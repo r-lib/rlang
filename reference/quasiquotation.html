@@ -16,7 +16,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
@@ -96,7 +97,7 @@ the base R printer (see the documentation topic)." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -134,7 +135,7 @@ the base R printer (see the documentation topic)." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-lib/rlang">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -282,7 +283,7 @@ special.</p></li>
     <pre class="examples"><div class='input'><span class='co'># Quasiquotation functions quote expressions like base::quote()</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='fu'>how_many</span>(<span class='no'>this</span>))</div><div class='output co'>#&gt; how_many(this)</div><div class='input'><span class='fu'><a href='quotation.html'>expr</a></span>(<span class='fu'>how_many</span>(<span class='no'>this</span>))</div><div class='output co'>#&gt; how_many(this)</div><div class='input'><span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'>how_many</span>(<span class='no'>this</span>))</div><div class='output co'>#&gt; &lt;quosure&gt;
 #&gt; expr: ^how_many(this)
-#&gt; env:  0x666f980</div><div class='input'>
+#&gt; env:  0x8086dc0</div><div class='input'>
 <span class='co'># In addition, they support unquoting. Let's store symbols</span>
 <span class='co'># (i.e. object names) in variables:</span>
 <span class='no'>this</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sym.html'>sym</a></span>(<span class='st'>"apples"</span>)
@@ -294,7 +295,7 @@ special.</p></li>
 <span class='co'># You can also insert values:</span>
 <span class='fu'><a href='quotation.html'>expr</a></span>(<span class='fu'>how_many</span>(!!(<span class='fl'>1</span> + <span class='fl'>2</span>)))</div><div class='output co'>#&gt; how_many(3)</div><div class='input'><span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'>how_many</span>(!!(<span class='fl'>1</span> + <span class='fl'>2</span>)))</div><div class='output co'>#&gt; &lt;quosure&gt;
 #&gt; expr: ^how_many(3)
-#&gt; env:  0x666f980</div><div class='input'>
+#&gt; env:  0x8086dc0</div><div class='input'>
 
 <span class='co'># Note that when you unquote complex objects into an expression,</span>
 <span class='co'># the base R printer may be a bit misleading. For instance compare</span>
@@ -302,7 +303,7 @@ special.</p></li>
 <span class='co'># when we unquote an integer vector:</span>
 <span class='fu'><a href='quotation.html'>expr</a></span>(<span class='fu'>how_many</span>(!!(<span class='fl'>1</span>:<span class='fl'>10</span>)))</div><div class='output co'>#&gt; how_many(1:10)</div><div class='input'><span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'>how_many</span>(!!(<span class='fl'>1</span>:<span class='fl'>10</span>)))</div><div class='output co'>#&gt; &lt;quosure&gt;
 #&gt; expr: ^how_many(&lt;int: 1L, 2L, 3L, 4L, 5L, ...&gt;)
-#&gt; env:  0x666f980</div><div class='input'>
+#&gt; env:  0x8086dc0</div><div class='input'>
 <span class='co'># This is why it's often useful to use qq_show() to examine the</span>
 <span class='co'># result of unquotation operators. It uses the same printer as</span>
 <span class='co'># quosures but does not return anything:</span>
@@ -313,13 +314,13 @@ special.</p></li>
 <span class='no'>args</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fl'>1</span>:<span class='fl'>3</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/mean'>mean</a></span>(!!!<span class='no'>args</span>))</div><div class='output co'>#&gt; &lt;quosure&gt;
 #&gt; expr: ^mean(&lt;int: 1L, 2L, 3L&gt;, na.rm = TRUE)
-#&gt; env:  0x666f980</div><div class='input'>
+#&gt; env:  0x8086dc0</div><div class='input'>
 <span class='co'># You can combine the two</span>
 <span class='no'>var</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>xyz</span>)
 <span class='no'>extra_args</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/mean'>mean</a></span>(!!<span class='no'>var</span> , !!!<span class='no'>extra_args</span>))</div><div class='output co'>#&gt; &lt;quosure&gt;
 #&gt; expr: ^mean(xyz, trim = 0.9, na.rm = TRUE)
-#&gt; env:  0x666f980</div><div class='input'>
+#&gt; env:  0x8086dc0</div><div class='input'>
 
 <span class='co'># The plural versions have support for the `:=` operator.</span>
 <span class='co'># Like `=`, `:=` creates named arguments:</span>
@@ -328,12 +329,12 @@ special.</p></li>
 #&gt; $mouse1
 #&gt; &lt;quosure&gt;
 #&gt; expr: ^bernard
-#&gt; env:  0x666f980
+#&gt; env:  0x8086dc0
 #&gt; 
 #&gt; $mouse2
 #&gt; &lt;quosure&gt;
 #&gt; expr: ^bianca
-#&gt; env:  0x666f980
+#&gt; env:  0x8086dc0
 #&gt; </div><div class='input'>
 <span class='co'># The `:=` is mainly useful to unquote names. Unlike `=` it</span>
 <span class='co'># supports `!!` on its LHS:</span>
@@ -343,12 +344,12 @@ special.</p></li>
 #&gt; $`unquote me!`
 #&gt; &lt;quosure&gt;
 #&gt; expr: ^bernard
-#&gt; env:  0x666f980
+#&gt; env:  0x8086dc0
 #&gt; 
 #&gt; $mouse2
 #&gt; &lt;quosure&gt;
 #&gt; expr: ^bianca
-#&gt; env:  0x666f980
+#&gt; env:  0x8086dc0
 #&gt; </div><div class='input'>
 
 <span class='co'># All these features apply to dots captured by enquos():</span>
@@ -368,7 +369,7 @@ special.</p></li>
 #&gt; $`unquote me!`
 #&gt; &lt;quosure&gt;
 #&gt; expr: ^penny
-#&gt; env:  0x666f980
+#&gt; env:  0x8086dc0
 #&gt; </div><div class='input'>
 
 <span class='co'># Unquoting is especially useful for building an expression by</span>
@@ -376,15 +377,15 @@ special.</p></li>
 <span class='no'>quo1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/chartr'>toupper</a></span>(<span class='no'>foo</span>))
 <span class='no'>quo1</span></div><div class='output co'>#&gt; &lt;quosure&gt;
 #&gt; expr: ^toupper(foo)
-#&gt; env:  0x666f980</div><div class='input'>
+#&gt; env:  0x8086dc0</div><div class='input'>
 <span class='no'>quo2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste</a></span>(!!<span class='no'>quo1</span>, <span class='no'>bar</span>))
 <span class='no'>quo2</span></div><div class='output co'>#&gt; &lt;quosure&gt;
 #&gt; expr: ^paste(^toupper(foo), bar)
-#&gt; env:  0x666f980</div><div class='input'>
+#&gt; env:  0x8086dc0</div><div class='input'>
 <span class='no'>quo3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(!!<span class='no'>quo2</span>, !!!<span class='fu'><a href='sym.html'>syms</a></span>(<span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>5</span>])))
 <span class='no'>quo3</span></div><div class='output co'>#&gt; &lt;quosure&gt;
 #&gt; expr: ^list(^paste(^toupper(foo), bar), a, b, c, d, e)
-#&gt; env:  0x666f980</div></pre>
+#&gt; env:  0x8086dc0</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

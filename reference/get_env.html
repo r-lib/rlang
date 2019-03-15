@@ -16,7 +16,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
@@ -77,7 +78,7 @@ environments)." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -115,7 +116,7 @@ environments)." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-lib/rlang">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -205,9 +206,9 @@ these functions.</p></li>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Environment of closure functions:</span>
 <span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='st'>"foo"</span>
-<span class='fu'>get_env</span>(<span class='no'>fn</span>)</div><div class='output co'>#&gt; &lt;environment: 0x8273760&gt;</div><div class='input'>
+<span class='fu'>get_env</span>(<span class='no'>fn</span>)</div><div class='output co'>#&gt; &lt;environment: 0x8fd2d48&gt;</div><div class='input'>
 <span class='co'># Or of quosures or formulas:</span>
-<span class='fu'>get_env</span>(~<span class='no'>foo</span>)</div><div class='output co'>#&gt; &lt;environment: 0x8273760&gt;</div><div class='input'><span class='fu'>get_env</span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>foo</span>))</div><div class='output co'>#&gt; &lt;environment: 0x8273760&gt;</div><div class='input'>
+<span class='fu'>get_env</span>(~<span class='no'>foo</span>)</div><div class='output co'>#&gt; &lt;environment: 0x8fd2d48&gt;</div><div class='input'><span class='fu'>get_env</span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>foo</span>))</div><div class='output co'>#&gt; &lt;environment: 0x8fd2d48&gt;</div><div class='input'>
 
 <span class='co'># Provide a default in case the object doesn't bundle an environment.</span>
 <span class='co'># Let's create an unevaluated formula:</span>
@@ -233,7 +234,7 @@ these functions.</p></li>
 <span class='co'># for fn has no effect on the original function:</span>
 <span class='no'>other_env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>child_env</a></span>(<span class='kw'>NULL</span>)
 <span class='fu'>set_env</span>(<span class='no'>fn</span>, <span class='no'>other_env</span>)</div><div class='output co'>#&gt; function() NULL
-#&gt; &lt;environment: 0x4815100&gt;</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'>get_env</span>(<span class='no'>fn</span>), <span class='no'>other_env</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
+#&gt; &lt;environment: 0x657ec90&gt;</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'>get_env</span>(<span class='no'>fn</span>), <span class='no'>other_env</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
 <span class='co'># Since set_env() returns a new function with a different</span>
 <span class='co'># environment, you'll need to reassign the result:</span>
 <span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='fu'>set_env</span>(<span class='no'>fn</span>, <span class='no'>other_env</span>)

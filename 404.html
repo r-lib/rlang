@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Display backtrace on error — rlang__backtrace_on_error • rlang</title>
+<title>Page not found (404) • rlang</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -26,25 +26,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
-<link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script>
+<link href="pkgdown.css" rel="stylesheet">
+<script src="pkgdown.js"></script>
 
 
 
-<meta property="og:title" content="Display backtrace on error — rlang__backtrace_on_error" />
-
-<meta property="og:description" content="Errors thrown with abort() automatically save a backtrace that
-can be inspected by calling last_error(). Optionally, you can
-also display the backtrace alongside the error message by setting
-the experimental option rlang__backtrace_on_error to one of the
-following values:
-&quot;reminder&quot;: Display a reminder that the backtrace can be
-inspected by calling rlang::last_error().
-&quot;branch&quot;: Display a simplified backtrace.
-&quot;collapse&quot;: Display a collapsed backtrace tree.
-&quot;full&quot;: Display the full backtrace tree.
-" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:title" content="Page not found (404)" />
 
 
 
@@ -61,7 +48,7 @@ inspected by calling rlang::last_error().
   </head>
 
   <body>
-    <div class="container template-reference-topic">
+    <div class="container template-title-body">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -73,7 +60,7 @@ inspected by calling rlang::last_error().
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">rlang</a>
+        <a class="navbar-link" href="index.html">rlang</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1.9000</span>
       </span>
     </div>
@@ -81,16 +68,16 @@ inspected by calling rlang::last_error().
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
+  <a href="index.html">
     <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../reference/lifecycle.html">Life cycle</a>
+  <a href="reference/lifecycle.html">Life cycle</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -111,7 +98,7 @@ inspected by calling rlang::last_error().
     </li>
     <li class="divider"></li>
     <li>
-      <a href="../news/index.html">Change log</a>
+      <a href="news/index.html">Change log</a>
     </li>
   </ul>
 </li>
@@ -134,66 +121,17 @@ inspected by calling rlang::last_error().
       </header>
 
 <div class="row">
-  <div class="col-md-9 contents">
+  <div class="contents col-md-9">
     <div class="page-header">
-    <h1>Display backtrace on error</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/cnd.R'><code>R/cnd.R</code></a></small>
-    <div class="hidden name"><code>rlang__backtrace_on_error.Rd</code></div>
+      <h1>Page not found (404)</h1>
     </div>
 
-    <div class="ref-description">
-    
-    <p>Errors thrown with <code><a href='abort.html'>abort()</a></code> automatically save a backtrace that
-can be inspected by calling <code><a href='last_error.html'>last_error()</a></code>. Optionally, you can
-also display the backtrace alongside the error message by setting
-the experimental option <code>rlang__backtrace_on_error</code> to one of the
-following values:</p><ul>
-<li><p><code>"reminder"</code>: Display a reminder that the backtrace can be
-inspected by calling <code><a href='last_error.html'>rlang::last_error()</a></code>.</p></li>
-<li><p><code>"branch"</code>: Display a simplified backtrace.</p></li>
-<li><p><code>"collapse"</code>: Display a collapsed backtrace tree.</p></li>
-<li><p><code>"full"</code>: Display the full backtrace tree.</p></li>
-</ul>
-    
-    </div>
-
-        
-    <h2 class="hasAnchor" id="promote-base-errors-to-rlang-errors"><a class="anchor" href="#promote-base-errors-to-rlang-errors"></a>Promote base errors to rlang errors</h2>
-
-    
-    <p>Call <code><a href='https://www.rdocumentation.org/packages/base/topics/options'>options(error = rlang:::add_backtrace)</a></code> to instrument base
-errors with rlang features. This handler does two things:</p><ul>
-<li><p>It saves the base error as an rlang object. This allows you to
-call <code><a href='last_error.html'>last_error()</a></code> to print the backtrace or inspect its data.</p></li>
-<li><p>It prints the backtrace for the current error according to the
-<code>rlang__backtrace_on_error</code> option.</p></li>
-</ul>
-    <p>This experimental handler is not exported because it is meant for
-interactive use only.</p>
-    
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'># Display a simplified backtrace on error for both base and rlang
-# errors:
-
-# options(
-#   rlang__backtrace_on_error = "branch",
-#   error = rlang:::add_backtrace
-# )
-# stop("foo")
-</div></pre>
-  </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      
-      <li><a href="#promote-base-errors-to-rlang-errors">Promote base errors to rlang errors</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+Content not found. Please use links in the navbar.
 
   </div>
+
 </div>
+
 
       <footer>
       <div class="copyright">
