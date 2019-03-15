@@ -484,7 +484,7 @@ sexp* dots_expand(sexp* dots, struct dots_capture_info* capture_info) {
 
           // Names might not be initialised when dots are captured by value
           if (out_names == r_null) {
-            out_names = init_names(out);
+            out_names = KEEP_N(init_names(out), n_protect);
           }
           r_chr_poke(out_names, count, name);
 
