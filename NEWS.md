@@ -1,7 +1,10 @@
 
 # rlang 0.3.1.9000
 
-* New "none" option for `rlang__backtrace_on_error`.
+* The experimental option `rlang__backtrace_on_error` is no longer
+  experimental and has been renamed to `rlang_backtrace_on_error`.
+
+* New "none" option for `rlang_backtrace_on_error`.
 
 * Unary operators applied to quosures now give better error messages.
 

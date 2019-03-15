@@ -177,7 +177,7 @@ test_that("error is printed with backtrace", {
   msg <- with_options(
     rlang_trace_format_srcrefs = FALSE,
     rlang_trace_top_env = current_env(),
-    rlang__backtrace_on_error = "branch",
+    rlang_backtrace_on_error = "branch",
     conditionMessage(catch_cnd(f()))
   )
 
@@ -270,10 +270,10 @@ test_that("No backtrace is displayed with top-level active bindings", {
 
 test_that("Invalid on_error option resets itself", {
   with_options(
-    rlang__backtrace_on_error = NA,
+    rlang_backtrace_on_error = NA,
     {
       expect_warning(tryCatch(abort("foo"), error = identity), "Invalid")
-      expect_null(peek_option("rlang__backtrace_on_error"))
+      expect_null(peek_option("rlang_backtrace_on_error"))
     }
   )
 })
@@ -294,14 +294,14 @@ test_that("on_error option can be tweaked", {
 
     cat_line("", ">>> Default:", "")
     with_options(
-      rlang__backtrace_on_error = NULL,
+      rlang_backtrace_on_error = NULL,
       rlang_interactive = TRUE,
       msg()
     )
 
     cat_line("", "", "", ">>> Reminder:", "")
     with_options(
-      rlang__backtrace_on_error = "reminder",
+      rlang_backtrace_on_error = "reminder",
       rlang_interactive = TRUE,
       msg()
     )
@@ -313,15 +313,15 @@ test_that("on_error option can be tweaked", {
     )
 
     cat_line("", "", "", ">>> Branch:", "")
-    with_options(rlang__backtrace_on_error = "branch", msg())
+    with_options(rlang_backtrace_on_error = "branch", msg())
 
     cat_line("", "", "", ">>> Collapsed:", "")
-    with_options(rlang__backtrace_on_error = "collapse", msg())
+    with_options(rlang_backtrace_on_error = "collapse", msg())
   }))
 })
 
 test_that("format_onerror_backtrace handles empty and size 1 traces", {
-  scoped_options(rlang__backtrace_on_error = "branch")
+  scoped_options(rlang_backtrace_on_error = "branch")
 
   trace <- new_trace(list(), int(), chr())
   expect_identical(format_onerror_backtrace(trace), NULL)

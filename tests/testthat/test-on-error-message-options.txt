@@ -38,7 +38,7 @@ Backtrace:
 
 The error message
 Backtrace:
-  1. rlang::with_options(rlang__backtrace_on_error = "branch", msg())
+  1. rlang::with_options(rlang_backtrace_on_error = "branch", msg())
   2. rlang:::msg()
  12. rlang:::f()
  15. rlang:::g()
