@@ -409,33 +409,6 @@ test_that("can evaluate quosures created in the data mask without infloop", {
   expect_identical(eval_bare(quo, quo_get_env(quo)), "foo")
 })
 
-test_that("`.env` pronoun is constructed", {
-  pronoun <- eval_tidy(quote(.env), mtcars)
-  expect_is(pronoun, "rlang_ctxt_pronoun")
-  expect_reference(env_parent(pronoun), current_env())
-})
-
-test_that("the `.env` pronoun is not an environment", {
-  pronoun <- eval_tidy(quote(.env), mtcars)
-  expect_error(length(pronoun), "Can't take the")
-
-  skip_if(getRversion() < "3.2")
-  expect_error(names(pronoun), "Can't take the")
-})
-
-test_that("subsetting `.env` evaluates", {
-  expect_error(eval_tidy(quote(.env[["cyl"]]), mtcars, env()), "not found")
-  cyl <- "foo"
-  expect_identical(eval_tidy(quote(.env$cyl), mtcars, env()), "foo")
-  expect_identical(eval_tidy(quote(.env[["cyl"]]), mtcars, env()), "foo")
-})
-
-test_that("mask inherits from `env` after evaluation", {
-  flag <- env(empty_env())
-  mask <- new_data_mask(env())
-  eval_tidy(NULL, mask, flag)
-  expect_true(env_inherits(mask, flag))
-})
 
 # Lifecycle ----------------------------------------------------------
 

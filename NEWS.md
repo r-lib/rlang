@@ -12,14 +12,6 @@
   entraced via `withCallingHandlers()`. The issue didn't affect
   entracing via top level `options(error = rlang::entrace)` handling.
 
-* Subsetting an object from the `.env` pronoun now evaluates the
-  corresponding symbol. This means you can now retrieve objects from
-  the contextual environment in magrittr pipes.
-
-  Note that following this change, and despite its name, `.env` is not
-  really an environment but a special shortcut, just like `.data` is
-  not really a data frame.
-
 
 # rlang 0.3.1
 
