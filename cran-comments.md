@@ -1,4 +1,6 @@
 
+Fixes the rchk problems. However, rchk warnings remain after the fix which AFAICS are false positives. I have contacted Tomas Kalibera about it. Refactoring the code to work around the warnings would be too dangerous for a quick release (dots capture in the tidyverse relies on it).
+
 ## Test environments
 
 * local OS X install: release
@@ -14,19 +16,6 @@
 
 ## Reverse dependencies
 
-I have run R CMD check on the 325 downstream dependencies. (Summary at
-https://github.com/tidyverse/rlang/tree/master/revdep).
+I have run R CMD check on the 444 downstream dependencies. (Summary at https://github.com/r-lib/rlang/blob/release-0.3.2/revdep/README.md).
 
-I couldn't install 15 packages. There were 6 broken packages and I
-have sent emails and fixes to the authors 2 weeks ago. 2 of these
-failures were fixed in the mean time, leaving 4 broken packages. The
-author of the naniar package will send a fix shortly and we will send
-a patch release for dplyr as well (the check failure is caused by
-assumptions in the tests that are no longer true rather than broken
-behaviour).
-
-In addition, I have tested the reverse dependencies of dplyr, tidyr,
-and purrr (1245 packages). I couldn't check 47 packages. I found 3
-failures in dplyr's revdeps, 1 in purrr's revdeps and 1 in tidyr's
-revdeps. The authors of these packages were informed two weeks ago as
-well.
+There were no issues.
