@@ -34,6 +34,11 @@ poke_type <- function(x, type) {
 sexp_address <- function(x) {
   .Call(rlang_sexp_address, x)
 }
+sexp_named <- function(x) {
+  # Don't use `substitute()` because dots might be forwarded
+  arg <- match.call(expand.dots = FALSE)$x
+  .Call(rlang_named, arg, parent.frame())
+}
 
 mark_object <- function(x) {
   invisible(.Call(rlang_mark_object, x))
