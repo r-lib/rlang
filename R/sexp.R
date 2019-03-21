@@ -78,4 +78,12 @@ sexp_attrib <- function(x) {
   .Call(rlang_attrib, x)
 }
 
+vec_alloc <- function(type, n) {
+  stopifnot(
+    is_string(type),
+    is_integer(n, 1)
+  )
+  .Call(rlang_vec_alloc, type, n)
+}
+
 # nocov end

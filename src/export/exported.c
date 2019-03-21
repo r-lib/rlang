@@ -336,6 +336,9 @@ sexp* rlang_named(sexp* x, sexp* env) {
 
 // vec.h
 
+sexp* rlang_vec_alloc(sexp* type, sexp* n) {
+  return Rf_allocVector(Rf_str2type(r_chr_get_c_string(type, 0)), r_int_get(n, 0));
+}
 sexp* rlang_vec_coerce(sexp* x, sexp* type) {
   return Rf_coerceVector(x, Rf_str2type(r_chr_get_c_string(type, 0)));
 }

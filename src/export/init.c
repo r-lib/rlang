@@ -66,6 +66,7 @@ extern sexp* rlang_enexpr(sexp*, sexp*);
 extern sexp* rlang_ensym(sexp*, sexp*);
 extern sexp* rlang_enquo(sexp*, sexp*);
 extern sexp* rlang_get_expression(sexp*, sexp*);
+extern sexp* rlang_vec_alloc(sexp*, sexp*);
 extern sexp* rlang_vec_coerce(sexp*, sexp*);
 extern sexp* rlang_mark_object(sexp*);
 extern sexp* rlang_promise_expr(sexp*, sexp*);
@@ -221,6 +222,7 @@ static const r_callable r_callables[] = {
   {"rlang_ensym",                       (r_fn_ptr) &rlang_ensym, 2},
   {"rlang_enquo",                       (r_fn_ptr) &rlang_enquo, 2},
   {"rlang_get_expression",              (r_fn_ptr) &rlang_get_expression, 2},
+  {"rlang_vec_alloc",                   (r_fn_ptr) &rlang_vec_alloc, 2},
   {"rlang_vec_coerce",                  (r_fn_ptr) &rlang_vec_coerce, 2},
   {"rlang_quo_is_symbol",               (r_fn_ptr) &rlang_quo_is_symbol, 1},
   {"rlang_quo_is_call",                 (r_fn_ptr) &rlang_quo_is_call, 1},
