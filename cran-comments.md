@@ -1,5 +1,5 @@
 
-Fixes the rchk problems. However, rchk warnings remain after the fix which AFAICS are false positives. I have contacted Tomas Kalibera about it. Refactoring the code to work around the warnings would be too dangerous for a quick release (dots capture in the tidyverse relies on it).
+Fixes the rchk problems.
 
 ## Test environments
 
