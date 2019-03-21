@@ -1,6 +1,11 @@
 
 # rlang 0.3.1.9000
 
+* Quoting functions gain a new interpolation operator `{{`. This is a
+  shortcut for `!!enquo(arg)`. It is less powerful than `!!` but
+  should be easier to learn because it is focused on a narrower task
+  and should look familiar to users of the glue package.
+
 * The experimental option `rlang__backtrace_on_error` is no longer
   experimental and has been renamed to `rlang_backtrace_on_error`.
 

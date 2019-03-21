@@ -4,8 +4,8 @@
 #'
 #' Quasiquotation is the mechanism that makes it possible to program
 #' flexibly with tidy evaluation grammars like dplyr. It is enabled in
-#' all tidyeval quoting functions, the most fundamental of which are
-#' [quo()] and [expr()].
+#' all functions quoting their arguments with `enquo()`, `enexpr()`,
+#' or the plural variants.
 #'
 #' Quasiquotation is the combination of quoting an expression while
 #' allowing immediate evaluation (unquoting) of part of that
@@ -25,6 +25,14 @@
 #'   converted to a list with [base::as.list()] to ensure proper
 #'   dispatch. If it is an S4 objects, it is converted to a list with
 #'   [methods::as()].
+#'
+#' - The `{{ }}` operator quotes and unquotes its argument in one
+#'   go, a pattern that we call **interpolation**. It is an alias for
+#'   `!!enquo(arg)`.
+#'
+#'   Like `enquo()`, `{{ }}` is used in functions to capture an
+#'   argument as a quoted expression. This expression is immediately
+#'   unquoted in place.
 #'
 #' Use `qq_show()` to experiment with quasiquotation or debug the
 #' effect of unquoting operators. `qq_show()` quotes its input,
@@ -136,6 +144,29 @@
 #' @name quasiquotation
 #' @aliases UQ UQS
 #' @examples
+#' # Interpolation with {{  }} is the easiest way to forward
+#' # arguments to tidy eval functions:
+#' if (is_attached("package:dplyr")) {
+#'
+#' # Forward all arguments involving data frame columns by
+#' # interpolating them within other data masked arguments.
+#' # Here we interpolate `arg` in a `summarise()` call:
+#' my_function <- function(data, arg) {
+#'   summarise(data, avg = mean({{ arg }}, na.rm = TRUE))
+#' }
+#'
+#' my_function(mtcars, cyl)
+#' my_function(mtcars, cyl * 10)
+#'
+#' # The  operator is just a shortcut for `!!enquo()`:
+#' my_function <- function(data, arg) {
+#'   summarise(data, avg = mean(!!enquo(arg), na.rm = TRUE))
+#' }
+#'
+#' my_function(mtcars, cyl)
+#'
+#' }
+#'
 #' # Quasiquotation functions quote expressions like base::quote()
 #' quote(how_many(this))
 #' expr(how_many(this))

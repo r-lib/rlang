@@ -4,7 +4,10 @@
 #include "utils.h"
 
 
-struct expansion_info which_bang_op(sexp* first) {
+struct expansion_info which_bang_op(sexp* second, struct expansion_info info);
+struct expansion_info which_curly_op(sexp* second, struct expansion_info info);
+
+struct expansion_info which_uq_op(sexp* first) {
   struct expansion_info info = init_expansion_info();
 
   if (r_is_call(first, "(")) {
@@ -13,7 +16,7 @@ struct expansion_info which_bang_op(sexp* first) {
       return info;
     }
 
-    struct expansion_info inner_info = which_bang_op(paren);
+    struct expansion_info inner_info = which_uq_op(paren);
 
     // Check that `root` is NULL so we don't remove parentheses when
     // there's an operation tail (i.e. when the parse tree was fixed
@@ -25,11 +28,28 @@ struct expansion_info which_bang_op(sexp* first) {
     }
   }
 
-  if (!r_is_call(first, "!")) {
+  if (r_typeof(first) != r_type_call) {
     return info;
   }
 
-  sexp* second = r_node_cadr(first);
+  sexp* head = r_node_car(first);
+
+  if (r_typeof(head) != r_type_symbol) {
+    return info;
+  }
+
+  const char* nm = r_sym_get_c_string(head);
+
+  if (strcmp(nm, "!") == 0) {
+    return which_bang_op(r_node_cadr(first), info);
+  } else if (strcmp(nm, "{") == 0) {
+    return which_curly_op(r_node_cadr(first), info);
+  } else {
+    return info;
+  }
+}
+
+struct expansion_info which_bang_op(sexp* second, struct expansion_info info) {
   if (!r_is_call(second, "!")) {
     return info;
   }
@@ -53,6 +73,18 @@ struct expansion_info which_bang_op(sexp* first) {
   info.operand = r_node_cadr(third);
   return info;
 }
+struct expansion_info which_curly_op(sexp* second, struct expansion_info info) {
+  if (!r_is_call(second, "{")) {
+    return info;
+  }
+
+  info.op = OP_EXPAND_CURLY;
+  info.parent = r_node_cdr(second);
+  info.operand = r_node_cadr(second);
+
+  return info;
+}
+
 
 // These functions are questioning and might be soft-deprecated in the
 // future
@@ -133,7 +165,7 @@ void maybe_poke_big_bang_op(sexp* x, struct expansion_info* info) {
 static sexp* dot_data_sym = NULL;
 
 struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
-  struct expansion_info info = which_bang_op(x);
+  struct expansion_info info = which_uq_op(x);
 
   if (r_typeof(x) != r_type_call) {
     return info;
@@ -237,7 +269,7 @@ struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
 }
 
 struct expansion_info is_big_bang_op(sexp* x) {
-  struct expansion_info info = which_bang_op(x);
+  struct expansion_info info = which_uq_op(x);
 
   if (info.op != OP_EXPAND_UQS) {
     maybe_poke_big_bang_op(x, &info);
@@ -342,6 +374,11 @@ sexp* big_bang(sexp* operand, sexp* env, sexp* node, sexp* next) {
   return next;
 }
 
+static sexp* curly_curly(struct expansion_info info, sexp* env) {
+  sexp* value = rlang_enquo(info.operand, env);
+  return bang_bang_teardown(value, info);
+}
+
 
 // Defined below
 static sexp* node_list_interp(sexp* x, sexp* env);
@@ -370,6 +407,9 @@ sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
       return out;
     }
   case OP_EXPAND_UQ:
+    return bang_bang(info, env);
+  case OP_EXPAND_CURLY:
+    return curly_curly(info, env);
   case OP_EXPAND_DOT_DATA:
     return bang_bang(info, env);
   case OP_EXPAND_UQE:

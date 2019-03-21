@@ -62,7 +62,7 @@ test_that("functions defs increase indent", {
 
 test_that("blocks are deparsed", {
   expect_identical(braces_deparse(quote({1; 2; { 3; 4 }})), c("{", "  1", "  2", "  {", "    3", "    4", "  }", "}"))
-  expect_identical(sexp_deparse(quote({{ 1 }})), c("{", "  {", "    1", "  }", "}"))
+  expect_identical_(sexp_deparse(quote({{ 1 }})), c("{", "  {", "    1", "  }", "}"))
 
   ctxt <- new_lines(width = 3L)
   expected_lines <- c("{", "  11111", "  22222", "  {", "    33333", "    44444", "  }", "}")
