@@ -4,6 +4,8 @@
 #include "utils.h"
 
 
+struct expansion_info which_bang_op(sexp* second, struct expansion_info info);
+
 struct expansion_info which_uq_op(sexp* first) {
   struct expansion_info info = init_expansion_info();
 
@@ -25,11 +27,26 @@ struct expansion_info which_uq_op(sexp* first) {
     }
   }
 
-  if (!r_is_call(first, "!")) {
+  if (r_typeof(first) != r_type_call) {
     return info;
   }
 
-  sexp* second = r_node_cadr(first);
+  sexp* head = r_node_car(first);
+
+  if (r_typeof(head) != r_type_symbol) {
+    return info;
+  }
+
+  const char* nm = r_sym_get_c_string(head);
+
+  if (strcmp(nm, "!") == 0) {
+    return which_bang_op(r_node_cadr(first), info);
+  } else {
+    return info;
+  }
+}
+
+struct expansion_info which_bang_op(sexp* second, struct expansion_info info) {
   if (!r_is_call(second, "!")) {
     return info;
   }
@@ -53,6 +70,7 @@ struct expansion_info which_uq_op(sexp* first) {
   info.operand = r_node_cadr(third);
   return info;
 }
+
 
 // These functions are questioning and might be soft-deprecated in the
 // future
