@@ -61,7 +61,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2.9000</span>
       </span>
     </div>
 
@@ -127,21 +127,29 @@
       <small>Source: <a href='https://github.com/r-lib/rlang/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="rlang-0-3-1-9000" class="section level1">
+    <div id="rlang-0-3-2-9000" class="section level1">
 <h1 class="page-header">
-<a href="#rlang-0-3-1-9000" class="anchor"></a>rlang 0.3.1.9000<small> Unreleased </small>
+<a href="#rlang-0-3-2-9000" class="anchor"></a>rlang 0.3.2.9000<small> Unreleased </small>
 </h1>
 <ul>
 <li><p>Quoting functions gain a new interpolation operator <code>{{</code>. This is a shortcut for <code>!!enquo(arg)</code>. It is less powerful than <code>!!</code> but should be easier to learn because it is focused on a narrower task and should look familiar to users of the glue package.</p></li>
-<li><p>The experimental option <code>rlang__backtrace_on_error</code> is no longer experimental and has been renamed to <code>rlang_backtrace_on_error</code>.</p></li>
-<li><p>New “none” option for <code>rlang_backtrace_on_error</code>.</p></li>
-<li><p>Unary operators applied to quosures now give better error messages.</p></li>
-<li><p>Fixed issue with backtraces of warnings promoted to error, and entraced via <code><a href="https://www.rdocumentation.org/packages/base/topics/conditions">withCallingHandlers()</a></code>. The issue didn’t affect entracing via top level <code><a href="https://www.rdocumentation.org/packages/base/topics/options">options(error = rlang::entrace)</a></code> handling.</p></li>
 <li>
 <p>Subsetting an object from the <code>.env</code> pronoun now evaluates the corresponding symbol. This means you can now retrieve objects from the contextual environment in magrittr pipes.</p>
 <p>Note that following this change, and despite its name, <code>.env</code> is not really an environment but a special shortcut, just like <code>.data</code> is not really a data frame.</p>
 </li>
 <li><p>The return object from <code><a href="../reference/as_function.html">as_function()</a></code> now inherits from <code>"function"</code> (<a href='https://github.com/richierocks'>@richierocks</a>, <a href='https://github.com/r-lib/rlang/issues/735'>#735</a>).</p></li>
+</ul>
+</div>
+    <div id="rlang-0-3-2" class="section level1">
+<h1 class="page-header">
+<a href="#rlang-0-3-2" class="anchor"></a>rlang 0.3.2<small> Unreleased </small>
+</h1>
+<ul>
+<li><p>Fixed protection issue reported by rchk.</p></li>
+<li><p>The experimental option <code>rlang__backtrace_on_error</code> is no longer experimental and has been renamed to <code>rlang_backtrace_on_error</code>.</p></li>
+<li><p>New “none” option for <code>rlang_backtrace_on_error</code>.</p></li>
+<li><p>Unary operators applied to quosures now give better error messages.</p></li>
+<li><p>Fixed issue with backtraces of warnings promoted to error, and entraced via <code><a href="https://www.rdocumentation.org/packages/base/topics/conditions">withCallingHandlers()</a></code>. The issue didn’t affect entracing via top level <code><a href="https://www.rdocumentation.org/packages/base/topics/options">options(error = rlang::entrace)</a></code> handling.</p></li>
 </ul>
 </div>
     <div id="rlang-0-3-1" class="section level1">
@@ -719,7 +727,8 @@ quo(call(`!!!`(var)))</a></code></pre>
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#rlang-0-3-1-9000">0.3.1.9000</a></li>
+        <li><a href="#rlang-0-3-2-9000">0.3.2.9000</a></li>
+        <li><a href="#rlang-0-3-2">0.3.2</a></li>
         <li><a href="#rlang-0-3-1">0.3.1</a></li>
         <li><a href="#rlang-0-3-0">0.3.0</a></li>
         <li><a href="#rlang-0-2-2">0.2.2</a></li>
