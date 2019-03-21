@@ -248,7 +248,7 @@ test_that("fn_body() always returns a `{` block", {
 
 test_that("as_function() adds a class to lambda functions", {
   out <- as_function(~foo)
-  expect_is(out, "rlang_lambda_function")
+  expect_is(out, c("rlang_lambda_function", "function"))
   expect_output(print(out), "<lambda>")
 })
 
