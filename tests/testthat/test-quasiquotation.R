@@ -581,3 +581,7 @@ test_that("splicing language objects still works", {
 test_that("can unquote string in function position", {
   expect_identical_(expr((!!"foo")()), quote("foo"()))
 })
+
+test_that("{{ is an unquote operator", {
+  expect_identical_(expr(list({{ quote(foo) }})), quote(list(foo)))
+})

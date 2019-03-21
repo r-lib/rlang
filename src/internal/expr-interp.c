@@ -5,6 +5,7 @@
 
 
 struct expansion_info which_bang_op(sexp* second, struct expansion_info info);
+struct expansion_info which_curly_op(sexp* second, struct expansion_info info);
 
 struct expansion_info which_uq_op(sexp* first) {
   struct expansion_info info = init_expansion_info();
@@ -41,6 +42,8 @@ struct expansion_info which_uq_op(sexp* first) {
 
   if (strcmp(nm, "!") == 0) {
     return which_bang_op(r_node_cadr(first), info);
+  } else if (strcmp(nm, "{") == 0) {
+    return which_curly_op(r_node_cadr(first), info);
   } else {
     return info;
   }
@@ -68,6 +71,17 @@ struct expansion_info which_bang_op(sexp* second, struct expansion_info info) {
 
   info.op = OP_EXPAND_UQS;
   info.operand = r_node_cadr(third);
+  return info;
+}
+struct expansion_info which_curly_op(sexp* second, struct expansion_info info) {
+  if (!r_is_call(second, "{")) {
+    return info;
+  }
+
+  info.op = OP_EXPAND_UQ;
+  info.parent = r_node_cdr(second);
+  info.operand = r_node_cadr(second);
+
   return info;
 }
 
