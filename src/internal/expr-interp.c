@@ -375,7 +375,7 @@ sexp* big_bang(sexp* operand, sexp* env, sexp* node, sexp* next) {
 }
 
 static sexp* curly_curly(struct expansion_info info, sexp* env) {
-  sexp* value = r_eval(info.operand, env);
+  sexp* value = rlang_enquo(info.operand, env);
   return bang_bang_teardown(value, info);
 }
 

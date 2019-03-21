@@ -582,8 +582,11 @@ test_that("can unquote string in function position", {
   expect_identical_(expr((!!"foo")()), quote("foo"()))
 })
 
-test_that("{{ is an unquote operator", {
-  expect_identical_(expr(list({{ quote(foo) }})), quote(list(foo)))
+test_that("{{ is a quote-unquote operator", {
+  fn <- function(foo) expr(list({{ foo }}))
+  expect_identical_(fn(bar), expr(list(!!quo(bar))))
+  expect_identical_(expr(list({{ letters }})), expr(list(!!quo(!!letters))))
+  expect_error_(expr(list({{ quote(foo) }})), "must be a symbol")
 })
 
 test_that("{{ only works in quoting functions", {
@@ -596,5 +599,16 @@ test_that("{{ only works in quoting functions", {
 
 test_that("{{ on the LHS of :=", {
   foo <- "bar"
-  expect_error_(exprs({{ foo }} := NA), "TODO")
+  expect_identical_(exprs({{ foo }} := NA), exprs(bar = NA))
+
+  foo <- quote(bar)
+  expect_identical_(exprs({{ foo }} := NA), exprs(bar = NA))
+
+  foo <- quo(bar)
+  expect_identical_(exprs({{ foo }} := NA), exprs(bar = NA))
+
+  fn <- function(foo) exprs({{ foo }} := NA)
+  expect_identical_(fn(bar), exprs(bar = NA))
+
+  expect_error_(exprs({{ foo() }} := NA), "must be a symbol")
 })
