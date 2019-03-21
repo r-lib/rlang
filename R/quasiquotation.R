@@ -146,9 +146,7 @@
 #' @examples
 #' # Interpolation with {{  }} is the easiest way to forward
 #' # arguments to tidy eval functions:
-#' if (is_installed("dplyr")) {
-#'
-#' library(dplyr)
+#' if (is_attached("package:dplyr")) {
 #'
 #' # Forward all arguments involving data frame columns by
 #' # interpolating them within other data masked arguments.
