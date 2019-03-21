@@ -1,10 +1,26 @@
 
-# rlang 0.3.1.9000
+# rlang 0.3.2.9000
 
 * Quoting functions gain a new interpolation operator `{{`. This is a
   shortcut for `!!enquo(arg)`. It is less powerful than `!!` but
   should be easier to learn because it is focused on a narrower task
   and should look familiar to users of the glue package.
+
+* Subsetting an object from the `.env` pronoun now evaluates the
+  corresponding symbol. This means you can now retrieve objects from
+  the contextual environment in magrittr pipes.
+
+  Note that following this change, and despite its name, `.env` is not
+  really an environment but a special shortcut, just like `.data` is
+  not really a data frame.
+
+* The return object from `as_function()` now inherits from
+  `"function"` (@richierocks, #735).
+
+
+# rlang 0.3.2
+
+* Fixed protection issue reported by rchk.
 
 * The experimental option `rlang__backtrace_on_error` is no longer
   experimental and has been renamed to `rlang_backtrace_on_error`.
@@ -17,15 +33,6 @@
   entraced via `withCallingHandlers()`. The issue didn't affect
   entracing via top level `options(error = rlang::entrace)` handling.
 
-* Subsetting an object from the `.env` pronoun now evaluates the
-  corresponding symbol. This means you can now retrieve objects from
-  the contextual environment in magrittr pipes.
-
-  Note that following this change, and despite its name, `.env` is not
-  really an environment but a special shortcut, just like `.data` is
-  not really a data frame.
-
-* The return object from `as_function()` now inherits from `"function"` (@richierocks, #735).
 
 # rlang 0.3.1
 
