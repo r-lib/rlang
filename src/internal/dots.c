@@ -478,16 +478,15 @@ sexp* dots_expand(sexp* dots, struct dots_capture_info* capture_info) {
 
         sexp* name = r_nms_get(names, i);
         if (name != r_string("")) {
-          // Serialised unicode points might arise when unquoting
-          // lists because of the conversion to pairlist
-          name = KEEP(r_str_unserialise_unicode(name));
-
           // Names might not be initialised when dots are captured by value
           if (out_names == r_null) {
             out_names = KEEP_N(init_names(out), n_protect);
           }
-          r_chr_poke(out_names, count, name);
 
+          // Serialised unicode points might arise when unquoting
+          // lists because of the conversion to pairlist
+          name = KEEP(r_str_unserialise_unicode(name));
+          r_chr_poke(out_names, count, name);
           FREE(1);
         }
 
