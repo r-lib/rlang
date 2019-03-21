@@ -7,7 +7,6 @@
 \alias{!!}
 \alias{!!!}
 \alias{:=}
-\alias{{{}
 \alias{qq_show}
 \title{Quasiquotation of an expression}
 \usage{
@@ -39,11 +38,11 @@ If the vector is a classed object (like a factor), it is
 converted to a list with \code{\link[base:as.list]{base::as.list()}} to ensure proper
 dispatch. If it is an S4 objects, it is converted to a list with
 \code{\link[methods:as]{methods::as()}}.
-\item The \code{\{\{} operator quotes and unquotes its argument in one
+\item The \code{{{ }}} operator quotes and unquotes its argument in one
 go, a pattern that we call \strong{interpolation}. It is an alias for
 \code{!!enquo(arg)}.
 
-Like \code{enquo()}, \code{\{\{} is used in functions to capture an
+Like \code{enquo()}, \code{{{ }}} is used in functions to capture an
 argument as a quoted expression. This expression is immediately
 unquoted in place.
 }
@@ -147,7 +146,7 @@ special.
 }
 
 \examples{
-# Interpolation with curly-curly is the easiest way to forward
+# Interpolation with {{  }} is the easiest way to forward
 # arguments to tidy eval functions:
 if (is_installed("dplyr")) {
 

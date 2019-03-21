@@ -26,11 +26,11 @@
 #'   dispatch. If it is an S4 objects, it is converted to a list with
 #'   [methods::as()].
 #'
-#' - The \code{\{\{} operator quotes and unquotes its argument in one
+#' - The `{{ }}` operator quotes and unquotes its argument in one
 #'   go, a pattern that we call **interpolation**. It is an alias for
 #'   `!!enquo(arg)`.
 #'
-#'   Like `enquo()`, \code{\{\{} is used in functions to capture an
+#'   Like `enquo()`, `{{ }}` is used in functions to capture an
 #'   argument as a quoted expression. This expression is immediately
 #'   unquoted in place.
 #'
@@ -144,7 +144,7 @@
 #' @name quasiquotation
 #' @aliases UQ UQS
 #' @examples
-#' # Interpolation with curly-curly is the easiest way to forward
+#' # Interpolation with {{  }} is the easiest way to forward
 #' # arguments to tidy eval functions:
 #' if (is_installed("dplyr")) {
 #'
@@ -269,12 +269,6 @@ UQS <- function(x) {
 #' @export
 `:=` <- function(x, y) {
   abort("`:=` can only be used within a quasiquoted argument")
-}
-#' @rdname quasiquotation
-#' @usage NULL
-#' @export
-`{{` <- function(x, y) {
-  abort("`{{` can only be used within a quasiquoted argument")
 }
 
 #' @rdname quasiquotation
