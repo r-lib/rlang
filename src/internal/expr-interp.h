@@ -27,7 +27,7 @@ static inline bool is_splice_call(sexp* node) {
 }
 
 
-#define EXPANSION_OP_MAX 7
+#define EXPANSION_OP_MAX 8
 enum expansion_op {
   OP_EXPAND_NONE,
   OP_EXPAND_UQ,
@@ -35,7 +35,8 @@ enum expansion_op {
   OP_EXPAND_UQS,
   OP_EXPAND_UQN,
   OP_EXPAND_FIXUP,
-  OP_EXPAND_DOT_DATA
+  OP_EXPAND_DOT_DATA,
+  OP_EXPAND_CURLY
 };
 
 struct expansion_info {

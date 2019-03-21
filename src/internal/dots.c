@@ -64,6 +64,9 @@ static sexp* def_unquote_name(sexp* expr, sexp* env) {
   case OP_EXPAND_UQ:
     lhs = KEEP_N(r_eval(info.operand, env), n_kept);
     break;
+  case OP_EXPAND_CURLY:
+    r_abort("TODO: {{ as LHS of `:=`");
+    break;
   case OP_EXPAND_UQE:
     r_abort("The LHS of `:=` can't be unquoted with `UQE()`");
   case OP_EXPAND_UQS:
@@ -286,6 +289,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
     case OP_EXPR_UQE:
     case OP_EXPR_FIXUP:
     case OP_EXPR_DOT_DATA:
+    case OP_EXPR_CURLY:
       expr = call_interp_impl(expr, env, info);
       capture_info->count += 1;
       break;
@@ -297,7 +301,8 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
     case OP_QUO_UQ:
     case OP_QUO_UQE:
     case OP_QUO_FIXUP:
-    case OP_QUO_DOT_DATA: {
+    case OP_QUO_DOT_DATA:
+    case OP_QUO_CURLY: {
       expr = KEEP(call_interp_impl(expr, env, info));
       expr = forward_quosure(expr, env);
       FREE(1);
@@ -343,6 +348,8 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
       FREE(1);
       break;
     }
+    case OP_VALUE_CURLY:
+      r_abort("Can't use `{{` in a non-quoting function");
     case OP_EXPR_UQN:
     case OP_QUO_UQN:
     case OP_VALUE_UQN:

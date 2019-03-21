@@ -585,3 +585,16 @@ test_that("can unquote string in function position", {
 test_that("{{ is an unquote operator", {
   expect_identical_(expr(list({{ quote(foo) }})), quote(list(foo)))
 })
+
+test_that("{{ only works in quoting functions", {
+  expect_error_(
+    list2({{ "foo" }}),
+    "Can't use `{{` in a non-quoting function",
+    fixed = TRUE
+  )
+})
+
+test_that("{{ on the LHS of :=", {
+  foo <- "bar"
+  expect_error_(exprs({{ foo }} := NA), "TODO")
+})

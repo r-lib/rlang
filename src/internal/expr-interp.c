@@ -78,7 +78,7 @@ struct expansion_info which_curly_op(sexp* second, struct expansion_info info) {
     return info;
   }
 
-  info.op = OP_EXPAND_UQ;
+  info.op = OP_EXPAND_CURLY;
   info.parent = r_node_cdr(second);
   info.operand = r_node_cadr(second);
 
@@ -374,6 +374,11 @@ sexp* big_bang(sexp* operand, sexp* env, sexp* node, sexp* next) {
   return next;
 }
 
+static sexp* curly_curly(struct expansion_info info, sexp* env) {
+  sexp* value = r_eval(info.operand, env);
+  return bang_bang_teardown(value, info);
+}
+
 
 // Defined below
 static sexp* node_list_interp(sexp* x, sexp* env);
@@ -402,6 +407,9 @@ sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
       return out;
     }
   case OP_EXPAND_UQ:
+    return bang_bang(info, env);
+  case OP_EXPAND_CURLY:
+    return curly_curly(info, env);
   case OP_EXPAND_DOT_DATA:
     return bang_bang(info, env);
   case OP_EXPAND_UQE:
