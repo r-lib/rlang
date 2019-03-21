@@ -56,7 +56,7 @@ static inline struct expansion_info init_expansion_info() {
   return info;
 }
 
-struct expansion_info which_bang_op(sexp* x);
+struct expansion_info which_uq_op(sexp* x);
 struct expansion_info which_expansion_op(sexp* x, bool unquote_names);
 struct expansion_info is_big_bang_op(sexp* x);
 

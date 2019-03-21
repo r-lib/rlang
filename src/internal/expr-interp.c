@@ -4,7 +4,7 @@
 #include "utils.h"
 
 
-struct expansion_info which_bang_op(sexp* first) {
+struct expansion_info which_uq_op(sexp* first) {
   struct expansion_info info = init_expansion_info();
 
   if (r_is_call(first, "(")) {
@@ -13,7 +13,7 @@ struct expansion_info which_bang_op(sexp* first) {
       return info;
     }
 
-    struct expansion_info inner_info = which_bang_op(paren);
+    struct expansion_info inner_info = which_uq_op(paren);
 
     // Check that `root` is NULL so we don't remove parentheses when
     // there's an operation tail (i.e. when the parse tree was fixed
@@ -133,7 +133,7 @@ void maybe_poke_big_bang_op(sexp* x, struct expansion_info* info) {
 static sexp* dot_data_sym = NULL;
 
 struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
-  struct expansion_info info = which_bang_op(x);
+  struct expansion_info info = which_uq_op(x);
 
   if (r_typeof(x) != r_type_call) {
     return info;
@@ -237,7 +237,7 @@ struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
 }
 
 struct expansion_info is_big_bang_op(sexp* x) {
-  struct expansion_info info = which_bang_op(x);
+  struct expansion_info info = which_uq_op(x);
 
   if (info.op != OP_EXPAND_UQS) {
     maybe_poke_big_bang_op(x, &info);
