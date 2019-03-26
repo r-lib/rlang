@@ -1,3 +1,4 @@
+* `maybe_missing()` gains a `default` argument.
 
 # rlang 0.3.2.9000
 
