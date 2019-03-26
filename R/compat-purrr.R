@@ -1,4 +1,4 @@
-# nocov start - compat-purrr (last updated: rlang 0.3.0.9000)
+# nocov start - compat-purrr (last updated: rlang 0.3.2.9000)
 
 # This file serves as a reference for compatibility functions for
 # purrr. They are not drop-in replacements but allow a similar style
@@ -28,6 +28,11 @@ map_chr <- function(.x, .f, ...) {
 }
 map_cpl <- function(.x, .f, ...) {
   map_mold(.x, .f, complex(1), ...)
+}
+
+walk <- function(.x, .f, ...) {
+  map(.x, .f, ...)
+  invisible(.x)
 }
 
 pluck <- function(.x, .f) {
