@@ -132,6 +132,7 @@
 <a href="#rlang-0-3-2-9000" class="anchor"></a>rlang 0.3.2.9000<small> Unreleased </small>
 </h1>
 <ul>
+<li><p>Fixed an issue in knitr that caused backtraces to print even when <code>error = TRUE</code>.</p></li>
 <li><p><code><a href="../reference/missing_arg.html">maybe_missing()</a></code> gains a <code>default</code> argument.</p></li>
 <li><p>Quoting functions gain a new interpolation operator <code>{{</code>. This is a shortcut for <code>!!enquo(arg)</code>. It is less powerful than <code>!!</code> but should be easier to learn because it is focused on a narrower task and should look familiar to users of the glue package.</p></li>
 <li>
