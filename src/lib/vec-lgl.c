@@ -49,10 +49,15 @@ sexp* r_lgl_which(sexp* x, bool na_propagate) {
   int* data = r_lgl_deref(x);
 
   r_ssize which_n = r_lgl_sum(x, na_propagate);
+
+  if (which_n > INT_MAX) {
+    r_abort("Internal error: Can't fit result of `r_lgl_which()` in an integer vector");
+  }
+
   sexp* which = KEEP(r_new_vector(r_type_integer, which_n));
   int* which_data = r_int_deref(which);
 
-  for (r_ssize i = 0; i < n; ++i, ++data) {
+  for (int i = 0; i < n; ++i, ++data) {
     int elt = *data;
 
     if (elt) {

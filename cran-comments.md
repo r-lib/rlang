@@ -1,6 +1,8 @@
 
 Fixes a bug in knitted markdown documents which caused backtraces to be displayed when they shouldn't.
 
+Also fixes one valgrind issue (I can't reproduce the uninitialised value warning locally).
+
 ## Test environments
 
 * local OS X install: release
