@@ -1,5 +1,5 @@
 
-# rlang 0.3.2.9000
+# rlang 0.3.3
 
 * Fixed an issue in knitr that caused backtraces to print even when `error = TRUE`.
 

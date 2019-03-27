@@ -1,5 +1,5 @@
 
-Fixes the rchk problems.
+Fixes a bug in knitted markdown documents which caused backtraces to be displayed when they shouldn't.
 
 ## Test environments
 
