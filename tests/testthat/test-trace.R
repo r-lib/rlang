@@ -601,3 +601,13 @@ test_that("can subset in middle level", {
 test_that("fails when `bottom` is not on the stack", {
   expect_error(trace_back(bottom = env()), "Can't find `bottom`")
 })
+
+test_that("caught error does not display backtrace in knitted files", {
+  scoped_options(
+    rlang_backtrace_on_error = NULL,
+    rlang_interactive = FALSE
+  )
+  lines <- render_md("test-trace.Rmd")
+  error_line <- lines[[length(lines)]]
+  expect_match(error_line, "foo$")
+})
