@@ -91,8 +91,8 @@ chr_enumerate <- function(chr, sep = ", ", final = "or") {
 #'   lists.
 #'
 #' * `maybe_missing()` is useful to pass down an input that might be
-#'   missing to another function. It avoids triggering an
-#'   "argument is missing" error.
+#'   missing to another function, potentially substituting by a
+#'   default value. It avoids triggering an "argument is missing" error.
 #'
 #'
 #' @section Other ways to reify the missing argument:
@@ -202,10 +202,12 @@ is_missing <- function(x) {
 }
 
 #' @rdname missing_arg
+#' @param default The object to return if the input is missing,
+#'   defaults to `missing_arg()`.
 #' @export
-maybe_missing <- function(x) {
+maybe_missing <- function(x, default = missing_arg()) {
   if (is_missing(x)) {
-    missing_arg()
+    default
   } else {
     x
   }

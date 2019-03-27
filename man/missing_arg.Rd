@@ -10,10 +10,13 @@ missing_arg()
 
 is_missing(x)
 
-maybe_missing(x)
+maybe_missing(x, default = missing_arg())
 }
 \arguments{
 \item{x}{An object that might be the missing argument.}
+
+\item{default}{The object to return if the input is missing,
+defaults to \code{missing_arg()}.}
 }
 \description{
 These functions help using the missing argument as a regular R
@@ -24,8 +27,8 @@ object.
 testing for missing arguments contained in other objects like
 lists.
 \item \code{maybe_missing()} is useful to pass down an input that might be
-missing to another function. It avoids triggering an
-"argument is missing" error.
+missing to another function, potentially substituting by a
+default value. It avoids triggering an "argument is missing" error.
 }
 }
 \section{Other ways to reify the missing argument}{
