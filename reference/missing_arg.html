@@ -40,8 +40,8 @@ is_missing() is like base::missing() but also supports
 testing for missing arguments contained in other objects like
 lists.
 maybe_missing() is useful to pass down an input that might be
-missing to another function. It avoids triggering an
-&quot;argument is missing&quot; error.
+missing to another function, potentially substituting by a
+default value. It avoids triggering an &quot;argument is missing&quot; error.
 " />
 <meta name="twitter:card" content="summary" />
 
@@ -149,8 +149,8 @@ object.</p><ul>
 testing for missing arguments contained in other objects like
 lists.</p></li>
 <li><p><code>maybe_missing()</code> is useful to pass down an input that might be
-missing to another function. It avoids triggering an
-"argument is missing" error.</p></li>
+missing to another function, potentially substituting by a
+default value. It avoids triggering an "argument is missing" error.</p></li>
 </ul>
     
     </div>
@@ -159,7 +159,7 @@ missing to another function. It avoids triggering an
 
 <span class='fu'>is_missing</span>(<span class='no'>x</span>)
 
-<span class='fu'>maybe_missing</span>(<span class='no'>x</span>)</pre>
+<span class='fu'>maybe_missing</span>(<span class='no'>x</span>, <span class='kw'>default</span> <span class='kw'>=</span> <span class='fu'>missing_arg</span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -167,6 +167,11 @@ missing to another function. It avoids triggering an
     <tr>
       <th>x</th>
       <td><p>An object that might be the missing argument.</p></td>
+    </tr>
+    <tr>
+      <th>default</th>
+      <td><p>The object to return if the input is missing,
+defaults to <code>missing_arg()</code>.</p></td>
     </tr>
     </table>
     
@@ -223,7 +228,7 @@ input might be the missing argument object.</p>
 <span class='no'>args</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fl'>1</span>, <span class='fu'>missing_arg</span>(), <span class='fl'>3</span>, <span class='fu'>missing_arg</span>())
 <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'>fn</span>(!!! <span class='no'>args</span>))</div><div class='output co'>#&gt; &lt;quosure&gt;
 #&gt; expr: ^fn(1, , 3, )
-#&gt; env:  0x905d610</div><div class='input'>
+#&gt; env:  0x7e023c8</div><div class='input'>
 <span class='co'># Other ways to create that object include:</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='kw'>expr</span> <span class='kw'>=</span> )</div><div class='output co'>#&gt; </div><div class='input'><span class='fu'><a href='quotation.html'>expr</a></span>()</div><div class='output co'>#&gt; </div><div class='input'>
 <span class='co'># It is perfectly valid to generate and assign the missing</span>
