@@ -1,6 +1,7 @@
-* `maybe_missing()` gains a `default` argument.
 
 # rlang 0.3.2.9000
+
+* `maybe_missing()` gains a `default` argument.
 
 * Quoting functions gain a new interpolation operator `{{`. This is a
   shortcut for `!!enquo(arg)`. It is less powerful than `!!` but
