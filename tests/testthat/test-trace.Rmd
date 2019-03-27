@@ -1,0 +1,11 @@
+
+```{r}
+getOption("rlang_backtrace_on_error")
+```
+
+```{r, error = TRUE}
+f <- function() g()
+g <- function() h()
+h <- function() rlang::abort("foo")
+f()
+```

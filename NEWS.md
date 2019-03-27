@@ -1,6 +1,8 @@
 
 # rlang 0.3.2.9000
 
+* Fixed an issue in knitr that caused backtraces to print even when `error = TRUE`.
+
 * `maybe_missing()` gains a `default` argument.
 
 * Quoting functions gain a new interpolation operator `{{`. This is a

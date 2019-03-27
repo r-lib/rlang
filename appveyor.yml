@@ -10,10 +10,18 @@ init:
 install:
   ps: Bootstrap
 
+environment:
+  global:
+    USE_RTOOLS: true
+
 cache:
   - C:\RLibrary
 
 # Adapt as necessary starting from here
+before_test:
+  - cinst pandoc
+  - ps: $env:Path += ";C:\Program Files (x86)\Pandoc\"
+  - pandoc -v
 
 build_script:
   - travis-tool.sh install_deps
