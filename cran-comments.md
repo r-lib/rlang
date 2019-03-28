@@ -1,7 +1,7 @@
 
 Fixes a bug in knitted markdown documents which caused backtraces to be displayed when they shouldn't.
 
-Also fixes one valgrind issue (I can't reproduce the uninitialised value warning locally).
+Also fixes one valgrind issue.
 
 ## Test environments
 
@@ -18,6 +18,6 @@ Also fixes one valgrind issue (I can't reproduce the uninitialised value warning
 
 ## Reverse dependencies
 
-I have run R CMD check on the 444 downstream dependencies. (Summary at https://github.com/r-lib/rlang/blob/release-0.3.2/revdep/README.md).
+I have run R CMD check on the 447 downstream dependencies. (Summary at https://github.com/r-lib/rlang/tree/release-0.3.3/revdep).
 
 There were no issues.

@@ -11,9 +11,34 @@ Version: 0.2.3
       All declared Imports should be used.
     ```
 
+# AMR
+
+Version: 0.6.0
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  6.5Mb
+      sub-directories of 1Mb or more:
+        data   2.9Mb
+        R      2.0Mb
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘microbenchmark’
+      All declared Imports should be used.
+    ```
+
+*   checking data for non-ASCII characters ... NOTE
+    ```
+      Note: found 7 marked UTF-8 strings
+    ```
+
 # amt
 
-Version: 0.0.5.0
+Version: 0.0.6
 
 ## In both
 
@@ -96,6 +121,66 @@ Version: 0.3.2
 
 Version: 0.2.0
 
+## Newly broken
+
+*   checking examples ... ERROR
+    ```
+    ...
+    > ### Name: geocode_tbl
+    > ### Title: Geocode tbl
+    > ### Aliases: geocode_tbl
+    > 
+    > ### ** Examples
+    > 
+    > 
+    > table_test <- tibble::tibble(
+    + x = c("39 quai Andre Citroen", "64 Allee de Bercy", "20 avenue de Segur"), 
+    + y = c("75015", "75012", "75007"), 
+    + z = rnorm(3)
+    + )
+    > 
+    > geocode_tbl(tbl = table_test, adresse = x)
+    Writing tempfile to.../var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T//RtmpBP6sm0/file127c81d5902d5.csv
+    If file is larger than 8 MB, it must be splitted
+    Size is : 61 bytes
+    Server errorService UnavailableServer error: (503) Service Unavailable
+    Error in geocode_tbl(tbl = table_test, adresse = x) : 
+      The API sent back an error 503
+    Execution halted
+    ```
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+             class = "tbl_df") at testthat/test_geocodetbl.R:60
+      2: quasi_label(enquo(object), label)
+      3: eval_bare(get_expr(quo), get_env(quo))
+      4: reverse_geocode_tbl(tbl = table_reverse, longitude = x, latitude = y) at /private/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T/RtmpWzsDrT/R.INSTALLd481114fc489/rlang/R/eval.R:99
+      5: stop("The API sent back an error ", httr::status_code(query_results)) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/banR/new/banR.Rcheck/00_pkg_src/banR/R/geocode_tbl.R:197
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      OK: 3 SKIPPED: 0 FAILED: 4
+      1. Error: Geocode tbl works  (@test_geocodetbl.R#12) 
+      2. Error: Input and output DFs have a similar number of rows (@test_geocodetbl.R#31) 
+      3. Error: Geocode_tbl works with a single-column input data.frame (@test_geocodetbl.R#48) 
+      4. Error: Reverse geocode tbl works  (@test_geocodetbl.R#60) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error in re-building vignettes:
+      ...
+    Quitting from lines 47-49 (geocode.Rmd) 
+    Error: processing vignette 'geocode.Rmd' failed with diagnostics:
+    The API sent back an error 503
+    Execution halted
+    ```
+
 ## In both
 
 *   checking dependencies in R code ... NOTE
@@ -110,6 +195,32 @@ Version: 0.9.3
 
 ## In both
 
+*   checking examples ... ERROR
+    ```
+    ...
+    
+    > ### Name: plotDetectorTrace
+    > ### Title: Plot BANTER Detector Traces
+    > ### Aliases: plotDetectorTrace
+    > 
+    > ### ** Examples
+    > 
+    > data(train.data)
+    > # initialize BANTER model with event data
+    > bant.mdl <- initBanterModel(train.data$events)
+    > # add all detector models
+    > bant.mdl <- addBanterDetector(
+    +   bant.mdl, train.data$detectors, 
+    +   ntree = 50, sampsize = 1, num.cores = 1
+    + )
+    > 
+    > plotDetectorTrace(bant.mdl)
+    Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
+      there is no package called ‘spatstat’
+    Calls: plotDetectorTrace ... tryCatch -> tryCatchList -> tryCatchOne -> <Anonymous>
+    Execution halted
+    ```
+
 *   checking dependencies in R code ... NOTE
     ```
     Namespace in Imports field not imported from: ‘ranger’
@@ -122,11 +233,18 @@ Version: 0.1.2
 
 ## In both
 
+*   checking whether package ‘bayesdfa’ can be installed ... WARNING
+    ```
+    Found the following significant warnings:
+      Warning: package ‘Rcpp’ was built under R version 3.5.2
+    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/bayesdfa/new/bayesdfa.Rcheck/00install.out’ for details.
+    ```
+
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.7Mb
+      installed size is  5.8Mb
       sub-directories of 1Mb or more:
-        libs   4.8Mb
+        libs   4.9Mb
     ```
 
 *   checking for GNU extensions in Makefiles ... NOTE
@@ -342,19 +460,15 @@ Version: 1.0.1
 
 # CGPfunctions
 
-Version: 0.4
+Version: 0.5.2
 
 ## In both
 
 *   checking dependencies in R code ... NOTE
     ```
-    Namespace in Imports field not imported from: ‘devtools’
+    Namespaces in Imports field not imported from:
+      ‘devtools’ ‘pwr’
       All declared Imports should be used.
-    ```
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Packages unavailable to check Rd xrefs: ‘BSDA’, ‘janitor’
     ```
 
 # circumplex
@@ -402,6 +516,28 @@ ERROR: compilation failed for package ‘circumplex’
 Version: 0.3.0
 
 ## In both
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      > 
+      > test_check("clustree")
+      ── 1. Error: show_axis works (@test-clustree.R#77)  ────────────────────────────
+      object 'seurat' not found
+      1: expect_is(clustree(seurat, show_axis = TRUE), c("gg", "ggplot")) at testthat/test-clustree.R:77
+      2: quasi_label(enquo(object), label)
+      3: eval_bare(get_expr(quo), get_env(quo))
+      4: clustree(seurat, show_axis = TRUE) at /private/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T/RtmpWzsDrT/R.INSTALLd481114fc489/rlang/R/eval.R:99
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      OK: 51 SKIPPED: 4 FAILED: 1
+      1. Error: show_axis works (@test-clustree.R#77) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
 
 *   checking re-building of vignette outputs ... WARNING
     ```
@@ -604,34 +740,6 @@ Version: 0.7.1.0
       All declared Imports should be used.
     ```
 
-# cutpointr
-
-Version: 0.7.4
-
-## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      `print\(scp\)` does not match "accuracy_oob 0.8201".
-      Actual value: "Method: oc_youden_normal \\nPredictor: dsi \\nOutcome: suicide \\nDirection: >= \\nSubgroups: female, male \\nNr\. of bootstraps: 10 \\n\\nSubgroup: female \\n-------------------------------------------------------------------------------- \\n optimal_cutpoint accuracy    acc sensitivity specificity    AUC n_pos n_neg\\n           2\.4778   0\.8954 0\.8954      0\.8148      0\.9014 0\.9446    27   365\\n\\nCutpoint 2\.47775393352595:\\n          observation\\nprediction yes  no\\n       yes  22  36\\n       no    5 329\\n\\n\\nPredictor summary: \\n Min\. 5% 1st Qu\. Median   Mean 3rd Qu\. 95% Max\.     SD\\n    0  0       0      0 0\.8393       1   5   10 1\.7452\\n\\nPredictor summary per class: \\n    Min\.  5% 1st Qu\. Median   Mean 3rd Qu\. 95% Max     SD\\nno     0 0\.0       0      0 0\.5479       0   4  10 1\.3181\\nyes    0 1\.3       4      5 4\.7778       6   7   9 2\.0444\\n\\nBootstrap summary: \\n# A tibble: 13 x 10\\n   Variable       Min\.  `5%` `1st Qu\.` Median  Mean `3rd Qu\.` `95%`  Max\.     SD\\n   <chr>         <dbl> <dbl>     <dbl>  <dbl> <dbl>     <dbl> <dbl> <dbl>  <dbl>\\n 1 optimal_cutp… 2\.18  2\.23      2\.33   2\.43  2\.47      2\.51  2\.83  2\.94  0\.218 \\n 2 AUC_b         0\.941 0\.943     0\.950  0\.964 0\.960     0\.967 0\.974 0\.976 0\.0119\\n 3 AUC_oob       0\.894 0\.894     0\.912  0\.924 0\.925     0\.939 0\.955 0\.956 0\.0222\\n 4 accuracy_b    0\.860 0\.871     0\.888  0\.908 0\.904     0\.923 0\.927 0\.929 0\.0226\\n 5 accuracy_oob  0\.820 0\.838     0\.873  0\.876 0\.880     0\.901 0\.912 0\.914 0\.0278\\n 6 acc_b         0\.860 0\.871     0\.888  0\.908 0\.904     0\.923 0\.927 0\.929 0\.0226\\n 7 acc_oob       0\.820 0\.838     0\.873  0\.876 0\.880     0\.901 0\.912 0\.914 0\.0278\\n 8 sensitivity_b 0\.708 0\.737     0\.779  0\.823 0\.826     0\.851 0\.940 0\.954 0\.0728\\n 9 sensitivity_… 0\.625 0\.644     0\.762  0\.809 0\.800     0\.872 0\.913 0\.923 0\.0971\\n10 specificity_b 0\.870 0\.875     0\.894  0\.915 0\.909     0\.927 0\.931 0\.932 0\.0223\\n11 specificity_… 0\.835 0\.845     0\.876  0\.880 0\.886     0\.912 0\.921 0\.922 0\.0283\\n12 kappa_b       0\.321 0\.329     0\.423  0\.509 0\.485     0\.562 0\.590 0\.610 0\.0995\\n13 kappa_oob     0\.305 0\.324     0\.368  0\.420 0\.444     0\.511 0\.608 0\.631 0\.106 \\n\\nSubgroup: male \\n-------------------------------------------------------------------------------- \\n optimal_cutpoint accuracy    acc sensitivity specificity    AUC n_pos n_neg\\n           3\.1723   0\.8643 0\.8643      0\.6667      0\.8779 0\.8617     9   131\\n\\nCutpoint 3\.17225507835137:\\n          observation\\nprediction yes  no\\n       yes   6  16\\n       no    3 115\\n\\n\\nPredictor summary: \\n Min\. 5% 1st Qu\. Median Mean 3rd Qu\. 95% Max\.     SD\\n    0  0       0      0 1\.15       1   6   11 2\.1151\\n\\nPredictor summary per class: \\n    Min\.  5% 1st Qu\. Median   Mean 3rd Qu\.  95% Max     SD\\nno     0 0\.0       0      0 0\.8702       1  5\.0   6 1\.6286\\nyes    0 0\.4       3      4 5\.2222       8 10\.6  11 3\.8333\\n\\nBootstrap summary: \\n# A tibble: 13 x 10\\n   Variable       Min\.  `5%` `1st Qu\.` Median  Mean `3rd Qu\.` `95%`  Max\.     SD\\n   <chr>         <dbl> <dbl>     <dbl>  <dbl> <dbl>     <dbl> <dbl> <dbl>  <dbl>\\n 1 optimal_cutp… 2\.82  2\.84      2\.92   3\.27  3\.26      3\.55  3\.82  3\.90  0\.387 \\n 2 AUC_b         0\.758 0\.787     0\.825  0\.879 0\.871     0\.904 0\.959 0\.968 0\.0641\\n 3 AUC_oob       0\.631 0\.691     0\.792  0\.885 0\.859     0\.943 0\.972 0\.977 0\.109 \\n 4 accuracy_b    0\.807 0\.814     0\.834  0\.864 0\.852     0\.871 0\.871 0\.871 0\.0243\\n 5 accuracy_oob  0\.822 0\.823     0\.839  0\.871 0\.866     0\.896 0\.905 0\.906 0\.0327\\n 6 acc_b         0\.807 0\.814     0\.834  0\.864 0\.852     0\.871 0\.871 0\.871 0\.0243\\n 7 acc_oob       0\.822 0\.823     0\.839  0\.871 0\.866     0\.896 0\.905 0\.906 0\.0327\\n 8 sensitivity_b 0\.556 0\.582     0\.667  0\.703 0\.735     0\.794 0\.936 1     0\.129 \\n 9 sensitivity_… 0\.333 0\.363     0\.5    0\.667 0\.707     1     1     1     0\.272 \\n10 specificity_b 0\.817 0\.825     0\.846  0\.867 0\.862     0\.875 0\.892 0\.898 0\.0246\\n11 specificity_… 0\.818 0\.826     0\.853  0\.887 0\.877     0\.898 0\.917 0\.918 0\.0342\\n12 kappa_b       0\.210 0\.220     0\.243  0\.338 0\.319     0\.380 0\.407 0\.411 0\.0757\\n13 kappa_oob     0\.118 0\.145     0\.208  0\.306 0\.310     0\.398 0\.497 0\.570 0\.139 "
-      
-      ── 3. Failure: summary is printed correctly (@test-cutpointr.R#1211)  ──────────
-      `print\(scp\)` does not match "accuracy_oob 0.8163".
-      Actual value: "Method: oc_youden_normal \\nPredictor: x \\nOutcome: class \\nDirection: >= \\nSubgroups: female, male \\nNr\. of bootstraps: 10 \\n\\nSubgroup: female \\n-------------------------------------------------------------------------------- \\n optimal_cutpoint accuracy    acc sensitivity specificity    AUC n_pos n_neg\\n           2\.4778   0\.8954 0\.8954      0\.8148      0\.9014 0\.9446    27   365\\n\\nCutpoint 2\.47775393352595:\\n          observation\\nprediction yes  no\\n       yes  22  36\\n       no    5 329\\n\\n\\nPredictor summary: \\n Min\. 5% 1st Qu\. Median   Mean 3rd Qu\. 95% Max\.     SD\\n    0  0       0      0 0\.8393       1   5   10 1\.7452\\n\\nPredictor summary per class: \\n    Min\.  5% 1st Qu\. Median   Mean 3rd Qu\. 95% Max     SD\\nno     0 0\.0       0      0 0\.5479       0   4  10 1\.3181\\nyes    0 1\.3       4      5 4\.7778       6   7   9 2\.0444\\n\\nBootstrap summary: \\n# A tibble: 13 x 10\\n   Variable       Min\.  `5%` `1st Qu\.` Median  Mean `3rd Qu\.` `95%`  Max\.     SD\\n   <chr>         <dbl> <dbl>     <dbl>  <dbl> <dbl>     <dbl> <dbl> <dbl>  <dbl>\\n 1 optimal_cutp… 2\.02  2\.12      2\.32   2\.40  2\.40      2\.54  2\.62  2\.66  0\.185 \\n 2 AUC_b         0\.907 0\.910     0\.92   0\.950 0\.940     0\.958 0\.965 0\.966 0\.0227\\n 3 AUC_oob       0\.898 0\.905     0\.931  0\.953 0\.947     0\.968 0\.978 0\.980 0\.0274\\n 4 accuracy_b    0\.878 0\.878     0\.895  0\.902 0\.900     0\.908 0\.916 0\.921 0\.0138\\n 5 accuracy_oob  0\.865 0\.868     0\.879  0\.888 0\.891     0\.906 0\.914 0\.917 0\.0176\\n 6 acc_b         0\.878 0\.878     0\.895  0\.902 0\.900     0\.908 0\.916 0\.921 0\.0138\\n 7 acc_oob       0\.865 0\.868     0\.879  0\.888 0\.891     0\.906 0\.914 0\.917 0\.0176\\n 8 sensitivity_b 0\.66  0\.689     0\.759  0\.786 0\.796     0\.849 0\.896 0\.917 0\.076 \\n 9 sensitivity_… 0\.7   0\.712     0\.8    0\.847 0\.861     0\.972 1     1     0\.112 \\n10 specificity_b 0\.878 0\.881     0\.901  0\.913 0\.910     0\.922 0\.934 0\.939 0\.019 \\n11 specificity_… 0\.864 0\.867     0\.882  0\.892 0\.895     0\.909 0\.925 0\.926 0\.0216\\n12 kappa_b       0\.362 0\.410     0\.475  0\.528 0\.514     0\.566 0\.582 0\.585 0\.0692\\n13 kappa_oob     0\.160 0\.214     0\.391  0\.420 0\.404     0\.475 0\.524 0\.539 0\.112 \\n\\nSubgroup: male \\n-------------------------------------------------------------------------------- \\n optimal_cutpoint accuracy    acc sensitivity specificity    AUC n_pos n_neg\\n           3\.1723   0\.8643 0\.8643      0\.6667      0\.8779 0\.8617     9   131\\n\\nCutpoint 3\.17225507835137:\\n          observation\\nprediction yes  no\\n       yes   6  16\\n       no    3 115\\n\\n\\nPredictor summary: \\n Min\. 5% 1st Qu\. Median Mean 3rd Qu\. 95% Max\.     SD\\n    0  0       0      0 1\.15       1   6   11 2\.1151\\n\\nPredictor summary per class: \\n    Min\.  5% 1st Qu\. Median   Mean 3rd Qu\.  95% Max     SD\\nno     0 0\.0       0      0 0\.8702       1  5\.0   6 1\.6286\\nyes    0 0\.4       3      4 5\.2222       8 10\.6  11 3\.8333\\n\\nBootstrap summary: \\n# A tibble: 13 x 10\\n   Variable       Min\.  `5%` `1st Qu\.` Median  Mean `3rd Qu\.` `95%`  Max\.     SD\\n   <chr>         <dbl> <dbl>     <dbl>  <dbl> <dbl>     <dbl> <dbl> <dbl>  <dbl>\\n 1 optimal_cutp… 2\.14  2\.26      2\.93   3\.05  2\.97      3\.28  3\.35  3\.36  0\.403 \\n 2 AUC_b         0\.738 0\.760     0\.823  0\.848 0\.852     0\.904 0\.925 0\.929 0\.0611\\n 3 AUC_oob       0\.806 0\.815     0\.838  0\.901 0\.899     0\.958 0\.990 1     0\.0688\\n 4 accuracy_b    0\.8   0\.8       0\.848  0\.868 0\.854     0\.871 0\.875 0\.879 0\.0298\\n 5 accuracy_oob  0\.816 0\.820     0\.835  0\.87  0\.862     0\.877 0\.899 0\.917 0\.031 \\n 6 acc_b         0\.8   0\.8       0\.848  0\.868 0\.854     0\.871 0\.875 0\.879 0\.0298\\n 7 acc_oob       0\.816 0\.820     0\.835  0\.87  0\.862     0\.877 0\.899 0\.917 0\.031 \\n 8 sensitivity_b 0\.333 0\.376     0\.542  0\.690 0\.656     0\.744 0\.9   1     0\.192 \\n 9 sensitivity_… 0\.5   0\.545     0\.617  0\.8   0\.777     0\.95  1     1     0\.183 \\n10 specificity_b 0\.806 0\.807     0\.865  0\.876 0\.864     0\.879 0\.894 0\.903 0\.0316\\n11 specificity_… 0\.808 0\.823     0\.852  0\.874 0\.870     0\.886 0\.909 0\.909 0\.031 \\n12 kappa_b       0\.133 0\.135     0\.154  0\.264 0\.264     0\.364 0\.416 0\.436 0\.116 \\n13 kappa_oob     0\.140 0\.192     0\.318  0\.448 0\.405     0\.493 0\.575 0\.625 0\.143 "
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 369 SKIPPED: 0 FAILED: 3
-      1. Failure: summary is printed correctly (@test-cutpointr.R#1179) 
-      2. Failure: summary is printed correctly (@test-cutpointr.R#1195) 
-      3. Failure: summary is printed correctly (@test-cutpointr.R#1211) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
 # dabestr
 
 Version: 0.2.0
@@ -680,8 +788,14 @@ Version: 0.16.0
 *   checking whether package ‘DeclareDesign’ can be installed ... WARNING
     ```
     Found the following significant warnings:
+      Warning: package ‘fabricatr’ was built under R version 3.5.2
       Warning: package ‘estimatr’ was built under R version 3.5.2
     See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/DeclareDesign/new/DeclareDesign.Rcheck/00install.out’ for details.
+    ```
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘lfe’
     ```
 
 # DEGreport
@@ -741,6 +855,7 @@ Version: 0.1.2
     ```
     Found the following significant warnings:
       Warning: package ‘DeclareDesign’ was built under R version 3.5.2
+      Warning: package ‘fabricatr’ was built under R version 3.5.2
       Warning: package ‘estimatr’ was built under R version 3.5.2
     See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/DesignLibrary/new/DesignLibrary.Rcheck/00install.out’ for details.
     ```
@@ -850,7 +965,7 @@ Version: 0.0.3
 
 # dlookr
 
-Version: 0.3.8
+Version: 0.3.9
 
 ## In both
 
@@ -915,6 +1030,60 @@ Version: 0.8.0.1
 *   checking data for non-ASCII characters ... NOTE
     ```
       Note: found 4 marked UTF-8 strings
+    ```
+
+# easyalluvial
+
+Version: 0.1.8
+
+## In both
+
+*   checking examples ... ERROR
+    ```
+    ...
+        filter, lag
+    
+    The following objects are masked from ‘package:base’:
+    
+        intersect, setdiff, setequal, union
+    
+    > 
+    > data = as_tibble(mtcars)
+    > categoricals = c('cyl', 'vs', 'am', 'gear', 'carb')
+    > numericals = c('mpg', 'cyl', 'disp', 'hp', 'drat', 'wt', 'qsec')
+    > max_variables = 5
+    > 
+    > data = data %>%
+    +   mutate_at( vars(categoricals), as.factor )
+    > 
+    > 
+    > alluvial_wide( data = data
+    +                 , max_variables = max_variables
+    +                 , fill_by = 'first_variable' )
+    Error: No role currently exists for column(s): 'easyalluvialid'. Please use `update_role()` instead.
+    Execution halted
+    ```
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      14: add_role(., easyalluvialid, new_role = "id variable")
+      15: stop(glue::glue("No role currently exists for column(s): {vars}. Please use ", "`update_role()` instead."), 
+             call. = FALSE) at /private/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T/RtmpRe0Uvl/R.INSTALLf9503f599132/recipes/R/roles.R:138
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      OK: 6 SKIPPED: 9 FAILED: 6
+      1. Error: alluvial_long (@test_alluvial_long.R#94) 
+      2. Error: alluvial_wide (@test_alluvial_wide.R#17) 
+      3. Error: manip_bin_numerics (@test_manip.R#28) 
+      4. Error: manip_bin_numerics zero variance columns (@test_manip.R#84) 
+      5. Error: manip_bin_numerics with vector (@test_manip.R#96) 
+      6. Error: plot condensation (@test_plot_condensation.R#15) 
+      
+      Error: testthat unit tests failed
+      Execution halted
     ```
 
 # echor
@@ -983,6 +1152,18 @@ Version: 1.1.2
     ```
     Namespaces in Imports field not imported from:
       ‘git2r’ ‘servr’
+      All declared Imports should be used.
+    ```
+
+# encryptr
+
+Version: 0.1.2
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘knitr’
       All declared Imports should be used.
     ```
 
@@ -1063,8 +1244,32 @@ Version: 0.16
 
 ## In both
 
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      2: getExportedValue(pkg, name)
+      3: asNamespace(ns)
+      4: getNamespace(ns)
+      5: tryCatch(loadNamespace(name), error = function(e) stop(e))
+      6: tryCatchList(expr, classes, parentenv, handlers)
+      7: tryCatchOne(expr, names, parentenv, handlers[[1L]])
+      8: value[[3L]](cond)
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      OK: 1277 SKIPPED: 0 FAILED: 2
+      1. Error: IV FE matches lfe including proj r2 (@test-iv-robust-fes.R#112) 
+      2. Error: FEs give correct projected F-stats (@test-lm-robust-fes.R#456) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
+
 *   checking package dependencies ... NOTE
     ```
+    Package suggested but not available for checking: ‘lfe’
+    
     Package which this enhances but not available for checking: ‘texreg’
     ```
 
@@ -1138,7 +1343,7 @@ Version: 3.0.0
 
 # finalfit
 
-Version: 0.9.0
+Version: 0.9.1
 
 ## In both
 
@@ -1254,37 +1459,14 @@ Version: 1.30.0
     Execution halted
     ```
 
+*   R CMD check timed out
+    
+
 *   checking whether package ‘ggbio’ can be installed ... WARNING
     ```
     Found the following significant warnings:
       Warning: subclass "GeneNameFilter" of class "AnnotationFilter" is not local and cannot be updated for new inheritance information; consider setClassUnion()
     See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/ggbio/new/ggbio.Rcheck/00install.out’ for details.
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    ...
-    
-    Loading required package: IRanges
-    Loading required package: GenomeInfoDb
-      ordinary text without R code
-    
-    label: unnamed-chunk-5
-    Quitting from lines 143-157 (ggbio.Rnw) 
-    Error in library(Homo.sapiens) : 
-      there is no package called 'Homo.sapiens'
-    Calls: knit2pdf ... withCallingHandlers -> withVisible -> eval -> eval -> library
-    In addition: Warning messages:
-    1: `panel.margin` is deprecated. Please use `panel.spacing` property instead 
-    2: `panel.margin` is deprecated. Please use `panel.spacing` property instead 
-    3: package 'GenomeInfoDb' was built under R version 3.5.2 
-    4: `panel.margin` is deprecated. Please use `panel.spacing` property instead 
-    5: `panel.margin` is deprecated. Please use `panel.spacing` property instead 
-    Execution halted
-    make: *** [ggbio.pdf] Error 1
-    Error in buildVignettes(dir = "/Users/lionel/Desktop/rlang/revdep/checks.noindex/ggbio/new/ggbio.Rcheck/vign_test/ggbio") : 
-      running 'make' failed
-    Execution halted
     ```
 
 *   checking package dependencies ... NOTE
@@ -1350,7 +1532,6 @@ Version: 1.10.2
     Found the following significant warnings:
       Warning: package ‘flowCore’ was built under R version 3.5.2
       Warning: package ‘ncdfFlow’ was built under R version 3.5.2
-      Warning: package ‘RcppArmadillo’ was built under R version 3.5.2
       Warning: package ‘flowWorkspace’ was built under R version 3.5.2
     See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/ggcyto/new/ggcyto.Rcheck/00install.out’ for details.
     ```
@@ -1417,17 +1598,6 @@ Version: 0.3.0
       All declared Imports should be used.
     ```
 
-# ggeffects
-
-Version: 0.8.0
-
-## In both
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: ‘ordinal’
-    ```
-
 # ggetho
 
 Version: 0.3.4
@@ -1450,10 +1620,10 @@ Version: 0.2.1
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.5Mb
+      installed size is  5.6Mb
       sub-directories of 1Mb or more:
         doc   2.8Mb
-        R     2.0Mb
+        R     2.1Mb
     ```
 
 # ggformula
@@ -1483,14 +1653,13 @@ Version: 0.9.1
 
 # gginnards
 
-Version: 0.0.1
+Version: 0.0.2
 
 ## In both
 
 *   checking dependencies in R code ... NOTE
     ```
-    Namespaces in Imports field not imported from:
-      ‘grid’ ‘tibble’
+    Namespace in Imports field not imported from: ‘tibble’
       All declared Imports should be used.
     ```
 
@@ -1502,10 +1671,10 @@ Version: 3.1.0
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.3Mb
+      installed size is  7.5Mb
       sub-directories of 1Mb or more:
         doc   1.8Mb
-        R     3.8Mb
+        R     4.0Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -1569,16 +1738,16 @@ Version: 1.0.3
 
 # ggstatsplot
 
-Version: 0.0.9
+Version: 0.0.10
 
 ## In both
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.4Mb
+      installed size is  6.4Mb
       sub-directories of 1Mb or more:
         help   4.1Mb
-        R      1.1Mb
+        R      2.0Mb
     ```
 
 # ggthemes
@@ -1628,7 +1797,6 @@ Version: 1.0.0
 *   checking whether package ‘glmSparseNet’ can be installed ... WARNING
     ```
     Found the following significant warnings:
-      Warning: package ‘Matrix’ was built under R version 3.5.2
       Warning: package ‘MultiAssayExperiment’ was built under R version 3.5.2
       Warning: package ‘GenomeInfoDb’ was built under R version 3.5.2
       Warning: package ‘BiocParallel’ was built under R version 3.5.2
@@ -1683,7 +1851,7 @@ Version: 0.5.1
 
 # grattan
 
-Version: 1.7.0.0
+Version: 1.7.1.0
 
 ## In both
 
@@ -1691,6 +1859,14 @@ Version: 1.7.0.0
     ```
     Packages suggested but not available for checking:
       ‘taxstats’ ‘taxstats1516’
+    ```
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  6.5Mb
+      sub-directories of 1Mb or more:
+        doc   3.5Mb
+        R     2.2Mb
     ```
 
 # gravity
@@ -1758,10 +1934,10 @@ Version: 4.2-0
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  8.8Mb
+      installed size is  9.7Mb
       sub-directories of 1Mb or more:
-        help   1.2Mb
-        R      7.1Mb
+        help   2.1Mb
+        R      7.0Mb
     ```
 
 # hpiR
@@ -1778,38 +1954,16 @@ Version: 0.2.0
 
 # huxtable
 
-Version: 4.4.0
+Version: 4.5.0
 
 ## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      Fontconfig error: "/Users/lionel/Desktop/rlang/revdep/library.noindex/huxtable/magick/etc/fonts/conf.d/90-synthetic.conf", line 6: invalid attribute 'version'
-      Fontconfig error: Cannot load default config file
-      ── 1. Failure: huxreg copes with different models (@test-huxreg.R#31)  ─────────
-      `hr <- huxreg(lm1, lm2, glm1)` produced warnings.
-      
-      ── 2. Failure: Data written in appropriate format (@test-openxlsx.R#101)  ──────
-      `openxlsx::saveWorkbook(wb, file = "test-xlsx.xlsx", overwrite = TRUE)` produced messages.
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 888 SKIPPED: 57 FAILED: 2
-      1. Failure: huxreg copes with different models (@test-huxreg.R#31) 
-      2. Failure: Data written in appropriate format (@test-openxlsx.R#101) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
 
 *   checking installed package size ... NOTE
     ```
       installed size is  5.3Mb
       sub-directories of 1Mb or more:
         doc   2.9Mb
-        R     2.1Mb
+        R     2.0Mb
     ```
 
 # iadf
@@ -1904,11 +2058,18 @@ Version: 0.7.1
 
 ## In both
 
+*   checking whether package ‘idealstan’ can be installed ... WARNING
+    ```
+    Found the following significant warnings:
+      Warning: package ‘Rcpp’ was built under R version 3.5.2
+    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/idealstan/new/idealstan.Rcheck/00install.out’ for details.
+    ```
+
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.8Mb
+      installed size is  6.9Mb
       sub-directories of 1Mb or more:
-        libs   5.1Mb
+        libs   5.2Mb
         R      1.0Mb
     ```
 
@@ -1960,11 +2121,11 @@ Version: 0.2.0
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.8Mb
+      installed size is  6.3Mb
       sub-directories of 1Mb or more:
-        data   3.5Mb
-        help   1.2Mb
-        R      1.1Mb
+        data   4.0Mb
+        help   1.1Mb
+        R      1.0Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -2164,7 +2325,7 @@ ERROR: lazy loading failed for package ‘JointAI’
 ```
 # jpmesh
 
-Version: 1.1.1
+Version: 1.1.2
 
 ## In both
 
@@ -2188,7 +2349,7 @@ Version: 0.3.2
 
 Version: 2.0.0
 
-## Newly broken
+## In both
 
 *   checking installed package size ... NOTE
     ```
@@ -2197,8 +2358,6 @@ Version: 2.0.0
         doc   2.2Mb
         R     2.1Mb
     ```
-
-## In both
 
 *   checking Rd cross-references ... NOTE
     ```
@@ -2229,7 +2388,7 @@ Version: 0.0.3
 
 # listarrays
 
-Version: 0.1.0
+Version: 0.2.0
 
 ## In both
 
@@ -2300,19 +2459,6 @@ Version: 0.3.0
     Execution halted
     ```
 
-# MazamaSpatialUtils
-
-Version: 0.6.1
-
-## Newly broken
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  5.1Mb
-      sub-directories of 1Mb or more:
-        data   4.0Mb
-    ```
-
 # metacoder
 
 Version: 0.3.1
@@ -2333,9 +2479,20 @@ Version: 0.3.1
       All declared Imports should be used.
     ```
 
+# mice
+
+Version: 3.4.0
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘gamlss’
+    ```
+
 # MlBayesOpt
 
-Version: 0.3.3
+Version: 0.3.4
 
 ## In both
 
@@ -2471,6 +2628,31 @@ Version: 0.1.1
       All declared Imports should be used.
     ```
 
+# netgsa
+
+Version: 3.1.0
+
+## In both
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error in re-building vignettes:
+      ...
+    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
+    Error running filter /usr/local/bin/pandoc-citeproc:
+    Filter returned error status 1
+    Error: processing vignette 'netgsa.Rmd' failed with diagnostics:
+    pandoc document conversion failed with error 83
+    Execution halted
+    ```
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  6.6Mb
+      sub-directories of 1Mb or more:
+        data   6.0Mb
+    ```
+
 # nhdR
 
 Version: 0.5.1
@@ -2586,9 +2768,9 @@ Version: 2.6-1
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.0Mb
+      installed size is  5.1Mb
       sub-directories of 1Mb or more:
-        R   4.0Mb
+        R   3.0Mb
     ```
 
 # paletteer
@@ -2602,6 +2784,17 @@ Version: 0.2.1
     Namespaces in Imports field not imported from:
       ‘jcolors’ ‘oompaBase’ ‘palr’ ‘pals’ ‘viridisLite’
       All declared Imports should be used.
+    ```
+
+# parsnip
+
+Version: 0.0.2
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘earth’
     ```
 
 # particles
@@ -2702,23 +2895,14 @@ Version: 1.2.1
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.2Mb
+      installed size is  5.1Mb
       sub-directories of 1Mb or more:
-        data   3.1Mb
+        data   2.8Mb
     ```
 
 # photobiology
 
 Version: 0.9.26
-
-## Newly broken
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  5.0Mb
-      sub-directories of 1Mb or more:
-        R   3.1Mb
-    ```
 
 ## In both
 
@@ -2727,6 +2911,13 @@ Version: 0.9.26
     Found the following significant warnings:
       Warning: package ‘tibble’ was built under R version 3.5.2
     See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/photobiology/new/photobiology.Rcheck/00install.out’ for details.
+    ```
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  5.1Mb
+      sub-directories of 1Mb or more:
+        R   3.1Mb
     ```
 
 # pivot
@@ -2811,7 +3002,7 @@ Version: 4.8.0
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.1Mb
+      installed size is  7.0Mb
       sub-directories of 1Mb or more:
         htmlwidgets   3.1Mb
         R             2.3Mb
@@ -3010,6 +3201,19 @@ Version: 1.0.1
     Package unavailable to check Rd xrefs: ‘purrr’
     ```
 
+# prophet
+
+Version: 0.4
+
+## In both
+
+*   checking whether package ‘prophet’ can be installed ... WARNING
+    ```
+    Found the following significant warnings:
+      Warning: package ‘Rcpp’ was built under R version 3.5.2
+    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/prophet/new/prophet.Rcheck/00install.out’ for details.
+    ```
+
 # proustr
 
 Version: 0.4.0
@@ -3043,7 +3247,7 @@ Version: 2.3.2
     ```
       installed size is  8.9Mb
       sub-directories of 1Mb or more:
-        R   7.1Mb
+        R   7.0Mb
     ```
 
 # PWFSLSmoke
@@ -3237,7 +3441,7 @@ ERROR: lazy loading failed for package ‘Rdrools’
 ```
 # recipes
 
-Version: 0.1.4
+Version: 0.1.5
 
 ## In both
 
@@ -3256,7 +3460,7 @@ Version: 0.1.4
       21: value[[3L]](cond)
       
       ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 1125 SKIPPED: 9 FAILED: 1
+      OK: 1153 SKIPPED: 9 FAILED: 1
       1. Error: printing (@test_ica.R#127) 
       
       Error: testthat unit tests failed
@@ -3292,11 +3496,12 @@ Version: 0.1.0
 
 ## In both
 
-*   checking dependencies in R code ... NOTE
+*   checking package dependencies ... ERROR
     ```
-    Namespaces in Imports field not imported from:
-      ‘rlang’ ‘spatstat’
-      All declared Imports should be used.
+    Package required but not available: ‘spatstat’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
 # replyr
@@ -3304,13 +3509,6 @@ Version: 0.1.0
 Version: 0.9.9
 
 ## In both
-
-*   checking whether package ‘replyr’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: package ‘wrapr’ was built under R version 3.5.2
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/replyr/new/replyr.Rcheck/00install.out’ for details.
-    ```
 
 *   checking Rd cross-references ... NOTE
     ```
@@ -3357,6 +3555,48 @@ Version: 3.0.3
       Note: found 44 marked UTF-8 strings
     ```
 
+# rfPermute
+
+Version: 2.1.6
+
+## In both
+
+*   checking whether package ‘rfPermute’ can be installed ... ERROR
+    ```
+    Installation failed.
+    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/rfPermute/new/rfPermute.Rcheck/00install.out’ for details.
+    ```
+
+## Installation
+
+### Devel
+
+```
+* installing *source* package ‘rfPermute’ ...
+** package ‘rfPermute’ successfully unpacked and MD5 sums checked
+** R
+** data
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
+  there is no package called ‘spatstat’
+ERROR: lazy loading failed for package ‘rfPermute’
+* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/rfPermute/new/rfPermute.Rcheck/rfPermute’
+
+```
+### CRAN
+
+```
+* installing *source* package ‘rfPermute’ ...
+** package ‘rfPermute’ successfully unpacked and MD5 sums checked
+** R
+** data
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
+  there is no package called ‘spatstat’
+ERROR: lazy loading failed for package ‘rfPermute’
+* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/rfPermute/old/rfPermute.Rcheck/rfPermute’
+
+```
 # rhmmer
 
 Version: 0.1.0
@@ -3412,6 +3652,13 @@ Version: 1.0.2
 Version: 2.3.0
 
 ## In both
+
+*   checking whether package ‘RNeXML’ can be installed ... WARNING
+    ```
+    Found the following significant warnings:
+      Warning: package ‘ape’ was built under R version 3.5.2
+    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/RNeXML/new/RNeXML.Rcheck/00install.out’ for details.
+    ```
 
 *   checking re-building of vignette outputs ... WARNING
     ```
@@ -3687,30 +3934,43 @@ Version: 0.1.1
     Execution halted
     ```
 
-# seplyr
-
-Version: 0.8.3
-
-## In both
-
-*   checking whether package ‘seplyr’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: package ‘wrapr’ was built under R version 3.5.2
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/seplyr/new/seplyr.Rcheck/00install.out’ for details.
-    ```
-
 # SeqVarTools
 
 Version: 1.20.2
 
 ## In both
 
-*   checking whether package ‘SeqVarTools’ can be installed ... WARNING
+*   checking package dependencies ... ERROR
     ```
-    Found the following significant warnings:
-      Warning: package ‘SeqArray’ was built under R version 3.5.2
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/SeqVarTools/new/SeqVarTools.Rcheck/00install.out’ for details.
+    Packages required but not available:
+      ‘SeqArray’ ‘Biobase’ ‘gdsfmt’ ‘GenomicRanges’ ‘IRanges’
+      ‘S4Vectors’ ‘GWASExactHW’ ‘logistf’ ‘dplyr’ ‘tidyr’
+    
+    Packages suggested but not available for checking:
+      ‘BiocGenerics’ ‘BiocStyle’ ‘RUnit’ ‘stringr’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
+    ```
+
+# servosphereR
+
+Version: 0.1.0
+
+## In both
+
+*   checking package dependencies ... ERROR
+    ```
+    Packages required but not available:
+      ‘purrr’ ‘data.table’ ‘dplyr’ ‘magrittr’
+    
+    Packages suggested but not available for checking:
+      ‘knitr’ ‘rmarkdown’ ‘testthat’
+    
+    VignetteBuilder package required for checking but not installed: ‘knitr’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
 # sf
@@ -3719,39 +3979,22 @@ Version: 0.7-3
 
 ## In both
 
-*   checking tests ...
+*   checking package dependencies ... ERROR
     ```
-    ...
-    201,202d200
-    < Warning message:
-    < package 'stars' was built under R version 3.5.2 
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      Reading layer `nospatial' from data source `/Users/lionel/Desktop/rlang/revdep/checks.noindex/sf/new/sf.Rcheck/sf/gpkg/nospatial.gpkg' using driver `GPKG'
-      OGR: Unsupported geometry type
-      Reading layer `nc' from data source `/Users/lionel/Desktop/rlang/revdep/checks.noindex/sf/new/sf.Rcheck/sf/shape/nc.shp' using driver `ESRI Shapefile'
-      Simple feature collection with 100 features and 14 fields
-      geometry type:  MULTIPOLYGON
-      dimension:      XY
-      bbox:           xmin: -84.32385 ymin: 33.88199 xmax: -75.45698 ymax: 36.58965
-      epsg (SRID):    4267
-      proj4string:    +proj=longlat +datum=NAD27 +no_defs
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 621 SKIPPED: 59 FAILED: 1
-      1. Error: gdal_subdatasets works (@test_gdal.R#50) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is 17.5Mb
-      sub-directories of 1Mb or more:
-        doc     11.2Mb
-        R        2.0Mb
-        sqlite   1.5Mb
+    Packages required but not available:
+      ‘classInt’ ‘DBI’ ‘magrittr’ ‘Rcpp’ ‘units’
+    
+    Packages suggested but not available for checking:
+      ‘blob’ ‘covr’ ‘dplyr’ ‘ggplot2’ ‘knitr’ ‘lwgeom’ ‘maps’
+      ‘maptools’ ‘mapview’ ‘microbenchmark’ ‘odbc’ ‘pillar’ ‘pool’
+      ‘raster’ ‘rgdal’ ‘rgeos’ ‘rmarkdown’ ‘RPostgres’ ‘RPostgreSQL’
+      ‘RSQLite’ ‘sp’ ‘spatstat’ ‘stars’ ‘testthat’ ‘tibble’ ‘tidyr’
+      ‘tidyselect’ ‘tmap’
+    
+    VignetteBuilder package required for checking but not installed: ‘knitr’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
 # shiny
@@ -3766,6 +4009,47 @@ Version: 1.2.0
       sub-directories of 1Mb or more:
         R     4.0Mb
         www   7.9Mb
+    ```
+
+# simglm
+
+Version: 0.7.2
+
+## In both
+
+*   checking package dependencies ... ERROR
+    ```
+    Packages required but not available: ‘dplyr’ ‘purrr’ ‘broom’
+    
+    Packages suggested but not available for checking:
+      ‘knitr’ ‘lme4’ ‘testthat’ ‘shiny’ ‘e1071’ ‘ggplot2’ ‘tidyr’
+      ‘geepack’ ‘rmarkdown’
+    
+    VignetteBuilder package required for checking but not installed: ‘knitr’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
+    ```
+
+# SimRVSequences
+
+Version: 0.1.2
+
+## In both
+
+*   checking package dependencies ... ERROR
+    ```
+    Packages required but not available:
+      ‘SimRVPedigree’ ‘kinship2’ ‘intervals’ ‘reshape2’ ‘dplyr’
+      ‘magrittr’
+    
+    Packages suggested but not available for checking:
+      ‘knitr’ ‘rmarkdown’ ‘testthat’
+    
+    VignetteBuilder package required for checking but not installed: ‘knitr’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
 # SingleCaseES
@@ -3830,7 +4114,7 @@ Version: 1.0.0
       installed size is  6.8Mb
       sub-directories of 1Mb or more:
         java   1.5Mb
-        R      4.0Mb
+        R      4.1Mb
     ```
 
 # spdplyr
@@ -3866,7 +4150,7 @@ Version: 0.3-0
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 15.6Mb
+      installed size is 15.5Mb
       sub-directories of 1Mb or more:
         doc  10.3Mb
         nc    3.5Mb
@@ -3886,7 +4170,7 @@ Version: 0.1.2
 
 # stplanr
 
-Version: 0.2.7
+Version: 0.2.8
 
 ## In both
 
@@ -3915,12 +4199,26 @@ Version: 0.2.7
 
 *   checking re-building of vignette outputs ... WARNING
     ```
-    Error in re-building vignettes:
-      ...
+    ...
+    Warning in igraph::get.shortest.paths(sln@g, x, output = "epath") :
+      At structural_properties.c:4597 :Couldn't reach some vertices
+    Warning in igraph::get.shortest.paths(sln@g, x, output = "epath") :
+      At structural_properties.c:4597 :Couldn't reach some vertices
+    Warning in igraph::get.shortest.paths(sln@g, x, output = "epath") :
+      At structural_properties.c:4597 :Couldn't reach some vertices
+    Warning in igraph::get.shortest.paths(sln@g, x, output = "epath") :
+      At structural_properties.c:4597 :Couldn't reach some vertices
+    Warning in igraph::get.shortest.paths(sln@g, x, output = "epath") :
+      At structural_properties.c:4597 :Couldn't reach some vertices
+    Warning in igraph::get.shortest.paths(sln@g, x, output = "epath") :
+      At structural_properties.c:4597 :Couldn't reach some vertices
+    Warning in igraph::get.shortest.paths(sln@g, x, output = "epath") :
+      At structural_properties.c:4597 :Couldn't reach some vertices
+    Transforming to CRS +proj=aeqd +lat_0=53.81907246 +lon_0=-1.52841182 +x_0=0 +y_0=0 +ellps=WGS84
     pandoc-citeproc: when expecting a product (:*:), encountered Object instead
     Error running filter /usr/local/bin/pandoc-citeproc:
     Filter returned error status 1
-    Error: processing vignette 'introducing-stplanr.Rmd' failed with diagnostics:
+    Error: processing vignette 'stplanr-paper.Rmd' failed with diagnostics:
     pandoc document conversion failed with error 83
     Execution halted
     ```
@@ -4028,10 +4326,11 @@ Version: 2.0.1
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 15.8Mb
+      installed size is 16.7Mb
       sub-directories of 1Mb or more:
-        data  11.2Mb
+        data  11.1Mb
         doc    3.4Mb
+        R      2.0Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -4090,7 +4389,7 @@ Version: 0.3.16
 
 # tabula
 
-Version: 1.0.0
+Version: 1.2.0
 
 ## In both
 
@@ -4108,8 +4407,7 @@ Version: 1.0.0
 
 *   checking dependencies in R code ... NOTE
     ```
-    Namespaces in Imports field not imported from:
-      ‘dplyr’ ‘tidyr’
+    Namespace in Imports field not imported from: ‘plyr’
       All declared Imports should be used.
     ```
 
@@ -4119,10 +4417,12 @@ Version: 0.5.0
 
 ## In both
 
-*   checking dependencies in R code ... NOTE
+*   checking package dependencies ... ERROR
     ```
-    Namespace in Imports field not imported from: ‘methods’
-      All declared Imports should be used.
+    Package required but not available: ‘spatstat’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
 # taxa
@@ -4133,7 +4433,7 @@ Version: 0.3.2
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.3Mb
+      installed size is  6.2Mb
       sub-directories of 1Mb or more:
         data   2.0Mb
         doc    1.7Mb
@@ -4327,6 +4627,39 @@ Version: 0.0.2
     Namespaces in Imports field not imported from:
       ‘broom’ ‘dials’ ‘parsnip’
       All declared Imports should be used.
+    ```
+
+# tidypredict
+
+Version: 0.3.0
+
+## In both
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      > library(tidypredict)
+      > 
+      > test_check("tidypredict")
+      ── 1. Error: (unknown) (@test-earth.R#3)  ──────────────────────────────────────
+      there is no package called 'earth'
+      1: data("etitanic", package = "earth") at testthat/test-earth.R:3
+      2: find.package(package, lib.loc, verbose = verbose)
+      3: stop(gettextf("there is no package called %s", sQuote(pkg)), domain = NA)
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      OK: 23 SKIPPED: 0 FAILED: 1
+      1. Error: (unknown) (@test-earth.R#3) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘earth’
     ```
 
 # tidyquant
@@ -4559,6 +4892,86 @@ Version: 0.1.0
       All declared Imports should be used.
     ```
 
+# unpivotr
+
+Version: 0.5.0
+
+## In both
+
+*   checking examples ... ERROR
+    ```
+    ...
+    > ##D browseURL(nestedspan)
+    > ## End(Not run)
+    > 
+    > as_cells(xml2::read_html(colspan))
+    Error: Columns 1, 2 must not have names of the form ... or ..j.
+    Backtrace:
+         █
+      1. ├─unpivotr::as_cells(xml2::read_html(colspan))
+      2. └─unpivotr:::as_cells.xml_document(xml2::read_html(colspan)) 00_pkg_src/unpivotr/R/as_cells.R:88:2
+      3.   └─base::lapply(tables, as_cells) 00_pkg_src/unpivotr/R/as_cells.R:212:2
+      4.     ├─unpivotr:::FUN(X[[i]], ...)
+      5.     └─unpivotr:::as_cells.xml_node(X[[i]], ...) 00_pkg_src/unpivotr/R/as_cells.R:88:2
+      6.       └─tibble::as_data_frame(out) 00_pkg_src/unpivotr/R/as_cells.R:201:2
+      7.         ├─tibble::as_tibble(x, ...)
+      8.         └─tibble:::as_tibble.list(x, ...)
+      9.           └─tibble:::lst_to_tibble(x, .rows, .name_repair, col_lengths(x))
+     10.             └─tibble:::set_repaired_names(x, .name_repair)
+     11.               ├─rlang::set_names(x, repaired_names(names(x), .name_repair = .name_repair))
+     12.               │ └─rlang:::set_names_impl(x, x, nm, ...)
+     13.               │   └─r
+    Execution halted
+    ```
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      19: set_names(x, repaired_names(names(x), .name_repair = .name_repair))
+      20: set_names_impl(x, x, nm, ...) at /private/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T/RtmpWzsDrT/R.INSTALLd481114fc489/rlang/R/attr.R:163
+      21: is_function(nm) at /private/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T/RtmpWzsDrT/R.INSTALLd481114fc489/rlang/R/attr.R:170
+      22: is_closure(x) at /private/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T/RtmpWzsDrT/R.INSTALLd481114fc489/rlang/R/fn.R:296
+      23: repaired_names(names(x), .name_repair = .name_repair)
+      24: check_unique(new_name)
+      25: abort(error_column_must_not_be_dot_dot(dot_dot_name))
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      OK: 246 SKIPPED: 0 FAILED: 2
+      1. Error: as_cells() works with html tables (@test-as_cells.R#45) 
+      2. Error: tidy_table works with html tables (@test-tidy_table.R#45) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    ...
+      ...
+    Quitting from lines 37-49 (html.Rmd) 
+    Error: processing vignette 'html.Rmd' failed with diagnostics:
+    Columns 1, 2 must not have names of the form ... or ..j.
+    Backtrace:
+         █
+      1. ├─tools::buildVignettes(dir = "/Users/lionel/Desktop/rlang/revdep/checks.noindex/unpivotr/new/unpivotr.Rcheck/vign_test/unpivotr")
+      2. │ ├─base::tryCatch(...)
+      3. │ │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
+      4. │ │   └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+      5. │ │     └─base:::doTryCatch(return(expr), name, parentenv, handler)
+      6. │ └─engine$weave(file, quiet = quiet, encoding = enc)
+      7. │   └─knitr:::vweave_rmarkdown(...)
+      8. │     └─rmarkdown::render(...)
+      9. │       └─knitr::knit(...)
+     10. │         └─knitr:::process_file(text, output)
+     11. │           ├─base::withCallingHandlers(...)
+     12. │           ├─knitr:::process_group(group)
+     13. │           └─knitr:::process_group.block(group)
+     14. │             └─k
+    Execution halted
+    ```
+
 # vdiffr
 
 Version: 0.3.0
@@ -4623,30 +5036,17 @@ Version: 0.3.0
 
 # xpose
 
-Version: 0.4.3
+Version: 0.4.4
 
 ## In both
 
-*   checking tests ...
+*   checking installed package size ... NOTE
     ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      3: compare.tbl_df(act$val, exp$val)
-      4: NextMethod("compare") at /private/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T/RtmpvD5aJZ/R.INSTALL97c27da5a21/readr/R/utils.R:51
-      5: compare.default(act$val, exp$val)
-      6: all.equal(x, y, ...)
-      7: all.equal.tbl_df(x, y, ...)
-      8: equal_data_frame(target, current, ignore_col_order = ignore_col_order, ignore_row_order = ignore_row_order, 
-             convert = convert)
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 522 SKIPPED: 6 FAILED: 2
-      1. Failure: dot arguments are properly passed to readr (@test-read_nm_tables.R#57) 
-      2. Error: vpc_data works properly with xpdb tables (@test-vpc.R#43) 
-      
-      Error: testthat unit tests failed
-      Execution halted
+      installed size is  6.7Mb
+      sub-directories of 1Mb or more:
+        doc    2.9Mb
+        help   1.1Mb
+        R      2.1Mb
     ```
 
 # ZipRadius
