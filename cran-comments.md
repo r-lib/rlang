@@ -1,7 +1,5 @@
 
-Fixes a bug in knitted markdown documents which caused backtraces to be displayed when they shouldn't.
-
-Also fixes one valgrind issue.
+Fixes the Solaris error.
 
 ## Test environments
 

@@ -1,4 +1,9 @@
 
+# rlang 0.3.4
+
+* Fixed a unit test that failed on the Solaris CRAN machine.
+
+
 # rlang 0.3.3
 
 * Fixed an issue in knitr that caused backtraces to print even when `error = TRUE`.
