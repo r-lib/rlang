@@ -82,3 +82,21 @@ sexp* r_node_list_find_tag(sexp* node, sexp* tag) {
 
   return r_null;
 }
+
+sexp* r_node_list_reverse(sexp* node) {
+  if (node == r_null) {
+    return node;
+  }
+
+  sexp* prev = r_null;
+  sexp* tail = node;
+  sexp* next;
+  while (tail != r_null) {
+    next = r_node_cdr(tail);
+    r_node_poke_cdr(tail, prev);
+    prev = tail;
+    tail = next;
+  }
+
+  return prev;
+}

@@ -100,6 +100,7 @@ sexp* r_node_tree_clone(sexp* x);
 sexp* r_node_list_clone_until(sexp* node, sexp* sentinel, sexp** sentinel_out);
 
 sexp* r_node_list_find_tag(sexp* node, sexp* tag);
+sexp* r_node_list_reverse(sexp* node);
 
 
 #endif

@@ -112,6 +112,7 @@ extern sexp* rlang_env_inherits(sexp*, sexp*);
 extern sexp* rlang_eval_top(sexp*, sexp*);
 extern sexp* rlang_attrib(sexp*);
 extern sexp* rlang_named(sexp*, sexp*);
+extern sexp* r_node_list_reverse(sexp*);
 
 // Library initialisation defined below
 sexp* rlang_library_load();
@@ -263,6 +264,7 @@ static const r_callable r_callables[] = {
   {"rlang_eval_top",                    (r_fn_ptr) &rlang_eval_top, 2},
   {"rlang_attrib",                      (r_fn_ptr) &rlang_attrib, 1},
   {"rlang_named",                       (r_fn_ptr) &rlang_named, 2},
+  {"rlang_node_list_reverse",           (r_fn_ptr) &r_node_list_reverse, 1},
   {NULL, NULL, 0}
 };
 

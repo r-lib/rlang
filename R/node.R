@@ -191,6 +191,10 @@ node_append <- function(.x, .y) {
   .x
 }
 
+node_list_reverse <- function(x) {
+  .Call(rlang_node_list_reverse, x)
+}
+
 
 #' Create a new call from components
 #'

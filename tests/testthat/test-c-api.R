@@ -446,3 +446,33 @@ test_that("r_lgl_which() handles empty vectors", {
   expect_identical(r_lgl_which(lgl(), TRUE), int())
   expect_identical(r_lgl_which(lgl(), FALSE), int())
 })
+
+test_that("r_node_list_reverse() reverses destructively", {
+  x <- pairlist(1)
+  y <- node_list_reverse(x)
+  expect_true(is_reference(x, y))
+
+  x <- pairlist(1, 2)
+  n1 <- x
+  n2 <- node_cdr(x)
+  y <- node_list_reverse(x)
+
+  expect_identical(y, pairlist(2, 1))
+  expect_true(is_reference(x, n1))
+  expect_true(is_reference(y, n2))
+  expect_true(is_reference(node_cdr(y), n1))
+  expect_true(is_null(node_cdr(n1)))
+
+  x <- pairlist(1, 2, 3)
+  n1 <- x
+  n2 <- node_cdr(x)
+  n3 <- node_cddr(x)
+  y <- node_list_reverse(x)
+
+  expect_identical(y, pairlist(3, 2, 1))
+  expect_true(is_reference(x, n1))
+  expect_true(is_reference(y, n3))
+  expect_true(is_reference(node_cdr(y), n2))
+  expect_true(is_reference(node_cddr(y), n1))
+  expect_true(is_null(node_cdr(n1)))
+})
