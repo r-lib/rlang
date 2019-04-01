@@ -17,3 +17,7 @@ is_same_body <- NULL
 .onUnload <- function(lib) {
   .Call(rlang_library_unload)
 }
+
+callback <- function(fn, data) {
+  .Call(rlang_callback, fn, data)
+}

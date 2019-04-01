@@ -446,3 +446,14 @@ test_that("r_lgl_which() handles empty vectors", {
   expect_identical(r_lgl_which(lgl(), TRUE), int())
   expect_identical(r_lgl_which(lgl(), FALSE), int())
 })
+
+test_that("r_on_exit_callback() calls back", {
+  test_onexit <- function() .Call(rlang_test_onexit)
+
+  msg <- NULL
+  withCallingHandlers(
+    message = function(cnd) msg <<- c(msg, cnd$message),
+    expect_error(test_onexit())
+  )
+  expect_identical(msg, c("foo\n", "bar\n"))
+})

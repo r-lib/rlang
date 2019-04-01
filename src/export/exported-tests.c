@@ -4,6 +4,17 @@ sexp* rlang_r_string(sexp* str) {
   return STRING_ELT(str, 0);
 }
 
+static void cb(void* data) {
+  const char* msg = (const char*) data;
+  r_inform(msg);
+}
+
+sexp* rlang_test_onexit() {
+  r_on_exit_callback(cb, "foo");
+  r_on_exit_callback(cb, "bar");
+  r_abort("tilt");
+}
+
 
 // chr.c
 

@@ -19,3 +19,12 @@ void signal_soft_deprecated(const char* msg) {
     r_warn(msg);
   }
 }
+
+sexp* rlang_callback(sexp* ptr, sexp* data) {
+  void (*fn_ptr)(void*) = (void (*)(void*)) R_ExternalPtrAddrFn(ptr);
+  void* data_ptr = EXTPTR_PTR(data);
+
+  fn_ptr(data_ptr);
+
+  return r_null;
+}

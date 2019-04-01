@@ -7,4 +7,5 @@
 #include "internal/expr-interp-rotate.c"
 #include "internal/internal.c"
 #include "internal/quo.c"
+#include "internal/stack.c"
 #include "internal/utils.c"

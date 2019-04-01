@@ -3,6 +3,8 @@
 
 
 void r_on_exit(sexp* expr, sexp* frame);
+void (*r_on_exit_callback)(void (*fn)(void*), void* data);
+
 
 sexp* r_current_frame();
 sexp* r_sys_frame(int n, sexp* frame);

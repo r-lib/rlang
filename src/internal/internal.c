@@ -10,11 +10,13 @@ sexp* as_list_s4_call = NULL;
 void rlang_init_dots();
 void rlang_init_expr_interp();
 void rlang_init_eval_tidy();
+void rlang_init_stack();
 
 void rlang_init_internal() {
   rlang_init_dots();
   rlang_init_expr_interp();
   rlang_init_eval_tidy();
+  rlang_init_stack();
 
   rlang_zap = rlang_ns_get("zap!");
 

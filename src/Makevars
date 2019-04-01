@@ -37,6 +37,7 @@ internal-files = \
         internal/expr-interp-rotate.c \
         internal/internal.c \
         internal/quo.c \
+        internal/stack.c \
         internal/utils.c
 
 export-files = \

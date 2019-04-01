@@ -81,6 +81,8 @@ SEXP r_init_library() {
   r_quo_get_env = (sexp* (*)(sexp*)) r_peek_c_callable("rlang", "rlang_quo_get_env");
   r_quo_set_env = (sexp* (*)(sexp*, sexp*)) r_peek_c_callable("rlang", "rlang_quo_set_env");
 
+  r_on_exit_callback = (void (*)(void (*)(void*), void*)) r_peek_c_callable("rlang", "rlang_on_exit_callback");
+
   /* parse.c - r_ops_precedence[] */
   RLANG_ASSERT((sizeof(r_ops_precedence) / sizeof(struct r_op_precedence)) == R_OP_MAX);
 

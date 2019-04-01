@@ -112,6 +112,8 @@ extern sexp* rlang_env_inherits(sexp*, sexp*);
 extern sexp* rlang_eval_top(sexp*, sexp*);
 extern sexp* rlang_attrib(sexp*);
 extern sexp* rlang_named(sexp*, sexp*);
+extern sexp* rlang_callback(sexp*, sexp*);
+extern void rlang_on_exit_callback(void (*fn)(void*), void* data);
 
 // Library initialisation defined below
 sexp* rlang_library_load();
@@ -135,6 +137,7 @@ extern sexp* rlang_test_Rf_warningcall(sexp*, sexp*);
 extern sexp* rlang_test_Rf_errorcall(sexp*, sexp*);
 extern sexp* rlang_test_lgl_sum(sexp*, sexp*);
 extern sexp* rlang_test_lgl_which(sexp*, sexp*);
+extern sexp* rlang_test_onexit();
 
 static const r_callable r_callables[] = {
   {"r_init_library",                    (r_fn_ptr) &r_init_library, 0},
@@ -263,6 +266,8 @@ static const r_callable r_callables[] = {
   {"rlang_eval_top",                    (r_fn_ptr) &rlang_eval_top, 2},
   {"rlang_attrib",                      (r_fn_ptr) &rlang_attrib, 1},
   {"rlang_named",                       (r_fn_ptr) &rlang_named, 2},
+  {"rlang_callback",                    (r_fn_ptr) &rlang_callback, 2},
+  {"rlang_test_onexit",                 (r_fn_ptr) &rlang_test_onexit, 0},
   {NULL, NULL, 0}
 };
 
@@ -284,6 +289,9 @@ void R_init_rlang(r_dll_info* dll) {
 
   // eval_tidy() is stable
   r_register_c_callable("rlang", "rlang_eval_tidy", (r_fn_ptr) &rlang_eval_tidy);
+
+  // Experimental
+  r_register_c_callable("rlang", "rlang_on_exit_callback", (r_fn_ptr) &rlang_on_exit_callback);
 
   // Experimental method for exporting C function pointers as actual R objects
   rlang_register_pointer("rlang", "rlang_test_is_spliceable", (r_fn_ptr) &rlang_is_clevel_spliceable);
