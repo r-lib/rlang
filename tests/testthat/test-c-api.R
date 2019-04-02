@@ -428,6 +428,12 @@ test_that("r_lgl_which() handles empty vectors", {
   expect_identical(r_lgl_which(lgl(), FALSE), int())
 })
 
+test_that("r_lgl_which() handles `NA` when propagation is disabled (#750)", {
+  expect_identical(r_lgl_which(lgl(TRUE, FALSE, NA), FALSE), int(1))
+  expect_identical(r_lgl_which(lgl(TRUE, FALSE, NA, TRUE), FALSE), int(1, 4))
+  expect_identical(r_lgl_which(lgl(TRUE, NA, FALSE, NA, TRUE, FALSE, TRUE), FALSE), int(1, 5, 7))
+})
+
 test_that("r_node_list_reverse() reverses destructively", {
   x <- pairlist(1)
   y <- node_list_reverse(x)
