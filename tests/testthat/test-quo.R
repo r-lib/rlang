@@ -270,6 +270,10 @@ test_that("can concatenate quosure lists", {
   expect_identical(c(quos(a, b), quos(foo = c)), quos(a, b, foo = c))
 })
 
+test_that("new_quosure() checks input", {
+  expect_error(new_quosure(NULL, NULL), "`env` must be an environment")
+})
+
 
 # Lifecycle ----------------------------------------------------------
 
