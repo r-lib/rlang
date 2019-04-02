@@ -103,6 +103,18 @@ bool r_is_double(sexp* x, r_ssize n, int finite) {
 #define RLANG_MAX_DOUBLE_INT 4503599627370496
 
 bool r_is_integerish(sexp* x, r_ssize n, int finite) {
+  // `NA` has unspecified type so is treated as `NA_integer_`
+  if (r_typeof(x) == r_type_logical) {
+    if (r_length(x) != 1 || r_lgl_get(x, 0) != NA_LOGICAL) {
+      return false;
+    } else {
+      x = PROTECT(r_int(NA_INTEGER));
+      bool out = r_is_integerish(x, n, finite);
+      UNPROTECT(1);
+      return out;
+    }
+  }
+
   if (r_typeof(x) == r_type_integer) {
     return r_is_integer(x, n, finite);
   }
