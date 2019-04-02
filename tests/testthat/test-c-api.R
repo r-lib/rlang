@@ -233,18 +233,14 @@ test_that("client library passes tests", {
 })
 
 test_that("r_env_unbind() removes objects", {
-  c_env_unbind <- function(env, names, inherits = FALSE) {
-    invisible(.Call(rlang_env_unbind, env, names, inherits))
-  }
-
   env <- env(a = 1L)
-  c_env_unbind(env, "a")
+  r_env_unbind(env, "a")
   expect_false(env_has(env, "a"))
 
   env <- env(a = 1L)
   child <- child_env(env)
-  expect_warning(c_env_unbind(child, "a"), "not found")
-  c_env_unbind(child, "a", inherits = TRUE)
+  expect_warning(r_env_unbind(child, "a"), "not found")
+  r_env_unbind(child, "a", inherits = TRUE)
   expect_false(env_has(env, "a"))
 })
 
@@ -380,12 +376,9 @@ test_that("r_parse()", {
 })
 
 test_that("r_parse_eval()", {
-  parse_eval <- function(x, env = caller_env()) {
-    .Call(rlang_test_parse_eval, x, env)
-  }
   foo <- "quux"
-  expect_identical(parse_eval("toupper(foo)"), "QUUX")
-  expect_error(parse_eval("toupper(foo); foo"), "single expression")
+  expect_identical(r_parse_eval("toupper(foo)"), "QUUX")
+  expect_error(r_parse_eval("toupper(foo); foo"), "single expression")
 })
 
 test_that("failed parses are printed if `rlang__verbose_errors` is non-NULL", {
@@ -405,33 +398,25 @@ test_that("r_warn_deprecated() warns once", {
 })
 
 test_that("r_nms_are_duplicated() detects duplicates", {
-  out <- nms_are_duplicated(letters)
+  out <- r_nms_are_duplicated(letters)
   expect_identical(out, rep(FALSE, length(letters)))
 
-  out <- nms_are_duplicated(c("a", "b", "a", "a", "c", "c"))
+  out <- r_nms_are_duplicated(c("a", "b", "a", "a", "c", "c"))
   expect_identical(out, c(FALSE, FALSE, TRUE, TRUE, FALSE, TRUE))
 })
 
 test_that("r_nms_are_duplicated() handles empty and missing names", {
-  out <- nms_are_duplicated(c("a", NA, NA, "b", "", "", "a"))
+  out <- r_nms_are_duplicated(c("a", NA, NA, "b", "", "", "a"))
   expect_identical(out, c(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE))
 })
 
 test_that("r_lgl_sum() handles NA", {
-  r_lgl_sum <- function(x, na_true) {
-    stopifnot(is_logical(x), is_bool(na_true))
-    .Call(rlang_test_lgl_sum, x, na_true)
-  }
   expect_identical(r_lgl_sum(lgl(TRUE, FALSE), TRUE), 1L)
   expect_identical(r_lgl_sum(lgl(TRUE, NA), TRUE), 2L)
   expect_identical(r_lgl_sum(lgl(TRUE, NA), FALSE), 1L)
 })
 
 test_that("r_lgl_which() handles NA", {
-  r_lgl_which <- function(x, na_propagate) {
-    stopifnot(is_logical(x), is_bool(na_propagate))
-    .Call(rlang_test_lgl_which, x, na_propagate)
-  }
   expect_identical(r_lgl_which(lgl(TRUE, FALSE), TRUE), 1L)
   expect_identical(r_lgl_which(lgl(TRUE, FALSE), FALSE), 1L)
   expect_identical(r_lgl_which(lgl(TRUE, NA), TRUE), int(1L, NA))
@@ -439,10 +424,6 @@ test_that("r_lgl_which() handles NA", {
 })
 
 test_that("r_lgl_which() handles empty vectors", {
-  r_lgl_which <- function(x, na_propagate) {
-    stopifnot(is_logical(x), is_bool(na_propagate))
-    .Call(rlang_test_lgl_which, x, na_propagate)
-  }
   expect_identical(r_lgl_which(lgl(), TRUE), int())
   expect_identical(r_lgl_which(lgl(), FALSE), int())
 })
