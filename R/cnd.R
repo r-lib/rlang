@@ -964,7 +964,7 @@ entrace_handle_top <- function(trace) {
 
 add_backtrace <- function() {
   # Warnings don't go through when error is being handled
-  msg <- "Warning: `add_backtrace()` is now exported as `enframe()` as of rlang 0.3.1"
+  msg <- "Warning: `add_backtrace()` is now exported as `entrace()` as of rlang 0.3.1"
   cat_line(msg, file = stderr())
   entrace(bottom = sys.frame(-1))
 }
