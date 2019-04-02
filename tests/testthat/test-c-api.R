@@ -446,3 +446,13 @@ test_that("r_lgl_which() handles empty vectors", {
   expect_identical(r_lgl_which(lgl(), TRUE), int())
   expect_identical(r_lgl_which(lgl(), FALSE), int())
 })
+
+test_that("r_lgl_which() handles `NA` when propagation is disabled (#750)", {
+  r_lgl_which <- function(x, na_propagate) {
+    stopifnot(is_logical(x), is_bool(na_propagate))
+    .Call(rlang_test_lgl_which, x, na_propagate)
+  }
+  expect_identical(r_lgl_which(lgl(TRUE, FALSE, NA), FALSE), int(1))
+  expect_identical(r_lgl_which(lgl(TRUE, FALSE, NA, TRUE), FALSE), int(1, 4))
+  expect_identical(r_lgl_which(lgl(TRUE, NA, FALSE, NA, TRUE, FALSE, TRUE), FALSE), int(1, 5, 7))
+})

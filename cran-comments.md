@@ -1,4 +1,5 @@
 
+Fixes the valgrind error.
 Fixes the Solaris error.
 
 ## Test environments
