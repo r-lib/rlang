@@ -174,10 +174,6 @@ sexp* rlang_node_poke_cddr(sexp* x, sexp* newcdr) {
   return x;
 }
 
-sexp* rlang_new_node_(sexp* car, sexp* cdr) {
-  return Rf_cons(car, cdr);
-}
-
 sexp* rlang_node_tag(sexp* x) {
   return TAG(x);
 }

@@ -33,7 +33,6 @@ extern sexp* rlang_node_poke_caar(sexp*, sexp*);
 extern sexp* rlang_node_poke_cadr(sexp*, sexp*);
 extern sexp* rlang_node_poke_cdar(sexp*, sexp*);
 extern sexp* rlang_node_poke_cddr(sexp*, sexp*);
-extern sexp* rlang_new_node_(sexp*, sexp*);
 extern sexp* rlang_duplicate(sexp*, sexp*);
 extern sexp* r_node_tree_clone(sexp*);
 extern sexp* rlang_node_tag(sexp*);
@@ -171,7 +170,7 @@ static const r_callable r_callables[] = {
   {"rlang_node_poke_cadr",              (r_fn_ptr) &rlang_node_poke_cadr, 2},
   {"rlang_node_poke_cdar",              (r_fn_ptr) &rlang_node_poke_cdar, 2},
   {"rlang_node_poke_cddr",              (r_fn_ptr) &rlang_node_poke_cddr, 2},
-  {"rlang_new_node",                    (r_fn_ptr) &rlang_new_node_, 2},
+  {"rlang_new_node",                    (r_fn_ptr) &r_new_node, 2},
   {"rlang_nms_are_duplicated",          (r_fn_ptr) &rlang_test_nms_are_duplicated, 2},
   {"rlang_env_clone",                   (r_fn_ptr) &r_env_clone, 2},
   {"rlang_env_unbind",                  (r_fn_ptr) &rlang_env_unbind, 3},
