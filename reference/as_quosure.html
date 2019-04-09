@@ -66,7 +66,7 @@ converts formulas and quosures and does not double-wrap." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9000</span>
       </span>
     </div>
 
@@ -187,20 +187,20 @@ might not be in the future.</p></li>
 <span class='no'>env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>(<span class='kw'>var</span> <span class='kw'>=</span> <span class='st'>"thing"</span>)
 <span class='fu'>as_quosure</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>var</span>), <span class='no'>env</span>)</div><div class='output co'>#&gt; &lt;quosure&gt;
 #&gt; expr: ^var
-#&gt; env:  0x4f8d1e8</div><div class='input'>
+#&gt; env:  0x5e8fa60</div><div class='input'>
 
 <span class='co'># The environment is ignored for formulas:</span>
 <span class='fu'>as_quosure</span>(~<span class='no'>foo</span>, <span class='no'>env</span>)</div><div class='output co'>#&gt; &lt;quosure&gt;
 #&gt; expr: ^foo
-#&gt; env:  0x50e9188</div><div class='input'><span class='fu'>as_quosure</span>(~<span class='no'>foo</span>)</div><div class='output co'>#&gt; &lt;quosure&gt;
+#&gt; env:  0x5fb68c8</div><div class='input'><span class='fu'>as_quosure</span>(~<span class='no'>foo</span>)</div><div class='output co'>#&gt; &lt;quosure&gt;
 #&gt; expr: ^foo
-#&gt; env:  0x50e9188</div><div class='input'>
+#&gt; env:  0x5fb68c8</div><div class='input'>
 <span class='co'># However you must supply it for symbols and calls:</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/try'>try</a></span>(<span class='fu'>as_quosure</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>var</span>)))</div><div class='output co'>#&gt; <span class='warning'>Warning: `as_quosure()` requires an explicit environment as of rlang 0.3.0.</span>
 #&gt; <span class='warning'>Please supply `env`.</span>
 #&gt; <span class='warning'>This warning is displayed once per session.</span></div><div class='output co'>#&gt; &lt;quosure&gt;
 #&gt; expr: ^var
-#&gt; env:  0x50e9188</div></pre>
+#&gt; env:  0x5fb68c8</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
