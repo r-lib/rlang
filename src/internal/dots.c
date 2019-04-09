@@ -6,6 +6,10 @@
 
 sexp* rlang_ns_get(const char* name);
 
+// Initialised at load time
+static sexp* empty_spliced_list = NULL;
+static sexp* rlang_spliced_flag = NULL;
+
 
 enum dots_homonyms {
   DOTS_HOMONYMS_KEEP = 0,
@@ -102,7 +106,6 @@ static sexp* def_unquote_name(sexp* expr, sexp* env) {
 }
 
 
-static sexp* rlang_spliced_flag = NULL;
 static inline bool is_spliced_dots(sexp* x) {
   return r_get_attribute(x, rlang_spliced_flag) != r_null;
 }
@@ -205,18 +208,7 @@ static inline sexp* dot_get_env(sexp* dot) {
   return r_list_get(dot, 1);
 }
 
-static sexp* empty_spliced_list() {
-  static sexp* list = NULL;
-  if (!list) {
-    list = new_preserved_empty_list();
-    mark_spliced_dots(list);
-  }
-  return list;
-}
-
 static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
-  if (!rlang_spliced_flag) rlang_spliced_flag = r_sym("__rlang_spliced");
-
   sexp* dots_names = r_vec_names(dots);
   capture_info->count = 0;
   r_ssize n = r_length(dots);
@@ -278,7 +270,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
         && (dots_names == r_null || r_chr_has_empty_string_at(dots_names, i))
         && should_ignore(capture_info->ignore_empty, i, n)) {
       capture_info->needs_expansion = true;
-      r_list_poke(dots, i, empty_spliced_list());
+      r_list_poke(dots, i, empty_spliced_list);
       FREE(1);
       continue;
     }
@@ -340,7 +332,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
       expr = KEEP(r_eval(info.operand, env));
       capture_info->needs_expansion = true;
       if (expr == r_null) {
-        expr = empty_spliced_list();
+        expr = empty_spliced_list;
       } else {
         expr = dots_value_big_bang(expr, env);
         capture_info->count += 1;
@@ -770,4 +762,9 @@ void rlang_init_dots() {
 
   abort_dots_homonyms_call = r_parse("rlang:::abort_dots_homonyms(x, y)");
   r_mark_precious(abort_dots_homonyms_call);
+
+  rlang_spliced_flag = r_sym("__rlang_spliced");
+
+  empty_spliced_list = new_preserved_empty_list();
+  mark_spliced_dots(empty_spliced_list);
 }
