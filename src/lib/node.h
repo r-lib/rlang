@@ -78,14 +78,14 @@ static inline sexp* r_new_node_list2(sexp* car1, sexp* car2) {
   return out;
 }
 
-static inline sexp* r_build_pairlist(sexp* car) {
-  return r_new_node(car, r_null);
+static inline sexp* r_pairlist(sexp* car) {
+  return Rf_list1(car);
 }
-static inline sexp* r_build_pairlist2(sexp* car1, sexp* car2) {
-  return r_new_node(car1, r_build_pairlist(car2));
+static inline sexp* r_pairlist2(sexp* car1, sexp* car2) {
+  return Rf_list2(car1, car2);
 }
-static inline sexp* r_build_pairlist3(sexp* car1, sexp* car2, sexp* car3) {
-  return r_new_node(car1, r_build_pairlist2(car2, car3));
+static inline sexp* r_pairlist3(sexp* car1, sexp* car2, sexp* car3) {
+  return Rf_list3(car1, car2, car3);
 }
 
 sexp* r_node_tree_clone(sexp* x);

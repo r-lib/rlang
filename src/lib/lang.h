@@ -18,10 +18,10 @@ static inline sexp* r_build_call(sexp* head) {
   return r_build_call_node(head, r_null);
 }
 static inline sexp* r_build_call1(sexp* head, sexp* arg1) {
-  return r_build_call_node(head, r_build_pairlist(arg1));
+  return r_build_call_node(head, r_pairlist(arg1));
 }
 static inline sexp* r_build_call2(sexp* head, sexp* arg1, sexp* arg2) {
-  return r_build_call_node(head, r_build_pairlist2(arg1, arg2));
+  return r_build_call_node(head, r_pairlist2(arg1, arg2));
 }
 
 bool r_is_call(sexp* x, const char* name);
