@@ -79,11 +79,7 @@ static inline sexp* r_new_node_list2(sexp* car1, sexp* car2) {
 }
 
 static inline sexp* r_build_node(sexp* car, sexp* cdr) {
-  PROTECT(car);
-  PROTECT(cdr);
-  sexp* out = Rf_cons(car, cdr);
-  UNPROTECT(2);
-  return out;
+  return Rf_cons(car, cdr);
 }
 
 static inline sexp* r_build_pairlist(sexp* car) {
