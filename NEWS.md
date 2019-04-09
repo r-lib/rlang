@@ -1,5 +1,5 @@
 
-# rlang 0.3.2.9000
+# rlang 0.3.4.9000
 
 * `is_integerish(NA)` is now `TRUE` (#751). In general, we now treat
   `NA` as having unspecified type.
