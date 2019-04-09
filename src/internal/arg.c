@@ -72,3 +72,14 @@ sexp* rlang_enquo(sexp* sym, sexp* frame) {
   FREE(1);
   return quo;
 }
+
+sexp* rlang_is_missing(sexp* _call, sexp* _op, sexp* args, sexp* env) {
+  args = r_node_cdr(args);
+
+  sexp* missing = r_eval(r_node_car(args), env);
+  if (r_lgl_get(missing, 0)) {
+    return r_shared_true;
+  }
+
+  return r_lgl(r_eval(r_x_sym, env) == r_missing_sym);
+}

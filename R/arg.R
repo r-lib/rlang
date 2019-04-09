@@ -193,12 +193,7 @@ missing_arg <- function() {
 #' @rdname missing_arg
 #' @export
 is_missing <- function(x) {
-  expr <- substitute(x)
-  if (typeof(expr) == "symbol" && missing(x)) {
-    TRUE
-  } else {
-    identical(x, missing_arg())
-  }
+  .External2(rlang_is_missing, missing(x))
 }
 
 #' @rdname missing_arg

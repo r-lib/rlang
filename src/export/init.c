@@ -267,6 +267,13 @@ static const r_callable r_callables[] = {
   {NULL, NULL, 0}
 };
 
+extern sexp* rlang_is_missing(sexp*, sexp*, sexp*, sexp*);
+
+static const r_external externals[] = {
+  {"rlang_is_missing",                  (r_fn_ptr) &rlang_is_missing, 1},
+  {NULL, NULL, 0}
+};
+
 void R_init_rlang(r_dll_info* dll) {
   r_register_c_callable("rlang", "rlang_squash_if", (r_fn_ptr) &r_squash_if);
 
@@ -293,7 +300,7 @@ void R_init_rlang(r_dll_info* dll) {
   r_register_c_callable("rlang", "rlang_as_data_mask", (r_fn_ptr) &rlang_as_data_mask_compat);
   r_register_c_callable("rlang", "rlang_new_data_mask", (r_fn_ptr) &rlang_new_data_mask_compat);
 
-  r_register_r_callables(dll, r_callables, NULL);
+  r_register_r_callables(dll, r_callables, externals);
 }
 
 
