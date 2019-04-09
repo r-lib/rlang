@@ -10,7 +10,7 @@ void r_on_exit(sexp* expr, sexp* frame) {
   }
 
   sexp* args = r_pairlist2(expr, r_lgl(1));
-  sexp* lang = KEEP(r_build_call_node(on_exit_prim, args));
+  sexp* lang = KEEP(r_new_call(on_exit_prim, args));
 
   r_eval(lang, frame);
   FREE(1);

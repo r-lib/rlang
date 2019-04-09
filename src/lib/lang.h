@@ -7,21 +7,15 @@
 static inline sexp* r_new_call(sexp* car, sexp* cdr) {
   return Rf_lcons(car, cdr);
 }
-static inline sexp* r_build_call_node(sexp* car, sexp* cdr) {
-  sexp* out = KEEP(r_new_node(car, cdr));
-  SET_TYPEOF(out, LANGSXP);
-  FREE(1);
-  return out;
-}
 
 static inline sexp* r_build_call(sexp* head) {
-  return r_build_call_node(head, r_null);
+  return r_new_call(head, r_null);
 }
 static inline sexp* r_build_call1(sexp* head, sexp* arg1) {
-  return r_build_call_node(head, r_pairlist(arg1));
+  return r_new_call(head, r_pairlist(arg1));
 }
 static inline sexp* r_build_call2(sexp* head, sexp* arg1, sexp* arg2) {
-  return r_build_call_node(head, r_pairlist2(arg1, arg2));
+  return r_new_call(head, r_pairlist2(arg1, arg2));
 }
 
 bool r_is_call(sexp* x, const char* name);
