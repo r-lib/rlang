@@ -73,9 +73,9 @@ sexp* new_raw_formula(sexp* lhs, sexp* rhs, sexp* env) {
   sexp* f;
   sexp* args;
   if (lhs == r_null) {
-    args = KEEP(r_new_node_list(rhs));
+    args = KEEP(r_pairlist(rhs));
   } else {
-    args = KEEP(r_new_node_list2(lhs, rhs));
+    args = KEEP(r_pairlist2(lhs, rhs));
   }
   f = KEEP(r_new_call(tilde_sym, args));
 
