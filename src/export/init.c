@@ -112,6 +112,9 @@ extern sexp* rlang_eval_top(sexp*, sexp*);
 extern sexp* rlang_attrib(sexp*);
 extern sexp* rlang_named(sexp*, sexp*);
 extern sexp* r_node_list_reverse(sexp*);
+extern sexp* rlang_new_splice_box(sexp*);
+extern sexp* rlang_is_splice_box(sexp*);
+extern sexp* rlang_unbox(sexp*);
 
 // Library initialisation defined below
 sexp* rlang_library_load();
@@ -264,6 +267,8 @@ static const r_callable r_callables[] = {
   {"rlang_attrib",                      (r_fn_ptr) &rlang_attrib, 1},
   {"rlang_named",                       (r_fn_ptr) &rlang_named, 2},
   {"rlang_node_list_reverse",           (r_fn_ptr) &r_node_list_reverse, 1},
+  {"rlang_new_splice_box",              (r_fn_ptr) &rlang_new_splice_box, 1},
+  {"rlang_is_splice_box",               (r_fn_ptr) &rlang_is_splice_box, 1},
   {NULL, NULL, 0}
 };
 
@@ -292,6 +297,10 @@ void R_init_rlang(r_dll_info* dll) {
 
   // eval_tidy() is stable
   r_register_c_callable("rlang", "rlang_eval_tidy", (r_fn_ptr) &rlang_eval_tidy);
+
+  // Maturing
+  r_register_c_callable("rlang", "rlang_is_splice_box", (r_fn_ptr) &rlang_is_splice_box);
+  r_register_c_callable("rlang", "rlang_unbox", (r_fn_ptr) &rlang_unbox);
 
   // Experimental method for exporting C function pointers as actual R objects
   rlang_register_pointer("rlang", "rlang_test_is_spliceable", (r_fn_ptr) &rlang_is_clevel_spliceable);

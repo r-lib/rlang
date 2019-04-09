@@ -33,6 +33,7 @@ void r_init_rlang_ns_env();
 void r_init_library_cnd();
 void r_init_library_env();
 void r_init_library_session();
+void r_init_library_squash();
 void r_init_library_stack();
 void r_init_library_sym();
 void r_init_library_vec_chr();
@@ -54,6 +55,7 @@ SEXP r_init_library() {
   r_init_library_cnd();
   r_init_library_env();
   r_init_library_session();
+  r_init_library_squash();
   r_init_library_stack();
   r_init_library_vec_chr();
 

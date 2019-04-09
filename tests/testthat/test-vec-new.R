@@ -35,7 +35,7 @@ test_that("objects are not spliced", {
 })
 
 test_that("explicitly spliced lists are spliced", {
-  expect_identical(lgl(FALSE, structure(list(TRUE, TRUE), class = "spliced")), c(FALSE, TRUE, TRUE))
+  expect_identical(lgl(FALSE, splice(list(TRUE, TRUE))), c(FALSE, TRUE, TRUE))
 })
 
 test_that("splicing uses inner names", {

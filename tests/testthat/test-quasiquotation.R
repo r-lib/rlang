@@ -612,3 +612,7 @@ test_that("{{ on the LHS of :=", {
 
   expect_error_(exprs({{ foo() }} := NA), "must be a symbol")
 })
+
+test_that("can unquote-splice in atomic capture", {
+  expect_identical_(chr("a", !!!c("b", "c"), !!!list("d")), c("a", "b", "c", "d"))
+})

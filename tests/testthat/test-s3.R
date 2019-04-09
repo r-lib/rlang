@@ -108,3 +108,9 @@ test_that("done() can be empty", {
   expect_false(is_done_box(nonempty, empty = TRUE))
   expect_true(is_done_box(nonempty, empty = FALSE))
 })
+
+test_that("splice box is constructed", {
+  box <- splice(list(NA))
+  expect_true(is.object(box))
+  expect_identical(box, structure(list(list(NA)), class = c("rlang_box_splice", "rlang_box")))
+})

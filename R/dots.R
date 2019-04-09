@@ -271,18 +271,24 @@ splice <- function(x) {
   if (!is_list(x)) {
     abort("Only lists can be spliced")
   }
-  structure(x, class = "spliced")
+  .Call(rlang_new_splice_box, x)
 }
 #' @rdname splice
 #' @export
 is_spliced <- function(x) {
-  inherits(x, "spliced")
+  .Call(rlang_is_splice_box, x)
 }
 #' @rdname splice
 #' @export
 is_spliced_bare <- function(x) {
   is_bare_list(x) || is_spliced(x)
 }
+#' @export
+print.rlang_box_splice <- function(x, ...) {
+  cat_line("<spliced>")
+  print(unbox(x))
+}
+
 #' @rdname splice
 #' @inheritParams tidy-dots
 #' @export
