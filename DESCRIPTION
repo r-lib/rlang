@@ -14,7 +14,7 @@ LazyData: true
 ByteCompile: true
 Biarch: true
 Depends:
-    R (>= 3.1.0)
+    R (>= 3.2.0)
 Suggests:
     covr,
     crayon,

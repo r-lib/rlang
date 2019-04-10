@@ -1,6 +1,9 @@
 
 # rlang 0.3.4.9000
 
+* We commit to support 5 versions of R. As R 3.6 is about to be
+  released, rlang now requires R 3.2 or greater.
+
 * `is_integerish(NA)` is now `TRUE` (#751). In general, we now treat
   `NA` as having unspecified type.
 
