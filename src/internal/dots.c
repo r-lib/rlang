@@ -448,7 +448,8 @@ static sexp* init_names(sexp* x) {
 }
 
 
-sexp* dots_expand(sexp* dots, struct dots_capture_info* capture_info, bool splice) {
+// Splice vectors and remove empty arguments
+sexp* dots_reshape(sexp* dots, struct dots_capture_info* capture_info, bool splice) {
   int n_protect = 0;
   sexp* dots_names = r_vec_names(dots);
 
@@ -620,7 +621,7 @@ sexp* rlang_exprs_interp(sexp* frame_env,
   sexp* dots = KEEP_N(dots_init(&capture_info, frame_env), n_protect);
 
   if (capture_info.needs_expansion) {
-    dots = KEEP_N(dots_expand(dots, &capture_info, true), n_protect);
+    dots = KEEP_N(dots_reshape(dots, &capture_info, true), n_protect);
   }
 
   dots = dots_finalise(&capture_info, dots);
@@ -648,7 +649,7 @@ sexp* rlang_quos_interp(sexp* frame_env,
   sexp* dots = KEEP_N(dots_init(&capture_info, frame_env), n_protect);
 
   if (capture_info.needs_expansion) {
-    dots = dots_expand(dots, &capture_info, true);
+    dots = dots_reshape(dots, &capture_info, true);
     KEEP_N(dots, n_protect);
   }
 
@@ -698,7 +699,7 @@ static sexp* dots_values_impl(sexp* frame_env,
       dots = KEEP(r_squash_if(dots, r_type_list, is_spliced, 1));
     } else {
       // This processes empty arguments that should be removed
-      dots = KEEP(dots_expand(dots, &capture_info, false));
+      dots = KEEP(dots_reshape(dots, &capture_info, false));
     }
     ++n_protect;
   }
