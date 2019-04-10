@@ -448,9 +448,6 @@ static sexp* init_names(sexp* x) {
 }
 
 
-// From capture.c
-sexp* capturedots(sexp* frame);
-
 sexp* dots_expand(sexp* dots, struct dots_capture_info* capture_info, bool splice) {
   int n_protect = 0;
   sexp* dots_names = r_vec_names(dots);
@@ -565,6 +562,10 @@ static void dots_check_homonyms(sexp* dots, sexp* nms) {
   FREE(1);
 }
 
+
+// From capture.c
+sexp* capturedots(sexp* frame);
+
 static sexp* dots_init(struct dots_capture_info* capture_info, sexp* frame_env) {
   int n_kept = 0;
 
@@ -597,6 +598,7 @@ static sexp* dots_finalise(struct dots_capture_info* capture_info, sexp* dots) {
 
   return dots;
 }
+
 
 sexp* rlang_exprs_interp(sexp* frame_env,
                          sexp* named,
