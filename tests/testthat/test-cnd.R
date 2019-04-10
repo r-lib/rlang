@@ -308,6 +308,7 @@ test_that("on_error option can be tweaked", {
 
     cat_line("", "", "", ">>> Default (not interactive):", "")
     with_options(
+      rlang_backtrace_on_error = NULL,
       rlang_interactive = FALSE,
       msg()
     )

@@ -16,7 +16,7 @@ Call `rlang::last_error()` to see a backtrace
 The error message
 Backtrace:
      █
-  1. ├─rlang::with_options(rlang_interactive = FALSE, msg())
+  1. ├─rlang::with_options(...)
   2. └─rlang:::msg()
   3.   ├─base::cat(conditionMessage(catch_cnd(f())))
   4.   ├─base::conditionMessage(catch_cnd(f()))
