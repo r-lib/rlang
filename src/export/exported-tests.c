@@ -86,8 +86,8 @@ bool rlang_is_clevel_spliceable(sexp* x) {
 // stack.c
 
 sexp* rlang_test_sys_call(sexp* n) {
-  return r_sys_call(r_c_int(n), NULL);
+  return r_sys_call(r_int_get(n, 0), NULL);
 }
 sexp* rlang_test_sys_frame(sexp* n) {
-  return r_sys_frame(r_c_int(n), NULL);
+  return r_sys_frame(r_int_get(n, 0), NULL);
 }

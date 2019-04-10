@@ -102,10 +102,6 @@ static inline sexp* r_int(int x) {
   return Rf_ScalarInteger(x);
 }
 
-static inline int r_c_int(sexp* x) {
-  return INTEGER(x)[0];
-}
-
 static inline sexp* r_new_vector(enum r_type type, r_ssize n) {
   return Rf_allocVector(type, n);
 }
