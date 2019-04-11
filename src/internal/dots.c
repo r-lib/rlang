@@ -2,6 +2,7 @@
 #include "dots.h"
 #include "expr-interp.h"
 #include "internal.h"
+#include "iter.h"
 #include "utils.h"
 
 sexp* rlang_ns_get(const char* name);
@@ -221,13 +222,14 @@ static inline sexp* dot_get_env(sexp* dot) {
 }
 
 static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
-  sexp* dots_names = r_vec_names(dots);
   capture_info->count = 0;
   r_ssize n = r_length(dots);
   bool unquote_names = capture_info->unquote_names;
 
-  for (r_ssize i = 0; i < n; ++i) {
-    sexp* elt = r_list_get(dots, i);
+  sexp* iter = KEEP(r_new_list_iterator(dots));
+
+  for (r_ssize i = 0; iter != r_null; ++i, iter = r_list_iter_rest(iter)) {
+    sexp* elt = r_list_iter_value(iter);
     sexp* expr = dot_get_expr(elt);
     sexp* env = dot_get_env(elt);
 
@@ -237,17 +239,12 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
     if (unquote_names && r_is_call(expr, ":=")) {
       sexp* name = KEEP(def_unquote_name(expr, env));
 
-      if (dots_names == r_null) {
-        dots_names = KEEP(r_new_vector(r_type_character, n));
-        r_push_names(dots, dots_names);
-        FREE(1);
-      }
-
-      if (r_chr_get(dots_names, i) == r_empty_str) {
-        r_chr_poke(dots_names, i, name);
-      } else {
+      sexp* current = r_list_iter_name(iter);
+      if (current != r_null && current != r_empty_str) {
         r_abort("Can't supply both `=` and `:=`");
       }
+
+      r_list_iter_poke_name(iter, name);
       expr = r_node_cadr(r_node_cdr(expr));
 
       FREE(1);
@@ -274,12 +271,14 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
     struct expansion_info info = which_expansion_op(expr, unquote_names);
     enum dots_expansion_op dots_op = info.op + (EXPANSION_OP_MAX * capture_info->type);
 
+    sexp* name = r_list_iter_name(iter);
+
     // Ignore empty arguments
     if (expr == r_missing_sym
-        && (dots_names == r_null || r_chr_get(dots_names, i) == r_empty_str)
+        && (name == r_null || name == r_empty_str)
         && should_ignore(capture_info->ignore_empty, i, n)) {
       capture_info->needs_expansion = true;
-      r_list_poke(dots, i, empty_spliced_arg);
+      r_list_iter_poke_value(iter, empty_spliced_arg);
       FREE(1);
       continue;
     }
@@ -359,10 +358,11 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
       r_abort("Internal error: `OP_DOTS_MAX`");
     }
 
-    r_list_poke(dots, i, expr);
+    r_list_iter_poke_value(iter, expr);
     FREE(1);
   }
 
+  FREE(1);
   return dots;
 }
 
