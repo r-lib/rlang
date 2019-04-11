@@ -404,7 +404,7 @@ static sexp* auto_name_call = NULL;
 static sexp* maybe_auto_name(sexp* x, sexp* named) {
   sexp* names = r_vec_names(x);
 
-  if (should_auto_name(named) && (!names || r_chr_has(names, ""))) {
+  if (should_auto_name(named) && (names == r_null || r_chr_has(names, ""))) {
     x = r_eval_with_x(auto_name_call, r_base_env, x);
   }
 
