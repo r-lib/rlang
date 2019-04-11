@@ -479,12 +479,7 @@ sexp* dots_reshape(sexp* dots, struct dots_capture_info* capture_info, bool spli
           if (out_names == r_null) {
             out_names = KEEP_N(init_names(out), n_protect);
           }
-
-          // Serialised unicode points might arise when unquoting
-          // lists because of the conversion to pairlist
-          name = KEEP(r_str_unserialise_unicode(name));
           r_chr_poke(out_names, count, name);
-          FREE(1);
         }
 
         ++count;
@@ -574,6 +569,8 @@ static sexp* dots_finalise(struct dots_capture_info* capture_info, sexp* dots) {
   sexp* nms = r_vec_names(dots);
 
   if (nms != r_null) {
+    // Serialised unicode points might arise when unquoting lists
+    // because of the conversion to pairlist
     nms = KEEP(rlang_unescape_character(nms));
     r_poke_names(dots, nms);
     FREE(1);
