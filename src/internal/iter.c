@@ -5,8 +5,9 @@
 
 struct iter_data {
   double i;
-  double n;
   sexp* x;
+  sexp** ptr;
+  sexp** end;
   sexp* names;
   sexp** names_ptr;
 };
@@ -20,28 +21,30 @@ sexp* r_new_list_iterator(sexp* x) {
   struct iter_data* data = ITER_DATA(iter);
 
   data->i = 0;
-  data->n = r_length(x);
   data->x = x;
+  data->ptr = DATAPTR(x);
+  data->end = data->ptr + r_length(x);
   data->names = r_vec_names(x);
   data->names_ptr = (data->names == r_null) ? NULL : r_chr_deref(data->names);;
 
   FREE(1);
 
-  if ((data->n) == 0) {
+  if (data->ptr == data->end) {
     return r_null;
   } else {
     return iter;
   }
 }
 
-static bool r_list_iter_advance(sexp* iter) {
+bool r_list_iter_advance(sexp* iter) {
   struct iter_data* data = ITER_DATA(iter);
 
-  if ((data->i + 1) >= (data->n)) {
+  if (data->ptr + 1 == data->end) {
     return false;
   }
 
   ++(data->i);
+  ++(data->ptr);
 
   if (data->names_ptr) {
     ++(data->names_ptr);
@@ -55,7 +58,7 @@ sexp* r_list_iter_value(sexp* iter) {
     return r_null;
   }
   struct iter_data* data = ITER_DATA(iter);
-  return r_list_get(data->x, data->i);
+  return *(data->ptr);
 }
 sexp* r_list_iter_name(sexp* iter) {
   if (iter == r_null) {
@@ -80,7 +83,7 @@ void r_list_iter_poke_name(sexp* iter, sexp* name) {
   struct iter_data* data = ITER_DATA(iter);
 
   if (!(data->names_ptr)) {
-    sexp* names = KEEP(r_new_vector(r_type_character, data->n));
+    sexp* names = KEEP(r_new_vector(r_type_character, r_length(data->x)));
     r_poke_names(data->x, names);
     FREE(1);
     data->names = names;
