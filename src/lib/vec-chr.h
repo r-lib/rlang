@@ -54,13 +54,8 @@ static inline sexp* r_chr(const char* c_string) {
 sexp* chr_prepend(sexp* chr, sexp* r_string);
 sexp* chr_append(sexp* chr, sexp* r_string);
 
-static inline bool r_is_empty_string(sexp* str) {
-  const char* c_str = CHAR(str);
-  return strcmp(c_str, "") == 0;
-}
-
 static inline bool r_chr_has_empty_string_at(sexp* chr, r_ssize i) {
-  return r_is_empty_string(r_chr_get(chr, i));
+  return r_chr_get(chr, i) == r_empty_str;
 }
 
 sexp* r_nms_are_duplicated(sexp* nms, bool from_last);
@@ -88,7 +83,7 @@ static inline bool r_str_is_name(sexp* str) {
   if (str == r_missing_str) {
     return false;
   }
-  if (r_is_empty_string(str)) {
+  if (str == r_empty_str) {
     return false;
   }
   return true;
