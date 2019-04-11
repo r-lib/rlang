@@ -174,13 +174,6 @@ static sexp* dots_big_bang_coerce(sexp* x) {
   }
 }
 
-static sexp* dots_value_big_bang(sexp* x) {
-  x = KEEP(dots_big_bang_coerce(x));
-  x = KEEP(rlang_new_splice_box(x));
-  FREE(2);
-  return x;
-}
-
 static sexp* dots_big_bang(struct dots_capture_info* capture_info,
                            sexp* expr, sexp* env, bool quosured) {
   sexp* value = KEEP(r_eval(expr, env));
@@ -316,8 +309,10 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
       }
       if (is_splice_box(expr)) {
         capture_info->needs_expansion = true;
+        capture_info->count += r_vec_length(rlang_unbox(expr));
+      } else {
+        capture_info->count += 1;
       }
-      capture_info->count += 1;
       break;
     case OP_VALUE_UQ:
       r_abort("Can't use `!!` in a non-quoting function");
@@ -326,12 +321,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
     case OP_VALUE_UQS: {
       expr = KEEP(r_eval(info.operand, env));
       capture_info->needs_expansion = true;
-      if (expr == r_null) {
-        expr = empty_spliced_arg;
-      } else {
-        expr = dots_value_big_bang(expr);
-        capture_info->count += 1;
-      }
+      expr = dots_big_bang(capture_info, info.operand, env, false);
       FREE(1);
       break;
     }
@@ -476,7 +466,8 @@ sexp* dots_as_list(sexp* dots, struct dots_capture_info* capture_info, bool spli
       elt = rlang_unbox(elt);
       sexp* nms = r_vec_names(elt);
 
-      for (r_ssize i = 0; i < r_length(elt); ++i) {
+      r_ssize n = r_length(elt);
+      for (r_ssize i = 0; i < n; ++i) {
         sexp* value = r_list_get(elt, i);
         r_list_poke(out, count, value);
 
@@ -665,7 +656,7 @@ static sexp* dots_values_impl(sexp* frame_env,
                               sexp* unquote_names,
                               sexp* homonyms,
                               sexp* check_assign,
-                              bool (*is_spliced)(sexp*)) {
+                              bool splice) {
   struct dots_capture_info capture_info;
   capture_info = init_capture_info(DOTS_VALUE,
                                    named,
@@ -675,25 +666,18 @@ static sexp* dots_values_impl(sexp* frame_env,
                                    homonyms,
                                    check_assign);
 
-  int n_protect = 0;
   sexp* dots;
-  dots = KEEP_N(dots_init_WIP(&capture_info, frame_env), n_protect);
+  dots = KEEP(dots_init_WIP(&capture_info, frame_env));
 
   if (capture_info.needs_expansion) {
-    if (is_spliced) {
-      dots = KEEP_N(r_vec_coerce(dots, r_type_list), n_protect);
-      dots = KEEP_N(r_squash_if(dots, r_type_list, is_spliced, 1), n_protect);
-    } else {
-      // This processes empty arguments that should be removed
-      dots = KEEP_N(dots_as_list(dots, &capture_info, false), n_protect);
-    }
+    dots = KEEP(dots_as_list(dots, &capture_info, splice));
   } else {
-    dots = KEEP_N(r_vec_coerce(dots, r_type_list), n_protect);
+    dots = KEEP(r_vec_coerce(dots, r_type_list));
   }
 
   dots = dots_finalise(&capture_info, dots);
 
-  FREE(n_protect);
+  FREE(2);
   return dots;
 }
 sexp* rlang_dots_values(sexp* frame_env,
@@ -710,7 +694,7 @@ sexp* rlang_dots_values(sexp* frame_env,
                           unquote_names,
                           homonyms,
                           check_assign,
-                          NULL);
+                          false);
 }
 sexp* rlang_dots_list(sexp* frame_env,
                       sexp* named,
@@ -726,7 +710,7 @@ sexp* rlang_dots_list(sexp* frame_env,
                           unquote_names,
                           homonyms,
                           check_assign,
-                          &is_splice_box);
+                          true);
 }
 sexp* rlang_dots_flat_list(sexp* frame_env,
                            sexp* named,
@@ -776,13 +760,9 @@ void rlang_init_dots() {
 
   {
     sexp* list = KEEP(r_new_vector(r_type_list, 0));
-    sexp* nms = KEEP(r_new_vector(r_type_character, 0));
-    r_poke_names(list, nms);
-
     empty_spliced_arg = rlang_new_splice_box(list);
     r_mark_precious(empty_spliced_arg);
     r_mark_shared(empty_spliced_arg);
-
-    FREE(2);
+    FREE(1);
   }
 }

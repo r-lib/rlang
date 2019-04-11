@@ -255,3 +255,7 @@ test_that("`.homonyms` works with spliced arguments", {
   myquos <- function(...) enquos(..., .homonyms = "first")
   expect_identical(myquos(!!!args), quos_list(a = quo(1), b = quo(2), quo(5), quo(6)))
 })
+
+test_that("can mix `!!!` and splice boxes", {
+  expect_identical(list2(1L, !!!(2:3), splice(list(4L))), as.list(1:4))
+})
