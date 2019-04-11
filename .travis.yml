@@ -23,6 +23,3 @@ matrix:
 env:
   global:
     - MAKEFLAGS="-j 2"
-
-before_install: R -e 'source("https://install-github.me/r-lib/remotes")'
-r_github_packages: r-lib/pkgdown
