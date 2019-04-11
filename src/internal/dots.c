@@ -126,9 +126,9 @@ static sexp* def_unquote_name(sexp* expr, sexp* env) {
   return name;
 }
 
-void signal_retired_splice(sexp* env) {
+void signal_retired_splice() {
   const char* msg =
-    "Unquoting language objects with `!!!` is soft-deprecated as of rlang 0.3.0.\n"
+    "Unquoting language objects with `!!!` is deprecated as of rlang 0.4.0.\n"
     "Please use `!!` instead.\n"
     "\n"
     "  # Bad:\n"
@@ -137,12 +137,11 @@ void signal_retired_splice(sexp* env) {
     "  # Good:\n"
     "  dplyr::select(data, !!enquo(x))    # Unquote single quosure\n"
     "  dplyr::select(data, !!!enquos(x))  # Splice list of quosures\n";
-    r_signal_soft_deprecated(msg, msg, env);
+    r_warn_deprecated(msg, msg);
 }
 
-// Maintain parity with deep_big_bang_coerce() in expr-interp.c.
-// The `env` argument is only needed for the soft-deprecation warning.
-static sexp* dots_big_bang_coerce(sexp* x, sexp* env) {
+// Maintain parity with deep_big_bang_coerce() in expr-interp.c
+static sexp* dots_big_bang_coerce(sexp* x) {
   switch (r_typeof(x)) {
   case r_type_null:
   case r_type_pairlist:
@@ -171,7 +170,7 @@ static sexp* dots_big_bang_coerce(sexp* x, sexp* env) {
     }
     // else fallthrough
   case r_type_symbol:
-    signal_retired_splice(env);
+    signal_retired_splice();
     return r_new_list(x, NULL);
 
   default:
@@ -182,8 +181,8 @@ static sexp* dots_big_bang_coerce(sexp* x, sexp* env) {
   }
 }
 
-static sexp* dots_value_big_bang(sexp* x, sexp* env) {
-  x = KEEP(dots_big_bang_coerce(x, env));
+static sexp* dots_value_big_bang(sexp* x) {
+  x = KEEP(dots_big_bang_coerce(x));
   x = KEEP(rlang_new_splice_box(x));
   FREE(2);
   return x;
@@ -192,7 +191,7 @@ static sexp* dots_value_big_bang(sexp* x, sexp* env) {
 static sexp* dots_big_bang(struct dots_capture_info* capture_info,
                            sexp* expr, sexp* env, bool quosured) {
   sexp* value = KEEP(r_eval(expr, env));
-  value = KEEP(dots_big_bang_coerce(value, env));
+  value = KEEP(dots_big_bang_coerce(value));
 
   r_ssize n = r_length(value);
   capture_info->count += n;
@@ -344,7 +343,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
       if (expr == r_null) {
         expr = empty_spliced_arg;
       } else {
-        expr = dots_value_big_bang(expr, env);
+        expr = dots_value_big_bang(expr);
         capture_info->count += 1;
       }
       FREE(1);
