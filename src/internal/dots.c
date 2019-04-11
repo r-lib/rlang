@@ -496,8 +496,6 @@ sexp* dots_reshape(sexp* dots, struct dots_capture_info* capture_info, bool spli
     }
   }
 
-  out = maybe_auto_name(out, capture_info->named);
-
   FREE(n_protect);
   return out;
 }
@@ -544,11 +542,9 @@ static void dots_check_homonyms(sexp* dots, sexp* nms) {
 sexp* capturedots(sexp* frame);
 
 static sexp* dots_init(struct dots_capture_info* capture_info, sexp* frame_env) {
-  int n_kept = 0;
-
-  sexp* dots = KEEP_N(capturedots(frame_env), n_kept);
+  sexp* dots = KEEP(capturedots(frame_env));
   dots = dots_unquote(dots, capture_info);
-  dots = KEEP_N(r_vec_coerce(dots, r_type_list), n_kept);
+  dots = KEEP(r_vec_coerce(dots, r_type_list));
 
   // Initialise the names only if there is no expansion to avoid
   // unnecessary allocation and auto-labelling
@@ -556,10 +552,9 @@ static sexp* dots_init(struct dots_capture_info* capture_info, sexp* frame_env) 
     if (capture_info->type != DOTS_VALUE && r_vec_names(dots) == r_null) {
       init_names(dots);
     }
-    dots = KEEP_N(maybe_auto_name(dots, capture_info->named), n_kept);
   }
 
-  FREE(n_kept);
+  FREE(2);
   return dots;
 }
 
@@ -575,12 +570,16 @@ static sexp* dots_finalise(struct dots_capture_info* capture_info, sexp* dots) {
     r_poke_names(dots, nms);
     FREE(1);
 
+    dots = KEEP(maybe_auto_name(dots, capture_info->named));
+
     switch (capture_info->homonyms) {
     case DOTS_HOMONYMS_KEEP: break;
     case DOTS_HOMONYMS_FIRST: dots = dots_keep(dots, nms, true); break;
     case DOTS_HOMONYMS_LAST: dots = dots_keep(dots, nms, false); break;
     case DOTS_HOMONYMS_ERROR: dots_check_homonyms(dots, nms); break;
     }
+
+    FREE(1);
   }
 
   return dots;
