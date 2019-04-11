@@ -6,6 +6,5 @@
 #include "internal/expr-interp.c"
 #include "internal/expr-interp-rotate.c"
 #include "internal/internal.c"
-#include "internal/iter.c"
 #include "internal/quo.c"
 #include "internal/utils.c"

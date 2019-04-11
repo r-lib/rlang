@@ -36,7 +36,6 @@ internal-files = \
         internal/expr-interp.c \
         internal/expr-interp-rotate.c \
         internal/internal.c \
-        internal/iter.c \
         internal/quo.c \
         internal/utils.c
 
