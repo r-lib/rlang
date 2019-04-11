@@ -99,16 +99,12 @@ SEXP capturedots(SEXP frame) {
     }
     if (dots == R_MissingArg) {
         UNPROTECT(1);
-        return allocVector(VECSXP, 0);
+        return R_NilValue;
     }
 
-    int n_dots = length(dots);
-    SEXP captured = PROTECT(allocVector(VECSXP, n_dots));
+    SEXP out = PROTECT(cons(R_NilValue, R_NilValue));
+    SEXP node = out;
 
-    SEXP names = PROTECT(allocVector(STRSXP, n_dots));
-    Rboolean named = FALSE;
-
-    int i = 0;
     while (dots != R_NilValue) {
         SEXP head = CAR(dots);
 
@@ -118,22 +114,15 @@ SEXP capturedots(SEXP frame) {
         else
             dot = new_captured_literal(head);
 
-        SET_VECTOR_ELT(captured, i, dot);
+        SETCDR(node, cons(dot, R_NilValue));
+        SET_TAG(CDR(node), TAG(dots));
 
-        if (TAG(dots) != R_NilValue) {
-            named = TRUE;
-            SET_STRING_ELT(names, i, PRINTNAME(TAG(dots)));
-        }
-
-        ++i;
+        node = CDR(node);
         dots = CDR(dots);
     }
 
-    if (named)
-        setAttrib(captured, R_NamesSymbol, names);
-
-    UNPROTECT(3);
-    return captured;
+    UNPROTECT(2);
+    return CDR(out);
 }
 
 SEXP attribute_hidden rlang_capturedots(SEXP call, SEXP op, SEXP args, SEXP rho)

@@ -41,7 +41,7 @@ test_that("can take forced dots with `allowForced = FALSE`", {
     force(..1)
     captureDots()
   }
-  expect_identical(fn(letters), list(list(expr = letters, env = empty_env())))
+  expect_identical(fn(a = letters), pairlist(a = list(expr = letters, env = empty_env())))
 })
 
 test_that("captured dots are only named if names were supplied", {

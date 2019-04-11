@@ -2,7 +2,6 @@
 #include "dots.h"
 #include "expr-interp.h"
 #include "internal.h"
-#include "iter.h"
 #include "utils.h"
 
 sexp* rlang_ns_get(const char* name);
@@ -116,15 +115,8 @@ static sexp* def_unquote_name(sexp* expr, sexp* env) {
     r_abort("The LHS of `:=` must be a string or a symbol");
   }
 
-  sexp* name = r_sym_get_string(lhs);
-
-  // Unserialise unicode points such as <U+xxx> that arise when
-  // UTF-8 names are converted to symbols and the native encoding
-  // does not support the characters (i.e. all the time on Windows)
-  name = r_str_unserialise_unicode(name);
-
   FREE(n_kept);
-  return name;
+  return lhs;
 }
 
 void signal_retired_splice() {
@@ -226,10 +218,9 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
   r_ssize n = r_length(dots);
   bool unquote_names = capture_info->unquote_names;
 
-  sexp* iter = KEEP(r_new_list_iterator(dots));
-
-  for (r_ssize i = 0; iter != r_null; ++i, iter = r_list_iter_rest(iter)) {
-    sexp* elt = r_list_iter_value(iter);
+  sexp* node = dots;
+  for (r_ssize i = 0; node != r_null; ++i, node = r_node_cdr(node)) {
+    sexp* elt = r_node_car(node);
     sexp* expr = dot_get_expr(elt);
     sexp* env = dot_get_env(elt);
 
@@ -237,17 +228,13 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
     expr = KEEP(r_duplicate(expr, false));
 
     if (unquote_names && r_is_call(expr, ":=")) {
-      sexp* name = KEEP(def_unquote_name(expr, env));
-
-      sexp* current = r_list_iter_name(iter);
-      if (current != r_null && current != r_empty_str) {
+      if (r_node_tag(node) != r_null) {
         r_abort("Can't supply both `=` and `:=`");
       }
 
-      r_list_iter_poke_name(iter, name);
+      sexp* nm = def_unquote_name(expr, env);
+      r_node_poke_tag(node, nm);
       expr = r_node_cadr(r_node_cdr(expr));
-
-      FREE(1);
     }
 
     if (capture_info->check_assign
@@ -271,14 +258,14 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
     struct expansion_info info = which_expansion_op(expr, unquote_names);
     enum dots_expansion_op dots_op = info.op + (EXPANSION_OP_MAX * capture_info->type);
 
-    sexp* name = r_list_iter_name(iter);
+    sexp* name = r_node_tag(node);
 
     // Ignore empty arguments
     if (expr == r_missing_sym
         && (name == r_null || name == r_empty_str)
         && should_ignore(capture_info->ignore_empty, i, n)) {
       capture_info->needs_expansion = true;
-      r_list_iter_poke_value(iter, empty_spliced_arg);
+      r_node_poke_car(node, empty_spliced_arg);
       FREE(1);
       continue;
     }
@@ -358,11 +345,10 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
       r_abort("Internal error: `OP_DOTS_MAX`");
     }
 
-    r_list_iter_poke_value(iter, expr);
+    r_node_poke_car(node, expr);
     FREE(1);
   }
 
-  FREE(1);
   return dots;
 }
 
@@ -567,6 +553,7 @@ static sexp* dots_init(struct dots_capture_info* capture_info, sexp* frame_env) 
 
   sexp* dots = KEEP_N(capturedots(frame_env), n_kept);
   dots = dots_unquote(dots, capture_info);
+  dots = KEEP_N(r_vec_coerce(dots, r_type_list), n_kept);
 
   // Initialise the names only if there is no expansion to avoid
   // unnecessary allocation and auto-labelling
@@ -580,10 +567,17 @@ static sexp* dots_init(struct dots_capture_info* capture_info, sexp* frame_env) 
   FREE(n_kept);
   return dots;
 }
+
+sexp* rlang_unescape_character(sexp*);
+
 static sexp* dots_finalise(struct dots_capture_info* capture_info, sexp* dots) {
   sexp* nms = r_vec_names(dots);
 
   if (nms != r_null) {
+    nms = KEEP(rlang_unescape_character(nms));
+    r_poke_names(dots, nms);
+    FREE(1);
+
     switch (capture_info->homonyms) {
     case DOTS_HOMONYMS_KEEP: break;
     case DOTS_HOMONYMS_FIRST: dots = dots_keep(dots, nms, true); break;
