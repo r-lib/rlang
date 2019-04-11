@@ -49,6 +49,7 @@ struct dots_capture_info {
   bool unquote_names;
   enum dots_homonyms homonyms;
   bool check_assign;
+  sexp* (*big_bang_coerce)(sexp*);
 };
 
 static int arg_match_ignore_empty(sexp* ignore_empty);
@@ -60,7 +61,8 @@ struct dots_capture_info init_capture_info(enum dots_capture_type type,
                                            sexp* preserve_empty,
                                            sexp* unquote_names,
                                            sexp* homonyms,
-                                           sexp* check_assign) {
+                                           sexp* check_assign,
+                                           sexp* (*coercer)(sexp*)) {
   struct dots_capture_info info;
 
   info.type = type;
@@ -72,6 +74,7 @@ struct dots_capture_info init_capture_info(enum dots_capture_type type,
   info.unquote_names = r_lgl_get(unquote_names, 0);
   info.homonyms = arg_match_homonyms(homonyms);
   info.check_assign = r_lgl_get(check_assign, 0);
+  info.big_bang_coerce = coercer;
 
   return info;
 }
@@ -177,7 +180,7 @@ static sexp* dots_big_bang_coerce(sexp* x) {
 static sexp* dots_big_bang(struct dots_capture_info* capture_info,
                            sexp* expr, sexp* env, bool quosured) {
   sexp* value = KEEP(r_eval(expr, env));
-  value = KEEP(dots_big_bang_coerce(value));
+  value = KEEP(capture_info->big_bang_coerce(value));
 
   r_ssize n = r_length(value);
   capture_info->count += n;
@@ -576,7 +579,8 @@ sexp* rlang_exprs_interp(sexp* frame_env,
                                    r_shared_true,
                                    unquote_names,
                                    homonyms,
-                                   check_assign);
+                                   check_assign,
+                                   &dots_big_bang_coerce);
 
   sexp* dots;
   dots = KEEP(dots_capture(&capture_info, frame_env));
@@ -599,7 +603,8 @@ sexp* rlang_quos_interp(sexp* frame_env,
                                    r_shared_true,
                                    unquote_names,
                                    homonyms,
-                                   check_assign);
+                                   check_assign,
+                                   &dots_big_bang_coerce);
 
   sexp* dots;
   dots = KEEP(dots_capture(&capture_info, frame_env));
@@ -640,7 +645,8 @@ static sexp* dots_values_impl(sexp* frame_env,
                                    preserve_empty,
                                    unquote_names,
                                    homonyms,
-                                   check_assign);
+                                   check_assign,
+                                   &dots_big_bang_coerce);
 
   sexp* dots;
   dots = KEEP(dots_capture(&capture_info, frame_env));
@@ -703,7 +709,8 @@ sexp* rlang_dots_flat_list(sexp* frame_env,
                                    preserve_empty,
                                    unquote_names,
                                    homonyms,
-                                   check_assign);
+                                   check_assign,
+                                   &dots_big_bang_coerce);
 
   sexp* dots;
   dots = KEEP(dots_capture(&capture_info, frame_env));
