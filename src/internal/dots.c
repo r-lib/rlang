@@ -227,9 +227,6 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
   r_ssize n = r_length(dots);
   bool unquote_names = capture_info->unquote_names;
 
-  int i_protect;
-  KEEP_WITH_INDEX(dots_names, i_protect);
-
   for (r_ssize i = 0; i < n; ++i) {
     sexp* elt = r_list_get(dots, i);
     sexp* expr = dot_get_expr(elt);
@@ -242,9 +239,9 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
       sexp* name = KEEP(def_unquote_name(expr, env));
 
       if (dots_names == r_null) {
-        dots_names = r_new_vector(r_type_character, n);
-        KEEP_I(dots_names, i_protect);
+        dots_names = KEEP(r_new_vector(r_type_character, n));
         r_push_names(dots, dots_names);
+        FREE(1);
       }
 
       if (r_chr_get(dots_names, i) == r_empty_str) {
@@ -367,7 +364,6 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
     FREE(1);
   }
 
-  FREE(1);
   return dots;
 }
 
