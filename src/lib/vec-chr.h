@@ -54,10 +54,6 @@ static inline sexp* r_chr(const char* c_string) {
 sexp* chr_prepend(sexp* chr, sexp* r_string);
 sexp* chr_append(sexp* chr, sexp* r_string);
 
-static inline bool r_chr_has_empty_string_at(sexp* chr, r_ssize i) {
-  return r_chr_get(chr, i) == r_empty_str;
-}
-
 sexp* r_nms_are_duplicated(sexp* nms, bool from_last);
 
 sexp* r_str_unserialise_unicode(sexp* r_string);

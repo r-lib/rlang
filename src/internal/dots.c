@@ -247,7 +247,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
         r_push_names(dots, dots_names);
       }
 
-      if (r_chr_has_empty_string_at(dots_names, i)) {
+      if (r_chr_get(dots_names, i) == r_empty_str) {
         r_chr_poke(dots_names, i, name);
       } else {
         r_abort("Can't supply both `=` and `:=`");
@@ -280,7 +280,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
 
     // Ignore empty arguments
     if (expr == r_missing_sym
-        && (dots_names == r_null || r_chr_has_empty_string_at(dots_names, i))
+        && (dots_names == r_null || r_chr_get(dots_names, i) == r_empty_str)
         && should_ignore(capture_info->ignore_empty, i, n)) {
       capture_info->needs_expansion = true;
       r_list_poke(dots, i, empty_spliced_arg);

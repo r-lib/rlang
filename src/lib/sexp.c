@@ -18,5 +18,5 @@ bool r_has_name_at(sexp* x, r_ssize i) {
   sexp* nms = r_vec_names(x);
   return
     r_typeof(nms) == r_type_character &&
-    !r_chr_has_empty_string_at(nms, i);
+    r_chr_get(nms, i) != r_empty_str;
 }
