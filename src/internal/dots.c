@@ -179,7 +179,9 @@ static sexp* dots_big_bang_coerce(sexp* x) {
     );
   }
 }
-static sexp* dots_big_bang_coerce_pairlist(sexp* x) {
+
+// Also used in expr-interp.c
+sexp* big_bang_coerce_pairlist(sexp* x, bool deep) {
   int n_protect = 0;
 
   if (r_is_object(x)) {
@@ -200,6 +202,20 @@ static sexp* dots_big_bang_coerce_pairlist(sexp* x) {
   case r_type_list:
     x = r_vec_coerce(x, r_type_pairlist);
     break;
+  case r_type_call:
+    if (deep && r_is_symbol(r_node_car(x), "{")) {
+      x = r_node_cdr(x);
+      break;
+    }
+    // fallthrough
+  case r_type_symbol: {
+    if (deep) {
+      signal_retired_splice();
+      x = r_new_node(x, r_null);
+      break;
+    }
+    // fallthrough
+  }
   default:
     r_abort(
       "Can't splice an object of type `%s` because it is not a vector",
@@ -209,6 +225,9 @@ static sexp* dots_big_bang_coerce_pairlist(sexp* x) {
 
   FREE(n_protect);
   return x;
+}
+static sexp* dots_big_bang_coerce_pairlist(sexp* x) {
+  return big_bang_coerce_pairlist(x, false);
 }
 
 static sexp* dots_big_bang_value(struct dots_capture_info* capture_info,
