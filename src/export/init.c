@@ -276,6 +276,7 @@ static const r_callable r_callables[] = {
   {NULL, NULL, 0}
 };
 
+
 extern sexp* rlang_is_missing(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_call2_external(sexp*, sexp*, sexp*, sexp*);
 
@@ -284,6 +285,9 @@ static const r_external externals[] = {
   {"rlang_call2_external",              (r_fn_ptr) &rlang_call2_external, 2},
   {NULL, NULL, 0}
 };
+
+
+extern bool is_splice_box(sexp*);
 
 void R_init_rlang(r_dll_info* dll) {
   r_register_c_callable("rlang", "rlang_squash_if", (r_fn_ptr) &r_squash_if);
@@ -305,7 +309,7 @@ void R_init_rlang(r_dll_info* dll) {
   r_register_c_callable("rlang", "rlang_eval_tidy", (r_fn_ptr) &rlang_eval_tidy);
 
   // Maturing
-  r_register_c_callable("rlang", "rlang_is_splice_box", (r_fn_ptr) &rlang_is_splice_box);
+  r_register_c_callable("rlang", "rlang_is_splice_box", (r_fn_ptr) &is_splice_box);
   r_register_c_callable("rlang", "rlang_unbox", (r_fn_ptr) &rlang_unbox);
 
   // Experimental method for exporting C function pointers as actual R objects

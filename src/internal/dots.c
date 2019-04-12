@@ -18,7 +18,7 @@ sexp* rlang_new_splice_box(sexp* x) {
   FREE(1);
   return out;
 }
-static bool is_splice_box(sexp* x) {
+bool is_splice_box(sexp* x) {
   return r_get_attributes(x) == splice_box_attrib;
 }
 sexp* rlang_is_splice_box(sexp* x) {

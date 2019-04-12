@@ -2,16 +2,12 @@
 #include "export.h"
 
 // Initialised at load time
-static sexp* (*rlang_is_splice_box)(sexp*) = NULL;
+static bool (*rlang_is_splice_box)(sexp*) = NULL;
 static sexp* (*rlang_unbox)(sexp*) = NULL;
-
-static bool is_splice_box(sexp* x) {
-  return r_lgl_get(rlang_is_splice_box(x), 0);
-}
 
 // The vector to splice might be boxed in a sentinel wrapper
 static sexp* maybe_unbox(sexp* x, bool (*is_spliceable)(sexp*)) {
-  if (is_spliceable(x) && is_splice_box(x)) {
+  if (is_spliceable(x) && rlang_is_splice_box(x)) {
     return r_vec_coerce(rlang_unbox(x), r_type_list);
   } else {
     return x;
@@ -206,7 +202,7 @@ static bool is_spliced_bare(sexp* x) {
   if (!r_is_object(x)) {
     return r_typeof(x) == r_type_list;
   } else {
-    return is_splice_box(x);
+    return rlang_is_splice_box(x);
   }
 }
 
@@ -244,7 +240,7 @@ static is_spliceable_t predicate_internal(sexp* x) {
   }
 
   if (x == is_spliced_clo) {
-    return &is_splice_box;
+    return rlang_is_splice_box;
   }
   if (x == is_spliceable_clo) {
     return &is_spliced_bare;
@@ -317,6 +313,6 @@ sexp* rlang_squash(sexp* dots, sexp* type, sexp* pred, sexp* depth_) {
 
 
 void r_init_library_squash() {
-  rlang_is_splice_box = (sexp* (*)(sexp*)) r_peek_c_callable("rlang", "rlang_is_splice_box");
+  rlang_is_splice_box = (bool (*)(sexp*)) r_peek_c_callable("rlang", "rlang_is_splice_box");
   rlang_unbox = (sexp* (*)(sexp*)) r_peek_c_callable("rlang", "rlang_unbox");
 }
