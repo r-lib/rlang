@@ -259,3 +259,8 @@ test_that("`.homonyms` works with spliced arguments", {
 test_that("can mix `!!!` and splice boxes", {
   expect_identical(list2(1L, !!!(2:3), splice(list(4L))), as.list(1:4))
 })
+
+test_that("dots_values() doesn't splice", {
+  expect_identical_(dots_values(!!!c(1:3)), list(splice(as.list(1:3))))
+  expect_identical_(dots_values(!!!list("foo", "bar")), list(splice(list("foo", "bar"))))
+})
