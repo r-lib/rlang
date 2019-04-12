@@ -180,18 +180,17 @@ static sexp* dots_big_bang_coerce(sexp* x) {
   }
 }
 
-static sexp* dots_big_bang(struct dots_capture_info* capture_info,
-                           sexp* expr, sexp* env, bool quosured) {
-  sexp* value = KEEP(r_eval(expr, env));
+static sexp* dots_big_bang_value(struct dots_capture_info* capture_info,
+                                 sexp* value, sexp* env, bool quosured) {
   value = KEEP(capture_info->big_bang_coerce(value));
 
   r_ssize n = r_length(value);
 
   if (quosured) {
     for (r_ssize i = 0; i < n; ++i) {
-      expr = r_list_get(value, i);
-      expr = forward_quosure(expr, env);
-      r_list_poke(value, i, expr);
+      sexp* elt = r_list_get(value, i);
+      elt = forward_quosure(elt, env);
+      r_list_poke(value, i, elt);
     }
   }
 
@@ -201,10 +200,17 @@ static sexp* dots_big_bang(struct dots_capture_info* capture_info,
     capture_info->count += n;
   }
 
-  value = KEEP(rlang_new_splice_box(value));
+  value = rlang_new_splice_box(value);
 
-  FREE(3);
+  FREE(1);
   return value;
+}
+static sexp* dots_big_bang(struct dots_capture_info* capture_info,
+                           sexp* expr, sexp* env, bool quosured) {
+  sexp* value = KEEP(r_eval(expr, env));
+  sexp* out = dots_big_bang_value(capture_info, value, env, quosured);
+  FREE(1);
+  return out;
 }
 
 static inline bool should_ignore(int ignore_empty, r_ssize i, r_ssize n) {
@@ -316,9 +322,12 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
         // evaluated), for instance by lapply() or map().
         expr = r_eval(expr, env);
       }
-      if (capture_info->splice && is_splice_box(expr)) {
-        capture_info->needs_expansion = true;
-        capture_info->count += r_vec_length(rlang_unbox(expr));
+      if (is_splice_box(expr)) {
+        // Coerce contents of splice boxes to ensure uniform type
+        KEEP(expr);
+        expr = rlang_unbox(expr);
+        expr = dots_big_bang_value(capture_info, expr, env, false);
+        FREE(1);
       } else {
         capture_info->count += 1;
       }

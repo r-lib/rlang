@@ -12,7 +12,7 @@ static bool is_splice_box(sexp* x) {
 // The vector to splice might be boxed in a sentinel wrapper
 static sexp* maybe_unbox(sexp* x, bool (*is_spliceable)(sexp*)) {
   if (is_spliceable(x) && is_splice_box(x)) {
-    return rlang_unbox(x);
+    return r_vec_coerce(rlang_unbox(x), r_type_list);
   } else {
     return x;
   }

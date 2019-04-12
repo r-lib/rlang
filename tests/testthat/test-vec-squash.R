@@ -48,8 +48,8 @@ test_that("lists are flattened", {
   expect_identical(flatten(flatten(flatten(flatten(x)))), list(1, 2, 3, 4))
 })
 
-test_that("splice() requires lists", {
-  expect_error(splice(quote(sym)), "Only lists can be spliced")
+test_that("flatten() checks type of splice box contents and coerces to list", {
+  expect_identical(flatten(list(1L, splice(2:3))), list(1L, 2L, 3L))
 })
 
 test_that("is_spliced_bare() is TRUE for bare lists", {
