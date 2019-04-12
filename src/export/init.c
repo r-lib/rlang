@@ -59,6 +59,7 @@ extern sexp* rlang_quos_interp(sexp*, sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_dots_values(sexp*, sexp*, sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_dots_list(sexp*, sexp*, sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_dots_flat_list(sexp*, sexp*, sexp*, sexp*, sexp*, sexp*);
+extern sexp* rlang_dots_pairlist(sexp*, sexp*, sexp*, sexp*, sexp*, sexp*);
 extern sexp* r_new_formula(sexp*, sexp*, sexp*);
 extern sexp* rlang_new_quosure(sexp*, sexp*);
 extern sexp* rlang_enexpr(sexp*, sexp*);
@@ -219,6 +220,7 @@ static const r_callable r_callables[] = {
   {"rlang_dots_values",                 (r_fn_ptr) &rlang_dots_values, 7},
   {"rlang_dots_list",                   (r_fn_ptr) &rlang_dots_list, 7},
   {"rlang_dots_flat_list",              (r_fn_ptr) &rlang_dots_flat_list, 7},
+  {"rlang_dots_pairlist",               (r_fn_ptr) &rlang_dots_pairlist, 7},
   {"rlang_new_formula",                 (r_fn_ptr) &r_new_formula, 3},
   {"rlang_new_quosure",                 (r_fn_ptr) &rlang_new_quosure, 2},
   {"rlang_enexpr",                      (r_fn_ptr) &rlang_enexpr, 2},

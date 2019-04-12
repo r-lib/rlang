@@ -1,6 +1,10 @@
 
 # rlang 0.3.4.9000
 
+* New `pairlist2()` function with splicing support. It preserves
+  missing arguments, which makes it useful for lists of formal
+  parameters for functions.
+
 * We commit to support 5 versions of R. As R 3.6 is about to be
   released, rlang now requires R 3.2 or greater.
 

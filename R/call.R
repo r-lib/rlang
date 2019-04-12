@@ -107,6 +107,36 @@ call2 <- function(.fn, ..., .ns = NULL) {
 
   new_call(.fn, as.pairlist(list2(...)))
 }
+#' Create pairlists with splicing support
+#'
+#' This pairlist constructor supports [tidy dots][tidy-dots] features
+#' like `!!!`. Use it to manually create argument lists for calls or
+#' parameter lists for functions.
+#'
+#' @param ... Arguments stored in the pairlist. Empty arguments are
+#'   preserved.
+#'
+#' @export
+#' @examples
+#' # Unlike `exprs()`, `pairlist2()` evaluates its arguments.
+#' new_function(pairlist2(x = 1, y = 3 * 6), quote(x * y))
+#' new_function(exprs(x = 1, y = 3 * 6), quote(x * y))
+#'
+#' # It preserves missing arguments, which is useful for creating
+#' # parameters without defaults:
+#' new_function(pairlist2(x = , y = 3 * 6), quote(x * y))
+pairlist2 <- function(...) {
+  .Call(rlang_dots_pairlist,
+    frame_env = environment(),
+    named = FALSE,
+    ignore_empty = "trailing",
+    preserve_empty = TRUE,
+    unquote_names = TRUE,
+    homonyms = "keep",
+    check_assign = FALSE
+  )
+}
+
 
 #' Is an object callable?
 #'
