@@ -29,6 +29,12 @@ test_that("call2() preserves empty arguments", {
   expect_identical(call2("[", quote(x), , drop = ), quote(x[, drop = ]))
 })
 
+test_that("call2() requires a symbol when namespace is supplied", {
+  expect_identical(call2("foo", .ns = "bar"), quote(bar::foo()))
+  expect_error(call2(function() NULL, .ns = "bar"), "must be a string or symbol")
+  expect_error(call2(quote(foo()), .ns = "bar"), "must be a string or symbol")
+})
+
 
 # Standardisation ---------------------------------------------------------
 
