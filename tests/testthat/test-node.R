@@ -116,7 +116,7 @@ test_that("pairlist2() supports splice boxes", {
 })
 
 test_that("pairlist2() supports empty spliced vectors", {
-  expect_null(pairlist2(!!!NULL))
-  expect_null(pairlist2(!!!lgl()))
-  expect_null(pairlist2(!!!list()))
+  expect_null_(pairlist2(!!!NULL))
+  expect_null_(pairlist2(!!!lgl()))
+  expect_null_(pairlist2(!!!list()))
 })
