@@ -22,7 +22,7 @@
 #' @param .fn Function to call. Must be a callable object: a string,
 #'   symbol, call, or a function.
 #' @param ... Arguments to the call either in or out of a list. These dots
-#'   support [tidy dots][tidy-dots] features.
+#'   support [tidy dots][tidy-dots] features. Empty arguments are preserved.
 #' @param .ns Namespace with which to prefix `.fn`. Must be a string
 #'   or symbol.
 #'
@@ -90,22 +90,12 @@
 #'
 #' # Creating namespaced calls is easy:
 #' call2("fun", arg = quote(baz), .ns = "mypkg")
+#'
+#' # Empty arguments are preserved:
+#' call2("[", quote(x), , drop = )
 #' @export
 call2 <- function(.fn, ..., .ns = NULL) {
-  if (is_character(.fn)) {
-    if (length(.fn) != 1) {
-      abort("`.fn` must be a length 1 string")
-    }
-    .fn <- sym(.fn)
-  } else if (!is_callable(.fn)) {
-    abort("Can't create call to non-callable object")
-  }
-
-  if (!is_null(.ns)) {
-    .fn <- new_call(namespace_sym, pairlist(sym(.ns), .fn))
-  }
-
-  new_call(.fn, as.pairlist(list2(...)))
+  .Call(rlang_call2, .fn, pairlist2(...), .ns)
 }
 #' Create pairlists with splicing support
 #'

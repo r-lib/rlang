@@ -30,6 +30,7 @@ lib-files = \
 internal-files = \
         internal/arg.c \
         internal/dots.c \
+        internal/call.c \
         internal/env.c \
         internal/env-binding.c \
         internal/eval-tidy.c \
