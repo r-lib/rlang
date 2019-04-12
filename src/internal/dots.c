@@ -837,14 +837,14 @@ sexp* rlang_dots_flat_list(sexp* frame_env,
   return dots;
 }
 
-static sexp* dots_values_node_impl(sexp* frame_env,
-                                   sexp* named,
-                                   sexp* ignore_empty,
-                                   sexp* preserve_empty,
-                                   sexp* unquote_names,
-                                   sexp* homonyms,
-                                   sexp* check_assign,
-                                   bool splice) {
+sexp* dots_values_node_impl(sexp* frame_env,
+                            sexp* named,
+                            sexp* ignore_empty,
+                            sexp* preserve_empty,
+                            sexp* unquote_names,
+                            sexp* homonyms,
+                            sexp* check_assign,
+                            bool splice) {
   struct dots_capture_info capture_info;
   capture_info = init_capture_info(DOTS_VALUE,
                                    named,

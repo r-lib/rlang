@@ -116,7 +116,6 @@ extern sexp* r_node_list_reverse(sexp*);
 extern sexp* rlang_new_splice_box(sexp*);
 extern sexp* rlang_is_splice_box(sexp*);
 extern sexp* rlang_unbox(sexp*);
-extern sexp* rlang_call2(sexp*, sexp*, sexp*);
 
 // Library initialisation defined below
 sexp* rlang_library_load();
@@ -272,14 +271,15 @@ static const r_callable r_callables[] = {
   {"rlang_node_list_reverse",           (r_fn_ptr) &r_node_list_reverse, 1},
   {"rlang_new_splice_box",              (r_fn_ptr) &rlang_new_splice_box, 1},
   {"rlang_is_splice_box",               (r_fn_ptr) &rlang_is_splice_box, 1},
-  {"rlang_call2",                       (r_fn_ptr) &rlang_call2, 3},
   {NULL, NULL, 0}
 };
 
 extern sexp* rlang_is_missing(sexp*, sexp*, sexp*, sexp*);
+extern sexp* rlang_call2_external(sexp*, sexp*, sexp*, sexp*);
 
 static const r_external externals[] = {
   {"rlang_is_missing",                  (r_fn_ptr) &rlang_is_missing, 1},
+  {"rlang_call2_external",              (r_fn_ptr) &rlang_call2_external, 2},
   {NULL, NULL, 0}
 };
 
