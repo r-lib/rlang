@@ -114,3 +114,9 @@ test_that("pairlist2() preserves empty arguments", {
 test_that("pairlist2() supports splice boxes", {
   expect_identical(pairlist2(1, splice(list("foo", "bar")), 4), pairlist(1, "foo", "bar", 4))
 })
+
+test_that("pairlist2() supports empty spliced vectors", {
+  expect_null(pairlist2(!!!NULL))
+  expect_null(pairlist2(!!!lgl()))
+  expect_null(pairlist2(!!!list()))
+})

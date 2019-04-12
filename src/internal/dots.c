@@ -575,6 +575,12 @@ sexp* dots_as_pairlist(sexp* dots, struct dots_capture_info* capture_info) {
       check_named_splice(dots);
 
       elt = rlang_unbox(elt);
+      if (elt == r_null) {
+        dots = r_node_cdr(dots);
+        r_node_poke_cdr(prev, dots);
+        continue;
+      }
+
       r_node_poke_cdr(prev, elt);
 
       sexp* next = r_node_cdr(dots);
