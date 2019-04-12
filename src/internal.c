@@ -6,6 +6,7 @@
 #include "internal/eval-tidy.c"
 #include "internal/expr-interp.c"
 #include "internal/expr-interp-rotate.c"
+#include "internal/fn.c"
 #include "internal/internal.c"
 #include "internal/quo.c"
 #include "internal/utils.c"

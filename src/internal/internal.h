@@ -12,6 +12,8 @@ extern sexp* as_list_s4_call;
 extern sexp* rlang_objs_keep;
 extern sexp* rlang_objs_trailing;
 
+extern sexp* fns_function;
+
 void rlang_init_internal();
 sexp* rlang_ns_get(const char* name);
 

@@ -10,6 +10,8 @@ sexp* as_list_s4_call = NULL;
 sexp* rlang_objs_keep = NULL;
 sexp* rlang_objs_trailing = NULL;
 
+sexp* fns_function = NULL;
+
 void rlang_init_dots();
 void rlang_init_expr_interp();
 void rlang_init_eval_tidy();
@@ -33,6 +35,9 @@ void rlang_init_internal() {
 
   rlang_objs_trailing = r_chr("trailing");
   r_mark_precious(rlang_objs_trailing);
+
+
+  fns_function = r_env_find(r_base_env, r_sym("function"));
 
   /* dots.c - enum dots_expansion_op */
   RLANG_ASSERT(OP_DOTS_MAX == DOTS_CAPTURE_TYPE_MAX * EXPANSION_OP_MAX);

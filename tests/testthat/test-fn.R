@@ -9,6 +9,9 @@ test_that("new_function equivalent to regular function", {
   f2 <- new_function(alist(x = a + b, y =), quote({x + y}))
 
   expect_equal(f1, f2)
+
+  env <- current_env()
+  expect_true(is_reference(fn_env(f2), env))
 })
 
 test_that("prim_name() extracts names", {

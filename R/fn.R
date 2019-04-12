@@ -32,10 +32,7 @@
 #' # Now they are:
 #' stopifnot(identical(f, g))
 new_function <- function(args, body, env = caller_env()) {
-  stopifnot(all(have_name(args)), is_environment(env))
-
-  args <- as.pairlist(args)
-  eval_bare(call("function", args, body), env)
+  .Call(rlang_new_function, args, body, env)
 }
 
 prim_eval <- eval(quote(sys.function(0)))
