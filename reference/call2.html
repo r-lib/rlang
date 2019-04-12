@@ -176,7 +176,7 @@ symbol, call, or a function.</p></td>
     <tr>
       <th>...</th>
       <td><p>Arguments to the call either in or out of a list. These dots
-support <a href='tidy-dots.html'>tidy dots</a> features.</p></td>
+support <a href='tidy-dots.html'>tidy dots</a> features. Empty arguments are preserved.</p></td>
     </tr>
     <tr>
       <th>.ns</th>
@@ -230,7 +230,9 @@ use more meaningful type names.</p>
 <span class='co'>#' Can supply arguments individually or in a list</span>
 <span class='fu'>call2</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>f</span>), <span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; f(a = 1, b = 2)</div><div class='input'><span class='fu'>call2</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>f</span>), !!!<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>2</span>))</div><div class='output co'>#&gt; f(a = 1, b = 2)</div><div class='input'>
 <span class='co'># Creating namespaced calls is easy:</span>
-<span class='fu'>call2</span>(<span class='st'>"fun"</span>, <span class='kw'>arg</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>baz</span>), <span class='kw'>.ns</span> <span class='kw'>=</span> <span class='st'>"mypkg"</span>)</div><div class='output co'>#&gt; mypkg::fun(arg = baz)</div></pre>
+<span class='fu'>call2</span>(<span class='st'>"fun"</span>, <span class='kw'>arg</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>baz</span>), <span class='kw'>.ns</span> <span class='kw'>=</span> <span class='st'>"mypkg"</span>)</div><div class='output co'>#&gt; mypkg::fun(arg = baz)</div><div class='input'>
+<span class='co'># Empty arguments are preserved:</span>
+<span class='fu'>call2</span>(<span class='st'>"["</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>x</span>), , <span class='kw'>drop</span> <span class='kw'>=</span> )</div><div class='output co'>#&gt; x[, drop = ]</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

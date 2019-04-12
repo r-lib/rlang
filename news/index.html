@@ -132,6 +132,12 @@
 <a href="#rlang-0-3-4-9000" class="anchor"></a>rlang 0.3.4.9000<small> Unreleased </small>
 </h1>
 <ul>
+<li>
+<p><code><a href="../reference/call2.html">call2()</a></code> now uses <code><a href="../reference/pairlist2.html">pairlist2()</a></code> internally. This considerably improves its performance. This also means it now preserves empty arguments:</p>
+<pre><code><a href="../reference/call2.html">call2("fn", 1, , foo = )
+#&gt; fn(1, , foo = )</a></code></pre>
+</li>
+<li><p>New <code><a href="../reference/pairlist2.html">pairlist2()</a></code> function with splicing support. It preserves missing arguments, which makes it useful for lists of formal parameters for functions.</p></li>
 <li><p>We commit to support 5 versions of R. As R 3.6 is about to be released, rlang now requires R 3.2 or greater.</p></li>
 <li><p><code><a href="../reference/is_integerish.html">is_integerish(NA)</a></code> is now <code>TRUE</code> (<a href='https://github.com/r-lib/rlang/issues/751'>#751</a>). In general, we now treat <code>NA</code> as having unspecified type.</p></li>
 <li><p>Fixed an issue in knitr that caused backtraces to print even when <code>error = TRUE</code>.</p></li>
@@ -167,16 +173,16 @@
 <ul>
 <li>
 <p>New <code><a href="../reference/entrace.html">entrace()</a></code> condition handler. Add this to your RProfile to enable rlang backtraces for all errors, including warnings promoted to errors:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="cf">if</span> (<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ns-load">requireNamespace</a></span>(<span class="st">"rlang"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)) {</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/options">options</a></span>(<span class="dt">error =</span> rlang<span class="op">::</span>entrace)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">}</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="cf">if</span> (<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ns-load">requireNamespace</a></span>(<span class="st">"rlang"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)) {</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/options">options</a></span>(<span class="dt">error =</span> rlang<span class="op">::</span>entrace)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">}</a></code></pre></div>
 <p>This handler also works as a calling handler:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="../reference/with_handlers.html">with_handlers</a></span>(</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">  <span class="dt">error =</span> <span class="kw"><a href="../reference/exiting.html">calling</a></span>(entrace),</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">  <span class="kw">foo</span>(bar)</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/with_handlers.html">with_handlers</a></span>(</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">  <span class="dt">error =</span> <span class="kw"><a href="../reference/exiting.html">calling</a></span>(entrace),</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">  <span class="kw">foo</span>(bar)</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">)</a></code></pre></div>
 <p>However it’s often more practical to use <code><a href="../reference/with_abort.html">with_abort()</a></code> in that case:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/with_abort.html">with_abort</a></span>(<span class="kw">foo</span>(bar))</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../reference/with_abort.html">with_abort</a></span>(<span class="kw">foo</span>(bar))</a></code></pre></div>
 </li>
 <li><p><code><a href="../reference/with_abort.html">with_abort()</a></code> gains a <code>classes</code> argument to promote any kind of condition to an rlang error.</p></li>
 <li><p>New <code><a href="../reference/last_error.html">last_trace()</a></code> shortcut to print the backtrace stored in the <code><a href="../reference/last_error.html">last_error()</a></code>.</p></li>
@@ -244,8 +250,8 @@
 <li><p><code><a href="../reference/quotation.html">exprs()</a></code> no longer flattens quosures. <code><a href="../reference/quotation.html">exprs(!!!quos(x, y))</a></code> is now equivalent to <code><a href="../reference/quotation.html">quos(x, y)</a></code>.</p></li>
 <li>
 <p>The sentinel for removing arguments in <code><a href="../reference/call_modify.html">call_modify()</a></code> has been changed from <code>NULL</code> to <code><a href="../reference/zap.html">zap()</a></code>. This breaking change is motivated by the ambiguity of <code>NULL</code> with valid argument values.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/call_modify.html">call_modify</a></span>(call, <span class="dt">arg =</span> <span class="ot">NULL</span>)  <span class="co"># Add `arg = NULL` to the call</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="../reference/call_modify.html">call_modify</a></span>(call, <span class="dt">arg =</span> <span class="kw"><a href="../reference/zap.html">zap</a></span>()) <span class="co"># Remove the `arg` argument from the call</span></a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/call_modify.html">call_modify</a></span>(call, <span class="dt">arg =</span> <span class="ot">NULL</span>)  <span class="co"># Add `arg = NULL` to the call</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="../reference/call_modify.html">call_modify</a></span>(call, <span class="dt">arg =</span> <span class="kw"><a href="../reference/zap.html">zap</a></span>()) <span class="co"># Remove the `arg` argument from the call</span></a></code></pre></div>
 </li>
 <li><p>The <code>%@%</code> operator now quotes its input and supports S4 objects. This makes it directly equivalent to <code>@</code> except that it extracts attributes for non-S4 objects (<a href='https://github.com/r-lib/rlang/issues/207'>#207</a>).</p></li>
 <li><p>Taking the <code><a href="../reference/env_parent.html">env_parent()</a></code> of the empty environment is now an error.</p></li>
