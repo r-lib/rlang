@@ -268,9 +268,6 @@ dots_split <- function(...,
 #' @keywords internal
 #' @export
 splice <- function(x) {
-  if (!is_list(x)) {
-    abort("Only lists can be spliced")
-  }
   .Call(rlang_new_splice_box, x)
 }
 #' @rdname splice
