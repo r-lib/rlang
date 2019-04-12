@@ -34,3 +34,7 @@ expect_no_error <- function(object, ...) {
 expect_no_error_ <- function(object, ...) {
   expect_error(object, NA, ...)
 }
+
+expect_null_ <- function(object, ...) {
+  expect_null(object, ...)
+}

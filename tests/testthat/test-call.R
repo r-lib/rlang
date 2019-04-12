@@ -3,7 +3,7 @@ context("call")
 # Creation ----------------------------------------------------------------
 
 test_that("character vector must be length 1", {
-  expect_error(call2(letters), "must be a length 1 string")
+  expect_error(call2(letters), "must be a string")
 })
 
 test_that("args can be specified individually or as list", {
@@ -23,6 +23,16 @@ test_that("fails with non-callable objects", {
 test_that("succeeds with literal functions", {
   expect_error(regex = NA, call2(base::mean, 1:10))
   expect_error(regex = NA, call2(base::list, 1:10))
+})
+
+test_that("call2() preserves empty arguments", {
+  expect_identical(call2("[", quote(x), , drop = ), quote(x[, drop = ]))
+})
+
+test_that("call2() requires a symbol when namespace is supplied", {
+  expect_identical(call2("foo", .ns = "bar"), quote(bar::foo()))
+  expect_error(call2(function() NULL, .ns = "bar"), "must be a string or symbol")
+  expect_error(call2(quote(foo()), .ns = "bar"), "must be a string or symbol")
 })
 
 

@@ -11,7 +11,7 @@ call2(.fn, ..., .ns = NULL)
 symbol, call, or a function.}
 
 \item{...}{Arguments to the call either in or out of a list. These dots
-support \link[=tidy-dots]{tidy dots} features.}
+support \link[=tidy-dots]{tidy dots} features. Empty arguments are preserved.}
 
 \item{.ns}{Namespace with which to prefix \code{.fn}. Must be a string
 or symbol.}
@@ -87,6 +87,9 @@ call2(quote(f), !!!list(a = 1, b = 2))
 
 # Creating namespaced calls is easy:
 call2("fun", arg = quote(baz), .ns = "mypkg")
+
+# Empty arguments are preserved:
+call2("[", quote(x), , drop = )
 }
 \seealso{
 call_modify

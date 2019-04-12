@@ -89,3 +89,34 @@ test_that("pairlist predicates detect pairlists", {
   expect_true(is_node_list(node))
   expect_true(is_node_list(NULL))
 })
+
+test_that("pairlist2() converts to pairlist", {
+  expect_identical_(pairlist2(1, !!!c(2, 3), 4), pairlist(1, 2, 3, 4))
+  expect_identical_(pairlist2(1, !!!mtcars[1:2], 4), pairlist(1, mpg = mtcars$mpg, cyl = mtcars$cyl, 4))
+
+  scoped_bindings(.env = global_env(),
+    as.list.rlang_foobar = function(x) list("foo", "bar")
+  )
+  foobar <- structure(NA, class = "rlang_foobar")
+  expect_identical_(pairlist2(1, !!!foobar, 4), pairlist(1, "foo", "bar", 4))
+})
+
+test_that("pairlist2() duplicates spliced pairlists", {
+  x <- pairlist("foo", "bar")
+  pairlist2(1, !!!x, 4)
+  expect_identical(x, pairlist("foo", "bar"))
+})
+
+test_that("pairlist2() preserves empty arguments", {
+  expect_identical(pairlist2(1, x = , , 4), pairlist(1, x = missing_arg(), missing_arg(), 4))
+})
+
+test_that("pairlist2() supports splice boxes", {
+  expect_identical(pairlist2(1, splice(list("foo", "bar")), 4), pairlist(1, "foo", "bar", 4))
+})
+
+test_that("pairlist2() supports empty spliced vectors", {
+  expect_null_(pairlist2(!!!NULL))
+  expect_null_(pairlist2(!!!lgl()))
+  expect_null_(pairlist2(!!!list()))
+})

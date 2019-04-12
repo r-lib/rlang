@@ -7,6 +7,8 @@
 #define r_names_sym R_NamesSymbol
 #define r_class_sym R_ClassSymbol
 #define r_dots_sym R_DotsSymbol
+#define r_namespace_sym R_DoubleColonSymbol
+#define r_namespace3_sym R_TripleColonSymbol
 
 extern sexp* r_dot_environment_sym;
 extern sexp* r_function_sym;

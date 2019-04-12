@@ -59,6 +59,7 @@ extern sexp* rlang_quos_interp(sexp*, sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_dots_values(sexp*, sexp*, sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_dots_list(sexp*, sexp*, sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_dots_flat_list(sexp*, sexp*, sexp*, sexp*, sexp*, sexp*);
+extern sexp* rlang_dots_pairlist(sexp*, sexp*, sexp*, sexp*, sexp*, sexp*);
 extern sexp* r_new_formula(sexp*, sexp*, sexp*);
 extern sexp* rlang_new_quosure(sexp*, sexp*);
 extern sexp* rlang_enexpr(sexp*, sexp*);
@@ -115,6 +116,7 @@ extern sexp* r_node_list_reverse(sexp*);
 extern sexp* rlang_new_splice_box(sexp*);
 extern sexp* rlang_is_splice_box(sexp*);
 extern sexp* rlang_unbox(sexp*);
+extern sexp* rlang_new_function(sexp*, sexp*, sexp*);
 
 // Library initialisation defined below
 sexp* rlang_library_load();
@@ -219,6 +221,7 @@ static const r_callable r_callables[] = {
   {"rlang_dots_values",                 (r_fn_ptr) &rlang_dots_values, 7},
   {"rlang_dots_list",                   (r_fn_ptr) &rlang_dots_list, 7},
   {"rlang_dots_flat_list",              (r_fn_ptr) &rlang_dots_flat_list, 7},
+  {"rlang_dots_pairlist",               (r_fn_ptr) &rlang_dots_pairlist, 7},
   {"rlang_new_formula",                 (r_fn_ptr) &r_new_formula, 3},
   {"rlang_new_quosure",                 (r_fn_ptr) &rlang_new_quosure, 2},
   {"rlang_enexpr",                      (r_fn_ptr) &rlang_enexpr, 2},
@@ -269,13 +272,16 @@ static const r_callable r_callables[] = {
   {"rlang_node_list_reverse",           (r_fn_ptr) &r_node_list_reverse, 1},
   {"rlang_new_splice_box",              (r_fn_ptr) &rlang_new_splice_box, 1},
   {"rlang_is_splice_box",               (r_fn_ptr) &rlang_is_splice_box, 1},
+  {"rlang_new_function",                (r_fn_ptr) &rlang_new_function, 3},
   {NULL, NULL, 0}
 };
 
 extern sexp* rlang_is_missing(sexp*, sexp*, sexp*, sexp*);
+extern sexp* rlang_call2_external(sexp*, sexp*, sexp*, sexp*);
 
 static const r_external externals[] = {
   {"rlang_is_missing",                  (r_fn_ptr) &rlang_is_missing, 1},
+  {"rlang_call2_external",              (r_fn_ptr) &rlang_call2_external, 2},
   {NULL, NULL, 0}
 };
 

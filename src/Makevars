@@ -30,11 +30,13 @@ lib-files = \
 internal-files = \
         internal/arg.c \
         internal/dots.c \
+        internal/call.c \
         internal/env.c \
         internal/env-binding.c \
         internal/eval-tidy.c \
         internal/expr-interp.c \
         internal/expr-interp-rotate.c \
+        internal/fn.c \
         internal/internal.c \
         internal/quo.c \
         internal/utils.c

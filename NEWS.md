@@ -1,6 +1,19 @@
 
 # rlang 0.3.4.9000
 
+* `call2()` now uses `pairlist2()` internally. This considerably
+  improves its performance. This also means it now preserves empty
+  arguments:
+
+  ```
+  call2("fn", 1, , foo = )
+  #> fn(1, , foo = )
+  ```
+
+* New `pairlist2()` function with splicing support. It preserves
+  missing arguments, which makes it useful for lists of formal
+  parameters for functions.
+
 * We commit to support 5 versions of R. As R 3.6 is about to be
   released, rlang now requires R 3.2 or greater.
 

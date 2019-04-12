@@ -151,13 +151,13 @@ static sexp* dots_big_bang_coerce(sexp* x) {
   case r_type_character:
   case r_type_raw:
     if (r_is_object(x)) {
-      return r_eval_with_x(as_list_call, r_base_env, x);
+      return r_eval_with_x(as_list_call, r_global_env, x);
     } else {
       return r_vec_coerce(x, r_type_list);
     }
   case r_type_list:
     if (r_is_object(x)) {
-      return r_eval_with_x(as_list_call, r_base_env, x);
+      return r_eval_with_x(as_list_call, r_global_env, x);
     } else {
       return r_duplicate(x, true);
     }
@@ -178,6 +178,56 @@ static sexp* dots_big_bang_coerce(sexp* x) {
       r_type_as_c_string(r_typeof(x))
     );
   }
+}
+
+// Also used in expr-interp.c
+sexp* big_bang_coerce_pairlist(sexp* x, bool deep) {
+  int n_protect = 0;
+
+  if (r_is_object(x)) {
+    x = KEEP_N(dots_big_bang_coerce(x), n_protect);
+  }
+
+  switch (r_typeof(x)) {
+  case r_type_null:
+  case r_type_pairlist:
+    x = r_duplicate(x, true);
+    break;
+  case r_type_logical:
+  case r_type_integer:
+  case r_type_double:
+  case r_type_complex:
+  case r_type_character:
+  case r_type_raw:
+  case r_type_list:
+    x = r_vec_coerce(x, r_type_pairlist);
+    break;
+  case r_type_call:
+    if (deep && r_is_symbol(r_node_car(x), "{")) {
+      x = r_node_cdr(x);
+      break;
+    }
+    // fallthrough
+  case r_type_symbol: {
+    if (deep) {
+      signal_retired_splice();
+      x = r_new_node(x, r_null);
+      break;
+    }
+    // fallthrough
+  }
+  default:
+    r_abort(
+      "Can't splice an object of type `%s` because it is not a vector",
+      r_type_as_c_string(r_typeof(x))
+    );
+  }
+
+  FREE(n_protect);
+  return x;
+}
+static sexp* dots_big_bang_coerce_pairlist(sexp* x) {
+  return big_bang_coerce_pairlist(x, false);
 }
 
 static sexp* dots_big_bang_value(struct dots_capture_info* capture_info,
@@ -448,6 +498,13 @@ static bool any_name(sexp* x, bool splice) {
   return false;
 }
 
+static void check_named_splice(sexp* node) {
+  if (r_node_tag(node) != r_null) {
+    const char* msg = "`!!!` shouldn't be supplied with a name. Only the operand's names are retained.";
+    r_signal_soft_deprecated(msg, msg, r_empty_env);
+  }
+}
+
 sexp* dots_as_list(sexp* dots, struct dots_capture_info* capture_info) {
   int n_protect = 0;
 
@@ -468,10 +525,7 @@ sexp* dots_as_list(sexp* dots, struct dots_capture_info* capture_info) {
     }
 
     if (capture_info->splice && is_splice_box(elt)) {
-      if (r_node_tag(dots) != r_null) {
-        const char* msg = "`!!!` shouldn't be supplied with a name. Only the operand's names are retained.";
-        r_signal_soft_deprecated(msg, msg, r_empty_env);
-      }
+      check_named_splice(dots);
 
       elt = rlang_unbox(elt);
       sexp* nms = r_vec_names(elt);
@@ -503,6 +557,49 @@ sexp* dots_as_list(sexp* dots, struct dots_capture_info* capture_info) {
   FREE(n_protect);
   return out;
 }
+
+sexp* dots_as_pairlist(sexp* dots, struct dots_capture_info* capture_info) {
+  sexp* out = KEEP(r_new_node(r_null, dots));
+  sexp* prev = out;
+
+  while (dots != r_null) {
+    sexp* elt = r_node_car(dots);
+
+    if (elt == empty_spliced_arg) {
+      dots = r_node_cdr(dots);
+      r_node_poke_cdr(prev, dots);
+      continue;
+    }
+
+    if (capture_info->splice && is_splice_box(elt)) {
+      check_named_splice(dots);
+
+      elt = rlang_unbox(elt);
+      if (elt == r_null) {
+        dots = r_node_cdr(dots);
+        r_node_poke_cdr(prev, dots);
+        continue;
+      }
+
+      r_node_poke_cdr(prev, elt);
+
+      sexp* next = r_node_cdr(dots);
+      sexp* tail = r_node_tail(elt);
+      r_node_poke_cdr(tail, next);
+
+      prev = tail;
+      dots = next;
+      continue;
+    }
+
+    prev = dots;
+    dots = r_node_cdr(dots);
+  }
+
+  FREE(1);
+  return r_node_cdr(out);
+}
+
 
 static sexp* dots_keep(sexp* dots, sexp* nms, bool first) {
   r_ssize n = r_length(dots);
@@ -738,6 +835,52 @@ sexp* rlang_dots_flat_list(sexp* frame_env,
 
   FREE(3);
   return dots;
+}
+
+sexp* dots_values_node_impl(sexp* frame_env,
+                            sexp* named,
+                            sexp* ignore_empty,
+                            sexp* preserve_empty,
+                            sexp* unquote_names,
+                            sexp* homonyms,
+                            sexp* check_assign,
+                            bool splice) {
+  struct dots_capture_info capture_info;
+  capture_info = init_capture_info(DOTS_VALUE,
+                                   named,
+                                   ignore_empty,
+                                   preserve_empty,
+                                   unquote_names,
+                                   homonyms,
+                                   check_assign,
+                                   &dots_big_bang_coerce_pairlist,
+                                   splice);
+
+  sexp* dots;
+  dots = KEEP(dots_capture(&capture_info, frame_env));
+
+  dots = KEEP(dots_as_pairlist(dots, &capture_info));
+
+  // dots = dots_finalise(&capture_info, dots);
+
+  FREE(2);
+  return dots;
+}
+sexp* rlang_dots_pairlist(sexp* frame_env,
+                          sexp* named,
+                          sexp* ignore_empty,
+                          sexp* preserve_empty,
+                          sexp* unquote_names,
+                          sexp* homonyms,
+                          sexp* check_assign) {
+  return dots_values_node_impl(frame_env,
+                               named,
+                               ignore_empty,
+                               preserve_empty,
+                               unquote_names,
+                               homonyms,
+                               check_assign,
+                               true);
 }
 
 void rlang_init_dots() {

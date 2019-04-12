@@ -22,7 +22,7 @@
 #' @param .fn Function to call. Must be a callable object: a string,
 #'   symbol, call, or a function.
 #' @param ... Arguments to the call either in or out of a list. These dots
-#'   support [tidy dots][tidy-dots] features.
+#'   support [tidy dots][tidy-dots] features. Empty arguments are preserved.
 #' @param .ns Namespace with which to prefix `.fn`. Must be a string
 #'   or symbol.
 #'
@@ -90,23 +90,43 @@
 #'
 #' # Creating namespaced calls is easy:
 #' call2("fun", arg = quote(baz), .ns = "mypkg")
+#'
+#' # Empty arguments are preserved:
+#' call2("[", quote(x), , drop = )
 #' @export
 call2 <- function(.fn, ..., .ns = NULL) {
-  if (is_character(.fn)) {
-    if (length(.fn) != 1) {
-      abort("`.fn` must be a length 1 string")
-    }
-    .fn <- sym(.fn)
-  } else if (!is_callable(.fn)) {
-    abort("Can't create call to non-callable object")
-  }
-
-  if (!is_null(.ns)) {
-    .fn <- new_call(namespace_sym, pairlist(sym(.ns), .fn))
-  }
-
-  new_call(.fn, as.pairlist(list2(...)))
+  .External2(rlang_call2_external, .fn, .ns)
 }
+#' Create pairlists with splicing support
+#'
+#' This pairlist constructor supports [tidy dots][tidy-dots] features
+#' like `!!!`. Use it to manually create argument lists for calls or
+#' parameter lists for functions.
+#'
+#' @param ... Arguments stored in the pairlist. Empty arguments are
+#'   preserved.
+#'
+#' @export
+#' @examples
+#' # Unlike `exprs()`, `pairlist2()` evaluates its arguments.
+#' new_function(pairlist2(x = 1, y = 3 * 6), quote(x * y))
+#' new_function(exprs(x = 1, y = 3 * 6), quote(x * y))
+#'
+#' # It preserves missing arguments, which is useful for creating
+#' # parameters without defaults:
+#' new_function(pairlist2(x = , y = 3 * 6), quote(x * y))
+pairlist2 <- function(...) {
+  .Call(rlang_dots_pairlist,
+    frame_env = environment(),
+    named = FALSE,
+    ignore_empty = "trailing",
+    preserve_empty = TRUE,
+    unquote_names = TRUE,
+    homonyms = "keep",
+    check_assign = FALSE
+  )
+}
+
 
 #' Is an object callable?
 #'
