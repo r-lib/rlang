@@ -46,7 +46,7 @@ arg_match <- function(arg, values = NULL) {
   i <- match(arg, values)
 
   if (is_na(i)) {
-    msg <- paste0(chr_quoted(arg_nm), " should be one of: ")
+    msg <- paste0(chr_quoted(arg_nm), " must be one of ")
     msg <- paste0(msg, chr_enumerate(chr_quoted(values, "\"")))
 
     i_partial <- pmatch(arg, values)
@@ -65,7 +65,7 @@ arg_match <- function(arg, values = NULL) {
 chr_quoted <- function(chr, type = "`") {
   paste0(type, chr, type)
 }
-chr_enumerate <- function(chr, sep = ", ", final = "or") {
+chr_enumerate <- function(chr, sep = ", ", final = ", or") {
   if (length(chr) < 2) {
     return(chr)
   }
