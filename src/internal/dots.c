@@ -139,7 +139,6 @@ void signal_retired_splice() {
     r_warn_deprecated(msg, msg);
 }
 
-// Maintain parity with deep_big_bang_coerce() in expr-interp.c
 static sexp* dots_big_bang_coerce(sexp* x) {
   switch (r_typeof(x)) {
   case r_type_null:
@@ -159,7 +158,7 @@ static sexp* dots_big_bang_coerce(sexp* x) {
     if (r_is_object(x)) {
       return r_eval_with_x(as_list_call, r_global_env, x);
     } else {
-      return r_duplicate(x, true);
+      return x;
     }
   case r_type_s4:
     return r_eval_with_x(as_list_s4_call, r_methods_ns_env, x);
@@ -237,6 +236,12 @@ static sexp* dots_big_bang_value(struct dots_capture_info* capture_info,
   r_ssize n = r_length(value);
 
   if (quosured) {
+    if (r_is_shared(value)) {
+      sexp* tmp = r_duplicate(value, true);
+      FREE(1);
+      value = KEEP(tmp);
+    }
+
     for (r_ssize i = 0; i < n; ++i) {
       sexp* elt = r_list_get(value, i);
       elt = forward_quosure(elt, env);

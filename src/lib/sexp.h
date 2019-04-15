@@ -17,7 +17,7 @@ static inline void r_mark_shared(sexp* x) {
   MARK_NOT_MUTABLE(x);
 }
 static inline bool r_is_shared(sexp* x) {
-  return MAYBE_SHARED(x);
+  return MAYBE_REFERENCED(x);
 }
 
 static inline void r_mark_object(sexp* x) {
