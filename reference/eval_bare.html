@@ -71,7 +71,7 @@ stack." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9001</span>
       </span>
     </div>
 
@@ -240,17 +240,17 @@ support.</p></div>
 
 <span class='co'># With eval_bare(), we do get the expected environment:</span>
 <span class='fu'>fn</span>(<span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='no'><a href='https://rlang.r-lib.org/reference/eval_bare.html'>eval_bare</a></span>)</div><div class='output co'>#&gt; $returned_env
-#&gt; &lt;environment: 0x5191390&gt;
+#&gt; &lt;environment: 0x5613ca0&gt;
 #&gt; 
 #&gt; $actual_env
-#&gt; &lt;environment: 0x5191390&gt;
+#&gt; &lt;environment: 0x5613ca0&gt;
 #&gt; </div><div class='input'>
 <span class='co'># But that's not the case with base::eval():</span>
 <span class='fu'>fn</span>(<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/base/topics/eval'>eval</a></span>)</div><div class='output co'>#&gt; $returned_env
-#&gt; &lt;environment: 0x50f4e90&gt;
+#&gt; &lt;environment: 0x54f58f0&gt;
 #&gt; 
 #&gt; $actual_env
-#&gt; &lt;environment: 0x50f37d0&gt;
+#&gt; &lt;environment: 0x54fc3e0&gt;
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
