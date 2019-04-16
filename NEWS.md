@@ -1,6 +1,9 @@
 
 # rlang 0.3.4.9000
 
+* `is_interactive()` is aware of the `TESTTHAT` environment variable and
+  returns `FALSE` when it is `"true"` (@jennybc, #738).
+
 * `call2()` now uses `pairlist2()` internally. This considerably
   improves its performance. This also means it now preserves empty
   arguments:

@@ -95,14 +95,14 @@ peek_option <- function(name) {
 #'
 #' Like [base::interactive()], `is_interactive()` returns `TRUE` when
 #' the function runs interactively and `FALSE` when it runs in batch
-#' mode. It also checks:
-#'
-#' * Whether knitr or an RStudio notebook is in progress.
+#' mode. It also checks, in this order:
 #'
 #' * The `rlang_interactive` global option. If set to a single `TRUE`
-#'   or `FALSE`, `is_interactive()` returns that value instead.  This
+#'   or `FALSE`, `is_interactive()` returns that value immediately. This
 #'   escape hatch is useful in unit tests or to manually turn on
 #'   interactive features in RMarkdown outputs.
+#'
+#' * Whether knitr, an RStudio notebook, or testthat is in progress.
 #'
 #' `with_interactive()` and `scoped_interactive()` set the global
 #' option conveniently.
@@ -122,6 +122,9 @@ is_interactive <- function() {
     return(FALSE)
   }
   if (is_true(peek_option("rstudio.notebook.executing"))) {
+    return(FALSE)
+  }
+  if (identical(Sys.getenv("TESTTHAT"), "true")) {
     return(FALSE)
   }
 
