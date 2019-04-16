@@ -342,6 +342,15 @@ dots_values <- function(...,
   )
 }
 
+# Micro optimisation: Inline character vectors in formals list
+formals(dots_values) <- pairlist(
+  ... = quote(expr = ),
+  .ignore_empty = c("trailing", "none", "all"),
+  .preserve_empty = FALSE,
+  .homonyms = c("keep", "first", "last", "error"),
+  .check_assign = FALSE
+)
+
 #' Capture definition objects
 #'
 #' @section Life cycle:
