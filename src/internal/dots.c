@@ -780,6 +780,7 @@ static sexp* dots_values_impl(sexp* frame_env,
   FREE(2);
   return dots;
 }
+
 sexp* rlang_ext2_dots_values(sexp* call,
                         sexp* op,
                         sexp* args,
@@ -805,6 +806,17 @@ sexp* rlang_ext2_dots_values(sexp* call,
   FREE(6);
   return out;
 }
+sexp* rlang_env_dots_values(sexp* env) {
+  return dots_values_impl(env,
+                          r_shared_false,
+                          rlang_objs_trailing,
+                          r_shared_false,
+                          r_shared_true,
+                          rlang_objs_keep,
+                          r_shared_false,
+                          false);
+}
+
 sexp* rlang_dots_list(sexp* frame_env,
                       sexp* named,
                       sexp* ignore_empty,
