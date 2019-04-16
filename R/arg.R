@@ -65,16 +65,25 @@ arg_match <- function(arg, values = NULL) {
 chr_quoted <- function(chr, type = "`") {
   paste0(type, chr, type)
 }
-chr_enumerate <- function(chr, sep = ", ", final = ", or") {
-  if (length(chr) < 2) {
+chr_enumerate <- function(chr, sep = ", ", final = "or") {
+  n <- length(chr)
+
+  if (n < 2) {
     return(chr)
   }
+
   n <- length(chr)
   head <- chr[seq_len(n - 1)]
   last <- chr[length(chr)]
 
-  head <- paste(head, collapse = ", ")
-  paste(head, final, last)
+  head <- paste(head, collapse = sep)
+
+  # Write a or b. But a, b, or c.
+  if (n > 2) {
+    paste0(head, sep, final, " ", last)
+  } else {
+    paste0(head, " ", final, " ", last)
+  }
 }
 
 #' Generate or handle a missing argument
