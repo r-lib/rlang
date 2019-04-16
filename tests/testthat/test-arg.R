@@ -4,7 +4,7 @@ test_that("matches arg", {
   myarg <- c("foo", "baz")
   expect_identical(arg_match(myarg, c("bar", "foo")), "foo")
   expect_error(
-    regex = "`myarg` should be one of: \"bar\" or \"baz\"",
+    regex = "`myarg` must be one of \"bar\" or \"baz\"",
     arg_match(myarg, c("bar", "baz"))
   )
 })

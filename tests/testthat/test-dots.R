@@ -242,7 +242,7 @@ test_that("`.homonyms` = 'error' fails with homonyms", {
   expect_error(list_error(1, a = 2, a = 3), "multiple arguments named `a` at positions 2 and 3")
 
   expect_error(list_error(1, a = 2, b = 3, 4, b = 5, b = 6, 7, a = 8), "\\* Multiple arguments named `a` at positions 2 and 8")
-  expect_error(list_error(1, a = 2, b = 3, 4, b = 5, b = 6, 7, a = 8), "\\* Multiple arguments named `b` at positions 3, 5 and 6")
+  expect_error(list_error(1, a = 2, b = 3, 4, b = 5, b = 6, 7, a = 8), "\\* Multiple arguments named `b` at positions 3, 5, and 6")
 })
 
 test_that("`.homonyms` works with spliced arguments", {

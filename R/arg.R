@@ -46,7 +46,7 @@ arg_match <- function(arg, values = NULL) {
   i <- match(arg, values)
 
   if (is_na(i)) {
-    msg <- paste0(chr_quoted(arg_nm), " should be one of: ")
+    msg <- paste0(chr_quoted(arg_nm), " must be one of ")
     msg <- paste0(msg, chr_enumerate(chr_quoted(values, "\"")))
 
     i_partial <- pmatch(arg, values)
@@ -66,15 +66,24 @@ chr_quoted <- function(chr, type = "`") {
   paste0(type, chr, type)
 }
 chr_enumerate <- function(chr, sep = ", ", final = "or") {
-  if (length(chr) < 2) {
+  n <- length(chr)
+
+  if (n < 2) {
     return(chr)
   }
+
   n <- length(chr)
   head <- chr[seq_len(n - 1)]
   last <- chr[length(chr)]
 
-  head <- paste(head, collapse = ", ")
-  paste(head, final, last)
+  head <- paste(head, collapse = sep)
+
+  # Write a or b. But a, b, or c.
+  if (n > 2) {
+    paste0(head, sep, final, " ", last)
+  } else {
+    paste0(head, " ", final, " ", last)
+  }
 }
 
 #' Generate or handle a missing argument
