@@ -780,21 +780,30 @@ static sexp* dots_values_impl(sexp* frame_env,
   FREE(2);
   return dots;
 }
-sexp* rlang_dots_values(sexp* frame_env,
-                        sexp* named,
-                        sexp* ignore_empty,
-                        sexp* preserve_empty,
-                        sexp* unquote_names,
-                        sexp* homonyms,
-                        sexp* check_assign) {
-  return dots_values_impl(frame_env,
-                          named,
-                          ignore_empty,
-                          preserve_empty,
-                          unquote_names,
-                          homonyms,
-                          check_assign,
-                          false);
+sexp* rlang_ext2_dots_values(sexp* call,
+                        sexp* op,
+                        sexp* args,
+                        sexp* env) {
+  args = r_node_cdr(args);
+
+  sexp* named =          KEEP(r_eval(r_node_car(args), env)); args = r_node_cdr(args);
+  sexp* ignore_empty =   KEEP(r_eval(r_node_car(args), env)); args = r_node_cdr(args);
+  sexp* preserve_empty = KEEP(r_eval(r_node_car(args), env)); args = r_node_cdr(args);
+  sexp* unquote_names =  KEEP(r_eval(r_node_car(args), env)); args = r_node_cdr(args);
+  sexp* homonyms =       KEEP(r_eval(r_node_car(args), env)); args = r_node_cdr(args);
+  sexp* check_assign =   KEEP(r_eval(r_node_car(args), env));
+
+  sexp* out = dots_values_impl(env,
+                               named,
+                               ignore_empty,
+                               preserve_empty,
+                               unquote_names,
+                               homonyms,
+                               check_assign,
+                               false);
+
+  FREE(6);
+  return out;
 }
 sexp* rlang_dots_list(sexp* frame_env,
                       sexp* named,

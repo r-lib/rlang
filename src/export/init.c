@@ -56,7 +56,6 @@ extern sexp* rlang_cnd_signal(sexp*);
 extern sexp* rlang_r_string(sexp*);
 extern sexp* rlang_exprs_interp(sexp*, sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_quos_interp(sexp*, sexp*, sexp*, sexp*, sexp*);
-extern sexp* rlang_dots_values(sexp*, sexp*, sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_dots_list(sexp*, sexp*, sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_dots_flat_list(sexp*, sexp*, sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_dots_pairlist(sexp*, sexp*, sexp*, sexp*, sexp*, sexp*);
@@ -218,7 +217,6 @@ static const r_callable r_callables[] = {
   {"rlang_r_string",                    (r_fn_ptr) &rlang_r_string, 1},
   {"rlang_exprs_interp",                (r_fn_ptr) &rlang_exprs_interp, 6},
   {"rlang_quos_interp",                 (r_fn_ptr) &rlang_quos_interp, 6},
-  {"rlang_dots_values",                 (r_fn_ptr) &rlang_dots_values, 7},
   {"rlang_dots_list",                   (r_fn_ptr) &rlang_dots_list, 7},
   {"rlang_dots_flat_list",              (r_fn_ptr) &rlang_dots_flat_list, 7},
   {"rlang_dots_pairlist",               (r_fn_ptr) &rlang_dots_pairlist, 7},
@@ -279,10 +277,12 @@ static const r_callable r_callables[] = {
 
 extern sexp* rlang_is_missing(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_call2_external(sexp*, sexp*, sexp*, sexp*);
+extern sexp* rlang_ext2_dots_values(sexp*, sexp*, sexp*, sexp*);
 
 static const r_external externals[] = {
   {"rlang_is_missing",                  (r_fn_ptr) &rlang_is_missing, 1},
   {"rlang_call2_external",              (r_fn_ptr) &rlang_call2_external, 2},
+  {"rlang_ext2_dots_values",            (r_fn_ptr) &rlang_ext2_dots_values, 6},
   {NULL, NULL, 0}
 };
 
