@@ -52,3 +52,10 @@ test_that("can convert strings (#138)", {
 test_that("as_string(quo) produces informative error message", {
   expect_error(as_string(quo(foo)), "a `quosure/formula` object to a string")
 })
+
+test_that("as_character() and chr() support logical NA", {
+  expect_identical(chr(NA), na_chr)
+  expect_identical(chr(NA, NA), c(na_chr, na_chr))
+  expect_identical(as_character(NA), na_chr)
+  expect_identical(as_character(lgl(NA, NA)), c(na_chr, na_chr))
+})
