@@ -18,7 +18,9 @@ as_closure(x, env = caller_env())
 If a \strong{function}, it is used as is.
 
 If a \strong{formula}, e.g. \code{~ .x + 2}, it is converted to a function
-with two arguments, \code{.x} or \code{.} and \code{.y}. This allows you to
+with up to two arguments: \code{.x} (single argument) or \code{.x} and \code{.y}
+(two arguments). The \code{.} placeholder can be used instead of \code{.x}.
+This allows you to
 create very compact anonymous functions with up to two inputs.
 Functions created from formulas have a special class. Use
 \code{is_lambda()} to test for it.}
@@ -29,17 +31,23 @@ is a string.}
 \description{
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
 \itemize{
-\item \code{as_function()} transform objects to functions. It fetches
-functions by name if supplied a string or transforms formulas to
-function.
+\item \code{as_function()} transforms an object into a function. It fetches
+the function by name, for string input, or turns a one-sided formula
+into a function.
 \item \code{as_closure()} first passes its argument to \code{as_function()}. If
 the result is a primitive function, it regularises it to a proper
 \link{closure} (see \code{\link[=is_function]{is_function()}} about primitive functions).
 }
 }
 \examples{
-f <- as_function(~ . + 1)
+f <- as_function(~ .x + 1)
 f(10)
+
+g <- as_function(~ -1 * .)
+g(4)
+
+h <- as_function(~ .x - .y)
+h(6, 3)
 
 # Functions created from a formula have a special class:
 is_lambda(f)

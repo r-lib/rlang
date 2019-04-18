@@ -379,9 +379,9 @@ fn_env <- function(fn) {
 #'
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
 #'
-#' * `as_function()` transform objects to functions. It fetches
-#'   functions by name if supplied a string or transforms formulas to
-#'   function.
+#' * `as_function()` transforms an object into a function. It fetches
+#'   the function by name, for string input, or turns a one-sided formula
+#'   into a function.
 #'
 #' * `as_closure()` first passes its argument to `as_function()`. If
 #'   the result is a primitive function, it regularises it to a proper
@@ -392,7 +392,9 @@ fn_env <- function(fn) {
 #'   If a **function**, it is used as is.
 #'
 #'   If a **formula**, e.g. `~ .x + 2`, it is converted to a function
-#'   with two arguments, `.x` or `.` and `.y`. This allows you to
+#'   with up to two arguments: `.x` (single argument) or `.x` and `.y`
+#'   (two arguments). The `.` placeholder can be used instead of `.x`.
+#'   This allows you to
 #'   create very compact anonymous functions with up to two inputs.
 #'   Functions created from formulas have a special class. Use
 #'   `is_lambda()` to test for it.
@@ -400,8 +402,14 @@ fn_env <- function(fn) {
 #'   is a string.
 #' @export
 #' @examples
-#' f <- as_function(~ . + 1)
+#' f <- as_function(~ .x + 1)
 #' f(10)
+#'
+#' g <- as_function(~ -1 * .)
+#' g(4)
+#'
+#' h <- as_function(~ .x - .y)
+#' h(6, 3)
 #'
 #' # Functions created from a formula have a special class:
 #' is_lambda(f)
