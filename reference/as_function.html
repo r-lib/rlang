@@ -34,9 +34,9 @@
 <meta property="og:title" content="Convert to function or closure — as_function" />
 
 <meta property="og:description" content="
-as_function() transform objects to functions. It fetches
-functions by name if supplied a string or transforms formulas to
-function.
+as_function() transforms an object into a function. It fetches
+the function by name, for string input, or turns a one-sided formula
+into a function.
 as_closure() first passes its argument to as_function(). If
 the result is a primitive function, it regularises it to a proper
 closure (see is_function() about primitive functions).
@@ -141,9 +141,9 @@ closure (see is_function() about primitive functions).
     <div class="ref-description">
     
     <p><a href='https://www.tidyverse.org/lifecycle/#stable'><img src='figures/lifecycle-stable.svg' alt='Stable lifecycle'></a></p><ul>
-<li><p><code>as_function()</code> transform objects to functions. It fetches
-functions by name if supplied a string or transforms formulas to
-function.</p></li>
+<li><p><code>as_function()</code> transforms an object into a function. It fetches
+the function by name, for string input, or turns a one-sided formula
+into a function.</p></li>
 <li><p><code>as_closure()</code> first passes its argument to <code>as_function()</code>. If
 the result is a primitive function, it regularises it to a proper
 <a href='https://www.rdocumentation.org/packages/base/topics/function'>closure</a> (see <code><a href='is_function.html'>is_function()</a></code> about primitive functions).</p></li>
@@ -165,10 +165,11 @@ the result is a primitive function, it regularises it to a proper
       <td><p>A function or formula.</p>
 <p>If a <strong>function</strong>, it is used as is.</p>
 <p>If a <strong>formula</strong>, e.g. <code>~ .x + 2</code>, it is converted to a function
-with two arguments, <code>.x</code> or <code>.</code> and <code>.y</code>. This allows you to
-create very compact anonymous functions with up to two inputs.
-Functions created from formulas have a special class. Use
-<code>is_lambda()</code> to test for it.</p></td>
+with up to two arguments: <code>.x</code> (single argument) or <code>.x</code> and <code>.y</code>
+(two arguments). The <code>.</code> placeholder can be used instead of <code>.x</code>.
+This allows you to create very compact anonymous functions with up
+to two inputs. Functions created from formulas have a special
+class. Use <code>is_lambda()</code> to test for it.</p></td>
     </tr>
     <tr>
       <th>env</th>
@@ -179,8 +180,12 @@ is a string.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='fu'>as_function</span>(~ <span class='no'>.</span> + <span class='fl'>1</span>)
+    <pre class="examples"><div class='input'><span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='fu'>as_function</span>(~ <span class='no'>.x</span> + <span class='fl'>1</span>)
 <span class='fu'>f</span>(<span class='fl'>10</span>)</div><div class='output co'>#&gt; [1] 11</div><div class='input'>
+<span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='fu'>as_function</span>(~ -<span class='fl'>1</span> * <span class='no'>.</span>)
+<span class='fu'>g</span>(<span class='fl'>4</span>)</div><div class='output co'>#&gt; [1] -4</div><div class='input'>
+<span class='no'>h</span> <span class='kw'>&lt;-</span> <span class='fu'>as_function</span>(~ <span class='no'>.x</span> - <span class='no'>.y</span>)
+<span class='fu'>h</span>(<span class='fl'>6</span>, <span class='fl'>3</span>)</div><div class='output co'>#&gt; [1] 3</div><div class='input'>
 <span class='co'># Functions created from a formula have a special class:</span>
 <span class='fu'>is_lambda</span>(<span class='no'>f</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_lambda</span>(<span class='fu'>as_function</span>(<span class='kw'>function</span>() <span class='st'>"foo"</span>))</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
 <span class='co'># Primitive functions are regularised as closures</span>
@@ -210,15 +215,15 @@ is a string.</p></td>
 #&gt;         .x
 #&gt;     else .x + .y
 #&gt; }
-#&gt; &lt;environment: 0x7793480&gt;</div><div class='input'><span class='fu'>as_closure</span>(<span class='no'>`~`</span>)</div><div class='output co'>#&gt; function(.x, .y) {
+#&gt; &lt;environment: 0x73d4910&gt;</div><div class='input'><span class='fu'>as_closure</span>(<span class='no'>`~`</span>)</div><div class='output co'>#&gt; function(.x, .y) {
 #&gt;       if (is_missing(substitute(.y))) {
 #&gt;         new_formula(NULL, substitute(.x), caller_env())
 #&gt;       } else {
 #&gt;         new_formula(substitute(.x), substitute(.y), caller_env())
 #&gt;       }
 #&gt;     }
-#&gt; &lt;bytecode: 0x860eda0&gt;
-#&gt; &lt;environment: 0x73e2e50&gt;</div></pre>
+#&gt; &lt;bytecode: 0x706c260&gt;
+#&gt; &lt;environment: 0x80d5ec8&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
