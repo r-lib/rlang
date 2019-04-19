@@ -263,3 +263,7 @@ reference:
       - with_handlers
       - exiting
       - calling
+  - title: Session state
+    contents:
+      - matches("interactive")
+      - matches("option")
