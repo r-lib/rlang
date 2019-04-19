@@ -20,10 +20,9 @@ If a \strong{function}, it is used as is.
 If a \strong{formula}, e.g. \code{~ .x + 2}, it is converted to a function
 with up to two arguments: \code{.x} (single argument) or \code{.x} and \code{.y}
 (two arguments). The \code{.} placeholder can be used instead of \code{.x}.
-This allows you to
-create very compact anonymous functions with up to two inputs.
-Functions created from formulas have a special class. Use
-\code{is_lambda()} to test for it.}
+This allows you to create very compact anonymous functions with up
+to two inputs. Functions created from formulas have a special
+class. Use \code{is_lambda()} to test for it.}
 
 \item{env}{Environment in which to fetch the function in case \code{x}
 is a string.}
