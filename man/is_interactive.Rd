@@ -26,13 +26,13 @@ the options are reset to their original values.}
 \description{
 Like \code{\link[base:interactive]{base::interactive()}}, \code{is_interactive()} returns \code{TRUE} when
 the function runs interactively and \code{FALSE} when it runs in batch
-mode. It also checks:
+mode. It also checks, in this order:
 \itemize{
-\item Whether knitr or an RStudio notebook is in progress.
 \item The \code{rlang_interactive} global option. If set to a single \code{TRUE}
-or \code{FALSE}, \code{is_interactive()} returns that value instead.  This
+or \code{FALSE}, \code{is_interactive()} returns that value immediately. This
 escape hatch is useful in unit tests or to manually turn on
 interactive features in RMarkdown outputs.
+\item Whether knitr, an RStudio notebook, or testthat is in progress.
 }
 
 \code{with_interactive()} and \code{scoped_interactive()} set the global

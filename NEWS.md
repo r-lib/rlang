@@ -1,6 +1,9 @@
 
 # rlang 0.3.4.9000
 
+* `is_interactive()` is aware of the `TESTTHAT` environment variable and
+  returns `FALSE` when it is `"true"` (@jennybc, #738).
+
 * `fn_fmls()` and variants no longer coerce their input to a
   closure. Instead, they throw an error.
 
