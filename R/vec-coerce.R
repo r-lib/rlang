@@ -147,6 +147,9 @@ as_complex <- function(x) {
 #' @rdname vector-coercion
 #' @export
 as_character <- function(x, encoding = NULL) {
+  if (is_unspecified(x)) {
+    return(rep_along(x, na_chr))
+  }
   coerce_type_vec(x, friendly_type("character"),
     string = ,
     character = {
@@ -179,6 +182,10 @@ vec_as_list <- function(x) {
     raw = as_base_type(x, as.list),
     list = { attributes(x) <- NULL; x }
   )
+}
+
+is_unspecified <- function(x) {
+  is_logical(x) && all(map_lgl(x, identical, NA))
 }
 
 as_base_type <- function(x, as_type) {

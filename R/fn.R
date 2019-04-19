@@ -59,29 +59,8 @@ prim_name <- function(prim) {
 #' is especially useful for forwarding arguments in [constructed
 #' calls][lang].
 #'
-#' Unlike `formals()`, these helpers also work with primitive
-#' functions. See [is_function()] for a discussion of primitive and
-#' closure functions.
-#'
-#' Note that the argument names are taken from the closures that are
-#' created when passing the primitive to [as_closure()]. For instance,
-#' while the arguments of the primitive operator `+` are labelled `e1`
-#' and `e2`, `fn_fmls_names()` will return `.x` and `.y`. Note that
-#' for many primitives the base R argument names are purely
-#' placeholders since they don't perform regular argument matching.
-#' E.g. this returns `5` instead of `-5`:
-#'
-#' ```
-#' `-`(e2 = 10, 5)
-#' ```
-#'
-#' To regularise the semantics of primitive functions, it is usually a
-#' good idea to coerce them to a closure first:
-#'
-#' ```
-#' minus <- as_closure(`-`)
-#' minus(.y = 10, 5)
-#' ```
+#' Unlike `formals()`, these helpers throw an error with primitive
+#' functions instead of returning `NULL`.
 #'
 #' @param fn A function. It is lookep up in the calling frame if not
 #'   supplied.
@@ -91,9 +70,6 @@ prim_name <- function(prim) {
 #' # Extract from current call:
 #' fn <- function(a = 1, b = 2) fn_fmls()
 #' fn()
-#'
-#' # Works with primitive functions:
-#' fn_fmls(base::switch)
 #'
 #' # fn_fmls_syms() makes it easy to forward arguments:
 #' call2("apply", !!! fn_fmls_syms(lapply))
@@ -105,7 +81,7 @@ prim_name <- function(prim) {
 #' fn_fmls_names(fn) <- c("foo", "bar")
 #' fn()
 fn_fmls <- function(fn = caller_fn()) {
-  fn <- as_closure(fn)
+  check_closure(fn)
   formals(fn)
 }
 #' @rdname fn_fmls
@@ -131,7 +107,7 @@ fn_fmls_syms <- function(fn = caller_fn()) {
 #' @param value New formals or formals names for `fn`.
 #' @export
 `fn_fmls<-` <- function(fn, value) {
-  fn <- as_closure(fn)
+  check_closure(fn)
   attrs <- attributes(fn)
 
   formals(fn) <- value
@@ -144,7 +120,7 @@ fn_fmls_syms <- function(fn = caller_fn()) {
 #' @rdname fn_fmls
 #' @export
 `fn_fmls_names<-` <- function(fn, value) {
-  fn <- as_closure(fn)
+  check_closure(fn)
   attrs <- attributes(fn)
 
   fmls <- formals(fn)
@@ -155,6 +131,12 @@ fn_fmls_syms <- function(fn = caller_fn()) {
   attributes(fn) <- attrs
 
   fn
+}
+
+check_closure <- function(x) {
+  if (!is_closure(x)) {
+    abort(sprintf("`fn` must be an R function, not %s", friendly_type_of(x)))
+  }
 }
 
 #' Get or set function body
@@ -379,9 +361,9 @@ fn_env <- function(fn) {
 #'
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
 #'
-#' * `as_function()` transform objects to functions. It fetches
-#'   functions by name if supplied a string or transforms formulas to
-#'   function.
+#' * `as_function()` transforms an object into a function. It fetches
+#'   the function by name, for string input, or turns a one-sided formula
+#'   into a function.
 #'
 #' * `as_closure()` first passes its argument to `as_function()`. If
 #'   the result is a primitive function, it regularises it to a proper
@@ -392,16 +374,23 @@ fn_env <- function(fn) {
 #'   If a **function**, it is used as is.
 #'
 #'   If a **formula**, e.g. `~ .x + 2`, it is converted to a function
-#'   with two arguments, `.x` or `.` and `.y`. This allows you to
-#'   create very compact anonymous functions with up to two inputs.
-#'   Functions created from formulas have a special class. Use
-#'   `is_lambda()` to test for it.
+#'   with up to two arguments: `.x` (single argument) or `.x` and `.y`
+#'   (two arguments). The `.` placeholder can be used instead of `.x`.
+#'   This allows you to create very compact anonymous functions with up
+#'   to two inputs. Functions created from formulas have a special
+#'   class. Use `is_lambda()` to test for it.
 #' @param env Environment in which to fetch the function in case `x`
 #'   is a string.
 #' @export
 #' @examples
-#' f <- as_function(~ . + 1)
+#' f <- as_function(~ .x + 1)
 #' f(10)
+#'
+#' g <- as_function(~ -1 * .)
+#' g(4)
+#'
+#' h <- as_function(~ .x - .y)
+#' h(6, 3)
 #'
 #' # Functions created from a formula have a special class:
 #' is_lambda(f)
