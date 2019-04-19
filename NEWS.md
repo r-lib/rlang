@@ -1,6 +1,9 @@
 
 # rlang 0.3.4.9000
 
+* `fn_fmls()` and variants no longer coerce their input to a
+  closure. Instead, they throw an error.
+
 * `call2()` now uses `pairlist2()` internally. This considerably
   improves its performance. This also means it now preserves empty
   arguments:

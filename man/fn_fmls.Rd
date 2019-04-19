@@ -31,31 +31,13 @@ supplied.}
 is especially useful for forwarding arguments in \link[=lang]{constructed calls}.
 }
 \details{
-Unlike \code{formals()}, these helpers also work with primitive
-functions. See \code{\link[=is_function]{is_function()}} for a discussion of primitive and
-closure functions.
-
-Note that the argument names are taken from the closures that are
-created when passing the primitive to \code{\link[=as_closure]{as_closure()}}. For instance,
-while the arguments of the primitive operator \code{+} are labelled \code{e1}
-and \code{e2}, \code{fn_fmls_names()} will return \code{.x} and \code{.y}. Note that
-for many primitives the base R argument names are purely
-placeholders since they don't perform regular argument matching.
-E.g. this returns \code{5} instead of \code{-5}:\preformatted{`-`(e2 = 10, 5)
-}
-
-To regularise the semantics of primitive functions, it is usually a
-good idea to coerce them to a closure first:\preformatted{minus <- as_closure(`-`)
-minus(.y = 10, 5)
-}
+Unlike \code{formals()}, these helpers throw an error with primitive
+functions instead of returning \code{NULL}.
 }
 \examples{
 # Extract from current call:
 fn <- function(a = 1, b = 2) fn_fmls()
 fn()
-
-# Works with primitive functions:
-fn_fmls(base::switch)
 
 # fn_fmls_syms() makes it easy to forward arguments:
 call2("apply", !!! fn_fmls_syms(lapply))
