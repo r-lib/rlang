@@ -132,6 +132,7 @@
 <a href="#rlang-0-3-4-9000" class="anchor"></a>rlang 0.3.4.9000<small> Unreleased </small>
 </h1>
 <ul>
+<li><p><code><a href="../reference/fn_fmls.html">fn_fmls()</a></code> and variants no longer coerce their input to a closure. Instead, they throw an error.</p></li>
 <li>
 <p><code><a href="../reference/call2.html">call2()</a></code> now uses <code><a href="../reference/pairlist2.html">pairlist2()</a></code> internally. This considerably improves its performance. This also means it now preserves empty arguments:</p>
 <pre><code><a href="../reference/call2.html">call2("fn", 1, , foo = )

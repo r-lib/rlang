@@ -169,21 +169,8 @@ supplied.</p></td>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Unlike <code><a href='https://www.rdocumentation.org/packages/base/topics/formals'>formals()</a></code>, these helpers also work with primitive
-functions. See <code><a href='is_function.html'>is_function()</a></code> for a discussion of primitive and
-closure functions.</p>
-<p>Note that the argument names are taken from the closures that are
-created when passing the primitive to <code><a href='as_function.html'>as_closure()</a></code>. For instance,
-while the arguments of the primitive operator <code>+</code> are labelled <code>e1</code>
-and <code>e2</code>, <code>fn_fmls_names()</code> will return <code>.x</code> and <code>.y</code>. Note that
-for many primitives the base R argument names are purely
-placeholders since they don't perform regular argument matching.
-E.g. this returns <code>5</code> instead of <code>-5</code>:</p><pre>`-`(e2 = 10, 5)
-</pre>
-    <p>To regularise the semantics of primitive functions, it is usually a
-good idea to coerce them to a closure first:</p><pre>minus &lt;- as_closure(`-`)
-minus(.y = 10, 5)
-</pre>
+    <p>Unlike <code><a href='https://www.rdocumentation.org/packages/base/topics/formals'>formals()</a></code>, these helpers throw an error with primitive
+functions instead of returning <code>NULL</code>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -198,13 +185,6 @@ minus(.y = 10, 5)
 #&gt; 
 #&gt; $b
 #&gt; [1] 2
-#&gt; </div><div class='input'>
-<span class='co'># Works with primitive functions:</span>
-<span class='fu'>fn_fmls</span>(<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/base/topics/switch'>switch</a></span>)</div><div class='output co'>#&gt; $EXPR
-#&gt; 
-#&gt; 
-#&gt; $...
-#&gt; 
 #&gt; </div><div class='input'>
 <span class='co'># fn_fmls_syms() makes it easy to forward arguments:</span>
 <span class='fu'><a href='call2.html'>call2</a></span>(<span class='st'>"apply"</span>, !!! <span class='fu'>fn_fmls_syms</span>(<span class='no'>lapply</span>))</div><div class='output co'>#&gt; apply(X = X, FUN = FUN, ...)</div><div class='input'>
