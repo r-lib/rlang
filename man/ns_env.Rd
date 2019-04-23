@@ -13,10 +13,11 @@ ns_imports_env(pkg = NULL)
 ns_env_name(pkg = NULL)
 }
 \arguments{
-\item{pkg}{The name of a package. If \code{NULL}, the surrounding
-namespace is returned, or an error is issued if not called within
-a namespace. If a function, the enclosure of that function is
-checked.}
+\item{pkg}{The name of a package or an environment. If a function,
+the environment of that function is searched for a namespace with
+\code{\link[base:topenv]{base::topenv()}}.}
+
+\item{env}{A namespace environment.}
 }
 \description{
 Namespaces are the environment where all the functions of a package

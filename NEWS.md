@@ -1,6 +1,10 @@
 
 # rlang 0.3.4.9000
 
+* `ns_env()` and `ns_env_name()` (experimental functions) now support
+  functions and environments consisently. They also require an
+  argument from now on.
+
 * `is_string()` gains a `string` argument. `is_string(x, "foo")` is a
   shortcut for `is_character(x) && length(x) == 1 && identical(x,
   "foo")`.
