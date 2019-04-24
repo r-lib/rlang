@@ -13,9 +13,15 @@ ns_imports_env(x = NULL)
 ns_env_name(x = NULL)
 }
 \arguments{
-\item{x}{The name of a package or an environment. If a function,
-the environment of that function is searched for a namespace with
-\code{\link[base:topenv]{base::topenv()}}.}
+\item{x}{\itemize{
+\item For \code{ns_env()}, the name of a package or an environment as a
+string.
+\itemize{
+\item An environment.
+\item A function. In that case, the environment of that function is
+searched for a namespace with \code{\link[base:topenv]{base::topenv()}}.
+}
+}}
 
 \item{env}{A namespace environment.}
 }

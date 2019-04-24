@@ -197,9 +197,12 @@ current_env <- function() {
 #' These functions are experimental and may not belong to the rlang
 #' package. Expect API changes.
 #'
-#' @param x The name of a package or an environment. If a function,
-#'   the environment of that function is searched for a namespace with
-#'   [base::topenv()].
+#' @param x
+#'   * For `ns_env()`, the name of a package or an environment as a
+#'     string.
+#'   * An environment.
+#'   * A function. In that case, the environment of that function is
+#'     searched for a namespace with [base::topenv()].
 #'
 #' @seealso [pkg_env()]
 #' @keywords internal
