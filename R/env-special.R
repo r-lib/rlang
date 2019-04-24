@@ -201,8 +201,11 @@ current_env <- function() {
 #'   * For `ns_env()`, the name of a package or an environment as a
 #'     string.
 #'   * An environment.
-#'   * A function. In that case, the environment of that function is
-#'     searched for a namespace with [base::topenv()].
+#'   * A function.
+#'
+#'   In the latter two cases, the environment ancestry is searched for
+#'   a namespace with [base::topenv()]. If the environment doesn't
+#'   inherit from a namespace, this is an error.
 #'
 #' @seealso [pkg_env()]
 #' @keywords internal
@@ -212,7 +215,7 @@ ns_env <- function(x = NULL) {
     builtin = ,
     special = ns_env("base"),
     closure = topenv(fn_env(x)),
-    environment = x,
+    environment = topenv(x),
     character = if (is_string(x)) asNamespace(x)
   )
 
@@ -232,7 +235,7 @@ ns_imports_env <- function(x = NULL) {
 #' @export
 ns_env_name <- function(x = NULL) {
   env <- switch(typeof(x),
-    environment = x,
+    environment = ,
     builtin = ,
     special = ,
     closure = ns_env(x),

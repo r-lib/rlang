@@ -18,9 +18,12 @@ ns_env_name(x = NULL)
 string.
 \itemize{
 \item An environment.
-\item A function. In that case, the environment of that function is
-searched for a namespace with \code{\link[base:topenv]{base::topenv()}}.
+\item A function.
 }
+
+In the latter two cases, the environment ancestry is searched for
+a namespace with \code{\link[base:topenv]{base::topenv()}}. If the environment doesn't
+inherit from a namespace, this is an error.
 }}
 
 \item{env}{A namespace environment.}

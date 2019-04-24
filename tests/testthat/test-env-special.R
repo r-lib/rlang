@@ -65,3 +65,10 @@ test_that("ns_env() and ns_env_name() support closures", {
 test_that("ns_env_name() accepts environments", {
   expect_identical(ns_env_name(ns_env("base")), "base")
 })
+
+test_that("ns_env() and ns_env_name() take the topenv()", {
+  ns <- ns_env("rlang")
+  local <- env(ns)
+  expect_true(is_reference(ns_env(local), ns))
+  expect_identical(ns_env_name(local), "rlang")
+})
