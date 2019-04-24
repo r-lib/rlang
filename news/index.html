@@ -132,6 +132,7 @@
 <a href="#rlang-0-3-4-9000" class="anchor"></a>rlang 0.3.4.9000<small> Unreleased </small>
 </h1>
 <ul>
+<li><p><code><a href="../reference/scalar-type-predicates.html">is_string()</a></code> gains a <code>string</code> argument. <code><a href="../reference/scalar-type-predicates.html">is_string(x, "foo")</a></code> is a shortcut for <code>is_character(x) &amp;&amp; length(x) == 1 &amp;&amp; identical(x, "foo")</code>.</p></li>
 <li><p><code><a href="../reference/is_interactive.html">is_interactive()</a></code> is aware of the <code>TESTTHAT</code> environment variable and returns <code>FALSE</code> when it is <code>"true"</code> (<a href='https://github.com/jennybc'>@jennybc</a>, <a href='https://github.com/r-lib/rlang/issues/738'>#738</a>).</p></li>
 <li><p><code><a href="../reference/fn_fmls.html">fn_fmls()</a></code> and variants no longer coerce their input to a closure. Instead, they throw an error.</p></li>
 <li>
