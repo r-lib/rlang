@@ -72,3 +72,13 @@ test_that("ns_env() and ns_env_name() take the topenv()", {
   expect_true(is_reference(ns_env(local), ns))
   expect_identical(ns_env_name(local), "rlang")
 })
+
+test_that("ns_env() and variants have default argument", {
+  fn <- function() list(ns_env(), ns_imports_env(), ns_env_name())
+  environment(fn) <- ns_env("rlang")
+  out <- fn()
+
+  expect_true(is_reference(out[[1]], ns_env("rlang")))
+  expect_true(is_reference(out[[2]], ns_imports_env("rlang")))
+  expect_identical(out[[3]], "rlang")
+})

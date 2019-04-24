@@ -200,7 +200,7 @@ current_env <- function() {
 #' @param x
 #'   * For `ns_env()`, the name of a package or an environment as a
 #'     string.
-#'   * An environment.
+#'   * An environment (the current environment by default).
 #'   * A function.
 #'
 #'   In the latter two cases, the environment ancestry is searched for
@@ -210,7 +210,7 @@ current_env <- function() {
 #' @seealso [pkg_env()]
 #' @keywords internal
 #' @export
-ns_env <- function(x = NULL) {
+ns_env <- function(x = caller_env()) {
   env <- switch(typeof(x),
     builtin = ,
     special = ns_env("base"),
@@ -227,13 +227,13 @@ ns_env <- function(x = NULL) {
 }
 #' @rdname ns_env
 #' @export
-ns_imports_env <- function(x = NULL) {
+ns_imports_env <- function(x = caller_env()) {
   env_parent(ns_env(x))
 }
 #' @rdname ns_env
 #' @param env A namespace environment.
 #' @export
-ns_env_name <- function(x = NULL) {
+ns_env_name <- function(x = caller_env()) {
   env <- switch(typeof(x),
     environment = ,
     builtin = ,

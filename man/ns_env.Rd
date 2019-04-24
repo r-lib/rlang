@@ -6,18 +6,18 @@
 \alias{ns_env_name}
 \title{Get the namespace of a package}
 \usage{
-ns_env(x = NULL)
+ns_env(x = caller_env())
 
-ns_imports_env(x = NULL)
+ns_imports_env(x = caller_env())
 
-ns_env_name(x = NULL)
+ns_env_name(x = caller_env())
 }
 \arguments{
 \item{x}{\itemize{
 \item For \code{ns_env()}, the name of a package or an environment as a
 string.
 \itemize{
-\item An environment.
+\item An environment (the current environment by default).
 \item A function.
 }
 
