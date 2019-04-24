@@ -6,14 +6,14 @@
 \alias{ns_env_name}
 \title{Get the namespace of a package}
 \usage{
-ns_env(pkg = NULL)
+ns_env(x = NULL)
 
-ns_imports_env(pkg = NULL)
+ns_imports_env(x = NULL)
 
-ns_env_name(pkg = NULL)
+ns_env_name(x = NULL)
 }
 \arguments{
-\item{pkg}{The name of a package or an environment. If a function,
+\item{x}{The name of a package or an environment. If a function,
 the environment of that function is searched for a namespace with
 \code{\link[base:topenv]{base::topenv()}}.}
 

@@ -197,43 +197,43 @@ current_env <- function() {
 #' These functions are experimental and may not belong to the rlang
 #' package. Expect API changes.
 #'
-#' @param pkg The name of a package or an environment. If a function,
+#' @param x The name of a package or an environment. If a function,
 #'   the environment of that function is searched for a namespace with
 #'   [base::topenv()].
 #'
 #' @seealso [pkg_env()]
 #' @keywords internal
 #' @export
-ns_env <- function(pkg = NULL) {
-  env <- switch(typeof(pkg),
+ns_env <- function(x = NULL) {
+  env <- switch(typeof(x),
     builtin = ,
     special = ns_env("base"),
-    closure = topenv(fn_env(pkg)),
-    environment = pkg,
-    character = if (is_string(pkg)) asNamespace(pkg)
+    closure = topenv(fn_env(x)),
+    environment = x,
+    character = if (is_string(x)) asNamespace(x)
   )
 
   if (!is_namespace(env)) {
-    abort("`pkg` must be a package name or a function inheriting from a namespace.")
+    abort("`x` must be a package name or a function inheriting from a namespace.")
   }
 
   env
 }
 #' @rdname ns_env
 #' @export
-ns_imports_env <- function(pkg = NULL) {
-  env_parent(ns_env(pkg))
+ns_imports_env <- function(x = NULL) {
+  env_parent(ns_env(x))
 }
 #' @rdname ns_env
 #' @param env A namespace environment.
 #' @export
-ns_env_name <- function(pkg = NULL) {
-  env <- switch(typeof(pkg),
-    environment = pkg,
+ns_env_name <- function(x = NULL) {
+  env <- switch(typeof(x),
+    environment = x,
     builtin = ,
     special = ,
-    closure = ns_env(pkg),
-    abort("`pkg` must be an environment or a function.")
+    closure = ns_env(x),
+    abort("`x` must be an environment or a function inheriting from a namespace.")
   )
   unname(getNamespaceName(env))
 }
