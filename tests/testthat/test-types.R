@@ -155,3 +155,10 @@ test_that("is_integerish() supports `NA` (#751)", {
   expect_false(is_integerish(NA, finite = TRUE))
   expect_true(is_integerish(NA, finite = FALSE))
 })
+
+test_that("is_string() matches on string", {
+  expect_true(is_string("foo"))
+  expect_true(is_string("foo", "foo"))
+  expect_false(is_string("foo", "bar"))
+  expect_false(is_string(NA, NA))
+})

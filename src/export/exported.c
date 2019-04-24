@@ -453,3 +453,24 @@ sexp* rlang_is_raw(sexp* x, sexp* n_) {
   r_ssize n = validate_n(n_);
   return r_shared_lgl(r_is_raw(x, n));
 }
+
+sexp* rlang_is_string(sexp* x, sexp* string) {
+  if (r_typeof(x) != r_type_character || r_length(x) != 1) {
+    return r_shared_false;
+  }
+
+  sexp* value = r_chr_get(x, 0);
+
+  if (value == NA_STRING) {
+    return r_shared_false;
+  }
+
+  if (string == r_null) {
+    return r_shared_true;
+  }
+  if (!rlang_is_string(string, r_null)) {
+    r_abort("`string` must be `NULL` or a string");
+  }
+
+  return r_shared_lgl(value == r_chr_get(string, 0));
+}

@@ -1,6 +1,10 @@
 
 # rlang 0.3.4.9000
 
+* `is_string()` gains a `string` argument. `is_string(x, "foo")` is a
+  shortcut for `is_character(x) && length(x) == 1 && identical(x,
+  "foo")`.
+
 * `is_interactive()` is aware of the `TESTTHAT` environment variable and
   returns `FALSE` when it is `"true"` (@jennybc, #738).
 

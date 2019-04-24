@@ -116,6 +116,7 @@ extern sexp* rlang_new_splice_box(sexp*);
 extern sexp* rlang_is_splice_box(sexp*);
 extern sexp* rlang_unbox(sexp*);
 extern sexp* rlang_new_function(sexp*, sexp*, sexp*);
+extern sexp* rlang_is_string(sexp*, sexp*);
 
 // Library initialisation defined below
 sexp* rlang_library_load();
@@ -271,6 +272,7 @@ static const r_callable r_callables[] = {
   {"rlang_new_splice_box",              (r_fn_ptr) &rlang_new_splice_box, 1},
   {"rlang_is_splice_box",               (r_fn_ptr) &rlang_is_splice_box, 1},
   {"rlang_new_function",                (r_fn_ptr) &rlang_new_function, 3},
+  {"rlang_is_string",                   (r_fn_ptr) &rlang_is_string, 2},
   {NULL, NULL, 0}
 };
 

@@ -30,7 +30,7 @@ is_scalar_logical(x)
 
 is_scalar_raw(x)
 
-is_string(x, encoding = NULL)
+is_string(x, string = NULL)
 
 is_scalar_bytes(x)
 }
@@ -39,6 +39,8 @@ is_scalar_bytes(x)
 
 \item{encoding}{Expected encoding of a string or character
 vector. One of \code{UTF-8}, \code{latin1}, or \code{unknown}.}
+
+\item{string}{A string to match \code{x} against.}
 }
 \description{
 These predicates check for a given type and whether the vector is

@@ -153,12 +153,10 @@ is_scalar_raw <- function(x) {
   .Call(rlang_is_raw, x, 1L)
 }
 #' @export
+#' @param string A string to match `x` against.
 #' @rdname scalar-type-predicates
-is_string <- function(x, encoding = NULL) {
-  if (!is_null(encoding)) {
-    warn_deprecated("The `encoding` argument is deprecated as of rlang 0.3.0.")
-  }
-  is_character(x, encoding = encoding, n = 1L) && !is.na(x)
+is_string <- function(x, string = NULL) {
+  .Call(rlang_is_string, x, string)
 }
 #' @export
 #' @rdname scalar-type-predicates
