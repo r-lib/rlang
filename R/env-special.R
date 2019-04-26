@@ -197,44 +197,51 @@ current_env <- function() {
 #' These functions are experimental and may not belong to the rlang
 #' package. Expect API changes.
 #'
-#' @param pkg The name of a package. If `NULL`, the surrounding
-#'   namespace is returned, or an error is issued if not called within
-#'   a namespace. If a function, the enclosure of that function is
-#'   checked.
+#' @param x
+#'   * For `ns_env()`, the name of a package or an environment as a
+#'     string.
+#'   * An environment (the current environment by default).
+#'   * A function.
+#'
+#'   In the latter two cases, the environment ancestry is searched for
+#'   a namespace with [base::topenv()]. If the environment doesn't
+#'   inherit from a namespace, this is an error.
 #'
 #' @seealso [pkg_env()]
 #' @keywords internal
 #' @export
-ns_env <- function(pkg = NULL) {
-  if (is_null(pkg)) {
-    bottom <- topenv(caller_env())
-    if (!isNamespace(bottom)) abort("not in a namespace")
-    bottom
-  } else if (is_function(pkg)) {
-    env <- env_parent(pkg)
-    if (isNamespace(env)) {
-      env
-    } else {
-      NULL
-    }
-  } else {
-    asNamespace(pkg)
+ns_env <- function(x = caller_env()) {
+  env <- switch(typeof(x),
+    builtin = ,
+    special = ns_env("base"),
+    closure = topenv(fn_env(x)),
+    environment = topenv(x),
+    character = if (is_string(x)) asNamespace(x)
+  )
+
+  if (!is_namespace(env)) {
+    abort("`x` must be a package name or a function inheriting from a namespace.")
   }
+
+  env
 }
 #' @rdname ns_env
 #' @export
-ns_imports_env <- function(pkg = NULL) {
-  env_parent(ns_env(pkg))
+ns_imports_env <- function(x = caller_env()) {
+  env_parent(ns_env(x))
 }
 #' @rdname ns_env
+#' @param env A namespace environment.
 #' @export
-ns_env_name <- function(pkg = NULL) {
-  if (is_null(pkg)) {
-    pkg <- with_env(caller_env(), ns_env())
-  } else if (is_function(pkg)) {
-    pkg <- get_env(pkg)
-  }
-  unname(getNamespaceName(pkg))
+ns_env_name <- function(x = caller_env()) {
+  env <- switch(typeof(x),
+    environment = ,
+    builtin = ,
+    special = ,
+    closure = ns_env(x),
+    abort("`x` must be an environment or a function inheriting from a namespace.")
+  )
+  unname(getNamespaceName(env))
 }
 
 ns_exports <- function(ns) getNamespaceExports(ns)

@@ -1,18 +1,5 @@
 context("env-special")
 
-test_that("ns_env() returns current namespace", {
-  expect_identical(with_env(ns_env("rlang"), ns_env()), get_env(rlang::get_env))
-})
-
-test_that("ns_imports_env() returns imports env", {
-  expect_identical(with_env(ns_env("rlang"), ns_imports_env()), env_parent(get_env(rlang::get_env)))
-})
-
-test_that("ns_env_name() returns namespace name", {
-  expect_identical(with_env(ns_env("base"), ns_env_name()), "base")
-  expect_identical(ns_env_name(rlang::get_env), "rlang")
-})
-
 test_that("search_envs() includes the global and base env", {
   envs <- search_envs()
   expect_identical(envs[[1]], global_env())
@@ -57,4 +44,41 @@ test_that("is_attached() detects environments on the search path", {
   expect_true(is_attached(base_env()))
   expect_true(is_attached(global_env()))
   expect_false(is_attached(ns_env("base")))
+})
+
+test_that("ns_env() and ns_env_name() support primitive functions", {
+  expect_true(is_reference(ns_env(base::list), ns_env("base")))
+  expect_true(is_reference(ns_env(base::`{`), ns_env("base")))
+
+  expect_identical(ns_env_name(base::list), "base")
+  expect_identical(ns_env_name(base::`{`), "base")
+})
+
+test_that("ns_env() and ns_env_name() support closures", {
+  fn <- function() NULL
+  environment(fn) <- env(ns_env("rlang"))
+
+  expect_true(is_reference(ns_env(fn), ns_env("rlang")))
+  expect_identical(ns_env_name(fn), "rlang")
+})
+
+test_that("ns_env_name() accepts environments", {
+  expect_identical(ns_env_name(ns_env("base")), "base")
+})
+
+test_that("ns_env() and ns_env_name() take the topenv()", {
+  ns <- ns_env("rlang")
+  local <- env(ns)
+  expect_true(is_reference(ns_env(local), ns))
+  expect_identical(ns_env_name(local), "rlang")
+})
+
+test_that("ns_env() and variants have default argument", {
+  fn <- function() list(ns_env(), ns_imports_env(), ns_env_name())
+  environment(fn) <- ns_env("rlang")
+  out <- fn()
+
+  expect_true(is_reference(out[[1]], ns_env("rlang")))
+  expect_true(is_reference(out[[2]], ns_imports_env("rlang")))
+  expect_identical(out[[3]], "rlang")
 })

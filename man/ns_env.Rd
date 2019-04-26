@@ -6,17 +6,27 @@
 \alias{ns_env_name}
 \title{Get the namespace of a package}
 \usage{
-ns_env(pkg = NULL)
+ns_env(x = caller_env())
 
-ns_imports_env(pkg = NULL)
+ns_imports_env(x = caller_env())
 
-ns_env_name(pkg = NULL)
+ns_env_name(x = caller_env())
 }
 \arguments{
-\item{pkg}{The name of a package. If \code{NULL}, the surrounding
-namespace is returned, or an error is issued if not called within
-a namespace. If a function, the enclosure of that function is
-checked.}
+\item{x}{\itemize{
+\item For \code{ns_env()}, the name of a package or an environment as a
+string.
+\itemize{
+\item An environment (the current environment by default).
+\item A function.
+}
+
+In the latter two cases, the environment ancestry is searched for
+a namespace with \code{\link[base:topenv]{base::topenv()}}. If the environment doesn't
+inherit from a namespace, this is an error.
+}}
+
+\item{env}{A namespace environment.}
 }
 \description{
 Namespaces are the environment where all the functions of a package
