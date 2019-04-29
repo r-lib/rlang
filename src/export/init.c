@@ -291,6 +291,7 @@ static const r_external externals[] = {
 
 extern bool is_splice_box(sexp*);
 extern sexp* rlang_env_dots_values(sexp*);
+extern sexp* rlang_env_dots_list(sexp*);
 
 void R_init_rlang(r_dll_info* dll) {
   r_register_c_callable("rlang", "rlang_squash_if", (r_fn_ptr) &r_squash_if);
@@ -315,6 +316,7 @@ void R_init_rlang(r_dll_info* dll) {
   r_register_c_callable("rlang", "rlang_is_splice_box", (r_fn_ptr) &is_splice_box);
   r_register_c_callable("rlang", "rlang_unbox", (r_fn_ptr) &rlang_unbox);
   r_register_c_callable("rlang", "rlang_env_dots_values", (r_fn_ptr) &rlang_env_dots_values);
+  r_register_c_callable("rlang", "rlang_env_dots_list", (r_fn_ptr) &rlang_env_dots_list);
 
   // Experimental method for exporting C function pointers as actual R objects
   rlang_register_pointer("rlang", "rlang_test_is_spliceable", (r_fn_ptr) &rlang_is_clevel_spliceable);

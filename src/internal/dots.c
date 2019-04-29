@@ -816,6 +816,16 @@ sexp* rlang_env_dots_values(sexp* env) {
                           r_shared_false,
                           false);
 }
+sexp* rlang_env_dots_list(sexp* env) {
+  return dots_values_impl(env,
+                          r_shared_false,
+                          rlang_objs_trailing,
+                          r_shared_false,
+                          r_shared_true,
+                          rlang_objs_keep,
+                          r_shared_false,
+                          true);
+}
 
 sexp* rlang_dots_list(sexp* frame_env,
                       sexp* named,
