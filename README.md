@@ -51,8 +51,8 @@ install.packages("rlang")
 Or install the development version from github with:
 
 ```r
-# install.packages("devtools")
-devtools::install_github("r-lib/rlang", build_vignettes = TRUE)
+# install.packages("remotes")
+remotes::install_github("r-lib/rlang")
 ```
 
 ## Cheatsheet
