@@ -16,8 +16,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
@@ -66,7 +65,7 @@ list of arguments, body code and parent environment." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.99.9003</span>
       </span>
     </div>
 
@@ -74,7 +73,7 @@ list of arguments, body code and parent environment." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -112,7 +111,7 @@ list of arguments, body code and parent environment." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-lib/rlang">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -148,9 +147,10 @@ list of arguments, body code and parent environment.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>args</th>
-      <td><p>A named list of default arguments. Note that if you
-want arguments that don't have defaults, you'll need to use the
-special function <a href='https://www.rdocumentation.org/packages/base/topics/list'>alist</a>, e.g. <code><a href='https://www.rdocumentation.org/packages/base/topics/list'>alist(a = , b = 1)</a></code></p></td>
+      <td><p>A named list or pairlist of default arguments. Note
+that if you want arguments that don't have defaults, you'll need
+to use the special function <code><a href='pairlist2.html'>pairlist2()</a></code>. If you need quoted
+defaults, use <code><a href='quotation.html'>exprs()</a></code>.</p></td>
     </tr>
     <tr>
       <th>body</th>
@@ -167,16 +167,30 @@ calling environment of <code>new_function()</code></p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='no'>x</span> + <span class='fl'>3</span>
-<span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='fu'>new_function</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>alist</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> ), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>x</span> + <span class='fl'>3</span>))
-
-<span class='co'># The components of the functions are identical</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/formals'>formals</a></span>(<span class='no'>f</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/formals'>formals</a></span>(<span class='no'>g</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/body'>body</a></span>(<span class='no'>f</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/body'>body</a></span>(<span class='no'>g</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/environment'>environment</a></span>(<span class='no'>f</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/environment'>environment</a></span>(<span class='no'>g</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='co'># But the functions are not identical because f has src code reference</span>
+    <pre class="examples"><div class='input'><span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='no'>letters</span>
+<span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='fu'>new_function</span>(<span class='kw'>NULL</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>letters</span>))
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='no'>f</span>, <span class='no'>g</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/attr'>attr</a></span>(<span class='no'>f</span>, <span class='st'>"srcref"</span>) <span class='kw'>&lt;-</span> <span class='kw'>NULL</span>
-<span class='co'># Now they are:</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/stopifnot'>stopifnot</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='no'>f</span>, <span class='no'>g</span>))</div></pre>
+<span class='co'># Pass a list or pairlist of named arguments to create a function</span>
+<span class='co'># with parameters. The name becomes the parameter name and the</span>
+<span class='co'># argument the default value for this parameter:</span>
+<span class='fu'>new_function</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>10</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>x</span>))</div><div class='output co'>#&gt; function (x = 10) 
+#&gt; x
+#&gt; &lt;environment: 0x7e54418&gt;</div><div class='input'><span class='fu'>new_function</span>(<span class='fu'><a href='pairlist2.html'>pairlist2</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>10</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>x</span>))</div><div class='output co'>#&gt; function (x = 10) 
+#&gt; x
+#&gt; &lt;environment: 0x7e54418&gt;</div><div class='input'>
+<span class='co'># Use `exprs()` to create quoted defaults. Compare:</span>
+<span class='fu'>new_function</span>(<span class='fu'><a href='pairlist2.html'>pairlist2</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>5</span> + <span class='fl'>5</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>x</span>))</div><div class='output co'>#&gt; function (x = 10) 
+#&gt; x
+#&gt; &lt;environment: 0x7e54418&gt;</div><div class='input'><span class='fu'>new_function</span>(<span class='fu'><a href='quotation.html'>exprs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>5</span> + <span class='fl'>5</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>x</span>))</div><div class='output co'>#&gt; function (x = 5 + 5) 
+#&gt; x
+#&gt; &lt;environment: 0x7e54418&gt;</div><div class='input'>
+<span class='co'># Pass empty arguments to omit defaults. `list()` doesn't allow</span>
+<span class='co'># empty arguments but `pairlist2()` does:</span>
+<span class='fu'>new_function</span>(<span class='fu'><a href='pairlist2.html'>pairlist2</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> , <span class='kw'>y</span> <span class='kw'>=</span> <span class='fl'>5</span> + <span class='fl'>5</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>x</span> + <span class='no'>y</span>))</div><div class='output co'>#&gt; function (x, y = 10) 
+#&gt; x + y
+#&gt; &lt;environment: 0x7e54418&gt;</div><div class='input'><span class='fu'>new_function</span>(<span class='fu'><a href='quotation.html'>exprs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> , <span class='kw'>y</span> <span class='kw'>=</span> <span class='fl'>5</span> + <span class='fl'>5</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>x</span> + <span class='no'>y</span>))</div><div class='output co'>#&gt; function (x, y = 5 + 5) 
+#&gt; x + y
+#&gt; &lt;environment: 0x7e54418&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -195,7 +209,7 @@ calling environment of <code>new_function()</code></p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
       </footer>
    </div>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Signal a condition — cnd_signal • rlang</title>
+<title>Signal a condition object — cnd_signal • rlang</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -16,8 +16,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
@@ -31,16 +30,24 @@
 
 
 
-<meta property="og:title" content="Signal a condition — cnd_signal" />
+<meta property="og:title" content="Signal a condition object — cnd_signal" />
 
-<meta property="og:description" content="Signal a condition to handlers that have been established on the
-stack. Conditions signalled with cnd_signal() are assumed to be
-benign. Control flow can resume normally once the condition has
-been signalled (if no handler jumped somewhere else on the
-evaluation stack). On the other hand, cnd_abort() treats the
-condition as critical and will jump out of the distressed call
-frame (see rst_abort()), unless a handler can deal with the
-condition." />
+<meta property="og:description" content="The type of signal depends on the class of the condition:
+A message is signalled if the condition inherits from
+&quot;message&quot;. This is equivalent to signalling with inform() or
+base::message().
+A warning is signalled if the condition inherits from
+&quot;warning&quot;. This is equivalent to signalling with warn() or
+base::warning().
+An error is signalled if the condition inherits from
+&quot;error&quot;. This is equivalent to signalling with abort() or
+base::stop().
+An interrupt is signalled if the condition inherits from
+&quot;interrupt&quot;. This is equivalent to signalling with
+interrupt().
+" />
+
+<meta property="og:description" content="Use cnd_type() to determine the type of a condition." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -71,7 +78,7 @@ condition." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.99.9003</span>
       </span>
     </div>
 
@@ -79,7 +86,7 @@ condition." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -117,7 +124,7 @@ condition." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-lib/rlang">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -133,21 +140,29 @@ condition." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Signal a condition</h1>
+    <h1>Signal a condition object</h1>
     <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/cnd.R'><code>R/cnd.R</code></a></small>
     <div class="hidden name"><code>cnd_signal.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Signal a condition to handlers that have been established on the
-stack. Conditions signalled with <code>cnd_signal()</code> are assumed to be
-benign. Control flow can resume normally once the condition has
-been signalled (if no handler jumped somewhere else on the
-evaluation stack). On the other hand, <code>cnd_abort()</code> treats the
-condition as critical and will jump out of the distressed call
-frame (see <code><a href='rst_abort.html'>rst_abort()</a></code>), unless a handler can deal with the
-condition.</p>
+    <p>The type of signal depends on the class of the condition:</p><ul>
+<li><p>A message is signalled if the condition inherits from
+<code>"message"</code>. This is equivalent to signalling with <code><a href='abort.html'>inform()</a></code> or
+<code><a href='https://www.rdocumentation.org/packages/base/topics/message'>base::message()</a></code>.</p></li>
+<li><p>A warning is signalled if the condition inherits from
+<code>"warning"</code>. This is equivalent to signalling with <code><a href='abort.html'>warn()</a></code> or
+<code><a href='https://www.rdocumentation.org/packages/base/topics/warning'>base::warning()</a></code>.</p></li>
+<li><p>An error is signalled if the condition inherits from
+<code>"error"</code>. This is equivalent to signalling with <code><a href='abort.html'>abort()</a></code> or
+<code><a href='https://www.rdocumentation.org/packages/base/topics/stop'>base::stop()</a></code>.</p></li>
+<li><p>An interrupt is signalled if the condition inherits from
+<code>"interrupt"</code>. This is equivalent to signalling with
+<code><a href='abort.html'>interrupt()</a></code>.</p></li>
+</ul>
+
+    <p>Use <code><a href='cnd_type.html'>cnd_type()</a></code> to determine the type of a condition.</p>
     
     </div>
 
@@ -162,91 +177,46 @@ condition.</p>
     </tr>
     <tr>
       <th>.cnd, .mufflable</th>
-      <td><p>These arguments are retired. <code>.cnd</code> has been
-renamed to <code>cnd</code> and <code>.mufflable</code> no longer has any effect as
-non-critical conditions are always signalled with a muffling
-restart.</p></td>
+      <td><p>These arguments are deprecated.</p></td>
     </tr>
     </table>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>If <code>.critical</code> is <code>FALSE</code>, this function has no side effects beyond
-calling handlers. In particular, execution will continue normally
-after signalling the condition (unless a handler jumped somewhere
-else via <code><a href='rst_list.html'>rst_jump()</a></code> or by being <code><a href='exiting.html'>exiting()</a></code>). If <code>.critical</code> is
-<code>TRUE</code>, the condition is signalled via <code><a href='https://www.rdocumentation.org/packages/base/topics/stop'>base::stop()</a></code> and the
-program will terminate if no handler dealt with the condition by
-jumping out of the distressed call frame.</p>
-<p><code><a href='exiting.html'>calling()</a></code> handlers are called in turn when they decline to handle
-the condition by returning normally. However, it is sometimes
-useful for a calling handler to produce a side effect (signalling
-another condition, displaying a message, logging something, etc),
-prevent the condition from being passed to other handlers, and
-resume execution from the place where the condition was
-signalled. The easiest way to accomplish this is by jumping to a
-restart point (see <code><a href='with_restarts.html'>with_restarts()</a></code>) established by the signalling
-function. <code>cnd_signal()</code> always installs a muffle restart (see
-<code><a href='cnd_muffle.html'>cnd_muffle()</a></code>).</p>
     
     <h2 class="hasAnchor" id="lifecycle"><a class="anchor" href="#lifecycle"></a>Lifecycle</h2>
 
     
     <ul>
 <li><p>Modifying a condition object with <code>cnd_signal()</code> is defunct.
-Consequently the <code>.msg</code> and <code>.call</code> arguments are retired and
-defunct as of rlang 0.3.0.  In addition <code>.cnd</code> is renamed to
-<code>cnd</code> and soft-deprecated.</p></li>
-<li><p>The <code>.mufflable</code> argument is soft-deprecated and no longer has
-any effect. Non-critical conditions are always signalled with a
-muffle restart.</p></li>
-<li><p>Creating a condition object with <code>cnd_signal()</code> is
-soft-deprecated. Please use <code><a href='abort.html'>signal()</a></code> instead.</p></li>
+Consequently the <code>.msg</code> and <code>.call</code> arguments are defunct as of
+rlang 0.3.0. In addition, <code>.cnd</code> has been renamed to <code>cnd</code> and is
+deprecated as of rlang 0.4.0</p></li>
+<li><p>The <code>.mufflable</code> argument is deprecated as of rlang 0.4.0 and no
+longer has any effect. Non-critical conditions are always
+signalled with a muffle restart.</p></li>
+<li><p>Creating a condition object with <code>cnd_signal()</code> is deprecated as
+of rlang 0.4.0. Please use <code><a href='abort.html'>signal()</a></code> instead.</p></li>
 </ul>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='abort.html'>abort()</a></code>, <code><a href='abort.html'>warn()</a></code> and <code><a href='abort.html'>inform()</a></code> for signalling typical
-R conditions. See <code><a href='with_handlers.html'>with_handlers()</a></code> for establishing condition
-handlers.</p></div>
+    <div class='dont-index'><p><code><a href='abort.html'>abort()</a></code>, <code><a href='abort.html'>warn()</a></code> and <code><a href='abort.html'>inform()</a></code> for creating and
+signalling structured R conditions. See <code><a href='with_handlers.html'>with_handlers()</a></code> for
+establishing condition handlers.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Creating a condition of type "foo"</span>
-<span class='no'>cnd</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cnd.html'>cnd</a></span>(<span class='st'>"foo"</span>)
-
-<span class='co'># If no handler capable of dealing with "foo" is established on the</span>
-<span class='co'># stack, signalling the condition has no effect:</span>
-<span class='fu'>cnd_signal</span>(<span class='no'>cnd</span>)
-
-<span class='co'># To learn more about establishing condition handlers, see</span>
-<span class='co'># documentation for with_handlers(), exiting() and calling():</span>
-<span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(<span class='fu'>cnd_signal</span>(<span class='no'>cnd</span>),
-  <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'><a href='exiting.html'>calling</a></span>(<span class='kw'>function</span>(<span class='no'>c</span>) <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='st'>"side effect!\n"</span>))
-)</div><div class='output co'>#&gt; side effect!</div><div class='output co'>#&gt; NULL</div><div class='input'>
-
-<span class='co'># By default, cnd_signal() creates a muffling restart which allows</span>
-<span class='co'># calling handlers to prevent a condition from being passed on to</span>
-<span class='co'># other handlers and to resume execution:</span>
-<span class='no'>undesirable_handler</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='exiting.html'>calling</a></span>(<span class='kw'>function</span>(<span class='no'>c</span>) <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='st'>"please don't call me\n"</span>))
-<span class='no'>muffling_handler</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='exiting.html'>calling</a></span>(<span class='kw'>function</span>(<span class='no'>c</span>) {
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='st'>"muffling foo...\n"</span>)
-  <span class='fu'><a href='cnd_muffle.html'>cnd_muffle</a></span>(<span class='no'>c</span>)
-})
-
-<span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(<span class='kw'>foo</span> <span class='kw'>=</span> <span class='no'>undesirable_handler</span>,
-  <span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(<span class='kw'>foo</span> <span class='kw'>=</span> <span class='no'>muffling_handler</span>, {
-    <span class='fu'>cnd_signal</span>(<span class='fu'><a href='cnd.html'>cnd</a></span>(<span class='st'>"foo"</span>))
-    <span class='st'>"return value"</span>
-  }))</div><div class='output co'>#&gt; muffling foo...</div><div class='output co'>#&gt; [1] "return value"</div></pre>
+    <pre class="examples"><div class='input'><span class='co'># The type of signal depends on the class. If the condition</span>
+<span class='co'># inherits from "warning", a warning is issued:</span>
+<span class='no'>cnd</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cnd.html'>warning_cnd</a></span>(<span class='st'>"my_warning_class"</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"This is a warning"</span>)
+<span class='fu'>cnd_signal</span>(<span class='no'>cnd</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: This is a warning</span></div><div class='input'>
+<span class='co'># If it inherits from "error", an error is raised:</span>
+<span class='no'>cnd</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cnd.html'>error_cnd</a></span>(<span class='st'>"my_error_class"</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"This is an error"</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/try'>try</a></span>(<span class='fu'>cnd_signal</span>(<span class='no'>cnd</span>))</div><div class='output co'>#&gt; Error : This is an error</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#details">Details</a></li>
-
       <li><a href="#lifecycle">Lifecycle</a></li>
 
       <li><a href="#see-also">See also</a></li>
@@ -263,7 +233,7 @@ handlers.</p></div>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
       </footer>
    </div>

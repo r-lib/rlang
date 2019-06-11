@@ -16,8 +16,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
@@ -71,7 +70,7 @@ sections that explain the reasons for their retirements." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.99.9003</span>
       </span>
     </div>
 
@@ -79,7 +78,7 @@ sections that explain the reasons for their retirements." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -117,7 +116,7 @@ sections that explain the reasons for their retirements." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-lib/rlang">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -203,7 +202,7 @@ changes.</p><ul>
 <li><p><code><a href='switch_type.html'>switch_class()</a></code>, <code><a href='switch_type.html'>coerce_class()</a></code></p></li>
 <li><p><code><a href='switch_lang.html'>lang_type_of()</a></code>, <code><a href='switch_lang.html'>switch_lang()</a></code>, <code><a href='switch_lang.html'>coerce_lang()</a></code></p></li>
 <li><p><code><a href='flatten.html'>flatten()</a></code>, <code><a href='flatten.html'>squash()</a></code>, and their atomic vector variants</p></li>
-<li><p><code><a href='modify.html'>modify()</a></code> and <code><a href='prepend.html'>prepend()</a></code></p></li>
+<li><p><code><a href='prepend.html'>modify()</a></code> and <code><a href='prepend.html'>prepend()</a></code></p></li>
 <li><p><code><a href='vector-coercion.html'>as_logical()</a></code>, <code><a href='vector-coercion.html'>as_character()</a></code>, etc.</p></li>
 <li><p><code><a href='with_restarts.html'>with_restarts()</a></code>, <code><a href='rst_list.html'>rst_list()</a></code>, <code><a href='rst_list.html'>rst_exists()</a></code>, <code><a href='rst_list.html'>rst_jump()</a></code>,
 <code><a href='rst_list.html'>rst_maybe_jump()</a></code>, <code><a href='rst_abort.html'>rst_abort()</a></code>. It is not clear yet whether we
@@ -222,10 +221,8 @@ want to recommend restarts as a style of programming in R.</p></li>
     <p><img src='figures/lifecycle-soft-deprecated.svg' alt='Soft-deprecated lifecycle' /></p>
 <p><strong>Soft-deprecated as of rlang 0.3.0</strong></p><ul>
 <li><p><code><a href='get_env.html'>get_env()</a></code>: The <code>env</code> argument no longer has a default and must be supplied</p></li>
-<li><p><code><a href='cnd_signal.html'>cnd_signal()</a></code>: The <code>.mufflable</code> argument no longer has any effect</p></li>
 <li><p><code><a href='invoke.html'>invoke()</a></code>: Use the simpler <code><a href='exec.html'>exec()</a></code> instead.</p></li>
 <li><p><code><a href='set_attrs.html'>set_attrs()</a></code>, <code><a href='set_attrs.html'>mut_attrs()</a></code></p></li>
-<li><p><code><a href='cnd_signal.html'>cnd_signal()</a></code>: <code>.cnd</code> =&gt; <code>cnd</code></p></li>
 <li><p><code><a href='is_frame.html'>is_frame()</a></code>, <code><a href='stack.html'>global_frame()</a></code>, <code><a href='stack.html'>current_frame()</a></code>,
 <code><a href='stack.html'>ctxt_frame()</a></code>, <code><a href='stack.html'>call_frame()</a></code>, <code><a href='frame_position.html'>frame_position()</a></code>,
 <code><a href='caller_frame.html'>caller_frame()</a></code></p></li>
@@ -285,7 +282,12 @@ like <code><a href='quotation.html'>quos()</a></code> is soft-deprecated.</p></l
 
     
     <p><img src='figures/lifecycle-deprecated.svg' alt='Deprecated lifecycle' /></p>
-<p><strong>Deprecated as of rlang 0.3.0</strong></p><ul>
+<p><strong>Deprecated as of rlang 0.4.0</strong></p><ul>
+<li><p><code><a href='prepend.html'>modify()</a></code> and <code><a href='prepend.html'>prepend()</a></code>.</p></li>
+<li><p><code><a href='cnd_signal.html'>cnd_signal()</a></code>: <code>.cnd</code> =&gt; <code>cnd</code></p></li>
+<li><p><code><a href='cnd_signal.html'>cnd_signal()</a></code>: The <code>.mufflable</code> argument no longer has any effect</p></li>
+</ul>
+    <p><strong>Deprecated as of rlang 0.3.0</strong></p><ul>
 <li><p><code><a href='as_data_mask.html'>as_data_mask()</a></code>: <code>parent</code> argument</p></li>
 <li><p><code><a href='as_data_mask.html'>new_data_mask()</a></code>: <code>parent</code> argument</p></li>
 <li><p><code><a href='env_parent.html'>env_tail()</a></code>: <code>sentinel</code> =&gt; <code>last</code></p></li>
@@ -306,7 +308,6 @@ argument.</p></li>
 <li><p><code><a href='eval_tidy_.html'>eval_tidy_()</a></code></p></li>
 <li><p><code><a href='is_quosureish.html'>is_quosureish()</a></code>, <code><a href='is_quosureish.html'>as_quosureish()</a></code></p></li>
 <li><p><code><a href='dictionary.html'>as_dictionary()</a></code> =&gt; <code><a href='as_data_mask.html'>as_data_pronoun()</a></code></p></li>
-<li><p><code><a href='cnd_signal.html'>cnd_signal()</a></code>: <code>.msg</code> and <code>.call</code>.</p></li>
 <li><p><code><a href='cnd.html'>cnd()</a></code>, <code><a href='cnd.html'>error_cnd()</a></code>, <code><a href='cnd.html'>warning_cnd()</a></code> and <code><a href='cnd.html'>message_cnd()</a></code>:
 <code>.msg</code> =&gt; <code>message</code>.</p></li>
 </ul>
@@ -326,6 +327,7 @@ find them in the commit history and previous releases.</p>
 <li><p><code>rst_muffle()</code> =&gt; <code><a href='cnd_muffle.html'>cnd_muffle()</a></code></p></li>
 <li><p><code>inplace()</code> =&gt; <code><a href='exiting.html'>calling()</a></code>. The <code>muffle</code> argument of <code>inplace()</code>
 has not been implemented in <code><a href='exiting.html'>calling()</a></code> and is now defunct.</p></li>
+<li><p><code><a href='cnd_signal.html'>cnd_signal()</a></code>: <code>.msg</code> and <code>.call</code>.</p></li>
 </ul>
     
 
@@ -358,7 +360,7 @@ has not been implemented in <code><a href='exiting.html'>calling()</a></code> an
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
       </footer>
    </div>
