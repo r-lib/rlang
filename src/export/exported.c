@@ -468,9 +468,21 @@ sexp* rlang_is_string(sexp* x, sexp* string) {
   if (string == r_null) {
     return r_shared_true;
   }
+
   if (!rlang_is_string(string, r_null)) {
     r_abort("`string` must be `NULL` or a string");
   }
 
-  return r_shared_lgl(value == r_chr_get(string, 0));
+  bool out = false;
+  r_ssize n = r_length(string);
+  sexp** p = r_chr_deref(string);
+
+  for (r_ssize i = 0; i < n; ++i, ++p) {
+    if (*p == value) {
+      out = true;
+      break;
+    }
+  }
+
+  return r_shared_lgl(out);
 }

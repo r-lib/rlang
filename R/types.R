@@ -153,7 +153,8 @@ is_scalar_raw <- function(x) {
   .Call(rlang_is_raw, x, 1L)
 }
 #' @export
-#' @param string A string to match `x` against.
+#' @param string A string to compare to `x`. If a character vector,
+#'   returns `TRUE` if at least one element is equal to `x`.
 #' @rdname scalar-type-predicates
 is_string <- function(x, string = NULL) {
   .Call(rlang_is_string, x, string)

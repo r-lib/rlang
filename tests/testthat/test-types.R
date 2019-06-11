@@ -161,4 +161,8 @@ test_that("is_string() matches on string", {
   expect_true(is_string("foo", "foo"))
   expect_false(is_string("foo", "bar"))
   expect_false(is_string(NA, NA))
+
+  expect_true(is_string("foo", c("foo", "bar")))
+  expect_true(is_string("foo", c("bar", "foo")))
+  expect_false(is_string("foo", c("bar", "baz")))
 })
