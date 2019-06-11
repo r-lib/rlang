@@ -200,13 +200,14 @@ maybe_add_namespace <- function(call, fn) {
     fn <- sys.function(fn)
   }
 
-  env <- topenv(fn_env(fn))
+  env <- fn_env(fn)
+  top <- topenv(env)
   if (is_reference(env, global_env())) {
     prefix <- "global"
     op <- "::"
-  } else if (is_namespace(env)) {
-    prefix <- ns_env_name(env)
-    op <- if (nm %in% ns_exports(env)) "::" else ":::"
+  } else if (is_namespace(top)) {
+    prefix <- ns_env_name(top)
+    op <- if (nm %in% ns_exports(top)) "::" else ":::"
   } else {
     return(call)
   }

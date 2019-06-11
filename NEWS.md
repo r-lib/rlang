@@ -1,6 +1,11 @@
 
 # rlang 0.3.99.9000
 
+* In rlang backtraces, the `global::` prefix is now only added when
+  the function directly inherits from the global environment.
+  Functions inheriting indirectly no longer have a namespace
+  qualifier (#733).
+
 * You can now pass a character vector as message argument for
   `abort()`, `warn()`, `inform()`, and `signal()`. The vector is
   collapsed to a single string with a `"\n"` newline separating each

@@ -485,6 +485,16 @@ test_that("global functions have `global::` prefix", {
   expect_known_trace_output(trace, file = "test-trace-global-prefix.txt")
 })
 
+test_that("local functions inheriting from global do not have `global::` prefix", {
+  skip_unless_utf8()
+
+  f <- eval_bare(expr(function(e) rlang::trace_back(e)), env(global_env()))
+  g <- function(e) f(e)
+  trace <- g(current_env())
+
+  expect_known_trace_output(trace, file = "test-trace-local-prefix.txt")
+})
+
 test_that("can trim layers of backtraces", {
   skip_unless_utf8()
 

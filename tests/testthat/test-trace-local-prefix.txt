@@ -1,0 +1,13 @@
+Full:
+    █
+ 1. └─rlang:::g(current_env())
+ 2.   └─f(e)
+
+Collapsed:
+    █
+ 1. └─rlang:::g(current_env())
+ 2.   └─f(e)
+
+Branch:
+ 1. rlang:::g(current_env())
+ 2. f(e)
