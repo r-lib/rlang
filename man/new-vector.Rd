@@ -32,7 +32,7 @@ new_list(n, names = NULL)
 }
 \description{
 These functions construct vectors of a given length, with attributes
-specified via dots. Except for \code{new_list()} and \code{new_bytes()}, the
+specified via dots. Except for \code{new_list()} and \code{new_raw()}, the
 empty vectors are filled with typed \link{missing} values. This is in
 contrast to the base function \code{\link[base:vector]{base::vector()}} which creates
 zero-filled vectors.
