@@ -1,6 +1,11 @@
 
 # rlang 0.3.99.9000
 
+* You can now pass a character vector as message argument for
+  `abort()`, `warn()`, `inform()`, and `signal()`. The vector is
+  collapsed to a single string with a `"\n"` newline separating each
+  element of the input vector (#744).
+
 * `options(error = rlang::entrace)` now has better support for errors
   thrown from C (#779). It also saves structured errors in the `error`
   field of `rlang::last_error()`.

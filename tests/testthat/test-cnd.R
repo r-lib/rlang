@@ -18,8 +18,11 @@ test_that("cnd_signal() creates muffle restarts", {
   )
 })
 
-test_that("error when msg is not a string", {
-  expect_error(warn(letters), "must be a string")
+test_that("signallers support character vectors as `message` parameter", {
+  expect_message(inform(c("foo", "bar")), "foo\nbar")
+  expect_warning(warn(c("foo", "bar")), "foo\nbar")
+  expect_error(abort(c("foo", "bar")), "foo\nbar")
+  expect_condition(signal(c("foo", "bar"), "quux"), "quux", regex = "foo\nbar")
 })
 
 

@@ -332,6 +332,7 @@ abort <- function(message, .subclass = NULL,
     trace <- trace_trim_context(trace, context)
   }
 
+  message <- paste0(message, collapse = "\n")
   cnd <- error_cnd(.subclass,
     ...,
     message = message,
@@ -390,6 +391,7 @@ find_capture_context <- function(n = 3L) {
 warn <- function(message, .subclass = NULL, ..., call = NULL, msg, type) {
   validate_signal_args(msg, type, call)
 
+  message <- paste0(message, collapse = "\n")
   cnd <- warning_cnd(.subclass, ..., message = message)
   warning(cnd)
 }
@@ -398,6 +400,7 @@ warn <- function(message, .subclass = NULL, ..., call = NULL, msg, type) {
 inform <- function(message, .subclass = NULL, ..., call = NULL, msg, type) {
   validate_signal_args(msg, type, call)
 
+  message <- paste0(message, collapse = "\n")
   message <- paste0(message, "\n")
   cnd <- message_cnd(.subclass, ..., message = message)
   message(cnd)
@@ -405,6 +408,7 @@ inform <- function(message, .subclass = NULL, ..., call = NULL, msg, type) {
 #' @rdname abort
 #' @export
 signal <- function(message, .subclass, ...) {
+  message <- paste0(message, collapse = "\n")
   cnd <- cnd(.subclass, ..., message = message)
   cnd_signal(cnd)
 }
