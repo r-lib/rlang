@@ -97,10 +97,8 @@ want to recommend restarts as a style of programming in R.
 \strong{Soft-deprecated as of rlang 0.3.0}
 \itemize{
 \item \code{\link[=get_env]{get_env()}}: The \code{env} argument no longer has a default and must be supplied
-\item \code{\link[=cnd_signal]{cnd_signal()}}: The \code{.mufflable} argument no longer has any effect
 \item \code{\link[=invoke]{invoke()}}: Use the simpler \code{\link[=exec]{exec()}} instead.
 \item \code{\link[=set_attrs]{set_attrs()}}, \code{\link[=mut_attrs]{mut_attrs()}}
-\item \code{\link[=cnd_signal]{cnd_signal()}}: \code{.cnd} => \code{cnd}
 \item \code{\link[=is_frame]{is_frame()}}, \code{\link[=global_frame]{global_frame()}}, \code{\link[=current_frame]{current_frame()}},
 \code{\link[=ctxt_frame]{ctxt_frame()}}, \code{\link[=call_frame]{call_frame()}}, \code{\link[=frame_position]{frame_position()}},
 \code{\link[=caller_frame]{caller_frame()}}
@@ -167,6 +165,8 @@ like \code{quos()} is soft-deprecated.
 \strong{Deprecated as of rlang 0.4.0}
 \itemize{
 \item \code{\link[=modify]{modify()}} and \code{\link[=prepend]{prepend()}}.
+\item \code{\link[=cnd_signal]{cnd_signal()}}: \code{.cnd} => \code{cnd}
+\item \code{\link[=cnd_signal]{cnd_signal()}}: The \code{.mufflable} argument no longer has any effect
 }
 
 \strong{Deprecated as of rlang 0.3.0}
@@ -194,7 +194,6 @@ argument.
 \item \code{\link[=eval_tidy_]{eval_tidy_()}}
 \item \code{\link[=is_quosureish]{is_quosureish()}}, \code{\link[=as_quosureish]{as_quosureish()}}
 \item \code{as_dictionary()} => \code{\link[=as_data_pronoun]{as_data_pronoun()}}
-\item \code{\link[=cnd_signal]{cnd_signal()}}: \code{.msg} and \code{.call}.
 \item \code{\link[=cnd]{cnd()}}, \code{\link[=error_cnd]{error_cnd()}}, \code{\link[=warning_cnd]{warning_cnd()}} and \code{\link[=message_cnd]{message_cnd()}}:
 \code{.msg} => \code{message}.
 }
@@ -218,6 +217,7 @@ find them in the commit history and previous releases.
 \item \code{rst_muffle()} => \code{\link[=cnd_muffle]{cnd_muffle()}}
 \item \code{inplace()} => \code{\link[=calling]{calling()}}. The \code{muffle} argument of \code{inplace()}
 has not been implemented in \code{calling()} and is now defunct.
+\item \code{\link[=cnd_signal]{cnd_signal()}}: \code{.msg} and \code{.call}.
 }
 }
 

@@ -98,11 +98,8 @@
 #' **Soft-deprecated as of rlang 0.3.0**
 #'
 #' * [get_env()]: The `env` argument no longer has a default and must be supplied
-#' * [cnd_signal()]: The `.mufflable` argument no longer has any effect
 #' * [invoke()]: Use the simpler [exec()] instead.
 #' * [set_attrs()], [mut_attrs()]
-#'
-#' * [cnd_signal()]: `.cnd` => `cnd`
 #'
 #' * [is_frame()], [global_frame()], [current_frame()],
 #'   [ctxt_frame()], [call_frame()], [frame_position()],
@@ -183,6 +180,9 @@
 #'
 #' * [modify()] and [prepend()].
 #'
+#' * [cnd_signal()]: `.cnd` => `cnd`
+#' * [cnd_signal()]: The `.mufflable` argument no longer has any effect
+#'
 #'
 #' **Deprecated as of rlang 0.3.0**
 #'
@@ -212,8 +212,6 @@
 #' * [is_quosureish()], [as_quosureish()]
 #' * `as_dictionary()` => [as_data_pronoun()]
 #'
-#' * [cnd_signal()]: `.msg` and `.call`.
-#'
 #' * [cnd()], [error_cnd()], [warning_cnd()] and [message_cnd()]:
 #'   `.msg` => `message`.
 #'
@@ -236,6 +234,8 @@
 #' * `rst_muffle()` => [cnd_muffle()]
 #' * `inplace()` => [calling()]. The `muffle` argument of `inplace()`
 #'   has not been implemented in `calling()` and is now defunct.
+#'
+#' * [cnd_signal()]: `.msg` and `.call`.
 #'
 #' @name lifecycle
 NULL

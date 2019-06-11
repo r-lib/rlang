@@ -66,6 +66,11 @@
   functions are now out of scope for rlang. They might be revived in
   the vctrs or funs packages.
 
+### Bumped lifecycle stages
+
+* `cnd_signal()`: The `.cnd` and `.mufflable` arguments are now
+  deprecated.
+
 
 # rlang 0.3.2
 

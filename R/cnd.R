@@ -129,25 +129,22 @@ cnd_type <- function(cnd) {
 #' @section Lifecycle:
 #'
 #' * Modifying a condition object with `cnd_signal()` is defunct.
-#'   Consequently the `.msg` and `.call` arguments are retired and
-#'   defunct as of rlang 0.3.0.  In addition `.cnd` is renamed to
-#'   `cnd` and soft-deprecated.
+#'   Consequently the `.msg` and `.call` arguments are defunct as of
+#'   rlang 0.3.0. In addition, `.cnd` has been renamed to `cnd` and is
+#'   deprecated as of rlang 0.4.0
 #'
-#' * The `.mufflable` argument is soft-deprecated and no longer has
-#'   any effect. Non-critical conditions are always signalled with a
-#'   muffle restart.
+#' * The `.mufflable` argument is deprecated as of rlang 0.4.0 and no
+#'   longer has any effect. Non-critical conditions are always
+#'   signalled with a muffle restart.
 #'
-#' * Creating a condition object with [cnd_signal()] is
-#'   soft-deprecated. Please use [signal()] instead.
+#' * Creating a condition object with [cnd_signal()] is deprecated as
+#'   of rlang 0.4.0. Please use [signal()] instead.
 #'
 #' @param cnd A condition object (see [cnd()]).
-#' @param .cnd,.mufflable These arguments are retired. `.cnd` has been
-#'   renamed to `cnd` and `.mufflable` no longer has any effect as
-#'   non-critical conditions are always signalled with a muffling
-#'   restart.
 #' @seealso [abort()], [warn()] and [inform()] for signalling typical
 #'   R conditions. See [with_handlers()] for establishing condition
 #'   handlers.
+#' @param .cnd,.mufflable These arguments are deprecated.
 #' @export
 #' @examples
 #' # Creating a condition of type "foo"
@@ -185,20 +182,20 @@ cnd_signal <- function(cnd, .cnd, .mufflable) {
 validate_cnd_signal_args <- function(cnd, .cnd, .mufflable,
                                      env = parent.frame()) {
   if (is_character(cnd)) {
-    signal_soft_deprecated(paste_line(
-      "Creating a condition with `cnd_signal()` is soft-deprecated as of rlang 0.3.0.",
+    warn_deprecated(paste_line(
+      "Creating a condition with `cnd_signal()` is deprecated as of rlang 0.4.0.",
       "Please use `signal()` instead."
     ))
     env$cnd <- cnd(cnd)
   }
   if (!missing(.cnd)) {
-    signal_soft_deprecated(paste_line(
-      "The `.cnd` argument is soft-deprecated as of rlang 0.3.0.",
+    warn_deprecated(paste_line(
+      "The `.cnd` argument is deprecated as of rlang 0.4.0.",
       "Please use `cnd` instead."
     ))
     if (is_character(.cnd)) {
-      signal_soft_deprecated(paste_line(
-        "Creating a condition with `cnd_signal()` is soft-deprecated as of rlang 0.3.0.",
+      warn_deprecated(paste_line(
+        "Creating a condition with `cnd_signal()` is deprecated as of rlang 0.4.0.",
         "Please use `signal()` instead."
       ))
       .cnd <- cnd(.cnd)
@@ -206,29 +203,11 @@ validate_cnd_signal_args <- function(cnd, .cnd, .mufflable,
     env$cnd <- .cnd
   }
   if (!missing(.mufflable)) {
-    signal_soft_deprecated(
-      "`.mufflable` is soft-deprecated as of rlang 0.3.0 and no longer has any effect"
+    warn_deprecated(
+      "`.mufflable` is deprecated as of rlang 0.4.0 and no longer has any effect"
     )
   }
 }
-
-cnd_call <- function(call) {
-  if (is_null(call) || is_false(call)) {
-    return(NULL)
-  }
-  if (is_call(call)) {
-    return(call)
-  }
-
-  if (is_true(call)) {
-    call <- 1L
-  } else if (!is_scalar_integerish(call, finite = TRUE)) {
-    stop("`call` must be a scalar logical or number", call. = FALSE)
-  }
-
-  sys.call(sys.parent(call + 1L))
-}
-
 
 #' Signal an error, warning, or message
 #'

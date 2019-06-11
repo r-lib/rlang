@@ -9,10 +9,7 @@ cnd_signal(cnd, .cnd, .mufflable)
 \arguments{
 \item{cnd}{A condition object (see \code{\link[=cnd]{cnd()}}).}
 
-\item{.cnd, .mufflable}{These arguments are retired. \code{.cnd} has been
-renamed to \code{cnd} and \code{.mufflable} no longer has any effect as
-non-critical conditions are always signalled with a muffling
-restart.}
+\item{.cnd, .mufflable}{These arguments are deprecated.}
 }
 \description{
 Signal a condition to handlers that have been established on the
@@ -48,14 +45,14 @@ function. \code{cnd_signal()} always installs a muffle restart (see
 
 \itemize{
 \item Modifying a condition object with \code{cnd_signal()} is defunct.
-Consequently the \code{.msg} and \code{.call} arguments are retired and
-defunct as of rlang 0.3.0.  In addition \code{.cnd} is renamed to
-\code{cnd} and soft-deprecated.
-\item The \code{.mufflable} argument is soft-deprecated and no longer has
-any effect. Non-critical conditions are always signalled with a
-muffle restart.
-\item Creating a condition object with \code{\link[=cnd_signal]{cnd_signal()}} is
-soft-deprecated. Please use \code{\link[=signal]{signal()}} instead.
+Consequently the \code{.msg} and \code{.call} arguments are defunct as of
+rlang 0.3.0. In addition, \code{.cnd} has been renamed to \code{cnd} and is
+deprecated as of rlang 0.4.0
+\item The \code{.mufflable} argument is deprecated as of rlang 0.4.0 and no
+longer has any effect. Non-critical conditions are always
+signalled with a muffle restart.
+\item Creating a condition object with \code{\link[=cnd_signal]{cnd_signal()}} is deprecated as
+of rlang 0.4.0. Please use \code{\link[=signal]{signal()}} instead.
 }
 }
 
