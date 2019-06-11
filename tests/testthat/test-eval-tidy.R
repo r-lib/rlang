@@ -40,8 +40,8 @@ test_that("pronouns resolve ambiguity looks first in `data`", {
 })
 
 test_that("pronouns complain about missing values", {
-  expect_error(eval_tidy(quo(.data$x), list()), "Column `x` not found in `.data`")
-  expect_error(eval_tidy(quo(.data$x), data.frame()), "Column `x` not found in `.data`")
+  expect_data_pronoun_error(eval_tidy(quo(.data$x), list()), "Column `x` not found in `.data`")
+  expect_data_pronoun_error(eval_tidy(quo(.data$x), data.frame()), "Column `x` not found in `.data`")
 })
 
 test_that("nested quosures look in their own env", {
@@ -244,7 +244,7 @@ test_that("as_data_pronoun() creates pronoun", {
   expect_reference(env_parent(data_env), empty_env())
   expect_true(all(env_names(data_env) %in% names(mtcars)))
 
-  expect_error(data$foobar, "Column `foobar` not found in `.data`")
+  expect_data_pronoun_error(data$foobar, "Column `foobar` not found in `.data`")
   expect_identical(data[["cyl"]], mtcars$cyl)
 })
 
@@ -354,20 +354,20 @@ test_that(".data pronoun walks the ancestry of environments", {
   expect_equal(.data$a, 3)
   expect_equal(.data$b, 2)
   expect_equal(.data$c, 1)
-  expect_error(.data$d, "Column `d` not found in `.data`")
-  expect_error(.data$e, "Column `e` not found in `.data`")
-  expect_error(.data$.data, "Column `.data` not found in `.data`")
-  expect_error(.data$.env, "Column `.env` not found in `.data`")
-  expect_error(.data$.top_env, "Column `.top_env` not found in `.data`")
+  expect_data_pronoun_error(.data$d, "Column `d` not found in `.data`")
+  expect_data_pronoun_error(.data$e, "Column `e` not found in `.data`")
+  expect_data_pronoun_error(.data$.data, "Column `.data` not found in `.data`")
+  expect_data_pronoun_error(.data$.env, "Column `.env` not found in `.data`")
+  expect_data_pronoun_error(.data$.top_env, "Column `.top_env` not found in `.data`")
 
   expect_equal(.data[["a"]], 3)
   expect_equal(.data[["b"]], 2)
   expect_equal(.data[["c"]], 1)
-  expect_error(.data[["d"]], "Column `d` not found in `.data`")
-  expect_error(.data[["e"]], "Column `e` not found in `.data`")
-  expect_error(.data[[".data"]], "Column `.data` not found in `.data`")
-  expect_error(.data[[".env"]], "Column `.env` not found in `.data`")
-  expect_error(.data[[".top_env"]], "Column `.top_env` not found in `.data`")
+  expect_data_pronoun_error(.data[["d"]], "Column `d` not found in `.data`")
+  expect_data_pronoun_error(.data[["e"]], "Column `e` not found in `.data`")
+  expect_data_pronoun_error(.data[[".data"]], "Column `.data` not found in `.data`")
+  expect_data_pronoun_error(.data[[".env"]], "Column `.env` not found in `.data`")
+  expect_data_pronoun_error(.data[[".top_env"]], "Column `.top_env` not found in `.data`")
 
   expect_error(.data["a"])
   expect_warning(names(.data), "deprecated")
