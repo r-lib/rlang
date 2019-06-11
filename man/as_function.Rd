@@ -30,9 +30,8 @@ is a string.}
 \description{
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
 \itemize{
-\item \code{as_function()} transforms an object into a function. It fetches
-the function by name, for string input, or turns a one-sided formula
-into a function.
+\item \code{as_function()} transforms a one-sided formula into a function.
+This powers the lambda syntax in packages like purrr.
 \item \code{as_closure()} first passes its argument to \code{as_function()}. If
 the result is a primitive function, it regularises it to a proper
 \link{closure} (see \code{\link[=is_function]{is_function()}} about primitive functions).

@@ -361,9 +361,8 @@ fn_env <- function(fn) {
 #'
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
 #'
-#' * `as_function()` transforms an object into a function. It fetches
-#'   the function by name, for string input, or turns a one-sided formula
-#'   into a function.
+#' * `as_function()` transforms a one-sided formula into a function.
+#'   This powers the lambda syntax in packages like purrr.
 #'
 #' * `as_closure()` first passes its argument to `as_function()`. If
 #'   the result is a primitive function, it regularises it to a proper
