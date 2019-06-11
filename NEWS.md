@@ -59,6 +59,14 @@
   `"function"` (@richierocks, #735).
 
 
+## Lifecycle
+
+* `modify()` and `prepend()` (two experimental functions marked as in
+  the questioning stage since rlang 0.3.0) are now deprecated. Vector
+  functions are now out of scope for rlang. They might be revived in
+  the vctrs or funs packages.
+
+
 # rlang 0.3.2
 
 * Fixed protection issue reported by rchk.

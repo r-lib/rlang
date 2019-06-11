@@ -179,6 +179,11 @@
 #'
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 #'
+#' **Deprecated as of rlang 0.4.0**
+#'
+#' * [modify()] and [prepend()].
+#'
+#'
 #' **Deprecated as of rlang 0.3.0**
 #'
 #' * [as_data_mask()]: `parent` argument

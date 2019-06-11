@@ -514,3 +514,9 @@ test_that("vector _along() ctors pick up names", {
   expect_identical(new_raw_along(x, toupper), set_names(raw(2), c("A", "B")))
   expect_identical(new_list_along(x, toupper), list(A = NULL, B = NULL))
 })
+
+test_that("vector is modified", {
+  x <- c(1, b = 2, c = 3, 4)
+  out <- modify(x, 5, b = 20, splice(list(6, c = "30")))
+  expect_equal(out, list(1, b = 20, c = "30", 4, 5, 6))
+})

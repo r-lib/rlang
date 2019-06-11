@@ -1474,6 +1474,68 @@ signal_soft_deprecated_along <- function(type, na, env = caller_env(2)) {
   ))
 }
 
+#' Prepend a vector
+#'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+#'
+#' Vector functions are now out of scope for rlang. They might be
+#' revived in the vctrs or funs packages.
+#'
+#'
+#' @keywords internal
+#'
+#' @param x the vector to be modified.
+#' @param values to be included in the modified vector.
+#' @param before a subscript, before which the values are to be appended.
+#' @export
+prepend <- function(x, values, before = 1) {
+  warn_deprecated_vector("prepend")
+
+  n <- length(x)
+  stopifnot(before > 0 && before <= n)
+
+  if (before == 1) {
+    c(values, x)
+  } else {
+    c(x[1:(before - 1)], values, x[before:n])
+  }
+}
+
+#' @rdname prepend
+#' @param .x A vector to modify.
+#' @param ... List of elements to merge into `.x`. Named elements
+#'   already existing in `.x` are used as replacements. Elements that
+#'   have new or no names are inserted at the end. These dots support
+#'   [tidy dots][tidy-dots] features.
+#' @export
+modify <- function(.x, ...) {
+  warn_deprecated_vector("modify")
+
+  out <- as.list(.x)
+  args <- list2(...)
+
+  args_nms <- names(args)
+  exists <- have_name(args) & args_nms %in% names(out)
+
+  for (nm in args_nms[exists]) {
+    out[[nm]] <- args[[nm]]
+  }
+
+  c(out, args[!exists])
+}
+
+warn_deprecated_vector <- function(fn) {
+  warn_deprecated(paste_line(
+    sprintf("`%s()` is deprecated as of rlang 0.4.0.", fn),
+    "",
+    "Vector tools are now out of scope for rlang to make it a more",
+    "focused package."
+  ))
+}
+
+
 
 #  Attributes  -------------------------------------------------------
 

@@ -164,6 +164,11 @@ like \code{quos()} is soft-deprecated.
 
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 
+\strong{Deprecated as of rlang 0.4.0}
+\itemize{
+\item \code{\link[=modify]{modify()}} and \code{\link[=prepend]{prepend()}}.
+}
+
 \strong{Deprecated as of rlang 0.3.0}
 \itemize{
 \item \code{\link[=as_data_mask]{as_data_mask()}}: \code{parent} argument
