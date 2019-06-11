@@ -419,9 +419,17 @@ as_data_pronoun <- function(data) {
 #' @param bottom The environment containing masking objects if the
 #'   data mask is one environment deep. The bottom environment if the
 #'   data mask comprises multiple environment.
+#'
+#'   If you haven't supplied `top`, this __must__ be an environment
+#'   that you own, i.e. that you have created yourself.
 #' @param top The last environment of the data mask. If the data mask
 #'   is only one environment deep, `top` should be the same as
 #'   `bottom`.
+#'
+#'   This __must__ be an environment that you own, i.e. that you have
+#'   created yourself. The parent of `top` will be changed by the tidy
+#'   eval engine and should be considered undetermined. Never make
+#'   assumption about the parent of `top`.
 #' @export
 new_data_mask <- function(bottom, top = bottom, parent = NULL) {
   if (!is_null(parent)) {
