@@ -453,7 +453,7 @@ data_pronoun_get <- function(x, nm) {
 }
 abort_data_pronoun <- function(nm) {
   msg <- sprintf("Column `%s` not found in `.data`", as_string(nm))
-  abort(msg, "rlang_data_pronoun_not_found")
+  abort(msg, "rlang_error_data_pronoun_not_found")
 }
 
 #' @export
