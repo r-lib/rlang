@@ -6,7 +6,7 @@ test_that("names2() takes care of missing values", {
 })
 
 test_that("names2() fails for environments", {
-  expect_error(names2(env()), "Use env_names() for environments.", fixed = TRUE)
+  expect_error(names2(env()), "Use `env_names()` for environments.", fixed = TRUE)
 })
 
 test_that("inputs must be valid", {

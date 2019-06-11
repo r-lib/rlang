@@ -15,8 +15,10 @@ has_name(x, name)
 A logical vector of the same length as \code{name}
 }
 \description{
-This function returns a logical value that indicates if a data frame or
-another named object contains an element with a specific name.
+This function returns a logical value that indicates if a data
+frame or another named object contains an element with a specific
+name. Note that \code{has_name()} only works with vectors. For instance,
+environments need the specialised function \code{\link[=env_has]{env_has()}}.
 }
 \details{
 Unnamed objects are treated as if all names are empty strings. \code{NA}

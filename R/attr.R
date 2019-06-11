@@ -98,8 +98,10 @@ nms_are_invalid <- function(x) {
 
 #' Does an object have an element with this name?
 #'
-#' This function returns a logical value that indicates if a data frame or
-#' another named object contains an element with a specific name.
+#' This function returns a logical value that indicates if a data
+#' frame or another named object contains an element with a specific
+#' name. Note that `has_name()` only works with vectors. For instance,
+#' environments need the specialised function [env_has()].
 #'
 #' Unnamed objects are treated as if all names are empty strings. `NA`
 #' input gives `FALSE` as output.
@@ -211,7 +213,9 @@ set_names_impl <- function(x, mold, nm, ...) {
 #' x <- set_names(1:3, c("a", NA, "b"))
 #' names2(x)
 names2 <- function(x) {
-  if (type_of(x) == "environment") abort("Use env_names() for environments.")
+  if (typeof(x) == "environment") {
+    abort("Use `env_names()` for environments.")
+  }
   nms <- names(x)
   if (is_null(nms)) {
     rep("", length(x))
