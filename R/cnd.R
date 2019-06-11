@@ -946,11 +946,11 @@ entrace_handle_top <- function(trace) {
       msg <- cnd$message
     }
   } else {
-    msg <- NULL
+    msg <- geterrmessage()
   }
 
   # Save a fake rlang error containing the backtrace
-  err <- error_cnd(message = msg, trace = trace, parent = cnd)
+  err <- error_cnd(message = msg, error = cnd, trace = trace, parent = cnd)
   last_error_env$cnd <- err
 
   # Print backtrace for current error

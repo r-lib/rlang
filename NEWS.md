@@ -1,6 +1,10 @@
 
 # rlang 0.3.4.9000
 
+* `options(error = rlang::entrace)` now has better support for errors
+  thrown from C (#779). It also saves structured errors in the `error`
+  field of `rlang::last_error()`.
+
 * `ns_env()` and `ns_env_name()` (experimental functions) now support
   functions and environments consisently. They also require an
   argument from now on.
