@@ -7,9 +7,10 @@
 new_function(args, body, env = caller_env())
 }
 \arguments{
-\item{args}{A named list of default arguments. Note that if you
-want arguments that don't have defaults, you'll need to use the
-special function \link{alist}, e.g. \code{alist(a = , b = 1)}}
+\item{args}{A named list or pairlist of default arguments. Note
+that if you want arguments that don't have defaults, you'll need
+to use the special function \code{\link[=pairlist2]{pairlist2()}}. If you need quoted
+defaults, use \code{\link[=exprs]{exprs()}}.}
 
 \item{body}{A language object representing the code inside the
 function. Usually this will be most easily generated with
@@ -25,18 +26,22 @@ This constructs a new function given its three components:
 list of arguments, body code and parent environment.
 }
 \examples{
-f <- function(x) x + 3
-g <- new_function(alist(x = ), quote(x + 3))
-
-# The components of the functions are identical
-identical(formals(f), formals(g))
-identical(body(f), body(g))
-identical(environment(f), environment(g))
-
-# But the functions are not identical because f has src code reference
+f <- function() letters
+g <- new_function(NULL, quote(letters))
 identical(f, g)
 
-attr(f, "srcref") <- NULL
-# Now they are:
-stopifnot(identical(f, g))
+# Pass a list or pairlist of named arguments to create a function
+# with parameters. The name becomes the parameter name and the
+# argument the default value for this parameter:
+new_function(list(x = 10), quote(x))
+new_function(pairlist2(x = 10), quote(x))
+
+# Use `exprs()` to create quoted defaults. Compare:
+new_function(pairlist2(x = 5 + 5), quote(x))
+new_function(exprs(x = 5 + 5), quote(x))
+
+# Pass empty arguments to omit defaults. `list()` doesn't allow
+# empty arguments but `pairlist2()` does:
+new_function(pairlist2(x = , y = 5 + 5), quote(x + y))
+new_function(exprs(x = , y = 5 + 5), quote(x + y))
 }
