@@ -96,35 +96,30 @@ cnd_type <- function(cnd) {
   .Call(rlang_cnd_type, cnd)
 }
 
-#' Signal a condition
+#' Signal a condition object
 #'
-#' Signal a condition to handlers that have been established on the
-#' stack. Conditions signalled with `cnd_signal()` are assumed to be
-#' benign. Control flow can resume normally once the condition has
-#' been signalled (if no handler jumped somewhere else on the
-#' evaluation stack). On the other hand, `cnd_abort()` treats the
-#' condition as critical and will jump out of the distressed call
-#' frame (see [rst_abort()]), unless a handler can deal with the
-#' condition.
+#' @description
 #'
-#' If `.critical` is `FALSE`, this function has no side effects beyond
-#' calling handlers. In particular, execution will continue normally
-#' after signalling the condition (unless a handler jumped somewhere
-#' else via [rst_jump()] or by being [exiting()]). If `.critical` is
-#' `TRUE`, the condition is signalled via [base::stop()] and the
-#' program will terminate if no handler dealt with the condition by
-#' jumping out of the distressed call frame.
+#' The type of signal depends on the class of the condition:
 #'
-#' [calling()] handlers are called in turn when they decline to handle
-#' the condition by returning normally. However, it is sometimes
-#' useful for a calling handler to produce a side effect (signalling
-#' another condition, displaying a message, logging something, etc),
-#' prevent the condition from being passed to other handlers, and
-#' resume execution from the place where the condition was
-#' signalled. The easiest way to accomplish this is by jumping to a
-#' restart point (see [with_restarts()]) established by the signalling
-#' function. `cnd_signal()` always installs a muffle restart (see
-#' [cnd_muffle()]).
+#' * A message is signalled if the condition inherits from
+#'   `"message"`. This is equivalent to signalling with [inform()] or
+#'   [base::message()].
+#'
+#' * A warning is signalled if the condition inherits from
+#'   `"warning"`. This is equivalent to signalling with [warn()] or
+#'   [base::warning()].
+#'
+#' * An error is signalled if the condition inherits from
+#'   `"error"`. This is equivalent to signalling with [abort()] or
+#'   [base::stop()].
+#'
+#' * An interrupt is signalled if the condition inherits from
+#'   `"interrupt"`. This is equivalent to signalling with
+#'   [interrupt()].
+#'
+#' Use [cnd_type()] to determine the type of a condition.
+#'
 #'
 #' @section Lifecycle:
 #'
@@ -141,40 +136,20 @@ cnd_type <- function(cnd) {
 #'   of rlang 0.4.0. Please use [signal()] instead.
 #'
 #' @param cnd A condition object (see [cnd()]).
-#' @seealso [abort()], [warn()] and [inform()] for signalling typical
-#'   R conditions. See [with_handlers()] for establishing condition
-#'   handlers.
 #' @param .cnd,.mufflable These arguments are deprecated.
+#' @seealso [abort()], [warn()] and [inform()] for creating and
+#'   signalling structured R conditions. See [with_handlers()] for
+#'   establishing condition handlers.
 #' @export
 #' @examples
-#' # Creating a condition of type "foo"
-#' cnd <- cnd("foo")
-#'
-#' # If no handler capable of dealing with "foo" is established on the
-#' # stack, signalling the condition has no effect:
+#' # The type of signal depends on the class. If the condition
+#' # inherits from "warning", a warning is issued:
+#' cnd <- warning_cnd("my_warning_class", message = "This is a warning")
 #' cnd_signal(cnd)
 #'
-#' # To learn more about establishing condition handlers, see
-#' # documentation for with_handlers(), exiting() and calling():
-#' with_handlers(cnd_signal(cnd),
-#'   foo = calling(function(c) cat("side effect!\n"))
-#' )
-#'
-#'
-#' # By default, cnd_signal() creates a muffling restart which allows
-#' # calling handlers to prevent a condition from being passed on to
-#' # other handlers and to resume execution:
-#' undesirable_handler <- calling(function(c) cat("please don't call me\n"))
-#' muffling_handler <- calling(function(c) {
-#'   cat("muffling foo...\n")
-#'   cnd_muffle(c)
-#' })
-#'
-#' with_handlers(foo = undesirable_handler,
-#'   with_handlers(foo = muffling_handler, {
-#'     cnd_signal(cnd("foo"))
-#'     "return value"
-#'   }))
+#' # If it inherits from "error", an error is raised:
+#' cnd <- error_cnd("my_error_class", message = "This is an error")
+#' try(cnd_signal(cnd))
 cnd_signal <- function(cnd, .cnd, .mufflable) {
   validate_cnd_signal_args(cnd, .cnd, .mufflable)
   invisible(.Call(rlang_cnd_signal, cnd))

@@ -2,7 +2,7 @@
 % Please edit documentation in R/cnd.R
 \name{cnd_signal}
 \alias{cnd_signal}
-\title{Signal a condition}
+\title{Signal a condition object}
 \usage{
 cnd_signal(cnd, .cnd, .mufflable)
 }
@@ -12,34 +12,23 @@ cnd_signal(cnd, .cnd, .mufflable)
 \item{.cnd, .mufflable}{These arguments are deprecated.}
 }
 \description{
-Signal a condition to handlers that have been established on the
-stack. Conditions signalled with \code{cnd_signal()} are assumed to be
-benign. Control flow can resume normally once the condition has
-been signalled (if no handler jumped somewhere else on the
-evaluation stack). On the other hand, \code{cnd_abort()} treats the
-condition as critical and will jump out of the distressed call
-frame (see \code{\link[=rst_abort]{rst_abort()}}), unless a handler can deal with the
-condition.
+The type of signal depends on the class of the condition:
+\itemize{
+\item A message is signalled if the condition inherits from
+\code{"message"}. This is equivalent to signalling with \code{\link[=inform]{inform()}} or
+\code{\link[base:message]{base::message()}}.
+\item A warning is signalled if the condition inherits from
+\code{"warning"}. This is equivalent to signalling with \code{\link[=warn]{warn()}} or
+\code{\link[base:warning]{base::warning()}}.
+\item An error is signalled if the condition inherits from
+\code{"error"}. This is equivalent to signalling with \code{\link[=abort]{abort()}} or
+\code{\link[base:stop]{base::stop()}}.
+\item An interrupt is signalled if the condition inherits from
+\code{"interrupt"}. This is equivalent to signalling with
+\code{\link[=interrupt]{interrupt()}}.
 }
-\details{
-If \code{.critical} is \code{FALSE}, this function has no side effects beyond
-calling handlers. In particular, execution will continue normally
-after signalling the condition (unless a handler jumped somewhere
-else via \code{\link[=rst_jump]{rst_jump()}} or by being \code{\link[=exiting]{exiting()}}). If \code{.critical} is
-\code{TRUE}, the condition is signalled via \code{\link[base:stop]{base::stop()}} and the
-program will terminate if no handler dealt with the condition by
-jumping out of the distressed call frame.
 
-\code{\link[=calling]{calling()}} handlers are called in turn when they decline to handle
-the condition by returning normally. However, it is sometimes
-useful for a calling handler to produce a side effect (signalling
-another condition, displaying a message, logging something, etc),
-prevent the condition from being passed to other handlers, and
-resume execution from the place where the condition was
-signalled. The easiest way to accomplish this is by jumping to a
-restart point (see \code{\link[=with_restarts]{with_restarts()}}) established by the signalling
-function. \code{cnd_signal()} always installs a muffle restart (see
-\code{\link[=cnd_muffle]{cnd_muffle()}}).
+Use \code{\link[=cnd_type]{cnd_type()}} to determine the type of a condition.
 }
 \section{Lifecycle}{
 
@@ -57,37 +46,17 @@ of rlang 0.4.0. Please use \code{\link[=signal]{signal()}} instead.
 }
 
 \examples{
-# Creating a condition of type "foo"
-cnd <- cnd("foo")
-
-# If no handler capable of dealing with "foo" is established on the
-# stack, signalling the condition has no effect:
+# The type of signal depends on the class. If the condition
+# inherits from "warning", a warning is issued:
+cnd <- warning_cnd("my_warning_class", message = "This is a warning")
 cnd_signal(cnd)
 
-# To learn more about establishing condition handlers, see
-# documentation for with_handlers(), exiting() and calling():
-with_handlers(cnd_signal(cnd),
-  foo = calling(function(c) cat("side effect!\\n"))
-)
-
-
-# By default, cnd_signal() creates a muffling restart which allows
-# calling handlers to prevent a condition from being passed on to
-# other handlers and to resume execution:
-undesirable_handler <- calling(function(c) cat("please don't call me\\n"))
-muffling_handler <- calling(function(c) {
-  cat("muffling foo...\\n")
-  cnd_muffle(c)
-})
-
-with_handlers(foo = undesirable_handler,
-  with_handlers(foo = muffling_handler, {
-    cnd_signal(cnd("foo"))
-    "return value"
-  }))
+# If it inherits from "error", an error is raised:
+cnd <- error_cnd("my_error_class", message = "This is an error")
+try(cnd_signal(cnd))
 }
 \seealso{
-\code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}} and \code{\link[=inform]{inform()}} for signalling typical
-R conditions. See \code{\link[=with_handlers]{with_handlers()}} for establishing condition
-handlers.
+\code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}} and \code{\link[=inform]{inform()}} for creating and
+signalling structured R conditions. See \code{\link[=with_handlers]{with_handlers()}} for
+establishing condition handlers.
 }
