@@ -12,9 +12,11 @@ matrix:
     - r: 3.5
       after_success:
         - Rscript -e 'covr::codecov()'
+      before_deploy:
+        Rscript -e 'remotes::install_cran("pkgdown")'
       deploy:
         provider: script
-        script: Rscript -e 'options(crayon.enabled = FALSE); pkgdown::deploy_site_github(verbose = TRUE)'
+        script: Rscript -e 'pkgdown::deploy_site_github(verbose = TRUE)'
         skip_cleanup: true
     - r: devel
   allow_failures:
