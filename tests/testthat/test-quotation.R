@@ -510,3 +510,7 @@ test_that("ensyms() unwraps quosures", {
   expect_identical(fn(!!!quos(foo, "bar")), exprs(foo, bar))
   expect_error(fn(!!!quos(foo, bar())), "Only strings can be converted to symbols")
 })
+
+test_that("vars() constructs quosures subclass", {
+  expect_true(inherits_only(vars(), c("quosures_vars", "quosures")))
+})

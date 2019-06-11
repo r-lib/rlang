@@ -1,6 +1,9 @@
 
 # rlang 0.3.99.9000
 
+* `vars()` is now exported from rlang, so it can be reexported from
+  other user-facing packages such as dplyr or ggplot2.
+
 * In rlang backtraces, the `global::` prefix is now only added when
   the function directly inherits from the global environment.
   Functions inheriting indirectly no longer have a namespace

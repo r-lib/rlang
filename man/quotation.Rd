@@ -12,6 +12,7 @@
 \alias{enquo}
 \alias{quos}
 \alias{enquos}
+\alias{vars}
 \title{Quotation}
 \usage{
 expr(expr)
@@ -41,6 +42,8 @@ quos(..., .named = FALSE, .ignore_empty = c("trailing", "none", "all"),
 enquos(..., .named = FALSE, .ignore_empty = c("trailing", "none",
   "all"), .unquote_names = TRUE, .homonyms = c("keep", "first", "last",
   "error"), .check_assign = FALSE)
+
+vars(...)
 }
 \arguments{
 \item{expr}{An expression.}
@@ -115,7 +118,8 @@ argument name and capture the expression that was supplied to
 that argument.
 \item You can capture the expressions that \emph{you} supply. To this end
 use \code{expr()} and \code{quo()} and their plural variants \code{exprs()} and
-\code{quos()}.
+\code{quos()}. There is also \code{vars()} which is a user-friendly synonym
+of \code{quos()}.
 }
 }
 
