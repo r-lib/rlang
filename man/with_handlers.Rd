@@ -2,9 +2,12 @@
 % Please edit documentation in R/cnd-handlers.R
 \name{with_handlers}
 \alias{with_handlers}
+\alias{calling}
 \title{Establish handlers on the stack}
 \usage{
 with_handlers(.expr, ...)
+
+calling(handler)
 }
 \arguments{
 \item{.expr}{An expression to execute in a context where new
@@ -16,35 +19,41 @@ argument. These handlers are treated as exiting by default. Use
 \code{\link[=calling]{calling()}} to specify a calling handler. These dots support
 \link[=tidy-dots]{tidy dots} features and are passed to \code{\link[=as_function]{as_function()}}
 to enable the formula shortcut for lambda functions.}
+
+\item{handler}{A handler function that takes a condition as
+argument. This is passed to \code{\link[=as_function]{as_function()}} and can thus be a
+formula describing a lambda function.}
 }
 \description{
 Condition handlers are functions established on the evaluation
 stack (see \code{\link[=ctxt_stack]{ctxt_stack()}}) that are called by R when a condition is
 signalled (see \code{\link[=cnd_signal]{cnd_signal()}} and \code{\link[=abort]{abort()}} for two common signal
-functions). They come in two types: exiting handlers, which jump
-out of the signalling context and are transferred to
-\code{with_handlers()} before being executed. And calling handlers,
-which are executed within the signal functions.
-}
-\details{
-An exiting handler is taking charge of the condition. No other
-handler on the stack gets a chance to handle the condition. The
-handler is executed and \code{with_handlers()} returns the return value
-of that handler. On the other hand, in place handlers do not
-necessarily take charge. If they return normally, they decline to
-handle the condition, and R looks for other handlers established on
-the evaluation stack. Only by jumping to an earlier call frame can
-a calling handler take charge of the condition and stop the
-signalling process. Sometimes, a muffling restart has been
-established for the purpose of jumping out of the signalling
-function but not out of the context where the condition was
-signalled, which allows execution to resume normally. See
-\code{\link[=cnd_muffle]{cnd_muffle()}} and the \code{mufflable} argument of \code{\link[=cnd_signal]{cnd_signal()}}.
+functions). They come in two types:
+\itemize{
+\item Exiting handlers aborts all code currently run between
+\code{with_handlers()} and the point where the condition has been
+raised. \code{with_handlers()} passes the return value of the handler
+to its caller.
+\item Calling handlers, which are executed from inside the signalling
+functions. Their return values are ignored, only their side
+effects matters. Valid side effects are writing a log message, or
+jumping out of the signalling context by \link[=with_restarts]{invoking a restart} or using \code{\link[=return_from]{return_from()}}. If the raised
+condition was an error, this interrupts the aborting process.
 
-Exiting handlers are established first by \code{with_handlers()}, and in
-place handlers are installed in second place. The latter handlers
-thus take precedence over the former.
+If a calling handler returns normally, it effectively declines to
+handle the condition and other handlers on the stack (calling or
+exiting) are given a chance to handle the condition.
 }
+
+Handlers are exiting by default, use \code{\link[=calling]{calling()}} to create a
+calling handler.
+}
+\section{Life cycle}{
+ \code{exiting()} is soft-deprecated as of rlang
+0.4.0 because \code{\link[=with_handlers]{with_handlers()}} now treats handlers as exiting by
+default.
+}
+
 \examples{
 # Signal a condition with signal():
 fn <- function() {
@@ -64,12 +73,9 @@ h <- function() {
 # Exiting handlers jump to with_handlers() before being
 # executed. Their return value is handed over:
 handler <- function(c) "handler return value"
-with_handlers(fn(), foo = exiting(handler))
-
-# Handlers are exiting by default so you can omit the adjective:
 with_handlers(fn(), foo = handler)
 
-# In place handlers are called in turn and their return value is
+# Calling handlers are called in turn and their return value is
 # ignored. Returning just means they are declining to take charge of
 # the condition. However, they can produce side-effects such as
 # displaying a message:
@@ -77,7 +83,7 @@ some_handler <- function(c) cat("some handler!\\n")
 other_handler <- function(c) cat("other handler!\\n")
 with_handlers(fn(), foo = calling(some_handler), foo = calling(other_handler))
 
-# If an in place handler jumps to an earlier context, it takes
+# If a calling handler jumps to an earlier context, it takes
 # charge of the condition and no other handler gets a chance to
 # deal with it. The canonical way of transferring control is by
 # jumping to a restart. See with_restarts() and restarting()
@@ -87,7 +93,4 @@ fn2 <- function() {
   with_restarts(g(), rst_foo = function() "restart value")
 }
 with_handlers(fn2(), foo = calling(exiting_handler), foo = calling(other_handler))
-}
-\seealso{
-\code{\link[=exiting]{exiting()}}, \code{\link[=calling]{calling()}}.
 }

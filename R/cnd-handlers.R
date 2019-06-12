@@ -1,30 +1,30 @@
 #' Establish handlers on the stack
 #'
+#' @description
+#'
 #' Condition handlers are functions established on the evaluation
 #' stack (see [ctxt_stack()]) that are called by R when a condition is
 #' signalled (see [cnd_signal()] and [abort()] for two common signal
-#' functions). They come in two types: exiting handlers, which jump
-#' out of the signalling context and are transferred to
-#' `with_handlers()` before being executed. And calling handlers,
-#' which are executed within the signal functions.
+#' functions). They come in two types:
 #'
-#' An exiting handler is taking charge of the condition. No other
-#' handler on the stack gets a chance to handle the condition. The
-#' handler is executed and `with_handlers()` returns the return value
-#' of that handler. On the other hand, in place handlers do not
-#' necessarily take charge. If they return normally, they decline to
-#' handle the condition, and R looks for other handlers established on
-#' the evaluation stack. Only by jumping to an earlier call frame can
-#' a calling handler take charge of the condition and stop the
-#' signalling process. Sometimes, a muffling restart has been
-#' established for the purpose of jumping out of the signalling
-#' function but not out of the context where the condition was
-#' signalled, which allows execution to resume normally. See
-#' [cnd_muffle()] and the `mufflable` argument of [cnd_signal()].
+#' * Exiting handlers aborts all code currently run between
+#'   `with_handlers()` and the point where the condition has been
+#'   raised. `with_handlers()` passes the return value of the handler
+#'   to its caller.
 #'
-#' Exiting handlers are established first by `with_handlers()`, and in
-#' place handlers are installed in second place. The latter handlers
-#' thus take precedence over the former.
+#' * Calling handlers, which are executed from inside the signalling
+#'   functions. Their return values are ignored, only their side
+#'   effects matters. Valid side effects are writing a log message, or
+#'   jumping out of the signalling context by [invoking a
+#'   restart][with_restarts] or using [return_from()]. If the raised
+#'   condition was an error, this interrupts the aborting process.
+#'
+#'   If a calling handler returns normally, it effectively declines to
+#'   handle the condition and other handlers on the stack (calling or
+#'   exiting) are given a chance to handle the condition.
+#'
+#' Handlers are exiting by default, use [calling()] to create a
+#' calling handler.
 #'
 #' @inheritParams with_restarts
 #' @param .expr An expression to execute in a context where new
@@ -35,8 +35,11 @@
 #'   [calling()] to specify a calling handler. These dots support
 #'   [tidy dots][tidy-dots] features and are passed to [as_function()]
 #'   to enable the formula shortcut for lambda functions.
-#' @seealso [exiting()], [calling()].
-#' @export
+#'
+#' @section Life cycle: `exiting()` is soft-deprecated as of rlang
+#'   0.4.0 because [with_handlers()] now treats handlers as exiting by
+#'   default.
+#'
 #' @examples
 #' # Signal a condition with signal():
 #' fn <- function() {
@@ -56,12 +59,9 @@
 #' # Exiting handlers jump to with_handlers() before being
 #' # executed. Their return value is handed over:
 #' handler <- function(c) "handler return value"
-#' with_handlers(fn(), foo = exiting(handler))
-#'
-#' # Handlers are exiting by default so you can omit the adjective:
 #' with_handlers(fn(), foo = handler)
 #'
-#' # In place handlers are called in turn and their return value is
+#' # Calling handlers are called in turn and their return value is
 #' # ignored. Returning just means they are declining to take charge of
 #' # the condition. However, they can produce side-effects such as
 #' # displaying a message:
@@ -69,7 +69,7 @@
 #' other_handler <- function(c) cat("other handler!\n")
 #' with_handlers(fn(), foo = calling(some_handler), foo = calling(other_handler))
 #'
-#' # If an in place handler jumps to an earlier context, it takes
+#' # If a calling handler jumps to an earlier context, it takes
 #' # charge of the condition and no other handler gets a chance to
 #' # deal with it. The canonical way of transferring control is by
 #' # jumping to a restart. See with_restarts() and restarting()
@@ -79,6 +79,7 @@
 #'   with_restarts(g(), rst_foo = function() "restart value")
 #' }
 #' with_handlers(fn2(), foo = calling(exiting_handler), foo = calling(other_handler))
+#' @export
 with_handlers <- function(.expr, ...) {
   handlers <- list2(...)
 
@@ -100,59 +101,10 @@ with_handlers <- function(.expr, ...) {
   .Call(rlang_eval, expr, environment())
 }
 
-#' Create an exiting or in place handler
-#'
-#' There are two types of condition handlers: exiting handlers, which
-#' are thrown to the place where they have been established (e.g.,
-#' [with_handlers()]'s evaluation frame), and local handlers, which
-#' are executed in place (e.g., where the condition has been
-#' signalled). `exiting()` and `calling()` create handlers suitable
-#' for [with_handlers()].
-#'
-#' A subtle point in the R language is that conditions are not thrown,
-#' handlers are. [base::tryCatch()] and [with_handlers()] actually
-#' catch handlers rather than conditions. When a critical condition is
-#' signalled with [base::stop()] or [abort()], R inspects the handler
-#' stack and looks for a handler that can deal with the condition. If
-#' it finds an exiting handler, it throws it to the function that
-#' established it ([with_handlers()]). That is, it interrupts the
-#' normal course of evaluation and jumps to `with_handlers()`
-#' evaluation frame (see [ctxt_stack()]), and only then and there the
-#' handler is called. On the other hand, if R finds a calling
-#' handler, it executes it locally. The calling handler can choose to
-#' handle the condition by jumping out of the frame (see [rst_jump()]
-#' or [return_from()]). If it returns locally, it declines to handle
-#' the condition which is passed to the next relevant handler on the
-#' stack. If no handler is found or is able to deal with the critical
-#' condition (by jumping out of the frame), R will then jump out of
-#' the faulty evaluation frame to top-level, via the abort restart
-#' (see [rst_abort()]).
-#'
+#' @rdname with_handlers
 #' @param handler A handler function that takes a condition as
 #'   argument. This is passed to [as_function()] and can thus be a
 #'   formula describing a lambda function.
-#' @seealso [with_handlers()] for examples, [restarting()] for another
-#'   kind of calling handler.
-#'
-#' @section Life cycle: `exiting()` is in the questioning stage
-#'   because [with_handlers()] now treats handlers as exiting by
-#'   default.
-#' @export
-#' @examples
-#' # You can supply a function taking a condition as argument:
-#' hnd <- exiting(function(c) cat("handled foo\n"))
-#' with_handlers(signal("A foobar condition occurred", "foo"), foo = hnd)
-#'
-#' # Or a lambda-formula where "." is bound to the condition:
-#' with_handlers(foo = calling(~cat("hello", .$attr, "\n")), {
-#'   signal("A foobar condition occurred", "foo", attr = "there")
-#'   "foo"
-#' })
-exiting <- function(handler) {
-  handler <- as_function(handler)
-  structure(handler, class = c("rlang_handler_exiting", "rlang_handler", "function"))
-}
-#' @rdname exiting
 #' @export
 calling <- function(handler) {
   handler <- as_function(handler)

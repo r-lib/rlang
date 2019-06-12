@@ -1621,3 +1621,24 @@ set_attrs_impl <- function(.x, ...) {
 }
 set_attrs_null <- list(NULL)
 names(set_attrs_null) <- ""
+
+#  Conditions --------------------------------------------------------
+
+#' Exiting handler
+#'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#'
+#' `exiting()` is no longer necessary as handlers are exiting by default.
+#'
+#' @keywords internal
+#' @export
+exiting <- function(handler) {
+  signal_soft_deprecated(c(
+    "`exiting()` is soft-deprecated as of rlang 0.4.0.",
+    "Handlers are now treated as exiting by default."
+  ))
+  handler <- as_function(handler)
+  structure(handler, class = c("rlang_handler_exiting", "rlang_handler", "function"))
+}

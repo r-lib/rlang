@@ -37,8 +37,8 @@ context("handlers") # ------------------------------------------------
 
 test_that("with_handlers() establishes inplace and exiting handlers", {
   handlers <- list(
-    error = exiting(function(c) "caught error"),
-    message = exiting(function(c) "caught message"),
+    error = function(c) "caught error",
+    message = function(c) "caught message",
     warning = calling(function(c) "warning"),
     foobar = calling(function(c) cat("foobar"))
   )

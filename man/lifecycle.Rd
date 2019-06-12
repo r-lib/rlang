@@ -94,6 +94,11 @@ want to recommend restarts as a style of programming in R.
 
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 
+\strong{Soft-deprecated as of rlang 0.4.0}
+\itemize{
+\item \code{\link[=exiting]{exiting()}}: Handlers are now treated as exiting by default.
+}
+
 \strong{Soft-deprecated as of rlang 0.3.0}
 \itemize{
 \item \code{\link[=get_env]{get_env()}}: The \code{env} argument no longer has a default and must be supplied

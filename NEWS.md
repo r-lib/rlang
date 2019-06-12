@@ -79,6 +79,10 @@
   functions are now out of scope for rlang. They might be revived in
   the vctrs or funs packages.
 
+* `exiting()` is soft-deprecated because `with_handlers()` treats
+  handlers as exiting by default.
+
+
 ### Bumped lifecycle stages
 
 * `cnd_signal()`: The `.cnd` and `.mufflable` arguments are now
