@@ -512,13 +512,7 @@ static sexp* node_list_interp_fixup(sexp* x, sexp* parent, sexp* env,
 
   if (expand_lhs) {
     // Expand the LHS normally, it never needs changes in the AST
-    struct expansion_info expansion_info = is_big_bang_op(lhs);
-    if (expansion_info.op == OP_EXPAND_UQS) {
-      sexp* node = big_bang(expansion_info.operand, env, lhs_node, rhs_node);
-      rhs_node = r_node_cdr(node);
-    } else {
-      r_node_poke_car(lhs_node, call_interp(r_node_car(lhs_node), env));
-    }
+    r_node_poke_car(lhs_node, call_interp(r_node_car(lhs_node), env));
   }
 
   node_list_interp_fixup_rhs(rhs, rhs_node, x, env, info);

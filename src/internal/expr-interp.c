@@ -312,20 +312,24 @@ static sexp* bang_bang_expression(struct expansion_info info, sexp* env) {
 // From dots.c
 sexp* big_bang_coerce_pairlist(sexp* x, bool deep);
 
-sexp* big_bang(sexp* operand, sexp* env, sexp* node, sexp* next) {
+sexp* big_bang(sexp* operand, sexp* env, sexp* prev, sexp* node) {
   sexp* value = KEEP(r_eval(operand, env));
   value = big_bang_coerce_pairlist(value, true);
 
   if (value == r_null) {
-    r_node_poke_cdr(node, r_node_cdr(next));
+    // Remove `!!!foo` from pairlist of args
+    r_node_poke_cdr(prev, r_node_cdr(node));
+    node = prev;
   } else {
     // Insert coerced value into existing pairlist of args
-    r_node_poke_cdr(r_node_tail(value), r_node_cdr(next));
-    r_node_poke_cdr(node, value);
+    sexp* tail = r_node_tail(value);
+    r_node_poke_cdr(tail, r_node_cdr(node));
+    r_node_poke_cdr(prev, value);
+    node = tail;
   }
 
   FREE(1);
-  return next;
+  return node;
 }
 
 static sexp* curly_curly(struct expansion_info info, sexp* env) {
@@ -335,6 +339,7 @@ static sexp* curly_curly(struct expansion_info info, sexp* env) {
 
 
 // Defined below
+static sexp* call_list_interp(sexp* x, sexp* env);
 static sexp* node_list_interp(sexp* x, sexp* env);
 static void call_maybe_poke_string_head(sexp* call);
 
@@ -356,7 +361,7 @@ sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
     if (r_typeof(x) != r_type_call) {
       return x;
     } else {
-      sexp* out = node_list_interp(x, env);
+      sexp* out = call_list_interp(x, env);
       call_maybe_poke_string_head(out);
       return out;
     }
@@ -375,13 +380,13 @@ sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
       return fixup_interp_first(info.operand, env);
     }
   case OP_EXPAND_UQS:
-    r_abort("Can't use `!!!` at top level");
+    r_abort("Can't use `!!!` at top level.");
   case OP_EXPAND_UQN:
-    r_abort("Internal error: Deep `:=` unquoting");
+    r_abort("Internal error: Deep `:=` unquoting.");
   }
 
-  // Silence mistaken noreturn warning on GCC
-  r_abort("Never reached");
+  // Silence noreturn warning on GCC
+  r_abort("Never reached.");
 }
 
 // Make (!!"foo")() and "foo"() equivalent
@@ -398,24 +403,31 @@ static void call_maybe_poke_string_head(sexp* call) {
   r_node_poke_car(call, r_sym(r_chr_get_c_string(head, 0)));
 }
 
-static sexp* node_list_interp(sexp* x, sexp* env) {
-  sexp* node = x;
+static sexp* call_list_interp(sexp* x, sexp* env) {
+  r_node_poke_car(x, call_interp(r_node_car(x), env));
+  r_node_poke_cdr(x, node_list_interp(r_node_cdr(x), env));
+  return x;
+}
+static sexp* node_list_interp(sexp* node, sexp* env) {
+  sexp* prev = KEEP(r_new_node(r_null, node));
+  sexp* out = prev;
 
   while (node != r_null) {
-    r_node_poke_car(node, call_interp(r_node_car(node), env));
+    sexp* arg = r_node_car(node);
+    struct expansion_info info = which_expansion_op(arg, false);
 
-    sexp* next = r_node_cdr(node);
-    sexp* next_head = r_node_car(next);
-
-    struct expansion_info info = is_big_bang_op(next_head);
     if (info.op == OP_EXPAND_UQS) {
-      node = big_bang(info.operand, env, node, next);
+      node = big_bang(info.operand, env, prev, node);
+    } else {
+      r_node_poke_car(node, call_interp_impl(arg, env, info));
     }
 
+    prev = node;
     node = r_node_cdr(node);
   }
 
-  return x;
+  FREE(1);
+  return r_node_cdr(out);
 }
 
 sexp* rlang_interp(sexp* x, sexp* env) {

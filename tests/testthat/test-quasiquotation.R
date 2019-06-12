@@ -616,3 +616,10 @@ test_that("{{ on the LHS of :=", {
 test_that("can unquote-splice in atomic capture", {
   expect_identical_(chr("a", !!!c("b", "c"), !!!list("d")), c("a", "b", "c", "d"))
 })
+
+test_that("can unquote-splice multiple times (#771)", {
+  expect_identical(call2("foo", !!!list(1, 2), !!!list(3, 4)), quote(foo(1, 2, 3, 4)))
+  expect_identical(list2(!!!list(1, 2), !!!list(3, 4)), list(1, 2, 3, 4))
+  expect_identical(exprs(!!!list(1, 2), !!!list(3, 4)), named_list(1, 2, 3, 4))
+  expect_identical(expr(foo(!!!list(1, 2), !!!list(3, 4))), quote(foo(1, 2, 3, 4)))
+})
