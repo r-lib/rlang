@@ -39,3 +39,9 @@ test_that("set_names() coerces to character", {
 test_that("has_name() works with pairlists", {
   expect_true(has_name(fn_fmls(`[.data.frame`), "drop"))
 })
+
+test_that("set_names() first names the vector before applying a function (#688)", {
+  exp <- set_names(letters, toupper(letters))
+  expect_identical(set_names(set_names(letters), toupper), exp)
+  expect_identical(set_names(letters, toupper), exp)
+})

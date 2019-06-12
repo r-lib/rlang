@@ -1,6 +1,15 @@
 
 # rlang 0.3.99.9000
 
+* `set_names()` now names unnamed input vectors before applying a
+  function. The following expressions are now equivalent:
+
+  ```
+  letters %>% set_names() %>% set_names(toupper)
+
+  letters %>% set_names(toupper)
+  ```
+
 * `with_handlers()` now installs calling handlers first on the stack,
   no matter their location in the argument list. This way they always
   take precedence over exiting handlers, which ensures their side

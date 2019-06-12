@@ -45,6 +45,10 @@ set_names(letters[1:5])
 set_names(1:10, ~ letters[seq_along(.)])
 set_names(head(mtcars), toupper)
 
+# If the input vector is unnamed, it is first named after itself
+# before the function is applied:
+set_names(letters, toupper)
+
 # `...` is passed to the function:
 set_names(head(mtcars), paste0, "_foo")
 }
