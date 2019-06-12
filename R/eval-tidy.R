@@ -498,7 +498,7 @@ ctxt_pronoun_get <- function(x, nm) {
 
 #' @export
 `[.rlang_data_pronoun` <- function(x, i, ...) {
-  abort("`[` is not supported by .data pronoun, use `[[` or $ instead")
+  abort("`[` is not supported by .data pronoun, use `[[` or $ instead.")
 }
 #' @export
 names.rlang_data_pronoun <- function(x) {

@@ -7,9 +7,9 @@
 as_env(x, parent = NULL)
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 
-This function is soft-deprecated as it was renamed to
-\code{\link[=as_environment]{as_environment()}} in rlang 0.2.0.
+This function is deprecated as it was renamed to \code{\link[=as_environment]{as_environment()}}
+in rlang 0.2.0.
 }
 \keyword{internal}

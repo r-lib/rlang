@@ -31,7 +31,7 @@ let the user know about the lossy squashing.
 \section{Life cycle}{
 
 
-This function replaces \code{quo_expr()} which was soft-deprecated in
+This function replaces \code{quo_expr()} which was deprecated in
 rlang 0.2.0. \code{quo_expr()} was a misnomer because it implied that it
 was a mere expression acccessor for quosures whereas it was really
 a lossy operation that squashed all nested quosures.

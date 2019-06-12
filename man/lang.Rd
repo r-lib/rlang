@@ -20,9 +20,9 @@ support \link[=tidy-dots]{tidy dots} features. Empty arguments are preserved.}
 or symbol.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 
-These functions are soft-deprecated, please use \code{\link[=call2]{call2()}} and
+These functions are deprecated, please use \code{\link[=call2]{call2()}} and
 \code{\link[=new_call]{new_call()}} instead.
 }
 \keyword{internal}

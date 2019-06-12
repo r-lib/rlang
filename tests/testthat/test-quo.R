@@ -212,7 +212,7 @@ test_that("quosures class has subset assign methods", {
 
   x[1:2] <- list(quo(3), quo(4))
   expect_identical(x, quos(3, 4))
-  expect_warning(x[2] <- list(4), "soft-deprecated")
+  expect_warning(x[2] <- list(4), "deprecated")
   ## expect_error(x[2] <- list(4), "Can't assign a double vector to a list of quosures")
 
   x[[2]] <- quo(10)

@@ -59,10 +59,10 @@ list_along(.x)
 \item{.x}{A vector.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 
-These functions were soft-deprecated and renamed with \code{new_} prefix
-in rlang 0.2.0. This is for consistency with other non-variadic
-object constructors.
+These functions were deprecated and renamed with \code{new_} prefix in
+rlang 0.2.0. This is for consistency with other non-variadic object
+constructors.
 }
 \keyword{internal}

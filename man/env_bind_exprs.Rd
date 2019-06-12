@@ -21,7 +21,7 @@ These dots support \link[=tidy-dots]{tidy dots} features.}
 evaluated when the symbols are forced.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 
 As of rlang 0.3.0, \code{env_bind_exprs()} and \code{env_bind_fns()} have
 been renamed to \code{\link[=env_bind_lazy]{env_bind_lazy()}} and \code{\link[=env_bind_active]{env_bind_active()}} for

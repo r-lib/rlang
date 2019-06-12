@@ -22,9 +22,8 @@ Extract arguments from a call
 
 
 In rlang 0.2.0, \code{lang_args()} and \code{lang_args_names()} were
-soft-deprecated and renamed to \code{call_args()} and
-\code{call_args_names()}. See lifecycle section in \code{\link[=call2]{call2()}} for more
-about this change.
+deprecated and renamed to \code{call_args()} and \code{call_args_names()}.
+See lifecycle section in \code{\link[=call2]{call2()}} for more about this change.
 }
 
 \examples{

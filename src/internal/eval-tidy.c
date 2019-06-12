@@ -260,7 +260,7 @@ static void warn_env_as_mask_once() {
     "  # Good:\n"
     "  mask <- new_data_mask(env)\n"
     "  eval_tidy(expr, mask)";
-  r_signal_soft_deprecated(msg, msg, r_empty_env);
+  r_warn_deprecated(msg, msg);
 }
 
 static sexp* data_pronoun_sym = NULL;

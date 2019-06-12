@@ -10,10 +10,10 @@ is_expr(x)
 \item{x}{An object to test.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 
-This function was soft-deprecated and renamed to \code{\link[=is_expression]{is_expression()}}
-in rlang 0.2.0. This is for consistency with other type predicates
+This function was deprecated and renamed to \code{\link[=is_expression]{is_expression()}} in
+rlang 0.2.0. This is for consistency with other type predicates
 which are not abbreviated.
 }
 \keyword{internal}

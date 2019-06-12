@@ -414,12 +414,12 @@ is_empty_env <- function(env) {
 #'
 #' @section Life cycle:
 #'
-#' - Using `get_env()` without supplying `env` is soft-deprecated as
+#' - Using `get_env()` without supplying `env` is deprecated as
 #'   of rlang 0.3.0. Please use [current_env()] to retrieve the
 #'   current environment.
 #'
 #' - Passing environment wrappers like formulas or functions instead
-#'   of bare environments is soft-deprecated as of rlang 0.3.0. This
+#'   of bare environments is deprecated as of rlang 0.3.0. This
 #'   internal genericity was causing confusion (see issue #427). You
 #'   should now extract the environment separately before calling
 #'   these functions.
@@ -457,7 +457,7 @@ is_empty_env <- function(env) {
 #' identical(get_env(f, default), default)
 get_env <- function(env, default = NULL) {
   if (missing(env)) {
-    signal_soft_deprecated("The `env` argument of `get_env()` must now be supplied")
+    warn_deprecated("The `env` argument of `get_env()` must now be supplied")
     env <- caller_env()
   }
 

@@ -37,13 +37,8 @@ modifying the call.
 \section{Life cycle}{
 
 \itemize{
-\item Prior to rlang 0.3.0, \code{NULL} was the sentinel for removing
-arguments. As of 0.3.0, \code{\link[=zap]{zap()}} objects remove arguments and
-\code{NULL} simply adds an argument set to \code{NULL}. This breaking
-change allows the deletion sentinel to be distinct from valid
-argument values.
-\item The \code{.standardise} argument is soft-deprecated as of rlang 0.3.0.
-\item In rlang 0.2.0, \code{lang_modify()} was soft-deprecated and renamed to
+\item The \code{.standardise} argument is deprecated as of rlang 0.3.0.
+\item In rlang 0.2.0, \code{lang_modify()} was deprecated and renamed to
 \code{call_modify()}. See lifecycle section in \code{\link[=call2]{call2()}} for more about
 this change.
 }

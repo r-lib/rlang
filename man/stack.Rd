@@ -40,7 +40,7 @@ non-standard frames. If \code{TRUE}, suboptimal call-stack entries by
 the stack. See \code{\link[=stack_trim]{stack_trim()}} and examples.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 
 The \code{eval_} and \code{call_} families of functions provide a replacement
 for the base R functions prefixed with \code{sys.} (which are all about

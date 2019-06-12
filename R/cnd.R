@@ -11,7 +11,7 @@
 #' @section Lifecycle:
 #'
 #' The `.type` and `.msg` arguments have been renamed to `.subclass`
-#' and `message`. They are defunct as of rlang 0.3.0.
+#' and `message`. They are deprecated as of rlang 0.3.0.
 #'
 #' @param .subclass The condition subclass.
 #' @param ... Named data fields stored inside the condition
@@ -158,19 +158,19 @@ validate_cnd_signal_args <- function(cnd, .cnd, .mufflable,
                                      env = parent.frame()) {
   if (is_character(cnd)) {
     warn_deprecated(paste_line(
-      "Creating a condition with `cnd_signal()` is deprecated as of rlang 0.4.0.",
+      "Creating a condition with `cnd_signal()` is deprecated as of rlang 0.3.0.",
       "Please use `signal()` instead."
     ))
     env$cnd <- cnd(cnd)
   }
   if (!missing(.cnd)) {
     warn_deprecated(paste_line(
-      "The `.cnd` argument is deprecated as of rlang 0.4.0.",
+      "The `.cnd` argument is deprecated as of rlang 0.3.0.",
       "Please use `cnd` instead."
     ))
     if (is_character(.cnd)) {
       warn_deprecated(paste_line(
-        "Creating a condition with `cnd_signal()` is deprecated as of rlang 0.4.0.",
+        "Creating a condition with `cnd_signal()` is deprecated as of rlang 0.3.0.",
         "Please use `signal()` instead."
       ))
       .cnd <- cnd(.cnd)
@@ -179,7 +179,7 @@ validate_cnd_signal_args <- function(cnd, .cnd, .mufflable,
   }
   if (!missing(.mufflable)) {
     warn_deprecated(
-      "`.mufflable` is deprecated as of rlang 0.4.0 and no longer has any effect"
+      "`.mufflable` is deprecated as of rlang 0.3.0 and no longer has any effect"
     )
   }
 }
@@ -253,7 +253,7 @@ validate_cnd_signal_args <- function(cnd, .cnd, .mufflable,
 #' @param call Deprecated as of rlang 0.3.0. Storing the full
 #'   backtrace is now preferred to storing a simple call.
 #' @param msg,type These arguments were renamed to `message` and
-#'   `.type` and are deprecated as of rlang 0.3.0.
+#'   `.subclass` and are deprecated as of rlang 0.3.0.
 #'
 #' @seealso [with_abort()] to convert all errors to rlang errors.
 #' @examples

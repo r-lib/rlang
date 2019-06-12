@@ -43,7 +43,7 @@ inherit from \code{error}, \code{warning} or \code{message}.
 
 
 The \code{.type} and \code{.msg} arguments have been renamed to \code{.subclass}
-and \code{message}. They are defunct as of rlang 0.3.0.
+and \code{message}. They are deprecated as of rlang 0.3.0.
 }
 
 \examples{

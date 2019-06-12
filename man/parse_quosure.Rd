@@ -21,9 +21,9 @@ R code in an isolated context (perhaps a child of the global
 environment or of the \link[=base_env]{base environment}).}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 
-These functions were soft-deprecated and renamed to \code{\link[=parse_quo]{parse_quo()}}
+These functions were deprecated and renamed to \code{\link[=parse_quo]{parse_quo()}}
 and \code{\link[=parse_quos]{parse_quos()}} in rlang 0.2.0. This is for consistency with the
 convention that suffixes indicating return types are not
 abbreviated.

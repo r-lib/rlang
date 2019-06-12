@@ -22,9 +22,9 @@ Extract function name or namespaced of a call
 \section{Life cycle}{
 
 
-In rlang 0.2.0, \code{lang_name()} was soft-deprecated and renamed to
-\code{call_name()}. See lifecycle section in \code{\link[=call2]{call2()}} for more about this
-change.
+In rlang 0.2.0, \code{lang_name()} was deprecated and renamed to
+\code{call_name()}. See lifecycle section in \code{\link[=call2]{call2()}} for more about
+this change.
 }
 
 \examples{

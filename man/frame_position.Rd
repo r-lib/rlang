@@ -18,7 +18,7 @@ bottom of the evaluation stack), or from the current frame (the
 top of the evaluation stack).}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 
 The frame position on the stack can be computed by counting frames
 from the global frame (the bottom of the stack, the default) or
@@ -32,7 +32,7 @@ as those will be discarded.
 \section{Life cycle}{
 
 
-These functions are soft-deprecated and replaced by \code{\link[=trace_back]{trace_back()}}.
+These functions are deprecated and replaced by \code{\link[=trace_back]{trace_back()}}.
 }
 
 \examples{

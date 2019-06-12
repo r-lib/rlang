@@ -34,9 +34,9 @@ call \code{\link[=call_standardise]{call_standardise()}} manually.}
 functions.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 
-These functions are soft-deprecated, please use \code{\link[=call_modify]{call_modify()}},
+These functions are deprecated, please use \code{\link[=call_modify]{call_modify()}},
 \code{\link[=call_standardise]{call_standardise()}}, or \code{\link[=call_fn]{call_fn()}} instead.
 }
 \keyword{internal}

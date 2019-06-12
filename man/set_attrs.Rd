@@ -22,7 +22,7 @@ modified in place.
 }
 \description{
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 
 \code{set_attrs()} adds, changes, or zaps attributes of objects. Pass a
 single unnamed \code{NULL} argument to zap all attributes. For
@@ -35,7 +35,7 @@ internal attributes names like \code{.Dim}, \code{.Dimnames} or \code{.Names}.
 \section{Life cycle}{
 
 
-These functions are soft-deprecated since rlang 0.3.0.
+These functions are deprecated since rlang 0.3.0.
 }
 
 \examples{

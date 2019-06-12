@@ -429,15 +429,9 @@ call_print_fine_type <- function(call) {
 #'
 #' @section Life cycle:
 #'
-#' * Prior to rlang 0.3.0, `NULL` was the sentinel for removing
-#'   arguments. As of 0.3.0, [zap()] objects remove arguments and
-#'   `NULL` simply adds an argument set to `NULL`. This breaking
-#'   change allows the deletion sentinel to be distinct from valid
-#'   argument values.
+#' * The `.standardise` argument is deprecated as of rlang 0.3.0.
 #'
-#' * The `.standardise` argument is soft-deprecated as of rlang 0.3.0.
-#'
-#' * In rlang 0.2.0, `lang_modify()` was soft-deprecated and renamed to
+#' * In rlang 0.2.0, `lang_modify()` was deprecated and renamed to
 #'   `call_modify()`. See lifecycle section in [call2()] for more about
 #'   this change.
 #'
@@ -514,8 +508,8 @@ call_modify <- function(.call,
   expr <- get_expr(.call)
 
   if (!is_null(.standardise)) {
-    signal_soft_deprecated(paste_line(
-      "`.standardise` is soft-deprecated as of rlang 0.3.0.",
+    warn_deprecated(paste_line(
+      "`.standardise` is deprecated as of rlang 0.3.0.",
       "Please use `call_standardise()` prior to calling `call_modify()`."
     ))
     if (.standardise) {
@@ -612,9 +606,9 @@ abort_call_input_type <- function(arg) {
 #'
 #' @section Life cycle:
 #'
-#' In rlang 0.2.0, `lang_standardise()` was soft-deprecated and
-#' renamed to `call_standardise()`. See lifecycle section in [call2()]
-#' for more about this change.
+#' In rlang 0.2.0, `lang_standardise()` was deprecated and renamed to
+#' `call_standardise()`. See lifecycle section in [call2()] for more
+#' about this change.
 #'
 #' @param call Can be a call or a quosure that wraps a call.
 #' @param env The environment where to find the definition of the
@@ -654,7 +648,7 @@ call_standardise <- function(call, env = caller_env()) {
 #'
 #' @section Life cycle:
 #'
-#' In rlang 0.2.0, `lang_fn()` was soft-deprecated and renamed to
+#' In rlang 0.2.0, `lang_fn()` was deprecated and renamed to
 #' `call_fn()`. See lifecycle section in [call2()] for more about this
 #' change.
 #'
@@ -694,9 +688,9 @@ call_fn <- function(call, env = caller_env()) {
 #'
 #' @section Life cycle:
 #'
-#' In rlang 0.2.0, `lang_name()` was soft-deprecated and renamed to
-#' `call_name()`. See lifecycle section in [call2()] for more about this
-#' change.
+#' In rlang 0.2.0, `lang_name()` was deprecated and renamed to
+#' `call_name()`. See lifecycle section in [call2()] for more about
+#' this change.
 #'
 #' @inheritParams call_standardise
 #' @return A string with the function name, or `NULL` if the function
@@ -763,9 +757,8 @@ call_ns <- function(call) {
 #' @section Life cycle:
 #'
 #' In rlang 0.2.0, `lang_args()` and `lang_args_names()` were
-#' soft-deprecated and renamed to `call_args()` and
-#' `call_args_names()`. See lifecycle section in [call2()] for more
-#' about this change.
+#' deprecated and renamed to `call_args()` and `call_args_names()`.
+#' See lifecycle section in [call2()] for more about this change.
 #'
 #' @inheritParams call_standardise
 #' @return A named list of arguments.

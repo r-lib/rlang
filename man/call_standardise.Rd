@@ -23,8 +23,8 @@ experimental handling of primitive functions.
 \section{Life cycle}{
 
 
-In rlang 0.2.0, \code{lang_standardise()} was soft-deprecated and
-renamed to \code{call_standardise()}. See lifecycle section in \code{\link[=call2]{call2()}}
-for more about this change.
+In rlang 0.2.0, \code{lang_standardise()} was deprecated and renamed to
+\code{call_standardise()}. See lifecycle section in \code{\link[=call2]{call2()}} for more
+about this change.
 }
 

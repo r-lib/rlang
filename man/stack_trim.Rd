@@ -14,7 +14,7 @@ the top of the stack. In other words, the number of layers of
 intervening frames to trim.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 
 \code{\link[=ctxt_stack]{ctxt_stack()}} can be tricky to use in real code because all
 intervening frames are returned with the stack, including those at
@@ -24,7 +24,7 @@ remove layers of intervening calls.
 \section{Life cycle}{
 
 
-These functions are soft-deprecated and replaced by \code{\link[=trace_back]{trace_back()}}.
+These functions are deprecated and replaced by \code{\link[=trace_back]{trace_back()}}.
 }
 
 \examples{

@@ -10,6 +10,6 @@ is_frame(x)
 \item{x}{Object to test}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 }
 \keyword{internal}

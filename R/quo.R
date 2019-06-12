@@ -216,7 +216,7 @@ c.quosures <- function(..., recursive = FALSE) {
   if (every(out, is_quosure)) {
     new_quosures(out)
   } else {
-    signal_soft_deprecated(paste_line(
+    warn_deprecated(paste_line(
       "Quosure lists can't be concatenated with objects other than quosures as of rlang 0.3.0.",
       "Please call `as.list()` on the quosure list first."
     ))
@@ -252,9 +252,9 @@ as.list.quosures <- function(x, ...) {
   x[[name]] <- value
   x
 }
-signal_quosure_assign <- function(x, env = caller_env(2)) {
-  signal_soft_deprecated(env = env, paste_line(
-    "Assigning non-quosure objects to quosure lists is soft-deprecated.",
+signal_quosure_assign <- function(x) {
+  warn_deprecated(paste_line(
+    "Assigning non-quosure objects to quosure lists is deprecated as of rlang 0.3.0.",
     "Please coerce to a bare list beforehand with `as.list()`"
   ))
 }
@@ -325,7 +325,7 @@ as_quosure <- function(x, env = NULL) {
 
   if (is_symbolic(x)) {
     if (is_null(env)) {
-      signal_soft_deprecated(paste_line(
+      warn_deprecated(paste_line(
         "`as_quosure()` requires an explicit environment as of rlang 0.3.0.",
         "Please supply `env`."
       ))
@@ -363,7 +363,7 @@ new_quosure <- function(expr, env = caller_env()) {
 #'
 #' @section Life cycle:
 #'
-#' This function replaces `quo_expr()` which was soft-deprecated in
+#' This function replaces `quo_expr()` which was deprecated in
 #' rlang 0.2.0. `quo_expr()` was a misnomer because it implied that it
 #' was a mere expression acccessor for quosures whereas it was really
 #' a lossy operation that squashed all nested quosures.
@@ -536,8 +536,8 @@ str.quosure <- function(object, ...) {
 
 #' @export
 as.character.quosure <- function(x, ...) {
-  signal_soft_deprecated(paste_line(
-    "Using `as.character()` on a quosure is soft-deprecated as of rlang 0.3.0.",
+  warn_deprecated(paste_line(
+    "Using `as.character()` on a quosure is deprecated as of rlang 0.3.0.",
     "Please use `quo_text()` intead."
   ))
   NextMethod()

@@ -13,11 +13,10 @@ is_bare_env(x)
 \item{x}{object to test}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 
-These functions were soft-deprecated and renamed to
-\code{\link[=is_environment]{is_environment()}} and \code{\link[=is_bare_environment]{is_bare_environment()}} in rlang 0.2.0. This
-is for consistency with other type predicates which are not
-abbreviated.
+These functions were deprecated and renamed to \code{\link[=is_environment]{is_environment()}}
+and \code{\link[=is_bare_environment]{is_bare_environment()}} in rlang 0.2.0. This is for consistency
+with other type predicates which are not abbreviated.
 }
 \keyword{internal}

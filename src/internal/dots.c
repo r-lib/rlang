@@ -442,9 +442,9 @@ static enum dots_homonyms arg_match_homonyms(sexp* homonyms) {
   r_abort("`.homonyms` must be one of: \"keep\", \"first\", \"last\", or \"error\"");
 }
 
-void signal_soft_deprecated_width() {
+static void warn_deprecated_width() {
   const char* msg = "`.named` can no longer be a width";
-  r_signal_soft_deprecated(msg, msg, r_empty_env);
+  r_warn_deprecated(msg, msg);
 }
 static bool should_auto_name(sexp* named) {
   if (r_length(named) != 1) {
@@ -455,11 +455,11 @@ static bool should_auto_name(sexp* named) {
   case r_type_logical:
     return r_lgl_get(named, 0);
   case r_type_integer:
-    signal_soft_deprecated_width();
+    warn_deprecated_width();
     return INTEGER(named)[0];
   case r_type_double:
     if (r_is_integerish(named, -1, true)) {
-      signal_soft_deprecated_width();
+      warn_deprecated_width();
       return REAL(named)[0];
     }
     // else fallthrough
@@ -506,7 +506,7 @@ static bool any_name(sexp* x, bool splice) {
 static void check_named_splice(sexp* node) {
   if (r_node_tag(node) != r_null) {
     const char* msg = "`!!!` shouldn't be supplied with a name. Only the operand's names are retained.";
-    r_signal_soft_deprecated(msg, msg, r_empty_env);
+    r_warn_deprecated(msg, msg);
   }
 }
 

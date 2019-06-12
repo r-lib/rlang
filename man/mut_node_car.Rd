@@ -37,9 +37,9 @@ can be any R objects.}
 \item{newtag}{The new tag for the node. This should be a symbol.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 
-These functions were soft-deprecated and renamed with \code{node_poke_}
+These functions were deprecated and renamed with \code{node_poke_}
 prefix in rlang 0.2.0. This change follows a new naming convention
 where mutation is referred to as "poking".
 }

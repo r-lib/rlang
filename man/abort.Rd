@@ -35,7 +35,7 @@ backtrace is now preferred to storing a simple call.}
 \item{parent}{A parent condition object created by \code{\link[=abort]{abort()}}.}
 
 \item{msg, type}{These arguments were renamed to \code{message} and
-\code{.type} and are deprecated as of rlang 0.3.0.}
+\code{.subclass} and are deprecated as of rlang 0.3.0.}
 }
 \description{
 These functions are equivalent to base functions \code{\link[base:stop]{base::stop()}},

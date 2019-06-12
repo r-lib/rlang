@@ -10,6 +10,6 @@ caller_frame(n = 1)
 \item{n}{Number of frames to go back.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 }
 \keyword{internal}

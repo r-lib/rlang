@@ -3,13 +3,13 @@
 
 #' Get caller frame
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 #'
 #' @param n Number of frames to go back.
 #' @keywords internal
 #' @export
 caller_frame <- function(n = 1) {
-  signal_soft_deprecated("`caller_frame()` is soft-deprecated as of rlang 0.3.0.")
+  warn_deprecated("`caller_frame()` is deprecated as of rlang 0.3.0.")
   call_frame(n + 2)
 }
 
@@ -17,7 +17,7 @@ caller_frame <- function(n = 1) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 #'
 #' The `eval_` and `call_` families of functions provide a replacement
 #' for the base R functions prefixed with `sys.` (which are all about
@@ -156,7 +156,7 @@ print.frame <- function(x, ...) {
 }
 #' Is object a frame?
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 #'
 #' @param x Object to test
 #' @keywords internal
@@ -168,7 +168,7 @@ is_frame <- function(x) {
 #' @rdname stack
 #' @export
 global_frame <- function() {
-  signal_soft_deprecated("`global_frame()` is soft-deprecated as of rlang 0.3.0.")
+  warn_deprecated("`global_frame()` is deprecated as of rlang 0.3.0.")
   new_frame(list(
     pos = 0L,
     caller_pos = NA_integer_,
@@ -181,14 +181,14 @@ global_frame <- function() {
 #' @rdname stack
 #' @export
 current_frame <- function() {
-  signal_soft_deprecated("`current_frame()` is soft-deprecated as of rlang 0.3.0.")
+  warn_deprecated("`current_frame()` is deprecated as of rlang 0.3.0.")
   ctxt_frame(2)
 }
 
 #' @rdname stack
 #' @export
 ctxt_frame <- function(n = 1) {
-  signal_soft_deprecated("`ctxt_frame()` is soft-deprecated as of rlang 0.3.0.")
+  warn_deprecated("`ctxt_frame()` is deprecated as of rlang 0.3.0.")
   stopifnot(n > 0)
   pos <- sys.nframe() - n
 
@@ -311,13 +311,13 @@ call_frame <- function(n = 1, clean = TRUE) {
 #' @rdname stack
 #' @export
 ctxt_depth <- function() {
-  signal_soft_deprecated("`ctxt_depth()` is soft-deprecated as of rlang 0.3.0.")
+  warn_deprecated("`ctxt_depth()` is deprecated as of rlang 0.3.0.")
   sys.nframe()
 }
 #' @rdname stack
 #' @export
 call_depth <- function() {
-  signal_soft_deprecated("`call_depth()` is soft-deprecated as of rlang 0.3.0.")
+  warn_deprecated("`call_depth()` is deprecated as of rlang 0.3.0.")
   eval_callers <- ctxt_stack_callers()
   trail <- trail_make(eval_callers)
   length(trail)
@@ -329,7 +329,7 @@ call_depth <- function() {
 #' @rdname stack
 #' @export
 ctxt_stack <- function(n = NULL, trim = 0) {
-  signal_soft_deprecated("`ctxt_stack()` is soft-deprecated as of rlang 0.3.0.")
+  warn_deprecated("`ctxt_stack()` is deprecated as of rlang 0.3.0.")
 
   stack_data <- list(
     pos = ctxt_stack_trail(),
@@ -397,7 +397,7 @@ stack_subset <- function(stack_data, n) {
 #' @rdname stack
 #' @export
 call_stack <- function(n = NULL, clean = TRUE) {
-  signal_soft_deprecated("`call_stack()` is soft-deprecated as of rlang 0.3.0.")
+  warn_deprecated("`call_stack()` is deprecated as of rlang 0.3.0.")
 
   eval_callers <- ctxt_stack_callers()
   trail <- trail_make(eval_callers, n, clean = clean)
@@ -442,21 +442,21 @@ frame_clean_eval <- function(frame) {
 #' @param x An object to test
 #' @export
 is_stack <- function(x) {
-  signal_soft_deprecated("`is_stack()` is soft-deprecated as of rlang 0.3.0.")
+  warn_deprecated("`is_stack()` is deprecated as of rlang 0.3.0.")
   inherits(x, "stack")
 }
 
 #' @rdname is_stack
 #' @export
 is_eval_stack <- function(x) {
-  signal_soft_deprecated("`is_eval_stack()` is soft-deprecated as of rlang 0.3.0.")
+  warn_deprecated("`is_eval_stack()` is deprecated as of rlang 0.3.0.")
   inherits(x, "ctxt_stack")
 }
 
 #' @rdname is_stack
 #' @export
 is_call_stack <- function(x) {
-  signal_soft_deprecated("`is_call_stack()` is soft-deprecated as of rlang 0.3.0.")
+  warn_deprecated("`is_call_stack()` is deprecated as of rlang 0.3.0.")
   inherits(x, "call_stack")
 }
 
@@ -478,7 +478,7 @@ sys_frame <- function(n) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 #'
 #' The frame position on the stack can be computed by counting frames
 #' from the global frame (the bottom of the stack, the default) or
@@ -493,7 +493,7 @@ sys_frame <- function(n) {
 #'
 #' @section Life cycle:
 #'
-#' These functions are soft-deprecated and replaced by [trace_back()].
+#' These functions are deprecated and replaced by [trace_back()].
 #'
 #' @param frame The environment of a frame. Can be any object with a
 #'   [get_env()] method. Note that for frame objects, the position from
@@ -526,7 +526,7 @@ sys_frame <- function(n) {
 #' h <- function(env) frame_position(env, from = "current")
 #' fn()
 frame_position <- function(frame, from = c("global", "current")) {
-  signal_soft_deprecated("`frame_position()` is soft-deprecated as of rlang 0.3.0.")
+  warn_deprecated("`frame_position()` is deprecated as of rlang 0.3.0.")
 
   stack <- stack_trim(ctxt_stack(), n = 2)
 
@@ -577,7 +577,7 @@ frame_position_current <- function(frame, stack = NULL,
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 #'
 #' [ctxt_stack()] can be tricky to use in real code because all
 #' intervening frames are returned with the stack, including those at
@@ -587,7 +587,7 @@ frame_position_current <- function(frame, stack = NULL,
 #'
 #' @section Life cycle:
 #'
-#' These functions are soft-deprecated and replaced by [trace_back()].
+#' These functions are deprecated and replaced by [trace_back()].
 #'
 #' @param stack An evaluation stack.
 #' @param n The number of call frames (not eval frames) to trim off
@@ -625,7 +625,7 @@ frame_position_current <- function(frame, stack = NULL,
 #' # These intervening frames won't appear in the evaluation stack
 #' identity(user_fn())
 stack_trim <- function(stack, n = 1) {
-  signal_soft_deprecated("`stack_trim()` is soft-deprecated as of rlang 0.3.0.")
+  warn_deprecated("`stack_trim()` is deprecated as of rlang 0.3.0.")
 
   if (n < 1) {
     return(stack)
@@ -663,9 +663,9 @@ UQE <- function(x) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 #'
-#' These functions were soft-deprecated and renamed to [parse_quo()]
+#' These functions were deprecated and renamed to [parse_quo()]
 #' and [parse_quos()] in rlang 0.2.0. This is for consistency with the
 #' convention that suffixes indicating return types are not
 #' abbreviated.
@@ -674,18 +674,18 @@ UQE <- function(x) {
 #' @keywords internal
 #' @export
 parse_quosure <- function(x, env = caller_env()) {
-  signal_soft_deprecated(paste_line(
-    "`parse_quosure()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `parse_quo()` instead"
+  warn_deprecated(paste_line(
+    "`parse_quosure()` is deprecated as of rlang 0.2.0.",
+    "Please use `parse_quo()` instead."
   ))
   parse_quo(x, env = env)
 }
 #' @rdname parse_quosure
 #' @export
 parse_quosures <- function(x, env = caller_env()) {
-  signal_soft_deprecated(paste_line(
-    "`parse_quosures()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `parse_quos()` instead"
+  warn_deprecated(paste_line(
+    "`parse_quosures()` is deprecated as of rlang 0.2.0.",
+    "Please use `parse_quos()` instead."
   ))
   parse_quos(x, env = env)
 }
@@ -694,17 +694,17 @@ parse_quosures <- function(x, env = caller_env()) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 #'
-#' This function is soft-deprecated, please use [quo_squash()] instead.
+#' This function is deprecated, please use [quo_squash()] instead.
 #'
 #' @inheritParams quo_squash
 #' @keywords internal
 #' @export
 quo_expr <- function(quo, warn = FALSE) {
-  signal_soft_deprecated(paste_line(
-    "`quo_expr()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `quo_squash()` instead"
+  warn_deprecated(paste_line(
+    "`quo_expr()` is deprecated as of rlang 0.2.0.",
+    "Please use `quo_squash()` instead."
   ))
   quo_squash(quo, warn = warn)
 }
@@ -713,10 +713,10 @@ quo_expr <- function(quo, warn = FALSE) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 #'
-#' These functions have been soft-deprecated in rlang 0.2.0. Please
-#' use [as_data_mask()] and [new_data_mask()] instead. We no longer
+#' These functions have been deprecated in rlang 0.2.0. Please use
+#' [as_data_mask()] and [new_data_mask()] instead. We no longer
 #' require the mask to be cleaned up so `overscope_clean()` does not
 #' have a replacement.
 #'
@@ -726,9 +726,9 @@ quo_expr <- function(quo, warn = FALSE) {
 #' @keywords internal
 #' @export
 as_overscope <- function(quo, data = NULL) {
-  signal_soft_deprecated(paste_line(
-    "`as_overscope()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `as_data_mask()` instead"
+  warn_deprecated(paste_line(
+    "`as_overscope()` is deprecated as of rlang 0.2.0.",
+    "Please use `as_data_mask()` instead."
   ))
   as_data_mask(data, quo_get_env(quo))
 }
@@ -736,9 +736,9 @@ as_overscope <- function(quo, data = NULL) {
 #' @param enclosure The `parent` argument of [new_data_mask()].
 #' @export
 new_overscope <- function(bottom, top = NULL, enclosure = NULL) {
-  signal_soft_deprecated(paste_line(
-    "`new_overscope()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `new_data_mask()` instead"
+  warn_deprecated(paste_line(
+    "`new_overscope()` is deprecated as of rlang 0.2.0.",
+    "Please use `new_data_mask()` instead."
   ))
   new_data_mask(bottom, top, enclosure)
 }
@@ -746,35 +746,18 @@ new_overscope <- function(bottom, top = NULL, enclosure = NULL) {
 #' @param overscope A data mask.
 #' @export
 overscope_clean <- function(overscope) {
-  signal_soft_deprecated("`overscope_clean()` is soft-deprecated as of rlang 0.2.0.")
+  warn_deprecated("`overscope_clean()` is deprecated as of rlang 0.2.0.")
   invisible(.Call(rlang_data_mask_clean, overscope))
 }
 
-#' Tidy evaluation in a custom environment
-#'
-#' @description
-#'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("defunct")}
-#'
-#' This function is defunct as of rlang 0.3.0.
-#'
-#' @inheritParams eval_tidy
-#' @inheritParams as_data_mask
-#'
-#' @keywords internal
-#' @export
-eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
-  stop_defunct("`eval_tidy_()` is defunct as of rlang 0.3.0. Use `eval_tidy()` instead.")
-}
 #' Evaluate next quosure in a data mask
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 #'
-#' `overscope_eval_next()` is soft-deprecated as of rlang
-#' 0.2.0. Please use `eval_tidy()` to which you can now supply an
-#' overscope.
+#' `overscope_eval_next()` is deprecated as of rlang 0.2.0. Please use
+#' `eval_tidy()` to which you can now supply an overscope.
 #'
 #' @param quo A quosure.
 #' @param overscope A valid overscope containing bindings for `~`,
@@ -787,9 +770,9 @@ eval_tidy_ <- function(expr, bottom, top = NULL, env = caller_env()) {
 #' @keywords internal
 #' @export
 overscope_eval_next <- function(overscope, quo, env = base_env()) {
-  signal_soft_deprecated(paste_line(
-    "`overscope_eval_next()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `eval_tidy()` with a data mask instead"
+  warn_deprecated(paste_line(
+    "`overscope_eval_next()` is deprecated as of rlang 0.2.0.",
+    "Please use `eval_tidy()` with a data mask instead."
   ))
   .Call(rlang_eval_tidy, quo, overscope, env)
 }
@@ -817,7 +800,7 @@ overscope_eval_next <- function(overscope, quo, env = base_env()) {
 as_dictionary <- function(x, lookup_msg = NULL, read_only = FALSE) {
   stop_defunct(paste_line(
     "`as_dictionary()` is defunct as of rlang 0.3.0.",
-    "Please use `as_data_pronoun()` instead"
+    "Please use `as_data_pronoun()` instead."
   ))
 }
 #' @rdname dictionary
@@ -858,18 +841,18 @@ as_quosureish <- function(x, env = caller_env()) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 #'
-#' These functions are soft-deprecated, please use [call2()] and
+#' These functions are deprecated, please use [call2()] and
 #' [new_call()] instead.
 #'
 #' @inheritParams call2
 #' @keywords internal
 #' @export
 lang <- function(.fn, ..., .ns = NULL) {
-  signal_soft_deprecated(paste_line(
-    "`lang()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `call2()` instead"
+  warn_deprecated(paste_line(
+    "`lang()` is deprecated as of rlang 0.2.0.",
+    "Please use `call2()` instead."
   ))
   call2(.fn, ..., .ns = .ns)
 }
@@ -877,9 +860,9 @@ lang <- function(.fn, ..., .ns = NULL) {
 #' @inheritParams new_call
 #' @export
 new_language <- function(head, tail = NULL) {
-  signal_soft_deprecated(paste_line(
-    "`new_language()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `new_call()` instead"
+  warn_deprecated(paste_line(
+    "`new_language()` is deprecated as of rlang 0.2.0.",
+    "Please use `new_call()` instead."
   ))
   new_call(head, tail)
 }
@@ -888,36 +871,36 @@ new_language <- function(head, tail = NULL) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 #'
-#' These functions are soft-deprecated, please use [is_call()] and its
-#' `n` argument instead.
+#' These functions are deprecated, please use [is_call()] and its `n`
+#' argument instead.
 #'
 #' @inheritParams is_call
 #' @keywords internal
 #' @export
 is_lang <- function(x, name = NULL, n = NULL, ns = NULL) {
-  signal_soft_deprecated(paste_line(
-    "`is_lang()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `is_call()` instead"
+  warn_deprecated(paste_line(
+    "`is_lang()` is deprecated as of rlang 0.2.0.",
+    "Please use `is_call()` instead."
   ))
   is_call(x, name, n, ns)
 }
 #' @rdname is_lang
 #' @export
 is_unary_lang <- function(x, name = NULL, ns = NULL) {
-  signal_soft_deprecated(paste_line(
-    "`is_unary_lang()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `is_call()` instead"
+  warn_deprecated(paste_line(
+    "`is_unary_lang()` is deprecated as of rlang 0.2.0.",
+    "Please use `is_call()` instead."
   ))
   is_call(x, name, n = 1L, ns = ns)
 }
 #' @rdname is_lang
 #' @export
 is_binary_lang <- function(x, name = NULL, ns = NULL) {
-  signal_soft_deprecated(paste_line(
-    "`is_binary_lang()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `is_call()` instead"
+  warn_deprecated(paste_line(
+    "`is_binary_lang()` is deprecated as of rlang 0.2.0.",
+    "Please use `is_call()` instead."
   ))
   is_call(x, name, n = 2L, ns = ns)
 }
@@ -925,9 +908,9 @@ is_binary_lang <- function(x, name = NULL, ns = NULL) {
 #' @param quo A quosure to test.
 #' @export
 quo_is_lang <- function(quo) {
-  signal_soft_deprecated(paste_line(
-    "`quo_is_lang()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `quo_is_call()` instead"
+  warn_deprecated(paste_line(
+    "`quo_is_lang()` is deprecated as of rlang 0.2.0.",
+    "Please use `quo_is_call()` instead."
   ))
   .Call(rlang_quo_is_call, quo)
 }
@@ -936,9 +919,9 @@ quo_is_lang <- function(quo) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 #'
-#' These functions are soft-deprecated, please use [call_modify()],
+#' These functions are deprecated, please use [call_modify()],
 #' [call_standardise()], or [call_fn()] instead.
 #'
 #' @inheritParams call_modify
@@ -947,9 +930,9 @@ quo_is_lang <- function(quo) {
 #' @keywords internal
 #' @export
 lang_modify <- function(.lang, ..., .standardise = FALSE) {
-  signal_soft_deprecated(paste_line(
-    "`lang_modify()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `call_modify()` instead"
+  warn_deprecated(paste_line(
+    "`lang_modify()` is deprecated as of rlang 0.2.0.",
+    "Please use `call_modify()` instead."
   ))
   if (.standardise) {
     .lang <- call_standardise(.lang, caller_env())
@@ -959,45 +942,45 @@ lang_modify <- function(.lang, ..., .standardise = FALSE) {
 #' @rdname lang_modify
 #' @export
 lang_standardise <- function(lang) {
-  signal_soft_deprecated(paste_line(
-    "`lang_standardise()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `call_standardise()` instead"
+  warn_deprecated(paste_line(
+    "`lang_standardise()` is deprecated as of rlang 0.2.0.",
+    "Please use `call_standardise()` instead."
   ))
   call_standardise(lang, env = caller_env())
 }
 #' @rdname lang_modify
 #' @export
 lang_fn <- function(lang) {
-  signal_soft_deprecated(paste_line(
-    "`lang_fn()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `call_fn()` instead"
+  warn_deprecated(paste_line(
+    "`lang_fn()` is deprecated as of rlang 0.2.0.",
+    "Please use `call_fn()` instead."
   ))
   call_fn(lang, caller_env())
 }
 #' @rdname lang_modify
 #' @export
 lang_name <- function(lang) {
-  signal_soft_deprecated(paste_line(
-    "`lang_name()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `call_name()` instead"
+  warn_deprecated(paste_line(
+    "`lang_name()` is deprecated as of rlang 0.2.0.",
+    "Please use `call_name()` instead."
   ))
   call_name(lang)
 }
 #' @rdname lang_modify
 #' @export
 lang_args <- function(lang) {
-  signal_soft_deprecated(paste_line(
-    "`lang_args()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `call_args()` instead"
+  warn_deprecated(paste_line(
+    "`lang_args()` is deprecated as of rlang 0.2.0.",
+    "Please use `call_args()` instead."
   ))
   call_args(lang)
 }
 #' @rdname lang_modify
 #' @export
 lang_args_names <- function(lang) {
-  signal_soft_deprecated(paste_line(
-    "`lang_args_names()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `call_args_names()` instead"
+  warn_deprecated(paste_line(
+    "`lang_args_names()` is deprecated as of rlang 0.2.0.",
+    "Please use `call_args_names()` instead."
   ))
   call_args_names(lang)
 }
@@ -1007,16 +990,16 @@ lang_args_names <- function(lang) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 #'
-#' As of rlang 0.2.0 these functions are retired (soft-deprecated for
-#' now) because they are low level accessors that are rarely needed
-#' for end users.
+#' As of rlang 0.2.0 these functions are retired (deprecated for now)
+#' because they are low level accessors that are rarely needed for end
+#' users.
 #'
 #' @param lang A call.
 #' @export
 lang_head <- function(lang) {
-  signal_soft_deprecated("`lang_head()` is soft-deprecated as of rlang 0.2.0.")
+  warn_deprecated("`lang_head()` is deprecated as of rlang 0.2.0.")
   call <- get_expr(lang)
   stopifnot(is_call(call))
   node_car(call)
@@ -1024,7 +1007,7 @@ lang_head <- function(lang) {
 #' @rdname lang_head
 #' @export
 lang_tail <- function(lang) {
-  signal_soft_deprecated("`lang_tail()` is soft-deprecated as of rlang 0.2.0.")
+  warn_deprecated("`lang_tail()` is deprecated as of rlang 0.2.0.")
   call <- get_expr(lang)
   stopifnot(is_call(call))
   node_cdr(call)
@@ -1034,19 +1017,19 @@ lang_tail <- function(lang) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 #'
-#' This function was soft-deprecated and renamed to [is_expression()]
-#' in rlang 0.2.0. This is for consistency with other type predicates
+#' This function was deprecated and renamed to [is_expression()] in
+#' rlang 0.2.0. This is for consistency with other type predicates
 #' which are not abbreviated.
 #'
 #' @inheritParams is_expression
 #' @keywords internal
 #' @export
 is_expr <- function(x) {
-  signal_soft_deprecated(paste_line(
-    "`is_expr()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `is_expression()` instead"
+  warn_deprecated(paste_line(
+    "`is_expr()` is deprecated as of rlang 0.2.0.",
+    "Please use `is_expression()` instead."
   ))
   is_expression(x)
 }
@@ -1058,9 +1041,9 @@ is_expr <- function(x) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 #'
-#' These functions were soft-deprecated and renamed with `node_poke_`
+#' These functions were deprecated and renamed with `node_poke_`
 #' prefix in rlang 0.2.0. This change follows a new naming convention
 #' where mutation is referred to as "poking".
 #'
@@ -1069,52 +1052,52 @@ is_expr <- function(x) {
 #' @keywords internal
 #' @export
 mut_node_car <- function(x, newcar) {
-  signal_soft_deprecated("`mut_node_car()` is soft-deprecated as of rlang 0.2.0.")
+  warn_deprecated("`mut_node_car()` is deprecated as of rlang 0.2.0.")
   invisible(.Call(rlang_node_poke_car, x, newcar))
 }
 #' @rdname mut_node_car
 #' @export
 mut_node_cdr <- function(x, newcdr) {
-  signal_soft_deprecated("`mut_node_cdr()` is soft-deprecated as of rlang 0.2.0.")
+  warn_deprecated("`mut_node_cdr()` is deprecated as of rlang 0.2.0.")
   invisible(.Call(rlang_node_poke_cdr, x, newcdr))
 }
 #' @rdname mut_node_car
 #' @export
 mut_node_caar <- function(x, newcar) {
-  signal_soft_deprecated("`mut_node_caar()` is soft-deprecated as of rlang 0.2.0.")
+  warn_deprecated("`mut_node_caar()` is deprecated as of rlang 0.2.0.")
   invisible(.Call(rlang_node_poke_caar, x, newcar))
 }
 #' @rdname mut_node_car
 #' @export
 mut_node_cadr <- function(x, newcar) {
-  signal_soft_deprecated("`mut_node_cadr()` is soft-deprecated as of rlang 0.2.0.")
+  warn_deprecated("`mut_node_cadr()` is deprecated as of rlang 0.2.0.")
   invisible(.Call(rlang_node_poke_cadr, x, newcar))
 }
 #' @rdname mut_node_car
 #' @export
 mut_node_cdar <- function(x, newcdr) {
-  signal_soft_deprecated("`mut_node_cdar()` is soft-deprecated as of rlang 0.2.0.")
+  warn_deprecated("`mut_node_cdar()` is deprecated as of rlang 0.2.0.")
   invisible(.Call(rlang_node_poke_cdar, x, newcdr))
 }
 #' @rdname mut_node_car
 #' @export
 mut_node_cddr <- function(x, newcdr) {
-  signal_soft_deprecated("`mut_node_cddr()` is soft-deprecated as of rlang 0.2.0.")
+  warn_deprecated("`mut_node_cddr()` is deprecated as of rlang 0.2.0.")
   invisible(.Call(rlang_node_poke_cddr, x, newcdr))
 }
 #' @rdname mut_node_car
 #' @export
 mut_node_tag <- function(x, newtag) {
-  signal_soft_deprecated("`mut_node_tag()` is soft-deprecated as of rlang 0.2.0.")
+  warn_deprecated("`mut_node_tag()` is deprecated as of rlang 0.2.0.")
   invisible(.Call(rlang_node_poke_tag, x, newtag))
 }
 
 #' @rdname vector-old-ctors
 #' @export
 node <- function(car, cdr = NULL) {
-  signal_soft_deprecated(paste_line(
-    "`node()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `new_node()` instead"
+  warn_deprecated(paste_line(
+    "`node()` is deprecated as of rlang 0.2.0.",
+    "Please use `new_node()` instead."
   ))
   new_node(car, cdr)
 }
@@ -1126,15 +1109,15 @@ node <- function(car, cdr = NULL) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 #'
-#' This function is soft-deprecated as it was renamed to
-#' [as_environment()] in rlang 0.2.0.
+#' This function is deprecated as it was renamed to [as_environment()]
+#' in rlang 0.2.0.
 #'
 #' @keywords internal
 #' @export
 as_env <- function(x, parent = NULL) {
-  signal_soft_deprecated("`as_env()` is soft-deprecated as of rlang 0.2.0.")
+  warn_deprecated("`as_env()` is deprecated as of rlang 0.2.0.")
   as_environment(x, parent)
 }
 
@@ -1142,29 +1125,28 @@ as_env <- function(x, parent = NULL) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 #'
-#' These functions were soft-deprecated and renamed to
-#' [is_environment()] and [is_bare_environment()] in rlang 0.2.0. This
-#' is for consistency with other type predicates which are not
-#' abbreviated.
+#' These functions were deprecated and renamed to [is_environment()]
+#' and [is_bare_environment()] in rlang 0.2.0. This is for consistency
+#' with other type predicates which are not abbreviated.
 #'
 #' @inheritParams is_environment
 #' @keywords internal
 #' @export
 is_env <- function(x) {
-  signal_soft_deprecated(paste_line(
-    "`is_env()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `is_environment()` instead"
+  warn_deprecated(paste_line(
+    "`is_env()` is deprecated as of rlang 0.2.0.",
+    "Please use `is_environment()` instead."
   ))
   is_environment(x)
 }
 #' @rdname is_env
 #' @export
 is_bare_env <- function(x) {
-  signal_soft_deprecated(paste_line(
-    "`is_bare_env()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `is_bare_environment()` instead"
+  warn_deprecated(paste_line(
+    "`is_bare_env()` is deprecated as of rlang 0.2.0.",
+    "Please use `is_bare_environment()` instead."
   ))
   is_bare_environment(x)
 }
@@ -1173,7 +1155,7 @@ is_bare_env <- function(x) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 #'
 #' As of rlang 0.3.0, `env_bind_exprs()` and `env_bind_fns()` have
 #' been renamed to [env_bind_lazy()] and [env_bind_active()] for
@@ -1184,8 +1166,8 @@ is_bare_env <- function(x) {
 #' @keywords internal
 #' @export
 env_bind_exprs <- function(.env, ..., .eval_env = caller_env()) {
-  signal_soft_deprecated(paste_line(
-    "`env_bind_exprs()` is soft-deprecated as of rlang 0.3.0.",
+  warn_deprecated(paste_line(
+    "`env_bind_exprs()` is deprecated as of rlang 0.3.0.",
     "Please use `env_bind_lazy()` instead."
   ))
   env_bind_lazy(.env = .env, ..., .eval_env = .eval_env)
@@ -1193,8 +1175,8 @@ env_bind_exprs <- function(.env, ..., .eval_env = caller_env()) {
 #' @rdname env_bind_exprs
 #' @export
 env_bind_fns <- function(.env, ...) {
-  signal_soft_deprecated(paste_line(
-    "`env_bind_fns()` is soft-deprecated as of rlang 0.3.0.",
+  warn_deprecated(paste_line(
+    "`env_bind_fns()` is deprecated as of rlang 0.3.0.",
     "Please use `env_bind_active()` instead."
   ))
   env_bind_active(.env = .env, ...)
@@ -1204,10 +1186,10 @@ env_bind_fns <- function(.env, ...) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 #'
-#' These functions are soft-deprecated as of rlang 0.3.0. They are
-#' replaced by [is_attached()], ...
+#' These functions are deprecated as of rlang 0.3.0. They are replaced
+#' by [is_attached()], ...
 #'
 #' @param nm The name of an environment attached to the search
 #'   path. Call [base::search()] to see what is currently on the path.
@@ -1215,8 +1197,8 @@ env_bind_fns <- function(.env, ...) {
 #' @keywords internal
 #' @export
 scoped_env <- function(nm) {
-  signal_soft_deprecated(paste_line(
-    "`scoped_env()` is soft-deprecated as of rlang 0.3.0.",
+  warn_deprecated(paste_line(
+    "`scoped_env()` is deprecated as of rlang 0.3.0.",
     "Please use `search_env()` instead."
   ))
   scoped_options(lifecycle_disable_warnings = TRUE)
@@ -1232,8 +1214,8 @@ scoped_env <- function(nm) {
 #' @rdname scoped_env
 #' @export
 is_scoped <- function(nm) {
-  signal_soft_deprecated(paste_line(
-    "`is_scoped()` is soft-deprecated as of rlang 0.3.0.",
+  warn_deprecated(paste_line(
+    "`is_scoped()` is deprecated as of rlang 0.3.0.",
     "Please use `is_attached()` instead."
   ))
   scoped_options(lifecycle_disable_warnings = TRUE)
@@ -1246,8 +1228,8 @@ is_scoped <- function(nm) {
 #' @rdname scoped_env
 #' @export
 scoped_envs <- function() {
-  signal_soft_deprecated(paste_line(
-    "`scoped_envs()` is soft-deprecated as of rlang 0.3.0.",
+  warn_deprecated(paste_line(
+    "`scoped_envs()` is deprecated as of rlang 0.3.0.",
     "Please use `search_envs()` instead."
   ))
   scoped_options(lifecycle_disable_warnings = TRUE)
@@ -1258,8 +1240,8 @@ scoped_envs <- function() {
 #' @rdname scoped_env
 #' @export
 scoped_names <- function() {
-  signal_soft_deprecated(paste_line(
-    "`scoped_names()` is soft-deprecated as of rlang 0.3.0.",
+  warn_deprecated(paste_line(
+    "`scoped_names()` is deprecated as of rlang 0.3.0.",
     "Please use `base::search()` instead."
   ))
   c(search(), "NULL")
@@ -1272,11 +1254,11 @@ scoped_names <- function() {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 #'
-#' These functions were soft-deprecated and renamed with `new_` prefix
-#' in rlang 0.2.0. This is for consistency with other non-variadic
-#' object constructors.
+#' These functions were deprecated and renamed with `new_` prefix in
+#' rlang 0.2.0. This is for consistency with other non-variadic object
+#' constructors.
 #'
 #' @param .x A vector.
 #' @inheritParams new-vector
@@ -1288,72 +1270,72 @@ NULL
 #' @rdname vector-old-ctors
 #' @export
 lgl_len <- function(.n) {
-  signal_soft_deprecated(paste_line(
-    "`lgl_len()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `new_logical()` instead"
+  warn_deprecated(paste_line(
+    "`lgl_len()` is deprecated as of rlang 0.2.0.",
+    "Please use `new_logical()` instead."
   ))
   new_logical(.n)
 }
 #' @rdname vector-old-ctors
 #' @export
 int_len <- function(.n) {
-  signal_soft_deprecated(paste_line(
-    "`int_len()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `new_integer()` instead"
+  warn_deprecated(paste_line(
+    "`int_len()` is deprecated as of rlang 0.2.0.",
+    "Please use `new_integer()` instead."
   ))
   new_integer(.n)
 }
 #' @rdname vector-old-ctors
 #' @export
 dbl_len <- function(.n) {
-  signal_soft_deprecated(paste_line(
-    "`dbl_len()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `new_double()` instead"
+  warn_deprecated(paste_line(
+    "`dbl_len()` is deprecated as of rlang 0.2.0.",
+    "Please use `new_double()` instead."
   ))
   new_double(.n)
 }
 #' @rdname vector-old-ctors
 #' @export
 chr_len <- function(.n) {
-  signal_soft_deprecated(paste_line(
-    "`chr_len()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `new_character()` instead"
+  warn_deprecated(paste_line(
+    "`chr_len()` is deprecated as of rlang 0.2.0.",
+    "Please use `new_character()` instead."
   ))
   new_character(.n)
 }
 #' @rdname vector-old-ctors
 #' @export
 cpl_len <- function(.n) {
-  signal_soft_deprecated(paste_line(
-    "`cpl_len()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `new_complex()` instead"
+  warn_deprecated(paste_line(
+    "`cpl_len()` is deprecated as of rlang 0.2.0.",
+    "Please use `new_complex()` instead."
   ))
   new_complex(.n)
 }
 #' @rdname vector-old-ctors
 #' @export
 raw_len <- function(.n) {
-  signal_soft_deprecated(paste_line(
-    "`raw_len()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `new_raw()` instead"
+  warn_deprecated(paste_line(
+    "`raw_len()` is deprecated as of rlang 0.2.0.",
+    "Please use `new_raw()` instead."
   ))
   new_raw(.n)
 }
 #' @rdname vector-old-ctors
 #' @export
 bytes_len <- function(.n) {
-  signal_soft_deprecated(paste_line(
-    "`bytes_len()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `new_raw()` instead"
+  warn_deprecated(paste_line(
+    "`bytes_len()` is deprecated as of rlang 0.2.0.",
+    "Please use `new_raw()` instead."
   ))
   new_raw(.n)
 }
 #' @rdname vector-old-ctors
 #' @export
 list_len <- function(.n) {
-  signal_soft_deprecated(paste_line(
-    "`list_len()` is soft-deprecated as of rlang 0.2.0.",
-    "Please use `new_list()` instead"
+  warn_deprecated(paste_line(
+    "`list_len()` is deprecated as of rlang 0.2.0.",
+    "Please use `new_list()` instead."
   ))
   new_list(.n)
 }
@@ -1361,63 +1343,63 @@ list_len <- function(.n) {
 #' @rdname vector-old-ctors
 #' @export
 lgl_along <- function(.x) {
-  signal_soft_deprecated("`lgl_along()` is soft-deprecated as of rlang 0.2.0.")
+  warn_deprecated("`lgl_along()` is deprecated as of rlang 0.2.0.")
   scoped_options(lifecycle_disable_warnings = TRUE)
   new_logical_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 int_along <- function(.x) {
-  signal_soft_deprecated("`int_along()` is soft-deprecated as of rlang 0.2.0.")
+  warn_deprecated("`int_along()` is deprecated as of rlang 0.2.0.")
   scoped_options(lifecycle_disable_warnings = TRUE)
   new_integer_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 dbl_along <- function(.x) {
-  signal_soft_deprecated("`dbl_along()` is soft-deprecated as of rlang 0.2.0.")
+  warn_deprecated("`dbl_along()` is deprecated as of rlang 0.2.0.")
   scoped_options(lifecycle_disable_warnings = TRUE)
   new_double_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 chr_along <- function(.x) {
-  signal_soft_deprecated("`chr_along()` is soft-deprecated as of rlang 0.2.0.")
+  warn_deprecated("`chr_along()` is deprecated as of rlang 0.2.0.")
   scoped_options(lifecycle_disable_warnings = TRUE)
   new_character_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 cpl_along <- function(.x) {
-  signal_soft_deprecated("`cpl_along()` is soft-deprecated as of rlang 0.2.0.")
+  warn_deprecated("`cpl_along()` is deprecated as of rlang 0.2.0.")
   scoped_options(lifecycle_disable_warnings = TRUE)
   new_complex_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 raw_along <- function(.x) {
-  signal_soft_deprecated("`raw_along()` is soft-deprecated as of rlang 0.2.0.")
+  warn_deprecated("`raw_along()` is deprecated as of rlang 0.2.0.")
   scoped_options(lifecycle_disable_warnings = TRUE)
   new_raw_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 bytes_along <- function(.x) {
-  signal_soft_deprecated("`bytes_along()` is soft-deprecated as of rlang 0.2.0.")
+  warn_deprecated("`bytes_along()` is deprecated as of rlang 0.2.0.")
   scoped_options(lifecycle_disable_warnings = TRUE)
   new_raw_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 list_along <- function(.x) {
-  signal_soft_deprecated("`list_along()` is soft-deprecated as of rlang 0.2.0.")
+  warn_deprecated("`list_along()` is deprecated as of rlang 0.2.0.")
   scoped_options(lifecycle_disable_warnings = TRUE)
   new_list_along(.x, NULL)
 }
 
 #' Create vectors matching the length of a given vector
 #'
-#' These functions are soft-deprecated as of rlang 0.3.0 because they
+#' These functions are deprecated as of rlang 0.3.0 because they
 #' are longer to type than the equivalent [rep_along()] or
 #' [rep_named()] calls without added clarity.
 #'
@@ -1428,48 +1410,48 @@ list_along <- function(.x) {
 #' @export
 #' @rdname new-vector-along-retired
 new_logical_along <- function(x, names = base::names(x)) {
-  signal_soft_deprecated_along("logical", "NA")
+  warn_deprecated_along("logical", "NA")
   set_names_impl(rep_len(na_lgl, length(x)), x, names)
 }
 #' @export
 #' @rdname new-vector-along-retired
 new_integer_along <- function(x, names = base::names(x)) {
-  signal_soft_deprecated_along("integer", "na_int")
+  warn_deprecated_along("integer", "na_int")
   set_names_impl(rep_len(na_int, length(x)), x, names)
 }
 #' @export
 #' @rdname new-vector-along-retired
 new_double_along <- function(x, names = base::names(x)) {
-  signal_soft_deprecated_along("double", "na_dbl")
+  warn_deprecated_along("double", "na_dbl")
   set_names_impl(rep_len(na_dbl, length(x)), x, names)
 }
 #' @export
 #' @rdname new-vector-along-retired
 new_character_along <- function(x, names = base::names(x)) {
-  signal_soft_deprecated_along("character", "na_chr")
+  warn_deprecated_along("character", "na_chr")
   set_names_impl(rep_len(na_chr, length(x)), x, names)
 }
 #' @export
 #' @rdname new-vector-along-retired
 new_complex_along <- function(x, names = base::names(x)) {
-  signal_soft_deprecated_along("complex", "na_cpl")
+  warn_deprecated_along("complex", "na_cpl")
   set_names_impl(rep_len(na_cpl, length(x)), x, names)
 }
 #' @export
 #' @rdname new-vector-along-retired
 new_raw_along <- function(x, names = base::names(x)) {
-  signal_soft_deprecated_along("raw", "new_raw(1)")
+  warn_deprecated_along("raw", "new_raw(1)")
   set_names_impl(vector("raw", length(x)), x, names)
 }
 #' @export
 #' @rdname new-vector-along-retired
 new_list_along <- function(x, names = base::names(x)) {
-  signal_soft_deprecated_along("list", "list(NULL)")
+  warn_deprecated_along("list", "list(NULL)")
   set_names_impl(vector("list", length(x)), x, names)
 }
-signal_soft_deprecated_along <- function(type, na, env = caller_env(2)) {
-  signal_soft_deprecated(env = env, paste_line(
-    sprintf("`new_%s_along()` is soft-deprecated as of rlang 0.3.0.", type),
+warn_deprecated_along <- function(type, na) {
+  warn_deprecated(paste_line(
+    sprintf("`new_%s_along()` is deprecated as of rlang 0.3.0.", type),
     sprintf("Please use `rep_along(x, %s)` or `rep_named(nms, %s)` instead.", na, na)
   ))
 }
@@ -1544,7 +1526,7 @@ warn_deprecated_vector <- function(fn) {
 #' @description
 #'
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 #'
 #' `set_attrs()` adds, changes, or zaps attributes of objects. Pass a
 #' single unnamed `NULL` argument to zap all attributes. For
@@ -1558,7 +1540,7 @@ warn_deprecated_vector <- function(fn) {
 #'
 #' @section Life cycle:
 #'
-#' These functions are soft-deprecated since rlang 0.3.0.
+#' These functions are deprecated since rlang 0.3.0.
 #'
 #' @param .x An object to decorate with attributes.
 #' @param ... A list of named attributes. These have [explicit
@@ -1590,7 +1572,7 @@ warn_deprecated_vector <- function(fn) {
 #' mut_attrs(env, foo = "bar")
 #' env
 set_attrs <- function(.x, ...) {
-  signal_soft_deprecated("`set_attrs()` is soft-deprecated as of rlang 0.3.0")
+  warn_deprecated("`set_attrs()` is deprecated as of rlang 0.3.0")
 
   if (!is_copyable(.x)) {
     abort("`.x` is uncopyable: use `mut_attrs()` to change attributes in place")
@@ -1600,7 +1582,7 @@ set_attrs <- function(.x, ...) {
 #' @rdname set_attrs
 #' @export
 mut_attrs <- function(.x, ...) {
-  signal_soft_deprecated("`set_attrs()` is soft-deprecated as of rlang 0.3.0")
+  warn_deprecated("`set_attrs()` is deprecated as of rlang 0.3.0")
 
   if (is_copyable(.x)) {
     abort("`.x` is copyable: use `set_attrs()` to change attributes without side effect")
@@ -1621,6 +1603,7 @@ set_attrs_impl <- function(.x, ...) {
 }
 set_attrs_null <- list(NULL)
 names(set_attrs_null) <- ""
+
 
 #  Conditions --------------------------------------------------------
 

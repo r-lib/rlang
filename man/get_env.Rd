@@ -41,11 +41,11 @@ package.
 \section{Life cycle}{
 
 \itemize{
-\item Using \code{get_env()} without supplying \code{env} is soft-deprecated as
+\item Using \code{get_env()} without supplying \code{env} is deprecated as
 of rlang 0.3.0. Please use \code{\link[=current_env]{current_env()}} to retrieve the
 current environment.
 \item Passing environment wrappers like formulas or functions instead
-of bare environments is soft-deprecated as of rlang 0.3.0. This
+of bare environments is deprecated as of rlang 0.3.0. This
 internal genericity was causing confusion (see issue #427). You
 should now extract the environment separately before calling
 these functions.

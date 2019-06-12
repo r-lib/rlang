@@ -20,9 +20,9 @@ scoped_names()
 path. Call \code{\link[base:search]{base::search()}} to see what is currently on the path.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 
-These functions are soft-deprecated as of rlang 0.3.0. They are
-replaced by \code{\link[=is_attached]{is_attached()}}, ...
+These functions are deprecated as of rlang 0.3.0. They are replaced
+by \code{\link[=is_attached]{is_attached()}}, ...
 }
 \keyword{internal}
