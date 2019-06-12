@@ -91,7 +91,7 @@ test_that("cnd_signal() and signal() returns NULL invisibly", {
 
 test_that("signal() accepts character vectors of classes (#195)", {
   expect <- calling(function(cnd) {
-    expect_identical(class(cnd), c("foo", "bar", "rlang_condition", "condition"))
+    expect_identical(class(cnd), c("foo", "bar", "condition"))
   })
   with_handlers(signal("", c("foo", "bar")), foo = expect)
 })
@@ -149,7 +149,7 @@ test_that("can muffle conditions", {
 })
 
 test_that("conditions have correct subclasses", {
-  expect_true(inherits_all(catch_cnd(signal("", "foo")), c("foo", "rlang_condition", "condition")))
+  expect_true(inherits_all(catch_cnd(signal("", "foo")), c("foo", "condition", "condition")))
   expect_true(inherits_all(catch_cnd(inform("", "foo")), c("foo", "message", "condition")))
   expect_true(inherits_all(catch_cnd(warn("", "foo")), c("foo", "warning", "condition")))
   expect_true(inherits_all(catch_cnd(abort("", "foo")), c("foo", "rlang_error", "error", "condition")))

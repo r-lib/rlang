@@ -45,7 +45,7 @@ cnd <- function(.subclass, ..., message = "") {
   if (missing(.subclass)) {
     abort("Bare conditions must be subclassed")
   }
-  .Call(rlang_new_condition, c(.subclass, "rlang_condition"), message, dots_list(...))
+  .Call(rlang_new_condition, .subclass, message, dots_list(...))
 }
 #' @rdname cnd
 #' @export
@@ -502,11 +502,9 @@ cnd_muffle <- function(cnd) {
   switch(cnd_type(cnd),
     message = invokeRestart("muffleMessage"),
     warning = invokeRestart("muffleWarning"),
-    interrupt = invokeRestart("resume")
-  )
-  if (inherits(cnd, "rlang_condition")) {
+    interrupt = invokeRestart("resume"),
     invokeRestart("rlang_muffle")
-  }
+  )
 
   abort("Can't find a muffling restart")
 }
