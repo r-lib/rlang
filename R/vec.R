@@ -1,5 +1,9 @@
 #' Poke values into a vector
 #'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+#'
 #' These tools are for R experts only. They copy elements from `y`
 #' into `x` by mutation. You should only do this if you own `x`,
 #' i.e. if you have created it or if you are certain that it doesn't

@@ -23,6 +23,8 @@ vec_poke_range(x, start, y, from = 1L, to = length(y) - from + 1L)
 \item{to}{The index indicating the end of the range to copy from \code{y}.}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+
 These tools are for R experts only. They copy elements from \code{y}
 into \code{x} by mutation. You should only do this if you own \code{x},
 i.e. if you have created it or if you are certain that it doesn't
