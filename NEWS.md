@@ -1,6 +1,9 @@
 
 # rlang 0.3.99.9000
 
+* The performance of `exec()` has been improved. It is now on the same
+  order of performance as `do.call()`, though slightly slower.
+
 * `set_names()` now names unnamed input vectors before applying a
   function. The following expressions are now equivalent:
 

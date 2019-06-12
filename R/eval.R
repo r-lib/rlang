@@ -316,16 +316,5 @@ eval_top <- function(expr, env = caller_env()) {
 #' data_env <- env(data = mtcars)
 #' eval(expr(lm(!!f, data)), data_env)
 exec <- function(.fn, ..., .env = caller_env()) {
-  args <- list2(...)
-  args <- map(args, sym_protect)
-
-  do.call(.fn, args, envir = .env)
-}
-
-sym_protect <- function(x) {
-  if (is_symbolic(x)) {
-    call2(quote, x)
-  } else {
-    x
-  }
+  .External2(rlang_exec, .fn, .env)
 }

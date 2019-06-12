@@ -33,6 +33,7 @@ internal-files = \
         internal/call.c \
         internal/env.c \
         internal/env-binding.c \
+        internal/eval.c \
         internal/eval-tidy.c \
         internal/expr-interp.c \
         internal/expr-interp-rotate.c \
