@@ -1,4 +1,4 @@
-# nocov start --- compat-lifecycle --- 2019-06-12 Wed 09:12
+# nocov start --- compat-lifecycle --- 2019-06-12 Wed 20:27
 
 # This file serves as a reference for currently unexported rlang
 # lifecycle functions. Please find the most recent version in rlang's
@@ -134,7 +134,14 @@ deprecation_env <- new.env(parent = emptyenv())
 
 stop_defunct <- function(msg) {
   msg <- lifecycle_validate_message(msg)
-  .Defunct(msg = msg)
+  err <- cnd(
+    c("defunctError", "error", "condition"),
+    old = NULL,
+    new = NULL,
+    package = NULL,
+    message = msg
+  )
+  stop(err)
 }
 
 scoped_lifecycle_silence <- function(frame = rlang::caller_env()) {

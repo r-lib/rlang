@@ -558,8 +558,8 @@ test_that("unquoting with rlang namespace is deprecated", {
 })
 
 test_that("UQE() is defunct", {
-  expect_error_(expr(foo$UQE(NULL)), "defunct")
-  expect_error_(UQE(), "defunct")
+  expect_defunct(expr(foo$UQE(NULL)), "defunct")
+  expect_defunct(UQE(), "defunct")
 })
 
 test_that("splicing language objects still works", {

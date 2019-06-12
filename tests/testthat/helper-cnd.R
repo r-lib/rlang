@@ -102,3 +102,7 @@ skip_silently <- function(reason, env = caller_env()) {
 expect_data_pronoun_error <- function(object, regexp = NULL, ...) {
   expect_error(object, regexp, ..., class = "rlang_error_data_pronoun_not_found")
 }
+
+expect_defunct <- function(object, ...) {
+  expect_error(object, class = "defunctError")
+}
