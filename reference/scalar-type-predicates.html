@@ -33,7 +33,11 @@
 <meta property="og:title" content="Scalar type predicates — scalar-type-predicates" />
 
 <meta property="og:description" content="These predicates check for a given type and whether the vector is
-&quot;scalar&quot;, that is, of length 1." />
+&quot;scalar&quot;, that is, of length 1.
+In addition to the length check, is_string() and is_bool()
+return FALSE if their input is missing. This is useful for
+type-checking arguments, when your function expects a single string
+or a single TRUE or FALSE." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -135,6 +139,10 @@
     
     <p>These predicates check for a given type and whether the vector is
 "scalar", that is, of length 1.</p>
+<p>In addition to the length check, <code>is_string()</code> and <code>is_bool()</code>
+return <code>FALSE</code> if their input is missing. This is useful for
+type-checking arguments, when your function expects a single string
+or a single <code>TRUE</code> or <code>FALSE</code>.</p>
     
     </div>
 
@@ -156,7 +164,9 @@
 
 <span class='fu'>is_string</span>(<span class='no'>x</span>, <span class='kw'>string</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>is_scalar_bytes</span>(<span class='no'>x</span>)</pre>
+<span class='fu'>is_scalar_bytes</span>(<span class='no'>x</span>)
+
+<span class='fu'>is_bool</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

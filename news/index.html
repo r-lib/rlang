@@ -131,6 +131,7 @@
 <a href="#rlang-0-3-99-9000" class="anchor"></a>rlang 0.3.99.9000<small> Unreleased </small>
 </h1>
 <ul>
+<li><p><code><a href="../reference/scalar-type-predicates.html">is_bool()</a></code> is a scalar type predicate that checks whether its input is a single <code>TRUE</code> or <code>FALSE</code>. Like <code><a href="../reference/scalar-type-predicates.html">is_string()</a></code>, it returns <code>FALSE</code> when the input is missing. This is useful for type-checking function arguments (<a href='https://github.com/r-lib/rlang/issues/695'>#695</a>).</p></li>
 <li><p>Lists of quosures now have pillar methods for display in tibbles.</p></li>
 <li><p>The performance of <code><a href="../reference/exec.html">exec()</a></code> has been improved. It is now on the same order of performance as <code><a href="https://www.rdocumentation.org/packages/base/topics/do.call">do.call()</a></code>, though slightly slower.</p></li>
 <li>
