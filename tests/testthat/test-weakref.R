@@ -3,28 +3,28 @@ context("weakref")
 test_that("weakref with key and no value allows key to be GC'd", {
   # This is the case when a weakref is used like a weak pointer (with no
   # value).
-  k <- new.env()
+  k <- env()
   w_finalized <- FALSE
   w <- new_weakref(key = k, finalizer = function(e) { message("w finalized"); w_finalized <<- TRUE })
 
-  expect_identical(weakref_get_key(w), k)
-  expect_identical(weakref_get_value(w), NULL)
+  expect_identical(wref_key(w), k)
+  expect_identical(wref_value(w), NULL)
   expect_false(w_finalized)
 
   rm(k)
   gc()
-  expect_identical(weakref_get_key(w), NULL)
+  expect_identical(wref_key(w), NULL)
   expect_true(w_finalized)
 })
 
 
 test_that("key keeps value alive", {
   # Key and value: key keeps value alive
-  k <- new.env()
+  k <- env()
   k_finalized <- FALSE
   reg.finalizer(k, function(e) { k_finalized <<- TRUE })
 
-  v <- new.env()
+  v <- env()
   v$x <- "hello"
   v_finalized <- FALSE
   reg.finalizer(v, function(e) { v_finalized <<- TRUE })
@@ -35,14 +35,14 @@ test_that("key keeps value alive", {
     value = v,
     finalizer = function(e) { w_finalized <<- TRUE }
   )
-  expect_identical(weakref_get_key(w), k)
-  expect_identical(weakref_get_value(w), v)
+  expect_identical(wref_key(w), k)
+  expect_identical(wref_value(w), v)
 
   # As long as the key is reachable, the value stays alive.
   rm(v)
   gc()
   expect_false(v_finalized)
-  expect_identical(weakref_get_value(w)$x, "hello")
+  expect_identical(wref_value(w)$x, "hello")
 
   # Even if the weakref object is unreachable, it still exists, so as long as the key is
   # reachable, it keeps the value alive.

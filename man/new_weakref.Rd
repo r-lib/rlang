@@ -21,51 +21,57 @@ want to use the weak reference like a weak pointer.}
 A weak reference is a special R object which makes it possible to keep a
 reference to an object without preventing garbage collection of that object.
 It can also be used to keep data about an object without preventing GC of the
-object, similar JavaScript WeakMap.
+object, similar to WeakMaps in JavaScript.
 
-As long as the key is reachable, the value will not be garbage collected.
-This is true even if the weak reference object becomes unreachable.
+Objects in R are considered \emph{reachable} if they can be accessed by following
+a chain of references, starting from a \emph{root node}; root nodes are
+specially-designated R objects, and include the global environment and base
+environment. As long as the key is reachable, the value will not be garbage
+collected. This is true even if the weak reference object becomes
+unreachable. The key effectively prevents the weak reference and its value
+from being collected, according to the following chain of ownership:
+\code{weakref <- key -> value}.
 
 When the key becomes unreachable, the key and value in the weak reference
 object are replaced by \code{NULL}, and the finalizer is scheduled to execute.
 }
 \examples{
-e <- new.env()
+e <- env()
 
 # Create a weak reference to e
 w <- new_weakref(e, finalizer = function(e) message("finalized"))
 
 # Get the key object from the weak reference
-identical(weakref_get_key(w), e)
+identical(wref_key(w), e)
 
 # When the regular reference (the `e` binding) is removed and a GC occurs,
 # the weak reference will not keep the object alive.
 rm(e)
 gc()
-identical(weakref_get_key(w), NULL)
+identical(wref_key(w), NULL)
 
 
 # A weak reference with a key and value. The value contains data about the
 # key.
-k <- new.env()
+k <- env()
 v <- list(1, 2, 3)
 w <- new_weakref(k, v)
 
-identical(weakref_get_key(w), k)
-identical(weakref_get_value(w), v)
+identical(wref_key(w), k)
+identical(wref_value(w), v)
 
 # When v is removed, the weak ref keeps it alive because k is still reachable.
 rm(v)
 gc()
-identical(weakref_get_value(w), list(1, 2, 3))
+identical(wref_value(w), list(1, 2, 3))
 
 # When k is removed, the weak ref does not keep k or v alive.
 rm(k)
 gc()
-identical(weakref_get_key(w), NULL)
-identical(weakref_get_value(w), NULL)
+identical(wref_key(w), NULL)
+identical(wref_value(w), NULL)
 }
 \seealso{
-\code{\link[=is_weakref]{is_weakref()}}, \code{\link[=weakref_get_key]{weakref_get_key()}} and \code{\link[=weakref_get_value]{weakref_get_value()}}.
+\code{\link[=is_weakref]{is_weakref()}}, \code{\link[=wref_key]{wref_key()}} and \code{\link[=wref_value]{wref_value()}}.
 }
 \keyword{experimental}

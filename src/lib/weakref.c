@@ -8,14 +8,14 @@ sexp* rlang_new_weakref(sexp* key, sexp* value, sexp* finalizer, sexp* onexit) {
   return R_MakeWeakRef(key, value, finalizer, LOGICAL(onexit)[0]);
 }
 
-sexp* rlang_weakref_get_key(sexp* x) {
+sexp* rlang_wref_key(sexp* x) {
   if (r_typeof(x) != WEAKREFSXP) {
     r_abort("`x` must be a weak reference object");
   }
   return R_WeakRefKey(x);
 }
 
-sexp* rlang_weakref_get_value(sexp* x) {
+sexp* rlang_wref_value(sexp* x) {
   if (r_typeof(x) != WEAKREFSXP) {
     r_abort("`x` must be a weak reference object");
   }
