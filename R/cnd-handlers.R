@@ -91,11 +91,11 @@ with_handlers <- function(.expr, ...) {
   exiting <- handlers[!is_calling]
 
   expr <- quote(.expr)
-  if (length(exiting)) {
-    expr <- expr(tryCatch(!!expr, !!!exiting))
-  }
   if (length(calling)) {
     expr <- expr(withCallingHandlers(!!expr, !!!calling))
+  }
+  if (length(exiting)) {
+    expr <- expr(tryCatch(!!expr, !!!exiting))
   }
 
   .Call(rlang_eval, expr, environment())

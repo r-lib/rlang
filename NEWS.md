@@ -1,6 +1,11 @@
 
 # rlang 0.3.99.9000
 
+* `with_handlers()` now installs calling handlers first on the stack,
+  no matter their location in the argument list. This way they always
+  take precedence over exiting handlers, which ensures their side
+  effects (such as logging) take place (#718).
+
 * `vars()` is now exported from rlang, so it can be reexported from
   other user-facing packages such as dplyr or ggplot2.
 

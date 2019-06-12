@@ -119,7 +119,8 @@
 #' # You can use restarting() to create restarting handlers easily:
 #' with_handlers(fn(FALSE), default_empty_string = restarting("rst_null"))
 with_restarts <- function(.expr, ...) {
-  do.call("withRestarts", list2(expr = quote(.expr), ...))
+  restarts <- map(list2(...), as_function)
+  value(withRestarts(.expr, !!!restarts))
 }
 
 

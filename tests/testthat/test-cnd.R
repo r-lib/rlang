@@ -503,6 +503,29 @@ test_that("signal context is detected", {
   expect_equal(eval_top(expr), list("warning_promoted", quote(f())))
 })
 
+test_that("with_handlers() registers calling handlers first (#718)", {
+  out <- with_restarts(
+    RESTART = ~ "good",
+    with_handlers(
+      CND = calling(~ rst_jump("RESTART")),
+      CND = ~ "bad",
+      signal("", "CND")
+    )
+  )
+  expect_identical(out, "good")
+
+  out <- with_restarts(
+    RESTART = ~ "good",
+    with_handlers(
+      CND = ~ "bad",
+      CND = calling(~ rst_jump("RESTART")),
+      signal("", "CND")
+    )
+  )
+  expect_identical(out, "good")
+})
+
+
 
 # Lifecycle ----------------------------------------------------------
 
