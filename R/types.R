@@ -101,8 +101,16 @@ is_null <- function(x) {
 
 #' Scalar type predicates
 #'
+#' @description
+#'
 #' These predicates check for a given type and whether the vector is
 #' "scalar", that is, of length 1.
+#'
+#' In addition to the length check, `is_string()` and `is_bool()`
+#' return `FALSE` if their input is missing. This is useful for
+#' type-checking arguments, when your function expects a single string
+#' or a single `TRUE` or `FALSE`.
+#'
 #' @inheritParams type-predicates
 #' @param x object to be tested.
 #' @seealso [type-predicates], [bare-type-predicates]
@@ -162,7 +170,8 @@ is_string <- function(x, string = NULL) {
 #' @export
 #' @rdname scalar-type-predicates
 is_scalar_bytes <- is_scalar_raw
-
+#' @export
+#' @rdname scalar-type-predicates
 is_bool <- function(x) {
   is_logical(x, n = 1) && !is.na(x)
 }

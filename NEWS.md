@@ -1,6 +1,11 @@
 
 # rlang 0.3.99.9000
 
+* `is_bool()` is a scalar type predicate that checks whether its input
+  is a single `TRUE` or `FALSE`. Like `is_string()`, it returns
+  `FALSE` when the input is missing. This is useful for type-checking
+  function arguments (#695).
+
 * Lists of quosures now have pillar methods for display in tibbles.
 
 * The performance of `exec()` has been improved. It is now on the same
