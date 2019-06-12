@@ -264,7 +264,7 @@ of performing a non-local jump to an arbitrary call frame.</p></div>
 <span class='co'># be calling because exiting handlers jump to the place where they</span>
 <span class='co'># are established before being executed, and the restart is not</span>
 <span class='co'># defined anymore at that point:</span>
-<span class='no'>rst_handler</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='exiting.html'>calling</a></span>(<span class='kw'>function</span>(<span class='no'>c</span>) <span class='fu'><a href='rst_list.html'>rst_jump</a></span>(<span class='st'>"rst_empty_chr"</span>))
+<span class='no'>rst_handler</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='with_handlers.html'>calling</a></span>(<span class='kw'>function</span>(<span class='no'>c</span>) <span class='fu'><a href='rst_list.html'>rst_jump</a></span>(<span class='st'>"rst_empty_chr"</span>))
 <span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(<span class='fu'>fn</span>(<span class='fl'>FALSE</span>), <span class='kw'>default_empty_string</span> <span class='kw'>=</span> <span class='no'>rst_handler</span>)</div><div class='output co'>#&gt; character(0)</div><div class='input'>
 <span class='co'># You can use restarting() to create restarting handlers easily:</span>
 <span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(<span class='fu'>fn</span>(<span class='fl'>FALSE</span>), <span class='kw'>default_empty_string</span> <span class='kw'>=</span> <span class='fu'><a href='restarting.html'>restarting</a></span>(<span class='st'>"rst_null"</span>))</div><div class='output co'>#&gt; NULL</div></span></pre>

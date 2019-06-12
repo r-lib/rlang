@@ -131,6 +131,7 @@
 <a href="#rlang-0-3-99-9000" class="anchor"></a>rlang 0.3.99.9000<small> Unreleased </small>
 </h1>
 <ul>
+<li><p><code><a href="../reference/with_handlers.html">with_handlers()</a></code> now installs calling handlers first on the stack, no matter their location in the argument list. This way they always take precedence over exiting handlers, which ensures their side effects (such as logging) take place (<a href='https://github.com/r-lib/rlang/issues/718'>#718</a>).</p></li>
 <li><p><code><a href="../reference/quotation.html">vars()</a></code> is now exported from rlang, so it can be reexported from other user-facing packages such as dplyr or ggplot2.</p></li>
 <li><p>In rlang backtraces, the <code>global::</code> prefix is now only added when the function directly inherits from the global environment. Functions inheriting indirectly no longer have a namespace qualifier (<a href='https://github.com/r-lib/rlang/issues/733'>#733</a>).</p></li>
 <li><p>You can now pass a character vector as message argument for <code><a href="../reference/abort.html">abort()</a></code>, <code><a href="../reference/abort.html">warn()</a></code>, <code><a href="../reference/abort.html">inform()</a></code>, and <code><a href="../reference/abort.html">signal()</a></code>. The vector is collapsed to a single string with a <code>"\n"</code> newline separating each element of the input vector (<a href='https://github.com/r-lib/rlang/issues/744'>#744</a>).</p></li>
@@ -160,8 +161,8 @@
 <h2 class="hasAnchor">
 <a href="#lifecycle" class="anchor"></a>Lifecycle</h2>
 <ul>
-<li>
-<code><a href="../reference/prepend.html">modify()</a></code> and <code><a href="../reference/prepend.html">prepend()</a></code> (two experimental functions marked as in the questioning stage since rlang 0.3.0) are now deprecated. Vector functions are now out of scope for rlang. They might be revived in the vctrs or funs packages.</li>
+<li><p><code><a href="../reference/prepend.html">modify()</a></code> and <code><a href="../reference/prepend.html">prepend()</a></code> (two experimental functions marked as in the questioning stage since rlang 0.3.0) are now deprecated. Vector functions are now out of scope for rlang. They might be revived in the vctrs or funs packages.</p></li>
+<li><p><code><a href="../reference/exiting.html">exiting()</a></code> is soft-deprecated because <code><a href="../reference/with_handlers.html">with_handlers()</a></code> treats handlers as exiting by default.</p></li>
 </ul>
 <div id="bumped-lifecycle-stages" class="section level3">
 <h3 class="hasAnchor">
@@ -201,7 +202,7 @@
 <a class="sourceLine" id="cb2-3" data-line-number="3">}</a></code></pre></div>
 <p>This handler also works as a calling handler:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/with_handlers.html">with_handlers</a></span>(</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">  <span class="dt">error =</span> <span class="kw"><a href="../reference/exiting.html">calling</a></span>(entrace),</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">  <span class="dt">error =</span> <span class="kw"><a href="../reference/with_handlers.html">calling</a></span>(entrace),</a>
 <a class="sourceLine" id="cb3-3" data-line-number="3">  <span class="kw">foo</span>(bar)</a>
 <a class="sourceLine" id="cb3-4" data-line-number="4">)</a></code></pre></div>
 <p>However it’s often more practical to use <code><a href="../reference/with_abort.html">with_abort()</a></code> in that case:</p>
@@ -235,7 +236,7 @@
 <a href="#minor-fixes-and-features" class="anchor"></a>Minor fixes and features</h2>
 <ul>
 <li><p>New <code><a href="../reference/is_interactive.html">is_interactive()</a></code> function. It serves the same purpose as <code><a href="https://www.rdocumentation.org/packages/base/topics/interactive">base::interactive()</a></code> but also checks if knitr is in progress and provides an escape hatch. Use <code><a href="../reference/is_interactive.html">with_interactive()</a></code> and <code><a href="../reference/is_interactive.html">scoped_interactive()</a></code> to override the return value of <code><a href="../reference/is_interactive.html">is_interactive()</a></code>. This is useful in unit tests or to manually turn on interactive features in RMarkdown outputs</p></li>
-<li><p><code><a href="../reference/exiting.html">calling()</a></code> now boxes its argument.</p></li>
+<li><p><code><a href="../reference/with_handlers.html">calling()</a></code> now boxes its argument.</p></li>
 <li><p>New <code><a href="../reference/done.html">done()</a></code> function to box a value. Done boxes are sentinels to indicate early termination of a loop or computation. For instance, it will be used in the purrr package to allow users to shortcircuit a reduction or accumulation.</p></li>
 <li><p><code><a href="../reference/box.html">new_box()</a></code> now accepts additional attributes passed to <code><a href="https://www.rdocumentation.org/packages/base/topics/structure">structure()</a></code>.</p></li>
 <li><p>Fixed a quotation bug with binary operators of zero or one argument such as <code>`/`(1)</code> (<a href='https://github.com/r-lib/rlang/issues/652'>#652</a>). They are now deparsed and printed properly as well.</p></li>
@@ -495,7 +496,7 @@ rlang::expr(mean(!!var * 100))</a></code></pre>
 <li><p>The experimental function <code>rst_muffle()</code> is now defunct. Please use <code><a href="../reference/cnd_muffle.html">cnd_muffle()</a></code> instead. Unlike its predecessor, <code><a href="../reference/cnd_muffle.html">cnd_muffle()</a></code> is not generic. It is marked as a calling handler and thus can be passed directly to <code><a href="../reference/with_handlers.html">with_handlers()</a></code> to muffle specific conditions (such as specific subclasses of warnings).</p></li>
 <li><p><code>cnd_inform()</code>, <code>cnd_warn()</code> and <code>cnd_abort()</code> are retired and defunct. The old <code>cnd_message()</code>, <code>cnd_warning()</code>, <code>cnd_error()</code> and <code>new_cnd()</code> constructors deprecated in rlang 0.2.0 are now defunct.</p></li>
 <li><p>Modifying a condition with <code><a href="../reference/cnd_signal.html">cnd_signal()</a></code> is defunct. In addition, creating a condition with <code><a href="../reference/cnd_signal.html">cnd_signal()</a></code> is soft-deprecated, please use the new function [signal()] instead.</p></li>
-<li><p><code>inplace()</code> has been renamed to <code><a href="../reference/exiting.html">calling()</a></code> to follow base R terminology more closely.</p></li>
+<li><p><code>inplace()</code> has been renamed to <code><a href="../reference/with_handlers.html">calling()</a></code> to follow base R terminology more closely.</p></li>
 </ul>
 </div>
 <div id="functions-and-arguments-in-the-questioning-stage" class="section level3">

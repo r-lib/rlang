@@ -136,7 +136,7 @@ being called for that condition." />
 
     <div class="ref-description">
     
-    <p>Unlike <code><a href='exiting.html'>exiting()</a></code> handlers, <code><a href='exiting.html'>calling()</a></code> handlers must be explicit
+    <p>Unlike <code><a href='exiting.html'>exiting()</a></code> handlers, <code><a href='with_handlers.html'>calling()</a></code> handlers must be explicit
 that they have handled a condition to stop it from propagating to
 other handlers. Use <code>cnd_muffle()</code> within a calling handler (or as
 a calling handler, see examples) to prevent any other handlers from
@@ -179,7 +179,7 @@ you will cause a new error to be signalled.</p><ul>
 situations where execution cannot continue safely.</p></li>
 <li><p>Conditions captured with <code><a href='https://www.rdocumentation.org/packages/base/topics/conditions'>base::tryCatch()</a></code>, <code><a href='with_handlers.html'>with_handlers()</a></code> or
 <code><a href='catch_cnd.html'>catch_cnd()</a></code> are no longer mufflable. Muffling restarts <em>must</em>
-be called from a <a href='exiting.html'>calling</a> handler.</p></li>
+be called from a <a href='with_handlers.html'>calling</a> handler.</p></li>
 </ul>
     
 
@@ -194,7 +194,7 @@ be called from a <a href='exiting.html'>calling</a> handler.</p></li>
 <span class='co'># This will suppress all `my_particular_wng` warnings but let other</span>
 <span class='co'># types of warnings go through:</span>
 <span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(<span class='fu'>fn</span>(),
-  <span class='kw'>my_particular_msg</span> <span class='kw'>=</span> <span class='fu'><a href='exiting.html'>calling</a></span>(<span class='kw'>function</span>(<span class='no'>cnd</span>) {
+  <span class='kw'>my_particular_msg</span> <span class='kw'>=</span> <span class='fu'><a href='with_handlers.html'>calling</a></span>(<span class='kw'>function</span>(<span class='no'>cnd</span>) {
     <span class='fu'><a href='abort.html'>inform</a></span>(<span class='st'>"Dealt with this particular message"</span>)
     <span class='fu'>cnd_muffle</span>(<span class='no'>cnd</span>)
   })
@@ -205,7 +205,7 @@ be called from a <a href='exiting.html'>calling</a> handler.</p></li>
 <span class='co'># cnd_muffle() can also be passed to with_handlers() as a calling</span>
 <span class='co'># handler:</span>
 <span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(<span class='fu'>fn</span>(),
-  <span class='kw'>my_particular_msg</span> <span class='kw'>=</span> <span class='fu'><a href='exiting.html'>calling</a></span>(<span class='no'>cnd_muffle</span>)
+  <span class='kw'>my_particular_msg</span> <span class='kw'>=</span> <span class='fu'><a href='with_handlers.html'>calling</a></span>(<span class='no'>cnd_muffle</span>)
 )</div><div class='output co'>#&gt; <span class='message'>On your guard!</span></div><div class='output co'>#&gt; [1] "foobar"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

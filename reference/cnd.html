@@ -203,13 +203,15 @@ and <code>message</code>. They are defunct as of rlang 0.3.0.</p>
 
 <span class='co'># When a relevant handler is set up, the signal causes the handler</span>
 <span class='co'># to be called:</span>
-<span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(<span class='fu'><a href='cnd_signal.html'>cnd_signal</a></span>(<span class='no'>cnd</span>), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'><a href='exiting.html'>exiting</a></span>(<span class='kw'>function</span>(<span class='no'>c</span>) <span class='st'>"caught!"</span>))</div><div class='output co'>#&gt; [1] "caught!"</div><div class='input'>
+<span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(<span class='fu'><a href='cnd_signal.html'>cnd_signal</a></span>(<span class='no'>cnd</span>), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'><a href='exiting.html'>exiting</a></span>(<span class='kw'>function</span>(<span class='no'>c</span>) <span class='st'>"caught!"</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: `exiting()` is soft-deprecated as of rlang 0.4.0.</span>
+#&gt; <span class='warning'>Handlers are now treated as exiting by default.</span>
+#&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once per session.</span><span></span></div><div class='output co'>#&gt; [1] "caught!"</div><div class='input'>
 <span class='co'># Handlers can be thrown or executed inplace. See with_handlers()</span>
 <span class='co'># documentation for more on this.</span>
 
 <span class='co'># Signalling an error condition aborts the current computation:</span>
 <span class='no'>err</span> <span class='kw'>&lt;-</span> <span class='fu'>error_cnd</span>(<span class='st'>"foo"</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"I am an error"</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/try'>try</a></span>(<span class='fu'><a href='cnd_signal.html'>cnd_signal</a></span>(<span class='no'>err</span>))</div><div class='output co'>#&gt; Error : I am an error</div></pre>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/try'>try</a></span>(<span class='fu'><a href='cnd_signal.html'>cnd_signal</a></span>(<span class='no'>err</span>))</div><div class='output co'>#&gt; Error : I am an error</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

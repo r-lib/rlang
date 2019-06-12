@@ -35,10 +35,23 @@
 <meta property="og:description" content="Condition handlers are functions established on the evaluation
 stack (see ctxt_stack()) that are called by R when a condition is
 signalled (see cnd_signal() and abort() for two common signal
-functions). They come in two types: exiting handlers, which jump
-out of the signalling context and are transferred to
-with_handlers() before being executed. And calling handlers,
-which are executed within the signal functions." />
+functions). They come in two types:
+Exiting handlers aborts all code currently run between
+with_handlers() and the point where the condition has been
+raised. with_handlers() passes the return value of the handler
+to its caller.
+Calling handlers, which are executed from inside the signalling
+functions. Their return values are ignored, only their side
+effects matters. Valid side effects are writing a log message, or
+jumping out of the signalling context by invoking a restart or using return_from(). If the raised
+condition was an error, this interrupts the aborting process.
+If a calling handler returns normally, it effectively declines to
+handle the condition and other handlers on the stack (calling or
+exiting) are given a chance to handle the condition.
+" />
+
+<meta property="og:description" content="Handlers are exiting by default, use calling() to create a
+calling handler." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -141,14 +154,29 @@ which are executed within the signal functions." />
     <p>Condition handlers are functions established on the evaluation
 stack (see <code><a href='stack.html'>ctxt_stack()</a></code>) that are called by R when a condition is
 signalled (see <code><a href='cnd_signal.html'>cnd_signal()</a></code> and <code><a href='abort.html'>abort()</a></code> for two common signal
-functions). They come in two types: exiting handlers, which jump
-out of the signalling context and are transferred to
-<code>with_handlers()</code> before being executed. And calling handlers,
-which are executed within the signal functions.</p>
+functions). They come in two types:</p><ul>
+<li><p>Exiting handlers aborts all code currently run between
+<code>with_handlers()</code> and the point where the condition has been
+raised. <code>with_handlers()</code> passes the return value of the handler
+to its caller.</p></li>
+<li><p>Calling handlers, which are executed from inside the signalling
+functions. Their return values are ignored, only their side
+effects matters. Valid side effects are writing a log message, or
+jumping out of the signalling context by <a href='with_restarts.html'>invoking a restart</a> or using <code><a href='return_from.html'>return_from()</a></code>. If the raised
+condition was an error, this interrupts the aborting process.</p>
+<p>If a calling handler returns normally, it effectively declines to
+handle the condition and other handlers on the stack (calling or
+exiting) are given a chance to handle the condition.</p></li>
+</ul>
+
+    <p>Handlers are exiting by default, use <code>calling()</code> to create a
+calling handler.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>with_handlers</span>(<span class='no'>.expr</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>with_handlers</span>(<span class='no'>.expr</span>, <span class='no'>...</span>)
+
+<span class='fu'>calling</span>(<span class='no'>handler</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -163,34 +191,23 @@ expression or a quoted formula.</p></td>
       <th>...</th>
       <td><p>Named handlers. These should be functions of one
 argument. These handlers are treated as exiting by default. Use
-<code><a href='exiting.html'>calling()</a></code> to specify a calling handler. These dots support
+<code>calling()</code> to specify a calling handler. These dots support
 <a href='tidy-dots.html'>tidy dots</a> features and are passed to <code><a href='as_function.html'>as_function()</a></code>
 to enable the formula shortcut for lambda functions.</p></td>
     </tr>
+    <tr>
+      <th>handler</th>
+      <td><p>A handler function that takes a condition as
+argument. This is passed to <code><a href='as_function.html'>as_function()</a></code> and can thus be a
+formula describing a lambda function.</p></td>
+    </tr>
     </table>
     
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
 
-    <p>An exiting handler is taking charge of the condition. No other
-handler on the stack gets a chance to handle the condition. The
-handler is executed and <code>with_handlers()</code> returns the return value
-of that handler. On the other hand, in place handlers do not
-necessarily take charge. If they return normally, they decline to
-handle the condition, and R looks for other handlers established on
-the evaluation stack. Only by jumping to an earlier call frame can
-a calling handler take charge of the condition and stop the
-signalling process. Sometimes, a muffling restart has been
-established for the purpose of jumping out of the signalling
-function but not out of the context where the condition was
-signalled, which allows execution to resume normally. See
-<code><a href='cnd_muffle.html'>cnd_muffle()</a></code> and the <code>mufflable</code> argument of <code><a href='cnd_signal.html'>cnd_signal()</a></code>.</p>
-<p>Exiting handlers are established first by <code>with_handlers()</code>, and in
-place handlers are installed in second place. The latter handlers
-thus take precedence over the former.</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='exiting.html'>exiting()</a></code>, <code><a href='exiting.html'>calling()</a></code>.</p></div>
+    <p><code><a href='exiting.html'>exiting()</a></code> is soft-deprecated as of rlang
+0.4.0 because <code>with_handlers()</code> now treats handlers as exiting by
+default.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -212,21 +229,19 @@ thus take precedence over the former.</p>
 <span class='co'># Exiting handlers jump to with_handlers() before being</span>
 <span class='co'># executed. Their return value is handed over:</span>
 <span class='no'>handler</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>c</span>) <span class='st'>"handler return value"</span>
-<span class='fu'>with_handlers</span>(<span class='fu'>fn</span>(), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'><a href='exiting.html'>exiting</a></span>(<span class='no'>handler</span>))</div><div class='output co'>#&gt; [1] "handler return value"</div><div class='input'>
-<span class='co'># Handlers are exiting by default so you can omit the adjective:</span>
 <span class='fu'>with_handlers</span>(<span class='fu'>fn</span>(), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='no'>handler</span>)</div><div class='output co'>#&gt; [1] "handler return value"</div><div class='input'>
-<span class='co'># In place handlers are called in turn and their return value is</span>
+<span class='co'># Calling handlers are called in turn and their return value is</span>
 <span class='co'># ignored. Returning just means they are declining to take charge of</span>
 <span class='co'># the condition. However, they can produce side-effects such as</span>
 <span class='co'># displaying a message:</span>
 <span class='no'>some_handler</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>c</span>) <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='st'>"some handler!\n"</span>)
 <span class='no'>other_handler</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>c</span>) <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='st'>"other handler!\n"</span>)
-<span class='fu'>with_handlers</span>(<span class='fu'>fn</span>(), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'><a href='exiting.html'>calling</a></span>(<span class='no'>some_handler</span>), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'><a href='exiting.html'>calling</a></span>(<span class='no'>other_handler</span>))</div><div class='output co'>#&gt; some handler!
+<span class='fu'>with_handlers</span>(<span class='fu'>fn</span>(), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'>calling</span>(<span class='no'>some_handler</span>), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'>calling</span>(<span class='no'>other_handler</span>))</div><div class='output co'>#&gt; some handler!
 #&gt; other handler!
 #&gt; called?
 #&gt; called?
 #&gt; called?</div><div class='output co'>#&gt; [1] "fn() return value"</div><div class='input'>
-<span class='co'># If an in place handler jumps to an earlier context, it takes</span>
+<span class='co'># If a calling handler jumps to an earlier context, it takes</span>
 <span class='co'># charge of the condition and no other handler gets a chance to</span>
 <span class='co'># deal with it. The canonical way of transferring control is by</span>
 <span class='co'># jumping to a restart. See with_restarts() and restarting()</span>
@@ -235,16 +250,14 @@ thus take precedence over the former.</p>
 <span class='no'>fn2</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
   <span class='fu'><a href='with_restarts.html'>with_restarts</a></span>(<span class='fu'>g</span>(), <span class='kw'>rst_foo</span> <span class='kw'>=</span> <span class='kw'>function</span>() <span class='st'>"restart value"</span>)
 }
-<span class='fu'>with_handlers</span>(<span class='fu'>fn2</span>(), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'><a href='exiting.html'>calling</a></span>(<span class='no'>exiting_handler</span>), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'><a href='exiting.html'>calling</a></span>(<span class='no'>other_handler</span>))</div><div class='output co'>#&gt; [1] "restart value"</div></pre>
+<span class='fu'>with_handlers</span>(<span class='fu'>fn2</span>(), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'>calling</span>(<span class='no'>exiting_handler</span>), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'>calling</span>(<span class='no'>other_handler</span>))</div><div class='output co'>#&gt; [1] "restart value"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#see-also">See also</a></li>
+      <li><a href="#life-cycle">Life cycle</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

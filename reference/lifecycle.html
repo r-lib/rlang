@@ -219,7 +219,10 @@ want to recommend restarts as a style of programming in R.</p></li>
 
     
     <p><img src='figures/lifecycle-soft-deprecated.svg' alt='Soft-deprecated lifecycle' /></p>
-<p><strong>Soft-deprecated as of rlang 0.3.0</strong></p><ul>
+<p><strong>Soft-deprecated as of rlang 0.4.0</strong></p><ul>
+<li><p><code><a href='exiting.html'>exiting()</a></code>: Handlers are now treated as exiting by default.</p></li>
+</ul>
+    <p><strong>Soft-deprecated as of rlang 0.3.0</strong></p><ul>
 <li><p><code><a href='get_env.html'>get_env()</a></code>: The <code>env</code> argument no longer has a default and must be supplied</p></li>
 <li><p><code><a href='invoke.html'>invoke()</a></code>: Use the simpler <code><a href='exec.html'>exec()</a></code> instead.</p></li>
 <li><p><code><a href='set_attrs.html'>set_attrs()</a></code>, <code><a href='set_attrs.html'>mut_attrs()</a></code></p></li>
@@ -325,8 +328,8 @@ find them in the commit history and previous releases.</p>
 <li><p><code>cnd_warning()</code> =&gt; <code><a href='cnd.html'>warning_cnd()</a></code></p></li>
 <li><p><code>cnd_error()</code> =&gt; <code><a href='cnd.html'>error_cnd()</a></code></p></li>
 <li><p><code>rst_muffle()</code> =&gt; <code><a href='cnd_muffle.html'>cnd_muffle()</a></code></p></li>
-<li><p><code>inplace()</code> =&gt; <code><a href='exiting.html'>calling()</a></code>. The <code>muffle</code> argument of <code>inplace()</code>
-has not been implemented in <code><a href='exiting.html'>calling()</a></code> and is now defunct.</p></li>
+<li><p><code>inplace()</code> =&gt; <code><a href='with_handlers.html'>calling()</a></code>. The <code>muffle</code> argument of <code>inplace()</code>
+has not been implemented in <code><a href='with_handlers.html'>calling()</a></code> and is now defunct.</p></li>
 <li><p><code><a href='cnd_signal.html'>cnd_signal()</a></code>: <code>.msg</code> and <code>.call</code>.</p></li>
 </ul>
     

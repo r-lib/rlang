@@ -161,7 +161,7 @@ promoted to rlang errors.</p></td>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>with_abort()</code> installs a <a href='exiting.html'>calling handler</a> for errors and
+    <p><code>with_abort()</code> installs a <a href='with_handlers.html'>calling handler</a> for errors and
 rethrows non-rlang errors with <code><a href='abort.html'>abort()</a></code>. However, error handlers
 installed <em>within</em> <code>with_abort()</code> have priority. For this reason,
 you should use <code><a href='https://www.rdocumentation.org/packages/base/topics/conditions'>tryCatch()</a></code> and <a href='exiting.html'>exiting</a> handlers outside
@@ -217,7 +217,7 @@ you should use <code><a href='https://www.rdocumentation.org/packages/base/topic
 #&gt; </span><span style='color: #555555;'>  5. </span><span>│       └─base:::doTryCatch(return(expr), name, parentenv, handler)
 #&gt; </span><span style='color: #555555;'>  6. </span><span>└─high_level()
 #&gt; </span><span style='color: #555555;'>  7. </span><span>  ├─rlang::with_handlers(...)
-#&gt; </span><span style='color: #555555;'>  8. </span><span>  │ └─base::tryCatch(...) </span><span style='color: #555555;'>/home/travis/build/r-lib/rlang/R/cnd-handlers.R:100:2</span><span>
+#&gt; </span><span style='color: #555555;'>  8. </span><span>  │ └─base::tryCatch(...) </span><span style='color: #555555;'>/home/travis/build/r-lib/rlang/R/cnd-handlers.R:101:2</span><span>
 #&gt; </span><span style='color: #555555;'>  9. </span><span>  │   └─base:::tryCatchList(expr, classes, parentenv, handlers)
 #&gt; </span><span style='color: #555555;'> 10. </span><span>  │     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
 #&gt; </span><span style='color: #555555;'> 11. </span><span>  │       └─base:::doTryCatch(return(expr), name, parentenv, handler)
