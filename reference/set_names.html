@@ -186,6 +186,12 @@ to the function.</p></li>
 #&gt; Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
 #&gt; Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
 #&gt; Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</div><div class='input'>
+<span class='co'># If the input vector is unnamed, it is first named after itself</span>
+<span class='co'># before the function is applied:</span>
+<span class='fu'>set_names</span>(<span class='no'>letters</span>, <span class='no'>toupper</span>)</div><div class='output co'>#&gt;   A   B   C   D   E   F   G   H   I   J   K   L   M   N   O   P   Q   R   S   T 
+#&gt; "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s" "t" 
+#&gt;   U   V   W   X   Y   Z 
+#&gt; "u" "v" "w" "x" "y" "z" </div><div class='input'>
 <span class='co'># `...` is passed to the function:</span>
 <span class='fu'>set_names</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>mtcars</span>), <span class='no'>paste0</span>, <span class='st'>"_foo"</span>)</div><div class='output co'>#&gt;                   mpg_foo cyl_foo disp_foo hp_foo drat_foo wt_foo qsec_foo
 #&gt; Mazda RX4            21.0       6      160    110     3.90  2.620    16.46
