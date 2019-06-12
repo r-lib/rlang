@@ -110,12 +110,17 @@ test_that("once-per-session note is not displayed on repeated warnings", {
 })
 
 test_that("inputs are type checked", {
-  expect_error(signal_soft_deprecated(1), "is_string")
-  expect_error(signal_soft_deprecated("foo", 1), "is_string")
+  expect_error(signal_soft_deprecated(1), "is_character")
   expect_error(signal_soft_deprecated("foo", "bar", 1), "is_environment")
-  expect_error(warn_deprecated(1), "is_string")
-  expect_error(warn_deprecated("foo", 1), "is_string")
-  expect_error(stop_defunct(1), "is_string")
+  expect_error(warn_deprecated(1), "is_character")
+  expect_error(stop_defunct(1), "is_character")
+})
+
+test_that("lifecycle signallers support character vectors", {
+  scoped_lifecycle_errors()
+  expect_error(signal_soft_deprecated(c("foo", "bar")), "foo\nbar")
+  expect_error(warn_deprecated(c("foo", "bar")), "foo\nbar")
+  expect_error(stop_defunct(c("foo", "bar")), "foo\nbar")
 })
 
 test_that("the topenv of the empty env is not the global env", {
