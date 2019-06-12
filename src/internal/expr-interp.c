@@ -399,7 +399,9 @@ static void call_maybe_poke_string_head(sexp* call) {
 }
 
 static sexp* node_list_interp(sexp* x, sexp* env) {
-  for (sexp* node = x; node != r_null; node = r_node_cdr(node)) {
+  sexp* node = x;
+
+  while (node != r_null) {
     r_node_poke_car(node, call_interp(r_node_car(node), env));
 
     sexp* next = r_node_cdr(node);
@@ -409,6 +411,8 @@ static sexp* node_list_interp(sexp* x, sexp* env) {
     if (info.op == OP_EXPAND_UQS) {
       node = big_bang(info.operand, env, node, next);
     }
+
+    node = r_node_cdr(node);
   }
 
   return x;
