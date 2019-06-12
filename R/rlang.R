@@ -13,6 +13,9 @@ is_same_body <- NULL
 
   .Call(r_init_library)
   .Call(rlang_library_load)
+
+  s3_register("pillar::pillar_shaft", "quosures", pillar_shaft.quosures)
+  s3_register("pillar::type_sum", "quosures", type_sum.quosures)
 }
 .onUnload <- function(lib) {
   .Call(rlang_library_unload)

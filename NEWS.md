@@ -1,6 +1,8 @@
 
 # rlang 0.3.99.9000
 
+* Lists of quosures now have pillar methods for display in tibbles.
+
 * The performance of `exec()` has been improved. It is now on the same
   order of performance as `do.call()`, though slightly slower.
 

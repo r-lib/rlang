@@ -259,6 +259,15 @@ signal_quosure_assign <- function(x, env = caller_env(2)) {
   ))
 }
 
+# Dynamically registered
+pillar_shaft.quosures <- function(x, ...) {
+  labels <- map_chr(unname(x), as_label)
+  structure(labels, width = 10L)
+}
+type_sum.quosures <- function(x) {
+  "quos"
+}
+
 #' Coerce object to quosure
 #'
 #' @description
