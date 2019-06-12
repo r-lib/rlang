@@ -131,6 +131,7 @@
 <a href="#rlang-0-3-99-9000" class="anchor"></a>rlang 0.3.99.9000<small> Unreleased </small>
 </h1>
 <ul>
+<li><p>The performance of <code><a href="../reference/exec.html">exec()</a></code> has been improved. It is now on the same order of performance as <code><a href="https://www.rdocumentation.org/packages/base/topics/do.call">do.call()</a></code>, though slightly slower.</p></li>
 <li>
 <p><code><a href="../reference/set_names.html">set_names()</a></code> now names unnamed input vectors before applying a function. The following expressions are now equivalent:</p>
 <pre><code>letters %&gt;% set_names() %&gt;% set_names(toupper)
