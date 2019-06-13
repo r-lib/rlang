@@ -1,4 +1,4 @@
-# nocov start --- compat-lifecycle --- 2019-06-12 Wed 20:27
+# nocov start --- compat-lifecycle --- 2019-06-13 Wed 10:58
 
 # This file serves as a reference for currently unexported rlang
 # lifecycle functions. Please find the most recent version in rlang's
@@ -119,7 +119,7 @@ warn_deprecated <- function(msg, id = msg) {
   silver <- function(x) if (has_colour()) crayon::silver(x) else x
 
   if (rlang::is_true(rlang::peek_option("lifecycle_warnings_as_errors"))) {
-    .Signal <- .Defunct
+    .Signal <- stop_defunct
   } else {
     .Signal <- .Deprecated
   }
