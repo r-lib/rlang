@@ -94,21 +94,15 @@ want to recommend restarts as a style of programming in R.
 
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 
-\strong{Deprecated as of rlang 0.4.0}
+\strong{Soft-deprecated as of rlang 0.4.0}
 \itemize{
 \item \code{\link[=exiting]{exiting()}}: Handlers are now treated as exiting by default.
 }
 
-\strong{Deprecated as of rlang 0.3.0}
+\strong{Soft-deprecated as of rlang 0.3.0}
 \itemize{
 \item \code{\link[=get_env]{get_env()}}: The \code{env} argument no longer has a default and must be supplied
 \item \code{\link[=invoke]{invoke()}}: Use the simpler \code{\link[=exec]{exec()}} instead.
-\item \code{\link[=set_attrs]{set_attrs()}}, \code{\link[=mut_attrs]{mut_attrs()}}
-\item \code{\link[=is_frame]{is_frame()}}, \code{\link[=global_frame]{global_frame()}}, \code{\link[=current_frame]{current_frame()}},
-\code{\link[=ctxt_frame]{ctxt_frame()}}, \code{\link[=call_frame]{call_frame()}}, \code{\link[=frame_position]{frame_position()}},
-\code{\link[=caller_frame]{caller_frame()}}
-\item \code{\link[=ctxt_depth]{ctxt_depth()}}, \code{\link[=call_depth]{call_depth()}}, \code{\link[=ctxt_stack]{ctxt_stack()}}, \code{\link[=call_stack]{call_stack()}},
-\code{\link[=stack_trim]{stack_trim()}}
 \item Passing a function or formula to \code{env_depth()},
 \code{env_poke_parent()}, \code{env_parent<-}, \code{env_tail()}, \code{set_env()},
 \code{env_clone()}, \code{env_inherits()}, \code{env_bind()},
@@ -117,43 +111,11 @@ want to recommend restarts as a style of programming in R.
 \code{env_bind_fns()}. This internal genericity was causing confusion
 (see issue #427). You should now extract the environment
 separately before calling these functions.
-\item \code{env_bind_exprs()} => \code{\link[=env_bind_lazy]{env_bind_lazy()}}
-\item \code{env_bind_fns()} => \code{\link[=env_bind_active]{env_bind_active()}}
-\item \code{scoped_names()} => \code{\link[base:search]{base::search()}}
-\item \code{is_scoped()} => \code{\link[=is_attached]{is_attached()}}
-\item \code{scoped_env()} => \code{\link[=search_env]{search_env()}}
-\item \code{scoped_envs()} => \code{\link[=search_envs]{search_envs()}}
 \item The \code{width} and \code{printer} arguments of \code{\link[=exprs_auto_name]{exprs_auto_name()}} and
 \code{\link[=quos_auto_name]{quos_auto_name()}} no longer have any effect. For the same
 reason, passing a width as \code{.named} argument of dots collectors
 like \code{quos()} is soft-deprecated.
-\item \code{\link[=call_modify]{call_modify()}}: \code{.standardise} and \code{.env} arguments.
-\item \code{new_logical_along()}, \code{new_integer_along()},
-\code{new_double_along()}, \code{new_complex_along()},
-\code{new_character_along()}, \code{new_raw_along()}, \code{new_list_along()}.
-\item \code{as.character()} on quosures.
-\item Assigning non-quosure objects to quosure lists.
 \item Supplying a named \code{!!!} call.
-}
-
-\strong{Deprecated as of rlang 0.2.0:}
-\itemize{
-\item \code{\link[=lang_head]{lang_head()}}, \code{\link[=lang_tail]{lang_tail()}}
-\item \code{\link[=parse_quosure]{parse_quosure()}} => \code{\link[=parse_quo]{parse_quo()}}
-\item \code{\link[=parse_quosures]{parse_quosures()}} => \code{\link[=parse_quos]{parse_quos()}}
-\item \code{\link[=lang]{lang()}} => \code{\link[=call2]{call2()}}
-\item \code{\link[=new_language]{new_language()}} => \code{\link[=new_call]{new_call()}}
-\item \code{\link[=is_lang]{is_lang()}} => \code{\link[=is_call]{is_call()}}
-\item \code{\link[=is_unary_lang]{is_unary_lang()}} => Use the \code{n} argument of \code{\link[=is_call]{is_call()}}
-\item \code{\link[=is_binary_lang]{is_binary_lang()}} => Use the \code{n} argument of \code{\link[=is_call]{is_call()}}
-\item \code{\link[=quo_is_lang]{quo_is_lang()}} => \code{\link[=quo_is_call]{quo_is_call()}}
-\item \code{\link[=is_expr]{is_expr()}} => \code{\link[=is_expression]{is_expression()}}
-\item \code{\link[=lang_modify]{lang_modify()}} => \code{\link[=call_modify]{call_modify()}}
-\item \code{\link[=lang_standardise]{lang_standardise()}} => \code{\link[=call_standardise]{call_standardise()}}
-\item \code{\link[=lang_fn]{lang_fn()}} => \code{\link[=call_fn]{call_fn()}}
-\item \code{\link[=lang_name]{lang_name()}} => \code{\link[=call_name]{call_name()}}
-\item \code{\link[=lang_args]{lang_args()}} => \code{\link[=call_args]{call_args()}}
-\item \code{\link[=lang_args_names]{lang_args_names()}} => \code{\link[=call_args_names]{call_args_names()}}
 }
 }
 
@@ -162,11 +124,45 @@ like \code{quos()} is soft-deprecated.
 
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 
-\strong{Deprecated as of rlang 0.4.0}
+\strong{Bumped to deprecated in rlang 0.4.0}
 \itemize{
 \item \code{\link[=modify]{modify()}} and \code{\link[=prepend]{prepend()}}.
+\item \code{new_logical_along()}, \code{new_integer_along()},
+\code{new_double_along()}, \code{new_complex_along()},
+\code{new_character_along()}, \code{new_raw_along()}, \code{new_list_along()}.
+\item \code{\link[=lang_modify]{lang_modify()}} => \code{\link[=call_modify]{call_modify()}}
+\item \code{\link[=lang_standardise]{lang_standardise()}} => \code{\link[=call_standardise]{call_standardise()}}
+\item \code{\link[=lang_fn]{lang_fn()}} => \code{\link[=call_fn]{call_fn()}}
+\item \code{\link[=lang_name]{lang_name()}} => \code{\link[=call_name]{call_name()}}
+\item \code{\link[=lang_args]{lang_args()}} => \code{\link[=call_args]{call_args()}}
+\item \code{\link[=lang_args_names]{lang_args_names()}} => \code{\link[=call_args_names]{call_args_names()}}
+\item \code{\link[=lang_head]{lang_head()}}, \code{\link[=lang_tail]{lang_tail()}}
+\item \code{\link[=lang]{lang()}} => \code{\link[=call2]{call2()}}
+\item \code{\link[=new_language]{new_language()}} => \code{\link[=new_call]{new_call()}}
+\item \code{\link[=is_lang]{is_lang()}} => \code{\link[=is_call]{is_call()}}
+\item \code{\link[=is_unary_lang]{is_unary_lang()}} => Use the \code{n} argument of \code{\link[=is_call]{is_call()}}
+\item \code{\link[=is_binary_lang]{is_binary_lang()}} => Use the \code{n} argument of \code{\link[=is_call]{is_call()}}
+\item \code{\link[=quo_is_lang]{quo_is_lang()}} => \code{\link[=quo_is_call]{quo_is_call()}}
+\item \code{\link[=call_modify]{call_modify()}}: \code{.standardise} and \code{.env} arguments.
+\item \code{\link[=is_expr]{is_expr()}} => \code{\link[=is_expression]{is_expression()}}
+\item \code{\link[=parse_quosure]{parse_quosure()}} => \code{\link[=parse_quo]{parse_quo()}}
+\item \code{\link[=parse_quosures]{parse_quosures()}} => \code{\link[=parse_quos]{parse_quos()}}
+\item Assigning non-quosure objects to quosure lists.
+\item \code{as.character()} on quosures.
 \item \code{\link[=cnd_signal]{cnd_signal()}}: \code{.cnd} => \code{cnd}
 \item \code{\link[=cnd_signal]{cnd_signal()}}: The \code{.mufflable} argument no longer has any effect
+\item \code{scoped_names()} => \code{\link[base:search]{base::search()}}
+\item \code{is_scoped()} => \code{\link[=is_attached]{is_attached()}}
+\item \code{scoped_env()} => \code{\link[=search_env]{search_env()}}
+\item \code{scoped_envs()} => \code{\link[=search_envs]{search_envs()}}
+\item \code{env_bind_exprs()} => \code{\link[=env_bind_lazy]{env_bind_lazy()}}
+\item \code{env_bind_fns()} => \code{\link[=env_bind_active]{env_bind_active()}}
+\item \code{\link[=is_frame]{is_frame()}}, \code{\link[=global_frame]{global_frame()}}, \code{\link[=current_frame]{current_frame()}},
+\code{\link[=ctxt_frame]{ctxt_frame()}}, \code{\link[=call_frame]{call_frame()}}, \code{\link[=frame_position]{frame_position()}},
+\code{\link[=caller_frame]{caller_frame()}}
+\item \code{\link[=ctxt_depth]{ctxt_depth()}}, \code{\link[=call_depth]{call_depth()}}, \code{\link[=ctxt_stack]{ctxt_stack()}}, \code{\link[=call_stack]{call_stack()}},
+\code{\link[=stack_trim]{stack_trim()}}
+\item \code{\link[=set_attrs]{set_attrs()}}, \code{\link[=mut_attrs]{mut_attrs()}}
 }
 }
 
@@ -175,7 +171,7 @@ like \code{quos()} is soft-deprecated.
 
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("defunct")}
 
-\strong{Defunct as of rlang 0.4.0}
+\strong{Bumped to defunct in rlang 0.4.0}
 \itemize{
 \item \code{quo_expr()} => \code{\link[=quo_squash]{quo_squash()}}
 \item \code{as_overscope()} => \code{\link[=as_data_mask]{as_data_mask()}}
@@ -202,7 +198,7 @@ argument.
 These functions were entirely removed from the package. You will
 find them in the commit history and previous releases.
 
-\strong{Archived in rlang 0.4.0}
+\strong{Archived as of rlang 0.4.0}
 \itemize{
 \item \code{UQE()}
 \item \code{as_dictionary()}, \code{is_dictionary()}
@@ -210,7 +206,7 @@ find them in the commit history and previous releases.
 \item \code{eval_tidy_()}
 }
 
-\strong{Archived in rlang 0.3.0:}
+\strong{Archived as of rlang 0.3.0:}
 \itemize{
 \item \code{cnd_inform()}, \code{cnd_warn()} and \code{cnd_abort()}
 \item \code{new_cnd()} => \code{\link[=cnd]{cnd()}}
