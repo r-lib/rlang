@@ -2,18 +2,9 @@
 % Please edit documentation in R/vec-chr.R
 \name{as_utf8_character}
 \alias{as_utf8_character}
-\alias{as_native_character}
-\alias{as_utf8_string}
-\alias{as_native_string}
 \title{Coerce to a character vector and attempt encoding conversion}
 \usage{
 as_utf8_character(x)
-
-as_native_character(x)
-
-as_utf8_string(x)
-
-as_native_string(x)
 }
 \arguments{
 \item{x}{An object to coerce.}

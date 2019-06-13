@@ -88,27 +88,6 @@ string <- function(x, encoding = NULL) {
 as_utf8_character <- function(x) {
   .Call(rlang_unescape_character, as_character(x))
 }
-#' @rdname as_utf8_character
-#' @export
-as_native_character <- function(x) {
-  enc2native(as_character(x))
-}
-#' @rdname as_utf8_character
-#' @export
-as_utf8_string <- function(x) {
-  coerce_type(x, "an UTF-8 string",
-    symbol = ,
-    string = enc2utf8(as_string(x))
-  )
-}
-#' @rdname as_utf8_character
-#' @export
-as_native_string <- function(x) {
-  coerce_type(x, "a natively encoded string",
-    symbol = ,
-    string = enc2native(as_string(x))
-  )
-}
 
 #' Translate unicode points to UTF-8
 #'

@@ -210,6 +210,7 @@ find them in the commit history and previous releases.
 \item \code{eval_tidy_()}
 \item \code{mut_utf8_locale()}, \code{mut_latin1_locale()}, \code{mut_mbcs_locale()}
 \item \code{set_chr_encoding()}, \code{chr_encoding()}, \code{set_str_encoding()}, \code{str_encoding()}
+\item \code{as_native_character()}, \code{as_utf8_string()}, \code{as_native_string()}
 }
 
 \strong{Archived as of rlang 0.3.0:}

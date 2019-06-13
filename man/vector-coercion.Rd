@@ -64,9 +64,7 @@ These functions are deprecated in favour of \code{vctrs::vec_cast()}.
 \code{as_character()} and \code{as_string()} have an optional \code{encoding}
 argument to specify the encoding. R uses this information for
 internal handling of strings and character vectors. Note that this
-is only declarative, no encoding conversion is attempted. See
-\code{\link[=as_utf8_character]{as_utf8_character()}} and \code{\link[=as_native_character]{as_native_character()}} for coercing to a
-character vector and attempt encoding conversion.
+is only declarative, no encoding conversion is attempted.
 
 Note that only \code{as_string()} can coerce symbols to a scalar
 character vector. This makes the code more explicit and adds an
