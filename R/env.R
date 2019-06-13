@@ -234,7 +234,7 @@ as_environment <- function(x, parent = NULL) {
 as_env_ <- function(x, parent = NULL) {
   stopifnot(is_dictionaryish(x))
   if (is_atomic(x)) {
-    x <- as_list(x)
+    x <- vec_coerce(x, "list")
   }
   list2env(x, parent = parent %||% empty_env())
 }

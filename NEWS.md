@@ -106,8 +106,16 @@
 * `exiting()` is soft-deprecated because `with_handlers()` treats
   handlers as exiting by default.
 
-* All functions soft-deprecated in previous releases are now
-  deprecated.
+* The vector constructors like `lgl()` or `new_logical()` are now in
+  the questioning stage. They are likely to be moved to the vctrs
+  package at some point. Same for the missing values shortcuts like
+  `na_lgl`.
+
+* `as_logical()`, `as_integer()`, etc have been soft-deprecated in
+  favour of `vctrs::vec_cast()`.
+
+* All functions that were soft-deprecated, deprecated, or defunct in
+  previous releases have been bumped to the next lifecycle stage.
 
 
 # rlang 0.3.2

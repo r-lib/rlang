@@ -22,6 +22,8 @@ na_chr
 na_cpl
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+
 Missing values are represented in R with the general symbol
 \code{NA}. They can be inserted in almost all data containers: all
 atomic vectors except raw vectors can contain missing values. To
@@ -45,6 +47,13 @@ target type. In the same way, since lists and environments can
 contain any types, expressions like \code{list(NA)} store a logical
 \code{NA}.
 }
+\section{Life cycle}{
+
+
+These shortcuts might be moved to the vctrs package at some
+point. This is why they are marked as questioning.
+}
+
 \examples{
 typeof(NA)
 typeof(na_lgl)

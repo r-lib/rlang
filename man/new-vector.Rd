@@ -31,12 +31,21 @@ new_list(n, names = NULL)
 \item{names}{Names for the new vector.}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+
 These functions construct vectors of a given length, with attributes
 specified via dots. Except for \code{new_list()} and \code{new_raw()}, the
 empty vectors are filled with typed \link{missing} values. This is in
 contrast to the base function \code{\link[base:vector]{base::vector()}} which creates
 zero-filled vectors.
 }
+\section{Lifecycle}{
+
+
+These functions are likely to be replaced by a vctrs equivalent in
+the future. They are in the questioning lifecycle stage.
+}
+
 \examples{
 new_list(10)
 new_logical(10)

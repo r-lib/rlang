@@ -66,6 +66,15 @@ changes.
 
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
 
+\strong{In the questioning stage as of rlang 0.4.0}
+
+These functions are likely to be moved to the vctrs package:
+\itemize{
+\item \code{\link[=lgl]{lgl()}}, \code{\link[=int]{int()}}, etc.
+\item \code{\link[=new_logical]{new_logical()}}, \code{\link[=new_integer]{new_integer()}}, etc.
+\item \link{na_lgl}, \link{na_int}, \code{\link[=is_lgl_na]{is_lgl_na()}}, \code{\link[=is_int_na]{is_int_na()}}, etc.
+}
+
 \strong{In the questioning stage as of rlang 0.3.0}
 \itemize{
 \item \code{\link[=child_env]{child_env()}}
@@ -98,6 +107,7 @@ want to recommend restarts as a style of programming in R.
 \itemize{
 \item \code{\link[=exiting]{exiting()}}: Handlers are now treated as exiting by default.
 \item \code{\link[=invoke]{invoke()}}: Use the simpler \code{\link[=exec]{exec()}} instead.
+\item \code{\link[=as_logical]{as_logical()}}, \code{\link[=as_integer]{as_integer()}}, etc. => \code{vctrs::vec_cast()}.
 }
 }
 

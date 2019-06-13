@@ -69,6 +69,15 @@
 #'
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
 #'
+#' **In the questioning stage as of rlang 0.4.0**
+#'
+#' These functions are likely to be moved to the vctrs package:
+#'
+#' * [lgl()], [int()], etc.
+#' * [new_logical()], [new_integer()], etc.
+#' * [na_lgl], [na_int], [is_lgl_na()], [is_int_na()], etc.
+#'
+#'
 #' **In the questioning stage as of rlang 0.3.0**
 #'
 #' * [child_env()]
@@ -100,6 +109,7 @@
 #'
 #' * [exiting()]: Handlers are now treated as exiting by default.
 #' * [invoke()]: Use the simpler [exec()] instead.
+#' * [as_logical()], [as_integer()], etc. => `vctrs::vec_cast()`.
 #'
 #'
 #' @section Deprecated functions and arguments:

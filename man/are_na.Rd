@@ -28,6 +28,8 @@ is_cpl_na(x)
 \item{x}{An object to test}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+
 \code{are_na()} checks for missing values in a vector and is equivalent
 to \code{\link[base:is.na]{base::is.na()}}. It is a vectorised predicate, meaning that its
 output is always the same length as its input. On the other hand,
@@ -42,6 +44,13 @@ to \code{\link[=is_null]{is_null()}} in that respect. In contrast the vectorised
 predicate \code{are_na()} requires a vector input since it is defined
 over vector values.
 }
+\section{Life cycle}{
+
+
+These functions might be moved to the vctrs package at some
+point. This is why they are marked as questioning.
+}
+
 \examples{
 # are_na() is vectorised and works regardless of the type
 are_na(c(1, 2, NA))
