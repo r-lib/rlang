@@ -196,7 +196,13 @@ changes.</p><ul>
 
     
     <p><a href='https://www.tidyverse.org/lifecycle/#questioning'><img src='figures/lifecycle-questioning.svg' alt='Questioning lifecycle'></a></p>
-<p><strong>In the questioning stage as of rlang 0.3.0</strong></p><ul>
+<p><strong>In the questioning stage as of rlang 0.4.0</strong></p>
+<p>These functions are likely to be moved to the vctrs package:</p><ul>
+<li><p><code><a href='vector-construction.html'>lgl()</a></code>, <code><a href='vector-construction.html'>int()</a></code>, etc.</p></li>
+<li><p><code><a href='new-vector.html'>new_logical()</a></code>, <code><a href='new-vector.html'>new_integer()</a></code>, etc.</p></li>
+<li><p><a href='missing.html'>na_lgl</a>, <a href='missing.html'>na_int</a>, <code><a href='are_na.html'>is_lgl_na()</a></code>, <code><a href='are_na.html'>is_int_na()</a></code>, etc.</p></li>
+</ul>
+    <p><strong>In the questioning stage as of rlang 0.3.0</strong></p><ul>
 <li><p><code><a href='env.html'>child_env()</a></code></p></li>
 <li><p><code><a href='type_of.html'>type_of()</a></code>, <code><a href='switch_type.html'>switch_type()</a></code>, <code><a href='switch_type.html'>coerce_type()</a></code></p></li>
 <li><p><code><a href='switch_type.html'>switch_class()</a></code>, <code><a href='switch_type.html'>coerce_class()</a></code></p></li>
@@ -222,6 +228,7 @@ want to recommend restarts as a style of programming in R.</p></li>
 <p><strong>Soft-deprecated in rlang 0.4.0</strong></p><ul>
 <li><p><code><a href='exiting.html'>exiting()</a></code>: Handlers are now treated as exiting by default.</p></li>
 <li><p><code><a href='invoke.html'>invoke()</a></code>: Use the simpler <code><a href='exec.html'>exec()</a></code> instead.</p></li>
+<li><p><code><a href='vector-coercion.html'>as_logical()</a></code>, <code><a href='vector-coercion.html'>as_integer()</a></code>, etc. =&gt; <code><a href='https://www.rdocumentation.org/packages/vctrs/topics/vec_cast'>vctrs::vec_cast()</a></code>.</p></li>
 </ul>
     
     <h2 class="hasAnchor" id="deprecated-functions-and-arguments"><a class="anchor" href="#deprecated-functions-and-arguments"></a>Deprecated functions and arguments</h2>

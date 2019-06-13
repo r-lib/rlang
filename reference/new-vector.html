@@ -32,7 +32,8 @@
 
 <meta property="og:title" content="Create vectors matching a given length — new-vector" />
 
-<meta property="og:description" content="These functions construct vectors of a given length, with attributes
+<meta property="og:description" content="
+These functions construct vectors of a given length, with attributes
 specified via dots. Except for new_list() and new_raw(), the
 empty vectors are filled with typed missing values. This is in
 contrast to the base function base::vector() which creates
@@ -136,7 +137,8 @@ zero-filled vectors." />
 
     <div class="ref-description">
     
-    <p>These functions construct vectors of a given length, with attributes
+    <p><a href='https://www.tidyverse.org/lifecycle/#questioning'><img src='figures/lifecycle-questioning.svg' alt='Questioning lifecycle'></a></p>
+<p>These functions construct vectors of a given length, with attributes
 specified via dots. Except for <code>new_list()</code> and <code>new_raw()</code>, the
 empty vectors are filled with typed <a href='missing.html'>missing</a> values. This is in
 contrast to the base function <code><a href='https://www.rdocumentation.org/packages/base/topics/vector'>base::vector()</a></code> which creates
@@ -170,6 +172,12 @@ zero-filled vectors.</p>
       <td><p>Names for the new vector.</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="lifecycle"><a class="anchor" href="#lifecycle"></a>Lifecycle</h2>
+
+    
+    <p>These functions are likely to be replaced by a vctrs equivalent in
+the future. They are in the questioning lifecycle stage.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -213,6 +221,8 @@ zero-filled vectors.</p>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#lifecycle">Lifecycle</a></li>
+
       <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>

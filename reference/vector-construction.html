@@ -32,7 +32,8 @@
 
 <meta property="og:title" content="Create vectors — vector-construction" />
 
-<meta property="og:description" content="The atomic vector constructors are equivalent to c() but:
+<meta property="og:description" content="
+The atomic vector constructors are equivalent to c() but:
 They allow you to be more explicit about the output
 type. Implicit coercions (e.g. from integer to logical) follow
 the rules described in vector-coercion.
@@ -137,7 +138,8 @@ They use tidy dots and thus support splicing with !!!.
 
     <div class="ref-description">
     
-    <p>The atomic vector constructors are equivalent to <code><a href='https://www.rdocumentation.org/packages/base/topics/c'>c()</a></code> but:</p><ul>
+    <p><a href='https://www.tidyverse.org/lifecycle/#questioning'><img src='figures/lifecycle-questioning.svg' alt='Questioning lifecycle'></a></p>
+<p>The atomic vector constructors are equivalent to <code><a href='https://www.rdocumentation.org/packages/base/topics/c'>c()</a></code> but:</p><ul>
 <li><p>They allow you to be more explicit about the output
 type. Implicit coercions (e.g. from integer to logical) follow
 the rules described in <a href='vector-coercion.html'>vector-coercion</a>.</p></li>
@@ -178,6 +180,9 @@ conversion is performed.</p></td>
 
     
     <ul>
+<li><p>All the abbreviated constructors such as <code>lgl()</code> will probably be
+moved to the vctrs package at some point. This is why they are
+marked as questioning.</p></li>
 <li><p>Automatic splicing is soft-deprecated and will trigger a warning
 in a future version. Please splice explicitly with <code>!!!</code>.</p></li>
 </ul>

@@ -172,7 +172,9 @@ letters %&gt;% set_names(toupper)</code></pre>
 <ul>
 <li><p><code><a href="../reference/prepend.html">modify()</a></code> and <code><a href="../reference/prepend.html">prepend()</a></code> (two experimental functions marked as in the questioning stage since rlang 0.3.0) are now deprecated. Vector functions are now out of scope for rlang. They might be revived in the vctrs or funs packages.</p></li>
 <li><p><code><a href="../reference/exiting.html">exiting()</a></code> is soft-deprecated because <code><a href="../reference/with_handlers.html">with_handlers()</a></code> treats handlers as exiting by default.</p></li>
-<li><p>All functions soft-deprecated in previous releases are now deprecated.</p></li>
+<li><p>The vector constructors like <code><a href="../reference/vector-construction.html">lgl()</a></code> or <code><a href="../reference/new-vector.html">new_logical()</a></code> are now in the questioning stage. They are likely to be moved to the vctrs package at some point. Same for the missing values shortcuts like <code>na_lgl</code>.</p></li>
+<li><p><code><a href="../reference/vector-coercion.html">as_logical()</a></code>, <code><a href="../reference/vector-coercion.html">as_integer()</a></code>, etc have been soft-deprecated in favour of <code><a href="https://www.rdocumentation.org/packages/vctrs/topics/vec_cast">vctrs::vec_cast()</a></code>.</p></li>
+<li><p>All functions that were soft-deprecated, deprecated, or defunct in previous releases have been bumped to the next lifecycle stage.</p></li>
 </ul>
 </div>
 </div>

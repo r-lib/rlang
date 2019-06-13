@@ -135,13 +135,13 @@ functions: all attributes except names are removed." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Coerce an object to a base type</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/vec-coerce.R'><code>R/vec-coerce.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/lifecycle-retired.R'><code>R/lifecycle-retired.R</code></a></small>
     <div class="hidden name"><code>vector-coercion.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><a href='https://www.tidyverse.org/lifecycle/#questioning'><img src='figures/lifecycle-questioning.svg' alt='Questioning lifecycle'></a></p>
+    <p><img src='figures/lifecycle-soft-deprecated.svg' alt='Soft-deprecated lifecycle' /></p>
 <p>These are equivalent to the base functions (e.g. <code><a href='https://www.rdocumentation.org/packages/base/topics/logical'>as.logical()</a></code>,
 <code><a href='https://www.rdocumentation.org/packages/base/topics/list'>as.list()</a></code>, etc), but perform coercion rather than conversion.
 This means they are not generic and will not call S3 conversion
@@ -181,6 +181,11 @@ conversion is performed.</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="lifecycle"><a class="anchor" href="#lifecycle"></a>Lifecycle</h2>
+
+    
+    <p>These functions are deprecated in favour of <code><a href='https://www.rdocumentation.org/packages/vctrs/topics/vec_cast'>vctrs::vec_cast()</a></code>.</p>
+    
     <h2 class="hasAnchor" id="coercion-to-logical-and-numeric-atomic-vectors"><a class="anchor" href="#coercion-to-logical-and-numeric-atomic-vectors"></a>Coercion to logical and numeric atomic vectors</h2>
 
     
@@ -201,9 +206,6 @@ internal handling of strings and character vectors. Note that this
 is only declarative, no encoding conversion is attempted. See
 <code><a href='as_utf8_character.html'>as_utf8_character()</a></code> and <code><a href='as_utf8_character.html'>as_native_character()</a></code> for coercing to a
 character vector and attempt encoding conversion.</p>
-<p>See also <code><a href='set_chr_encoding.html'>set_chr_encoding()</a></code> and <code><a href='mut_utf8_locale.html'>mut_utf8_locale()</a></code> for
-information about encodings and locales in R, and <code><a href='string.html'>string()</a></code> and
-<code><a href='vector-construction.html'>chr()</a></code> for other ways of creating strings and character vectors.</p>
 <p>Note that only <code><a href='as_string.html'>as_string()</a></code> can coerce symbols to a scalar
 character vector. This makes the code more explicit and adds an
 extra type check.</p>
@@ -243,11 +245,13 @@ place and has side-effects.</p>
 #&gt; attr(,"class")
 #&gt; [1] "foo"
 #&gt; attr(,"bar")
-#&gt; [1] "baz"</div><div class='input'><span class='fu'>as_list</span>(<span class='no'>l</span>)</div><div class='output co'>#&gt; [[1]]
+#&gt; [1] "baz"</div><div class='input'><span class='fu'>as_list</span>(<span class='no'>l</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: `as_list()` is deprecated as of rlang 0.4.0</span>
+#&gt; <span class='warning'>Please use `vctrs::vec_cast()` instead.</span>
+#&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once per session.</span><span></span></div><div class='output co'>#&gt; [[1]]
 #&gt; [1] TRUE
 #&gt; </div><div class='input'>
 <span class='co'># Implicit conversions are performed in base R but not rlang:</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/logical'>as.logical</a></span>(<span class='no'>l</span>)</div><div class='output co'>#&gt; [1] TRUE</div><span class='co'># NOT RUN {</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/logical'>as.logical</a></span>(<span class='no'>l</span>)</div><div class='output co'>#&gt; [1] TRUE</div></span><span class='co'># NOT RUN {</span>
 <span class='fu'>as_logical</span>(<span class='no'>l</span>)
 <span class='co'># }</span><div class='input'>
 <span class='co'># Conversion methods are bypassed, making the result of the</span>
@@ -281,6 +285,8 @@ place and has side-effects.</p>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#lifecycle">Lifecycle</a></li>
+
       <li><a href="#coercion-to-logical-and-numeric-atomic-vectors">Coercion to logical and numeric atomic vectors</a></li>
 
       <li><a href="#coercion-to-character-vectors">Coercion to character vectors</a></li>
