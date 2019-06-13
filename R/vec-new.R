@@ -2,6 +2,8 @@
 #'
 #' @description
 #'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#'
 #' The atomic vector constructors are equivalent to [c()] but:
 #'
 #' * They allow you to be more explicit about the output
@@ -12,6 +14,10 @@
 #'
 #'
 #' @section Life cycle:
+#'
+#' * All the abbreviated constructors such as `lgl()` will probably be
+#'   moved to the vctrs package at some point. This is why they are
+#'   marked as questioning.
 #'
 #' * Automatic splicing is soft-deprecated and will trigger a warning
 #'   in a future version. Please splice explicitly with `!!!`.
@@ -131,6 +137,10 @@ list3 <- function(...) {
 
 #' Create vectors matching a given length
 #'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#'
 #' These functions construct vectors of a given length, with attributes
 #' specified via dots. Except for `new_list()` and `new_raw()`, the
 #' empty vectors are filled with typed [missing] values. This is in
@@ -139,6 +149,12 @@ list3 <- function(...) {
 #'
 #' @param n The vector length.
 #' @param names Names for the new vector.
+#'
+#' @section Lifecycle:
+#'
+#' These functions are likely to be replaced by a vctrs equivalent in
+#' the future. They are in the questioning lifecycle stage.
+#'
 #' @examples
 #' new_list(10)
 #' new_logical(10)

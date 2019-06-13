@@ -1,11 +1,18 @@
 #' Missing values
 #'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#'
 #' Missing values are represented in R with the general symbol
 #' `NA`. They can be inserted in almost all data containers: all
 #' atomic vectors except raw vectors can contain missing values. To
 #' achieve this, R automatically converts the general `NA` symbol to a
 #' typed missing value appropriate for the target vector. The objects
 #' provided here are aliases for those typed `NA` objects.
+#'
+#'
+#' @details
 #'
 #' Typed missing values are necessary because R needs sentinel values
 #' of the same type (i.e. the same machine representation of the data)
@@ -21,6 +28,12 @@
 #' target type. In the same way, since lists and environments can
 #' contain any types, expressions like `list(NA)` store a logical
 #' `NA`.
+#'
+#'
+#' @section Life cycle:
+#'
+#' These shortcuts might be moved to the vctrs package at some
+#' point. This is why they are marked as questioning.
 #'
 #' @examples
 #' typeof(NA)
@@ -53,6 +66,10 @@ na_cpl <- NA_complex_
 
 #' Test for missing values
 #'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#'
 #' `are_na()` checks for missing values in a vector and is equivalent
 #' to [base::is.na()]. It is a vectorised predicate, meaning that its
 #' output is always the same length as its input. On the other hand,
@@ -61,13 +78,22 @@ na_cpl <- NA_complex_
 #' `FALSE`. Finally, there are typed versions that check for
 #' particular [missing types][missing].
 #'
+#'
+#' @details
+#'
 #' The scalar predicates accept non-vector inputs. They are equivalent
 #' to [is_null()] in that respect. In contrast the vectorised
 #' predicate `are_na()` requires a vector input since it is defined
 #' over vector values.
 #'
 #' @param x An object to test
-#' @export
+#'
+#' @section Life cycle:
+#'
+#' These functions might be moved to the vctrs package at some
+#' point. This is why they are marked as questioning.
+#'
+#'
 #' @examples
 #' # are_na() is vectorised and works regardless of the type
 #' are_na(c(1, 2, NA))
@@ -81,6 +107,7 @@ na_cpl <- NA_complex_
 #' # There are typed versions as well:
 #' is_lgl_na(NA)
 #' is_lgl_na(na_dbl)
+#' @export
 are_na <- function(x) {
   if (!is_atomic(x)) {
     abort("`x` must be an atomic vector")

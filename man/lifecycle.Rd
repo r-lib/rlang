@@ -66,6 +66,15 @@ changes.
 
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
 
+\strong{In the questioning stage as of rlang 0.4.0}
+
+These functions are likely to be moved to the vctrs package:
+\itemize{
+\item \code{\link[=lgl]{lgl()}}, \code{\link[=int]{int()}}, etc.
+\item \code{\link[=new_logical]{new_logical()}}, \code{\link[=new_integer]{new_integer()}}, etc.
+\item \link{na_lgl}, \link{na_int}, \code{\link[=is_lgl_na]{is_lgl_na()}}, \code{\link[=is_int_na]{is_int_na()}}, etc.
+}
+
 \strong{In the questioning stage as of rlang 0.3.0}
 \itemize{
 \item \code{\link[=child_env]{child_env()}}
