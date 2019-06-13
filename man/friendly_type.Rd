@@ -7,7 +7,7 @@
 friendly_type(type)
 }
 \arguments{
-\item{type}{A type as returned by \code{\link[=type_of]{type_of()}} or \code{\link[=lang_type_of]{lang_type_of()}}.}
+\item{type}{A type as returned by \code{\link[=typeof]{typeof()}}.}
 }
 \value{
 A string of the prettified type, qualified with an
@@ -19,7 +19,7 @@ Format a type for error messages
 \section{Life cycle}{
 
 \itemize{
-\item Like \code{\link[=type_of]{type_of()}}, \code{friendly_type()} is experimental.
+\item \code{friendly_type()} is experimental.
 }
 }
 

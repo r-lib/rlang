@@ -365,9 +365,9 @@ type_of_ <- function(x) {
 #'
 #' @section Life cycle:
 #'
-#' * Like [type_of()], `friendly_type()` is experimental.
+#' * `friendly_type()` is experimental.
 #'
-#' @param type A type as returned by [type_of()] or [lang_type_of()].
+#' @param type A type as returned by [typeof()].
 #' @return A string of the prettified type, qualified with an
 #'   indefinite article.
 #' @export
@@ -378,22 +378,7 @@ type_of_ <- function(x) {
 #' friendly_type("string")
 #' @export
 friendly_type <- function(type) {
-  friendly <- as_friendly_type(type)
-  if (!is_null(friendly)) {
-    return(friendly)
-  }
-
-  friendly <- friendly_lang_type_of(type)
-  if (!is_null(friendly)) {
-    return(friendly)
-  }
-
-  friendly <- friendly_expr_type_of(type)
-  if (!is_null(friendly)) {
-    return(friendly)
-  }
-
-  type
+  as_friendly_type(type) %||% type
 }
 
 friendly_type_of <- function(x, length = FALSE) {
@@ -452,138 +437,6 @@ as_friendly_type <- function(type) {
 paste_classes <- function(x) {
   paste(class(x), collapse = "/")
 }
-
-friendly_lang_type_of <- function(type) {
-  switch(type,
-    named = "a named call",
-    namespaced = "a namespaced call",
-    recursive = "a recursive call",
-    inlined = "an inlined call"
-  )
-}
-
-friendly_expr_type_of <- function(type) {
-  switch(type,
-    NULL = "NULL",
-    name = ,
-    symbol = "a symbol",
-    language = "a call",
-    pairlist = "a pairlist node",
-    literal = "a syntactic literal",
-    missing = "the missing argument"
-  )
-}
-
-#' Dispatch on call type
-#'
-#' @description
-#'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
-#'
-#' `switch_lang()` dispatches clauses based on the subtype of call, as
-#' determined by `lang_type_of()`. The subtypes are based on the type
-#' of call head (see details).
-#'
-#' @details
-#'
-#' Calls (objects of type `language`) do not necessarily call a named
-#' function. They can also call an anonymous function or the result of
-#' some other expression. The language subtypes are organised around
-#' the kind of object being called:
-#'
-#' * For regular calls to named function, `switch_lang()` returns
-#'   "named".
-#'
-#' * Sometimes the function being called is the result of another
-#'   function call, e.g. `foo()()`, or the result of another
-#'   subsetting call, e.g. `foo$bar()` or `foo@bar()`. In this case,
-#'   the call head is not a symbol, it is another call (e.g. to the
-#'   infix functions `$` or `@`). The call subtype is said to be
-#'   "recursive".
-#'
-#' * A special subset of recursive calls are namespaced calls like
-#'   `foo::bar()`. `switch_lang()` returns "namespaced" for these
-#'   calls. It is generally a good idea if your function treats
-#'   `bar()` and `foo::bar()` similarly.
-#'
-#' * Finally, it is possible to have a literal (see [is_expression()] for a
-#'   definition of literals) as call head. In most cases, this will be
-#'   a function inlined in the call (this is sometimes an expedient
-#'   way of dealing with scoping issues). For calls with a literal
-#'   node head, `switch_lang()` returns "inlined". Note that if a call
-#'   head contains a literal that is not function, something went
-#'   wrong and using that object will probably make R crash.
-#'   `switch_lang()` issues an error in this case.
-#'
-#' The reason we use the term _node head_ is because calls are
-#' structured as tree objects. This makes sense because the best
-#' representation for language code is a tree whose hierarchy is
-#' determined by the order of operations. See [node] for more on this.
-#'
-#'
-#' @section Life cycle:
-#'
-#' All these functions are in the questioning stage and likely to be
-#' removed from the package.
-#'
-#' @inheritParams switch_type
-#' @param .x,x A language object (a call). If a formula quote, the RHS
-#'   is extracted first.
-#' @param ... Named clauses. The names should be types as returned by
-#'   `lang_type_of()`.
-#'
-#' @keywords internal
-#' @export
-#' @examples
-#' # Named calls:
-#' lang_type_of(~foo())
-#'
-#' # Recursive calls:
-#' lang_type_of(~foo$bar())
-#' lang_type_of(~foo()())
-#'
-#' # Namespaced calls:
-#' lang_type_of(~base::list())
-#'
-#' # For an inlined call, let's inline a function in the head node:
-#' call <- quote(foo(letters))
-#' call[[1]] <- base::toupper
-#'
-#' call
-#' lang_type_of(call)
-switch_lang <- function(.x, ...) {
-  switch(lang_type_of(.x), ...)
-}
-#' @rdname switch_lang
-#' @export
-coerce_lang <- function(.x, .to, ...) {
-  msg <- paste0("Can't convert ", friendly_type_of(.x), " to ", .to, "")
-  switch(lang_type_of(.x), ..., abort(msg))
-}
-#' @rdname switch_lang
-#' @export
-lang_type_of <- function(x) {
-  x <- get_expr(x)
-  stopifnot(typeof(x) == "language")
-
-  type <- typeof(node_car(x))
-  if (type == "symbol") {
-    "named"
-  } else if (is_namespaced_symbol(node_car(x))) {
-    "namespaced"
-  } else if (type == "language") {
-    "recursive"
-  } else if (type %in% c("closure", "builtin", "special")) {
-    "inlined"
-  } else {
-    abort("corrupt language object")
-  }
-}
-
-# Exported `switch_lang()` function is likely to be deprecated in the
-# future. Use switch_call() internally:
-switch_call <- switch_lang
 
 #' Is an object copyable?
 #'

@@ -73,13 +73,6 @@ type_of <- function(x) {
 #' error message when conversion fails.
 #'
 #'
-#' @section Life cycle:
-#'
-#' * Like [type_of()], `switch_type()` and `coerce_type()` are
-#'   experimental functions.
-#'
-#' * `switch_class()` and `coerce_class()` are experimental functions.
-#'
 #' @param .x An object from which to dispatch.
 #' @param ... Named clauses. The names should be types as returned by
 #'   [type_of()].
@@ -88,7 +81,6 @@ type_of <- function(x) {
 #'   target type. A catch-all clause is then added to signal an error
 #'   stating the conversion failure. This type is prettified unless
 #'   `.to` inherits from the S3 class `"AsIs"` (see [base::I()]).
-#' @seealso [switch_lang()]
 #' @export
 #' @keywords internal
 #' @examples

@@ -72,7 +72,6 @@ These functions are likely to be moved to the vctrs package:
 \strong{In the questioning stage as of rlang 0.3.0}
 \itemize{
 \item \code{\link[=child_env]{child_env()}}
-\item \code{\link[=lang_type_of]{lang_type_of()}}, \code{\link[=switch_lang]{switch_lang()}}, \code{\link[=coerce_lang]{coerce_lang()}}
 \item \code{\link[=flatten]{flatten()}}, \code{\link[=squash]{squash()}}, and their atomic vector variants
 \item \code{\link[=modify]{modify()}} and \code{\link[=prepend]{prepend()}}
 \item \code{\link[=with_restarts]{with_restarts()}}, \code{\link[=rst_list]{rst_list()}}, \code{\link[=rst_exists]{rst_exists()}}, \code{\link[=rst_jump]{rst_jump()}},
@@ -206,6 +205,7 @@ find them in the commit history and previous releases.
 \item \code{mut_utf8_locale()}, \code{mut_latin1_locale()}, \code{mut_mbcs_locale()}
 \item \code{set_chr_encoding()}, \code{chr_encoding()}, \code{set_str_encoding()}, \code{str_encoding()}
 \item \code{as_native_character()}, \code{as_utf8_string()}, \code{as_native_string()}
+\item \code{lang_type_of()}, \code{switch_lang()}, \code{coerce_lang()}
 }
 
 \strong{Archived as of rlang 0.3.0:}

@@ -122,6 +122,9 @@
 * The encoding and locale API was summarily archived. This API didn't
   bring any value and wasn't used on CRAN.
 
+* `lang_type_of()`, `switch_lang()`, and `coerce_lang()` were
+  archived. These functions were not used on CRAN or internally.
+
 * All functions that were soft-deprecated, deprecated, or defunct in
   previous releases have been bumped to the next lifecycle stage.
 

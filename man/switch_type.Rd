@@ -37,15 +37,6 @@ stating the conversion failure. This type is prettified unless
 versions are intended for type conversion and provide a standard
 error message when conversion fails.
 }
-\section{Life cycle}{
-
-\itemize{
-\item Like \code{\link[=type_of]{type_of()}}, \code{switch_type()} and \code{coerce_type()} are
-experimental functions.
-\item \code{switch_class()} and \code{coerce_class()} are experimental functions.
-}
-}
-
 \examples{
 switch_type(3L,
   double = "foo",
@@ -94,8 +85,5 @@ switch_type(rlang::switch_type,
   primitive = "foo",
   "default"
 )
-}
-\seealso{
-\code{\link[=switch_lang]{switch_lang()}}
 }
 \keyword{internal}

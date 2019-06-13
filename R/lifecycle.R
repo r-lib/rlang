@@ -75,7 +75,6 @@
 #' **In the questioning stage as of rlang 0.3.0**
 #'
 #' * [child_env()]
-#' * [lang_type_of()], [switch_lang()], [coerce_lang()]
 #' * [flatten()], [squash()], and their atomic vector variants
 #' * [modify()] and [prepend()]
 #' * [with_restarts()], [rst_list()], [rst_exists()], [rst_jump()],
@@ -214,6 +213,7 @@
 #' * `mut_utf8_locale()`, `mut_latin1_locale()`, `mut_mbcs_locale()`
 #' * `set_chr_encoding()`, `chr_encoding()`, `set_str_encoding()`, `str_encoding()`
 #' * `as_native_character()`, `as_utf8_string()`, `as_native_string()`
+#' * `lang_type_of()`, `switch_lang()`, `coerce_lang()`
 #'
 #'
 #' **Archived as of rlang 0.3.0:**
