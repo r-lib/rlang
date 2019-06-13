@@ -15,6 +15,8 @@ an encoding mark. This is only declarative, no encoding
 conversion is performed.}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+
 These base-type constructors allow more control over the creation
 of strings in R. They take character vectors or string-like objects
 (integerish or raw vectors), and optionally set the encoding. The

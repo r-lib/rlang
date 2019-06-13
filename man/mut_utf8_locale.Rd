@@ -16,6 +16,8 @@ mut_mbcs_locale()
 The previous locale (invisibly).
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+
 Setting a locale's codeset (specifically, the \code{LC_CTYPE} category)
 produces side effects in R's handling of strings. The most
 important of these affects how the R parser marks strings. R has
@@ -26,8 +28,7 @@ the corresponding encoding. It is important for strings to have
 consistent encoding markers, as they determine a number of internal
 encoding conversions when R or packages handle strings (see
 \code{\link[=set_str_encoding]{set_str_encoding()}} for some examples).
-}
-\details{
+
 If you are changing the locale encoding for testing purposes, you
 need to be aware that R caches strings and symbols to save
 memory. If you change the locale during an R session, it can lead

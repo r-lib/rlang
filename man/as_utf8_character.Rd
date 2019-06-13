@@ -19,6 +19,8 @@ as_native_string(x)
 \item{x}{An object to coerce.}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+
 Unlike specifying the \code{encoding} argument in \code{as_string()} and
 \code{as_character()}, which is only declarative, these functions
 actually attempt to convert the encoding of their input. There are

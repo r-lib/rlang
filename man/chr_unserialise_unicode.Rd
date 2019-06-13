@@ -10,6 +10,8 @@ chr_unserialise_unicode(chr)
 \item{chr}{A character vector.}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+
 For historical reasons, R translates strings to the native encoding
 when they are converted to symbols. This string-to-symbol
 conversion is not a rare occurrence and happens for instance to the

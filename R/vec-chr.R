@@ -1,5 +1,9 @@
 #' Create a string
 #'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+#'
 #' These base-type constructors allow more control over the creation
 #' of strings in R. They take character vectors or string-like objects
 #' (integerish or raw vectors), and optionally set the encoding. The
@@ -45,6 +49,8 @@ string <- function(x, encoding = NULL) {
 #' Coerce to a character vector and attempt encoding conversion
 #'
 #' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
 #'
 #' Unlike specifying the `encoding` argument in `as_string()` and
 #' `as_character()`, which is only declarative, these functions
@@ -116,6 +122,8 @@ as_native_string <- function(x) {
 #'
 #' @description
 #'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+#'
 #' For historical reasons, R translates strings to the native encoding
 #' when they are converted to symbols. This string-to-symbol
 #' conversion is not a rare occurrence and happens for instance to the
@@ -150,6 +158,10 @@ chr_unserialise_unicode <- function(chr) {
 }
 
 #' Set encoding of a string or character vector
+#'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
 #'
 #' R has specific support for UTF-8 and latin1 encoded strings. This
 #' mostly matters for internal conversions. Thanks to this support,
@@ -237,6 +249,10 @@ str_encoding <- function(x) {
 }
 
 #' Set the locale's codeset for testing
+#'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
 #'
 #' Setting a locale's codeset (specifically, the `LC_CTYPE` category)
 #' produces side effects in R's handling of strings. The most

@@ -24,6 +24,8 @@ conversions, or \code{"unknown"} if the string should be treated as
 encoded in the current locale codeset.}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+
 R has specific support for UTF-8 and latin1 encoded strings. This
 mostly matters for internal conversions. Thanks to this support,
 you can reencode strings to UTF-8 or latin1 for internal
