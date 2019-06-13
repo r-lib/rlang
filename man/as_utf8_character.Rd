@@ -2,23 +2,16 @@
 % Please edit documentation in R/vec-chr.R
 \name{as_utf8_character}
 \alias{as_utf8_character}
-\alias{as_native_character}
-\alias{as_utf8_string}
-\alias{as_native_string}
 \title{Coerce to a character vector and attempt encoding conversion}
 \usage{
 as_utf8_character(x)
-
-as_native_character(x)
-
-as_utf8_string(x)
-
-as_native_string(x)
 }
 \arguments{
 \item{x}{An object to coerce.}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+
 Unlike specifying the \code{encoding} argument in \code{as_string()} and
 \code{as_character()}, which is only declarative, these functions
 actually attempt to convert the encoding of their input. There are
@@ -28,9 +21,9 @@ two possible cases:
 for which R has specific support. In this case, converting to the
 same encoding is a no-op, and converting to native always works
 as expected, as long as the native encoding, the one specified by
-the \code{LC_CTYPE} locale (see \code{\link[=mut_utf8_locale]{mut_utf8_locale()}}) has support for
-all characters occurring in the strings. Unrepresentable
-characters are serialised as unicode points: "<U+xxxx>".
+the \code{LC_CTYPE} locale has support for all characters occurring in
+the strings. Unrepresentable characters are serialised as unicode
+points: "<U+xxxx>".
 \item The string is not tagged. R assumes that it is encoded in the
 native encoding. Conversion to native is a no-op, and conversion
 to UTF-8 should work as long as the string is actually encoded in
@@ -47,15 +40,6 @@ non-UTF-8 native encoding.
 # Let's create a string marked as UTF-8 (which is guaranteed by the
 # Unicode escaping in the string):
 utf8 <- "caf\\uE9"
-str_encoding(utf8)
+Encoding(utf8)
 as_bytes(utf8)
-
-# It can then be converted to a native encoding, that is, the
-# encoding specified in the current locale:
-\dontrun{
-mut_latin1_locale()
-latin1 <- as_native_string(utf8)
-str_encoding(latin1)
-as_bytes(latin1)
-}
 }

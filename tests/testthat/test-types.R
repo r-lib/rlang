@@ -11,10 +11,11 @@ test_that("predicates match definitions", {
 })
 
 test_that("can bypass string serialisation", {
-  bar <- chr(list("cafe", string(c(0x63, 0x61, 0x66, 0xE9))), .encoding = "latin1")
+  bar <- chr(list("cafe", string(c(0x63, 0x61, 0x66, 0xE9))))
+  Encoding(bar) <- "latin1"
   bytes <- list(bytes(c(0x63, 0x61, 0x66, 0x65)), bytes(c(0x63, 0x61, 0x66, 0xE9)))
   expect_identical(map(bar, as_bytes), bytes)
-  expect_identical(str_encoding(bar[[2]]), "latin1")
+  expect_identical(Encoding(bar[[2]]), "latin1")
 })
 
 test_that("type_of() returns correct type", {

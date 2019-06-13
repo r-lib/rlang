@@ -114,6 +114,9 @@
 * `as_logical()`, `as_integer()`, etc have been soft-deprecated in
   favour of `vctrs::vec_cast()`.
 
+* The encoding and locale API was summarily archived. This API didn't
+  bring any value and wasn't used on CRAN.
+
 * All functions that were soft-deprecated, deprecated, or defunct in
   previous releases have been bumped to the next lifecycle stage.
 

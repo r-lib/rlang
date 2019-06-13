@@ -17,9 +17,6 @@ A symbol for \code{sym()} and a list of symbols for \code{syms()}.
 }
 \description{
 These functions take strings as input and turn them into symbols.
-Contrarily to \code{as.name()}, they convert the strings to the native
-encoding beforehand. This is necessary because symbols remove
-silently the encoding mark of strings (see \code{\link[=set_str_encoding]{set_str_encoding()}}).
 }
 \examples{
 # The empty string returns the missing argument:

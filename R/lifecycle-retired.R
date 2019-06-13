@@ -39,9 +39,7 @@
 #' `as_character()` and `as_string()` have an optional `encoding`
 #' argument to specify the encoding. R uses this information for
 #' internal handling of strings and character vectors. Note that this
-#' is only declarative, no encoding conversion is attempted. See
-#' [as_utf8_character()] and [as_native_character()] for coercing to a
-#' character vector and attempt encoding conversion.
+#' is only declarative, no encoding conversion is attempted.
 #'
 #' Note that only `as_string()` can coerce symbols to a scalar
 #' character vector. This makes the code more explicit and adds an
@@ -172,7 +170,10 @@ as_character <- function(x, encoding = NULL) {
     string = ,
     character = {
       attributes(x) <- NULL
-      set_chr_encoding(x, encoding)
+      if (!is_null(encoding)) {
+        Encoding(x) <- encoding
+      }
+      x
     }
   )
 }

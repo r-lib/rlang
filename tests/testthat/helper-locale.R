@@ -30,14 +30,14 @@ get_alien_lang_string <- function() {
 
 with_non_utf8_locale <- function(code) {
   old_locale <- mut_non_utf8_locale()
-  on.exit(mut_ctype(old_locale), add = TRUE)
+  on.exit(poke_ctype_locale(old_locale), add = TRUE)
   code
 }
 
 mut_non_utf8_locale <- function() {
   if (.Platform$OS.type == "windows") return(NULL)
   tryCatch(
-    locale <- mut_ctype("en_US.ISO8859-1"),
+    locale <- poke_ctype_locale("en_US.ISO8859-1"),
     warning = function(e) {
       testthat::skip("Cannot set latin-1 locale")
     }
@@ -46,7 +46,42 @@ mut_non_utf8_locale <- function() {
 }
 
 with_latin1_locale <- function(expr) {
-  old_locale <- suppressMessages(mut_latin1_locale())
-  on.exit(mut_ctype(old_locale))
+  old_locale <- suppressMessages(poke_latin1_locale())
+  on.exit(poke_ctype_locale(old_locale))
   expr
+}
+
+
+poke_utf8_locale <- function() {
+  if (.Platform$OS.type == "windows") {
+    warn("UTF-8 is not supported on Windows")
+  } else {
+    inform("Locale codeset is now UTF-8")
+    poke_ctype_locale("en_US.UTF-8")
+  }
+}
+poke_latin1_locale <- function() {
+  if (.Platform$OS.type == "windows") {
+    locale <- "English_United States.1252"
+  } else {
+    locale <- "en_US.ISO8859-1"
+  }
+  inform("Locale codeset is now latin1")
+  poke_ctype_locale(locale)
+}
+poke_mbcs_locale <- function() {
+  if (.Platform$OS.type == "windows") {
+    locale <- "English_United States.932"
+  } else {
+    locale <- "ja_JP.SJIS"
+  }
+  inform("Locale codeset is now of non-UTF-8 MBCS type")
+  poke_ctype_locale(locale)
+}
+poke_ctype_locale <- function(x) {
+  if (is_null(x)) return(x)
+  # Workaround bug in Sys.setlocale()
+  old <- Sys.getlocale("LC_CTYPE")
+  Sys.setlocale("LC_CTYPE", locale = x)
+  invisible(old)
 }

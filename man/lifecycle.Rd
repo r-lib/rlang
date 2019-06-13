@@ -54,9 +54,7 @@ changes.
 \code{\link[=dots_definitions]{dots_definitions()}}
 \item \code{\link[=scoped_options]{scoped_options()}}, \code{\link[=with_options]{with_options()}}, \code{\link[=push_options]{push_options()}},
 \code{\link[=peek_options]{peek_options()}}, \code{\link[=peek_option]{peek_option()}}
-\item \code{\link[=as_bytes]{as_bytes()}}, \code{\link[=chr_unserialise_unicode]{chr_unserialise_unicode()}}, \code{\link[=set_chr_encoding]{set_chr_encoding()}},
-\code{\link[=chr_encoding]{chr_encoding()}}, \code{\link[=set_str_encoding]{set_str_encoding()}}, \code{\link[=str_encoding]{str_encoding()}}
-\item \code{\link[=mut_utf8_locale]{mut_utf8_locale()}}, \code{\link[=mut_latin1_locale]{mut_latin1_locale()}}, \code{\link[=mut_mbcs_locale]{mut_mbcs_locale()}}
+\item \code{\link[=as_bytes]{as_bytes()}}, \code{\link[=chr_unserialise_unicode]{chr_unserialise_unicode()}}
 \item \code{\link[=caller_fn]{caller_fn()}}, \code{\link[=current_fn]{current_fn()}}
 }
 }
@@ -210,6 +208,9 @@ find them in the commit history and previous releases.
 \item \code{as_dictionary()}, \code{is_dictionary()}
 \item \code{as_quosureish()}, \code{is_quosureish()}
 \item \code{eval_tidy_()}
+\item \code{mut_utf8_locale()}, \code{mut_latin1_locale()}, \code{mut_mbcs_locale()}
+\item \code{set_chr_encoding()}, \code{chr_encoding()}, \code{set_str_encoding()}, \code{str_encoding()}
+\item \code{as_native_character()}, \code{as_utf8_string()}, \code{as_native_string()}
 }
 
 \strong{Archived as of rlang 0.3.0:}

@@ -10,11 +10,12 @@ string(x, encoding = NULL)
 \item{x}{A character vector or a vector or list of string-like
 objects.}
 
-\item{encoding}{If non-null, passed to \code{\link[=set_chr_encoding]{set_chr_encoding()}} to add
-an encoding mark. This is only declarative, no encoding
-conversion is performed.}
+\item{encoding}{If non-null, set an encoding mark. This is only
+declarative, no encoding conversion is performed.}
 }
 \description{
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+
 These base-type constructors allow more control over the creation
 of strings in R. They take character vectors or string-like objects
 (integerish or raw vectors), and optionally set the encoding. The
@@ -26,7 +27,7 @@ string version checks that the input contains a scalar string.
 # be encoded in UTF-8, and the string will be marked as UTF-8
 # automatically:
 cafe <- string("caf\\uE9")
-str_encoding(cafe)
+Encoding(cafe)
 as_bytes(cafe)
 
 # In addition, string() provides useful conversions to let
@@ -35,10 +36,6 @@ as_bytes(cafe)
 # hexadecimal form. If it is a latin1 encoding, you can mark the
 # string explicitly:
 cafe_latin1 <- string(c(0x63, 0x61, 0x66, 0xE9), "latin1")
-str_encoding(cafe_latin1)
+Encoding(cafe_latin1)
 as_bytes(cafe_latin1)
-}
-\seealso{
-\code{set_chr_encoding()} for more information
-about encodings in R.
 }
