@@ -117,6 +117,10 @@ extern sexp* rlang_is_splice_box(sexp*);
 extern sexp* rlang_unbox(sexp*);
 extern sexp* rlang_new_function(sexp*, sexp*, sexp*);
 extern sexp* rlang_is_string(sexp*, sexp*);
+extern sexp* rlang_new_weakref(sexp*, sexp*, sexp*, sexp*);
+extern sexp* rlang_wref_key(sexp*);
+extern sexp* rlang_wref_value(sexp*);
+extern sexp* rlang_is_weakref(sexp*);
 
 // Library initialisation defined below
 sexp* rlang_library_load();
@@ -273,6 +277,10 @@ static const r_callable r_callables[] = {
   {"rlang_is_splice_box",               (r_fn_ptr) &rlang_is_splice_box, 1},
   {"rlang_new_function",                (r_fn_ptr) &rlang_new_function, 3},
   {"rlang_is_string",                   (r_fn_ptr) &rlang_is_string, 2},
+  {"rlang_new_weakref",                 (r_fn_ptr) &rlang_new_weakref, 4},
+  {"rlang_wref_key",                    (r_fn_ptr) &rlang_wref_key, 1},
+  {"rlang_wref_value",                  (r_fn_ptr) &rlang_wref_value, 1},
+  {"rlang_is_weakref",                  (r_fn_ptr) &rlang_is_weakref, 1},
   {NULL, NULL, 0}
 };
 

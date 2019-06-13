@@ -95,6 +95,8 @@
 * The return object from `as_function()` now inherits from
   `"function"` (@richierocks, #735).
 
+* New functions for weak references: `new_weakref()`, `weakref_key()`,
+  `weakref_value()`, and `is_weakref()` (@wch, #787).
 
 ## Lifecycle
 
