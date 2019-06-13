@@ -7,8 +7,8 @@
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
 #'
 #' This is equivalent to [base::typeof()] with a few differences that
 #' make dispatching easier:
@@ -52,8 +52,117 @@
 #' type_of(list)
 #' type_of(`$`)
 type_of <- function(x) {
-  signal_soft_deprecated("`type_of()` is deprecated as of rlang 0.4.0.")
+  signal_soft_deprecated(c(
+    "`type_of()` is deprecated as of rlang 0.4.0.",
+    "Please use `typeof()` or your own version instead."
+  ))
   type_of_(x)
+}
+
+#' Dispatch on base types
+#'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+#'
+#' `switch_type()` is equivalent to
+#' \code{\link[base]{switch}(\link{type_of}(x, ...))}, while
+#' `switch_class()` switchpatches based on `class(x)`. The `coerce_`
+#' versions are intended for type conversion and provide a standard
+#' error message when conversion fails.
+#'
+#'
+#' @section Life cycle:
+#'
+#' * Like [type_of()], `switch_type()` and `coerce_type()` are
+#'   experimental functions.
+#'
+#' * `switch_class()` and `coerce_class()` are experimental functions.
+#'
+#' @param .x An object from which to dispatch.
+#' @param ... Named clauses. The names should be types as returned by
+#'   [type_of()].
+#' @param .to This is useful when you switchpatch within a coercing
+#'   function. If supplied, this should be a string indicating the
+#'   target type. A catch-all clause is then added to signal an error
+#'   stating the conversion failure. This type is prettified unless
+#'   `.to` inherits from the S3 class `"AsIs"` (see [base::I()]).
+#' @seealso [switch_lang()]
+#' @export
+#' @keywords internal
+#' @examples
+#' switch_type(3L,
+#'   double = "foo",
+#'   integer = "bar",
+#'   "default"
+#' )
+#'
+#' # Use the coerce_ version to get standardised error handling when no
+#' # type matches:
+#' to_chr <- function(x) {
+#'   coerce_type(x, "a chr",
+#'     integer = as.character(x),
+#'     double = as.character(x)
+#'   )
+#' }
+#' to_chr(3L)
+#'
+#' # Strings have their own type:
+#' switch_type("str",
+#'   character = "foo",
+#'   string = "bar",
+#'   "default"
+#' )
+#'
+#' # Use a fallthrough clause if you need to dispatch on all character
+#' # vectors, including strings:
+#' switch_type("str",
+#'   string = ,
+#'   character = "foo",
+#'   "default"
+#' )
+#'
+#' # special and builtin functions are treated as primitive, since
+#' # there is usually no reason to treat them differently:
+#' switch_type(base::list,
+#'   primitive = "foo",
+#'   "default"
+#' )
+#' switch_type(base::`$`,
+#'   primitive = "foo",
+#'   "default"
+#' )
+#'
+#' # closures are not primitives:
+#' switch_type(rlang::switch_type,
+#'   primitive = "foo",
+#'   "default"
+#' )
+switch_type <- function(.x, ...) {
+  signal_soft_deprecated(c(
+    "`switch_type()` is soft-deprecated as of rlang 0.4.0.",
+    "Please use `switch(typeof())` or `switch(my_typeof())` instead."
+  ))
+  switch(type_of_(.x), ...)
+}
+#' @rdname switch_type
+#' @export
+coerce_type <- function(.x, .to, ...) {
+  signal_soft_deprecated("`coerce_type()` is soft-deprecated as of rlang 0.4.0.")
+  switch(type_of_(.x), ..., abort_coercion(.x, .to))
+}
+#' @rdname switch_type
+#' @export
+switch_class <- function(.x, ...) {
+  signal_soft_deprecated("`switch_class()` is soft-deprecated as of rlang 0.4.0.")
+  switch(class(.x), ...)
+}
+#' @rdname switch_type
+#' @export
+coerce_class <- function(.x, .to, ...) {
+  signal_soft_deprecated("`coerce_class()` is soft-deprecated as of rlang 0.4.0.")
+  switch(class(.x), ..., abort_coercion(.x, .to))
 }
 
 

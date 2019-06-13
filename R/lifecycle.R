@@ -75,8 +75,6 @@
 #' **In the questioning stage as of rlang 0.3.0**
 #'
 #' * [child_env()]
-#' * [switch_type()], [coerce_type()]
-#' * [switch_class()], [coerce_class()]
 #' * [lang_type_of()], [switch_lang()], [coerce_lang()]
 #' * [flatten()], [squash()], and their atomic vector variants
 #' * [modify()] and [prepend()]
@@ -103,7 +101,8 @@
 #' * [exiting()]: Handlers are now treated as exiting by default.
 #' * [invoke()]: Use the simpler [exec()] instead.
 #' * [as_logical()], [as_integer()], etc. => `vctrs::vec_cast()`.
-#' * [type_of()]
+#' * [type_of()], [switch_type()], [coerce_type()], [switch_class()],
+#'   [coerce_class()]
 #'
 #'
 #' @section Deprecated functions and arguments:

@@ -10,8 +10,8 @@ type_of(x)
 \item{x}{An R object.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
 
 This is equivalent to \code{\link[base:typeof]{base::typeof()}} with a few differences that
 make dispatching easier:

@@ -361,112 +361,6 @@ type_of_ <- function(x) {
   }
 }
 
-#' Dispatch on base types
-#'
-#' @description
-#'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
-#'
-#' `switch_type()` is equivalent to
-#' \code{\link[base]{switch}(\link{type_of}(x, ...))}, while
-#' `switch_class()` switchpatches based on `class(x)`. The `coerce_`
-#' versions are intended for type conversion and provide a standard
-#' error message when conversion fails.
-#'
-#'
-#' @section Life cycle:
-#'
-#' * Like [type_of()], `switch_type()` and `coerce_type()` are
-#'   experimental functions.
-#'
-#' * `switch_class()` and `coerce_class()` are experimental functions.
-#'
-#' @param .x An object from which to dispatch.
-#' @param ... Named clauses. The names should be types as returned by
-#'   [type_of()].
-#' @param .to This is useful when you switchpatch within a coercing
-#'   function. If supplied, this should be a string indicating the
-#'   target type. A catch-all clause is then added to signal an error
-#'   stating the conversion failure. This type is prettified unless
-#'   `.to` inherits from the S3 class `"AsIs"` (see [base::I()]).
-#' @seealso [switch_lang()]
-#' @export
-#' @keywords internal
-#' @examples
-#' switch_type(3L,
-#'   double = "foo",
-#'   integer = "bar",
-#'   "default"
-#' )
-#'
-#' # Use the coerce_ version to get standardised error handling when no
-#' # type matches:
-#' to_chr <- function(x) {
-#'   coerce_type(x, "a chr",
-#'     integer = as.character(x),
-#'     double = as.character(x)
-#'   )
-#' }
-#' to_chr(3L)
-#'
-#' # Strings have their own type:
-#' switch_type("str",
-#'   character = "foo",
-#'   string = "bar",
-#'   "default"
-#' )
-#'
-#' # Use a fallthrough clause if you need to dispatch on all character
-#' # vectors, including strings:
-#' switch_type("str",
-#'   string = ,
-#'   character = "foo",
-#'   "default"
-#' )
-#'
-#' # special and builtin functions are treated as primitive, since
-#' # there is usually no reason to treat them differently:
-#' switch_type(base::list,
-#'   primitive = "foo",
-#'   "default"
-#' )
-#' switch_type(base::`$`,
-#'   primitive = "foo",
-#'   "default"
-#' )
-#'
-#' # closures are not primitives:
-#' switch_type(rlang::switch_type,
-#'   primitive = "foo",
-#'   "default"
-#' )
-switch_type <- function(.x, ...) {
-  switch(type_of_(.x), ...)
-}
-#' @rdname switch_type
-#' @export
-coerce_type <- function(.x, .to, ...) {
-  switch(type_of_(.x), ..., abort_coercion(.x, .to))
-}
-#' @rdname switch_type
-#' @export
-switch_class <- function(.x, ...) {
-  switch(class(.x), ...)
-}
-#' @rdname switch_type
-#' @export
-coerce_class <- function(.x, .to, ...) {
-  switch(class(.x), ..., abort_coercion(.x, .to))
-}
-abort_coercion <- function(x, to_type) {
-  x_type <- friendly_type_of(x)
-  if (!inherits(to_type, "AsIs")) {
-    to_type <- as_friendly_type(to_type)
-  }
-  abort(paste0("Can't convert ", x_type, " to ", to_type))
-}
-
 #' Format a type for error messages
 #'
 #' @section Life cycle:
@@ -718,13 +612,14 @@ switch_call <- switch_lang
 #' structure(base::list, foo = "bar")
 #' str(base::list)
 is_copyable <- function(x) {
-  switch_type(x,
+  switch(typeof(x),
     NULL = ,
     char = ,
     symbol = ,
-    primitive = ,
+    special = ,
+    builtin = ,
     environment = ,
-    pointer =
+    externalptr =
       FALSE,
     TRUE
   )
