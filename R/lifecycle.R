@@ -60,8 +60,6 @@
 #' * [as_bytes()], [chr_unserialise_unicode()], [set_chr_encoding()],
 #'   [chr_encoding()], [set_str_encoding()], [str_encoding()]
 #'
-#' * [mut_utf8_locale()], [mut_latin1_locale()], [mut_mbcs_locale()]
-#'
 #' * [caller_fn()], [current_fn()]
 #'
 #'
@@ -218,6 +216,7 @@
 #' * `as_dictionary()`, `is_dictionary()`
 #' * `as_quosureish()`, `is_quosureish()`
 #' * `eval_tidy_()`
+#' * `mut_utf8_locale()`, `mut_latin1_locale()`, `mut_mbcs_locale()`
 #'
 #'
 #' **Archived as of rlang 0.3.0:**

@@ -56,7 +56,6 @@ changes.
 \code{\link[=peek_options]{peek_options()}}, \code{\link[=peek_option]{peek_option()}}
 \item \code{\link[=as_bytes]{as_bytes()}}, \code{\link[=chr_unserialise_unicode]{chr_unserialise_unicode()}}, \code{\link[=set_chr_encoding]{set_chr_encoding()}},
 \code{\link[=chr_encoding]{chr_encoding()}}, \code{\link[=set_str_encoding]{set_str_encoding()}}, \code{\link[=str_encoding]{str_encoding()}}
-\item \code{\link[=mut_utf8_locale]{mut_utf8_locale()}}, \code{\link[=mut_latin1_locale]{mut_latin1_locale()}}, \code{\link[=mut_mbcs_locale]{mut_mbcs_locale()}}
 \item \code{\link[=caller_fn]{caller_fn()}}, \code{\link[=current_fn]{current_fn()}}
 }
 }
@@ -210,6 +209,7 @@ find them in the commit history and previous releases.
 \item \code{as_dictionary()}, \code{is_dictionary()}
 \item \code{as_quosureish()}, \code{is_quosureish()}
 \item \code{eval_tidy_()}
+\item \code{mut_utf8_locale()}, \code{mut_latin1_locale()}, \code{mut_mbcs_locale()}
 }
 
 \strong{Archived as of rlang 0.3.0:}

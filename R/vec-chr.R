@@ -61,9 +61,9 @@ string <- function(x, encoding = NULL) {
 #'   for which R has specific support. In this case, converting to the
 #'   same encoding is a no-op, and converting to native always works
 #'   as expected, as long as the native encoding, the one specified by
-#'   the `LC_CTYPE` locale (see [mut_utf8_locale()]) has support for
-#'   all characters occurring in the strings. Unrepresentable
-#'   characters are serialised as unicode points: "<U+xxxx>".
+#'   the `LC_CTYPE` locale has support for all characters occurring in
+#'   the strings. Unrepresentable characters are serialised as unicode
+#'   points: "<U+xxxx>".
 #'
 #' * The string is not tagged. R assumes that it is encoded in the
 #'   native encoding. Conversion to native is a no-op, and conversion
@@ -84,15 +84,6 @@ string <- function(x, encoding = NULL) {
 #' utf8 <- "caf\uE9"
 #' str_encoding(utf8)
 #' as_bytes(utf8)
-#'
-#' # It can then be converted to a native encoding, that is, the
-#' # encoding specified in the current locale:
-#' \dontrun{
-#' mut_latin1_locale()
-#' latin1 <- as_native_string(utf8)
-#' str_encoding(latin1)
-#' as_bytes(latin1)
-#' }
 as_utf8_character <- function(x) {
   .Call(rlang_unescape_character, as_character(x))
 }
@@ -170,10 +161,9 @@ chr_unserialise_unicode <- function(chr) {
 #' back to the native encoding. However, it is important to make sure
 #' the encoding mark has not been lost in the process, otherwise the
 #' output will be treated as if encoded according to the current
-#' locale (see [mut_utf8_locale()] for documentation about locale
-#' codesets), which is not appropriate if it does not coincide with
-#' the actual encoding. In those situations, you can use these
-#' functions to ensure an encoding mark in your strings.
+#' locale, which is not appropriate if it does not coincide with the
+#' actual encoding. In those situations, you can use these functions
+#' to ensure an encoding mark in your strings.
 #'
 #'
 #' @section Life cycle:
@@ -186,8 +176,7 @@ chr_unserialise_unicode <- function(chr) {
 #'   (`"UTF-8"` or `"latin1"`), `"bytes"` to inhibit all encoding
 #'   conversions, or `"unknown"` if the string should be treated as
 #'   encoded in the current locale codeset.
-#' @seealso [mut_utf8_locale()] about the effects of the locale, and
-#'   [as_utf8_string()] about encoding conversion.
+#' @seealso [as_utf8_string()] about encoding conversion.
 #' @export
 #' @keywords internal
 #' @examples
@@ -213,17 +202,6 @@ chr_unserialise_unicode <- function(chr) {
 #' # However the names are converted to UTF-8 by the c() function:
 #' str_encoding(names(c(latin1)))
 #' as_bytes(names(c(latin1)))
-#'
-#' # Bad things happen when the encoding marker is lost and R performs
-#' # a conversion. R will assume that the string is encoded according
-#' # to the current locale:
-#' \dontrun{
-#' bad <- set_names(set_str_encoding(latin1, "unknown"))
-#' mut_utf8_locale()
-#'
-#' str_encoding(names(c(bad)))
-#' as_bytes(names(c(bad)))
-#' }
 set_chr_encoding <- function(x, encoding = c("unknown", "UTF-8", "latin1", "bytes")) {
   if (!is_null(encoding)) {
     Encoding(x) <- arg_match(encoding)
@@ -246,84 +224,4 @@ set_str_encoding <- function(x, encoding = c("unknown", "UTF-8", "latin1", "byte
 str_encoding <- function(x) {
   stopifnot(is_string(x))
   Encoding(x)
-}
-
-#' Set the locale's codeset for testing
-#'
-#' @description
-#'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
-#'
-#' Setting a locale's codeset (specifically, the `LC_CTYPE` category)
-#' produces side effects in R's handling of strings. The most
-#' important of these affects how the R parser marks strings. R has
-#' specific internal support for latin1 (single-byte encoding) and
-#' UTF-8 (multi-bytes variable-width encoding) strings. If the locale
-#' codeset is latin1 or UTF-8, the parser will mark all strings with
-#' the corresponding encoding. It is important for strings to have
-#' consistent encoding markers, as they determine a number of internal
-#' encoding conversions when R or packages handle strings (see
-#' [set_str_encoding()] for some examples).
-#'
-#' If you are changing the locale encoding for testing purposes, you
-#' need to be aware that R caches strings and symbols to save
-#' memory. If you change the locale during an R session, it can lead
-#' to surprising and difficult to reproduce results. When in doubt, restart
-#' your R session.
-#'
-#' Note that these helpers are only provided for testing interactively
-#' the effects of changing locale codeset. They let you quickly change
-#' the default text encoding to latin1, UTF-8, or non-UTF-8 MBCS. They
-#' are not widely tested and do not provide a way of setting the
-#' language and region of the locale. They have permanent side effects
-#' and should probably not be used in package examples, unit tests, or
-#' in the course of a data analysis. Note finally that
-#' `mut_utf8_locale()` will not work on Windows as only latin1 and
-#' MBCS locales are supported on this OS.
-#'
-#'
-#' @section Life cycle:
-#'
-#' These functions are experimental. They might be removed in the
-#' future because they don't bring anything new over the base API.
-#'
-#' @return The previous locale (invisibly).
-#' @keywords internal
-#' @export
-mut_utf8_locale <- function() {
-  if (.Platform$OS.type == "windows") {
-    warn("UTF-8 is not supported on Windows")
-  } else {
-    inform("Locale codeset is now UTF-8")
-    mut_ctype("en_US.UTF-8")
-  }
-}
-#' @rdname mut_utf8_locale
-#' @export
-mut_latin1_locale <- function() {
-  if (.Platform$OS.type == "windows") {
-    locale <- "English_United States.1252"
-  } else {
-    locale <- "en_US.ISO8859-1"
-  }
-  inform("Locale codeset is now latin1")
-  mut_ctype(locale)
-}
-#' @rdname mut_utf8_locale
-#' @export
-mut_mbcs_locale <- function() {
-  if (.Platform$OS.type == "windows") {
-    locale <- "English_United States.932"
-  } else {
-    locale <- "ja_JP.SJIS"
-  }
-  inform("Locale codeset is now of non-UTF-8 MBCS type")
-  mut_ctype(locale)
-}
-mut_ctype <- function(x) {
-  if (is_null(x)) return(x)
-  # Workaround bug in Sys.setlocale()
-  old <- Sys.getlocale("LC_CTYPE")
-  Sys.setlocale("LC_CTYPE", locale = x)
-  invisible(old)
 }

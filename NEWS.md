@@ -114,6 +114,8 @@
 * `as_logical()`, `as_integer()`, etc have been soft-deprecated in
   favour of `vctrs::vec_cast()`.
 
+* Locale setters such as `mut_utf8_locale()` etc were archived.
+
 * All functions that were soft-deprecated, deprecated, or defunct in
   previous releases have been bumped to the next lifecycle stage.
 
