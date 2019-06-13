@@ -258,7 +258,7 @@ as_env_ <- function(x, parent = NULL) {
 #' @section Life cycle:
 #'
 #' The `sentinel` argument of `env_tail()` has been deprecated in
-#' rlang 0.2.0 and renamed to `last`.
+#' rlang 0.2.0 and renamed to `last`. It is defunct as of rlang 0.4.0.
 #'
 #' @inheritParams get_env
 #' @param n The number of generations to go up.
@@ -269,8 +269,7 @@ as_env_ <- function(x, parent = NULL) {
 #'
 #'   `env_tail()` returns the environment which has `last` as parent
 #'   and `env_parents()` returns the list of environments up to `last`.
-#' @param sentinel This argument is soft-deprecated, please use `last`
-#'   instead.
+#' @param sentinel This argument is defunct, please use `last` instead.
 #' @return An environment for `env_parent()` and `env_tail()`, a list
 #'   of environments for `env_parents()`.
 #' @export
@@ -311,7 +310,7 @@ env_parent <- function(env = caller_env(), n = 1) {
 env_tail <- function(env = caller_env(), last = global_env(),
                      sentinel = NULL) {
   if (!is_null(sentinel)) {
-    warn_deprecated(paste_line(
+    stop_defunct(paste_line(
       "`sentinel` is deprecated as of version 0.3.0.",
       "Please use `last` instead."
     ))

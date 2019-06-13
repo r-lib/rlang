@@ -25,8 +25,7 @@ tail or the parents of an environment on the search path.
 \code{env_tail()} returns the environment which has \code{last} as parent
 and \code{env_parents()} returns the list of environments up to \code{last}.}
 
-\item{sentinel}{This argument is soft-deprecated, please use \code{last}
-instead.}
+\item{sentinel}{This argument is defunct, please use \code{last} instead.}
 }
 \value{
 An environment for \code{env_parent()} and \code{env_tail()}, a list
@@ -48,7 +47,7 @@ See the section on \emph{inheritance} in \code{\link[=env]{env()}}'s documentati
 
 
 The \code{sentinel} argument of \code{env_tail()} has been deprecated in
-rlang 0.2.0 and renamed to \code{last}.
+rlang 0.2.0 and renamed to \code{last}. It is defunct as of rlang 0.4.0.
 }
 
 \examples{

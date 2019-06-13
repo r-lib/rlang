@@ -95,12 +95,12 @@
 #'
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 #'
-#' **Soft-deprecated as of rlang 0.4.0**
+#' **Deprecated as of rlang 0.4.0**
 #'
 #' * [exiting()]: Handlers are now treated as exiting by default.
 #'
 #'
-#' **Soft-deprecated as of rlang 0.3.0**
+#' **Deprecated as of rlang 0.3.0**
 #'
 #' * [get_env()]: The `env` argument no longer has a default and must be supplied
 #' * [invoke()]: Use the simpler [exec()] instead.
@@ -148,7 +148,7 @@
 #' * Supplying a named `!!!` call.
 #'
 #'
-#' **Soft-deprecated as of rlang 0.2.0:**
+#' **Deprecated as of rlang 0.2.0:**
 #'
 #' * [lang_head()], [lang_tail()]
 #'
@@ -185,8 +185,6 @@
 #'
 #' **Deprecated as of rlang 0.3.0**
 #'
-#' * [env_tail()]: `sentinel` => `last`
-#'
 #' * [abort()], [warn()], [inform()]: `msg`, `type` => `.msg`, `.type`
 #' * [abort()], [warn()], [inform()], [cnd()], [error_cnd()],
 #'   [warning_cnd()], [message_cnd()]: `call` argument.
@@ -210,6 +208,7 @@
 #' * [new_overscope()] => [new_data_mask()]
 #' * [overscope_clean()]
 #' * [overscope_eval_next()] => [eval_tidy()]
+#' * [env_tail()]: `sentinel` => `last`
 #'
 #'
 #' **Defunct as of rlang 0.3.0:**
