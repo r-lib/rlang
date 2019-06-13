@@ -219,18 +219,47 @@ want to recommend restarts as a style of programming in R.</p></li>
 
     
     <p><img src='figures/lifecycle-soft-deprecated.svg' alt='Soft-deprecated lifecycle' /></p>
-<p><strong>Soft-deprecated as of rlang 0.4.0</strong></p><ul>
+<p><strong>Soft-deprecated in rlang 0.4.0</strong></p><ul>
 <li><p><code><a href='exiting.html'>exiting()</a></code>: Handlers are now treated as exiting by default.</p></li>
-</ul>
-    <p><strong>Soft-deprecated as of rlang 0.3.0</strong></p><ul>
-<li><p><code><a href='get_env.html'>get_env()</a></code>: The <code>env</code> argument no longer has a default and must be supplied</p></li>
 <li><p><code><a href='invoke.html'>invoke()</a></code>: Use the simpler <code><a href='exec.html'>exec()</a></code> instead.</p></li>
-<li><p><code><a href='set_attrs.html'>set_attrs()</a></code>, <code><a href='set_attrs.html'>mut_attrs()</a></code></p></li>
-<li><p><code><a href='is_frame.html'>is_frame()</a></code>, <code><a href='stack.html'>global_frame()</a></code>, <code><a href='stack.html'>current_frame()</a></code>,
-<code><a href='stack.html'>ctxt_frame()</a></code>, <code><a href='stack.html'>call_frame()</a></code>, <code><a href='frame_position.html'>frame_position()</a></code>,
-<code><a href='caller_frame.html'>caller_frame()</a></code></p></li>
-<li><p><code><a href='stack.html'>ctxt_depth()</a></code>, <code><a href='stack.html'>call_depth()</a></code>, <code><a href='stack.html'>ctxt_stack()</a></code>, <code><a href='stack.html'>call_stack()</a></code>,
-<code><a href='stack_trim.html'>stack_trim()</a></code></p></li>
+</ul>
+    
+    <h2 class="hasAnchor" id="deprecated-functions-and-arguments"><a class="anchor" href="#deprecated-functions-and-arguments"></a>Deprecated functions and arguments</h2>
+
+    
+    <p><img src='figures/lifecycle-deprecated.svg' alt='Deprecated lifecycle' /></p>
+<p><strong>Bumped to deprecated in rlang 0.4.0</strong></p><ul>
+<li><p><code><a href='prepend.html'>modify()</a></code> and <code><a href='prepend.html'>prepend()</a></code>.</p></li>
+<li><p><code><a href='new-vector-along-retired.html'>new_logical_along()</a></code>, <code><a href='new-vector-along-retired.html'>new_integer_along()</a></code>,
+<code><a href='new-vector-along-retired.html'>new_double_along()</a></code>, <code><a href='new-vector-along-retired.html'>new_complex_along()</a></code>,
+<code><a href='new-vector-along-retired.html'>new_character_along()</a></code>, <code><a href='new-vector-along-retired.html'>new_raw_along()</a></code>, <code><a href='new-vector-along-retired.html'>new_list_along()</a></code>.</p></li>
+<li><p><code><a href='lang_modify.html'>lang_modify()</a></code> =&gt; <code><a href='call_modify.html'>call_modify()</a></code></p></li>
+<li><p><code><a href='lang_modify.html'>lang_standardise()</a></code> =&gt; <code><a href='call_standardise.html'>call_standardise()</a></code></p></li>
+<li><p><code><a href='lang_modify.html'>lang_fn()</a></code> =&gt; <code><a href='call_fn.html'>call_fn()</a></code></p></li>
+<li><p><code><a href='lang_modify.html'>lang_name()</a></code> =&gt; <code><a href='call_name.html'>call_name()</a></code></p></li>
+<li><p><code><a href='lang_modify.html'>lang_args()</a></code> =&gt; <code><a href='call_args.html'>call_args()</a></code></p></li>
+<li><p><code><a href='lang_modify.html'>lang_args_names()</a></code> =&gt; <code><a href='call_args.html'>call_args_names()</a></code></p></li>
+<li><p><code><a href='lang_head.html'>lang_head()</a></code>, <code><a href='lang_head.html'>lang_tail()</a></code></p></li>
+<li><p><code><a href='lang.html'>lang()</a></code> =&gt; <code><a href='call2.html'>call2()</a></code></p></li>
+<li><p><code><a href='lang.html'>new_language()</a></code> =&gt; <code><a href='new_call.html'>new_call()</a></code></p></li>
+<li><p><code><a href='is_lang.html'>is_lang()</a></code> =&gt; <code><a href='is_call.html'>is_call()</a></code></p></li>
+<li><p><code><a href='is_lang.html'>is_unary_lang()</a></code> =&gt; Use the <code>n</code> argument of <code><a href='is_call.html'>is_call()</a></code></p></li>
+<li><p><code><a href='is_lang.html'>is_binary_lang()</a></code> =&gt; Use the <code>n</code> argument of <code><a href='is_call.html'>is_call()</a></code></p></li>
+<li><p><code><a href='is_lang.html'>quo_is_lang()</a></code> =&gt; <code><a href='quosure.html'>quo_is_call()</a></code></p></li>
+<li><p><code><a href='call_modify.html'>call_modify()</a></code>: <code>.standardise</code> and <code>.env</code> arguments.</p></li>
+<li><p><code><a href='is_expr.html'>is_expr()</a></code> =&gt; <code><a href='is_expression.html'>is_expression()</a></code></p></li>
+<li><p><code><a href='parse_quosure.html'>parse_quosure()</a></code> =&gt; <code><a href='parse_expr.html'>parse_quo()</a></code></p></li>
+<li><p><code><a href='parse_quosure.html'>parse_quosures()</a></code> =&gt; <code><a href='parse_expr.html'>parse_quos()</a></code></p></li>
+<li><p>Assigning non-quosure objects to quosure lists.</p></li>
+<li><p><code><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character()</a></code> on quosures.</p></li>
+<li><p><code><a href='cnd_signal.html'>cnd_signal()</a></code>: <code>.cnd</code> =&gt; <code>cnd</code></p></li>
+<li><p><code><a href='cnd_signal.html'>cnd_signal()</a></code>: The <code>.mufflable</code> argument no longer has any effect</p></li>
+<li><p><code><a href='scoped_env.html'>scoped_names()</a></code> =&gt; <code><a href='https://www.rdocumentation.org/packages/base/topics/search'>base::search()</a></code></p></li>
+<li><p><code><a href='scoped_env.html'>is_scoped()</a></code> =&gt; <code><a href='search_envs.html'>is_attached()</a></code></p></li>
+<li><p><code><a href='scoped_env.html'>scoped_env()</a></code> =&gt; <code><a href='search_envs.html'>search_env()</a></code></p></li>
+<li><p><code><a href='scoped_env.html'>scoped_envs()</a></code> =&gt; <code><a href='search_envs.html'>search_envs()</a></code></p></li>
+<li><p><code><a href='env_bind_exprs.html'>env_bind_exprs()</a></code> =&gt; <code><a href='env_bind.html'>env_bind_lazy()</a></code></p></li>
+<li><p><code><a href='env_bind_exprs.html'>env_bind_fns()</a></code> =&gt; <code><a href='env_bind.html'>env_bind_active()</a></code></p></li>
 <li><p>Passing a function or formula to <code><a href='env_depth.html'>env_depth()</a></code>,
 <code><a href='get_env.html'>env_poke_parent()</a></code>, <code>env_parent&lt;-</code>, <code><a href='env_parent.html'>env_tail()</a></code>, <code><a href='get_env.html'>set_env()</a></code>,
 <code><a href='env_clone.html'>env_clone()</a></code>, <code><a href='env_inherits.html'>env_inherits()</a></code>, <code><a href='env_bind.html'>env_bind()</a></code>,
@@ -239,76 +268,39 @@ want to recommend restarts as a style of programming in R.</p></li>
 <code><a href='env_bind_exprs.html'>env_bind_fns()</a></code>. This internal genericity was causing confusion
 (see issue #427). You should now extract the environment
 separately before calling these functions.</p></li>
-<li><p><code><a href='env_bind_exprs.html'>env_bind_exprs()</a></code> =&gt; <code><a href='env_bind.html'>env_bind_lazy()</a></code></p></li>
-<li><p><code><a href='env_bind_exprs.html'>env_bind_fns()</a></code> =&gt; <code><a href='env_bind.html'>env_bind_active()</a></code></p></li>
-<li><p><code><a href='scoped_env.html'>scoped_names()</a></code> =&gt; <code><a href='https://www.rdocumentation.org/packages/base/topics/search'>base::search()</a></code></p></li>
-<li><p><code><a href='scoped_env.html'>is_scoped()</a></code> =&gt; <code><a href='search_envs.html'>is_attached()</a></code></p></li>
-<li><p><code><a href='scoped_env.html'>scoped_env()</a></code> =&gt; <code><a href='search_envs.html'>search_env()</a></code></p></li>
-<li><p><code><a href='scoped_env.html'>scoped_envs()</a></code> =&gt; <code><a href='search_envs.html'>search_envs()</a></code></p></li>
+<li><p><code><a href='get_env.html'>get_env()</a></code>: The <code>env</code> argument no longer has a default and must be supplied</p></li>
+<li><p><code><a href='is_frame.html'>is_frame()</a></code>, <code><a href='stack.html'>global_frame()</a></code>, <code><a href='stack.html'>current_frame()</a></code>,
+<code><a href='stack.html'>ctxt_frame()</a></code>, <code><a href='stack.html'>call_frame()</a></code>, <code><a href='frame_position.html'>frame_position()</a></code>,
+<code><a href='caller_frame.html'>caller_frame()</a></code></p></li>
+<li><p><code><a href='stack.html'>ctxt_depth()</a></code>, <code><a href='stack.html'>call_depth()</a></code>, <code><a href='stack.html'>ctxt_stack()</a></code>, <code><a href='stack.html'>call_stack()</a></code>,
+<code><a href='stack_trim.html'>stack_trim()</a></code></p></li>
+<li><p><code><a href='set_attrs.html'>set_attrs()</a></code>, <code><a href='set_attrs.html'>mut_attrs()</a></code></p></li>
 <li><p>The <code>width</code> and <code>printer</code> arguments of <code><a href='exprs_auto_name.html'>exprs_auto_name()</a></code> and
 <code><a href='exprs_auto_name.html'>quos_auto_name()</a></code> no longer have any effect. For the same
 reason, passing a width as <code>.named</code> argument of dots collectors
-like <code><a href='quotation.html'>quos()</a></code> is soft-deprecated.</p></li>
-<li><p><code><a href='call_modify.html'>call_modify()</a></code>: <code>.standardise</code> and <code>.env</code> arguments.</p></li>
-<li><p><code><a href='new-vector-along-retired.html'>new_logical_along()</a></code>, <code><a href='new-vector-along-retired.html'>new_integer_along()</a></code>,
-<code><a href='new-vector-along-retired.html'>new_double_along()</a></code>, <code><a href='new-vector-along-retired.html'>new_complex_along()</a></code>,
-<code><a href='new-vector-along-retired.html'>new_character_along()</a></code>, <code><a href='new-vector-along-retired.html'>new_raw_along()</a></code>, <code><a href='new-vector-along-retired.html'>new_list_along()</a></code>.</p></li>
-<li><p><code><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character()</a></code> on quosures.</p></li>
-<li><p>Assigning non-quosure objects to quosure lists.</p></li>
-<li><p>Supplying a named <code>!!!</code> call.</p></li>
-</ul>
-    <p><strong>Soft-deprecated as of rlang 0.2.0:</strong></p><ul>
-<li><p><code><a href='as_overscope.html'>overscope_clean()</a></code></p></li>
-<li><p><code><a href='overscope_eval_next.html'>overscope_eval_next()</a></code> =&gt; <code><a href='eval_tidy.html'>eval_tidy()</a></code></p></li>
-<li><p><code><a href='lang_head.html'>lang_head()</a></code>, <code><a href='lang_head.html'>lang_tail()</a></code></p></li>
-<li><p><code><a href='quo_expr.html'>quo_expr()</a></code> =&gt; <code><a href='quo_squash.html'>quo_squash()</a></code></p></li>
-<li><p><code><a href='parse_quosure.html'>parse_quosure()</a></code> =&gt; <code><a href='parse_expr.html'>parse_quo()</a></code></p></li>
-<li><p><code><a href='parse_quosure.html'>parse_quosures()</a></code> =&gt; <code><a href='parse_expr.html'>parse_quos()</a></code></p></li>
-<li><p><code><a href='as_overscope.html'>as_overscope()</a></code> =&gt; <code><a href='as_data_mask.html'>as_data_mask()</a></code></p></li>
-<li><p><code><a href='as_overscope.html'>new_overscope()</a></code> =&gt; <code><a href='as_data_mask.html'>new_data_mask()</a></code></p></li>
-<li><p><code><a href='lang.html'>lang()</a></code> =&gt; <code><a href='call2.html'>call2()</a></code></p></li>
-<li><p><code><a href='lang.html'>new_language()</a></code> =&gt; <code><a href='new_call.html'>new_call()</a></code></p></li>
-<li><p><code><a href='is_lang.html'>is_lang()</a></code> =&gt; <code><a href='is_call.html'>is_call()</a></code></p></li>
-<li><p><code><a href='is_lang.html'>is_unary_lang()</a></code> =&gt; Use the <code>n</code> argument of <code><a href='is_call.html'>is_call()</a></code></p></li>
-<li><p><code><a href='is_lang.html'>is_binary_lang()</a></code> =&gt; Use the <code>n</code> argument of <code><a href='is_call.html'>is_call()</a></code></p></li>
-<li><p><code><a href='is_lang.html'>quo_is_lang()</a></code> =&gt; <code><a href='quosure.html'>quo_is_call()</a></code></p></li>
-<li><p><code><a href='is_expr.html'>is_expr()</a></code> =&gt; <code><a href='is_expression.html'>is_expression()</a></code></p></li>
-<li><p><code><a href='lang_modify.html'>lang_modify()</a></code> =&gt; <code><a href='call_modify.html'>call_modify()</a></code></p></li>
-<li><p><code><a href='lang_modify.html'>lang_standardise()</a></code> =&gt; <code><a href='call_standardise.html'>call_standardise()</a></code></p></li>
-<li><p><code><a href='lang_modify.html'>lang_fn()</a></code> =&gt; <code><a href='call_fn.html'>call_fn()</a></code></p></li>
-<li><p><code><a href='lang_modify.html'>lang_name()</a></code> =&gt; <code><a href='call_name.html'>call_name()</a></code></p></li>
-<li><p><code><a href='lang_modify.html'>lang_args()</a></code> =&gt; <code><a href='call_args.html'>call_args()</a></code></p></li>
-<li><p><code><a href='lang_modify.html'>lang_args_names()</a></code> =&gt; <code><a href='call_args.html'>call_args_names()</a></code></p></li>
-</ul>
-    
-    <h2 class="hasAnchor" id="deprecated-functions-and-arguments"><a class="anchor" href="#deprecated-functions-and-arguments"></a>Deprecated functions and arguments</h2>
-
-    
-    <p><img src='figures/lifecycle-deprecated.svg' alt='Deprecated lifecycle' /></p>
-<p><strong>Deprecated as of rlang 0.4.0</strong></p><ul>
-<li><p><code><a href='prepend.html'>modify()</a></code> and <code><a href='prepend.html'>prepend()</a></code>.</p></li>
-<li><p><code><a href='cnd_signal.html'>cnd_signal()</a></code>: <code>.cnd</code> =&gt; <code>cnd</code></p></li>
-<li><p><code><a href='cnd_signal.html'>cnd_signal()</a></code>: The <code>.mufflable</code> argument no longer has any effect</p></li>
-</ul>
-    <p><strong>Deprecated as of rlang 0.3.0</strong></p><ul>
-<li><p><code><a href='as_data_mask.html'>as_data_mask()</a></code>: <code>parent</code> argument</p></li>
-<li><p><code><a href='as_data_mask.html'>new_data_mask()</a></code>: <code>parent</code> argument</p></li>
-<li><p><code><a href='env_parent.html'>env_tail()</a></code>: <code>sentinel</code> =&gt; <code>last</code></p></li>
-<li><p><code><a href='abort.html'>abort()</a></code>, <code><a href='abort.html'>warn()</a></code>, <code><a href='abort.html'>inform()</a></code>: <code>msg</code>, <code>type</code> =&gt; <code>.msg</code>, <code>.type</code></p></li>
-<li><p><code><a href='abort.html'>abort()</a></code>, <code><a href='abort.html'>warn()</a></code>, <code><a href='abort.html'>inform()</a></code>, <code><a href='cnd.html'>cnd()</a></code>, <code><a href='cnd.html'>error_cnd()</a></code>,
-<code><a href='cnd.html'>warning_cnd()</a></code>, <code><a href='cnd.html'>message_cnd()</a></code>: <code>call</code> argument.</p></li>
-<li><p><code><a href='https://www.rdocumentation.org/packages/base/topics/length'>length()</a></code> and <code><a href='https://www.rdocumentation.org/packages/base/topics/names'>names()</a></code> on tidy eval <code>.data</code> pronouns.</p></li>
-<li><p><code><a href='type-predicates.html'>is_character()</a></code>, <code><a href='scalar-type-predicates.html'>is_string()</a></code>, and variants: The <code>encoding</code>
-argument.</p></li>
+like <code><a href='quotation.html'>quos()</a></code> is deprecated.</p></li>
 </ul>
     
     <h2 class="hasAnchor" id="defunct-functions-and-arguments"><a class="anchor" href="#defunct-functions-and-arguments"></a>Defunct functions and arguments</h2>
 
     
     <p><img src='figures/lifecycle-defunct.svg' alt='Defunct lifecycle' /></p>
-<p><strong>Defunct as of rlang 0.3.0:</strong></p><ul>
-<li><p><code><a href='cnd.html'>cnd()</a></code>, <code><a href='cnd.html'>error_cnd()</a></code>, <code><a href='cnd.html'>warning_cnd()</a></code> and <code><a href='cnd.html'>message_cnd()</a></code>:
-<code>.msg</code> =&gt; <code>message</code>.</p></li>
+<p><strong>Defunct as of rlang 0.4.0</strong></p><ul>
+<li><p><code><a href='quo_expr.html'>quo_expr()</a></code> =&gt; <code><a href='quo_squash.html'>quo_squash()</a></code></p></li>
+<li><p><code><a href='as_overscope.html'>as_overscope()</a></code> =&gt; <code><a href='as_data_mask.html'>as_data_mask()</a></code></p></li>
+<li><p><code><a href='as_overscope.html'>new_overscope()</a></code> =&gt; <code><a href='as_data_mask.html'>new_data_mask()</a></code></p></li>
+<li><p><code><a href='as_overscope.html'>overscope_clean()</a></code></p></li>
+<li><p><code><a href='overscope_eval_next.html'>overscope_eval_next()</a></code> =&gt; <code><a href='eval_tidy.html'>eval_tidy()</a></code></p></li>
+<li><p><code><a href='https://www.rdocumentation.org/packages/base/topics/length'>length()</a></code> and <code><a href='https://www.rdocumentation.org/packages/base/topics/names'>names()</a></code> on tidy eval <code>.data</code> pronouns.</p></li>
+<li><p>Supplying a named <code>!!!</code> call.</p></li>
+<li><p><code><a href='as_data_mask.html'>as_data_mask()</a></code>: <code>parent</code> argument</p></li>
+<li><p><code><a href='as_data_mask.html'>new_data_mask()</a></code>: <code>parent</code> argument</p></li>
+<li><p><code><a href='env_parent.html'>env_tail()</a></code>: <code>sentinel</code> =&gt; <code>last</code></p></li>
+<li><p><code><a href='abort.html'>abort()</a></code>, <code><a href='abort.html'>warn()</a></code>, <code><a href='abort.html'>inform()</a></code>: <code>msg</code>, <code>type</code> =&gt; <code>.msg</code>, <code>.type</code></p></li>
+<li><p><code><a href='abort.html'>abort()</a></code>, <code><a href='abort.html'>warn()</a></code>, <code><a href='abort.html'>inform()</a></code>, <code><a href='cnd.html'>cnd()</a></code>, <code><a href='cnd.html'>error_cnd()</a></code>,
+<code><a href='cnd.html'>warning_cnd()</a></code>, <code><a href='cnd.html'>message_cnd()</a></code>: <code>call</code> argument.</p></li>
+<li><p><code><a href='type-predicates.html'>is_character()</a></code>, <code><a href='scalar-type-predicates.html'>is_string()</a></code>, and variants: The <code>encoding</code>
+argument.</p></li>
 </ul>
     
     <h2 class="hasAnchor" id="archived"><a class="anchor" href="#archived"></a>Archived</h2>
@@ -317,13 +309,13 @@ argument.</p></li>
     <p><a href='https://www.tidyverse.org/lifecycle/#archived'><img src='figures/lifecycle-archived.svg' alt='Archived lifecycle'></a></p>
 <p>These functions were entirely removed from the package. You will
 find them in the commit history and previous releases.</p>
-<p><strong>Archived in rlang 0.4.0</strong></p><ul>
+<p><strong>Archived as of rlang 0.4.0</strong></p><ul>
 <li><p><code>UQE()</code></p></li>
 <li><p><code>as_dictionary()</code>, <code>is_dictionary()</code></p></li>
 <li><p><code>as_quosureish()</code>, <code>is_quosureish()</code></p></li>
 <li><p><code>eval_tidy_()</code></p></li>
 </ul>
-    <p><strong>Archived in rlang 0.3.0:</strong></p><ul>
+    <p><strong>Archived as of rlang 0.3.0:</strong></p><ul>
 <li><p><code>cnd_inform()</code>, <code>cnd_warn()</code> and <code>cnd_abort()</code></p></li>
 <li><p><code>new_cnd()</code> =&gt; <code><a href='cnd.html'>cnd()</a></code></p></li>
 <li><p><code>cnd_message()</code> =&gt; <code><a href='cnd.html'>message_cnd()</a></code></p></li>
@@ -333,6 +325,8 @@ find them in the commit history and previous releases.</p>
 <li><p><code>inplace()</code> =&gt; <code><a href='with_handlers.html'>calling()</a></code>. The <code>muffle</code> argument of <code>inplace()</code>
 has not been implemented in <code><a href='with_handlers.html'>calling()</a></code> and is now defunct.</p></li>
 <li><p><code><a href='cnd_signal.html'>cnd_signal()</a></code>: <code>.msg</code> and <code>.call</code>.</p></li>
+<li><p><code><a href='cnd.html'>cnd()</a></code>, <code><a href='cnd.html'>error_cnd()</a></code>, <code><a href='cnd.html'>warning_cnd()</a></code> and <code><a href='cnd.html'>message_cnd()</a></code>:
+<code>.msg</code> =&gt; <code>message</code>.</p></li>
 </ul>
     
 

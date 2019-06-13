@@ -169,7 +169,7 @@ for end users.</p>
     </tr>
     <tr>
       <th>parent</th>
-      <td><p>Soft-deprecated. This argument no longer has any effect.
+      <td><p>Deprecated. This argument no longer has any effect.
 The parent of the data mask is determined from either:</p><ul>
 <li><p>The <code>env</code> argument of <code><a href='eval_tidy.html'>eval_tidy()</a></code></p></li>
 <li><p>Quosure environments when applicable</p></li>
@@ -270,15 +270,14 @@ bottom and top environment of the data mask.</p>
     <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
 
     
-    <p><strong>rlang 0.3.0</strong></p>
-<p>Passing environments to <code>as_data_mask()</code> is soft-deprecated. Please
-build a data mask with <code>new_data_mask()</code>.</p>
-<p>The <code>parent</code> argument no longer has any effect. The parent of the
-data mask is determined from either:</p><ul>
+    <p>The <code>parent</code> argument no longer has any effect and is defunct as of
+rlang 0.4.0. The parent of the data mask is determined from either:</p><ul>
 <li><p>The <code>env</code> argument of <code><a href='eval_tidy.html'>eval_tidy()</a></code></p></li>
 <li><p>Quosure environments when applicable</p></li>
 </ul>
-    <p><strong>rlang 0.2.0</strong></p>
+    <p>Passing environments to <code>as_data_mask()</code> is deprecated as of rlang
+0.3.0. Please use <code>new_data_mask()</code> instead.</p>
+<p><strong>rlang 0.2.0</strong></p>
 <p>In early versions of rlang data masks were called overscopes. We
 think data mask is a more natural name in R. It makes reference to
 masking in the search path which occurs through the same mechanism
@@ -286,7 +285,7 @@ masking in the search path which occurs through the same mechanism
 environments). We say that objects from user data mask objects
 in the current environment.</p>
 <p>Following this change in terminology, <code><a href='as_overscope.html'>as_overscope()</a></code> and
-<code><a href='as_overscope.html'>new_overscope()</a></code> were soft-deprecated in rlang 0.2.0 in favour of
+<code><a href='as_overscope.html'>new_overscope()</a></code> were deprecated in rlang 0.2.0 in favour of
 <code>as_data_mask()</code> and <code>new_data_mask()</code>.</p>
     
 

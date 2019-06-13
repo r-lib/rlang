@@ -195,7 +195,9 @@ or complex expressions.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># invoke() has the same purpose as do.call():</span>
-<span class='fu'>invoke</span>(<span class='no'>paste</span>, <span class='no'>letters</span>)</div><div class='output co'>#&gt; [1] "a b c d e f g h i j k l m n o p q r s t u v w x y z"</div><div class='input'>
+<span class='fu'>invoke</span>(<span class='no'>paste</span>, <span class='no'>letters</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: `invoke()` is deprecated as of rlang 0.4.0.</span>
+#&gt; <span class='warning'>Please use `exec()` or `eval(expr())`instead.</span>
+#&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once per session.</span><span></span></div><div class='output co'>#&gt; [1] "a b c d e f g h i j k l m n o p q r s t u v w x y z"</div><div class='input'>
 <span class='co'># But it creates much cleaner calls:</span>
 <span class='fu'>invoke</span>(<span class='no'>call_inspect</span>, <span class='no'>mtcars</span>)</div><div class='output co'>#&gt; .fn(mpg = `1`, cyl = `2`, disp = `3`, hp = `4`, drat = `5`, wt = `6`, 
 #&gt;     qsec = `7`, vs = `8`, am = `9`, gear = `10`, carb = `11`)</div><div class='input'>
@@ -204,17 +206,17 @@ or complex expressions.</p>
 <span class='fu'>invoke</span>(<span class='no'>fn</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>mtcars</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; tryCatch(withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpPl8a8k/file4ca25eeb79b6"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpPl8a8k/file4ca267dfb0a2")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/Rtmp7tttTQ/file4cb822e5759"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/Rtmp7tttTQ/file4cb86917f219")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
 #&gt;     invisible()
 #&gt; }, error = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpPl8a8k/file4ca267dfb0a2", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/Rtmp7tttTQ/file4cb86917f219", 
 #&gt;         ".error"))
 #&gt; }, interrupt = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpPl8a8k/file4ca267dfb0a2", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/Rtmp7tttTQ/file4cb86917f219", 
 #&gt;         ".error"))
 #&gt; }, callr_message = function(e) {
 #&gt;     try({
@@ -264,17 +266,17 @@ or complex expressions.</p>
 #&gt; [[8]]
 #&gt; withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpPl8a8k/file4ca25eeb79b6"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpPl8a8k/file4ca267dfb0a2")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/Rtmp7tttTQ/file4cb822e5759"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/Rtmp7tttTQ/file4cb86917f219")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
 #&gt;     invisible()
 #&gt; }, error = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpPl8a8k/file4ca267dfb0a2", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/Rtmp7tttTQ/file4cb86917f219", 
 #&gt;         ".error"))
 #&gt; }, interrupt = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpPl8a8k/file4ca267dfb0a2", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/Rtmp7tttTQ/file4cb86917f219", 
 #&gt;         ".error"))
 #&gt; }, callr_message = function(e) {
 #&gt;     try({
@@ -297,11 +299,11 @@ or complex expressions.</p>
 #&gt; })
 #&gt; 
 #&gt; [[9]]
-#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpPl8a8k/file4ca25eeb79b6"), 
-#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpPl8a8k/file4ca267dfb0a2")
+#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/Rtmp7tttTQ/file4cb822e5759"), 
+#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/Rtmp7tttTQ/file4cb86917f219")
 #&gt; 
 #&gt; [[10]]
-#&gt; do.call(do.call, c(readRDS("/tmp/RtmpPl8a8k/file4ca25eeb79b6"), 
+#&gt; do.call(do.call, c(readRDS("/tmp/Rtmp7tttTQ/file4cb822e5759"), 
 #&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv)
 #&gt; 
 #&gt; [[11]]
@@ -318,7 +320,7 @@ or complex expressions.</p>
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; }, list(pkg = ".", examples = TRUE, document = FALSE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpPl8a8k/file4ca23c772f36"), 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/Rtmp7tttTQ/file4cb82d2c8293"), 
 #&gt;     preview = FALSE, new_process = FALSE, crayon_enabled = TRUE, 
 #&gt;     crayon_colors = 256, pkgdown_internet = TRUE), envir = &lt;environment&gt;)
 #&gt; 
@@ -329,7 +331,7 @@ or complex expressions.</p>
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; })(pkg = ".", examples = TRUE, document = FALSE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpPl8a8k/file4ca23c772f36"), 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/Rtmp7tttTQ/file4cb82d2c8293"), 
 #&gt;     preview = FALSE, new_process = FALSE, crayon_enabled = TRUE, 
 #&gt;     crayon_colors = 256, pkgdown_internet = TRUE)
 #&gt; 
@@ -490,17 +492,17 @@ or complex expressions.</p>
 #&gt;     2, 4, 6, 8, 2))</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/do.call'>do.call</a></span>(<span class='no'>fn</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>mtcars</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; tryCatch(withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpPl8a8k/file4ca25eeb79b6"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpPl8a8k/file4ca267dfb0a2")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/Rtmp7tttTQ/file4cb822e5759"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/Rtmp7tttTQ/file4cb86917f219")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
 #&gt;     invisible()
 #&gt; }, error = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpPl8a8k/file4ca267dfb0a2", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/Rtmp7tttTQ/file4cb86917f219", 
 #&gt;         ".error"))
 #&gt; }, interrupt = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpPl8a8k/file4ca267dfb0a2", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/Rtmp7tttTQ/file4cb86917f219", 
 #&gt;         ".error"))
 #&gt; }, callr_message = function(e) {
 #&gt;     try({
@@ -550,17 +552,17 @@ or complex expressions.</p>
 #&gt; [[8]]
 #&gt; withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpPl8a8k/file4ca25eeb79b6"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpPl8a8k/file4ca267dfb0a2")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/Rtmp7tttTQ/file4cb822e5759"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/Rtmp7tttTQ/file4cb86917f219")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
 #&gt;     invisible()
 #&gt; }, error = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpPl8a8k/file4ca267dfb0a2", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/Rtmp7tttTQ/file4cb86917f219", 
 #&gt;         ".error"))
 #&gt; }, interrupt = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpPl8a8k/file4ca267dfb0a2", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/Rtmp7tttTQ/file4cb86917f219", 
 #&gt;         ".error"))
 #&gt; }, callr_message = function(e) {
 #&gt;     try({
@@ -583,11 +585,11 @@ or complex expressions.</p>
 #&gt; })
 #&gt; 
 #&gt; [[9]]
-#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpPl8a8k/file4ca25eeb79b6"), 
-#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpPl8a8k/file4ca267dfb0a2")
+#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/Rtmp7tttTQ/file4cb822e5759"), 
+#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/Rtmp7tttTQ/file4cb86917f219")
 #&gt; 
 #&gt; [[10]]
-#&gt; do.call(do.call, c(readRDS("/tmp/RtmpPl8a8k/file4ca25eeb79b6"), 
+#&gt; do.call(do.call, c(readRDS("/tmp/Rtmp7tttTQ/file4cb822e5759"), 
 #&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv)
 #&gt; 
 #&gt; [[11]]
@@ -604,7 +606,7 @@ or complex expressions.</p>
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; }, list(pkg = ".", examples = TRUE, document = FALSE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpPl8a8k/file4ca23c772f36"), 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/Rtmp7tttTQ/file4cb82d2c8293"), 
 #&gt;     preview = FALSE, new_process = FALSE, crayon_enabled = TRUE, 
 #&gt;     crayon_colors = 256, pkgdown_internet = TRUE), envir = &lt;environment&gt;)
 #&gt; 
@@ -615,7 +617,7 @@ or complex expressions.</p>
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; })(pkg = ".", examples = TRUE, document = FALSE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpPl8a8k/file4ca23c772f36"), 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/Rtmp7tttTQ/file4cb82d2c8293"), 
 #&gt;     preview = FALSE, new_process = FALSE, crayon_enabled = TRUE, 
 #&gt;     crayon_colors = 256, pkgdown_internet = TRUE)
 #&gt; 
@@ -783,7 +785,7 @@ or complex expressions.</p>
 <span class='co'># the argument prefix:</span>
 <span class='fu'>invoke</span>(<span class='no'>call_inspect</span>, <span class='no'>mtcars</span>, <span class='kw'>.bury</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"inspect!"</span>, <span class='st'>"col"</span>))</div><div class='output co'>#&gt; `inspect!`(mpg = col1, cyl = col2, disp = col3, hp = col4, drat = col5, 
 #&gt;     wt = col6, qsec = col7, vs = col8, am = col9, gear = col10, 
-#&gt;     carb = col11)</div></pre>
+#&gt;     carb = col11)</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
