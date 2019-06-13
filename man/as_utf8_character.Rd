@@ -49,6 +49,6 @@ non-UTF-8 native encoding.
 # Let's create a string marked as UTF-8 (which is guaranteed by the
 # Unicode escaping in the string):
 utf8 <- "caf\\uE9"
-str_encoding(utf8)
+Encoding(utf8)
 as_bytes(utf8)
 }

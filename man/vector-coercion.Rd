@@ -25,9 +25,8 @@ as_list(x)
 \arguments{
 \item{x}{An object to coerce to a base type.}
 
-\item{encoding}{If non-null, passed to \code{\link[=set_chr_encoding]{set_chr_encoding()}} to add
-an encoding mark. This is only declarative, no encoding
-conversion is performed.}
+\item{encoding}{If non-null, set an encoding mark. This is only
+declarative, no encoding conversion is performed.}
 }
 \description{
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}

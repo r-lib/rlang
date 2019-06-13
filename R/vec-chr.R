@@ -11,11 +11,8 @@
 #'
 #' @param x A character vector or a vector or list of string-like
 #'   objects.
-#' @param encoding If non-null, passed to [set_chr_encoding()] to add
-#'   an encoding mark. This is only declarative, no encoding
-#'   conversion is performed.
-#' @seealso `set_chr_encoding()` for more information
-#'   about encodings in R.
+#' @param encoding If non-null, set an encoding mark. This is only
+#'   declarative, no encoding conversion is performed.
 #' @export
 #' @examples
 #' # As everywhere in R, you can specify a string with Unicode
@@ -23,7 +20,7 @@
 #' # be encoded in UTF-8, and the string will be marked as UTF-8
 #' # automatically:
 #' cafe <- string("caf\uE9")
-#' str_encoding(cafe)
+#' Encoding(cafe)
 #' as_bytes(cafe)
 #'
 #' # In addition, string() provides useful conversions to let
@@ -32,7 +29,7 @@
 #' # hexadecimal form. If it is a latin1 encoding, you can mark the
 #' # string explicitly:
 #' cafe_latin1 <- string(c(0x63, 0x61, 0x66, 0xE9), "latin1")
-#' str_encoding(cafe_latin1)
+#' Encoding(cafe_latin1)
 #' as_bytes(cafe_latin1)
 string <- function(x, encoding = NULL) {
   if (is_integerish(x)) {
@@ -43,7 +40,11 @@ string <- function(x, encoding = NULL) {
     abort("`x` must be a string or raw vector")
   }
 
-  set_chr_encoding(x, encoding)
+  if (!is_null(encoding)) {
+    Encoding(x) <- encoding
+  }
+
+  x
 }
 
 #' Coerce to a character vector and attempt encoding conversion
@@ -82,7 +83,7 @@ string <- function(x, encoding = NULL) {
 #' # Let's create a string marked as UTF-8 (which is guaranteed by the
 #' # Unicode escaping in the string):
 #' utf8 <- "caf\uE9"
-#' str_encoding(utf8)
+#' Encoding(utf8)
 #' as_bytes(utf8)
 as_utf8_character <- function(x) {
   .Call(rlang_unescape_character, as_character(x))
@@ -146,82 +147,4 @@ as_native_string <- function(x) {
 chr_unserialise_unicode <- function(chr) {
   stopifnot(is_character(chr))
   .Call(rlang_unescape_character, chr)
-}
-
-#' Set encoding of a string or character vector
-#'
-#' @description
-#'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
-#'
-#' R has specific support for UTF-8 and latin1 encoded strings. This
-#' mostly matters for internal conversions. Thanks to this support,
-#' you can reencode strings to UTF-8 or latin1 for internal
-#' processing, and return these strings without having to convert them
-#' back to the native encoding. However, it is important to make sure
-#' the encoding mark has not been lost in the process, otherwise the
-#' output will be treated as if encoded according to the current
-#' locale, which is not appropriate if it does not coincide with the
-#' actual encoding. In those situations, you can use these functions
-#' to ensure an encoding mark in your strings.
-#'
-#'
-#' @section Life cycle:
-#'
-#' These functions are experimental. They might be removed in the
-#' future because they don't bring anything new over the base API.
-#'
-#' @param x A string or character vector.
-#' @param encoding Either an encoding specially handled by R
-#'   (`"UTF-8"` or `"latin1"`), `"bytes"` to inhibit all encoding
-#'   conversions, or `"unknown"` if the string should be treated as
-#'   encoded in the current locale codeset.
-#' @seealso [as_utf8_string()] about encoding conversion.
-#' @export
-#' @keywords internal
-#' @examples
-#' # Encoding marks are always ignored on ASCII strings:
-#' str_encoding(set_str_encoding("cafe", "UTF-8"))
-#'
-#' # You can specify the encoding of strings containing non-ASCII
-#' # characters:
-#' cafe <- string(c(0x63, 0x61, 0x66, 0xC3, 0xE9))
-#' str_encoding(cafe)
-#' str_encoding(set_str_encoding(cafe, "UTF-8"))
-#'
-#'
-#' # It is important to consistently mark the encoding of strings
-#' # because R and other packages perform internal string conversions
-#' # all the time. Here is an example with the names attribute:
-#' latin1 <- string(c(0x63, 0x61, 0x66, 0xE9), "latin1")
-#' latin1 <- set_names(latin1)
-#'
-#' # The names attribute is encoded in latin1 as we would expect:
-#' str_encoding(names(latin1))
-#'
-#' # However the names are converted to UTF-8 by the c() function:
-#' str_encoding(names(c(latin1)))
-#' as_bytes(names(c(latin1)))
-set_chr_encoding <- function(x, encoding = c("unknown", "UTF-8", "latin1", "bytes")) {
-  if (!is_null(encoding)) {
-    Encoding(x) <- arg_match(encoding)
-  }
-  x
-}
-#' @rdname set_chr_encoding
-#' @export
-chr_encoding <- function(x) {
-  Encoding(x)
-}
-#' @rdname set_chr_encoding
-#' @export
-set_str_encoding <- function(x, encoding = c("unknown", "UTF-8", "latin1", "bytes")) {
-  stopifnot(is_string(x))
-  set_chr_encoding(x, encoding)
-}
-#' @rdname set_chr_encoding
-#' @export
-str_encoding <- function(x) {
-  stopifnot(is_string(x))
-  Encoding(x)
 }

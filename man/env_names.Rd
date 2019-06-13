@@ -36,16 +36,16 @@ to a symbol).
 
 
 There are deep encoding issues when you convert a string to symbol
-and vice versa. Symbols are \emph{always} in the native encoding (see
-\code{\link[=set_chr_encoding]{set_chr_encoding()}}). If that encoding (let's say latin1) cannot
-support some characters, these characters are serialised to
-ASCII. That's why you sometimes see strings looking like
-\code{<U+1234>}, especially if you're running Windows (as R doesn't
-support UTF-8 as native encoding on that platform).
+and vice versa. Symbols are \emph{always} in the native encoding. If
+that encoding (let's say latin1) cannot support some characters,
+these characters are serialised to ASCII. That's why you sometimes
+see strings looking like \code{<U+1234>}, especially if you're running
+Windows (as R doesn't support UTF-8 as native encoding on that
+platform).
 
 To alleviate some of the encoding pain, \code{env_names()} always
 returns a UTF-8 character vector (which is fine even on Windows)
-with unicode points unserialised.
+with ASCII unicode points translated back to UTF-8.
 }
 
 \examples{

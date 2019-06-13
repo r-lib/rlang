@@ -172,7 +172,10 @@ as_character <- function(x, encoding = NULL) {
     string = ,
     character = {
       attributes(x) <- NULL
-      set_chr_encoding(x, encoding)
+      if (!is_null(encoding)) {
+        Encoding(x) <- encoding
+      }
+      x
     }
   )
 }

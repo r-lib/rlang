@@ -77,13 +77,9 @@ cpl <- function(...) {
 }
 #' @rdname vector-construction
 #' @export
-#' @param .encoding If non-null, passed to [set_chr_encoding()] to add
-#'   an encoding mark. This is only declarative, no encoding
-#'   conversion is performed.
 #' @export
-chr <- function(..., .encoding = NULL) {
+chr <- function(...) {
   out <- .Call(rlang_squash, dots_values(...), "character", is_spliced_bare, 1L)
-  set_chr_encoding(out, .encoding)
 }
 #' @rdname vector-construction
 #' @export

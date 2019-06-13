@@ -72,7 +72,7 @@ is_character <- function(x, n = NULL, encoding = NULL) {
   }
   if (!is_null(encoding)) {
     stopifnot(typeof(encoding) == "character")
-    if (!all(chr_encoding(x) %in% encoding)) {
+    if (!all(Encoding(x) %in% encoding)) {
       return(FALSE)
     }
   }
