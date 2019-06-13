@@ -182,13 +182,8 @@ call <code><a href='call_standardise.html'>call_standardise()</a></code> manuall
 
     
     <ul>
-<li><p>Prior to rlang 0.3.0, <code>NULL</code> was the sentinel for removing
-arguments. As of 0.3.0, <code><a href='zap.html'>zap()</a></code> objects remove arguments and
-<code>NULL</code> simply adds an argument set to <code>NULL</code>. This breaking
-change allows the deletion sentinel to be distinct from valid
-argument values.</p></li>
-<li><p>The <code>.standardise</code> argument is soft-deprecated as of rlang 0.3.0.</p></li>
-<li><p>In rlang 0.2.0, <code><a href='lang_modify.html'>lang_modify()</a></code> was soft-deprecated and renamed to
+<li><p>The <code>.standardise</code> argument is deprecated as of rlang 0.3.0.</p></li>
+<li><p>In rlang 0.2.0, <code><a href='lang_modify.html'>lang_modify()</a></code> was deprecated and renamed to
 <code>call_modify()</code>. See lifecycle section in <code><a href='call2.html'>call2()</a></code> for more about
 this change.</p></li>
 </ul>
@@ -232,7 +227,7 @@ this change.</p></li>
 <span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='no'>bar</span>))
 <span class='fu'>call_modify</span>(<span class='no'>f</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>foo</span>))</div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^matrix(bar, foo)</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x5afc178</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7d58400</span><span></div><div class='input'>
 
 <span class='co'># By default, arguments with the same name are kept. This has</span>
 <span class='co'># subtle implications, for instance you can move an argument to</span>

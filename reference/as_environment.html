@@ -33,9 +33,9 @@
 <meta property="og:title" content="Coerce to an environment — as_environment" />
 
 <meta property="og:description" content="as_environment() coerces named vectors (including lists) to an
-environment. It first checks that x is a dictionary (see
-is_dictionaryish()). If supplied an unnamed string, it returns the
-corresponding package environment (see pkg_env())." />
+environment. The names must be unique. If supplied an unnamed
+string, it returns the corresponding package environment (see
+pkg_env())." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -136,9 +136,9 @@ corresponding package environment (see pkg_env())." />
     <div class="ref-description">
     
     <p><code>as_environment()</code> coerces named vectors (including lists) to an
-environment. It first checks that <code>x</code> is a dictionary (see
-<code><a href='is_named.html'>is_dictionaryish()</a></code>). If supplied an unnamed string, it returns the
-corresponding package environment (see <code><a href='search_envs.html'>pkg_env()</a></code>).</p>
+environment. The names must be unique. If supplied an unnamed
+string, it returns the corresponding package environment (see
+<code><a href='search_envs.html'>pkg_env()</a></code>).</p>
     
     </div>
 

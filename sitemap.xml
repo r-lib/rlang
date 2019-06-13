@@ -4,9 +4,6 @@
     <loc>https://rlang.r-lib.org/index.html</loc>
   </url>
   <url>
-    <loc>https://rlang.r-lib.org/reference/UQE.html</loc>
-  </url>
-  <url>
     <loc>https://rlang.r-lib.org/reference/abort.html</loc>
   </url>
   <url>
@@ -109,9 +106,6 @@
     <loc>https://rlang.r-lib.org/reference/cnd_type.html</loc>
   </url>
   <url>
-    <loc>https://rlang.r-lib.org/reference/dictionary.html</loc>
-  </url>
-  <url>
     <loc>https://rlang.r-lib.org/reference/done.html</loc>
   </url>
   <url>
@@ -194,9 +188,6 @@
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/eval_tidy.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/eval_tidy_.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/exec.html</loc>
@@ -311,9 +302,6 @@
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/is_pairlist.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/is_quosureish.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/is_reference.html</loc>

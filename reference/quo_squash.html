@@ -175,7 +175,7 @@ the user about it.</p></td>
     <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
 
     
-    <p>This function replaces <code><a href='quo_expr.html'>quo_expr()</a></code> which was soft-deprecated in
+    <p>This function replaces <code><a href='quo_expr.html'>quo_expr()</a></code> which was deprecated in
 rlang 0.2.0. <code><a href='quo_expr.html'>quo_expr()</a></code> was a misnomer because it implied that it
 was a mere expression acccessor for quosures whereas it was really
 a lossy operation that squashed all nested quosures.</p>
@@ -186,7 +186,7 @@ a lossy operation that squashed all nested quosures.</p>
 <span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'>wrapper</span>(!!<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>wrappee</span>)))
 <span class='no'>quo</span></div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^wrapper(^wrappee)</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x9037dc8</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7f21b58</span><span></div><div class='input'>
 <span class='co'># quo_squash() flattens all the quosures and returns a simple expression:</span>
 <span class='fu'>quo_squash</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; wrapper(wrappee)</div></span></pre>
   </div>

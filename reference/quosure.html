@@ -256,9 +256,6 @@ have the <a href='empty_env.html'>empty environment</a> as enclosure.</p>
     <ul>
 <li><p><code>is_quosure()</code> is stable.</p></li>
 <li><p><code>quo_get_expr()</code> and <code>quo_get_env()</code> are stable.</p></li>
-<li><p><code><a href='is_quosureish.html'>is_quosureish()</a></code> is deprecated as of rlang 0.2.0. This function
-assumed that quosures are formulas which is currently true but
-might not be in the future.</p></li>
 </ul>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -271,10 +268,10 @@ and <code><a href='as_quosure.html'>new_quosure()</a></code> for constructing qu
     <pre class="examples"><div class='input'><span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>my_quosure</span>)
 <span class='no'>quo</span></div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^my_quosure</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x2853fc0</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7928eb0</span><span></div><div class='input'>
 
 <span class='co'># Access and set the components of a quosure:</span>
-<span class='fu'>quo_get_expr</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; my_quosure</div><div class='input'><span class='fu'>quo_get_env</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; &lt;environment: 0x2853fc0&gt;</div><div class='input'>
+<span class='fu'>quo_get_expr</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; my_quosure</div><div class='input'><span class='fu'>quo_get_env</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7928eb0&gt;</div><div class='input'>
 <span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'>quo_set_expr</span>(<span class='no'>quo</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>baz</span>))
 <span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'>quo_set_env</span>(<span class='no'>quo</span>, <span class='fu'><a href='empty_env.html'>empty_env</a></span>())
 <span class='no'>quo</span></div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>

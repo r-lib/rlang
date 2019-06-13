@@ -172,15 +172,8 @@ letters %&gt;% set_names(toupper)</code></pre>
 <ul>
 <li><p><code><a href="../reference/prepend.html">modify()</a></code> and <code><a href="../reference/prepend.html">prepend()</a></code> (two experimental functions marked as in the questioning stage since rlang 0.3.0) are now deprecated. Vector functions are now out of scope for rlang. They might be revived in the vctrs or funs packages.</p></li>
 <li><p><code><a href="../reference/exiting.html">exiting()</a></code> is soft-deprecated because <code><a href="../reference/with_handlers.html">with_handlers()</a></code> treats handlers as exiting by default.</p></li>
+<li><p>All functions soft-deprecated in previous releases are now deprecated.</p></li>
 </ul>
-<div id="bumped-lifecycle-stages" class="section level3">
-<h3 class="hasAnchor">
-<a href="#bumped-lifecycle-stages" class="anchor"></a>Bumped lifecycle stages</h3>
-<ul>
-<li>
-<code><a href="../reference/cnd_signal.html">cnd_signal()</a></code>: The <code>.cnd</code> and <code>.mufflable</code> arguments are now deprecated.</li>
-</ul>
-</div>
 </div>
 </div>
     <div id="rlang-0-3-2" class="section level1">
@@ -501,7 +494,7 @@ rlang::expr(mean(!!var * 100))</a></code></pre>
 <a href="#defunct-functions-and-arguments" class="anchor"></a>Defunct functions and arguments</h3>
 <p>Defunct functions and arguments throw an error when used.</p>
 <ul>
-<li><p><code><a href="../reference/dictionary.html">as_dictionary()</a></code> is now defunct.</p></li>
+<li><p><code>as_dictionary()</code> is now defunct.</p></li>
 <li><p>The experimental function <code>rst_muffle()</code> is now defunct. Please use <code><a href="../reference/cnd_muffle.html">cnd_muffle()</a></code> instead. Unlike its predecessor, <code><a href="../reference/cnd_muffle.html">cnd_muffle()</a></code> is not generic. It is marked as a calling handler and thus can be passed directly to <code><a href="../reference/with_handlers.html">with_handlers()</a></code> to muffle specific conditions (such as specific subclasses of warnings).</p></li>
 <li><p><code>cnd_inform()</code>, <code>cnd_warn()</code> and <code>cnd_abort()</code> are retired and defunct. The old <code>cnd_message()</code>, <code>cnd_warning()</code>, <code>cnd_error()</code> and <code>new_cnd()</code> constructors deprecated in rlang 0.2.0 are now defunct.</p></li>
 <li><p>Modifying a condition with <code><a href="../reference/cnd_signal.html">cnd_signal()</a></code> is defunct. In addition, creating a condition with <code><a href="../reference/cnd_signal.html">cnd_signal()</a></code> is soft-deprecated, please use the new function [signal()] instead.</p></li>
@@ -667,10 +660,10 @@ quo(call(`!!!`(var)))</a></code></pre>
 <ul>
 <li><p><code>!!</code> now binds tightly in order to match intuitive parsing of tidy eval code, e.g. <code>!! x &gt; y</code> is now equivalent to <code>(!! x) &gt; y</code>. A corollary of this new syntax is that you now have to be explicit when you want to unquote the whole expression on the right of <code>!!</code>. For instance you have to explicitly write <code>!! (x &gt; y)</code> to unquote <code>x &gt; y</code> rather than just <code>x</code>.</p></li>
 <li><p><code><a href="../reference/quasiquotation.html">UQ()</a></code>, <code><a href="../reference/quasiquotation.html">UQS()</a></code> and <code>:=</code> now issue an error when called directly. The previous definitions caused surprising results when the operators were invoked in wrong places (i.e. not in quasiquoted arguments).</p></li>
-<li><p>The prefix form <code><a href="../reference/quasiquotation.html">`!!`()</a></code> is now an alias to <code>!!</code> rather than <code><a href="../reference/UQE.html">UQE()</a></code>. This makes it more in line with regular R syntax where operators are parsed as regular calls, e.g. <code>a + b</code> is parsed as <code>`+`(a, b)</code> and both forms are completely equivalent. Also the prefix form <code><a href="../reference/quasiquotation.html">`!!!`()</a></code> is now equivalent to <code>!!!</code>.</p></li>
-<li><p><code><a href="../reference/UQE.html">UQE()</a></code> is now deprecated in order to simplify the syntax of quasiquotation. Please use <code>!! get_expr(x)</code> instead.</p></li>
+<li><p>The prefix form <code><a href="../reference/quasiquotation.html">`!!`()</a></code> is now an alias to <code>!!</code> rather than <code>UQE()</code>. This makes it more in line with regular R syntax where operators are parsed as regular calls, e.g. <code>a + b</code> is parsed as <code>`+`(a, b)</code> and both forms are completely equivalent. Also the prefix form <code><a href="../reference/quasiquotation.html">`!!!`()</a></code> is now equivalent to <code>!!!</code>.</p></li>
+<li><p><code>UQE()</code> is now deprecated in order to simplify the syntax of quasiquotation. Please use <code>!! get_expr(x)</code> instead.</p></li>
 <li><p><code><a href="../reference/expr_interp.html">expr_interp()</a></code> now returns a formula instead of a quosure when supplied a formula.</p></li>
-<li><p><code><a href="../reference/is_quosureish.html">is_quosureish()</a></code> and <code><a href="../reference/is_quosureish.html">as_quosureish()</a></code> are deprecated. These functions assumed that quosures are formulas but that is only an implementation detail.</p></li>
+<li><p><code>is_quosureish()</code> and <code>as_quosureish()</code> are deprecated. These functions assumed that quosures are formulas but that is only an implementation detail.</p></li>
 <li><p><code>new_cnd()</code> is now <code><a href="../reference/cnd.html">cnd()</a></code> for consistency with other constructors. Also, <code>cnd_error()</code>, <code>cnd_warning()</code> and <code>cnd_message()</code> are now <code><a href="../reference/cnd.html">error_cnd()</a></code>, <code><a href="../reference/cnd.html">warning_cnd()</a></code> and <code><a href="../reference/cnd.html">message_cnd()</a></code> to follow our naming scheme according to which the type of output is a suffix rather than a prefix.</p></li>
 <li><p><code><a href="../reference/is_pairlist.html">is_node()</a></code> now returns <code>TRUE</code> for calls as well and <code><a href="../reference/is_pairlist.html">is_pairlist()</a></code> does not return <code>TRUE</code> for <code>NULL</code> objects. Use <code><a href="../reference/is_pairlist.html">is_node_list()</a></code> to determine whether an object either of type <code>pairlist</code> or <code>NULL</code>. Note that all these functions are still experimental.</p></li>
 <li><p><code><a href="../reference/set_names.html">set_names()</a></code> no longer automatically splices lists of character vectors as we are moving away from automatic splicing semantics.</p></li>

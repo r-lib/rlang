@@ -185,10 +185,7 @@ interrupt().
 
     
     <ul>
-<li><p>Modifying a condition object with <code>cnd_signal()</code> is defunct.
-Consequently the <code>.msg</code> and <code>.call</code> arguments are defunct as of
-rlang 0.3.0. In addition, <code>.cnd</code> has been renamed to <code>cnd</code> and is
-deprecated as of rlang 0.4.0</p></li>
+<li><p><code>.cnd</code> has been renamed to <code>cnd</code> and is deprecated as of rlang 0.4.0.</p></li>
 <li><p>The <code>.mufflable</code> argument is deprecated as of rlang 0.4.0 and no
 longer has any effect. Non-critical conditions are always
 signalled with a muffle restart.</p></li>
