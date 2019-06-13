@@ -370,8 +370,6 @@ test_that(".data pronoun walks the ancestry of environments", {
   expect_data_pronoun_error(.data[[".top_env"]], "Column `.top_env` not found in `.data`")
 
   expect_error(.data["a"])
-  expect_warning(names(.data), "deprecated")
-  expect_warning(length(.data), "deprecated")
 })
 
 test_that("can inspect the exported pronoun", {
@@ -436,6 +434,13 @@ test_that("mask inherits from `env` after evaluation", {
   eval_tidy(NULL, mask, flag)
   expect_true(env_inherits(mask, flag))
 })
+
+test_that("can't take the names() and length() of the `.data` pronoun", {
+  pronoun <- as_data_pronoun(mtcars)
+  expect_error(names(pronoun), "Can't take")
+  expect_error(length(pronoun), "Can't take")
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

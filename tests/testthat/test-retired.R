@@ -419,12 +419,6 @@ test_that("retired _along() ctors still work", {
   expect_identical(list_along(1:2), new_list_along(1:2))
 })
 
-test_that("names() and length() still work on data pronouns", {
-  pronoun <- as_data_pronoun(mtcars)
-  expect_true(all(names(pronoun) %in% names(mtcars)))
-  expect_length(pronoun, length(mtcars))
-})
-
 test_that("pattern match on string encoding", {
   expect_true(is_character(letters, encoding = "unknown"))
   expect_false(is_character(letters, encoding = "UTF-8"))

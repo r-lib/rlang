@@ -500,21 +500,11 @@ ctxt_pronoun_get <- function(x, nm) {
 }
 #' @export
 names.rlang_data_pronoun <- function(x) {
-  warn_deprecated("Taking the `names()` of the `.data` pronoun is deprecated")
-  env <- .subset2(x, 1)
-  if (is_data_mask(env)) {
-    env <- env_parent(env)
-  }
-  env_names(env)
+  abort("Can't take the `names()` of the `.data` pronoun")
 }
 #' @export
 length.rlang_data_pronoun <- function(x) {
-  warn_deprecated("Taking the `length()` of the `.data` pronoun is deprecated")
-  env <- .subset2(x, 1)
-  if (is_data_mask(env)) {
-    env <- env_parent(env)
-  }
-  env_length(env)
+  abort("Can't take the `length()` of the `.data` pronoun")
 }
 
 #' @export

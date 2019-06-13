@@ -186,8 +186,6 @@
 #'
 #' **Deprecated as of rlang 0.3.0**
 #'
-#' * `length()` and `names()` on tidy eval `.data` pronouns.
-#'
 #' * [is_character()], [is_string()], and variants: The `encoding`
 #'   argument.
 #'
@@ -198,13 +196,15 @@
 #'
 #' **Defunct as of rlang 0.4.0**
 #'
-#' * [quo_expr()] => [quo_squash()]
+#' * `quo_expr()` => [quo_squash()]
+#' * `as_overscope()` => [as_data_mask()]
+#' * `new_overscope()` => [new_data_mask()]
+#' * `overscope_clean()`
+#' * `overscope_eval_next()` => [eval_tidy()]
+#' * `length()` and `names()` on tidy eval `.data` pronouns.
+#'
 #' * [as_data_mask()]: `parent` argument
 #' * [new_data_mask()]: `parent` argument
-#' * [as_overscope()] => [as_data_mask()]
-#' * [new_overscope()] => [new_data_mask()]
-#' * [overscope_clean()]
-#' * [overscope_eval_next()] => [eval_tidy()]
 #' * [env_tail()]: `sentinel` => `last`
 #' * [abort()], [warn()], [inform()]: `msg`, `type` => `.msg`, `.type`
 #' * [abort()], [warn()], [inform()], [cnd()], [error_cnd()],
