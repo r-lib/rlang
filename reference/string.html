@@ -32,7 +32,8 @@
 
 <meta property="og:title" content="Create a string — string" />
 
-<meta property="og:description" content="These base-type constructors allow more control over the creation
+<meta property="og:description" content="
+These base-type constructors allow more control over the creation
 of strings in R. They take character vectors or string-like objects
 (integerish or raw vectors), and optionally set the encoding. The
 string version checks that the input contains a scalar string." />
@@ -135,7 +136,8 @@ string version checks that the input contains a scalar string." />
 
     <div class="ref-description">
     
-    <p>These base-type constructors allow more control over the creation
+    <p><a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a></p>
+<p>These base-type constructors allow more control over the creation
 of strings in R. They take character vectors or string-like objects
 (integerish or raw vectors), and optionally set the encoding. The
 string version checks that the input contains a scalar string.</p>
@@ -154,16 +156,10 @@ objects.</p></td>
     </tr>
     <tr>
       <th>encoding</th>
-      <td><p>If non-null, passed to <code><a href='set_chr_encoding.html'>set_chr_encoding()</a></code> to add
-an encoding mark. This is only declarative, no encoding
-conversion is performed.</p></td>
+      <td><p>If non-null, set an encoding mark. This is only
+declarative, no encoding conversion is performed.</p></td>
     </tr>
     </table>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='set_chr_encoding.html'>set_chr_encoding()</a></code> for more information
-about encodings in R.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -172,22 +168,20 @@ about encodings in R.</p></div>
 <span class='co'># be encoded in UTF-8, and the string will be marked as UTF-8</span>
 <span class='co'># automatically:</span>
 <span class='no'>cafe</span> <span class='kw'>&lt;-</span> <span class='fu'>string</span>(<span class='st'>"caf\uE9"</span>)
-<span class='fu'><a href='set_chr_encoding.html'>str_encoding</a></span>(<span class='no'>cafe</span>)</div><div class='output co'>#&gt; [1] "UTF-8"</div><div class='input'><span class='fu'><a href='as_bytes.html'>as_bytes</a></span>(<span class='no'>cafe</span>)</div><div class='output co'>#&gt; [1] 63 61 66 c3 a9</div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Encoding'>Encoding</a></span>(<span class='no'>cafe</span>)</div><div class='output co'>#&gt; [1] "UTF-8"</div><div class='input'><span class='fu'><a href='as_bytes.html'>as_bytes</a></span>(<span class='no'>cafe</span>)</div><div class='output co'>#&gt; [1] 63 61 66 c3 a9</div><div class='input'>
 <span class='co'># In addition, string() provides useful conversions to let</span>
 <span class='co'># programmers control how the string is represented in memory. For</span>
 <span class='co'># encodings other than UTF-8, you'll need to supply the bytes in</span>
 <span class='co'># hexadecimal form. If it is a latin1 encoding, you can mark the</span>
 <span class='co'># string explicitly:</span>
 <span class='no'>cafe_latin1</span> <span class='kw'>&lt;-</span> <span class='fu'>string</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0x63</span>, <span class='fl'>0x61</span>, <span class='fl'>0x66</span>, <span class='fl'>0xE9</span>), <span class='st'>"latin1"</span>)
-<span class='fu'><a href='set_chr_encoding.html'>str_encoding</a></span>(<span class='no'>cafe_latin1</span>)</div><div class='output co'>#&gt; [1] "latin1"</div><div class='input'><span class='fu'><a href='as_bytes.html'>as_bytes</a></span>(<span class='no'>cafe_latin1</span>)</div><div class='output co'>#&gt; [1] 63 61 66 e9</div></pre>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Encoding'>Encoding</a></span>(<span class='no'>cafe_latin1</span>)</div><div class='output co'>#&gt; [1] "latin1"</div><div class='input'><span class='fu'><a href='as_bytes.html'>as_bytes</a></span>(<span class='no'>cafe_latin1</span>)</div><div class='output co'>#&gt; [1] 63 61 66 e9</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#see-also">See also</a></li>
-      
+            
       <li><a href="#examples">Examples</a></li>
     </ul>
 

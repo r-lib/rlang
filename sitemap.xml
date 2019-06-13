@@ -340,9 +340,6 @@
     <loc>https://rlang.r-lib.org/reference/mut_node_car.html</loc>
   </url>
   <url>
-    <loc>https://rlang.r-lib.org/reference/mut_utf8_locale.html</loc>
-  </url>
-  <url>
     <loc>https://rlang.r-lib.org/reference/names2.html</loc>
   </url>
   <url>
@@ -455,9 +452,6 @@
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/set_attrs.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/set_chr_encoding.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/set_expr.html</loc>

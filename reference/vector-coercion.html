@@ -175,9 +175,8 @@ functions: all attributes except names are removed.</p>
     </tr>
     <tr>
       <th>encoding</th>
-      <td><p>If non-null, passed to <code><a href='set_chr_encoding.html'>set_chr_encoding()</a></code> to add
-an encoding mark. This is only declarative, no encoding
-conversion is performed.</p></td>
+      <td><p>If non-null, set an encoding mark. This is only
+declarative, no encoding conversion is performed.</p></td>
     </tr>
     </table>
     
@@ -203,9 +202,7 @@ conversion is performed.</p></td>
     <p><code>as_character()</code> and <code><a href='as_string.html'>as_string()</a></code> have an optional <code>encoding</code>
 argument to specify the encoding. R uses this information for
 internal handling of strings and character vectors. Note that this
-is only declarative, no encoding conversion is attempted. See
-<code><a href='as_utf8_character.html'>as_utf8_character()</a></code> and <code><a href='as_utf8_character.html'>as_native_character()</a></code> for coercing to a
-character vector and attempt encoding conversion.</p>
+is only declarative, no encoding conversion is attempted.</p>
 <p>Note that only <code><a href='as_string.html'>as_string()</a></code> can coerce symbols to a scalar
 character vector. This makes the code more explicit and adds an
 extra type check.</p>

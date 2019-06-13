@@ -172,15 +172,15 @@ to a symbol).</p>
 
     
     <p>There are deep encoding issues when you convert a string to symbol
-and vice versa. Symbols are <em>always</em> in the native encoding (see
-<code><a href='set_chr_encoding.html'>set_chr_encoding()</a></code>). If that encoding (let's say latin1) cannot
-support some characters, these characters are serialised to
-ASCII. That's why you sometimes see strings looking like
-<code>&lt;U+1234&gt;</code>, especially if you're running Windows (as R doesn't
-support UTF-8 as native encoding on that platform).</p>
+and vice versa. Symbols are <em>always</em> in the native encoding. If
+that encoding (let's say latin1) cannot support some characters,
+these characters are serialised to ASCII. That's why you sometimes
+see strings looking like <code>&lt;U+1234&gt;</code>, especially if you're running
+Windows (as R doesn't support UTF-8 as native encoding on that
+platform).</p>
 <p>To alleviate some of the encoding pain, <code>env_names()</code> always
 returns a UTF-8 character vector (which is fine even on Windows)
-with unicode points unserialised.</p>
+with ASCII unicode points translated back to UTF-8.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

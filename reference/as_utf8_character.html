@@ -32,7 +32,8 @@
 
 <meta property="og:title" content="Coerce to a character vector and attempt encoding conversion — as_utf8_character" />
 
-<meta property="og:description" content="Unlike specifying the encoding argument in as_string() and
+<meta property="og:description" content="
+Unlike specifying the encoding argument in as_string() and
 as_character(), which is only declarative, these functions
 actually attempt to convert the encoding of their input. There are
 two possible cases:
@@ -40,9 +41,9 @@ The string is tagged as UTF-8 or latin1, the only two encodings
 for which R has specific support. In this case, converting to the
 same encoding is a no-op, and converting to native always works
 as expected, as long as the native encoding, the one specified by
-the LC_CTYPE locale (see mut_utf8_locale()) has support for
-all characters occurring in the strings. Unrepresentable
-characters are serialised as unicode points: &quot;&amp;lt;U+xxxx&amp;gt;&quot;.
+the LC_CTYPE locale has support for all characters occurring in
+the strings. Unrepresentable characters are serialised as unicode
+points: &quot;&amp;lt;U+xxxx&amp;gt;&quot;.
 The string is not tagged. R assumes that it is encoded in the
 native encoding. Conversion to native is a no-op, and conversion
 to UTF-8 should work as long as the string is actually encoded in
@@ -153,7 +154,8 @@ non-UTF-8 native encoding." />
 
     <div class="ref-description">
     
-    <p>Unlike specifying the <code>encoding</code> argument in <code><a href='as_string.html'>as_string()</a></code> and
+    <p><a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a></p>
+<p>Unlike specifying the <code>encoding</code> argument in <code><a href='as_string.html'>as_string()</a></code> and
 <code><a href='vector-coercion.html'>as_character()</a></code>, which is only declarative, these functions
 actually attempt to convert the encoding of their input. There are
 two possible cases:</p><ul>
@@ -161,9 +163,9 @@ two possible cases:</p><ul>
 for which R has specific support. In this case, converting to the
 same encoding is a no-op, and converting to native always works
 as expected, as long as the native encoding, the one specified by
-the <code>LC_CTYPE</code> locale (see <code><a href='mut_utf8_locale.html'>mut_utf8_locale()</a></code>) has support for
-all characters occurring in the strings. Unrepresentable
-characters are serialised as unicode points: "&lt;U+xxxx&gt;".</p></li>
+the <code>LC_CTYPE</code> locale has support for all characters occurring in
+the strings. Unrepresentable characters are serialised as unicode
+points: "&lt;U+xxxx&gt;".</p></li>
 <li><p>The string is not tagged. R assumes that it is encoded in the
 native encoding. Conversion to native is a no-op, and conversion
 to UTF-8 should work as long as the string is actually encoded in
@@ -178,13 +180,7 @@ non-UTF-8 native encoding.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>as_utf8_character</span>(<span class='no'>x</span>)
-
-<span class='fu'>as_native_character</span>(<span class='no'>x</span>)
-
-<span class='fu'>as_utf8_string</span>(<span class='no'>x</span>)
-
-<span class='fu'>as_native_string</span>(<span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>as_utf8_character</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -200,15 +196,7 @@ non-UTF-8 native encoding.</p>
     <pre class="examples"><div class='input'><span class='co'># Let's create a string marked as UTF-8 (which is guaranteed by the</span>
 <span class='co'># Unicode escaping in the string):</span>
 <span class='no'>utf8</span> <span class='kw'>&lt;-</span> <span class='st'>"caf\uE9"</span>
-<span class='fu'><a href='set_chr_encoding.html'>str_encoding</a></span>(<span class='no'>utf8</span>)</div><div class='output co'>#&gt; [1] "UTF-8"</div><div class='input'><span class='fu'><a href='as_bytes.html'>as_bytes</a></span>(<span class='no'>utf8</span>)</div><div class='output co'>#&gt; [1] 63 61 66 c3 a9</div><div class='input'>
-# It can then be converted to a native encoding, that is, the
-# encoding specified in the current locale:
-</div><span class='co'># NOT RUN {</span>
-<span class='fu'><a href='mut_utf8_locale.html'>mut_latin1_locale</a></span>()
-<span class='no'>latin1</span> <span class='kw'>&lt;-</span> <span class='fu'>as_native_string</span>(<span class='no'>utf8</span>)
-<span class='fu'><a href='set_chr_encoding.html'>str_encoding</a></span>(<span class='no'>latin1</span>)
-<span class='fu'><a href='as_bytes.html'>as_bytes</a></span>(<span class='no'>latin1</span>)
-<span class='co'># }</span></pre>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Encoding'>Encoding</a></span>(<span class='no'>utf8</span>)</div><div class='output co'>#&gt; [1] "UTF-8"</div><div class='input'><span class='fu'><a href='as_bytes.html'>as_bytes</a></span>(<span class='no'>utf8</span>)</div><div class='output co'>#&gt; [1] 63 61 66 c3 a9</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
