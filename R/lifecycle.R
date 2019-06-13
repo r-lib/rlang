@@ -42,15 +42,11 @@
 #' These functions are not yet part of the rlang API. Expect breaking
 #' changes.
 #'
-#' * [with_env()], [locally()]
-#' * [env_poke()]
-#'
-#' * [env_bind_fns()], [env_bind_exprs()]
-#' * [pkg_env()], [pkg_env_name()]
-#' * [scoped_env()], [scoped_names()], [scoped_envs()], [is_scoped()]
-#' * [ns_env()], [ns_imports_env()], [ns_env_name()]
+#' * [with_env()], [locally()], [env_poke()]
+#' * [pkg_env()], [pkg_env_name()], [ns_env()], [ns_imports_env()], [ns_env_name()]
 #'
 #' * [is_pairlist()], [as_pairlist()], [is_node()], [is_node_list()]
+#'
 #' * [is_definition()], [new_definition()], [is_formulaish()],
 #'   [dots_definitions()]
 #'
@@ -83,7 +79,6 @@
 #' * [lang_type_of()], [switch_lang()], [coerce_lang()]
 #' * [flatten()], [squash()], and their atomic vector variants
 #' * [modify()] and [prepend()]
-#' * [as_logical()], [as_character()], etc.
 #' * [with_restarts()], [rst_list()], [rst_exists()], [rst_jump()],
 #'   [rst_maybe_jump()], [rst_abort()]. It is not clear yet whether we
 #'   want to recommend restarts as a style of programming in R.

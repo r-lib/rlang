@@ -43,12 +43,8 @@ sections that explain the reasons for their retirements.
 These functions are not yet part of the rlang API. Expect breaking
 changes.
 \itemize{
-\item \code{\link[=with_env]{with_env()}}, \code{\link[=locally]{locally()}}
-\item \code{\link[=env_poke]{env_poke()}}
-\item \code{\link[=env_bind_fns]{env_bind_fns()}}, \code{\link[=env_bind_exprs]{env_bind_exprs()}}
-\item \code{\link[=pkg_env]{pkg_env()}}, \code{\link[=pkg_env_name]{pkg_env_name()}}
-\item \code{\link[=scoped_env]{scoped_env()}}, \code{\link[=scoped_names]{scoped_names()}}, \code{\link[=scoped_envs]{scoped_envs()}}, \code{\link[=is_scoped]{is_scoped()}}
-\item \code{\link[=ns_env]{ns_env()}}, \code{\link[=ns_imports_env]{ns_imports_env()}}, \code{\link[=ns_env_name]{ns_env_name()}}
+\item \code{\link[=with_env]{with_env()}}, \code{\link[=locally]{locally()}}, \code{\link[=env_poke]{env_poke()}}
+\item \code{\link[=pkg_env]{pkg_env()}}, \code{\link[=pkg_env_name]{pkg_env_name()}}, \code{\link[=ns_env]{ns_env()}}, \code{\link[=ns_imports_env]{ns_imports_env()}}, \code{\link[=ns_env_name]{ns_env_name()}}
 \item \code{\link[=is_pairlist]{is_pairlist()}}, \code{\link[=as_pairlist]{as_pairlist()}}, \code{\link[=is_node]{is_node()}}, \code{\link[=is_node_list]{is_node_list()}}
 \item \code{\link[=is_definition]{is_definition()}}, \code{\link[=new_definition]{new_definition()}}, \code{\link[=is_formulaish]{is_formulaish()}},
 \code{\link[=dots_definitions]{dots_definitions()}}
@@ -81,7 +77,6 @@ These functions are likely to be moved to the vctrs package:
 \item \code{\link[=lang_type_of]{lang_type_of()}}, \code{\link[=switch_lang]{switch_lang()}}, \code{\link[=coerce_lang]{coerce_lang()}}
 \item \code{\link[=flatten]{flatten()}}, \code{\link[=squash]{squash()}}, and their atomic vector variants
 \item \code{\link[=modify]{modify()}} and \code{\link[=prepend]{prepend()}}
-\item \code{\link[=as_logical]{as_logical()}}, \code{\link[=as_character]{as_character()}}, etc.
 \item \code{\link[=with_restarts]{with_restarts()}}, \code{\link[=rst_list]{rst_list()}}, \code{\link[=rst_exists]{rst_exists()}}, \code{\link[=rst_jump]{rst_jump()}},
 \code{\link[=rst_maybe_jump]{rst_maybe_jump()}}, \code{\link[=rst_abort]{rst_abort()}}. It is not clear yet whether we
 want to recommend restarts as a style of programming in R.
