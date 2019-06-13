@@ -212,8 +212,6 @@
 #'
 #' **Defunct as of rlang 0.3.0:**
 #'
-#' * [UQE()]
-#'
 #' * [cnd()], [error_cnd()], [warning_cnd()] and [message_cnd()]:
 #'   `.msg` => `message`.
 #'
@@ -225,8 +223,10 @@
 #' These functions were entirely removed from the package. You will
 #' find them in the commit history and previous releases.
 #'
+#'
 #' **Archived in rlang 0.4.0**
 #'
+#' * `UQE()`
 #' * `as_dictionary()`, `is_dictionary()`
 #' * `as_quosureish()`, `is_quosureish()`
 #' * `eval_tidy_()`

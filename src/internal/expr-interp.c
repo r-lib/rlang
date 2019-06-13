@@ -230,24 +230,6 @@ struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
     return info;
   }
 
-
-  if (r_is_prefixed_call_any(x, uqe_names, UQE_N)) {
-    info.op = OP_EXPAND_UQE;
-    info.operand = r_node_cadr(x);
-
-    if (!r_is_namespaced_call(x, "rlang", NULL)) {
-      info.parent = r_node_cdr(r_node_cdar(x));
-      info.root = r_node_car(x);
-    }
-
-    return info;
-  }
-  if (r_is_call_any(x, uqe_names, UQE_N)) {
-    info.op = OP_EXPAND_UQE;
-    info.operand = r_node_cadr(x);
-    return info;
-  }
-
   if (r_is_call(x, "[[") && r_node_cadr(x) == dot_data_sym) {
     info.op = OP_EXPAND_DOT_DATA;
     info.root = x;
@@ -292,21 +274,9 @@ static sexp* bang_bang_teardown(sexp* value, struct expansion_info info) {
     return info.root;
   }
 }
-
 static sexp* bang_bang(struct expansion_info info, sexp* env) {
   sexp* value = r_eval(info.operand, env);
   return bang_bang_teardown(value, info);
-}
-static sexp* bang_bang_expression(struct expansion_info info, sexp* env) {
-  sexp* value = KEEP(r_eval(info.operand, env));
-
-  if (r_is_formulaish(value, -1, 0)) {
-    value = rlang_get_expression(value, NULL);
-  }
-  value = bang_bang_teardown(value, info);
-
-  FREE(1);
-  return value;
 }
 
 // From dots.c
@@ -352,9 +322,6 @@ sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
   if (info.op && info.op != OP_EXPAND_FIXUP && r_node_cdr(x) == r_null) {
     r_abort("`UQ()` and `UQS()` must be called with an argument");
   }
-  if (info.op == OP_EXPAND_UQE) {
-    r_stop_defunct("`UQE()` is defunct. Please use `!!get_expr(x)`");
-  }
 
   switch (info.op) {
   case OP_EXPAND_NONE:
@@ -371,8 +338,6 @@ sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
     return curly_curly(info, env);
   case OP_EXPAND_DOT_DATA:
     return bang_bang(info, env);
-  case OP_EXPAND_UQE:
-    return bang_bang_expression(info, env);
   case OP_EXPAND_FIXUP:
     if (info.operand == r_null) {
       return fixup_interp(x, env);

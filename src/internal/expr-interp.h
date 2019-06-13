@@ -5,10 +5,8 @@
 
 
 #define UQ_N 2
-#define UQE_N 1
 #define UQS_N 2
 
-static const char* uqe_names[UQE_N] = { "UQE" };
 static const char* uqs_names[UQS_N] = { "UQS", "!!!"};
 
 
@@ -27,11 +25,10 @@ static inline bool is_splice_call(sexp* node) {
 }
 
 
-#define EXPANSION_OP_MAX 8
+#define EXPANSION_OP_MAX 7
 enum expansion_op {
   OP_EXPAND_NONE,
   OP_EXPAND_UQ,
-  OP_EXPAND_UQE,
   OP_EXPAND_UQS,
   OP_EXPAND_UQN,
   OP_EXPAND_FIXUP,

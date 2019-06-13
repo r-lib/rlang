@@ -98,8 +98,6 @@ static sexp* def_unquote_name(sexp* expr, sexp* env) {
   case OP_EXPAND_CURLY:
     lhs = KEEP_N(rlang_enquo(info.operand, env), n_kept);
     break;
-  case OP_EXPAND_UQE:
-    r_abort("The LHS of `:=` can't be unquoted with `UQE()`");
   case OP_EXPAND_UQS:
     r_abort("The LHS of `:=` can't be spliced with `!!!`");
   case OP_EXPAND_UQN:
@@ -338,7 +336,6 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
     switch (dots_op) {
     case OP_EXPR_NONE:
     case OP_EXPR_UQ:
-    case OP_EXPR_UQE:
     case OP_EXPR_FIXUP:
     case OP_EXPR_DOT_DATA:
     case OP_EXPR_CURLY:
@@ -350,7 +347,6 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
       break;
     case OP_QUO_NONE:
     case OP_QUO_UQ:
-    case OP_QUO_UQE:
     case OP_QUO_FIXUP:
     case OP_QUO_DOT_DATA:
     case OP_QUO_CURLY: {
@@ -389,8 +385,6 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
       break;
     case OP_VALUE_UQ:
       r_abort("Can't use `!!` in a non-quoting function");
-    case OP_VALUE_UQE:
-      r_abort("Can't use `UQE()` in a non-quoting function");
     case OP_VALUE_UQS: {
       expr = KEEP(r_eval(info.operand, env));
       expr = dots_big_bang(capture_info, info.operand, env, false);

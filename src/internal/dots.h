@@ -12,7 +12,6 @@ enum dots_capture_type {
 enum dots_expansion_op {
   OP_EXPR_NONE,
   OP_EXPR_UQ,
-  OP_EXPR_UQE,
   OP_EXPR_UQS,
   OP_EXPR_UQN,
   OP_EXPR_FIXUP,
@@ -20,7 +19,6 @@ enum dots_expansion_op {
   OP_EXPR_CURLY,
   OP_QUO_NONE,
   OP_QUO_UQ,
-  OP_QUO_UQE,
   OP_QUO_UQS,
   OP_QUO_UQN,
   OP_QUO_FIXUP,
@@ -28,7 +26,6 @@ enum dots_expansion_op {
   OP_QUO_CURLY,
   OP_VALUE_NONE,
   OP_VALUE_UQ,
-  OP_VALUE_UQE,
   OP_VALUE_UQS,
   OP_VALUE_UQN,
   OP_VALUE_FIXUP,

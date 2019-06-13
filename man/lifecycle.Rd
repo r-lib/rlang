@@ -195,7 +195,6 @@ argument.
 
 \strong{Defunct as of rlang 0.3.0:}
 \itemize{
-\item \code{\link[=UQE]{UQE()}}
 \item \code{\link[=cnd]{cnd()}}, \code{\link[=error_cnd]{error_cnd()}}, \code{\link[=warning_cnd]{warning_cnd()}} and \code{\link[=message_cnd]{message_cnd()}}:
 \code{.msg} => \code{message}.
 }
@@ -211,6 +210,7 @@ find them in the commit history and previous releases.
 
 \strong{Archived in rlang 0.4.0}
 \itemize{
+\item \code{UQE()}
 \item \code{as_dictionary()}, \code{is_dictionary()}
 \item \code{as_quosureish()}, \code{is_quosureish()}
 \item \code{eval_tidy_()}

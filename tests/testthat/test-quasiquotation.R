@@ -557,11 +557,6 @@ test_that("unquoting with rlang namespace is deprecated", {
   expect_error_(dots_values(rlang::UQ(quote(.))), "`!!` in a non-quoting function")
 })
 
-test_that("UQE() is defunct", {
-  expect_defunct(expr(foo$UQE(NULL)), "defunct")
-  expect_defunct(UQE(), "defunct")
-})
-
 test_that("splicing language objects still works", {
   scoped_lifecycle_silence()
 
