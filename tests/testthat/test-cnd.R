@@ -529,23 +529,6 @@ test_that("with_handlers() registers calling handlers first (#718)", {
 
 # Lifecycle ----------------------------------------------------------
 
-test_that("deprecated arguments of abort() etc still work", {
-  foo <- function() {
-    abort(msg = "foo", type = "bar", call = TRUE)
-  }
-
-  cnds <- catch_cnds(foo())
-  msgs <- pluck_conditions_msgs(cnds)
-
-  warnings_msgs <- msgs$warnings
-  expect_length(warnings_msgs, 3L)
-  expect_match(warnings_msgs[[1]], "`msg` has been renamed to `message`")
-  expect_match(warnings_msgs[[2]], "`type` has been renamed to `.subclass`")
-  expect_match(warnings_msgs[[3]], "`call` is deprecated")
-
-  expect_match(msgs$error, "foo")
-})
-
 test_that("deprecated arguments of cnd_signal() still work", {
   scoped_lifecycle_silence()
 

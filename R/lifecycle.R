@@ -95,6 +95,7 @@
 #'
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 #'
+#'
 #' **Deprecated as of rlang 0.4.0**
 #'
 #' * [exiting()]: Handlers are now treated as exiting by default.
@@ -185,10 +186,6 @@
 #'
 #' **Deprecated as of rlang 0.3.0**
 #'
-#' * [abort()], [warn()], [inform()]: `msg`, `type` => `.msg`, `.type`
-#' * [abort()], [warn()], [inform()], [cnd()], [error_cnd()],
-#'   [warning_cnd()], [message_cnd()]: `call` argument.
-#'
 #' * `length()` and `names()` on tidy eval `.data` pronouns.
 #'
 #' * [is_character()], [is_string()], and variants: The `encoding`
@@ -209,6 +206,9 @@
 #' * [overscope_clean()]
 #' * [overscope_eval_next()] => [eval_tidy()]
 #' * [env_tail()]: `sentinel` => `last`
+#' * [abort()], [warn()], [inform()]: `msg`, `type` => `.msg`, `.type`
+#' * [abort()], [warn()], [inform()], [cnd()], [error_cnd()],
+#'   [warning_cnd()], [message_cnd()]: `call` argument.
 #'
 #'
 #' **Defunct as of rlang 0.3.0:**

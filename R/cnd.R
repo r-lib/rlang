@@ -247,10 +247,10 @@ validate_cnd_signal_args <- function(cnd, .cnd, .mufflable,
 #' @param .subclass Subclass of the condition. This allows your users
 #'   to selectively handle the conditions signalled by your functions.
 #' @param ... Additional data to be stored in the condition object.
-#' @param call Deprecated as of rlang 0.3.0. Storing the full
+#' @param call Defunct as of rlang 0.4.0. Storing the full
 #'   backtrace is now preferred to storing a simple call.
 #' @param msg,type These arguments were renamed to `message` and
-#'   `.subclass` and are deprecated as of rlang 0.3.0.
+#'   `.subclass` and are defunct as of rlang 0.4.0.
 #'
 #' @seealso [with_abort()] to convert all errors to rlang errors.
 #' @examples
@@ -409,17 +409,15 @@ signal <- function(message, .subclass, ...) {
   cnd <- cnd(.subclass, ..., message = message)
   cnd_signal(cnd)
 }
-validate_signal_args <- function(msg, type, call, env = parent.frame()) {
+validate_signal_args <- function(msg, type, call) {
   if (!missing(msg)) {
-    warn_deprecated("`msg` has been renamed to `message` and is deprecated as of rlang 0.3.0")
-    env$message <- msg
+    stop_defunct("`msg` has been renamed to `message` and is deprecated as of rlang 0.3.0")
   }
   if (!missing(type)) {
-    warn_deprecated("`type` has been renamed to `.subclass` and is deprecated as of rlang 0.3.0")
-    env$.subclass <- type
+    stop_defunct("`type` has been renamed to `.subclass` and is deprecated as of rlang 0.3.0")
   }
   if (!is_null(call)) {
-    warn_deprecated("`call` is deprecated as of rlang 0.3.0")
+    stop_defunct("`call` is deprecated as of rlang 0.3.0")
   }
 }
 #' @rdname abort
