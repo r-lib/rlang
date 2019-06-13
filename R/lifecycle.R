@@ -152,7 +152,6 @@
 #'
 #' * [lang_head()], [lang_tail()]
 #'
-#' * [quo_expr()] => [quo_squash()]
 #' * [parse_quosure()] => [parse_quo()]
 #' * [parse_quosures()] => [parse_quos()]
 #'
@@ -204,6 +203,7 @@
 #'
 #' **Defunct as of rlang 0.4.0**
 #'
+#' * [quo_expr()] => [quo_squash()]
 #' * [as_data_mask()]: `parent` argument
 #' * [new_data_mask()]: `parent` argument
 #' * [as_overscope()] => [as_data_mask()]

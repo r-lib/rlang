@@ -8,11 +8,6 @@ test_that("parse_quosure() forwards to parse_quo()", {
   expect_identical(parse_quosures("foo; bar", env), parse_quos("foo; bar", env))
 })
 
-test_that("quo_expr() forwards to quo_squash()", {
-  quo <- quo(list(!!quo(foo)))
-  expect_identical(quo_expr(quo), quo_squash(quo))
-})
-
 test_that("lang() forwards to call2() and is_lang() to is_call()", {
   lang <- lang("foo", !!! list(1, 2), .ns = "bar")
   call <- call2("foo", !!! list(1, 2), .ns = "bar")
