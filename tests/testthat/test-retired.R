@@ -420,13 +420,7 @@ test_that("retired _along() ctors still work", {
 })
 
 test_that("pattern match on string encoding", {
-  expect_true(is_character(letters, encoding = "unknown"))
-  expect_false(is_character(letters, encoding = "UTF-8"))
-
-  chr <- chr(c("foo", "fo\uE9"))
-  expect_false(is_character(chr, encoding = "UTF-8"))
-  expect_false(is_character(chr, encoding = "unknown"))
-  expect_true(is_character(chr, encoding = c("unknown", "UTF-8")))
+  expect_defunct(is_character(letters, encoding = "unknown"))
 })
 
 test_that("vector _along() ctors pick up names", {

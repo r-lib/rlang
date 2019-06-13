@@ -184,12 +184,6 @@
 #' * [cnd_signal()]: The `.mufflable` argument no longer has any effect
 #'
 #'
-#' **Deprecated as of rlang 0.3.0**
-#'
-#' * [is_character()], [is_string()], and variants: The `encoding`
-#'   argument.
-#'
-#'
 #' @section Defunct functions and arguments:
 #'
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("defunct")}
@@ -209,12 +203,8 @@
 #' * [abort()], [warn()], [inform()]: `msg`, `type` => `.msg`, `.type`
 #' * [abort()], [warn()], [inform()], [cnd()], [error_cnd()],
 #'   [warning_cnd()], [message_cnd()]: `call` argument.
-#'
-#'
-#' **Defunct as of rlang 0.3.0:**
-#'
-#' * [cnd()], [error_cnd()], [warning_cnd()] and [message_cnd()]:
-#'   `.msg` => `message`.
+#' * [is_character()], [is_string()], and variants: The `encoding`
+#'   argument.
 #'
 #'
 #' @section Archived:
@@ -246,6 +236,9 @@
 #'   has not been implemented in `calling()` and is now defunct.
 #'
 #' * [cnd_signal()]: `.msg` and `.call`.
+#' * [cnd()], [error_cnd()], [warning_cnd()] and [message_cnd()]:
+#'   `.msg` => `message`.
+#'
 #'
 #' @name lifecycle
 NULL

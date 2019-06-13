@@ -168,16 +168,6 @@ like \code{quos()} is soft-deprecated.
 \item \code{\link[=cnd_signal]{cnd_signal()}}: \code{.cnd} => \code{cnd}
 \item \code{\link[=cnd_signal]{cnd_signal()}}: The \code{.mufflable} argument no longer has any effect
 }
-
-\strong{Deprecated as of rlang 0.3.0}
-\itemize{
-\item \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, \code{\link[=inform]{inform()}}: \code{msg}, \code{type} => \code{.msg}, \code{.type}
-\item \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, \code{\link[=inform]{inform()}}, \code{\link[=cnd]{cnd()}}, \code{\link[=error_cnd]{error_cnd()}},
-\code{\link[=warning_cnd]{warning_cnd()}}, \code{\link[=message_cnd]{message_cnd()}}: \code{call} argument.
-\item \code{length()} and \code{names()} on tidy eval \code{.data} pronouns.
-\item \code{\link[=is_character]{is_character()}}, \code{\link[=is_string]{is_string()}}, and variants: The \code{encoding}
-argument.
-}
 }
 
 \section{Defunct functions and arguments}{
@@ -187,20 +177,20 @@ argument.
 
 \strong{Defunct as of rlang 0.4.0}
 \itemize{
-\item \code{\link[=quo_expr]{quo_expr()}} => \code{\link[=quo_squash]{quo_squash()}}
+\item \code{quo_expr()} => \code{\link[=quo_squash]{quo_squash()}}
+\item \code{as_overscope()} => \code{\link[=as_data_mask]{as_data_mask()}}
+\item \code{new_overscope()} => \code{\link[=new_data_mask]{new_data_mask()}}
+\item \code{overscope_clean()}
+\item \code{overscope_eval_next()} => \code{\link[=eval_tidy]{eval_tidy()}}
+\item \code{length()} and \code{names()} on tidy eval \code{.data} pronouns.
 \item \code{\link[=as_data_mask]{as_data_mask()}}: \code{parent} argument
 \item \code{\link[=new_data_mask]{new_data_mask()}}: \code{parent} argument
-\item \code{\link[=as_overscope]{as_overscope()}} => \code{\link[=as_data_mask]{as_data_mask()}}
-\item \code{\link[=new_overscope]{new_overscope()}} => \code{\link[=new_data_mask]{new_data_mask()}}
-\item \code{\link[=overscope_clean]{overscope_clean()}}
-\item \code{\link[=overscope_eval_next]{overscope_eval_next()}} => \code{\link[=eval_tidy]{eval_tidy()}}
 \item \code{\link[=env_tail]{env_tail()}}: \code{sentinel} => \code{last}
-}
-
-\strong{Defunct as of rlang 0.3.0:}
-\itemize{
-\item \code{\link[=cnd]{cnd()}}, \code{\link[=error_cnd]{error_cnd()}}, \code{\link[=warning_cnd]{warning_cnd()}} and \code{\link[=message_cnd]{message_cnd()}}:
-\code{.msg} => \code{message}.
+\item \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, \code{\link[=inform]{inform()}}: \code{msg}, \code{type} => \code{.msg}, \code{.type}
+\item \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, \code{\link[=inform]{inform()}}, \code{\link[=cnd]{cnd()}}, \code{\link[=error_cnd]{error_cnd()}},
+\code{\link[=warning_cnd]{warning_cnd()}}, \code{\link[=message_cnd]{message_cnd()}}: \code{call} argument.
+\item \code{\link[=is_character]{is_character()}}, \code{\link[=is_string]{is_string()}}, and variants: The \code{encoding}
+argument.
 }
 }
 
@@ -231,6 +221,8 @@ find them in the commit history and previous releases.
 \item \code{inplace()} => \code{\link[=calling]{calling()}}. The \code{muffle} argument of \code{inplace()}
 has not been implemented in \code{calling()} and is now defunct.
 \item \code{\link[=cnd_signal]{cnd_signal()}}: \code{.msg} and \code{.call}.
+\item \code{\link[=cnd]{cnd()}}, \code{\link[=error_cnd]{error_cnd()}}, \code{\link[=warning_cnd]{warning_cnd()}} and \code{\link[=message_cnd]{message_cnd()}}:
+\code{.msg} => \code{message}.
 }
 }
 

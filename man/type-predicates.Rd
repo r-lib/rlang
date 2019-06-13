@@ -44,8 +44,7 @@ non-finite values are \code{NA}, \code{Inf}, \code{-Inf} and \code{NaN}. Setting
 to something other than \code{NULL} can be expensive because the whole
 vector needs to be traversed and checked.}
 
-\item{encoding}{Expected encoding of a string or character
-vector. One of \code{UTF-8}, \code{latin1}, or \code{unknown}.}
+\item{encoding}{Defunct as of rlang 0.4.0.}
 }
 \description{
 These type predicates aim to make type testing in R more

@@ -42,8 +42,7 @@ is_bare_bytes(x, n = NULL)
 
 \item{n}{Expected length of a vector.}
 
-\item{encoding}{Expected encoding of a string or character
-vector. One of \code{UTF-8}, \code{latin1}, or \code{unknown}.}
+\item{encoding}{Defunct as of rlang 0.4.0.}
 }
 \description{
 These predicates check for a given type but only return \code{TRUE} for

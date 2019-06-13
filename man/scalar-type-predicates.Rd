@@ -40,8 +40,7 @@ is_bool(x)
 \arguments{
 \item{x}{object to be tested.}
 
-\item{encoding}{Expected encoding of a string or character
-vector. One of \code{UTF-8}, \code{latin1}, or \code{unknown}.}
+\item{encoding}{Defunct as of rlang 0.4.0.}
 
 \item{string}{A string to compare to \code{x}. If a character vector,
 returns \code{TRUE} if at least one element is equal to \code{x}.}
