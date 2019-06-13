@@ -460,19 +460,20 @@ get_env <- function(env, default = NULL) {
     env <- caller_env()
   }
 
-  out <- switch_type(env,
+  out <- switch(typeof(env),
     environment = env,
     definition = ,
-    formula = attr(env, ".Environment"),
+    language = if (is_formula(env)) attr(env, ".Environment"),
+    builtin = ,
+    special = ,
     primitive = base_env(),
-    closure = environment(env),
-    list = switch_class(env, frame = env$env)
+    closure = environment(env)
   )
 
   out <- out %||% default
 
   if (is_null(out)) {
-    type <- friendly_type(type_of(env))
+    type <- friendly_type_of(env)
     abort(paste0("Can't extract an environment from ", type))
   } else {
     out
@@ -528,7 +529,7 @@ set_env <- function(env, new_env = caller_env()) {
     },
     environment = new_env,
     abort(paste0(
-      "Can't set environment for ", friendly_type(type_of(env)), ""
+      "Can't set environment for ", friendly_type_of(env)
     ))
   )
 }

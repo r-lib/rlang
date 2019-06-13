@@ -344,55 +344,7 @@ is_scalar_integerish <- function(x, finite = NULL) {
   .Call(rlang_is_integerish, x, 1L, finite)
 }
 
-#' Base type of an object
-#'
-#' @description
-#'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
-#'
-#' This is equivalent to [base::typeof()] with a few differences that
-#' make dispatching easier:
-#' * The type of one-sided formulas is "quote".
-#' * The type of character vectors of length 1 is "string".
-#' * The type of special and builtin functions is "primitive".
-#'
-#'
-#' @section Life cycle:
-#'
-#' `type_of()` is an experimental function. Expect API changes.
-#'
-#' @param x An R object.
-#' @export
-#' @keywords internal
-#' @examples
-#' type_of(10L)
-#'
-#' # Quosures are treated as a new base type but not formulas:
-#' type_of(quo(10L))
-#' type_of(~10L)
-#'
-#' # Compare to base::typeof():
-#' typeof(quo(10L))
-#'
-#' # Strings are treated as a new base type:
-#' type_of(letters)
-#' type_of(letters[[1]])
-#'
-#' # This is a bit inconsistent with the core language tenet that data
-#' # types are vectors. However, treating strings as a different
-#' # scalar type is quite helpful for switching on function inputs
-#' # since so many arguments expect strings:
-#' switch_type("foo", character = abort("vector!"), string = "result")
-#'
-#' # Special and builtin primitives are both treated as primitives.
-#' # That's because it is often irrelevant which type of primitive an
-#' # input is:
-#' typeof(list)
-#' typeof(`$`)
-#' type_of(list)
-#' type_of(`$`)
-type_of <- function(x) {
+type_of_ <- function(x) {
   type <- typeof(x)
   if (is_formulaish(x)) {
     if (identical(node_car(x), colon_equals_sym)) {
@@ -490,12 +442,12 @@ type_of <- function(x) {
 #'   "default"
 #' )
 switch_type <- function(.x, ...) {
-  switch(type_of(.x), ...)
+  switch(type_of_(.x), ...)
 }
 #' @rdname switch_type
 #' @export
 coerce_type <- function(.x, .to, ...) {
-  switch(type_of(.x), ..., abort_coercion(.x, .to))
+  switch(type_of_(.x), ..., abort_coercion(.x, .to))
 }
 #' @rdname switch_type
 #' @export
@@ -712,7 +664,7 @@ switch_lang <- function(.x, ...) {
 #' @rdname switch_lang
 #' @export
 coerce_lang <- function(.x, .to, ...) {
-  msg <- paste0("Can't convert ", type_of(.x), " to ", .to, "")
+  msg <- paste0("Can't convert ", friendly_type_of(.x), " to ", .to, "")
   switch(lang_type_of(.x), ..., abort(msg))
 }
 #' @rdname switch_lang

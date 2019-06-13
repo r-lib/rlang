@@ -92,7 +92,7 @@ current_fn <- function() {
 #' fn()
 return_from <- function(frame, value = NULL) {
   if (is_integerish(frame)) {
-    frame <- ctxt_frame(frame)
+    frame <- ctxt_frame(frame)$env
   }
 
   exit_env <- get_env(frame)
@@ -112,7 +112,7 @@ return_to <- function(frame, value = NULL) {
       prev_pos <- distance - 1
     }
 
-    prev_frame <- ctxt_frame(prev_pos)
+    prev_frame <- ctxt_frame(prev_pos)$env
   })
   return_from(prev_frame, value)
 }

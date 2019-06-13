@@ -72,7 +72,7 @@ These functions are likely to be moved to the vctrs package:
 \strong{In the questioning stage as of rlang 0.3.0}
 \itemize{
 \item \code{\link[=child_env]{child_env()}}
-\item \code{\link[=type_of]{type_of()}}, \code{\link[=switch_type]{switch_type()}}, \code{\link[=coerce_type]{coerce_type()}}
+\item \code{\link[=switch_type]{switch_type()}}, \code{\link[=coerce_type]{coerce_type()}}
 \item \code{\link[=switch_class]{switch_class()}}, \code{\link[=coerce_class]{coerce_class()}}
 \item \code{\link[=lang_type_of]{lang_type_of()}}, \code{\link[=switch_lang]{switch_lang()}}, \code{\link[=coerce_lang]{coerce_lang()}}
 \item \code{\link[=flatten]{flatten()}}, \code{\link[=squash]{squash()}}, and their atomic vector variants
@@ -101,6 +101,7 @@ want to recommend restarts as a style of programming in R.
 \item \code{\link[=exiting]{exiting()}}: Handlers are now treated as exiting by default.
 \item \code{\link[=invoke]{invoke()}}: Use the simpler \code{\link[=exec]{exec()}} instead.
 \item \code{\link[=as_logical]{as_logical()}}, \code{\link[=as_integer]{as_integer()}}, etc. => \code{vctrs::vec_cast()}.
+\item \code{\link[=type_of]{type_of()}}
 }
 }
 
