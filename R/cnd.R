@@ -123,14 +123,14 @@ cnd_type <- function(cnd) {
 #'
 #' @section Lifecycle:
 #'
-#' * `.cnd` has been renamed to `cnd` and is deprecated as of rlang 0.4.0.
+#' * `.cnd` has been renamed to `cnd` and is deprecated as of rlang 0.3.0.
 #'
-#' * The `.mufflable` argument is deprecated as of rlang 0.4.0 and no
+#' * The `.mufflable` argument is deprecated as of rlang 0.3.0 and no
 #'   longer has any effect. Non-critical conditions are always
 #'   signalled with a muffle restart.
 #'
 #' * Creating a condition object with [cnd_signal()] is deprecated as
-#'   of rlang 0.4.0. Please use [signal()] instead.
+#'   of rlang 0.3.0. Please use [signal()] instead.
 #'
 #' @param cnd A condition object (see [cnd()]).
 #' @param .cnd,.mufflable These arguments are deprecated.

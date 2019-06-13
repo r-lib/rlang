@@ -33,12 +33,12 @@ Use \code{\link[=cnd_type]{cnd_type()}} to determine the type of a condition.
 \section{Lifecycle}{
 
 \itemize{
-\item \code{.cnd} has been renamed to \code{cnd} and is deprecated as of rlang 0.4.0.
-\item The \code{.mufflable} argument is deprecated as of rlang 0.4.0 and no
+\item \code{.cnd} has been renamed to \code{cnd} and is deprecated as of rlang 0.3.0.
+\item The \code{.mufflable} argument is deprecated as of rlang 0.3.0 and no
 longer has any effect. Non-critical conditions are always
 signalled with a muffle restart.
 \item Creating a condition object with \code{\link[=cnd_signal]{cnd_signal()}} is deprecated as
-of rlang 0.4.0. Please use \code{\link[=signal]{signal()}} instead.
+of rlang 0.3.0. Please use \code{\link[=signal]{signal()}} instead.
 }
 }
 
