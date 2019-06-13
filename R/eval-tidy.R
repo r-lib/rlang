@@ -301,16 +301,14 @@ print.rlang_fake_data_pronoun <- function(...) cat_line("<pronoun>")
 #'
 #' @section Life cycle:
 #'
-#' **rlang 0.3.0**
-#'
-#' Passing environments to `as_data_mask()` is soft-deprecated. Please
-#' build a data mask with `new_data_mask()`.
-#'
-#' The `parent` argument no longer has any effect. The parent of the
-#' data mask is determined from either:
+#' The `parent` argument no longer has any effect and is defunct as of
+#' rlang 0.4.0. The parent of the data mask is determined from either:
 #'
 #'   * The `env` argument of `eval_tidy()`
 #'   * Quosure environments when applicable
+#'
+#' Passing environments to `as_data_mask()` is deprecated as of rlang
+#' 0.3.0. Please use `new_data_mask()` instead.
 #'
 #' **rlang 0.2.0**
 #'
@@ -322,11 +320,11 @@ print.rlang_fake_data_pronoun <- function(...) cat_line("<pronoun>")
 #' in the current environment.
 #'
 #' Following this change in terminology, `as_overscope()` and
-#' `new_overscope()` were soft-deprecated in rlang 0.2.0 in favour of
+#' `new_overscope()` were deprecated in rlang 0.2.0 in favour of
 #' `as_data_mask()` and `new_data_mask()`.
 #'
 #' @param data A data frame or named vector of masking data.
-#' @param parent Soft-deprecated. This argument no longer has any effect.
+#' @param parent Deprecated. This argument no longer has any effect.
 #'   The parent of the data mask is determined from either:
 #'   * The `env` argument of `eval_tidy()`
 #'   * Quosure environments when applicable
@@ -399,7 +397,7 @@ print.rlang_fake_data_pronoun <- function(...) cat_line("<pronoun>")
 #' eval_tidy(quote(c(.data$a, .data$b, .data$c)), data = mask)
 as_data_mask <- function(data, parent = NULL) {
   if (!is_null(parent)) {
-    warn_deprecated(paste_line(
+    stop_defunct(paste_line(
       "The `parent` argument of `as_data_mask()` is deprecated.",
       "The parent of the data mask is determined from either:",
       "",
@@ -433,7 +431,7 @@ as_data_pronoun <- function(data) {
 #' @export
 new_data_mask <- function(bottom, top = bottom, parent = NULL) {
   if (!is_null(parent)) {
-    warn_deprecated(paste_line(
+    stop_defunct(paste_line(
       "The `parent` argument of `new_data_mask()` is deprecated.",
       "The parent of the data mask is determined from either:",
       "",

@@ -38,7 +38,7 @@ assumption about the parent of \code{top}.}
 \item{overscope}{A data mask.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("defunct")}
 
 These functions have been deprecated in rlang 0.2.0. Please use
 \code{\link[=as_data_mask]{as_data_mask()}} and \code{\link[=new_data_mask]{new_data_mask()}} instead. We no longer

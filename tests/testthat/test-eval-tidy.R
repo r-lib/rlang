@@ -439,12 +439,9 @@ test_that("mask inherits from `env` after evaluation", {
 
 # Lifecycle ----------------------------------------------------------
 
-test_that("as_data_mask() and new_data_mask() warn once when passed a parent", {
-  expect_warning(as_data_mask(mtcars, env()), "deprecated")
-  expect_no_warning(as_data_mask(mtcars, env()))
-
-  expect_warning(new_data_mask(NULL, NULL, parent = env()), "deprecated")
-  expect_no_warning(new_data_mask(NULL, NULL, parent = env()))
+test_that("as_data_mask() and new_data_mask() are deprecated", {
+  expect_defunct(as_data_mask(mtcars, env()))
+  expect_defunct(new_data_mask(NULL, NULL, parent = env()))
 })
 
 test_that("supplying environment as data is deprecated", {

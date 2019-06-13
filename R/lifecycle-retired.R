@@ -696,7 +696,7 @@ quo_expr <- function(quo, warn = FALSE) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("defunct")}
 #'
 #' These functions have been deprecated in rlang 0.2.0. Please use
 #' [as_data_mask()] and [new_data_mask()] instead. We no longer
@@ -709,35 +709,32 @@ quo_expr <- function(quo, warn = FALSE) {
 #' @keywords internal
 #' @export
 as_overscope <- function(quo, data = NULL) {
-  warn_deprecated(paste_line(
+  stop_defunct(paste_line(
     "`as_overscope()` is deprecated as of rlang 0.2.0.",
     "Please use `as_data_mask()` instead."
   ))
-  as_data_mask(data, quo_get_env(quo))
 }
 #' @rdname as_overscope
 #' @param enclosure The `parent` argument of [new_data_mask()].
 #' @export
 new_overscope <- function(bottom, top = NULL, enclosure = NULL) {
-  warn_deprecated(paste_line(
+  stop_defunct(paste_line(
     "`new_overscope()` is deprecated as of rlang 0.2.0.",
     "Please use `new_data_mask()` instead."
   ))
-  new_data_mask(bottom, top, enclosure)
 }
 #' @rdname as_overscope
 #' @param overscope A data mask.
 #' @export
 overscope_clean <- function(overscope) {
-  warn_deprecated("`overscope_clean()` is deprecated as of rlang 0.2.0.")
-  invisible(.Call(rlang_data_mask_clean, overscope))
+  stop_defunct("`overscope_clean()` is deprecated as of rlang 0.2.0.")
 }
 
 #' Evaluate next quosure in a data mask
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("defunct")}
 #'
 #' `overscope_eval_next()` is deprecated as of rlang 0.2.0. Please use
 #' `eval_tidy()` to which you can now supply an overscope.
@@ -753,11 +750,10 @@ overscope_clean <- function(overscope) {
 #' @keywords internal
 #' @export
 overscope_eval_next <- function(overscope, quo, env = base_env()) {
-  warn_deprecated(paste_line(
+  stop_defunct(paste_line(
     "`overscope_eval_next()` is deprecated as of rlang 0.2.0.",
     "Please use `eval_tidy()` with a data mask instead."
   ))
-  .Call(rlang_eval_tidy, quo, overscope, env)
 }
 
 

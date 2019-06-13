@@ -138,14 +138,10 @@ like \code{quos()} is soft-deprecated.
 
 \strong{Soft-deprecated as of rlang 0.2.0:}
 \itemize{
-\item \code{\link[=overscope_clean]{overscope_clean()}}
-\item \code{\link[=overscope_eval_next]{overscope_eval_next()}} => \code{\link[=eval_tidy]{eval_tidy()}}
 \item \code{\link[=lang_head]{lang_head()}}, \code{\link[=lang_tail]{lang_tail()}}
 \item \code{\link[=quo_expr]{quo_expr()}} => \code{\link[=quo_squash]{quo_squash()}}
 \item \code{\link[=parse_quosure]{parse_quosure()}} => \code{\link[=parse_quo]{parse_quo()}}
 \item \code{\link[=parse_quosures]{parse_quosures()}} => \code{\link[=parse_quos]{parse_quos()}}
-\item \code{\link[=as_overscope]{as_overscope()}} => \code{\link[=as_data_mask]{as_data_mask()}}
-\item \code{\link[=new_overscope]{new_overscope()}} => \code{\link[=new_data_mask]{new_data_mask()}}
 \item \code{\link[=lang]{lang()}} => \code{\link[=call2]{call2()}}
 \item \code{\link[=new_language]{new_language()}} => \code{\link[=new_call]{new_call()}}
 \item \code{\link[=is_lang]{is_lang()}} => \code{\link[=is_call]{is_call()}}
@@ -176,8 +172,6 @@ like \code{quos()} is soft-deprecated.
 
 \strong{Deprecated as of rlang 0.3.0}
 \itemize{
-\item \code{\link[=as_data_mask]{as_data_mask()}}: \code{parent} argument
-\item \code{\link[=new_data_mask]{new_data_mask()}}: \code{parent} argument
 \item \code{\link[=env_tail]{env_tail()}}: \code{sentinel} => \code{last}
 \item \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, \code{\link[=inform]{inform()}}: \code{msg}, \code{type} => \code{.msg}, \code{.type}
 \item \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, \code{\link[=inform]{inform()}}, \code{\link[=cnd]{cnd()}}, \code{\link[=error_cnd]{error_cnd()}},
@@ -192,6 +186,16 @@ argument.
 
 
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("defunct")}
+
+\strong{Defunct as of rlang 0.4.0}
+\itemize{
+\item \code{\link[=as_data_mask]{as_data_mask()}}: \code{parent} argument
+\item \code{\link[=new_data_mask]{new_data_mask()}}: \code{parent} argument
+\item \code{\link[=as_overscope]{as_overscope()}} => \code{\link[=as_data_mask]{as_data_mask()}}
+\item \code{\link[=new_overscope]{new_overscope()}} => \code{\link[=new_data_mask]{new_data_mask()}}
+\item \code{\link[=overscope_clean]{overscope_clean()}}
+\item \code{\link[=overscope_eval_next]{overscope_eval_next()}} => \code{\link[=eval_tidy]{eval_tidy()}}
+}
 
 \strong{Defunct as of rlang 0.3.0:}
 \itemize{

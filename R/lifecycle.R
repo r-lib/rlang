@@ -150,16 +150,11 @@
 #'
 #' **Soft-deprecated as of rlang 0.2.0:**
 #'
-#' * [overscope_clean()]
-#' * [overscope_eval_next()] => [eval_tidy()]
-#'
 #' * [lang_head()], [lang_tail()]
 #'
 #' * [quo_expr()] => [quo_squash()]
 #' * [parse_quosure()] => [parse_quo()]
 #' * [parse_quosures()] => [parse_quos()]
-#' * [as_overscope()] => [as_data_mask()]
-#' * [new_overscope()] => [new_data_mask()]
 #'
 #' * [lang()] => [call2()]
 #' * [new_language()] => [new_call()]
@@ -191,9 +186,6 @@
 #'
 #' **Deprecated as of rlang 0.3.0**
 #'
-#' * [as_data_mask()]: `parent` argument
-#' * [new_data_mask()]: `parent` argument
-#'
 #' * [env_tail()]: `sentinel` => `last`
 #'
 #' * [abort()], [warn()], [inform()]: `msg`, `type` => `.msg`, `.type`
@@ -209,6 +201,16 @@
 #' @section Defunct functions and arguments:
 #'
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("defunct")}
+#'
+#' **Defunct as of rlang 0.4.0**
+#'
+#' * [as_data_mask()]: `parent` argument
+#' * [new_data_mask()]: `parent` argument
+#' * [as_overscope()] => [as_data_mask()]
+#' * [new_overscope()] => [new_data_mask()]
+#' * [overscope_clean()]
+#' * [overscope_eval_next()] => [eval_tidy()]
+#'
 #'
 #' **Defunct as of rlang 0.3.0:**
 #'
