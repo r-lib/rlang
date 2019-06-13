@@ -171,9 +171,9 @@ new_environment <- function(data = list(), parent = empty_env()) {
 #' Coerce to an environment
 #'
 #' `as_environment()` coerces named vectors (including lists) to an
-#' environment. It first checks that `x` is a dictionary (see
-#' [is_dictionaryish()]). If supplied an unnamed string, it returns the
-#' corresponding package environment (see [pkg_env()]).
+#' environment. The names must be unique. If supplied an unnamed
+#' string, it returns the corresponding package environment (see
+#' [pkg_env()]).
 #'
 #' If `x` is an environment and `parent` is not `NULL`, the
 #' environment is duplicated before being set a new parent. The return

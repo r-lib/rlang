@@ -196,9 +196,6 @@ argument.
 \strong{Defunct as of rlang 0.3.0:}
 \itemize{
 \item \code{\link[=UQE]{UQE()}}
-\item \code{\link[=eval_tidy_]{eval_tidy_()}}
-\item \code{\link[=is_quosureish]{is_quosureish()}}, \code{\link[=as_quosureish]{as_quosureish()}}
-\item \code{as_dictionary()} => \code{\link[=as_data_pronoun]{as_data_pronoun()}}
 \item \code{\link[=cnd]{cnd()}}, \code{\link[=error_cnd]{error_cnd()}}, \code{\link[=warning_cnd]{warning_cnd()}} and \code{\link[=message_cnd]{message_cnd()}}:
 \code{.msg} => \code{message}.
 }
@@ -211,6 +208,13 @@ argument.
 
 These functions were entirely removed from the package. You will
 find them in the commit history and previous releases.
+
+\strong{Archived in rlang 0.4.0}
+\itemize{
+\item \code{as_dictionary()}, \code{is_dictionary()}
+\item \code{as_quosureish()}, \code{is_quosureish()}
+\item \code{eval_tidy_()}
+}
 
 \strong{Archived in rlang 0.3.0:}
 \itemize{

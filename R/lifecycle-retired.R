@@ -778,63 +778,6 @@ overscope_eval_next <- function(overscope, quo, env = base_env()) {
 }
 
 
-#' Create a dictionary
-#'
-#' @description
-#'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("defunct")}
-#'
-#' The dictionary class is defunct as of rlang 0.2.0. It was
-#' trying to be too general and did not prove useful. Please use
-#' [as_data_pronoun()] or your own pronoun class instead.
-#'
-#' @param x An object for which you want to find associated data.
-#' @param lookup_msg An error message when your data source is
-#'   accessed inappropriately (by position rather than name).
-#' @param read_only Whether users can replace elements of the
-#'   dictionary.
-#'
-#' @name dictionary
-#' @keywords internal
-#' @export
-as_dictionary <- function(x, lookup_msg = NULL, read_only = FALSE) {
-  stop_defunct(paste_line(
-    "`as_dictionary()` is defunct as of rlang 0.3.0.",
-    "Please use `as_data_pronoun()` instead."
-  ))
-}
-#' @rdname dictionary
-#' @export
-is_dictionary <- function(x) {
-  stop_defunct("`is_dictionary()` is defunct as of rlang 0.3.0.")
-}
-
-#' Test for or coerce to quosure-like objects
-#'
-#' @description
-#'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("defunct")}
-#'
-#' These functions are deprecated as of rlang 0.2.0 because they make
-#' the assumption that quosures are a subtype of formula, which we are
-#' now considering to be an implementation detail.
-#'
-#' @inheritParams is_formula
-#' @inheritParams as_quosure
-#'
-#' @keywords internal
-#' @export
-is_quosureish <- function(x, scoped = NULL) {
-  stop_defunct("`is_quosureish()` is defunct as of rlang 0.3.0")
-}
-#' @rdname is_quosureish
-#' @export
-as_quosureish <- function(x, env = caller_env()) {
-  stop_defunct("`as_quosureish()` is defunct as of rlang 0.3.0")
-}
-
-
-
 #  Expressions  ------------------------------------------------------
 
 #' Create a call

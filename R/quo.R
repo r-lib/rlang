@@ -60,11 +60,6 @@
 #'
 #' - `quo_get_expr()` and `quo_get_env()` are stable.
 #'
-#' - `is_quosureish()` is deprecated as of rlang 0.2.0. This function
-#'   assumed that quosures are formulas which is currently true but
-#'   might not be in the future.
-#'
-#'
 #' @name quosure
 #' @seealso [quo()] for creating quosures by quotation; [as_quosure()]
 #'   and [new_quosure()] for constructing quosures manually.

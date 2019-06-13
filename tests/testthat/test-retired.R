@@ -103,11 +103,6 @@ test_that("is_expr() forwards to is_expression()", {
   expect_false(is_expr(1:2))
 })
 
-test_that("is_quosureish() and as_quosureish() are defunct", {
-  expect_defunct(is_quosureish(~foo), "defunct as of")
-  expect_defunct(as_quosureish(~foo), "defunct as of")
-})
-
 test_that("node() still works", {
   expect_identical(node(1, NULL), new_node(1, NULL))
 })

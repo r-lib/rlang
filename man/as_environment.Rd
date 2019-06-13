@@ -16,9 +16,9 @@ environment (as opposed to data representing an environment, like
 }
 \description{
 \code{as_environment()} coerces named vectors (including lists) to an
-environment. It first checks that \code{x} is a dictionary (see
-\code{\link[=is_dictionaryish]{is_dictionaryish()}}). If supplied an unnamed string, it returns the
-corresponding package environment (see \code{\link[=pkg_env]{pkg_env()}}).
+environment. The names must be unique. If supplied an unnamed
+string, it returns the corresponding package environment (see
+\code{\link[=pkg_env]{pkg_env()}}).
 }
 \details{
 If \code{x} is an environment and \code{parent} is not \code{NULL}, the

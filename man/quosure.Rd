@@ -110,9 +110,6 @@ have the \link[=empty_env]{empty environment} as enclosure.
 \itemize{
 \item \code{is_quosure()} is stable.
 \item \code{quo_get_expr()} and \code{quo_get_env()} are stable.
-\item \code{is_quosureish()} is deprecated as of rlang 0.2.0. This function
-assumed that quosures are formulas which is currently true but
-might not be in the future.
 }
 }
 
