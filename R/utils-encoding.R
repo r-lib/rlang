@@ -1,52 +1,3 @@
-#' Create a string
-#'
-#' @description
-#'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
-#'
-#' These base-type constructors allow more control over the creation
-#' of strings in R. They take character vectors or string-like objects
-#' (integerish or raw vectors), and optionally set the encoding. The
-#' string version checks that the input contains a scalar string.
-#'
-#' @param x A character vector or a vector or list of string-like
-#'   objects.
-#' @param encoding If non-null, set an encoding mark. This is only
-#'   declarative, no encoding conversion is performed.
-#' @export
-#' @examples
-#' # As everywhere in R, you can specify a string with Unicode
-#' # escapes. The characters corresponding to Unicode codepoints will
-#' # be encoded in UTF-8, and the string will be marked as UTF-8
-#' # automatically:
-#' cafe <- string("caf\uE9")
-#' Encoding(cafe)
-#' as_bytes(cafe)
-#'
-#' # In addition, string() provides useful conversions to let
-#' # programmers control how the string is represented in memory. For
-#' # encodings other than UTF-8, you'll need to supply the bytes in
-#' # hexadecimal form. If it is a latin1 encoding, you can mark the
-#' # string explicitly:
-#' cafe_latin1 <- string(c(0x63, 0x61, 0x66, 0xE9), "latin1")
-#' Encoding(cafe_latin1)
-#' as_bytes(cafe_latin1)
-string <- function(x, encoding = NULL) {
-  if (is_integerish(x)) {
-    x <- rawToChar(as.raw(x))
-  } else if (is_raw(x)) {
-    x <- rawToChar(x)
-  } else if (!is_string(x)) {
-    abort("`x` must be a string or raw vector")
-  }
-
-  if (!is_null(encoding)) {
-    Encoding(x) <- encoding
-  }
-
-  x
-}
-
 #' Coerce to a character vector and attempt encoding conversion
 #'
 #' @description
@@ -126,4 +77,88 @@ as_utf8_character <- function(x) {
 chr_unserialise_unicode <- function(chr) {
   stopifnot(is_character(chr))
   .Call(rlang_unescape_character, chr)
+}
+
+#' Create a string
+#'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+#'
+#' These base-type constructors allow more control over the creation
+#' of strings in R. They take character vectors or string-like objects
+#' (integerish or raw vectors), and optionally set the encoding. The
+#' string version checks that the input contains a scalar string.
+#'
+#' @param x A character vector or a vector or list of string-like
+#'   objects.
+#' @param encoding If non-null, set an encoding mark. This is only
+#'   declarative, no encoding conversion is performed.
+#' @export
+#' @examples
+#' # As everywhere in R, you can specify a string with Unicode
+#' # escapes. The characters corresponding to Unicode codepoints will
+#' # be encoded in UTF-8, and the string will be marked as UTF-8
+#' # automatically:
+#' cafe <- string("caf\uE9")
+#' Encoding(cafe)
+#' as_bytes(cafe)
+#'
+#' # In addition, string() provides useful conversions to let
+#' # programmers control how the string is represented in memory. For
+#' # encodings other than UTF-8, you'll need to supply the bytes in
+#' # hexadecimal form. If it is a latin1 encoding, you can mark the
+#' # string explicitly:
+#' cafe_latin1 <- string(c(0x63, 0x61, 0x66, 0xE9), "latin1")
+#' Encoding(cafe_latin1)
+#' as_bytes(cafe_latin1)
+string <- function(x, encoding = NULL) {
+  if (is_integerish(x)) {
+    x <- rawToChar(as.raw(x))
+  } else if (is_raw(x)) {
+    x <- rawToChar(x)
+  } else if (!is_string(x)) {
+    abort("`x` must be a string or raw vector")
+  }
+
+  if (!is_null(encoding)) {
+    Encoding(x) <- encoding
+  }
+
+  x
+}
+
+#' Coerce to a raw vector
+#'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+#'
+#' This currently only works with strings, and returns its hexadecimal
+#' representation.
+#'
+#'
+#' @section Life cycle:
+#'
+#' Raw vector functions are experimental.
+#'
+#' @param x A string.
+#' @return A raw vector of bytes.
+#' @keywords internal
+#' @export
+as_bytes <- function(x) {
+  switch(typeof(x),
+    raw = return(x),
+    character = if (is_string(x)) return(charToRaw(x))
+  )
+  abort("`x` must be a string or raw vector")
+}
+new_bytes <- function(x) {
+  if (is_integerish(x)) {
+    as.raw(x)
+  } else if (is_raw(x)) {
+    x
+  } else {
+    abort("input should be integerish")
+  }
 }
