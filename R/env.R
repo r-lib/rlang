@@ -478,13 +478,13 @@ get_env <- function(env, default = NULL) {
     out
   }
 }
-get_env_retired <- function(x, fn, env = caller_env(2)) {
+get_env_retired <- function(x, fn) {
   if (is_environment(x)) {
     return(x)
   }
 
   type <- friendly_type_of(x)
-  signal_soft_deprecated(env = env, paste_line(
+  warn_deprecated(paste_line(
     sprintf("Passing an environment wrapper like %s is deprecated.", type),
     sprintf("Please retrieve the environment before calling `%s`", fn)
   ))

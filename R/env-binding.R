@@ -125,7 +125,7 @@ env_bind_impl <- function(env, data, fn, bind = FALSE, binder = NULL) {
     }
   }
 
-  env_ <- get_env_retired(env, fn, caller_env(2))
+  env_ <- get_env_retired(env, fn)
   nms <- names2(data)
 
   if (bind) {

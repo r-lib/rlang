@@ -12,9 +12,9 @@ quos_auto_name(quos, width = NULL)
 \arguments{
 \item{exprs}{A list of expressions.}
 
-\item{width}{Soft-deprecated. Maximum width of names.}
+\item{width}{Deprecated. Maximum width of names.}
 
-\item{printer}{Soft-deprecated. A function that takes an expression
+\item{printer}{Deprecated. A function that takes an expression
 and converts it to a string. This function must take an
 expression as the first argument and \code{width} as the second
 argument.}

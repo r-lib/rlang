@@ -415,22 +415,22 @@ endots <- function(call,
 #' [quo_name()].
 #'
 #' @param exprs A list of expressions.
-#' @param width Soft-deprecated. Maximum width of names.
-#' @param printer Soft-deprecated. A function that takes an expression
+#' @param width Deprecated. Maximum width of names.
+#' @param printer Deprecated. A function that takes an expression
 #'   and converts it to a string. This function must take an
 #'   expression as the first argument and `width` as the second
 #'   argument.
 #' @export
 exprs_auto_name <- function(exprs, width = NULL, printer = NULL) {
   if (!is_null(width)) {
-    signal_soft_deprecated(env = empty_env(), paste_line(
-      "The `width` argument is soft-deprecated as of rlang 0.3.0."
+    warn_deprecated(paste_line(
+      "The `width` argument is deprecated as of rlang 0.3.0."
     ))
   }
 
   if (!is_null(printer)) {
-    signal_soft_deprecated(env = empty_env(), paste_line(
-      "The `printer` argument is soft-deprecated as of rlang 0.3.0."
+    warn_deprecated(paste_line(
+      "The `printer` argument is deprecated as of rlang 0.3.0."
     ))
   }
 

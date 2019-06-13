@@ -103,22 +103,7 @@
 #'
 #' **Soft-deprecated as of rlang 0.3.0**
 #'
-#' * [get_env()]: The `env` argument no longer has a default and must be supplied
 #' * [invoke()]: Use the simpler [exec()] instead.
-#'
-#' * Passing a function or formula to `env_depth()`,
-#'   `env_poke_parent()`, `env_parent<-`, `env_tail()`, `set_env()`,
-#'   `env_clone()`, `env_inherits()`, `env_bind()`,
-#'   `scoped_bindings()`, `with_bindings()`, `env_poke()`,
-#'   `env_has()`, `env_get()`, `env_names()`, `env_bind_exprs()` and
-#'   `env_bind_fns()`. This internal genericity was causing confusion
-#'   (see issue #427). You should now extract the environment
-#'   separately before calling these functions.
-#'
-#' * The `width` and `printer` arguments of [exprs_auto_name()] and
-#'   [quos_auto_name()] no longer have any effect. For the same
-#'   reason, passing a width as `.named` argument of dots collectors
-#'   like `quos()` is soft-deprecated.
 #'
 #'
 #' @section Deprecated functions and arguments:
@@ -164,6 +149,15 @@
 #'
 #' * `env_bind_exprs()` => [env_bind_lazy()]
 #' * `env_bind_fns()` => [env_bind_active()]
+#' * Passing a function or formula to `env_depth()`,
+#'   `env_poke_parent()`, `env_parent<-`, `env_tail()`, `set_env()`,
+#'   `env_clone()`, `env_inherits()`, `env_bind()`,
+#'   `scoped_bindings()`, `with_bindings()`, `env_poke()`,
+#'   `env_has()`, `env_get()`, `env_names()`, `env_bind_exprs()` and
+#'   `env_bind_fns()`. This internal genericity was causing confusion
+#'   (see issue #427). You should now extract the environment
+#'   separately before calling these functions.
+#' * [get_env()]: The `env` argument no longer has a default and must be supplied
 #'
 #' * [is_frame()], [global_frame()], [current_frame()],
 #'   [ctxt_frame()], [call_frame()], [frame_position()],
@@ -173,6 +167,11 @@
 #'   [stack_trim()]
 #'
 #' * [set_attrs()], [mut_attrs()]
+#'
+#' * The `width` and `printer` arguments of [exprs_auto_name()] and
+#'   [quos_auto_name()] no longer have any effect. For the same
+#'   reason, passing a width as `.named` argument of dots collectors
+#'   like `quos()` is deprecated.
 #'
 #'
 #' @section Defunct functions and arguments:
