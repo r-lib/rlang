@@ -352,7 +352,7 @@ env_bury <- function(.env, ...) {
 #'   modified in place, invisibly.
 #' @export
 #' @examples
-#' data <- set_names(as_list(letters), letters)
+#' data <- set_names(as.list(letters), letters)
 #' env_bind(environment(), !!! data)
 #' env_has(environment(), letters)
 #'

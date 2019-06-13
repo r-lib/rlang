@@ -274,6 +274,10 @@ test_that("new_quosure() checks input", {
   expect_error(new_quosure(NULL, NULL), "`env` must be an environment")
 })
 
+test_that("as_string(quo) produces informative error message", {
+  expect_error(as_string(quo(foo)), "a `quosure/formula` object to a string")
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

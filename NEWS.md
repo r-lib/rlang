@@ -111,6 +111,9 @@
   package at some point. Same for the missing values shortcuts like
   `na_lgl`.
 
+* `as_logical()`, `as_integer()`, etc have been soft-deprecated in
+  favour of `vctrs::vec_cast()`.
+
 * All functions that were soft-deprecated, deprecated, or defunct in
   previous releases have been bumped to the next lifecycle stage.
 

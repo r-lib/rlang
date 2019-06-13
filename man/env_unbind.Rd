@@ -25,7 +25,7 @@ it ignores the parent environments of \code{env} by default. Set
 \code{inherit} to \code{TRUE} to track down bindings in parent environments.
 }
 \examples{
-data <- set_names(as_list(letters), letters)
+data <- set_names(as.list(letters), letters)
 env_bind(environment(), !!! data)
 env_has(environment(), letters)
 

@@ -107,6 +107,7 @@ want to recommend restarts as a style of programming in R.
 \itemize{
 \item \code{\link[=exiting]{exiting()}}: Handlers are now treated as exiting by default.
 \item \code{\link[=invoke]{invoke()}}: Use the simpler \code{\link[=exec]{exec()}} instead.
+\item \code{\link[=as_logical]{as_logical()}}, \code{\link[=as_integer]{as_integer()}}, etc. => \code{vctrs::vec_cast()}.
 }
 }
 

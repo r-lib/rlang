@@ -16,15 +16,6 @@ test_that("Unicode escapes are always converted to UTF8 characters on roundtrip"
   )
 })
 
-test_that("Unicode escapes are always converted to UTF8 characters in as_list()", {
-  with_non_utf8_locale({
-    env <- child_env(empty_env())
-    env_bind(env, !! get_alien_lang_string() := NULL)
-    list <- as_list(env)
-    expect_identical(names(list), get_alien_lang_string())
-  })
-})
-
 test_that("Unicode escapes are always converted to UTF8 characters with env_names()", {
   with_non_utf8_locale({
     env <- child_env(empty_env())

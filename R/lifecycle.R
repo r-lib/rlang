@@ -109,6 +109,7 @@
 #'
 #' * [exiting()]: Handlers are now treated as exiting by default.
 #' * [invoke()]: Use the simpler [exec()] instead.
+#' * [as_logical()], [as_integer()], etc. => `vctrs::vec_cast()`.
 #'
 #'
 #' @section Deprecated functions and arguments:
