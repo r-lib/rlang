@@ -499,8 +499,8 @@ static bool any_name(sexp* x, bool splice) {
 
 static void check_named_splice(sexp* node) {
   if (r_node_tag(node) != r_null) {
-    const char* msg = "`!!!` shouldn't be supplied with a name. Only the operand's names are retained.";
-    r_warn_deprecated(msg, msg);
+    const char* msg = "`!!!` can't be supplied with a name. Only the operand's names are retained.";
+    r_stop_defunct(msg);
   }
 }
 

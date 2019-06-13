@@ -120,8 +120,6 @@
 #'   reason, passing a width as `.named` argument of dots collectors
 #'   like `quos()` is soft-deprecated.
 #'
-#' * Supplying a named `!!!` call.
-#'
 #'
 #' @section Deprecated functions and arguments:
 #'
@@ -181,7 +179,7 @@
 #'
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("defunct")}
 #'
-#' **Bumped to defunct in rlang 0.4.0**
+#' **Defunct as of rlang 0.4.0**
 #'
 #' * `quo_expr()` => [quo_squash()]
 #' * `as_overscope()` => [as_data_mask()]
@@ -189,6 +187,7 @@
 #' * `overscope_clean()`
 #' * `overscope_eval_next()` => [eval_tidy()]
 #' * `length()` and `names()` on tidy eval `.data` pronouns.
+#' * Supplying a named `!!!` call.
 #'
 #' * [as_data_mask()]: `parent` argument
 #' * [new_data_mask()]: `parent` argument

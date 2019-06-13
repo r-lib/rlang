@@ -86,7 +86,7 @@ void r_stop_defunct(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
 
-  signal_retirement(".Defunct(msg = x)", buf);
+  signal_retirement("stop_defunct(msg = x)", buf);
 
   r_abort("Internal error: Unexpected return after `.Defunct()`");
 }
@@ -95,7 +95,7 @@ static void signal_retirement(const char* source, const char* buf) {
   sexp* call = KEEP(r_parse(source));
   sexp* msg = KEEP(r_chr(buf));
 
-  r_eval_with_x(call, r_base_env, msg);
+  r_eval_with_x(call, r_ns_env("rlang"), msg);
 
   FREE(2);
 }

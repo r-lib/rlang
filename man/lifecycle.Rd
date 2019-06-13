@@ -115,7 +115,6 @@ separately before calling these functions.
 \code{\link[=quos_auto_name]{quos_auto_name()}} no longer have any effect. For the same
 reason, passing a width as \code{.named} argument of dots collectors
 like \code{quos()} is soft-deprecated.
-\item Supplying a named \code{!!!} call.
 }
 }
 
@@ -171,7 +170,7 @@ like \code{quos()} is soft-deprecated.
 
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("defunct")}
 
-\strong{Bumped to defunct in rlang 0.4.0}
+\strong{Defunct as of rlang 0.4.0}
 \itemize{
 \item \code{quo_expr()} => \code{\link[=quo_squash]{quo_squash()}}
 \item \code{as_overscope()} => \code{\link[=as_data_mask]{as_data_mask()}}
@@ -179,6 +178,7 @@ like \code{quos()} is soft-deprecated.
 \item \code{overscope_clean()}
 \item \code{overscope_eval_next()} => \code{\link[=eval_tidy]{eval_tidy()}}
 \item \code{length()} and \code{names()} on tidy eval \code{.data} pronouns.
+\item Supplying a named \code{!!!} call.
 \item \code{\link[=as_data_mask]{as_data_mask()}}: \code{parent} argument
 \item \code{\link[=new_data_mask]{new_data_mask()}}: \code{parent} argument
 \item \code{\link[=env_tail]{env_tail()}}: \code{sentinel} => \code{last}
