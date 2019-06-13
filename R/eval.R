@@ -229,6 +229,11 @@ locally <- function(expr) {
 #' invoke(call_inspect, mtcars, .bury = c("inspect!", "col"))
 invoke <- function(.fn, .args = list(), ...,
                    .env = caller_env(), .bury = c(".fn", "")) {
+  signal_soft_deprecated(c(
+    "`invoke()` is deprecated as of rlang 0.4.0.",
+    "Please use `exec()` or `eval(expr())`instead."
+  ))
+
   args <- c(.args, list(...))
 
   if (is_null(.bury) || !length(args)) {

@@ -96,13 +96,9 @@
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 #'
 #'
-#' **Soft-deprecated as of rlang 0.4.0**
+#' **Soft-deprecated in rlang 0.4.0**
 #'
 #' * [exiting()]: Handlers are now treated as exiting by default.
-#'
-#'
-#' **Soft-deprecated as of rlang 0.3.0**
-#'
 #' * [invoke()]: Use the simpler [exec()] instead.
 #'
 #'
