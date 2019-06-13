@@ -4,7 +4,7 @@
 \alias{new_weakref}
 \title{Create a weak reference}
 \usage{
-new_weakref(key, value = NULL, finalizer = NULL, onexit = FALSE)
+new_weakref(key, value = NULL, finalizer = NULL, on_quit = FALSE)
 }
 \arguments{
 \item{key}{The key for the weak reference. Must be a reference object -- that
@@ -15,7 +15,7 @@ want to use the weak reference like a weak pointer.}
 
 \item{finalizer}{A function that is run after the key becomes unreachable.}
 
-\item{onexit}{Should the finalizer be run when R exits?}
+\item{on_quit}{Should the finalizer be run when R exits?}
 }
 \description{
 A weak reference is a special R object which makes it possible to keep a

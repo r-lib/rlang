@@ -24,7 +24,7 @@
 #' @param value The value for the weak reference. This can be `NULL`, if you
 #'   want to use the weak reference like a weak pointer.
 #' @param finalizer A function that is run after the key becomes unreachable.
-#' @param onexit Should the finalizer be run when R exits?
+#' @param on_quit Should the finalizer be run when R exits?
 #'
 #' @keywords experimental
 #' @seealso [is_weakref()], [wref_key()] and [wref_value()].
@@ -64,8 +64,8 @@
 #' gc()
 #' identical(wref_key(w), NULL)
 #' identical(wref_value(w), NULL)
-new_weakref <- function(key, value = NULL, finalizer = NULL, onexit = FALSE) {
-  .Call(rlang_new_weakref, key, value, finalizer, onexit)
+new_weakref <- function(key, value = NULL, finalizer = NULL, on_quit = FALSE) {
+  .Call(rlang_new_weakref, key, value, finalizer, on_quit)
 }
 
 #' Get key/value from a weak reference object
