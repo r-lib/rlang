@@ -533,7 +533,7 @@ str.quosure <- function(object, ...) {
 as.character.quosure <- function(x, ...) {
   warn_deprecated(paste_line(
     "Using `as.character()` on a quosure is deprecated as of rlang 0.3.0.",
-    "Please use `quo_text()` intead."
+    "Please use `as_label()` or `as_name()` instead."
   ))
   NextMethod()
 }
