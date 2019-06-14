@@ -132,6 +132,7 @@
 #' * [call_modify()]: `.standardise` and `.env` arguments.
 #'
 #' * [is_expr()] => [is_expression()]
+#' * `quo_expr()` => [quo_squash()]
 #' * [parse_quosure()] => [parse_quo()]
 #' * [parse_quosures()] => [parse_quos()]
 #' * Assigning non-quosure objects to quosure lists.
@@ -183,7 +184,6 @@
 #'
 #' **Defunct as of rlang 0.4.0**
 #'
-#' * `quo_expr()` => [quo_squash()]
 #' * `length()` and `names()` on tidy eval `.data` pronouns.
 #' * Supplying a named `!!!` call.
 #'

@@ -1087,7 +1087,7 @@ parse_quosures <- function(x, env = caller_env()) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("defunct")}
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 #'
 #' This function is deprecated, please use [quo_squash()] instead.
 #'
@@ -1095,10 +1095,11 @@ parse_quosures <- function(x, env = caller_env()) {
 #' @keywords internal
 #' @export
 quo_expr <- function(quo, warn = FALSE) {
-  stop_defunct(paste_line(
+  warn_deprecated(paste_line(
     "`quo_expr()` is deprecated as of rlang 0.2.0.",
     "Please use `quo_squash()` instead."
   ))
+  quo_squash(quo, warn = warn)
 }
 
 #' Create an overscope

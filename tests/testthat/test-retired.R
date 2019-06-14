@@ -587,3 +587,8 @@ test_that("invoke() can be called without arguments", {
   expect_identical(invoke("list"), list())
   expect_identical(invoke(list), list())
 })
+
+test_that("quo_expr() still works", {
+  x <- quo(foo(!!quo(bar), !!local(quo(baz))))
+  expect_identical(quo_expr(x), quo_squash(x))
+})

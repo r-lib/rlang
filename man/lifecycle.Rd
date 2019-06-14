@@ -129,6 +129,7 @@ want to recommend restarts as a style of programming in R.
 \item \code{\link[=quo_is_lang]{quo_is_lang()}} => \code{\link[=quo_is_call]{quo_is_call()}}
 \item \code{\link[=call_modify]{call_modify()}}: \code{.standardise} and \code{.env} arguments.
 \item \code{\link[=is_expr]{is_expr()}} => \code{\link[=is_expression]{is_expression()}}
+\item \code{quo_expr()} => \code{\link[=quo_squash]{quo_squash()}}
 \item \code{\link[=parse_quosure]{parse_quosure()}} => \code{\link[=parse_quo]{parse_quo()}}
 \item \code{\link[=parse_quosures]{parse_quosures()}} => \code{\link[=parse_quos]{parse_quos()}}
 \item Assigning non-quosure objects to quosure lists.
@@ -174,7 +175,6 @@ like \code{quos()} is deprecated.
 
 \strong{Defunct as of rlang 0.4.0}
 \itemize{
-\item \code{quo_expr()} => \code{\link[=quo_squash]{quo_squash()}}
 \item \code{length()} and \code{names()} on tidy eval \code{.data} pronouns.
 \item Supplying a named \code{!!!} call.
 \item \code{\link[=as_data_mask]{as_data_mask()}}: \code{parent} argument
