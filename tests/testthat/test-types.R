@@ -122,16 +122,6 @@ test_that("is_integerish() supports large numbers (#578)", {
   expect_false(is_integerish(2^40 - 0.0001))
 })
 
-test_that("is_integerish() supports `NA` (#751)", {
-  expect_false(is_integerish(lgl()))
-  expect_false(is_integerish(lgl(NA, NA)))
-  expect_false(is_integerish(NA, 2))
-  expect_true(is_integerish(NA))
-  expect_true(is_integerish(NA, 1))
-  expect_false(is_integerish(NA, finite = TRUE))
-  expect_true(is_integerish(NA, finite = FALSE))
-})
-
 test_that("is_string() matches on string", {
   expect_true(is_string("foo"))
   expect_true(is_string("foo", "foo"))
