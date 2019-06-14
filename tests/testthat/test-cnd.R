@@ -525,6 +525,11 @@ test_that("with_handlers() registers calling handlers first (#718)", {
   expect_identical(out, "good")
 })
 
+test_that("can pass classed strings as error message", {
+  message <- structure("foo", class = c("glue", "character"))
+  err <- catch_cnd(abort(message))
+  expect_identical(err$message, message)
+})
 
 
 # Lifecycle ----------------------------------------------------------
