@@ -37,8 +37,7 @@
 #'
 #' * You can capture the expressions that _you_ supply. To this end
 #'   use `expr()` and `quo()` and their plural variants `exprs()` and
-#'   `quos()`. There is also `vars()` which is a user-friendly synonym
-#'   of `quos()`.
+#'   `quos()`.
 #'
 #'
 #' @section Capture raw expressions:
@@ -329,11 +328,6 @@ enquos <- function(...,
     check_assign = .check_assign
   )
   structure(quos, class = "quosures")
-}
-#' @rdname quotation
-#' @export
-vars <- function(...) {
-  structure(enquos(...), class = c("quosures_vars", "quosures"))
 }
 
 
