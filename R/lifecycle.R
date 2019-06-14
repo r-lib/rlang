@@ -42,15 +42,11 @@
 #' These functions are not yet part of the rlang API. Expect breaking
 #' changes.
 #'
-#' * [with_env()], [locally()]
-#' * [env_poke()]
-#'
-#' * [env_bind_fns()], [env_bind_exprs()]
-#' * [pkg_env()], [pkg_env_name()]
-#' * [scoped_env()], [scoped_names()], [scoped_envs()], [is_scoped()]
-#' * [ns_env()], [ns_imports_env()], [ns_env_name()]
+#' * [with_env()], [locally()], [env_poke()]
+#' * [pkg_env()], [pkg_env_name()], [ns_env()], [ns_imports_env()], [ns_env_name()]
 #'
 #' * [is_pairlist()], [as_pairlist()], [is_node()], [is_node_list()]
+#'
 #' * [is_definition()], [new_definition()], [is_formulaish()],
 #'   [dots_definitions()]
 #'
@@ -66,6 +62,7 @@
 #'
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
 #'
+#'
 #' **In the questioning stage as of rlang 0.4.0**
 #'
 #' These functions are likely to be moved to the vctrs package:
@@ -78,12 +75,8 @@
 #' **In the questioning stage as of rlang 0.3.0**
 #'
 #' * [child_env()]
-#' * [type_of()], [switch_type()], [coerce_type()]
-#' * [switch_class()], [coerce_class()]
-#' * [lang_type_of()], [switch_lang()], [coerce_lang()]
 #' * [flatten()], [squash()], and their atomic vector variants
 #' * [modify()] and [prepend()]
-#' * [as_logical()], [as_character()], etc.
 #' * [with_restarts()], [rst_list()], [rst_exists()], [rst_jump()],
 #'   [rst_maybe_jump()], [rst_abort()]. It is not clear yet whether we
 #'   want to recommend restarts as a style of programming in R.
@@ -107,6 +100,8 @@
 #' * [exiting()]: Handlers are now treated as exiting by default.
 #' * [invoke()]: Use the simpler [exec()] instead.
 #' * [as_logical()], [as_integer()], etc. => `vctrs::vec_cast()`.
+#' * [type_of()], [switch_type()], [coerce_type()], [switch_class()],
+#'   [coerce_class()]
 #'
 #'
 #' @section Deprecated functions and arguments:
@@ -218,6 +213,7 @@
 #' * `mut_utf8_locale()`, `mut_latin1_locale()`, `mut_mbcs_locale()`
 #' * `set_chr_encoding()`, `chr_encoding()`, `set_str_encoding()`, `str_encoding()`
 #' * `as_native_character()`, `as_utf8_string()`, `as_native_string()`
+#' * `lang_type_of()`, `switch_lang()`, `coerce_lang()`
 #'
 #'
 #' **Archived as of rlang 0.3.0:**

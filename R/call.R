@@ -675,7 +675,7 @@ call_fn <- function(call, env = caller_env()) {
     abort_call_input_type("call")
   }
 
-  switch_call(expr,
+  switch(call_type(expr),
     recursive = abort("`call` does not call a named or inlined function"),
     inlined = node_car(expr),
     named = ,
@@ -727,7 +727,7 @@ call_name <- function(call) {
     abort_call_input_type("call")
   }
 
-  switch_call(call,
+  switch(call_type(call),
     named = as_string(node_car(call)),
     namespaced = as_string(node_cadr(node_cdar(call))),
     NULL
@@ -849,4 +849,22 @@ which_operator <- function(call) {
 }
 call_has_precedence <- function(call, parent_call, side = NULL) {
   .Call(rlang_call_has_precedence, call, parent_call, side)
+}
+
+call_type <- function(x) {
+  x <- get_expr(x)
+  stopifnot(typeof(x) == "language")
+
+  type <- typeof(node_car(x))
+  if (type == "symbol") {
+    "named"
+  } else if (is_namespaced_symbol(node_car(x))) {
+    "namespaced"
+  } else if (type == "language") {
+    "recursive"
+  } else if (type %in% c("closure", "builtin", "special")) {
+    "inlined"
+  } else {
+    abort("corrupt language object")
+  }
 }

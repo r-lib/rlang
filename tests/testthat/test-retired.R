@@ -5,6 +5,18 @@ scoped_lifecycle_silence()
 
 # Deprecated in rlang 0.4.0 ------------------------------------------
 
+test_that("type_of() returns correct type", {
+  expect_identical(type_of("foo"), "string")
+  expect_identical(type_of(letters), "character")
+  expect_identical(type_of(base::`$`), "primitive")
+  expect_identical(type_of(base::list), "primitive")
+  expect_identical(type_of(base::eval), "closure")
+  expect_identical(type_of(~foo), "formula")
+  expect_identical(type_of(quo(foo)), "formula")
+  expect_identical(type_of(quote(a := b)), "definition")
+  expect_identical(type_of(quote(foo())), "language")
+})
+
 test_that("Unicode escapes are always converted to UTF8 characters in as_list()", {
   with_non_utf8_locale({
     env <- child_env(empty_env())

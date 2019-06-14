@@ -409,27 +409,30 @@ fn_env <- function(fn) {
 #' as_closure(`+`)
 #' as_closure(`~`)
 as_function <- function(x, env = caller_env()) {
-  coerce_type(x, friendly_type("function"),
-    primitive = ,
-    closure = {
-      x
-    },
-    formula = {
-      if (length(x) > 2) {
-        abort("Can't convert a two-sided formula to a function")
-      }
-      if (is_quosure(x)) {
-        eval(expr(function(...) eval_tidy(!!x)))
-      } else {
-        args <- list(... = missing_arg(), .x = quote(..1), .y = quote(..2), . = quote(..1))
-        fn <- new_function(args, f_rhs(x), f_env(x))
-        structure(fn, class = c("rlang_lambda_function", "function"))
-      }
-    },
-    string = {
-      get(x, envir = env, mode = "function")
+  if (is_function(x)) {
+    return(x)
+  }
+
+  if (is_quosure(x)) {
+    return(eval(expr(function(...) eval_tidy(!!x))))
+  }
+
+  if (is_formula(x)) {
+    if (length(x) > 2) {
+      abort("Can't convert a two-sided formula to a function")
     }
-  )
+
+    args <- list(... = missing_arg(), .x = quote(..1), .y = quote(..2), . = quote(..1))
+    fn <- new_function(args, f_rhs(x), f_env(x))
+    fn <- structure(fn, class = c("rlang_lambda_function", "function"))
+    return(fn)
+  }
+
+  if (is_string(x)) {
+    return(get(x, envir = env, mode = "function"))
+  }
+
+  abort_coercion(x, friendly_type("function"))
 }
 #' @export
 print.rlang_lambda_function <- function(x, ...) {
@@ -446,25 +449,27 @@ is_lambda <- function(x) {
 #' @export
 as_closure <- function(x, env = caller_env()) {
   x <- as_function(x, env = env)
-  coerce_type(x, "a closure",
-    closure =
-      x,
-    primitive = {
-      fn_name <- prim_name(x)
 
-      fn <- op_as_closure(fn_name)
-      if (!is_null(fn)) {
-        return(fn)
-      }
+  if (is_closure(x)) {
+    return(x)
+  }
+  if (!is_primitive(x)) {
+    abort_coercion(x, "a closure")
+  }
 
-      fmls <- formals(args(fn_name))
-      prim_call <- call2(x, !!!prim_args(fmls))
+  fn_name <- prim_name(x)
+  fn <- op_as_closure(fn_name)
 
-      # The closure wrapper should inherit from the global environment
-      # to ensure proper lexical dispatch with methods defined there
-      new_function(fmls, prim_call, global_env())
-    }
-  )
+  if (!is_null(fn)) {
+    return(fn)
+  }
+
+  fmls <- formals(args(fn_name))
+  prim_call <- call2(x, !!!prim_args(fmls))
+
+  # The closure wrapper should inherit from the global environment
+  # to ensure proper lexical dispatch with methods defined there
+  new_function(fmls, prim_call, global_env())
 }
 
 prim_args <- function(fmls) {

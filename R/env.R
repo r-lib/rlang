@@ -207,31 +207,24 @@ new_environment <- function(data = list(), parent = empty_env()) {
 #' # With NULL it returns the empty environment:
 #' as_environment(NULL)
 as_environment <- function(x, parent = NULL) {
-  coerce_type(x, "an environment",
-    NULL = {
-      empty_env()
-    },
-    environment = {
-      x
-    },
-    string = {
-      if (length(x) > 1 || is_named(x)) {
-        return(as_env_(x, parent))
-      }
-      pkg_env(x)
-    },
+  if (is_string(x) && !is_named(x)) {
+    return(pkg_env(x))
+  }
+
+  switch(typeof(x),
+    NULL = empty_env(),
+    environment = x,
     logical = ,
     integer = ,
     double = ,
-    complex = ,
     character = ,
+    complex = ,
     raw = ,
-    list = {
-      as_env_(x, parent)
-    }
+    list = vec_as_environment(x, parent),
+    abort_coercion(x, "an environment")
   )
 }
-as_env_ <- function(x, parent = NULL) {
+vec_as_environment <- function(x, parent = NULL) {
   stopifnot(is_dictionaryish(x))
   if (is_atomic(x)) {
     x <- vec_coerce(x, "list")
@@ -460,19 +453,20 @@ get_env <- function(env, default = NULL) {
     env <- caller_env()
   }
 
-  out <- switch_type(env,
+  out <- switch(typeof(env),
     environment = env,
     definition = ,
-    formula = attr(env, ".Environment"),
+    language = if (is_formula(env)) attr(env, ".Environment"),
+    builtin = ,
+    special = ,
     primitive = base_env(),
-    closure = environment(env),
-    list = switch_class(env, frame = env$env)
+    closure = environment(env)
   )
 
   out <- out %||% default
 
   if (is_null(out)) {
-    type <- friendly_type(type_of(env))
+    type <- friendly_type_of(env)
     abort(paste0("Can't extract an environment from ", type))
   } else {
     out
@@ -519,18 +513,17 @@ get_env_retired <- function(x, fn) {
 set_env <- function(env, new_env = caller_env()) {
   new_env <- get_env_retired(new_env, "set_env()")
 
-  switch_type(env,
-    definition = ,
-    formula = ,
-    closure = {
-      environment(env) <- new_env
-      env
-    },
-    environment = new_env,
-    abort(paste0(
-      "Can't set environment for ", friendly_type(type_of(env)), ""
-    ))
-  )
+  if (is_formulaish(env) || is_closure(env)) {
+    environment(env) <- new_env
+    return(env)
+  }
+  if (is_environment(env)) {
+    return(new_env)
+  }
+
+  abort(paste0(
+    "Can't set environment for ", friendly_type_of(env)
+  ))
 }
 #' @rdname get_env
 #' @export
