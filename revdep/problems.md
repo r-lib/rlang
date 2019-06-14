@@ -19,9 +19,9 @@ Version: 0.7.0
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.4Mb
+      installed size is  6.1Mb
       sub-directories of 1Mb or more:
-        data   4.0Mb
+        data   3.8Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -121,15 +121,6 @@ Version: 0.3.2
 
 Version: 1.0.1
 
-## Newly broken
-
-*   checking whether package ‘AzureKusto’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘dplyr::vars’ by ‘rlang::vars’ when loading ‘AzureKusto’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/AzureKusto/new/AzureKusto.Rcheck/00install.out’ for details.
-    ```
-
 ## In both
 
 *   checking dependencies in R code ... NOTE
@@ -163,19 +154,6 @@ Version: 0.9.3
       All declared Imports should be used.
     ```
 
-# bayesammi
-
-Version: 0.1.0
-
-## Newly broken
-
-*   checking whether package ‘bayesammi’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘ggplot2::vars’ by ‘rlang::vars’ when loading ‘bayesammi’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/bayesammi/new/bayesammi.Rcheck/00install.out’ for details.
-    ```
-
 # bayesdfa
 
 Version: 0.1.3
@@ -184,9 +162,9 @@ Version: 0.1.3
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.8Mb
+      installed size is  5.7Mb
       sub-directories of 1Mb or more:
-        libs   4.9Mb
+        libs   4.8Mb
     ```
 
 *   checking for GNU extensions in Makefiles ... NOTE
@@ -222,16 +200,6 @@ Version: 0.4.0
 # bayesplot
 
 Version: 1.7.0
-
-## Newly broken
-
-*   checking whether package ‘bayesplot’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘ggplot2::vars’ by ‘rlang::vars’ when loading ‘bayesplot’
-      Warning: replacing previous import ‘rlang::vars’ by ‘dplyr::vars’ when loading ‘bayesplot’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/bayesplot/new/bayesplot.Rcheck/00install.out’ for details.
-    ```
 
 ## In both
 
@@ -417,7 +385,7 @@ Version: 0.2.0
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
     Last 13 lines of output:
-      27: abort(sprintf("`fn` must be an R function, not %s", friendly_type_of(x))) at /private/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T/RtmpHM1jVc/R.INSTALL6098fd919a6/rlang/R/fn.R:143
+      27: abort(sprintf("`fn` must be an R function, not %s", friendly_type_of(x))) at /private/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T/Rtmp3Ij4Yr/R.INSTALL917422a6e5c/rlang/R/fn.R:143
       
       simpleWarning in `force(expr)`: internal
       simpleWarning in `force(expr)`: internal
@@ -478,15 +446,6 @@ Version: 1.0.1
 
 Version: 0.5.2
 
-## Newly broken
-
-*   checking whether package ‘CGPfunctions’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘ggplot2::vars’ by ‘rlang::vars’ when loading ‘CGPfunctions’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/CGPfunctions/new/CGPfunctions.Rcheck/00install.out’ for details.
-    ```
-
 ## In both
 
 *   checking dependencies in R code ... NOTE
@@ -522,19 +481,6 @@ Version: 0.3.1
     See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/circumplex/new/circumplex.Rcheck/00install.out’ for details.
     ```
 
-# CluMP
-
-Version: 0.7
-
-## Newly broken
-
-*   checking whether package ‘CluMP’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘ggplot2::vars’ by ‘rlang::vars’ when loading ‘CluMP’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/CluMP/new/CluMP.Rcheck/00install.out’ for details.
-    ```
-
 # clustree
 
 Version: 0.4.0
@@ -553,7 +499,7 @@ Version: 0.4.0
       1: expect_is(clustree(seurat, prefix = "res.", show_axis = TRUE), c("gg", "ggplot")) at testthat/test-clustree.R:91
       2: quasi_label(enquo(object), label, arg = "object")
       3: eval_bare(get_expr(quo), get_env(quo))
-      4: clustree(seurat, prefix = "res.", show_axis = TRUE) at /private/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T/RtmpHM1jVc/R.INSTALL6098fd919a6/rlang/R/eval.R:99
+      4: clustree(seurat, prefix = "res.", show_axis = TRUE) at /private/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T/Rtmp3Ij4Yr/R.INSTALL917422a6e5c/rlang/R/eval.R:99
       
       ══ testthat results  ═══════════════════════════════════════════════════════════
       OK: 48 SKIPPED: 4 WARNINGS: 0 FAILED: 1
@@ -811,30 +757,6 @@ Version: 0.8.0
 
 Version: 1.0.3
 
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      2: quasi_label(enquo(object), label, arg = "object")
-      3: eval_bare(get_expr(quo), get_env(quo))
-      4: package_name(quo(ggplot2)) at /private/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T/RtmpHM1jVc/R.INSTALL6098fd919a6/rlang/R/eval.R:99
-      5: quo_expr(package) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/conflicted/new/conflicted.Rcheck/00_pkg_src/conflicted/R/shim.R:175
-      6: stop_defunct(paste_line("`quo_expr()` is deprecated as of rlang 0.2.0.", "Please use `quo_squash()` instead.")) at /private/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T/RtmpHM1jVc/R.INSTALL6098fd919a6/rlang/R/lifecycle-retired.R:1098
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 23 SKIPPED: 0 WARNINGS: 0 FAILED: 4
-      1. Error: shims load package with conflicts silently (@test-shim.R#13) 
-      2. Error: detaching package removes shims (@test-shim.R#24) 
-      3. Error: shimmed help returns same as unshimmed (@test-shim.R#36) 
-      4. Error: package_name mimics library (@test-shim.R#56) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
 ## In both
 
 *   checking dependencies in R code ... NOTE
@@ -872,26 +794,6 @@ Version: 0.7.1.0
 
 Version: 0.1.0
 
-## Newly broken
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error(s) in re-building vignettes:
-      ...
-    --- re-building ‘cytominer-pipeline.Rmd’ using rmarkdown
-    Quitting from lines 66-70 (cytominer-pipeline.Rmd) 
-    Quitting from lines 66-70 (cytominer-pipeline.Rmd) 
-    Error: processing vignette 'cytominer-pipeline.Rmd' failed with diagnostics:
-    `overscope_clean()` is deprecated as of rlang 0.2.0.
-    --- failed re-building ‘cytominer-pipeline.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘cytominer-pipeline.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
 ## In both
 
 *   checking tests ...
@@ -899,16 +801,16 @@ Version: 0.1.0
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
     Last 13 lines of output:
+      46: FUN(X[[i]], ...)
+      47: partial_eval_call(get_expr(call), vars, get_env(call))
+      48: as_string(call[[1]])
+      49: abort_coercion(x, "a string") at /private/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T/Rtmp3Ij4Yr/R.INSTALL917422a6e5c/rlang/R/sym.R:108
+      50: abort(paste0("Can't convert ", x_type, " to ", to_type)) at /private/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T/Rtmp3Ij4Yr/R.INSTALL917422a6e5c/rlang/R/utils-conditions.R:7
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      OK: 20 SKIPPED: 0 WARNINGS: 22 FAILED: 2
       1. Error: `aggregate` aggregates data (@test-aggregate.R#15) 
-      2. Error: `aggregate` aggregates data (@test-aggregate.R#15) 
-      3. Error: `count_na_rows` returns the frequency of NAs per variable (@test-count_na_rows.R#13) 
-      4. Error: `count_na_rows` returns the frequency of NAs per variable (@test-count_na_rows.R#13) 
-      5. Error: cytominer can process dataset with a normalized schema (@test-cytominer.R#23) 
-      6. Error: cytominer can process dataset with a normalized schema (@test-cytominer.R#23) 
-      7. Error: cytominer can process dataset with a CellProfiler schema (@test-cytominer.R#227) 
-      8. Error: cytominer can process dataset with a CellProfiler schema (@test-cytominer.R#227) 
-      9. Error: `drop_na_columns` removes columns have only NAs (@test-drop_na_columns.R#11) 
-      1. ...
+      2. Error: `generalized_log` generalized_logs data (@test-generalized_log.R#16) 
       
       Error: testthat unit tests failed
       In addition: Warning message:
@@ -966,176 +868,32 @@ Version: 0.3.1
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
     Last 13 lines of output:
-                 on.exit(overscope_clean(overscope))
-                 escape(overscope_eval_next(overscope, x), con = con)
-             }
-         })
-      12: FUN(X[[i]], ...)
-      13: overscope_clean(overscope)
-      14: stop_defunct("`overscope_clean()` is deprecated as of rlang 0.2.0.") at /private/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T/RtmpHM1jVc/R.INSTALL6098fd919a6/rlang/R/lifecycle-retired.R:1139
+      
+          intersect, setdiff, setequal, union
+      
+      > library(ggplot2)
+      > 
+      > test_check("dbplot")
+      ── 1. Failure: No error or warning when translated to SQL  ─────────────────────
+      `dbplyr::translate_sql(...)` produced warnings.
       
       ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 23 SKIPPED: 0 WARNINGS: 1 FAILED: 2
-      1. Error: No error or warning when translated to SQL (@eval.R#99) 
-      2. Error: No error or warning when translated to SQL (@eval.R#99) 
+      OK: 23 SKIPPED: 0 WARNINGS: 1 FAILED: 1
+      1. Failure: No error or warning when translated to SQL 
       
       Error: testthat unit tests failed
       Execution halted
-    ```
-
-*   checking whether package ‘dbplot’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘ggplot2::vars’ by ‘rlang::vars’ when loading ‘dbplot’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/dbplot/new/dbplot.Rcheck/00install.out’ for details.
     ```
 
 # dbplyr
 
 Version: 1.4.1
 
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    ...
-    Attaching package: ‘dplyr’
-    
-    The following objects are masked from ‘package:dbplyr’:
-    
-        ident, sql
-    
-    The following objects are masked from ‘package:stats’:
-    
-        filter, lag
-    
-    The following objects are masked from ‘package:base’:
-    
-        intersect, setdiff, setequal, union
-    
-    > 
-    > dbplyr::memdb_frame(a = c(3, 4, 1, 2)) %>%
-    +   arrange(a)
-    Error: `overscope_eval_next()` is deprecated as of rlang 0.2.0.
-    Please use `eval_tidy()` with a data mask instead.
-    Error: `overscope_clean()` is deprecated as of rlang 0.2.0.
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 265 SKIPPED: 12 WARNINGS: 4 FAILED: 305
-      1. Error: basic arithmetic is correct (@test-backend-.R#26) 
-      2. Error: basic arithmetic is correct (@test-backend-.R#26) 
-      3. Error: unary minus flips sign of number (@test-backend-.R#39) 
-      4. Error: unary minus flips sign of number (@test-backend-.R#39) 
-      5. Error: unary minus wraps non-numeric expressions (@test-backend-.R#45) 
-      6. Error: unary minus wraps non-numeric expressions (@test-backend-.R#45) 
-      7. Error: binary minus subtracts (@test-backend-.R#50) 
-      8. Error: binary minus subtracts (@test-backend-.R#50) 
-      9. Error: log base comes first (@test-backend-.R#56) 
-      1. ...
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
-*   checking whether package ‘dbplyr’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘dplyr::vars’ by ‘rlang::vars’ when loading ‘dbplyr’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/dbplyr/new/dbplyr.Rcheck/00install.out’ for details.
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    ...
-    
-    The following objects are masked from 'package:stats':
-    
-        filter, lag
-    
-    The following objects are masked from 'package:base':
-    
-        intersect, setdiff, setequal, union
-    
-    Quitting from lines 28-36 (translation-verb.Rmd) 
-    Quitting from lines 28-36 (translation-verb.Rmd) 
-    Error: processing vignette 'translation-verb.Rmd' failed with diagnostics:
-    `overscope_clean()` is deprecated as of rlang 0.2.0.
-    --- failed re-building ‘translation-verb.Rmd’
-    
-    SUMMARY: processing the following files failed:
-      ‘dbplyr.Rmd’ ‘reprex.Rmd’ ‘sql.Rmd’ ‘translation-function.Rmd’
-      ‘translation-verb.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
 ## In both
 
 *   checking Rd cross-references ... NOTE
     ```
     Package unavailable to check Rd xrefs: ‘dtplyr’
-    ```
-
-# DeclareDesign
-
-Version: 0.18.0
-
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    ...
-    > ### Title: Compare two designs
-    > ### Aliases: compare_functions compare_designs compare_design_code
-    > ###   compare_design_summaries compare_design_data compare_design_estimates
-    > ###   compare_design_estimands
-    > 
-    > ### ** Examples
-    > 
-    > 
-    > design1 <- declare_population(N = 100, u = rnorm(N)) +
-    +   declare_potential_outcomes(Y ~ Z + u) +
-    +   declare_estimand(ATE = mean(Y_Z_1 - Y_Z_0)) +
-    +   declare_sampling(n = 75) +
-    +   declare_assignment(m = 50) +
-    +   declare_reveal(Y, Z) +
-    +   declare_estimator(Y ~ Z, estimand = "ATE")
-    Warning: Assigning non-quosure objects to quosure lists is deprecated as of rlang 0.3.0.
-    Please coerce to a bare list beforehand with `as.list()`
-    This warning is displayed once per session.
-    Error: `quo_expr()` is deprecated as of rlang 0.2.0.
-    Please use `quo_squash()` instead.
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 256 SKIPPED: 5 WARNINGS: 27 FAILED: 101
-      1. Error: tibble more (@test-alternative-df-compatibility.R#38) 
-      2. Error: test assignment and probability functions (@test-assignment.R#58) 
-      3. Error: more than 1 assignment (@test-assignment.R#119) 
-      4. Error: attrition / formula PO (@test-attrition.R#21) 
-      5. Error: attrition / legacy PO (@test-attrition.R#44) 
-      6. Error: test diagnosands (@test-bootstrap-diagnosands.R#32) 
-      7. Error: compare_designs works (@test-compare-designs.R#35) 
-      8. Error: compare works (@test-compare-designs.R#100) 
-      9. Error: test the custom execution strategy (@test-conduct-custom.R#20) 
-      1. ...
-      
-      Error: testthat unit tests failed
-      Execution halted
     ```
 
 # DEGreport
@@ -1191,44 +949,23 @@ Version: 0.1.3
 
 ## Newly broken
 
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘DesignLibrary-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: binary_iv_designer
-    > ### Title: Create a binary instrumental variables design
-    > ### Aliases: binary_iv_designer simple_iv_designer
-    > 
-    > ### ** Examples
-    > 
-    > # Generate a simple iv design: iv identifies late not ate 
-    > binary_iv_design_1 <- binary_iv_designer(N = 1000, b = c(.1, .2, .3, .4))
-    Warning: Assigning non-quosure objects to quosure lists is deprecated as of rlang 0.3.0.
-    Please coerce to a bare list beforehand with `as.list()`
-    This warning is displayed once per session.
-    Error: `quo_expr()` is deprecated as of rlang 0.2.0.
-    Please use `quo_squash()` instead.
-    Execution halted
-    ```
-
 *   checking tests ...
     ```
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
     Last 13 lines of output:
-      11: reveal_nse_helper(quo_expr(X))
-      12: quo_expr(X)
-      13: stop_defunct(paste_line("`quo_expr()` is deprecated as of rlang 0.2.0.", "Please use `quo_squash()` instead.")) at /private/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T/RtmpHM1jVc/R.INSTALL6098fd919a6/rlang/R/lifecycle-retired.R:1098
+                 }
+             }
+         }, args = c("x"), arguments_as_values = F, exclude_args = NULL), "character") at testthat/test_helpers.R:37
+      2: quasi_label(enquo(object), label, arg = "object")
+      3: force(quo)
+      4: enquo(object)
+      5: rlang::abort(x) at /private/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T/Rtmp3Ij4Yr/R.INSTALL917422a6e5c/rlang/R/quotation.R:293
       
       ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 15 SKIPPED: 0 WARNINGS: 1 FAILED: 6
-      1. Error: (unknown) (@test_designers.R#16) 
-      2. Error: with and without term (@test_diagnose_designers.R#4) 
-      3. Error: fan out IDs are correct (@test_fanout.R#6) 
-      4. Error: internal helpers for when source code is missing work (@test_helpers.R#31) 
-      5. Error: construct_design_code works as it should when source is missing (@test_helpers.R#37) 
-      6. Error: MH sim ids (@test_simulate_designers.R#4) 
+      OK: 309 SKIPPED: 0 WARNINGS: 5 FAILED: 2
+      1. Error: internal helpers for when source code is missing work (@test_helpers.R#31) 
+      2. Error: construct_design_code works as it should when source is missing (@test_helpers.R#37) 
       
       Error: testthat unit tests failed
       Execution halted
@@ -1271,74 +1008,24 @@ Version: 0.6.1
 
 Version: 0.8.5
 
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    ...
-     [6] "S1WantShout" "S2DoCurse"   "S2DoScold"   "S2DoShout"   "S2WantCurse"
-    [11] "S2WantScold" "S2WantShout" "S3DoCurse"   "S3DoScold"   "S3DoShout"  
-    [16] "S3WantCurse" "S3WantScold" "S3WantShout" "S4DoCurse"   "S4DoScold"  
-    [21] "S4DoShout"   "S4WantCurse" "S4WantScold" "S4WantShout"
-    
-    $person_properties
-    [1] "gender"
-    
-    $columns_ignored
-    [1] "anger"
-    
-    > add_item_properties(db, verbAggrProperties)
-    4 item properties for 24 items added or updated
-    > 
-    > f=fit_enorm(db)
-    ==
-    > pv_M=plausible_values(db,f,(mode=="Do")&(gender=="Male"))
-    Error: `overscope_eval_next()` is deprecated as of rlang 0.2.0.
-    Please use `eval_tidy()` with a data mask instead.
-    Error: `overscope_clean()` is deprecated as of rlang 0.2.0.
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 54 SKIPPED: 5 WARNINGS: 3 FAILED: 8
-      1. Error: inconsistencies between data and parms are handled correctly (@test_ability.R#13) 
-      2. Error: inconsistencies between data and parms are handled correctly (@test_ability.R#13) 
-      3. Error: predicates work as expected (@test_data_selection.R#18) 
-      4. Error: predicates work as expected (@test_data_selection.R#18) 
-      5. Failure: calibration of verbal aggression dataset matches oplm results, with fixed and unfixed (@test_enorm.R#84) 
-      6. Failure: calibration of verbal aggression dataset matches oplm results, with fixed and unfixed (@test_enorm.R#85) 
-      7. Error: populations work (@test_plausible_values.R#7) 
-      8. Error: populations work (@test_plausible_values.R#7) 
-      
-      Error: testthat unit tests failed
-      In addition: Warning message:
-      call dbDisconnect() when finished working with a connection 
-      Execution halted
-    ```
-
 ## In both
 
 *   checking re-building of vignette outputs ... WARNING
     ```
     ...
-    --- re-building ‘profile-plots.Rmd’ using rmarkdown
-    no column `person_id` provided, automatically generating unique person id's
-    Quitting from lines 89-95 (profile-plots.Rmd) 
-    Quitting from lines 89-95 (profile-plots.Rmd) 
+    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
+    Error running filter /usr/local/bin/pandoc-citeproc:
+    Filter returned error status 1
     Error: processing vignette 'profile-plots.Rmd' failed with diagnostics:
-    `overscope_clean()` is deprecated as of rlang 0.2.0.
+    pandoc document conversion failed with error 83
     --- failed re-building ‘profile-plots.Rmd’
     
     --- re-building ‘Test_Individual_differences.Rmd’ using rmarkdown
-    Quitting from lines 95-99 (Test_Individual_differences.Rmd) 
-    Quitting from lines 95-99 (Test_Individual_differences.Rmd) 
+    pandoc-citeproc: when expecting a product (:*:), encountered Object instead
+    Error running filter /usr/local/bin/pandoc-citeproc:
+    Filter returned error status 1
     Error: processing vignette 'Test_Individual_differences.Rmd' failed with diagnostics:
-    `overscope_clean()` is deprecated as of rlang 0.2.0.
+    pandoc document conversion failed with error 83
     --- failed re-building ‘Test_Individual_differences.Rmd’
     
     SUMMARY: processing the following files failed:
@@ -1360,56 +1047,6 @@ Version: 0.1.6
     Unexported objects imported by ':::' calls:
       ‘dexter:::get_resp_data’ ‘dexter:::qcolors’
       See the note in ?`:::` about the use of this operator.
-    ```
-
-# dexterMST
-
-Version: 0.1.1
-
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-             }
-         })
-      14: FUN(X[[i]], ...)
-      15: overscope_clean(overscope)
-      16: stop_defunct("`overscope_clean()` is deprecated as of rlang 0.2.0.") at /private/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T/RtmpHM1jVc/R.INSTALL6098fd919a6/rlang/R/lifecycle-retired.R:1139
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 9 SKIPPED: 0 WARNINGS: 0 FAILED: 4
-      1. Error: we can calibrate (@test_calibration.R#127) 
-      2. Error: we can calibrate (@test_calibration.R#127) 
-      3. Error: can import from dexter and calbration comparable to dexter (@test_inputs.R#81) 
-      4. Error: can import from dexter and calbration comparable to dexter (@test_inputs.R#81) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error(s) in re-building vignettes:
-      ...
-    --- re-building ‘multistage_fundamentals.Rmd’ using rmarkdown
-    Warning in engine$weave(file, quiet = quiet, encoding = enc) :
-      The vignette engine knitr::rmarkdown is not available, because the rmarkdown package is not installed. Please install it.
-    Computing non-mst profile_tables over an mst design, did you mean to use profile_tables_mst?
-    Warning: Removed 33 rows containing missing values (geom_point).
-    Quitting from lines 439-440 (multistage_fundamentals.Rmd) 
-    Quitting from lines 439-440 (multistage_fundamentals.Rmd) 
-    Error: processing vignette 'multistage_fundamentals.Rmd' failed with diagnostics:
-    `overscope_clean()` is deprecated as of rlang 0.2.0.
-    --- failed re-building ‘multistage_fundamentals.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘multistage_fundamentals.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
     ```
 
 # DiagrammeR
@@ -1446,92 +1083,12 @@ Version: 2018.05.22
 
 Version: 0.0.4
 
-## Newly broken
-
-*   checking whether package ‘DisImpact’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘dplyr::vars’ by ‘rlang::vars’ when loading ‘DisImpact’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/DisImpact/new/DisImpact.Rcheck/00install.out’ for details.
-    ```
-
 ## In both
 
 *   checking dependencies in R code ... NOTE
     ```
     Namespace in Imports field not imported from: ‘magrittr’
       All declared Imports should be used.
-    ```
-
-# distrr
-
-Version: 0.0.5
-
-## Newly broken
-
-*   checking whether package ‘distrr’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘dplyr::vars’ by ‘rlang::vars’ when loading ‘distrr’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/distrr/new/distrr.Rcheck/00install.out’ for details.
-    ```
-
-# dlookr
-
-Version: 0.3.9
-
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    ...
-    2 Bad       Yes   Sales Price    -0.583
-    3 Good      No    Sales Price    -0.811
-    4 Good      Yes   Sales Price    -0.603
-    5 Medium    No    Sales Price    -0.610
-    6 Medium    Yes   Sales Price    -0.538
-    > 
-    > # extract only those with 'ShelveLoc' variable level is "Good",
-    > # and compute the correlation coefficient of 'Sales' variable
-    > # by 'Urban' and 'US' variables.
-    > # And the correlation coefficient is negative and smaller than 0.5
-    > con_sqlite %>% 
-    +   tbl("TB_CARSEATS") %>% 
-    +   filter(ShelveLoc == "Good") %>%
-    +   group_by(Urban, US) %>%
-    +   correlate(Sales) %>%
-    +   filter(coef_corr < 0) %>%
-    +   filter(abs(coef_corr) > 0.5)
-    Error: `overscope_eval_next()` is deprecated as of rlang 0.2.0.
-    Please use `eval_tidy()` with a data mask instead.
-    Error: `overscope_clean()` is deprecated as of rlang 0.2.0.
-    Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    ...
-    
-        transform
-    
-    
-    Attaching package: 'dplyr'
-    
-    The following objects are masked from 'package:stats':
-    
-        filter, lag
-    
-    The following objects are masked from 'package:base':
-    
-        intersect, setdiff, setequal, union
-    
-    --- finished re-building ‘transformation.Rmd’
-    
-    SUMMARY: processing the following files failed:
-      ‘diagonosis.Rmd’ ‘EDA.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
     ```
 
 # dotwhisker
@@ -1570,34 +1127,6 @@ Version: 0.5.0
 
 Version: 0.8.1
 
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    ...
-    +   # Compute query and save in remote table
-    +   compute(remote)
-    + 
-    +   # Compute query bring back to this session
-    +   collect(remote)
-    + 
-    +   # Creates a fresh query based on the generated SQL
-    +   collapse(remote)
-    + }
-    Loading required package: dbplyr
-    
-    Attaching package: ‘dbplyr’
-    
-    The following objects are masked from ‘package:dplyr’:
-    
-        ident, sql
-    
-    Error: `overscope_eval_next()` is deprecated as of rlang 0.2.0.
-    Please use `eval_tidy()` with a data mask instead.
-    Error: `overscope_clean()` is deprecated as of rlang 0.2.0.
-    Execution halted
-    ```
-
 ## In both
 
 *   checking installed package size ... NOTE
@@ -1612,31 +1141,9 @@ Version: 0.8.1
       Note: found 4 marked UTF-8 strings
     ```
 
-# dsr
-
-Version: 0.2.1
-
-## Newly broken
-
-*   checking whether package ‘dsr’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘dplyr::vars’ by ‘rlang::vars’ when loading ‘dsr’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/dsr/new/dsr.Rcheck/00install.out’ for details.
-    ```
-
 # echor
 
 Version: 0.1.2
-
-## Newly broken
-
-*   checking whether package ‘echor’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘dplyr::vars’ by ‘rlang::vars’ when loading ‘echor’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/echor/new/echor.Rcheck/00install.out’ for details.
-    ```
 
 ## In both
 
@@ -1749,7 +1256,7 @@ Version: 3.10.4
       installed size is  5.1Mb
       sub-directories of 1Mb or more:
         doc   1.6Mb
-        R     2.1Mb
+        R     2.0Mb
     ```
 
 # estimatr
@@ -1766,64 +1273,6 @@ Version: 0.18.0
 *   checking Rd cross-references ... NOTE
     ```
     Package unavailable to check Rd xrefs: ‘texreg’
-    ```
-
-# etl
-
-Version: 0.3.7
-
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    ...
-    > ##D }
-    > ## End(Not run)
-    > 
-    > # Do it step-by-step
-    > cars %>%
-    +   etl_extract() %>%
-    +   etl_transform() %>%
-    +   etl_load()
-    Extracting raw data...
-    Transforming raw data...
-    Loading 1 file(s) into the database...
-    > src_tbls(cars)
-    [1] "mtcars"
-    > cars %>%
-    +   tbl("mtcars") %>%
-    +   group_by(cyl) %>%
-    +   summarize(N = n(), mean_mpg = mean(mpg))
-    Error: `overscope_eval_next()` is deprecated as of rlang 0.2.0.
-    Please use `eval_tidy()` with a data mask instead.
-    Error: `overscope_clean()` is deprecated as of rlang 0.2.0.
-    Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    ...
-        filter, lag
-    
-    The following objects are masked from 'package:base':
-    
-        intersect, setdiff, setequal, union
-    
-    --- finished re-building ‘extending_etl.Rmd’
-    
-    --- re-building ‘using_etl.Rmd’ using rmarkdown
-    Warning: replacing previous import 'dplyr::vars' by 'rlang::vars' when loading 'dbplyr'
-    Quitting from lines 108-112 (using_etl.Rmd) 
-    Quitting from lines 108-112 (using_etl.Rmd) 
-    Error: processing vignette 'using_etl.Rmd' failed with diagnostics:
-    `overscope_clean()` is deprecated as of rlang 0.2.0.
-    --- failed re-building ‘using_etl.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘using_etl.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
     ```
 
 # EventStudy
@@ -1844,19 +1293,6 @@ Version: 0.36
     Namespaces in Imports field not imported from:
       ‘curl’ ‘openxlsx’ ‘stringr’
       All declared Imports should be used.
-    ```
-
-# explore
-
-Version: 0.4.2
-
-## Newly broken
-
-*   checking whether package ‘explore’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘ggplot2::vars’ by ‘rlang::vars’ when loading ‘explore’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/explore/new/explore.Rcheck/00install.out’ for details.
     ```
 
 # ezplot
@@ -1944,34 +1380,6 @@ Version: 1.0.0
       Note: found 1 marked UTF-8 string
     ```
 
-# gargle
-
-Version: 0.2.0
-
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      
-      ── 5. Failure: Request to bad URL (tokeninfo, HTML content) (@test-response-proc
-      `print(err$message)` has changed from known value recorded in 'fixtures/tokeninfo_400_bad-path_MESSAGE.txt'.
-      Lengths differ: 1 is not 2
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 161 SKIPPED: 1 WARNINGS: 0 FAILED: 5
-      1. Failure: Request for non-existent resource (Drive v3, JSON content) (@test-response-process.R#11) 
-      2. Failure: Request for non-existent resource (Sheets v4, HTML content) (@test-response-process.R#18) 
-      3. Failure: Request with invalid argument (Sheets v4 error style) (@test-response-process.R#25) 
-      4. Failure: Request with invalid value (tokeninfo, JSON content) (@test-response-process.R#32) 
-      5. Failure: Request to bad URL (tokeninfo, HTML content) (@test-response-process.R#39) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
 # gestalt
 
 Version: 0.1.7
@@ -2020,9 +1428,9 @@ Version: 1.30.0
     
     Loading required package: ggplot2
     From .checkSubclasses(): subclass "GeneNameFilter" of class "AnnotationFilter" is not local and is not updated for new inheritance information currently; 
-    [where=<environment: 0x7ffb2d105bd8>, where2=<environment: namespace:ggbio>]
+    [where=<environment: 0x7f948878dd40>, where2=<environment: namespace:ggbio>]
     From .checkSubclasses(): subclass "GeneNameFilter" of class "AnnotationFilter" is not local and is not updated for new inheritance information currently; 
-    [where=<environment: 0x7ffb2d105bd8>, where2=<environment: namespace:ggbio>]
+    [where=<environment: 0x7f948878dd40>, where2=<environment: namespace:ggbio>]
     Creating a new generic function for 'rescale' in package 'ggbio'
     Creating a new generic function for 'xlim' in package 'ggbio'
     Error in reconcilePropertiesAndPrototype(name, slots, prototype, superClasses,  : 
@@ -2085,10 +1493,10 @@ Version: 1.10.2
     loading R object...
     loading tree object...
     Done
-    Warning: Removed 3 rows containing missing values (geom_hex).
-    Warning: Removed 8 rows containing missing values (geom_hex).
-    Warning: Removed 11933 rows containing non-finite values (stat_binhex).
-    Warning: Removed 16 rows containing missing values (geom_hex).
+    Warning: Removed 1 rows containing missing values (geom_hex).
+    Warning: Removed 6 rows containing missing values (geom_hex).
+    Warning: Removed 11920 rows containing non-finite values (stat_binhex).
+    Warning: Removed 14 rows containing missing values (geom_hex).
     Quitting from lines 100-115 (Top_features_of_ggcyto.Rmd) 
     Error: processing vignette 'Top_features_of_ggcyto.Rmd' failed with diagnostics:
     there is no package called 'R.utils'
@@ -2155,28 +1563,6 @@ Version: 1.10.2
 
 Version: 0.3.0
 
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘ggedit-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: layersList
-    > ### Title: layersList
-    > ### Aliases: layersList
-    > 
-    > ### ** Examples
-    > 
-    > p=ggplot2::ggplot(iris,ggplot2::aes(x=Sepal.Length,y=Sepal.Width))
-    > p=p+ggplot2::geom_point(ggplot2::aes(colour=Species))+ggplot2::geom_line()
-    > p
-    > p.list=layersList(p)
-    Error: `quo_expr()` is deprecated as of rlang 0.2.0.
-    Please use `quo_squash()` instead.
-    Execution halted
-    ```
-
 ## In both
 
 *   checking dependencies in R code ... NOTE
@@ -2222,6 +1608,20 @@ Version: 0.0.2
       All declared Imports should be used.
     ```
 
+# ggpage
+
+Version: 0.2.3
+
+## In both
+
+*   checking package dependencies ... ERROR
+    ```
+    Package required but not available: ‘tidytext’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
+    ```
+
 # ggplot2
 
 Version: 3.1.1
@@ -2233,7 +1633,7 @@ Version: 3.1.1
       installed size is  5.5Mb
       sub-directories of 1Mb or more:
         doc   1.8Mb
-        R     2.0Mb
+        R     2.1Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -2379,19 +1779,6 @@ Version: 1.14.6
         examples   3.7Mb
     ```
 
-# ggupset
-
-Version: 0.1.0
-
-## Newly broken
-
-*   checking whether package ‘ggupset’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘ggplot2::vars’ by ‘rlang::vars’ when loading ‘ggupset’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/ggupset/new/ggupset.Rcheck/00install.out’ for details.
-    ```
-
 # glmSparseNet
 
 Version: 1.0.0
@@ -2510,38 +1897,6 @@ Version: 1.3.2
     manual.
     ```
 
-# guardianapi
-
-Version: 0.1.0
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    ...
-    Retrieving additional page 4 of 150
-    Retrieving additional page 5 of 150
-    Retrieving additional page 6 of 150
-    Retrieving additional page 7 of 150
-    Retrieving additional page 8 of 150
-    Retrieving additional page 9 of 150
-    Retrieving additional page 10 of 150
-    Retrieving additional page 11 of 150
-    Retrieving additional page 12 of 150
-    Retrieving additional page 13 of 150
-    Retrieving additional page 14 of 150
-    Quitting from lines 79-108 (introduction.Rmd) 
-    Error: processing vignette 'introduction.Rmd' failed with diagnostics:
-    HTTP error 503.
-    --- failed re-building ‘introduction.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘introduction.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
 # helixvis
 
 Version: 1.0.1
@@ -2579,6 +1934,20 @@ Version: 0.7.0
       sub-directories of 1Mb or more:
         doc           3.7Mb
         htmlwidgets   4.0Mb
+    ```
+
+# Hmisc
+
+Version: 4.2-0
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  5.7Mb
+      sub-directories of 1Mb or more:
+        help   2.1Mb
+        R      3.0Mb
     ```
 
 # hms
@@ -2775,16 +2144,10 @@ Version: 0.7.1
 
 ## In both
 
-*   checking installed package size ... NOTE
+*   checking whether package ‘idealstan’ can be installed ... ERROR
     ```
-      installed size is  6.5Mb
-      sub-directories of 1Mb or more:
-        libs   5.2Mb
-    ```
-
-*   checking for GNU extensions in Makefiles ... NOTE
-    ```
-    GNU make is a SystemRequirements.
+    Installation failed.
+    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/idealstan/new/idealstan.Rcheck/00install.out’ for details.
     ```
 
 # implyr
@@ -2843,24 +2206,45 @@ Version: 0.2.0
       Execution halted
     ```
 
+*   checking installed package size ... NOTE
+    ```
+      installed size is  5.2Mb
+      sub-directories of 1Mb or more:
+        data   3.5Mb
+        help   1.1Mb
+    ```
+
 *   checking dependencies in R code ... NOTE
     ```
     Namespace in Imports field not imported from: ‘lazyeval’
       All declared Imports should be used.
     ```
 
+# inferr
+
+Version: 0.3.0
+
+## In both
+
+*   checking package dependencies ... ERROR
+    ```
+    Packages required but not available:
+      'dplyr', 'magrittr', 'purrr', 'Rcpp', 'shiny', 'tibble', 'tidyr'
+    
+    Packages suggested but not available for checking:
+      'covr', 'descriptr', 'haven', 'jsonlite', 'knitr', 'lubridate',
+      'readr', 'readxl', 'rmarkdown', 'scales', 'shinyBS',
+      'shinythemes', 'stringr', 'testthat'
+    
+    VignetteBuilder package required for checking but not installed: ‘knitr’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
+    ```
+
 # interactions
 
 Version: 1.1.0
-
-## Newly broken
-
-*   checking whether package ‘interactions’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘ggplot2::vars’ by ‘rlang::vars’ when loading ‘interactions’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/interactions/new/interactions.Rcheck/00install.out’ for details.
-    ```
 
 ## In both
 
@@ -3024,15 +2408,6 @@ Version: 0.3.4
 
 Version: 2.0.1
 
-## Newly broken
-
-*   checking whether package ‘jtools’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘ggplot2::vars’ by ‘rlang::vars’ when loading ‘jtools’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/jtools/new/jtools.Rcheck/00install.out’ for details.
-    ```
-
 ## In both
 
 *   checking package dependencies ... NOTE
@@ -3057,19 +2432,6 @@ Version: 0.4.2
       Note: found 52458 marked UTF-8 strings
     ```
 
-# konfound
-
-Version: 0.1.2
-
-## Newly broken
-
-*   checking whether package ‘konfound’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘dplyr::vars’ by ‘rlang::vars’ when loading ‘konfound’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/konfound/new/konfound.Rcheck/00install.out’ for details.
-    ```
-
 # lenses
 
 Version: 0.0.3
@@ -3090,34 +2452,6 @@ Version: 0.2.0
 *   checking Rd cross-references ... NOTE
     ```
     Package unavailable to check Rd xrefs: ‘keras’
-    ```
-
-# lobstr
-
-Version: 1.0.1
-
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      `quo_expr()` is deprecated as of rlang 0.2.0.
-      Please use `quo_squash()` instead.
-      1: expect_equal(ast_tree(quo(x)), ast_tree(expr(x))) at testthat/test-ast.R:4
-      2: quasi_label(enquo(object), label, arg = "object")
-      3: eval_bare(get_expr(quo), get_env(quo))
-      4: ast_tree(quo(x)) at /private/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T/RtmpHM1jVc/R.INSTALL6098fd919a6/rlang/R/eval.R:99
-      5: quo_expr(x) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/lobstr/new/lobstr.Rcheck/00_pkg_src/lobstr/R/ast.R:41
-      6: stop_defunct(paste_line("`quo_expr()` is deprecated as of rlang 0.2.0.", "Please use `quo_squash()` instead.")) at /private/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T/RtmpHM1jVc/R.INSTALL6098fd919a6/rlang/R/lifecycle-retired.R:1098
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 60 SKIPPED: 0 WARNINGS: 0 FAILED: 1
-      1. Error: quosures print same as expressions (@test-ast.R#4) 
-      
-      Error: testthat unit tests failed
-      Execution halted
     ```
 
 # LOGAN
@@ -3188,15 +2522,6 @@ Version: 1.61.0
 # malariaAtlas
 
 Version: 0.0.3
-
-## Newly broken
-
-*   checking whether package ‘malariaAtlas’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘ggplot2::vars’ by ‘rlang::vars’ when loading ‘malariaAtlas’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/malariaAtlas/new/malariaAtlas.Rcheck/00install.out’ for details.
-    ```
 
 ## In both
 
@@ -3292,15 +2617,6 @@ Version: 1.0.0
 
 Version: 0.1.2
 
-## Newly broken
-
-*   checking whether package ‘modeldb’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘ggplot2::vars’ by ‘rlang::vars’ when loading ‘modeldb’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/modeldb/new/modeldb.Rcheck/00install.out’ for details.
-    ```
-
 ## In both
 
 *   checking re-building of vignette outputs ... WARNING
@@ -3308,11 +2624,7 @@ Version: 0.1.2
     Error(s) in re-building vignettes:
       ...
     --- re-building ‘kmeans.Rmd’ using rmarkdown
-    Quitting from lines 45-49 (kmeans.Rmd) 
-    Quitting from lines 45-49 (kmeans.Rmd) 
-    Error: processing vignette 'kmeans.Rmd' failed with diagnostics:
-    `overscope_clean()` is deprecated as of rlang 0.2.0.
-    --- failed re-building ‘kmeans.Rmd’
+    --- finished re-building ‘kmeans.Rmd’
     
     --- re-building ‘linear-regression.Rmd’ using rmarkdown
     Quitting from lines 54-57 (linear-regression.Rmd) 
@@ -3320,8 +2632,8 @@ Version: 0.1.2
     object of type 'symbol' is not subsettable
     --- failed re-building ‘linear-regression.Rmd’
     
-    SUMMARY: processing the following files failed:
-      ‘kmeans.Rmd’ ‘linear-regression.Rmd’
+    SUMMARY: processing the following file failed:
+      ‘linear-regression.Rmd’
     
     Error: Vignette re-building failed.
     Execution halted
@@ -3401,34 +2713,6 @@ Version: 6.2.1
         R   5.1Mb
     ```
 
-# mudata2
-
-Version: 1.0.6
-
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/test-all.R’ failed.
-    Last 13 lines of output:
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 921 SKIPPED: 0 WARNINGS: 1 FAILED: 16
-      1. Error: mudata constructor works with sqlite data frames (@test_mudata_remote.R#42) 
-      2. Error: mudata constructor works with sqlite data frames (@test_mudata_remote.R#42) 
-      3. Error: mudata_sql works as expected (@test_mudata_remote.R#78) 
-      4. Error: mudata_sql works as expected (@test_mudata_remote.R#78) 
-      5. Error: summary and print methods are sql type safe (@test_mudata_remote.R#100) 
-      6. Error: summary and print methods are sql type safe (@test_mudata_remote.R#100) 
-      7. Error: distinct_* functions return the correct values (@test_mudata_remote.R#115) 
-      8. Error: distinct_* functions return the correct values (@test_mudata_remote.R#115) 
-      9. Error: autoplot/plot works on sqlite sources (@test_mudata_remote.R#129) 
-      1. ...
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
 # nandb
 
 Version: 2.0.1
@@ -3439,19 +2723,6 @@ Version: 2.0.1
     ```
     Namespace in Imports field not imported from: ‘utils’
       All declared Imports should be used.
-    ```
-
-# naniar
-
-Version: 0.4.2
-
-## Newly broken
-
-*   checking whether package ‘naniar’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘ggplot2::vars’ by ‘rlang::vars’ when loading ‘naniar’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/naniar/new/naniar.Rcheck/00install.out’ for details.
     ```
 
 # ncappc
@@ -3671,7 +2942,7 @@ Version: 0.7.0
     Running the tests in ‘tests/testthat.R’ failed.
     Last 13 lines of output:
       25: eval_tidy(args[[j]], mask)
-      26: skim(., ...) at /private/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T/RtmpHM1jVc/R.INSTALL6098fd919a6/rlang/R/eval-tidy.R:153
+      26: skim(., ...) at /private/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T/Rtmp3Ij4Yr/R.INSTALL917422a6e5c/rlang/R/eval-tidy.R:153
       27: skim.data.frame(., ...)
       28: purrr::map(.data[selected], skim_v)
       29: .f(.x[[i]], ...)
@@ -3680,18 +2951,11 @@ Version: 0.7.0
       32: .x(x)
       
       ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 274 SKIPPED: 0 WARNINGS: 2 FAILED: 1
+      OK: 274 SKIPPED: 0 WARNINGS: 0 FAILED: 1
       1. Error: summary.panel_data works (@test-utils.R#291) 
       
       Error: testthat unit tests failed
       Execution halted
-    ```
-
-*   checking whether package ‘panelr’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘dplyr::vars’ by ‘rlang::vars’ when loading ‘panelr’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/panelr/new/panelr.Rcheck/00install.out’ for details.
     ```
 
 ## In both
@@ -3820,6 +3084,13 @@ Version: 1.2.1
     Execution halted
     ```
 
+*   checking installed package size ... NOTE
+    ```
+      installed size is  5.0Mb
+      sub-directories of 1Mb or more:
+        data   3.1Mb
+    ```
+
 # photobiology
 
 Version: 0.9.28
@@ -3880,18 +3151,18 @@ Version: 18.4.17
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
     Last 13 lines of output:
+      
       ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 49 SKIPPED: 1 WARNINGS: 4 FAILED: 10
-      1.  Error: PIVOT construction (@test-pivot.R#33) 
-      2.  Error: PIVOT warnings and errors (@test-pivot.R#71) 
-      3.  Error: PIVOT warnings and errors (@test-pivot.R#71) 
-      4.  Error: PIVOT with nested select (@test-pivot.R#115) 
-      5.  Error: spread.tbl_lazy (@test-tidyr.R#8) 
-      6.  Failure: UNPIVOT construction (@test-unpivot.R#45) 
-      7.  Failure: order_by (@test-unpivot.R#81) 
-      8.  Failure: find_connection (@test-utils.R#11) 
-      9.  Failure: find_connection (@test-utils.R#12) 
-      10. Error: get_pivot_levels (@test-utils.R#29) 
+      OK: 49 SKIPPED: 1 WARNINGS: 4 FAILED: 9
+      1. Error: PIVOT construction (@test-pivot.R#33) 
+      2. Error: PIVOT warnings and errors (@test-pivot.R#71) 
+      3. Error: PIVOT with nested select (@test-pivot.R#115) 
+      4. Error: spread.tbl_lazy (@test-tidyr.R#8) 
+      5. Failure: UNPIVOT construction (@test-unpivot.R#45) 
+      6. Failure: order_by (@test-unpivot.R#81) 
+      7. Failure: find_connection (@test-utils.R#11) 
+      8. Failure: find_connection (@test-utils.R#12) 
+      9. Error: get_pivot_levels (@test-utils.R#29) 
       
       Error: testthat unit tests failed
       Execution halted
@@ -3987,7 +3258,7 @@ Version: 4.9.0
       installed size is  6.5Mb
       sub-directories of 1Mb or more:
         htmlwidgets   3.4Mb
-        R             1.2Mb
+        R             1.1Mb
     ```
 
 # plyranges
@@ -4029,56 +3300,14 @@ Version: 0.1.4
 
 ## Newly broken
 
-*   checking examples ... ERROR
+*   checking examples ... WARNING
     ```
-    ...
-    Running examples in ‘pmatch-Ex.R’ failed
-    The error most likely occurred in:
+    Found the following significant warnings:
     
-    > ### Name: case_func
-    > ### Title: Creates a pattern matching function.
-    > ### Aliases: case_func
-    > 
-    > ### ** Examples
-    > 
-    > linked_list := NIL | CONS(car, cdr : linked_list)
-    Warning: `is_lang()` is deprecated as of rlang 0.2.0.
-    Please use `is_call()` instead.
-    This warning is displayed once per session.
-    > lst <- CONS(1, CONS(2, CONS(3, NIL)))
-    > len <- case_func(acc = 0,
-    +    NIL -> acc,
-    +    CONS(car,cdr) -> len(cdr, acc + 1)
-    + )
-    Error: `quo_expr()` is deprecated as of rlang 0.2.0.
-    Please use `quo_squash()` instead.
-    Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    ...
-    
-    --- re-building ‘huffman-coding.Rmd’ using rmarkdown
-    Quitting from lines 181-188 (huffman-coding.Rmd) 
-    Error: processing vignette 'huffman-coding.Rmd' failed with diagnostics:
-    `quo_expr()` is deprecated as of rlang 0.2.0.
-    Please use `quo_squash()` instead.
-    --- failed re-building ‘huffman-coding.Rmd’
-    
-    --- re-building ‘optional-types-with-pmatch.Rmd’ using rmarkdown
-    Quitting from lines 42-46 (optional-types-with-pmatch.Rmd) 
-    Error: processing vignette 'optional-types-with-pmatch.Rmd' failed with diagnostics:
-    `quo_expr()` is deprecated as of rlang 0.2.0.
-    Please use `quo_squash()` instead.
-    --- failed re-building ‘optional-types-with-pmatch.Rmd’
-    
-    SUMMARY: processing the following files failed:
-      ‘getting-started-with-pmatch-.Rmd’ ‘huffman-coding.Rmd’
-      ‘optional-types-with-pmatch.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
+      Warning: Passing an environment as data mask is deprecated.
+    Deprecated functions may be defunct as soon as of the next release
+    of R.
+    See ?Deprecated.
     ```
 
 ## In both
@@ -4087,19 +3316,17 @@ Version: 0.1.4
     ```
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
+    Complete output:
+      > library(testthat)
+      > library(pmatch)
+      > 
+      > test_check("pmatch")
+      ── 1. Failure: we can transform a function that contains a call to cases (@test-
+      tailr::can_loop_transform(llength) isn't true.
+      
       ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 35 SKIPPED: 0 WARNINGS: 10 FAILED: 26
-      1. Error: We can match on constant constructors (@test_cases.R#6) 
-      2. Error: We can create match on function constructors (@test_cases.R#34) 
-      3. Error: We can formula as well as assignment syntax (@test_cases.R#54) 
-      4. Error: We can create match constants on function constructors (@test_cases.R#111) 
-      5. Error: We can create match variables in function constructors (@test_cases.R#135) 
-      6. Error: We can distinguish between constructors (@test_cases.R#147) 
-      7. Error: We do not confuse variables for constructors (@test_cases.R#158) 
-      8. Error: We can do quasi-quoting (@test_cases.R#173) 
-      9. Failure: We handle syntax errors gracefully (@test_cases.R#179) 
-      1. ...
+      OK: 164 SKIPPED: 0 WARNINGS: 7 FAILED: 1
+      1. Failure: we can transform a function that contains a call to cases (@test-transforms.R#62) 
       
       Error: testthat unit tests failed
       Execution halted
@@ -4272,7 +3499,6 @@ Version: 1.3.0
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
     Last 13 lines of output:
-      
       ── 10. Failure: (unknown) (@test-cleanup-reporter.R#207)  ──────────────────────
       'R connections, unit: testsuite' did not close network connections: 
       # A tibble: 1 x 6
@@ -4285,6 +3511,7 @@ Version: 1.3.0
       Maximum number of 10 failures reached, some test results may be missing.
       
       ══ DONE ════════════════════════════════════════════════════════════════════════
+      Keep trying!
       Error: Test failures
       Execution halted
     ```
@@ -4341,15 +3568,6 @@ Version: 0.1.0
 # quickReg
 
 Version: 1.5.0
-
-## Newly broken
-
-*   checking whether package ‘quickReg’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘ggplot2::vars’ by ‘rlang::vars’ when loading ‘quickReg’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/quickReg/new/quickReg.Rcheck/00install.out’ for details.
-    ```
 
 ## In both
 
@@ -4480,82 +3698,6 @@ Version: 0.1.0
 
 Version: 1.0.0
 
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    ...
-    
-    > ### Name: replyr_copy_from
-    > ### Title: Bring remote data back as a local data frame tbl.
-    > ### Aliases: replyr_copy_from
-    > 
-    > ### ** Examples
-    > 
-    > 
-    > 
-    > if (requireNamespace("RSQLite", quietly = TRUE)) {
-    +   my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-    +   RSQLite::initExtension(my_db)
-    +   d <- replyr_copy_to(my_db,data.frame(x=c(1,2)),'d')
-    +   d2 <- replyr_copy_from(d)
-    +   print(d2)
-    +   DBI::dbDisconnect(my_db)
-    + }
-    Error: `overscope_eval_next()` is deprecated as of rlang 0.2.0.
-    Please use `eval_tidy()` with a data mask instead.
-    Error: `overscope_clean()` is deprecated as of rlang 0.2.0.
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-                 on.exit(overscope_clean(overscope))
-                 escape(overscope_eval_next(overscope, x), con = con)
-             }
-         })
-      27: FUN(X[[i]], ...)
-      28: overscope_clean(overscope)
-      29: stop_defunct("`overscope_clean()` is deprecated as of rlang 0.2.0.") at /private/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T/RtmpHM1jVc/R.INSTALL6098fd919a6/rlang/R/lifecycle-retired.R:1139
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 1 SKIPPED: 17 WARNINGS: 1 FAILED: 2
-      1. Error: test_replyr_copy_from.R (@test_replyr_copy_from.R#10) 
-      2. Error: test_replyr_copy_from.R (@test_replyr_copy_from.R#10) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    ...
-        intersect, setdiff, setequal, union
-    
-    Quitting from lines 203-216 (replyr.Rmd) 
-    Quitting from lines 203-216 (replyr.Rmd) 
-    Error: processing vignette 'replyr.Rmd' failed with diagnostics:
-    `overscope_clean()` is deprecated as of rlang 0.2.0.
-    --- failed re-building ‘replyr.Rmd’
-    
-    --- re-building ‘summary.Rmd’ using rmarkdown
-    Quitting from lines 26-47 (summary.Rmd) 
-    Quitting from lines 26-47 (summary.Rmd) 
-    Error: processing vignette 'summary.Rmd' failed with diagnostics:
-    `overscope_clean()` is deprecated as of rlang 0.2.0.
-    --- failed re-building ‘summary.Rmd’
-    
-    SUMMARY: processing the following files failed:
-      ‘coalesce.Rmd’ ‘DependencySorting.Rmd’ ‘joinController.Rmd’
-      ‘replyr.Rmd’ ‘summary.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
 ## In both
 
 *   checking Rd cross-references ... NOTE
@@ -4683,34 +3825,12 @@ Version: 2.3.0
 
 Version: 2.0.8
 
-## Newly broken
-
-*   checking whether package ‘RSDA’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘ggplot2::vars’ by ‘rlang::vars’ when loading ‘RSDA’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/RSDA/new/RSDA.Rcheck/00install.out’ for details.
-    ```
-
 ## In both
 
 *   checking dependencies in R code ... NOTE
     ```
     Namespace in Imports field not imported from: ‘randomcoloR’
       All declared Imports should be used.
-    ```
-
-# rsimsum
-
-Version: 0.5.2
-
-## Newly broken
-
-*   checking whether package ‘rsimsum’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘ggplot2::vars’ by ‘rlang::vars’ when loading ‘rsimsum’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/rsimsum/new/rsimsum.Rcheck/00install.out’ for details.
     ```
 
 # RtutoR
@@ -4861,34 +3981,6 @@ Version: 0.28
     See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/sdcTable/new/sdcTable.Rcheck/00install.out’ for details.
     ```
 
-# sealr
-
-Version: 0.1.1
-
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      1: expect_equal(ncol(ls_objects(class = "data.frame", pkgs = "package:datasets", nms = TRUE, 
-             eval = TRUE)), 4L) at testthat/test-object-context.R:17
-      2: quasi_label(enquo(object), label, arg = "object")
-      3: eval_bare(get_expr(quo), get_env(quo))
-      4: ncol(ls_objects(class = "data.frame", pkgs = "package:datasets", nms = TRUE, eval = TRUE)) at /private/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T/RtmpHM1jVc/R.INSTALL6098fd919a6/rlang/R/eval.R:99
-      5: ls_objects(class = "data.frame", pkgs = "package:datasets", nms = TRUE, eval = TRUE)
-      6: rlang::quo_expr(environment) at /Users/lionel/Desktop/rlang/revdep/checks.noindex/sealr/new/sealr.Rcheck/00_pkg_src/sealr/R/collect.R:107
-      7: stop_defunct(paste_line("`quo_expr()` is deprecated as of rlang 0.2.0.", "Please use `quo_squash()` instead.")) at /private/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T/RtmpHM1jVc/R.INSTALL6098fd919a6/rlang/R/lifecycle-retired.R:1098
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 34 SKIPPED: 4 WARNINGS: 4 FAILED: 1
-      1. Error: filter (@test-object-context.R#17) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
 # sensobol
 
 Version: 0.2.0
@@ -5015,9 +4107,9 @@ Version: 1.3.2
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 10.9Mb
+      installed size is 11.9Mb
       sub-directories of 1Mb or more:
-        R     2.1Mb
+        R     3.0Mb
         www   7.9Mb
     ```
 
@@ -5116,80 +4208,6 @@ Version: 0.1.0
       All declared Imports should be used.
     ```
 
-# srvyr
-
-Version: 0.3.4
-
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 103 SKIPPED: 0 WARNINGS: 7 FAILED: 14
-      1. Error: DB backed survey tests - RSQLite (@test_database.R#39) 
-      2. Error: DB backed survey tests - RSQLite (@test_database.R#39) 
-      3. Error: Can get replicate weight surveys - RSQLite (@test_database.R#120) 
-      4. Error: Can get replicate weight surveys - RSQLite (@test_database.R#120) 
-      5. Error: Can use as_survey (@test_database.R#139) 
-      6. Error: Can use as_survey (@test_database.R#139) 
-      7. Error: DB backed survey tests - MonetDBLite (@test_database.R#39) 
-      8. Error: DB backed survey tests - MonetDBLite (@test_database.R#39) 
-      9. Error: Can get replicate weight surveys - MonetDBLite (@test_database.R#120) 
-      1. ...
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
-*   checking whether package ‘srvyr’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘rlang::vars’ by ‘dplyr::vars’ when loading ‘srvyr’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/srvyr/new/srvyr.Rcheck/00install.out’ for details.
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    ...
-    
-        filter, lag
-    
-    The following objects are masked from 'package:base':
-    
-        intersect, setdiff, setequal, union
-    
-    
-    Attaching package: 'srvyr'
-    
-    The following object is masked from 'package:stats':
-    
-        filter
-    
-    --- finished re-building ‘srvyr-vs-survey.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘srvyr-database.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
-# stability
-
-Version: 0.5.0
-
-## Newly broken
-
-*   checking whether package ‘stability’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘ggplot2::vars’ by ‘rlang::vars’ when loading ‘stability’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/stability/new/stability.Rcheck/00install.out’ for details.
-    ```
-
 # stars
 
 Version: 0.3-1
@@ -5264,27 +4282,18 @@ Version: 0.2.1
 
 Version: 0.2.4
 
-## Newly broken
-
-*   checking whether package ‘sugrrants’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘rlang::vars’ by ‘dplyr::vars’ when loading ‘sugrrants’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/sugrrants/new/sugrrants.Rcheck/00install.out’ for details.
-    ```
-
 ## In both
 
 *   checking re-building of vignette outputs ... WARNING
     ```
     ...
+    
     The following objects are masked from 'package:base':
     
         intersect, setdiff, setequal, union
     
     Loading required package: viridisLite
     Loading required package: ggplot2
-    Warning: replacing previous import 'rlang::vars' by 'dplyr::vars' when loading 'sugrrants'
     Argument `week_start` only works for the monthly calendar.
     Argument `week_start` only works for the monthly calendar.
     pandoc-citeproc: when expecting a product (:*:), encountered Object instead
@@ -5304,15 +4313,6 @@ Version: 0.2.4
 # SummarizedBenchmark
 
 Version: 2.0.1
-
-## Newly broken
-
-*   checking whether package ‘SummarizedBenchmark’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘dplyr::vars’ by ‘rlang::vars’ when loading ‘SummarizedBenchmark’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/SummarizedBenchmark/new/SummarizedBenchmark.Rcheck/00install.out’ for details.
-    ```
 
 ## In both
 
@@ -5380,7 +4380,7 @@ Version: 2.0.1
     ```
       installed size is 15.5Mb
       sub-directories of 1Mb or more:
-        data  11.1Mb
+        data  11.2Mb
         doc    3.4Mb
     ```
 
@@ -5419,96 +4419,25 @@ Version: 2.0.1
     field contains 'methods').
     ```
 
-# surveydata
-
-Version: 0.2.3
-
-## Newly broken
-
-*   checking whether package ‘surveydata’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘ggplot2::vars’ by ‘rlang::vars’ when loading ‘surveydata’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/surveydata/new/surveydata.Rcheck/00install.out’ for details.
-    ```
-
 # survivalAnalysis
 
 Version: 0.1.1
 
 ## Newly broken
 
-*   checking examples ... ERROR
-    ```
-    ...
-    
-    Attaching package: ‘dplyr’
-    
-    The following objects are masked from ‘package:stats’:
-    
-        filter, lag
-    
-    The following objects are masked from ‘package:base’:
-    
-        intersect, setdiff, setequal, union
-    
-    > survival::colon %>%
-    +    analyse_multivariate(vars(time, status),
-    +                         vars(rx, sex, age, obstruct, perfor, nodes, differ, extent)) %>%
-    +    print()
-    Warning: `quo_is_lang()` is deprecated as of rlang 0.2.0.
-    Please use `quo_is_call()` instead.
-    This warning is displayed once per session.
-    Error: `quo_expr()` is deprecated as of rlang 0.2.0.
-    Please use `quo_squash()` instead.
-    Execution halted
-    ```
-
-*   checking whether package ‘survivalAnalysis’ can be installed ... WARNING
+*   checking examples ... WARNING
     ```
     Found the following significant warnings:
-      Warning: replacing previous import ‘ggplot2::vars’ by ‘rlang::vars’ when loading ‘survivalAnalysis’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/survivalAnalysis/new/survivalAnalysis.Rcheck/00install.out’ for details.
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    ...
-    ── Attaching packages ────────────────────────────────── tidyverse 1.2.1 ──
-    ✔ ggplot2 3.1.1     ✔ purrr   0.3.2
-    ✔ tibble  2.1.3     ✔ dplyr   0.8.1
-    ✔ tidyr   0.8.3     ✔ stringr 1.4.0
-    ✔ readr   1.3.1     ✔ forcats 0.4.0
-    ── Conflicts ───────────────────────────────────── tidyverse_conflicts() ──
-    ✖ dplyr::filter() masks stats::filter()
-    ✖ dplyr::lag()    masks stats::lag()
-    Warning: replacing previous import 'dplyr::vars' by 'rlang::vars' when loading 'tidytidbits'
-    Warning: replacing previous import 'ggplot2::vars' by 'rlang::vars' when loading 'survivalAnalysis'
-    Quitting from lines 54-56 (univariate.Rmd) 
-    Error: processing vignette 'univariate.Rmd' failed with diagnostics:
-    `quo_expr()` is deprecated as of rlang 0.2.0.
-    Please use `quo_squash()` instead.
-    --- failed re-building ‘univariate.Rmd’
     
-    SUMMARY: processing the following files failed:
-      ‘multivariate.Rmd’ ‘univariate.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
+      Warning: Passing an environment wrapper like a `quosure/formula` object is deprecated.
+    Deprecated functions may be defunct as soon as of the next release
+    of R.
+    See ?Deprecated.
     ```
 
 # SWMPrExtension
 
 Version: 0.3.16
-
-## Newly broken
-
-*   checking whether package ‘SWMPrExtension’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘ggplot2::vars’ by ‘rlang::vars’ when loading ‘SWMPrExtension’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/SWMPrExtension/new/SWMPrExtension.Rcheck/00install.out’ for details.
-    ```
 
 ## In both
 
@@ -5592,19 +4521,6 @@ Version: 0.3.2
       All declared Imports should be used.
     ```
 
-# tbrf
-
-Version: 0.1.2
-
-## Newly broken
-
-*   checking whether package ‘tbrf’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘dplyr::vars’ by ‘rlang::vars’ when loading ‘tbrf’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/tbrf/new/tbrf.Rcheck/00install.out’ for details.
-    ```
-
 # tealeaves
 
 Version: 1.0.0
@@ -5641,114 +4557,6 @@ Version: 0.0.1
     ```
     Namespace in Imports field not imported from: ‘stringr’
       All declared Imports should be used.
-    ```
-
-# tfdatasets
-
-Version: 1.13.1
-
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 86 SKIPPED: 2 WARNINGS: 9 FAILED: 9
-      1. Failure: dataset_prepare yields list of x and y tensors 
-      2. Failure: dataset_prepare accepts formula syntax 
-      3. Failure: dataset_prepare can fuse dataset_batch 
-      4. Failure: dataset_prepare does not require y 
-      5. Failure: dataset_prepare can return named features 
-      6. Failure: dataset_prepare can return an unnamed list 
-      7. Failure: dataset_prepare can provide keras input tensors 
-      8. Failure: input_fn supports tidyselect 
-      9. Failure: input_fn accepts formula syntax 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
-# tfestimators
-
-Version: 1.9.1
-
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 45 SKIPPED: 0 WARNINGS: 23 FAILED: 24
-      1. Failure: boosted_trees_regressor() runs successfully (@helper-utils.R#21) 
-      2. Failure: boosted_trees_classifier() runs successfully (@helper-utils.R#21) 
-      3. Failure: boosted_trees_classifier() runs successfully with integer labels (@helper-utils.R#21) 
-      4. Failure: linear_dnn_combined_regressor() runs successfully (@helper-utils.R#21) 
-      5. Failure: linear_dnn_combined_classifier() runs successfully (@helper-utils.R#21) 
-      6. Error: (unknown) (@test-estimator-utils.R#12) 
-      7. Failure: feature columns can be constructed correctly (@helper-utils.R#21) 
-      8. Failure: feature columns can be constructed with (cond) ~ (op) syntax (@helper-utils.R#21) 
-      9. Failure: duplicates columns are dropped (@helper-utils.R#21) 
-      1. ...
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
-# tidyhydat
-
-Version: 0.4.0
-
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 77 SKIPPED: 17 WARNINGS: 3 FAILED: 151
-      1. Error: hy_annual_instant_peaks accepts single and multiple province arguments (@test_hy_annual_instant_peaks.R#6) 
-      2. Error: hy_annual_instant_peaks accepts single and multiple province arguments (@test_hy_annual_instant_peaks.R#6) 
-      3. Error: hy_annual_instant_peaks accepts single and multiple province arguments (@test_hy_annual_instant_peaks.R#23) 
-      4. Error: hy_annual_instant_peaks accepts single and multiple province arguments (@test_hy_annual_instant_peaks.R#23) 
-      5. Error: hy_annual_instant_peaks gather data when no arguments are supplied (@test_hy_annual_instant_peaks.R#53) 
-      6. Error: hy_annual_instant_peaks gather data when no arguments are supplied (@test_hy_annual_instant_peaks.R#53) 
-      7. Error: hy_annual_instant_peaks respects year inputs (@test_hy_annual_instant_peaks.R#62) 
-      8. Error: hy_annual_instant_peaks respects year inputs (@test_hy_annual_instant_peaks.R#62) 
-      9. Error: hy_annual_stats accepts single and multiple province arguments (@test_hy_annual_stats.R#5) 
-      1. ...
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error(s) in re-building vignettes:
-      ...
-    --- re-building ‘tidyhydat_an_introduction.Rmd’ using rmarkdown
-    --- finished re-building ‘tidyhydat_an_introduction.Rmd’
-    
-    --- re-building ‘tidyhydat_example_analysis.Rmd’ using rmarkdown
-    --- finished re-building ‘tidyhydat_example_analysis.Rmd’
-    
-    --- re-building ‘tidyhydat_hydat_db.Rmd’ using rmarkdown
-    Quitting from lines 61-64 (tidyhydat_hydat_db.Rmd) 
-    Quitting from lines 61-64 (tidyhydat_hydat_db.Rmd) 
-    Error: processing vignette 'tidyhydat_hydat_db.Rmd' failed with diagnostics:
-    `overscope_clean()` is deprecated as of rlang 0.2.0.
-    --- failed re-building ‘tidyhydat_hydat_db.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘tidyhydat_hydat_db.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
     ```
 
 # tidyinftheo
@@ -5811,11 +4619,12 @@ Version: 0.0.2
 
 ## In both
 
-*   checking dependencies in R code ... NOTE
+*   checking package dependencies ... ERROR
     ```
-    Namespaces in Imports field not imported from:
-      ‘broom’ ‘dials’ ‘parsnip’
-      All declared Imports should be used.
+    Package required but not available: ‘tidytext’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
 # tidymv
@@ -5828,57 +4637,6 @@ Version: 2.1.0
     ```
     Namespace in Imports field not imported from: ‘cowplot’
       All declared Imports should be used.
-    ```
-
-# tidypredict
-
-Version: 0.3.0
-
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘tidypredict-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: tidypredict_sql
-    > ### Title: Returns a SQL query with formula to calculate fitted values
-    > ### Aliases: tidypredict_sql
-    > ### Keywords: internal
-    > 
-    > ### ** Examples
-    > 
-    > library(dbplyr)
-    Warning: replacing previous import ‘dplyr::vars’ by ‘rlang::vars’ when loading ‘dbplyr’
-    > 
-    > model <- lm(mpg ~ wt + am + cyl, data = mtcars)
-    > tidypredict_sql(model, simulate_dbi())
-    Error: `overscope_eval_next()` is deprecated as of rlang 0.2.0.
-    Please use `eval_tidy()` with a data mask instead.
-    Error: `overscope_clean()` is deprecated as of rlang 0.2.0.
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-                 on.exit(overscope_clean(overscope))
-                 escape(overscope_eval_next(overscope, x), con = con)
-             }
-         })
-      8: FUN(X[[i]], ...)
-      9: overscope_clean(overscope)
-      10: stop_defunct("`overscope_clean()` is deprecated as of rlang 0.2.0.") at /private/var/folders/b9/1vbq6rn93_1fk71sn95dqb8r0000gn/T/RtmpHM1jVc/R.INSTALL6098fd919a6/rlang/R/lifecycle-retired.R:1139
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 34 SKIPPED: 0 WARNINGS: 1 FAILED: 2
-      1. Error: Correct SQL query is returned (@test-sql.R#4) 
-      2. Error: Correct SQL query is returned (@test-sql.R#4) 
-      
-      Error: testthat unit tests failed
-      Execution halted
     ```
 
 # tidyquant
@@ -5906,16 +4664,7 @@ Version: 0.8.3
 
 # tidytext
 
-Version: 0.2.0
-
-## Newly broken
-
-*   checking whether package ‘tidytext’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘dplyr::vars’ by ‘rlang::vars’ when loading ‘tidytext’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/tidytext/new/tidytext.Rcheck/00install.out’ for details.
-    ```
+Version: 0.2.1
 
 ## In both
 
@@ -5931,31 +4680,14 @@ Version: 0.2.0
 
 ## Newly broken
 
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘tidytidbits-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: eval_unquoted
-    > ### Title: Execute code after tidy evaluation
-    > ### Aliases: eval_unquoted
-    > 
-    > ### ** Examples
-    > 
-    > library(rlang)
-    > # Note that evaluation takes place in the calling environment!
-    > l <- quo(l <- 1) # l is a quosure in our env
-    > eval_unquoted(!!l)
-    Error: `quo_expr()` is deprecated as of rlang 0.2.0.
-    Please use `quo_squash()` instead.
-    Execution halted
-    ```
-
-*   checking whether package ‘tidytidbits’ can be installed ... WARNING
+*   checking examples ... WARNING
     ```
     Found the following significant warnings:
-      Warning: replacing previous import ‘dplyr::vars’ by ‘rlang::vars’ when loading ‘tidytidbits’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/tidytidbits/new/tidytidbits.Rcheck/00install.out’ for details.
+    
+      Warning: Passing an environment wrapper like a `quosure/formula` object is deprecated.
+    Deprecated functions may be defunct as soon as of the next release
+    of R.
+    See ?Deprecated.
     ```
 
 # tidytransit
@@ -6242,19 +4974,6 @@ Version: 1.0.1
     Package unavailable to check Rd xrefs: ‘usethis’
     ```
 
-# VWPre
-
-Version: 1.1.0
-
-## Newly broken
-
-*   checking whether package ‘VWPre’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘ggplot2::vars’ by ‘rlang::vars’ when loading ‘VWPre’
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/VWPre/new/VWPre.Rcheck/00install.out’ for details.
-    ```
-
 # weathercan
 
 Version: 0.2.8
@@ -6275,29 +4994,6 @@ Version: 0.2.8
 # wordbankr
 
 Version: 0.3.0
-
-## Newly broken
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error(s) in re-building vignettes:
-      ...
-    --- re-building ‘wordbankr.Rmd’ using rmarkdown
-    Warning: replacing previous import 'dplyr::vars' by 'rlang::vars' when loading 'dbplyr'
-    Warning in .local(conn, statement, ...) :
-      Decimal MySQL column 6 imported as numeric
-    Quitting from lines 31-33 (wordbankr.Rmd) 
-    Quitting from lines 31-33 (wordbankr.Rmd) 
-    Error: processing vignette 'wordbankr.Rmd' failed with diagnostics:
-    `overscope_clean()` is deprecated as of rlang 0.2.0.
-    --- failed re-building ‘wordbankr.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘wordbankr.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
 
 ## In both
 
