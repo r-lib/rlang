@@ -538,6 +538,23 @@ as.character.quosure <- function(x, ...) {
   NextMethod()
 }
 
+#' @export
+`[.quosure` <- function(x, i, ...) {
+  signal_soft_deprecated(c(
+    "Subsetting quosures with `[` is deprecated as of rlang 0.4.0",
+    "Please use `quo_get_expr()` instead."
+  ))
+  NextMethod()
+}
+#' @export
+`[[.quosure` <- function(x, i, ...) {
+  signal_soft_deprecated(c(
+    "Subsetting quosures with `[[` is deprecated as of rlang 0.4.0",
+    "Please use `quo_get_expr()` instead."
+  ))
+  NextMethod()
+}
+
 # Create a circular list of colours. This infloops if printed in the REPL!
 new_quo_palette <- function() {
   last_node <- new_node(open_cyan, NULL)

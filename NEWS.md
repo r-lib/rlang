@@ -98,6 +98,7 @@
 * New functions for weak references: `new_weakref()`, `weakref_key()`,
   `weakref_value()`, and `is_weakref()` (@wch, #787).
 
+
 ## Lifecycle
 
 * `modify()` and `prepend()` (two experimental functions marked as in
@@ -124,6 +125,8 @@
 
 * `lang_type_of()`, `switch_lang()`, and `coerce_lang()` were
   archived. These functions were not used on CRAN or internally.
+
+* Subsetting quosures with `[` or `[[` is soft-deprecated.
 
 * All functions that were soft-deprecated, deprecated, or defunct in
   previous releases have been bumped to the next lifecycle stage.
