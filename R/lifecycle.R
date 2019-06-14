@@ -171,6 +171,11 @@
 #'   reason, passing a width as `.named` argument of dots collectors
 #'   like `quos()` is deprecated.
 #'
+#' * `as_overscope()` => [as_data_mask()]
+#' * `new_overscope()` => [new_data_mask()]
+#' * `overscope_eval_next()` => [eval_tidy()]
+#' * `overscope_clean()`
+#'
 #'
 #' @section Defunct functions and arguments:
 #'
@@ -179,10 +184,6 @@
 #' **Defunct as of rlang 0.4.0**
 #'
 #' * `quo_expr()` => [quo_squash()]
-#' * `as_overscope()` => [as_data_mask()]
-#' * `new_overscope()` => [new_data_mask()]
-#' * `overscope_clean()`
-#' * `overscope_eval_next()` => [eval_tidy()]
 #' * `length()` and `names()` on tidy eval `.data` pronouns.
 #' * Supplying a named `!!!` call.
 #'
