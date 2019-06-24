@@ -236,6 +236,7 @@ reference:
       - is_true
       - is_false
       - is_string
+      - is_bool
       - is_bare_string
   - title: Operators
     contents:
@@ -267,3 +268,7 @@ reference:
     contents:
       - matches("interactive")
       - matches("option")
+  - title: Weak references
+    contents:
+      - matches("weakref")
+      - matches("wref")
