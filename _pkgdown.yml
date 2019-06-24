@@ -175,25 +175,11 @@ reference:
       - dbl
       - cpl
       - chr
-      - bytes
       - list2
-      - string
       - rep_along
       - rep_named
       - seq2
       - seq2_along
-      - new_logical
-      - new_integer
-      - new_double
-      - new_complex
-      - new_character
-      - new_raw
-      - new_list
-  - title: Missing values
-    contents:
-      - starts_with("na_")
-      - are_na
-      - is_na
   - title: Attributes
     contents:
       - set_names
@@ -262,7 +248,6 @@ reference:
   - title: Condition handlers
     contents:
       - with_handlers
-      - exiting
       - calling
   - title: Session state
     contents:
