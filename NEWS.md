@@ -1,15 +1,81 @@
 
 # rlang 0.3.99.9000
 
+## Tidy evaluation
+
+### Interpolate function inputs with the curly-curly operator
+
+The main change of this release is the new tidy evaluation operator
+`{{`.  This operator abstracts the quote-and-unquote idiom into a
+single interpolation step:
+
+```
+my_wrapper <- function(data, var, by) {
+  data %>%
+    group_by({{ by }}) %>%
+    summarise(average = mean({{ var }}, na.rm = TRUE))
+}
+```
+
+`{{ var }}` is a shortcut for `!!enquo(var)` that should be easier on
+the eyes, and easier to learn and teach.
+
+Note that for multiple inputs, the existing documentation doesn't
+stress enough that you can just pass dots straight to other tidy eval
+functions. There is no need for quote-and-unquote unless you need to
+modify the inputs or their names in some way:
+
+```
+my_wrapper <- function(data, var, ...) {
+  data %>%
+    group_by(...) %>%
+    summarise(average = mean({{ var }}, na.rm = TRUE))
+}
+```
+
+
+### More robust `.env` pronoun
+
+Another improvement to tidy evaluation should make it easier to use
+the `.env` pronoun. Starting from this release, subsetting an object
+from the `.env` pronoun now evaluates the corresponding symbol. This
+makes `.env` more robust, in particular in magrittr pipelines. The
+following example would previously fail:
+
+```
+foo <- 10
+mtcars %>% mutate(cyl = cyl * .env$foo)
+```
+
+This way, using the `.env` pronoun is now equivalent to unquoting a
+constant objects, but with an easier syntax:
+
+```
+mtcars %>% mutate(cyl = cyl * !!foo)
+```
+
+Note that following this change, and despite its name, `.env` is no
+longer referring to a bare environment. Instead, it is a special
+shortcut with its own rules. Similarly, the `.data` pronoun is not
+really a data frame.
+
+
+## New functions and features
+
+* New `pairlist2()` function with splicing support. It preserves
+  missing arguments, which makes it useful for lists of formal
+  parameters for functions.
+
 * `is_bool()` is a scalar type predicate that checks whether its input
   is a single `TRUE` or `FALSE`. Like `is_string()`, it returns
   `FALSE` when the input is missing. This is useful for type-checking
   function arguments (#695).
 
-* Lists of quosures now have pillar methods for display in tibbles.
+* `is_string()` gains a `string` argument. `is_string(x, "foo")` is a
+  shortcut for `is_character(x) && length(x) == 1 && identical(x,
+  "foo")`.
 
-* The performance of `exec()` has been improved. It is now on the same
-  order of performance as `do.call()`, though slightly slower.
+* Lists of quosures now have pillar methods for display in tibbles.
 
 * `set_names()` now names unnamed input vectors before applying a
   function. The following expressions are now equivalent:
@@ -19,6 +85,34 @@
 
   letters %>% set_names(toupper)
   ```
+
+* You can now pass a character vector as message argument for
+  `abort()`, `warn()`, `inform()`, and `signal()`. The vector is
+  collapsed to a single string with a `"\n"` newline separating each
+  element of the input vector (#744).
+
+* `maybe_missing()` gains a `default` argument.
+
+* New functions for weak references: `new_weakref()`, `weakref_key()`,
+  `weakref_value()`, and `is_weakref()` (@wch, #787).
+
+
+## Performance
+
+* The performance of `exec()` has been improved. It is now on the same
+  order of performance as `do.call()`, though slightly slower.
+
+* `call2()` now uses the new `pairlist2()` function internally. This
+  considerably improves its performance. This also means it now
+  preserves empty arguments:
+
+  ```
+  call2("fn", 1, , foo = )
+  #> fn(1, , foo = )
+  ```
+
+
+## Bugfixes and small improvements
 
 * `with_handlers()` now installs calling handlers first on the stack,
   no matter their location in the argument list. This way they always
@@ -30,11 +124,6 @@
   Functions inheriting indirectly no longer have a namespace
   qualifier (#733).
 
-* You can now pass a character vector as message argument for
-  `abort()`, `warn()`, `inform()`, and `signal()`. The vector is
-  collapsed to a single string with a `"\n"` newline separating each
-  element of the input vector (#744).
-
 * `options(error = rlang::entrace)` now has better support for errors
   thrown from C (#779). It also saves structured errors in the `error`
   field of `rlang::last_error()`.
@@ -43,57 +132,23 @@
   functions and environments consisently. They also require an
   argument from now on.
 
-* `is_string()` gains a `string` argument. `is_string(x, "foo")` is a
-  shortcut for `is_character(x) && length(x) == 1 && identical(x,
-  "foo")`.
-
 * `is_interactive()` is aware of the `TESTTHAT` environment variable and
   returns `FALSE` when it is `"true"` (@jennybc, #738).
 
 * `fn_fmls()` and variants no longer coerce their input to a
   closure. Instead, they throw an error.
 
-* `call2()` now uses `pairlist2()` internally. This considerably
-  improves its performance. This also means it now preserves empty
-  arguments:
-
-  ```
-  call2("fn", 1, , foo = )
-  #> fn(1, , foo = )
-  ```
-
-* New `pairlist2()` function with splicing support. It preserves
-  missing arguments, which makes it useful for lists of formal
-  parameters for functions.
-
-* We commit to support 5 versions of R. As R 3.6 is about to be
-  released, rlang now requires R 3.2 or greater.
-
 * Fixed an issue in knitr that caused backtraces to print even when `error = TRUE`.
-
-* `maybe_missing()` gains a `default` argument.
-
-* Quoting functions gain a new interpolation operator `{{`. This is a
-  shortcut for `!!enquo(arg)`. It is less powerful than `!!` but
-  should be easier to learn because it is focused on a narrower task
-  and should look familiar to users of the glue package.
-
-* Subsetting an object from the `.env` pronoun now evaluates the
-  corresponding symbol. This means you can now retrieve objects from
-  the contextual environment in magrittr pipes.
-
-  Note that following this change, and despite its name, `.env` is not
-  really an environment but a special shortcut, just like `.data` is
-  not really a data frame.
 
 * The return object from `as_function()` now inherits from
   `"function"` (@richierocks, #735).
 
-* New functions for weak references: `new_weakref()`, `weakref_key()`,
-  `weakref_value()`, and `is_weakref()` (@wch, #787).
-
 
 ## Lifecycle
+
+We commit to support 5 versions of R. As R 3.6 is about to be
+released, rlang now requires R 3.2 or greater. We're also continuing
+our efforts to streamline and narrow the rlang API.
 
 * `modify()` and `prepend()` (two experimental functions marked as in
   the questioning stage since rlang 0.3.0) are now deprecated. Vector
