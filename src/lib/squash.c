@@ -51,8 +51,9 @@ static r_ssize atom_squash(enum r_type kind, squash_info_t info,
     n_inner = r_vec_length(maybe_unbox(inner, is_spliceable));
 
     if (depth != 0 && is_spliceable(inner)) {
-      inner = maybe_unbox(inner, is_spliceable);
+      inner = PROTECT(maybe_unbox(inner, is_spliceable));
       count = atom_squash(kind, info, inner, out, count, is_spliceable, depth - 1);
+      UNPROTECT(1);
     } else if (n_inner) {
       r_vec_poke_coerce_n(out, count, inner, 0, n_inner);
 
@@ -91,8 +92,9 @@ static r_ssize list_squash(squash_info_t info, sexp* outer,
     inner = VECTOR_ELT(outer, i);
 
     if (depth != 0 && is_spliceable(inner)) {
-      inner = maybe_unbox(inner, is_spliceable);
+      inner = PROTECT(maybe_unbox(inner, is_spliceable));
       count = list_squash(info, inner, out, count, is_spliceable, depth - 1);
+      UNPROTECT(1);
     } else {
       SET_VECTOR_ELT(out, count, inner);
 
@@ -162,8 +164,9 @@ static void squash_info(squash_info_t* info, sexp* outer,
 
     if (depth != 0 && is_spliceable(inner)) {
       update_info_outer(info, outer, i);
-      inner = maybe_unbox(inner, is_spliceable);
+      inner = PROTECT(maybe_unbox(inner, is_spliceable));
       squash_info(info, inner, is_spliceable, depth - 1);
+      UNPROTECT(1);
     } else if (info->recursive || r_vec_length(inner)) {
       update_info_inner(info, outer, i, inner);
     }

@@ -658,7 +658,6 @@ static sexp* dots_finalise(struct dots_capture_info* capture_info, sexp* dots) {
     // because of the conversion to pairlist
     nms = KEEP(rlang_unescape_character(nms));
     r_poke_names(dots, nms);
-    FREE(1);
 
     dots = KEEP(maybe_auto_name(dots, capture_info->named));
 
@@ -669,7 +668,7 @@ static sexp* dots_finalise(struct dots_capture_info* capture_info, sexp* dots) {
     case DOTS_HOMONYMS_ERROR: dots_check_homonyms(dots, nms); break;
     }
 
-    FREE(1);
+    FREE(2);
   }
 
   return dots;
