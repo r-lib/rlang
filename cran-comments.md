@@ -1,4 +1,6 @@
 
+LTO warnings should be fixed.
+
 ## Test environments
 
 * local OS X install: release
