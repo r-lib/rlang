@@ -79,7 +79,7 @@ cpl <- function(...) {
 #' @export
 #' @export
 chr <- function(...) {
-  out <- .Call(rlang_squash, dots_values(...), "character", is_spliced_bare, 1L)
+  .Call(rlang_squash, dots_values(...), "character", is_spliced_bare, 1L)
 }
 #' @rdname vector-construction
 #' @export
