@@ -47,6 +47,16 @@
 <![endif]-->
 
 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-115082821-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-115082821-1');
+</script>
+
   </head>
 
   <body>
@@ -63,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.99.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9000</span>
       </span>
     </div>
 
@@ -143,7 +153,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>type</th>
-      <td><p>A type as returned by <code><a href='type_of.html'>type_of()</a></code> or <code><a href='switch_lang.html'>lang_type_of()</a></code>.</p></td>
+      <td><p>A type as returned by <code><a href='https://www.rdocumentation.org/packages/base/topics/typeof'>typeof()</a></code>.</p></td>
     </tr>
     </table>
     
@@ -156,7 +166,7 @@ indefinite article.</p>
 
     
     <ul>
-<li><p>Like <code><a href='type_of.html'>type_of()</a></code>, <code>friendly_type()</code> is experimental.</p></li>
+<li><p><code>friendly_type()</code> is experimental.</p></li>
 </ul>
     
 

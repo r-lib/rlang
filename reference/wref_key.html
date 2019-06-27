@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract function from a call — call_fn • rlang</title>
+<title>Get key/value from a weak reference object — wref_key • rlang</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,11 +30,9 @@
 
 
 
-<meta property="og:title" content="Extract function from a call — call_fn" />
+<meta property="og:title" content="Get key/value from a weak reference object — wref_key" />
 
-<meta property="og:description" content="If a frame or formula, the function will be retrieved from the
-associated environment. Otherwise, it is looked up in the calling
-frame." />
+<meta property="og:description" content="Get key/value from a weak reference object" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -137,83 +135,43 @@ frame." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract function from a call</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/call.R'><code>R/call.R</code></a></small>
-    <div class="hidden name"><code>call_fn.Rd</code></div>
+    <h1>Get key/value from a weak reference object</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/weakref.R'><code>R/weakref.R</code></a></small>
+    <div class="hidden name"><code>wref_key.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>If a frame or formula, the function will be retrieved from the
-associated environment. Otherwise, it is looked up in the calling
-frame.</p>
+    <p>Get key/value from a weak reference object</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>call_fn</span>(<span class='no'>call</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>())</pre>
+    <pre class="usage"><span class='fu'>wref_key</span>(<span class='no'>x</span>)
+
+<span class='fu'>wref_value</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>call</th>
-      <td><p>Can be a call or a quosure that wraps a call.</p></td>
-    </tr>
-    <tr>
-      <th>env</th>
-      <td><p>The environment where to find the definition of the
-function quoted in <code>call</code> in case <code>call</code> is not wrapped in a
-quosure.</p></td>
+      <th>x</th>
+      <td><p>A weak reference object.</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
-
-    
-    <p>In rlang 0.2.0, <code><a href='lang_modify.html'>lang_fn()</a></code> was deprecated and renamed to
-<code>call_fn()</code>. See lifecycle section in <code><a href='call2.html'>call2()</a></code> for more about this
-change.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='call_name.html'>call_name()</a></code></p></div>
+    <div class='dont-index'><p><code><a href='is_weakref.html'>is_weakref()</a></code> and <code><a href='new_weakref.html'>new_weakref()</a></code>.</p></div>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Extract from a quoted call:</span>
-<span class='fu'>call_fn</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>()))</div><div class='output co'>#&gt; function (data = NA, nrow = 1, ncol = 1, byrow = FALSE, dimnames = NULL) 
-#&gt; {
-#&gt;     if (is.object(data) || !is.atomic(data)) 
-#&gt;         data &lt;- as.vector(data)
-#&gt;     .Internal(matrix(data, nrow, ncol, byrow, dimnames, missing(nrow), 
-#&gt;         missing(ncol)))
-#&gt; }
-#&gt; &lt;bytecode: 0x19a1588&gt;
-#&gt; &lt;environment: namespace:base&gt;</div><div class='input'><span class='fu'>call_fn</span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>()))</div><div class='output co'>#&gt; function (data = NA, nrow = 1, ncol = 1, byrow = FALSE, dimnames = NULL) 
-#&gt; {
-#&gt;     if (is.object(data) || !is.atomic(data)) 
-#&gt;         data &lt;- as.vector(data)
-#&gt;     .Internal(matrix(data, nrow, ncol, byrow, dimnames, missing(nrow), 
-#&gt;         missing(ncol)))
-#&gt; }
-#&gt; &lt;bytecode: 0x19a1588&gt;
-#&gt; &lt;environment: namespace:base&gt;</div><div class='input'>
-<span class='co'># Extract the calling function</span>
-<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>call_fn</span>(<span class='fu'><a href='stack.html'>call_frame</a></span>())
-<span class='fu'>test</span>()</div><div class='output co'>#&gt; function() call_fn(call_frame())
-#&gt; &lt;environment: 0x66e1f68&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#life-cycle">Life cycle</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+          </ul>
 
   </div>
 </div>

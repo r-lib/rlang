@@ -316,6 +316,9 @@
     <loc>https://rlang.r-lib.org/reference/is_true.html</loc>
   </url>
   <url>
+    <loc>https://rlang.r-lib.org/reference/is_weakref.html</loc>
+  </url>
+  <url>
     <loc>https://rlang.r-lib.org/reference/lang.html</loc>
   </url>
   <url>
@@ -362,6 +365,9 @@
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/new_quosures.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/new_weakref.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/ns_env.html</loc>
@@ -472,9 +478,6 @@
     <loc>https://rlang.r-lib.org/reference/string.html</loc>
   </url>
   <url>
-    <loc>https://rlang.r-lib.org/reference/switch_lang.html</loc>
-  </url>
-  <url>
     <loc>https://rlang.r-lib.org/reference/switch_type.html</loc>
   </url>
   <url>
@@ -518,6 +521,9 @@
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/with_restarts.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/wref_key.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/zap.html</loc>

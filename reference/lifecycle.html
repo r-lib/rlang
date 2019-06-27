@@ -54,6 +54,16 @@ sections that explain the reasons for their retirements." />
 <![endif]-->
 
 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-115082821-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-115082821-1');
+</script>
+
   </head>
 
   <body>
@@ -70,7 +80,7 @@ sections that explain the reasons for their retirements." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.99.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9000</span>
       </span>
     </div>
 
@@ -175,12 +185,8 @@ sections that explain the reasons for their retirements.</p>
     <p><a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a></p>
 <p>These functions are not yet part of the rlang API. Expect breaking
 changes.</p><ul>
-<li><p><code><a href='with_env.html'>with_env()</a></code>, <code><a href='with_env.html'>locally()</a></code></p></li>
-<li><p><code><a href='env_poke.html'>env_poke()</a></code></p></li>
-<li><p><code><a href='env_bind_exprs.html'>env_bind_fns()</a></code>, <code><a href='env_bind_exprs.html'>env_bind_exprs()</a></code></p></li>
-<li><p><code><a href='search_envs.html'>pkg_env()</a></code>, <code><a href='search_envs.html'>pkg_env_name()</a></code></p></li>
-<li><p><code><a href='scoped_env.html'>scoped_env()</a></code>, <code><a href='scoped_env.html'>scoped_names()</a></code>, <code><a href='scoped_env.html'>scoped_envs()</a></code>, <code><a href='scoped_env.html'>is_scoped()</a></code></p></li>
-<li><p><code><a href='ns_env.html'>ns_env()</a></code>, <code><a href='ns_env.html'>ns_imports_env()</a></code>, <code><a href='ns_env.html'>ns_env_name()</a></code></p></li>
+<li><p><code><a href='with_env.html'>with_env()</a></code>, <code><a href='with_env.html'>locally()</a></code>, <code><a href='env_poke.html'>env_poke()</a></code></p></li>
+<li><p><code><a href='search_envs.html'>pkg_env()</a></code>, <code><a href='search_envs.html'>pkg_env_name()</a></code>, <code><a href='ns_env.html'>ns_env()</a></code>, <code><a href='ns_env.html'>ns_imports_env()</a></code>, <code><a href='ns_env.html'>ns_env_name()</a></code></p></li>
 <li><p><code><a href='is_pairlist.html'>is_pairlist()</a></code>, <code><a href='as_pairlist.html'>as_pairlist()</a></code>, <code><a href='is_pairlist.html'>is_node()</a></code>, <code><a href='is_pairlist.html'>is_node_list()</a></code></p></li>
 <li><p><code><a href='op-definition.html'>is_definition()</a></code>, <code><a href='op-definition.html'>new_definition()</a></code>, <code><a href='op-definition.html'>is_formulaish()</a></code>,
 <code><a href='dots_definitions.html'>dots_definitions()</a></code></p></li>
@@ -202,12 +208,8 @@ changes.</p><ul>
 </ul>
     <p><strong>In the questioning stage as of rlang 0.3.0</strong></p><ul>
 <li><p><code><a href='env.html'>child_env()</a></code></p></li>
-<li><p><code><a href='type_of.html'>type_of()</a></code>, <code><a href='switch_type.html'>switch_type()</a></code>, <code><a href='switch_type.html'>coerce_type()</a></code></p></li>
-<li><p><code><a href='switch_type.html'>switch_class()</a></code>, <code><a href='switch_type.html'>coerce_class()</a></code></p></li>
-<li><p><code><a href='switch_lang.html'>lang_type_of()</a></code>, <code><a href='switch_lang.html'>switch_lang()</a></code>, <code><a href='switch_lang.html'>coerce_lang()</a></code></p></li>
 <li><p><code><a href='flatten.html'>flatten()</a></code>, <code><a href='flatten.html'>squash()</a></code>, and their atomic vector variants</p></li>
 <li><p><code><a href='prepend.html'>modify()</a></code> and <code><a href='prepend.html'>prepend()</a></code></p></li>
-<li><p><code><a href='vector-coercion.html'>as_logical()</a></code>, <code><a href='vector-coercion.html'>as_character()</a></code>, etc.</p></li>
 <li><p><code><a href='with_restarts.html'>with_restarts()</a></code>, <code><a href='rst_list.html'>rst_list()</a></code>, <code><a href='rst_list.html'>rst_exists()</a></code>, <code><a href='rst_list.html'>rst_jump()</a></code>,
 <code><a href='rst_list.html'>rst_maybe_jump()</a></code>, <code><a href='rst_abort.html'>rst_abort()</a></code>. It is not clear yet whether we
 want to recommend restarts as a style of programming in R.</p></li>
@@ -227,6 +229,8 @@ want to recommend restarts as a style of programming in R.</p></li>
 <li><p><code><a href='exiting.html'>exiting()</a></code>: Handlers are now treated as exiting by default.</p></li>
 <li><p><code><a href='invoke.html'>invoke()</a></code>: Use the simpler <code><a href='exec.html'>exec()</a></code> instead.</p></li>
 <li><p><code><a href='vector-coercion.html'>as_logical()</a></code>, <code><a href='vector-coercion.html'>as_integer()</a></code>, etc. =&gt; <code><a href='https://www.rdocumentation.org/packages/vctrs/topics/vec_cast'>vctrs::vec_cast()</a></code>.</p></li>
+<li><p><code><a href='type_of.html'>type_of()</a></code>, <code><a href='switch_type.html'>switch_type()</a></code>, <code><a href='switch_type.html'>coerce_type()</a></code>, <code><a href='switch_type.html'>switch_class()</a></code>,
+<code><a href='switch_type.html'>coerce_class()</a></code></p></li>
 </ul>
     
     <h2 class="hasAnchor" id="deprecated-functions-and-arguments"><a class="anchor" href="#deprecated-functions-and-arguments"></a>Deprecated functions and arguments</h2>
@@ -253,6 +257,7 @@ want to recommend restarts as a style of programming in R.</p></li>
 <li><p><code><a href='is_lang.html'>quo_is_lang()</a></code> =&gt; <code><a href='quosure.html'>quo_is_call()</a></code></p></li>
 <li><p><code><a href='call_modify.html'>call_modify()</a></code>: <code>.standardise</code> and <code>.env</code> arguments.</p></li>
 <li><p><code><a href='is_expr.html'>is_expr()</a></code> =&gt; <code><a href='is_expression.html'>is_expression()</a></code></p></li>
+<li><p><code><a href='quo_expr.html'>quo_expr()</a></code> =&gt; <code><a href='quo_squash.html'>quo_squash()</a></code></p></li>
 <li><p><code><a href='parse_quosure.html'>parse_quosure()</a></code> =&gt; <code><a href='parse_expr.html'>parse_quo()</a></code></p></li>
 <li><p><code><a href='parse_quosure.html'>parse_quosures()</a></code> =&gt; <code><a href='parse_expr.html'>parse_quos()</a></code></p></li>
 <li><p>Assigning non-quosure objects to quosure lists.</p></li>
@@ -284,6 +289,10 @@ separately before calling these functions.</p></li>
 <code><a href='exprs_auto_name.html'>quos_auto_name()</a></code> no longer have any effect. For the same
 reason, passing a width as <code>.named</code> argument of dots collectors
 like <code><a href='quotation.html'>quos()</a></code> is deprecated.</p></li>
+<li><p><code><a href='as_overscope.html'>as_overscope()</a></code> =&gt; <code><a href='as_data_mask.html'>as_data_mask()</a></code></p></li>
+<li><p><code><a href='as_overscope.html'>new_overscope()</a></code> =&gt; <code><a href='as_data_mask.html'>new_data_mask()</a></code></p></li>
+<li><p><code><a href='overscope_eval_next.html'>overscope_eval_next()</a></code> =&gt; <code><a href='eval_tidy.html'>eval_tidy()</a></code></p></li>
+<li><p><code><a href='as_overscope.html'>overscope_clean()</a></code></p></li>
 </ul>
     
     <h2 class="hasAnchor" id="defunct-functions-and-arguments"><a class="anchor" href="#defunct-functions-and-arguments"></a>Defunct functions and arguments</h2>
@@ -291,11 +300,6 @@ like <code><a href='quotation.html'>quos()</a></code> is deprecated.</p></li>
     
     <p><img src='figures/lifecycle-defunct.svg' alt='Defunct lifecycle' /></p>
 <p><strong>Defunct as of rlang 0.4.0</strong></p><ul>
-<li><p><code><a href='quo_expr.html'>quo_expr()</a></code> =&gt; <code><a href='quo_squash.html'>quo_squash()</a></code></p></li>
-<li><p><code><a href='as_overscope.html'>as_overscope()</a></code> =&gt; <code><a href='as_data_mask.html'>as_data_mask()</a></code></p></li>
-<li><p><code><a href='as_overscope.html'>new_overscope()</a></code> =&gt; <code><a href='as_data_mask.html'>new_data_mask()</a></code></p></li>
-<li><p><code><a href='as_overscope.html'>overscope_clean()</a></code></p></li>
-<li><p><code><a href='overscope_eval_next.html'>overscope_eval_next()</a></code> =&gt; <code><a href='eval_tidy.html'>eval_tidy()</a></code></p></li>
 <li><p><code><a href='https://www.rdocumentation.org/packages/base/topics/length'>length()</a></code> and <code><a href='https://www.rdocumentation.org/packages/base/topics/names'>names()</a></code> on tidy eval <code>.data</code> pronouns.</p></li>
 <li><p>Supplying a named <code>!!!</code> call.</p></li>
 <li><p><code><a href='as_data_mask.html'>as_data_mask()</a></code>: <code>parent</code> argument</p></li>
@@ -322,6 +326,7 @@ find them in the commit history and previous releases.</p>
 <li><p><code>mut_utf8_locale()</code>, <code>mut_latin1_locale()</code>, <code>mut_mbcs_locale()</code></p></li>
 <li><p><code>set_chr_encoding()</code>, <code>chr_encoding()</code>, <code>set_str_encoding()</code>, <code>str_encoding()</code></p></li>
 <li><p><code>as_native_character()</code>, <code>as_utf8_string()</code>, <code>as_native_string()</code></p></li>
+<li><p><code>lang_type_of()</code>, <code>switch_lang()</code>, <code>coerce_lang()</code></p></li>
 </ul>
     <p><strong>Archived as of rlang 0.3.0:</strong></p><ul>
 <li><p><code>cnd_inform()</code>, <code>cnd_warn()</code> and <code>cnd_abort()</code></p></li>

@@ -50,6 +50,16 @@ assembled programmatically. This is the purpose of invoke()." />
 <![endif]-->
 
 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-115082821-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-115082821-1');
+</script>
+
   </head>
 
   <body>
@@ -66,7 +76,7 @@ assembled programmatically. This is the purpose of invoke()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.99.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9000</span>
       </span>
     </div>
 
@@ -206,17 +216,17 @@ or complex expressions.</p>
 <span class='fu'>invoke</span>(<span class='no'>fn</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>mtcars</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; tryCatch(withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpMVh6Pm/file4d004ee8fc43"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpMVh6Pm/file4d005f7e6a51")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/Rtmpy7shX6/file647c584dcccc"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/Rtmpy7shX6/file647c626216be")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
 #&gt;     invisible()
 #&gt; }, error = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpMVh6Pm/file4d005f7e6a51", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/Rtmpy7shX6/file647c626216be", 
 #&gt;         ".error"))
 #&gt; }, interrupt = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpMVh6Pm/file4d005f7e6a51", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/Rtmpy7shX6/file647c626216be", 
 #&gt;         ".error"))
 #&gt; }, callr_message = function(e) {
 #&gt;     try({
@@ -266,17 +276,17 @@ or complex expressions.</p>
 #&gt; [[8]]
 #&gt; withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpMVh6Pm/file4d004ee8fc43"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpMVh6Pm/file4d005f7e6a51")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/Rtmpy7shX6/file647c584dcccc"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/Rtmpy7shX6/file647c626216be")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
 #&gt;     invisible()
 #&gt; }, error = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpMVh6Pm/file4d005f7e6a51", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/Rtmpy7shX6/file647c626216be", 
 #&gt;         ".error"))
 #&gt; }, interrupt = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpMVh6Pm/file4d005f7e6a51", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/Rtmpy7shX6/file647c626216be", 
 #&gt;         ".error"))
 #&gt; }, callr_message = function(e) {
 #&gt;     try({
@@ -299,11 +309,11 @@ or complex expressions.</p>
 #&gt; })
 #&gt; 
 #&gt; [[9]]
-#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpMVh6Pm/file4d004ee8fc43"), 
-#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpMVh6Pm/file4d005f7e6a51")
+#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/Rtmpy7shX6/file647c584dcccc"), 
+#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/Rtmpy7shX6/file647c626216be")
 #&gt; 
 #&gt; [[10]]
-#&gt; do.call(do.call, c(readRDS("/tmp/RtmpMVh6Pm/file4d004ee8fc43"), 
+#&gt; do.call(do.call, c(readRDS("/tmp/Rtmpy7shX6/file647c584dcccc"), 
 #&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv)
 #&gt; 
 #&gt; [[11]]
@@ -320,7 +330,7 @@ or complex expressions.</p>
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; }, list(pkg = ".", examples = TRUE, document = FALSE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpMVh6Pm/file4d0022cfdf23"), 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/Rtmpy7shX6/file647c2b31dff"), 
 #&gt;     preview = FALSE, new_process = FALSE, crayon_enabled = TRUE, 
 #&gt;     crayon_colors = 256, pkgdown_internet = TRUE), envir = &lt;environment&gt;)
 #&gt; 
@@ -331,7 +341,7 @@ or complex expressions.</p>
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; })(pkg = ".", examples = TRUE, document = FALSE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpMVh6Pm/file4d0022cfdf23"), 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/Rtmpy7shX6/file647c2b31dff"), 
 #&gt;     preview = FALSE, new_process = FALSE, crayon_enabled = TRUE, 
 #&gt;     crayon_colors = 256, pkgdown_internet = TRUE)
 #&gt; 
@@ -458,51 +468,50 @@ or complex expressions.</p>
 #&gt; invoke(fn, list(mtcars))
 #&gt; 
 #&gt; [[39]]
-#&gt; .fn(`1`)
+#&gt; .Call(rlang_eval, call, .env)
 #&gt; </div><div class='input'>
 <span class='co'># Compare to do.call():</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/do.call'>do.call</a></span>(<span class='no'>call_inspect</span>, <span class='no'>mtcars</span>)</div><div class='output co'>#&gt; (function (...) 
-#&gt; match.call())(mpg = c(21, 21, 22.8, 21.4, 18.7, 18.1, 14.3, 24.4, 
-#&gt; 22.8, 19.2, 17.8, 16.4, 17.3, 15.2, 10.4, 10.4, 14.7, 32.4, 30.4, 
-#&gt; 33.9, 21.5, 15.5, 15.2, 13.3, 19.2, 27.3, 26, 30.4, 15.8, 19.7, 
-#&gt; 15, 21.4), cyl = c(6, 6, 4, 6, 8, 6, 8, 4, 4, 6, 6, 8, 8, 8, 
-#&gt; 8, 8, 8, 4, 4, 4, 4, 8, 8, 8, 8, 4, 4, 4, 8, 6, 8, 4), disp = c(160, 
-#&gt; 160, 108, 258, 360, 225, 360, 146.7, 140.8, 167.6, 167.6, 275.8, 
-#&gt; 275.8, 275.8, 472, 460, 440, 78.7, 75.7, 71.1, 120.1, 318, 304, 
-#&gt; 350, 400, 79, 120.3, 95.1, 351, 145, 301, 121), hp = c(110, 110, 
-#&gt; 93, 110, 175, 105, 245, 62, 95, 123, 123, 180, 180, 180, 205, 
-#&gt; 215, 230, 66, 52, 65, 97, 150, 150, 245, 175, 66, 91, 113, 264, 
-#&gt; 175, 335, 109), drat = c(3.9, 3.9, 3.85, 3.08, 3.15, 2.76, 3.21, 
-#&gt; 3.69, 3.92, 3.92, 3.92, 3.07, 3.07, 3.07, 2.93, 3, 3.23, 4.08, 
-#&gt; 4.93, 4.22, 3.7, 2.76, 3.15, 3.73, 3.08, 4.08, 4.43, 3.77, 4.22, 
-#&gt; 3.62, 3.54, 4.11), wt = c(2.62, 2.875, 2.32, 3.215, 3.44, 3.46, 
-#&gt; 3.57, 3.19, 3.15, 3.44, 3.44, 4.07, 3.73, 3.78, 5.25, 5.424, 
-#&gt; 5.345, 2.2, 1.615, 1.835, 2.465, 3.52, 3.435, 3.84, 3.845, 1.935, 
-#&gt; 2.14, 1.513, 3.17, 2.77, 3.57, 2.78), qsec = c(16.46, 17.02, 
-#&gt; 18.61, 19.44, 17.02, 20.22, 15.84, 20, 22.9, 18.3, 18.9, 17.4, 
-#&gt; 17.6, 18, 17.98, 17.82, 17.42, 19.47, 18.52, 19.9, 20.01, 16.87, 
-#&gt; 17.3, 15.41, 17.05, 18.9, 16.7, 16.9, 14.5, 15.5, 14.6, 18.6), 
-#&gt;     vs = c(0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 
-#&gt;     1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1), am = c(1, 1, 
-#&gt;     1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 
-#&gt;     0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1), gear = c(4, 4, 4, 3, 3, 
-#&gt;     3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 4, 4, 3, 3, 3, 3, 
-#&gt;     3, 4, 5, 5, 5, 5, 5, 4), carb = c(4, 4, 1, 1, 2, 1, 4, 2, 
-#&gt;     2, 4, 4, 3, 3, 3, 4, 4, 4, 1, 2, 1, 1, 2, 2, 4, 2, 1, 2, 
-#&gt;     2, 4, 6, 8, 2))</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/do.call'>do.call</a></span>(<span class='no'>fn</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>mtcars</span>))</div><div class='output co'>#&gt; [[1]]
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/do.call'>do.call</a></span>(<span class='no'>call_inspect</span>, <span class='no'>mtcars</span>)</div><div class='output co'>#&gt; (function(...) match.call())(mpg = c(21, 21, 22.8, 21.4, 18.7, 
+#&gt; 18.1, 14.3, 24.4, 22.8, 19.2, 17.8, 16.4, 17.3, 15.2, 10.4, 10.4, 
+#&gt; 14.7, 32.4, 30.4, 33.9, 21.5, 15.5, 15.2, 13.3, 19.2, 27.3, 26, 
+#&gt; 30.4, 15.8, 19.7, 15, 21.4), cyl = c(6, 6, 4, 6, 8, 6, 8, 4, 
+#&gt; 4, 6, 6, 8, 8, 8, 8, 8, 8, 4, 4, 4, 4, 8, 8, 8, 8, 4, 4, 4, 8, 
+#&gt; 6, 8, 4), disp = c(160, 160, 108, 258, 360, 225, 360, 146.7, 
+#&gt; 140.8, 167.6, 167.6, 275.8, 275.8, 275.8, 472, 460, 440, 78.7, 
+#&gt; 75.7, 71.1, 120.1, 318, 304, 350, 400, 79, 120.3, 95.1, 351, 
+#&gt; 145, 301, 121), hp = c(110, 110, 93, 110, 175, 105, 245, 62, 
+#&gt; 95, 123, 123, 180, 180, 180, 205, 215, 230, 66, 52, 65, 97, 150, 
+#&gt; 150, 245, 175, 66, 91, 113, 264, 175, 335, 109), drat = c(3.9, 
+#&gt; 3.9, 3.85, 3.08, 3.15, 2.76, 3.21, 3.69, 3.92, 3.92, 3.92, 3.07, 
+#&gt; 3.07, 3.07, 2.93, 3, 3.23, 4.08, 4.93, 4.22, 3.7, 2.76, 3.15, 
+#&gt; 3.73, 3.08, 4.08, 4.43, 3.77, 4.22, 3.62, 3.54, 4.11), wt = c(2.62, 
+#&gt; 2.875, 2.32, 3.215, 3.44, 3.46, 3.57, 3.19, 3.15, 3.44, 3.44, 
+#&gt; 4.07, 3.73, 3.78, 5.25, 5.424, 5.345, 2.2, 1.615, 1.835, 2.465, 
+#&gt; 3.52, 3.435, 3.84, 3.845, 1.935, 2.14, 1.513, 3.17, 2.77, 3.57, 
+#&gt; 2.78), qsec = c(16.46, 17.02, 18.61, 19.44, 17.02, 20.22, 15.84, 
+#&gt; 20, 22.9, 18.3, 18.9, 17.4, 17.6, 18, 17.98, 17.82, 17.42, 19.47, 
+#&gt; 18.52, 19.9, 20.01, 16.87, 17.3, 15.41, 17.05, 18.9, 16.7, 16.9, 
+#&gt; 14.5, 15.5, 14.6, 18.6), vs = c(0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 
+#&gt; 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 
+#&gt; 1), am = c(1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+#&gt; 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1), gear = c(4, 4, 
+#&gt; 4, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 4, 4, 3, 3, 3, 
+#&gt; 3, 3, 4, 5, 5, 5, 5, 5, 4), carb = c(4, 4, 1, 1, 2, 1, 4, 2, 
+#&gt; 2, 4, 4, 3, 3, 3, 4, 4, 4, 1, 2, 1, 1, 2, 2, 4, 2, 1, 2, 2, 4, 
+#&gt; 6, 8, 2))</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/do.call'>do.call</a></span>(<span class='no'>fn</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>mtcars</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; tryCatch(withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpMVh6Pm/file4d004ee8fc43"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpMVh6Pm/file4d005f7e6a51")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/Rtmpy7shX6/file647c584dcccc"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/Rtmpy7shX6/file647c626216be")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
 #&gt;     invisible()
 #&gt; }, error = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpMVh6Pm/file4d005f7e6a51", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/Rtmpy7shX6/file647c626216be", 
 #&gt;         ".error"))
 #&gt; }, interrupt = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpMVh6Pm/file4d005f7e6a51", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/Rtmpy7shX6/file647c626216be", 
 #&gt;         ".error"))
 #&gt; }, callr_message = function(e) {
 #&gt;     try({
@@ -552,17 +561,17 @@ or complex expressions.</p>
 #&gt; [[8]]
 #&gt; withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpMVh6Pm/file4d004ee8fc43"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpMVh6Pm/file4d005f7e6a51")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/Rtmpy7shX6/file647c584dcccc"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/Rtmpy7shX6/file647c626216be")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
 #&gt;     invisible()
 #&gt; }, error = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpMVh6Pm/file4d005f7e6a51", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/Rtmpy7shX6/file647c626216be", 
 #&gt;         ".error"))
 #&gt; }, interrupt = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpMVh6Pm/file4d005f7e6a51", 
+#&gt;     saveRDS(list("error", e), file = paste0("/tmp/Rtmpy7shX6/file647c626216be", 
 #&gt;         ".error"))
 #&gt; }, callr_message = function(e) {
 #&gt;     try({
@@ -585,11 +594,11 @@ or complex expressions.</p>
 #&gt; })
 #&gt; 
 #&gt; [[9]]
-#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpMVh6Pm/file4d004ee8fc43"), 
-#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpMVh6Pm/file4d005f7e6a51")
+#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/Rtmpy7shX6/file647c584dcccc"), 
+#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/Rtmpy7shX6/file647c626216be")
 #&gt; 
 #&gt; [[10]]
-#&gt; do.call(do.call, c(readRDS("/tmp/RtmpMVh6Pm/file4d004ee8fc43"), 
+#&gt; do.call(do.call, c(readRDS("/tmp/Rtmpy7shX6/file647c584dcccc"), 
 #&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv)
 #&gt; 
 #&gt; [[11]]
@@ -606,7 +615,7 @@ or complex expressions.</p>
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; }, list(pkg = ".", examples = TRUE, document = FALSE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpMVh6Pm/file4d0022cfdf23"), 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/Rtmpy7shX6/file647c2b31dff"), 
 #&gt;     preview = FALSE, new_process = FALSE, crayon_enabled = TRUE, 
 #&gt;     crayon_colors = 256, pkgdown_internet = TRUE), envir = &lt;environment&gt;)
 #&gt; 
@@ -617,7 +626,7 @@ or complex expressions.</p>
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; })(pkg = ".", examples = TRUE, document = FALSE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpMVh6Pm/file4d0022cfdf23"), 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/Rtmpy7shX6/file647c2b31dff"), 
 #&gt;     preview = FALSE, new_process = FALSE, crayon_enabled = TRUE, 
 #&gt;     crayon_colors = 256, pkgdown_internet = TRUE)
 #&gt; 
@@ -744,36 +753,34 @@ or complex expressions.</p>
 #&gt; do.call(fn, list(mtcars))
 #&gt; 
 #&gt; [[39]]
-#&gt; (function (...) 
-#&gt; sys.calls())(list(mpg = c(21, 21, 22.8, 21.4, 18.7, 18.1, 14.3, 
-#&gt; 24.4, 22.8, 19.2, 17.8, 16.4, 17.3, 15.2, 10.4, 10.4, 14.7, 32.4, 
-#&gt; 30.4, 33.9, 21.5, 15.5, 15.2, 13.3, 19.2, 27.3, 26, 30.4, 15.8, 
-#&gt; 19.7, 15, 21.4), cyl = c(6, 6, 4, 6, 8, 6, 8, 4, 4, 6, 6, 8, 
-#&gt; 8, 8, 8, 8, 8, 4, 4, 4, 4, 8, 8, 8, 8, 4, 4, 4, 8, 6, 8, 4), 
-#&gt;     disp = c(160, 160, 108, 258, 360, 225, 360, 146.7, 140.8, 
-#&gt;     167.6, 167.6, 275.8, 275.8, 275.8, 472, 460, 440, 78.7, 75.7, 
-#&gt;     71.1, 120.1, 318, 304, 350, 400, 79, 120.3, 95.1, 351, 145, 
-#&gt;     301, 121), hp = c(110, 110, 93, 110, 175, 105, 245, 62, 95, 
-#&gt;     123, 123, 180, 180, 180, 205, 215, 230, 66, 52, 65, 97, 150, 
-#&gt;     150, 245, 175, 66, 91, 113, 264, 175, 335, 109), drat = c(3.9, 
-#&gt;     3.9, 3.85, 3.08, 3.15, 2.76, 3.21, 3.69, 3.92, 3.92, 3.92, 
-#&gt;     3.07, 3.07, 3.07, 2.93, 3, 3.23, 4.08, 4.93, 4.22, 3.7, 2.76, 
-#&gt;     3.15, 3.73, 3.08, 4.08, 4.43, 3.77, 4.22, 3.62, 3.54, 4.11
-#&gt;     ), wt = c(2.62, 2.875, 2.32, 3.215, 3.44, 3.46, 3.57, 3.19, 
-#&gt;     3.15, 3.44, 3.44, 4.07, 3.73, 3.78, 5.25, 5.424, 5.345, 2.2, 
-#&gt;     1.615, 1.835, 2.465, 3.52, 3.435, 3.84, 3.845, 1.935, 2.14, 
-#&gt;     1.513, 3.17, 2.77, 3.57, 2.78), qsec = c(16.46, 17.02, 18.61, 
-#&gt;     19.44, 17.02, 20.22, 15.84, 20, 22.9, 18.3, 18.9, 17.4, 17.6, 
-#&gt;     18, 17.98, 17.82, 17.42, 19.47, 18.52, 19.9, 20.01, 16.87, 
-#&gt;     17.3, 15.41, 17.05, 18.9, 16.7, 16.9, 14.5, 15.5, 14.6, 18.6
-#&gt;     ), vs = c(0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 
-#&gt;     0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1), am = c(1, 
-#&gt;     1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 
-#&gt;     0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1), gear = c(4, 4, 4, 3, 
-#&gt;     3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 4, 4, 3, 3, 3, 
-#&gt;     3, 3, 4, 5, 5, 5, 5, 5, 4), carb = c(4, 4, 1, 1, 2, 1, 4, 
-#&gt;     2, 2, 4, 4, 3, 3, 3, 4, 4, 4, 1, 2, 1, 1, 2, 2, 4, 2, 1, 
-#&gt;     2, 2, 4, 6, 8, 2)))
+#&gt; (function(...) sys.calls())(list(mpg = c(21, 21, 22.8, 21.4, 
+#&gt; 18.7, 18.1, 14.3, 24.4, 22.8, 19.2, 17.8, 16.4, 17.3, 15.2, 10.4, 
+#&gt; 10.4, 14.7, 32.4, 30.4, 33.9, 21.5, 15.5, 15.2, 13.3, 19.2, 27.3, 
+#&gt; 26, 30.4, 15.8, 19.7, 15, 21.4), cyl = c(6, 6, 4, 6, 8, 6, 8, 
+#&gt; 4, 4, 6, 6, 8, 8, 8, 8, 8, 8, 4, 4, 4, 4, 8, 8, 8, 8, 4, 4, 4, 
+#&gt; 8, 6, 8, 4), disp = c(160, 160, 108, 258, 360, 225, 360, 146.7, 
+#&gt; 140.8, 167.6, 167.6, 275.8, 275.8, 275.8, 472, 460, 440, 78.7, 
+#&gt; 75.7, 71.1, 120.1, 318, 304, 350, 400, 79, 120.3, 95.1, 351, 
+#&gt; 145, 301, 121), hp = c(110, 110, 93, 110, 175, 105, 245, 62, 
+#&gt; 95, 123, 123, 180, 180, 180, 205, 215, 230, 66, 52, 65, 97, 150, 
+#&gt; 150, 245, 175, 66, 91, 113, 264, 175, 335, 109), drat = c(3.9, 
+#&gt; 3.9, 3.85, 3.08, 3.15, 2.76, 3.21, 3.69, 3.92, 3.92, 3.92, 3.07, 
+#&gt; 3.07, 3.07, 2.93, 3, 3.23, 4.08, 4.93, 4.22, 3.7, 2.76, 3.15, 
+#&gt; 3.73, 3.08, 4.08, 4.43, 3.77, 4.22, 3.62, 3.54, 4.11), wt = c(2.62, 
+#&gt; 2.875, 2.32, 3.215, 3.44, 3.46, 3.57, 3.19, 3.15, 3.44, 3.44, 
+#&gt; 4.07, 3.73, 3.78, 5.25, 5.424, 5.345, 2.2, 1.615, 1.835, 2.465, 
+#&gt; 3.52, 3.435, 3.84, 3.845, 1.935, 2.14, 1.513, 3.17, 2.77, 3.57, 
+#&gt; 2.78), qsec = c(16.46, 17.02, 18.61, 19.44, 17.02, 20.22, 15.84, 
+#&gt; 20, 22.9, 18.3, 18.9, 17.4, 17.6, 18, 17.98, 17.82, 17.42, 19.47, 
+#&gt; 18.52, 19.9, 20.01, 16.87, 17.3, 15.41, 17.05, 18.9, 16.7, 16.9, 
+#&gt; 14.5, 15.5, 14.6, 18.6), vs = c(0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 
+#&gt; 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 
+#&gt; 1), am = c(1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+#&gt; 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1), gear = c(4, 4, 
+#&gt; 4, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 4, 4, 3, 3, 3, 
+#&gt; 3, 3, 4, 5, 5, 5, 5, 5, 4), carb = c(4, 4, 1, 1, 2, 1, 4, 2, 
+#&gt; 2, 4, 4, 3, 3, 3, 4, 4, 4, 1, 2, 1, 1, 2, 2, 4, 2, 1, 2, 2, 4, 
+#&gt; 6, 8, 2)))
 #&gt; </div><div class='input'>
 
 <span class='co'># Specify the function name either by supplying a string</span>

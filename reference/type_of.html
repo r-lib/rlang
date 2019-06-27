@@ -55,6 +55,16 @@ The type of special and builtin functions is &quot;primitive&quot;.
 <![endif]-->
 
 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-115082821-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-115082821-1');
+</script>
+
   </head>
 
   <body>
@@ -71,7 +81,7 @@ The type of special and builtin functions is &quot;primitive&quot;.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.99.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9000</span>
       </span>
     </div>
 
@@ -134,15 +144,15 @@ The type of special and builtin functions is &quot;primitive&quot;.
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Base type of an object</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/types.R'><code>R/types.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/lifecycle-retired.R'><code>R/lifecycle-retired.R</code></a></small>
     <div class="hidden name"><code>type_of.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>
+    <p><img src='figures/lifecycle-soft-deprecated.svg' alt='Soft-deprecated lifecycle' />
 
-    <a href='https://www.tidyverse.org/lifecycle/#questioning'><img src='figures/lifecycle-questioning.svg' alt='Questioning lifecycle'></a></p>
+    <a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a></p>
 <p>This is equivalent to <code><a href='https://www.rdocumentation.org/packages/base/topics/typeof'>base::typeof()</a></code> with a few differences that
 make dispatching easier:</p><ul>
 <li><p>The type of one-sided formulas is "quote".</p></li>
@@ -170,7 +180,9 @@ make dispatching easier:</p><ul>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>type_of</span>(<span class='fl'>10L</span>)</div><div class='output co'>#&gt; [1] "integer"</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'>type_of</span>(<span class='fl'>10L</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: `type_of()` is deprecated as of rlang 0.4.0.</span>
+#&gt; <span class='warning'>Please use `typeof()` or your own version instead.</span>
+#&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once per session.</span><span></span></div><div class='output co'>#&gt; [1] "integer"</div><div class='input'>
 <span class='co'># Quosures are treated as a new base type but not formulas:</span>
 <span class='fu'>type_of</span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fl'>10L</span>))</div><div class='output co'>#&gt; [1] "formula"</div><div class='input'><span class='fu'>type_of</span>(~<span class='fl'>10L</span>)</div><div class='output co'>#&gt; [1] "formula"</div><div class='input'>
 <span class='co'># Compare to base::typeof():</span>
@@ -185,7 +197,7 @@ make dispatching easier:</p><ul>
 <span class='co'># Special and builtin primitives are both treated as primitives.</span>
 <span class='co'># That's because it is often irrelevant which type of primitive an</span>
 <span class='co'># input is:</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/typeof'>typeof</a></span>(<span class='no'>list</span>)</div><div class='output co'>#&gt; [1] "builtin"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/typeof'>typeof</a></span>(<span class='no'>`$`</span>)</div><div class='output co'>#&gt; [1] "special"</div><div class='input'><span class='fu'>type_of</span>(<span class='no'>list</span>)</div><div class='output co'>#&gt; [1] "primitive"</div><div class='input'><span class='fu'>type_of</span>(<span class='no'>`$`</span>)</div><div class='output co'>#&gt; [1] "primitive"</div></pre>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/typeof'>typeof</a></span>(<span class='no'>list</span>)</div><div class='output co'>#&gt; [1] "builtin"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/typeof'>typeof</a></span>(<span class='no'>`$`</span>)</div><div class='output co'>#&gt; [1] "special"</div><div class='input'><span class='fu'>type_of</span>(<span class='no'>list</span>)</div><div class='output co'>#&gt; [1] "primitive"</div><div class='input'><span class='fu'>type_of</span>(<span class='no'>`$`</span>)</div><div class='output co'>#&gt; [1] "primitive"</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

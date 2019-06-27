@@ -44,6 +44,16 @@
 <![endif]-->
 
 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-115082821-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-115082821-1');
+</script>
+
   </head>
 
   <body>
@@ -60,7 +70,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.99.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9000</span>
       </span>
     </div>
 
@@ -143,7 +153,7 @@
       <tr>
         
         <td>
-          <p><code><a href="quotation.html">expr()</a></code> <code><a href="quotation.html">enexpr()</a></code> <code><a href="quotation.html">exprs()</a></code> <code><a href="quotation.html">enexprs()</a></code> <code><a href="quotation.html">ensym()</a></code> <code><a href="quotation.html">ensyms()</a></code> <code><a href="quotation.html">quo()</a></code> <code><a href="quotation.html">enquo()</a></code> <code><a href="quotation.html">quos()</a></code> <code><a href="quotation.html">enquos()</a></code> <code><a href="quotation.html">vars()</a></code> </p>
+          <p><code><a href="quotation.html">expr()</a></code> <code><a href="quotation.html">enexpr()</a></code> <code><a href="quotation.html">exprs()</a></code> <code><a href="quotation.html">enexprs()</a></code> <code><a href="quotation.html">ensym()</a></code> <code><a href="quotation.html">ensyms()</a></code> <code><a href="quotation.html">quo()</a></code> <code><a href="quotation.html">enquo()</a></code> <code><a href="quotation.html">quos()</a></code> <code><a href="quotation.html">enquos()</a></code> </p>
         </td>
         <td><p>Quotation</p></td>
       </tr><tr>
@@ -681,12 +691,6 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="string.html">string()</a></code> </p>
-        </td>
-        <td><p>Create a string</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="rep_along.html">rep_along()</a></code> <code><a href="rep_along.html">rep_named()</a></code> </p>
         </td>
         <td><p>Create vectors matching the length of a given vector</p></td>
@@ -696,32 +700,6 @@
           <p><code><a href="seq2.html">seq2()</a></code> <code><a href="seq2.html">seq2_along()</a></code> </p>
         </td>
         <td><p>Increasing sequence of integers in an interval</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="new-vector.html">new_logical()</a></code> <code><a href="new-vector.html">new_integer()</a></code> <code><a href="new-vector.html">new_double()</a></code> <code><a href="new-vector.html">new_character()</a></code> <code><a href="new-vector.html">new_complex()</a></code> <code><a href="new-vector.html">new_raw()</a></code> <code><a href="new-vector.html">new_list()</a></code> </p>
-        </td>
-        <td><p>Create vectors matching a given length</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-missing-values" class="hasAnchor"><a href="#section-missing-values" class="anchor"></a>Missing values</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="missing.html">na_lgl</a></code> <code><a href="missing.html">na_int</a></code> <code><a href="missing.html">na_dbl</a></code> <code><a href="missing.html">na_chr</a></code> <code><a href="missing.html">na_cpl</a></code> </p>
-        </td>
-        <td><p>Missing values</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="are_na.html">are_na()</a></code> <code><a href="are_na.html">is_na()</a></code> <code><a href="are_na.html">is_lgl_na()</a></code> <code><a href="are_na.html">is_int_na()</a></code> <code><a href="are_na.html">is_dbl_na()</a></code> <code><a href="are_na.html">is_chr_na()</a></code> <code><a href="are_na.html">is_cpl_na()</a></code> </p>
-        </td>
-        <td><p>Test for missing values</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -872,12 +850,6 @@
           <p><code><a href="with_handlers.html">with_handlers()</a></code> <code><a href="with_handlers.html">calling()</a></code> </p>
         </td>
         <td><p>Establish handlers on the stack</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="exiting.html">exiting()</a></code> </p>
-        </td>
-        <td><p>Exiting handler</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -898,6 +870,32 @@
           <p><code><a href="scoped_options.html">scoped_options()</a></code> <code><a href="scoped_options.html">with_options()</a></code> <code><a href="scoped_options.html">push_options()</a></code> <code><a href="scoped_options.html">peek_options()</a></code> <code><a href="scoped_options.html">peek_option()</a></code> </p>
         </td>
         <td><p>Change global options</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-weak-references" class="hasAnchor"><a href="#section-weak-references" class="anchor"></a>Weak references</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="is_weakref.html">is_weakref()</a></code> </p>
+        </td>
+        <td><p>Is object a weak reference?</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="new_weakref.html">new_weakref()</a></code> </p>
+        </td>
+        <td><p>Create a weak reference</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="wref_key.html">wref_key()</a></code> <code><a href="wref_key.html">wref_value()</a></code> </p>
+        </td>
+        <td><p>Get key/value from a weak reference object</p></td>
       </tr>
     </tbody>
     </table>
@@ -921,7 +919,6 @@
       <li><a href="#section-search-path-and-namespaces">Search path and namespaces</a></li>
       <li><a href="#section-s-">S3</a></li>
       <li><a href="#section-create-vectors">Create vectors</a></li>
-      <li><a href="#section-missing-values">Missing values</a></li>
       <li><a href="#section-attributes">Attributes</a></li>
       <li><a href="#section-type-predicates">Type predicates</a></li>
       <li><a href="#section-operators">Operators</a></li>
@@ -929,6 +926,7 @@
       <li><a href="#section-create-tidy-evaluation-apis">Create tidy evaluation APIs</a></li>
       <li><a href="#section-condition-handlers">Condition handlers</a></li>
       <li><a href="#section-session-state">Session state</a></li>
+      <li><a href="#section-weak-references">Weak references</a></li>
     </ul>
   </div>
 </div>

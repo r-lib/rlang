@@ -44,6 +44,16 @@
 <![endif]-->
 
 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-115082821-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-115082821-1');
+</script>
+
   </head>
 
   <body>
@@ -60,7 +70,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.99.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9000</span>
       </span>
     </div>
 
@@ -126,55 +136,104 @@
       <small>Source: <a href='https://github.com/r-lib/rlang/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="rlang-0-3-99-9000" class="section level1">
+    <div id="rlang-0-4-0-9000" class="section level1">
 <h1 class="page-header">
-<a href="#rlang-0-3-99-9000" class="anchor"></a>rlang 0.3.99.9000<small> Unreleased </small>
+<a href="#rlang-0-4-0-9000" class="anchor"></a>rlang 0.4.0.9000<small> Unreleased </small>
 </h1>
+</div>
+    <div id="rlang-0-4-0" class="section level1">
+<h1 class="page-header">
+<a href="#rlang-0-4-0" class="anchor"></a>rlang 0.4.0<small> 2019-06-25 </small>
+</h1>
+<div id="tidy-evaluation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#tidy-evaluation" class="anchor"></a>Tidy evaluation</h2>
+<div id="interpolate-function-inputs-with-the-curly-curly-operator" class="section level3">
+<h3 class="hasAnchor">
+<a href="#interpolate-function-inputs-with-the-curly-curly-operator" class="anchor"></a>Interpolate function inputs with the curly-curly operator</h3>
+<p>The main change of this release is the new tidy evaluation operator <code>{{</code>. This operator abstracts the quote-and-unquote idiom into a single interpolation step:</p>
+<pre><code>my_wrapper &lt;- function(data, var, by) {
+  data %&gt;%
+    group_by({{ by }}) %&gt;%
+    summarise(average = mean({{ var }}, na.rm = TRUE))
+}</code></pre>
+<p><code>{{ var }}</code> is a shortcut for <code>!!enquo(var)</code> that should be easier on the eyes, and easier to learn and teach.</p>
+<p>Note that for multiple inputs, the existing documentation doesn’t stress enough that you can just pass dots straight to other tidy eval functions. There is no need for quote-and-unquote unless you need to modify the inputs or their names in some way:</p>
+<pre><code>my_wrapper &lt;- function(data, var, ...) {
+  data %&gt;%
+    group_by(...) %&gt;%
+    summarise(average = mean({{ var }}, na.rm = TRUE))
+}</code></pre>
+</div>
+<div id="more-robust--env-pronoun" class="section level3">
+<h3 class="hasAnchor">
+<a href="#more-robust--env-pronoun" class="anchor"></a>More robust <code>.env</code> pronoun</h3>
+<p>Another improvement to tidy evaluation should make it easier to use the <code>.env</code> pronoun. Starting from this release, subsetting an object from the <code>.env</code> pronoun now evaluates the corresponding symbol. This makes <code>.env</code> more robust, in particular in magrittr pipelines. The following example would previously fail:</p>
+<pre><code>foo &lt;- 10
+mtcars %&gt;% mutate(cyl = cyl * .env$foo)</code></pre>
+<p>This way, using the <code>.env</code> pronoun is now equivalent to unquoting a constant objects, but with an easier syntax:</p>
+<pre><code>mtcars %&gt;% mutate(cyl = cyl * !!foo)</code></pre>
+<p>Note that following this change, and despite its name, <code>.env</code> is no longer referring to a bare environment. Instead, it is a special shortcut with its own rules. Similarly, the <code>.data</code> pronoun is not really a data frame.</p>
+</div>
+</div>
+<div id="new-functions-and-features" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-functions-and-features" class="anchor"></a>New functions and features</h2>
 <ul>
+<li><p>New <code><a href="../reference/pairlist2.html">pairlist2()</a></code> function with splicing support. It preserves missing arguments, which makes it useful for lists of formal parameters for functions.</p></li>
 <li><p><code><a href="../reference/scalar-type-predicates.html">is_bool()</a></code> is a scalar type predicate that checks whether its input is a single <code>TRUE</code> or <code>FALSE</code>. Like <code><a href="../reference/scalar-type-predicates.html">is_string()</a></code>, it returns <code>FALSE</code> when the input is missing. This is useful for type-checking function arguments (<a href='https://github.com/r-lib/rlang/issues/695'>#695</a>).</p></li>
+<li><p><code><a href="../reference/scalar-type-predicates.html">is_string()</a></code> gains a <code>string</code> argument. <code><a href="../reference/scalar-type-predicates.html">is_string(x, "foo")</a></code> is a shortcut for <code>is_character(x) &amp;&amp; length(x) == 1 &amp;&amp; identical(x, "foo")</code>.</p></li>
 <li><p>Lists of quosures now have pillar methods for display in tibbles.</p></li>
-<li><p>The performance of <code><a href="../reference/exec.html">exec()</a></code> has been improved. It is now on the same order of performance as <code><a href="https://www.rdocumentation.org/packages/base/topics/do.call">do.call()</a></code>, though slightly slower.</p></li>
 <li>
 <p><code><a href="../reference/set_names.html">set_names()</a></code> now names unnamed input vectors before applying a function. The following expressions are now equivalent:</p>
 <pre><code>letters %&gt;% set_names() %&gt;% set_names(toupper)
 
 letters %&gt;% set_names(toupper)</code></pre>
 </li>
-<li><p><code><a href="../reference/with_handlers.html">with_handlers()</a></code> now installs calling handlers first on the stack, no matter their location in the argument list. This way they always take precedence over exiting handlers, which ensures their side effects (such as logging) take place (<a href='https://github.com/r-lib/rlang/issues/718'>#718</a>).</p></li>
-<li><p><code><a href="../reference/quotation.html">vars()</a></code> is now exported from rlang, so it can be reexported from other user-facing packages such as dplyr or ggplot2.</p></li>
-<li><p>In rlang backtraces, the <code>global::</code> prefix is now only added when the function directly inherits from the global environment. Functions inheriting indirectly no longer have a namespace qualifier (<a href='https://github.com/r-lib/rlang/issues/733'>#733</a>).</p></li>
 <li><p>You can now pass a character vector as message argument for <code><a href="../reference/abort.html">abort()</a></code>, <code><a href="../reference/abort.html">warn()</a></code>, <code><a href="../reference/abort.html">inform()</a></code>, and <code><a href="../reference/abort.html">signal()</a></code>. The vector is collapsed to a single string with a <code>"\n"</code> newline separating each element of the input vector (<a href='https://github.com/r-lib/rlang/issues/744'>#744</a>).</p></li>
-<li><p><code><a href="https://www.rdocumentation.org/packages/base/topics/options">options(error = rlang::entrace)</a></code> now has better support for errors thrown from C (<a href='https://github.com/r-lib/rlang/issues/779'>#779</a>). It also saves structured errors in the <code>error</code> field of <code><a href="../reference/last_error.html">rlang::last_error()</a></code>.</p></li>
-<li><p><code><a href="../reference/ns_env.html">ns_env()</a></code> and <code><a href="../reference/ns_env.html">ns_env_name()</a></code> (experimental functions) now support functions and environments consisently. They also require an argument from now on.</p></li>
-<li><p><code><a href="../reference/scalar-type-predicates.html">is_string()</a></code> gains a <code>string</code> argument. <code><a href="../reference/scalar-type-predicates.html">is_string(x, "foo")</a></code> is a shortcut for <code>is_character(x) &amp;&amp; length(x) == 1 &amp;&amp; identical(x, "foo")</code>.</p></li>
-<li><p><code><a href="../reference/is_interactive.html">is_interactive()</a></code> is aware of the <code>TESTTHAT</code> environment variable and returns <code>FALSE</code> when it is <code>"true"</code> (<a href='https://github.com/jennybc'>@jennybc</a>, <a href='https://github.com/r-lib/rlang/issues/738'>#738</a>).</p></li>
-<li><p><code><a href="../reference/fn_fmls.html">fn_fmls()</a></code> and variants no longer coerce their input to a closure. Instead, they throw an error.</p></li>
+<li><p><code><a href="../reference/missing_arg.html">maybe_missing()</a></code> gains a <code>default</code> argument.</p></li>
+<li><p>New functions for weak references: <code><a href="../reference/new_weakref.html">new_weakref()</a></code>, <code>weakref_key()</code>, <code>weakref_value()</code>, and <code><a href="../reference/is_weakref.html">is_weakref()</a></code> (<a href='https://github.com/wch'>@wch</a>, <a href='https://github.com/r-lib/rlang/issues/787'>#787</a>).</p></li>
+</ul>
+</div>
+<div id="performance" class="section level2">
+<h2 class="hasAnchor">
+<a href="#performance" class="anchor"></a>Performance</h2>
+<ul>
+<li><p>The performance of <code><a href="../reference/exec.html">exec()</a></code> has been improved. It is now on the same order of performance as <code><a href="https://www.rdocumentation.org/packages/base/topics/do.call">do.call()</a></code>, though slightly slower.</p></li>
 <li>
-<p><code><a href="../reference/call2.html">call2()</a></code> now uses <code><a href="../reference/pairlist2.html">pairlist2()</a></code> internally. This considerably improves its performance. This also means it now preserves empty arguments:</p>
+<p><code><a href="../reference/call2.html">call2()</a></code> now uses the new <code><a href="../reference/pairlist2.html">pairlist2()</a></code> function internally. This considerably improves its performance. This also means it now preserves empty arguments:</p>
 <pre><code><a href="../reference/call2.html">call2("fn", 1, , foo = )
 #&gt; fn(1, , foo = )</a></code></pre>
 </li>
-<li><p>New <code><a href="../reference/pairlist2.html">pairlist2()</a></code> function with splicing support. It preserves missing arguments, which makes it useful for lists of formal parameters for functions.</p></li>
-<li><p>We commit to support 5 versions of R. As R 3.6 is about to be released, rlang now requires R 3.2 or greater.</p></li>
-<li><p><code><a href="../reference/is_integerish.html">is_integerish(NA)</a></code> is now <code>TRUE</code> (<a href='https://github.com/r-lib/rlang/issues/751'>#751</a>). In general, we now treat <code>NA</code> as having unspecified type.</p></li>
+</ul>
+</div>
+<div id="bugfixes-and-small-improvements" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bugfixes-and-small-improvements" class="anchor"></a>Bugfixes and small improvements</h2>
+<ul>
+<li><p><code><a href="../reference/with_handlers.html">with_handlers()</a></code> now installs calling handlers first on the stack, no matter their location in the argument list. This way they always take precedence over exiting handlers, which ensures their side effects (such as logging) take place (<a href='https://github.com/r-lib/rlang/issues/718'>#718</a>).</p></li>
+<li><p>In rlang backtraces, the <code>global::</code> prefix is now only added when the function directly inherits from the global environment. Functions inheriting indirectly no longer have a namespace qualifier (<a href='https://github.com/r-lib/rlang/issues/733'>#733</a>).</p></li>
+<li><p><code><a href="https://www.rdocumentation.org/packages/base/topics/options">options(error = rlang::entrace)</a></code> now has better support for errors thrown from C (<a href='https://github.com/r-lib/rlang/issues/779'>#779</a>). It also saves structured errors in the <code>error</code> field of <code><a href="../reference/last_error.html">rlang::last_error()</a></code>.</p></li>
+<li><p><code><a href="../reference/ns_env.html">ns_env()</a></code> and <code><a href="../reference/ns_env.html">ns_env_name()</a></code> (experimental functions) now support functions and environments consisently. They also require an argument from now on.</p></li>
+<li><p><code><a href="../reference/is_interactive.html">is_interactive()</a></code> is aware of the <code>TESTTHAT</code> environment variable and returns <code>FALSE</code> when it is <code>"true"</code> (<a href='https://github.com/jennybc'>@jennybc</a>, <a href='https://github.com/r-lib/rlang/issues/738'>#738</a>).</p></li>
+<li><p><code><a href="../reference/fn_fmls.html">fn_fmls()</a></code> and variants no longer coerce their input to a closure. Instead, they throw an error.</p></li>
 <li><p>Fixed an issue in knitr that caused backtraces to print even when <code>error = TRUE</code>.</p></li>
-<li><p><code><a href="../reference/missing_arg.html">maybe_missing()</a></code> gains a <code>default</code> argument.</p></li>
-<li><p>Quoting functions gain a new interpolation operator <code>{{</code>. This is a shortcut for <code>!!enquo(arg)</code>. It is less powerful than <code>!!</code> but should be easier to learn because it is focused on a narrower task and should look familiar to users of the glue package.</p></li>
-<li>
-<p>Subsetting an object from the <code>.env</code> pronoun now evaluates the corresponding symbol. This means you can now retrieve objects from the contextual environment in magrittr pipes.</p>
-<p>Note that following this change, and despite its name, <code>.env</code> is not really an environment but a special shortcut, just like <code>.data</code> is not really a data frame.</p>
-</li>
 <li><p>The return object from <code><a href="../reference/as_function.html">as_function()</a></code> now inherits from <code>"function"</code> (<a href='https://github.com/richierocks'>@richierocks</a>, <a href='https://github.com/r-lib/rlang/issues/735'>#735</a>).</p></li>
 </ul>
+</div>
 <div id="lifecycle" class="section level2">
 <h2 class="hasAnchor">
 <a href="#lifecycle" class="anchor"></a>Lifecycle</h2>
+<p>We commit to support 5 versions of R. As R 3.6 is about to be released, rlang now requires R 3.2 or greater. We’re also continuing our efforts to streamline and narrow the rlang API.</p>
 <ul>
 <li><p><code><a href="../reference/prepend.html">modify()</a></code> and <code><a href="../reference/prepend.html">prepend()</a></code> (two experimental functions marked as in the questioning stage since rlang 0.3.0) are now deprecated. Vector functions are now out of scope for rlang. They might be revived in the vctrs or funs packages.</p></li>
 <li><p><code><a href="../reference/exiting.html">exiting()</a></code> is soft-deprecated because <code><a href="../reference/with_handlers.html">with_handlers()</a></code> treats handlers as exiting by default.</p></li>
 <li><p>The vector constructors like <code><a href="../reference/vector-construction.html">lgl()</a></code> or <code><a href="../reference/new-vector.html">new_logical()</a></code> are now in the questioning stage. They are likely to be moved to the vctrs package at some point. Same for the missing values shortcuts like <code>na_lgl</code>.</p></li>
 <li><p><code><a href="../reference/vector-coercion.html">as_logical()</a></code>, <code><a href="../reference/vector-coercion.html">as_integer()</a></code>, etc have been soft-deprecated in favour of <code><a href="https://www.rdocumentation.org/packages/vctrs/topics/vec_cast">vctrs::vec_cast()</a></code>.</p></li>
+<li><p><code><a href="../reference/type_of.html">type_of()</a></code>, <code><a href="../reference/switch_type.html">switch_type()</a></code>, <code><a href="../reference/switch_type.html">coerce_type()</a></code>, and friends are soft-deprecated.</p></li>
 <li><p>The encoding and locale API was summarily archived. This API didn’t bring any value and wasn’t used on CRAN.</p></li>
+<li><p><code>lang_type_of()</code>, <code>switch_lang()</code>, and <code>coerce_lang()</code> were archived. These functions were not used on CRAN or internally.</p></li>
+<li><p>Subsetting quosures with <code>[</code> or <code>[[</code> is soft-deprecated.</p></li>
 <li><p>All functions that were soft-deprecated, deprecated, or defunct in previous releases have been bumped to the next lifecycle stage.</p></li>
 </ul>
 </div>
@@ -202,16 +261,16 @@ letters %&gt;% set_names(toupper)</code></pre>
 <ul>
 <li>
 <p>New <code><a href="../reference/entrace.html">entrace()</a></code> condition handler. Add this to your RProfile to enable rlang backtraces for all errors, including warnings promoted to errors:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="cf">if</span> (<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ns-load">requireNamespace</a></span>(<span class="st">"rlang"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)) {</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/options">options</a></span>(<span class="dt">error =</span> rlang<span class="op">::</span>entrace)</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">}</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="cf">if</span> (<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ns-load">requireNamespace</a></span>(<span class="st">"rlang"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)) {</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/options">options</a></span>(<span class="dt">error =</span> rlang<span class="op">::</span>entrace)</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">}</a></code></pre></div>
 <p>This handler also works as a calling handler:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../reference/with_handlers.html">with_handlers</a></span>(</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">  <span class="dt">error =</span> <span class="kw"><a href="../reference/with_handlers.html">calling</a></span>(entrace),</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">  <span class="kw">foo</span>(bar)</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="../reference/with_handlers.html">with_handlers</a></span>(</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">  <span class="dt">error =</span> <span class="kw"><a href="../reference/with_handlers.html">calling</a></span>(entrace),</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">  <span class="kw">foo</span>(bar)</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4">)</a></code></pre></div>
 <p>However it’s often more practical to use <code><a href="../reference/with_abort.html">with_abort()</a></code> in that case:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/with_abort.html">with_abort</a></span>(<span class="kw">foo</span>(bar))</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../reference/with_abort.html">with_abort</a></span>(<span class="kw">foo</span>(bar))</a></code></pre></div>
 </li>
 <li><p><code><a href="../reference/with_abort.html">with_abort()</a></code> gains a <code>classes</code> argument to promote any kind of condition to an rlang error.</p></li>
 <li><p>New <code><a href="../reference/last_error.html">last_trace()</a></code> shortcut to print the backtrace stored in the <code><a href="../reference/last_error.html">last_error()</a></code>.</p></li>
@@ -279,8 +338,8 @@ letters %&gt;% set_names(toupper)</code></pre>
 <li><p><code><a href="../reference/quotation.html">exprs()</a></code> no longer flattens quosures. <code><a href="../reference/quotation.html">exprs(!!!quos(x, y))</a></code> is now equivalent to <code><a href="../reference/quotation.html">quos(x, y)</a></code>.</p></li>
 <li>
 <p>The sentinel for removing arguments in <code><a href="../reference/call_modify.html">call_modify()</a></code> has been changed from <code>NULL</code> to <code><a href="../reference/zap.html">zap()</a></code>. This breaking change is motivated by the ambiguity of <code>NULL</code> with valid argument values.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/call_modify.html">call_modify</a></span>(call, <span class="dt">arg =</span> <span class="ot">NULL</span>)  <span class="co"># Add `arg = NULL` to the call</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw"><a href="../reference/call_modify.html">call_modify</a></span>(call, <span class="dt">arg =</span> <span class="kw"><a href="../reference/zap.html">zap</a></span>()) <span class="co"># Remove the `arg` argument from the call</span></a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="../reference/call_modify.html">call_modify</a></span>(call, <span class="dt">arg =</span> <span class="ot">NULL</span>)  <span class="co"># Add `arg = NULL` to the call</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw"><a href="../reference/call_modify.html">call_modify</a></span>(call, <span class="dt">arg =</span> <span class="kw"><a href="../reference/zap.html">zap</a></span>()) <span class="co"># Remove the `arg` argument from the call</span></a></code></pre></div>
 </li>
 <li><p>The <code>%@%</code> operator now quotes its input and supports S4 objects. This makes it directly equivalent to <code>@</code> except that it extracts attributes for non-S4 objects (<a href='https://github.com/r-lib/rlang/issues/207'>#207</a>).</p></li>
 <li><p>Taking the <code><a href="../reference/env_parent.html">env_parent()</a></code> of the empty environment is now an error.</p></li>
@@ -545,9 +604,9 @@ rlang::expr(mean(!!var * 100))</a></code></pre>
 </ul>
 <p>See the first section below for a complete list of changes to the tidy evaluation framework.</p>
 <p>This release also polishes the rlang API. Many functions have been renamed as we get a better feel for the consistency and clarity of the API. Note that rlang as a whole is still maturing and some functions are even experimental. In order to make things clearer for users of rlang, we have started to develop a set of conventions to document the current stability of each function. You will now find “lifecycle” sections in documentation topics. In addition we have gathered all lifecycle information in the <code><a href="../reference/lifecycle.html">?rlang::lifecycle</a></code> help page. Please only use functions marked as stable in your projects unless you are prepared to deal with occasional backward incompatible updates.</p>
-<div id="tidy-evaluation" class="section level2">
+<div id="tidy-evaluation-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#tidy-evaluation" class="anchor"></a>Tidy evaluation</h2>
+<a href="#tidy-evaluation-1" class="anchor"></a>Tidy evaluation</h2>
 <ul>
 <li><p>The backend for <code><a href="../reference/quotation.html">quos()</a></code>, <code><a href="../reference/quotation.html">exprs()</a></code>, <code><a href="../reference/tidy-dots.html">list2()</a></code>, <code><a href="../reference/tidy-dots.html">dots_list()</a></code>, etc is now written in C. This greatly improve the performance of dots capture, especially with the splicing operator <code>!!!</code> which now scales much better (you’ll see a 1000x performance gain in some cases). The unquoting algorithm has also been improved which makes <code><a href="../reference/quotation.html">enexpr()</a></code> and <code><a href="../reference/quotation.html">enquo()</a></code> more efficient as well.</p></li>
 <li>
@@ -766,7 +825,8 @@ quo(call(`!!!`(var)))</a></code></pre>
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#rlang-0-3-99-9000">0.3.99.9000</a></li>
+        <li><a href="#rlang-0-4-0-9000">0.4.0.9000</a></li>
+        <li><a href="#rlang-0-4-0">0.4.0</a></li>
         <li><a href="#rlang-0-3-2">0.3.2</a></li>
         <li><a href="#rlang-0-3-1">0.3.1</a></li>
         <li><a href="#rlang-0-3-0">0.3.0</a></li>
