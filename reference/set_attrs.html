@@ -105,6 +105,9 @@ uncopyable types, use mut_attrs()." />
   <ul class="dropdown-menu" role="menu">
     <li class="dropdown-header">Release notes</li>
     <li>
+      <a href="https://www.tidyverse.org/articles/2019/06/rlang-0-4-0/">Version 0.4.0</a>
+    </li>
+    <li>
       <a href="https://www.tidyverse.org/articles/2019/01/rlang-0-3-1/">Version 0.3.1</a>
     </li>
     <li>
@@ -225,7 +228,7 @@ internal attributes names like <code>.Dim</code>, <code>.Dimnames</code> or <cod
 <span class='co'># For uncopyable types, mut_attrs() lets you modify in place:</span>
 <span class='no'>env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>()
 <span class='fu'>mut_attrs</span>(<span class='no'>env</span>, <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"bar"</span>)
-<span class='no'>env</span></div><div class='output co'>#&gt; &lt;environment: 0x5262158&gt;
+<span class='no'>env</span></div><div class='output co'>#&gt; &lt;environment: 0x9787b50&gt;
 #&gt; attr(,"foo")
 #&gt; [1] "bar"</div></pre>
   </div>

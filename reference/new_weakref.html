@@ -113,6 +113,9 @@ object are replaced by NULL, and the finalizer is scheduled to execute." />
   <ul class="dropdown-menu" role="menu">
     <li class="dropdown-header">Release notes</li>
     <li>
+      <a href="https://www.tidyverse.org/articles/2019/06/rlang-0-4-0/">Version 0.4.0</a>
+    </li>
+    <li>
       <a href="https://www.tidyverse.org/articles/2019/01/rlang-0-3-1/">Version 0.3.1</a>
     </li>
     <li>
@@ -214,8 +217,8 @@ want to use the weak reference like a weak pointer.</p></td>
 <span class='co'># the weak reference will not keep the object alive.</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rm'>rm</a></span>(<span class='no'>e</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/gc'>gc</a></span>()</div><div class='output co'>#&gt;           used (Mb) gc trigger  (Mb) max used  (Mb)
-#&gt; Ncells 1030547 55.1    2028650 108.4  2028650 108.4
-#&gt; Vcells 2418156 18.5    8388608  64.0  3757678  28.7</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'><a href='wref_key.html'>wref_key</a></span>(<span class='no'>w</span>), <span class='kw'>NULL</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+#&gt; Ncells 1030657 55.1    2025773 108.2  2025773 108.2
+#&gt; Vcells 2418352 18.5    8388608  64.0  3702447  28.3</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'><a href='wref_key.html'>wref_key</a></span>(<span class='no'>w</span>), <span class='kw'>NULL</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 
 <span class='co'># A weak reference with a key and value. The value contains data about the</span>
 <span class='co'># key.</span>
@@ -227,13 +230,13 @@ want to use the weak reference like a weak pointer.</p></td>
 <span class='co'># When v is removed, the weak ref keeps it alive because k is still reachable.</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rm'>rm</a></span>(<span class='no'>v</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/gc'>gc</a></span>()</div><div class='output co'>#&gt;           used (Mb) gc trigger  (Mb) max used  (Mb)
-#&gt; Ncells 1030658 55.1    2028650 108.4  2028650 108.4
-#&gt; Vcells 2418096 18.5    8388608  64.0  3757678  28.7</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'><a href='wref_key.html'>wref_value</a></span>(<span class='no'>w</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+#&gt; Ncells 1030660 55.1    2025773 108.2  2025773 108.2
+#&gt; Vcells 2418112 18.5    8388608  64.0  3702447  28.3</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'><a href='wref_key.html'>wref_value</a></span>(<span class='no'>w</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># When k is removed, the weak ref does not keep k or v alive.</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rm'>rm</a></span>(<span class='no'>k</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/gc'>gc</a></span>()</div><div class='output co'>#&gt;           used (Mb) gc trigger  (Mb) max used  (Mb)
-#&gt; Ncells 1030675 55.1    2028650 108.4  2028650 108.4
-#&gt; Vcells 2418115 18.5    8388608  64.0  3757678  28.7</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'><a href='wref_key.html'>wref_key</a></span>(<span class='no'>w</span>), <span class='kw'>NULL</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'><a href='wref_key.html'>wref_value</a></span>(<span class='no'>w</span>), <span class='kw'>NULL</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+#&gt; Ncells 1030677 55.1    2025773 108.2  2025773 108.2
+#&gt; Vcells 2418131 18.5    8388608  64.0  3702447  28.3</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'><a href='wref_key.html'>wref_key</a></span>(<span class='no'>w</span>), <span class='kw'>NULL</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'><a href='wref_key.html'>wref_value</a></span>(<span class='no'>w</span>), <span class='kw'>NULL</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
