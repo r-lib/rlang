@@ -219,32 +219,51 @@ or complex expressions.</p>
 <span class='fu'>invoke</span>(<span class='no'>fn</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>mtcars</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; tryCatch(withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpWzs0lU/file54017dd97a58"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpWzs0lU/file54014b7eab3")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpgP725p/file54515011b9c9"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpgP725p/file545176286d07")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
 #&gt;     invisible()
 #&gt; }, error = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpWzs0lU/file54014b7eab3", 
-#&gt;         ".error"))
+#&gt;     {
+#&gt;         capture.output(assign(".Traceback", traceback(9), envir = baseenv()))
+#&gt;         calls &lt;- sys.calls()
+#&gt;         dcframe &lt;- which(vapply(calls, function(x) length(x) &gt;= 
+#&gt;             1 &amp;&amp; identical(x[[1]], quote(do.call)), logical(1)))[1]
+#&gt;         if (!is.na(dcframe)) 
+#&gt;             e$`_ignore` &lt;- list(c(1, dcframe + 1L))
+#&gt;         e$`_pid` &lt;- Sys.getpid()
+#&gt;         e$`_timestamp` &lt;- Sys.time()
+#&gt;         err &lt;- as.environment("tools:callr")$`__callr_data__`$err
+#&gt;         e &lt;- err$add_trace_back(e)
+#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpgP725p/file545176286d07", 
+#&gt;             ".error"))
+#&gt;     }
 #&gt; }, interrupt = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpWzs0lU/file54014b7eab3", 
-#&gt;         ".error"))
+#&gt;     {
+#&gt;         capture.output(assign(".Traceback", traceback(9), envir = baseenv()))
+#&gt;         calls &lt;- sys.calls()
+#&gt;         dcframe &lt;- which(vapply(calls, function(x) length(x) &gt;= 
+#&gt;             1 &amp;&amp; identical(x[[1]], quote(do.call)), logical(1)))[1]
+#&gt;         if (!is.na(dcframe)) 
+#&gt;             e$`_ignore` &lt;- list(c(1, dcframe + 1L))
+#&gt;         e$`_pid` &lt;- Sys.getpid()
+#&gt;         e$`_timestamp` &lt;- Sys.time()
+#&gt;         err &lt;- as.environment("tools:callr")$`__callr_data__`$err
+#&gt;         e &lt;- err$add_trace_back(e)
+#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpgP725p/file545176286d07", 
+#&gt;             ".error"))
+#&gt;     }
 #&gt; }, callr_message = function(e) {
 #&gt;     try({
+#&gt;         pxlib &lt;- as.environment("tools:callr")$`__callr_data__`$pxlib
 #&gt;         if (is.null(e$code)) 
 #&gt;             e$code &lt;- "301"
-#&gt;         msg &lt;- paste0("base64::", processx::base64_encode(serialize(e, 
+#&gt;         msg &lt;- paste0("base64::", pxlib$base64_encode(serialize(e, 
 #&gt;             NULL)))
 #&gt;         data &lt;- paste(e$code, msg, "\n")
-#&gt;         con &lt;- processx::conn_create_fd(3, close = FALSE)
-#&gt;         while (1) {
-#&gt;             data &lt;- processx::conn_write(con, data)
-#&gt;             if (!length(data)) 
-#&gt;                 break
-#&gt;             Sys.sleep(0.1)
-#&gt;         }
+#&gt;         pxlib$write_fd(3L, data)
 #&gt;         if (!is.null(findRestart("muffleMessage"))) {
 #&gt;             invokeRestart("muffleMessage")
 #&gt;         }
@@ -279,32 +298,51 @@ or complex expressions.</p>
 #&gt; [[8]]
 #&gt; withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpWzs0lU/file54017dd97a58"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpWzs0lU/file54014b7eab3")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpgP725p/file54515011b9c9"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpgP725p/file545176286d07")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
 #&gt;     invisible()
 #&gt; }, error = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpWzs0lU/file54014b7eab3", 
-#&gt;         ".error"))
+#&gt;     {
+#&gt;         capture.output(assign(".Traceback", traceback(9), envir = baseenv()))
+#&gt;         calls &lt;- sys.calls()
+#&gt;         dcframe &lt;- which(vapply(calls, function(x) length(x) &gt;= 
+#&gt;             1 &amp;&amp; identical(x[[1]], quote(do.call)), logical(1)))[1]
+#&gt;         if (!is.na(dcframe)) 
+#&gt;             e$`_ignore` &lt;- list(c(1, dcframe + 1L))
+#&gt;         e$`_pid` &lt;- Sys.getpid()
+#&gt;         e$`_timestamp` &lt;- Sys.time()
+#&gt;         err &lt;- as.environment("tools:callr")$`__callr_data__`$err
+#&gt;         e &lt;- err$add_trace_back(e)
+#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpgP725p/file545176286d07", 
+#&gt;             ".error"))
+#&gt;     }
 #&gt; }, interrupt = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpWzs0lU/file54014b7eab3", 
-#&gt;         ".error"))
+#&gt;     {
+#&gt;         capture.output(assign(".Traceback", traceback(9), envir = baseenv()))
+#&gt;         calls &lt;- sys.calls()
+#&gt;         dcframe &lt;- which(vapply(calls, function(x) length(x) &gt;= 
+#&gt;             1 &amp;&amp; identical(x[[1]], quote(do.call)), logical(1)))[1]
+#&gt;         if (!is.na(dcframe)) 
+#&gt;             e$`_ignore` &lt;- list(c(1, dcframe + 1L))
+#&gt;         e$`_pid` &lt;- Sys.getpid()
+#&gt;         e$`_timestamp` &lt;- Sys.time()
+#&gt;         err &lt;- as.environment("tools:callr")$`__callr_data__`$err
+#&gt;         e &lt;- err$add_trace_back(e)
+#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpgP725p/file545176286d07", 
+#&gt;             ".error"))
+#&gt;     }
 #&gt; }, callr_message = function(e) {
 #&gt;     try({
+#&gt;         pxlib &lt;- as.environment("tools:callr")$`__callr_data__`$pxlib
 #&gt;         if (is.null(e$code)) 
 #&gt;             e$code &lt;- "301"
-#&gt;         msg &lt;- paste0("base64::", processx::base64_encode(serialize(e, 
+#&gt;         msg &lt;- paste0("base64::", pxlib$base64_encode(serialize(e, 
 #&gt;             NULL)))
 #&gt;         data &lt;- paste(e$code, msg, "\n")
-#&gt;         con &lt;- processx::conn_create_fd(3, close = FALSE)
-#&gt;         while (1) {
-#&gt;             data &lt;- processx::conn_write(con, data)
-#&gt;             if (!length(data)) 
-#&gt;                 break
-#&gt;             Sys.sleep(0.1)
-#&gt;         }
+#&gt;         pxlib$write_fd(3L, data)
 #&gt;         if (!is.null(findRestart("muffleMessage"))) {
 #&gt;             invokeRestart("muffleMessage")
 #&gt;         }
@@ -312,11 +350,11 @@ or complex expressions.</p>
 #&gt; })
 #&gt; 
 #&gt; [[9]]
-#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpWzs0lU/file54017dd97a58"), 
-#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpWzs0lU/file54014b7eab3")
+#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpgP725p/file54515011b9c9"), 
+#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpgP725p/file545176286d07")
 #&gt; 
 #&gt; [[10]]
-#&gt; do.call(do.call, c(readRDS("/tmp/RtmpWzs0lU/file54017dd97a58"), 
+#&gt; do.call(do.call, c(readRDS("/tmp/RtmpgP725p/file54515011b9c9"), 
 #&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv)
 #&gt; 
 #&gt; [[11]]
@@ -333,7 +371,7 @@ or complex expressions.</p>
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; }, list(pkg = ".", examples = TRUE, document = FALSE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpWzs0lU/file54012a6dabbc"), 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpgP725p/file54516badeaed"), 
 #&gt;     preview = FALSE, new_process = FALSE, crayon_enabled = TRUE, 
 #&gt;     crayon_colors = 256, pkgdown_internet = TRUE), envir = &lt;environment&gt;)
 #&gt; 
@@ -344,7 +382,7 @@ or complex expressions.</p>
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; })(pkg = ".", examples = TRUE, document = FALSE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpWzs0lU/file54012a6dabbc"), 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpgP725p/file54516badeaed"), 
 #&gt;     preview = FALSE, new_process = FALSE, crayon_enabled = TRUE, 
 #&gt;     crayon_colors = 256, pkgdown_internet = TRUE)
 #&gt; 
@@ -504,32 +542,51 @@ or complex expressions.</p>
 #&gt; 6, 8, 2))</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/do.call'>do.call</a></span>(<span class='no'>fn</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>mtcars</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; tryCatch(withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpWzs0lU/file54017dd97a58"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpWzs0lU/file54014b7eab3")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpgP725p/file54515011b9c9"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpgP725p/file545176286d07")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
 #&gt;     invisible()
 #&gt; }, error = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpWzs0lU/file54014b7eab3", 
-#&gt;         ".error"))
+#&gt;     {
+#&gt;         capture.output(assign(".Traceback", traceback(9), envir = baseenv()))
+#&gt;         calls &lt;- sys.calls()
+#&gt;         dcframe &lt;- which(vapply(calls, function(x) length(x) &gt;= 
+#&gt;             1 &amp;&amp; identical(x[[1]], quote(do.call)), logical(1)))[1]
+#&gt;         if (!is.na(dcframe)) 
+#&gt;             e$`_ignore` &lt;- list(c(1, dcframe + 1L))
+#&gt;         e$`_pid` &lt;- Sys.getpid()
+#&gt;         e$`_timestamp` &lt;- Sys.time()
+#&gt;         err &lt;- as.environment("tools:callr")$`__callr_data__`$err
+#&gt;         e &lt;- err$add_trace_back(e)
+#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpgP725p/file545176286d07", 
+#&gt;             ".error"))
+#&gt;     }
 #&gt; }, interrupt = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpWzs0lU/file54014b7eab3", 
-#&gt;         ".error"))
+#&gt;     {
+#&gt;         capture.output(assign(".Traceback", traceback(9), envir = baseenv()))
+#&gt;         calls &lt;- sys.calls()
+#&gt;         dcframe &lt;- which(vapply(calls, function(x) length(x) &gt;= 
+#&gt;             1 &amp;&amp; identical(x[[1]], quote(do.call)), logical(1)))[1]
+#&gt;         if (!is.na(dcframe)) 
+#&gt;             e$`_ignore` &lt;- list(c(1, dcframe + 1L))
+#&gt;         e$`_pid` &lt;- Sys.getpid()
+#&gt;         e$`_timestamp` &lt;- Sys.time()
+#&gt;         err &lt;- as.environment("tools:callr")$`__callr_data__`$err
+#&gt;         e &lt;- err$add_trace_back(e)
+#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpgP725p/file545176286d07", 
+#&gt;             ".error"))
+#&gt;     }
 #&gt; }, callr_message = function(e) {
 #&gt;     try({
+#&gt;         pxlib &lt;- as.environment("tools:callr")$`__callr_data__`$pxlib
 #&gt;         if (is.null(e$code)) 
 #&gt;             e$code &lt;- "301"
-#&gt;         msg &lt;- paste0("base64::", processx::base64_encode(serialize(e, 
+#&gt;         msg &lt;- paste0("base64::", pxlib$base64_encode(serialize(e, 
 #&gt;             NULL)))
 #&gt;         data &lt;- paste(e$code, msg, "\n")
-#&gt;         con &lt;- processx::conn_create_fd(3, close = FALSE)
-#&gt;         while (1) {
-#&gt;             data &lt;- processx::conn_write(con, data)
-#&gt;             if (!length(data)) 
-#&gt;                 break
-#&gt;             Sys.sleep(0.1)
-#&gt;         }
+#&gt;         pxlib$write_fd(3L, data)
 #&gt;         if (!is.null(findRestart("muffleMessage"))) {
 #&gt;             invokeRestart("muffleMessage")
 #&gt;         }
@@ -564,32 +621,51 @@ or complex expressions.</p>
 #&gt; [[8]]
 #&gt; withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpWzs0lU/file54017dd97a58"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpWzs0lU/file54014b7eab3")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpgP725p/file54515011b9c9"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpgP725p/file545176286d07")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
 #&gt;     invisible()
 #&gt; }, error = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpWzs0lU/file54014b7eab3", 
-#&gt;         ".error"))
+#&gt;     {
+#&gt;         capture.output(assign(".Traceback", traceback(9), envir = baseenv()))
+#&gt;         calls &lt;- sys.calls()
+#&gt;         dcframe &lt;- which(vapply(calls, function(x) length(x) &gt;= 
+#&gt;             1 &amp;&amp; identical(x[[1]], quote(do.call)), logical(1)))[1]
+#&gt;         if (!is.na(dcframe)) 
+#&gt;             e$`_ignore` &lt;- list(c(1, dcframe + 1L))
+#&gt;         e$`_pid` &lt;- Sys.getpid()
+#&gt;         e$`_timestamp` &lt;- Sys.time()
+#&gt;         err &lt;- as.environment("tools:callr")$`__callr_data__`$err
+#&gt;         e &lt;- err$add_trace_back(e)
+#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpgP725p/file545176286d07", 
+#&gt;             ".error"))
+#&gt;     }
 #&gt; }, interrupt = function(e) {
-#&gt;     saveRDS(list("error", e), file = paste0("/tmp/RtmpWzs0lU/file54014b7eab3", 
-#&gt;         ".error"))
+#&gt;     {
+#&gt;         capture.output(assign(".Traceback", traceback(9), envir = baseenv()))
+#&gt;         calls &lt;- sys.calls()
+#&gt;         dcframe &lt;- which(vapply(calls, function(x) length(x) &gt;= 
+#&gt;             1 &amp;&amp; identical(x[[1]], quote(do.call)), logical(1)))[1]
+#&gt;         if (!is.na(dcframe)) 
+#&gt;             e$`_ignore` &lt;- list(c(1, dcframe + 1L))
+#&gt;         e$`_pid` &lt;- Sys.getpid()
+#&gt;         e$`_timestamp` &lt;- Sys.time()
+#&gt;         err &lt;- as.environment("tools:callr")$`__callr_data__`$err
+#&gt;         e &lt;- err$add_trace_back(e)
+#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpgP725p/file545176286d07", 
+#&gt;             ".error"))
+#&gt;     }
 #&gt; }, callr_message = function(e) {
 #&gt;     try({
+#&gt;         pxlib &lt;- as.environment("tools:callr")$`__callr_data__`$pxlib
 #&gt;         if (is.null(e$code)) 
 #&gt;             e$code &lt;- "301"
-#&gt;         msg &lt;- paste0("base64::", processx::base64_encode(serialize(e, 
+#&gt;         msg &lt;- paste0("base64::", pxlib$base64_encode(serialize(e, 
 #&gt;             NULL)))
 #&gt;         data &lt;- paste(e$code, msg, "\n")
-#&gt;         con &lt;- processx::conn_create_fd(3, close = FALSE)
-#&gt;         while (1) {
-#&gt;             data &lt;- processx::conn_write(con, data)
-#&gt;             if (!length(data)) 
-#&gt;                 break
-#&gt;             Sys.sleep(0.1)
-#&gt;         }
+#&gt;         pxlib$write_fd(3L, data)
 #&gt;         if (!is.null(findRestart("muffleMessage"))) {
 #&gt;             invokeRestart("muffleMessage")
 #&gt;         }
@@ -597,11 +673,11 @@ or complex expressions.</p>
 #&gt; })
 #&gt; 
 #&gt; [[9]]
-#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpWzs0lU/file54017dd97a58"), 
-#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpWzs0lU/file54014b7eab3")
+#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpgP725p/file54515011b9c9"), 
+#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpgP725p/file545176286d07")
 #&gt; 
 #&gt; [[10]]
-#&gt; do.call(do.call, c(readRDS("/tmp/RtmpWzs0lU/file54017dd97a58"), 
+#&gt; do.call(do.call, c(readRDS("/tmp/RtmpgP725p/file54515011b9c9"), 
 #&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv)
 #&gt; 
 #&gt; [[11]]
@@ -618,7 +694,7 @@ or complex expressions.</p>
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; }, list(pkg = ".", examples = TRUE, document = FALSE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpWzs0lU/file54012a6dabbc"), 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpgP725p/file54516badeaed"), 
 #&gt;     preview = FALSE, new_process = FALSE, crayon_enabled = TRUE, 
 #&gt;     crayon_colors = 256, pkgdown_internet = TRUE), envir = &lt;environment&gt;)
 #&gt; 
@@ -629,7 +705,7 @@ or complex expressions.</p>
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; })(pkg = ".", examples = TRUE, document = FALSE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpWzs0lU/file54012a6dabbc"), 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpgP725p/file54516badeaed"), 
 #&gt;     preview = FALSE, new_process = FALSE, crayon_enabled = TRUE, 
 #&gt;     crayon_colors = 256, pkgdown_internet = TRUE)
 #&gt; 

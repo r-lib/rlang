@@ -231,7 +231,8 @@ to the search path with <code><a href='https://www.rdocumentation.org/packages/b
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/search'>search</a></span>()</div><div class='output co'>#&gt;  [1] ".GlobalEnv"        "devtools_shims"    "package:rlang"    
 #&gt;  [4] "package:testthat"  "package:stats"     "package:graphics" 
 #&gt;  [7] "package:grDevices" "package:utils"     "package:datasets" 
-#&gt; [10] "package:methods"   "Autoloads"         "package:base"     </div><div class='input'>
+#&gt; [10] "package:methods"   "Autoloads"         "tools:callr"      
+#&gt; [13] "package:base"     </div><div class='input'>
 <span class='co'># Get the corresponding environments:</span>
 <span class='fu'>search_envs</span>()</div><div class='output co'>#&gt;  [[1]] $ &lt;env: global&gt;
 #&gt;  [[2]] $ &lt;env: devtools_shims&gt;
@@ -244,7 +245,8 @@ to the search path with <code><a href='https://www.rdocumentation.org/packages/b
 #&gt;  [[9]] $ &lt;env: package:datasets&gt;
 #&gt; [[10]] $ &lt;env: package:methods&gt;
 #&gt; [[11]] $ &lt;env: Autoloads&gt;
-#&gt; [[12]] $ &lt;env: package:base&gt;</div><div class='input'>
+#&gt; [[12]] $ &lt;env: tools:callr&gt;
+#&gt; [[13]] $ &lt;env: package:base&gt;</div><div class='input'>
 <span class='co'># The global environment and the base package are always first and</span>
 <span class='co'># last in the chain, respectively:</span>
 <span class='no'>envs</span> <span class='kw'>&lt;-</span> <span class='fu'>search_envs</span>()

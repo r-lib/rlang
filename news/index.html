@@ -143,6 +143,14 @@
 <h1 class="page-header">
 <a href="#rlang-0-4-0-9000" class="anchor"></a>rlang 0.4.0.9000<small> Unreleased </small>
 </h1>
+<div id="bugfixes-and-small-improvements" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bugfixes-and-small-improvements" class="anchor"></a>Bugfixes and small improvements</h2>
+<ul>
+<li>
+<code>x %|% y</code> now also works when <code>y</code> is of same length as <code>x</code> (<a href='https://github.com/rcannood'>@rcannood</a>, <a href='https://github.com/r-lib/rlang/issues/806'>#806</a>).</li>
+</ul>
+</div>
 </div>
     <div id="rlang-0-4-0" class="section level1">
 <h1 class="page-header">
@@ -210,9 +218,9 @@ letters %&gt;% set_names(toupper)</code></pre>
 </li>
 </ul>
 </div>
-<div id="bugfixes-and-small-improvements" class="section level2">
+<div id="bugfixes-and-small-improvements-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bugfixes-and-small-improvements" class="anchor"></a>Bugfixes and small improvements</h2>
+<a href="#bugfixes-and-small-improvements-1" class="anchor"></a>Bugfixes and small improvements</h2>
 <ul>
 <li><p><code><a href="../reference/with_handlers.html">with_handlers()</a></code> now installs calling handlers first on the stack, no matter their location in the argument list. This way they always take precedence over exiting handlers, which ensures their side effects (such as logging) take place (<a href='https://github.com/r-lib/rlang/issues/718'>#718</a>).</p></li>
 <li><p>In rlang backtraces, the <code>global::</code> prefix is now only added when the function directly inherits from the global environment. Functions inheriting indirectly no longer have a namespace qualifier (<a href='https://github.com/r-lib/rlang/issues/733'>#733</a>).</p></li>
