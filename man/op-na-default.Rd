@@ -8,7 +8,9 @@
 x \%|\% y
 }
 \arguments{
-\item{x, y}{\code{y} for elements of \code{x} that are NA; otherwise, \code{x}.}
+\item{x}{The original values.}
+
+\item{y}{The replacement values. Must be of length 1 or the same length as \code{x}.}
 }
 \description{
 This infix function is similar to \code{\%||\%} but is vectorised
@@ -17,6 +19,7 @@ than using \code{\link[base:ifelse]{base::ifelse()}} and does not perform type c
 }
 \examples{
 c("a", "b", NA, "c") \%|\% "default"
+c(1L, NA, 3L, NA, NA) \%|\% (6L:10L)
 }
 \seealso{
 \link{op-null-default}

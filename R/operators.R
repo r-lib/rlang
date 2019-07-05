@@ -20,14 +20,17 @@
 #' and provides a default value for missing elements. It is faster
 #' than using [base::ifelse()] and does not perform type conversions.
 #'
-#' @param x,y `y` for elements of `x` that are NA; otherwise, `x`.
+#' @param x The original values.
+#' @param y The replacement values. Must be of length 1 or the same length as `x`.
 #' @export
 #' @name op-na-default
 #' @seealso [op-null-default]
 #' @examples
 #' c("a", "b", NA, "c") %|% "default"
+#' c(1L, NA, 3L, NA, NA) %|% (6L:10L)
 `%|%` <- function(x, y) {
-  stopifnot(is_atomic(x) && is_scalar_atomic(y))
+  stopifnot(is_atomic(x) && is_atomic(y))
+  stopifnot(length(y) == 1 || length(y) == length(x))
   stopifnot(typeof(x) == typeof(y))
   .Call(rlang_replace_na, x, y)
 }
