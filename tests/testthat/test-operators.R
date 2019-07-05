@@ -17,9 +17,31 @@ test_that("%|% returns default value", {
   expect_equal(cpx, c(1i, 2i, 3i, 4i))
 })
 
+test_that("%|% also works when y is of same length as x", {
+  lgl <- c(TRUE, TRUE, NA, FALSE) %|% c(TRUE, TRUE, FALSE, TRUE)
+  expect_identical(lgl, c(TRUE, TRUE, FALSE, FALSE))
+
+  int <- c(1L, 2L, NA, 4L) %|% c(10L, 11L, 12L, 13L)
+  expect_identical(int, c(1L, 2L, 12L, 4L))
+
+  dbl <- c(1, 2, NA, 4) %|% c(10, 11, 12, 13)
+  expect_identical(dbl, c(1, 2, 12, 4))
+
+  chr <- c("1", "2", NA, "4") %|% c("10", "11", "12", "13")
+  expect_identical(chr, c("1", "2", "12", "4"))
+
+  cpx <- c(1i, 2i, NA, 4i) %|% c(10i, 11i, 12i, 13i)
+  expect_equal(cpx, c(1i, 2i, 12i, 4i))
+})
+
 test_that("%|% fails with wrong types", {
   expect_error(c(1L, NA) %|% 2)
   expect_error(c(1, NA) %|% "")
+})
+
+test_that("%|% fails with wrong length", {
+  expect_error(c(1L, NA) %|% 1:3)
+  expect_error(1:10 %|% 1:4)
 })
 
 test_that("%@% returns attribute", {
