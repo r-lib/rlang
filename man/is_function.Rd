@@ -46,15 +46,13 @@ argument matching (dealing with positional versus named arguments,
 partial matching, etc). One practical consequence of the special
 way in which primitives are passed arguments is that they
 technically do not have formal arguments, and \code{\link[=formals]{formals()}} will
-return \code{NULL} if called on a primitive function. See \code{\link[=fn_fmls]{fn_fmls()}}
-for a function that returns a representation of formal arguments
-for primitive functions. Finally, primitive functions can either
-take arguments lazily, like R closures do, or evaluate them eagerly
-before being passed on to the C code. The former kind of primitives
-are called "special" in R terminology, while the latter is referred
-to as "builtin". \code{is_primitive_eager()} and \code{is_primitive_lazy()}
-allow you to check whether a primitive function evaluates arguments
-eagerly or lazily.
+return \code{NULL} if called on a primitive function. Finally, primitive
+functions can either take arguments lazily, like R closures do,
+or evaluate them eagerly before being passed on to the C code.
+The former kind of primitives are called "special" in R terminology,
+while the latter is referred to as "builtin". \code{is_primitive_eager()}
+and \code{is_primitive_lazy()} allow you to check whether a primitive
+function evaluates arguments eagerly or lazily.
 
 You will also encounter the distinction between primitive and
 internal functions in technical documentation. Like primitive
