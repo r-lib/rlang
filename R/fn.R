@@ -224,15 +224,13 @@ fn_body_node <- function(fn) {
 #' partial matching, etc). One practical consequence of the special
 #' way in which primitives are passed arguments is that they
 #' technically do not have formal arguments, and [formals()] will
-#' return `NULL` if called on a primitive function. See [fn_fmls()]
-#' for a function that returns a representation of formal arguments
-#' for primitive functions. Finally, primitive functions can either
-#' take arguments lazily, like R closures do, or evaluate them eagerly
-#' before being passed on to the C code. The former kind of primitives
-#' are called "special" in R terminology, while the latter is referred
-#' to as "builtin". `is_primitive_eager()` and `is_primitive_lazy()`
-#' allow you to check whether a primitive function evaluates arguments
-#' eagerly or lazily.
+#' return `NULL` if called on a primitive function. Finally, primitive 
+#' functions can either take arguments lazily, like R closures do, 
+#' or evaluate them eagerly before being passed on to the C code. 
+#' The former kind of primitives are called "special" in R terminology, 
+#' while the latter is referred to as "builtin". `is_primitive_eager()` 
+#' and `is_primitive_lazy()` allow you to check whether a primitive 
+#' function evaluates arguments eagerly or lazily.
 #'
 #' You will also encounter the distinction between primitive and
 #' internal functions in technical documentation. Like primitive
