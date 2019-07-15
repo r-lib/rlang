@@ -451,3 +451,7 @@ test_that("as_name() supports quosured symbols and strings", {
    expect_identical(as_name(quo("foo")), "foo")
    expect_error(as_name(quo(foo())), "Can't convert a call to a string")
  })
+
+test_that("named empty lists are marked as named", {
+  expect_identical(expr_deparse(set_names(list(), chr())), "<named list>")
+})

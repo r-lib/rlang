@@ -651,6 +651,11 @@ atom_deparse <- function(x, lines = new_lines()) {
 }
 
 list_deparse <- function(x, lines = new_lines()) {
+  if (!length(x) && !is_null(names(x))) {
+    lines$push("<named list>")
+    return(lines$get_lines())
+  }
+
   lines$push(paste0("<list: "))
   lines$increase_indent()
 

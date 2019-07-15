@@ -3,6 +3,9 @@
 
 * `x %|% y` now also works when `y` is of same length as `x` (@rcannood, #806).
 
+* Empty named lists are now deparsed more explicitly as
+  `"<named list>"`.
+
 * Fixed `chr()` bug causing it to return invisibly.
 
 
