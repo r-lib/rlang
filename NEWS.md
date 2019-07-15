@@ -1,9 +1,10 @@
 
 # rlang 0.4.0.9000
 
-## Bugfixes and small improvements
-
 * `x %|% y` now also works when `y` is of same length as `x` (@rcannood, #806).
+
+* Fixed `chr()` bug causing it to return invisibly.
+
 
 # rlang 0.4.0
 
