@@ -12,9 +12,14 @@ Full:
 
 Collapsed:
     █
- 1. └─[ NA %>% F() %>% T() ] with 7 more calls
- 9.   └─rlang:::T(.)
+ 1. └─NA %>% F() %>% T()
+ 2.   ├─[ base::withVisible(...) ]
+ 3.   └─[ base::eval(...) ] with 1 more call
+ 5.     └─rlang:::`_fseq`(`_lhs`)
+ 6.       └─magrittr::freduce(value, `_function_list`)
+ 7.         ├─[ base::withVisible(...) ]
+ 8.         └─function_list[[k]](value)
+ 9.           └─rlang:::T(.)
 
 Branch:
- 1. rlang:::F(.)
  9. rlang:::T(.)
