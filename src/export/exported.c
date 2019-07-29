@@ -329,6 +329,10 @@ sexp* rlang_named(sexp* x, sexp* env) {
   return Rf_ScalarInteger(NAMED(x));
 }
 
+sexp* rlang_find_var(sexp* env, sexp* sym) {
+  return Rf_findVar(sym, env);
+}
+
 
 // vec.h
 

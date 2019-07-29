@@ -86,4 +86,8 @@ vec_alloc <- function(type, n) {
   .Call(rlang_vec_alloc, type, n)
 }
 
+find_var <- function(env, sym) {
+  .Call(rlang_find_var, env, sym);
+}
+
 # nocov end

@@ -121,6 +121,7 @@ extern sexp* rlang_new_weakref(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_wref_key(sexp*);
 extern sexp* rlang_wref_value(sexp*);
 extern sexp* rlang_is_weakref(sexp*);
+extern sexp* rlang_find_var(sexp*, sexp*);
 
 // Library initialisation defined below
 sexp* rlang_library_load();
@@ -281,6 +282,7 @@ static const r_callable r_callables[] = {
   {"rlang_wref_key",                    (r_fn_ptr) &rlang_wref_key, 1},
   {"rlang_wref_value",                  (r_fn_ptr) &rlang_wref_value, 1},
   {"rlang_is_weakref",                  (r_fn_ptr) &rlang_is_weakref, 1},
+  {"rlang_find_var",                    (r_fn_ptr) &rlang_find_var, 2},
   {NULL, NULL, 0}
 };
 
