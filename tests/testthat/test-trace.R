@@ -623,3 +623,27 @@ test_that("caught error does not display backtrace in knitted files", {
   error_line <- lines[[length(lines)]]
   expect_match(error_line, "foo$")
 })
+
+test_that("branch backtraces respect lexical contexts", {
+  skip_unless_utf8()
+
+  e <- environment()
+
+  f <- function() lapply(NA, function(x) trace_back(e))
+  trace <- f()[[1]]
+  expect_known_trace_output(trace, file = "test-trace-lexical.txt")
+
+  f <- function() lapply(NA, function(x) lapply(NA, function(y) trace_back(e)))
+  trace <- f()[[1]][[1]]
+  expect_known_trace_output(trace, file = "test-trace-lexical-nested.txt")
+
+  f <- function() {
+    g <- function(x) {
+      h <- function(y) trace_back(e)
+      h()
+    }
+    g()
+  }
+  trace <- f()
+  expect_known_trace_output(trace, file = "test-trace-lexical-named.txt")
+})

@@ -1,0 +1,14 @@
+Full:
+    █
+ 1. └─rlang:::f()
+ 2.   └─rlang:::g()
+ 3.     └─rlang:::h()
+
+Collapsed:
+    █
+ 1. └─rlang:::f()
+ 2.   └─rlang:::g()
+ 3.     └─rlang:::h()
+
+Branch:
+ 1. rlang:::f()

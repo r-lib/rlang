@@ -647,6 +647,7 @@ trail_uncollapse_pipe <- function(trace) {
 
 trace_simplify_branch <- function(trace) {
   parents <- trace$parents
+  lexical_parents <- trace$clo_parents
   path <- int()
   id <- length(parents)
 
@@ -661,6 +662,10 @@ trace_simplify_branch <- function(trace) {
       parents[[id + 1L]] <- next_id
 
       id <- next_id
+    }
+
+    while (!is.na(lexical_parent <- lexical_parents[[id]])) {
+      id <- lexical_parent
     }
 
     if (!is_uninformative_call(trace$calls[[id]])) {

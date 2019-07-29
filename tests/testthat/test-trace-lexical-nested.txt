@@ -1,0 +1,18 @@
+Full:
+    █
+ 1. └─rlang:::f()
+ 2.   └─base::lapply(NA, function(x) lapply(NA, function(y) trace_back(e)))
+ 3.     └─rlang:::FUN(X[[i]], ...)
+ 4.       └─base::lapply(NA, function(y) trace_back(e))
+ 5.         └─rlang:::FUN(X[[i]], ...)
+
+Collapsed:
+    █
+ 1. └─rlang:::f()
+ 2.   └─base::lapply(NA, function(x) lapply(NA, function(y) trace_back(e)))
+ 3.     └─rlang:::FUN(X[[i]], ...)
+ 4.       └─base::lapply(NA, function(y) trace_back(e))
+ 5.         └─rlang:::FUN(X[[i]], ...)
+
+Branch:
+ 1. rlang:::f()
