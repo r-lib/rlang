@@ -66,7 +66,8 @@
   }
 }
 #' @rdname op-get-attr
-#' @usage x %@% name <- value
+#' @param value New value for attribute `name`.
+#' @usage x \%@\% name <- value
 #' @export
 `%@%<-` <- function(x, name, value) {
   name <- as_string(ensym(name))

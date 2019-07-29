@@ -8,12 +8,14 @@
 \usage{
 x \%@\% name
 
-x %@% name <- value
+x \%@\% name <- value
 }
 \arguments{
 \item{x}{Object}
 
 \item{name}{Attribute name}
+
+\item{value}{New value for attribute \code{name}.}
 }
 \description{
 This operator extracts or sets attributes for regular objects and
