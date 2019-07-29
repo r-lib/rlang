@@ -406,13 +406,13 @@ test_that("collapsing of eval() frames detects when error occurs within eval()",
 test_that("can print degenerate backtraces", {
   skip_unless_utf8()
 
-  trace_sym <- new_trace(list(quote(foo)), int(0), chr(""))
+  trace_sym <- new_trace(list(quote(foo)), int(0), chr(""), int(NA))
   expect_known_trace_output(trace_sym, file = "test-trace-degenerate-sym.txt")
 
-  trace_null <- new_trace(list(NULL), int(0), chr(""))
+  trace_null <- new_trace(list(NULL), int(0), chr(""), int(NA))
   expect_known_trace_output(trace_null, file = "test-trace-degenerate-null.txt")
 
-  trace_scalar <- new_trace(list(1L), int(0), chr(""))
+  trace_scalar <- new_trace(list(1L), int(0), chr(""), int(NA))
   expect_known_trace_output(trace_scalar, file = "test-trace-degenerate-scalar.txt")
 })
 

@@ -327,13 +327,13 @@ test_that("on_error option can be tweaked", {
 test_that("format_onerror_backtrace handles empty and size 1 traces", {
   scoped_options(rlang_backtrace_on_error = "branch")
 
-  trace <- new_trace(list(), int(), chr())
+  trace <- new_trace(list(), int(), chr(), int())
   expect_identical(format_onerror_backtrace(trace), NULL)
 
-  trace <- new_trace(list(quote(foo)), int(0), chr(""))
+  trace <- new_trace(list(quote(foo)), int(0), chr(""), int(NA))
   expect_identical(format_onerror_backtrace(trace), NULL)
 
-  trace <- new_trace(list(quote(foo), quote(bar)), int(0, 1), chr("", ""))
+  trace <- new_trace(list(quote(foo), quote(bar)), int(0, 1), chr("", ""), int(NA, NA))
   expect_match(format_onerror_backtrace(trace), "foo.*bar")
 })
 

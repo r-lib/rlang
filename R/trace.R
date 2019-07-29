@@ -88,7 +88,10 @@ trace_back <- function(top = NULL, bottom = NULL) {
   parents <- normalise_parents(parents)
   envs <- map(frames, env_label)
 
-  trace <- new_trace(calls, parents, envs)
+  clo_parents <- map_chr(idx, function(i) env_label(fn_env(sys.function(i))))
+  clo_parents <- match(clo_parents, envs)
+
+  trace <- new_trace(calls, parents, envs, clo_parents)
   trace <- trace_trim_env(trace, top)
 
   trace
@@ -224,14 +227,15 @@ normalise_parents <- function(parents) {
   parents
 }
 
-new_trace <- function(calls, parents, envs, indices = NULL) {
+new_trace <- function(calls, parents, envs, clo_parents, indices = NULL) {
   indices <- indices %||% seq_along(calls)
 
   n <- length(calls)
   stopifnot(
     is_list(calls),
     is_integer(parents, n),
-    is_integer(indices, n)
+    is_integer(indices, n),
+    is_integer(clo_parents, n)
   )
 
   structure(
@@ -239,6 +243,7 @@ new_trace <- function(calls, parents, envs, indices = NULL) {
       calls = calls,
       parents = parents,
       envs = envs,
+      clo_parents = clo_parents,
       indices = indices
     ),
     class = "rlang_trace"
@@ -259,9 +264,10 @@ c.rlang_trace <- function(...) {
   calls <- flatten(map(traces, `[[`, "calls"))
   parents <- flatten_int(map(traces, `[[`, "parents"))
   envs <- flatten(map(traces, `[[`, "envs"))
+  clo_parents <- flatten(map(traces, `[[`, "clo_parents"))
   indices <- flatten_int(map(traces, `[[`, "indices"))
 
-  new_trace(calls, parents, envs, indices)
+  new_trace(calls, parents, envs, clo_parents, indices = indices)
 }
 
 #' @export
@@ -417,7 +423,7 @@ trace_length <- function(x) {
 
 trace_subset <- function(x, i) {
   if (!length(i)) {
-    return(new_trace(list(), int(), list()))
+    return(new_trace(list(), int(), list(), int()))
   }
   stopifnot(is_integerish(i))
 
@@ -428,11 +434,13 @@ trace_subset <- function(x, i) {
   }
 
   parents <- match(as.character(x$parents[i]), as.character(i), nomatch = 0)
+  clo_parents <- match(as.character(x$clo_parents[i]), as.character(i), nomatch = NA)
 
   new_trace(
     calls = x$calls[i],
     parents = parents,
     envs = x$envs[i],
+    clo_parents = clo_parents,
     indices = x$indices[i]
   )
 }
