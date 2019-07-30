@@ -852,23 +852,3 @@ trace_root <- function() {
     "x"
   }
 }
-
-# Misc --------------------------------------------------------------------
-
-reprex_callstack <- function() {
-  path <- tempfile(fileext = ".rds")
-
-  code <- expr({
-    f <- function() g()
-    g <- function() h()
-    h <- function() rlang::trace_back(globalenv())
-
-    x <- try(identity(f()))
-    saveRDS(x, !!path)
-  })
-
-  reprex <- getExportedValue("reprex", "reprex")
-  reprex(input = expr_deparse(code), outfile = NULL, show = FALSE)
-
-  readRDS(path)
-}
