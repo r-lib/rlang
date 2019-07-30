@@ -524,6 +524,17 @@ is_eval_call <- function(call) {
   is_call(call, c("eval", "evalq"), ns = c("", "base"))
 }
 
+lexical_parent <- function(parents, id) {
+  parent <- parents[[id]]
+
+  # `eval()` frame cause XXX
+  if (is.na(parent) || parent >= id) {
+    NA
+  } else {
+    parent
+  }
+}
+
 trace_simplify_branch <- function(trace) {
   parents <- trace$parents
   lexical_parents <- trace$clo_parents
@@ -543,7 +554,7 @@ trace_simplify_branch <- function(trace) {
       id <- next_id
     }
 
-    while (!is.na(lexical_parent <- lexical_parents[[id]])) {
+    while (!is.na(lexical_parent <- lexical_parent(lexical_parents, id))) {
       id <- lexical_parent
     }
 

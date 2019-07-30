@@ -626,4 +626,37 @@ test_that("branch backtraces respect lexical contexts", {
   }
   trace <- f()
   expect_known_trace_output(trace, file = "test-trace-lexical-named.txt")
+
+
+  skip_if(getRversion() < "3.4", "`eval()` frame calls are different on R < 3.4")
+
+  # The eval frame has the same environment as `f()`
+  f <- function() {
+    g <- function(y) trace_back(e)
+    eval(quote(g()))
+  }
+  trace <- f()
+  expect_known_trace_output(trace, file = "test-trace-parasite-eval.txt")
+})
+
+test_that("branch backtraces don't infloop when lexical parent is also an eval frame", {
+  skip_unless_utf8()
+
+  e <- current_env()
+  dothis <- function() eval(quote(dothat()), e)
+  dothat <- function(y) trace_back(e)
+  trace <- dothis()
+
+  expect_known_trace_output(trace, file = "test-trace-lexical-eval-frame.txt")
+
+
+  skip_if(getRversion() < "3.5", "`!!` is not deparsed properly on R < 3.5")
+
+  e <- current_env()
+  dothis <- function() eval(expr(dothat(!!e)), globalenv())
+  dothat <- local(envir = global_env(), function(e) trace_back(e))
+  scoped_bindings(.env = global_env(), dothat = dothat)
+  trace <- dothis()
+
+  expect_known_trace_output(trace, file = "test-trace-lexical-eval-frame-global.txt")
 })

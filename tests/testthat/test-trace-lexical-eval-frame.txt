@@ -1,0 +1,10 @@
+Full:
+    █
+ 1. └─rlang:::dothat()
+
+Collapsed:
+    █
+ 1. └─rlang:::dothat()
+
+Branch:
+ 1. rlang:::dothat()
