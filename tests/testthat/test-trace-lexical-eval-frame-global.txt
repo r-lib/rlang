@@ -12,5 +12,4 @@ Collapsed:
 
 Branch:
  1. rlang:::dothis()
- 2. base::eval(expr(dothat(!!e)), globalenv())
- 3. base::eval(expr(dothat(!!e)), globalenv())
+ 4. global::dothat(<environment>)

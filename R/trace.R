@@ -88,7 +88,9 @@ trace_back <- function(top = NULL, bottom = NULL) {
   envs <- map(frames, env_label)
 
   clo_parents <- map_chr(idx, function(i) env_label(fn_env(sys.function(i))))
-  clo_parents <- match(clo_parents, envs)
+  global <- clo_parents == "global"
+  clo_parents <- match(clo_parents, as.character(envs))
+  clo_parents[global] <- 1L
 
   trace <- new_trace(calls, parents, envs, clo_parents)
   trace <- trace_trim_env(trace, top)
