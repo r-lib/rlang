@@ -64,6 +64,7 @@ reference:
       - signal
       - trace_back
       - with_abort
+      - entrace
   - title: Evaluate expressions
     contents:
       - eval_tidy
