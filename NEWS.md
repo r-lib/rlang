@@ -1,5 +1,8 @@
 
-# rlang 0.4.0.9000
+# rlang (development)
+
+* Added internal utility `cnd_entrace()` to add a backtrace to a
+  condition.
 
 * `rlang::last_error()` backtraces are no longer displayed in red.
 
