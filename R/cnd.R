@@ -769,6 +769,12 @@ show_trace_p <- function() {
 #'
 #' @description
 #'
+#' `entrace()` interrupts an error throw to add an [rlang
+#' backtrace][trace_back()] to the error. The error throw is
+#' immediately resumed. `cnd_entrace()` adds a backtrace to a
+#' condition object, without any other effect. Both functions should
+#' be called directly from an error handler.
+#'
 #' Set the `error` global option to `quote(rlang::entrace())` to
 #' transform base errors to rlang errors. These enriched errors
 #' include a backtrace. The RProfile is a good place to set the
@@ -784,6 +790,7 @@ show_trace_p <- function() {
 #' @param ... Unused. These dots are for future extensions.
 #'
 #' @seealso [with_abort()] to promote conditions to rlang errors.
+#'   [cnd_entrace()] to manually add a backtrace to a condition.
 #' @examples
 #' if (FALSE) {  # Not run
 #'
@@ -815,6 +822,25 @@ entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
   }
 }
 
+#' @rdname entrace
+#' @export
+cnd_entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
+  check_dots_empty(...)
+
+  if (!is_null(cnd$trace)) {
+    return(cnd)
+  }
+
+  if (is_null(bottom)) {
+    nframe <- sys.parent() - 1
+    info <- signal_context_info(nframe)
+    bottom <- sys.frame(info[[2]])
+  }
+  cnd$trace <- trace_back(top = top, bottom = bottom)
+
+  cnd
+}
+
 #' Return information about signalling context
 #'
 #' @param nframe The depth of the frame to inspect. In a condition
@@ -839,7 +865,7 @@ entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
 #'   * `"condition"` for conditions signalled with `base::signalCondition()`
 #'
 #' @keywords internal
-#' @export
+#' @noRd
 signal_context_info <- function(nframe) {
   first <- sys_body(nframe)
 

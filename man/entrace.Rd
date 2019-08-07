@@ -2,9 +2,12 @@
 % Please edit documentation in R/cnd.R
 \name{entrace}
 \alias{entrace}
+\alias{cnd_entrace}
 \title{Add backtrace from error handler}
 \usage{
 entrace(cnd, ..., top = NULL, bottom = NULL)
+
+cnd_entrace(cnd, ..., top = NULL, bottom = NULL)
 }
 \arguments{
 \item{cnd}{When \code{entrace()} is used as a calling handler, \code{cnd} is
@@ -31,6 +34,11 @@ capture context.
 Can also be an integer that will be passed to \code{\link[=caller_env]{caller_env()}}.}
 }
 \description{
+\code{entrace()} interrupts an error throw to add an \link[=trace_back]{rlang backtrace} to the error. The error throw is
+immediately resumed. \code{cnd_entrace()} adds a backtrace to a
+condition object, without any other effect. Both functions should
+be called directly from an error handler.
+
 Set the \code{error} global option to \code{quote(rlang::entrace())} to
 transform base errors to rlang errors. These enriched errors
 include a backtrace. The RProfile is a good place to set the
@@ -52,4 +60,5 @@ if (requireNamespace("rlang", quietly = TRUE)) {
 }
 \seealso{
 \code{\link[=with_abort]{with_abort()}} to promote conditions to rlang errors.
+\code{\link[=cnd_entrace]{cnd_entrace()}} to manually add a backtrace to a condition.
 }
