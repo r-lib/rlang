@@ -544,9 +544,12 @@ test_that("cnd_entrace() skips capture context", {
   }
   foo <- function() bar()
   bar <- function() stop("foobar")
+
+  scoped_options(rlang_trace_top_env = current_env())
   err <- capture(foo())
+
   last <- err$trace$calls[[4]]
-  expect_equal(last, quote(rlang:::bar()))
+  expect_match(deparse(last), "bar")
 })
 
 
