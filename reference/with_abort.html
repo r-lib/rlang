@@ -202,8 +202,8 @@ you should use <code><a href='https://www.rdocumentation.org/packages/base/topic
 #&gt; message: </span><span style='font-style: italic;'>Base error</span><span>
 #&gt; class:   `rlang_error`
 #&gt; backtrace:
-#&gt; </span><span style='color: #555555;'> 1. </span><span style='color: #BB0000;'>base::try(with_abort(fn()))</span><span>
-#&gt; </span><span style='color: #555555;'> 8. </span><span style='color: #BB0000;'>fn()</span><span>
+#&gt; </span><span style='color: #555555;'> 1. </span><span>base::try(with_abort(fn()))
+#&gt; </span><span style='color: #555555;'> 8. </span><span>fn()
 #&gt; </span><span style='color: #555555;'>Call `rlang::last_trace()` to see the full backtrace</span><span></div><div class='input'>
 <span class='co'># with_abort() is handy for rethrowing low level errors. The</span>
 <span class='co'># backtraces are then segmented between the low level and high</span>
@@ -241,37 +241,37 @@ you should use <code><a href='https://www.rdocumentation.org/packages/base/topic
 #&gt; message: </span><span style='font-style: italic;'>High level error</span><span>
 #&gt; class:   `rlang_error`
 #&gt; backtrace:
-#&gt; </span><span style='color: #555555;'> 1. </span><span style='color: #BB0000;'>base::try(high_level())</span><span>
-#&gt; </span><span style='color: #555555;'> 6. </span><span style='color: #BB0000;'>high_level()</span><span>
+#&gt; </span><span style='color: #555555;'> 1. </span><span>base::try(high_level())
+#&gt; </span><span style='color: #555555;'> 6. </span><span>high_level()
 #&gt; </span><span style='font-weight: bold;'>&lt;error: parent&gt;</span><span>
 #&gt; message: </span><span style='font-style: italic;'>Low level error</span><span>
 #&gt; class:   `rlang_error`
 #&gt; backtrace:
-#&gt; </span><span style='color: #555555;'> 1. </span><span style='color: #BB0000;'>rlang::with_abort(low_level1())</span><span>
-#&gt; </span><span style='color: #555555;'> 3. </span><span style='color: #BB0000;'>low_level1()</span><span>
-#&gt; </span><span style='color: #555555;'> 4. </span><span style='color: #BB0000;'>low_level2()</span><span>
+#&gt; </span><span style='color: #555555;'> 1. </span><span>rlang::with_abort(low_level1())
+#&gt; </span><span style='color: #555555;'> 3. </span><span>low_level1()
+#&gt; </span><span style='color: #555555;'> 4. </span><span>low_level2()
 #&gt; </span><span style='color: #555555;'>Call `rlang::last_trace()` to see the full backtrace</span><span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='fu'><a href='last_error.html'>last_error</a></span>())</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;error&gt;</span><span>
 #&gt; message: </span><span style='font-style: italic;'>High level error</span><span>
 #&gt; class:   `rlang_error`
 #&gt; fields:  `message`, `trace`, and `parent`
 #&gt; backtrace:
-#&gt; </span><span style='color: #555555;'>    </span><span style='color: #BB0000;'>█</span><span>
-#&gt; </span><span style='color: #555555;'> 1. </span><span style='color: #BB0000;'>├─base::try(high_level())</span><span>
-#&gt; </span><span style='color: #555555;'> 2. </span><span style='color: #BB0000;'>│ └─base::tryCatch(...)</span><span>
-#&gt; </span><span style='color: #555555;'> 3. </span><span style='color: #BB0000;'>│   └─base:::tryCatchList(expr, classes, parentenv, handlers)</span><span>
-#&gt; </span><span style='color: #555555;'> 4. </span><span style='color: #BB0000;'>│     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])</span><span>
-#&gt; </span><span style='color: #555555;'> 5. </span><span style='color: #BB0000;'>│       └─base:::doTryCatch(return(expr), name, parentenv, handler)</span><span>
-#&gt; </span><span style='color: #555555;'> 6. </span><span style='color: #BB0000;'>└─high_level()</span><span>
+#&gt; </span><span style='color: #555555;'>    </span><span>█
+#&gt; </span><span style='color: #555555;'> 1. </span><span>├─base::try(high_level())
+#&gt; </span><span style='color: #555555;'> 2. </span><span>│ └─base::tryCatch(...)
+#&gt; </span><span style='color: #555555;'> 3. </span><span>│   └─base:::tryCatchList(expr, classes, parentenv, handlers)
+#&gt; </span><span style='color: #555555;'> 4. </span><span>│     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+#&gt; </span><span style='color: #555555;'> 5. </span><span>│       └─base:::doTryCatch(return(expr), name, parentenv, handler)
+#&gt; </span><span style='color: #555555;'> 6. </span><span>└─high_level()
 #&gt; </span><span style='font-weight: bold;'>&lt;error: parent&gt;</span><span>
 #&gt; message: </span><span style='font-style: italic;'>Low level error</span><span>
 #&gt; class:   `rlang_error`
 #&gt; fields:  `message`, `trace`, `parent`, and `error`
 #&gt; backtrace:
-#&gt; </span><span style='color: #555555;'>    </span><span style='color: #BB0000;'>█</span><span>
-#&gt; </span><span style='color: #555555;'> 1. </span><span style='color: #BB0000;'>├─rlang::with_abort(low_level1())</span><span>
-#&gt; </span><span style='color: #555555;'> 2. </span><span style='color: #BB0000;'>│ └─base::withCallingHandlers(...)</span><span>
-#&gt; </span><span style='color: #555555;'> 3. </span><span style='color: #BB0000;'>└─low_level1()</span><span>
-#&gt; </span><span style='color: #555555;'> 4. </span><span style='color: #BB0000;'>  └─low_level2()</span><span></div><div class='input'>
+#&gt; </span><span style='color: #555555;'>    </span><span>█
+#&gt; </span><span style='color: #555555;'> 1. </span><span>├─rlang::with_abort(low_level1())
+#&gt; </span><span style='color: #555555;'> 2. </span><span>│ └─base::withCallingHandlers(...)
+#&gt; </span><span style='color: #555555;'> 3. </span><span>└─low_level1()
+#&gt; </span><span style='color: #555555;'> 4. </span><span>  └─low_level2()</div><div class='input'>
 <span class='co'># Reset to default</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>options</a></span>(<span class='kw'>rlang_trace_top_env</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div></span></pre>
   </div>

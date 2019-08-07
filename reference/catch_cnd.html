@@ -182,21 +182,21 @@ default, catches all conditions.</p></td>
 #&gt; message: </span><span style='font-style: italic;'>an error</span><span>
 #&gt; class:   `rlang_error`
 #&gt; backtrace:
-#&gt; </span><span style='color: #555555;'>  1. </span><span style='color: #BB0000;'>base::tryCatch(...)</span><span>
-#&gt; </span><span style='color: #555555;'> 13. </span><span style='color: #BB0000;'>pkgdown::build_site(...)</span><span>
-#&gt; </span><span style='color: #555555;'> 14. </span><span style='color: #BB0000;'>pkgdown:::build_site_local(...)</span><span>
-#&gt; </span><span style='color: #555555;'> 15. </span><span style='color: #BB0000;'>pkgdown::build_reference(...)</span><span>
-#&gt; </span><span style='color: #555555;'> 16. </span><span style='color: #BB0000;'>purrr::map(...)</span><span>
-#&gt; </span><span style='color: #555555;'> 17. </span><span style='color: #BB0000;'>pkgdown:::.f(.x[[i]], ...)</span><span>
-#&gt; </span><span style='color: #555555;'> 18. </span><span style='color: #BB0000;'>pkgdown:::data_reference_topic(...)</span><span>
-#&gt; </span><span style='color: #555555;'> 20. </span><span style='color: #BB0000;'>pkgdown:::as_data.tag_examples(...)</span><span>
-#&gt; </span><span style='color: #555555;'> 21. </span><span style='color: #BB0000;'>purrr::pmap_chr(...)</span><span>
-#&gt; </span><span style='color: #555555;'> 22. </span><span style='color: #BB0000;'>pkgdown:::.f(...)</span><span>
-#&gt; </span><span style='color: #555555;'> 25. </span><span style='color: #BB0000;'>evaluate::evaluate(code, env, new_device = TRUE)</span><span>
-#&gt; </span><span style='color: #555555;'> 26. </span><span style='color: #BB0000;'>evaluate:::evaluate_call(...)</span><span>
-#&gt; </span><span style='color: #555555;'> 36. </span><span style='color: #BB0000;'>[ base::eval(...) ]</span><span style='color: #555555;'> with 1 more call</span><span>
-#&gt; </span><span style='color: #555555;'> 38. </span><span style='color: #BB0000;'>rlang::catch_cnd(abort("an error"))</span><span>
-#&gt; </span><span style='color: #555555;'> 44. </span><span style='color: #BB0000;'>base::force(expr) </span><span style='color: #555555;'>/home/travis/build/r-lib/rlang/R/cnd.R:535:6</span><span>
+#&gt; </span><span style='color: #555555;'>  1. </span><span>base::tryCatch(...)
+#&gt; </span><span style='color: #555555;'> 13. </span><span>pkgdown::build_site(...)
+#&gt; </span><span style='color: #555555;'> 14. </span><span>pkgdown:::build_site_local(...)
+#&gt; </span><span style='color: #555555;'> 15. </span><span>pkgdown::build_reference(...)
+#&gt; </span><span style='color: #555555;'> 16. </span><span>purrr::map(...)
+#&gt; </span><span style='color: #555555;'> 17. </span><span>pkgdown:::.f(.x[[i]], ...)
+#&gt; </span><span style='color: #555555;'> 18. </span><span>pkgdown:::data_reference_topic(...)
+#&gt; </span><span style='color: #555555;'> 20. </span><span>pkgdown:::as_data.tag_examples(...)
+#&gt; </span><span style='color: #555555;'> 21. </span><span>purrr::pmap_chr(...)
+#&gt; </span><span style='color: #555555;'> 22. </span><span>pkgdown:::.f(...)
+#&gt; </span><span style='color: #555555;'> 25. </span><span>evaluate::evaluate(code, env, new_device = TRUE)
+#&gt; </span><span style='color: #555555;'> 26. </span><span>evaluate:::evaluate_call(...)
+#&gt; </span><span style='color: #555555;'> 36. </span><span>[ base::eval(...) ]</span><span style='color: #555555;'> with 1 more call</span><span>
+#&gt; </span><span style='color: #555555;'> 38. </span><span>rlang::catch_cnd(abort("an error"))
+#&gt; </span><span style='color: #555555;'> 44. </span><span>base::force(expr) </span><span style='color: #555555;'>/home/travis/build/r-lib/rlang/R/cnd.R:535:6</span><span>
 #&gt; </span><span style='color: #555555;'>Call `rlang::last_trace()` to see the full backtrace</span><span></div><div class='input'><span class='fu'>catch_cnd</span>(<span class='fu'><a href='cnd_signal.html'>cnd_signal</a></span>(<span class='st'>"my_condition"</span>, <span class='kw'>.msg</span> <span class='kw'>=</span> <span class='st'>"a condition"</span>))</div><div class='output co'>#&gt; &lt;simpleError in cnd_signal("my_condition", .msg = "a condition"): unused argument (.msg = "a condition")&gt;</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
