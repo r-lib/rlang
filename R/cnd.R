@@ -588,7 +588,7 @@ print.rlang_error <- function(x,
     }
 
     trace_lines <- format(trace, ..., simplify = simplify)
-    cat_line(red(trace_lines))
+    cat_line(trace_lines)
   }
 
   if (!is_null(x$parent)) {

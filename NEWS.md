@@ -1,6 +1,8 @@
 
 # rlang 0.4.0.9000
 
+* `rlang::last_error()` backtraces are no longer displayed in red.
+
 * `x %|% y` now also works when `y` is of same length as `x` (@rcannood, #806).
 
 * Empty named lists are now deparsed more explicitly as
