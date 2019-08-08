@@ -552,12 +552,11 @@ print.rlang_error <- function(x,
   if (is_null(child)) {
     header <- bold(sprintf("<%s>", class))
   } else {
-    header <- bold(sprintf("<%s: parent>", class))
+    header <- bold(sprintf("<parent: %s>", class))
   }
 
-  message <- x$message
-  if (is_string(message) && nzchar(message)) {
-    message <- sprintf("message: %s", italic(message))
+  if (is_string(x$message) && nzchar(x$message)) {
+    message <- x$message
   } else {
     message <- NULL
   }
@@ -567,16 +566,11 @@ print.rlang_error <- function(x,
     message
   )
 
-  if (fields) {
-    nms <- chr_enumerate(chr_quoted(names(x)), final = "and")
-    cat_line(sprintf("fields:  %s", nms))
-  }
-
   trace <- x$trace
   simplify <- arg_match(simplify, c("collapse", "branch", "none"))
 
   if (!is_null(trace)) {
-    cat_line("backtrace:")
+    cat_line(bold("Backtrace:"))
 
     if (!is_null(child)) {
       # Trim common portions of backtrace

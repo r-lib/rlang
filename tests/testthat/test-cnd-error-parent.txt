@@ -1,7 +1,7 @@
 Full:
 <error/rlang_error>
-message: High-level message
-backtrace:
+High-level message
+Backtrace:
      █
   1. ├─rlang::catch_cnd(a())
   2. │ ├─rlang::eval_bare(...)
@@ -13,9 +13,9 @@ backtrace:
   8. └─rlang:::a()
   9.   └─rlang:::b()
  10.     └─rlang:::c()
-<error/rlang_error: parent>
-message: Low-level message
-backtrace:
+<parent: error/rlang_error>
+Low-level message
+Backtrace:
     █
  1. └─rlang:::f()
  2.   └─rlang:::g()
@@ -23,16 +23,16 @@ backtrace:
 
 Collapsed:
 <error/rlang_error>
-message: High-level message
-backtrace:
+High-level message
+Backtrace:
      █
   1. ├─[ rlang::catch_cnd(...) ] with 6 more calls
   8. └─rlang:::a()
   9.   └─rlang:::b()
  10.     └─rlang:::c()
-<error/rlang_error: parent>
-message: Low-level message
-backtrace:
+<parent: error/rlang_error>
+Low-level message
+Backtrace:
     █
  1. └─rlang:::f()
  2.   └─rlang:::g()
@@ -40,15 +40,15 @@ backtrace:
 
 Branch:
 <error/rlang_error>
-message: High-level message
-backtrace:
+High-level message
+Backtrace:
   1. rlang::catch_cnd(a())
   8. rlang:::a()
   9. rlang:::b()
  10. rlang:::c()
-<error/rlang_error: parent>
-message: Low-level message
-backtrace:
+<parent: error/rlang_error>
+Low-level message
+Backtrace:
  1. rlang:::f()
  2. rlang:::g()
  3. rlang:::h()

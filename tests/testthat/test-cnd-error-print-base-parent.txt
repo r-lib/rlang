@@ -1,3 +1,3 @@
 <error/bar>
-<error/simpleError: parent>
-message: foo
+<parent: error/simpleError>
+foo

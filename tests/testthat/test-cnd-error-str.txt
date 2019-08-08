@@ -1,7 +1,6 @@
 <error/rlang_error>
-message: The high-level error message
-fields:  `message`, `trace`, and `parent`
-backtrace:
+The high-level error message
+Backtrace:
      █
   1. ├─rlang::catch_cnd(a())
   2. │ ├─rlang::eval_bare(...)
@@ -15,10 +14,9 @@ backtrace:
  10.   │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
  11.   └─rlang:::b()
  12.     └─rlang:::c()
-<error/rlang_error: parent>
-message: The low-level error message
-fields:  `message`, `trace`, `parent`, and `foo`
-backtrace:
+<parent: error/rlang_error>
+The low-level error message
+Backtrace:
     █
  1. └─rlang:::f()
  2.   ├─base::tryCatch(g())

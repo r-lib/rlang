@@ -1,15 +1,15 @@
 print():
 
 <error/rlang_error>
-message: High-level message
-backtrace:
+High-level message
+Backtrace:
   1. base::identity(catch_cnd(a()))
   9. rlang:::a()
  10. rlang:::b()
  11. rlang:::c()
-<error/rlang_error: parent>
-message: Low-level message
-backtrace:
+<parent: error/rlang_error>
+Low-level message
+Backtrace:
  1. rlang::with_abort(f())
  3. rlang:::f()
  4. rlang:::g()
@@ -20,9 +20,8 @@ Call `rlang::last_trace()` to see the full backtrace
 summary():
 
 <error/rlang_error>
-message: High-level message
-fields:  `message`, `trace`, and `parent`
-backtrace:
+High-level message
+Backtrace:
      █
   1. ├─base::identity(catch_cnd(a()))
   2. ├─rlang::catch_cnd(a())
@@ -35,10 +34,9 @@ backtrace:
   9. └─rlang:::a()
  10.   └─rlang:::b()
  11.     └─rlang:::c()
-<error/rlang_error: parent>
-message: Low-level message
-fields:  `message`, `trace`, `parent`, and `error`
-backtrace:
+<parent: error/rlang_error>
+Low-level message
+Backtrace:
     █
  1. ├─rlang::with_abort(f())
  2. │ └─base::withCallingHandlers(...)
