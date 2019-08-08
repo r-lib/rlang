@@ -623,3 +623,21 @@ test_that("caught error does not display backtrace in knitted files", {
   error_line <- lines[[length(lines)]]
   expect_match(error_line, "foo$")
 })
+
+test_that("empty backtraces are dealt with", {
+  foo <- NULL
+
+  local({
+    env <- new.env()
+    scoped_options(rlang_trace_top_env = env)
+    tryCatch(
+      error = identity,
+      withCallingHandlers(
+        error = function(cnd) foo <<- cnd_entrace(cnd),
+        eval(quote(stop("stop")), env)
+      )
+    )
+  })
+
+  expect_identical(trace_length(foo$trace), 0L)
+})
