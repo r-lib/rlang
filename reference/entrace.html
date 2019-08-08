@@ -32,7 +32,11 @@
 
 <meta property="og:title" content="Add backtrace from error handler — entrace" />
 
-<meta property="og:description" content="Set the error global option to quote(rlang::entrace()) to
+<meta property="og:description" content="entrace() interrupts an error throw to add an rlang backtrace to the error. The error throw is
+immediately resumed. cnd_entrace() adds a backtrace to a
+condition object, without any other effect. Both functions should
+be called directly from an error handler.
+Set the error global option to quote(rlang::entrace()) to
 transform base errors to rlang errors. These enriched errors
 include a backtrace. The RProfile is a good place to set the
 handler.
@@ -79,7 +83,7 @@ with_abort()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9001</span>
       </span>
     </div>
 
@@ -151,7 +155,11 @@ with_abort()." />
 
     <div class="ref-description">
     
-    <p>Set the <code>error</code> global option to <code><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote(rlang::entrace())</a></code> to
+    <p><code>entrace()</code> interrupts an error throw to add an <a href='trace_back.html'>rlang backtrace</a> to the error. The error throw is
+immediately resumed. <code>cnd_entrace()</code> adds a backtrace to a
+condition object, without any other effect. Both functions should
+be called directly from an error handler.</p>
+<p>Set the <code>error</code> global option to <code><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote(rlang::entrace())</a></code> to
 transform base errors to rlang errors. These enriched errors
 include a backtrace. The RProfile is a good place to set the
 handler.</p>
@@ -161,7 +169,9 @@ is often more practical to use the higher-level function
     
     </div>
 
-    <pre class="usage"><span class='fu'>entrace</span>(<span class='no'>cnd</span>, <span class='no'>...</span>, <span class='kw'>top</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bottom</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>entrace</span>(<span class='no'>cnd</span>, <span class='no'>...</span>, <span class='kw'>top</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bottom</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='fu'>cnd_entrace</span>(<span class='no'>cnd</span>, <span class='no'>...</span>, <span class='kw'>top</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bottom</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -198,7 +208,8 @@ capture context.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='with_abort.html'>with_abort()</a></code> to promote conditions to rlang errors.</p></div>
+    <div class='dont-index'><p><code><a href='with_abort.html'>with_abort()</a></code> to promote conditions to rlang errors.
+<code>cnd_entrace()</code> to manually add a backtrace to a condition.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

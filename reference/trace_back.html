@@ -76,7 +76,7 @@ summary() method of this object will reveal." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9001</span>
       </span>
     </div>
 
@@ -155,7 +155,9 @@ evaluation, the call stack in R is actually a tree, which the
     
     </div>
 
-    <pre class="usage"><span class='fu'>trace_back</span>(<span class='kw'>top</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bottom</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>trace_back</span>(<span class='kw'>top</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bottom</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='fu'>trace_length</span>(<span class='no'>trace</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -179,7 +181,15 @@ and represents the youngest call in the backtrace.</p>
 capture context.</p>
 <p>Can also be an integer that will be passed to <code><a href='caller_env.html'>caller_env()</a></code>.</p></td>
     </tr>
+    <tr>
+      <th>trace</th>
+      <td><p>A backtrace created by <code>trace_back()</code>.</p></td>
+    </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p><code>trace_length()</code> returns the number of frames in a backtrace.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -326,7 +336,9 @@ capture context.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      
+      <li><a href="#details">Details</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
