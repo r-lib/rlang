@@ -1,14 +1,12 @@
-<error>
+<error/rlang_error>
 message: High-level message
-class:   `rlang_error`
 backtrace:
   1. rlang::catch_cnd(a())
   8. rlang:::a()
   9. rlang:::b()
  10. rlang:::c()
-<error: parent>
+<error/rlang_error: parent>
 message: Low-level message
-class:   `rlang_error`
 backtrace:
  1. rlang:::f()
  2. rlang:::g()

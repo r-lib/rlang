@@ -544,10 +544,15 @@ print.rlang_error <- function(x,
                               child = NULL,
                               simplify = c("branch", "collapse", "none"),
                               fields = FALSE) {
+  class <- class(x)[[1]]
+  if (class != "error") {
+    class <- paste0("error/", class)
+  }
+
   if (is_null(child)) {
-    header <- bold("<error>")
+    header <- bold(sprintf("<%s>", class))
   } else {
-    header <- bold("<error: parent>")
+    header <- bold(sprintf("<%s: parent>", class))
   }
 
   message <- x$message
@@ -559,8 +564,7 @@ print.rlang_error <- function(x,
 
   cat_line(
     header,
-    message,
-    sprintf("class:   `%s`", class(x)[[1]])
+    message
   )
 
   if (fields) {
