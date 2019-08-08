@@ -179,8 +179,8 @@ default, catches all conditions.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>catch_cnd</span>(<span class='fl'>10</span>)</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'>catch_cnd</span>(<span class='fu'><a href='abort.html'>abort</a></span>(<span class='st'>"an error"</span>))</div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;error/rlang_error&gt;</span><span>
-#&gt; message: </span><span style='font-style: italic;'>an error</span><span>
-#&gt; backtrace:
+#&gt; an error
+#&gt; </span><span style='font-weight: bold;'>Backtrace:</span><span>
 #&gt; </span><span style='color: #555555;'>  1. </span><span>base::tryCatch(...)
 #&gt; </span><span style='color: #555555;'> 13. </span><span>pkgdown::build_site(...)
 #&gt; </span><span style='color: #555555;'> 14. </span><span>pkgdown:::build_site_local(...)
