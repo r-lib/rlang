@@ -2,9 +2,12 @@
 % Please edit documentation in R/trace.R
 \name{trace_back}
 \alias{trace_back}
+\alias{trace_length}
 \title{Capture a backtrace}
 \usage{
 trace_back(top = NULL, bottom = NULL)
+
+trace_length(trace)
 }
 \arguments{
 \item{top}{The first frame environment to be included in the
@@ -24,12 +27,17 @@ Set this when you would like to capture a backtrace without the
 capture context.
 
 Can also be an integer that will be passed to \code{\link[=caller_env]{caller_env()}}.}
+
+\item{trace}{A backtrace created by \code{trace_back()}.}
 }
 \description{
 A backtrace captures the sequence of calls that lead to the current
 function, sometimes called the call stack. Because of lazy
 evaluation, the call stack in R is actually a tree, which the
 \code{summary()} method of this object will reveal.
+}
+\details{
+\code{trace_length()} returns the number of frames in a backtrace.
 }
 \examples{
 # Trim backtraces automatically (this improves the generated

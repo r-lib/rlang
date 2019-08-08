@@ -1,6 +1,8 @@
 
 # rlang (development)
 
+* `trace_length()` returns the number of frames in a backtrace.
+
 * Added internal utility `cnd_entrace()` to add a backtrace to a
   condition.
 

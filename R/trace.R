@@ -5,6 +5,8 @@
 #' evaluation, the call stack in R is actually a tree, which the
 #' `summary()` method of this object will reveal.
 #'
+#' `trace_length()` returns the number of frames in a backtrace.
+#'
 #' @param top The first frame environment to be included in the
 #'   backtrace. This becomes the top of the backtrace tree and
 #'   represents the oldest call in the backtrace.
@@ -411,8 +413,11 @@ summary.rlang_trace <- function(object,
   invisible(object)
 }
 
-trace_length <- function(x) {
-  length(x$calls)
+#' @rdname trace_back
+#' @param trace A backtrace created by `trace_back()`.
+#' @export
+trace_length <- function(trace) {
+  length(trace$calls)
 }
 
 trace_subset <- function(x, i) {
