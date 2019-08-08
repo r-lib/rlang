@@ -769,6 +769,12 @@ show_trace_p <- function() {
 #'
 #' @description
 #'
+#' `entrace()` interrupts an error throw to add an [rlang
+#' backtrace][trace_back()] to the error. The error throw is
+#' immediately resumed. `cnd_entrace()` adds a backtrace to a
+#' condition object, without any other effect. Both functions should
+#' be called directly from an error handler.
+#'
 #' Set the `error` global option to `quote(rlang::entrace())` to
 #' transform base errors to rlang errors. These enriched errors
 #' include a backtrace. The RProfile is a good place to set the
@@ -784,6 +790,7 @@ show_trace_p <- function() {
 #' @param ... Unused. These dots are for future extensions.
 #'
 #' @seealso [with_abort()] to promote conditions to rlang errors.
+#'   [cnd_entrace()] to manually add a backtrace to a condition.
 #' @examples
 #' if (FALSE) {  # Not run
 #'
@@ -815,36 +822,80 @@ entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
   }
 }
 
+#' @rdname entrace
+#' @export
+cnd_entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
+  check_dots_empty(...)
+
+  if (!is_null(cnd$trace)) {
+    return(cnd)
+  }
+
+  if (is_null(bottom)) {
+    nframe <- sys.parent() - 1
+    info <- signal_context_info(nframe)
+    bottom <- sys.frame(info[[2]])
+  }
+  cnd$trace <- trace_back(top = top, bottom = bottom)
+
+  cnd
+}
+
+#' Return information about signalling context
+#'
+#' @param nframe The depth of the frame to inspect. In a condition
+#'   handler, this would typically be `sys.nframe() - 1L`.
+#'
+#' @return A named list of two elements `type` and `depth`. The depth
+#'   is the call frame number of the signalling context. The type is
+#'   one of:
+#'
+#'   * `"unknown"`
+#'   * `"stop_message"` for errors thrown with `base::stop("message")"
+#'   * `"stop_condition"` for errors thrown with `base::stop(cnd_object)`
+#'   * `"stop_native"` for errors thrown from C
+#'   * `"stop_rlang"` for errors thrown with `rlang::abort()`
+#'   * `"warning_message"` for warnings signalled with `base::warning("message")"
+#'   * `"warning_condition"` for warnings signalled with `base::warning(cnd_object)`
+#'   * `"warning_native"` for warnings signalled from C
+#'   * `"warning_promoted"` for warnings promoted to errors with `getOption("warn")`
+#'   * `"warning_rlang"` for warnings signalled with `rlang::warn()`
+#'   * `"message"` for messages signalled with `base::message()`
+#'   * `"message_rlang"` for messages signalled with `rlang::inform()`
+#'   * `"condition"` for conditions signalled with `base::signalCondition()`
+#'
+#' @keywords internal
+#' @noRd
 signal_context_info <- function(nframe) {
   first <- sys_body(nframe)
 
   if (is_same_body(first, body(.handleSimpleError))) {
     if (is_same_body(sys_body(nframe - 1), body(stop))) {
-      return(list("stop_message", nframe - 2))
+      return(list(type = "stop_message", depth = nframe - 2))
     } else if (is_same_body(sys_body(nframe - 4), body(.signalSimpleWarning))) {
-      return(list("warning_promoted", nframe - 6))
+      return(list(type = "warning_promoted", depth = nframe - 6))
     } else {
-      return(list("stop_native", nframe - 1))
+      return(list(type = "stop_native", depth = nframe - 1))
     }
   }
 
   if (is_same_body(first, body(stop))) {
     if (is_same_body(sys_body(nframe - 1), body(abort))) {
-      return(list("stop_rlang", nframe - 2))
+      return(list(type = "stop_rlang", depth = nframe - 2))
     } else {
-      return(list("stop_condition", nframe - 1))
+      return(list(type = "stop_condition", depth = nframe - 1))
     }
   }
 
   if (is_same_body(first, body(signalCondition))) {
     if (from_withrestarts(nframe - 1) && is_same_body(sys_body(nframe - 4), body(message))) {
       if (is_same_body(sys_body(nframe - 5), body(inform))) {
-        return(list("message_rlang", nframe - 6))
+        return(list(type = "message_rlang", depth = nframe - 6))
       } else {
-        return(list("message", nframe - 5))
+        return(list(type = "message", depth = nframe - 5))
       }
     } else {
-      return(list("condition", nframe - 1))
+      return(list(type = "condition", depth = nframe - 1))
     }
   }
 
@@ -852,20 +903,20 @@ signal_context_info <- function(nframe) {
     withrestarts_caller <- sys_body(nframe - 3)
     if (is_same_body(withrestarts_caller, body(.signalSimpleWarning))) {
       if (is_same_body(sys_body(nframe - 4), body(warning))) {
-        return(list("warning_message", nframe - 5))
+        return(list(type = "warning_message", depth = nframe - 5))
       } else {
-        return(list("warning_native", nframe - 4))
+        return(list(type = "warning_native", depth = nframe - 4))
       }
     } else if (is_same_body(withrestarts_caller, body(warning))) {
       if (is_same_body(sys_body(nframe - 4), body(warn))) {
-        return(list("warning_rlang", nframe - 5))
+        return(list(type = "warning_rlang", depth = nframe - 5))
       } else {
-        return(list("warning_condition", nframe - 4))
+        return(list(type = "warning_condition", depth = nframe - 4))
       }
     }
   }
 
-  list("unknown", nframe)
+  list(type = "unknown", depth = nframe)
 }
 
 from_withrestarts <- function(nframe) {

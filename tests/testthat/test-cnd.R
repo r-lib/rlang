@@ -531,6 +531,27 @@ test_that("can pass classed strings as error message", {
   expect_identical(err$message, message)
 })
 
+test_that("cnd_entrace() skips capture context", {
+  capture <- function(expr) {
+    env <- environment()
+    withCallingHandlers(
+      expr,
+      error = function(err) {
+        err <- cnd_entrace(err)
+        return_from(env, err)
+      }
+    )
+  }
+  foo <- function() bar()
+  bar <- function() stop("foobar")
+
+  scoped_options(rlang_trace_top_env = current_env())
+  err <- capture(foo())
+
+  last <- err$trace$calls[[4]]
+  expect_match(deparse(last), "bar")
+})
+
 
 # Lifecycle ----------------------------------------------------------
 
