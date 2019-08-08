@@ -198,9 +198,8 @@ you should use <code><a href='https://www.rdocumentation.org/packages/base/topic
 #&gt; </span><span style='color: #555555;'> 5. </span><span>│       └─base:::doTryCatch(return(expr), name, parentenv, handler)
 #&gt; </span><span style='color: #555555;'> 6. </span><span>├─rlang::with_abort(fn())
 #&gt; </span><span style='color: #555555;'> 7. </span><span>│ └─base::withCallingHandlers(...)
-#&gt; </span><span style='color: #555555;'> 8. </span><span>└─fn()</div><div class='input'><span class='fu'><a href='last_error.html'>last_error</a></span>()</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;error&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 8. </span><span>└─fn()</div><div class='input'><span class='fu'><a href='last_error.html'>last_error</a></span>()</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;error/rlang_error&gt;</span><span>
 #&gt; message: </span><span style='font-style: italic;'>Base error</span><span>
-#&gt; class:   `rlang_error`
 #&gt; backtrace:
 #&gt; </span><span style='color: #555555;'> 1. </span><span>base::try(with_abort(fn()))
 #&gt; </span><span style='color: #555555;'> 8. </span><span>fn()
@@ -237,22 +236,19 @@ you should use <code><a href='https://www.rdocumentation.org/packages/base/topic
 #&gt; </span><span style='color: #555555;'> 12. </span><span>  ├─rlang::with_abort(low_level1())
 #&gt; </span><span style='color: #555555;'> 13. </span><span>  │ └─base::withCallingHandlers(...)
 #&gt; </span><span style='color: #555555;'> 14. </span><span>  └─low_level1()
-#&gt; </span><span style='color: #555555;'> 15. </span><span>    └─low_level2()</div><div class='input'><span class='fu'><a href='last_error.html'>last_error</a></span>()</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;error&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 15. </span><span>    └─low_level2()</div><div class='input'><span class='fu'><a href='last_error.html'>last_error</a></span>()</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;error/rlang_error&gt;</span><span>
 #&gt; message: </span><span style='font-style: italic;'>High level error</span><span>
-#&gt; class:   `rlang_error`
 #&gt; backtrace:
 #&gt; </span><span style='color: #555555;'> 1. </span><span>base::try(high_level())
 #&gt; </span><span style='color: #555555;'> 6. </span><span>high_level()
-#&gt; </span><span style='font-weight: bold;'>&lt;error: parent&gt;</span><span>
+#&gt; </span><span style='font-weight: bold;'>&lt;error/rlang_error: parent&gt;</span><span>
 #&gt; message: </span><span style='font-style: italic;'>Low level error</span><span>
-#&gt; class:   `rlang_error`
 #&gt; backtrace:
 #&gt; </span><span style='color: #555555;'> 1. </span><span>rlang::with_abort(low_level1())
 #&gt; </span><span style='color: #555555;'> 3. </span><span>low_level1()
 #&gt; </span><span style='color: #555555;'> 4. </span><span>low_level2()
-#&gt; </span><span style='color: #555555;'>Call `rlang::last_trace()` to see the full backtrace</span><span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='fu'><a href='last_error.html'>last_error</a></span>())</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;error&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>Call `rlang::last_trace()` to see the full backtrace</span><span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='fu'><a href='last_error.html'>last_error</a></span>())</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;error/rlang_error&gt;</span><span>
 #&gt; message: </span><span style='font-style: italic;'>High level error</span><span>
-#&gt; class:   `rlang_error`
 #&gt; fields:  `message`, `trace`, and `parent`
 #&gt; backtrace:
 #&gt; </span><span style='color: #555555;'>    </span><span>█
@@ -262,9 +258,8 @@ you should use <code><a href='https://www.rdocumentation.org/packages/base/topic
 #&gt; </span><span style='color: #555555;'> 4. </span><span>│     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
 #&gt; </span><span style='color: #555555;'> 5. </span><span>│       └─base:::doTryCatch(return(expr), name, parentenv, handler)
 #&gt; </span><span style='color: #555555;'> 6. </span><span>└─high_level()
-#&gt; </span><span style='font-weight: bold;'>&lt;error: parent&gt;</span><span>
+#&gt; </span><span style='font-weight: bold;'>&lt;error/rlang_error: parent&gt;</span><span>
 #&gt; message: </span><span style='font-style: italic;'>Low level error</span><span>
-#&gt; class:   `rlang_error`
 #&gt; fields:  `message`, `trace`, `parent`, and `error`
 #&gt; backtrace:
 #&gt; </span><span style='color: #555555;'>    </span><span>█
