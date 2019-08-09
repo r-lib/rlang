@@ -499,12 +499,16 @@ interrupt <- function() {
 #'   my_particular_msg = calling(cnd_muffle)
 #' )
 cnd_muffle <- function(cnd) {
-  switch(cnd_type(cnd),
-    message = invokeRestart("muffleMessage"),
-    warning = invokeRestart("muffleWarning"),
-    interrupt = invokeRestart("resume"),
-    invokeRestart("rlang_muffle")
+  restart <- switch(cnd_type(cnd),
+    message = "muffleMessage",
+    warning = "muffleWarning",
+    interrupt = "resume",
+    "rlang_muffle"
   )
+
+  if (!is_null(findRestart(restart))) {
+    invokeRestart(restart)
+  }
 
   abort("Can't find a muffling restart")
 }

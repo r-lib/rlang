@@ -1,6 +1,10 @@
 
 # rlang (development)
 
+* `cnd_muffle()` now checks that a restart exists before invoking
+  it. The restart might not exist if the condition is signalled with a
+  different function (such as `stop(warning_cnd)`).
+
 * `trace_length()` returns the number of frames in a backtrace.
 
 * Added internal utility `cnd_entrace()` to add a backtrace to a
