@@ -2,7 +2,6 @@
 % Please edit documentation in R/cnd.R
 \name{rlang_backtrace_on_error}
 \alias{rlang_backtrace_on_error}
-\alias{add_backtrace}
 \title{Display backtrace on error}
 \description{
 Errors thrown with \code{\link[=abort]{abort()}} automatically save a backtrace that

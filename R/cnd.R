@@ -677,7 +677,6 @@ as.character.rlang_error <- function(x, ...) {
 #'   [`rlang_backtrace_on_error`] option.
 #'
 #' @name rlang_backtrace_on_error
-#' @aliases add_backtrace
 #'
 #' @examples
 #' # Display a simplified backtrace on error for both base and rlang
