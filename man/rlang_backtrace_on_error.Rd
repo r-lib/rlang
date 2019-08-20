@@ -21,7 +21,7 @@ inspected by calling \code{\link[rlang:last_error]{rlang::last_error()}}.
 \section{Promote base errors to rlang errors}{
 
 
-Call \code{options(error = rlang::enframe)} to instrument base
+Call \code{options(error = rlang::entrace)} to instrument base
 errors with rlang features. This handler does two things:
 \itemize{
 \item It saves the base error as an rlang object. This allows you to
@@ -37,7 +37,7 @@ call \code{\link[=last_error]{last_error()}} to print the backtrace or inspect i
 
 # options(
 #   rlang_backtrace_on_error = "branch",
-#   error = rlang::enframe
+#   error = rlang::entrace
 # )
 # stop("foo")
 }
