@@ -779,7 +779,8 @@ show_trace_p <- function() {
 #' Set the `error` global option to `quote(rlang::entrace())` to
 #' transform base errors to rlang errors. These enriched errors
 #' include a backtrace. The `.Rprofile` is a good place to set the
-#' handler.
+#' handler. See [`rlang_backtrace_on_error`] for a way to customize
+#' the output.
 #'
 #' `entrace()` also works as a [calling][calling] handler, though it
 #' is often more practical to use the higher-level function
