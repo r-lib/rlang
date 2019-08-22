@@ -667,7 +667,7 @@ as.character.rlang_error <- function(x, ...) {
 #'
 #' @section Promote base errors to rlang errors:
 #'
-#' Call `options(error = rlang::entrace)` to instrument base
+#' Call `options(error = quote(rlang::entrace()))` to instrument base
 #' errors with rlang features. This handler does two things:
 #'
 #' * It saves the base error as an rlang object. This allows you to
@@ -684,7 +684,7 @@ as.character.rlang_error <- function(x, ...) {
 #'
 #' # options(
 #' #   rlang_backtrace_on_error = "branch",
-#' #   error = rlang::entrace
+#' #   error = quote(rlang::entrace())
 #' # )
 #' # stop("foo")
 NULL
@@ -797,7 +797,7 @@ show_trace_p <- function() {
 #'
 #' # Set the error handler in your RProfile like this:
 #' if (requireNamespace("rlang", quietly = TRUE)) {
-#'   options(error = rlang::entrace)
+#'   options(error = quote(rlang::entrace()))
 #' }
 #'
 #' }
