@@ -212,7 +212,7 @@ validate_cnd_signal_args <- function(cnd, .cnd, .mufflable,
 #' and a full backtrace with `summary(last_error())`.
 #'
 #' You can also display a backtrace with the error message by setting
-#' the option `rlang_backtrace_on_error`. It supports the following
+#' the option [`rlang_backtrace_on_error`]. It supports the following
 #' values:
 #'
 #' * `"reminder"`: Invite users to call `rlang::last_error()` to see a
@@ -655,7 +655,7 @@ as.character.rlang_error <- function(x, ...) {
 #' Errors thrown with [abort()] automatically save a backtrace that
 #' can be inspected by calling [last_error()]. Optionally, you can
 #' also display the backtrace alongside the error message by setting
-#' the option `rlang_backtrace_on_error` to one of the following
+#' the option [`rlang_backtrace_on_error`] to one of the following
 #' values:
 #'
 #' * `"reminder"`: Display a reminder that the backtrace can be

@@ -7,7 +7,7 @@
 Errors thrown with \code{\link[=abort]{abort()}} automatically save a backtrace that
 can be inspected by calling \code{\link[=last_error]{last_error()}}. Optionally, you can
 also display the backtrace alongside the error message by setting
-the option \code{rlang_backtrace_on_error} to one of the following
+the option \code{\link{rlang_backtrace_on_error}} to one of the following
 values:
 \itemize{
 \item \code{"reminder"}: Display a reminder that the backtrace can be
