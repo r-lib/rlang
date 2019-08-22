@@ -778,7 +778,7 @@ show_trace_p <- function() {
 #'
 #' Set the `error` global option to `quote(rlang::entrace())` to
 #' transform base errors to rlang errors. These enriched errors
-#' include a backtrace. The RProfile is a good place to set the
+#' include a backtrace. The `.Rprofile` is a good place to set the
 #' handler.
 #'
 #' `entrace()` also works as a [calling][calling] handler, though it
@@ -795,7 +795,7 @@ show_trace_p <- function() {
 #' @examples
 #' if (FALSE) {  # Not run
 #'
-#' # Set the error handler in your RProfile like this:
+#' # Set the error handler in your .Rprofile like this:
 #' if (requireNamespace("rlang", quietly = TRUE)) {
 #'   options(error = quote(rlang::entrace()))
 #' }

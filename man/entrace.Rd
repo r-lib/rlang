@@ -41,7 +41,7 @@ be called directly from an error handler.
 
 Set the \code{error} global option to \code{quote(rlang::entrace())} to
 transform base errors to rlang errors. These enriched errors
-include a backtrace. The RProfile is a good place to set the
+include a backtrace. The \code{.Rprofile} is a good place to set the
 handler.
 
 \code{entrace()} also works as a \link{calling} handler, though it
@@ -51,7 +51,7 @@ is often more practical to use the higher-level function
 \examples{
 if (FALSE) {  # Not run
 
-# Set the error handler in your RProfile like this:
+# Set the error handler in your .Rprofile like this:
 if (requireNamespace("rlang", quietly = TRUE)) {
   options(error = quote(rlang::entrace()))
 }
