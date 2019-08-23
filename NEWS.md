@@ -1,6 +1,9 @@
 
 # rlang (development)
 
+* `env_bind()`'s performance has been significantly improved by fixing a bug
+  that caused values to be repeatedly looked up by name.
+
 * `cnd_muffle()` now checks that a restart exists before invoking
   it. The restart might not exist if the condition is signalled with a
   different function (such as `stop(warning_cnd)`).

@@ -137,7 +137,7 @@ env_bind_impl <- function(env, data, fn, bind = FALSE, binder = NULL) {
 
   if (is_null(binder)) {
     binder <- function(env, nm, value) {
-      base::assign(nm, data[[nm]], envir = env)
+      base::assign(nm, value, envir = env)
     }
   }
 
