@@ -181,19 +181,19 @@ formula or a function, or the current environment otherwise.</p></td>
     <pre class="examples"><div class='input'><span class='co'># All tidy NSE functions like quo() unquote on capture:</span>
 <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(!!(<span class='fl'>1</span> + <span class='fl'>2</span>)))</div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^list(3)</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x706c398</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x76596e0</span><span></div><div class='input'>
 <span class='co'># expr_interp() is meant to provide the same functionality when you</span>
 <span class='co'># have a formula or expression that might contain unquoting</span>
 <span class='co'># operators:</span>
 <span class='no'>f</span> <span class='kw'>&lt;-</span> ~<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(!!(<span class='fl'>1</span> + <span class='fl'>2</span>))
 <span class='fu'>expr_interp</span>(<span class='no'>f</span>)</div><div class='output co'>#&gt; ~list(3)
-#&gt; &lt;environment: 0x706c398&gt;</div><div class='input'>
+#&gt; &lt;environment: 0x76596e0&gt;</div><div class='input'>
 <span class='co'># Note that only the outer formula is unquoted (which is a reason</span>
 <span class='co'># to use expr_interp() as early as possible in all user-facing</span>
 <span class='co'># functions):</span>
 <span class='no'>f</span> <span class='kw'>&lt;-</span> ~<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(~!!(<span class='fl'>1</span> + <span class='fl'>2</span>), !!(<span class='fl'>1</span> + <span class='fl'>2</span>))
 <span class='fu'>expr_interp</span>(<span class='no'>f</span>)</div><div class='output co'>#&gt; ~list(~3, 3)
-#&gt; &lt;environment: 0x706c398&gt;</div><div class='input'>
+#&gt; &lt;environment: 0x76596e0&gt;</div><div class='input'>
 
 <span class='co'># Another purpose for expr_interp() is to interpolate a closure's</span>
 <span class='co'># body. This is useful to inline a function within another. The</span>
@@ -219,7 +219,7 @@ formula or a function, or the current environment otherwise.</p></td>
 #&gt;     x &lt;- paste0(x, "_suffix")
 #&gt;     toupper(x)
 #&gt; }
-#&gt; &lt;environment: 0x706c398&gt;</div><div class='input'><span class='fu'>fn</span>(<span class='st'>"foo"</span>)</div><div class='output co'>#&gt; [1] "FOO_SUFFIX"</div></span></pre>
+#&gt; &lt;environment: 0x76596e0&gt;</div><div class='input'><span class='fu'>fn</span>(<span class='st'>"foo"</span>)</div><div class='output co'>#&gt; [1] "FOO_SUFFIX"</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
