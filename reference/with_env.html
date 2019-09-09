@@ -8,21 +8,25 @@
 
 <title>Evaluate an expression within a given environment — with_env • rlang</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,8 +34,8 @@
 
 
 
-<meta property="og:title" content="Evaluate an expression within a given environment — with_env" />
 
+<meta property="og:title" content="Evaluate an expression within a given environment — with_env" />
 <meta property="og:description" content="These functions evaluate expr within a given environment (env
 for with_env(), or the child of the current environment for
 locally). They rely on eval_bare() which features a lighter
@@ -39,6 +43,7 @@ evaluation mechanism than base R base::eval(), and which also has
 some subtle implications when evaluting stack sensitive functions
 (see help for eval_bare())." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -61,6 +66,7 @@ some subtle implications when evaluting stack sensitive functions
 
   gtag('config', 'UA-115082821-1');
 </script>
+
 
   </head>
 
@@ -86,7 +92,7 @@ some subtle implications when evaluting stack sensitive functions
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -123,11 +129,10 @@ some subtle implications when evaluting stack sensitive functions
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-lib/rlang">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -138,6 +143,7 @@ some subtle implications when evaluting stack sensitive functions
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -149,20 +155,18 @@ some subtle implications when evaluting stack sensitive functions
     </div>
 
     <div class="ref-description">
-    
     <p>These functions evaluate <code>expr</code> within a given environment (<code>env</code>
 for <code>with_env()</code>, or the child of the current environment for
 <code>locally</code>). They rely on <code><a href='eval_bare.html'>eval_bare()</a></code> which features a lighter
-evaluation mechanism than base R <code><a href='https://www.rdocumentation.org/packages/base/topics/eval'>base::eval()</a></code>, and which also has
+evaluation mechanism than base R <code><a href='https://rdrr.io/r/base/eval.html'>base::eval()</a></code>, and which also has
 some subtle implications when evaluting stack sensitive functions
 (see help for <code><a href='eval_bare.html'>eval_bare()</a></code>).</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>with_env</span>(<span class='no'>env</span>, <span class='no'>expr</span>)
 
 <span class='fu'>locally</span>(<span class='no'>expr</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -176,28 +180,28 @@ an object with a <code><a href='get_env.html'>get_env()</a></code> method.</p></
       <td><p>An expression to evaluate.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>locally()</code> is equivalent to the base function
-<code><a href='https://www.rdocumentation.org/packages/base/topics/eval'>base::local()</a></code> but it produces a much cleaner
+<code><a href='https://rdrr.io/r/base/eval.html'>base::local()</a></code> but it produces a much cleaner
 evaluation stack, and has stack-consistent semantics. It is thus
 more suited for experimenting with the R language.</p>
-    
     <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
 
     
-    <p>These functions are experimental. Expect API changes.</p>
-    
+
+
+<p>These functions are experimental. Expect API changes.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># with_env() is handy to create formulas with a given environment:</span>
 <span class='no'>env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>child_env</a></span>(<span class='st'>"rlang"</span>)
 <span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='fu'>with_env</span>(<span class='no'>env</span>, ~<span class='fu'><a href='new_formula.html'>new_formula</a></span>())
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'><a href='f_rhs.html'>f_env</a></span>(<span class='no'>f</span>), <span class='no'>env</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'><a href='f_rhs.html'>f_env</a></span>(<span class='no'>f</span>), <span class='no'>env</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># Or functions with a given enclosure:</span>
 <span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='fu'>with_env</span>(<span class='no'>env</span>, <span class='kw'>function</span>() <span class='kw'>NULL</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'><a href='get_env.html'>get_env</a></span>(<span class='no'>fn</span>), <span class='no'>env</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'><a href='get_env.html'>get_env</a></span>(<span class='no'>fn</span>), <span class='no'>env</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 
 <span class='co'># Unlike eval() it doesn't create duplicates on the evaluation</span>
 <span class='co'># stack. You can thus use it e.g. to create non-local returns:</span>
@@ -206,7 +210,7 @@ more suited for experimenting with the R language.</p>
   <span class='st'>"normal return"</span>
 }
 <span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>env</span>) {
-  <span class='fu'>with_env</span>(<span class='no'>env</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/function'>return</a></span>(<span class='st'>"early return"</span>))
+  <span class='fu'>with_env</span>(<span class='no'>env</span>, <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='st'>"early return"</span>))
 }
 <span class='fu'>fn</span>()</div><div class='output co'>#&gt; [1] "early return"</div><div class='input'>
 
@@ -221,16 +225,14 @@ more suited for experimenting with the R language.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#details">Details</a></li>
-
       <li><a href="#life-cycle">Life cycle</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -238,13 +240,16 @@ more suited for experimenting with the R language.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

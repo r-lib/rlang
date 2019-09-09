@@ -8,21 +8,25 @@
 
 <title>Life cycle of the rlang package — lifecycle • rlang</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,8 +34,8 @@
 
 
 
-<meta property="og:title" content="Life cycle of the rlang package — lifecycle" />
 
+<meta property="og:title" content="Life cycle of the rlang package — lifecycle" />
 <meta property="og:description" content="
 The rlang package is currently maturing. Unless otherwise stated,
 this applies to all its exported functions. Maturing functions are
@@ -41,6 +45,7 @@ for a list of functions marked as stable.
 The documentation pages of retired functions contain life cycle
 sections that explain the reasons for their retirements." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -63,6 +68,7 @@ sections that explain the reasons for their retirements." />
 
   gtag('config', 'UA-115082821-1');
 </script>
+
 
   </head>
 
@@ -88,7 +94,7 @@ sections that explain the reasons for their retirements." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -125,11 +131,10 @@ sections that explain the reasons for their retirements." />
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-lib/rlang">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -140,6 +145,7 @@ sections that explain the reasons for their retirements." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -151,7 +157,6 @@ sections that explain the reasons for their retirements." />
     </div>
 
     <div class="ref-description">
-    
     <p><a href='https://www.tidyverse.org/lifecycle/#maturing'><img src='figures/lifecycle-maturing.svg' alt='Maturing lifecycle'></a></p>
 <p>The rlang package is currently maturing. Unless otherwise stated,
 this applies to all its exported functions. Maturing functions are
@@ -160,14 +165,16 @@ prepared to make changes as the package evolves. See sections below
 for a list of functions marked as stable.</p>
 <p>The documentation pages of retired functions contain life cycle
 sections that explain the reasons for their retirements.</p>
-    
     </div>
 
-        
+
+
     <h2 class="hasAnchor" id="stable-functions"><a class="anchor" href="#stable-functions"></a>Stable functions</h2>
 
     
-    <p><a href='https://www.tidyverse.org/lifecycle/#stable'><img src='figures/lifecycle-stable.svg' alt='Stable lifecycle'></a></p><ul>
+
+
+<p><a href='https://www.tidyverse.org/lifecycle/#stable'><img src='figures/lifecycle-stable.svg' alt='Stable lifecycle'></a></p><ul>
 <li><p><code><a href='eval_tidy.html'>eval_tidy()</a></code></p></li>
 <li><p><a href='quasiquotation.html'>!!</a>, <a href='quasiquotation.html'>!!!</a></p></li>
 <li><p><code><a href='quotation.html'>enquo()</a></code>, <code><a href='quotation.html'>quo()</a></code>, <code><a href='quotation.html'>quos()</a></code></p></li>
@@ -181,11 +188,13 @@ sections that explain the reasons for their retirements.</p>
 <li><p><code><a href='set_names.html'>set_names()</a></code>, <code><a href='names2.html'>names2()</a></code></p></li>
 <li><p><code><a href='as_function.html'>as_function()</a></code>, <code><a href='new_function.html'>new_function()</a></code></p></li>
 </ul>
-    
+
     <h2 class="hasAnchor" id="experimental-functions"><a class="anchor" href="#experimental-functions"></a>Experimental functions</h2>
 
     
-    <p><a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a></p>
+
+
+<p><a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a></p>
 <p>These functions are not yet part of the rlang API. Expect breaking
 changes.</p><ul>
 <li><p><code><a href='with_env.html'>with_env()</a></code>, <code><a href='with_env.html'>locally()</a></code>, <code><a href='env_poke.html'>env_poke()</a></code></p></li>
@@ -198,18 +207,21 @@ changes.</p><ul>
 <li><p><code><a href='as_bytes.html'>as_bytes()</a></code>, <code><a href='chr_unserialise_unicode.html'>chr_unserialise_unicode()</a></code></p></li>
 <li><p><code><a href='caller_fn.html'>caller_fn()</a></code>, <code><a href='caller_fn.html'>current_fn()</a></code></p></li>
 </ul>
-    
+
     <h2 class="hasAnchor" id="questioning-stage"><a class="anchor" href="#questioning-stage"></a>Questioning stage</h2>
 
     
-    <p><a href='https://www.tidyverse.org/lifecycle/#questioning'><img src='figures/lifecycle-questioning.svg' alt='Questioning lifecycle'></a></p>
+
+
+<p><a href='https://www.tidyverse.org/lifecycle/#questioning'><img src='figures/lifecycle-questioning.svg' alt='Questioning lifecycle'></a></p>
 <p><strong>In the questioning stage as of rlang 0.4.0</strong></p>
 <p>These functions are likely to be moved to the vctrs package:</p><ul>
 <li><p><code><a href='vector-construction.html'>lgl()</a></code>, <code><a href='vector-construction.html'>int()</a></code>, etc.</p></li>
 <li><p><code><a href='new-vector.html'>new_logical()</a></code>, <code><a href='new-vector.html'>new_integer()</a></code>, etc.</p></li>
 <li><p><a href='missing.html'>na_lgl</a>, <a href='missing.html'>na_int</a>, <code><a href='are_na.html'>is_lgl_na()</a></code>, <code><a href='are_na.html'>is_int_na()</a></code>, etc.</p></li>
 </ul>
-    <p><strong>In the questioning stage as of rlang 0.3.0</strong></p><ul>
+
+<p><strong>In the questioning stage as of rlang 0.3.0</strong></p><ul>
 <li><p><code><a href='env.html'>child_env()</a></code></p></li>
 <li><p><code><a href='flatten.html'>flatten()</a></code>, <code><a href='flatten.html'>squash()</a></code>, and their atomic vector variants</p></li>
 <li><p><code><a href='prepend.html'>modify()</a></code> and <code><a href='prepend.html'>prepend()</a></code></p></li>
@@ -219,27 +231,32 @@ want to recommend restarts as a style of programming in R.</p></li>
 <li><p><code><a href='return_from.html'>return_from()</a></code> and <code><a href='return_from.html'>return_to()</a></code>.</p></li>
 <li><p><code><a href='expr_label.html'>expr_label()</a></code>, <code><a href='expr_label.html'>expr_name()</a></code>, and <code><a href='expr_label.html'>expr_text()</a></code>.</p></li>
 </ul>
-    <p><strong>In the questioning stage as of rlang 0.2.0</strong></p><ul>
+
+<p><strong>In the questioning stage as of rlang 0.2.0</strong></p><ul>
 <li><p><code><a href='quasiquotation.html'>UQ()</a></code>, <code><a href='quasiquotation.html'>UQS()</a></code></p></li>
 <li><p><code><a href='splice.html'>dots_splice()</a></code>, <code><a href='splice.html'>splice()</a></code></p></li>
 </ul>
-    
+
     <h2 class="hasAnchor" id="soft-deprecated-functions-and-arguments"><a class="anchor" href="#soft-deprecated-functions-and-arguments"></a>Soft-deprecated functions and arguments</h2>
 
     
-    <p><img src='figures/lifecycle-soft-deprecated.svg' alt='Soft-deprecated lifecycle' /></p>
+
+
+<p><img src='figures/lifecycle-soft-deprecated.svg' alt='Soft-deprecated lifecycle' /></p>
 <p><strong>Soft-deprecated in rlang 0.4.0</strong></p><ul>
 <li><p><code><a href='exiting.html'>exiting()</a></code>: Handlers are now treated as exiting by default.</p></li>
 <li><p><code><a href='invoke.html'>invoke()</a></code>: Use the simpler <code><a href='exec.html'>exec()</a></code> instead.</p></li>
-<li><p><code><a href='vector-coercion.html'>as_logical()</a></code>, <code><a href='vector-coercion.html'>as_integer()</a></code>, etc. =&gt; <code><a href='https://www.rdocumentation.org/packages/vctrs/topics/vec_cast'>vctrs::vec_cast()</a></code>.</p></li>
+<li><p><code><a href='vector-coercion.html'>as_logical()</a></code>, <code><a href='vector-coercion.html'>as_integer()</a></code>, etc. =&gt; <code><a href='https://rdrr.io/pkg/vctrs/man/vec_cast.html'>vctrs::vec_cast()</a></code>.</p></li>
 <li><p><code><a href='type_of.html'>type_of()</a></code>, <code><a href='switch_type.html'>switch_type()</a></code>, <code><a href='switch_type.html'>coerce_type()</a></code>, <code><a href='switch_type.html'>switch_class()</a></code>,
 <code><a href='switch_type.html'>coerce_class()</a></code></p></li>
 </ul>
-    
+
     <h2 class="hasAnchor" id="deprecated-functions-and-arguments"><a class="anchor" href="#deprecated-functions-and-arguments"></a>Deprecated functions and arguments</h2>
 
     
-    <p><img src='figures/lifecycle-deprecated.svg' alt='Deprecated lifecycle' /></p>
+
+
+<p><img src='figures/lifecycle-deprecated.svg' alt='Deprecated lifecycle' /></p>
 <p><strong>Bumped to deprecated in rlang 0.4.0</strong></p><ul>
 <li><p><code><a href='prepend.html'>modify()</a></code> and <code><a href='prepend.html'>prepend()</a></code>.</p></li>
 <li><p><code><a href='new-vector-along-retired.html'>new_logical_along()</a></code>, <code><a href='new-vector-along-retired.html'>new_integer_along()</a></code>,
@@ -264,10 +281,10 @@ want to recommend restarts as a style of programming in R.</p></li>
 <li><p><code><a href='parse_quosure.html'>parse_quosure()</a></code> =&gt; <code><a href='parse_expr.html'>parse_quo()</a></code></p></li>
 <li><p><code><a href='parse_quosure.html'>parse_quosures()</a></code> =&gt; <code><a href='parse_expr.html'>parse_quos()</a></code></p></li>
 <li><p>Assigning non-quosure objects to quosure lists.</p></li>
-<li><p><code><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character()</a></code> on quosures.</p></li>
+<li><p><code><a href='https://rdrr.io/r/base/character.html'>as.character()</a></code> on quosures.</p></li>
 <li><p><code><a href='cnd_signal.html'>cnd_signal()</a></code>: <code>.cnd</code> =&gt; <code>cnd</code></p></li>
 <li><p><code><a href='cnd_signal.html'>cnd_signal()</a></code>: The <code>.mufflable</code> argument no longer has any effect</p></li>
-<li><p><code><a href='scoped_env.html'>scoped_names()</a></code> =&gt; <code><a href='https://www.rdocumentation.org/packages/base/topics/search'>base::search()</a></code></p></li>
+<li><p><code><a href='scoped_env.html'>scoped_names()</a></code> =&gt; <code><a href='https://rdrr.io/r/base/search.html'>base::search()</a></code></p></li>
 <li><p><code><a href='scoped_env.html'>is_scoped()</a></code> =&gt; <code><a href='search_envs.html'>is_attached()</a></code></p></li>
 <li><p><code><a href='scoped_env.html'>scoped_env()</a></code> =&gt; <code><a href='search_envs.html'>search_env()</a></code></p></li>
 <li><p><code><a href='scoped_env.html'>scoped_envs()</a></code> =&gt; <code><a href='search_envs.html'>search_envs()</a></code></p></li>
@@ -297,13 +314,15 @@ like <code><a href='quotation.html'>quos()</a></code> is deprecated.</p></li>
 <li><p><code><a href='overscope_eval_next.html'>overscope_eval_next()</a></code> =&gt; <code><a href='eval_tidy.html'>eval_tidy()</a></code></p></li>
 <li><p><code><a href='as_overscope.html'>overscope_clean()</a></code></p></li>
 </ul>
-    
+
     <h2 class="hasAnchor" id="defunct-functions-and-arguments"><a class="anchor" href="#defunct-functions-and-arguments"></a>Defunct functions and arguments</h2>
 
     
-    <p><img src='figures/lifecycle-defunct.svg' alt='Defunct lifecycle' /></p>
+
+
+<p><img src='figures/lifecycle-defunct.svg' alt='Defunct lifecycle' /></p>
 <p><strong>Defunct as of rlang 0.4.0</strong></p><ul>
-<li><p><code><a href='https://www.rdocumentation.org/packages/base/topics/length'>length()</a></code> and <code><a href='https://www.rdocumentation.org/packages/base/topics/names'>names()</a></code> on tidy eval <code>.data</code> pronouns.</p></li>
+<li><p><code><a href='https://rdrr.io/r/base/length.html'>length()</a></code> and <code><a href='https://rdrr.io/r/base/names.html'>names()</a></code> on tidy eval <code>.data</code> pronouns.</p></li>
 <li><p>Supplying a named <code>!!!</code> call.</p></li>
 <li><p><code><a href='as_data_mask.html'>as_data_mask()</a></code>: <code>parent</code> argument</p></li>
 <li><p><code><a href='as_data_mask.html'>new_data_mask()</a></code>: <code>parent</code> argument</p></li>
@@ -314,11 +333,13 @@ like <code><a href='quotation.html'>quos()</a></code> is deprecated.</p></li>
 <li><p><code><a href='type-predicates.html'>is_character()</a></code>, <code><a href='scalar-type-predicates.html'>is_string()</a></code>, and variants: The <code>encoding</code>
 argument.</p></li>
 </ul>
-    
+
     <h2 class="hasAnchor" id="archived"><a class="anchor" href="#archived"></a>Archived</h2>
 
     
-    <p><a href='https://www.tidyverse.org/lifecycle/#archived'><img src='figures/lifecycle-archived.svg' alt='Archived lifecycle'></a></p>
+
+
+<p><a href='https://www.tidyverse.org/lifecycle/#archived'><img src='figures/lifecycle-archived.svg' alt='Archived lifecycle'></a></p>
 <p>These functions were entirely removed from the package. You will
 find them in the commit history and previous releases.</p>
 <p><strong>Archived as of rlang 0.4.0</strong></p><ul>
@@ -331,7 +352,8 @@ find them in the commit history and previous releases.</p>
 <li><p><code>as_native_character()</code>, <code>as_utf8_string()</code>, <code>as_native_string()</code></p></li>
 <li><p><code>lang_type_of()</code>, <code>switch_lang()</code>, <code>coerce_lang()</code></p></li>
 </ul>
-    <p><strong>Archived as of rlang 0.3.0:</strong></p><ul>
+
+<p><strong>Archived as of rlang 0.3.0:</strong></p><ul>
 <li><p><code>cnd_inform()</code>, <code>cnd_warn()</code> and <code>cnd_abort()</code></p></li>
 <li><p><code>new_cnd()</code> =&gt; <code><a href='cnd.html'>cnd()</a></code></p></li>
 <li><p><code>cnd_message()</code> =&gt; <code><a href='cnd.html'>message_cnd()</a></code></p></li>
@@ -344,30 +366,24 @@ has not been implemented in <code><a href='with_handlers.html'>calling()</a></co
 <li><p><code><a href='cnd.html'>cnd()</a></code>, <code><a href='cnd.html'>error_cnd()</a></code>, <code><a href='cnd.html'>warning_cnd()</a></code> and <code><a href='cnd.html'>message_cnd()</a></code>:
 <code>.msg</code> =&gt; <code>message</code>.</p></li>
 </ul>
-    
+
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      
       <li><a href="#stable-functions">Stable functions</a></li>
-
       <li><a href="#experimental-functions">Experimental functions</a></li>
-
       <li><a href="#questioning-stage">Questioning stage</a></li>
-
       <li><a href="#soft-deprecated-functions-and-arguments">Soft-deprecated functions and arguments</a></li>
-
       <li><a href="#deprecated-functions-and-arguments">Deprecated functions and arguments</a></li>
-
       <li><a href="#defunct-functions-and-arguments">Defunct functions and arguments</a></li>
-
       <li><a href="#archived">Archived</a></li>
-          </ul>
+    </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -375,13 +391,16 @@ has not been implemented in <code><a href='with_handlers.html'>calling()</a></co
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

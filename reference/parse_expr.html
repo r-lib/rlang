@@ -8,21 +8,25 @@
 
 <title>Parse R code — parse_expr • rlang</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,12 +34,13 @@
 
 
 
-<meta property="og:title" content="Parse R code — parse_expr" />
 
+<meta property="og:title" content="Parse R code — parse_expr" />
 <meta property="og:description" content="These functions parse and transform text into R expressions. This
 is the first step to interpret or evaluate a piece of R code
 written by a programmer." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -58,6 +63,7 @@ written by a programmer." />
 
   gtag('config', 'UA-115082821-1');
 </script>
+
 
   </head>
 
@@ -83,7 +89,7 @@ written by a programmer." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -120,11 +126,10 @@ written by a programmer." />
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-lib/rlang">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -135,6 +140,7 @@ written by a programmer." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -146,11 +152,9 @@ written by a programmer." />
     </div>
 
     <div class="ref-description">
-    
     <p>These functions parse and transform text into R expressions. This
 is the first step to interpret or evaluate a piece of R code
 written by a programmer.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>parse_expr</span>(<span class='no'>x</span>)
@@ -160,7 +164,7 @@ written by a programmer.</p>
 <span class='fu'>parse_quo</span>(<span class='no'>x</span>, <span class='no'>env</span>)
 
 <span class='fu'>parse_quos</span>(<span class='no'>x</span>, <span class='no'>env</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -179,7 +183,7 @@ R code in an isolated context (perhaps a child of the global
 environment or of the <a href='search_envs.html'>base environment</a>).</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code>parse_expr()</code> returns an <a href='is_expression.html'>expression</a>,
@@ -187,32 +191,30 @@ environment or of the <a href='search_envs.html'>base environment</a>).</p></td>
 plural variants the length of the output may be greater than the
 length of the input. This would happen is one of the strings
 contain several expressions (such as <code>"foo; bar"</code>).</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>parse_expr()</code> returns one expression. If the text contains more
 than one expression (separated by semicolons or new lines), an error is
 issued. On the other hand <code>parse_exprs()</code> can handle multiple
 expressions. It always returns a list of expressions (compare to
-<code><a href='https://www.rdocumentation.org/packages/base/topics/parse'>base::parse()</a></code> which returns a base::expression vector). All
+<code><a href='https://rdrr.io/r/base/parse.html'>base::parse()</a></code> which returns a base::expression vector). All
 functions also support R connections.</p>
 <p>The versions suffixed with <code>_quo</code> and <code>_quos</code> return
 <a href='quotation.html'>quosures</a> rather than raw expressions.</p>
-    
     <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
 
     
-    <ul>
+
+<ul>
 <li><p><code><a href='parse_quosure.html'>parse_quosure()</a></code> and <code><a href='parse_quosure.html'>parse_quosures()</a></code> were soft-deprecated in
 rlang 0.2.0 and renamed to <code>parse_quo()</code> and <code>parse_quos()</code>. This
 is consistent with the rule that abbreviated suffixes indicate
 the return type of a function.</p></li>
 </ul>
-    
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://www.rdocumentation.org/packages/base/topics/parse'>base::parse()</a></code></p></div>
-    
+    <div class='dont-index'><p><code><a href='https://rdrr.io/r/base/parse.html'>base::parse()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># parse_expr() can parse any R expression:</span>
@@ -229,11 +231,11 @@ the return type of a function.</p></li>
 #&gt; </div><div class='input'>
 <span class='co'># You can also parse source files by passing a R connection. Let's</span>
 <span class='co'># create a file containing R code:</span>
-<span class='no'>path</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='st'>"my-file.R"</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='st'>"1; 2; mtcars"</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='no'>path</span>)
+<span class='no'>path</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='st'>"my-file.R"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"1; 2; mtcars"</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='no'>path</span>)
 
 <span class='co'># We can now parse it by supplying a connection:</span>
-<span class='fu'>parse_exprs</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/connections'>file</a></span>(<span class='no'>path</span>))</div><div class='output co'>#&gt; [[1]]
+<span class='fu'>parse_exprs</span>(<span class='fu'><a href='https://rdrr.io/r/base/connections.html'>file</a></span>(<span class='no'>path</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] 1
 #&gt; 
 #&gt; [[2]]
@@ -247,20 +249,16 @@ the return type of a function.</p></li>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#life-cycle">Life cycle</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -268,13 +266,16 @@ the return type of a function.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

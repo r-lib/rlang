@@ -8,21 +8,25 @@
 
 <title>Quasiquotation of an expression — quasiquotation • rlang</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,8 +34,8 @@
 
 
 
-<meta property="og:title" content="Quasiquotation of an expression — quasiquotation" />
 
+<meta property="og:title" content="Quasiquotation of an expression — quasiquotation" />
 <meta property="og:description" content="Quasiquotation is the mechanism that makes it possible to program
 flexibly with tidy evaluation grammars like dplyr. It is enabled in
 all functions quoting their arguments with enquo(), enexpr(),
@@ -57,14 +61,15 @@ go, a pattern that we call interpolation. It is an alias for
 Like enquo(), {{ }} is used in functions to capture an
 argument as a quoted expression. This expression is immediately
 unquoted in place.
-" />
 
-<meta property="og:description" content="Use qq_show() to experiment with quasiquotation or debug the
+
+Use qq_show() to experiment with quasiquotation or debug the
 effect of unquoting operators. qq_show() quotes its input,
 processes unquoted parts, and prints the result with
 expr_print(). This expression printer has a clearer output than
 the base R printer (see the documentation topic)." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -87,6 +92,7 @@ the base R printer (see the documentation topic)." />
 
   gtag('config', 'UA-115082821-1');
 </script>
+
 
   </head>
 
@@ -112,7 +118,7 @@ the base R printer (see the documentation topic)." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -149,11 +155,10 @@ the base R printer (see the documentation topic)." />
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-lib/rlang">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -164,6 +169,7 @@ the base R printer (see the documentation topic)." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -175,7 +181,6 @@ the base R printer (see the documentation topic)." />
     </div>
 
     <div class="ref-description">
-    
     <p>Quasiquotation is the mechanism that makes it possible to program
 flexibly with tidy evaluation grammars like dplyr. It is enabled in
 all functions quoting their arguments with <code><a href='quotation.html'>enquo()</a></code>, <code><a href='quotation.html'>enexpr()</a></code>,
@@ -192,9 +197,9 @@ be embedded in the surrounding call, i.e. each element is
 inserted as an argument. If the vector is named, the names are
 used as argument names.</p>
 <p>If the vector is a classed object (like a factor), it is
-converted to a list with <code><a href='https://www.rdocumentation.org/packages/base/topics/list'>base::as.list()</a></code> to ensure proper
+converted to a list with <code><a href='https://rdrr.io/r/base/list.html'>base::as.list()</a></code> to ensure proper
 dispatch. If it is an S4 objects, it is converted to a list with
-<code><a href='https://www.rdocumentation.org/packages/methods/topics/as'>methods::as()</a></code>.</p></li>
+<code><a href='https://rdrr.io/r/methods/as.html'>methods::as()</a></code>.</p></li>
 <li><p>The <code>{{ }}</code> operator quotes and unquotes its argument in one
 go, a pattern that we call <strong>interpolation</strong>. It is an alias for
 <code>!!enquo(arg)</code>.</p>
@@ -203,16 +208,15 @@ argument as a quoted expression. This expression is immediately
 unquoted in place.</p></li>
 </ul>
 
-    <p>Use <code>qq_show()</code> to experiment with quasiquotation or debug the
+<p>Use <code>qq_show()</code> to experiment with quasiquotation or debug the
 effect of unquoting operators. <code>qq_show()</code> quotes its input,
 processes unquoted parts, and prints the result with
 <code><a href='expr_print.html'>expr_print()</a></code>. This expression printer has a clearer output than
 the base R printer (see the <a href='expr_print.html'>documentation topic</a>).</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>qq_show</span>(<span class='no'>expr</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -221,11 +225,13 @@ the base R printer (see the <a href='expr_print.html'>documentation topic</a>).<
       <td><p>An expression to be quasiquoted.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="unquoting-names"><a class="anchor" href="#unquoting-names"></a>Unquoting names</h2>
 
     
-    <p>When a function takes multiple named arguments
+
+
+<p>When a function takes multiple named arguments
 (e.g. <code>dplyr::mutate()</code>), it is difficult to supply a variable as
 name. Since the LHS of <code>=</code> is quoted, giving the name of a variable
 results in the argument having the name of the variable rather than
@@ -238,45 +244,53 @@ supported on the LHS of <code>=</code>. This is why we have made the more
 flexible <code>:=</code> operator an alias of <code>=</code>. You can use it to supply
 names, e.g. <code>a := b</code> is equivalent to <code>a = b</code>. Since its syntax is
 more flexible you can unquote on the LHS:</p><pre>name &lt;- "Jane"
-    list2(!!name := 1 + 2)
+
+list2(!!name := 1 + 2)
 exprs(!!name := 1 + 2)
 quos(!!name := 1 + 2)
 </pre>
-    <p>Like <code>=</code>, the <code>:=</code> operator expects strings or symbols on its LHS.</p>
+
+<p>Like <code>=</code>, the <code>:=</code> operator expects strings or symbols on its LHS.</p>
 <p>Note that unquoting on the LHS of <code>:=</code> only works in top level
 expressions. These are all valid:</p><pre>exprs(!!nm := x)
 tibble(!!nm := x)
 list2(!!nm := x)
 </pre>
-    <p>But deep-unquoting names isn't supported:</p><pre>expr(foo(!!nm := x))
+
+<p>But deep-unquoting names isn't supported:</p><pre>expr(foo(!!nm := x))
 exprs(foo(!!nm := x))
 </pre>
-    
+
     <h2 class="hasAnchor" id="theory"><a class="anchor" href="#theory"></a>Theory</h2>
 
     
-    <p>Formally, <code><a href='quotation.html'>quo()</a></code> and <code><a href='quotation.html'>expr()</a></code> are quasiquote functions, <code>!!</code> is
+
+
+<p>Formally, <code><a href='quotation.html'>quo()</a></code> and <code><a href='quotation.html'>expr()</a></code> are quasiquote functions, <code>!!</code> is
 the unquote operator, and <code>!!!</code> is the unquote-splice operator.
 These terms have a rich history in Lisp languages, and live on in
 modern languages like
 <a href='https://docs.julialang.org/en/v1/manual/metaprogramming/'>Julia</a>
 and
 <a href='https://docs.racket-lang.org/reference/quasiquote.html'>Racket</a>.</p>
-    
     <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
 
     
-    <ul>
+
+<ul>
 <li><p>Calling <code>UQ()</code> and <code>UQS()</code> with the rlang namespace qualifier is
 deprecated as of rlang 0.3.0. Just use the unqualified forms
 instead:</p><pre># Bad
 rlang::expr(mean(rlang::UQ(var) * 100))
-    # Ok
+
+# Ok
 rlang::expr(mean(UQ(var) * 100))
-    # Good
+
+# Good
 rlang::expr(mean(!!var * 100))
 </pre>
-    <p>Supporting namespace qualifiers complicates the implementation of
+
+<p>Supporting namespace qualifiers complicates the implementation of
 unquotation and is misleading as to the nature of unquoting
 operators (which are syntactic operators that operates at
 quotation-time rather than function calls at evaluation-time).</p></li>
@@ -301,7 +315,7 @@ reality unquoting is <em>not</em> a function call, it is a syntactic
 operation. The operator form makes it clearer that unquoting is
 special.</p></li>
 </ul>
-    
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Interpolation with {{  }} is the easiest way to forward</span>
@@ -312,7 +326,7 @@ special.</p></li>
 <span class='co'># interpolating them within other data masked arguments.</span>
 <span class='co'># Here we interpolate `arg` in a `summarise()` call:</span>
 <span class='no'>my_function</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>data</span>, <span class='no'>arg</span>) {
-  <span class='fu'>summarise</span>(<span class='no'>data</span>, <span class='kw'>avg</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/mean'>mean</a></span>({{ <span class='no'>arg</span> }}, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
+  <span class='fu'>summarise</span>(<span class='no'>data</span>, <span class='kw'>avg</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>({{ <span class='no'>arg</span> }}, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
 }
 
 <span class='fu'>my_function</span>(<span class='no'>mtcars</span>, <span class='no'>cyl</span>)
@@ -320,7 +334,7 @@ special.</p></li>
 
 <span class='co'># The  operator is just a shortcut for `!!enquo()`:</span>
 <span class='no'>my_function</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>data</span>, <span class='no'>arg</span>) {
-  <span class='fu'>summarise</span>(<span class='no'>data</span>, <span class='kw'>avg</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/mean'>mean</a></span>(!!<span class='fu'><a href='quotation.html'>enquo</a></span>(<span class='no'>arg</span>), <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
+  <span class='fu'>summarise</span>(<span class='no'>data</span>, <span class='kw'>avg</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(!!<span class='fu'><a href='quotation.html'>enquo</a></span>(<span class='no'>arg</span>), <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
 }
 
 <span class='fu'>my_function</span>(<span class='no'>mtcars</span>, <span class='no'>cyl</span>)
@@ -328,9 +342,9 @@ special.</p></li>
 }
 
 <span class='co'># Quasiquotation functions quote expressions like base::quote()</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='fu'>how_many</span>(<span class='no'>this</span>))</div><div class='output co'>#&gt; how_many(this)</div><div class='input'><span class='fu'><a href='quotation.html'>expr</a></span>(<span class='fu'>how_many</span>(<span class='no'>this</span>))</div><div class='output co'>#&gt; how_many(this)</div><div class='input'><span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'>how_many</span>(<span class='no'>this</span>))</div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
+<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'>how_many</span>(<span class='no'>this</span>))</div><div class='output co'>#&gt; how_many(this)</div><div class='input'><span class='fu'><a href='quotation.html'>expr</a></span>(<span class='fu'>how_many</span>(<span class='no'>this</span>))</div><div class='output co'>#&gt; how_many(this)</div><div class='input'><span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'>how_many</span>(<span class='no'>this</span>))</div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^how_many(this)</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7a4af78</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x8e87c38</span><span></div><div class='input'>
 <span class='co'># In addition, they support unquoting. Let's store symbols</span>
 <span class='co'># (i.e. object names) in variables:</span>
 <span class='no'>this</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sym.html'>sym</a></span>(<span class='st'>"apples"</span>)
@@ -342,7 +356,7 @@ special.</p></li>
 <span class='co'># You can also insert values:</span>
 <span class='fu'><a href='quotation.html'>expr</a></span>(<span class='fu'>how_many</span>(!!(<span class='fl'>1</span> + <span class='fl'>2</span>)))</div><div class='output co'>#&gt; how_many(3)</div><div class='input'><span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'>how_many</span>(!!(<span class='fl'>1</span> + <span class='fl'>2</span>)))</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^how_many(3)</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7a4af78</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x8e87c38</span><span></div><div class='input'>
 
 <span class='co'># Note that when you unquote complex objects into an expression,</span>
 <span class='co'># the base R printer may be a bit misleading. For instance compare</span>
@@ -350,7 +364,7 @@ special.</p></li>
 <span class='co'># when we unquote an integer vector:</span>
 <span class='fu'><a href='quotation.html'>expr</a></span>(<span class='fu'>how_many</span>(!!(<span class='fl'>1</span>:<span class='fl'>10</span>)))</div><div class='output co'>#&gt; how_many(1:10)</div><div class='input'><span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'>how_many</span>(!!(<span class='fl'>1</span>:<span class='fl'>10</span>)))</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^how_many(&lt;int: 1L, 2L, 3L, 4L, 5L, ...&gt;)</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7a4af78</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x8e87c38</span><span></div><div class='input'>
 <span class='co'># This is why it's often useful to use qq_show() to examine the</span>
 <span class='co'># result of unquotation operators. It uses the same printer as</span>
 <span class='co'># quosures but does not return anything:</span>
@@ -358,16 +372,16 @@ special.</p></li>
 
 <span class='co'># Use `!!!` to add multiple arguments to a function. Its argument</span>
 <span class='co'># should evaluate to a list or vector:</span>
-<span class='no'>args</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fl'>1</span>:<span class='fl'>3</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/mean'>mean</a></span>(!!!<span class='no'>args</span>))</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
+<span class='no'>args</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>1</span>:<span class='fl'>3</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(!!!<span class='no'>args</span>))</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^mean(&lt;int: 1L, 2L, 3L&gt;, na.rm = TRUE)</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7a4af78</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x8e87c38</span><span></div><div class='input'>
 <span class='co'># You can combine the two</span>
-<span class='no'>var</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>xyz</span>)
-<span class='no'>extra_args</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/mean'>mean</a></span>(!!<span class='no'>var</span> , !!!<span class='no'>extra_args</span>))</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
+<span class='no'>var</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>xyz</span>)
+<span class='no'>extra_args</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(!!<span class='no'>var</span> , !!!<span class='no'>extra_args</span>))</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^mean(xyz, trim = 0.9, na.rm = TRUE)</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7a4af78</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x8e87c38</span><span></div><div class='input'>
 
 <span class='co'># The plural versions have support for the `:=` operator.</span>
 <span class='co'># Like `=`, `:=` creates named arguments:</span>
@@ -376,12 +390,12 @@ special.</p></li>
 #&gt; $mouse1
 #&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^bernard</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7a4af78</span><span>
+#&gt; env:  </span><span style='color: #0000BB;'>0x8e87c38</span><span>
 #&gt; 
 #&gt; $mouse2
 #&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^bianca</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7a4af78</span><span>
+#&gt; env:  </span><span style='color: #0000BB;'>0x8e87c38</span><span>
 #&gt; </div><div class='input'>
 <span class='co'># The `:=` is mainly useful to unquote names. Unlike `=` it</span>
 <span class='co'># supports `!!` on its LHS:</span>
@@ -391,12 +405,12 @@ special.</p></li>
 #&gt; $`unquote me!`
 #&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^bernard</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7a4af78</span><span>
+#&gt; env:  </span><span style='color: #0000BB;'>0x8e87c38</span><span>
 #&gt; 
 #&gt; $mouse2
 #&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^bianca</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7a4af78</span><span>
+#&gt; env:  </span><span style='color: #0000BB;'>0x8e87c38</span><span>
 #&gt; </div><div class='input'>
 
 <span class='co'># All these features apply to dots captured by enquos():</span>
@@ -416,40 +430,37 @@ special.</p></li>
 #&gt; $`unquote me!`
 #&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^penny</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7a4af78</span><span>
+#&gt; env:  </span><span style='color: #0000BB;'>0x8e87c38</span><span>
 #&gt; </div><div class='input'>
 
 <span class='co'># Unquoting is especially useful for building an expression by</span>
 <span class='co'># expanding around a variable part (the unquoted part):</span>
-<span class='no'>quo1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/chartr'>toupper</a></span>(<span class='no'>foo</span>))
+<span class='no'>quo1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/chartr.html'>toupper</a></span>(<span class='no'>foo</span>))
 <span class='no'>quo1</span></div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^toupper(foo)</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7a4af78</span><span></div><div class='input'>
-<span class='no'>quo2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste</a></span>(!!<span class='no'>quo1</span>, <span class='no'>bar</span>))
+#&gt; env:  </span><span style='color: #0000BB;'>0x8e87c38</span><span></div><div class='input'>
+<span class='no'>quo2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(!!<span class='no'>quo1</span>, <span class='no'>bar</span>))
 <span class='no'>quo2</span></div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^paste(^toupper(foo), bar)</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7a4af78</span><span></div><div class='input'>
-<span class='no'>quo3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(!!<span class='no'>quo2</span>, !!!<span class='fu'><a href='sym.html'>syms</a></span>(<span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>5</span>])))
+#&gt; env:  </span><span style='color: #0000BB;'>0x8e87c38</span><span></div><div class='input'>
+<span class='no'>quo3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(!!<span class='no'>quo2</span>, !!!<span class='fu'><a href='sym.html'>syms</a></span>(<span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>5</span>])))
 <span class='no'>quo3</span></div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^list(^paste(^toupper(foo), bar), a, b, c, d, e)</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7a4af78</span><span></div></span></pre>
+#&gt; env:  </span><span style='color: #0000BB;'>0x8e87c38</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#unquoting-names">Unquoting names</a></li>
-
       <li><a href="#theory">Theory</a></li>
-
       <li><a href="#life-cycle">Life cycle</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -457,13 +468,16 @@ special.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

@@ -8,21 +8,25 @@
 
 <title>Quotation — quotation • rlang</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,8 +34,8 @@
 
 
 
-<meta property="og:title" content="Quotation — quotation" />
 
+<meta property="og:title" content="Quotation — quotation" />
 <meta property="og:description" content="
 Quotation is a mechanism by which an expression supplied as
 argument is captured by a function. Instead of seeing the value of
@@ -43,14 +47,15 @@ compute a new value. Evaluating a call causes that value to be
 computed. Calls typically involve symbols to reference R objects.
 Symbols represent the name that is given to an object in a
 particular context (an environment).
-" />
 
-<meta property="og:description" content="We call objects containing calls and symbols expressions.
+
+We call objects containing calls and symbols expressions.
 There are two ways to create R expressions. First you can build
 calls and symbols from parts and pieces (see sym(), syms() and
 call2()). The other way is by quotation or quasiquotation,
 i.e. by intercepting an expression instead of evaluating it." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -73,6 +78,7 @@ i.e. by intercepting an expression instead of evaluating it." />
 
   gtag('config', 'UA-115082821-1');
 </script>
+
 
   </head>
 
@@ -98,7 +104,7 @@ i.e. by intercepting an expression instead of evaluating it." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -135,11 +141,10 @@ i.e. by intercepting an expression instead of evaluating it." />
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-lib/rlang">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -150,6 +155,7 @@ i.e. by intercepting an expression instead of evaluating it." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -161,7 +167,6 @@ i.e. by intercepting an expression instead of evaluating it." />
     </div>
 
     <div class="ref-description">
-    
     <p><a href='https://www.tidyverse.org/lifecycle/#stable'><img src='figures/lifecycle-stable.svg' alt='Stable lifecycle'></a></p>
 <p>Quotation is a mechanism by which an expression supplied as
 argument is captured by a function. Instead of seeing the value of
@@ -175,42 +180,41 @@ computed. Calls typically involve symbols to reference R objects.</p></li>
 particular context (an <a href='env.html'>environment</a>).</p></li>
 </ul>
 
-    <p>We call objects containing calls and symbols <a href='is_expr.html'>expressions</a>.
+<p>We call objects containing calls and symbols <a href='is_expr.html'>expressions</a>.
 There are two ways to create R expressions. First you can <strong>build</strong>
 calls and symbols from parts and pieces (see <code><a href='sym.html'>sym()</a></code>, <code><a href='sym.html'>syms()</a></code> and
 <code><a href='call2.html'>call2()</a></code>). The other way is by <em>quotation</em> or <em>quasiquotation</em>,
 i.e. by intercepting an expression instead of evaluating it.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>expr</span>(<span class='no'>expr</span>)
 
 <span class='fu'>enexpr</span>(<span class='no'>arg</span>)
 
-<span class='fu'>exprs</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>,
+<span class='fu'>exprs</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>,
   <span class='st'>"all"</span>), <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'>enexprs</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>,
-  <span class='st'>"all"</span>), <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>,
+<span class='fu'>enexprs</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>,
+  <span class='st'>"all"</span>), <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>,
   <span class='st'>"error"</span>), <span class='kw'>.check_assign</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='fu'>ensym</span>(<span class='no'>arg</span>)
 
-<span class='fu'>ensyms</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>,
-  <span class='st'>"all"</span>), <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>,
+<span class='fu'>ensyms</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>,
+  <span class='st'>"all"</span>), <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>,
   <span class='st'>"error"</span>), <span class='kw'>.check_assign</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='fu'>quo</span>(<span class='no'>expr</span>)
 
 <span class='fu'>enquo</span>(<span class='no'>arg</span>)
 
-<span class='fu'>quos</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
+<span class='fu'>quos</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
   <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'>enquos</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>,
-  <span class='st'>"all"</span>), <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>,
+<span class='fu'>enquos</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>,
+  <span class='st'>"all"</span>), <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>,
   <span class='st'>"error"</span>), <span class='kw'>.check_assign</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -268,11 +272,13 @@ function parameter, or wrap the <code>&lt;-</code> call in braces otherwise.
 This ensures assignments are explicit.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="user-expressions-versus-your-expressions"><a class="anchor" href="#user-expressions-versus-your-expressions"></a>User expressions versus your expressions</h2>
 
     
-    <p>There are two points of view when it comes to capturing an
+
+
+<p>There are two points of view when it comes to capturing an
 expression:</p><ul>
 <li><p>You can capture the expressions supplied by <em>the user</em> of your
 function. This is the purpose of <code>ensym()</code>, <code>enexpr()</code> and
@@ -283,11 +289,12 @@ that argument.</p></li>
 use <code>expr()</code> and <code>quo()</code> and their plural variants <code>exprs()</code> and
 <code>quos()</code>.</p></li>
 </ul>
-    
+
     <h2 class="hasAnchor" id="capture-raw-expressions"><a class="anchor" href="#capture-raw-expressions"></a>Capture raw expressions</h2>
 
     
-    <ul>
+
+<ul>
 <li><p><code>enexpr()</code> and <code>expr()</code> capture a single raw expression.</p></li>
 <li><p><code>enexprs()</code> and <code>exprs()</code> capture a list of raw expressions
 including expressions contained in <code>...</code>.</p></li>
@@ -296,18 +303,20 @@ including expressions contained in <code>...</code>.</p></li>
 (which they convert to symbol) or a symbol. If anything else
 is supplied they throw an error.</p></li>
 </ul>
-    <p>In terms of base functions, <code>enexpr(arg)</code> corresponds to
-<code><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>base::substitute(arg)</a></code> (though that function also features complex
-substitution semantics) and <code>expr()</code> is like <code><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote()</a></code> (and
-<code><a href='https://www.rdocumentation.org/packages/base/topics/bquote'>bquote()</a></code> if we consider unquotation syntax). The plural variant
-<code>exprs()</code> is equivalent to <code><a href='https://www.rdocumentation.org/packages/base/topics/list'>base::alist()</a></code>. Finally there is no
+
+<p>In terms of base functions, <code>enexpr(arg)</code> corresponds to
+<code><a href='https://rdrr.io/r/base/substitute.html'>base::substitute(arg)</a></code> (though that function also features complex
+substitution semantics) and <code>expr()</code> is like <code><a href='https://rdrr.io/r/base/substitute.html'>quote()</a></code> (and
+<code><a href='https://rdrr.io/r/base/bquote.html'>bquote()</a></code> if we consider unquotation syntax). The plural variant
+<code>exprs()</code> is equivalent to <code><a href='https://rdrr.io/r/base/list.html'>base::alist()</a></code>. Finally there is no
 function in base R that is equivalent to <code>enexprs()</code> but you can
-reproduce its behaviour with <code><a href='https://www.rdocumentation.org/packages/base/topics/eval'>eval(substitute(alist(...)))</a></code>.</p>
-    
+reproduce its behaviour with <code><a href='https://rdrr.io/r/base/eval.html'>eval(substitute(alist(...)))</a></code>.</p>
     <h2 class="hasAnchor" id="capture-expressions-in-quosures"><a class="anchor" href="#capture-expressions-in-quosures"></a>Capture expressions in quosures</h2>
 
     
-    <p><code>quo()</code> and <code>enquo()</code> are similar to their <code>expr</code> counterparts but
+
+
+<p><code>quo()</code> and <code>enquo()</code> are similar to their <code>expr</code> counterparts but
 capture both the expression and its environment in an object called
 a quosure. This wrapper contains a reference to the original
 environment in which that expression was captured. Keeping track of
@@ -319,11 +328,12 @@ original environment, quosures can be seen as vehicles that allow
 expressions to travel from function to function but that beam back
 instantly to their original environment upon evaluation.</p>
 <p>See the <a href='quosure.html'>quosure</a> help topic about tools to work with quosures.</p>
-    
     <h2 class="hasAnchor" id="quasiquotation"><a class="anchor" href="#quasiquotation"></a>Quasiquotation</h2>
 
     
-    <p>All quotation functions in rlang have support for <a href='quasiquotation.html'>unquoting operators</a>. The combination of quotation and
+
+
+<p>All quotation functions in rlang have support for <a href='quasiquotation.html'>unquoting operators</a>. The combination of quotation and
 unquotation is called <em>quasiquotation</em>.</p>
 <p>Unquotation provides a way to refer to variables during quotation.
 Variables are problematic when quoting because a captured
@@ -340,9 +350,9 @@ build a complex expressions where some parts are constant (the
 parts that are captured) and some parts are variable (the parts
 that are unquoted).</p></li>
 </ul>
-    <p>See the <a href='quasiquotation.html'>quasiquotation</a> help topic for more about this as well as
+
+<p>See the <a href='quasiquotation.html'>quasiquotation</a> help topic for more about this as well as
 <a href='https://adv-r.hadley.nz/quasiquotation.html'>the chapter in Advanced R</a>.</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># expr() and exprs() capture expressions that you supply:</span>
@@ -407,8 +417,8 @@ that are unquoted).</p></li>
 <span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'>quo</span>(<span class='no'>letters</span>)
 <span class='no'>quo</span></div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^letters</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x18717d0</span><span></div><div class='input'>
-<span class='fu'><a href='set_expr.html'>get_expr</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; letters</div><div class='input'><span class='fu'><a href='get_env.html'>get_env</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; &lt;environment: 0x18717d0&gt;</div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x789ccc8</span><span></div><div class='input'>
+<span class='fu'><a href='set_expr.html'>get_expr</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; letters</div><div class='input'><span class='fu'><a href='get_env.html'>get_env</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; &lt;environment: 0x789ccc8&gt;</div><div class='input'>
 <span class='co'># Quosures can be evaluated with eval_tidy():</span>
 <span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt;  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
 #&gt; [20] "t" "u" "v" "w" "x" "y" "z"</div><div class='input'>
@@ -433,7 +443,7 @@ that are unquoted).</p></li>
 <span class='co'># terminal is capable of displaying colours:</span>
 <span class='no'>quo</span></div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^(</span><span style='color: #00BB00;'>^2 + 3</span><span style='color: #0000BB;'>) * local_ten</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x93cc578</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x88f0298</span><span></div><div class='input'>
 <span class='co'># All the quosures in the expression evaluate in their original</span>
 <span class='co'># context. The local objects are looked up properly and we get the</span>
 <span class='co'># expected result:</span>
@@ -443,20 +453,16 @@ that are unquoted).</p></li>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#user-expressions-versus-your-expressions">User expressions versus your expressions</a></li>
-
       <li><a href="#capture-raw-expressions">Capture raw expressions</a></li>
-
       <li><a href="#capture-expressions-in-quosures">Capture expressions in quosures</a></li>
-
       <li><a href="#quasiquotation">Quasiquotation</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -464,13 +470,16 @@ that are unquoted).</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

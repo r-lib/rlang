@@ -8,21 +8,25 @@
 
 <title>Signal an error, warning, or message — abort • rlang</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,8 +34,8 @@
 
 
 
-<meta property="og:title" content="Signal an error, warning, or message — abort" />
 
+<meta property="og:title" content="Signal an error, warning, or message — abort" />
 <meta property="og:description" content="These functions are equivalent to base functions base::stop(),
 base::warning() and base::message(), but make it easy to supply
 condition metadata:
@@ -40,12 +44,13 @@ conditions can be captured or handled selectively, allowing for
 finer-grained error handling.
 Supply metadata with named ... arguments. This data will be
 stored in the condition object and can be examined by handlers.
-" />
 
-<meta property="og:description" content="interrupt() allows R code to simulate a user interrupt of the
+
+interrupt() allows R code to simulate a user interrupt of the
 kind that is signalled with Ctrl-C. It is currently not possible
 to create custom interrupt condition objects." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -68,6 +73,7 @@ to create custom interrupt condition objects." />
 
   gtag('config', 'UA-115082821-1');
 </script>
+
 
   </head>
 
@@ -93,7 +99,7 @@ to create custom interrupt condition objects." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -130,11 +136,10 @@ to create custom interrupt condition objects." />
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-lib/rlang">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -145,6 +150,7 @@ to create custom interrupt condition objects." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -156,9 +162,8 @@ to create custom interrupt condition objects." />
     </div>
 
     <div class="ref-description">
-    
-    <p>These functions are equivalent to base functions <code><a href='https://www.rdocumentation.org/packages/base/topics/stop'>base::stop()</a></code>,
-<code><a href='https://www.rdocumentation.org/packages/base/topics/warning'>base::warning()</a></code> and <code><a href='https://www.rdocumentation.org/packages/base/topics/message'>base::message()</a></code>, but make it easy to supply
+    <p>These functions are equivalent to base functions <code><a href='https://rdrr.io/r/base/stop.html'>base::stop()</a></code>,
+<code><a href='https://rdrr.io/r/base/warning.html'>base::warning()</a></code> and <code><a href='https://rdrr.io/r/base/message.html'>base::message()</a></code>, but make it easy to supply
 condition metadata:</p><ul>
 <li><p>Supply <code>.subclass</code> to create a classed condition. Typed
 conditions can be captured or handled selectively, allowing for
@@ -167,10 +172,9 @@ finer-grained error handling.</p></li>
 stored in the condition object and can be examined by handlers.</p></li>
 </ul>
 
-    <p><code>interrupt()</code> allows R code to simulate a user interrupt of the
+<p><code>interrupt()</code> allows R code to simulate a user interrupt of the
 kind that is signalled with <code>Ctrl-C</code>. It is currently not possible
 to create custom interrupt condition objects.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>abort</span>(<span class='no'>message</span>, <span class='kw'>.subclass</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>trace</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>call</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -183,7 +187,7 @@ to create custom interrupt condition objects.</p>
 <span class='fu'>signal</span>(<span class='no'>message</span>, <span class='no'>.subclass</span>, <span class='no'>...</span>)
 
 <span class='fu'>interrupt</span>()</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -219,16 +223,18 @@ backtrace is now preferred to storing a simple call.</p></td>
 <code>.subclass</code> and are defunct as of rlang 0.4.0.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="backtrace"><a class="anchor" href="#backtrace"></a>Backtrace</h2>
 
     
-    <p>Unlike <code><a href='https://www.rdocumentation.org/packages/base/topics/stop'>stop()</a></code> and <code><a href='https://www.rdocumentation.org/packages/base/topics/warning'>warning()</a></code>, these functions don't include call
+
+
+<p>Unlike <code><a href='https://rdrr.io/r/base/stop.html'>stop()</a></code> and <code><a href='https://rdrr.io/r/base/warning.html'>warning()</a></code>, these functions don't include call
 information by default. This saves you from typing <code>call. = FALSE</code>
 and produces cleaner error messages.</p>
 <p>A backtrace is always saved into error objects. You can print a
 simplified backtrace of the last error by calling <code><a href='last_error.html'>last_error()</a></code>
-and a full backtrace with <code><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary(last_error())</a></code>.</p>
+and a full backtrace with <code><a href='https://rdrr.io/r/base/summary.html'>summary(last_error())</a></code>.</p>
 <p>You can also display a backtrace with the error message by setting
 the option <code>rlang_backtrace_on_error</code>. It supports the following
 values:</p><ul>
@@ -239,31 +245,33 @@ backtrace.</p></li>
 <li><p><code>"full"</code>: Display a full backtrace tree.</p></li>
 <li><p><code>"none"</code>: Display nothing.</p></li>
 </ul>
-    
+
     <h2 class="hasAnchor" id="mufflable-conditions"><a class="anchor" href="#mufflable-conditions"></a>Mufflable conditions</h2>
 
     
-    <p>Signalling a condition with <code>inform()</code> or <code>warn()</code> causes a message
+
+
+<p>Signalling a condition with <code>inform()</code> or <code>warn()</code> causes a message
 to be displayed in the console. These messages can be muffled with
-<code><a href='https://www.rdocumentation.org/packages/base/topics/message'>base::suppressMessages()</a></code> or <code><a href='https://www.rdocumentation.org/packages/base/topics/warning'>base::suppressWarnings()</a></code>.</p>
+<code><a href='https://rdrr.io/r/base/message.html'>base::suppressMessages()</a></code> or <code><a href='https://rdrr.io/r/base/warning.html'>base::suppressWarnings()</a></code>.</p>
 <p>On recent R versions (&gt;= R 3.5.0), interrupts are typically
 signalled with a <code>"resume"</code> restart. This is however not
 guaranteed.</p>
-    
     <h2 class="hasAnchor" id="lifecycle"><a class="anchor" href="#lifecycle"></a>Lifecycle</h2>
 
     
-    <p>These functions were changed in rlang 0.3.0 to take condition
+
+
+<p>These functions were changed in rlang 0.3.0 to take condition
 metadata with <code>...</code>. Consequently:</p><ul>
 <li><p>All arguments were renamed to be prefixed with a dot, except for
 <code>type</code> which was renamed to <code>.subclass</code>.</p></li>
 <li><p><code>.call</code> (previously <code>call</code>) can no longer be passed positionally.</p></li>
 </ul>
-    
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='with_abort.html'>with_abort()</a></code> to convert all errors to rlang errors.</p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># These examples are guarded to avoid throwing errors</span>
@@ -276,7 +284,7 @@ metadata with <code>...</code>. Consequently:</p><ul>
 <span class='fu'>abort</span>(<span class='st'>"Something bad happened"</span>, <span class='st'>"somepkg_bad_error"</span>)
 
 <span class='co'># This will allow your users to handle the error selectively</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/conditions'>tryCatch</a></span>(
+<span class='fu'><a href='https://rdrr.io/r/base/conditions.html'>tryCatch</a></span>(
   <span class='fu'>somepkg_function</span>(),
   <span class='kw'>somepkg_bad_error</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>err</span>) {
     <span class='fu'>warn</span>(<span class='no'>err</span>$<span class='no'>message</span>) <span class='co'># Demote the error to a warning</span>
@@ -288,7 +296,7 @@ metadata with <code>...</code>. Consequently:</p><ul>
 <span class='fu'>abort</span>(<span class='st'>"Something bad happened"</span>, <span class='st'>"somepkg_bad_error"</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>)
 
 <span class='co'># This data can then be consulted by user handlers:</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/conditions'>tryCatch</a></span>(
+<span class='fu'><a href='https://rdrr.io/r/base/conditions.html'>tryCatch</a></span>(
   <span class='fu'>somepkg_function</span>(),
   <span class='kw'>somepkg_bad_error</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>err</span>) {
     <span class='co'># Compute an alternative return value with the data:</span>
@@ -301,10 +309,10 @@ metadata with <code>...</code>. Consequently:</p><ul>
 <span class='co'># the caught error as `parent` to get a nice decomposition of</span>
 <span class='co'># errors and backtraces:</span>
 <span class='no'>file</span> <span class='kw'>&lt;-</span> <span class='st'>"http://foo.bar/baz"</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/conditions'>tryCatch</a></span>(
+<span class='fu'><a href='https://rdrr.io/r/base/conditions.html'>tryCatch</a></span>(
   <span class='fu'>download</span>(<span class='no'>file</span>),
   <span class='kw'>error</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>err</span>) {
-    <span class='no'>msg</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sprintf'>sprintf</a></span>(<span class='st'>"Can't download `%s`"</span>, <span class='no'>file</span>)
+    <span class='no'>msg</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"Can't download `%s`"</span>, <span class='no'>file</span>)
     <span class='fu'>abort</span>(<span class='no'>msg</span>, <span class='kw'>parent</span> <span class='kw'>=</span> <span class='no'>err</span>)
 })
 
@@ -315,7 +323,7 @@ metadata with <code>...</code>. Consequently:</p><ul>
 <span class='fu'><a href='last_error.html'>last_error</a></span>()
 
 <span class='co'># Use `summary()` to print the full backtrace and the condition fields:</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='fu'><a href='last_error.html'>last_error</a></span>())
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'><a href='last_error.html'>last_error</a></span>())
 
 }</div></pre>
   </div>
@@ -323,20 +331,16 @@ metadata with <code>...</code>. Consequently:</p><ul>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#backtrace">Backtrace</a></li>
-
       <li><a href="#mufflable-conditions">Mufflable conditions</a></li>
-
       <li><a href="#lifecycle">Lifecycle</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -344,13 +348,16 @@ metadata with <code>...</code>. Consequently:</p><ul>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

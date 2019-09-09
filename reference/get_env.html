@@ -8,21 +8,25 @@
 
 <title>Get or set the environment of an object — get_env • rlang</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,8 +34,8 @@
 
 
 
-<meta property="og:title" content="Get or set the environment of an object — get_env" />
 
+<meta property="og:title" content="Get or set the environment of an object — get_env" />
 <meta property="og:description" content="These functions dispatch internally with methods for functions,
 formulas and frames. If called with a missing argument, the
 environment of the current evaluation frame (see ctxt_stack()) is
@@ -40,6 +44,7 @@ the identity function and the environment is simply returned (this
 helps simplifying code when writing generic functions for
 environments)." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -62,6 +67,7 @@ environments)." />
 
   gtag('config', 'UA-115082821-1');
 </script>
+
 
   </head>
 
@@ -87,7 +93,7 @@ environments)." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -124,11 +130,10 @@ environments)." />
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-lib/rlang">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -139,6 +144,7 @@ environments)." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -150,7 +156,6 @@ environments)." />
     </div>
 
     <div class="ref-description">
-    
     <p>These functions dispatch internally with methods for functions,
 formulas and frames. If called with a missing argument, the
 environment of the current evaluation frame (see <code><a href='stack.html'>ctxt_stack()</a></code>) is
@@ -158,7 +163,6 @@ returned. If you call <code>get_env()</code> with an environment, it acts as
 the identity function and the environment is simply returned (this
 helps simplifying code when writing generic functions for
 environments).</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>get_env</span>(<span class='no'>env</span>, <span class='kw'>default</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
@@ -166,7 +170,7 @@ environments).</p>
 <span class='fu'>set_env</span>(<span class='no'>env</span>, <span class='kw'>new_env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>())
 
 <span class='fu'>env_poke_parent</span>(<span class='no'>env</span>, <span class='no'>new_env</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -185,7 +189,7 @@ an error is issued.</p></td>
       <td><p>An environment to replace <code>env</code> with.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>While <code>set_env()</code> returns a modified copy and does not have side
@@ -194,11 +198,11 @@ side effect. This is because environments are
 <a href='is_copyable.html'>uncopyable</a>. Be careful not to change environments
 that you don't own, e.g. a parent environment of a function from a
 package.</p>
-    
     <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
 
     
-    <ul>
+
+<ul>
 <li><p>Using <code>get_env()</code> without supplying <code>env</code> is deprecated as
 of rlang 0.3.0. Please use <code><a href='caller_env.html'>current_env()</a></code> to retrieve the
 current environment.</p></li>
@@ -208,23 +212,22 @@ internal genericity was causing confusion (see issue #427). You
 should now extract the environment separately before calling
 these functions.</p></li>
 </ul>
-    
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='quosure.html'>quo_get_env()</a></code> and <code><a href='quosure.html'>quo_set_env()</a></code> for versions of
 <code>get_env()</code> and <code>set_env()</code> that only work on quosures.</p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Environment of closure functions:</span>
 <span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='st'>"foo"</span>
-<span class='fu'>get_env</span>(<span class='no'>fn</span>)</div><div class='output co'>#&gt; &lt;environment: 0x76a2958&gt;</div><div class='input'>
+<span class='fu'>get_env</span>(<span class='no'>fn</span>)</div><div class='output co'>#&gt; &lt;environment: 0x5f2b840&gt;</div><div class='input'>
 <span class='co'># Or of quosures or formulas:</span>
-<span class='fu'>get_env</span>(~<span class='no'>foo</span>)</div><div class='output co'>#&gt; &lt;environment: 0x76a2958&gt;</div><div class='input'><span class='fu'>get_env</span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>foo</span>))</div><div class='output co'>#&gt; &lt;environment: 0x76a2958&gt;</div><div class='input'>
+<span class='fu'>get_env</span>(~<span class='no'>foo</span>)</div><div class='output co'>#&gt; &lt;environment: 0x5f2b840&gt;</div><div class='input'><span class='fu'>get_env</span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>foo</span>))</div><div class='output co'>#&gt; &lt;environment: 0x5f2b840&gt;</div><div class='input'>
 
 <span class='co'># Provide a default in case the object doesn't bundle an environment.</span>
 <span class='co'># Let's create an unevaluated formula:</span>
-<span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(~<span class='no'>foo</span>)
+<span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(~<span class='no'>foo</span>)
 
 <span class='co'># The following line would fail if run because unevaluated formulas</span>
 <span class='co'># don't bundle an environment (they didn't have the chance to</span>
@@ -234,40 +237,37 @@ these functions.</p></li>
 <span class='co'># It is often useful to provide a default when you're writing</span>
 <span class='co'># functions accepting formulas as input:</span>
 <span class='no'>default</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>()
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'>get_env</span>(<span class='no'>f</span>, <span class='no'>default</span>), <span class='no'>default</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'>get_env</span>(<span class='no'>f</span>, <span class='no'>default</span>), <span class='no'>default</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># set_env() can be used to set the enclosure of functions and</span>
 <span class='co'># formulas. Let's create a function with a particular environment:</span>
 <span class='no'>env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>child_env</a></span>(<span class='st'>"base"</span>)
 <span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='fu'>set_env</span>(<span class='kw'>function</span>() <span class='kw'>NULL</span>, <span class='no'>env</span>)
 
 <span class='co'># That function now has `env` as enclosure:</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'>get_env</span>(<span class='no'>fn</span>), <span class='no'>env</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'>get_env</span>(<span class='no'>fn</span>), <span class='fu'><a href='caller_env.html'>current_env</a></span>())</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'>get_env</span>(<span class='no'>fn</span>), <span class='no'>env</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'>get_env</span>(<span class='no'>fn</span>), <span class='fu'><a href='caller_env.html'>current_env</a></span>())</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
 <span class='co'># set_env() does not work by side effect. Setting a new environment</span>
 <span class='co'># for fn has no effect on the original function:</span>
 <span class='no'>other_env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>child_env</a></span>(<span class='kw'>NULL</span>)
 <span class='fu'>set_env</span>(<span class='no'>fn</span>, <span class='no'>other_env</span>)</div><div class='output co'>#&gt; function() NULL
-#&gt; &lt;environment: 0x76512b8&gt;</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'>get_env</span>(<span class='no'>fn</span>), <span class='no'>other_env</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
+#&gt; &lt;environment: 0x721a4c8&gt;</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'>get_env</span>(<span class='no'>fn</span>), <span class='no'>other_env</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
 <span class='co'># Since set_env() returns a new function with a different</span>
 <span class='co'># environment, you'll need to reassign the result:</span>
 <span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='fu'>set_env</span>(<span class='no'>fn</span>, <span class='no'>other_env</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='fu'>get_env</span>(<span class='no'>fn</span>), <span class='no'>other_env</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'>get_env</span>(<span class='no'>fn</span>), <span class='no'>other_env</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#details">Details</a></li>
-
       <li><a href="#life-cycle">Life cycle</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -275,13 +275,16 @@ these functions.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

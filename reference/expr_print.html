@@ -8,21 +8,25 @@
 
 <title>Print an expression — expr_print • rlang</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,8 +34,8 @@
 
 
 
-<meta property="og:title" content="Print an expression — expr_print" />
 
+<meta property="og:title" content="Print an expression — expr_print" />
 <meta property="og:description" content="expr_print(), powered by expr_deparse(), is an alternative
 printer for R expressions with a few improvements over the base R
 printer.
@@ -45,8 +49,10 @@ expr(foo(!!(1:3)))) is printed like this: foo(&amp;lt;int: 1L, 2L, 3L&amp;gt;) w
 foo(1:3) which is ambiguous.
 It respects the width boundary (from the global option width)
 in more cases.
+
 " />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -69,6 +75,7 @@ in more cases.
 
   gtag('config', 'UA-115082821-1');
 </script>
+
 
   </head>
 
@@ -94,7 +101,7 @@ in more cases.
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -131,11 +138,10 @@ in more cases.
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-lib/rlang">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -146,6 +152,7 @@ in more cases.
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -157,7 +164,6 @@ in more cases.
     </div>
 
     <div class="ref-description">
-    
     <p><code>expr_print()</code>, powered by <code>expr_deparse()</code>, is an alternative
 printer for R expressions with a few improvements over the base R
 printer.</p><ul>
@@ -172,13 +178,13 @@ integer vector unquoted in a function call (e.g.
 <li><p>It respects the width boundary (from the global option <code>width</code>)
 in more cases.</p></li>
 </ul>
-    
+
     </div>
 
     <pre class="usage"><span class='fu'>expr_print</span>(<span class='no'>x</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fu'><a href='scoped_options.html'>peek_option</a></span>(<span class='st'>"width"</span>))
 
 <span class='fu'>expr_deparse</span>(<span class='no'>x</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fu'><a href='scoped_options.html'>peek_option</a></span>(<span class='st'>"width"</span>))</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -192,14 +198,14 @@ in more cases.</p></li>
 Defaults to the global option <code>width</code>.</p></td>
     </tr>
     </table>
-    
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># It supports any object. Non-symbolic objects are always printed</span>
 <span class='co'># within angular brackets:</span>
 <span class='fu'>expr_print</span>(<span class='fl'>1</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt; &lt;int: 1L, 2L, 3L&gt;</div><div class='input'><span class='fu'>expr_print</span>(<span class='kw'>function</span>() <span class='kw'>NULL</span>)</div><div class='output co'>#&gt; &lt;function() NULL&gt;</div><div class='input'>
 <span class='co'># Contrast this to how the code to create these objects is printed:</span>
-<span class='fu'>expr_print</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='fl'>1</span>:<span class='fl'>3</span>))</div><div class='output co'>#&gt; 1:3</div><div class='input'><span class='fu'>expr_print</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='kw'>function</span>() <span class='kw'>NULL</span>))</div><div class='output co'>#&gt; function() NULL</div><div class='input'>
+<span class='fu'>expr_print</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fl'>1</span>:<span class='fl'>3</span>))</div><div class='output co'>#&gt; 1:3</div><div class='input'><span class='fu'>expr_print</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>function</span>() <span class='kw'>NULL</span>))</div><div class='output co'>#&gt; function() NULL</div><div class='input'>
 <span class='co'># The main cause of non-symbolic objects in expressions is</span>
 <span class='co'># quasiquotation:</span>
 <span class='fu'>expr_print</span>(<span class='fu'><a href='quotation.html'>expr</a></span>(<span class='fu'>foo</span>(!!(<span class='fl'>1</span>:<span class='fl'>3</span>))))</div><div class='output co'>#&gt; foo(&lt;int: 1L, 2L, 3L&gt;)</div><div class='input'>
@@ -208,21 +214,21 @@ Defaults to the global option <code>width</code>.</p></td>
 <span class='fu'>expr_print</span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>foo</span>))</div><div class='output co'>#&gt; <span style='color: #0000BB;'>^foo</span><span></div><div class='input'><span class='fu'>expr_print</span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'>foo</span>(!!<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>bar</span>))))</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>^foo(^bar)</span><span></div><div class='input'>
 <span class='co'># Quosures from local environments are colourised according to</span>
 <span class='co'># their environments (if you have crayon installed):</span>
-<span class='no'>local_quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/eval'>local</a></span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>foo</span>))
+<span class='no'>local_quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/eval.html'>local</a></span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>foo</span>))
 <span class='fu'>expr_print</span>(<span class='no'>local_quo</span>)</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>^foo</span><span></div><div class='input'>
-<span class='no'>wrapper_quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/eval'>local</a></span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/grDevices/topics/plotmath'>bar</a></span>(!!<span class='no'>local_quo</span>, <span class='no'>baz</span>)))
+<span class='no'>wrapper_quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/eval.html'>local</a></span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'><a href='https://rdrr.io/r/grDevices/plotmath.html'>bar</a></span>(!!<span class='no'>local_quo</span>, <span class='no'>baz</span>)))
 <span class='fu'>expr_print</span>(<span class='no'>wrapper_quo</span>)</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>^bar(</span><span style='color: #00BB00;'>^foo</span><span style='color: #0000BB;'>, baz)</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -230,13 +236,16 @@ Defaults to the global option <code>width</code>.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

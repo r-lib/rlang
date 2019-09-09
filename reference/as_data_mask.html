@@ -8,21 +8,25 @@
 
 <title>Create a data mask — as_data_mask • rlang</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,8 +34,8 @@
 
 
 
-<meta property="og:title" content="Create a data mask — as_data_mask" />
 
+<meta property="og:title" content="Create a data mask — as_data_mask" />
 <meta property="og:description" content="
 A data mask is an environment (or possibly multiple environments
 forming an ancestry) containing user-supplied objects. Objects in
@@ -43,6 +47,7 @@ These functions let you construct a tidy eval data mask manually.
 They are meant for developers of tidy eval interfaces rather than
 for end users." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -65,6 +70,7 @@ for end users." />
 
   gtag('config', 'UA-115082821-1');
 </script>
+
 
   </head>
 
@@ -90,7 +96,7 @@ for end users." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -127,11 +133,10 @@ for end users." />
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-lib/rlang">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -142,6 +147,7 @@ for end users." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -153,7 +159,6 @@ for end users." />
     </div>
 
     <div class="ref-description">
-    
     <p><a href='https://www.tidyverse.org/lifecycle/#stable'><img src='figures/lifecycle-stable.svg' alt='Stable lifecycle'></a></p>
 <p>A data mask is an environment (or possibly multiple environments
 forming an ancestry) containing user-supplied objects. Objects in
@@ -164,7 +169,6 @@ user data.</p>
 <p>These functions let you construct a tidy eval data mask manually.
 They are meant for developers of tidy eval interfaces rather than
 for end users.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>as_data_mask</span>(<span class='no'>data</span>, <span class='kw'>parent</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
@@ -172,7 +176,7 @@ for end users.</p>
 <span class='fu'>as_data_pronoun</span>(<span class='no'>data</span>)
 
 <span class='fu'>new_data_mask</span>(<span class='no'>bottom</span>, <span class='kw'>top</span> <span class='kw'>=</span> <span class='no'>bottom</span>, <span class='kw'>parent</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -207,15 +211,16 @@ eval engine and should be considered undetermined. Never make
 assumption about the parent of <code>top</code>.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A data mask that you can supply to <code><a href='eval_tidy.html'>eval_tidy()</a></code>.</p>
-    
     <h2 class="hasAnchor" id="why-build-a-data-mask-"><a class="anchor" href="#why-build-a-data-mask-"></a>Why build a data mask?</h2>
 
     
-    <p>Most of the time you can just call <code><a href='eval_tidy.html'>eval_tidy()</a></code> with a list or a
+
+
+<p>Most of the time you can just call <code><a href='eval_tidy.html'>eval_tidy()</a></code> with a list or a
 data frame and the data mask will be constructed automatically.
 There are three main use cases for manual creation of data masks:</p><ul>
 <li><p>When <code><a href='eval_tidy.html'>eval_tidy()</a></code> is called with the same data in a tight loop.
@@ -229,13 +234,15 @@ later time. One example of this is <code><a href='https://tibble.tidyverse.org/r
 columns can refer to previous ones.</p></li>
 <li><p>When your data mask requires special features. For instance the
 data frame columns in dplyr data masks are implemented with
-<a href='https://www.rdocumentation.org/packages/base/topics/delayedAssign'>active bindings</a>.</p></li>
+<a href='https://rdrr.io/r/base/delayedAssign.html'>active bindings</a>.</p></li>
 </ul>
-    
+
     <h2 class="hasAnchor" id="building-your-own-data-mask"><a class="anchor" href="#building-your-own-data-mask"></a>Building your own data mask</h2>
 
     
-    <p>Unlike <code><a href='https://www.rdocumentation.org/packages/base/topics/eval'>base::eval()</a></code> which takes any kind of environments as data
+
+
+<p>Unlike <code><a href='https://rdrr.io/r/base/eval.html'>base::eval()</a></code> which takes any kind of environments as data
 mask, <code><a href='eval_tidy.html'>eval_tidy()</a></code> has specific requirements in order to support
 <a href='quotation.html'>quosures</a>. For this reason you can't supply bare
 environments.</p>
@@ -254,15 +261,17 @@ environment, or an rlang data mask. In the latter case, the whole
 ancestry is looked up from the bottom to the top of the mask.
 Functions stored in the mask are bypassed by the pronoun.</p></li>
 </ul>
-    <p>Once you have built a data mask, simply pass it to <code><a href='eval_tidy.html'>eval_tidy()</a></code> as
+
+<p>Once you have built a data mask, simply pass it to <code><a href='eval_tidy.html'>eval_tidy()</a></code> as
 the <code>data</code> argument. You can repeat this as many times as
 needed. Note that any objects created there (perhaps because of a
 call to <code>&lt;-</code>) will persist in subsequent evaluations.</p>
-    
     <h2 class="hasAnchor" id="top-and-bottom-of-data-mask"><a class="anchor" href="#top-and-bottom-of-data-mask"></a>Top and bottom of data mask</h2>
 
     
-    <p>In some cases you'll need several levels in your data mask. One
+
+
+<p>In some cases you'll need several levels in your data mask. One
 good reason is when you include functions in the mask. It's a good
 idea to keep data objects one level lower than function objects, so
 that the former cannot override the definitions of the latter (see
@@ -277,18 +286,21 @@ to one of the following environments:</p><ul>
 <li><p>The default environment passed as the <code>env</code> argument of <code><a href='eval_tidy.html'>eval_tidy()</a></code>.</p></li>
 <li><p>The environment of the current quosure being evaluated, if applicable.</p></li>
 </ul>
-    <p>Consequently, all masking data should be contained between the
+
+<p>Consequently, all masking data should be contained between the
 bottom and top environment of the data mask.</p>
-    
     <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
 
     
-    <p>The <code>parent</code> argument no longer has any effect and is defunct as of
+
+
+<p>The <code>parent</code> argument no longer has any effect and is defunct as of
 rlang 0.4.0. The parent of the data mask is determined from either:</p><ul>
 <li><p>The <code>env</code> argument of <code><a href='eval_tidy.html'>eval_tidy()</a></code></p></li>
 <li><p>Quosure environments when applicable</p></li>
 </ul>
-    <p>Passing environments to <code>as_data_mask()</code> is deprecated as of rlang
+
+<p>Passing environments to <code>as_data_mask()</code> is deprecated as of rlang
 0.3.0. Please use <code>new_data_mask()</code> instead.</p>
 <p><strong>rlang 0.2.0</strong></p>
 <p>In early versions of rlang data masks were called overscopes. We
@@ -300,7 +312,6 @@ in the current environment.</p>
 <p>Following this change in terminology, <code><a href='as_overscope.html'>as_overscope()</a></code> and
 <code><a href='as_overscope.html'>new_overscope()</a></code> were deprecated in rlang 0.2.0 in favour of
 <code>as_data_mask()</code> and <code>new_data_mask()</code>.</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Evaluating in a tidy evaluation environment enables all tidy</span>
@@ -309,16 +320,16 @@ in the current environment.</p>
 <span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>letters</span>), <span class='no'>mask</span>)</div><div class='output co'>#&gt;  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
 #&gt; [20] "t" "u" "v" "w" "x" "y" "z"</div><div class='input'>
 <span class='co'># You can install new pronouns in the mask:</span>
-<span class='no'>mask</span>$<span class='no'>.pronoun</span> <span class='kw'>&lt;-</span> <span class='fu'>as_data_pronoun</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"bar"</span>, <span class='kw'>baz</span> <span class='kw'>=</span> <span class='st'>"bam"</span>))
+<span class='no'>mask</span>$<span class='no'>.pronoun</span> <span class='kw'>&lt;-</span> <span class='fu'>as_data_pronoun</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"bar"</span>, <span class='kw'>baz</span> <span class='kw'>=</span> <span class='st'>"bam"</span>))
 <span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>.pronoun</span>$<span class='no'>foo</span>), <span class='no'>mask</span>)</div><div class='output co'>#&gt; [1] "bar"</div><div class='input'>
 <span class='co'># In some cases the data mask can leak to the user, for example if</span>
 <span class='co'># a function or formula is created in the data mask environment:</span>
 <span class='no'>cyl</span> <span class='kw'>&lt;-</span> <span class='st'>"user variable from the context"</span>
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='kw'>function</span>() <span class='no'>cyl</span>), <span class='no'>mask</span>)
+<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>function</span>() <span class='no'>cyl</span>), <span class='no'>mask</span>)
 <span class='fu'>fn</span>()</div><div class='output co'>#&gt;  [1] 6 6 4 6 8 6 8 4 4 6 6 8 8 8 8 8 8 4 4 4 4 8 8 8 8 4 4 4 8 6 8 4</div><div class='input'>
 <span class='co'># If new objects are created in the mask, they persist in the</span>
 <span class='co'># subsequent calls:</span>
-<span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>new</span> <span class='kw'>&lt;-</span> <span class='no'>cyl</span> + <span class='no'>am</span>), <span class='no'>mask</span>)</div><div class='output co'>#&gt;  [1] 7 7 5 6 8 6 8 4 4 6 6 8 8 8 8 8 8 5 5 5 4 8 8 8 8 5 5 5 9 7 9 5</div><div class='input'><span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>new</span> * <span class='fl'>2</span>), <span class='no'>mask</span>)</div><div class='output co'>#&gt;  [1] 14 14 10 12 16 12 16  8  8 12 12 16 16 16 16 16 16 10 10 10  8 16 16 16 16
+<span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>new</span> <span class='kw'>&lt;-</span> <span class='no'>cyl</span> + <span class='no'>am</span>), <span class='no'>mask</span>)</div><div class='output co'>#&gt;  [1] 7 7 5 6 8 6 8 4 4 6 6 8 8 8 8 8 8 5 5 5 4 8 8 8 8 5 5 5 9 7 9 5</div><div class='input'><span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>new</span> * <span class='fl'>2</span>), <span class='no'>mask</span>)</div><div class='output co'>#&gt;  [1] 14 14 10 12 16 12 16  8  8 12 12 16 16 16 16 16 16 10 10 10  8 16 16 16 16
 #&gt; [26] 10 10 10 18 14 18 10</div><div class='input'>
 
 <span class='co'># In some cases your data mask is a whole chain of environments</span>
@@ -330,7 +341,7 @@ in the current environment.</p>
 <span class='co'># is when you include functions in your mask. In that case you'll</span>
 <span class='co'># put functions in the top environment and data in the bottom. This</span>
 <span class='co'># will prevent the data from overwriting the functions.</span>
-<span class='no'>top</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>new_environment</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>`+`</span> <span class='kw'>=</span> <span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste</a></span>, <span class='kw'>c</span> <span class='kw'>=</span> <span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste</a></span>))
+<span class='no'>top</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>new_environment</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>`+`</span> <span class='kw'>=</span> <span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>, <span class='kw'>c</span> <span class='kw'>=</span> <span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>))
 
 <span class='co'># Let's add a middle environment just for sport:</span>
 <span class='no'>middle</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>(<span class='no'>top</span>)
@@ -344,10 +355,10 @@ in the current environment.</p>
 
 <span class='co'># This data mask can be passed to eval_tidy() instead of a list or</span>
 <span class='co'># data frame:</span>
-<span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>a</span> + <span class='no'>b</span> + <span class='no'>c</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mask</span>)</div><div class='output co'>#&gt; [1] "a b c"</div><div class='input'>
+<span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>a</span> + <span class='no'>b</span> + <span class='no'>c</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mask</span>)</div><div class='output co'>#&gt; [1] "a b c"</div><div class='input'>
 <span class='co'># Note how the function `c()` and the object `c` are looked up</span>
 <span class='co'># properly because of the multi-level structure:</span>
-<span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='no'>a</span>, <span class='no'>b</span>, <span class='no'>c</span>)), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mask</span>)</div><div class='output co'>#&gt; [1] "a b c"</div><div class='input'>
+<span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>a</span>, <span class='no'>b</span>, <span class='no'>c</span>)), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mask</span>)</div><div class='output co'>#&gt; [1] "a b c"</div><div class='input'>
 <span class='co'># new_data_mask() does not create data pronouns, but</span>
 <span class='co'># data pronouns can be added manually:</span>
 <span class='no'>mask</span>$<span class='no'>.fns</span> <span class='kw'>&lt;-</span> <span class='fu'>as_data_pronoun</span>(<span class='no'>top</span>)
@@ -359,28 +370,23 @@ in the current environment.</p>
 <span class='no'>mask</span>$<span class='no'>.data</span> <span class='kw'>&lt;-</span> <span class='fu'>as_data_pronoun</span>(<span class='no'>mask</span>)
 <span class='no'>mask</span>$<span class='no'>.data</span>$<span class='no'>c</span></div><div class='output co'>#&gt; [1] "c"</div><div class='input'>
 <span class='co'># Now we can reference the values with the pronouns:</span>
-<span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='no'>.data</span>$<span class='no'>a</span>, <span class='no'>.data</span>$<span class='no'>b</span>, <span class='no'>.data</span>$<span class='no'>c</span>)), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mask</span>)</div><div class='output co'>#&gt; [1] "a b c"</div></pre>
+<span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>.data</span>$<span class='no'>a</span>, <span class='no'>.data</span>$<span class='no'>b</span>, <span class='no'>.data</span>$<span class='no'>c</span>)), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mask</span>)</div><div class='output co'>#&gt; [1] "a b c"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#why-build-a-data-mask-">Why build a data mask?</a></li>
-
       <li><a href="#building-your-own-data-mask">Building your own data mask</a></li>
-
       <li><a href="#top-and-bottom-of-data-mask">Top and bottom of data mask</a></li>
-
       <li><a href="#life-cycle">Life cycle</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -388,13 +394,16 @@ in the current environment.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

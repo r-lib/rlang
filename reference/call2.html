@@ -8,21 +8,25 @@
 
 <title>Create a call — call2 • rlang</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,8 +34,8 @@
 
 
 
-<meta property="og:title" content="Create a call — call2" />
 
+<meta property="og:title" content="Create a call — call2" />
 <meta property="og:description" content="Quoted function calls are one of the two types of
 symbolic objects in R. They represent the action of
 calling a function, possibly with arguments. There are two ways of
@@ -42,11 +46,12 @@ an R object. That is, a quoted function call.
 By constructing it with base::call(), base::as.call(), or
 call2(). In this case, you pass the call elements (the function
 to call and the arguments to call it with) separately.
-" />
 
-<meta property="og:description" content="See section below for the difference between call2() and the base
+
+See section below for the difference between call2() and the base
 constructors." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -69,6 +74,7 @@ constructors." />
 
   gtag('config', 'UA-115082821-1');
 </script>
+
 
   </head>
 
@@ -94,7 +100,7 @@ constructors." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -131,11 +137,10 @@ constructors." />
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-lib/rlang">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -146,6 +151,7 @@ constructors." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -157,7 +163,6 @@ constructors." />
     </div>
 
     <div class="ref-description">
-    
     <p>Quoted function calls are one of the two types of
 <a href='is_expression.html'>symbolic</a> objects in R. They represent the action of
 calling a function, possibly with arguments. There are two ways of
@@ -165,18 +170,17 @@ creating a quoted call:</p><ul>
 <li><p>By <a href='quotation.html'>quoting</a> it. Quoting prevents functions from being
 called. Instead, you get the description of the function call as
 an R object. That is, a quoted function call.</p></li>
-<li><p>By constructing it with <code><a href='https://www.rdocumentation.org/packages/base/topics/call'>base::call()</a></code>, <code><a href='https://www.rdocumentation.org/packages/base/topics/call'>base::as.call()</a></code>, or
+<li><p>By constructing it with <code><a href='https://rdrr.io/r/base/call.html'>base::call()</a></code>, <code><a href='https://rdrr.io/r/base/call.html'>base::as.call()</a></code>, or
 <code>call2()</code>. In this case, you pass the call elements (the function
 to call and the arguments to call it with) separately.</p></li>
 </ul>
 
-    <p>See section below for the difference between <code>call2()</code> and the base
+<p>See section below for the difference between <code>call2()</code> and the base
 constructors.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>call2</span>(<span class='no'>.fn</span>, <span class='no'>...</span>, <span class='kw'>.ns</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -196,72 +200,75 @@ support <a href='tidy-dots.html'>tidy dots</a> features. Empty arguments are pre
 or symbol.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="difference-with-base-constructors"><a class="anchor" href="#difference-with-base-constructors"></a>Difference with base constructors</h2>
 
     
-    <p><code>call2()</code> is more flexible and convenient than <code><a href='https://www.rdocumentation.org/packages/base/topics/call'>base::call()</a></code>:</p><ul>
+
+
+<p><code>call2()</code> is more flexible and convenient than <code><a href='https://rdrr.io/r/base/call.html'>base::call()</a></code>:</p><ul>
 <li><p>The function to call can be a string or a <a href='is_callable.html'>callable</a>
 object: a symbol, another call (e.g. a <code>$</code> or <code>[[</code> call), or a
-function to inline. <code><a href='https://www.rdocumentation.org/packages/base/topics/call'>base::call()</a></code> only supports strings and you
-need to use <code><a href='https://www.rdocumentation.org/packages/base/topics/call'>base::as.call()</a></code> to construct a call with a callable
+function to inline. <code><a href='https://rdrr.io/r/base/call.html'>base::call()</a></code> only supports strings and you
+need to use <code><a href='https://rdrr.io/r/base/call.html'>base::as.call()</a></code> to construct a call with a callable
 object.</p><pre>call2(list, 1, 2)
-    as.call(list(list, 1, 2))
+
+as.call(list(list, 1, 2))
 </pre></li>
 <li><p>The <code>.ns</code> argument is convenient for creating namespaced calls.</p><pre>call2("list", 1, 2, .ns = "base")
-    ns_call &lt;- as.call(list(as.name("::"), as.name("list"), as.name("base")))
+
+ns_call &lt;- as.call(list(as.name("::"), as.name("list"), as.name("base")))
 as.call(list(ns_call, 1, 2))
 </pre></li>
 <li><p><code>call2()</code> has <a href='tidy-dots.html'>tidy dots</a> support and you can splice lists
-of arguments with <code>!!!</code>. With base R, you need to use <code><a href='https://www.rdocumentation.org/packages/base/topics/call'>as.call()</a></code>
-instead of <code><a href='https://www.rdocumentation.org/packages/base/topics/call'>call()</a></code> if the arguments are in a list.</p><pre>args &lt;- list(na.rm = TRUE, trim = 0)
-    call2("mean", 1:10, !!!args)
-    as.call(c(list(as.name("mean"), 1:10), args))
+of arguments with <code>!!!</code>. With base R, you need to use <code><a href='https://rdrr.io/r/base/call.html'>as.call()</a></code>
+instead of <code><a href='https://rdrr.io/r/base/call.html'>call()</a></code> if the arguments are in a list.</p><pre>args &lt;- list(na.rm = TRUE, trim = 0)
+
+call2("mean", 1:10, !!!args)
+
+as.call(c(list(as.name("mean"), 1:10), args))
 </pre></li>
 </ul>
-    
+
     <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
 
     
-    <p>In rlang 0.2.0 <code><a href='lang.html'>lang()</a></code> was soft-deprecated and renamed to
+
+
+<p>In rlang 0.2.0 <code><a href='lang.html'>lang()</a></code> was soft-deprecated and renamed to
 <code>call2()</code>.</p>
 <p>In early versions of rlang calls were called "language" objects in
 order to follow the R type nomenclature as returned by
-<code><a href='https://www.rdocumentation.org/packages/base/topics/typeof'>base::typeof()</a></code>. The goal was to avoid adding to the confusion
+<code><a href='https://rdrr.io/r/base/typeof.html'>base::typeof()</a></code>. The goal was to avoid adding to the confusion
 between S modes and R types. With hindsight we find it is better to
 use more meaningful type names.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>call_modify</p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># fn can either be a string, a symbol or a call</span>
-<span class='fu'>call2</span>(<span class='st'>"f"</span>, <span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; f(a = 1)</div><div class='input'><span class='fu'>call2</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>f</span>), <span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; f(a = 1)</div><div class='input'><span class='fu'>call2</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='fu'>f</span>()), <span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; f()(a = 1)</div><div class='input'>
+<span class='fu'>call2</span>(<span class='st'>"f"</span>, <span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; f(a = 1)</div><div class='input'><span class='fu'>call2</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>f</span>), <span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; f(a = 1)</div><div class='input'><span class='fu'>call2</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'>f</span>()), <span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; f()(a = 1)</div><div class='input'>
 <span class='co'>#' Can supply arguments individually or in a list</span>
-<span class='fu'>call2</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>f</span>), <span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; f(a = 1, b = 2)</div><div class='input'><span class='fu'>call2</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>f</span>), !!!<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>2</span>))</div><div class='output co'>#&gt; f(a = 1, b = 2)</div><div class='input'>
+<span class='fu'>call2</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>f</span>), <span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; f(a = 1, b = 2)</div><div class='input'><span class='fu'>call2</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>f</span>), !!!<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>2</span>))</div><div class='output co'>#&gt; f(a = 1, b = 2)</div><div class='input'>
 <span class='co'># Creating namespaced calls is easy:</span>
-<span class='fu'>call2</span>(<span class='st'>"fun"</span>, <span class='kw'>arg</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>baz</span>), <span class='kw'>.ns</span> <span class='kw'>=</span> <span class='st'>"mypkg"</span>)</div><div class='output co'>#&gt; mypkg::fun(arg = baz)</div><div class='input'>
+<span class='fu'>call2</span>(<span class='st'>"fun"</span>, <span class='kw'>arg</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>baz</span>), <span class='kw'>.ns</span> <span class='kw'>=</span> <span class='st'>"mypkg"</span>)</div><div class='output co'>#&gt; mypkg::fun(arg = baz)</div><div class='input'>
 <span class='co'># Empty arguments are preserved:</span>
-<span class='fu'>call2</span>(<span class='st'>"["</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>x</span>), , <span class='kw'>drop</span> <span class='kw'>=</span> )</div><div class='output co'>#&gt; x[, drop = ]</div></pre>
+<span class='fu'>call2</span>(<span class='st'>"["</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>x</span>), , <span class='kw'>drop</span> <span class='kw'>=</span> )</div><div class='output co'>#&gt; x[, drop = ]</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#difference-with-base-constructors">Difference with base constructors</a></li>
-
       <li><a href="#life-cycle">Life cycle</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -269,13 +276,16 @@ use more meaningful type names.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

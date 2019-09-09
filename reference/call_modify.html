@@ -8,21 +8,25 @@
 
 <title>Modify the arguments of a call — call_modify • rlang</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,12 +34,13 @@
 
 
 
-<meta property="og:title" content="Modify the arguments of a call — call_modify" />
 
+<meta property="og:title" content="Modify the arguments of a call — call_modify" />
 <meta property="og:description" content="If you are working with a user-supplied call, make sure the
 arguments are standardised with call_standardise() before
 modifying the call." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -58,6 +63,7 @@ modifying the call." />
 
   gtag('config', 'UA-115082821-1');
 </script>
+
 
   </head>
 
@@ -83,7 +89,7 @@ modifying the call." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -120,11 +126,10 @@ modifying the call." />
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-lib/rlang">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -135,6 +140,7 @@ modifying the call." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -146,16 +152,14 @@ modifying the call." />
     </div>
 
     <div class="ref-description">
-    
     <p>If you are working with a user-supplied call, make sure the
 arguments are standardised with <code><a href='call_standardise.html'>call_standardise()</a></code> before
 modifying the call.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>call_modify</span>(<span class='no'>.call</span>, <span class='no'>...</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>, <span class='st'>"error"</span>),
+    <pre class="usage"><span class='fu'>call_modify</span>(<span class='no'>.call</span>, <span class='no'>...</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>, <span class='st'>"error"</span>),
   <span class='kw'>.standardise</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>.env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>())</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -186,27 +190,27 @@ error and indicate what arguments have duplicated names.</p></td>
 call <code><a href='call_standardise.html'>call_standardise()</a></code> manually.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A quosure if <code>.call</code> is a quosure, a call otherwise.</p>
-    
     <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
 
     
-    <ul>
+
+<ul>
 <li><p>The <code>.standardise</code> argument is deprecated as of rlang 0.3.0.</p></li>
 <li><p>In rlang 0.2.0, <code><a href='lang_modify.html'>lang_modify()</a></code> was deprecated and renamed to
 <code>call_modify()</code>. See lifecycle section in <code><a href='call2.html'>call2()</a></code> for more about
 this change.</p></li>
 </ul>
-    
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>call</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/mean'>mean</a></span>(<span class='no'>x</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
+    <pre class="examples"><div class='input'><span class='no'>call</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='no'>x</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
 
 <span class='co'># Modify an existing argument</span>
-<span class='fu'>call_modify</span>(<span class='no'>call</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; mean(x, na.rm = FALSE)</div><div class='input'><span class='fu'>call_modify</span>(<span class='no'>call</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>y</span>))</div><div class='output co'>#&gt; mean(x, na.rm = TRUE, x = y)</div><div class='input'>
+<span class='fu'>call_modify</span>(<span class='no'>call</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; mean(x, na.rm = FALSE)</div><div class='input'><span class='fu'>call_modify</span>(<span class='no'>call</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>y</span>))</div><div class='output co'>#&gt; mean(x, na.rm = TRUE, x = y)</div><div class='input'>
 <span class='co'># Remove an argument</span>
 <span class='fu'>call_modify</span>(<span class='no'>call</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fu'><a href='zap.html'>zap</a></span>())</div><div class='output co'>#&gt; mean(x)</div><div class='input'>
 <span class='co'># Add a new argument</span>
@@ -214,11 +218,11 @@ this change.</p></li>
 <span class='co'># Add an explicit missing argument:</span>
 <span class='fu'>call_modify</span>(<span class='no'>call</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> )</div><div class='output co'>#&gt; mean(x, na.rm = )</div><div class='input'>
 <span class='co'># Supply a list of new arguments with `!!!`</span>
-<span class='no'>newargs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>0.1</span>)
+<span class='no'>newargs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>0.1</span>)
 <span class='no'>call</span> <span class='kw'>&lt;-</span> <span class='fu'>call_modify</span>(<span class='no'>call</span>, !!!<span class='no'>newargs</span>)
 <span class='no'>call</span></div><div class='output co'>#&gt; mean(x, na.rm = NULL, trim = 0.1)</div><div class='input'>
 <span class='co'># Remove multiple arguments by splicing zaps:</span>
-<span class='no'>newargs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='rep_along.html'>rep_named</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"na.rm"</span>, <span class='st'>"trim"</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fu'><a href='zap.html'>zap</a></span>()))
+<span class='no'>newargs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='rep_along.html'>rep_named</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"na.rm"</span>, <span class='st'>"trim"</span>), <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='zap.html'>zap</a></span>()))
 <span class='no'>call</span> <span class='kw'>&lt;-</span> <span class='fu'>call_modify</span>(<span class='no'>call</span>, !!!<span class='no'>newargs</span>)
 <span class='no'>call</span></div><div class='output co'>#&gt; mean(x)</div><div class='input'>
 
@@ -230,42 +234,40 @@ this change.</p></li>
 
 <span class='co'># When you're working with a user-supplied call, standardise it</span>
 <span class='co'># beforehand because it might contain unmatched arguments:</span>
-<span class='no'>user_call</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='no'>x</span>, <span class='kw'>nc</span> <span class='kw'>=</span> <span class='fl'>3</span>))
+<span class='no'>user_call</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='no'>x</span>, <span class='kw'>nc</span> <span class='kw'>=</span> <span class='fl'>3</span>))
 <span class='fu'>call_modify</span>(<span class='no'>user_call</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; matrix(x, nc = 3, ncol = 1)</div><div class='input'>
 <span class='co'># Standardising applies the usual argument matching rules:</span>
 <span class='no'>user_call</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='call_standardise.html'>call_standardise</a></span>(<span class='no'>user_call</span>)
 <span class='no'>user_call</span></div><div class='output co'>#&gt; matrix(data = x, ncol = 3)</div><div class='input'><span class='fu'>call_modify</span>(<span class='no'>user_call</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; matrix(data = x, ncol = 1)</div><div class='input'>
 
 <span class='co'># You can also modify quosures inplace:</span>
-<span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='no'>bar</span>))
-<span class='fu'>call_modify</span>(<span class='no'>f</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>foo</span>))</div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
+<span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='no'>bar</span>))
+<span class='fu'>call_modify</span>(<span class='no'>f</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>foo</span>))</div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^matrix(bar, foo)</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x79d7170</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x574a590</span><span></div><div class='input'>
 
 <span class='co'># By default, arguments with the same name are kept. This has</span>
 <span class='co'># subtle implications, for instance you can move an argument to</span>
 <span class='co'># last position by removing it and remapping it:</span>
-<span class='no'>call</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='fu'>foo</span>(<span class='kw'>bar</span> <span class='kw'>=</span> , <span class='no'>baz</span>))
+<span class='no'>call</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'>foo</span>(<span class='kw'>bar</span> <span class='kw'>=</span> , <span class='no'>baz</span>))
 <span class='fu'>call_modify</span>(<span class='no'>call</span>, <span class='kw'>bar</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bar</span> <span class='kw'>=</span> <span class='fu'><a href='missing_arg.html'>missing_arg</a></span>())</div><div class='output co'>#&gt; foo(bar = , baz)</div><div class='input'>
 <span class='co'># You can also choose to keep only the first or last homonym</span>
 <span class='co'># arguments:</span>
-<span class='no'>args</span> <span class='kw'>&lt;-</span>  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>bar</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bar</span> <span class='kw'>=</span> <span class='fu'><a href='missing_arg.html'>missing_arg</a></span>())
+<span class='no'>args</span> <span class='kw'>&lt;-</span>  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>bar</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bar</span> <span class='kw'>=</span> <span class='fu'><a href='missing_arg.html'>missing_arg</a></span>())
 <span class='fu'>call_modify</span>(<span class='no'>call</span>, !!!<span class='no'>args</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='st'>"first"</span>)</div><div class='output co'>#&gt; foo(bar = NULL, baz)</div><div class='input'><span class='fu'>call_modify</span>(<span class='no'>call</span>, !!!<span class='no'>args</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='st'>"last"</span>)</div><div class='output co'>#&gt; foo(bar = , baz)</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#life-cycle">Life cycle</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -273,13 +275,16 @@ this change.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

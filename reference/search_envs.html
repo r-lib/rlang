@@ -8,21 +8,25 @@
 
 <title>Search path environments — search_envs • rlang</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,8 +34,8 @@
 
 
 
-<meta property="og:title" content="Search path environments — search_envs" />
 
+<meta property="og:title" content="Search path environments — search_envs" />
 <meta property="og:description" content="The search path is a chain of environments containing exported
 functions of attached packages.
 The API includes:
@@ -48,8 +52,10 @@ and throws an error otherwise. It is a shortcut for
 search_env(pkg_env_name(&quot;pkgname&quot;)).
 is_attached() returns TRUE when its argument (a search name
 or a package environment) is attached to the search path.
+
 " />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -72,6 +78,7 @@ or a package environment) is attached to the search path.
 
   gtag('config', 'UA-115082821-1');
 </script>
+
 
   </head>
 
@@ -97,7 +104,7 @@ or a package environment) is attached to the search path.
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -134,11 +141,10 @@ or a package environment) is attached to the search path.
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-lib/rlang">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -149,6 +155,7 @@ or a package environment) is attached to the search path.
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -160,11 +167,10 @@ or a package environment) is attached to the search path.
     </div>
 
     <div class="ref-description">
-    
     <p>The search path is a chain of environments containing exported
 functions of attached packages.</p>
 <p>The API includes:</p><ul>
-<li><p><code><a href='https://www.rdocumentation.org/packages/base/topics/search'>base::search()</a></code> to get the names of environments attached to the
+<li><p><code><a href='https://rdrr.io/r/base/search.html'>base::search()</a></code> to get the names of environments attached to the
 search path.</p></li>
 <li><p><code>search_envs()</code> returns the environments on the search path as a
 list.</p></li>
@@ -178,7 +184,7 @@ and throws an error otherwise. It is a shortcut for
 <li><p><code>is_attached()</code> returns <code>TRUE</code> when its argument (a search name
 or a package environment) is attached to the search path.</p></li>
 </ul>
-    
+
     </div>
 
     <pre class="usage"><span class='fu'>search_envs</span>()
@@ -194,14 +200,14 @@ or a package environment) is attached to the search path.</p></li>
 <span class='fu'>base_env</span>()
 
 <span class='fu'>global_env</span>()</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>name</th>
       <td><p>The name of an environment attached to the search
-path. Call <code><a href='https://www.rdocumentation.org/packages/base/topics/search'>base::search()</a></code> to get the names of environments
+path. Call <code><a href='https://rdrr.io/r/base/search.html'>base::search()</a></code> to get the names of environments
 currently attached to the search path. Note that the search name
 of a package environment is prefixed with <code>"package:"</code>.</p></td>
     </tr>
@@ -210,47 +216,46 @@ of a package environment is prefixed with <code>"package:"</code>.</p></td>
       <td><p>The name of a package.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="the-search-path"><a class="anchor" href="#the-search-path"></a>The search path</h2>
 
     
-    <p>This chain of environments determines what objects are visible from
+
+
+<p>This chain of environments determines what objects are visible from
 the global workspace. It contains the following elements:</p><ul>
 <li><p>The chain always starts with <code>global_env()</code> and finishes with
 <code>base_env()</code> (technically, it finishes with the <code><a href='empty_env.html'>empty_env()</a></code>
 which the base package environment inherits from).</p></li>
-<li><p>Each <code><a href='https://www.rdocumentation.org/packages/base/topics/library'>base::library()</a></code> call attaches a new package environment to
+<li><p>Each <code><a href='https://rdrr.io/r/base/library.html'>base::library()</a></code> call attaches a new package environment to
 the search path. Attached packages are associated with a <a href='env_name.html'>search name</a>.</p></li>
 <li><p>In addition, any list, data frame, or environment can be attached
-to the search path with <code><a href='https://www.rdocumentation.org/packages/base/topics/attach'>base::attach()</a></code>.</p></li>
+to the search path with <code><a href='https://rdrr.io/r/base/attach.html'>base::attach()</a></code>.</p></li>
 </ul>
-    
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># List the search names of environments attached to the search path:</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/search'>search</a></span>()</div><div class='output co'>#&gt;  [1] ".GlobalEnv"        "devtools_shims"    "package:rlang"    
-#&gt;  [4] "package:testthat"  "package:stats"     "package:graphics" 
-#&gt;  [7] "package:grDevices" "package:utils"     "package:datasets" 
-#&gt; [10] "package:methods"   "Autoloads"         "tools:callr"      
-#&gt; [13] "package:base"     </div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/search.html'>search</a></span>()</div><div class='output co'>#&gt;  [1] ".GlobalEnv"        "package:rlang"     "package:stats"    
+#&gt;  [4] "package:graphics"  "package:grDevices" "package:utils"    
+#&gt;  [7] "package:datasets"  "package:methods"   "Autoloads"        
+#&gt; [10] "tools:callr"       "package:base"     </div><div class='input'>
 <span class='co'># Get the corresponding environments:</span>
 <span class='fu'>search_envs</span>()</div><div class='output co'>#&gt;  [[1]] $ &lt;env: global&gt;
-#&gt;  [[2]] $ &lt;env: devtools_shims&gt;
-#&gt;  [[3]] $ &lt;env: package:rlang&gt;
-#&gt;  [[4]] $ &lt;env: package:testthat&gt;
-#&gt;  [[5]] $ &lt;env: package:stats&gt;
-#&gt;  [[6]] $ &lt;env: package:graphics&gt;
-#&gt;  [[7]] $ &lt;env: package:grDevices&gt;
-#&gt;  [[8]] $ &lt;env: package:utils&gt;
-#&gt;  [[9]] $ &lt;env: package:datasets&gt;
-#&gt; [[10]] $ &lt;env: package:methods&gt;
-#&gt; [[11]] $ &lt;env: Autoloads&gt;
-#&gt; [[12]] $ &lt;env: tools:callr&gt;
-#&gt; [[13]] $ &lt;env: package:base&gt;</div><div class='input'>
+#&gt;  [[2]] $ &lt;env: package:rlang&gt;
+#&gt;  [[3]] $ &lt;env: package:stats&gt;
+#&gt;  [[4]] $ &lt;env: package:graphics&gt;
+#&gt;  [[5]] $ &lt;env: package:grDevices&gt;
+#&gt;  [[6]] $ &lt;env: package:utils&gt;
+#&gt;  [[7]] $ &lt;env: package:datasets&gt;
+#&gt;  [[8]] $ &lt;env: package:methods&gt;
+#&gt;  [[9]] $ &lt;env: Autoloads&gt;
+#&gt; [[10]] $ &lt;env: tools:callr&gt;
+#&gt; [[11]] $ &lt;env: package:base&gt;</div><div class='input'>
 <span class='co'># The global environment and the base package are always first and</span>
 <span class='co'># last in the chain, respectively:</span>
 <span class='no'>envs</span> <span class='kw'>&lt;-</span> <span class='fu'>search_envs</span>()
-<span class='no'>envs</span><span class='kw'>[[</span><span class='fl'>1</span>]]</div><div class='output co'>#&gt; &lt;environment: R_GlobalEnv&gt;</div><div class='input'><span class='no'>envs</span><span class='kw'>[[</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/length'>length</a></span>(<span class='no'>envs</span>)]]</div><div class='output co'>#&gt; &lt;environment: base&gt;</div><div class='input'>
+<span class='no'>envs</span><span class='kw'>[[</span><span class='fl'>1</span>]]</div><div class='output co'>#&gt; &lt;environment: R_GlobalEnv&gt;</div><div class='input'><span class='no'>envs</span><span class='kw'>[[</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>envs</span>)]]</div><div class='output co'>#&gt; &lt;environment: base&gt;</div><div class='input'>
 <span class='co'># These two environments have their own shortcuts:</span>
 <span class='fu'>global_env</span>()</div><div class='output co'>#&gt; &lt;environment: R_GlobalEnv&gt;</div><div class='input'><span class='fu'>base_env</span>()</div><div class='output co'>#&gt; &lt;environment: base&gt;</div><div class='input'>
 <span class='co'># Packages appear in the search path with a special name. Use</span>
@@ -259,7 +264,7 @@ to the search path with <code><a href='https://www.rdocumentation.org/packages/b
 #&gt; attr(,"name")
 #&gt; [1] "package:rlang"
 #&gt; attr(,"path")
-#&gt; [1] "/home/travis/build/r-lib/rlang"</div><div class='input'>
+#&gt; [1] "/home/travis/R/Library/rlang"</div><div class='input'>
 <span class='co'># Alternatively, get the scoped environment of a package with</span>
 <span class='co'># pkg_env():</span>
 <span class='fu'>pkg_env</span>(<span class='st'>"utils"</span>)</div><div class='output co'>#&gt; &lt;environment: package:utils&gt;
@@ -272,14 +277,13 @@ to the search path with <code><a href='https://www.rdocumentation.org/packages/b
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#the-search-path">The search path</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -287,13 +291,16 @@ to the search path with <code><a href='https://www.rdocumentation.org/packages/b
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 
