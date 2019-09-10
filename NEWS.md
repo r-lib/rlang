@@ -1,6 +1,8 @@
 
 # rlang (development)
 
+* `is_call()` now returns `FALSE` for quosures.
+
 * `env_bind()`'s performance has been significantly improved by fixing a bug
   that caused values to be repeatedly looked up by name.
 

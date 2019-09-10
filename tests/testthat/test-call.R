@@ -170,6 +170,10 @@ test_that("is_call() pattern-matches", {
   expect_false(is_call(NULL))
 })
 
+test_that("quosures are not calls", {
+  expect_false(is_call(quo()))
+})
+
 test_that("is_call() vectorises name", {
   expect_false(is_call(quote(foo::bar), c("fn", "fn2")))
   expect_true(is_call(quote(foo::bar), c("fn", "::")))
@@ -454,7 +458,8 @@ test_that("call_print_fine_type() returns correct enum", {
 })
 
 test_that("call_name() fails with namespaced objects (#670)", {
-  skip("Disabled for the 0.3.1 release")
+  expect_true(TRUE)
+  return("Disabled for the 0.3.1 release")
   expect_error(call_name(~foo::bar), "`call` must be a quoted call")
   expect_error(call_name(~foo:::bar), "`call` must be a quoted call")
 })

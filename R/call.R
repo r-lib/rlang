@@ -241,7 +241,7 @@ is_callable <- function(x) {
 #' is_call(quote(foo(bar)), c("bar", "foo"))
 #' is_call(quote(base::list), c("::", ":::", "$", "@"))
 is_call <- function(x, name = NULL, n = NULL, ns = NULL) {
-  if (typeof(x) != "language") {
+  if (typeof(x) != "language" || is_quosure(x)) {
     return(FALSE)
   }
 
