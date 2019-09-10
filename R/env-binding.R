@@ -125,34 +125,35 @@ env_bind_impl <- function(env, data, fn, bind = FALSE, binder = NULL) {
     }
   }
 
-  env_ <- get_env_retired(env, fn)
+  env <- get_env_retired(env, fn)
+  data <- vec_coerce(data, "list")
   nms <- names2(data)
 
   if (bind) {
     old <- new_list(length(nms), nms)
-    overwritten <- env_has(env_, nms)
-    old[overwritten] <- env_get_list(env_, nms[overwritten])
+    overwritten <- env_has(env, nms)
+    old[overwritten] <- env_get_list(env, nms[overwritten])
     old[!overwritten] <- list(zap())
+
+    # We don't allow duplicates so we can remove bindings separately
+    zapped <- map_lgl(data, is_zap) & overwritten
+    rm(list = nms[zapped], envir = env)
+    data <- data[!zapped]
+    nms <- names(data) %||% chr()
   }
 
   if (is_null(binder)) {
-    binder <- function(env, nm, value) {
-      base::assign(nm, value, envir = env)
-    }
-  }
-
-  for (i in seq_along(data)) {
-    if (bind && overwritten[[i]] && is_zap(maybe_missing(data[[i]]))) {
-      base::rm(list = nms[[i]], envir = env)
-    } else {
-      binder(env_, nms[[i]], data[[i]])
+    .Call(rlang_env_bind_list, env, nms, data);
+  } else {
+    for (i in seq_along(data)) {
+      binder(env, nms[[i]], data[[i]])
     }
   }
 
   if (bind) {
     invisible(old)
   } else {
-    invisible(env_)
+    invisible(env)
   }
 }
 
