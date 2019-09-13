@@ -20,9 +20,12 @@ If a \strong{function}, it is used as is.
 If a \strong{formula}, e.g. \code{~ .x + 2}, it is converted to a function
 with up to two arguments: \code{.x} (single argument) or \code{.x} and \code{.y}
 (two arguments). The \code{.} placeholder can be used instead of \code{.x}.
-This allows you to create very compact anonymous functions with up
+This allows you to create very compact anonymous functions (lambdas) with up
 to two inputs. Functions created from formulas have a special
-class. Use \code{is_lambda()} to test for it.}
+class. Use \code{is_lambda()} to test for it.
+
+Lambdas currently do not support \link{quasiquotation},
+due to the way the arguments are handled internally.}
 
 \item{env}{Environment in which to fetch the function in case \code{x}
 is a string.}
@@ -59,4 +62,13 @@ as_closure("list")
 # functions created with the formula syntax:
 as_closure(`+`)
 as_closure(`~`)
+
+# Use a regular function for tidy evaluation, also when calling functions
+# that use tidy evaluation:
+## Bad:
+e <- as_function(~ as_label(ensym(.x)))
+## Good:
+e <- as_function(function(x) as_label(ensym(x)))
+
+e(y)
 }
