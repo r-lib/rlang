@@ -183,9 +183,11 @@ the result is a primitive function, it regularises it to a proper
 <p>If a <strong>formula</strong>, e.g. <code>~ .x + 2</code>, it is converted to a function
 with up to two arguments: <code>.x</code> (single argument) or <code>.x</code> and <code>.y</code>
 (two arguments). The <code>.</code> placeholder can be used instead of <code>.x</code>.
-This allows you to create very compact anonymous functions with up
+This allows you to create very compact anonymous functions (lambdas) with up
 to two inputs. Functions created from formulas have a special
-class. Use <code>is_lambda()</code> to test for it.</p></td>
+class. Use <code>is_lambda()</code> to test for it.</p>
+<p>Lambdas currently do not support <a href='quasiquotation.html'>quasiquotation</a>,
+due to the way the arguments are handled internally.</p></td>
     </tr>
     <tr>
       <th>env</th>
@@ -231,7 +233,7 @@ is a string.</p></td>
 #&gt;         .x
 #&gt;     else .x + .y
 #&gt; }
-#&gt; &lt;environment: 0x75cff48&gt;</div><div class='input'><span class='fu'>as_closure</span>(<span class='no'>`~`</span>)</div><div class='output co'>#&gt; function (.x, .y) 
+#&gt; &lt;environment: 0x5f511b0&gt;</div><div class='input'><span class='fu'>as_closure</span>(<span class='no'>`~`</span>)</div><div class='output co'>#&gt; function (.x, .y) 
 #&gt; {
 #&gt;     if (is_missing(substitute(.y))) {
 #&gt;         new_formula(NULL, substitute(.x), caller_env())
@@ -240,8 +242,16 @@ is a string.</p></td>
 #&gt;         new_formula(substitute(.x), substitute(.y), caller_env())
 #&gt;     }
 #&gt; }
-#&gt; &lt;bytecode: 0x6e36f40&gt;
-#&gt; &lt;environment: 0x766fba8&gt;</div></pre>
+#&gt; &lt;bytecode: 0x5612e80&gt;
+#&gt; &lt;environment: 0x2df1d30&gt;</div><div class='input'>
+<span class='co'># Use a regular function for tidy evaluation, also when calling functions</span>
+<span class='co'># that use tidy evaluation:</span>
+<span class='co'>## Bad:</span>
+<span class='no'>e</span> <span class='kw'>&lt;-</span> <span class='fu'>as_function</span>(~ <span class='fu'><a href='as_label.html'>as_label</a></span>(<span class='fu'><a href='quotation.html'>ensym</a></span>(<span class='no'>.x</span>)))
+<span class='co'>## Good:</span>
+<span class='no'>e</span> <span class='kw'>&lt;-</span> <span class='fu'>as_function</span>(<span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'><a href='as_label.html'>as_label</a></span>(<span class='fu'><a href='quotation.html'>ensym</a></span>(<span class='no'>x</span>)))
+
+<span class='fu'>e</span>(<span class='no'>y</span>)</div><div class='output co'>#&gt; [1] "y"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
