@@ -378,9 +378,13 @@ fn_env <- function(fn) {
 #'   If a **formula**, e.g. `~ .x + 2`, it is converted to a function
 #'   with up to two arguments: `.x` (single argument) or `.x` and `.y`
 #'   (two arguments). The `.` placeholder can be used instead of `.x`.
-#'   This allows you to create very compact anonymous functions with up
+#'   This allows you to create very compact anonymous functions (lambdas) with up
 #'   to two inputs. Functions created from formulas have a special
 #'   class. Use `is_lambda()` to test for it.
+#'
+#'   Lambdas currently do not support [quasiquotation],
+#'   due to the way the arguments are handled internally.
+#'
 #' @param env Environment in which to fetch the function in case `x`
 #'   is a string.
 #' @export
@@ -406,6 +410,15 @@ fn_env <- function(fn) {
 #' # functions created with the formula syntax:
 #' as_closure(`+`)
 #' as_closure(`~`)
+#'
+#' # Use a regular function for tidy evaluation, also when calling functions
+#' # that use tidy evaluation:
+#' ## Bad:
+#' e <- as_function(~ as_label(ensym(.x)))
+#' ## Good:
+#' e <- as_function(function(x) as_label(ensym(x)))
+#'
+#' e(y)
 as_function <- function(x, env = caller_env()) {
   if (is_function(x)) {
     return(x)
