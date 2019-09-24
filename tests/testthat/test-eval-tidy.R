@@ -441,6 +441,18 @@ test_that("can't take the names() and length() of the `.data` pronoun", {
   expect_error(length(pronoun), "Can't take")
 })
 
+test_that("eval_tidy() does not infloop when the quosure inherits from the mask", {
+  mask <- as_data_mask(list(foo = 1))
+  quo <- new_quosure(quote(foo), mask)
+  expect_identical(eval_tidy(quo, mask), 1)
+
+  top <- env(foo = 1)
+  bottom <- env(top)
+  mask <- new_data_mask(bottom, top)
+  quo <- new_quosure(quote(foo), top)
+  expect_identical(eval_tidy(quo, mask), 1)
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

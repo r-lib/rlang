@@ -502,8 +502,10 @@ sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* env) {
   // * Look-up in leaked environments would proceed from the data mask
   //   to the appropriate lexical environment (from quosures or from
   //   the `env` argument of eval_tidy()).
-  poke_ctxt_env(mask, env);
-  r_env_poke_parent(top, env);
+  if (!r_env_inherits(mask, env, top)) {
+    poke_ctxt_env(mask, env);
+    r_env_poke_parent(top, env);
+  }
 
   sexp* out = r_eval(expr, mask);
   FREE(n_protect);
