@@ -171,26 +171,41 @@ test_that("error_cnd() checks its fields", {
 test_that("error is printed with backtrace", {
   skip_unless_utf8()
 
-  f <- function() g()
-  g <- function() h()
-  h <- function() abort("Error message")
-
-  run_script <- function(file) {
+  run_script <- function(file, envvars = chr()) {
     skip_on_os("windows")
 
     # Suppress non-zero exit warnings
     suppressWarnings(system2(
       file.path(R.home("bin"), "Rscript"),
-      file,
+      c("--vanilla", file),
       stdout = TRUE,
       stderr = TRUE,
-      timeout = 1
+      timeout = 1,
+      env = envvars
     ))
   }
 
+  run_error_script <- function(envvars = chr()) {
+    run_script(test_path("fixtures", "error-backtrace.R"), envvars = envvars)
+  }
+
+  default_interactive <- run_error_script(envvars = "rlang_interactive=true")
+  default_non_interactive <- run_error_script()
+  branch <- run_error_script(envvars = "rlang_backtrace_on_error=branch")
+  full <- run_error_script(envvars = "rlang_backtrace_on_error=full")
+
   verify_output(test_path("test-cnd-error.txt"), {
-    lines <- run_script(test_path("fixtures", "error-backtrace.R"))
-    cat_line(lines)
+    "Default (interactive)"
+    cat_line(default_interactive)
+
+    "Default (non-interactive)"
+    cat_line(default_non_interactive)
+
+    "Branch"
+    cat_line(branch)
+
+    "Full"
+    cat_line(full)
   })
 })
 

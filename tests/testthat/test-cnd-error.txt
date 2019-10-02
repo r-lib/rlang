@@ -1,5 +1,30 @@
-> lines <- run_script(test_path("fixtures", "error-backtrace.R"))
-> cat_line(lines)
+> # Default (interactive)
+> cat_line(default_interactive)
+Error: Error message
+Call `rlang::last_error()` to see a backtrace
+Execution halted
+
+> # Default (non-interactive)
+> cat_line(default_non_interactive)
+Error: Error message
+Backtrace:
+    █
+ 1. └─global::f()
+ 2.   └─global::g()
+ 3.     └─global::h()
+Execution halted
+
+> # Branch
+> cat_line(branch)
+Error: Error message
+Backtrace:
+ 1. global::f()
+ 2. global::g()
+ 3. global::h()
+Execution halted
+
+> # Full
+> cat_line(full)
 Error: Error message
 Backtrace:
     █

@@ -355,7 +355,7 @@ abort <- function(message = "",
     # If we're still here, the error is unhandled. Fall back with a
     # bare condition to avoid calling handlers logging the same error
     # twice
-    fallback <- cnd(NULL)
+    fallback <- cnd("rlang_error")
   }
 
   # Save the unhandled error for `rlang::last_error()`.
