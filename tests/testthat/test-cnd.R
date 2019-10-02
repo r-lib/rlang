@@ -177,7 +177,9 @@ test_that("error is printed with backtrace", {
 
   default_interactive <- run_error_script(envvars = "rlang_interactive=true")
   default_non_interactive <- run_error_script()
+  reminder <- run_error_script(envvars = "rlang_backtrace_on_error=reminder")
   branch <- run_error_script(envvars = "rlang_backtrace_on_error=branch")
+  collapse <- run_error_script(envvars = "rlang_backtrace_on_error=collapse")
   full <- run_error_script(envvars = "rlang_backtrace_on_error=full")
 
   verify_output(test_path("test-cnd-error.txt"), {
@@ -187,8 +189,14 @@ test_that("error is printed with backtrace", {
     "Default (non-interactive)"
     cat_line(default_non_interactive)
 
+    "Reminder"
+    cat_line(reminder)
+
     "Branch"
     cat_line(branch)
+
+    "Collapse"
+    cat_line(collapse)
 
     "Full"
     cat_line(full)
@@ -361,49 +369,6 @@ test_that("Invalid on_error option resets itself", {
       expect_null(peek_option("rlang_backtrace_on_error"))
     }
   )
-})
-
-test_that("on_error option can be tweaked", {
-  skip_unless_utf8()
-
-  f <- function() tryCatch(g())
-  g <- function() h()
-  h <- function() abort("The error message")
-  msg <- function() cat(conditionMessage(catch_cnd(f())))
-
-  expect_known_output(file = test_path("test-on-error-message-options.txt"), local({
-    scoped_options(
-      rlang_trace_top_env = current_env(),
-      rlang_trace_format_srcrefs = FALSE
-    )
-
-    cat_line("", ">>> Default:", "")
-    with_options(
-      rlang_backtrace_on_error = NULL,
-      rlang_interactive = TRUE,
-      msg()
-    )
-
-    cat_line("", "", "", ">>> Reminder:", "")
-    with_options(
-      rlang_backtrace_on_error = "reminder",
-      rlang_interactive = TRUE,
-      msg()
-    )
-
-    cat_line("", "", "", ">>> Default (not interactive):", "")
-    with_options(
-      rlang_backtrace_on_error = NULL,
-      rlang_interactive = FALSE,
-      msg()
-    )
-
-    cat_line("", "", "", ">>> Branch:", "")
-    with_options(rlang_backtrace_on_error = "branch", msg())
-
-    cat_line("", "", "", ">>> Collapsed:", "")
-    with_options(rlang_backtrace_on_error = "collapse", msg())
-  }))
 })
 
 test_that("format_onerror_backtrace handles empty and size 1 traces", {

@@ -8,7 +8,7 @@ if (nzchar(Sys.getenv("rlang_interactive"))) {
 }
 options(rlang_trace_format_srcrefs = FALSE)
 
-f <- function() g()
+f <- function() tryCatch(g())
 g <- function() h()
 h <- function() rlang::abort("Error message")
 

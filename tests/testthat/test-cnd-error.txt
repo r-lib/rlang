@@ -10,8 +10,15 @@ Error: Error message
 Backtrace:
     █
  1. └─global::f()
- 2.   └─global::g()
- 3.     └─global::h()
+ 2.   ├─base::tryCatch(g())
+ 3.   │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
+ 4.   └─global::g()
+ 5.     └─global::h()
+Execution halted
+
+> # Reminder
+> cat_line(reminder)
+Error: Error message
 Execution halted
 
 > # Branch
@@ -19,8 +26,19 @@ Execution halted
 Error: Error message
 Backtrace:
  1. global::f()
- 2. global::g()
- 3. global::h()
+ 4. global::g()
+ 5. global::h()
+Execution halted
+
+> # Collapse
+> cat_line(collapse)
+Error: Error message
+Backtrace:
+    █
+ 1. └─global::f()
+ 2.   ├─[ base::tryCatch(...) ] with 1 more call
+ 4.   └─global::g()
+ 5.     └─global::h()
 Execution halted
 
 > # Full
@@ -29,7 +47,9 @@ Error: Error message
 Backtrace:
     █
  1. └─global::f()
- 2.   └─global::g()
- 3.     └─global::h()
+ 2.   ├─base::tryCatch(g())
+ 3.   │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
+ 4.   └─global::g()
+ 5.     └─global::h()
 Execution halted
 
