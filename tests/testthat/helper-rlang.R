@@ -19,7 +19,6 @@ run_script <- function(file, envvars = chr()) {
     c("--vanilla", file),
     stdout = TRUE,
     stderr = TRUE,
-    timeout = 1,
     env = envvars
   ))
 }
