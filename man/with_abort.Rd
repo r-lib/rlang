@@ -27,32 +27,17 @@ you should use \code{\link[=tryCatch]{tryCatch()}} and \link{exiting} handlers o
 \code{with_abort()} rather than inside.
 }
 \examples{
-# For cleaner backtraces:
-options(rlang_trace_top_env = current_env())
-
 # with_abort() automatically casts simple errors thrown by stop()
-# to rlang errors:
-fn <- function() stop("Base error")
-try(with_abort(fn()))
-last_error()
-
-# with_abort() is handy for rethrowing low level errors. The
-# backtraces are then segmented between the low level and high
-# level contexts.
-low_level1 <- function() low_level2()
-low_level2 <- function() stop("Low level error")
+# to rlang errors. It is is handy for rethrowing low level
+# errors. The backtraces are then segmented between the low level
+# and high level contexts.
+f <- function() g()
+g <- function() stop("Low level error")
 
 high_level <- function() {
   with_handlers(
-    with_abort(low_level1()),
-    error = ~ abort("High level error", parent = .x)
+    with_abort(f()),
+    error = ~ abort("High level error", parent = .)
   )
 }
-
-try(high_level())
-last_error()
-summary(last_error())
-
-# Reset to default
-options(rlang_trace_top_env = NULL)
 }

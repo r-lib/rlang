@@ -343,7 +343,33 @@ abort <- function(message = "",
     trace = trace
   )
 
-  stop(cnd)
+  if (is_true(peek_option("rlang_force_unhandled_error"))) {
+    # Fall back with the full rlang error
+    fallback <- cnd
+  } else {
+    # Let exiting and calling handlers handle the fully typed
+    # condition. The error message hasn't been altered yet and won't
+    # affect handling functions like `try()`.
+    signalCondition(cnd)
+
+    # If we're still here, the error is unhandled. Fall back with a
+    # bare condition to avoid calling handlers logging the same error
+    # twice
+    fallback <- cnd(NULL)
+  }
+
+  # Save the unhandled error for `rlang::last_error()`.
+  last_error_env$cnd <- cnd
+
+  # Generate the error message, possibly with parent error messages,
+  # and possibly with a backtrace or reminder
+  fallback$message <- paste_line(
+    conditionMessage(cnd),
+    parent_errors_lines(cnd),
+    format_onerror_backtrace(cnd$trace)
+  )
+
+  stop(fallback)
 }
 
 trace_trim_context <- function(trace, frame = caller_env()) {
@@ -616,29 +642,23 @@ summary.rlang_error <- function(object, ...) {
   print(object, simplify = "none", fields = TRUE)
 }
 
-#' @export
-conditionMessage.rlang_error <- function(c) {
-  last_error_env$cnd <- c
-
-  message <- c$message
-
-  parents <- chr()
+parent_errors_lines <- function(c) {
+  lines <- chr()
   while (is_condition(c$parent)) {
     c <- c$parent
-    parents <- chr(parents, c$message)
+    lines <- chr(lines, c$message) # FIXME: call condition-message?
   }
 
-  if (length(parents)) {
-    parents <- cli_branch(parents)
-    message <- paste_line(
+  if (length(lines)) {
+    lines <- cli_branch(lines)
+    lines <- paste_line(
       message,
       "Parents:",
-      parents
+      lines
     )
   }
 
-  backtrace <- format_onerror_backtrace(c$trace)
-  paste_line(message, backtrace)
+  lines
 }
 
 #' @export
@@ -1002,34 +1022,19 @@ add_backtrace <- function() {
 #' `with_abort()` rather than inside.
 #'
 #' @examples
-#' # For cleaner backtraces:
-#' options(rlang_trace_top_env = current_env())
-#'
 #' # with_abort() automatically casts simple errors thrown by stop()
-#' # to rlang errors:
-#' fn <- function() stop("Base error")
-#' try(with_abort(fn()))
-#' last_error()
-#'
-#' # with_abort() is handy for rethrowing low level errors. The
-#' # backtraces are then segmented between the low level and high
-#' # level contexts.
-#' low_level1 <- function() low_level2()
-#' low_level2 <- function() stop("Low level error")
+#' # to rlang errors. It is is handy for rethrowing low level
+#' # errors. The backtraces are then segmented between the low level
+#' # and high level contexts.
+#' f <- function() g()
+#' g <- function() stop("Low level error")
 #'
 #' high_level <- function() {
 #'   with_handlers(
-#'     with_abort(low_level1()),
-#'     error = ~ abort("High level error", parent = .x)
+#'     with_abort(f()),
+#'     error = ~ abort("High level error", parent = .)
 #'   )
 #' }
-#'
-#' try(high_level())
-#' last_error()
-#' summary(last_error())
-#'
-#' # Reset to default
-#' options(rlang_trace_top_env = NULL)
 #' @export
 with_abort <- function(expr, classes = "error") {
   handlers <- rep_named(classes, list(entrace))

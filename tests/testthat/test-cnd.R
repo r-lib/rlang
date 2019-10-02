@@ -175,18 +175,23 @@ test_that("error is printed with backtrace", {
   g <- function() h()
   h <- function() abort("Error message")
 
-  # Workaround as it is not straightforward to sink stderr and
-  # handle/muffle an error at the same time
-  msg <- with_options(
-    rlang_trace_format_srcrefs = FALSE,
-    rlang_trace_top_env = current_env(),
-    rlang_backtrace_on_error = "branch",
-    conditionMessage(catch_cnd(f()))
-  )
+  run_script <- function(file) {
+    skip_on_os("windows")
 
-  output <- crayon::strip_style(strsplit(msg, "\n")[[1]])
-  expected <- readLines(test_path("test-cnd-error.txt"))
-  expect_identical(!!output, expected)
+    # Suppress non-zero exit warnings
+    suppressWarnings(system2(
+      file.path(R.home("bin"), "Rscript"),
+      file,
+      stdout = TRUE,
+      stderr = TRUE,
+      timeout = 1
+    ))
+  }
+
+  verify_output(test_path("test-cnd-error.txt"), {
+    lines <- run_script(test_path("fixtures", "error-backtrace.R"))
+    cat_line(lines)
+  })
 })
 
 test_that("error is printed with parent backtrace", {
@@ -252,7 +257,9 @@ test_that("errors are saved", {
 
   # Verbose try() triggers conditionMessage() and thus saves the error.
   # This simulates an unhandled error.
-  try(abort("foo", "bar"), outFile = file)
+  with_options(rlang_force_unhandled_error = TRUE,
+    try(abort("foo", "bar"), outFile = file)
+  )
 
   expect_true(inherits_all(last_error(), c("bar", "rlang_error")))
 })
@@ -273,6 +280,7 @@ test_that("No backtrace is displayed with top-level active bindings", {
 
 test_that("Invalid on_error option resets itself", {
   with_options(
+    rlang_force_unhandled_error = TRUE,
     rlang_backtrace_on_error = NA,
     {
       expect_warning(tryCatch(abort("foo"), error = identity), "Invalid")
@@ -477,7 +485,9 @@ test_that("signal context is detected", {
   expect_equal(signal_info(base::stop, ""), list("stop_message", quote(f())))
   expect_equal(signal_info(base::stop, cnd("error")), list("stop_condition", quote(f())))
   expect_equal(signal_info(function(msg) errorcall(NULL, msg), ""), list("stop_native", quote(errorcall(NULL, msg))))
-  expect_equal(signal_info(abort, "")[[1]], "stop_rlang")
+
+  # No longer works since we switched to signalCondition approach
+  # expect_equal(signal_info(abort, "")[[1]], "stop_rlang")
 
   expect_equal(signal_info(base::warning, ""), list("warning_message", quote(f())))
   expect_equal(signal_info(base::warning, cnd("warning")), list("warning_condition", quote(f())))
