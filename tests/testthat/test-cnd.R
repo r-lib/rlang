@@ -216,6 +216,27 @@ test_that("can use conditionMessage() method in subclasses of rlang errors", {
   })
 })
 
+test_that("parent errors are not displayed in error message and backtrace", {
+  skip_unless_utf8()
+
+  run_error_script <- function(envvars = chr()) {
+    run_script(
+      test_path("fixtures", "error-backtrace-parent.R"),
+      envvars = envvars
+    )
+  }
+  non_interactive <- run_error_script()
+  interactive <- run_error_script(envvars = "rlang_interactive=true")
+
+  verify_output(test_path("test-cnd-error-parent.txt"), {
+    "Interactive"
+    cat_line(interactive)
+
+    "Non-interactive"
+    cat_line(non_interactive)
+  })
+})
+
 test_that("rlang_error.print() calls conditionMessage() method", {
   scoped_bindings(.env = global_env(),
     conditionMessage.foobar = function(c) c$foobar_msg
@@ -259,14 +280,22 @@ test_that("error is printed with parent backtrace", {
 
   scoped_options(
     rlang_trace_format_srcrefs = FALSE,
-    rlang_trace_top_env = current_env()
+    rlang_trace_top_env = current_env(),
+    rlang_backtrace_on_error = "none"
   )
+
   err <- catch_cnd(a())
 
-  expect_known_output(file = test_path("test-cnd-error-parent-default.txt"),
-    print(err)
+  err_force <- with_options(
+    catch_cnd(a()),
+    rlang_force_unhandled_error = TRUE
   )
-  expect_known_trace_output(err, file = "test-cnd-error-parent.txt")
+
+  expect_known_output(file = test_path("test-cnd-error-parent-default.txt"), {
+    print(err)
+    print(err_force)
+  })
+  expect_known_trace_output(err, file = "test-cnd-error-parent-trace.txt")
 })
 
 test_that("summary.rlang_error() prints full backtrace", {

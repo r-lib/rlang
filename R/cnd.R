@@ -365,7 +365,6 @@ abort <- function(message = "",
   # and possibly with a backtrace or reminder
   fallback$message <- paste_line(
     conditionMessage(cnd),
-    parent_errors_lines(cnd),
     format_onerror_backtrace(cnd$trace)
   )
 
@@ -639,25 +638,6 @@ last_error_env$cnd <- NULL
 #' @export
 summary.rlang_error <- function(object, ...) {
   print(object, simplify = "none", fields = TRUE)
-}
-
-parent_errors_lines <- function(c) {
-  lines <- chr()
-  while (is_condition(c$parent)) {
-    c <- c$parent
-    lines <- chr(lines, c$message) # FIXME: call condition-message?
-  }
-
-  if (length(lines)) {
-    lines <- cli_branch(lines)
-    lines <- paste_line(
-      message,
-      "Parents:",
-      lines
-    )
-  }
-
-  lines
 }
 
 #' @export
