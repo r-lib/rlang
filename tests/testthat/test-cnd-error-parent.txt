@@ -13,7 +13,7 @@ Backtrace:
   8. └─rlang:::a()
   9.   └─rlang:::b()
  10.     └─rlang:::c()
-<parent: error/rlang_error>
+<parent: error/foobar>
 Low-level message
 Backtrace:
     █
@@ -30,7 +30,7 @@ Backtrace:
   8. └─rlang:::a()
   9.   └─rlang:::b()
  10.     └─rlang:::c()
-<parent: error/rlang_error>
+<parent: error/foobar>
 Low-level message
 Backtrace:
     █
@@ -46,7 +46,7 @@ Backtrace:
   8. rlang:::a()
   9. rlang:::b()
  10. rlang:::c()
-<parent: error/rlang_error>
+<parent: error/foobar>
 Low-level message
 Backtrace:
  1. rlang:::f()

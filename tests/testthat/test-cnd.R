@@ -171,20 +171,6 @@ test_that("error_cnd() checks its fields", {
 test_that("error is printed with backtrace", {
   skip_unless_utf8()
 
-  run_script <- function(file, envvars = chr()) {
-    skip_on_os("windows")
-
-    # Suppress non-zero exit warnings
-    suppressWarnings(system2(
-      file.path(R.home("bin"), "Rscript"),
-      c("--vanilla", file),
-      stdout = TRUE,
-      stderr = TRUE,
-      timeout = 1,
-      env = envvars
-    ))
-  }
-
   run_error_script <- function(envvars = chr()) {
     run_script(test_path("fixtures", "error-backtrace.R"), envvars = envvars)
   }
@@ -209,12 +195,56 @@ test_that("error is printed with backtrace", {
   })
 })
 
-test_that("error is printed with parent backtrace", {
+test_that("can use conditionMessage() method in subclasses of rlang errors", {
   skip_unless_utf8()
+
+  run_error_script <- function(envvars = chr()) {
+    run_script(
+      test_path("fixtures", "error-backtrace-conditionMessage.R"),
+      envvars = envvars
+    )
+  }
+  non_interactive <- run_error_script()
+  interactive <- run_error_script(envvars = "rlang_interactive=true")
+
+  verify_output(test_path("test-cnd-error-conditionMessage.txt"), {
+    "Interactive"
+    cat_line(interactive)
+
+    "Non-interactive"
+    cat_line(non_interactive)
+  })
+})
+
+test_that("rlang_error.print() calls conditionMessage() method", {
+  scoped_bindings(.env = global_env(),
+    conditionMessage.foobar = function(c) c$foobar_msg
+  )
+  scoped_options(
+    rlang_trace_format_srcrefs = FALSE,
+    rlang_trace_top_env = current_env()
+  )
 
   f <- function() g()
   g <- function() h()
-  h <- function() abort("Low-level message")
+  h <- function() abort("", "foobar", foobar_msg = "Low-level message")
+
+  # Handled error
+  err <- catch_cnd(f())
+  verify_output(test_path("test-error-print-conditionMessage.txt"), print(err))
+})
+
+test_that("error is printed with parent backtrace", {
+  skip_unless_utf8()
+
+  # Test low-level error can use conditionMessage()
+  scoped_bindings(.env = global_env(),
+    conditionMessage.foobar = function(c) c$foobar_msg
+  )
+
+  f <- function() g()
+  g <- function() h()
+  h <- function() abort("", "foobar", foobar_msg = "Low-level message")
 
   a <- function() b()
   b <- function() c()

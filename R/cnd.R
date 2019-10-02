@@ -586,9 +586,8 @@ print.rlang_error <- function(x,
     header <- bold(sprintf("<parent: %s>", class))
   }
 
-  if (is_string(x$message) && nzchar(x$message)) {
-    message <- x$message
-  } else {
+  message <- conditionMessage(x)
+  if (!nzchar(message)) {
     message <- NULL
   }
 
