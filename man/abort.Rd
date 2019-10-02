@@ -8,8 +8,8 @@
 \alias{interrupt}
 \title{Signal an error, warning, or message}
 \usage{
-abort(message, .subclass = NULL, ..., trace = NULL, call = NULL,
-  parent = NULL, msg, type)
+abort(message = "", .subclass = NULL, ..., trace = NULL,
+  call = NULL, parent = NULL, msg, type)
 
 warn(message, .subclass = NULL, ..., call = NULL, msg, type)
 

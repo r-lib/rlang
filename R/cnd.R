@@ -307,7 +307,8 @@ validate_cnd_signal_args <- function(cnd, .cnd, .mufflable,
 #'
 #' }
 #' @export
-abort <- function(message, .subclass = NULL,
+abort <- function(message = "",
+                  .subclass = NULL,
                   ...,
                   trace = NULL,
                   call = NULL,

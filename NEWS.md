@@ -1,6 +1,10 @@
 
 # rlang (development)
 
+* `abort()` can now be called without error message. This is useful
+  when `conditionMessage()` is used to generate the message at
+  print-time.
+
 * Fixed an infinite loop in `eval_tidy()`. It occurred when evaluating
   a quosure that inherits from the mask itself.
 
