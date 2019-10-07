@@ -1,6 +1,12 @@
 
 # rlang (development)
 
+* rlang errors are no longer formatted and saved through
+  `conditionMessage()`. This makes it easier to use a
+  `conditionMessage()` method in subclasses created with `abort()`,
+  which is useful to delay expensive generation of error messages
+  until display time.
+
 * `abort()` can now be called without error message. This is useful
   when `conditionMessage()` is used to generate the message at
   print-time.

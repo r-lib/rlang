@@ -171,30 +171,109 @@ test_that("error_cnd() checks its fields", {
 test_that("error is printed with backtrace", {
   skip_unless_utf8()
 
-  f <- function() g()
-  g <- function() h()
-  h <- function() abort("Error message")
+  run_error_script <- function(envvars = chr()) {
+    run_script(test_path("fixtures", "error-backtrace.R"), envvars = envvars)
+  }
 
-  # Workaround as it is not straightforward to sink stderr and
-  # handle/muffle an error at the same time
-  msg <- with_options(
+  default_interactive <- run_error_script(envvars = "rlang_interactive=true")
+  default_non_interactive <- run_error_script()
+  reminder <- run_error_script(envvars = "rlang_backtrace_on_error=reminder")
+  branch <- run_error_script(envvars = "rlang_backtrace_on_error=branch")
+  collapse <- run_error_script(envvars = "rlang_backtrace_on_error=collapse")
+  full <- run_error_script(envvars = "rlang_backtrace_on_error=full")
+
+  verify_output(test_path("test-cnd-error.txt"), {
+    "Default (interactive)"
+    cat_line(default_interactive)
+
+    "Default (non-interactive)"
+    cat_line(default_non_interactive)
+
+    "Reminder"
+    cat_line(reminder)
+
+    "Branch"
+    cat_line(branch)
+
+    "Collapse"
+    cat_line(collapse)
+
+    "Full"
+    cat_line(full)
+  })
+})
+
+test_that("can use conditionMessage() method in subclasses of rlang errors", {
+  skip_unless_utf8()
+
+  run_error_script <- function(envvars = chr()) {
+    run_script(
+      test_path("fixtures", "error-backtrace-conditionMessage.R"),
+      envvars = envvars
+    )
+  }
+  non_interactive <- run_error_script()
+  interactive <- run_error_script(envvars = "rlang_interactive=true")
+
+  verify_output(test_path("test-cnd-error-conditionMessage.txt"), {
+    "Interactive"
+    cat_line(interactive)
+
+    "Non-interactive"
+    cat_line(non_interactive)
+  })
+})
+
+test_that("parent errors are not displayed in error message and backtrace", {
+  skip_unless_utf8()
+
+  run_error_script <- function(envvars = chr()) {
+    run_script(
+      test_path("fixtures", "error-backtrace-parent.R"),
+      envvars = envvars
+    )
+  }
+  non_interactive <- run_error_script()
+  interactive <- run_error_script(envvars = "rlang_interactive=true")
+
+  verify_output(test_path("test-cnd-error-parent.txt"), {
+    "Interactive"
+    cat_line(interactive)
+
+    "Non-interactive"
+    cat_line(non_interactive)
+  })
+})
+
+test_that("rlang_error.print() calls conditionMessage() method", {
+  scoped_bindings(.env = global_env(),
+    conditionMessage.foobar = function(c) c$foobar_msg
+  )
+  scoped_options(
     rlang_trace_format_srcrefs = FALSE,
-    rlang_trace_top_env = current_env(),
-    rlang_backtrace_on_error = "branch",
-    conditionMessage(catch_cnd(f()))
+    rlang_trace_top_env = current_env()
   )
 
-  output <- crayon::strip_style(strsplit(msg, "\n")[[1]])
-  expected <- readLines(test_path("test-cnd-error.txt"))
-  expect_identical(!!output, expected)
+  f <- function() g()
+  g <- function() h()
+  h <- function() abort("", "foobar", foobar_msg = "Low-level message")
+
+  # Handled error
+  err <- catch_cnd(f())
+  verify_output(test_path("test-error-print-conditionMessage.txt"), print(err))
 })
 
 test_that("error is printed with parent backtrace", {
   skip_unless_utf8()
 
+  # Test low-level error can use conditionMessage()
+  scoped_bindings(.env = global_env(),
+    conditionMessage.foobar = function(c) c$foobar_msg
+  )
+
   f <- function() g()
   g <- function() h()
-  h <- function() abort("Low-level message")
+  h <- function() abort("", "foobar", foobar_msg = "Low-level message")
 
   a <- function() b()
   b <- function() c()
@@ -209,14 +288,22 @@ test_that("error is printed with parent backtrace", {
 
   scoped_options(
     rlang_trace_format_srcrefs = FALSE,
-    rlang_trace_top_env = current_env()
+    rlang_trace_top_env = current_env(),
+    rlang_backtrace_on_error = "none"
   )
+
   err <- catch_cnd(a())
 
-  expect_known_output(file = test_path("test-cnd-error-parent-default.txt"),
-    print(err)
+  err_force <- with_options(
+    catch_cnd(a()),
+    rlang_force_unhandled_error = TRUE
   )
-  expect_known_trace_output(err, file = "test-cnd-error-parent.txt")
+
+  expect_known_output(file = test_path("test-cnd-error-parent-default.txt"), {
+    print(err)
+    print(err_force)
+  })
+  expect_known_trace_output(err, file = "test-cnd-error-parent-trace.txt")
 })
 
 test_that("summary.rlang_error() prints full backtrace", {
@@ -252,7 +339,9 @@ test_that("errors are saved", {
 
   # Verbose try() triggers conditionMessage() and thus saves the error.
   # This simulates an unhandled error.
-  try(abort("foo", "bar"), outFile = file)
+  with_options(rlang_force_unhandled_error = TRUE,
+    try(abort("foo", "bar"), outFile = file)
+  )
 
   expect_true(inherits_all(last_error(), c("bar", "rlang_error")))
 })
@@ -273,55 +362,13 @@ test_that("No backtrace is displayed with top-level active bindings", {
 
 test_that("Invalid on_error option resets itself", {
   with_options(
+    rlang_force_unhandled_error = TRUE,
     rlang_backtrace_on_error = NA,
     {
       expect_warning(tryCatch(abort("foo"), error = identity), "Invalid")
       expect_null(peek_option("rlang_backtrace_on_error"))
     }
   )
-})
-
-test_that("on_error option can be tweaked", {
-  skip_unless_utf8()
-
-  f <- function() tryCatch(g())
-  g <- function() h()
-  h <- function() abort("The error message")
-  msg <- function() cat(conditionMessage(catch_cnd(f())))
-
-  expect_known_output(file = test_path("test-on-error-message-options.txt"), local({
-    scoped_options(
-      rlang_trace_top_env = current_env(),
-      rlang_trace_format_srcrefs = FALSE
-    )
-
-    cat_line("", ">>> Default:", "")
-    with_options(
-      rlang_backtrace_on_error = NULL,
-      rlang_interactive = TRUE,
-      msg()
-    )
-
-    cat_line("", "", "", ">>> Reminder:", "")
-    with_options(
-      rlang_backtrace_on_error = "reminder",
-      rlang_interactive = TRUE,
-      msg()
-    )
-
-    cat_line("", "", "", ">>> Default (not interactive):", "")
-    with_options(
-      rlang_backtrace_on_error = NULL,
-      rlang_interactive = FALSE,
-      msg()
-    )
-
-    cat_line("", "", "", ">>> Branch:", "")
-    with_options(rlang_backtrace_on_error = "branch", msg())
-
-    cat_line("", "", "", ">>> Collapsed:", "")
-    with_options(rlang_backtrace_on_error = "collapse", msg())
-  }))
 })
 
 test_that("format_onerror_backtrace handles empty and size 1 traces", {
@@ -477,7 +524,9 @@ test_that("signal context is detected", {
   expect_equal(signal_info(base::stop, ""), list("stop_message", quote(f())))
   expect_equal(signal_info(base::stop, cnd("error")), list("stop_condition", quote(f())))
   expect_equal(signal_info(function(msg) errorcall(NULL, msg), ""), list("stop_native", quote(errorcall(NULL, msg))))
-  expect_equal(signal_info(abort, "")[[1]], "stop_rlang")
+
+  # No longer works since we switched to signalCondition approach
+  # expect_equal(signal_info(abort, "")[[1]], "stop_rlang")
 
   expect_equal(signal_info(base::warning, ""), list("warning_message", quote(f())))
   expect_equal(signal_info(base::warning, cnd("warning")), list("warning_condition", quote(f())))

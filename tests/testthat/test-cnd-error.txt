@@ -1,6 +1,55 @@
-Error message
+> # Default (interactive)
+> cat_line(default_interactive)
+Error: Error message
+Call `rlang::last_error()` to see a backtrace
+Execution halted
+
+> # Default (non-interactive)
+> cat_line(default_non_interactive)
+Error: Error message
 Backtrace:
-  1. rlang::with_options(...)
- 10. rlang:::f()
- 11. rlang:::g()
- 12. rlang:::h()
+    █
+ 1. └─global::f()
+ 2.   ├─base::tryCatch(g())
+ 3.   │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
+ 4.   └─global::g()
+ 5.     └─global::h()
+Execution halted
+
+> # Reminder
+> cat_line(reminder)
+Error: Error message
+Execution halted
+
+> # Branch
+> cat_line(branch)
+Error: Error message
+Backtrace:
+ 1. global::f()
+ 4. global::g()
+ 5. global::h()
+Execution halted
+
+> # Collapse
+> cat_line(collapse)
+Error: Error message
+Backtrace:
+    █
+ 1. └─global::f()
+ 2.   ├─[ base::tryCatch(...) ] with 1 more call
+ 4.   └─global::g()
+ 5.     └─global::h()
+Execution halted
+
+> # Full
+> cat_line(full)
+Error: Error message
+Backtrace:
+    █
+ 1. └─global::f()
+ 2.   ├─base::tryCatch(g())
+ 3.   │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
+ 4.   └─global::g()
+ 5.     └─global::h()
+Execution halted
+
