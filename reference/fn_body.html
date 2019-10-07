@@ -185,48 +185,7 @@ supplied.</p></td>
 #&gt;     do()
 #&gt; }</div><div class='input'>
 <span class='co'># It also throws an error when used on a primitive function:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>fn_body</span>(<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/r/base/list.html'>list</a></span>))</div><div class='output co'>#&gt; Error : `fn` is not a closure
-#&gt; Backtrace:
-#&gt; <span style='color: #555555;'>     </span><span>█
-#&gt; </span><span style='color: #555555;'>  1. </span><span>├─base::tryCatch(...)
-#&gt; </span><span style='color: #555555;'>  2. </span><span>│ └─base:::tryCatchList(expr, classes, parentenv, handlers)
-#&gt; </span><span style='color: #555555;'>  3. </span><span>│   ├─base:::tryCatchOne(...)
-#&gt; </span><span style='color: #555555;'>  4. </span><span>│   │ └─base:::doTryCatch(return(expr), name, parentenv, handler)
-#&gt; </span><span style='color: #555555;'>  5. </span><span>│   └─base:::tryCatchList(expr, names[-nh], parentenv, handlers[-nh])
-#&gt; </span><span style='color: #555555;'>  6. </span><span>│     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-#&gt; </span><span style='color: #555555;'>  7. </span><span>│       └─base:::doTryCatch(return(expr), name, parentenv, handler)
-#&gt; </span><span style='color: #555555;'>  8. </span><span>├─base::withCallingHandlers(...)
-#&gt; </span><span style='color: #555555;'>  9. </span><span>├─base::saveRDS(...)
-#&gt; </span><span style='color: #555555;'> 10. </span><span>├─base::do.call(...)
-#&gt; </span><span style='color: #555555;'> 11. </span><span>├─(function (what, args, quote = FALSE, envir = parent.frame()) ...
-#&gt; </span><span style='color: #555555;'> 12. </span><span>└─(function (..., crayon_enabled, crayon_colors, pkgdown_internet) ...
-#&gt; </span><span style='color: #555555;'> 13. </span><span>  └─pkgdown::build_site(...)
-#&gt; </span><span style='color: #555555;'> 14. </span><span>    └─pkgdown:::build_site_local(...)
-#&gt; </span><span style='color: #555555;'> 15. </span><span>      └─pkgdown::build_reference(...)
-#&gt; </span><span style='color: #555555;'> 16. </span><span>        └─purrr::map(...)
-#&gt; </span><span style='color: #555555;'> 17. </span><span>          └─pkgdown:::.f(.x[[i]], ...)
-#&gt; </span><span style='color: #555555;'> 18. </span><span>            └─pkgdown:::data_reference_topic(...)
-#&gt; </span><span style='color: #555555;'> 19. </span><span>              └─pkgdown:::run_examples(...)
-#&gt; </span><span style='color: #555555;'> 20. </span><span>                └─pkgdown:::highlight_examples(code, topic, env = env)
-#&gt; </span><span style='color: #555555;'> 21. </span><span>                  └─evaluate::evaluate(x, child_env(env), new_device = TRUE)
-#&gt; </span><span style='color: #555555;'> 22. </span><span>                    └─evaluate:::evaluate_call(...)
-#&gt; </span><span style='color: #555555;'> 23. </span><span>                      ├─evaluate:::timing_fn(...)
-#&gt; </span><span style='color: #555555;'> 24. </span><span>                      ├─evaluate:::handle(...)
-#&gt; </span><span style='color: #555555;'> 25. </span><span>                      │ └─base::try(f, silent = TRUE)
-#&gt; </span><span style='color: #555555;'> 26. </span><span>                      │   └─base::tryCatch(...)
-#&gt; </span><span style='color: #555555;'> 27. </span><span>                      │     └─base:::tryCatchList(expr, classes, parentenv, handlers)
-#&gt; </span><span style='color: #555555;'> 28. </span><span>                      │       └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-#&gt; </span><span style='color: #555555;'> 29. </span><span>                      │         └─base:::doTryCatch(return(expr), name, parentenv, handler)
-#&gt; </span><span style='color: #555555;'> 30. </span><span>                      ├─base::withCallingHandlers(...)
-#&gt; </span><span style='color: #555555;'> 31. </span><span>                      ├─base::withVisible(eval(expr, envir, enclos))
-#&gt; </span><span style='color: #555555;'> 32. </span><span>                      └─base::eval(expr, envir, enclos)
-#&gt; </span><span style='color: #555555;'> 33. </span><span>                        └─base::eval(expr, envir, enclos)
-#&gt; </span><span style='color: #555555;'> 34. </span><span>                          ├─base::try(fn_body(base::list))
-#&gt; </span><span style='color: #555555;'> 35. </span><span>                          │ └─base::tryCatch(...)
-#&gt; </span><span style='color: #555555;'> 36. </span><span>                          │   └─base:::tryCatchList(expr, classes, parentenv, handlers)
-#&gt; </span><span style='color: #555555;'> 37. </span><span>                          │     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-#&gt; </span><span style='color: #555555;'> 38. </span><span>                          │       └─base:::doTryCatch(return(expr), name, parentenv, handler)
-#&gt; </span><span style='color: #555555;'> 39. </span><span>                          └─rlang::fn_body(base::list)</div></span></pre>
+<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>fn_body</span>(<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/r/base/list.html'>list</a></span>))</div><div class='output co'>#&gt; Error : `fn` is not a closure</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

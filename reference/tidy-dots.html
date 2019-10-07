@@ -350,49 +350,7 @@ default. <code>list2()</code> does not have this issue.</p>
 <span class='co'># Or raise an informative error:</span>
 <span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>dots_list</span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='st'>"error"</span>))</div><div class='output co'>#&gt; Error : Arguments can't have the same name. We found these problems:
 #&gt; * Multiple arguments named `a` at positions 1 and 2
-#&gt; * Multiple arguments named `b` at positions 3 and 4
-#&gt; Backtrace:
-#&gt; <span style='color: #555555;'>     </span><span>█
-#&gt; </span><span style='color: #555555;'>  1. </span><span>├─base::tryCatch(...)
-#&gt; </span><span style='color: #555555;'>  2. </span><span>│ └─base:::tryCatchList(expr, classes, parentenv, handlers)
-#&gt; </span><span style='color: #555555;'>  3. </span><span>│   ├─base:::tryCatchOne(...)
-#&gt; </span><span style='color: #555555;'>  4. </span><span>│   │ └─base:::doTryCatch(return(expr), name, parentenv, handler)
-#&gt; </span><span style='color: #555555;'>  5. </span><span>│   └─base:::tryCatchList(expr, names[-nh], parentenv, handlers[-nh])
-#&gt; </span><span style='color: #555555;'>  6. </span><span>│     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-#&gt; </span><span style='color: #555555;'>  7. </span><span>│       └─base:::doTryCatch(return(expr), name, parentenv, handler)
-#&gt; </span><span style='color: #555555;'>  8. </span><span>├─base::withCallingHandlers(...)
-#&gt; </span><span style='color: #555555;'>  9. </span><span>├─base::saveRDS(...)
-#&gt; </span><span style='color: #555555;'> 10. </span><span>├─base::do.call(...)
-#&gt; </span><span style='color: #555555;'> 11. </span><span>├─(function (what, args, quote = FALSE, envir = parent.frame()) ...
-#&gt; </span><span style='color: #555555;'> 12. </span><span>├─(function (..., crayon_enabled, crayon_colors, pkgdown_internet) ...
-#&gt; </span><span style='color: #555555;'> 13. </span><span>│ └─pkgdown::build_site(...)
-#&gt; </span><span style='color: #555555;'> 14. </span><span>│   └─pkgdown:::build_site_local(...)
-#&gt; </span><span style='color: #555555;'> 15. </span><span>│     └─pkgdown::build_reference(...)
-#&gt; </span><span style='color: #555555;'> 16. </span><span>│       └─purrr::map(...)
-#&gt; </span><span style='color: #555555;'> 17. </span><span>│         └─pkgdown:::.f(.x[[i]], ...)
-#&gt; </span><span style='color: #555555;'> 18. </span><span>│           └─pkgdown:::data_reference_topic(...)
-#&gt; </span><span style='color: #555555;'> 19. </span><span>│             └─pkgdown:::run_examples(...)
-#&gt; </span><span style='color: #555555;'> 20. </span><span>│               └─pkgdown:::highlight_examples(code, topic, env = env)
-#&gt; </span><span style='color: #555555;'> 21. </span><span>│                 └─evaluate::evaluate(x, child_env(env), new_device = TRUE)
-#&gt; </span><span style='color: #555555;'> 22. </span><span>│                   └─evaluate:::evaluate_call(...)
-#&gt; </span><span style='color: #555555;'> 23. </span><span>│                     ├─evaluate:::timing_fn(...)
-#&gt; </span><span style='color: #555555;'> 24. </span><span>│                     ├─evaluate:::handle(...)
-#&gt; </span><span style='color: #555555;'> 25. </span><span>│                     │ └─base::try(f, silent = TRUE)
-#&gt; </span><span style='color: #555555;'> 26. </span><span>│                     │   └─base::tryCatch(...)
-#&gt; </span><span style='color: #555555;'> 27. </span><span>│                     │     └─base:::tryCatchList(expr, classes, parentenv, handlers)
-#&gt; </span><span style='color: #555555;'> 28. </span><span>│                     │       └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-#&gt; </span><span style='color: #555555;'> 29. </span><span>│                     │         └─base:::doTryCatch(return(expr), name, parentenv, handler)
-#&gt; </span><span style='color: #555555;'> 30. </span><span>│                     ├─base::withCallingHandlers(...)
-#&gt; </span><span style='color: #555555;'> 31. </span><span>│                     ├─base::withVisible(eval(expr, envir, enclos))
-#&gt; </span><span style='color: #555555;'> 32. </span><span>│                     └─base::eval(expr, envir, enclos)
-#&gt; </span><span style='color: #555555;'> 33. </span><span>│                       └─base::eval(expr, envir, enclos)
-#&gt; </span><span style='color: #555555;'> 34. </span><span>│                         ├─base::try(dots_list(a = 1, a = 2, b = 3, b = 4, 5, 6, .homonyms = "error"))
-#&gt; </span><span style='color: #555555;'> 35. </span><span>│                         │ └─base::tryCatch(...)
-#&gt; </span><span style='color: #555555;'> 36. </span><span>│                         │   └─base:::tryCatchList(expr, classes, parentenv, handlers)
-#&gt; </span><span style='color: #555555;'> 37. </span><span>│                         │     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-#&gt; </span><span style='color: #555555;'> 38. </span><span>│                         │       └─base:::doTryCatch(return(expr), name, parentenv, handler)
-#&gt; </span><span style='color: #555555;'> 39. </span><span>│                         └─rlang::dots_list(a = 1, a = 2, b = 3, b = 4, 5, 6, .homonyms = "error")
-#&gt; </span><span style='color: #555555;'> 40. </span><span>└─rlang:::abort_dots_homonyms(x, y)</div><div class='input'>
+#&gt; * Multiple arguments named `b` at positions 3 and 4</div><div class='input'>
 
 <span class='co'># dots_list() can be configured to warn when a `&lt;-` call is</span>
 <span class='co'># detected:</span>
@@ -414,7 +372,7 @@ default. <code>list2()</code> does not have this issue.</p>
 <span class='co'># This requires users to be explicit about their intent:</span>
 <span class='fu'>my_list</span>({ <span class='no'>a</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span> })</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] 1
-#&gt; </div></span></pre>
+#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

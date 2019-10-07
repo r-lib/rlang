@@ -185,91 +185,19 @@ you should use <code><a href='https://rdrr.io/r/base/conditions.html'>tryCatch()
 <code>with_abort()</code> rather than inside.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># For cleaner backtraces:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/options.html'>options</a></span>(<span class='kw'>rlang_trace_top_env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>current_env</a></span>())
-
-<span class='co'># with_abort() automatically casts simple errors thrown by stop()</span>
-<span class='co'># to rlang errors:</span>
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'><a href='https://rdrr.io/r/base/stop.html'>stop</a></span>(<span class='st'>"Base error"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>with_abort</span>(<span class='fu'>fn</span>()))</div><div class='output co'>#&gt; Error : Base error
-#&gt; Backtrace:
-#&gt; <span style='color: #555555;'>    </span><span>█
-#&gt; </span><span style='color: #555555;'> 1. </span><span>├─base::try(with_abort(fn()))
-#&gt; </span><span style='color: #555555;'> 2. </span><span>│ └─base::tryCatch(...)
-#&gt; </span><span style='color: #555555;'> 3. </span><span>│   └─base:::tryCatchList(expr, classes, parentenv, handlers)
-#&gt; </span><span style='color: #555555;'> 4. </span><span>│     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-#&gt; </span><span style='color: #555555;'> 5. </span><span>│       └─base:::doTryCatch(return(expr), name, parentenv, handler)
-#&gt; </span><span style='color: #555555;'> 6. </span><span>├─rlang::with_abort(fn())
-#&gt; </span><span style='color: #555555;'> 7. </span><span>│ └─base::withCallingHandlers(...)
-#&gt; </span><span style='color: #555555;'> 8. </span><span>└─fn()</div><div class='input'><span class='fu'><a href='last_error.html'>last_error</a></span>()</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;error/rlang_error&gt;</span><span>
-#&gt; Base error
-#&gt; </span><span style='font-weight: bold;'>Backtrace:</span><span>
-#&gt; </span><span style='color: #555555;'> 1. </span><span>base::try(with_abort(fn()))
-#&gt; </span><span style='color: #555555;'> 8. </span><span>fn()
-#&gt; </span><span style='color: #555555;'>Call `rlang::last_trace()` to see the full backtrace</span><span></div><div class='input'>
-<span class='co'># with_abort() is handy for rethrowing low level errors. The</span>
-<span class='co'># backtraces are then segmented between the low level and high</span>
-<span class='co'># level contexts.</span>
-<span class='no'>low_level1</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>low_level2</span>()
-<span class='no'>low_level2</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'><a href='https://rdrr.io/r/base/stop.html'>stop</a></span>(<span class='st'>"Low level error"</span>)
+    <pre class="examples"><div class='input'><span class='co'># with_abort() automatically casts simple errors thrown by stop()</span>
+<span class='co'># to rlang errors. It is is handy for rethrowing low level</span>
+<span class='co'># errors. The backtraces are then segmented between the low level</span>
+<span class='co'># and high level contexts.</span>
+<span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>g</span>()
+<span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'><a href='https://rdrr.io/r/base/stop.html'>stop</a></span>(<span class='st'>"Low level error"</span>)
 
 <span class='no'>high_level</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
   <span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(
-    <span class='fu'>with_abort</span>(<span class='fu'>low_level1</span>()),
-    <span class='kw'>error</span> <span class='kw'>=</span> ~ <span class='fu'><a href='abort.html'>abort</a></span>(<span class='st'>"High level error"</span>, <span class='kw'>parent</span> <span class='kw'>=</span> <span class='no'>.x</span>)
+    <span class='fu'>with_abort</span>(<span class='fu'>f</span>()),
+    <span class='kw'>error</span> <span class='kw'>=</span> ~ <span class='fu'><a href='abort.html'>abort</a></span>(<span class='st'>"High level error"</span>, <span class='kw'>parent</span> <span class='kw'>=</span> <span class='no'>.</span>)
   )
-}
-
-<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>high_level</span>())</div><div class='output co'>#&gt; Error : High level error
-#&gt; Parents:
-#&gt;  ─Low level error
-#&gt; Backtrace:
-#&gt; </span><span style='color: #555555;'>     </span><span>█
-#&gt; </span><span style='color: #555555;'>  1. </span><span>├─base::try(high_level())
-#&gt; </span><span style='color: #555555;'>  2. </span><span>│ └─base::tryCatch(...)
-#&gt; </span><span style='color: #555555;'>  3. </span><span>│   └─base:::tryCatchList(expr, classes, parentenv, handlers)
-#&gt; </span><span style='color: #555555;'>  4. </span><span>│     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-#&gt; </span><span style='color: #555555;'>  5. </span><span>│       └─base:::doTryCatch(return(expr), name, parentenv, handler)
-#&gt; </span><span style='color: #555555;'>  6. </span><span>└─high_level()
-#&gt; </span><span style='color: #555555;'>  7. </span><span>  ├─rlang::with_handlers(...)
-#&gt; </span><span style='color: #555555;'>  8. </span><span>  │ └─base::tryCatch(...)
-#&gt; </span><span style='color: #555555;'>  9. </span><span>  │   └─base:::tryCatchList(expr, classes, parentenv, handlers)
-#&gt; </span><span style='color: #555555;'> 10. </span><span>  │     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-#&gt; </span><span style='color: #555555;'> 11. </span><span>  │       └─base:::doTryCatch(return(expr), name, parentenv, handler)
-#&gt; </span><span style='color: #555555;'> 12. </span><span>  ├─rlang::with_abort(low_level1())
-#&gt; </span><span style='color: #555555;'> 13. </span><span>  │ └─base::withCallingHandlers(...)
-#&gt; </span><span style='color: #555555;'> 14. </span><span>  └─low_level1()
-#&gt; </span><span style='color: #555555;'> 15. </span><span>    └─low_level2()</div><div class='input'><span class='fu'><a href='last_error.html'>last_error</a></span>()</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;error/rlang_error&gt;</span><span>
-#&gt; High level error
-#&gt; </span><span style='font-weight: bold;'>Backtrace:</span><span>
-#&gt; </span><span style='color: #555555;'> 1. </span><span>base::try(high_level())
-#&gt; </span><span style='color: #555555;'> 6. </span><span>high_level()
-#&gt; </span><span style='font-weight: bold;'>&lt;parent: error/rlang_error&gt;</span><span>
-#&gt; Low level error
-#&gt; </span><span style='font-weight: bold;'>Backtrace:</span><span>
-#&gt; </span><span style='color: #555555;'> 1. </span><span>rlang::with_abort(low_level1())
-#&gt; </span><span style='color: #555555;'> 3. </span><span>low_level1()
-#&gt; </span><span style='color: #555555;'> 4. </span><span>low_level2()
-#&gt; </span><span style='color: #555555;'>Call `rlang::last_trace()` to see the full backtrace</span><span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'><a href='last_error.html'>last_error</a></span>())</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;error/rlang_error&gt;</span><span>
-#&gt; High level error
-#&gt; </span><span style='font-weight: bold;'>Backtrace:</span><span>
-#&gt; </span><span style='color: #555555;'>    </span><span>█
-#&gt; </span><span style='color: #555555;'> 1. </span><span>├─base::try(high_level())
-#&gt; </span><span style='color: #555555;'> 2. </span><span>│ └─base::tryCatch(...)
-#&gt; </span><span style='color: #555555;'> 3. </span><span>│   └─base:::tryCatchList(expr, classes, parentenv, handlers)
-#&gt; </span><span style='color: #555555;'> 4. </span><span>│     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-#&gt; </span><span style='color: #555555;'> 5. </span><span>│       └─base:::doTryCatch(return(expr), name, parentenv, handler)
-#&gt; </span><span style='color: #555555;'> 6. </span><span>└─high_level()
-#&gt; </span><span style='font-weight: bold;'>&lt;parent: error/rlang_error&gt;</span><span>
-#&gt; Low level error
-#&gt; </span><span style='font-weight: bold;'>Backtrace:</span><span>
-#&gt; </span><span style='color: #555555;'>    </span><span>█
-#&gt; </span><span style='color: #555555;'> 1. </span><span>├─rlang::with_abort(low_level1())
-#&gt; </span><span style='color: #555555;'> 2. </span><span>│ └─base::withCallingHandlers(...)
-#&gt; </span><span style='color: #555555;'> 3. </span><span>└─low_level1()
-#&gt; </span><span style='color: #555555;'> 4. </span><span>  └─low_level2()</div><div class='input'>
-<span class='co'># Reset to default</span>
-<span class='fu'><a href='https://rdrr.io/r/base/options.html'>options</a></span>(<span class='kw'>rlang_trace_top_env</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div></span></pre>
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
