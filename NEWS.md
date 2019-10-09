@@ -1,6 +1,11 @@
 
 # rlang (development)
 
+* `cnd_signal()` has improved support for rlang errors created with
+  `error_cnd()`. It now records a backtrace if there isn't one
+  already, and saves the error so it can be inspected with
+  `rlang::last_error()`.
+
 * rlang errors are no longer formatted and saved through
   `conditionMessage()`. This makes it easier to use a
   `conditionMessage()` method in subclasses created with `abort()`,

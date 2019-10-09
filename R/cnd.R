@@ -149,7 +149,13 @@ cnd_type <- function(cnd) {
 #' try(cnd_signal(cnd))
 cnd_signal <- function(cnd, .cnd, .mufflable) {
   validate_cnd_signal_args(cnd, .cnd, .mufflable)
-  invisible(.Call(rlang_cnd_signal, cnd))
+  if (inherits(cnd, "rlang_error") && is_null(cnd$trace)) {
+    trace <- trace_back()
+    cnd$trace <- trace_trim_context(trace, trace_length(trace))
+    signal_abort(cnd)
+  } else {
+    invisible(.Call(rlang_cnd_signal, cnd))
+  }
 }
 validate_cnd_signal_args <- function(cnd, .cnd, .mufflable,
                                      env = parent.frame()) {
@@ -342,7 +348,10 @@ abort <- function(message = "",
     parent = parent,
     trace = trace
   )
+  signal_abort(cnd)
+}
 
+signal_abort <- function(cnd) {
   if (is_true(peek_option("rlang_force_unhandled_error"))) {
     # Fall back with the full rlang error
     fallback <- cnd

@@ -339,11 +339,30 @@ test_that("errors are saved", {
 
   # Verbose try() triggers conditionMessage() and thus saves the error.
   # This simulates an unhandled error.
-  with_options(rlang_force_unhandled_error = TRUE,
-    try(abort("foo", "bar"), outFile = file)
+  scoped_options(rlang_force_unhandled_error = TRUE)
+
+  try(abort("foo", "bar"), outFile = file)
+  expect_true(inherits_all(last_error(), c("bar", "rlang_error")))
+
+  try(cnd_signal(error_cnd("foobar")), outFile = file)
+  expect_true(inherits_all(last_error(), c("foobar", "rlang_error")))
+})
+
+test_that("cnd_signal() creates a backtrace if needed", {
+  skip_unless_utf8()
+
+  scoped_options(
+    rlang_trace_top_env = current_env(),
+    rlang_trace_format_srcrefs = FALSE
   )
 
-  expect_true(inherits_all(last_error(), c("bar", "rlang_error")))
+  err <- error_cnd("rlang_error_foobar", trace = NULL)
+  f <- function() g()
+  g <- function() h()
+  h <- function() cnd_signal(err)
+
+  err <- catch_cnd(f())
+  expect_known_output(file = test_path("test-cnd-signal-trace.txt"), print(err))
 })
 
 test_that("can take the str() of an rlang error (#615)", {
