@@ -1032,3 +1032,38 @@ with_abort <- function(expr, classes = "error") {
   handle_call <- rlang::expr(withCallingHandlers(expr, !!!handlers))
   .Call(rlang_eval, handle_call, current_env())
 }
+
+#' Build an error message from a main issue and bullet messages
+#'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+#'
+#' `cnd_message()` is meant to be used in `conditionMessage()`
+#' methods. The error class should implement:
+#'
+#' - A `cnd_issue()` method returning a single, bullet-less line.
+#'
+#' - A `cnd_bullets()` method returning a list of issues or
+#'   informative statements, prefixed with bullets.
+#'
+#' @param cnd A condition object.
+#'
+#' @keywords internal
+#' @export
+cnd_message <- function(cnd) {
+  paste_line(
+    cnd_issue(cnd),
+    cnd_bullets(cnd)
+  )
+}
+#' @rdname cnd_message
+#' @export
+cnd_issue <- function(cnd, ...) {
+  UseMethod("cnd_issue")
+}
+#' @rdname cnd_message
+#' @export
+cnd_bullets <- function(cnd, ...) {
+  UseMethod("cnd_bullets")
+}
