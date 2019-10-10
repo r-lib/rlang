@@ -1042,10 +1042,17 @@ with_abort <- function(expr, classes = "error") {
 #' `cnd_message()` is meant to be used in `conditionMessage()`
 #' methods. The error class should implement:
 #'
-#' - A `cnd_issue()` method returning a single, bullet-less line.
+#' - A `cnd_issue()` method returning a single line.
 #'
-#' - A `cnd_bullets()` method returning a list of issues or
-#'   informative statements, prefixed with bullets.
+#' - A `cnd_bullets()` method returning a named vector of lines. These
+#'   lines are automatically prefixed with a bullet by `cnd_message()`.
+#'
+#' The bullets are formatted depending on the names of the character
+#' vector:
+#'
+#' - Elements named `"i"` are prefixed with a blue "info" symbol.
+#' - Elements named `"x"` are prefixed with a red "cross" symbol.
+#' - Unnamed elements are prefixed with a "*" symbol.
 #'
 #' @param cnd A condition object.
 #'
@@ -1054,7 +1061,7 @@ with_abort <- function(expr, classes = "error") {
 cnd_message <- function(cnd) {
   paste_line(
     cnd_issue(cnd),
-    cnd_bullets(cnd)
+    format_bullets(cnd_bullets(cnd))
   )
 }
 #' @rdname cnd_message
@@ -1066,4 +1073,13 @@ cnd_issue <- function(cnd, ...) {
 #' @export
 cnd_bullets <- function(cnd, ...) {
   UseMethod("cnd_bullets")
+}
+
+format_bullets <- function(x) {
+  nms <- names2(x)
+  stopifnot(nms %in% c("i", "x", ""))
+
+  bullets <- ifelse(nms == "i", info(), ifelse(nms == "x", cross(), "*"))
+  bullets <- paste(bullets, x, collapse = "\n")
+  bullets
 }

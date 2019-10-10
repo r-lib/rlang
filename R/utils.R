@@ -224,3 +224,10 @@ pad_spaces <- function(x, left = TRUE) {
     paste0(x, spaces(pads))
   }
 }
+
+info <- function() {
+  blue("i")
+}
+cross <- function() {
+  red("x")
+}
