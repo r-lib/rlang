@@ -21,9 +21,21 @@ cnd_bullets(cnd, ...)
 \code{cnd_message()} is meant to be used in \code{conditionMessage()}
 methods. The error class should implement:
 \itemize{
-\item A \code{cnd_issue()} method returning a single, bullet-less line.
-\item A \code{cnd_bullets()} method returning a list of issues or
-informative statements, prefixed with bullets.
+\item A \code{cnd_issue()} method returning a single line.
+\item A \code{cnd_bullets()} method returning a named vector of lines. These
+lines are automatically prefixed with a bullet by \code{cnd_message()}.
 }
+
+The bullets are formatted depending on the names of the character
+vector:
+\itemize{
+\item Elements named \code{"i"} are prefixed with a blue "info" symbol.
+\item Elements named \code{"x"} are prefixed with a red "cross" symbol.
+\item Unnamed elements are prefixed with a "*" symbol.
+}
+
+\code{cnd_message()} is automatically called by the \code{conditionMessage()}
+for rlang errors. Errors thrown with \code{\link[=abort]{abort()}} can implement
+\code{cnd_issue()} and \code{cnd_bullets()} right away.
 }
 \keyword{internal}

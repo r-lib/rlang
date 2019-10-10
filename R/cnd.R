@@ -578,6 +578,11 @@ catch_cnd <- function(expr, classes = "condition") {
 }
 
 #' @export
+conditionMessage.rlang_error <- function(c) {
+  cnd_message(c)
+}
+
+#' @export
 print.rlang_error <- function(x,
                               ...,
                               child = NULL,
@@ -1054,6 +1059,10 @@ with_abort <- function(expr, classes = "error") {
 #' - Elements named `"x"` are prefixed with a red "cross" symbol.
 #' - Unnamed elements are prefixed with a "*" symbol.
 #'
+#' `cnd_message()` is automatically called by the `conditionMessage()`
+#' for rlang errors. Errors thrown with [abort()] can implement
+#' `cnd_issue()` and `cnd_bullets()` right away.
+#'
 #' @param cnd A condition object.
 #'
 #' @keywords internal
@@ -1064,18 +1073,32 @@ cnd_message <- function(cnd) {
     format_bullets(cnd_bullets(cnd))
   )
 }
+
 #' @rdname cnd_message
 #' @export
 cnd_issue <- function(cnd, ...) {
   UseMethod("cnd_issue")
 }
+#' @export
+cnd_issue.default <- function(cnd, ...) {
+  cnd$message
+}
+
 #' @rdname cnd_message
 #' @export
 cnd_bullets <- function(cnd, ...) {
   UseMethod("cnd_bullets")
 }
+#' @export
+cnd_bullets.default <- function(cnd, ...) {
+  chr()
+}
 
 format_bullets <- function(x) {
+  if (!length(x)) {
+    return(x)
+  }
+
   nms <- names2(x)
   stopifnot(nms %in% c("i", "x", ""))
 
