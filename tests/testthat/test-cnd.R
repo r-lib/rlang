@@ -303,6 +303,9 @@ test_that("error is printed with parent backtrace", {
     print(err)
     print(err_force)
   })
+  expect_known_output(file = test_path("test-cnd-error-parent-full.txt"), {
+    print(err, simplify = "none")
+  })
   expect_known_trace_output(err, file = "test-cnd-error-parent-trace.txt")
 })
 

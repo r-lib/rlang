@@ -1,6 +1,12 @@
 
 # rlang (development)
 
+* The display of rlang errors derived from parent errors has been
+  improved. The simplified backtrace (as printed by
+  `rlang::last_error()`) no longer includes the parent errors. On the
+  other hand, the full backtrace (as printed by `rlang::last_trace()`)
+  now includes the backtraces of the parent errors.
+
 * `cnd_signal()` has improved support for rlang errors created with
   `error_cnd()`. It now records a backtrace if there isn't one
   already, and saves the error so it can be inspected with

@@ -5,12 +5,6 @@ Backtrace:
   8. rlang:::a()
   9. rlang:::b()
  10. rlang:::c()
-<parent: error/foobar>
-Low-level message
-Backtrace:
- 1. rlang:::f()
- 2. rlang:::g()
- 3. rlang:::h()
 Call `rlang::last_trace()` to see the full backtrace.
 <error/rlang_error>
 High-level message
@@ -19,10 +13,4 @@ Backtrace:
   9. rlang:::a()
  10. rlang:::b()
  11. rlang:::c()
-<parent: error/foobar>
-Low-level message
-Backtrace:
- 1. rlang:::f()
- 2. rlang:::g()
- 3. rlang:::h()
 Call `rlang::last_trace()` to see the full backtrace.

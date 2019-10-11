@@ -769,7 +769,9 @@ last_error <- function() {
 #' @rdname last_error
 #' @export
 last_trace <- function() {
-  last_error()$trace
+  err <- last_error()
+  err$print_simplify <- "none"
+  err
 }
 
 
