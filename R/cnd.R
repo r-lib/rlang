@@ -1044,26 +1044,45 @@ with_abort <- function(expr, classes = "error") {
 #'
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
 #'
-#' `cnd_message()` is meant to be used in `conditionMessage()`
-#' methods. The error class should implement:
+#' `cnd_message()` assembles an error message from two components:
 #'
-#' - A `cnd_issue()` method returning a single line.
+#' - The `cnd_issue()` generic. Methods should return a single line.
 #'
-#' - A `cnd_bullets()` method returning a named vector of lines. These
-#'   lines are automatically prefixed with a bullet by `cnd_message()`.
+#' - The `cnd_bullets()` generic. methods should return a named
+#'   vector of lines. These lines are automatically prefixed with a
+#'   bullet by `cnd_message()` (see the section on error
+#'   statements).
 #'
-#' The bullets are formatted depending on the names of the character
-#' vector:
+#' `cnd_message()` is automatically called by the `conditionMessage()`
+#' for rlang errors so that errors thrown with [abort()] only need to
+#' implement `cnd_issue()` and `cnd_bullets()`. It can also be called
+#' in custom `conditionMessage()` methods.
+#'
+#' @param cnd A condition object.
+#'
+#' @section Error statements:
+#'
+#' This experimental infrastructure is based on the idea that
+#' sentences in error messages are best kept very short and very
+#' simple. From this point of view, you should strive for simple
+#' sentences, ideally containing a single phrase. The best way to
+#' present the information is then as a list of bullets.
+#'
+#' `cnd_issue()` is the generic for the main error message. It should
+#' be as generic as possible, but since it is a generic it is easy to
+#' override by error subclasses.
+#'
+#' The `cnd_bullets()` methods should return a character vector of
+#' sentences. These are automatically prefixed with bullets by
+#' `cnd_message()`, according to the following scheme:
 #'
 #' - Elements named `"i"` are prefixed with a blue "info" symbol.
 #' - Elements named `"x"` are prefixed with a red "cross" symbol.
 #' - Unnamed elements are prefixed with a "*" symbol.
 #'
-#' `cnd_message()` is automatically called by the `conditionMessage()`
-#' for rlang errors. Errors thrown with [abort()] can implement
-#' `cnd_issue()` and `cnd_bullets()` right away.
-#'
-#' @param cnd A condition object.
+#' You are free to lay out the bullets in the order that you
+#' like. However, the "x" elements should usually come before "i"
+#' elements.
 #'
 #' @section Overriding `cnd_bullets()`:
 #'
@@ -1084,6 +1103,15 @@ with_abort <- function(expr, classes = "error") {
 #' Note that as a rule, `cnd_issue()` should be a general thematic
 #' issues that does not depend on state, and so does not need to be
 #' overridden.
+#'
+#'
+#' @section Life cycle:
+#'
+#' This infrastructure is experimental. In particular, the output of
+#' `cnd_message()` is likely to change in the future and you shouldn't
+#' test it verbatim in a way that makes R CMD check fail. Instead, use
+#' [testthat::verify_output()] to monitor the output without causing
+#' CRAN check failures when it changes.
 #'
 #' @keywords internal
 #' @export
