@@ -7,13 +7,6 @@ Backtrace:
   9. rlang:::a()
  10. rlang:::b()
  11. rlang:::c()
-<parent: error/rlang_error>
-Low-level message
-Backtrace:
- 1. rlang::with_abort(f())
- 3. rlang:::f()
- 4. rlang:::g()
- 5. rlang:::h()
 Call `rlang::last_trace()` to see the full backtrace.
 
 
