@@ -11,7 +11,7 @@ Backtrace:
  1. rlang:::f()
  2. rlang:::g()
  3. rlang:::h()
-Call `rlang::last_trace()` to see the full backtrace
+Call `rlang::last_trace()` to see the full backtrace.
 <error/rlang_error>
 High-level message
 Backtrace:
@@ -25,4 +25,4 @@ Backtrace:
  1. rlang:::f()
  2. rlang:::g()
  3. rlang:::h()
-Call `rlang::last_trace()` to see the full backtrace
+Call `rlang::last_trace()` to see the full backtrace.

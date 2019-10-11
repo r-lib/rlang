@@ -1,7 +1,7 @@
 > # Default (interactive)
 > cat_line(default_interactive)
 Error: Error message
-Call `rlang::last_error()` to see a backtrace
+Call `rlang::last_error()` to see a backtrace.
 Execution halted
 
 > # Default (non-interactive)

@@ -4,4 +4,4 @@ Backtrace:
   8. rlang:::f()
   9. rlang:::g()
  10. rlang:::h()
-Call `rlang::last_trace()` to see the full backtrace
+Call `rlang::last_trace()` to see the full backtrace.
