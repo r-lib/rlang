@@ -664,7 +664,16 @@ test_that("default cnd_bullets() method calls lazy method if present", {
       c(x = cnd$data, i = "bar")
     }
   )
-  verify_output(test_path("test-cnd-bullets-lazy.txt"), cnd_signal(err))
+  err_formula_bullets <- error_cnd(
+    "class",
+    message = "Issue.",
+    data = "foo",
+    .bullets = ~ .$data
+  )
+  verify_output(test_path("test-cnd-bullets-lazy.txt"), {
+    cnd_signal(err)
+    cnd_signal(err_formula_bullets)
+  })
 })
 
 

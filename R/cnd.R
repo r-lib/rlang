@@ -1093,6 +1093,9 @@ cnd_bullets <- function(cnd, ...) {
 cnd_bullets.default <- function(cnd, ...) {
   if (is_function(cnd$.bullets)) {
     cnd$.bullets(cnd, ...)
+  } else if (is_bare_formula(cnd$.bullets)) {
+    cnd_bullets <- as_function(cnd$.bullets)
+    cnd_bullets(cnd, ...)
   } else {
     chr()
   }
