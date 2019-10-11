@@ -1,0 +1,4 @@
+> cnd_signal(err)
+Error: Issue.
+x foo
+i bar

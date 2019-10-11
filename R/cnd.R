@@ -1091,7 +1091,11 @@ cnd_bullets <- function(cnd, ...) {
 }
 #' @export
 cnd_bullets.default <- function(cnd, ...) {
-  chr()
+  if (is_function(cnd$.bullets)) {
+    cnd$.bullets(cnd, ...)
+  } else {
+    chr()
+  }
 }
 
 format_bullets <- function(x) {

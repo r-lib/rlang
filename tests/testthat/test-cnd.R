@@ -655,6 +655,18 @@ test_that("default conditionMessage() method for rlang errors calls cnd_message(
   expect_identical(out, exp)
 })
 
+test_that("default cnd_bullets() method calls lazy method if present", {
+  err <- error_cnd(
+    "class",
+    message = "Issue.",
+    data = "foo",
+    .bullets = function(cnd, ...) {
+      c(x = cnd$data, i = "bar")
+    }
+  )
+  verify_output(test_path("test-cnd-bullets-lazy.txt"), cnd_signal(err))
+})
+
 
 # Lifecycle ----------------------------------------------------------
 
