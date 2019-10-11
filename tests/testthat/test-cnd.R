@@ -657,7 +657,7 @@ test_that("default conditionMessage() method for rlang errors calls cnd_message(
 
 test_that("default cnd_bullets() method calls lazy method if present", {
   err <- error_cnd(
-    "class",
+    "rlang_foobar",
     message = "Issue.",
     data = "foo",
     .bullets = function(cnd, ...) {
@@ -665,11 +665,20 @@ test_that("default cnd_bullets() method calls lazy method if present", {
     }
   )
   err_formula_bullets <- error_cnd(
-    "class",
+    "rlang_foobar",
     message = "Issue.",
     data = "foo",
     .bullets = ~ .$data
   )
+
+  # Should not have precedence
+  local_methods(
+    cnd_bullets.rlang_foobar = function(cnd, ...) "wrong!"
+  )
+
+  # Needs bugfix in dev version
+  skip_if_not_installed("testthat", "2.2.1.9000")
+
   verify_output(test_path("test-cnd-bullets-lazy.txt"), {
     cnd_signal(err)
     cnd_signal(err_formula_bullets)

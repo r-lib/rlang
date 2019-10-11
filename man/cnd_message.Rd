@@ -38,4 +38,26 @@ vector:
 for rlang errors. Errors thrown with \code{\link[=abort]{abort()}} can implement
 \code{cnd_issue()} and \code{cnd_bullets()} right away.
 }
+\section{Overriding \code{cnd_bullets()}}{
+
+
+Sometimes the generation of an error message depends on the state
+of the type checking. In that case, it can be tricky to lazily
+generate error messages with \code{cnd_bullets()}: you can either
+overspecify your error class hierarchies with one class per state,
+or replicate the type-checking control flow within the
+\code{cnd_bullets()} method. None of these options are ideal.
+
+To work around this, you can define a \code{.bullets} field in your
+error object. This should be a function (or a lambda-formula which
+will be passed to \code{\link[=as_function]{as_function()}}) with the same signature as
+\code{cnd_bullets()} methods. This function overrides the
+\code{cnd_bullets()} generic and can generate an error message tailored
+to the state in which the error was constructed.
+
+Note that as a rule, \code{cnd_issue()} should be a general thematic
+issues that does not depend on state, and so does not need to be
+overridden.
+}
+
 \keyword{internal}

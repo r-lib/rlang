@@ -1065,6 +1065,26 @@ with_abort <- function(expr, classes = "error") {
 #'
 #' @param cnd A condition object.
 #'
+#' @section Overriding `cnd_bullets()`:
+#'
+#' Sometimes the generation of an error message depends on the state
+#' of the type checking. In that case, it can be tricky to lazily
+#' generate error messages with `cnd_bullets()`: you can either
+#' overspecify your error class hierarchies with one class per state,
+#' or replicate the type-checking control flow within the
+#' `cnd_bullets()` method. None of these options are ideal.
+#'
+#' To work around this, you can define a `.bullets` field in your
+#' error object. This should be a function (or a lambda-formula which
+#' will be passed to [as_function()]) with the same signature as
+#' `cnd_bullets()` methods. This function overrides the
+#' `cnd_bullets()` generic and can generate an error message tailored
+#' to the state in which the error was constructed.
+#'
+#' Note that as a rule, `cnd_issue()` should be a general thematic
+#' issues that does not depend on state, and so does not need to be
+#' overridden.
+#'
 #' @keywords internal
 #' @export
 cnd_message <- function(cnd) {
@@ -1087,18 +1107,18 @@ cnd_issue.default <- function(cnd, ...) {
 #' @rdname cnd_message
 #' @export
 cnd_bullets <- function(cnd, ...) {
-  UseMethod("cnd_bullets")
-}
-#' @export
-cnd_bullets.default <- function(cnd, ...) {
   if (is_function(cnd$.bullets)) {
     cnd$.bullets(cnd, ...)
   } else if (is_bare_formula(cnd$.bullets)) {
     cnd_bullets <- as_function(cnd$.bullets)
     cnd_bullets(cnd, ...)
   } else {
-    chr()
+    UseMethod("cnd_bullets")
   }
+}
+#' @export
+cnd_bullets.default <- function(cnd, ...) {
+  chr()
 }
 
 format_bullets <- function(x) {

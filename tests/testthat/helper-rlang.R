@@ -22,3 +22,7 @@ run_script <- function(file, envvars = chr()) {
     env = envvars
   ))
 }
+
+local_methods <- function(..., .frame = caller_env()) {
+  scoped_bindings(..., .env = global_env(), .frame = .frame)
+}
