@@ -21,10 +21,9 @@ cnd_bullets(cnd, ...)
 \code{cnd_message()} assembles an error message from two components:
 \itemize{
 \item The \code{cnd_issue()} generic. Methods should return a single line.
-\item The \code{cnd_bullets()} generic. methods should return a named
-vector of lines. These lines are automatically prefixed with a
-bullet by \code{cnd_message()} (see the section on error
-statements).
+\item The \code{cnd_bullets()} generic. Methods should return a named vector
+of lines. These lines are automatically prefixed with a bullet by
+\code{cnd_message()} (see the section on error statements).
 }
 
 \code{cnd_message()} is automatically called by the \code{conditionMessage()}
@@ -36,10 +35,11 @@ in custom \code{conditionMessage()} methods.
 
 
 This experimental infrastructure is based on the idea that
-sentences in error messages are best kept very short and very
-simple. From this point of view, you should strive for simple
-sentences, ideally containing a single phrase. The best way to
-present the information is then as a list of bullets.
+sentences in error messages are best kept short and simple. From
+this point of view, the best way to present the information is as a
+bullet list of simple sentences containing a single clause.
+\code{cnd_message()} helps following this structure by building an error
+message from two parts: the \strong{issue} and the \strong{bullets}.
 
 \code{cnd_issue()} is the generic for the main error message. It should
 be as generic as possible, but since it is a generic it is easy to
@@ -54,9 +54,8 @@ sentences. These are automatically prefixed with bullets by
 \item Unnamed elements are prefixed with a "*" symbol.
 }
 
-You are free to lay out the bullets in the order that you
-like. However, the "x" elements should usually come before "i"
-elements.
+While you are free to lay out the bullets in the order that you
+like, "x" bullets should usually precede "i" bullets.
 }
 
 \section{Overriding \code{cnd_bullets()}}{
@@ -69,16 +68,16 @@ overspecify your error class hierarchies with one class per state,
 or replicate the type-checking control flow within the
 \code{cnd_bullets()} method. None of these options are ideal.
 
-To work around this, you can define a \code{.bullets} field in your
-error object. This should be a function (or a lambda-formula which
-will be passed to \code{\link[=as_function]{as_function()}}) with the same signature as
+A better option is to define a \code{.bullets} field in your error
+object. This should be a function (or a lambda-formula which will
+be passed to \code{\link[=as_function]{as_function()}}) with the same signature as
 \code{cnd_bullets()} methods. This function overrides the
 \code{cnd_bullets()} generic and can generate an error message tailored
 to the state in which the error was constructed.
 
 Note that as a rule, \code{cnd_issue()} should be a general thematic
-issues that does not depend on state, and so does not need to be
-overridden.
+issues that does not depend on state. For this reason, it isn't
+possible to define an overriding method in the condition object.
 }
 
 \section{Life cycle}{

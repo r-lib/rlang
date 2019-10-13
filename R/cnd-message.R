@@ -8,10 +8,9 @@
 #'
 #' - The `cnd_issue()` generic. Methods should return a single line.
 #'
-#' - The `cnd_bullets()` generic. methods should return a named
-#'   vector of lines. These lines are automatically prefixed with a
-#'   bullet by `cnd_message()` (see the section on error
-#'   statements).
+#' - The `cnd_bullets()` generic. Methods should return a named vector
+#'   of lines. These lines are automatically prefixed with a bullet by
+#'   `cnd_message()` (see the section on error statements).
 #'
 #' `cnd_message()` is automatically called by the `conditionMessage()`
 #' for rlang errors so that errors thrown with [abort()] only need to
@@ -23,10 +22,11 @@
 #' @section Error statements:
 #'
 #' This experimental infrastructure is based on the idea that
-#' sentences in error messages are best kept very short and very
-#' simple. From this point of view, you should strive for simple
-#' sentences, ideally containing a single phrase. The best way to
-#' present the information is then as a list of bullets.
+#' sentences in error messages are best kept short and simple. From
+#' this point of view, the best way to present the information is as a
+#' bullet list of simple sentences containing a single clause.
+#' `cnd_message()` helps following this structure by building an error
+#' message from two parts: the __issue__ and the __bullets__.
 #'
 #' `cnd_issue()` is the generic for the main error message. It should
 #' be as generic as possible, but since it is a generic it is easy to
@@ -40,9 +40,9 @@
 #' - Elements named `"x"` are prefixed with a red "cross" symbol.
 #' - Unnamed elements are prefixed with a "*" symbol.
 #'
-#' You are free to lay out the bullets in the order that you
-#' like. However, the "x" elements should usually come before "i"
-#' elements.
+#' While you are free to lay out the bullets in the order that you
+#' like, "x" bullets should usually precede "i" bullets.
+#'
 #'
 #' @section Overriding `cnd_bullets()`:
 #'
@@ -53,16 +53,16 @@
 #' or replicate the type-checking control flow within the
 #' `cnd_bullets()` method. None of these options are ideal.
 #'
-#' To work around this, you can define a `.bullets` field in your
-#' error object. This should be a function (or a lambda-formula which
-#' will be passed to [as_function()]) with the same signature as
+#' A better option is to define a `.bullets` field in your error
+#' object. This should be a function (or a lambda-formula which will
+#' be passed to [as_function()]) with the same signature as
 #' `cnd_bullets()` methods. This function overrides the
 #' `cnd_bullets()` generic and can generate an error message tailored
 #' to the state in which the error was constructed.
 #'
 #' Note that as a rule, `cnd_issue()` should be a general thematic
-#' issues that does not depend on state, and so does not need to be
-#' overridden.
+#' issues that does not depend on state. For this reason, it isn't
+#' possible to define an overriding method in the condition object.
 #'
 #'
 #' @section Life cycle:
