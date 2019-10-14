@@ -77,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9005</span>
       </span>
     </div>
 
@@ -563,7 +563,7 @@ rlang::expr(mean(!!var * 100))</a></code></pre>
 <ul>
 <li><p><code>as_dictionary()</code> is now defunct.</p></li>
 <li><p>The experimental function <code>rst_muffle()</code> is now defunct. Please use <code><a href="../reference/cnd_muffle.html">cnd_muffle()</a></code> instead. Unlike its predecessor, <code><a href="../reference/cnd_muffle.html">cnd_muffle()</a></code> is not generic. It is marked as a calling handler and thus can be passed directly to <code><a href="../reference/with_handlers.html">with_handlers()</a></code> to muffle specific conditions (such as specific subclasses of warnings).</p></li>
-<li><p><code>cnd_inform()</code>, <code>cnd_warn()</code> and <code>cnd_abort()</code> are retired and defunct. The old <code>cnd_message()</code>, <code>cnd_warning()</code>, <code>cnd_error()</code> and <code>new_cnd()</code> constructors deprecated in rlang 0.2.0 are now defunct.</p></li>
+<li><p><code>cnd_inform()</code>, <code>cnd_warn()</code> and <code>cnd_abort()</code> are retired and defunct. The old <code><a href="../reference/cnd_message.html">cnd_message()</a></code>, <code>cnd_warning()</code>, <code>cnd_error()</code> and <code>new_cnd()</code> constructors deprecated in rlang 0.2.0 are now defunct.</p></li>
 <li><p>Modifying a condition with <code><a href="../reference/cnd_signal.html">cnd_signal()</a></code> is defunct. In addition, creating a condition with <code><a href="../reference/cnd_signal.html">cnd_signal()</a></code> is soft-deprecated, please use the new function [signal()] instead.</p></li>
 <li><p><code>inplace()</code> has been renamed to <code><a href="../reference/with_handlers.html">calling()</a></code> to follow base R terminology more closely.</p></li>
 </ul>
@@ -731,7 +731,7 @@ quo(call(`!!!`(var)))</a></code></pre>
 <li><p><code>UQE()</code> is now deprecated in order to simplify the syntax of quasiquotation. Please use <code>!! get_expr(x)</code> instead.</p></li>
 <li><p><code><a href="../reference/expr_interp.html">expr_interp()</a></code> now returns a formula instead of a quosure when supplied a formula.</p></li>
 <li><p><code>is_quosureish()</code> and <code>as_quosureish()</code> are deprecated. These functions assumed that quosures are formulas but that is only an implementation detail.</p></li>
-<li><p><code>new_cnd()</code> is now <code><a href="../reference/cnd.html">cnd()</a></code> for consistency with other constructors. Also, <code>cnd_error()</code>, <code>cnd_warning()</code> and <code>cnd_message()</code> are now <code><a href="../reference/cnd.html">error_cnd()</a></code>, <code><a href="../reference/cnd.html">warning_cnd()</a></code> and <code><a href="../reference/cnd.html">message_cnd()</a></code> to follow our naming scheme according to which the type of output is a suffix rather than a prefix.</p></li>
+<li><p><code>new_cnd()</code> is now <code><a href="../reference/cnd.html">cnd()</a></code> for consistency with other constructors. Also, <code>cnd_error()</code>, <code>cnd_warning()</code> and <code><a href="../reference/cnd_message.html">cnd_message()</a></code> are now <code><a href="../reference/cnd.html">error_cnd()</a></code>, <code><a href="../reference/cnd.html">warning_cnd()</a></code> and <code><a href="../reference/cnd.html">message_cnd()</a></code> to follow our naming scheme according to which the type of output is a suffix rather than a prefix.</p></li>
 <li><p><code><a href="../reference/is_pairlist.html">is_node()</a></code> now returns <code>TRUE</code> for calls as well and <code><a href="../reference/is_pairlist.html">is_pairlist()</a></code> does not return <code>TRUE</code> for <code>NULL</code> objects. Use <code><a href="../reference/is_pairlist.html">is_node_list()</a></code> to determine whether an object either of type <code>pairlist</code> or <code>NULL</code>. Note that all these functions are still experimental.</p></li>
 <li><p><code><a href="../reference/set_names.html">set_names()</a></code> no longer automatically splices lists of character vectors as we are moving away from automatic splicing semantics.</p></li>
 </ul>
