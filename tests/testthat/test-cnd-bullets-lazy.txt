@@ -1,0 +1,7 @@
+> cnd_signal(err)
+Error: Issue.
+x foo
+i bar
+> cnd_signal(err_formula_bullets)
+Error: Issue.
+* foo

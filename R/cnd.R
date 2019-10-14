@@ -578,6 +578,11 @@ catch_cnd <- function(expr, classes = "condition") {
 }
 
 #' @export
+conditionMessage.rlang_error <- function(c) {
+  cnd_message(c)
+}
+
+#' @export
 print.rlang_error <- function(x,
                               ...,
                               child = NULL,
