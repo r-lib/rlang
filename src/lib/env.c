@@ -1,4 +1,5 @@
 #include "rlang.h"
+#include <Rversion.h>
 
 sexp* eval_with_x(sexp* call, sexp* x);
 sexp* eval_with_xy(sexp* call, sexp* x, sexp* y);
@@ -64,9 +65,54 @@ sexp* r_new_environment(sexp* parent, r_ssize size) {
 static sexp* env2list_call = NULL;
 static sexp* list2env_call = NULL;
 
-sexp* r_env_as_list(sexp* x) {
-  return eval_with_x(env2list_call, x);
+sexp* r_env_as_list_compat(sexp* env, sexp* out);
+
+sexp* r_env_as_list(sexp* env) {
+  sexp* out = KEEP(eval_with_x(env2list_call, env));
+
+#if R_VERSION < R_Version(4, 0, 0)
+  out = r_env_as_list_compat(env, out);
+#endif
+
+  FREE(1);
+  return out;
 }
+
+// On R < 4.0, the active binding function is returned instead of
+// its value. We invoke the active bindings here to get consistent
+// behaviour in all supported R versions.
+sexp* r_env_as_list_compat(sexp* env, sexp* out) {
+  sexp* nms = KEEP(r_env_names(env));
+  sexp* types = KEEP(r_env_binding_types(env, nms));
+
+  if (types == R_NilValue) {
+    FREE(2);
+    return out;
+  }
+
+  r_ssize n = r_length(nms);
+  sexp** nms_ptr = r_chr_deref(nms);
+  int* types_ptr = r_int_deref(types);
+
+  for (r_ssize i = 0; i < n; ++i, ++nms_ptr, ++types_ptr) {
+    enum r_env_binding_type type = *types_ptr;
+    if (type == R_ENV_BINDING_ACTIVE) {
+      r_ssize fn_idx = r_chr_detect_index(nms, r_str_deref(*nms_ptr));
+      if (fn_idx < 0) {
+        r_abort("Internal error: Can't find active binding in list");
+      }
+
+      sexp* fn = r_list_get(out, fn_idx);
+      sexp* value = r_eval(KEEP(r_call(fn)), r_empty_env);
+      r_list_poke(out, fn_idx, value);
+      FREE(1);
+    }
+  }
+
+  FREE(2);
+  return out;
+}
+
 sexp* r_list_as_environment(sexp* x, sexp* parent) {
   parent = parent ? parent : r_empty_env;
   return eval_with_xy(list2env_call, x, parent);
@@ -77,46 +123,10 @@ sexp* r_env_clone(sexp* env, sexp* parent) {
     parent = r_env_parent(env);
   }
 
-  sexp* nms = KEEP(r_env_names(env));
-  sexp* types = KEEP(r_env_binding_types(env, nms));
+  sexp* out = KEEP(r_env_as_list(env));
+  out = r_list_as_environment(out, parent);
 
-  sexp* out_list = KEEP(r_env_as_list(env));
-  sexp* out = KEEP(r_list_as_environment(out_list, parent));
-
-  if (types == r_null) {
-    FREE(4);
-    return out;
-  }
-
-  r_ssize n = r_length(nms);
-  sexp** nms_ptr = r_chr_deref(nms);
-  int* types_ptr = r_int_deref(types);
-
-  // There is currently no way of accessing the function of an active
-  // binding except through env2list. This makes it impossible to
-  // preserve active bindings without forcing promises.
-
-  for (r_ssize i = 0; i < n; ++i, ++nms_ptr, ++types_ptr) {
-    enum r_env_binding_type type = *types_ptr;
-    if (type == R_ENV_BINDING_ACTIVE) {
-      sexp* str = *nms_ptr;
-      sexp* sym = r_str_as_symbol(str);
-
-      r_ssize fn_idx = r_chr_detect_index(nms, r_str_deref(str));
-      if (fn_idx < 0) {
-        r_abort("Internal error: Can't find active binding in temporary list");
-      }
-
-      sexp* nms = KEEP(r_str_as_character(str));
-      r_env_unbind_names(out, nms, false);
-      FREE(1);
-
-      sexp* fn = r_list_get(out_list, fn_idx);
-      R_MakeActiveBinding(sym, fn, out);
-    }
-  }
-
-  FREE(4);
+  FREE(1);
   return out;
 }
 

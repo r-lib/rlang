@@ -1,6 +1,11 @@
 
 # rlang (development)
 
+* `env_clone()` no longer recreates active bindings and is now just an
+  alias for `env2list(as.list(env))`. Unlike `as.list()` which returns
+  the active binding function on R < 4.0, the value of active bindings
+  is consistently used in all versions.
+
 * The display of rlang errors derived from parent errors has been
   improved. The simplified backtrace (as printed by
   `rlang::last_error()`) no longer includes the parent errors. On the

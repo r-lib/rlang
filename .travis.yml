@@ -20,6 +20,8 @@ matrix:
         script: Rscript -e 'pkgdown::deploy_site_github(verbose = TRUE)'
         skip_cleanup: true
     - r: devel
+      env:
+        - _R_ENV2LIST_BUGFIX_=true
 
 env:
   global:
