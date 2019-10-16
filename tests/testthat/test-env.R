@@ -347,19 +347,11 @@ test_that("environment is printed with class if any", {
   expect_output(env_print(env), "class: foo, bar")
 })
 
-test_that("env_clone() recreates active bindings", {
+test_that("env_clone() invokes active bindings in all R versions", {
   e <- env()
   env_bind_active(e, foo = function() "foo")
   out <- env_clone(e)
   expect_identical(out$foo, "foo")
-})
-
-test_that("env_clone() does not force promises", {
-  skip("Failing")
-  e <- env()
-  env_bind_lazy(e, foo = abort("forced"))
-  out <- env_clone(e)
-  expect_error(out$foo, "forced")
 })
 
 test_that("env_poke_parent() pokes parent", {
