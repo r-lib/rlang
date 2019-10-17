@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create a condition object — cnd • rlang</title>
+<title>Create a condition object — error_cnd • rlang</title>
 
 
 <!-- jquery -->
@@ -35,7 +35,7 @@
 
 
 
-<meta property="og:title" content="Create a condition object — cnd" />
+<meta property="og:title" content="Create a condition object — error_cnd" />
 <meta property="og:description" content="These constructors make it easy to create subclassed conditions.
 Conditions are objects that power the error system in R. They can
 also be used for passing messages to pre-established handlers." />
@@ -147,7 +147,7 @@ also be used for passing messages to pre-established handlers." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Create a condition object</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/cnd.R'><code>R/cnd.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/cnd-error.R'><code>R/cnd-error.R</code></a>, <a href='https://github.com/r-lib/rlang/blob/master/R/cnd.R'><code>R/cnd.R</code></a></small>
     <div class="hidden name"><code>cnd.Rd</code></div>
     </div>
 
@@ -157,10 +157,10 @@ Conditions are objects that power the error system in R. They can
 also be used for passing messages to pre-established handlers.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cnd</span>(<span class='no'>.subclass</span>, <span class='no'>...</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>""</span>)
-
-<span class='fu'>error_cnd</span>(<span class='kw'>.subclass</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>trace</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <pre class="usage"><span class='fu'>error_cnd</span>(<span class='kw'>.subclass</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>trace</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>parent</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='fu'>cnd</span>(<span class='no'>.subclass</span>, <span class='no'>...</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>""</span>)
 
 <span class='fu'>warning_cnd</span>(<span class='kw'>.subclass</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>""</span>)
 
