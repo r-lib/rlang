@@ -45,3 +45,8 @@ test_that("set_names() first names the vector before applying a function (#688)"
   expect_identical(set_names(set_names(letters), toupper), exp)
   expect_identical(set_names(letters, toupper), exp)
 })
+
+test_that("set_names2() fills in empty names", {
+  chr <- c("a", b = "B", "c")
+  expect_equal(set_names2(chr), c(a = "a", b = "B", c = "c"))
+})

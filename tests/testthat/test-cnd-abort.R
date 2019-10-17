@@ -1,0 +1,120 @@
+context("cnd-abort")
+
+test_that("errors are signalled with backtrace", {
+  fn <- function() abort("")
+  err <- catch_cnd(fn())
+  expect_is(err$trace, "rlang_trace")
+})
+
+test_that("can pass classed strings as error message", {
+  message <- structure("foo", class = c("glue", "character"))
+  err <- catch_cnd(abort(message))
+  expect_identical(err$message, message)
+})
+
+test_that("errors are saved", {
+  # `outFile` argument
+  skip_if(getRversion() < "3.4")
+
+  file <- tempfile()
+  on.exit(unlink(file))
+
+  # Verbose try() triggers conditionMessage() and thus saves the error.
+  # This simulates an unhandled error.
+  scoped_options(rlang_force_unhandled_error = TRUE)
+
+  try(abort("foo", "bar"), outFile = file)
+  expect_true(inherits_all(last_error(), c("bar", "rlang_error")))
+
+  try(cnd_signal(error_cnd("foobar")), outFile = file)
+  expect_true(inherits_all(last_error(), c("foobar", "rlang_error")))
+})
+
+test_that("No backtrace is displayed with top-level active bindings", {
+  scoped_options(
+    rlang_trace_top_env = current_env()
+  )
+
+  env_bind_active(current_env(), foo = function() abort("msg"))
+  expect_error(foo, "^msg$")
+})
+
+test_that("Invalid on_error option resets itself", {
+  with_options(
+    rlang_force_unhandled_error = TRUE,
+    rlang_backtrace_on_error = NA,
+    {
+      expect_warning(tryCatch(abort("foo"), error = identity), "Invalid")
+      expect_null(peek_option("rlang_backtrace_on_error"))
+    }
+  )
+})
+
+test_that("format_onerror_backtrace handles empty and size 1 traces", {
+  scoped_options(rlang_backtrace_on_error = "branch")
+
+  trace <- new_trace(list(), int(), chr())
+  expect_identical(format_onerror_backtrace(trace), NULL)
+
+  trace <- new_trace(list(quote(foo)), int(0), chr(""))
+  expect_identical(format_onerror_backtrace(trace), NULL)
+
+  trace <- new_trace(list(quote(foo), quote(bar)), int(0, 1), chr("", ""))
+  expect_match(format_onerror_backtrace(trace), "foo.*bar")
+})
+
+test_that("error is printed with backtrace", {
+  skip_unless_utf8()
+
+  run_error_script <- function(envvars = chr()) {
+    run_script(test_path("fixtures", "error-backtrace.R"), envvars = envvars)
+  }
+
+  default_interactive <- run_error_script(envvars = "rlang_interactive=true")
+  default_non_interactive <- run_error_script()
+  reminder <- run_error_script(envvars = "rlang_backtrace_on_error=reminder")
+  branch <- run_error_script(envvars = "rlang_backtrace_on_error=branch")
+  collapse <- run_error_script(envvars = "rlang_backtrace_on_error=collapse")
+  full <- run_error_script(envvars = "rlang_backtrace_on_error=full")
+
+  verify_output(test_path("test-cnd-error.txt"), {
+    "Default (interactive)"
+    cat_line(default_interactive)
+
+    "Default (non-interactive)"
+    cat_line(default_non_interactive)
+
+    "Reminder"
+    cat_line(reminder)
+
+    "Branch"
+    cat_line(branch)
+
+    "Collapse"
+    cat_line(collapse)
+
+    "Full"
+    cat_line(full)
+  })
+})
+
+test_that("parent errors are not displayed in error message and backtrace", {
+  skip_unless_utf8()
+
+  run_error_script <- function(envvars = chr()) {
+    run_script(
+      test_path("fixtures", "error-backtrace-parent.R"),
+      envvars = envvars
+    )
+  }
+  non_interactive <- run_error_script()
+  interactive <- run_error_script(envvars = "rlang_interactive=true")
+
+  verify_output(test_path("test-cnd-error-parent.txt"), {
+    "Interactive"
+    cat_line(interactive)
+
+    "Non-interactive"
+    cat_line(non_interactive)
+  })
+})

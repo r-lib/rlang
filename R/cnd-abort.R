@@ -1,0 +1,353 @@
+#' Signal an error, warning, or message
+#'
+#' @description
+#'
+#' These functions are equivalent to base functions [base::stop()],
+#' [base::warning()] and [base::message()], but make it easy to supply
+#' condition metadata:
+#'
+#' * Supply `.subclass` to create a classed condition. Typed
+#'   conditions can be captured or handled selectively, allowing for
+#'   finer-grained error handling.
+#'
+#' * Supply metadata with named `...` arguments. This data will be
+#'   stored in the condition object and can be examined by handlers.
+#'
+#' `interrupt()` allows R code to simulate a user interrupt of the
+#' kind that is signalled with `Ctrl-C`. It is currently not possible
+#' to create custom interrupt condition objects.
+#'
+#'
+#' @section Backtrace:
+#'
+#' Unlike `stop()` and `warning()`, these functions don't include call
+#' information by default. This saves you from typing `call. = FALSE`
+#' and produces cleaner error messages.
+#'
+#' A backtrace is always saved into error objects. You can print a
+#' simplified backtrace of the last error by calling [last_error()]
+#' and a full backtrace with `summary(last_error())`.
+#'
+#' You can also display a backtrace with the error message by setting
+#' the option `rlang_backtrace_on_error`. It supports the following
+#' values:
+#'
+#' * `"reminder"`: Invite users to call `rlang::last_error()` to see a
+#'   backtrace.
+#' * `"branch"`: Display a simplified backtrace.
+#' * `"collapse"`: Display a collapsed backtrace tree.
+#' * `"full"`: Display a full backtrace tree.
+#' * `"none"`: Display nothing.
+#'
+#' @section Mufflable conditions:
+#'
+#' Signalling a condition with `inform()` or `warn()` causes a message
+#' to be displayed in the console. These messages can be muffled with
+#' [base::suppressMessages()] or [base::suppressWarnings()].
+#'
+#' On recent R versions (>= R 3.5.0), interrupts are typically
+#' signalled with a `"resume"` restart. This is however not
+#' guaranteed.
+#'
+#'
+#' @section Lifecycle:
+#'
+#' These functions were changed in rlang 0.3.0 to take condition
+#' metadata with `...`. Consequently:
+#'
+#' * All arguments were renamed to be prefixed with a dot, except for
+#'   `type` which was renamed to `.subclass`.
+#' * `.call` (previously `call`) can no longer be passed positionally.
+#'
+#' @inheritParams cnd
+#' @param message The message to display.
+#' @param .subclass Subclass of the condition. This allows your users
+#'   to selectively handle the conditions signalled by your functions.
+#' @param ... Additional data to be stored in the condition object.
+#' @param call Defunct as of rlang 0.4.0. Storing the full
+#'   backtrace is now preferred to storing a simple call.
+#' @param msg,type These arguments were renamed to `message` and
+#'   `.subclass` and are defunct as of rlang 0.4.0.
+#'
+#' @seealso [with_abort()] to convert all errors to rlang errors.
+#' @examples
+#' # These examples are guarded to avoid throwing errors
+#' if (FALSE) {
+#'
+#' # Signal an error with a message just like stop():
+#' abort("Something bad happened")
+#'
+#' # Give a class to the error:
+#' abort("Something bad happened", "somepkg_bad_error")
+#'
+#' # This will allow your users to handle the error selectively
+#' tryCatch(
+#'   somepkg_function(),
+#'   somepkg_bad_error = function(err) {
+#'     warn(err$message) # Demote the error to a warning
+#'     NA                # Return an alternative value
+#'   }
+#' )
+#'
+#' # You can also specify metadata that will be stored in the condition:
+#' abort("Something bad happened", "somepkg_bad_error", data = 1:10)
+#'
+#' # This data can then be consulted by user handlers:
+#' tryCatch(
+#'   somepkg_function(),
+#'   somepkg_bad_error = function(err) {
+#'     # Compute an alternative return value with the data:
+#'     recover_error(err$data)
+#'   }
+#' )
+#'
+#' # If you call low-level APIs it is good practice to catch technical
+#' # errors and rethrow them with a more meaningful message. Pass on
+#' # the caught error as `parent` to get a nice decomposition of
+#' # errors and backtraces:
+#' file <- "http://foo.bar/baz"
+#' tryCatch(
+#'   download(file),
+#'   error = function(err) {
+#'     msg <- sprintf("Can't download `%s`", file)
+#'     abort(msg, parent = err)
+#' })
+#'
+#' # Unhandled errors are saved automatically by `abort()` and can be
+#' # retrieved with `last_error()`. The error prints with a simplified
+#' # backtrace:
+#' abort("Saved error?")
+#' last_error()
+#'
+#' # Use `summary()` to print the full backtrace and the condition fields:
+#' summary(last_error())
+#'
+#' }
+#' @export
+abort <- function(message = "",
+                  .subclass = NULL,
+                  ...,
+                  trace = NULL,
+                  call = NULL,
+                  parent = NULL,
+                  msg, type) {
+  validate_signal_args(msg, type, call)
+
+  if (is_null(trace) && is_null(peek_option("rlang__disable_trace_capture"))) {
+    # Prevents infloops when rlang throws during trace capture
+    scoped_options("rlang__disable_trace_capture" = TRUE)
+
+    trace <- trace_back()
+
+    if (is_null(parent)) {
+      context <- trace_length(trace)
+    } else {
+      context <- find_capture_context()
+    }
+    trace <- trace_trim_context(trace, context)
+  }
+
+  # Only collapse lengthy vectors because `paste0()` removes the class
+  # of glue strings
+  if (length(message) > 1) {
+    message <- paste0(message, collapse = "\n")
+  }
+
+  cnd <- error_cnd(.subclass,
+    ...,
+    message = message,
+    parent = parent,
+    trace = trace
+  )
+  signal_abort(cnd)
+}
+
+signal_abort <- function(cnd) {
+  if (is_true(peek_option("rlang_force_unhandled_error"))) {
+    # Fall back with the full rlang error
+    fallback <- cnd
+  } else {
+    # Let exiting and calling handlers handle the fully typed
+    # condition. The error message hasn't been altered yet and won't
+    # affect handling functions like `try()`.
+    signalCondition(cnd)
+
+    # If we're still here, the error is unhandled. Fall back with a
+    # bare condition to avoid calling handlers logging the same error
+    # twice
+    fallback <- cnd("rlang_error")
+  }
+
+  # Save the unhandled error for `rlang::last_error()`.
+  last_error_env$cnd <- cnd
+
+  # Generate the error message, possibly with parent error messages,
+  # and possibly with a backtrace or reminder
+  fallback$message <- paste_line(
+    conditionMessage(cnd),
+    format_onerror_backtrace(cnd$trace)
+  )
+
+  stop(fallback)
+}
+
+trace_trim_context <- function(trace, frame = caller_env()) {
+  if (is_environment(frame)) {
+    idx <- detect_index(trace$envs, identical, env_label(frame))
+  } else if (is_scalar_integerish(frame)) {
+    idx <- frame
+  } else {
+    abort("`frame` must be a frame environment or index")
+  }
+
+  to_trim <- seq2(idx, trace_length(trace))
+  if (length(to_trim)) {
+    trace <- trace_subset(trace, -to_trim)
+  }
+
+  trace
+}
+# FIXME: Find more robust strategy of stripping catching context
+find_capture_context <- function(n = 3L) {
+  sys_parent <- sys.parent(n)
+  thrower_frame <- sys.frame(sys_parent)
+
+  call <- sys.call(sys_parent)
+  frame <- sys.frame(sys_parent)
+  if (!is_call(call, "tryCatchOne") || !env_inherits(frame, ns_env("base"))) {
+    return(thrower_frame)
+  }
+
+  sys_parents <- sys.parents()
+  while (!is_call(call, "tryCatch")) {
+    sys_parent <- sys_parents[sys_parent]
+    call <- sys.call(sys_parent)
+  }
+
+  next_parent <- sys_parents[sys_parent]
+  call <- sys.call(next_parent)
+  if (is_call(call, "with_handlers")) {
+    sys_parent <- next_parent
+  }
+
+  sys.frame(sys_parent)
+}
+
+#' Display backtrace on error
+#'
+#' @description
+#'
+#' Errors thrown with [abort()] automatically save a backtrace that
+#' can be inspected by calling [last_error()]. Optionally, you can
+#' also display the backtrace alongside the error message by setting
+#' the option `rlang_backtrace_on_error` to one of the following
+#' values:
+#'
+#' * `"reminder"`: Display a reminder that the backtrace can be
+#'   inspected by calling [rlang::last_error()].
+#' * `"branch"`: Display a simplified backtrace.
+#' * `"collapse"`: Display a collapsed backtrace tree.
+#' * `"full"`: Display the full backtrace tree.
+#'
+#'
+#' @section Promote base errors to rlang errors:
+#'
+#' Call `options(error = rlang::enframe)` to instrument base
+#' errors with rlang features. This handler does two things:
+#'
+#' * It saves the base error as an rlang object. This allows you to
+#'   call [last_error()] to print the backtrace or inspect its data.
+#'
+#' * It prints the backtrace for the current error according to the
+#'   [`rlang_backtrace_on_error`] option.
+#'
+#' @name rlang_backtrace_on_error
+#' @aliases add_backtrace
+#'
+#' @examples
+#' # Display a simplified backtrace on error for both base and rlang
+#' # errors:
+#'
+#' # options(
+#' #   rlang_backtrace_on_error = "branch",
+#' #   error = rlang::enframe
+#' # )
+#' # stop("foo")
+NULL
+
+format_onerror_backtrace <- function(trace) {
+  show_trace <- show_trace_p()
+
+  opts <- c("none", "reminder", "branch", "collapse", "full")
+  if (!is_string(show_trace) || !show_trace %in% opts) {
+    options(rlang_backtrace_on_error = NULL)
+    warn("Invalid `rlang_backtrace_on_error` option (resetting to `NULL`)")
+    return(NULL)
+  }
+
+  if (show_trace == "none") {
+    return(NULL)
+  }
+
+  if (show_trace == "branch") {
+    max_frames <- 10L
+  } else {
+    max_frames <- NULL
+  }
+
+  simplify <- switch(show_trace,
+    full = "none",
+    reminder = "branch", # Check size of backtrace branch
+    show_trace
+  )
+
+  backtrace_lines <- format(trace, simplify = simplify, max_frames = max_frames)
+
+  # Backtraces of size 0 and 1 are uninteresting
+  if (length(backtrace_lines) <= 1L) {
+    return(NULL)
+  }
+
+  if (show_trace == "reminder") {
+    if (is_interactive()) {
+      reminder <- silver("Call `rlang::last_error()` to see a backtrace.")
+    } else {
+      reminder <- NULL
+    }
+    return(reminder)
+  }
+
+  paste_line(
+    "Backtrace:",
+    backtrace_lines
+  )
+}
+
+show_trace_p <- function() {
+  old_opt <- peek_option("rlang__backtrace_on_error")
+  if (!is_null(old_opt)) {
+    warn_deprecated(paste_line(
+      "`rlang__backtrace_on_error` is no longer experimental.",
+      "It has been renamed to `rlang_backtrace_on_error`. Please update your RProfile."
+    ))
+    return(old_opt)
+  }
+
+  opt <- peek_option("rlang_backtrace_on_error")
+  if (!is_null(opt)) {
+    return(opt)
+  }
+
+  # FIXME: parameterise `is_interactive()`?
+  interactive <- with_options(
+    knitr.in.progress = NULL,
+    rstudio.notebook.executing = NULL,
+    is_interactive()
+  )
+
+  if (interactive) {
+    "reminder"
+  } else {
+    "full"
+  }
+}
