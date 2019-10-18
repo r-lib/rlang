@@ -7,7 +7,6 @@ Backtrace:
   9. rlang:::a()
  10. rlang:::b()
  11. rlang:::c()
-Call `rlang::last_trace()` to see the full backtrace.
 
 
 summary():

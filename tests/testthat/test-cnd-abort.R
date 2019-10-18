@@ -118,3 +118,33 @@ test_that("parent errors are not displayed in error message and backtrace", {
     cat_line(non_interactive)
   })
 })
+
+test_that("backtrace reminder is displayed when called from `last_error()`", {
+  scoped_options(
+    rlang_trace_format_srcrefs = FALSE,
+    rlang_trace_top_env = current_env()
+  )
+
+  f <- function() g()
+  g <- function() h()
+  h <- function() abort("foo")
+  err <- catch_cnd(f())
+
+  last_error_env$cnd <- err
+
+  verify_output(test_path("output-cnd-abort-trace-reminder.txt"), {
+    "Normal case"
+    print(err)
+
+    "From `last_error()`"
+    print(last_error())
+
+    "Saved from `last_error()`"
+    saved <- last_error()
+    print(saved)
+
+    "Saved from `last_error()`, but no longer last"
+    last_error_env$cnd <- error_cnd("foo")
+    print(saved)
+  })
+})

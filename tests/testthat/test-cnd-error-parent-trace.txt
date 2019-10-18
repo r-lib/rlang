@@ -46,4 +46,3 @@ Backtrace:
   8. rlang:::a()
   9. rlang:::b()
  10. rlang:::c()
-Call `rlang::last_trace()` to see the full backtrace.

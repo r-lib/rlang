@@ -1,6 +1,9 @@
 
 # rlang (development)
 
+* Printing an error no longer recommends calling `last_trace()`,
+  unless called from `last_error()`.
+
 * `env_clone()` no longer recreates active bindings and is now just an
   alias for `env2list(as.list(env))`. Unlike `as.list()` which returns
   the active binding function on R < 4.0, the value of active bindings

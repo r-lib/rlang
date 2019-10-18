@@ -367,7 +367,10 @@ last_error <- function() {
   if (is_null(last_error_env$cnd)) {
     abort("Can't show last error because no error was recorded yet")
   }
-  last_error_env$cnd
+
+  cnd <- last_error_env$cnd
+  cnd$rlang$internal$from_last_error <- TRUE
+  cnd
 }
 #' @rdname last_error
 #' @export

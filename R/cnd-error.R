@@ -26,7 +26,8 @@ print.rlang_error <- function(x,
                               ...,
                               child = NULL,
                               simplify = c("branch", "collapse", "none"),
-                              fields = FALSE) {
+                              fields = FALSE,
+                              from_last_error = FALSE) {
   # Allow overwriting default display via condition field
   simplify <- x$rlang$internal$print_simplify %||% simplify
 
@@ -80,7 +81,11 @@ print.rlang_error <- function(x,
 
   # Recommend printing the full backtrace. Only do it after having
   # printed all parent errors first.
-  if (simplify == "branch" && is_null(child) && !is_null(trace)) {
+  from_last_error <-
+    is_true(x$rlang$internal$from_last_error) &&
+    identical(x, last_error())
+
+  if (from_last_error && simplify == "branch" && is_null(child) && !is_null(trace)) {
     cat_line(silver("Call `rlang::last_trace()` to see the full backtrace."))
   }
 

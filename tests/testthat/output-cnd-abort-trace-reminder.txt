@@ -1,0 +1,44 @@
+> # Normal case
+> print(err)
+<error/rlang_error>
+foo
+Backtrace:
+  1. rlang::catch_cnd(f())
+  8. rlang:::f()
+  9. rlang:::g()
+ 10. rlang:::h()
+
+> # From `last_error()`
+> print(last_error())
+<error/rlang_error>
+foo
+Backtrace:
+  1. rlang::catch_cnd(f())
+  8. rlang:::f()
+  9. rlang:::g()
+ 10. rlang:::h()
+Call `rlang::last_trace()` to see the full backtrace.
+
+> # Saved from `last_error()`
+> saved <- last_error()
+> print(saved)
+<error/rlang_error>
+foo
+Backtrace:
+  1. rlang::catch_cnd(f())
+  8. rlang:::f()
+  9. rlang:::g()
+ 10. rlang:::h()
+Call `rlang::last_trace()` to see the full backtrace.
+
+> # Saved from `last_error()`, but no longer last
+> last_error_env$cnd <- error_cnd("foo")
+> print(saved)
+<error/rlang_error>
+foo
+Backtrace:
+  1. rlang::catch_cnd(f())
+  8. rlang:::f()
+  9. rlang:::g()
+ 10. rlang:::h()
+
