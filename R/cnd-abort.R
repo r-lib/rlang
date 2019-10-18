@@ -367,3 +367,7 @@ last_trace <- function() {
   err$rlang$internal$print_simplify <- "none"
   err
 }
+
+# This is where we save errors for `last_error()`
+last_error_env <- new.env(parent = emptyenv())
+last_error_env$cnd <- NULL

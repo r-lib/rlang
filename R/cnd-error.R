@@ -92,10 +92,6 @@ print.rlang_error <- function(x,
   invisible(x)
 }
 
-# Last error to be returned in last_error()
-last_error_env <- new.env(parent = emptyenv())
-last_error_env$cnd <- NULL
-
 #' @export
 summary.rlang_error <- function(object, ...) {
   print(object, simplify = "none", fields = TRUE)
