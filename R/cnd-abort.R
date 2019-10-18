@@ -373,6 +373,6 @@ last_error <- function() {
 #' @export
 last_trace <- function() {
   err <- last_error()
-  err$print_simplify <- "none"
+  err$rlang$internal$print_simplify <- "none"
   err
 }

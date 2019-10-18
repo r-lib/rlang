@@ -28,7 +28,7 @@ print.rlang_error <- function(x,
                               simplify = c("branch", "collapse", "none"),
                               fields = FALSE) {
   # Allow overwriting default display via condition field
-  simplify <- x$print_simplify %||% simplify
+  simplify <- x$rlang$internal$print_simplify %||% simplify
 
   class <- class(x)[[1]]
   if (class != "error") {
