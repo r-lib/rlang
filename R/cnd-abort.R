@@ -147,11 +147,7 @@ abort <- function(message = "",
     trace <- trace_trim_context(trace, context)
   }
 
-  # Only collapse lengthy vectors because `paste0()` removes the class
-  # of glue strings
-  if (length(message) > 1) {
-    message <- paste0(message, collapse = "\n")
-  }
+  message <- collapse_cnd_message(message)
 
   cnd <- error_cnd(.subclass,
     ...,

@@ -94,7 +94,7 @@ validate_cnd_signal_args <- function(cnd, .cnd, .mufflable,
 warn <- function(message, .subclass = NULL, ..., call = NULL, msg, type) {
   validate_signal_args(msg, type, call)
 
-  message <- paste0(message, collapse = "\n")
+  message <- collapse_cnd_message(message)
   cnd <- warning_cnd(.subclass, ..., message = message)
   warning(cnd)
 }
@@ -103,7 +103,7 @@ warn <- function(message, .subclass = NULL, ..., call = NULL, msg, type) {
 inform <- function(message, .subclass = NULL, ..., call = NULL, msg, type) {
   validate_signal_args(msg, type, call)
 
-  message <- paste0(message, collapse = "\n")
+  message <- collapse_cnd_message(message)
   message <- paste0(message, "\n")
   cnd <- message_cnd(.subclass, ..., message = message)
   message(cnd)
@@ -111,7 +111,7 @@ inform <- function(message, .subclass = NULL, ..., call = NULL, msg, type) {
 #' @rdname abort
 #' @export
 signal <- function(message, .subclass, ...) {
-  message <- paste0(message, collapse = "\n")
+  message <- collapse_cnd_message(message)
   cnd <- cnd(.subclass, ..., message = message)
   cnd_signal(cnd)
 }

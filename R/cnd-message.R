@@ -125,3 +125,15 @@ format_bullets <- function(x) {
   bullets <- paste(bullets, x, collapse = "\n")
   bullets
 }
+
+collapse_cnd_message <- function(x) {
+  if (length(x) > 1L) {
+    paste(
+      x[[1]],
+      format_bullets(x[-1]),
+      sep = "\n"
+    )
+  } else {
+    x
+  }
+}
