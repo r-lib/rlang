@@ -82,7 +82,7 @@ assembled programmatically. This is the purpose of invoke()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9006</span>
       </span>
     </div>
 
@@ -223,8 +223,8 @@ or complex expressions.</p>
 <span class='fu'>invoke</span>(<span class='no'>fn</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>mtcars</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; tryCatch(withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/Rtmp4B68tY/file4f26784478dc"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/Rtmp4B68tY/file4f2645afc31f")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpHx81Bp/file4f097446b193"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpHx81Bp/file4f09309fa125")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
@@ -245,7 +245,7 @@ or complex expressions.</p>
 #&gt;         e$`_pid` &lt;- Sys.getpid()
 #&gt;         e$`_timestamp` &lt;- Sys.time()
 #&gt;         e &lt;- err$add_trace_back(e)
-#&gt;         saveRDS(list("error", e), file = paste0("/tmp/Rtmp4B68tY/file4f2645afc31f", 
+#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpHx81Bp/file4f09309fa125", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, interrupt = function(e) {
@@ -264,7 +264,7 @@ or complex expressions.</p>
 #&gt;         e$`_pid` &lt;- Sys.getpid()
 #&gt;         e$`_timestamp` &lt;- Sys.time()
 #&gt;         e &lt;- err$add_trace_back(e)
-#&gt;         saveRDS(list("error", e), file = paste0("/tmp/Rtmp4B68tY/file4f2645afc31f", 
+#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpHx81Bp/file4f09309fa125", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, callr_message = function(e) {
@@ -310,8 +310,8 @@ or complex expressions.</p>
 #&gt; [[8]]
 #&gt; withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/Rtmp4B68tY/file4f26784478dc"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/Rtmp4B68tY/file4f2645afc31f")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpHx81Bp/file4f097446b193"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpHx81Bp/file4f09309fa125")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
@@ -332,7 +332,7 @@ or complex expressions.</p>
 #&gt;         e$`_pid` &lt;- Sys.getpid()
 #&gt;         e$`_timestamp` &lt;- Sys.time()
 #&gt;         e &lt;- err$add_trace_back(e)
-#&gt;         saveRDS(list("error", e), file = paste0("/tmp/Rtmp4B68tY/file4f2645afc31f", 
+#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpHx81Bp/file4f09309fa125", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, interrupt = function(e) {
@@ -351,7 +351,7 @@ or complex expressions.</p>
 #&gt;         e$`_pid` &lt;- Sys.getpid()
 #&gt;         e$`_timestamp` &lt;- Sys.time()
 #&gt;         e &lt;- err$add_trace_back(e)
-#&gt;         saveRDS(list("error", e), file = paste0("/tmp/Rtmp4B68tY/file4f2645afc31f", 
+#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpHx81Bp/file4f09309fa125", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, callr_message = function(e) {
@@ -370,11 +370,11 @@ or complex expressions.</p>
 #&gt; })
 #&gt; 
 #&gt; [[9]]
-#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/Rtmp4B68tY/file4f26784478dc"), 
-#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/Rtmp4B68tY/file4f2645afc31f")
+#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpHx81Bp/file4f097446b193"), 
+#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpHx81Bp/file4f09309fa125")
 #&gt; 
 #&gt; [[10]]
-#&gt; do.call(do.call, c(readRDS("/tmp/Rtmp4B68tY/file4f26784478dc"), 
+#&gt; do.call(do.call, c(readRDS("/tmp/RtmpHx81Bp/file4f097446b193"), 
 #&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv)
 #&gt; 
 #&gt; [[11]]
@@ -391,7 +391,7 @@ or complex expressions.</p>
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; }, list(pkg = list(package = "rlang", version = list(c(0L, 4L, 
-#&gt; 0L, 9005L)), src_path = "/home/travis/build/r-lib/rlang", dst_path = "/tmp/Rtmp4B68tY/file4f2653f13748", 
+#&gt; 0L, 9006L)), src_path = "/home/travis/build/r-lib/rlang", dst_path = "/tmp/RtmpHx81Bp/file4f095935b70c", 
 #&gt;     github_url = "https://github.com/r-lib/rlang", desc = &lt;environment&gt;, 
 #&gt;     meta = list(url = "https://rlang.r-lib.org", template = list(
 #&gt;         params = list(ganalytics = "UA-115082821-1")), home = list(
@@ -470,7 +470,7 @@ or complex expressions.</p>
 #&gt;             "calling")), list(title = "Session state", contents = c("matches(\"interactive\")", 
 #&gt;             "matches(\"option\")")), list(title = "Weak references", 
 #&gt;                 contents = c("matches(\"weakref\")", "matches(\"wref\")"
-#&gt;                 ))), destination = "/tmp/Rtmp4B68tY/file4f2653f13748"), 
+#&gt;                 ))), destination = "/tmp/RtmpHx81Bp/file4f095935b70c"), 
 #&gt;     figures = list(dev = "grDevices::png", dpi = 96L, dev.args = list(), 
 #&gt;         fig.ext = "png", fig.width = 7.29166666666667, fig.height = NULL, 
 #&gt;         fig.retina = 2L, fig.asp = 0.618046971569839), development = list(
@@ -636,8 +636,8 @@ or complex expressions.</p>
 #&gt;         "current_fn"), caller_frame.Rd = "caller_frame", catch_cnd.Rd = "catch_cnd", 
 #&gt;         chr_unserialise_unicode.Rd = "chr_unserialise_unicode", 
 #&gt;         cnd.Rd = c("error_cnd", "cnd", "warning_cnd", "message_cnd"
-#&gt;         ), cnd_message.Rd = c("cnd_message", "cnd_issue", "cnd_bullets"
-#&gt;         ), cnd_muffle.Rd = "cnd_muffle", cnd_signal.Rd = "cnd_signal", 
+#&gt;         ), cnd_message.Rd = c("cnd_message", "cnd_issue", "cnd_bullets", 
+#&gt;         "format_bullets"), cnd_muffle.Rd = "cnd_muffle", cnd_signal.Rd = "cnd_signal", 
 #&gt;         cnd_type.Rd = "cnd_type", done.Rd = c("done", "is_done_box"
 #&gt;         ), dots_definitions.Rd = "dots_definitions", dots_n.Rd = "dots_n", 
 #&gt;         dots_values.Rd = "dots_values", duplicate.Rd = "duplicate", 
@@ -793,14 +793,14 @@ or complex expressions.</p>
 #&gt;         catch_cnd.Rd = "catch_cnd()", chr_unserialise_unicode.Rd = "chr_unserialise_unicode()", 
 #&gt;         cnd.Rd = c("error_cnd()", "cnd()", "warning_cnd()", "message_cnd()"
 #&gt;         ), cnd_message.Rd = c("cnd_message()", "cnd_issue()", 
-#&gt;         "cnd_bullets()"), cnd_muffle.Rd = "cnd_muffle()", cnd_signal.Rd = "cnd_signal()", 
-#&gt;         cnd_type.Rd = "cnd_type()", done.Rd = c("done()", "is_done_box()"
-#&gt;         ), dots_definitions.Rd = "dots_definitions()", dots_n.Rd = "dots_n()", 
-#&gt;         dots_values.Rd = "dots_values()", duplicate.Rd = "duplicate()", 
-#&gt;         empty_env.Rd = "empty_env()", entrace.Rd = c("entrace()", 
-#&gt;         "cnd_entrace()"), env.Rd = c("env()", "child_env()", 
-#&gt;         "new_environment()"), env_bind.Rd = c("env_bind()", "env_bind_lazy()", 
-#&gt;         "env_bind_active()"), env_bind_exprs.Rd = c("env_bind_exprs()", 
+#&gt;         "cnd_bullets()", "format_bullets()"), cnd_muffle.Rd = "cnd_muffle()", 
+#&gt;         cnd_signal.Rd = "cnd_signal()", cnd_type.Rd = "cnd_type()", 
+#&gt;         done.Rd = c("done()", "is_done_box()"), dots_definitions.Rd = "dots_definitions()", 
+#&gt;         dots_n.Rd = "dots_n()", dots_values.Rd = "dots_values()", 
+#&gt;         duplicate.Rd = "duplicate()", empty_env.Rd = "empty_env()", 
+#&gt;         entrace.Rd = c("entrace()", "cnd_entrace()"), env.Rd = c("env()", 
+#&gt;         "child_env()", "new_environment()"), env_bind.Rd = c("env_bind()", 
+#&gt;         "env_bind_lazy()", "env_bind_active()"), env_bind_exprs.Rd = c("env_bind_exprs()", 
 #&gt;         "env_bind_fns()"), env_binding_are_active.Rd = c("env_binding_are_active()", 
 #&gt;         "env_binding_are_lazy()"), env_binding_lock.Rd = c("env_binding_lock()", 
 #&gt;         "env_binding_unlock()", "env_binding_are_locked()"), 
@@ -2024,10 +2024,12 @@ or complex expressions.</p>
 #&gt;             "\n", "% Please edit documentation in R/cnd-message.R", 
 #&gt;             "\n", list("cnd_message"), "\n", list("cnd_message"), 
 #&gt;             "\n", list("cnd_issue"), "\n", list("cnd_bullets"), 
-#&gt;             "\n", list("Build an error message from a main issue and bullet messages"), 
+#&gt;             "\n", list("format_bullets"), "\n", list("Build an error message from a main issue and bullet messages"), 
 #&gt;             "\n", list("\n", "cnd_message(cnd)\n", "\n", "cnd_issue(cnd, ...)\n", 
-#&gt;                 "\n", "cnd_bullets(cnd, ...)\n"), "\n", list(
-#&gt;                 "\n", list(list("cnd"), list("A condition object.")), 
+#&gt;                 "\n", "cnd_bullets(cnd, ...)\n", "\n", "format_bullets(x)\n"), 
+#&gt;             "\n", list("\n", list(list("cnd"), list("A condition object.")), 
+#&gt;                 "\n", "\n", list(list("x"), list("A named character vector of messages. Elements named as\n", 
+#&gt;                   list("x"), " or ", list("i"), " are prefixed with the corresponding bullet.")), 
 #&gt;                 "\n"), "\n", list("\n", list("rlang:::lifecycle(\"experimental\")"), 
 #&gt;                 "\n", "\n", list("cnd_message()"), " assembles an error message from two components:\n", 
 #&gt;                 list("\n", list(), " The ", list("cnd_issue()"), 
@@ -7334,25 +7336,25 @@ or complex expressions.</p>
 #&gt;     fn_body = "fn_body", `fn_body&lt;-` = "fn_body", fn_env = "fn_env", 
 #&gt;     `fn_env&lt;-` = "fn_env", fn_fmls = "fn_fmls", fn_fmls_names = "fn_fmls", 
 #&gt;     `fn_fmls_names&lt;-` = "fn_fmls", fn_fmls_syms = "fn_fmls", 
-#&gt;     `fn_fmls&lt;-` = "fn_fmls", frame_position = "frame_position", 
-#&gt;     friendly_type = "friendly_type", get_env = "get_env", get_expr = "set_expr", 
-#&gt;     global_env = "search_envs", global_frame = "stack", has_length = "has_length", 
-#&gt;     has_name = "has_name", have_name = "is_named", inform = "abort", 
-#&gt;     inherits_all = "inherits_any", inherits_any = "inherits_any", 
-#&gt;     inherits_only = "inherits_any", int = "vector-construction", 
-#&gt;     int_along = "vector-old-ctors", int_len = "vector-old-ctors", 
-#&gt;     interrupt = "abort", invoke = "invoke", is_atomic = "type-predicates", 
-#&gt;     is_attached = "search_envs", is_bare_atomic = "bare-type-predicates", 
-#&gt;     is_bare_bytes = "bare-type-predicates", is_bare_character = "bare-type-predicates", 
-#&gt;     is_bare_double = "bare-type-predicates", is_bare_env = "is_env", 
-#&gt;     is_bare_environment = "is_environment", is_bare_formula = "is_formula", 
-#&gt;     is_bare_integer = "bare-type-predicates", is_bare_integerish = "is_integerish", 
-#&gt;     is_bare_list = "bare-type-predicates", is_bare_logical = "bare-type-predicates", 
-#&gt;     is_bare_numeric = "bare-type-predicates", is_bare_raw = "bare-type-predicates", 
-#&gt;     is_bare_string = "bare-type-predicates", is_bare_vector = "bare-type-predicates", 
-#&gt;     is_binary_lang = "is_lang", is_bool = "scalar-type-predicates", 
-#&gt;     is_box = "box", is_bytes = "type-predicates", is_call = "is_call", 
-#&gt;     is_call_stack = "is_stack", is_callable = "is_callable", 
+#&gt;     `fn_fmls&lt;-` = "fn_fmls", format_bullets = "cnd_message", 
+#&gt;     frame_position = "frame_position", friendly_type = "friendly_type", 
+#&gt;     get_env = "get_env", get_expr = "set_expr", global_env = "search_envs", 
+#&gt;     global_frame = "stack", has_length = "has_length", has_name = "has_name", 
+#&gt;     have_name = "is_named", inform = "abort", inherits_all = "inherits_any", 
+#&gt;     inherits_any = "inherits_any", inherits_only = "inherits_any", 
+#&gt;     int = "vector-construction", int_along = "vector-old-ctors", 
+#&gt;     int_len = "vector-old-ctors", interrupt = "abort", invoke = "invoke", 
+#&gt;     is_atomic = "type-predicates", is_attached = "search_envs", 
+#&gt;     is_bare_atomic = "bare-type-predicates", is_bare_bytes = "bare-type-predicates", 
+#&gt;     is_bare_character = "bare-type-predicates", is_bare_double = "bare-type-predicates", 
+#&gt;     is_bare_env = "is_env", is_bare_environment = "is_environment", 
+#&gt;     is_bare_formula = "is_formula", is_bare_integer = "bare-type-predicates", 
+#&gt;     is_bare_integerish = "is_integerish", is_bare_list = "bare-type-predicates", 
+#&gt;     is_bare_logical = "bare-type-predicates", is_bare_numeric = "bare-type-predicates", 
+#&gt;     is_bare_raw = "bare-type-predicates", is_bare_string = "bare-type-predicates", 
+#&gt;     is_bare_vector = "bare-type-predicates", is_binary_lang = "is_lang", 
+#&gt;     is_bool = "scalar-type-predicates", is_box = "box", is_bytes = "type-predicates", 
+#&gt;     is_call = "is_call", is_call_stack = "is_stack", is_callable = "is_callable", 
 #&gt;     is_character = "type-predicates", is_chr_na = "are_na", is_closure = "is_function", 
 #&gt;     is_condition = "is_condition", is_copyable = "is_copyable", 
 #&gt;     is_cpl_na = "are_na", is_dbl_na = "are_na", is_definition = "op-definition", 
@@ -7460,7 +7462,7 @@ or complex expressions.</p>
 #&gt;     with_options = "scoped_options", with_restarts = "with_restarts", 
 #&gt;     wref_key = "wref_key", wref_value = "wref_key", zap = "zap"
 #&gt;     ), article_index = character(0)), examples = TRUE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/Rtmp4B68tY/file4f2653f13748"), 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpHx81Bp/file4f095935b70c"), 
 #&gt;     install = FALSE, preview = FALSE, new_process = FALSE, devel = FALSE, 
 #&gt;     crayon_enabled = TRUE, crayon_colors = 256, pkgdown_internet = TRUE), 
 #&gt;     envir = &lt;environment&gt;)
@@ -7472,7 +7474,7 @@ or complex expressions.</p>
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; })(pkg = list(package = "rlang", version = list(c(0L, 4L, 0L, 
-#&gt; 9005L)), src_path = "/home/travis/build/r-lib/rlang", dst_path = "/tmp/Rtmp4B68tY/file4f2653f13748", 
+#&gt; 9006L)), src_path = "/home/travis/build/r-lib/rlang", dst_path = "/tmp/RtmpHx81Bp/file4f095935b70c", 
 #&gt;     github_url = "https://github.com/r-lib/rlang", desc = &lt;environment&gt;, 
 #&gt;     meta = list(url = "https://rlang.r-lib.org", template = list(
 #&gt;         params = list(ganalytics = "UA-115082821-1")), home = list(
@@ -7551,7 +7553,7 @@ or complex expressions.</p>
 #&gt;             "calling")), list(title = "Session state", contents = c("matches(\"interactive\")", 
 #&gt;             "matches(\"option\")")), list(title = "Weak references", 
 #&gt;                 contents = c("matches(\"weakref\")", "matches(\"wref\")"
-#&gt;                 ))), destination = "/tmp/Rtmp4B68tY/file4f2653f13748"), 
+#&gt;                 ))), destination = "/tmp/RtmpHx81Bp/file4f095935b70c"), 
 #&gt;     figures = list(dev = "grDevices::png", dpi = 96L, dev.args = list(), 
 #&gt;         fig.ext = "png", fig.width = 7.29166666666667, fig.height = NULL, 
 #&gt;         fig.retina = 2L, fig.asp = 0.618046971569839), development = list(
@@ -7717,8 +7719,8 @@ or complex expressions.</p>
 #&gt;         "current_fn"), caller_frame.Rd = "caller_frame", catch_cnd.Rd = "catch_cnd", 
 #&gt;         chr_unserialise_unicode.Rd = "chr_unserialise_unicode", 
 #&gt;         cnd.Rd = c("error_cnd", "cnd", "warning_cnd", "message_cnd"
-#&gt;         ), cnd_message.Rd = c("cnd_message", "cnd_issue", "cnd_bullets"
-#&gt;         ), cnd_muffle.Rd = "cnd_muffle", cnd_signal.Rd = "cnd_signal", 
+#&gt;         ), cnd_message.Rd = c("cnd_message", "cnd_issue", "cnd_bullets", 
+#&gt;         "format_bullets"), cnd_muffle.Rd = "cnd_muffle", cnd_signal.Rd = "cnd_signal", 
 #&gt;         cnd_type.Rd = "cnd_type", done.Rd = c("done", "is_done_box"
 #&gt;         ), dots_definitions.Rd = "dots_definitions", dots_n.Rd = "dots_n", 
 #&gt;         dots_values.Rd = "dots_values", duplicate.Rd = "duplicate", 
@@ -7874,14 +7876,14 @@ or complex expressions.</p>
 #&gt;         catch_cnd.Rd = "catch_cnd()", chr_unserialise_unicode.Rd = "chr_unserialise_unicode()", 
 #&gt;         cnd.Rd = c("error_cnd()", "cnd()", "warning_cnd()", "message_cnd()"
 #&gt;         ), cnd_message.Rd = c("cnd_message()", "cnd_issue()", 
-#&gt;         "cnd_bullets()"), cnd_muffle.Rd = "cnd_muffle()", cnd_signal.Rd = "cnd_signal()", 
-#&gt;         cnd_type.Rd = "cnd_type()", done.Rd = c("done()", "is_done_box()"
-#&gt;         ), dots_definitions.Rd = "dots_definitions()", dots_n.Rd = "dots_n()", 
-#&gt;         dots_values.Rd = "dots_values()", duplicate.Rd = "duplicate()", 
-#&gt;         empty_env.Rd = "empty_env()", entrace.Rd = c("entrace()", 
-#&gt;         "cnd_entrace()"), env.Rd = c("env()", "child_env()", 
-#&gt;         "new_environment()"), env_bind.Rd = c("env_bind()", "env_bind_lazy()", 
-#&gt;         "env_bind_active()"), env_bind_exprs.Rd = c("env_bind_exprs()", 
+#&gt;         "cnd_bullets()", "format_bullets()"), cnd_muffle.Rd = "cnd_muffle()", 
+#&gt;         cnd_signal.Rd = "cnd_signal()", cnd_type.Rd = "cnd_type()", 
+#&gt;         done.Rd = c("done()", "is_done_box()"), dots_definitions.Rd = "dots_definitions()", 
+#&gt;         dots_n.Rd = "dots_n()", dots_values.Rd = "dots_values()", 
+#&gt;         duplicate.Rd = "duplicate()", empty_env.Rd = "empty_env()", 
+#&gt;         entrace.Rd = c("entrace()", "cnd_entrace()"), env.Rd = c("env()", 
+#&gt;         "child_env()", "new_environment()"), env_bind.Rd = c("env_bind()", 
+#&gt;         "env_bind_lazy()", "env_bind_active()"), env_bind_exprs.Rd = c("env_bind_exprs()", 
 #&gt;         "env_bind_fns()"), env_binding_are_active.Rd = c("env_binding_are_active()", 
 #&gt;         "env_binding_are_lazy()"), env_binding_lock.Rd = c("env_binding_lock()", 
 #&gt;         "env_binding_unlock()", "env_binding_are_locked()"), 
@@ -9105,10 +9107,12 @@ or complex expressions.</p>
 #&gt;             "\n", "% Please edit documentation in R/cnd-message.R", 
 #&gt;             "\n", list("cnd_message"), "\n", list("cnd_message"), 
 #&gt;             "\n", list("cnd_issue"), "\n", list("cnd_bullets"), 
-#&gt;             "\n", list("Build an error message from a main issue and bullet messages"), 
+#&gt;             "\n", list("format_bullets"), "\n", list("Build an error message from a main issue and bullet messages"), 
 #&gt;             "\n", list("\n", "cnd_message(cnd)\n", "\n", "cnd_issue(cnd, ...)\n", 
-#&gt;                 "\n", "cnd_bullets(cnd, ...)\n"), "\n", list(
-#&gt;                 "\n", list(list("cnd"), list("A condition object.")), 
+#&gt;                 "\n", "cnd_bullets(cnd, ...)\n", "\n", "format_bullets(x)\n"), 
+#&gt;             "\n", list("\n", list(list("cnd"), list("A condition object.")), 
+#&gt;                 "\n", "\n", list(list("x"), list("A named character vector of messages. Elements named as\n", 
+#&gt;                   list("x"), " or ", list("i"), " are prefixed with the corresponding bullet.")), 
 #&gt;                 "\n"), "\n", list("\n", list("rlang:::lifecycle(\"experimental\")"), 
 #&gt;                 "\n", "\n", list("cnd_message()"), " assembles an error message from two components:\n", 
 #&gt;                 list("\n", list(), " The ", list("cnd_issue()"), 
@@ -14415,25 +14419,25 @@ or complex expressions.</p>
 #&gt;     fn_body = "fn_body", `fn_body&lt;-` = "fn_body", fn_env = "fn_env", 
 #&gt;     `fn_env&lt;-` = "fn_env", fn_fmls = "fn_fmls", fn_fmls_names = "fn_fmls", 
 #&gt;     `fn_fmls_names&lt;-` = "fn_fmls", fn_fmls_syms = "fn_fmls", 
-#&gt;     `fn_fmls&lt;-` = "fn_fmls", frame_position = "frame_position", 
-#&gt;     friendly_type = "friendly_type", get_env = "get_env", get_expr = "set_expr", 
-#&gt;     global_env = "search_envs", global_frame = "stack", has_length = "has_length", 
-#&gt;     has_name = "has_name", have_name = "is_named", inform = "abort", 
-#&gt;     inherits_all = "inherits_any", inherits_any = "inherits_any", 
-#&gt;     inherits_only = "inherits_any", int = "vector-construction", 
-#&gt;     int_along = "vector-old-ctors", int_len = "vector-old-ctors", 
-#&gt;     interrupt = "abort", invoke = "invoke", is_atomic = "type-predicates", 
-#&gt;     is_attached = "search_envs", is_bare_atomic = "bare-type-predicates", 
-#&gt;     is_bare_bytes = "bare-type-predicates", is_bare_character = "bare-type-predicates", 
-#&gt;     is_bare_double = "bare-type-predicates", is_bare_env = "is_env", 
-#&gt;     is_bare_environment = "is_environment", is_bare_formula = "is_formula", 
-#&gt;     is_bare_integer = "bare-type-predicates", is_bare_integerish = "is_integerish", 
-#&gt;     is_bare_list = "bare-type-predicates", is_bare_logical = "bare-type-predicates", 
-#&gt;     is_bare_numeric = "bare-type-predicates", is_bare_raw = "bare-type-predicates", 
-#&gt;     is_bare_string = "bare-type-predicates", is_bare_vector = "bare-type-predicates", 
-#&gt;     is_binary_lang = "is_lang", is_bool = "scalar-type-predicates", 
-#&gt;     is_box = "box", is_bytes = "type-predicates", is_call = "is_call", 
-#&gt;     is_call_stack = "is_stack", is_callable = "is_callable", 
+#&gt;     `fn_fmls&lt;-` = "fn_fmls", format_bullets = "cnd_message", 
+#&gt;     frame_position = "frame_position", friendly_type = "friendly_type", 
+#&gt;     get_env = "get_env", get_expr = "set_expr", global_env = "search_envs", 
+#&gt;     global_frame = "stack", has_length = "has_length", has_name = "has_name", 
+#&gt;     have_name = "is_named", inform = "abort", inherits_all = "inherits_any", 
+#&gt;     inherits_any = "inherits_any", inherits_only = "inherits_any", 
+#&gt;     int = "vector-construction", int_along = "vector-old-ctors", 
+#&gt;     int_len = "vector-old-ctors", interrupt = "abort", invoke = "invoke", 
+#&gt;     is_atomic = "type-predicates", is_attached = "search_envs", 
+#&gt;     is_bare_atomic = "bare-type-predicates", is_bare_bytes = "bare-type-predicates", 
+#&gt;     is_bare_character = "bare-type-predicates", is_bare_double = "bare-type-predicates", 
+#&gt;     is_bare_env = "is_env", is_bare_environment = "is_environment", 
+#&gt;     is_bare_formula = "is_formula", is_bare_integer = "bare-type-predicates", 
+#&gt;     is_bare_integerish = "is_integerish", is_bare_list = "bare-type-predicates", 
+#&gt;     is_bare_logical = "bare-type-predicates", is_bare_numeric = "bare-type-predicates", 
+#&gt;     is_bare_raw = "bare-type-predicates", is_bare_string = "bare-type-predicates", 
+#&gt;     is_bare_vector = "bare-type-predicates", is_binary_lang = "is_lang", 
+#&gt;     is_bool = "scalar-type-predicates", is_box = "box", is_bytes = "type-predicates", 
+#&gt;     is_call = "is_call", is_call_stack = "is_stack", is_callable = "is_callable", 
 #&gt;     is_character = "type-predicates", is_chr_na = "are_na", is_closure = "is_function", 
 #&gt;     is_condition = "is_condition", is_copyable = "is_copyable", 
 #&gt;     is_cpl_na = "are_na", is_dbl_na = "are_na", is_definition = "op-definition", 
@@ -14541,7 +14545,7 @@ or complex expressions.</p>
 #&gt;     with_options = "scoped_options", with_restarts = "with_restarts", 
 #&gt;     wref_key = "wref_key", wref_value = "wref_key", zap = "zap"
 #&gt;     ), article_index = character(0)), examples = TRUE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/Rtmp4B68tY/file4f2653f13748"), 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpHx81Bp/file4f095935b70c"), 
 #&gt;     install = FALSE, preview = FALSE, new_process = FALSE, devel = FALSE, 
 #&gt;     crayon_enabled = TRUE, crayon_colors = 256, pkgdown_internet = TRUE)
 #&gt; 
@@ -14682,8 +14686,8 @@ or complex expressions.</p>
 #&gt;     2, 4, 6, 8, 2))</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/do.call.html'>do.call</a></span>(<span class='no'>fn</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>mtcars</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; tryCatch(withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/Rtmp4B68tY/file4f26784478dc"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/Rtmp4B68tY/file4f2645afc31f")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpHx81Bp/file4f097446b193"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpHx81Bp/file4f09309fa125")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
@@ -14704,7 +14708,7 @@ or complex expressions.</p>
 #&gt;         e$`_pid` &lt;- Sys.getpid()
 #&gt;         e$`_timestamp` &lt;- Sys.time()
 #&gt;         e &lt;- err$add_trace_back(e)
-#&gt;         saveRDS(list("error", e), file = paste0("/tmp/Rtmp4B68tY/file4f2645afc31f", 
+#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpHx81Bp/file4f09309fa125", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, interrupt = function(e) {
@@ -14723,7 +14727,7 @@ or complex expressions.</p>
 #&gt;         e$`_pid` &lt;- Sys.getpid()
 #&gt;         e$`_timestamp` &lt;- Sys.time()
 #&gt;         e &lt;- err$add_trace_back(e)
-#&gt;         saveRDS(list("error", e), file = paste0("/tmp/Rtmp4B68tY/file4f2645afc31f", 
+#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpHx81Bp/file4f09309fa125", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, callr_message = function(e) {
@@ -14769,8 +14773,8 @@ or complex expressions.</p>
 #&gt; [[8]]
 #&gt; withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/Rtmp4B68tY/file4f26784478dc"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/Rtmp4B68tY/file4f2645afc31f")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpHx81Bp/file4f097446b193"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpHx81Bp/file4f09309fa125")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
@@ -14791,7 +14795,7 @@ or complex expressions.</p>
 #&gt;         e$`_pid` &lt;- Sys.getpid()
 #&gt;         e$`_timestamp` &lt;- Sys.time()
 #&gt;         e &lt;- err$add_trace_back(e)
-#&gt;         saveRDS(list("error", e), file = paste0("/tmp/Rtmp4B68tY/file4f2645afc31f", 
+#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpHx81Bp/file4f09309fa125", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, interrupt = function(e) {
@@ -14810,7 +14814,7 @@ or complex expressions.</p>
 #&gt;         e$`_pid` &lt;- Sys.getpid()
 #&gt;         e$`_timestamp` &lt;- Sys.time()
 #&gt;         e &lt;- err$add_trace_back(e)
-#&gt;         saveRDS(list("error", e), file = paste0("/tmp/Rtmp4B68tY/file4f2645afc31f", 
+#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpHx81Bp/file4f09309fa125", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, callr_message = function(e) {
@@ -14829,11 +14833,11 @@ or complex expressions.</p>
 #&gt; })
 #&gt; 
 #&gt; [[9]]
-#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/Rtmp4B68tY/file4f26784478dc"), 
-#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/Rtmp4B68tY/file4f2645afc31f")
+#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpHx81Bp/file4f097446b193"), 
+#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpHx81Bp/file4f09309fa125")
 #&gt; 
 #&gt; [[10]]
-#&gt; do.call(do.call, c(readRDS("/tmp/Rtmp4B68tY/file4f26784478dc"), 
+#&gt; do.call(do.call, c(readRDS("/tmp/RtmpHx81Bp/file4f097446b193"), 
 #&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv)
 #&gt; 
 #&gt; [[11]]
@@ -14850,7 +14854,7 @@ or complex expressions.</p>
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; }, list(pkg = list(package = "rlang", version = list(c(0L, 4L, 
-#&gt; 0L, 9005L)), src_path = "/home/travis/build/r-lib/rlang", dst_path = "/tmp/Rtmp4B68tY/file4f2653f13748", 
+#&gt; 0L, 9006L)), src_path = "/home/travis/build/r-lib/rlang", dst_path = "/tmp/RtmpHx81Bp/file4f095935b70c", 
 #&gt;     github_url = "https://github.com/r-lib/rlang", desc = &lt;environment&gt;, 
 #&gt;     meta = list(url = "https://rlang.r-lib.org", template = list(
 #&gt;         params = list(ganalytics = "UA-115082821-1")), home = list(
@@ -14929,7 +14933,7 @@ or complex expressions.</p>
 #&gt;             "calling")), list(title = "Session state", contents = c("matches(\"interactive\")", 
 #&gt;             "matches(\"option\")")), list(title = "Weak references", 
 #&gt;                 contents = c("matches(\"weakref\")", "matches(\"wref\")"
-#&gt;                 ))), destination = "/tmp/Rtmp4B68tY/file4f2653f13748"), 
+#&gt;                 ))), destination = "/tmp/RtmpHx81Bp/file4f095935b70c"), 
 #&gt;     figures = list(dev = "grDevices::png", dpi = 96L, dev.args = list(), 
 #&gt;         fig.ext = "png", fig.width = 7.29166666666667, fig.height = NULL, 
 #&gt;         fig.retina = 2L, fig.asp = 0.618046971569839), development = list(
@@ -15095,8 +15099,8 @@ or complex expressions.</p>
 #&gt;         "current_fn"), caller_frame.Rd = "caller_frame", catch_cnd.Rd = "catch_cnd", 
 #&gt;         chr_unserialise_unicode.Rd = "chr_unserialise_unicode", 
 #&gt;         cnd.Rd = c("error_cnd", "cnd", "warning_cnd", "message_cnd"
-#&gt;         ), cnd_message.Rd = c("cnd_message", "cnd_issue", "cnd_bullets"
-#&gt;         ), cnd_muffle.Rd = "cnd_muffle", cnd_signal.Rd = "cnd_signal", 
+#&gt;         ), cnd_message.Rd = c("cnd_message", "cnd_issue", "cnd_bullets", 
+#&gt;         "format_bullets"), cnd_muffle.Rd = "cnd_muffle", cnd_signal.Rd = "cnd_signal", 
 #&gt;         cnd_type.Rd = "cnd_type", done.Rd = c("done", "is_done_box"
 #&gt;         ), dots_definitions.Rd = "dots_definitions", dots_n.Rd = "dots_n", 
 #&gt;         dots_values.Rd = "dots_values", duplicate.Rd = "duplicate", 
@@ -15252,14 +15256,14 @@ or complex expressions.</p>
 #&gt;         catch_cnd.Rd = "catch_cnd()", chr_unserialise_unicode.Rd = "chr_unserialise_unicode()", 
 #&gt;         cnd.Rd = c("error_cnd()", "cnd()", "warning_cnd()", "message_cnd()"
 #&gt;         ), cnd_message.Rd = c("cnd_message()", "cnd_issue()", 
-#&gt;         "cnd_bullets()"), cnd_muffle.Rd = "cnd_muffle()", cnd_signal.Rd = "cnd_signal()", 
-#&gt;         cnd_type.Rd = "cnd_type()", done.Rd = c("done()", "is_done_box()"
-#&gt;         ), dots_definitions.Rd = "dots_definitions()", dots_n.Rd = "dots_n()", 
-#&gt;         dots_values.Rd = "dots_values()", duplicate.Rd = "duplicate()", 
-#&gt;         empty_env.Rd = "empty_env()", entrace.Rd = c("entrace()", 
-#&gt;         "cnd_entrace()"), env.Rd = c("env()", "child_env()", 
-#&gt;         "new_environment()"), env_bind.Rd = c("env_bind()", "env_bind_lazy()", 
-#&gt;         "env_bind_active()"), env_bind_exprs.Rd = c("env_bind_exprs()", 
+#&gt;         "cnd_bullets()", "format_bullets()"), cnd_muffle.Rd = "cnd_muffle()", 
+#&gt;         cnd_signal.Rd = "cnd_signal()", cnd_type.Rd = "cnd_type()", 
+#&gt;         done.Rd = c("done()", "is_done_box()"), dots_definitions.Rd = "dots_definitions()", 
+#&gt;         dots_n.Rd = "dots_n()", dots_values.Rd = "dots_values()", 
+#&gt;         duplicate.Rd = "duplicate()", empty_env.Rd = "empty_env()", 
+#&gt;         entrace.Rd = c("entrace()", "cnd_entrace()"), env.Rd = c("env()", 
+#&gt;         "child_env()", "new_environment()"), env_bind.Rd = c("env_bind()", 
+#&gt;         "env_bind_lazy()", "env_bind_active()"), env_bind_exprs.Rd = c("env_bind_exprs()", 
 #&gt;         "env_bind_fns()"), env_binding_are_active.Rd = c("env_binding_are_active()", 
 #&gt;         "env_binding_are_lazy()"), env_binding_lock.Rd = c("env_binding_lock()", 
 #&gt;         "env_binding_unlock()", "env_binding_are_locked()"), 
@@ -16483,10 +16487,12 @@ or complex expressions.</p>
 #&gt;             "\n", "% Please edit documentation in R/cnd-message.R", 
 #&gt;             "\n", list("cnd_message"), "\n", list("cnd_message"), 
 #&gt;             "\n", list("cnd_issue"), "\n", list("cnd_bullets"), 
-#&gt;             "\n", list("Build an error message from a main issue and bullet messages"), 
+#&gt;             "\n", list("format_bullets"), "\n", list("Build an error message from a main issue and bullet messages"), 
 #&gt;             "\n", list("\n", "cnd_message(cnd)\n", "\n", "cnd_issue(cnd, ...)\n", 
-#&gt;                 "\n", "cnd_bullets(cnd, ...)\n"), "\n", list(
-#&gt;                 "\n", list(list("cnd"), list("A condition object.")), 
+#&gt;                 "\n", "cnd_bullets(cnd, ...)\n", "\n", "format_bullets(x)\n"), 
+#&gt;             "\n", list("\n", list(list("cnd"), list("A condition object.")), 
+#&gt;                 "\n", "\n", list(list("x"), list("A named character vector of messages. Elements named as\n", 
+#&gt;                   list("x"), " or ", list("i"), " are prefixed with the corresponding bullet.")), 
 #&gt;                 "\n"), "\n", list("\n", list("rlang:::lifecycle(\"experimental\")"), 
 #&gt;                 "\n", "\n", list("cnd_message()"), " assembles an error message from two components:\n", 
 #&gt;                 list("\n", list(), " The ", list("cnd_issue()"), 
@@ -21793,25 +21799,25 @@ or complex expressions.</p>
 #&gt;     fn_body = "fn_body", `fn_body&lt;-` = "fn_body", fn_env = "fn_env", 
 #&gt;     `fn_env&lt;-` = "fn_env", fn_fmls = "fn_fmls", fn_fmls_names = "fn_fmls", 
 #&gt;     `fn_fmls_names&lt;-` = "fn_fmls", fn_fmls_syms = "fn_fmls", 
-#&gt;     `fn_fmls&lt;-` = "fn_fmls", frame_position = "frame_position", 
-#&gt;     friendly_type = "friendly_type", get_env = "get_env", get_expr = "set_expr", 
-#&gt;     global_env = "search_envs", global_frame = "stack", has_length = "has_length", 
-#&gt;     has_name = "has_name", have_name = "is_named", inform = "abort", 
-#&gt;     inherits_all = "inherits_any", inherits_any = "inherits_any", 
-#&gt;     inherits_only = "inherits_any", int = "vector-construction", 
-#&gt;     int_along = "vector-old-ctors", int_len = "vector-old-ctors", 
-#&gt;     interrupt = "abort", invoke = "invoke", is_atomic = "type-predicates", 
-#&gt;     is_attached = "search_envs", is_bare_atomic = "bare-type-predicates", 
-#&gt;     is_bare_bytes = "bare-type-predicates", is_bare_character = "bare-type-predicates", 
-#&gt;     is_bare_double = "bare-type-predicates", is_bare_env = "is_env", 
-#&gt;     is_bare_environment = "is_environment", is_bare_formula = "is_formula", 
-#&gt;     is_bare_integer = "bare-type-predicates", is_bare_integerish = "is_integerish", 
-#&gt;     is_bare_list = "bare-type-predicates", is_bare_logical = "bare-type-predicates", 
-#&gt;     is_bare_numeric = "bare-type-predicates", is_bare_raw = "bare-type-predicates", 
-#&gt;     is_bare_string = "bare-type-predicates", is_bare_vector = "bare-type-predicates", 
-#&gt;     is_binary_lang = "is_lang", is_bool = "scalar-type-predicates", 
-#&gt;     is_box = "box", is_bytes = "type-predicates", is_call = "is_call", 
-#&gt;     is_call_stack = "is_stack", is_callable = "is_callable", 
+#&gt;     `fn_fmls&lt;-` = "fn_fmls", format_bullets = "cnd_message", 
+#&gt;     frame_position = "frame_position", friendly_type = "friendly_type", 
+#&gt;     get_env = "get_env", get_expr = "set_expr", global_env = "search_envs", 
+#&gt;     global_frame = "stack", has_length = "has_length", has_name = "has_name", 
+#&gt;     have_name = "is_named", inform = "abort", inherits_all = "inherits_any", 
+#&gt;     inherits_any = "inherits_any", inherits_only = "inherits_any", 
+#&gt;     int = "vector-construction", int_along = "vector-old-ctors", 
+#&gt;     int_len = "vector-old-ctors", interrupt = "abort", invoke = "invoke", 
+#&gt;     is_atomic = "type-predicates", is_attached = "search_envs", 
+#&gt;     is_bare_atomic = "bare-type-predicates", is_bare_bytes = "bare-type-predicates", 
+#&gt;     is_bare_character = "bare-type-predicates", is_bare_double = "bare-type-predicates", 
+#&gt;     is_bare_env = "is_env", is_bare_environment = "is_environment", 
+#&gt;     is_bare_formula = "is_formula", is_bare_integer = "bare-type-predicates", 
+#&gt;     is_bare_integerish = "is_integerish", is_bare_list = "bare-type-predicates", 
+#&gt;     is_bare_logical = "bare-type-predicates", is_bare_numeric = "bare-type-predicates", 
+#&gt;     is_bare_raw = "bare-type-predicates", is_bare_string = "bare-type-predicates", 
+#&gt;     is_bare_vector = "bare-type-predicates", is_binary_lang = "is_lang", 
+#&gt;     is_bool = "scalar-type-predicates", is_box = "box", is_bytes = "type-predicates", 
+#&gt;     is_call = "is_call", is_call_stack = "is_stack", is_callable = "is_callable", 
 #&gt;     is_character = "type-predicates", is_chr_na = "are_na", is_closure = "is_function", 
 #&gt;     is_condition = "is_condition", is_copyable = "is_copyable", 
 #&gt;     is_cpl_na = "are_na", is_dbl_na = "are_na", is_definition = "op-definition", 
@@ -21919,7 +21925,7 @@ or complex expressions.</p>
 #&gt;     with_options = "scoped_options", with_restarts = "with_restarts", 
 #&gt;     wref_key = "wref_key", wref_value = "wref_key", zap = "zap"
 #&gt;     ), article_index = character(0)), examples = TRUE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/Rtmp4B68tY/file4f2653f13748"), 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpHx81Bp/file4f095935b70c"), 
 #&gt;     install = FALSE, preview = FALSE, new_process = FALSE, devel = FALSE, 
 #&gt;     crayon_enabled = TRUE, crayon_colors = 256, pkgdown_internet = TRUE), 
 #&gt;     envir = &lt;environment&gt;)
@@ -21931,7 +21937,7 @@ or complex expressions.</p>
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; })(pkg = list(package = "rlang", version = list(c(0L, 4L, 0L, 
-#&gt; 9005L)), src_path = "/home/travis/build/r-lib/rlang", dst_path = "/tmp/Rtmp4B68tY/file4f2653f13748", 
+#&gt; 9006L)), src_path = "/home/travis/build/r-lib/rlang", dst_path = "/tmp/RtmpHx81Bp/file4f095935b70c", 
 #&gt;     github_url = "https://github.com/r-lib/rlang", desc = &lt;environment&gt;, 
 #&gt;     meta = list(url = "https://rlang.r-lib.org", template = list(
 #&gt;         params = list(ganalytics = "UA-115082821-1")), home = list(
@@ -22010,7 +22016,7 @@ or complex expressions.</p>
 #&gt;             "calling")), list(title = "Session state", contents = c("matches(\"interactive\")", 
 #&gt;             "matches(\"option\")")), list(title = "Weak references", 
 #&gt;                 contents = c("matches(\"weakref\")", "matches(\"wref\")"
-#&gt;                 ))), destination = "/tmp/Rtmp4B68tY/file4f2653f13748"), 
+#&gt;                 ))), destination = "/tmp/RtmpHx81Bp/file4f095935b70c"), 
 #&gt;     figures = list(dev = "grDevices::png", dpi = 96L, dev.args = list(), 
 #&gt;         fig.ext = "png", fig.width = 7.29166666666667, fig.height = NULL, 
 #&gt;         fig.retina = 2L, fig.asp = 0.618046971569839), development = list(
@@ -22176,8 +22182,8 @@ or complex expressions.</p>
 #&gt;         "current_fn"), caller_frame.Rd = "caller_frame", catch_cnd.Rd = "catch_cnd", 
 #&gt;         chr_unserialise_unicode.Rd = "chr_unserialise_unicode", 
 #&gt;         cnd.Rd = c("error_cnd", "cnd", "warning_cnd", "message_cnd"
-#&gt;         ), cnd_message.Rd = c("cnd_message", "cnd_issue", "cnd_bullets"
-#&gt;         ), cnd_muffle.Rd = "cnd_muffle", cnd_signal.Rd = "cnd_signal", 
+#&gt;         ), cnd_message.Rd = c("cnd_message", "cnd_issue", "cnd_bullets", 
+#&gt;         "format_bullets"), cnd_muffle.Rd = "cnd_muffle", cnd_signal.Rd = "cnd_signal", 
 #&gt;         cnd_type.Rd = "cnd_type", done.Rd = c("done", "is_done_box"
 #&gt;         ), dots_definitions.Rd = "dots_definitions", dots_n.Rd = "dots_n", 
 #&gt;         dots_values.Rd = "dots_values", duplicate.Rd = "duplicate", 
@@ -22333,14 +22339,14 @@ or complex expressions.</p>
 #&gt;         catch_cnd.Rd = "catch_cnd()", chr_unserialise_unicode.Rd = "chr_unserialise_unicode()", 
 #&gt;         cnd.Rd = c("error_cnd()", "cnd()", "warning_cnd()", "message_cnd()"
 #&gt;         ), cnd_message.Rd = c("cnd_message()", "cnd_issue()", 
-#&gt;         "cnd_bullets()"), cnd_muffle.Rd = "cnd_muffle()", cnd_signal.Rd = "cnd_signal()", 
-#&gt;         cnd_type.Rd = "cnd_type()", done.Rd = c("done()", "is_done_box()"
-#&gt;         ), dots_definitions.Rd = "dots_definitions()", dots_n.Rd = "dots_n()", 
-#&gt;         dots_values.Rd = "dots_values()", duplicate.Rd = "duplicate()", 
-#&gt;         empty_env.Rd = "empty_env()", entrace.Rd = c("entrace()", 
-#&gt;         "cnd_entrace()"), env.Rd = c("env()", "child_env()", 
-#&gt;         "new_environment()"), env_bind.Rd = c("env_bind()", "env_bind_lazy()", 
-#&gt;         "env_bind_active()"), env_bind_exprs.Rd = c("env_bind_exprs()", 
+#&gt;         "cnd_bullets()", "format_bullets()"), cnd_muffle.Rd = "cnd_muffle()", 
+#&gt;         cnd_signal.Rd = "cnd_signal()", cnd_type.Rd = "cnd_type()", 
+#&gt;         done.Rd = c("done()", "is_done_box()"), dots_definitions.Rd = "dots_definitions()", 
+#&gt;         dots_n.Rd = "dots_n()", dots_values.Rd = "dots_values()", 
+#&gt;         duplicate.Rd = "duplicate()", empty_env.Rd = "empty_env()", 
+#&gt;         entrace.Rd = c("entrace()", "cnd_entrace()"), env.Rd = c("env()", 
+#&gt;         "child_env()", "new_environment()"), env_bind.Rd = c("env_bind()", 
+#&gt;         "env_bind_lazy()", "env_bind_active()"), env_bind_exprs.Rd = c("env_bind_exprs()", 
 #&gt;         "env_bind_fns()"), env_binding_are_active.Rd = c("env_binding_are_active()", 
 #&gt;         "env_binding_are_lazy()"), env_binding_lock.Rd = c("env_binding_lock()", 
 #&gt;         "env_binding_unlock()", "env_binding_are_locked()"), 
@@ -23564,10 +23570,12 @@ or complex expressions.</p>
 #&gt;             "\n", "% Please edit documentation in R/cnd-message.R", 
 #&gt;             "\n", list("cnd_message"), "\n", list("cnd_message"), 
 #&gt;             "\n", list("cnd_issue"), "\n", list("cnd_bullets"), 
-#&gt;             "\n", list("Build an error message from a main issue and bullet messages"), 
+#&gt;             "\n", list("format_bullets"), "\n", list("Build an error message from a main issue and bullet messages"), 
 #&gt;             "\n", list("\n", "cnd_message(cnd)\n", "\n", "cnd_issue(cnd, ...)\n", 
-#&gt;                 "\n", "cnd_bullets(cnd, ...)\n"), "\n", list(
-#&gt;                 "\n", list(list("cnd"), list("A condition object.")), 
+#&gt;                 "\n", "cnd_bullets(cnd, ...)\n", "\n", "format_bullets(x)\n"), 
+#&gt;             "\n", list("\n", list(list("cnd"), list("A condition object.")), 
+#&gt;                 "\n", "\n", list(list("x"), list("A named character vector of messages. Elements named as\n", 
+#&gt;                   list("x"), " or ", list("i"), " are prefixed with the corresponding bullet.")), 
 #&gt;                 "\n"), "\n", list("\n", list("rlang:::lifecycle(\"experimental\")"), 
 #&gt;                 "\n", "\n", list("cnd_message()"), " assembles an error message from two components:\n", 
 #&gt;                 list("\n", list(), " The ", list("cnd_issue()"), 
@@ -28874,25 +28882,25 @@ or complex expressions.</p>
 #&gt;     fn_body = "fn_body", `fn_body&lt;-` = "fn_body", fn_env = "fn_env", 
 #&gt;     `fn_env&lt;-` = "fn_env", fn_fmls = "fn_fmls", fn_fmls_names = "fn_fmls", 
 #&gt;     `fn_fmls_names&lt;-` = "fn_fmls", fn_fmls_syms = "fn_fmls", 
-#&gt;     `fn_fmls&lt;-` = "fn_fmls", frame_position = "frame_position", 
-#&gt;     friendly_type = "friendly_type", get_env = "get_env", get_expr = "set_expr", 
-#&gt;     global_env = "search_envs", global_frame = "stack", has_length = "has_length", 
-#&gt;     has_name = "has_name", have_name = "is_named", inform = "abort", 
-#&gt;     inherits_all = "inherits_any", inherits_any = "inherits_any", 
-#&gt;     inherits_only = "inherits_any", int = "vector-construction", 
-#&gt;     int_along = "vector-old-ctors", int_len = "vector-old-ctors", 
-#&gt;     interrupt = "abort", invoke = "invoke", is_atomic = "type-predicates", 
-#&gt;     is_attached = "search_envs", is_bare_atomic = "bare-type-predicates", 
-#&gt;     is_bare_bytes = "bare-type-predicates", is_bare_character = "bare-type-predicates", 
-#&gt;     is_bare_double = "bare-type-predicates", is_bare_env = "is_env", 
-#&gt;     is_bare_environment = "is_environment", is_bare_formula = "is_formula", 
-#&gt;     is_bare_integer = "bare-type-predicates", is_bare_integerish = "is_integerish", 
-#&gt;     is_bare_list = "bare-type-predicates", is_bare_logical = "bare-type-predicates", 
-#&gt;     is_bare_numeric = "bare-type-predicates", is_bare_raw = "bare-type-predicates", 
-#&gt;     is_bare_string = "bare-type-predicates", is_bare_vector = "bare-type-predicates", 
-#&gt;     is_binary_lang = "is_lang", is_bool = "scalar-type-predicates", 
-#&gt;     is_box = "box", is_bytes = "type-predicates", is_call = "is_call", 
-#&gt;     is_call_stack = "is_stack", is_callable = "is_callable", 
+#&gt;     `fn_fmls&lt;-` = "fn_fmls", format_bullets = "cnd_message", 
+#&gt;     frame_position = "frame_position", friendly_type = "friendly_type", 
+#&gt;     get_env = "get_env", get_expr = "set_expr", global_env = "search_envs", 
+#&gt;     global_frame = "stack", has_length = "has_length", has_name = "has_name", 
+#&gt;     have_name = "is_named", inform = "abort", inherits_all = "inherits_any", 
+#&gt;     inherits_any = "inherits_any", inherits_only = "inherits_any", 
+#&gt;     int = "vector-construction", int_along = "vector-old-ctors", 
+#&gt;     int_len = "vector-old-ctors", interrupt = "abort", invoke = "invoke", 
+#&gt;     is_atomic = "type-predicates", is_attached = "search_envs", 
+#&gt;     is_bare_atomic = "bare-type-predicates", is_bare_bytes = "bare-type-predicates", 
+#&gt;     is_bare_character = "bare-type-predicates", is_bare_double = "bare-type-predicates", 
+#&gt;     is_bare_env = "is_env", is_bare_environment = "is_environment", 
+#&gt;     is_bare_formula = "is_formula", is_bare_integer = "bare-type-predicates", 
+#&gt;     is_bare_integerish = "is_integerish", is_bare_list = "bare-type-predicates", 
+#&gt;     is_bare_logical = "bare-type-predicates", is_bare_numeric = "bare-type-predicates", 
+#&gt;     is_bare_raw = "bare-type-predicates", is_bare_string = "bare-type-predicates", 
+#&gt;     is_bare_vector = "bare-type-predicates", is_binary_lang = "is_lang", 
+#&gt;     is_bool = "scalar-type-predicates", is_box = "box", is_bytes = "type-predicates", 
+#&gt;     is_call = "is_call", is_call_stack = "is_stack", is_callable = "is_callable", 
 #&gt;     is_character = "type-predicates", is_chr_na = "are_na", is_closure = "is_function", 
 #&gt;     is_condition = "is_condition", is_copyable = "is_copyable", 
 #&gt;     is_cpl_na = "are_na", is_dbl_na = "are_na", is_definition = "op-definition", 
@@ -29000,7 +29008,7 @@ or complex expressions.</p>
 #&gt;     with_options = "scoped_options", with_restarts = "with_restarts", 
 #&gt;     wref_key = "wref_key", wref_value = "wref_key", zap = "zap"
 #&gt;     ), article_index = character(0)), examples = TRUE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/Rtmp4B68tY/file4f2653f13748"), 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpHx81Bp/file4f095935b70c"), 
 #&gt;     install = FALSE, preview = FALSE, new_process = FALSE, devel = FALSE, 
 #&gt;     crayon_enabled = TRUE, crayon_colors = 256, pkgdown_internet = TRUE)
 #&gt; 

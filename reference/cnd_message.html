@@ -90,7 +90,7 @@ in custom conditionMessage() methods." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9006</span>
       </span>
     </div>
 
@@ -179,7 +179,9 @@ in custom <code><a href='https://rdrr.io/r/base/conditions.html'>conditionMessag
 
 <span class='fu'>cnd_issue</span>(<span class='no'>cnd</span>, <span class='no'>...</span>)
 
-<span class='fu'>cnd_bullets</span>(<span class='no'>cnd</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>cnd_bullets</span>(<span class='no'>cnd</span>, <span class='no'>...</span>)
+
+<span class='fu'>format_bullets</span>(<span class='no'>x</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -187,6 +189,11 @@ in custom <code><a href='https://rdrr.io/r/base/conditions.html'>conditionMessag
     <tr>
       <th>cnd</th>
       <td><p>A condition object.</p></td>
+    </tr>
+    <tr>
+      <th>x</th>
+      <td><p>A named character vector of messages. Elements named as
+<code>x</code> or <code>i</code> are prefixed with the corresponding bullet.</p></td>
     </tr>
     </table>
 
