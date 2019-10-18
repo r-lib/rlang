@@ -1,6 +1,10 @@
 
 # rlang (development)
 
+* Capture of backtrace in the context of rethrowing an error from an
+  exiting handler has been improved. The `tryCatch()` context no
+  longer leaks in the high-level backtrace.
+
 * Printing an error no longer recommends calling `last_trace()`,
   unless called from `last_error()`.
 

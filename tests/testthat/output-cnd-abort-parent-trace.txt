@@ -1,0 +1,28 @@
+> wrapper <- FALSE
+> err <- catch_cnd(f())
+> print(err)
+<simpleError in value[[3L]](cond): object 'parent' not found>
+
+> wrapper <- TRUE
+> err <- catch_cnd(f())
+> print(err)
+<error/rlang_error>
+wrapper
+Backtrace:
+  1. rlang::catch_cnd(f())
+  8. rlang:::f()
+  9. rlang:::g()
+ 10. rlang:::h()
+
+> # FIXME?
+> parent <- FALSE
+> err <- catch_cnd(f())
+> print(err)
+<error/rlang_error>
+wrapper
+Backtrace:
+  1. rlang::catch_cnd(f())
+  8. rlang:::f()
+  9. rlang:::g()
+ 10. rlang:::h()
+

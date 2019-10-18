@@ -142,7 +142,7 @@ abort <- function(message = "",
     if (is_null(parent)) {
       context <- trace_length(trace)
     } else {
-      context <- find_capture_context()
+      context <- find_capture_context(3L)
     }
     trace <- trace_trim_context(trace, context)
   }
@@ -207,30 +207,18 @@ trace_trim_context <- function(trace, frame = caller_env()) {
 
   trace
 }
-# FIXME: Find more robust strategy of stripping catching context
+
+# Assumes we're called from an exiting handler. Need to
 find_capture_context <- function(n = 3L) {
-  sys_parent <- sys.parent(n)
-  thrower_frame <- sys.frame(sys_parent)
+  parent <- orig <- sys.parent(n)
+  call <- sys.call(parent)
 
-  call <- sys.call(sys_parent)
-  frame <- sys.frame(sys_parent)
-  if (!is_call(call, "tryCatchOne") || !env_inherits(frame, ns_env("base"))) {
-    return(thrower_frame)
+  try_catch_n <- detect_index(sys.calls(), is_call, "tryCatch", .right = TRUE)
+  if (try_catch_n == 0L) {
+    sys.frame(sys.parent(n))
+  } else {
+    sys.frame(try_catch_n)
   }
-
-  sys_parents <- sys.parents()
-  while (!is_call(call, "tryCatch")) {
-    sys_parent <- sys_parents[sys_parent]
-    call <- sys.call(sys_parent)
-  }
-
-  next_parent <- sys_parents[sys_parent]
-  call <- sys.call(next_parent)
-  if (is_call(call, "with_handlers")) {
-    sys_parent <- next_parent
-  }
-
-  sys.frame(sys_parent)
 }
 
 #' Display backtrace on error

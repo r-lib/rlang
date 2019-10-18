@@ -148,3 +148,45 @@ test_that("backtrace reminder is displayed when called from `last_error()`", {
     print(saved)
   })
 })
+
+test_that("capture context doesn't leak into low-level backtraces", {
+  scoped_options(
+    rlang_trace_format_srcrefs = FALSE,
+    rlang_trace_top_env = current_env()
+  )
+
+  stop_wrapper <- function(...) abort("wrapper", ...)
+  f <- function() g()
+  g <- function() h()
+  h <- function() {
+    tryCatch(
+      stop("low-level"),
+      error = function(err) {
+        if (wrapper) {
+          stop_wrapper(parent = err)
+        } else {
+          if (parent) {
+            abort("no wrapper", parent = err)
+          } else {
+            abort("no wrapper")
+          }
+        }
+      }
+    )
+  }
+
+  verify_output(test_path("output-cnd-abort-parent-trace.txt"), {
+    wrapper <- FALSE
+    err <- catch_cnd(f())
+    print(err)
+
+    wrapper <- TRUE
+    err <- catch_cnd(f())
+    print(err)
+
+    "FIXME?"
+    parent <- FALSE
+    err <- catch_cnd(f())
+    print(err)
+  })
+})
