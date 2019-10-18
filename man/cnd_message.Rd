@@ -4,6 +4,7 @@
 \alias{cnd_message}
 \alias{cnd_issue}
 \alias{cnd_bullets}
+\alias{format_bullets}
 \title{Build an error message from a main issue and bullet messages}
 \usage{
 cnd_message(cnd)
@@ -11,9 +12,14 @@ cnd_message(cnd)
 cnd_issue(cnd, ...)
 
 cnd_bullets(cnd, ...)
+
+format_bullets(x)
 }
 \arguments{
 \item{cnd}{A condition object.}
+
+\item{x}{A named character vector of messages. Elements named as
+\code{x} or \code{i} are prefixed with the corresponding bullet.}
 }
 \description{
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}

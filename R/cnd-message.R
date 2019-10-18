@@ -109,6 +109,10 @@ cnd_bullets.default <- function(cnd, ...) {
   chr()
 }
 
+#' @rdname cnd_message
+#' @export
+#' @param x A named character vector of messages. Elements named as
+#'   `x` or `i` are prefixed with the corresponding bullet.
 format_bullets <- function(x) {
   if (!length(x)) {
     return(x)
