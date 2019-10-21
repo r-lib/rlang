@@ -37,8 +37,6 @@
 * Fixed an infinite loop in `eval_tidy()`. It occurred when evaluating
   a quosure that inherits from the mask itself.
 
-* `is_call()` now returns `FALSE` for quosures.
-
 * `env_bind()`'s performance has been significantly improved by fixing a bug
   that caused values to be repeatedly looked up by name.
 
