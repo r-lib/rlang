@@ -130,7 +130,7 @@ call_fix_car <- function(call) {
 
 # Assumes magrittr 1.5
 add_pipe_pointer <- function(calls, frames) {
-  pipe_begs <- which(map_lgl(calls, is_call, "%>%"))
+  pipe_begs <- which(map_lgl(calls, is_call2, "%>%"))
   pipe_kinds <- map_int(pipe_begs, pipe_call_kind, calls)
 
   pipe_calls <- map2(pipe_begs, pipe_kinds, function(beg, kind) {
@@ -552,7 +552,7 @@ n_collapsed <- function(trace, id) {
 }
 
 is_eval_call <- function(call) {
-  is_call(call, c("eval", "evalq"), ns = c("", "base"))
+  is_call2(call, c("eval", "evalq"), ns = c("", "base"))
 }
 
 pipe_collect_calls <- function(pipe, env) {
@@ -563,7 +563,7 @@ pipe_collect_calls <- function(pipe, env) {
 
   calls <- new_node(last_call, NULL)
 
-  while (is_call(node_car(node), "%>%")) {
+  while (is_call2(node_car(node), "%>%")) {
     node <- node_cdar(node)
     call <- pipe_add_dot(node_cadr(node))
     call <- maybe_add_namespace(call, env)
@@ -571,7 +571,7 @@ pipe_collect_calls <- function(pipe, env) {
   }
 
   first_call <- node_car(node)
-  if (is_call(first_call)) {
+  if (is_call2(first_call)) {
     # The first call doesn't need a dot
     first_call <- maybe_add_namespace(first_call, env)
     calls <- new_node(first_call, calls)
@@ -583,7 +583,7 @@ pipe_collect_calls <- function(pipe, env) {
   list(calls = as.list(calls), leading = leading)
 }
 pipe_add_dot <- function(call) {
-  if (!is_call(call)) {
+  if (!is_call2(call)) {
     return(call2(call, dot_sym))
   }
 
@@ -683,7 +683,7 @@ trace_simplify_branch <- function(trace) {
 
 # Bypass calls with inlined functions
 is_uninformative_call <- function(call) {
-  if (!is_call(call)) {
+  if (!is_call2(call)) {
     return(FALSE)
   }
 
@@ -695,9 +695,9 @@ is_uninformative_call <- function(call) {
   }
 
   # If a call, might be wrapped in parentheses
-  while (is_call(fn, "(")) {
+  while (is_call2(fn, "(")) {
     fn <- fn[[2]]
-    if (is_call(fn, "function")) {
+    if (is_call2(fn, "function")) {
       return(TRUE)
     }
   }
@@ -783,7 +783,7 @@ trace_call_text <- function(call, collapse) {
     return(as_label(call))
   }
 
-  if (is_call(call, "%>%")) {
+  if (is_call2(call, "%>%")) {
     call <- call
   } else if (length(call) > 1L) {
     call <- call2(node_car(call), quote(...))

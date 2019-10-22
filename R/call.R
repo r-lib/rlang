@@ -291,6 +291,15 @@ is_call <- function(x, name = NULL, n = NULL, ns = NULL) {
   TRUE
 }
 
+# Until `is_call()` is fixed
+is_call2 <- function(x, ...) {
+  if (is_quosure(x)) {
+    FALSE
+  } else {
+    rlang::is_call(x, ...)
+  }
+}
+
 #' How does a call print at the console?
 #'
 #' @description
