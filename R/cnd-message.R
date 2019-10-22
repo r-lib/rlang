@@ -56,7 +56,7 @@
 #' or replicate the type-checking control flow within the
 #' `cnd_bullets()` method. None of these options are ideal.
 #'
-#' A better option is to define a `.bullets` field in your error
+#' A better option is to define a `cnd_bullets` field in your error
 #' object. This should be a function (or a lambda-formula which will
 #' be passed to [as_function()]) with the same signature as
 #' `cnd_bullets()` methods. This function overrides the
@@ -98,10 +98,10 @@ cnd_issue.default <- function(cnd, ...) {
 #' @rdname cnd_message
 #' @export
 cnd_bullets <- function(cnd, ...) {
-  if (is_function(cnd$.bullets)) {
-    cnd$.bullets(cnd, ...)
-  } else if (is_bare_formula(cnd$.bullets)) {
-    cnd_bullets <- as_function(cnd$.bullets)
+  if (is_function(cnd$cnd_bullets)) {
+    cnd$cnd_bullets(cnd, ...)
+  } else if (is_bare_formula(cnd$cnd_bullets)) {
+    cnd_bullets <- as_function(cnd$cnd_bullets)
     cnd_bullets(cnd, ...)
   } else {
     UseMethod("cnd_bullets")

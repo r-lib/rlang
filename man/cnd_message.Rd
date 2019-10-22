@@ -77,7 +77,7 @@ overspecify your error class hierarchies with one class per state,
 or replicate the type-checking control flow within the
 \code{cnd_bullets()} method. None of these options are ideal.
 
-A better option is to define a \code{.bullets} field in your error
+A better option is to define a \code{cnd_bullets} field in your error
 object. This should be a function (or a lambda-formula which will
 be passed to \code{\link[=as_function]{as_function()}}) with the same signature as
 \code{cnd_bullets()} methods. This function overrides the

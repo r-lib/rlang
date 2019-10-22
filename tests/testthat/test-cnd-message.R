@@ -40,7 +40,7 @@ test_that("default cnd_bullets() method calls lazy method if present", {
     "rlang_foobar",
     message = "Issue.",
     data = "foo",
-    .bullets = function(cnd, ...) {
+    cnd_bullets = function(cnd, ...) {
       c(x = cnd$data, i = "bar")
     }
   )
@@ -48,7 +48,7 @@ test_that("default cnd_bullets() method calls lazy method if present", {
     "rlang_foobar",
     message = "Issue.",
     data = "foo",
-    .bullets = ~ .$data
+    cnd_bullets = ~ .$data
   )
 
   # Should not have precedence
