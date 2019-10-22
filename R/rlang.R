@@ -34,15 +34,15 @@ check_downstream_dep <- function(dep, pkg) {
 
   msg <- c(
     sprintf("As of rlang %s, %s must be at least version %s.", from, pkg, min),
-    x = sprintf("%s %s is not compatible with rlang %s.", pkg, ver, rlang_ver)
+    x = sprintf("%s %s is too old for rlang %s.", pkg, ver, rlang_ver)
   )
 
   os <- tolower(Sys.info()[["sysname"]])
   if (os == "windows") {
     url <- "https://github.com/jennybc/what-they-forgot/issues/62"
     howto <- c(
-      i = "Updating packages requires precautions on Windows.",
-      i = sprintf("See <%s>.", url)
+      i = sprintf("Please update %s to the latest version.", pkg),
+      i = sprintf("Updating packages on Windows requires precautions:\n  <%s>", url)
     )
   } else {
     howto <- c(
