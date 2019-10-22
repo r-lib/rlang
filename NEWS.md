@@ -1,5 +1,5 @@
 
-# rlang (development)
+# rlang 0.4.1
 
 * New experimental framework for creating bulleted error messages. See
   `?cnd_message` for the motivation and an overwiew of the tools we
