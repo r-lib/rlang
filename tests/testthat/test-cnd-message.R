@@ -1,7 +1,10 @@
 context("cnd-message")
 
 test_that("format_bullets() formats bullets depending on names", {
-  scoped_options(crayon.enabled = FALSE)
+  scoped_options(
+    crayon.enabled = FALSE,
+    cli.unicode = FALSE
+  )
   expect_identical(format_bullets(c("foo", "bar")), "* foo\n* bar")
   expect_identical(format_bullets(c(i = "foo", "baz", x = "bar")), "i foo\n* baz\nx bar")
   expect_error(format_bullets(c(i = "foo", u = "bar")))
