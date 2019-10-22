@@ -369,7 +369,9 @@ fn_env <- function(fn) {
 #'
 #' * `as_closure()` first passes its argument to `as_function()`. If
 #'   the result is a primitive function, it regularises it to a proper
-#'   [closure] (see [is_function()] about primitive functions).
+#'   [closure] (see [is_function()] about primitive functions). Some
+#'   special control flow primitives like `if`, `for`, or `break`
+#'   can't be coerced to a closure.
 #'
 #' @param x A function or formula.
 #'

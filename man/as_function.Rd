@@ -37,7 +37,9 @@ is a string.}
 This powers the lambda syntax in packages like purrr.
 \item \code{as_closure()} first passes its argument to \code{as_function()}. If
 the result is a primitive function, it regularises it to a proper
-\link{closure} (see \code{\link[=is_function]{is_function()}} about primitive functions).
+\link{closure} (see \code{\link[=is_function]{is_function()}} about primitive functions). Some
+special control flow primitives like \code{if}, \code{for}, or \code{break}
+can't be coerced to a closure.
 }
 }
 \examples{
