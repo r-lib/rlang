@@ -49,6 +49,8 @@ reference:
       - enexpr
       - enexprs
       - quasiquotation
+      - as_label
+      - as_name
   - title: Tidy dots
     desc: >
       Collect arguments contained in `...` with `!!!` and
@@ -56,6 +58,7 @@ reference:
     contents:
       - list2
       - dots_list
+      - pairlist2
   - title: Errors, conditions, and backtraces
     contents:
       - abort
@@ -65,6 +68,10 @@ reference:
       - trace_back
       - with_abort
       - entrace
+      - cnd_signal
+      - last_error
+      - rlang_backtrace_on_error
+      - catch_cnd
   - title: Evaluate expressions
     contents:
       - eval_tidy
@@ -75,6 +82,7 @@ reference:
       - sym
       - syms
       - is_symbol
+      - as_string
   - title: Calls
     contents:
       - starts_with("call_")
@@ -171,6 +179,7 @@ reference:
       - unbox
       - zap
       - is_zap
+      - done
   - title: Create vectors
     desc: >
       Atomic vector constructors have implicit splicing (i.e. splice
@@ -191,6 +200,8 @@ reference:
     contents:
       - set_names
       - names2
+      - has_name
+      - is_named
   - title: Type predicates
     contents:
       - is_list
