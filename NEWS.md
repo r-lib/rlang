@@ -1,6 +1,14 @@
 
 # rlang (development)
 
+* New experimental framework for creating bulleted error messages. See
+  `?cnd_message` for the motivation and an overwiew of the tools we
+  have created to support this approach. In particular, `abort()` now
+  takes character vectors to assemble a bullet list. Elements named
+  `x` are prefixed with a red cross, elements named `i` are prefixed
+  with a blue info symbol, and unnamed elements are prefixed with a
+  bullet.
+
 * Capture of backtrace in the context of rethrowing an error from an
   exiting handler has been improved. The `tryCatch()` context no
   longer leaks in the high-level backtrace.

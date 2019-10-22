@@ -17,6 +17,9 @@
 #' implement `cnd_issue()` and `cnd_bullets()`. It can also be called
 #' in custom `conditionMessage()` methods.
 #'
+#' Note that if you pass a named character vector to [abort()], you
+#' get the same formatting behaviour as `cnd_message()`.
+#'
 #' @param cnd A condition object.
 #'
 #' @section Error statements:

@@ -36,6 +36,9 @@ of lines. These lines are automatically prefixed with a bullet by
 for rlang errors so that errors thrown with \code{\link[=abort]{abort()}} only need to
 implement \code{cnd_issue()} and \code{cnd_bullets()}. It can also be called
 in custom \code{conditionMessage()} methods.
+
+Note that if you pass a named character vector to \code{\link[=abort]{abort()}}, you
+get the same formatting behaviour as \code{cnd_message()}.
 }
 \section{Error statements}{
 

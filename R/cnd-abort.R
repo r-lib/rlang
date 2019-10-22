@@ -61,6 +61,10 @@
 #'
 #' @inheritParams cnd
 #' @param message The message to display.
+#'
+#'   Experimental: Can also be a named character vector, in which case
+#'   the message is assembled as a list of bullets. See
+#'   [cnd_message()] to learn how names control the bulleted output.
 #' @param .subclass Subclass of the condition. This allows your users
 #'   to selectively handle the conditions signalled by your functions.
 #' @param ... Additional data to be stored in the condition object.

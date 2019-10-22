@@ -20,7 +20,11 @@ signal(message, .subclass, ...)
 interrupt()
 }
 \arguments{
-\item{message}{The message to display.}
+\item{message}{The message to display.
+
+Experimental: Can also be a named character vector, in which case
+the message is assembled as a list of bullets. See
+\code{\link[=cnd_message]{cnd_message()}} to learn how names control the bulleted output.}
 
 \item{.subclass}{Subclass of the condition. This allows your users
 to selectively handle the conditions signalled by your functions.}
