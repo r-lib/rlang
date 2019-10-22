@@ -236,7 +236,7 @@ generate error messages with <code>cnd_bullets()</code>: you can either
 overspecify your error class hierarchies with one class per state,
 or replicate the type-checking control flow within the
 <code>cnd_bullets()</code> method. None of these options are ideal.</p>
-<p>A better option is to define a <code>.bullets</code> field in your error
+<p>A better option is to define a <code>cnd_bullets</code> field in your error
 object. This should be a function (or a lambda-formula which will
 be passed to <code><a href='as_function.html'>as_function()</a></code>) with the same signature as
 <code>cnd_bullets()</code> methods. This function overrides the
