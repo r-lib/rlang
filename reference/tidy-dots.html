@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Collect dots tidily — tidy-dots • rlang</title>
+<title>Collect dots as lists — tidy-dots • rlang</title>
 
 
 <!-- jquery -->
@@ -35,20 +35,19 @@
 
 
 
-<meta property="og:title" content="Collect dots tidily — tidy-dots" />
-<meta property="og:description" content="list2() is equivalent to list(...) but provides tidy
-dots semantics:
+<meta property="og:title" content="Collect dots as lists — tidy-dots" />
+<meta property="og:description" content="list2() is equivalent to list(...) with a few additional
+features:
 You can splice other lists with the
 unquote-splice !!! operator.
 You can unquote names by using the unquote
 operator !! on the left-hand side of :=.
+Trailing commas are ignored, making it easier to copy and paste
+arguments.
 
 
-We call quasiquotation support in dots tidy dots semantics and
-functions taking dots with list2() tidy dots functions.
-Quasiquotation is an alternative to do.call() idioms and gives
-the users of your functions an uniform syntax to supply a variable
-number of arguments or a variable name.
+For lack of a better name, these features are collectively called
+&quot;tidy dots&quot;.
 dots_list() is a lower-level version of list2() that offers
 additional parameters for dots capture." />
 <meta name="twitter:card" content="summary" />
@@ -158,25 +157,24 @@ additional parameters for dots capture." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Collect dots tidily</h1>
+    <h1>Collect dots as lists</h1>
     <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/dots.R'><code>R/dots.R</code></a>, <a href='https://github.com/r-lib/rlang/blob/master/R/vec-new.R'><code>R/vec-new.R</code></a></small>
     <div class="hidden name"><code>tidy-dots.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>list2()</code> is equivalent to <code><a href='https://rdrr.io/r/base/list.html'>list(...)</a></code> but provides tidy
-dots semantics:</p><ul>
+    <p><code>list2()</code> is equivalent to <code><a href='https://rdrr.io/r/base/list.html'>list(...)</a></code> with a few additional
+features:</p><ul>
 <li><p>You can splice other lists with the
 <a href='quasiquotation.html'>unquote-splice</a> <code>!!!</code> operator.</p></li>
 <li><p>You can unquote names by using the <a href='quasiquotation.html'>unquote</a>
 operator <code>!!</code> on the left-hand side of <code>:=</code>.</p></li>
+<li><p>Trailing commas are ignored, making it easier to copy and paste
+arguments.</p></li>
 </ul>
 
-<p>We call quasiquotation support in dots <strong>tidy dots</strong> semantics and
-functions taking dots with <code>list2()</code> tidy dots functions.
-Quasiquotation is an alternative to <code><a href='https://rdrr.io/r/base/do.call.html'>do.call()</a></code> idioms and gives
-the users of your functions an uniform syntax to supply a variable
-number of arguments or a variable name.</p>
+<p>For lack of a better name, these features are collectively called
+"tidy dots".</p>
 <p><code>dots_list()</code> is a lower-level version of <code>list2()</code> that offers
 additional parameters for dots capture.</p>
     </div>
@@ -229,24 +227,6 @@ This ensures assignments are explicit.</p></td>
 
     <p>A list of arguments. This list is always named: unnamed
 arguments are named with the empty string <code>""</code>.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>Note that while all tidy eval <a href='quotation.html'>quoting functions</a> have
-tidy dots semantics, not all tidy dots functions are quoting
-functions. <code>list2()</code> is for standard functions, not quoting
-functions.</p>
-    <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
-
-    
-
-
-<p>One difference of <code>dots_list()</code> with <code>list2()</code> is that it always
-allocates a vector of names even if no names were supplied. In this
-case, the names are all empty <code>""</code>. This is for consistency with
-<code><a href='quotation.html'>enquos()</a></code> and <code><a href='quotation.html'>enexprs()</a></code> but can be quite costly when long lists
-are spliced in the results. For this reason we plan to parameterise
-this behaviour with a <code>.named</code> argument and possibly change the
-default. <code>list2()</code> does not have this issue.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='quotation.html'>exprs()</a></code> for extracting dots without evaluation.</p></div>
@@ -379,8 +359,6 @@ default. <code>list2()</code> does not have this issue.</p>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#life-cycle">Life cycle</a></li>
       <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
