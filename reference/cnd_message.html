@@ -47,7 +47,9 @@ cnd_message() (see the section on error statements).
 cnd_message() is automatically called by the conditionMessage()
 for rlang errors so that errors thrown with abort() only need to
 implement cnd_issue() and cnd_bullets(). It can also be called
-in custom conditionMessage() methods." />
+in custom conditionMessage() methods.
+Note that if you pass a named character vector to abort(), you
+get the same formatting behaviour as cnd_message()." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -173,6 +175,8 @@ of lines. These lines are automatically prefixed with a bullet by
 for rlang errors so that errors thrown with <code><a href='abort.html'>abort()</a></code> only need to
 implement <code>cnd_issue()</code> and <code>cnd_bullets()</code>. It can also be called
 in custom <code><a href='https://rdrr.io/r/base/conditions.html'>conditionMessage()</a></code> methods.</p>
+<p>Note that if you pass a named character vector to <code><a href='abort.html'>abort()</a></code>, you
+get the same formatting behaviour as <code>cnd_message()</code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>cnd_message</span>(<span class='no'>cnd</span>)

@@ -41,7 +41,9 @@ as_function() transforms a one-sided formula into a function.
 This powers the lambda syntax in packages like purrr.
 as_closure() first passes its argument to as_function(). If
 the result is a primitive function, it regularises it to a proper
-closure (see is_function() about primitive functions).
+closure (see is_function() about primitive functions). Some
+special control flow primitives like if, for, or break
+can't be coerced to a closure.
 
 " />
 <meta name="twitter:card" content="summary" />
@@ -162,7 +164,9 @@ closure (see is_function() about primitive functions).
 This powers the lambda syntax in packages like purrr.</p></li>
 <li><p><code>as_closure()</code> first passes its argument to <code>as_function()</code>. If
 the result is a primitive function, it regularises it to a proper
-<a href='https://rdrr.io/r/base/function.html'>closure</a> (see <code><a href='is_function.html'>is_function()</a></code> about primitive functions).</p></li>
+<a href='https://rdrr.io/r/base/function.html'>closure</a> (see <code><a href='is_function.html'>is_function()</a></code> about primitive functions). Some
+special control flow primitives like <code>if</code>, <code>for</code>, or <code>break</code>
+can't be coerced to a closure.</p></li>
 </ul>
 
     </div>
@@ -233,7 +237,7 @@ is a string.</p></td>
 #&gt;         .x
 #&gt;     else .x + .y
 #&gt; }
-#&gt; &lt;environment: 0x37dc640&gt;</div><div class='input'><span class='fu'>as_closure</span>(<span class='no'>`~`</span>)</div><div class='output co'>#&gt; function (.x, .y) 
+#&gt; &lt;environment: 0x3d98d80&gt;</div><div class='input'><span class='fu'>as_closure</span>(<span class='no'>`~`</span>)</div><div class='output co'>#&gt; function (.x, .y) 
 #&gt; {
 #&gt;     if (is_missing(substitute(.y))) {
 #&gt;         new_formula(NULL, substitute(.x), caller_env())
@@ -242,8 +246,8 @@ is a string.</p></td>
 #&gt;         new_formula(substitute(.x), substitute(.y), caller_env())
 #&gt;     }
 #&gt; }
-#&gt; &lt;bytecode: 0x5c2c9e0&gt;
-#&gt; &lt;environment: 0x31fb660&gt;</div><div class='input'>
+#&gt; &lt;bytecode: 0x614a068&gt;
+#&gt; &lt;environment: 0x37826b8&gt;</div><div class='input'>
 <span class='co'># Use a regular function for tidy evaluation, also when calling functions</span>
 <span class='co'># that use tidy evaluation:</span>
 <span class='co'>## Bad:</span>
