@@ -10,6 +10,14 @@ downstream_deps <- list(
 )
 
 check_downstream_dep <- function(dep, pkg) {
+  if (!isNamespaceLoaded(pkg)) {
+    setHook(
+      packageEvent(pkg, "onLoad"),
+      function(...) check_downstream_dep(dep, pkg)
+    )
+    return()
+  }
+
   min <- dep[["min"]]
   from <- dep[["from"]]
   stopifnot(
