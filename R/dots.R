@@ -1,9 +1,9 @@
-#' Collect dots tidily
+#' Collect dots as lists
 #'
 #' @description
 #'
-#' `list2()` is equivalent to `list(...)` but provides tidy
-#' dots semantics:
+#' `list2()` is equivalent to `list(...)` with a few additional
+#' features:
 #'
 #' - You can splice other lists with the
 #'   [unquote-splice][quasiquotation] `!!!` operator.
@@ -11,34 +11,14 @@
 #' - You can unquote names by using the [unquote][quasiquotation]
 #'   operator `!!` on the left-hand side of `:=`.
 #'
-#' We call quasiquotation support in dots **tidy dots** semantics and
-#' functions taking dots with `list2()` tidy dots functions.
-#' Quasiquotation is an alternative to `do.call()` idioms and gives
-#' the users of your functions an uniform syntax to supply a variable
-#' number of arguments or a variable name.
+#' - Trailing commas are ignored, making it easier to copy and paste
+#'   arguments.
+#'
+#' For lack of a better name, these features are collectively called
+#' "tidy dots".
 #'
 #' `dots_list()` is a lower-level version of `list2()` that offers
 #' additional parameters for dots capture.
-#'
-#'
-#' @details
-#'
-#' Note that while all tidy eval [quoting functions][quotation] have
-#' tidy dots semantics, not all tidy dots functions are quoting
-#' functions. `list2()` is for standard functions, not quoting
-#' functions.
-#'
-#'
-#' @section Life cycle:
-#'
-#' One difference of `dots_list()` with `list2()` is that it always
-#' allocates a vector of names even if no names were supplied. In this
-#' case, the names are all empty `""`. This is for consistency with
-#' [enquos()] and [enexprs()] but can be quite costly when long lists
-#' are spliced in the results. For this reason we plan to parameterise
-#' this behaviour with a `.named` argument and possibly change the
-#' default. `list2()` does not have this issue.
-#'
 #'
 #' @param ... Arguments to collect with `!!!` support.
 #' @param .ignore_empty Whether to ignore empty arguments. Can be one

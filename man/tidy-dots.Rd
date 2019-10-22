@@ -4,7 +4,7 @@
 \alias{tidy-dots}
 \alias{dots_list}
 \alias{list2}
-\title{Collect dots tidily}
+\title{Collect dots as lists}
 \usage{
 dots_list(..., .ignore_empty = c("trailing", "none", "all"),
   .preserve_empty = FALSE, .homonyms = c("keep", "first", "last",
@@ -41,42 +41,23 @@ A list of arguments. This list is always named: unnamed
 arguments are named with the empty string \code{""}.
 }
 \description{
-\code{list2()} is equivalent to \code{list(...)} but provides tidy
-dots semantics:
+\code{list2()} is equivalent to \code{list(...)} with a few additional
+features:
 \itemize{
 \item You can splice other lists with the
 \link[=quasiquotation]{unquote-splice} \code{!!!} operator.
 \item You can unquote names by using the \link[=quasiquotation]{unquote}
 operator \code{!!} on the left-hand side of \code{:=}.
+\item Trailing commas are ignored, making it easier to copy and paste
+arguments.
 }
 
-We call quasiquotation support in dots \strong{tidy dots} semantics and
-functions taking dots with \code{list2()} tidy dots functions.
-Quasiquotation is an alternative to \code{do.call()} idioms and gives
-the users of your functions an uniform syntax to supply a variable
-number of arguments or a variable name.
+For lack of a better name, these features are collectively called
+"tidy dots".
 
 \code{dots_list()} is a lower-level version of \code{list2()} that offers
 additional parameters for dots capture.
 }
-\details{
-Note that while all tidy eval \link[=quotation]{quoting functions} have
-tidy dots semantics, not all tidy dots functions are quoting
-functions. \code{list2()} is for standard functions, not quoting
-functions.
-}
-\section{Life cycle}{
-
-
-One difference of \code{dots_list()} with \code{list2()} is that it always
-allocates a vector of names even if no names were supplied. In this
-case, the names are all empty \code{""}. This is for consistency with
-\code{\link[=enquos]{enquos()}} and \code{\link[=enexprs]{enexprs()}} but can be quite costly when long lists
-are spliced in the results. For this reason we plan to parameterise
-this behaviour with a \code{.named} argument and possibly change the
-default. \code{list2()} does not have this issue.
-}
-
 \examples{
 # Let's create a function that takes a variable number of arguments:
 numeric <- function(...) {
