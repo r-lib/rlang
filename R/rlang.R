@@ -24,11 +24,26 @@ check_downstream_dep <- function(dep, pkg) {
 
   rlang_ver <- packageVersion("rlang")
 
-  warn(c(
-    sprintf("As of rlang %s, %s must be at least %s.", from, pkg, min),
-    x = sprintf("%s %s is not compatible with rlang %s.", pkg, ver, rlang_ver),
-    i = sprintf("Please update %s with `install.packages(\"%s\")`.", pkg, pkg)
-  ))
+  msg <- c(
+    sprintf("As of rlang %s, %s must be at least version %s.", from, pkg, min),
+    x = sprintf("%s %s is not compatible with rlang %s.", pkg, ver, rlang_ver)
+  )
+
+  os <- tolower(Sys.info()[["sysname"]])
+  if (os == "windows") {
+    url <- "https://github.com/jennybc/what-they-forgot/issues/62"
+    howto <- c(
+      i = "Updating packages requires precautions on Windows.",
+      i = sprintf("See <%s>.", url)
+    )
+  } else {
+    howto <- c(
+      i = sprintf("Please update %s with `install.packages(\"%s\")`.", pkg, pkg)
+    )
+  }
+  msg <- c(msg, howto)
+
+  warn(msg)
 }
 
 .onLoad <- function(lib, pkg) {
