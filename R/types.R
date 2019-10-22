@@ -393,6 +393,7 @@ friendly_type <- function(type) {
 #' effects.
 #'
 #' @param x An object to test.
+#' @keywords internal
 #' @export
 #' @examples
 #' # Let's add attributes with structure() to uncopyable types. Since
@@ -447,6 +448,7 @@ is_equal <- function(x, y) {
 #'   even if you modify one of the references.
 #'
 #' @param x,y R objects.
+#' @keywords internal
 #' @export
 #' @examples
 #' # Reassigning an uncopyable object such as an environment creates a

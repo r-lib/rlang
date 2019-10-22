@@ -65,3 +65,4 @@ is_na(character(0))
 is_lgl_na(NA)
 is_lgl_na(na_dbl)
 }
+\keyword{internal}

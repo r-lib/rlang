@@ -43,3 +43,4 @@ orig_env$a
 \seealso{
 \code{\link[=env_bind]{env_bind()}}, \code{\link[=env_unbind]{env_unbind()}}
 }
+\keyword{internal}

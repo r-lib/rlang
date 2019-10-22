@@ -73,3 +73,4 @@ with_handlers(fn(),
   my_particular_msg = calling(cnd_muffle)
 )
 }
+\keyword{internal}

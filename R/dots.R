@@ -319,6 +319,8 @@ dots_splice <- function(...,
 #'
 #' @inheritParams tidy-dots
 #' @param ... Arguments to evaluate and process splicing operators.
+#'
+#' @keywords internal
 #' @export
 #' @examples
 #' dots <- dots_values(!!! list(1, 2), 3)
@@ -398,6 +400,7 @@ dots_node <- function(...) {
 #' as an integer.
 #'
 #' @param ... Forwarded arguments.
+#' @keywords internal
 #' @export
 #' @examples
 #' fn <- function(...) dots_n(..., baz)

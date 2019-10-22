@@ -234,5 +234,6 @@
 #'   `.msg` => `message`.
 #'
 #'
+#' @keywords internal
 #' @name lifecycle
 NULL

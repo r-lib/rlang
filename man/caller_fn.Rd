@@ -32,3 +32,4 @@ These functions are experimental.
 \seealso{
 \code{\link[=caller_env]{caller_env()}} and \code{\link[=current_env]{current_env()}}
 }
+\keyword{internal}

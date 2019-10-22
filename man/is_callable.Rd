@@ -41,3 +41,4 @@ if (is_callable(obj)) {
 
 eval_bare(lang)
 }
+\keyword{internal}

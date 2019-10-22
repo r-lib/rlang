@@ -22,6 +22,8 @@
 #' @param trace A `trace` object created by [trace_back()].
 #' @param parent A parent condition object created by [abort()].
 #' @seealso [cnd_signal()], [with_handlers()].
+#'
+#' @keywords internal
 #' @export
 #' @examples
 #' # Create a condition inheriting from the s3 type "foo":
@@ -60,6 +62,7 @@ message_cnd <- function(.subclass = NULL, ..., message = "") {
 
 #' Is object a condition?
 #' @param x An object to test.
+#' @keywords internal
 #' @export
 is_condition <- function(x) {
   inherits(x, "condition")
@@ -72,6 +75,8 @@ is_condition <- function(x) {
 #' @param cnd A condition object.
 #' @return A string, either `"condition"`, `"message"`, `"warning"`,
 #'   `"error"` or `"interrupt"`.
+#'
+#' @keywords internal
 #' @export
 #' @examples
 #' cnd_type(catch_cnd(abort("Abort!")))

@@ -122,6 +122,7 @@ eval_bare <- function(expr, env = parent.frame()) {
 #' @inheritParams eval_bare
 #' @param env An environment within which to evaluate `expr`. Can be
 #'   an object with a [get_env()] method.
+#' @keywords internal
 #' @export
 #' @examples
 #' # with_env() is handy to create formulas with a given environment:

@@ -317,6 +317,8 @@ with_bindings <- function(.expr, ..., .env = caller_env()) {
 #' @return A copy of `.env` enclosing the new environment containing
 #'   bindings to `...` arguments.
 #' @seealso [env_bind()], [env_unbind()]
+#'
+#' @keywords internal
 #' @export
 #' @examples
 #' orig_env <- env(a = 10)

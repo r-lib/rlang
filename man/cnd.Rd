@@ -68,3 +68,4 @@ try(cnd_signal(err))
 \seealso{
 \code{\link[=cnd_signal]{cnd_signal()}}, \code{\link[=with_handlers]{with_handlers()}}.
 }
+\keyword{internal}

@@ -67,3 +67,4 @@ with_handlers(fn(), foo = restarting("rst_baz"))
 \seealso{
 \code{\link[=calling]{calling()}} and \code{\link[=exiting]{exiting()}}.
 }
+\keyword{internal}

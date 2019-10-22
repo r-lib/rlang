@@ -12,3 +12,4 @@ prim_name(prim)
 \description{
 Name of a primitive function
 }
+\keyword{internal}

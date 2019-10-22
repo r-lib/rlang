@@ -65,3 +65,4 @@ with_env("base", ~mtcars)
 # This can be handy to put dictionaries in scope:
 with_env(mtcars, cyl)
 }
+\keyword{internal}

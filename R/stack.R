@@ -20,6 +20,7 @@
 #' @param n The number of generations to go back.
 #'
 #' @seealso [caller_env()] and [current_env()]
+#' @keywords internal
 #' @export
 caller_fn <- function(n = 1) {
   with_options(lifecycle_disable_warnings = TRUE,
@@ -72,6 +73,7 @@ current_fn <- function() {
 #' perform non-local jumps.
 #'
 #'
+#' @keywords internal
 #' @export
 #' @examples
 #' # Passing fn() evaluation frame to g():

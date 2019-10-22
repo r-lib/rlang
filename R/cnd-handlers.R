@@ -135,6 +135,7 @@ calling <- function(handler) {
 #'   function. These arguments are evaluated only once and
 #'   immediately, when creating the restarting handler. Furthermore,
 #'   they support [tidy dots][tidy-dots] features.
+#' @keywords internal
 #' @export
 #' @seealso [calling()] and [exiting()].
 #' @examples
@@ -253,6 +254,7 @@ catch_cnd <- function(expr, classes = "condition") {
 #'
 #' @param cnd A condition to muffle.
 #'
+#' @keywords internal
 #' @export
 #' @examples
 #' fn <- function() {

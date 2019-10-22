@@ -259,6 +259,7 @@ length_ <- function(x) {
 #'   `has_length()` returns `TRUE` if `x` has length greater than
 #'   zero, and `FALSE` otherwise.
 #' @export
+#' @keywords internal
 #' @examples
 #' has_length(list())
 #' has_length(list(), 0)

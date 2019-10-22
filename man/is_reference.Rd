@@ -45,3 +45,4 @@ is_reference(copy, vec)
 vec[[1]] <- 100
 is_reference(copy, vec)
 }
+\keyword{internal}

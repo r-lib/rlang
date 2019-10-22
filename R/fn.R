@@ -45,6 +45,7 @@ is_prim_eval <- function(x) identical(x, prim_eval)
 
 #' Name of a primitive function
 #' @param prim A primitive function such as [base::c()].
+#' @keywords internal
 #' @export
 prim_name <- function(prim) {
   stopifnot(is_primitive(prim))

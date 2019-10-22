@@ -588,6 +588,7 @@ env_inherits <- function(env, ancestor) {
 #' @return The old value of `env_is_locked()` invisibly.
 #'
 #' @seealso [env_binding_lock()]
+#' @keywords internal
 #' @export
 #' @examples
 #' # New environments are unlocked by default:

@@ -141,6 +141,7 @@ pairlist2 <- function(...) {
 #' is not legal to manually set language heads to strings.
 #'
 #' @param x An object to test.
+#' @keywords internal
 #' @export
 #' @examples
 #' # Symbolic objects and functions are callable:

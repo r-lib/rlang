@@ -34,6 +34,7 @@
 #' clear yet whether we want to recommend restarts as a style of
 #' programming in R.
 #'
+#' @keywords internal
 #' @export
 #' @examples
 #' # Restarts are not the only way to jump to a previous frame, but
@@ -149,6 +150,7 @@ with_restarts <- function(.expr, ...) {
 #' clear yet whether we want to recommend restarts as a style of
 #' programming in R.
 #'
+#' @keywords internal
 #' @export
 rst_list <- function() {
   computeRestarts()
@@ -191,6 +193,7 @@ rst_maybe_jump <- function(.restart, ...) {
 #' programming in R.
 #'
 #' @seealso [rst_jump()], [abort()]
+#' @keywords internal
 #' @export
 #' @examples
 #' # The `abort` restart is a bit special in that it is always

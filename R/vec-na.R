@@ -35,6 +35,7 @@
 #' These shortcuts might be moved to the vctrs package at some
 #' point. This is why they are marked as questioning.
 #'
+#' @keywords internal
 #' @examples
 #' typeof(NA)
 #' typeof(na_lgl)
@@ -93,7 +94,7 @@ na_cpl <- NA_complex_
 #' These functions might be moved to the vctrs package at some
 #' point. This is why they are marked as questioning.
 #'
-#'
+#' @keywords internal
 #' @examples
 #' # are_na() is vectorised and works regardless of the type
 #' are_na(c(1, 2, NA))

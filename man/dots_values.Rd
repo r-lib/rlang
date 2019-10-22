@@ -47,3 +47,4 @@ dots
 # Flatten the objects marked as spliced:
 flatten_if(dots, is_spliced)
 }
+\keyword{internal}

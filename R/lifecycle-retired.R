@@ -850,6 +850,7 @@ frame_clean_eval <- function(frame) {
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 #'
 #' @param x An object to test
+#' @keywords internal
 #' @export
 is_stack <- function(x) {
   warn_deprecated("`is_stack()` is deprecated as of rlang 0.3.0.")
@@ -1333,6 +1334,7 @@ lang_args_names <- function(lang) {
 #' users.
 #'
 #' @param lang A call.
+#' @keywords internal
 #' @export
 lang_head <- function(lang) {
   warn_deprecated("`lang_head()` is deprecated as of rlang 0.2.0.")
@@ -1742,6 +1744,7 @@ list_along <- function(.x) {
 #' @param x A vector.
 #' @param names Names for the new vector.
 #' @name new-vector-along-retired
+#' @keywords internal
 
 #' @export
 #' @rdname new-vector-along-retired

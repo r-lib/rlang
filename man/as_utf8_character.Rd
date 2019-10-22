@@ -43,3 +43,4 @@ utf8 <- "caf\\uE9"
 Encoding(utf8)
 as_bytes(utf8)
 }
+\keyword{internal}

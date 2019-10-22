@@ -20,3 +20,4 @@ Use \code{cnd_type()} to check what type a condition is.
 cnd_type(catch_cnd(abort("Abort!")))
 cnd_type(catch_cnd(interrupt()))
 }
+\keyword{internal}

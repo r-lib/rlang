@@ -200,6 +200,7 @@ with_lifecycle_errors <- function(expr) {
 #'   `"experimental"`, `"maturing"`, `"stable"`, `"questioning"`,
 #'   `"archived"`, `"soft-deprecated"`, `"deprecated"`, `"defunct"`.
 #'
+#' @keywords internal
 #' @noRd
 NULL
 

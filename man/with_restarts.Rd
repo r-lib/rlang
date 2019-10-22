@@ -128,3 +128,4 @@ with_handlers(fn(FALSE), default_empty_string = restarting("rst_null"))
 \code{\link[=return_from]{return_from()}} and \code{\link[=return_to]{return_to()}} for a more flexible way
 of performing a non-local jump to an arbitrary call frame.
 }
+\keyword{internal}

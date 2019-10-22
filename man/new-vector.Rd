@@ -53,3 +53,4 @@ new_logical(10)
 \seealso{
 rep_along
 }
+\keyword{internal}

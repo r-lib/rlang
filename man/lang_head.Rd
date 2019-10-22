@@ -19,3 +19,4 @@ As of rlang 0.2.0 these functions are retired (deprecated for now)
 because they are low level accessors that are rarely needed for end
 users.
 }
+\keyword{internal}

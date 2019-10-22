@@ -12,3 +12,4 @@ is_condition(x)
 \description{
 Is object a condition?
 }
+\keyword{internal}

@@ -39,3 +39,4 @@ cafe_latin1 <- string(c(0x63, 0x61, 0x66, 0xE9), "latin1")
 Encoding(cafe_latin1)
 as_bytes(cafe_latin1)
 }
+\keyword{internal}

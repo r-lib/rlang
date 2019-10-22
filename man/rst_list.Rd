@@ -43,3 +43,4 @@ programming in R.
 \seealso{
 \code{\link[=with_restarts]{with_restarts()}}
 }
+\keyword{internal}

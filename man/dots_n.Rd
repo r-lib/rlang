@@ -17,3 +17,4 @@ as an integer.
 fn <- function(...) dots_n(..., baz)
 fn(foo, bar)
 }
+\keyword{internal}

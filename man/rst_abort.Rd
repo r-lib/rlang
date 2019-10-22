@@ -65,3 +65,4 @@ cat("`out` has now become:", out, "\\n")
 \seealso{
 \code{\link[=rst_jump]{rst_jump()}}, \code{\link[=abort]{abort()}}
 }
+\keyword{internal}

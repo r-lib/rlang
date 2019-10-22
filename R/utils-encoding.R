@@ -30,6 +30,7 @@
 #'
 #' @param x An object to coerce.
 #' @export
+#' @keywords internal
 #' @examples
 #' # Let's create a string marked as UTF-8 (which is guaranteed by the
 #' # Unicode escaping in the string):
@@ -94,6 +95,7 @@ chr_unserialise_unicode <- function(chr) {
 #'   objects.
 #' @param encoding If non-null, set an encoding mark. This is only
 #'   declarative, no encoding conversion is performed.
+#' @keywords internal
 #' @export
 #' @examples
 #' # As everywhere in R, you can specify a string with Unicode

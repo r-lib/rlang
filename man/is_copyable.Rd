@@ -32,3 +32,4 @@ is_copyable(env)
 structure(base::list, foo = "bar")
 str(base::list)
 }
+\keyword{internal}

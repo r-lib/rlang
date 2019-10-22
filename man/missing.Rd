@@ -65,3 +65,4 @@ na_dbl <- NA
 typeof(na_dbl)
 }
 \keyword{datasets}
+\keyword{internal}

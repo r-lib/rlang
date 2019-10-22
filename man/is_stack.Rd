@@ -18,3 +18,4 @@ is_call_stack(x)
 \description{
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
 }
+\keyword{internal}

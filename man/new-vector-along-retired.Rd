@@ -35,3 +35,4 @@ These functions are deprecated as of rlang 0.3.0 because they
 are longer to type than the equivalent \code{\link[=rep_along]{rep_along()}} or
 \code{\link[=rep_named]{rep_named()}} calls without added clarity.
 }
+\keyword{internal}

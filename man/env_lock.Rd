@@ -49,3 +49,4 @@ env$a <- 10
 \seealso{
 \code{\link[=env_binding_lock]{env_binding_lock()}}
 }
+\keyword{internal}

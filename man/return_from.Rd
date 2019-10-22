@@ -64,3 +64,4 @@ fn()
 h <- function(env) return_to(env, "early return")
 fn()
 }
+\keyword{internal}
