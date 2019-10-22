@@ -142,7 +142,7 @@
 #'   special.
 #'
 #' @name quasiquotation
-#' @aliases UQ UQS
+#' @aliases UQ UQS {{}} \{\{
 #' @examples
 #' # Interpolation with {{  }} is the easiest way to forward
 #' # arguments to tidy eval functions:
