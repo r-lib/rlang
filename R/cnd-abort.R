@@ -181,8 +181,7 @@ signal_abort <- function(cnd) {
   # Save the unhandled error for `rlang::last_error()`.
   last_error_env$cnd <- cnd
 
-  # Generate the error message, possibly with parent error messages,
-  # and possibly with a backtrace or reminder
+  # Generate the error message, possibly with a backtrace or reminder
   fallback$message <- paste_line(
     conditionMessage(cnd),
     format_onerror_backtrace(cnd$trace)
