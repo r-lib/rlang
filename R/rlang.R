@@ -25,12 +25,12 @@ check_downstream_dep <- function(dep, pkg) {
     !is_null(from)
   )
 
-  ver <- packageVersion(pkg)
+  ver <- utils::packageVersion(pkg)
   if (ver >= min) {
     return()
   }
 
-  rlang_ver <- packageVersion("rlang")
+  rlang_ver <- utils::packageVersion("rlang")
 
   msg <- c(
     sprintf("As of rlang %s, %s must be at least version %s.", from, pkg, min),
