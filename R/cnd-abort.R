@@ -29,7 +29,7 @@
 #' and a full backtrace with `summary(last_error())`.
 #'
 #' You can also display a backtrace with the error message by setting
-#' the option `rlang_backtrace_on_error`. It supports the following
+#' the option [`rlang_backtrace_on_error`]. It supports the following
 #' values:
 #'
 #' * `"reminder"`: Invite users to call `rlang::last_error()` to see a
@@ -240,14 +240,14 @@ find_capture_context <- function(n = 3L) {
 #'
 #' @section Promote base errors to rlang errors:
 #'
-#' Call `options(error = rlang::enframe)` to instrument base
+#' Call `options(error = rlang::entrace)` to instrument base
 #' errors with rlang features. This handler does two things:
 #'
 #' * It saves the base error as an rlang object. This allows you to
 #'   call [last_error()] to print the backtrace or inspect its data.
 #'
 #' * It prints the backtrace for the current error according to the
-#'   [`rlang_backtrace_on_error`] option.
+#'   `rlang_backtrace_on_error` option.
 #'
 #' @name rlang_backtrace_on_error
 #' @aliases add_backtrace
@@ -258,7 +258,7 @@ find_capture_context <- function(n = 3L) {
 #'
 #' # options(
 #' #   rlang_backtrace_on_error = "branch",
-#' #   error = rlang::enframe
+#' #   error = rlang::entrace
 #' # )
 #' # stop("foo")
 NULL

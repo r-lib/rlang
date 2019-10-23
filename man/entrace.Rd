@@ -42,7 +42,7 @@ be called directly from an error handler.
 Set the \code{error} global option to \code{quote(rlang::entrace())} to
 transform base errors to rlang errors. These enriched errors
 include a backtrace. The RProfile is a good place to set the
-handler. See \link{rlang_backtrace_on_error} for details.
+handler. See \code{\link{rlang_backtrace_on_error}} for details.
 
 \code{entrace()} also works as a \link{calling} handler, though it
 is often more practical to use the higher-level function

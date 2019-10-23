@@ -69,7 +69,7 @@ simplified backtrace of the last error by calling \code{\link[=last_error]{last_
 and a full backtrace with \code{summary(last_error())}.
 
 You can also display a backtrace with the error message by setting
-the option \code{rlang_backtrace_on_error}. It supports the following
+the option \code{\link{rlang_backtrace_on_error}}. It supports the following
 values:
 \itemize{
 \item \code{"reminder"}: Invite users to call \code{rlang::last_error()} to see a
