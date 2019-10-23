@@ -88,7 +88,7 @@ trace_back <- function(top = NULL, bottom = NULL) {
   calls <- map2(calls, seq_along(calls), maybe_add_namespace)
 
   parents <- normalise_parents(parents)
-  envs <- map(frames, env_label)
+  envs <- map_chr(frames, env_label)
 
   trace <- new_trace(calls, parents, envs)
   trace <- trace_trim_env(trace, top)
@@ -264,7 +264,7 @@ c.rlang_trace <- function(...) {
 
   calls <- flatten(map(traces, `[[`, "calls"))
   parents <- flatten_int(map(traces, `[[`, "parents"))
-  envs <- flatten(map(traces, `[[`, "envs"))
+  envs <- flatten_chr(map(traces, `[[`, "envs"))
   indices <- flatten_int(map(traces, `[[`, "indices"))
 
   new_trace(calls, parents, envs, indices)
