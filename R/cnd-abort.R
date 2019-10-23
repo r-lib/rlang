@@ -88,8 +88,8 @@
 #' tryCatch(
 #'   somepkg_function(),
 #'   somepkg_bad_error = function(err) {
-#'     warn(err$message) # Demote the error to a warning
-#'     NA                # Return an alternative value
+#'     warn(conditionMessage(err)) # Demote the error to a warning
+#'     NA                          # Return an alternative value
 #'   }
 #' )
 #'

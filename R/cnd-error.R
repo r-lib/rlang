@@ -96,11 +96,3 @@ print.rlang_error <- function(x,
 summary.rlang_error <- function(object, ...) {
   print(object, simplify = "none", fields = TRUE)
 }
-
-#' @export
-as.character.rlang_error <- function(x, ...) {
-  # Don't generate backtrace or reminder in programmatic uses. Fixes
-  # backtraces in knitr.
-  x$message
-}
-

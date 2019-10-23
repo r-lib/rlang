@@ -51,7 +51,7 @@ entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
   if (missing(cnd)) {
     entrace_handle_top(trace)
   } else {
-    abort(cnd$message %||% "", error = cnd, trace = trace)
+    abort(conditionMessage(cnd) %||% "", error = cnd, trace = trace)
   }
 }
 
