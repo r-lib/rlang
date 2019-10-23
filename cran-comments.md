@@ -1,6 +1,4 @@
 
-LTO warnings should be fixed.
-
 ## Test environments
 
 * local OS X install: release
@@ -16,6 +14,6 @@ LTO warnings should be fixed.
 
 ## Reverse dependencies
 
-I have run R CMD check on the 487 downstream dependencies. (Summary at https://github.com/tidyverse/rlang/tree/master/revdep).
+I have run R CMD check on the downstream dependencies. (Summary at https://github.com/tidyverse/rlang/tree/master/revdep).
 
-I couldn't install 2 packages. There are 9 broken packages. The authors were notified 10 days ago.
+I couldn't install 10 packages. There was one failure (GenomicDataCommons) which appears to be a false positive.
