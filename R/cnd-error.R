@@ -61,7 +61,7 @@ print.rlang_error <- function(x,
     if (!is_null(child)) {
       # Trim common portions of backtrace
       child_trace <- child$trace
-      common <- map_lgl(trace$envs, `%in%`, child_trace$envs)
+      common <- map_lgl(trace$ids, `%in%`, child_trace$ids)
       trace <- trace_subset(trace, which(!common))
 
       # Trim catching context if any

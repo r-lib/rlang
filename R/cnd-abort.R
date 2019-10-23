@@ -192,7 +192,7 @@ signal_abort <- function(cnd) {
 
 trace_trim_context <- function(trace, frame = caller_env()) {
   if (is_environment(frame)) {
-    idx <- detect_index(trace$envs, identical, env_label(frame))
+    idx <- detect_index(trace$ids, identical, env_label(frame))
   } else if (is_scalar_integerish(frame)) {
     idx <- frame
   } else {

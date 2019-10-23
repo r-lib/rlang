@@ -88,9 +88,9 @@ trace_back <- function(top = NULL, bottom = NULL) {
   calls <- map2(calls, seq_along(calls), maybe_add_namespace)
 
   parents <- normalise_parents(parents)
-  envs <- map_chr(frames, env_label)
+  ids <- map_chr(frames, env_label)
 
-  trace <- new_trace(calls, parents, envs)
+  trace <- new_trace(calls, parents, ids)
   trace <- trace_trim_env(trace, top)
 
   trace
@@ -230,7 +230,7 @@ normalise_parents <- function(parents) {
   parents
 }
 
-new_trace <- function(calls, parents, envs, indices = NULL) {
+new_trace <- function(calls, parents, ids, indices = NULL) {
   indices <- indices %||% seq_along(calls)
 
   n <- length(calls)
@@ -244,7 +244,7 @@ new_trace <- function(calls, parents, envs, indices = NULL) {
     list(
       calls = calls,
       parents = parents,
-      envs = envs,
+      ids = ids,
       indices = indices
     ),
     class = "rlang_trace"
@@ -264,10 +264,10 @@ c.rlang_trace <- function(...) {
 
   calls <- flatten(map(traces, `[[`, "calls"))
   parents <- flatten_int(map(traces, `[[`, "parents"))
-  envs <- flatten_chr(map(traces, `[[`, "envs"))
+  ids <- flatten_chr(map(traces, `[[`, "ids"))
   indices <- flatten_int(map(traces, `[[`, "indices"))
 
-  new_trace(calls, parents, envs, indices)
+  new_trace(calls, parents, ids, indices)
 }
 
 #' @export
@@ -441,7 +441,7 @@ trace_subset <- function(x, i) {
   new_trace(
     calls = x$calls[i],
     parents = parents,
-    envs = x$envs[i],
+    ids = x$ids[i],
     indices = x$indices[i]
   )
 }
@@ -507,13 +507,13 @@ trace_trim_env <- function(x, to = NULL) {
     return(x)
   }
 
-  is_top <- x$envs == env_label(to)
+  is_top <- x$ids == env_label(to)
   if (!any(is_top)) {
     return(x)
   }
 
   start <- last(which(is_top)) + 1
-  end <- length(x$envs)
+  end <- length(x$ids)
 
   trace_subset(x, seq2(start, end))
 }
@@ -631,8 +631,8 @@ trail_uncollapse_pipe <- function(trace) {
     parent <- trace$parents[[idx]]
     pipe_parents <- seq(parent, parent + pointer - 1L)
 
-    # Assign the pipe frame as dummy envs for uncollapsed frames
-    pipe_envs <- rep(trace$envs[idx], pointer)
+    # Assign the pipe frame as dummy ids for uncollapsed frames
+    pipe_ids <- rep(trace$ids[idx], pointer)
 
     # Add the number of uncollapsed frames to children's
     # ancestry. This assumes a backtrace branch.
@@ -640,7 +640,7 @@ trail_uncollapse_pipe <- function(trace) {
 
     trace$calls <- c(trace_before$calls, pipe_calls, trace_after$calls)
     trace$parents <- c(trace_before$parents, pipe_parents, trace_after$parents)
-    trace$envs <- c(trace_before$envs, pipe_envs, trace$envs)
+    trace$ids <- c(trace_before$ids, pipe_ids, trace$ids)
   }
 
   trace
