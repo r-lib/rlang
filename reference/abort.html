@@ -290,8 +290,8 @@ metadata with <code>...</code>. Consequently:</p><ul>
 <span class='fu'><a href='https://rdrr.io/r/base/conditions.html'>tryCatch</a></span>(
   <span class='fu'>somepkg_function</span>(),
   <span class='kw'>somepkg_bad_error</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>err</span>) {
-    <span class='fu'>warn</span>(<span class='no'>err</span>$<span class='no'>message</span>) <span class='co'># Demote the error to a warning</span>
-    <span class='fl'>NA</span>                <span class='co'># Return an alternative value</span>
+    <span class='fu'>warn</span>(<span class='fu'><a href='https://rdrr.io/r/base/conditions.html'>conditionMessage</a></span>(<span class='no'>err</span>)) <span class='co'># Demote the error to a warning</span>
+    <span class='fl'>NA</span>                          <span class='co'># Return an alternative value</span>
   }
 )
 
