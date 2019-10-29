@@ -21,6 +21,16 @@
 #' 3. Trailing commas are ignored, making it easier to copy and paste
 #'    lines of arguments.
 #'
+#'
+#' @section Add dynamic dots support in your functions:
+#'
+#' If your function takes dots, adding support for dynamic features is
+#' as easy as collecting the dots with [list2()]. Other dynamic dots
+#' collectors are:
+#'
+#' - [exprs()] and [quos()], which don't evaluate their arguments.
+#' - [dots_list()], which is more configurable than [list2()].
+#'
 #' @name dyn-dots
 NULL
 
