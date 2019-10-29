@@ -66,8 +66,7 @@
 #'
 #' @param ...,data Named values. You can supply one unnamed to specify
 #'   a custom parent, otherwise it defaults to the current
-#'   environment. These dots support [tidy dots][dyn-dots]
-#'   features.
+#'   environment. These dots are [dynamic][dyn-dots].
 #' @param .parent,parent A parent environment. Can be an object
 #'   supported by [as_environment()].
 #' @seealso [env_has()], [env_bind()].

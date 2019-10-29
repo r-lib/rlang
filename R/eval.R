@@ -284,15 +284,13 @@ eval_top <- function(expr, env = caller_env()) {
 #' It has two primary uses:
 #'
 #' * To call a function with arguments stored in a list (if the function
-#'   doesn't support [dyn-dots])
+#'   doesn't support [dynamic dots][dyn-dots]).
 #'
 #' * To call every function stored in a list (in conjunction with `map()`/
 #'   [lapply()])
 #'
 #' @param .fn A function, or function name as a string.
-#' @param ... Arguments to function.
-#'
-#'   These dots support [dyn-dots] features.
+#' @param ... Arguments for `.fn`. These dots are [dynamic][dyn-dots].
 #' @param  .env Environment in which to evaluate the call. This will be
 #'   most useful if `f` is a string, or the function has side-effects.
 #' @export

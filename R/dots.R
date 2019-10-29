@@ -221,7 +221,7 @@ dots_split <- function(...,
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
 #'
 #' - `splice` marks an object to be spliced. It is equivalent to using
-#'   `!!!` in a function with [tidy dots semantics][dyn-dots].
+#'   `!!!` in a function taking [dynamic dots][dyn-dots].
 #'
 #' - `dots_splice()` is like [dots_list()] but automatically splices
 #'   list inputs.
@@ -306,7 +306,7 @@ print.rlang_box_splice <- function(x, ...) {
 }
 
 #' @rdname splice
-#' @inheritParams dyn-dots
+#' @inheritParams dots_list
 #' @export
 dots_splice <- function(...,
                         .ignore_empty = c("trailing", "none", "all"),
@@ -336,7 +336,7 @@ dots_splice <- function(...,
 #' spliced objects manually, perhaps with a custom predicate (see
 #' [flatten_if()]).
 #'
-#' @inheritParams dyn-dots
+#' @inheritParams dots_list
 #' @param ... Arguments to evaluate and process splicing operators.
 #'
 #' @keywords internal

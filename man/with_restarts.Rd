@@ -14,7 +14,7 @@ restarts are established.}
 
 \item{...}{Named restart functions. The name is taken as the
 restart name and the function is executed after the jump. These
-dots support \link[=dyn-dots]{tidy dots} features.}
+dots are \link[=dyn-dots]{dynamic}.}
 }
 \description{
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}

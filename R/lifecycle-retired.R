@@ -1829,7 +1829,7 @@ prepend <- function(x, values, before = 1) {
 #' @param ... List of elements to merge into `.x`. Named elements
 #'   already existing in `.x` are used as replacements. Elements that
 #'   have new or no names are inserted at the end. These dots support
-#'   [tidy dots][dyn-dots] features.
+#'   [dynamic dots][dyn-dots] features.
 #' @export
 modify <- function(.x, ...) {
   warn_deprecated_vector("modify")

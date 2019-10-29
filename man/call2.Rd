@@ -11,7 +11,7 @@ call2(.fn, ..., .ns = NULL)
 symbol, call, or a function.}
 
 \item{...}{Arguments to the call either in or out of a list. These dots
-support \link[=dyn-dots]{tidy dots} features. Empty arguments are preserved.}
+are \link[=dyn-dots]{dynamic} and preserve empty arguments.}
 
 \item{.ns}{Namespace with which to prefix \code{.fn}. Must be a string
 or symbol.}

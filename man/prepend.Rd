@@ -21,7 +21,7 @@ modify(.x, ...)
 \item{...}{List of elements to merge into \code{.x}. Named elements
 already existing in \code{.x} are used as replacements. Elements that
 have new or no names are inserted at the end. These dots support
-\link[=dyn-dots]{tidy dots} features.}
+\link[=dyn-dots]{dynamic dots} features.}
 }
 \description{
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}

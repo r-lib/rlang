@@ -18,7 +18,7 @@
 #'   restarts are established.
 #' @param ... Named restart functions. The name is taken as the
 #'   restart name and the function is executed after the jump. These
-#'   dots support [tidy dots][dyn-dots] features.
+#'   dots are [dynamic][dyn-dots].
 #' @seealso [return_from()] and [return_to()] for a more flexible way
 #'   of performing a non-local jump to an arbitrary call frame.
 #'
@@ -140,8 +140,8 @@ with_restarts <- function(.expr, ...) {
 #' exists before jumping.
 #'
 #' @param .restart The name of a restart.
-#' @param ... Arguments passed on to the restart function. These
-#'   dots support [tidy dots][dyn-dots] features.
+#' @param ... Arguments passed on to the restart function. These dots
+#'   are [dynamic][dyn-dots].
 #' @seealso [with_restarts()]
 #'
 #' @section Life cycle:

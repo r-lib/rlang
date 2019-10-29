@@ -10,7 +10,7 @@
 #'   type. Implicit coercions (e.g. from integer to logical) follow
 #'   the rules described in [vector-coercion].
 #'
-#' * They use [tidy dots][dyn-dots] and thus support splicing with `!!!`.
+#' * They use [dynamic dots][dyn-dots].
 #'
 #'
 #' @section Life cycle:

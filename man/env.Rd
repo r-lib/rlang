@@ -15,8 +15,7 @@ new_environment(data = list(), parent = empty_env())
 \arguments{
 \item{..., data}{Named values. You can supply one unnamed to specify
 a custom parent, otherwise it defaults to the current
-environment. These dots support \link[=dyn-dots]{tidy dots}
-features.}
+environment. These dots are \link[=dyn-dots]{dynamic}.}
 
 \item{.parent, parent}{A parent environment. Can be an object
 supported by \code{\link[=as_environment]{as_environment()}}.}
