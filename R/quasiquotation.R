@@ -9,8 +9,7 @@
 #'
 #' Quasiquotation is the combination of quoting an expression while
 #' allowing immediate evaluation (unquoting) of part of that
-#' expression. We provide both syntactic operators and functional
-#' forms for unquoting.
+#' expression.
 #'
 #' - The `!!` operator unquotes its argument. It gets evaluated
 #'   immediately in the surrounding context.
