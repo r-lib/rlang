@@ -24,7 +24,7 @@ lang_args_names(lang)
 \arguments{
 \item{...}{Named or unnamed expressions (constants, names or calls)
 used to modify the call. Use \code{\link[=zap]{zap()}} to remove arguments. These
-dots support \link[=tidy-dots]{tidy dots} features. Empty arguments are
+dots support \link[=dyn-dots]{tidy dots} features. Empty arguments are
 allowed and preserved.}
 
 \item{.standardise}{Soft-deprecated as of rlang 0.3.0. Please

@@ -1829,7 +1829,7 @@ prepend <- function(x, values, before = 1) {
 #' @param ... List of elements to merge into `.x`. Named elements
 #'   already existing in `.x` are used as replacements. Elements that
 #'   have new or no names are inserted at the end. These dots support
-#'   [tidy dots][tidy-dots] features.
+#'   [tidy dots][dyn-dots] features.
 #' @export
 modify <- function(.x, ...) {
   warn_deprecated_vector("modify")
@@ -1883,7 +1883,7 @@ warn_deprecated_vector <- function(fn) {
 #'
 #' @param .x An object to decorate with attributes.
 #' @param ... A list of named attributes. These have [explicit
-#'   splicing semantics][tidy-dots]. Pass a single unnamed `NULL` argument to
+#'   splicing semantics][dyn-dots]. Pass a single unnamed `NULL` argument to
 #'   zap all attributes from `.x`.
 #' @return `set_attrs()` returns a modified [shallow copy][duplicate]
 #'   of `.x`. `mut_attrs()` invisibly returns the original `.x`

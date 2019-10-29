@@ -11,7 +11,7 @@ exec(.fn, ..., .env = caller_env())
 
 \item{...}{Arguments to function.
 
-These dots support \link{tidy-dots} features.}
+These dots support \link{dyn-dots} features.}
 
 \item{.env}{Environment in which to evaluate the call. This will be
 most useful if \code{f} is a string, or the function has side-effects.}
@@ -21,7 +21,7 @@ This function constructs and evaluates a call to \code{.fn}.
 It has two primary uses:
 \itemize{
 \item To call a function with arguments stored in a list (if the function
-doesn't support \link{tidy-dots})
+doesn't support \link{dyn-dots})
 \item To call every function stored in a list (in conjunction with \code{map()}/
 \code{\link[=lapply]{lapply()}})
 }

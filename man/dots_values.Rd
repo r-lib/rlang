@@ -10,27 +10,6 @@ dots_values(..., .ignore_empty = c("trailing", "none", "all"),
 }
 \arguments{
 \item{...}{Arguments to evaluate and process splicing operators.}
-
-\item{.ignore_empty}{Whether to ignore empty arguments. Can be one
-of \code{"trailing"}, \code{"none"}, \code{"all"}. If \code{"trailing"}, only the
-last argument is ignored if it is empty.}
-
-\item{.preserve_empty}{Whether to preserve the empty arguments that
-were not ignored. If \code{TRUE}, empty arguments are stored with
-\code{\link[=missing_arg]{missing_arg()}} values. If \code{FALSE} (the default) an error is
-thrown when an empty argument is detected.}
-
-\item{.homonyms}{How to treat arguments with the same name. The
-default, \code{"keep"}, preserves these arguments. Set \code{.homonyms} to
-\code{"first"} to only keep the first occurrences, to \code{"last"} to keep
-the last occurrences, and to \code{"error"} to raise an informative
-error and indicate what arguments have duplicated names.}
-
-\item{.check_assign}{Whether to check for \code{<-} calls passed in
-dots. When \code{TRUE} and a \code{<-} call is detected, a warning is
-issued to advise users to use \code{=} if they meant to match a
-function parameter, or wrap the \code{<-} call in braces otherwise.
-This ensures assignments are explicit.}
 }
 \description{
 This is a tool for advanced users. It captures dots, processes

@@ -16,7 +16,7 @@
 #' @param class The condition subclass.
 #' @param ... Named data fields stored inside the condition
 #'   object. These dots are evaluated with [explicit
-#'   splicing][tidy-dots].
+#'   splicing][dyn-dots].
 #' @param message A default message to inform the user about the
 #'   condition when it is signalled.
 #' @param trace A `trace` object created by [trace_back()].

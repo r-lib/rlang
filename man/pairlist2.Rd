@@ -11,7 +11,7 @@ pairlist2(...)
 preserved.}
 }
 \description{
-This pairlist constructor supports \link[=tidy-dots]{tidy dots} features
+This pairlist constructor supports \link[=dyn-dots]{tidy dots} features
 like \code{!!!}. Use it to manually create argument lists for calls or
 parameter lists for functions.
 }

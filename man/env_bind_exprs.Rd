@@ -15,7 +15,7 @@ env_bind_fns(.env, ...)
 \item{...}{Pairs of names and expressions, values or functions.
 Pass \code{\link[=zap]{zap()}} objects to remove bindings.
 
-These dots support \link[=tidy-dots]{tidy dots} features.}
+These dots support \link[=dyn-dots]{tidy dots} features.}
 
 \item{.eval_env}{The environment where the expressions will be
 evaluated when the symbols are forced.}

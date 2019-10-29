@@ -33,7 +33,7 @@
 #' @param ... Named handlers. These should be functions of one
 #'   argument. These handlers are treated as exiting by default. Use
 #'   [calling()] to specify a calling handler. These dots support
-#'   [tidy dots][tidy-dots] features and are passed to [as_function()]
+#'   [tidy dots][dyn-dots] features and are passed to [as_function()]
 #'   to enable the formula shortcut for lambda functions.
 #'
 #' @section Life cycle: `exiting()` is soft-deprecated as of rlang
@@ -134,7 +134,7 @@ calling <- function(handler) {
 #' @param ... Additional arguments passed on the restart
 #'   function. These arguments are evaluated only once and
 #'   immediately, when creating the restarting handler. Furthermore,
-#'   they support [tidy dots][tidy-dots] features.
+#'   they support [tidy dots][dyn-dots] features.
 #' @keywords internal
 #' @export
 #' @seealso [calling()] and [exiting()].
