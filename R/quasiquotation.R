@@ -1,61 +1,80 @@
-#' Quasiquotation of an expression
+#' Forcing parts of an expression
 #'
 #' @description
 #'
-#' Quasiquotation is the mechanism that makes it possible to program
-#' flexibly with tidy evaluation grammars like dplyr. It is enabled in
-#' all functions quoting their arguments with `enquo()`, `enexpr()`,
-#' or the plural variants.
+#' It is sometimes useful to force early evaluation of part of an
+#' expression before it gets fully evaluated. The tidy eval framework
+#' provides several forcing operators for different use cases.
 #'
-#' Quasiquotation is the combination of quoting an expression while
-#' allowing immediate evaluation (unquoting) of part of that
-#' expression.
+#' - The bang-bang operator `!!` forces a _single_ object. One
+#'   common case for `!!` is to substitute an environment-variable
+#'   (created with `<-`) with a data-variable (inside a data frame).
 #'
-#' - The `!!` operator unquotes its argument. It gets evaluated
-#'   immediately in the surrounding context.
+#'   ```
+#'   library(dplyr)
 #'
-#' - The `!!!` operator unquotes and splices its argument. The
-#'   argument should represent a list or a vector. Each element will
-#'   be embedded in the surrounding call, i.e. each element is
-#'   inserted as an argument. If the vector is named, the names are
-#'   used as argument names.
+#'   # The environment variable `var` refers to the data-variable
+#'   # `height`
+#'   var <- sym("height")
 #'
-#'   If the vector is a classed object (like a factor), it is
-#'   converted to a list with [base::as.list()] to ensure proper
-#'   dispatch. If it is an S4 objects, it is converted to a list with
-#'   [methods::as()].
+#'   # We force `var`, which substitutes it with `height`
+#'   starwars %>%
+#'     summarise(avg = mean(!!var, na.rm = TRUE))
+#'   ```
 #'
-#' - The `{{ }}` operator quotes and unquotes its argument in one
-#'   go, a pattern that we call **interpolation**. It is an alias for
-#'   `!!enquo(arg)`.
+#' - The big-bang operator `!!!` forces-splice a _list_ of objects.
+#'   The elements of the list are spliced in place, meaning that they
+#'   each become one single argument.
 #'
-#'   Like `enquo()`, `{{ }}` is used in functions to capture an
-#'   argument as a quoted expression. This expression is immediately
-#'   unquoted in place.
+#'   ```
+#'   vars <- syms(c("height", "mass"))
 #'
-#' Use `qq_show()` to experiment with quasiquotation or debug the
-#' effect of unquoting operators. `qq_show()` quotes its input,
-#' processes unquoted parts, and prints the result with
-#' [expr_print()]. This expression printer has a clearer output than
-#' the base R printer (see the [documentation topic][expr_print]).
+#'   # Force-splicing is equivalent to supplying the elements separately
+#'   starwars %>% select(!!!vars)
+#'   starwars %>% select(height, mass)
+#'   ```
+#'
+#' - The curly-curly operator `{{ }}` for function arguments is a bit
+#'   special because it forces the function argument and immediately
+#'   defuses it. The defused expression is substituted in place, ready
+#'   to be evaluated in another context, such as the data frame.
+#'
+#'   ```
+#'   # Force-defuse all function arguments that might contain
+#'   # data-variables by embracing them with {{ }}
+#'   mean_by <- function(data, by, var) {
+#'     data %>%
+#'       group_by({{ by }}) %>%
+#'       summarise(avg = mean({{ var }}, na.rm = TRUE))
+#'   }
+#'
+#'   # The function variables `by` and `var` are forced but defused.
+#'   # The data-variables they contain are evaluated by dplyr later on
+#'   # in data context.
+#'   iris %>% mean_by(by = Species, var = Sepal.Width)
+#'   ```
+#'
+#' Use `qq_show()` to experiment with forcing operators. `qq_show()`
+#' defuses its input, processes all forcing operators, and prints the
+#' result with [expr_print()] to reveal objects inlined in the
+#' expression by the forcing operators.
 #'
 #'
-#' @section Unquoting names:
+#' @section Forcing names:
 #'
 #' When a function takes multiple named arguments
 #' (e.g. `dplyr::mutate()`), it is difficult to supply a variable as
-#' name. Since the LHS of `=` is quoted, giving the name of a variable
-#' results in the argument having the name of the variable rather than
-#' the name stored in that variable. This problem is right up the
-#' alley for the unquoting operator `!!`. If you were able to unquote
-#' the variable when supplying the name, the argument would be named
-#' after the content of that variable.
+#' name. Since the LHS of `=` is [defused][quotation], giving the name
+#' of a variable results in the argument having the name of the
+#' variable rather than the name stored in that variable. This problem
+#' of forcing evaluation of names is exactly what the `!!` operator is
+#' for.
 #'
 #' Unfortunately R is very strict about the kind of expressions
-#' supported on the LHS of `=`. This is why we have made the more
-#' flexible `:=` operator an alias of `=`. You can use it to supply
+#' supported on the LHS of `=`. This is why rlang interprets the
+#' walrus operator `:=` as an alias of `=`. You can use it to supply
 #' names, e.g. `a := b` is equivalent to `a = b`. Since its syntax is
-#' more flexible you can unquote on the LHS:
+#' more flexible you can also force names on its LHS:
 #'
 #' ```
 #' name <- "Jane"
@@ -67,7 +86,7 @@
 #'
 #' Like `=`, the `:=` operator expects strings or symbols on its LHS.
 #'
-#' Note that unquoting on the LHS of `:=` only works in top level
+#' Currently, forcing names with `:=` only works in top level
 #' expressions. These are all valid:
 #'
 #' ```
@@ -76,18 +95,18 @@
 #' list2(!!nm := x)
 #' ```
 #'
-#' But deep-unquoting names isn't supported:
+#' But deep-forcing names isn't supported:
 #'
 #' ```
-#' expr(foo(!!nm := x))
-#' exprs(foo(!!nm := x))
+#' expr(this(is(deep(!!nm := x))))
+#' exprs(this(is(deep(!!nm := x))))
 #' ```
 #'
 #'
 #' @section Theory:
 #'
-#' Formally, `quo()` and `expr()` are quasiquote functions, `!!` is
-#' the unquote operator, and `!!!` is the unquote-splice operator.
+#' Formally, `quo()` and `expr()` are quasiquotation functions, `!!`
+#' is the unquote operator, and `!!!` is the unquote-splice operator.
 #' These terms have a rich history in Lisp languages, and live on in
 #' modern languages like
 #' [Julia](https://docs.julialang.org/en/v1/manual/metaprogramming/)
