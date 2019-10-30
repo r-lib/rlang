@@ -99,7 +99,7 @@ call2 <- function(.fn, ..., .ns = NULL) {
 }
 #' Create pairlists with splicing support
 #'
-#' This pairlist constructor supports [dynamic dots][dyn-dots]. Use
+#' This pairlist constructor uses [dynamic dots][dyn-dots]. Use
 #' it to manually create argument lists for calls or parameter lists
 #' for functions.
 #'

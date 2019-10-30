@@ -12,7 +12,7 @@ along the way to function parameters.
 \code{\link[=list]{list()}}.
 }
 
-Dynamic dots offer a few more additional features:
+Dynamic dots offer a few additional features:
 \enumerate{
 \item You can \strong{splice} arguments saved in a list with the \link[=quasiquotation]{big bang} operator \code{!!!}.
 \item You can \strong{unquote} names by using the \link[=quasiquotation]{bang bang}

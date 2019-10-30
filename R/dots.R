@@ -10,7 +10,7 @@
 #' - __Collect__ arguments inside data structures, e.g. with [c()] or
 #'   [list()].
 #'
-#' Dynamic dots offer a few more additional features:
+#' Dynamic dots offer a few additional features:
 #'
 #' 1. You can __splice__ arguments saved in a list with the [big
 #'    bang][quasiquotation] operator `!!!`.

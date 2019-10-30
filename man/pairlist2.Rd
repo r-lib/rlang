@@ -11,7 +11,7 @@ pairlist2(...)
 \link[=dyn-dots]{dynamic} and preserve empty arguments.}
 }
 \description{
-This pairlist constructor supports \link[=dyn-dots]{dynamic dots}. Use
+This pairlist constructor uses \link[=dyn-dots]{dynamic dots}. Use
 it to manually create argument lists for calls or parameter lists
 for functions.
 }
