@@ -12,7 +12,7 @@
 \alias{enquo}
 \alias{quos}
 \alias{enquos}
-\title{Quotation}
+\title{Defusing R expressions}
 \usage{
 expr(expr)
 
@@ -83,107 +83,87 @@ This ensures assignments are explicit.}
 \description{
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
 
-Quotation is a mechanism by which an expression supplied as
-argument is captured by a function. Instead of seeing the value of
-the argument, the function sees the recipe (the R code) to make
-that value. This is possible because R \link[=is_expr]{expressions} are
-representable as regular objects in R:
+When a function argument is defused, R doesn't return its value
+like it normally would. Instead, it returns the R expression
+describing how to make the value as an inert object. These defused
+expressions are like blueprints for computing values.
+
+The main purpose of preventing evaluation of an expression is to
+avoid "object not found" errors when the expression involves
+data-variables that only exist in a data frame. The expression is
+defused so it can be resumed later on, in a context where the
+data-variables have been defined.
+
+Defusing prevents the evaluation of R code, but you can still force
+evaluation inside a defused expression with the \link[=quasiquotation]{forcing operators} \code{!!} and \code{!!!}.
+}
+\section{Types of defused expressions}{
+
 \itemize{
-\item Calls represent the action of calling a function to
-compute a new value. Evaluating a call causes that value to be
-computed. Calls typically involve symbols to reference R objects.
-\item Symbols represent the name that is given to an object in a
-particular context (an \link[=env]{environment}).
+\item \strong{Calls} represent the action of calling a function to compute a
+new value, such as a vector.
+\item \strong{Symbols} represent named objects. When the object pointed to
+by the symbol was defined in a function or in the global
+environment, we call it an environment-variable. When the object
+is a column in a data frame, we call it a data-variable.
 }
 
-We call objects containing calls and symbols \link[=is_expr]{expressions}.
-There are two ways to create R expressions. First you can \strong{build}
-calls and symbols from parts and pieces (see \code{\link[=sym]{sym()}}, \code{\link[=syms]{syms()}} and
-\code{\link[=call2]{call2()}}). The other way is by \emph{quotation} or \emph{quasiquotation},
-i.e. by intercepting an expression instead of evaluating it.
+You can create new call or symbol objects by using the defusing
+function \code{expr()}:\preformatted{# Create a symbol representing objects called `foo`
+expr(foo)
+
+# Create a call representing the computation of the mean of `foo`
+expr(mean(foo, na.rm = TRUE))
 }
-\section{User expressions versus your expressions}{
+
+Defusing is not the only way to create defused expressions. You can
+also assemble them from data:\preformatted{# Assemble a symbol from a string
+var <- "foo"
+sym(var)
+
+# Assemble a call from strings, symbols, and other objects
+call("mean", sym(var), na.rm = TRUE)
+}
+}
+
+\section{Defusing function arguments}{
 
 
-There are two points of view when it comes to capturing an
+There are two points of view when it comes to defusing an
 expression:
 \itemize{
-\item You can capture the expressions supplied by \emph{the user} of your
-function. This is the purpose of \code{ensym()}, \code{enexpr()} and
-\code{enquo()} and their plural variants. These functions take an
-argument name and capture the expression that was supplied to
-that argument.
-\item You can capture the expressions that \emph{you} supply. To this end
-use \code{expr()} and \code{quo()} and their plural variants \code{exprs()} and
-\code{quos()}.
+\item You can defuse expressions that \emph{you} supply with \code{expr()}. This
+is one way of creating symbols and calls (see previous section).
+\item You can defuse the expressions supplied by \emph{the user} of your
+function with the operators starting with \code{en} like \code{ensym()},
+\code{enquo()} and their plural variants. They defuse function
+arguments .
 }
 }
 
-\section{Capture raw expressions}{
-
-\itemize{
-\item \code{enexpr()} and \code{expr()} capture a single raw expression.
-\item \code{enexprs()} and \code{exprs()} capture a list of raw expressions
-including expressions contained in \code{...}.
-\item \code{ensym()} and \code{ensyms()} are variants of \code{enexpr()} and
-\code{enexprs()} that check the captured expression is either a string
-(which they convert to symbol) or a symbol. If anything else
-is supplied they throw an error.
-}
-
-In terms of base functions, \code{enexpr(arg)} corresponds to
-\code{base::substitute(arg)} (though that function also features complex
-substitution semantics) and \code{expr()} is like \code{\link[=quote]{quote()}} (and
-\code{\link[=bquote]{bquote()}} if we consider unquotation syntax). The plural variant
-\code{exprs()} is equivalent to \code{\link[base:alist]{base::alist()}}. Finally there is no
-function in base R that is equivalent to \code{enexprs()} but you can
-reproduce its behaviour with \code{eval(substitute(alist(...)))}.
-}
-
-\section{Capture expressions in quosures}{
+\section{Defused arguments and quosures}{
 
 
-\code{quo()} and \code{enquo()} are similar to their \code{expr} counterparts but
-capture both the expression and its environment in an object called
-a quosure. This wrapper contains a reference to the original
-environment in which that expression was captured. Keeping track of
-the environments of expressions is important because this is where
-functions and objects mentioned in the expression are defined.
-
-Quosures are objects that can be evaluated with \code{\link[=eval_tidy]{eval_tidy()}} just
-like symbols or function calls. Since they always evaluate in their
-original environment, quosures can be seen as vehicles that allow
-expressions to travel from function to function but that beam back
-instantly to their original environment upon evaluation.
+If you inspect the return values of \code{expr()} and \code{enquo()}, you'll
+notice that the latter doesn't return a raw expression like the
+former. Instead it returns a \strong{quosure}, a wrapper containing an
+expression and an environment. R needs information about the
+environment to properly evaluate the argument expression because it
+comes from a different context than the current function.
 
 See the \link{quosure} help topic about tools to work with quosures.
 }
 
-\section{Quasiquotation}{
+\section{Comparison to base R}{
 
-
-All quotation functions in rlang have support for \link[=quasiquotation]{unquoting operators}. The combination of quotation and
-unquotation is called \emph{quasiquotation}.
-
-Unquotation provides a way to refer to variables during quotation.
-Variables are problematic when quoting because a captured
-expression is essentially a constant, just like a string is a
-constant. For instance in all the following cases \code{apple} is a
-constant: \code{~apple}, \code{"apple"} and \code{expr(apple)}. Unquoting allows
-you to introduce a part of variability within a captured
-expression.
 \itemize{
-\item In the case of \code{enexpr()} and \code{enquo()}, unquoting provides an
-escape hatch to the users of your function that allows them to
-manipulate the expression that you capture.
-\item In the case of \code{expr()} and \code{quo()}, quasiquotation lets you
-build a complex expressions where some parts are constant (the
-parts that are captured) and some parts are variable (the parts
-that are unquoted).
+\item The defusing operator \code{expr()} is similar to \code{\link[=quote]{quote()}}. Like
+\code{\link[=bquote]{bquote()}}, it allows \link[=quotation]{forcing} evaluation of parts
+of an expression.
+\item The plural variant \code{exprs()} is similar to \code{\link[=alist]{alist()}}.
+\item The argument-defusing operator \code{enquo()} is similar to
+\code{\link[=substitute]{substitute()}}.
 }
-
-See the \link{quasiquotation} help topic for more about this as well as
-\href{https://adv-r.hadley.nz/quasiquotation.html}{the chapter in Advanced R}.
 }
 
 \examples{

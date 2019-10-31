@@ -1,109 +1,95 @@
-#' Quotation
+#' Defusing R expressions
 #'
 #' @description
 #'
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
 #'
-#' Quotation is a mechanism by which an expression supplied as
-#' argument is captured by a function. Instead of seeing the value of
-#' the argument, the function sees the recipe (the R code) to make
-#' that value. This is possible because R [expressions][is_expr] are
-#' representable as regular objects in R:
+#' When a function argument is defused, R doesn't return its value
+#' like it normally would. Instead, it returns the R expression
+#' describing how to make the value as an inert object. These defused
+#' expressions are like blueprints for computing values.
 #'
-#' * Calls represent the action of calling a function to
-#'   compute a new value. Evaluating a call causes that value to be
-#'   computed. Calls typically involve symbols to reference R objects.
+#' The main purpose of preventing evaluation of an expression is to
+#' avoid "object not found" errors when the expression involves
+#' data-variables that only exist in a data frame. The expression is
+#' defused so it can be resumed later on, in a context where the
+#' data-variables have been defined.
 #'
-#' * Symbols represent the name that is given to an object in a
-#'   particular context (an [environment][env]).
-#'
-#' We call objects containing calls and symbols [expressions][is_expr].
-#' There are two ways to create R expressions. First you can **build**
-#' calls and symbols from parts and pieces (see [sym()], [syms()] and
-#' [call2()]). The other way is by *quotation* or *quasiquotation*,
-#' i.e. by intercepting an expression instead of evaluating it.
+#' Defusing prevents the evaluation of R code, but you can still force
+#' evaluation inside a defused expression with the [forcing
+#' operators][quasiquotation] `!!` and `!!!`.
 #'
 #'
-#' @section User expressions versus your expressions:
+#' @section Types of defused expressions:
 #'
-#' There are two points of view when it comes to capturing an
+#' * __Calls__ represent the action of calling a function to compute a
+#'   new value, such as a vector.
+#'
+#' * __Symbols__ represent named objects. When the object pointed to
+#'   by the symbol was defined in a function or in the global
+#'   environment, we call it an environment-variable. When the object
+#'   is a column in a data frame, we call it a data-variable.
+#'
+#' You can create new call or symbol objects by using the defusing
+#' function `expr()`:
+#'
+#' ```
+#' # Create a symbol representing objects called `foo`
+#' expr(foo)
+#'
+#' # Create a call representing the computation of the mean of `foo`
+#' expr(mean(foo, na.rm = TRUE))
+#' ```
+#'
+#' Defusing is not the only way to create defused expressions. You can
+#' also assemble them from data:
+#'
+#' ```
+#' # Assemble a symbol from a string
+#' var <- "foo"
+#' sym(var)
+#'
+#' # Assemble a call from strings, symbols, and other objects
+#' call("mean", sym(var), na.rm = TRUE)
+#' ```
+#'
+#'
+#' @section Defusing function arguments:
+#'
+#' There are two points of view when it comes to defusing an
 #' expression:
 #'
-#' * You can capture the expressions supplied by _the user_ of your
-#'   function. This is the purpose of `ensym()`, `enexpr()` and
-#'   `enquo()` and their plural variants. These functions take an
-#'   argument name and capture the expression that was supplied to
-#'   that argument.
+#' * You can defuse expressions that _you_ supply with `expr()`. This
+#'   is one way of creating symbols and calls (see previous section).
 #'
-#' * You can capture the expressions that _you_ supply. To this end
-#'   use `expr()` and `quo()` and their plural variants `exprs()` and
-#'   `quos()`.
+#' * You can defuse the expressions supplied by _the user_ of your
+#'   function with the operators starting with `en` like `ensym()`,
+#'   `enquo()` and their plural variants. They defuse function
+#'   arguments .
 #'
 #'
-#' @section Capture raw expressions:
+#' @section Defused arguments and quosures:
 #'
-#' * `enexpr()` and `expr()` capture a single raw expression.
-#'
-#' * `enexprs()` and `exprs()` capture a list of raw expressions
-#'   including expressions contained in `...`.
-#'
-#' * `ensym()` and `ensyms()` are variants of `enexpr()` and
-#'   `enexprs()` that check the captured expression is either a string
-#'   (which they convert to symbol) or a symbol. If anything else
-#'   is supplied they throw an error.
-#'
-#' In terms of base functions, `enexpr(arg)` corresponds to
-#' `base::substitute(arg)` (though that function also features complex
-#' substitution semantics) and `expr()` is like [quote()] (and
-#' [bquote()] if we consider unquotation syntax). The plural variant
-#' `exprs()` is equivalent to [base::alist()]. Finally there is no
-#' function in base R that is equivalent to `enexprs()` but you can
-#' reproduce its behaviour with `eval(substitute(alist(...)))`.
-#'
-#'
-#' @section Capture expressions in quosures:
-#'
-#' `quo()` and `enquo()` are similar to their `expr` counterparts but
-#' capture both the expression and its environment in an object called
-#' a quosure. This wrapper contains a reference to the original
-#' environment in which that expression was captured. Keeping track of
-#' the environments of expressions is important because this is where
-#' functions and objects mentioned in the expression are defined.
-#'
-#' Quosures are objects that can be evaluated with [eval_tidy()] just
-#' like symbols or function calls. Since they always evaluate in their
-#' original environment, quosures can be seen as vehicles that allow
-#' expressions to travel from function to function but that beam back
-#' instantly to their original environment upon evaluation.
+#' If you inspect the return values of `expr()` and `enquo()`, you'll
+#' notice that the latter doesn't return a raw expression like the
+#' former. Instead it returns a __quosure__, a wrapper containing an
+#' expression and an environment. R needs information about the
+#' environment to properly evaluate the argument expression because it
+#' comes from a different context than the current function.
 #'
 #' See the [quosure] help topic about tools to work with quosures.
 #'
 #'
-#' @section Quasiquotation:
+#' @section Comparison to base R:
 #'
-#' All quotation functions in rlang have support for [unquoting
-#' operators][quasiquotation]. The combination of quotation and
-#' unquotation is called *quasiquotation*.
+#' * The defusing operator `expr()` is similar to [quote()]. Like
+#'   [bquote()], it allows [forcing][quotation] evaluation of parts
+#'   of an expression.
 #'
-#' Unquotation provides a way to refer to variables during quotation.
-#' Variables are problematic when quoting because a captured
-#' expression is essentially a constant, just like a string is a
-#' constant. For instance in all the following cases `apple` is a
-#' constant: `~apple`, `"apple"` and `expr(apple)`. Unquoting allows
-#' you to introduce a part of variability within a captured
-#' expression.
+#' * The plural variant `exprs()` is similar to [alist()].
 #'
-#' * In the case of `enexpr()` and `enquo()`, unquoting provides an
-#'   escape hatch to the users of your function that allows them to
-#'   manipulate the expression that you capture.
-#'
-#' * In the case of `expr()` and `quo()`, quasiquotation lets you
-#'   build a complex expressions where some parts are constant (the
-#'   parts that are captured) and some parts are variable (the parts
-#'   that are unquoted).
-#'
-#' See the [quasiquotation] help topic for more about this as well as
-#' [the chapter in Advanced R](https://adv-r.hadley.nz/quasiquotation.html).
+#' * The argument-defusing operator `enquo()` is similar to
+#'   [substitute()].
 #'
 #'
 #' @inheritParams tidy-dots
