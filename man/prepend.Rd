@@ -18,10 +18,10 @@ modify(.x, ...)
 
 \item{.x}{A vector to modify.}
 
-\item{...}{List of elements to merge into \code{.x}. Named elements
-already existing in \code{.x} are used as replacements. Elements that
-have new or no names are inserted at the end. These dots support
-\link[=dyn-dots]{dynamic dots} features.}
+\item{...}{[\link[=dyn-dots]{Dynamic}] - List of elements to merge into
+\code{.x}. Named elements already existing in \code{.x} are used as
+replacements. Elements that have new or no names are inserted at
+the end.}
 }
 \description{
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}

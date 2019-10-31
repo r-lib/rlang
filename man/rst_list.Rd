@@ -18,8 +18,8 @@ rst_maybe_jump(.restart, ...)
 \arguments{
 \item{.restart}{The name of a restart.}
 
-\item{...}{Arguments passed on to the restart function. These dots
-are \link[=dyn-dots]{dynamic}.}
+\item{...}{[\link[=dyn-dots]{Dynamic}] - Arguments passed on to the
+restart function.}
 }
 \description{
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}

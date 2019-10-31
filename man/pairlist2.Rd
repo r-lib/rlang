@@ -7,8 +7,8 @@
 pairlist2(...)
 }
 \arguments{
-\item{...}{Arguments stored in the pairlist. These dots are
-\link[=dyn-dots]{dynamic} and preserve empty arguments.}
+\item{...}{[\link[=dyn-dots]{Dynamic}] - Arguments stored in the
+pairlist. Empty arguments are preserved.}
 }
 \description{
 This pairlist constructor uses \link[=dyn-dots]{dynamic dots}. Use

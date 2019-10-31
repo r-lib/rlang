@@ -15,9 +15,9 @@ env_bind_active(.env, ...)
 \arguments{
 \item{.env}{An environment.}
 
-\item{...}{Pairs of names and expressions, values or functions.
-Pass \code{\link[=zap]{zap()}} objects to remove bindings. These dots are
-\link[=dyn-dots]{dynamic}.}
+\item{...}{[\link[=dyn-dots]{Dynamic}] - Named objects (\code{env_bind()}),
+expressions \code{env_bind_lazy()}, or functions (\code{env_bind_active()}).
+Use \code{\link[=zap]{zap()}} to remove bindings.}
 
 \item{.eval_env}{The environment where the expressions will be
 evaluated when the symbols are forced.}
