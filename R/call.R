@@ -21,8 +21,8 @@
 #'
 #' @param .fn Function to call. Must be a callable object: a string,
 #'   symbol, call, or a function.
-#' @param ... [[Dynamic][dyn-dots]] - Arguments to the call either in
-#'   or out of a list. Empty arguments are preserved.
+#' @param ... [[Dynamic][dyn-dots]] - Arguments for the function
+#'   call. Empty arguments are preserved.
 #' @param .ns Namespace with which to prefix `.fn`. Must be a string
 #'   or symbol.
 #'
