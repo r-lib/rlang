@@ -25,11 +25,11 @@
 #' @section Add dynamic dots support in your functions:
 #'
 #' If your function takes dots, adding support for dynamic features is
-#' as easy as collecting the dots with [list2()]. Other dynamic dots
-#' collectors are:
+#' as easy as collecting the dots with [list2()] instead of [list()].
 #'
-#' - [exprs()] and [quos()], which don't evaluate their arguments.
-#' - [dots_list()], which is more configurable than [list2()].
+#' Other dynamic dots collectors are [dots_list()], which is more
+#' configurable than [list2()], `vars()` which doesn't force its
+#' arguments, and [call2()] for creating calls.
 #'
 #' @name dyn-dots
 NULL

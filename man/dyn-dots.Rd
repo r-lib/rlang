@@ -25,11 +25,10 @@ lines of arguments.
 
 
 If your function takes dots, adding support for dynamic features is
-as easy as collecting the dots with \code{\link[=list2]{list2()}}. Other dynamic dots
-collectors are:
-\itemize{
-\item \code{\link[=exprs]{exprs()}} and \code{\link[=quos]{quos()}}, which don't evaluate their arguments.
-\item \code{\link[=dots_list]{dots_list()}}, which is more configurable than \code{\link[=list2]{list2()}}.
-}
+as easy as collecting the dots with \code{\link[=list2]{list2()}} instead of \code{\link[=list]{list()}}.
+
+Other dynamic dots collectors are \code{\link[=dots_list]{dots_list()}}, which is more
+configurable than \code{\link[=list2]{list2()}}, \code{vars()} which doesn't force its
+arguments, and \code{\link[=call2]{call2()}} for creating calls.
 }
 
