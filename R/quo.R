@@ -2,7 +2,7 @@
 #'
 #' @description
 #'
-#' A quosure is a type of [quoted expression][quotation] that includes
+#' A quosure is a type of [quoted expression][nse-defuse] that includes
 #' a reference to the context where it was created. A quosure is thus
 #' guaranteed to evaluate in its original environment and can refer to
 #' local objects.

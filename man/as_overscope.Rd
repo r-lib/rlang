@@ -13,7 +13,7 @@ new_overscope(bottom, top = NULL, enclosure = NULL)
 overscope_clean(overscope)
 }
 \arguments{
-\item{quo}{A \link[=quotation]{quosure}.}
+\item{quo}{A \link[=nse-defuse]{quosure}.}
 
 \item{data}{A data frame or named vector of masking data.}
 

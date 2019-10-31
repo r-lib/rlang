@@ -82,7 +82,7 @@ data frame columns in dplyr data masks are implemented with
 
 Unlike \code{\link[base:eval]{base::eval()}} which takes any kind of environments as data
 mask, \code{\link[=eval_tidy]{eval_tidy()}} has specific requirements in order to support
-\link[=quotation]{quosures}. For this reason you can't supply bare
+\link[=nse-defuse]{quosures}. For this reason you can't supply bare
 environments.
 
 There are two ways of constructing an rlang data mask manually:

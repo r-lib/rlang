@@ -28,7 +28,7 @@ environment, \code{eval_tidy()} transforms it to a \strong{data mask} with
 \code{\link[=as_data_mask]{as_data_mask()}}. Evaluating in a data mask enables the following
 features:
 \itemize{
-\item \link[=quotation]{Quosures}. Quosures are expressions bundled with an
+\item \link[=nse-defuse]{Quosures}. Quosures are expressions bundled with an
 environment. If \code{data} is supplied, objects in the data mask
 always have precedence over the quosure environment, i.e. the
 data masks the environment.

@@ -22,7 +22,7 @@ Quoted function calls are one of the two types of
 calling a function, possibly with arguments. There are two ways of
 creating a quoted call:
 \itemize{
-\item By \link[=quotation]{quoting} it. Quoting prevents functions from being
+\item By \link[=nse-defuse]{quoting} it. Quoting prevents functions from being
 called. Instead, you get the description of the function call as
 an R object. That is, a quoted function call.
 \item By constructing it with \code{\link[base:call]{base::call()}}, \code{\link[base:as.call]{base::as.call()}}, or

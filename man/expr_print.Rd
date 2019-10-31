@@ -20,7 +20,7 @@ Defaults to the global option \code{width}.}
 printer for R expressions with a few improvements over the base R
 printer.
 \itemize{
-\item It colourises \link[=quotation]{quosures} according to their environment.
+\item It colourises \link[=nse-defuse]{quosures} according to their environment.
 Quosures from the global environment are printed normally while
 quosures from local environments are printed in unique colour (or
 in italic when all colours are taken).

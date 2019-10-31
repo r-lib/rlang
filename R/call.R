@@ -7,7 +7,7 @@
 #' calling a function, possibly with arguments. There are two ways of
 #' creating a quoted call:
 #'
-#' * By [quoting][quotation] it. Quoting prevents functions from being
+#' * By [quoting][nse-defuse] it. Quoting prevents functions from being
 #'   called. Instead, you get the description of the function call as
 #'   an R object. That is, a quoted function call.
 #'

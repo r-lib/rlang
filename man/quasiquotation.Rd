@@ -73,7 +73,7 @@ expression by the forcing operators.
 
 When a function takes multiple named arguments
 (e.g. \code{dplyr::mutate()}), it is difficult to supply a variable as
-name. Since the LHS of \code{=} is \link[=quotation]{defused}, giving the name
+name. Since the LHS of \code{=} is \link[=nse-defuse]{defused}, giving the name
 of a variable results in the argument having the name of the
 variable rather than the name stored in that variable. This problem
 of forcing evaluation of names is exactly what the \code{!!} operator is

@@ -1115,7 +1115,7 @@ quo_expr <- function(quo, warn = FALSE) {
 #' have a replacement.
 #'
 #' @inheritParams as_data_mask
-#' @param quo A [quosure][quotation].
+#' @param quo A [quosure][nse-defuse].
 #'
 #' @keywords internal
 #' @export

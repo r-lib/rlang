@@ -337,7 +337,7 @@ switch_expr <- function(.x, ...) {
 #' printer for R expressions with a few improvements over the base R
 #' printer.
 #'
-#' * It colourises [quosures][quotation] according to their environment.
+#' * It colourises [quosures][nse-defuse] according to their environment.
 #'   Quosures from the global environment are printed normally while
 #'   quosures from local environments are printed in unique colour (or
 #'   in italic when all colours are taken).

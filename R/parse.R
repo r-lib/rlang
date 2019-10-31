@@ -12,7 +12,7 @@
 #' functions also support R connections.
 #'
 #' The versions suffixed with `_quo` and `_quos` return
-#' [quosures][quotation] rather than raw expressions.
+#' [quosures][nse-defuse] rather than raw expressions.
 #'
 #'
 #' @section Life cycle:

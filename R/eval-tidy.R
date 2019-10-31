@@ -11,7 +11,7 @@
 #' [as_data_mask()]. Evaluating in a data mask enables the following
 #' features:
 #'
-#' - [Quosures][quotation]. Quosures are expressions bundled with an
+#' - [Quosures][nse-defuse]. Quosures are expressions bundled with an
 #'   environment. If `data` is supplied, objects in the data mask
 #'   always have precedence over the quosure environment, i.e. the
 #'   data masks the environment.
@@ -248,7 +248,7 @@ print.rlang_fake_data_pronoun <- function(...) cat_line("<pronoun>")
 #'
 #' Unlike [base::eval()] which takes any kind of environments as data
 #' mask, [eval_tidy()] has specific requirements in order to support
-#' [quosures][quotation]. For this reason you can't supply bare
+#' [quosures][nse-defuse]. For this reason you can't supply bare
 #' environments.
 #'
 #' There are two ways of constructing an rlang data mask manually:

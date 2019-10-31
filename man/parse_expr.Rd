@@ -47,7 +47,7 @@ expressions. It always returns a list of expressions (compare to
 functions also support R connections.
 
 The versions suffixed with \code{_quo} and \code{_quos} return
-\link[=quotation]{quosures} rather than raw expressions.
+\link[=nse-defuse]{quosures} rather than raw expressions.
 }
 \section{Life cycle}{
 

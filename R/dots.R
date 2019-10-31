@@ -338,7 +338,7 @@ formals(dots_values) <- pairlist(
 #'
 #' `dots_definitions()` is experimental. Expect API changes.
 #'
-#' @inheritParams quotation
+#' @inheritParams nse-defuse
 #'
 #' @keywords internal
 #' @export

@@ -93,7 +93,7 @@
 #' @section Comparison to base R:
 #'
 #' * The defusing operator `expr()` is similar to [quote()]. Like
-#'   [bquote()], it allows [forcing][quotation] evaluation of parts
+#'   [bquote()], it allows [forcing][nse-defuse] evaluation of parts
 #'   of an expression.
 #'
 #' * The plural variant `exprs()` is similar to [alist()].
@@ -122,7 +122,8 @@
 #'   arguments.
 #' @param .unquote_names Whether to treat `:=` as `=`. Unlike `=`, the
 #'   `:=` syntax supports `!!` unquoting on the LHS.
-#' @name quotation
+#' @name nse-defuse
+#' @aliases quotation
 #' @examples
 #' # expr() and exprs() capture expressions that you supply:
 #' expr(symbol)
@@ -198,18 +199,18 @@
 #' eval_tidy(quo)
 NULL
 
-#' @rdname quotation
+#' @rdname nse-defuse
 #' @export
 expr <- function(expr) {
   enexpr(expr)
 }
-#' @rdname quotation
+#' @rdname nse-defuse
 #' @export
 enexpr <- function(arg) {
   .Call(rlang_enexpr, substitute(arg), parent.frame())
 }
 
-#' @rdname quotation
+#' @rdname nse-defuse
 #' @export
 exprs <- function(...,
                   .named = FALSE,
@@ -224,7 +225,7 @@ exprs <- function(...,
     check_assign = FALSE
   )
 }
-#' @rdname quotation
+#' @rdname nse-defuse
 #' @export
 enexprs <- function(...,
                    .named = FALSE,
@@ -245,12 +246,12 @@ enexprs <- function(...,
   )
 }
 
-#' @rdname quotation
+#' @rdname nse-defuse
 #' @export
 ensym <- function(arg) {
   .Call(rlang_ensym, substitute(arg), parent.frame())
 }
-#' @rdname quotation
+#' @rdname nse-defuse
 #' @export
 ensyms <- function(...,
                    .named = FALSE,
@@ -278,18 +279,18 @@ ensyms <- function(...,
 }
 
 
-#' @rdname quotation
+#' @rdname nse-defuse
 #' @export
 quo <- function(expr) {
   enquo(expr)
 }
-#' @rdname quotation
+#' @rdname nse-defuse
 #' @export
 enquo <- function(arg) {
   .Call(rlang_enquo, substitute(arg), parent.frame())
 }
 
-#' @rdname quotation
+#' @rdname nse-defuse
 #' @export
 quos <- function(...,
                  .named = FALSE,
@@ -304,7 +305,7 @@ quos <- function(...,
     check_assign = FALSE
   )
 }
-#' @rdname quotation
+#' @rdname nse-defuse
 #' @export
 enquos <- function(...,
                    .named = FALSE,

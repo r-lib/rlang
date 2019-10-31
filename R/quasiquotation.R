@@ -67,7 +67,7 @@
 #'
 #' When a function takes multiple named arguments
 #' (e.g. `dplyr::mutate()`), it is difficult to supply a variable as
-#' name. Since the LHS of `=` is [defused][quotation], giving the name
+#' name. Since the LHS of `=` is [defused][nse-defuse], giving the name
 #' of a variable results in the argument having the name of the
 #' variable rather than the name stored in that variable. This problem
 #' of forcing evaluation of names is exactly what the `!!` operator is
