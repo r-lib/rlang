@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Quotation — quotation • rlang</title>
+<title>Defuse R expressions — quotation • rlang</title>
 
 
 <!-- jquery -->
@@ -35,25 +35,26 @@
 
 
 
-<meta property="og:title" content="Quotation — quotation" />
+<meta property="og:title" content="Defuse R expressions — quotation" />
 <meta property="og:description" content="
-Quotation is a mechanism by which an expression supplied as
-argument is captured by a function. Instead of seeing the value of
-the argument, the function sees the recipe (the R code) to make
-that value. This is possible because R expressions are
-representable as regular objects in R:
-Calls represent the action of calling a function to
-compute a new value. Evaluating a call causes that value to be
-computed. Calls typically involve symbols to reference R objects.
-Symbols represent the name that is given to an object in a
-particular context (an environment).
-
-
-We call objects containing calls and symbols expressions.
-There are two ways to create R expressions. First you can build
-calls and symbols from parts and pieces (see sym(), syms() and
-call2()). The other way is by quotation or quasiquotation,
-i.e. by intercepting an expression instead of evaluating it." />
+Defusing a function argument prevents its evaluation. When a
+function argument is defused, R doesn't return its value like it
+normally would but it returns the R expression describing how to
+make the value. These defused expressions are like blueprints for
+computing values. (Defusing is also known as quoting, and is done
+in base R by quote() and substitute().)
+There are two main ways to defuse expressions, to which correspond
+the two functions expr() and enquo(). Whereas expr() defuses
+your own expression, enquo() defuses expressions supplied as
+argument by the user of a function. See section on function
+arguments for more on this distinction.
+The main purpose of preventing evaluation of an expression is to
+avoid &quot;object not found&quot; errors when the expression involves
+data-variables that only exist in a data frame. The expression is
+defused so it can be resumed later on, in a context where the
+data-variables have been defined.
+Defusing prevents the evaluation of R code, but you can still force
+evaluation inside a defused expression with the forcing operators !! and !!!." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -161,30 +162,31 @@ i.e. by intercepting an expression instead of evaluating it." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Quotation</h1>
+    <h1>Defuse R expressions</h1>
     <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/quotation.R'><code>R/quotation.R</code></a></small>
     <div class="hidden name"><code>quotation.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p><a href='https://www.tidyverse.org/lifecycle/#stable'><img src='figures/lifecycle-stable.svg' alt='Stable lifecycle'></a></p>
-<p>Quotation is a mechanism by which an expression supplied as
-argument is captured by a function. Instead of seeing the value of
-the argument, the function sees the recipe (the R code) to make
-that value. This is possible because R <a href='is_expr.html'>expressions</a> are
-representable as regular objects in R:</p><ul>
-<li><p>Calls represent the action of calling a function to
-compute a new value. Evaluating a call causes that value to be
-computed. Calls typically involve symbols to reference R objects.</p></li>
-<li><p>Symbols represent the name that is given to an object in a
-particular context (an <a href='env.html'>environment</a>).</p></li>
-</ul>
-
-<p>We call objects containing calls and symbols <a href='is_expr.html'>expressions</a>.
-There are two ways to create R expressions. First you can <strong>build</strong>
-calls and symbols from parts and pieces (see <code><a href='sym.html'>sym()</a></code>, <code><a href='sym.html'>syms()</a></code> and
-<code><a href='call2.html'>call2()</a></code>). The other way is by <em>quotation</em> or <em>quasiquotation</em>,
-i.e. by intercepting an expression instead of evaluating it.</p>
+<p>Defusing a function argument prevents its evaluation. When a
+function argument is defused, R doesn't return its value like it
+normally would but it returns the R expression describing how to
+make the value. These defused expressions are like blueprints for
+computing values. (Defusing is also known as <em>quoting</em>, and is done
+in base R by <code><a href='https://rdrr.io/r/base/substitute.html'>quote()</a></code> and <code><a href='https://rdrr.io/r/base/substitute.html'>substitute()</a></code>.)</p>
+<p>There are two main ways to defuse expressions, to which correspond
+the two functions <code>expr()</code> and <code>enquo()</code>. Whereas <code>expr()</code> defuses
+your own expression, <code>enquo()</code> defuses expressions supplied as
+argument by the user of a function. See section on function
+arguments for more on this distinction.</p>
+<p>The main purpose of preventing evaluation of an expression is to
+avoid "object not found" errors when the expression involves
+data-variables that only exist in a data frame. The expression is
+defused so it can be resumed later on, in a context where the
+data-variables have been defined.</p>
+<p>Defusing prevents the evaluation of R code, but you can still force
+evaluation inside a defused expression with the <a href='quasiquotation.html'>forcing operators</a> <code>!!</code> and <code>!!!</code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>expr</span>(<span class='no'>expr</span>)
@@ -273,86 +275,76 @@ This ensures assignments are explicit.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="user-expressions-versus-your-expressions"><a class="anchor" href="#user-expressions-versus-your-expressions"></a>User expressions versus your expressions</h2>
-
-    
-
-
-<p>There are two points of view when it comes to capturing an
-expression:</p><ul>
-<li><p>You can capture the expressions supplied by <em>the user</em> of your
-function. This is the purpose of <code>ensym()</code>, <code>enexpr()</code> and
-<code>enquo()</code> and their plural variants. These functions take an
-argument name and capture the expression that was supplied to
-that argument.</p></li>
-<li><p>You can capture the expressions that <em>you</em> supply. To this end
-use <code>expr()</code> and <code>quo()</code> and their plural variants <code>exprs()</code> and
-<code>quos()</code>.</p></li>
-</ul>
-
-    <h2 class="hasAnchor" id="capture-raw-expressions"><a class="anchor" href="#capture-raw-expressions"></a>Capture raw expressions</h2>
+    <h2 class="hasAnchor" id="types-of-defused-expressions"><a class="anchor" href="#types-of-defused-expressions"></a>Types of defused expressions</h2>
 
     
 
 <ul>
-<li><p><code>enexpr()</code> and <code>expr()</code> capture a single raw expression.</p></li>
-<li><p><code>enexprs()</code> and <code>exprs()</code> capture a list of raw expressions
-including expressions contained in <code>...</code>.</p></li>
-<li><p><code>ensym()</code> and <code>ensyms()</code> are variants of <code>enexpr()</code> and
-<code>enexprs()</code> that check the captured expression is either a string
-(which they convert to symbol) or a symbol. If anything else
-is supplied they throw an error.</p></li>
+<li><p><strong>Calls</strong>, like <code>f(1, 2, 3)</code>, <code>1 + 1</code>, or ...,  represent the action of calling a function to compute a
+new value, such as a vector.</p></li>
+<li><p><strong>Symbols</strong>, like <code>x</code> or <code>df</code>, represent named objects. When the object pointed to
+by the symbol was defined in a function or in the global
+environment, we call it an environment-variable. When the object
+is a column in a data frame, we call it a data-variable.</p></li>
 </ul>
 
-<p>In terms of base functions, <code>enexpr(arg)</code> corresponds to
-<code><a href='https://rdrr.io/r/base/substitute.html'>base::substitute(arg)</a></code> (though that function also features complex
-substitution semantics) and <code>expr()</code> is like <code><a href='https://rdrr.io/r/base/substitute.html'>quote()</a></code> (and
-<code><a href='https://rdrr.io/r/base/bquote.html'>bquote()</a></code> if we consider unquotation syntax). The plural variant
-<code>exprs()</code> is equivalent to <code><a href='https://rdrr.io/r/base/list.html'>base::alist()</a></code>. Finally there is no
-function in base R that is equivalent to <code>enexprs()</code> but you can
-reproduce its behaviour with <code><a href='https://rdrr.io/r/base/eval.html'>eval(substitute(alist(...)))</a></code>.</p>
-    <h2 class="hasAnchor" id="capture-expressions-in-quosures"><a class="anchor" href="#capture-expressions-in-quosures"></a>Capture expressions in quosures</h2>
+<p>You can create new call or symbol objects by using the defusing
+function <code>expr()</code>:</p><pre># Create a symbol representing objects called `foo`
+expr(foo)
+
+# Create a call representing the computation of the mean of `foo`
+expr(mean(foo, na.rm = TRUE))
+</pre>
+
+<p>Defusing is not the only way to create defused expressions. You can
+also assemble them from data:</p><pre># Assemble a symbol from a string
+var &lt;- "foo"
+sym(var)
+
+# Assemble a call from strings, symbols, and other objects
+call("mean", sym(var), na.rm = TRUE)
+</pre>
+
+    <h2 class="hasAnchor" id="defusing-function-arguments"><a class="anchor" href="#defusing-function-arguments"></a>Defusing function arguments</h2>
 
     
 
 
-<p><code>quo()</code> and <code>enquo()</code> are similar to their <code>expr</code> counterparts but
-capture both the expression and its environment in an object called
-a quosure. This wrapper contains a reference to the original
-environment in which that expression was captured. Keeping track of
-the environments of expressions is important because this is where
-functions and objects mentioned in the expression are defined.</p>
-<p>Quosures are objects that can be evaluated with <code><a href='eval_tidy.html'>eval_tidy()</a></code> just
-like symbols or function calls. Since they always evaluate in their
-original environment, quosures can be seen as vehicles that allow
-expressions to travel from function to function but that beam back
-instantly to their original environment upon evaluation.</p>
+<p>There are two points of view when it comes to defusing an
+expression:</p><ul>
+<li><p>You can defuse expressions that <em>you</em> supply with <code>expr()</code>. This
+is one way of creating symbols and calls (see previous section).</p></li>
+<li><p>You can defuse the expressions supplied by <em>the user</em> of your
+function with the operators starting with <code>en</code> like <code>ensym()</code>,
+<code>enquo()</code> and their plural variants. They defuse function
+arguments .</p></li>
+</ul>
+
+    <h2 class="hasAnchor" id="defused-arguments-and-quosures"><a class="anchor" href="#defused-arguments-and-quosures"></a>Defused arguments and quosures</h2>
+
+    
+
+
+<p>If you inspect the return values of <code>expr()</code> and <code>enquo()</code>, you'll
+notice that the latter doesn't return a raw expression like the
+former. Instead it returns a <strong>quosure</strong>, a wrapper containing an
+expression and an environment. R needs information about the
+environment to properly evaluate the argument expression because it
+comes from a different context than the current function.</p>
 <p>See the <a href='quosure.html'>quosure</a> help topic about tools to work with quosures.</p>
-    <h2 class="hasAnchor" id="quasiquotation"><a class="anchor" href="#quasiquotation"></a>Quasiquotation</h2>
+    <h2 class="hasAnchor" id="comparison-to-base-r"><a class="anchor" href="#comparison-to-base-r"></a>Comparison to base R</h2>
 
     
 
-
-<p>All quotation functions in rlang have support for <a href='quasiquotation.html'>unquoting operators</a>. The combination of quotation and
-unquotation is called <em>quasiquotation</em>.</p>
-<p>Unquotation provides a way to refer to variables during quotation.
-Variables are problematic when quoting because a captured
-expression is essentially a constant, just like a string is a
-constant. For instance in all the following cases <code>apple</code> is a
-constant: <code>~apple</code>, <code>"apple"</code> and <code>expr(apple)</code>. Unquoting allows
-you to introduce a part of variability within a captured
-expression.</p><ul>
-<li><p>In the case of <code>enexpr()</code> and <code>enquo()</code>, unquoting provides an
-escape hatch to the users of your function that allows them to
-manipulate the expression that you capture.</p></li>
-<li><p>In the case of <code>expr()</code> and <code>quo()</code>, quasiquotation lets you
-build a complex expressions where some parts are constant (the
-parts that are captured) and some parts are variable (the parts
-that are unquoted).</p></li>
+<ul>
+<li><p>The defusing operator <code>expr()</code> is similar to <code><a href='https://rdrr.io/r/base/substitute.html'>quote()</a></code>. Like
+<code><a href='https://rdrr.io/r/base/bquote.html'>bquote()</a></code>, it allows forcing evaluation of parts
+of an expression.</p></li>
+<li><p>The plural variant <code>exprs()</code> is similar to <code><a href='https://rdrr.io/r/base/list.html'>alist()</a></code>.</p></li>
+<li><p>The argument-defusing operator <code>enquo()</code> is similar to
+<code><a href='https://rdrr.io/r/base/substitute.html'>substitute()</a></code>.</p></li>
 </ul>
 
-<p>See the <a href='quasiquotation.html'>quasiquotation</a> help topic for more about this as well as
-<a href='https://adv-r.hadley.nz/quasiquotation.html'>the chapter in Advanced R</a>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># expr() and exprs() capture expressions that you supply:</span>
@@ -417,8 +409,8 @@ that are unquoted).</p></li>
 <span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'>quo</span>(<span class='no'>letters</span>)
 <span class='no'>quo</span></div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^letters</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x5568360</span><span></div><div class='input'>
-<span class='fu'><a href='set_expr.html'>get_expr</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; letters</div><div class='input'><span class='fu'><a href='get_env.html'>get_env</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; &lt;environment: 0x5568360&gt;</div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x5a71908</span><span></div><div class='input'>
+<span class='fu'><a href='set_expr.html'>get_expr</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; letters</div><div class='input'><span class='fu'><a href='get_env.html'>get_env</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; &lt;environment: 0x5a71908&gt;</div><div class='input'>
 <span class='co'># Quosures can be evaluated with eval_tidy():</span>
 <span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt;  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
 #&gt; [20] "t" "u" "v" "w" "x" "y" "z"</div><div class='input'>
@@ -443,7 +435,7 @@ that are unquoted).</p></li>
 <span class='co'># terminal is capable of displaying colours:</span>
 <span class='no'>quo</span></div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^(</span><span style='color: #00BB00;'>^2 + 3</span><span style='color: #0000BB;'>) * local_ten</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x6ebfde0</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x67ebc00</span><span></div><div class='input'>
 <span class='co'># All the quosures in the expression evaluate in their original</span>
 <span class='co'># context. The local objects are looked up properly and we get the</span>
 <span class='co'># expected result:</span>
@@ -453,10 +445,10 @@ that are unquoted).</p></li>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#user-expressions-versus-your-expressions">User expressions versus your expressions</a></li>
-      <li><a href="#capture-raw-expressions">Capture raw expressions</a></li>
-      <li><a href="#capture-expressions-in-quosures">Capture expressions in quosures</a></li>
-      <li><a href="#quasiquotation">Quasiquotation</a></li>
+      <li><a href="#types-of-defused-expressions">Types of defused expressions</a></li>
+      <li><a href="#defusing-function-arguments">Defusing function arguments</a></li>
+      <li><a href="#defused-arguments-and-quosures">Defused arguments and quosures</a></li>
+      <li><a href="#comparison-to-base-r">Comparison to base R</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

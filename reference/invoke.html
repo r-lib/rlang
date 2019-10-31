@@ -223,8 +223,8 @@ or complex expressions.</p>
 <span class='fu'>invoke</span>(<span class='no'>fn</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>mtcars</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; tryCatch(withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpVKlqNt/file4fa43922fcdc"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpVKlqNt/file4fa46db5c1ea")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpmbQNjf/file4fa434b2a5a"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpmbQNjf/file4fa4564e85e9")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
@@ -245,7 +245,7 @@ or complex expressions.</p>
 #&gt;         e$`_pid` &lt;- Sys.getpid()
 #&gt;         e$`_timestamp` &lt;- Sys.time()
 #&gt;         e &lt;- err$add_trace_back(e)
-#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpVKlqNt/file4fa46db5c1ea", 
+#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpmbQNjf/file4fa4564e85e9", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, interrupt = function(e) {
@@ -264,7 +264,7 @@ or complex expressions.</p>
 #&gt;         e$`_pid` &lt;- Sys.getpid()
 #&gt;         e$`_timestamp` &lt;- Sys.time()
 #&gt;         e &lt;- err$add_trace_back(e)
-#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpVKlqNt/file4fa46db5c1ea", 
+#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpmbQNjf/file4fa4564e85e9", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, callr_message = function(e) {
@@ -310,8 +310,8 @@ or complex expressions.</p>
 #&gt; [[8]]
 #&gt; withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpVKlqNt/file4fa43922fcdc"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpVKlqNt/file4fa46db5c1ea")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpmbQNjf/file4fa434b2a5a"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpmbQNjf/file4fa4564e85e9")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
@@ -332,7 +332,7 @@ or complex expressions.</p>
 #&gt;         e$`_pid` &lt;- Sys.getpid()
 #&gt;         e$`_timestamp` &lt;- Sys.time()
 #&gt;         e &lt;- err$add_trace_back(e)
-#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpVKlqNt/file4fa46db5c1ea", 
+#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpmbQNjf/file4fa4564e85e9", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, interrupt = function(e) {
@@ -351,7 +351,7 @@ or complex expressions.</p>
 #&gt;         e$`_pid` &lt;- Sys.getpid()
 #&gt;         e$`_timestamp` &lt;- Sys.time()
 #&gt;         e &lt;- err$add_trace_back(e)
-#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpVKlqNt/file4fa46db5c1ea", 
+#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpmbQNjf/file4fa4564e85e9", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, callr_message = function(e) {
@@ -370,11 +370,11 @@ or complex expressions.</p>
 #&gt; })
 #&gt; 
 #&gt; [[9]]
-#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpVKlqNt/file4fa43922fcdc"), 
-#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpVKlqNt/file4fa46db5c1ea")
+#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpmbQNjf/file4fa434b2a5a"), 
+#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpmbQNjf/file4fa4564e85e9")
 #&gt; 
 #&gt; [[10]]
-#&gt; do.call(do.call, c(readRDS("/tmp/RtmpVKlqNt/file4fa43922fcdc"), 
+#&gt; do.call(do.call, c(readRDS("/tmp/RtmpmbQNjf/file4fa434b2a5a"), 
 #&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv)
 #&gt; 
 #&gt; [[11]]
@@ -391,7 +391,7 @@ or complex expressions.</p>
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; }, list(pkg = list(package = "rlang", version = list(c(0L, 4L, 
-#&gt; 1L, 9000L)), src_path = "/home/travis/build/r-lib/rlang", dst_path = "/tmp/RtmpVKlqNt/file4fa4f6660de", 
+#&gt; 1L, 9000L)), src_path = "/home/travis/build/r-lib/rlang", dst_path = "/tmp/RtmpmbQNjf/file4fa451674f1b", 
 #&gt;     github_url = "https://github.com/r-lib/rlang", desc = &lt;environment&gt;, 
 #&gt;     meta = list(url = "https://rlang.r-lib.org", template = list(
 #&gt;         params = list(ganalytics = "UA-115082821-1")), home = list(
@@ -473,7 +473,7 @@ or complex expressions.</p>
 #&gt;             "calling")), list(title = "Session state", contents = c("matches(\"interactive\")", 
 #&gt;             "matches(\"option\")")), list(title = "Weak references", 
 #&gt;                 contents = c("matches(\"weakref\")", "matches(\"wref\")"
-#&gt;                 ))), destination = "/tmp/RtmpVKlqNt/file4fa4f6660de"), 
+#&gt;                 ))), destination = "/tmp/RtmpmbQNjf/file4fa451674f1b"), 
 #&gt;     figures = list(dev = "grDevices::png", dpi = 96L, dev.args = list(), 
 #&gt;         fig.ext = "png", fig.width = 7.29166666666667, fig.height = NULL, 
 #&gt;         fig.retina = 2L, fig.asp = 0.618046971569839), development = list(
@@ -991,7 +991,7 @@ or complex expressions.</p>
 #&gt;     "Name of a primitive function", "Force parts of an expression", 
 #&gt;     "Squash a quosure", "Format quosures for printing or labelling", 
 #&gt;     "Squash a quosure", "Quosure getters, setters and testers", 
-#&gt;     "Quotation", "Create vectors matching the length of a given vector", 
+#&gt;     "Defuse R expressions", "Create vectors matching the length of a given vector", 
 #&gt;     "Create a restarting handler", "Jump to or from a frame", 
 #&gt;     "Display backtrace on error", "Jump to the abort restart", 
 #&gt;     "Restarts utilities", "Scalar type predicates", "Temporarily change bindings of an environment", 
@@ -5544,8 +5544,9 @@ or complex expressions.</p>
 #&gt;                 "exprs"), "\n", list("enexprs"), "\n", list("ensym"), 
 #&gt;             "\n", list("ensyms"), "\n", list("quo"), "\n", list(
 #&gt;                 "enquo"), "\n", list("quos"), "\n", list("enquos"), 
-#&gt;             "\n", list("Quotation"), "\n", list("\n", "expr(expr)\n", 
-#&gt;                 "\n", "enexpr(arg)\n", "\n", "exprs(..., .named = FALSE, .ignore_empty = c(\"trailing\", \"none\",\n", 
+#&gt;             "\n", list("Defuse R expressions"), "\n", list("\n", 
+#&gt;                 "expr(expr)\n", "\n", "enexpr(arg)\n", "\n", 
+#&gt;                 "exprs(..., .named = FALSE, .ignore_empty = c(\"trailing\", \"none\",\n", 
 #&gt;                 "  \"all\"), .unquote_names = TRUE)\n", "\n", 
 #&gt;                 "enexprs(..., .named = FALSE, .ignore_empty = c(\"trailing\", \"none\",\n", 
 #&gt;                 "  \"all\"), .unquote_names = TRUE, .homonyms = c(\"keep\", \"first\", \"last\",\n", 
@@ -5601,96 +5602,75 @@ or complex expressions.</p>
 #&gt;                   list("&lt;-"), " call in braces otherwise.\n", 
 #&gt;                   "This ensures assignments are explicit.")), 
 #&gt;                 "\n"), "\n", list("\n", list("rlang:::lifecycle(\"stable\")"), 
-#&gt;                 "\n", "\n", "Quotation is a mechanism by which an expression supplied as\n", 
-#&gt;                 "argument is captured by a function. Instead of seeing the value of\n", 
-#&gt;                 "the argument, the function sees the recipe (the R code) to make\n", 
-#&gt;                 "that value. This is possible because R ", list(
-#&gt;                   "expressions"), " are\n", "representable as regular objects in R:\n", 
-#&gt;                 list("\n", list(), " Calls represent the action of calling a function to\n", 
-#&gt;                   "compute a new value. Evaluating a call causes that value to be\n", 
-#&gt;                   "computed. Calls typically involve symbols to reference R objects.\n", 
-#&gt;                   list(), " Symbols represent the name that is given to an object in a\n", 
-#&gt;                   "particular context (an ", list("environment"), 
-#&gt;                   ").\n"), "\n", "\n", "We call objects containing calls and symbols ", 
-#&gt;                 list("expressions"), ".\n", "There are two ways to create R expressions. First you can ", 
-#&gt;                 list("build"), "\n", "calls and symbols from parts and pieces (see ", 
-#&gt;                 list(list("sym()")), ", ", list(list("syms()")), 
-#&gt;                 " and\n", list(list("call2()")), "). The other way is by ", 
-#&gt;                 list("quotation"), " or ", list("quasiquotation"), 
-#&gt;                 ",\n", "i.e. by intercepting an expression instead of evaluating it.\n"), 
-#&gt;             "\n", list(list("User expressions versus your expressions"), 
-#&gt;                 list("\n", "\n", "\n", "There are two points of view when it comes to capturing an\n", 
-#&gt;                   "expression:\n", list("\n", list(), " You can capture the expressions supplied by ", 
-#&gt;                     list("the user"), " of your\n", "function. This is the purpose of ", 
-#&gt;                     list("ensym()"), ", ", list("enexpr()"), 
-#&gt;                     " and\n", list("enquo()"), " and their plural variants. These functions take an\n", 
-#&gt;                     "argument name and capture the expression that was supplied to\n", 
-#&gt;                     "that argument.\n", list(), " You can capture the expressions that ", 
-#&gt;                     list("you"), " supply. To this end\n", "use ", 
-#&gt;                     list("expr()"), " and ", list("quo()"), " and their plural variants ", 
-#&gt;                     list("exprs()"), " and\n", list("quos()"), 
-#&gt;                     ".\n"), "\n")), "\n", "\n", list(list("Capture raw expressions"), 
+#&gt;                 "\n", "\n", "Defusing a function argument prevents its evaluation. When a\n", 
+#&gt;                 "function argument is defused, R doesn't return its value like it\n", 
+#&gt;                 "normally would but it returns the R expression describing how to\n", 
+#&gt;                 "make the value. These defused expressions are like blueprints for\n", 
+#&gt;                 "computing values. (Defusing is also known as ", 
+#&gt;                 list("quoting"), ", and is done\n", "in base R by ", 
+#&gt;                 list(list("quote()")), " and ", list(list("substitute()")), 
+#&gt;                 ".)\n", "\n", "There are two main ways to defuse expressions, to which correspond\n", 
+#&gt;                 "the two functions ", list("expr()"), " and ", 
+#&gt;                 list("enquo()"), ". Whereas ", list("expr()"), 
+#&gt;                 " defuses\n", "your own expression, ", list("enquo()"), 
+#&gt;                 " defuses expressions supplied as\n", "argument by the user of a function. See section on function\n", 
+#&gt;                 "arguments for more on this distinction.\n", 
+#&gt;                 "\n", "The main purpose of preventing evaluation of an expression is to\n", 
+#&gt;                 "avoid \"object not found\" errors when the expression involves\n", 
+#&gt;                 "data-variables that only exist in a data frame. The expression is\n", 
+#&gt;                 "defused so it can be resumed later on, in a context where the\n", 
+#&gt;                 "data-variables have been defined.\n", "\n", 
+#&gt;                 "Defusing prevents the evaluation of R code, but you can still force\n", 
+#&gt;                 "evaluation inside a defused expression with the ", 
+#&gt;                 list("forcing operators"), " ", list("!!"), " and ", 
+#&gt;                 list("!!!"), ".\n"), "\n", list(list("Types of defused expressions"), 
 #&gt;                 list("\n", "\n", list("\n", list(), " ", list(
-#&gt;                   "enexpr()"), " and ", list("expr()"), " capture a single raw expression.\n", 
-#&gt;                   list(), " ", list("enexprs()"), " and ", list(
-#&gt;                     "exprs()"), " capture a list of raw expressions\n", 
-#&gt;                   "including expressions contained in ", list(
-#&gt;                     "..."), ".\n", list(), " ", list("ensym()"), 
-#&gt;                   " and ", list("ensyms()"), " are variants of ", 
-#&gt;                   list("enexpr()"), " and\n", list("enexprs()"), 
-#&gt;                   " that check the captured expression is either a string\n", 
-#&gt;                   "(which they convert to symbol) or a symbol. If anything else\n", 
-#&gt;                   "is supplied they throw an error.\n"), "\n", 
-#&gt;                   "\n", "In terms of base functions, ", list(
-#&gt;                     "enexpr(arg)"), " corresponds to\n", list(
-#&gt;                     "base::substitute(arg)"), " (though that function also features complex\n", 
-#&gt;                   "substitution semantics) and ", list("expr()"), 
-#&gt;                   " is like ", list(list("quote()")), " (and\n", 
-#&gt;                   list(list("bquote()")), " if we consider unquotation syntax). The plural variant\n", 
-#&gt;                   list("exprs()"), " is equivalent to ", list(
-#&gt;                     list("base::alist()")), ". Finally there is no\n", 
-#&gt;                   "function in base R that is equivalent to ", 
-#&gt;                   list("enexprs()"), " but you can\n", "reproduce its behaviour with ", 
-#&gt;                   list("eval(substitute(alist(...)))"), ".\n")), 
-#&gt;             "\n", "\n", list(list("Capture expressions in quosures"), 
-#&gt;                 list("\n", "\n", "\n", list("quo()"), " and ", 
-#&gt;                   list("enquo()"), " are similar to their ", 
-#&gt;                   list("expr"), " counterparts but\n", "capture both the expression and its environment in an object called\n", 
-#&gt;                   "a quosure. This wrapper contains a reference to the original\n", 
-#&gt;                   "environment in which that expression was captured. Keeping track of\n", 
-#&gt;                   "the environments of expressions is important because this is where\n", 
-#&gt;                   "functions and objects mentioned in the expression are defined.\n", 
-#&gt;                   "\n", "Quosures are objects that can be evaluated with ", 
-#&gt;                   list(list("eval_tidy()")), " just\n", "like symbols or function calls. Since they always evaluate in their\n", 
-#&gt;                   "original environment, quosures can be seen as vehicles that allow\n", 
-#&gt;                   "expressions to travel from function to function but that beam back\n", 
-#&gt;                   "instantly to their original environment upon evaluation.\n", 
+#&gt;                   "Calls"), ", like ", list("f(1, 2, 3)"), ", ", 
+#&gt;                   list("1 + 1"), ", or ...,  represent the action of calling a function to compute a\n", 
+#&gt;                   "new value, such as a vector.\n", list(), " ", 
+#&gt;                   list("Symbols"), ", like ", list("x"), " or ", 
+#&gt;                   list("df"), ", represent named objects. When the object pointed to\n", 
+#&gt;                   "by the symbol was defined in a function or in the global\n", 
+#&gt;                   "environment, we call it an environment-variable. When the object\n", 
+#&gt;                   "is a column in a data frame, we call it a data-variable.\n"), 
+#&gt;                   "\n", "\n", "You can create new call or symbol objects by using the defusing\n", 
+#&gt;                   "function ", list("expr()"), ":", list("# Create a symbol representing objects called `foo`\n", 
+#&gt;                     "expr(foo)\n", "\n", "# Create a call representing the computation of the mean of `foo`\n", 
+#&gt;                     "expr(mean(foo, na.rm = TRUE))\n"), "\n", 
+#&gt;                   "\n", "Defusing is not the only way to create defused expressions. You can\n", 
+#&gt;                   "also assemble them from data:", list("# Assemble a symbol from a string\n", 
+#&gt;                     "var &lt;- \"foo\"\n", "sym(var)\n", "\n", "# Assemble a call from strings, symbols, and other objects\n", 
+#&gt;                     "call(\"mean\", sym(var), na.rm = TRUE)\n"), 
+#&gt;                   "\n")), "\n", "\n", list(list("Defusing function arguments"), 
+#&gt;                 list("\n", "\n", "\n", "There are two points of view when it comes to defusing an\n", 
+#&gt;                   "expression:\n", list("\n", list(), " You can defuse expressions that ", 
+#&gt;                     list("you"), " supply with ", list("expr()"), 
+#&gt;                     ". This\n", "is one way of creating symbols and calls (see previous section).\n", 
+#&gt;                     list(), " You can defuse the expressions supplied by ", 
+#&gt;                     list("the user"), " of your\n", "function with the operators starting with ", 
+#&gt;                     list("en"), " like ", list("ensym()"), ",\n", 
+#&gt;                     list("enquo()"), " and their plural variants. They defuse function\n", 
+#&gt;                     "arguments .\n"), "\n")), "\n", "\n", list(
+#&gt;                 list("Defused arguments and quosures"), list(
+#&gt;                   "\n", "\n", "\n", "If you inspect the return values of ", 
+#&gt;                   list("expr()"), " and ", list("enquo()"), ", you'll\n", 
+#&gt;                   "notice that the latter doesn't return a raw expression like the\n", 
+#&gt;                   "former. Instead it returns a ", list("quosure"), 
+#&gt;                   ", a wrapper containing an\n", "expression and an environment. R needs information about the\n", 
+#&gt;                   "environment to properly evaluate the argument expression because it\n", 
+#&gt;                   "comes from a different context than the current function.\n", 
 #&gt;                   "\n", "See the ", list("quosure"), " help topic about tools to work with quosures.\n")), 
-#&gt;             "\n", "\n", list(list("Quasiquotation"), list("\n", 
-#&gt;                 "\n", "\n", "All quotation functions in rlang have support for ", 
-#&gt;                 list("unquoting operators"), ". The combination of quotation and\n", 
-#&gt;                 "unquotation is called ", list("quasiquotation"), 
-#&gt;                 ".\n", "\n", "Unquotation provides a way to refer to variables during quotation.\n", 
-#&gt;                 "Variables are problematic when quoting because a captured\n", 
-#&gt;                 "expression is essentially a constant, just like a string is a\n", 
-#&gt;                 "constant. For instance in all the following cases ", 
-#&gt;                 list("apple"), " is a\n", "constant: ", list(
-#&gt;                   "~apple"), ", ", list("\"apple\""), " and ", 
-#&gt;                 list("expr(apple)"), ". Unquoting allows\n", 
-#&gt;                 "you to introduce a part of variability within a captured\n", 
-#&gt;                 "expression.\n", list("\n", list(), " In the case of ", 
-#&gt;                   list("enexpr()"), " and ", list("enquo()"), 
-#&gt;                   ", unquoting provides an\n", "escape hatch to the users of your function that allows them to\n", 
-#&gt;                   "manipulate the expression that you capture.\n", 
-#&gt;                   list(), " In the case of ", list("expr()"), 
-#&gt;                   " and ", list("quo()"), ", quasiquotation lets you\n", 
-#&gt;                   "build a complex expressions where some parts are constant (the\n", 
-#&gt;                   "parts that are captured) and some parts are variable (the parts\n", 
-#&gt;                   "that are unquoted).\n"), "\n", "\n", "See the ", 
-#&gt;                 list("quasiquotation"), " help topic for more about this as well as\n", 
-#&gt;                 list(list("https://adv-r.hadley.nz/quasiquotation.html"), 
-#&gt;                   list("the chapter in Advanced R")), ".\n")), 
-#&gt;             "\n", "\n", list("\n", "# expr() and exprs() capture expressions that you supply:\n", 
+#&gt;             "\n", "\n", list(list("Comparison to base R"), list(
+#&gt;                 "\n", "\n", list("\n", list(), " The defusing operator ", 
+#&gt;                   list("expr()"), " is similar to ", list(list(
+#&gt;                     "quote()")), ". Like\n", list(list("bquote()")), 
+#&gt;                   ", it allows ", list("forcing"), " evaluation of parts\n", 
+#&gt;                   "of an expression.\n", list(), " The plural variant ", 
+#&gt;                   list("exprs()"), " is similar to ", list(list(
+#&gt;                     "alist()")), ".\n", list(), " The argument-defusing operator ", 
+#&gt;                   list("enquo()"), " is similar to\n", list(list(
+#&gt;                     "substitute()")), ".\n"), "\n")), "\n", "\n", 
+#&gt;             list("\n", "# expr() and exprs() capture expressions that you supply:\n", 
 #&gt;                 "expr(symbol)\n", "exprs(several, such, symbols)\n", 
 #&gt;                 "\n", "# enexpr() and enexprs() capture expressions that your user supplied:\n", 
 #&gt;                 "expr_inputs &lt;- function(arg, ...) {\n", "  user_exprs &lt;- enexprs(arg, ...)\n", 
@@ -7506,7 +7486,7 @@ or complex expressions.</p>
 #&gt;     with_options = "scoped_options", with_restarts = "with_restarts", 
 #&gt;     wref_key = "wref_key", wref_value = "wref_key", zap = "zap"
 #&gt;     ), article_index = character(0)), examples = TRUE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpVKlqNt/file4fa4f6660de"), 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpmbQNjf/file4fa451674f1b"), 
 #&gt;     install = FALSE, preview = FALSE, new_process = FALSE, devel = FALSE, 
 #&gt;     crayon_enabled = TRUE, crayon_colors = 256, pkgdown_internet = TRUE), 
 #&gt;     envir = &lt;environment&gt;)
@@ -7518,7 +7498,7 @@ or complex expressions.</p>
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; })(pkg = list(package = "rlang", version = list(c(0L, 4L, 1L, 
-#&gt; 9000L)), src_path = "/home/travis/build/r-lib/rlang", dst_path = "/tmp/RtmpVKlqNt/file4fa4f6660de", 
+#&gt; 9000L)), src_path = "/home/travis/build/r-lib/rlang", dst_path = "/tmp/RtmpmbQNjf/file4fa451674f1b", 
 #&gt;     github_url = "https://github.com/r-lib/rlang", desc = &lt;environment&gt;, 
 #&gt;     meta = list(url = "https://rlang.r-lib.org", template = list(
 #&gt;         params = list(ganalytics = "UA-115082821-1")), home = list(
@@ -7600,7 +7580,7 @@ or complex expressions.</p>
 #&gt;             "calling")), list(title = "Session state", contents = c("matches(\"interactive\")", 
 #&gt;             "matches(\"option\")")), list(title = "Weak references", 
 #&gt;                 contents = c("matches(\"weakref\")", "matches(\"wref\")"
-#&gt;                 ))), destination = "/tmp/RtmpVKlqNt/file4fa4f6660de"), 
+#&gt;                 ))), destination = "/tmp/RtmpmbQNjf/file4fa451674f1b"), 
 #&gt;     figures = list(dev = "grDevices::png", dpi = 96L, dev.args = list(), 
 #&gt;         fig.ext = "png", fig.width = 7.29166666666667, fig.height = NULL, 
 #&gt;         fig.retina = 2L, fig.asp = 0.618046971569839), development = list(
@@ -8118,7 +8098,7 @@ or complex expressions.</p>
 #&gt;     "Name of a primitive function", "Force parts of an expression", 
 #&gt;     "Squash a quosure", "Format quosures for printing or labelling", 
 #&gt;     "Squash a quosure", "Quosure getters, setters and testers", 
-#&gt;     "Quotation", "Create vectors matching the length of a given vector", 
+#&gt;     "Defuse R expressions", "Create vectors matching the length of a given vector", 
 #&gt;     "Create a restarting handler", "Jump to or from a frame", 
 #&gt;     "Display backtrace on error", "Jump to the abort restart", 
 #&gt;     "Restarts utilities", "Scalar type predicates", "Temporarily change bindings of an environment", 
@@ -12671,8 +12651,9 @@ or complex expressions.</p>
 #&gt;                 "exprs"), "\n", list("enexprs"), "\n", list("ensym"), 
 #&gt;             "\n", list("ensyms"), "\n", list("quo"), "\n", list(
 #&gt;                 "enquo"), "\n", list("quos"), "\n", list("enquos"), 
-#&gt;             "\n", list("Quotation"), "\n", list("\n", "expr(expr)\n", 
-#&gt;                 "\n", "enexpr(arg)\n", "\n", "exprs(..., .named = FALSE, .ignore_empty = c(\"trailing\", \"none\",\n", 
+#&gt;             "\n", list("Defuse R expressions"), "\n", list("\n", 
+#&gt;                 "expr(expr)\n", "\n", "enexpr(arg)\n", "\n", 
+#&gt;                 "exprs(..., .named = FALSE, .ignore_empty = c(\"trailing\", \"none\",\n", 
 #&gt;                 "  \"all\"), .unquote_names = TRUE)\n", "\n", 
 #&gt;                 "enexprs(..., .named = FALSE, .ignore_empty = c(\"trailing\", \"none\",\n", 
 #&gt;                 "  \"all\"), .unquote_names = TRUE, .homonyms = c(\"keep\", \"first\", \"last\",\n", 
@@ -12728,96 +12709,75 @@ or complex expressions.</p>
 #&gt;                   list("&lt;-"), " call in braces otherwise.\n", 
 #&gt;                   "This ensures assignments are explicit.")), 
 #&gt;                 "\n"), "\n", list("\n", list("rlang:::lifecycle(\"stable\")"), 
-#&gt;                 "\n", "\n", "Quotation is a mechanism by which an expression supplied as\n", 
-#&gt;                 "argument is captured by a function. Instead of seeing the value of\n", 
-#&gt;                 "the argument, the function sees the recipe (the R code) to make\n", 
-#&gt;                 "that value. This is possible because R ", list(
-#&gt;                   "expressions"), " are\n", "representable as regular objects in R:\n", 
-#&gt;                 list("\n", list(), " Calls represent the action of calling a function to\n", 
-#&gt;                   "compute a new value. Evaluating a call causes that value to be\n", 
-#&gt;                   "computed. Calls typically involve symbols to reference R objects.\n", 
-#&gt;                   list(), " Symbols represent the name that is given to an object in a\n", 
-#&gt;                   "particular context (an ", list("environment"), 
-#&gt;                   ").\n"), "\n", "\n", "We call objects containing calls and symbols ", 
-#&gt;                 list("expressions"), ".\n", "There are two ways to create R expressions. First you can ", 
-#&gt;                 list("build"), "\n", "calls and symbols from parts and pieces (see ", 
-#&gt;                 list(list("sym()")), ", ", list(list("syms()")), 
-#&gt;                 " and\n", list(list("call2()")), "). The other way is by ", 
-#&gt;                 list("quotation"), " or ", list("quasiquotation"), 
-#&gt;                 ",\n", "i.e. by intercepting an expression instead of evaluating it.\n"), 
-#&gt;             "\n", list(list("User expressions versus your expressions"), 
-#&gt;                 list("\n", "\n", "\n", "There are two points of view when it comes to capturing an\n", 
-#&gt;                   "expression:\n", list("\n", list(), " You can capture the expressions supplied by ", 
-#&gt;                     list("the user"), " of your\n", "function. This is the purpose of ", 
-#&gt;                     list("ensym()"), ", ", list("enexpr()"), 
-#&gt;                     " and\n", list("enquo()"), " and their plural variants. These functions take an\n", 
-#&gt;                     "argument name and capture the expression that was supplied to\n", 
-#&gt;                     "that argument.\n", list(), " You can capture the expressions that ", 
-#&gt;                     list("you"), " supply. To this end\n", "use ", 
-#&gt;                     list("expr()"), " and ", list("quo()"), " and their plural variants ", 
-#&gt;                     list("exprs()"), " and\n", list("quos()"), 
-#&gt;                     ".\n"), "\n")), "\n", "\n", list(list("Capture raw expressions"), 
+#&gt;                 "\n", "\n", "Defusing a function argument prevents its evaluation. When a\n", 
+#&gt;                 "function argument is defused, R doesn't return its value like it\n", 
+#&gt;                 "normally would but it returns the R expression describing how to\n", 
+#&gt;                 "make the value. These defused expressions are like blueprints for\n", 
+#&gt;                 "computing values. (Defusing is also known as ", 
+#&gt;                 list("quoting"), ", and is done\n", "in base R by ", 
+#&gt;                 list(list("quote()")), " and ", list(list("substitute()")), 
+#&gt;                 ".)\n", "\n", "There are two main ways to defuse expressions, to which correspond\n", 
+#&gt;                 "the two functions ", list("expr()"), " and ", 
+#&gt;                 list("enquo()"), ". Whereas ", list("expr()"), 
+#&gt;                 " defuses\n", "your own expression, ", list("enquo()"), 
+#&gt;                 " defuses expressions supplied as\n", "argument by the user of a function. See section on function\n", 
+#&gt;                 "arguments for more on this distinction.\n", 
+#&gt;                 "\n", "The main purpose of preventing evaluation of an expression is to\n", 
+#&gt;                 "avoid \"object not found\" errors when the expression involves\n", 
+#&gt;                 "data-variables that only exist in a data frame. The expression is\n", 
+#&gt;                 "defused so it can be resumed later on, in a context where the\n", 
+#&gt;                 "data-variables have been defined.\n", "\n", 
+#&gt;                 "Defusing prevents the evaluation of R code, but you can still force\n", 
+#&gt;                 "evaluation inside a defused expression with the ", 
+#&gt;                 list("forcing operators"), " ", list("!!"), " and ", 
+#&gt;                 list("!!!"), ".\n"), "\n", list(list("Types of defused expressions"), 
 #&gt;                 list("\n", "\n", list("\n", list(), " ", list(
-#&gt;                   "enexpr()"), " and ", list("expr()"), " capture a single raw expression.\n", 
-#&gt;                   list(), " ", list("enexprs()"), " and ", list(
-#&gt;                     "exprs()"), " capture a list of raw expressions\n", 
-#&gt;                   "including expressions contained in ", list(
-#&gt;                     "..."), ".\n", list(), " ", list("ensym()"), 
-#&gt;                   " and ", list("ensyms()"), " are variants of ", 
-#&gt;                   list("enexpr()"), " and\n", list("enexprs()"), 
-#&gt;                   " that check the captured expression is either a string\n", 
-#&gt;                   "(which they convert to symbol) or a symbol. If anything else\n", 
-#&gt;                   "is supplied they throw an error.\n"), "\n", 
-#&gt;                   "\n", "In terms of base functions, ", list(
-#&gt;                     "enexpr(arg)"), " corresponds to\n", list(
-#&gt;                     "base::substitute(arg)"), " (though that function also features complex\n", 
-#&gt;                   "substitution semantics) and ", list("expr()"), 
-#&gt;                   " is like ", list(list("quote()")), " (and\n", 
-#&gt;                   list(list("bquote()")), " if we consider unquotation syntax). The plural variant\n", 
-#&gt;                   list("exprs()"), " is equivalent to ", list(
-#&gt;                     list("base::alist()")), ". Finally there is no\n", 
-#&gt;                   "function in base R that is equivalent to ", 
-#&gt;                   list("enexprs()"), " but you can\n", "reproduce its behaviour with ", 
-#&gt;                   list("eval(substitute(alist(...)))"), ".\n")), 
-#&gt;             "\n", "\n", list(list("Capture expressions in quosures"), 
-#&gt;                 list("\n", "\n", "\n", list("quo()"), " and ", 
-#&gt;                   list("enquo()"), " are similar to their ", 
-#&gt;                   list("expr"), " counterparts but\n", "capture both the expression and its environment in an object called\n", 
-#&gt;                   "a quosure. This wrapper contains a reference to the original\n", 
-#&gt;                   "environment in which that expression was captured. Keeping track of\n", 
-#&gt;                   "the environments of expressions is important because this is where\n", 
-#&gt;                   "functions and objects mentioned in the expression are defined.\n", 
-#&gt;                   "\n", "Quosures are objects that can be evaluated with ", 
-#&gt;                   list(list("eval_tidy()")), " just\n", "like symbols or function calls. Since they always evaluate in their\n", 
-#&gt;                   "original environment, quosures can be seen as vehicles that allow\n", 
-#&gt;                   "expressions to travel from function to function but that beam back\n", 
-#&gt;                   "instantly to their original environment upon evaluation.\n", 
+#&gt;                   "Calls"), ", like ", list("f(1, 2, 3)"), ", ", 
+#&gt;                   list("1 + 1"), ", or ...,  represent the action of calling a function to compute a\n", 
+#&gt;                   "new value, such as a vector.\n", list(), " ", 
+#&gt;                   list("Symbols"), ", like ", list("x"), " or ", 
+#&gt;                   list("df"), ", represent named objects. When the object pointed to\n", 
+#&gt;                   "by the symbol was defined in a function or in the global\n", 
+#&gt;                   "environment, we call it an environment-variable. When the object\n", 
+#&gt;                   "is a column in a data frame, we call it a data-variable.\n"), 
+#&gt;                   "\n", "\n", "You can create new call or symbol objects by using the defusing\n", 
+#&gt;                   "function ", list("expr()"), ":", list("# Create a symbol representing objects called `foo`\n", 
+#&gt;                     "expr(foo)\n", "\n", "# Create a call representing the computation of the mean of `foo`\n", 
+#&gt;                     "expr(mean(foo, na.rm = TRUE))\n"), "\n", 
+#&gt;                   "\n", "Defusing is not the only way to create defused expressions. You can\n", 
+#&gt;                   "also assemble them from data:", list("# Assemble a symbol from a string\n", 
+#&gt;                     "var &lt;- \"foo\"\n", "sym(var)\n", "\n", "# Assemble a call from strings, symbols, and other objects\n", 
+#&gt;                     "call(\"mean\", sym(var), na.rm = TRUE)\n"), 
+#&gt;                   "\n")), "\n", "\n", list(list("Defusing function arguments"), 
+#&gt;                 list("\n", "\n", "\n", "There are two points of view when it comes to defusing an\n", 
+#&gt;                   "expression:\n", list("\n", list(), " You can defuse expressions that ", 
+#&gt;                     list("you"), " supply with ", list("expr()"), 
+#&gt;                     ". This\n", "is one way of creating symbols and calls (see previous section).\n", 
+#&gt;                     list(), " You can defuse the expressions supplied by ", 
+#&gt;                     list("the user"), " of your\n", "function with the operators starting with ", 
+#&gt;                     list("en"), " like ", list("ensym()"), ",\n", 
+#&gt;                     list("enquo()"), " and their plural variants. They defuse function\n", 
+#&gt;                     "arguments .\n"), "\n")), "\n", "\n", list(
+#&gt;                 list("Defused arguments and quosures"), list(
+#&gt;                   "\n", "\n", "\n", "If you inspect the return values of ", 
+#&gt;                   list("expr()"), " and ", list("enquo()"), ", you'll\n", 
+#&gt;                   "notice that the latter doesn't return a raw expression like the\n", 
+#&gt;                   "former. Instead it returns a ", list("quosure"), 
+#&gt;                   ", a wrapper containing an\n", "expression and an environment. R needs information about the\n", 
+#&gt;                   "environment to properly evaluate the argument expression because it\n", 
+#&gt;                   "comes from a different context than the current function.\n", 
 #&gt;                   "\n", "See the ", list("quosure"), " help topic about tools to work with quosures.\n")), 
-#&gt;             "\n", "\n", list(list("Quasiquotation"), list("\n", 
-#&gt;                 "\n", "\n", "All quotation functions in rlang have support for ", 
-#&gt;                 list("unquoting operators"), ". The combination of quotation and\n", 
-#&gt;                 "unquotation is called ", list("quasiquotation"), 
-#&gt;                 ".\n", "\n", "Unquotation provides a way to refer to variables during quotation.\n", 
-#&gt;                 "Variables are problematic when quoting because a captured\n", 
-#&gt;                 "expression is essentially a constant, just like a string is a\n", 
-#&gt;                 "constant. For instance in all the following cases ", 
-#&gt;                 list("apple"), " is a\n", "constant: ", list(
-#&gt;                   "~apple"), ", ", list("\"apple\""), " and ", 
-#&gt;                 list("expr(apple)"), ". Unquoting allows\n", 
-#&gt;                 "you to introduce a part of variability within a captured\n", 
-#&gt;                 "expression.\n", list("\n", list(), " In the case of ", 
-#&gt;                   list("enexpr()"), " and ", list("enquo()"), 
-#&gt;                   ", unquoting provides an\n", "escape hatch to the users of your function that allows them to\n", 
-#&gt;                   "manipulate the expression that you capture.\n", 
-#&gt;                   list(), " In the case of ", list("expr()"), 
-#&gt;                   " and ", list("quo()"), ", quasiquotation lets you\n", 
-#&gt;                   "build a complex expressions where some parts are constant (the\n", 
-#&gt;                   "parts that are captured) and some parts are variable (the parts\n", 
-#&gt;                   "that are unquoted).\n"), "\n", "\n", "See the ", 
-#&gt;                 list("quasiquotation"), " help topic for more about this as well as\n", 
-#&gt;                 list(list("https://adv-r.hadley.nz/quasiquotation.html"), 
-#&gt;                   list("the chapter in Advanced R")), ".\n")), 
-#&gt;             "\n", "\n", list("\n", "# expr() and exprs() capture expressions that you supply:\n", 
+#&gt;             "\n", "\n", list(list("Comparison to base R"), list(
+#&gt;                 "\n", "\n", list("\n", list(), " The defusing operator ", 
+#&gt;                   list("expr()"), " is similar to ", list(list(
+#&gt;                     "quote()")), ". Like\n", list(list("bquote()")), 
+#&gt;                   ", it allows ", list("forcing"), " evaluation of parts\n", 
+#&gt;                   "of an expression.\n", list(), " The plural variant ", 
+#&gt;                   list("exprs()"), " is similar to ", list(list(
+#&gt;                     "alist()")), ".\n", list(), " The argument-defusing operator ", 
+#&gt;                   list("enquo()"), " is similar to\n", list(list(
+#&gt;                     "substitute()")), ".\n"), "\n")), "\n", "\n", 
+#&gt;             list("\n", "# expr() and exprs() capture expressions that you supply:\n", 
 #&gt;                 "expr(symbol)\n", "exprs(several, such, symbols)\n", 
 #&gt;                 "\n", "# enexpr() and enexprs() capture expressions that your user supplied:\n", 
 #&gt;                 "expr_inputs &lt;- function(arg, ...) {\n", "  user_exprs &lt;- enexprs(arg, ...)\n", 
@@ -14633,7 +14593,7 @@ or complex expressions.</p>
 #&gt;     with_options = "scoped_options", with_restarts = "with_restarts", 
 #&gt;     wref_key = "wref_key", wref_value = "wref_key", zap = "zap"
 #&gt;     ), article_index = character(0)), examples = TRUE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpVKlqNt/file4fa4f6660de"), 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpmbQNjf/file4fa451674f1b"), 
 #&gt;     install = FALSE, preview = FALSE, new_process = FALSE, devel = FALSE, 
 #&gt;     crayon_enabled = TRUE, crayon_colors = 256, pkgdown_internet = TRUE)
 #&gt; 
@@ -14774,8 +14734,8 @@ or complex expressions.</p>
 #&gt;     2, 4, 6, 8, 2))</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/do.call.html'>do.call</a></span>(<span class='no'>fn</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>mtcars</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; tryCatch(withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpVKlqNt/file4fa43922fcdc"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpVKlqNt/file4fa46db5c1ea")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpmbQNjf/file4fa434b2a5a"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpmbQNjf/file4fa4564e85e9")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
@@ -14796,7 +14756,7 @@ or complex expressions.</p>
 #&gt;         e$`_pid` &lt;- Sys.getpid()
 #&gt;         e$`_timestamp` &lt;- Sys.time()
 #&gt;         e &lt;- err$add_trace_back(e)
-#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpVKlqNt/file4fa46db5c1ea", 
+#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpmbQNjf/file4fa4564e85e9", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, interrupt = function(e) {
@@ -14815,7 +14775,7 @@ or complex expressions.</p>
 #&gt;         e$`_pid` &lt;- Sys.getpid()
 #&gt;         e$`_timestamp` &lt;- Sys.time()
 #&gt;         e &lt;- err$add_trace_back(e)
-#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpVKlqNt/file4fa46db5c1ea", 
+#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpmbQNjf/file4fa4564e85e9", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, callr_message = function(e) {
@@ -14861,8 +14821,8 @@ or complex expressions.</p>
 #&gt; [[8]]
 #&gt; withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpVKlqNt/file4fa43922fcdc"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpVKlqNt/file4fa46db5c1ea")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpmbQNjf/file4fa434b2a5a"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpmbQNjf/file4fa4564e85e9")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
@@ -14883,7 +14843,7 @@ or complex expressions.</p>
 #&gt;         e$`_pid` &lt;- Sys.getpid()
 #&gt;         e$`_timestamp` &lt;- Sys.time()
 #&gt;         e &lt;- err$add_trace_back(e)
-#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpVKlqNt/file4fa46db5c1ea", 
+#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpmbQNjf/file4fa4564e85e9", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, interrupt = function(e) {
@@ -14902,7 +14862,7 @@ or complex expressions.</p>
 #&gt;         e$`_pid` &lt;- Sys.getpid()
 #&gt;         e$`_timestamp` &lt;- Sys.time()
 #&gt;         e &lt;- err$add_trace_back(e)
-#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpVKlqNt/file4fa46db5c1ea", 
+#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpmbQNjf/file4fa4564e85e9", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, callr_message = function(e) {
@@ -14921,11 +14881,11 @@ or complex expressions.</p>
 #&gt; })
 #&gt; 
 #&gt; [[9]]
-#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpVKlqNt/file4fa43922fcdc"), 
-#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpVKlqNt/file4fa46db5c1ea")
+#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpmbQNjf/file4fa434b2a5a"), 
+#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpmbQNjf/file4fa4564e85e9")
 #&gt; 
 #&gt; [[10]]
-#&gt; do.call(do.call, c(readRDS("/tmp/RtmpVKlqNt/file4fa43922fcdc"), 
+#&gt; do.call(do.call, c(readRDS("/tmp/RtmpmbQNjf/file4fa434b2a5a"), 
 #&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv)
 #&gt; 
 #&gt; [[11]]
@@ -14942,7 +14902,7 @@ or complex expressions.</p>
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; }, list(pkg = list(package = "rlang", version = list(c(0L, 4L, 
-#&gt; 1L, 9000L)), src_path = "/home/travis/build/r-lib/rlang", dst_path = "/tmp/RtmpVKlqNt/file4fa4f6660de", 
+#&gt; 1L, 9000L)), src_path = "/home/travis/build/r-lib/rlang", dst_path = "/tmp/RtmpmbQNjf/file4fa451674f1b", 
 #&gt;     github_url = "https://github.com/r-lib/rlang", desc = &lt;environment&gt;, 
 #&gt;     meta = list(url = "https://rlang.r-lib.org", template = list(
 #&gt;         params = list(ganalytics = "UA-115082821-1")), home = list(
@@ -15024,7 +14984,7 @@ or complex expressions.</p>
 #&gt;             "calling")), list(title = "Session state", contents = c("matches(\"interactive\")", 
 #&gt;             "matches(\"option\")")), list(title = "Weak references", 
 #&gt;                 contents = c("matches(\"weakref\")", "matches(\"wref\")"
-#&gt;                 ))), destination = "/tmp/RtmpVKlqNt/file4fa4f6660de"), 
+#&gt;                 ))), destination = "/tmp/RtmpmbQNjf/file4fa451674f1b"), 
 #&gt;     figures = list(dev = "grDevices::png", dpi = 96L, dev.args = list(), 
 #&gt;         fig.ext = "png", fig.width = 7.29166666666667, fig.height = NULL, 
 #&gt;         fig.retina = 2L, fig.asp = 0.618046971569839), development = list(
@@ -15542,7 +15502,7 @@ or complex expressions.</p>
 #&gt;     "Name of a primitive function", "Force parts of an expression", 
 #&gt;     "Squash a quosure", "Format quosures for printing or labelling", 
 #&gt;     "Squash a quosure", "Quosure getters, setters and testers", 
-#&gt;     "Quotation", "Create vectors matching the length of a given vector", 
+#&gt;     "Defuse R expressions", "Create vectors matching the length of a given vector", 
 #&gt;     "Create a restarting handler", "Jump to or from a frame", 
 #&gt;     "Display backtrace on error", "Jump to the abort restart", 
 #&gt;     "Restarts utilities", "Scalar type predicates", "Temporarily change bindings of an environment", 
@@ -20095,8 +20055,9 @@ or complex expressions.</p>
 #&gt;                 "exprs"), "\n", list("enexprs"), "\n", list("ensym"), 
 #&gt;             "\n", list("ensyms"), "\n", list("quo"), "\n", list(
 #&gt;                 "enquo"), "\n", list("quos"), "\n", list("enquos"), 
-#&gt;             "\n", list("Quotation"), "\n", list("\n", "expr(expr)\n", 
-#&gt;                 "\n", "enexpr(arg)\n", "\n", "exprs(..., .named = FALSE, .ignore_empty = c(\"trailing\", \"none\",\n", 
+#&gt;             "\n", list("Defuse R expressions"), "\n", list("\n", 
+#&gt;                 "expr(expr)\n", "\n", "enexpr(arg)\n", "\n", 
+#&gt;                 "exprs(..., .named = FALSE, .ignore_empty = c(\"trailing\", \"none\",\n", 
 #&gt;                 "  \"all\"), .unquote_names = TRUE)\n", "\n", 
 #&gt;                 "enexprs(..., .named = FALSE, .ignore_empty = c(\"trailing\", \"none\",\n", 
 #&gt;                 "  \"all\"), .unquote_names = TRUE, .homonyms = c(\"keep\", \"first\", \"last\",\n", 
@@ -20152,96 +20113,75 @@ or complex expressions.</p>
 #&gt;                   list("&lt;-"), " call in braces otherwise.\n", 
 #&gt;                   "This ensures assignments are explicit.")), 
 #&gt;                 "\n"), "\n", list("\n", list("rlang:::lifecycle(\"stable\")"), 
-#&gt;                 "\n", "\n", "Quotation is a mechanism by which an expression supplied as\n", 
-#&gt;                 "argument is captured by a function. Instead of seeing the value of\n", 
-#&gt;                 "the argument, the function sees the recipe (the R code) to make\n", 
-#&gt;                 "that value. This is possible because R ", list(
-#&gt;                   "expressions"), " are\n", "representable as regular objects in R:\n", 
-#&gt;                 list("\n", list(), " Calls represent the action of calling a function to\n", 
-#&gt;                   "compute a new value. Evaluating a call causes that value to be\n", 
-#&gt;                   "computed. Calls typically involve symbols to reference R objects.\n", 
-#&gt;                   list(), " Symbols represent the name that is given to an object in a\n", 
-#&gt;                   "particular context (an ", list("environment"), 
-#&gt;                   ").\n"), "\n", "\n", "We call objects containing calls and symbols ", 
-#&gt;                 list("expressions"), ".\n", "There are two ways to create R expressions. First you can ", 
-#&gt;                 list("build"), "\n", "calls and symbols from parts and pieces (see ", 
-#&gt;                 list(list("sym()")), ", ", list(list("syms()")), 
-#&gt;                 " and\n", list(list("call2()")), "). The other way is by ", 
-#&gt;                 list("quotation"), " or ", list("quasiquotation"), 
-#&gt;                 ",\n", "i.e. by intercepting an expression instead of evaluating it.\n"), 
-#&gt;             "\n", list(list("User expressions versus your expressions"), 
-#&gt;                 list("\n", "\n", "\n", "There are two points of view when it comes to capturing an\n", 
-#&gt;                   "expression:\n", list("\n", list(), " You can capture the expressions supplied by ", 
-#&gt;                     list("the user"), " of your\n", "function. This is the purpose of ", 
-#&gt;                     list("ensym()"), ", ", list("enexpr()"), 
-#&gt;                     " and\n", list("enquo()"), " and their plural variants. These functions take an\n", 
-#&gt;                     "argument name and capture the expression that was supplied to\n", 
-#&gt;                     "that argument.\n", list(), " You can capture the expressions that ", 
-#&gt;                     list("you"), " supply. To this end\n", "use ", 
-#&gt;                     list("expr()"), " and ", list("quo()"), " and their plural variants ", 
-#&gt;                     list("exprs()"), " and\n", list("quos()"), 
-#&gt;                     ".\n"), "\n")), "\n", "\n", list(list("Capture raw expressions"), 
+#&gt;                 "\n", "\n", "Defusing a function argument prevents its evaluation. When a\n", 
+#&gt;                 "function argument is defused, R doesn't return its value like it\n", 
+#&gt;                 "normally would but it returns the R expression describing how to\n", 
+#&gt;                 "make the value. These defused expressions are like blueprints for\n", 
+#&gt;                 "computing values. (Defusing is also known as ", 
+#&gt;                 list("quoting"), ", and is done\n", "in base R by ", 
+#&gt;                 list(list("quote()")), " and ", list(list("substitute()")), 
+#&gt;                 ".)\n", "\n", "There are two main ways to defuse expressions, to which correspond\n", 
+#&gt;                 "the two functions ", list("expr()"), " and ", 
+#&gt;                 list("enquo()"), ". Whereas ", list("expr()"), 
+#&gt;                 " defuses\n", "your own expression, ", list("enquo()"), 
+#&gt;                 " defuses expressions supplied as\n", "argument by the user of a function. See section on function\n", 
+#&gt;                 "arguments for more on this distinction.\n", 
+#&gt;                 "\n", "The main purpose of preventing evaluation of an expression is to\n", 
+#&gt;                 "avoid \"object not found\" errors when the expression involves\n", 
+#&gt;                 "data-variables that only exist in a data frame. The expression is\n", 
+#&gt;                 "defused so it can be resumed later on, in a context where the\n", 
+#&gt;                 "data-variables have been defined.\n", "\n", 
+#&gt;                 "Defusing prevents the evaluation of R code, but you can still force\n", 
+#&gt;                 "evaluation inside a defused expression with the ", 
+#&gt;                 list("forcing operators"), " ", list("!!"), " and ", 
+#&gt;                 list("!!!"), ".\n"), "\n", list(list("Types of defused expressions"), 
 #&gt;                 list("\n", "\n", list("\n", list(), " ", list(
-#&gt;                   "enexpr()"), " and ", list("expr()"), " capture a single raw expression.\n", 
-#&gt;                   list(), " ", list("enexprs()"), " and ", list(
-#&gt;                     "exprs()"), " capture a list of raw expressions\n", 
-#&gt;                   "including expressions contained in ", list(
-#&gt;                     "..."), ".\n", list(), " ", list("ensym()"), 
-#&gt;                   " and ", list("ensyms()"), " are variants of ", 
-#&gt;                   list("enexpr()"), " and\n", list("enexprs()"), 
-#&gt;                   " that check the captured expression is either a string\n", 
-#&gt;                   "(which they convert to symbol) or a symbol. If anything else\n", 
-#&gt;                   "is supplied they throw an error.\n"), "\n", 
-#&gt;                   "\n", "In terms of base functions, ", list(
-#&gt;                     "enexpr(arg)"), " corresponds to\n", list(
-#&gt;                     "base::substitute(arg)"), " (though that function also features complex\n", 
-#&gt;                   "substitution semantics) and ", list("expr()"), 
-#&gt;                   " is like ", list(list("quote()")), " (and\n", 
-#&gt;                   list(list("bquote()")), " if we consider unquotation syntax). The plural variant\n", 
-#&gt;                   list("exprs()"), " is equivalent to ", list(
-#&gt;                     list("base::alist()")), ". Finally there is no\n", 
-#&gt;                   "function in base R that is equivalent to ", 
-#&gt;                   list("enexprs()"), " but you can\n", "reproduce its behaviour with ", 
-#&gt;                   list("eval(substitute(alist(...)))"), ".\n")), 
-#&gt;             "\n", "\n", list(list("Capture expressions in quosures"), 
-#&gt;                 list("\n", "\n", "\n", list("quo()"), " and ", 
-#&gt;                   list("enquo()"), " are similar to their ", 
-#&gt;                   list("expr"), " counterparts but\n", "capture both the expression and its environment in an object called\n", 
-#&gt;                   "a quosure. This wrapper contains a reference to the original\n", 
-#&gt;                   "environment in which that expression was captured. Keeping track of\n", 
-#&gt;                   "the environments of expressions is important because this is where\n", 
-#&gt;                   "functions and objects mentioned in the expression are defined.\n", 
-#&gt;                   "\n", "Quosures are objects that can be evaluated with ", 
-#&gt;                   list(list("eval_tidy()")), " just\n", "like symbols or function calls. Since they always evaluate in their\n", 
-#&gt;                   "original environment, quosures can be seen as vehicles that allow\n", 
-#&gt;                   "expressions to travel from function to function but that beam back\n", 
-#&gt;                   "instantly to their original environment upon evaluation.\n", 
+#&gt;                   "Calls"), ", like ", list("f(1, 2, 3)"), ", ", 
+#&gt;                   list("1 + 1"), ", or ...,  represent the action of calling a function to compute a\n", 
+#&gt;                   "new value, such as a vector.\n", list(), " ", 
+#&gt;                   list("Symbols"), ", like ", list("x"), " or ", 
+#&gt;                   list("df"), ", represent named objects. When the object pointed to\n", 
+#&gt;                   "by the symbol was defined in a function or in the global\n", 
+#&gt;                   "environment, we call it an environment-variable. When the object\n", 
+#&gt;                   "is a column in a data frame, we call it a data-variable.\n"), 
+#&gt;                   "\n", "\n", "You can create new call or symbol objects by using the defusing\n", 
+#&gt;                   "function ", list("expr()"), ":", list("# Create a symbol representing objects called `foo`\n", 
+#&gt;                     "expr(foo)\n", "\n", "# Create a call representing the computation of the mean of `foo`\n", 
+#&gt;                     "expr(mean(foo, na.rm = TRUE))\n"), "\n", 
+#&gt;                   "\n", "Defusing is not the only way to create defused expressions. You can\n", 
+#&gt;                   "also assemble them from data:", list("# Assemble a symbol from a string\n", 
+#&gt;                     "var &lt;- \"foo\"\n", "sym(var)\n", "\n", "# Assemble a call from strings, symbols, and other objects\n", 
+#&gt;                     "call(\"mean\", sym(var), na.rm = TRUE)\n"), 
+#&gt;                   "\n")), "\n", "\n", list(list("Defusing function arguments"), 
+#&gt;                 list("\n", "\n", "\n", "There are two points of view when it comes to defusing an\n", 
+#&gt;                   "expression:\n", list("\n", list(), " You can defuse expressions that ", 
+#&gt;                     list("you"), " supply with ", list("expr()"), 
+#&gt;                     ". This\n", "is one way of creating symbols and calls (see previous section).\n", 
+#&gt;                     list(), " You can defuse the expressions supplied by ", 
+#&gt;                     list("the user"), " of your\n", "function with the operators starting with ", 
+#&gt;                     list("en"), " like ", list("ensym()"), ",\n", 
+#&gt;                     list("enquo()"), " and their plural variants. They defuse function\n", 
+#&gt;                     "arguments .\n"), "\n")), "\n", "\n", list(
+#&gt;                 list("Defused arguments and quosures"), list(
+#&gt;                   "\n", "\n", "\n", "If you inspect the return values of ", 
+#&gt;                   list("expr()"), " and ", list("enquo()"), ", you'll\n", 
+#&gt;                   "notice that the latter doesn't return a raw expression like the\n", 
+#&gt;                   "former. Instead it returns a ", list("quosure"), 
+#&gt;                   ", a wrapper containing an\n", "expression and an environment. R needs information about the\n", 
+#&gt;                   "environment to properly evaluate the argument expression because it\n", 
+#&gt;                   "comes from a different context than the current function.\n", 
 #&gt;                   "\n", "See the ", list("quosure"), " help topic about tools to work with quosures.\n")), 
-#&gt;             "\n", "\n", list(list("Quasiquotation"), list("\n", 
-#&gt;                 "\n", "\n", "All quotation functions in rlang have support for ", 
-#&gt;                 list("unquoting operators"), ". The combination of quotation and\n", 
-#&gt;                 "unquotation is called ", list("quasiquotation"), 
-#&gt;                 ".\n", "\n", "Unquotation provides a way to refer to variables during quotation.\n", 
-#&gt;                 "Variables are problematic when quoting because a captured\n", 
-#&gt;                 "expression is essentially a constant, just like a string is a\n", 
-#&gt;                 "constant. For instance in all the following cases ", 
-#&gt;                 list("apple"), " is a\n", "constant: ", list(
-#&gt;                   "~apple"), ", ", list("\"apple\""), " and ", 
-#&gt;                 list("expr(apple)"), ". Unquoting allows\n", 
-#&gt;                 "you to introduce a part of variability within a captured\n", 
-#&gt;                 "expression.\n", list("\n", list(), " In the case of ", 
-#&gt;                   list("enexpr()"), " and ", list("enquo()"), 
-#&gt;                   ", unquoting provides an\n", "escape hatch to the users of your function that allows them to\n", 
-#&gt;                   "manipulate the expression that you capture.\n", 
-#&gt;                   list(), " In the case of ", list("expr()"), 
-#&gt;                   " and ", list("quo()"), ", quasiquotation lets you\n", 
-#&gt;                   "build a complex expressions where some parts are constant (the\n", 
-#&gt;                   "parts that are captured) and some parts are variable (the parts\n", 
-#&gt;                   "that are unquoted).\n"), "\n", "\n", "See the ", 
-#&gt;                 list("quasiquotation"), " help topic for more about this as well as\n", 
-#&gt;                 list(list("https://adv-r.hadley.nz/quasiquotation.html"), 
-#&gt;                   list("the chapter in Advanced R")), ".\n")), 
-#&gt;             "\n", "\n", list("\n", "# expr() and exprs() capture expressions that you supply:\n", 
+#&gt;             "\n", "\n", list(list("Comparison to base R"), list(
+#&gt;                 "\n", "\n", list("\n", list(), " The defusing operator ", 
+#&gt;                   list("expr()"), " is similar to ", list(list(
+#&gt;                     "quote()")), ". Like\n", list(list("bquote()")), 
+#&gt;                   ", it allows ", list("forcing"), " evaluation of parts\n", 
+#&gt;                   "of an expression.\n", list(), " The plural variant ", 
+#&gt;                   list("exprs()"), " is similar to ", list(list(
+#&gt;                     "alist()")), ".\n", list(), " The argument-defusing operator ", 
+#&gt;                   list("enquo()"), " is similar to\n", list(list(
+#&gt;                     "substitute()")), ".\n"), "\n")), "\n", "\n", 
+#&gt;             list("\n", "# expr() and exprs() capture expressions that you supply:\n", 
 #&gt;                 "expr(symbol)\n", "exprs(several, such, symbols)\n", 
 #&gt;                 "\n", "# enexpr() and enexprs() capture expressions that your user supplied:\n", 
 #&gt;                 "expr_inputs &lt;- function(arg, ...) {\n", "  user_exprs &lt;- enexprs(arg, ...)\n", 
@@ -22057,7 +21997,7 @@ or complex expressions.</p>
 #&gt;     with_options = "scoped_options", with_restarts = "with_restarts", 
 #&gt;     wref_key = "wref_key", wref_value = "wref_key", zap = "zap"
 #&gt;     ), article_index = character(0)), examples = TRUE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpVKlqNt/file4fa4f6660de"), 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpmbQNjf/file4fa451674f1b"), 
 #&gt;     install = FALSE, preview = FALSE, new_process = FALSE, devel = FALSE, 
 #&gt;     crayon_enabled = TRUE, crayon_colors = 256, pkgdown_internet = TRUE), 
 #&gt;     envir = &lt;environment&gt;)
@@ -22069,7 +22009,7 @@ or complex expressions.</p>
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; })(pkg = list(package = "rlang", version = list(c(0L, 4L, 1L, 
-#&gt; 9000L)), src_path = "/home/travis/build/r-lib/rlang", dst_path = "/tmp/RtmpVKlqNt/file4fa4f6660de", 
+#&gt; 9000L)), src_path = "/home/travis/build/r-lib/rlang", dst_path = "/tmp/RtmpmbQNjf/file4fa451674f1b", 
 #&gt;     github_url = "https://github.com/r-lib/rlang", desc = &lt;environment&gt;, 
 #&gt;     meta = list(url = "https://rlang.r-lib.org", template = list(
 #&gt;         params = list(ganalytics = "UA-115082821-1")), home = list(
@@ -22151,7 +22091,7 @@ or complex expressions.</p>
 #&gt;             "calling")), list(title = "Session state", contents = c("matches(\"interactive\")", 
 #&gt;             "matches(\"option\")")), list(title = "Weak references", 
 #&gt;                 contents = c("matches(\"weakref\")", "matches(\"wref\")"
-#&gt;                 ))), destination = "/tmp/RtmpVKlqNt/file4fa4f6660de"), 
+#&gt;                 ))), destination = "/tmp/RtmpmbQNjf/file4fa451674f1b"), 
 #&gt;     figures = list(dev = "grDevices::png", dpi = 96L, dev.args = list(), 
 #&gt;         fig.ext = "png", fig.width = 7.29166666666667, fig.height = NULL, 
 #&gt;         fig.retina = 2L, fig.asp = 0.618046971569839), development = list(
@@ -22669,7 +22609,7 @@ or complex expressions.</p>
 #&gt;     "Name of a primitive function", "Force parts of an expression", 
 #&gt;     "Squash a quosure", "Format quosures for printing or labelling", 
 #&gt;     "Squash a quosure", "Quosure getters, setters and testers", 
-#&gt;     "Quotation", "Create vectors matching the length of a given vector", 
+#&gt;     "Defuse R expressions", "Create vectors matching the length of a given vector", 
 #&gt;     "Create a restarting handler", "Jump to or from a frame", 
 #&gt;     "Display backtrace on error", "Jump to the abort restart", 
 #&gt;     "Restarts utilities", "Scalar type predicates", "Temporarily change bindings of an environment", 
@@ -27222,8 +27162,9 @@ or complex expressions.</p>
 #&gt;                 "exprs"), "\n", list("enexprs"), "\n", list("ensym"), 
 #&gt;             "\n", list("ensyms"), "\n", list("quo"), "\n", list(
 #&gt;                 "enquo"), "\n", list("quos"), "\n", list("enquos"), 
-#&gt;             "\n", list("Quotation"), "\n", list("\n", "expr(expr)\n", 
-#&gt;                 "\n", "enexpr(arg)\n", "\n", "exprs(..., .named = FALSE, .ignore_empty = c(\"trailing\", \"none\",\n", 
+#&gt;             "\n", list("Defuse R expressions"), "\n", list("\n", 
+#&gt;                 "expr(expr)\n", "\n", "enexpr(arg)\n", "\n", 
+#&gt;                 "exprs(..., .named = FALSE, .ignore_empty = c(\"trailing\", \"none\",\n", 
 #&gt;                 "  \"all\"), .unquote_names = TRUE)\n", "\n", 
 #&gt;                 "enexprs(..., .named = FALSE, .ignore_empty = c(\"trailing\", \"none\",\n", 
 #&gt;                 "  \"all\"), .unquote_names = TRUE, .homonyms = c(\"keep\", \"first\", \"last\",\n", 
@@ -27279,96 +27220,75 @@ or complex expressions.</p>
 #&gt;                   list("&lt;-"), " call in braces otherwise.\n", 
 #&gt;                   "This ensures assignments are explicit.")), 
 #&gt;                 "\n"), "\n", list("\n", list("rlang:::lifecycle(\"stable\")"), 
-#&gt;                 "\n", "\n", "Quotation is a mechanism by which an expression supplied as\n", 
-#&gt;                 "argument is captured by a function. Instead of seeing the value of\n", 
-#&gt;                 "the argument, the function sees the recipe (the R code) to make\n", 
-#&gt;                 "that value. This is possible because R ", list(
-#&gt;                   "expressions"), " are\n", "representable as regular objects in R:\n", 
-#&gt;                 list("\n", list(), " Calls represent the action of calling a function to\n", 
-#&gt;                   "compute a new value. Evaluating a call causes that value to be\n", 
-#&gt;                   "computed. Calls typically involve symbols to reference R objects.\n", 
-#&gt;                   list(), " Symbols represent the name that is given to an object in a\n", 
-#&gt;                   "particular context (an ", list("environment"), 
-#&gt;                   ").\n"), "\n", "\n", "We call objects containing calls and symbols ", 
-#&gt;                 list("expressions"), ".\n", "There are two ways to create R expressions. First you can ", 
-#&gt;                 list("build"), "\n", "calls and symbols from parts and pieces (see ", 
-#&gt;                 list(list("sym()")), ", ", list(list("syms()")), 
-#&gt;                 " and\n", list(list("call2()")), "). The other way is by ", 
-#&gt;                 list("quotation"), " or ", list("quasiquotation"), 
-#&gt;                 ",\n", "i.e. by intercepting an expression instead of evaluating it.\n"), 
-#&gt;             "\n", list(list("User expressions versus your expressions"), 
-#&gt;                 list("\n", "\n", "\n", "There are two points of view when it comes to capturing an\n", 
-#&gt;                   "expression:\n", list("\n", list(), " You can capture the expressions supplied by ", 
-#&gt;                     list("the user"), " of your\n", "function. This is the purpose of ", 
-#&gt;                     list("ensym()"), ", ", list("enexpr()"), 
-#&gt;                     " and\n", list("enquo()"), " and their plural variants. These functions take an\n", 
-#&gt;                     "argument name and capture the expression that was supplied to\n", 
-#&gt;                     "that argument.\n", list(), " You can capture the expressions that ", 
-#&gt;                     list("you"), " supply. To this end\n", "use ", 
-#&gt;                     list("expr()"), " and ", list("quo()"), " and their plural variants ", 
-#&gt;                     list("exprs()"), " and\n", list("quos()"), 
-#&gt;                     ".\n"), "\n")), "\n", "\n", list(list("Capture raw expressions"), 
+#&gt;                 "\n", "\n", "Defusing a function argument prevents its evaluation. When a\n", 
+#&gt;                 "function argument is defused, R doesn't return its value like it\n", 
+#&gt;                 "normally would but it returns the R expression describing how to\n", 
+#&gt;                 "make the value. These defused expressions are like blueprints for\n", 
+#&gt;                 "computing values. (Defusing is also known as ", 
+#&gt;                 list("quoting"), ", and is done\n", "in base R by ", 
+#&gt;                 list(list("quote()")), " and ", list(list("substitute()")), 
+#&gt;                 ".)\n", "\n", "There are two main ways to defuse expressions, to which correspond\n", 
+#&gt;                 "the two functions ", list("expr()"), " and ", 
+#&gt;                 list("enquo()"), ". Whereas ", list("expr()"), 
+#&gt;                 " defuses\n", "your own expression, ", list("enquo()"), 
+#&gt;                 " defuses expressions supplied as\n", "argument by the user of a function. See section on function\n", 
+#&gt;                 "arguments for more on this distinction.\n", 
+#&gt;                 "\n", "The main purpose of preventing evaluation of an expression is to\n", 
+#&gt;                 "avoid \"object not found\" errors when the expression involves\n", 
+#&gt;                 "data-variables that only exist in a data frame. The expression is\n", 
+#&gt;                 "defused so it can be resumed later on, in a context where the\n", 
+#&gt;                 "data-variables have been defined.\n", "\n", 
+#&gt;                 "Defusing prevents the evaluation of R code, but you can still force\n", 
+#&gt;                 "evaluation inside a defused expression with the ", 
+#&gt;                 list("forcing operators"), " ", list("!!"), " and ", 
+#&gt;                 list("!!!"), ".\n"), "\n", list(list("Types of defused expressions"), 
 #&gt;                 list("\n", "\n", list("\n", list(), " ", list(
-#&gt;                   "enexpr()"), " and ", list("expr()"), " capture a single raw expression.\n", 
-#&gt;                   list(), " ", list("enexprs()"), " and ", list(
-#&gt;                     "exprs()"), " capture a list of raw expressions\n", 
-#&gt;                   "including expressions contained in ", list(
-#&gt;                     "..."), ".\n", list(), " ", list("ensym()"), 
-#&gt;                   " and ", list("ensyms()"), " are variants of ", 
-#&gt;                   list("enexpr()"), " and\n", list("enexprs()"), 
-#&gt;                   " that check the captured expression is either a string\n", 
-#&gt;                   "(which they convert to symbol) or a symbol. If anything else\n", 
-#&gt;                   "is supplied they throw an error.\n"), "\n", 
-#&gt;                   "\n", "In terms of base functions, ", list(
-#&gt;                     "enexpr(arg)"), " corresponds to\n", list(
-#&gt;                     "base::substitute(arg)"), " (though that function also features complex\n", 
-#&gt;                   "substitution semantics) and ", list("expr()"), 
-#&gt;                   " is like ", list(list("quote()")), " (and\n", 
-#&gt;                   list(list("bquote()")), " if we consider unquotation syntax). The plural variant\n", 
-#&gt;                   list("exprs()"), " is equivalent to ", list(
-#&gt;                     list("base::alist()")), ". Finally there is no\n", 
-#&gt;                   "function in base R that is equivalent to ", 
-#&gt;                   list("enexprs()"), " but you can\n", "reproduce its behaviour with ", 
-#&gt;                   list("eval(substitute(alist(...)))"), ".\n")), 
-#&gt;             "\n", "\n", list(list("Capture expressions in quosures"), 
-#&gt;                 list("\n", "\n", "\n", list("quo()"), " and ", 
-#&gt;                   list("enquo()"), " are similar to their ", 
-#&gt;                   list("expr"), " counterparts but\n", "capture both the expression and its environment in an object called\n", 
-#&gt;                   "a quosure. This wrapper contains a reference to the original\n", 
-#&gt;                   "environment in which that expression was captured. Keeping track of\n", 
-#&gt;                   "the environments of expressions is important because this is where\n", 
-#&gt;                   "functions and objects mentioned in the expression are defined.\n", 
-#&gt;                   "\n", "Quosures are objects that can be evaluated with ", 
-#&gt;                   list(list("eval_tidy()")), " just\n", "like symbols or function calls. Since they always evaluate in their\n", 
-#&gt;                   "original environment, quosures can be seen as vehicles that allow\n", 
-#&gt;                   "expressions to travel from function to function but that beam back\n", 
-#&gt;                   "instantly to their original environment upon evaluation.\n", 
+#&gt;                   "Calls"), ", like ", list("f(1, 2, 3)"), ", ", 
+#&gt;                   list("1 + 1"), ", or ...,  represent the action of calling a function to compute a\n", 
+#&gt;                   "new value, such as a vector.\n", list(), " ", 
+#&gt;                   list("Symbols"), ", like ", list("x"), " or ", 
+#&gt;                   list("df"), ", represent named objects. When the object pointed to\n", 
+#&gt;                   "by the symbol was defined in a function or in the global\n", 
+#&gt;                   "environment, we call it an environment-variable. When the object\n", 
+#&gt;                   "is a column in a data frame, we call it a data-variable.\n"), 
+#&gt;                   "\n", "\n", "You can create new call or symbol objects by using the defusing\n", 
+#&gt;                   "function ", list("expr()"), ":", list("# Create a symbol representing objects called `foo`\n", 
+#&gt;                     "expr(foo)\n", "\n", "# Create a call representing the computation of the mean of `foo`\n", 
+#&gt;                     "expr(mean(foo, na.rm = TRUE))\n"), "\n", 
+#&gt;                   "\n", "Defusing is not the only way to create defused expressions. You can\n", 
+#&gt;                   "also assemble them from data:", list("# Assemble a symbol from a string\n", 
+#&gt;                     "var &lt;- \"foo\"\n", "sym(var)\n", "\n", "# Assemble a call from strings, symbols, and other objects\n", 
+#&gt;                     "call(\"mean\", sym(var), na.rm = TRUE)\n"), 
+#&gt;                   "\n")), "\n", "\n", list(list("Defusing function arguments"), 
+#&gt;                 list("\n", "\n", "\n", "There are two points of view when it comes to defusing an\n", 
+#&gt;                   "expression:\n", list("\n", list(), " You can defuse expressions that ", 
+#&gt;                     list("you"), " supply with ", list("expr()"), 
+#&gt;                     ". This\n", "is one way of creating symbols and calls (see previous section).\n", 
+#&gt;                     list(), " You can defuse the expressions supplied by ", 
+#&gt;                     list("the user"), " of your\n", "function with the operators starting with ", 
+#&gt;                     list("en"), " like ", list("ensym()"), ",\n", 
+#&gt;                     list("enquo()"), " and their plural variants. They defuse function\n", 
+#&gt;                     "arguments .\n"), "\n")), "\n", "\n", list(
+#&gt;                 list("Defused arguments and quosures"), list(
+#&gt;                   "\n", "\n", "\n", "If you inspect the return values of ", 
+#&gt;                   list("expr()"), " and ", list("enquo()"), ", you'll\n", 
+#&gt;                   "notice that the latter doesn't return a raw expression like the\n", 
+#&gt;                   "former. Instead it returns a ", list("quosure"), 
+#&gt;                   ", a wrapper containing an\n", "expression and an environment. R needs information about the\n", 
+#&gt;                   "environment to properly evaluate the argument expression because it\n", 
+#&gt;                   "comes from a different context than the current function.\n", 
 #&gt;                   "\n", "See the ", list("quosure"), " help topic about tools to work with quosures.\n")), 
-#&gt;             "\n", "\n", list(list("Quasiquotation"), list("\n", 
-#&gt;                 "\n", "\n", "All quotation functions in rlang have support for ", 
-#&gt;                 list("unquoting operators"), ". The combination of quotation and\n", 
-#&gt;                 "unquotation is called ", list("quasiquotation"), 
-#&gt;                 ".\n", "\n", "Unquotation provides a way to refer to variables during quotation.\n", 
-#&gt;                 "Variables are problematic when quoting because a captured\n", 
-#&gt;                 "expression is essentially a constant, just like a string is a\n", 
-#&gt;                 "constant. For instance in all the following cases ", 
-#&gt;                 list("apple"), " is a\n", "constant: ", list(
-#&gt;                   "~apple"), ", ", list("\"apple\""), " and ", 
-#&gt;                 list("expr(apple)"), ". Unquoting allows\n", 
-#&gt;                 "you to introduce a part of variability within a captured\n", 
-#&gt;                 "expression.\n", list("\n", list(), " In the case of ", 
-#&gt;                   list("enexpr()"), " and ", list("enquo()"), 
-#&gt;                   ", unquoting provides an\n", "escape hatch to the users of your function that allows them to\n", 
-#&gt;                   "manipulate the expression that you capture.\n", 
-#&gt;                   list(), " In the case of ", list("expr()"), 
-#&gt;                   " and ", list("quo()"), ", quasiquotation lets you\n", 
-#&gt;                   "build a complex expressions where some parts are constant (the\n", 
-#&gt;                   "parts that are captured) and some parts are variable (the parts\n", 
-#&gt;                   "that are unquoted).\n"), "\n", "\n", "See the ", 
-#&gt;                 list("quasiquotation"), " help topic for more about this as well as\n", 
-#&gt;                 list(list("https://adv-r.hadley.nz/quasiquotation.html"), 
-#&gt;                   list("the chapter in Advanced R")), ".\n")), 
-#&gt;             "\n", "\n", list("\n", "# expr() and exprs() capture expressions that you supply:\n", 
+#&gt;             "\n", "\n", list(list("Comparison to base R"), list(
+#&gt;                 "\n", "\n", list("\n", list(), " The defusing operator ", 
+#&gt;                   list("expr()"), " is similar to ", list(list(
+#&gt;                     "quote()")), ". Like\n", list(list("bquote()")), 
+#&gt;                   ", it allows ", list("forcing"), " evaluation of parts\n", 
+#&gt;                   "of an expression.\n", list(), " The plural variant ", 
+#&gt;                   list("exprs()"), " is similar to ", list(list(
+#&gt;                     "alist()")), ".\n", list(), " The argument-defusing operator ", 
+#&gt;                   list("enquo()"), " is similar to\n", list(list(
+#&gt;                     "substitute()")), ".\n"), "\n")), "\n", "\n", 
+#&gt;             list("\n", "# expr() and exprs() capture expressions that you supply:\n", 
 #&gt;                 "expr(symbol)\n", "exprs(several, such, symbols)\n", 
 #&gt;                 "\n", "# enexpr() and enexprs() capture expressions that your user supplied:\n", 
 #&gt;                 "expr_inputs &lt;- function(arg, ...) {\n", "  user_exprs &lt;- enexprs(arg, ...)\n", 
@@ -29184,7 +29104,7 @@ or complex expressions.</p>
 #&gt;     with_options = "scoped_options", with_restarts = "with_restarts", 
 #&gt;     wref_key = "wref_key", wref_value = "wref_key", zap = "zap"
 #&gt;     ), article_index = character(0)), examples = TRUE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpVKlqNt/file4fa4f6660de"), 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpmbQNjf/file4fa451674f1b"), 
 #&gt;     install = FALSE, preview = FALSE, new_process = FALSE, devel = FALSE, 
 #&gt;     crayon_enabled = TRUE, crayon_colors = 256, pkgdown_internet = TRUE)
 #&gt; 
