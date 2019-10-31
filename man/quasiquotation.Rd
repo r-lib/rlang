@@ -10,7 +10,7 @@
 \alias{!!!}
 \alias{:=}
 \alias{qq_show}
-\title{Forcing parts of an expression}
+\title{Force parts of an expression}
 \usage{
 qq_show(expr)
 }
@@ -45,7 +45,10 @@ starwars \%>\% select(height, mass)
 \item The curly-curly operator \code{{{ }}} for function arguments is a bit
 special because it forces the function argument and immediately
 defuses it. The defused expression is substituted in place, ready
-to be evaluated in another context, such as the data frame.\preformatted{# Force-defuse all function arguments that might contain
+to be evaluated in another context, such as the data frame.
+
+In practice, this is useful when you have a data-variable in an
+env-variable (such as a function argument).\preformatted{# Force-defuse all function arguments that might contain
 # data-variables by embracing them with {{ }}
 mean_by <- function(data, by, var) {
   data \%>\%
@@ -53,7 +56,7 @@ mean_by <- function(data, by, var) {
     summarise(avg = mean({{ var }}, na.rm = TRUE))
 }
 
-# The function variables `by` and `var` are forced but defused.
+# The env-variables `by` and `var` are forced but defused.
 # The data-variables they contain are evaluated by dplyr later on
 # in data context.
 iris \%>\% mean_by(by = Species, var = Sepal.Width)

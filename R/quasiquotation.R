@@ -1,4 +1,4 @@
-#' Forcing parts of an expression
+#' Force parts of an expression
 #'
 #' @description
 #'
@@ -39,6 +39,9 @@
 #'   defuses it. The defused expression is substituted in place, ready
 #'   to be evaluated in another context, such as the data frame.
 #'
+#'   In practice, this is useful when you have a data-variable in an
+#'   env-variable (such as a function argument).
+#'
 #'   ```
 #'   # Force-defuse all function arguments that might contain
 #'   # data-variables by embracing them with {{ }}
@@ -48,7 +51,7 @@
 #'       summarise(avg = mean({{ var }}, na.rm = TRUE))
 #'   }
 #'
-#'   # The function variables `by` and `var` are forced but defused.
+#'   # The env-variables `by` and `var` are forced but defused.
 #'   # The data-variables they contain are evaluated by dplyr later on
 #'   # in data context.
 #'   iris %>% mean_by(by = Species, var = Sepal.Width)
