@@ -85,7 +85,7 @@
 #'
 #' The definition operator is typically used in DSL packages like
 #' `ggvis` and `data.table`. It is also used in the tidyverse as a way
-#' of unquoting names (see [quasiquotation]).
+#' of unquoting names (see [nse-force]).
 #'
 #' * `is_definition()` returns `TRUE` for calls to `:=`.
 #'

@@ -385,7 +385,7 @@ fn_env <- function(fn) {
 #'   to two inputs. Functions created from formulas have a special
 #'   class. Use `is_lambda()` to test for it.
 #'
-#'   Lambdas currently do not support [quasiquotation],
+#'   Lambdas currently do not support [nse-force],
 #'   due to the way the arguments are handled internally.
 #'
 #' @param env Environment in which to fetch the function in case `x`

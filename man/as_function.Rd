@@ -24,7 +24,7 @@ This allows you to create very compact anonymous functions (lambdas) with up
 to two inputs. Functions created from formulas have a special
 class. Use \code{is_lambda()} to test for it.
 
-Lambdas currently do not support \link{quasiquotation},
+Lambdas currently do not support \link{nse-force},
 due to the way the arguments are handled internally.}
 
 \item{env}{Environment in which to fetch the function in case \code{x}

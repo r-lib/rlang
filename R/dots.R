@@ -6,9 +6,9 @@
 #' features:
 #'
 #' - You can splice other lists with the
-#'   [unquote-splice][quasiquotation] `!!!` operator.
+#'   [unquote-splice][nse-force] `!!!` operator.
 #'
-#' - You can unquote names by using the [unquote][quasiquotation]
+#' - You can unquote names by using the [unquote][nse-force]
 #'   operator `!!` on the left-hand side of `:=`.
 #'
 #' - Trailing commas are ignored, making it easier to copy and paste

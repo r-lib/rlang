@@ -150,6 +150,6 @@ with_data(data, .env$apple)
 }
 }
 \seealso{
-\link{quasiquotation} for the second leg of the tidy evaluation
+\link{nse-force} for the second leg of the tidy evaluation
 framework.
 }

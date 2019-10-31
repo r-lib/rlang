@@ -9,7 +9,7 @@ with_restarts(.expr, ...)
 \arguments{
 \item{.expr}{An expression to execute with new restarts established
 on the stack. This argument is passed by expression and supports
-\link[=quasiquotation]{unquoting}. It is evaluated in a context where
+\link[=nse-force]{unquoting}. It is evaluated in a context where
 restarts are established.}
 
 \item{...}{Named restart functions. The name is taken as the

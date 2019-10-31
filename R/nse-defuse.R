@@ -26,7 +26,7 @@
 #'
 #' Defusing prevents the evaluation of R code, but you can still force
 #' evaluation inside a defused expression with the [forcing
-#' operators][quasiquotation] `!!` and `!!!`.
+#' operators][nse-force] `!!` and `!!!`.
 #'
 #'
 #' @section Types of defused expressions:

@@ -45,8 +45,8 @@ arguments are named with the empty string \code{""}.
 features:
 \itemize{
 \item You can splice other lists with the
-\link[=quasiquotation]{unquote-splice} \code{!!!} operator.
-\item You can unquote names by using the \link[=quasiquotation]{unquote}
+\link[=nse-force]{unquote-splice} \code{!!!} operator.
+\item You can unquote names by using the \link[=nse-force]{unquote}
 operator \code{!!} on the left-hand side of \code{:=}.
 \item Trailing commas are ignored, making it easier to copy and paste
 arguments.

@@ -19,7 +19,7 @@ column:\preformatted{var <- "height"
 dplyr::summarise(df, mean(.data[[var]]))
 }
 
-The index variable \code{var} is \link[=quasiquotation]{unquoted}, which
+The index variable \code{var} is \link[=nse-force]{unquoted}, which
 ensures a column named \code{var} in the data frame cannot mask it.
 This makes the pronoun safe to use in functions and packages.
 \item Sometimes a computation is not about the whole data but about a

@@ -23,7 +23,7 @@ is_formulaish(x, scoped = NULL, lhs = NULL)
 \description{
 The definition operator is typically used in DSL packages like
 \code{ggvis} and \code{data.table}. It is also used in the tidyverse as a way
-of unquoting names (see \link{quasiquotation}).
+of unquoting names (see \link{nse-force}).
 \itemize{
 \item \code{is_definition()} returns \code{TRUE} for calls to \code{:=}.
 \item \code{is_formulaish()} returns \code{TRUE} for both formulas and

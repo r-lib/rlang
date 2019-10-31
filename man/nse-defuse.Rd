@@ -105,7 +105,7 @@ defused so it can be resumed later on, in a context where the
 data-variables have been defined.
 
 Defusing prevents the evaluation of R code, but you can still force
-evaluation inside a defused expression with the \link[=quasiquotation]{forcing operators} \code{!!} and \code{!!!}.
+evaluation inside a defused expression with the \link[=nse-force]{forcing operators} \code{!!} and \code{!!!}.
 }
 \section{Types of defused expressions}{
 
