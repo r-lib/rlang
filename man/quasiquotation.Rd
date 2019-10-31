@@ -10,7 +10,7 @@
 \alias{!!!}
 \alias{:=}
 \alias{qq_show}
-\title{Quasiquotation of an expression}
+\title{Force parts of an expression}
 \usage{
 qq_show(expr)
 }
@@ -18,59 +18,72 @@ qq_show(expr)
 \item{expr}{An expression to be quasiquoted.}
 }
 \description{
-Quasiquotation is the mechanism that makes it possible to program
-flexibly with tidy evaluation grammars like dplyr. It is enabled in
-all functions quoting their arguments with \code{enquo()}, \code{enexpr()},
-or the plural variants.
-
-Quasiquotation is the combination of quoting an expression while
-allowing immediate evaluation (unquoting) of part of that
-expression.
+It is sometimes useful to force early evaluation of part of an
+expression before it gets fully evaluated. The tidy eval framework
+provides several forcing operators for different use cases.
 \itemize{
-\item The \code{!!} operator unquotes its argument. It gets evaluated
-immediately in the surrounding context.
-\item The \code{!!!} operator unquotes and splices its argument. The
-argument should represent a list or a vector. Each element will
-be embedded in the surrounding call, i.e. each element is
-inserted as an argument. If the vector is named, the names are
-used as argument names.
+\item The bang-bang operator \code{!!} forces a \emph{single} object. One
+common case for \code{!!} is to substitute an environment-variable
+(created with \code{<-}) with a data-variable (inside a data frame).\preformatted{library(dplyr)
 
-If the vector is a classed object (like a factor), it is
-converted to a list with \code{\link[base:as.list]{base::as.list()}} to ensure proper
-dispatch. If it is an S4 objects, it is converted to a list with
-\code{\link[methods:as]{methods::as()}}.
-\item The \code{{{ }}} operator quotes and unquotes its argument in one
-go, a pattern that we call \strong{interpolation}. It is an alias for
-\code{!!enquo(arg)}.
+# The environment variable `var` refers to the data-variable
+# `height`
+var <- sym("height")
 
-Like \code{enquo()}, \code{{{ }}} is used in functions to capture an
-argument as a quoted expression. This expression is immediately
-unquoted in place.
+# We force `var`, which substitutes it with `height`
+starwars \%>\%
+  summarise(avg = mean(!!var, na.rm = TRUE))
+}
+\item The big-bang operator \code{!!!} forces-splice a \emph{list} of objects.
+The elements of the list are spliced in place, meaning that they
+each become one single argument.\preformatted{vars <- syms(c("height", "mass"))
+
+# Force-splicing is equivalent to supplying the elements separately
+starwars \%>\% select(!!!vars)
+starwars \%>\% select(height, mass)
+}
+\item The curly-curly operator \code{{{ }}} for function arguments is a bit
+special because it forces the function argument and immediately
+defuses it. The defused expression is substituted in place, ready
+to be evaluated in another context, such as the data frame.
+
+In practice, this is useful when you have a data-variable in an
+env-variable (such as a function argument).\preformatted{# Force-defuse all function arguments that might contain
+# data-variables by embracing them with {{ }}
+mean_by <- function(data, by, var) {
+  data \%>\%
+    group_by({{ by }}) \%>\%
+    summarise(avg = mean({{ var }}, na.rm = TRUE))
 }
 
-Use \code{qq_show()} to experiment with quasiquotation or debug the
-effect of unquoting operators. \code{qq_show()} quotes its input,
-processes unquoted parts, and prints the result with
-\code{\link[=expr_print]{expr_print()}}. This expression printer has a clearer output than
-the base R printer (see the \link[=expr_print]{documentation topic}).
+# The env-variables `by` and `var` are forced but defused.
+# The data-variables they contain are evaluated by dplyr later on
+# in data context.
+iris \%>\% mean_by(by = Species, var = Sepal.Width)
 }
-\section{Unquoting names}{
+}
+
+Use \code{qq_show()} to experiment with forcing operators. \code{qq_show()}
+defuses its input, processes all forcing operators, and prints the
+result with \code{\link[=expr_print]{expr_print()}} to reveal objects inlined in the
+expression by the forcing operators.
+}
+\section{Forcing names}{
 
 
 When a function takes multiple named arguments
 (e.g. \code{dplyr::mutate()}), it is difficult to supply a variable as
-name. Since the LHS of \code{=} is quoted, giving the name of a variable
-results in the argument having the name of the variable rather than
-the name stored in that variable. This problem is right up the
-alley for the unquoting operator \code{!!}. If you were able to unquote
-the variable when supplying the name, the argument would be named
-after the content of that variable.
+name. Since the LHS of \code{=} is \link[=quotation]{defused}, giving the name
+of a variable results in the argument having the name of the
+variable rather than the name stored in that variable. This problem
+of forcing evaluation of names is exactly what the \code{!!} operator is
+for.
 
 Unfortunately R is very strict about the kind of expressions
-supported on the LHS of \code{=}. This is why we have made the more
-flexible \code{:=} operator an alias of \code{=}. You can use it to supply
+supported on the LHS of \code{=}. This is why rlang interprets the
+walrus operator \code{:=} as an alias of \code{=}. You can use it to supply
 names, e.g. \code{a := b} is equivalent to \code{a = b}. Since its syntax is
-more flexible you can unquote on the LHS:\preformatted{name <- "Jane"
+more flexible you can also force names on its LHS:\preformatted{name <- "Jane"
 
 list2(!!name := 1 + 2)
 exprs(!!name := 1 + 2)
@@ -79,22 +92,22 @@ quos(!!name := 1 + 2)
 
 Like \code{=}, the \code{:=} operator expects strings or symbols on its LHS.
 
-Note that unquoting on the LHS of \code{:=} only works in top level
+Currently, forcing names with \code{:=} only works in top level
 expressions. These are all valid:\preformatted{exprs(!!nm := x)
 tibble(!!nm := x)
 list2(!!nm := x)
 }
 
-But deep-unquoting names isn't supported:\preformatted{expr(foo(!!nm := x))
-exprs(foo(!!nm := x))
+But deep-forcing names isn't supported:\preformatted{expr(this(is(deep(!!nm := x))))
+exprs(this(is(deep(!!nm := x))))
 }
 }
 
 \section{Theory}{
 
 
-Formally, \code{quo()} and \code{expr()} are quasiquote functions, \code{!!} is
-the unquote operator, and \code{!!!} is the unquote-splice operator.
+Formally, \code{quo()} and \code{expr()} are quasiquotation functions, \code{!!}
+is the unquote operator, and \code{!!!} is the unquote-splice operator.
 These terms have a rich history in Lisp languages, and live on in
 modern languages like
 \href{https://docs.julialang.org/en/v1/manual/metaprogramming/}{Julia}
