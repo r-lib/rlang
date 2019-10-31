@@ -1,4 +1,4 @@
-context("quasiquotation")
+context("nse-force")
 
 test_that("interpolation does not recurse over spliced arguments", {
   var2 <- quote({foo; !! stop(); bar})
