@@ -1,4 +1,4 @@
-context("quotation")
+context("nse-defuse")
 
 test_that("quos() creates quosures", {
   fs <- quos(x = 1 + 2, y = 2 + 3)
