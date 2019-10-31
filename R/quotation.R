@@ -1,13 +1,21 @@
-#' Defusing R expressions
+#' Defuse R expressions
 #'
 #' @description
 #'
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
 #'
-#' When a function argument is defused, R doesn't return its value
-#' like it normally would. Instead, it returns the R expression
-#' describing how to make the value as an inert object. These defused
-#' expressions are like blueprints for computing values.
+#' Defusing a function argument prevents its evaluation. When a
+#' function argument is defused, R doesn't return its value like it
+#' normally would but it returns the R expression describing how to
+#' make the value. These defused expressions are like blueprints for
+#' computing values. (Defusing is also known as _quoting_, and is done
+#' in base R by [quote()] and [substitute()].)
+#'
+#' There are two main ways to defuse expressions, to which correspond
+#' the two functions `expr()` and `enquo()`. Whereas `expr()` defuses
+#' your own expression, `enquo()` defuses expressions supplied as
+#' argument by the user of a function. See section on function
+#' arguments for more on this distinction.
 #'
 #' The main purpose of preventing evaluation of an expression is to
 #' avoid "object not found" errors when the expression involves
@@ -22,10 +30,10 @@
 #'
 #' @section Types of defused expressions:
 #'
-#' * __Calls__ represent the action of calling a function to compute a
+#' * __Calls__, like `f(1, 2, 3)`, `1 + 1`, or ...,  represent the action of calling a function to compute a
 #'   new value, such as a vector.
 #'
-#' * __Symbols__ represent named objects. When the object pointed to
+#' * __Symbols__, like `x` or `df`, represent named objects. When the object pointed to
 #'   by the symbol was defined in a function or in the global
 #'   environment, we call it an environment-variable. When the object
 #'   is a column in a data frame, we call it a data-variable.

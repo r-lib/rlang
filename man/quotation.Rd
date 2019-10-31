@@ -12,7 +12,7 @@
 \alias{enquo}
 \alias{quos}
 \alias{enquos}
-\title{Defusing R expressions}
+\title{Defuse R expressions}
 \usage{
 expr(expr)
 
@@ -83,10 +83,18 @@ This ensures assignments are explicit.}
 \description{
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
 
-When a function argument is defused, R doesn't return its value
-like it normally would. Instead, it returns the R expression
-describing how to make the value as an inert object. These defused
-expressions are like blueprints for computing values.
+Defusing a function argument prevents its evaluation. When a
+function argument is defused, R doesn't return its value like it
+normally would but it returns the R expression describing how to
+make the value. These defused expressions are like blueprints for
+computing values. (Defusing is also known as \emph{quoting}, and is done
+in base R by \code{\link[=quote]{quote()}} and \code{\link[=substitute]{substitute()}}.)
+
+There are two main ways to defuse expressions, to which correspond
+the two functions \code{expr()} and \code{enquo()}. Whereas \code{expr()} defuses
+your own expression, \code{enquo()} defuses expressions supplied as
+argument by the user of a function. See section on function
+arguments for more on this distinction.
 
 The main purpose of preventing evaluation of an expression is to
 avoid "object not found" errors when the expression involves
@@ -100,9 +108,9 @@ evaluation inside a defused expression with the \link[=quasiquotation]{forcing o
 \section{Types of defused expressions}{
 
 \itemize{
-\item \strong{Calls} represent the action of calling a function to compute a
+\item \strong{Calls}, like \code{f(1, 2, 3)}, \code{1 + 1}, or ...,  represent the action of calling a function to compute a
 new value, such as a vector.
-\item \strong{Symbols} represent named objects. When the object pointed to
+\item \strong{Symbols}, like \code{x} or \code{df}, represent named objects. When the object pointed to
 by the symbol was defined in a function or in the global
 environment, we call it an environment-variable. When the object
 is a column in a data frame, we call it a data-variable.
