@@ -4,12 +4,13 @@
 #'
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
 #'
-#' Defusing a function argument prevents its evaluation. When a
-#' function argument is defused, R doesn't return its value like it
-#' normally would but it returns the R expression describing how to
-#' make the value. These defused expressions are like blueprints for
-#' computing values. (Defusing is also known as _quoting_, and is done
-#' in base R by [quote()] and [substitute()].)
+#' The defusing operators `expr()` and `enquo()` prevent the
+#' evaluation of R code. Defusing is also known as _quoting_, and is
+#' done in base R by [quote()] and [substitute()]. When a function
+#' argument is defused, R doesn't return its value like it normally
+#' would but it returns the R expression describing how to make the
+#' value. These defused expressions are like blueprints for computing
+#' values.
 #'
 #' There are two main ways to defuse expressions, to which correspond
 #' the two functions `expr()` and `enquo()`. Whereas `expr()` defuses
@@ -30,13 +31,14 @@
 #'
 #' @section Types of defused expressions:
 #'
-#' * __Calls__, like `f(1, 2, 3)`, `1 + 1`, or ...,  represent the action of calling a function to compute a
-#'   new value, such as a vector.
+#' * __Calls__, like `f(1, 2, 3)` or `1 + 1` represent the action of
+#'   calling a function to compute a new value, such as a vector.
 #'
-#' * __Symbols__, like `x` or `df`, represent named objects. When the object pointed to
-#'   by the symbol was defined in a function or in the global
-#'   environment, we call it an environment-variable. When the object
-#'   is a column in a data frame, we call it a data-variable.
+#' * __Symbols__, like `x` or `df`, represent named objects. When the
+#'   object pointed to by the symbol was defined in a function or in
+#'   the global environment, we call it an environment-variable. When
+#'   the object is a column in a data frame, we call it a
+#'   data-variable.
 #'
 #' You can create new call or symbol objects by using the defusing
 #' function `expr()`:

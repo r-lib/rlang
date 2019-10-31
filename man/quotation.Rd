@@ -83,12 +83,13 @@ This ensures assignments are explicit.}
 \description{
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
 
-Defusing a function argument prevents its evaluation. When a
-function argument is defused, R doesn't return its value like it
-normally would but it returns the R expression describing how to
-make the value. These defused expressions are like blueprints for
-computing values. (Defusing is also known as \emph{quoting}, and is done
-in base R by \code{\link[=quote]{quote()}} and \code{\link[=substitute]{substitute()}}.)
+The defusing operators \code{expr()} and \code{enquo()} prevent the
+evaluation of R code. Defusing is also known as \emph{quoting}, and is
+done in base R by \code{\link[=quote]{quote()}} and \code{\link[=substitute]{substitute()}}. When a function
+argument is defused, R doesn't return its value like it normally
+would but it returns the R expression describing how to make the
+value. These defused expressions are like blueprints for computing
+values.
 
 There are two main ways to defuse expressions, to which correspond
 the two functions \code{expr()} and \code{enquo()}. Whereas \code{expr()} defuses
@@ -108,12 +109,13 @@ evaluation inside a defused expression with the \link[=quasiquotation]{forcing o
 \section{Types of defused expressions}{
 
 \itemize{
-\item \strong{Calls}, like \code{f(1, 2, 3)}, \code{1 + 1}, or ...,  represent the action of calling a function to compute a
-new value, such as a vector.
-\item \strong{Symbols}, like \code{x} or \code{df}, represent named objects. When the object pointed to
-by the symbol was defined in a function or in the global
-environment, we call it an environment-variable. When the object
-is a column in a data frame, we call it a data-variable.
+\item \strong{Calls}, like \code{f(1, 2, 3)} or \code{1 + 1} represent the action of
+calling a function to compute a new value, such as a vector.
+\item \strong{Symbols}, like \code{x} or \code{df}, represent named objects. When the
+object pointed to by the symbol was defined in a function or in
+the global environment, we call it an environment-variable. When
+the object is a column in a data frame, we call it a
+data-variable.
 }
 
 You can create new call or symbol objects by using the defusing
