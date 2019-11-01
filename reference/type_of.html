@@ -194,9 +194,9 @@ make dispatching easier:</p><ul>
 #&gt; <span class='warning'>Please use `typeof()` or your own version instead.</span>
 #&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once per session.</span><span></span></div><div class='output co'>#&gt; [1] "integer"</div><div class='input'>
 <span class='co'># Quosures are treated as a new base type but not formulas:</span>
-<span class='fu'>type_of</span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fl'>10L</span>))</div><div class='output co'>#&gt; [1] "formula"</div><div class='input'><span class='fu'>type_of</span>(~<span class='fl'>10L</span>)</div><div class='output co'>#&gt; [1] "formula"</div><div class='input'>
+<span class='fu'>type_of</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fl'>10L</span>))</div><div class='output co'>#&gt; [1] "formula"</div><div class='input'><span class='fu'>type_of</span>(~<span class='fl'>10L</span>)</div><div class='output co'>#&gt; [1] "formula"</div><div class='input'>
 <span class='co'># Compare to base::typeof():</span>
-<span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fl'>10L</span>))</div><div class='output co'>#&gt; [1] "language"</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fl'>10L</span>))</div><div class='output co'>#&gt; [1] "language"</div><div class='input'>
 <span class='co'># Strings are treated as a new base type:</span>
 <span class='fu'>type_of</span>(<span class='no'>letters</span>)</div><div class='output co'>#&gt; [1] "character"</div><div class='input'><span class='fu'>type_of</span>(<span class='no'>letters</span><span class='kw'>[[</span><span class='fl'>1</span>]])</div><div class='output co'>#&gt; [1] "string"</div><div class='input'>
 <span class='co'># This is a bit inconsistent with the core language tenet that data</span>

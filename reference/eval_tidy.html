@@ -174,7 +174,7 @@ argument. Whereas <code><a href='https://rdrr.io/r/base/eval.html'>eval()</a></c
 environment, <code>eval_tidy()</code> transforms it to a <strong>data mask</strong> with
 <code><a href='as_data_mask.html'>as_data_mask()</a></code>. Evaluating in a data mask enables the following
 features:</p><ul>
-<li><p><a href='quotation.html'>Quosures</a>. Quosures are expressions bundled with an
+<li><p><a href='nse-defuse.html'>Quosures</a>. Quosures are expressions bundled with an
 environment. If <code>data</code> is supplied, objects in the data mask
 always have precedence over the quosure environment, i.e. the
 data masks the environment.</p></li>
@@ -290,7 +290,7 @@ framework.</p></div>
 
 <span class='co'># In addition eval_tidy() has support for quosures:</span>
 <span class='no'>with_data</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>data</span>, <span class='no'>expr</span>) {
-  <span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quotation.html'>enquo</a></span>(<span class='no'>expr</span>)
+  <span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='nse-defuse.html'>enquo</a></span>(<span class='no'>expr</span>)
   <span class='fu'>eval_tidy</span>(<span class='no'>quo</span>, <span class='no'>data</span>)
 }
 <span class='fu'>with_data</span>(<span class='kw'>NULL</span>, <span class='no'>apple</span>)</div><div class='output co'>#&gt; [1] "apple"</div><div class='input'><span class='fu'>with_data</span>(<span class='no'>data</span>, <span class='no'>apple</span>)</div><div class='output co'>#&gt; [1] "CARROT"</div><div class='input'><span class='fu'>with_data</span>(<span class='no'>data</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>apple</span>, <span class='no'>kiwi</span>))</div><div class='output co'>#&gt; [[1]]

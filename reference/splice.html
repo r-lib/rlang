@@ -224,11 +224,11 @@ This ensures assignments are explicit.</p></td>
 
 <p>The <code>!!!</code> operator works differently in <em>standard</em> functions taking
 dots with <code><a href='tidy-dots.html'>dots_list()</a></code> than in <em>quoting</em> functions taking dots
-with <code><a href='quotation.html'>enexprs()</a></code> or <code><a href='quotation.html'>enquos()</a></code>.</p><ul>
+with <code><a href='nse-defuse.html'>enexprs()</a></code> or <code><a href='nse-defuse.html'>enquos()</a></code>.</p><ul>
 <li><p>In quoting functions <code>!!!</code> disaggregates its argument (let's call
 it <code>x</code>) into as many objects as there are elements in
-<code>x</code>. E.g. <code><a href='quotation.html'>quo(foo(!!! c(1, 2)))</a></code> is completely equivalent to
-<code><a href='quotation.html'>quo(foo(1, 2))</a></code>. The creation of those separate objects has an
+<code>x</code>. E.g. <code><a href='nse-defuse.html'>quo(foo(!!! c(1, 2)))</a></code> is completely equivalent to
+<code><a href='nse-defuse.html'>quo(foo(1, 2))</a></code>. The creation of those separate objects has an
 overhead but is typically not important when manipulating calls
 because function calls typically take a small number of
 arguments.</p></li>

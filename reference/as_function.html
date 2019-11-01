@@ -237,7 +237,7 @@ is a string.</p></td>
 #&gt;         .x
 #&gt;     else .x + .y
 #&gt; }
-#&gt; &lt;environment: 0x1930ac0&gt;</div><div class='input'><span class='fu'>as_closure</span>(<span class='no'>`~`</span>)</div><div class='output co'>#&gt; function (.x, .y) 
+#&gt; &lt;environment: 0x1890108&gt;</div><div class='input'><span class='fu'>as_closure</span>(<span class='no'>`~`</span>)</div><div class='output co'>#&gt; function (.x, .y) 
 #&gt; {
 #&gt;     if (is_missing(substitute(.y))) {
 #&gt;         new_formula(NULL, substitute(.x), caller_env())
@@ -246,14 +246,14 @@ is a string.</p></td>
 #&gt;         new_formula(substitute(.x), substitute(.y), caller_env())
 #&gt;     }
 #&gt; }
-#&gt; &lt;bytecode: 0x5fee228&gt;
-#&gt; &lt;environment: 0x21939e0&gt;</div><div class='input'>
+#&gt; &lt;bytecode: 0x630c648&gt;
+#&gt; &lt;environment: 0x2407170&gt;</div><div class='input'>
 <span class='co'># Use a regular function for tidy evaluation, also when calling functions</span>
 <span class='co'># that use tidy evaluation:</span>
 <span class='co'>## Bad:</span>
-<span class='no'>e</span> <span class='kw'>&lt;-</span> <span class='fu'>as_function</span>(~ <span class='fu'><a href='as_label.html'>as_label</a></span>(<span class='fu'><a href='quotation.html'>ensym</a></span>(<span class='no'>.x</span>)))
+<span class='no'>e</span> <span class='kw'>&lt;-</span> <span class='fu'>as_function</span>(~ <span class='fu'><a href='as_label.html'>as_label</a></span>(<span class='fu'><a href='nse-defuse.html'>ensym</a></span>(<span class='no'>.x</span>)))
 <span class='co'>## Good:</span>
-<span class='no'>e</span> <span class='kw'>&lt;-</span> <span class='fu'>as_function</span>(<span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'><a href='as_label.html'>as_label</a></span>(<span class='fu'><a href='quotation.html'>ensym</a></span>(<span class='no'>x</span>)))
+<span class='no'>e</span> <span class='kw'>&lt;-</span> <span class='fu'>as_function</span>(<span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'><a href='as_label.html'>as_label</a></span>(<span class='fu'><a href='nse-defuse.html'>ensym</a></span>(<span class='no'>x</span>)))
 
 <span class='fu'>e</span>(<span class='no'>y</span>)</div><div class='output co'>#&gt; [1] "y"</div></pre>
   </div>

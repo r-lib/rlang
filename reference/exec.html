@@ -202,7 +202,7 @@ most useful if <code>f</code> is a string, or the function has side-effects.</p>
 <span class='co'># Compare to do.call it will not automatically inline expressions</span>
 <span class='co'># into the evaluated call.</span>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fl'>10</span>
-<span class='no'>args</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quotation.html'>exprs</a></span>(<span class='kw'>x1</span> <span class='kw'>=</span> <span class='no'>x</span> + <span class='fl'>1</span>, <span class='kw'>x2</span> <span class='kw'>=</span> <span class='no'>x</span> * <span class='fl'>2</span>)
+<span class='no'>args</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='nse-defuse.html'>exprs</a></span>(<span class='kw'>x1</span> <span class='kw'>=</span> <span class='no'>x</span> + <span class='fl'>1</span>, <span class='kw'>x2</span> <span class='kw'>=</span> <span class='no'>x</span> * <span class='fl'>2</span>)
 <span class='fu'>exec</span>(<span class='no'>list</span>, !!!<span class='no'>args</span>)</div><div class='output co'>#&gt; $x1
 #&gt; x + 1
 #&gt; 
@@ -266,7 +266,7 @@ most useful if <code>f</code> is a string, or the function has side-effects.</p>
 <span class='co'># construct it yourself. This may require creating a new environment</span>
 <span class='co'># with carefully constructed bindings</span>
 <span class='no'>data_env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mtcars</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span>(<span class='fu'><a href='quotation.html'>expr</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span>(!!<span class='no'>f</span>, <span class='no'>data</span>)), <span class='no'>data_env</span>)</div><div class='output co'>#&gt; 
+<span class='fu'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span>(<span class='fu'><a href='nse-defuse.html'>expr</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span>(!!<span class='no'>f</span>, <span class='no'>data</span>)), <span class='no'>data_env</span>)</div><div class='output co'>#&gt; 
 #&gt; Call:
 #&gt; lm(formula = disp ~ cyl, data = data)
 #&gt; 

@@ -185,8 +185,8 @@ dealing with (a call, a symbol, an unquoted constant), use
 <code>as_label()</code> and make no assumption about the resulting string. If
 you know you have a symbol and need the name of the object it
 refers to, use <code><a href='as_string.html'>as_string()</a></code>. For instance, use <code>as_label()</code> with
-objects captured with <code><a href='quotation.html'>enquo()</a></code> and <code><a href='as_string.html'>as_string()</a></code> with symbols
-captured with <code><a href='quotation.html'>ensym()</a></code>.</p>
+objects captured with <code><a href='nse-defuse.html'>enquo()</a></code> and <code><a href='as_string.html'>as_string()</a></code> with symbols
+captured with <code><a href='nse-defuse.html'>ensym()</a></code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>as_label</span>(<span class='no'>x</span>)</pre>
@@ -225,7 +225,7 @@ deterministically.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># as_label() is useful with quoted expressions:</span>
-<span class='fu'>as_label</span>(<span class='fu'><a href='quotation.html'>expr</a></span>(<span class='fu'>foo</span>(<span class='no'>bar</span>)))</div><div class='output co'>#&gt; [1] "foo(bar)"</div><div class='input'><span class='fu'>as_label</span>(<span class='fu'><a href='quotation.html'>expr</a></span>(<span class='no'>foobar</span>))</div><div class='output co'>#&gt; [1] "foobar"</div><div class='input'>
+<span class='fu'>as_label</span>(<span class='fu'><a href='nse-defuse.html'>expr</a></span>(<span class='fu'>foo</span>(<span class='no'>bar</span>)))</div><div class='output co'>#&gt; [1] "foo(bar)"</div><div class='input'><span class='fu'>as_label</span>(<span class='fu'><a href='nse-defuse.html'>expr</a></span>(<span class='no'>foobar</span>))</div><div class='output co'>#&gt; [1] "foobar"</div><div class='input'>
 <span class='co'># It works with any R object. This is also useful for quoted</span>
 <span class='co'># arguments because the user might unquote constant objects:</span>
 <span class='fu'>as_label</span>(<span class='fl'>1</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt; [1] "&lt;int&gt;"</div><div class='input'><span class='fu'>as_label</span>(<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/r/base/list.html'>list</a></span>)</div><div class='output co'>#&gt; [1] "&lt;fn&gt;"</div></pre>

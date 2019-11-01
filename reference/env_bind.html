@@ -199,7 +199,7 @@ to difficult problems (see the implementations of <code>dplyr::do()</code>
 methods for an example).</p></li>
 <li><p><code>env_bind_lazy()</code> takes named <em>expressions</em>. This is equivalent
 to <code><a href='https://rdrr.io/r/base/delayedAssign.html'>base::delayedAssign()</a></code>. The arguments are captured with
-<code><a href='quotation.html'>exprs()</a></code> (and thus support call-splicing and unquoting) and
+<code><a href='nse-defuse.html'>exprs()</a></code> (and thus support call-splicing and unquoting) and
 assigned to symbols in <code>.env</code>. These expressions are not
 evaluated immediately but lazily. Once a symbol is evaluated, the
 corresponding expression is evaluated in turn and its value is
@@ -333,7 +333,7 @@ functions.</p>
 <span class='co'># Or by unquoting a quosure:</span>
 <span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/eval.html'>local</a></span>({
   <span class='no'>who</span> <span class='kw'>&lt;-</span> <span class='st'>"fievel"</span>
-  <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='no'>who</span>, <span class='st'>"mouse"</span>))
+  <span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='no'>who</span>, <span class='st'>"mouse"</span>))
 })
 <span class='fu'>env_bind_lazy</span>(<span class='no'>env</span>, <span class='kw'>name</span> <span class='kw'>=</span> !!<span class='no'>quo</span>)
 <span class='no'>env</span>$<span class='no'>name</span></div><div class='output co'>#&gt; [1] "fievel mouse"</div><div class='input'>

@@ -234,10 +234,10 @@ about a new deparsing API.</p></li>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Quosures can contain nested quosures:</span>
-<span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='fu'>foo</span>(!! <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>bar</span>)))
+<span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fu'>foo</span>(!! <span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='no'>bar</span>)))
 <span class='no'>quo</span></div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^foo(^bar)</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7841f58</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7b4f268</span><span></div><div class='input'>
 <span class='co'># quo_squash() unwraps all quosures and returns a raw expression:</span>
 <span class='fu'><a href='quo_squash.html'>quo_squash</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; foo(bar)</div><div class='input'>
 <span class='co'># This is used by quo_text() and quo_label():</span>
@@ -245,7 +245,7 @@ about a new deparsing API.</p></li>
 <span class='co'># Compare to the unwrapped expression:</span>
 <span class='fu'><a href='expr_label.html'>expr_text</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; [1] "~foo(~bar)"</div><div class='input'>
 <span class='co'># quo_name() is helpful when you need really short labels:</span>
-<span class='fu'>quo_name</span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>sym</span>))</div><div class='output co'>#&gt; [1] "sym"</div><div class='input'><span class='fu'>quo_name</span>(<span class='fu'><a href='quotation.html'>quo</a></span>(!! <span class='no'>sym</span>))</div><div class='output co'>#&gt; [1] "function (x) ..."</div></span></pre>
+<span class='fu'>quo_name</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='no'>sym</span>))</div><div class='output co'>#&gt; [1] "sym"</div><div class='input'><span class='fu'>quo_name</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(!! <span class='no'>sym</span>))</div><div class='output co'>#&gt; [1] "function (x) ..."</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

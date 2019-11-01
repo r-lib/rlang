@@ -195,7 +195,7 @@ colon-equals operators.</p></li>
     <p>The recommended way to use it is to capture arguments as
 expressions or quosures. You can then give a special function
 definition for the <code>:=</code> symbol in an overscope. Note that if you
-capture dots with <code><a href='quotation.html'>exprs()</a></code> or <code><a href='quotation.html'>quos()</a></code>, you need to disable
+capture dots with <code><a href='nse-defuse.html'>exprs()</a></code> or <code><a href='nse-defuse.html'>quos()</a></code>, you need to disable
 interpretation of <code>:=</code> by setting <code>.unquote_names</code> to <code>FALSE</code>.</p>
 <p>From rlang and data.table perspectives, this operator is not meant
 to be evaluated directly at top-level which is why the exported

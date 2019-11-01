@@ -213,7 +213,7 @@ doesn't unwrap quosures.</p></div>
 <span class='no'>foo</span></div><div class='output co'>#&gt; foo</div><div class='input'><span class='fu'>as_name</span>(<span class='no'>foo</span>)</div><div class='output co'>#&gt; [1] "foo"</div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span>(<span class='no'>bar</span>)</div><div class='output co'>#&gt; [1] "symbol"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span>(<span class='fu'>as_name</span>(<span class='no'>bar</span>))</div><div class='output co'>#&gt; [1] "character"</div><div class='input'>
 <span class='co'># as_name() unwraps quosured symbols automatically:</span>
-<span class='fu'>as_name</span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>foo</span>))</div><div class='output co'>#&gt; [1] "foo"</div></pre>
+<span class='fu'>as_name</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='no'>foo</span>))</div><div class='output co'>#&gt; [1] "foo"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

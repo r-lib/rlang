@@ -244,7 +244,7 @@ data frame columns in dplyr data masks are implemented with
 
 <p>Unlike <code><a href='https://rdrr.io/r/base/eval.html'>base::eval()</a></code> which takes any kind of environments as data
 mask, <code><a href='eval_tidy.html'>eval_tidy()</a></code> has specific requirements in order to support
-<a href='quotation.html'>quosures</a>. For this reason you can't supply bare
+<a href='nse-defuse.html'>quosures</a>. For this reason you can't supply bare
 environments.</p>
 <p>There are two ways of constructing an rlang data mask manually:</p><ul>
 <li><p><code>as_data_mask()</code> transforms a list or data frame to a data mask.
@@ -317,11 +317,11 @@ in the current environment.</p>
     <pre class="examples"><div class='input'><span class='co'># Evaluating in a tidy evaluation environment enables all tidy</span>
 <span class='co'># features:</span>
 <span class='no'>mask</span> <span class='kw'>&lt;-</span> <span class='fu'>as_data_mask</span>(<span class='no'>mtcars</span>)
-<span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>letters</span>), <span class='no'>mask</span>)</div><div class='output co'>#&gt;  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
+<span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='no'>letters</span>), <span class='no'>mask</span>)</div><div class='output co'>#&gt;  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
 #&gt; [20] "t" "u" "v" "w" "x" "y" "z"</div><div class='input'>
 <span class='co'># You can install new pronouns in the mask:</span>
 <span class='no'>mask</span>$<span class='no'>.pronoun</span> <span class='kw'>&lt;-</span> <span class='fu'>as_data_pronoun</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"bar"</span>, <span class='kw'>baz</span> <span class='kw'>=</span> <span class='st'>"bam"</span>))
-<span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>.pronoun</span>$<span class='no'>foo</span>), <span class='no'>mask</span>)</div><div class='output co'>#&gt; [1] "bar"</div><div class='input'>
+<span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='no'>.pronoun</span>$<span class='no'>foo</span>), <span class='no'>mask</span>)</div><div class='output co'>#&gt; [1] "bar"</div><div class='input'>
 <span class='co'># In some cases the data mask can leak to the user, for example if</span>
 <span class='co'># a function or formula is created in the data mask environment:</span>
 <span class='no'>cyl</span> <span class='kw'>&lt;-</span> <span class='st'>"user variable from the context"</span>

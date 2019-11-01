@@ -164,7 +164,7 @@ its contents, quo_is_missing(), quo_is_symbol(), etc." />
     </div>
 
     <div class="ref-description">
-    <p>A quosure is a type of <a href='quotation.html'>quoted expression</a> that includes
+    <p>A quosure is a type of <a href='nse-defuse.html'>quoted expression</a> that includes
 a reference to the context where it was created. A quosure is thus
 guaranteed to evaluate in its original environment and can refer to
 local objects.</p>
@@ -248,8 +248,8 @@ has to match at least one of them, otherwise <code><a href='is_call.html'>is_cal
     
 
 
-<p>A quosure usually does not carry environments for <a href='is_expression.html'>constant objects</a> like strings or numbers. <code><a href='quotation.html'>quo()</a></code> and
-<code><a href='quotation.html'>enquo()</a></code> only capture an environment for <a href='is_expression.html'>symbolic expressions</a>. For instance, all of these return the
+<p>A quosure usually does not carry environments for <a href='is_expression.html'>constant objects</a> like strings or numbers. <code><a href='nse-defuse.html'>quo()</a></code> and
+<code><a href='nse-defuse.html'>enquo()</a></code> only capture an environment for <a href='is_expression.html'>symbolic expressions</a>. For instance, all of these return the
 <a href='empty_env.html'>empty environment</a>:</p><pre>quo_get_env(quo("constant"))
 quo_get_env(quo(100))
 quo_get_env(quo(NA))
@@ -268,7 +268,7 @@ quo_get_env(quo(some_function()))
 
 
 <p>When missing arguments are captured as quosures, either through
-<code><a href='quotation.html'>enquo()</a></code> or <code><a href='quotation.html'>quos()</a></code>, they are returned as an empty quosure. These
+<code><a href='nse-defuse.html'>enquo()</a></code> or <code><a href='nse-defuse.html'>quos()</a></code>, they are returned as an empty quosure. These
 quosures contain the <a href='missing_arg.html'>missing argument</a> and typically
 have the <a href='empty_env.html'>empty environment</a> as enclosure.</p>
     <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
@@ -282,17 +282,17 @@ have the <a href='empty_env.html'>empty environment</a> as enclosure.</p>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='quotation.html'>quo()</a></code> for creating quosures by quotation; <code><a href='as_quosure.html'>as_quosure()</a></code>
+    <div class='dont-index'><p><code><a href='nse-defuse.html'>quo()</a></code> for creating quosures by quotation; <code><a href='as_quosure.html'>as_quosure()</a></code>
 and <code><a href='as_quosure.html'>new_quosure()</a></code> for constructing quosures manually.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>my_quosure</span>)
+    <pre class="examples"><div class='input'><span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='no'>my_quosure</span>)
 <span class='no'>quo</span></div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^my_quosure</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x9797228</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x9a97678</span><span></div><div class='input'>
 
 <span class='co'># Access and set the components of a quosure:</span>
-<span class='fu'>quo_get_expr</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; my_quosure</div><div class='input'><span class='fu'>quo_get_env</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; &lt;environment: 0x9797228&gt;</div><div class='input'>
+<span class='fu'>quo_get_expr</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; my_quosure</div><div class='input'><span class='fu'>quo_get_env</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; &lt;environment: 0x9a97678&gt;</div><div class='input'>
 <span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'>quo_set_expr</span>(<span class='no'>quo</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>baz</span>))
 <span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'>quo_set_env</span>(<span class='no'>quo</span>, <span class='fu'><a href='empty_env.html'>empty_env</a></span>())
 <span class='no'>quo</span></div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
@@ -305,10 +305,10 @@ and <code><a href='as_quosure.html'>new_quosure()</a></code> for constructing qu
 <span class='fu'>quo_is_symbol</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>quo_is_call</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>quo_is_null</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
 <span class='co'># quo_is_missing() checks for a special kind of quosure, the one</span>
 <span class='co'># that contains the missing argument:</span>
-<span class='fu'><a href='quotation.html'>quo</a></span>()</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
+<span class='fu'><a href='nse-defuse.html'>quo</a></span>()</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: ^
-#&gt; env:  empty</div><div class='input'><span class='fu'>quo_is_missing</span>(<span class='fu'><a href='quotation.html'>quo</a></span>())</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>arg</span>) <span class='fu'><a href='quotation.html'>enquo</a></span>(<span class='no'>arg</span>)
+#&gt; env:  empty</div><div class='input'><span class='fu'>quo_is_missing</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>())</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>arg</span>) <span class='fu'><a href='nse-defuse.html'>enquo</a></span>(<span class='no'>arg</span>)
 <span class='fu'>fn</span>()</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: ^
 #&gt; env:  empty</div><div class='input'><span class='fu'>quo_is_missing</span>(<span class='fu'>fn</span>())</div><div class='output co'>#&gt; [1] TRUE</div></span></pre>

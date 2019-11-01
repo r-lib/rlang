@@ -195,7 +195,7 @@ definition not evaluated.</p>
     <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='no'>disp</span> ~ <span class='no'>am</span>
 <span class='fu'>is_formula</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='fu'>is_formula</span>(~<span class='fl'>10</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_formula</span>(<span class='fl'>10</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
-<span class='fu'>is_formula</span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>foo</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_bare_formula</span>(<span class='fu'><a href='quotation.html'>quo</a></span>(<span class='no'>foo</span>))</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
+<span class='fu'>is_formula</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='no'>foo</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_bare_formula</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='no'>foo</span>))</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
 <span class='co'># Note that unevaluated formulas are treated as bare formulas even</span>
 <span class='co'># though they don't inherit from "formula":</span>
 <span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(~<span class='no'>foo</span>)
