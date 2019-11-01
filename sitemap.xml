@@ -379,6 +379,9 @@
     <loc>https://rlang.r-lib.org/reference/nse-defuse.html</loc>
   </url>
   <url>
+    <loc>https://rlang.r-lib.org/reference/nse-force.html</loc>
+  </url>
+  <url>
     <loc>https://rlang.r-lib.org/reference/op-definition.html</loc>
   </url>
   <url>
@@ -407,9 +410,6 @@
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/prim_name.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/quasiquotation.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/quo_expr.html</loc>

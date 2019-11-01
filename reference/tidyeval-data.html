@@ -181,7 +181,7 @@ column:</p><pre>var &lt;- "height"
 dplyr::summarise(df, mean(.data[[var]]))
 </pre>
 
-<p>The index variable <code>var</code> is <a href='quasiquotation.html'>unquoted</a>, which
+<p>The index variable <code>var</code> is <a href='nse-force.html'>unquoted</a>, which
 ensures a column named <code>var</code> in the data frame cannot mask it.
 This makes the pronoun safe to use in functions and packages.</p></li>
 <li><p>Sometimes a computation is not about the whole data but about a
