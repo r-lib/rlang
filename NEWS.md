@@ -2,6 +2,12 @@
 # rlang (development version)
 
 
+# rlang 0.4.2
+
+* Fixed an error in `trace_back()` when the call stack contains a
+  quosured symbol.
+
+
 # rlang 0.4.1
 
 * New experimental framework for creating bulleted error messages. See

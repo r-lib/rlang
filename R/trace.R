@@ -185,6 +185,9 @@ pipe_call_kind <- function(beg, calls) {
 maybe_add_namespace <- function(call, fn) {
   if (is_quosure(call)) {
     call <- quo_get_expr(call)
+    if (!is_call(call)) {
+      return(call)
+    }
   }
 
   if (call_print_fine_type(call) != "call") {

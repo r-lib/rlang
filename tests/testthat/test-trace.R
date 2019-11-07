@@ -641,3 +641,19 @@ test_that("empty backtraces are dealt with", {
 
   expect_identical(trace_length(foo$trace), 0L)
 })
+
+test_that("can trace back with quosured symbol", {
+  e <- current_env()
+  f <- function(foo = g()) {
+    # This will create a call in the call stack that isn't really a call
+    quo <- quo(foo)
+
+    # Quosure must be nested otherwise `eval_tidy()` unwraps it
+    eval_tidy(expr(identity(!!quo)))
+  }
+  g <- function() trace_back(e)
+
+  # FIXME: Weird trace structure
+  trace <- f()
+  expect_is(trace, "rlang_trace")
+})
