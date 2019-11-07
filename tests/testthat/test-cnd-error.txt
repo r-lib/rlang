@@ -7,6 +7,8 @@ Execution halted
 > # Default (non-interactive)
 > cat_line(default_non_interactive)
 Error: Error message
+<error/rlang_error>
+Error message
 Backtrace:
     █
  1. └─global::f()
@@ -44,6 +46,8 @@ Execution halted
 > # Full
 > cat_line(full)
 Error: Error message
+<error/rlang_error>
+Error message
 Backtrace:
     █
  1. └─global::f()

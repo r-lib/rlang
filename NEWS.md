@@ -7,6 +7,10 @@
 * Fixed an error in `trace_back()` when the call stack contains a
   quosured symbol.
 
+* Backtrace is now displayed in full when an error occurs in
+  non-interactive sessions. Previously the backtraces of parent errors
+  were left out.
+
 
 # rlang 0.4.1
 

@@ -60,7 +60,7 @@ test_that("format_onerror_backtrace handles empty and size 1 traces", {
   expect_identical(format_onerror_backtrace(trace), NULL)
 
   trace <- new_trace(list(quote(foo), quote(bar)), int(0, 1), chr("", ""))
-  expect_match(format_onerror_backtrace(trace), "foo.*bar")
+  expect_match(format_onerror_backtrace(error_cnd(trace = trace)), "foo.*bar")
 })
 
 test_that("error is printed with backtrace", {

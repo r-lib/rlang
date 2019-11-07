@@ -24,10 +24,18 @@ conditionMessage.rlang_error <- function(c) {
 #' @export
 print.rlang_error <- function(x,
                               ...,
-                              child = NULL,
                               simplify = c("branch", "collapse", "none"),
-                              fields = FALSE,
-                              from_last_error = FALSE) {
+                              fields = FALSE) {
+  cat_line(format(x, simplify = simplify, fields = fields))
+  invisible(x)
+}
+
+#' @export
+format.rlang_error <- function(x,
+                               ...,
+                               child = NULL,
+                               simplify = c("branch", "collapse", "none"),
+                               fields = FALSE) {
   # Allow overwriting default display via condition field
   simplify <- x$rlang$internal$print_simplify %||% simplify
 
@@ -47,7 +55,7 @@ print.rlang_error <- function(x,
     message <- NULL
   }
 
-  cat_line(
+  out <- paste_line(
     header,
     message
   )
@@ -56,7 +64,7 @@ print.rlang_error <- function(x,
   simplify <- arg_match(simplify, c("collapse", "branch", "none"))
 
   if (!is_null(trace)) {
-    cat_line(bold("Backtrace:"))
+    out <- paste_line(out, bold("Backtrace:"))
 
     if (!is_null(child)) {
       # Trim common portions of backtrace
@@ -72,11 +80,12 @@ print.rlang_error <- function(x,
     }
 
     trace_lines <- format(trace, ..., simplify = simplify)
-    cat_line(trace_lines)
+    out <- paste_line(out, trace_lines)
   }
 
   if (simplify != "branch" && !is_null(x$parent)) {
-    print.rlang_error(x$parent, ..., child = x, simplify = simplify, fields = fields)
+    parent_lines <- format.rlang_error(x$parent, ..., child = x, simplify = simplify, fields = fields)
+    out <- paste_line(out, parent_lines)
   }
 
   # Recommend printing the full backtrace. Only do it after having
@@ -86,10 +95,11 @@ print.rlang_error <- function(x,
     identical(x, last_error())
 
   if (from_last_error && simplify == "branch" && is_null(child) && !is_null(trace)) {
-    cat_line(silver("Call `rlang::last_trace()` to see the full backtrace."))
+    reminder <- silver("Call `rlang::last_trace()` to see the full backtrace.")
+    out <- paste_line(out, reminder)
   }
 
-  invisible(x)
+  out
 }
 
 #' @export

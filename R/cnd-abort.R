@@ -184,7 +184,7 @@ signal_abort <- function(cnd) {
   # Generate the error message, possibly with a backtrace or reminder
   fallback$message <- paste_line(
     conditionMessage(cnd),
-    format_onerror_backtrace(cnd$trace)
+    format_onerror_backtrace(cnd)
   )
 
   stop(fallback)
@@ -262,7 +262,8 @@ find_capture_context <- function(n = 3L) {
 #' # stop("foo")
 NULL
 
-format_onerror_backtrace <- function(trace) {
+format_onerror_backtrace <- function(cnd) {
+  trace <- cnd$trace
   show_trace <- show_trace_p()
 
   opts <- c("none", "reminder", "branch", "collapse", "full")
@@ -287,6 +288,11 @@ format_onerror_backtrace <- function(trace) {
     reminder = "branch", # Check size of backtrace branch
     show_trace
   )
+
+  if (simplify == "none") {
+    # Show full backtrace including for parent errors
+    return(format(cnd, simplify = "none"))
+  }
 
   backtrace_lines <- format(trace, simplify = simplify, max_frames = max_frames)
 

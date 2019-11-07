@@ -194,7 +194,7 @@ entrace_handle_top <- function(trace) {
   last_error_env$cnd <- err
 
   # Print backtrace for current error
-  backtrace_lines <- format_onerror_backtrace(trace)
+  backtrace_lines <- format_onerror_backtrace(err)
   if (length(backtrace_lines)) {
     cat_line(backtrace_lines)
   }
