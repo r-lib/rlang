@@ -121,12 +121,12 @@ signal_context_info <- function(nframe) {
   }
 
   if (is_same_body(first, body(signalCondition))) {
-    if (from_withrestarts(nframe - 1) && is_same_body(sys_body(nframe - 4), body(message))) {
-      if (is_same_body(sys_body(nframe - 5), body(inform))) {
-        return(list(type = "message_rlang", depth = nframe - 6))
-      } else {
-        return(list(type = "message", depth = nframe - 5))
-      }
+    from_restarts <- from_withrestarts(nframe - 1)
+    signal_body <- sys_body(nframe - 4)
+    if (from_restarts && is_same_body(signal_body, body(message))) {
+      return(list(type = "message", depth = nframe - 5))
+    } else if (from_restarts && is_same_body(signal_body, body(inform))) {
+      return(list(type = "message_rlang", depth = nframe - 5))
     } else {
       return(list(type = "condition", depth = nframe - 1))
     }

@@ -99,14 +99,32 @@ warn <- function(message, .subclass = NULL, ..., call = NULL, msg, type) {
   warning(cnd)
 }
 #' @rdname abort
+#' @param file Where the message is printed. This should be a
+#'   connection or character string which will be passed to [cat()].
+#'
+#'   By default, `inform()` prints to standard output in interactive
+#'   sessions and standard error otherwise. This way IDEs can treat
+#'   messages distinctly from warnings and errors, and R scripts can
+#'   still filter out the messages easily by redirecting `stderr`.
 #' @export
-inform <- function(message, .subclass = NULL, ..., call = NULL, msg, type) {
+inform <- function(message,
+                   .subclass = NULL,
+                   ...,
+                   call = NULL,
+                   file = NULL,
+                   msg,
+                   type) {
   validate_signal_args(msg, type, call)
 
   message <- collapse_cnd_message(message)
-  message <- paste0(message, "\n")
   cnd <- message_cnd(.subclass, ..., message = message)
-  message(cnd)
+
+  withRestarts(muffleMessage = function() NULL, {
+    signalCondition(cnd)
+
+    file <- file %||% if (is_interactive()) stdout() else stderr()
+    cat_line(message, file = file)
+  })
 }
 #' @rdname abort
 #' @export

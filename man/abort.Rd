@@ -13,7 +13,8 @@ abort(message = "", .subclass = NULL, ..., trace = NULL,
 
 warn(message, .subclass = NULL, ..., call = NULL, msg, type)
 
-inform(message, .subclass = NULL, ..., call = NULL, msg, type)
+inform(message, .subclass = NULL, ..., call = NULL, file = NULL, msg,
+  type)
 
 signal(message, .subclass, ...)
 
@@ -40,6 +41,14 @@ backtrace is now preferred to storing a simple call.}
 
 \item{msg, type}{These arguments were renamed to \code{message} and
 \code{.subclass} and are defunct as of rlang 0.4.0.}
+
+\item{file}{Where the message is printed. This should be a
+connection or character string which will be passed to \code{\link[=cat]{cat()}}.
+
+By default, \code{inform()} prints to standard output in interactive
+sessions and standard error otherwise. This way IDEs can treat
+messages distinctly from warnings and errors, and R scripts can
+still filter out the messages easily by redirecting \code{stderr}.}
 }
 \description{
 These functions are equivalent to base functions \code{\link[base:stop]{base::stop()}},
