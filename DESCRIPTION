@@ -23,7 +23,7 @@ Suggests:
     methods,
     pillar,
     rmarkdown,
-    testthat (>= 2.0.0)
+    testthat (>= 2.3.0)
 Encoding: UTF-8
 RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)
