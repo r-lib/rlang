@@ -4,6 +4,12 @@
 
 # rlang 0.4.2
 
+* `inform()` now prints messages to the standard output by default in
+  interactive sessions. This makes them appear more like normal output
+  in IDEs such as RStudio. In non-interactive sessions, messages are
+  still printed to standard error to make it easy to redirect messages
+  when running R scripts (#852).
+
 * Fixed an error in `trace_back()` when the call stack contains a
   quosured symbol.
 
