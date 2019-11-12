@@ -182,7 +182,8 @@ to create custom interrupt condition objects.</p>
 
 <span class='fu'>warn</span>(<span class='no'>message</span>, <span class='kw'>.subclass</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>call</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>msg</span>, <span class='no'>type</span>)
 
-<span class='fu'>inform</span>(<span class='no'>message</span>, <span class='kw'>.subclass</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>call</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>msg</span>, <span class='no'>type</span>)
+<span class='fu'>inform</span>(<span class='no'>message</span>, <span class='kw'>.subclass</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>call</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>msg</span>,
+  <span class='no'>type</span>)
 
 <span class='fu'>signal</span>(<span class='no'>message</span>, <span class='no'>.subclass</span>, <span class='no'>...</span>)
 
@@ -224,6 +225,15 @@ backtrace is now preferred to storing a simple call.</p></td>
       <th>msg, type</th>
       <td><p>These arguments were renamed to <code>message</code> and
 <code>.subclass</code> and are defunct as of rlang 0.4.0.</p></td>
+    </tr>
+    <tr>
+      <th>file</th>
+      <td><p>Where the message is printed. This should be a
+connection or character string which will be passed to <code><a href='https://rdrr.io/r/base/cat.html'>cat()</a></code>.</p>
+<p>By default, <code>inform()</code> prints to standard output in interactive
+sessions and standard error otherwise. This way IDEs can treat
+messages distinctly from warnings and errors, and R scripts can
+still filter out the messages easily by redirecting <code>stderr</code>.</p></td>
     </tr>
     </table>
 

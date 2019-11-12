@@ -156,6 +156,7 @@
 <a href="#rlang-0-4-2" class="anchor"></a>rlang 0.4.2<small> Unreleased </small>
 </h1>
 <ul>
+<li><p><code><a href="../reference/abort.html">inform()</a></code> now prints messages to the standard output by default in interactive sessions. This makes them appear more like normal output in IDEs such as RStudio. In non-interactive sessions, messages are still printed to standard error to make it easy to redirect messages when running R scripts (<a href='https://github.com/r-lib/rlang/issues/852'>#852</a>).</p></li>
 <li><p>Fixed an error in <code><a href="../reference/trace_back.html">trace_back()</a></code> when the call stack contains a quosured symbol.</p></li>
 <li><p>Backtrace is now displayed in full when an error occurs in non-interactive sessions. Previously the backtraces of parent errors were left out.</p></li>
 </ul>
