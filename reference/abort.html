@@ -177,15 +177,15 @@ kind that is signalled with <code>Ctrl-C</code>. It is currently not possible
 to create custom interrupt condition objects.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>abort</span>(<span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>.subclass</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>trace</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>call</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>parent</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>msg</span>, <span class='no'>type</span>)
+    <pre class="usage"><span class='fu'>abort</span>(<span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>class</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>trace</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>call</span>,
+  <span class='kw'>parent</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>msg</span>, <span class='no'>type</span>, <span class='no'>.subclass</span>)
 
-<span class='fu'>warn</span>(<span class='no'>message</span>, <span class='kw'>.subclass</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>call</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>msg</span>, <span class='no'>type</span>)
+<span class='fu'>warn</span>(<span class='no'>message</span>, <span class='kw'>class</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='no'>call</span>, <span class='no'>msg</span>, <span class='no'>type</span>, <span class='no'>.subclass</span>)
 
-<span class='fu'>inform</span>(<span class='no'>message</span>, <span class='kw'>.subclass</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>call</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>msg</span>,
-  <span class='no'>type</span>)
+<span class='fu'>inform</span>(<span class='no'>message</span>, <span class='kw'>class</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>call</span>, <span class='no'>msg</span>, <span class='no'>type</span>,
+  <span class='no'>.subclass</span>)
 
-<span class='fu'>signal</span>(<span class='no'>message</span>, <span class='no'>.subclass</span>, <span class='no'>...</span>)
+<span class='fu'>signal</span>(<span class='no'>message</span>, <span class='no'>class</span>, <span class='no'>...</span>, <span class='no'>.subclass</span>)
 
 <span class='fu'>interrupt</span>()</pre>
 
@@ -200,7 +200,7 @@ the message is assembled as a list of bullets. See
 <code><a href='cnd_message.html'>cnd_message()</a></code> to learn how names control the bulleted output.</p></td>
     </tr>
     <tr>
-      <th>.subclass</th>
+      <th>class</th>
       <td><p>Subclass of the condition. This allows your users
 to selectively handle the conditions signalled by your functions.</p></td>
     </tr>
@@ -225,6 +225,13 @@ backtrace is now preferred to storing a simple call.</p></td>
       <th>msg, type</th>
       <td><p>These arguments were renamed to <code>message</code> and
 <code>.subclass</code> and are defunct as of rlang 0.4.0.</p></td>
+    </tr>
+    <tr>
+      <th>.subclass</th>
+      <td><p>This argument was renamed to <code>class</code> in rlang
+0.4.2.  It will be deprecated in the next major version. This is
+for consistency with our conventions for class constructors
+documented in <a href='https://adv-r.hadley.nz/s3.html#s3-subclassing'>https://adv-r.hadley.nz/s3.html#s3-subclassing</a>.</p></td>
     </tr>
     <tr>
       <th>file</th>

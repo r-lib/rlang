@@ -160,18 +160,21 @@ also be used for passing messages to pre-established handlers.</p>
     <pre class="usage"><span class='fu'>error_cnd</span>(<span class='kw'>.subclass</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>trace</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>parent</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>cnd</span>(<span class='no'>.subclass</span>, <span class='no'>...</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>""</span>)
+<span class='fu'>cnd</span>(<span class='no'>class</span>, <span class='no'>...</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='no'>.subclass</span>)
 
-<span class='fu'>warning_cnd</span>(<span class='kw'>.subclass</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>""</span>)
+<span class='fu'>warning_cnd</span>(<span class='kw'>class</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='no'>.subclass</span>)
 
-<span class='fu'>message_cnd</span>(<span class='kw'>.subclass</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>""</span>)</pre>
+<span class='fu'>message_cnd</span>(<span class='kw'>class</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='no'>.subclass</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>.subclass</th>
-      <td><p>The condition subclass.</p></td>
+      <td><p>This argument was renamed to <code>class</code> in rlang
+0.4.2.  It will be deprecated in the next major version. This is
+for consistency with our conventions for class constructors
+documented in <a href='https://adv-r.hadley.nz/s3.html#s3-subclassing'>https://adv-r.hadley.nz/s3.html#s3-subclassing</a>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -190,6 +193,10 @@ condition when it is signalled.</p></td>
     <tr>
       <th>parent</th>
       <td><p>A parent condition object created by <code><a href='abort.html'>abort()</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>class</th>
+      <td><p>The condition subclass.</p></td>
     </tr>
     </table>
 
