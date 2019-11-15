@@ -61,7 +61,7 @@ test_that("lifecycle warnings helper enable warnings", {
     lifecycle_disable_warnings = TRUE,
     {
       evalq({
-        scoped_lifecycle_warnings()
+        local_lifecycle_warnings()
         expect_warning(retired1(), "enabled")
         expect_warning(retired1(), "enabled")
         expect_warning(retired2(), "enabled")
@@ -72,7 +72,7 @@ test_that("lifecycle warnings helper enable warnings", {
 })
 
 test_that("can disable lifecycle warnings", {
-  scoped_lifecycle_silence()
+  local_lifecycle_silence()
   local_options(
     lifecycle_verbose_soft_deprecation = TRUE,
     lifecycle_repeat_warnings = TRUE
@@ -83,7 +83,7 @@ test_that("can disable lifecycle warnings", {
 })
 
 test_that("can promote lifecycle warnings to errors", {
-  scoped_lifecycle_errors()
+  local_lifecycle_errors()
   expect_defunct(signal_soft_deprecated("foo"), "foo")
   expect_defunct(warn_deprecated("foo"), "foo")
 })
@@ -117,7 +117,7 @@ test_that("inputs are type checked", {
 })
 
 test_that("lifecycle signallers support character vectors", {
-  scoped_lifecycle_errors()
+  local_lifecycle_errors()
   expect_defunct(signal_soft_deprecated(c("foo", "bar")), "foo\nbar")
   expect_defunct(warn_deprecated(c("foo", "bar")), "foo\nbar")
   expect_defunct(stop_defunct(c("foo", "bar")), "foo\nbar")

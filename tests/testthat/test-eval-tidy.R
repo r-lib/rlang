@@ -386,7 +386,7 @@ test_that("data pronoun always skips functions", {
 })
 
 test_that("leaked quosure masks are not mistaken with data masks", {
-  scoped_lifecycle_silence()
+  local_lifecycle_silence()
   e <- eval_tidy(quote(current_env()))
   expect_no_error(eval_tidy("foo", e))
 })

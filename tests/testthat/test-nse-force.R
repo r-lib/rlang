@@ -167,7 +167,7 @@ test_that("quosures are not rewrapped", {
 })
 
 test_that("UQ() fails if called without argument", {
-  scoped_lifecycle_silence()
+  local_lifecycle_silence()
 
   quo <- quo(UQ(NULL))
   expect_equal(quo, ~NULL)
@@ -516,7 +516,7 @@ test_that("`.data[[` unquotes", {
 })
 
 test_that("it is still possible to unquote manually within `.data[[`", {
-  scoped_lifecycle_silence()
+  local_lifecycle_silence()
   foo <- "baz"
   expect_identical(expr(.data[[!!toupper(foo)]]), quote(.data[["BAZ"]]))
 })
@@ -558,7 +558,7 @@ test_that("unquoting with rlang namespace is deprecated", {
 })
 
 test_that("splicing language objects still works", {
-  scoped_lifecycle_silence()
+  local_lifecycle_silence()
 
   expect_identical_(exprs(!!!~foo), named_list(~foo))
   expect_identical_(exprs(!!!quote(foo(bar))), named_list(quote(foo(bar))))

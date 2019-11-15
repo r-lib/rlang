@@ -1,6 +1,6 @@
 context("retired")
 
-scoped_lifecycle_silence()
+local_lifecycle_silence()
 
 
 # Deprecated in rlang 0.4.0 ------------------------------------------
