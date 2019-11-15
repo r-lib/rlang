@@ -37,7 +37,7 @@ test_that("signal_soft_deprecated() warns when option is set", {
 })
 
 test_that("warn_deprecated() repeats warnings when option is set", {
-  scoped_options(lifecycle_verbose_soft_deprecation = TRUE)
+  local_options(lifecycle_verbose_soft_deprecation = TRUE)
 
   retired1 <- function() signal_soft_deprecated("soft deprecated repeats")
   retired2 <- function() warn_deprecated("deprecated repeats")
@@ -48,7 +48,7 @@ test_that("warn_deprecated() repeats warnings when option is set", {
   expect_no_warning(retired1())
   expect_no_warning(retired2())
 
-  scoped_options(lifecycle_repeat_warnings = TRUE)
+  local_options(lifecycle_repeat_warnings = TRUE)
   expect_warning(retired1(), "repeats")
   expect_warning(retired2(), "repeats")
 })
@@ -61,7 +61,7 @@ test_that("lifecycle warnings helper enable warnings", {
     lifecycle_disable_warnings = TRUE,
     {
       evalq({
-        scoped_lifecycle_warnings()
+        local_lifecycle_warnings()
         expect_warning(retired1(), "enabled")
         expect_warning(retired1(), "enabled")
         expect_warning(retired2(), "enabled")
@@ -72,8 +72,8 @@ test_that("lifecycle warnings helper enable warnings", {
 })
 
 test_that("can disable lifecycle warnings", {
-  scoped_lifecycle_silence()
-  scoped_options(
+  local_lifecycle_silence()
+  local_options(
     lifecycle_verbose_soft_deprecation = TRUE,
     lifecycle_repeat_warnings = TRUE
   )
@@ -83,7 +83,7 @@ test_that("can disable lifecycle warnings", {
 })
 
 test_that("can promote lifecycle warnings to errors", {
-  scoped_lifecycle_errors()
+  local_lifecycle_errors()
   expect_defunct(signal_soft_deprecated("foo"), "foo")
   expect_defunct(warn_deprecated("foo"), "foo")
 })
@@ -103,7 +103,7 @@ test_that("once-per-session note is not displayed on repeated warnings", {
   wrn <- catch_cnd(warn_deprecated("foo", "once-per-session-note"))
   expect_true(grepl("once per session", wrn$message))
 
-  scoped_options(lifecycle_repeat_warnings = TRUE)
+  local_options(lifecycle_repeat_warnings = TRUE)
 
   wrn <- catch_cnd(warn_deprecated("foo", "once-per-session-no-note"))
   expect_false(grepl("once per session", wrn$message))
@@ -117,7 +117,7 @@ test_that("inputs are type checked", {
 })
 
 test_that("lifecycle signallers support character vectors", {
-  scoped_lifecycle_errors()
+  local_lifecycle_errors()
   expect_defunct(signal_soft_deprecated(c("foo", "bar")), "foo\nbar")
   expect_defunct(warn_deprecated(c("foo", "bar")), "foo\nbar")
   expect_defunct(stop_defunct(c("foo", "bar")), "foo\nbar")

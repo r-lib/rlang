@@ -442,7 +442,7 @@ test_that("env_name() requires an environment", {
 #  Lifecycle ---------------------------------------------------------
 
 test_that("env API warns with non-environments", {
-  scoped_options(lifecycle_verbose_soft_deprecation = TRUE)
+  local_options(lifecycle_verbose_soft_deprecation = TRUE)
 
   f <- local(~foo)
   expect_warning(env_parent(f) <- empty_env(), "deprecated")
@@ -456,7 +456,7 @@ test_that("env API warns with non-environments", {
   expect_warning(env_inherits(~foo, empty_env()), "deprecated")
 
   expect_warning(env_bind(~foo, a = 1), "deprecated")
-  expect_warning(scoped_bindings(.env = ~foo), "deprecated")
+  expect_warning(local_bindings(.env = ~foo), "deprecated")
   expect_warning(with_bindings(NULL, a = 1, .env = ~foo), "deprecated")
   expect_warning(env_poke(~foo, "a", NULL), "deprecated")
   expect_warning(env_has(~foo, "a"), "deprecated")

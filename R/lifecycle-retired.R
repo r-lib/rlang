@@ -1539,7 +1539,7 @@ scoped_env <- function(nm) {
     "`scoped_env()` is deprecated as of rlang 0.3.0.",
     "Please use `search_env()` instead."
   ))
-  scoped_options(lifecycle_disable_warnings = TRUE)
+  local_options(lifecycle_disable_warnings = TRUE)
 
   if (identical(nm, "NULL")) {
     return(empty_env())
@@ -1556,7 +1556,7 @@ is_scoped <- function(nm) {
     "`is_scoped()` is deprecated as of rlang 0.3.0.",
     "Please use `is_attached()` instead."
   ))
-  scoped_options(lifecycle_disable_warnings = TRUE)
+  local_options(lifecycle_disable_warnings = TRUE)
 
   if (!is_scalar_character(nm)) {
     stop("`nm` must be a string", call. = FALSE)
@@ -1570,7 +1570,7 @@ scoped_envs <- function() {
     "`scoped_envs()` is deprecated as of rlang 0.3.0.",
     "Please use `search_envs()` instead."
   ))
-  scoped_options(lifecycle_disable_warnings = TRUE)
+  local_options(lifecycle_disable_warnings = TRUE)
 
   envs <- c(list(.GlobalEnv), env_parents(.GlobalEnv))
   set_names(envs, scoped_names())
@@ -1682,56 +1682,56 @@ list_len <- function(.n) {
 #' @export
 lgl_along <- function(.x) {
   warn_deprecated("`lgl_along()` is deprecated as of rlang 0.2.0.")
-  scoped_options(lifecycle_disable_warnings = TRUE)
+  local_options(lifecycle_disable_warnings = TRUE)
   new_logical_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 int_along <- function(.x) {
   warn_deprecated("`int_along()` is deprecated as of rlang 0.2.0.")
-  scoped_options(lifecycle_disable_warnings = TRUE)
+  local_options(lifecycle_disable_warnings = TRUE)
   new_integer_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 dbl_along <- function(.x) {
   warn_deprecated("`dbl_along()` is deprecated as of rlang 0.2.0.")
-  scoped_options(lifecycle_disable_warnings = TRUE)
+  local_options(lifecycle_disable_warnings = TRUE)
   new_double_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 chr_along <- function(.x) {
   warn_deprecated("`chr_along()` is deprecated as of rlang 0.2.0.")
-  scoped_options(lifecycle_disable_warnings = TRUE)
+  local_options(lifecycle_disable_warnings = TRUE)
   new_character_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 cpl_along <- function(.x) {
   warn_deprecated("`cpl_along()` is deprecated as of rlang 0.2.0.")
-  scoped_options(lifecycle_disable_warnings = TRUE)
+  local_options(lifecycle_disable_warnings = TRUE)
   new_complex_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 raw_along <- function(.x) {
   warn_deprecated("`raw_along()` is deprecated as of rlang 0.2.0.")
-  scoped_options(lifecycle_disable_warnings = TRUE)
+  local_options(lifecycle_disable_warnings = TRUE)
   new_raw_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 bytes_along <- function(.x) {
   warn_deprecated("`bytes_along()` is deprecated as of rlang 0.2.0.")
-  scoped_options(lifecycle_disable_warnings = TRUE)
+  local_options(lifecycle_disable_warnings = TRUE)
   new_raw_along(.x, NULL)
 }
 #' @rdname vector-old-ctors
 #' @export
 list_along <- function(.x) {
   warn_deprecated("`list_along()` is deprecated as of rlang 0.2.0.")
-  scoped_options(lifecycle_disable_warnings = TRUE)
+  local_options(lifecycle_disable_warnings = TRUE)
   new_list_along(.x, NULL)
 }
 
@@ -1962,4 +1962,35 @@ exiting <- function(handler) {
   ))
   handler <- as_function(handler)
   structure(handler, class = c("rlang_handler_exiting", "rlang_handler", "function"))
+}
+
+
+#  Scoped_
+
+#' Questioning `scoped_` functions
+#'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#'
+#' These functions have been renamed to use the conventional `local_`
+#' prefix. They will be deprecated in the next minor version of rlang.
+#'
+#' @inheritParams local_interactive
+#' @inheritParams local_options
+#' @inheritParams local_bindings
+#'
+#' @export
+scoped_interactive <- function(value = TRUE, frame = caller_env()) {
+  local_interactive(value = value, frame = frame)
+}
+#' @rdname scoped_interactive
+#' @export
+scoped_options <- function(..., .frame = caller_env()) {
+  local_options(..., .frame = .frame)
+}
+#' @rdname scoped_interactive
+#' @export
+scoped_bindings <- function(..., .env = .frame, .frame = caller_env()) {
+  local_bindings(..., .env = .env, .frame = .frame)
 }

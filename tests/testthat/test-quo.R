@@ -206,7 +206,7 @@ test_that("as_quosures() auto-names if requested", {
 })
 
 test_that("quosures class has subset assign methods", {
-  scoped_options(lifecycle_verbose_soft_deprecation = TRUE)
+  local_options(lifecycle_verbose_soft_deprecation = TRUE)
 
   x <- quos(1, 2)
 
@@ -237,7 +237,7 @@ test_that("can remove quosures by assigning NULL", {
 })
 
 test_that("can't cast a quosure to base types (#523)", {
-  scoped_options(lifecycle_verbose_soft_deprecation = TRUE)
+  local_options(lifecycle_verbose_soft_deprecation = TRUE)
   expect_warning(as.character(quo(foo)), "`as.character\\(\\)` on a quosure")
   expect_identical(as.character(quo(foo)), c("~", "foo"))
 })
@@ -282,12 +282,12 @@ test_that("as_string(quo) produces informative error message", {
 # Lifecycle ----------------------------------------------------------
 
 test_that("as_quosure() still provides default env", {
-  scoped_lifecycle_warnings()
+  local_lifecycle_warnings()
   quo <- expect_warning(as_quosure(quote(foo)), "explicit environment")
   expect_reference(quo_get_env(quo), current_env())
 })
 
 test_that("can still concatenate quosure lists and non-quosures", {
-  scoped_lifecycle_silence()
+  local_lifecycle_silence()
   expect_identical(c(quos(foo), list(1)), named_list(quo(foo), 1))
 })

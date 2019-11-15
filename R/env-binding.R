@@ -257,14 +257,14 @@ env_bind_active <- function(.env, ...) {
 #'
 #' @description
 #'
-#' * `scoped_bindings()` temporarily changes bindings in `.env` (which
+#' * `local_bindings()` temporarily changes bindings in `.env` (which
 #'   is by default the caller environment). The bindings are reset to
 #'   their original values when the current frame (or an arbitrary one
 #'   if you specify `.frame`) goes out of scope.
 #'
 #' * `with_bindings()` evaluates `expr` with temporary bindings. When
 #'   `with_bindings()` returns, bindings are reset to their original
-#'   values. It is a simple wrapper around `scoped_bindings()`.
+#'   values. It is a simple wrapper around `local_bindings()`.
 #'
 #' @inheritParams env_bind
 #' @param ... Pairs of names and values. These dots support splicing
@@ -272,7 +272,7 @@ env_bind_active <- function(.env, ...) {
 #' @param .frame The frame environment that determines the scope of
 #'   the temporary bindings. When that frame is popped from the call
 #'   stack, bindings are switched back to their original values.
-#' @return `scoped_bindings()` returns the values of old bindings
+#' @return `local_bindings()` returns the values of old bindings
 #'   invisibly; `with_bindings()` returns the value of `expr`.
 #' @export
 #' @examples
@@ -282,25 +282,25 @@ env_bind_active <- function(.env, ...) {
 #' # `foo` will be temporarily rebinded while executing `expr`
 #' with_bindings(paste(foo, bar), foo = "rebinded")
 #' paste(foo, bar)
-scoped_bindings <- function(..., .env = .frame, .frame = caller_env()) {
-  env <- get_env_retired(.env, "scoped_bindings()")
+local_bindings <- function(..., .env = .frame, .frame = caller_env()) {
+  env <- get_env_retired(.env, "local_bindings()")
 
   bindings <- list2(...)
   if (!length(bindings)) {
     return(list())
   }
 
-  old <- env_bind_impl(env, bindings, "scoped_bindings()", bind = TRUE)
-  scoped_exit(frame = .frame, !!call2(env_bind_impl, env, old, bind = TRUE))
+  old <- env_bind_impl(env, bindings, "local_bindings()", bind = TRUE)
+  local_exit(frame = .frame, !!call2(env_bind_impl, env, old, bind = TRUE))
 
   invisible(old)
 }
-#' @rdname scoped_bindings
+#' @rdname local_bindings
 #' @param .expr An expression to evaluate with temporary bindings.
 #' @export
 with_bindings <- function(.expr, ..., .env = caller_env()) {
   env <- get_env_retired(.env, "with_bindings()")
-  scoped_bindings(..., .env = .env)
+  local_bindings(..., .env = .env)
   .expr
 }
 

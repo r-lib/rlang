@@ -386,7 +386,7 @@ test_that("data pronoun always skips functions", {
 })
 
 test_that("leaked quosure masks are not mistaken with data masks", {
-  scoped_lifecycle_silence()
+  local_lifecycle_silence()
   e <- eval_tidy(quote(current_env()))
   expect_no_error(eval_tidy("foo", e))
 })
@@ -462,7 +462,7 @@ test_that("as_data_mask() and new_data_mask() are deprecated", {
 })
 
 test_that("supplying environment as data is deprecated", {
-  scoped_options(lifecycle_verbose_soft_deprecation = TRUE)
+  local_options(lifecycle_verbose_soft_deprecation = TRUE)
   `_x` <- "foo"
   expect_warning(eval_tidy("foo", current_env()), "deprecated")
   expect_identical(eval_tidy(quo(`_x`), current_env()), "foo")

@@ -6,7 +6,7 @@ test_that("parse_quo() etc return quosures", {
 })
 
 test_that("parse_quosure() and parse_quosures() are deprecated", {
-  scoped_lifecycle_warnings()
+  local_lifecycle_warnings()
   expect_warning(parse_quosure("foo"), "deprecated")
   expect_warning(parse_quosures("foo; bar"), "deprecated")
 })

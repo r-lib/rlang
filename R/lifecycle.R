@@ -50,7 +50,7 @@
 #' * [is_definition()], [new_definition()], [is_formulaish()],
 #'   [dots_definitions()]
 #'
-#' * [scoped_options()], [with_options()], [push_options()],
+#' * [local_options()], [with_options()], [push_options()],
 #'   [peek_options()], [peek_option()]
 #'
 #' * [as_bytes()], [chr_unserialise_unicode()]
@@ -151,7 +151,7 @@
 #' * Passing a function or formula to `env_depth()`,
 #'   `env_poke_parent()`, `env_parent<-`, `env_tail()`, `set_env()`,
 #'   `env_clone()`, `env_inherits()`, `env_bind()`,
-#'   `scoped_bindings()`, `with_bindings()`, `env_poke()`,
+#'   `local_bindings()`, `with_bindings()`, `env_poke()`,
 #'   `env_has()`, `env_get()`, `env_names()`, `env_bind_exprs()` and
 #'   `env_bind_fns()`. This internal genericity was causing confusion
 #'   (see issue #427). You should now extract the environment

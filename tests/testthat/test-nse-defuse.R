@@ -492,7 +492,7 @@ test_that("enexprs() and enquos() support empty dots", {
 })
 
 test_that("supplying `!!!` with a name warns", {
-  scoped_options(lifecycle_verbose_soft_deprecation = TRUE)
+  local_options(lifecycle_verbose_soft_deprecation = TRUE)
   expect_no_warning_(quos(!!!1, 2, !!!NULL))
   expect_defunct(quos(foo = !!!1, 2, bar = !!!NULL), "Only the operand's names are retained")
 })

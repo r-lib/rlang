@@ -59,7 +59,7 @@ test_that("conditions have correct subclasses", {
 test_that("cnd_signal() creates a backtrace if needed", {
   skip_unless_utf8()
 
-  scoped_options(
+  local_options(
     rlang_trace_top_env = current_env(),
     rlang_trace_format_srcrefs = FALSE
   )
@@ -77,7 +77,7 @@ test_that("cnd_signal() creates a backtrace if needed", {
 # Lifecycle ----------------------------------------------------------
 
 test_that("deprecated arguments of cnd_signal() still work", {
-  scoped_lifecycle_silence()
+  local_lifecycle_silence()
 
   observed <- catch_cnd(cnd_signal("foo"))
   expected <- catch_cnd(signal("", "foo"))

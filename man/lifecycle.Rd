@@ -48,7 +48,7 @@ changes.
 \item \code{\link[=is_pairlist]{is_pairlist()}}, \code{\link[=as_pairlist]{as_pairlist()}}, \code{\link[=is_node]{is_node()}}, \code{\link[=is_node_list]{is_node_list()}}
 \item \code{\link[=is_definition]{is_definition()}}, \code{\link[=new_definition]{new_definition()}}, \code{\link[=is_formulaish]{is_formulaish()}},
 \code{\link[=dots_definitions]{dots_definitions()}}
-\item \code{\link[=scoped_options]{scoped_options()}}, \code{\link[=with_options]{with_options()}}, \code{\link[=push_options]{push_options()}},
+\item \code{\link[=local_options]{local_options()}}, \code{\link[=with_options]{with_options()}}, \code{\link[=push_options]{push_options()}},
 \code{\link[=peek_options]{peek_options()}}, \code{\link[=peek_option]{peek_option()}}
 \item \code{\link[=as_bytes]{as_bytes()}}, \code{\link[=chr_unserialise_unicode]{chr_unserialise_unicode()}}
 \item \code{\link[=caller_fn]{caller_fn()}}, \code{\link[=current_fn]{current_fn()}}
@@ -145,7 +145,7 @@ want to recommend restarts as a style of programming in R.
 \item Passing a function or formula to \code{env_depth()},
 \code{env_poke_parent()}, \code{env_parent<-}, \code{env_tail()}, \code{set_env()},
 \code{env_clone()}, \code{env_inherits()}, \code{env_bind()},
-\code{scoped_bindings()}, \code{with_bindings()}, \code{env_poke()},
+\code{local_bindings()}, \code{with_bindings()}, \code{env_poke()},
 \code{env_has()}, \code{env_get()}, \code{env_names()}, \code{env_bind_exprs()} and
 \code{env_bind_fns()}. This internal genericity was causing confusion
 (see issue #427). You should now extract the environment

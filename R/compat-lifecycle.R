@@ -1,4 +1,4 @@
-# nocov start --- compat-lifecycle --- 2019-06-13 Wed 10:58
+# nocov start --- compat-lifecycle --- 2019-11-15 Fri 15:55
 
 # This file serves as a reference for currently unexported rlang
 # lifecycle functions. Please find the most recent version in rlang's
@@ -144,36 +144,36 @@ stop_defunct <- function(msg) {
   stop(err)
 }
 
-scoped_lifecycle_silence <- function(frame = rlang::caller_env()) {
-  rlang::scoped_options(.frame = frame,
+local_lifecycle_silence <- function(frame = rlang::caller_env()) {
+  rlang::local_options(.frame = frame,
     lifecycle_disable_warnings = TRUE
   )
 }
 with_lifecycle_silence <- function(expr) {
-  scoped_lifecycle_silence()
+  local_lifecycle_silence()
   expr
 }
 
-scoped_lifecycle_warnings <- function(frame = rlang::caller_env()) {
-  rlang::scoped_options(.frame = frame,
+local_lifecycle_warnings <- function(frame = rlang::caller_env()) {
+  rlang::local_options(.frame = frame,
     lifecycle_disable_warnings = FALSE,
     lifecycle_verbose_soft_deprecation = TRUE,
     lifecycle_repeat_warnings = TRUE
   )
 }
 with_lifecycle_warnings <- function(expr) {
-  scoped_lifecycle_warnings()
+  local_lifecycle_warnings()
   expr
 }
 
-scoped_lifecycle_errors <- function(frame = rlang::caller_env()) {
-  scoped_lifecycle_warnings(frame = frame)
-  rlang::scoped_options(.frame = frame,
+local_lifecycle_errors <- function(frame = rlang::caller_env()) {
+  local_lifecycle_warnings(frame = frame)
+  rlang::local_options(.frame = frame,
     lifecycle_warnings_as_errors = TRUE
   )
 }
 with_lifecycle_errors <- function(expr) {
-  scoped_lifecycle_errors()
+  local_lifecycle_errors()
   expr
 }
 

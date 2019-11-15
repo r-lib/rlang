@@ -72,11 +72,11 @@ test_that("env_get_list() retrieves multiple bindings", {
   expect_identical(env_get_list(env, c("foo", "baz"), inherit = TRUE), list(foo = 1L, baz =0L))
 })
 
-test_that("scoped_bindings binds temporarily", {
+test_that("local_bindings binds temporarily", {
   env <- env(foo = "foo", bar = "bar")
 
   local({
-    old <- scoped_bindings(.env = env,
+    old <- local_bindings(.env = env,
       foo = "FOO",
       bar = "BAR",
       baz = "BAZ"
@@ -233,8 +233,8 @@ test_that("can pluck missing arg from environment", {
   env_get(child, "x", inherit = TRUE)
 })
 
-test_that("can call scoped_bindings() and with_bindings() without arguments", {
-  expect_no_error(scoped_bindings())
+test_that("can call local_bindings() and with_bindings() without arguments", {
+  expect_no_error(local_bindings())
   expect_no_error(with_bindings("foo"))
 })
 
@@ -332,7 +332,7 @@ test_that("env_bind_active() supports nested quosures", {
 # Lifecycle ----------------------------------------------------------
 
 test_that("env_bind_exprs() and env_bind_fns() still work", {
-  scoped_options(lifecycle_disable_warnings = TRUE)
+  local_options(lifecycle_disable_warnings = TRUE)
   e <- env()
 
   env_bind_exprs(e, foo = cat("foo\n"))

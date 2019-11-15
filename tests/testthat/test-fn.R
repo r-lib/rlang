@@ -260,7 +260,7 @@ test_that("fn_env() returns base namespace for primitives", {
 })
 
 test_that("as_closure() wrappers dispatch properly", {
-  scoped_bindings(.env = global_env(),
+  local_bindings(.env = global_env(),
     as.character.foobar = function(...) "dispatched!"
   )
   x <- structure(list(), class = "foobar")
@@ -268,7 +268,7 @@ test_that("as_closure() wrappers dispatch properly", {
 })
 
 test_that("as_closure() wrappers are not masked", {
-  scoped_bindings(
+  local_bindings(
     .env = global_env(),
     as.character = function(...) abort("tilt")
   )

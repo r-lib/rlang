@@ -188,7 +188,7 @@ test_that("dots collectors can elect to warn with bare `<-` arguments", {
 })
 
 test_that("dots collectors never warn for <- when option is set", {
-  scoped_options(rlang_dots_disable_assign_warning = TRUE)
+  local_options(rlang_dots_disable_assign_warning = TRUE)
 
   expect_no_warning(list2(a <- 1))
   myexprs <- function(...) enexprs(..., .check_assign = TRUE)
