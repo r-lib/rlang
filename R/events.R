@@ -1,5 +1,5 @@
 
-scoped_exit <- function(expr, frame = caller_env()) {
+local_exit <- function(expr, frame = caller_env()) {
   expr <- enexpr(expr)
 
   # We are at top-level when only one frame refers to the global environment

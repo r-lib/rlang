@@ -291,7 +291,7 @@ local_bindings <- function(..., .env = .frame, .frame = caller_env()) {
   }
 
   old <- env_bind_impl(env, bindings, "local_bindings()", bind = TRUE)
-  scoped_exit(frame = .frame, !!call2(env_bind_impl, env, old, bind = TRUE))
+  local_exit(frame = .frame, !!call2(env_bind_impl, env, old, bind = TRUE))
 
   invisible(old)
 }

@@ -59,7 +59,7 @@ local_options <- function(..., .frame = caller_env()) {
 
   old <- options(options)
   options_lang <- call2(base::options, !!! old)
-  scoped_exit(!! options_lang, frame = .frame)
+  local_exit(!! options_lang, frame = .frame)
 
   invisible(old)
 }
