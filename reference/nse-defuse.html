@@ -49,11 +49,11 @@ the two functions expr() and enquo(). Whereas expr() defuses
 your own expression, enquo() defuses expressions supplied as
 argument by the user of a function. See section on function
 arguments for more on this distinction.
-The main purpose of preventing evaluation of an expression is to
-avoid &quot;object not found&quot; errors when the expression involves
-data-variables that only exist in a data frame. The expression is
-defused so it can be resumed later on, in a context where the
-data-variables have been defined.
+The main purpose of defusing evaluation of an expression is to
+enable data-masking, where an expression is evaluated in the
+context of a data frame so that you can write var instead of
+data$var. The expression is defused so it can be resumed later
+on, in a context where the data-variables have been defined.
 Defusing prevents the evaluation of R code, but you can still force
 evaluation inside a defused expression with the forcing operators !! and !!!." />
 <meta name="twitter:card" content="summary" />
@@ -182,11 +182,11 @@ the two functions <code>expr()</code> and <code>enquo()</code>. Whereas <code>ex
 your own expression, <code>enquo()</code> defuses expressions supplied as
 argument by the user of a function. See section on function
 arguments for more on this distinction.</p>
-<p>The main purpose of preventing evaluation of an expression is to
-avoid "object not found" errors when the expression involves
-data-variables that only exist in a data frame. The expression is
-defused so it can be resumed later on, in a context where the
-data-variables have been defined.</p>
+<p>The main purpose of defusing evaluation of an expression is to
+enable data-masking, where an expression is evaluated in the
+context of a data frame so that you can write <code>var</code> instead of
+<code>data$var</code>. The expression is defused so it can be resumed later
+on, in a context where the data-variables have been defined.</p>
 <p>Defusing prevents the evaluation of R code, but you can still force
 evaluation inside a defused expression with the <a href='nse-force.html'>forcing operators</a> <code>!!</code> and <code>!!!</code>.</p>
     </div>
@@ -412,8 +412,8 @@ of an expression.</p></li>
 <span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'>quo</span>(<span class='no'>letters</span>)
 <span class='no'>quo</span></div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^letters</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7d173e8</span><span></div><div class='input'>
-<span class='fu'><a href='set_expr.html'>get_expr</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; letters</div><div class='input'><span class='fu'><a href='get_env.html'>get_env</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7d173e8&gt;</div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x85b8698</span><span></div><div class='input'>
+<span class='fu'><a href='set_expr.html'>get_expr</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; letters</div><div class='input'><span class='fu'><a href='get_env.html'>get_env</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; &lt;environment: 0x85b8698&gt;</div><div class='input'>
 <span class='co'># Quosures can be evaluated with eval_tidy():</span>
 <span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt;  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
 #&gt; [20] "t" "u" "v" "w" "x" "y" "z"</div><div class='input'>
@@ -438,7 +438,7 @@ of an expression.</p></li>
 <span class='co'># terminal is capable of displaying colours:</span>
 <span class='no'>quo</span></div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^(</span><span style='color: #00BB00;'>^2 + 3</span><span style='color: #0000BB;'>) * local_ten</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x57a82e0</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x5f17d08</span><span></div><div class='input'>
 <span class='co'># All the quosures in the expression evaluate in their original</span>
 <span class='co'># context. The local objects are looked up properly and we get the</span>
 <span class='co'># expected result:</span>
