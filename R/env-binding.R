@@ -55,10 +55,9 @@
 #' functions.
 #'
 #' @param .env An environment.
-#' @param ... Pairs of names and expressions, values or functions.
-#'   Pass [zap()] objects to remove bindings.
-#'
-#'   These dots support [tidy dots][tidy-dots] features.
+#' @param ... <[dynamic][dyn-dots]> Named objects (`env_bind()`),
+#'   expressions `env_bind_lazy()`, or functions (`env_bind_active()`).
+#'   Use [zap()] to remove bindings.
 #' @return The input object `.env`, with its associated environment
 #'   modified in place, invisibly.
 #' @export

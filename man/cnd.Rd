@@ -22,8 +22,8 @@ message_cnd(class = NULL, ..., message = "", .subclass)
 for consistency with our conventions for class constructors
 documented in \url{https://adv-r.hadley.nz/s3.html#s3-subclassing}.}
 
-\item{...}{Named data fields stored inside the condition
-object. These dots are evaluated with \link[=tidy-dots]{explicit splicing}.}
+\item{...}{<\link[=dyn-dots]{dynamic}> Named data fields stored inside
+the condition object.}
 
 \item{message}{A default message to inform the user about the
 condition when it is signalled.}

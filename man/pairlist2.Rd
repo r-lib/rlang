@@ -7,13 +7,13 @@
 pairlist2(...)
 }
 \arguments{
-\item{...}{Arguments stored in the pairlist. Empty arguments are
-preserved.}
+\item{...}{<\link[=dyn-dots]{dynamic}> Arguments stored in the
+pairlist. Empty arguments are preserved.}
 }
 \description{
-This pairlist constructor supports \link[=tidy-dots]{tidy dots} features
-like \code{!!!}. Use it to manually create argument lists for calls or
-parameter lists for functions.
+This pairlist constructor uses \link[=dyn-dots]{dynamic dots}. Use
+it to manually create argument lists for calls or parameter lists
+for functions.
 }
 \examples{
 # Unlike `exprs()`, `pairlist2()` evaluates its arguments.

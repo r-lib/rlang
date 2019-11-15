@@ -8,7 +8,6 @@
 \alias{cpl}
 \alias{chr}
 \alias{bytes}
-\alias{ll}
 \title{Create vectors}
 \usage{
 lgl(...)
@@ -35,7 +34,7 @@ The atomic vector constructors are equivalent to \code{\link[=c]{c()}} but:
 \item They allow you to be more explicit about the output
 type. Implicit coercions (e.g. from integer to logical) follow
 the rules described in \link{vector-coercion}.
-\item They use \link[=tidy-dots]{tidy dots} and thus support splicing with \code{!!!}.
+\item They use \link[=dyn-dots]{dynamic dots}.
 }
 }
 \section{Life cycle}{

@@ -101,8 +101,7 @@
 #' * The argument-defusing operator `enquo()` is similar to
 #'   [substitute()].
 #'
-#'
-#' @inheritParams tidy-dots
+#' @inheritParams dots_list
 #' @param expr An expression.
 #' @param arg A symbol representing an argument. The expression
 #'   supplied to that argument will be captured instead of being

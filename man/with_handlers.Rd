@@ -14,11 +14,10 @@ calling(handler)
 handlers are established. The underscored version takes a quoted
 expression or a quoted formula.}
 
-\item{...}{Named handlers. These should be functions of one
-argument. These handlers are treated as exiting by default. Use
-\code{\link[=calling]{calling()}} to specify a calling handler. These dots support
-\link[=tidy-dots]{tidy dots} features and are passed to \code{\link[=as_function]{as_function()}}
-to enable the formula shortcut for lambda functions.}
+\item{...}{<\link[=dyn-dots]{dynamic}> Named handlers. These should be
+functions of one argument, or \link[=as_function]{formula functions}.
+The handlers are considered exiting by default, use \code{\link[=calling]{calling()}}
+to specify a calling handler.}
 
 \item{handler}{A handler function that takes a condition as
 argument. This is passed to \code{\link[=as_function]{as_function()}} and can thus be a

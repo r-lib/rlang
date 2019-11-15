@@ -12,10 +12,9 @@ call_modify(.call, ..., .homonyms = c("keep", "first", "last", "error"),
 right-hand side, or a frame object from which to extract the call
 expression.}
 
-\item{...}{Named or unnamed expressions (constants, names or calls)
-used to modify the call. Use \code{\link[=zap]{zap()}} to remove arguments. These
-dots support \link[=tidy-dots]{tidy dots} features. Empty arguments are
-allowed and preserved.}
+\item{...}{<\link[=dyn-dots]{dynamic}> Named or unnamed expressions
+(constants, names or calls) used to modify the call. Use \code{\link[=zap]{zap()}}
+to remove arguments. Empty arguments are preserved.}
 
 \item{.homonyms}{How to treat arguments with the same name. The
 default, \code{"keep"}, preserves these arguments. Set \code{.homonyms} to

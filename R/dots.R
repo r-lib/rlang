@@ -1,26 +1,82 @@
-#' Collect dots as lists
+#' Dynamic dots
 #'
 #' @description
 #'
-#' `list2()` is equivalent to `list(...)` with a few additional
-#' features:
+#' The `...` syntax of base R allows you to:
 #'
-#' - You can splice other lists with the
-#'   [unquote-splice][nse-force] `!!!` operator.
+#' - __Forward__ arguments from function to function, matching them
+#'   along the way to function parameters.
 #'
-#' - You can unquote names by using the [unquote][nse-force]
-#'   operator `!!` on the left-hand side of `:=`.
+#' - __Collect__ arguments inside data structures, e.g. with [c()] or
+#'   [list()].
 #'
-#' - Trailing commas are ignored, making it easier to copy and paste
-#'   arguments.
+#' Dynamic dots offer a few additional features:
 #'
-#' For lack of a better name, these features are collectively called
-#' "tidy dots".
+#' 1. You can __splice__ arguments saved in a list with the [big
+#'    bang][quasiquotation] operator `!!!`.
 #'
-#' `dots_list()` is a lower-level version of `list2()` that offers
-#' additional parameters for dots capture.
+#' 2. You can __unquote__ names by using the [bang bang][quasiquotation]
+#'    operator `!!` on the left-hand side of `:=`.
 #'
-#' @param ... Arguments to collect with `!!!` support.
+#' 3. Trailing commas are ignored, making it easier to copy and paste
+#'    lines of arguments.
+#'
+#'
+#' @section Add dynamic dots support in your functions:
+#'
+#' If your function takes dots, adding support for dynamic features is
+#' as easy as collecting the dots with [list2()] instead of [list()].
+#'
+#' Other dynamic dots collectors are [dots_list()], which is more
+#' configurable than [list2()], `vars()` which doesn't force its
+#' arguments, and [call2()] for creating calls.
+#'
+#' @name dyn-dots
+NULL
+
+#' Collect dots in a list
+#'
+#' `list2(...)` is equivalent to `list(...)` with a few additional
+#' features, collectively called [_dynamic dots_][dyn-dots]. While
+#' `list2()` hard-code these features, `dots_list()` is a lower-level
+#' version that offers more control.
+#'
+#' @param ... Arguments to collect in a list. These dots are
+#'   [dynamic][dyn-dots].
+#' @return A list containing the `...` inputs.
+#'
+#' @export
+list2 <- function(...) {
+  .Call(rlang_dots_list,
+    frame_env = environment(),
+    named = FALSE,
+    ignore_empty = "trailing",
+    preserve_empty = FALSE,
+    unquote_names = TRUE,
+    homonyms = "keep",
+    check_assign = FALSE
+  )
+}
+#' @rdname list2
+#' @usage NULL
+#' @export
+ll <- list2
+
+# Preserves empty arguments
+list3 <- function(...) {
+  .Call(rlang_dots_list,
+    frame_env = environment(),
+    named = FALSE,
+    ignore_empty = "trailing",
+    preserve_empty = TRUE,
+    unquote_names = TRUE,
+    homonyms = "keep",
+    check_assign = FALSE
+  )
+}
+
+
+#' @rdname list2
 #' @param .ignore_empty Whether to ignore empty arguments. Can be one
 #'   of `"trailing"`, `"none"`, `"all"`. If `"trailing"`, only the
 #'   last argument is ignored if it is empty.
@@ -38,13 +94,6 @@
 #'   issued to advise users to use `=` if they meant to match a
 #'   function parameter, or wrap the `<-` call in braces otherwise.
 #'   This ensures assignments are explicit.
-#' @return A list of arguments. This list is always named: unnamed
-#'   arguments are named with the empty string `""`.
-#'
-#' @seealso [exprs()] for extracting dots without evaluation.
-#' @name tidy-dots
-
-#' @rdname tidy-dots
 #' @export
 #' @examples
 #' # Let's create a function that takes a variable number of arguments:
@@ -182,7 +231,7 @@ dots_split <- function(...,
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
 #'
 #' - `splice` marks an object to be spliced. It is equivalent to using
-#'   `!!!` in a function with [tidy dots semantics][tidy-dots].
+#'   `!!!` in a function taking [dynamic dots][dyn-dots].
 #'
 #' - `dots_splice()` is like [dots_list()] but automatically splices
 #'   list inputs.
@@ -267,7 +316,7 @@ print.rlang_box_splice <- function(x, ...) {
 }
 
 #' @rdname splice
-#' @inheritParams tidy-dots
+#' @inheritParams dots_list
 #' @export
 dots_splice <- function(...,
                         .ignore_empty = c("trailing", "none", "all"),
@@ -297,7 +346,7 @@ dots_splice <- function(...,
 #' spliced objects manually, perhaps with a custom predicate (see
 #' [flatten_if()]).
 #'
-#' @inheritParams tidy-dots
+#' @inheritParams dots_list
 #' @param ... Arguments to evaluate and process splicing operators.
 #'
 #' @keywords internal

@@ -12,9 +12,9 @@ on the stack. This argument is passed by expression and supports
 \link[=nse-force]{unquoting}. It is evaluated in a context where
 restarts are established.}
 
-\item{...}{Named restart functions. The name is taken as the
-restart name and the function is executed after the jump. These
-dots support \link[=tidy-dots]{tidy dots} features.}
+\item{...}{<\link[=dyn-dots]{dynamic}> Named restart functions. The
+name is taken as the restart name and the function is executed
+after the jump.}
 }
 \description{
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}

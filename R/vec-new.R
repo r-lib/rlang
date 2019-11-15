@@ -10,7 +10,7 @@
 #'   type. Implicit coercions (e.g. from integer to logical) follow
 #'   the rules described in [vector-coercion].
 #'
-#' * They use [tidy dots][tidy-dots] and thus support splicing with `!!!`.
+#' * They use [dynamic dots][dyn-dots].
 #'
 #'
 #' @section Life cycle:
@@ -98,38 +98,6 @@ bytes <- function(...) {
   })
   .Call(rlang_squash, dots, "raw", is_spliced_bare, 1L)
 }
-
-#' @rdname tidy-dots
-#' @export
-list2 <- function(...) {
-  .Call(rlang_dots_list,
-    frame_env = environment(),
-    named = FALSE,
-    ignore_empty = "trailing",
-    preserve_empty = FALSE,
-    unquote_names = TRUE,
-    homonyms = "keep",
-    check_assign = FALSE
-  )
-}
-#' @rdname vector-construction
-#' @usage NULL
-#' @export
-ll <- list2
-
-# Preserves empty arguments
-list3 <- function(...) {
-  .Call(rlang_dots_list,
-    frame_env = environment(),
-    named = FALSE,
-    ignore_empty = "trailing",
-    preserve_empty = TRUE,
-    unquote_names = TRUE,
-    homonyms = "keep",
-    check_assign = FALSE
-  )
-}
-
 
 #' Create vectors matching a given length
 #'

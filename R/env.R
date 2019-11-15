@@ -64,10 +64,9 @@
 #' - `child_env()` is in the questioning stage. It is redundant now
 #'   that `env()` accepts parent environments.
 #'
-#' @param ...,data Named values. You can supply one unnamed to specify
-#'   a custom parent, otherwise it defaults to the current
-#'   environment. These dots support [tidy dots][tidy-dots]
-#'   features.
+#' @param ...,data <[dynamic][dyn-dots]> Named values. You can
+#'   supply one unnamed to specify a custom parent, otherwise it
+#'   defaults to the current environment.
 #' @param .parent,parent A parent environment. Can be an object
 #'   supported by [as_environment()].
 #' @seealso [env_has()], [env_bind()].

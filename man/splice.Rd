@@ -20,7 +20,8 @@ dots_splice(..., .ignore_empty = c("trailing", "none", "all"),
 \arguments{
 \item{x}{A list to splice.}
 
-\item{...}{Arguments to collect with \code{!!!} support.}
+\item{...}{Arguments to collect in a list. These dots are
+\link[=dyn-dots]{dynamic}.}
 
 \item{.ignore_empty}{Whether to ignore empty arguments. Can be one
 of \code{"trailing"}, \code{"none"}, \code{"all"}. If \code{"trailing"}, only the
@@ -47,7 +48,7 @@ This ensures assignments are explicit.}
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
 \itemize{
 \item \code{splice} marks an object to be spliced. It is equivalent to using
-\code{!!!} in a function with \link[=tidy-dots]{tidy dots semantics}.
+\code{!!!} in a function taking \link[=dyn-dots]{dynamic dots}.
 \item \code{dots_splice()} is like \code{\link[=dots_list]{dots_list()}} but automatically splices
 list inputs.
 }

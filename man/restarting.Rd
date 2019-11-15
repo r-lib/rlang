@@ -9,10 +9,9 @@ restarting(.restart, ..., .fields = NULL)
 \arguments{
 \item{.restart}{The name of a restart.}
 
-\item{...}{Additional arguments passed on the restart
-function. These arguments are evaluated only once and
-immediately, when creating the restarting handler. Furthermore,
-they support \link[=tidy-dots]{tidy dots} features.}
+\item{...}{<\link[=dyn-dots]{dynamic}> Additional arguments passed on
+the restart function. These arguments are evaluated only once
+and immediately, when creating the restarting handler.}
 
 \item{.fields}{A character vector specifying the fields of the
 condition that should be passed as arguments to the restart. If

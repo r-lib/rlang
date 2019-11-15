@@ -9,10 +9,9 @@ env_bury(.env, ...)
 \arguments{
 \item{.env}{An environment.}
 
-\item{...}{Pairs of names and expressions, values or functions.
-Pass \code{\link[=zap]{zap()}} objects to remove bindings.
-
-These dots support \link[=tidy-dots]{tidy dots} features.}
+\item{...}{<\link[=dyn-dots]{dynamic}> Named objects (\code{env_bind()}),
+expressions \code{env_bind_lazy()}, or functions (\code{env_bind_active()}).
+Use \code{\link[=zap]{zap()}} to remove bindings.}
 }
 \value{
 A copy of \code{.env} enclosing the new environment containing

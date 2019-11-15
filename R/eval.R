@@ -283,16 +283,15 @@ eval_top <- function(expr, env = caller_env()) {
 #' This function constructs and evaluates a call to `.fn`.
 #' It has two primary uses:
 #'
-#' * To call a function with arguments stored in a list (if the function
-#'   doesn't support [tidy-dots])
+#' * To call a function with arguments stored in a list (if the
+#'   function doesn't support [dynamic dots][dyn-dots]). Splice the
+#'   list of arguments with `!!!`.
 #'
 #' * To call every function stored in a list (in conjunction with `map()`/
 #'   [lapply()])
 #'
 #' @param .fn A function, or function name as a string.
-#' @param ... Arguments to function.
-#'
-#'   These dots support [tidy-dots] features.
+#' @param ... <[dynamic][dyn-dots]> Arguments for `.fn`.
 #' @param  .env Environment in which to evaluate the call. This will be
 #'   most useful if `f` is a string, or the function has side-effects.
 #' @export
