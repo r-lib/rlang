@@ -65,13 +65,17 @@
 #'   Experimental: Can also be a named character vector, in which case
 #'   the message is assembled as a list of bullets. See
 #'   [cnd_message()] to learn how names control the bulleted output.
-#' @param .subclass Subclass of the condition. This allows your users
+#' @param class Subclass of the condition. This allows your users
 #'   to selectively handle the conditions signalled by your functions.
 #' @param ... Additional data to be stored in the condition object.
 #' @param call Defunct as of rlang 0.4.0. Storing the full
 #'   backtrace is now preferred to storing a simple call.
 #' @param msg,type These arguments were renamed to `message` and
 #'   `.subclass` and are defunct as of rlang 0.4.0.
+#' @param .subclass This argument was renamed to `class` in rlang
+#'   0.4.2.  It will be deprecated in the next major version. This is
+#'   for consistency with our conventions for class constructors
+#'   documented in <https://adv-r.hadley.nz/s3.html#s3-subclassing>.
 #'
 #' @seealso [with_abort()] to convert all errors to rlang errors.
 #' @examples
@@ -129,13 +133,13 @@
 #' }
 #' @export
 abort <- function(message = "",
-                  .subclass = NULL,
+                  class = NULL,
                   ...,
                   trace = NULL,
-                  call = NULL,
+                  call,
                   parent = NULL,
-                  msg, type) {
-  validate_signal_args(msg, type, call)
+                  msg, type, .subclass) {
+  validate_signal_args(msg, type, call, .subclass)
 
   if (is_null(trace) && is_null(peek_option("rlang__disable_trace_capture"))) {
     # Prevents infloops when rlang throws during trace capture
@@ -153,7 +157,7 @@ abort <- function(message = "",
 
   message <- collapse_cnd_message(message)
 
-  cnd <- error_cnd(.subclass,
+  cnd <- error_cnd(class,
     ...,
     message = message,
     parent = parent,

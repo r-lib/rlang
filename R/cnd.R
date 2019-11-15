@@ -13,7 +13,7 @@
 #' The `.type` and `.msg` arguments have been renamed to `.subclass`
 #' and `message`. They are deprecated as of rlang 0.3.0.
 #'
-#' @param .subclass The condition subclass.
+#' @param class The condition subclass.
 #' @param ... Named data fields stored inside the condition
 #'   object. These dots are evaluated with [explicit
 #'   splicing][tidy-dots].
@@ -21,6 +21,7 @@
 #'   condition when it is signalled.
 #' @param trace A `trace` object created by [trace_back()].
 #' @param parent A parent condition object created by [abort()].
+#' @inheritParams abort
 #' @seealso [cnd_signal()], [with_handlers()].
 #'
 #' @keywords internal
@@ -43,21 +44,30 @@
 #' # Signalling an error condition aborts the current computation:
 #' err <- error_cnd("foo", message = "I am an error")
 #' try(cnd_signal(err))
-cnd <- function(.subclass, ..., message = "") {
-  if (missing(.subclass)) {
+cnd <- function(class, ..., message = "", .subclass) {
+  if (!missing(.subclass)) {
+    deprecate_subclass(.subclass)
+  }
+  if (missing(class)) {
     abort("Bare conditions must be subclassed")
   }
-  .Call(rlang_new_condition, .subclass, message, dots_list(...))
+  .Call(rlang_new_condition, class, message, dots_list(...))
 }
 #' @rdname cnd
 #' @export
-warning_cnd <- function(.subclass = NULL, ..., message = "") {
-  .Call(rlang_new_condition, c(.subclass, "warning"), message, dots_list(...))
+warning_cnd <- function(class = NULL, ..., message = "", .subclass) {
+  if (!missing(.subclass)) {
+    deprecate_subclass(.subclass)
+  }
+  .Call(rlang_new_condition, c(class, "warning"), message, dots_list(...))
 }
 #' @rdname cnd
 #' @export
-message_cnd <- function(.subclass = NULL, ..., message = "") {
-  .Call(rlang_new_condition, c(.subclass, "message"), message, dots_list(...))
+message_cnd <- function(class = NULL, ..., message = "", .subclass) {
+  if (!missing(.subclass)) {
+    deprecate_subclass(.subclass)
+  }
+  .Call(rlang_new_condition, c(class, "message"), message, dots_list(...))
 }
 
 #' Is object a condition?

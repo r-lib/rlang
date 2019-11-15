@@ -87,3 +87,13 @@ test_that("deprecated arguments of cnd_signal() still work", {
     foo = calling(function(cnd) expect_true(rst_exists("rlang_muffle")))
   )
 })
+
+test_that("can still use `.subclass`", {
+  expect_error(abort("foo", .subclass = "baz"), class = "baz")
+  expect_warning(warn("foo", .subclass = "baz"), class = "baz")
+  expect_message(inform("foo", .subclass = "baz"), class = "baz")
+  expect_is(cnd(.subclass = "baz"), "baz")
+  expect_is(error_cnd(.subclass = "baz"), "baz")
+  expect_is(warning_cnd(.subclass = "baz"), "baz")
+  expect_is(message_cnd(.subclass = "baz"), "baz")
+})

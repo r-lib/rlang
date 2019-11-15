@@ -10,14 +10,17 @@
 error_cnd(.subclass = NULL, ..., message = "", trace = NULL,
   parent = NULL)
 
-cnd(.subclass, ..., message = "")
+cnd(class, ..., message = "", .subclass)
 
-warning_cnd(.subclass = NULL, ..., message = "")
+warning_cnd(class = NULL, ..., message = "", .subclass)
 
-message_cnd(.subclass = NULL, ..., message = "")
+message_cnd(class = NULL, ..., message = "", .subclass)
 }
 \arguments{
-\item{.subclass}{The condition subclass.}
+\item{.subclass}{This argument was renamed to \code{class} in rlang
+0.4.2.  It will be deprecated in the next major version. This is
+for consistency with our conventions for class constructors
+documented in \url{https://adv-r.hadley.nz/s3.html#s3-subclassing}.}
 
 \item{...}{Named data fields stored inside the condition
 object. These dots are evaluated with \link[=tidy-dots]{explicit splicing}.}
@@ -28,6 +31,8 @@ condition when it is signalled.}
 \item{trace}{A \code{trace} object created by \code{\link[=trace_back]{trace_back()}}.}
 
 \item{parent}{A parent condition object created by \code{\link[=abort]{abort()}}.}
+
+\item{class}{The condition subclass.}
 }
 \description{
 These constructors make it easy to create subclassed conditions.

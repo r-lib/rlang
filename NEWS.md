@@ -4,6 +4,11 @@
 
 # rlang 0.4.2
 
+* The `.subclass` argument of `abort()`, `warn()` and `inform()` has
+  been renamed to `class`. This is for consistency with our
+  conventions for class constructors documented in
+  https://adv-r.hadley.nz/s3.html#s3-subclassing.
+
 * `inform()` now prints messages to the standard output by default in
   interactive sessions. This makes them appear more like normal output
   in IDEs such as RStudio. In non-interactive sessions, messages are
