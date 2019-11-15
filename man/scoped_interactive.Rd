@@ -3,11 +3,14 @@
 \name{scoped_interactive}
 \alias{scoped_interactive}
 \alias{scoped_options}
+\alias{scoped_bindings}
 \title{Questioning \code{scoped_} functions}
 \usage{
 scoped_interactive(value = TRUE, frame = caller_env())
 
 scoped_options(..., .frame = caller_env())
+
+scoped_bindings(..., .env = .frame, .frame = caller_env())
 }
 \arguments{
 \item{value}{A single \code{TRUE} or \code{FALSE}. This overrides the return
@@ -24,6 +27,8 @@ or character vectors of option names.}
 \item{.frame}{The environment of a stack frame which defines the
 scope of the temporary options. When the frame returns, the
 options are set back to their original values.}
+
+\item{.env}{An environment.}
 }
 \description{
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}

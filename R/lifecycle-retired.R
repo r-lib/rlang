@@ -1978,6 +1978,7 @@ exiting <- function(handler) {
 #'
 #' @inheritParams local_interactive
 #' @inheritParams local_options
+#' @inheritParams local_bindings
 #'
 #' @export
 scoped_interactive <- function(value = TRUE, frame = caller_env()) {
@@ -1987,4 +1988,9 @@ scoped_interactive <- function(value = TRUE, frame = caller_env()) {
 #' @export
 scoped_options <- function(..., .frame = caller_env()) {
   local_options(..., .frame = .frame)
+}
+#' @rdname scoped_interactive
+#' @export
+scoped_bindings <- function(..., .env = .frame, .frame = caller_env()) {
+  local_bindings(..., .env = .env, .frame = .frame)
 }

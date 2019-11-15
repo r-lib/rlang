@@ -29,7 +29,7 @@ test_that("can use conditionMessage() method in subclasses of rlang errors", {
 })
 
 test_that("rlang_error.print() calls conditionMessage() method", {
-  scoped_bindings(.env = global_env(),
+  local_bindings(.env = global_env(),
     conditionMessage.foobar = function(c) c$foobar_msg
   )
   local_options(
@@ -50,7 +50,7 @@ test_that("error is printed with parent backtrace", {
   skip_unless_utf8()
 
   # Test low-level error can use conditionMessage()
-  scoped_bindings(.env = global_env(),
+  local_bindings(.env = global_env(),
     conditionMessage.foobar = function(c) c$foobar_msg
   )
 

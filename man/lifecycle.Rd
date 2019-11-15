@@ -145,7 +145,7 @@ want to recommend restarts as a style of programming in R.
 \item Passing a function or formula to \code{env_depth()},
 \code{env_poke_parent()}, \code{env_parent<-}, \code{env_tail()}, \code{set_env()},
 \code{env_clone()}, \code{env_inherits()}, \code{env_bind()},
-\code{scoped_bindings()}, \code{with_bindings()}, \code{env_poke()},
+\code{local_bindings()}, \code{with_bindings()}, \code{env_poke()},
 \code{env_has()}, \code{env_get()}, \code{env_names()}, \code{env_bind_exprs()} and
 \code{env_bind_fns()}. This internal genericity was causing confusion
 (see issue #427). You should now extract the environment
