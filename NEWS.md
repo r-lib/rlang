@@ -4,6 +4,11 @@
 
 # rlang 0.4.2
 
+* The functions prefixed in `scoped_` have been renamed to use the
+  more conventional `local_` prefix. For instance, `scoped_bindings()`
+  is now `local_bindings()`. The `scoped_` functions will be
+  deprecated in the next significant version of rlang (0.5.0).
+
 * The `.subclass` argument of `abort()`, `warn()` and `inform()` has
   been renamed to `class`. This is for consistency with our
   conventions for class constructors documented in
