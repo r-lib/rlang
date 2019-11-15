@@ -1,8 +1,8 @@
 
-# rlang (development version)
-
-
 # rlang 0.4.2
+
+* New `cnd_details()` generic for customising the footer of error
+  messages.
 
 * The reminder to call `last_error()` is now less confusing thanks to
   a suggestion by @markhwhiteii.

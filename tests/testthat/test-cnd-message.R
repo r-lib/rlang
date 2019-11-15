@@ -33,6 +33,17 @@ test_that("default conditionMessage() method for rlang errors calls cnd_message(
   )
   exp <- paste0("dispatched!\n", format_bullets(c("one", x = "two", i = "three")))
   expect_identical(out, exp)
+
+  # All three methods defined
+  out <- with_bindings(
+    .env = global_env(),
+    cnd_issue.rlang_foobar = function(cnd, ...) "dispatched!",
+    cnd_bullets.rlang_foobar = function(cnd, ...) c("one", x = "two", i = "three"),
+    cnd_details.rlang_foobar = function(cnd, ...) c("foo", "bar"),
+    conditionMessage(error_cnd("rlang_foobar", message = "embedded"))
+  )
+  exp <- paste0(exp, "\nfoo\nbar")
+  expect_identical(out, exp)
 })
 
 test_that("default cnd_bullets() method calls lazy method if present", {

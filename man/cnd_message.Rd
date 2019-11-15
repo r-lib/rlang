@@ -4,6 +4,7 @@
 \alias{cnd_message}
 \alias{cnd_issue}
 \alias{cnd_bullets}
+\alias{cnd_details}
 \alias{format_bullets}
 \title{Build an error message from a main issue and bullet messages}
 \usage{
@@ -12,6 +13,8 @@ cnd_message(cnd)
 cnd_issue(cnd, ...)
 
 cnd_bullets(cnd, ...)
+
+cnd_details(cnd, ...)
 
 format_bullets(x)
 }
@@ -30,6 +33,8 @@ format_bullets(x)
 \item The \code{cnd_bullets()} generic. Methods should return a named vector
 of lines. These lines are automatically prefixed with a bullet by
 \code{cnd_message()} (see the section on error statements).
+\item The \code{cnd_details()} generic. Methods should return one or several
+lines.
 }
 
 \code{cnd_message()} is automatically called by the \code{conditionMessage()}
