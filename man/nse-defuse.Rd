@@ -98,11 +98,11 @@ your own expression, \code{enquo()} defuses expressions supplied as
 argument by the user of a function. See section on function
 arguments for more on this distinction.
 
-The main purpose of preventing evaluation of an expression is to
-avoid "object not found" errors when the expression involves
-data-variables that only exist in a data frame. The expression is
-defused so it can be resumed later on, in a context where the
-data-variables have been defined.
+The main purpose of defusing evaluation of an expression is to
+enable data-masking, where an expression is evaluated in the
+context of a data frame so that you can write \code{var} instead of
+\code{data$var}. The expression is defused so it can be resumed later
+on, in a context where the data-variables have been defined.
 
 Defusing prevents the evaluation of R code, but you can still force
 evaluation inside a defused expression with the \link[=nse-force]{forcing operators} \code{!!} and \code{!!!}.
