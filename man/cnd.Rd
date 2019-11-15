@@ -22,7 +22,7 @@ message_cnd(class = NULL, ..., message = "", .subclass)
 for consistency with our conventions for class constructors
 documented in \url{https://adv-r.hadley.nz/s3.html#s3-subclassing}.}
 
-\item{...}{[\link[=dyn-dots]{Dynamic}] - Named data fields stored inside
+\item{...}{<\link[=dyn-dots]{dynamic}> Named data fields stored inside
 the condition object.}
 
 \item{message}{A default message to inform the user about the

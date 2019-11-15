@@ -22,7 +22,7 @@ lang_args(lang)
 lang_args_names(lang)
 }
 \arguments{
-\item{...}{[\link[=dyn-dots]{Dynamic}] - Named or unnamed expressions
+\item{...}{<\link[=dyn-dots]{dynamic}> Named or unnamed expressions
 (constants, names or calls) used to modify the call. Use \code{\link[=zap]{zap()}}
 to remove arguments. Empty arguments are preserved.}
 

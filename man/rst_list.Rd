@@ -18,7 +18,7 @@ rst_maybe_jump(.restart, ...)
 \arguments{
 \item{.restart}{The name of a restart.}
 
-\item{...}{[\link[=dyn-dots]{Dynamic}] - Arguments passed on to the
+\item{...}{<\link[=dyn-dots]{dynamic}> Arguments passed on to the
 restart function.}
 }
 \description{

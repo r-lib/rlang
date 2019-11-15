@@ -9,7 +9,7 @@ env_bury(.env, ...)
 \arguments{
 \item{.env}{An environment.}
 
-\item{...}{[\link[=dyn-dots]{Dynamic}] - Named objects (\code{env_bind()}),
+\item{...}{<\link[=dyn-dots]{dynamic}> Named objects (\code{env_bind()}),
 expressions \code{env_bind_lazy()}, or functions (\code{env_bind_active()}).
 Use \code{\link[=zap]{zap()}} to remove bindings.}
 }

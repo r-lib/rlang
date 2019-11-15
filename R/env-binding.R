@@ -55,7 +55,7 @@
 #' functions.
 #'
 #' @param .env An environment.
-#' @param ... [[Dynamic][dyn-dots]] - Named objects (`env_bind()`),
+#' @param ... <[dynamic][dyn-dots]> Named objects (`env_bind()`),
 #'   expressions `env_bind_lazy()`, or functions (`env_bind_active()`).
 #'   Use [zap()] to remove bindings.
 #' @return The input object `.env`, with its associated environment

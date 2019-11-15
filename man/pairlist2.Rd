@@ -7,7 +7,7 @@
 pairlist2(...)
 }
 \arguments{
-\item{...}{[\link[=dyn-dots]{Dynamic}] - Arguments stored in the
+\item{...}{<\link[=dyn-dots]{dynamic}> Arguments stored in the
 pairlist. Empty arguments are preserved.}
 }
 \description{

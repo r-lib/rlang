@@ -16,7 +16,7 @@
 #'   on the stack. This argument is passed by expression and supports
 #'   [unquoting][nse-force]. It is evaluated in a context where
 #'   restarts are established.
-#' @param ... [[Dynamic][dyn-dots]] - Named restart functions. The
+#' @param ... <[dynamic][dyn-dots]> Named restart functions. The
 #'   name is taken as the restart name and the function is executed
 #'   after the jump.
 #' @seealso [return_from()] and [return_to()] for a more flexible way
@@ -140,7 +140,7 @@ with_restarts <- function(.expr, ...) {
 #' exists before jumping.
 #'
 #' @param .restart The name of a restart.
-#' @param ... [[Dynamic][dyn-dots]] - Arguments passed on to the
+#' @param ... <[dynamic][dyn-dots]> Arguments passed on to the
 #'   restart function.
 #' @seealso [with_restarts()]
 #'

@@ -13,7 +13,7 @@ new_language(head, tail = NULL)
 \item{.fn}{Function to call. Must be a callable object: a string,
 symbol, call, or a function.}
 
-\item{...}{[\link[=dyn-dots]{Dynamic}] - Arguments for the function
+\item{...}{<\link[=dyn-dots]{dynamic}> Arguments for the function
 call. Empty arguments are preserved.}
 
 \item{.ns}{Namespace with which to prefix \code{.fn}. Must be a string

@@ -9,7 +9,7 @@ restarting(.restart, ..., .fields = NULL)
 \arguments{
 \item{.restart}{The name of a restart.}
 
-\item{...}{[\link[=dyn-dots]{Dynamic}] - Additional arguments passed on
+\item{...}{<\link[=dyn-dots]{dynamic}> Additional arguments passed on
 the restart function. These arguments are evaluated only once
 and immediately, when creating the restarting handler.}
 

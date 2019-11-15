@@ -30,10 +30,10 @@
 #' @param .expr An expression to execute in a context where new
 #'   handlers are established. The underscored version takes a quoted
 #'   expression or a quoted formula.
-#' @param ... [[Dynamic][dyn-dots]] - Named handlers. These should be functions of one
-#'   argument, or [formula functions][as_function]. The handlers are
-#'   considered exiting by default, use [calling()] to specify a
-#'   calling handler.
+#' @param ... <[dynamic][dyn-dots]> Named handlers. These should be
+#'   functions of one argument, or [formula functions][as_function].
+#'   The handlers are considered exiting by default, use [calling()]
+#'   to specify a calling handler.
 #'
 #' @section Life cycle: `exiting()` is soft-deprecated as of rlang
 #'   0.4.0 because [with_handlers()] now treats handlers as exiting by
@@ -130,7 +130,7 @@ calling <- function(handler) {
 #'   named, the names (except empty names `""`) are used as
 #'   argument names for calling the restart function. Otherwise the
 #'   the fields themselves are used as argument names.
-#' @param ... [[Dynamic][dyn-dots]] - Additional arguments passed on
+#' @param ... <[dynamic][dyn-dots]> Additional arguments passed on
 #'   the restart function. These arguments are evaluated only once
 #'   and immediately, when creating the restarting handler.
 #' @keywords internal

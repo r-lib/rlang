@@ -18,7 +18,7 @@ modify(.x, ...)
 
 \item{.x}{A vector to modify.}
 
-\item{...}{[\link[=dyn-dots]{Dynamic}] - List of elements to merge into
+\item{...}{<\link[=dyn-dots]{dynamic}> List of elements to merge into
 \code{.x}. Named elements already existing in \code{.x} are used as
 replacements. Elements that have new or no names are inserted at
 the end.}

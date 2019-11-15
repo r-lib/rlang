@@ -21,7 +21,7 @@
 #'
 #' @param .fn Function to call. Must be a callable object: a string,
 #'   symbol, call, or a function.
-#' @param ... [[Dynamic][dyn-dots]] - Arguments for the function
+#' @param ... <[dynamic][dyn-dots]> Arguments for the function
 #'   call. Empty arguments are preserved.
 #' @param .ns Namespace with which to prefix `.fn`. Must be a string
 #'   or symbol.
@@ -103,7 +103,7 @@ call2 <- function(.fn, ..., .ns = NULL) {
 #' it to manually create argument lists for calls or parameter lists
 #' for functions.
 #'
-#' @param ... [[Dynamic][dyn-dots]] - Arguments stored in the
+#' @param ... <[dynamic][dyn-dots]> Arguments stored in the
 #'   pairlist. Empty arguments are preserved.
 #'
 #' @export
@@ -429,7 +429,7 @@ call_print_fine_type <- function(call) {
 #' @param .call Can be a call, a formula quoting a call in the
 #'   right-hand side, or a frame object from which to extract the call
 #'   expression.
-#' @param ... [[Dynamic][dyn-dots]] - Named or unnamed expressions
+#' @param ... <[dynamic][dyn-dots]> Named or unnamed expressions
 #'   (constants, names or calls) used to modify the call. Use [zap()]
 #'   to remove arguments. Empty arguments are preserved.
 #' @param .standardise,.env Soft-deprecated as of rlang 0.3.0. Please

@@ -13,7 +13,7 @@ child_env(.parent, ...)
 new_environment(data = list(), parent = empty_env())
 }
 \arguments{
-\item{..., data}{[\link[=dyn-dots]{Dynamic}] - Named values. You can
+\item{..., data}{<\link[=dyn-dots]{dynamic}> Named values. You can
 supply one unnamed to specify a custom parent, otherwise it
 defaults to the current environment.}
 

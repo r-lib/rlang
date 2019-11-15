@@ -14,7 +14,7 @@
 #' and `message`. They are deprecated as of rlang 0.3.0.
 #'
 #' @param class The condition subclass.
-#' @param ... [[Dynamic][dyn-dots]] - Named data fields stored inside
+#' @param ... <[dynamic][dyn-dots]> Named data fields stored inside
 #'   the condition object.
 #' @param message A default message to inform the user about the
 #'   condition when it is signalled.

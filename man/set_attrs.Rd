@@ -12,7 +12,7 @@ mut_attrs(.x, ...)
 \arguments{
 \item{.x}{An object to decorate with attributes.}
 
-\item{...}{[\link[=dyn-dots]{Dynamic}] - A list of named attributes. Pass
+\item{...}{<\link[=dyn-dots]{dynamic}> A list of named attributes. Pass
 a single unnamed \code{NULL} argument to zap all attributes from \code{.x}.}
 }
 \value{
