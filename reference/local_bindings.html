@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get the current or caller environment — caller_env • rlang</title>
+<title>Temporarily change bindings of an environment — local_bindings • rlang</title>
 
 
 <!-- jquery -->
@@ -35,13 +35,16 @@
 
 
 
-<meta property="og:title" content="Get the current or caller environment — caller_env" />
+<meta property="og:title" content="Temporarily change bindings of an environment — local_bindings" />
 <meta property="og:description" content="
 
-The current environment is the execution environment of the
-current function (the one currently being evaluated).
-The caller environment is the execution environment of the
-function that called the current function.
+local_bindings() temporarily changes bindings in .env (which
+is by default the caller environment). The bindings are reset to
+their original values when the current frame (or an arbitrary one
+if you specify .frame) goes out of scope.
+with_bindings() evaluates expr with temporary bindings. When
+with_bindings() returns, bindings are reset to their original
+values. It is a simple wrapper around local_bindings().
 
 " />
 <meta name="twitter:card" content="summary" />
@@ -151,70 +154,70 @@ function that called the current function.
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get the current or caller environment</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/env-special.R'><code>R/env-special.R</code></a></small>
-    <div class="hidden name"><code>caller_env.Rd</code></div>
+    <h1>Temporarily change bindings of an environment</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/env-binding.R'><code>R/env-binding.R</code></a></small>
+    <div class="hidden name"><code>local_bindings.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
 <ul>
-<li><p>The current environment is the execution environment of the
-current function (the one currently being evaluated).</p></li>
-<li><p>The caller environment is the execution environment of the
-function that called the current function.</p></li>
+<li><p><code>local_bindings()</code> temporarily changes bindings in <code>.env</code> (which
+is by default the caller environment). The bindings are reset to
+their original values when the current frame (or an arbitrary one
+if you specify <code>.frame</code>) goes out of scope.</p></li>
+<li><p><code>with_bindings()</code> evaluates <code>expr</code> with temporary bindings. When
+<code>with_bindings()</code> returns, bindings are reset to their original
+values. It is a simple wrapper around <code>local_bindings()</code>.</p></li>
 </ul>
 
     </div>
 
-    <pre class="usage"><span class='fu'>caller_env</span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+    <pre class="usage"><span class='fu'>local_bindings</span>(<span class='no'>...</span>, <span class='kw'>.env</span> <span class='kw'>=</span> <span class='no'>.frame</span>, <span class='kw'>.frame</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>())
 
-<span class='fu'>current_env</span>()</pre>
+<span class='fu'>with_bindings</span>(<span class='no'>.expr</span>, <span class='no'>...</span>, <span class='kw'>.env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>())</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>n</th>
-      <td><p>Number of frames to go back.</p></td>
+      <th>...</th>
+      <td><p>Pairs of names and values. These dots support splicing
+(with value semantics) and name unquoting.</p></td>
+    </tr>
+    <tr>
+      <th>.env</th>
+      <td><p>An environment.</p></td>
+    </tr>
+    <tr>
+      <th>.frame</th>
+      <td><p>The frame environment that determines the scope of
+the temporary bindings. When that frame is popped from the call
+stack, bindings are switched back to their original values.</p></td>
+    </tr>
+    <tr>
+      <th>.expr</th>
+      <td><p>An expression to evaluate with temporary bindings.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <div class='dont-index'><p><code><a href='caller_frame.html'>caller_frame()</a></code> and <code><a href='stack.html'>current_frame()</a></code></p></div>
+    <p><code>local_bindings()</code> returns the values of old bindings
+invisibly; <code>with_bindings()</code> returns the value of <code>expr</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Let's create a function that returns its current environment and</span>
-<span class='co'># its caller environment:</span>
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>current</span> <span class='kw'>=</span> <span class='fu'>current_env</span>(), <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fu'>caller_env</span>())
+    <pre class="examples"><div class='input'><span class='no'>foo</span> <span class='kw'>&lt;-</span> <span class='st'>"foo"</span>
+<span class='no'>bar</span> <span class='kw'>&lt;-</span> <span class='st'>"bar"</span>
 
-<span class='co'># The current environment is an unique execution environment</span>
-<span class='co'># created when `fn()` was called. The caller environment is the</span>
-<span class='co'># global env because that's where we called `fn()`.</span>
-<span class='fu'>fn</span>()</div><div class='output co'>#&gt; $current
-#&gt; &lt;environment: 0x61af0b8&gt;
-#&gt; 
-#&gt; $caller
-#&gt; &lt;environment: 0x60259f0&gt;
-#&gt; </div><div class='input'>
-<span class='co'># Let's call `fn()` again but this time within a function:</span>
-<span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>fn</span>()
-
-<span class='co'># Now the caller environment is also an unique execution environment.</span>
-<span class='co'># This is the exec env created by R for our call to g():</span>
-<span class='fu'>g</span>()</div><div class='output co'>#&gt; $current
-#&gt; &lt;environment: 0x6406c30&gt;
-#&gt; 
-#&gt; $caller
-#&gt; &lt;environment: 0x6406ca0&gt;
-#&gt; </div></pre>
+<span class='co'># `foo` will be temporarily rebinded while executing `expr`</span>
+<span class='fu'>with_bindings</span>(<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='no'>foo</span>, <span class='no'>bar</span>), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"rebinded"</span>)</div><div class='output co'>#&gt; [1] "rebinded bar"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='no'>foo</span>, <span class='no'>bar</span>)</div><div class='output co'>#&gt; [1] "foo bar"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#see-also">See also</a></li>
+      <li><a href="#value">Value</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

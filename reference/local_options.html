@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get the current or caller environment — caller_env • rlang</title>
+<title>Change global options — local_options • rlang</title>
 
 
 <!-- jquery -->
@@ -35,13 +35,18 @@
 
 
 
-<meta property="og:title" content="Get the current or caller environment — caller_env" />
+<meta property="og:title" content="Change global options — local_options" />
 <meta property="og:description" content="
 
-The current environment is the execution environment of the
-current function (the one currently being evaluated).
-The caller environment is the execution environment of the
-function that called the current function.
+local_options() changes options for the duration of a stack
+frame (by default the current one). Options are set back to their
+old values when the frame returns.
+with_options() changes options while an expression is
+evaluated. Options are restored when the expression returns.
+push_options() adds or changes options permanently.
+peek_option() and peek_options() return option values. The
+former returns the option directly while the latter returns a
+list.
 
 " />
 <meta name="twitter:card" content="summary" />
@@ -151,70 +156,103 @@ function that called the current function.
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get the current or caller environment</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/env-special.R'><code>R/env-special.R</code></a></small>
-    <div class="hidden name"><code>caller_env.Rd</code></div>
+    <h1>Change global options</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/state.R'><code>R/state.R</code></a></small>
+    <div class="hidden name"><code>local_options.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
 <ul>
-<li><p>The current environment is the execution environment of the
-current function (the one currently being evaluated).</p></li>
-<li><p>The caller environment is the execution environment of the
-function that called the current function.</p></li>
+<li><p><code>local_options()</code> changes options for the duration of a stack
+frame (by default the current one). Options are set back to their
+old values when the frame returns.</p></li>
+<li><p><code>with_options()</code> changes options while an expression is
+evaluated. Options are restored when the expression returns.</p></li>
+<li><p><code>push_options()</code> adds or changes options permanently.</p></li>
+<li><p><code>peek_option()</code> and <code>peek_options()</code> return option values. The
+former returns the option directly while the latter returns a
+list.</p></li>
 </ul>
 
     </div>
 
-    <pre class="usage"><span class='fu'>caller_env</span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+    <pre class="usage"><span class='fu'>local_options</span>(<span class='no'>...</span>, <span class='kw'>.frame</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>())
 
-<span class='fu'>current_env</span>()</pre>
+<span class='fu'>with_options</span>(<span class='no'>.expr</span>, <span class='no'>...</span>)
+
+<span class='fu'>push_options</span>(<span class='no'>...</span>)
+
+<span class='fu'>peek_options</span>(<span class='no'>...</span>)
+
+<span class='fu'>peek_option</span>(<span class='no'>name</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>n</th>
-      <td><p>Number of frames to go back.</p></td>
+      <th>...</th>
+      <td><p>For <code>local_options()</code> and <code>push_options()</code>, named
+values defining new option values. For <code>peek_options()</code>, strings
+or character vectors of option names.</p></td>
+    </tr>
+    <tr>
+      <th>.frame</th>
+      <td><p>The environment of a stack frame which defines the
+scope of the temporary options. When the frame returns, the
+options are set back to their original values.</p></td>
+    </tr>
+    <tr>
+      <th>.expr</th>
+      <td><p>An expression to evaluate with temporary options.</p></td>
+    </tr>
+    <tr>
+      <th>name</th>
+      <td><p>An option name as string.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <div class='dont-index'><p><code><a href='caller_frame.html'>caller_frame()</a></code> and <code><a href='stack.html'>current_frame()</a></code></p></div>
+    <p>For <code>local_options()</code> and <code>push_options()</code>, the old option
+values. <code>peek_option()</code> returns the current value of an option
+while the plural <code>peek_options()</code> returns a list of current
+option values.</p>
+    <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
+
+    
+
+
+<p>These functions are experimental.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Let's create a function that returns its current environment and</span>
-<span class='co'># its caller environment:</span>
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>current</span> <span class='kw'>=</span> <span class='fu'>current_env</span>(), <span class='kw'>caller</span> <span class='kw'>=</span> <span class='fu'>caller_env</span>())
-
-<span class='co'># The current environment is an unique execution environment</span>
-<span class='co'># created when `fn()` was called. The caller environment is the</span>
-<span class='co'># global env because that's where we called `fn()`.</span>
-<span class='fu'>fn</span>()</div><div class='output co'>#&gt; $current
-#&gt; &lt;environment: 0x61af0b8&gt;
+    <pre class="examples"><div class='input'><span class='co'># Store and retrieve a global option:</span>
+<span class='fu'>push_options</span>(<span class='kw'>my_option</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+<span class='fu'>peek_option</span>(<span class='st'>"my_option"</span>)</div><div class='output co'>#&gt; [1] 10</div><div class='input'>
+<span class='co'># Change the option temporarily:</span>
+<span class='fu'>with_options</span>(<span class='kw'>my_option</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='fu'>peek_option</span>(<span class='st'>"my_option"</span>))</div><div class='output co'>#&gt; [1] 100</div><div class='input'><span class='fu'>peek_option</span>(<span class='st'>"my_option"</span>)</div><div class='output co'>#&gt; [1] 10</div><div class='input'>
+<span class='co'># The scoped variant is useful within functions:</span>
+<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
+  <span class='fu'>local_options</span>(<span class='kw'>my_option</span> <span class='kw'>=</span> <span class='fl'>100</span>)
+  <span class='fu'>peek_option</span>(<span class='st'>"my_option"</span>)
+}
+<span class='fu'>fn</span>()</div><div class='output co'>#&gt; [1] 100</div><div class='input'><span class='fu'>peek_option</span>(<span class='st'>"my_option"</span>)</div><div class='output co'>#&gt; [1] 10</div><div class='input'>
+<span class='co'># The plural peek returns a named list:</span>
+<span class='fu'>peek_options</span>(<span class='st'>"my_option"</span>)</div><div class='output co'>#&gt; $my_option
+#&gt; [1] 10
+#&gt; </div><div class='input'><span class='fu'>peek_options</span>(<span class='st'>"my_option"</span>, <span class='st'>"digits"</span>)</div><div class='output co'>#&gt; $my_option
+#&gt; [1] 10
 #&gt; 
-#&gt; $caller
-#&gt; &lt;environment: 0x60259f0&gt;
-#&gt; </div><div class='input'>
-<span class='co'># Let's call `fn()` again but this time within a function:</span>
-<span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>fn</span>()
-
-<span class='co'># Now the caller environment is also an unique execution environment.</span>
-<span class='co'># This is the exec env created by R for our call to g():</span>
-<span class='fu'>g</span>()</div><div class='output co'>#&gt; $current
-#&gt; &lt;environment: 0x6406c30&gt;
-#&gt; 
-#&gt; $caller
-#&gt; &lt;environment: 0x6406ca0&gt;
+#&gt; $digits
+#&gt; [1] 7
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#see-also">See also</a></li>
+      <li><a href="#value">Value</a></li>
+      <li><a href="#life-cycle">Life cycle</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

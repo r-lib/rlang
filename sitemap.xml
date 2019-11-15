@@ -343,6 +343,12 @@
     <loc>https://rlang.r-lib.org/reference/list2.html</loc>
   </url>
   <url>
+    <loc>https://rlang.r-lib.org/reference/local_bindings.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/local_options.html</loc>
+  </url>
+  <url>
     <loc>https://rlang.r-lib.org/reference/missing.html</loc>
   </url>
   <url>
@@ -451,13 +457,10 @@
     <loc>https://rlang.r-lib.org/reference/scalar-type-predicates.html</loc>
   </url>
   <url>
-    <loc>https://rlang.r-lib.org/reference/scoped_bindings.html</loc>
-  </url>
-  <url>
     <loc>https://rlang.r-lib.org/reference/scoped_env.html</loc>
   </url>
   <url>
-    <loc>https://rlang.r-lib.org/reference/scoped_options.html</loc>
+    <loc>https://rlang.r-lib.org/reference/scoped_interactive.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/search_envs.html</loc>

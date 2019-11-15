@@ -202,8 +202,8 @@ changes.</p><ul>
 <li><p><code><a href='is_pairlist.html'>is_pairlist()</a></code>, <code><a href='as_pairlist.html'>as_pairlist()</a></code>, <code><a href='is_pairlist.html'>is_node()</a></code>, <code><a href='is_pairlist.html'>is_node_list()</a></code></p></li>
 <li><p><code><a href='op-definition.html'>is_definition()</a></code>, <code><a href='op-definition.html'>new_definition()</a></code>, <code><a href='op-definition.html'>is_formulaish()</a></code>,
 <code><a href='dots_definitions.html'>dots_definitions()</a></code></p></li>
-<li><p><code><a href='scoped_options.html'>scoped_options()</a></code>, <code><a href='scoped_options.html'>with_options()</a></code>, <code><a href='scoped_options.html'>push_options()</a></code>,
-<code><a href='scoped_options.html'>peek_options()</a></code>, <code><a href='scoped_options.html'>peek_option()</a></code></p></li>
+<li><p><code><a href='local_options.html'>local_options()</a></code>, <code><a href='local_options.html'>with_options()</a></code>, <code><a href='local_options.html'>push_options()</a></code>,
+<code><a href='local_options.html'>peek_options()</a></code>, <code><a href='local_options.html'>peek_option()</a></code></p></li>
 <li><p><code><a href='as_bytes.html'>as_bytes()</a></code>, <code><a href='chr_unserialise_unicode.html'>chr_unserialise_unicode()</a></code></p></li>
 <li><p><code><a href='caller_fn.html'>caller_fn()</a></code>, <code><a href='caller_fn.html'>current_fn()</a></code></p></li>
 </ul>
@@ -293,7 +293,7 @@ want to recommend restarts as a style of programming in R.</p></li>
 <li><p>Passing a function or formula to <code><a href='env_depth.html'>env_depth()</a></code>,
 <code><a href='get_env.html'>env_poke_parent()</a></code>, <code>env_parent&lt;-</code>, <code><a href='env_parent.html'>env_tail()</a></code>, <code><a href='get_env.html'>set_env()</a></code>,
 <code><a href='env_clone.html'>env_clone()</a></code>, <code><a href='env_inherits.html'>env_inherits()</a></code>, <code><a href='env_bind.html'>env_bind()</a></code>,
-<code><a href='scoped_bindings.html'>scoped_bindings()</a></code>, <code><a href='scoped_bindings.html'>with_bindings()</a></code>, <code><a href='env_poke.html'>env_poke()</a></code>,
+<code><a href='local_bindings.html'>local_bindings()</a></code>, <code><a href='local_bindings.html'>with_bindings()</a></code>, <code><a href='env_poke.html'>env_poke()</a></code>,
 <code><a href='env_has.html'>env_has()</a></code>, <code><a href='env_get.html'>env_get()</a></code>, <code><a href='env_names.html'>env_names()</a></code>, <code><a href='env_bind_exprs.html'>env_bind_exprs()</a></code> and
 <code><a href='env_bind_exprs.html'>env_bind_fns()</a></code>. This internal genericity was causing confusion
 (see issue #427). You should now extract the environment
