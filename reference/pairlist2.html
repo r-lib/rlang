@@ -36,9 +36,9 @@
 
 
 <meta property="og:title" content="Create pairlists with splicing support — pairlist2" />
-<meta property="og:description" content="This pairlist constructor supports tidy dots features
-like !!!. Use it to manually create argument lists for calls or
-parameter lists for functions." />
+<meta property="og:description" content="This pairlist constructor uses dynamic dots. Use
+it to manually create argument lists for calls or parameter lists
+for functions." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -152,9 +152,9 @@ parameter lists for functions." />
     </div>
 
     <div class="ref-description">
-    <p>This pairlist constructor supports <a href='tidy-dots.html'>tidy dots</a> features
-like <code>!!!</code>. Use it to manually create argument lists for calls or
-parameter lists for functions.</p>
+    <p>This pairlist constructor uses <a href='dyn-dots.html'>dynamic dots</a>. Use
+it to manually create argument lists for calls or parameter lists
+for functions.</p>
     </div>
 
     <pre class="usage"><span class='fu'>pairlist2</span>(<span class='no'>...</span>)</pre>
@@ -164,8 +164,8 @@ parameter lists for functions.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>...</th>
-      <td><p>Arguments stored in the pairlist. Empty arguments are
-preserved.</p></td>
+      <td><p>&lt;<a href='dyn-dots.html'>dynamic</a>&gt; Arguments stored in the
+pairlist. Empty arguments are preserved.</p></td>
     </tr>
     </table>
 
@@ -174,14 +174,14 @@ preserved.</p></td>
     <pre class="examples"><div class='input'><span class='co'># Unlike `exprs()`, `pairlist2()` evaluates its arguments.</span>
 <span class='fu'><a href='new_function.html'>new_function</a></span>(<span class='fu'>pairlist2</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='fl'>3</span> * <span class='fl'>6</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>x</span> * <span class='no'>y</span>))</div><div class='output co'>#&gt; function (x = 1, y = 18) 
 #&gt; x * y
-#&gt; &lt;environment: 0x1de0b30&gt;</div><div class='input'><span class='fu'><a href='new_function.html'>new_function</a></span>(<span class='fu'><a href='nse-defuse.html'>exprs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='fl'>3</span> * <span class='fl'>6</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>x</span> * <span class='no'>y</span>))</div><div class='output co'>#&gt; function (x = 1, y = 3 * 6) 
+#&gt; &lt;environment: 0x2beaf58&gt;</div><div class='input'><span class='fu'><a href='new_function.html'>new_function</a></span>(<span class='fu'><a href='nse-defuse.html'>exprs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='fl'>3</span> * <span class='fl'>6</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>x</span> * <span class='no'>y</span>))</div><div class='output co'>#&gt; function (x = 1, y = 3 * 6) 
 #&gt; x * y
-#&gt; &lt;environment: 0x1de0b30&gt;</div><div class='input'>
+#&gt; &lt;environment: 0x2beaf58&gt;</div><div class='input'>
 <span class='co'># It preserves missing arguments, which is useful for creating</span>
 <span class='co'># parameters without defaults:</span>
 <span class='fu'><a href='new_function.html'>new_function</a></span>(<span class='fu'>pairlist2</span>(<span class='kw'>x</span> <span class='kw'>=</span> , <span class='kw'>y</span> <span class='kw'>=</span> <span class='fl'>3</span> * <span class='fl'>6</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>x</span> * <span class='no'>y</span>))</div><div class='output co'>#&gt; function (x, y = 18) 
 #&gt; x * y
-#&gt; &lt;environment: 0x1de0b30&gt;</div></pre>
+#&gt; &lt;environment: 0x2beaf58&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

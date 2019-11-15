@@ -124,6 +124,9 @@
     <loc>https://rlang.r-lib.org/reference/duplicate.html</loc>
   </url>
   <url>
+    <loc>https://rlang.r-lib.org/reference/dyn-dots.html</loc>
+  </url>
+  <url>
     <loc>https://rlang.r-lib.org/reference/empty_env.html</loc>
   </url>
   <url>
@@ -337,6 +340,9 @@
     <loc>https://rlang.r-lib.org/reference/lifecycle.html</loc>
   </url>
   <url>
+    <loc>https://rlang.r-lib.org/reference/list2.html</loc>
+  </url>
+  <url>
     <loc>https://rlang.r-lib.org/reference/missing.html</loc>
   </url>
   <url>
@@ -485,9 +491,6 @@
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/sym.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/tidy-dots.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/tidyeval-data.html</loc>

@@ -38,8 +38,9 @@
 <meta property="og:title" content="Execute a function — exec" />
 <meta property="og:description" content="This function constructs and evaluates a call to .fn.
 It has two primary uses:
-To call a function with arguments stored in a list (if the function
-doesn't support tidy-dots)
+To call a function with arguments stored in a list (if the
+function doesn't support dynamic dots). Splice the
+list of arguments with !!!.
 To call every function stored in a list (in conjunction with map()/
 lapply())
 
@@ -159,8 +160,9 @@ lapply())
     <div class="ref-description">
     <p>This function constructs and evaluates a call to <code>.fn</code>.
 It has two primary uses:</p><ul>
-<li><p>To call a function with arguments stored in a list (if the function
-doesn't support <a href='tidy-dots.html'>tidy-dots</a>)</p></li>
+<li><p>To call a function with arguments stored in a list (if the
+function doesn't support <a href='dyn-dots.html'>dynamic dots</a>). Splice the
+list of arguments with <code>!!!</code>.</p></li>
 <li><p>To call every function stored in a list (in conjunction with <code>map()</code>/
 <code><a href='https://rdrr.io/r/base/lapply.html'>lapply()</a></code>)</p></li>
 </ul>
@@ -178,8 +180,7 @@ doesn't support <a href='tidy-dots.html'>tidy-dots</a>)</p></li>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Arguments to function.</p>
-<p>These dots support <a href='tidy-dots.html'>tidy-dots</a> features.</p></td>
+      <td><p>&lt;<a href='dyn-dots.html'>dynamic</a>&gt; Arguments for <code>.fn</code>.</p></td>
     </tr>
     <tr>
       <th>.env</th>

@@ -38,7 +38,7 @@
 <meta property="og:title" content="Splice lists — splice" />
 <meta property="og:description" content="
 splice marks an object to be spliced. It is equivalent to using
-!!! in a function with tidy dots semantics.
+!!! in a function taking dynamic dots.
 dots_splice() is like dots_list() but automatically splices
 list inputs.
 
@@ -158,8 +158,8 @@ list inputs.
     <div class="ref-description">
     <p><a href='https://www.tidyverse.org/lifecycle/#questioning'><img src='figures/lifecycle-questioning.svg' alt='Questioning lifecycle'></a></p><ul>
 <li><p><code>splice</code> marks an object to be spliced. It is equivalent to using
-<code>!!!</code> in a function with <a href='tidy-dots.html'>tidy dots semantics</a>.</p></li>
-<li><p><code>dots_splice()</code> is like <code><a href='tidy-dots.html'>dots_list()</a></code> but automatically splices
+<code>!!!</code> in a function taking <a href='dyn-dots.html'>dynamic dots</a>.</p></li>
+<li><p><code>dots_splice()</code> is like <code><a href='list2.html'>dots_list()</a></code> but automatically splices
 list inputs.</p></li>
 </ul>
 
@@ -184,7 +184,8 @@ list inputs.</p></li>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Arguments to collect with <code>!!!</code> support.</p></td>
+      <td><p>Arguments to collect in a list. These dots are
+<a href='dyn-dots.html'>dynamic</a>.</p></td>
     </tr>
     <tr>
       <th>.ignore_empty</th>
@@ -223,7 +224,7 @@ This ensures assignments are explicit.</p></td>
 
 
 <p>The <code>!!!</code> operator works differently in <em>standard</em> functions taking
-dots with <code><a href='tidy-dots.html'>dots_list()</a></code> than in <em>quoting</em> functions taking dots
+dots with <code><a href='list2.html'>dots_list()</a></code> than in <em>quoting</em> functions taking dots
 with <code><a href='nse-defuse.html'>enexprs()</a></code> or <code><a href='nse-defuse.html'>enquos()</a></code>.</p><ul>
 <li><p>In quoting functions <code>!!!</code> disaggregates its argument (let's call
 it <code>x</code>) into as many objects as there are elements in
@@ -234,7 +235,7 @@ because function calls typically take a small number of
 arguments.</p></li>
 <li><p>In standard functions, disaggregating the spliced collection
 would have a negative performance impact in cases where
-<code><a href='tidy-dots.html'>dots_list()</a></code> is used to build up data structures from user
+<code><a href='list2.html'>dots_list()</a></code> is used to build up data structures from user
 inputs. To avoid this spliced inputs are marked with <code>splice()</code>
 and the final list is built with (the equivalent of)
 <code><a href='flatten.html'>flatten_if(dots, is_spliced)</a></code>.</p></li>
@@ -260,9 +261,9 @@ arguments. To avoid this you can use <code>splice()</code> instead:</p><pre>purr
 
 <ul>
 <li><p><code>dots_splice()</code> is in the questioning stage. It is part of our
-experiments with dots semantics. Compared to <code><a href='tidy-dots.html'>dots_list()</a></code>,
+experiments with dots semantics. Compared to <code><a href='list2.html'>dots_list()</a></code>,
 <code>dots_splice()</code> automatically splices lists. We now lean towards
-adopting a single type of dots semantics (those of <code><a href='tidy-dots.html'>dots_list()</a></code>)
+adopting a single type of dots semantics (those of <code><a href='list2.html'>dots_list()</a></code>)
 where splicing is explicit.</p></li>
 <li><p><code>splice()</code> is in the questioning stage. It is not clear whether it is
 really needed as there are other ways to avoid the performance

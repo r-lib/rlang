@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Set and get an expression — set_expr • rlang</title>
+<title>Dynamic dots — dyn-dots • rlang</title>
 
 
 <!-- jquery -->
@@ -35,14 +35,22 @@
 
 
 
-<meta property="og:title" content="Set and get an expression — set_expr" />
-<meta property="og:description" content="These helpers are useful to make your function work generically
-with quosures and raw expressions. First call get_expr() to
-extract an expression. Once you're done processing the expression,
-call set_expr() on the original object to update the expression.
-You can return the result of set_expr(), either a formula or an
-expression depending on the input type. Note that set_expr() does
-not change its input, it creates a new object." />
+<meta property="og:title" content="Dynamic dots — dyn-dots" />
+<meta property="og:description" content="The ... syntax of base R allows you to:
+Forward arguments from function to function, matching them
+along the way to function parameters.
+Collect arguments inside data structures, e.g. with c() or
+list().
+
+
+Dynamic dots offer a few additional features:
+You can splice arguments saved in a list with the big bang operator !!!.
+You can unquote names by using the bang bang
+operator !! on the left-hand side of :=.
+Trailing commas are ignored, making it easier to copy and paste
+lines of arguments.
+
+" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -150,69 +158,47 @@ not change its input, it creates a new object." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Set and get an expression</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/expr.R'><code>R/expr.R</code></a></small>
-    <div class="hidden name"><code>set_expr.Rd</code></div>
+    <h1>Dynamic dots</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/dots.R'><code>R/dots.R</code></a></small>
+    <div class="hidden name"><code>dyn-dots.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>These helpers are useful to make your function work generically
-with quosures and raw expressions. First call <code>get_expr()</code> to
-extract an expression. Once you're done processing the expression,
-call <code>set_expr()</code> on the original object to update the expression.
-You can return the result of <code>set_expr()</code>, either a formula or an
-expression depending on the input type. Note that <code>set_expr()</code> does
-not change its input, it creates a new object.</p>
+    <p>The <code>...</code> syntax of base R allows you to:</p><ul>
+<li><p><strong>Forward</strong> arguments from function to function, matching them
+along the way to function parameters.</p></li>
+<li><p><strong>Collect</strong> arguments inside data structures, e.g. with <code><a href='https://rdrr.io/r/base/c.html'>c()</a></code> or
+<code><a href='https://rdrr.io/r/base/list.html'>list()</a></code>.</p></li>
+</ul>
+
+<p>Dynamic dots offer a few additional features:</p><ol>
+<li><p>You can <strong>splice</strong> arguments saved in a list with the <a href='nse-force.html'>big bang</a> operator <code>!!!</code>.</p></li>
+<li><p>You can <strong>unquote</strong> names by using the <a href='nse-force.html'>bang bang</a>
+operator <code>!!</code> on the left-hand side of <code>:=</code>.</p></li>
+<li><p>Trailing commas are ignored, making it easier to copy and paste
+lines of arguments.</p></li>
+</ol>
+
     </div>
 
-    <pre class="usage"><span class='fu'>set_expr</span>(<span class='no'>x</span>, <span class='no'>value</span>)
 
-<span class='fu'>get_expr</span>(<span class='no'>x</span>, <span class='kw'>default</span> <span class='kw'>=</span> <span class='no'>x</span>)</pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>x</th>
-      <td><p>An expression, closure, or one-sided formula. In addition,
-<code>set_expr()</code> accept frames.</p></td>
-    </tr>
-    <tr>
-      <th>value</th>
-      <td><p>An updated expression.</p></td>
-    </tr>
-    <tr>
-      <th>default</th>
-      <td><p>A default expression to return when <code>x</code> is not an
-expression wrapper. Defaults to <code>x</code> itself.</p></td>
-    </tr>
-    </table>
+    <h2 class="hasAnchor" id="add-dynamic-dots-support-in-your-functions"><a class="anchor" href="#add-dynamic-dots-support-in-your-functions"></a>Add dynamic dots support in your functions</h2>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    
 
-    <p>The updated original input for <code>set_expr()</code>. A raw
-expression for <code>get_expr()</code>.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='quosure.html'>quo_get_expr()</a></code> and <code><a href='quosure.html'>quo_set_expr()</a></code> for versions of
-<code>get_expr()</code> and <code>set_expr()</code> that only work on quosures.</p></div>
+<p>If your function takes dots, adding support for dynamic features is
+as easy as collecting the dots with <code><a href='list2.html'>list2()</a></code> instead of <code><a href='https://rdrr.io/r/base/list.html'>list()</a></code>.</p>
+<p>Other dynamic dots collectors are <code><a href='list2.html'>dots_list()</a></code>, which is more
+configurable than <code><a href='list2.html'>list2()</a></code>, <code>vars()</code> which doesn't force its
+arguments, and <code><a href='call2.html'>call2()</a></code> for creating calls.</p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>f</span> <span class='kw'>&lt;-</span> ~<span class='fu'>foo</span>(<span class='no'>bar</span>)
-<span class='no'>e</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'>foo</span>(<span class='no'>bar</span>))
-<span class='no'>frame</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span>(<span class='fu'><a href='stack.html'>ctxt_frame</a></span>()))</div><div class='output co'>#&gt; <span class='warning'>Warning: `ctxt_frame()` is deprecated as of rlang 0.3.0.</span>
-#&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once per session.</span><span></span></div><div class='input'>
-<span class='fu'>get_expr</span>(<span class='no'>f</span>)</div><div class='output co'>#&gt; foo(bar)</div><div class='input'><span class='fu'>get_expr</span>(<span class='no'>e</span>)</div><div class='output co'>#&gt; foo(bar)</div><div class='input'><span class='fu'>get_expr</span>(<span class='no'>frame</span>)</div><div class='output co'>#&gt; identity(ctxt_frame())</div><div class='input'>
-<span class='fu'>set_expr</span>(<span class='no'>f</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>baz</span>))</div><div class='output co'>#&gt; ~baz
-#&gt; &lt;environment: 0x6758500&gt;</div><div class='input'><span class='fu'>set_expr</span>(<span class='no'>e</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>baz</span>))</div><div class='output co'>#&gt; baz</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
+      <li><a href="#add-dynamic-dots-support-in-your-functions">Add dynamic dots support in your functions</a></li>
     </ul>
 
   </div>

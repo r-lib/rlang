@@ -206,11 +206,10 @@ expression or a quoted formula.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Named handlers. These should be functions of one
-argument. These handlers are treated as exiting by default. Use
-<code>calling()</code> to specify a calling handler. These dots support
-<a href='tidy-dots.html'>tidy dots</a> features and are passed to <code><a href='as_function.html'>as_function()</a></code>
-to enable the formula shortcut for lambda functions.</p></td>
+      <td><p>&lt;<a href='dyn-dots.html'>dynamic</a>&gt; Named handlers. These should be
+functions of one argument, or <a href='as_function.html'>formula functions</a>.
+The handlers are considered exiting by default, use <code>calling()</code>
+to specify a calling handler.</p></td>
     </tr>
     <tr>
       <th>handler</th>

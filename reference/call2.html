@@ -191,8 +191,8 @@ symbol, call, or a function.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Arguments to the call either in or out of a list. These dots
-support <a href='tidy-dots.html'>tidy dots</a> features. Empty arguments are preserved.</p></td>
+      <td><p>&lt;<a href='dyn-dots.html'>dynamic</a>&gt; Arguments for the function
+call. Empty arguments are preserved.</p></td>
     </tr>
     <tr>
       <th>.ns</th>
@@ -220,7 +220,7 @@ as.call(list(list, 1, 2))
 ns_call &lt;- as.call(list(as.name("::"), as.name("list"), as.name("base")))
 as.call(list(ns_call, 1, 2))
 </pre></li>
-<li><p><code>call2()</code> has <a href='tidy-dots.html'>tidy dots</a> support and you can splice lists
+<li><p><code>call2()</code> has <a href='list2.html'>tidy dots</a> support and you can splice lists
 of arguments with <code>!!!</code>. With base R, you need to use <code><a href='https://rdrr.io/r/base/call.html'>as.call()</a></code>
 instead of <code><a href='https://rdrr.io/r/base/call.html'>call()</a></code> if the arguments are in a list.</p><pre>args &lt;- list(na.rm = TRUE, trim = 0)
 
