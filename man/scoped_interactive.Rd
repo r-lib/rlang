@@ -2,9 +2,12 @@
 % Please edit documentation in R/lifecycle-retired.R
 \name{scoped_interactive}
 \alias{scoped_interactive}
+\alias{scoped_options}
 \title{Questioning \code{scoped_} functions}
 \usage{
 scoped_interactive(value = TRUE, frame = caller_env())
+
+scoped_options(..., .frame = caller_env())
 }
 \arguments{
 \item{value}{A single \code{TRUE} or \code{FALSE}. This overrides the return
@@ -13,6 +16,14 @@ value of \code{is_interactive()}.}
 \item{frame}{The environment of a running function which defines
 the scope of the temporary options. When the function returns,
 the options are reset to their original values.}
+
+\item{...}{For \code{local_options()} and \code{push_options()}, named
+values defining new option values. For \code{peek_options()}, strings
+or character vectors of option names.}
+
+\item{.frame}{The environment of a stack frame which defines the
+scope of the temporary options. When the frame returns, the
+options are set back to their original values.}
 }
 \description{
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}

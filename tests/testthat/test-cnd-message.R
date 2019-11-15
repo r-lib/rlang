@@ -1,7 +1,7 @@
 context("cnd-message")
 
 test_that("format_bullets() formats bullets depending on names", {
-  scoped_options(
+  local_options(
     crayon.enabled = FALSE,
     cli.unicode = FALSE
   )

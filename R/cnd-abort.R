@@ -143,7 +143,7 @@ abort <- function(message = "",
 
   if (is_null(trace) && is_null(peek_option("rlang__disable_trace_capture"))) {
     # Prevents infloops when rlang throws during trace capture
-    scoped_options("rlang__disable_trace_capture" = TRUE)
+    local_options("rlang__disable_trace_capture" = TRUE)
 
     trace <- trace_back()
 

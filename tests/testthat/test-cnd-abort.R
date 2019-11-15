@@ -21,7 +21,7 @@ test_that("errors are saved", {
 
   # Verbose try() triggers conditionMessage() and thus saves the error.
   # This simulates an unhandled error.
-  scoped_options(rlang_force_unhandled_error = TRUE)
+  local_options(rlang_force_unhandled_error = TRUE)
 
   try(abort("foo", "bar"), outFile = file)
   expect_true(inherits_all(last_error(), c("bar", "rlang_error")))
@@ -31,7 +31,7 @@ test_that("errors are saved", {
 })
 
 test_that("No backtrace is displayed with top-level active bindings", {
-  scoped_options(
+  local_options(
     rlang_trace_top_env = current_env()
   )
 
@@ -51,7 +51,7 @@ test_that("Invalid on_error option resets itself", {
 })
 
 test_that("format_onerror_backtrace handles empty and size 1 traces", {
-  scoped_options(rlang_backtrace_on_error = "branch")
+  local_options(rlang_backtrace_on_error = "branch")
 
   trace <- new_trace(list(), int(), chr())
   expect_identical(format_onerror_backtrace(trace), NULL)
@@ -120,7 +120,7 @@ test_that("parent errors are not displayed in error message and backtrace", {
 })
 
 test_that("backtrace reminder is displayed when called from `last_error()`", {
-  scoped_options(
+  local_options(
     rlang_trace_format_srcrefs = FALSE,
     rlang_trace_top_env = current_env()
   )
@@ -150,7 +150,7 @@ test_that("backtrace reminder is displayed when called from `last_error()`", {
 })
 
 test_that("capture context doesn't leak into low-level backtraces", {
-  scoped_options(
+  local_options(
     rlang_trace_format_srcrefs = FALSE,
     rlang_trace_top_env = current_env()
   )

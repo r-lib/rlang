@@ -50,7 +50,7 @@
 #' * [is_definition()], [new_definition()], [is_formulaish()],
 #'   [dots_definitions()]
 #'
-#' * [scoped_options()], [with_options()], [push_options()],
+#' * [local_options()], [with_options()], [push_options()],
 #'   [peek_options()], [peek_option()]
 #'
 #' * [as_bytes()], [chr_unserialise_unicode()]

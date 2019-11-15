@@ -4,7 +4,7 @@ context("trace.R")
 test_that("tree printing only changes deliberately", {
   skip_unless_utf8()
 
-  scoped_options(
+  local_options(
     rlang_trace_format_srcrefs = TRUE,
     rlang_trace__force_dangling_srcrefs = TRUE
   )
@@ -34,7 +34,7 @@ test_that("can print tree with collapsed branches", {
   # Fake eval() call does not have same signature on old R
   skip_if(getRversion() < "3.4")
 
-  scoped_options(
+  local_options(
     rlang_trace_format_srcrefs = TRUE,
     rlang_trace__force_dangling_srcrefs = TRUE
   )
@@ -103,7 +103,7 @@ test_that("cli_branch() handles edge case", {
 })
 
 test_that("trace formatting picks up `rlang_trace_format_srcrefs`", {
-  scoped_options(rlang_trace__force_dangling_srcrefs = TRUE)
+  local_options(rlang_trace__force_dangling_srcrefs = TRUE)
 
   e <- environment()
   f <- function() trace_back(e)
@@ -388,7 +388,7 @@ test_that("collapsing of eval() frames detects when error occurs within eval()",
   trace <- NULL
 
   fn <- function() {
-    scoped_options(
+    local_options(
       rlang_trace_format_srcrefs = FALSE
     )
     e <<- current_env()
@@ -509,7 +509,7 @@ test_that("can trim layers of backtraces", {
   trace3 <- f(3)
 
   expect_known_output(file = test_path("test-trace-trim.txt"), {
-    scoped_options(rlang_trace_format_srcrefs = FALSE)
+    local_options(rlang_trace_format_srcrefs = FALSE)
 
     cat_line("No trimming:")
     summary(trace0)
@@ -615,7 +615,7 @@ test_that("fails when `bottom` is not on the stack", {
 test_that("caught error does not display backtrace in knitted files", {
   skip_if(!rmarkdown::pandoc_available())
 
-  scoped_options(
+  local_options(
     rlang_backtrace_on_error = NULL,
     rlang_interactive = FALSE
   )
@@ -629,7 +629,7 @@ test_that("empty backtraces are dealt with", {
 
   local({
     env <- new.env()
-    scoped_options(rlang_trace_top_env = env)
+    local_options(rlang_trace_top_env = env)
     tryCatch(
       error = identity,
       withCallingHandlers(

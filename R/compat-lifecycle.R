@@ -145,7 +145,7 @@ stop_defunct <- function(msg) {
 }
 
 scoped_lifecycle_silence <- function(frame = rlang::caller_env()) {
-  rlang::scoped_options(.frame = frame,
+  rlang::local_options(.frame = frame,
     lifecycle_disable_warnings = TRUE
   )
 }
@@ -155,7 +155,7 @@ with_lifecycle_silence <- function(expr) {
 }
 
 scoped_lifecycle_warnings <- function(frame = rlang::caller_env()) {
-  rlang::scoped_options(.frame = frame,
+  rlang::local_options(.frame = frame,
     lifecycle_disable_warnings = FALSE,
     lifecycle_verbose_soft_deprecation = TRUE,
     lifecycle_repeat_warnings = TRUE
@@ -168,7 +168,7 @@ with_lifecycle_warnings <- function(expr) {
 
 scoped_lifecycle_errors <- function(frame = rlang::caller_env()) {
   scoped_lifecycle_warnings(frame = frame)
-  rlang::scoped_options(.frame = frame,
+  rlang::local_options(.frame = frame,
     lifecycle_warnings_as_errors = TRUE
   )
 }

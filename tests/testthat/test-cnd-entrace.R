@@ -18,7 +18,7 @@ test_that("with_abort() promotes base errors to rlang errors", {
     )
   }
 
-  scoped_options(
+  local_options(
     rlang_trace_format_srcrefs = FALSE,
     rlang_trace_top_env = current_env()
   )
@@ -71,7 +71,7 @@ test_that("with_abort() entraces conditions properly", {
     }
   }
 
-  scoped_options(
+  local_options(
     rlang_trace_top_env = current_env()
   )
 
@@ -158,7 +158,7 @@ test_that("cnd_entrace() skips capture context", {
   foo <- function() bar()
   bar <- function() stop("foobar")
 
-  scoped_options(rlang_trace_top_env = current_env())
+  local_options(rlang_trace_top_env = current_env())
   err <- capture(foo())
 
   last <- err$trace$calls[[4]]

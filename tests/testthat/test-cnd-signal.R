@@ -59,7 +59,7 @@ test_that("conditions have correct subclasses", {
 test_that("cnd_signal() creates a backtrace if needed", {
   skip_unless_utf8()
 
-  scoped_options(
+  local_options(
     rlang_trace_top_env = current_env(),
     rlang_trace_format_srcrefs = FALSE
   )
