@@ -2,13 +2,13 @@
 % Please edit documentation in R/state.R
 \name{is_interactive}
 \alias{is_interactive}
-\alias{scoped_interactive}
+\alias{local_interactive}
 \alias{with_interactive}
 \title{Is R running interactively?}
 \usage{
 is_interactive()
 
-scoped_interactive(value = TRUE, frame = caller_env())
+local_interactive(value = TRUE, frame = caller_env())
 
 with_interactive(expr, value = TRUE)
 }
@@ -35,6 +35,6 @@ interactive features in RMarkdown outputs.
 \item Whether knitr, an RStudio notebook, or testthat is in progress.
 }
 
-\code{with_interactive()} and \code{scoped_interactive()} set the global
+\code{with_interactive()} and \code{local_interactive()} set the global
 option conveniently.
 }

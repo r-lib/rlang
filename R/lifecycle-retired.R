@@ -1963,3 +1963,22 @@ exiting <- function(handler) {
   handler <- as_function(handler)
   structure(handler, class = c("rlang_handler_exiting", "rlang_handler", "function"))
 }
+
+
+#  Scoped_
+
+#' Questioning `scoped_` functions
+#'
+#' @description
+#'
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#'
+#' These functions have been renamed to use the conventional `local_`
+#' prefix. They will be deprecated in the next minor version of rlang.
+#'
+#' @inheritParams local_interactive
+#'
+#' @export
+scoped_interactive <- function(value = TRUE, frame = caller_env()) {
+  local_interactive(value = value, frame = frame)
+}

@@ -24,7 +24,7 @@ test_that("is_interactive() honors rlang_interactive option, above all else", {
   expect_false(with_options(rlang_interactive = FALSE, is_interactive()))
   expect_error(with_options(rlang_interactive = NA, is_interactive()), "must be a single")
 
-  scoped_interactive(FALSE)
+  local_interactive(FALSE)
   expect_false(is_interactive())
   expect_true(with_interactive(value = TRUE, is_interactive()))
 })

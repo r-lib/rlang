@@ -104,7 +104,7 @@ peek_option <- function(name) {
 #'
 #' * Whether knitr, an RStudio notebook, or testthat is in progress.
 #'
-#' `with_interactive()` and `scoped_interactive()` set the global
+#' `with_interactive()` and `local_interactive()` set the global
 #' option conveniently.
 #'
 #' @export
@@ -137,7 +137,7 @@ is_interactive <- function() {
 #' @param value A single `TRUE` or `FALSE`. This overrides the return
 #'   value of `is_interactive()`.
 #' @export
-scoped_interactive <- function(value = TRUE, frame = caller_env()) {
+local_interactive <- function(value = TRUE, frame = caller_env()) {
   scoped_options(rlang_interactive = value, .frame = frame)
 }
 #' @rdname is_interactive
@@ -145,6 +145,6 @@ scoped_interactive <- function(value = TRUE, frame = caller_env()) {
 #'   `value`.
 #' @export
 with_interactive <- function(expr, value = TRUE) {
-  scoped_interactive(value)
+  local_interactive(value)
   expr
 }
