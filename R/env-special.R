@@ -247,6 +247,15 @@ ns_env_name <- function(x = caller_env()) {
 ns_exports <- function(ns) getNamespaceExports(ns)
 ns_imports <- function(ns) getNamespaceImports(ns)
 
+ns_exports_has <- function(ns, name) {
+  if (is_reference(ns, base_ns_env)) {
+    exports <- base_pkg_env
+  } else {
+    exports <- ns$.__NAMESPACE__.$exports
+  }
+  !is_null(exports) && exists(name, envir = exports, inherits = FALSE)
+}
+
 #' Is an object a namespace environment?
 #'
 #' @param x An object to test.

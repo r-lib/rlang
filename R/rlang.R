@@ -54,6 +54,9 @@ check_downstream_dep <- function(dep, pkg) {
   warn(msg)
 }
 
+base_ns_env <- NULL
+base_pkg_env <- NULL
+
 .onLoad <- function(lib, pkg) {
   if (getRversion() < "3.5") {
     is_same_body <<- function(x, y) identical(x, y)
@@ -68,6 +71,9 @@ check_downstream_dep <- function(dep, pkg) {
   s3_register("pillar::type_sum", "quosures", type_sum.quosures)
 
   map2(downstream_deps, names(downstream_deps), check_downstream_dep)
+
+  base_ns_env <<- ns_env("base")
+  base_pkg_env <<- baseenv()
 }
 .onUnload <- function(lib) {
   .Call(rlang_library_unload)
