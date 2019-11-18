@@ -223,8 +223,8 @@ or complex expressions.</p>
 <span class='fu'>invoke</span>(<span class='no'>fn</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>mtcars</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; tryCatch(withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/Rtmpoo4vIN/file18bf30ffdc8d"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/Rtmpoo4vIN/file18bf6f45e214")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpwHDkZh/file4ff92753371b"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpwHDkZh/file4ff9772f64df")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
@@ -245,7 +245,7 @@ or complex expressions.</p>
 #&gt;         e$`_pid` &lt;- Sys.getpid()
 #&gt;         e$`_timestamp` &lt;- Sys.time()
 #&gt;         e &lt;- err$add_trace_back(e)
-#&gt;         saveRDS(list("error", e), file = paste0("/tmp/Rtmpoo4vIN/file18bf6f45e214", 
+#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpwHDkZh/file4ff9772f64df", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, interrupt = function(e) {
@@ -264,7 +264,7 @@ or complex expressions.</p>
 #&gt;         e$`_pid` &lt;- Sys.getpid()
 #&gt;         e$`_timestamp` &lt;- Sys.time()
 #&gt;         e &lt;- err$add_trace_back(e)
-#&gt;         saveRDS(list("error", e), file = paste0("/tmp/Rtmpoo4vIN/file18bf6f45e214", 
+#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpwHDkZh/file4ff9772f64df", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, callr_message = function(e) {
@@ -310,8 +310,8 @@ or complex expressions.</p>
 #&gt; [[8]]
 #&gt; withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/Rtmpoo4vIN/file18bf30ffdc8d"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/Rtmpoo4vIN/file18bf6f45e214")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpwHDkZh/file4ff92753371b"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpwHDkZh/file4ff9772f64df")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
@@ -332,7 +332,7 @@ or complex expressions.</p>
 #&gt;         e$`_pid` &lt;- Sys.getpid()
 #&gt;         e$`_timestamp` &lt;- Sys.time()
 #&gt;         e &lt;- err$add_trace_back(e)
-#&gt;         saveRDS(list("error", e), file = paste0("/tmp/Rtmpoo4vIN/file18bf6f45e214", 
+#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpwHDkZh/file4ff9772f64df", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, interrupt = function(e) {
@@ -351,7 +351,7 @@ or complex expressions.</p>
 #&gt;         e$`_pid` &lt;- Sys.getpid()
 #&gt;         e$`_timestamp` &lt;- Sys.time()
 #&gt;         e &lt;- err$add_trace_back(e)
-#&gt;         saveRDS(list("error", e), file = paste0("/tmp/Rtmpoo4vIN/file18bf6f45e214", 
+#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpwHDkZh/file4ff9772f64df", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, callr_message = function(e) {
@@ -370,11 +370,11 @@ or complex expressions.</p>
 #&gt; })
 #&gt; 
 #&gt; [[9]]
-#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/Rtmpoo4vIN/file18bf30ffdc8d"), 
-#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/Rtmpoo4vIN/file18bf6f45e214")
+#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpwHDkZh/file4ff92753371b"), 
+#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpwHDkZh/file4ff9772f64df")
 #&gt; 
 #&gt; [[10]]
-#&gt; do.call(do.call, c(readRDS("/tmp/Rtmpoo4vIN/file18bf30ffdc8d"), 
+#&gt; do.call(do.call, c(readRDS("/tmp/RtmpwHDkZh/file4ff92753371b"), 
 #&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv)
 #&gt; 
 #&gt; [[11]]
@@ -391,7 +391,7 @@ or complex expressions.</p>
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; }, list(pkg = list(package = "rlang", version = list(c(0L, 4L, 
-#&gt; 1L, 9000L)), src_path = "/home/travis/build/r-lib/rlang", dst_path = "/tmp/Rtmpoo4vIN/file18bf1ed18353", 
+#&gt; 1L, 9000L)), src_path = "/home/travis/build/r-lib/rlang", dst_path = "/tmp/RtmpwHDkZh/file4ff94b9e5827", 
 #&gt;     github_url = "https://github.com/r-lib/rlang", desc = &lt;environment&gt;, 
 #&gt;     meta = list(url = "https://rlang.r-lib.org", template = list(
 #&gt;         params = list(ganalytics = "UA-115082821-1")), home = list(
@@ -473,7 +473,7 @@ or complex expressions.</p>
 #&gt;             "calling")), list(title = "Session state", contents = c("matches(\"interactive\")", 
 #&gt;             "matches(\"option\")")), list(title = "Weak references", 
 #&gt;                 contents = c("matches(\"weakref\")", "matches(\"wref\")"
-#&gt;                 ))), destination = "/tmp/Rtmpoo4vIN/file18bf1ed18353"), 
+#&gt;                 ))), destination = "/tmp/RtmpwHDkZh/file4ff94b9e5827"), 
 #&gt;     figures = list(dev = "grDevices::png", dpi = 96L, dev.args = list(), 
 #&gt;         fig.ext = "png", fig.width = 7.29166666666667, fig.height = NULL, 
 #&gt;         fig.retina = 2L, fig.asp = 0.618046971569839), development = list(
@@ -7549,7 +7549,7 @@ or complex expressions.</p>
 #&gt;     with_options = "local_options", with_restarts = "with_restarts", 
 #&gt;     wref_key = "wref_key", wref_value = "wref_key", zap = "zap"
 #&gt;     ), article_index = character(0)), examples = TRUE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/Rtmpoo4vIN/file18bf1ed18353"), 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpwHDkZh/file4ff94b9e5827"), 
 #&gt;     install = FALSE, preview = FALSE, new_process = FALSE, devel = FALSE, 
 #&gt;     crayon_enabled = TRUE, crayon_colors = 256, pkgdown_internet = TRUE), 
 #&gt;     envir = &lt;environment&gt;)
@@ -7561,7 +7561,7 @@ or complex expressions.</p>
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; })(pkg = list(package = "rlang", version = list(c(0L, 4L, 1L, 
-#&gt; 9000L)), src_path = "/home/travis/build/r-lib/rlang", dst_path = "/tmp/Rtmpoo4vIN/file18bf1ed18353", 
+#&gt; 9000L)), src_path = "/home/travis/build/r-lib/rlang", dst_path = "/tmp/RtmpwHDkZh/file4ff94b9e5827", 
 #&gt;     github_url = "https://github.com/r-lib/rlang", desc = &lt;environment&gt;, 
 #&gt;     meta = list(url = "https://rlang.r-lib.org", template = list(
 #&gt;         params = list(ganalytics = "UA-115082821-1")), home = list(
@@ -7643,7 +7643,7 @@ or complex expressions.</p>
 #&gt;             "calling")), list(title = "Session state", contents = c("matches(\"interactive\")", 
 #&gt;             "matches(\"option\")")), list(title = "Weak references", 
 #&gt;                 contents = c("matches(\"weakref\")", "matches(\"wref\")"
-#&gt;                 ))), destination = "/tmp/Rtmpoo4vIN/file18bf1ed18353"), 
+#&gt;                 ))), destination = "/tmp/RtmpwHDkZh/file4ff94b9e5827"), 
 #&gt;     figures = list(dev = "grDevices::png", dpi = 96L, dev.args = list(), 
 #&gt;         fig.ext = "png", fig.width = 7.29166666666667, fig.height = NULL, 
 #&gt;         fig.retina = 2L, fig.asp = 0.618046971569839), development = list(
@@ -14719,7 +14719,7 @@ or complex expressions.</p>
 #&gt;     with_options = "local_options", with_restarts = "with_restarts", 
 #&gt;     wref_key = "wref_key", wref_value = "wref_key", zap = "zap"
 #&gt;     ), article_index = character(0)), examples = TRUE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/Rtmpoo4vIN/file18bf1ed18353"), 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpwHDkZh/file4ff94b9e5827"), 
 #&gt;     install = FALSE, preview = FALSE, new_process = FALSE, devel = FALSE, 
 #&gt;     crayon_enabled = TRUE, crayon_colors = 256, pkgdown_internet = TRUE)
 #&gt; 
@@ -14860,8 +14860,8 @@ or complex expressions.</p>
 #&gt;     2, 4, 6, 8, 2))</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/do.call.html'>do.call</a></span>(<span class='no'>fn</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>mtcars</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; tryCatch(withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/Rtmpoo4vIN/file18bf30ffdc8d"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/Rtmpoo4vIN/file18bf6f45e214")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpwHDkZh/file4ff92753371b"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpwHDkZh/file4ff9772f64df")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
@@ -14882,7 +14882,7 @@ or complex expressions.</p>
 #&gt;         e$`_pid` &lt;- Sys.getpid()
 #&gt;         e$`_timestamp` &lt;- Sys.time()
 #&gt;         e &lt;- err$add_trace_back(e)
-#&gt;         saveRDS(list("error", e), file = paste0("/tmp/Rtmpoo4vIN/file18bf6f45e214", 
+#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpwHDkZh/file4ff9772f64df", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, interrupt = function(e) {
@@ -14901,7 +14901,7 @@ or complex expressions.</p>
 #&gt;         e$`_pid` &lt;- Sys.getpid()
 #&gt;         e$`_timestamp` &lt;- Sys.time()
 #&gt;         e &lt;- err$add_trace_back(e)
-#&gt;         saveRDS(list("error", e), file = paste0("/tmp/Rtmpoo4vIN/file18bf6f45e214", 
+#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpwHDkZh/file4ff9772f64df", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, callr_message = function(e) {
@@ -14947,8 +14947,8 @@ or complex expressions.</p>
 #&gt; [[8]]
 #&gt; withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/Rtmpoo4vIN/file18bf30ffdc8d"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/Rtmpoo4vIN/file18bf6f45e214")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpwHDkZh/file4ff92753371b"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpwHDkZh/file4ff9772f64df")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
@@ -14969,7 +14969,7 @@ or complex expressions.</p>
 #&gt;         e$`_pid` &lt;- Sys.getpid()
 #&gt;         e$`_timestamp` &lt;- Sys.time()
 #&gt;         e &lt;- err$add_trace_back(e)
-#&gt;         saveRDS(list("error", e), file = paste0("/tmp/Rtmpoo4vIN/file18bf6f45e214", 
+#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpwHDkZh/file4ff9772f64df", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, interrupt = function(e) {
@@ -14988,7 +14988,7 @@ or complex expressions.</p>
 #&gt;         e$`_pid` &lt;- Sys.getpid()
 #&gt;         e$`_timestamp` &lt;- Sys.time()
 #&gt;         e &lt;- err$add_trace_back(e)
-#&gt;         saveRDS(list("error", e), file = paste0("/tmp/Rtmpoo4vIN/file18bf6f45e214", 
+#&gt;         saveRDS(list("error", e), file = paste0("/tmp/RtmpwHDkZh/file4ff9772f64df", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, callr_message = function(e) {
@@ -15007,11 +15007,11 @@ or complex expressions.</p>
 #&gt; })
 #&gt; 
 #&gt; [[9]]
-#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/Rtmpoo4vIN/file18bf30ffdc8d"), 
-#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/Rtmpoo4vIN/file18bf6f45e214")
+#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/RtmpwHDkZh/file4ff92753371b"), 
+#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/RtmpwHDkZh/file4ff9772f64df")
 #&gt; 
 #&gt; [[10]]
-#&gt; do.call(do.call, c(readRDS("/tmp/Rtmpoo4vIN/file18bf30ffdc8d"), 
+#&gt; do.call(do.call, c(readRDS("/tmp/RtmpwHDkZh/file4ff92753371b"), 
 #&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv)
 #&gt; 
 #&gt; [[11]]
@@ -15028,7 +15028,7 @@ or complex expressions.</p>
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; }, list(pkg = list(package = "rlang", version = list(c(0L, 4L, 
-#&gt; 1L, 9000L)), src_path = "/home/travis/build/r-lib/rlang", dst_path = "/tmp/Rtmpoo4vIN/file18bf1ed18353", 
+#&gt; 1L, 9000L)), src_path = "/home/travis/build/r-lib/rlang", dst_path = "/tmp/RtmpwHDkZh/file4ff94b9e5827", 
 #&gt;     github_url = "https://github.com/r-lib/rlang", desc = &lt;environment&gt;, 
 #&gt;     meta = list(url = "https://rlang.r-lib.org", template = list(
 #&gt;         params = list(ganalytics = "UA-115082821-1")), home = list(
@@ -15110,7 +15110,7 @@ or complex expressions.</p>
 #&gt;             "calling")), list(title = "Session state", contents = c("matches(\"interactive\")", 
 #&gt;             "matches(\"option\")")), list(title = "Weak references", 
 #&gt;                 contents = c("matches(\"weakref\")", "matches(\"wref\")"
-#&gt;                 ))), destination = "/tmp/Rtmpoo4vIN/file18bf1ed18353"), 
+#&gt;                 ))), destination = "/tmp/RtmpwHDkZh/file4ff94b9e5827"), 
 #&gt;     figures = list(dev = "grDevices::png", dpi = 96L, dev.args = list(), 
 #&gt;         fig.ext = "png", fig.width = 7.29166666666667, fig.height = NULL, 
 #&gt;         fig.retina = 2L, fig.asp = 0.618046971569839), development = list(
@@ -22186,7 +22186,7 @@ or complex expressions.</p>
 #&gt;     with_options = "local_options", with_restarts = "with_restarts", 
 #&gt;     wref_key = "wref_key", wref_value = "wref_key", zap = "zap"
 #&gt;     ), article_index = character(0)), examples = TRUE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/Rtmpoo4vIN/file18bf1ed18353"), 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpwHDkZh/file4ff94b9e5827"), 
 #&gt;     install = FALSE, preview = FALSE, new_process = FALSE, devel = FALSE, 
 #&gt;     crayon_enabled = TRUE, crayon_colors = 256, pkgdown_internet = TRUE), 
 #&gt;     envir = &lt;environment&gt;)
@@ -22198,7 +22198,7 @@ or complex expressions.</p>
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; })(pkg = list(package = "rlang", version = list(c(0L, 4L, 1L, 
-#&gt; 9000L)), src_path = "/home/travis/build/r-lib/rlang", dst_path = "/tmp/Rtmpoo4vIN/file18bf1ed18353", 
+#&gt; 9000L)), src_path = "/home/travis/build/r-lib/rlang", dst_path = "/tmp/RtmpwHDkZh/file4ff94b9e5827", 
 #&gt;     github_url = "https://github.com/r-lib/rlang", desc = &lt;environment&gt;, 
 #&gt;     meta = list(url = "https://rlang.r-lib.org", template = list(
 #&gt;         params = list(ganalytics = "UA-115082821-1")), home = list(
@@ -22280,7 +22280,7 @@ or complex expressions.</p>
 #&gt;             "calling")), list(title = "Session state", contents = c("matches(\"interactive\")", 
 #&gt;             "matches(\"option\")")), list(title = "Weak references", 
 #&gt;                 contents = c("matches(\"weakref\")", "matches(\"wref\")"
-#&gt;                 ))), destination = "/tmp/Rtmpoo4vIN/file18bf1ed18353"), 
+#&gt;                 ))), destination = "/tmp/RtmpwHDkZh/file4ff94b9e5827"), 
 #&gt;     figures = list(dev = "grDevices::png", dpi = 96L, dev.args = list(), 
 #&gt;         fig.ext = "png", fig.width = 7.29166666666667, fig.height = NULL, 
 #&gt;         fig.retina = 2L, fig.asp = 0.618046971569839), development = list(
@@ -29356,7 +29356,7 @@ or complex expressions.</p>
 #&gt;     with_options = "local_options", with_restarts = "with_restarts", 
 #&gt;     wref_key = "wref_key", wref_value = "wref_key", zap = "zap"
 #&gt;     ), article_index = character(0)), examples = TRUE, run_dont_run = FALSE, 
-#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/Rtmpoo4vIN/file18bf1ed18353"), 
+#&gt;     seed = 1014, lazy = FALSE, override = list(destination = "/tmp/RtmpwHDkZh/file4ff94b9e5827"), 
 #&gt;     install = FALSE, preview = FALSE, new_process = FALSE, devel = FALSE, 
 #&gt;     crayon_enabled = TRUE, crayon_colors = 256, pkgdown_internet = TRUE)
 #&gt; 
