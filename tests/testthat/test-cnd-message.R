@@ -39,7 +39,7 @@ test_that("default conditionMessage() method for rlang errors calls cnd_message(
     .env = global_env(),
     cnd_header.rlang_foobar = function(cnd, ...) "dispatched!",
     cnd_bullets.rlang_foobar = function(cnd, ...) c("one", x = "two", i = "three"),
-    cnd_details.rlang_foobar = function(cnd, ...) c("foo", "bar"),
+    cnd_footer.rlang_foobar = function(cnd, ...) c("foo", "bar"),
     conditionMessage(error_cnd("rlang_foobar", message = "embedded"))
   )
   exp <- paste0(exp, "\nfoo\nbar")

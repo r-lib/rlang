@@ -12,7 +12,7 @@
 #'   of lines. These lines are automatically prefixed with a bullet by
 #'   `cnd_message()` (see the section on error statements).
 #'
-#' - The `cnd_details()` generic. Methods should return one or several
+#' - The `cnd_footer()` generic. Methods should return one or several
 #'   lines.
 #'
 #' `cnd_message()` is automatically called by the `conditionMessage()`
@@ -85,7 +85,7 @@ cnd_message <- function(cnd) {
   paste_line(
     cnd_header(cnd),
     format_bullets(cnd_bullets(cnd)),
-    cnd_details(cnd)
+    cnd_footer(cnd)
   )
 }
 
@@ -118,11 +118,11 @@ cnd_bullets.default <- function(cnd, ...) {
 
 #' @rdname cnd_message
 #' @export
-cnd_details <- function(cnd, ...) {
-  UseMethod("cnd_details")
+cnd_footer <- function(cnd, ...) {
+  UseMethod("cnd_footer")
 }
 #' @export
-cnd_details.default <- function(cnd, ...) {
+cnd_footer.default <- function(cnd, ...) {
   chr()
 }
 
