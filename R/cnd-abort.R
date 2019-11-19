@@ -307,7 +307,7 @@ format_onerror_backtrace <- function(cnd) {
 
   if (show_trace == "reminder") {
     if (is_interactive()) {
-      reminder <- silver("Call `rlang::last_error()` to see a backtrace.")
+      reminder <- silver("Run `rlang::last_error()` to see where the error occurred.")
     } else {
       reminder <- NULL
     }
