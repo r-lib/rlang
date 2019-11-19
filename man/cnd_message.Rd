@@ -3,7 +3,7 @@
 \name{cnd_message}
 \alias{cnd_message}
 \alias{cnd_header}
-\alias{cnd_bullets}
+\alias{cnd_body}
 \alias{cnd_footer}
 \alias{format_bullets}
 \title{Build an error message from a main issue and bullet messages}
@@ -12,7 +12,7 @@ cnd_message(cnd)
 
 cnd_header(cnd, ...)
 
-cnd_bullets(cnd, ...)
+cnd_body(cnd, ...)
 
 cnd_footer(cnd, ...)
 
@@ -30,7 +30,7 @@ format_bullets(x)
 \code{cnd_message()} assembles an error message from two components:
 \itemize{
 \item The \code{cnd_header()} generic. Methods should return a single line.
-\item The \code{cnd_bullets()} generic. Methods should return a named vector
+\item The \code{cnd_body()} generic. Methods should return a named vector
 of lines. These lines are automatically prefixed with a bullet by
 \code{cnd_message()} (see the section on error statements).
 \item The \code{cnd_footer()} generic. Methods should return one or several
@@ -39,7 +39,7 @@ lines.
 
 \code{cnd_message()} is automatically called by the \code{conditionMessage()}
 for rlang errors so that errors thrown with \code{\link[=abort]{abort()}} only need to
-implement \code{cnd_header()} and \code{cnd_bullets()}. It can also be called
+implement \code{cnd_header()} and \code{cnd_body()}. It can also be called
 in custom \code{conditionMessage()} methods.
 
 Note that if you pass a named character vector to \code{\link[=abort]{abort()}}, you
@@ -59,7 +59,7 @@ message from two parts: the \strong{issue} and the \strong{bullets}.
 be as generic as possible, but since it is a generic it is easy to
 override by error subclasses.
 
-The \code{cnd_bullets()} methods should return a character vector of
+The \code{cnd_body()} methods should return a character vector of
 sentences. These are automatically prefixed with bullets by
 \code{cnd_message()}, according to the following scheme:
 \itemize{
@@ -72,21 +72,21 @@ While you are free to lay out the bullets in the order that you
 like, "x" bullets should usually precede "i" bullets.
 }
 
-\section{Overriding \code{cnd_bullets()}}{
+\section{Overriding \code{cnd_body()}}{
 
 
 Sometimes the generation of an error message depends on the state
 of the type checking. In that case, it can be tricky to lazily
-generate error messages with \code{cnd_bullets()}: you can either
+generate error messages with \code{cnd_body()}: you can either
 overspecify your error class hierarchies with one class per state,
 or replicate the type-checking control flow within the
-\code{cnd_bullets()} method. None of these options are ideal.
+\code{cnd_body()} method. None of these options are ideal.
 
-A better option is to define a \code{cnd_bullets} field in your error
+A better option is to define a \code{cnd_body} field in your error
 object. This should be a function (or a lambda-formula which will
 be passed to \code{\link[=as_function]{as_function()}}) with the same signature as
-\code{cnd_bullets()} methods. This function overrides the
-\code{cnd_bullets()} generic and can generate an error message tailored
+\code{cnd_body()} methods. This function overrides the
+\code{cnd_body()} generic and can generate an error message tailored
 to the state in which the error was constructed.
 
 Note that as a rule, \code{cnd_header()} should be a general thematic

@@ -8,7 +8,7 @@
 #'
 #' - The `cnd_header()` generic. Methods should return a single line.
 #'
-#' - The `cnd_bullets()` generic. Methods should return a named vector
+#' - The `cnd_body()` generic. Methods should return a named vector
 #'   of lines. These lines are automatically prefixed with a bullet by
 #'   `cnd_message()` (see the section on error statements).
 #'
@@ -17,7 +17,7 @@
 #'
 #' `cnd_message()` is automatically called by the `conditionMessage()`
 #' for rlang errors so that errors thrown with [abort()] only need to
-#' implement `cnd_header()` and `cnd_bullets()`. It can also be called
+#' implement `cnd_header()` and `cnd_body()`. It can also be called
 #' in custom `conditionMessage()` methods.
 #'
 #' Note that if you pass a named character vector to [abort()], you
@@ -38,7 +38,7 @@
 #' be as generic as possible, but since it is a generic it is easy to
 #' override by error subclasses.
 #'
-#' The `cnd_bullets()` methods should return a character vector of
+#' The `cnd_body()` methods should return a character vector of
 #' sentences. These are automatically prefixed with bullets by
 #' `cnd_message()`, according to the following scheme:
 #'
@@ -50,20 +50,20 @@
 #' like, "x" bullets should usually precede "i" bullets.
 #'
 #'
-#' @section Overriding `cnd_bullets()`:
+#' @section Overriding `cnd_body()`:
 #'
 #' Sometimes the generation of an error message depends on the state
 #' of the type checking. In that case, it can be tricky to lazily
-#' generate error messages with `cnd_bullets()`: you can either
+#' generate error messages with `cnd_body()`: you can either
 #' overspecify your error class hierarchies with one class per state,
 #' or replicate the type-checking control flow within the
-#' `cnd_bullets()` method. None of these options are ideal.
+#' `cnd_body()` method. None of these options are ideal.
 #'
-#' A better option is to define a `cnd_bullets` field in your error
+#' A better option is to define a `cnd_body` field in your error
 #' object. This should be a function (or a lambda-formula which will
 #' be passed to [as_function()]) with the same signature as
-#' `cnd_bullets()` methods. This function overrides the
-#' `cnd_bullets()` generic and can generate an error message tailored
+#' `cnd_body()` methods. This function overrides the
+#' `cnd_body()` generic and can generate an error message tailored
 #' to the state in which the error was constructed.
 #'
 #' Note that as a rule, `cnd_header()` should be a general thematic
@@ -84,7 +84,7 @@
 cnd_message <- function(cnd) {
   paste_line(
     cnd_header(cnd),
-    format_bullets(cnd_bullets(cnd)),
+    format_bullets(cnd_body(cnd)),
     cnd_footer(cnd)
   )
 }
@@ -101,18 +101,18 @@ cnd_header.default <- function(cnd, ...) {
 
 #' @rdname cnd_message
 #' @export
-cnd_bullets <- function(cnd, ...) {
+cnd_body <- function(cnd, ...) {
   if (is_function(cnd$cnd_bullets)) {
     cnd$cnd_bullets(cnd, ...)
   } else if (is_bare_formula(cnd$cnd_bullets)) {
-    cnd_bullets <- as_function(cnd$cnd_bullets)
-    cnd_bullets(cnd, ...)
+    cnd_body <- as_function(cnd$cnd_bullets)
+    cnd_body(cnd, ...)
   } else {
-    UseMethod("cnd_bullets")
+    UseMethod("cnd_body")
   }
 }
 #' @export
-cnd_bullets.default <- function(cnd, ...) {
+cnd_body.default <- function(cnd, ...) {
   chr()
 }
 

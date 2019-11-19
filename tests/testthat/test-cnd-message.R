@@ -24,11 +24,11 @@ test_that("default conditionMessage() method for rlang errors calls cnd_message(
   )
   expect_identical(out, "dispatched!")
 
-  # Both `cnd_header()` and `cnd_bullets()` methods
+  # Both `cnd_header()` and `cnd_body()` methods
   out <- with_bindings(
     .env = global_env(),
     cnd_header.rlang_foobar = function(cnd, ...) "dispatched!",
-    cnd_bullets.rlang_foobar = function(cnd, ...) c("one", x = "two", i = "three"),
+    cnd_body.rlang_foobar = function(cnd, ...) c("one", x = "two", i = "three"),
     conditionMessage(error_cnd("rlang_foobar", message = "embedded"))
   )
   exp <- paste0("dispatched!\n", format_bullets(c("one", x = "two", i = "three")))
@@ -38,7 +38,7 @@ test_that("default conditionMessage() method for rlang errors calls cnd_message(
   out <- with_bindings(
     .env = global_env(),
     cnd_header.rlang_foobar = function(cnd, ...) "dispatched!",
-    cnd_bullets.rlang_foobar = function(cnd, ...) c("one", x = "two", i = "three"),
+    cnd_body.rlang_foobar = function(cnd, ...) c("one", x = "two", i = "three"),
     cnd_footer.rlang_foobar = function(cnd, ...) c("foo", "bar"),
     conditionMessage(error_cnd("rlang_foobar", message = "embedded"))
   )
@@ -46,12 +46,12 @@ test_that("default conditionMessage() method for rlang errors calls cnd_message(
   expect_identical(out, exp)
 })
 
-test_that("default cnd_bullets() method calls lazy method if present", {
+test_that("default cnd_body() method calls lazy method if present", {
   err <- error_cnd(
     "rlang_foobar",
     message = "Issue.",
     data = "foo",
-    cnd_bullets = function(cnd, ...) {
+    cnd_body = function(cnd, ...) {
       c(x = cnd$data, i = "bar")
     }
   )
@@ -59,12 +59,12 @@ test_that("default cnd_bullets() method calls lazy method if present", {
     "rlang_foobar",
     message = "Issue.",
     data = "foo",
-    cnd_bullets = ~ .$data
+    cnd_body = ~ .$data
   )
 
   # Should not have precedence
   local_methods(
-    cnd_bullets.rlang_foobar = function(cnd, ...) "wrong!"
+    cnd_body.rlang_foobar = function(cnd, ...) "wrong!"
   )
 
   # Needs bugfix in dev version
