@@ -17,16 +17,14 @@ test_that("default conditionMessage() method for rlang errors calls cnd_message(
   expect_identical(out, "embedded")
 
   # Only `cnd_header()` method
-  out <- with_bindings(
-    .env = global_env(),
+  out <- with_methods(
     cnd_header.rlang_foobar = function(cnd, ...) "dispatched!",
     conditionMessage(error_cnd("rlang_foobar", message = "embedded"))
   )
   expect_identical(out, "dispatched!")
 
   # Both `cnd_header()` and `cnd_body()` methods
-  out <- with_bindings(
-    .env = global_env(),
+  out <- with_methods(
     cnd_header.rlang_foobar = function(cnd, ...) "dispatched!",
     cnd_body.rlang_foobar = function(cnd, ...) c("one", "two", "three"),
     conditionMessage(error_cnd("rlang_foobar", message = "embedded"))
@@ -35,8 +33,7 @@ test_that("default conditionMessage() method for rlang errors calls cnd_message(
   expect_identical(out, exp)
 
   # All three methods defined
-  out <- with_bindings(
-    .env = global_env(),
+  out <- with_methods(
     cnd_header.rlang_foobar = function(cnd, ...) "dispatched!",
     cnd_body.rlang_foobar = function(cnd, ...) c("one", "two", "three"),
     cnd_footer.rlang_foobar = function(cnd, ...) c("foo", "bar"),

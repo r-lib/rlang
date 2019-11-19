@@ -26,3 +26,7 @@ run_script <- function(file, envvars = chr()) {
 local_methods <- function(..., .frame = caller_env()) {
   local_bindings(..., .env = global_env(), .frame = .frame)
 }
+with_methods <- function(.expr, ...) {
+  local_methods(...)
+  .expr
+}
