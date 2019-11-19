@@ -84,7 +84,7 @@
 cnd_message <- function(cnd) {
   paste_line(
     cnd_header(cnd),
-    format_bullets(cnd_body(cnd)),
+    cnd_body(cnd),
     cnd_footer(cnd)
   )
 }
@@ -102,14 +102,27 @@ cnd_header.default <- function(cnd, ...) {
 #' @rdname cnd_message
 #' @export
 cnd_body <- function(cnd, ...) {
-  if (is_function(cnd$cnd_bullets)) {
-    cnd$cnd_bullets(cnd, ...)
-  } else if (is_bare_formula(cnd$cnd_bullets)) {
-    cnd_body <- as_function(cnd$cnd_bullets)
-    cnd_body(cnd, ...)
-  } else {
-    UseMethod("cnd_body")
+  cnd_bullets <- cnd$cnd_bullets
+
+  if (is_null(cnd_bullets)) {
+    return(cnd_body_dispatch(cnd, ...))
   }
+
+  if (is_function(cnd_bullets)) {
+    bullets <- cnd_bullets(cnd, ...)
+  } else if (is_bare_formula(cnd_bullets)) {
+    cnd_body <- as_function(cnd_bullets)
+    bullets <- cnd_body(cnd, ...)
+  } else if (is_true(cnd_bullets)) {
+    bullets <- cnd_body_dispatch(cnd, ...)
+  } else {
+    abort("`cnd_bullets` must be `TRUE` or a function.")
+  }
+
+  format_bullets(bullets)
+}
+cnd_body_dispatch <- function(cnd, ...) {
+  UseMethod("cnd_body")
 }
 #' @export
 cnd_body.default <- function(cnd, ...) {

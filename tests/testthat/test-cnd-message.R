@@ -28,17 +28,17 @@ test_that("default conditionMessage() method for rlang errors calls cnd_message(
   out <- with_bindings(
     .env = global_env(),
     cnd_header.rlang_foobar = function(cnd, ...) "dispatched!",
-    cnd_body.rlang_foobar = function(cnd, ...) c("one", x = "two", i = "three"),
+    cnd_body.rlang_foobar = function(cnd, ...) c("one", "two", "three"),
     conditionMessage(error_cnd("rlang_foobar", message = "embedded"))
   )
-  exp <- paste0("dispatched!\n", format_bullets(c("one", x = "two", i = "three")))
+  exp <- paste0("dispatched!\n", paste_line(c("one", "two", "three")))
   expect_identical(out, exp)
 
   # All three methods defined
   out <- with_bindings(
     .env = global_env(),
     cnd_header.rlang_foobar = function(cnd, ...) "dispatched!",
-    cnd_body.rlang_foobar = function(cnd, ...) c("one", x = "two", i = "three"),
+    cnd_body.rlang_foobar = function(cnd, ...) c("one", "two", "three"),
     cnd_footer.rlang_foobar = function(cnd, ...) c("foo", "bar"),
     conditionMessage(error_cnd("rlang_foobar", message = "embedded"))
   )
@@ -46,12 +46,12 @@ test_that("default conditionMessage() method for rlang errors calls cnd_message(
   expect_identical(out, exp)
 })
 
-test_that("default cnd_body() method calls lazy method if present", {
+test_that("default cnd_body() method calls OO cnd_bullets() method if present", {
   err <- error_cnd(
     "rlang_foobar",
     message = "Issue.",
     data = "foo",
-    cnd_body = function(cnd, ...) {
+    cnd_bullets = function(cnd, ...) {
       c(x = cnd$data, i = "bar")
     }
   )
@@ -59,7 +59,7 @@ test_that("default cnd_body() method calls lazy method if present", {
     "rlang_foobar",
     message = "Issue.",
     data = "foo",
-    cnd_body = ~ .$data
+    cnd_bullets = ~ .$data
   )
 
   # Should not have precedence
@@ -67,11 +67,26 @@ test_that("default cnd_body() method calls lazy method if present", {
     cnd_body.rlang_foobar = function(cnd, ...) "wrong!"
   )
 
-  # Needs bugfix in dev version
-  skip_if_not_installed("testthat", "2.2.1.9000")
-
   verify_output(test_path("test-cnd-bullets-lazy.txt"), {
     cnd_signal(err)
     cnd_signal(err_formula_bullets)
+  })
+})
+
+test_that("default cnd_body() method formats bullets if cnd_bullets field is TRUE", {
+  err <- error_cnd(
+    "rlang_foobar",
+    message = "Issue.",
+    data = "foo",
+    cnd_bullets = TRUE
+  )
+
+  # Should not have precedence
+  local_methods(
+    cnd_body.rlang_foobar = function(cnd, ...) c("foo", i = "bar")
+  )
+
+  verify_output(test_path("test-cnd-bullets-true.txt"), {
+    cnd_signal(err)
   })
 })
