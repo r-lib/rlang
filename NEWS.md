@@ -1,8 +1,15 @@
 
 # rlang 0.4.2
 
-* New `cnd_details()` generic for customising the footer of error
-  messages.
+* New `cnd_header()`, `cnd_body()` and `cnd_footer()` generics. These
+  are automatically called by the default `conditionMessage()` for
+  rlang errors.
+
+  Concretely, this is a way of breaking up lazy generation of error
+  messages with `conditionMessage()` into three independent
+  parts. This provides a lot of flexibility for hierarchies of error
+  classes, for instance you could inherit the body of an error message
+  from a parent class while overriding the header and footer.
 
 * The reminder to call `last_error()` is now less confusing thanks to
   a suggestion by @markhwhiteii.
