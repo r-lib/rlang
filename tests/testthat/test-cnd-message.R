@@ -43,12 +43,12 @@ test_that("default conditionMessage() method for rlang errors calls cnd_message(
   expect_identical(out, exp)
 })
 
-test_that("default cnd_body() method calls OO cnd_bullets() method if present", {
+test_that("default cnd_body() method calls OO bullets() method if present", {
   err <- error_cnd(
     "rlang_foobar",
     message = "Issue.",
     data = "foo",
-    cnd_bullets = function(cnd, ...) {
+    bullets = function(cnd, ...) {
       c(x = cnd$data, i = "bar")
     }
   )
@@ -56,7 +56,7 @@ test_that("default cnd_body() method calls OO cnd_bullets() method if present", 
     "rlang_foobar",
     message = "Issue.",
     data = "foo",
-    cnd_bullets = ~ .$data
+    bullets = ~ .$data
   )
 
   # Should not have precedence
@@ -70,12 +70,12 @@ test_that("default cnd_body() method calls OO cnd_bullets() method if present", 
   })
 })
 
-test_that("default cnd_body() method formats bullets if cnd_bullets field is TRUE", {
+test_that("default cnd_body() method formats bullets if bullets field is TRUE", {
   err <- error_cnd(
     "rlang_foobar",
     message = "Issue.",
     data = "foo",
-    cnd_bullets = TRUE
+    bullets = TRUE
   )
 
   # Should not have precedence

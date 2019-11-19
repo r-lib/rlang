@@ -102,21 +102,21 @@ cnd_header.default <- function(cnd, ...) {
 #' @rdname cnd_message
 #' @export
 cnd_body <- function(cnd, ...) {
-  cnd_bullets <- cnd$cnd_bullets
+  bullets <- cnd$bullets
 
-  if (is_null(cnd_bullets)) {
+  if (is_null(bullets)) {
     return(cnd_body_dispatch(cnd, ...))
   }
 
-  if (is_function(cnd_bullets)) {
-    bullets <- cnd_bullets(cnd, ...)
-  } else if (is_bare_formula(cnd_bullets)) {
-    cnd_body <- as_function(cnd_bullets)
+  if (is_function(bullets)) {
+    bullets <- bullets(cnd, ...)
+  } else if (is_bare_formula(bullets)) {
+    cnd_body <- as_function(bullets)
     bullets <- cnd_body(cnd, ...)
-  } else if (is_true(cnd_bullets)) {
+  } else if (is_true(bullets)) {
     bullets <- cnd_body_dispatch(cnd, ...)
   } else {
-    abort("`cnd_bullets` must be `TRUE` or a function.")
+    abort("`bullets` must be `TRUE` or a function.")
   }
 
   format_bullets(bullets)
