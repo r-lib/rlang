@@ -87,3 +87,21 @@ test_that("default cnd_body() method formats bullets if bullets field is TRUE", 
     cnd_signal(err)
   })
 })
+
+test_that("default cnd_body() method formats bullets if bullets field is a character vector", {
+  err <- error_cnd(
+    "rlang_foobar",
+    message = "Issue.",
+    data = "foo",
+    bullets = c("foo", i = "bar")
+  )
+
+  # Should not have precedence
+  local_methods(
+    cnd_body.rlang_foobar = function(cnd, ...) "wrong"
+  )
+
+  verify_output(test_path("test-cnd-bullets-vector.txt"), {
+    cnd_signal(err)
+  })
+})

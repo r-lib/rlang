@@ -115,7 +115,7 @@ cnd_body <- function(cnd, ...) {
     bullets <- cnd_body(cnd, ...)
   } else if (is_true(bullets)) {
     bullets <- cnd_body_dispatch(cnd, ...)
-  } else {
+  } else if (!is_character(bullets)) {
     abort("`bullets` must be `TRUE` or a function.")
   }
 
