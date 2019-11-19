@@ -2,7 +2,7 @@
 % Please edit documentation in R/cnd-message.R
 \name{cnd_message}
 \alias{cnd_message}
-\alias{cnd_issue}
+\alias{cnd_header}
 \alias{cnd_bullets}
 \alias{cnd_details}
 \alias{format_bullets}
@@ -10,7 +10,7 @@
 \usage{
 cnd_message(cnd)
 
-cnd_issue(cnd, ...)
+cnd_header(cnd, ...)
 
 cnd_bullets(cnd, ...)
 
@@ -29,7 +29,7 @@ format_bullets(x)
 
 \code{cnd_message()} assembles an error message from two components:
 \itemize{
-\item The \code{cnd_issue()} generic. Methods should return a single line.
+\item The \code{cnd_header()} generic. Methods should return a single line.
 \item The \code{cnd_bullets()} generic. Methods should return a named vector
 of lines. These lines are automatically prefixed with a bullet by
 \code{cnd_message()} (see the section on error statements).
@@ -39,7 +39,7 @@ lines.
 
 \code{cnd_message()} is automatically called by the \code{conditionMessage()}
 for rlang errors so that errors thrown with \code{\link[=abort]{abort()}} only need to
-implement \code{cnd_issue()} and \code{cnd_bullets()}. It can also be called
+implement \code{cnd_header()} and \code{cnd_bullets()}. It can also be called
 in custom \code{conditionMessage()} methods.
 
 Note that if you pass a named character vector to \code{\link[=abort]{abort()}}, you
@@ -55,7 +55,7 @@ bullet list of simple sentences containing a single clause.
 \code{cnd_message()} helps following this structure by building an error
 message from two parts: the \strong{issue} and the \strong{bullets}.
 
-\code{cnd_issue()} is the generic for the main error message. It should
+\code{cnd_header()} is the generic for the main error message. It should
 be as generic as possible, but since it is a generic it is easy to
 override by error subclasses.
 
@@ -89,7 +89,7 @@ be passed to \code{\link[=as_function]{as_function()}}) with the same signature 
 \code{cnd_bullets()} generic and can generate an error message tailored
 to the state in which the error was constructed.
 
-Note that as a rule, \code{cnd_issue()} should be a general thematic
+Note that as a rule, \code{cnd_header()} should be a general thematic
 issues that does not depend on state. For this reason, it isn't
 possible to define an overriding method in the condition object.
 }

@@ -16,18 +16,18 @@ test_that("default conditionMessage() method for rlang errors calls cnd_message(
   out <- conditionMessage(error_cnd("rlang_foobar", message = "embedded"))
   expect_identical(out, "embedded")
 
-  # Only `cnd_issue()` method
+  # Only `cnd_header()` method
   out <- with_bindings(
     .env = global_env(),
-    cnd_issue.rlang_foobar = function(cnd, ...) "dispatched!",
+    cnd_header.rlang_foobar = function(cnd, ...) "dispatched!",
     conditionMessage(error_cnd("rlang_foobar", message = "embedded"))
   )
   expect_identical(out, "dispatched!")
 
-  # Both `cnd_issue()` and `cnd_bullets()` methods
+  # Both `cnd_header()` and `cnd_bullets()` methods
   out <- with_bindings(
     .env = global_env(),
-    cnd_issue.rlang_foobar = function(cnd, ...) "dispatched!",
+    cnd_header.rlang_foobar = function(cnd, ...) "dispatched!",
     cnd_bullets.rlang_foobar = function(cnd, ...) c("one", x = "two", i = "three"),
     conditionMessage(error_cnd("rlang_foobar", message = "embedded"))
   )
@@ -37,7 +37,7 @@ test_that("default conditionMessage() method for rlang errors calls cnd_message(
   # All three methods defined
   out <- with_bindings(
     .env = global_env(),
-    cnd_issue.rlang_foobar = function(cnd, ...) "dispatched!",
+    cnd_header.rlang_foobar = function(cnd, ...) "dispatched!",
     cnd_bullets.rlang_foobar = function(cnd, ...) c("one", x = "two", i = "three"),
     cnd_details.rlang_foobar = function(cnd, ...) c("foo", "bar"),
     conditionMessage(error_cnd("rlang_foobar", message = "embedded"))

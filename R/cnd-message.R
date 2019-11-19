@@ -6,7 +6,7 @@
 #'
 #' `cnd_message()` assembles an error message from two components:
 #'
-#' - The `cnd_issue()` generic. Methods should return a single line.
+#' - The `cnd_header()` generic. Methods should return a single line.
 #'
 #' - The `cnd_bullets()` generic. Methods should return a named vector
 #'   of lines. These lines are automatically prefixed with a bullet by
@@ -17,7 +17,7 @@
 #'
 #' `cnd_message()` is automatically called by the `conditionMessage()`
 #' for rlang errors so that errors thrown with [abort()] only need to
-#' implement `cnd_issue()` and `cnd_bullets()`. It can also be called
+#' implement `cnd_header()` and `cnd_bullets()`. It can also be called
 #' in custom `conditionMessage()` methods.
 #'
 #' Note that if you pass a named character vector to [abort()], you
@@ -34,7 +34,7 @@
 #' `cnd_message()` helps following this structure by building an error
 #' message from two parts: the __issue__ and the __bullets__.
 #'
-#' `cnd_issue()` is the generic for the main error message. It should
+#' `cnd_header()` is the generic for the main error message. It should
 #' be as generic as possible, but since it is a generic it is easy to
 #' override by error subclasses.
 #'
@@ -66,7 +66,7 @@
 #' `cnd_bullets()` generic and can generate an error message tailored
 #' to the state in which the error was constructed.
 #'
-#' Note that as a rule, `cnd_issue()` should be a general thematic
+#' Note that as a rule, `cnd_header()` should be a general thematic
 #' issues that does not depend on state. For this reason, it isn't
 #' possible to define an overriding method in the condition object.
 #'
@@ -83,7 +83,7 @@
 #' @export
 cnd_message <- function(cnd) {
   paste_line(
-    cnd_issue(cnd),
+    cnd_header(cnd),
     format_bullets(cnd_bullets(cnd)),
     cnd_details(cnd)
   )
@@ -91,11 +91,11 @@ cnd_message <- function(cnd) {
 
 #' @rdname cnd_message
 #' @export
-cnd_issue <- function(cnd, ...) {
-  UseMethod("cnd_issue")
+cnd_header <- function(cnd, ...) {
+  UseMethod("cnd_header")
 }
 #' @export
-cnd_issue.default <- function(cnd, ...) {
+cnd_header.default <- function(cnd, ...) {
   cnd$message
 }
 
