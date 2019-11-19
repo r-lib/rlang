@@ -1,5 +1,0 @@
-> cnd_signal(err)
-Error: Issue.
-* foo
-i bar
-

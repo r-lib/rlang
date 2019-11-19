@@ -70,24 +70,6 @@ test_that("default cnd_body() method calls OO bullets() method if present", {
   })
 })
 
-test_that("default cnd_body() method formats bullets if bullets field is TRUE", {
-  err <- error_cnd(
-    "rlang_foobar",
-    message = "Issue.",
-    data = "foo",
-    bullets = TRUE
-  )
-
-  # Should not have precedence
-  local_methods(
-    cnd_body.rlang_foobar = function(cnd, ...) c("foo", i = "bar")
-  )
-
-  verify_output(test_path("test-cnd-bullets-true.txt"), {
-    cnd_signal(err)
-  })
-})
-
 test_that("default cnd_body() method formats bullets if bullets field is a character vector", {
   err <- error_cnd(
     "rlang_foobar",
@@ -104,4 +86,48 @@ test_that("default cnd_body() method formats bullets if bullets field is a chara
   verify_output(test_path("test-cnd-bullets-vector.txt"), {
     cnd_signal(err)
   })
+})
+
+test_that("can override body method with `body` or `bullet` fields", {
+  local_methods(cnd_body.rlang_foobar = function(...) "wrong")
+
+  expect_error(
+    stop(error_cnd("rlang_foobar", message = "header", body = "body")),
+    "header\nbody",
+    class = "rlang_foobar"
+  )
+  expect_error(
+    stop(error_cnd("rlang_foobar", message = "header", body = ~ "body")),
+    "header\nbody",
+    class = "rlang_foobar"
+  )
+  expect_error(
+    stop(error_cnd("rlang_foobar", message = "header", body = function(...) "body")),
+    "header\nbody",
+    class = "rlang_foobar"
+  )
+
+  expect_error(
+    stop(error_cnd("rlang_foobar", message = "header", bullets = "body")),
+    "header\n* body",
+    fixed = TRUE,
+    class = "rlang_foobar"
+  )
+  expect_error(
+    stop(error_cnd("rlang_foobar", message = "header", bullets = ~ "body")),
+    "header\n* body",
+    fixed = TRUE,
+    class = "rlang_foobar"
+  )
+  expect_error(
+    stop(error_cnd("rlang_foobar", message = "header", bullets = function(...) "body")),
+    "header\n* body",
+    fixed = TRUE,
+    class = "rlang_foobar"
+  )
+
+  expect_error(
+    stop(error_cnd("rlang_foobar", message = "header", bullets = "foo", body = "foo")),
+    "Can't supply both `bullets` and `body` fields"
+  )
 })

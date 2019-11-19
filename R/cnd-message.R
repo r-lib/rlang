@@ -103,23 +103,23 @@ cnd_header.default <- function(cnd, ...) {
 #' @export
 cnd_body <- function(cnd, ...) {
   bullets <- cnd$bullets
+  body <- cnd$body
 
-  if (is_null(bullets)) {
+  if (!is_null(bullets) && !is_null(body)) {
+    abort("Can't supply both `bullets` and `body` fields.")
+  }
+
+  if (is_null(bullets) && is_null(body)) {
     return(cnd_body_dispatch(cnd, ...))
   }
 
-  if (is_function(bullets)) {
-    bullets <- bullets(cnd, ...)
-  } else if (is_bare_formula(bullets)) {
-    cnd_body <- as_function(bullets)
-    bullets <- cnd_body(cnd, ...)
-  } else if (is_true(bullets)) {
-    bullets <- cnd_body_dispatch(cnd, ...)
-  } else if (!is_character(bullets)) {
-    abort("`bullets` must be `TRUE` or a function.")
-  }
+  body <- override_cnd_body(bullets %||% body, cnd, ...)
 
-  format_bullets(bullets)
+  if (is_null(bullets)) {
+    body
+  } else {
+    format_bullets(body)
+  }
 }
 cnd_body_dispatch <- function(cnd, ...) {
   UseMethod("cnd_body")
@@ -127,6 +127,19 @@ cnd_body_dispatch <- function(cnd, ...) {
 #' @export
 cnd_body.default <- function(cnd, ...) {
   chr()
+}
+
+override_cnd_body <- function(body, cnd, ...) {
+  if (is_function(body)) {
+    body(cnd, ...)
+  } else if (is_bare_formula(body)) {
+    body <- as_function(body)
+    body(cnd, ...)
+  } else if (is_character(body)) {
+    body
+  } else {
+    abort("`body` must be `TRUE` or a function.")
+  }
 }
 
 #' @rdname cnd_message
