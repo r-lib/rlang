@@ -58,34 +58,20 @@ cnd_header.default <- function(cnd, ...) {
 #' @rdname cnd_message
 #' @export
 cnd_body <- function(cnd, ...) {
-  bullets <- cnd$bullets
-  body <- cnd$body
-
-  if (!is_null(bullets) && !is_null(body)) {
-    abort("Can't supply both `bullets` and `body` fields.")
-  }
-
-  if (is_null(bullets) && is_null(body)) {
-    return(cnd_body_dispatch(cnd, ...))
-  }
-
-  body <- override_cnd_body(bullets %||% body, cnd, ...)
-
-  if (is_null(bullets)) {
-    body
+  if (is_null(cnd$body)) {
+    UseMethod("cnd_body")
   } else {
-    format_bullets(body)
+    override_cnd_body(cnd, ...)
   }
-}
-cnd_body_dispatch <- function(cnd, ...) {
-  UseMethod("cnd_body")
 }
 #' @method cnd_body default
 cnd_body.default <- function(cnd, ...) {
   chr()
 }
 
-override_cnd_body <- function(body, cnd, ...) {
+override_cnd_body <- function(cnd, ...) {
+  body <- cnd$body
+
   if (is_function(body)) {
     body(cnd, ...)
   } else if (is_bare_formula(body)) {
@@ -131,22 +117,6 @@ cnd_footer.default <- function(cnd, ...) {
 #' symbols of the bullets provide hints on how to interpret the bullet
 #' relative to the general error issue, which should be supplied as
 #' [cnd_header()].
-#'
-#'
-#' @section The `bullets` field in condition objects:
-#'
-#' The messages for rlang errors created with [abort()] are
-#' automatically formatted with [cnd_message()], which assembles a
-#' message from the `cnd_header()`, `cnd_body()`, and `cnd_footer()`
-#' generics. You can override the body generic by storing a `body`
-#' field in the condition object. Similarly, you can store a `bullets`
-#' field to override `cnd_body()`.
-#'
-#' Like `body`, this can be a static character vector, a
-#' [lambda-formula][as_function], or a function with the same
-#' signature as `cnd_body()`. Unlike `body` which is included in the
-#' error message literally, the `bullets` field (or the result of its
-#' invokation) is formatted with `format_bullets()`.
 #'
 #' @param x A named character vector of messages. Elements named as
 #'   `x` or `i` are prefixed with the corresponding bullet.

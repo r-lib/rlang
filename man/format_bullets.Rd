@@ -32,20 +32,3 @@ symbols of the bullets provide hints on how to interpret the bullet
 relative to the general error issue, which should be supplied as
 \code{\link[=cnd_header]{cnd_header()}}.
 }
-\section{The \code{bullets} field in condition objects}{
-
-
-The messages for rlang errors created with \code{\link[=abort]{abort()}} are
-automatically formatted with \code{\link[=cnd_message]{cnd_message()}}, which assembles a
-message from the \code{cnd_header()}, \code{cnd_body()}, and \code{cnd_footer()}
-generics. You can override the body generic by storing a \code{body}
-field in the condition object. Similarly, you can store a \code{bullets}
-field to override \code{cnd_body()}.
-
-Like \code{body}, this can be a static character vector, a
-\link[=as_function]{lambda-formula}, or a function with the same
-signature as \code{cnd_body()}. Unlike \code{body} which is included in the
-error message literally, the \code{bullets} field (or the result of its
-invokation) is formatted with \code{format_bullets()}.
-}
-

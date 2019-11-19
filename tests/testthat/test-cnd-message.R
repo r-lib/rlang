@@ -43,52 +43,7 @@ test_that("default conditionMessage() method for rlang errors calls cnd_message(
   expect_identical(out, exp)
 })
 
-test_that("default cnd_body() method calls OO bullets() method if present", {
-  err <- error_cnd(
-    "rlang_foobar",
-    message = "Issue.",
-    data = "foo",
-    bullets = function(cnd, ...) {
-      c(x = cnd$data, i = "bar")
-    }
-  )
-  err_formula_bullets <- error_cnd(
-    "rlang_foobar",
-    message = "Issue.",
-    data = "foo",
-    bullets = ~ .$data
-  )
-
-  # Should not have precedence
-  local_methods(
-    cnd_body.rlang_foobar = function(cnd, ...) "wrong!"
-  )
-
-  verify_output(test_path("test-cnd-bullets-lazy.txt"), {
-    cnd_signal(err)
-    cnd_signal(err_formula_bullets)
-  })
-})
-
-test_that("default cnd_body() method formats bullets if bullets field is a character vector", {
-  err <- error_cnd(
-    "rlang_foobar",
-    message = "Issue.",
-    data = "foo",
-    bullets = c("foo", i = "bar")
-  )
-
-  # Should not have precedence
-  local_methods(
-    cnd_body.rlang_foobar = function(cnd, ...) "wrong"
-  )
-
-  verify_output(test_path("test-cnd-bullets-vector.txt"), {
-    cnd_signal(err)
-  })
-})
-
-test_that("can override body method with `body` or `bullet` fields", {
+test_that("can override body method with `body` fields", {
   local_methods(cnd_body.rlang_foobar = function(...) "wrong")
 
   expect_error(
@@ -108,26 +63,9 @@ test_that("can override body method with `body` or `bullet` fields", {
   )
 
   expect_error(
-    stop(error_cnd("rlang_foobar", message = "header", bullets = "body")),
+    stop(error_cnd("rlang_foobar", message = "header", body = ~ format_bullets("body"))),
     "header\n* body",
     fixed = TRUE,
     class = "rlang_foobar"
-  )
-  expect_error(
-    stop(error_cnd("rlang_foobar", message = "header", bullets = ~ "body")),
-    "header\n* body",
-    fixed = TRUE,
-    class = "rlang_foobar"
-  )
-  expect_error(
-    stop(error_cnd("rlang_foobar", message = "header", bullets = function(...) "body")),
-    "header\n* body",
-    fixed = TRUE,
-    class = "rlang_foobar"
-  )
-
-  expect_error(
-    stop(error_cnd("rlang_foobar", message = "header", bullets = "foo", body = "foo")),
-    "Can't supply both `bullets` and `body` fields"
   )
 })
