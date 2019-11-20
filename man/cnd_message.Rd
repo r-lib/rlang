@@ -36,7 +36,10 @@ combined into a single string with a newline separator.
 
 \code{cnd_message()} is automatically called by the \code{conditionMessage()}
 for rlang errors. Error classes created with \code{\link[=abort]{abort()}} only need to
-implement header, body or footer methods.
+implement header, body or footer methods. This provides a lot of
+flexibility for hierarchies of error classes, for instance you
+could inherit the body of an error message from a parent class
+while overriding the header and footer.
 }
 \section{Overriding \code{cnd_body()}}{
 

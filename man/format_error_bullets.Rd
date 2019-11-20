@@ -15,7 +15,7 @@ format_error_bullets(x)
 
 \code{format_error_bullets()} takes a character vector and returns a single
 string (or an empty vector if the input is empty). The elements of
-the input vector are assempled as a list of bullets, depending on
+the input vector are assembled as a list of bullets, depending on
 their names:
 \itemize{
 \item Elements named \code{"i"} are bulleted with a blue "info" symbol.

@@ -16,7 +16,10 @@
 #'
 #' `cnd_message()` is automatically called by the `conditionMessage()`
 #' for rlang errors. Error classes created with [abort()] only need to
-#' implement header, body or footer methods.
+#' implement header, body or footer methods. This provides a lot of
+#' flexibility for hierarchies of error classes, for instance you
+#' could inherit the body of an error message from a parent class
+#' while overriding the header and footer.
 #'
 #'
 #' @section Overriding `cnd_body()`:
@@ -104,7 +107,7 @@ cnd_footer.default <- function(cnd, ...) {
 #'
 #' `format_error_bullets()` takes a character vector and returns a single
 #' string (or an empty vector if the input is empty). The elements of
-#' the input vector are assempled as a list of bullets, depending on
+#' the input vector are assembled as a list of bullets, depending on
 #' their names:
 #'
 #' - Elements named `"i"` are bulleted with a blue "info" symbol.
