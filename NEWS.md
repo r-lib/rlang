@@ -2,8 +2,8 @@
 # rlang 0.4.2
 
 * New `cnd_header()`, `cnd_body()` and `cnd_footer()` generics. These
-  are automatically called by the default `conditionMessage()` for
-  rlang errors.
+  are automatically called by `conditionMessage.rlang_error()`, the
+  default method for all rlang errors.
 
   Concretely, this is a way of breaking up lazy generation of error
   messages with `conditionMessage()` into three independent
