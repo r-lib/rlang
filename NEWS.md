@@ -4,6 +4,9 @@
 
 # rlang 0.4.2
 
+* The reminder to call `last_error()` is now less confusing thanks to
+  a suggestion by @markhwhiteii.
+
 * The functions prefixed in `scoped_` have been renamed to use the
   more conventional `local_` prefix. For instance, `scoped_bindings()`
   is now `local_bindings()`. The `scoped_` functions will be
