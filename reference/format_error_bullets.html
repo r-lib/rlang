@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create a function — new_function • rlang</title>
+<title>Format bullets for error messages — format_error_bullets • rlang</title>
 
 
 <!-- jquery -->
@@ -35,10 +35,25 @@
 
 
 
-<meta property="og:title" content="Create a function — new_function" />
+<meta property="og:title" content="Format bullets for error messages — format_error_bullets" />
 <meta property="og:description" content="
-This constructs a new function given its three components:
-list of arguments, body code and parent environment." />
+format_error_bullets() takes a character vector and returns a single
+string (or an empty vector if the input is empty). The elements of
+the input vector are assembled as a list of bullets, depending on
+their names:
+Elements named &quot;i&quot; are bulleted with a blue &quot;info&quot; symbol.
+Elements named &quot;x&quot; are bulleted with a red &quot;cross&quot; symbol.
+Unnamed elements are bulleted with a &quot;*&quot; symbol.
+
+
+This experimental infrastructure is based on the idea that
+sentences in error messages are best kept short and simple. From
+this point of view, the best way to present the information is in
+the cnd_body() method of an error conditon, as a bullet list of
+simple sentences containing a single clause. The info and cross
+symbols of the bullets provide hints on how to interpret the bullet
+relative to the general error issue, which should be supplied as
+cnd_header()." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -146,74 +161,50 @@ list of arguments, body code and parent environment." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create a function</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/fn.R'><code>R/fn.R</code></a></small>
-    <div class="hidden name"><code>new_function.Rd</code></div>
+    <h1>Format bullets for error messages</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/cnd-message.R'><code>R/cnd-message.R</code></a></small>
+    <div class="hidden name"><code>format_error_bullets.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><a href='https://www.tidyverse.org/lifecycle/#stable'><img src='figures/lifecycle-stable.svg' alt='Stable lifecycle'></a></p>
-<p>This constructs a new function given its three components:
-list of arguments, body code and parent environment.</p>
+    <p><a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a></p>
+<p><code>format_error_bullets()</code> takes a character vector and returns a single
+string (or an empty vector if the input is empty). The elements of
+the input vector are assembled as a list of bullets, depending on
+their names:</p><ul>
+<li><p>Elements named <code>"i"</code> are bulleted with a blue "info" symbol.</p></li>
+<li><p>Elements named <code>"x"</code> are bulleted with a red "cross" symbol.</p></li>
+<li><p>Unnamed elements are bulleted with a "*" symbol.</p></li>
+</ul>
+
+<p>This experimental infrastructure is based on the idea that
+sentences in error messages are best kept short and simple. From
+this point of view, the best way to present the information is in
+the <code><a href='cnd_message.html'>cnd_body()</a></code> method of an error conditon, as a bullet list of
+simple sentences containing a single clause. The info and cross
+symbols of the bullets provide hints on how to interpret the bullet
+relative to the general error issue, which should be supplied as
+<code><a href='cnd_message.html'>cnd_header()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>new_function</span>(<span class='no'>args</span>, <span class='no'>body</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>())</pre>
+    <pre class="usage"><span class='fu'>format_error_bullets</span>(<span class='no'>x</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>args</th>
-      <td><p>A named list or pairlist of default arguments. Note
-that if you want arguments that don't have defaults, you'll need
-to use the special function <code><a href='pairlist2.html'>pairlist2()</a></code>. If you need quoted
-defaults, use <code><a href='nse-defuse.html'>exprs()</a></code>.</p></td>
-    </tr>
-    <tr>
-      <th>body</th>
-      <td><p>A language object representing the code inside the
-function. Usually this will be most easily generated with
-<code><a href='https://rdrr.io/r/base/substitute.html'>base::quote()</a></code></p></td>
-    </tr>
-    <tr>
-      <th>env</th>
-      <td><p>The parent environment of the function, defaults to the
-calling environment of <code>new_function()</code></p></td>
+      <th>x</th>
+      <td><p>A named character vector of messages. Elements named as
+<code>x</code> or <code>i</code> are prefixed with the corresponding bullet.</p></td>
     </tr>
     </table>
 
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='no'>letters</span>
-<span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='fu'>new_function</span>(<span class='kw'>NULL</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>letters</span>))
-<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='no'>f</span>, <span class='no'>g</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='co'># Pass a list or pairlist of named arguments to create a function</span>
-<span class='co'># with parameters. The name becomes the parameter name and the</span>
-<span class='co'># argument the default value for this parameter:</span>
-<span class='fu'>new_function</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>10</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>x</span>))</div><div class='output co'>#&gt; function (x = 10) 
-#&gt; x
-#&gt; &lt;environment: 0x33e6ee8&gt;</div><div class='input'><span class='fu'>new_function</span>(<span class='fu'><a href='pairlist2.html'>pairlist2</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>10</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>x</span>))</div><div class='output co'>#&gt; function (x = 10) 
-#&gt; x
-#&gt; &lt;environment: 0x33e6ee8&gt;</div><div class='input'>
-<span class='co'># Use `exprs()` to create quoted defaults. Compare:</span>
-<span class='fu'>new_function</span>(<span class='fu'><a href='pairlist2.html'>pairlist2</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>5</span> + <span class='fl'>5</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>x</span>))</div><div class='output co'>#&gt; function (x = 10) 
-#&gt; x
-#&gt; &lt;environment: 0x33e6ee8&gt;</div><div class='input'><span class='fu'>new_function</span>(<span class='fu'><a href='nse-defuse.html'>exprs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>5</span> + <span class='fl'>5</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>x</span>))</div><div class='output co'>#&gt; function (x = 5 + 5) 
-#&gt; x
-#&gt; &lt;environment: 0x33e6ee8&gt;</div><div class='input'>
-<span class='co'># Pass empty arguments to omit defaults. `list()` doesn't allow</span>
-<span class='co'># empty arguments but `pairlist2()` does:</span>
-<span class='fu'>new_function</span>(<span class='fu'><a href='pairlist2.html'>pairlist2</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> , <span class='kw'>y</span> <span class='kw'>=</span> <span class='fl'>5</span> + <span class='fl'>5</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>x</span> + <span class='no'>y</span>))</div><div class='output co'>#&gt; function (x, y = 10) 
-#&gt; x + y
-#&gt; &lt;environment: 0x33e6ee8&gt;</div><div class='input'><span class='fu'>new_function</span>(<span class='fu'><a href='nse-defuse.html'>exprs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> , <span class='kw'>y</span> <span class='kw'>=</span> <span class='fl'>5</span> + <span class='fl'>5</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>x</span> + <span class='no'>y</span>))</div><div class='output co'>#&gt; function (x, y = 5 + 5) 
-#&gt; x + y
-#&gt; &lt;environment: 0x33e6ee8&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

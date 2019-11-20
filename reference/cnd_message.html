@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Build an error message from a main issue and bullet messages — cnd_message • rlang</title>
+<title>Build an error message from parts — cnd_message • rlang</title>
 
 
 <!-- jquery -->
@@ -35,21 +35,24 @@
 
 
 
-<meta property="og:title" content="Build an error message from a main issue and bullet messages — cnd_message" />
-<meta property="og:description" content="
-cnd_message() assembles an error message from two components:
-The cnd_issue() generic. Methods should return a single line.
-The cnd_bullets() generic. Methods should return a named vector
-of lines. These lines are automatically prefixed with a bullet by
-cnd_message() (see the section on error statements).
+<meta property="og:title" content="Build an error message from parts — cnd_message" />
+<meta property="og:description" content="cnd_message() assembles an error message from three generics:
+cnd_header()
+cnd_body()
+cnd_footer()
 
 
+The default method for the error header returns the message field
+of the condition object. The default methods for the body and
+footer return empty character vectors. In general, methods for
+these generics should return a character vector. The elements are
+combined into a single string with a newline separator.
 cnd_message() is automatically called by the conditionMessage()
-for rlang errors so that errors thrown with abort() only need to
-implement cnd_issue() and cnd_bullets(). It can also be called
-in custom conditionMessage() methods.
-Note that if you pass a named character vector to abort(), you
-get the same formatting behaviour as cnd_message()." />
+for rlang errors. Error classes created with abort() only need to
+implement header, body or footer methods. This provides a lot of
+flexibility for hierarchies of error classes, for instance you
+could inherit the body of an error message from a parent class
+while overriding the header and footer." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -157,35 +160,38 @@ get the same formatting behaviour as cnd_message()." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Build an error message from a main issue and bullet messages</h1>
+    <h1>Build an error message from parts</h1>
     <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/cnd-message.R'><code>R/cnd-message.R</code></a></small>
     <div class="hidden name"><code>cnd_message.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a></p>
-<p><code>cnd_message()</code> assembles an error message from two components:</p><ul>
-<li><p>The <code>cnd_issue()</code> generic. Methods should return a single line.</p></li>
-<li><p>The <code>cnd_bullets()</code> generic. Methods should return a named vector
-of lines. These lines are automatically prefixed with a bullet by
-<code>cnd_message()</code> (see the section on error statements).</p></li>
+    <p><code>cnd_message()</code> assembles an error message from three generics:</p><ul>
+<li><p><code>cnd_header()</code></p></li>
+<li><p><code>cnd_body()</code></p></li>
+<li><p><code>cnd_footer()</code></p></li>
 </ul>
 
+<p>The default method for the error header returns the <code>message</code> field
+of the condition object. The default methods for the body and
+footer return empty character vectors. In general, methods for
+these generics should return a character vector. The elements are
+combined into a single string with a newline separator.</p>
 <p><code>cnd_message()</code> is automatically called by the <code><a href='https://rdrr.io/r/base/conditions.html'>conditionMessage()</a></code>
-for rlang errors so that errors thrown with <code><a href='abort.html'>abort()</a></code> only need to
-implement <code>cnd_issue()</code> and <code>cnd_bullets()</code>. It can also be called
-in custom <code><a href='https://rdrr.io/r/base/conditions.html'>conditionMessage()</a></code> methods.</p>
-<p>Note that if you pass a named character vector to <code><a href='abort.html'>abort()</a></code>, you
-get the same formatting behaviour as <code>cnd_message()</code>.</p>
+for rlang errors. Error classes created with <code><a href='abort.html'>abort()</a></code> only need to
+implement header, body or footer methods. This provides a lot of
+flexibility for hierarchies of error classes, for instance you
+could inherit the body of an error message from a parent class
+while overriding the header and footer.</p>
     </div>
 
     <pre class="usage"><span class='fu'>cnd_message</span>(<span class='no'>cnd</span>)
 
-<span class='fu'>cnd_issue</span>(<span class='no'>cnd</span>, <span class='no'>...</span>)
+<span class='fu'>cnd_header</span>(<span class='no'>cnd</span>, <span class='no'>...</span>)
 
-<span class='fu'>cnd_bullets</span>(<span class='no'>cnd</span>, <span class='no'>...</span>)
+<span class='fu'>cnd_body</span>(<span class='no'>cnd</span>, <span class='no'>...</span>)
 
-<span class='fu'>format_bullets</span>(<span class='no'>x</span>)</pre>
+<span class='fu'>cnd_footer</span>(<span class='no'>cnd</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -195,75 +201,36 @@ get the same formatting behaviour as <code>cnd_message()</code>.</p>
       <td><p>A condition object.</p></td>
     </tr>
     <tr>
-      <th>x</th>
-      <td><p>A named character vector of messages. Elements named as
-<code>x</code> or <code>i</code> are prefixed with the corresponding bullet.</p></td>
+      <th>...</th>
+      <td><p>Arguments passed to methods.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="error-statements"><a class="anchor" href="#error-statements"></a>Error statements</h2>
+    <h2 class="hasAnchor" id="overriding-cnd-body-"><a class="anchor" href="#overriding-cnd-body-"></a>Overriding <code>cnd_body()</code></h2>
 
     
 
 
-<p>This experimental infrastructure is based on the idea that
-sentences in error messages are best kept short and simple. From
-this point of view, the best way to present the information is as a
-bullet list of simple sentences containing a single clause.
-<code>cnd_message()</code> helps following this structure by building an error
-message from two parts: the <strong>issue</strong> and the <strong>bullets</strong>.</p>
-<p><code>cnd_issue()</code> is the generic for the main error message. It should
-be as generic as possible, but since it is a generic it is easy to
-override by error subclasses.</p>
-<p>The <code>cnd_bullets()</code> methods should return a character vector of
-sentences. These are automatically prefixed with bullets by
-<code>cnd_message()</code>, according to the following scheme:</p><ul>
-<li><p>Elements named <code>"i"</code> are prefixed with a blue "info" symbol.</p></li>
-<li><p>Elements named <code>"x"</code> are prefixed with a red "cross" symbol.</p></li>
-<li><p>Unnamed elements are prefixed with a "*" symbol.</p></li>
-</ul>
-
-<p>While you are free to lay out the bullets in the order that you
-like, "x" bullets should usually precede "i" bullets.</p>
-    <h2 class="hasAnchor" id="overriding-cnd-bullets-"><a class="anchor" href="#overriding-cnd-bullets-"></a>Overriding <code>cnd_bullets()</code></h2>
-
-    
-
-
-<p>Sometimes the generation of an error message depends on the state
-of the type checking. In that case, it can be tricky to lazily
-generate error messages with <code>cnd_bullets()</code>: you can either
-overspecify your error class hierarchies with one class per state,
-or replicate the type-checking control flow within the
-<code>cnd_bullets()</code> method. None of these options are ideal.</p>
-<p>A better option is to define a <code>cnd_bullets</code> field in your error
-object. This should be a function (or a lambda-formula which will
-be passed to <code><a href='as_function.html'>as_function()</a></code>) with the same signature as
-<code>cnd_bullets()</code> methods. This function overrides the
-<code>cnd_bullets()</code> generic and can generate an error message tailored
-to the state in which the error was constructed.</p>
-<p>Note that as a rule, <code>cnd_issue()</code> should be a general thematic
-issues that does not depend on state. For this reason, it isn't
-possible to define an overriding method in the condition object.</p>
-    <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
-
-    
-
-
-<p>This infrastructure is experimental. In particular, the output of
-<code>cnd_message()</code> is likely to change in the future and you shouldn't
-test it verbatim in a way that makes R CMD check fail. Instead, use
-<code><a href='https://rdrr.io/pkg/testthat/man/verify_output.html'>testthat::verify_output()</a></code> to monitor the output without causing
-CRAN check failures when it changes.</p>
+<p><a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a></p>
+<p>Sometimes the contents of an error message depends on the state of
+your checking routine. In that case, it can be tricky to lazily
+generate error messages with <code>cnd_body()</code>: you have the choice
+between overspecifying your error class hierarchies with one class
+per state, or replicating the type-checking control flow within the
+<code>cnd_body()</code> method. None of these options are ideal.</p>
+<p>A better option is to define a <code>body</code> field in your error object
+containing a static string, a <a href='as_function.html'>lambda-formula</a>, or a
+function with the same signature as <code>cnd_body()</code>. This field
+overrides the <code>cnd_body()</code> generic and makes it easy to generate an
+error message tailored to the state in which the error was
+constructed.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#error-statements">Error statements</a></li>
-      <li><a href="#overriding-cnd-bullets-">Overriding <code>cnd_bullets()</code></a></li>
-      <li><a href="#life-cycle">Life cycle</a></li>
+      <li><a href="#overriding-cnd-body-">Overriding <code>cnd_body()</code></a></li>
     </ul>
 
   </div>

@@ -146,16 +146,15 @@
       <small>Source: <a href='https://github.com/r-lib/rlang/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="rlang-development-version" class="section level1">
-<h1 class="page-header">
-<a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
-</h1>
-</div>
     <div id="rlang-0-4-2" class="section level1">
 <h1 class="page-header">
 <a href="#rlang-0-4-2" class="anchor"></a>rlang 0.4.2<small> Unreleased </small>
 </h1>
 <ul>
+<li>
+<p>New <code><a href="../reference/cnd_message.html">cnd_header()</a></code>, <code><a href="../reference/cnd_message.html">cnd_body()</a></code> and <code><a href="../reference/cnd_message.html">cnd_footer()</a></code> generics. These are automatically called by <code>conditionMessage.rlang_error()</code>, the default method for all rlang errors.</p>
+<p>Concretely, this is a way of breaking up lazy generation of error messages with <code><a href="https://rdrr.io/r/base/conditions.html">conditionMessage()</a></code> into three independent parts. This provides a lot of flexibility for hierarchies of error classes, for instance you could inherit the body of an error message from a parent class while overriding the header and footer.</p>
+</li>
 <li><p>The reminder to call <code><a href="../reference/last_error.html">last_error()</a></code> is now less confusing thanks to a suggestion by <a href='https://github.com/markhwhiteii'>@markhwhiteii</a>.</p></li>
 <li><p>The functions prefixed in <code>scoped_</code> have been renamed to use the more conventional <code>local_</code> prefix. For instance, <code><a href="../reference/scoped_interactive.html">scoped_bindings()</a></code> is now <code><a href="../reference/local_bindings.html">local_bindings()</a></code>. The <code>scoped_</code> functions will be deprecated in the next significant version of rlang (0.5.0).</p></li>
 <li><p>The <code>.subclass</code> argument of <code><a href="../reference/abort.html">abort()</a></code>, <code><a href="../reference/abort.html">warn()</a></code> and <code><a href="../reference/abort.html">inform()</a></code> has been renamed to <code>class</code>. This is for consistency with our conventions for class constructors documented in <a href="https://adv-r.hadley.nz/s3.html#s3-subclassing" class="uri">https://adv-r.hadley.nz/s3.html#s3-subclassing</a>.</p></li>
@@ -872,7 +871,6 @@ quo(call(`!!!`(var)))</a></code></pre>
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#rlang-development-version">development version</a></li>
         <li><a href="#rlang-0-4-2">0.4.2</a></li>
         <li><a href="#rlang-0-4-1">0.4.1</a></li>
         <li><a href="#rlang-0-4-0">0.4.0</a></li>
