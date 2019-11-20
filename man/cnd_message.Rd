@@ -2,101 +2,62 @@
 % Please edit documentation in R/cnd-message.R
 \name{cnd_message}
 \alias{cnd_message}
-\alias{cnd_issue}
-\alias{cnd_bullets}
-\alias{format_bullets}
-\title{Build an error message from a main issue and bullet messages}
+\alias{cnd_header}
+\alias{cnd_body}
+\alias{cnd_footer}
+\title{Build an error message from parts}
 \usage{
 cnd_message(cnd)
 
-cnd_issue(cnd, ...)
+cnd_header(cnd, ...)
 
-cnd_bullets(cnd, ...)
+cnd_body(cnd, ...)
 
-format_bullets(x)
+cnd_footer(cnd, ...)
 }
 \arguments{
 \item{cnd}{A condition object.}
 
-\item{x}{A named character vector of messages. Elements named as
-\code{x} or \code{i} are prefixed with the corresponding bullet.}
+\item{...}{Arguments passed to methods.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
-
-\code{cnd_message()} assembles an error message from two components:
+\code{cnd_message()} assembles an error message from three generics:
 \itemize{
-\item The \code{cnd_issue()} generic. Methods should return a single line.
-\item The \code{cnd_bullets()} generic. Methods should return a named vector
-of lines. These lines are automatically prefixed with a bullet by
-\code{cnd_message()} (see the section on error statements).
+\item \code{cnd_header()}
+\item \code{cnd_body()}
+\item \code{cnd_footer()}
 }
+
+The default method for the error header returns the \code{message} field
+of the condition object. The default methods for the body and
+footer return empty character vectors. In general, methods for
+these generics should return a character vector. The elements are
+combined into a single string with a newline separator.
 
 \code{cnd_message()} is automatically called by the \code{conditionMessage()}
-for rlang errors so that errors thrown with \code{\link[=abort]{abort()}} only need to
-implement \code{cnd_issue()} and \code{cnd_bullets()}. It can also be called
-in custom \code{conditionMessage()} methods.
-
-Note that if you pass a named character vector to \code{\link[=abort]{abort()}}, you
-get the same formatting behaviour as \code{cnd_message()}.
+for rlang errors. Error classes created with \code{\link[=abort]{abort()}} only need to
+implement header, body or footer methods. This provides a lot of
+flexibility for hierarchies of error classes, for instance you
+could inherit the body of an error message from a parent class
+while overriding the header and footer.
 }
-\section{Error statements}{
+\section{Overriding \code{cnd_body()}}{
 
 
-This experimental infrastructure is based on the idea that
-sentences in error messages are best kept short and simple. From
-this point of view, the best way to present the information is as a
-bullet list of simple sentences containing a single clause.
-\code{cnd_message()} helps following this structure by building an error
-message from two parts: the \strong{issue} and the \strong{bullets}.
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
 
-\code{cnd_issue()} is the generic for the main error message. It should
-be as generic as possible, but since it is a generic it is easy to
-override by error subclasses.
+Sometimes the contents of an error message depends on the state of
+your checking routine. In that case, it can be tricky to lazily
+generate error messages with \code{cnd_body()}: you have the choice
+between overspecifying your error class hierarchies with one class
+per state, or replicating the type-checking control flow within the
+\code{cnd_body()} method. None of these options are ideal.
 
-The \code{cnd_bullets()} methods should return a character vector of
-sentences. These are automatically prefixed with bullets by
-\code{cnd_message()}, according to the following scheme:
-\itemize{
-\item Elements named \code{"i"} are prefixed with a blue "info" symbol.
-\item Elements named \code{"x"} are prefixed with a red "cross" symbol.
-\item Unnamed elements are prefixed with a "*" symbol.
+A better option is to define a \code{body} field in your error object
+containing a static string, a \link[=as_function]{lambda-formula}, or a
+function with the same signature as \code{cnd_body()}. This field
+overrides the \code{cnd_body()} generic and makes it easy to generate an
+error message tailored to the state in which the error was
+constructed.
 }
 
-While you are free to lay out the bullets in the order that you
-like, "x" bullets should usually precede "i" bullets.
-}
-
-\section{Overriding \code{cnd_bullets()}}{
-
-
-Sometimes the generation of an error message depends on the state
-of the type checking. In that case, it can be tricky to lazily
-generate error messages with \code{cnd_bullets()}: you can either
-overspecify your error class hierarchies with one class per state,
-or replicate the type-checking control flow within the
-\code{cnd_bullets()} method. None of these options are ideal.
-
-A better option is to define a \code{cnd_bullets} field in your error
-object. This should be a function (or a lambda-formula which will
-be passed to \code{\link[=as_function]{as_function()}}) with the same signature as
-\code{cnd_bullets()} methods. This function overrides the
-\code{cnd_bullets()} generic and can generate an error message tailored
-to the state in which the error was constructed.
-
-Note that as a rule, \code{cnd_issue()} should be a general thematic
-issues that does not depend on state. For this reason, it isn't
-possible to define an overriding method in the condition object.
-}
-
-\section{Life cycle}{
-
-
-This infrastructure is experimental. In particular, the output of
-\code{cnd_message()} is likely to change in the future and you shouldn't
-test it verbatim in a way that makes R CMD check fail. Instead, use
-\code{\link[testthat:verify_output]{testthat::verify_output()}} to monitor the output without causing
-CRAN check failures when it changes.
-}
-
-\keyword{internal}

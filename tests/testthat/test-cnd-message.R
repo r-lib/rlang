@@ -1,14 +1,14 @@
 context("cnd-message")
 
-test_that("format_bullets() formats bullets depending on names", {
+test_that("format_error_bullets() formats bullets depending on names", {
   local_options(
     crayon.enabled = FALSE,
     cli.unicode = FALSE
   )
-  expect_identical(format_bullets(c("foo", "bar")), "* foo\n* bar")
-  expect_identical(format_bullets(c(i = "foo", "baz", x = "bar")), "i foo\n* baz\nx bar")
-  expect_error(format_bullets(c(i = "foo", u = "bar")))
-  expect_identical(format_bullets(chr()), chr())
+  expect_identical(format_error_bullets(c("foo", "bar")), "* foo\n* bar")
+  expect_identical(format_error_bullets(c(i = "foo", "baz", x = "bar")), "i foo\n* baz\nx bar")
+  expect_error(format_error_bullets(c(i = "foo", u = "bar")))
+  expect_identical(format_error_bullets(chr()), chr())
 })
 
 test_that("default conditionMessage() method for rlang errors calls cnd_message()", {
@@ -16,51 +16,56 @@ test_that("default conditionMessage() method for rlang errors calls cnd_message(
   out <- conditionMessage(error_cnd("rlang_foobar", message = "embedded"))
   expect_identical(out, "embedded")
 
-  # Only `cnd_issue()` method
-  out <- with_bindings(
-    .env = global_env(),
-    cnd_issue.rlang_foobar = function(cnd, ...) "dispatched!",
+  # Only `cnd_header()` method
+  out <- with_methods(
+    cnd_header.rlang_foobar = function(cnd, ...) "dispatched!",
     conditionMessage(error_cnd("rlang_foobar", message = "embedded"))
   )
   expect_identical(out, "dispatched!")
 
-  # Both `cnd_issue()` and `cnd_bullets()` methods
-  out <- with_bindings(
-    .env = global_env(),
-    cnd_issue.rlang_foobar = function(cnd, ...) "dispatched!",
-    cnd_bullets.rlang_foobar = function(cnd, ...) c("one", x = "two", i = "three"),
+  # Both `cnd_header()` and `cnd_body()` methods
+  out <- with_methods(
+    cnd_header.rlang_foobar = function(cnd, ...) "dispatched!",
+    cnd_body.rlang_foobar = function(cnd, ...) c("one", "two", "three"),
     conditionMessage(error_cnd("rlang_foobar", message = "embedded"))
   )
-  exp <- paste0("dispatched!\n", format_bullets(c("one", x = "two", i = "three")))
+  exp <- paste0("dispatched!\n", paste_line(c("one", "two", "three")))
+  expect_identical(out, exp)
+
+  # All three methods defined
+  out <- with_methods(
+    cnd_header.rlang_foobar = function(cnd, ...) "dispatched!",
+    cnd_body.rlang_foobar = function(cnd, ...) c("one", "two", "three"),
+    cnd_footer.rlang_foobar = function(cnd, ...) c("foo", "bar"),
+    conditionMessage(error_cnd("rlang_foobar", message = "embedded"))
+  )
+  exp <- paste0(exp, "\nfoo\nbar")
   expect_identical(out, exp)
 })
 
-test_that("default cnd_bullets() method calls lazy method if present", {
-  err <- error_cnd(
-    "rlang_foobar",
-    message = "Issue.",
-    data = "foo",
-    cnd_bullets = function(cnd, ...) {
-      c(x = cnd$data, i = "bar")
-    }
-  )
-  err_formula_bullets <- error_cnd(
-    "rlang_foobar",
-    message = "Issue.",
-    data = "foo",
-    cnd_bullets = ~ .$data
-  )
+test_that("can override body method with `body` fields", {
+  local_methods(cnd_body.rlang_foobar = function(...) "wrong")
 
-  # Should not have precedence
-  local_methods(
-    cnd_bullets.rlang_foobar = function(cnd, ...) "wrong!"
+  expect_error(
+    stop(error_cnd("rlang_foobar", message = "header", body = "body")),
+    "header\nbody",
+    class = "rlang_foobar"
+  )
+  expect_error(
+    stop(error_cnd("rlang_foobar", message = "header", body = ~ "body")),
+    "header\nbody",
+    class = "rlang_foobar"
+  )
+  expect_error(
+    stop(error_cnd("rlang_foobar", message = "header", body = function(...) "body")),
+    "header\nbody",
+    class = "rlang_foobar"
   )
 
-  # Needs bugfix in dev version
-  skip_if_not_installed("testthat", "2.2.1.9000")
-
-  verify_output(test_path("test-cnd-bullets-lazy.txt"), {
-    cnd_signal(err)
-    cnd_signal(err_formula_bullets)
-  })
+  expect_error(
+    stop(error_cnd("rlang_foobar", message = "header", body = ~ format_error_bullets("body"))),
+    "header\n* body",
+    fixed = TRUE,
+    class = "rlang_foobar"
+  )
 })
