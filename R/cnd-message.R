@@ -102,7 +102,7 @@ cnd_footer.default <- function(cnd, ...) {
 #'
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
 #'
-#' `format_bullets()` takes a character vector and returns a single
+#' `format_error_bullets()` takes a character vector and returns a single
 #' string (or an empty vector if the input is empty). The elements of
 #' the input vector are assempled as a list of bullets, depending on
 #' their names:
@@ -123,7 +123,7 @@ cnd_footer.default <- function(cnd, ...) {
 #' @param x A named character vector of messages. Elements named as
 #'   `x` or `i` are prefixed with the corresponding bullet.
 #' @export
-format_bullets <- function(x) {
+format_error_bullets <- function(x) {
   if (!length(x)) {
     return(x)
   }
@@ -140,7 +140,7 @@ collapse_cnd_message <- function(x) {
   if (length(x) > 1L) {
     paste(
       x[[1]],
-      format_bullets(x[-1]),
+      format_error_bullets(x[-1]),
       sep = "\n"
     )
   } else {
