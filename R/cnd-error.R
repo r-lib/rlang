@@ -95,7 +95,7 @@ format.rlang_error <- function(x,
     identical(x, last_error())
 
   if (from_last_error && simplify == "branch" && is_null(child) && !is_null(trace)) {
-    reminder <- silver("Call `rlang::last_trace()` to see the full backtrace.")
+    reminder <- silver("Run `rlang::last_trace()` to see the full context.")
     out <- paste_line(out, reminder)
   }
 
