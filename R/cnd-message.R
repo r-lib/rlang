@@ -10,7 +10,9 @@
 #'
 #' The default method for the error header returns the `message` field
 #' of the condition object. The default methods for the body and
-#' footer return empty character vectors.
+#' footer return empty character vectors. In general, methods for
+#' these generics should return a character vector. The elements are
+#' combined into a single string with a newline separator.
 #'
 #' `cnd_message()` is automatically called by the `conditionMessage()`
 #' for rlang errors. Error classes created with [abort()] only need to
