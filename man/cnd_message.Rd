@@ -44,6 +44,8 @@ while overriding the header and footer.
 \section{Overriding \code{cnd_body()}}{
 
 
+\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+
 Sometimes the contents of an error message depends on the state of
 your checking routine. In that case, it can be tricky to lazily
 generate error messages with \code{cnd_body()}: you have the choice
