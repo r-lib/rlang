@@ -1,31 +1,3 @@
-# arrow
-
-<details>
-
-* Version: 0.15.0
-* Source code: https://github.com/cran/arrow
-* URL: https://github.com/apache/arrow/, https://arrow.apache.org/docs/r
-* BugReports: https://issues.apache.org/jira/projects/ARROW/issues
-* Date/Publication: 2019-10-07 19:00:02 UTC
-* Number of recursive dependencies: 50
-
-Run `revdep_details(,"arrow")` for more info
-
-</details>
-
-## Newly broken
-
-*   R CMD check timed out
-    
-
-## Newly fixed
-
-*   checking whether package ‘arrow’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/arrow/old/arrow.Rcheck/00install.out’ for details.
-    ```
-
 # circumplex
 
 <details>
@@ -88,7 +60,7 @@ ERROR: compilation failed for package ‘circumplex’
 * URL: http://dexterities.netlify.com
 * BugReports: https://github.com/jessekps/dexter/issues
 * Date/Publication: 2019-08-22 12:30:02 UTC
-* Number of recursive dependencies: 68
+* Number of recursive dependencies: 77
 
 Run `revdep_details(,"dexter")` for more info
 
@@ -132,54 +104,58 @@ ERROR: compilation failed for package ‘dexter’
 * removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/dexter/old/dexter.Rcheck/dexter’
 
 ```
-# iCNV
+# Hmisc
 
 <details>
 
-* Version: 
-* Source code: ???
-* Number of recursive dependencies: 0
+* Version: 4.3-0
+* Source code: https://github.com/cran/Hmisc
+* URL: http://biostat.mc.vanderbilt.edu/Hmisc, https://github.com/harrelfe/Hmisc
+* Date/Publication: 2019-11-07 19:20:02 UTC
+* Number of recursive dependencies: 121
 
-Run `revdep_details(,"")` for more info
+Run `revdep_details(,"Hmisc")` for more info
 
 </details>
 
-## Error before installation
+## In both
+
+*   checking whether package ‘Hmisc’ can be installed ... ERROR
+    ```
+    Installation failed.
+    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/Hmisc/new/Hmisc.Rcheck/00install.out’ for details.
+    ```
+
+## Installation
 
 ### Devel
 
 ```
-
-  There is a binary version available but the source version is later:
-              binary source needs_compilation
-WES.1KG.WUGSC 1.14.0 1.16.0             FALSE
-
-  These will not be installed
-
-
-Package which is only available in source form, and may need
-  compilation of C/C++/Fortran: ‘BSgenome.Hsapiens.UCSC.hg19’
-installing the source package ‘WES.1KG.WUGSC’
-
-
+* installing *source* package ‘Hmisc’ ...
+** package ‘Hmisc’ successfully unpacked and MD5 sums checked
+** using staged installation
+** libs
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include  -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c Hmisc.c -o Hmisc.o
+gfortran-8  -fPIC  -Wall -g -O2  -c cidxcn.f -o cidxcn.o
+make: gfortran-8: No such file or directory
+make: *** [cidxcn.o] Error 1
+ERROR: compilation failed for package ‘Hmisc’
+* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/Hmisc/new/Hmisc.Rcheck/Hmisc’
 
 ```
 ### CRAN
 
 ```
-
-  There is a binary version available but the source version is later:
-              binary source needs_compilation
-WES.1KG.WUGSC 1.14.0 1.16.0             FALSE
-
-  These will not be installed
-
-
-Package which is only available in source form, and may need
-  compilation of C/C++/Fortran: ‘BSgenome.Hsapiens.UCSC.hg19’
-installing the source package ‘WES.1KG.WUGSC’
-
-
+* installing *source* package ‘Hmisc’ ...
+** package ‘Hmisc’ successfully unpacked and MD5 sums checked
+** using staged installation
+** libs
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include  -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c Hmisc.c -o Hmisc.o
+gfortran-8  -fPIC  -Wall -g -O2  -c cidxcn.f -o cidxcn.o
+make: gfortran-8: No such file or directory
+make: *** [cidxcn.o] Error 1
+ERROR: compilation failed for package ‘Hmisc’
+* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/Hmisc/old/Hmisc.Rcheck/Hmisc’
 
 ```
 # poppr
@@ -191,7 +167,7 @@ installing the source package ‘WES.1KG.WUGSC’
 * URL: https://grunwaldlab.github.io/poppr, https://github.com/grunwaldlab/poppr, https://grunwaldlab.github.io/Population_Genetics_in_R/
 * BugReports: https://github.com/grunwaldlab/poppr/issues
 * Date/Publication: 2019-06-18 16:21:21 UTC
-* Number of recursive dependencies: 99
+* Number of recursive dependencies: 110
 
 Run `revdep_details(,"poppr")` for more info
 
@@ -235,82 +211,210 @@ ERROR: compilation failed for package ‘poppr’
 * removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/poppr/old/poppr.Rcheck/poppr’
 
 ```
-# rdomains
+# RxODE
 
 <details>
 
-* Version: 0.1.7
-* Source code: https://github.com/cran/rdomains
-* Date/Publication: 2018-01-28 17:59:33 UTC
-* Number of recursive dependencies: 80
+* Version: 0.9.1-8
+* Source code: https://github.com/cran/RxODE
+* URL: https://nlmixrdevelopment.github.io/RxODE/
+* BugReports: https://github.com/nlmixrdevelopment/RxODE/issues
+* Date/Publication: 2019-11-12 14:30:06 UTC
+* Number of recursive dependencies: 121
 
-Run `revdep_details(,"rdomains")` for more info
+Run `revdep_details(,"RxODE")` for more info
 
 </details>
 
 ## In both
 
-*   R CMD check timed out
-    
-
-*   checking dependencies in R code ... NOTE
+*   checking whether package ‘RxODE’ can be installed ... ERROR
     ```
-    Namespace in Imports field not imported from: ‘rlang’
-      All declared Imports should be used.
+    Installation failed.
+    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/RxODE/new/RxODE.Rcheck/00install.out’ for details.
     ```
 
-# restfulSE
-
-<details>
-
-* Version: 1.6.1
-* Source code: https://github.com/cran/restfulSE
-* Date/Publication: 2019-08-19
-* Number of recursive dependencies: 106
-
-Run `revdep_details(,"restfulSE")` for more info
-
-</details>
-
-## In both
-
-*   checking examples ... ERROR
+*   checking package dependencies ... NOTE
     ```
-    Running examples in ‘restfulSE-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: RESTfulSummarizedExperiment
-    > ### Title: Construct RESTfulSummarizedExperiment
-    > ### Aliases: RESTfulSummarizedExperiment
-    > ###   RESTfulSummarizedExperiment,RangedSummarizedExperiment,H5S_dataset-method
-    > ###   .RESTfulSummarizedExperiment assay
-    > ###   assay,RESTfulSummarizedExperiment,missing-method
-    > 
-    > ### ** Examples
-    > 
-    > require("rhdf5client")
-    Loading required package: rhdf5client
-    > hsds = H5S_source(serverURL=URL_hsds())
-    Error in transl(target) : 
-      error: can't read JSON http://hsdshdflab.hdfgroup.org/domains
-    Calls: H5S_source -> hsdsInfo -> hsdsInfo -> transl
-    Execution halted
+    Package suggested but not available for checking: ‘installr’
     ```
 
-*   R CMD check timed out
-    
+## Installation
 
-*   checking R code for possible problems ... NOTE
-    ```
-    BQ3_Source: no visible binding for global variable
-      ‘SampleTypeLetterCode’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/restfulSE/new/restfulSE.Rcheck/00_pkg_src/restfulSE/R/BQ3_Array.R:82-85)
-    BQ3m2: no visible binding for global variable ‘SampleTypeLetterCode’
-      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/restfulSE/new/restfulSE.Rcheck/00_pkg_src/restfulSE/R/BQ3_Array.R:273-274)
-    Undefined global functions or variables:
-      SampleTypeLetterCode
-    ```
+### Devel
 
+```
+* installing *source* package ‘RxODE’ ...
+** package ‘RxODE’ successfully unpacked and MD5 sums checked
+** using staged installation
+checking for gcc... clang
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables... 
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether we are using the GNU C compiler... yes
+checking whether clang accepts -g... yes
+checking for clang option to accept ISO C89... none needed
+checking for clang option to support OpenMP... unsupported
+configure: creating ./config.status
+config.status: creating src/Makevars
+--------[begin src/Makevars]--------
+# -*- mode: makefile-gmake -*-
+CXX_STD     = CXX11
+
+################################################################################
+## Package library flags.
+PKG_LIBS    = $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS) 
+
+# Release options
+PKG_CFLAGS  =  -D_isRxODE_
+PKG_CXXFLAGS =  -D_isRxODE_
+
+
+SOURCES_C = call_dvode.c dop853.c tran.c omegaChol.c init.c par_solve.c cfode.c common.c corfailure.c correction.c daxpy.c ddot.c dgefa.c dgesl.c dscal.c fnorm.c idamax.c intdy.c lsoda.c methodswitch.c orderswitch.c prja.c scaleh.c solsy.c stoda.c vmnorm.c strdup_printf.c rprintf.c lincmt.c box.c 
+SOURCES_CPP = RcppExports.cpp WinDrive.cpp rxInv.cpp rxData.cpp etTran.cpp et.cpp rxStack.cpp cvPost.cpp
+SOURCES_FORTAN = dlsoda.f opkda2.f
+
+OBJECTS = $(SOURCES_C:.c=.o) $(SOURCES_FORTAN:.f=.o) $(SOURCES_CPP:.cpp=.o)
+
+# strippedLib: $(SHLIB)
+# 	if test -e "/usr/bin/strip"; then /usr/bin/strip -s $(SHLIB); fi
+
+.PHONY: all 
+# all: strippedLib
+# $(SHLIB): mylibs
+all: $(SHLIB)
+# mylibs:  
+# 	$(CC) -I"$(R_INCLUDE_DIR)" $(CFLAGS) $(CPPFLAGS) $(SHLIB_CFLAGS) $(CPICFLAGS) -I../inst/include/ ../inst/include/RxODE_model.h || $(CC) --version
+
+
+--------[end src/Makevars]--------
+** libs
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c call_dvode.c -o call_dvode.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c dop853.c -o dop853.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c tran.c -o tran.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c omegaChol.c -o omegaChol.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c init.c -o init.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c par_solve.c -o par_solve.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c cfode.c -o cfode.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c common.c -o common.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c corfailure.c -o corfailure.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c correction.c -o correction.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c daxpy.c -o daxpy.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c ddot.c -o ddot.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c dgefa.c -o dgefa.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c dgesl.c -o dgesl.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c dscal.c -o dscal.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c fnorm.c -o fnorm.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c idamax.c -o idamax.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c intdy.c -o intdy.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c lsoda.c -o lsoda.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c methodswitch.c -o methodswitch.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c orderswitch.c -o orderswitch.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c prja.c -o prja.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c scaleh.c -o scaleh.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c solsy.c -o solsy.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c stoda.c -o stoda.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c vmnorm.c -o vmnorm.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c strdup_printf.c -o strdup_printf.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c rprintf.c -o rprintf.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c lincmt.c -o lincmt.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c box.c -o box.o
+gfortran-8  -fPIC  -Wall -g -O2  -c dlsoda.f -o dlsoda.o
+make: gfortran-8: No such file or directory
+make: *** [dlsoda.o] Error 1
+ERROR: compilation failed for package ‘RxODE’
+* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/RxODE/new/RxODE.Rcheck/RxODE’
+
+```
+### CRAN
+
+```
+* installing *source* package ‘RxODE’ ...
+** package ‘RxODE’ successfully unpacked and MD5 sums checked
+** using staged installation
+checking for gcc... clang
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables... 
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether we are using the GNU C compiler... yes
+checking whether clang accepts -g... yes
+checking for clang option to accept ISO C89... none needed
+checking for clang option to support OpenMP... unsupported
+configure: creating ./config.status
+config.status: creating src/Makevars
+--------[begin src/Makevars]--------
+# -*- mode: makefile-gmake -*-
+CXX_STD     = CXX11
+
+################################################################################
+## Package library flags.
+PKG_LIBS    = $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS) 
+
+# Release options
+PKG_CFLAGS  =  -D_isRxODE_
+PKG_CXXFLAGS =  -D_isRxODE_
+
+
+SOURCES_C = call_dvode.c dop853.c tran.c omegaChol.c init.c par_solve.c cfode.c common.c corfailure.c correction.c daxpy.c ddot.c dgefa.c dgesl.c dscal.c fnorm.c idamax.c intdy.c lsoda.c methodswitch.c orderswitch.c prja.c scaleh.c solsy.c stoda.c vmnorm.c strdup_printf.c rprintf.c lincmt.c box.c 
+SOURCES_CPP = RcppExports.cpp WinDrive.cpp rxInv.cpp rxData.cpp etTran.cpp et.cpp rxStack.cpp cvPost.cpp
+SOURCES_FORTAN = dlsoda.f opkda2.f
+
+OBJECTS = $(SOURCES_C:.c=.o) $(SOURCES_FORTAN:.f=.o) $(SOURCES_CPP:.cpp=.o)
+
+# strippedLib: $(SHLIB)
+# 	if test -e "/usr/bin/strip"; then /usr/bin/strip -s $(SHLIB); fi
+
+.PHONY: all 
+# all: strippedLib
+# $(SHLIB): mylibs
+all: $(SHLIB)
+# mylibs:  
+# 	$(CC) -I"$(R_INCLUDE_DIR)" $(CFLAGS) $(CPPFLAGS) $(SHLIB_CFLAGS) $(CPICFLAGS) -I../inst/include/ ../inst/include/RxODE_model.h || $(CC) --version
+
+
+--------[end src/Makevars]--------
+** libs
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c call_dvode.c -o call_dvode.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c dop853.c -o dop853.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c tran.c -o tran.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c omegaChol.c -o omegaChol.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c init.c -o init.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c par_solve.c -o par_solve.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c cfode.c -o cfode.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c common.c -o common.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c corfailure.c -o corfailure.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c correction.c -o correction.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c daxpy.c -o daxpy.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c ddot.c -o ddot.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c dgefa.c -o dgefa.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c dgesl.c -o dgesl.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c dscal.c -o dscal.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c fnorm.c -o fnorm.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c idamax.c -o idamax.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c intdy.c -o intdy.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c lsoda.c -o lsoda.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c methodswitch.c -o methodswitch.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c orderswitch.c -o orderswitch.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c prja.c -o prja.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c scaleh.c -o scaleh.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c solsy.c -o solsy.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c stoda.c -o stoda.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c vmnorm.c -o vmnorm.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c strdup_printf.c -o strdup_printf.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c rprintf.c -o rprintf.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c lincmt.c -o lincmt.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/dparser/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/Rcpp/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/RcppArmadillo/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/RxODE/PreciseSums/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -D_isRxODE_ -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c box.c -o box.o
+gfortran-8  -fPIC  -Wall -g -O2  -c dlsoda.f -o dlsoda.o
+make: gfortran-8: No such file or directory
+make: *** [dlsoda.o] Error 1
+ERROR: compilation failed for package ‘RxODE’
+* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/RxODE/old/RxODE.Rcheck/RxODE’
+
+```
 # sdcTable
 
 <details>
@@ -320,7 +424,7 @@ Run `revdep_details(,"restfulSE")` for more info
 * URL: https://github.com/sdcTools/sdcTable
 * BugReports: https://github.com/sdcTools/userSupport/issues
 * Date/Publication: 2019-09-19 13:10:02 UTC
-* Number of recursive dependencies: 47
+* Number of recursive dependencies: 55
 
 Run `revdep_details(,"sdcTable")` for more info
 
@@ -367,7 +471,7 @@ ERROR: configuration failed for package ‘sdcTable’
 * URL: https://github.com/brockk/trialr
 * BugReports: https://github.com/brockk/trialr/issues
 * Date/Publication: 2019-06-25 11:40:03 UTC
-* Number of recursive dependencies: 106
+* Number of recursive dependencies: 108
 
 Run `revdep_details(,"trialr")` for more info
 
@@ -395,32 +499,5 @@ Run `revdep_details(,"trialr")` for more info
 *   checking for GNU extensions in Makefiles ... NOTE
     ```
     GNU make is a SystemRequirements.
-    ```
-
-# weathercan
-
-<details>
-
-* Version: 0.3.1
-* Source code: https://github.com/cran/weathercan
-* URL: https://github.com/ropensci/weathercan
-* BugReports: https://github.com/ropensci/weathercan/issues
-* Date/Publication: 2019-09-29 16:00:02 UTC
-* Number of recursive dependencies: 131
-
-Run `revdep_details(,"weathercan")` for more info
-
-</details>
-
-## Newly broken
-
-*   R CMD check timed out
-    
-
-## In both
-
-*   checking data for non-ASCII characters ... NOTE
-    ```
-      Note: found 72 marked UTF-8 strings
     ```
 

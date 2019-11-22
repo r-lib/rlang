@@ -10,34 +10,38 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |Europe/Brussels              |
-|date     |2019-10-22                   |
+|date     |2019-11-22                   |
 
 # Dependencies
 
-|package |old   |new        |Δ  |
-|:-------|:-----|:----------|:--|
-|rlang   |0.4.0 |0.4.0.9007 |*  |
+|package |old   |new   |Δ  |
+|:-------|:-----|:-----|:--|
+|rlang   |0.4.1 |0.4.2 |*  |
 
 # Revdeps
 
-## Failed to check (10)
+## Failed to check (7)
 
-|package                              |version |error     |warning |note |
-|:------------------------------------|:-------|:---------|:-------|:----|
-|[arrow](failures.md#arrow)           |0.15.0  |-1 __+1__ |        |     |
-|circumplex                           |0.3.3   |1         |        |     |
-|dexter                               |1.0.0   |1         |        |     |
-|iCNV                                 |?       |          |        |     |
-|poppr                                |2.8.3   |1         |        |     |
-|rdomains                             |0.1.7   |1         |        |1    |
-|restfulSE                            |1.6.1   |2         |        |1    |
-|sdcTable                             |0.30    |1         |        |     |
-|trialr                               |0.1.2   |1         |        |3    |
-|[weathercan](failures.md#weathercan) |0.3.1   |__+1__    |        |1    |
+|package    |version |error |warning |note |
+|:----------|:-------|:-----|:-------|:----|
+|circumplex |0.3.3   |1     |        |     |
+|dexter     |1.0.0   |1     |        |     |
+|Hmisc      |4.3-0   |1     |        |     |
+|poppr      |2.8.3   |1     |        |     |
+|RxODE      |0.9.1-8 |1     |        |1    |
+|sdcTable   |0.30    |1     |        |     |
+|trialr     |0.1.2   |1     |        |3    |
 
-## New problems (1)
+## New problems (8)
 
-|package                                              |version |error  |warning |note |
-|:----------------------------------------------------|:-------|:------|:-------|:----|
-|[GenomicDataCommons](problems.md#genomicdatacommons) |1.8.0   |__+1__ |1       |1    |
+|package                                  |version  |error |warning |note     |
+|:----------------------------------------|:--------|:-----|:-------|:--------|
+|[arrow](problems.md#arrow)               |0.15.1.1 |-1    |        |__+1__   |
+|[broomExtra](problems.md#broomextra)     |0.0.6    |      |__+1__  |         |
+|[cursory](problems.md#cursory)           |1.0.0    |      |__+1__  |1        |
+|[dplyr](problems.md#dplyr)               |0.8.3    |      |__+1__  |2        |
+|[groupedstats](problems.md#groupedstats) |0.1.0    |      |__+1__  |         |
+|[INDperform](problems.md#indperform)     |0.2.1    |      |        |1 __+1__ |
+|[perturbatr](problems.md#perturbatr)     |1.4.0    |      |        |__+1__   |
+|[tibble](problems.md#tibble)             |2.1.3    |      |__+1__  |         |
 
