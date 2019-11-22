@@ -2,6 +2,7 @@
 % Please edit documentation in R/dots.R
 \name{dyn-dots}
 \alias{dyn-dots}
+\alias{tidy-dots}
 \title{Dynamic dots}
 \description{
 The \code{...} syntax of base R allows you to:

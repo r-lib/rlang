@@ -32,6 +32,7 @@
 #' arguments, and [call2()] for creating calls.
 #'
 #' @name dyn-dots
+#' @aliases tidy-dots
 NULL
 
 #' Collect dots in a list
