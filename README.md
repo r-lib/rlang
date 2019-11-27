@@ -3,7 +3,6 @@ rlang <img src="man/figures/rlang.png" align="right" />
 
 <!-- badges: start -->
 [![R build status](https://github.com/r-lib/rlang/workflows/R-CMD-check/badge.svg)](https://github.com/r-lib/rlang)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/r-lib/rlang?branch=master&svg=true)](https://ci.appveyor.com/project/lionel-/rlang)
 [![Coverage Status](https://codecov.io/gh/r-lib/rlang/branch/master/graph/badge.svg)](https://codecov.io/github/r-lib/rlang?branch=master)
 [![Lifecycle Status](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/)
 <!-- badges: end -->
