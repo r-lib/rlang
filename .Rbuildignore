@@ -13,3 +13,4 @@
 ^TAGS$
 ^\.github$
 .*\.dir-locals\.el$
+^\.github/workflows/R-CMD-check\.yaml$
