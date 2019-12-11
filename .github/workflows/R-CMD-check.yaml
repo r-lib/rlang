@@ -37,6 +37,13 @@ jobs:
       - uses: r-lib/actions/setup-tinytex@master
         if: contains(matrix.config.args, 'no-manual') == false
 
+      - name: Install missing latex pacakges
+        if: contains(matrix.config.args, 'no-manual') == false
+        run: |
+          tlmgr install atbegshi
+          tlmgr install atveryend
+          tlmgr install rerunfilecheck
+
       - name: Cache R packages
         if: runner.os != 'Windows'
         uses: actions/cache@v1
