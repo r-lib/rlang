@@ -329,7 +329,7 @@ test_that("env_bind_active() supports nested quosures", {
 })
 
 test_that("env_get() survives native encoding", {
-  with_non_utf8_encoding({
+  with_non_utf8_locale({
     e <- env(empty_env())
     funs <- list(function() 42)
     native <- enc2native("\u4e2d")
