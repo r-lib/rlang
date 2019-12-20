@@ -2,7 +2,7 @@
 
 
 sexp* rlang_env_get(sexp* env, sexp* nm) {
-  sexp* sym = r_sym(r_chr_get_c_string(nm, 0));
+  sexp* sym = Rf_installChar(r_chr_get(nm, 0));
   sexp* out = KEEP(r_env_find(env, sym));
 
   // Trigger `symbol not found` error if needed
