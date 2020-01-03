@@ -171,7 +171,6 @@ is_callable <- function(x) {
 #' This function tests if `x` is a [call][call2]. This is a
 #' pattern-matching predicate that returns `FALSE` if `name` and `n`
 #' are supplied and the call does not match these properties.
-#' `is_unary_call()` and `is_binary_call()` hardcode `n` to 1 and 2.
 #'
 #'
 #' @section Life cycle:
