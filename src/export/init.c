@@ -125,7 +125,7 @@ extern sexp* rlang_find_var(sexp*, sexp*);
 extern sexp* rlang_env_bind_list(sexp*, sexp*, sexp*);
 
 // Library initialisation defined below
-sexp* rlang_library_load();
+sexp* rlang_library_load(sexp*);
 sexp* rlang_library_unload();
 
 // For unit tests
@@ -149,7 +149,7 @@ extern sexp* rlang_test_lgl_which(sexp*, sexp*);
 
 static const r_callable r_callables[] = {
   {"r_init_library",                    (r_fn_ptr) &r_init_library, 0},
-  {"rlang_library_load",                (r_fn_ptr) &rlang_library_load, 0},
+  {"rlang_library_load",                (r_fn_ptr) &rlang_library_load, 1},
   {"rlang_library_unload",              (r_fn_ptr) &rlang_library_unload, 0},
   {"r_f_lhs",                           (r_fn_ptr) &r_f_lhs, 1},
   {"r_f_rhs",                           (r_fn_ptr) &r_f_rhs, 1},
@@ -345,10 +345,10 @@ void R_init_rlang(r_dll_info* dll) {
 
 
 // From "../internal/internal.h"
-void rlang_init_internal();
+void rlang_init_internal(sexp* ns);
 
-sexp* rlang_library_load() {
-  rlang_init_internal();
+sexp* rlang_library_load(sexp* ns) {
+  rlang_init_internal(ns);
   return r_null;
 }
 

@@ -84,25 +84,42 @@
 #'
 #' list2(!!name := 1 + 2)
 #' exprs(!!name := 1 + 2)
-#' quos(!!name := 1 + 2)
 #' ```
 #'
 #' Like `=`, the `:=` operator expects strings or symbols on its LHS.
+#'
+#' Since unquoting names is related to interpolating within a string
+#' with the glue package, we have made the glue syntax available on
+#' the LHS of `:=`:
+#'
+#' ```
+#' list2("{name}" := 1)
+#' tibble("{name}" := 1)
+#' ```
+#'
+#' You can also interpolate defused function arguments with double
+#' braces `{{`, similar to the curly-curly syntax:
+#'
+#' ```
+#' wrapper <- function(data, var) {
+#'   data %>% mutate("{{ var }}_foo" := {{ var }} * 2)
+#' }
+#' ```
 #'
 #' Currently, forcing names with `:=` only works in top level
 #' expressions. These are all valid:
 #'
 #' ```
-#' exprs(!!nm := x)
-#' tibble(!!nm := x)
-#' list2(!!nm := x)
+#' exprs(!!name := x)
+#' tibble(!!name := x)
+#' tibble("{name}" := x)
 #' ```
 #'
 #' But deep-forcing names isn't supported:
 #'
 #' ```
-#' expr(this(is(deep(!!nm := x))))
-#' exprs(this(is(deep(!!nm := x))))
+#' expr(this(is(deep(!!name := x))))
+#' exprs(this(is(deep("{name}" := x))))
 #' ```
 #'
 #'

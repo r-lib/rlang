@@ -82,6 +82,9 @@ struct dots_capture_info init_capture_info(enum dots_capture_type type,
   return info;
 }
 
+// Initialised at load time
+static bool has_glue = false;
+static sexp* glue_unquote_fn = NULL;
 
 static sexp* def_unquote_name(sexp* expr, sexp* env) {
   int n_kept = 0;
@@ -106,6 +109,13 @@ static sexp* def_unquote_name(sexp* expr, sexp* env) {
     r_abort("The LHS of `:=` must be a string or a symbol");
   case OP_EXPAND_DOT_DATA:
     r_abort("Can't use the `.data` pronoun on the LHS of `:=`");
+  }
+
+  if (has_glue && TYPEOF(lhs) == STRSXP) {
+    sexp* glue_unquote_call = KEEP(r_call2(glue_unquote_fn, lhs));
+    lhs = r_eval(glue_unquote_call, env);
+    FREE(1);
+    KEEP_N(lhs, n_kept);
   }
 
   // Unwrap quosures for convenience
@@ -912,7 +922,10 @@ sexp* rlang_dots_pairlist(sexp* frame_env,
                                true);
 }
 
-void rlang_init_dots() {
+void rlang_init_dots(sexp* ns) {
+  has_glue = r_lgl_get(r_eval(r_sym("has_glue"), ns), 0);
+  glue_unquote_fn = r_eval(r_sym("glue_unquote"), ns);
+
   auto_name_call = r_parse("rlang:::quos_auto_name(x)");
   r_mark_precious(auto_name_call);
 
