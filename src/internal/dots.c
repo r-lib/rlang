@@ -82,8 +82,14 @@ struct dots_capture_info init_capture_info(enum dots_capture_type type,
   return info;
 }
 
-// Initialised at load time
+
 static bool has_glue = false;
+sexp* rlang_glue_is_there() {
+  has_glue = true;
+  return r_null;
+}
+
+// Initialised at load time
 static sexp* glue_unquote_fn = NULL;
 
 static sexp* def_unquote_name(sexp* expr, sexp* env) {
@@ -923,7 +929,6 @@ sexp* rlang_dots_pairlist(sexp* frame_env,
 }
 
 void rlang_init_dots(sexp* ns) {
-  has_glue = r_lgl_get(r_eval(r_sym("has_glue"), ns), 0);
   glue_unquote_fn = r_eval(r_sym("glue_unquote"), ns);
 
   auto_name_call = r_parse("rlang:::quos_auto_name(x)");

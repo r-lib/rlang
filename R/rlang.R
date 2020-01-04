@@ -4,9 +4,6 @@ NULL
 # For cnd.R
 is_same_body <- NULL
 
-# For dots.c
-has_glue <- NULL
-
 
 downstream_deps <- list(
   dplyr = c(min = "0.8.0", from = "0.4.0")
@@ -67,8 +64,12 @@ base_pkg_env <- NULL
     is_same_body <<- is_reference
   }
 
-  has_glue <<- is_installed("glue")
-
+  # glue depends on rlang so we can't detect it is installed right
+  # away. Instead we do it when glue has finished loading.
+  setHook(
+    packageEvent("glue", "onLoad"),
+    function(...).Call(rlang_glue_is_there)
+  )
 
   .Call(r_init_library)
   .Call(rlang_library_load, ns_env("rlang"))
