@@ -107,7 +107,7 @@ Functions stored in the mask are bypassed by the pronoun.
 Once you have built a data mask, simply pass it to \code{\link[=eval_tidy]{eval_tidy()}} as
 the \code{data} argument. You can repeat this as many times as
 needed. Note that any objects created there (perhaps because of a
-call to \code{<-}) will persist in subsequent evaluations.
+call to \verb{<-}) will persist in subsequent evaluations.
 }
 
 \section{Top and bottom of data mask}{

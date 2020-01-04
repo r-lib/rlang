@@ -20,7 +20,7 @@ It has two primary uses:
 \itemize{
 \item To call a function with arguments stored in a list (if the
 function doesn't support \link[=dyn-dots]{dynamic dots}). Splice the
-list of arguments with \code{!!!}.
+list of arguments with \verb{!!!}.
 \item To call every function stored in a list (in conjunction with \code{map()}/
 \code{\link[=lapply]{lapply()}})
 }

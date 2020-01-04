@@ -31,7 +31,7 @@ is a database.
 }
 
 The \code{.data} object exported here is useful to import in your
-package namespace to avoid a \code{R CMD check} note when referring to
+package namespace to avoid a \verb{R CMD check} note when referring to
 objects from the data mask.
 }
 \keyword{datasets}

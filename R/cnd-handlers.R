@@ -26,7 +26,6 @@
 #' Handlers are exiting by default, use [calling()] to create a
 #' calling handler.
 #'
-#' @inheritParams with_restarts
 #' @param .expr An expression to execute in a context where new
 #'   handlers are established. The underscored version takes a quoted
 #'   expression or a quoted formula.

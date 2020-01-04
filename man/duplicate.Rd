@@ -8,7 +8,7 @@ duplicate(x, shallow = FALSE)
 }
 \arguments{
 \item{x}{Any R object. However, uncopyable types like symbols and
-environments are returned as is (just like with \code{<-}).}
+environments are returned as is (just like with \verb{<-}).}
 
 \item{shallow}{This is relevant for recursive data structures like
 lists, calls and pairlists. A shallow copy only duplicates the

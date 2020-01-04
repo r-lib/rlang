@@ -23,9 +23,9 @@ It is sometimes useful to force early evaluation of part of an
 expression before it gets fully evaluated. The tidy eval framework
 provides several forcing operators for different use cases.
 \itemize{
-\item The bang-bang operator \code{!!} forces a \emph{single} object. One
-common case for \code{!!} is to substitute an environment-variable
-(created with \code{<-}) with a data-variable (inside a data frame).\preformatted{library(dplyr)
+\item The bang-bang operator \verb{!!} forces a \emph{single} object. One
+common case for \verb{!!} is to substitute an environment-variable
+(created with \verb{<-}) with a data-variable (inside a data frame).\preformatted{library(dplyr)
 
 # The environment variable `var` refers to the data-variable
 # `height`
@@ -35,7 +35,7 @@ var <- sym("height")
 starwars \%>\%
   summarise(avg = mean(!!var, na.rm = TRUE))
 }
-\item The big-bang operator \code{!!!} forces-splice a \emph{list} of objects.
+\item The big-bang operator \verb{!!!} forces-splice a \emph{list} of objects.
 The elements of the list are spliced in place, meaning that they
 each become one single argument.\preformatted{vars <- syms(c("height", "mass"))
 
@@ -50,12 +50,12 @@ to be evaluated in another context, such as the data frame.
 
 In practice, this is useful when you have a data-variable in an
 env-variable (such as a function argument).\preformatted{# Force-defuse all function arguments that might contain
-# data-variables by embracing them with {{ }}
-mean_by <- function(data, by, var) {
+# data-variables by embracing them with \{\{ \}\}
+mean_by <- function(data, by, var) \{
   data \%>\%
-    group_by({{ by }}) \%>\%
-    summarise(avg = mean({{ var }}, na.rm = TRUE))
-}
+    group_by(\{\{ by \}\}) \%>\%
+    summarise(avg = mean(\{\{ var \}\}, na.rm = TRUE))
+\}
 
 # The env-variables `by` and `var` are forced but defused.
 # The data-variables they contain are evaluated by dplyr later on
@@ -77,12 +77,12 @@ When a function takes multiple named arguments
 name. Since the LHS of \code{=} is \link[=nse-defuse]{defused}, giving the name
 of a variable results in the argument having the name of the
 variable rather than the name stored in that variable. This problem
-of forcing evaluation of names is exactly what the \code{!!} operator is
+of forcing evaluation of names is exactly what the \verb{!!} operator is
 for.
 
 Unfortunately R is very strict about the kind of expressions
 supported on the LHS of \code{=}. This is why rlang interprets the
-walrus operator \code{:=} as an alias of \code{=}. You can use it to supply
+walrus operator \verb{:=} as an alias of \code{=}. You can use it to supply
 names, e.g. \code{a := b} is equivalent to \code{a = b}. Since its syntax is
 more flexible you can also force names on its LHS:\preformatted{name <- "Jane"
 
@@ -91,9 +91,9 @@ exprs(!!name := 1 + 2)
 quos(!!name := 1 + 2)
 }
 
-Like \code{=}, the \code{:=} operator expects strings or symbols on its LHS.
+Like \code{=}, the \verb{:=} operator expects strings or symbols on its LHS.
 
-Currently, forcing names with \code{:=} only works in top level
+Currently, forcing names with \verb{:=} only works in top level
 expressions. These are all valid:\preformatted{exprs(!!nm := x)
 tibble(!!nm := x)
 list2(!!nm := x)
@@ -107,8 +107,8 @@ exprs(this(is(deep(!!nm := x))))
 \section{Theory}{
 
 
-Formally, \code{quo()} and \code{expr()} are quasiquotation functions, \code{!!}
-is the unquote operator, and \code{!!!} is the unquote-splice operator.
+Formally, \code{quo()} and \code{expr()} are quasiquotation functions, \verb{!!}
+is the unquote operator, and \verb{!!!} is the unquote-splice operator.
 These terms have a rich history in Lisp languages, and live on in
 modern languages like
 \href{https://docs.julialang.org/en/v1/manual/metaprogramming/}{Julia}
@@ -142,7 +142,7 @@ consistent with other R operators (e.g. \code{`+`(a, b)} is the
 prefix form of \code{a + b}).
 
 Note that the prefix forms are not as relevant as before because
-\code{!!} now has the right operator precedence, i.e. the same as
+\verb{!!} now has the right operator precedence, i.e. the same as
 unary \code{-} or \code{+}. It is thus safe to mingle it with other
 operators, e.g. \code{!!a + !!b} does the right thing. In addition the
 parser now strips one level of parentheses around unquoted
@@ -153,7 +153,7 @@ Finally, the named functional forms \code{UQ()} and \code{UQS()} were
 misleading because they suggested that existing knowledge about
 functions is applicable to quasiquotation. This was reinforced by
 the visible definitions of these functions exported by rlang and
-by the tidy eval parser interpreting \code{rlang::UQ()} as \code{!!}. In
+by the tidy eval parser interpreting \code{rlang::UQ()} as \verb{!!}. In
 reality unquoting is \emph{not} a function call, it is a syntactic
 operation. The operator form makes it clearer that unquoting is
 special.

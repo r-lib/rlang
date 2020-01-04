@@ -57,16 +57,16 @@ default.
 # Signal a condition with signal():
 fn <- function() {
   g()
-  cat("called?\\n")
+  cat("called?\n")
   "fn() return value"
 }
 g <- function() {
   h()
-  cat("called?\\n")
+  cat("called?\n")
 }
 h <- function() {
   signal("A foobar condition occurred", "foo")
-  cat("called?\\n")
+  cat("called?\n")
 }
 
 # Exiting handlers jump to with_handlers() before being
@@ -78,8 +78,8 @@ with_handlers(fn(), foo = handler)
 # ignored. Returning just means they are declining to take charge of
 # the condition. However, they can produce side-effects such as
 # displaying a message:
-some_handler <- function(c) cat("some handler!\\n")
-other_handler <- function(c) cat("other handler!\\n")
+some_handler <- function(c) cat("some handler!\n")
+other_handler <- function(c) cat("other handler!\n")
 with_handlers(fn(), foo = calling(some_handler), foo = calling(other_handler))
 
 # If a calling handler jumps to an earlier context, it takes

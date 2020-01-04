@@ -4,8 +4,11 @@
 \alias{dots_definitions}
 \title{Capture definition objects}
 \usage{
-dots_definitions(..., .named = FALSE, .ignore_empty = c("trailing",
-  "none", "all"))
+dots_definitions(
+  ...,
+  .named = FALSE,
+  .ignore_empty = c("trailing", "none", "all")
+)
 }
 \arguments{
 \item{...}{For \code{enexprs()}, \code{ensyms()} and \code{enquos()}, names of

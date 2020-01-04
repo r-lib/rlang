@@ -4,8 +4,13 @@
 \alias{call_modify}
 \title{Modify the arguments of a call}
 \usage{
-call_modify(.call, ..., .homonyms = c("keep", "first", "last", "error"),
-  .standardise = NULL, .env = caller_env())
+call_modify(
+  .call,
+  ...,
+  .homonyms = c("keep", "first", "last", "error"),
+  .standardise = NULL,
+  .env = caller_env()
+)
 }
 \arguments{
 \item{.call}{Can be a call, a formula quoting a call in the

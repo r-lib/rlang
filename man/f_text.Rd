@@ -30,7 +30,7 @@ f_label(f)
 # Names a quoted with ``
 f_label(~ x)
 # Strings are encoded
-f_label(~ "a\\nb")
+f_label(~ "a\nb")
 # Long expressions are collapsed
 f_label(~ foo({
   1 + 2

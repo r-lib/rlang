@@ -73,11 +73,11 @@ number of frames to go down the stack) and cannot be lower than 1.
 
 Note finally that \code{parent.frame(1)} corresponds to
 \code{call_frame(2)$env}, as \code{n = 1} always refers to the current
-frame. This makes the \code{_frame()} and \code{_stack()} functions
+frame. This makes the \verb{_frame()} and \verb{_stack()} functions
 consistent: \code{ctxt_frame(2)} is the same as \code{ctxt_stack()[[2]]}.
 Also, \code{ctxt_depth()} returns one more frame than
 \code{\link[base:sys.nframe]{base::sys.nframe()}} because it counts the global frame. That is
-consistent with the \code{_stack()} functions which return the global
+consistent with the \verb{_stack()} functions which return the global
 frame as well. This way, \code{call_stack(call_depth())} is the same as
 \code{global_frame()}.
 }

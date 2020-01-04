@@ -32,7 +32,6 @@ has to match at least one of them, otherwise \code{is_call()} returns
 This function tests if \code{x} is a \link[=call2]{call}. This is a
 pattern-matching predicate that returns \code{FALSE} if \code{name} and \code{n}
 are supplied and the call does not match these properties.
-\code{is_unary_call()} and \code{is_binary_call()} hardcode \code{n} to 1 and 2.
 }
 \section{Life cycle}{
 

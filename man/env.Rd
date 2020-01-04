@@ -73,7 +73,7 @@ for example \code{\link[=as_data_mask]{as_data_mask()}}.
 Unlike regular objects such as vectors, environments are an
 \link[=is_copyable]{uncopyable} object type. This means that if you
 have multiple references to a given environment (by assigning the
-environment to another symbol with \code{<-} or passing the environment
+environment to another symbol with \verb{<-} or passing the environment
 as argument to a function), modifying the bindings of one of those
 references changes all other references as well.
 }

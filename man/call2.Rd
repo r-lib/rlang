@@ -52,7 +52,7 @@ ns_call <- as.call(list(as.name("::"), as.name("list"), as.name("base")))
 as.call(list(ns_call, 1, 2))
 }
 \item \code{call2()} has \link[=list2]{tidy dots} support and you can splice lists
-of arguments with \code{!!!}. With base R, you need to use \code{as.call()}
+of arguments with \verb{!!!}. With base R, you need to use \code{as.call()}
 instead of \code{call()} if the arguments are in a list.\preformatted{args <- list(na.rm = TRUE, trim = 0)
 
 call2("mean", 1:10, !!!args)

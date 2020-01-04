@@ -29,7 +29,7 @@ modified in place, invisibly.
 \description{
 These functions create bindings in an environment. The bindings are
 supplied through \code{...} as pairs of names and values or expressions.
-\code{env_bind()} is equivalent to evaluating a \code{<-} expression within
+\code{env_bind()} is equivalent to evaluating a \verb{<-} expression within
 the given environment. This function should take care of the
 majority of use cases but the other variants can be useful for
 specific problems.
@@ -128,7 +128,7 @@ env_bind(my_env, !!!old)
 
 # env_bind_lazy() assigns expressions lazily:
 env <- env()
-env_bind_lazy(env, name = { cat("forced!\\n"); "value" })
+env_bind_lazy(env, name = { cat("forced!\n"); "value" })
 
 # Referring to the binding will cause evaluation:
 env$name
@@ -166,7 +166,7 @@ env$name
 # You can create active bindings with env_bind_active(). Active
 # bindings execute a function each time they are evaluated:
 fn <- function() {
-  cat("I have been called\\n")
+  cat("I have been called\n")
   rnorm(1)
 }
 

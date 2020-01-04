@@ -104,7 +104,7 @@ pkg_env_name <- function(pkg) {
   paste0("package:", pkg)
 }
 #' @rdname search_envs
-#' @rdname x An environment or a search name.
+#' @param x An environment or a search name.
 #' @export
 is_attached <- function(x) {
   if (is_string(x)) {

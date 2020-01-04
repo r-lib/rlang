@@ -26,7 +26,7 @@ string version checks that the input contains a scalar string.
 # escapes. The characters corresponding to Unicode codepoints will
 # be encoded in UTF-8, and the string will be marked as UTF-8
 # automatically:
-cafe <- string("caf\\uE9")
+cafe <- string("caf\uE9")
 Encoding(cafe)
 as_bytes(cafe)
 

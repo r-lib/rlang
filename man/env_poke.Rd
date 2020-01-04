@@ -4,8 +4,7 @@
 \alias{env_poke}
 \title{Poke an object in an environment}
 \usage{
-env_poke(env = caller_env(), nm, value, inherit = FALSE,
-  create = !inherit)
+env_poke(env = caller_env(), nm, value, inherit = FALSE, create = !inherit)
 }
 \arguments{
 \item{env}{An environment.}
@@ -41,7 +40,7 @@ an existing binding to reassign. If not found and \code{create} is
 This default makes sense because the inheriting case is mostly
 for overriding an existing binding. If not found, something
 probably went wrong and it is safer to issue an error. Note that
-this is different to the base R operator \code{<<-} which will create
+this is different to the base R operator \verb{<<-} which will create
 a binding in the global environment instead of the current
 environment when no existing binding is found in the parents.
 }
@@ -51,7 +50,7 @@ environment when no existing binding is found in the parents.
 \code{env_poke()} is experimental. We are still experimenting with
 reducing the number of redundant functions by using quasiquotation.
 It is possible \code{env_poke()} will be deprecated in favour of
-\code{env_bind()} and name-unquoting with \code{:=}.
+\code{env_bind()} and name-unquoting with \verb{:=}.
 }
 
 \keyword{internal}

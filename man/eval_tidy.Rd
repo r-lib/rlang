@@ -49,9 +49,9 @@ and an object \code{var} in \code{env}, and \code{expr} refers to \code{var}, th
 column has priority:\preformatted{var <- "this one?"
 data <- data.frame(var = rep("Or that one?", 3))
 
-within <- function(data, expr) {
+within <- function(data, expr) \{
   eval_tidy(enquo(expr), data)
-}
+\}
 
 within(data, toupper(var))
 #> [1] "OR THAT ONE?" "OR THAT ONE?" "OR THAT ONE?"
@@ -76,12 +76,12 @@ likely unquote quosures.
 Note that unwrapping a quosure with \code{\link[=quo_get_expr]{quo_get_expr()}} does not
 guarantee that there is no quosures inside the expression. Quosures
 might be unquoted anywhere. For instance, the following does not
-work reliably in the presence of nested quosures:\preformatted{my_quoting_fn <- function(x) {
+work reliably in the presence of nested quosures:\preformatted{my_quoting_fn <- function(x) \{
   x <- enquo(x)
   expr <- quo_get_expr(x)
   env <- quo_get_env(x)
   eval(expr, env)
-}
+\}
 
 # Works:
 my_quoting_fn(toupper(letters))

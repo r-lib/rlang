@@ -17,9 +17,9 @@ supplied.}
 }
 \description{
 \code{fn_body()} is a simple wrapper around \code{\link[base:body]{base::body()}}. It always
-returns a \code{\{} expression and throws an error when the input is a
+returns a \verb{\\\{} expression and throws an error when the input is a
 primitive function (whereas \code{body()} returns \code{NULL}). The setter
-version preserves attributes, unlike \code{body<-}.
+version preserves attributes, unlike \verb{body<-}.
 }
 \examples{
 # fn_body() is like body() but always returns a block:

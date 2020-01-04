@@ -32,13 +32,13 @@ rst_list()
 # signalling an error:
 \dontrun{
 fn <- function() {
-  cat("aborting...\\n")
+  cat("aborting...\n")
   rst_abort()
-  cat("This is never called\\n")
+  cat("This is never called\n")
 }
 {
   fn()
-  cat("This is never called\\n")
+  cat("This is never called\n")
 }
 }
 
@@ -47,7 +47,7 @@ fn <- function() {
 \dontrun{
 {
   abort("error")
-  cat("This is never called\\n")
+  cat("This is never called\n")
 }
 }
 
@@ -57,9 +57,9 @@ fn <- function() {
 out <- NULL
 {
   out <- with_restarts(abort("error"), abort = function() "restart!")
-  cat("This is called\\n")
+  cat("This is called\n")
 }
-cat("`out` has now become:", out, "\\n")
+cat("`out` has now become:", out, "\n")
 }
 }
 \seealso{

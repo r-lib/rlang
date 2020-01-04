@@ -18,7 +18,7 @@ the user about it.}
 }
 \description{
 \code{quo_squash()} flattens all nested quosures within an expression.
-For example it transforms \code{^foo(^bar(), ^baz)} to the bare
+For example it transforms \verb{^foo(^bar(), ^baz)} to the bare
 expression \code{foo(bar(), baz)}.
 
 This operation is safe if the squashed quosure is used for

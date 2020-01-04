@@ -42,7 +42,7 @@ fn <- function(x) expr_label(substitute(x))
 fn(x:y)
 
 # Strings are encoded
-expr_label("a\\nb")
+expr_label("a\nb")
 
 # Names and expressions are quoted with ``
 expr_label(quote(x))

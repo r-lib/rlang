@@ -44,7 +44,7 @@ the rules described in \link{vector-coercion}.
 moved to the vctrs package at some point. This is why they are
 marked as questioning.
 \item Automatic splicing is soft-deprecated and will trigger a warning
-in a future version. Please splice explicitly with \code{!!!}.
+in a future version. Please splice explicitly with \verb{!!!}.
 }
 }
 

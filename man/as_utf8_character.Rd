@@ -39,7 +39,7 @@ non-UTF-8 native encoding.
 \examples{
 # Let's create a string marked as UTF-8 (which is guaranteed by the
 # Unicode escaping in the string):
-utf8 <- "caf\\uE9"
+utf8 <- "caf\uE9"
 Encoding(utf8)
 as_bytes(utf8)
 }

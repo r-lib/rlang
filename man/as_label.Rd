@@ -39,8 +39,8 @@ captured with \code{ensym()}.
 \item Symbols are transformed to string with \code{as_string()}.
 \item Calls are abbreviated.
 \item Numbers are represented as such.
-\item Other constants are represented by their type, such as \code{<dbl>}
-or \code{<data.frame>}.
+\item Other constants are represented by their type, such as \verb{<dbl>}
+or \verb{<data.frame>}.
 }
 
 Note that simple symbols should generally be transformed to strings

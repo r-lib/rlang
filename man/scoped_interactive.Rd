@@ -24,9 +24,9 @@ the options are reset to their original values.}
 values defining new option values. For \code{peek_options()}, strings
 or character vectors of option names.}
 
-\item{.frame}{The environment of a stack frame which defines the
-scope of the temporary options. When the frame returns, the
-options are set back to their original values.}
+\item{.frame}{The environment of a running function which defines
+the scope of the temporary options. When the function returns,
+the options are reset to their original values.}
 
 \item{.env}{An environment.}
 }

@@ -7,8 +7,7 @@
 \alias{message_cnd}
 \title{Create a condition object}
 \usage{
-error_cnd(.subclass = NULL, ..., message = "", trace = NULL,
-  parent = NULL)
+error_cnd(.subclass = NULL, ..., message = "", trace = NULL, parent = NULL)
 
 cnd(class, ..., message = "", .subclass)
 

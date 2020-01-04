@@ -59,11 +59,11 @@ fn()
 # rst_maybe_jump() checks that a restart exists before trying to jump:
 fn <- function() {
   g()
-  cat("will this be called?\\n")
+  cat("will this be called?\n")
 }
 g <- function() {
   rst_maybe_jump("my_restart")
-  cat("will this be called?\\n")
+  cat("will this be called?\n")
 }
 
 # Here no restart are on the stack:
@@ -72,7 +72,7 @@ fn()
 # If a restart point called `my_restart` was established on the
 # stack before calling fn(), the control flow will jump there:
 rst <- function() {
-  cat("restarting...\\n")
+  cat("restarting...\n")
   "return value"
 }
 with_restarts(fn(), my_restart = rst)

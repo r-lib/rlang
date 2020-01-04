@@ -15,9 +15,9 @@ along the way to function parameters.
 
 Dynamic dots offer a few additional features:
 \enumerate{
-\item You can \strong{splice} arguments saved in a list with the \link[=quasiquotation]{big bang} operator \code{!!!}.
+\item You can \strong{splice} arguments saved in a list with the \link[=quasiquotation]{big bang} operator \verb{!!!}.
 \item You can \strong{unquote} names by using the \link[=quasiquotation]{bang bang}
-operator \code{!!} on the left-hand side of \code{:=}.
+operator \verb{!!} on the left-hand side of \verb{:=}.
 \item Trailing commas are ignored, making it easier to copy and paste
 lines of arguments.
 }

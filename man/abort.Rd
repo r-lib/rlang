@@ -8,13 +8,21 @@
 \alias{interrupt}
 \title{Signal an error, warning, or message}
 \usage{
-abort(message = "", class = NULL, ..., trace = NULL, call,
-  parent = NULL, msg, type, .subclass)
+abort(
+  message = "",
+  class = NULL,
+  ...,
+  trace = NULL,
+  call,
+  parent = NULL,
+  msg,
+  type,
+  .subclass
+)
 
 warn(message, class = NULL, ..., call, msg, type, .subclass)
 
-inform(message, class = NULL, ..., file = NULL, call, msg, type,
-  .subclass)
+inform(message, class = NULL, ..., file = NULL, call, msg, type, .subclass)
 
 signal(message, class, ..., .subclass)
 

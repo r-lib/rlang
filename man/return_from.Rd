@@ -50,7 +50,7 @@ considering simpler alternatives.
 # Passing fn() evaluation frame to g():
 fn <- function() {
   val <- g(current_env())
-  cat("g returned:", val, "\\n")
+  cat("g returned:", val, "\n")
   "normal return"
 }
 g <- function(env) h(env)

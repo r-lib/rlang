@@ -46,7 +46,7 @@ expressions. It always returns a list of expressions (compare to
 \code{\link[base:parse]{base::parse()}} which returns a base::expression vector). All
 functions also support R connections.
 
-The versions suffixed with \code{_quo} and \code{_quos} return
+The versions suffixed with \verb{_quo} and \verb{_quos} return
 \link[=nse-defuse]{quosures} rather than raw expressions.
 }
 \section{Life cycle}{
@@ -63,8 +63,8 @@ the return type of a function.
 # parse_expr() can parse any R expression:
 parse_expr("mtcars \%>\% dplyr::mutate(cyl_prime = cyl / sd(cyl))")
 
-# A string can contain several expressions separated by ; or \\n
-parse_exprs("NULL; list()\\n foo(bar)")
+# A string can contain several expressions separated by ; or \n
+parse_exprs("NULL; list()\n foo(bar)")
 
 # You can also parse source files by passing a R connection. Let's
 # create a file containing R code:

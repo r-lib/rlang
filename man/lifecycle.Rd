@@ -143,7 +143,7 @@ want to recommend restarts as a style of programming in R.
 \item \code{env_bind_exprs()} => \code{\link[=env_bind_lazy]{env_bind_lazy()}}
 \item \code{env_bind_fns()} => \code{\link[=env_bind_active]{env_bind_active()}}
 \item Passing a function or formula to \code{env_depth()},
-\code{env_poke_parent()}, \code{env_parent<-}, \code{env_tail()}, \code{set_env()},
+\code{env_poke_parent()}, \verb{env_parent<-}, \code{env_tail()}, \code{set_env()},
 \code{env_clone()}, \code{env_inherits()}, \code{env_bind()},
 \code{local_bindings()}, \code{with_bindings()}, \code{env_poke()},
 \code{env_has()}, \code{env_get()}, \code{env_names()}, \code{env_bind_exprs()} and
@@ -176,7 +176,7 @@ like \code{quos()} is deprecated.
 \strong{Defunct as of rlang 0.4.0}
 \itemize{
 \item \code{length()} and \code{names()} on tidy eval \code{.data} pronouns.
-\item Supplying a named \code{!!!} call.
+\item Supplying a named \verb{!!!} call.
 \item \code{\link[=as_data_mask]{as_data_mask()}}: \code{parent} argument
 \item \code{\link[=new_data_mask]{new_data_mask()}}: \code{parent} argument
 \item \code{\link[=env_tail]{env_tail()}}: \code{sentinel} => \code{last}

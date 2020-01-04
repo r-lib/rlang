@@ -13,7 +13,7 @@ is_copyable(x)
 When an object is modified, R generally copies it (sometimes
 lazily) to enforce \href{https://en.wikipedia.org/wiki/Value_semantics}{value semantics}.
 However, some internal types are uncopyable. If you try to copy
-them, either with \code{<-} or by argument passing, you actually create
+them, either with \verb{<-} or by argument passing, you actually create
 references to the original object rather than actual
 copies. Modifying these references can thus have far reaching side
 effects.

@@ -13,9 +13,13 @@ is_spliced(x)
 
 is_spliced_bare(x)
 
-dots_splice(..., .ignore_empty = c("trailing", "none", "all"),
-  .preserve_empty = FALSE, .homonyms = c("keep", "first", "last",
-  "error"), .check_assign = FALSE)
+dots_splice(
+  ...,
+  .ignore_empty = c("trailing", "none", "all"),
+  .preserve_empty = FALSE,
+  .homonyms = c("keep", "first", "last", "error"),
+  .check_assign = FALSE
+)
 }
 \arguments{
 \item{x}{A list to splice.}
@@ -38,17 +42,17 @@ default, \code{"keep"}, preserves these arguments. Set \code{.homonyms} to
 the last occurrences, and to \code{"error"} to raise an informative
 error and indicate what arguments have duplicated names.}
 
-\item{.check_assign}{Whether to check for \code{<-} calls passed in
-dots. When \code{TRUE} and a \code{<-} call is detected, a warning is
+\item{.check_assign}{Whether to check for \verb{<-} calls passed in
+dots. When \code{TRUE} and a \verb{<-} call is detected, a warning is
 issued to advise users to use \code{=} if they meant to match a
-function parameter, or wrap the \code{<-} call in braces otherwise.
+function parameter, or wrap the \verb{<-} call in braces otherwise.
 This ensures assignments are explicit.}
 }
 \description{
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
 \itemize{
 \item \code{splice} marks an object to be spliced. It is equivalent to using
-\code{!!!} in a function taking \link[=dyn-dots]{dynamic dots}.
+\verb{!!!} in a function taking \link[=dyn-dots]{dynamic dots}.
 \item \code{dots_splice()} is like \code{\link[=dots_list]{dots_list()}} but automatically splices
 list inputs.
 }
@@ -56,11 +60,11 @@ list inputs.
 \section{Standard splicing versus quoting splicing}{
 
 
-The \code{!!!} operator works differently in \emph{standard} functions taking
+The \verb{!!!} operator works differently in \emph{standard} functions taking
 dots with \code{dots_list()} than in \emph{quoting} functions taking dots
 with \code{\link[=enexprs]{enexprs()}} or \code{\link[=enquos]{enquos()}}.
 \itemize{
-\item In quoting functions \code{!!!} disaggregates its argument (let's call
+\item In quoting functions \verb{!!!} disaggregates its argument (let's call
 it \code{x}) into as many objects as there are elements in
 \code{x}. E.g. \code{quo(foo(!!! c(1, 2)))} is completely equivalent to
 \code{quo(foo(1, 2))}. The creation of those separate objects has an
@@ -77,7 +81,7 @@ and the final list is built with (the equivalent of)
 
 Most of the time you should not care about the difference. However
 if you use a standard function taking tidy dots within a quoting
-function, the \code{!!!} operator will disaggregate its argument because
+function, the \verb{!!!} operator will disaggregate its argument because
 the behaviour of the quasiquoting function has priority. You might
 then observe some performance cost in edge cases. Here is one
 example where this would happen:\preformatted{purrr::rerun(10, dplyr::bind_rows(!!! x))

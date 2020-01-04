@@ -8,9 +8,13 @@
 \usage{
 list2(...)
 
-dots_list(..., .ignore_empty = c("trailing", "none", "all"),
-  .preserve_empty = FALSE, .homonyms = c("keep", "first", "last",
-  "error"), .check_assign = FALSE)
+dots_list(
+  ...,
+  .ignore_empty = c("trailing", "none", "all"),
+  .preserve_empty = FALSE,
+  .homonyms = c("keep", "first", "last", "error"),
+  .check_assign = FALSE
+)
 }
 \arguments{
 \item{...}{Arguments to collect in a list. These dots are
@@ -31,10 +35,10 @@ default, \code{"keep"}, preserves these arguments. Set \code{.homonyms} to
 the last occurrences, and to \code{"error"} to raise an informative
 error and indicate what arguments have duplicated names.}
 
-\item{.check_assign}{Whether to check for \code{<-} calls passed in
-dots. When \code{TRUE} and a \code{<-} call is detected, a warning is
+\item{.check_assign}{Whether to check for \verb{<-} calls passed in
+dots. When \code{TRUE} and a \verb{<-} call is detected, a warning is
 issued to advise users to use \code{=} if they meant to match a
-function parameter, or wrap the \code{<-} call in braces otherwise.
+function parameter, or wrap the \verb{<-} call in braces otherwise.
 This ensures assignments are explicit.}
 }
 \value{
@@ -42,7 +46,7 @@ A list containing the \code{...} inputs.
 }
 \description{
 \code{list2(...)} is equivalent to \code{list(...)} with a few additional
-features, collectively called \link[=dyn-dots]{dynamic dots}. While
+features, collectively called \link[=dyn-dots]{\emph{dynamic dots}}. While
 \code{list2()} hard-code these features, \code{dots_list()} is a lower-level
 version that offers more control.
 }

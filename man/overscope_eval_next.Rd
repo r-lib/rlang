@@ -8,7 +8,7 @@ overscope_eval_next(overscope, quo, env = base_env())
 }
 \arguments{
 \item{overscope}{A valid overscope containing bindings for \code{~},
-\code{.top_env} and \code{_F} and whose parents contain overscoped bindings
+\code{.top_env} and \verb{_F} and whose parents contain overscoped bindings
 for tidy evaluation.}
 
 \item{quo}{A quosure.}

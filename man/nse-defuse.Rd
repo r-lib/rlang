@@ -19,29 +19,52 @@ expr(expr)
 
 enexpr(arg)
 
-exprs(..., .named = FALSE, .ignore_empty = c("trailing", "none",
-  "all"), .unquote_names = TRUE)
+exprs(
+  ...,
+  .named = FALSE,
+  .ignore_empty = c("trailing", "none", "all"),
+  .unquote_names = TRUE
+)
 
-enexprs(..., .named = FALSE, .ignore_empty = c("trailing", "none",
-  "all"), .unquote_names = TRUE, .homonyms = c("keep", "first", "last",
-  "error"), .check_assign = FALSE)
+enexprs(
+  ...,
+  .named = FALSE,
+  .ignore_empty = c("trailing", "none", "all"),
+  .unquote_names = TRUE,
+  .homonyms = c("keep", "first", "last", "error"),
+  .check_assign = FALSE
+)
 
 ensym(arg)
 
-ensyms(..., .named = FALSE, .ignore_empty = c("trailing", "none",
-  "all"), .unquote_names = TRUE, .homonyms = c("keep", "first", "last",
-  "error"), .check_assign = FALSE)
+ensyms(
+  ...,
+  .named = FALSE,
+  .ignore_empty = c("trailing", "none", "all"),
+  .unquote_names = TRUE,
+  .homonyms = c("keep", "first", "last", "error"),
+  .check_assign = FALSE
+)
 
 quo(expr)
 
 enquo(arg)
 
-quos(..., .named = FALSE, .ignore_empty = c("trailing", "none", "all"),
-  .unquote_names = TRUE)
+quos(
+  ...,
+  .named = FALSE,
+  .ignore_empty = c("trailing", "none", "all"),
+  .unquote_names = TRUE
+)
 
-enquos(..., .named = FALSE, .ignore_empty = c("trailing", "none",
-  "all"), .unquote_names = TRUE, .homonyms = c("keep", "first", "last",
-  "error"), .check_assign = FALSE)
+enquos(
+  ...,
+  .named = FALSE,
+  .ignore_empty = c("trailing", "none", "all"),
+  .unquote_names = TRUE,
+  .homonyms = c("keep", "first", "last", "error"),
+  .check_assign = FALSE
+)
 }
 \arguments{
 \item{expr}{An expression.}
@@ -66,8 +89,8 @@ applies only to arguments passed in \code{...}, not to named
 arguments. On the other hand, \code{"all"} also applies to named
 arguments.}
 
-\item{.unquote_names}{Whether to treat \code{:=} as \code{=}. Unlike \code{=}, the
-\code{:=} syntax supports \code{!!} unquoting on the LHS.}
+\item{.unquote_names}{Whether to treat \verb{:=} as \code{=}. Unlike \code{=}, the
+\verb{:=} syntax supports \verb{!!} unquoting on the LHS.}
 
 \item{.homonyms}{How to treat arguments with the same name. The
 default, \code{"keep"}, preserves these arguments. Set \code{.homonyms} to
@@ -75,10 +98,10 @@ default, \code{"keep"}, preserves these arguments. Set \code{.homonyms} to
 the last occurrences, and to \code{"error"} to raise an informative
 error and indicate what arguments have duplicated names.}
 
-\item{.check_assign}{Whether to check for \code{<-} calls passed in
-dots. When \code{TRUE} and a \code{<-} call is detected, a warning is
+\item{.check_assign}{Whether to check for \verb{<-} calls passed in
+dots. When \code{TRUE} and a \verb{<-} call is detected, a warning is
 issued to advise users to use \code{=} if they meant to match a
-function parameter, or wrap the \code{<-} call in braces otherwise.
+function parameter, or wrap the \verb{<-} call in braces otherwise.
 This ensures assignments are explicit.}
 }
 \description{
@@ -105,7 +128,7 @@ context of a data frame so that you can write \code{var} instead of
 on, in a context where the data-variables have been defined.
 
 Defusing prevents the evaluation of R code, but you can still force
-evaluation inside a defused expression with the \link[=nse-force]{forcing operators} \code{!!} and \code{!!!}.
+evaluation inside a defused expression with the \link[=nse-force]{forcing operators} \verb{!!} and \verb{!!!}.
 }
 \section{Types of defused expressions}{
 

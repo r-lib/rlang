@@ -4,8 +4,7 @@
 \alias{invoke}
 \title{Invoke a function with a list of arguments}
 \usage{
-invoke(.fn, .args = list(), ..., .env = caller_env(),
-  .bury = c(".fn", ""))
+invoke(.fn, .args = list(), ..., .env = caller_env(), .bury = c(".fn", ""))
 }
 \arguments{
 \item{.fn}{A function to invoke. Can be a function object or the

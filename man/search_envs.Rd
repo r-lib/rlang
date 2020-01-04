@@ -31,6 +31,8 @@ currently attached to the search path. Note that the search name
 of a package environment is prefixed with \code{"package:"}.}
 
 \item{pkg}{The name of a package.}
+
+\item{x}{An environment or a search name.}
 }
 \description{
 The search path is a chain of environments containing exported

@@ -20,7 +20,7 @@ names of a list of arguments converted to a call by \code{do.call()}.
 If the string contains unicode characters that cannot be
 represented in the native encoding, R serialises those as an ASCII
 sequence representing the unicode point. This is why Windows users
-with western locales often see strings looking like \code{<U+xxxx>}. To
+with western locales often see strings looking like \verb{<U+xxxx>}. To
 alleviate some of the pain, rlang parses strings and looks for
 serialised unicode points to translate them back to the proper
 UTF-8 representation. This transformation occurs automatically in
@@ -37,6 +37,6 @@ This function is experimental.
 ascii <- "<U+5E78>"
 chr_unserialise_unicode(ascii)
 
-identical(chr_unserialise_unicode(ascii), "\\u5e78")
+identical(chr_unserialise_unicode(ascii), "\u5e78")
 }
 \keyword{internal}

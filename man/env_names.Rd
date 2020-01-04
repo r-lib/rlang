@@ -39,7 +39,7 @@ There are deep encoding issues when you convert a string to symbol
 and vice versa. Symbols are \emph{always} in the native encoding. If
 that encoding (let's say latin1) cannot support some characters,
 these characters are serialised to ASCII. That's why you sometimes
-see strings looking like \code{<U+1234>}, especially if you're running
+see strings looking like \verb{<U+1234>}, especially if you're running
 Windows (as R doesn't support UTF-8 as native encoding on that
 platform).
 

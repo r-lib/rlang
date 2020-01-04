@@ -26,7 +26,7 @@ quosures from local environments are printed in unique colour (or
 in italic when all colours are taken).
 \item It wraps inlined objects in angular brackets. For instance, an
 integer vector unquoted in a function call (e.g.
-\code{expr(foo(!!(1:3)))}) is printed like this: \code{foo(<int: 1L, 2L, 3L>)} while by default R prints the code to create that vector:
+\code{expr(foo(!!(1:3)))}) is printed like this: \verb{foo(<int: 1L, 2L, 3L>)} while by default R prints the code to create that vector:
 \code{foo(1:3)} which is ambiguous.
 \item It respects the width boundary (from the global option \code{width})
 in more cases.
