@@ -19,6 +19,7 @@ Suggests:
     cli,
     covr,
     crayon,
+    glue,
     magrittr,
     methods,
     pillar,

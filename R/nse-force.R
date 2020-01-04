@@ -350,3 +350,22 @@ expr_interp <- function(x, env = NULL) {
   }
   x
 }
+
+
+glue_unquote <- function(text, env = caller_env()) {
+  glue::glue(glue_first_pass(text, env = env), .envir = env)
+}
+glue_first_pass <- function(text, env = caller_env()) {
+  glue::glue(
+    text,
+    .open = "{{",
+    .close = "}}",
+    .transformer = glue_first_pass_eval,
+    .envir = env
+  )
+}
+glue_first_pass_eval <- function(text, env) {
+  text_expr <- parse_expr(text)
+  defused_expr <- eval_bare(call2(enexpr, text_expr), env)
+  as_label(defused_expr)
+}
