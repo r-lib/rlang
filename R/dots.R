@@ -38,7 +38,7 @@ NULL
 #' Collect dots in a list
 #'
 #' `list2(...)` is equivalent to `list(...)` with a few additional
-#' features, collectively called [_dynamic dots_][dyn-dots]. While
+#' features, collectively called [dynamic dots][dyn-dots]. While
 #' `list2()` hard-code these features, `dots_list()` is a lower-level
 #' version that offers more control.
 #'

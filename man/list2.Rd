@@ -46,7 +46,7 @@ A list containing the \code{...} inputs.
 }
 \description{
 \code{list2(...)} is equivalent to \code{list(...)} with a few additional
-features, collectively called \link[=dyn-dots]{\emph{dynamic dots}}. While
+features, collectively called \link[=dyn-dots]{dynamic dots}. While
 \code{list2()} hard-code these features, \code{dots_list()} is a lower-level
 version that offers more control.
 }
