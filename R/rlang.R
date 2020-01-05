@@ -46,7 +46,7 @@ check_downstream_dep <- function(dep, pkg) {
     )
   } else {
     howto <- c(
-      i = sprintf("Please update %s with `install.packages(\"%s\")`.", pkg, pkg)
+      i = sprintf("Please update %s with `install.packages(\"%s\")` and restart R.", pkg, pkg)
     )
   }
   msg <- c(msg, howto)
