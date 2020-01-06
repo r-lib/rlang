@@ -110,15 +110,13 @@
 #' expressions. These are all valid:
 #'
 #' ```
-#' exprs(!!name := x)
-#' tibble(!!name := x)
+#' exprs("{name}" := x)
 #' tibble("{name}" := x)
 #' ```
 #'
 #' But deep-forcing names isn't supported:
 #'
 #' ```
-#' expr(this(is(deep(!!name := x))))
 #' exprs(this(is(deep("{name}" := x))))
 #' ```
 #'

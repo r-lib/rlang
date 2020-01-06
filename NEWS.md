@@ -3,7 +3,8 @@
 
 * You can now use glue syntax to unquote on the LHS of `:=`. This
   syntax is automatically available in all functions taking dots with
-  `list2()` and `enquos()`, and thus most of the tidyverse.
+  `list2()` and `enquos()`, and thus most of the tidyverse. Note that
+  if you use the glue syntax in an R package, you need to import glue.
 
   A single pair of braces triggers normal glue interpolation:
 

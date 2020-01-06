@@ -105,13 +105,11 @@ braces \verb{\{\{}, similar to the curly-curly syntax:\preformatted{wrapper <- f
 }
 
 Currently, forcing names with \verb{:=} only works in top level
-expressions. These are all valid:\preformatted{exprs(!!name := x)
-tibble(!!name := x)
+expressions. These are all valid:\preformatted{exprs("\{name\}" := x)
 tibble("\{name\}" := x)
 }
 
-But deep-forcing names isn't supported:\preformatted{expr(this(is(deep(!!name := x))))
-exprs(this(is(deep("\{name\}" := x))))
+But deep-forcing names isn't supported:\preformatted{exprs(this(is(deep("\{name\}" := x))))
 }
 }
 
