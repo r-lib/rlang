@@ -5,18 +5,24 @@ NULL
 is_same_body <- NULL
 
 
+defer_if_unloaded <- function(pkg, fn, action = NULL) {
+  if (!isNamespaceLoaded(pkg)) {
+    setHook(packageEvent(pkg, "onLoad"), fn)
+    action
+  }
+}
+
+
 downstream_deps <- list(
   dplyr = c(min = "0.8.0", from = "0.4.0")
 )
 
 check_downstream_dep <- function(dep, pkg) {
-  if (!isNamespaceLoaded(pkg)) {
-    setHook(
-      packageEvent(pkg, "onLoad"),
-      function(...) check_downstream_dep(dep, pkg)
-    )
+  defer_if_unloaded(
+    pkg,
+    function(...) check_downstream_dep(dep, pkg),
     return()
-  }
+  )
 
   min <- dep[["min"]]
   from <- dep[["from"]]
@@ -54,6 +60,12 @@ check_downstream_dep <- function(dep, pkg) {
   warn(msg)
 }
 
+detect_glue <- function() {
+  defer_if_unloaded("glue", function(...) detect_glue(), return())
+  .Call(rlang_glue_is_there)
+}
+
+
 base_ns_env <- NULL
 base_pkg_env <- NULL
 
@@ -64,12 +76,7 @@ base_pkg_env <- NULL
     is_same_body <<- is_reference
   }
 
-  # glue depends on rlang so we can't detect it is installed right
-  # away. Instead we do it when glue has finished loading.
-  setHook(
-    packageEvent("glue", "onLoad"),
-    function(...).Call(rlang_glue_is_there)
-  )
+  detect_glue()
 
   .Call(r_init_library)
   .Call(rlang_library_load, ns_env("rlang"))
