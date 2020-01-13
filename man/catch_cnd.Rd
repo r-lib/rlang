@@ -25,5 +25,5 @@ for debugging, and for unit testing.
 \examples{
 catch_cnd(10)
 catch_cnd(abort("an error"))
-catch_cnd(cnd_signal("my_condition", .msg = "a condition"))
+catch_cnd(signal("my_condition", message = "a condition"))
 }
