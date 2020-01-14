@@ -67,6 +67,7 @@ trim_leading_spaces <- function(line) {
 new_lines <- function(width = peek_option("width"),
                       deparser = sexp_deparse) {
   width <- width %||% 60L
+  stopifnot(is_integerish(width, n = 1))
 
   r6lite(
     deparse = function(self, x) {
@@ -333,10 +334,13 @@ binary_op_deparse <- function(x, lines = new_lines(), space = " ") {
   x <- node_cdr(x)
   operand_deparse(node_car(x), outer, "lhs", lines)
 
-  lines$push(paste0(space, op, space))
+  lines$push_sticky(paste0(space, op, space))
 
   x <- node_cdr(x)
+
+  lines$increase_indent()
   operand_deparse(node_car(x), outer, "rhs", lines)
+  lines$decrease_indent()
 
   lines$get_lines()
 }

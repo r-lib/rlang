@@ -4,6 +4,9 @@
 * Parsable constants like `NaN` and `NA_integer_` are now deparsed by
   `expr_deparse()` in their parsable form (#890).
 
+* Infix operators now stick to their LHS when deparsed by
+  `expr_deparse()` (#890).
+
 
 # rlang 0.4.2
 

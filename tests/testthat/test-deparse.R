@@ -460,3 +460,8 @@ test_that("as_name() supports quosured symbols and strings", {
 test_that("named empty lists are marked as named", {
   expect_identical(expr_deparse(set_names(list(), chr())), "<named list>")
 })
+
+test_that("infix operators are sticky", {
+  expect_identical(expr_deparse(quote(foo %>% bar), width = 3L), c("foo %>%", "  bar"))
+  expect_identical(expr_deparse(quote(foo + bar), width = 3L), c("foo +", "  bar"))
+})
