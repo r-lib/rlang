@@ -67,6 +67,7 @@ trim_leading_spaces <- function(line) {
 new_lines <- function(width = peek_option("width"),
                       deparser = sexp_deparse) {
   width <- width %||% 60L
+  stopifnot(is_integerish(width, n = 1))
 
   r6lite(
     deparse = function(self, x) {
@@ -333,10 +334,13 @@ binary_op_deparse <- function(x, lines = new_lines(), space = " ") {
   x <- node_cdr(x)
   operand_deparse(node_car(x), outer, "lhs", lines)
 
-  lines$push(paste0(space, op, space))
+  lines$push_sticky(paste0(space, op, space))
 
   x <- node_cdr(x)
+
+  lines$increase_indent()
   operand_deparse(node_car(x), outer, "rhs", lines)
+  lines$decrease_indent()
 
   lines$get_lines()
 }
@@ -584,7 +588,7 @@ call_deparser <- function(x) {
 atom_elements <- function(x) {
   elts <- as.character(x)
 
-  na_pos <- are_na(x)
+  na_pos <- are_na(x) & !is.nan(x)
   elts[na_pos] <- "NA"
 
   elts[!na_pos] <- switch (typeof(x),
@@ -596,20 +600,12 @@ atom_elements <- function(x) {
   elts
 }
 is_scalar_deparsable <- function(x) {
-  if (typeof(x) == "raw" || length(x) != 1 || is_named(x)) {
-    return(FALSE)
-  }
-
-  if (is_na(x) && !is_logical(x)) {
-    return(FALSE)
-  }
-
-  TRUE
+  typeof(x) != "raw" && length(x) == 1 && !is_named(x)
 }
 
 atom_deparse <- function(x, lines = new_lines()) {
   if (is_scalar_deparsable(x)) {
-    lines$push(atom_elements(x))
+    lines$push(deparse(x))
     return(NULL)
   }
 

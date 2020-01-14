@@ -286,19 +286,24 @@ test_that("empty quosures are deparsed", {
 })
 
 test_that("missing values are deparsed", {
-  expect_identical(sexp_deparse(NA), "NA")
+  expect_identical(expr_deparse(NA), "NA")
+  expect_identical(expr_deparse(NaN), "NaN")
+  expect_identical(expr_deparse(NA_integer_), "NA_integer_")
+  expect_identical(expr_deparse(NA_real_), "NA_real_")
+  expect_identical(expr_deparse(NA_complex_), "NA_complex_")
+  expect_identical(expr_deparse(NA_character_), "NA_character_")
+
+  expect_identical(expr_deparse(c(NaN, 2, NA)), "<dbl: NaN, 2, NA>")
+  expect_identical(expr_deparse(c(foo = NaN)), "<dbl: foo = NaN>")
   expect_identical(sexp_deparse(c(name = NA)), "<lgl: name = NA>")
-  expect_identical(sexp_deparse(NA_integer_), "<int: NA>")
-  expect_identical(sexp_deparse(NA_real_), "<dbl: NA>")
-  expect_identical(sexp_deparse(NA_complex_), "<cpl: NA>")
-  expect_identical(sexp_deparse(NA_character_), "<chr: NA>")
+
   expect_identical(sexp_deparse(c(NA, "NA")), "<chr: NA, \"NA\">")
 
   expect_identical(sexp_deparse(quote(call(NA))), "call(NA)")
-  expect_identical(sexp_deparse(quote(call(NA_integer_))), "call(<int: NA>)")
-  expect_identical(sexp_deparse(quote(call(NA_real_))), "call(<dbl: NA>)")
-  expect_identical(sexp_deparse(quote(call(NA_complex_))), "call(<cpl: NA>)")
-  expect_identical(sexp_deparse(quote(call(NA_character_))), "call(<chr: NA>)")
+  expect_identical(sexp_deparse(quote(call(NA_integer_))), "call(NA_integer_)")
+  expect_identical(sexp_deparse(quote(call(NA_real_))), "call(NA_real_)")
+  expect_identical(sexp_deparse(quote(call(NA_complex_))), "call(NA_complex_)")
+  expect_identical(sexp_deparse(quote(call(NA_character_))), "call(NA_character_)")
 })
 
 test_that("needs_backticks() detects non-syntactic symbols", {
@@ -454,4 +459,9 @@ test_that("as_name() supports quosured symbols and strings", {
 
 test_that("named empty lists are marked as named", {
   expect_identical(expr_deparse(set_names(list(), chr())), "<named list>")
+})
+
+test_that("infix operators are sticky", {
+  expect_identical(expr_deparse(quote(foo %>% bar), width = 3L), c("foo %>%", "  bar"))
+  expect_identical(expr_deparse(quote(foo + bar), width = 3L), c("foo +", "  bar"))
 })
