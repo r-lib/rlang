@@ -1,6 +1,9 @@
 
 # rlang (development version)
 
+* Parsable constants like `NaN` and `NA_integer_` are now deparsed by
+  `expr_deparse()` in their parsable form (#890).
+
 
 # rlang 0.4.2
 
