@@ -57,3 +57,13 @@ Backtrace:
  5.     └─global::h()
 Execution halted
 
+> # Rethrown (interactive)
+> cat_line(rethrown_interactive)
+Error: Error message
+Execution halted
+
+> # Rethrown (non-interactive)
+> cat_line(rethrown_non_interactive)
+Error: Error message
+Execution halted
+

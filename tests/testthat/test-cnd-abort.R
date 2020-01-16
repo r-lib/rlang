@@ -77,6 +77,14 @@ test_that("error is printed with backtrace", {
   collapse <- run_error_script(envvars = "rlang_backtrace_on_error=collapse")
   full <- run_error_script(envvars = "rlang_backtrace_on_error=full")
 
+  rethrown_non_interactive <- run_script(
+    test_path("fixtures", "error-backtrace-rethrown.R")
+  )
+  rethrown_interactive <- run_script(
+    test_path("fixtures", "error-backtrace-rethrown.R"),
+    envvars = "rlang_interactive=true"
+  )
+
   verify_output(test_path("test-cnd-error.txt"), {
     "Default (interactive)"
     cat_line(default_interactive)
@@ -95,6 +103,12 @@ test_that("error is printed with backtrace", {
 
     "Full"
     cat_line(full)
+
+    "Rethrown (interactive)"
+    cat_line(rethrown_interactive)
+
+    "Rethrown (non-interactive)"
+    cat_line(rethrown_non_interactive)
   })
 })
 
