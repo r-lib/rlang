@@ -249,7 +249,7 @@ void r_init_library_cnd() {
   wng_signal_call = r_parse("warning(x)");
   r_mark_precious(wng_signal_call);
 
-  err_signal_call = r_parse("stop(x)");
+  err_signal_call = r_parse("rlang:::signal_abort(x)");
   r_mark_precious(err_signal_call);
 
   const char* cnd_signal_source =

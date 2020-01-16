@@ -1,4 +1,8 @@
 
+if (nzchar(Sys.getenv("rlang_interactive"))) {
+  options(rlang_interactive = TRUE)
+}
+
 f <- function() tryCatch(g())
 g <- function() h()
 h <- function() rlang::abort("Error message")

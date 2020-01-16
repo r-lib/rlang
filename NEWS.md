@@ -1,6 +1,9 @@
 
 # rlang (development version)
 
+* `cnd_signal()` now uses the same approach as `abort()` to save
+  unhandled errors to `last_error()`.
+
 * Parsable constants like `NaN` and `NA_integer_` are now deparsed by
   `expr_deparse()` in their parsable form (#890).
 
