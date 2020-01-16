@@ -1,6 +1,8 @@
 
 # rlang (development version)
 
+* `cnd_body.default()` is now properly registered.
+
 * `cnd_signal()` now uses the same approach as `abort()` to save
   unhandled errors to `last_error()`.
 

@@ -71,7 +71,7 @@ cnd_body <- function(cnd, ...) {
     override_cnd_body(cnd, ...)
   }
 }
-#' @method cnd_body default
+#' @export
 cnd_body.default <- function(cnd, ...) {
   chr()
 }
