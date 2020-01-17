@@ -1,6 +1,8 @@
 
 # rlang (development version)
 
+* `flatten()` fails with a proper error when input can't be flattened (#868, #885).
+
 * `inform()` now consistently appends a final newline to the message
   (#880).
 

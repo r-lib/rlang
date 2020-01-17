@@ -126,3 +126,8 @@ test_that("flatten_if() and squash_if() handle primitive functions", {
   expect_identical(flatten_if(list(list(1), 2), is.list), list(1, 2))
   expect_identical(squash_if(list(list(list(1)), 2), is.list), list(1, 2))
 })
+
+test_that("only lists can be flattened (#868, #885)", {
+  expect_error(flatten(1), "Only lists")
+  expect_error(flatten_if(list(1), function(x) TRUE), "Only lists")
+})

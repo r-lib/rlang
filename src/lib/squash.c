@@ -156,6 +156,10 @@ static void update_info_inner(squash_info_t* info, sexp* outer, r_ssize i, sexp*
 
 static void squash_info(squash_info_t* info, sexp* outer,
                         bool (*is_spliceable)(sexp*), int depth) {
+  if (r_typeof(outer) != r_type_list) {
+    r_abort("Only lists can be spliced");
+  }
+
   sexp* inner;
   r_ssize n_outer = r_length(outer);
 
