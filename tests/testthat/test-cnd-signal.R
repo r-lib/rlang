@@ -88,6 +88,10 @@ test_that("condition signallers can be called without arguments", {
   expect_error(abort(class = "foo"), "", fixed = TRUE)
 })
 
+test_that("`inform()` returns invisibly", {
+  expect_invisible(inform("foo"))
+})
+
 
 # Lifecycle ----------------------------------------------------------
 
