@@ -15,7 +15,7 @@ extern sexp* rlang_objs_trailing;
 extern sexp* fns_function;
 extern sexp* fns_quote;
 
-void rlang_init_internal();
+void rlang_init_internal(sexp* ns);
 sexp* rlang_ns_get(const char* name);
 
 // From dots.c

@@ -88,19 +88,28 @@ more flexible you can also force names on its LHS:\preformatted{name <- "Jane"
 
 list2(!!name := 1 + 2)
 exprs(!!name := 1 + 2)
-quos(!!name := 1 + 2)
 }
 
 Like \code{=}, the \verb{:=} operator expects strings or symbols on its LHS.
 
-Currently, forcing names with \verb{:=} only works in top level
-expressions. These are all valid:\preformatted{exprs(!!nm := x)
-tibble(!!nm := x)
-list2(!!nm := x)
+Since unquoting names is related to interpolating within a string
+with the glue package, we have made the glue syntax available on
+the LHS of \verb{:=}:\preformatted{list2("\{name\}" := 1)
+tibble("\{name\}" := 1)
 }
 
-But deep-forcing names isn't supported:\preformatted{expr(this(is(deep(!!nm := x))))
-exprs(this(is(deep(!!nm := x))))
+You can also interpolate defused function arguments with double
+braces \verb{\{\{}, similar to the curly-curly syntax:\preformatted{wrapper <- function(data, var) \{
+  data \%>\% mutate("\{\{ var \}\}_foo" := \{\{ var \}\} * 2)
+\}
+}
+
+Currently, forcing names with \verb{:=} only works in top level
+expressions. These are all valid:\preformatted{exprs("\{name\}" := x)
+tibble("\{name\}" := x)
+}
+
+But deep-forcing names isn't supported:\preformatted{exprs(this(is(deep("\{name\}" := x))))
 }
 }
 

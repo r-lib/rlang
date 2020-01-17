@@ -13,12 +13,14 @@ sexp* rlang_objs_trailing = NULL;
 sexp* fns_function = NULL;
 sexp* fns_quote = NULL;
 
+void rlang_init_utils();
 void rlang_init_dots();
 void rlang_init_expr_interp();
 void rlang_init_eval_tidy();
 
-void rlang_init_internal() {
-  rlang_init_dots();
+void rlang_init_internal(sexp* ns) {
+  rlang_init_utils();
+  rlang_init_dots(ns);
   rlang_init_expr_interp();
   rlang_init_eval_tidy();
 

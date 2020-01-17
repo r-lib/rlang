@@ -1,6 +1,46 @@
 
 # rlang (development version)
 
+* You can now use glue syntax to unquote on the LHS of `:=`. This
+  syntax is automatically available in all functions taking dots with
+  `list2()` and `enquos()`, and thus most of the tidyverse. Note that
+  if you use the glue syntax in an R package, you need to import glue.
+
+  A single pair of braces triggers normal glue interpolation:
+
+  ```r
+  df <- data.frame(x = 1:3)
+
+  suffix <- "foo"
+  df %>% dplyr::mutate("var_{suffix}" := x * 2)
+  #>   x var_foo
+  #> 1 1       2
+  #> 2 2       4
+  #> 3 3       6
+  ```
+
+  Using a pair of double braces is for labelling a function argument.
+  Technically, this is shortcut for `"{as_label(enquo(arg))}"`. The
+  syntax is similar to the curly-curly syntax for interpolating
+  function arguments:
+
+  ```r
+  my_wrapper <- function(data, var, suffix = "foo") {
+    data %>% dplyr::mutate("{{ var }}_{suffix}" := {{ var }} * 2)
+  }
+  df %>% my_wrapper(x)
+  #>   x x_foo
+  #> 1 1     2
+  #> 2 2     4
+  #> 3 3     6
+
+  df %>% my_wrapper(sqrt(x))
+  #>   x sqrt(x)_foo
+  #> 1 1    2.000000
+  #> 2 2    2.828427
+  #> 3 3    3.464102
+  ```
+
 * The tidy eval `.env` pronoun is now exported for documentation
   purposes.
 
