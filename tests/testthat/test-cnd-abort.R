@@ -112,6 +112,33 @@ test_that("error is printed with backtrace", {
   })
 })
 
+test_that("empty backtraces are not printed", {
+  skip_unless_utf8()
+
+  run_error_script <- function(envvars = chr()) {
+    run_script(test_path("fixtures", "error-backtrace-empty.R"), envvars = envvars)
+  }
+
+  branch0 <- run_error_script(envvars = c("rlang_backtrace_on_error=branch", "trace_depth=0"))
+  full0 <- run_error_script(envvars = c("rlang_backtrace_on_error=full", "trace_depth=0"))
+  branch1 <- run_error_script(envvars = c("rlang_backtrace_on_error=branch", "trace_depth=1"))
+  full1 <- run_error_script(envvars = c("rlang_backtrace_on_error=full", "trace_depth=1"))
+
+  verify_output(test_path("test-cnd-error-empty.txt"), {
+    "Branch (depth 0)"
+    cat_line(branch0)
+
+    "Full"
+    cat_line(full0)
+
+    "Branch (depth 1)"
+    cat_line(branch1)
+
+    "Full (depth 1)"
+    cat_line(full1)
+  })
+})
+
 test_that("parent errors are not displayed in error message and backtrace", {
   skip_unless_utf8()
 

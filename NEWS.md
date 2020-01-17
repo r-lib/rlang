@@ -1,6 +1,9 @@
 
 # rlang (development version)
 
+* Empty backtraces are no longer shown when `rlang_backtrace_on_error`
+  is set.
+
 * You can now use glue syntax to unquote on the LHS of `:=`. This
   syntax is automatically available in all functions taking dots with
   `list2()` and `enquos()`, and thus most of the tidyverse. Note that

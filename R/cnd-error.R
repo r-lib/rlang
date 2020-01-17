@@ -63,7 +63,7 @@ format.rlang_error <- function(x,
   trace <- x$trace
   simplify <- arg_match(simplify, c("collapse", "branch", "none"))
 
-  if (!is_null(trace)) {
+  if (!is_null(trace) && trace_length(trace)) {
     out <- paste_line(out, bold("Backtrace:"))
 
     if (!is_null(child)) {

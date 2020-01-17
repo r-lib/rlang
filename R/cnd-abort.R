@@ -270,6 +270,10 @@ NULL
 
 format_onerror_backtrace <- function(cnd) {
   trace <- cnd$trace
+  if (is_null(trace) || !trace_length(trace)) {
+    return(NULL)
+  }
+
   show_trace <- show_trace_p()
 
   opts <- c("none", "reminder", "branch", "collapse", "full")
@@ -281,6 +285,14 @@ format_onerror_backtrace <- function(cnd) {
 
   if (show_trace == "none") {
     return(NULL)
+  }
+  if (show_trace == "reminder") {
+    if (is_interactive()) {
+      reminder <- silver("Run `rlang::last_error()` to see where the error occurred.")
+    } else {
+      reminder <- NULL
+    }
+    return(reminder)
   }
 
   if (show_trace == "branch") {
@@ -297,29 +309,13 @@ format_onerror_backtrace <- function(cnd) {
 
   if (simplify == "none") {
     # Show full backtrace including for parent errors
-    return(format(cnd, simplify = "none"))
+    format(cnd, simplify = "none")
+  } else {
+    paste_line(
+      "Backtrace:",
+      format(trace, simplify = simplify, max_frames = max_frames)
+    )
   }
-
-  backtrace_lines <- format(trace, simplify = simplify, max_frames = max_frames)
-
-  # Backtraces of size 0 and 1 are uninteresting
-  if (length(backtrace_lines) <= 1L) {
-    return(NULL)
-  }
-
-  if (show_trace == "reminder") {
-    if (is_interactive()) {
-      reminder <- silver("Run `rlang::last_error()` to see where the error occurred.")
-    } else {
-      reminder <- NULL
-    }
-    return(reminder)
-  }
-
-  paste_line(
-    "Backtrace:",
-    backtrace_lines
-  )
 }
 
 show_trace_p <- function() {
