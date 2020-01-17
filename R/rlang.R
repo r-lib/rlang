@@ -5,10 +5,12 @@ NULL
 is_same_body <- NULL
 
 
-defer_if_unloaded <- function(pkg, fn, action = NULL) {
-  if (!isNamespaceLoaded(pkg)) {
-    setHook(packageEvent(pkg, "onLoad"), fn)
-    action
+on_package_load <- function(pkg, expr) {
+  if (isNamespaceLoaded(pkg)) {
+    expr
+  } else {
+    thunk <- function(...) expr
+    setHook(packageEvent(pkg, "onLoad"), thunk)
   }
 }
 
@@ -18,12 +20,6 @@ downstream_deps <- list(
 )
 
 check_downstream_dep <- function(dep, pkg) {
-  defer_if_unloaded(
-    pkg,
-    function(...) check_downstream_dep(dep, pkg),
-    return()
-  )
-
   min <- dep[["min"]]
   from <- dep[["from"]]
   stopifnot(
@@ -60,11 +56,6 @@ check_downstream_dep <- function(dep, pkg) {
   warn(msg)
 }
 
-detect_glue <- function() {
-  defer_if_unloaded("glue", function(...) detect_glue(), return())
-  .Call(rlang_glue_is_there)
-}
-
 
 base_ns_env <- NULL
 base_pkg_env <- NULL
@@ -76,7 +67,7 @@ base_pkg_env <- NULL
     is_same_body <<- is_reference
   }
 
-  detect_glue()
+  on_package_load("glue", .Call(rlang_glue_is_there))
 
   .Call(r_init_library)
   .Call(rlang_library_load, ns_env("rlang"))
@@ -84,7 +75,10 @@ base_pkg_env <- NULL
   s3_register("pillar::pillar_shaft", "quosures", pillar_shaft.quosures)
   s3_register("pillar::type_sum", "quosures", type_sum.quosures)
 
-  map2(downstream_deps, names(downstream_deps), check_downstream_dep)
+  map2(downstream_deps, names(downstream_deps), function(dep, pkg) {
+    force(dep)
+    on_package_load(pkg, check_downstream_dep(dep, pkg))
+  })
 
   base_ns_env <<- ns_env("base")
   base_pkg_env <<- baseenv()
