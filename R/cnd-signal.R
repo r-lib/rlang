@@ -118,13 +118,14 @@ inform <- function(message,
   validate_signal_args(msg, type, call, .subclass)
 
   message <- collapse_cnd_message(message)
+  message <- paste0(message, "\n")
   cnd <- message_cnd(class, ..., message = message)
 
   withRestarts(muffleMessage = function() NULL, {
     signalCondition(cnd)
 
     file <- file %||% if (is_interactive()) stdout() else stderr()
-    cat_line(message, file = file)
+    cat(message, file = file)
   })
 }
 #' @rdname abort

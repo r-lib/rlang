@@ -73,6 +73,13 @@ test_that("cnd_signal() creates a backtrace if needed", {
   expect_known_output(file = test_path("test-cnd-signal-trace.txt"), print(err))
 })
 
+test_that("`inform()` appends newline to message", {
+  expect_identical(
+    catch_cnd(inform("foo"))$message,
+    "foo\n"
+  )
+})
+
 
 # Lifecycle ----------------------------------------------------------
 
