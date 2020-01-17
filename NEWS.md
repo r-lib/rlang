@@ -1,6 +1,9 @@
 
 # rlang (development version)
 
+* `inform()` now consistently appends a final newline to the message
+  (#880).
+
 * `cnd_body.default()` is now properly registered.
 
 * `cnd_signal()` now uses the same approach as `abort()` to save
