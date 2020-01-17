@@ -131,6 +131,8 @@ inform <- function(message = NULL,
     file <- file %||% if (is_interactive()) stdout() else stderr()
     cat(message, file = file)
   })
+
+  invisible()
 }
 #' @rdname abort
 #' @export
