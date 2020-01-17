@@ -165,43 +165,47 @@ names.rlang_fake_data_pronoun <- function(...) NULL
 #' @export
 print.rlang_fake_data_pronoun <- function(...) cat_line("<pronoun>")
 
-#' Data pronoun for tidy evaluation
+#' Data pronouns for tidy evaluation
 #'
 #' @description
 #'
-#' This pronoun allows you to be explicit when you refer to an object
-#' inside the data. Referring to the `.data` pronoun rather than to
-#' the original data frame has several advantages:
+#' These pronouns allow you to be explicit about where to find objects
+#' when programming with data masked functions.
 #'
-#' * It makes it easy to refer to column names stored as strings. If
-#'   `var` contains the column `"height"`, the pronoun will subset that
-#'   column:
+#' ```
+#' m <- 10
+#' mtcars %>% mutate(disp = .data$disp * .env$m)
+#' ```
 #'
-#'     ```
-#'     var <- "height"
-#'     dplyr::summarise(df, mean(.data[[var]]))
-#'     ```
+#' * `.data` retrieves data-variables from the data frame.
+#' * `.env` retrieves env-variables from the environment.
 #'
-#'   The index variable `var` is [unquoted][nse-force], which
-#'   ensures a column named `var` in the data frame cannot mask it.
-#'   This makes the pronoun safe to use in functions and packages.
+#' Because the lookup is explicit, there is no ambiguity between both
+#' kinds of variables. Compare:
 #'
-#' * Sometimes a computation is not about the whole data but about a
-#'   subset. For example if you supply a grouped data frame to a dplyr
-#'   verb, the `.data` pronoun contains the group subset.
+#' ```
+#' disp <- 10
+#' mtcars %>% mutate(disp = .data$disp * .env$disp)
+#' mtcars %>% mutate(disp = disp * disp)
+#' ```
 #'
-#' * It lets dplyr know that you're referring to a column from the
-#'   data which is helpful to generate correct queries when the source
-#'   is a database.
+#' The `.data` object exported from rlang is also useful to import in
+#' your package namespace to avoid a `R CMD check` note when referring
+#' to objects from the data mask.
 #'
-#' The `.data` object exported here is useful to import in your
-#' package namespace to avoid a `R CMD check` note when referring to
-#' objects from the data mask.
+#' Note that `.data` is only a pronoun, it is not a real data
+#' frame. This means that you can't take its names or map a function
+#' over the contents of `.data`. Similarly, `.env` is not an actual R
+#' environment. For instance, it doesn't have a parent and the
+#' subsetting operators behave differently.
 #'
 #' @name tidyeval-data
 #' @format NULL
 #' @export
 .data <- structure(list(), class = "rlang_fake_data_pronoun")
+#' @rdname tidyeval-data
+#' @export
+.env <- .data
 
 
 #' Create a data mask

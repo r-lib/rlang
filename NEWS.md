@@ -1,6 +1,9 @@
 
 # rlang (development version)
 
+* The tidy eval `.env` pronoun is now exported for documentation
+  purposes.
+
 * `warn()` and `abort()` now check that either `class` or `message`
   was supplied. `inform()` allows sending empty message as it is
   occasionally useful for building user output incrementally.
