@@ -80,6 +80,14 @@ test_that("`inform()` appends newline to message", {
   )
 })
 
+test_that("condition signallers can be called without arguments", {
+  # For pragmatic reasons we don't require a class because we now use
+  # `inform()` in places where `cat()` would be more appropriate
+  expect_message(inform(), "", fixed = TRUE)
+  expect_warning(warn(class = "foo"), "", fixed = TRUE)
+  expect_error(abort(class = "foo"), "", fixed = TRUE)
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

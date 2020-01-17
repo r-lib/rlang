@@ -91,10 +91,12 @@ validate_cnd_signal_args <- function(cnd, .cnd, .mufflable,
 
 #' @rdname abort
 #' @export
-warn <- function(message, class = NULL, ..., call, msg, type, .subclass) {
+warn <- function(message = NULL, class = NULL, ..., call, msg, type, .subclass) {
   validate_signal_args(msg, type, call, .subclass)
 
+  message <- validate_signal_message(message, class)
   message <- collapse_cnd_message(message)
+
   cnd <- warning_cnd(class, ..., message = message)
   warning(cnd)
 }
@@ -107,7 +109,7 @@ warn <- function(message, class = NULL, ..., call, msg, type, .subclass) {
 #'   messages distinctly from warnings and errors, and R scripts can
 #'   still filter out the messages easily by redirecting `stderr`.
 #' @export
-inform <- function(message,
+inform <- function(message = NULL,
                    class = NULL,
                    ...,
                    file = NULL,
@@ -117,8 +119,10 @@ inform <- function(message,
                    .subclass) {
   validate_signal_args(msg, type, call, .subclass)
 
+  message <- message %||% ""
   message <- collapse_cnd_message(message)
   message <- paste0(message, "\n")
+
   cnd <- message_cnd(class, ..., message = message)
 
   withRestarts(muffleMessage = function() NULL, {
@@ -162,4 +166,15 @@ deprecate_subclass <- function(subclass, env = caller_env()) {
 #' @export
 interrupt <- function() {
   .Call(rlang_interrupt)
+}
+
+validate_signal_message <- function(msg, class) {
+  if (is_null(msg)) {
+    if (is_null(class)) {
+      abort("Either `message` or `class` must be supplied.")
+    }
+    msg <- ""
+  }
+
+  msg
 }

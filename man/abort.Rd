@@ -9,7 +9,7 @@
 \title{Signal an error, warning, or message}
 \usage{
 abort(
-  message = "",
+  message = NULL,
   class = NULL,
   ...,
   trace = NULL,
@@ -20,9 +20,18 @@ abort(
   .subclass
 )
 
-warn(message, class = NULL, ..., call, msg, type, .subclass)
+warn(message = NULL, class = NULL, ..., call, msg, type, .subclass)
 
-inform(message, class = NULL, ..., file = NULL, call, msg, type, .subclass)
+inform(
+  message = NULL,
+  class = NULL,
+  ...,
+  file = NULL,
+  call,
+  msg,
+  type,
+  .subclass
+)
 
 signal(message, class, ..., .subclass)
 
@@ -31,9 +40,10 @@ interrupt()
 \arguments{
 \item{message}{The message to display.
 
-Experimental: Can also be a named character vector, in which case
-the message is assembled as a list of bullets. See
-\code{\link[=cnd_message]{cnd_message()}} to learn how names control the bulleted output.}
+If not supplied, it is expected that the message is generated
+lazily through \link[=cnd_message]{conditionMessage()}. In that case,
+\code{class} must be supplied. Only \code{inform()} allows empty messages
+as it is occasionally useful to build user output incrementally.}
 
 \item{class}{Subclass of the condition. This allows your users
 to selectively handle the conditions signalled by your functions.}

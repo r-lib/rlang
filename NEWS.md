@@ -1,6 +1,10 @@
 
 # rlang (development version)
 
+* `warn()` and `abort()` now check that either `class` or `message`
+  was supplied. `inform()` allows sending empty message as it is
+  occasionally useful for building user output incrementally.
+
 * `flatten()` fails with a proper error when input can't be flattened (#868, #885).
 
 * `inform()` now consistently appends a final newline to the message
