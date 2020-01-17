@@ -85,7 +85,7 @@ test_that("condition signallers can be called without arguments", {
   # `inform()` in places where `cat()` would be more appropriate
   expect_message(inform(), "", fixed = TRUE)
   expect_warning(warn(class = "foo"), "", fixed = TRUE)
-  expect_error(abort(class = "foo"), "", fixed = TRUE)
+  expect_error(abort(class = "foo"), "", fixed = TRUE, class = "foo")
 })
 
 test_that("`inform()` returns invisibly", {
