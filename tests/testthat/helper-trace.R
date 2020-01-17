@@ -24,6 +24,7 @@ expect_equal_trace <- function(x, y) {
 
 render_md <- function(file) {
   skip_if_not_installed("rmarkdown")
+  skip_if_not_installed("knitr")
 
   out_file <- tempfile(file)
   on.exit(file.remove(out_file))
