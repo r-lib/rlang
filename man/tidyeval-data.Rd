@@ -31,5 +31,11 @@ mtcars \%>\% mutate(disp = disp * disp)
 The \code{.data} object exported from rlang is also useful to import in
 your package namespace to avoid a \verb{R CMD check} note when referring
 to objects from the data mask.
+
+Note that \code{.data} is only a pronoun, it is not a real data
+frame. This means that you can't take its names or map a function
+over the contents of \code{.data}. Similarly, \code{.env} is not an actual R
+environment. For instance, it doesn't have a parent and the
+subsetting operators behave differently.
 }
 \keyword{datasets}

@@ -193,6 +193,12 @@ print.rlang_fake_data_pronoun <- function(...) cat_line("<pronoun>")
 #' your package namespace to avoid a `R CMD check` note when referring
 #' to objects from the data mask.
 #'
+#' Note that `.data` is only a pronoun, it is not a real data
+#' frame. This means that you can't take its names or map a function
+#' over the contents of `.data`. Similarly, `.env` is not an actual R
+#' environment. For instance, it doesn't have a parent and the
+#' subsetting operators behave differently.
+#'
 #' @name tidyeval-data
 #' @format NULL
 #' @export
