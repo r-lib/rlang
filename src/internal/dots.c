@@ -89,6 +89,29 @@ sexp* rlang_glue_is_there() {
   return r_null;
 }
 
+static bool has_curly(const char* str) {
+  for (char c = *str; c != '\0'; ++str, c = *str) {
+    if (c == '{') {
+      return true;
+    }
+  }
+  return false;
+}
+
+static void require_glue() {
+  sexp* call = KEEP(r_parse("is_installed('glue')"));
+  sexp* out = KEEP(r_eval(call, rlang_ns_env));
+
+  if (!r_is_scalar_logical(out)) {
+    r_abort("Internal error: Expected scalar logical from `requireNamespace()`.");
+  }
+  if (!r_lgl_get(out, 0)) {
+    r_abort("Can't use `{` symbols in LHS of `:=` if glue is not installed.");
+  }
+
+  FREE(2);
+}
+
 // Initialised at load time
 static sexp* glue_unquote_fn = NULL;
 
@@ -117,11 +140,19 @@ static sexp* def_unquote_name(sexp* expr, sexp* env) {
     r_abort("Can't use the `.data` pronoun on the LHS of `:=`");
   }
 
-  if (has_glue && TYPEOF(lhs) == STRSXP) {
-    sexp* glue_unquote_call = KEEP(r_call2(glue_unquote_fn, lhs));
-    lhs = r_eval(glue_unquote_call, env);
-    FREE(1);
-    KEEP_N(lhs, n_kept);
+  if (r_typeof(lhs) == r_type_character) {
+    if (r_length(lhs) != 1) {
+      r_abort("The LHS of `:=` must be a string or a symbol.");
+    }
+    if (has_curly(r_chr_get_c_string(lhs, 0))) {
+      if (!has_glue) {
+        require_glue();
+      }
+      sexp* glue_unquote_call = KEEP(r_call2(glue_unquote_fn, lhs));
+      lhs = r_eval(glue_unquote_call, env);
+      FREE(1);
+      KEEP_N(lhs, n_kept);
+    }
   }
 
   // Unwrap quosures for convenience

@@ -7,5 +7,7 @@ void signal_soft_deprecated(const char* msg);
 sexp* rlang_ns_get(const char* name);
 sexp* rlang_enquo(sexp* sym, sexp* frame);
 
+extern sexp* rlang_ns_env;
+
 
 #endif
