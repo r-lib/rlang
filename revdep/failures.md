@@ -1,12 +1,40 @@
+# arrow
+
+<details>
+
+* Version: 0.15.1.1
+* Source code: https://github.com/cran/arrow
+* URL: https://github.com/apache/arrow/, https://arrow.apache.org/docs/r
+* BugReports: https://issues.apache.org/jira/projects/ARROW/issues
+* Date/Publication: 2019-11-05 22:00:09 UTC
+* Number of recursive dependencies: 59
+
+Run `revdep_details(,"arrow")` for more info
+
+</details>
+
+## Newly broken
+
+*   R CMD check timed out
+    
+
+## Newly fixed
+
+*   checking whether package ‘arrow’ can be installed ... ERROR
+    ```
+    Installation failed.
+    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/arrow/old/arrow.Rcheck/00install.out’ for details.
+    ```
+
 # circumplex
 
 <details>
 
-* Version: 0.3.3
+* Version: 0.3.5
 * Source code: https://github.com/cran/circumplex
 * URL: https://github.com/jmgirard/circumplex
 * BugReports: https://github.com/jmgirard/circumplex/issues
-* Date/Publication: 2019-09-26 08:30:15 UTC
+* Date/Publication: 2020-01-10 01:10:08 UTC
 * Number of recursive dependencies: 95
 
 Run `revdep_details(,"circumplex")` for more info
@@ -55,12 +83,12 @@ ERROR: compilation failed for package ‘circumplex’
 
 <details>
 
-* Version: 1.0.0
+* Version: 1.0.3
 * Source code: https://github.com/cran/dexter
 * URL: http://dexterities.netlify.com
 * BugReports: https://github.com/jessekps/dexter/issues
-* Date/Publication: 2019-08-22 12:30:02 UTC
-* Number of recursive dependencies: 77
+* Date/Publication: 2020-01-14 13:50:03 UTC
+* Number of recursive dependencies: 79
 
 Run `revdep_details(,"dexter")` for more info
 
@@ -112,7 +140,7 @@ ERROR: compilation failed for package ‘dexter’
 * Source code: https://github.com/cran/Hmisc
 * URL: http://biostat.mc.vanderbilt.edu/Hmisc, https://github.com/harrelfe/Hmisc
 * Date/Publication: 2019-11-07 19:20:02 UTC
-* Number of recursive dependencies: 121
+* Number of recursive dependencies: 123
 
 Run `revdep_details(,"Hmisc")` for more info
 
@@ -158,6 +186,154 @@ ERROR: compilation failed for package ‘Hmisc’
 * removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/Hmisc/old/Hmisc.Rcheck/Hmisc’
 
 ```
+# HURDAT
+
+<details>
+
+* Version: 0.2.3
+* Source code: https://github.com/cran/HURDAT
+* URL: https://github.com/timtrice/HURDAT
+* BugReports: https://github.com/timtrice/HURDAT/issues
+* Date/Publication: 2019-07-14 22:30:04 UTC
+* Number of recursive dependencies: 108
+
+Run `revdep_details(,"HURDAT")` for more info
+
+</details>
+
+## In both
+
+*   R CMD check timed out
+    
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘rvest’ ‘xml2’
+      All declared Imports should be used.
+    ```
+
+# iCNV
+
+<details>
+
+* Version: 
+* Source code: ???
+* URL: http://rlang.r-lib.org, https://github.com/r-lib/rlang
+* BugReports: https://github.com/r-lib/rlang/issues
+* Number of recursive dependencies: 0
+
+Run `revdep_details(,"")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+
+  There are binary versions available but the source versions are later:
+          binary    source needs_compilation
+farver     2.0.2     2.0.3              TRUE
+RCurl  1.95-4.12 1.95-4.13              TRUE
+XML    3.98-1.20  3.99-0.1              TRUE
+
+  Binaries will be installed
+  These will not be installed
+
+
+Package which is only available in source form, and may need
+  compilation of C/C++/Fortran: ‘BSgenome.Hsapiens.UCSC.hg19’
+installing the source package ‘WES.1KG.WUGSC’
+
+
+
+```
+### CRAN
+
+```
+
+  There are binary versions available but the source versions are later:
+          binary    source needs_compilation
+farver     2.0.2     2.0.3              TRUE
+RCurl  1.95-4.12 1.95-4.13              TRUE
+XML    3.98-1.20  3.99-0.1              TRUE
+
+  Binaries will be installed
+  These will not be installed
+
+
+Package which is only available in source form, and may need
+  compilation of C/C++/Fortran: ‘BSgenome.Hsapiens.UCSC.hg19’
+installing the source package ‘WES.1KG.WUGSC’
+
+
+
+```
+# momentuHMM
+
+<details>
+
+* Version: 1.5.0
+* Source code: https://github.com/cran/momentuHMM
+* URL: https://github.com/bmcclintock/momentuHMM
+* BugReports: https://github.com/bmcclintock/momentuHMM/issues
+* Date/Publication: 2019-12-18 02:10:11 UTC
+* Number of recursive dependencies: 178
+
+Run `revdep_details(,"momentuHMM")` for more info
+
+</details>
+
+## In both
+
+*   R CMD check timed out
+    
+
+# PAST
+
+<details>
+
+* Version: 1.0.1
+* Source code: https://github.com/cran/PAST
+* URL: https://github.com/IGBB/past
+* BugReports: https://github.com/IGBB/past/issues
+* Date/Publication: 2019-08-07
+* Number of recursive dependencies: 87
+
+Run `revdep_details(,"PAST")` for more info
+
+</details>
+
+## In both
+
+*   R CMD check timed out
+    
+
+*   checking top-level files ... NOTE
+    ```
+    File
+      LICENSE
+    is not mentioned in the DESCRIPTION file.
+    ```
+
+*   checking R code for possible problems ... NOTE
+    ```
+    assign_SNPs_to_genes: no visible binding for global variable
+      ‘Marker_original.x’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/PAST/new/PAST.Rcheck/00_pkg_src/PAST/R/assign_SNPs_to_genes.R:467-490)
+    find_pathway_significance: no visible binding for global variable
+      ‘gene_id’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/PAST/new/PAST.Rcheck/00_pkg_src/PAST/R/find_pathway_significance.R:126-128)
+    load_GWAS_data: no visible binding for global variable ‘Chr’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/PAST/new/PAST.Rcheck/00_pkg_src/PAST/R/load_GWAS_data.R:35-50)
+    load_GWAS_data: no visible binding for global variable ‘Pos’
+      (/Users/lionel/Desktop/rlang/revdep/checks.noindex/PAST/new/PAST.Rcheck/00_pkg_src/PAST/R/load_GWAS_data.R:35-50)
+    Undefined global functions or variables:
+      Chr gene_id Marker_original.x Pos
+    ```
+
 # poppr
 
 <details>
@@ -211,16 +387,36 @@ ERROR: compilation failed for package ‘poppr’
 * removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/poppr/old/poppr.Rcheck/poppr’
 
 ```
+# portalr
+
+<details>
+
+* Version: 0.3.1
+* Source code: https://github.com/cran/portalr
+* URL: https://weecology.github.io/portalr/, https://github.com/weecology/portalr
+* BugReports: https://github.com/weecology/portalr/issues
+* Date/Publication: 2020-01-16 15:00:02 UTC
+* Number of recursive dependencies: 105
+
+Run `revdep_details(,"portalr")` for more info
+
+</details>
+
+## In both
+
+*   R CMD check timed out
+    
+
 # RxODE
 
 <details>
 
-* Version: 0.9.1-8
+* Version: 0.9.1-9
 * Source code: https://github.com/cran/RxODE
 * URL: https://nlmixrdevelopment.github.io/RxODE/
 * BugReports: https://github.com/nlmixrdevelopment/RxODE/issues
-* Date/Publication: 2019-11-12 14:30:06 UTC
-* Number of recursive dependencies: 121
+* Date/Publication: 2020-01-10 23:20:06 UTC
+* Number of recursive dependencies: 122
 
 Run `revdep_details(,"RxODE")` for more info
 
@@ -236,7 +432,8 @@ Run `revdep_details(,"RxODE")` for more info
 
 *   checking package dependencies ... NOTE
     ```
-    Package suggested but not available for checking: ‘installr’
+    Packages suggested but not available for checking:
+      'SnakeCharmR', 'installr'
     ```
 
 ## Installation
@@ -424,7 +621,7 @@ ERROR: compilation failed for package ‘RxODE’
 * URL: https://github.com/sdcTools/sdcTable
 * BugReports: https://github.com/sdcTools/userSupport/issues
 * Date/Publication: 2019-09-19 13:10:02 UTC
-* Number of recursive dependencies: 55
+* Number of recursive dependencies: 56
 
 Run `revdep_details(,"sdcTable")` for more info
 
@@ -466,16 +663,24 @@ ERROR: configuration failed for package ‘sdcTable’
 
 <details>
 
-* Version: 0.1.2
+* Version: 0.1.3
 * Source code: https://github.com/cran/trialr
 * URL: https://github.com/brockk/trialr
 * BugReports: https://github.com/brockk/trialr/issues
-* Date/Publication: 2019-06-25 11:40:03 UTC
-* Number of recursive dependencies: 108
+* Date/Publication: 2020-01-08 22:30:10 UTC
+* Number of recursive dependencies: 104
 
 Run `revdep_details(,"trialr")` for more info
 
 </details>
+
+## Newly broken
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘tidyr’
+      All declared Imports should be used.
+    ```
 
 ## In both
 
@@ -486,18 +691,92 @@ Run `revdep_details(,"trialr")` for more info
     ```
       installed size is 12.7Mb
       sub-directories of 1Mb or more:
-        doc    4.0Mb
+        doc    4.1Mb
         libs   7.7Mb
     ```
 
-*   checking dependencies in R code ... NOTE
+# vroom
+
+<details>
+
+* Version: 1.2.0
+* Source code: https://github.com/cran/vroom
+* URL: https://github.com/r-lib/vroom
+* BugReports: https://github.com/r-lib/vroom/issues
+* Date/Publication: 2020-01-13 22:40:02 UTC
+* Number of recursive dependencies: 90
+
+Run `revdep_details(,"vroom")` for more info
+
+</details>
+
+## In both
+
+*   checking whether package ‘vroom’ can be installed ... ERROR
     ```
-    Namespace in Imports field not imported from: ‘tidyr’
-      All declared Imports should be used.
+    Installation failed.
+    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/vroom/new/vroom.Rcheck/00install.out’ for details.
     ```
 
-*   checking for GNU extensions in Makefiles ... NOTE
-    ```
-    GNU make is a SystemRequirements.
-    ```
+## Installation
 
+### Devel
+
+```
+* installing *source* package ‘vroom’ ...
+** package ‘vroom’ successfully unpacked and MD5 sums checked
+** using staged installation
+** libs
+clang++ -std=gnu++11 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/progress/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/Rcpp/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -Imio/include -DWIN32_LEAN_AND_MEAN -Ispdlog/include -fPIC  -Wall -g -O2  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -c Iconv.cpp -o Iconv.o
+clang++ -std=gnu++11 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/progress/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/Rcpp/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -Imio/include -DWIN32_LEAN_AND_MEAN -Ispdlog/include -fPIC  -Wall -g -O2  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -c LocaleInfo.cpp -o LocaleInfo.o
+clang++ -std=gnu++11 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/progress/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/Rcpp/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -Imio/include -DWIN32_LEAN_AND_MEAN -Ispdlog/include -fPIC  -Wall -g -O2  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -c RcppExports.cpp -o RcppExports.o
+clang++ -std=gnu++11 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/progress/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/Rcpp/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -Imio/include -DWIN32_LEAN_AND_MEAN -Ispdlog/include -fPIC  -Wall -g -O2  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -c altrep.cc -o altrep.o
+clang++ -std=gnu++11 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/progress/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/Rcpp/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -Imio/include -DWIN32_LEAN_AND_MEAN -Ispdlog/include -fPIC  -Wall -g -O2  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -c delimited_index.cc -o delimited_index.o
+clang++ -std=gnu++11 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/progress/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/Rcpp/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -Imio/include -DWIN32_LEAN_AND_MEAN -Ispdlog/include -fPIC  -Wall -g -O2  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -c delimited_index_connection.cc -o delimited_index_connection.o
+clang++ -std=gnu++11 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/progress/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/Rcpp/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -Imio/include -DWIN32_LEAN_AND_MEAN -Ispdlog/include -fPIC  -Wall -g -O2  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -c fixed_width_index_connection.cc -o fixed_width_index_connection.o
+clang++ -std=gnu++11 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/progress/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/Rcpp/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -Imio/include -DWIN32_LEAN_AND_MEAN -Ispdlog/include -fPIC  -Wall -g -O2  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -c gen.cc -o gen.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/progress/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/Rcpp/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include  -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c grisu3.c -o grisu3.o
+clang++ -std=gnu++11 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/progress/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/Rcpp/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -Imio/include -DWIN32_LEAN_AND_MEAN -Ispdlog/include -fPIC  -Wall -g -O2  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -c guess_type.cc -o guess_type.o
+clang++ -std=gnu++11 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/progress/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/Rcpp/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -Imio/include -DWIN32_LEAN_AND_MEAN -Ispdlog/include -fPIC  -Wall -g -O2  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -c index_collection.cc -o index_collection.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/progress/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/Rcpp/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include  -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c localtime.c -o localtime.o
+clang++ -std=gnu++11 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/progress/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/Rcpp/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -Imio/include -DWIN32_LEAN_AND_MEAN -Ispdlog/include -fPIC  -Wall -g -O2  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -c vroom.cc -o vroom.o
+clang++ -std=gnu++11 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/progress/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/Rcpp/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -Imio/include -DWIN32_LEAN_AND_MEAN -Ispdlog/include -fPIC  -Wall -g -O2  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -c vroom_big_int.cc -o vroom_big_int.o
+vroom_big_int.cc:23:13: error: use of undeclared identifier 'LONG_LONG_MAX'
+  if (val > LONG_LONG_MAX) {
+            ^
+1 error generated.
+make: *** [vroom_big_int.o] Error 1
+ERROR: compilation failed for package ‘vroom’
+* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/vroom/new/vroom.Rcheck/vroom’
+
+```
+### CRAN
+
+```
+* installing *source* package ‘vroom’ ...
+** package ‘vroom’ successfully unpacked and MD5 sums checked
+** using staged installation
+** libs
+clang++ -std=gnu++11 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/progress/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/Rcpp/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -Imio/include -DWIN32_LEAN_AND_MEAN -Ispdlog/include -fPIC  -Wall -g -O2  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -c Iconv.cpp -o Iconv.o
+clang++ -std=gnu++11 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/progress/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/Rcpp/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -Imio/include -DWIN32_LEAN_AND_MEAN -Ispdlog/include -fPIC  -Wall -g -O2  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -c LocaleInfo.cpp -o LocaleInfo.o
+clang++ -std=gnu++11 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/progress/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/Rcpp/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -Imio/include -DWIN32_LEAN_AND_MEAN -Ispdlog/include -fPIC  -Wall -g -O2  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -c RcppExports.cpp -o RcppExports.o
+clang++ -std=gnu++11 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/progress/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/Rcpp/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -Imio/include -DWIN32_LEAN_AND_MEAN -Ispdlog/include -fPIC  -Wall -g -O2  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -c altrep.cc -o altrep.o
+clang++ -std=gnu++11 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/progress/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/Rcpp/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -Imio/include -DWIN32_LEAN_AND_MEAN -Ispdlog/include -fPIC  -Wall -g -O2  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -c delimited_index.cc -o delimited_index.o
+clang++ -std=gnu++11 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/progress/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/Rcpp/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -Imio/include -DWIN32_LEAN_AND_MEAN -Ispdlog/include -fPIC  -Wall -g -O2  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -c delimited_index_connection.cc -o delimited_index_connection.o
+clang++ -std=gnu++11 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/progress/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/Rcpp/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -Imio/include -DWIN32_LEAN_AND_MEAN -Ispdlog/include -fPIC  -Wall -g -O2  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -c fixed_width_index_connection.cc -o fixed_width_index_connection.o
+clang++ -std=gnu++11 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/progress/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/Rcpp/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -Imio/include -DWIN32_LEAN_AND_MEAN -Ispdlog/include -fPIC  -Wall -g -O2  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -c gen.cc -o gen.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/progress/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/Rcpp/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include  -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c grisu3.c -o grisu3.o
+clang++ -std=gnu++11 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/progress/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/Rcpp/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -Imio/include -DWIN32_LEAN_AND_MEAN -Ispdlog/include -fPIC  -Wall -g -O2  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -c guess_type.cc -o guess_type.o
+clang++ -std=gnu++11 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/progress/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/Rcpp/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -Imio/include -DWIN32_LEAN_AND_MEAN -Ispdlog/include -fPIC  -Wall -g -O2  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -c index_collection.cc -o index_collection.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/progress/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/Rcpp/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include  -fPIC  -Wall -g -O2   -Wall -pedantic -mtune=core2  -O3 -c localtime.c -o localtime.o
+clang++ -std=gnu++11 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/progress/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/Rcpp/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -Imio/include -DWIN32_LEAN_AND_MEAN -Ispdlog/include -fPIC  -Wall -g -O2  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -c vroom.cc -o vroom.o
+clang++ -std=gnu++11 -std=c++11 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/progress/include" -I"/Users/lionel/Desktop/rlang/revdep/library.noindex/vroom/Rcpp/include" -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -Imio/include -DWIN32_LEAN_AND_MEAN -Ispdlog/include -fPIC  -Wall -g -O2  -arch x86_64 -ftemplate-depth-256 -Wall -pedantic -c vroom_big_int.cc -o vroom_big_int.o
+vroom_big_int.cc:23:13: error: use of undeclared identifier 'LONG_LONG_MAX'
+  if (val > LONG_LONG_MAX) {
+            ^
+1 error generated.
+make: *** [vroom_big_int.o] Error 1
+ERROR: compilation failed for package ‘vroom’
+* removing ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/vroom/old/vroom.Rcheck/vroom’
+
+```
