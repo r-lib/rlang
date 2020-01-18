@@ -1,4 +1,9 @@
 
+options(
+  crayon.enabled = FALSE,
+  cli.unicode = FALSE
+)
+
 library(rlang)
 
 opt <- Sys.getenv("rlang_backtrace_on_error")

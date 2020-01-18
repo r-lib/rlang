@@ -21,7 +21,7 @@ Error: foo
 <error/rlang_error>
 foo
 Backtrace:
-    █
- 1. └─global::f()
+    x
+ 1. \-global::f()
 Execution halted
 

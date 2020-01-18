@@ -1,4 +1,9 @@
 
+options(
+  crayon.enabled = FALSE,
+  cli.unicode = FALSE
+)
+
 if (nzchar(Sys.getenv("rlang_interactive"))) {
   options(rlang_interactive = TRUE)
 }
