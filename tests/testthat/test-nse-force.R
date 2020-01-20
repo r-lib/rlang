@@ -547,6 +547,13 @@ test_that("can defuse-and-label and interpolate with glue", {
   expect_identical(exprs("{{var}}_{suffix}" := 1), exprs(letters_foo = 1))
 })
 
+test_that("unquoted strings are not interpolated with glue", {
+  expect_identical_(
+    list2(!!"{foo}" := 1),
+    list(`{foo}` = 1)
+  )
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

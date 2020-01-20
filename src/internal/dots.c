@@ -115,6 +115,23 @@ static void require_glue() {
 // Initialised at load time
 static sexp* glue_unquote_fn = NULL;
 
+static sexp* glue_unquote(sexp* lhs, sexp* env) {
+  if (r_typeof(lhs) != r_type_character ||
+      r_length(lhs) != 1 ||
+      !has_curly(r_chr_get_c_string(lhs, 0))) {
+    return lhs;
+  }
+
+  if (!has_glue) {
+    require_glue();
+  }
+
+  sexp* glue_unquote_call = KEEP(r_call2(glue_unquote_fn, lhs));
+  lhs = r_eval(glue_unquote_call, env);
+  FREE(1);
+  return lhs;
+}
+
 static sexp* def_unquote_name(sexp* expr, sexp* env) {
   int n_kept = 0;
   sexp* lhs = r_node_cadr(expr);
@@ -123,6 +140,7 @@ static sexp* def_unquote_name(sexp* expr, sexp* env) {
 
   switch (info.op) {
   case OP_EXPAND_NONE:
+    lhs = KEEP_N(glue_unquote(lhs, env), n_kept);
     break;
   case OP_EXPAND_UQ:
     lhs = KEEP_N(r_eval(info.operand, env), n_kept);
@@ -138,21 +156,6 @@ static sexp* def_unquote_name(sexp* expr, sexp* env) {
     r_abort("The LHS of `:=` must be a string or a symbol");
   case OP_EXPAND_DOT_DATA:
     r_abort("Can't use the `.data` pronoun on the LHS of `:=`");
-  }
-
-  if (r_typeof(lhs) == r_type_character) {
-    if (r_length(lhs) != 1) {
-      r_abort("The LHS of `:=` must be a string or a symbol.");
-    }
-    if (has_curly(r_chr_get_c_string(lhs, 0))) {
-      if (!has_glue) {
-        require_glue();
-      }
-      sexp* glue_unquote_call = KEEP(r_call2(glue_unquote_fn, lhs));
-      lhs = r_eval(glue_unquote_call, env);
-      FREE(1);
-      KEEP_N(lhs, n_kept);
-    }
   }
 
   // Unwrap quosures for convenience
