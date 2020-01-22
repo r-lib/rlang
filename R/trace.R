@@ -755,6 +755,21 @@ trace_simplify_collapse <- function(trace) {
   trace_subset(trace, rev(path))
 }
 
+# Typically the full trace is held by the child error and the partial
+# trace by the parent
+trace_trim_common <- function(full, partial) {
+  common <- map_lgl(full$ids, `%in%`, partial$ids)
+  out <- trace_subset(full, which(!common))
+
+  # Trim catching context if any
+  calls <- out$calls
+  if (length(calls) && is_call(calls[[1]], c("tryCatch", "with_handlers", "catch_cnd"))) {
+    out <- trace_subset_across(out, -1, 1)
+  }
+
+  out
+}
+
 
 # Printing ----------------------------------------------------------------
 

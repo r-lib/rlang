@@ -58,16 +58,7 @@ format.rlang_error <- function(x,
     out <- paste_line(out, bold("Backtrace:"))
 
     if (!is_null(child)) {
-      # Trim common portions of backtrace
-      child_trace <- child$trace
-      common <- map_lgl(trace$ids, `%in%`, child_trace$ids)
-      trace <- trace_subset(trace, which(!common))
-
-      # Trim catching context if any
-      calls <- trace$calls
-      if (length(calls) && is_call(calls[[1]], c("tryCatch", "with_handlers", "catch_cnd"))) {
-        trace <- trace_subset_across(trace, -1, 1)
-      }
+      trace <- trace_trim_common(trace, child$trace)
     }
 
     trace_lines <- format(trace, ..., simplify = simplify)

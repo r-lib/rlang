@@ -315,11 +315,12 @@ format_onerror_backtrace <- function(cnd) {
   if (simplify == "none") {
     # Show parent backtraces
     while (!is_null(cnd <- cnd$parent)) {
+      trace <- trace_trim_common(cnd$trace, trace)
       out <- paste_line(
         out,
         rlang_error_header(cnd, child = TRUE),
         "Backtrace:",
-        format(cnd$trace, simplify = simplify, max_frames = max_frames)
+        format(trace, simplify = simplify, max_frames = max_frames)
       )
     }
   }
