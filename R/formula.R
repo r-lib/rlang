@@ -206,7 +206,7 @@ f_label <- function(x) {
 
 
 signal_formula_access <- function() {
-  if (is_true(peek_option("rlang_internal_warn_quosure_access"))) {
+  if (is_true(peek_option("rlang:::warn_quosure_access"))) {
     warn(
       "Using formula accessors with quosures is soft-deprecated"
     )

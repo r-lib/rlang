@@ -820,7 +820,7 @@ src_loc <- function(srcref, dir = getwd()) {
   if (identical(file, "") || identical(file, "<text>")) {
     return("")
   }
-  if (!file.exists(file) && is_null(peek_option("rlang_trace__force_dangling_srcrefs"))) {
+  if (!file.exists(file) && is_null(peek_option("rlang:::trace_force_dangling_srcrefs"))) {
     return("")
   }
 
