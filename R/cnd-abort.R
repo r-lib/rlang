@@ -307,15 +307,24 @@ format_onerror_backtrace <- function(cnd) {
     show_trace
   )
 
+  out <- paste_line(
+    "Backtrace:",
+    format(trace, simplify = simplify, max_frames = max_frames)
+  )
+
   if (simplify == "none") {
-    # Show full backtrace including for parent errors
-    format(cnd, simplify = "none")
-  } else {
-    paste_line(
-      "Backtrace:",
-      format(trace, simplify = simplify, max_frames = max_frames)
-    )
+    # Show parent backtraces
+    while (!is_null(cnd <- cnd$parent)) {
+      out <- paste_line(
+        out,
+        rlang_error_header(cnd, child = TRUE),
+        "Backtrace:",
+        format(cnd$trace, simplify = simplify, max_frames = max_frames)
+      )
+    }
   }
+
+  out
 }
 
 show_trace_p <- function() {

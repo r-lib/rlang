@@ -7,8 +7,6 @@ Execution halted
 > # Default (non-interactive)
 > cat_line(default_non_interactive)
 Error: Error message
-<error/rlang_error>
-Error message
 Backtrace:
     x
  1. \-global::f()
@@ -46,8 +44,6 @@ Execution halted
 > # Full
 > cat_line(full)
 Error: Error message
-<error/rlang_error>
-Error message
 Backtrace:
     x
  1. \-global::f()
@@ -66,8 +62,6 @@ Execution halted
 > # Rethrown (non-interactive)
 > cat_line(rethrown_non_interactive)
 Error: Error message
-<error/rlang_error>
-Error message
 Backtrace:
     x
  1. +-base::tryCatch(f(), error = function(cnd) rlang::cnd_signal(cnd))

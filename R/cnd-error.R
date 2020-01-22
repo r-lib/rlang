@@ -39,16 +39,7 @@ format.rlang_error <- function(x,
   # Allow overwriting default display via condition field
   simplify <- x$rlang$internal$print_simplify %||% simplify
 
-  class <- class(x)[[1]]
-  if (class != "error") {
-    class <- paste0("error/", class)
-  }
-
-  if (is_null(child)) {
-    header <- bold(sprintf("<%s>", class))
-  } else {
-    header <- bold(sprintf("<parent: %s>", class))
-  }
+  header <- rlang_error_header(x, child)
 
   message <- conditionMessage(x)
   if (!nzchar(message)) {
@@ -105,4 +96,17 @@ format.rlang_error <- function(x,
 #' @export
 summary.rlang_error <- function(object, ...) {
   print(object, simplify = "none", fields = TRUE)
+}
+
+rlang_error_header <- function(cnd, child = NULL) {
+  class <- class(cnd)[[1]]
+  if (class != "error") {
+    class <- paste0("error/", class)
+  }
+
+  if (is_null(child)) {
+    bold(sprintf("<%s>", class))
+  } else {
+    bold(sprintf("<parent: %s>", class))
+  }
 }

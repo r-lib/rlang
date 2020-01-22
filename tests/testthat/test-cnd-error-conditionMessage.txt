@@ -7,8 +7,6 @@ Execution halted
 > # Non-interactive
 > cat_line(non_interactive)
 Error: dispatched!
-<error/foobar_error>
-dispatched!
 Backtrace:
     x
  1. \-global::f()
