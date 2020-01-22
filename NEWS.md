@@ -1,8 +1,5 @@
 
-# rlang (development version)
-
-* Empty backtraces are no longer shown when `rlang_backtrace_on_error`
-  is set.
+# rlang 0.4.3
 
 * You can now use glue syntax to unquote on the LHS of `:=`. This
   syntax is automatically available in all functions taking dots with
@@ -43,6 +40,9 @@
   #> 2 2    2.828427
   #> 3 3    3.464102
   ```
+
+* Empty backtraces are no longer shown when `rlang_backtrace_on_error`
+  is set.
 
 * The tidy eval `.env` pronoun is now exported for documentation
   purposes.

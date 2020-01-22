@@ -1,7 +1,4 @@
 
-Should fix recipe's failures following testthat update.
-Also fixes performance regression in testthat checks.
-
 ## Test environments
 
 * local OS X install: release
@@ -19,4 +16,4 @@ Also fixes performance regression in testthat checks.
 
 I have run R CMD check on the downstream dependencies. (Summary at https://github.com/tidyverse/rlang/tree/master/revdep).
 
-I couldn't install 7 packages. There were no problems.
+I couldn't install 14 packages. There were no problems.
