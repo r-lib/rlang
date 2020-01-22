@@ -79,7 +79,7 @@ test_that("error is printed with parent backtrace", {
 
   err_force <- with_options(
     catch_cnd(a()),
-    rlang_force_unhandled_error = TRUE
+    `rlang:::force_unhandled_error` = TRUE
   )
 
   expect_known_output(file = test_path("test-cnd-error-parent-default.txt"), {

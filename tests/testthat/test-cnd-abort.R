@@ -21,7 +21,7 @@ test_that("errors are saved", {
 
   # Verbose try() triggers conditionMessage() and thus saves the error.
   # This simulates an unhandled error.
-  local_options(rlang_force_unhandled_error = TRUE)
+  local_options(`rlang:::force_unhandled_error` = TRUE)
 
   try(abort("foo", "bar"), outFile = file)
   expect_true(inherits_all(last_error(), c("bar", "rlang_error")))
@@ -41,7 +41,7 @@ test_that("No backtrace is displayed with top-level active bindings", {
 
 test_that("Invalid on_error option resets itself", {
   with_options(
-    rlang_force_unhandled_error = TRUE,
+    `rlang:::force_unhandled_error` = TRUE,
     rlang_backtrace_on_error = NA,
     {
       expect_warning(tryCatch(abort("foo"), error = identity), "Invalid")

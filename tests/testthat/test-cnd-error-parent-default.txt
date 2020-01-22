@@ -8,7 +8,7 @@ Backtrace:
 <error/rlang_error>
 High-level message
 Backtrace:
-  1. rlang::with_options(catch_cnd(a()), rlang_force_unhandled_error = TRUE)
+  1. rlang::with_options(catch_cnd(a()), `rlang:::force_unhandled_error` = TRUE)
   9. rlang:::a()
  10. rlang:::b()
  11. rlang:::c()
