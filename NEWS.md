@@ -1,12 +1,4 @@
 
-# rlang (development)
-
-* Fixed a bug in magrittr backtraces that caused duplicate calls to
-  appear in the trace.
-
-* Fixed a bug in magrittr backtraces that caused wrong call indices.
-
-
 # rlang 0.4.3
 
 * You can now use glue syntax to unquote on the LHS of `:=`. This
@@ -48,6 +40,11 @@
   #> 2 2    2.828427
   #> 3 3    3.464102
   ```
+
+* Fixed a bug in magrittr backtraces that caused duplicate calls to
+  appear in the trace.
+
+* Fixed a bug in magrittr backtraces that caused wrong call indices.
 
 * Empty backtraces are no longer shown when `rlang_backtrace_on_error`
   is set.
