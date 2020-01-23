@@ -18,4 +18,4 @@ Collapsed:
 Branch:
  1. rlang:::f(.)
  9. rlang:::g(., 1, 2)
- 1. rlang:::h(3, ., 4)
+ 9. rlang:::h(3, ., 4)

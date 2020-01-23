@@ -22,5 +22,4 @@ Collapsed:
 Branch:
   1. rlang:::F(NA %>% C())
   2. rlang:::C(.)
- 10. rlang:::f()
- 11. rlang:::F(NA %>% C())
+ 11. rlang:::f()
