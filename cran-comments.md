@@ -1,4 +1,6 @@
 
+This is a resubmission of 0.4.3.
+
 ## Test environments
 
 * local OS X install: release
