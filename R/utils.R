@@ -234,3 +234,11 @@ cross <- function() {
   red(x)
 }
 
+strip_trailing_newline <- function(x) {
+  n <- nchar(x)
+  if (substr(x, n, n) == "\n") {
+    substr(x, 0, n - 1L)
+  } else {
+    x
+  }
+}

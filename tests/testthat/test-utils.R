@@ -20,3 +20,10 @@ test_that("local_options() sets options", {
 test_that("local_options() restores options", {
   expect_identical(getOption("digits"), old_digits)
 })
+
+test_that("trailing newlines are trimmed", {
+  expect_identical(strip_trailing_newline("foo"), "foo")
+  expect_identical(strip_trailing_newline(""), "")
+  expect_identical(strip_trailing_newline("foo\n"), "foo")
+  expect_identical(strip_trailing_newline("\n"), "")
+})

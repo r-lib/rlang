@@ -41,7 +41,7 @@ format.rlang_error <- function(x,
 
   header <- rlang_error_header(x, child)
 
-  message <- conditionMessage(x)
+  message <- strip_trailing_newline(conditionMessage(x))
   if (!nzchar(message)) {
     message <- NULL
   }
