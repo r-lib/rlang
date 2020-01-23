@@ -268,6 +268,10 @@ find_capture_context <- function(n = 3L) {
 #' # stop("foo")
 NULL
 
+# Whenever the backtrace-on-error format is changed, the version in
+# `inst/backtrace-ver` and in `tests/testthat/helper-rlang.R` must be
+# bumped. This way `devtools::test()` will skip the tests that require
+# the dev version to be installed locally.
 format_onerror_backtrace <- function(cnd) {
   trace <- cnd$trace
   if (is_null(trace) || !trace_length(trace)) {

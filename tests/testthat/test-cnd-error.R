@@ -9,6 +9,7 @@ test_that("error_cnd() checks its fields", {
 
 test_that("can use conditionMessage() method in subclasses of rlang errors", {
   skip_unless_utf8()
+  skip_if_stale_backtrace()
 
   run_error_script <- function(envvars = chr()) {
     run_script(

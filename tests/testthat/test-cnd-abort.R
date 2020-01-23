@@ -65,6 +65,7 @@ test_that("format_onerror_backtrace handles empty and size 1 traces", {
 
 test_that("error is printed with backtrace", {
   skip_unless_utf8()
+  skip_if_stale_backtrace()
 
   run_error_script <- function(envvars = chr()) {
     run_script(test_path("fixtures", "error-backtrace.R"), envvars = envvars)
@@ -114,6 +115,7 @@ test_that("error is printed with backtrace", {
 
 test_that("empty backtraces are not printed", {
   skip_unless_utf8()
+  skip_if_stale_backtrace()
 
   run_error_script <- function(envvars = chr()) {
     run_script(test_path("fixtures", "error-backtrace-empty.R"), envvars = envvars)
@@ -141,6 +143,7 @@ test_that("empty backtraces are not printed", {
 
 test_that("parent errors are not displayed in error message and backtrace", {
   skip_unless_utf8()
+  skip_if_stale_backtrace()
 
   run_error_script <- function(envvars = chr()) {
     run_script(
