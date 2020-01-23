@@ -289,7 +289,7 @@ format.rlang_trace <- function(x,
   switch(arg_match(simplify),
     none = trace_format(x, max_frames, dir, srcrefs),
     collapse = trace_format_collapse(x, max_frames, dir, srcrefs),
-    branch = trace_format_trail(x, max_frames, dir, srcrefs)
+    branch = trace_format_branch(x, max_frames, dir, srcrefs)
   )
 }
 
@@ -309,9 +309,9 @@ trace_format_collapse <- function(trace, max_frames, dir, srcrefs) {
   trace <- trace_simplify_collapse(trace)
   trace_format(trace, max_frames, dir, srcrefs)
 }
-trace_format_trail <- function(trace, max_frames, dir, srcrefs) {
+trace_format_branch <- function(trace, max_frames, dir, srcrefs) {
   trace <- trace_simplify_branch(trace)
-  trace <- trail_uncollapse_pipe(trace)
+  trace <- branch_uncollapse_pipe(trace)
   tree <- trace_as_tree(trace, dir = dir, srcrefs = srcrefs)
 
   branch <- tree[-1, ][["call"]]
@@ -329,7 +329,7 @@ format_collapsed <- function(what, n) {
 
   paste0(what, n_text)
 }
-format_collapsed_trail <- function(what, n, style = NULL) {
+format_collapsed_branch <- function(what, n, style = NULL) {
   style <- style %||% cli_box_chars()
   what <- sprintf(" %s %s", style$h, what)
   format_collapsed(what, n)
@@ -371,7 +371,7 @@ cli_branch <- function(lines, max = NULL, style = NULL, indices = NULL) {
   if (numbered) {
     collapsed_line <- paste0(spaces(padding), "...")
   } else {
-    collapsed_line <- format_collapsed_trail("...", n_collapsed, style = style)
+    collapsed_line <- format_collapsed_branch("...", n_collapsed, style = style)
   }
 
   if (max == 1L) {
@@ -611,7 +611,7 @@ has_pipe_pointer <- function(x) {
 }
 
 # Assumes a backtrace branch with collapsed pipe
-trail_uncollapse_pipe <- function(trace) {
+branch_uncollapse_pipe <- function(trace) {
   while (idx <- detect_index(trace$calls, has_pipe_pointer)) {
     trace_before <- trace_subset(trace, seq2(1L, idx - 1L))
     trace_after <- trace_subset(trace, seq2(idx + 2L, trace_length(trace)))
