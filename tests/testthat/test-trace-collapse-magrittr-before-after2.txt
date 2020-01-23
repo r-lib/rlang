@@ -18,5 +18,5 @@ Collapsed:
  10.     └─rlang:::f()
 
 Branch:
-  1. rlang:::C(.)
+  9. rlang:::C(.)
  10. rlang:::f()

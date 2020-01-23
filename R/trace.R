@@ -641,13 +641,11 @@ branch_uncollapse_pipe <- function(trace) {
     # Assign the pipe frame as dummy ids for uncollapsed frames
     pipe_ids <- rep(trace$ids[idx], pointer)
 
-    pipe_indices <- idx
-    n_pipe_calls <- length(pipe_calls)
-    if (n_pipe_calls > 1L) {
-      n_collapsed <- attr(pipe, "collapsed")
-      rest_indices <- rep(idx + n_collapsed + 1L, n_pipe_calls - 1L)
-      pipe_indices <- c(pipe_indices, rest_indices)
-    }
+    # This assigns the same frame number to all pipe calls that have
+    # already returned
+    n_collapsed <- attr(pipe, "collapsed")
+    pipe_indices <- rep(idx, length(pipe_calls) - 1L)
+    pipe_indices <- c(pipe_indices, idx + n_collapsed + 1L)
 
     # Add the number of uncollapsed frames to children's
     # ancestry. This assumes a backtrace branch.
