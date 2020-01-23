@@ -19,5 +19,4 @@ Collapsed:
 
 Branch:
   1. rlang:::C(.)
-  9. rlang:::f()
- 10. rlang:::C(.)
+ 10. rlang:::f()

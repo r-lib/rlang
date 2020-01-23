@@ -641,13 +641,20 @@ branch_uncollapse_pipe <- function(trace) {
     # Assign the pipe frame as dummy ids for uncollapsed frames
     pipe_ids <- rep(trace$ids[idx], pointer)
 
+    pipe_indices <- seq(idx, idx + length(pipe_calls) - 1L)
+
     # Add the number of uncollapsed frames to children's
     # ancestry. This assumes a backtrace branch.
     trace_after$parents <- trace_after$parents + pointer
 
     trace$calls <- c(trace_before$calls, pipe_calls, trace_after$calls)
     trace$parents <- c(trace_before$parents, pipe_parents, trace_after$parents)
-    trace$ids <- c(trace_before$ids, pipe_ids, trace$ids)
+    trace$ids <- c(trace_before$ids, pipe_ids, trace_after$ids)
+    trace$indices <- c(trace_before$indices, pipe_indices, trace_after$indices)
+  }
+
+  if (length(unique(lengths(trace))) != 1L) {
+    abort("Internal error: Trace data is not square.")
   }
 
   trace

@@ -21,7 +21,7 @@ Collapsed:
 
 Branch:
   1. rlang:::F(.)
-  9. rlang:::G(.)
- 10. rlang:::H(.)
- 11. rlang:::f()
-  1. rlang:::h()
+  2. rlang:::G(.)
+  3. rlang:::H(.)
+ 10. rlang:::f()
+ 11. rlang:::h()

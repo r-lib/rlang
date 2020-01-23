@@ -17,5 +17,5 @@ Collapsed:
 
 Branch:
  1. rlang:::f(NULL)
- 9. rlang:::g(., list(.))
- 1. rlang:::h(3, ., list(.))
+ 2. rlang:::g(., list(.))
+ 3. rlang:::h(3, ., list(.))

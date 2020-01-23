@@ -18,6 +18,5 @@ Collapsed:
  10.   └─rlang:::T(.)
 
 Branch:
-  1. rlang:::F(NA %>% T())
-  2. rlang:::T(.)
- 10. rlang:::F(NA %>% T())
+ 1. rlang:::F(NA %>% T())
+ 2. rlang:::T(.)
