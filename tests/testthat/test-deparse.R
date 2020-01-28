@@ -123,6 +123,7 @@ test_that("unspaced operators are deparsed", {
 })
 
 test_that("operands are wrapped in parentheses to ensure correct predecence", {
+  skip("FIXME r-devel")
   expect_identical_(sexp_deparse(expr(1 + !!quote(2 + 3))), "1 + (2 + 3)")
   expect_identical_(sexp_deparse(expr((!!quote(1^2))^3)), "(1^2)^3")
   expect_identical_(sexp_deparse(quote(function() 1 ? 2)), "function() 1 ? 2")

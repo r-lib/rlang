@@ -1,5 +1,6 @@
 
-This is a resubmission of 0.4.3.
+This should fix rlang on r-devel.
+
 
 ## Test environments
 
@@ -16,6 +17,4 @@ This is a resubmission of 0.4.3.
 
 ## Reverse dependencies
 
-I have run R CMD check on the downstream dependencies. (Summary at https://github.com/tidyverse/rlang/tree/master/revdep).
-
-I couldn't install 14 packages. There were no problems.
+This is a trivial maintenance release so I haven't checked reverse dependencies.

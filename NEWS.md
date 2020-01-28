@@ -1,5 +1,7 @@
 
-# rlang (development version)
+# rlang 0.4.4
+
+* Maintenance release for CRAN.
 
 
 # rlang 0.4.3
