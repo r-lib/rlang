@@ -32,7 +32,8 @@ mode. It also checks, in this order:
 or \code{FALSE}, \code{is_interactive()} returns that value immediately. This
 escape hatch is useful in unit tests or to manually turn on
 interactive features in RMarkdown outputs.
-\item Whether knitr, an RStudio notebook, or testthat is in progress.
+\item Whether knitr, an RStudio notebook, or testthat is in progress
+(in which case \code{is_interactive()} returns \code{FALSE}).
 }
 
 \code{with_interactive()} and \code{local_interactive()} set the global
