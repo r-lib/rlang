@@ -29,7 +29,7 @@ kind of functions.
 \details{
 Closures are functions written in R, named after the way their
 arguments are scoped within nested environments (see
-https://en.wikipedia.org/wiki/Closure_(computer_programming)). The
+\url{https://en.wikipedia.org/wiki/Closure_(computer_programming)}). The
 root environment of the closure is called the closure
 environment. When closures are evaluated, a new environment called
 the evaluation frame is created with the closure environment as
