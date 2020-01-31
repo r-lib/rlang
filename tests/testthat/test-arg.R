@@ -17,6 +17,11 @@ test_that("gives an error with more than one arg", {
   )
 })
 
+test_that("uses first value when called with all values", {
+  myarg <- c("bar","baz")
+  expect_identical(arg_match(myarg, c("bar", "baz")), "bar")
+})
+
 test_that("informative error message on partial match", {
   myarg <- "f"
   expect_error(
