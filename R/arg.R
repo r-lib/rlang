@@ -14,6 +14,7 @@
 #'   the values are taken from the function definition of the [caller
 #'   frame][caller_frame].
 #' @return The string supplied to `arg`.
+#' @importFrom utils adist
 #' @export
 #' @examples
 #' fn <- function(x = c("foo", "bar")) arg_match(x)

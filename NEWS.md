@@ -1,6 +1,6 @@
 
 # rlang (development version)
-
+* `arg_match()` now detects and suggests possible typos in provided arguments.
 
 # rlang 0.4.3
 
