@@ -56,7 +56,7 @@ arg_match <- function(arg, values = NULL) {
     }
 
     i_close <- adist(arg, values) / nchar(values)
-    if (any(i_close < 0.3)) {
+    if (any(i_close <= 0.5)) {
       candidate <- values[[which.min(i_close)]]
     }
 

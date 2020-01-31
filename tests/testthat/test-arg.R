@@ -18,11 +18,24 @@ test_that("informative error message on partial match", {
 })
 
 test_that("informative error message on a typo", {
-  myarg <- "continuuos"
-  expect_error(
-    arg_match(myarg, c("discrete", "continuous")),
-    "Did you mean \"continuous\"?"
-  )
+  verify_output("test-typo-suggest.txt", {
+    myarg <- "continuuos"
+    arg_match(myarg, c("discrete", "continuous"))
+    myarg <- "fou"
+    arg_match(myarg, c("bar", "foo"))
+    myarg <- "fu"
+    arg_match(myarg, c("ba", "fo"))
+
+    "# No suggestion when the edit distance is too large"
+    myarg <- "foobaz"
+    arg_match(myarg, c("fooquxs", "discrete"))
+    myarg <- "a"
+    arg_match(myarg, c("b", "c"))
+
+    "# Even with small possible typos, if there's a match it returns the match"
+    myarg <- "bas"
+    arg_match(myarg, c("foo", "baz", "bas"))
+  })
 })
 
 test_that("gets choices from function", {
