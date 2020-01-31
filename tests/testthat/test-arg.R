@@ -1,12 +1,25 @@
 context("arg")
 
 test_that("matches arg", {
-  myarg <- c("foo", "baz")
+  myarg <- "foo"
   expect_identical(arg_match(myarg, c("bar", "foo")), "foo")
   expect_error(
     regex = "`myarg` must be one of \"bar\" or \"baz\"",
     arg_match(myarg, c("bar", "baz"))
   )
+})
+
+test_that("gives an error with more than one arg", {
+  myarg <- c("bar","fun")
+  expect_error(
+    regex = "`myarg` must be a character vector of length 1.",
+    arg_match(myarg, c("bar", "baz"))
+  )
+})
+
+test_that("uses first value when called with all values", {
+  myarg <- c("bar","baz")
+  expect_identical(arg_match(myarg, c("bar", "baz")), "bar")
 })
 
 test_that("informative error message on partial match", {

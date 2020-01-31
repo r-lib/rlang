@@ -26,6 +26,7 @@ print.rlang_error <- function(x,
                               ...,
                               simplify = c("branch", "collapse", "none"),
                               fields = FALSE) {
+  simplify <- arg_match(simplify)
   cat_line(format(x, simplify = simplify, fields = fields))
   invisible(x)
 }
@@ -52,7 +53,7 @@ format.rlang_error <- function(x,
   )
 
   trace <- x$trace
-  simplify <- arg_match(simplify, c("collapse", "branch", "none"))
+  simplify <- arg_match(simplify)
 
   if (!is_null(trace) && trace_length(trace)) {
     out <- paste_line(out, bold("Backtrace:"))
