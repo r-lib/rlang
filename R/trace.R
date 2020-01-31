@@ -401,6 +401,7 @@ print.rlang_trace <- function(x,
                               max_frames = NULL,
                               dir = getwd(),
                               srcrefs = NULL) {
+  simplify <- arg_match(simplify)
   cat_line(format(x, ...,
     simplify = simplify,
     max_frames = max_frames,
