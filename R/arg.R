@@ -42,6 +42,9 @@ arg_match <- function(arg, values = NULL) {
   if (!is_character(arg)) {
     abort(paste0(chr_quoted(arg_nm), " must be a character vector"))
   }
+  if (length(arg) > 1 && !identical(arg, values)) {
+    abort(paste0(chr_quoted(arg_nm), " must be a character vector of length 1."))
+  }
 
   arg <- arg[[1]]
   i <- match(arg, values)

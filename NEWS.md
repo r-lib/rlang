@@ -1,6 +1,14 @@
 
 # rlang (development version)
+
 * `arg_match()` now detects and suggests possible typos in provided arguments.
+
+* `arg_match()` now gives an error if argument is of length greater than 1 and doesn't exactly
+  match the values input, similar to base `match.arg` (#914, @AliciaSchep) 
+
+# rlang 0.4.4
+
+* Maintenance release for CRAN.
 
 # rlang 0.4.3
 
