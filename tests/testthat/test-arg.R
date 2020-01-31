@@ -4,8 +4,8 @@ test_that("matches arg", {
   myarg <- "foo"
   expect_identical(arg_match(myarg, c("bar", "foo")), "foo")
   expect_error(
-    regex = "`myarg` must be one of \"bar\" or \"baz\"",
-    arg_match(myarg, c("bar", "baz"))
+    arg_match(myarg, c("bar", "baz")),
+    "`myarg` must be one of \"bar\" or \"baz\""
   )
 })
 
@@ -25,9 +25,30 @@ test_that("uses first value when called with all values", {
 test_that("informative error message on partial match", {
   myarg <- "f"
   expect_error(
-    regex = "Did you mean \"foo\"?",
-    arg_match(myarg, c("bar", "foo"))
+    arg_match(myarg, c("bar", "foo")),
+    "Did you mean \"foo\"?"
   )
+})
+
+test_that("informative error message on a typo", {
+  verify_output("test-typo-suggest.txt", {
+    myarg <- "continuuos"
+    arg_match(myarg, c("discrete", "continuous"))
+    myarg <- "fou"
+    arg_match(myarg, c("bar", "foo"))
+    myarg <- "fu"
+    arg_match(myarg, c("ba", "fo"))
+
+    "# No suggestion when the edit distance is too large"
+    myarg <- "foobaz"
+    arg_match(myarg, c("fooquxs", "discrete"))
+    myarg <- "a"
+    arg_match(myarg, c("b", "c"))
+
+    "# Even with small possible typos, if there's a match it returns the match"
+    myarg <- "bas"
+    arg_match(myarg, c("foo", "baz", "bas"))
+  })
 })
 
 test_that("gets choices from function", {

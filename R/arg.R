@@ -14,6 +14,7 @@
 #'   the values are taken from the function definition of the [caller
 #'   frame][caller_frame].
 #' @return The string supplied to `arg`.
+#' @importFrom utils adist
 #' @export
 #' @examples
 #' fn <- function(x = c("foo", "bar")) arg_match(x)
@@ -55,6 +56,14 @@ arg_match <- function(arg, values = NULL) {
     i_partial <- pmatch(arg, values)
     if (!is_na(i_partial)) {
       candidate <- values[[i_partial]]
+    }
+
+    i_close <- adist(arg, values) / nchar(values)
+    if (any(i_close <= 0.5)) {
+      candidate <- values[[which.min(i_close)]]
+    }
+
+    if (exists("candidate")) {
       candidate <- chr_quoted(candidate, "\"")
       msg <- paste0(msg, "\n", "Did you mean ", candidate, "?")
     }
