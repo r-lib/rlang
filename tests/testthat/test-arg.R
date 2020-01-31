@@ -17,6 +17,14 @@ test_that("informative error message on partial match", {
   )
 })
 
+test_that("informative error message on a typo", {
+  myarg <- "continuuos"
+  expect_error(
+    arg_match(myarg, c("discrete", "continuous")),
+    "Did you mean \"continuous\"?"
+  )
+})
+
 test_that("gets choices from function", {
   fn <- function(myarg = c("bar", "foo")) arg_match(myarg)
   expect_error(fn("f"), "Did you mean \"foo\"?")

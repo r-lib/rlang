@@ -52,6 +52,14 @@ arg_match <- function(arg, values = NULL) {
     i_partial <- pmatch(arg, values)
     if (!is_na(i_partial)) {
       candidate <- values[[i_partial]]
+    }
+
+    i_close <- adist(arg, values) / nchar(values)
+    if (any(i_close < 0.3)) {
+      candidate <- values[[which.min(i_close)]]
+    }
+
+    if (exists("candidate")) {
       candidate <- chr_quoted(candidate, "\"")
       msg <- paste0(msg, "\n", "Did you mean ", candidate, "?")
     }
