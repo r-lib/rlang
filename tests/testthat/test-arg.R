@@ -4,16 +4,16 @@ test_that("matches arg", {
   myarg <- c("foo", "baz")
   expect_identical(arg_match(myarg, c("bar", "foo")), "foo")
   expect_error(
-    regex = "`myarg` must be one of \"bar\" or \"baz\"",
-    arg_match(myarg, c("bar", "baz"))
+    arg_match(myarg, c("bar", "baz")),
+    "`myarg` must be one of \"bar\" or \"baz\""
   )
 })
 
 test_that("informative error message on partial match", {
   myarg <- "f"
   expect_error(
-    regex = "Did you mean \"foo\"?",
-    arg_match(myarg, c("bar", "foo"))
+    arg_match(myarg, c("bar", "foo")),
+    "Did you mean \"foo\"?"
   )
 })
 
