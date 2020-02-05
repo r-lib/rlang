@@ -8,11 +8,14 @@
 #' * `rlang_interactive`: A logical value used by [is_interactive()]. This
 #'    can be set to `TRUE` to test interactive behavior in unit tests,
 #'    for example.
+#'
 #' * `rlang_backtrace_on_error`: A character string which controls whether
 #'    backtraces are displayed with error messages, and the level of
 #'    detail they print. See [rlang_backtrace_on_error] for the possible option values.
+#'
 #' * `rlang_trace_format_srcrefs`: A logical value used to control whether
 #'    srcrefs are printed as part of the backtrace.
+#'
 #' * `rlang_trace_top_env`: An environment which will be treated as the
 #'    top-level environment when printing traces. See [trace_back()]
 #'    for examples.
