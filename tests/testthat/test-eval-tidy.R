@@ -453,6 +453,13 @@ test_that("eval_tidy() does not infloop when the quosure inherits from the mask"
   expect_identical(eval_tidy(quo, mask), 1)
 })
 
+test_that(".data pronoun handles promises (#908)", {
+  e <- env()
+  env_bind_lazy(e, a = c(1))
+  mask <- new_data_mask(e)
+  mask$.data <- as_data_pronoun(mask)
+  expect_equal(eval_tidy(expr(.data$a * 2), mask), 2)
+})
 
 # Lifecycle ----------------------------------------------------------
 

@@ -209,13 +209,17 @@ static sexp* mask_find(sexp* env, sexp* sym) {
     // to a simple environment whose ancestry shouldn't be looked up.
     top_env = env;
   }
-  KEEP(top_env); // Help rchk
+  int n_kept = 0;
+  KEEP_N(top_env, n_kept); // Help rchk
 
   sexp* cur = env;
   do {
     sexp* obj = r_env_find(cur, sym);
+    if (TYPEOF(obj) == PROMSXP) {
+      obj = KEEP_N(r_eval(obj, r_empty_env), n_kept);
+    }
     if (obj != r_unbound_sym && !r_is_function(obj)) {
-      FREE(1);
+      FREE(n_kept);
       return obj;
     }
 
@@ -226,7 +230,7 @@ static sexp* mask_find(sexp* env, sexp* sym) {
     }
   } while (cur != r_empty_env);
 
-  FREE(1);
+  FREE(n_kept);
   return r_unbound_sym;
 }
 sexp* rlang_data_pronoun_get(sexp* pronoun, sexp* sym) {
