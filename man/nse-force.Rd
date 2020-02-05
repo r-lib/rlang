@@ -142,7 +142,7 @@ rlang::expr(mean(!!var * 100))
 
 Supporting namespace qualifiers complicates the implementation of
 unquotation and is misleading as to the nature of unquoting
-operators (which are syntactic operators that operates at
+operators (which are syntactic operators that operate at
 quotation-time rather than function calls at evaluation-time).
 \item \code{UQ()} and \code{UQS()} were soft-deprecated in rlang 0.2.0 in order
 to make the syntax of quasiquotation more consistent. The prefix
