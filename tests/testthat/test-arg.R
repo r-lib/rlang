@@ -17,6 +17,28 @@ test_that("gives an error with more than one arg", {
   )
 })
 
+test_that("gives error with different than rearranged arg vs value", {
+  expect_error(
+    reprex = "must be a character vector of length 1 or setwise-match caller values",
+    {
+    f <- function(myarg = c("foo", "bar", "fun")) {
+      arg_match(myarg, c("fun", "bar"))
+    }
+    f()
+  }
+  )
+})
+
+test_that("gives no error with rearranged arg vs value", {
+  expect_silent({
+    f <- function(myarg = c("bar", "fun")) {
+      arg_match(myarg, c("fun", "bar"))
+    }
+    f()
+  }
+  )
+})
+
 test_that("uses first value when called with all values", {
   myarg <- c("bar","baz")
   expect_identical(arg_match(myarg, c("bar", "baz")), "bar")

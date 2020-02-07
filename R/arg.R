@@ -43,7 +43,7 @@ arg_match <- function(arg, values = NULL) {
     abort(paste0(chr_quoted(arg_nm), " must be a character vector"))
   }
   if (length(arg) > 1 && !setequal(arg, values)) {
-    abort(paste0(chr_quoted(arg_nm), " must be a character vector of length 1."))
+    abort(paste0(chr_quoted(arg_nm), " must be a character vector of length 1 or setwise-match caller values."))
   }
 
   arg <- arg[[1]]
