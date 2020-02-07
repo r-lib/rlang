@@ -37,21 +37,20 @@ arg_match <- function(arg, values = NULL) {
     values <- eval_bare(values, get_env(fn))
   }
   if (!is_character(values)) {
-    abort("Internal error: `values` must be a character vector")
+    abort("Internal error: `values` must be a character vector.")
   }
   if (!is_character(arg)) {
-    abort(paste0(chr_quoted(arg_nm), " must be a character vector"))
+    abort(paste0(chr_quoted(arg_nm), " must be a character vector."))
   }
-  if (length(arg) > 1 && !identical(arg, values)) {
-    abort(paste0(chr_quoted(arg_nm), " must be a character vector of length 1."))
+  if (length(arg) > 1 && !setequal(arg, values)) {
+    abort(arg_match_invalid_msg(arg_nm, values))
   }
 
   arg <- arg[[1]]
   i <- match(arg, values)
 
   if (is_na(i)) {
-    msg <- paste0(chr_quoted(arg_nm), " must be one of ")
-    msg <- paste0(msg, chr_enumerate(chr_quoted(values, "\"")))
+    msg <- arg_match_invalid_msg(arg_nm, values)
 
     i_partial <- pmatch(arg, values)
     if (!is_na(i_partial)) {
@@ -72,6 +71,12 @@ arg_match <- function(arg, values = NULL) {
   }
 
   values[[i]]
+}
+
+arg_match_invalid_msg <- function(arg_nm, values) {
+  msg <- paste0(chr_quoted(arg_nm), " must be one of ")
+  msg <- paste0(msg, chr_enumerate(chr_quoted(values, "\"")), ".")
+  msg
 }
 
 chr_quoted <- function(chr, type = "`") {

@@ -12,9 +12,23 @@ test_that("matches arg", {
 test_that("gives an error with more than one arg", {
   myarg <- c("bar","fun")
   expect_error(
-    regex = "`myarg` must be a character vector of length 1.",
+    regex = "`myarg` must be one of \"bar\" or \"baz\".",
     arg_match(myarg, c("bar", "baz"))
   )
+})
+
+test_that("gives error with different than rearranged arg vs value", {
+  f <- function(myarg = c("foo", "bar", "fun")) {
+    arg_match(myarg, c("fun", "bar"))
+  }
+  expect_error(f(), regex = "`myarg` must be one of \"fun\" or \"bar\"")
+})
+
+test_that("gives no error with rearranged arg vs value", {
+  f <- function(myarg = c("bar", "fun")) {
+    arg_match(myarg, c("fun", "bar"))
+  }
+  expect_identical(f(), "bar")
 })
 
 test_that("uses first value when called with all values", {
