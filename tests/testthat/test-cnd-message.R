@@ -69,3 +69,10 @@ test_that("can override body method with `body` fields", {
     class = "rlang_foobar"
   )
 })
+
+test_that("`body` must be a string or a function", {
+  expect_error(
+    stop(error_cnd("foo", body = letters)),
+    "must be a string or a function"
+  )
+})
