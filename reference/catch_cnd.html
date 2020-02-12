@@ -109,6 +109,9 @@ for debugging, and for unit testing." />
   <ul class="dropdown-menu" role="menu">
     <li class="dropdown-header">Release notes</li>
     <li>
+      <a href="https://www.tidyverse.org/blog/2020/02/glue-strings-and-tidy-eval/">Version 0.4.3</a>
+    </li>
+    <li>
       <a href="https://www.tidyverse.org/articles/2019/06/rlang-0-4-0/">Version 0.4.0</a>
     </li>
     <li>
@@ -184,7 +187,7 @@ default, catches all conditions.</p></td>
     <pre class="examples"><div class='input'><span class='fu'>catch_cnd</span>(<span class='fl'>10</span>)</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'>catch_cnd</span>(<span class='fu'><a href='abort.html'>abort</a></span>(<span class='st'>"an error"</span>))</div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;error/rlang_error&gt;</span><span>
 #&gt; an error
 #&gt; </span><span style='font-weight: bold;'>Backtrace:</span><span>
-#&gt; </span><span style='color: #555555;'>  1. </span><span>pkgdown:::deploy_local(new_process = FALSE, remote_url = "https://x-access-token:ab6d13bfcbe2719975c7b26500383ff0f1c55219@github.com/r-lib/rlang.git")
+#&gt; </span><span style='color: #555555;'>  1. </span><span>pkgdown:::deploy_local(new_process = FALSE, remote_url = url)
 #&gt; </span><span style='color: #555555;'>  2. </span><span>pkgdown::build_site(...)
 #&gt; </span><span style='color: #555555;'>  3. </span><span>pkgdown:::build_site_local(...)
 #&gt; </span><span style='color: #555555;'>  4. </span><span>pkgdown::build_reference(...)

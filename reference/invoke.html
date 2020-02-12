@@ -109,6 +109,9 @@ assembled programmatically. This is the purpose of invoke()." />
   <ul class="dropdown-menu" role="menu">
     <li class="dropdown-header">Release notes</li>
     <li>
+      <a href="https://www.tidyverse.org/blog/2020/02/glue-strings-and-tidy-eval/">Version 0.4.3</a>
+    </li>
+    <li>
       <a href="https://www.tidyverse.org/articles/2019/06/rlang-0-4-0/">Version 0.4.0</a>
     </li>
     <li>
@@ -220,7 +223,7 @@ or complex expressions.</p>
 <span class='co'># and stacktraces:</span>
 <span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>...</span>) <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>sys.calls</a></span>()
 <span class='fu'>invoke</span>(<span class='no'>fn</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>mtcars</span>))</div><div class='output co'>#&gt; [[1]]
-#&gt; pkgdown:::deploy_local(new_process = FALSE, remote_url = "https://x-access-token:ab6d13bfcbe2719975c7b26500383ff0f1c55219@github.com/r-lib/rlang.git")
+#&gt; pkgdown:::deploy_local(new_process = FALSE, remote_url = url)
 #&gt; 
 #&gt; [[2]]
 #&gt; build_site(".", override = list(destination = dest_dir), devel = FALSE, 
@@ -358,7 +361,7 @@ or complex expressions.</p>
 #&gt;     3, 4, 5, 5, 5, 5, 5, 4), carb = c(4, 4, 1, 1, 2, 1, 4, 2, 
 #&gt;     2, 4, 4, 3, 3, 3, 4, 4, 4, 1, 2, 1, 1, 2, 2, 4, 2, 1, 2, 
 #&gt;     2, 4, 6, 8, 2))</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/do.call.html'>do.call</a></span>(<span class='no'>fn</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>mtcars</span>))</div><div class='output co'>#&gt; [[1]]
-#&gt; pkgdown:::deploy_local(new_process = FALSE, remote_url = "https://x-access-token:ab6d13bfcbe2719975c7b26500383ff0f1c55219@github.com/r-lib/rlang.git")
+#&gt; pkgdown:::deploy_local(new_process = FALSE, remote_url = url)
 #&gt; 
 #&gt; [[2]]
 #&gt; build_site(".", override = list(destination = dest_dir), devel = FALSE, 

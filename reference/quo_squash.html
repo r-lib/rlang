@@ -114,6 +114,9 @@ let the user know about the lossy squashing." />
   <ul class="dropdown-menu" role="menu">
     <li class="dropdown-header">Release notes</li>
     <li>
+      <a href="https://www.tidyverse.org/blog/2020/02/glue-strings-and-tidy-eval/">Version 0.4.3</a>
+    </li>
+    <li>
       <a href="https://www.tidyverse.org/articles/2019/06/rlang-0-4-0/">Version 0.4.0</a>
     </li>
     <li>
@@ -204,7 +207,7 @@ a lossy operation that squashed all nested quosures.</p>
 <span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fu'>wrapper</span>(!!<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='no'>wrappee</span>)))
 <span class='no'>quo</span></div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^wrapper(^wrappee)</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7fa118ec0b08</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7fb58c8b7ee0</span><span></div><div class='input'>
 <span class='co'># quo_squash() flattens all the quosures and returns a simple expression:</span>
 <span class='fu'>quo_squash</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; wrapper(wrappee)</div></span></pre>
   </div>
