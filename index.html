@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4.9000</span>
       </span>
     </div>
 
@@ -103,9 +103,9 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="rlang" class="section level1">
+<div id="rlang-" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#rlang" class="anchor"></a>rlang <img src="reference/figures/rlang.png" align="right">
+<a href="#rlang-" class="anchor"></a>rlang <img src="reference/figures/rlang.png" align="right">
 </h1></div>
 <!-- badges: start -->
 
@@ -120,11 +120,11 @@
 <li>
 <p>A consistent API for working with <strong>base types</strong>. Note that overall this is a work in progress that is still in flux:</p>
 <ul>
-<li><p>Environments, e.g. <code><a href="reference/env.html">env()</a></code>, <code><a href="reference/env_has.html">env_has()</a></code>, <code><a href="reference/env_get.html">env_get()</a></code>, <code><a href="reference/env_bind.html">env_bind()</a></code>, <code><a href="reference/env_unbind.html">env_unbind()</a></code>, <code><a href="reference/env_print.html">env_print()</a></code>.</p></li>
-<li><p>Calls and symbols, e.g. <code><a href="reference/call2.html">call2()</a></code>, <code><a href="reference/is_call.html">is_call()</a></code>, <code><a href="reference/sym.html">sym()</a></code>, <code><a href="reference/sym.html">syms()</a></code>.</p></li>
-<li><p>Functions, e.g. <code><a href="reference/new_function.html">new_function()</a></code>, <code><a href="reference/as_function.html">as_function()</a></code>. The latter supports the purrr-style formula notation for lambda functions.</p></li>
+<li><p>Environments, e.g. <code><a href="reference/env.html">env()</a></code>, <code><a href="reference/env_has.html">env_has()</a></code>, <code><a href="reference/env_get.html">env_get()</a></code>, <code><a href="reference/env_bind.html">env_bind()</a></code>, <code><a href="reference/env_unbind.html">env_unbind()</a></code>, <code><a href="reference/env_print.html">env_print()</a></code>.</p></li>
+<li><p>Calls and symbols, e.g. <code><a href="reference/call2.html">call2()</a></code>, <code><a href="reference/is_call.html">is_call()</a></code>, <code><a href="reference/sym.html">sym()</a></code>, <code><a href="reference/sym.html">syms()</a></code>.</p></li>
+<li><p>Functions, e.g. <code><a href="reference/new_function.html">new_function()</a></code>, <code><a href="reference/as_function.html">as_function()</a></code>. The latter supports the purrr-style formula notation for lambda functions.</p></li>
 <li><p>Vectors, including construction (<code><a href="reference/vector-construction.html">lgl()</a></code>, <code><a href="reference/vector-construction.html">int()</a></code>, …) and predicates (<code><a href="reference/type-predicates.html">is_logical()</a></code>, <code><a href="reference/type-predicates.html">is_character()</a></code>).</p></li>
-<li><p>Attributes, e.g. <code><a href="reference/set_names.html">set_names()</a></code>.</p></li>
+<li><p>Attributes, e.g. <code><a href="reference/set_names.html">set_names()</a></code>.</p></li>
 </ul>
 </li>
 </ul>
@@ -133,10 +133,10 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install the released version of rlang from CRAN with:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"rlang"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"rlang"</span>)</span></code></pre></div>
 <p>Or install the development version from github with:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># install.packages("remotes")</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">remotes<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/remotes/man/install_github.html">install_github</a></span>(<span class="st">"r-lib/rlang"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># install.packages("remotes")</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>remotes<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/remotes/man/install_github.html">install_github</a></span>(<span class="st">"r-lib/rlang"</span>)</span></code></pre></div>
 </div>
 <div id="cheatsheet" class="section level2">
 <h2 class="hasAnchor">
@@ -180,7 +180,6 @@
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://github.com/r-lib/rlang"><img src="https://github.com/r-lib/rlang/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
-<li><a href="https://ci.appveyor.com/project/lionel-/rlang"><img src="https://ci.appveyor.com/api/projects/status/github/r-lib/rlang?branch=master&amp;svg=true" alt="AppVeyor Build Status"></a></li>
 <li><a href="https://codecov.io/github/r-lib/rlang?branch=master"><img src="https://codecov.io/gh/r-lib/rlang/branch/master/graph/badge.svg" alt="Coverage Status"></a></li>
 <li><a href="https://www.tidyverse.org/lifecycle/"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Lifecycle Status"></a></li>
 </ul>
@@ -194,7 +193,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
 
       </footer>

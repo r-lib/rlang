@@ -96,7 +96,7 @@ or a package environment) is attached to the search path.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4.9000</span>
       </span>
     </div>
 
@@ -215,6 +215,10 @@ of a package environment is prefixed with <code>"package:"</code>.</p></td>
       <th>pkg</th>
       <td><p>The name of a package.</p></td>
     </tr>
+    <tr>
+      <th>x</th>
+      <td><p>An environment or a search name.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="the-search-path"><a class="anchor" href="#the-search-path"></a>The search path</h2>
@@ -239,7 +243,7 @@ to the search path with <code><a href='https://rdrr.io/r/base/attach.html'>base:
 <span class='fu'><a href='https://rdrr.io/r/base/search.html'>search</a></span>()</div><div class='output co'>#&gt;  [1] ".GlobalEnv"        "package:rlang"     "package:stats"    
 #&gt;  [4] "package:graphics"  "package:grDevices" "package:utils"    
 #&gt;  [7] "package:datasets"  "package:methods"   "Autoloads"        
-#&gt; [10] "tools:callr"       "package:base"     </div><div class='input'>
+#&gt; [10] "package:base"     </div><div class='input'>
 <span class='co'># Get the corresponding environments:</span>
 <span class='fu'>search_envs</span>()</div><div class='output co'>#&gt;  [[1]] $ &lt;env: global&gt;
 #&gt;  [[2]] $ &lt;env: package:rlang&gt;
@@ -250,8 +254,7 @@ to the search path with <code><a href='https://rdrr.io/r/base/attach.html'>base:
 #&gt;  [[7]] $ &lt;env: package:datasets&gt;
 #&gt;  [[8]] $ &lt;env: package:methods&gt;
 #&gt;  [[9]] $ &lt;env: Autoloads&gt;
-#&gt; [[10]] $ &lt;env: tools:callr&gt;
-#&gt; [[11]] $ &lt;env: package:base&gt;</div><div class='input'>
+#&gt; [[10]] $ &lt;env: package:base&gt;</div><div class='input'>
 <span class='co'># The global environment and the base package are always first and</span>
 <span class='co'># last in the chain, respectively:</span>
 <span class='no'>envs</span> <span class='kw'>&lt;-</span> <span class='fu'>search_envs</span>()
@@ -264,14 +267,14 @@ to the search path with <code><a href='https://rdrr.io/r/base/attach.html'>base:
 #&gt; attr(,"name")
 #&gt; [1] "package:rlang"
 #&gt; attr(,"path")
-#&gt; [1] "/home/travis/R/Library/rlang"</div><div class='input'>
+#&gt; [1] "/Users/runner/runners/2.164.0/work/_temp/Library/rlang"</div><div class='input'>
 <span class='co'># Alternatively, get the scoped environment of a package with</span>
 <span class='co'># pkg_env():</span>
 <span class='fu'>pkg_env</span>(<span class='st'>"utils"</span>)</div><div class='output co'>#&gt; &lt;environment: package:utils&gt;
 #&gt; attr(,"name")
 #&gt; [1] "package:utils"
 #&gt; attr(,"path")
-#&gt; [1] "/home/travis/R-bin/lib/R/library/utils"</div></pre>
+#&gt; [1] "/Library/Frameworks/R.framework/Versions/3.6/Resources/library/utils"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -291,7 +294,7 @@ to the search path with <code><a href='https://rdrr.io/r/base/attach.html'>base:
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
 
       </footer>

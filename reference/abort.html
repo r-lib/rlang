@@ -91,7 +91,7 @@ to create custom interrupt condition objects." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4.9000</span>
       </span>
     </div>
 
@@ -177,13 +177,30 @@ kind that is signalled with <code>Ctrl-C</code>. It is currently not possible
 to create custom interrupt condition objects.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>abort</span>(<span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>class</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>trace</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>call</span>,
-  <span class='kw'>parent</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>msg</span>, <span class='no'>type</span>, <span class='no'>.subclass</span>)
+    <pre class="usage"><span class='fu'>abort</span>(
+  <span class='kw'>message</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>class</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>trace</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>call</span>,
+  <span class='kw'>parent</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>msg</span>,
+  <span class='no'>type</span>,
+  <span class='no'>.subclass</span>
+)
 
-<span class='fu'>warn</span>(<span class='no'>message</span>, <span class='kw'>class</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='no'>call</span>, <span class='no'>msg</span>, <span class='no'>type</span>, <span class='no'>.subclass</span>)
+<span class='fu'>warn</span>(<span class='kw'>message</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>class</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='no'>call</span>, <span class='no'>msg</span>, <span class='no'>type</span>, <span class='no'>.subclass</span>)
 
-<span class='fu'>inform</span>(<span class='no'>message</span>, <span class='kw'>class</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>call</span>, <span class='no'>msg</span>, <span class='no'>type</span>,
-  <span class='no'>.subclass</span>)
+<span class='fu'>inform</span>(
+  <span class='kw'>message</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>class</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>call</span>,
+  <span class='no'>msg</span>,
+  <span class='no'>type</span>,
+  <span class='no'>.subclass</span>
+)
 
 <span class='fu'>signal</span>(<span class='no'>message</span>, <span class='no'>class</span>, <span class='no'>...</span>, <span class='no'>.subclass</span>)
 
@@ -195,9 +212,10 @@ to create custom interrupt condition objects.</p>
     <tr>
       <th>message</th>
       <td><p>The message to display.</p>
-<p>Experimental: Can also be a named character vector, in which case
-the message is assembled as a list of bullets. See
-<code><a href='cnd_message.html'>cnd_message()</a></code> to learn how names control the bulleted output.</p></td>
+<p>If not supplied, it is expected that the message is generated
+lazily through <a href='cnd_message.html'>conditionMessage()</a>. In that case,
+<code>class</code> must be supplied. Only <code>inform()</code> allows empty messages
+as it is occasionally useful to build user output incrementally.</p></td>
     </tr>
     <tr>
       <th>class</th>
@@ -368,7 +386,7 @@ metadata with <code>...</code>. Consequently:</p><ul>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
 
       </footer>

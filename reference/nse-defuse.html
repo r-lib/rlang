@@ -98,7 +98,7 @@ evaluation inside a defused expression with the forcing operators !! and !!!." /
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4.9000</span>
       </span>
     </div>
 
@@ -195,29 +195,52 @@ evaluation inside a defused expression with the <a href='nse-force.html'>forcing
 
 <span class='fu'>enexpr</span>(<span class='no'>arg</span>)
 
-<span class='fu'>exprs</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>,
-  <span class='st'>"all"</span>), <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>exprs</span>(
+  <span class='no'>...</span>,
+  <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
+  <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)
 
-<span class='fu'>enexprs</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>,
-  <span class='st'>"all"</span>), <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>,
-  <span class='st'>"error"</span>), <span class='kw'>.check_assign</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>enexprs</span>(
+  <span class='no'>...</span>,
+  <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
+  <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>, <span class='st'>"error"</span>),
+  <span class='kw'>.check_assign</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)
 
 <span class='fu'>ensym</span>(<span class='no'>arg</span>)
 
-<span class='fu'>ensyms</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>,
-  <span class='st'>"all"</span>), <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>,
-  <span class='st'>"error"</span>), <span class='kw'>.check_assign</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>ensyms</span>(
+  <span class='no'>...</span>,
+  <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
+  <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>, <span class='st'>"error"</span>),
+  <span class='kw'>.check_assign</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)
 
 <span class='fu'>quo</span>(<span class='no'>expr</span>)
 
 <span class='fu'>enquo</span>(<span class='no'>arg</span>)
 
-<span class='fu'>quos</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
-  <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>quos</span>(
+  <span class='no'>...</span>,
+  <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
+  <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)
 
-<span class='fu'>enquos</span>(<span class='no'>...</span>, <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>,
-  <span class='st'>"all"</span>), <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>,
-  <span class='st'>"error"</span>), <span class='kw'>.check_assign</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+<span class='fu'>enquos</span>(
+  <span class='no'>...</span>,
+  <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
+  <span class='kw'>.unquote_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>, <span class='st'>"error"</span>),
+  <span class='kw'>.check_assign</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -412,8 +435,8 @@ of an expression.</p></li>
 <span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'>quo</span>(<span class='no'>letters</span>)
 <span class='no'>quo</span></div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^letters</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0xaa684c8</span><span></div><div class='input'>
-<span class='fu'><a href='set_expr.html'>get_expr</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; letters</div><div class='input'><span class='fu'><a href='get_env.html'>get_env</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; &lt;environment: 0xaa684c8&gt;</div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7fa118ed1800</span><span></div><div class='input'>
+<span class='fu'><a href='set_expr.html'>get_expr</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; letters</div><div class='input'><span class='fu'><a href='get_env.html'>get_env</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7fa118ed1800&gt;</div><div class='input'>
 <span class='co'># Quosures can be evaluated with eval_tidy():</span>
 <span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt;  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
 #&gt; [20] "t" "u" "v" "w" "x" "y" "z"</div><div class='input'>
@@ -438,7 +461,7 @@ of an expression.</p></li>
 <span class='co'># terminal is capable of displaying colours:</span>
 <span class='no'>quo</span></div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^(</span><span style='color: #00BB00;'>^2 + 3</span><span style='color: #0000BB;'>) * local_ten</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x6f70770</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7fa1147851e0</span><span></div><div class='input'>
 <span class='co'># All the quosures in the expression evaluate in their original</span>
 <span class='co'># context. The local objects are looked up properly and we get the</span>
 <span class='co'># expected result:</span>
@@ -465,7 +488,7 @@ of an expression.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
 
       </footer>

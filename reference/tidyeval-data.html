@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Data pronoun for tidy evaluation — tidyeval-data • rlang</title>
+<title>Data pronouns for tidy evaluation — tidyeval-data • rlang</title>
 
 
 <!-- jquery -->
@@ -35,30 +35,30 @@
 
 
 
-<meta property="og:title" content="Data pronoun for tidy evaluation — tidyeval-data" />
-<meta property="og:description" content="This pronoun allows you to be explicit when you refer to an object
-inside the data. Referring to the .data pronoun rather than to
-the original data frame has several advantages:
-It makes it easy to refer to column names stored as strings. If
-var contains the column &quot;height&quot;, the pronoun will subset that
-column:var &amp;lt;- &quot;height&quot;
-dplyr::summarise(df, mean(.data[[var]]))
+<meta property="og:title" content="Data pronouns for tidy evaluation — tidyeval-data" />
+<meta property="og:description" content="These pronouns allow you to be explicit about where to find objects
+when programming with data masked functions.m &amp;lt;- 10
+mtcars %&amp;gt;% mutate(disp = .data$disp * .env$m)
 
 
-The index variable var is unquoted, which
-ensures a column named var in the data frame cannot mask it.
-This makes the pronoun safe to use in functions and packages.
-Sometimes a computation is not about the whole data but about a
-subset. For example if you supply a grouped data frame to a dplyr
-verb, the .data pronoun contains the group subset.
-It lets dplyr know that you're referring to a column from the
-data which is helpful to generate correct queries when the source
-is a database.
+.data retrieves data-variables from the data frame.
+.env retrieves env-variables from the environment.
 
 
-The .data object exported here is useful to import in your
-package namespace to avoid a R CMD check note when referring to
-objects from the data mask." />
+Because the lookup is explicit, there is no ambiguity between both
+kinds of variables. Compare:disp &amp;lt;- 10
+mtcars %&amp;gt;% mutate(disp = .data$disp * .env$disp)
+mtcars %&amp;gt;% mutate(disp = disp * disp)
+
+
+The .data object exported from rlang is also useful to import in
+your package namespace to avoid a R CMD check note when referring
+to objects from the data mask.
+Note that .data is only a pronoun, it is not a real data
+frame. This means that you can't take its names or map a function
+over the contents of .data. Similarly, .env is not an actual R
+environment. For instance, it doesn't have a parent and the
+subsetting operators behave differently." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -101,7 +101,7 @@ objects from the data mask." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4.9000</span>
       </span>
     </div>
 
@@ -166,45 +166,51 @@ objects from the data mask." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Data pronoun for tidy evaluation</h1>
+    <h1>Data pronouns for tidy evaluation</h1>
     <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/eval-tidy.R'><code>R/eval-tidy.R</code></a></small>
     <div class="hidden name"><code>tidyeval-data.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This pronoun allows you to be explicit when you refer to an object
-inside the data. Referring to the <code>.data</code> pronoun rather than to
-the original data frame has several advantages:</p><ul>
-<li><p>It makes it easy to refer to column names stored as strings. If
-<code>var</code> contains the column <code>"height"</code>, the pronoun will subset that
-column:</p><pre>var &lt;- "height"
-dplyr::summarise(df, mean(.data[[var]]))
+    <p>These pronouns allow you to be explicit about where to find objects
+when programming with data masked functions.</p><pre>m &lt;- 10
+mtcars %&gt;% mutate(disp = .data$disp * .env$m)
 </pre>
-
-<p>The index variable <code>var</code> is <a href='nse-force.html'>unquoted</a>, which
-ensures a column named <code>var</code> in the data frame cannot mask it.
-This makes the pronoun safe to use in functions and packages.</p></li>
-<li><p>Sometimes a computation is not about the whole data but about a
-subset. For example if you supply a grouped data frame to a dplyr
-verb, the <code>.data</code> pronoun contains the group subset.</p></li>
-<li><p>It lets dplyr know that you're referring to a column from the
-data which is helpful to generate correct queries when the source
-is a database.</p></li>
+<ul>
+<li><p><code>.data</code> retrieves data-variables from the data frame.</p></li>
+<li><p><code>.env</code> retrieves env-variables from the environment.</p></li>
 </ul>
 
-<p>The <code>.data</code> object exported here is useful to import in your
-package namespace to avoid a <code>R CMD check</code> note when referring to
-objects from the data mask.</p>
+<p>Because the lookup is explicit, there is no ambiguity between both
+kinds of variables. Compare:</p><pre>disp &lt;- 10
+mtcars %&gt;% mutate(disp = .data$disp * .env$disp)
+mtcars %&gt;% mutate(disp = disp * disp)
+</pre>
+
+<p>The <code>.data</code> object exported from rlang is also useful to import in
+your package namespace to avoid a <code>R CMD check</code> note when referring
+to objects from the data mask.</p>
+<p>Note that <code>.data</code> is only a pronoun, it is not a real data
+frame. This means that you can't take its names or map a function
+over the contents of <code>.data</code>. Similarly, <code>.env</code> is not an actual R
+environment. For instance, it doesn't have a parent and the
+subsetting operators behave differently.</p>
     </div>
 
-    <pre class="usage"><span class='no'>.data</span></pre>
+    <pre class="usage"><span class='no'>.data</span>
+
+<span class='no'>.env</span></pre>
 
 
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+
+    <p>An object of class <code>rlang_fake_data_pronoun</code> of length .</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#format">Format</a></li>
     </ul>
 
   </div>
@@ -217,7 +223,7 @@ objects from the data mask.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
 
       </footer>

@@ -82,7 +82,7 @@ from the current frame (the top of the stack)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4.9000</span>
       </span>
     </div>
 
@@ -201,11 +201,11 @@ as those will be discarded.</p>
 #&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once per session.</span><span></span></div><div class='output co'>#&gt; <span class='warning'>Warning: `stack_trim()` is deprecated as of rlang 0.3.0.</span>
 #&gt; <span class='warning'></span><span style='color: #555555;'>This warning is displayed once per session.</span><span></span></div><div class='output co'>#&gt; <span class='warning'>Warning: `ctxt_stack()` is deprecated as of rlang 0.3.0.</span>
 #&gt; <span class='warning'></span><span style='color: #555555;'>This warning is displayed once per session.</span><span></span></div><div class='output co'>#&gt; <span class='warning'>Warning: `global_frame()` is deprecated as of rlang 0.3.0.</span>
-#&gt; <span class='warning'></span><span style='color: #555555;'>This warning is displayed once per session.</span><span></span></div><div class='output co'>#&gt; [1] 34</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span>(<span class='fu'>fn</span>()))</div><div class='output co'>#&gt; [1] 36</div><div class='input'>
+#&gt; <span class='warning'></span><span style='color: #555555;'>This warning is displayed once per session.</span><span></span></div><div class='output co'>#&gt; [1] 23</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span>(<span class='fu'>fn</span>()))</div><div class='output co'>#&gt; [1] 25</div><div class='input'>
 <span class='co'># Note that it trims off intervening calls before counting so you</span>
 <span class='co'># can safely nest it within other calls:</span>
 <span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>env</span>) <span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span>(<span class='fu'>frame_position</span>(<span class='no'>env</span>)))
-<span class='fu'>fn</span>()</div><div class='output co'>#&gt; [1] 34</div><div class='input'>
+<span class='fu'>fn</span>()</div><div class='output co'>#&gt; [1] 23</div><div class='input'>
 <span class='co'># You can also ask for the position from the current frame rather</span>
 <span class='co'># than the global frame:</span>
 <span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>g</span>(<span class='fu'><a href='https://rdrr.io/r/base/environment.html'>environment</a></span>())
@@ -232,7 +232,7 @@ as those will be discarded.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
 
       </footer>

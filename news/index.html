@@ -77,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4.9000</span>
       </span>
     </div>
 
@@ -150,10 +150,67 @@
 <h1 class="page-header">
 <a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
 </h1>
+<ul>
+<li><p><code><a href="../reference/arg_match.html">arg_match()</a></code> now detects and suggests possible typos in provided arguments (<a href='https://github.com/jonkeane'>@jonkeane</a>, <a href='https://github.com/r-lib/rlang/issues/798'>#798</a>).</p></li>
+<li><p><code><a href="../reference/arg_match.html">arg_match()</a></code> now gives an error if argument is of length greater than 1 and doesn’t exactly match the values input, similar to base <code>match.arg</code> (<a href='https://github.com/r-lib/rlang/issues/914'>#914</a>, <a href='https://github.com/AliciaSchep'>@AliciaSchep</a>)</p></li>
+</ul>
 </div>
-    <div id="rlang-0-4-2" class="section level1">
+    <div id="rlang-044" class="section level1">
 <h1 class="page-header">
-<a href="#rlang-0-4-2" class="anchor"></a>rlang 0.4.2<small> 2019-11-23 </small>
+<a href="#rlang-044" class="anchor"></a>rlang 0.4.4<small> 2020-01-28 </small>
+</h1>
+<ul>
+<li>Maintenance release for CRAN.</li>
+</ul>
+</div>
+    <div id="rlang-043" class="section level1">
+<h1 class="page-header">
+<a href="#rlang-043" class="anchor"></a>rlang 0.4.3<small> 2020-01-24 </small>
+</h1>
+<ul>
+<li>
+<p>You can now use glue syntax to unquote on the LHS of <code>:=</code>. This syntax is automatically available in all functions taking dots with <code><a href="../reference/list2.html">list2()</a></code> and <code><a href="../reference/nse-defuse.html">enquos()</a></code>, and thus most of the tidyverse. Note that if you use the glue syntax in an R package, you need to import glue.</p>
+<p>A single pair of braces triggers normal glue interpolation:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>df &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="dt">x =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)</span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a>suffix &lt;-<span class="st"> "foo"</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a>df <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="st">"var_{suffix}"</span> <span class="op">:</span><span class="er">=</span><span class="st"> </span>x <span class="op">*</span><span class="st"> </span><span class="dv">2</span>)</span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="co">#&gt;   x var_foo</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="co">#&gt; 1 1       2</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="co">#&gt; 2 2       4</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="co">#&gt; 3 3       6</span></span></code></pre></div>
+<p>Using a pair of double braces is for labelling a function argument. Technically, this is shortcut for <code>"{as_label(enquo(arg))}"</code>. The syntax is similar to the curly-curly syntax for interpolating function arguments:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>my_wrapper &lt;-<span class="st"> </span><span class="cf">function</span>(data, var, <span class="dt">suffix =</span> <span class="st">"foo"</span>) {</span>
+<span id="cb2-2"><a href="#cb2-2"></a>  data <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="st">"{{ var }}_{suffix}"</span> <span class="op">:</span><span class="er">=</span><span class="st"> </span>{{ var }} <span class="op">*</span><span class="st"> </span><span class="dv">2</span>)</span>
+<span id="cb2-3"><a href="#cb2-3"></a>}</span>
+<span id="cb2-4"><a href="#cb2-4"></a>df <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">my_wrapper</span>(x)</span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="co">#&gt;   x x_foo</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="co">#&gt; 1 1     2</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="co">#&gt; 2 2     4</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="co">#&gt; 3 3     6</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a></span>
+<span id="cb2-10"><a href="#cb2-10"></a>df <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">my_wrapper</span>(<span class="kw"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span>(x))</span>
+<span id="cb2-11"><a href="#cb2-11"></a><span class="co">#&gt;   x sqrt(x)_foo</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a><span class="co">#&gt; 1 1    2.000000</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a><span class="co">#&gt; 2 2    2.828427</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a><span class="co">#&gt; 3 3    3.464102</span></span></code></pre></div>
+</li>
+<li><p>Fixed a bug in magrittr backtraces that caused duplicate calls to appear in the trace.</p></li>
+<li><p>Fixed a bug in magrittr backtraces that caused wrong call indices.</p></li>
+<li><p>Empty backtraces are no longer shown when <code>rlang_backtrace_on_error</code> is set.</p></li>
+<li><p>The tidy eval <code>.env</code> pronoun is now exported for documentation purposes.</p></li>
+<li><p><code><a href="../reference/abort.html">warn()</a></code> and <code><a href="../reference/abort.html">abort()</a></code> now check that either <code>class</code> or <code>message</code> was supplied. <code><a href="../reference/abort.html">inform()</a></code> allows sending empty message as it is occasionally useful for building user output incrementally.</p></li>
+<li><p><code><a href="../reference/flatten.html">flatten()</a></code> fails with a proper error when input can’t be flattened (<a href='https://github.com/r-lib/rlang/issues/868'>#868</a>, <a href='https://github.com/r-lib/rlang/issues/885'>#885</a>).</p></li>
+<li><p><code><a href="../reference/abort.html">inform()</a></code> now consistently appends a final newline to the message (<a href='https://github.com/r-lib/rlang/issues/880'>#880</a>).</p></li>
+<li><p><code>cnd_body.default()</code> is now properly registered.</p></li>
+<li><p><code><a href="../reference/cnd_signal.html">cnd_signal()</a></code> now uses the same approach as <code><a href="../reference/abort.html">abort()</a></code> to save unhandled errors to <code><a href="../reference/last_error.html">last_error()</a></code>.</p></li>
+<li><p>Parsable constants like <code>NaN</code> and <code>NA_integer_</code> are now deparsed by <code><a href="../reference/expr_print.html">expr_deparse()</a></code> in their parsable form (<a href='https://github.com/r-lib/rlang/issues/890'>#890</a>).</p></li>
+<li><p>Infix operators now stick to their LHS when deparsed by <code><a href="../reference/expr_print.html">expr_deparse()</a></code> (<a href='https://github.com/r-lib/rlang/issues/890'>#890</a>).</p></li>
+</ul>
+</div>
+    <div id="rlang-042" class="section level1">
+<h1 class="page-header">
+<a href="#rlang-042" class="anchor"></a>rlang 0.4.2<small> 2019-11-23 </small>
 </h1>
 <ul>
 <li>
@@ -168,9 +225,9 @@
 <li><p>Backtrace is now displayed in full when an error occurs in non-interactive sessions. Previously the backtraces of parent errors were left out.</p></li>
 </ul>
 </div>
-    <div id="rlang-0-4-1" class="section level1">
+    <div id="rlang-041" class="section level1">
 <h1 class="page-header">
-<a href="#rlang-0-4-1" class="anchor"></a>rlang 0.4.1<small> 2019-10-24 </small>
+<a href="#rlang-041" class="anchor"></a>rlang 0.4.1<small> 2019-10-24 </small>
 </h1>
 <ul>
 <li><p>New experimental framework for creating bulleted error messages. See <code><a href="../reference/cnd_message.html">?cnd_message</a></code> for the motivation and an overwiew of the tools we have created to support this approach. In particular, <code><a href="../reference/abort.html">abort()</a></code> now takes character vectors to assemble a bullet list. Elements named <code>x</code> are prefixed with a red cross, elements named <code>i</code> are prefixed with a blue info symbol, and unnamed elements are prefixed with a bullet.</p></li>
@@ -192,9 +249,9 @@
 <li><p>Fixed <code><a href="../reference/vector-construction.html">chr()</a></code> bug causing it to return invisibly.</p></li>
 </ul>
 </div>
-    <div id="rlang-0-4-0" class="section level1">
+    <div id="rlang-040" class="section level1">
 <h1 class="page-header">
-<a href="#rlang-0-4-0" class="anchor"></a>rlang 0.4.0<small> 2019-06-25 </small>
+<a href="#rlang-040" class="anchor"></a>rlang 0.4.0<small> 2019-06-25 </small>
 </h1>
 <div id="tidy-evaluation" class="section level2">
 <h2 class="hasAnchor">
@@ -216,9 +273,9 @@
     summarise(average = mean({{ var }}, na.rm = TRUE))
 }</code></pre>
 </div>
-<div id="more-robust--env-pronoun" class="section level3">
+<div id="more-robust-env-pronoun" class="section level3">
 <h3 class="hasAnchor">
-<a href="#more-robust--env-pronoun" class="anchor"></a>More robust <code>.env</code> pronoun</h3>
+<a href="#more-robust-env-pronoun" class="anchor"></a>More robust <code>.env</code> pronoun</h3>
 <p>Another improvement to tidy evaluation should make it easier to use the <code>.env</code> pronoun. Starting from this release, subsetting an object from the <code>.env</code> pronoun now evaluates the corresponding symbol. This makes <code>.env</code> more robust, in particular in magrittr pipelines. The following example would previously fail:</p>
 <pre><code>foo &lt;- 10
 mtcars %&gt;% mutate(cyl = cyl * .env$foo)</code></pre>
@@ -289,9 +346,9 @@ letters %&gt;% set_names(toupper)</code></pre>
 </ul>
 </div>
 </div>
-    <div id="rlang-0-3-2" class="section level1">
+    <div id="rlang-032" class="section level1">
 <h1 class="page-header">
-<a href="#rlang-0-3-2" class="anchor"></a>rlang 0.3.2<small> 2019-03-21 </small>
+<a href="#rlang-032" class="anchor"></a>rlang 0.3.2<small> 2019-03-21 </small>
 </h1>
 <ul>
 <li><p>Fixed protection issue reported by rchk.</p></li>
@@ -301,9 +358,9 @@ letters %&gt;% set_names(toupper)</code></pre>
 <li><p>Fixed issue with backtraces of warnings promoted to error, and entraced via <code><a href="https://rdrr.io/r/base/conditions.html">withCallingHandlers()</a></code>. The issue didn’t affect entracing via top level <code><a href="https://rdrr.io/r/base/options.html">options(error = rlang::entrace)</a></code> handling.</p></li>
 </ul>
 </div>
-    <div id="rlang-0-3-1" class="section level1">
+    <div id="rlang-031" class="section level1">
 <h1 class="page-header">
-<a href="#rlang-0-3-1" class="anchor"></a>rlang 0.3.1<small> 2019-01-08 </small>
+<a href="#rlang-031" class="anchor"></a>rlang 0.3.1<small> 2019-01-08 </small>
 </h1>
 <p>This patch release polishes the new backtrace feature introduced in rlang 0.3.0 and solves bugs for the upcoming release of purrr 0.3.0. It also features <code><a href="../reference/as_label.html">as_label()</a></code> and <code><a href="../reference/as_name.html">as_name()</a></code> which are meant to replace <code><a href="../reference/quo_label.html">quo_name()</a></code> in the future. Finally, a bunch of deparsing issues have been fixed.</p>
 <div id="backtrace-fixes" class="section level2">
@@ -312,16 +369,16 @@ letters %&gt;% set_names(toupper)</code></pre>
 <ul>
 <li>
 <p>New <code><a href="../reference/entrace.html">entrace()</a></code> condition handler. Add this to your RProfile to enable rlang backtraces for all errors, including warnings promoted to errors:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="cf">if</span> (<span class="kw"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span>(<span class="st">"rlang"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)) {</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">  <span class="kw"><a href="https://rdrr.io/r/base/options.html">options</a></span>(<span class="dt">error =</span> rlang<span class="op">::</span>entrace)</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">}</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="cf">if</span> (<span class="kw"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span>(<span class="st">"rlang"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)) {</span>
+<span id="cb9-2"><a href="#cb9-2"></a>  <span class="kw"><a href="https://rdrr.io/r/base/options.html">options</a></span>(<span class="dt">error =</span> rlang<span class="op">::</span>entrace)</span>
+<span id="cb9-3"><a href="#cb9-3"></a>}</span></code></pre></div>
 <p>This handler also works as a calling handler:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="../reference/with_handlers.html">with_handlers</a></span>(</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">  <span class="dt">error =</span> <span class="kw"><a href="../reference/with_handlers.html">calling</a></span>(entrace),</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3">  <span class="kw">foo</span>(bar)</a>
-<a class="sourceLine" id="cb8-4" data-line-number="4">)</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw"><a href="../reference/with_handlers.html">with_handlers</a></span>(</span>
+<span id="cb10-2"><a href="#cb10-2"></a>  <span class="dt">error =</span> <span class="kw"><a href="../reference/with_handlers.html">calling</a></span>(entrace),</span>
+<span id="cb10-3"><a href="#cb10-3"></a>  <span class="kw">foo</span>(bar)</span>
+<span id="cb10-4"><a href="#cb10-4"></a>)</span></code></pre></div>
 <p>However it’s often more practical to use <code><a href="../reference/with_abort.html">with_abort()</a></code> in that case:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../reference/with_abort.html">with_abort</a></span>(<span class="kw">foo</span>(bar))</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw"><a href="../reference/with_abort.html">with_abort</a></span>(<span class="kw">foo</span>(bar))</span></code></pre></div>
 </li>
 <li><p><code><a href="../reference/with_abort.html">with_abort()</a></code> gains a <code>classes</code> argument to promote any kind of condition to an rlang error.</p></li>
 <li><p>New <code><a href="../reference/last_error.html">last_trace()</a></code> shortcut to print the backtrace stored in the <code><a href="../reference/last_error.html">last_error()</a></code>.</p></li>
@@ -370,9 +427,9 @@ letters %&gt;% set_names(toupper)</code></pre>
 </ul>
 </div>
 </div>
-    <div id="rlang-0-3-0" class="section level1">
+    <div id="rlang-030" class="section level1">
 <h1 class="page-header">
-<a href="#rlang-0-3-0" class="anchor"></a>rlang 0.3.0<small> 2018-10-22 </small>
+<a href="#rlang-030" class="anchor"></a>rlang 0.3.0<small> 2018-10-22 </small>
 </h1>
 <div id="breaking-changes" class="section level2">
 <h2 class="hasAnchor">
@@ -389,8 +446,8 @@ letters %&gt;% set_names(toupper)</code></pre>
 <li><p><code><a href="../reference/nse-defuse.html">exprs()</a></code> no longer flattens quosures. <code><a href="../reference/nse-defuse.html">exprs(!!!quos(x, y))</a></code> is now equivalent to <code><a href="../reference/nse-defuse.html">quos(x, y)</a></code>.</p></li>
 <li>
 <p>The sentinel for removing arguments in <code><a href="../reference/call_modify.html">call_modify()</a></code> has been changed from <code>NULL</code> to <code><a href="../reference/zap.html">zap()</a></code>. This breaking change is motivated by the ambiguity of <code>NULL</code> with valid argument values.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="../reference/call_modify.html">call_modify</a></span>(call, <span class="dt">arg =</span> <span class="ot">NULL</span>)  <span class="co"># Add `arg = NULL` to the call</span></a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw"><a href="../reference/call_modify.html">call_modify</a></span>(call, <span class="dt">arg =</span> <span class="kw"><a href="../reference/zap.html">zap</a></span>()) <span class="co"># Remove the `arg` argument from the call</span></a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw"><a href="../reference/call_modify.html">call_modify</a></span>(call, <span class="dt">arg =</span> <span class="ot">NULL</span>)  <span class="co"># Add `arg = NULL` to the call</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="kw"><a href="../reference/call_modify.html">call_modify</a></span>(call, <span class="dt">arg =</span> <span class="kw"><a href="../reference/zap.html">zap</a></span>()) <span class="co"># Remove the `arg` argument from the call</span></span></code></pre></div>
 </li>
 <li><p>The <code><a href="../reference/op-get-attr.html">%@%</a></code> operator now quotes its input and supports S4 objects. This makes it directly equivalent to <code>@</code> except that it extracts attributes for non-S4 objects (<a href='https://github.com/r-lib/rlang/issues/207'>#207</a>).</p></li>
 <li><p>Taking the <code><a href="../reference/env_parent.html">env_parent()</a></code> of the empty environment is now an error.</p></li>
@@ -442,7 +499,7 @@ letters %&gt;% set_names(toupper)</code></pre>
 <ul>
 <li><p>Lists, pairlists, and atomic vectors. If they have a class, they are converted with <code><a href="https://rdrr.io/r/base/list.html">base::as.list()</a></code> to allow S3 dispatch. Following this change, objects like factors can now be spliced without data loss.</p></li>
 <li><p>S4 objects. These are converted with <code>as(obj, "list")</code> before splicing.</p></li>
-<li><p>Quoted blocks of expressions, i.e. <code>{ }</code> calls</p></li>
+<li><p>Quoted blocks of expressions, i.e. <code>{ }</code> calls</p></li>
 </ul>
 <p><code>!!!</code> disallows:</p>
 <ul>
@@ -626,15 +683,15 @@ rlang::expr(mean(!!var * 100))</a></code></pre>
 </div>
 </div>
 </div>
-    <div id="rlang-0-2-2" class="section level1">
+    <div id="rlang-022" class="section level1">
 <h1 class="page-header">
-<a href="#rlang-0-2-2" class="anchor"></a>rlang 0.2.2<small> 2018-08-16 </small>
+<a href="#rlang-022" class="anchor"></a>rlang 0.2.2<small> 2018-08-16 </small>
 </h1>
 <p>This is a maintenance release that fixes several garbage collection protection issues.</p>
 </div>
-    <div id="rlang-0-2-1" class="section level1">
+    <div id="rlang-021" class="section level1">
 <h1 class="page-header">
-<a href="#rlang-0-2-1" class="anchor"></a>rlang 0.2.1<small> 2018-05-30 </small>
+<a href="#rlang-021" class="anchor"></a>rlang 0.2.1<small> 2018-05-30 </small>
 </h1>
 <p>This is a maintenance release that fixes several tidy evaluation issues.</p>
 <ul>
@@ -643,9 +700,9 @@ rlang::expr(mean(!!var * 100))</a></code></pre>
 <li><p>Formulas are now evaluated in the correct environment by <code><a href="../reference/eval_tidy.html">eval_tidy()</a></code>. This fixes issues in dplyr and other tidy-evaluation interfaces.</p></li>
 </ul>
 </div>
-    <div id="rlang-0-2-0" class="section level1">
+    <div id="rlang-020" class="section level1">
 <h1 class="page-header">
-<a href="#rlang-0-2-0" class="anchor"></a>rlang 0.2.0<small> 2018-02-20 </small>
+<a href="#rlang-020" class="anchor"></a>rlang 0.2.0<small> 2018-02-20 </small>
 </h1>
 <p>This release of rlang is mostly an effort at polishing the tidy evaluation framework. All tidy eval functions and operators have been rewritten in C in order to improve performance. Capture of expression, quasiquotation, and evaluation of quosures are now vastly faster. On the UI side, many of the inconveniences that affected the first release of rlang have been solved:</p>
 <ul>
@@ -661,7 +718,7 @@ rlang::expr(mean(!!var * 100))</a></code></pre>
 <ul>
 <li><p>The backend for <code><a href="../reference/nse-defuse.html">quos()</a></code>, <code><a href="../reference/nse-defuse.html">exprs()</a></code>, <code><a href="../reference/list2.html">list2()</a></code>, <code><a href="../reference/list2.html">dots_list()</a></code>, etc is now written in C. This greatly improve the performance of dots capture, especially with the splicing operator <code>!!!</code> which now scales much better (you’ll see a 1000x performance gain in some cases). The unquoting algorithm has also been improved which makes <code><a href="../reference/nse-defuse.html">enexpr()</a></code> and <code><a href="../reference/nse-defuse.html">enquo()</a></code> more efficient as well.</p></li>
 <li>
-<p>The tidy eval <code>!!</code> operator now binds tightly. You no longer have to wrap it in parentheses, i.e. <code>!!x &gt; y</code> will only unquote <code>x</code>.</p>
+<p>The tidy eval <code>!!</code> operator now binds tightly. You no longer have to wrap it in parentheses, i.e. <code>!!x &gt; y</code> will only unquote <code>x</code>.</p>
 <p>Technically the <code>!!</code> operator has the same precedence as unary <code><a href="https://rdrr.io/r/base/Arithmetic.html">-</a></code> and <code><a href="https://rdrr.io/r/base/Arithmetic.html">+</a></code>. This means that <code>!!a:b</code> and <code>!!a + b</code> are equivalent to <code>(!!a):b</code> and <code>(!!a) + b</code>. On the other hand <code>!!a^b</code> and <code>!!a$b</code> are equivalent to<code>!!(a^b)</code> and <code>!!(a$b)</code>.</p>
 </li>
 <li><p>The print method for quosures has been greatly improved. Quosures no longer appear as formulas but as expressions prefixed with <code><a href="https://rdrr.io/r/base/Arithmetic.html">^</a></code>; quosures are colourised according to their environment; unquoted objects are displayed between angular brackets instead of code (i.e. an unquoted integer vector is shown as <code>&lt;int: 1, 2&gt;</code> rather than <code>1:2</code>); unquoted S3 objects are displayed using <code><a href="https://rdrr.io/pkg/pillar/man/type_sum.html">pillar::type_sum()</a></code> if available.</p></li>
@@ -726,7 +783,7 @@ quo(call(`!!!`(var)))</a></code></pre>
 <ul>
 <li><p>New functions <code><a href="../reference/inherits_any.html">inherits_any()</a></code>, <code><a href="../reference/inherits_any.html">inherits_all()</a></code>, and <code><a href="../reference/inherits_any.html">inherits_only()</a></code>. They allow testing for inheritance from multiple classes. The <code>_any</code> variant is equivalent to <code><a href="https://rdrr.io/r/base/class.html">base::inherits()</a></code> but is more explicit about its behaviour. <code><a href="../reference/inherits_any.html">inherits_all()</a></code> checks that all classes are present in order and <code><a href="../reference/inherits_any.html">inherits_only()</a></code> checks that the class vectors are identical.</p></li>
 <li><p>New <code>fn_fmls&lt;-</code> and <code>fn_fmls_names&lt;-</code> setters.</p></li>
-<li><p>New function experimental function <code><a href="../reference/chr_unserialise_unicode.html">chr_unserialise_unicode()</a></code> for turning characters serialised to unicode point form (e.g. <code>&lt;U+xxxx&gt;</code>) to UTF-8. In addition, <code><a href="../reference/as_utf8_character.html">as_utf8_character()</a></code> now translates those as well. (<a href='https://github.com/krlmlr'>@krlmlr</a>)</p></li>
+<li><p>New function experimental function <code><a href="../reference/chr_unserialise_unicode.html">chr_unserialise_unicode()</a></code> for turning characters serialised to unicode point form (e.g. <code>&lt;U+xxxx&gt;</code>) to UTF-8. In addition, <code><a href="../reference/as_utf8_character.html">as_utf8_character()</a></code> now translates those as well. (<a href='https://github.com/krlmlr'>@krlmlr</a>)</p></li>
 <li><p><code><a href="../reference/expr_label.html">expr_label()</a></code> now supports quoted function definition calls (<a href='https://github.com/r-lib/rlang/issues/275'>#275</a>).</p></li>
 <li><p><code><a href="../reference/call_modify.html">call_modify()</a></code> and <code><a href="../reference/call_standardise.html">call_standardise()</a></code> gain an argument to specify an environment. The call definition is looked up in that environment when the call to modify or standardise is not wrapped in a quosure.</p></li>
 <li><p><code><a href="../reference/is_symbol.html">is_symbol()</a></code> gains a <code>name</code> argument to check that that the symbol name matches a string (<a href='https://github.com/r-lib/rlang/issues/287'>#287</a>).</p></li>
@@ -771,9 +828,9 @@ quo(call(`!!!`(var)))</a></code></pre>
 <h3 class="hasAnchor">
 <a href="#breaking-changes-1" class="anchor"></a>Breaking changes</h3>
 <ul>
-<li><p><code>!!</code> now binds tightly in order to match intuitive parsing of tidy eval code, e.g. <code>!! x &gt; y</code> is now equivalent to <code>(!! x) &gt; y</code>. A corollary of this new syntax is that you now have to be explicit when you want to unquote the whole expression on the right of <code>!!</code>. For instance you have to explicitly write <code>!! (x &gt; y)</code> to unquote <code>x &gt; y</code> rather than just <code>x</code>.</p></li>
+<li><p><code>!!</code> now binds tightly in order to match intuitive parsing of tidy eval code, e.g. <code>!! x &gt; y</code> is now equivalent to <code>(!! x) &gt; y</code>. A corollary of this new syntax is that you now have to be explicit when you want to unquote the whole expression on the right of <code>!!</code>. For instance you have to explicitly write <code>!! (x &gt; y)</code> to unquote <code>x &gt; y</code> rather than just <code>x</code>.</p></li>
 <li><p><code><a href="../reference/nse-force.html">UQ()</a></code>, <code><a href="../reference/nse-force.html">UQS()</a></code> and <code>:=</code> now issue an error when called directly. The previous definitions caused surprising results when the operators were invoked in wrong places (i.e. not in quasiquoted arguments).</p></li>
-<li><p>The prefix form <code><a href="../reference/nse-force.html">`!!`()</a></code> is now an alias to <code>!!</code> rather than <code>UQE()</code>. This makes it more in line with regular R syntax where operators are parsed as regular calls, e.g. <code>a + b</code> is parsed as <code>`+`(a, b)</code> and both forms are completely equivalent. Also the prefix form <code><a href="../reference/nse-force.html">`!!!`()</a></code> is now equivalent to <code>!!!</code>.</p></li>
+<li><p>The prefix form <code><a href="../reference/nse-force.html">`!!`()</a></code> is now an alias to <code>!!</code> rather than <code>UQE()</code>. This makes it more in line with regular R syntax where operators are parsed as regular calls, e.g. <code>a + b</code> is parsed as <code>`+`(a, b)</code> and both forms are completely equivalent. Also the prefix form <code><a href="../reference/nse-force.html">`!!!`()</a></code> is now equivalent to <code>!!!</code>.</p></li>
 <li><p><code>UQE()</code> is now deprecated in order to simplify the syntax of quasiquotation. Please use <code>!! get_expr(x)</code> instead.</p></li>
 <li><p><code><a href="../reference/expr_interp.html">expr_interp()</a></code> now returns a formula instead of a quosure when supplied a formula.</p></li>
 <li><p><code>is_quosureish()</code> and <code>as_quosureish()</code> are deprecated. These functions assumed that quosures are formulas but that is only an implementation detail.</p></li>
@@ -798,40 +855,40 @@ quo(call(`!!!`(var)))</a></code></pre>
 <li><p><code><a href="../reference/as_overscope.html">as_overscope()</a></code> is soft-deprecated in favour of <code><a href="../reference/as_data_mask.html">as_data_mask()</a></code>.</p></li>
 <li><p>The node setters were renamed from <code>mut_node_</code> prefix to <code>node_poke_</code>. This change follows a new naming convention in rlang where mutation is referred to as “poking”.</p></li>
 <li><p><code><a href="../reference/splice.html">splice()</a></code> is now in questioning stage as it is not needed given the <code>!!!</code> operator works in functions taking dots with <code><a href="../reference/list2.html">dots_list()</a></code>.</p></li>
-<li><p><code><a href="../reference/vector-old-ctors.html">lgl_len()</a></code>, <code><a href="../reference/vector-old-ctors.html">int_len()</a></code> etc have been soft-deprecated and renamed with <code>new_</code> prefix, e.g. <code><a href="../reference/new-vector.html">new_logical()</a></code> and <code><a href="../reference/new-vector.html">new_integer()</a></code>. This is for consistency with other non-variadic object constructors.</p></li>
+<li><p><code><a href="../reference/vector-old-ctors.html">lgl_len()</a></code>, <code><a href="../reference/vector-old-ctors.html">int_len()</a></code> etc have been soft-deprecated and renamed with <code>new_</code> prefix, e.g. <code><a href="../reference/new-vector.html">new_logical()</a></code> and <code><a href="../reference/new-vector.html">new_integer()</a></code>. This is for consistency with other non-variadic object constructors.</p></li>
 <li><p><code><a href="../reference/list2.html">ll()</a></code> is now an alias to <code><a href="../reference/list2.html">list2()</a></code>. This is consistent with the new <code><a href="../reference/call2.html">call2()</a></code> constructor for calls. <code><a href="../reference/list2.html">list2()</a></code> and <code><a href="../reference/call2.html">call2()</a></code> are versions of <code><a href="https://rdrr.io/r/base/list.html">list()</a></code> and <code><a href="https://rdrr.io/r/base/call.html">call()</a></code> that support splicing of lists with <code>!!!</code>. <code><a href="../reference/list2.html">ll()</a></code> remains around as a shorthand for users who like its conciseness.</p></li>
-<li><p>Automatic splicing of lists in vector constructors (e.g. <code><a href="../reference/vector-construction.html">lgl()</a></code>, <code><a href="../reference/vector-construction.html">chr()</a></code>, etc) is now soft-deprecated. Please be explicit with the splicing operator <code>!!!</code>.</p></li>
+<li><p>Automatic splicing of lists in vector constructors (e.g. <code><a href="../reference/vector-construction.html">lgl()</a></code>, <code><a href="../reference/vector-construction.html">chr()</a></code>, etc) is now soft-deprecated. Please be explicit with the splicing operator <code>!!!</code>.</p></li>
 </ul>
 </div>
 </div>
 </div>
-    <div id="rlang-0-1-6" class="section level1">
+    <div id="rlang-016" class="section level1">
 <h1 class="page-header">
-<a href="#rlang-0-1-6" class="anchor"></a>rlang 0.1.6<small> 2017-12-21 </small>
+<a href="#rlang-016" class="anchor"></a>rlang 0.1.6<small> 2017-12-21 </small>
 </h1>
 <ul>
 <li><p>This is a maintenance release in anticipation of a forthcoming change to R’s C API (use <code>MARK_NOT_MUTABLE()</code> instead of <code>SET_NAMED()</code>).</p></li>
 <li><p>New function <code><a href="../reference/is_reference.html">is_reference()</a></code> to check whether two objects are one and the same.</p></li>
 </ul>
 </div>
-    <div id="rlang-0-1-4" class="section level1">
+    <div id="rlang-014" class="section level1">
 <h1 class="page-header">
-<a href="#rlang-0-1-4" class="anchor"></a>rlang 0.1.4<small> 2017-11-05 </small>
+<a href="#rlang-014" class="anchor"></a>rlang 0.1.4<small> 2017-11-05 </small>
 </h1>
 <ul>
 <li>
 <code><a href="../reference/eval_tidy.html">eval_tidy()</a></code> no longer maps over lists but returns them literally. This behaviour is an overlook from past refactorings and was never documented.</li>
 </ul>
 </div>
-    <div id="rlang-0-1-2" class="section level1">
+    <div id="rlang-012" class="section level1">
 <h1 class="page-header">
-<a href="#rlang-0-1-2" class="anchor"></a>rlang 0.1.2<small> 2017-08-09 </small>
+<a href="#rlang-012" class="anchor"></a>rlang 0.1.2<small> 2017-08-09 </small>
 </h1>
 <p>This hotfix release makes rlang compatible with the R 3.1 branch.</p>
 </div>
-    <div id="rlang-0-1-1" class="section level1">
+    <div id="rlang-011" class="section level1">
 <h1 class="page-header">
-<a href="#rlang-0-1-1" class="anchor"></a>rlang 0.1.1<small> 2017-05-18 </small>
+<a href="#rlang-011" class="anchor"></a>rlang 0.1.1<small> 2017-05-18 </small>
 </h1>
 <p>This release includes two important fixes for tidy evaluation:</p>
 <ul>
@@ -864,9 +921,9 @@ quo(call(`!!!`(var)))</a></code></pre>
 </ul>
 </div>
 </div>
-    <div id="rlang-0-1-0" class="section level1">
+    <div id="rlang-010" class="section level1">
 <h1 class="page-header">
-<a href="#rlang-0-1-0" class="anchor"></a>rlang 0.1.0<small> Unreleased </small>
+<a href="#rlang-010" class="anchor"></a>rlang 0.1.0<small> Unreleased </small>
 </h1>
 <p>Initial release.</p>
 </div>
@@ -877,20 +934,22 @@ quo(call(`!!!`(var)))</a></code></pre>
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
         <li><a href="#rlang-development-version">development version</a></li>
-        <li><a href="#rlang-0-4-2">0.4.2</a></li>
-        <li><a href="#rlang-0-4-1">0.4.1</a></li>
-        <li><a href="#rlang-0-4-0">0.4.0</a></li>
-        <li><a href="#rlang-0-3-2">0.3.2</a></li>
-        <li><a href="#rlang-0-3-1">0.3.1</a></li>
-        <li><a href="#rlang-0-3-0">0.3.0</a></li>
-        <li><a href="#rlang-0-2-2">0.2.2</a></li>
-        <li><a href="#rlang-0-2-1">0.2.1</a></li>
-        <li><a href="#rlang-0-2-0">0.2.0</a></li>
-        <li><a href="#rlang-0-1-6">0.1.6</a></li>
-        <li><a href="#rlang-0-1-4">0.1.4</a></li>
-        <li><a href="#rlang-0-1-2">0.1.2</a></li>
-        <li><a href="#rlang-0-1-1">0.1.1</a></li>
-        <li><a href="#rlang-0-1-0">0.1.0</a></li>
+        <li><a href="#rlang-044">0.4.4</a></li>
+        <li><a href="#rlang-043">0.4.3</a></li>
+        <li><a href="#rlang-042">0.4.2</a></li>
+        <li><a href="#rlang-041">0.4.1</a></li>
+        <li><a href="#rlang-040">0.4.0</a></li>
+        <li><a href="#rlang-032">0.3.2</a></li>
+        <li><a href="#rlang-031">0.3.1</a></li>
+        <li><a href="#rlang-030">0.3.0</a></li>
+        <li><a href="#rlang-022">0.2.2</a></li>
+        <li><a href="#rlang-021">0.2.1</a></li>
+        <li><a href="#rlang-020">0.2.0</a></li>
+        <li><a href="#rlang-016">0.1.6</a></li>
+        <li><a href="#rlang-014">0.1.4</a></li>
+        <li><a href="#rlang-012">0.1.2</a></li>
+        <li><a href="#rlang-011">0.1.1</a></li>
+        <li><a href="#rlang-010">0.1.0</a></li>
       </ul>
     </div>
   </div>
@@ -904,7 +963,7 @@ quo(call(`!!!`(var)))</a></code></pre>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
 
       </footer>

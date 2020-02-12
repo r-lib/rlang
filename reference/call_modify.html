@@ -81,7 +81,7 @@ modifying the call." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4.9000</span>
       </span>
     </div>
 
@@ -157,8 +157,13 @@ arguments are standardised with <code><a href='call_standardise.html'>call_stand
 modifying the call.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>call_modify</span>(<span class='no'>.call</span>, <span class='no'>...</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>, <span class='st'>"error"</span>),
-  <span class='kw'>.standardise</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>.env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>())</pre>
+    <pre class="usage"><span class='fu'>call_modify</span>(
+  <span class='no'>.call</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>, <span class='st'>"error"</span>),
+  <span class='kw'>.standardise</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>.env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>()
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -243,7 +248,7 @@ this change.</p></li>
 <span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='no'>bar</span>))
 <span class='fu'>call_modify</span>(<span class='no'>f</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>foo</span>))</div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^matrix(bar, foo)</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x77b6b00</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7fa11922cbb8</span><span></div><div class='input'>
 
 <span class='co'># By default, arguments with the same name are kept. This has</span>
 <span class='co'># subtle implications, for instance you can move an argument to</span>
@@ -274,7 +279,7 @@ this change.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
 
       </footer>
