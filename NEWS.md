@@ -1,11 +1,15 @@
 
 # rlang (development version)
 
-* `arg_match()` now detects and suggests possible typos in provided arguments
-  (@jonkeane, #798).
+* All rlang options are now documented in a centralised place (#899,
+  @smingerson).
 
-* `arg_match()` now gives an error if argument is of length greater than 1 and doesn't exactly
-  match the values input, similar to base `match.arg` (#914, @AliciaSchep) 
+* `arg_match()` now detects and suggests possible typos in provided
+  arguments (@jonkeane, #798).
+
+* `arg_match()` now gives an error if argument is of length greater
+  than 1 and doesn't exactly match the values input, similar to base
+  `match.arg` (#914, @AliciaSchep)
 
 # rlang 0.4.4
 

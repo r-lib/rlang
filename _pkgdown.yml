@@ -280,3 +280,6 @@ reference:
     contents:
       - matches("weakref")
       - matches("wref")
+  - title: FAQ
+    contents:
+      - matches("faq")
