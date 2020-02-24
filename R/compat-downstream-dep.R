@@ -20,12 +20,14 @@ check_downstream_deps <- local({
     }
   }
 
+  is_string <- function(x) is.character(x) && length(x) == 1 && !is.na(x)
+
   check_downstream_dep <- function(pkg, dep_pkg, dep_data, with_rlang) {
     min <- dep_data[["min"]]
     from <- dep_data[["from"]]
     stopifnot(
-      !is.null(min),
-      !is.null(from)
+      is_string(min),
+      is_string(from)
     )
 
     ver <- utils::packageVersion(dep_pkg)
