@@ -21,7 +21,7 @@ base_pkg_env <- NULL
   }
 
   check_linked_version(pkg, with_rlang = FALSE)
-  check_downstream_deps(downstream_deps)
+  check_downstream_deps(pkg, downstream_deps, with_rlang = FALSE)
 
   on_package_load("glue", .Call(rlang_glue_is_there))
 

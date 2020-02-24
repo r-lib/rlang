@@ -1,4 +1,4 @@
-# nocov start --- compat-downstream-deps --- 2020-02-24 Mon 13:05 CET
+# nocov start --- compat-downstream-deps --- 2020-02-24 Mon 15:57 CET
 
 
 check_downstream_deps <- local({
@@ -20,27 +20,36 @@ check_downstream_deps <- local({
     }
   }
 
-  check_downstream_dep <- function(dep, pkg) {
-    min <- dep[["min"]]
-    from <- dep[["from"]]
+  check_downstream_dep <- function(pkg, dep_pkg, dep_data, with_rlang) {
+    min <- dep_data[["min"]]
+    from <- dep_data[["from"]]
     stopifnot(
-      !is_null(min),
-      !is_null(from)
+      !is.null(min),
+      !is.null(from)
     )
 
-    ver <- utils::packageVersion(pkg)
+    ver <- utils::packageVersion(dep_pkg)
     if (ver >= min) {
       return()
     }
 
     rlang_ver <- utils::packageVersion("rlang")
 
-    msg <- c(
-      sprintf("As of rlang %s, %s must be at least version %s.", from, pkg, min),
-      x = sprintf("%s %s is too old for rlang %s.", pkg, ver, rlang_ver)
+    header <- sprintf("As of rlang %s, %s must be at least version %s.", from, dep_pkg, min)
+    body <- c(
+      x = sprintf("%s %s is too old for rlang %s.", dep_pkg, ver, rlang_ver),
+      howto_reinstall_msg(dep_pkg)
     )
 
-    warn(c(msg, howto_reinstall_msg(pkg)))
+    if (with_rlang) {
+      body <- rlang::format_error_bullets(body)
+      msg <- paste(c(header, body), collapse = "\n")
+      rlang::warn(msg)
+    } else {
+      body <- paste0("* ", body)
+      msg <- paste(c(header, body), collapse = "\n")
+      warning(msg, call. = FALSE)
+    }
   }
 
   on_package_load <- function(pkg, expr) {
@@ -52,14 +61,19 @@ check_downstream_deps <- local({
     }
   }
 
-  function(deps) {
+  function(pkg, deps, with_rlang = requireNamespace("rlang")) {
     Map(
-      function(dep, pkg) {
-        force(dep)
-        on_package_load(pkg, check_downstream_dep(dep, pkg))
+      function(dep_pkg, dep_data) {
+        force(dep_data)
+        on_package_load(dep_pkg, check_downstream_dep(
+          pkg,
+          dep_pkg,
+          dep_data,
+          with_rlang = with_rlang
+        ))
       },
-      deps,
-      names(deps)
+      names(deps),
+      deps
     )
   }
 })
