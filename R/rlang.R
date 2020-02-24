@@ -5,56 +5,9 @@ NULL
 is_same_body <- NULL
 
 
-on_package_load <- function(pkg, expr) {
-  if (isNamespaceLoaded(pkg)) {
-    expr
-  } else {
-    thunk <- function(...) expr
-    setHook(packageEvent(pkg, "onLoad"), thunk)
-  }
-}
-
-
 downstream_deps <- list(
   dplyr = c(min = "0.8.0", from = "0.4.0")
 )
-
-check_downstream_dep <- function(dep, pkg) {
-  min <- dep[["min"]]
-  from <- dep[["from"]]
-  stopifnot(
-    !is_null(min),
-    !is_null(from)
-  )
-
-  ver <- utils::packageVersion(pkg)
-  if (ver >= min) {
-    return()
-  }
-
-  rlang_ver <- utils::packageVersion("rlang")
-
-  msg <- c(
-    sprintf("As of rlang %s, %s must be at least version %s.", from, pkg, min),
-    x = sprintf("%s %s is too old for rlang %s.", pkg, ver, rlang_ver)
-  )
-
-  os <- tolower(Sys.info()[["sysname"]])
-  if (os == "windows") {
-    url <- "https://github.com/jennybc/what-they-forgot/issues/62"
-    howto <- c(
-      i = sprintf("Please update %s to the latest version.", pkg),
-      i = sprintf("Updating packages on Windows requires precautions:\n  <%s>", url)
-    )
-  } else {
-    howto <- c(
-      i = sprintf("Please update %s with `install.packages(\"%s\")` and restart R.", pkg, pkg)
-    )
-  }
-  msg <- c(msg, howto)
-
-  warn(msg)
-}
 
 
 base_ns_env <- NULL
@@ -68,6 +21,8 @@ base_pkg_env <- NULL
   }
 
   check_linked_version(pkg, with_rlang = FALSE)
+  check_downstream_deps(downstream_deps)
+
   on_package_load("glue", .Call(rlang_glue_is_there))
 
   .Call(r_init_library)
@@ -76,14 +31,18 @@ base_pkg_env <- NULL
   s3_register("pillar::pillar_shaft", "quosures", pillar_shaft.quosures)
   s3_register("pillar::type_sum", "quosures", type_sum.quosures)
 
-  map2(downstream_deps, names(downstream_deps), function(dep, pkg) {
-    force(dep)
-    on_package_load(pkg, check_downstream_dep(dep, pkg))
-  })
-
   base_ns_env <<- ns_env("base")
   base_pkg_env <<- baseenv()
 }
 .onUnload <- function(lib) {
   .Call(rlang_library_unload)
+}
+
+on_package_load <- function(pkg, expr) {
+  if (isNamespaceLoaded(pkg)) {
+    expr
+  } else {
+    thunk <- function(...) expr
+    setHook(packageEvent(pkg, "onLoad"), thunk)
+  }
 }
