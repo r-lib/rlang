@@ -1,7 +1,24 @@
-# nocov start --- compat-downstream-deps --- 2020-02-24 Mon 12:59 CET
+# nocov start --- compat-downstream-deps --- 2020-02-24 Mon 13:05 CET
 
 
 check_downstream_deps <- local({
+
+  # Keep in sync with compat-linked-version.R
+  howto_reinstall_msg <- function(pkg) {
+    os <- tolower(Sys.info()[["sysname"]])
+
+    if (os == "windows") {
+      url <- "https://github.com/jennybc/what-they-forgot/issues/62"
+      c(
+        i = sprintf("Please update %s to the latest version.", pkg),
+        i = sprintf("Updating packages on Windows requires precautions:\n  <%s>", url)
+      )
+    } else {
+      c(
+        i = sprintf("Please update %s with `install.packages(\"%s\")` and restart R.", pkg, pkg)
+      )
+    }
+  }
 
   check_downstream_dep <- function(dep, pkg) {
     min <- dep[["min"]]
@@ -23,21 +40,7 @@ check_downstream_deps <- local({
       x = sprintf("%s %s is too old for rlang %s.", pkg, ver, rlang_ver)
     )
 
-    os <- tolower(Sys.info()[["sysname"]])
-    if (os == "windows") {
-      url <- "https://github.com/jennybc/what-they-forgot/issues/62"
-      howto <- c(
-        i = sprintf("Please update %s to the latest version.", pkg),
-        i = sprintf("Updating packages on Windows requires precautions:\n  <%s>", url)
-      )
-    } else {
-      howto <- c(
-        i = sprintf("Please update %s with `install.packages(\"%s\")` and restart R.", pkg, pkg)
-      )
-    }
-    msg <- c(msg, howto)
-
-    warn(msg)
+    warn(c(msg, howto_reinstall_msg(pkg)))
   }
 
   on_package_load <- function(pkg, expr) {

@@ -1,8 +1,9 @@
-# nocov start --- compat-linked-version --- 2020-02-24 Mon 12:55 CET
+# nocov start --- compat-linked-version --- 2020-02-24 Mon 13:05 CET
 
 
 check_linked_version <- local({
 
+  # Keep in sync with compat-downstream-deps.R
   howto_reinstall_msg <- function(pkg) {
     os <- tolower(Sys.info()[["sysname"]])
 
