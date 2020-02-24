@@ -5,11 +5,6 @@ NULL
 is_same_body <- NULL
 
 
-downstream_deps <- list(
-  dplyr = c(min = "0.8.0", from = "0.4.0")
-)
-
-
 base_ns_env <- NULL
 base_pkg_env <- NULL
 
@@ -21,7 +16,12 @@ base_pkg_env <- NULL
   }
 
   check_linked_version(pkg, with_rlang = FALSE)
-  check_downstream_deps(pkg, downstream_deps, with_rlang = FALSE)
+
+  check_downstream_deps(
+    pkg,
+    dplyr = c(min = "0.8.0", from = "0.4.0"),
+    with_rlang = FALSE
+  )
 
   on_package_load("glue", .Call(rlang_glue_is_there))
 

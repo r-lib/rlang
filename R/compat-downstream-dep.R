@@ -63,7 +63,14 @@ check_downstream_deps <- local({
     }
   }
 
-  function(pkg, deps, with_rlang = requireNamespace("rlang")) {
+  function(pkg, ..., with_rlang = requireNamespace("rlang")) {
+    deps <- list(...)
+    nms <- names(deps)
+
+    if (is.null(nms)) {
+      stop("Downstream dependencies should be named.", call. = FALSE)
+    }
+
     Map(
       function(dep_pkg, dep_data) {
         force(dep_data)
@@ -74,7 +81,7 @@ check_downstream_deps <- local({
           with_rlang = with_rlang
         ))
       },
-      names(deps),
+      nms,
       deps
     )
   }
