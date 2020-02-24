@@ -67,6 +67,7 @@ base_pkg_env <- NULL
     is_same_body <<- is_reference
   }
 
+  check_linked_version(pkg, with_rlang = FALSE)
   on_package_load("glue", .Call(rlang_glue_is_there))
 
   .Call(r_init_library)
