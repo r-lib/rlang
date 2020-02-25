@@ -9,6 +9,7 @@ sexp* rlang_ns_get(const char* name);
 // Initialised at load time
 static sexp* empty_spliced_arg = NULL;
 static sexp* splice_box_attrib = NULL;
+static sexp* quosures_attrib = NULL;
 
 sexp* rlang_new_splice_box(sexp* x) {
   sexp* out = KEEP(r_new_vector(r_type_list, 1));
@@ -772,9 +773,12 @@ sexp* rlang_quos_interp(sexp* frame_env,
   dots = KEEP(dots_as_list(dots, &capture_info));
   dots = KEEP(dots_finalise(&capture_info, dots));
 
-  r_push_class(dots, "quosures");
+  sexp* attrib = KEEP(r_new_node(r_names(dots), quosures_attrib));
+  r_node_poke_tag(attrib, r_names_sym);
+  r_poke_attributes(dots, attrib);
+  r_mark_object(dots);
 
-  FREE(3);
+  FREE(4);
   return dots;
 }
 
@@ -989,6 +993,19 @@ void rlang_init_dots(sexp* ns) {
     empty_spliced_arg = rlang_new_splice_box(list);
     r_mark_precious(empty_spliced_arg);
     r_mark_shared(empty_spliced_arg);
+    FREE(1);
+  }
+
+  {
+    sexp* quosures_class = KEEP(r_new_vector(r_type_character, 2));
+    r_chr_poke(quosures_class, 0, r_string("quosures"));
+    r_chr_poke(quosures_class, 1, r_string("list"));
+
+    quosures_attrib = r_pairlist(quosures_class);
+    r_mark_precious(quosures_attrib);
+    r_mark_shared(quosures_attrib);
+
+    r_node_poke_tag(quosures_attrib, r_class_sym);
     FREE(1);
   }
 }

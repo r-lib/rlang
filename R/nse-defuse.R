@@ -323,7 +323,7 @@ enquos <- function(...,
     homonyms = .homonyms,
     check_assign = .check_assign
   )
-  structure(quos, class = "quosures")
+  structure(quos, class = c("quosures", "list"))
 }
 
 

@@ -182,7 +182,7 @@ new_quosures <- function(x) {
     abort("Expected a list of quosures")
   }
   structure(x,
-    class = "quosures",
+    class = c("quosures", "list"),
     names = names2(x)
   )
 }
@@ -203,7 +203,7 @@ is_quosures <- function(x) {
 
 #' @export
 `[.quosures` <- function(x, i) {
-  structure(NextMethod(), class = "quosures")
+  structure(NextMethod(), class = c("quosures", "list"))
 }
 #' @export
 c.quosures <- function(..., recursive = FALSE) {

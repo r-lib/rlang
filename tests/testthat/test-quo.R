@@ -189,7 +189,7 @@ test_that("new_quosures() checks that elements are quosures", {
 })
 
 test_that("new_quosures() and as_quosures() return named lists", {
-  exp <- structure(list(), names = chr(), class = "quosures")
+  exp <- structure(list(), names = chr(), class = c("quosures", "list"))
   expect_identical(new_quosures(list()), exp)
   expect_identical(as_quosures(list()), exp)
 })
@@ -276,6 +276,17 @@ test_that("new_quosure() checks input", {
 
 test_that("as_string(quo) produces informative error message", {
   expect_error(as_string(quo(foo)), "a `quosure/formula` object to a string")
+})
+
+test_that("`[` properly reconstructs quosure lists", {
+  expect_identical(quos(1, 2, 3)[2:3], quos(2, 3))
+  expect_identical(quos(1, 2, 3)[2:3], new_quosures(list(quo(2), quo(3))))
+})
+
+test_that("quosure lists are considered vectors", {
+  skip_if_not_installed("vctrs", "0.2.3")
+  expect_true(vctrs::vec_is(quos()))
+  expect_identical(vctrs::vec_slice(quos(1, 2, 3), 2:3), quos(2, 3))
 })
 
 

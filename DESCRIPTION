@@ -24,7 +24,8 @@ Suggests:
     methods,
     pillar,
     rmarkdown,
-    testthat (>= 2.3.0)
+    testthat (>= 2.3.0),
+    vctrs (>= 0.2.3)
 Encoding: UTF-8
 RoxygenNote: 7.0.2
 Roxygen: list(markdown = TRUE)

@@ -6,7 +6,7 @@ named_list <- function(...) {
   named(list(...))
 }
 quos_list <- function(...) {
-  structure(named_list(...), class = "quosures")
+  structure(named_list(...), class = c("quosures", "list"))
 }
 
 expect_error_ <- function(object, ...) {
