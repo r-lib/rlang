@@ -154,6 +154,7 @@
 <a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li><p>Quosure lists now explicitly inherit from <code>"list"</code>. This makes them compatible with the vctrs package (<a href='https://github.com/r-lib/rlang/issues/928'>#928</a>).</p></li>
 <li><p>All rlang options are now documented in a centralised place (<a href='https://github.com/r-lib/rlang/issues/899'>#899</a>, <a href='https://github.com/smingerson'>@smingerson</a>).</p></li>
 <li><p><code><a href="../reference/arg_match.html">arg_match()</a></code> now detects and suggests possible typos in provided arguments (<a href='https://github.com/jonkeane'>@jonkeane</a>, <a href='https://github.com/r-lib/rlang/issues/798'>#798</a>).</p></li>
 <li><p><code><a href="../reference/arg_match.html">arg_match()</a></code> now gives an error if argument is of length greater than 1 and doesn’t exactly match the values input, similar to base <code>match.arg</code> (<a href='https://github.com/r-lib/rlang/issues/914'>#914</a>, <a href='https://github.com/AliciaSchep'>@AliciaSchep</a>)</p></li>
