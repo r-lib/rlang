@@ -1,6 +1,9 @@
 
 # rlang (development version)
 
+* Quosure lists now explicitly inherit from `"list"`. This makes them
+  compatible with the vctrs package (#928).
+
 * All rlang options are now documented in a centralised place (#899,
   @smingerson).
 
