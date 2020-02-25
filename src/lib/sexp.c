@@ -1,7 +1,7 @@
 #include "rlang.h"
 
 bool r_is_named(sexp* x) {
-  sexp* nms = r_vec_names(x);
+  sexp* nms = r_names(x);
 
   if (r_typeof(nms) != STRSXP) {
     return false;
@@ -15,7 +15,7 @@ bool r_is_named(sexp* x) {
 }
 
 bool r_has_name_at(sexp* x, r_ssize i) {
-  sexp* nms = r_vec_names(x);
+  sexp* nms = r_names(x);
   return
     r_typeof(nms) == r_type_character &&
     r_chr_get(nms, i) != r_empty_str;

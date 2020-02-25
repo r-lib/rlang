@@ -518,7 +518,7 @@ static bool should_auto_name(sexp* named) {
 static sexp* auto_name_call = NULL;
 
 static sexp* maybe_auto_name(sexp* x, sexp* named) {
-  sexp* names = r_vec_names(x);
+  sexp* names = r_names(x);
 
   if (should_auto_name(named) && (names == r_null || r_chr_has(names, ""))) {
     x = r_eval_with_x(auto_name_call, r_base_env, x);
@@ -536,7 +536,7 @@ static bool any_name(sexp* x, bool splice) {
     sexp* elt = r_node_car(x);
 
     if (splice && is_splice_box(elt)) {
-      if (r_vec_names(rlang_unbox(elt)) != r_null) {
+      if (r_names(rlang_unbox(elt)) != r_null) {
         return true;
       }
     }
@@ -577,7 +577,7 @@ sexp* dots_as_list(sexp* dots, struct dots_capture_info* capture_info) {
       check_named_splice(dots);
 
       elt = rlang_unbox(elt);
-      sexp* nms = r_vec_names(elt);
+      sexp* nms = r_names(elt);
 
       r_ssize n = r_length(elt);
       for (r_ssize i = 0; i < n; ++i) {
@@ -701,7 +701,7 @@ static sexp* dots_capture(struct dots_capture_info* capture_info, sexp* frame_en
 sexp* rlang_unescape_character(sexp*);
 
 static sexp* dots_finalise(struct dots_capture_info* capture_info, sexp* dots) {
-  sexp* nms = r_vec_names(dots);
+  sexp* nms = r_names(dots);
 
   if (nms != r_null) {
     // Serialised unicode points might arise when unquoting lists

@@ -54,7 +54,7 @@ static inline sexp* r_get_class(sexp* x) {
   return r_get_attribute(x, r_class_sym);
 }
 
-static inline sexp* r_vec_names(sexp* x) {
+static inline sexp* r_names(sexp* x) {
   return r_get_attribute(x, r_names_sym);
 }
 static inline void r_poke_names(sexp* x, sexp* nms) {

@@ -42,7 +42,7 @@ static r_ssize atom_squash(enum r_type kind, squash_info_t info,
   }
 
   sexp* inner;
-  sexp* out_names = KEEP(r_vec_names(out));
+  sexp* out_names = KEEP(r_names(out));
   r_ssize n_outer = r_length(outer);
   r_ssize n_inner;
 
@@ -58,11 +58,11 @@ static r_ssize atom_squash(enum r_type kind, squash_info_t info,
       r_vec_poke_coerce_n(out, count, inner, 0, n_inner);
 
       if (info.named) {
-        sexp* nms = r_vec_names(inner);
+        sexp* nms = r_names(inner);
         if (r_typeof(nms) == r_type_character) {
           r_vec_poke_n(out_names, count, nms, 0, n_inner);
         } else if (n_inner == 1 && r_has_name_at(outer, i)) {
-          SET_STRING_ELT(out_names, count, STRING_ELT(r_vec_names(outer), i));
+          SET_STRING_ELT(out_names, count, STRING_ELT(r_names(outer), i));
         }
       }
 
@@ -85,7 +85,7 @@ static r_ssize list_squash(squash_info_t info, sexp* outer,
   }
 
   sexp* inner;
-  sexp* out_names = KEEP(r_vec_names(out));
+  sexp* out_names = KEEP(r_names(out));
   r_ssize n_outer = r_length(outer);
 
   for (r_ssize i = 0; i != n_outer; ++i) {
@@ -98,8 +98,8 @@ static r_ssize list_squash(squash_info_t info, sexp* outer,
     } else {
       SET_VECTOR_ELT(out, count, inner);
 
-      if (info.named && r_typeof(r_vec_names(outer)) == r_type_character) {
-        sexp* name = STRING_ELT(r_vec_names(outer), i);
+      if (info.named && r_typeof(r_names(outer)) == r_type_character) {
+        sexp* name = STRING_ELT(r_names(outer), i);
         SET_STRING_ELT(out_names, count, name);
       }
 
@@ -133,7 +133,7 @@ static void update_info_inner(squash_info_t* info, sexp* outer, r_ssize i, sexp*
     return;
   }
 
-  bool named = r_typeof(r_vec_names(inner)) == r_type_character;
+  bool named = r_typeof(r_names(inner)) == r_type_character;
   bool recursive = info->recursive;
 
   bool copy_outer = recursive || n_inner == 1;

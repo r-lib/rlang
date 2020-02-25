@@ -105,7 +105,7 @@ static sexp* new_condition_names(sexp* data) {
     r_abort("Conditions must have named data fields");
   }
 
-  sexp* data_nms = r_vec_names(data);
+  sexp* data_nms = r_names(data);
 
   if (r_chr_has_any(data_nms, (const char* []) { "message", NULL })) {
     r_abort("Conditions can't have a `message` data field");
