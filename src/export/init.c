@@ -336,6 +336,7 @@ void R_init_rlang(r_dll_info* dll) {
   r_register_c_callable("rlang", "rlang_unbox", (r_fn_ptr) &rlang_unbox);
   r_register_c_callable("rlang", "rlang_env_dots_values", (r_fn_ptr) &rlang_env_dots_values);
   r_register_c_callable("rlang", "rlang_env_dots_list", (r_fn_ptr) &rlang_env_dots_list);
+  r_register_c_callable("rlang", "rlang_sym_as_character", (r_fn_ptr) &rlang_sym_as_character);
 
   // Experimental method for exporting C function pointers as actual R objects
   rlang_register_pointer("rlang", "rlang_test_is_spliceable", (r_fn_ptr) &rlang_is_clevel_spliceable);
