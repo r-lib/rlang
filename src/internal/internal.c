@@ -14,7 +14,7 @@ sexp* fns_function = NULL;
 sexp* fns_quote = NULL;
 
 void rlang_init_utils();
-void rlang_init_dots();
+void rlang_init_dots(sexp* ns);
 void rlang_init_expr_interp();
 void rlang_init_eval_tidy();
 
