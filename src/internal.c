@@ -1,4 +1,5 @@
 #include "internal/arg.c"
+#include "internal/attr.c"
 #include "internal/call.c"
 #include "internal/dots.c"
 #include "internal/env.c"

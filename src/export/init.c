@@ -131,6 +131,7 @@ extern sexp* rlang_find_var(sexp*, sexp*);
 extern sexp* rlang_env_bind_list(sexp*, sexp*, sexp*);
 extern sexp* rlang_glue_is_there();
 extern sexp* rlang_linked_version();
+extern sexp* rlang_names2();
 
 // Library initialisation defined below
 sexp* rlang_library_load(sexp*);
@@ -301,6 +302,7 @@ static const r_callable r_callables[] = {
   {"rlang_env_bind_list",               (r_fn_ptr) &rlang_env_bind_list, 3},
   {"rlang_glue_is_there",               (r_fn_ptr) &rlang_glue_is_there, 0},
   {"rlang_linked_version",              (r_fn_ptr) &rlang_linked_version, 0},
+  {"rlang_names2",                      (r_fn_ptr) &rlang_names2, 1},
   {NULL, NULL, 0}
 };
 
@@ -309,6 +311,7 @@ extern sexp* rlang_is_missing(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_call2_external(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_ext2_dots_values(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_exec(sexp*, sexp*, sexp*, sexp*);
+extern sexp* rlang_set_names(sexp*, sexp*, sexp*, sexp*);
 
 
 static const r_external externals[] = {
@@ -316,6 +319,7 @@ static const r_external externals[] = {
   {"rlang_call2_external",              (r_fn_ptr) &rlang_call2_external, 2},
   {"rlang_ext2_dots_values",            (r_fn_ptr) &rlang_ext2_dots_values, 6},
   {"rlang_exec",                        (r_fn_ptr) &rlang_exec, 2},
+  {"rlang_set_names",                   (r_fn_ptr) &rlang_set_names, 3},
   {NULL, NULL, 0}
 };
 

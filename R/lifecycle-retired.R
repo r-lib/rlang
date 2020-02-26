@@ -1794,6 +1794,10 @@ warn_deprecated_along <- function(type, na) {
     sprintf("Please use `rep_along(x, %s)` or `rep_named(nms, %s)` instead.", na, na)
   ))
 }
+# FIXME: This can be simplified once the `_along` ctors are defunct
+set_names_impl <- function(x, mold, nm, ...) {
+  .External2(rlang_set_names, x, mold, nm)
+}
 
 #' Prepend a vector
 #'
