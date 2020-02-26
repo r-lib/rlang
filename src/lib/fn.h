@@ -29,5 +29,24 @@ static inline bool r_is_function(sexp* x) {
   }
 }
 
+static inline bool r_is_closure(sexp* x) {
+  return r_typeof(x) == r_type_closure;
+}
+
+static inline bool r_is_primitive(sexp* x) {
+  switch (r_typeof(x)) {
+  case r_type_builtin:
+  case r_type_special:
+    return true;
+  default:
+    return false;
+  }
+}
+static inline bool r_is_primitive_eager(sexp* x) {
+  return r_typeof(x) == r_type_builtin;
+}
+static inline bool r_is_primitive_lazy(sexp* x) {
+  return r_typeof(x) == r_type_special;
+}
 
 #endif

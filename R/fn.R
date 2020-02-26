@@ -276,19 +276,19 @@ fn_body_node <- function(fn) {
 #' # While closures do:
 #' identity(identity(ctxt_stack()))
 is_function <- function(x) {
-  is_closure(x) || is_primitive(x)
+  .Call(rlang_is_function, x)
 }
 
 #' @export
 #' @rdname is_function
 is_closure <- function(x) {
-  typeof(x) == "closure"
+  .Call(rlang_is_closure, x)
 }
 
 #' @export
 #' @rdname is_function
 is_primitive <- function(x) {
-  typeof(x) %in% c("builtin", "special")
+  .Call(rlang_is_primitive, x)
 }
 #' @export
 #' @rdname is_function
@@ -299,7 +299,7 @@ is_primitive <- function(x) {
 #' is_primitive_eager(base::list)
 #' is_primitive_eager(base::`+`)
 is_primitive_eager <- function(x) {
-  typeof(x) == "builtin"
+  .Call(rlang_is_primitive_eager, x)
 }
 #' @export
 #' @rdname is_function
@@ -310,7 +310,7 @@ is_primitive_eager <- function(x) {
 #' is_primitive_lazy(base::quote)
 #' is_primitive_lazy(base::substitute)
 is_primitive_lazy <- function(x) {
-  typeof(x) == "special"
+  .Call(rlang_is_primitive_lazy, x)
 }
 
 

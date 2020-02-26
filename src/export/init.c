@@ -39,6 +39,11 @@ extern sexp* rlang_node_tag(sexp*);
 extern sexp* rlang_node_poke_tag(sexp*, sexp*);
 extern sexp* rlang_eval(sexp*, sexp*);
 extern sexp* rlang_interp(sexp*, sexp*);
+extern sexp* rlang_is_function(sexp*);
+extern sexp* rlang_is_closure(sexp*);
+extern sexp* rlang_is_primitive(sexp*);
+extern sexp* rlang_is_primitive_eager(sexp*);
+extern sexp* rlang_is_primitive_lazy(sexp*);
 extern sexp* rlang_is_formulaish(sexp*, sexp*, sexp*);
 extern sexp* rlang_is_reference(sexp*, sexp*);
 extern sexp* rlang_sexp_address(sexp*);
@@ -163,6 +168,11 @@ static const r_callable r_callables[] = {
   {"rlang_node_tree_clone",             (r_fn_ptr) &r_node_tree_clone, 1},
   {"rlang_eval",                        (r_fn_ptr) &rlang_eval, 2},
   {"rlang_interp",                      (r_fn_ptr) &rlang_interp, 2},
+  {"rlang_is_function",                 (r_fn_ptr) &rlang_is_function, 1},
+  {"rlang_is_closure",                  (r_fn_ptr) &rlang_is_closure, 1},
+  {"rlang_is_primitive",                (r_fn_ptr) &rlang_is_primitive, 1},
+  {"rlang_is_primitive_eager",          (r_fn_ptr) &rlang_is_primitive_eager, 1},
+  {"rlang_is_primitive_lazy",           (r_fn_ptr) &rlang_is_primitive_lazy, 1},
   {"rlang_is_formulaish",               (r_fn_ptr) &rlang_is_formulaish, 3},
   {"rlang_is_null",                     (r_fn_ptr) &rlang_is_null, 1},
   {"rlang_is_reference",                (r_fn_ptr) &rlang_is_reference, 2},
