@@ -37,6 +37,7 @@ bool r_chr_has(sexp* chr, const char* c_string);
 bool r_chr_has_any(sexp* chr, const char** c_strings);
 r_ssize r_chr_detect_index(sexp* chr, const char* c_string);
 
+void r_chr_fill(sexp* chr, sexp* value, r_ssize n);
 
 sexp* r_new_character(const char** strings);
 
