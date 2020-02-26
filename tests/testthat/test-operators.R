@@ -35,19 +35,25 @@ test_that("%|% also works when y is of same length as x", {
 })
 
 test_that("%|% fails on non-atomic original values", {
-  expect_error(call("fn") %|% 1)
+  verify_errors({
+    expect_error(call("fn") %|% 1)
+  })
 })
 
 test_that("%|% fails with wrong types", {
-  expect_error(c(1L, NA) %|% 2)
-  expect_error(c(1, NA) %|% "")
-  expect_error(c(1, NA) %|% call("fn"))
+  verify_errors({
+    expect_error(c(1L, NA) %|% 2)
+    expect_error(c(1, NA) %|% "")
+    expect_error(c(1, NA) %|% call("fn"))
+  })
 })
 
 test_that("%|% fails with wrong length", {
-  expect_error(c(1L, NA) %|% 1:3)
-  expect_error(1:10 %|% 1:4)
-  expect_error(1L %|% 1:4)
+  verify_errors({
+    expect_error(c(1L, NA) %|% 1:3)
+    expect_error(1:10 %|% 1:4)
+    expect_error(1L %|% 1:4)
+  })
 })
 
 test_that("%|% fails with intelligent errors", {
