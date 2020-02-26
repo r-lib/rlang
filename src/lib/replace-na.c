@@ -80,7 +80,7 @@ sexp* rlang_replace_na(sexp* x, sexp* replacement) {
   }
 
   default: {
-    r_abort("Don't know how to handle object of type", Rf_type2char(x_type));
+    r_abort("Internal error: Don't know how to handle object of type %s", Rf_type2char(x_type));
   }
   }
 
@@ -154,7 +154,7 @@ static sexp* replace_na_(sexp* x, sexp* replacement, int i) {
   }
 
   default: {
-    r_abort("Don't know how to handle object of type", Rf_type2char(r_typeof(x)));
+    r_abort("Internal error: Don't know how to handle object of type %s", Rf_type2char(r_typeof(x)));
   }
   }
 
@@ -218,7 +218,7 @@ static sexp* replace_na_vec_(sexp* x, sexp* replacement, int i) {
   }
 
   default: {
-    r_abort("Don't know how to handle object of type", Rf_type2char(r_typeof(x)));
+    r_abort("Internal error: Don't know how to handle object of type %s", Rf_type2char(r_typeof(x)));
   }
   }
 
