@@ -137,6 +137,14 @@ sexp* rlang_is_primitive_eager(sexp* x) {
 
 // formula.c
 
+sexp* rlang_is_formula(sexp* x, sexp* scoped, sexp* lhs) {
+  int scoped_int = r_as_optional_bool(scoped);
+  int lhs_int = r_as_optional_bool(lhs);
+
+  bool out = r_is_formula(x, scoped_int, lhs_int);
+  return r_lgl(out);
+}
+
 sexp* rlang_is_formulaish(sexp* x, sexp* scoped, sexp* lhs) {
   int scoped_int = r_as_optional_bool(scoped);
   int lhs_int = r_as_optional_bool(lhs);
