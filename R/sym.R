@@ -102,7 +102,7 @@ as_string <- function(x) {
   }
 
   if (is_symbol(x)) {
-    return(.Call(rlang_symbol_to_character, x))
+    return(.Call(rlang_sym_as_character, x))
   }
 
   abort_coercion(x, "a string")

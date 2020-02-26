@@ -14,9 +14,11 @@ sexp* rlang_symbol(sexp* chr) {
   return r_vec_coerce(chr, r_type_symbol);
 }
 
-sexp* rlang_symbol_to_character(sexp* chr) {
-  sexp* name = PRINTNAME(chr);
-  return r_str_as_character(r_str_unserialise_unicode(name));
+sexp* rlang_sym_as_character(sexp* sym) {
+  sexp* str = KEEP(r_str_unserialise_unicode(PRINTNAME(sym)));
+  sexp* out = r_str_as_character(str);
+  FREE(1);
+  return out;
 }
 
 sexp* rlang_unescape_character(sexp* chr) {

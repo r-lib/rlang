@@ -46,7 +46,7 @@ extern sexp* rlang_length(sexp*);
 extern sexp* rlang_true_length(sexp* x);
 extern sexp* rlang_squash(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_symbol(sexp*);
-extern sexp* rlang_symbol_to_character(sexp*);
+extern sexp* rlang_sym_as_character(sexp*);
 extern sexp* rlang_tilde_eval(sexp*, sexp*, sexp*);
 extern sexp* rlang_unescape_character(sexp*);
 extern sexp* rlang_capturearginfo(sexp*, sexp*, sexp*, sexp*);
@@ -201,7 +201,7 @@ static const r_callable r_callables[] = {
   {"rlang_squash",                      (r_fn_ptr) &rlang_squash, 4},
   {"rlang_sexp_address",                (r_fn_ptr) &rlang_sexp_address, 1},
   {"rlang_symbol",                      (r_fn_ptr) &rlang_symbol, 1},
-  {"rlang_symbol_to_character",         (r_fn_ptr) &rlang_symbol_to_character, 1},
+  {"rlang_sym_as_character",            (r_fn_ptr) &rlang_sym_as_character, 1},
   {"rlang_tilde_eval",                  (r_fn_ptr) &rlang_tilde_eval, 3},
   {"rlang_unescape_character",          (r_fn_ptr) &rlang_unescape_character, 1},
   {"rlang_new_call",                    (r_fn_ptr) &rlang_new_call_node, 2},
