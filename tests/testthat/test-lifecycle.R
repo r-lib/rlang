@@ -23,8 +23,9 @@ test_that("signal_soft_deprecated() warns when called from global env", {
 })
 
 test_that("signal_soft_deprecated() warns when called from package being tested", {
+  old <- Sys.getenv("NOT_CRAN")
   Sys.setenv("NOT_CRAN" = "true")
-  on.exit(Sys.setenv("NOT_CRAN" = ""))
+  on.exit(Sys.setenv("NOT_CRAN" = old))
   retired <- function() signal_soft_deprecated("warns from package being tested")
   expect_warning(retired(), "warns from")
 })
