@@ -43,7 +43,8 @@ The rlang_interactive global option. If set to a single TRUE
 or FALSE, is_interactive() returns that value immediately. This
 escape hatch is useful in unit tests or to manually turn on
 interactive features in RMarkdown outputs.
-Whether knitr, an RStudio notebook, or testthat is in progress.
+Whether knitr, an RStudio notebook, or testthat is in progress
+(in which case is_interactive() returns FALSE).
 
 
 with_interactive() and local_interactive() set the global
@@ -171,7 +172,8 @@ mode. It also checks, in this order:</p><ul>
 or <code>FALSE</code>, <code>is_interactive()</code> returns that value immediately. This
 escape hatch is useful in unit tests or to manually turn on
 interactive features in RMarkdown outputs.</p></li>
-<li><p>Whether knitr, an RStudio notebook, or testthat is in progress.</p></li>
+<li><p>Whether knitr, an RStudio notebook, or testthat is in progress
+(in which case <code>is_interactive()</code> returns <code>FALSE</code>).</p></li>
 </ul>
 
 <p><code>with_interactive()</code> and <code>local_interactive()</code> set the global
