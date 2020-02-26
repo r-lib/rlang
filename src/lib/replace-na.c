@@ -4,10 +4,34 @@ static sexp* replace_na_(sexp* x, sexp* replacement, int start);
 static sexp* replace_na_vec_(sexp* x, sexp* replacement, int start);
 
 sexp* rlang_replace_na(sexp* x, sexp* replacement) {
+  const enum r_type x_type = r_typeof(x);
+  const enum r_type replacement_type = r_typeof(replacement);
+
   int n = r_length(x);
+  int n_replacement = r_length(replacement);
+
+  if (!r_is_atomic(x, -1)) {
+    r_abort("Cannot replace missing values in an object of type %s", Rf_type2char(x_type));
+  }
+
+  if (x_type != replacement_type) {
+    r_abort("The replacement values, which have type %s, must have the same "
+            "type as the original values, which have type %s",
+            Rf_type2char(replacement_type),
+            Rf_type2char(x_type));
+  }
+
+  if (n_replacement != 1 && n_replacement != n) {
+    if (n == 1) {
+      r_abort("The replacement values must have size 1, not %i", n_replacement);
+    } else {
+      r_abort("The replacement values must have size 1 or %i, not %i", n, n_replacement);
+    }
+  }
+
   int i = 0;
 
-  switch(r_typeof(x)) {
+  switch(x_type) {
   case LGLSXP: {
     int* arr = LOGICAL(x);
     for (; i < n; ++i) {
@@ -59,13 +83,13 @@ sexp* rlang_replace_na(sexp* x, sexp* replacement) {
   }
 
   default: {
-    r_abort("Don't know how to handle object of type", Rf_type2char(r_typeof(x)));
+    r_abort("Don't know how to handle object of type", Rf_type2char(x_type));
   }
   }
 
   if (i == n) {
     return x;
-  } else if (r_length(replacement) == 1) {
+  } else if (n_replacement == 1) {
     return replace_na_(x, replacement, i);
   } else {
     return replace_na_vec_(x, replacement, i);
