@@ -10,13 +10,13 @@ Error: Cannot replace missing values in an object of type language
 ==========================
 
 > c(1L, NA) %|% 2
-Error: The replacement values, which have type double, must have the same type as the original values, which have type integer
+Error: Replacement values must have type integer, not type double
 
 > c(1, NA) %|% ""
-Error: The replacement values, which have type character, must have the same type as the original values, which have type double
+Error: Replacement values must have type double, not type character
 
 > c(1, NA) %|% call("fn")
-Error: The replacement values, which have type language, must have the same type as the original values, which have type double
+Error: Replacement values must have type double, not type language
 
 
 %|% fails with wrong length

@@ -15,10 +15,7 @@ sexp* rlang_replace_na(sexp* x, sexp* replacement) {
   }
 
   if (x_type != replacement_type) {
-    r_abort("The replacement values, which have type %s, must have the same "
-            "type as the original values, which have type %s",
-            Rf_type2char(replacement_type),
-            Rf_type2char(x_type));
+    r_abort("Replacement values must have type %s, not type %s", Rf_type2char(x_type), Rf_type2char(replacement_type));
   }
 
   if (n_replacement != 1 && n_replacement != n) {
