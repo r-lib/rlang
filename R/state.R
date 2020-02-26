@@ -102,7 +102,8 @@ peek_option <- function(name) {
 #'   escape hatch is useful in unit tests or to manually turn on
 #'   interactive features in RMarkdown outputs.
 #'
-#' * Whether knitr, an RStudio notebook, or testthat is in progress.
+#' * Whether knitr, an RStudio notebook, or testthat is in progress
+#'   (in which case `is_interactive()` returns `FALSE`).
 #'
 #' `with_interactive()` and `local_interactive()` set the global
 #' option conveniently.
