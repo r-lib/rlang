@@ -122,7 +122,6 @@ static inline sexp* r_eval_fn_with_x(sexp* fn, sexp* x) {
   sexp* call = KEEP(r_new_call(fn, args));
 
   sexp* out = r_eval(call, r_global_env);
-
   FREE(2);
   return out;
 }
@@ -134,7 +133,6 @@ static inline sexp* r_eval_fn_with_x_y(sexp* fn, sexp* x, sexp* y) {
   sexp* call = KEEP(r_new_call(fn, args));
 
   sexp* out = r_eval(call, r_global_env);
-
   FREE(3);
   return out;
 }
@@ -144,7 +142,6 @@ static inline sexp* r_eval_fn_with_x_dots(sexp* fn, sexp* x, sexp* dots) {
   sexp* call = KEEP(r_new_call(fn, args));
 
   sexp* out = r_eval(call, r_global_env);
-
   FREE(2);
   return out;
 }
