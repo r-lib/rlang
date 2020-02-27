@@ -74,6 +74,10 @@ sexp* r_x_sym;
 sexp* r_y_sym;
 sexp* r_z_sym;
 
+sexp* r_dot_x_sym;
+sexp* r_dot_y_sym;
+sexp* r_dot_fn_sym;
+
 void r_init_library_sym() {
   r_dot_environment_sym = r_sym(".Environment");
   r_function_sym = r_sym("function");
@@ -84,4 +88,8 @@ void r_init_library_sym() {
   r_x_sym = r_sym("x");
   r_y_sym = r_sym("y");
   r_z_sym = r_sym("z");
+
+  r_dot_x_sym = r_sym(".x");
+  r_dot_y_sym = r_sym(".y");
+  r_dot_fn_sym = r_sym(".fn");
 }
