@@ -637,3 +637,8 @@ test_that("can unquote-splice multiple times (#771)", {
   expect_identical(exprs(!!!list(1, 2), !!!list(3, 4)), named_list(1, 2, 3, 4))
   expect_identical(expr(foo(!!!list(1, 2), !!!list(3, 4))), quote(foo(1, 2, 3, 4)))
 })
+
+test_that(".data[[quote(foo)]] creates strings (#836)", {
+  expect_identical(expr(call(.data[[quote(foo)]])), quote(call(.data[["foo"]])))
+  expect_identical(expr(call(.data[[!!quote(foo)]])), quote(call(.data[["foo"]])))
+})

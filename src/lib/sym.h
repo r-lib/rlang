@@ -34,6 +34,10 @@ static inline const char* r_sym_get_c_string(sexp* sym) {
   return CHAR(PRINTNAME(sym));
 }
 
+static inline sexp* r_sym_as_character(sexp* x) {
+  return Rf_ScalarString(PRINTNAME(x));
+}
+
 bool r_is_symbol(sexp* sym, const char* string);
 bool r_is_symbol_any(sexp* x, const char** strings, int n);
 

@@ -1,6 +1,8 @@
 
 # rlang (development version)
 
+* The `.data` pronoun now accepts symbol subscripts (#836).
+
 * Quosure lists now explicitly inherit from `"list"`. This makes them
   compatible with the vctrs package (#928).
 

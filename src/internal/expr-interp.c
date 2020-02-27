@@ -336,8 +336,20 @@ sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
     return bang_bang(info, env);
   case OP_EXPAND_CURLY:
     return curly_curly(info, env);
-  case OP_EXPAND_DOT_DATA:
-    return bang_bang(info, env);
+  case OP_EXPAND_DOT_DATA: {
+    sexp* out = KEEP(bang_bang(info, env));
+
+    // Replace symbols by strings
+    sexp* subscript_node = r_node_cddr(out);
+    sexp* subscript = r_node_car(subscript_node);
+    if (r_typeof(subscript) == r_type_symbol) {
+      subscript = r_sym_as_character(subscript);
+      r_node_poke_car(subscript_node, subscript);
+    }
+
+    FREE(1);
+    return out;
+  }
   case OP_EXPAND_FIXUP:
     if (info.operand == r_null) {
       return fixup_interp(x, env);
