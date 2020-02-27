@@ -170,9 +170,11 @@ static inline r_ssize r_length_dispatch(sexp* x, sexp* env) {
 
   switch (r_typeof(n)) {
   case r_type_integer:
-    out = (r_ssize) INTEGER(n)[0]; break;
+    out = (r_ssize) INTEGER(n)[0];
+    break;
   case r_type_double:
-    out = REAL(n)[0]; break;
+    out = REAL(n)[0];
+    break;
   default:
     r_abort("Object length has unknown type %s", r_type_as_c_string(r_typeof(n)));
   }
