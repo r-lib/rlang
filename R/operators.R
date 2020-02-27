@@ -29,9 +29,6 @@
 #' c("a", "b", NA, "c") %|% "default"
 #' c(1L, NA, 3L, NA, NA) %|% (6L:10L)
 `%|%` <- function(x, y) {
-  stopifnot(is_atomic(x) && is_atomic(y))
-  stopifnot(length(y) == 1 || length(y) == length(x))
-  stopifnot(typeof(x) == typeof(y))
   .Call(rlang_replace_na, x, y)
 }
 

@@ -1,0 +1,33 @@
+
+%|% fails on non-atomic original values
+=======================================
+
+> call("fn") %|% 1
+Error: Cannot replace missing values in an object of type language
+
+
+%|% fails with wrong types
+==========================
+
+> c(1L, NA) %|% 2
+Error: Replacement values must have type integer, not type double
+
+> c(1, NA) %|% ""
+Error: Replacement values must have type double, not type character
+
+> c(1, NA) %|% call("fn")
+Error: Replacement values must have type double, not type language
+
+
+%|% fails with wrong length
+===========================
+
+> c(1L, NA) %|% 1:3
+Error: The replacement values must have size 1 or 2, not 3
+
+> 1:10 %|% 1:4
+Error: The replacement values must have size 1 or 10, not 4
+
+> 1L %|% 1:4
+Error: The replacement values must have size 1, not 4
+

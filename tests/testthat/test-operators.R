@@ -34,14 +34,43 @@ test_that("%|% also works when y is of same length as x", {
   expect_equal(cpx, c(1i, 2i, 12i, 4i))
 })
 
+test_that("%|% fails on non-atomic original values", {
+  verify_errors({
+    expect_error(call("fn") %|% 1)
+  })
+})
+
 test_that("%|% fails with wrong types", {
-  expect_error(c(1L, NA) %|% 2)
-  expect_error(c(1, NA) %|% "")
+  verify_errors({
+    expect_error(c(1L, NA) %|% 2)
+    expect_error(c(1, NA) %|% "")
+    expect_error(c(1, NA) %|% call("fn"))
+  })
 })
 
 test_that("%|% fails with wrong length", {
-  expect_error(c(1L, NA) %|% 1:3)
-  expect_error(1:10 %|% 1:4)
+  verify_errors({
+    expect_error(c(1L, NA) %|% 1:3)
+    expect_error(1:10 %|% 1:4)
+    expect_error(1L %|% 1:4)
+  })
+})
+
+test_that("%|% fails with intelligent errors", {
+  verify_output(test_path("test-operators-replace-na.txt"), {
+    "# %|% fails on non-atomic original values"
+    call("fn") %|% 1
+
+    "# %|% fails with wrong types"
+    c(1L, NA) %|% 2
+    c(1, NA) %|% ""
+    c(1, NA) %|% call("fn")
+
+    "# %|% fails with wrong length"
+    c(1L, NA) %|% 1:3
+    1:10 %|% 1:4
+    1L %|% 1:4
+  })
 })
 
 test_that("%@% returns attribute", {
