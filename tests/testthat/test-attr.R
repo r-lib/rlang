@@ -43,6 +43,7 @@ test_that("set_names() checks length generically", {
   names(expect) <- "a"
 
   expect_identical(set_names(x, "a"), expect)
+  expect_error(set_names(x, c("a", "b")), "the same length")
 })
 
 test_that("has_name() works with pairlists", {
