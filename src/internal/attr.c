@@ -50,10 +50,8 @@ static inline sexp* r_node_names(sexp* x) {
 
     if (tag == r_null) {
       p_out[i] = r_empty_str;
-    } else if (r_is_symbolic(tag)) {
-      p_out[i] = PRINTNAME(tag);
     } else {
-      r_abort("Invalid type %s for tag", r_type_as_c_string(r_typeof(tag)));
+      p_out[i] = PRINTNAME(tag);
     }
   }
 
