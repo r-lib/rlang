@@ -1,7 +1,7 @@
 #include <rlang.h>
 #include "internal.h"
 
-static inline sexp* r_language_names(sexp* x);
+static inline sexp* r_node_names(sexp* x);
 static inline sexp* r_names_dispatch(sexp* x);
 
 sexp* rlang_names2(sexp* x) {
@@ -15,7 +15,7 @@ sexp* rlang_names2(sexp* x) {
   // does. `r_names()` will not find these names because it has a guarantee
   // to never allocate.
   if (type == r_type_pairlist || type == r_type_call) {
-    return r_language_names(x);
+    return r_node_names(x);
   }
 
   sexp* nms;
@@ -37,7 +37,7 @@ sexp* rlang_names2(sexp* x) {
   return nms;
 }
 
-static inline sexp* r_language_names(sexp* x) {
+static inline sexp* r_node_names(sexp* x) {
   r_ssize n = r_length(x);
 
   sexp* out = KEEP(r_new_vector(r_type_character, n));
