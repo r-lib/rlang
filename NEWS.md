@@ -1,6 +1,13 @@
 
 # rlang (development version)
 
+* `set_names()` is now implemented in C, and should be faster.
+
+* `is_formula()` is now implemented in C, and should be faster.
+
+* `is_function()`, `is_closure()`, `is_primitive()`, `is_primitive_eager()`,
+  and `is_primitive_lazy()` are now implemented in C, and should be faster.
+
 * The `.data` pronoun now accepts symbol subscripts (#836).
 
 * Quosure lists now explicitly inherit from `"list"`. This makes them

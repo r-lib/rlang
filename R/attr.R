@@ -166,37 +166,8 @@ has_name <- function(x, name) {
 #' # `...` is passed to the function:
 #' set_names(head(mtcars), paste0, "_foo")
 set_names <- function(x, nm = x, ...) {
-  set_names_impl(x, x, nm, ...)
-}
-
-# FIXME: This can be simplified once the `_along` ctors are defunct
-set_names_impl <- function(x, mold, nm, ...) {
-  if (!is_vector(x)) {
-    abort("`x` must be a vector")
-  }
-
-  if (is_function(nm) || is_formula(nm)) {
-    if (is_null(names(mold))) {
-      mold <- as.character(mold)
-    } else {
-      mold <- names2(mold)
-    }
-    nm <- as_function(nm)
-    nm <- nm(mold, ...)
-  } else if (!is_null(nm)) {
-    if (dots_n(...)) {
-      nm <- as.character(c(nm, ...))
-    } else {
-      nm <- as.character(nm)
-    }
-  }
-
-  if (!is_null(nm) && !is_character(nm, length(x))) {
-    abort("`nm` must be `NULL` or a character vector the same length as `x`")
-  }
-
-  names(x) <- nm
-  x
+  mold <- x
+  .Call(rlang_set_names, x, mold, nm, environment())
 }
 
 #' Get names of a vector
@@ -224,15 +195,7 @@ set_names_impl <- function(x, mold, nm, ...) {
 #' x <- set_names(1:3, c("a", NA, "b"))
 #' names2(x)
 names2 <- function(x) {
-  if (typeof(x) == "environment") {
-    abort("Use `env_names()` for environments.")
-  }
-  nms <- names(x)
-  if (is_null(nms)) {
-    rep("", length(x))
-  } else {
-    nms %|% ""
-  }
+  .Call(rlang_names2, x, environment())
 }
 
 # Avoids `NA` names on subset-assign with unnamed vectors

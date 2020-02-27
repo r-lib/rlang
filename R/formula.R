@@ -53,10 +53,7 @@ new_formula <- function(lhs, rhs, env = caller_env()) {
 #' is_bare_formula(f, scoped = TRUE)
 #' is_bare_formula(eval(f), scoped = TRUE)
 is_formula <- function(x, scoped = NULL, lhs = NULL) {
-  if (!is_formulaish(x, scoped = scoped, lhs = lhs)) {
-    return(FALSE)
-  }
-  identical(node_car(x), tilde_sym)
+  .Call(rlang_is_formula, x, scoped, lhs)
 }
 #' @rdname is_formula
 #' @export

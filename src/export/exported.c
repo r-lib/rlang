@@ -114,8 +114,36 @@ sexp* rlang_eval_top(sexp* expr, sexp* env) {
   }
 }
 
+// fn.c
+
+sexp* rlang_is_function(sexp* x) {
+  return r_shared_lgl(r_is_function(x));
+}
+
+sexp* rlang_is_closure(sexp* x) {
+  return r_shared_lgl(r_is_closure(x));
+}
+
+sexp* rlang_is_primitive(sexp* x) {
+  return r_shared_lgl(r_is_primitive(x));
+}
+sexp* rlang_is_primitive_lazy(sexp* x) {
+  return r_shared_lgl(r_is_primitive_lazy(x));
+}
+sexp* rlang_is_primitive_eager(sexp* x) {
+  return r_shared_lgl(r_is_primitive_eager(x));
+}
+
 
 // formula.c
+
+sexp* rlang_is_formula(sexp* x, sexp* scoped, sexp* lhs) {
+  int scoped_int = r_as_optional_bool(scoped);
+  int lhs_int = r_as_optional_bool(lhs);
+
+  bool out = r_is_formula(x, scoped_int, lhs_int);
+  return r_lgl(out);
+}
 
 sexp* rlang_is_formulaish(sexp* x, sexp* scoped, sexp* lhs) {
   int scoped_int = r_as_optional_bool(scoped);

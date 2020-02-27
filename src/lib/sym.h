@@ -20,6 +20,10 @@ extern sexp* r_x_sym;
 extern sexp* r_y_sym;
 extern sexp* r_z_sym;
 
+extern sexp* r_dot_x_sym;
+extern sexp* r_dot_y_sym;
+extern sexp* r_dot_fn_sym;
+
 
 sexp* r_new_symbol(sexp* x, int* err);
 

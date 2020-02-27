@@ -59,6 +59,14 @@ bool r_chr_has_any(sexp* chr, const char** c_strings) {
   return false;
 }
 
+void r_chr_fill(sexp* chr, sexp* value, r_ssize n) {
+  sexp** p_chr = STRING_PTR(chr);
+
+  for (r_ssize i = 0; i < n; ++i) {
+    p_chr[i] = value;
+  }
+}
+
 static void validate_chr_setter(sexp* chr, sexp* r_string) {
   if (r_typeof(chr) != r_type_character) {
     r_abort("`chr` must be a character vector");
