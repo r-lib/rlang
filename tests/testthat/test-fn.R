@@ -268,11 +268,12 @@ test_that("as_closure() wrappers dispatch properly", {
 })
 
 test_that("as_closure() wrappers are not masked", {
-  local_bindings(
-    .env = global_env(),
-    as.character = function(...) abort("tilt")
-  )
-  expect_identical(as_closure(as.character)(1), "1")
+  wrapper <- as_closure(as.character)
+  as.character <- function(...) abort("tilt")
+  expect_identical(wrapper(1), "1")
+
+  wrapper <- as_closure(as.character)
+  expect_error(wrapper(1), "tilt")
 })
 
 test_that("arguments of closured primitives are matched by name before `...` (tidyverse/purrr#411)", {
