@@ -56,7 +56,6 @@ static inline sexp* r_node_names(sexp* x) {
   }
 
   FREE(1);
-  r_mark_shared(out);
   return out;
 }
 
