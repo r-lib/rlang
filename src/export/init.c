@@ -131,7 +131,7 @@ extern sexp* rlang_find_var(sexp*, sexp*);
 extern sexp* rlang_env_bind_list(sexp*, sexp*, sexp*);
 extern sexp* rlang_glue_is_there();
 extern sexp* rlang_linked_version();
-extern sexp* rlang_names2();
+extern sexp* rlang_names2(sexp*);
 
 // Library initialisation defined below
 sexp* rlang_library_load(sexp*);
