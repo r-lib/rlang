@@ -1796,7 +1796,7 @@ warn_deprecated_along <- function(type, na) {
 }
 # FIXME: This can be simplified once the `_along` ctors are defunct
 set_names_impl <- function(x, mold, nm, ...) {
-  .External2(rlang_set_names, x, mold, nm)
+  .Call(rlang_set_names, x, mold, nm, environment())
 }
 
 #' Prepend a vector

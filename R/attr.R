@@ -167,7 +167,7 @@ has_name <- function(x, name) {
 #' set_names(head(mtcars), paste0, "_foo")
 set_names <- function(x, nm = x, ...) {
   mold <- x
-  .External2(rlang_set_names, x, mold, nm)
+  .Call(rlang_set_names, x, mold, nm, environment())
 }
 
 #' Get names of a vector

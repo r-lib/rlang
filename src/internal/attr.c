@@ -66,14 +66,8 @@ static inline sexp* r_as_character(sexp* x);
 static inline sexp* r_as_function(sexp* x);
 static inline sexp* r_set_names_dispatch(sexp* x, sexp* nm);
 
-sexp* rlang_set_names(sexp* call, sexp* op, sexp* args, sexp* env) {
+sexp* rlang_set_names(sexp* x, sexp* mold, sexp* nm, sexp* env) {
   int n_kept = 0;
-
-  args = r_node_cdr(args);
-
-  sexp* x = KEEP_N(r_node_car(args), n_kept); args = r_node_cdr(args);
-  sexp* mold = KEEP_N(r_node_car(args), n_kept); args = r_node_cdr(args);
-  sexp* nm = KEEP_N(r_node_car(args), n_kept); args = r_node_cdr(args);
 
   sexp* dots = KEEP_N(rlang_dots(env), n_kept);
 
