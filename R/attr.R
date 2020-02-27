@@ -195,7 +195,7 @@ set_names <- function(x, nm = x, ...) {
 #' x <- set_names(1:3, c("a", NA, "b"))
 #' names2(x)
 names2 <- function(x) {
-  .Call(rlang_names2, x)
+  .Call(rlang_names2, x, environment())
 }
 
 # Avoids `NA` names on subset-assign with unnamed vectors

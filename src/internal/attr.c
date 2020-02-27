@@ -2,9 +2,9 @@
 #include "internal.h"
 
 static inline sexp* r_node_names(sexp* x);
-static inline sexp* r_names_dispatch(sexp* x);
+static inline sexp* r_names_dispatch(sexp* x, sexp* env);
 
-sexp* rlang_names2(sexp* x) {
+sexp* rlang_names2(sexp* x, sexp* env) {
   const enum r_type type = r_typeof(x);
 
   if (type == r_type_environment) {
@@ -20,7 +20,7 @@ sexp* rlang_names2(sexp* x) {
 
   sexp* nms;
   if (r_is_object(x)) {
-    nms = KEEP(r_names_dispatch(x));
+    nms = KEEP(r_names_dispatch(x, env));
   } else {
     nms = KEEP(r_names(x));
   }
@@ -60,11 +60,11 @@ static inline sexp* r_node_names(sexp* x) {
   return out;
 }
 
-static inline sexp* r_eval_fn_with_x_dots(sexp* fn, sexp* x, sexp* dots);
-static inline sexp* r_eval_c_with_x_dots(sexp* x, sexp* dots);
-static inline sexp* r_as_character(sexp* x);
-static inline sexp* r_as_function(sexp* x);
-static inline sexp* r_set_names_dispatch(sexp* x, sexp* nm);
+static inline sexp* r_fn_eval_in_with_x_dots(sexp* fn, sexp* x, sexp* dots, sexp* env);
+static inline sexp* r_c_eval_in_with_x_dots(sexp* x, sexp* dots, sexp* env);
+static inline sexp* r_as_character(sexp* x, sexp* env);
+static inline sexp* r_as_function(sexp* x, sexp* env);
+static inline sexp* r_set_names_dispatch(sexp* x, sexp* nm, sexp* env);
 
 sexp* rlang_set_names(sexp* x, sexp* mold, sexp* nm, sexp* env) {
   int n_kept = 0;
@@ -76,7 +76,7 @@ sexp* rlang_set_names(sexp* x, sexp* mold, sexp* nm, sexp* env) {
   }
 
   if (nm == r_null) {
-    x = r_set_names_dispatch(x, r_null);
+    x = r_set_names_dispatch(x, r_null, env);
 
     FREE(n_kept);
     return x;
@@ -84,95 +84,85 @@ sexp* rlang_set_names(sexp* x, sexp* mold, sexp* nm, sexp* env) {
 
   if (r_is_function(nm) || r_is_formula(nm, -1, -1)) {
     if (r_is_null(r_names(mold))) {
-      mold = KEEP_N(r_as_character(mold), n_kept);
+      mold = KEEP_N(r_as_character(mold, env), n_kept);
     } else {
-      mold = KEEP_N(rlang_names2(mold), n_kept);
+      mold = KEEP_N(rlang_names2(mold, env), n_kept);
     }
 
-    nm = KEEP_N(r_as_function(nm), n_kept);
-    nm = KEEP_N(r_eval_fn_with_x_dots(nm, mold, dots), n_kept);
+    nm = KEEP_N(r_as_function(nm, env), n_kept);
+    nm = KEEP_N(r_fn_eval_in_with_x_dots(nm, mold, dots, env), n_kept);
   } else {
     if (r_length(dots) > 0) {
-      nm = KEEP_N(r_eval_c_with_x_dots(nm, dots), n_kept);
+      nm = KEEP_N(r_c_eval_in_with_x_dots(nm, dots, env), n_kept);
     }
 
-    nm = KEEP_N(r_as_character(nm), n_kept);
+    nm = KEEP_N(r_as_character(nm, env), n_kept);
   }
 
   if (!r_is_character(nm, r_length(x))) {
     r_abort("`nm` must be `NULL` or a character vector the same length as `x`");
   }
 
-  x = r_set_names_dispatch(x, nm);
+  x = r_set_names_dispatch(x, nm, env);
 
   FREE(n_kept);
   return x;
 }
 
+static inline sexp* r_fn_eval_in_with_x_dots(sexp* fn, sexp* x, sexp* dots, sexp* env) {
+  sexp* args = KEEP(r_new_node(r_dot_x_sym, dots));
+  sexp* call = KEEP(r_new_call(r_dot_fn_sym, args));
 
-static inline sexp* r_eval_fn_with_x(sexp* fn, sexp* x) {
-  sexp* args = KEEP(r_new_node(x, r_null));
-
-  sexp* call = KEEP(r_new_call(fn, args));
-
-  sexp* out = r_eval(call, r_global_env);
-  FREE(2);
-  return out;
-}
-
-static inline sexp* r_eval_fn_with_x_y(sexp* fn, sexp* x, sexp* y) {
-  sexp* args = KEEP(r_new_node(y, r_null));
-  args = KEEP(r_new_node(x, args));
-
-  sexp* call = KEEP(r_new_call(fn, args));
-
-  sexp* out = r_eval(call, r_global_env);
-  FREE(3);
-  return out;
-}
-
-static inline sexp* r_eval_fn_with_x_dots(sexp* fn, sexp* x, sexp* dots) {
-  sexp* args = KEEP(r_new_node(x, dots));
-  sexp* call = KEEP(r_new_call(fn, args));
-
-  sexp* out = r_eval(call, r_global_env);
+  // This evaluates `fn(x, ...)`
+  // `.x` is the first input, x
+  // `.fn` is the function, fn
+  // The dots are a pairlist already in the call
+  sexp* out = r_eval_in_with_xy(call, env, x, r_dot_x_sym, fn, r_dot_fn_sym);
   FREE(2);
   return out;
 }
 
 static sexp* c_fn = NULL;
-static inline sexp* r_eval_c_with_x_dots(sexp* x, sexp* dots) {
-  return r_eval_fn_with_x_dots(c_fn, x, dots);
+static inline sexp* r_c_eval_in_with_x_dots(sexp* x, sexp* dots, sexp* env) {
+  return r_fn_eval_in_with_x_dots(c_fn, x, dots, env);
 }
 
-static sexp* as_character_fn = NULL;
-static inline sexp* r_as_character(sexp* x) {
-  return r_eval_fn_with_x(as_character_fn, x);
+static sexp* as_character_call = NULL;
+static inline sexp* r_as_character(sexp* x, sexp* env) {
+  return r_eval_in_with_x(as_character_call, env, x, r_dot_x_sym);
 }
 
-static sexp* names_fn = NULL;
-static inline sexp* r_names_dispatch(sexp* x) {
-  return r_eval_fn_with_x(names_fn, x);
+static sexp* names_call = NULL;
+static inline sexp* r_names_dispatch(sexp* x, sexp* env) {
+  return r_eval_in_with_x(names_call, env, x, r_dot_x_sym);
 }
 
 // TODO: Replace with C implementation of `as_function()`
-static sexp* as_function_fn = NULL;
-static inline sexp* r_as_function(sexp* x) {
-  return r_eval_fn_with_x(as_function_fn, x);
+static sexp* as_function_call = NULL;
+static inline sexp* r_as_function(sexp* x, sexp* env) {
+  return r_eval_in_with_x(as_function_call, env, x, r_dot_x_sym);
 }
 
 // Use `names<-()` rather than setting names directly with `r_poke_names()`
 // for genericity and for speed. `names<-()` can shallow duplicate `x`'s
 // attributes using ALTREP wrappers, which is not in R's public API.
-static sexp* set_names_fn = NULL;
-static inline sexp* r_set_names_dispatch(sexp* x, sexp* nm) {
-  return r_eval_fn_with_x_y(set_names_fn, x, nm);
+static sexp* set_names_call = NULL;
+static inline sexp* r_set_names_dispatch(sexp* x, sexp* nm, sexp* env) {
+  return r_eval_in_with_xy(set_names_call, env, x, r_dot_x_sym, nm, r_dot_y_sym);
 }
 
 void rlang_init_attr(sexp* ns) {
   c_fn = r_eval(r_sym("c"), r_base_env);
-  as_character_fn = r_eval(r_sym("as.character"), r_base_env);
-  names_fn = r_eval(r_sym("names"), r_base_env);
-  as_function_fn = r_eval(r_sym("as_function"), ns);
-  set_names_fn = r_eval(r_sym("names<-"), r_base_env);
+
+  as_character_call = r_parse("as.character(.x)");
+  r_mark_precious(as_character_call);
+
+  names_call = r_parse("names(.x)");
+  r_mark_precious(names_call);
+
+  as_function_call = r_parse("as_function(.x)");
+  r_mark_precious(as_function_call);
+
+  set_names_call = r_parse("`names<-`(.x, .y)");
+  r_mark_precious(set_names_call);
 }
