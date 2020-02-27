@@ -64,6 +64,7 @@ static inline sexp* r_c_eval_in_with_x_dots(sexp* x, sexp* dots, sexp* env);
 static inline sexp* r_as_character(sexp* x, sexp* env);
 static inline sexp* r_as_function(sexp* x, sexp* env);
 static inline sexp* r_set_names_dispatch(sexp* x, sexp* nm, sexp* env);
+static inline r_ssize r_length_dispatch(sexp* x, sexp* env);
 
 sexp* rlang_set_names(sexp* x, sexp* mold, sexp* nm, sexp* env) {
   int n_kept = 0;
@@ -98,7 +99,14 @@ sexp* rlang_set_names(sexp* x, sexp* mold, sexp* nm, sexp* env) {
     nm = KEEP_N(r_as_character(nm, env), n_kept);
   }
 
-  if (!r_is_character(nm, r_length(x))) {
+  r_ssize n;
+  if (r_is_object(x)) {
+    n = r_length_dispatch(x, env);
+  } else {
+    n = r_length(x);
+  }
+
+  if (!r_is_character(nm, n)) {
     r_abort("`nm` must be `NULL` or a character vector the same length as `x`");
   }
 
@@ -150,6 +158,29 @@ static inline sexp* r_set_names_dispatch(sexp* x, sexp* nm, sexp* env) {
   return r_eval_in_with_xy(set_names_call, env, x, r_dot_x_sym, nm, r_dot_y_sym);
 }
 
+static sexp* length_call = NULL;
+static inline r_ssize r_length_dispatch(sexp* x, sexp* env) {
+  sexp* n = KEEP(r_eval_in_with_x(length_call, env, x, r_dot_x_sym));
+
+  if (r_length(n) != 1) {
+    r_abort("Object length must have size 1, not %i", r_length(n));
+  }
+
+  r_ssize out;
+
+  switch (r_typeof(n)) {
+  case r_type_integer:
+    out = (r_ssize) INTEGER(n)[0]; break;
+  case r_type_double:
+    out = REAL(n)[0]; break;
+  default:
+    r_abort("Object length has unknown type %s", r_type_as_c_string(r_typeof(n)));
+  }
+
+  FREE(1);
+  return out;
+}
+
 void rlang_init_attr(sexp* ns) {
   c_fn = r_eval(r_sym("c"), r_base_env);
 
@@ -164,4 +195,7 @@ void rlang_init_attr(sexp* ns) {
 
   set_names_call = r_parse("`names<-`(.x, .y)");
   r_mark_precious(set_names_call);
+
+  length_call = r_parse("length(.x)");
+  r_mark_precious(length_call);
 }

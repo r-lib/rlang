@@ -36,6 +36,15 @@ test_that("set_names() coerces to character", {
   expect_identical(set_names(1:2, "a", TRUE), c(a = 1L, `TRUE` = 2L))
 })
 
+test_that("set_names() checks length generically", {
+  x <- as.POSIXlt("1970-01-01", tz = "UTC")
+
+  expect <- x
+  names(expect) <- "a"
+
+  expect_identical(set_names(x, "a"), expect)
+})
+
 test_that("has_name() works with pairlists", {
   expect_true(has_name(fn_fmls(`[.data.frame`), "drop"))
 })
