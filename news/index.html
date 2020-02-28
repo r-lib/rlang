@@ -154,6 +154,7 @@
 <a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li><p>Fixed crash when <code>env_bindings_are_lazy()</code> gets improper arguments (<a href='https://github.com/r-lib/rlang/issues/923'>#923</a>).</p></li>
 <li><p><code><a href="../reference/set_names.html">set_names()</a></code> is now implemented in C, and should be faster.</p></li>
 <li><p><code><a href="../reference/is_formula.html">is_formula()</a></code> is now implemented in C, and should be faster.</p></li>
 <li><p><code><a href="../reference/is_function.html">is_function()</a></code>, <code><a href="../reference/is_function.html">is_closure()</a></code>, <code><a href="../reference/is_function.html">is_primitive()</a></code>, <code><a href="../reference/is_function.html">is_primitive_eager()</a></code>, and <code><a href="../reference/is_function.html">is_primitive_lazy()</a></code> are now implemented in C, and should be faster.</p></li>
