@@ -1,112 +1,110 @@
-# arrow
+# ggplot2
 
 <details>
 
-* Version: 0.15.1.1
-* Source code: https://github.com/cran/arrow
-* URL: https://github.com/apache/arrow/, https://arrow.apache.org/docs/r
-* BugReports: https://issues.apache.org/jira/projects/ARROW/issues
-* Date/Publication: 2019-11-05 22:00:09 UTC
-* Number of recursive dependencies: 59
+* Version: 3.2.1
+* Source code: https://github.com/cran/ggplot2
+* URL: http://ggplot2.tidyverse.org, https://github.com/tidyverse/ggplot2
+* BugReports: https://github.com/tidyverse/ggplot2/issues
+* Date/Publication: 2019-08-10 22:30:13 UTC
+* Number of recursive dependencies: 150
 
-Run `revdep_details(,"arrow")` for more info
+Run `revdep_details(,"ggplot2")` for more info
 
 </details>
 
 ## Newly broken
 
-*   R CMD check timed out
-    
-
-## Newly fixed
-
-*   checking whether package ‘arrow’ can be installed ... ERROR
+*   checking tests ...
     ```
-    Installation failed.
-    See ‘/Users/lionel/Desktop/rlang/revdep/checks.noindex/arrow/old/arrow.Rcheck/00install.out’ for details.
-    ```
-
-# perturbatr
-
-<details>
-
-* Version: 1.4.0
-* Source code: https://github.com/cran/perturbatr
-* URL: https://github.com/cbg-ethz/perturbatr
-* BugReports: https://github.com/cbg-ethz/perturbatr/issues
-* Date/Publication: 2019-05-02
-* Number of recursive dependencies: 96
-
-Run `revdep_details(,"perturbatr")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  5.0Mb
-      sub-directories of 1Mb or more:
-        data   3.1Mb
-    ```
-
-# socviz
-
-<details>
-
-* Version: 1.0.0
-* Source code: https://github.com/cran/socviz
-* URL: https://github.com/kjhealy/socviz
-* BugReports: https://github.com/kjhealy/socviz/issues
-* Date/Publication: 2019-04-23 12:00:03 UTC
-* Number of recursive dependencies: 45
-
-Run `revdep_details(,"socviz")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  5.1Mb
-      sub-directories of 1Mb or more:
-        data   4.5Mb
-    ```
-
-# trialr
-
-<details>
-
-* Version: 0.1.3
-* Source code: https://github.com/cran/trialr
-* URL: https://github.com/brockk/trialr
-* BugReports: https://github.com/brockk/trialr/issues
-* Date/Publication: 2020-01-08 22:30:10 UTC
-* Number of recursive dependencies: 104
-
-Run `revdep_details(,"trialr")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘tidyr’
-      All declared Imports should be used.
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      > library(testthat)
+      > library(ggplot2)
+      > 
+      > test_check("ggplot2")
+      ── 1. Failure: as_facets_list() coerces lists (@test-facet-.r#40)  ─────────────
+      `out` not identical to `exp`.
+      Component 3: Attributes: < Component "class": Lengths (2, 1) differ (string compare on first 1) >
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      [ OK: 1097 | SKIPPED: 105 | WARNINGS: 0 | FAILED: 1 ]
+      1. Failure: as_facets_list() coerces lists (@test-facet-.r#40) 
+      
+      Error: testthat unit tests failed
+      Execution halted
     ```
 
 ## In both
 
-*   R CMD check timed out
-    
+*   checking installed package size ... NOTE
+    ```
+      installed size is  7.6Mb
+      sub-directories of 1Mb or more:
+        doc   3.8Mb
+        R     2.1Mb
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘mgcv’ ‘reshape2’ ‘viridisLite’
+      All declared Imports should be used.
+    ```
+
+# RxODE
+
+<details>
+
+* Version: 0.9.1-9
+* Source code: https://github.com/cran/RxODE
+* URL: https://nlmixrdevelopment.github.io/RxODE/
+* BugReports: https://github.com/nlmixrdevelopment/RxODE/issues
+* Date/Publication: 2020-01-10 23:20:06 UTC
+* Number of recursive dependencies: 121
+
+Run `revdep_details(,"RxODE")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      > library(testthat)
+      > library(RxODE)
+      > test_check("RxODE")
+      ── 1. Failure: Issue #56 (@test-issue-56.R#11)  ────────────────────────────────
+      dir.exists("/tmp/m1.d") isn't true.
+      
+      [====|====|====|====|====|====|====|====|====|====] 0:00:00 
+      
+      [====|====|====|====|====|====|====|====|====|====] 0:00:00 
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      [ OK: 876 | SKIPPED: 0 | WARNINGS: 0 | FAILED: 1 ]
+      1. Failure: Issue #56 (@test-issue-56.R#11) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Packages suggested but not available for checking:
+      'SnakeCharmR', 'installr'
+    ```
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 12.7Mb
+      installed size is  6.8Mb
       sub-directories of 1Mb or more:
-        doc    4.1Mb
-        libs   7.7Mb
+        libs   4.1Mb
+        R      2.0Mb
     ```
 
