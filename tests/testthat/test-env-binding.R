@@ -344,6 +344,11 @@ test_that("env_get() survives native encoding", {
   })
 })
 
+test_that("`env_binding_are_lazy()` type-checks `env` (#923)", {
+  expect_error(env_binding_are_lazy("a", "b"), "must be an environment")
+})
+
+
 # Lifecycle ----------------------------------------------------------
 
 test_that("env_bind_exprs() and env_bind_fns() still work", {

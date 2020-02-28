@@ -1,6 +1,8 @@
 
 # rlang (development version)
 
+* Fixed crash when `env_bindings_are_lazy()` gets improper arguments (#923).
+
 * `set_names()` is now implemented in C, and should be faster.
 
 * `is_formula()` is now implemented in C, and should be faster.

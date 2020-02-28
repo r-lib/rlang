@@ -671,6 +671,9 @@ env_binding_are_lazy <- function(env, nms = NULL) {
   env_binding_are_type(env, nms, 1L)
 }
 env_binding_are_type <- function(env, nms, type) {
+  if (!is_environment(env)) {
+    abort("`env` must be an environment.")
+  }
   nms <- env_binding_validate_names(env, nms)
   promise <- env_binding_types(env, nms)
 
