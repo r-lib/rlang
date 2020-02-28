@@ -1,6 +1,10 @@
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
 
+// Compile with `-fvisibility=hidden -DHAVE_VISIBILITY_ATTRIBUTE` if you link to this library
+#include <R_ext/Visibility.h>
+#define export attribute_visible extern
+
 #include <rlang.h>
 
 // Callable from other packages
@@ -328,7 +332,7 @@ extern bool is_splice_box(sexp*);
 extern sexp* rlang_env_dots_values(sexp*);
 extern sexp* rlang_env_dots_list(sexp*);
 
-void R_init_rlang(r_dll_info* dll) {
+export void R_init_rlang(r_dll_info* dll) {
   r_register_c_callable("rlang", "rlang_squash_if", (r_fn_ptr) &r_squash_if);
 
   // The quosure functions are stable
