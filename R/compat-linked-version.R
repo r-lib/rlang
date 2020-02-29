@@ -28,7 +28,9 @@ check_linked_version <- local({
     if (is.null(linked_ver_ptr)) {
       linked_ver <- ""
     } else {
-      linked_ver <- .Call(linked_ver_ptr)
+      # Construct call to avoid NOTE when argument to `.Call()` is not
+      # statically analysable
+      linked_ver <- do.call(".Call", list(linked_ver_ptr))
     }
 
     if (nzchar(linked_ver) && ver == linked_ver) {

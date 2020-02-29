@@ -4,6 +4,7 @@
 ^\.Rproj\.user$
 ^cran-comments\.md$
 ^revdep$
+^revdep-all$
 ^vignettes/rsconnect$
 ^\.httr-oauth$
 ^codecov\.yml$
