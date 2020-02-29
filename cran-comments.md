@@ -1,7 +1,4 @@
 
-This should fix rlang on r-devel.
-
-
 ## Test environments
 
 * local OS X install: release
@@ -17,4 +14,6 @@ This should fix rlang on r-devel.
 
 ## Reverse dependencies
 
-This is a trivial maintenance release so I haven't checked reverse dependencies.
+ggplot2 is failing because of faulty assumptions in unit tests. We'll submit an update shortly.
+
+Apart from this, no problems were found.

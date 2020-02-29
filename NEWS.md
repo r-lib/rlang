@@ -1,22 +1,18 @@
 
-# rlang (development version)
+# rlang 0.4.5
 
-* Fixed crash when `env_bindings_are_lazy()` gets improper arguments (#923).
-
-* `set_names()` is now implemented in C, and should be faster.
-
-* `is_formula()` is now implemented in C, and should be faster.
-
-* `is_function()`, `is_closure()`, `is_primitive()`, `is_primitive_eager()`,
-  and `is_primitive_lazy()` are now implemented in C, and should be faster.
+* `set_names()`, `is_formula()`, and `names2()` are now implemented in
+  C for efficiency.
 
 * The `.data` pronoun now accepts symbol subscripts (#836).
 
 * Quosure lists now explicitly inherit from `"list"`. This makes them
   compatible with the vctrs package (#928).
 
-* All rlang options are now documented in a centralised place (#899,
-  @smingerson).
+* All rlang options are now documented in a centralised place, see
+  `?rlang::faq-options` (#899, @smingerson).
+
+* Fixed crash when `env_bindings_are_lazy()` gets improper arguments (#923).
 
 * `arg_match()` now detects and suggests possible typos in provided
   arguments (@jonkeane, #798).
@@ -25,9 +21,11 @@
   than 1 and doesn't exactly match the values input, similar to base
   `match.arg` (#914, @AliciaSchep)
 
+
 # rlang 0.4.4
 
 * Maintenance release for CRAN.
+
 
 # rlang 0.4.3
 
