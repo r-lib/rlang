@@ -77,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.5</span>
       </span>
     </div>
 
@@ -149,18 +149,16 @@
       <small>Source: <a href='https://github.com/r-lib/rlang/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="rlang-development-version" class="section level1">
+    <div id="rlang-045" class="section level1">
 <h1 class="page-header">
-<a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
+<a href="#rlang-045" class="anchor"></a>rlang 0.4.5<small> Unreleased </small>
 </h1>
 <ul>
-<li><p>Fixed crash when <code>env_bindings_are_lazy()</code> gets improper arguments (<a href='https://github.com/r-lib/rlang/issues/923'>#923</a>).</p></li>
-<li><p><code><a href="../reference/set_names.html">set_names()</a></code> is now implemented in C, and should be faster.</p></li>
-<li><p><code><a href="../reference/is_formula.html">is_formula()</a></code> is now implemented in C, and should be faster.</p></li>
-<li><p><code><a href="../reference/is_function.html">is_function()</a></code>, <code><a href="../reference/is_function.html">is_closure()</a></code>, <code><a href="../reference/is_function.html">is_primitive()</a></code>, <code><a href="../reference/is_function.html">is_primitive_eager()</a></code>, and <code><a href="../reference/is_function.html">is_primitive_lazy()</a></code> are now implemented in C, and should be faster.</p></li>
+<li><p><code><a href="../reference/set_names.html">set_names()</a></code>, <code><a href="../reference/is_formula.html">is_formula()</a></code>, and <code><a href="../reference/names2.html">names2()</a></code> are now implemented in C for efficiency.</p></li>
 <li><p>The <code>.data</code> pronoun now accepts symbol subscripts (<a href='https://github.com/r-lib/rlang/issues/836'>#836</a>).</p></li>
 <li><p>Quosure lists now explicitly inherit from <code>"list"</code>. This makes them compatible with the vctrs package (<a href='https://github.com/r-lib/rlang/issues/928'>#928</a>).</p></li>
-<li><p>All rlang options are now documented in a centralised place (<a href='https://github.com/r-lib/rlang/issues/899'>#899</a>, <a href='https://github.com/smingerson'>@smingerson</a>).</p></li>
+<li><p>All rlang options are now documented in a centralised place, see <code>?rlang::faq-options</code> (<a href='https://github.com/r-lib/rlang/issues/899'>#899</a>, <a href='https://github.com/smingerson'>@smingerson</a>).</p></li>
+<li><p>Fixed crash when <code>env_bindings_are_lazy()</code> gets improper arguments (<a href='https://github.com/r-lib/rlang/issues/923'>#923</a>).</p></li>
 <li><p><code><a href="../reference/arg_match.html">arg_match()</a></code> now detects and suggests possible typos in provided arguments (<a href='https://github.com/jonkeane'>@jonkeane</a>, <a href='https://github.com/r-lib/rlang/issues/798'>#798</a>).</p></li>
 <li><p><code><a href="../reference/arg_match.html">arg_match()</a></code> now gives an error if argument is of length greater than 1 and doesn’t exactly match the values input, similar to base <code>match.arg</code> (<a href='https://github.com/r-lib/rlang/issues/914'>#914</a>, <a href='https://github.com/AliciaSchep'>@AliciaSchep</a>)</p></li>
 </ul>
@@ -943,7 +941,7 @@ quo(call(`!!!`(var)))</a></code></pre>
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#rlang-development-version">development version</a></li>
+        <li><a href="#rlang-045">0.4.5</a></li>
         <li><a href="#rlang-044">0.4.4</a></li>
         <li><a href="#rlang-043">0.4.3</a></li>
         <li><a href="#rlang-042">0.4.2</a></li>
