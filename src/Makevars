@@ -1,64 +1,8 @@
 PKG_CPPFLAGS = -I./lib/
 PKG_CFLAGS = $(C_VISIBILITY)
 
-lib-files = \
-        lib/rlang.h \
-        lib/attrs.c \
-        lib/cnd.c \
-        lib/debug.c \
-        lib/env.c \
-        lib/env-binding.c \
-        lib/eval.c \
-        lib/export.c \
-        lib/fn.c \
-        lib/formula.c \
-        lib/lang.c \
-        lib/node.c \
-        lib/parse.c \
-        lib/quo.c \
-        lib/replace-na.c \
-        lib/rlang.c \
-        lib/sexp.c \
-        lib/squash.c \
-        lib/stack.c \
-        lib/sym.c \
-        lib/sym-unescape.c \
-        lib/vec.c \
-        lib/vec-chr.c \
-        lib/vec-lgl.c \
-        lib/vec-list.c
-
-internal-files = \
-        internal/arg.c \
-        internal/attr.c \
-        internal/dots.c \
-        internal/call.c \
-        internal/env.c \
-        internal/env-binding.c \
-        internal/eval.c \
-        internal/eval-tidy.c \
-        internal/expr-interp.c \
-        internal/expr-interp-rotate.c \
-        internal/fn.c \
-        internal/internal.c \
-        internal/quo.c \
-        internal/utils.c
-
-export-files = \
-        export/exported.c \
-        export/exported-tests.c \
-        export/init.c
-
-
 all: $(SHLIB)
 
 $(SHLIB): lib.o internal.o export.o
-
-lib.c: $(lib-files)
-	touch lib.c
-internal.c: $(internal-files)
-	touch internal.c
-export.c: $(export-files)
-	touch export.c
 
 .PHONY: all
