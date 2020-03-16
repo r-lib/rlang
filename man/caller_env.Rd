@@ -33,7 +33,7 @@ fn()
 # Let's call `fn()` again but this time within a function:
 g <- function() fn()
 
-# Now the caller environment is also an unique execution environment.
+# Now the caller environment is also a unique execution environment.
 # This is the exec env created by R for our call to g():
 g()
 }
