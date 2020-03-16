@@ -488,10 +488,10 @@ check_dots_empty <- function(...) {
 }
 
 
-# This helper is used when coercing S3 objects found
-# in `!!!` to a list. It is similar to `as.list()`, but
-# the names of `x` always end up on the names of the
-# output list, unlike `as.list.factor()`.
+# This helper is used when splicing S3 or S4 objects found
+# in `!!!`. It is similar to `as.list()`, but the names of
+# `x` always end up on the names of the output list,
+# unlike `as.list.factor()`.
 rlang_as_list <- function(x) {
   n <- length(x)
   names <- names(x)
