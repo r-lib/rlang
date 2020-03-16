@@ -1,6 +1,8 @@
 
 # rlang (development version)
 
+* `!!!` now uses a combination of `length()`, `names()`, and `[[` to splice
+  S3 and S4 objects (#945).
 
 # rlang 0.4.5
 
