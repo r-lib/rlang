@@ -341,22 +341,26 @@ test_that("!!! succeeds with vectors, pairlists and language objects", {
   expect_identical_(list2(!!!bytes(0)), list(bytes(0)))
 })
 
-test_that("!!! calls as.list()", {
+test_that("!!! calls `[[`", {
   as_quos_list <- function(x, env = empty_env()) {
     new_quosures(map(x, new_quosure, env = env))
   }
-  exp <- as.list(mtcars)
+
+  exp <- map(seq_along(mtcars), function(i) mtcars[[i]])
+  names(exp) <- names(mtcars)
   expect_identical_(exprs(!!!mtcars), exp)
   expect_identical_(quos(!!!mtcars), as_quos_list(exp))
   expect_identical_(expr(foo(!!!mtcars)), do.call(call, c(list("foo"), exp)))
   expect_identical_(list2(!!!mtcars), as.list(mtcars))
 
   fct <- factor(c("a", "b"))
-  exp <- set_names(as.list(fct), c("", ""))
+  fct <- set_names(fct, c("x", "y"))
+  exp <- set_names(list(fct[[1]], fct[[2]]), names(fct))
   expect_identical_(exprs(!!!fct), exp)
   expect_identical_(quos(!!!fct), as_quos_list(exp))
   expect_identical_(expr(foo(!!!fct)), do.call(call, c(list("foo"), exp)))
-  expect_identical_(list2(!!!fct), as.list(fct))
+  expect_identical_(list2(!!!fct), exp)
+})
 })
 
 test_that("!!! calls methods::as()", {
