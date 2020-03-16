@@ -389,6 +389,9 @@ test_that("!!! calls `[[` with vector S4 objects", {
   as_quos_list <- function(x, env = empty_env()) {
     new_quosures(map(x, new_quosure, env = env))
   }
+  foo <- function(x, y) {
+    list(x, y)
+  }
 
   .Belongings <- methods::setClass("Belongings", contains = "list", slots = c(name = "character"))
   fievel <- .Belongings(list(1, "x"), name = "Fievel")
@@ -404,15 +407,10 @@ test_that("!!! calls `[[` with vector S4 objects", {
 
   exp_named <- set_names(exp, c("", ""))
 
-  exp_foo <- quote(foo(
-    new("Belongings", .Data = list(1), name = "Fievel"),
-    new("Belongings", .Data = list("x"), name = "Fievel")
-  ))
-
   expect_identical_(list2(!!!fievel), exp)
+  expect_identical_(eval_bare(expr(foo(!!!fievel))), exp)
   expect_identical_(exprs(!!!fievel), exp_named)
   expect_identical_(quos(!!!fievel), as_quos_list(exp_named))
-  expect_equal_(expr(foo(!!!fievel)), exp_foo)
 })
 
 
