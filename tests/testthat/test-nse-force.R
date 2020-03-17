@@ -421,6 +421,12 @@ test_that("!!! doesn't shorten S3 lists containing `NULL`", {
   expect_identical_(list2(!!!y), list(a = NULL, b = 1))
 })
 
+test_that("!!! goes through `[[` for record S3 types", {
+  x <- as.POSIXlt(as.Date("1970-01-01"))
+  x_named <- set_names(x, "a")
+  expect_identical_(list2(!!!x_named), list(a = x))
+})
+
 # bang ---------------------------------------------------------------
 
 test_that("single ! is not treated as shortcut", {
