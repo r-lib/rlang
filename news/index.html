@@ -153,6 +153,10 @@
 <h1 class="page-header">
 <a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
 </h1>
+<ul>
+<li>
+<code>!!!</code> now uses a combination of <code><a href="https://rdrr.io/r/base/length.html">length()</a></code>, <code><a href="https://rdrr.io/r/base/names.html">names()</a></code>, and <code><a href="https://rdrr.io/r/base/Extract.html">[[</a></code> to splice S3 and S4 objects. This produces more consistent behaviour than <code><a href="https://rdrr.io/r/base/list.html">as.list()</a></code> on a wider variety of vector classes (<a href='https://github.com/r-lib/rlang/issues/945'>#945</a>, tidyverse/dplyr<a href='https://github.com/r-lib/rlang/issues/4931'>#4931</a>).</li>
+</ul>
 </div>
     <div id="rlang-045" class="section level1">
 <h1 class="page-header">
