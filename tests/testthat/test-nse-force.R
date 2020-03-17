@@ -413,6 +413,13 @@ test_that("!!! calls `[[` with vector S4 objects", {
   expect_identical_(quos(!!!fievel), as_quos_list(exp_named))
 })
 
+test_that("!!! doesn't shorten S3 lists containing `NULL`", {
+  x <- structure(list(NULL), class = "foobar")
+  y <- structure(list(a = NULL, b = 1), class = "foobar")
+
+  expect_identical_(list2(!!!x), list(NULL))
+  expect_identical_(list2(!!!y), list(a = NULL, b = 1))
+})
 
 # bang ---------------------------------------------------------------
 

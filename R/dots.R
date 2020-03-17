@@ -493,9 +493,17 @@ check_dots_empty <- function(...) {
 # `x` always end up on the names of the output list,
 # unlike `as.list.factor()`.
 rlang_as_list <- function(x) {
-  n <- length(x)
   names <- names(x)
 
+  # Special case if `x` is already a list.
+  # This also avoids accidentally shortening the `out` list with `[[<-`
+  # if any element of `x` happens to be `NULL`.
+  if (is.list(x)) {
+    attributes(x) <- list(names = names)
+    return(x)
+  }
+
+  n <- length(x)
   out <- vector("list", n)
 
   for (i in seq_len(n)) {
