@@ -461,6 +461,68 @@ test_that(".data pronoun handles promises (#908)", {
   expect_equal(eval_tidy(expr(.data$a * 2), mask), 2)
 })
 
+test_that("Non-quosure tilde found correctly (#924)", {
+  ## Base tilde
+  expect_equal(eval_tidy(quo(~1)), ~1)
+
+  ## tilde outside
+  expect_equal(
+    with(
+      list(`~` = function(...) "outside"),
+      eval_tidy(quo(~1))
+    ),
+    "outside"
+  )
+  ## tilde inside; works trivially
+  expect_equal(
+    eval_tidy(
+      quo(
+        with(
+          list(`~` = function(...) "inside"),
+          ~1
+    ) ) ),
+    "inside"
+  )
+  ## tilde in promise
+
+  expect_equal(
+    eval_tidy({
+      f <- function(`~`) quo(~1)
+      f(function(...) "promise")
+    }),
+    "promise"
+  )
+  expect_equal(
+    eval_tidy({
+      f <- function(`~`) {
+        force(`~`)
+        quo(~1)
+      }
+      f(function(...) "promise2")
+    }),
+    "promise2"
+  )
+  expect_error(
+    eval_tidy({
+      f <- function(`~`) quo(~1)
+      f()
+    }),
+    "missing, with no default"
+  )
+  ## no tilde
+
+  env <- new.env(parent=emptyenv())
+  env[['quo']] <- quo
+  expect_error(
+    eval_tidy(local(quo(~1), envir = env)),
+    "Could not find function"
+  )
+  ## but make sure quosure tilde works
+
+  env[['x']] <- 1
+  expect_equal(eval_tidy(local(quo(x), envir=env)), 1)
+})
+
 # Lifecycle ----------------------------------------------------------
 
 test_that("supplying environment as data is deprecated", {

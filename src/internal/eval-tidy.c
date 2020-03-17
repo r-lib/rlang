@@ -340,7 +340,53 @@ sexp* rlang_new_data_mask_compat(sexp* bottom, sexp* top, sexp* parent) {
 sexp* rlang_as_data_mask_compat(sexp* data, sexp* parent) {
   return rlang_as_data_mask(data);
 }
+// Similar to Rf_findFun(r_sym("~"), env), but skips the mask environment.
+// In theory we need a version that does Rf_findVar(r_sym("~"), env) for
+// the cases where `~` is referenced directly (instead of called as a fun),
+// but there is no point to it since we have no mechanism to trigger it like
+// we do when the rlang mask tilde evaluates.
+//
+// Adapted from findFun (R/trunk/src/main/envir.c)
 
+static sexp* find_tilde(sexp* env) {
+  sexp* tilde_sym = KEEP(r_sym("~"));
+  sexp* vl;
+
+  // R_envHasNoSpecialSymbols does not appear to recognize
+  // user envs with "~" (e.g. in `with`)
+
+  KEEP(KEEP(R_NilValue));  // so loop is PROTECT balanced
+  while (env != R_EmptyEnv) {
+    if (mask_info(env).type == RLANG_MASK_NONE) {
+      FREE(2);             // vl potentially allocated twice due to promise
+      vl = KEEP(r_env_find(env, tilde_sym));
+      if (vl != R_UnboundValue) {
+        if (TYPEOF(vl) == PROMSXP) {
+          SEXP pv = PRVALUE(vl);
+          if (pv != R_UnboundValue)
+            vl = KEEP(pv);       // stack balance
+          else {
+            vl = KEEP(Rf_eval(vl, env));
+          }
+        } else KEEP(R_NilValue); // stack balance
+        int is_fun = TYPEOF(vl) == CLOSXP ||
+                     TYPEOF(vl) == BUILTINSXP ||
+                     TYPEOF(vl) == SPECIALSXP;
+        if (is_fun || vl == R_MissingArg) break;
+      } else KEEP(R_NilValue);   // stack balance
+    }
+    env = ENCLOS(env);
+  }
+  if (env == R_EmptyEnv) {
+    r_abort("Could not find function \"~\"");
+  } else if (vl == R_MissingArg) {
+    // this error message is slightly confusing as it will not be emitted
+    // with the correct call.
+    r_abort("Argument \"~\" is missing, with no default");
+  }
+  FREE(3);
+  return (vl);
+}
 
 static sexp* tilde_prim = NULL;
 
@@ -348,16 +394,20 @@ static sexp* base_tilde_eval(sexp* tilde, sexp* quo_env) {
   if (r_f_has_env(tilde)) {
     return tilde;
   }
-
-  // Inline the base primitive because overscopes override `~` to make
+  // Inline the `~` because data masks override it to make
   // quosures self-evaluate
-  tilde = KEEP(r_new_call(tilde_prim, r_node_cdr(tilde)));
+  sexp* tilde_found_fn = KEEP(find_tilde(quo_env));
+
+  tilde = KEEP(r_new_call(tilde_found_fn, r_node_cdr(tilde)));
   tilde = KEEP(r_eval(tilde, quo_env));
 
-  // Change it back because the result still has the primitive inlined
-  r_node_poke_car(tilde, r_tilde_sym);
+  // Undo inlining but only if the result of evaluating it is still an
+  // unevaluated call with the same "tilde"
 
-  FREE(2);
+  if (TYPEOF(tilde) == LANGSXP && CAR(tilde) == tilde_found_fn) {
+    r_node_poke_car(tilde, r_tilde_sym);
+  }
+  FREE(3);
   return tilde;
 }
 
