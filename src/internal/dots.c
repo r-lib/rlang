@@ -199,18 +199,18 @@ static sexp* dots_big_bang_coerce(sexp* x) {
   case r_type_character:
   case r_type_raw:
     if (r_is_object(x)) {
-      return r_eval_with_x(as_list_call, r_global_env, x);
+      return r_eval_with_x(rlang_as_list_call, rlang_ns_env, x);
     } else {
       return r_vec_coerce(x, r_type_list);
     }
   case r_type_list:
     if (r_is_object(x)) {
-      return r_eval_with_x(as_list_call, r_global_env, x);
+      return r_eval_with_x(rlang_as_list_call, rlang_ns_env, x);
     } else {
       return x;
     }
   case r_type_s4:
-    return r_eval_with_x(as_list_s4_call, r_methods_ns_env, x);
+    return r_eval_with_x(rlang_as_list_call, rlang_ns_env, x);
   case r_type_call:
     if (r_is_symbol(r_node_car(x), "{")) {
       return r_vec_coerce(r_node_cdr(x), r_type_list);

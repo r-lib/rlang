@@ -4,8 +4,7 @@
 
 sexp* rlang_zap = NULL;
 
-sexp* as_list_call = NULL;
-sexp* as_list_s4_call = NULL;
+sexp* rlang_as_list_call = NULL;
 
 sexp* rlang_objs_keep = NULL;
 sexp* rlang_objs_trailing = NULL;
@@ -28,11 +27,8 @@ void rlang_init_internal(sexp* ns) {
 
   rlang_zap = rlang_ns_get("zap!");
 
-  as_list_call = r_parse("as.list(x)");
-  r_mark_precious(as_list_call);
-
-  as_list_s4_call = r_parse("as(x, 'list')");
-  r_mark_precious(as_list_s4_call);
+  rlang_as_list_call = r_parse("rlang_as_list(x)");
+  r_mark_precious(rlang_as_list_call);
 
 
   rlang_objs_keep = r_chr("keep");

@@ -95,10 +95,10 @@ test_that("pairlist2() converts to pairlist", {
   expect_identical_(pairlist2(1, !!!mtcars[1:2], 4), pairlist(1, mpg = mtcars$mpg, cyl = mtcars$cyl, 4))
 
   local_bindings(.env = global_env(),
-    as.list.rlang_foobar = function(x) list("foo", "bar")
+    `[[.rlang_foobar` = function(x, i) "foo"
   )
   foobar <- structure(NA, class = "rlang_foobar")
-  expect_identical_(pairlist2(1, !!!foobar, 4), pairlist(1, "foo", "bar", 4))
+  expect_identical_(pairlist2(1, !!!foobar, 4), pairlist(1, "foo", 4))
 })
 
 test_that("pairlist2() duplicates spliced pairlists", {
