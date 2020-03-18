@@ -413,6 +413,43 @@ test_that("!!! calls `[[` with vector S4 objects", {
   expect_identical_(quos(!!!fievel), as_quos_list(exp_named))
 })
 
+test_that("!!! doesn't shorten S3 lists containing `NULL`", {
+  x <- structure(list(NULL), class = "foobar")
+  y <- structure(list(a = NULL, b = 1), class = "foobar")
+
+  expect_identical_(list2(!!!x), list(NULL))
+  expect_identical_(list2(!!!y), list(a = NULL, b = 1))
+})
+
+test_that("!!! goes through `[[` for record S3 types", {
+  x <- structure(list(x = c(1, 2, 3), y = c(3, 2, 1)), class = "rcrd")
+
+  local_methods(
+    `[[.rcrd` = function(x, i, ...) {
+      structure(lapply(unclass(x), "[[", i), class = "rcrd")
+    },
+    names.rcrd = function(x) {
+      names(x$x)
+    },
+    `names<-.rcrd` = function(x, value) {
+      names(x$x) <- value
+      x
+    },
+    length.rcrd = function(x) {
+      length(x$x)
+    }
+  )
+
+  x_named <- set_names(x, c("a", "b", "c"))
+
+  expect <- list(
+    a = structure(list(x = 1, y = 3), class = "rcrd"),
+    b = structure(list(x = 2, y = 2), class = "rcrd"),
+    c = structure(list(x = 3, y = 1), class = "rcrd")
+  )
+
+  expect_identical_(list2(!!!x_named), expect)
+})
 
 # bang ---------------------------------------------------------------
 
