@@ -41,7 +41,6 @@ SEXP attribute_hidden new_captured_promise(SEXP x, SEXP env) {
         expr = new_captured_literal(value);
         UNPROTECT(1);
     } else {
-        MARK_NOT_MUTABLE(expr);
         expr = new_captured_arg(expr, expr_env);
     }
 

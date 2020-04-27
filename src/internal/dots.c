@@ -452,6 +452,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
       r_abort("Internal error: `OP_DOTS_MAX`");
     }
 
+    r_mark_shared(expr);
     r_node_poke_car(node, expr);
     FREE(1);
   }
