@@ -1,110 +1,40 @@
-# ggplot2
+# exampletestr
 
 <details>
 
-* Version: 3.2.1
-* Source code: https://github.com/cran/ggplot2
-* URL: http://ggplot2.tidyverse.org, https://github.com/tidyverse/ggplot2
-* BugReports: https://github.com/tidyverse/ggplot2/issues
-* Date/Publication: 2019-08-10 22:30:13 UTC
-* Number of recursive dependencies: 150
+* Version: 1.6.1
+* Source code: https://github.com/cran/exampletestr
+* URL: https://rorynolan.github.io/exampletestr, https://github.com/rorynolan/exampletestr#readme
+* BugReports: https://www.github.com/rorynolan/exampletestr/issues
+* Date/Publication: 2020-04-15 18:10:02 UTC
+* Number of recursive dependencies: 82
 
-Run `revdep_details(,"ggplot2")` for more info
+Run `revdep_details(,"exampletestr")` for more info
 
 </details>
 
 ## Newly broken
 
-*   checking tests ...
+*   checking tests ... ERROR
     ```
-     ERROR
+      Running ‘spelling.R’
+      Running ‘testthat.R’
     Running the tests in ‘tests/testthat.R’ failed.
     Last 13 lines of output:
-      > library(testthat)
-      > library(ggplot2)
-      > 
-      > test_check("ggplot2")
-      ── 1. Failure: as_facets_list() coerces lists (@test-facet-.r#40)  ─────────────
-      `out` not identical to `exp`.
-      Component 3: Attributes: < Component "class": Lengths (2, 1) differ (string compare on first 1) >
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 1097 | SKIPPED: 105 | WARNINGS: 0 | FAILED: 1 ]
-      1. Failure: as_facets_list() coerces lists (@test-facet-.r#40) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  7.6Mb
-      sub-directories of 1Mb or more:
-        doc   3.8Mb
-        R     2.1Mb
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘mgcv’ ‘reshape2’ ‘viridisLite’
-      All declared Imports should be used.
-    ```
-
-# RxODE
-
-<details>
-
-* Version: 0.9.1-9
-* Source code: https://github.com/cran/RxODE
-* URL: https://nlmixrdevelopment.github.io/RxODE/
-* BugReports: https://github.com/nlmixrdevelopment/RxODE/issues
-* Date/Publication: 2020-01-10 23:20:06 UTC
-* Number of recursive dependencies: 121
-
-Run `revdep_details(,"RxODE")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      > library(testthat)
-      > library(RxODE)
-      > test_check("RxODE")
-      ── 1. Failure: Issue #56 (@test-issue-56.R#11)  ────────────────────────────────
-      dir.exists("/tmp/m1.d") isn't true.
-      
-      [====|====|====|====|====|====|====|====|====|====] 0:00:00 
-      
-      [====|====|====|====|====|====|====|====|====|====] 0:00:00 
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 876 | SKIPPED: 0 | WARNINGS: 0 | FAILED: 1 ]
-      1. Failure: Issue #56 (@test-issue-56.R#11) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Packages suggested but not available for checking:
-      'SnakeCharmR', 'installr'
-    ```
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  6.8Mb
-      sub-directories of 1Mb or more:
-        libs   4.1Mb
-        R      2.0Mb
+      11: lapply(teardown_env$queue, function(f) try(f()))
+      12: teardown_run(dirname(path))
+      13: FUN(X[[i]], ...)
+      14: lapply(paths, test_file, env = env, reporter = current_reporter,     start_end_reporter = FALSE, load_helpers = FALSE, wrap = wrap)
+      15: force(code)
+      16: doWithOneRestart(return(expr), restart)
+      17: withOneRestart(expr, restarts[[1L]])
+      18: withRestarts(testthat_abort_reporter = function() NULL, force(code))
+      19: with_reporter(reporter = current_reporter, results <- lapply(paths,     test_file, env = env, reporter = current_reporter, start_end_reporter = FALSE,     load_helpers = FALSE, wrap = wrap))
+      20: test_files(paths, reporter = reporter, env = env, stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      21: test_dir(path = test_path, reporter = reporter, env = env, filter = filter,     ..., stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap)
+      22: test_package_dir(package = package, test_path = test_path, filter = filter,     reporter = reporter, ..., stop_on_failure = stop_on_failure,     stop_on_warning = stop_on_warning, wrap = wrap)
+      23: test_check("exampletestr")
+      An irrecoverable exception occurred. R is aborting now ...
+      Segmentation fault
     ```
 
