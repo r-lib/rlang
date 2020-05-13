@@ -646,7 +646,7 @@ branch_uncollapse_pipe <- function(trace) {
 
     # This assigns the same frame number to all pipe calls that have
     # already returned
-    n_collapsed <- attr(pipe, "collapsed")
+    n_collapsed <- attr(pipe, "collapsed") %||% 0L
     pipe_indices <- rep(idx, length(pipe_calls) - 1L)
     pipe_indices <- c(pipe_indices, idx + n_collapsed + 1L)
 
