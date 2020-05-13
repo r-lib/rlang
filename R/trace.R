@@ -613,6 +613,8 @@ has_pipe_pointer <- function(x) {
 
 # Assumes a backtrace branch with collapsed pipe
 branch_uncollapse_pipe <- function(trace) {
+  orig <- trace
+
   while (idx <- detect_index(trace$calls, has_pipe_pointer)) {
     trace_before <- trace_subset(trace, seq2(1L, idx - 1L))
     trace_after <- trace_subset(trace, seq2(idx + 2L, trace_length(trace)))
@@ -659,7 +661,8 @@ branch_uncollapse_pipe <- function(trace) {
   }
 
   if (length(unique(lengths(trace))) != 1L) {
-    abort("Internal error: Trace data is not square.")
+    warn("Internal error: Trace data is not square.")
+    return(orig)
   }
 
   trace
