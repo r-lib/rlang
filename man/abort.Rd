@@ -75,10 +75,10 @@ still filter out the messages easily by redirecting \code{stderr}.}
 }
 \description{
 These functions are equivalent to base functions \code{\link[base:stop]{base::stop()}},
-\code{\link[base:warning]{base::warning()}} and \code{\link[base:message]{base::message()}}, but make it easy to supply
+\code{\link[base:warning]{base::warning()}}, and \code{\link[base:message]{base::message()}}, but make it easy to supply
 condition metadata:
 \itemize{
-\item Supply \code{.subclass} to create a classed condition. Typed
+\item Supply \code{class} to create a classed condition. Typed
 conditions can be captured or handled selectively, allowing for
 finer-grained error handling.
 \item Supply metadata with named \code{...} arguments. This data will be
@@ -129,11 +129,12 @@ guaranteed.
 
 
 These functions were changed in rlang 0.3.0 to take condition
-metadata with \code{...}. Consequently:
+metadata with \code{...} and further changes occurred in 0.4.2. Consequently:
 \itemize{
-\item All arguments were renamed to be prefixed with a dot, except for
-\code{type} which was renamed to \code{.subclass}.
-\item \code{.call} (previously \code{call}) can no longer be passed positionally.
+\item The \code{type} argument was renamed to \code{.subclass} (0.3.0) and then renamed
+again to \code{class} (0.4.2).
+\item Only \code{message} and \code{class} can be passed positionally, i.e. they are the
+only arguments before \code{...}.
 }
 }
 
