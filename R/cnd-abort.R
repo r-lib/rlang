@@ -3,10 +3,10 @@
 #' @description
 #'
 #' These functions are equivalent to base functions [base::stop()],
-#' [base::warning()] and [base::message()], but make it easy to supply
+#' [base::warning()], and [base::message()], but make it easy to supply
 #' condition metadata:
 #'
-#' * Supply `.subclass` to create a classed condition. Typed
+#' * Supply `class` to create a classed condition. Typed
 #'   conditions can be captured or handled selectively, allowing for
 #'   finer-grained error handling.
 #'
@@ -53,11 +53,12 @@
 #' @section Lifecycle:
 #'
 #' These functions were changed in rlang 0.3.0 to take condition
-#' metadata with `...`. Consequently:
+#' metadata with `...` and further changes occurred in 0.4.2. Consequently:
 #'
-#' * All arguments were renamed to be prefixed with a dot, except for
-#'   `type` which was renamed to `.subclass`.
-#' * `.call` (previously `call`) can no longer be passed positionally.
+#' * The `type` argument was renamed to `.subclass` (0.3.0) and then renamed
+#'   again to `class` (0.4.2).
+#' * Only `message` and `class` can be passed positionally, i.e. they are the
+#'   only arguments before `...`.
 #'
 #' @inheritParams cnd
 #' @param message The message to display.
