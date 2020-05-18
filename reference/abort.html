@@ -37,9 +37,9 @@
 
 <meta property="og:title" content="Signal an error, warning, or message — abort" />
 <meta property="og:description" content="These functions are equivalent to base functions base::stop(),
-base::warning() and base::message(), but make it easy to supply
+base::warning(), and base::message(), but make it easy to supply
 condition metadata:
-Supply .subclass to create a classed condition. Typed
+Supply class to create a classed condition. Typed
 conditions can be captured or handled selectively, allowing for
 finer-grained error handling.
 Supply metadata with named ... arguments. This data will be
@@ -166,9 +166,9 @@ to create custom interrupt condition objects." />
 
     <div class="ref-description">
     <p>These functions are equivalent to base functions <code><a href='https://rdrr.io/r/base/stop.html'>base::stop()</a></code>,
-<code><a href='https://rdrr.io/r/base/warning.html'>base::warning()</a></code> and <code><a href='https://rdrr.io/r/base/message.html'>base::message()</a></code>, but make it easy to supply
+<code><a href='https://rdrr.io/r/base/warning.html'>base::warning()</a></code>, and <code><a href='https://rdrr.io/r/base/message.html'>base::message()</a></code>, but make it easy to supply
 condition metadata:</p><ul>
-<li><p>Supply <code>.subclass</code> to create a classed condition. Typed
+<li><p>Supply <code>class</code> to create a classed condition. Typed
 conditions can be captured or handled selectively, allowing for
 finer-grained error handling.</p></li>
 <li><p>Supply metadata with named <code>...</code> arguments. This data will be
@@ -304,10 +304,11 @@ guaranteed.</p>
 
 
 <p>These functions were changed in rlang 0.3.0 to take condition
-metadata with <code>...</code>. Consequently:</p><ul>
-<li><p>All arguments were renamed to be prefixed with a dot, except for
-<code>type</code> which was renamed to <code>.subclass</code>.</p></li>
-<li><p><code>.call</code> (previously <code>call</code>) can no longer be passed positionally.</p></li>
+metadata with <code>...</code> and further changes occurred in 0.4.2. Consequently:</p><ul>
+<li><p>The <code>type</code> argument was renamed to <code>.subclass</code> (0.3.0) and then renamed
+again to <code>class</code> (0.4.2).</p></li>
+<li><p>Only <code>message</code> and <code>class</code> can be passed positionally, i.e. they are the
+only arguments before <code>...</code>.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
