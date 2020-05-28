@@ -40,15 +40,15 @@
 #'   rev(out)
 #' }
 #'
-#' # splice
+#' # Splice
 #' x <- list(alpha = "first", omega = "last")
 #' f(!!!x)
 #'
-#' # unquote a name
+#' # Unquote a name
 #' nm <- "key"
 #' f(!!nm := "value")
 #'
-#' # tolerate a trailing comma
+#' # Tolerate a trailing comma
 #' f(this = "that", )
 NULL
 
