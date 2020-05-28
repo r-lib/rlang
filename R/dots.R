@@ -44,9 +44,11 @@
 #' x <- list(alpha = "first", omega = "last")
 #' f(!!!x)
 #'
-#' # Unquote a name
+#' # Unquote a name, showing both the `!!` bang bang and `{}` glue style
 #' nm <- "key"
 #' f(!!nm := "value")
+#' f("{nm}" := "value")
+#' f("prefix_{nm}" := "value")
 #'
 #' # Tolerate a trailing comma
 #' f(this = "that", )
