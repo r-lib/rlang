@@ -197,11 +197,39 @@ as easy as collecting the dots with <code><a href='list2.html'>list2()</a></code
 configurable than <code><a href='list2.html'>list2()</a></code>, <code>vars()</code> which doesn't force its
 arguments, and <code><a href='call2.html'>call2()</a></code> for creating calls.</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>...</span>) {
+  <span class='no'>out</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='list2.html'>list2</a></span>(<span class='no'>...</span>)
+  <span class='fu'><a href='https://rdrr.io/r/base/rev.html'>rev</a></span>(<span class='no'>out</span>)
+}
+
+<span class='co'># Splice</span>
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>alpha</span> <span class='kw'>=</span> <span class='st'>"first"</span>, <span class='kw'>omega</span> <span class='kw'>=</span> <span class='st'>"last"</span>)
+<span class='fu'>f</span>(!!!<span class='no'>x</span>)</div><div class='output co'>#&gt; $omega
+#&gt; [1] "last"
+#&gt; 
+#&gt; $alpha
+#&gt; [1] "first"
+#&gt; </div><div class='input'>
+<span class='co'># Unquote a name, showing both the `!!` bang bang and `{}` glue style</span>
+<span class='no'>nm</span> <span class='kw'>&lt;-</span> <span class='st'>"key"</span>
+<span class='fu'>f</span>(!!<span class='no'>nm</span> <span class='kw'>:=</span> <span class='st'>"value"</span>)</div><div class='output co'>#&gt; $key
+#&gt; [1] "value"
+#&gt; </div><div class='input'><span class='fu'>f</span>(<span class='st'>"{nm}"</span> <span class='kw'>:=</span> <span class='st'>"value"</span>)</div><div class='output co'>#&gt; $key
+#&gt; [1] "value"
+#&gt; </div><div class='input'><span class='fu'>f</span>(<span class='st'>"prefix_{nm}"</span> <span class='kw'>:=</span> <span class='st'>"value"</span>)</div><div class='output co'>#&gt; $prefix_key
+#&gt; [1] "value"
+#&gt; </div><div class='input'>
+<span class='co'># Tolerate a trailing comma</span>
+<span class='fu'>f</span>(<span class='kw'>this</span> <span class='kw'>=</span> <span class='st'>"that"</span>, )</div><div class='output co'>#&gt; $this
+#&gt; [1] "that"
+#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#add-dynamic-dots-support-in-your-functions">Add dynamic dots support in your functions</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
