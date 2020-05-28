@@ -33,6 +33,25 @@
 #'
 #' @name dyn-dots
 #' @aliases tidy-dots
+#'
+#' @examples
+#' f <- function(...) {
+#'   out <- list2(...)
+#'   rev(out)
+#' }
+#'
+#' # Splice
+#' x <- list(alpha = "first", omega = "last")
+#' f(!!!x)
+#'
+#' # Unquote a name, showing both the `!!` bang bang and `{}` glue style
+#' nm <- "key"
+#' f(!!nm := "value")
+#' f("{nm}" := "value")
+#' f("prefix_{nm}" := "value")
+#'
+#' # Tolerate a trailing comma
+#' f(this = "that", )
 NULL
 
 #' Collect dots in a list

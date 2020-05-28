@@ -33,3 +33,22 @@ configurable than \code{\link[=list2]{list2()}}, \code{vars()} which doesn't for
 arguments, and \code{\link[=call2]{call2()}} for creating calls.
 }
 
+\examples{
+f <- function(...) {
+  out <- list2(...)
+  rev(out)
+}
+
+# Splice
+x <- list(alpha = "first", omega = "last")
+f(!!!x)
+
+# Unquote a name, showing both the `!!` bang bang and `{}` glue style
+nm <- "key"
+f(!!nm := "value")
+f("{nm}" := "value")
+f("prefix_{nm}" := "value")
+
+# Tolerate a trailing comma
+f(this = "that", )
+}
