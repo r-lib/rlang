@@ -85,11 +85,13 @@ cat_line <- function(..., .trailing = TRUE, file = "") {
   cat(paste_line(..., .trailing = .trailing), file = file)
 }
 paste_line <- function(..., .trailing = FALSE) {
-  lines <- paste(chr(...), collapse = "\n")
+  text <- chr(...)
+
   if (.trailing) {
-    lines <- paste0(lines, "\n")
+    paste0(text, "\n", collapse = "")
+  } else {
+    paste(text, collapse = "\n")
   }
-  lines
 }
 
 has_crayon <- function() {
