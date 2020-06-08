@@ -206,20 +206,20 @@ might not be in the future.</p></li>
 <span class='no'>env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>(<span class='kw'>var</span> <span class='kw'>=</span> <span class='st'>"thing"</span>)
 <span class='fu'>as_quosure</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>var</span>), <span class='no'>env</span>)</div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^var</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7fa0859990b0</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7f9214d2dd20</span><span></div><div class='input'>
 
 <span class='co'># The environment is ignored for formulas:</span>
 <span class='fu'>as_quosure</span>(~<span class='no'>foo</span>, <span class='no'>env</span>)</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^foo</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7fa083bdaf58</span><span></div><div class='input'><span class='fu'>as_quosure</span>(~<span class='no'>foo</span>)</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7f9214ce3728</span><span></div><div class='input'><span class='fu'>as_quosure</span>(~<span class='no'>foo</span>)</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^foo</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7fa083bdaf58</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7f9214ce3728</span><span></div><div class='input'>
 <span class='co'># However you must supply it for symbols and calls:</span>
 <span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>as_quosure</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>var</span>)))</div><div class='output co'>#&gt; <span class='warning'>Warning: `as_quosure()` requires an explicit environment as of rlang 0.3.0.</span>
 #&gt; <span class='warning'>Please supply `env`.</span>
 #&gt; <span class='warning'></span><span style='color: #555555;'>This warning is displayed once per session.</span><span></span></div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^var</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7fa083bdaf58</span><span></div></span></pre>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7f9214ce3728</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

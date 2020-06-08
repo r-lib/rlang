@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Is a package installed in the library? — is_installed • rlang</title>
+<title>Are packages installed in any of the libraries? — is_installed • rlang</title>
 
 
 <!-- jquery -->
@@ -35,9 +35,9 @@
 
 
 
-<meta property="og:title" content="Is a package installed in the library? — is_installed" />
-<meta property="og:description" content="This checks that a package is installed with minimal side effects.
-If installed, the package will be loaded but not attached." />
+<meta property="og:title" content="Are packages installed in any of the libraries? — is_installed" />
+<meta property="og:description" content="This checks that packages are installed with minimal side effects.
+If installed, the packages will be loaded but not attached." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -148,14 +148,14 @@ If installed, the package will be loaded but not attached." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Is a package installed in the library?</h1>
+    <h1>Are packages installed in any of the libraries?</h1>
     <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/env-special.R'><code>R/env-special.R</code></a></small>
     <div class="hidden name"><code>is_installed.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This checks that a package is installed with minimal side effects.
-If installed, the package will be loaded but not attached.</p>
+    <p>This checks that packages are installed with minimal side effects.
+If installed, the packages will be loaded but not attached.</p>
     </div>
 
     <pre class="usage"><span class='fu'>is_installed</span>(<span class='no'>pkg</span>)</pre>
@@ -165,16 +165,17 @@ If installed, the package will be loaded but not attached.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>pkg</th>
-      <td><p>The name of a package.</p></td>
+      <td><p>The package names.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>TRUE</code> if the package is installed, <code>FALSE</code> otherwise.</p>
+    <p><code>TRUE</code> if <em>all</em> package names provided in <code>pkg</code> are installed,
+<code>FALSE</code> otherwise.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>is_installed</span>(<span class='st'>"utils"</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_installed</span>(<span class='st'>"ggplot5"</span>)</div><div class='output co'>#&gt; [1] FALSE</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>is_installed</span>(<span class='st'>"utils"</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_installed</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"base"</span>, <span class='st'>"ggplot5"</span>))</div><div class='output co'>#&gt; [1] FALSE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
