@@ -2,21 +2,23 @@
 % Please edit documentation in R/env-special.R
 \name{is_installed}
 \alias{is_installed}
-\title{Is a package installed in the library?}
+\title{Are packages installed in any of the libraries?}
 \usage{
 is_installed(pkg)
 }
 \arguments{
-\item{pkg}{The name of a package.}
+\item{pkg}{The package names.}
 }
 \value{
-\code{TRUE} if the package is installed, \code{FALSE} otherwise.
+A named logical vector of the same length as \code{pkg}. \code{TRUE} for each
+installed package and \code{FALSE} for each package not found in any of the
+libraries.
 }
 \description{
-This checks that a package is installed with minimal side effects.
-If installed, the package will be loaded but not attached.
+This checks that packages are installed with minimal side effects.
+If installed, the packages will be loaded but not attached.
 }
 \examples{
-is_installed("utils")
+is_installed(c("graphics", "utils"))
 is_installed("ggplot5")
 }

@@ -82,3 +82,7 @@ test_that("ns_env() and variants have default argument", {
   expect_true(is_reference(out[[2]], ns_imports_env("rlang")))
   expect_identical(out[[3]], "rlang")
 })
+
+test_that("is_installed() is vectorized", {
+  expect_false(all(is_installed(c("base", "no.notapackagename"))))
+})
