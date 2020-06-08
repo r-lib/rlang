@@ -270,17 +270,14 @@ is_namespace <- function(x) {
 #' If installed, the packages will be loaded but not attached.
 #'
 #' @param pkg The package names.
-#' @return A named logical vector of the same length as `pkg`. `TRUE` for each
-#'   installed package and `FALSE` for each package not found in any of the
-#'   libraries.
+#' @return `TRUE` if _all_ package names provided in `pkg` are installed,
+#'   `FALSE` otherwise.
 #' @export
 #' @examples
-#' is_installed(c("graphics", "utils"))
-#' is_installed("ggplot5")
+#' is_installed("utils")
+#' is_installed(c("base", "ggplot5"))
 is_installed <- function(pkg) {
-  vapply(pkg,
-         function(x) is_true(requireNamespace(x, quietly = TRUE)),
-         FALSE)
+  all(map_lgl(pkg, function(x) is_true(requireNamespace(x, quietly = TRUE))))
 }
 
 

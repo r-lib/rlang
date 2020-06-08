@@ -10,15 +10,14 @@ is_installed(pkg)
 \item{pkg}{The package names.}
 }
 \value{
-A named logical vector of the same length as \code{pkg}. \code{TRUE} for each
-installed package and \code{FALSE} for each package not found in any of the
-libraries.
+\code{TRUE} if \emph{all} package names provided in \code{pkg} are installed,
+\code{FALSE} otherwise.
 }
 \description{
 This checks that packages are installed with minimal side effects.
 If installed, the packages will be loaded but not attached.
 }
 \examples{
-is_installed(c("graphics", "utils"))
-is_installed("ggplot5")
+is_installed("utils")
+is_installed(c("base", "ggplot5"))
 }
