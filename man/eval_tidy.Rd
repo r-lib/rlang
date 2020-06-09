@@ -91,6 +91,22 @@ my_quoting_fn(toupper(!!quo(letters)))
 }
 }
 
+\section{Stack semantics of \code{eval_tidy()}}{
+
+
+\code{eval_tidy()} has different stack semantics than \code{\link[base:eval]{base::eval()}}:
+\itemize{
+\item Functions that require the evaluation environment to correspond
+to a frame on the call stack do not work. This is why \code{return()}
+called from a quosure does not work.
+\item The mask environment creates a new branch in the call tree
+defined by \code{sys.parent()} (you can visualise it in a \code{\link[=browser]{browser()}}
+session with \code{lobstr::cst()}).
+}
+
+See also \code{\link[=eval_bare]{eval_bare()}} for more information about these differences.
+}
+
 \section{Life cycle}{
 
 
