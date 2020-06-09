@@ -13,25 +13,13 @@ abort(
   class = NULL,
   ...,
   trace = NULL,
-  call,
   parent = NULL,
-  msg,
-  type,
   .subclass
 )
 
-warn(message = NULL, class = NULL, ..., call, msg, type, .subclass)
+warn(message = NULL, class = NULL, ..., .subclass)
 
-inform(
-  message = NULL,
-  class = NULL,
-  ...,
-  file = NULL,
-  call,
-  msg,
-  type,
-  .subclass
-)
+inform(message = NULL, class = NULL, ..., file = NULL, .subclass)
 
 signal(message, class, ..., .subclass)
 
@@ -52,13 +40,7 @@ to selectively handle the conditions signalled by your functions.}
 
 \item{trace}{A \code{trace} object created by \code{\link[=trace_back]{trace_back()}}.}
 
-\item{call}{Defunct as of rlang 0.4.0. Storing the full
-backtrace is now preferred to storing a simple call.}
-
 \item{parent}{A parent condition object created by \code{\link[=abort]{abort()}}.}
-
-\item{msg, type}{These arguments were renamed to \code{message} and
-\code{.subclass} and are defunct as of rlang 0.4.0.}
 
 \item{.subclass}{This argument was renamed to \code{class} in rlang
 0.4.2.  It will be deprecated in the next major version. This is
@@ -123,19 +105,6 @@ to be displayed in the console. These messages can be muffled with
 On recent R versions (>= R 3.5.0), interrupts are typically
 signalled with a \code{"resume"} restart. This is however not
 guaranteed.
-}
-
-\section{Lifecycle}{
-
-
-These functions were changed in rlang 0.3.0 to take condition
-metadata with \code{...} and further changes occurred in 0.4.2. Consequently:
-\itemize{
-\item The \code{type} argument was renamed to \code{.subclass} (0.3.0) and then renamed
-again to \code{class} (0.4.2).
-\item Only \code{message} and \code{class} can be passed positionally, i.e. they are the
-only arguments before \code{...}.
-}
 }
 
 \examples{

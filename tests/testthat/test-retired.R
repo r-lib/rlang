@@ -544,10 +544,6 @@ test_that("whole scope is purged", {
   expect_identical(names(outside), "important")
 })
 
-test_that("pattern match on string encoding", {
-  expect_defunct(is_character(letters, encoding = "unknown"))
-})
-
 test_that("vector _along() ctors pick up names", {
   x <- list(a = NULL, b = NULL)
   expect_identical(new_logical_along(x), c(a = NA, b = NA))

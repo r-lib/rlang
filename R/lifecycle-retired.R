@@ -1134,7 +1134,7 @@ new_overscope <- function(bottom, top = NULL, enclosure = NULL) {
     "`new_overscope()` is deprecated as of rlang 0.2.0.",
     "Please use `new_data_mask()` instead."
   ))
-  new_data_mask(bottom, top, enclosure)
+  new_data_mask(bottom, top)
 }
 #' @rdname as_overscope
 #' @param overscope A data mask.

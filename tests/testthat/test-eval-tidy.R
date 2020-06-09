@@ -463,11 +463,6 @@ test_that(".data pronoun handles promises (#908)", {
 
 # Lifecycle ----------------------------------------------------------
 
-test_that("as_data_mask() and new_data_mask() are deprecated", {
-  expect_defunct(as_data_mask(mtcars, env()))
-  expect_defunct(new_data_mask(NULL, NULL, parent = env()))
-})
-
 test_that("supplying environment as data is deprecated", {
   local_options(lifecycle_verbose_soft_deprecation = TRUE)
   `_x` <- "foo"

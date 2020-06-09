@@ -27,7 +27,7 @@ is_bare_integer(x, n = NULL)
 
 is_bare_numeric(x, n = NULL)
 
-is_bare_character(x, n = NULL, encoding = NULL)
+is_bare_character(x, n = NULL)
 
 is_bare_logical(x, n = NULL)
 
@@ -41,8 +41,6 @@ is_bare_bytes(x, n = NULL)
 \item{x}{Object to be tested.}
 
 \item{n}{Expected length of a vector.}
-
-\item{encoding}{Defunct as of rlang 0.4.0.}
 }
 \description{
 These predicates check for a given type but only return \code{TRUE} for

@@ -187,53 +187,6 @@
 #' * `length()` and `names()` on tidy eval `.data` pronouns.
 #' * Supplying a named `!!!` call.
 #'
-#' * [as_data_mask()]: `parent` argument
-#' * [new_data_mask()]: `parent` argument
-#' * [env_tail()]: `sentinel` => `last`
-#' * [abort()], [warn()], [inform()]: `msg`, `type` => `.msg`, `.type`
-#' * [abort()], [warn()], [inform()], [cnd()], [error_cnd()],
-#'   [warning_cnd()], [message_cnd()]: `call` argument.
-#' * [is_character()], [is_string()], and variants: The `encoding`
-#'   argument.
-#'
-#'
-#' @section Archived:
-#'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("archived")}
-#'
-#' These functions were entirely removed from the package. You will
-#' find them in the commit history and previous releases.
-#'
-#'
-#' **Archived as of rlang 0.4.0**
-#'
-#' * `UQE()`
-#' * `as_dictionary()`, `is_dictionary()`
-#' * `as_quosureish()`, `is_quosureish()`
-#' * `eval_tidy_()`
-#' * `mut_utf8_locale()`, `mut_latin1_locale()`, `mut_mbcs_locale()`
-#' * `set_chr_encoding()`, `chr_encoding()`, `set_str_encoding()`, `str_encoding()`
-#' * `as_native_character()`, `as_utf8_string()`, `as_native_string()`
-#' * `lang_type_of()`, `switch_lang()`, `coerce_lang()`
-#'
-#'
-#' **Archived as of rlang 0.3.0:**
-#'
-#' * `cnd_inform()`, `cnd_warn()` and `cnd_abort()`
-#'
-#' * `new_cnd()` => [cnd()]
-#' * `cnd_message()` => [message_cnd()]
-#' * `cnd_warning()` => [warning_cnd()]
-#' * `cnd_error()` => [error_cnd()]
-#' * `rst_muffle()` => [cnd_muffle()]
-#' * `inplace()` => [calling()]. The `muffle` argument of `inplace()`
-#'   has not been implemented in `calling()` and is now defunct.
-#'
-#' * [cnd_signal()]: `.msg` and `.call`.
-#' * [cnd()], [error_cnd()], [warning_cnd()] and [message_cnd()]:
-#'   `.msg` => `message`.
-#'
-#'
 #' @keywords internal
 #' @name lifecycle
 NULL
