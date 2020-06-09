@@ -6,21 +6,14 @@
 \alias{new_data_mask}
 \title{Create a data mask}
 \usage{
-as_data_mask(data, parent = NULL)
+as_data_mask(data)
 
 as_data_pronoun(data)
 
-new_data_mask(bottom, top = bottom, parent = NULL)
+new_data_mask(bottom, top = bottom)
 }
 \arguments{
 \item{data}{A data frame or named vector of masking data.}
-
-\item{parent}{Deprecated. This argument no longer has any effect.
-The parent of the data mask is determined from either:
-\itemize{
-\item The \code{env} argument of \code{eval_tidy()}
-\item Quosure environments when applicable
-}}
 
 \item{bottom}{The environment containing masking objects if the
 data mask is one environment deep. The bottom environment if the
@@ -134,33 +127,6 @@ to one of the following environments:
 
 Consequently, all masking data should be contained between the
 bottom and top environment of the data mask.
-}
-
-\section{Life cycle}{
-
-
-The \code{parent} argument no longer has any effect and is defunct as of
-rlang 0.4.0. The parent of the data mask is determined from either:
-\itemize{
-\item The \code{env} argument of \code{eval_tidy()}
-\item Quosure environments when applicable
-}
-
-Passing environments to \code{as_data_mask()} is deprecated as of rlang
-0.3.0. Please use \code{new_data_mask()} instead.
-
-\strong{rlang 0.2.0}
-
-In early versions of rlang data masks were called overscopes. We
-think data mask is a more natural name in R. It makes reference to
-masking in the search path which occurs through the same mechanism
-(in technical terms, lexical scoping with hierarchically nested
-environments). We say that objects from user data mask objects
-in the current environment.
-
-Following this change in terminology, \code{as_overscope()} and
-\code{new_overscope()} were deprecated in rlang 0.2.0 in favour of
-\code{as_data_mask()} and \code{new_data_mask()}.
 }
 
 \examples{

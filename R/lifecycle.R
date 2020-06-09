@@ -187,8 +187,6 @@
 #' * `length()` and `names()` on tidy eval `.data` pronouns.
 #' * Supplying a named `!!!` call.
 #'
-#' * [as_data_mask()]: `parent` argument
-#' * [new_data_mask()]: `parent` argument
 #' * [env_tail()]: `sentinel` => `last`
 #' * [abort()], [warn()], [inform()]: `msg`, `type` => `.msg`, `.type`
 #' * [abort()], [warn()], [inform()], [cnd()], [error_cnd()],

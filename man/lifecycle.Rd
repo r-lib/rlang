@@ -177,8 +177,6 @@ like \code{quos()} is deprecated.
 \itemize{
 \item \code{length()} and \code{names()} on tidy eval \code{.data} pronouns.
 \item Supplying a named \verb{!!!} call.
-\item \code{\link[=as_data_mask]{as_data_mask()}}: \code{parent} argument
-\item \code{\link[=new_data_mask]{new_data_mask()}}: \code{parent} argument
 \item \code{\link[=env_tail]{env_tail()}}: \code{sentinel} => \code{last}
 \item \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, \code{\link[=inform]{inform()}}: \code{msg}, \code{type} => \code{.msg}, \code{.type}
 \item \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, \code{\link[=inform]{inform()}}, \code{\link[=cnd]{cnd()}}, \code{\link[=error_cnd]{error_cnd()}},
