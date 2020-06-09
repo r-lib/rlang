@@ -8,7 +8,7 @@
 \usage{
 env_parent(env = caller_env(), n = 1)
 
-env_tail(env = caller_env(), last = global_env(), sentinel = NULL)
+env_tail(env = caller_env(), last = global_env())
 
 env_parents(env = caller_env(), last = global_env())
 }
@@ -24,8 +24,6 @@ tail or the parents of an environment on the search path.
 
 \code{env_tail()} returns the environment which has \code{last} as parent
 and \code{env_parents()} returns the list of environments up to \code{last}.}
-
-\item{sentinel}{This argument is defunct, please use \code{last} instead.}
 }
 \value{
 An environment for \code{env_parent()} and \code{env_tail()}, a list
@@ -43,13 +41,6 @@ empty environment. This list is named using \code{\link[=env_name]{env_name()}}.
 
 See the section on \emph{inheritance} in \code{\link[=env]{env()}}'s documentation.
 }
-\section{Life cycle}{
-
-
-The \code{sentinel} argument of \code{env_tail()} has been deprecated in
-rlang 0.2.0 and renamed to \code{last}. It is defunct as of rlang 0.4.0.
-}
-
 \examples{
 # Get the parent environment with env_parent():
 env_parent(global_env())

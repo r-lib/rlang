@@ -246,12 +246,6 @@ vec_as_environment <- function(x, parent = NULL) {
 #'
 #' See the section on _inheritance_ in [env()]'s documentation.
 #'
-#'
-#' @section Life cycle:
-#'
-#' The `sentinel` argument of `env_tail()` has been deprecated in
-#' rlang 0.2.0 and renamed to `last`. It is defunct as of rlang 0.4.0.
-#'
 #' @inheritParams get_env
 #' @param n The number of generations to go up.
 #' @param last The environment at which to stop. Defaults to the
@@ -261,7 +255,6 @@ vec_as_environment <- function(x, parent = NULL) {
 #'
 #'   `env_tail()` returns the environment which has `last` as parent
 #'   and `env_parents()` returns the list of environments up to `last`.
-#' @param sentinel This argument is defunct, please use `last` instead.
 #' @return An environment for `env_parent()` and `env_tail()`, a list
 #'   of environments for `env_parents()`.
 #' @export
@@ -299,16 +292,7 @@ env_parent <- function(env = caller_env(), n = 1) {
 }
 #' @rdname env_parent
 #' @export
-env_tail <- function(env = caller_env(), last = global_env(),
-                     sentinel = NULL) {
-  if (!is_null(sentinel)) {
-    stop_defunct(paste_line(
-      "`sentinel` is deprecated as of version 0.3.0.",
-      "Please use `last` instead."
-    ))
-    last <- sentinel
-  }
-
+env_tail <- function(env = caller_env(), last = global_env()) {
   env_ <- get_env_retired(env, "env_tail()")
   parent <- env_parent(env_)
 
