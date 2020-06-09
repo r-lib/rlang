@@ -8,7 +8,7 @@ test_that("atomic vectors are spliced", {
   expect_identical(int, 1:5)
 
   dbl <- dbl(1, c(2, 3), list(4, 5))
-  expect_identical(dbl, as_double(1:5))
+  expect_identical(dbl, dbl(1:5))
 
   cpl <- cpl(1i, c(2i, 3i), list(4i, 5i))
   expect_identical(cpl, c(1i, 2i, 3i, 4i, 5i))
