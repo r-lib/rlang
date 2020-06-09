@@ -265,6 +265,21 @@ my_quoting_fn(toupper(letters))
 my_quoting_fn(toupper(!!quo(letters)))
 </pre>
 
+    <h2 class="hasAnchor" id="stack-semantics-of-eval-tidy-"><a class="anchor" href="#stack-semantics-of-eval-tidy-"></a>Stack semantics of <code>eval_tidy()</code></h2>
+
+    
+
+
+<p><code>eval_tidy()</code> has different stack semantics than <code><a href='https://rdrr.io/r/base/eval.html'>base::eval()</a></code>:</p><ul>
+<li><p>Functions that require the evaluation environment to correspond
+to a frame on the call stack do not work. This is why <code><a href='https://rdrr.io/r/base/function.html'>return()</a></code>
+called from a quosure does not work.</p></li>
+<li><p>The mask environment creates a new branch in the call tree
+defined by <code><a href='https://rdrr.io/r/base/sys.parent.html'>sys.parent()</a></code> (you can visualise it in a <code><a href='https://rdrr.io/r/base/browser.html'>browser()</a></code>
+session with <code>lobstr::cst()</code>).</p></li>
+</ul>
+
+<p>See also <code><a href='eval_bare.html'>eval_bare()</a></code> for more information about these differences.</p>
     <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
 
     
@@ -328,6 +343,7 @@ framework.</p></div>
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#data-masking">Data masking</a></li>
       <li><a href="#when-should-eval-tidy-be-used-instead-of-eval-">When should eval_tidy() be used instead of eval()?</a></li>
+      <li><a href="#stack-semantics-of-eval-tidy-">Stack semantics of <code>eval_tidy()</code></a></li>
       <li><a href="#life-cycle">Life cycle</a></li>
       <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
