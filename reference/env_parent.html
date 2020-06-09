@@ -178,7 +178,7 @@ empty environment. This list is named using <code><a href='env_name.html'>env_na
 
     <pre class="usage"><span class='fu'>env_parent</span>(<span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>(), <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 
-<span class='fu'>env_tail</span>(<span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>(), <span class='kw'>last</span> <span class='kw'>=</span> <span class='fu'><a href='search_envs.html'>global_env</a></span>(), <span class='kw'>sentinel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>env_tail</span>(<span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>(), <span class='kw'>last</span> <span class='kw'>=</span> <span class='fu'><a href='search_envs.html'>global_env</a></span>())
 
 <span class='fu'>env_parents</span>(<span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>(), <span class='kw'>last</span> <span class='kw'>=</span> <span class='fu'><a href='search_envs.html'>global_env</a></span>())</pre>
 
@@ -202,23 +202,12 @@ tail or the parents of an environment on the search path.</p>
 <p><code>env_tail()</code> returns the environment which has <code>last</code> as parent
 and <code>env_parents()</code> returns the list of environments up to <code>last</code>.</p></td>
     </tr>
-    <tr>
-      <th>sentinel</th>
-      <td><p>This argument is defunct, please use <code>last</code> instead.</p></td>
-    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An environment for <code>env_parent()</code> and <code>env_tail()</code>, a list
 of environments for <code>env_parents()</code>.</p>
-    <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
-
-    
-
-
-<p>The <code>sentinel</code> argument of <code>env_tail()</code> has been deprecated in
-rlang 0.2.0 and renamed to <code>last</code>. It is defunct as of rlang 0.4.0.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Get the parent environment with env_parent():</span>
@@ -232,7 +221,7 @@ rlang 0.2.0 and renamed to <code>last</code>. It is defunct as of rlang 0.4.0.</
 <span class='co'># By default, env_parent() returns the parent environment of the</span>
 <span class='co'># current evaluation frame. If called at top-level (the global</span>
 <span class='co'># frame), the following two expressions are equivalent:</span>
-<span class='fu'>env_parent</span>()</div><div class='output co'>#&gt; &lt;environment: 0x7f7f97ba8608&gt;</div><div class='input'><span class='fu'>env_parent</span>(<span class='fu'><a href='search_envs.html'>base_env</a></span>())</div><div class='output co'>#&gt; &lt;environment: R_EmptyEnv&gt;</div><div class='input'>
+<span class='fu'>env_parent</span>()</div><div class='output co'>#&gt; &lt;environment: 0x7fbe9377d920&gt;</div><div class='input'><span class='fu'>env_parent</span>(<span class='fu'><a href='search_envs.html'>base_env</a></span>())</div><div class='output co'>#&gt; &lt;environment: R_EmptyEnv&gt;</div><div class='input'>
 <span class='co'># This default is more handy when called within a function. In this</span>
 <span class='co'># case, the enclosure environment of the function is returned</span>
 <span class='co'># (since it is the parent of the evaluation frame):</span>
@@ -245,7 +234,6 @@ rlang 0.2.0 and renamed to <code>last</code>. It is defunct as of rlang 0.4.0.</
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
-      <li><a href="#life-cycle">Life cycle</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

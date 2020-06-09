@@ -174,11 +174,11 @@ They are meant for developers of tidy eval interfaces rather than
 for end users.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>as_data_mask</span>(<span class='no'>data</span>, <span class='kw'>parent</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>as_data_mask</span>(<span class='no'>data</span>)
 
 <span class='fu'>as_data_pronoun</span>(<span class='no'>data</span>)
 
-<span class='fu'>new_data_mask</span>(<span class='no'>bottom</span>, <span class='kw'>top</span> <span class='kw'>=</span> <span class='no'>bottom</span>, <span class='kw'>parent</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+<span class='fu'>new_data_mask</span>(<span class='no'>bottom</span>, <span class='kw'>top</span> <span class='kw'>=</span> <span class='no'>bottom</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -186,14 +186,6 @@ for end users.</p>
     <tr>
       <th>data</th>
       <td><p>A data frame or named vector of masking data.</p></td>
-    </tr>
-    <tr>
-      <th>parent</th>
-      <td><p>Deprecated. This argument no longer has any effect.
-The parent of the data mask is determined from either:</p><ul>
-<li><p>The <code>env</code> argument of <code><a href='eval_tidy.html'>eval_tidy()</a></code></p></li>
-<li><p>Quosure environments when applicable</p></li>
-</ul></td>
     </tr>
     <tr>
       <th>bottom</th>
@@ -292,29 +284,6 @@ to one of the following environments:</p><ul>
 
 <p>Consequently, all masking data should be contained between the
 bottom and top environment of the data mask.</p>
-    <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
-
-    
-
-
-<p>The <code>parent</code> argument no longer has any effect and is defunct as of
-rlang 0.4.0. The parent of the data mask is determined from either:</p><ul>
-<li><p>The <code>env</code> argument of <code><a href='eval_tidy.html'>eval_tidy()</a></code></p></li>
-<li><p>Quosure environments when applicable</p></li>
-</ul>
-
-<p>Passing environments to <code>as_data_mask()</code> is deprecated as of rlang
-0.3.0. Please use <code>new_data_mask()</code> instead.</p>
-<p><strong>rlang 0.2.0</strong></p>
-<p>In early versions of rlang data masks were called overscopes. We
-think data mask is a more natural name in R. It makes reference to
-masking in the search path which occurs through the same mechanism
-(in technical terms, lexical scoping with hierarchically nested
-environments). We say that objects from user data mask objects
-in the current environment.</p>
-<p>Following this change in terminology, <code><a href='as_overscope.html'>as_overscope()</a></code> and
-<code><a href='as_overscope.html'>new_overscope()</a></code> were deprecated in rlang 0.2.0 in favour of
-<code>as_data_mask()</code> and <code>new_data_mask()</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Evaluating in a tidy evaluation environment enables all tidy</span>
@@ -383,7 +352,6 @@ in the current environment.</p>
       <li><a href="#why-build-a-data-mask-">Why build a data mask?</a></li>
       <li><a href="#building-your-own-data-mask">Building your own data mask</a></li>
       <li><a href="#top-and-bottom-of-data-mask">Top and bottom of data mask</a></li>
-      <li><a href="#life-cycle">Life cycle</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

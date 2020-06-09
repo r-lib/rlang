@@ -185,25 +185,13 @@ to create custom interrupt condition objects.</p>
   <span class='kw'>class</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='no'>...</span>,
   <span class='kw'>trace</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>call</span>,
   <span class='kw'>parent</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>msg</span>,
-  <span class='no'>type</span>,
   <span class='no'>.subclass</span>
 )
 
-<span class='fu'>warn</span>(<span class='kw'>message</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>class</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='no'>call</span>, <span class='no'>msg</span>, <span class='no'>type</span>, <span class='no'>.subclass</span>)
+<span class='fu'>warn</span>(<span class='kw'>message</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>class</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='no'>.subclass</span>)
 
-<span class='fu'>inform</span>(
-  <span class='kw'>message</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>class</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>call</span>,
-  <span class='no'>msg</span>,
-  <span class='no'>type</span>,
-  <span class='no'>.subclass</span>
-)
+<span class='fu'>inform</span>(<span class='kw'>message</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>class</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>.subclass</span>)
 
 <span class='fu'>signal</span>(<span class='no'>message</span>, <span class='no'>class</span>, <span class='no'>...</span>, <span class='no'>.subclass</span>)
 
@@ -234,18 +222,8 @@ to selectively handle the conditions signalled by your functions.</p></td>
       <td><p>A <code>trace</code> object created by <code><a href='trace_back.html'>trace_back()</a></code>.</p></td>
     </tr>
     <tr>
-      <th>call</th>
-      <td><p>Defunct as of rlang 0.4.0. Storing the full
-backtrace is now preferred to storing a simple call.</p></td>
-    </tr>
-    <tr>
       <th>parent</th>
       <td><p>A parent condition object created by <code>abort()</code>.</p></td>
-    </tr>
-    <tr>
-      <th>msg, type</th>
-      <td><p>These arguments were renamed to <code>message</code> and
-<code>.subclass</code> and are defunct as of rlang 0.4.0.</p></td>
     </tr>
     <tr>
       <th>.subclass</th>
@@ -298,19 +276,6 @@ to be displayed in the console. These messages can be muffled with
 <p>On recent R versions (&gt;= R 3.5.0), interrupts are typically
 signalled with a <code>"resume"</code> restart. This is however not
 guaranteed.</p>
-    <h2 class="hasAnchor" id="lifecycle"><a class="anchor" href="#lifecycle"></a>Lifecycle</h2>
-
-    
-
-
-<p>These functions were changed in rlang 0.3.0 to take condition
-metadata with <code>...</code> and further changes occurred in 0.4.2. Consequently:</p><ul>
-<li><p>The <code>type</code> argument was renamed to <code>.subclass</code> (0.3.0) and then renamed
-again to <code>class</code> (0.4.2).</p></li>
-<li><p>Only <code>message</code> and <code>class</code> can be passed positionally, i.e. they are the
-only arguments before <code>...</code>.</p></li>
-</ul>
-
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='with_abort.html'>with_abort()</a></code> to convert all errors to rlang errors.</p></div>
@@ -375,7 +340,6 @@ only arguments before <code>...</code>.</p></li>
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#backtrace">Backtrace</a></li>
       <li><a href="#mufflable-conditions">Mufflable conditions</a></li>
-      <li><a href="#lifecycle">Lifecycle</a></li>
       <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
