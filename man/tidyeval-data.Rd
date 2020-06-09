@@ -6,7 +6,9 @@
 \alias{.data}
 \alias{.env}
 \title{Data pronouns for tidy evaluation}
-\format{An object of class \code{rlang_fake_data_pronoun} of length .}
+\format{
+An object of class \code{rlang_fake_data_pronoun} of length .
+}
 \usage{
 .data
 

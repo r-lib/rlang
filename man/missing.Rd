@@ -9,7 +9,17 @@
 \alias{na_chr}
 \alias{na_cpl}
 \title{Missing values}
-\format{An object of class \code{logical} of length 1.}
+\format{
+An object of class \code{logical} of length 1.
+
+An object of class \code{integer} of length 1.
+
+An object of class \code{numeric} of length 1.
+
+An object of class \code{character} of length 1.
+
+An object of class \code{complex} of length 1.
+}
 \usage{
 na_lgl
 

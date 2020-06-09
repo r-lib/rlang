@@ -27,7 +27,7 @@ Suggests:
     testthat (>= 2.3.0),
     vctrs (>= 0.2.3)
 Encoding: UTF-8
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 Roxygen: list(markdown = TRUE)
 URL: http://rlang.r-lib.org, https://github.com/r-lib/rlang
 BugReports: https://github.com/r-lib/rlang/issues
