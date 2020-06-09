@@ -180,40 +180,4 @@ like \code{quos()} is deprecated.
 }
 }
 
-\section{Archived}{
-
-
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("archived")}
-
-These functions were entirely removed from the package. You will
-find them in the commit history and previous releases.
-
-\strong{Archived as of rlang 0.4.0}
-\itemize{
-\item \code{UQE()}
-\item \code{as_dictionary()}, \code{is_dictionary()}
-\item \code{as_quosureish()}, \code{is_quosureish()}
-\item \code{eval_tidy_()}
-\item \code{mut_utf8_locale()}, \code{mut_latin1_locale()}, \code{mut_mbcs_locale()}
-\item \code{set_chr_encoding()}, \code{chr_encoding()}, \code{set_str_encoding()}, \code{str_encoding()}
-\item \code{as_native_character()}, \code{as_utf8_string()}, \code{as_native_string()}
-\item \code{lang_type_of()}, \code{switch_lang()}, \code{coerce_lang()}
-}
-
-\strong{Archived as of rlang 0.3.0:}
-\itemize{
-\item \code{cnd_inform()}, \code{cnd_warn()} and \code{cnd_abort()}
-\item \code{new_cnd()} => \code{\link[=cnd]{cnd()}}
-\item \code{cnd_message()} => \code{\link[=message_cnd]{message_cnd()}}
-\item \code{cnd_warning()} => \code{\link[=warning_cnd]{warning_cnd()}}
-\item \code{cnd_error()} => \code{\link[=error_cnd]{error_cnd()}}
-\item \code{rst_muffle()} => \code{\link[=cnd_muffle]{cnd_muffle()}}
-\item \code{inplace()} => \code{\link[=calling]{calling()}}. The \code{muffle} argument of \code{inplace()}
-has not been implemented in \code{calling()} and is now defunct.
-\item \code{\link[=cnd_signal]{cnd_signal()}}: \code{.msg} and \code{.call}.
-\item \code{\link[=cnd]{cnd()}}, \code{\link[=error_cnd]{error_cnd()}}, \code{\link[=warning_cnd]{warning_cnd()}} and \code{\link[=message_cnd]{message_cnd()}}:
-\code{.msg} => \code{message}.
-}
-}
-
 \keyword{internal}
