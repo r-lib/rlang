@@ -186,10 +186,6 @@
 #'
 #' * `length()` and `names()` on tidy eval `.data` pronouns.
 #' * Supplying a named `!!!` call.
-#'
-#' * [abort()], [warn()], [inform()]: `msg`, `type` => `.msg`, `.type`
-#' * [abort()], [warn()], [inform()], [cnd()], [error_cnd()],
-#'   [warning_cnd()], [message_cnd()]: `call` argument.
 #' * [is_character()], [is_string()], and variants: The `encoding`
 #'   argument.
 #'

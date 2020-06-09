@@ -49,17 +49,6 @@
 #' signalled with a `"resume"` restart. This is however not
 #' guaranteed.
 #'
-#'
-#' @section Lifecycle:
-#'
-#' These functions were changed in rlang 0.3.0 to take condition
-#' metadata with `...` and further changes occurred in 0.4.2. Consequently:
-#'
-#' * The `type` argument was renamed to `.subclass` (0.3.0) and then renamed
-#'   again to `class` (0.4.2).
-#' * Only `message` and `class` can be passed positionally, i.e. they are the
-#'   only arguments before `...`.
-#'
 #' @inheritParams cnd
 #' @param message The message to display.
 #'
@@ -70,10 +59,6 @@
 #' @param class Subclass of the condition. This allows your users
 #'   to selectively handle the conditions signalled by your functions.
 #' @param ... Additional data to be stored in the condition object.
-#' @param call Defunct as of rlang 0.4.0. Storing the full
-#'   backtrace is now preferred to storing a simple call.
-#' @param msg,type These arguments were renamed to `message` and
-#'   `.subclass` and are defunct as of rlang 0.4.0.
 #' @param .subclass This argument was renamed to `class` in rlang
 #'   0.4.2.  It will be deprecated in the next major version. This is
 #'   for consistency with our conventions for class constructors
@@ -138,10 +123,9 @@ abort <- function(message = NULL,
                   class = NULL,
                   ...,
                   trace = NULL,
-                  call,
                   parent = NULL,
-                  msg, type, .subclass) {
-  validate_signal_args(msg, type, call, .subclass)
+                  .subclass) {
+  validate_signal_args(.subclass)
 
   if (is_null(trace) && is_null(peek_option("rlang:::disable_trace_capture"))) {
     # Prevents infloops when rlang throws during trace capture

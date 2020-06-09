@@ -91,8 +91,8 @@ validate_cnd_signal_args <- function(cnd, .cnd, .mufflable,
 
 #' @rdname abort
 #' @export
-warn <- function(message = NULL, class = NULL, ..., call, msg, type, .subclass) {
-  validate_signal_args(msg, type, call, .subclass)
+warn <- function(message = NULL, class = NULL, ..., .subclass) {
+  validate_signal_args(.subclass)
 
   message <- validate_signal_message(message, class)
   message <- collapse_cnd_message(message)
@@ -113,11 +113,8 @@ inform <- function(message = NULL,
                    class = NULL,
                    ...,
                    file = NULL,
-                   call,
-                   msg,
-                   type,
                    .subclass) {
-  validate_signal_args(msg, type, call, .subclass)
+  validate_signal_args(.subclass)
 
   message <- message %||% ""
   message <- collapse_cnd_message(message)
@@ -146,15 +143,6 @@ signal <- function(message, class, ..., .subclass) {
 }
 
 validate_signal_args <- function(msg, type, call, subclass, env = caller_env()) {
-  if (!missing(msg)) {
-    stop_defunct("`msg` has been renamed to `message` and is deprecated as of rlang 0.3.0")
-  }
-  if (!missing(type)) {
-    stop_defunct("`type` has been renamed to `.subclass` and is deprecated as of rlang 0.3.0")
-  }
-  if (!missing(call)) {
-    stop_defunct("`call` is deprecated as of rlang 0.3.0")
-  }
   if (!missing(subclass)) {
     deprecate_subclass(subclass, env = env)
   }
