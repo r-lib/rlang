@@ -186,8 +186,6 @@
 #'
 #' * `length()` and `names()` on tidy eval `.data` pronouns.
 #' * Supplying a named `!!!` call.
-#' * [is_character()], [is_string()], and variants: The `encoding`
-#'   argument.
 #'
 #'
 #' @section Archived:

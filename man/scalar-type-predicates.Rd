@@ -25,7 +25,7 @@ is_scalar_integer(x)
 
 is_scalar_double(x)
 
-is_scalar_character(x, encoding = NULL)
+is_scalar_character(x)
 
 is_scalar_logical(x)
 
@@ -39,8 +39,6 @@ is_bool(x)
 }
 \arguments{
 \item{x}{object to be tested.}
-
-\item{encoding}{Defunct as of rlang 0.4.0.}
 
 \item{string}{A string to compare to \code{x}. If a character vector,
 returns \code{TRUE} if at least one element is equal to \code{x}.}
