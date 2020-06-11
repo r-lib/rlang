@@ -58,8 +58,8 @@ local_options <- function(..., .frame = caller_env()) {
   stopifnot(is_named(options))
 
   old <- options(options)
-  options_lang <- call2(base::options, !!! old)
-  local_exit(!! options_lang, frame = .frame)
+  options_call <- call2(base::options, !!!old)
+  local_exit(!!options_call, frame = .frame)
 
   invisible(old)
 }
