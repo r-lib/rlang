@@ -704,7 +704,7 @@ call_fn <- function(call, env = caller_env()) {
   )
 }
 
-#' Extract function name or namespaced of a call
+#' Extract function name or namespace of a call
 #'
 #' @section Life cycle:
 #'
