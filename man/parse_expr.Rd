@@ -20,7 +20,8 @@ it will be automatically closed and destroyed.}
 \code{parse_exprs()} returns a list of expressions. Note that for the
 plural variants the length of the output may be greater than the
 length of the input. This would happen is one of the strings
-contain several expressions (such as \code{"foo; bar"}).
+contain several expressions (such as \code{"foo; bar"}). The names of
+\code{x} are preserved (and recycled in case of multiple expressions).
 }
 \description{
 These functions parse and transform text into R expressions. This
@@ -41,6 +42,9 @@ parse_expr("mtcars \%>\% dplyr::mutate(cyl_prime = cyl / sd(cyl))")
 
 # A string can contain several expressions separated by ; or \n
 parse_exprs("NULL; list()\n foo(bar)")
+
+# Use names to figure out which input produced an expression:
+parse_exprs(c(foo = "1; 2", bar = "3"))
 
 # You can also parse source files by passing a R connection. Let's
 # create a file containing R code:

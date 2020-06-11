@@ -1,6 +1,10 @@
 
 # rlang (development version)
 
+* `parse_exprs()` now preserves names (#808). When a single string
+  produces multiple expressions, the names may be useful to figure out
+  what input produced which expression.
+
 * `parse_exprs()` now supports empty expressions (#954).
 
 * `list2(!!!x)` no longer evaluates `x` multiple times (#981).

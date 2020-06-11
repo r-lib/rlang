@@ -19,7 +19,8 @@
 #'   `parse_exprs()` returns a list of expressions. Note that for the
 #'   plural variants the length of the output may be greater than the
 #'   length of the input. This would happen is one of the strings
-#'   contain several expressions (such as `"foo; bar"`).
+#'   contain several expressions (such as `"foo; bar"`). The names of
+#'   `x` are preserved (and recycled in case of multiple expressions).
 #' @seealso [base::parse()]
 #' @export
 #' @examples
@@ -28,6 +29,9 @@
 #'
 #' # A string can contain several expressions separated by ; or \n
 #' parse_exprs("NULL; list()\n foo(bar)")
+#'
+#' # Use names to figure out which input produced an expression:
+#' parse_exprs(c(foo = "1; 2", bar = "3"))
 #'
 #' # You can also parse source files by passing a R connection. Let's
 #' # create a file containing R code:
@@ -57,15 +61,26 @@ parse_exprs <- function(x) {
       on.exit(close(x))
     }
     exprs <- parse(file = x)
-  } else if (is_string(x)) {
-    exprs <- parse(text = x)
   } else if (is.character(x)) {
-    x <- paste(x, collapse = "\n")
-    exprs <- parse(text = x)
+    exprs <- chr_parse_exprs(x)
   } else {
     abort("`x` must be a character vector or an R connection")
   }
   as.list(exprs)
+}
+
+chr_parse_exprs <- function(x) {
+  parsed <- map(x, function(elt) as.list(parse(text = elt)))
+
+  nms <- names(parsed)
+  parsed <- unname(parsed)
+
+  if (!is_null(nms)) {
+    nms <- flatten_chr(map2(parsed, nms, rep_along))
+  }
+  parsed <- flatten(parsed)
+
+  set_names(parsed, nms)
 }
 
 #' Parsing variants that return quosures
