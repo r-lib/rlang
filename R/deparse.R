@@ -467,7 +467,7 @@ call_delimited_type <- function(call) {
     return("none")
   }
 
-  op <- which_operator(call)
+  op <- call_parse_type(call)
   if (op == "") {
     return("none")
   }
@@ -577,7 +577,7 @@ op_deparse <- function(op, x, lines) {
   lines$get_lines()
 }
 call_deparser <- function(x) {
-  op <- which_operator(x)
+  op <- call_parse_type(x)
   if (op != "") {
     function(x, lines) op_deparse(op, x, lines)
   } else {

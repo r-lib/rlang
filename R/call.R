@@ -365,7 +365,7 @@ call_print_fine_type <- function(call) {
     abort("`call` must be a call")
   }
 
-  op <- which_operator(call)
+  op <- call_parse_type(call)
   if (op == "") {
     return("call")
   }
@@ -864,7 +864,10 @@ is_namespaced_symbol <- function(x, ns = NULL, private = NULL) {
   }
 }
 
-which_operator <- function(call) {
+#' What is the parser type of a call?
+#' @keywords internal
+#' @export
+call_parse_type <- function(call) {
   .Call(rlang_which_operator, call)
 }
 call_has_precedence <- function(call, parent_call, side = NULL) {
