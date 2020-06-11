@@ -142,7 +142,7 @@ signal <- function(message, class, ..., .subclass) {
   cnd_signal(cnd)
 }
 
-validate_signal_args <- function(msg, type, call, subclass, env = caller_env()) {
+validate_signal_args <- function(subclass, env = caller_env()) {
   if (!missing(subclass)) {
     deprecate_subclass(subclass, env = env)
   }

@@ -234,3 +234,7 @@ test_that("capture context doesn't leak into low-level backtraces", {
     print(err)
   })
 })
+
+test_that("`.subclass` argument of `abort()` still works", {
+  expect_true(inherits(catch_cnd(abort("foo", .subclass = "bar")), "bar"))
+})
