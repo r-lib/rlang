@@ -154,6 +154,7 @@
 <a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li><p><code><a href="../reference/parse_expr.html">parse_exprs()</a></code> now preserves names (<a href='https://github.com/r-lib/rlang/issues/808'>#808</a>). When a single string produces multiple expressions, the names may be useful to figure out what input produced which expression.</p></li>
 <li><p><code><a href="../reference/parse_expr.html">parse_exprs()</a></code> now supports empty expressions (<a href='https://github.com/r-lib/rlang/issues/954'>#954</a>).</p></li>
 <li><p><code><a href="../reference/list2.html">list2(!!!x)</a></code> no longer evaluates <code>x</code> multiple times (<a href='https://github.com/r-lib/rlang/issues/981'>#981</a>).</p></li>
 <li><p><code><a href="../reference/is_installed.html">is_installed()</a></code> now properly handles a <code>pkg</code> argument of length &gt; 1. Before this it silently tested the first element of <code>pkg</code> only and thus always returned <code>TRUE</code> if the first package was installed regardless of the actual length of <code>pkg</code>. (<a href='https://github.com/r-lib/rlang/issues/991'>#991</a>, <a href='https://github.com/salim-b'>@salim-b</a>)</p></li>
