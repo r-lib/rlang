@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get the empty environment — empty_env • rlang</title>
+<title>What is the parser type of a call? — call_parse_type • rlang</title>
 
 
 <!-- jquery -->
@@ -35,10 +35,8 @@
 
 
 
-<meta property="og:title" content="Get the empty environment — empty_env" />
-<meta property="og:description" content="The empty environment is the only one that does not have a parent.
-It is always used as the tail of an environment chain such as the
-search path (see search_envs())." />
+<meta property="og:title" content="What is the parser type of a call? — call_parse_type" />
+<meta property="og:description" content="What is the parser type of a call?" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -149,29 +147,23 @@ search path (see search_envs())." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get the empty environment</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/env-special.R'><code>R/env-special.R</code></a></small>
-    <div class="hidden name"><code>empty_env.Rd</code></div>
+    <h1>What is the parser type of a call?</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/call.R'><code>R/call.R</code></a></small>
+    <div class="hidden name"><code>call_parse_type.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The empty environment is the only one that does not have a parent.
-It is always used as the tail of an environment chain such as the
-search path (see <code><a href='search_envs.html'>search_envs()</a></code>).</p>
+    <p>What is the parser type of a call?</p>
     </div>
 
-    <pre class="usage"><span class='fu'>empty_env</span>()</pre>
+    <pre class="usage"><span class='fu'>call_parse_type</span>(<span class='no'>call</span>)</pre>
 
 
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Create environments with nothing in scope:</span>
-<span class='fu'><a href='env.html'>child_env</a></span>(<span class='fu'>empty_env</span>())</div><div class='output co'>#&gt; &lt;environment: 0x7f7f2ece17f8&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
