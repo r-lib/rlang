@@ -123,10 +123,11 @@ test_that("unspaced operators are deparsed", {
 })
 
 test_that("operands are wrapped in parentheses to ensure correct predecence", {
-  skip("FIXME r-devel")
   expect_identical_(sexp_deparse(expr(1 + !!quote(2 + 3))), "1 + (2 + 3)")
   expect_identical_(sexp_deparse(expr((!!quote(1^2))^3)), "(1^2)^3")
-  expect_identical_(sexp_deparse(quote(function() 1 ? 2)), "function() 1 ? 2")
+
+  skip_on_cran()
+  expect_identical_(sexp_deparse(quote(function() 1 ? 2)), "(function() 1) ? 2")
   expect_identical_(sexp_deparse(expr(!!quote(function() 1) ? 2)), "(function() 1) ? 2")
 })
 
@@ -262,8 +263,9 @@ test_that("other objects are deparsed with base deparser", {
 })
 
 test_that("S3 objects are deparsed", {
+  skip_on_cran()
   expr <- expr(list(!!factor(1:3), !!structure(list(), class = c("foo", "bar", "baz"))))
-  expect_identical(sexp_deparse(expr), "list(<fct>, <S3: foo>)")
+  expect_identical(sexp_deparse(expr), "list(<fct>, <foo>)")
 })
 
 test_that("successive indentations on a single line are only counted once", {
@@ -384,14 +386,17 @@ test_that("as_label() handles literals", {
 })
 
 test_that("as_label() handles objects", {
-  expect_identical(as_label(mtcars), "<data.frame>")
-  expect_identical(as_label(structure(1, class = "foo")), "<S3: foo>")
+  skip_on_cran()
+  expect_identical(as_label(mtcars), "<df[,11]>")
+  expect_identical(as_label(structure(1, class = "foo")), "<foo>")
 })
 
 test_that("bracket deparsing is a form of argument deparsing", {
-  expect_identical(expr_deparse(call("[", iris, missing_arg(), drop = FALSE)), "<data.frame>[, drop = FALSE]")
   expect_identical(expr_deparse(quote(foo[bar, , baz()])), "foo[bar, , baz()]")
   expect_identical(expr_deparse(quote(foo[[bar, , baz()]])), "foo[[bar, , baz()]]")
+
+  skip_on_cran()
+  expect_identical(expr_deparse(call("[", iris, missing_arg(), drop = FALSE)), "<df[,5]>[, drop = FALSE]")
 })
 
 test_that("non-syntactic symbols are deparsed with backticks", {
@@ -420,8 +425,9 @@ test_that("empty blocks are deparsed on the same line", {
 })
 
 test_that("top-level S3 objects are deparsed", {
+  skip_on_cran()
   f <- structure(function() { }, class = "lambda")
-  expect_identical(expr_deparse(f), "<S3: lambda>")
+  expect_identical(expr_deparse(f), "<lambda>")
 })
 
 # This test causes a parsing failure in R CMD check >= 3.6
