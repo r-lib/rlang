@@ -317,8 +317,21 @@ is_call2 <- function(x, ...) {
 #' * `"special"` for function definitions, control-flow calls like
 #'   `if` or `for`, and subscripting calls like `foo[]` and `foo[[]]`.
 #'
-#'
 #' @param call A quoted function call. An error is raised if not a call.
+#'
+#' @section Finer print types:
+#'
+#' `call_print_fine_type()` is a lower level version with the following
+#' differences:
+#'
+#' * The `"special"` calls are categorised as `"control"` (`if`,
+#'   `for`, `while`, `repeat`, `function`), `"delim"` (`(` and `{`),
+#'   and `"subset"` (`[` and `[[`).
+#'
+#' * The `"prefixed"` calls are categorised as `"prefix"` (`+`, `-`,
+#'   ...) and `"calls"`.
+#'
+#'
 #' @examples
 #' call_print_type(quote(foo(bar)))
 #' call_print_type(quote(foo[[bar]]))
