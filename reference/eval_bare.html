@@ -258,17 +258,17 @@ support.</p></div>
 
 <span class='co'># With eval_bare(), we do get the expected environment:</span>
 <span class='fu'>fn</span>(<span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='no'><a href='https://rlang.r-lib.org/reference/eval_bare.html'>eval_bare</a></span>)</div><div class='output co'>#&gt; $returned_env
-#&gt; &lt;environment: 0x7fd4f1ec2520&gt;
+#&gt; &lt;environment: 0x7fe64aef5f00&gt;
 #&gt; 
 #&gt; $actual_env
-#&gt; &lt;environment: 0x7fd4f1ec2520&gt;
+#&gt; &lt;environment: 0x7fe64aef5f00&gt;
 #&gt; </div><div class='input'>
 <span class='co'># But that's not the case with base::eval():</span>
 <span class='fu'>fn</span>(<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span>)</div><div class='output co'>#&gt; $returned_env
-#&gt; &lt;environment: 0x7fd4f1f69440&gt;
+#&gt; &lt;environment: 0x7fe64490a800&gt;
 #&gt; 
 #&gt; $actual_env
-#&gt; &lt;environment: 0x7fd4f1f67280&gt;
+#&gt; &lt;environment: 0x7fe64490bda8&gt;
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
