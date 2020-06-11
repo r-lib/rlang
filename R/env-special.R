@@ -159,6 +159,8 @@ empty_env <- emptyenv
 #' @seealso [caller_frame()] and [current_frame()]
 #' @export
 #' @examples
+#' if (FALSE) {
+#'
 #' # Let's create a function that returns its current environment and
 #' # its caller environment:
 #' fn <- function() list(current = current_env(), caller = caller_env())
@@ -174,6 +176,8 @@ empty_env <- emptyenv
 #' # Now the caller environment is also a unique execution environment.
 #' # This is the exec env created by R for our call to g():
 #' g()
+#'
+#' }
 caller_env <- function(n = 1) {
   parent.frame(n + 1)
 }

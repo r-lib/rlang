@@ -21,6 +21,8 @@ function that called the current function.
 }
 }
 \examples{
+if (FALSE) {
+
 # Let's create a function that returns its current environment and
 # its caller environment:
 fn <- function() list(current = current_env(), caller = caller_env())
@@ -36,6 +38,8 @@ g <- function() fn()
 # Now the caller environment is also a unique execution environment.
 # This is the exec env created by R for our call to g():
 g()
+
+}
 }
 \seealso{
 \code{\link[=caller_frame]{caller_frame()}} and \code{\link[=current_frame]{current_frame()}}
