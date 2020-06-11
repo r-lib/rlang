@@ -127,6 +127,7 @@ test_that("operands are wrapped in parentheses to ensure correct predecence", {
   expect_identical_(sexp_deparse(expr((!!quote(1^2))^3)), "(1^2)^3")
 
   skip_on_cran()
+  skip_if(getRversion() < "4.0.0")
   expect_identical_(sexp_deparse(quote(function() 1 ? 2)), "(function() 1) ? 2")
   expect_identical_(sexp_deparse(expr(!!quote(function() 1) ? 2)), "(function() 1) ? 2")
 })
