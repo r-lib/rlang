@@ -458,18 +458,25 @@ rlang_type_sum <- function(x) {
   if (is_installed("pillar")) {
     pillar::type_sum(x)
   } else {
-    UseMethod("type_sum")
+    UseMethod("rlang_type_sum")
   }
 }
 
-type_sum.ordered <- function(x) "ord"
-type_sum.factor <- function(x) "fct"
-type_sum.POSIXct <- function(x) "dttm"
-type_sum.difftime <- function(x) "time"
-type_sum.Date <- function(x) "date"
-type_sum.data.frame <- function(x) class(x)[[1]]
+#' @export
+rlang_type_sum.ordered <- function(x) "ord"
+#' @export
+rlang_type_sum.factor <- function(x) "fct"
+#' @export
+rlang_type_sum.POSIXct <- function(x) "dttm"
+#' @export
+rlang_type_sum.difftime <- function(x) "time"
+#' @export
+rlang_type_sum.Date <- function(x) "date"
+#' @export
+rlang_type_sum.data.frame <- function(x) class(x)[[1]]
 
-type_sum.default <- function(x) {
+#' @export
+rlang_type_sum.default <- function(x) {
   if (!is.object(x)) {
     switch(typeof(x),
       logical = "lgl",
