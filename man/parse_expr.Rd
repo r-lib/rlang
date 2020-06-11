@@ -3,28 +3,17 @@
 \name{parse_expr}
 \alias{parse_expr}
 \alias{parse_exprs}
-\alias{parse_quo}
-\alias{parse_quos}
 \title{Parse R code}
 \usage{
 parse_expr(x)
 
 parse_exprs(x)
-
-parse_quo(x, env)
-
-parse_quos(x, env)
 }
 \arguments{
 \item{x}{Text containing expressions to parse_expr for
 \code{parse_expr()} and \code{parse_exprs()}. Can also be an R connection,
 for instance to a file. If the supplied connection is not open,
 it will be automatically closed and destroyed.}
-
-\item{env}{The environment for the quosures. Depending on the use
-case, a good default might be the \link[=global_env]{global environment} but you might also want to evaluate the
-R code in an isolated context (perhaps a child of the global
-environment or of the \link[=base_env]{base environment}).}
 }
 \value{
 \code{parse_expr()} returns an \link[=is_expression]{expression},
@@ -45,20 +34,7 @@ issued. On the other hand \code{parse_exprs()} can handle multiple
 expressions. It always returns a list of expressions (compare to
 \code{\link[base:parse]{base::parse()}} which returns a base::expression vector). All
 functions also support R connections.
-
-The versions suffixed with \verb{_quo} and \verb{_quos} return
-\link[=nse-defuse]{quosures} rather than raw expressions.
 }
-\section{Life cycle}{
-
-\itemize{
-\item \code{parse_quosure()} and \code{parse_quosures()} were soft-deprecated in
-rlang 0.2.0 and renamed to \code{parse_quo()} and \code{parse_quos()}. This
-is consistent with the rule that abbreviated suffixes indicate
-the return type of a function.
-}
-}
-
 \examples{
 # parse_expr() can parse any R expression:
 parse_expr("mtcars \%>\% dplyr::mutate(cyl_prime = cyl / sd(cyl))")

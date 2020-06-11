@@ -11,26 +11,10 @@
 #' [base::parse()] which returns a base::expression vector). All
 #' functions also support R connections.
 #'
-#' The versions suffixed with `_quo` and `_quos` return
-#' [quosures][nse-defuse] rather than raw expressions.
-#'
-#'
-#' @section Life cycle:
-#'
-#' - `parse_quosure()` and `parse_quosures()` were soft-deprecated in
-#'   rlang 0.2.0 and renamed to `parse_quo()` and `parse_quos()`. This
-#'   is consistent with the rule that abbreviated suffixes indicate
-#'   the return type of a function.
-#'
 #' @param x Text containing expressions to parse_expr for
 #'   `parse_expr()` and `parse_exprs()`. Can also be an R connection,
 #'   for instance to a file. If the supplied connection is not open,
 #'   it will be automatically closed and destroyed.
-#' @param env The environment for the quosures. Depending on the use
-#'   case, a good default might be the [global
-#'   environment][global_env] but you might also want to evaluate the
-#'   R code in an isolated context (perhaps a child of the global
-#'   environment or of the [base environment][base_env]).
 #' @return `parse_expr()` returns an [expression][is_expression],
 #'   `parse_exprs()` returns a list of expressions. Note that for the
 #'   plural variants the length of the output may be greater than the
@@ -84,7 +68,21 @@ parse_exprs <- function(x) {
   as.list(exprs)
 }
 
-#' @rdname parse_expr
+#' Parsing variants that return quosures
+#'
+#' @description
+#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#'
+#' These functions are in the questioning stage because they don't add
+#' value compared to using [parse_expr()] with [new_quosure()].
+#'
+#' @inheritParams parse_expr
+#' @param env The environment for the quosures. Depending on the use
+#'   case, a good default might be the [global
+#'   environment][global_env] but you might also want to evaluate the
+#'   R code in an isolated context (perhaps a child of the global
+#'   environment or of the [base environment][base_env]).
+#' @keywords internal
 #' @export
 parse_quo <- function(x, env) {
   if (missing(env)) {
@@ -92,7 +90,7 @@ parse_quo <- function(x, env) {
   }
   new_quosure(parse_expr(x), as_environment(env))
 }
-#' @rdname parse_expr
+#' @rdname parse_quo
 #' @export
 parse_quos <- function(x, env) {
   if (missing(env)) {
