@@ -25,7 +25,8 @@ sexp* capture(sexp* sym, sexp* frame, SEXP* arg_env) {
   sexp* env = r_list_get(arg_info, 1);
 
   // Unquoting rearranges the expression
-  expr = KEEP(r_duplicate(expr, false));
+  // FIXME: Only duplicate the call tree, not the leaves
+  expr = KEEP(r_copy(expr));
   expr = call_interp(expr, env);
 
   if (arg_env) {

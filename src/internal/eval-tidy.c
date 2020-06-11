@@ -143,7 +143,7 @@ static sexp* tilde_fn = NULL;
 static sexp* restore_mask_fn = NULL;
 
 static void on_exit_restore_lexical_env(sexp* mask, sexp* old, sexp* frame) {
-  sexp* fn = KEEP(r_duplicate(restore_mask_fn, true));
+  sexp* fn = KEEP(r_clone(restore_mask_fn));
 
   sexp* env = KEEP(r_new_environment(r_base_env, 2));
   r_env_poke(env, mask_sym, mask);

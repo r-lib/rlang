@@ -239,7 +239,7 @@ sexp* big_bang_coerce_pairlist(sexp* x, bool deep) {
   switch (r_typeof(x)) {
   case r_type_null:
   case r_type_pairlist:
-    x = r_duplicate(x, true);
+    x = r_clone(x);
     break;
   case r_type_logical:
   case r_type_integer:
@@ -286,7 +286,7 @@ static sexp* dots_big_bang_value(struct dots_capture_info* capture_info,
 
   if (quosured) {
     if (r_is_shared(value)) {
-      sexp* tmp = r_duplicate(value, true);
+      sexp* tmp = r_clone(value);
       FREE(1);
       value = KEEP(tmp);
     }
@@ -339,7 +339,8 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
     sexp* env = dot_get_env(elt);
 
     // Unquoting rearranges expressions
-    expr = KEEP(r_duplicate(expr, false));
+    // FIXME: Only duplicate the call tree, not the leaves
+    expr = KEEP(r_copy(expr));
 
     if (unquote_names && r_is_call(expr, ":=")) {
       if (r_node_tag(node) != r_null) {

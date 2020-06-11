@@ -415,7 +415,8 @@ sexp* rlang_interp(sexp* x, sexp* env) {
     return x;
   }
 
-  x = KEEP(r_duplicate(x, false));
+  // FIXME: Only duplicate the call tree, not the leaves
+  x = KEEP(r_copy(x));
   x = call_interp(x, env);
 
   FREE(1);

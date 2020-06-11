@@ -12,7 +12,7 @@ inline sexp* r_poke_attributes(sexp* x, sexp* attrs) {
   return x;
 }
 static inline sexp* r_set_attributes(sexp* x, sexp* attrs) {
-  x = KEEP(r_duplicate(x, true));
+  x = KEEP(r_clone(x));
   SET_ATTRIB(x, attrs);
   FREE(1);
   return x;

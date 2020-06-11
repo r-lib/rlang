@@ -14,7 +14,7 @@ sexp* r_node_tree_clone(sexp* x) {
     r_abort("Internal error: Expected node tree for shallow copy");
   }
 
-  x = KEEP(r_duplicate(x, true));
+  x = KEEP(r_clone(x));
 
   sexp* rest = x;
   while (rest != r_null) {

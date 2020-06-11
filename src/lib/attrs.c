@@ -57,7 +57,7 @@ sexp* r_clone2(sexp* x) {
 
   // Prevent attributes from being cloned
   r_poke_attributes(x, r_null);
-  sexp* out = r_duplicate(x, true);
+  sexp* out = r_clone(x);
   r_poke_attributes(x, attrs);
   r_poke_attributes(out, attrs);
 
