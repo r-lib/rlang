@@ -242,3 +242,8 @@ strip_trailing_newline <- function(x) {
     x
   }
 }
+
+unstructure <- function(x) {
+  attributes(x) <- NULL
+  x
+}

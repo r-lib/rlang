@@ -42,3 +42,8 @@ test_that("parse_exprs() and parse_quos() support empty input", {
   expect_identical(zap_srcref_attributes(parse_exprs(chr())), list())
   expect_identical(zap_srcref_attributes(parse_quos(chr(), env())), quos_list())
 })
+
+test_that("parse_exprs() supports empty expressions (#954)", {
+  x <- c("1", "", "2")
+  expect_equal(unstructure(parse_exprs(x)), list(1, 2))
+})

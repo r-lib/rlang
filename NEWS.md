@@ -1,6 +1,8 @@
 
 # rlang (development version)
 
+* `parse_exprs()` now supports empty expressions (#954).
+
 * `list2(!!!x)` no longer evaluates `x` multiple times (#981).
 
 * `is_installed()` now properly handles a `pkg` argument of length > 1.

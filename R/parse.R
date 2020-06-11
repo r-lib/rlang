@@ -60,7 +60,7 @@ parse_exprs <- function(x) {
   } else if (is_string(x)) {
     exprs <- parse(text = x)
   } else if (is.character(x)) {
-    x <- paste(x, collapse = "; ")
+    x <- paste(x, collapse = "\n")
     exprs <- parse(text = x)
   } else {
     abort("`x` must be a character vector or an R connection")
