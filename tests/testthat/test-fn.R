@@ -285,3 +285,7 @@ test_that("arguments of closured primitives are matched by name after `...`", {
   expect_true(is_na(fn(1, NA)))
   expect_identical(fn(na.rm = TRUE, 1, NA), 1)
 })
+
+test_that("transforming defused formula to function causes an informative error (#953)", {
+  expect_error(as_function(quote(~foo)), "defused formula")
+})

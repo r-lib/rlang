@@ -436,8 +436,16 @@ as_function <- function(x, env = caller_env()) {
       abort("Can't convert a two-sided formula to a function")
     }
 
+    env <- f_env(x)
+    if (!is_environment(env)) {
+      abort(c(
+        "Can't transform defused formula to a function.",
+        i = "A defused formula doesn't carry an environment."
+      ))
+    }
+
     args <- list(... = missing_arg(), .x = quote(..1), .y = quote(..2), . = quote(..1))
-    fn <- new_function(args, f_rhs(x), f_env(x))
+    fn <- new_function(args, f_rhs(x), env)
     fn <- structure(fn, class = c("rlang_lambda_function", "function"))
     return(fn)
   }
