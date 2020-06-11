@@ -50,7 +50,8 @@ reference:
       - exprs
       - enexpr
       - enexprs
-      - quasiquotation
+      - nse-force
+      - nse-defuse
       - as_label
       - as_name
   - title: Tidy dots
