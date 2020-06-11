@@ -162,11 +162,7 @@ written by a programmer.</p>
 
     <pre class="usage"><span class='fu'>parse_expr</span>(<span class='no'>x</span>)
 
-<span class='fu'>parse_exprs</span>(<span class='no'>x</span>)
-
-<span class='fu'>parse_quo</span>(<span class='no'>x</span>, <span class='no'>env</span>)
-
-<span class='fu'>parse_quos</span>(<span class='no'>x</span>, <span class='no'>env</span>)</pre>
+<span class='fu'>parse_exprs</span>(<span class='no'>x</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -177,13 +173,6 @@ written by a programmer.</p>
 <code>parse_expr()</code> and <code>parse_exprs()</code>. Can also be an R connection,
 for instance to a file. If the supplied connection is not open,
 it will be automatically closed and destroyed.</p></td>
-    </tr>
-    <tr>
-      <th>env</th>
-      <td><p>The environment for the quosures. Depending on the use
-case, a good default might be the <a href='search_envs.html'>global environment</a> but you might also want to evaluate the
-R code in an isolated context (perhaps a child of the global
-environment or of the <a href='search_envs.html'>base environment</a>).</p></td>
     </tr>
     </table>
 
@@ -202,19 +191,6 @@ issued. On the other hand <code>parse_exprs()</code> can handle multiple
 expressions. It always returns a list of expressions (compare to
 <code><a href='https://rdrr.io/r/base/parse.html'>base::parse()</a></code> which returns a base::expression vector). All
 functions also support R connections.</p>
-<p>The versions suffixed with <code>_quo</code> and <code>_quos</code> return
-<a href='nse-defuse.html'>quosures</a> rather than raw expressions.</p>
-    <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
-
-    
-
-<ul>
-<li><p><code><a href='parse_quosure.html'>parse_quosure()</a></code> and <code><a href='parse_quosure.html'>parse_quosures()</a></code> were soft-deprecated in
-rlang 0.2.0 and renamed to <code>parse_quo()</code> and <code>parse_quos()</code>. This
-is consistent with the rule that abbreviated suffixes indicate
-the return type of a function.</p></li>
-</ul>
-
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='https://rdrr.io/r/base/parse.html'>base::parse()</a></code></p></div>
@@ -254,7 +230,6 @@ the return type of a function.</p></li>
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
-      <li><a href="#life-cycle">Life cycle</a></li>
       <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Format quosures for printing or labelling — quo_label • rlang</title>
+<title>Parsing variants that return quosures — parse_quo • rlang</title>
 
 
 <!-- jquery -->
@@ -35,25 +35,10 @@
 
 
 
-<meta property="og:title" content="Format quosures for printing or labelling — quo_label" />
+<meta property="og:title" content="Parsing variants that return quosures — parse_quo" />
 <meta property="og:description" content="
-Note: You should now use as_label() or as_name() instead
-of quo_name(). See life cycle section below.
-These functions take an arbitrary R object, typically an
-expression, and represent it as a string.
-quo_name() returns an abbreviated representation of the object
-as a single line string. It is suitable for default names.
-quo_text() returns a multiline string. For instance block
-expressions like { foo; bar } are represented on 4 lines (one
-for each symbol, and the curly braces on their own lines).
-
-
-These deparsers are only suitable for creating default names or
-printing output at the console. The behaviour of your functions
-should not depend on deparsed objects. If you are looking for a way
-of transforming symbols to strings, use as_string() instead of
-quo_name(). Unlike deparsing, the transformation between symbols
-and strings is non-lossy and well defined." />
+These functions are in the questioning stage because they don't add
+value compared to using parse_expr() with new_quosure()." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -164,99 +149,46 @@ and strings is non-lossy and well defined." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Format quosures for printing or labelling</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/quo.R'><code>R/quo.R</code></a></small>
-    <div class="hidden name"><code>quo_label.Rd</code></div>
+    <h1>Parsing variants that return quosures</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/parse.R'><code>R/parse.R</code></a></small>
+    <div class="hidden name"><code>parse_quo.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p><a href='https://www.tidyverse.org/lifecycle/#questioning'><img src='figures/lifecycle-questioning.svg' alt='Questioning lifecycle'></a></p>
-<p><strong>Note:</strong> You should now use <code><a href='as_label.html'>as_label()</a></code> or <code><a href='as_name.html'>as_name()</a></code> instead
-of <code>quo_name()</code>. See life cycle section below.</p>
-<p>These functions take an arbitrary R object, typically an
-<a href='is_expression.html'>expression</a>, and represent it as a string.</p><ul>
-<li><p><code>quo_name()</code> returns an abbreviated representation of the object
-as a single line string. It is suitable for default names.</p></li>
-<li><p><code>quo_text()</code> returns a multiline string. For instance block
-expressions like <code>{ foo; bar }</code> are represented on 4 lines (one
-for each symbol, and the curly braces on their own lines).</p></li>
-</ul>
-
-<p>These deparsers are only suitable for creating default names or
-printing output at the console. The behaviour of your functions
-should not depend on deparsed objects. If you are looking for a way
-of transforming symbols to strings, use <code><a href='as_string.html'>as_string()</a></code> instead of
-<code>quo_name()</code>. Unlike deparsing, the transformation between symbols
-and strings is non-lossy and well defined.</p>
+<p>These functions are in the questioning stage because they don't add
+value compared to using <code><a href='parse_expr.html'>parse_expr()</a></code> with <code><a href='as_quosure.html'>new_quosure()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>quo_label</span>(<span class='no'>quo</span>)
+    <pre class="usage"><span class='fu'>parse_quo</span>(<span class='no'>x</span>, <span class='no'>env</span>)
 
-<span class='fu'>quo_text</span>(<span class='no'>quo</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>60L</span>, <span class='kw'>nlines</span> <span class='kw'>=</span> <span class='fl'>Inf</span>)
-
-<span class='fu'>quo_name</span>(<span class='no'>quo</span>)</pre>
+<span class='fu'>parse_quos</span>(<span class='no'>x</span>, <span class='no'>env</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>quo</th>
-      <td><p>A quosure or expression.</p></td>
+      <th>x</th>
+      <td><p>Text containing expressions to parse_expr for
+<code><a href='parse_expr.html'>parse_expr()</a></code> and <code><a href='parse_expr.html'>parse_exprs()</a></code>. Can also be an R connection,
+for instance to a file. If the supplied connection is not open,
+it will be automatically closed and destroyed.</p></td>
     </tr>
     <tr>
-      <th>width</th>
-      <td><p>Width of each line.</p></td>
-    </tr>
-    <tr>
-      <th>nlines</th>
-      <td><p>Maximum number of lines to extract.</p></td>
+      <th>env</th>
+      <td><p>The environment for the quosures. Depending on the use
+case, a good default might be the <a href='search_envs.html'>global environment</a> but you might also want to evaluate the
+R code in an isolated context (perhaps a child of the global
+environment or of the <a href='search_envs.html'>base environment</a>).</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
 
-    
-
-
-<p>These functions are in the questioning life cycle stage.</p><ul>
-<li><p><code><a href='as_label.html'>as_label()</a></code> and <code><a href='as_name.html'>as_name()</a></code> should be used instead of
-<code>quo_name()</code>. <code><a href='as_label.html'>as_label()</a></code> transforms any R object to a string
-but should only be used to create a default name. Labelisation is
-not a well defined operation and no assumption should be made
-about the label. On the other hand, <code><a href='as_name.html'>as_name()</a></code> only works with
-(possibly quosured) symbols, but is a well defined and
-deterministic operation.</p></li>
-<li><p>We don't have a good replacement for <code>quo_text()</code> yet. See
-<a href='https://github.com/r-lib/rlang/issues/636'>https://github.com/r-lib/rlang/issues/636</a> to follow discussions
-about a new deparsing API.</p></li>
-</ul>
-
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='expr_label.html'>expr_label()</a></code>, <code><a href='f_text.html'>f_label()</a></code></p></div>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Quosures can contain nested quosures:</span>
-<span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fu'>foo</span>(!! <span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='no'>bar</span>)))
-<span class='no'>quo</span></div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
-#&gt; expr: </span><span style='color: #0000BB;'>^foo(^bar)</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7fcc71abb0f0</span><span></div><div class='input'>
-<span class='co'># quo_squash() unwraps all quosures and returns a raw expression:</span>
-<span class='fu'><a href='quo_squash.html'>quo_squash</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; foo(bar)</div><div class='input'>
-<span class='co'># This is used by quo_text() and quo_label():</span>
-<span class='fu'>quo_text</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; [1] "foo(bar)"</div><div class='input'>
-<span class='co'># Compare to the unwrapped expression:</span>
-<span class='fu'><a href='expr_label.html'>expr_text</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; [1] "~foo(~bar)"</div><div class='input'>
-<span class='co'># quo_name() is helpful when you need really short labels:</span>
-<span class='fu'>quo_name</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='no'>sym</span>))</div><div class='output co'>#&gt; [1] "sym"</div><div class='input'><span class='fu'>quo_name</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(!! <span class='no'>sym</span>))</div><div class='output co'>#&gt; [1] "function (x) ..."</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#life-cycle">Life cycle</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
