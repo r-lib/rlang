@@ -233,18 +233,19 @@ as.call(c(list(as.name("mean"), 1:10), args))
 </pre></li>
 </ul>
 
-    <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
+    <h2 class="hasAnchor" id="caveats-of-inlining-objects-in-calls"><a class="anchor" href="#caveats-of-inlining-objects-in-calls"></a>Caveats of inlining objects in calls</h2>
 
     
 
 
-<p>In rlang 0.2.0 <code><a href='lang.html'>lang()</a></code> was soft-deprecated and renamed to
-<code>call2()</code>.</p>
-<p>In early versions of rlang calls were called "language" objects in
-order to follow the R type nomenclature as returned by
-<code><a href='https://rdrr.io/r/base/typeof.html'>base::typeof()</a></code>. The goal was to avoid adding to the confusion
-between S modes and R types. With hindsight we find it is better to
-use more meaningful type names.</p>
+<p><code>call2()</code> makes it possible to inline objects in calls, both in
+function and argument positions. Inlining an object or a function
+has the advantage that the correct object is used in all
+environments. If all components of the code are inlined, you can
+even evaluate in the <a href='empty_env.html'>empty environment</a>.</p>
+<p>However inlining also has drawbacks. It can cause issues with NSE
+functions that expect symbolic arguments. The objects may also leak
+in representations of the call stack, such as <code><a href='https://rdrr.io/r/base/traceback.html'>traceback()</a></code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>call_modify</p></div>
@@ -264,7 +265,7 @@ use more meaningful type names.</p>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#difference-with-base-constructors">Difference with base constructors</a></li>
-      <li><a href="#life-cycle">Life cycle</a></li>
+      <li><a href="#caveats-of-inlining-objects-in-calls">Caveats of inlining objects in calls</a></li>
       <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
