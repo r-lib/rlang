@@ -438,9 +438,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
     case OP_VALUE_UQ:
       r_abort("Can't use `!!` in a non-quoting function");
     case OP_VALUE_UQS: {
-      expr = KEEP(r_eval(info.operand, env));
       expr = dots_big_bang(capture_info, info.operand, env, false);
-      FREE(1);
       break;
     }
     case OP_VALUE_CURLY:

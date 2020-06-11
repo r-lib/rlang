@@ -1,6 +1,8 @@
 
 # rlang (development version)
 
+* `list2(!!!x)` no longer evaluates `x` multiple times (#981).
+
 * `is_installed()` now properly handles a `pkg` argument of length > 1. Before this it silently tested the first element of `pkg` only and thus always returned `TRUE` if the first package was installed regardless of the actual length of `pkg`. (#991, @salim-b)
 
 
