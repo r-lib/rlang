@@ -65,17 +65,17 @@
 #'   ```
 #'
 #'
-#' @section Life cycle:
+#' @section Caveats of inlining objects in calls:
 #'
-#' In rlang 0.2.0 `lang()` was soft-deprecated and renamed to
-#' `call2()`.
+#' `call2()` makes it possible to inline objects in calls, both in
+#' function and argument positions. Inlining an object or a function
+#' has the advantage that the correct object is used in all
+#' environments. If all components of the code are inlined, you can
+#' even evaluate in the [empty environment][empty_env].
 #'
-#' In early versions of rlang calls were called "language" objects in
-#' order to follow the R type nomenclature as returned by
-#' [base::typeof()]. The goal was to avoid adding to the confusion
-#' between S modes and R types. With hindsight we find it is better to
-#' use more meaningful type names.
-#'
+#' However inlining also has drawbacks. It can cause issues with NSE
+#' functions that expect symbolic arguments. The objects may also leak
+#' in representations of the call stack, such as [traceback()].
 #'
 #' @seealso call_modify
 #' @examples
