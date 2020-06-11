@@ -874,3 +874,111 @@ trace_root <- function() {
     "x"
   }
 }
+
+#' Trace functions from a set of packages
+#'
+#' @param pkgs One or more package names whose functions should be traced.
+#' @param max_level Maximum nesting level of call stack.
+#' @param regexp Regular expression passed to [base::grepl()] to
+#'   select which functions should be traced. Can be a single string
+#'   or a vector as long as `pkgs`.
+#' @param ... These dots are for future extensions and should be empty.
+#'
+#' @author Iñaki Ucar (ORCID: 0000-0001-6403-5550)
+#' @noRd
+trace_pkgs <- function(pkgs, max_level = Inf, ..., regexp = NULL) {
+  check_dots_empty(...)
+
+  # Avoids namespace loading issues
+  lapply(pkgs, requireNamespace, quietly = TRUE)
+
+  trace_level <- 0
+
+  # Create a thunk because `trace()` sloppily transforms functions into calls
+  tracer <- rlang::call2(function() {
+    trace_level <<- trace_level + 1
+
+    if (trace_level > max_level) {
+      return()
+    }
+
+    # Work around sys.foo() weirdness
+    get_fn <- rlang::call2(function(fn = sys.function(sys.parent())) fn)
+    fn <- eval(get_fn, env = parent.frame())
+
+    try(silent = TRUE, {
+      call <- evalq(base::match.call(), envir = parent.frame())
+      call <- call_add_namespace(call, fn)
+
+      indent <- paste0(rep(" ", (trace_level - 1) * 2), collapse = "")
+      line <- paste0(indent, rlang::as_label(call))
+      cat(line, "\n")
+    })
+  })
+
+  exit <- rlang::call2(function() {
+    trace_level <<- trace_level - 1
+  })
+
+  if (length(regexp) == 1) {
+    regexp <- rep(regexp, length(pkgs))
+  }
+
+  for (i in seq_along(pkgs)) {
+    pkg <- pkgs[[i]]
+    ns <- asNamespace(pkg)
+    ns_fns <- names(Filter(is.function, as.list(ns)))
+
+    if (!is.null(regexp)) {
+      ns_fns <- ns_fns[grepl(regexp[[i]], ns_fns)]
+    }
+
+    suppressMessages(trace(
+      ns_fns,
+      tracer = tracer,
+      exit = exit,
+      print = FALSE,
+      where = ns
+    ))
+
+    message(sprintf(
+      "Tracing %d functions in %s.",
+      length(ns_fns),
+      pkg
+    ))
+  }
+}
+
+call_add_namespace <- function(call, fn) {
+  if (!is.call(call) || !is.symbol(call[[1]])) {
+    return(call)
+  }
+
+  sym <- call[[1]]
+  nm <- as.character(sym)
+
+  if (nm %in% c("::", ":::")) {
+    return(call)
+  }
+
+  env <- environment(fn)
+  top <- topenv(env)
+
+  if (identical(env, globalenv())) {
+    prefix <- "global"
+    op <- "::"
+  } else if (isNamespace(top)) {
+    prefix <- rlang::ns_env_name(top)
+    if (rlang:::ns_exports_has(top, nm)) {
+      op <- "::"
+    } else {
+      op <- ":::"
+    }
+  } else {
+    return(call)
+  }
+
+  namespaced_sym <- call(op, as.symbol(prefix), sym)
+  call[[1]] <- namespaced_sym
+  call
+}
