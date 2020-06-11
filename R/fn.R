@@ -52,7 +52,9 @@ prim_name <- function(prim) {
 
   # Workaround because R_FunTab is not public
   name <- format(prim)
-  name <- sub("^.Primitive\\(\"", "", name)
+
+  # TERR formats primitives as `.Native("name")` (#958)
+  name <- sub("^\\.(Primitive|Native)\\(\"", "", name)
   name <- sub("\"\\)$", "", name)
   name
 }
