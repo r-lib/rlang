@@ -184,9 +184,9 @@ effects.</p>
     <pre class="examples"><div class='input'><span class='co'># Let's add attributes with structure() to uncopyable types. Since</span>
 <span class='co'># they are not copied, the attributes are changed in place:</span>
 <span class='no'>env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>()
-<span class='fu'><a href='https://rdrr.io/r/base/structure.html'>structure</a></span>(<span class='no'>env</span>, <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"bar"</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7fe8aa370148&gt;
+<span class='fu'><a href='https://rdrr.io/r/base/structure.html'>structure</a></span>(<span class='no'>env</span>, <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"bar"</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7fd39a9af040&gt;
 #&gt; attr(,"foo")
-#&gt; [1] "bar"</div><div class='input'><span class='no'>env</span></div><div class='output co'>#&gt; &lt;environment: 0x7fe8aa370148&gt;
+#&gt; [1] "bar"</div><div class='input'><span class='no'>env</span></div><div class='output co'>#&gt; &lt;environment: 0x7fd39a9af040&gt;
 #&gt; attr(,"foo")
 #&gt; [1] "bar"</div><div class='input'>
 <span class='co'># These objects that can only be changed with side effect are not</span>
