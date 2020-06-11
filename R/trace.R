@@ -895,7 +895,7 @@ trace_pkgs <- function(pkgs, max_level = Inf, ..., regexp = NULL) {
   trace_level <- 0
 
   # Create a thunk because `trace()` sloppily transforms functions into calls
-  tracer <- rlang::call2(function() {
+  tracer <- call2(function() {
     trace_level <<- trace_level + 1
 
     if (trace_level > max_level) {
@@ -903,7 +903,7 @@ trace_pkgs <- function(pkgs, max_level = Inf, ..., regexp = NULL) {
     }
 
     # Work around sys.foo() weirdness
-    get_fn <- rlang::call2(function(fn = sys.function(sys.parent())) fn)
+    get_fn <- call2(function(fn = sys.function(sys.parent())) fn)
     fn <- eval(get_fn, env = parent.frame())
 
     try(silent = TRUE, {
@@ -911,25 +911,25 @@ trace_pkgs <- function(pkgs, max_level = Inf, ..., regexp = NULL) {
       call <- call_add_namespace(call, fn)
 
       indent <- paste0(rep(" ", (trace_level - 1) * 2), collapse = "")
-      line <- paste0(indent, rlang::as_label(call))
+      line <- paste0(indent, as_label(call))
       cat(line, "\n")
     })
   })
 
-  exit <- rlang::call2(function() {
+  exit <- call2(function() {
     trace_level <<- trace_level - 1
   })
 
   if (length(regexp) == 1) {
-    regexp <- rep(regexp, length(pkgs))
+    regexp <- rep_along(pkgs, regexp)
   }
 
   for (i in seq_along(pkgs)) {
     pkg <- pkgs[[i]]
-    ns <- asNamespace(pkg)
-    ns_fns <- names(Filter(is.function, as.list(ns)))
+    ns <- ns_env(pkg)
+    ns_fns <- names(keep(is.function, as.list(ns)))
 
-    if (!is.null(regexp)) {
+    if (!is_null(regexp)) {
       ns_fns <- ns_fns[grepl(regexp[[i]], ns_fns)]
     }
 
@@ -955,7 +955,7 @@ call_add_namespace <- function(call, fn) {
   }
 
   sym <- call[[1]]
-  nm <- as.character(sym)
+  nm <- as_string(sym)
 
   if (nm %in% c("::", ":::")) {
     return(call)
@@ -964,12 +964,12 @@ call_add_namespace <- function(call, fn) {
   env <- environment(fn)
   top <- topenv(env)
 
-  if (identical(env, globalenv())) {
+  if (is_reference(env, globalenv())) {
     prefix <- "global"
     op <- "::"
-  } else if (isNamespace(top)) {
-    prefix <- rlang::ns_env_name(top)
-    if (rlang:::ns_exports_has(top, nm)) {
+  } else if (is_namespace(top)) {
+    prefix <- ns_env_name(top)
+    if (ns_exports_has(top, nm)) {
       op <- "::"
     } else {
       op <- ":::"
