@@ -154,8 +154,8 @@
 <a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
 </h1>
 <ul>
-<li>
-<code><a href="../reference/is_installed.html">is_installed()</a></code> now properly handles a <code>pkg</code> argument of length &gt; 1. Before this it silently tested the first element of <code>pkg</code> only and thus always returned <code>TRUE</code> if the first package was installed regardless of the actual length of <code>pkg</code>. (<a href='https://github.com/r-lib/rlang/issues/991'>#991</a>, <a href='https://github.com/salim-b'>@salim-b</a>)</li>
+<li><p><code><a href="../reference/list2.html">list2(!!!x)</a></code> no longer evaluates <code>x</code> multiple times (<a href='https://github.com/r-lib/rlang/issues/981'>#981</a>).</p></li>
+<li><p><code><a href="../reference/is_installed.html">is_installed()</a></code> now properly handles a <code>pkg</code> argument of length &gt; 1. Before this it silently tested the first element of <code>pkg</code> only and thus always returned <code>TRUE</code> if the first package was installed regardless of the actual length of <code>pkg</code>. (<a href='https://github.com/r-lib/rlang/issues/991'>#991</a>, <a href='https://github.com/salim-b'>@salim-b</a>)</p></li>
 </ul>
 </div>
     <div id="rlang-046" class="section level1">
