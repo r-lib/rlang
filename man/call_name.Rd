@@ -3,7 +3,7 @@
 \name{call_name}
 \alias{call_name}
 \alias{call_ns}
-\title{Extract function name or namespaced of a call}
+\title{Extract function name or namespace of a call}
 \usage{
 call_name(call)
 
@@ -17,7 +17,7 @@ A string with the function name, or \code{NULL} if the function
 is anonymous.
 }
 \description{
-Extract function name or namespaced of a call
+Extract function name or namespace of a call
 }
 \section{Life cycle}{
 
