@@ -2,15 +2,20 @@
 % Please edit documentation in R/arg.R
 \name{arg_match}
 \alias{arg_match}
+\alias{arg_match_val}
 \title{Match an argument to a character vector}
 \usage{
 arg_match(arg, values = NULL)
+
+arg_match_val(arg, values, arg_nm = as_label(substitute(arg)))
 }
 \arguments{
 \item{arg}{A symbol referring to an argument accepting strings.}
 
 \item{values}{The possible values that \code{arg} can take. If \code{NULL},
 the values are taken from the function definition of the \link[=caller_frame]{caller frame}.}
+
+\item{arg_nm}{The label to be used for \code{arg} in error messages.}
 }
 \value{
 The string supplied to \code{arg}.
@@ -22,6 +27,9 @@ This is equivalent to \code{\link[base:match.arg]{base::match.arg()}} with a few
 \item Error messages are a bit more informative and obey the tidyverse
 standards.
 }
+
+\code{arg_match_val()} is a bare-bones version if performance is at a premium.
+It requires a string as \code{arg} and explicit \code{values}.
 }
 \examples{
 fn <- function(x = c("foo", "bar")) arg_match(x)

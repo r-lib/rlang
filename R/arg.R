@@ -47,9 +47,23 @@ arg_match <- function(arg, values = NULL) {
   }
 
   arg <- arg[[1]]
+  arg_match_val(arg, values, arg_nm)
+}
+
+#' @description
+#' `arg_match_val()` is a bare-bones version if performance is at a premium.
+#' It requires a string as `arg` and explicit `values`.
+#' @param arg_nm The label to be used for `arg` in error messages.
+#' @rdname arg_match
+#' @export
+arg_match_val <- function(arg, values, arg_nm = as_label(substitute(arg))) {
+  if (!is_character(arg)) {
+    abort(paste0(chr_quoted(arg_nm), " must be a string."))
+  }
+
   i <- match(arg, values)
 
-  if (is_na(i)) {
+  if (is.na(i)) {
     msg <- arg_match_invalid_msg(arg_nm, values)
 
     i_partial <- pmatch(arg, values)
