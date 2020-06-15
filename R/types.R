@@ -80,10 +80,9 @@ is_raw <- function(x, n = NULL) {
 is_bytes <- is_raw
 
 #' @export
+#' @usage is_null(x)
 #' @rdname type-predicates
-is_null <- function(x) {
-  .Call(rlang_is_null, x)
-}
+is_null <- is.null
 
 #' Scalar type predicates
 #'
