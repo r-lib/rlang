@@ -28,3 +28,20 @@ test_that("is_interactive() honors rlang_interactive option, above all else", {
   expect_false(is_interactive())
   expect_true(with_interactive(value = TRUE, is_interactive()))
 })
+
+test_that("local_options() restores options in correct order (#980)", {
+  local_options(foo = -1)
+
+  local({
+    local_options(foo = 0)
+    local_options(foo = 1)
+  })
+  expect_identical(peek_option("foo"), -1)
+
+  local({
+    on.exit("existing")
+    local_options(foo = 0)
+    local_options(foo = 1)
+  })
+  expect_identical(peek_option("foo"), -1)
+})

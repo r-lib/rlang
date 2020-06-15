@@ -91,6 +91,20 @@ test_that("local_bindings binds temporarily", {
   expect_false(env_has(env, "baz"))
 })
 
+test_that("local_bindings() restores in correct order", {
+  foo <- "start"
+
+  local({
+    local_bindings(foo = "foo")
+    expect_identical(foo, "foo")
+
+    local_bindings(foo = "bar")
+    expect_identical(foo, "bar")
+  })
+
+  expect_identical(foo, "start")
+})
+
 test_that("with_bindings() evaluates with temporary bindings", {
   foo <- "foo"
   baz <- "baz"
