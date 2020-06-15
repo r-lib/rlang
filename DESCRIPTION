@@ -26,6 +26,8 @@ Suggests:
     rmarkdown,
     testthat (>= 2.3.0),
     vctrs (>= 0.2.3)
+Remotes:
+    rstudio/rmarkdown
 Encoding: UTF-8
 RoxygenNote: 7.1.0
 Roxygen: list(markdown = TRUE)
