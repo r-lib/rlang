@@ -904,7 +904,7 @@ trace_pkgs <- function(pkgs, max_level = Inf, ..., regexp = NULL) {
 
     # Work around sys.foo() weirdness
     get_fn <- call2(function(fn = sys.function(sys.parent())) fn)
-    fn <- eval(get_fn, env = parent.frame())
+    fn <- eval(get_fn, envir = parent.frame())
 
     try(silent = TRUE, {
       call <- evalq(base::match.call(), envir = parent.frame())
