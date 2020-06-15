@@ -259,132 +259,132 @@ frame as well. This way, <code>call_stack(call_depth())</code> is the same as
 <span class='fu'>f</span>(<span class='fu'>f</span>(<span class='fu'>ctxt_stack</span>()))</div><div class='output co'>#&gt; [[1]]
 #&gt; &lt;frame 26&gt; (25)
 #&gt; expr: identity(x)
-#&gt; env:  [local 0x7fcfcb4eb980]
+#&gt; env:  [local 0x7fc86a1eccf8]
 #&gt; 
 #&gt; [[2]]
 #&gt; &lt;frame 25&gt; (22)
 #&gt; expr: f(ctxt_stack())
-#&gt; env:  [local 0x7fcfcb4eba98]
+#&gt; env:  [local 0x7fc86a1ece10]
 #&gt; 
 #&gt; [[3]]
 #&gt; &lt;frame 24&gt; (23)
 #&gt; expr: identity(x)
-#&gt; env:  [local 0x7fcfcb4ebbb0]
+#&gt; env:  [local 0x7fc86a1ecf28]
 #&gt; 
 #&gt; [[4]]
 #&gt; &lt;frame 23&gt; (22)
 #&gt; expr: f(f(ctxt_stack()))
-#&gt; env:  [local 0x7fcfcb4ebcc8]
+#&gt; env:  [local 0x7fc86a1ed040]
 #&gt; 
 #&gt; [[5]]
 #&gt; &lt;frame 22&gt; (21)
 #&gt; expr: eval(expr, envir, enclos)
-#&gt; env:  [local 0x7fcfcb21a8b0]
+#&gt; env:  [local 0x7fc86a174a90]
 #&gt; 
 #&gt; [[6]]
 #&gt; &lt;frame 21&gt; (11)
 #&gt; expr: eval(expr, envir, enclos)
-#&gt; env:  [local 0x7fcfcb4ebe88]
+#&gt; env:  [local 0x7fc86a1ed200]
 #&gt; 
 #&gt; [[7]]
 #&gt; &lt;frame 20&gt; (11)
 #&gt; expr: withVisible(eval(expr, envir, enclos))
-#&gt; env:  [local 0x7fcfcb4ec0b8]
+#&gt; env:  [local 0x7fc86a1ed4a0]
 #&gt; 
 #&gt; [[8]]
 #&gt; &lt;frame 19&gt; (11)
 #&gt; expr: withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler,  &lt;...&gt;
-#&gt; env:  [local 0x7fcfcb4ec668]
+#&gt; env:  [local 0x7fc86a1eda50]
 #&gt; 
 #&gt; [[9]]
 #&gt; &lt;frame 18&gt; (17)
 #&gt; expr: doTryCatch(return(expr), name, parentenv, handler)
-#&gt; env:  [local 0x7fcfcb4ecbe0]
+#&gt; env:  [local 0x7fc86a1edfc8]
 #&gt; 
 #&gt; [[10]]
 #&gt; &lt;frame 17&gt; (16)
 #&gt; expr: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-#&gt; env:  [local 0x7fcfcb4ecf28]
+#&gt; env:  [local 0x7fc86a1ea400]
 #&gt; 
 #&gt; [[11]]
 #&gt; &lt;frame 16&gt; (15)
 #&gt; expr: tryCatchList(expr, classes, parentenv, handlers)
-#&gt; env:  [local 0x7fcfcb4ed270]
+#&gt; env:  [local 0x7fc86a1ea748]
 #&gt; 
 #&gt; [[12]]
 #&gt; &lt;frame 15&gt; (14)
 #&gt; expr: tryCatch(expr, error = function(e) { &lt;...&gt;
-#&gt; env:  [local 0x7fcfcb52fe28]
+#&gt; env:  [local 0x7fc86a1eae10]
 #&gt; 
 #&gt; [[13]]
 #&gt; &lt;frame 14&gt; (13)
 #&gt; expr: try(f, silent = TRUE)
-#&gt; env:  [local 0x7fcfcb530058]
+#&gt; env:  [local 0x7fc86a1eb040]
 #&gt; 
 #&gt; [[14]]
 #&gt; &lt;frame 13&gt; (11)
 #&gt; expr: handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, envir,  &lt;...&gt;
-#&gt; env:  [local 0x7fcfcb5301e0]
+#&gt; env:  [local 0x7fc86a1eb1c8]
 #&gt; 
 #&gt; [[15]]
 #&gt; &lt;frame 12&gt; (11)
 #&gt; expr: timing_fn(handle(ev &lt;- withCallingHandlers(withVisible(eval(expr,  &lt;...&gt;
-#&gt; env:  [local 0x7fcfcb5302c0]
+#&gt; env:  [local 0x7fc86a1eb2a8]
 #&gt; 
 #&gt; [[16]]
 #&gt; &lt;frame 11&gt; (10)
 #&gt; expr: evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfcb55bd10]
+#&gt; env:  [frame 0x7fc86a0a4eb8]
 #&gt; 
 #&gt; [[17]]
 #&gt; &lt;frame 10&gt; (9)
 #&gt; expr: evaluate::evaluate(x, child_env(env), new_device = TRUE)
-#&gt; env:  [frame 0x7fcfcb0f5d68]
+#&gt; env:  [frame 0x7fc86715f948]
 #&gt; 
 #&gt; [[18]]
 #&gt; &lt;frame 9&gt; (8)
 #&gt; expr: highlight_examples(code, topic, env = env)
-#&gt; env:  [frame 0x7fcfcb256210]
+#&gt; env:  [frame 0x7fc86a00c4a8]
 #&gt; 
 #&gt; [[19]]
 #&gt; &lt;frame 8&gt; (7)
 #&gt; expr: run_examples(tags$tag_examples[[1]], env = new.env(parent = globalenv()),  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc2ad1108]
+#&gt; env:  [frame 0x7fc8639204d8]
 #&gt; 
 #&gt; [[20]]
 #&gt; &lt;frame 7&gt; (6)
 #&gt; expr: data_reference_topic(topic, pkg, examples = examples, run_dont_run = run_dont_run)
-#&gt; env:  [frame 0x7fcfc6f6e1a8]
+#&gt; env:  [frame 0x7fc8659804a8]
 #&gt; 
 #&gt; [[21]]
 #&gt; &lt;frame 6&gt; (5)
 #&gt; expr: .f(.x[[i]], ...)
-#&gt; env:  [frame 0x7fcfc7025a18]
+#&gt; env:  [frame 0x7fc865370598]
 #&gt; 
 #&gt; [[22]]
 #&gt; &lt;frame 5&gt; (4)
 #&gt; expr: purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc70cf238]
+#&gt; env:  [frame 0x7fc86628faa8]
 #&gt; 
 #&gt; [[23]]
 #&gt; &lt;frame 4&gt; (3)
 #&gt; expr: build_reference(pkg, lazy = lazy, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc7462268]
+#&gt; env:  [frame 0x7fc868229130]
 #&gt; 
 #&gt; [[24]]
 #&gt; &lt;frame 3&gt; (2)
 #&gt; expr: build_site_local(pkg = pkg, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc72bb8e8]
+#&gt; env:  [frame 0x7fc868095ee8]
 #&gt; 
 #&gt; [[25]]
 #&gt; &lt;frame 2&gt; (1)
 #&gt; expr: build_site(".", override = list(destination = dest_dir), devel = FALSE,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc3d1b618]
+#&gt; env:  [frame 0x7fc8619eb650]
 #&gt; 
 #&gt; [[26]]
 #&gt; &lt;frame 1&gt; (0)
 #&gt; expr: pkgdown:::deploy_local(new_process = FALSE, remote_url = url)
-#&gt; env:  [frame 0x7fcfc6c0c1a8]
+#&gt; env:  [frame 0x7fc861f1cda8]
 #&gt; 
 #&gt; [[27]]
 #&gt; &lt;frame 0&gt; [global]
@@ -396,62 +396,62 @@ frame as well. This way, <code>call_stack(call_depth())</code> is the same as
 #&gt; <span class='warning'></span><span style='color: #555555;'>This warning is displayed once per session.</span><span></span></div><div class='output co'>#&gt; [[1]]
 #&gt; &lt;frame 21&gt; (11)
 #&gt; expr: eval(expr, envir, enclos)
-#&gt; env:  [local 0x7fcfcb21a8b0]
+#&gt; env:  [local 0x7fc86a174a90]
 #&gt; 
 #&gt; [[2]]
 #&gt; &lt;frame 11&gt; (10)
 #&gt; expr: evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfcbcdd3c0]
+#&gt; env:  [frame 0x7fc867fce1a0]
 #&gt; 
 #&gt; [[3]]
 #&gt; &lt;frame 10&gt; (9)
 #&gt; expr: evaluate::evaluate(x, child_env(env), new_device = TRUE)
-#&gt; env:  [frame 0x7fcfcb0f5d68]
+#&gt; env:  [frame 0x7fc86715f948]
 #&gt; 
 #&gt; [[4]]
 #&gt; &lt;frame 9&gt; (8)
 #&gt; expr: highlight_examples(code, topic, env = env)
-#&gt; env:  [frame 0x7fcfcb256210]
+#&gt; env:  [frame 0x7fc86a00c4a8]
 #&gt; 
 #&gt; [[5]]
 #&gt; &lt;frame 8&gt; (7)
 #&gt; expr: run_examples(tags$tag_examples[[1]], env = new.env(parent = globalenv()),  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc2ad1108]
+#&gt; env:  [frame 0x7fc8639204d8]
 #&gt; 
 #&gt; [[6]]
 #&gt; &lt;frame 7&gt; (6)
 #&gt; expr: data_reference_topic(topic, pkg, examples = examples, run_dont_run = run_dont_run)
-#&gt; env:  [frame 0x7fcfc6f6e1a8]
+#&gt; env:  [frame 0x7fc8659804a8]
 #&gt; 
 #&gt; [[7]]
 #&gt; &lt;frame 6&gt; (5)
 #&gt; expr: .f(.x[[i]], ...)
-#&gt; env:  [frame 0x7fcfc7025a18]
+#&gt; env:  [frame 0x7fc865370598]
 #&gt; 
 #&gt; [[8]]
 #&gt; &lt;frame 5&gt; (4)
 #&gt; expr: purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc70cf238]
+#&gt; env:  [frame 0x7fc86628faa8]
 #&gt; 
 #&gt; [[9]]
 #&gt; &lt;frame 4&gt; (3)
 #&gt; expr: build_reference(pkg, lazy = lazy, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc7462268]
+#&gt; env:  [frame 0x7fc868229130]
 #&gt; 
 #&gt; [[10]]
 #&gt; &lt;frame 3&gt; (2)
 #&gt; expr: build_site_local(pkg = pkg, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc72bb8e8]
+#&gt; env:  [frame 0x7fc868095ee8]
 #&gt; 
 #&gt; [[11]]
 #&gt; &lt;frame 2&gt; (1)
 #&gt; expr: build_site(".", override = list(destination = dest_dir), devel = FALSE,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc3d1b618]
+#&gt; env:  [frame 0x7fc8619eb650]
 #&gt; 
 #&gt; [[12]]
 #&gt; &lt;frame 1&gt; (0)
 #&gt; expr: pkgdown:::deploy_local(new_process = FALSE, remote_url = url)
-#&gt; env:  [frame 0x7fcfc6c0c1a8]
+#&gt; env:  [frame 0x7fc861f1cda8]
 #&gt; 
 #&gt; [[13]]
 #&gt; &lt;frame 0&gt; [global]
@@ -464,127 +464,127 @@ frame as well. This way, <code>call_stack(call_depth())</code> is the same as
 <span class='fu'>f</span>(<span class='fu'>g</span>(<span class='no'>ctxt_stack</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; &lt;frame 25&gt; (22)
 #&gt; expr: g(ctxt_stack)
-#&gt; env:  [local 0x7fcfcacb8c68]
+#&gt; env:  [local 0x7fc867d3ab68]
 #&gt; 
 #&gt; [[2]]
 #&gt; &lt;frame 24&gt; (23)
 #&gt; expr: identity(x)
-#&gt; env:  [local 0x7fcfcacb8d80]
+#&gt; env:  [local 0x7fc867d3ac80]
 #&gt; 
 #&gt; [[3]]
 #&gt; &lt;frame 23&gt; (22)
 #&gt; expr: f(g(ctxt_stack))
-#&gt; env:  [local 0x7fcfcacb8e98]
+#&gt; env:  [local 0x7fc867d3ad98]
 #&gt; 
 #&gt; [[4]]
 #&gt; &lt;frame 22&gt; (21)
 #&gt; expr: eval(expr, envir, enclos)
-#&gt; env:  [local 0x7fcfcb21a8b0]
+#&gt; env:  [local 0x7fc86a174a90]
 #&gt; 
 #&gt; [[5]]
 #&gt; &lt;frame 21&gt; (11)
 #&gt; expr: eval(expr, envir, enclos)
-#&gt; env:  [local 0x7fcfcacb9058]
+#&gt; env:  [local 0x7fc867d3af90]
 #&gt; 
 #&gt; [[6]]
 #&gt; &lt;frame 20&gt; (11)
 #&gt; expr: withVisible(eval(expr, envir, enclos))
-#&gt; env:  [local 0x7fcfcacb9330]
+#&gt; env:  [local 0x7fc867d3b1c0]
 #&gt; 
 #&gt; [[7]]
 #&gt; &lt;frame 19&gt; (11)
 #&gt; expr: withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler,  &lt;...&gt;
-#&gt; env:  [local 0x7fcfcacb5a40]
+#&gt; env:  [local 0x7fc867d3b770]
 #&gt; 
 #&gt; [[8]]
 #&gt; &lt;frame 18&gt; (17)
 #&gt; expr: doTryCatch(return(expr), name, parentenv, handler)
-#&gt; env:  [local 0x7fcfcacb5fb8]
+#&gt; env:  [local 0x7fc867d3bce8]
 #&gt; 
 #&gt; [[9]]
 #&gt; &lt;frame 17&gt; (16)
 #&gt; expr: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-#&gt; env:  [local 0x7fcfcacb6300]
+#&gt; env:  [local 0x7fc867d38120]
 #&gt; 
 #&gt; [[10]]
 #&gt; &lt;frame 16&gt; (15)
 #&gt; expr: tryCatchList(expr, classes, parentenv, handlers)
-#&gt; env:  [local 0x7fcfcacb6648]
+#&gt; env:  [local 0x7fc867d38468]
 #&gt; 
 #&gt; [[11]]
 #&gt; &lt;frame 15&gt; (14)
 #&gt; expr: tryCatch(expr, error = function(e) { &lt;...&gt;
-#&gt; env:  [local 0x7fcfcacb6d10]
+#&gt; env:  [local 0x7fc867d38b68]
 #&gt; 
 #&gt; [[12]]
 #&gt; &lt;frame 14&gt; (13)
 #&gt; expr: try(f, silent = TRUE)
-#&gt; env:  [local 0x7fcfcacb6f40]
+#&gt; env:  [local 0x7fc867d38d98]
 #&gt; 
 #&gt; [[13]]
 #&gt; &lt;frame 13&gt; (11)
 #&gt; expr: handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, envir,  &lt;...&gt;
-#&gt; env:  [local 0x7fcfcacb70c8]
+#&gt; env:  [local 0x7fc867d38f20]
 #&gt; 
 #&gt; [[14]]
 #&gt; &lt;frame 12&gt; (11)
 #&gt; expr: timing_fn(handle(ev &lt;- withCallingHandlers(withVisible(eval(expr,  &lt;...&gt;
-#&gt; env:  [local 0x7fcfcacb71a8]
+#&gt; env:  [local 0x7fc867d39000]
 #&gt; 
 #&gt; [[15]]
 #&gt; &lt;frame 11&gt; (10)
 #&gt; expr: evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc7629348]
+#&gt; env:  [frame 0x7fc867d290e0]
 #&gt; 
 #&gt; [[16]]
 #&gt; &lt;frame 10&gt; (9)
 #&gt; expr: evaluate::evaluate(x, child_env(env), new_device = TRUE)
-#&gt; env:  [frame 0x7fcfcb0f5d68]
+#&gt; env:  [frame 0x7fc86715f948]
 #&gt; 
 #&gt; [[17]]
 #&gt; &lt;frame 9&gt; (8)
 #&gt; expr: highlight_examples(code, topic, env = env)
-#&gt; env:  [frame 0x7fcfcb256210]
+#&gt; env:  [frame 0x7fc86a00c4a8]
 #&gt; 
 #&gt; [[18]]
 #&gt; &lt;frame 8&gt; (7)
 #&gt; expr: run_examples(tags$tag_examples[[1]], env = new.env(parent = globalenv()),  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc2ad1108]
+#&gt; env:  [frame 0x7fc8639204d8]
 #&gt; 
 #&gt; [[19]]
 #&gt; &lt;frame 7&gt; (6)
 #&gt; expr: data_reference_topic(topic, pkg, examples = examples, run_dont_run = run_dont_run)
-#&gt; env:  [frame 0x7fcfc6f6e1a8]
+#&gt; env:  [frame 0x7fc8659804a8]
 #&gt; 
 #&gt; [[20]]
 #&gt; &lt;frame 6&gt; (5)
 #&gt; expr: .f(.x[[i]], ...)
-#&gt; env:  [frame 0x7fcfc7025a18]
+#&gt; env:  [frame 0x7fc865370598]
 #&gt; 
 #&gt; [[21]]
 #&gt; &lt;frame 5&gt; (4)
 #&gt; expr: purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc70cf238]
+#&gt; env:  [frame 0x7fc86628faa8]
 #&gt; 
 #&gt; [[22]]
 #&gt; &lt;frame 4&gt; (3)
 #&gt; expr: build_reference(pkg, lazy = lazy, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc7462268]
+#&gt; env:  [frame 0x7fc868229130]
 #&gt; 
 #&gt; [[23]]
 #&gt; &lt;frame 3&gt; (2)
 #&gt; expr: build_site_local(pkg = pkg, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc72bb8e8]
+#&gt; env:  [frame 0x7fc868095ee8]
 #&gt; 
 #&gt; [[24]]
 #&gt; &lt;frame 2&gt; (1)
 #&gt; expr: build_site(".", override = list(destination = dest_dir), devel = FALSE,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc3d1b618]
+#&gt; env:  [frame 0x7fc8619eb650]
 #&gt; 
 #&gt; [[25]]
 #&gt; &lt;frame 1&gt; (0)
 #&gt; expr: pkgdown:::deploy_local(new_process = FALSE, remote_url = url)
-#&gt; env:  [frame 0x7fcfc6c0c1a8]
+#&gt; env:  [frame 0x7fc861f1cda8]
 #&gt; 
 #&gt; [[26]]
 #&gt; &lt;frame 0&gt; [global]
@@ -595,67 +595,67 @@ frame as well. This way, <code>call_stack(call_depth())</code> is the same as
 #&gt; [1] "ctxt_stack" "stack"     </div><div class='input'><span class='fu'>f</span>(<span class='fu'>g</span>(<span class='no'>call_stack</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; &lt;frame 25&gt; (21)
 #&gt; expr: g(call_stack)
-#&gt; env:  [local 0x7fcfcb26cbf8]
+#&gt; env:  [local 0x7fc86ad91908]
 #&gt; 
 #&gt; [[2]]
 #&gt; &lt;frame 21&gt; (11)
 #&gt; expr: eval(expr, envir, enclos)
-#&gt; env:  [local 0x7fcfcb21a8b0]
+#&gt; env:  [local 0x7fc86a174a90]
 #&gt; 
 #&gt; [[3]]
 #&gt; &lt;frame 11&gt; (10)
 #&gt; expr: evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfcb476b58]
+#&gt; env:  [frame 0x7fc86ae9ae08]
 #&gt; 
 #&gt; [[4]]
 #&gt; &lt;frame 10&gt; (9)
 #&gt; expr: evaluate::evaluate(x, child_env(env), new_device = TRUE)
-#&gt; env:  [frame 0x7fcfcb0f5d68]
+#&gt; env:  [frame 0x7fc86715f948]
 #&gt; 
 #&gt; [[5]]
 #&gt; &lt;frame 9&gt; (8)
 #&gt; expr: highlight_examples(code, topic, env = env)
-#&gt; env:  [frame 0x7fcfcb256210]
+#&gt; env:  [frame 0x7fc86a00c4a8]
 #&gt; 
 #&gt; [[6]]
 #&gt; &lt;frame 8&gt; (7)
 #&gt; expr: run_examples(tags$tag_examples[[1]], env = new.env(parent = globalenv()),  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc2ad1108]
+#&gt; env:  [frame 0x7fc8639204d8]
 #&gt; 
 #&gt; [[7]]
 #&gt; &lt;frame 7&gt; (6)
 #&gt; expr: data_reference_topic(topic, pkg, examples = examples, run_dont_run = run_dont_run)
-#&gt; env:  [frame 0x7fcfc6f6e1a8]
+#&gt; env:  [frame 0x7fc8659804a8]
 #&gt; 
 #&gt; [[8]]
 #&gt; &lt;frame 6&gt; (5)
 #&gt; expr: .f(.x[[i]], ...)
-#&gt; env:  [frame 0x7fcfc7025a18]
+#&gt; env:  [frame 0x7fc865370598]
 #&gt; 
 #&gt; [[9]]
 #&gt; &lt;frame 5&gt; (4)
 #&gt; expr: purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc70cf238]
+#&gt; env:  [frame 0x7fc86628faa8]
 #&gt; 
 #&gt; [[10]]
 #&gt; &lt;frame 4&gt; (3)
 #&gt; expr: build_reference(pkg, lazy = lazy, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc7462268]
+#&gt; env:  [frame 0x7fc868229130]
 #&gt; 
 #&gt; [[11]]
 #&gt; &lt;frame 3&gt; (2)
 #&gt; expr: build_site_local(pkg = pkg, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc72bb8e8]
+#&gt; env:  [frame 0x7fc868095ee8]
 #&gt; 
 #&gt; [[12]]
 #&gt; &lt;frame 2&gt; (1)
 #&gt; expr: build_site(".", override = list(destination = dest_dir), devel = FALSE,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc3d1b618]
+#&gt; env:  [frame 0x7fc8619eb650]
 #&gt; 
 #&gt; [[13]]
 #&gt; &lt;frame 1&gt; (0)
 #&gt; expr: pkgdown:::deploy_local(new_process = FALSE, remote_url = url)
-#&gt; env:  [frame 0x7fcfc6c0c1a8]
+#&gt; env:  [frame 0x7fc861f1cda8]
 #&gt; 
 #&gt; [[14]]
 #&gt; &lt;frame 0&gt; [global]
@@ -678,12 +678,12 @@ frame as well. This way, <code>call_stack(call_depth())</code> is the same as
 #&gt; <span class='warning'></span><span style='color: #555555;'>This warning is displayed once per session.</span><span></span></div><div class='output co'>#&gt; $current
 #&gt; &lt;frame 23&gt; (22)
 #&gt; expr: fn()
-#&gt; env:  [local 0x7fcfc9e5b730]
+#&gt; env:  [local 0x7fc869412790]
 #&gt; 
 #&gt; $first
 #&gt; &lt;frame 23&gt; (22)
 #&gt; expr: fn()
-#&gt; env:  [local 0x7fcfc9e5b730]
+#&gt; env:  [local 0x7fc869412790]
 #&gt; </div><div class='input'>
 <span class='co'># While current_frame() is the top of the stack, global_frame() is</span>
 <span class='co'># the bottom:</span>
@@ -698,122 +698,122 @@ frame as well. This way, <code>call_stack(call_depth())</code> is the same as
 <span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span>(<span class='fu'>ctxt_stack</span>()))</div><div class='output co'>#&gt; [[1]]
 #&gt; &lt;frame 24&gt; (22)
 #&gt; expr: identity(ctxt_stack())
-#&gt; env:  [local 0x7fcfc90515f0]
+#&gt; env:  [local 0x7fc8687a9188]
 #&gt; 
 #&gt; [[2]]
 #&gt; &lt;frame 23&gt; (22)
 #&gt; expr: identity(identity(ctxt_stack()))
-#&gt; env:  [local 0x7fcfc90514d8]
+#&gt; env:  [local 0x7fc8687a9070]
 #&gt; 
 #&gt; [[3]]
 #&gt; &lt;frame 22&gt; (21)
 #&gt; expr: eval(expr, envir, enclos)
-#&gt; env:  [local 0x7fcfcb21a8b0]
+#&gt; env:  [local 0x7fc86a174a90]
 #&gt; 
 #&gt; [[4]]
 #&gt; &lt;frame 21&gt; (11)
 #&gt; expr: eval(expr, envir, enclos)
-#&gt; env:  [local 0x7fcfc9051318]
+#&gt; env:  [local 0x7fc8687a8e40]
 #&gt; 
 #&gt; [[5]]
 #&gt; &lt;frame 20&gt; (11)
 #&gt; expr: withVisible(eval(expr, envir, enclos))
-#&gt; env:  [local 0x7fcfc90510e8]
+#&gt; env:  [local 0x7fc8687acb20]
 #&gt; 
 #&gt; [[6]]
 #&gt; &lt;frame 19&gt; (11)
 #&gt; expr: withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler,  &lt;...&gt;
-#&gt; env:  [local 0x7fcfc9050b38]
+#&gt; env:  [local 0x7fc8687ac570]
 #&gt; 
 #&gt; [[7]]
 #&gt; &lt;frame 18&gt; (17)
 #&gt; expr: doTryCatch(return(expr), name, parentenv, handler)
-#&gt; env:  [local 0x7fcfc9050588]
+#&gt; env:  [local 0x7fc8687abfc0]
 #&gt; 
 #&gt; [[8]]
 #&gt; &lt;frame 17&gt; (16)
 #&gt; expr: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-#&gt; env:  [local 0x7fcfc9050240]
+#&gt; env:  [local 0x7fc8687abc78]
 #&gt; 
 #&gt; [[9]]
 #&gt; &lt;frame 16&gt; (15)
 #&gt; expr: tryCatchList(expr, classes, parentenv, handlers)
-#&gt; env:  [local 0x7fcfc9053dd0]
+#&gt; env:  [local 0x7fc8687ab930]
 #&gt; 
 #&gt; [[10]]
 #&gt; &lt;frame 15&gt; (14)
 #&gt; expr: tryCatch(expr, error = function(e) { &lt;...&gt;
-#&gt; env:  [local 0x7fcfc9053708]
+#&gt; env:  [local 0x7fc8687ab230]
 #&gt; 
 #&gt; [[11]]
 #&gt; &lt;frame 14&gt; (13)
 #&gt; expr: try(f, silent = TRUE)
-#&gt; env:  [local 0x7fcfc90534d8]
+#&gt; env:  [local 0x7fc8687aafc8]
 #&gt; 
 #&gt; [[12]]
 #&gt; &lt;frame 13&gt; (11)
 #&gt; expr: handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, envir,  &lt;...&gt;
-#&gt; env:  [local 0x7fcfc9053350]
+#&gt; env:  [local 0x7fc8687aae40]
 #&gt; 
 #&gt; [[13]]
 #&gt; &lt;frame 12&gt; (11)
 #&gt; expr: timing_fn(handle(ev &lt;- withCallingHandlers(withVisible(eval(expr,  &lt;...&gt;
-#&gt; env:  [local 0x7fcfc9053270]
+#&gt; env:  [local 0x7fc8687aec70]
 #&gt; 
 #&gt; [[14]]
 #&gt; &lt;frame 11&gt; (10)
 #&gt; expr: evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc9068438]
+#&gt; env:  [frame 0x7fc8687c4030]
 #&gt; 
 #&gt; [[15]]
 #&gt; &lt;frame 10&gt; (9)
 #&gt; expr: evaluate::evaluate(x, child_env(env), new_device = TRUE)
-#&gt; env:  [frame 0x7fcfcb0f5d68]
+#&gt; env:  [frame 0x7fc86715f948]
 #&gt; 
 #&gt; [[16]]
 #&gt; &lt;frame 9&gt; (8)
 #&gt; expr: highlight_examples(code, topic, env = env)
-#&gt; env:  [frame 0x7fcfcb256210]
+#&gt; env:  [frame 0x7fc86a00c4a8]
 #&gt; 
 #&gt; [[17]]
 #&gt; &lt;frame 8&gt; (7)
 #&gt; expr: run_examples(tags$tag_examples[[1]], env = new.env(parent = globalenv()),  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc2ad1108]
+#&gt; env:  [frame 0x7fc8639204d8]
 #&gt; 
 #&gt; [[18]]
 #&gt; &lt;frame 7&gt; (6)
 #&gt; expr: data_reference_topic(topic, pkg, examples = examples, run_dont_run = run_dont_run)
-#&gt; env:  [frame 0x7fcfc6f6e1a8]
+#&gt; env:  [frame 0x7fc8659804a8]
 #&gt; 
 #&gt; [[19]]
 #&gt; &lt;frame 6&gt; (5)
 #&gt; expr: .f(.x[[i]], ...)
-#&gt; env:  [frame 0x7fcfc7025a18]
+#&gt; env:  [frame 0x7fc865370598]
 #&gt; 
 #&gt; [[20]]
 #&gt; &lt;frame 5&gt; (4)
 #&gt; expr: purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc70cf238]
+#&gt; env:  [frame 0x7fc86628faa8]
 #&gt; 
 #&gt; [[21]]
 #&gt; &lt;frame 4&gt; (3)
 #&gt; expr: build_reference(pkg, lazy = lazy, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc7462268]
+#&gt; env:  [frame 0x7fc868229130]
 #&gt; 
 #&gt; [[22]]
 #&gt; &lt;frame 3&gt; (2)
 #&gt; expr: build_site_local(pkg = pkg, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc72bb8e8]
+#&gt; env:  [frame 0x7fc868095ee8]
 #&gt; 
 #&gt; [[23]]
 #&gt; &lt;frame 2&gt; (1)
 #&gt; expr: build_site(".", override = list(destination = dest_dir), devel = FALSE,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc3d1b618]
+#&gt; env:  [frame 0x7fc8619eb650]
 #&gt; 
 #&gt; [[24]]
 #&gt; &lt;frame 1&gt; (0)
 #&gt; expr: pkgdown:::deploy_local(new_process = FALSE, remote_url = url)
-#&gt; env:  [frame 0x7fcfc6c0c1a8]
+#&gt; env:  [frame 0x7fc861f1cda8]
 #&gt; 
 #&gt; [[25]]
 #&gt; &lt;frame 0&gt; [global]
@@ -824,112 +824,112 @@ frame as well. This way, <code>call_stack(call_depth())</code> is the same as
 #&gt; [1] "ctxt_stack" "stack"     </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span>(<span class='fu'>ctxt_stack</span>(<span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>1</span>)))</div><div class='output co'>#&gt; [[1]]
 #&gt; &lt;frame 22&gt; (21)
 #&gt; expr: eval(expr, envir, enclos)
-#&gt; env:  [local 0x7fcfcb21a8b0]
+#&gt; env:  [local 0x7fc86a174a90]
 #&gt; 
 #&gt; [[2]]
 #&gt; &lt;frame 21&gt; (11)
 #&gt; expr: eval(expr, envir, enclos)
-#&gt; env:  [local 0x7fcfc4738398]
+#&gt; env:  [local 0x7fc86852f0d0]
 #&gt; 
 #&gt; [[3]]
 #&gt; &lt;frame 20&gt; (11)
 #&gt; expr: withVisible(eval(expr, envir, enclos))
-#&gt; env:  [local 0x7fcfc4737e58]
+#&gt; env:  [local 0x7fc86852eea0]
 #&gt; 
 #&gt; [[4]]
 #&gt; &lt;frame 19&gt; (11)
 #&gt; expr: withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler,  &lt;...&gt;
-#&gt; env:  [local 0x7fcfc47374f0]
+#&gt; env:  [local 0x7fc8685347c8]
 #&gt; 
 #&gt; [[5]]
 #&gt; &lt;frame 18&gt; (17)
 #&gt; expr: doTryCatch(return(expr), name, parentenv, handler)
-#&gt; env:  [local 0x7fcfc4736b18]
+#&gt; env:  [local 0x7fc868534218]
 #&gt; 
 #&gt; [[6]]
 #&gt; &lt;frame 17&gt; (16)
 #&gt; expr: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-#&gt; env:  [local 0x7fcfc473a2b8]
+#&gt; env:  [local 0x7fc868533ed0]
 #&gt; 
 #&gt; [[7]]
 #&gt; &lt;frame 16&gt; (15)
 #&gt; expr: tryCatchList(expr, classes, parentenv, handlers)
-#&gt; env:  [local 0x7fcfc4739d40]
+#&gt; env:  [local 0x7fc868533b88]
 #&gt; 
 #&gt; [[8]]
 #&gt; &lt;frame 15&gt; (14)
 #&gt; expr: tryCatch(expr, error = function(e) { &lt;...&gt;
-#&gt; env:  [local 0x7fcfc4739100]
+#&gt; env:  [local 0x7fc868533450]
 #&gt; 
 #&gt; [[9]]
 #&gt; &lt;frame 14&gt; (13)
 #&gt; expr: try(f, silent = TRUE)
-#&gt; env:  [local 0x7fcfc4738ed0]
+#&gt; env:  [local 0x7fc868533220]
 #&gt; 
 #&gt; [[10]]
 #&gt; &lt;frame 13&gt; (11)
 #&gt; expr: handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, envir,  &lt;...&gt;
-#&gt; env:  [local 0x7fcfc4738d10]
+#&gt; env:  [local 0x7fc868533098]
 #&gt; 
 #&gt; [[11]]
 #&gt; &lt;frame 12&gt; (11)
 #&gt; expr: timing_fn(handle(ev &lt;- withCallingHandlers(withVisible(eval(expr,  &lt;...&gt;
-#&gt; env:  [local 0x7fcfc4738c30]
+#&gt; env:  [local 0x7fc868532fb8]
 #&gt; 
 #&gt; [[12]]
 #&gt; &lt;frame 11&gt; (10)
 #&gt; expr: evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc474fd08]
+#&gt; env:  [frame 0x7fc868546b90]
 #&gt; 
 #&gt; [[13]]
 #&gt; &lt;frame 10&gt; (9)
 #&gt; expr: evaluate::evaluate(x, child_env(env), new_device = TRUE)
-#&gt; env:  [frame 0x7fcfcb0f5d68]
+#&gt; env:  [frame 0x7fc86715f948]
 #&gt; 
 #&gt; [[14]]
 #&gt; &lt;frame 9&gt; (8)
 #&gt; expr: highlight_examples(code, topic, env = env)
-#&gt; env:  [frame 0x7fcfcb256210]
+#&gt; env:  [frame 0x7fc86a00c4a8]
 #&gt; 
 #&gt; [[15]]
 #&gt; &lt;frame 8&gt; (7)
 #&gt; expr: run_examples(tags$tag_examples[[1]], env = new.env(parent = globalenv()),  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc2ad1108]
+#&gt; env:  [frame 0x7fc8639204d8]
 #&gt; 
 #&gt; [[16]]
 #&gt; &lt;frame 7&gt; (6)
 #&gt; expr: data_reference_topic(topic, pkg, examples = examples, run_dont_run = run_dont_run)
-#&gt; env:  [frame 0x7fcfc6f6e1a8]
+#&gt; env:  [frame 0x7fc8659804a8]
 #&gt; 
 #&gt; [[17]]
 #&gt; &lt;frame 6&gt; (5)
 #&gt; expr: .f(.x[[i]], ...)
-#&gt; env:  [frame 0x7fcfc7025a18]
+#&gt; env:  [frame 0x7fc865370598]
 #&gt; 
 #&gt; [[18]]
 #&gt; &lt;frame 5&gt; (4)
 #&gt; expr: purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc70cf238]
+#&gt; env:  [frame 0x7fc86628faa8]
 #&gt; 
 #&gt; [[19]]
 #&gt; &lt;frame 4&gt; (3)
 #&gt; expr: build_reference(pkg, lazy = lazy, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc7462268]
+#&gt; env:  [frame 0x7fc868229130]
 #&gt; 
 #&gt; [[20]]
 #&gt; &lt;frame 3&gt; (2)
 #&gt; expr: build_site_local(pkg = pkg, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc72bb8e8]
+#&gt; env:  [frame 0x7fc868095ee8]
 #&gt; 
 #&gt; [[21]]
 #&gt; &lt;frame 2&gt; (1)
 #&gt; expr: build_site(".", override = list(destination = dest_dir), devel = FALSE,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc3d1b618]
+#&gt; env:  [frame 0x7fc8619eb650]
 #&gt; 
 #&gt; [[22]]
 #&gt; &lt;frame 1&gt; (0)
 #&gt; expr: pkgdown:::deploy_local(new_process = FALSE, remote_url = url)
-#&gt; env:  [frame 0x7fcfc6c0c1a8]
+#&gt; env:  [frame 0x7fc861f1cda8]
 #&gt; 
 #&gt; [[23]]
 #&gt; &lt;frame 0&gt; [global]
@@ -943,127 +943,127 @@ frame as well. This way, <code>call_stack(call_depth())</code> is the same as
 <span class='fu'>fn</span>(<span class='fl'>0</span>)</div><div class='output co'>#&gt; [[1]]
 #&gt; &lt;frame 25&gt; (23)
 #&gt; expr: identity(ctxt_stack(trim = trim))
-#&gt; env:  [local 0x7fcfc74ca4d8]
+#&gt; env:  [local 0x7fc86828b830]
 #&gt; 
 #&gt; [[2]]
 #&gt; &lt;frame 24&gt; (23)
 #&gt; expr: identity(identity(ctxt_stack(trim = trim)))
-#&gt; env:  [local 0x7fcfc74ca3c0]
+#&gt; env:  [local 0x7fc86828b718]
 #&gt; 
 #&gt; [[3]]
 #&gt; &lt;frame 23&gt; (22)
 #&gt; expr: fn(0)
-#&gt; env:  [local 0x7fcfc74ca2a8]
+#&gt; env:  [local 0x7fc86828b600]
 #&gt; 
 #&gt; [[4]]
 #&gt; &lt;frame 22&gt; (21)
 #&gt; expr: eval(expr, envir, enclos)
-#&gt; env:  [local 0x7fcfcb21a8b0]
+#&gt; env:  [local 0x7fc86a174a90]
 #&gt; 
 #&gt; [[5]]
 #&gt; &lt;frame 21&gt; (11)
 #&gt; expr: eval(expr, envir, enclos)
-#&gt; env:  [local 0x7fcfc74ca0e8]
+#&gt; env:  [local 0x7fc86828b440]
 #&gt; 
 #&gt; [[6]]
 #&gt; &lt;frame 20&gt; (11)
 #&gt; expr: withVisible(eval(expr, envir, enclos))
-#&gt; env:  [local 0x7fcfc74cddc8]
+#&gt; env:  [local 0x7fc86828b210]
 #&gt; 
 #&gt; [[7]]
 #&gt; &lt;frame 19&gt; (11)
 #&gt; expr: withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler,  &lt;...&gt;
-#&gt; env:  [local 0x7fcfc74cd818]
+#&gt; env:  [local 0x7fc86828ac60]
 #&gt; 
 #&gt; [[8]]
 #&gt; &lt;frame 18&gt; (17)
 #&gt; expr: doTryCatch(return(expr), name, parentenv, handler)
-#&gt; env:  [local 0x7fcfc74cd268]
+#&gt; env:  [local 0x7fc86828a6e8]
 #&gt; 
 #&gt; [[9]]
 #&gt; &lt;frame 17&gt; (16)
 #&gt; expr: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-#&gt; env:  [local 0x7fcfc74ccf20]
+#&gt; env:  [local 0x7fc86828e2b0]
 #&gt; 
 #&gt; [[10]]
 #&gt; &lt;frame 16&gt; (15)
 #&gt; expr: tryCatchList(expr, classes, parentenv, handlers)
-#&gt; env:  [local 0x7fcfc74ccbd8]
+#&gt; env:  [local 0x7fc86828df68]
 #&gt; 
 #&gt; [[11]]
 #&gt; &lt;frame 15&gt; (14)
 #&gt; expr: tryCatch(expr, error = function(e) { &lt;...&gt;
-#&gt; env:  [local 0x7fcfc74cc510]
+#&gt; env:  [local 0x7fc86828d8a0]
 #&gt; 
 #&gt; [[12]]
 #&gt; &lt;frame 14&gt; (13)
 #&gt; expr: try(f, silent = TRUE)
-#&gt; env:  [local 0x7fcfc74cc2e0]
+#&gt; env:  [local 0x7fc86828d670]
 #&gt; 
 #&gt; [[13]]
 #&gt; &lt;frame 13&gt; (11)
 #&gt; expr: handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, envir,  &lt;...&gt;
-#&gt; env:  [local 0x7fcfc74cc158]
+#&gt; env:  [local 0x7fc86828d4e8]
 #&gt; 
 #&gt; [[14]]
 #&gt; &lt;frame 12&gt; (11)
 #&gt; expr: timing_fn(handle(ev &lt;- withCallingHandlers(withVisible(eval(expr,  &lt;...&gt;
-#&gt; env:  [local 0x7fcfc74cc078]
+#&gt; env:  [local 0x7fc86828d3d0]
 #&gt; 
 #&gt; [[15]]
 #&gt; &lt;frame 11&gt; (10)
 #&gt; expr: evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc74e6e08]
+#&gt; env:  [frame 0x7fc8682a7558]
 #&gt; 
 #&gt; [[16]]
 #&gt; &lt;frame 10&gt; (9)
 #&gt; expr: evaluate::evaluate(x, child_env(env), new_device = TRUE)
-#&gt; env:  [frame 0x7fcfcb0f5d68]
+#&gt; env:  [frame 0x7fc86715f948]
 #&gt; 
 #&gt; [[17]]
 #&gt; &lt;frame 9&gt; (8)
 #&gt; expr: highlight_examples(code, topic, env = env)
-#&gt; env:  [frame 0x7fcfcb256210]
+#&gt; env:  [frame 0x7fc86a00c4a8]
 #&gt; 
 #&gt; [[18]]
 #&gt; &lt;frame 8&gt; (7)
 #&gt; expr: run_examples(tags$tag_examples[[1]], env = new.env(parent = globalenv()),  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc2ad1108]
+#&gt; env:  [frame 0x7fc8639204d8]
 #&gt; 
 #&gt; [[19]]
 #&gt; &lt;frame 7&gt; (6)
 #&gt; expr: data_reference_topic(topic, pkg, examples = examples, run_dont_run = run_dont_run)
-#&gt; env:  [frame 0x7fcfc6f6e1a8]
+#&gt; env:  [frame 0x7fc8659804a8]
 #&gt; 
 #&gt; [[20]]
 #&gt; &lt;frame 6&gt; (5)
 #&gt; expr: .f(.x[[i]], ...)
-#&gt; env:  [frame 0x7fcfc7025a18]
+#&gt; env:  [frame 0x7fc865370598]
 #&gt; 
 #&gt; [[21]]
 #&gt; &lt;frame 5&gt; (4)
 #&gt; expr: purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc70cf238]
+#&gt; env:  [frame 0x7fc86628faa8]
 #&gt; 
 #&gt; [[22]]
 #&gt; &lt;frame 4&gt; (3)
 #&gt; expr: build_reference(pkg, lazy = lazy, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc7462268]
+#&gt; env:  [frame 0x7fc868229130]
 #&gt; 
 #&gt; [[23]]
 #&gt; &lt;frame 3&gt; (2)
 #&gt; expr: build_site_local(pkg = pkg, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc72bb8e8]
+#&gt; env:  [frame 0x7fc868095ee8]
 #&gt; 
 #&gt; [[24]]
 #&gt; &lt;frame 2&gt; (1)
 #&gt; expr: build_site(".", override = list(destination = dest_dir), devel = FALSE,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc3d1b618]
+#&gt; env:  [frame 0x7fc8619eb650]
 #&gt; 
 #&gt; [[25]]
 #&gt; &lt;frame 1&gt; (0)
 #&gt; expr: pkgdown:::deploy_local(new_process = FALSE, remote_url = url)
-#&gt; env:  [frame 0x7fcfc6c0c1a8]
+#&gt; env:  [frame 0x7fc861f1cda8]
 #&gt; 
 #&gt; [[26]]
 #&gt; &lt;frame 0&gt; [global]
@@ -1076,117 +1076,117 @@ frame as well. This way, <code>call_stack(call_depth())</code> is the same as
 <span class='fu'>fn</span>(<span class='fl'>1</span>)</div><div class='output co'>#&gt; [[1]]
 #&gt; &lt;frame 23&gt; (22)
 #&gt; expr: fn(1)
-#&gt; env:  [local 0x7fcfc4548400]
+#&gt; env:  [local 0x7fc865686430]
 #&gt; 
 #&gt; [[2]]
 #&gt; &lt;frame 22&gt; (21)
 #&gt; expr: eval(expr, envir, enclos)
-#&gt; env:  [local 0x7fcfcb21a8b0]
+#&gt; env:  [local 0x7fc86a174a90]
 #&gt; 
 #&gt; [[3]]
 #&gt; &lt;frame 21&gt; (11)
 #&gt; expr: eval(expr, envir, enclos)
-#&gt; env:  [local 0x7fcfc45481d0]
+#&gt; env:  [local 0x7fc865685630]
 #&gt; 
 #&gt; [[4]]
 #&gt; &lt;frame 20&gt; (11)
 #&gt; expr: withVisible(eval(expr, envir, enclos))
-#&gt; env:  [local 0x7fcfc4547fa0]
+#&gt; env:  [local 0x7fc86568ab30]
 #&gt; 
 #&gt; [[5]]
 #&gt; &lt;frame 19&gt; (11)
 #&gt; expr: withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler,  &lt;...&gt;
-#&gt; env:  [local 0x7fcfc4547980]
+#&gt; env:  [local 0x7fc86568be48]
 #&gt; 
 #&gt; [[6]]
 #&gt; &lt;frame 18&gt; (17)
 #&gt; expr: doTryCatch(return(expr), name, parentenv, handler)
-#&gt; env:  [local 0x7fcfc4547398]
+#&gt; env:  [local 0x7fc865692e40]
 #&gt; 
 #&gt; [[7]]
 #&gt; &lt;frame 17&gt; (16)
 #&gt; expr: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-#&gt; env:  [local 0x7fcfc4546bf0]
+#&gt; env:  [local 0x7fc8656942e0]
 #&gt; 
 #&gt; [[8]]
 #&gt; &lt;frame 16&gt; (15)
 #&gt; expr: tryCatchList(expr, classes, parentenv, handlers)
-#&gt; env:  [local 0x7fcfc806d510]
+#&gt; env:  [local 0x7fc86569dc50]
 #&gt; 
 #&gt; [[9]]
 #&gt; &lt;frame 15&gt; (14)
 #&gt; expr: tryCatch(expr, error = function(e) { &lt;...&gt;
-#&gt; env:  [local 0x7fcfc8100470]
+#&gt; env:  [local 0x7fc8656adbe0]
 #&gt; 
 #&gt; [[10]]
 #&gt; &lt;frame 14&gt; (13)
 #&gt; expr: try(f, silent = TRUE)
-#&gt; env:  [local 0x7fcfc80d8ff8]
+#&gt; env:  [local 0x7fc8656b1400]
 #&gt; 
 #&gt; [[11]]
 #&gt; &lt;frame 13&gt; (11)
 #&gt; expr: handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, envir,  &lt;...&gt;
-#&gt; env:  [local 0x7fcfc80d8380]
+#&gt; env:  [local 0x7fc8656b62a8]
 #&gt; 
 #&gt; [[12]]
 #&gt; &lt;frame 12&gt; (11)
 #&gt; expr: timing_fn(handle(ev &lt;- withCallingHandlers(withVisible(eval(expr,  &lt;...&gt;
-#&gt; env:  [local 0x7fcfc80dba40]
+#&gt; env:  [local 0x7fc8656b5358]
 #&gt; 
 #&gt; [[13]]
 #&gt; &lt;frame 11&gt; (10)
 #&gt; expr: evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc8186998]
+#&gt; env:  [frame 0x7fc865741390]
 #&gt; 
 #&gt; [[14]]
 #&gt; &lt;frame 10&gt; (9)
 #&gt; expr: evaluate::evaluate(x, child_env(env), new_device = TRUE)
-#&gt; env:  [frame 0x7fcfcb0f5d68]
+#&gt; env:  [frame 0x7fc86715f948]
 #&gt; 
 #&gt; [[15]]
 #&gt; &lt;frame 9&gt; (8)
 #&gt; expr: highlight_examples(code, topic, env = env)
-#&gt; env:  [frame 0x7fcfcb256210]
+#&gt; env:  [frame 0x7fc86a00c4a8]
 #&gt; 
 #&gt; [[16]]
 #&gt; &lt;frame 8&gt; (7)
 #&gt; expr: run_examples(tags$tag_examples[[1]], env = new.env(parent = globalenv()),  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc2ad1108]
+#&gt; env:  [frame 0x7fc8639204d8]
 #&gt; 
 #&gt; [[17]]
 #&gt; &lt;frame 7&gt; (6)
 #&gt; expr: data_reference_topic(topic, pkg, examples = examples, run_dont_run = run_dont_run)
-#&gt; env:  [frame 0x7fcfc6f6e1a8]
+#&gt; env:  [frame 0x7fc8659804a8]
 #&gt; 
 #&gt; [[18]]
 #&gt; &lt;frame 6&gt; (5)
 #&gt; expr: .f(.x[[i]], ...)
-#&gt; env:  [frame 0x7fcfc7025a18]
+#&gt; env:  [frame 0x7fc865370598]
 #&gt; 
 #&gt; [[19]]
 #&gt; &lt;frame 5&gt; (4)
 #&gt; expr: purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc70cf238]
+#&gt; env:  [frame 0x7fc86628faa8]
 #&gt; 
 #&gt; [[20]]
 #&gt; &lt;frame 4&gt; (3)
 #&gt; expr: build_reference(pkg, lazy = lazy, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc7462268]
+#&gt; env:  [frame 0x7fc868229130]
 #&gt; 
 #&gt; [[21]]
 #&gt; &lt;frame 3&gt; (2)
 #&gt; expr: build_site_local(pkg = pkg, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc72bb8e8]
+#&gt; env:  [frame 0x7fc868095ee8]
 #&gt; 
 #&gt; [[22]]
 #&gt; &lt;frame 2&gt; (1)
 #&gt; expr: build_site(".", override = list(destination = dest_dir), devel = FALSE,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc3d1b618]
+#&gt; env:  [frame 0x7fc8619eb650]
 #&gt; 
 #&gt; [[23]]
 #&gt; &lt;frame 1&gt; (0)
 #&gt; expr: pkgdown:::deploy_local(new_process = FALSE, remote_url = url)
-#&gt; env:  [frame 0x7fcfc6c0c1a8]
+#&gt; env:  [frame 0x7fc861f1cda8]
 #&gt; 
 #&gt; [[24]]
 #&gt; &lt;frame 0&gt; [global]
@@ -1200,127 +1200,127 @@ frame as well. This way, <code>call_stack(call_depth())</code> is the same as
 <span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span>(<span class='fu'>fn</span>(<span class='fl'>1</span>)))</div><div class='output co'>#&gt; [[1]]
 #&gt; &lt;frame 25&gt; (22)
 #&gt; expr: fn(1)
-#&gt; env:  [local 0x7fcfc8c804a8]
+#&gt; env:  [local 0x7fc8655ead28]
 #&gt; 
 #&gt; [[2]]
 #&gt; &lt;frame 24&gt; (22)
 #&gt; expr: identity(fn(1))
-#&gt; env:  [local 0x7fcfc8c80390]
+#&gt; env:  [local 0x7fc8655eac10]
 #&gt; 
 #&gt; [[3]]
 #&gt; &lt;frame 23&gt; (22)
 #&gt; expr: identity(identity(fn(1)))
-#&gt; env:  [local 0x7fcfc8c80278]
+#&gt; env:  [local 0x7fc8655eaaf8]
 #&gt; 
 #&gt; [[4]]
 #&gt; &lt;frame 22&gt; (21)
 #&gt; expr: eval(expr, envir, enclos)
-#&gt; env:  [local 0x7fcfcb21a8b0]
+#&gt; env:  [local 0x7fc86a174a90]
 #&gt; 
 #&gt; [[5]]
 #&gt; &lt;frame 21&gt; (11)
 #&gt; expr: eval(expr, envir, enclos)
-#&gt; env:  [local 0x7fcfc8c800b8]
+#&gt; env:  [local 0x7fc8655ea8c8]
 #&gt; 
 #&gt; [[6]]
 #&gt; &lt;frame 20&gt; (11)
 #&gt; expr: withVisible(eval(expr, envir, enclos))
-#&gt; env:  [local 0x7fcfc8c7fe88]
+#&gt; env:  [local 0x7fc8655ea628]
 #&gt; 
 #&gt; [[7]]
 #&gt; &lt;frame 19&gt; (11)
 #&gt; expr: withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler,  &lt;...&gt;
-#&gt; env:  [local 0x7fcfc8c7f8d8]
+#&gt; env:  [local 0x7fc8655e99b0]
 #&gt; 
 #&gt; [[8]]
 #&gt; &lt;frame 18&gt; (17)
 #&gt; expr: doTryCatch(return(expr), name, parentenv, handler)
-#&gt; env:  [local 0x7fcfc8c7f328]
+#&gt; env:  [local 0x7fc8655e9400]
 #&gt; 
 #&gt; [[9]]
 #&gt; &lt;frame 17&gt; (16)
 #&gt; expr: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-#&gt; env:  [local 0x7fcfc8c7efa8]
+#&gt; env:  [local 0x7fc8655ecfc8]
 #&gt; 
 #&gt; [[10]]
 #&gt; &lt;frame 16&gt; (15)
 #&gt; expr: tryCatchList(expr, classes, parentenv, handlers)
-#&gt; env:  [local 0x7fcfc8c7ec60]
+#&gt; env:  [local 0x7fc8655ecc48]
 #&gt; 
 #&gt; [[11]]
 #&gt; &lt;frame 15&gt; (14)
 #&gt; expr: tryCatch(expr, error = function(e) { &lt;...&gt;
-#&gt; env:  [local 0x7fcfc8c82470]
+#&gt; env:  [local 0x7fc8655f04d8]
 #&gt; 
 #&gt; [[12]]
 #&gt; &lt;frame 14&gt; (13)
 #&gt; expr: try(f, silent = TRUE)
-#&gt; env:  [local 0x7fcfc8c82240]
+#&gt; env:  [local 0x7fc8655f0200]
 #&gt; 
 #&gt; [[13]]
 #&gt; &lt;frame 13&gt; (11)
 #&gt; expr: handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, envir,  &lt;...&gt;
-#&gt; env:  [local 0x7fcfc8c820b8]
+#&gt; env:  [local 0x7fc8655f0078]
 #&gt; 
 #&gt; [[14]]
 #&gt; &lt;frame 12&gt; (11)
 #&gt; expr: timing_fn(handle(ev &lt;- withCallingHandlers(withVisible(eval(expr,  &lt;...&gt;
-#&gt; env:  [local 0x7fcfc8c81fa0]
+#&gt; env:  [local 0x7fc8655ef978]
 #&gt; 
 #&gt; [[15]]
 #&gt; &lt;frame 11&gt; (10)
 #&gt; expr: evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc8c97ad0]
+#&gt; env:  [frame 0x7fc86560c938]
 #&gt; 
 #&gt; [[16]]
 #&gt; &lt;frame 10&gt; (9)
 #&gt; expr: evaluate::evaluate(x, child_env(env), new_device = TRUE)
-#&gt; env:  [frame 0x7fcfcb0f5d68]
+#&gt; env:  [frame 0x7fc86715f948]
 #&gt; 
 #&gt; [[17]]
 #&gt; &lt;frame 9&gt; (8)
 #&gt; expr: highlight_examples(code, topic, env = env)
-#&gt; env:  [frame 0x7fcfcb256210]
+#&gt; env:  [frame 0x7fc86a00c4a8]
 #&gt; 
 #&gt; [[18]]
 #&gt; &lt;frame 8&gt; (7)
 #&gt; expr: run_examples(tags$tag_examples[[1]], env = new.env(parent = globalenv()),  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc2ad1108]
+#&gt; env:  [frame 0x7fc8639204d8]
 #&gt; 
 #&gt; [[19]]
 #&gt; &lt;frame 7&gt; (6)
 #&gt; expr: data_reference_topic(topic, pkg, examples = examples, run_dont_run = run_dont_run)
-#&gt; env:  [frame 0x7fcfc6f6e1a8]
+#&gt; env:  [frame 0x7fc8659804a8]
 #&gt; 
 #&gt; [[20]]
 #&gt; &lt;frame 6&gt; (5)
 #&gt; expr: .f(.x[[i]], ...)
-#&gt; env:  [frame 0x7fcfc7025a18]
+#&gt; env:  [frame 0x7fc865370598]
 #&gt; 
 #&gt; [[21]]
 #&gt; &lt;frame 5&gt; (4)
 #&gt; expr: purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc70cf238]
+#&gt; env:  [frame 0x7fc86628faa8]
 #&gt; 
 #&gt; [[22]]
 #&gt; &lt;frame 4&gt; (3)
 #&gt; expr: build_reference(pkg, lazy = lazy, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc7462268]
+#&gt; env:  [frame 0x7fc868229130]
 #&gt; 
 #&gt; [[23]]
 #&gt; &lt;frame 3&gt; (2)
 #&gt; expr: build_site_local(pkg = pkg, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc72bb8e8]
+#&gt; env:  [frame 0x7fc868095ee8]
 #&gt; 
 #&gt; [[24]]
 #&gt; &lt;frame 2&gt; (1)
 #&gt; expr: build_site(".", override = list(destination = dest_dir), devel = FALSE,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc3d1b618]
+#&gt; env:  [frame 0x7fc8619eb650]
 #&gt; 
 #&gt; [[25]]
 #&gt; &lt;frame 1&gt; (0)
 #&gt; expr: pkgdown:::deploy_local(new_process = FALSE, remote_url = url)
-#&gt; env:  [frame 0x7fcfc6c0c1a8]
+#&gt; env:  [frame 0x7fc861f1cda8]
 #&gt; 
 #&gt; [[26]]
 #&gt; &lt;frame 0&gt; [global]
@@ -1331,112 +1331,112 @@ frame as well. This way, <code>call_stack(call_depth())</code> is the same as
 #&gt; [1] "ctxt_stack" "stack"     </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span>(<span class='fu'>fn</span>(<span class='fl'>2</span>)))</div><div class='output co'>#&gt; [[1]]
 #&gt; &lt;frame 22&gt; (21)
 #&gt; expr: eval(expr, envir, enclos)
-#&gt; env:  [local 0x7fcfcb21a8b0]
+#&gt; env:  [local 0x7fc86a174a90]
 #&gt; 
 #&gt; [[2]]
 #&gt; &lt;frame 21&gt; (11)
 #&gt; expr: eval(expr, envir, enclos)
-#&gt; env:  [local 0x7fcfc67e3838]
+#&gt; env:  [local 0x7fc86249ed90]
 #&gt; 
 #&gt; [[3]]
 #&gt; &lt;frame 20&gt; (11)
 #&gt; expr: withVisible(eval(expr, envir, enclos))
-#&gt; env:  [local 0x7fcfc67e35d0]
+#&gt; env:  [local 0x7fc86249eb28]
 #&gt; 
 #&gt; [[4]]
 #&gt; &lt;frame 19&gt; (11)
 #&gt; expr: withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler,  &lt;...&gt;
-#&gt; env:  [local 0x7fcfc67e3020]
+#&gt; env:  [local 0x7fc86249e540]
 #&gt; 
 #&gt; [[5]]
 #&gt; &lt;frame 18&gt; (17)
 #&gt; expr: doTryCatch(return(expr), name, parentenv, handler)
-#&gt; env:  [local 0x7fcfc67e2a38]
+#&gt; env:  [local 0x7fc86249df90]
 #&gt; 
 #&gt; [[6]]
 #&gt; &lt;frame 17&gt; (16)
 #&gt; expr: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-#&gt; env:  [local 0x7fcfc67e26b8]
+#&gt; env:  [local 0x7fc86249dc48]
 #&gt; 
 #&gt; [[7]]
 #&gt; &lt;frame 16&gt; (15)
 #&gt; expr: tryCatchList(expr, classes, parentenv, handlers)
-#&gt; env:  [local 0x7fcfc67e2370]
+#&gt; env:  [local 0x7fc86249d900]
 #&gt; 
 #&gt; [[8]]
 #&gt; &lt;frame 15&gt; (14)
 #&gt; expr: tryCatch(expr, error = function(e) { &lt;...&gt;
-#&gt; env:  [local 0x7fcfc67e1c70]
+#&gt; env:  [local 0x7fc86249d200]
 #&gt; 
 #&gt; [[9]]
 #&gt; &lt;frame 14&gt; (13)
 #&gt; expr: try(f, silent = TRUE)
-#&gt; env:  [local 0x7fcfc67e1a40]
+#&gt; env:  [local 0x7fc8624a0ea8]
 #&gt; 
 #&gt; [[10]]
 #&gt; &lt;frame 13&gt; (11)
 #&gt; expr: handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, envir,  &lt;...&gt;
-#&gt; env:  [local 0x7fcfc67e77c8]
+#&gt; env:  [local 0x7fc8624a0d20]
 #&gt; 
 #&gt; [[11]]
 #&gt; &lt;frame 12&gt; (11)
 #&gt; expr: timing_fn(handle(ev &lt;- withCallingHandlers(withVisible(eval(expr,  &lt;...&gt;
-#&gt; env:  [local 0x7fcfc67e76e8]
+#&gt; env:  [local 0x7fc8624a0c40]
 #&gt; 
 #&gt; [[12]]
 #&gt; &lt;frame 11&gt; (10)
 #&gt; expr: evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc8811190]
+#&gt; env:  [frame 0x7fc8624c3e40]
 #&gt; 
 #&gt; [[13]]
 #&gt; &lt;frame 10&gt; (9)
 #&gt; expr: evaluate::evaluate(x, child_env(env), new_device = TRUE)
-#&gt; env:  [frame 0x7fcfcb0f5d68]
+#&gt; env:  [frame 0x7fc86715f948]
 #&gt; 
 #&gt; [[14]]
 #&gt; &lt;frame 9&gt; (8)
 #&gt; expr: highlight_examples(code, topic, env = env)
-#&gt; env:  [frame 0x7fcfcb256210]
+#&gt; env:  [frame 0x7fc86a00c4a8]
 #&gt; 
 #&gt; [[15]]
 #&gt; &lt;frame 8&gt; (7)
 #&gt; expr: run_examples(tags$tag_examples[[1]], env = new.env(parent = globalenv()),  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc2ad1108]
+#&gt; env:  [frame 0x7fc8639204d8]
 #&gt; 
 #&gt; [[16]]
 #&gt; &lt;frame 7&gt; (6)
 #&gt; expr: data_reference_topic(topic, pkg, examples = examples, run_dont_run = run_dont_run)
-#&gt; env:  [frame 0x7fcfc6f6e1a8]
+#&gt; env:  [frame 0x7fc8659804a8]
 #&gt; 
 #&gt; [[17]]
 #&gt; &lt;frame 6&gt; (5)
 #&gt; expr: .f(.x[[i]], ...)
-#&gt; env:  [frame 0x7fcfc7025a18]
+#&gt; env:  [frame 0x7fc865370598]
 #&gt; 
 #&gt; [[18]]
 #&gt; &lt;frame 5&gt; (4)
 #&gt; expr: purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc70cf238]
+#&gt; env:  [frame 0x7fc86628faa8]
 #&gt; 
 #&gt; [[19]]
 #&gt; &lt;frame 4&gt; (3)
 #&gt; expr: build_reference(pkg, lazy = lazy, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc7462268]
+#&gt; env:  [frame 0x7fc868229130]
 #&gt; 
 #&gt; [[20]]
 #&gt; &lt;frame 3&gt; (2)
 #&gt; expr: build_site_local(pkg = pkg, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc72bb8e8]
+#&gt; env:  [frame 0x7fc868095ee8]
 #&gt; 
 #&gt; [[21]]
 #&gt; &lt;frame 2&gt; (1)
 #&gt; expr: build_site(".", override = list(destination = dest_dir), devel = FALSE,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc3d1b618]
+#&gt; env:  [frame 0x7fc8619eb650]
 #&gt; 
 #&gt; [[22]]
 #&gt; &lt;frame 1&gt; (0)
 #&gt; expr: pkgdown:::deploy_local(new_process = FALSE, remote_url = url)
-#&gt; env:  [frame 0x7fcfc6c0c1a8]
+#&gt; env:  [frame 0x7fc861f1cda8]
 #&gt; 
 #&gt; [[23]]
 #&gt; &lt;frame 0&gt; [global]
@@ -1449,117 +1449,117 @@ frame as well. This way, <code>call_stack(call_depth())</code> is the same as
 <span class='fu'>g</span>(<span class='fl'>2</span>)</div><div class='output co'>#&gt; [[1]]
 #&gt; &lt;frame 23&gt; (22)
 #&gt; expr: g(2)
-#&gt; env:  [local 0x7fcfc6cd3130]
+#&gt; env:  [local 0x7fc861fd0478]
 #&gt; 
 #&gt; [[2]]
 #&gt; &lt;frame 22&gt; (21)
 #&gt; expr: eval(expr, envir, enclos)
-#&gt; env:  [local 0x7fcfcb21a8b0]
+#&gt; env:  [local 0x7fc86a174a90]
 #&gt; 
 #&gt; [[3]]
 #&gt; &lt;frame 21&gt; (11)
 #&gt; expr: eval(expr, envir, enclos)
-#&gt; env:  [local 0x7fcfc6cd2f70]
+#&gt; env:  [local 0x7fc861fd61c8]
 #&gt; 
 #&gt; [[4]]
 #&gt; &lt;frame 20&gt; (11)
 #&gt; expr: withVisible(eval(expr, envir, enclos))
-#&gt; env:  [local 0x7fcfc6cd2d08]
+#&gt; env:  [local 0x7fc861fd5eb8]
 #&gt; 
 #&gt; [[5]]
 #&gt; &lt;frame 19&gt; (11)
 #&gt; expr: withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler,  &lt;...&gt;
-#&gt; env:  [local 0x7fcfc6cd20c8]
+#&gt; env:  [local 0x7fc861fd5828]
 #&gt; 
 #&gt; [[6]]
 #&gt; &lt;frame 18&gt; (17)
 #&gt; expr: doTryCatch(return(expr), name, parentenv, handler)
-#&gt; env:  [local 0x7fcfc6cd1920]
+#&gt; env:  [local 0x7fc861fd5160]
 #&gt; 
 #&gt; [[7]]
 #&gt; &lt;frame 17&gt; (16)
 #&gt; expr: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-#&gt; env:  [local 0x7fcfc6cd54e8]
+#&gt; env:  [local 0x7fc861fd4da8]
 #&gt; 
 #&gt; [[8]]
 #&gt; &lt;frame 16&gt; (15)
 #&gt; expr: tryCatchList(expr, classes, parentenv, handlers)
-#&gt; env:  [local 0x7fcfc6cd50f8]
+#&gt; env:  [local 0x7fc861fd49f0]
 #&gt; 
 #&gt; [[9]]
 #&gt; &lt;frame 15&gt; (14)
 #&gt; expr: tryCatch(expr, error = function(e) { &lt;...&gt;
-#&gt; env:  [local 0x7fcfc6cdcdb0]
+#&gt; env:  [local 0x7fc861fd8078]
 #&gt; 
 #&gt; [[10]]
 #&gt; &lt;frame 14&gt; (13)
 #&gt; expr: try(f, silent = TRUE)
-#&gt; env:  [local 0x7fcfc6cdcb80]
+#&gt; env:  [local 0x7fc861fd7d30]
 #&gt; 
 #&gt; [[11]]
 #&gt; &lt;frame 13&gt; (11)
 #&gt; expr: handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, envir,  &lt;...&gt;
-#&gt; env:  [local 0x7fcfc6cdc9c0]
+#&gt; env:  [local 0x7fc861fd7940]
 #&gt; 
 #&gt; [[12]]
 #&gt; &lt;frame 12&gt; (11)
 #&gt; expr: timing_fn(handle(ev &lt;- withCallingHandlers(withVisible(eval(expr,  &lt;...&gt;
-#&gt; env:  [local 0x7fcfc6cdc8a8]
+#&gt; env:  [local 0x7fc861fd7828]
 #&gt; 
 #&gt; [[13]]
 #&gt; &lt;frame 11&gt; (10)
 #&gt; expr: evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc6d8ed78]
+#&gt; env:  [frame 0x7fc86586ed30]
 #&gt; 
 #&gt; [[14]]
 #&gt; &lt;frame 10&gt; (9)
 #&gt; expr: evaluate::evaluate(x, child_env(env), new_device = TRUE)
-#&gt; env:  [frame 0x7fcfcb0f5d68]
+#&gt; env:  [frame 0x7fc86715f948]
 #&gt; 
 #&gt; [[15]]
 #&gt; &lt;frame 9&gt; (8)
 #&gt; expr: highlight_examples(code, topic, env = env)
-#&gt; env:  [frame 0x7fcfcb256210]
+#&gt; env:  [frame 0x7fc86a00c4a8]
 #&gt; 
 #&gt; [[16]]
 #&gt; &lt;frame 8&gt; (7)
 #&gt; expr: run_examples(tags$tag_examples[[1]], env = new.env(parent = globalenv()),  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc2ad1108]
+#&gt; env:  [frame 0x7fc8639204d8]
 #&gt; 
 #&gt; [[17]]
 #&gt; &lt;frame 7&gt; (6)
 #&gt; expr: data_reference_topic(topic, pkg, examples = examples, run_dont_run = run_dont_run)
-#&gt; env:  [frame 0x7fcfc6f6e1a8]
+#&gt; env:  [frame 0x7fc8659804a8]
 #&gt; 
 #&gt; [[18]]
 #&gt; &lt;frame 6&gt; (5)
 #&gt; expr: .f(.x[[i]], ...)
-#&gt; env:  [frame 0x7fcfc7025a18]
+#&gt; env:  [frame 0x7fc865370598]
 #&gt; 
 #&gt; [[19]]
 #&gt; &lt;frame 5&gt; (4)
 #&gt; expr: purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc70cf238]
+#&gt; env:  [frame 0x7fc86628faa8]
 #&gt; 
 #&gt; [[20]]
 #&gt; &lt;frame 4&gt; (3)
 #&gt; expr: build_reference(pkg, lazy = lazy, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc7462268]
+#&gt; env:  [frame 0x7fc868229130]
 #&gt; 
 #&gt; [[21]]
 #&gt; &lt;frame 3&gt; (2)
 #&gt; expr: build_site_local(pkg = pkg, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc72bb8e8]
+#&gt; env:  [frame 0x7fc868095ee8]
 #&gt; 
 #&gt; [[22]]
 #&gt; &lt;frame 2&gt; (1)
 #&gt; expr: build_site(".", override = list(destination = dest_dir), devel = FALSE,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc3d1b618]
+#&gt; env:  [frame 0x7fc8619eb650]
 #&gt; 
 #&gt; [[23]]
 #&gt; &lt;frame 1&gt; (0)
 #&gt; expr: pkgdown:::deploy_local(new_process = FALSE, remote_url = url)
-#&gt; env:  [frame 0x7fcfc6c0c1a8]
+#&gt; env:  [frame 0x7fc861f1cda8]
 #&gt; 
 #&gt; [[24]]
 #&gt; &lt;frame 0&gt; [global]
@@ -1570,112 +1570,112 @@ frame as well. This way, <code>call_stack(call_depth())</code> is the same as
 #&gt; [1] "ctxt_stack" "stack"     </div><div class='input'><span class='fu'>g</span>(<span class='fl'>3</span>)</div><div class='output co'>#&gt; [[1]]
 #&gt; &lt;frame 22&gt; (21)
 #&gt; expr: eval(expr, envir, enclos)
-#&gt; env:  [local 0x7fcfcb21a8b0]
+#&gt; env:  [local 0x7fc86a174a90]
 #&gt; 
 #&gt; [[2]]
 #&gt; &lt;frame 21&gt; (11)
 #&gt; expr: eval(expr, envir, enclos)
-#&gt; env:  [local 0x7fcfc5f83768]
+#&gt; env:  [local 0x7fc86506e380]
 #&gt; 
 #&gt; [[3]]
 #&gt; &lt;frame 20&gt; (11)
 #&gt; expr: withVisible(eval(expr, envir, enclos))
-#&gt; env:  [local 0x7fcfc5f83500]
+#&gt; env:  [local 0x7fc86506e0a8]
 #&gt; 
 #&gt; [[4]]
 #&gt; &lt;frame 19&gt; (11)
 #&gt; expr: withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler,  &lt;...&gt;
-#&gt; env:  [local 0x7fcfc5f82b98]
+#&gt; env:  [local 0x7fc8650722c0]
 #&gt; 
 #&gt; [[5]]
 #&gt; &lt;frame 18&gt; (17)
 #&gt; expr: doTryCatch(return(expr), name, parentenv, handler)
-#&gt; env:  [local 0x7fcfc5f82540]
+#&gt; env:  [local 0x7fc865071ca0]
 #&gt; 
 #&gt; [[6]]
 #&gt; &lt;frame 17&gt; (16)
 #&gt; expr: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-#&gt; env:  [local 0x7fcfc5f821f8]
+#&gt; env:  [local 0x7fc865071878]
 #&gt; 
 #&gt; [[7]]
 #&gt; &lt;frame 16&gt; (15)
 #&gt; expr: tryCatchList(expr, classes, parentenv, handlers)
-#&gt; env:  [local 0x7fcfc5f81e78]
+#&gt; env:  [local 0x7fc865071450]
 #&gt; 
 #&gt; [[8]]
 #&gt; &lt;frame 15&gt; (14)
 #&gt; expr: tryCatch(expr, error = function(e) { &lt;...&gt;
-#&gt; env:  [local 0x7fcfc5f86690]
+#&gt; env:  [local 0x7fc865070c00]
 #&gt; 
 #&gt; [[9]]
 #&gt; &lt;frame 14&gt; (13)
 #&gt; expr: try(f, silent = TRUE)
-#&gt; env:  [local 0x7fcfc5f86380]
+#&gt; env:  [local 0x7fc865076038]
 #&gt; 
 #&gt; [[10]]
 #&gt; &lt;frame 13&gt; (11)
 #&gt; expr: handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, envir,  &lt;...&gt;
-#&gt; env:  [local 0x7fcfc5f86150]
+#&gt; env:  [local 0x7fc865075e08]
 #&gt; 
 #&gt; [[11]]
 #&gt; &lt;frame 12&gt; (11)
 #&gt; expr: timing_fn(handle(ev &lt;- withCallingHandlers(withVisible(eval(expr,  &lt;...&gt;
-#&gt; env:  [local 0x7fcfc5f85f90]
+#&gt; env:  [local 0x7fc865075d28]
 #&gt; 
 #&gt; [[12]]
 #&gt; &lt;frame 11&gt; (10)
 #&gt; expr: evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc5fc26e0]
+#&gt; env:  [frame 0x7fc8650a5998]
 #&gt; 
 #&gt; [[13]]
 #&gt; &lt;frame 10&gt; (9)
 #&gt; expr: evaluate::evaluate(x, child_env(env), new_device = TRUE)
-#&gt; env:  [frame 0x7fcfcb0f5d68]
+#&gt; env:  [frame 0x7fc86715f948]
 #&gt; 
 #&gt; [[14]]
 #&gt; &lt;frame 9&gt; (8)
 #&gt; expr: highlight_examples(code, topic, env = env)
-#&gt; env:  [frame 0x7fcfcb256210]
+#&gt; env:  [frame 0x7fc86a00c4a8]
 #&gt; 
 #&gt; [[15]]
 #&gt; &lt;frame 8&gt; (7)
 #&gt; expr: run_examples(tags$tag_examples[[1]], env = new.env(parent = globalenv()),  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc2ad1108]
+#&gt; env:  [frame 0x7fc8639204d8]
 #&gt; 
 #&gt; [[16]]
 #&gt; &lt;frame 7&gt; (6)
 #&gt; expr: data_reference_topic(topic, pkg, examples = examples, run_dont_run = run_dont_run)
-#&gt; env:  [frame 0x7fcfc6f6e1a8]
+#&gt; env:  [frame 0x7fc8659804a8]
 #&gt; 
 #&gt; [[17]]
 #&gt; &lt;frame 6&gt; (5)
 #&gt; expr: .f(.x[[i]], ...)
-#&gt; env:  [frame 0x7fcfc7025a18]
+#&gt; env:  [frame 0x7fc865370598]
 #&gt; 
 #&gt; [[18]]
 #&gt; &lt;frame 5&gt; (4)
 #&gt; expr: purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc70cf238]
+#&gt; env:  [frame 0x7fc86628faa8]
 #&gt; 
 #&gt; [[19]]
 #&gt; &lt;frame 4&gt; (3)
 #&gt; expr: build_reference(pkg, lazy = lazy, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc7462268]
+#&gt; env:  [frame 0x7fc868229130]
 #&gt; 
 #&gt; [[20]]
 #&gt; &lt;frame 3&gt; (2)
 #&gt; expr: build_site_local(pkg = pkg, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc72bb8e8]
+#&gt; env:  [frame 0x7fc868095ee8]
 #&gt; 
 #&gt; [[21]]
 #&gt; &lt;frame 2&gt; (1)
 #&gt; expr: build_site(".", override = list(destination = dest_dir), devel = FALSE,  &lt;...&gt;
-#&gt; env:  [frame 0x7fcfc3d1b618]
+#&gt; env:  [frame 0x7fc8619eb650]
 #&gt; 
 #&gt; [[22]]
 #&gt; &lt;frame 1&gt; (0)
 #&gt; expr: pkgdown:::deploy_local(new_process = FALSE, remote_url = url)
-#&gt; env:  [frame 0x7fcfc6c0c1a8]
+#&gt; env:  [frame 0x7fc861f1cda8]
 #&gt; 
 #&gt; [[23]]
 #&gt; &lt;frame 0&gt; [global]
