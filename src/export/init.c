@@ -13,7 +13,6 @@ extern bool rlang_is_clevel_spliceable(sexp*);
 extern bool rlang_is_quosure(sexp*);
 
 // Callable from this package
-extern sexp* rlang_is_null(sexp*);
 extern sexp* r_f_lhs(sexp*);
 extern sexp* r_f_rhs(sexp*);
 extern sexp* r_new_condition(sexp*, sexp*, sexp*);
@@ -182,7 +181,6 @@ static const r_callable r_callables[] = {
   {"rlang_is_primitive_lazy",           (r_fn_ptr) &rlang_is_primitive_lazy, 1},
   {"rlang_is_formula",                  (r_fn_ptr) &rlang_is_formula, 3},
   {"rlang_is_formulaish",               (r_fn_ptr) &rlang_is_formulaish, 3},
-  {"rlang_is_null",                     (r_fn_ptr) &rlang_is_null, 1},
   {"rlang_is_reference",                (r_fn_ptr) &rlang_is_reference, 2},
   {"rlang_length",                      (r_fn_ptr) &rlang_length, 1},
   {"rlang_true_length",                 (r_fn_ptr) &rlang_true_length, 1},

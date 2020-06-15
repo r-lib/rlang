@@ -295,10 +295,6 @@ sexp* rlang_duplicate(sexp* x, sexp* shallow) {
   return r_duplicate(x, r_lgl_get(shallow, 0));
 }
 
-sexp* rlang_is_null(sexp* x) {
-  return r_lgl(r_is_null(x));
-}
-
 sexp* rlang_sexp_address(sexp* x) {
   static char str[1000];
   snprintf(str, 1000, "%p", (void*) x);
