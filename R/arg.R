@@ -54,11 +54,11 @@ arg_match <- function(arg, values = NULL) {
 #' @rdname arg_match
 #' @export
 arg_match0 <- function(arg, values, arg_nm = as_label(substitute(arg))) {
-  if (!is_string(arg)) {
+  # Use primitive checks to avoid function calls
+  if (!.Call(rlang_is_string, arg, NULL)) {
     abort(paste0(chr_quoted(arg_nm), " must be a string."))
   }
-
-  if (!is_character(values)) {
+  if (!.Call(rlang_is_character, arg, NULL)) {
     abort("Internal error: `values` must be a character vector.")
   }
 
