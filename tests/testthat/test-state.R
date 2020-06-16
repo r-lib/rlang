@@ -1,9 +1,5 @@
 context("state")
 
-test_that("can't add an exit event at top-level", {
-  expect_error(local_exit(1, global_env()), "Can't add an exit event at top-level")
-})
-
 test_that("options are set temporarily", {
   local_options(foo = "foo")
   expect_identical(with_options(foo = "bar", peek_option("foo")), "bar")
