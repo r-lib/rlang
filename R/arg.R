@@ -36,9 +36,6 @@ arg_match <- function(arg, values = NULL) {
     values <- fn_fmls(fn)[[arg_nm]]
     values <- eval_bare(values, get_env(fn))
   }
-  if (!is_character(values)) {
-    abort("Internal error: `values` must be a character vector.")
-  }
   if (!is_character(arg)) {
     abort(paste0(chr_quoted(arg_nm), " must be a character vector."))
   }
@@ -59,6 +56,10 @@ arg_match <- function(arg, values = NULL) {
 arg_match0 <- function(arg, values, arg_nm = as_label(substitute(arg))) {
   if (!is_string(arg)) {
     abort(paste0(chr_quoted(arg_nm), " must be a string."))
+  }
+
+  if (!is_character(values)) {
+    abort("Internal error: `values` must be a character vector.")
   }
 
   i <- match(arg, values)
