@@ -2,12 +2,12 @@
 % Please edit documentation in R/arg.R
 \name{arg_match}
 \alias{arg_match}
-\alias{arg_match_val}
+\alias{arg_match0}
 \title{Match an argument to a character vector}
 \usage{
 arg_match(arg, values = NULL)
 
-arg_match_val(arg, values, arg_nm = as_label(substitute(arg)))
+arg_match0(arg, values, arg_nm = as_label(substitute(arg)))
 }
 \arguments{
 \item{arg}{A symbol referring to an argument accepting strings.}
@@ -28,7 +28,7 @@ This is equivalent to \code{\link[base:match.arg]{base::match.arg()}} with a few
 standards.
 }
 
-\code{arg_match_val()} is a bare-bones version if performance is at a premium.
+\code{arg_match0()} is a bare-bones version if performance is at a premium.
 It requires a string as \code{arg} and explicit \code{values}.
 }
 \examples{
