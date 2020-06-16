@@ -1,10 +1,14 @@
+# nocov start --- compat-defer --- 2020-06-16
+
+# This drop-in file implements withr::defer(). Please find the most
+# recent version in withr's repository.
 
 defer <- function(expr, envir = parent.frame(), priority = c("first", "last")) { }
+defer_ns <- new.env()
 
+local(envir = defer_ns, {
 
-local({
-
-defer <<- function(expr, envir = parent.frame(), priority = c("first", "last")) {
+defer <- function(expr, envir = parent.frame(), priority = c("first", "last")) {
   priority <- match.arg(priority)
   if (identical(envir, .GlobalEnv) && is.null(get_handlers(envir))) {
     message(
@@ -21,6 +25,8 @@ defer <<- function(expr, envir = parent.frame(), priority = c("first", "last")) 
     )
   )
 }
+
+defer <<- defer
 
 get_handlers <- function(envir) {
   attr(envir, "handlers")
@@ -62,3 +68,5 @@ make_call <- function(...) {
 }
 
 }) # defer() namespace
+
+# nocov end
