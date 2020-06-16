@@ -35,7 +35,7 @@ set_handlers <- function(envir, handlers) {
     # We have to use do.call here instead of eval because of the way on.exit
     # determines its evaluation context
     # (https://stat.ethz.ch/pipermail/r-devel/2013-November/067867.html)
-    do.call(base::on.exit, list(substitute(call), TRUE), envir = envir)
+    do.call(base::on.exit, list(call, TRUE), envir = envir)
   }
 }
 
