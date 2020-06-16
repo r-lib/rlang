@@ -35,7 +35,10 @@ It requires a string as \code{arg} and explicit \code{values}.
 fn <- function(x = c("foo", "bar")) arg_match(x)
 fn("bar")
 
-# This would throw an informative error if run:
-# fn("b")
-# fn("baz")
+# Throws an informative error for mismatches:
+try(fn("b"))
+try(fn("baz"))
+
+# Use the bare-bones version with explicit values for speed:
+arg_match0("bar", c("foo", "bar", "baz"))
 }

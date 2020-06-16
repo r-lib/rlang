@@ -20,9 +20,9 @@
 #' fn <- function(x = c("foo", "bar")) arg_match(x)
 #' fn("bar")
 #'
-#' # This would throw an informative error if run:
-#' # fn("b")
-#' # fn("baz")
+#' # Throws an informative error for mismatches:
+#' try(fn("b"))
+#' try(fn("baz"))
 arg_match <- function(arg, values = NULL) {
   arg_expr <- enexpr(arg)
   if (!is_symbol(arg_expr)) {
@@ -55,6 +55,10 @@ arg_match <- function(arg, values = NULL) {
 #' @param arg_nm The label to be used for `arg` in error messages.
 #' @rdname arg_match
 #' @export
+#' @examples
+#'
+#' # Use the bare-bones version with explicit values for speed:
+#' arg_match0("bar", c("foo", "bar", "baz"))
 arg_match0 <- function(arg, values, arg_nm = as_label(substitute(arg))) {
   # Use primitive checks to avoid function calls
   if (!.Call(rlang_is_string, arg, NULL)) {
