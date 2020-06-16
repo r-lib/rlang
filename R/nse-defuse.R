@@ -341,7 +341,7 @@ endots <- function(call,
                    unquote_names,
                    homonyms,
                    check_assign) {
-  ignore_empty <- arg_match(ignore_empty, c("trailing", "none", "all"))
+  ignore_empty <- arg_match0(ignore_empty, c("trailing", "none", "all"))
   syms <- as.list(node_cdr(call))
 
   if (!is_null(names(syms))) {
