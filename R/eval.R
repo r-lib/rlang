@@ -323,7 +323,3 @@ eval_top <- function(expr, env = caller_env()) {
 exec <- function(.fn, ..., .env = caller_env()) {
   .External2(rlang_exec, .fn, .env)
 }
-
-blast <- function(expr, env = caller_env()) {
-  eval_bare(enexpr(expr), env)
-}
