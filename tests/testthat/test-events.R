@@ -5,6 +5,8 @@ test_that("can't add an exit event at top-level", {
 })
 
 test_that("can add an exit event within a non-top-level global frame", {
+  skip("FIXME")
+
   local(envir = global_env(), {
     `_x` <- TRUE
     rlang:::local_exit(`_x` <- FALSE)
