@@ -5,6 +5,12 @@
 #include "utils.h"
 
 sexp* rlang_ns_get(const char* name);
+static bool should_auto_name(sexp* named);
+
+static sexp* as_label_call = NULL;
+static sexp* r_as_label(sexp* x) {
+  return r_eval_with_x(as_label_call, rlang_ns_env, x);
+}
 
 // Initialised at load time
 static sexp* empty_spliced_arg = NULL;
@@ -332,6 +338,12 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
   r_ssize n = r_length(dots);
   bool unquote_names = capture_info->unquote_names;
 
+  // In the case of `dots_list()` we auto-name inputs eagerly while we
+  // still have access to the defused expression
+  bool needs_autoname =
+    capture_info->type == DOTS_VALUE &&
+    should_auto_name(capture_info->named);
+
   sexp* node = dots;
   for (r_ssize i = 0; node != r_null; ++i, node = r_node_cdr(node)) {
     sexp* elt = r_node_car(node);
@@ -414,7 +426,9 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
     }
     case OP_VALUE_NONE:
     case OP_VALUE_FIXUP:
-    case OP_VALUE_DOT_DATA:
+    case OP_VALUE_DOT_DATA: {
+      sexp* orig = expr;
+
       if (expr == r_missing_sym) {
         if (!capture_info->preserve_empty) {
           r_abort("Argument %d is empty", i + 1);
@@ -425,6 +439,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
         // evaluated), for instance by lapply() or map().
         expr = r_eval(expr, env);
       }
+
       if (is_splice_box(expr)) {
         // Coerce contents of splice boxes to ensure uniform type
         KEEP(expr);
@@ -432,9 +447,16 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
         expr = dots_big_bang_value(capture_info, expr, env, false);
         FREE(1);
       } else {
+        if (needs_autoname && r_node_tag(node) == r_null) {
+          sexp* label = KEEP(r_as_label(orig));
+          r_node_poke_tag(node, r_chr_as_symbol(label));
+          FREE(1);
+        }
         capture_info->count += 1;
       }
+
       break;
+    }
     case OP_VALUE_UQ:
       r_abort("Can't use `!!` in a non-quoting function");
     case OP_VALUE_UQS: {
@@ -703,6 +725,13 @@ sexp* rlang_unescape_character(sexp*);
 static sexp* dots_finalise(struct dots_capture_info* capture_info, sexp* dots) {
   sexp* nms = r_names(dots);
 
+  if (capture_info->type == DOTS_VALUE && should_auto_name(capture_info->named)) {
+    if (nms == r_null) {
+      nms = r_new_vector(r_type_character, r_length(dots));
+    }
+  }
+  KEEP(nms);
+
   if (nms != r_null) {
     // Serialised unicode points might arise when unquoting lists
     // because of the conversion to pairlist
@@ -721,6 +750,7 @@ static sexp* dots_finalise(struct dots_capture_info* capture_info, sexp* dots) {
     FREE(2);
   }
 
+  FREE(1);
   return dots;
 }
 
@@ -1007,4 +1037,7 @@ void rlang_init_dots(sexp* ns) {
     r_node_poke_tag(quosures_attrib, r_class_sym);
     FREE(1);
   }
+
+  as_label_call = r_parse("as_label(x)");
+  r_mark_precious(as_label_call);
 }

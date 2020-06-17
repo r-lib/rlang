@@ -1,6 +1,8 @@
 
 # rlang (development version)
 
+* `dots_list()` gains a `.named` argument for auto-naming dots (#957).
+
 * It is now possible to subset the `.data` pronoun with quosured
   symbols or strings (#807).
 
