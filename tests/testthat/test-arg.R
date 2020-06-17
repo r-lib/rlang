@@ -12,8 +12,15 @@ test_that("matches arg", {
 test_that("gives an error with more than one arg", {
   myarg <- c("bar", "fun")
   expect_error(
-    regex = "`myarg` must be a string.",
+    regexp = "`myarg` must be a string.",
     arg_match0(myarg, c("bar", "baz"))
+  )
+})
+
+test_that("gives an error with bogus values", {
+  expect_error(
+    regexp = "Internal error: `values` must be a character vector.",
+    arg_match0("foo", 1:3)
   )
 })
 
