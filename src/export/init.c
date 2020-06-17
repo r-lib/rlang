@@ -137,6 +137,7 @@ extern sexp* rlang_linked_version();
 extern sexp* rlang_names2(sexp*, sexp*);
 extern sexp* rlang_set_names(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_chr_get(sexp* x, sexp* i);
+extern sexp* rlang_env_has(sexp*, sexp*, sexp*);
 
 // Library initialisation defined below
 sexp* rlang_library_load(sexp*);
@@ -309,6 +310,7 @@ static const r_callable r_callables[] = {
   {"rlang_names2",                      (r_fn_ptr) &rlang_names2, 2},
   {"rlang_set_names",                   (r_fn_ptr) &rlang_set_names, 4},
   {"rlang_chr_get",                     (r_fn_ptr) &rlang_chr_get, 2},
+  {"rlang_env_has",                     (r_fn_ptr) &rlang_env_has, 3},
   {NULL, NULL, 0}
 };
 

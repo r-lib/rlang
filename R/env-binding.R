@@ -365,8 +365,7 @@ env_unbind <- function(env = caller_env(), nms, inherit = FALSE) {
 #' env_has(env, "foo", inherit = TRUE)
 env_has <- function(env = caller_env(), nms, inherit = FALSE) {
   env <- get_env_retired(env, "env_has()")
-  nms <- set_names(nms)
-  map_lgl(nms, exists, envir = env, inherits = inherit)
+  .Call(rlang_env_has, env, nms, inherit)
 }
 
 #' Get an object in an environment

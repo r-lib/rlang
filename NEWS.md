@@ -1,6 +1,8 @@
 
 # rlang (development version)
 
+* `env_has()` is now rewritten in C for performance.
+
 * `dots_list()` gains a `.named` argument for auto-naming dots (#957).
 
 * It is now possible to subset the `.data` pronoun with quosured
