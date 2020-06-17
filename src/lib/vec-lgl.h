@@ -5,7 +5,8 @@
 int r_as_optional_bool(sexp* lgl);
 
 static inline sexp* r_lgl(bool x) {
-  return Rf_ScalarLogical(x);
+  extern SEXP R_TrueValue, R_FalseValue;
+  return x ? R_TrueValue : R_FalseValue;
 }
 
 bool r_is_true(sexp* x);
