@@ -97,6 +97,9 @@ list3 <- function(...) {
 
 
 #' @rdname list2
+#' @param .named Whether to ensure all dots are named. Unnamed
+#'   elements are processed with [as_label()] to build a default
+#'   name.
 #' @param .ignore_empty Whether to ignore empty arguments. Can be one
 #'   of `"trailing"`, `"none"`, `"all"`. If `"trailing"`, only the
 #'   last argument is ignored if it is empty.
@@ -185,13 +188,14 @@ list3 <- function(...) {
 #' # This requires users to be explicit about their intent:
 #' my_list({ a <- 1 })
 dots_list <- function(...,
+                      .named = FALSE,
                       .ignore_empty = c("trailing", "none", "all"),
                       .preserve_empty = FALSE,
                       .homonyms = c("keep", "first", "last", "error"),
                       .check_assign = FALSE) {
   dots <- .Call(rlang_dots_list,
     frame_env = environment(),
-    named = FALSE,
+    named = .named,
     ignore_empty = .ignore_empty,
     preserve_empty = .preserve_empty,
     unquote_names = TRUE,

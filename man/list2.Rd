@@ -10,6 +10,7 @@ list2(...)
 
 dots_list(
   ...,
+  .named = FALSE,
   .ignore_empty = c("trailing", "none", "all"),
   .preserve_empty = FALSE,
   .homonyms = c("keep", "first", "last", "error"),
@@ -19,6 +20,10 @@ dots_list(
 \arguments{
 \item{...}{Arguments to collect in a list. These dots are
 \link[=dyn-dots]{dynamic}.}
+
+\item{.named}{Whether to ensure all dots are named. Unnamed
+elements are processed with \code{\link[=as_label]{as_label()}} to build a default
+name.}
 
 \item{.ignore_empty}{Whether to ignore empty arguments. Can be one
 of \code{"trailing"}, \code{"none"}, \code{"all"}. If \code{"trailing"}, only the

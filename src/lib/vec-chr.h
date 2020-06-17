@@ -74,6 +74,10 @@ static inline sexp* r_str_as_character(sexp* x) {
   return Rf_ScalarString(x);
 }
 
+static inline sexp* r_chr_as_symbol(sexp* str) {
+  return r_sym(Rf_translateChar(r_chr_get(str, 0)));
+}
+
 static inline bool r_str_is_name(sexp* str) {
   if (str == r_missing_str) {
     return false;

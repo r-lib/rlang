@@ -80,7 +80,7 @@ arguments to capture without evaluation (including \code{...}). For
 
 \item{.named}{Whether to ensure all dots are named. Unnamed
 elements are processed with \code{\link[=as_label]{as_label()}} to build a default
-name. See also \code{\link[=quos_auto_name]{quos_auto_name()}}.}
+name.}
 
 \item{.ignore_empty}{Whether to ignore empty arguments. Can be one
 of \code{"trailing"}, \code{"none"}, \code{"all"}. If \code{"trailing"}, only the
