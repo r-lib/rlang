@@ -425,7 +425,7 @@ new_data_mask <- function(bottom, top = bottom) {
 }
 data_pronoun_get <- function(x, nm) {
   if (!is_string(nm)) {
-    abort("Must subset the data pronoun with a string")
+    abort("Must subset the data pronoun with a string.")
   }
   mask <- .subset2(x, 1)
   .Call(rlang_data_pronoun_get, mask, sym(nm))
@@ -445,7 +445,7 @@ abort_data_pronoun <- function(nm) {
 }
 ctxt_pronoun_get <- function(x, nm) {
   if (!is_string(nm)) {
-    abort("Must subset the context pronoun with a string")
+    abort("Must subset the context pronoun with a string.")
   }
   eval_bare(sym(nm), x)
 }
