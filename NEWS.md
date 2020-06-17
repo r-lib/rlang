@@ -1,6 +1,9 @@
 
 # rlang (development version)
 
+* Expressions like `quote(list("a b" = 1))` are now properly deparsed
+  by `expr_deparse()` (#950).
+
 * `parse_exprs()` now preserves names (#808). When a single string
   produces multiple expressions, the names may be useful to figure out
   what input produced which expression.

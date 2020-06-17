@@ -473,3 +473,7 @@ test_that("infix operators are sticky", {
   expect_identical(expr_deparse(quote(foo %>% bar), width = 3L), c("foo %>%", "  bar"))
   expect_identical(expr_deparse(quote(foo + bar), width = 3L), c("foo +", "  bar"))
 })
+
+test_that("argument names are backticked if needed (#950)", {
+  expect_identical(expr_deparse(quote(list(`a b` = 1))), "list(`a b` = 1)")
+})

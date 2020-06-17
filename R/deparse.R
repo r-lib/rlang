@@ -426,7 +426,7 @@ args_deparse <- function(x, lines = new_lines(), delims = c("(", ")")) {
   while (!is_null(x)) {
     tag <- node_tag(x)
     if (!is_null(tag)) {
-      lines$push(as_string(tag))
+      sym_deparse(tag, lines = lines)
       lines$push_sticky(" = ")
       lines$make_next_sticky()
     }
