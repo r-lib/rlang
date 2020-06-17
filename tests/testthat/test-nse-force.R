@@ -717,3 +717,8 @@ test_that(".data[[quote(foo)]] creates strings (#836)", {
   expect_identical(expr(call(.data[[quote(foo)]])), quote(call(.data[["foo"]])))
   expect_identical(expr(call(.data[[!!quote(foo)]])), quote(call(.data[["foo"]])))
 })
+
+test_that(".data[[quo(foo)]] creates strings (#807)", {
+  expect_identical(expr(call(.data[[quo(foo)]])), quote(call(.data[["foo"]])))
+  expect_identical(expr(call(.data[[!!quo(foo)]])), quote(call(.data[["foo"]])))
+})

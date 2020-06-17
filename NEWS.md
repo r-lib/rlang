@@ -1,6 +1,9 @@
 
 # rlang (development version)
 
+* It is now possible to subset the `.data` pronoun with quosured
+  symbols or strings (#807).
+
 * Expressions like `quote(list("a b" = 1))` are now properly deparsed
   by `expr_deparse()` (#950).
 

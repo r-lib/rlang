@@ -342,6 +342,10 @@ sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
     // Replace symbols by strings
     sexp* subscript_node = r_node_cddr(out);
     sexp* subscript = r_node_car(subscript_node);
+
+    if (rlang_is_quosure(subscript)) {
+      subscript = r_node_cadr(subscript);
+    }
     if (r_typeof(subscript) == r_type_symbol) {
       subscript = r_sym_as_character(subscript);
       r_node_poke_car(subscript_node, subscript);
