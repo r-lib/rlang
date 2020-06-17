@@ -42,6 +42,14 @@ static inline sexp* r_sym_as_character(sexp* x) {
   return Rf_ScalarString(PRINTNAME(x));
 }
 
+static inline sexp* r_new_symbol_translate(sexp* str) {
+  // Translate with translateChar() to silence R 4.0 warnings
+  // introduced in r76981. This unfortunately causes one additional
+  // heap allocation.
+  const char* str_native = Rf_translateChar(str);
+  return Rf_install(str_native);
+}
+
 bool r_is_symbol(sexp* sym, const char* string);
 bool r_is_symbol_any(sexp* x, const char** strings, int n);
 
