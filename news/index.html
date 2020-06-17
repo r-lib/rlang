@@ -154,6 +154,7 @@
 <a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li><p>It is now possible to subset the <code>.data</code> pronoun with quosured symbols or strings (<a href='https://github.com/r-lib/rlang/issues/807'>#807</a>).</p></li>
 <li><p>Expressions like <code><a href="https://rdrr.io/r/base/substitute.html">quote(list("a b" = 1))</a></code> are now properly deparsed by <code><a href="../reference/expr_print.html">expr_deparse()</a></code> (<a href='https://github.com/r-lib/rlang/issues/950'>#950</a>).</p></li>
 <li><p><code><a href="../reference/parse_expr.html">parse_exprs()</a></code> now preserves names (<a href='https://github.com/r-lib/rlang/issues/808'>#808</a>). When a single string produces multiple expressions, the names may be useful to figure out what input produced which expression.</p></li>
 <li><p><code><a href="../reference/parse_expr.html">parse_exprs()</a></code> now supports empty expressions (<a href='https://github.com/r-lib/rlang/issues/954'>#954</a>).</p></li>
