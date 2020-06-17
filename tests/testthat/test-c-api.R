@@ -179,6 +179,9 @@ test_that("r_which_operator() returns correct tokens", {
 })
 
 test_that("client library passes tests", {
+  # Avoid installing into system library by default
+  skip_if(!nzchar(Sys.getenv("RLANG_FULL_TESTS")))
+
   skip_on_cran()
   skip_on_ci()
 
