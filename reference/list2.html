@@ -166,6 +166,7 @@ version that offers more control.</p>
 
 <span class='fu'>dots_list</span>(
   <span class='no'>...</span>,
+  <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
   <span class='kw'>.preserve_empty</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>, <span class='st'>"error"</span>),
@@ -179,6 +180,12 @@ version that offers more control.</p>
       <th>...</th>
       <td><p>Arguments to collect in a list. These dots are
 <a href='dyn-dots.html'>dynamic</a>.</p></td>
+    </tr>
+    <tr>
+      <th>.named</th>
+      <td><p>Whether to ensure all dots are named. Unnamed
+elements are processed with <code><a href='as_label.html'>as_label()</a></code> to build a default
+name.</p></td>
     </tr>
     <tr>
       <th>.ignore_empty</th>
