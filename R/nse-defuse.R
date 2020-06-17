@@ -111,7 +111,7 @@
 #'   `exprs()` and `quos()`, the expressions to capture unevaluated
 #'   (including expressions contained in `...`).
 #' @param .named Whether to ensure all dots are named. Unnamed
-#'   elements are processed with [quo_name()] to build a default
+#'   elements are processed with [as_label()] to build a default
 #'   name. See also [quos_auto_name()].
 #' @param .ignore_empty Whether to ignore empty arguments. Can be one
 #'   of `"trailing"`, `"none"`, `"all"`. If `"trailing"`, only the
