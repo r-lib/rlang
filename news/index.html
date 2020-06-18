@@ -158,6 +158,7 @@
 <a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li><p>The unicode translation warnings that appeared on Windows with R 4.0 are now fixed.</p></li>
 <li><p><code>env_unbind(inherit = TRUE)</code> now only removes a binding from the first parent environment that has a binding. It used to remove the bindings from the whole ancestry. The new behaviour doesn’t guarantee that a scope doesn’t have a binding but it is safer.</p></li>
 <li><p><code>env_has()</code> is now rewritten in C for performance.</p></li>
 <li><p><code>dots_list()</code> gains a <code>.named</code> argument for auto-naming dots (<a href='https://github.com/r-lib/rlang/issues/957'>#957</a>).</p></li>
