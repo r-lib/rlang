@@ -1,4 +1,4 @@
-# nocov start --- compat-lifecycle --- 2019-11-15 Fri 15:55
+# nocov start --- compat-lifecycle --- 2020-06-18
 
 # This file serves as a reference for currently unexported rlang
 # lifecycle functions. Please find the most recent version in rlang's
@@ -226,6 +226,7 @@ lifecycle_img <- function(stage, url) {
     stable = ,
     questioning = ,
     retired = ,
+    superseded = ,
     archived =
       sprintf(
         "\\out{<a href='%s'><img src='%s' alt='%s lifecycle'></a>}",
