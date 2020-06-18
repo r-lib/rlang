@@ -158,6 +158,8 @@
 <a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li><p><code>env_unbind(inherit = TRUE)</code> now only removes a binding from the first parent environment that has a binding. It used to remove the bindings from the whole ancestry. The new behaviour doesn’t guarantee that a scope doesn’t have a binding but it is safer.</p></li>
+<li><p><code>env_has()</code> is now rewritten in C for performance.</p></li>
 <li><p><code>dots_list()</code> gains a <code>.named</code> argument for auto-naming dots (<a href='https://github.com/r-lib/rlang/issues/957'>#957</a>).</p></li>
 <li><p>It is now possible to subset the <code>.data</code> pronoun with quosured symbols or strings (<a href='https://github.com/r-lib/rlang/issues/807'>#807</a>).</p></li>
 <li><p>Expressions like <code><a href="https://rdrr.io/r/base/substitute.html">quote(list("a b" = 1))</a></code> are now properly deparsed by <code>expr_deparse()</code> (<a href='https://github.com/r-lib/rlang/issues/950'>#950</a>).</p></li>

@@ -203,8 +203,9 @@ modified in place, invisibly.</p>
 <span class='kw'>env</span> <span class='op'>&lt;-</span> <span class='fu'>env</span>(<span class='kw'>parent</span>, foo = <span class='st'>"b"</span>)
 
 <span class='fu'>env_unbind</span>(<span class='kw'>env</span>, <span class='st'>"foo"</span>, inherit = <span class='fl'>TRUE</span>)
-<span class='fu'>env_has</span>(<span class='kw'>env</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>), inherit = <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;   foo   bar 
-#&gt; FALSE  TRUE </div></pre>
+<span class='fu'>env_has</span>(<span class='kw'>env</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>))</div><div class='output co'>#&gt;   foo   bar 
+#&gt; FALSE FALSE </div><div class='input'><span class='fu'>env_has</span>(<span class='kw'>env</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>), inherit = <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;  foo  bar 
+#&gt; TRUE TRUE </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
