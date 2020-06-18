@@ -71,9 +71,21 @@ sexp* r_env_as_list(sexp* x);
 sexp* r_list_as_environment(sexp* x, sexp* parent);
 sexp* r_env_clone(sexp* env, sexp* parent);
 
+
+static inline
+void r_env_unbind(sexp* env, sexp* sym) {
+#if (R_VERSION < R_Version(4, 0, 0))
+  r__env_unbind(env, sym);
+#else
+  R_removeVarFromFrame(sym, env);
+#endif
+}
+void r_env_unbind_anywhere(sexp* env, sexp* sym);
+
+void r_env_unbind_syms(sexp* env, sexp** syms);
 void r_env_unbind_string(sexp* env, const char* name);
-void r_env_unbind_names(sexp* env, sexp* names);
 void r_env_unbind_strings(sexp* env, const char** strings);
+void r_env_unbind_names(sexp* env, sexp* names);
 
 void r_env_unbind_string_anywhere(sexp* env, const char* name);
 void r_env_unbind_anywhere_names(sexp* env, sexp* names);

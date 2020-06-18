@@ -133,11 +133,59 @@ sexp* r_env_clone(sexp* env, sexp* parent) {
 
 static sexp* remove_call = NULL;
 
+#if (R_VERSION < R_Version(4, 0, 0))
+void r__env_unbind(sexp* env, sexp* sym) {
+  sexp* nm = KEEP(r_sym_as_character(sym));
+  sexp* out = eval_with_xyz(remove_call, env, nm, r_shared_false);
+  FREE(1);
+  return out;
+}
+#endif
+
+void r_env_unbind_anywhere(sexp* env, sexp* sym) {
+  while (env != r_empty_env) {
+    if (r_env_has(env, sym)) {
+      r_env_unbind(env, sym);
+      return;
+    }
+
+    env = r_env_parent(env);
+  }
+}
+
+void r_env_unbind_syms(sexp* env, sexp** syms) {
+  while (syms) {
+    r_env_unbind(env, *syms++);
+  }
+}
+
+static
+void env_unbind_names(sexp* env, sexp* names, bool inherit) {
+#if (R_VERSION < R_Version(4, 0, 0))
+  eval_with_xyz(remove_call, env, names, r_lgl(inherit));
+#else
+  sexp* const * p_names = r_chr_deref(names);
+  r_ssize n = r_length(names);
+
+  if (inherit) {
+    for (r_ssize i = 0; i < n; ++i) {
+      sexp* sym = r_str_as_symbol(p_names[i]);
+      r_env_unbind_anywhere(env, sym);
+    }
+  } else {
+    for (r_ssize i = 0; i < n; ++i) {
+      sexp* sym = r_str_as_symbol(p_names[i]);
+      r_env_unbind(env, sym);
+    }
+  }
+#endif
+}
+
 void r_env_unbind_names(sexp* env, sexp* names) {
-  eval_with_xyz(remove_call, env, names, r_shared_false);
+  env_unbind_names(env, names, false);
 }
 void r_env_unbind_anywhere_names(sexp* env, sexp* names) {
-  eval_with_xyz(remove_call, env, names, r_shared_true);
+  env_unbind_names(env, names, true);
 }
 
 sexp* rlang_env_unbind(sexp* env, sexp* names, sexp* inherits) {
