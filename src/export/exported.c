@@ -90,7 +90,7 @@ sexp* rlang_env_bind_list(sexp* env, sexp* names, sexp* data) {
   sexp** namesp = r_chr_deref(names);
 
   for (r_ssize i = 0; i < n; ++i) {
-    Rf_defineVar(Rf_installChar(namesp[i]), r_list_get(data, i), env);
+    Rf_defineVar(r_str_as_symbol(namesp[i]), r_list_get(data, i), env);
   }
 
   return r_null;

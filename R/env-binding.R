@@ -247,7 +247,7 @@ env_bind_active <- function(.env, ...) {
     if (nm %in% existing) {
       env_unbind(env, nm)
     }
-    makeActiveBinding(nm, value, env)
+    makeActiveBinding(sym(nm), value, env)
   }
 
   env_bind_impl(.env, fns, "env_bind_active()", TRUE, binder)

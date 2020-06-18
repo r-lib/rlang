@@ -9,9 +9,7 @@ void copy_character(sexp* tgt, sexp* src, R_xlen_t len);
 R_xlen_t unescape_character_in_copy(sexp* tgt, sexp* src, R_xlen_t i);
 
 sexp* rlang_symbol(sexp* chr) {
-  // Uses installChar(), no translation. Translating causes issues
-  // when converting back to character.
-  return r_vec_coerce(chr, r_type_symbol);
+  return r_str_as_symbol(r_chr_get(chr, 0));
 }
 
 sexp* rlang_sym_as_character(sexp* sym) {
