@@ -2,8 +2,8 @@ rlang <img src="man/figures/rlang.png" align="right" />
 =======================================================
 
 <!-- badges: start -->
-[![R build status](https://github.com/r-lib/rlang/workflows/R-CMD-check/badge.svg)](https://github.com/r-lib/rlang)
-[![Coverage Status](https://codecov.io/gh/r-lib/rlang/branch/master/graph/badge.svg)](https://codecov.io/github/r-lib/rlang?branch=master)
+[![R build status](https://github.com/r-lib/rlang/workflows/R-CMD-check/badge.svg)](https://github.com/r-lib/rlang/actions)
+[![Codecov test coverage](https://codecov.io/gh/r-lib/rlang/branch/master/graph/badge.svg)](https://codecov.io/gh/r-lib/rlang?branch=master)
 [![Lifecycle Status](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/)
 <!-- badges: end -->
 
