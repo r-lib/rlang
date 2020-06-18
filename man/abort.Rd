@@ -100,7 +100,7 @@ backtrace.
 
 Signalling a condition with \code{inform()} or \code{warn()} causes a message
 to be displayed in the console. These messages can be muffled with
-\code{\link[base:suppressMessages]{base::suppressMessages()}} or \code{\link[base:suppressWarnings]{base::suppressWarnings()}}.
+\code{\link[base:message]{base::suppressMessages()}} or \code{\link[base:warning]{base::suppressWarnings()}}.
 
 On recent R versions (>= R 3.5.0), interrupts are typically
 signalled with a \code{"resume"} restart. This is however not

@@ -75,7 +75,7 @@ extra type check.
 
 
 \code{as_list()} only coerces vector and dictionary types (environments
-are an example of dictionary type). Unlike \code{\link[base:as.list]{base::as.list()}},
+are an example of dictionary type). Unlike \code{\link[base:list]{base::as.list()}},
 \code{as_list()} removes all attributes except names.
 }
 

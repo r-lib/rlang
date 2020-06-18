@@ -25,7 +25,7 @@ or vector of classes passed to \code{\link[=inherits_all]{inherits_all()}}.}
 \item{box}{A boxed value to unbox.}
 }
 \description{
-\code{new_box()} is similar to \code{\link[base:I]{base::I()}} but it protects a value by
+\code{new_box()} is similar to \code{\link[base:AsIs]{base::I()}} but it protects a value by
 wrapping it in a scalar list rather than by adding an attribute.
 \code{unbox()} retrieves the boxed value. \code{is_box()} tests whether an
 object is boxed with optional class. \code{as_box()} ensures that a

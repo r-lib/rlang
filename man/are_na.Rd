@@ -31,7 +31,7 @@ is_cpl_na(x)
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
 
 \code{are_na()} checks for missing values in a vector and is equivalent
-to \code{\link[base:is.na]{base::is.na()}}. It is a vectorised predicate, meaning that its
+to \code{\link[base:NA]{base::is.na()}}. It is a vectorised predicate, meaning that its
 output is always the same length as its input. On the other hand,
 \code{is_na()} is a scalar predicate and always returns a scalar
 boolean, \code{TRUE} or \code{FALSE}. If its input is not scalar, it returns

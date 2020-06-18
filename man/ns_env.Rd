@@ -22,7 +22,7 @@ string.
 }
 
 In the latter two cases, the environment ancestry is searched for
-a namespace with \code{\link[base:topenv]{base::topenv()}}. If the environment doesn't
+a namespace with \code{\link[base:ns-topenv]{base::topenv()}}. If the environment doesn't
 inherit from a namespace, this is an error.
 }}
 

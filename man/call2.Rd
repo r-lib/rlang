@@ -25,7 +25,7 @@ creating a quoted call:
 \item By \link[=nse-defuse]{quoting} it. Quoting prevents functions from being
 called. Instead, you get the description of the function call as
 an R object. That is, a quoted function call.
-\item By constructing it with \code{\link[base:call]{base::call()}}, \code{\link[base:as.call]{base::as.call()}}, or
+\item By constructing it with \code{\link[base:call]{base::call()}}, \code{\link[base:call]{base::as.call()}}, or
 \code{call2()}. In this case, you pass the call elements (the function
 to call and the arguments to call it with) separately.
 }

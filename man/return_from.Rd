@@ -19,7 +19,7 @@ environment currently on the stack.}
 \description{
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
 
-While \code{\link[base:return]{base::return()}} can only return from the current local
+While \code{\link[base:function]{base::return()}} can only return from the current local
 frame, these two functions will return from any frame on the
 current evaluation stack, between the global and the currently
 active context. They provide a way of performing arbitrary

@@ -71,7 +71,7 @@ of an integer vector --- save any important objects beforehand!).
 }
 \seealso{
 \code{\link[=duplicate]{duplicate()}} for creating copy-safe objects and
-\code{\link[base:pairlist]{base::pairlist()}} for an easier way of creating a linked list of
+\code{\link[base:list]{base::pairlist()}} for an easier way of creating a linked list of
 nodes.
 }
 \keyword{internal}

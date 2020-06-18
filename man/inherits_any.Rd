@@ -19,7 +19,7 @@ inherits_only(x, class)
 }
 \description{
 \itemize{
-\item \code{inherits_any()} is like \code{\link[base:inherits]{base::inherits()}} but is more explicit
+\item \code{inherits_any()} is like \code{\link[base:class]{base::inherits()}} but is more explicit
 about its behaviour with multiple classes. If \code{classes} contains
 several elements and the object inherits from at least one of
 them, \code{inherits_any()} returns \code{TRUE}.

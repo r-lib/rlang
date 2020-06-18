@@ -14,7 +14,7 @@ defaults, use \code{\link[=exprs]{exprs()}}.}
 
 \item{body}{A language object representing the code inside the
 function. Usually this will be most easily generated with
-\code{\link[base:quote]{base::quote()}}}
+\code{\link[base:substitute]{base::quote()}}}
 
 \item{env}{The parent environment of the function, defaults to the
 calling environment of \code{new_function()}}

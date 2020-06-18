@@ -19,7 +19,7 @@ A character vector of length 1.
 \section{Unicode tags}{
 
 
-Unlike \code{\link[base:as.symbol]{base::as.symbol()}} and \code{\link[base:as.name]{base::as.name()}}, \code{as_string()}
+Unlike \code{\link[base:name]{base::as.symbol()}} and \code{\link[base:name]{base::as.name()}}, \code{as_string()}
 automatically transforms unicode tags such as \code{"<U+5E78>"} to the
 proper UTF-8 character. This is important on Windows because:
 \itemize{

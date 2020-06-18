@@ -26,7 +26,7 @@ vector needs to be traversed and checked.}
 These predicates check whether R considers a number vector to be
 integer-like, according to its own tolerance check (which is in
 fact delegated to the C library). This function is not adapted to
-data analysis, see the help for \code{\link[base:is.integer]{base::is.integer()}} for examples
+data analysis, see the help for \code{\link[base:integer]{base::is.integer()}} for examples
 of how to check for whole numbers.
 
 Things to consider when checking for integer-like doubles:

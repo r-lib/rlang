@@ -59,7 +59,7 @@ internal functions in technical documentation. Like primitive
 functions, internal functions are defined at a low level and
 written in C. However, internal functions have no representation in
 the R language. Instead, they are called via a call to
-\code{\link[base:.Internal]{base::.Internal()}} within a regular closure. This ensures that
+\code{\link[base:Internal]{base::.Internal()}} within a regular closure. This ensures that
 they appear as normal R function objects: they obey all the usual
 rules of argument passing, and they appear on the evaluation stack
 as any other closures. As a result, \code{\link[=fn_fmls]{fn_fmls()}} does not need to

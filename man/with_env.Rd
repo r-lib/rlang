@@ -25,7 +25,7 @@ some subtle implications when evaluting stack sensitive functions
 }
 \details{
 \code{locally()} is equivalent to the base function
-\code{\link[base:local]{base::local()}} but it produces a much cleaner
+\code{\link[base:eval]{base::local()}} but it produces a much cleaner
 evaluation stack, and has stack-consistent semantics. It is thus
 more suited for experimenting with the R language.
 }
