@@ -187,25 +187,21 @@ environments.</p></td>
 modified in place, invisibly.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='set_names.html'>set_names</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>as.list</a></span>(<span class='no'>letters</span>), <span class='no'>letters</span>)
-<span class='fu'><a href='env_bind.html'>env_bind</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/environment.html'>environment</a></span>(), !!! <span class='no'>data</span>)
-<span class='fu'><a href='env_has.html'>env_has</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/environment.html'>environment</a></span>(), <span class='no'>letters</span>)</div><div class='output co'>#&gt;    a    b    c    d    e    f    g    h    i    j    k    l    m    n    o    p 
-#&gt; TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE 
-#&gt;    q    r    s    t    u    v    w    x    y    z 
-#&gt; TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE </div><div class='input'>
-<span class='co'># env_unbind() removes bindings:</span>
-<span class='fu'>env_unbind</span>(<span class='fu'><a href='https://rdrr.io/r/base/environment.html'>environment</a></span>(), <span class='no'>letters</span>)
-<span class='fu'><a href='env_has.html'>env_has</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/environment.html'>environment</a></span>(), <span class='no'>letters</span>)</div><div class='output co'>#&gt;     a     b     c     d     e     f     g     h     i     j     k     l     m 
-#&gt; FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE 
-#&gt;     n     o     p     q     r     s     t     u     v     w     x     y     z 
-#&gt; FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE </div><div class='input'>
+    <pre class="examples"><div class='input'><span class='no'>env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>(<span class='kw'>foo</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>bar</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+<span class='fu'><a href='env_has.html'>env_has</a></span>(<span class='no'>env</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>))</div><div class='output co'>#&gt;  foo  bar 
+#&gt; TRUE TRUE </div><div class='input'>
+<span class='co'># Remove bindings with `env_unbind()`</span>
+<span class='fu'>env_unbind</span>(<span class='no'>env</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>))
+<span class='fu'><a href='env_has.html'>env_has</a></span>(<span class='no'>env</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>))</div><div class='output co'>#&gt;   foo   bar 
+#&gt; FALSE FALSE </div><div class='input'>
 <span class='co'># With inherit = TRUE, it removes bindings in parent environments</span>
 <span class='co'># as well:</span>
-<span class='no'>parent</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>child_env</a></span>(<span class='kw'>NULL</span>, <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"a"</span>)
-<span class='no'>env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>child_env</a></span>(<span class='no'>parent</span>, <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"b"</span>)
+<span class='no'>parent</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>(<span class='fu'><a href='empty_env.html'>empty_env</a></span>(), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>bar</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+<span class='no'>env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>(<span class='no'>parent</span>, <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"b"</span>)
+
 <span class='fu'>env_unbind</span>(<span class='no'>env</span>, <span class='st'>"foo"</span>, <span class='kw'>inherit</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'><a href='env_has.html'>env_has</a></span>(<span class='no'>env</span>, <span class='st'>"foo"</span>, <span class='kw'>inherit</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;   foo 
-#&gt; FALSE </div></pre>
+<span class='fu'><a href='env_has.html'>env_has</a></span>(<span class='no'>env</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>), <span class='kw'>inherit</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;   foo   bar 
+#&gt; FALSE  TRUE </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

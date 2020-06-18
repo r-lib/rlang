@@ -36,7 +36,11 @@
 
 
 <meta property="og:title" content="Mask bindings by defining symbols deeper in a scope — env_bury" />
-<meta property="og:description" content="env_bury() is like env_bind() but it creates the bindings in a
+<meta property="og:description" content="
+This function is superseded. Please use env() (and possibly
+set_env() if you're masking the bindings for another object like
+a closure or a formula) instead.
+env_bury() is like env_bind() but it creates the bindings in a
 new child environment. This makes sure the new bindings have
 precedence over old ones, without altering existing environments.
 Unlike env_bind(), this function does not have side effects and
@@ -152,12 +156,16 @@ returns a new environment (or object wrapping that environment)." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Mask bindings by defining symbols deeper in a scope</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/env-binding.R'><code>R/env-binding.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/lifecycle-retired.R'><code>R/lifecycle-retired.R</code></a></small>
     <div class="hidden name"><code>env_bury.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>env_bury()</code> is like <code><a href='env_bind.html'>env_bind()</a></code> but it creates the bindings in a
+    <p><a href='https://www.tidyverse.org/lifecycle/#superseded'><img src='figures/lifecycle-superseded.svg' alt='Superseded lifecycle'></a></p>
+<p>This function is superseded. Please use <code><a href='env.html'>env()</a></code> (and possibly
+<code><a href='get_env.html'>set_env()</a></code> if you're masking the bindings for another object like
+a closure or a formula) instead.</p>
+<p><code>env_bury()</code> is like <code><a href='env_bind.html'>env_bind()</a></code> but it creates the bindings in a
 new child environment. This makes sure the new bindings have
 precedence over old ones, without altering existing environments.
 Unlike <code><a href='env_bind.html'>env_bind()</a></code>, this function does not have side effects and
