@@ -1,6 +1,9 @@
 
 # rlang (development version)
 
+* The unicode translation warnings that appeared on Windows with R 4.0
+  are now fixed.
+
 * `env_unbind(inherit = TRUE)` now only removes a binding from the
   first parent environment that has a binding. It used to remove the
   bindings from the whole ancestry. The new behaviour doesn't
