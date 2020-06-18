@@ -133,11 +133,11 @@ sexp* r_env_clone(sexp* env, sexp* parent) {
 
 static sexp* remove_call = NULL;
 
-sexp* r_env_unbind_names(sexp* env, sexp* names) {
-  return eval_with_xyz(remove_call, env, names, r_shared_false);
+void r_env_unbind_names(sexp* env, sexp* names) {
+  eval_with_xyz(remove_call, env, names, r_shared_false);
 }
-sexp* r_env_unbind_anywhere_names(sexp* env, sexp* names) {
-  return eval_with_xyz(remove_call, env, names, r_shared_true);
+void r_env_unbind_anywhere_names(sexp* env, sexp* names) {
+  eval_with_xyz(remove_call, env, names, r_shared_true);
 }
 
 sexp* rlang_env_unbind(sexp* env, sexp* names, sexp* inherits) {
@@ -152,34 +152,34 @@ sexp* rlang_env_unbind(sexp* env, sexp* names, sexp* inherits) {
   }
 
   if (*r_lgl_deref(inherits)) {
-    return r_env_unbind_anywhere_names(env, names);
+    r_env_unbind_anywhere_names(env, names);
   } else {
-    return r_env_unbind_names(env, names);
+    r_env_unbind_names(env, names);
   }
+
+  return r_null;
 }
 
-sexp* r_env_unbind_strings(sexp* env, const char** names) {
+void r_env_unbind_strings(sexp* env, const char** names) {
   sexp* nms = KEEP(r_new_character(names));
-  sexp* out = r_env_unbind_names(env, nms);
+  r_env_unbind_names(env, nms);
   FREE(1);
-  return out;
 }
-sexp* r_env_unbind_anywhere_strings(sexp* env, const char** names) {
+void r_env_unbind_anywhere_strings(sexp* env, const char** names) {
   sexp* nms = KEEP(r_new_character(names));
-  sexp* out = r_env_unbind_anywhere_names(env, nms);
+  r_env_unbind_anywhere_names(env, nms);
   FREE(1);
-  return out;
 }
 
-sexp* r_env_unbind_string(sexp* env, const char* name) {
+void r_env_unbind_string(sexp* env, const char* name) {
   static const char* names[2] = { "", NULL };
   names[0] = name;
-  return r_env_unbind_strings(env, names);
+  r_env_unbind_strings(env, names);
 }
-sexp* r_env_unbind_string_anywhere(sexp* env, const char* name) {
+void r_env_unbind_string_anywhere(sexp* env, const char* name) {
   static const char* names[2] = { "", NULL };
   names[0] = name;
-  return r_env_unbind_anywhere_strings(env, names);
+  r_env_unbind_anywhere_strings(env, names);
 }
 
 bool r_env_inherits(sexp* env, sexp* ancestor, sexp* top) {
