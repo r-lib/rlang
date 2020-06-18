@@ -135,10 +135,12 @@ static sexp* remove_call = NULL;
 
 #if (R_VERSION < R_Version(4, 0, 0))
 void r__env_unbind(sexp* env, sexp* sym) {
-  sexp* nm = KEEP(r_sym_as_character(sym));
-  sexp* out = eval_with_xyz(remove_call, env, nm, r_shared_false);
-  FREE(1);
-  return out;
+  // Check if binding exists to avoid `rm()` warning
+  if (r_env_has(env, sym)) {
+    sexp* nm = KEEP(r_sym_as_character(sym));
+    eval_with_xyz(remove_call, env, nm, r_shared_false);
+    FREE(1);
+  }
 }
 #endif
 
@@ -161,9 +163,6 @@ void r_env_unbind_syms(sexp* env, sexp** syms) {
 
 static
 void env_unbind_names(sexp* env, sexp* names, bool inherit) {
-#if (R_VERSION < R_Version(4, 0, 0))
-  eval_with_xyz(remove_call, env, names, r_lgl(inherit));
-#else
   sexp* const * p_names = r_chr_deref(names);
   r_ssize n = r_length(names);
 
@@ -178,7 +177,6 @@ void env_unbind_names(sexp* env, sexp* names, bool inherit) {
       r_env_unbind(env, sym);
     }
   }
-#endif
 }
 
 void r_env_unbind_names(sexp* env, sexp* names) {

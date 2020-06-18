@@ -75,6 +75,7 @@ sexp* r_env_clone(sexp* env, sexp* parent);
 static inline
 void r_env_unbind(sexp* env, sexp* sym) {
 #if (R_VERSION < R_Version(4, 0, 0))
+  void r__env_unbind(sexp*, sexp*);
   r__env_unbind(env, sym);
 #else
   R_removeVarFromFrame(sym, env);
