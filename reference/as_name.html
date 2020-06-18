@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -52,7 +56,6 @@ Note that rlang::as_name() is the opposite of
 base::as.name(). If you're writing base R code, we recommend
 using base::as.symbol() which is an alias of as.name() that
 follows a more modern terminology (R types instead of S modes)." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -80,7 +83,7 @@ follows a more modern terminology (R types instead of S modes)." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -144,7 +147,7 @@ follows a more modern terminology (R types instead of S modes)." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/r-lib/rlang">
+  <a href="https://github.com/r-lib/rlang/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -168,32 +171,32 @@ follows a more modern terminology (R types instead of S modes)." />
     </div>
 
     <div class="ref-description">
-    <p><code>as_name()</code> converts <a href='sym.html'>symbols</a> to character strings. The
+    <p><code>as_name()</code> converts symbols to character strings. The
 conversion is deterministic. That is, the roundtrip symbol -&gt; name
 -&gt; symbol always gets the same result.</p><ul>
 <li><p>Use <code>as_name()</code> when you need to transform a symbol to a string
 to <em>refer</em> to an object by its name.</p></li>
-<li><p>Use <code><a href='as_label.html'>as_label()</a></code> when you need to transform any kind of object to
+<li><p>Use <code>as_label()</code> when you need to transform any kind of object to
 a string to <em>represent</em> that object with a short description.</p></li>
 </ul>
 
 <p>Expect <code>as_name()</code> to gain
 <a href='https://principles.tidyverse.org/names-attribute.html#minimal-unique-universal'>name-repairing</a>
 features in the future.</p>
-<p>Note that <code>rlang::as_name()</code> is the <em>opposite</em> of
+<p>Note that <code><a href='https://rlang.r-lib.org/reference/as_name.html'>rlang::as_name()</a></code> is the <em>opposite</em> of
 <code><a href='https://rdrr.io/r/base/name.html'>base::as.name()</a></code>. If you're writing base R code, we recommend
 using <code><a href='https://rdrr.io/r/base/name.html'>base::as.symbol()</a></code> which is an alias of <code><a href='https://rdrr.io/r/base/name.html'>as.name()</a></code> that
 follows a more modern terminology (R types instead of S modes).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>as_name</span>(<span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>as_name</span>(<span class='kw'>x</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>A string or symbol, possibly wrapped in a <a href='quosure.html'>quosure</a>.
+      <td><p>A string or symbol, possibly wrapped in a quosure.
 If a string, the attributes are removed, if any.</p></td>
     </tr>
     </table>
@@ -203,30 +206,25 @@ If a string, the attributes are removed, if any.</p></td>
     <p>A character vector of length 1.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='as_label.html'>as_label()</a></code> for converting any object to a single string
-suitable as a label. <code><a href='as_string.html'>as_string()</a></code> for a lower-level version that
+    <div class='dont-index'><p><code>as_label()</code> for converting any object to a single string
+suitable as a label. <code>as_string()</code> for a lower-level version that
 doesn't unwrap quosures.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Let's create some symbols:</span>
-<span class='no'>foo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>foo</span>)
-<span class='no'>bar</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sym.html'>sym</a></span>(<span class='st'>"bar"</span>)
+<span class='kw'>foo</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>foo</span>)
+<span class='kw'>bar</span> <span class='op'>&lt;-</span> <span class='fu'>sym</span>(<span class='st'>"bar"</span>)
 
 <span class='co'># as_name() converts symbols to strings:</span>
-<span class='no'>foo</span></div><div class='output co'>#&gt; foo</div><div class='input'><span class='fu'>as_name</span>(<span class='no'>foo</span>)</div><div class='output co'>#&gt; [1] "foo"</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span>(<span class='no'>bar</span>)</div><div class='output co'>#&gt; [1] "symbol"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span>(<span class='fu'>as_name</span>(<span class='no'>bar</span>))</div><div class='output co'>#&gt; [1] "character"</div><div class='input'>
+<span class='kw'>foo</span></div><div class='output co'>#&gt; foo</div><div class='input'><span class='fu'>as_name</span>(<span class='kw'>foo</span>)</div><div class='output co'>#&gt; [1] "foo"</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span>(<span class='kw'>bar</span>)</div><div class='output co'>#&gt; [1] "symbol"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span>(<span class='fu'>as_name</span>(<span class='kw'>bar</span>))</div><div class='output co'>#&gt; [1] "character"</div><div class='input'>
 <span class='co'># as_name() unwraps quosured symbols automatically:</span>
-<span class='fu'>as_name</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='no'>foo</span>))</div><div class='output co'>#&gt; [1] "foo"</div></pre>
+<span class='fu'>as_name</span>(<span class='fu'>quo</span>(<span class='kw'>foo</span>))</div><div class='output co'>#&gt; [1] "foo"</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -237,7 +235,7 @@ doesn't unwrap quosures.</p></div>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

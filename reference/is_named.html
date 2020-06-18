@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -41,7 +45,6 @@ the names are missing or empty (NA or &quot;&quot;). is_dictionaryish()
 checks that an object is a dictionary: that it has actual names and
 in addition that there are no duplicated names. have_name()
 is a vectorised version of is_named()." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -69,7 +72,7 @@ is a vectorised version of is_named()." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -133,7 +136,7 @@ is a vectorised version of is_named()." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/r-lib/rlang">
+  <a href="https://github.com/r-lib/rlang/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -164,11 +167,11 @@ in addition that there are no duplicated names. <code>have_name()</code>
 is a vectorised version of <code>is_named()</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>is_named</span>(<span class='no'>x</span>)
+    <pre class="usage"><span class='fu'>is_named</span>(<span class='kw'>x</span>)
 
-<span class='fu'>is_dictionaryish</span>(<span class='no'>x</span>)
+<span class='fu'>is_dictionaryish</span>(<span class='kw'>x</span>)
 
-<span class='fu'>have_name</span>(<span class='no'>x</span>)</pre>
+<span class='fu'>have_name</span>(<span class='kw'>x</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -187,43 +190,39 @@ returns a logical vector as long as the input.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># A data frame usually has valid, unique names</span>
-<span class='fu'>is_named</span>(<span class='no'>mtcars</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>have_name</span>(<span class='no'>mtcars</span>)</div><div class='output co'>#&gt;  [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE</div><div class='input'><span class='fu'>is_dictionaryish</span>(<span class='no'>mtcars</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'>is_named</span>(<span class='kw'>mtcars</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>have_name</span>(<span class='kw'>mtcars</span>)</div><div class='output co'>#&gt;  [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE</div><div class='input'><span class='fu'>is_dictionaryish</span>(<span class='kw'>mtcars</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># But data frames can also have duplicated columns:</span>
-<span class='no'>dups</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='no'>mtcars</span>, <span class='kw'>cyl</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>mtcars</span>)))
-<span class='fu'>is_dictionaryish</span>(<span class='no'>dups</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
+<span class='kw'>dups</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='kw'>mtcars</span>, cyl = <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='kw'>mtcars</span>)))
+<span class='fu'>is_dictionaryish</span>(<span class='kw'>dups</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
 <span class='co'># The names are still valid:</span>
-<span class='fu'>is_named</span>(<span class='no'>dups</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>have_name</span>(<span class='no'>dups</span>)</div><div class='output co'>#&gt;  [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE</div><div class='input'>
+<span class='fu'>is_named</span>(<span class='kw'>dups</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>have_name</span>(<span class='kw'>dups</span>)</div><div class='output co'>#&gt;  [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE</div><div class='input'>
 
 <span class='co'># For empty objects the semantics are slightly different.</span>
 <span class='co'># is_dictionaryish() returns TRUE for empty objects:</span>
 <span class='fu'>is_dictionaryish</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># But is_named() will only return TRUE if there is a names</span>
 <span class='co'># attribute (a zero-length character vector in this case):</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='set_names.html'>set_names</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(), <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(<span class='fl'>0</span>))
-<span class='fu'>is_named</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='kw'>x</span> <span class='op'>&lt;-</span> <span class='fu'>set_names</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(), <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(<span class='fl'>0</span>))
+<span class='fu'>is_named</span>(<span class='kw'>x</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 
 <span class='co'># Empty and missing names are invalid:</span>
-<span class='no'>invalid</span> <span class='kw'>&lt;-</span> <span class='no'>dups</span>
-<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>invalid</span>)[<span class='fl'>2</span>] <span class='kw'>&lt;-</span> <span class='st'>""</span>
-<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>invalid</span>)[<span class='fl'>5</span>] <span class='kw'>&lt;-</span> <span class='fl'>NA</span>
+<span class='kw'>invalid</span> <span class='op'>&lt;-</span> <span class='kw'>dups</span>
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='kw'>invalid</span>)[<span class='fl'>2</span>] <span class='op'>&lt;-</span> <span class='st'>""</span>
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='kw'>invalid</span>)[<span class='fl'>5</span>] <span class='op'>&lt;-</span> <span class='fl'>NA</span>
 
 <span class='co'># is_named() performs a global check while have_name() can show you</span>
 <span class='co'># where the problem is:</span>
-<span class='fu'>is_named</span>(<span class='no'>invalid</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>have_name</span>(<span class='no'>invalid</span>)</div><div class='output co'>#&gt;  [1]  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE</div><div class='input'>
+<span class='fu'>is_named</span>(<span class='kw'>invalid</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>have_name</span>(<span class='kw'>invalid</span>)</div><div class='output co'>#&gt;  [1]  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE</div><div class='input'>
 <span class='co'># have_name() will work even with vectors that don't have a names</span>
 <span class='co'># attribute:</span>
-<span class='fu'>have_name</span>(<span class='no'>letters</span>)</div><div class='output co'>#&gt;  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+<span class='fu'>have_name</span>(<span class='kw'>letters</span>)</div><div class='output co'>#&gt;  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
 #&gt; [13] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
 #&gt; [25] FALSE FALSE</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -234,7 +233,7 @@ returns a logical vector as long as the input.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

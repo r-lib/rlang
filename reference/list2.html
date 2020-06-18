@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -40,7 +44,6 @@
 features, collectively called dynamic dots. While
 list2() hard-code these features, dots_list() is a lower-level
 version that offers more control." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -68,7 +71,7 @@ version that offers more control." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -132,7 +135,7 @@ version that offers more control." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/r-lib/rlang">
+  <a href="https://github.com/r-lib/rlang/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -157,20 +160,20 @@ version that offers more control." />
 
     <div class="ref-description">
     <p><code>list2(...)</code> is equivalent to <code><a href='https://rdrr.io/r/base/list.html'>list(...)</a></code> with a few additional
-features, collectively called <a href='dyn-dots.html'>dynamic dots</a>. While
+features, collectively called dynamic dots. While
 <code>list2()</code> hard-code these features, <code>dots_list()</code> is a lower-level
 version that offers more control.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>list2</span>(<span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>list2</span>(<span class='kw'>...</span>)
 
 <span class='fu'>dots_list</span>(
-  <span class='no'>...</span>,
-  <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
-  <span class='kw'>.preserve_empty</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>, <span class='st'>"error"</span>),
-  <span class='kw'>.check_assign</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>...</span>,
+  .named = <span class='fl'>FALSE</span>,
+  .ignore_empty = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
+  .preserve_empty = <span class='fl'>FALSE</span>,
+  .homonyms = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>, <span class='st'>"error"</span>),
+  .check_assign = <span class='fl'>FALSE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -179,12 +182,12 @@ version that offers more control.</p>
     <tr>
       <th>...</th>
       <td><p>Arguments to collect in a list. These dots are
-<a href='dyn-dots.html'>dynamic</a>.</p></td>
+dynamic.</p></td>
     </tr>
     <tr>
       <th>.named</th>
       <td><p>Whether to ensure all dots are named. Unnamed
-elements are processed with <code><a href='as_label.html'>as_label()</a></code> to build a default
+elements are processed with <code>as_label()</code> to build a default
 name.</p></td>
     </tr>
     <tr>
@@ -197,7 +200,7 @@ last argument is ignored if it is empty.</p></td>
       <th>.preserve_empty</th>
       <td><p>Whether to preserve the empty arguments that
 were not ignored. If <code>TRUE</code>, empty arguments are stored with
-<code><a href='missing_arg.html'>missing_arg()</a></code> values. If <code>FALSE</code> (the default) an error is
+<code>missing_arg()</code> values. If <code>FALSE</code> (the default) an error is
 thrown when an empty argument is detected.</p></td>
     </tr>
     <tr>
@@ -212,7 +215,7 @@ error and indicate what arguments have duplicated names.</p></td>
       <th>.check_assign</th>
       <td><p>Whether to check for <code>&lt;-</code> calls passed in
 dots. When <code>TRUE</code> and a <code>&lt;-</code> call is detected, a warning is
-issued to advise users to use <code>=</code> if they meant to match a
+issued to advise users to use <code><a href='https://rdrr.io/r/base/assignOps.html'>=</a></code> if they meant to match a
 function parameter, or wrap the <code>&lt;-</code> call in braces otherwise.
 This ensures assignments are explicit.</p></td>
     </tr>
@@ -224,36 +227,36 @@ This ensures assignments are explicit.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Let's create a function that takes a variable number of arguments:</span>
-<span class='no'>numeric</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>...</span>) {
-  <span class='no'>dots</span> <span class='kw'>&lt;-</span> <span class='fu'>list2</span>(<span class='no'>...</span>)
-  <span class='no'>num</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='no'>dots</span>)
-  <span class='fu'><a href='set_names.html'>set_names</a></span>(<span class='no'>num</span>, <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>dots</span>))
+<span class='kw'>numeric</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>...</span>) {
+  <span class='kw'>dots</span> <span class='op'>&lt;-</span> <span class='fu'>list2</span>(<span class='kw'>...</span>)
+  <span class='kw'>num</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='kw'>dots</span>)
+  <span class='fu'>set_names</span>(<span class='kw'>num</span>, <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='kw'>dots</span>))
 }
 <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>numeric</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>)</div><div class='output co'>#&gt; [1] 1 2 3</div><div class='input'>
 <span class='co'># The main difference with list(...) is that list2(...) enables</span>
 <span class='co'># the `!!!` syntax to splice lists:</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>2</span>, <span class='fl'>3</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>numeric</a></span>(<span class='fl'>1</span>, !!! <span class='no'>x</span>, <span class='fl'>4</span>)</div><div class='output co'>#&gt; [1] 1 2 3 4</div><div class='input'>
+<span class='kw'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>2</span>, <span class='fl'>3</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>numeric</a></span>(<span class='fl'>1</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span> <span class='kw'>x</span>, <span class='fl'>4</span>)</div><div class='output co'>#&gt; [1] 1 2 3 4</div><div class='input'>
 <span class='co'># As well as unquoting of names:</span>
-<span class='no'>nm</span> <span class='kw'>&lt;-</span> <span class='st'>"yup!"</span>
-<span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>numeric</a></span>(!!<span class='no'>nm</span> <span class='kw'>:=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; yup! 
+<span class='kw'>nm</span> <span class='op'>&lt;-</span> <span class='st'>"yup!"</span>
+<span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>numeric</a></span>(<span class='op'>!</span><span class='op'>!</span><span class='kw'>nm</span> <span class='op'>:=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; yup! 
 #&gt;    1 </div><div class='input'>
 
 <span class='co'># One useful application of splicing is to work around exact and</span>
 <span class='co'># partial matching of arguments. Let's create a function taking</span>
 <span class='co'># named arguments and dots:</span>
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>data</span>, <span class='no'>...</span>) {
-  <span class='fu'>list2</span>(<span class='no'>...</span>)
+<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>data</span>, <span class='kw'>...</span>) {
+  <span class='fu'>list2</span>(<span class='kw'>...</span>)
 }
 
 <span class='co'># You normally cannot pass an argument named `data` through the dots</span>
 <span class='co'># as it will match `fn`'s `data` argument. The splicing syntax</span>
 <span class='co'># provides a workaround:</span>
-<span class='fu'>fn</span>(<span class='st'>"wrong!"</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>letters</span>)  <span class='co'># exact matching of `data`</span></div><div class='output co'>#&gt; [[1]]
+<span class='fu'>fn</span>(<span class='st'>"wrong!"</span>, data = <span class='kw'>letters</span>)  <span class='co'># exact matching of `data`</span></div><div class='output co'>#&gt; [[1]]
 #&gt; [1] "wrong!"
-#&gt; </div><div class='input'><span class='fu'>fn</span>(<span class='st'>"wrong!"</span>, <span class='kw'>dat</span> <span class='kw'>=</span> <span class='no'>letters</span>)   <span class='co'># partial matching of `data`</span></div><div class='output co'>#&gt; [[1]]
+#&gt; </div><div class='input'><span class='fu'>fn</span>(<span class='st'>"wrong!"</span>, dat = <span class='kw'>letters</span>)   <span class='co'># partial matching of `data`</span></div><div class='output co'>#&gt; [[1]]
 #&gt; [1] "wrong!"
-#&gt; </div><div class='input'><span class='fu'>fn</span>(<span class='no'>some_data</span>, !!!<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>letters</span>))  <span class='co'># no matching</span></div><div class='output co'>#&gt; $data
+#&gt; </div><div class='input'><span class='fu'>fn</span>(<span class='kw'>some_data</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(data = <span class='kw'>letters</span>))  <span class='co'># no matching</span></div><div class='output co'>#&gt; $data
 #&gt;  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
 #&gt; [20] "t" "u" "v" "w" "x" "y" "z"
 #&gt; </div><div class='input'>
@@ -261,7 +264,7 @@ This ensures assignments are explicit.</p></td>
 <span class='co'># Empty arguments trigger an error by default:</span>
 <span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>fn</span>(, ))</div><div class='output co'>#&gt; list()</div><div class='input'>
 <span class='co'># You can choose to preserve empty arguments instead:</span>
-<span class='no'>list3</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>...</span>) <span class='fu'>dots_list</span>(<span class='no'>...</span>, <span class='kw'>.preserve_empty</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='kw'>list3</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>...</span>) <span class='fu'>dots_list</span>(<span class='kw'>...</span>, .preserve_empty = <span class='fl'>TRUE</span>)
 
 <span class='co'># Note how the last empty argument is still ignored because</span>
 <span class='co'># `.ignore_empty` defaults to "trailing":</span>
@@ -269,12 +272,12 @@ This ensures assignments are explicit.</p></td>
 #&gt; 
 #&gt; </div><div class='input'>
 <span class='co'># The list with preserved empty arguments is equivalent to:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='missing_arg.html'>missing_arg</a></span>())</div><div class='output co'>#&gt; [[1]]
+<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'>missing_arg</span>())</div><div class='output co'>#&gt; [[1]]
 #&gt; 
 #&gt; </div><div class='input'>
 
 <span class='co'># Arguments with duplicated names are kept by default:</span>
-<span class='fu'>list2</span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>)</div><div class='output co'>#&gt; $a
+<span class='fu'>list2</span>(a = <span class='fl'>1</span>, a = <span class='fl'>2</span>, b = <span class='fl'>3</span>, b = <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>)</div><div class='output co'>#&gt; $a
 #&gt; [1] 1
 #&gt; 
 #&gt; $a
@@ -293,7 +296,7 @@ This ensures assignments are explicit.</p></td>
 #&gt; [1] 6
 #&gt; </div><div class='input'>
 <span class='co'># Use the `.homonyms` argument to keep only the first of these:</span>
-<span class='fu'>dots_list</span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='st'>"first"</span>)</div><div class='output co'>#&gt; $a
+<span class='fu'>dots_list</span>(a = <span class='fl'>1</span>, a = <span class='fl'>2</span>, b = <span class='fl'>3</span>, b = <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>, .homonyms = <span class='st'>"first"</span>)</div><div class='output co'>#&gt; $a
 #&gt; [1] 1
 #&gt; 
 #&gt; $b
@@ -306,7 +309,7 @@ This ensures assignments are explicit.</p></td>
 #&gt; [1] 6
 #&gt; </div><div class='input'>
 <span class='co'># Or the last:</span>
-<span class='fu'>dots_list</span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='st'>"last"</span>)</div><div class='output co'>#&gt; $a
+<span class='fu'>dots_list</span>(a = <span class='fl'>1</span>, a = <span class='fl'>2</span>, b = <span class='fl'>3</span>, b = <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>, .homonyms = <span class='st'>"last"</span>)</div><div class='output co'>#&gt; $a
 #&gt; [1] 2
 #&gt; 
 #&gt; $b
@@ -319,14 +322,14 @@ This ensures assignments are explicit.</p></td>
 #&gt; [1] 6
 #&gt; </div><div class='input'>
 <span class='co'># Or raise an informative error:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>dots_list</span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>, <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='st'>"error"</span>))</div><div class='output co'>#&gt; Error : Arguments can't have the same name. We found these problems:
+<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>dots_list</span>(a = <span class='fl'>1</span>, a = <span class='fl'>2</span>, b = <span class='fl'>3</span>, b = <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>, .homonyms = <span class='st'>"error"</span>))</div><div class='output co'>#&gt; Error : Arguments can't have the same name. We found these problems:
 #&gt; * Multiple arguments named `a` at positions 1 and 2
 #&gt; * Multiple arguments named `b` at positions 3 and 4</div><div class='input'>
 
 <span class='co'># dots_list() can be configured to warn when a `&lt;-` call is</span>
 <span class='co'># detected:</span>
-<span class='no'>my_list</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>...</span>) <span class='fu'>dots_list</span>(<span class='no'>...</span>, <span class='kw'>.check_assign</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'>my_list</span>(<span class='no'>a</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Using `&lt;-` as argument is often a mistake.</span>
+<span class='kw'>my_list</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>...</span>) <span class='fu'>dots_list</span>(<span class='kw'>...</span>, .check_assign = <span class='fl'>TRUE</span>)
+<span class='fu'>my_list</span>(<span class='kw'>a</span> <span class='op'>&lt;-</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Using `&lt;-` as argument is often a mistake.</span>
 #&gt; <span class='warning'>Do you need to use `=` to match an argument?</span>
 #&gt; <span class='warning'></span>
 #&gt; <span class='warning'>If you really want to use `&lt;-`, please wrap in braces:</span>
@@ -341,18 +344,14 @@ This ensures assignments are explicit.</p></td>
 #&gt; </div><div class='input'>
 <span class='co'># There is no warning if the assignment is wrapped in braces.</span>
 <span class='co'># This requires users to be explicit about their intent:</span>
-<span class='fu'>my_list</span>({ <span class='no'>a</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span> })</div><div class='output co'>#&gt; [[1]]
+<span class='fu'>my_list</span>({ <span class='kw'>a</span> <span class='op'>&lt;-</span> <span class='fl'>1</span> })</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] 1
 #&gt; </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -363,7 +362,7 @@ This ensures assignments are explicit.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

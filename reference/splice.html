@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -43,7 +47,6 @@ dots_splice() is like dots_list() but automatically splices
 list inputs.
 
 " />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -71,7 +74,7 @@ list inputs.
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -135,7 +138,7 @@ list inputs.
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/r-lib/rlang">
+  <a href="https://github.com/r-lib/rlang/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -161,25 +164,25 @@ list inputs.
     <div class="ref-description">
     <p><a href='https://www.tidyverse.org/lifecycle/#questioning'><img src='figures/lifecycle-questioning.svg' alt='Questioning lifecycle'></a></p><ul>
 <li><p><code>splice</code> marks an object to be spliced. It is equivalent to using
-<code>!!!</code> in a function taking <a href='dyn-dots.html'>dynamic dots</a>.</p></li>
-<li><p><code>dots_splice()</code> is like <code><a href='list2.html'>dots_list()</a></code> but automatically splices
+<code>!!!</code> in a function taking dynamic dots.</p></li>
+<li><p><code>dots_splice()</code> is like <code>dots_list()</code> but automatically splices
 list inputs.</p></li>
 </ul>
 
     </div>
 
-    <pre class="usage"><span class='fu'>splice</span>(<span class='no'>x</span>)
+    <pre class="usage"><span class='fu'>splice</span>(<span class='kw'>x</span>)
 
-<span class='fu'>is_spliced</span>(<span class='no'>x</span>)
+<span class='fu'>is_spliced</span>(<span class='kw'>x</span>)
 
-<span class='fu'>is_spliced_bare</span>(<span class='no'>x</span>)
+<span class='fu'>is_spliced_bare</span>(<span class='kw'>x</span>)
 
 <span class='fu'>dots_splice</span>(
-  <span class='no'>...</span>,
-  <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
-  <span class='kw'>.preserve_empty</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>, <span class='st'>"error"</span>),
-  <span class='kw'>.check_assign</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>...</span>,
+  .ignore_empty = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
+  .preserve_empty = <span class='fl'>FALSE</span>,
+  .homonyms = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>, <span class='st'>"error"</span>),
+  .check_assign = <span class='fl'>FALSE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -192,7 +195,7 @@ list inputs.</p></li>
     <tr>
       <th>...</th>
       <td><p>Arguments to collect in a list. These dots are
-<a href='dyn-dots.html'>dynamic</a>.</p></td>
+dynamic.</p></td>
     </tr>
     <tr>
       <th>.ignore_empty</th>
@@ -204,7 +207,7 @@ last argument is ignored if it is empty.</p></td>
       <th>.preserve_empty</th>
       <td><p>Whether to preserve the empty arguments that
 were not ignored. If <code>TRUE</code>, empty arguments are stored with
-<code><a href='missing_arg.html'>missing_arg()</a></code> values. If <code>FALSE</code> (the default) an error is
+<code>missing_arg()</code> values. If <code>FALSE</code> (the default) an error is
 thrown when an empty argument is detected.</p></td>
     </tr>
     <tr>
@@ -219,7 +222,7 @@ error and indicate what arguments have duplicated names.</p></td>
       <th>.check_assign</th>
       <td><p>Whether to check for <code>&lt;-</code> calls passed in
 dots. When <code>TRUE</code> and a <code>&lt;-</code> call is detected, a warning is
-issued to advise users to use <code>=</code> if they meant to match a
+issued to advise users to use <code><a href='https://rdrr.io/r/base/assignOps.html'>=</a></code> if they meant to match a
 function parameter, or wrap the <code>&lt;-</code> call in braces otherwise.
 This ensures assignments are explicit.</p></td>
     </tr>
@@ -231,21 +234,21 @@ This ensures assignments are explicit.</p></td>
 
 
 <p>The <code>!!!</code> operator works differently in <em>standard</em> functions taking
-dots with <code><a href='list2.html'>dots_list()</a></code> than in <em>quoting</em> functions taking dots
-with <code><a href='nse-defuse.html'>enexprs()</a></code> or <code><a href='nse-defuse.html'>enquos()</a></code>.</p><ul>
+dots with <code>dots_list()</code> than in <em>quoting</em> functions taking dots
+with <code>enexprs()</code> or <code>enquos()</code>.</p><ul>
 <li><p>In quoting functions <code>!!!</code> disaggregates its argument (let's call
 it <code>x</code>) into as many objects as there are elements in
-<code>x</code>. E.g. <code><a href='nse-defuse.html'>quo(foo(!!! c(1, 2)))</a></code> is completely equivalent to
-<code><a href='nse-defuse.html'>quo(foo(1, 2))</a></code>. The creation of those separate objects has an
+<code>x</code>. E.g. <code>quo(foo(!!! c(1, 2)))</code> is completely equivalent to
+<code>quo(foo(1, 2))</code>. The creation of those separate objects has an
 overhead but is typically not important when manipulating calls
 because function calls typically take a small number of
 arguments.</p></li>
 <li><p>In standard functions, disaggregating the spliced collection
 would have a negative performance impact in cases where
-<code><a href='list2.html'>dots_list()</a></code> is used to build up data structures from user
+<code>dots_list()</code> is used to build up data structures from user
 inputs. To avoid this spliced inputs are marked with <code>splice()</code>
 and the final list is built with (the equivalent of)
-<code><a href='flatten.html'>flatten_if(dots, is_spliced)</a></code>.</p></li>
+<code>flatten_if(dots, is_spliced)</code>.</p></li>
 </ul>
 
 <p>Most of the time you should not care about the difference. However
@@ -253,14 +256,12 @@ if you use a standard function taking tidy dots within a quoting
 function, the <code>!!!</code> operator will disaggregate its argument because
 the behaviour of the quasiquoting function has priority. You might
 then observe some performance cost in edge cases. Here is one
-example where this would happen:</p><pre>purrr::rerun(10, dplyr::bind_rows(!!! x))
-</pre>
+example where this would happen:</p><pre><span class='kw'>purrr</span>::<span class='fu'><a href='https://purrr.tidyverse.org/reference/rerun.html'>rerun</a></span>(<span class='fl'>10</span>, <span class='kw'>dplyr</span>::<span class='fu'>bind_rows</span>(<span class='op'>!</span><span class='op'>!</span><span class='op'>!</span> <span class='kw'>x</span>))</pre>
 
 <p><code><a href='https://purrr.tidyverse.org/reference/rerun.html'>purrr::rerun()</a></code> is a quoting function and <code>dplyr::bind_rows()</code> is
 a standard function. Because <code>bind_rows()</code> is called <em>inside</em>
 <code>rerun()</code>, the list <code>x</code> will be disaggregated into a pairlist of
-arguments. To avoid this you can use <code>splice()</code> instead:</p><pre>purrr::rerun(10, dplyr::bind_rows(splice(x)))
-</pre>
+arguments. To avoid this you can use <code>splice()</code> instead:</p><pre><span class='kw'>purrr</span>::<span class='fu'><a href='https://purrr.tidyverse.org/reference/rerun.html'>rerun</a></span>(<span class='fl'>10</span>, <span class='kw'>dplyr</span>::<span class='fu'>bind_rows</span>(<span class='fu'>splice</span>(<span class='kw'>x</span>)))</pre>
 
     <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
 
@@ -268,9 +269,9 @@ arguments. To avoid this you can use <code>splice()</code> instead:</p><pre>purr
 
 <ul>
 <li><p><code>dots_splice()</code> is in the questioning stage. It is part of our
-experiments with dots semantics. Compared to <code><a href='list2.html'>dots_list()</a></code>,
+experiments with dots semantics. Compared to <code>dots_list()</code>,
 <code>dots_splice()</code> automatically splices lists. We now lean towards
-adopting a single type of dots semantics (those of <code><a href='list2.html'>dots_list()</a></code>)
+adopting a single type of dots semantics (those of <code>dots_list()</code>)
 where splicing is explicit.</p></li>
 <li><p><code>splice()</code> is in the questioning stage. It is not clear whether it is
 really needed as there are other ways to avoid the performance
@@ -279,14 +280,10 @@ issue discussed above.</p></li>
 
 
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#standard-splicing-versus-quoting-splicing">Standard splicing versus quoting splicing</a></li>
-      <li><a href="#life-cycle">Life cycle</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -297,7 +294,7 @@ issue discussed above.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -52,7 +56,6 @@ interrupt().
 
 
 Use cnd_type() to determine the type of a condition." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -80,7 +83,7 @@ Use cnd_type() to determine the type of a condition." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -144,7 +147,7 @@ Use cnd_type() to determine the type of a condition." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/r-lib/rlang">
+  <a href="https://github.com/r-lib/rlang/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -170,30 +173,30 @@ Use cnd_type() to determine the type of a condition." />
     <div class="ref-description">
     <p>The type of signal depends on the class of the condition:</p><ul>
 <li><p>A message is signalled if the condition inherits from
-<code>"message"</code>. This is equivalent to signalling with <code><a href='abort.html'>inform()</a></code> or
+<code>"message"</code>. This is equivalent to signalling with <code>inform()</code> or
 <code><a href='https://rdrr.io/r/base/message.html'>base::message()</a></code>.</p></li>
 <li><p>A warning is signalled if the condition inherits from
-<code>"warning"</code>. This is equivalent to signalling with <code><a href='abort.html'>warn()</a></code> or
+<code>"warning"</code>. This is equivalent to signalling with <code>warn()</code> or
 <code><a href='https://rdrr.io/r/base/warning.html'>base::warning()</a></code>.</p></li>
 <li><p>An error is signalled if the condition inherits from
-<code>"error"</code>. This is equivalent to signalling with <code><a href='abort.html'>abort()</a></code> or
+<code>"error"</code>. This is equivalent to signalling with <code>abort()</code> or
 <code><a href='https://rdrr.io/r/base/stop.html'>base::stop()</a></code>.</p></li>
 <li><p>An interrupt is signalled if the condition inherits from
 <code>"interrupt"</code>. This is equivalent to signalling with
-<code><a href='abort.html'>interrupt()</a></code>.</p></li>
+<code>interrupt()</code>.</p></li>
 </ul>
 
-<p>Use <code><a href='cnd_type.html'>cnd_type()</a></code> to determine the type of a condition.</p>
+<p>Use <code>cnd_type()</code> to determine the type of a condition.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cnd_signal</span>(<span class='no'>cnd</span>, <span class='no'>.cnd</span>, <span class='no'>.mufflable</span>)</pre>
+    <pre class="usage"><span class='fu'>cnd_signal</span>(<span class='kw'>cnd</span>, <span class='kw'>.cnd</span>, <span class='kw'>.mufflable</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>cnd</th>
-      <td><p>A condition object (see <code><a href='cnd.html'>cnd()</a></code>).</p></td>
+      <td><p>A condition object (see <code>cnd()</code>).</p></td>
     </tr>
     <tr>
       <th>.cnd, .mufflable</th>
@@ -211,33 +214,28 @@ Use cnd_type() to determine the type of a condition." />
 longer has any effect. Non-critical conditions are always
 signalled with a muffle restart.</p></li>
 <li><p>Creating a condition object with <code>cnd_signal()</code> is deprecated as
-of rlang 0.3.0. Please use <code><a href='abort.html'>signal()</a></code> instead.</p></li>
+of rlang 0.3.0. Please use <code>signal()</code> instead.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='abort.html'>abort()</a></code>, <code><a href='abort.html'>warn()</a></code> and <code><a href='abort.html'>inform()</a></code> for creating and
-signalling structured R conditions. See <code><a href='with_handlers.html'>with_handlers()</a></code> for
+    <div class='dont-index'><p><code>abort()</code>, <code>warn()</code> and <code>inform()</code> for creating and
+signalling structured R conditions. See <code>with_handlers()</code> for
 establishing condition handlers.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># The type of signal depends on the class. If the condition</span>
 <span class='co'># inherits from "warning", a warning is issued:</span>
-<span class='no'>cnd</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cnd.html'>warning_cnd</a></span>(<span class='st'>"my_warning_class"</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"This is a warning"</span>)
-<span class='fu'>cnd_signal</span>(<span class='no'>cnd</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: This is a warning</span></div><div class='input'>
+<span class='kw'>cnd</span> <span class='op'>&lt;-</span> <span class='fu'>warning_cnd</span>(<span class='st'>"my_warning_class"</span>, message = <span class='st'>"This is a warning"</span>)
+<span class='fu'>cnd_signal</span>(<span class='kw'>cnd</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: This is a warning</span></div><div class='input'>
 <span class='co'># If it inherits from "error", an error is raised:</span>
-<span class='no'>cnd</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cnd.html'>error_cnd</a></span>(<span class='st'>"my_error_class"</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"This is an error"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>cnd_signal</span>(<span class='no'>cnd</span>))</div><div class='output co'>#&gt; Error : This is an error</div></pre>
+<span class='kw'>cnd</span> <span class='op'>&lt;-</span> <span class='fu'>error_cnd</span>(<span class='st'>"my_error_class"</span>, message = <span class='st'>"This is an error"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>cnd_signal</span>(<span class='kw'>cnd</span>))</div><div class='output co'>#&gt; Error : This is an error</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#lifecycle">Lifecycle</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -248,7 +246,7 @@ establishing condition handlers.</p></div>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

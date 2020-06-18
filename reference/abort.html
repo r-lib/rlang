@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -49,7 +53,6 @@ stored in the condition object and can be examined by handlers.
 interrupt() allows R code to simulate a user interrupt of the
 kind that is signalled with Ctrl-C. It is currently not possible
 to create custom interrupt condition objects." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -77,7 +80,7 @@ to create custom interrupt condition objects." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -141,7 +144,7 @@ to create custom interrupt condition objects." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/r-lib/rlang">
+  <a href="https://github.com/r-lib/rlang/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -181,19 +184,19 @@ to create custom interrupt condition objects.</p>
     </div>
 
     <pre class="usage"><span class='fu'>abort</span>(
-  <span class='kw'>message</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>class</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>trace</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>parent</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>.subclass</span>
+  message = <span class='kw'>NULL</span>,
+  class = <span class='kw'>NULL</span>,
+  <span class='kw'>...</span>,
+  trace = <span class='kw'>NULL</span>,
+  parent = <span class='kw'>NULL</span>,
+  <span class='kw'>.subclass</span>
 )
 
-<span class='fu'>warn</span>(<span class='kw'>message</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>class</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='no'>.subclass</span>)
+<span class='fu'>warn</span>(message = <span class='kw'>NULL</span>, class = <span class='kw'>NULL</span>, <span class='kw'>...</span>, <span class='kw'>.subclass</span>)
 
-<span class='fu'>inform</span>(<span class='kw'>message</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>class</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>.subclass</span>)
+<span class='fu'>inform</span>(message = <span class='kw'>NULL</span>, class = <span class='kw'>NULL</span>, <span class='kw'>...</span>, file = <span class='kw'>NULL</span>, <span class='kw'>.subclass</span>)
 
-<span class='fu'>signal</span>(<span class='no'>message</span>, <span class='no'>class</span>, <span class='no'>...</span>, <span class='no'>.subclass</span>)
+<span class='fu'>signal</span>(<span class='kw'>message</span>, <span class='kw'>class</span>, <span class='kw'>...</span>, <span class='kw'>.subclass</span>)
 
 <span class='fu'>interrupt</span>()</pre>
 
@@ -204,7 +207,7 @@ to create custom interrupt condition objects.</p>
       <th>message</th>
       <td><p>The message to display.</p>
 <p>If not supplied, it is expected that the message is generated
-lazily through <a href='cnd_message.html'>conditionMessage()</a>. In that case,
+lazily through conditionMessage(). In that case,
 <code>class</code> must be supplied. Only <code>inform()</code> allows empty messages
 as it is occasionally useful to build user output incrementally.</p></td>
     </tr>
@@ -219,7 +222,7 @@ to selectively handle the conditions signalled by your functions.</p></td>
     </tr>
     <tr>
       <th>trace</th>
-      <td><p>A <code>trace</code> object created by <code><a href='trace_back.html'>trace_back()</a></code>.</p></td>
+      <td><p>A <code>trace</code> object created by <code>trace_back()</code>.</p></td>
     </tr>
     <tr>
       <th>parent</th>
@@ -252,12 +255,12 @@ still filter out the messages easily by redirecting <code>stderr</code>.</p></td
 information by default. This saves you from typing <code>call. = FALSE</code>
 and produces cleaner error messages.</p>
 <p>A backtrace is always saved into error objects. You can print a
-simplified backtrace of the last error by calling <code><a href='last_error.html'>last_error()</a></code>
+simplified backtrace of the last error by calling <code>last_error()</code>
 and a full backtrace with <code><a href='https://rdrr.io/r/base/summary.html'>summary(last_error())</a></code>.</p>
 <p>You can also display a backtrace with the error message by setting
-the option <code><a href='rlang_backtrace_on_error.html'>rlang_backtrace_on_error</a></code>. It supports the following
+the option <code>rlang_backtrace_on_error</code>. It supports the following
 values:</p><ul>
-<li><p><code>"reminder"</code>: Invite users to call <code><a href='last_error.html'>rlang::last_error()</a></code> to see a
+<li><p><code>"reminder"</code>: Invite users to call <code><a href='https://rlang.r-lib.org/reference/last_error.html'>rlang::last_error()</a></code> to see a
 backtrace.</p></li>
 <li><p><code>"branch"</code>: Display a simplified backtrace.</p></li>
 <li><p><code>"collapse"</code>: Display a collapsed backtrace tree.</p></li>
@@ -278,11 +281,11 @@ signalled with a <code>"resume"</code> restart. This is however not
 guaranteed.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='with_abort.html'>with_abort()</a></code> to convert all errors to rlang errors.</p></div>
+    <div class='dont-index'><p><code>with_abort()</code> to convert all errors to rlang errors.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># These examples are guarded to avoid throwing errors</span>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 
 <span class='co'># Signal an error with a message just like stop():</span>
 <span class='fu'>abort</span>(<span class='st'>"Something bad happened"</span>)
@@ -293,21 +296,21 @@ guaranteed.</p>
 <span class='co'># This will allow your users to handle the error selectively</span>
 <span class='fu'><a href='https://rdrr.io/r/base/conditions.html'>tryCatch</a></span>(
   <span class='fu'>somepkg_function</span>(),
-  <span class='kw'>somepkg_bad_error</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>err</span>) {
-    <span class='fu'>warn</span>(<span class='fu'><a href='https://rdrr.io/r/base/conditions.html'>conditionMessage</a></span>(<span class='no'>err</span>)) <span class='co'># Demote the error to a warning</span>
+  somepkg_bad_error = <span class='fu'>function</span>(<span class='kw'>err</span>) {
+    <span class='fu'>warn</span>(<span class='fu'><a href='https://rdrr.io/r/base/conditions.html'>conditionMessage</a></span>(<span class='kw'>err</span>)) <span class='co'># Demote the error to a warning</span>
     <span class='fl'>NA</span>                          <span class='co'># Return an alternative value</span>
   }
 )
 
 <span class='co'># You can also specify metadata that will be stored in the condition:</span>
-<span class='fu'>abort</span>(<span class='st'>"Something bad happened"</span>, <span class='st'>"somepkg_bad_error"</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>)
+<span class='fu'>abort</span>(<span class='st'>"Something bad happened"</span>, <span class='st'>"somepkg_bad_error"</span>, data = <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>)
 
 <span class='co'># This data can then be consulted by user handlers:</span>
 <span class='fu'><a href='https://rdrr.io/r/base/conditions.html'>tryCatch</a></span>(
   <span class='fu'>somepkg_function</span>(),
-  <span class='kw'>somepkg_bad_error</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>err</span>) {
+  somepkg_bad_error = <span class='fu'>function</span>(<span class='kw'>err</span>) {
     <span class='co'># Compute an alternative return value with the data:</span>
-    <span class='fu'>recover_error</span>(<span class='no'>err</span>$<span class='no'>data</span>)
+    <span class='fu'>recover_error</span>(<span class='kw'>err</span><span class='op'>$</span><span class='kw'>data</span>)
   }
 )
 
@@ -315,35 +318,29 @@ guaranteed.</p>
 <span class='co'># errors and rethrow them with a more meaningful message. Pass on</span>
 <span class='co'># the caught error as `parent` to get a nice decomposition of</span>
 <span class='co'># errors and backtraces:</span>
-<span class='no'>file</span> <span class='kw'>&lt;-</span> <span class='st'>"http://foo.bar/baz"</span>
+<span class='kw'>file</span> <span class='op'>&lt;-</span> <span class='st'>"http://foo.bar/baz"</span>
 <span class='fu'><a href='https://rdrr.io/r/base/conditions.html'>tryCatch</a></span>(
-  <span class='fu'>download</span>(<span class='no'>file</span>),
-  <span class='kw'>error</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>err</span>) {
-    <span class='no'>msg</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"Can't download `%s`"</span>, <span class='no'>file</span>)
-    <span class='fu'>abort</span>(<span class='no'>msg</span>, <span class='kw'>parent</span> <span class='kw'>=</span> <span class='no'>err</span>)
+  <span class='fu'>download</span>(<span class='kw'>file</span>),
+  error = <span class='fu'>function</span>(<span class='kw'>err</span>) {
+    <span class='kw'>msg</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"Can't download `%s`"</span>, <span class='kw'>file</span>)
+    <span class='fu'>abort</span>(<span class='kw'>msg</span>, parent = <span class='kw'>err</span>)
 })
 
 <span class='co'># Unhandled errors are saved automatically by `abort()` and can be</span>
 <span class='co'># retrieved with `last_error()`. The error prints with a simplified</span>
 <span class='co'># backtrace:</span>
 <span class='fu'>abort</span>(<span class='st'>"Saved error?"</span>)
-<span class='fu'><a href='last_error.html'>last_error</a></span>()
+<span class='fu'>last_error</span>()
 
 <span class='co'># Use `summary()` to print the full backtrace and the condition fields:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'><a href='last_error.html'>last_error</a></span>())
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'>last_error</span>())
 
 }</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#backtrace">Backtrace</a></li>
-      <li><a href="#mufflable-conditions">Mufflable conditions</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -354,7 +351,7 @@ guaranteed.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

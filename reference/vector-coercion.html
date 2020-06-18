@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -46,7 +50,6 @@ will never attempt any kind of parsing. E.g. they will not try to
 figure out if a character vector represents integers or booleans.
 Finally, they treat attributes consistently, unlike the base R
 functions: all attributes except names are removed." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -74,7 +77,7 @@ functions: all attributes except names are removed." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -138,7 +141,7 @@ functions: all attributes except names are removed." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/r-lib/rlang">
+  <a href="https://github.com/r-lib/rlang/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -174,17 +177,17 @@ Finally, they treat attributes consistently, unlike the base R
 functions: all attributes except names are removed.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>as_logical</span>(<span class='no'>x</span>)
+    <pre class="usage"><span class='fu'>as_logical</span>(<span class='kw'>x</span>)
 
-<span class='fu'>as_integer</span>(<span class='no'>x</span>)
+<span class='fu'>as_integer</span>(<span class='kw'>x</span>)
 
-<span class='fu'>as_double</span>(<span class='no'>x</span>)
+<span class='fu'>as_double</span>(<span class='kw'>x</span>)
 
-<span class='fu'>as_complex</span>(<span class='no'>x</span>)
+<span class='fu'>as_complex</span>(<span class='kw'>x</span>)
 
-<span class='fu'>as_character</span>(<span class='no'>x</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>as_character</span>(<span class='kw'>x</span>, encoding = <span class='kw'>NULL</span>)
 
-<span class='fu'>as_list</span>(<span class='no'>x</span>)</pre>
+<span class='fu'>as_list</span>(<span class='kw'>x</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -212,7 +215,7 @@ declarative, no encoding conversion is performed.</p></td>
 
 <ul>
 <li><p>To logical vectors: Integer and integerish double vectors. See
-<code><a href='is_integerish.html'>is_integerish()</a></code>.</p></li>
+<code>is_integerish()</code>.</p></li>
 <li><p>To integer vectors: Logical and integerish double vectors.</p></li>
 <li><p>To double vectors: Logical and integer vectors.</p></li>
 <li><p>To complex vectors: Logical, integer and double vectors.</p></li>
@@ -223,11 +226,11 @@ declarative, no encoding conversion is performed.</p></td>
     
 
 
-<p><code>as_character()</code> and <code><a href='as_string.html'>as_string()</a></code> have an optional <code>encoding</code>
+<p><code>as_character()</code> and <code>as_string()</code> have an optional <code>encoding</code>
 argument to specify the encoding. R uses this information for
 internal handling of strings and character vectors. Note that this
 is only declarative, no encoding conversion is attempted.</p>
-<p>Note that only <code><a href='as_string.html'>as_string()</a></code> can coerce symbols to a scalar
+<p>Note that only <code>as_string()</code> can coerce symbols to a scalar
 character vector. This makes the code more explicit and adds an
 extra type check.</p>
     <h2 class="hasAnchor" id="coercion-to-lists"><a class="anchor" href="#coercion-to-lists"></a>Coercion to lists</h2>
@@ -247,7 +250,7 @@ are an example of dictionary type). Unlike <code><a href='https://rdrr.io/r/base
 that the underlying objects has to be copied. This has no
 performance implications in the case of lists because this is a
 shallow copy: only the list structure is copied, not the contents
-(see <code><a href='duplicate.html'>duplicate()</a></code>). However, be aware that atomic vectors
+(see <code>duplicate()</code>). However, be aware that atomic vectors
 containing large amounts of data will have to be copied.</p>
 <p>In general, any attribute modification creates a copy, which is why
 it is better to avoid using attributes with heavy atomic vectors.
@@ -257,35 +260,35 @@ place and has side-effects.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Coercing atomic vectors removes attributes with both base R and rlang:</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/structure.html'>structure</a></span>(<span class='fl'>TRUE</span>, <span class='kw'>class</span> <span class='kw'>=</span> <span class='st'>"foo"</span>, <span class='kw'>bar</span> <span class='kw'>=</span> <span class='st'>"baz"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/logical.html'>as.logical</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='kw'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/structure.html'>structure</a></span>(<span class='fl'>TRUE</span>, class = <span class='st'>"foo"</span>, bar = <span class='st'>"baz"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/logical.html'>as.logical</a></span>(<span class='kw'>x</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># But coercing lists preserves attributes in base R but not rlang:</span>
-<span class='no'>l</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/structure.html'>structure</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>TRUE</span>), <span class='kw'>class</span> <span class='kw'>=</span> <span class='st'>"foo"</span>, <span class='kw'>bar</span> <span class='kw'>=</span> <span class='st'>"baz"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/list.html'>as.list</a></span>(<span class='no'>l</span>)</div><div class='output co'>#&gt; [[1]]
+<span class='kw'>l</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/structure.html'>structure</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>TRUE</span>), class = <span class='st'>"foo"</span>, bar = <span class='st'>"baz"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/list.html'>as.list</a></span>(<span class='kw'>l</span>)</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] TRUE
 #&gt; 
 #&gt; attr(,"class")
 #&gt; [1] "foo"
 #&gt; attr(,"bar")
-#&gt; [1] "baz"</div><div class='input'><span class='fu'>as_list</span>(<span class='no'>l</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: `as_list()` is deprecated as of rlang 0.4.0</span>
+#&gt; [1] "baz"</div><div class='input'><span class='fu'>as_list</span>(<span class='kw'>l</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: `as_list()` is deprecated as of rlang 0.4.0</span>
 #&gt; <span class='warning'>Please use `vctrs::vec_cast()` instead.</span>
 #&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once per session.</span><span></span></div><div class='output co'>#&gt; [[1]]
 #&gt; [1] TRUE
 #&gt; </div><div class='input'>
 <span class='co'># Implicit conversions are performed in base R but not rlang:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/logical.html'>as.logical</a></span>(<span class='no'>l</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'>as_logical</span>(<span class='no'>l</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/logical.html'>as.logical</a></span>(<span class='kw'>l</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'>as_logical</span>(<span class='kw'>l</span>)
 }
 
 <span class='co'># Conversion methods are bypassed, making the result of the</span>
 <span class='co'># coercion more predictable:</span>
-<span class='no'>as.list.foo</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='st'>"wrong"</span>
-<span class='fu'><a href='https://rdrr.io/r/base/list.html'>as.list</a></span>(<span class='no'>l</span>)</div><div class='output co'>#&gt; [1] "wrong"</div><div class='input'><span class='fu'>as_list</span>(<span class='no'>l</span>)</div><div class='output co'>#&gt; [[1]]
+<span class='kw'>as.list.foo</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>x</span>) <span class='st'>"wrong"</span>
+<span class='fu'><a href='https://rdrr.io/r/base/list.html'>as.list</a></span>(<span class='kw'>l</span>)</div><div class='output co'>#&gt; [1] "wrong"</div><div class='input'><span class='fu'>as_list</span>(<span class='kw'>l</span>)</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] TRUE
 #&gt; </div><div class='input'>
 <span class='co'># The input is never parsed. E.g. character vectors of numbers are</span>
 <span class='co'># not converted to numeric types:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span>(<span class='st'>"33"</span>)</div><div class='output co'>#&gt; [1] 33</div><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span>(<span class='st'>"33"</span>)</div><div class='output co'>#&gt; [1] 33</div><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='fu'>as_integer</span>(<span class='st'>"33"</span>)
 }
 
@@ -293,9 +296,9 @@ place and has side-effects.</p>
 <span class='co'># With base R tools there is no way to convert an environment to a</span>
 <span class='co'># list without either triggering method dispatch, or changing the</span>
 <span class='co'># original environment. as_list() makes it easy:</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/structure.html'>structure</a></span>(<span class='fu'><a href='as_environment.html'>as_environment</a></span>(<span class='no'>mtcars</span>[<span class='fl'>1</span>:<span class='fl'>2</span>]), <span class='kw'>class</span> <span class='kw'>=</span> <span class='st'>"foobar"</span>)
-<span class='no'>as.list.foobar</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'><a href='abort.html'>abort</a></span>(<span class='st'>"dont call me"</span>)
-<span class='fu'>as_list</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; $cyl
+<span class='kw'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/structure.html'>structure</a></span>(<span class='fu'>as_environment</span>(<span class='kw'>mtcars</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>]), class = <span class='st'>"foobar"</span>)
+<span class='kw'>as.list.foobar</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>x</span>) <span class='fu'>abort</span>(<span class='st'>"dont call me"</span>)
+<span class='fu'>as_list</span>(<span class='kw'>x</span>)</div><div class='output co'>#&gt; $cyl
 #&gt;  [1] 6 6 4 6 8 6 8 4 4 6 6 8 8 8 8 8 8 4 4 4 4 8 8 8 8 4 4 4 8 6 8 4
 #&gt; 
 #&gt; $mpg
@@ -304,18 +307,10 @@ place and has side-effects.</p>
 #&gt; [31] 15.0 21.4
 #&gt; </div></span></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#lifecycle">Lifecycle</a></li>
-      <li><a href="#coercion-to-logical-and-numeric-atomic-vectors">Coercion to logical and numeric atomic vectors</a></li>
-      <li><a href="#coercion-to-character-vectors">Coercion to character vectors</a></li>
-      <li><a href="#coercion-to-lists">Coercion to lists</a></li>
-      <li><a href="#effects-of-removing-attributes">Effects of removing attributes</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -326,7 +321,7 @@ place and has side-effects.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

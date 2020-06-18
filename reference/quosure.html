@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -51,7 +55,6 @@ with quosures and throw an error with other types of input.
 Test if an object is a quosure with is_quosure(). If you know an
 object is a quosure, use the quo_ prefixed predicates to check
 its contents, quo_is_missing(), quo_is_symbol(), etc." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -79,7 +82,7 @@ its contents, quo_is_missing(), quo_is_symbol(), etc." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -143,7 +146,7 @@ its contents, quo_is_missing(), quo_is_symbol(), etc." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/r-lib/rlang">
+  <a href="https://github.com/r-lib/rlang/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -167,13 +170,13 @@ its contents, quo_is_missing(), quo_is_symbol(), etc." />
     </div>
 
     <div class="ref-description">
-    <p>A quosure is a type of <a href='nse-defuse.html'>quoted expression</a> that includes
+    <p>A quosure is a type of quoted expression that includes
 a reference to the context where it was created. A quosure is thus
 guaranteed to evaluate in its original environment and can refer to
 local objects.</p>
 <p>You can access the quosure components (its expression and its
 environment) with:</p><ul>
-<li><p><code><a href='set_expr.html'>get_expr()</a></code> and <code><a href='get_env.html'>get_env()</a></code>. These getters also support other
+<li><p><code>get_expr()</code> and <code>get_env()</code>. These getters also support other
 kinds of objects such as formulas.</p></li>
 <li><p><code>quo_get_expr()</code> and <code>quo_get_env()</code>. These getters only work
 with quosures and throw an error with other types of input.</p></li>
@@ -184,25 +187,25 @@ object is a quosure, use the <code>quo_</code> prefixed predicates to check
 its contents, <code>quo_is_missing()</code>, <code>quo_is_symbol()</code>, etc.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>is_quosure</span>(<span class='no'>x</span>)
+    <pre class="usage"><span class='fu'>is_quosure</span>(<span class='kw'>x</span>)
 
-<span class='fu'>quo_is_missing</span>(<span class='no'>quo</span>)
+<span class='fu'>quo_is_missing</span>(<span class='kw'>quo</span>)
 
-<span class='fu'>quo_is_symbol</span>(<span class='no'>quo</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>quo_is_symbol</span>(<span class='kw'>quo</span>, name = <span class='kw'>NULL</span>)
 
-<span class='fu'>quo_is_call</span>(<span class='no'>quo</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ns</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>quo_is_call</span>(<span class='kw'>quo</span>, name = <span class='kw'>NULL</span>, n = <span class='kw'>NULL</span>, ns = <span class='kw'>NULL</span>)
 
-<span class='fu'>quo_is_symbolic</span>(<span class='no'>quo</span>)
+<span class='fu'>quo_is_symbolic</span>(<span class='kw'>quo</span>)
 
-<span class='fu'>quo_is_null</span>(<span class='no'>quo</span>)
+<span class='fu'>quo_is_null</span>(<span class='kw'>quo</span>)
 
-<span class='fu'>quo_get_expr</span>(<span class='no'>quo</span>)
+<span class='fu'>quo_get_expr</span>(<span class='kw'>quo</span>)
 
-<span class='fu'>quo_get_env</span>(<span class='no'>quo</span>)
+<span class='fu'>quo_get_env</span>(<span class='kw'>quo</span>)
 
-<span class='fu'>quo_set_expr</span>(<span class='no'>quo</span>, <span class='no'>expr</span>)
+<span class='fu'>quo_set_expr</span>(<span class='kw'>quo</span>, <span class='kw'>expr</span>)
 
-<span class='fu'>quo_set_env</span>(<span class='no'>quo</span>, <span class='no'>env</span>)</pre>
+<span class='fu'>quo_set_env</span>(<span class='kw'>quo</span>, <span class='kw'>env</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -229,11 +232,11 @@ match.</p></td>
       <th>ns</th>
       <td><p>The namespace of the call. If <code>NULL</code>, the namespace
 doesn't participate in the pattern-matching. If an empty string
-<code>""</code> and <code>x</code> is a namespaced call, <code><a href='is_call.html'>is_call()</a></code> returns
-<code>FALSE</code>. If any other string, <code><a href='is_call.html'>is_call()</a></code> checks that <code>x</code> is
+<code>""</code> and <code>x</code> is a namespaced call, <code>is_call()</code> returns
+<code>FALSE</code>. If any other string, <code>is_call()</code> checks that <code>x</code> is
 namespaced within <code>ns</code>.</p>
 <p>Can be a character vector of namespaces, in which case the call
-has to match at least one of them, otherwise <code><a href='is_call.html'>is_call()</a></code> returns
+has to match at least one of them, otherwise <code>is_call()</code> returns
 <code>FALSE</code>.</p></td>
     </tr>
     <tr>
@@ -251,19 +254,17 @@ has to match at least one of them, otherwise <code><a href='is_call.html'>is_cal
     
 
 
-<p>A quosure usually does not carry environments for <a href='is_expression.html'>constant objects</a> like strings or numbers. <code><a href='nse-defuse.html'>quo()</a></code> and
-<code><a href='nse-defuse.html'>enquo()</a></code> only capture an environment for <a href='is_expression.html'>symbolic expressions</a>. For instance, all of these return the
-<a href='empty_env.html'>empty environment</a>:</p><pre>quo_get_env(quo("constant"))
-quo_get_env(quo(100))
-quo_get_env(quo(NA))
-</pre>
+<p>A quosure usually does not carry environments for constant objects like strings or numbers. <code>quo()</code> and
+<code>enquo()</code> only capture an environment for symbolic expressions. For instance, all of these return the
+empty environment:</p><pre><span class='fu'>quo_get_env</span>(<span class='fu'>quo</span>(<span class='st'>"constant"</span>))
+<span class='fu'>quo_get_env</span>(<span class='fu'>quo</span>(<span class='fl'>100</span>))
+<span class='fu'>quo_get_env</span>(<span class='fu'>quo</span>(<span class='fl'>NA</span>))</pre>
 
 <p>On the other hand, quosures capture the environment of symbolic
 expressions, i.e. expressions whose meaning depends on the
 environment in which they are evaluated and what objects are
-defined there:</p><pre>quo_get_env(quo(some_object))
-quo_get_env(quo(some_function()))
-</pre>
+defined there:</p><pre><span class='fu'>quo_get_env</span>(<span class='fu'>quo</span>(<span class='kw'>some_object</span>))
+<span class='fu'>quo_get_env</span>(<span class='fu'>quo</span>(<span class='fu'>some_function</span>()))</pre>
 
     <h2 class="hasAnchor" id="empty-quosures"><a class="anchor" href="#empty-quosures"></a>Empty quosures</h2>
 
@@ -271,9 +272,9 @@ quo_get_env(quo(some_function()))
 
 
 <p>When missing arguments are captured as quosures, either through
-<code><a href='nse-defuse.html'>enquo()</a></code> or <code><a href='nse-defuse.html'>quos()</a></code>, they are returned as an empty quosure. These
-quosures contain the <a href='missing_arg.html'>missing argument</a> and typically
-have the <a href='empty_env.html'>empty environment</a> as enclosure.</p>
+<code>enquo()</code> or <code>quos()</code>, they are returned as an empty quosure. These
+quosures contain the missing argument and typically
+have the empty environment as enclosure.</p>
     <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
 
     
@@ -285,48 +286,41 @@ have the <a href='empty_env.html'>empty environment</a> as enclosure.</p>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='nse-defuse.html'>quo()</a></code> for creating quosures by quotation; <code><a href='as_quosure.html'>as_quosure()</a></code>
-and <code><a href='as_quosure.html'>new_quosure()</a></code> for constructing quosures manually.</p></div>
+    <div class='dont-index'><p><code>quo()</code> for creating quosures by quotation; <code>as_quosure()</code>
+and <code>new_quosure()</code> for constructing quosures manually.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='no'>my_quosure</span>)
-<span class='no'>quo</span></div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
+    <pre class="examples"><div class='input'><span class='kw'>quo</span> <span class='op'>&lt;-</span> <span class='fu'>quo</span>(<span class='kw'>my_quosure</span>)
+<span class='kw'>quo</span></div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^my_quosure</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7fb7aacf6560</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7ffb18612e88</span><span></div><div class='input'>
 
 <span class='co'># Access and set the components of a quosure:</span>
-<span class='fu'>quo_get_expr</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; my_quosure</div><div class='input'><span class='fu'>quo_get_env</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7fb7aacf6560&gt;</div><div class='input'>
-<span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'>quo_set_expr</span>(<span class='no'>quo</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>baz</span>))
-<span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'>quo_set_env</span>(<span class='no'>quo</span>, <span class='fu'><a href='empty_env.html'>empty_env</a></span>())
-<span class='no'>quo</span></div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
+<span class='fu'>quo_get_expr</span>(<span class='kw'>quo</span>)</div><div class='output co'>#&gt; my_quosure</div><div class='input'><span class='fu'>quo_get_env</span>(<span class='kw'>quo</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7ffb18612e88&gt;</div><div class='input'>
+<span class='kw'>quo</span> <span class='op'>&lt;-</span> <span class='fu'>quo_set_expr</span>(<span class='kw'>quo</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>baz</span>))
+<span class='kw'>quo</span> <span class='op'>&lt;-</span> <span class='fu'>quo_set_env</span>(<span class='kw'>quo</span>, <span class='fu'>empty_env</span>())
+<span class='kw'>quo</span></div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: ^baz
 #&gt; env:  empty</div><div class='input'>
 <span class='co'># Test wether an object is a quosure:</span>
-<span class='fu'>is_quosure</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'>is_quosure</span>(<span class='kw'>quo</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># If it is a quosure, you can use the specialised type predicates</span>
 <span class='co'># to check what is inside it:</span>
-<span class='fu'>quo_is_symbol</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>quo_is_call</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>quo_is_null</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
+<span class='fu'>quo_is_symbol</span>(<span class='kw'>quo</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>quo_is_call</span>(<span class='kw'>quo</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>quo_is_null</span>(<span class='kw'>quo</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
 <span class='co'># quo_is_missing() checks for a special kind of quosure, the one</span>
 <span class='co'># that contains the missing argument:</span>
-<span class='fu'><a href='nse-defuse.html'>quo</a></span>()</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
+<span class='fu'>quo</span>()</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: ^
-#&gt; env:  empty</div><div class='input'><span class='fu'>quo_is_missing</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>())</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>arg</span>) <span class='fu'><a href='nse-defuse.html'>enquo</a></span>(<span class='no'>arg</span>)
+#&gt; env:  empty</div><div class='input'><span class='fu'>quo_is_missing</span>(<span class='fu'>quo</span>())</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>arg</span>) <span class='fu'>enquo</span>(<span class='kw'>arg</span>)
 <span class='fu'>fn</span>()</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: ^
 #&gt; env:  empty</div><div class='input'><span class='fu'>quo_is_missing</span>(<span class='fu'>fn</span>())</div><div class='output co'>#&gt; [1] TRUE</div></span></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#quosured-constants">Quosured constants</a></li>
-      <li><a href="#empty-quosures">Empty quosures</a></li>
-      <li><a href="#life-cycle">Life cycle</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -337,7 +331,7 @@ and <code><a href='as_quosure.html'>new_quosure()</a></code> for constructing qu
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

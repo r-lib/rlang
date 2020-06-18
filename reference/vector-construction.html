@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -44,7 +48,6 @@ the rules described in vector-coercion.
 They use dynamic dots.
 
 " />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -72,7 +75,7 @@ They use dynamic dots.
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -136,7 +139,7 @@ They use dynamic dots.
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/r-lib/rlang">
+  <a href="https://github.com/r-lib/rlang/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -164,23 +167,23 @@ They use dynamic dots.
 <p>The atomic vector constructors are equivalent to <code><a href='https://rdrr.io/r/base/c.html'>c()</a></code> but:</p><ul>
 <li><p>They allow you to be more explicit about the output
 type. Implicit coercions (e.g. from integer to logical) follow
-the rules described in <a href='vector-coercion.html'>vector-coercion</a>.</p></li>
-<li><p>They use <a href='dyn-dots.html'>dynamic dots</a>.</p></li>
+the rules described in vector-coercion.</p></li>
+<li><p>They use dynamic dots.</p></li>
 </ul>
 
     </div>
 
-    <pre class="usage"><span class='fu'>lgl</span>(<span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>lgl</span>(<span class='kw'>...</span>)
 
-<span class='fu'>int</span>(<span class='no'>...</span>)
+<span class='fu'>int</span>(<span class='kw'>...</span>)
 
-<span class='fu'>dbl</span>(<span class='no'>...</span>)
+<span class='fu'>dbl</span>(<span class='kw'>...</span>)
 
-<span class='fu'>cpl</span>(<span class='no'>...</span>)
+<span class='fu'>cpl</span>(<span class='kw'>...</span>)
 
-<span class='fu'>chr</span>(<span class='no'>...</span>)
+<span class='fu'>chr</span>(<span class='kw'>...</span>)
 
-<span class='fu'>bytes</span>(<span class='no'>...</span>)</pre>
+<span class='fu'>bytes</span>(<span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -211,35 +214,31 @@ in a future version. Please splice explicitly with <code>!!!</code>.</p></li>
 <span class='co'># They follow a restricted set of coercion rules:</span>
 <span class='fu'>int</span>(<span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>, <span class='fl'>20</span>)</div><div class='output co'>#&gt; [1]  1  0 20</div><div class='input'>
 <span class='co'># Lists can be spliced:</span>
-<span class='fu'>dbl</span>(<span class='fl'>10</span>, !!! <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>1</span>, <span class='fl'>2L</span>), <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] 10  1  2  1</div><div class='input'>
+<span class='fu'>dbl</span>(<span class='fl'>10</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>1</span>, <span class='fl'>2L</span>), <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] 10  1  2  1</div><div class='input'>
 
 <span class='co'># They splice names a bit differently than c(). The latter</span>
 <span class='co'># automatically composes inner and outer names:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>A</span> <span class='kw'>=</span> <span class='fl'>10</span>), <span class='kw'>b</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>C</span> <span class='kw'>=</span> <span class='fl'>30</span>))</div><div class='output co'>#&gt; a.A b.B b.C 
+<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(a = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(A = <span class='fl'>10</span>), b = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(B = <span class='fl'>20</span>, C = <span class='fl'>30</span>))</div><div class='output co'>#&gt; a.A b.B b.C 
 #&gt;  10  20  30 </div><div class='input'>
 <span class='co'># On the other hand, rlang's ctors use the inner names and issue a</span>
 <span class='co'># warning to inform the user that the outer names are ignored:</span>
-<span class='fu'>dbl</span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>A</span> <span class='kw'>=</span> <span class='fl'>10</span>), <span class='kw'>b</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>C</span> <span class='kw'>=</span> <span class='fl'>30</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: Outer names are only allowed for unnamed scalar atomic inputs</span></div><div class='output co'>#&gt;  A  B  C 
-#&gt; 10 20 30 </div><div class='input'><span class='fu'>dbl</span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: Outer names are only allowed for unnamed scalar atomic inputs</span></div><div class='output co'>#&gt; [1] 1 2</div><div class='input'>
+<span class='fu'>dbl</span>(a = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(A = <span class='fl'>10</span>), b = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(B = <span class='fl'>20</span>, C = <span class='fl'>30</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: Outer names are only allowed for unnamed scalar atomic inputs</span></div><div class='output co'>#&gt;  A  B  C 
+#&gt; 10 20 30 </div><div class='input'><span class='fu'>dbl</span>(a = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: Outer names are only allowed for unnamed scalar atomic inputs</span></div><div class='output co'>#&gt; [1] 1 2</div><div class='input'>
 <span class='co'># As an exception, it is allowed to provide an outer name when the</span>
 <span class='co'># inner vector is an unnamed scalar atomic:</span>
-<span class='fu'>dbl</span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; a 
+<span class='fu'>dbl</span>(a = <span class='fl'>1</span>)</div><div class='output co'>#&gt; a 
 #&gt; 1 </div><div class='input'>
 <span class='co'># Spliced lists behave the same way:</span>
-<span class='fu'>dbl</span>(!!! <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>))</div><div class='output co'>#&gt; a 
-#&gt; 1 </div><div class='input'><span class='fu'>dbl</span>(!!! <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>A</span> <span class='kw'>=</span> <span class='fl'>1</span>)))</div><div class='output co'>#&gt; <span class='warning'>Warning: Outer names are only allowed for unnamed scalar atomic inputs</span></div><div class='output co'>#&gt; A 
+<span class='fu'>dbl</span>(<span class='op'>!</span><span class='op'>!</span><span class='op'>!</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(a = <span class='fl'>1</span>))</div><div class='output co'>#&gt; a 
+#&gt; 1 </div><div class='input'><span class='fu'>dbl</span>(<span class='op'>!</span><span class='op'>!</span><span class='op'>!</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(a = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(A = <span class='fl'>1</span>)))</div><div class='output co'>#&gt; <span class='warning'>Warning: Outer names are only allowed for unnamed scalar atomic inputs</span></div><div class='output co'>#&gt; A 
 #&gt; 1 </div><div class='input'>
 <span class='co'># bytes() accepts integerish inputs</span>
-<span class='fu'>bytes</span>(<span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='output co'>#&gt;  [1] 01 02 03 04 05 06 07 08 09 0a</div><div class='input'><span class='fu'>bytes</span>(<span class='fl'>0x01</span>, <span class='fl'>0xff</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0x03</span>, <span class='fl'>0x05</span>), <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>10</span>, <span class='fl'>20</span>, <span class='fl'>30L</span>))</div><div class='output co'>#&gt; [1] 01 ff 03 05 0a 14 1e</div></pre>
+<span class='fu'>bytes</span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>)</div><div class='output co'>#&gt;  [1] 01 02 03 04 05 06 07 08 09 0a</div><div class='input'><span class='fu'>bytes</span>(<span class='fl'>0x01</span>, <span class='fl'>0xff</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0x03</span>, <span class='fl'>0x05</span>), <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>10</span>, <span class='fl'>20</span>, <span class='fl'>30L</span>))</div><div class='output co'>#&gt; [1] 01 ff 03 05 0a 14 1e</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#life-cycle">Life cycle</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -250,7 +249,7 @@ in a future version. Please splice explicitly with <code>!!!</code>.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -40,7 +44,6 @@
 Normally, you invoke a R function by typing arguments manually. A
 powerful alternative is to call a function with a list of arguments
 assembled programmatically. This is the purpose of invoke()." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -68,7 +71,7 @@ assembled programmatically. This is the purpose of invoke()." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -132,7 +135,7 @@ assembled programmatically. This is the purpose of invoke()." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/r-lib/rlang">
+  <a href="https://github.com/r-lib/rlang/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -162,7 +165,7 @@ powerful alternative is to call a function with a list of arguments
 assembled programmatically. This is the purpose of <code>invoke()</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>invoke</span>(<span class='no'>.fn</span>, <span class='kw'>.args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(), <span class='no'>...</span>, <span class='kw'>.env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>(), <span class='kw'>.bury</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>".fn"</span>, <span class='st'>""</span>))</pre>
+    <pre class="usage"><span class='fu'>invoke</span>(<span class='kw'>.fn</span>, .args = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(), <span class='kw'>...</span>, .env = <span class='fu'>caller_env</span>(), .bury = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>".fn"</span>, <span class='st'>""</span>))</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -197,37 +200,37 @@ prefer to inline the function and its arguments in the call.</p></td>
 that creates cleaner call traces because it does not inline the
 function and the arguments in the call (see examples). To achieve
 this, <code>invoke()</code> creates a child environment of <code>.env</code> with <code>.fn</code>
-and all arguments bound to new symbols (see <code><a href='env_bury.html'>env_bury()</a></code>). It then
-uses the same strategy as <code><a href='eval_bare.html'>eval_bare()</a></code> to evaluate with minimal
+and all arguments bound to new symbols (see <code>env_bury()</code>). It then
+uses the same strategy as <code>eval_bare()</code> to evaluate with minimal
 noise.</p>
     <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
 
     
 
 
-<p><code>invoke()</code> is soft-deprecated in favour of <code><a href='exec.html'>exec()</a></code>. Now that we
+<p><code>invoke()</code> is soft-deprecated in favour of <code>exec()</code>. Now that we
 understand better the interaction between unquoting and dots
-capture, we can take a simpler approach in <code><a href='exec.html'>exec()</a></code>.</p>
+capture, we can take a simpler approach in <code>exec()</code>.</p>
 <p>If you need finer control over the generated call, you should construct
 an environment and call yourself, manually burying large objects
 or complex expressions.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># invoke() has the same purpose as do.call():</span>
-<span class='fu'>invoke</span>(<span class='no'>paste</span>, <span class='no'>letters</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: `invoke()` is deprecated as of rlang 0.4.0.</span>
+<span class='fu'>invoke</span>(<span class='kw'>paste</span>, <span class='kw'>letters</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: `invoke()` is deprecated as of rlang 0.4.0.</span>
 #&gt; <span class='warning'>Please use `exec()` or `eval(expr())`instead.</span>
 #&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once per session.</span><span></span></div><div class='output co'>#&gt; [1] "a b c d e f g h i j k l m n o p q r s t u v w x y z"</div><div class='input'>
 <span class='co'># But it creates much cleaner calls:</span>
-<span class='fu'>invoke</span>(<span class='no'>call_inspect</span>, <span class='no'>mtcars</span>)</div><div class='output co'>#&gt; .fn(mpg = `1`, cyl = `2`, disp = `3`, hp = `4`, drat = `5`, wt = `6`, 
+<span class='fu'>invoke</span>(<span class='kw'>call_inspect</span>, <span class='kw'>mtcars</span>)</div><div class='output co'>#&gt; .fn(mpg = `1`, cyl = `2`, disp = `3`, hp = `4`, drat = `5`, wt = `6`, 
 #&gt;     qsec = `7`, vs = `8`, am = `9`, gear = `10`, carb = `11`)</div><div class='input'>
 <span class='co'># and stacktraces:</span>
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>...</span>) <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>sys.calls</a></span>()
-<span class='fu'>invoke</span>(<span class='no'>fn</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>mtcars</span>))</div><div class='output co'>#&gt; [[1]]
-#&gt; pkgdown:::deploy_local(new_process = FALSE, remote_url = url)
+<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>...</span>) <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>sys.calls</a></span>()
+<span class='fu'>invoke</span>(<span class='kw'>fn</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>mtcars</span>))</div><div class='output co'>#&gt; [[1]]
+#&gt; pkgdown::deploy_to_branch(new_process = FALSE)
 #&gt; 
 #&gt; [[2]]
-#&gt; build_site(".", override = list(destination = dest_dir), devel = FALSE, 
-#&gt;     preview = FALSE, install = FALSE, ...)
+#&gt; build_site(pkg, devel = FALSE, preview = FALSE, install = FALSE, 
+#&gt;     ...)
 #&gt; 
 #&gt; [[3]]
 #&gt; build_site_local(pkg = pkg, examples = examples, run_dont_run = run_dont_run, 
@@ -246,37 +249,45 @@ or complex expressions.</p>
 #&gt; .f(.x[[i]], ...)
 #&gt; 
 #&gt; [[7]]
-#&gt; data_reference_topic(topic, pkg, examples = examples, run_dont_run = run_dont_run)
+#&gt; withCallingHandlers(data_reference_topic(topic, pkg, examples = examples, 
+#&gt;     run_dont_run = run_dont_run), error = function(err) {
+#&gt;     msg &lt;- c(paste0("Failed to parse Rd in ", topic$file_in), 
+#&gt;         i = err$message)
+#&gt;     abort(msg, parent = err)
+#&gt; })
 #&gt; 
 #&gt; [[8]]
+#&gt; data_reference_topic(topic, pkg, examples = examples, run_dont_run = run_dont_run)
+#&gt; 
+#&gt; [[9]]
 #&gt; run_examples(tags$tag_examples[[1]], env = new.env(parent = globalenv()), 
 #&gt;     topic = tools::file_path_sans_ext(topic$file_in), run_examples = examples, 
 #&gt;     run_dont_run = run_dont_run)
 #&gt; 
-#&gt; [[9]]
+#&gt; [[10]]
 #&gt; highlight_examples(code, topic, env = env)
 #&gt; 
-#&gt; [[10]]
+#&gt; [[11]]
 #&gt; evaluate::evaluate(x, child_env(env), new_device = TRUE)
 #&gt; 
-#&gt; [[11]]
+#&gt; [[12]]
 #&gt; evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos, 
 #&gt;     debug = debug, last = i == length(out), use_try = stop_on_error != 
 #&gt;         2L, keep_warning = keep_warning, keep_message = keep_message, 
 #&gt;     output_handler = output_handler, include_timing = include_timing)
 #&gt; 
-#&gt; [[12]]
+#&gt; [[13]]
 #&gt; timing_fn(handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, 
 #&gt;     envir, enclos)), warning = wHandler, error = eHandler, message = mHandler)))
 #&gt; 
-#&gt; [[13]]
+#&gt; [[14]]
 #&gt; handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, envir, 
 #&gt;     enclos)), warning = wHandler, error = eHandler, message = mHandler))
 #&gt; 
-#&gt; [[14]]
+#&gt; [[15]]
 #&gt; try(f, silent = TRUE)
 #&gt; 
-#&gt; [[15]]
+#&gt; [[16]]
 #&gt; tryCatch(expr, error = function(e) {
 #&gt;     call &lt;- conditionCall(e)
 #&gt;     if (!is.null(call)) {
@@ -303,36 +314,36 @@ or complex expressions.</p>
 #&gt;     invisible(structure(msg, class = "try-error", condition = e))
 #&gt; })
 #&gt; 
-#&gt; [[16]]
+#&gt; [[17]]
 #&gt; tryCatchList(expr, classes, parentenv, handlers)
 #&gt; 
-#&gt; [[17]]
+#&gt; [[18]]
 #&gt; tryCatchOne(expr, names, parentenv, handlers[[1L]])
 #&gt; 
-#&gt; [[18]]
+#&gt; [[19]]
 #&gt; doTryCatch(return(expr), name, parentenv, handler)
 #&gt; 
-#&gt; [[19]]
+#&gt; [[20]]
 #&gt; withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler, 
 #&gt;     error = eHandler, message = mHandler)
 #&gt; 
-#&gt; [[20]]
-#&gt; withVisible(eval(expr, envir, enclos))
-#&gt; 
 #&gt; [[21]]
-#&gt; eval(expr, envir, enclos)
+#&gt; withVisible(eval(expr, envir, enclos))
 #&gt; 
 #&gt; [[22]]
 #&gt; eval(expr, envir, enclos)
 #&gt; 
 #&gt; [[23]]
-#&gt; invoke(fn, list(mtcars))
+#&gt; eval(expr, envir, enclos)
 #&gt; 
 #&gt; [[24]]
+#&gt; invoke(fn, list(mtcars))
+#&gt; 
+#&gt; [[25]]
 #&gt; .fn(`1`)
 #&gt; </div><div class='input'>
 <span class='co'># Compare to do.call():</span>
-<span class='fu'><a href='https://rdrr.io/r/base/do.call.html'>do.call</a></span>(<span class='no'>call_inspect</span>, <span class='no'>mtcars</span>)</div><div class='output co'>#&gt; (function (...) 
+<span class='fu'><a href='https://rdrr.io/r/base/do.call.html'>do.call</a></span>(<span class='kw'>call_inspect</span>, <span class='kw'>mtcars</span>)</div><div class='output co'>#&gt; (function (...) 
 #&gt; match.call())(mpg = c(21, 21, 22.8, 21.4, 18.7, 18.1, 14.3, 24.4, 
 #&gt; 22.8, 19.2, 17.8, 16.4, 17.3, 15.2, 10.4, 10.4, 14.7, 32.4, 30.4, 
 #&gt; 33.9, 21.5, 15.5, 15.2, 13.3, 19.2, 27.3, 26, 30.4, 15.8, 19.7, 
@@ -360,12 +371,12 @@ or complex expressions.</p>
 #&gt;     3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 4, 4, 3, 3, 3, 3, 
 #&gt;     3, 4, 5, 5, 5, 5, 5, 4), carb = c(4, 4, 1, 1, 2, 1, 4, 2, 
 #&gt;     2, 4, 4, 3, 3, 3, 4, 4, 4, 1, 2, 1, 1, 2, 2, 4, 2, 1, 2, 
-#&gt;     2, 4, 6, 8, 2))</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/do.call.html'>do.call</a></span>(<span class='no'>fn</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>mtcars</span>))</div><div class='output co'>#&gt; [[1]]
-#&gt; pkgdown:::deploy_local(new_process = FALSE, remote_url = url)
+#&gt;     2, 4, 6, 8, 2))</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/do.call.html'>do.call</a></span>(<span class='kw'>fn</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>mtcars</span>))</div><div class='output co'>#&gt; [[1]]
+#&gt; pkgdown::deploy_to_branch(new_process = FALSE)
 #&gt; 
 #&gt; [[2]]
-#&gt; build_site(".", override = list(destination = dest_dir), devel = FALSE, 
-#&gt;     preview = FALSE, install = FALSE, ...)
+#&gt; build_site(pkg, devel = FALSE, preview = FALSE, install = FALSE, 
+#&gt;     ...)
 #&gt; 
 #&gt; [[3]]
 #&gt; build_site_local(pkg = pkg, examples = examples, run_dont_run = run_dont_run, 
@@ -384,37 +395,45 @@ or complex expressions.</p>
 #&gt; .f(.x[[i]], ...)
 #&gt; 
 #&gt; [[7]]
-#&gt; data_reference_topic(topic, pkg, examples = examples, run_dont_run = run_dont_run)
+#&gt; withCallingHandlers(data_reference_topic(topic, pkg, examples = examples, 
+#&gt;     run_dont_run = run_dont_run), error = function(err) {
+#&gt;     msg &lt;- c(paste0("Failed to parse Rd in ", topic$file_in), 
+#&gt;         i = err$message)
+#&gt;     abort(msg, parent = err)
+#&gt; })
 #&gt; 
 #&gt; [[8]]
+#&gt; data_reference_topic(topic, pkg, examples = examples, run_dont_run = run_dont_run)
+#&gt; 
+#&gt; [[9]]
 #&gt; run_examples(tags$tag_examples[[1]], env = new.env(parent = globalenv()), 
 #&gt;     topic = tools::file_path_sans_ext(topic$file_in), run_examples = examples, 
 #&gt;     run_dont_run = run_dont_run)
 #&gt; 
-#&gt; [[9]]
+#&gt; [[10]]
 #&gt; highlight_examples(code, topic, env = env)
 #&gt; 
-#&gt; [[10]]
+#&gt; [[11]]
 #&gt; evaluate::evaluate(x, child_env(env), new_device = TRUE)
 #&gt; 
-#&gt; [[11]]
+#&gt; [[12]]
 #&gt; evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos, 
 #&gt;     debug = debug, last = i == length(out), use_try = stop_on_error != 
 #&gt;         2L, keep_warning = keep_warning, keep_message = keep_message, 
 #&gt;     output_handler = output_handler, include_timing = include_timing)
 #&gt; 
-#&gt; [[12]]
+#&gt; [[13]]
 #&gt; timing_fn(handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, 
 #&gt;     envir, enclos)), warning = wHandler, error = eHandler, message = mHandler)))
 #&gt; 
-#&gt; [[13]]
+#&gt; [[14]]
 #&gt; handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, envir, 
 #&gt;     enclos)), warning = wHandler, error = eHandler, message = mHandler))
 #&gt; 
-#&gt; [[14]]
+#&gt; [[15]]
 #&gt; try(f, silent = TRUE)
 #&gt; 
-#&gt; [[15]]
+#&gt; [[16]]
 #&gt; tryCatch(expr, error = function(e) {
 #&gt;     call &lt;- conditionCall(e)
 #&gt;     if (!is.null(call)) {
@@ -441,32 +460,32 @@ or complex expressions.</p>
 #&gt;     invisible(structure(msg, class = "try-error", condition = e))
 #&gt; })
 #&gt; 
-#&gt; [[16]]
+#&gt; [[17]]
 #&gt; tryCatchList(expr, classes, parentenv, handlers)
 #&gt; 
-#&gt; [[17]]
+#&gt; [[18]]
 #&gt; tryCatchOne(expr, names, parentenv, handlers[[1L]])
 #&gt; 
-#&gt; [[18]]
+#&gt; [[19]]
 #&gt; doTryCatch(return(expr), name, parentenv, handler)
 #&gt; 
-#&gt; [[19]]
+#&gt; [[20]]
 #&gt; withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler, 
 #&gt;     error = eHandler, message = mHandler)
 #&gt; 
-#&gt; [[20]]
-#&gt; withVisible(eval(expr, envir, enclos))
-#&gt; 
 #&gt; [[21]]
-#&gt; eval(expr, envir, enclos)
+#&gt; withVisible(eval(expr, envir, enclos))
 #&gt; 
 #&gt; [[22]]
 #&gt; eval(expr, envir, enclos)
 #&gt; 
 #&gt; [[23]]
-#&gt; do.call(fn, list(mtcars))
+#&gt; eval(expr, envir, enclos)
 #&gt; 
 #&gt; [[24]]
+#&gt; do.call(fn, list(mtcars))
+#&gt; 
+#&gt; [[25]]
 #&gt; (function(...) sys.calls())(list(mpg = c(21, 21, 22.8, 21.4, 
 #&gt; 18.7, 18.1, 14.3, 24.4, 22.8, 19.2, 17.8, 16.4, 17.3, 15.2, 10.4, 
 #&gt; 10.4, 14.7, 32.4, 30.4, 33.9, 21.5, 15.5, 15.2, 13.3, 19.2, 27.3, 
@@ -499,24 +518,19 @@ or complex expressions.</p>
 
 <span class='co'># Specify the function name either by supplying a string</span>
 <span class='co'># identifying the function (it should be visible in .env):</span>
-<span class='fu'>invoke</span>(<span class='st'>"call_inspect"</span>, <span class='no'>letters</span>)</div><div class='output co'>#&gt; call_inspect(`1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, 
+<span class='fu'>invoke</span>(<span class='st'>"call_inspect"</span>, <span class='kw'>letters</span>)</div><div class='output co'>#&gt; call_inspect(`1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, 
 #&gt;     `11`, `12`, `13`, `14`, `15`, `16`, `17`, `18`, `19`, `20`, 
 #&gt;     `21`, `22`, `23`, `24`, `25`, `26`)</div><div class='input'>
 <span class='co'># Or by changing the .bury argument, with which you can also change</span>
 <span class='co'># the argument prefix:</span>
-<span class='fu'>invoke</span>(<span class='no'>call_inspect</span>, <span class='no'>mtcars</span>, <span class='kw'>.bury</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"inspect!"</span>, <span class='st'>"col"</span>))</div><div class='output co'>#&gt; `inspect!`(mpg = col1, cyl = col2, disp = col3, hp = col4, drat = col5, 
+<span class='fu'>invoke</span>(<span class='kw'>call_inspect</span>, <span class='kw'>mtcars</span>, .bury = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"inspect!"</span>, <span class='st'>"col"</span>))</div><div class='output co'>#&gt; `inspect!`(mpg = col1, cyl = col2, disp = col3, hp = col4, drat = col5, 
 #&gt;     wt = col6, qsec = col7, vs = col8, am = col9, gear = col10, 
 #&gt;     carb = col11)</div></span></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#life-cycle">Life cycle</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -527,7 +541,7 @@ or complex expressions.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

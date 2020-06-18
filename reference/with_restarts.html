@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -44,7 +48,6 @@ there. Each restart is established along with a restart function
 that is executed after the jump and that provides a return value
 from the establishing point (i.e., a return value for
 with_restarts())." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -72,7 +75,7 @@ with_restarts())." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -136,7 +139,7 @@ with_restarts())." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/r-lib/rlang">
+  <a href="https://github.com/r-lib/rlang/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -170,7 +173,7 @@ from the establishing point (i.e., a return value for
 <code>with_restarts()</code>).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>with_restarts</span>(<span class='no'>.expr</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>with_restarts</span>(<span class='kw'>.expr</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -179,12 +182,12 @@ from the establishing point (i.e., a return value for
       <th>.expr</th>
       <td><p>An expression to execute with new restarts established
 on the stack. This argument is passed by expression and supports
-<a href='nse-force.html'>unquoting</a>. It is evaluated in a context where
+unquoting. It is evaluated in a context where
 restarts are established.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>&lt;<a href='dyn-dots.html'>dynamic</a>&gt; Named restart functions. The
+      <td><p>&lt;dynamic&gt; Named restart functions. The
 name is taken as the restart name and the function is executed
 after the jump.</p></td>
     </tr>
@@ -193,7 +196,7 @@ after the jump.</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Restarts are not the only way of jumping to a previous call frame
-(see <code><a href='return_from.html'>return_from()</a></code> or <code><a href='return_from.html'>return_to()</a></code>). However, they have the
+(see <code>return_from()</code> or <code>return_to()</code>). However, they have the
 advantage of being callable by name once established.</p>
     <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
 
@@ -205,30 +208,30 @@ clear yet whether we want to recommend restarts as a style of
 programming in R.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='return_from.html'>return_from()</a></code> and <code><a href='return_from.html'>return_to()</a></code> for a more flexible way
+    <div class='dont-index'><p><code>return_from()</code> and <code>return_to()</code> for a more flexible way
 of performing a non-local jump to an arbitrary call frame.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Restarts are not the only way to jump to a previous frame, but</span>
 <span class='co'># they have the advantage of being callable by name:</span>
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>with_restarts</span>(<span class='fu'>g</span>(), <span class='kw'>my_restart</span> <span class='kw'>=</span> <span class='kw'>function</span>() <span class='st'>"returned"</span>)
-<span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>h</span>()
-<span class='no'>h</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() { <span class='fu'><a href='rst_list.html'>rst_jump</a></span>(<span class='st'>"my_restart"</span>); <span class='st'>"not returned"</span> }
+<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() <span class='fu'>with_restarts</span>(<span class='fu'>g</span>(), my_restart = <span class='fu'>function</span>() <span class='st'>"returned"</span>)
+<span class='kw'>g</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() <span class='fu'>h</span>()
+<span class='kw'>h</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() { <span class='fu'>rst_jump</span>(<span class='st'>"my_restart"</span>); <span class='st'>"not returned"</span> }
 <span class='fu'>fn</span>()</div><div class='output co'>#&gt; [1] "returned"</div><div class='input'>
 <span class='co'># Whereas a non-local return requires to manually pass the calling</span>
 <span class='co'># frame to the return function:</span>
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>g</span>(<span class='fu'><a href='caller_env.html'>current_env</a></span>())
-<span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>env</span>) <span class='fu'>h</span>(<span class='no'>env</span>)
-<span class='no'>h</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>env</span>) { <span class='fu'><a href='return_from.html'>return_from</a></span>(<span class='no'>env</span>, <span class='st'>"returned"</span>); <span class='st'>"not returned"</span> }
+<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() <span class='fu'>g</span>(<span class='fu'>current_env</span>())
+<span class='kw'>g</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>env</span>) <span class='fu'>h</span>(<span class='kw'>env</span>)
+<span class='kw'>h</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>env</span>) { <span class='fu'>return_from</span>(<span class='kw'>env</span>, <span class='st'>"returned"</span>); <span class='st'>"not returned"</span> }
 <span class='fu'>fn</span>()</div><div class='output co'>#&gt; [1] "returned"</div><div class='input'>
 
 <span class='co'># rst_maybe_jump() checks that a restart exists before trying to jump:</span>
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
+<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() {
   <span class='fu'>g</span>()
   <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"will this be called?\n"</span>)
 }
-<span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
-  <span class='fu'><a href='rst_list.html'>rst_maybe_jump</a></span>(<span class='st'>"my_restart"</span>)
+<span class='kw'>g</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() {
+  <span class='fu'>rst_maybe_jump</span>(<span class='st'>"my_restart"</span>)
   <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"will this be called?\n"</span>)
 }
 
@@ -237,17 +240,17 @@ of performing a non-local jump to an arbitrary call frame.</p></div>
 #&gt; will this be called?</div><div class='input'>
 <span class='co'># If a restart point called `my_restart` was established on the</span>
 <span class='co'># stack before calling fn(), the control flow will jump there:</span>
-<span class='no'>rst</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
+<span class='kw'>rst</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() {
   <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"restarting...\n"</span>)
   <span class='st'>"return value"</span>
 }
-<span class='fu'>with_restarts</span>(<span class='fu'>fn</span>(), <span class='kw'>my_restart</span> <span class='kw'>=</span> <span class='no'>rst</span>)</div><div class='output co'>#&gt; restarting...</div><div class='output co'>#&gt; [1] "return value"</div><div class='input'>
+<span class='fu'>with_restarts</span>(<span class='fu'>fn</span>(), my_restart = <span class='kw'>rst</span>)</div><div class='output co'>#&gt; restarting...</div><div class='output co'>#&gt; [1] "return value"</div><div class='input'>
 
 <span class='co'># Restarts are particularly useful to provide alternative default</span>
 <span class='co'># values when the normal output cannot be computed:</span>
 
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>valid_input</span>) {
-  <span class='kw'>if</span> (<span class='no'>valid_input</span>) {
+<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>valid_input</span>) {
+  <span class='co'>if</span> (<span class='kw'>valid_input</span>) {
     <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='st'>"normal value"</span>)
   }
 
@@ -256,16 +259,16 @@ of performing a non-local jump to an arbitrary call frame.</p></div>
   <span class='co'># we want to provide a way for the caller to get a different</span>
   <span class='co'># output. For this purpose, we provide two restart functions that</span>
   <span class='co'># returns alternative defaults:</span>
-  <span class='no'>restarts</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
-    <span class='kw'>rst_empty_chr</span> <span class='kw'>=</span> <span class='kw'>function</span>() <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(<span class='fl'>0</span>),
-    <span class='kw'>rst_null</span> <span class='kw'>=</span> <span class='kw'>function</span>() <span class='kw'>NULL</span>
+  <span class='kw'>restarts</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
+    rst_empty_chr = <span class='fu'>function</span>() <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(<span class='fl'>0</span>),
+    rst_null = <span class='fu'>function</span>() <span class='kw'>NULL</span>
   )
 
-  <span class='fu'>with_restarts</span>(<span class='fu'><a href='splice.html'>splice</a></span>(<span class='no'>restarts</span>), <span class='kw'>.expr</span> <span class='kw'>=</span> {
+  <span class='fu'>with_restarts</span>(<span class='fu'>splice</span>(<span class='kw'>restarts</span>), .expr = {
 
     <span class='co'># Signal a typed condition to let the caller know that we are</span>
     <span class='co'># about to return an empty string as default value:</span>
-    <span class='fu'><a href='cnd_signal.html'>cnd_signal</a></span>(<span class='st'>"default_empty_string"</span>)
+    <span class='fu'>cnd_signal</span>(<span class='st'>"default_empty_string"</span>)
 
     <span class='co'># If no jump to with_restarts, return default value:</span>
     <span class='st'>""</span>
@@ -283,21 +286,15 @@ of performing a non-local jump to an arbitrary call frame.</p></div>
 <span class='co'># be calling because exiting handlers jump to the place where they</span>
 <span class='co'># are established before being executed, and the restart is not</span>
 <span class='co'># defined anymore at that point:</span>
-<span class='no'>rst_handler</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='with_handlers.html'>calling</a></span>(<span class='kw'>function</span>(<span class='no'>c</span>) <span class='fu'><a href='rst_list.html'>rst_jump</a></span>(<span class='st'>"rst_empty_chr"</span>))
-<span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(<span class='fu'>fn</span>(<span class='fl'>FALSE</span>), <span class='kw'>default_empty_string</span> <span class='kw'>=</span> <span class='no'>rst_handler</span>)</div><div class='output co'>#&gt; character(0)</div><div class='input'>
+<span class='kw'>rst_handler</span> <span class='op'>&lt;-</span> <span class='fu'>calling</span>(<span class='fu'>function</span>(<span class='kw'>c</span>) <span class='fu'>rst_jump</span>(<span class='st'>"rst_empty_chr"</span>))
+<span class='fu'>with_handlers</span>(<span class='fu'>fn</span>(<span class='fl'>FALSE</span>), default_empty_string = <span class='kw'>rst_handler</span>)</div><div class='output co'>#&gt; character(0)</div><div class='input'>
 <span class='co'># You can use restarting() to create restarting handlers easily:</span>
-<span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(<span class='fu'>fn</span>(<span class='fl'>FALSE</span>), <span class='kw'>default_empty_string</span> <span class='kw'>=</span> <span class='fu'><a href='restarting.html'>restarting</a></span>(<span class='st'>"rst_null"</span>))</div><div class='output co'>#&gt; NULL</div></span></pre>
+<span class='fu'>with_handlers</span>(<span class='fu'>fn</span>(<span class='fl'>FALSE</span>), default_empty_string = <span class='fu'>restarting</span>(<span class='st'>"rst_null"</span>))</div><div class='output co'>#&gt; NULL</div></span></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#life-cycle">Life cycle</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -308,7 +305,7 @@ of performing a non-local jump to an arbitrary call frame.</p></div>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

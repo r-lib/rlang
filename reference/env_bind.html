@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -65,7 +69,6 @@ bound to the symbol (the expressions are thus evaluated only
 once, if at all).
 
 " />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -93,7 +96,7 @@ once, if at all).
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -157,7 +160,7 @@ once, if at all).
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/r-lib/rlang">
+  <a href="https://github.com/r-lib/rlang/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -193,7 +196,7 @@ specific problems.</p><ul>
 bindings in <code>.env</code>. This is equivalent to
 <code><a href='https://rdrr.io/r/base/bindenv.html'>base::makeActiveBinding()</a></code>. An active binding executes a
 function each time it is evaluated. The arguments are passed to
-<code><a href='as_function.html'>as_function()</a></code> so you can supply formulas instead of functions.</p>
+<code>as_function()</code> so you can supply formulas instead of functions.</p>
 <p>Remember that functions are scoped in their own environment.
 These functions can thus refer to symbols from this enclosure
 that are not actually in scope in the dynamic environment where
@@ -202,7 +205,7 @@ to difficult problems (see the implementations of <code>dplyr::do()</code>
 methods for an example).</p></li>
 <li><p><code>env_bind_lazy()</code> takes named <em>expressions</em>. This is equivalent
 to <code><a href='https://rdrr.io/r/base/delayedAssign.html'>base::delayedAssign()</a></code>. The arguments are captured with
-<code><a href='nse-defuse.html'>exprs()</a></code> (and thus support call-splicing and unquoting) and
+<code>exprs()</code> (and thus support call-splicing and unquoting) and
 assigned to symbols in <code>.env</code>. These expressions are not
 evaluated immediately but lazily. Once a symbol is evaluated, the
 corresponding expression is evaluated in turn and its value is
@@ -212,11 +215,11 @@ once, if at all).</p></li>
 
     </div>
 
-    <pre class="usage"><span class='fu'>env_bind</span>(<span class='no'>.env</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>env_bind</span>(<span class='kw'>.env</span>, <span class='kw'>...</span>)
 
-<span class='fu'>env_bind_lazy</span>(<span class='no'>.env</span>, <span class='no'>...</span>, <span class='kw'>.eval_env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>())
+<span class='fu'>env_bind_lazy</span>(<span class='kw'>.env</span>, <span class='kw'>...</span>, .eval_env = <span class='fu'>caller_env</span>())
 
-<span class='fu'>env_bind_active</span>(<span class='no'>.env</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>env_bind_active</span>(<span class='kw'>.env</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -227,9 +230,9 @@ once, if at all).</p></li>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>&lt;<a href='dyn-dots.html'>dynamic</a>&gt; Named objects (<code>env_bind()</code>),
+      <td><p>&lt;dynamic&gt; Named objects (<code>env_bind()</code>),
 expressions <code>env_bind_lazy()</code>, or functions (<code>env_bind_active()</code>).
-Use <code><a href='zap.html'>zap()</a></code> to remove bindings.</p></td>
+Use <code>zap()</code> to remove bindings.</p></td>
     </tr>
     <tr>
       <th>.eval_env</th>
@@ -248,7 +251,7 @@ modified in place, invisibly.</p>
 
 
 <p>Since environments have reference semantics (see relevant section
-in <code><a href='env.html'>env()</a></code> documentation), modifying the bindings of an environment
+in <code>env()</code> documentation), modifying the bindings of an environment
 produces effects in all other references to that environment. In
 other words, <code>env_bind()</code> and its variants have side effects.</p>
 <p>Like other side-effecty functions like <code><a href='https://rdrr.io/r/graphics/par.html'>par()</a></code> and <code><a href='https://rdrr.io/r/base/options.html'>options()</a></code>,
@@ -267,36 +270,36 @@ functions.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># env_bind() is a programmatic way of assigning values to symbols</span>
 <span class='co'># with `&lt;-`. We can add bindings in the current environment:</span>
-<span class='fu'>env_bind</span>(<span class='fu'><a href='caller_env.html'>current_env</a></span>(), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"bar"</span>)
-<span class='no'>foo</span></div><div class='output co'>#&gt; [1] "bar"</div><div class='input'>
+<span class='fu'>env_bind</span>(<span class='fu'>current_env</span>(), foo = <span class='st'>"bar"</span>)
+<span class='kw'>foo</span></div><div class='output co'>#&gt; [1] "bar"</div><div class='input'>
 <span class='co'># Or modify those bindings:</span>
-<span class='no'>bar</span> <span class='kw'>&lt;-</span> <span class='st'>"bar"</span>
-<span class='fu'>env_bind</span>(<span class='fu'><a href='caller_env.html'>current_env</a></span>(), <span class='kw'>bar</span> <span class='kw'>=</span> <span class='st'>"BAR"</span>)
-<span class='no'>bar</span></div><div class='output co'>#&gt; [1] "BAR"</div><div class='input'>
+<span class='kw'>bar</span> <span class='op'>&lt;-</span> <span class='st'>"bar"</span>
+<span class='fu'>env_bind</span>(<span class='fu'>current_env</span>(), bar = <span class='st'>"BAR"</span>)
+<span class='kw'>bar</span></div><div class='output co'>#&gt; [1] "BAR"</div><div class='input'>
 <span class='co'># You can remove bindings by supplying zap sentinels:</span>
-<span class='fu'>env_bind</span>(<span class='fu'><a href='caller_env.html'>current_env</a></span>(), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'><a href='zap.html'>zap</a></span>())
-<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='no'>foo</span>)</div><div class='output co'>#&gt; Error in try(foo) : object 'foo' not found</div><div class='input'>
+<span class='fu'>env_bind</span>(<span class='fu'>current_env</span>(), foo = <span class='fu'>zap</span>())
+<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='kw'>foo</span>)</div><div class='output co'>#&gt; Error in try(foo) : object 'foo' not found</div><div class='input'>
 <span class='co'># Unquote-splice a named list of zaps</span>
-<span class='no'>zaps</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='rep_along.html'>rep_named</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>), <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='zap.html'>zap</a></span>()))
-<span class='fu'>env_bind</span>(<span class='fu'><a href='caller_env.html'>current_env</a></span>(), !!!<span class='no'>zaps</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='no'>bar</span>)</div><div class='output co'>#&gt; Error in try(bar) : object 'bar' not found</div><div class='input'>
+<span class='kw'>zaps</span> <span class='op'>&lt;-</span> <span class='fu'>rep_named</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>), <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'>zap</span>()))
+<span class='fu'>env_bind</span>(<span class='fu'>current_env</span>(), <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='kw'>zaps</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='kw'>bar</span>)</div><div class='output co'>#&gt; Error in try(bar) : object 'bar' not found</div><div class='input'>
 <span class='co'># It is most useful to change other environments:</span>
-<span class='no'>my_env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>()
-<span class='fu'>env_bind</span>(<span class='no'>my_env</span>, <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"foo"</span>)
-<span class='no'>my_env</span>$<span class='no'>foo</span></div><div class='output co'>#&gt; [1] "foo"</div><div class='input'>
+<span class='kw'>my_env</span> <span class='op'>&lt;-</span> <span class='fu'>env</span>()
+<span class='fu'>env_bind</span>(<span class='kw'>my_env</span>, foo = <span class='st'>"foo"</span>)
+<span class='kw'>my_env</span><span class='op'>$</span><span class='kw'>foo</span></div><div class='output co'>#&gt; [1] "foo"</div><div class='input'>
 <span class='co'># A useful feature is to splice lists of named values:</span>
-<span class='no'>vals</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>20</span>)
-<span class='fu'>env_bind</span>(<span class='no'>my_env</span>, !!!<span class='no'>vals</span>, <span class='kw'>c</span> <span class='kw'>=</span> <span class='fl'>30</span>)
-<span class='no'>my_env</span>$<span class='no'>b</span></div><div class='output co'>#&gt; [1] 20</div><div class='input'><span class='no'>my_env</span>$<span class='no'>c</span></div><div class='output co'>#&gt; [1] 30</div><div class='input'>
+<span class='kw'>vals</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(a = <span class='fl'>10</span>, b = <span class='fl'>20</span>)
+<span class='fu'>env_bind</span>(<span class='kw'>my_env</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='kw'>vals</span>, c = <span class='fl'>30</span>)
+<span class='kw'>my_env</span><span class='op'>$</span><span class='kw'>b</span></div><div class='output co'>#&gt; [1] 20</div><div class='input'><span class='kw'>my_env</span><span class='op'>$</span><span class='kw'>c</span></div><div class='output co'>#&gt; [1] 30</div><div class='input'>
 <span class='co'># You can also unquote a variable referring to a symbol or a string</span>
 <span class='co'># as binding name:</span>
-<span class='no'>var</span> <span class='kw'>&lt;-</span> <span class='st'>"baz"</span>
-<span class='fu'>env_bind</span>(<span class='no'>my_env</span>, !!<span class='no'>var</span> <span class='kw'>:=</span> <span class='st'>"BAZ"</span>)
-<span class='no'>my_env</span>$<span class='no'>baz</span></div><div class='output co'>#&gt; [1] "BAZ"</div><div class='input'>
+<span class='kw'>var</span> <span class='op'>&lt;-</span> <span class='st'>"baz"</span>
+<span class='fu'>env_bind</span>(<span class='kw'>my_env</span>, <span class='op'>!</span><span class='op'>!</span><span class='kw'>var</span> <span class='op'>:=</span> <span class='st'>"BAZ"</span>)
+<span class='kw'>my_env</span><span class='op'>$</span><span class='kw'>baz</span></div><div class='output co'>#&gt; [1] "BAZ"</div><div class='input'>
 
 <span class='co'># The old values of the bindings are returned invisibly:</span>
-<span class='no'>old</span> <span class='kw'>&lt;-</span> <span class='fu'>env_bind</span>(<span class='no'>my_env</span>, <span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>baz</span> <span class='kw'>=</span> <span class='st'>"baz"</span>)
-<span class='no'>old</span></div><div class='output co'>#&gt; $a
+<span class='kw'>old</span> <span class='op'>&lt;-</span> <span class='fu'>env_bind</span>(<span class='kw'>my_env</span>, a = <span class='fl'>1</span>, b = <span class='fl'>2</span>, baz = <span class='st'>"baz"</span>)
+<span class='kw'>old</span></div><div class='output co'>#&gt; $a
 #&gt; [1] 10
 #&gt; 
 #&gt; $b
@@ -307,66 +310,60 @@ functions.</p>
 #&gt; </div><div class='input'>
 <span class='co'># You can restore the original environment state by supplying the</span>
 <span class='co'># old values back:</span>
-<span class='fu'>env_bind</span>(<span class='no'>my_env</span>, !!!<span class='no'>old</span>)
+<span class='fu'>env_bind</span>(<span class='kw'>my_env</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='kw'>old</span>)
 
 <span class='co'># env_bind_lazy() assigns expressions lazily:</span>
-<span class='no'>env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>()
-<span class='fu'>env_bind_lazy</span>(<span class='no'>env</span>, <span class='kw'>name</span> <span class='kw'>=</span> { <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"forced!\n"</span>); <span class='st'>"value"</span> })
+<span class='kw'>env</span> <span class='op'>&lt;-</span> <span class='fu'>env</span>()
+<span class='fu'>env_bind_lazy</span>(<span class='kw'>env</span>, name = { <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"forced!\n"</span>); <span class='st'>"value"</span> })
 
 <span class='co'># Referring to the binding will cause evaluation:</span>
-<span class='no'>env</span>$<span class='no'>name</span></div><div class='output co'>#&gt; forced!</div><div class='output co'>#&gt; [1] "value"</div><div class='input'>
+<span class='kw'>env</span><span class='op'>$</span><span class='kw'>name</span></div><div class='output co'>#&gt; forced!</div><div class='output co'>#&gt; [1] "value"</div><div class='input'>
 <span class='co'># But only once, subsequent references yield the final value:</span>
-<span class='no'>env</span>$<span class='no'>name</span></div><div class='output co'>#&gt; [1] "value"</div><div class='input'>
+<span class='kw'>env</span><span class='op'>$</span><span class='kw'>name</span></div><div class='output co'>#&gt; [1] "value"</div><div class='input'>
 <span class='co'># You can unquote expressions:</span>
-<span class='no'>expr</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/message.html'>message</a></span>(<span class='st'>"forced!"</span>))
-<span class='fu'>env_bind_lazy</span>(<span class='no'>env</span>, <span class='kw'>name</span> <span class='kw'>=</span> !!<span class='no'>expr</span>)
-<span class='no'>env</span>$<span class='no'>name</span></div><div class='output co'>#&gt; <span class='message'>forced!</span></div><div class='output co'>#&gt; NULL</div><div class='input'>
+<span class='kw'>expr</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/message.html'>message</a></span>(<span class='st'>"forced!"</span>))
+<span class='fu'>env_bind_lazy</span>(<span class='kw'>env</span>, name = <span class='op'>!</span><span class='op'>!</span><span class='kw'>expr</span>)
+<span class='kw'>env</span><span class='op'>$</span><span class='kw'>name</span></div><div class='output co'>#&gt; <span class='message'>forced!</span></div><div class='output co'>#&gt; NULL</div><div class='input'>
 
 <span class='co'># By default the expressions are evaluated in the current</span>
 <span class='co'># environment. For instance we can create a local binding and refer</span>
 <span class='co'># to it, even though the variable is bound in a different</span>
 <span class='co'># environment:</span>
-<span class='no'>who</span> <span class='kw'>&lt;-</span> <span class='st'>"mickey"</span>
-<span class='fu'>env_bind_lazy</span>(<span class='no'>env</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='no'>who</span>, <span class='st'>"mouse"</span>))
-<span class='no'>env</span>$<span class='no'>name</span></div><div class='output co'>#&gt; [1] "mickey mouse"</div><div class='input'>
+<span class='kw'>who</span> <span class='op'>&lt;-</span> <span class='st'>"mickey"</span>
+<span class='fu'>env_bind_lazy</span>(<span class='kw'>env</span>, name = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='kw'>who</span>, <span class='st'>"mouse"</span>))
+<span class='kw'>env</span><span class='op'>$</span><span class='kw'>name</span></div><div class='output co'>#&gt; [1] "mickey mouse"</div><div class='input'>
 <span class='co'># You can specify another evaluation environment with `.eval_env`:</span>
-<span class='no'>eval_env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>(<span class='kw'>who</span> <span class='kw'>=</span> <span class='st'>"minnie"</span>)
-<span class='fu'>env_bind_lazy</span>(<span class='no'>env</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='no'>who</span>, <span class='st'>"mouse"</span>), <span class='kw'>.eval_env</span> <span class='kw'>=</span> <span class='no'>eval_env</span>)
-<span class='no'>env</span>$<span class='no'>name</span></div><div class='output co'>#&gt; [1] "minnie mouse"</div><div class='input'>
+<span class='kw'>eval_env</span> <span class='op'>&lt;-</span> <span class='fu'>env</span>(who = <span class='st'>"minnie"</span>)
+<span class='fu'>env_bind_lazy</span>(<span class='kw'>env</span>, name = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='kw'>who</span>, <span class='st'>"mouse"</span>), .eval_env = <span class='kw'>eval_env</span>)
+<span class='kw'>env</span><span class='op'>$</span><span class='kw'>name</span></div><div class='output co'>#&gt; [1] "minnie mouse"</div><div class='input'>
 <span class='co'># Or by unquoting a quosure:</span>
-<span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/eval.html'>local</a></span>({
-  <span class='no'>who</span> <span class='kw'>&lt;-</span> <span class='st'>"fievel"</span>
-  <span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='no'>who</span>, <span class='st'>"mouse"</span>))
+<span class='kw'>quo</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/eval.html'>local</a></span>({
+  <span class='kw'>who</span> <span class='op'>&lt;-</span> <span class='st'>"fievel"</span>
+  <span class='fu'>quo</span>(<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='kw'>who</span>, <span class='st'>"mouse"</span>))
 })
-<span class='fu'>env_bind_lazy</span>(<span class='no'>env</span>, <span class='kw'>name</span> <span class='kw'>=</span> !!<span class='no'>quo</span>)
-<span class='no'>env</span>$<span class='no'>name</span></div><div class='output co'>#&gt; [1] "fievel mouse"</div><div class='input'>
+<span class='fu'>env_bind_lazy</span>(<span class='kw'>env</span>, name = <span class='op'>!</span><span class='op'>!</span><span class='kw'>quo</span>)
+<span class='kw'>env</span><span class='op'>$</span><span class='kw'>name</span></div><div class='output co'>#&gt; [1] "fievel mouse"</div><div class='input'>
 <span class='co'># You can create active bindings with env_bind_active(). Active</span>
 <span class='co'># bindings execute a function each time they are evaluated:</span>
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
+<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() {
   <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"I have been called\n"</span>)
   <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>1</span>)
 }
 
-<span class='no'>env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>()
-<span class='fu'>env_bind_active</span>(<span class='no'>env</span>, <span class='kw'>symbol</span> <span class='kw'>=</span> <span class='no'>fn</span>)
+<span class='kw'>env</span> <span class='op'>&lt;-</span> <span class='fu'>env</span>()
+<span class='fu'>env_bind_active</span>(<span class='kw'>env</span>, symbol = <span class='kw'>fn</span>)
 
 <span class='co'># `fn` is executed each time `symbol` is evaluated or retrieved:</span>
-<span class='no'>env</span>$<span class='no'>symbol</span></div><div class='output co'>#&gt; I have been called</div><div class='output co'>#&gt; [1] -1.400044</div><div class='input'><span class='no'>env</span>$<span class='no'>symbol</span></div><div class='output co'>#&gt; I have been called</div><div class='output co'>#&gt; [1] 0.2553171</div><div class='input'><span class='fu'><a href='eval_bare.html'>eval_bare</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>symbol</span>), <span class='no'>env</span>)</div><div class='output co'>#&gt; I have been called</div><div class='output co'>#&gt; [1] -2.437264</div><div class='input'><span class='fu'><a href='eval_bare.html'>eval_bare</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>symbol</span>), <span class='no'>env</span>)</div><div class='output co'>#&gt; I have been called</div><div class='output co'>#&gt; [1] -0.005571287</div><div class='input'>
+<span class='kw'>env</span><span class='op'>$</span><span class='kw'>symbol</span></div><div class='output co'>#&gt; I have been called</div><div class='output co'>#&gt; [1] -1.400044</div><div class='input'><span class='kw'>env</span><span class='op'>$</span><span class='kw'>symbol</span></div><div class='output co'>#&gt; I have been called</div><div class='output co'>#&gt; [1] 0.2553171</div><div class='input'><span class='fu'>eval_bare</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>symbol</span>), <span class='kw'>env</span>)</div><div class='output co'>#&gt; I have been called</div><div class='output co'>#&gt; [1] -2.437264</div><div class='input'><span class='fu'>eval_bare</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>symbol</span>), <span class='kw'>env</span>)</div><div class='output co'>#&gt; I have been called</div><div class='output co'>#&gt; [1] -0.005571287</div><div class='input'>
 <span class='co'># All arguments are passed to as_function() so you can use the</span>
 <span class='co'># formula shortcut:</span>
-<span class='fu'>env_bind_active</span>(<span class='no'>env</span>, <span class='kw'>foo</span> <span class='kw'>=</span> ~ <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>1</span>))
-<span class='no'>env</span>$<span class='no'>foo</span></div><div class='output co'>#&gt; [1] 0.732882</div><div class='input'><span class='no'>env</span>$<span class='no'>foo</span></div><div class='output co'>#&gt; [1] 0.7725215</div></pre>
+<span class='fu'>env_bind_active</span>(<span class='kw'>env</span>, foo = <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>1</span>))
+<span class='kw'>env</span><span class='op'>$</span><span class='kw'>foo</span></div><div class='output co'>#&gt; [1] 0.732882</div><div class='input'><span class='kw'>env</span><span class='op'>$</span><span class='kw'>foo</span></div><div class='output co'>#&gt; [1] 0.7725215</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#side-effects">Side effects</a></li>
-      <li><a href="#life-cycle">Life cycle</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -377,7 +374,7 @@ functions.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

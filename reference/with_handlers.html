@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -56,7 +60,6 @@ exiting) are given a chance to handle the condition.
 
 Handlers are exiting by default, use calling() to create a
 calling handler." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -84,7 +87,7 @@ calling handler." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -148,7 +151,7 @@ calling handler." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/r-lib/rlang">
+  <a href="https://github.com/r-lib/rlang/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -173,8 +176,8 @@ calling handler." />
 
     <div class="ref-description">
     <p>Condition handlers are functions established on the evaluation
-stack (see <code><a href='stack.html'>ctxt_stack()</a></code>) that are called by R when a condition is
-signalled (see <code><a href='cnd_signal.html'>cnd_signal()</a></code> and <code><a href='abort.html'>abort()</a></code> for two common signal
+stack (see <code>ctxt_stack()</code>) that are called by R when a condition is
+signalled (see <code>cnd_signal()</code> and <code>abort()</code> for two common signal
 functions). They come in two types:</p><ul>
 <li><p>Exiting handlers aborts all code currently run between
 <code>with_handlers()</code> and the point where the condition has been
@@ -183,7 +186,7 @@ to its caller.</p></li>
 <li><p>Calling handlers, which are executed from inside the signalling
 functions. Their return values are ignored, only their side
 effects matters. Valid side effects are writing a log message, or
-jumping out of the signalling context by <a href='with_restarts.html'>invoking a restart</a> or using <code><a href='return_from.html'>return_from()</a></code>. If the raised
+jumping out of the signalling context by invoking a restart or using <code>return_from()</code>. If the raised
 condition was an error, this interrupts the aborting process.</p>
 <p>If a calling handler returns normally, it effectively declines to
 handle the condition and other handlers on the stack (calling or
@@ -194,9 +197,9 @@ exiting) are given a chance to handle the condition.</p></li>
 calling handler.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>with_handlers</span>(<span class='no'>.expr</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>with_handlers</span>(<span class='kw'>.expr</span>, <span class='kw'>...</span>)
 
-<span class='fu'>calling</span>(<span class='no'>handler</span>)</pre>
+<span class='fu'>calling</span>(<span class='kw'>handler</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -209,52 +212,52 @@ expression or a quoted formula.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>&lt;<a href='dyn-dots.html'>dynamic</a>&gt; Named handlers. These should be
-functions of one argument, or <a href='as_function.html'>formula functions</a>.
+      <td><p>&lt;dynamic&gt; Named handlers. These should be
+functions of one argument, or formula functions.
 The handlers are considered exiting by default, use <code>calling()</code>
 to specify a calling handler.</p></td>
     </tr>
     <tr>
       <th>handler</th>
       <td><p>A handler function that takes a condition as
-argument. This is passed to <code><a href='as_function.html'>as_function()</a></code> and can thus be a
+argument. This is passed to <code>as_function()</code> and can thus be a
 formula describing a lambda function.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
 
-    <p><code><a href='exiting.html'>exiting()</a></code> is soft-deprecated as of rlang
+    <p><code>exiting()</code> is soft-deprecated as of rlang
 0.4.0 because <code>with_handlers()</code> now treats handlers as exiting by
 default.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Signal a condition with signal():</span>
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
+<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() {
   <span class='fu'>g</span>()
   <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"called?\n"</span>)
   <span class='st'>"fn() return value"</span>
 }
-<span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
+<span class='kw'>g</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() {
   <span class='fu'>h</span>()
   <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"called?\n"</span>)
 }
-<span class='no'>h</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
-  <span class='fu'><a href='abort.html'>signal</a></span>(<span class='st'>"A foobar condition occurred"</span>, <span class='st'>"foo"</span>)
+<span class='kw'>h</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() {
+  <span class='fu'>signal</span>(<span class='st'>"A foobar condition occurred"</span>, <span class='st'>"foo"</span>)
   <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"called?\n"</span>)
 }
 
 <span class='co'># Exiting handlers jump to with_handlers() before being</span>
 <span class='co'># executed. Their return value is handed over:</span>
-<span class='no'>handler</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>c</span>) <span class='st'>"handler return value"</span>
-<span class='fu'>with_handlers</span>(<span class='fu'>fn</span>(), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='no'>handler</span>)</div><div class='output co'>#&gt; [1] "handler return value"</div><div class='input'>
+<span class='kw'>handler</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>c</span>) <span class='st'>"handler return value"</span>
+<span class='fu'>with_handlers</span>(<span class='fu'>fn</span>(), foo = <span class='kw'>handler</span>)</div><div class='output co'>#&gt; [1] "handler return value"</div><div class='input'>
 <span class='co'># Calling handlers are called in turn and their return value is</span>
 <span class='co'># ignored. Returning just means they are declining to take charge of</span>
 <span class='co'># the condition. However, they can produce side-effects such as</span>
 <span class='co'># displaying a message:</span>
-<span class='no'>some_handler</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>c</span>) <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"some handler!\n"</span>)
-<span class='no'>other_handler</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>c</span>) <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"other handler!\n"</span>)
-<span class='fu'>with_handlers</span>(<span class='fu'>fn</span>(), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'>calling</span>(<span class='no'>some_handler</span>), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'>calling</span>(<span class='no'>other_handler</span>))</div><div class='output co'>#&gt; some handler!
+<span class='kw'>some_handler</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>c</span>) <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"some handler!\n"</span>)
+<span class='kw'>other_handler</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>c</span>) <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"other handler!\n"</span>)
+<span class='fu'>with_handlers</span>(<span class='fu'>fn</span>(), foo = <span class='fu'>calling</span>(<span class='kw'>some_handler</span>), foo = <span class='fu'>calling</span>(<span class='kw'>other_handler</span>))</div><div class='output co'>#&gt; some handler!
 #&gt; other handler!
 #&gt; called?
 #&gt; called?
@@ -264,20 +267,16 @@ default.</p>
 <span class='co'># deal with it. The canonical way of transferring control is by</span>
 <span class='co'># jumping to a restart. See with_restarts() and restarting()</span>
 <span class='co'># documentation for more on this:</span>
-<span class='no'>exiting_handler</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>c</span>) <span class='fu'><a href='rst_list.html'>rst_jump</a></span>(<span class='st'>"rst_foo"</span>)
-<span class='no'>fn2</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
-  <span class='fu'><a href='with_restarts.html'>with_restarts</a></span>(<span class='fu'>g</span>(), <span class='kw'>rst_foo</span> <span class='kw'>=</span> <span class='kw'>function</span>() <span class='st'>"restart value"</span>)
+<span class='kw'>exiting_handler</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>c</span>) <span class='fu'>rst_jump</span>(<span class='st'>"rst_foo"</span>)
+<span class='kw'>fn2</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() {
+  <span class='fu'>with_restarts</span>(<span class='fu'>g</span>(), rst_foo = <span class='fu'>function</span>() <span class='st'>"restart value"</span>)
 }
-<span class='fu'>with_handlers</span>(<span class='fu'>fn2</span>(), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'>calling</span>(<span class='no'>exiting_handler</span>), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'>calling</span>(<span class='no'>other_handler</span>))</div><div class='output co'>#&gt; [1] "restart value"</div></pre>
+<span class='fu'>with_handlers</span>(<span class='fu'>fn2</span>(), foo = <span class='fu'>calling</span>(<span class='kw'>exiting_handler</span>), foo = <span class='fu'>calling</span>(<span class='kw'>other_handler</span>))</div><div class='output co'>#&gt; [1] "restart value"</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#life-cycle">Life cycle</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -288,7 +287,7 @@ default.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>
