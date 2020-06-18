@@ -382,6 +382,19 @@ sexp* rlang_find_var(sexp* env, sexp* sym) {
   return Rf_findVar(sym, env);
 }
 
+sexp* rlang_chr_get(sexp* x, sexp* i) {
+  if (r_typeof(i) != r_type_integer || r_length(i) != 1) {
+    r_abort("`i` must be an integer value.");
+  }
+
+  int c_i = r_int_get(i, 0);
+  if (c_i < 0 || c_i >= r_length(x)) {
+    r_abort("`i` is out of bound. Note that `r_chr_get()` takes zero-based locations.");
+  }
+
+  return r_chr_get(x, c_i);
+}
+
 
 // vec.h
 

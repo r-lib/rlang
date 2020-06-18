@@ -90,4 +90,8 @@ find_var <- function(env, sym) {
   .Call(rlang_find_var, env, sym);
 }
 
+chr_get <- function(x, i = 0L) {
+  .Call(rlang_chr_get, x, i)
+}
+
 # nocov end
