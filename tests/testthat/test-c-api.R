@@ -236,15 +236,15 @@ test_that("client library passes tests", {
   expect_identical(result, 0L)
 })
 
-test_that("r_env_unbind_anywhere() removes objects", {
+test_that("r_env_unbind_string_anywhere() removes objects", {
   env <- env(a = 1L)
-  r_env_unbind_anywhere(env, "a")
+  r_env_unbind_string_anywhere(env, "a")
   expect_false(env_has(env, "a"))
 
   env <- env(a = 1L)
   child <- child_env(env)
-  expect_warning(r_env_unbind_anywhere(child, "a"), "not found")
-  r_env_unbind_anywhere(child, "a", inherits = TRUE)
+  expect_warning(r_env_unbind_string_anywhere(child, "a"), "not found")
+  r_env_unbind_string_anywhere(child, "a", inherits = TRUE)
   expect_false(env_has(env, "a"))
 })
 

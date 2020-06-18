@@ -171,12 +171,12 @@ sexp* r_env_unbind_anywhere_strings(sexp* env, const char** names) {
   return out;
 }
 
-sexp* r_env_unbind(sexp* env, const char* name) {
+sexp* r_env_unbind_string(sexp* env, const char* name) {
   static const char* names[2] = { "", NULL };
   names[0] = name;
   return r_env_unbind_strings(env, names);
 }
-sexp* r_env_unbind_anywhere(sexp* env, const char* name) {
+sexp* r_env_unbind_string_anywhere(sexp* env, const char* name) {
   static const char* names[2] = { "", NULL };
   names[0] = name;
   return r_env_unbind_anywhere_strings(env, names);
