@@ -71,9 +71,13 @@ sexp* r_env_as_list(sexp* x);
 sexp* r_list_as_environment(sexp* x, sexp* parent);
 sexp* r_env_clone(sexp* env, sexp* parent);
 
-sexp* r_env_unbind_names(sexp* env, sexp* names, bool inherits);
-sexp* r_env_unbind_all(sexp* env, const char** names, bool inherits);
-sexp* r_env_unbind(sexp* env, const char* name, bool inherits);
+sexp* r_env_unbind(sexp* env, const char* name);
+sexp* r_env_unbind_names(sexp* env, sexp* names);
+sexp* r_env_unbind_strings(sexp* env, const char** strings);
+
+sexp* r_env_unbind_anywhere(sexp* env, const char* name);
+sexp* r_env_unbind_anywhere_names(sexp* env, sexp* names);
+sexp* r_env_unbind_anywhere_strings(sexp* env, const char** names);
 
 bool r_env_inherits(sexp* env, sexp* ancestor, sexp* top);
 

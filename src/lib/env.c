@@ -133,8 +133,11 @@ sexp* r_env_clone(sexp* env, sexp* parent) {
 
 static sexp* remove_call = NULL;
 
-sexp* r_env_unbind_names(sexp* env, sexp* names, bool inherits) {
-  return eval_with_xyz(remove_call, env, names, inherits ? r_shared_true : r_shared_false);
+sexp* r_env_unbind_names(sexp* env, sexp* names) {
+  return eval_with_xyz(remove_call, env, names, r_shared_false);
+}
+sexp* r_env_unbind_anywhere_names(sexp* env, sexp* names) {
+  return eval_with_xyz(remove_call, env, names, r_shared_true);
 }
 
 sexp* rlang_env_unbind(sexp* env, sexp* names, sexp* inherits) {
@@ -147,20 +150,36 @@ sexp* rlang_env_unbind(sexp* env, sexp* names, sexp* inherits) {
   if (!r_is_scalar_logical(inherits)) {
     r_abort("`inherits` must be a scalar logical vector");
   }
-  return r_env_unbind_names(env, names, *r_lgl_deref(inherits));
+
+  if (*r_lgl_deref(inherits)) {
+    return r_env_unbind_anywhere_names(env, names);
+  } else {
+    return r_env_unbind_names(env, names);
+  }
 }
 
-sexp* r_env_unbind_all(sexp* env, const char** names, bool inherits) {
+sexp* r_env_unbind_strings(sexp* env, const char** names) {
   sexp* nms = KEEP(r_new_character(names));
-  sexp* out = r_env_unbind_names(env, nms, inherits);
+  sexp* out = r_env_unbind_names(env, nms);
+  FREE(1);
+  return out;
+}
+sexp* r_env_unbind_anywhere_strings(sexp* env, const char** names) {
+  sexp* nms = KEEP(r_new_character(names));
+  sexp* out = r_env_unbind_anywhere_names(env, nms);
   FREE(1);
   return out;
 }
 
-sexp* r_env_unbind(sexp* env, const char* name, bool inherits) {
+sexp* r_env_unbind(sexp* env, const char* name) {
   static const char* names[2] = { "", NULL };
   names[0] = name;
-  return r_env_unbind_all(env, names, inherits);
+  return r_env_unbind_strings(env, names);
+}
+sexp* r_env_unbind_anywhere(sexp* env, const char* name) {
+  static const char* names[2] = { "", NULL };
+  names[0] = name;
+  return r_env_unbind_anywhere_strings(env, names);
 }
 
 bool r_env_inherits(sexp* env, sexp* ancestor, sexp* top) {

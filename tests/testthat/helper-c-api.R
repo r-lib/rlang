@@ -1,5 +1,5 @@
 
-r_env_unbind <- function(env, names, inherits = FALSE) {
+r_env_unbind_anywhere <- function(env, names, inherits = FALSE) {
   invisible(.Call(rlang_env_unbind, env, names, inherits))
 }
 
