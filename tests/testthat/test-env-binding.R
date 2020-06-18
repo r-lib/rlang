@@ -112,14 +112,13 @@ test_that("with_bindings() evaluates with temporary bindings", {
   expect_identical(foo, "foo")
 })
 
-test_that("env_unbind() with `inherits = TRUE` wipes out all bindings", {
-  bindings <- list(`_foo` = "foo", `_bar` = "bar")
-  env_bind(global_env(), !!! bindings)
-  env <- child_env(global_env(), !!! bindings)
+test_that("env_unbind() with `inherits = TRUE` only removes first match", {
+  env <- env(foo = "foo")
+  child <- env(env, foo = "foo")
 
-  env_unbind(env, "_foo", inherit = TRUE)
-  expect_false(all(env_has(env, names(bindings))))
-  expect_false(all(env_has(global_env(), names(bindings))))
+  env_unbind(child, "foo", inherit = TRUE)
+  expect_false(env_has(child, "foo"))
+  expect_true(env_has(env, "foo"))
 })
 
 test_that("env_bind() requires named elements", {

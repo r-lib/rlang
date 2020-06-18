@@ -133,8 +133,57 @@ sexp* r_env_clone(sexp* env, sexp* parent) {
 
 static sexp* remove_call = NULL;
 
-sexp* r_env_unbind_names(sexp* env, sexp* names, bool inherits) {
-  return eval_with_xyz(remove_call, env, names, inherits ? r_shared_true : r_shared_false);
+#if (R_VERSION < R_Version(4, 0, 0))
+void r__env_unbind(sexp* env, sexp* sym) {
+  // Check if binding exists to avoid `rm()` warning
+  if (r_env_has(env, sym)) {
+    sexp* nm = KEEP(r_sym_as_character(sym));
+    eval_with_xyz(remove_call, env, nm, r_shared_false);
+    FREE(1);
+  }
+}
+#endif
+
+void r_env_unbind_anywhere(sexp* env, sexp* sym) {
+  while (env != r_empty_env) {
+    if (r_env_has(env, sym)) {
+      r_env_unbind(env, sym);
+      return;
+    }
+
+    env = r_env_parent(env);
+  }
+}
+
+void r_env_unbind_syms(sexp* env, sexp** syms) {
+  while (syms) {
+    r_env_unbind(env, *syms++);
+  }
+}
+
+static
+void env_unbind_names(sexp* env, sexp* names, bool inherit) {
+  sexp* const * p_names = r_chr_deref(names);
+  r_ssize n = r_length(names);
+
+  if (inherit) {
+    for (r_ssize i = 0; i < n; ++i) {
+      sexp* sym = r_str_as_symbol(p_names[i]);
+      r_env_unbind_anywhere(env, sym);
+    }
+  } else {
+    for (r_ssize i = 0; i < n; ++i) {
+      sexp* sym = r_str_as_symbol(p_names[i]);
+      r_env_unbind(env, sym);
+    }
+  }
+}
+
+void r_env_unbind_names(sexp* env, sexp* names) {
+  env_unbind_names(env, names, false);
+}
+void r_env_unbind_anywhere_names(sexp* env, sexp* names) {
+  env_unbind_names(env, names, true);
 }
 
 sexp* rlang_env_unbind(sexp* env, sexp* names, sexp* inherits) {
@@ -147,20 +196,36 @@ sexp* rlang_env_unbind(sexp* env, sexp* names, sexp* inherits) {
   if (!r_is_scalar_logical(inherits)) {
     r_abort("`inherits` must be a scalar logical vector");
   }
-  return r_env_unbind_names(env, names, *r_lgl_deref(inherits));
+
+  if (*r_lgl_deref(inherits)) {
+    r_env_unbind_anywhere_names(env, names);
+  } else {
+    r_env_unbind_names(env, names);
+  }
+
+  return r_null;
 }
 
-sexp* r_env_unbind_all(sexp* env, const char** names, bool inherits) {
+void r_env_unbind_strings(sexp* env, const char** names) {
   sexp* nms = KEEP(r_new_character(names));
-  sexp* out = r_env_unbind_names(env, nms, inherits);
+  r_env_unbind_names(env, nms);
   FREE(1);
-  return out;
+}
+void r_env_unbind_anywhere_strings(sexp* env, const char** names) {
+  sexp* nms = KEEP(r_new_character(names));
+  r_env_unbind_anywhere_names(env, nms);
+  FREE(1);
 }
 
-sexp* r_env_unbind(sexp* env, const char* name, bool inherits) {
+void r_env_unbind_string(sexp* env, const char* name) {
   static const char* names[2] = { "", NULL };
   names[0] = name;
-  return r_env_unbind_all(env, names, inherits);
+  r_env_unbind_strings(env, names);
+}
+void r_env_unbind_string_anywhere(sexp* env, const char* name) {
+  static const char* names[2] = { "", NULL };
+  names[0] = name;
+  r_env_unbind_anywhere_strings(env, names);
 }
 
 bool r_env_inherits(sexp* env, sexp* ancestor, sexp* top) {

@@ -438,6 +438,21 @@ test_that("env_name() requires an environment", {
   expect_error(env_name("base"), "must be an environment")
 })
 
+test_that("env_unbind() removes objects", {
+  env <- env(a = 1L)
+  env_unbind(env, "a")
+  expect_false(env_has(env, "a"))
+
+  env <- env(a = 1L)
+  child <- child_env(env)
+
+  env_unbind(child, "a")
+  expect_true(env_has(child, "a", inherit = TRUE))
+
+  env_unbind(child, "a", inherit = TRUE)
+  expect_false(env_has(env, "a"))
+})
+
 
 #  Lifecycle ---------------------------------------------------------
 

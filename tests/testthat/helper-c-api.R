@@ -1,8 +1,4 @@
 
-r_env_unbind <- function(env, names, inherits = FALSE) {
-  invisible(.Call(rlang_env_unbind, env, names, inherits))
-}
-
 r_parse_eval <- function(x, env = caller_env()) {
   .Call(rlang_test_parse_eval, x, env)
 }

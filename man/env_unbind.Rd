@@ -38,5 +38,6 @@ parent <- env(empty_env(), foo = 1, bar = 2)
 env <- env(parent, foo = "b")
 
 env_unbind(env, "foo", inherit = TRUE)
+env_has(env, c("foo", "bar"))
 env_has(env, c("foo", "bar"), inherit = TRUE)
 }
