@@ -332,17 +332,10 @@ with_bindings <- function(.expr, ..., .env = caller_env()) {
 #' env <- env(parent, foo = "b")
 #'
 #' env_unbind(env, "foo", inherit = TRUE)
+#' env_has(env, c("foo", "bar"))
 #' env_has(env, c("foo", "bar"), inherit = TRUE)
 env_unbind <- function(env = caller_env(), nms, inherit = FALSE) {
-  if (inherit) {
-    while (any(exist <- env_has(env, nms, inherit = TRUE))) {
-      rm(list = nms[exist], envir = env, inherits = TRUE)
-    }
-  } else {
-    exist <- env_has(env, nms, inherit = FALSE)
-    rm(list = nms[exist], envir = env)
-  }
-
+  .Call(rlang_env_unbind, env, nms, inherit)
   invisible(env)
 }
 

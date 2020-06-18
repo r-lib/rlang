@@ -1,6 +1,11 @@
 
 # rlang (development version)
 
+* `env_unbind(inherit = TRUE)` now only removes a binding from the
+  first parent environment that has a binding. It used to remove the
+  bindings from the whole ancestry. The new behaviour doesn't
+  guarantee that a scope doesn't have a binding but it is safer.
+
 * `env_has()` is now rewritten in C for performance.
 
 * `dots_list()` gains a `.named` argument for auto-naming dots (#957).

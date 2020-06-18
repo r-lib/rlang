@@ -236,19 +236,6 @@ test_that("client library passes tests", {
   expect_identical(result, 0L)
 })
 
-test_that("r_env_unbind() removes objects", {
-  env <- env(a = 1L)
-  r_env_unbind(env, "a")
-  expect_false(env_has(env, "a"))
-
-  env <- env(a = 1L)
-  child <- child_env(env)
-  r_env_unbind(child, "a")
-  expect_true(env_has(child, "a", inherit = TRUE))
-  r_env_unbind(child, "a", inherits = TRUE)
-  expect_false(env_has(env, "a"))
-})
-
 node_list_clone_until <- function(node, sentinel) {
   .Call(rlang_test_node_list_clone_until, node, sentinel)
 }
