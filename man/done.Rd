@@ -19,7 +19,7 @@ only for empty boxes. Otherwise it returns \code{TRUE} only for
 non-empty boxes.}
 }
 \value{
-A \link[rlang:new_box]{boxed} value.
+A \link[=new_box]{boxed} value.
 }
 \description{
 A value boxed with \code{done()} signals to its caller that it

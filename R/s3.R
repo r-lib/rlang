@@ -168,7 +168,7 @@ as_box_if <- function(.x, .p, .class = NULL, ...) {
 #'
 #' @param x For `done()`, a value to box. For `is_done_box()`, a
 #'   value to test.
-#' @return A [boxed][rlang::new_box] value.
+#' @return A [boxed][new_box] value.
 #'
 #' @examples
 #' done(3)
