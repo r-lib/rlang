@@ -508,7 +508,7 @@ test_that("Non-quosure tilde found correctly (#924)", {
       f <- function(`~`) quo(~1)
       f()
     }),
-    "missing, with no default"
+    "not found"
   )
 
   # No tilde
@@ -516,13 +516,22 @@ test_that("Non-quosure tilde found correctly (#924)", {
   env[['quo']] <- quo
   expect_error(
     eval_tidy(local(quo(~1), envir = env)),
-    "Could not find function"
+    "not found"
   )
 
   # But make sure quosure tilde works
   env[['x']] <- 1
   expect_equal(eval_tidy(local(quo(x), envir = env)), 1)
 })
+
+test_that("can evaluate tilde in nested masks", {
+  tilde <- eval_tidy(quo(eval_tidy(~1)))
+  expect_identical(
+    eval_bare(tilde, f_env(tilde)),
+    tilde
+  )
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

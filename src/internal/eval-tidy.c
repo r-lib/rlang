@@ -340,54 +340,8 @@ sexp* rlang_new_data_mask_compat(sexp* bottom, sexp* top, sexp* parent) {
 sexp* rlang_as_data_mask_compat(sexp* data, sexp* parent) {
   return rlang_as_data_mask(data);
 }
-// Similar to Rf_findFun(r_sym("~"), env), but skips the mask environment.
-// In theory we need a version that does Rf_findVar(r_sym("~"), env) for
-// the cases where `~` is referenced directly (instead of called as a fun),
-// but there is no point to it since we have no mechanism to trigger it like
-// we do when the rlang mask tilde evaluates.
-//
-// Adapted from findFun (R/trunk/src/main/envir.c)
 
-static sexp* find_tilde(sexp* env) {
-  sexp* tilde_sym = KEEP(r_sym("~"));
-  sexp* vl;
-
-  // R_envHasNoSpecialSymbols does not appear to recognize
-  // user envs with "~" (e.g. in `with`)
-
-  KEEP(KEEP(R_NilValue));  // so loop is PROTECT balanced
-  while (env != R_EmptyEnv) {
-    if (mask_info(env).type == RLANG_MASK_NONE) {
-      FREE(2);             // vl potentially allocated twice due to promise
-      vl = KEEP(r_env_find(env, tilde_sym));
-      if (vl != R_UnboundValue) {
-        if (TYPEOF(vl) == PROMSXP) {
-          SEXP pv = PRVALUE(vl);
-          if (pv != R_UnboundValue)
-            vl = KEEP(pv);       // stack balance
-          else {
-            vl = KEEP(Rf_eval(vl, env));
-          }
-        } else KEEP(R_NilValue); // stack balance
-        int is_fun = TYPEOF(vl) == CLOSXP ||
-                     TYPEOF(vl) == BUILTINSXP ||
-                     TYPEOF(vl) == SPECIALSXP;
-        if (is_fun || vl == R_MissingArg) break;
-      } else KEEP(R_NilValue);   // stack balance
-    }
-    env = ENCLOS(env);
-  }
-  if (env == R_EmptyEnv) {
-    r_abort("Could not find function \"~\"");
-  } else if (vl == R_MissingArg) {
-    // this error message is slightly confusing as it will not be emitted
-    // with the correct call.
-    r_abort("Argument \"~\" is missing, with no default");
-  }
-  FREE(3);
-  return (vl);
-}
-
+static sexp* find_tilde(sexp* env);
 static sexp* tilde_prim = NULL;
 
 static sexp* base_tilde_eval(sexp* tilde, sexp* quo_env) {
@@ -409,6 +363,34 @@ static sexp* base_tilde_eval(sexp* tilde, sexp* quo_env) {
   }
   FREE(3);
   return tilde;
+}
+
+// Similar to Rf_findFun(r_sym("~"), env), but skips the mask environments.
+static sexp* find_tilde(sexp* env) {
+  for (; env != R_EmptyEnv; env = ENCLOS(env)) {
+    // Skip over quosure's `~`
+    if (mask_info(env).type != RLANG_MASK_NONE) {
+      continue;
+    }
+
+    sexp* tilde = r_env_find(env, r_tilde_sym);
+    if (r_typeof(tilde) == r_type_promise) {
+      tilde = r_eval(tilde, r_empty_env);
+    }
+
+    if (tilde == r_missing_sym) {
+      // For simplicity, cause 'object not found' error instead of
+      // 'missing argument' error
+      break;
+    }
+    if (r_is_function(tilde)) {
+      return tilde;
+    }
+  }
+
+  // Trigger 'object not found' error
+  r_eval(r_tilde_sym, r_empty_env);
+  never_reached("find_tilde");
 }
 
 sexp* env_get_top_binding(sexp* mask) {
