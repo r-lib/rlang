@@ -462,10 +462,10 @@ test_that(".data pronoun handles promises (#908)", {
 })
 
 test_that("Non-quosure tilde found correctly (#924)", {
-  ## Base tilde
+  # Base tilde
   expect_equal(eval_tidy(quo(~1)), ~1)
 
-  ## tilde outside
+  # Tilde outside
   expect_equal(
     with(
       list(`~` = function(...) "outside"),
@@ -473,7 +473,8 @@ test_that("Non-quosure tilde found correctly (#924)", {
     ),
     "outside"
   )
-  ## tilde inside; works trivially
+
+  # Tilde inside; works trivially
   expect_equal(
     eval_tidy(
       quo(
@@ -483,8 +484,8 @@ test_that("Non-quosure tilde found correctly (#924)", {
     ) ) ),
     "inside"
   )
-  ## tilde in promise
 
+  # Tilde in promise
   expect_equal(
     eval_tidy({
       f <- function(`~`) quo(~1)
@@ -509,18 +510,18 @@ test_that("Non-quosure tilde found correctly (#924)", {
     }),
     "missing, with no default"
   )
-  ## no tilde
 
+  # No tilde
   env <- new.env(parent=emptyenv())
   env[['quo']] <- quo
   expect_error(
     eval_tidy(local(quo(~1), envir = env)),
     "Could not find function"
   )
-  ## but make sure quosure tilde works
 
+  # But make sure quosure tilde works
   env[['x']] <- 1
-  expect_equal(eval_tidy(local(quo(x), envir=env)), 1)
+  expect_equal(eval_tidy(local(quo(x), envir = env)), 1)
 })
 
 # Lifecycle ----------------------------------------------------------
