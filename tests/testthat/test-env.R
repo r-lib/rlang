@@ -347,6 +347,11 @@ test_that("environment is printed with class if any", {
   expect_output(env_print(env), "class: foo, bar")
 })
 
+test_that("can print missing binding from mask environments", {
+  e <- eval_tidy(quote(current_env()))
+  expect_output(env_print(e), "missing")
+})
+
 test_that("env_clone() invokes active bindings in all R versions", {
   if (getRversion() >= "4.0") {
     skip("Until the workaround is in place")

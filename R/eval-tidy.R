@@ -527,3 +527,13 @@ data_pronoun_name <- function(x) {
 is_data_mask <- function(x) {
   is_environment(x) && env_has(x, ".__rlang_data_mask__.")
 }
+
+# Work around for missing argument binding
+mask_clone <- function(mask) {
+  out <- as.list(mask)
+
+  is_missing_arg <- names(out) == ""
+  out <- keep(out, !is_missing_arg)
+
+  list2env(out, parent = env_parent(mask))
+}

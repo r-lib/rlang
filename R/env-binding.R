@@ -607,6 +607,7 @@ env_binding_unlock <- function(env, nms = NULL) {
 #' @export
 env_binding_are_locked <- function(env, nms = NULL) {
   nms <- env_binding_validate_names(env, nms)
+  nms <- map(nms, sym)
   set_names(map_lgl(nms, bindingIsLocked, env = env), nms)
 }
 
@@ -661,12 +662,14 @@ env_binding_type_sum <- function(env, nms = NULL) {
 
   active <- env_binding_are_active(env, nms)
   promise <- env_binding_are_lazy(env, nms)
-  other <- !active & !promise
+  missing <- nms == ""
+  other <- !active & !promise & !missing
 
   types <- new_character(length(nms), nms)
   types[active] <- "active"
   types[promise] <- "lazy"
   types[other] <- map_chr(env_get_list(env, nms[other]), rlang_type_sum)
+  types[missing] <- "missing"
 
   types
 }

@@ -182,6 +182,7 @@ sexp* rlang_new_data_mask(sexp* bottom, sexp* top) {
   sexp* ctxt_pronoun = KEEP(rlang_new_ctxt_pronoun(top));
 
   r_env_poke(data_mask, r_tilde_sym, tilde_fn);
+  r_env_poke(data_mask, r_missing_sym, r_missing_sym);
   r_env_poke(data_mask, data_mask_flag_sym, data_mask);
   r_env_poke(data_mask, data_mask_env_sym, ctxt_pronoun);
   r_env_poke(data_mask, data_mask_top_env_sym, top);
@@ -267,6 +268,7 @@ static void warn_env_as_mask_once() {
   r_warn_deprecated(msg, msg);
 }
 
+static sexp* mask_clone(sexp* mask);
 static sexp* data_pronoun_sym = NULL;
 
 sexp* rlang_as_data_mask(sexp* data) {
@@ -284,7 +286,12 @@ sexp* rlang_as_data_mask(sexp* data) {
   switch (r_typeof(data)) {
   case r_type_environment:
     warn_env_as_mask_once();
-    bottom = KEEP_N(r_env_clone(data, NULL), n_protect);
+    if (rlang_is_data_mask(data)) {
+      bottom = mask_clone(data);
+    } else {
+      bottom = r_env_clone(data, NULL);
+    }
+    KEEP_N(bottom, n_protect);
     break;
 
   case r_type_logical:
@@ -330,6 +337,15 @@ sexp* rlang_as_data_mask(sexp* data) {
 
   FREE(n_protect);
   return data_mask;
+}
+
+static
+sexp* mask_clone(sexp* mask) {
+  // Work around
+  sexp* call = KEEP(r_parse("mask_clone(x)"));
+  sexp* out = r_eval_with_x(call, rlang_ns_env, mask);
+  FREE(1);
+  return out;
 }
 
 // For compatibility of the exported C callable
@@ -497,6 +513,7 @@ sexp* rlang_data_mask_clean(sexp* mask) {
 static sexp* new_quosure_mask(sexp* env) {
   sexp* mask = KEEP(r_new_environment(env, 3));
   r_env_poke(mask, r_tilde_sym, tilde_fn);
+  r_env_poke(mask, r_missing_sym, r_missing_sym);
   r_env_poke(mask, quo_mask_flag_sym, mask);
   FREE(1);
   return mask;
