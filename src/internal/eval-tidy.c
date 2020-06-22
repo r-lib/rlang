@@ -341,24 +341,56 @@ sexp* rlang_as_data_mask_compat(sexp* data, sexp* parent) {
   return rlang_as_data_mask(data);
 }
 
-
+static sexp* find_tilde(sexp* env);
 static sexp* tilde_prim = NULL;
 
 static sexp* base_tilde_eval(sexp* tilde, sexp* quo_env) {
   if (r_f_has_env(tilde)) {
     return tilde;
   }
-
-  // Inline the base primitive because overscopes override `~` to make
+  // Inline the `~` because data masks override it to make
   // quosures self-evaluate
-  tilde = KEEP(r_new_call(tilde_prim, r_node_cdr(tilde)));
+  sexp* tilde_found_fn = KEEP(find_tilde(quo_env));
+
+  tilde = KEEP(r_new_call(tilde_found_fn, r_node_cdr(tilde)));
   tilde = KEEP(r_eval(tilde, quo_env));
 
-  // Change it back because the result still has the primitive inlined
-  r_node_poke_car(tilde, r_tilde_sym);
+  // Undo inlining but only if the result of evaluating it is still an
+  // unevaluated call with the same "tilde"
 
-  FREE(2);
+  if (TYPEOF(tilde) == LANGSXP && CAR(tilde) == tilde_found_fn) {
+    r_node_poke_car(tilde, r_tilde_sym);
+  }
+  FREE(3);
   return tilde;
+}
+
+// Similar to Rf_findFun(r_sym("~"), env), but skips the mask environments.
+static sexp* find_tilde(sexp* env) {
+  for (; env != R_EmptyEnv; env = ENCLOS(env)) {
+    // Skip over quosure's `~`
+    if (mask_info(env).type != RLANG_MASK_NONE) {
+      continue;
+    }
+
+    sexp* tilde = r_env_find(env, r_tilde_sym);
+    if (r_typeof(tilde) == r_type_promise) {
+      tilde = r_eval(tilde, r_empty_env);
+    }
+
+    if (tilde == r_missing_sym) {
+      // For simplicity, cause 'object not found' error instead of
+      // 'missing argument' error
+      break;
+    }
+    if (r_is_function(tilde)) {
+      return tilde;
+    }
+  }
+
+  // Trigger 'object not found' error
+  r_eval(r_tilde_sym, r_empty_env);
+  never_reached("find_tilde");
 }
 
 sexp* env_get_top_binding(sexp* mask) {
