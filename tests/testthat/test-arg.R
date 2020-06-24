@@ -22,6 +22,11 @@ test_that("gives error with different than rearranged arg vs value", {
     arg_match0(myarg, c("fun", "bar"))
   }
   expect_error(f(), regexp = "`myarg` must be one of \"fun\" or \"bar\"")
+
+  expect_error(
+    arg_match0(c("foo", "foo"), c("foo", "bar")),
+    regexp = "must be one of \"foo\" or \"bar\""
+  )
 })
 
 test_that("gives no error with rearranged arg vs value", {

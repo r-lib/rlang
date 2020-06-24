@@ -130,26 +130,33 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
   }
 
   // Same-length vector: must be identical, we allow changed order.
-  bool need_match = false;
-  r_ssize ii = 0;
-  for (; ii < len; ++ii) {
-    if (r_chr_get(arg, ii) != r_chr_get(values, ii)) {
-      need_match = true;
+  r_ssize i = 0;
+  for (; i < len; ++i) {
+    if (r_chr_get(arg, i) != r_chr_get(values, i)) {
       break;
     }
   }
 
-  // Elements are in order, return first
-  if (!need_match) {
+  // Elements are identical, return first
+  if (i == len) {
     FREE(2);
     return(r_str_as_character(r_chr_get(values, 0)));
   }
 
-  for (r_ssize i = ii; i < len; ++i) {
+  sexp* my_values = KEEP(r_duplicate(values, true));
+
+  // Invariant: values[i:(len-1)] contains the values we haven't matched yet
+  for (; i < len; ++i) {
+    sexp* current_arg = r_chr_get(arg, i);
+    if (current_arg == r_chr_get(values, i)) {
+      continue;
+    }
+
     bool matched = false;
-    for (r_ssize j = ii; j < len; ++j) {
-      if (r_chr_get(arg, i) == r_chr_get(values, j)) {
+    for (r_ssize j = i + 1; j < len; ++j) {
+      if (current_arg == r_chr_get(values, j)) {
         matched = true;
+        r_chr_poke(values, j, r_chr_get(values, i));
         break;
       }
     }
@@ -163,7 +170,7 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
     }
   }
 
-  FREE(2);
+  FREE(3);
   return(r_str_as_character(r_chr_get(arg, 0)));
 }
 
