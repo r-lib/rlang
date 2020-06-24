@@ -44,7 +44,7 @@ sexp* rlang_call2(sexp* fn, sexp* args, sexp* ns) {
   return out;
 }
 
-sexp* rlang_call2_external(sexp* call, sexp* op, sexp* args, sexp* env) {
+sexp* rlang_ext2_call2(sexp* call, sexp* op, sexp* args, sexp* env) {
   args = r_node_cdr(args);
 
   sexp* fn = KEEP(r_eval(r_sym(".fn"), env));

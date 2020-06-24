@@ -5,7 +5,7 @@
 sexp* rlang_call2(sexp* fn, sexp* args, sexp* ns);
 
 
-sexp* rlang_exec(sexp* call, sexp* op, sexp* args, sexp* rho) {
+sexp* rlang_ext2_exec(sexp* call, sexp* op, sexp* args, sexp* rho) {
   args = r_node_cdr(args);
 
   sexp* fn = KEEP(r_eval(r_sym(".fn"), rho));

@@ -74,7 +74,7 @@ sexp* rlang_enquo(sexp* sym, sexp* frame) {
   return quo;
 }
 
-sexp* rlang_is_missing(sexp* _call, sexp* _op, sexp* args, sexp* env) {
+sexp* rlang_ext2_is_missing(sexp* _call, sexp* _op, sexp* args, sexp* env) {
   args = r_node_cdr(args);
 
   sexp* missing = r_eval(r_node_car(args), env);

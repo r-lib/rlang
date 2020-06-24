@@ -321,5 +321,5 @@ eval_top <- function(expr, env = caller_env()) {
 #' data_env <- env(data = mtcars)
 #' eval(expr(lm(!!f, data)), data_env)
 exec <- function(.fn, ..., .env = caller_env()) {
-  .External2(rlang_exec, .fn, .env)
+  .External2(rlang_ext2_exec, .fn, .env)
 }
