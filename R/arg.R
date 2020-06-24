@@ -71,27 +71,31 @@ arg_match0 <- function(arg, values, arg_nm = as_label(substitute(arg))) {
   i <- match(arg, values)
 
   if (is.na(i)) {
-    msg <- arg_match_invalid_msg(arg_nm, values)
-
-    i_partial <- pmatch(arg, values)
-    if (!is_na(i_partial)) {
-      candidate <- values[[i_partial]]
-    }
-
-    i_close <- adist(arg, values) / nchar(values)
-    if (any(i_close <= 0.5)) {
-      candidate <- values[[which.min(i_close)]]
-    }
-
-    if (exists("candidate")) {
-      candidate <- chr_quoted(candidate, "\"")
-      msg <- paste0(msg, "\n", "Did you mean ", candidate, "?")
-    }
-
-    abort(msg)
+    stop_arg_match(arg, values, arg_nm)
   }
 
   values[[i]]
+}
+
+stop_arg_match <- function(arg, values, arg_nm) {
+  msg <- arg_match_invalid_msg(arg_nm, values)
+
+  i_partial <- pmatch(arg, values)
+  if (!is_na(i_partial)) {
+    candidate <- values[[i_partial]]
+  }
+
+  i_close <- adist(arg, values) / nchar(values)
+  if (any(i_close <= 0.5)) {
+    candidate <- values[[which.min(i_close)]]
+  }
+
+  if (exists("candidate")) {
+    candidate <- chr_quoted(candidate, "\"")
+    msg <- paste0(msg, "\n", "Did you mean ", candidate, "?")
+  }
+
+  abort(msg)
 }
 
 arg_match_invalid_msg <- function(arg_nm, values) {
