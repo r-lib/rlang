@@ -107,18 +107,18 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
   if (len != 1 && len != len_values) {
     //arg_match0_abort("`%s` must be a string or have the same length as `values`.",  arg_nm_promise, env);
 
-    arg = Rf_ScalarString(STRING_ELT(arg, 0));
+    arg = r_str_as_character(r_chr_get(arg, 0));
     r_eval_with_xyz(stop_arg_match_call, r_base_env, arg, values, arg_nm_promise);
 
     while (1); // No return
   }
 
   if (len == 1) {
-    sexp* arg_char = STRING_ELT(arg, 0);
+    sexp* arg_char = r_chr_get(arg, 0);
     for (r_ssize i = 0; i < len_values; ++i) {
-      if (arg_char == STRING_ELT(values, i)) {
+      if (arg_char == r_chr_get(values, i)) {
         FREE(2);
-        return(Rf_ScalarString(arg_char));
+        return(r_str_as_character(arg_char));
       }
     }
 
@@ -129,7 +129,7 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
     bool need_match = false;
     r_ssize ii = 0;
     for (; ii < len; ++ii) {
-      if (STRING_ELT(arg, ii) != STRING_ELT(values, ii)) {
+      if (r_chr_get(arg, ii) != r_chr_get(values, ii)) {
         need_match = true;
         break;
       }
@@ -144,7 +144,7 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
     for (R_xlen_t i = ii; i < len; ++i) {
       bool matched = false;
       for (r_ssize j = ii; j < len; ++j) {
-        if (STRING_ELT(arg, i) == STRING_ELT(values, j)) {
+        if (r_chr_get(arg, i) == r_chr_get(values, j)) {
           matched = true;
           break;
         }
@@ -152,7 +152,7 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
 
       if (!matched) {
         // arg_match0_abort("`%s` must contain all elements in `values`.", arg_nm_promise, env);
-        arg = Rf_ScalarString(STRING_ELT(arg, 0));
+        arg = r_str_as_character(r_chr_get(arg, 0));
         r_eval_with_xyz(stop_arg_match_call, r_base_env, arg, values, arg_nm_promise);
 
         while (1); // No return
@@ -160,7 +160,7 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
     }
 
     FREE(2);
-    return(Rf_ScalarString(STRING_ELT(arg, 0)));
+    return(r_str_as_character(r_chr_get(arg, 0)));
   }
 }
 
@@ -171,7 +171,7 @@ void arg_match0_abort(const char* msg, sexp* arg_nm_promise, sexp* env) {
     r_abort("`arg_nm` must be a string.");
   }
 
-  const char* arg_nm_chr = CHAR(STRING_ELT(arg_nm, 0));
+  const char* arg_nm_chr = r_chr_get_c_string(arg_nm, 0);
   r_abort(msg, arg_nm_chr);
 }
 
