@@ -91,13 +91,12 @@ void arg_match0_abort(const char* msg, sexp* arg_nm_promise, sexp* env);
 sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
   args = r_node_cdr(args);
 
-  sexp* arg =            KEEP(r_eval(r_node_car(args), env)); args = r_node_cdr(args);
-  sexp* values =         KEEP(r_eval(r_node_car(args), env)); args = r_node_cdr(args);
-  // Expensive by default, forced only if necessary.
-  sexp* arg_nm_promise = r_node_car(args);
+  sexp* arg =    r_node_car(args); args = r_node_cdr(args);
+  sexp* values = r_node_car(args); args = r_node_cdr(args);
+  sexp* arg_nm = r_node_car(args);
 
   if (r_typeof(arg) != r_type_character) {
-    arg_match0_abort("`%s` must be a character vector.", arg_nm_promise, env);
+    arg_match0_abort("`%s` must be a character vector.", arg_nm, env);
   }
   if (r_typeof(values) != r_type_character) {
     r_abort("`values` must be a character vector.");
@@ -109,7 +108,7 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
     //arg_match0_abort("`%s` must be a string or have the same length as `values`.",  arg_nm_promise, env);
 
     arg = r_str_as_character(r_chr_get(arg, 0));
-    r_eval_with_xyz(stop_arg_match_call, r_base_env, arg, values, arg_nm_promise);
+    r_eval_with_xyz(stop_arg_match_call, r_base_env, arg, values, arg_nm);
 
     never_reached("rlang_ext2_arg_match0");
   }
@@ -119,12 +118,11 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
     sexp* arg_char = r_chr_get(arg, 0);
     for (r_ssize i = 0; i < len_values; ++i) {
       if (arg_char == r_chr_get(values, i)) {
-        FREE(2);
         return(r_str_as_character(arg_char));
       }
     }
 
-    r_eval_with_xyz(stop_arg_match_call, r_base_env, arg, values, arg_nm_promise);
+    r_eval_with_xyz(stop_arg_match_call, r_base_env, arg, values, arg_nm);
 
     never_reached("rlang_ext2_arg_match0");
   }
@@ -139,7 +137,6 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
 
   // Elements are identical, return first
   if (i == len) {
-    FREE(2);
     return(r_str_as_character(r_chr_get(values, 0)));
   }
 
@@ -164,19 +161,17 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
     if (!matched) {
       // arg_match0_abort("`%s` must contain all elements in `values`.", arg_nm_promise, env);
       arg = r_str_as_character(r_chr_get(arg, 0));
-      r_eval_with_xyz(stop_arg_match_call, r_base_env, arg, values, arg_nm_promise);
+      r_eval_with_xyz(stop_arg_match_call, r_base_env, arg, values, arg_nm);
 
       never_reached("rlang_ext2_arg_match0");
     }
   }
 
-  FREE(3);
+  FREE(1);
   return(r_str_as_character(r_chr_get(arg, 0)));
 }
 
-void arg_match0_abort(const char* msg, sexp* arg_nm_promise, sexp* env) {
-  sexp* arg_nm = KEEP(r_eval(arg_nm_promise, env));
-
+void arg_match0_abort(const char* msg, sexp* arg_nm, sexp* env) {
   if (r_typeof(arg_nm) != r_type_character || r_length(arg_nm) != 1) {
     r_abort("`arg_nm` must be a string.");
   }
