@@ -105,7 +105,12 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
   r_ssize len = r_length(arg);
   r_ssize len_values = r_length(values);
   if (len != 1 && len != len_values) {
-    arg_match0_abort("`%s` must be a string or have the same length as `values`.",  arg_nm_promise, env);
+    //arg_match0_abort("`%s` must be a string or have the same length as `values`.",  arg_nm_promise, env);
+
+    arg = Rf_ScalarString(STRING_ELT(arg, 0));
+    r_eval_with_xyz(stop_arg_match_call, r_base_env, arg, values, arg_nm_promise);
+
+    while (1); // No return
   }
 
   if (len == 1) {
@@ -146,7 +151,11 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
       }
 
       if (!matched) {
-        arg_match0_abort("`%s` must contain all elements in `values`.", arg_nm_promise, env);
+        // arg_match0_abort("`%s` must contain all elements in `values`.", arg_nm_promise, env);
+        arg = Rf_ScalarString(STRING_ELT(arg, 0));
+        r_eval_with_xyz(stop_arg_match_call, r_base_env, arg, values, arg_nm_promise);
+
+        while (1); // No return
       }
     }
 

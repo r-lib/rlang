@@ -12,16 +12,30 @@ test_that("matches arg", {
 test_that("gives an error with more than one arg", {
   myarg <- c("bar", "fun")
   expect_error(
-    regexp = "`myarg` must be a string.",
+    regexp = "`myarg` must be one of \"bar\" or \"baz\".",
     arg_match0(myarg, c("bar", "baz"))
   )
 })
 
-test_that("gives an error with bogus values", {
-  expect_error(
-    regexp = "Internal error: `values` must be a character vector.",
-    arg_match0("foo", 1:3)
+test_that("gives error with different than rearranged arg vs value", {
+  f <- function(myarg = c("foo", "bar", "fun")) {
+    arg_match0(myarg, c("fun", "bar"))
+  }
+  expect_error(f(), regexp = "`myarg` must be one of \"fun\" or \"bar\"")
+})
+
+test_that("gives no error with rearranged arg vs value", {
+  expect_identical(arg_match0(rev(letters), letters), "z")
+
+  withr::with_seed(
+    20200624L,
+    expect_identical(arg_match0(letters, sample(letters)), "a")
   )
+})
+
+test_that("uses first value when called with all values", {
+  myarg <- c("bar", "baz")
+  expect_identical(arg_match0(myarg, c("bar", "baz")), "bar")
 })
 
 test_that("informative error message on partial match", {
