@@ -114,6 +114,7 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
     never_reached("rlang_ext2_arg_match0");
   }
 
+  // Simple case: one argument, we check if it's one of the values.
   if (len == 1) {
     sexp* arg_char = r_chr_get(arg, 0);
     for (r_ssize i = 0; i < len_values; ++i) {
@@ -126,43 +127,44 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
     r_eval_with_xyz(stop_arg_match_call, r_base_env, arg, values, arg_nm_promise);
 
     never_reached("rlang_ext2_arg_match0");
-  } else {
-    bool need_match = false;
-    r_ssize ii = 0;
-    for (; ii < len; ++ii) {
-      if (r_chr_get(arg, ii) != r_chr_get(values, ii)) {
-        need_match = true;
+  }
+
+  // Same-length vector: must be identical, we allow changed order.
+  bool need_match = false;
+  r_ssize ii = 0;
+  for (; ii < len; ++ii) {
+    if (r_chr_get(arg, ii) != r_chr_get(values, ii)) {
+      need_match = true;
+      break;
+    }
+  }
+
+  // Elements are in order, return first
+  if (!need_match) {
+    FREE(2);
+    return(Rf_ScalarString(STRING_ELT(values, 0)));
+  }
+
+  for (R_xlen_t i = ii; i < len; ++i) {
+    bool matched = false;
+    for (r_ssize j = ii; j < len; ++j) {
+      if (r_chr_get(arg, i) == r_chr_get(values, j)) {
+        matched = true;
         break;
       }
     }
 
-    // Elements are in order, return first
-    if (!need_match) {
-      FREE(2);
-      return(Rf_ScalarString(STRING_ELT(values, 0)));
+    if (!matched) {
+      // arg_match0_abort("`%s` must contain all elements in `values`.", arg_nm_promise, env);
+      arg = r_str_as_character(r_chr_get(arg, 0));
+      r_eval_with_xyz(stop_arg_match_call, r_base_env, arg, values, arg_nm_promise);
+
+      never_reached("rlang_ext2_arg_match0");
     }
-
-    for (R_xlen_t i = ii; i < len; ++i) {
-      bool matched = false;
-      for (r_ssize j = ii; j < len; ++j) {
-        if (r_chr_get(arg, i) == r_chr_get(values, j)) {
-          matched = true;
-          break;
-        }
-      }
-
-      if (!matched) {
-        // arg_match0_abort("`%s` must contain all elements in `values`.", arg_nm_promise, env);
-        arg = r_str_as_character(r_chr_get(arg, 0));
-        r_eval_with_xyz(stop_arg_match_call, r_base_env, arg, values, arg_nm_promise);
-
-        never_reached("rlang_ext2_arg_match0");
-      }
-    }
-
-    FREE(2);
-    return(r_str_as_character(r_chr_get(arg, 0)));
   }
+
+  FREE(2);
+  return(r_str_as_character(r_chr_get(arg, 0)));
 }
 
 void arg_match0_abort(const char* msg, sexp* arg_nm_promise, sexp* env) {
