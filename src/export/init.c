@@ -325,6 +325,7 @@ extern sexp* rlang_ext2_is_missing(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_ext2_call2(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_ext2_dots_values(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_ext2_exec(sexp*, sexp*, sexp*, sexp*);
+extern sexp* rlang_ext2_arg_match0(sexp*, sexp*, sexp*, sexp*);
 
 
 static const r_external externals[] = {
@@ -332,6 +333,7 @@ static const r_external externals[] = {
   {"rlang_ext2_call2",                  (r_fn_ptr) &rlang_ext2_call2, 2},
   {"rlang_ext2_dots_values",            (r_fn_ptr) &rlang_ext2_dots_values, 6},
   {"rlang_ext2_exec",                   (r_fn_ptr) &rlang_ext2_exec, 2},
+  {"rlang_ext2_arg_match0",             (r_fn_ptr) &rlang_ext2_arg_match0, 3},
   {NULL, NULL, 0}
 };
 

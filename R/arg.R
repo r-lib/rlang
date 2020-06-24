@@ -60,21 +60,7 @@ arg_match <- function(arg, values = NULL) {
 #' # Use the bare-bones version with explicit values for speed:
 #' arg_match0("bar", c("foo", "bar", "baz"))
 arg_match0 <- function(arg, values, arg_nm = as_label(substitute(arg))) {
-  # Use primitive checks to avoid function calls
-  if (!.Call(rlang_is_string, arg, NULL)) {
-    abort(paste0(chr_quoted(arg_nm), " must be a string."))
-  }
-  if (!.Call(rlang_is_character, values, NULL)) {
-    abort("Internal error: `values` must be a character vector.")
-  }
-
-  i <- match(arg, values)
-
-  if (is.na(i)) {
-    stop_arg_match(arg, values, arg_nm)
-  }
-
-  values[[i]]
+  .External2(rlang_ext2_arg_match0, arg, values, arg_nm)
 }
 
 stop_arg_match <- function(arg, values, arg_nm) {

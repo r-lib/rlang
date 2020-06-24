@@ -30,6 +30,7 @@ r_ssize r_as_ssize(sexp* n) {
 }
 
 void r_init_rlang_ns_env();
+void r_init_library_arg();
 void r_init_library_cnd();
 void r_init_library_env();
 void r_init_library_session();
@@ -53,6 +54,7 @@ SEXP r_init_library() {
   r_init_library_sym();  // Needs to be first
 
   r_init_rlang_ns_env();
+  r_init_library_arg();
   r_init_library_cnd();
   r_init_library_env();
   r_init_library_session();
