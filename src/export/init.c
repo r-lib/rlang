@@ -318,14 +318,14 @@ static const r_callable r_callables[] = {
 extern sexp* rlang_ext2_is_missing(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_ext2_call2(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_ext2_dots_values(sexp*, sexp*, sexp*, sexp*);
-extern sexp* rlang_exec(sexp*, sexp*, sexp*, sexp*);
+extern sexp* rlang_ext2_exec(sexp*, sexp*, sexp*, sexp*);
 
 
 static const r_external externals[] = {
   {"rlang_ext2_is_missing",             (r_fn_ptr) &rlang_ext2_is_missing, 1},
   {"rlang_ext2_call2",                  (r_fn_ptr) &rlang_ext2_call2, 2},
   {"rlang_ext2_dots_values",            (r_fn_ptr) &rlang_ext2_dots_values, 6},
-  {"rlang_exec",                        (r_fn_ptr) &rlang_exec, 2},
+  {"rlang_ext2_exec",                   (r_fn_ptr) &rlang_ext2_exec, 2},
   {NULL, NULL, 0}
 };
 
