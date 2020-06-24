@@ -1,5 +1,6 @@
 #include <rlang.h>
 #include "expr-interp.h"
+#include "utils.h"
 
 // Capture
 
@@ -110,7 +111,7 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
     arg = r_str_as_character(r_chr_get(arg, 0));
     r_eval_with_xyz(stop_arg_match_call, r_base_env, arg, values, arg_nm_promise);
 
-    while (1); // No return
+    never_reached("rlang_ext2_arg_match0");
   }
 
   if (len == 1) {
@@ -124,7 +125,7 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
 
     r_eval_with_xyz(stop_arg_match_call, r_base_env, arg, values, arg_nm_promise);
 
-    while (1); // No return
+    never_reached("rlang_ext2_arg_match0");
   } else {
     bool need_match = false;
     r_ssize ii = 0;
@@ -155,7 +156,7 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
         arg = r_str_as_character(r_chr_get(arg, 0));
         r_eval_with_xyz(stop_arg_match_call, r_base_env, arg, values, arg_nm_promise);
 
-        while (1); // No return
+        never_reached("rlang_ext2_arg_match0");
       }
     }
 
