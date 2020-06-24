@@ -44,6 +44,9 @@
   and thus always returned `TRUE` if the first package was installed
   regardless of the actual length of `pkg`. (#991, @salim-b)
 
+* `arg_match0()` is a faster version of `arg_match()` for use when performance
+  is at a premium (#997, @krlmlr).
+
 
 # rlang 0.4.6
 
