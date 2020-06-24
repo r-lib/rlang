@@ -142,10 +142,10 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
   // Elements are in order, return first
   if (!need_match) {
     FREE(2);
-    return(Rf_ScalarString(STRING_ELT(values, 0)));
+    return(r_str_as_character(r_chr_get(values, 0)));
   }
 
-  for (R_xlen_t i = ii; i < len; ++i) {
+  for (r_ssize i = ii; i < len; ++i) {
     bool matched = false;
     for (r_ssize j = ii; j < len; ++j) {
       if (r_chr_get(arg, i) == r_chr_get(values, j)) {
