@@ -40,8 +40,7 @@
 
 
 <meta property="og:title" content="Poke an object in an environment — env_poke" />
-<meta property="og:description" content="
-env_poke() will assign or reassign a binding in env if create
+<meta property="og:description" content="env_poke() will assign or reassign a binding in env if create
 is TRUE. If create is FALSE and a binding does not already
 exists, an error is issued." />
 
@@ -159,8 +158,7 @@ exists, an error is issued." />
     </div>
 
     <div class="ref-description">
-    <p><a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a></p>
-<p><code>env_poke()</code> will assign or reassign a binding in <code>env</code> if <code>create</code>
+    <p><code>env_poke()</code> will assign or reassign a binding in <code>env</code> if <code>create</code>
 is <code>TRUE</code>. If <code>create</code> is <code>FALSE</code> and a binding does not already
 exists, an error is issued.</p>
     </div>
@@ -211,15 +209,6 @@ probably went wrong and it is safer to issue an error. Note that
 this is different to the base R operator <code>&lt;&lt;-</code> which will create
 a binding in the global environment instead of the current
 environment when no existing binding is found in the parents.</p>
-    <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
-
-    
-
-
-<p><code>env_poke()</code> is experimental. We are still experimenting with
-reducing the number of redundant functions by using quasiquotation.
-It is possible <code>env_poke()</code> will be deprecated in favour of
-<code>env_bind()</code> and name-unquoting with <code>:=</code>.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
