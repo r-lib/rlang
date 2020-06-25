@@ -158,6 +158,8 @@
 <a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li><p><code>env_poke()</code> now supports <code>zap()</code> sentinels for removing bindings (<a href='https://github.com/r-lib/rlang/issues/1012'>#1012</a>) and has better support for characters that are not representable in the local encoding.</p></li>
+<li><p><code>env_poke()</code> has been rewritten in C for performance.</p></li>
 <li><p><code>eval_tidy()</code> now looks up the lexically defined <code><a href="https://rdrr.io/r/base/tilde.html">~</a></code> function (<a href='https://github.com/r-lib/rlang/issues/924'>#924</a>, <a href='https://github.com/brodieG'>@brodieG</a>).</p></li>
 <li><p>The unicode translation warnings that appeared on Windows with R 4.0 are now fixed.</p></li>
 <li><p><code>env_unbind(inherit = TRUE)</code> now only removes a binding from the first parent environment that has a binding. It used to remove the bindings from the whole ancestry. The new behaviour doesn’t guarantee that a scope doesn’t have a binding but it is safer.</p></li>
