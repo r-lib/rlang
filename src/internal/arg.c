@@ -179,7 +179,7 @@ void arg_match0_abort(const char* msg, sexp* env) {
   sexp* arg_nm = KEEP(r_eval(arg_nm_sym, env));
 
   if (r_typeof(arg_nm) != r_type_character || r_length(arg_nm) != 1) {
-    r_abort("`arg_nm` must be a string.");
+    r_abort(msg, "<arg_nm>");
   }
 
   const char* arg_nm_chr = r_chr_get_c_string(arg_nm, 0);
