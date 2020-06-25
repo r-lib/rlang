@@ -420,10 +420,6 @@ env_get_list <- function(env = caller_env(), nms, default, inherit = FALSE) {
 
 #' Poke an object in an environment
 #'
-#' @description
-#'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
-#'
 #' `env_poke()` will assign or reassign a binding in `env` if `create`
 #' is `TRUE`. If `create` is `FALSE` and a binding does not already
 #' exists, an error is issued.
@@ -445,13 +441,6 @@ env_get_list <- function(env = caller_env(), nms, default, inherit = FALSE) {
 #' environment when no existing binding is found in the parents.
 #'
 #'
-#' @section Life cycle:
-#'
-#' `env_poke()` is experimental. We are still experimenting with
-#' reducing the number of redundant functions by using quasiquotation.
-#' It is possible `env_poke()` will be deprecated in favour of
-#' `env_bind()` and name-unquoting with `:=`.
-#'
 #' @inheritParams env_get
 #' @param value The value for a new binding.
 #' @param create Whether to create a binding if it does not already
@@ -459,7 +448,6 @@ env_get_list <- function(env = caller_env(), nms, default, inherit = FALSE) {
 #' @return The old value of `nm` or a [zap sentinel][zap] if the
 #'   binding did not exist yet.
 #'
-#' @keywords internal
 #' @export
 env_poke <- function(env = caller_env(), nm, value,
                      inherit = FALSE, create = !inherit) {

@@ -24,8 +24,6 @@ The old value of \code{nm} or a \link[=zap]{zap sentinel} if the
 binding did not exist yet.
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
-
 \code{env_poke()} will assign or reassign a binding in \code{env} if \code{create}
 is \code{TRUE}. If \code{create} is \code{FALSE} and a binding does not already
 exists, an error is issued.
@@ -44,13 +42,3 @@ this is different to the base R operator \verb{<<-} which will create
 a binding in the global environment instead of the current
 environment when no existing binding is found in the parents.
 }
-\section{Life cycle}{
-
-
-\code{env_poke()} is experimental. We are still experimenting with
-reducing the number of redundant functions by using quasiquotation.
-It is possible \code{env_poke()} will be deprecated in favour of
-\code{env_bind()} and name-unquoting with \verb{:=}.
-}
-
-\keyword{internal}

@@ -152,6 +152,7 @@ reference:
       - env_bind_lazy
       - env_bind_active
       - env_unbind
+      - env_poke
       - with_bindings
       - scoped_bindings
       - env_has
