@@ -8,6 +8,14 @@ static inline sexp* r_lgl(bool x) {
   return Rf_ScalarLogical(x);
 }
 
+static inline
+bool r_is_bool(SEXP x) {
+  return
+    TYPEOF(x) == LGLSXP &&
+    Rf_length(x) == 1 &&
+    LOGICAL(x)[0] != NA_LOGICAL;
+}
+
 bool r_is_true(sexp* x);
 
 static inline sexp* r_shared_lgl(bool x) {

@@ -1,6 +1,12 @@
 
 # rlang (development version)
 
+* `env_poke()` now supports `zap()` sentinels for removing bindings
+  (#1012) and has better support for characters that are not
+  representable in the local encoding.
+
+* `env_poke()` has been rewritten in C for performance.
+
 * `eval_tidy()` now looks up the lexically defined `~` function (#924,
   @brodieG).
 

@@ -449,38 +449,20 @@ env_get_list <- function(env = caller_env(), nms, default, inherit = FALSE) {
 #'   binding did not exist yet.
 #'
 #' @export
-env_poke <- function(env = caller_env(), nm, value,
-                     inherit = FALSE, create = !inherit) {
-  stopifnot(is_string(nm))
+env_poke <- function(env = caller_env(),
+                     nm,
+                     value,
+                     inherit = FALSE,
+                     create = !inherit) {
   env_ <- get_env_retired(env, "env_poke()")
-  old <- env_get(env_, nm, inherit = inherit, default = zap())
-
-  if (inherit) {
-    scope_poke(env_, nm, value, create)
-  } else if (create || env_has(env_, nm)) {
-    assign(nm, value, envir = env_)
-  } else {
-    abort(paste0("Can't find existing binding in `env` for \"", nm, "\""))
-  }
-
-  invisible(maybe_missing(old))
-}
-scope_poke <- function(env, nm, value, create) {
-  cur <- env
-
-  while (!env_has(cur, nm) && !is_empty_env(cur)) {
-    cur <- env_parent(cur)
-  }
-
-  if (is_empty_env(cur)) {
-    if (!create) {
-      abort(paste0("Can't find existing binding in `env` for \"", nm, "\""))
-    }
-    cur <- env
-  }
-
-  assign(nm, value, envir = cur)
-  env
+  invisible(.Call(
+    rlang_env_poke,
+    env = env,
+    nm = nm,
+    values = value,
+    inherit = inherit,
+    create = create
+  ))
 }
 
 #' Names and numbers of symbols bound in an environment

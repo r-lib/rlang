@@ -361,6 +361,32 @@ test_that("`env_binding_are_lazy()` type-checks `env` (#923)", {
   expect_error(env_binding_are_lazy("a", "b"), "must be an environment")
 })
 
+test_that("env_poke() zaps (#1012)", {
+  env <- env(foo = 1)
+  env_poke(env, "foo", zap())
+  expect_false(env_has(env, "foo"))
+
+  env <- env(env(foo = 1))
+  env_poke(env, "foo", zap())
+  expect_false(env_has(env, "foo"))
+  expect_true(env_has(env, "foo", inherit = TRUE))
+
+  env_poke(env, "foo", zap(), inherit = TRUE)
+  expect_false(env_has(env, "foo", inherit = TRUE))
+})
+
+test_that("env_poke() doesn't warn when unrepresentable characters are serialised", {
+  with_non_utf8_locale({
+    e <- env(empty_env())
+    nm <- get_alien_lang_string()
+
+    expect_no_warning(env_poke(e, nm, NA))
+
+    nms <- env_names(e)
+    expect_equal(Encoding(nms), "UTF-8")
+  })
+})
+
 
 # Lifecycle ----------------------------------------------------------
 
