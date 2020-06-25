@@ -53,6 +53,7 @@ sexp* rlang_env_has(sexp* env, sexp* nms, sexp* inherit) {
 
 static void env_poke_or_zap(sexp* env, sexp* sym, sexp* value);
 static void env_poke_lazy(sexp* env, sexp* sym, sexp* value, sexp* eval_env);
+static void env_poke_active(sexp* env, sexp* sym, sexp* fn, sexp* eval_env);
 static sexp* env_get(sexp* env, sexp* sym);
 
 sexp* rlang_env_poke(sexp* env, sexp* nm, sexp* value, sexp* inherit, sexp* create) {
@@ -163,7 +164,7 @@ sexp* rlang_env_bind(sexp* env,
       switch (c_bind_type) {
       case BIND_TYPE_value: r_env_poke(env, sym, value); break;
       case BIND_TYPE_lazy: env_poke_lazy(env, sym, value, eval_env); break;
-      case BIND_TYPE_active: r_abort("TODO");
+      case BIND_TYPE_active: env_poke_active(env, sym, value, eval_env); break;
       }
     }
   }
@@ -201,7 +202,6 @@ void env_poke_or_zap(sexp* env, sexp* sym, sexp* value) {
     r_env_poke(env, sym, value);
   }
 }
-
 static
 void env_poke_lazy(sexp* env, sexp* sym, sexp* expr, sexp* eval_env) {
   if (rlang_is_quosure(expr)) {
@@ -212,6 +212,16 @@ void env_poke_lazy(sexp* env, sexp* sym, sexp* expr, sexp* eval_env) {
   KEEP(expr);
 
   r_env_poke_lazy(env, sym, expr, eval_env);
+  FREE(1);
+}
+static
+void env_poke_active(sexp* env, sexp* sym, sexp* fn, sexp* eval_env) {
+  if (!r_is_function(fn)) {
+    fn = r_as_function(fn, eval_env);
+  }
+  KEEP(fn);
+
+  r_env_poke_active(env, sym, fn);
   FREE(1);
 }
 

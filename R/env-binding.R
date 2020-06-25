@@ -244,18 +244,15 @@ env_bind_lazy <- function(.env, ..., .eval_env = caller_env()) {
 #' env$foo
 #' env$foo
 env_bind_active <- function(.env, ...) {
-  fns <- map_if(list3(...), negate(is_zap), as_function)
-
-  existing <- env_names(.env)
-  binder <- function(env, nm, value) {
-    # makeActiveBinding() fails if there is already a regular binding
-    if (nm %in% existing) {
-      env_unbind(env, nm)
-    }
-    makeActiveBinding(sym(nm), value, env)
-  }
-
-  env_bind_impl(.env, fns, "env_bind_active()", TRUE, binder)
+  .env <- get_env_retired(.env, "env_bind_active()")
+  invisible(.Call(
+    rlang_env_bind,
+    env = .env,
+    values = list3(...),
+    needs_old = TRUE,
+    bind_type = "active",
+    eval_env = caller_env()
+  ))
 }
 
 #' Temporarily change bindings of an environment
