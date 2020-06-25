@@ -682,13 +682,13 @@ static sexp* dots_keep(sexp* dots, sexp* nms, bool first) {
   sexp* out_nms = KEEP(r_new_vector(r_type_character, out_n));
   r_push_names(out, out_nms);
 
-  sexp** nms_ptr = r_chr_deref(nms);
-  int* dups_ptr = r_lgl_deref(dups);
+  sexp* const * p_nms = r_chr_const_deref(nms);
+  const int* p_dups = r_lgl_const_deref(dups);
 
-  for (r_ssize i = 0, out_i = 0; i < n; ++i, ++nms_ptr, ++dups_ptr) {
-    if (!*dups_ptr) {
+  for (r_ssize i = 0, out_i = 0; i < n; ++i) {
+    if (!p_dups[i]) {
       r_list_poke(out, out_i, r_list_get(dots, i));
-      r_chr_poke(out_nms, out_i, *nms_ptr);
+      r_chr_poke(out_nms, out_i, p_nms[i]);
       ++out_i;
     }
   }

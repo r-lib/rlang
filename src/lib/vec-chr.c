@@ -114,12 +114,12 @@ sexp* r_nms_are_duplicated(sexp* nms, bool from_last) {
   sexp* dups = KEEP(Rf_duplicated(nms, from_last));
 
   r_ssize n = r_length(dups);
-  int* dups_ptr = r_lgl_deref(dups);
-  sexp** nms_ptr = r_chr_deref(nms);
+  int* p_dups = r_lgl_deref(dups);
+  sexp* const * p_nms = r_chr_const_deref(nms);
 
-  for (r_ssize i = 0; i < n; ++i, ++dups_ptr, ++nms_ptr) {
-    if (*nms_ptr == r_empty_str || *nms_ptr == r_missing_str) {
-      *dups_ptr = false;
+  for (r_ssize i = 0; i < n; ++i) {
+    if (p_nms[i] == r_empty_str || p_nms[i] == r_missing_str) {
+      p_dups[i] = false;
     }
   }
 

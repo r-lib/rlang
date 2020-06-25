@@ -25,14 +25,16 @@ r_ssize r_lgl_sum(sexp* x, bool na_true) {
   r_ssize n = r_vec_length(x);
 
   r_ssize sum = 0;
-  int* ptr = r_lgl_deref(x);
+  const int* p_x = r_lgl_const_deref(x);
 
-  for (r_ssize i = 0; i < n; ++i, ++ptr) {
+  for (r_ssize i = 0; i < n; ++i) {
     // This can't overflow since `sum` is necessarily smaller or equal
     // to the vector length expressed in `r_ssize`.
-    if (na_true && *ptr) {
+    int x_i = p_x[i];
+
+    if (na_true && x_i) {
       sum += 1;
-    } else if (*ptr == 1) {
+    } else if (x_i == 1) {
       sum += 1;
     }
   }
@@ -46,7 +48,7 @@ sexp* r_lgl_which(sexp* x, bool na_propagate) {
   }
 
   r_ssize n = r_length(x);
-  int* data = r_lgl_deref(x);
+  const int* p_x = r_lgl_const_deref(x);
 
   r_ssize which_n = r_lgl_sum(x, na_propagate);
 
@@ -55,18 +57,18 @@ sexp* r_lgl_which(sexp* x, bool na_propagate) {
   }
 
   sexp* which = KEEP(r_new_vector(r_type_integer, which_n));
-  int* which_data = r_int_deref(which);
+  int* p_which = r_int_deref(which);
 
-  for (int i = 0; i < n; ++i, ++data) {
-    int elt = *data;
+  for (int i = 0; i < n; ++i) {
+    int elt = p_x[i];
 
     if (elt) {
       if (na_propagate && elt == NA_LOGICAL) {
-        *which_data = NA_INTEGER;
-        ++which_data;
+        *p_which = NA_INTEGER;
+        ++p_which;
       } else if (elt != NA_LOGICAL) {
-        *which_data = i + 1;
-        ++which_data;
+        *p_which = i + 1;
+        ++p_which;
       }
     }
   }

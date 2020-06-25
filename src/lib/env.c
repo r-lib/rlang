@@ -91,13 +91,13 @@ sexp* r_env_as_list_compat(sexp* env, sexp* out) {
   }
 
   r_ssize n = r_length(nms);
-  sexp** nms_ptr = r_chr_deref(nms);
-  int* types_ptr = r_int_deref(types);
+  sexp* const * p_nms = r_chr_const_deref(nms);
+  const int* p_types = r_int_const_deref(types);
 
-  for (r_ssize i = 0; i < n; ++i, ++nms_ptr, ++types_ptr) {
-    enum r_env_binding_type type = *types_ptr;
+  for (r_ssize i = 0; i < n; ++i) {
+    enum r_env_binding_type type = p_types[i];
     if (type == R_ENV_BINDING_ACTIVE) {
-      r_ssize fn_idx = r_chr_detect_index(nms, r_str_deref(*nms_ptr));
+      r_ssize fn_idx = r_chr_detect_index(nms, r_str_deref(p_nms[i]));
       if (fn_idx < 0) {
         r_abort("Internal error: Can't find active binding in list");
       }
@@ -163,7 +163,7 @@ void r_env_unbind_syms(sexp* env, sexp** syms) {
 
 static
 void env_unbind_names(sexp* env, sexp* names, bool inherit) {
-  sexp* const * p_names = r_chr_deref(names);
+  sexp* const * p_names = r_chr_const_deref(names);
   r_ssize n = r_length(names);
 
   if (inherit) {

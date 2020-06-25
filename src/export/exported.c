@@ -87,10 +87,10 @@ sexp* rlang_env_bind_list(sexp* env, sexp* names, sexp* data) {
     r_abort("Internal error: `data` and `names` must have the same length.");
   }
 
-  sexp** namesp = r_chr_deref(names);
+  sexp* const * p_names = r_chr_const_deref(names);
 
   for (r_ssize i = 0; i < n; ++i) {
-    Rf_defineVar(r_str_as_symbol(namesp[i]), r_list_get(data, i), env);
+    Rf_defineVar(r_str_as_symbol(p_names[i]), r_list_get(data, i), env);
   }
 
   return r_null;
@@ -541,10 +541,10 @@ sexp* rlang_is_string(sexp* x, sexp* string) {
 
   bool out = false;
   r_ssize n = r_length(string);
-  sexp** p = r_chr_deref(string);
+  sexp* const * p_string = r_chr_const_deref(string);
 
-  for (r_ssize i = 0; i < n; ++i, ++p) {
-    if (*p == value) {
+  for (r_ssize i = 0; i < n; ++i) {
+    if (p_string[i] == value) {
       out = true;
       break;
     }
