@@ -61,6 +61,7 @@ static inline sexp* r_env_poke(sexp* env, sexp* sym, sexp* value) {
   Rf_defineVar(sym, value, env);
   return env;
 }
+void r_env_poke_lazy(sexp* env, sexp* sym, sexp* expr, sexp* eval_env);
 
 sexp* r_ns_env(const char* pkg);
 sexp* r_base_ns_get(const char* name);

@@ -35,7 +35,7 @@ sexp* r_base_ns_get(const char* name) {
 }
 
 
-static sexp* rlang_ns_env = NULL;
+sexp* rlang_ns_env = NULL;
 
 sexp* rlang_ns_get(const char* name) {
   return ns_env_get(rlang_ns_env, name);
@@ -128,6 +128,20 @@ sexp* r_env_clone(sexp* env, sexp* parent) {
 
   FREE(1);
   return out;
+}
+
+
+static sexp* poke_lazy_call = NULL;
+static sexp* poke_lazy_value_node = NULL;
+
+void r_env_poke_lazy(sexp* env, sexp* sym, sexp* expr, sexp* eval_env) {
+  sexp* name = KEEP(r_sym_as_character(sym));
+
+  r_node_poke_car(poke_lazy_value_node, expr);
+  r_eval_with_xyz(poke_lazy_call, rlang_ns_env, name, env, eval_env);
+  r_node_poke_car(poke_lazy_value_node, r_null);
+
+  FREE(1);
 }
 
 
@@ -253,6 +267,11 @@ void r_init_library_env() {
 
   list2env_call = r_parse("list2env(x, envir = NULL, parent = y, hash = TRUE)");
   r_mark_precious(list2env_call);
+
+  poke_lazy_call = r_parse("delayedAssign(x, value = NULL, assign.env = y, eval.env = z)");
+  r_mark_precious(poke_lazy_call);
+
+  poke_lazy_value_node = r_node_cddr(poke_lazy_call);
 
   remove_call = r_parse("remove(list = y, envir = x, inherits = z)");
   r_mark_precious(remove_call);

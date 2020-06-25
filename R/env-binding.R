@@ -114,7 +114,8 @@ env_bind <- function(.env, ...) {
     env = .env,
     values = list3(...),
     needs_old = TRUE,
-    bind_type = "value"
+    bind_type = "value",
+    eval_env = NULL
   ))
 }
 env_bind_impl <- function(env, data, fn, bind = FALSE, binder = NULL) {
@@ -207,19 +208,15 @@ env_bind_impl <- function(env, data, fn, bind = FALSE, binder = NULL) {
 #' env_bind_lazy(env, name = !!quo)
 #' env$name
 env_bind_lazy <- function(.env, ..., .eval_env = caller_env()) {
-  exprs <- exprs(...)
-  exprs <- map_if(exprs, is_quosure, function(quo) call2(as_function(quo)))
-
-  binder <- function(env, nm, value) {
-    do.call("delayedAssign", list(
-      x = nm,
-      value = value,
-      eval.env = .eval_env,
-      assign.env = env
-    ))
-  }
-
-  env_bind_impl(.env, exprs, "env_bind_lazy()", TRUE, binder)
+  .env <- get_env_retired(.env, "env_bind_lazy()")
+  invisible(.Call(
+    rlang_env_bind,
+    env = .env,
+    values = exprs(...),
+    needs_old = TRUE,
+    bind_type = "lazy",
+    eval_env = .eval_env
+  ))
 }
 #' @rdname env_bind
 #' @export
