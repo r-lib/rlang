@@ -49,3 +49,23 @@ sexp* rlang_env_has(sexp* env, sexp* nms, sexp* inherit) {
   FREE(1);
   return out;
 }
+
+sexp* rlang_env_unbind(sexp* env, sexp* names, sexp* inherits) {
+  if (r_typeof(env) != r_type_environment) {
+    r_abort("`env` must be an environment");
+  }
+  if (r_typeof(names) != r_type_character) {
+    r_abort("`names` must be a character vector");
+  }
+  if (!r_is_scalar_logical(inherits)) {
+    r_abort("`inherits` must be a scalar logical vector");
+  }
+
+  if (*r_lgl_deref(inherits)) {
+    r_env_unbind_anywhere_names(env, names);
+  } else {
+    r_env_unbind_names(env, names);
+  }
+
+  return r_null;
+}

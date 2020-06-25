@@ -186,26 +186,6 @@ void r_env_unbind_anywhere_names(sexp* env, sexp* names) {
   env_unbind_names(env, names, true);
 }
 
-sexp* rlang_env_unbind(sexp* env, sexp* names, sexp* inherits) {
-  if (r_typeof(env) != r_type_environment) {
-    r_abort("`env` must be an environment");
-  }
-  if (r_typeof(names) != r_type_character) {
-    r_abort("`names` must be a character vector");
-  }
-  if (!r_is_scalar_logical(inherits)) {
-    r_abort("`inherits` must be a scalar logical vector");
-  }
-
-  if (*r_lgl_deref(inherits)) {
-    r_env_unbind_anywhere_names(env, names);
-  } else {
-    r_env_unbind_names(env, names);
-  }
-
-  return r_null;
-}
-
 void r_env_unbind_strings(sexp* env, const char** names) {
   sexp* nms = KEEP(r_new_character(names));
   r_env_unbind_names(env, nms);
