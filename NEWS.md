@@ -1,6 +1,9 @@
 
 # rlang (development version)
 
+* `env_bind()`, `env_bind_active()`, and `env_bind_lazy()` have been
+  rewritten in C.
+
 * `env_poke()` now supports `zap()` sentinels for removing bindings
   (#1012) and has better support for characters that are not
   representable in the local encoding.
