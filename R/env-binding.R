@@ -60,6 +60,7 @@
 #'   Use [zap()] to remove bindings.
 #' @return The input object `.env`, with its associated environment
 #'   modified in place, invisibly.
+#' @seealso [env_poke()] for binding a single element.
 #' @export
 #' @examples
 #' # env_bind() is a programmatic way of assigning values to symbols
@@ -448,6 +449,7 @@ env_get_list <- function(env = caller_env(), nms, default, inherit = FALSE) {
 #' @return The old value of `nm` or a [zap sentinel][zap] if the
 #'   binding did not exist yet.
 #'
+#' @seealso [env_bind()] for binding multiple elements.
 #' @export
 env_poke <- function(env = caller_env(),
                      nm,

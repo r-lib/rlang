@@ -185,3 +185,6 @@ env_bind_active(env, foo = ~ runif(1))
 env$foo
 env$foo
 }
+\seealso{
+\code{\link[=env_poke]{env_poke()}} for binding a single element.
+}

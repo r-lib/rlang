@@ -42,3 +42,6 @@ this is different to the base R operator \verb{<<-} which will create
 a binding in the global environment instead of the current
 environment when no existing binding is found in the parents.
 }
+\seealso{
+\code{\link[=env_bind]{env_bind()}} for binding multiple elements.
+}
