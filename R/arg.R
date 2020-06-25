@@ -62,7 +62,7 @@ arg_match <- function(arg, values = NULL) {
 #' # Use the bare-bones version with explicit values for speed:
 #' arg_match0("bar", c("foo", "bar", "baz"))
 arg_match0 <- function(arg, values, arg_nm = as_label(substitute(arg))) {
-  .External2(rlang_ext2_arg_match0, arg, values, arg_nm)
+  .External2(rlang_ext2_arg_match0, arg, values)
 }
 
 stop_arg_match <- function(arg, values, arg_nm) {

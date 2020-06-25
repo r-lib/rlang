@@ -87,16 +87,17 @@ sexp* rlang_ext2_is_missing(sexp* _call, sexp* _op, sexp* args, sexp* env) {
 }
 
 static sexp* stop_arg_match_call = NULL;
-void arg_match0_abort(const char* msg, sexp* arg_nm_promise, sexp* env);
+static sexp* arg_nm_sym = NULL;
+
+void arg_match0_abort(const char* msg, sexp* env);
 sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
   args = r_node_cdr(args);
 
   sexp* arg =    r_node_car(args); args = r_node_cdr(args);
-  sexp* values = r_node_car(args); args = r_node_cdr(args);
-  sexp* arg_nm = r_node_car(args);
+  sexp* values = r_node_car(args);
 
   if (r_typeof(arg) != r_type_character) {
-    arg_match0_abort("`%s` must be a character vector.", arg_nm, env);
+    arg_match0_abort("`%s` must be a character vector.", env);
   }
   if (r_typeof(values) != r_type_character) {
     r_abort("`values` must be a character vector.");
@@ -107,7 +108,8 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
   if (len != 1 && len != len_values) {
     //arg_match0_abort("`%s` must be a string or have the same length as `values`.",  arg_nm_promise, env);
 
-    arg = r_str_as_character(r_chr_get(arg, 0));
+    arg = KEEP(r_str_as_character(r_chr_get(arg, 0)));
+    sexp* arg_nm = KEEP(r_eval(arg_nm_sym, env));
     r_eval_with_xyz(stop_arg_match_call, r_base_env, arg, values, arg_nm);
 
     never_reached("rlang_ext2_arg_match0");
@@ -122,6 +124,7 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
       }
     }
 
+    sexp* arg_nm = KEEP(r_eval(arg_nm_sym, env));
     r_eval_with_xyz(stop_arg_match_call, r_base_env, arg, values, arg_nm);
 
     never_reached("rlang_ext2_arg_match0");
@@ -160,7 +163,8 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
 
     if (!matched) {
       // arg_match0_abort("`%s` must contain all elements in `values`.", arg_nm_promise, env);
-      arg = r_str_as_character(r_chr_get(arg, 0));
+      arg = KEEP(r_str_as_character(r_chr_get(arg, 0)));
+      sexp* arg_nm = KEEP(r_eval(arg_nm_sym, env));
       r_eval_with_xyz(stop_arg_match_call, r_base_env, arg, values, arg_nm);
 
       never_reached("rlang_ext2_arg_match0");
@@ -171,7 +175,9 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
   return(r_str_as_character(r_chr_get(arg, 0)));
 }
 
-void arg_match0_abort(const char* msg, sexp* arg_nm, sexp* env) {
+void arg_match0_abort(const char* msg, sexp* env) {
+  sexp* arg_nm = KEEP(r_eval(arg_nm_sym, env));
+
   if (r_typeof(arg_nm) != r_type_character || r_length(arg_nm) != 1) {
     r_abort("`arg_nm` must be a string.");
   }
@@ -183,4 +189,6 @@ void arg_match0_abort(const char* msg, sexp* arg_nm, sexp* env) {
 void r_init_library_arg() {
   stop_arg_match_call = r_parse("rlang:::stop_arg_match(x, y, z)");
   r_mark_precious(stop_arg_match_call);
+
+  arg_nm_sym = r_sym("arg_nm");
 }
