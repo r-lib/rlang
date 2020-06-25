@@ -118,51 +118,17 @@ env_bind <- function(.env, ...) {
     eval_env = NULL
   ))
 }
-env_bind_impl <- function(env, data, fn, bind = FALSE, binder = NULL) {
-  if (!is_vector(data)) {
-    type <- friendly_type_of(data)
-    abort(sprintf("`data` must be a vector not a %s", type))
-  }
-  if (length(data)) {
-    nms <- names(data)
-    if (is_null(nms) || any(nms_are_invalid(nms))) {
-      abort("Can't bind data because all arguments must be named")
-    }
-    if (any(duplicated(nms))) {
-      abort("Can't bind data because some arguments have the same name")
-    }
-  }
 
-  env <- get_env_retired(env, fn)
-  data <- vec_coerce(data, "list")
-  nms <- names2(data)
-
-  if (bind) {
-    old <- new_list(length(nms), nms)
-    overwritten <- env_has(env, nms)
-    old[overwritten] <- env_get_list(env, nms[overwritten])
-    old[!overwritten] <- list(zap())
-
-    # We don't allow duplicates so we can remove bindings separately
-    zapped <- map_lgl(data, is_zap) & overwritten
-    rm(list = nms[zapped], envir = env)
-    data <- data[!zapped]
-    nms <- names(data) %||% chr()
-  }
-
-  if (is_null(binder)) {
-    .Call(rlang_env_bind_list, env, nms, data);
-  } else {
-    for (i in seq_along(data)) {
-      binder(env, nms[[i]], data[[i]])
-    }
-  }
-
-  if (bind) {
-    invisible(old)
-  } else {
-    invisible(env)
-  }
+# Doesn't return list of old bindings for efficiency
+env_bind0 <- function(.env, values) {
+  invisible(.Call(
+    rlang_env_bind,
+    env = .env,
+    values = values,
+    needs_old = FALSE,
+    bind_type = "value",
+    eval_env = NULL
+  ))
 }
 
 #' @rdname env_bind
@@ -287,13 +253,8 @@ env_bind_active <- function(.env, ...) {
 local_bindings <- function(..., .env = .frame, .frame = caller_env()) {
   env <- get_env_retired(.env, "local_bindings()")
 
-  bindings <- list2(...)
-  if (!length(bindings)) {
-    return(list())
-  }
-
-  old <- env_bind_impl(env, bindings, "local_bindings()", bind = TRUE)
-  defer(env_bind_impl(env, old, bind = TRUE), envir = .frame)
+  old <- env_bind(env, ...)
+  defer(env_bind0(env, old), envir = .frame)
 
   invisible(old)
 }

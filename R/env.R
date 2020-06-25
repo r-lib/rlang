@@ -149,21 +149,26 @@ env <- function(...) {
   }
 
   env <- new.env(parent = parent)
-  env_bind_impl(env, dots$named)
+  env_bind0(env, dots$named)
   env
 }
 #' @rdname env
 #' @export
 child_env <- function(.parent, ...) {
   env <- new.env(parent = as_environment(.parent))
-  env_bind_impl(env, list2(...))
+  env_bind0(env, list2(...))
   env
 }
 #' @rdname env
 #' @export
 new_environment <- function(data = list(), parent = empty_env()) {
   env <- new.env(parent = parent)
-  env_bind_impl(env, data)
+
+  if (!is_list(data)) {
+    data <- rlang_as_list(data)
+  }
+
+  env_bind0(env, data)
   env
 }
 
