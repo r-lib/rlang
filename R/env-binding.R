@@ -108,7 +108,14 @@
 #' # old values back:
 #' env_bind(my_env, !!!old)
 env_bind <- function(.env, ...) {
-  env_bind_impl(.env, list3(...), "env_bind()", bind = TRUE)
+  .env <- get_env_retired(.env, "env_bind()")
+  invisible(.Call(
+    rlang_env_bind,
+    env = .env,
+    values = list3(...),
+    needs_old = TRUE,
+    bind_type = "value"
+  ))
 }
 env_bind_impl <- function(env, data, fn, bind = FALSE, binder = NULL) {
   if (!is_vector(data)) {

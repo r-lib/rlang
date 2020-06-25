@@ -122,16 +122,13 @@ test_that("env_unbind() with `inherits = TRUE` only removes first match", {
 })
 
 test_that("env_bind() requires named elements", {
-  expect_error(env_bind(env(), 1), "all arguments must be named")
-  expect_error(env_bind(env(), !!! list(1)), "all arguments must be named")
+  expect_error(env_bind(env(), 1), "some elements are not named")
+  expect_error(env_bind(env(), !!!list(1)), "some elements are not named")
 })
 
-test_that("env_bind() requires uniquely named elements", {
-  expect_error(env_bind(env(), a = 1, a = 2), "some arguments have the same name")
-})
 test_that("env_bind() works with empty unnamed lists", {
   expect_no_error(env_bind(env()))
-  expect_no_error(env_bind(env(), !!! list()))
+  expect_no_error(env_bind(env(), !!!list()))
 })
 
 test_that("env_names() unserialises unicode", {
