@@ -36,6 +36,7 @@ void r_init_library_session();
 void r_init_library_squash();
 void r_init_library_stack();
 void r_init_library_sym();
+void r_init_library_vec();
 void r_init_library_vec_chr();
 
 sexp* r_shared_true;
@@ -57,6 +58,7 @@ SEXP r_init_library() {
   r_init_library_session();
   r_init_library_squash();
   r_init_library_stack();
+  r_init_library_vec();
   r_init_library_vec_chr();
 
   r_shared_true = r_new_vector(r_type_logical, 1);

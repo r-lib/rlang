@@ -20,8 +20,4 @@ void signal_soft_deprecated(const char* msg) {
   }
 }
 
-sexp* rlang_ns_env = NULL;
-
-void rlang_init_utils() {
-  rlang_ns_env = r_ns_env("rlang");
-}
+void rlang_init_utils() { }

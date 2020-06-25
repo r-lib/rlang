@@ -165,5 +165,7 @@ static inline sexp* r_vec_are_duplicated(sexp* x) {
 
 bool r_vec_find_first_identical_any(sexp* x, sexp* y, r_ssize* index);
 
+extern sexp* r_shared_empty_list;
+
 
 #endif

@@ -144,10 +144,12 @@ static inline sexp* r_names_dispatch(sexp* x, sexp* env) {
   return r_eval_in_with_x(names_call, env, x, r_dot_x_sym);
 }
 
+extern sexp* rlang_ns_env;
+
 // TODO: Replace with C implementation of `as_function()`
 static sexp* as_function_call = NULL;
 static inline sexp* r_as_function(sexp* x, sexp* env) {
-  return r_eval_in_with_x(as_function_call, env, x, r_dot_x_sym);
+  return r_eval_with_xy(as_function_call, rlang_ns_env, x, env);
 }
 
 // Use `names<-()` rather than setting names directly with `r_poke_names()`
@@ -192,7 +194,7 @@ void rlang_init_attr(sexp* ns) {
   names_call = r_parse("names(.x)");
   r_mark_precious(names_call);
 
-  as_function_call = r_parse("as_function(.x)");
+  as_function_call = r_parse("as_function(x, env = y)");
   r_mark_precious(as_function_call);
 
   set_names_call = r_parse("`names<-`(.x, .y)");

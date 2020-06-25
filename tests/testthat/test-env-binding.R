@@ -122,16 +122,13 @@ test_that("env_unbind() with `inherits = TRUE` only removes first match", {
 })
 
 test_that("env_bind() requires named elements", {
-  expect_error(env_bind(env(), 1), "all arguments must be named")
-  expect_error(env_bind(env(), !!! list(1)), "all arguments must be named")
+  expect_error(env_bind(env(), 1), "some elements are not named")
+  expect_error(env_bind(env(), !!!list(1)), "some elements are not named")
 })
 
-test_that("env_bind() requires uniquely named elements", {
-  expect_error(env_bind(env(), a = 1, a = 2), "some arguments have the same name")
-})
 test_that("env_bind() works with empty unnamed lists", {
   expect_no_error(env_bind(env()))
-  expect_no_error(env_bind(env(), !!! list()))
+  expect_no_error(env_bind(env(), !!!list()))
 })
 
 test_that("env_names() unserialises unicode", {
@@ -141,10 +138,6 @@ test_that("env_names() unserialises unicode", {
 
 test_that("env_has() returns a named vector", {
   expect_identical(env_has(env(a = TRUE), c("a", "b", "c")), c(a = TRUE, b = FALSE, c = FALSE))
-})
-
-test_that("env_bind_impl() fails if data is not a vector", {
-  expect_error(env_bind_impl(env(), env()), "must be a vector")
 })
 
 test_that("env_unbind() doesn't warn if binding doesn't exist (#177)", {
@@ -385,6 +378,12 @@ test_that("env_poke() doesn't warn when unrepresentable characters are serialise
     nms <- env_names(e)
     expect_equal(Encoding(nms), "UTF-8")
   })
+})
+
+test_that("new_environment() supports non-list data", {
+  env <- new_environment(c(a = 1))
+  expect_equal(typeof(env), "environment")
+  expect_equal(env$a, 1)
 })
 
 

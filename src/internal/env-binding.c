@@ -52,6 +52,9 @@ sexp* rlang_env_has(sexp* env, sexp* nms, sexp* inherit) {
 }
 
 static void env_poke_or_zap(sexp* env, sexp* sym, sexp* value);
+static void env_poke_lazy(sexp* env, sexp* sym, sexp* value, sexp* eval_env);
+static void env_poke_active(sexp* env, sexp* sym, sexp* fn, sexp* eval_env);
+static sexp* env_get(sexp* env, sexp* sym);
 
 sexp* rlang_env_poke(sexp* env, sexp* nm, sexp* value, sexp* inherit, sexp* create) {
   if (!r_is_string(nm, NULL)) {
@@ -99,13 +102,75 @@ sexp* rlang_env_poke(sexp* env, sexp* nm, sexp* value, sexp* inherit, sexp* crea
   return old;
 }
 
-static
-void env_poke_or_zap(sexp* env, sexp* sym, sexp* value) {
-  if (value == rlang_zap) {
-    r_env_unbind(env, sym);
-  } else {
-    r_env_poke(env, sym, value);
+
+enum bind_type {
+  BIND_TYPE_value,
+  BIND_TYPE_active,
+  BIND_TYPE_lazy
+};
+
+enum bind_type parse_bind_type(sexp* bind_type) {
+  switch (*r_chr_get_c_string(bind_type, 0)) {
+  case 'v': return BIND_TYPE_value;
+  case 'a': return BIND_TYPE_active;
+  case 'l': return BIND_TYPE_lazy;
+  default: never_reached("parse_bind_type");
   }
+}
+
+sexp* rlang_env_bind(sexp* env,
+                     sexp* values,
+                     sexp* needs_old,
+                     sexp* bind_type,
+                     sexp* eval_env) {
+  bool c_needs_old = r_lgl_get(needs_old, 0);
+  enum bind_type c_bind_type = parse_bind_type(bind_type);
+
+  if (r_typeof(values) != r_type_list) {
+    r_stop_internal_error("rlang_env_bind", "`values` must be a list.");
+  }
+
+  r_ssize n = r_length(values);
+  if (!n) {
+    return r_shared_empty_list;
+  }
+
+  sexp* names = r_names(values);
+  if (n && names == r_null) {
+    r_abort("Can't bind data because some elements are not named.");
+  }
+  sexp* const * p_names = r_chr_const_deref(names);
+
+  sexp* old = r_null;
+  if (c_needs_old) {
+    old = r_new_vector(r_type_list, n);
+    r_poke_names(old, names);
+  }
+  KEEP(old);
+
+  for (r_ssize i = 0; i < n; ++i) {
+    sexp* sym = r_str_as_symbol(p_names[i]);
+    sexp* value = r_list_get(values, i);
+
+    if (c_needs_old) {
+      sexp* old_elt = KEEP(env_get(env, sym));
+      r_list_poke(old, i, old_elt);
+      FREE(1);
+    }
+
+    if (value == rlang_zap) {
+      r_env_unbind(env, sym);
+    } else {
+      switch (c_bind_type) {
+      case BIND_TYPE_value: r_env_poke(env, sym, value); break;
+      case BIND_TYPE_lazy: env_poke_lazy(env, sym, value, eval_env); break;
+      case BIND_TYPE_active: env_poke_active(env, sym, value, eval_env); break;
+      }
+    }
+  }
+
+  FREE(1);
+  return old;
 }
 
 sexp* rlang_env_unbind(sexp* env, sexp* names, sexp* inherits) {
@@ -126,4 +191,53 @@ sexp* rlang_env_unbind(sexp* env, sexp* names, sexp* inherits) {
   }
 
   return r_null;
+}
+
+
+static
+void env_poke_or_zap(sexp* env, sexp* sym, sexp* value) {
+  if (value == rlang_zap) {
+    r_env_unbind(env, sym);
+  } else {
+    r_env_poke(env, sym, value);
+  }
+}
+static
+void env_poke_lazy(sexp* env, sexp* sym, sexp* expr, sexp* eval_env) {
+  if (rlang_is_quosure(expr)) {
+    expr = KEEP(r_as_function(expr, eval_env));
+    expr = r_new_call(expr, r_null);
+    FREE(1);
+  }
+  KEEP(expr);
+
+  r_env_poke_lazy(env, sym, expr, eval_env);
+  FREE(1);
+}
+static
+void env_poke_active(sexp* env, sexp* sym, sexp* fn, sexp* eval_env) {
+  if (!r_is_function(fn)) {
+    fn = r_as_function(fn, eval_env);
+  }
+  KEEP(fn);
+
+  r_env_poke_active(env, sym, fn);
+  FREE(1);
+}
+
+static
+sexp* env_get(sexp* env, sexp* sym) {
+  sexp* out = r_env_find(env, sym);
+
+  if (out == r_unbound_sym) {
+    return rlang_zap;
+  }
+
+  if (r_typeof(out) == r_type_promise) {
+    KEEP(out);
+    out = r_eval(out, r_base_env);
+    FREE(1);
+  }
+
+  return out;
 }
