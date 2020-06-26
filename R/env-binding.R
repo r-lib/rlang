@@ -363,17 +363,14 @@ env_get <- function(env = caller_env(), nm, default, inherit = FALSE) {
 #' @rdname env_get
 #' @export
 env_get_list <- function(env = caller_env(), nms, default, inherit = FALSE) {
-  skip("")
   env <- get_env_retired(env, "env_get_list()")
-
-  nms <- set_names(nms)
-
-  # FIXME R 3.1: missingness of `default` is not passed through dots on 3.1
-  if (missing(default)) {
-    map(nms, env_get, env = env, inherit = inherit)
-  } else {
-    map(nms, env_get, env = env, inherit = inherit, default = default)
-  }
+  .Call(
+    rlang_env_get_list,
+    env = env,
+    nms = nms,
+    inherit = inherit,
+    closure_env = environment()
+  )
 }
 
 #' Poke an object in an environment

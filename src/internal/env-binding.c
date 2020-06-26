@@ -2,6 +2,8 @@
 #include "internal.h"
 
 
+static sexp* rlang_env_get_sym(sexp* env, sexp* nm, bool inherit, sexp* closure_env);
+
 sexp* rlang_env_get(sexp* env, sexp* nm, sexp* inherit, sexp* closure_env) {
   if (r_typeof(env) != r_type_environment) {
     r_abort("`env` must be an environment.");
@@ -13,10 +15,16 @@ sexp* rlang_env_get(sexp* env, sexp* nm, sexp* inherit, sexp* closure_env) {
     r_abort("`inherit` must be a logical value.");
   }
 
-  sexp* sym = r_str_as_symbol(r_chr_get(nm, 0));
+  bool c_inherit = r_lgl_get(inherit, 0);
 
+  sexp* sym = r_str_as_symbol(r_chr_get(nm, 0));
+  return rlang_env_get_sym(env, sym, c_inherit, closure_env);
+}
+
+static
+sexp* rlang_env_get_sym(sexp* env, sexp* sym, bool inherit, sexp* closure_env) {
   sexp* out;
-  if (r_lgl_get(inherit, 0)) {
+  if (inherit) {
     out = r_env_find_anywhere(env, sym);
   } else {
     out = r_env_find(env, sym);
@@ -32,6 +40,35 @@ sexp* rlang_env_get(sexp* env, sexp* nm, sexp* inherit, sexp* closure_env) {
     out = r_eval(r_sym("default"), closure_env);
   }
 
+  return out;
+}
+
+sexp* rlang_env_get_list(sexp* env, sexp* nms, sexp* inherit, sexp* closure_env) {
+  if (r_typeof(env) != r_type_environment) {
+    r_abort("`env` must be an environment.");
+  }
+  if (r_typeof(nms) != r_type_character) {
+    r_abort("`nm` must be a string.");
+  }
+  if (!r_is_bool(inherit)) {
+    r_abort("`inherit` must be a logical value.");
+  }
+
+  bool c_inherit = r_lgl_get(inherit, 0);
+  r_ssize n = r_length(nms);
+
+  sexp* out = KEEP(r_new_vector(r_type_list, n));
+  r_poke_names(out, nms);
+
+  sexp* const * p_nms = r_chr_deref_const(nms);
+
+  for (r_ssize i = 0; i <n; ++i) {
+    sexp* sym = r_str_as_symbol(p_nms[i]);
+    sexp* elt = rlang_env_get_sym(env, sym, c_inherit, closure_env);
+    r_list_poke(out, i, elt);
+  }
+
+  FREE(1);
   return out;
 }
 

@@ -101,6 +101,7 @@ extern sexp* rlang_data_mask_clean(sexp*);
 extern sexp* rlang_eval_tidy(sexp*, sexp*, sexp*);
 extern sexp* rlang_as_data_pronoun(sexp*);
 extern sexp* rlang_env_get(sexp*, sexp*, sexp*, sexp*);
+extern sexp* rlang_env_get_list(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_env_unlock(sexp*);
 extern sexp* rlang_interrupt();
 extern sexp* rlang_is_list(sexp*, sexp*);
@@ -279,6 +280,7 @@ static const r_callable r_callables[] = {
   {"rlang_as_data_pronoun",             (r_fn_ptr) &rlang_as_data_pronoun, 1},
   {"rlang_env_binding_types",           (r_fn_ptr) &r_env_binding_types, 2},
   {"rlang_env_get",                     (r_fn_ptr) &rlang_env_get, 4},
+  {"rlang_env_get_list",                (r_fn_ptr) &rlang_env_get_list, 4},
   {"rlang_env_unlock",                  (r_fn_ptr) &rlang_env_unlock, 1},
   {"rlang_interrupt",                   (r_fn_ptr) &rlang_interrupt, 0},
   {"rlang_is_list",                     (r_fn_ptr) &rlang_is_list, 2},
