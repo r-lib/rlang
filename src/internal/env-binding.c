@@ -32,7 +32,7 @@ sexp* rlang_env_has(sexp* env, sexp* nms, sexp* inherit) {
   sexp* out = KEEP(r_new_vector(r_type_logical, n));
 
   int* p_out = r_lgl_deref(out);
-  sexp* const * p_nms = r_chr_const_deref(nms);
+  sexp* const * p_nms = r_chr_deref_const(nms);
 
   if (r_lgl_get(inherit, 0)) {
     for (r_ssize i = 0; i < n; ++i) {
@@ -139,7 +139,7 @@ sexp* rlang_env_bind(sexp* env,
   if (n && names == r_null) {
     r_abort("Can't bind data because some elements are not named.");
   }
-  sexp* const * p_names = r_chr_const_deref(names);
+  sexp* const * p_names = r_chr_deref_const(names);
 
   sexp* old = r_null;
   if (c_needs_old) {

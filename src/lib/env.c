@@ -91,8 +91,8 @@ sexp* r_env_as_list_compat(sexp* env, sexp* out) {
   }
 
   r_ssize n = r_length(nms);
-  sexp* const * p_nms = r_chr_const_deref(nms);
-  const int* p_types = r_int_const_deref(types);
+  sexp* const * p_nms = r_chr_deref_const(nms);
+  const int* p_types = r_int_deref_const(types);
 
   for (r_ssize i = 0; i < n; ++i) {
     enum r_env_binding_type type = p_types[i];
@@ -177,7 +177,7 @@ void r_env_unbind_syms(sexp* env, sexp** syms) {
 
 static
 void env_unbind_names(sexp* env, sexp* names, bool inherit) {
-  sexp* const * p_names = r_chr_const_deref(names);
+  sexp* const * p_names = r_chr_deref_const(names);
   r_ssize n = r_length(names);
 
   if (inherit) {

@@ -682,8 +682,8 @@ static sexp* dots_keep(sexp* dots, sexp* nms, bool first) {
   sexp* out_nms = KEEP(r_new_vector(r_type_character, out_n));
   r_push_names(out, out_nms);
 
-  sexp* const * p_nms = r_chr_const_deref(nms);
-  const int* p_dups = r_lgl_const_deref(dups);
+  sexp* const * p_nms = r_chr_deref_const(nms);
+  const int* p_dups = r_lgl_deref_const(dups);
 
   for (r_ssize i = 0, out_i = 0; i < n; ++i) {
     if (!p_dups[i]) {

@@ -47,7 +47,7 @@ bool r_is_finite(sexp* x) {
 
   switch(r_typeof(x)) {
   case r_type_integer: {
-    const int* p_x = r_int_const_deref(x);
+    const int* p_x = r_int_deref_const(x);
     for (r_ssize i = 0; i < n; ++i) {
       if (p_x[i] == NA_INTEGER) {
         return false;
@@ -56,7 +56,7 @@ bool r_is_finite(sexp* x) {
     break;
   }
   case r_type_double: {
-    const double* p_x = r_dbl_const_deref(x);
+    const double* p_x = r_dbl_deref_const(x);
     for (r_ssize i = 0; i < n; ++i) {
       if (!isfinite(p_x[i])) {
         return false;
@@ -65,7 +65,7 @@ bool r_is_finite(sexp* x) {
     break;
   }
   case r_type_complex: {
-    const r_complex_t* p_x = r_cpl_const_deref(x);
+    const r_complex_t* p_x = r_cpl_deref_const(x);
     for (r_ssize i = 0; i < n; ++i) {
       if (!isfinite(p_x[i].r) || !isfinite(p_x[i].i)) {
         return false;
@@ -111,7 +111,7 @@ bool r_is_integerish(sexp* x, r_ssize n, int finite) {
   }
 
   r_ssize actual_n = r_length(x);
-  const double* p_x = r_dbl_const_deref(x);
+  const double* p_x = r_dbl_deref_const(x);
   bool actual_finite = true;
 
   for (r_ssize i = 0; i < actual_n; ++i) {

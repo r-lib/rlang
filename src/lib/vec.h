@@ -25,27 +25,27 @@ static inline sexp** r_chr_deref(sexp* x) {
 }
 
 static inline
-const int* r_int_const_deref(sexp* x) {
+const int* r_int_deref_const(sexp* x) {
   return (const int*) INTEGER(x);
 }
 static inline
-const int* r_lgl_const_deref(sexp* x) {
+const int* r_lgl_deref_const(sexp* x) {
   return (const int*) LOGICAL(x);
 }
 static inline
-const double* r_dbl_const_deref(sexp* x) {
+const double* r_dbl_deref_const(sexp* x) {
   return (const double*) REAL(x);
 }
 static inline
-const r_complex_t* r_cpl_const_deref(sexp* x) {
+const r_complex_t* r_cpl_deref_const(sexp* x) {
   return (const r_complex_t*) COMPLEX(x);
 }
 static inline
-const r_byte_t* r_raw_const_deref(sexp* x) {
+const r_byte_t* r_raw_deref_const(sexp* x) {
   return (const r_byte_t*) RAW(x);
 }
 static inline
-sexp* const * r_chr_const_deref(sexp* x) {
+sexp* const * r_chr_deref_const(sexp* x) {
   return (sexp* const *) STRING_PTR(x);
 }
 

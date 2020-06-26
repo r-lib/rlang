@@ -25,7 +25,7 @@ r_ssize r_lgl_sum(sexp* x, bool na_true) {
   r_ssize n = r_vec_length(x);
 
   r_ssize sum = 0;
-  const int* p_x = r_lgl_const_deref(x);
+  const int* p_x = r_lgl_deref_const(x);
 
   for (r_ssize i = 0; i < n; ++i) {
     // This can't overflow since `sum` is necessarily smaller or equal
@@ -48,7 +48,7 @@ sexp* r_lgl_which(sexp* x, bool na_propagate) {
   }
 
   r_ssize n = r_length(x);
-  const int* p_x = r_lgl_const_deref(x);
+  const int* p_x = r_lgl_deref_const(x);
 
   r_ssize which_n = r_lgl_sum(x, na_propagate);
 
