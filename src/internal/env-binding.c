@@ -178,8 +178,8 @@ sexp* rlang_env_unbind(sexp* env, sexp* names, sexp* inherits) {
   if (r_typeof(names) != r_type_character) {
     r_abort("`names` must be a character vector");
   }
-  if (!r_is_scalar_logical(inherits)) {
     r_abort("`inherits` must be a scalar logical vector");
+  if (!r_is_bool(inherits)) {
   }
 
   if (*r_lgl_deref(inherits)) {

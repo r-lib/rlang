@@ -109,7 +109,7 @@ static void require_glue() {
   sexp* call = KEEP(r_parse("is_installed('glue')"));
   sexp* out = KEEP(r_eval(call, rlang_ns_env));
 
-  if (!r_is_scalar_logical(out)) {
+  if (!r_is_bool(out)) {
     r_abort("Internal error: Expected scalar logical from `requireNamespace()`.");
   }
   if (!r_lgl_get(out, 0)) {

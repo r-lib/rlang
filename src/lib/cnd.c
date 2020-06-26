@@ -121,7 +121,7 @@ static sexp* new_condition_names(sexp* data) {
 sexp* r_new_condition(sexp* subclass, sexp* msg, sexp* data) {
   if (msg == r_null) {
     msg = r_shared_empty_chr;
-  } else if (!r_is_scalar_character(msg)) {
+  } else if (!r_is_string(msg, NULL)) {
     r_abort("Condition message must be a string");
   }
 

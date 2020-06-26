@@ -9,7 +9,7 @@ int r_as_optional_bool(sexp* lgl) {
 }
 
 bool r_is_true(sexp* x) {
-  if (!r_is_scalar_logical(x)) {
+  if (!r_is_bool(x)) {
     return false;
   } else {
     int value = LOGICAL(x)[0];

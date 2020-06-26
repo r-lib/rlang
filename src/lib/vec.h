@@ -113,13 +113,6 @@ bool r_is_character(sexp* x, r_ssize n);
 bool r_is_raw(sexp* x, r_ssize n);
 
 
-static inline bool r_is_scalar_character(sexp* x) {
-  return r_typeof(x) == r_type_character && r_length(x) == 1;
-}
-static inline bool r_is_scalar_logical(sexp* x) {
-  return r_typeof(x) == r_type_logical && r_length(x) == 1;
-}
-
 static inline sexp* r_int(int x) {
   return Rf_ScalarInteger(x);
 }
