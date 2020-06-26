@@ -153,9 +153,7 @@ sexp* rlang_env_bind(sexp* env,
     sexp* value = r_list_get(values, i);
 
     if (c_needs_old) {
-      sexp* old_elt = KEEP(env_get(env, sym));
-      r_list_poke(old, i, old_elt);
-      FREE(1);
+      r_list_poke(old, i, env_get(env, sym));
     }
 
     if (value == rlang_zap) {
