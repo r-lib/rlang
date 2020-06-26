@@ -352,23 +352,18 @@ env_has <- function(env = caller_env(), nms, inherit = FALSE) {
 #' env_get(env, "foo", default = "FOO")
 env_get <- function(env = caller_env(), nm, default, inherit = FALSE) {
   env <- get_env_retired(env, "env_get()")
-  if (!missing(default)) {
-    exists <- env_has(env, nm, inherit = inherit)
-    if (!exists) {
-      return(default)
-    }
-  }
-
-  # FIXME: The `inherit` case fails with missing arguments
-  if (inherit) {
-    return(get(nm, envir = env, inherits = TRUE))
-  }
-
-  .Call(rlang_env_get, env, nm)
+  .Call(
+    rlang_env_get,
+    env = env,
+    nm = nm,
+    inherit = inherit,
+    closure_env = environment()
+  )
 }
 #' @rdname env_get
 #' @export
 env_get_list <- function(env = caller_env(), nms, default, inherit = FALSE) {
+  skip("")
   env <- get_env_retired(env, "env_get_list()")
 
   nms <- set_names(nms)

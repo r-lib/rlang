@@ -2,24 +2,36 @@
 #include "internal.h"
 
 
-sexp* rlang_env_get(sexp* env, sexp* nm) {
+sexp* rlang_env_get(sexp* env, sexp* nm, sexp* inherit, sexp* closure_env) {
   if (r_typeof(env) != r_type_environment) {
     r_abort("`env` must be an environment.");
   }
-  sexp* sym = r_str_as_symbol(r_chr_get(nm, 0));
-  sexp* out = KEEP(r_env_find(env, sym));
+  if (!r_is_string(nm, NULL)) {
+    r_abort("`nm` must be a string.");
+  }
+  if (!r_is_bool(inherit)) {
+    r_abort("`inherit` must be a logical value.");
+  }
 
-  // Trigger `symbol not found` error if needed
-  if (out == r_unbound_sym) {
-    r_eval(sym, r_empty_env);
-    r_abort("Internal error: `rlang_env_get()` should have failed earlier");
+  sexp* sym = r_str_as_symbol(r_chr_get(nm, 0));
+
+  sexp* out;
+  if (r_lgl_get(inherit, 0)) {
+    out = r_env_find_anywhere(env, sym);
+  } else {
+    out = r_env_find(env, sym);
   }
 
   if (r_typeof(out) == r_type_promise) {
+    KEEP(out);
     out = r_eval(out, r_empty_env);
+    FREE(1);
   }
 
-  FREE(1);
+  if (out == r_unbound_sym) {
+    out = r_eval(r_sym("default"), closure_env);
+  }
+
   return out;
 }
 

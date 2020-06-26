@@ -480,7 +480,7 @@ test_that("env API warns with non-environments", {
   expect_warning(with_bindings(NULL, a = 1, .env = ~foo), "deprecated")
   expect_warning(env_poke(~foo, "a", NULL), "deprecated")
   expect_warning(env_has(~foo, "a"), "deprecated")
-  expect_warning(env_get(~foo, "a"), "deprecated")
+  expect_warning(env_get(~foo, "f"), "deprecated")
   expect_warning(env_names(~foo), "deprecated")
   expect_warning(env_bind_lazy(~foo, foo = list()), "deprecated")
   expect_warning(env_bind_active(~foo, a = function() "foo"), "deprecated")
