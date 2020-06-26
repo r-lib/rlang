@@ -1,18 +1,27 @@
 print():
 
-<error/rlang_error>
-High-level message
+█
+├─<error/rlang_error>
+│ High-level message
+└─<error/rlang_error>
+  Low-level message
 Backtrace:
   1. base::identity(catch_cnd(a()))
   9. rlang:::a()
  10. rlang:::b()
  11. rlang:::c()
+ 18. rlang:::f()
+ 19. rlang:::g()
+ 20. rlang:::h()
 
 
 summary():
 
-<error/rlang_error>
-High-level message
+█
+├─<error/rlang_error>
+│ High-level message
+└─<error/rlang_error>
+  Low-level message
 Backtrace:
      █
   1. ├─base::identity(catch_cnd(a()))
@@ -26,12 +35,12 @@ Backtrace:
   9. └─rlang:::a()
  10.   └─rlang:::b()
  11.     └─rlang:::c()
-<parent: error/rlang_error>
-Low-level message
-Backtrace:
-    █
- 1. ├─rlang::with_abort(f())
- 2. │ └─base::withCallingHandlers(...)
- 3. └─rlang:::f()
- 4.   └─rlang:::g()
- 5.     └─rlang:::h()
+ 12.       ├─base::tryCatch(...)
+ 13.       │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
+ 14.       │   └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+ 15.       │     └─base:::doTryCatch(return(expr), name, parentenv, handler)
+ 16.       ├─rlang::with_abort(f())
+ 17.       │ └─base::withCallingHandlers(...)
+ 18.       └─rlang:::f()
+ 19.         └─rlang:::g()
+ 20.           └─rlang:::h()

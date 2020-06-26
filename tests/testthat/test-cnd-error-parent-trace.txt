@@ -1,6 +1,8 @@
 Full:
-<error/rlang_error>
-High-level message
+█
+├─<error/rlang_error>
+│ High-level message
+└─<error/foobar>
 Backtrace:
      █
   1. ├─rlang::catch_cnd(a())
@@ -13,36 +15,40 @@ Backtrace:
   8. └─rlang:::a()
   9.   └─rlang:::b()
  10.     └─rlang:::c()
-<parent: error/foobar>
-Low-level message
-Backtrace:
-    █
- 1. └─rlang:::f()
- 2.   └─rlang:::g()
- 3.     └─rlang:::h()
+ 11.       ├─base::tryCatch(...)
+ 12.       │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
+ 13.       │   └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+ 14.       │     └─base:::doTryCatch(return(expr), name, parentenv, handler)
+ 15.       └─rlang:::f()
+ 16.         └─rlang:::g()
+ 17.           └─rlang:::h()
 
 Collapsed:
-<error/rlang_error>
-High-level message
+█
+├─<error/rlang_error>
+│ High-level message
+└─<error/foobar>
 Backtrace:
      █
   1. ├─[ rlang::catch_cnd(...) ] with 6 more calls
   8. └─rlang:::a()
   9.   └─rlang:::b()
  10.     └─rlang:::c()
-<parent: error/foobar>
-Low-level message
-Backtrace:
-    █
- 1. └─rlang:::f()
- 2.   └─rlang:::g()
- 3.     └─rlang:::h()
+ 11.       ├─[ base::tryCatch(...) ] with 3 more calls
+ 15.       └─rlang:::f()
+ 16.         └─rlang:::g()
+ 17.           └─rlang:::h()
 
 Branch:
-<error/rlang_error>
-High-level message
+█
+├─<error/rlang_error>
+│ High-level message
+└─<error/foobar>
 Backtrace:
   1. rlang::catch_cnd(a())
   8. rlang:::a()
   9. rlang:::b()
  10. rlang:::c()
+ 15. rlang:::f()
+ 16. rlang:::g()
+ 17. rlang:::h()

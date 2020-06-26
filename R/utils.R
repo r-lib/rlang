@@ -254,3 +254,15 @@ unstructure <- function(x) {
 
   out
 }
+
+cli_rule <- function() {
+  if (is_installed("cli")) {
+    cli::rule()
+  } else {
+    strrep("-", peek_option("width") %||% 60L)
+  }
+}
+
+split_lines <- function(x) {
+  strsplit(x, "\n")[[1]]
+}

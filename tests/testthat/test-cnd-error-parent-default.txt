@@ -1,14 +1,25 @@
-<error/rlang_error>
-High-level message
+█
+├─<error/rlang_error>
+│ High-level message
+└─<error/foobar>
 Backtrace:
   1. rlang::catch_cnd(a())
   8. rlang:::a()
   9. rlang:::b()
  10. rlang:::c()
-<error/rlang_error>
-High-level message
+ 15. rlang:::f()
+ 16. rlang:::g()
+ 17. rlang:::h()
+█
+├─<error/rlang_error>
+│ High-level message
+└─<error/foobar>
+  Low-level message
 Backtrace:
   1. rlang::with_options(catch_cnd(a()), `rlang:::force_unhandled_error` = TRUE)
   9. rlang:::a()
  10. rlang:::b()
  11. rlang:::c()
+ 16. rlang:::f()
+ 17. rlang:::g()
+ 18. rlang:::h()

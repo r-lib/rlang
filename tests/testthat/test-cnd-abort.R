@@ -220,6 +220,7 @@ test_that("capture context doesn't leak into low-level backtraces", {
   }
 
   verify_output(test_path("output-cnd-abort-parent-trace.txt"), {
+    parent <- TRUE
     wrapper <- FALSE
     err <- catch_cnd(f())
     print(err)

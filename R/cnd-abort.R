@@ -129,16 +129,17 @@ abort <- function(message = NULL,
 
   if (is_null(trace) && is_null(peek_option("rlang:::disable_trace_capture"))) {
     # Prevents infloops when rlang throws during trace capture
-    local_options("rlang:::disable_trace_capture" = TRUE)
+    with_options("rlang:::disable_trace_capture" = TRUE, {
+      trace <- trace_back()
 
-    trace <- trace_back()
+      if (is_null(parent)) {
+        context <- trace_length(trace)
+      } else {
+        context <- find_capture_context(3L)
+      }
 
-    if (is_null(parent)) {
-      context <- trace_length(trace)
-    } else {
-      context <- find_capture_context(3L)
-    }
-    trace <- trace_trim_context(trace, context)
+      trace <- trace_trim_context(trace, context)
+    })
   }
 
   message <- validate_signal_message(message, class)
@@ -198,17 +199,33 @@ trace_trim_context <- function(trace, frame = caller_env()) {
   trace
 }
 
-# Assumes we're called from an exiting handler. Need to
+# Assumes we're called from a calling or exiting handler
 find_capture_context <- function(n = 3L) {
-  parent <- orig <- sys.parent(n)
-  call <- sys.call(parent)
+  calls <- sys.calls()
 
-  try_catch_n <- detect_index(sys.calls(), is_call, "tryCatch", .right = TRUE)
-  if (try_catch_n == 0L) {
-    sys.frame(sys.parent(n))
-  } else {
-    sys.frame(try_catch_n)
+  exiting_call <- quote(value[[3L]](cond))
+  exiting_n <- detect_index(calls, identical, exiting_call, .right = TRUE)
+
+  # tryCatch()
+  if (exiting_n != 0L) {
+    try_catch_calls <- calls[seq_len(exiting_n - 1L)]
+    try_catch_n <- detect_index(try_catch_calls, is_call, "tryCatch", .right = TRUE)
+    if (try_catch_n != 0L) {
+      return(sys.frame(try_catch_n))
+    } else {
+      return(sys.frame(sys.parent(n)))
+    }
   }
+
+  bottom_loc <- length(calls) - 3
+  bottom <- calls[[bottom_loc]]
+
+  # withCallingHandlers()
+  if (is_function(bottom[[1]])) {
+    return(sys.frame(bottom_loc))
+  }
+
+  sys.frame(sys.parent(n))
 }
 
 #' Display backtrace on error
