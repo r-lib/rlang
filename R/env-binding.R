@@ -418,7 +418,7 @@ env_poke <- function(env = caller_env(),
                      value,
                      inherit = FALSE,
                      create = !inherit) {
-  env_ <- get_env_retired(env, "env_poke()")
+  env <- get_env_retired(env, "env_poke()")
   invisible(.Call(
     rlang_env_poke,
     env = env,

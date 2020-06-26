@@ -3,6 +3,9 @@
 
 
 sexp* rlang_env_get(sexp* env, sexp* nm) {
+  if (r_typeof(env) != r_type_environment) {
+    r_abort("`env` must be an environment.");
+  }
   sexp* sym = r_str_as_symbol(r_chr_get(nm, 0));
   sexp* out = KEEP(r_env_find(env, sym));
 
@@ -21,6 +24,9 @@ sexp* rlang_env_get(sexp* env, sexp* nm) {
 }
 
 sexp* rlang_env_has(sexp* env, sexp* nms, sexp* inherit) {
+  if (r_typeof(env) != r_type_environment) {
+    r_abort("`env` must be an environment.");
+  }
   if (r_typeof(nms) != r_type_character) {
     r_abort("`nms` must be a character vector.");
   }
@@ -57,6 +63,9 @@ static void env_poke_active(sexp* env, sexp* sym, sexp* fn, sexp* eval_env);
 static sexp* env_get(sexp* env, sexp* sym);
 
 sexp* rlang_env_poke(sexp* env, sexp* nm, sexp* value, sexp* inherit, sexp* create) {
+  if (r_typeof(env) != r_type_environment) {
+    r_abort("`env` must be an environment.");
+  }
   if (!r_is_string(nm, NULL)) {
     r_abort("`nm` must be a string.");
   }
@@ -123,6 +132,10 @@ sexp* rlang_env_bind(sexp* env,
                      sexp* needs_old,
                      sexp* bind_type,
                      sexp* eval_env) {
+  if (r_typeof(env) != r_type_environment) {
+    r_abort("`env` must be an environment.");
+  }
+
   bool c_needs_old = r_lgl_get(needs_old, 0);
   enum bind_type c_bind_type = parse_bind_type(bind_type);
 
@@ -173,13 +186,13 @@ sexp* rlang_env_bind(sexp* env,
 
 sexp* rlang_env_unbind(sexp* env, sexp* names, sexp* inherits) {
   if (r_typeof(env) != r_type_environment) {
-    r_abort("`env` must be an environment");
+    r_abort("`env` must be an environment.");
   }
   if (r_typeof(names) != r_type_character) {
-    r_abort("`names` must be a character vector");
+    r_abort("`names` must be a character vector.");
   }
-    r_abort("`inherits` must be a scalar logical vector");
   if (!r_is_bool(inherits)) {
+    r_abort("`inherits` must be a logical value.");
   }
 
   if (*r_lgl_deref(inherits)) {
