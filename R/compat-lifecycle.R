@@ -92,7 +92,7 @@ signal_soft_deprecated <- function(msg, id = msg, env = rlang::caller_env(2)) {
   tested_package <- Sys.getenv("TESTTHAT_PKG")
   if (nzchar(tested_package) &&
         identical(Sys.getenv("NOT_CRAN"), "true") &&
-        rlang::env_name(topenv(env)) == rlang::env_name(ns_env(tested_package))) {
+        rlang::env_name(topenv(env)) == rlang::env_name(rlang::ns_env(tested_package))) {
     warn_deprecated(msg, id)
     return(invisible(NULL))
   }
