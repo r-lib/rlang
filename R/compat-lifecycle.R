@@ -58,7 +58,7 @@
 #' @seealso [lifecycle()]
 NULL
 
-signal_soft_deprecated <- function(msg, id = msg, env = caller_env(2)) {
+signal_soft_deprecated <- function(msg, id = msg, env = rlang::caller_env(2)) {
   msg <- lifecycle_validate_message(msg)
   stopifnot(
     rlang::is_string(id),
@@ -134,7 +134,7 @@ deprecation_env <- new.env(parent = emptyenv())
 
 stop_defunct <- function(msg) {
   msg <- lifecycle_validate_message(msg)
-  err <- cnd(
+  err <- rlang::cnd(
     c("defunctError", "error", "condition"),
     old = NULL,
     new = NULL,
@@ -255,7 +255,7 @@ upcase1 <- function(x) {
 }
 
 lifecycle_validate_message <- function(msg) {
-  stopifnot(is_character(msg))
+  stopifnot(rlang::is_character(msg))
   paste0(msg, collapse = "\n")
 }
 
