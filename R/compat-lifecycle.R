@@ -1,4 +1,4 @@
-# nocov start --- compat-lifecycle --- 2020-06-18
+# nocov start --- compat-lifecycle --- 2020-06-30
 
 # This file serves as a reference for currently unexported rlang
 # lifecycle functions. Please find the most recent version in rlang's
