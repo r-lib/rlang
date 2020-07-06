@@ -12,7 +12,7 @@ the option \code{rlang_backtrace_on_error} to one of the following
 values:
 \itemize{
 \item \code{"reminder"}: Display a reminder that the backtrace can be
-inspected by calling \code{\link[rlang:last_error]{rlang::last_error()}}.
+inspected by calling \code{\link[=last_error]{last_error()}}.
 \item \code{"branch"}: Display a simplified backtrace.
 \item \code{"collapse"}: Display a collapsed backtrace tree.
 \item \code{"full"}: Display the full backtrace tree.
