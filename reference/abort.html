@@ -314,17 +314,20 @@ guaranteed.</p>
   }
 )
 
-<span class='co'># If you call low-level APIs it is good practice to catch technical</span>
-<span class='co'># errors and rethrow them with a more meaningful message. Pass on</span>
-<span class='co'># the caught error as `parent` to get a nice decomposition of</span>
-<span class='co'># errors and backtraces:</span>
+<span class='co'># If you call low-level APIs it is good practice to handle</span>
+<span class='co'># technical errors and rethrow them with a more meaningful</span>
+<span class='co'># message. Always prefer doing this from `withCallinghandlers()`</span>
+<span class='co'># rather than `tryCatch()` because the former preserves the stack</span>
+<span class='co'># on error and makes it possible for users to use `recover()`.</span>
 <span class='kw'>file</span> <span class='op'>&lt;-</span> <span class='st'>"http://foo.bar/baz"</span>
-<span class='fu'><a href='https://rdrr.io/r/base/conditions.html'>tryCatch</a></span>(
+<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>withCallinghandlers</span>(
   <span class='fu'>download</span>(<span class='kw'>file</span>),
   error = <span class='fu'>function</span>(<span class='kw'>err</span>) {
     <span class='kw'>msg</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"Can't download `%s`"</span>, <span class='kw'>file</span>)
     <span class='fu'>abort</span>(<span class='kw'>msg</span>, parent = <span class='kw'>err</span>)
-})
+}))
+<span class='co'># Note how we supplied the parent error to `abort()` as `parent` to</span>
+<span class='co'># get a decomposition of error messages across error contexts.</span>
 
 <span class='co'># Unhandled errors are saved automatically by `abort()` and can be</span>
 <span class='co'># retrieved with `last_error()`. The error prints with a simplified</span>

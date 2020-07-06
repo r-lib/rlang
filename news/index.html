@@ -158,6 +158,10 @@
 <a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li>
+<p>The backtraces of chained errors are no longer decomposed by error context. Instead, the error messages are displayed as a tree to reflect the error ancestry, and the deepest backtrace in the ancestry is displayed.</p>
+<p>This change simplifies the display (<a href='https://github.com/r-lib/rlang/issues/851'>#851</a>) and makes it possible to rethow errors from a calling handler rather than an exiting handler, which we now think is more appropriate because it allows users to <code><a href="https://rdrr.io/r/utils/recover.html">recover()</a></code> into the error.</p>
+</li>
 <li><p><code>env_bind()</code>, <code>env_bind_active()</code>, <code>env_bind_lazy()</code>, <code>env_get()</code>, and <code>env_get_list()</code> have been rewritten in C.</p></li>
 <li><p><code>env_poke()</code> now supports <code>zap()</code> sentinels for removing bindings (<a href='https://github.com/r-lib/rlang/issues/1012'>#1012</a>) and has better support for characters that are not representable in the local encoding.</p></li>
 <li><p><code>env_poke()</code> has been rewritten in C for performance.</p></li>
