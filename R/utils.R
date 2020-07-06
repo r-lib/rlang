@@ -264,5 +264,5 @@ cli_rule <- function() {
 }
 
 split_lines <- function(x) {
-  strsplit(x, "\n")[[1]]
+  strsplit(x, "\n", fixed = TRUE)[[1]]
 }

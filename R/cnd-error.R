@@ -128,7 +128,7 @@ format.rlang_error <- function(x,
 
 with_reduced_width <- function(expr) {
   with_options(
-    width = peek_option("width") - 2L,
+    width = max(peek_option("width") - 2L, 10L),
     expr
   )
 }
