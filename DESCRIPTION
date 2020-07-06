@@ -29,7 +29,7 @@ Suggests:
 Remotes:
     rstudio/rmarkdown
 Encoding: UTF-8
-RoxygenNote: 7.1.0.9000
+RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
 URL: http://rlang.r-lib.org, https://github.com/r-lib/rlang
 BugReports: https://github.com/r-lib/rlang/issues
