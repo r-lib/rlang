@@ -30,6 +30,8 @@ standards.
 
 \code{arg_match0()} is a bare-bones version if performance is at a premium.
 It requires a string as \code{arg} and explicit \code{values}.
+(For convenience, setting \code{arg} to \code{values}, perhaps permutated, is also
+supported.)
 }
 \examples{
 fn <- function(x = c("foo", "bar")) arg_match(x)
@@ -41,4 +43,7 @@ try(fn("baz"))
 
 # Use the bare-bones version with explicit values for speed:
 arg_match0("bar", c("foo", "bar", "baz"))
+
+# For convenience:
+arg_match0(c("bar", "baz", "foo"), c("foo", "bar", "baz"))
 }

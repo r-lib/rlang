@@ -54,6 +54,8 @@ arg_match <- function(arg, values = NULL) {
 #' @description
 #' `arg_match0()` is a bare-bones version if performance is at a premium.
 #' It requires a string as `arg` and explicit `values`.
+#' (For convenience, setting `arg` to `values`, perhaps permutated, is also
+#' supported.)
 #' @param arg_nm The label to be used for `arg` in error messages.
 #' @rdname arg_match
 #' @export
@@ -61,6 +63,9 @@ arg_match <- function(arg, values = NULL) {
 #'
 #' # Use the bare-bones version with explicit values for speed:
 #' arg_match0("bar", c("foo", "bar", "baz"))
+#'
+#' # For convenience:
+#' arg_match0(c("bar", "baz", "foo"), c("foo", "bar", "baz"))
 arg_match0 <- function(arg, values, arg_nm = as_label(substitute(arg))) {
   .External2(rlang_ext2_arg_match0, arg, values)
 }
