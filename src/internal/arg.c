@@ -146,15 +146,15 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
   // Invariant: values[i:(len-1)] contains the values we haven't matched yet
   for (; i < len; ++i) {
     sexp* current_arg = r_chr_get(arg, i);
-    if (current_arg == r_chr_get(values, i)) {
+    if (current_arg == r_chr_get(my_values, i)) {
       continue;
     }
 
     bool matched = false;
     for (r_ssize j = i + 1; j < len; ++j) {
-      if (current_arg == r_chr_get(values, j)) {
+      if (current_arg == r_chr_get(my_values, j)) {
         matched = true;
-        r_chr_poke(values, j, r_chr_get(values, i));
+        r_chr_poke(my_values, j, r_chr_get(my_values, i));
         break;
       }
     }
