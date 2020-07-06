@@ -26,7 +26,9 @@ lib-files = \
         lib/vec.c \
         lib/vec-chr.c \
         lib/vec-lgl.c \
-        lib/vec-list.c
+        lib/vec-list.c \
+        lib/vec-raw.c \
+        lib/weakref.c
 
 internal-files = \
         internal/arg.c \
