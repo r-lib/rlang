@@ -31,6 +31,10 @@ print.rlang_error <- function(x,
   invisible(x)
 }
 
+is_rlang_error <- function(x) {
+  inherits(x, "rlang_error")
+}
+
 #' @export
 format.rlang_error <- function(x,
                                ...,
@@ -40,17 +44,55 @@ format.rlang_error <- function(x,
   # Allow overwriting default display via condition field
   simplify <- x$rlang$internal$print_simplify %||% simplify
 
-  header <- rlang_error_header(x, child)
+  orig <- x
+  parent <- x$parent
+  style <- cli_box_chars()
 
-  message <- strip_trailing_newline(conditionMessage(x))
-  if (!nzchar(message)) {
-    message <- NULL
+  header <- rlang_error_header(x)
+
+  if (is_rlang_error(parent)) {
+    header <- header_add_tree_node(header, style, parent)
+    header <-   paste_line(trace_root(), header)
+
+    message <- with_reduced_width(
+      as_rlang_error_message(conditionMessage(x))
+    )
+    message <- message_add_tree_prefix(message, style, parent)
+  } else {
+    message <- as_rlang_error_message(conditionMessage(x))
   }
 
   out <- paste_line(
     header,
     message
   )
+
+  while (is_rlang_error(parent)) {
+    x <- parent
+    parent <- parent$parent
+
+    header <- rlang_error_header(x)
+    header <- header_add_tree_node(header, style, parent)
+
+    message <- with_reduced_width(
+      as_rlang_error_message(cnd_header(x))
+    )
+    message <- message_add_tree_prefix(message, style, parent)
+
+    if (is_rlang_error(parent)) {
+      header <- paste0
+      message <- with_reduced_width(
+        as_rlang_error_message(conditionMessage(x))
+      )
+      message <- message_add_tree_prefix(message, style)
+    }
+
+    out <- paste_line(
+      out,
+      header,
+      message
+    )
+  }
 
   trace <- x$trace
   simplify <- arg_match(simplify)
@@ -71,19 +113,56 @@ format.rlang_error <- function(x,
     out <- paste_line(out, parent_lines)
   }
 
-  # Recommend printing the full backtrace. Only do it after having
-  # printed all parent errors first.
-  from_last_error <-
-    is_true(x$rlang$internal$from_last_error) &&
-    identical(x, last_error())
-
-  if (from_last_error && simplify == "branch" && is_null(child) && !is_null(trace)) {
+  # Recommend printing the full backtrace if called from `last_error()`
+  from_last_error <- is_true(orig$rlang$internal$from_last_error)
+  if (from_last_error && simplify == "branch" && !is_null(trace)) {
     reminder <- silver("Run `rlang::last_trace()` to see the full context.")
     out <- paste_line(out, reminder)
   }
 
   out
 }
+
+with_reduced_width <- function(expr) {
+  with_options(
+    width = max(peek_option("width") - 2L, 10L),
+    expr
+  )
+}
+
+as_rlang_error_message <- function(message) {
+  message <- strip_trailing_newline(message)
+
+  if (nzchar(message)) {
+    message
+  } else {
+    NULL
+  }
+}
+
+header_add_tree_node <- function(header, style, parent) {
+  if (is_rlang_error(parent)) {
+    s <- style$j
+  } else {
+    s <- style$l
+  }
+  paste0(s, style$h, header)
+}
+message_add_tree_prefix <- function(message, style, parent) {
+  if (is_null(message)) {
+    return(NULL)
+  }
+
+  if (is_rlang_error(parent)) {
+    s <- style$v
+  } else {
+    s <- " "
+  }
+  message <- split_lines(message)
+  message <- paste0(s, " ", message)
+  paste_line(message)
+}
+
 
 #' @export
 summary.rlang_error <- function(object, ...) {

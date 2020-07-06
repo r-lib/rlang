@@ -1,6 +1,16 @@
 
 # rlang (development version)
 
+* The backtraces of chained errors are no longer decomposed by error
+  context. Instead, the error messages are displayed as a tree to
+  reflect the error ancestry, and the deepest backtrace in the ancestry
+  is displayed.
+
+  This change simplifies the display (#851) and makes it possible to
+  rethow errors from a calling handler rather than an exiting handler,
+  which we now think is more appropriate because it allows users to
+  `recover()` into the error.
+
 * `env_bind()`, `env_bind_active()`, `env_bind_lazy()`, `env_get()`,
   and `env_get_list()` have been rewritten in C.
 
