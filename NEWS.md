@@ -3,7 +3,7 @@
 
 * The backtraces of chained errors are no longer decomposed by error
   context. Instead, the error messages are displayed as a tree to
-  reflect the error ancestry, and the oldest backtrace in the ancestry
+  reflect the error ancestry, and the deepest backtrace in the ancestry
   is displayed.
 
   This change simplifies the display (#851) and makes it possible to
