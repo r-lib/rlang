@@ -41,4 +41,5 @@ Backtrace:
   8. rlang:::f()
   9. rlang:::g()
  10. rlang:::h()
+Run `rlang::last_trace()` to see the full context.
 
