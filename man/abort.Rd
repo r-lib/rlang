@@ -138,17 +138,20 @@ tryCatch(
   }
 )
 
-# If you call low-level APIs it is good practice to catch technical
-# errors and rethrow them with a more meaningful message. Pass on
-# the caught error as `parent` to get a nice decomposition of
-# errors and backtraces:
+# If you call low-level APIs it is good practice to handle
+# technical errors and rethrow them with a more meaningful
+# message. Always prefer doing this from `withCallinghandlers()`
+# rather than `tryCatch()` because the former preserves the stack
+# on error and makes it possible for users to use `recover()`.
 file <- "http://foo.bar/baz"
-tryCatch(
+try(withCallinghandlers(
   download(file),
   error = function(err) {
     msg <- sprintf("Can't download `\%s`", file)
     abort(msg, parent = err)
-})
+}))
+# Note how we supplied the parent error to `abort()` as `parent` to
+# get a decomposition of error messages across error contexts.
 
 # Unhandled errors are saved automatically by `abort()` and can be
 # retrieved with `last_error()`. The error prints with a simplified
