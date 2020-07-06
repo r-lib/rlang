@@ -198,22 +198,22 @@ calling environment of <code>new_function()</code></p></td>
 <span class='co'># argument the default value for this parameter:</span>
 <span class='fu'>new_function</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(x = <span class='fl'>10</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>x</span>))</div><div class='output co'>#&gt; function (x = 10) 
 #&gt; x
-#&gt; &lt;environment: 0x7fc1149e7ac8&gt;</div><div class='input'><span class='fu'>new_function</span>(<span class='fu'>pairlist2</span>(x = <span class='fl'>10</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>x</span>))</div><div class='output co'>#&gt; function (x = 10) 
+#&gt; &lt;environment: 0x7fe03d5b6020&gt;</div><div class='input'><span class='fu'>new_function</span>(<span class='fu'>pairlist2</span>(x = <span class='fl'>10</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>x</span>))</div><div class='output co'>#&gt; function (x = 10) 
 #&gt; x
-#&gt; &lt;environment: 0x7fc1149e7ac8&gt;</div><div class='input'>
+#&gt; &lt;environment: 0x7fe03d5b6020&gt;</div><div class='input'>
 <span class='co'># Use `exprs()` to create quoted defaults. Compare:</span>
 <span class='fu'>new_function</span>(<span class='fu'>pairlist2</span>(x = <span class='fl'>5</span> <span class='op'>+</span> <span class='fl'>5</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>x</span>))</div><div class='output co'>#&gt; function (x = 10) 
 #&gt; x
-#&gt; &lt;environment: 0x7fc1149e7ac8&gt;</div><div class='input'><span class='fu'>new_function</span>(<span class='fu'>exprs</span>(x = <span class='fl'>5</span> <span class='op'>+</span> <span class='fl'>5</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>x</span>))</div><div class='output co'>#&gt; function (x = 5 + 5) 
+#&gt; &lt;environment: 0x7fe03d5b6020&gt;</div><div class='input'><span class='fu'>new_function</span>(<span class='fu'>exprs</span>(x = <span class='fl'>5</span> <span class='op'>+</span> <span class='fl'>5</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>x</span>))</div><div class='output co'>#&gt; function (x = 5 + 5) 
 #&gt; x
-#&gt; &lt;environment: 0x7fc1149e7ac8&gt;</div><div class='input'>
+#&gt; &lt;environment: 0x7fe03d5b6020&gt;</div><div class='input'>
 <span class='co'># Pass empty arguments to omit defaults. `list()` doesn't allow</span>
 <span class='co'># empty arguments but `pairlist2()` does:</span>
 <span class='fu'>new_function</span>(<span class='fu'>pairlist2</span>(x = , y = <span class='fl'>5</span> <span class='op'>+</span> <span class='fl'>5</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>x</span> <span class='op'>+</span> <span class='kw'>y</span>))</div><div class='output co'>#&gt; function (x, y = 10) 
 #&gt; x + y
-#&gt; &lt;environment: 0x7fc1149e7ac8&gt;</div><div class='input'><span class='fu'>new_function</span>(<span class='fu'>exprs</span>(x = , y = <span class='fl'>5</span> <span class='op'>+</span> <span class='fl'>5</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>x</span> <span class='op'>+</span> <span class='kw'>y</span>))</div><div class='output co'>#&gt; function (x, y = 5 + 5) 
+#&gt; &lt;environment: 0x7fe03d5b6020&gt;</div><div class='input'><span class='fu'>new_function</span>(<span class='fu'>exprs</span>(x = , y = <span class='fl'>5</span> <span class='op'>+</span> <span class='fl'>5</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>x</span> <span class='op'>+</span> <span class='kw'>y</span>))</div><div class='output co'>#&gt; function (x, y = 5 + 5) 
 #&gt; x + y
-#&gt; &lt;environment: 0x7fc1149e7ac8&gt;</div></pre>
+#&gt; &lt;environment: 0x7fe03d5b6020&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
