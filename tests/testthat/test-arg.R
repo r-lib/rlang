@@ -32,6 +32,8 @@ test_that("gives error with different than rearranged arg vs value", {
 test_that("gives no error with rearranged arg vs value", {
   expect_identical(arg_match0(rev(letters), letters), "z")
 
+  skip_if_not_installed("withr")
+
   withr::with_seed(
     20200624L,
     expect_identical(arg_match0(letters, sample(letters)), "a")
