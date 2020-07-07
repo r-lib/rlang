@@ -2,15 +2,19 @@
 % Please edit documentation in R/arg.R
 \name{arg_match}
 \alias{arg_match}
+\alias{arg_match0}
 \title{Match an argument to a character vector}
 \usage{
 arg_match(arg, values = NULL)
+
+arg_match0(arg, values, arg_nm = as_label(substitute(arg)))
 }
 \arguments{
 \item{arg}{A symbol referring to an argument accepting strings.}
 
-\item{values}{The possible values that \code{arg} can take. If \code{NULL},
-the values are taken from the function definition of the \link[=caller_frame]{caller frame}.}
+\item{values}{The possible values that \code{arg} can take.}
+
+\item{arg_nm}{The label to be used for \code{arg} in error messages.}
 }
 \value{
 The string supplied to \code{arg}.
@@ -22,12 +26,32 @@ This is equivalent to \code{\link[base:match.arg]{base::match.arg()}} with a few
 \item Error messages are a bit more informative and obey the tidyverse
 standards.
 }
+
+\code{arg_match()} derives the possible values from the
+\link[=caller_frame]{caller frame}.
+
+\code{arg_match0()} is a bare-bones version if performance is at a premium.
+It requires a string as \code{arg} and explicit \code{values}.
+For convenience, \code{arg} may also be a character vector containing
+every element of \code{values}, possibly permuted.
+In this case, the first element of \code{arg} is used.
 }
 \examples{
 fn <- function(x = c("foo", "bar")) arg_match(x)
 fn("bar")
 
-# This would throw an informative error if run:
-# fn("b")
-# fn("baz")
+# Throws an informative error for mismatches:
+try(fn("b"))
+try(fn("baz"))
+
+# Use the bare-bones version with explicit values for speed:
+arg_match0("bar", c("foo", "bar", "baz"))
+
+# For convenience:
+fn1 <- function(x = c("bar", "baz", "foo")) fn3(x)
+fn2 <- function(x = c("baz", "bar", "foo")) fn3(x)
+fn3 <- function(x) arg_match0(x, c("foo", "bar", "baz"))
+fn1()
+fn2("bar")
+try(fn3("zoo"))
 }

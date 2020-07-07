@@ -9,10 +9,10 @@
 #' * Error messages are a bit more informative and obey the tidyverse
 #'   standards.
 #'
+#' `arg_match()` derives the possible values from the
+#' [caller frame][caller_frame].
+#'
 #' @param arg A symbol referring to an argument accepting strings.
-#' @param values The possible values that `arg` can take. If `NULL`,
-#'   the values are taken from the function definition of the [caller
-#'   frame][caller_frame].
 #' @return The string supplied to `arg`.
 #' @importFrom utils adist
 #' @export
@@ -20,9 +20,9 @@
 #' fn <- function(x = c("foo", "bar")) arg_match(x)
 #' fn("bar")
 #'
-#' # This would throw an informative error if run:
-#' # fn("b")
-#' # fn("baz")
+#' # Throws an informative error for mismatches:
+#' try(fn("b"))
+#' try(fn("baz"))
 arg_match <- function(arg, values = NULL) {
   arg_expr <- enexpr(arg)
   if (!is_symbol(arg_expr)) {
@@ -35,9 +35,10 @@ arg_match <- function(arg, values = NULL) {
     fn <- caller_fn()
     values <- fn_fmls(fn)[[arg_nm]]
     values <- eval_bare(values, get_env(fn))
-  }
-  if (!is_character(values)) {
-    abort("Internal error: `values` must be a character vector.")
+  } else {
+    signal_soft_deprecated(
+      "The `values` argument to `arg_match()` is deprecated as of rlang 0.4.7. Use `arg_match0()` instead."
+    )
   }
   if (!is_character(arg)) {
     abort(paste0(chr_quoted(arg_nm), " must be a character vector."))
@@ -47,30 +48,55 @@ arg_match <- function(arg, values = NULL) {
   }
 
   arg <- arg[[1]]
-  i <- match(arg, values)
+  arg_match0(arg, values, arg_nm)
+}
 
-  if (is_na(i)) {
-    msg <- arg_match_invalid_msg(arg_nm, values)
+#' @description
+#' `arg_match0()` is a bare-bones version if performance is at a premium.
+#' It requires a string as `arg` and explicit `values`.
+#' For convenience, `arg` may also be a character vector containing
+#' every element of `values`, possibly permuted.
+#' In this case, the first element of `arg` is used.
+#'
+#' @param values The possible values that `arg` can take.
+#' @param arg_nm The label to be used for `arg` in error messages.
+#' @rdname arg_match
+#' @export
+#' @examples
+#'
+#' # Use the bare-bones version with explicit values for speed:
+#' arg_match0("bar", c("foo", "bar", "baz"))
+#'
+#' # For convenience:
+#' fn1 <- function(x = c("bar", "baz", "foo")) fn3(x)
+#' fn2 <- function(x = c("baz", "bar", "foo")) fn3(x)
+#' fn3 <- function(x) arg_match0(x, c("foo", "bar", "baz"))
+#' fn1()
+#' fn2("bar")
+#' try(fn3("zoo"))
+arg_match0 <- function(arg, values, arg_nm = as_label(substitute(arg))) {
+  .External(rlang_ext_arg_match0, arg, values, environment())
+}
 
-    i_partial <- pmatch(arg, values)
-    if (!is_na(i_partial)) {
-      candidate <- values[[i_partial]]
-    }
+stop_arg_match <- function(arg, values, arg_nm) {
+  msg <- arg_match_invalid_msg(arg_nm, values)
 
-    i_close <- adist(arg, values) / nchar(values)
-    if (any(i_close <= 0.5)) {
-      candidate <- values[[which.min(i_close)]]
-    }
-
-    if (exists("candidate")) {
-      candidate <- chr_quoted(candidate, "\"")
-      msg <- paste0(msg, "\n", "Did you mean ", candidate, "?")
-    }
-
-    abort(msg)
+  i_partial <- pmatch(arg, values)
+  if (!is_na(i_partial)) {
+    candidate <- values[[i_partial]]
   }
 
-  values[[i]]
+  i_close <- adist(arg, values) / nchar(values)
+  if (any(i_close <= 0.5)) {
+    candidate <- values[[which.min(i_close)]]
+  }
+
+  if (exists("candidate")) {
+    candidate <- chr_quoted(candidate, "\"")
+    msg <- paste0(msg, "\n", "Did you mean ", candidate, "?")
+  }
+
+  abort(msg)
 }
 
 arg_match_invalid_msg <- function(arg_nm, values) {

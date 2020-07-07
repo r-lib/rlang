@@ -25,7 +25,8 @@ Suggests:
     pillar,
     rmarkdown,
     testthat (>= 2.3.0),
-    vctrs (>= 0.2.3)
+    vctrs (>= 0.2.3),
+    withr
 Remotes:
     rstudio/rmarkdown
 Encoding: UTF-8
