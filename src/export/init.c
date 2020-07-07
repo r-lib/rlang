@@ -321,7 +321,7 @@ static const r_callable r_callables[] = {
 };
 
 
-extern sexp* rlang_ext_arg_match0(sexp*, sexp*, sexp*, sexp*);
+extern sexp* rlang_ext_arg_match0(sexp*);
 
 extern sexp* rlang_ext2_is_missing(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_ext2_call2(sexp*, sexp*, sexp*, sexp*);

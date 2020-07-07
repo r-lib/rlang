@@ -88,8 +88,8 @@ sexp* rlang_ext2_is_missing(sexp* _call, sexp* _op, sexp* args, sexp* env) {
 
 static sexp* stop_arg_match_call = NULL;
 static sexp* arg_nm_sym = NULL;
-
 void arg_match0_abort(const char* msg, sexp* env);
+
 sexp* rlang_ext_arg_match0(sexp* args) {
   args = r_node_cdr(args);
 
