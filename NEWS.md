@@ -1,6 +1,9 @@
 
 # rlang (development version)
 
+* `warn()` and `inform()` gain a `.frequency` argument to control how
+  frequently the warning or message should be displayed.
+
 * New `raw_deparse_str()` function for converting a raw vector into a
   string of hexadecimal characters (@krlmlr, #978).
 

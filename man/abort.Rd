@@ -17,9 +17,24 @@ abort(
   .subclass
 )
 
-warn(message = NULL, class = NULL, ..., .subclass)
+warn(
+  message = NULL,
+  class = NULL,
+  ...,
+  .frequency = c("always", "regularly", "once"),
+  .frequency_id = message,
+  .subclass
+)
 
-inform(message = NULL, class = NULL, ..., file = NULL, .subclass)
+inform(
+  message = NULL,
+  class = NULL,
+  ...,
+  file = NULL,
+  .frequency = c("always", "regularly", "once"),
+  .frequency_id = message,
+  .subclass
+)
 
 signal(message, class, ..., .subclass)
 
@@ -46,6 +61,16 @@ to selectively handle the conditions signalled by your functions.}
 0.4.2.  It will be deprecated in the next major version. This is
 for consistency with our conventions for class constructors
 documented in \url{https://adv-r.hadley.nz/s3.html#s3-subclassing}.}
+
+\item{.frequency}{How frequently should the warning or message be
+displayed? By default (\code{"always"}) it is displayed at each
+time. If \code{"regularly"}, it is displayed once every 8 hours. If
+\code{"once"}, it is displayed once per session.}
+
+\item{.frequency_id}{A unique identifier for the warning or
+message. This is used when \code{.frequency} is supplied to recognise
+recurring conditions. If not supplied, \code{message} is used for
+identification.}
 
 \item{file}{Where the message is printed. This should be a
 connection or character string which will be passed to \code{\link[=cat]{cat()}}.

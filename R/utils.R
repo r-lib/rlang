@@ -266,3 +266,7 @@ cli_rule <- function() {
 split_lines <- function(x) {
   strsplit(x, "\n", fixed = TRUE)[[1]]
 }
+
+stop_internal <- function(fn, msg) {
+  abort(sprintf("Internal error in `%s()`: %s"), fn, msg)
+}
