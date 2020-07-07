@@ -118,7 +118,7 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
     sexp* arg_char = r_chr_get(arg, 0);
     for (r_ssize i = 0; i < len_values; ++i) {
       if (arg_char == r_chr_get(values, i)) {
-        return(r_str_as_character(arg_char));
+        return(arg);
       }
     }
 
