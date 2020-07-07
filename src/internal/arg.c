@@ -124,33 +124,37 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
     never_reached("rlang_ext2_arg_match0");
   }
 
+  sexp* const* p_arg = r_chr_deref_const(arg);
+  sexp* const* p_values = r_chr_deref_const(values);
+
   // Same-length vector: must be identical, we allow changed order.
   r_ssize i = 0;
   for (; i < arg_len; ++i) {
-    if (r_chr_get(arg, i) != r_chr_get(values, i)) {
+    if (p_arg[i] != p_values[i]) {
       break;
     }
   }
 
   // Elements are identical, return first
   if (i == arg_len) {
-    return(r_str_as_character(r_chr_get(values, 0)));
+    return(r_str_as_character(p_arg[0]));
   }
 
   sexp* my_values = KEEP(r_duplicate(values, true));
+  sexp** p_my_values = r_chr_deref(my_values);
 
   // Invariant: my_values[i:(len-1)] contains the values we haven't matched yet
   for (; i < arg_len; ++i) {
-    sexp* current_arg = r_chr_get(arg, i);
-    if (current_arg == r_chr_get(my_values, i)) {
+    sexp* current_arg = p_arg[i];
+    if (current_arg == p_my_values[i]) {
       continue;
     }
 
     bool matched = false;
     for (r_ssize j = i + 1; j < arg_len; ++j) {
-      if (current_arg == r_chr_get(my_values, j)) {
+      if (current_arg == p_my_values[j]) {
         matched = true;
-        r_chr_poke(my_values, j, r_chr_get(my_values, i));
+        p_my_values[j] = p_my_values[i];
         break;
       }
     }
