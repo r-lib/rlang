@@ -6,7 +6,7 @@ sexp* rlang_raw_deparse_str(sexp* x, sexp* prefix, sexp* suffix) {
   r_ssize len_data = 0;
   if (!r_is_null(x)) {
     if (r_typeof(x) != r_type_raw) {
-      r_abort("`prefix` must be a raw vector or NULL.");
+      r_abort("`x` must be a raw vector or NULL.");
     }
     p_data = r_raw_deref(x);
     len_data = r_length(x);
