@@ -448,6 +448,9 @@
     <loc>https://rlang.r-lib.org/reference/quosure.html</loc>
   </url>
   <url>
+    <loc>https://rlang.r-lib.org/reference/raw_deparse_str.html</loc>
+  </url>
+  <url>
     <loc>https://rlang.r-lib.org/reference/rep_along.html</loc>
   </url>
   <url>

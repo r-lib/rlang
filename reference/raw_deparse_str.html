@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create a formula — new_formula • rlang</title>
+<title>Serialize a raw vector to a string — raw_deparse_str • rlang</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,13 @@
 
 
 
-<meta property="og:title" content="Create a formula — new_formula" />
-<meta property="og:description" content="Create a formula" />
+<meta property="og:title" content="Serialize a raw vector to a string — raw_deparse_str" />
+<meta property="og:description" content="
+This function converts a raw vector to a hexadecimal string,
+optionally adding a prefix and a suffix.
+It is roughly equivalent to
+paste0(prefix, paste(format(x), collapse = &quot;&quot;), suffix)
+and much faster." />
 
 
 
@@ -150,41 +155,41 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create a formula</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/formula.R'><code>R/formula.R</code></a></small>
-    <div class="hidden name"><code>new_formula.Rd</code></div>
+    <h1>Serialize a raw vector to a string</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/raw.R'><code>R/raw.R</code></a></small>
+    <div class="hidden name"><code>raw_deparse_str.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Create a formula</p>
+    <p><a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a></p>
+<p>This function converts a raw vector to a hexadecimal string,
+optionally adding a prefix and a suffix.
+It is roughly equivalent to
+<code><a href='https://rdrr.io/r/base/paste.html'>paste0(prefix, paste(format(x), collapse = ""), suffix)</a></code>
+and much faster.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>new_formula</span>(<span class='kw'>lhs</span>, <span class='kw'>rhs</span>, env = <span class='fu'>caller_env</span>())</pre>
+    <pre class="usage"><span class='fu'>raw_deparse_str</span>(<span class='kw'>x</span>, prefix = <span class='kw'>NULL</span>, suffix = <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>lhs, rhs</th>
-      <td><p>A call, name, or atomic vector.</p></td>
+      <th>x</th>
+      <td><p>A raw vector.</p></td>
     </tr>
     <tr>
-      <th>env</th>
-      <td><p>An environment.</p></td>
+      <th>prefix, suffix</th>
+      <td><p>Prefix and suffix strings, or `NULL.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A formula object.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code>new_quosure()</code></p></div>
+    <p>A string.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>new_formula</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>a</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>b</span>))</div><div class='output co'>#&gt; a ~ b
-#&gt; &lt;environment: 0x7fb390ff2878&gt;</div><div class='input'><span class='fu'>new_formula</span>(<span class='kw'>NULL</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>b</span>))</div><div class='output co'>#&gt; ~b
-#&gt; &lt;environment: 0x7fb390ff2878&gt;</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>raw_deparse_str</span>(<span class='fu'><a href='https://rdrr.io/r/base/raw.html'>raw</a></span>())</div><div class='output co'>#&gt; [1] ""</div><div class='input'><span class='fu'>raw_deparse_str</span>(<span class='fu'><a href='https://rdrr.io/r/base/rawConversion.html'>charToRaw</a></span>(<span class='st'>"string"</span>))</div><div class='output co'>#&gt; [1] "737472696e67"</div><div class='input'><span class='fu'>raw_deparse_str</span>(<span class='fu'><a href='https://rdrr.io/r/base/raw.html'>raw</a></span>(<span class='fl'>10</span>), prefix = <span class='st'>"'0x"</span>, suffix = <span class='st'>"'"</span>)</div><div class='output co'>#&gt; [1] "'0x00000000000000000000'"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

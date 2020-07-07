@@ -158,6 +158,7 @@
 <a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li><p>New <code>raw_deparse_str()</code> function for converting a raw vector into a string of hexadecimal characters (<a href='https://github.com/krlmlr'>@krlmlr</a>, <a href='https://github.com/r-lib/rlang/issues/978'>#978</a>).</p></li>
 <li>
 <p>The backtraces of chained errors are no longer decomposed by error context. Instead, the error messages are displayed as a tree to reflect the error ancestry, and the deepest backtrace in the ancestry is displayed.</p>
 <p>This change simplifies the display (<a href='https://github.com/r-lib/rlang/issues/851'>#851</a>) and makes it possible to rethow errors from a calling handler rather than an exiting handler, which we now think is more appropriate because it allows users to <code><a href="https://rdrr.io/r/utils/recover.html">recover()</a></code> into the error.</p>
