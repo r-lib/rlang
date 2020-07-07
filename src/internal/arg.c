@@ -106,11 +106,7 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
   r_ssize arg_len = r_length(arg);
   r_ssize values_len = r_length(values);
   if (arg_len != 1 && arg_len != values_len) {
-    arg = KEEP(r_str_as_character(r_chr_get(arg, 0)));
-    sexp* arg_nm = KEEP(r_eval(arg_nm_sym, env));
-    r_eval_with_xyz(stop_arg_match_call, r_base_env, arg, values, arg_nm);
-
-    never_reached("rlang_ext2_arg_match0");
+    arg_match0_abort("`%s` must be a string or have the same length as `values`.", env);
   }
 
   // Simple case: one argument, we check if it's one of the values.

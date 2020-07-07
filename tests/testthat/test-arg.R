@@ -21,7 +21,7 @@ test_that("gives error with different than rearranged arg vs value", {
   f <- function(myarg = c("foo", "bar", "fun")) {
     arg_match0(myarg, c("fun", "bar"))
   }
-  expect_error(f(), regexp = "`myarg` must be one of \"fun\" or \"bar\"")
+  expect_error(f(), "`myarg` must be a string or have the same length as `values`.")
 
   expect_error(
     arg_match0(c("foo", "foo"), c("foo", "bar")),
