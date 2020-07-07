@@ -90,11 +90,12 @@ static sexp* stop_arg_match_call = NULL;
 static sexp* arg_nm_sym = NULL;
 
 void arg_match0_abort(const char* msg, sexp* env);
-sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
+sexp* rlang_ext_arg_match0(sexp* args) {
   args = r_node_cdr(args);
 
   sexp* arg = r_node_car(args); args = r_node_cdr(args);
-  sexp* values = r_node_car(args);
+  sexp* values = r_node_car(args); args = r_node_cdr(args);
+  sexp* env = r_node_car(args);
 
   if (r_typeof(arg) != r_type_character) {
     arg_match0_abort("`%s` must be a character vector.", env);
