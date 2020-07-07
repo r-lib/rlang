@@ -10,7 +10,7 @@ sexp* rlang_raw_deparse_str(sexp* x, sexp* prefix, sexp* suffix) {
 
   const char* s_prefix = NULL;
   r_ssize len_prefix = 0;
-  if (!r_is_null(prefix)) {
+  if (prefix != r_null) {
     if (!r_is_string(prefix, NULL)) {
       r_abort("`prefix` must be a string or NULL.");
     }
@@ -20,7 +20,7 @@ sexp* rlang_raw_deparse_str(sexp* x, sexp* prefix, sexp* suffix) {
 
   const char* s_suffix = NULL;
   r_ssize len_suffix = 0;
-  if (!r_is_null(suffix)) {
+  if (suffix != r_null) {
     if (!r_is_string(suffix, NULL)) {
       r_abort("`suffix` must be a string or NULL.");
     }
