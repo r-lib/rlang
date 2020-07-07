@@ -18,7 +18,7 @@
 #' raw_deparse_str()
 #' raw_deparse_str(charToRaw("string"))
 #' raw_deparse_str(raw(10), prefix = "'0x", suffix = "'")
-raw_deparse_str <- function(x = NULL, prefix = NULL, suffix = NULL) {
+raw_deparse_str <- function(x, prefix = NULL, suffix = NULL) {
   if (!is.null(prefix)) {
     prefix <- enc2utf8(prefix)
   }

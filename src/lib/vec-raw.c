@@ -2,15 +2,11 @@
 #include "rlang.h"
 
 sexp* rlang_raw_deparse_str(sexp* x, sexp* prefix, sexp* suffix) {
-  const unsigned char* p_x = NULL;
-  r_ssize len_data = 0;
-  if (x != r_null) {
-    if (r_typeof(x) != r_type_raw) {
-      r_abort("`x` must be a raw vector or NULL.");
-    }
-    p_x = r_raw_deref(x);
-    len_data = r_length(x);
+  if (r_typeof(x) != r_type_raw) {
+    r_abort("`x` must be a raw vector or NULL.");
   }
+  const unsigned char* p_x = r_raw_deref(x);
+  r_ssize len_data = r_length(x);
 
   const char* s_prefix = NULL;
   r_ssize len_prefix = 0;
