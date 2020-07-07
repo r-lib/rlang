@@ -4,7 +4,7 @@
 sexp* rlang_raw_deparse_str(sexp* x, sexp* prefix, sexp* suffix) {
   const r_byte_t* p_data = NULL;
   r_ssize len_data = 0;
-  if (!r_is_null(x)) {
+  if (x != r_null) {
     if (r_typeof(x) != r_type_raw) {
       r_abort("`x` must be a raw vector or NULL.");
     }
