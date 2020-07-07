@@ -157,6 +157,8 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
     for (r_ssize j = i + 1; j < arg_len; ++j) {
       if (current_arg == p_my_values[j]) {
         matched = true;
+
+        // Replace matched value by the element that failed to match at this iteration
         p_my_values[j] = p_my_values[i];
         break;
       }
