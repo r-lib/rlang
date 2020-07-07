@@ -12,3 +12,5 @@
 #include "internal/internal.c"
 #include "internal/quo.c"
 #include "internal/utils.c"
+#include "internal/vec-raw.c"
+

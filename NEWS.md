@@ -1,6 +1,9 @@
 
 # rlang (development version)
 
+* New `raw_deparse_str()` function for converting a raw vector into a
+  string of hexadecimal characters (@krlmlr, #978).
+
 * The backtraces of chained errors are no longer decomposed by error
   context. Instead, the error messages are displayed as a tree to
   reflect the error ancestry, and the deepest backtrace in the ancestry
