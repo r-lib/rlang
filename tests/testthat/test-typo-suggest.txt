@@ -33,3 +33,12 @@ Even with small possible typos, if there's a match it returns the match
 > arg_match0(myarg, c("foo", "baz", "bas"))
 [1] "bas"
 
+
+arg_nm is honored
+=================
+
+> myarg <- "baq"
+> arg_match0(myarg, c("foo", "baz", "bas"), arg_nm = "arg")
+Error: `arg` must be one of "foo", "baz", or "bas".
+Did you mean "baz"?
+

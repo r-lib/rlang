@@ -70,6 +70,10 @@ test_that("informative error message on a typo", {
     "# Even with small possible typos, if there's a match it returns the match"
     myarg <- "bas"
     arg_match0(myarg, c("foo", "baz", "bas"))
+
+    "# arg_nm is honored"
+    myarg <- "baq"
+    arg_match0(myarg, c("foo", "baz", "bas"), arg_nm = "arg")
   })
 })
 
