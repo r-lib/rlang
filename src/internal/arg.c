@@ -105,6 +105,9 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
 
   r_ssize arg_len = r_length(arg);
   r_ssize values_len = r_length(values);
+  if (values_len == 0) {
+    arg_match0_abort("`values` must have at least one element.", env);
+  }
   if (arg_len != 1 && arg_len != values_len) {
     arg_match0_abort("`%s` must be a string or have the same length as `values`.", env);
   }

@@ -74,6 +74,9 @@ test_that("informative error message on a typo", {
     "# arg_nm is honored"
     myarg <- "baq"
     arg_match0(myarg, c("foo", "baz", "bas"), arg_nm = "arg")
+
+    "# Corner case"
+    arg_match0("", character())
   })
 })
 

@@ -42,3 +42,10 @@ arg_nm is honored
 Error: `arg` must be one of "foo", "baz", or "bas".
 Did you mean "baz"?
 
+
+Corner case
+===========
+
+> arg_match0("", character())
+Error: `values` must have at least one element.
+
