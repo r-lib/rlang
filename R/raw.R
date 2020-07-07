@@ -9,7 +9,7 @@
 #' `paste0(prefix, paste(format(x), collapse = ""), suffix)`
 #' and much faster.
 #'
-#' @param x A raw vector or `NULL`.
+#' @param x A raw vector.
 #' @param prefix,suffix Prefix and suffix strings, or `NULL.
 #'
 #' @return A string.

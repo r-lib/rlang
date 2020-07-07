@@ -3,7 +3,7 @@
 
 sexp* rlang_raw_deparse_str(sexp* x, sexp* prefix, sexp* suffix) {
   if (r_typeof(x) != r_type_raw) {
-    r_abort("`x` must be a raw vector or NULL.");
+    r_abort("`x` must be a raw vector.");
   }
   const unsigned char* p_x = r_raw_deref(x);
   r_ssize len_data = r_length(x);
@@ -31,7 +31,7 @@ sexp* rlang_raw_deparse_str(sexp* x, sexp* prefix, sexp* suffix) {
   r_ssize len = len_prefix + (2 * len_data) + len_suffix;
 
   sexp* buf = KEEP(r_new_vector(r_type_raw, len));
-  r_byte_t* p_buf = r_raw_deref(buf);
+  char* p_buf = r_raw_deref(buf);
 
   memcpy(p_buf, s_prefix, len_prefix);
   p_buf += len_prefix;
