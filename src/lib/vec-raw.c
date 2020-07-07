@@ -2,13 +2,13 @@
 #include "rlang.h"
 
 sexp* rlang_raw_deparse_str(sexp* x, sexp* prefix, sexp* suffix) {
-  const r_byte_t* p_data = NULL;
+  const unsigned char* p_x = NULL;
   r_ssize len_data = 0;
   if (x != r_null) {
     if (r_typeof(x) != r_type_raw) {
       r_abort("`x` must be a raw vector or NULL.");
     }
-    p_data = r_raw_deref(x);
+    p_x = r_raw_deref(x);
     len_data = r_length(x);
   }
 
@@ -43,7 +43,7 @@ sexp* rlang_raw_deparse_str(sexp* x, sexp* prefix, sexp* suffix) {
   const char* lookup = "0123456789abcdef";
 
   for (r_ssize i = 0; i < len_data; ++i) {
-    r_byte_t value = p_data[i];
+    r_byte_t value = p_x[i];
     *p_buf++ = lookup[value / 16];
     *p_buf++ = lookup[value % 16];
   }
