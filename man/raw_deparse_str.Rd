@@ -4,10 +4,10 @@
 \alias{raw_deparse_str}
 \title{Serialize a raw vector to a string}
 \usage{
-raw_deparse_str(x = NULL, prefix = NULL, suffix = NULL)
+raw_deparse_str(x, prefix = NULL, suffix = NULL)
 }
 \arguments{
-\item{x}{A raw vector or \code{NULL}.}
+\item{x}{A raw vector.}
 
 \item{prefix, suffix}{Prefix and suffix strings, or `NULL.}
 }
