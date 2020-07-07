@@ -176,6 +176,7 @@
 <li><p><code>parse_exprs()</code> now supports empty expressions (<a href='https://github.com/r-lib/rlang/issues/954'>#954</a>).</p></li>
 <li><p><code>list2(!!!x)</code> no longer evaluates <code>x</code> multiple times (<a href='https://github.com/r-lib/rlang/issues/981'>#981</a>).</p></li>
 <li><p><code>is_installed()</code> now properly handles a <code>pkg</code> argument of length &gt; 1. Before this it silently tested the first element of <code>pkg</code> only and thus always returned <code>TRUE</code> if the first package was installed regardless of the actual length of <code>pkg</code>. (<a href='https://github.com/r-lib/rlang/issues/991'>#991</a>, <a href='https://github.com/salim-b'>@salim-b</a>)</p></li>
+<li><p><code>arg_match0()</code> is a faster version of <code>arg_match()</code> for use when performance is at a premium (<a href='https://github.com/r-lib/rlang/issues/997'>#997</a>, <a href='https://github.com/krlmlr'>@krlmlr</a>).</p></li>
 </ul>
 </div>
     <div id="rlang-046" class="section level1">

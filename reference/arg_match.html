@@ -45,7 +45,14 @@ Partial matches trigger an error.
 Error messages are a bit more informative and obey the tidyverse
 standards.
 
-" />
+
+arg_match() derives the possible values from the
+caller frame.
+arg_match0() is a bare-bones version if performance is at a premium.
+It requires a string as arg and explicit values.
+For convenience, arg may also be a character vector containing
+every element of values, possibly permuted.
+In this case, the first element of arg is used." />
 
 
 
@@ -167,9 +174,18 @@ standards.
 standards.</p></li>
 </ul>
 
+<p><code>arg_match()</code> derives the possible values from the
+caller frame.</p>
+<p><code>arg_match0()</code> is a bare-bones version if performance is at a premium.
+It requires a string as <code>arg</code> and explicit <code>values</code>.
+For convenience, <code>arg</code> may also be a character vector containing
+every element of <code>values</code>, possibly permuted.
+In this case, the first element of <code>arg</code> is used.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>arg_match</span>(<span class='kw'>arg</span>, values = <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>arg_match</span>(<span class='kw'>arg</span>, values = <span class='kw'>NULL</span>)
+
+<span class='fu'>arg_match0</span>(<span class='kw'>arg</span>, <span class='kw'>values</span>, arg_nm = <span class='fu'>as_label</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>substitute</a></span>(<span class='kw'>arg</span>)))</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -180,8 +196,11 @@ standards.</p></li>
     </tr>
     <tr>
       <th>values</th>
-      <td><p>The possible values that <code>arg</code> can take. If <code>NULL</code>,
-the values are taken from the function definition of the caller frame.</p></td>
+      <td><p>The possible values that <code>arg</code> can take.</p></td>
+    </tr>
+    <tr>
+      <th>arg_nm</th>
+      <td><p>The label to be used for <code>arg</code> in error messages.</p></td>
     </tr>
     </table>
 
@@ -192,9 +211,18 @@ the values are taken from the function definition of the caller frame.</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>x</span> = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>)) <span class='fu'>arg_match</span>(<span class='kw'>x</span>)
 <span class='fu'>fn</span>(<span class='st'>"bar"</span>)</div><div class='output co'>#&gt; [1] "bar"</div><div class='input'>
-<span class='co'># This would throw an informative error if run:</span>
-<span class='co'># fn("b")</span>
-<span class='co'># fn("baz")</span></div></pre>
+<span class='co'># Throws an informative error for mismatches:</span>
+<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>fn</span>(<span class='st'>"b"</span>))</div><div class='output co'>#&gt; Error : `x` must be one of "foo" or "bar".
+#&gt; Did you mean "bar"?</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>fn</span>(<span class='st'>"baz"</span>))</div><div class='output co'>#&gt; Error : `x` must be one of "foo" or "bar".
+#&gt; Did you mean "bar"?</div><div class='input'>
+<span class='co'># Use the bare-bones version with explicit values for speed:</span>
+<span class='fu'>arg_match0</span>(<span class='st'>"bar"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>, <span class='st'>"baz"</span>))</div><div class='output co'>#&gt; [1] "bar"</div><div class='input'>
+<span class='co'># For convenience:</span>
+<span class='kw'>fn1</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>x</span> = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"bar"</span>, <span class='st'>"baz"</span>, <span class='st'>"foo"</span>)) <span class='fu'>fn3</span>(<span class='kw'>x</span>)
+<span class='kw'>fn2</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>x</span> = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"baz"</span>, <span class='st'>"bar"</span>, <span class='st'>"foo"</span>)) <span class='fu'>fn3</span>(<span class='kw'>x</span>)
+<span class='kw'>fn3</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>x</span>) <span class='fu'>arg_match0</span>(<span class='kw'>x</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>, <span class='st'>"baz"</span>))
+<span class='fu'>fn1</span>()</div><div class='output co'>#&gt; [1] "bar"</div><div class='input'><span class='fu'>fn2</span>(<span class='st'>"bar"</span>)</div><div class='output co'>#&gt; [1] "bar"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>fn3</span>(<span class='st'>"zoo"</span>))</div><div class='output co'>#&gt; Error : `x` must be one of "foo", "bar", or "baz".
+#&gt; Did you mean "foo"?</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
