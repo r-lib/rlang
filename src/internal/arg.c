@@ -93,7 +93,7 @@ void arg_match0_abort(const char* msg, sexp* env);
 sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
   args = r_node_cdr(args);
 
-  sexp* arg =    r_node_car(args); args = r_node_cdr(args);
+  sexp* arg = r_node_car(args); args = r_node_cdr(args);
   sexp* values = r_node_car(args);
 
   if (r_typeof(arg) != r_type_character) {
