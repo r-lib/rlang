@@ -1,5 +1,6 @@
 PKG_CPPFLAGS = -I./lib/
-PKG_CFLAGS = $(C_VISIBILITY)
+PKG_CFLAGS = $(C_VISIBILITY) $(RLIB_CI_CFLAGS)
+PKG_LDFLAGS = $(RLIB_CI_LDFLAGS)
 
 lib-files = \
         lib/rlang.h \
