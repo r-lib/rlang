@@ -122,7 +122,7 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
     }
 
     sexp* arg_nm = KEEP(r_eval(arg_nm_sym, env));
-    r_eval_with_xyz(stop_arg_match_call, r_base_env, arg, values, arg_nm);
+    r_eval_with_xyz(stop_arg_match_call, rlang_ns_env, arg, values, arg_nm);
 
     never_reached("rlang_ext2_arg_match0");
   }
@@ -167,7 +167,7 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
     if (!matched) {
       arg = KEEP(r_str_as_character(r_chr_get(arg, 0)));
       sexp* arg_nm = KEEP(r_eval(arg_nm_sym, env));
-      r_eval_with_xyz(stop_arg_match_call, r_base_env, arg, values, arg_nm);
+      r_eval_with_xyz(stop_arg_match_call, rlang_ns_env, arg, values, arg_nm);
 
       never_reached("rlang_ext2_arg_match0");
     }
@@ -189,7 +189,7 @@ void arg_match0_abort(const char* msg, sexp* env) {
 }
 
 void r_init_library_arg() {
-  stop_arg_match_call = r_parse("rlang:::stop_arg_match(x, y, z)");
+  stop_arg_match_call = r_parse("stop_arg_match(x, y, z)");
   r_mark_precious(stop_arg_match_call);
 
   arg_nm_sym = r_sym("arg_nm");
