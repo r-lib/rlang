@@ -9,10 +9,10 @@
 #' * Error messages are a bit more informative and obey the tidyverse
 #'   standards.
 #'
+#' `arg_match()` derives the possible values from the
+#' [caller frame][caller_frame].
+#'
 #' @param arg A symbol referring to an argument accepting strings.
-#' @param values The possible values that `arg` can take. If `NULL`,
-#'   the values are taken from the function definition of the [caller
-#'   frame][caller_frame].
 #' @return The string supplied to `arg`.
 #' @importFrom utils adist
 #' @export
@@ -54,8 +54,11 @@ arg_match <- function(arg, values = NULL) {
 #' @description
 #' `arg_match0()` is a bare-bones version if performance is at a premium.
 #' It requires a string as `arg` and explicit `values`.
-#' (For convenience, setting `arg` to `values`, perhaps permutated, is also
-#' supported.)
+#' For convenience, `arg` may also be a character vector containing
+#' every element of `values`, possibly permuted.
+#' In this case, the first element of `arg` is used.
+#'
+#' @param values The possible values that `arg` can take.
 #' @param arg_nm The label to be used for `arg` in error messages.
 #' @rdname arg_match
 #' @export
@@ -65,7 +68,12 @@ arg_match <- function(arg, values = NULL) {
 #' arg_match0("bar", c("foo", "bar", "baz"))
 #'
 #' # For convenience:
-#' arg_match0(c("bar", "baz", "foo"), c("foo", "bar", "baz"))
+#' fn1 <- function(x = c("bar", "baz", "foo")) fn3(x)
+#' fn2 <- function(x = c("baz", "bar", "foo")) fn3(x)
+#' fn3 <- function(x) arg_match0(x, c("foo", "bar", "baz"))
+#' fn1()
+#' fn2("bar")
+#' try(fn3("zoo"))
 arg_match0 <- function(arg, values, arg_nm = as_label(substitute(arg))) {
   .External2(rlang_ext2_arg_match0, arg, values)
 }
