@@ -31,7 +31,7 @@ sexp* rlang_raw_deparse_str(sexp* x, sexp* prefix, sexp* suffix) {
   r_ssize len = len_prefix + (2 * len_data) + len_suffix;
 
   sexp* buf = KEEP(r_new_vector(r_type_raw, len));
-  char* p_buf = r_raw_deref(buf);
+  char* p_buf = (char*) r_raw_deref(buf);
 
   memcpy(p_buf, s_prefix, len_prefix);
   p_buf += len_prefix;
@@ -49,7 +49,7 @@ sexp* rlang_raw_deparse_str(sexp* x, sexp* prefix, sexp* suffix) {
 
   // Invariant: p_buf == r_raw_deref(buf) + len
 
-  sexp* chr_out = KEEP(Rf_mkCharLenCE(r_raw_deref(buf), len, CE_UTF8));
+  sexp* chr_out = KEEP(Rf_mkCharLenCE((char*) r_raw_deref(buf), len, CE_UTF8));
   sexp* out = KEEP(r_str_as_character(chr_out));
 
   FREE(3);
