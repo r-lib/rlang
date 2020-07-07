@@ -24,7 +24,7 @@ It is roughly equivalent to
 and much faster.
 }
 \examples{
-raw_deparse_str()
+raw_deparse_str(raw())
 raw_deparse_str(charToRaw("string"))
 raw_deparse_str(raw(10), prefix = "'0x", suffix = "'")
 }

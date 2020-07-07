@@ -15,7 +15,7 @@
 #' @return A string.
 #' @export
 #' @examples
-#' raw_deparse_str()
+#' raw_deparse_str(raw())
 #' raw_deparse_str(charToRaw("string"))
 #' raw_deparse_str(raw(10), prefix = "'0x", suffix = "'")
 raw_deparse_str <- function(x, prefix = NULL, suffix = NULL) {
