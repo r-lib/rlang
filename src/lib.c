@@ -29,5 +29,4 @@
 #include "lib/vec-chr.c"
 #include "lib/vec-lgl.c"
 #include "lib/vec-list.c"
-#include "lib/vec-raw.c"
 #include "lib/weakref.c"

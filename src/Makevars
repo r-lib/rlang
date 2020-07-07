@@ -27,7 +27,6 @@ lib-files = \
         lib/vec-chr.c \
         lib/vec-lgl.c \
         lib/vec-list.c \
-        lib/vec-raw.c \
         lib/weakref.c
 
 internal-files = \
@@ -44,7 +43,8 @@ internal-files = \
         internal/fn.c \
         internal/internal.c \
         internal/quo.c \
-        internal/utils.c
+        internal/utils.c \
+        internal/vec-raw.c
 
 export-files = \
         export/exported.c \
