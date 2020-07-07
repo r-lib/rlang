@@ -103,9 +103,9 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
     r_abort("`values` must be a character vector.");
   }
 
-  r_ssize len = r_length(arg);
-  r_ssize len_values = r_length(values);
-  if (len != 1 && len != len_values) {
+  r_ssize arg_len = r_length(arg);
+  r_ssize values_len = r_length(values);
+  if (arg_len != 1 && arg_len != values_len) {
     arg = KEEP(r_str_as_character(r_chr_get(arg, 0)));
     sexp* arg_nm = KEEP(r_eval(arg_nm_sym, env));
     r_eval_with_xyz(stop_arg_match_call, r_base_env, arg, values, arg_nm);
@@ -114,9 +114,9 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
   }
 
   // Simple case: one argument, we check if it's one of the values.
-  if (len == 1) {
+  if (arg_len == 1) {
     sexp* arg_char = r_chr_get(arg, 0);
-    for (r_ssize i = 0; i < len_values; ++i) {
+    for (r_ssize i = 0; i < values_len; ++i) {
       if (arg_char == r_chr_get(values, i)) {
         return(arg);
       }
@@ -130,28 +130,28 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
 
   // Same-length vector: must be identical, we allow changed order.
   r_ssize i = 0;
-  for (; i < len; ++i) {
+  for (; i < arg_len; ++i) {
     if (r_chr_get(arg, i) != r_chr_get(values, i)) {
       break;
     }
   }
 
   // Elements are identical, return first
-  if (i == len) {
+  if (i == arg_len) {
     return(r_str_as_character(r_chr_get(values, 0)));
   }
 
   sexp* my_values = KEEP(r_duplicate(values, true));
 
   // Invariant: my_values[i:(len-1)] contains the values we haven't matched yet
-  for (; i < len; ++i) {
+  for (; i < arg_len; ++i) {
     sexp* current_arg = r_chr_get(arg, i);
     if (current_arg == r_chr_get(my_values, i)) {
       continue;
     }
 
     bool matched = false;
-    for (r_ssize j = i + 1; j < len; ++j) {
+    for (r_ssize j = i + 1; j < arg_len; ++j) {
       if (current_arg == r_chr_get(my_values, j)) {
         matched = true;
         r_chr_poke(my_values, j, r_chr_get(my_values, i));
