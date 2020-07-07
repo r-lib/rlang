@@ -143,7 +143,7 @@ sexp* rlang_ext2_arg_match0(sexp* _call, sexp* _op, sexp* args, sexp* env) {
 
   sexp* my_values = KEEP(r_duplicate(values, true));
 
-  // Invariant: values[i:(len-1)] contains the values we haven't matched yet
+  // Invariant: my_values[i:(len-1)] contains the values we haven't matched yet
   for (; i < len; ++i) {
     sexp* current_arg = r_chr_get(arg, i);
     if (current_arg == r_chr_get(my_values, i)) {
