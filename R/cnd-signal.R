@@ -223,7 +223,7 @@ needs_signal <- function(frequency, id, env) {
   }
 
   if (!inherits(sentinel, "POSIXct")) {
-    abort("Internal error: Expected `POSIXct` value in `lifecycle::needs_warning()`.")
+    stop_internal("needs_signal", "Expected `POSIXct` value.")
   }
 
   # Signal every 8 hours
