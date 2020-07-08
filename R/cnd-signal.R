@@ -208,7 +208,7 @@ needs_signal <- function(frequency, id, env) {
   if (is_string(frequency, "always")) {
     return(TRUE)
   }
-  if (is_true(peek_option("rlang:::force_verbosity"))) {
+  if (is_true(peek_option("rlang:::message_always"))) {
     return(TRUE)
   }
 

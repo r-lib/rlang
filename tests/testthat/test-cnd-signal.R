@@ -93,6 +93,8 @@ test_that("`inform()` returns invisibly", {
 })
 
 test_that("warn() respects frequency", {
+  local_options(`rlang:::message_always` = FALSE)
+
   expect_warning(
     warn("foo", .frequency = "always", .frequency_id = "warn_always"),
     "^foo$"
@@ -120,6 +122,8 @@ test_that("warn() respects frequency", {
 })
 
 test_that("inform() respects frequency", {
+  local_options(`rlang:::message_always` = FALSE)
+
   expect_message(
     inform("foo", .frequency = "always", .frequency_id = "inform_always"),
     "^foo\n$"
@@ -143,6 +147,18 @@ test_that("inform() respects frequency", {
   )
   expect_no_message(
     inform("foo", .frequency = "regularly", .frequency_id = "inform_regularly")
+  )
+})
+
+test_that("periodic messages can be forced", {
+  local_options(`rlang:::message_always` = TRUE)
+  expect_warning(
+    warn("foo", .frequency = "once", .frequency_id = "warn_forced"),
+    "foo"
+  )
+  expect_warning(
+    warn("foo", .frequency = "once", .frequency_id = "warn_forced"),
+    "foo"
   )
 })
 
