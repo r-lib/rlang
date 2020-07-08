@@ -150,6 +150,19 @@ test_that("inform() respects frequency", {
   )
 })
 
+test_that("warn() and inform() use different periodicity environments", {
+  local_options(`rlang:::message_always` = FALSE)
+
+  expect_message(
+    inform("foo", .frequency = "once", .frequency_id = "warn_inform_different_envs"),
+    "foo"
+  )
+  expect_warning(
+    warn("foo", .frequency = "once", .frequency_id = "warn_inform_different_envs"),
+    "foo"
+  )
+})
+
 test_that("periodic messages can be forced", {
   local_options(`rlang:::message_always` = TRUE)
   expect_warning(

@@ -145,7 +145,7 @@ inform <- function(message = NULL,
 
   .frequency <- arg_match(.frequency, c("always", "regularly", "once"))
 
-  if (needs_signal(.frequency, .frequency_id, warning_freq_env)) {
+  if (needs_signal(.frequency, .frequency_id, message_freq_env)) {
     message <- add_message_freq(message, .frequency, "message")
   } else {
     return(invisible(NULL))
