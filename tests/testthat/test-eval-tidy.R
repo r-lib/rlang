@@ -457,69 +457,6 @@ test_that(".data pronoun handles promises (#908)", {
   expect_equal(eval_tidy(expr(.data$a * 2), mask), 2)
 })
 
-test_that("Non-quosure tilde found correctly (#924)", {
-  # Base tilde
-  expect_equal(eval_tidy(quo(~1)), ~1)
-
-  # Tilde outside
-  expect_equal(
-    with(
-      list(`~` = function(...) "outside"),
-      eval_tidy(quo(~1))
-    ),
-    "outside"
-  )
-
-  # Tilde inside; works trivially
-  expect_equal(
-    eval_tidy(
-      quo(
-        with(
-          list(`~` = function(...) "inside"),
-          ~1
-    ) ) ),
-    "inside"
-  )
-
-  # Tilde in promise
-  expect_equal(
-    eval_tidy({
-      f <- function(`~`) quo(~1)
-      f(function(...) "promise")
-    }),
-    "promise"
-  )
-  expect_equal(
-    eval_tidy({
-      f <- function(`~`) {
-        force(`~`)
-        quo(~1)
-      }
-      f(function(...) "promise2")
-    }),
-    "promise2"
-  )
-  expect_error(
-    eval_tidy({
-      f <- function(`~`) quo(~1)
-      f()
-    }),
-    "not found"
-  )
-
-  # No tilde
-  env <- new.env(parent=emptyenv())
-  env[['quo']] <- quo
-  expect_error(
-    eval_tidy(local(quo(~1), envir = env)),
-    "not found"
-  )
-
-  # But make sure quosure tilde works
-  env[['x']] <- 1
-  expect_equal(eval_tidy(local(quo(x), envir = env)), 1)
-})
-
 test_that("can evaluate tilde in nested masks", {
   tilde <- eval_tidy(quo(eval_tidy(~1)))
   expect_identical(
