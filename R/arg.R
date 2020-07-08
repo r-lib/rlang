@@ -35,10 +35,6 @@ arg_match <- function(arg, values = NULL) {
     fn <- caller_fn()
     values <- fn_fmls(fn)[[arg_nm]]
     values <- eval_bare(values, get_env(fn))
-  } else {
-    signal_soft_deprecated(
-      "The `values` argument to `arg_match()` is deprecated as of rlang 0.4.7. Use `arg_match0()` instead."
-    )
   }
   if (!is_character(arg)) {
     abort(paste0(chr_quoted(arg_nm), " must be a character vector."))
