@@ -9,6 +9,10 @@ cnd_muffle(cnd)
 \arguments{
 \item{cnd}{A condition to muffle.}
 }
+\value{
+If \code{cnd} is mufflable, \code{cnd_muffle()} jumps to the muffle
+restart and doesn't return. Otherwise, it returns \code{FALSE}.
+}
 \description{
 Unlike \code{\link[=exiting]{exiting()}} handlers, \code{\link[=calling]{calling()}} handlers must be explicit
 that they have handled a condition to stop it from propagating to

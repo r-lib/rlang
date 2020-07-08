@@ -250,6 +250,8 @@ catch_cnd <- function(expr, classes = "condition") {
 #'   be called from a [calling] handler.
 #'
 #' @param cnd A condition to muffle.
+#' @return If `cnd` is mufflable, `cnd_muffle()` jumps to the muffle
+#'   restart and doesn't return. Otherwise, it returns `FALSE`.
 #'
 #' @keywords internal
 #' @export
@@ -290,5 +292,5 @@ cnd_muffle <- function(cnd) {
     invokeRestart(restart)
   }
 
-  abort("Can't find a muffling restart")
+  FALSE
 }

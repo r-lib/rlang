@@ -1,6 +1,9 @@
 
 # rlang (development version)
 
+* `cnd_muffle()` now returns `FALSE` instead of failing if the
+  condition is not mufflable (#1022).
+
 * `warn()` and `inform()` gain a `.frequency` argument to control how
   frequently the warning or message should be displayed.
 

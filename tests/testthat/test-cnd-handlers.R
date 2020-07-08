@@ -72,3 +72,12 @@ test_that("with_handlers() registers calling handlers first (#718)", {
   )
   expect_identical(out, "good")
 })
+
+test_that("cnd_muffle() returns FALSE if the condition is not mufflable", {
+  value <- NULL
+  expect_error(withCallingHandlers(
+    stop("foo"),
+    error = function(cnd) value <<- cnd_muffle(cnd)
+  ))
+  expect_false(value)
+})
