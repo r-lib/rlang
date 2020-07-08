@@ -293,10 +293,10 @@ and <code>new_quosure()</code> for constructing quosures manually.</p></div>
     <pre class="examples"><div class='input'><span class='kw'>quo</span> <span class='op'>&lt;-</span> <span class='fu'>quo</span>(<span class='kw'>my_quosure</span>)
 <span class='kw'>quo</span></div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^my_quosure</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7fc5fbb6aac8</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7ff8a9d3c440</span><span></div><div class='input'>
 
 <span class='co'># Access and set the components of a quosure:</span>
-<span class='fu'>quo_get_expr</span>(<span class='kw'>quo</span>)</div><div class='output co'>#&gt; my_quosure</div><div class='input'><span class='fu'>quo_get_env</span>(<span class='kw'>quo</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7fc5fbb6aac8&gt;</div><div class='input'>
+<span class='fu'>quo_get_expr</span>(<span class='kw'>quo</span>)</div><div class='output co'>#&gt; my_quosure</div><div class='input'><span class='fu'>quo_get_env</span>(<span class='kw'>quo</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7ff8a9d3c440&gt;</div><div class='input'>
 <span class='kw'>quo</span> <span class='op'>&lt;-</span> <span class='fu'>quo_set_expr</span>(<span class='kw'>quo</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>baz</span>))
 <span class='kw'>quo</span> <span class='op'>&lt;-</span> <span class='fu'>quo_set_env</span>(<span class='kw'>quo</span>, <span class='fu'>empty_env</span>())
 <span class='kw'>quo</span></div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
