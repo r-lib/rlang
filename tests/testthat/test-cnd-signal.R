@@ -175,6 +175,10 @@ test_that("periodic messages can be forced", {
   )
 })
 
+test_that("`.frequency_id` is mandatory", {
+  expect_error(warn("foo", .frequency = "once"), "frequency_id")
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

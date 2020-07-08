@@ -96,14 +96,14 @@ validate_cnd_signal_args <- function(cnd, .cnd, .mufflable,
 #'   `"once"`, it is displayed once per session.
 #' @param .frequency_id A unique identifier for the warning or
 #'   message. This is used when `.frequency` is supplied to recognise
-#'   recurring conditions. If not supplied, `message` is used for
-#'   identification.
+#'   recurring conditions. This argument must be supplied if
+#'   `.frequency` is not set to `"always"`.
 #' @export
 warn <- function(message = NULL,
                  class = NULL,
                  ...,
                  .frequency = c("always", "regularly", "once"),
-                 .frequency_id = message,
+                 .frequency_id = NULL,
                  .subclass) {
   validate_signal_args(.subclass)
 
@@ -135,7 +135,7 @@ inform <- function(message = NULL,
                    ...,
                    file = NULL,
                    .frequency = c("always", "regularly", "once"),
-                   .frequency_id = message,
+                   .frequency_id = NULL,
                    .subclass) {
   validate_signal_args(.subclass)
 
@@ -210,6 +210,10 @@ needs_signal <- function(frequency, id, env) {
   }
   if (is_true(peek_option("rlang:::message_always"))) {
     return(TRUE)
+  }
+
+  if (is_null(id)) {
+    abort("`.frequency_id` should be supplied with `.frequency`.")
   }
 
   sentinel <- env[[id]]

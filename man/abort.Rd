@@ -22,7 +22,7 @@ warn(
   class = NULL,
   ...,
   .frequency = c("always", "regularly", "once"),
-  .frequency_id = message,
+  .frequency_id = NULL,
   .subclass
 )
 
@@ -32,7 +32,7 @@ inform(
   ...,
   file = NULL,
   .frequency = c("always", "regularly", "once"),
-  .frequency_id = message,
+  .frequency_id = NULL,
   .subclass
 )
 
@@ -69,8 +69,8 @@ time. If \code{"regularly"}, it is displayed once every 8 hours. If
 
 \item{.frequency_id}{A unique identifier for the warning or
 message. This is used when \code{.frequency} is supplied to recognise
-recurring conditions. If not supplied, \code{message} is used for
-identification.}
+recurring conditions. This argument must be supplied if
+\code{.frequency} is not set to \code{"always"}.}
 
 \item{file}{Where the message is printed. This should be a
 connection or character string which will be passed to \code{\link[=cat]{cat()}}.
