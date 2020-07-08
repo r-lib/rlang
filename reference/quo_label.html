@@ -243,7 +243,7 @@ about a new deparsing API.</p></li>
 <span class='kw'>quo</span> <span class='op'>&lt;-</span> <span class='fu'>quo</span>(<span class='fu'>foo</span>(<span class='op'>!</span><span class='op'>!</span> <span class='fu'>quo</span>(<span class='kw'>bar</span>)))
 <span class='kw'>quo</span></div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^foo(^bar)</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7f8326d7c2c0</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7f8f0cc36d90</span><span></div><div class='input'>
 <span class='co'># quo_squash() unwraps all quosures and returns a raw expression:</span>
 <span class='fu'>quo_squash</span>(<span class='kw'>quo</span>)</div><div class='output co'>#&gt; foo(bar)</div><div class='input'>
 <span class='co'># This is used by quo_text() and quo_label():</span>

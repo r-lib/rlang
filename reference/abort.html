@@ -205,7 +205,7 @@ to create custom interrupt condition objects.</p>
   message = <span class='kw'>NULL</span>,
   class = <span class='kw'>NULL</span>,
   <span class='kw'>...</span>,
-  file = <span class='kw'>NULL</span>,
+  .file = <span class='kw'>NULL</span>,
   .frequency = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"always"</span>, <span class='st'>"regularly"</span>, <span class='st'>"once"</span>),
   .frequency_id = <span class='kw'>NULL</span>,
   <span class='kw'>.subclass</span>
@@ -265,7 +265,7 @@ recurring conditions. This argument must be supplied if
 <code>.frequency</code> is not set to <code>"always"</code>.</p></td>
     </tr>
     <tr>
-      <th>file</th>
+      <th>.file</th>
       <td><p>Where the message is printed. This should be a
 connection or character string which will be passed to <code><a href='https://rdrr.io/r/base/cat.html'>cat()</a></code>.</p>
 <p>By default, <code>inform()</code> prints to standard output in interactive
