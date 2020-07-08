@@ -122,7 +122,7 @@ warn <- function(message = NULL,
   warning(cnd)
 }
 #' @rdname abort
-#' @param file Where the message is printed. This should be a
+#' @param .file Where the message is printed. This should be a
 #'   connection or character string which will be passed to [cat()].
 #'
 #'   By default, `inform()` prints to standard output in interactive
@@ -133,7 +133,7 @@ warn <- function(message = NULL,
 inform <- function(message = NULL,
                    class = NULL,
                    ...,
-                   file = NULL,
+                   .file = NULL,
                    .frequency = c("always", "regularly", "once"),
                    .frequency_id = NULL,
                    .subclass) {
@@ -156,8 +156,8 @@ inform <- function(message = NULL,
   withRestarts(muffleMessage = function() NULL, {
     signalCondition(cnd)
 
-    file <- file %||% if (is_interactive()) stdout() else stderr()
-    cat(message, file = file)
+    .file <- .file %||% if (is_interactive()) stdout() else stderr()
+    cat(message, file = .file)
   })
 
   invisible()

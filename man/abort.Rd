@@ -30,7 +30,7 @@ inform(
   message = NULL,
   class = NULL,
   ...,
-  file = NULL,
+  .file = NULL,
   .frequency = c("always", "regularly", "once"),
   .frequency_id = NULL,
   .subclass
@@ -72,7 +72,7 @@ message. This is used when \code{.frequency} is supplied to recognise
 recurring conditions. This argument must be supplied if
 \code{.frequency} is not set to \code{"always"}.}
 
-\item{file}{Where the message is printed. This should be a
+\item{.file}{Where the message is printed. This should be a
 connection or character string which will be passed to \code{\link[=cat]{cat()}}.
 
 By default, \code{inform()} prints to standard output in interactive
