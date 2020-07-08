@@ -90,12 +90,33 @@ validate_cnd_signal_args <- function(cnd, .cnd, .mufflable,
 }
 
 #' @rdname abort
+#' @param .frequency How frequently should the warning or message be
+#'   displayed? By default (`"always"`) it is displayed at each
+#'   time. If `"regularly"`, it is displayed once every 8 hours. If
+#'   `"once"`, it is displayed once per session.
+#' @param .frequency_id A unique identifier for the warning or
+#'   message. This is used when `.frequency` is supplied to recognise
+#'   recurring conditions. This argument must be supplied if
+#'   `.frequency` is not set to `"always"`.
 #' @export
-warn <- function(message = NULL, class = NULL, ..., .subclass) {
+warn <- function(message = NULL,
+                 class = NULL,
+                 ...,
+                 .frequency = c("always", "regularly", "once"),
+                 .frequency_id = NULL,
+                 .subclass) {
   validate_signal_args(.subclass)
 
   message <- validate_signal_message(message, class)
   message <- collapse_cnd_message(message)
+
+  .frequency <- arg_match(.frequency, c("always", "regularly", "once"))
+
+  if (needs_signal(.frequency, .frequency_id, warning_freq_env)) {
+    message <- add_message_freq(message, .frequency, "warning")
+  } else {
+    return(invisible(NULL))
+  }
 
   cnd <- warning_cnd(class, ..., message = message)
   warning(cnd)
@@ -113,12 +134,22 @@ inform <- function(message = NULL,
                    class = NULL,
                    ...,
                    file = NULL,
+                   .frequency = c("always", "regularly", "once"),
+                   .frequency_id = NULL,
                    .subclass) {
   validate_signal_args(.subclass)
 
   message <- message %||% ""
   message <- collapse_cnd_message(message)
   message <- paste0(message, "\n")
+
+  .frequency <- arg_match(.frequency, c("always", "regularly", "once"))
+
+  if (needs_signal(.frequency, .frequency_id, message_freq_env)) {
+    message <- add_message_freq(message, .frequency, "message")
+  } else {
+    return(invisible(NULL))
+  }
 
   cnd <- message_cnd(class, ..., message = message)
 
@@ -167,4 +198,53 @@ validate_signal_message <- function(msg, class) {
   }
 
   msg
+}
+
+
+warning_freq_env <- new.env(parent = emptyenv())
+message_freq_env <- new.env(parent = emptyenv())
+
+needs_signal <- function(frequency, id, env) {
+  if (is_string(frequency, "always")) {
+    return(TRUE)
+  }
+  if (is_true(peek_option("rlang:::message_always"))) {
+    return(TRUE)
+  }
+
+  if (is_null(id)) {
+    abort("`.frequency_id` should be supplied with `.frequency`.")
+  }
+
+  sentinel <- env[[id]]
+  if (is_null(sentinel)) {
+    env_poke(env, id, Sys.time())
+    return(TRUE)
+  }
+
+  if (is_string(frequency, "once")) {
+    return(FALSE)
+  }
+
+  if (!inherits(sentinel, "POSIXct")) {
+    stop_internal("needs_signal", "Expected `POSIXct` value.")
+  }
+
+  # Signal every 8 hours
+  (Sys.time() - sentinel) > (8 * 60 * 60)
+}
+
+add_message_freq <- function(message, frequency, type) {
+  if (is_string(frequency, "always")) {
+    return(message)
+  }
+
+  if (is_string(frequency, "regularly")) {
+    info <- silver("This %s is displayed once every 8 hours.")
+  } else {
+    info <- silver("This %s is displayed once per session.")
+  }
+  info <- sprintf(info, type)
+
+  paste_line(message, info)
 }

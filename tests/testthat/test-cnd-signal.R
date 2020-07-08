@@ -92,6 +92,93 @@ test_that("`inform()` returns invisibly", {
   expect_invisible(inform("foo"))
 })
 
+test_that("warn() respects frequency", {
+  local_options(`rlang:::message_always` = FALSE)
+
+  expect_warning(
+    warn("foo", .frequency = "always", .frequency_id = "warn_always"),
+    "^foo$"
+  )
+  expect_warning(
+    warn("foo", .frequency = "always", .frequency_id = "warn_always"),
+    "^foo$"
+  )
+
+  expect_warning(
+    warn("foo", .frequency = "once", .frequency_id = "warn_once"),
+    "^foo\n.*warning is displayed once per session"
+  )
+  expect_no_warning(
+    warn("foo", .frequency = "once", .frequency_id = "warn_once")
+  )
+
+  expect_warning(
+    warn("foo", .frequency = "regularly", .frequency_id = "warn_regularly"),
+    "foo\n.*warning is displayed once every 8 hours"
+  )
+  expect_no_warning(
+    warn("foo", .frequency = "regularly", .frequency_id = "warn_regularly")
+  )
+})
+
+test_that("inform() respects frequency", {
+  local_options(`rlang:::message_always` = FALSE)
+
+  expect_message(
+    inform("foo", .frequency = "always", .frequency_id = "inform_always"),
+    "^foo\n$"
+  )
+  expect_message(
+    inform("foo", .frequency = "always", .frequency_id = "inform_always"),
+    "^foo\n$"
+  )
+
+  expect_message(
+    inform("foo", .frequency = "once", .frequency_id = "inform_once"),
+    "^foo\n.*message is displayed once per session"
+  )
+  expect_no_message(
+    inform("foo", .frequency = "once", .frequency_id = "inform_once")
+  )
+
+  expect_message(
+    inform("foo", .frequency = "regularly", .frequency_id = "inform_regularly"),
+    "foo\n.*message is displayed once every 8 hours"
+  )
+  expect_no_message(
+    inform("foo", .frequency = "regularly", .frequency_id = "inform_regularly")
+  )
+})
+
+test_that("warn() and inform() use different periodicity environments", {
+  local_options(`rlang:::message_always` = FALSE)
+
+  expect_message(
+    inform("foo", .frequency = "once", .frequency_id = "warn_inform_different_envs"),
+    "foo"
+  )
+  expect_warning(
+    warn("foo", .frequency = "once", .frequency_id = "warn_inform_different_envs"),
+    "foo"
+  )
+})
+
+test_that("periodic messages can be forced", {
+  local_options(`rlang:::message_always` = TRUE)
+  expect_warning(
+    warn("foo", .frequency = "once", .frequency_id = "warn_forced"),
+    "foo"
+  )
+  expect_warning(
+    warn("foo", .frequency = "once", .frequency_id = "warn_forced"),
+    "foo"
+  )
+})
+
+test_that("`.frequency_id` is mandatory", {
+  expect_error(warn("foo", .frequency = "once"), "frequency_id")
+})
+
 
 # Lifecycle ----------------------------------------------------------
 
