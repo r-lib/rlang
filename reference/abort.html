@@ -192,9 +192,24 @@ to create custom interrupt condition objects.</p>
   <span class='kw'>.subclass</span>
 )
 
-<span class='fu'>warn</span>(message = <span class='kw'>NULL</span>, class = <span class='kw'>NULL</span>, <span class='kw'>...</span>, <span class='kw'>.subclass</span>)
+<span class='fu'>warn</span>(
+  message = <span class='kw'>NULL</span>,
+  class = <span class='kw'>NULL</span>,
+  <span class='kw'>...</span>,
+  .frequency = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"always"</span>, <span class='st'>"regularly"</span>, <span class='st'>"once"</span>),
+  .frequency_id = <span class='kw'>NULL</span>,
+  <span class='kw'>.subclass</span>
+)
 
-<span class='fu'>inform</span>(message = <span class='kw'>NULL</span>, class = <span class='kw'>NULL</span>, <span class='kw'>...</span>, file = <span class='kw'>NULL</span>, <span class='kw'>.subclass</span>)
+<span class='fu'>inform</span>(
+  message = <span class='kw'>NULL</span>,
+  class = <span class='kw'>NULL</span>,
+  <span class='kw'>...</span>,
+  file = <span class='kw'>NULL</span>,
+  .frequency = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"always"</span>, <span class='st'>"regularly"</span>, <span class='st'>"once"</span>),
+  .frequency_id = <span class='kw'>NULL</span>,
+  <span class='kw'>.subclass</span>
+)
 
 <span class='fu'>signal</span>(<span class='kw'>message</span>, <span class='kw'>class</span>, <span class='kw'>...</span>, <span class='kw'>.subclass</span>)
 
@@ -234,6 +249,20 @@ to selectively handle the conditions signalled by your functions.</p></td>
 0.4.2.  It will be deprecated in the next major version. This is
 for consistency with our conventions for class constructors
 documented in <a href='https://adv-r.hadley.nz/s3.html#s3-subclassing'>https://adv-r.hadley.nz/s3.html#s3-subclassing</a>.</p></td>
+    </tr>
+    <tr>
+      <th>.frequency</th>
+      <td><p>How frequently should the warning or message be
+displayed? By default (<code>"always"</code>) it is displayed at each
+time. If <code>"regularly"</code>, it is displayed once every 8 hours. If
+<code>"once"</code>, it is displayed once per session.</p></td>
+    </tr>
+    <tr>
+      <th>.frequency_id</th>
+      <td><p>A unique identifier for the warning or
+message. This is used when <code>.frequency</code> is supplied to recognise
+recurring conditions. This argument must be supplied if
+<code>.frequency</code> is not set to <code>"always"</code>.</p></td>
     </tr>
     <tr>
       <th>file</th>
