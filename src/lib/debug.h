@@ -4,7 +4,7 @@
 
 #define r_printf Rprintf
 void r_sexp_inspect(sexp* x);
-void r_browse();
+void r_browse(SEXP x);
 void r_browse_at(sexp* env);
 
 

@@ -7,7 +7,12 @@ void r_sexp_inspect(sexp* x) {
   FREE(1);
 }
 
-void r_browse() {
+void r_browse(SEXP x) {
+  r_env_poke(R_GlobalEnv, Rf_install(".debug"), x);
+
+  Rprintf("Object saved in `.debug`:\n");
+  Rf_PrintValue(x);
+
   r_browse_at(KEEP(r_current_frame())); FREE(1);
 }
 void r_browse_at(sexp* env) {
