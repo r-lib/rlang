@@ -1,5 +1,5 @@
 Package: rlang
-Version: 0.4.6.9000
+Version: 0.4.7
 Title: Functions for Base Types and Core R and 'Tidyverse' Features
 Description: A toolbox for working with base types, core R features
   like the condition system, and core 'Tidyverse' features like tidy
@@ -27,8 +27,6 @@ Suggests:
     testthat (>= 2.3.0),
     vctrs (>= 0.2.3),
     withr
-Remotes:
-    rstudio/rmarkdown
 Encoding: UTF-8
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
