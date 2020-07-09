@@ -440,7 +440,8 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
         expr = r_eval(expr, env);
       }
 
-      r_keep_t i = KEEP_HERE(expr);
+      r_keep_t i;
+      KEEP_HERE(expr, &i);
 
       if (is_splice_box(expr)) {
         // Coerce contents of splice boxes to ensure uniform type
