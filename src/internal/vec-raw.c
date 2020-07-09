@@ -8,7 +8,7 @@ sexp* rlang_raw_deparse_str(sexp* x, sexp* prefix, sexp* suffix) {
   const unsigned char* p_x = r_raw_deref(x);
   r_ssize len_data = r_length(x);
 
-  const char* s_prefix = NULL;
+  const char* s_prefix = "";
   r_ssize len_prefix = 0;
   if (prefix != r_null) {
     if (!r_is_string(prefix, NULL)) {
@@ -18,7 +18,7 @@ sexp* rlang_raw_deparse_str(sexp* x, sexp* prefix, sexp* suffix) {
     len_prefix = strlen(s_prefix);
   }
 
-  const char* s_suffix = NULL;
+  const char* s_suffix = "";
   r_ssize len_suffix = 0;
   if (suffix != r_null) {
     if (!r_is_string(suffix, NULL)) {
