@@ -40,13 +40,7 @@ static inline sexp* binding_as_sym(bool list, sexp* bindings, r_ssize i) {
 
     return out;
   } else {
-    sexp* elt = r_chr_get(bindings, i);
-
-    if (elt == r_empty_str) {
-      return r_missing_sym;
-    } else {
-      return r_str_as_symbol(elt);
-    }
+    return r_str_as_symbol(r_chr_get(bindings, i));
   }
 }
 

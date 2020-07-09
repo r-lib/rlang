@@ -226,6 +226,10 @@ test_that("Arguments to formulas are not stripped from their attributes (#227)",
   expect_identical(f_lhs(f), quo)
 })
 
+test_that("evaluating an empty quosure fails", {
+  expect_error(eval_tidy(quo()), "not found")
+})
+
 test_that("can supply a data mask as data", {
   mask <- as_data_mask(list(x = 1L))
   eval_tidy(quo(x <- 2L), mask)
@@ -463,10 +467,6 @@ test_that("can evaluate tilde in nested masks", {
     eval_bare(tilde, f_env(tilde)),
     tilde
   )
-})
-
-test_that("unquoted missing argument trigger missing arg error (#952)", {
-  expect_error(eval_tidy(quo(), mtcars), "missing")
 })
 
 
