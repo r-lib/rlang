@@ -205,10 +205,11 @@ sexp* rlang_env_bind(sexp* env,
 
   sexp* old = r_null;
   if (c_needs_old) {
-    old = r_new_vector(r_type_list, n);
+    old = KEEP(r_new_vector(r_type_list, n));
     r_poke_names(old, names);
+  } else {
+    KEEP(old);
   }
-  KEEP(old);
 
   for (r_ssize i = 0; i < n; ++i) {
     sexp* sym = r_str_as_symbol(p_names[i]);

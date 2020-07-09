@@ -214,7 +214,7 @@ static sexp* mask_find(sexp* env, sexp* sym) {
 
   sexp* cur = env;
   do {
-    sexp* obj = r_env_find(cur, sym);
+    sexp* obj = KEEP_N(r_env_find(cur, sym), n_kept);
     if (TYPEOF(obj) == PROMSXP) {
       obj = KEEP_N(r_eval(obj, r_empty_env), n_kept);
     }
