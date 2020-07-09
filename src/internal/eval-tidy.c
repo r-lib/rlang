@@ -210,14 +210,17 @@ static sexp* mask_find(sexp* env, sexp* sym) {
     top_env = env;
   }
   int n_kept = 0;
-  KEEP_N(top_env, n_kept); // Help rchk
+  KEEP_N(top_env, n_kept);
 
   sexp* cur = env;
   do {
-    sexp* obj = KEEP_N(r_env_find(cur, sym), n_kept);
+    sexp* obj = r_env_find(cur, sym);
     if (TYPEOF(obj) == PROMSXP) {
-      obj = KEEP_N(r_eval(obj, r_empty_env), n_kept);
+      KEEP(obj);
+      obj = r_eval(obj, r_empty_env);
+      FREE(1);
     }
+
     if (obj != r_unbound_sym && !r_is_function(obj)) {
       FREE(n_kept);
       return obj;
