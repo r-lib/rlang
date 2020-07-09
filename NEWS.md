@@ -29,9 +29,6 @@
 
 * `env_poke()` has been rewritten in C for performance.
 
-* `eval_tidy()` now looks up the lexically defined `~` function (#924,
-  @brodieG).
-
 * The unicode translation warnings that appeared on Windows with R 4.0
   are now fixed.
 
