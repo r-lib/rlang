@@ -66,40 +66,6 @@ ERROR: lazy loading failed for package ‘abjutils’
 * DONE (abjutils)
 
 ```
-# NA
-
-<details>
-
-* Version: NA
-* Source code: https://github.com/cran/NA
-* Number of recursive dependencies: 0
-
-Run `cloud_details(, "NA")` for more info
-
-</details>
-
-## Error before installation
-
-### Devel
-
-```
-
-
-
-
-
-
-```
-### CRAN
-
-```
-
-
-
-
-
-
-```
 # bioOED
 
 <details>
@@ -324,7 +290,7 @@ installing to /tmp/workdir/cattonum/old/cattonum.Rcheck/00LOCK-cattonum/00new/ca
 * URL: https://github.com/igordot/clustermole
 * BugReports: https://github.com/igordot/clustermole/issues
 * Date/Publication: 2020-01-27 10:00:02 UTC
-* Number of recursive dependencies: 107
+* Number of recursive dependencies: 93
 
 Run `cloud_details(, "clustermole")` for more info
 
@@ -510,40 +476,6 @@ ERROR: lazy loading failed for package ‘dmdScheme’
 * removing ‘/tmp/workdir/dmdScheme/old/dmdScheme.Rcheck/dmdScheme’
 
 ```
-# NA
-
-<details>
-
-* Version: NA
-* Source code: https://github.com/cran/NA
-* Number of recursive dependencies: 0
-
-Run `cloud_details(, "NA")` for more info
-
-</details>
-
-## Error before installation
-
-### Devel
-
-```
-
-
-
-
-
-
-```
-### CRAN
-
-```
-
-
-
-
-
-
-```
 # fingertipscharts
 
 <details>
@@ -617,7 +549,7 @@ ERROR: lazy loading failed for package ‘fingertipscharts’
 * URL: https://fishtreeoflife.org/
 * BugReports: https://github.com/jonchang/fishtree/issues
 * Date/Publication: 2019-12-17 09:10:02 UTC
-* Number of recursive dependencies: 104
+* Number of recursive dependencies: 103
 
 Run `cloud_details(, "fishtree")` for more info
 
@@ -687,40 +619,6 @@ Status: 1 ERROR
 
 
 ```
-# NA
-
-<details>
-
-* Version: NA
-* Source code: https://github.com/cran/NA
-* Number of recursive dependencies: 0
-
-Run `cloud_details(, "NA")` for more info
-
-</details>
-
-## Error before installation
-
-### Devel
-
-```
-
-
-
-
-
-
-```
-### CRAN
-
-```
-
-
-
-
-
-
-```
 # mcvis
 
 <details>
@@ -728,7 +626,7 @@ Run `cloud_details(, "NA")` for more info
 * Version: 1.0.4
 * Source code: https://github.com/cran/mcvis
 * Date/Publication: 2020-06-03 16:20:02 UTC
-* Number of recursive dependencies: 103
+* Number of recursive dependencies: 102
 
 Run `cloud_details(, "mcvis")` for more info
 
@@ -787,7 +685,7 @@ ERROR: lazy loading failed for package ‘mcvis’
 * URL: https://lifebrain.github.io/metagam/, https://github.com/Lifebrain/metagam
 * BugReports: https://github.com/Lifebrain/metagam/issues
 * Date/Publication: 2020-06-22 18:30:03 UTC
-* Number of recursive dependencies: 140
+* Number of recursive dependencies: 139
 
 Run `cloud_details(, "metagam")` for more info
 
@@ -868,7 +766,7 @@ Status: 1 ERROR
 * Version: 0.6
 * Source code: https://github.com/cran/NetworkChange
 * Date/Publication: 2020-02-06 05:20:02 UTC
-* Number of recursive dependencies: 136
+* Number of recursive dependencies: 135
 
 Run `cloud_details(, "NetworkChange")` for more info
 
@@ -986,7 +884,7 @@ ERROR: lazy loading failed for package ‘nomisr’
 * URL: https://github.com/fumi-github/omicwas
 * BugReports: https://github.com/fumi-github/omicwas/issues
 * Date/Publication: 2020-06-02 09:40:02 UTC
-* Number of recursive dependencies: 105
+* Number of recursive dependencies: 103
 
 Run `cloud_details(, "omicwas")` for more info
 
@@ -1048,132 +946,6 @@ Status: 1 ERROR
 
 
 ```
-# processR
-
-<details>
-
-* Version: 0.2.3
-* Source code: https://github.com/cran/processR
-* URL: https://github.com/cardiomoon/processR
-* BugReports: https://github.com/cardiomoon/processR/issues
-* Date/Publication: 2020-01-27 14:10:02 UTC
-* Number of recursive dependencies: 166
-
-Run `cloud_details(, "processR")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘processR’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/tmp/workdir/processR/new/processR.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘processR’ ...
-** package ‘processR’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** data
-*** moving datasets to lazyload DB
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘mnormt’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘processR’
-* removing ‘/tmp/workdir/processR/new/processR.Rcheck/processR’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘processR’ ...
-** package ‘processR’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** data
-*** moving datasets to lazyload DB
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘mnormt’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘processR’
-* removing ‘/tmp/workdir/processR/old/processR.Rcheck/processR’
-
-```
-# radiant.data
-
-<details>
-
-* Version: 1.3.9
-* Source code: https://github.com/cran/radiant.data
-* URL: https://github.com/radiant-rstats/radiant.data, https://radiant-rstats.github.io/radiant.data, https://radiant-rstats.github.io/docs
-* BugReports: https://github.com/radiant-rstats/radiant.data/issues
-* Date/Publication: 2020-06-16 16:30:10 UTC
-* Number of recursive dependencies: 146
-
-Run `cloud_details(, "radiant.data")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘radiant.data’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/tmp/workdir/radiant.data/new/radiant.data.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘radiant.data’ ...
-** package ‘radiant.data’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** data
-*** moving datasets to lazyload DB
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘mnormt’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘radiant.data’
-* removing ‘/tmp/workdir/radiant.data/new/radiant.data.Rcheck/radiant.data’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘radiant.data’ ...
-** package ‘radiant.data’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** data
-*** moving datasets to lazyload DB
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘mnormt’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘radiant.data’
-* removing ‘/tmp/workdir/radiant.data/old/radiant.data.Rcheck/radiant.data’
-
-```
 # RNeXML
 
 <details>
@@ -1183,7 +955,7 @@ ERROR: lazy loading failed for package ‘radiant.data’
 * URL: https://docs.ropensci.org/RNeXML, https://github.com/ropensci/RNeXML
 * BugReports: https://github.com/ropensci/RNeXML/issues
 * Date/Publication: 2020-06-18 18:40:02 UTC
-* Number of recursive dependencies: 136
+* Number of recursive dependencies: 135
 
 Run `cloud_details(, "RNeXML")` for more info
 
@@ -1266,7 +1038,7 @@ Status: 1 ERROR
 * URL: http://www.satijalab.org/seurat, https://github.com/satijalab/seurat
 * BugReports: https://github.com/satijalab/seurat/issues
 * Date/Publication: 2020-04-16 11:50:08 UTC
-* Number of recursive dependencies: 205
+* Number of recursive dependencies: 218
 
 Run `cloud_details(, "Seurat")` for more info
 
@@ -1336,83 +1108,63 @@ Status: 1 ERROR
 
 
 ```
-# sigminer
+# SpaDES.core
 
 <details>
 
-* Version: 1.0.7
-* Source code: https://github.com/cran/sigminer
-* URL: https://github.com/ShixiangWang/sigminer
-* BugReports: https://github.com/ShixiangWang/sigminer/issues
-* Date/Publication: 2020-06-17 05:20:02 UTC
-* Number of recursive dependencies: 186
+* Version: 1.0.1
+* Source code: https://github.com/cran/SpaDES.core
+* URL: https://spades-core.predictiveecology.org/, https://github.com/PredictiveEcology/SpaDES.core
+* BugReports: https://github.com/PredictiveEcology/SpaDES.core/issues
+* Date/Publication: 2020-05-15 17:10:06 UTC
+* Number of recursive dependencies: 156
 
-Run `cloud_details(, "sigminer")` for more info
+Run `cloud_details(, "SpaDES.core")` for more info
 
 </details>
 
-## Error before installation
+## In both
+
+*   checking whether package ‘SpaDES.core’ can be installed ... ERROR
+    ```
+    Installation failed.
+    See ‘/tmp/workdir/SpaDES.core/new/SpaDES.core.Rcheck/00install.out’ for details.
+    ```
+
+## Installation
 
 ### Devel
 
 ```
-* using log directory ‘/tmp/workdir/sigminer/new/sigminer.Rcheck’
-* using R version 3.6.3 (2020-02-29)
-* using platform: x86_64-pc-linux-gnu (64-bit)
-* using session charset: UTF-8
-* using options ‘--no-manual --no-build-vignettes’
-* checking for file ‘sigminer/DESCRIPTION’ ... OK
-* this is package ‘sigminer’ version ‘1.0.7’
-* package encoding: UTF-8
-* checking package namespace information ... OK
-* checking package dependencies ... ERROR
-Packages suggested but not available:
-  'BSgenome', 'BSgenome.Hsapiens.UCSC.hg19'
-
-The suggested packages are required for a complete check.
-Checking can be attempted without them by setting the environment
-variable _R_CHECK_FORCE_SUGGESTS_ to a false value.
-
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-manual.
-* DONE
-Status: 1 ERROR
-
-
-
-
-
+* installing *source* package ‘SpaDES.core’ ...
+** package ‘SpaDES.core’ successfully unpacked and MD5 sums checked
+** using staged installation
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+Error: package or namespace load failed for ‘reproducible’ in loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]]):
+ there is no package called ‘stringfish’
+Error: package ‘reproducible’ could not be loaded
+Execution halted
+ERROR: lazy loading failed for package ‘SpaDES.core’
+* removing ‘/tmp/workdir/SpaDES.core/new/SpaDES.core.Rcheck/SpaDES.core’
 
 ```
 ### CRAN
 
 ```
-* using log directory ‘/tmp/workdir/sigminer/old/sigminer.Rcheck’
-* using R version 3.6.3 (2020-02-29)
-* using platform: x86_64-pc-linux-gnu (64-bit)
-* using session charset: UTF-8
-* using options ‘--no-manual --no-build-vignettes’
-* checking for file ‘sigminer/DESCRIPTION’ ... OK
-* this is package ‘sigminer’ version ‘1.0.7’
-* package encoding: UTF-8
-* checking package namespace information ... OK
-* checking package dependencies ... ERROR
-Packages suggested but not available:
-  'BSgenome', 'BSgenome.Hsapiens.UCSC.hg19'
-
-The suggested packages are required for a complete check.
-Checking can be attempted without them by setting the environment
-variable _R_CHECK_FORCE_SUGGESTS_ to a false value.
-
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-manual.
-* DONE
-Status: 1 ERROR
-
-
-
-
-
+* installing *source* package ‘SpaDES.core’ ...
+** package ‘SpaDES.core’ successfully unpacked and MD5 sums checked
+** using staged installation
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+Error: package or namespace load failed for ‘reproducible’ in loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]]):
+ there is no package called ‘stringfish’
+Error: package ‘reproducible’ could not be loaded
+Execution halted
+ERROR: lazy loading failed for package ‘SpaDES.core’
+* removing ‘/tmp/workdir/SpaDES.core/old/SpaDES.core.Rcheck/SpaDES.core’
 
 ```
 # styler
@@ -1546,7 +1298,7 @@ ERROR: lazy loading failed for package ‘SWMPrExtension’
 * URL: https://github.com/paul-buerkner/thurstonianIRT
 * BugReports: https://github.com/paul-buerkner/thurstonianIRT/issues
 * Date/Publication: 2019-08-09 10:40:02 UTC
-* Number of recursive dependencies: 87
+* Number of recursive dependencies: 86
 
 Run `cloud_details(, "thurstonianIRT")` for more info
 
@@ -1575,8 +1327,6 @@ g++ -std=gnu++14 -I"/opt/R/3.6.3/lib/R/include" -DNDEBUG -I"../inst/include" -I"
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:392:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -1619,8 +1369,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:39
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:374:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -1651,8 +1399,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:37
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:367:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -1674,8 +1420,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:36
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -1695,8 +1439,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:367:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -1718,8 +1460,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:36
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -1741,7 +1481,7 @@ In file included from /opt/R/3.6.3/lib/R/library/BH/include/boost/smart_ptr/shar
                  from /opt/R/3.6.3/lib/R/library/BH/include/boost/date_time/time_clock.hpp:17,
                  from /opt/R/3.6.3/lib/R/library/BH/include/boost/date_time/posix_time/posix_time_types.hpp:10,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
+                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:4,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
 /opt/R/3.6.3/lib/R/library/BH/include/boost/smart_ptr/detail/shared_count.hpp:356:33: warning: ‘template<class> class std::auto_ptr’ is deprecated [-Wdeprecated-declarations]
@@ -1760,7 +1500,7 @@ In file included from /opt/R/3.6.3/lib/R/library/BH/include/boost/shared_ptr.hpp
                  from /opt/R/3.6.3/lib/R/library/BH/include/boost/date_time/time_clock.hpp:17,
                  from /opt/R/3.6.3/lib/R/library/BH/include/boost/date_time/posix_time/posix_time_types.hpp:10,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
+                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:4,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
 /opt/R/3.6.3/lib/R/library/BH/include/boost/smart_ptr/shared_ptr.hpp:256:65: warning: ‘template<class> class std::auto_ptr’ is deprecated [-Wdeprecated-declarations]
@@ -1779,7 +1519,7 @@ In file included from /opt/R/3.6.3/lib/R/library/BH/include/boost/shared_ptr.hpp
                  from /opt/R/3.6.3/lib/R/library/BH/include/boost/date_time/time_clock.hpp:17,
                  from /opt/R/3.6.3/lib/R/library/BH/include/boost/date_time/posix_time/posix_time_types.hpp:10,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
+                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:4,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
 /opt/R/3.6.3/lib/R/library/BH/include/boost/smart_ptr/shared_ptr.hpp:471:31: warning: ‘template<class> class std::auto_ptr’ is deprecated [-Wdeprecated-declarations]
@@ -1798,7 +1538,7 @@ In file included from /opt/R/3.6.3/lib/R/library/BH/include/boost/shared_ptr.hpp
                  from /opt/R/3.6.3/lib/R/library/BH/include/boost/date_time/time_clock.hpp:17,
                  from /opt/R/3.6.3/lib/R/library/BH/include/boost/date_time/posix_time/posix_time_types.hpp:10,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
+                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:4,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
 /opt/R/3.6.3/lib/R/library/BH/include/boost/smart_ptr/shared_ptr.hpp:484:22: warning: ‘template<class> class std::auto_ptr’ is deprecated [-Wdeprecated-declarations]
@@ -1817,7 +1557,7 @@ In file included from /opt/R/3.6.3/lib/R/library/BH/include/boost/shared_ptr.hpp
                  from /opt/R/3.6.3/lib/R/library/BH/include/boost/date_time/time_clock.hpp:17,
                  from /opt/R/3.6.3/lib/R/library/BH/include/boost/date_time/posix_time/posix_time_types.hpp:10,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
+                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:4,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
 /opt/R/3.6.3/lib/R/library/BH/include/boost/smart_ptr/shared_ptr.hpp:567:34: warning: ‘template<class> class std::auto_ptr’ is deprecated [-Wdeprecated-declarations]
@@ -1836,7 +1576,7 @@ In file included from /opt/R/3.6.3/lib/R/library/BH/include/boost/shared_ptr.hpp
                  from /opt/R/3.6.3/lib/R/library/BH/include/boost/date_time/time_clock.hpp:17,
                  from /opt/R/3.6.3/lib/R/library/BH/include/boost/date_time/posix_time/posix_time_types.hpp:10,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
+                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:4,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
 /opt/R/3.6.3/lib/R/library/BH/include/boost/smart_ptr/shared_ptr.hpp:576:34: warning: ‘template<class> class std::auto_ptr’ is deprecated [-Wdeprecated-declarations]
@@ -1855,7 +1595,7 @@ In file included from /opt/R/3.6.3/lib/R/library/BH/include/boost/shared_ptr.hpp
                  from /opt/R/3.6.3/lib/R/library/BH/include/boost/date_time/time_clock.hpp:17,
                  from /opt/R/3.6.3/lib/R/library/BH/include/boost/date_time/posix_time/posix_time_types.hpp:10,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
+                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:4,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
 /opt/R/3.6.3/lib/R/library/BH/include/boost/smart_ptr/shared_ptr.hpp: In member function ‘boost::shared_ptr<T>& boost::shared_ptr<T>::operator=(std::auto_ptr<_Up>&&)’:
@@ -1874,8 +1614,6 @@ In file included from /usr/include/c++/7/bits/locale_conv.h:41:0,
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/SparseCore:37:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Sparse:26,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:14,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -1889,8 +1627,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/SparseC
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:367:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -1913,8 +1649,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:36
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -1950,8 +1684,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:367:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -1974,8 +1706,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:36
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -2566,7 +2296,7 @@ In file included from /opt/R/3.6.3/lib/R/library/BH/include/boost/fusion/functio
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/model/test_gradients.hpp:7,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/services/diagnose/diagnose.hpp:10,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:35,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
+                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:4,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
 /opt/R/3.6.3/lib/R/library/BH/include/boost/get_pointer.hpp: At global scope:
@@ -2585,8 +2315,6 @@ In file included from /usr/include/c++/7/bits/locale_conv.h:41:0,
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -2943,8 +2671,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:367:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -2969,8 +2695,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:36
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -3386,8 +3110,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -3400,8 +3122,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -3581,8 +3301,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -3612,8 +3330,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:491:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -3634,8 +3350,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:49
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -3762,8 +3476,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:491:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -3790,8 +3502,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:49
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:367:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -3818,8 +3528,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:36
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -3953,8 +3661,6 @@ stan_files/thurstonian_irt_model.cc:13:87:   required from here
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -3988,8 +3694,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -4047,8 +3751,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:491:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -4064,8 +3766,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:49
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -4272,8 +3972,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -4291,8 +3989,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -4529,8 +4225,6 @@ stan_files/thurstonian_irt_model.cc:13:87:   required from here
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -4548,8 +4242,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -4566,8 +4258,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -4628,8 +4318,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -4703,8 +4391,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -4736,8 +4422,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -4810,8 +4494,6 @@ stan_files/thurstonian_irt_model.cc:13:87:   required from here
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -4845,8 +4527,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -4976,8 +4656,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -4999,8 +4677,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -5076,8 +4752,6 @@ stan_files/thurstonian_irt_model.cc:13:87:   required from here
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -5126,8 +4800,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -5150,8 +4822,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -5172,8 +4842,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:491:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -5219,8 +4887,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:49
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:494:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -5247,8 +4913,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:49
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -5271,8 +4935,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -5295,8 +4957,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -5375,8 +5035,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -5411,8 +5069,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -5435,8 +5091,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -5459,8 +5113,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:494:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -5482,8 +5134,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:49
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -5550,8 +5200,6 @@ stan_files/thurstonian_irt_model.cc:24:89:   required from here
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:494:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -5579,8 +5227,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:49
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -5688,8 +5334,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:494:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -5712,8 +5356,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:49
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -5735,8 +5377,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:491:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -5758,8 +5398,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:49
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -5923,8 +5561,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -5947,8 +5583,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:368:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -5970,8 +5604,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:36
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -5994,8 +5626,6 @@ stan_files/thurstonian_irt_model.cc:13:87:   required from here
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -6102,8 +5732,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -6126,8 +5754,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:498:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -6155,8 +5781,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:49
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -6221,8 +5845,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -6273,8 +5895,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -6423,8 +6043,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -6475,8 +6093,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -6513,8 +6129,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -6579,8 +6193,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -6603,8 +6215,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -6627,8 +6237,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -6651,8 +6259,6 @@ stan_files/thurstonian_irt_model.cc:13:87:   required from here
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -6689,8 +6295,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -6727,8 +6331,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -6751,8 +6353,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -6831,8 +6431,6 @@ stan_files/thurstonian_irt_model.cc:24:89:   required from here
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -6897,8 +6495,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -7019,8 +6615,6 @@ stan_files/thurstonian_irt_model.cc:21:88:   required from here
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -7043,8 +6637,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -7067,8 +6659,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -7091,8 +6681,6 @@ stan_files/thurstonian_irt_model.cc:13:87:   required from here
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -7131,8 +6719,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -7169,8 +6755,6 @@ stan_files/thurstonian_irt_model.cc:13:87:   required from here
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -7293,8 +6877,6 @@ stan_files/thurstonian_irt_model.cc:13:87:   required from here
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -7331,8 +6913,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -7441,8 +7021,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -7465,8 +7043,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -7531,8 +7107,6 @@ stan_files/thurstonian_irt_model.cc:21:88:   required from here
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -7625,8 +7199,6 @@ stan_files/thurstonian_irt_model.cc:21:88:   required from here
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -7837,8 +7409,6 @@ g++ -std=gnu++14 -I"/opt/R/3.6.3/lib/R/include" -DNDEBUG -I"../inst/include" -I"
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:392:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -7881,8 +7451,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:39
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:374:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -7913,8 +7481,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:37
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:367:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -7936,8 +7502,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:36
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -7957,8 +7521,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:367:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -7980,8 +7542,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:36
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -8003,7 +7563,7 @@ In file included from /opt/R/3.6.3/lib/R/library/BH/include/boost/smart_ptr/shar
                  from /opt/R/3.6.3/lib/R/library/BH/include/boost/date_time/time_clock.hpp:17,
                  from /opt/R/3.6.3/lib/R/library/BH/include/boost/date_time/posix_time/posix_time_types.hpp:10,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
+                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:4,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
 /opt/R/3.6.3/lib/R/library/BH/include/boost/smart_ptr/detail/shared_count.hpp:356:33: warning: ‘template<class> class std::auto_ptr’ is deprecated [-Wdeprecated-declarations]
@@ -8022,7 +7582,7 @@ In file included from /opt/R/3.6.3/lib/R/library/BH/include/boost/shared_ptr.hpp
                  from /opt/R/3.6.3/lib/R/library/BH/include/boost/date_time/time_clock.hpp:17,
                  from /opt/R/3.6.3/lib/R/library/BH/include/boost/date_time/posix_time/posix_time_types.hpp:10,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
+                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:4,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
 /opt/R/3.6.3/lib/R/library/BH/include/boost/smart_ptr/shared_ptr.hpp:256:65: warning: ‘template<class> class std::auto_ptr’ is deprecated [-Wdeprecated-declarations]
@@ -8041,7 +7601,7 @@ In file included from /opt/R/3.6.3/lib/R/library/BH/include/boost/shared_ptr.hpp
                  from /opt/R/3.6.3/lib/R/library/BH/include/boost/date_time/time_clock.hpp:17,
                  from /opt/R/3.6.3/lib/R/library/BH/include/boost/date_time/posix_time/posix_time_types.hpp:10,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
+                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:4,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
 /opt/R/3.6.3/lib/R/library/BH/include/boost/smart_ptr/shared_ptr.hpp:471:31: warning: ‘template<class> class std::auto_ptr’ is deprecated [-Wdeprecated-declarations]
@@ -8060,7 +7620,7 @@ In file included from /opt/R/3.6.3/lib/R/library/BH/include/boost/shared_ptr.hpp
                  from /opt/R/3.6.3/lib/R/library/BH/include/boost/date_time/time_clock.hpp:17,
                  from /opt/R/3.6.3/lib/R/library/BH/include/boost/date_time/posix_time/posix_time_types.hpp:10,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
+                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:4,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
 /opt/R/3.6.3/lib/R/library/BH/include/boost/smart_ptr/shared_ptr.hpp:484:22: warning: ‘template<class> class std::auto_ptr’ is deprecated [-Wdeprecated-declarations]
@@ -8079,7 +7639,7 @@ In file included from /opt/R/3.6.3/lib/R/library/BH/include/boost/shared_ptr.hpp
                  from /opt/R/3.6.3/lib/R/library/BH/include/boost/date_time/time_clock.hpp:17,
                  from /opt/R/3.6.3/lib/R/library/BH/include/boost/date_time/posix_time/posix_time_types.hpp:10,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
+                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:4,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
 /opt/R/3.6.3/lib/R/library/BH/include/boost/smart_ptr/shared_ptr.hpp:567:34: warning: ‘template<class> class std::auto_ptr’ is deprecated [-Wdeprecated-declarations]
@@ -8098,7 +7658,7 @@ In file included from /opt/R/3.6.3/lib/R/library/BH/include/boost/shared_ptr.hpp
                  from /opt/R/3.6.3/lib/R/library/BH/include/boost/date_time/time_clock.hpp:17,
                  from /opt/R/3.6.3/lib/R/library/BH/include/boost/date_time/posix_time/posix_time_types.hpp:10,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
+                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:4,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
 /opt/R/3.6.3/lib/R/library/BH/include/boost/smart_ptr/shared_ptr.hpp:576:34: warning: ‘template<class> class std::auto_ptr’ is deprecated [-Wdeprecated-declarations]
@@ -8117,7 +7677,7 @@ In file included from /opt/R/3.6.3/lib/R/library/BH/include/boost/shared_ptr.hpp
                  from /opt/R/3.6.3/lib/R/library/BH/include/boost/date_time/time_clock.hpp:17,
                  from /opt/R/3.6.3/lib/R/library/BH/include/boost/date_time/posix_time/posix_time_types.hpp:10,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
+                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:4,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
 /opt/R/3.6.3/lib/R/library/BH/include/boost/smart_ptr/shared_ptr.hpp: In member function ‘boost::shared_ptr<T>& boost::shared_ptr<T>::operator=(std::auto_ptr<_Up>&&)’:
@@ -8136,8 +7696,6 @@ In file included from /usr/include/c++/7/bits/locale_conv.h:41:0,
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/SparseCore:37:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Sparse:26,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:14,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -8151,8 +7709,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/SparseC
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:367:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -8175,8 +7731,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:36
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -8212,8 +7766,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:367:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -8236,8 +7788,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:36
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -8828,7 +8378,7 @@ In file included from /opt/R/3.6.3/lib/R/library/BH/include/boost/fusion/functio
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/model/test_gradients.hpp:7,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/services/diagnose/diagnose.hpp:10,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:35,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
+                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:4,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
 /opt/R/3.6.3/lib/R/library/BH/include/boost/get_pointer.hpp: At global scope:
@@ -8847,8 +8397,6 @@ In file included from /usr/include/c++/7/bits/locale_conv.h:41:0,
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -9205,8 +8753,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:367:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -9231,8 +8777,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:36
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -9648,8 +9192,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -9662,8 +9204,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -9843,8 +9383,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -9874,8 +9412,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:491:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -9896,8 +9432,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:49
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -10024,8 +9558,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:491:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -10052,8 +9584,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:49
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:367:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -10080,8 +9610,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:36
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -10215,8 +9743,6 @@ stan_files/thurstonian_irt_model.cc:13:87:   required from here
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -10250,8 +9776,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -10309,8 +9833,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:491:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -10326,8 +9848,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:49
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -10534,8 +10054,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -10553,8 +10071,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -10791,8 +10307,6 @@ stan_files/thurstonian_irt_model.cc:13:87:   required from here
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -10810,8 +10324,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -10828,8 +10340,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -10890,8 +10400,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -10965,8 +10473,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -10998,8 +10504,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -11072,8 +10576,6 @@ stan_files/thurstonian_irt_model.cc:13:87:   required from here
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -11107,8 +10609,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -11238,8 +10738,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -11261,8 +10759,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -11338,8 +10834,6 @@ stan_files/thurstonian_irt_model.cc:13:87:   required from here
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -11388,8 +10882,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -11412,8 +10904,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -11434,8 +10924,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:491:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -11481,8 +10969,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:49
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:494:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -11509,8 +10995,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:49
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -11533,8 +11017,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -11557,8 +11039,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -11637,8 +11117,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -11673,8 +11151,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -11697,8 +11173,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -11721,8 +11195,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:494:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -11744,8 +11216,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:49
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -11812,8 +11282,6 @@ stan_files/thurstonian_irt_model.cc:24:89:   required from here
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:494:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -11841,8 +11309,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:49
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -11950,8 +11416,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:494:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -11974,8 +11438,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:49
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -11997,8 +11459,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:491:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -12020,8 +11480,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:49
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -12185,8 +11643,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -12209,8 +11665,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:368:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -12232,8 +11686,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:36
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -12256,8 +11708,6 @@ stan_files/thurstonian_irt_model.cc:13:87:   required from here
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -12364,8 +11814,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -12388,8 +11836,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:498:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -12417,8 +11863,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:49
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -12483,8 +11927,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -12535,8 +11977,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -12685,8 +12125,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -12737,8 +12175,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -12775,8 +12211,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -12841,8 +12275,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -12865,8 +12297,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -12889,8 +12319,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -12913,8 +12341,6 @@ stan_files/thurstonian_irt_model.cc:13:87:   required from here
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -12951,8 +12377,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -12989,8 +12413,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -13013,8 +12435,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -13093,8 +12513,6 @@ stan_files/thurstonian_irt_model.cc:24:89:   required from here
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -13159,8 +12577,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -13281,8 +12697,6 @@ stan_files/thurstonian_irt_model.cc:21:88:   required from here
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -13305,8 +12719,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -13329,8 +12741,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -13353,8 +12763,6 @@ stan_files/thurstonian_irt_model.cc:13:87:   required from here
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -13393,8 +12801,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -13431,8 +12837,6 @@ stan_files/thurstonian_irt_model.cc:13:87:   required from here
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -13555,8 +12959,6 @@ stan_files/thurstonian_irt_model.cc:13:87:   required from here
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -13593,8 +12995,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -13703,8 +13103,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:43
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -13727,8 +13125,6 @@ In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:44
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -13793,8 +13189,6 @@ stan_files/thurstonian_irt_model.cc:21:88:   required from here
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:440:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -13887,8 +13281,6 @@ stan_files/thurstonian_irt_model.cc:21:88:   required from here
 In file included from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Core:434:0,
                  from /opt/R/3.6.3/lib/R/library/RcppEigen/include/Eigen/Dense:1,
                  from /opt/R/3.6.3/lib/R/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
-                 from /opt/R/3.6.3/lib/R/library/StanHeaders/include/src/stan/version.hpp:4,
-                 from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/stan_fit.hpp:11,
                  from /opt/R/3.6.3/lib/R/library/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/thurstonian_irt_model.hpp:18,
                  from stan_files/thurstonian_irt_model.cc:3:
@@ -14227,7 +13619,7 @@ Status: 1 ERROR
 * URL: https://github.com/cardiomoon/webr
 * BugReports: https://github.com/cardiomoon/webr/issues
 * Date/Publication: 2020-01-26 14:20:02 UTC
-* Number of recursive dependencies: 148
+* Number of recursive dependencies: 147
 
 Run `cloud_details(, "webr")` for more info
 
