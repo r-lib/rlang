@@ -2,7 +2,7 @@
 ## Test environments
 
 * local OS X install: release
-* travis-ci: 3.2, 3.3, 3.4, 3.5, release, and devel
+* travis-ci: 3.3, 3.4, 3.5, 3.6, 4.0, devel
 * win-builder: devel and release
 * rchk: unbuntu-rchk platform on R-hub
 
@@ -14,6 +14,4 @@
 
 ## Reverse dependencies
 
-ggplot2 is failing because of faulty assumptions in unit tests. We'll submit an update shortly.
-
-Apart from this, no problems were found.
+No problems were found.
