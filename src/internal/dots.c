@@ -440,12 +440,13 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
         expr = r_eval(expr, env);
       }
 
+      r_keep_t i = KEEP_HERE(expr);
+
       if (is_splice_box(expr)) {
         // Coerce contents of splice boxes to ensure uniform type
-        KEEP(expr);
         expr = rlang_unbox(expr);
         expr = dots_big_bang_value(capture_info, expr, env, false);
-        FREE(1);
+        KEEP_AT(expr, i);
       } else {
         if (needs_autoname && r_node_tag(node) == r_null) {
           sexp* label = KEEP(r_as_label(orig));
@@ -455,6 +456,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
         capture_info->count += 1;
       }
 
+      FREE(1);
       break;
     }
     case OP_VALUE_UQ:
