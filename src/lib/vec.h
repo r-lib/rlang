@@ -20,9 +20,6 @@ static inline r_complex_t* r_cpl_deref(sexp* x) {
 static inline r_byte_t* r_raw_deref(sexp* x) {
   return RAW(x);
 }
-static inline sexp** r_chr_deref(sexp* x) {
-  return STRING_PTR(x);
-}
 
 static inline
 const int* r_int_deref_const(sexp* x) {

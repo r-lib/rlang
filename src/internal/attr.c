@@ -41,7 +41,6 @@ static inline sexp* r_node_names(sexp* x) {
   r_ssize n = r_length(x);
 
   sexp* out = KEEP(r_new_vector(r_type_character, n));
-  sexp** p_out = STRING_PTR(out);
 
   int i = 0;
 
@@ -49,9 +48,9 @@ static inline sexp* r_node_names(sexp* x) {
     sexp* tag = r_node_tag(x);
 
     if (tag == r_null) {
-      p_out[i] = r_empty_str;
+      SET_STRING_ELT(out, i, r_empty_str);
     } else {
-      p_out[i] = PRINTNAME(tag);
+      SET_STRING_ELT(out, i, PRINTNAME(tag));
     }
   }
 

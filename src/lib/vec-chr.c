@@ -60,10 +60,8 @@ bool r_chr_has_any(sexp* chr, const char** c_strings) {
 }
 
 void r_chr_fill(sexp* chr, sexp* value, r_ssize n) {
-  sexp** p_chr = STRING_PTR(chr);
-
   for (r_ssize i = 0; i < n; ++i) {
-    p_chr[i] = value;
+    SET_STRING_ELT(chr, i, value);
   }
 }
 
