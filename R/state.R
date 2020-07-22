@@ -121,9 +121,6 @@ is_interactive <- function() {
   if (is_true(peek_option("knitr.in.progress"))) {
     return(FALSE)
   }
-  if (is_true(peek_option("rstudio.notebook.executing"))) {
-    return(FALSE)
-  }
   if (identical(Sys.getenv("TESTTHAT"), "true")) {
     return(FALSE)
   }
