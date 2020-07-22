@@ -1,6 +1,8 @@
 
 # rlang (development version)
 
+* `is_interactive()` no longer consults "rstudio.notebook.executing"
+  option (#1031).
 
 # rlang 0.4.7
 
