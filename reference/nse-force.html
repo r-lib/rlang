@@ -49,18 +49,18 @@ common case for !! is to substitute an environment-variable
 
 # The environment variable `var` refers to the data-variable
 # `height`
-var &amp;lt;- sym(&quot;height&quot;)
+var &amp;amp;lt;- sym(&quot;height&quot;)
 
 # We force `var`, which substitutes it with `height`
-starwars %&amp;gt;%
+starwars %&amp;amp;gt;%
   summarise(avg = mean(!!var, na.rm = TRUE))
 The big-bang operator !!! forces-splice a list of objects.
 The elements of the list are spliced in place, meaning that they
-each become one single argument.vars &amp;lt;- syms(c(&quot;height&quot;, &quot;mass&quot;))
+each become one single argument.vars &amp;amp;lt;- syms(c(&quot;height&quot;, &quot;mass&quot;))
 
 # Force-splicing is equivalent to supplying the elements separately
-starwars %&amp;gt;% select(!!!vars)
-starwars %&amp;gt;% select(height, mass)
+starwars %&amp;amp;gt;% select(!!!vars)
+starwars %&amp;amp;gt;% select(height, mass)
 The curly-curly operator {{ }} for function arguments is a bit
 special because it forces the function argument and immediately
 defuses it. The defused expression is substituted in place, ready
@@ -68,16 +68,16 @@ to be evaluated in another context, such as the data frame.
 In practice, this is useful when you have a data-variable in an
 env-variable (such as a function argument).# Force-defuse all function arguments that might contain
 # data-variables by embracing them with {{ }}
-mean_by &amp;lt;- function(data, by, var) {
-  data %&amp;gt;%
-    group_by({{ by }}) %&amp;gt;%
+mean_by &amp;amp;lt;- function(data, by, var) {
+  data %&amp;amp;gt;%
+    group_by({{ by }}) %&amp;amp;gt;%
     summarise(avg = mean({{ var }}, na.rm = TRUE))
 }
 
 # The env-variables `by` and `var` are forced but defused.
 # The data-variables they contain are evaluated by dplyr later on
 # in data context.
-iris %&amp;gt;% mean_by(by = Species, var = Sepal.Width)
+iris %&amp;amp;gt;% mean_by(by = Species, var = Sepal.Width)
 
 
 Use qq_show() to experiment with forcing operators. qq_show()
@@ -204,22 +204,22 @@ expression before it gets fully evaluated. The tidy eval framework
 provides several forcing operators for different use cases.</p><ul>
 <li><p>The bang-bang operator <code>!!</code> forces a <em>single</em> object. One
 common case for <code>!!</code> is to substitute an environment-variable
-(created with <code>&lt;-</code>) with a data-variable (inside a data frame).</p><pre><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'>dplyr</span>)
+(created with <code>&lt;-</code>) with a data-variable (inside a data frame).</p><pre><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
 
 <span class='co'># The environment variable `var` refers to the data-variable</span>
 <span class='co'># `height`</span>
-<span class='kw'>var</span> <span class='op'>&lt;-</span> <span class='fu'>sym</span>(<span class='st'>"height"</span>)
+<span class='no'>var</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='fu'><a href='sym.html'>sym</a></span>(<span class='st'>"height"</span>)
 
 <span class='co'># We force `var`, which substitutes it with `height`</span>
-<span class='kw'>starwars</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>summarise</span>(avg = <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='op'>!</span><span class='op'>!</span><span class='kw'>var</span>, na.rm = <span class='fl'>TRUE</span>))</pre></li>
+<span class='no'>starwars</span> <span class='kw'>%&amp;gt;%</span>
+  <span class='fu'>summarise</span>(<span class='kw'>avg</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(!!<span class='no'>var</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</pre></li>
 <li><p>The big-bang operator <code>!!!</code> forces-splice a <em>list</em> of objects.
 The elements of the list are spliced in place, meaning that they
-each become one single argument.</p><pre><span class='kw'>vars</span> <span class='op'>&lt;-</span> <span class='fu'>syms</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"height"</span>, <span class='st'>"mass"</span>))
+each become one single argument.</p><pre><span class='no'>vars</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='fu'><a href='sym.html'>syms</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"height"</span>, <span class='st'>"mass"</span>))
 
 <span class='co'># Force-splicing is equivalent to supplying the elements separately</span>
-<span class='kw'>starwars</span> <span class='op'>%&gt;%</span> <span class='fu'>select</span>(<span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='kw'>vars</span>)
-<span class='kw'>starwars</span> <span class='op'>%&gt;%</span> <span class='fu'>select</span>(<span class='kw'>height</span>, <span class='kw'>mass</span>)</pre></li>
+<span class='no'>starwars</span> <span class='kw'>%&amp;gt;%</span> <span class='fu'>select</span>(!!!<span class='no'>vars</span>)
+<span class='no'>starwars</span> <span class='kw'>%&amp;gt;%</span> <span class='fu'>select</span>(<span class='no'>height</span>, <span class='no'>mass</span>)</pre></li>
 <li><p>The curly-curly operator <code>{{ }}</code> for function arguments is a bit
 special because it forces the function argument and immediately
 defuses it. The defused expression is substituted in place, ready
@@ -227,25 +227,25 @@ to be evaluated in another context, such as the data frame.</p>
 <p>In practice, this is useful when you have a data-variable in an
 env-variable (such as a function argument).</p><pre><span class='co'># Force-defuse all function arguments that might contain</span>
 <span class='co'># data-variables by embracing them with {{ }}</span>
-<span class='kw'>mean_by</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>data</span>, <span class='kw'>by</span>, <span class='kw'>var</span>) {
-  <span class='kw'>data</span> <span class='op'>%&gt;%</span>
-    <span class='fu'>group_by</span>({{ <span class='kw'>by</span> }}) <span class='op'>%&gt;%</span>
-    <span class='fu'>summarise</span>(avg = <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>({{ <span class='kw'>var</span> }}, na.rm = <span class='fl'>TRUE</span>))
+<span class='no'>mean_by</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='kw'>function</span>(<span class='no'>data</span>, <span class='no'>by</span>, <span class='no'>var</span>) {
+  <span class='no'>data</span> <span class='kw'>%&amp;gt;%</span>
+    <span class='fu'>group_by</span>({{ <span class='no'>by</span> }}) <span class='kw'>%&amp;gt;%</span>
+    <span class='fu'>summarise</span>(<span class='kw'>avg</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>({{ <span class='no'>var</span> }}, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
 }
 
 <span class='co'># The env-variables `by` and `var` are forced but defused.</span>
 <span class='co'># The data-variables they contain are evaluated by dplyr later on</span>
 <span class='co'># in data context.</span>
-<span class='kw'>iris</span> <span class='op'>%&gt;%</span> <span class='fu'>mean_by</span>(by = <span class='kw'>Species</span>, var = <span class='kw'>Sepal.Width</span>)</pre></li>
+<span class='no'>iris</span> <span class='kw'>%&amp;gt;%</span> <span class='fu'>mean_by</span>(<span class='kw'>by</span> <span class='kw'>=</span> <span class='no'>Species</span>, <span class='kw'>var</span> <span class='kw'>=</span> <span class='no'>Sepal.Width</span>)</pre></li>
 </ul>
 
 <p>Use <code>qq_show()</code> to experiment with forcing operators. <code>qq_show()</code>
 defuses its input, processes all forcing operators, and prints the
-result with <code>expr_print()</code> to reveal objects inlined in the
+result with <code><a href='expr_print.html'>expr_print()</a></code> to reveal objects inlined in the
 expression by the forcing operators.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>qq_show</span>(<span class='kw'>expr</span>)</pre>
+    <pre class="usage"><span class='fu'>qq_show</span>(<span class='no'>expr</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -263,43 +263,43 @@ expression by the forcing operators.</p>
 
 <p>When a function takes multiple named arguments
 (e.g. <code>dplyr::mutate()</code>), it is difficult to supply a variable as
-name. Since the LHS of <code><a href='https://rdrr.io/r/base/assignOps.html'>=</a></code> is defused, giving the name
+name. Since the LHS of <code>=</code> is <a href='nse-defuse.html'>defused</a>, giving the name
 of a variable results in the argument having the name of the
 variable rather than the name stored in that variable. This problem
 of forcing evaluation of names is exactly what the <code>!!</code> operator is
 for.</p>
 <p>Unfortunately R is very strict about the kind of expressions
-supported on the LHS of <code><a href='https://rdrr.io/r/base/assignOps.html'>=</a></code>. This is why rlang interprets the
-walrus operator <code>:=</code> as an alias of <code><a href='https://rdrr.io/r/base/assignOps.html'>=</a></code>. You can use it to supply
+supported on the LHS of <code>=</code>. This is why rlang interprets the
+walrus operator <code>:=</code> as an alias of <code>=</code>. You can use it to supply
 names, e.g. <code>a := b</code> is equivalent to <code>a = b</code>. Since its syntax is
-more flexible you can also force names on its LHS:</p><pre><span class='kw'>name</span> <span class='op'>&lt;-</span> <span class='st'>"Jane"</span>
+more flexible you can also force names on its LHS:</p><pre><span class='no'>name</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='st'>"Jane"</span>
 
-<span class='fu'>list2</span>(<span class='op'>!</span><span class='op'>!</span><span class='kw'>name</span> <span class='op'>:=</span> <span class='fl'>1</span> <span class='op'>+</span> <span class='fl'>2</span>)
-<span class='fu'>exprs</span>(<span class='op'>!</span><span class='op'>!</span><span class='kw'>name</span> <span class='op'>:=</span> <span class='fl'>1</span> <span class='op'>+</span> <span class='fl'>2</span>)</pre>
+<span class='fu'><a href='list2.html'>list2</a></span>(!!<span class='no'>name</span> <span class='kw'>:=</span> <span class='fl'>1</span> + <span class='fl'>2</span>)
+<span class='fu'><a href='nse-defuse.html'>exprs</a></span>(!!<span class='no'>name</span> <span class='kw'>:=</span> <span class='fl'>1</span> + <span class='fl'>2</span>)</pre>
 
-<p>Like <code><a href='https://rdrr.io/r/base/assignOps.html'>=</a></code>, the <code>:=</code> operator expects strings or symbols on its LHS.</p>
+<p>Like <code>=</code>, the <code>:=</code> operator expects strings or symbols on its LHS.</p>
 <p>Since unquoting names is related to interpolating within a string
 with the glue package, we have made the glue syntax available on
-the LHS of <code>:=</code>:</p><pre><span class='fu'>list2</span>(<span class='st'>"{name}"</span> <span class='op'>:=</span> <span class='fl'>1</span>)
-<span class='fu'>tibble</span>(<span class='st'>"{name}"</span> <span class='op'>:=</span> <span class='fl'>1</span>)</pre>
+the LHS of <code>:=</code>:</p><pre><span class='fu'><a href='list2.html'>list2</a></span>(<span class='st'>"{name}"</span> <span class='kw'>:=</span> <span class='fl'>1</span>)
+<span class='fu'>tibble</span>(<span class='st'>"{name}"</span> <span class='kw'>:=</span> <span class='fl'>1</span>)</pre>
 
 <p>You can also interpolate defused function arguments with double
-braces <code>{{</code>, similar to the curly-curly syntax:</p><pre><span class='kw'>wrapper</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>data</span>, <span class='kw'>var</span>) {
-  <span class='kw'>data</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span>(<span class='st'>"{{ var }}_foo"</span> <span class='op'>:=</span> {{ <span class='kw'>var</span> }} <span class='op'>*</span> <span class='fl'>2</span>)
+braces <code>{{</code>, similar to the curly-curly syntax:</p><pre><span class='no'>wrapper</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='kw'>function</span>(<span class='no'>data</span>, <span class='no'>var</span>) {
+  <span class='no'>data</span> <span class='kw'>%&amp;gt;%</span> <span class='fu'>mutate</span>(<span class='st'>"{{ var }}_foo"</span> <span class='kw'>:=</span> {{ <span class='no'>var</span> }} * <span class='fl'>2</span>)
 }</pre>
 
 <p>Currently, forcing names with <code>:=</code> only works in top level
-expressions. These are all valid:</p><pre><span class='fu'>exprs</span>(<span class='st'>"{name}"</span> <span class='op'>:=</span> <span class='kw'>x</span>)
-<span class='fu'>tibble</span>(<span class='st'>"{name}"</span> <span class='op'>:=</span> <span class='kw'>x</span>)</pre>
+expressions. These are all valid:</p><pre><span class='fu'><a href='nse-defuse.html'>exprs</a></span>(<span class='st'>"{name}"</span> <span class='kw'>:=</span> <span class='no'>x</span>)
+<span class='fu'>tibble</span>(<span class='st'>"{name}"</span> <span class='kw'>:=</span> <span class='no'>x</span>)</pre>
 
-<p>But deep-forcing names isn't supported:</p><pre><span class='fu'>exprs</span>(<span class='fu'>this</span>(<span class='fu'>is</span>(<span class='fu'>deep</span>(<span class='st'>"{name}"</span> <span class='op'>:=</span> <span class='kw'>x</span>))))</pre>
+<p>But deep-forcing names isn't supported:</p><pre><span class='fu'><a href='nse-defuse.html'>exprs</a></span>(<span class='fu'>this</span>(<span class='fu'>is</span>(<span class='fu'>deep</span>(<span class='st'>"{name}"</span> <span class='kw'>:=</span> <span class='no'>x</span>))))</pre>
 
     <h2 class="hasAnchor" id="theory"><a class="anchor" href="#theory"></a>Theory</h2>
 
     
 
 
-<p>Formally, <code>quo()</code> and <code>expr()</code> are quasiquotation functions, <code>!!</code>
+<p>Formally, <code><a href='nse-defuse.html'>quo()</a></code> and <code><a href='nse-defuse.html'>expr()</a></code> are quasiquotation functions, <code>!!</code>
 is the unquote operator, and <code>!!!</code> is the unquote-splice operator.
 These terms have a rich history in Lisp languages, and live on in
 modern languages like
@@ -314,13 +314,13 @@ and
 <li><p>Calling <code>UQ()</code> and <code>UQS()</code> with the rlang namespace qualifier is
 deprecated as of rlang 0.3.0. Just use the unqualified forms
 instead:</p><pre><span class='co'># Bad</span>
-<span class='kw'>rlang</span>::<span class='fu'><a href='https://rlang.r-lib.org/reference/nse-defuse.html'>expr</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='kw'>rlang</span>::<span class='fu'><a href='https://rlang.r-lib.org/reference/nse-force.html'>UQ</a></span>(<span class='kw'>var</span>) <span class='op'>*</span> <span class='fl'>100</span>))
+<span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='nse-defuse.html'>expr</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'>UQ</span>(<span class='no'>var</span>) * <span class='fl'>100</span>))
 
 <span class='co'># Ok</span>
-<span class='kw'>rlang</span>::<span class='fu'><a href='https://rlang.r-lib.org/reference/nse-defuse.html'>expr</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='fu'>UQ</span>(<span class='kw'>var</span>) <span class='op'>*</span> <span class='fl'>100</span>))
+<span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='nse-defuse.html'>expr</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='fu'>UQ</span>(<span class='no'>var</span>) * <span class='fl'>100</span>))
 
 <span class='co'># Good</span>
-<span class='kw'>rlang</span>::<span class='fu'><a href='https://rlang.r-lib.org/reference/nse-defuse.html'>expr</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='op'>!</span><span class='op'>!</span><span class='kw'>var</span> <span class='op'>*</span> <span class='fl'>100</span>))</pre>
+<span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='fu'><a href='nse-defuse.html'>expr</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(!!<span class='no'>var</span> * <span class='fl'>100</span>))</pre>
 
 <p>Supporting namespace qualifiers complicates the implementation of
 unquotation and is misleading as to the nature of unquoting
@@ -333,7 +333,7 @@ consistent with other R operators (e.g. <code>`+`(a, b)</code> is the
 prefix form of <code>a + b</code>).</p>
 <p>Note that the prefix forms are not as relevant as before because
 <code>!!</code> now has the right operator precedence, i.e. the same as
-unary <code><a href='https://rdrr.io/r/base/Arithmetic.html'>-</a></code> or <code><a href='https://rdrr.io/r/base/Arithmetic.html'>+</a></code>. It is thus safe to mingle it with other
+unary <code>-</code> or <code>+</code>. It is thus safe to mingle it with other
 operators, e.g. <code>!!a + !!b</code> does the right thing. In addition the
 parser now strips one level of parentheses around unquoted
 expressions. This way <code>(!!"foo")(...)</code> expands to <code>foo(...)</code>.
@@ -342,7 +342,7 @@ These changes make the prefix forms less useful.</p>
 misleading because they suggested that existing knowledge about
 functions is applicable to quasiquotation. This was reinforced by
 the visible definitions of these functions exported by rlang and
-by the tidy eval parser interpreting <code><a href='https://rlang.r-lib.org/reference/nse-force.html'>rlang::UQ()</a></code> as <code>!!</code>. In
+by the tidy eval parser interpreting <code>rlang::UQ()</code> as <code>!!</code>. In
 reality unquoting is <em>not</em> a function call, it is a syntactic
 operation. The operator form makes it clearer that unquoting is
 special.</p></li>
@@ -352,102 +352,102 @@ special.</p></li>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Interpolation with {{  }} is the easiest way to forward</span>
 <span class='co'># arguments to tidy eval functions:</span>
-<span class='co'>if</span> (<span class='fu'>is_attached</span>(<span class='st'>"package:dplyr"</span>)) {
+<span class='kw'>if</span> (<span class='fu'><a href='search_envs.html'>is_attached</a></span>(<span class='st'>"package:dplyr"</span>)) {
 
 <span class='co'># Forward all arguments involving data frame columns by</span>
 <span class='co'># interpolating them within other data masked arguments.</span>
 <span class='co'># Here we interpolate `arg` in a `summarise()` call:</span>
-<span class='kw'>my_function</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>data</span>, <span class='kw'>arg</span>) {
-  <span class='fu'>summarise</span>(<span class='kw'>data</span>, avg = <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>({{ <span class='kw'>arg</span> }}, na.rm = <span class='fl'>TRUE</span>))
+<span class='no'>my_function</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>data</span>, <span class='no'>arg</span>) {
+  <span class='fu'>summarise</span>(<span class='no'>data</span>, <span class='kw'>avg</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>({{ <span class='no'>arg</span> }}, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
 }
 
-<span class='fu'>my_function</span>(<span class='kw'>mtcars</span>, <span class='kw'>cyl</span>)
-<span class='fu'>my_function</span>(<span class='kw'>mtcars</span>, <span class='kw'>cyl</span> <span class='op'>*</span> <span class='fl'>10</span>)
+<span class='fu'>my_function</span>(<span class='no'>mtcars</span>, <span class='no'>cyl</span>)
+<span class='fu'>my_function</span>(<span class='no'>mtcars</span>, <span class='no'>cyl</span> * <span class='fl'>10</span>)
 
 <span class='co'># The  operator is just a shortcut for `!!enquo()`:</span>
-<span class='kw'>my_function</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>data</span>, <span class='kw'>arg</span>) {
-  <span class='fu'>summarise</span>(<span class='kw'>data</span>, avg = <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='op'>!</span><span class='op'>!</span><span class='fu'>enquo</span>(<span class='kw'>arg</span>), na.rm = <span class='fl'>TRUE</span>))
+<span class='no'>my_function</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>data</span>, <span class='no'>arg</span>) {
+  <span class='fu'>summarise</span>(<span class='no'>data</span>, <span class='kw'>avg</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(!!<span class='fu'><a href='nse-defuse.html'>enquo</a></span>(<span class='no'>arg</span>), <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
 }
 
-<span class='fu'>my_function</span>(<span class='kw'>mtcars</span>, <span class='kw'>cyl</span>)
+<span class='fu'>my_function</span>(<span class='no'>mtcars</span>, <span class='no'>cyl</span>)
 
 }
 
 <span class='co'># Quasiquotation functions quote expressions like base::quote()</span>
-<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'>how_many</span>(<span class='kw'>this</span>))</div><div class='output co'>#&gt; how_many(this)</div><div class='input'><span class='fu'>expr</span>(<span class='fu'>how_many</span>(<span class='kw'>this</span>))</div><div class='output co'>#&gt; how_many(this)</div><div class='input'><span class='fu'>quo</span>(<span class='fu'>how_many</span>(<span class='kw'>this</span>))</div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
+<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'>how_many</span>(<span class='no'>this</span>))</div><div class='output co'>#&gt; how_many(this)</div><div class='input'><span class='fu'><a href='nse-defuse.html'>expr</a></span>(<span class='fu'>how_many</span>(<span class='no'>this</span>))</div><div class='output co'>#&gt; how_many(this)</div><div class='input'><span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fu'>how_many</span>(<span class='no'>this</span>))</div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^how_many(this)</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7f9640c1ca38</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7fd9652ff580</span><span></div><div class='input'>
 <span class='co'># In addition, they support unquoting. Let's store symbols</span>
 <span class='co'># (i.e. object names) in variables:</span>
-<span class='kw'>this</span> <span class='op'>&lt;-</span> <span class='fu'>sym</span>(<span class='st'>"apples"</span>)
-<span class='kw'>that</span> <span class='op'>&lt;-</span> <span class='fu'>sym</span>(<span class='st'>"oranges"</span>)
+<span class='no'>this</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sym.html'>sym</a></span>(<span class='st'>"apples"</span>)
+<span class='no'>that</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sym.html'>sym</a></span>(<span class='st'>"oranges"</span>)
 
 <span class='co'># With unquotation you can insert the contents of these variables</span>
 <span class='co'># inside the quoted expression:</span>
-<span class='fu'>expr</span>(<span class='fu'>how_many</span>(<span class='op'>!</span><span class='op'>!</span><span class='kw'>this</span>))</div><div class='output co'>#&gt; how_many(apples)</div><div class='input'><span class='fu'>expr</span>(<span class='fu'>how_many</span>(<span class='op'>!</span><span class='op'>!</span><span class='kw'>that</span>))</div><div class='output co'>#&gt; how_many(oranges)</div><div class='input'>
+<span class='fu'><a href='nse-defuse.html'>expr</a></span>(<span class='fu'>how_many</span>(!!<span class='no'>this</span>))</div><div class='output co'>#&gt; how_many(apples)</div><div class='input'><span class='fu'><a href='nse-defuse.html'>expr</a></span>(<span class='fu'>how_many</span>(!!<span class='no'>that</span>))</div><div class='output co'>#&gt; how_many(oranges)</div><div class='input'>
 <span class='co'># You can also insert values:</span>
-<span class='fu'>expr</span>(<span class='fu'>how_many</span>(<span class='op'>!</span><span class='op'>!</span>(<span class='fl'>1</span> <span class='op'>+</span> <span class='fl'>2</span>)))</div><div class='output co'>#&gt; how_many(3)</div><div class='input'><span class='fu'>quo</span>(<span class='fu'>how_many</span>(<span class='op'>!</span><span class='op'>!</span>(<span class='fl'>1</span> <span class='op'>+</span> <span class='fl'>2</span>)))</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
+<span class='fu'><a href='nse-defuse.html'>expr</a></span>(<span class='fu'>how_many</span>(!!(<span class='fl'>1</span> + <span class='fl'>2</span>)))</div><div class='output co'>#&gt; how_many(3)</div><div class='input'><span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fu'>how_many</span>(!!(<span class='fl'>1</span> + <span class='fl'>2</span>)))</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^how_many(3)</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7f9640c1ca38</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7fd9652ff580</span><span></div><div class='input'>
 
 <span class='co'># Note that when you unquote complex objects into an expression,</span>
 <span class='co'># the base R printer may be a bit misleading. For instance compare</span>
 <span class='co'># the output of `expr()` and `quo()` (which uses a custom printer)</span>
 <span class='co'># when we unquote an integer vector:</span>
-<span class='fu'>expr</span>(<span class='fu'>how_many</span>(<span class='op'>!</span><span class='op'>!</span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>)))</div><div class='output co'>#&gt; how_many(1:10)</div><div class='input'><span class='fu'>quo</span>(<span class='fu'>how_many</span>(<span class='op'>!</span><span class='op'>!</span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>)))</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
+<span class='fu'><a href='nse-defuse.html'>expr</a></span>(<span class='fu'>how_many</span>(!!(<span class='fl'>1</span>:<span class='fl'>10</span>)))</div><div class='output co'>#&gt; how_many(1:10)</div><div class='input'><span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fu'>how_many</span>(!!(<span class='fl'>1</span>:<span class='fl'>10</span>)))</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^how_many(&lt;int: 1L, 2L, 3L, 4L, 5L, ...&gt;)</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7f9640c1ca38</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7fd9652ff580</span><span></div><div class='input'>
 <span class='co'># This is why it's often useful to use qq_show() to examine the</span>
 <span class='co'># result of unquotation operators. It uses the same printer as</span>
 <span class='co'># quosures but does not return anything:</span>
-<span class='fu'>qq_show</span>(<span class='fu'>how_many</span>(<span class='op'>!</span><span class='op'>!</span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>)))</div><div class='output co'>#&gt; how_many(&lt;int: 1L, 2L, 3L, 4L, 5L, ...&gt;)</div><div class='input'>
+<span class='fu'>qq_show</span>(<span class='fu'>how_many</span>(!!(<span class='fl'>1</span>:<span class='fl'>10</span>)))</div><div class='output co'>#&gt; how_many(&lt;int: 1L, 2L, 3L, 4L, 5L, ...&gt;)</div><div class='input'>
 
 <span class='co'># Use `!!!` to add multiple arguments to a function. Its argument</span>
 <span class='co'># should evaluate to a list or vector:</span>
-<span class='kw'>args</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, na.rm = <span class='fl'>TRUE</span>)
-<span class='fu'>quo</span>(<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='kw'>args</span>))</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
+<span class='no'>args</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>1</span>:<span class='fl'>3</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(!!!<span class='no'>args</span>))</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^mean(&lt;int: 1L, 2L, 3L&gt;, na.rm = TRUE)</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7f9640c1ca38</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7fd9652ff580</span><span></div><div class='input'>
 <span class='co'># You can combine the two</span>
-<span class='kw'>var</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>xyz</span>)
-<span class='kw'>extra_args</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(trim = <span class='fl'>0.9</span>, na.rm = <span class='fl'>TRUE</span>)
-<span class='fu'>quo</span>(<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='op'>!</span><span class='op'>!</span><span class='kw'>var</span> , <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='kw'>extra_args</span>))</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
+<span class='no'>var</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>xyz</span>)
+<span class='no'>extra_args</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(!!<span class='no'>var</span> , !!!<span class='no'>extra_args</span>))</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^mean(xyz, trim = 0.9, na.rm = TRUE)</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7f9640c1ca38</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7fd9652ff580</span><span></div><div class='input'>
 
 <span class='co'># The plural versions have support for the `:=` operator.</span>
 <span class='co'># Like `=`, `:=` creates named arguments:</span>
-<span class='fu'>quos</span>(<span class='kw'>mouse1</span> <span class='op'>:=</span> <span class='kw'>bernard</span>, mouse2 = <span class='kw'>bianca</span>)</div><div class='output co'>#&gt; &lt;list_of&lt;quosure&gt;&gt;
+<span class='fu'><a href='nse-defuse.html'>quos</a></span>(<span class='no'>mouse1</span> <span class='kw'>:=</span> <span class='no'>bernard</span>, <span class='kw'>mouse2</span> <span class='kw'>=</span> <span class='no'>bianca</span>)</div><div class='output co'>#&gt; &lt;list_of&lt;quosure&gt;&gt;
 #&gt; 
 #&gt; $mouse1
 #&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^bernard</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7f9640c1ca38</span><span>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7fd9652ff580</span><span>
 #&gt; 
 #&gt; $mouse2
 #&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^bianca</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7f9640c1ca38</span><span>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7fd9652ff580</span><span>
 #&gt; </div><div class='input'>
 <span class='co'># The `:=` is mainly useful to unquote names. Unlike `=` it</span>
 <span class='co'># supports `!!` on its LHS:</span>
-<span class='kw'>var</span> <span class='op'>&lt;-</span> <span class='st'>"unquote me!"</span>
-<span class='fu'>quos</span>(<span class='op'>!</span><span class='op'>!</span><span class='kw'>var</span> <span class='op'>:=</span> <span class='kw'>bernard</span>, mouse2 = <span class='kw'>bianca</span>)</div><div class='output co'>#&gt; &lt;list_of&lt;quosure&gt;&gt;
+<span class='no'>var</span> <span class='kw'>&lt;-</span> <span class='st'>"unquote me!"</span>
+<span class='fu'><a href='nse-defuse.html'>quos</a></span>(!!<span class='no'>var</span> <span class='kw'>:=</span> <span class='no'>bernard</span>, <span class='kw'>mouse2</span> <span class='kw'>=</span> <span class='no'>bianca</span>)</div><div class='output co'>#&gt; &lt;list_of&lt;quosure&gt;&gt;
 #&gt; 
 #&gt; $`unquote me!`
 #&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^bernard</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7f9640c1ca38</span><span>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7fd9652ff580</span><span>
 #&gt; 
 #&gt; $mouse2
 #&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^bianca</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7f9640c1ca38</span><span>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7fd9652ff580</span><span>
 #&gt; </div><div class='input'>
 
 <span class='co'># All these features apply to dots captured by enquos():</span>
-<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>...</span>) <span class='fu'>enquos</span>(<span class='kw'>...</span>)
-<span class='fu'>fn</span>(<span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='kw'>args</span>, <span class='op'>!</span><span class='op'>!</span><span class='kw'>var</span> <span class='op'>:=</span> <span class='kw'>penny</span>)</div><div class='output co'>#&gt; &lt;list_of&lt;quosure&gt;&gt;
+<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>...</span>) <span class='fu'><a href='nse-defuse.html'>enquos</a></span>(<span class='no'>...</span>)
+<span class='fu'>fn</span>(!!!<span class='no'>args</span>, !!<span class='no'>var</span> <span class='kw'>:=</span> <span class='no'>penny</span>)</div><div class='output co'>#&gt; &lt;list_of&lt;quosure&gt;&gt;
 #&gt; 
 #&gt; [[1]]
 #&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
@@ -462,23 +462,23 @@ special.</p></li>
 #&gt; $`unquote me!`
 #&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^penny</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7f9640c1ca38</span><span>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7fd9652ff580</span><span>
 #&gt; </div><div class='input'>
 
 <span class='co'># Unquoting is especially useful for building an expression by</span>
 <span class='co'># expanding around a variable part (the unquoted part):</span>
-<span class='kw'>quo1</span> <span class='op'>&lt;-</span> <span class='fu'>quo</span>(<span class='fu'><a href='https://rdrr.io/r/base/chartr.html'>toupper</a></span>(<span class='kw'>foo</span>))
-<span class='kw'>quo1</span></div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
+<span class='no'>quo1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/chartr.html'>toupper</a></span>(<span class='no'>foo</span>))
+<span class='no'>quo1</span></div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^toupper(foo)</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7f9640c1ca38</span><span></div><div class='input'>
-<span class='kw'>quo2</span> <span class='op'>&lt;-</span> <span class='fu'>quo</span>(<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='op'>!</span><span class='op'>!</span><span class='kw'>quo1</span>, <span class='kw'>bar</span>))
-<span class='kw'>quo2</span></div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7fd9652ff580</span><span></div><div class='input'>
+<span class='no'>quo2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(!!<span class='no'>quo1</span>, <span class='no'>bar</span>))
+<span class='no'>quo2</span></div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^paste(^toupper(foo), bar)</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7f9640c1ca38</span><span></div><div class='input'>
-<span class='kw'>quo3</span> <span class='op'>&lt;-</span> <span class='fu'>quo</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='op'>!</span><span class='op'>!</span><span class='kw'>quo2</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='fu'>syms</span>(<span class='kw'>letters</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>])))
-<span class='kw'>quo3</span></div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7fd9652ff580</span><span></div><div class='input'>
+<span class='no'>quo3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(!!<span class='no'>quo2</span>, !!!<span class='fu'><a href='sym.html'>syms</a></span>(<span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>5</span>])))
+<span class='no'>quo3</span></div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^list(^paste(^toupper(foo), bar), a, b, c, d, e)</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7f9640c1ca38</span><span></div></span></pre>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7fd9652ff580</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -494,7 +494,7 @@ special.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

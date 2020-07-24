@@ -171,19 +171,19 @@ See the section on inheritance in env()'s documentation." />
 <li><p><code>env_parent()</code> returns the parent environment of <code>env</code> if called
 with <code>n = 1</code>, the grandparent with <code>n = 2</code>, etc.</p></li>
 <li><p><code>env_tail()</code> searches through the parents and returns the one
-which has <code>empty_env()</code> as parent.</p></li>
+which has <code><a href='empty_env.html'>empty_env()</a></code> as parent.</p></li>
 <li><p><code>env_parents()</code> returns the list of all parents, including the
-empty environment. This list is named using <code>env_name()</code>.</p></li>
+empty environment. This list is named using <code><a href='env_name.html'>env_name()</a></code>.</p></li>
 </ul>
 
-<p>See the section on <em>inheritance</em> in <code>env()</code>'s documentation.</p>
+<p>See the section on <em>inheritance</em> in <code><a href='env.html'>env()</a></code>'s documentation.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>env_parent</span>(env = <span class='fu'>caller_env</span>(), n = <span class='fl'>1</span>)
+    <pre class="usage"><span class='fu'>env_parent</span>(<span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>(), <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 
-<span class='fu'>env_tail</span>(env = <span class='fu'>caller_env</span>(), last = <span class='fu'>global_env</span>())
+<span class='fu'>env_tail</span>(<span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>(), <span class='kw'>last</span> <span class='kw'>=</span> <span class='fu'><a href='search_envs.html'>global_env</a></span>())
 
-<span class='fu'>env_parents</span>(env = <span class='fu'>caller_env</span>(), last = <span class='fu'>global_env</span>())</pre>
+<span class='fu'>env_parents</span>(<span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>(), <span class='kw'>last</span> <span class='kw'>=</span> <span class='fu'><a href='search_envs.html'>global_env</a></span>())</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -214,23 +214,23 @@ of environments for <code>env_parents()</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Get the parent environment with env_parent():</span>
-<span class='fu'>env_parent</span>(<span class='fu'>global_env</span>())</div><div class='output co'>#&gt; &lt;environment: package:rlang&gt;
+<span class='fu'>env_parent</span>(<span class='fu'><a href='search_envs.html'>global_env</a></span>())</div><div class='output co'>#&gt; &lt;environment: package:rlang&gt;
 #&gt; attr(,"name")
 #&gt; [1] "package:rlang"
 #&gt; attr(,"path")
 #&gt; [1] "/Users/runner/work/_temp/Library/rlang"</div><div class='input'>
 <span class='co'># Or the tail environment with env_tail():</span>
-<span class='fu'>env_tail</span>(<span class='fu'>global_env</span>())</div><div class='output co'>#&gt; &lt;environment: base&gt;</div><div class='input'>
+<span class='fu'>env_tail</span>(<span class='fu'><a href='search_envs.html'>global_env</a></span>())</div><div class='output co'>#&gt; &lt;environment: base&gt;</div><div class='input'>
 <span class='co'># By default, env_parent() returns the parent environment of the</span>
 <span class='co'># current evaluation frame. If called at top-level (the global</span>
 <span class='co'># frame), the following two expressions are equivalent:</span>
-<span class='fu'>env_parent</span>()</div><div class='output co'>#&gt; &lt;environment: 0x7f963d4fb130&gt;</div><div class='input'><span class='fu'>env_parent</span>(<span class='fu'>base_env</span>())</div><div class='output co'>#&gt; &lt;environment: R_EmptyEnv&gt;</div><div class='input'>
+<span class='fu'>env_parent</span>()</div><div class='output co'>#&gt; &lt;environment: 0x7fd962701908&gt;</div><div class='input'><span class='fu'>env_parent</span>(<span class='fu'><a href='search_envs.html'>base_env</a></span>())</div><div class='output co'>#&gt; &lt;environment: R_EmptyEnv&gt;</div><div class='input'>
 <span class='co'># This default is more handy when called within a function. In this</span>
 <span class='co'># case, the enclosure environment of the function is returned</span>
 <span class='co'># (since it is the parent of the evaluation frame):</span>
-<span class='kw'>enclos_env</span> <span class='op'>&lt;-</span> <span class='fu'>env</span>()
-<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>set_env</span>(<span class='fu'>function</span>() <span class='fu'>env_parent</span>(), <span class='kw'>enclos_env</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='kw'>enclos_env</span>, <span class='fu'>fn</span>())</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+<span class='no'>enclos_env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>()
+<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_env.html'>set_env</a></span>(<span class='kw'>function</span>() <span class='fu'>env_parent</span>(), <span class='no'>enclos_env</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='no'>enclos_env</span>, <span class='fu'>fn</span>())</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -246,7 +246,7 @@ of environments for <code>env_parents()</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

@@ -169,7 +169,7 @@ It is roughly equivalent to
 and much faster.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>raw_deparse_str</span>(<span class='kw'>x</span>, prefix = <span class='kw'>NULL</span>, suffix = <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>raw_deparse_str</span>(<span class='no'>x</span>, <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>suffix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -189,7 +189,7 @@ and much faster.</p>
     <p>A string.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>raw_deparse_str</span>(<span class='fu'><a href='https://rdrr.io/r/base/raw.html'>raw</a></span>())</div><div class='output co'>#&gt; [1] ""</div><div class='input'><span class='fu'>raw_deparse_str</span>(<span class='fu'><a href='https://rdrr.io/r/base/rawConversion.html'>charToRaw</a></span>(<span class='st'>"string"</span>))</div><div class='output co'>#&gt; [1] "737472696e67"</div><div class='input'><span class='fu'>raw_deparse_str</span>(<span class='fu'><a href='https://rdrr.io/r/base/raw.html'>raw</a></span>(<span class='fl'>10</span>), prefix = <span class='st'>"'0x"</span>, suffix = <span class='st'>"'"</span>)</div><div class='output co'>#&gt; [1] "'0x00000000000000000000'"</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>raw_deparse_str</span>(<span class='fu'><a href='https://rdrr.io/r/base/raw.html'>raw</a></span>())</div><div class='output co'>#&gt; [1] ""</div><div class='input'><span class='fu'>raw_deparse_str</span>(<span class='fu'><a href='https://rdrr.io/r/base/rawConversion.html'>charToRaw</a></span>(<span class='st'>"string"</span>))</div><div class='output co'>#&gt; [1] "737472696e67"</div><div class='input'><span class='fu'>raw_deparse_str</span>(<span class='fu'><a href='https://rdrr.io/r/base/raw.html'>raw</a></span>(<span class='fl'>10</span>), <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='st'>"'0x"</span>, <span class='kw'>suffix</span> <span class='kw'>=</span> <span class='st'>"'"</span>)</div><div class='output co'>#&gt; [1] "'0x00000000000000000000'"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -205,7 +205,7 @@ and much faster.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

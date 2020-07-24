@@ -166,12 +166,12 @@ uncopyable types, use mut_attrs()." />
 <img src='figures/lifecycle-deprecated.svg' alt='Deprecated lifecycle' /></p>
 <p><code>set_attrs()</code> adds, changes, or zaps attributes of objects. Pass a
 single unnamed <code>NULL</code> argument to zap all attributes. For
-uncopyable types, use <code>mut_attrs()</code>.</p>
+<a href='is_copyable.html'>uncopyable</a> types, use <code>mut_attrs()</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>set_attrs</span>(<span class='kw'>.x</span>, <span class='kw'>...</span>)
+    <pre class="usage"><span class='fu'>set_attrs</span>(<span class='no'>.x</span>, <span class='no'>...</span>)
 
-<span class='fu'>mut_attrs</span>(<span class='kw'>.x</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'>mut_attrs</span>(<span class='no'>.x</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -182,14 +182,14 @@ uncopyable types, use <code>mut_attrs()</code>.</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>&lt;dynamic&gt; A list of named attributes. Pass
+      <td><p>&lt;<a href='dyn-dots.html'>dynamic</a>&gt; A list of named attributes. Pass
 a single unnamed <code>NULL</code> argument to zap all attributes from <code>.x</code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>set_attrs()</code> returns a modified shallow copy
+    <p><code>set_attrs()</code> returns a modified <a href='duplicate.html'>shallow copy</a>
 of <code>.x</code>. <code>mut_attrs()</code> invisibly returns the original <code>.x</code>
 modified in place.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -204,16 +204,16 @@ internal attributes names like <code>.Dim</code>, <code>.Dimnames</code> or <cod
 <p>These functions are deprecated since rlang 0.3.0.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>set_attrs</span>(<span class='kw'>letters</span>, names = <span class='fl'>1</span><span class='op'>:</span><span class='fl'>26</span>, class = <span class='st'>"my_chr"</span>)</div><div class='output co'>#&gt;   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20 
+    <pre class="examples"><div class='input'><span class='fu'>set_attrs</span>(<span class='no'>letters</span>, <span class='kw'>names</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>26</span>, <span class='kw'>class</span> <span class='kw'>=</span> <span class='st'>"my_chr"</span>)</div><div class='output co'>#&gt;   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20 
 #&gt; "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s" "t" 
 #&gt;  21  22  23  24  25  26 
 #&gt; "u" "v" "w" "x" "y" "z" 
 #&gt; attr(,"class")
 #&gt; [1] "my_chr"</div><div class='input'>
 <span class='co'># Splice a list of attributes:</span>
-<span class='kw'>attrs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(attr = <span class='st'>"attr"</span>, names = <span class='fl'>1</span><span class='op'>:</span><span class='fl'>26</span>, class = <span class='st'>"my_chr"</span>)
-<span class='kw'>obj</span> <span class='op'>&lt;-</span> <span class='fu'>set_attrs</span>(<span class='kw'>letters</span>, <span class='fu'>splice</span>(<span class='kw'>attrs</span>))
-<span class='kw'>obj</span></div><div class='output co'>#&gt;   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20 
+<span class='no'>attrs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>attr</span> <span class='kw'>=</span> <span class='st'>"attr"</span>, <span class='kw'>names</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>26</span>, <span class='kw'>class</span> <span class='kw'>=</span> <span class='st'>"my_chr"</span>)
+<span class='no'>obj</span> <span class='kw'>&lt;-</span> <span class='fu'>set_attrs</span>(<span class='no'>letters</span>, <span class='fu'><a href='splice.html'>splice</a></span>(<span class='no'>attrs</span>))
+<span class='no'>obj</span></div><div class='output co'>#&gt;   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20 
 #&gt; "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s" "t" 
 #&gt;  21  22  23  24  25  26 
 #&gt; "u" "v" "w" "x" "y" "z" 
@@ -222,11 +222,11 @@ internal attributes names like <code>.Dim</code>, <code>.Dimnames</code> or <cod
 #&gt; attr(,"class")
 #&gt; [1] "my_chr"</div><div class='input'>
 <span class='co'># Zap attributes by passing a single unnamed NULL argument:</span>
-<span class='fu'>set_attrs</span>(<span class='kw'>obj</span>, <span class='kw'>NULL</span>)</div><div class='output co'>#&gt;  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
-#&gt; [20] "t" "u" "v" "w" "x" "y" "z"</div><div class='input'><span class='fu'>set_attrs</span>(<span class='kw'>obj</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>NULL</span>))</div><div class='output co'>#&gt;  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
+<span class='fu'>set_attrs</span>(<span class='no'>obj</span>, <span class='kw'>NULL</span>)</div><div class='output co'>#&gt;  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
+#&gt; [20] "t" "u" "v" "w" "x" "y" "z"</div><div class='input'><span class='fu'>set_attrs</span>(<span class='no'>obj</span>, !!! <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>NULL</span>))</div><div class='output co'>#&gt;  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
 #&gt; [20] "t" "u" "v" "w" "x" "y" "z"</div><div class='input'>
 <span class='co'># Note that set_attrs() never modifies objects in place:</span>
-<span class='kw'>obj</span></div><div class='output co'>#&gt;   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20 
+<span class='no'>obj</span></div><div class='output co'>#&gt;   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20 
 #&gt; "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s" "t" 
 #&gt;  21  22  23  24  25  26 
 #&gt; "u" "v" "w" "x" "y" "z" 
@@ -235,9 +235,9 @@ internal attributes names like <code>.Dim</code>, <code>.Dimnames</code> or <cod
 #&gt; attr(,"class")
 #&gt; [1] "my_chr"</div><div class='input'>
 <span class='co'># For uncopyable types, mut_attrs() lets you modify in place:</span>
-<span class='kw'>env</span> <span class='op'>&lt;-</span> <span class='fu'>env</span>()
-<span class='fu'>mut_attrs</span>(<span class='kw'>env</span>, foo = <span class='st'>"bar"</span>)
-<span class='kw'>env</span></div><div class='output co'>#&gt; &lt;environment: 0x7f96442ab268&gt;
+<span class='no'>env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>()
+<span class='fu'>mut_attrs</span>(<span class='no'>env</span>, <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"bar"</span>)
+<span class='no'>env</span></div><div class='output co'>#&gt; &lt;environment: 0x7fd963139c10&gt;
 #&gt; attr(,"foo")
 #&gt; [1] "bar"</div></pre>
   </div>
@@ -255,7 +255,7 @@ internal attributes names like <code>.Dim</code>, <code>.Dimnames</code> or <cod
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

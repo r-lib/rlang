@@ -173,13 +173,13 @@ in more cases.
     <p><code>expr_print()</code>, powered by <code>expr_deparse()</code>, is an alternative
 printer for R expressions with a few improvements over the base R
 printer.</p><ul>
-<li><p>It colourises quosures according to their environment.
+<li><p>It colourises <a href='nse-defuse.html'>quosures</a> according to their environment.
 Quosures from the global environment are printed normally while
 quosures from local environments are printed in unique colour (or
 in italic when all colours are taken).</p></li>
 <li><p>It wraps inlined objects in angular brackets. For instance, an
 integer vector unquoted in a function call (e.g.
-<code>expr(foo(!!(1:3)))</code>) is printed like this: <code>foo(&lt;int: 1L, 2L, 3L&gt;)</code> while by default R prints the code to create that vector:
+<code><a href='nse-defuse.html'>expr(foo(!!(1:3)))</a></code>) is printed like this: <code>foo(&lt;int: 1L, 2L, 3L&gt;)</code> while by default R prints the code to create that vector:
 <code>foo(1:3)</code> which is ambiguous.</p></li>
 <li><p>It respects the width boundary (from the global option <code>width</code>)
 in more cases.</p></li>
@@ -187,9 +187,9 @@ in more cases.</p></li>
 
     </div>
 
-    <pre class="usage"><span class='fu'>expr_print</span>(<span class='kw'>x</span>, width = <span class='fu'>peek_option</span>(<span class='st'>"width"</span>))
+    <pre class="usage"><span class='fu'>expr_print</span>(<span class='no'>x</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fu'><a href='local_options.html'>peek_option</a></span>(<span class='st'>"width"</span>))
 
-<span class='fu'>expr_deparse</span>(<span class='kw'>x</span>, width = <span class='fu'>peek_option</span>(<span class='st'>"width"</span>))</pre>
+<span class='fu'>expr_deparse</span>(<span class='no'>x</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fu'><a href='local_options.html'>peek_option</a></span>(<span class='st'>"width"</span>))</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -209,21 +209,21 @@ Defaults to the global option <code>width</code>.</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># It supports any object. Non-symbolic objects are always printed</span>
 <span class='co'># within angular brackets:</span>
-<span class='fu'>expr_print</span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>)</div><div class='output co'>#&gt; &lt;int: 1L, 2L, 3L&gt;</div><div class='input'><span class='fu'>expr_print</span>(<span class='fu'>function</span>() <span class='kw'>NULL</span>)</div><div class='output co'>#&gt; &lt;function() NULL&gt;</div><div class='input'>
+<span class='fu'>expr_print</span>(<span class='fl'>1</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt; &lt;int: 1L, 2L, 3L&gt;</div><div class='input'><span class='fu'>expr_print</span>(<span class='kw'>function</span>() <span class='kw'>NULL</span>)</div><div class='output co'>#&gt; &lt;function() NULL&gt;</div><div class='input'>
 <span class='co'># Contrast this to how the code to create these objects is printed:</span>
-<span class='fu'>expr_print</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>))</div><div class='output co'>#&gt; 1:3</div><div class='input'><span class='fu'>expr_print</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'>function</span>() <span class='kw'>NULL</span>))</div><div class='output co'>#&gt; function() NULL</div><div class='input'>
+<span class='fu'>expr_print</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fl'>1</span>:<span class='fl'>3</span>))</div><div class='output co'>#&gt; 1:3</div><div class='input'><span class='fu'>expr_print</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>function</span>() <span class='kw'>NULL</span>))</div><div class='output co'>#&gt; function() NULL</div><div class='input'>
 <span class='co'># The main cause of non-symbolic objects in expressions is</span>
 <span class='co'># quasiquotation:</span>
-<span class='fu'>expr_print</span>(<span class='fu'>expr</span>(<span class='fu'>foo</span>(<span class='op'>!</span><span class='op'>!</span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>))))</div><div class='output co'>#&gt; foo(&lt;int: 1L, 2L, 3L&gt;)</div><div class='input'>
+<span class='fu'>expr_print</span>(<span class='fu'><a href='nse-defuse.html'>expr</a></span>(<span class='fu'>foo</span>(!!(<span class='fl'>1</span>:<span class='fl'>3</span>))))</div><div class='output co'>#&gt; foo(&lt;int: 1L, 2L, 3L&gt;)</div><div class='input'>
 
 <span class='co'># Quosures from the global environment are printed normally:</span>
-<span class='fu'>expr_print</span>(<span class='fu'>quo</span>(<span class='kw'>foo</span>))</div><div class='output co'>#&gt; <span style='color: #0000BB;'>^foo</span><span></div><div class='input'><span class='fu'>expr_print</span>(<span class='fu'>quo</span>(<span class='fu'>foo</span>(<span class='op'>!</span><span class='op'>!</span><span class='fu'>quo</span>(<span class='kw'>bar</span>))))</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>^foo(^bar)</span><span></div><div class='input'>
+<span class='fu'>expr_print</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='no'>foo</span>))</div><div class='output co'>#&gt; <span style='color: #0000BB;'>^foo</span><span></div><div class='input'><span class='fu'>expr_print</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fu'>foo</span>(!!<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='no'>bar</span>))))</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>^foo(^bar)</span><span></div><div class='input'>
 <span class='co'># Quosures from local environments are colourised according to</span>
 <span class='co'># their environments (if you have crayon installed):</span>
-<span class='kw'>local_quo</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/eval.html'>local</a></span>(<span class='fu'>quo</span>(<span class='kw'>foo</span>))
-<span class='fu'>expr_print</span>(<span class='kw'>local_quo</span>)</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>^foo</span><span></div><div class='input'>
-<span class='kw'>wrapper_quo</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/eval.html'>local</a></span>(<span class='fu'>quo</span>(<span class='fu'><a href='https://rdrr.io/r/grDevices/plotmath.html'>bar</a></span>(<span class='op'>!</span><span class='op'>!</span><span class='kw'>local_quo</span>, <span class='kw'>baz</span>)))
-<span class='fu'>expr_print</span>(<span class='kw'>wrapper_quo</span>)</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>^bar(</span><span style='color: #00BB00;'>^foo</span><span style='color: #0000BB;'>, baz)</span><span></div></span></pre>
+<span class='no'>local_quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/eval.html'>local</a></span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='no'>foo</span>))
+<span class='fu'>expr_print</span>(<span class='no'>local_quo</span>)</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>^foo</span><span></div><div class='input'>
+<span class='no'>wrapper_quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/eval.html'>local</a></span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fu'><a href='https://rdrr.io/r/grDevices/plotmath.html'>bar</a></span>(!!<span class='no'>local_quo</span>, <span class='no'>baz</span>)))
+<span class='fu'>expr_print</span>(<span class='no'>wrapper_quo</span>)</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>^bar(</span><span style='color: #00BB00;'>^foo</span><span style='color: #0000BB;'>, baz)</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -239,7 +239,7 @@ Defaults to the global option <code>width</code>.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

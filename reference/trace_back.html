@@ -165,9 +165,9 @@ evaluation, the call stack in R is actually a tree, which the
 <code><a href='https://rdrr.io/r/base/summary.html'>summary()</a></code> method of this object will reveal.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>trace_back</span>(top = <span class='kw'>NULL</span>, bottom = <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>trace_back</span>(<span class='kw'>top</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bottom</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>trace_length</span>(<span class='kw'>trace</span>)</pre>
+<span class='fu'>trace_length</span>(<span class='no'>trace</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -189,7 +189,7 @@ backtrace. This becomes the rightmost leaf of the backtrace tree
 and represents the youngest call in the backtrace.</p>
 <p>Set this when you would like to capture a backtrace without the
 capture context.</p>
-<p>Can also be an integer that will be passed to <code>caller_env()</code>.</p></td>
+<p>Can also be an integer that will be passed to <code><a href='caller_env.html'>caller_env()</a></code>.</p></td>
     </tr>
     <tr>
       <th>trace</th>
@@ -205,11 +205,11 @@ capture context.</p>
     <pre class="examples"><div class='input'><span class='co'># Trim backtraces automatically (this improves the generated</span>
 <span class='co'># documentation for the rlang website and the same trick can be</span>
 <span class='co'># useful within knitr documents):</span>
-<span class='fu'><a href='https://rdrr.io/r/base/options.html'>options</a></span>(rlang_trace_top_env = <span class='fu'>current_env</span>())
+<span class='fu'><a href='https://rdrr.io/r/base/options.html'>options</a></span>(<span class='kw'>rlang_trace_top_env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>current_env</a></span>())
 
-<span class='kw'>f</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() <span class='fu'>g</span>()
-<span class='kw'>g</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() <span class='fu'>h</span>()
-<span class='kw'>h</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() <span class='fu'>trace_back</span>()
+<span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>g</span>()
+<span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>h</span>()
+<span class='no'>h</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>trace_back</span>()
 
 <span class='co'># When no lazy evaluation is involved the backtrace is linear</span>
 <span class='co'># (i.e. every call has only one child)</span>
@@ -244,8 +244,8 @@ capture context.</p>
 #&gt; </span><span style='color: #555555;'> 9. </span><span>    └─h()</div><div class='input'>
 <span class='co'># When printing, you can request to simplify this tree to only show</span>
 <span class='co'># the direct sequence of calls that lead to `trace_back()`</span>
-<span class='kw'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span>(<span class='fu'>f</span>()))
-<span class='kw'>x</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'>    </span><span>█
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span>(<span class='fu'>f</span>()))
+<span class='no'>x</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'>    </span><span>█
 #&gt; </span><span style='color: #555555;'> 1. </span><span>├─base::try(identity(f()))
 #&gt; </span><span style='color: #555555;'> 2. </span><span>│ └─base::tryCatch(...)
 #&gt; </span><span style='color: #555555;'> 3. </span><span>│   └─base:::tryCatchList(expr, classes, parentenv, handlers)
@@ -254,14 +254,14 @@ capture context.</p>
 #&gt; </span><span style='color: #555555;'> 6. </span><span>├─base::identity(f())
 #&gt; </span><span style='color: #555555;'> 7. </span><span>└─f()
 #&gt; </span><span style='color: #555555;'> 8. </span><span>  └─g()
-#&gt; </span><span style='color: #555555;'> 9. </span><span>    └─h()</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='kw'>x</span>, simplify = <span class='st'>"branch"</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'> 1. </span><span>base::try(identity(f()))
+#&gt; </span><span style='color: #555555;'> 9. </span><span>    └─h()</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>, <span class='kw'>simplify</span> <span class='kw'>=</span> <span class='st'>"branch"</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'> 1. </span><span>base::try(identity(f()))
 #&gt; </span><span style='color: #555555;'> 7. </span><span>f()
 #&gt; </span><span style='color: #555555;'> 8. </span><span>g()
 #&gt; </span><span style='color: #555555;'> 9. </span><span>h()</div><div class='input'>
 <span class='co'># With a little cunning you can also use it to capture the</span>
 <span class='co'># tree from within a base NSE function</span>
-<span class='kw'>x</span> <span class='op'>&lt;-</span> <span class='kw'>NULL</span>
-<span class='fu'><a href='https://rdrr.io/r/base/with.html'>with</a></span>(<span class='kw'>mtcars</span>, {<span class='kw'>x</span> <span class='op'>&lt;&lt;-</span> <span class='fu'>f</span>(); <span class='fl'>10</span>})</div><div class='output co'>#&gt; [1] 10</div><div class='input'><span class='kw'>x</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'>    </span><span>█
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='kw'>NULL</span>
+<span class='fu'><a href='https://rdrr.io/r/base/with.html'>with</a></span>(<span class='no'>mtcars</span>, {<span class='no'>x</span> <span class='kw'>&lt;&lt;-</span> <span class='fu'>f</span>(); <span class='fl'>10</span>})</div><div class='output co'>#&gt; [1] 10</div><div class='input'><span class='no'>x</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'>    </span><span>█
 #&gt; </span><span style='color: #555555;'> 1. </span><span>├─base::with(...)
 #&gt; </span><span style='color: #555555;'> 2. </span><span>└─base::with.default(...)
 #&gt; </span><span style='color: #555555;'> 3. </span><span>  └─base::eval(substitute(expr), data, enclos = parent.frame())
@@ -271,13 +271,13 @@ capture context.</p>
 #&gt; </span><span style='color: #555555;'> 7. </span><span>          └─h()</div><div class='input'>
 
 <span class='co'># Restore default top env for next example</span>
-<span class='fu'><a href='https://rdrr.io/r/base/options.html'>options</a></span>(rlang_trace_top_env = <span class='kw'>NULL</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/options.html'>options</a></span>(<span class='kw'>rlang_trace_top_env</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
 <span class='co'># When code is executed indirectly, i.e. via source or within an</span>
 <span class='co'># RMarkdown document, you'll tend to get a lot of guff at the beginning</span>
 <span class='co'># related to the execution environment:</span>
-<span class='kw'>conn</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/textconnections.html'>textConnection</a></span>(<span class='st'>"summary(f())"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/source.html'>source</a></span>(<span class='kw'>conn</span>, echo = <span class='fl'>TRUE</span>, local = <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; 
+<span class='no'>conn</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/textconnections.html'>textConnection</a></span>(<span class='st'>"summary(f())"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/source.html'>source</a></span>(<span class='no'>conn</span>, <span class='kw'>echo</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>local</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; 
 #&gt; &gt; summary(f())
 #&gt; </span><span style='color: #555555;'>     </span><span>█
 #&gt; </span><span style='color: #555555;'>  1. </span><span>└─pkgdown::deploy_to_branch(new_process = FALSE)
@@ -286,46 +286,45 @@ capture context.</p>
 #&gt; </span><span style='color: #555555;'>  4. </span><span>      └─pkgdown::build_reference(...)
 #&gt; </span><span style='color: #555555;'>  5. </span><span>        └─purrr::map(...)
 #&gt; </span><span style='color: #555555;'>  6. </span><span>          └─pkgdown:::.f(.x[[i]], ...)
-#&gt; </span><span style='color: #555555;'>  7. </span><span>            ├─base::withCallingHandlers(...)
-#&gt; </span><span style='color: #555555;'>  8. </span><span>            └─pkgdown:::data_reference_topic(...)
-#&gt; </span><span style='color: #555555;'>  9. </span><span>              └─pkgdown:::run_examples(...)
-#&gt; </span><span style='color: #555555;'> 10. </span><span>                └─pkgdown:::highlight_examples(code, topic, env = env)
-#&gt; </span><span style='color: #555555;'> 11. </span><span>                  └─evaluate::evaluate(x, child_env(env), new_device = TRUE)
-#&gt; </span><span style='color: #555555;'> 12. </span><span>                    └─evaluate:::evaluate_call(...)
-#&gt; </span><span style='color: #555555;'> 13. </span><span>                      ├─evaluate:::timing_fn(...)
-#&gt; </span><span style='color: #555555;'> 14. </span><span>                      ├─evaluate:::handle(...)
-#&gt; </span><span style='color: #555555;'> 15. </span><span>                      │ └─base::try(f, silent = TRUE)
-#&gt; </span><span style='color: #555555;'> 16. </span><span>                      │   └─base::tryCatch(...)
-#&gt; </span><span style='color: #555555;'> 17. </span><span>                      │     └─base:::tryCatchList(expr, classes, parentenv, handlers)
-#&gt; </span><span style='color: #555555;'> 18. </span><span>                      │       └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-#&gt; </span><span style='color: #555555;'> 19. </span><span>                      │         └─base:::doTryCatch(return(expr), name, parentenv, handler)
-#&gt; </span><span style='color: #555555;'> 20. </span><span>                      ├─base::withCallingHandlers(...)
-#&gt; </span><span style='color: #555555;'> 21. </span><span>                      ├─base::withVisible(eval(expr, envir, enclos))
-#&gt; </span><span style='color: #555555;'> 22. </span><span>                      └─base::eval(expr, envir, enclos)
-#&gt; </span><span style='color: #555555;'> 23. </span><span>                        └─base::eval(expr, envir, enclos)
-#&gt; </span><span style='color: #555555;'> 24. </span><span>                          ├─base::source(conn, echo = TRUE, local = TRUE)
-#&gt; </span><span style='color: #555555;'> 25. </span><span>                          │ ├─base::withVisible(eval(ei, envir))
-#&gt; </span><span style='color: #555555;'> 26. </span><span>                          │ └─base::eval(ei, envir)
-#&gt; </span><span style='color: #555555;'> 27. </span><span>                          │   └─base::eval(ei, envir)
-#&gt; </span><span style='color: #555555;'> 28. </span><span>                          ├─base::summary(f())
-#&gt; </span><span style='color: #555555;'> 29. </span><span>                          └─f()
-#&gt; </span><span style='color: #555555;'> 30. </span><span>                            └─g()
-#&gt; </span><span style='color: #555555;'> 31. </span><span>                              └─h()</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/connections.html'>close</a></span>(<span class='kw'>conn</span>)
+#&gt; </span><span style='color: #555555;'>  7. </span><span>            └─pkgdown:::data_reference_topic(...)
+#&gt; </span><span style='color: #555555;'>  8. </span><span>              └─pkgdown:::run_examples(...)
+#&gt; </span><span style='color: #555555;'>  9. </span><span>                └─pkgdown:::highlight_examples(code, topic, env = env)
+#&gt; </span><span style='color: #555555;'> 10. </span><span>                  └─evaluate::evaluate(x, child_env(env), new_device = TRUE)
+#&gt; </span><span style='color: #555555;'> 11. </span><span>                    └─evaluate:::evaluate_call(...)
+#&gt; </span><span style='color: #555555;'> 12. </span><span>                      ├─evaluate:::timing_fn(...)
+#&gt; </span><span style='color: #555555;'> 13. </span><span>                      ├─evaluate:::handle(...)
+#&gt; </span><span style='color: #555555;'> 14. </span><span>                      │ └─base::try(f, silent = TRUE)
+#&gt; </span><span style='color: #555555;'> 15. </span><span>                      │   └─base::tryCatch(...)
+#&gt; </span><span style='color: #555555;'> 16. </span><span>                      │     └─base:::tryCatchList(expr, classes, parentenv, handlers)
+#&gt; </span><span style='color: #555555;'> 17. </span><span>                      │       └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+#&gt; </span><span style='color: #555555;'> 18. </span><span>                      │         └─base:::doTryCatch(return(expr), name, parentenv, handler)
+#&gt; </span><span style='color: #555555;'> 19. </span><span>                      ├─base::withCallingHandlers(...)
+#&gt; </span><span style='color: #555555;'> 20. </span><span>                      ├─base::withVisible(eval(expr, envir, enclos))
+#&gt; </span><span style='color: #555555;'> 21. </span><span>                      └─base::eval(expr, envir, enclos)
+#&gt; </span><span style='color: #555555;'> 22. </span><span>                        └─base::eval(expr, envir, enclos)
+#&gt; </span><span style='color: #555555;'> 23. </span><span>                          ├─base::source(conn, echo = TRUE, local = TRUE)
+#&gt; </span><span style='color: #555555;'> 24. </span><span>                          │ ├─base::withVisible(eval(ei, envir))
+#&gt; </span><span style='color: #555555;'> 25. </span><span>                          │ └─base::eval(ei, envir)
+#&gt; </span><span style='color: #555555;'> 26. </span><span>                          │   └─base::eval(ei, envir)
+#&gt; </span><span style='color: #555555;'> 27. </span><span>                          ├─base::summary(f())
+#&gt; </span><span style='color: #555555;'> 28. </span><span>                          └─f()
+#&gt; </span><span style='color: #555555;'> 29. </span><span>                            └─g()
+#&gt; </span><span style='color: #555555;'> 30. </span><span>                              └─h()</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/connections.html'>close</a></span>(<span class='no'>conn</span>)
 
 <span class='co'># To automatically strip this off, specify which frame should be</span>
 <span class='co'># the top of the backtrace. This will automatically trim off calls</span>
 <span class='co'># prior to that frame:</span>
-<span class='kw'>top</span> <span class='op'>&lt;-</span> <span class='fu'>current_env</span>()
-<span class='kw'>h</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() <span class='fu'>trace_back</span>(<span class='kw'>top</span>)
+<span class='no'>top</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='caller_env.html'>current_env</a></span>()
+<span class='no'>h</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>trace_back</span>(<span class='no'>top</span>)
 
-<span class='kw'>conn</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/textconnections.html'>textConnection</a></span>(<span class='st'>"summary(f())"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/source.html'>source</a></span>(<span class='kw'>conn</span>, echo = <span class='fl'>TRUE</span>, local = <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; 
+<span class='no'>conn</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/textconnections.html'>textConnection</a></span>(<span class='st'>"summary(f())"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/source.html'>source</a></span>(<span class='no'>conn</span>, <span class='kw'>echo</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>local</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; 
 #&gt; &gt; summary(f())
 #&gt; </span><span style='color: #555555;'>    </span><span>█
 #&gt; </span><span style='color: #555555;'> 1. </span><span>├─base::summary(f())
 #&gt; </span><span style='color: #555555;'> 2. </span><span>└─f()
 #&gt; </span><span style='color: #555555;'> 3. </span><span>  └─g()
-#&gt; </span><span style='color: #555555;'> 4. </span><span>    └─h()</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/connections.html'>close</a></span>(<span class='kw'>conn</span>)</div></span></pre>
+#&gt; </span><span style='color: #555555;'> 4. </span><span>    └─h()</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/connections.html'>close</a></span>(<span class='no'>conn</span>)</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -341,7 +340,7 @@ capture context.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

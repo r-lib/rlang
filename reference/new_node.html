@@ -169,35 +169,35 @@ any type checking and can crash R very easily (try to take the CAR
 of an integer vector --- save any important objects beforehand!).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>new_node</span>(<span class='kw'>car</span>, cdr = <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>new_node</span>(<span class='no'>car</span>, <span class='kw'>cdr</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>node_car</span>(<span class='kw'>x</span>)
+<span class='fu'>node_car</span>(<span class='no'>x</span>)
 
-<span class='fu'>node_cdr</span>(<span class='kw'>x</span>)
+<span class='fu'>node_cdr</span>(<span class='no'>x</span>)
 
-<span class='fu'>node_caar</span>(<span class='kw'>x</span>)
+<span class='fu'>node_caar</span>(<span class='no'>x</span>)
 
-<span class='fu'>node_cadr</span>(<span class='kw'>x</span>)
+<span class='fu'>node_cadr</span>(<span class='no'>x</span>)
 
-<span class='fu'>node_cdar</span>(<span class='kw'>x</span>)
+<span class='fu'>node_cdar</span>(<span class='no'>x</span>)
 
-<span class='fu'>node_cddr</span>(<span class='kw'>x</span>)
+<span class='fu'>node_cddr</span>(<span class='no'>x</span>)
 
-<span class='fu'>node_poke_car</span>(<span class='kw'>x</span>, <span class='kw'>newcar</span>)
+<span class='fu'>node_poke_car</span>(<span class='no'>x</span>, <span class='no'>newcar</span>)
 
-<span class='fu'>node_poke_cdr</span>(<span class='kw'>x</span>, <span class='kw'>newcdr</span>)
+<span class='fu'>node_poke_cdr</span>(<span class='no'>x</span>, <span class='no'>newcdr</span>)
 
-<span class='fu'>node_poke_caar</span>(<span class='kw'>x</span>, <span class='kw'>newcar</span>)
+<span class='fu'>node_poke_caar</span>(<span class='no'>x</span>, <span class='no'>newcar</span>)
 
-<span class='fu'>node_poke_cadr</span>(<span class='kw'>x</span>, <span class='kw'>newcar</span>)
+<span class='fu'>node_poke_cadr</span>(<span class='no'>x</span>, <span class='no'>newcar</span>)
 
-<span class='fu'>node_poke_cdar</span>(<span class='kw'>x</span>, <span class='kw'>newcdr</span>)
+<span class='fu'>node_poke_cdar</span>(<span class='no'>x</span>, <span class='no'>newcdr</span>)
 
-<span class='fu'>node_poke_cddr</span>(<span class='kw'>x</span>, <span class='kw'>newcdr</span>)
+<span class='fu'>node_poke_cddr</span>(<span class='no'>x</span>, <span class='no'>newcdr</span>)
 
-<span class='fu'>node_tag</span>(<span class='kw'>x</span>)
+<span class='fu'>node_tag</span>(<span class='no'>x</span>)
 
-<span class='fu'>node_poke_tag</span>(<span class='kw'>x</span>, <span class='kw'>newtag</span>)</pre>
+<span class='fu'>node_poke_tag</span>(<span class='no'>x</span>, <span class='no'>newtag</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -224,7 +224,7 @@ barebones and do not perform any type checking.</p></td>
 in place. Getters return the requested node component.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>duplicate()</code> for creating copy-safe objects and
+    <div class='dont-index'><p><code><a href='duplicate.html'>duplicate()</a></code> for creating copy-safe objects and
 <code><a href='https://rdrr.io/r/base/list.html'>base::pairlist()</a></code> for an easier way of creating a linked list of
 nodes.</p></div>
 
@@ -243,7 +243,7 @@ nodes.</p></div>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

@@ -161,13 +161,13 @@ consistency." />
     <div class="ref-description">
     <p><img src='figures/lifecycle-deprecated.svg' alt='Deprecated lifecycle' /></p>
 <p>As of rlang 0.3.0, <code>env_bind_exprs()</code> and <code>env_bind_fns()</code> have
-been renamed to <code>env_bind_lazy()</code> and <code>env_bind_active()</code> for
+been renamed to <code><a href='env_bind.html'>env_bind_lazy()</a></code> and <code><a href='env_bind.html'>env_bind_active()</a></code> for
 consistency.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>env_bind_exprs</span>(<span class='kw'>.env</span>, <span class='kw'>...</span>, .eval_env = <span class='fu'>caller_env</span>())
+    <pre class="usage"><span class='fu'>env_bind_exprs</span>(<span class='no'>.env</span>, <span class='no'>...</span>, <span class='kw'>.eval_env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>())
 
-<span class='fu'>env_bind_fns</span>(<span class='kw'>.env</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'>env_bind_fns</span>(<span class='no'>.env</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -178,9 +178,9 @@ consistency.</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>&lt;dynamic&gt; Named objects (<code>env_bind()</code>),
-expressions <code>env_bind_lazy()</code>, or functions (<code>env_bind_active()</code>).
-Use <code>zap()</code> to remove bindings.</p></td>
+      <td><p>&lt;<a href='dyn-dots.html'>dynamic</a>&gt; Named objects (<code><a href='env_bind.html'>env_bind()</a></code>),
+expressions <code><a href='env_bind.html'>env_bind_lazy()</a></code>, or functions (<code><a href='env_bind.html'>env_bind_active()</a></code>).
+Use <code><a href='zap.html'>zap()</a></code> to remove bindings.</p></td>
     </tr>
     <tr>
       <th>.eval_env</th>
@@ -205,7 +205,7 @@ evaluated when the symbols are forced.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

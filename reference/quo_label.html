@@ -174,10 +174,10 @@ and strings is non-lossy and well defined." />
 
     <div class="ref-description">
     <p><a href='https://www.tidyverse.org/lifecycle/#questioning'><img src='figures/lifecycle-questioning.svg' alt='Questioning lifecycle'></a></p>
-<p><strong>Note:</strong> You should now use <code>as_label()</code> or <code>as_name()</code> instead
+<p><strong>Note:</strong> You should now use <code><a href='as_label.html'>as_label()</a></code> or <code><a href='as_name.html'>as_name()</a></code> instead
 of <code>quo_name()</code>. See life cycle section below.</p>
 <p>These functions take an arbitrary R object, typically an
-expression, and represent it as a string.</p><ul>
+<a href='is_expression.html'>expression</a>, and represent it as a string.</p><ul>
 <li><p><code>quo_name()</code> returns an abbreviated representation of the object
 as a single line string. It is suitable for default names.</p></li>
 <li><p><code>quo_text()</code> returns a multiline string. For instance block
@@ -188,16 +188,16 @@ for each symbol, and the curly braces on their own lines).</p></li>
 <p>These deparsers are only suitable for creating default names or
 printing output at the console. The behaviour of your functions
 should not depend on deparsed objects. If you are looking for a way
-of transforming symbols to strings, use <code>as_string()</code> instead of
+of transforming symbols to strings, use <code><a href='as_string.html'>as_string()</a></code> instead of
 <code>quo_name()</code>. Unlike deparsing, the transformation between symbols
 and strings is non-lossy and well defined.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>quo_label</span>(<span class='kw'>quo</span>)
+    <pre class="usage"><span class='fu'>quo_label</span>(<span class='no'>quo</span>)
 
-<span class='fu'>quo_text</span>(<span class='kw'>quo</span>, width = <span class='fl'>60L</span>, nlines = <span class='fl'>Inf</span>)
+<span class='fu'>quo_text</span>(<span class='no'>quo</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>60L</span>, <span class='kw'>nlines</span> <span class='kw'>=</span> <span class='fl'>Inf</span>)
 
-<span class='fu'>quo_name</span>(<span class='kw'>quo</span>)</pre>
+<span class='fu'>quo_name</span>(<span class='no'>quo</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -222,11 +222,11 @@ and strings is non-lossy and well defined.</p>
 
 
 <p>These functions are in the questioning life cycle stage.</p><ul>
-<li><p><code>as_label()</code> and <code>as_name()</code> should be used instead of
-<code>quo_name()</code>. <code>as_label()</code> transforms any R object to a string
+<li><p><code><a href='as_label.html'>as_label()</a></code> and <code><a href='as_name.html'>as_name()</a></code> should be used instead of
+<code>quo_name()</code>. <code><a href='as_label.html'>as_label()</a></code> transforms any R object to a string
 but should only be used to create a default name. Labelisation is
 not a well defined operation and no assumption should be made
-about the label. On the other hand, <code>as_name()</code> only works with
+about the label. On the other hand, <code><a href='as_name.html'>as_name()</a></code> only works with
 (possibly quosured) symbols, but is a well defined and
 deterministic operation.</p></li>
 <li><p>We don't have a good replacement for <code>quo_text()</code> yet. See
@@ -236,22 +236,22 @@ about a new deparsing API.</p></li>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>expr_label()</code>, <code>f_label()</code></p></div>
+    <div class='dont-index'><p><code><a href='expr_label.html'>expr_label()</a></code>, <code><a href='f_text.html'>f_label()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Quosures can contain nested quosures:</span>
-<span class='kw'>quo</span> <span class='op'>&lt;-</span> <span class='fu'>quo</span>(<span class='fu'>foo</span>(<span class='op'>!</span><span class='op'>!</span> <span class='fu'>quo</span>(<span class='kw'>bar</span>)))
-<span class='kw'>quo</span></div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
+<span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fu'>foo</span>(!! <span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='no'>bar</span>)))
+<span class='no'>quo</span></div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^foo(^bar)</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7f9643ee1410</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7fd960f01680</span><span></div><div class='input'>
 <span class='co'># quo_squash() unwraps all quosures and returns a raw expression:</span>
-<span class='fu'>quo_squash</span>(<span class='kw'>quo</span>)</div><div class='output co'>#&gt; foo(bar)</div><div class='input'>
+<span class='fu'><a href='quo_squash.html'>quo_squash</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; foo(bar)</div><div class='input'>
 <span class='co'># This is used by quo_text() and quo_label():</span>
-<span class='fu'>quo_text</span>(<span class='kw'>quo</span>)</div><div class='output co'>#&gt; [1] "foo(bar)"</div><div class='input'>
+<span class='fu'>quo_text</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; [1] "foo(bar)"</div><div class='input'>
 <span class='co'># Compare to the unwrapped expression:</span>
-<span class='fu'>expr_text</span>(<span class='kw'>quo</span>)</div><div class='output co'>#&gt; [1] "~foo(~bar)"</div><div class='input'>
+<span class='fu'><a href='expr_label.html'>expr_text</a></span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; [1] "~foo(~bar)"</div><div class='input'>
 <span class='co'># quo_name() is helpful when you need really short labels:</span>
-<span class='fu'>quo_name</span>(<span class='fu'>quo</span>(<span class='kw'>sym</span>))</div><div class='output co'>#&gt; [1] "sym"</div><div class='input'><span class='fu'>quo_name</span>(<span class='fu'>quo</span>(<span class='op'>!</span><span class='op'>!</span> <span class='kw'>sym</span>))</div><div class='output co'>#&gt; [1] "function (x) ..."</div></span></pre>
+<span class='fu'>quo_name</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='no'>sym</span>))</div><div class='output co'>#&gt; [1] "sym"</div><div class='input'><span class='fu'>quo_name</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(!! <span class='no'>sym</span>))</div><div class='output co'>#&gt; [1] "function (x) ..."</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -267,7 +267,7 @@ about a new deparsing API.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

@@ -163,9 +163,9 @@ character vector. All names are returned, even those starting with
 a dot. <code>env_length()</code> returns the number of bindings.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>env_names</span>(<span class='kw'>env</span>)
+    <pre class="usage"><span class='fu'>env_names</span>(<span class='no'>env</span>)
 
-<span class='fu'>env_length</span>(<span class='kw'>env</span>)</pre>
+<span class='fu'>env_length</span>(<span class='no'>env</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -185,7 +185,7 @@ a dot. <code>env_length()</code> returns the number of bindings.</p>
 
 
 <p>Technically, objects are bound to symbols rather than strings,
-since the R interpreter evaluates symbols (see <code>is_expression()</code> for a
+since the R interpreter evaluates symbols (see <code><a href='is_expression.html'>is_expression()</a></code> for a
 discussion of symbolic objects versus literal objects). However it
 is often more convenient to work with strings. In rlang
 terminology, the string corresponding to a symbol is called the
@@ -208,8 +208,8 @@ returns a UTF-8 character vector (which is fine even on Windows)
 with ASCII unicode points translated back to UTF-8.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>env</span> <span class='op'>&lt;-</span> <span class='fu'>env</span>(a = <span class='fl'>1</span>, b = <span class='fl'>2</span>)
-<span class='fu'>env_names</span>(<span class='kw'>env</span>)</div><div class='output co'>#&gt; [1] "a" "b"</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+<span class='fu'>env_names</span>(<span class='no'>env</span>)</div><div class='output co'>#&gt; [1] "a" "b"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -225,7 +225,7 @@ with ASCII unicode points translated back to UTF-8.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

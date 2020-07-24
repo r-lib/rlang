@@ -163,18 +163,18 @@ flatten_if())." />
     <div class="ref-description">
     <p>This is a tool for advanced users. It captures dots, processes
 unquoting and splicing operators, and evaluates them. Unlike
-<code>dots_list()</code>, it does not flatten spliced objects, instead they
-are attributed a <code>spliced</code> class (see <code>splice()</code>). You can process
+<code><a href='list2.html'>dots_list()</a></code>, it does not flatten spliced objects, instead they
+are attributed a <code>spliced</code> class (see <code><a href='splice.html'>splice()</a></code>). You can process
 spliced objects manually, perhaps with a custom predicate (see
-<code>flatten_if()</code>).</p>
+<code><a href='flatten.html'>flatten_if()</a></code>).</p>
     </div>
 
     <pre class="usage"><span class='fu'>dots_values</span>(
-  <span class='kw'>...</span>,
-  .ignore_empty = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
-  .preserve_empty = <span class='fl'>FALSE</span>,
-  .homonyms = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>, <span class='st'>"error"</span>),
-  .check_assign = <span class='fl'>FALSE</span>
+  <span class='no'>...</span>,
+  <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
+  <span class='kw'>.preserve_empty</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>, <span class='st'>"error"</span>),
+  <span class='kw'>.check_assign</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -194,7 +194,7 @@ last argument is ignored if it is empty.</p></td>
       <th>.preserve_empty</th>
       <td><p>Whether to preserve the empty arguments that
 were not ignored. If <code>TRUE</code>, empty arguments are stored with
-<code>missing_arg()</code> values. If <code>FALSE</code> (the default) an error is
+<code><a href='missing_arg.html'>missing_arg()</a></code> values. If <code>FALSE</code> (the default) an error is
 thrown when an empty argument is detected.</p></td>
     </tr>
     <tr>
@@ -209,7 +209,7 @@ error and indicate what arguments have duplicated names.</p></td>
       <th>.check_assign</th>
       <td><p>Whether to check for <code>&lt;-</code> calls passed in
 dots. When <code>TRUE</code> and a <code>&lt;-</code> call is detected, a warning is
-issued to advise users to use <code><a href='https://rdrr.io/r/base/assignOps.html'>=</a></code> if they meant to match a
+issued to advise users to use <code>=</code> if they meant to match a
 function parameter, or wrap the <code>&lt;-</code> call in braces otherwise.
 This ensures assignments are explicit.</p></td>
     </tr>
@@ -217,8 +217,8 @@ This ensures assignments are explicit.</p></td>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>dots</span> <span class='op'>&lt;-</span> <span class='fu'>dots_values</span>(<span class='op'>!</span><span class='op'>!</span><span class='op'>!</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>), <span class='fl'>3</span>)
-<span class='kw'>dots</span></div><div class='output co'>#&gt; [[1]]
+    <pre class="examples"><div class='input'><span class='no'>dots</span> <span class='kw'>&lt;-</span> <span class='fu'>dots_values</span>(!!! <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>), <span class='fl'>3</span>)
+<span class='no'>dots</span></div><div class='output co'>#&gt; [[1]]
 #&gt; &lt;spliced&gt;
 #&gt; [[1]]
 #&gt; [1] 1
@@ -231,7 +231,7 @@ This ensures assignments are explicit.</p></td>
 #&gt; [1] 3
 #&gt; </div><div class='input'>
 <span class='co'># Flatten the objects marked as spliced:</span>
-<span class='fu'>flatten_if</span>(<span class='kw'>dots</span>, <span class='kw'>is_spliced</span>)</div><div class='output co'>#&gt; [[1]]
+<span class='fu'><a href='flatten.html'>flatten_if</a></span>(<span class='no'>dots</span>, <span class='no'>is_spliced</span>)</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] 1
 #&gt; 
 #&gt; [[2]]
@@ -255,7 +255,7 @@ This ensures assignments are explicit.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

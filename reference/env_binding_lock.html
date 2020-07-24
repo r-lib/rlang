@@ -163,11 +163,11 @@ made to redefine the binding." />
 made to redefine the binding.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>env_binding_lock</span>(<span class='kw'>env</span>, nms = <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>env_binding_lock</span>(<span class='no'>env</span>, <span class='kw'>nms</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>env_binding_unlock</span>(<span class='kw'>env</span>, nms = <span class='kw'>NULL</span>)
+<span class='fu'>env_binding_unlock</span>(<span class='no'>env</span>, <span class='kw'>nms</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>env_binding_are_locked</span>(<span class='kw'>env</span>, nms = <span class='kw'>NULL</span>)</pre>
+<span class='fu'>env_binding_are_locked</span>(<span class='no'>env</span>, <span class='kw'>nms</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -190,16 +190,16 @@ long as <code>nms</code> and named after it. <code>env_binding_lock()</code> and
 <code>env_binding_are_unlocked()</code> invisibly.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>env_lock()</code> for locking an environment.</p></div>
+    <div class='dont-index'><p><code><a href='env_lock.html'>env_lock()</a></code> for locking an environment.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Bindings are unlocked by default:</span>
-<span class='kw'>env</span> <span class='op'>&lt;-</span> <span class='fu'>env</span>(a = <span class='st'>"A"</span>, b = <span class='st'>"B"</span>)
-<span class='fu'>env_binding_are_locked</span>(<span class='kw'>env</span>)</div><div class='output co'>#&gt;     a     b 
+<span class='no'>env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='st'>"A"</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='st'>"B"</span>)
+<span class='fu'>env_binding_are_locked</span>(<span class='no'>env</span>)</div><div class='output co'>#&gt;     a     b 
 #&gt; FALSE FALSE </div><div class='input'>
 <span class='co'># But can optionally be locked:</span>
-<span class='fu'>env_binding_lock</span>(<span class='kw'>env</span>, <span class='st'>"a"</span>)
-<span class='fu'>env_binding_are_locked</span>(<span class='kw'>env</span>)</div><div class='output co'>#&gt;     a     b 
+<span class='fu'>env_binding_lock</span>(<span class='no'>env</span>, <span class='st'>"a"</span>)
+<span class='fu'>env_binding_are_locked</span>(<span class='no'>env</span>)</div><div class='output co'>#&gt;     a     b 
 #&gt;  TRUE FALSE </div><div class='input'>
 <span class='co'># If run, the following would now return an error because `a` is locked:</span>
 <span class='co'># env_bind(env, a = "foo")</span>
@@ -207,12 +207,12 @@ long as <code>nms</code> and named after it. <code>env_binding_lock()</code> and
 
 <span class='co'># Let's unlock it. Note that the return value indicate which</span>
 <span class='co'># bindings were locked:</span>
-<span class='kw'>were_locked</span> <span class='op'>&lt;-</span> <span class='fu'>env_binding_unlock</span>(<span class='kw'>env</span>)
-<span class='kw'>were_locked</span></div><div class='output co'>#&gt;     a     b 
+<span class='no'>were_locked</span> <span class='kw'>&lt;-</span> <span class='fu'>env_binding_unlock</span>(<span class='no'>env</span>)
+<span class='no'>were_locked</span></div><div class='output co'>#&gt;     a     b 
 #&gt;  TRUE FALSE </div><div class='input'>
 <span class='co'># Now that it is unlocked we can modify it again:</span>
-<span class='fu'>env_bind</span>(<span class='kw'>env</span>, a = <span class='st'>"foo"</span>)
-<span class='fu'>with_env</span>(<span class='kw'>env</span>, <span class='kw'>a</span> <span class='op'>&lt;-</span> <span class='st'>"bar"</span>)</div><div class='output co'>#&gt; [1] "bar"</div><div class='input'><span class='kw'>env</span><span class='op'>$</span><span class='kw'>a</span></div><div class='output co'>#&gt; [1] "bar"</div></pre>
+<span class='fu'><a href='env_bind.html'>env_bind</a></span>(<span class='no'>env</span>, <span class='kw'>a</span> <span class='kw'>=</span> <span class='st'>"foo"</span>)
+<span class='fu'><a href='with_env.html'>with_env</a></span>(<span class='no'>env</span>, <span class='no'>a</span> <span class='kw'>&lt;-</span> <span class='st'>"bar"</span>)</div><div class='output co'>#&gt; [1] "bar"</div><div class='input'><span class='no'>env</span>$<span class='no'>a</span></div><div class='output co'>#&gt; [1] "bar"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -228,7 +228,7 @@ long as <code>nms</code> and named after it. <code>env_binding_lock()</code> and
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

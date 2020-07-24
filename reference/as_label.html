@@ -182,20 +182,20 @@ in a graphical plot.</p></li>
 labelling is the first step before name repair.</p></li>
 </ul>
 
-<p>See also <code>as_name()</code> for transforming symbols back to a
-string. Unlike <code>as_label()</code>, <code>as_string()</code> is a well defined
+<p>See also <code><a href='as_name.html'>as_name()</a></code> for transforming symbols back to a
+string. Unlike <code>as_label()</code>, <code><a href='as_string.html'>as_string()</a></code> is a well defined
 operation that guarantees the roundtrip symbol -&gt; string -&gt;
 symbol.</p>
 <p>In general, if you don't know for sure what kind of object you're
 dealing with (a call, a symbol, an unquoted constant), use
 <code>as_label()</code> and make no assumption about the resulting string. If
 you know you have a symbol and need the name of the object it
-refers to, use <code>as_string()</code>. For instance, use <code>as_label()</code> with
-objects captured with <code>enquo()</code> and <code>as_string()</code> with symbols
-captured with <code>ensym()</code>.</p>
+refers to, use <code><a href='as_string.html'>as_string()</a></code>. For instance, use <code>as_label()</code> with
+objects captured with <code><a href='nse-defuse.html'>enquo()</a></code> and <code><a href='as_string.html'>as_string()</a></code> with symbols
+captured with <code><a href='nse-defuse.html'>ensym()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>as_label</span>(<span class='kw'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>as_label</span>(<span class='no'>x</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -211,8 +211,8 @@ captured with <code>ensym()</code>.</p>
     
 
 <ul>
-<li><p>Quosures are squashed before being labelled.</p></li>
-<li><p>Symbols are transformed to string with <code>as_string()</code>.</p></li>
+<li><p>Quosures are <a href='quo_squash.html'>squashed</a> before being labelled.</p></li>
+<li><p>Symbols are transformed to string with <code><a href='as_string.html'>as_string()</a></code>.</p></li>
 <li><p>Calls are abbreviated.</p></li>
 <li><p>Numbers are represented as such.</p></li>
 <li><p>Other constants are represented by their type, such as <code>&lt;dbl&gt;</code>
@@ -220,21 +220,21 @@ or <code>&lt;data.frame&gt;</code>.</p></li>
 </ul>
 
 <p>Note that simple symbols should generally be transformed to strings
-with <code>as_name()</code>. Labelling is not a well defined operation and
+with <code><a href='as_name.html'>as_name()</a></code>. Labelling is not a well defined operation and
 no assumption should be made about how the label is created. On the
-other hand, <code>as_name()</code> only works with symbols and is a well
+other hand, <code><a href='as_name.html'>as_name()</a></code> only works with symbols and is a well
 defined, deterministic operation.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>as_name()</code> for transforming symbols back to a string
+    <div class='dont-index'><p><code><a href='as_name.html'>as_name()</a></code> for transforming symbols back to a string
 deterministically.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># as_label() is useful with quoted expressions:</span>
-<span class='fu'>as_label</span>(<span class='fu'>expr</span>(<span class='fu'>foo</span>(<span class='kw'>bar</span>)))</div><div class='output co'>#&gt; [1] "foo(bar)"</div><div class='input'><span class='fu'>as_label</span>(<span class='fu'>expr</span>(<span class='kw'>foobar</span>))</div><div class='output co'>#&gt; [1] "foobar"</div><div class='input'>
+<span class='fu'>as_label</span>(<span class='fu'><a href='nse-defuse.html'>expr</a></span>(<span class='fu'>foo</span>(<span class='no'>bar</span>)))</div><div class='output co'>#&gt; [1] "foo(bar)"</div><div class='input'><span class='fu'>as_label</span>(<span class='fu'><a href='nse-defuse.html'>expr</a></span>(<span class='no'>foobar</span>))</div><div class='output co'>#&gt; [1] "foobar"</div><div class='input'>
 <span class='co'># It works with any R object. This is also useful for quoted</span>
 <span class='co'># arguments because the user might unquote constant objects:</span>
-<span class='fu'>as_label</span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>)</div><div class='output co'>#&gt; [1] "&lt;int&gt;"</div><div class='input'><span class='fu'>as_label</span>(<span class='kw'>base</span>::<span class='kw'><a href='https://rdrr.io/r/base/list.html'>list</a></span>)</div><div class='output co'>#&gt; [1] "&lt;fn&gt;"</div></pre>
+<span class='fu'>as_label</span>(<span class='fl'>1</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt; [1] "&lt;int&gt;"</div><div class='input'><span class='fu'>as_label</span>(<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/r/base/list.html'>list</a></span>)</div><div class='output co'>#&gt; [1] "&lt;fn&gt;"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -250,7 +250,7 @@ deterministically.</p></div>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

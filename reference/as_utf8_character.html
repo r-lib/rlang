@@ -179,8 +179,8 @@ non-UTF-8 native encoding." />
 
     <div class="ref-description">
     <p><a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a></p>
-<p>Unlike specifying the <code>encoding</code> argument in <code>as_string()</code> and
-<code>as_character()</code>, which is only declarative, these functions
+<p>Unlike specifying the <code>encoding</code> argument in <code><a href='as_string.html'>as_string()</a></code> and
+<code><a href='vector-coercion.html'>as_character()</a></code>, which is only declarative, these functions
 actually attempt to convert the encoding of their input. There are
 two possible cases:</p><ul>
 <li><p>The string is tagged as UTF-8 or latin1, the only two encodings
@@ -198,12 +198,12 @@ the locale codeset.</p></li>
 
 <p>When translating to UTF-8, the strings are parsed for serialised
 unicode points (e.g. strings looking like "U+xxxx") with
-<code>chr_unserialise_unicode()</code>. This helps to alleviate the effects of
+<code><a href='chr_unserialise_unicode.html'>chr_unserialise_unicode()</a></code>. This helps to alleviate the effects of
 character-to-symbol-to-character roundtrips on systems with
 non-UTF-8 native encoding.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>as_utf8_character</span>(<span class='kw'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>as_utf8_character</span>(<span class='no'>x</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -218,8 +218,8 @@ non-UTF-8 native encoding.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Let's create a string marked as UTF-8 (which is guaranteed by the</span>
 <span class='co'># Unicode escaping in the string):</span>
-<span class='kw'>utf8</span> <span class='op'>&lt;-</span> <span class='st'>"caf\uE9"</span>
-<span class='fu'><a href='https://rdrr.io/r/base/Encoding.html'>Encoding</a></span>(<span class='kw'>utf8</span>)</div><div class='output co'>#&gt; [1] "UTF-8"</div><div class='input'><span class='fu'>as_bytes</span>(<span class='kw'>utf8</span>)</div><div class='output co'>#&gt; [1] 63 61 66 c3 a9</div></pre>
+<span class='no'>utf8</span> <span class='kw'>&lt;-</span> <span class='st'>"caf\uE9"</span>
+<span class='fu'><a href='https://rdrr.io/r/base/Encoding.html'>Encoding</a></span>(<span class='no'>utf8</span>)</div><div class='output co'>#&gt; [1] "UTF-8"</div><div class='input'><span class='fu'><a href='as_bytes.html'>as_bytes</a></span>(<span class='no'>utf8</span>)</div><div class='output co'>#&gt; [1] 63 61 66 c3 a9</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -235,7 +235,7 @@ non-UTF-8 native encoding.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

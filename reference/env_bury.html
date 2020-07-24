@@ -165,17 +165,17 @@ returns a new environment (or object wrapping that environment)." />
 
     <div class="ref-description">
     <p><a href='https://www.tidyverse.org/lifecycle/#superseded'><img src='figures/lifecycle-superseded.svg' alt='Superseded lifecycle'></a></p>
-<p>This function is superseded. Please use <code>env()</code> (and possibly
-<code>set_env()</code> if you're masking the bindings for another object like
+<p>This function is superseded. Please use <code><a href='env.html'>env()</a></code> (and possibly
+<code><a href='get_env.html'>set_env()</a></code> if you're masking the bindings for another object like
 a closure or a formula) instead.</p>
-<p><code>env_bury()</code> is like <code>env_bind()</code> but it creates the bindings in a
+<p><code>env_bury()</code> is like <code><a href='env_bind.html'>env_bind()</a></code> but it creates the bindings in a
 new child environment. This makes sure the new bindings have
 precedence over old ones, without altering existing environments.
-Unlike <code>env_bind()</code>, this function does not have side effects and
+Unlike <code><a href='env_bind.html'>env_bind()</a></code>, this function does not have side effects and
 returns a new environment (or object wrapping that environment).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>env_bury</span>(<span class='kw'>.env</span>, <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>env_bury</span>(<span class='no'>.env</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -186,9 +186,9 @@ returns a new environment (or object wrapping that environment).</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>&lt;dynamic&gt; Named objects (<code>env_bind()</code>),
-expressions <code>env_bind_lazy()</code>, or functions (<code>env_bind_active()</code>).
-Use <code>zap()</code> to remove bindings.</p></td>
+      <td><p>&lt;<a href='dyn-dots.html'>dynamic</a>&gt; Named objects (<code><a href='env_bind.html'>env_bind()</a></code>),
+expressions <code><a href='env_bind.html'>env_bind_lazy()</a></code>, or functions (<code><a href='env_bind.html'>env_bind_active()</a></code>).
+Use <code><a href='zap.html'>zap()</a></code> to remove bindings.</p></td>
     </tr>
     </table>
 
@@ -198,20 +198,20 @@ Use <code>zap()</code> to remove bindings.</p></td>
 bindings to <code>...</code> arguments.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>env_bind()</code>, <code>env_unbind()</code></p></div>
+    <div class='dont-index'><p><code><a href='env_bind.html'>env_bind()</a></code>, <code><a href='env_unbind.html'>env_unbind()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>orig_env</span> <span class='op'>&lt;-</span> <span class='fu'>env</span>(a = <span class='fl'>10</span>)
-<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>set_env</span>(<span class='fu'>function</span>() <span class='kw'>a</span>, <span class='kw'>orig_env</span>)
+    <pre class="examples"><div class='input'><span class='no'>orig_env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_env.html'>set_env</a></span>(<span class='kw'>function</span>() <span class='no'>a</span>, <span class='no'>orig_env</span>)
 
 <span class='co'># fn() currently sees `a` as the value `10`:</span>
 <span class='fu'>fn</span>()</div><div class='output co'>#&gt; [1] 10</div><div class='input'>
 <span class='co'># env_bury() will bury the current scope of fn() behind a new</span>
 <span class='co'># environment:</span>
-<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>env_bury</span>(<span class='kw'>fn</span>, a = <span class='fl'>1000</span>)
+<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='fu'>env_bury</span>(<span class='no'>fn</span>, <span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1000</span>)
 <span class='fu'>fn</span>()</div><div class='output co'>#&gt; [1] 1000</div><div class='input'>
 <span class='co'># Even though the symbol `a` is still defined deeper in the scope:</span>
-<span class='kw'>orig_env</span><span class='op'>$</span><span class='kw'>a</span></div><div class='output co'>#&gt; [1] 10</div></pre>
+<span class='no'>orig_env</span>$<span class='no'>a</span></div><div class='output co'>#&gt; [1] 10</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -227,7 +227,7 @@ bindings to <code>...</code> arguments.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

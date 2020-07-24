@@ -177,17 +177,17 @@ Finally, they treat attributes consistently, unlike the base R
 functions: all attributes except names are removed.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>as_logical</span>(<span class='kw'>x</span>)
+    <pre class="usage"><span class='fu'>as_logical</span>(<span class='no'>x</span>)
 
-<span class='fu'>as_integer</span>(<span class='kw'>x</span>)
+<span class='fu'>as_integer</span>(<span class='no'>x</span>)
 
-<span class='fu'>as_double</span>(<span class='kw'>x</span>)
+<span class='fu'>as_double</span>(<span class='no'>x</span>)
 
-<span class='fu'>as_complex</span>(<span class='kw'>x</span>)
+<span class='fu'>as_complex</span>(<span class='no'>x</span>)
 
-<span class='fu'>as_character</span>(<span class='kw'>x</span>, encoding = <span class='kw'>NULL</span>)
+<span class='fu'>as_character</span>(<span class='no'>x</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>as_list</span>(<span class='kw'>x</span>)</pre>
+<span class='fu'>as_list</span>(<span class='no'>x</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -215,7 +215,7 @@ declarative, no encoding conversion is performed.</p></td>
 
 <ul>
 <li><p>To logical vectors: Integer and integerish double vectors. See
-<code>is_integerish()</code>.</p></li>
+<code><a href='is_integerish.html'>is_integerish()</a></code>.</p></li>
 <li><p>To integer vectors: Logical and integerish double vectors.</p></li>
 <li><p>To double vectors: Logical and integer vectors.</p></li>
 <li><p>To complex vectors: Logical, integer and double vectors.</p></li>
@@ -226,11 +226,11 @@ declarative, no encoding conversion is performed.</p></td>
     
 
 
-<p><code>as_character()</code> and <code>as_string()</code> have an optional <code>encoding</code>
+<p><code>as_character()</code> and <code><a href='as_string.html'>as_string()</a></code> have an optional <code>encoding</code>
 argument to specify the encoding. R uses this information for
 internal handling of strings and character vectors. Note that this
 is only declarative, no encoding conversion is attempted.</p>
-<p>Note that only <code>as_string()</code> can coerce symbols to a scalar
+<p>Note that only <code><a href='as_string.html'>as_string()</a></code> can coerce symbols to a scalar
 character vector. This makes the code more explicit and adds an
 extra type check.</p>
     <h2 class="hasAnchor" id="coercion-to-lists"><a class="anchor" href="#coercion-to-lists"></a>Coercion to lists</h2>
@@ -250,7 +250,7 @@ are an example of dictionary type). Unlike <code><a href='https://rdrr.io/r/base
 that the underlying objects has to be copied. This has no
 performance implications in the case of lists because this is a
 shallow copy: only the list structure is copied, not the contents
-(see <code>duplicate()</code>). However, be aware that atomic vectors
+(see <code><a href='duplicate.html'>duplicate()</a></code>). However, be aware that atomic vectors
 containing large amounts of data will have to be copied.</p>
 <p>In general, any attribute modification creates a copy, which is why
 it is better to avoid using attributes with heavy atomic vectors.
@@ -260,35 +260,35 @@ place and has side-effects.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Coercing atomic vectors removes attributes with both base R and rlang:</span>
-<span class='kw'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/structure.html'>structure</a></span>(<span class='fl'>TRUE</span>, class = <span class='st'>"foo"</span>, bar = <span class='st'>"baz"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/logical.html'>as.logical</a></span>(<span class='kw'>x</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/structure.html'>structure</a></span>(<span class='fl'>TRUE</span>, <span class='kw'>class</span> <span class='kw'>=</span> <span class='st'>"foo"</span>, <span class='kw'>bar</span> <span class='kw'>=</span> <span class='st'>"baz"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/logical.html'>as.logical</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># But coercing lists preserves attributes in base R but not rlang:</span>
-<span class='kw'>l</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/structure.html'>structure</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>TRUE</span>), class = <span class='st'>"foo"</span>, bar = <span class='st'>"baz"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/list.html'>as.list</a></span>(<span class='kw'>l</span>)</div><div class='output co'>#&gt; [[1]]
+<span class='no'>l</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/structure.html'>structure</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>TRUE</span>), <span class='kw'>class</span> <span class='kw'>=</span> <span class='st'>"foo"</span>, <span class='kw'>bar</span> <span class='kw'>=</span> <span class='st'>"baz"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/list.html'>as.list</a></span>(<span class='no'>l</span>)</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] TRUE
 #&gt; 
 #&gt; attr(,"class")
 #&gt; [1] "foo"
 #&gt; attr(,"bar")
-#&gt; [1] "baz"</div><div class='input'><span class='fu'>as_list</span>(<span class='kw'>l</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: `as_list()` is deprecated as of rlang 0.4.0</span>
+#&gt; [1] "baz"</div><div class='input'><span class='fu'>as_list</span>(<span class='no'>l</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: `as_list()` is deprecated as of rlang 0.4.0</span>
 #&gt; <span class='warning'>Please use `vctrs::vec_cast()` instead.</span>
 #&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once per session.</span><span></span></div><div class='output co'>#&gt; [[1]]
 #&gt; [1] TRUE
 #&gt; </div><div class='input'>
 <span class='co'># Implicit conversions are performed in base R but not rlang:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/logical.html'>as.logical</a></span>(<span class='kw'>l</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'>as_logical</span>(<span class='kw'>l</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/logical.html'>as.logical</a></span>(<span class='no'>l</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'>as_logical</span>(<span class='no'>l</span>)
 }
 
 <span class='co'># Conversion methods are bypassed, making the result of the</span>
 <span class='co'># coercion more predictable:</span>
-<span class='kw'>as.list.foo</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>x</span>) <span class='st'>"wrong"</span>
-<span class='fu'><a href='https://rdrr.io/r/base/list.html'>as.list</a></span>(<span class='kw'>l</span>)</div><div class='output co'>#&gt; [1] "wrong"</div><div class='input'><span class='fu'>as_list</span>(<span class='kw'>l</span>)</div><div class='output co'>#&gt; [[1]]
+<span class='no'>as.list.foo</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='st'>"wrong"</span>
+<span class='fu'><a href='https://rdrr.io/r/base/list.html'>as.list</a></span>(<span class='no'>l</span>)</div><div class='output co'>#&gt; [1] "wrong"</div><div class='input'><span class='fu'>as_list</span>(<span class='no'>l</span>)</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] TRUE
 #&gt; </div><div class='input'>
 <span class='co'># The input is never parsed. E.g. character vectors of numbers are</span>
 <span class='co'># not converted to numeric types:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span>(<span class='st'>"33"</span>)</div><div class='output co'>#&gt; [1] 33</div><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span>(<span class='st'>"33"</span>)</div><div class='output co'>#&gt; [1] 33</div><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='fu'>as_integer</span>(<span class='st'>"33"</span>)
 }
 
@@ -296,9 +296,9 @@ place and has side-effects.</p>
 <span class='co'># With base R tools there is no way to convert an environment to a</span>
 <span class='co'># list without either triggering method dispatch, or changing the</span>
 <span class='co'># original environment. as_list() makes it easy:</span>
-<span class='kw'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/structure.html'>structure</a></span>(<span class='fu'>as_environment</span>(<span class='kw'>mtcars</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>]), class = <span class='st'>"foobar"</span>)
-<span class='kw'>as.list.foobar</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>x</span>) <span class='fu'>abort</span>(<span class='st'>"dont call me"</span>)
-<span class='fu'>as_list</span>(<span class='kw'>x</span>)</div><div class='output co'>#&gt; $cyl
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/structure.html'>structure</a></span>(<span class='fu'><a href='as_environment.html'>as_environment</a></span>(<span class='no'>mtcars</span>[<span class='fl'>1</span>:<span class='fl'>2</span>]), <span class='kw'>class</span> <span class='kw'>=</span> <span class='st'>"foobar"</span>)
+<span class='no'>as.list.foobar</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'><a href='abort.html'>abort</a></span>(<span class='st'>"dont call me"</span>)
+<span class='fu'>as_list</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; $cyl
 #&gt;  [1] 6 6 4 6 8 6 8 4 4 6 6 8 8 8 8 8 8 4 4 4 4 8 8 8 8 4 4 4 8 6 8 4
 #&gt; 
 #&gt; $mpg
@@ -321,7 +321,7 @@ place and has side-effects.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

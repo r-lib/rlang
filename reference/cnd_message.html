@@ -184,20 +184,20 @@ footer return empty character vectors. In general, methods for
 these generics should return a character vector. The elements are
 combined into a single string with a newline separator.</p>
 <p><code>cnd_message()</code> is automatically called by the <code><a href='https://rdrr.io/r/base/conditions.html'>conditionMessage()</a></code>
-for rlang errors. Error classes created with <code>abort()</code> only need to
+for rlang errors. Error classes created with <code><a href='abort.html'>abort()</a></code> only need to
 implement header, body or footer methods. This provides a lot of
 flexibility for hierarchies of error classes, for instance you
 could inherit the body of an error message from a parent class
 while overriding the header and footer.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cnd_message</span>(<span class='kw'>cnd</span>)
+    <pre class="usage"><span class='fu'>cnd_message</span>(<span class='no'>cnd</span>)
 
-<span class='fu'>cnd_header</span>(<span class='kw'>cnd</span>, <span class='kw'>...</span>)
+<span class='fu'>cnd_header</span>(<span class='no'>cnd</span>, <span class='no'>...</span>)
 
-<span class='fu'>cnd_body</span>(<span class='kw'>cnd</span>, <span class='kw'>...</span>)
+<span class='fu'>cnd_body</span>(<span class='no'>cnd</span>, <span class='no'>...</span>)
 
-<span class='fu'>cnd_footer</span>(<span class='kw'>cnd</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'>cnd_footer</span>(<span class='no'>cnd</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -225,7 +225,7 @@ between overspecifying your error class hierarchies with one class
 per state, or replicating the type-checking control flow within the
 <code>cnd_body()</code> method. None of these options are ideal.</p>
 <p>A better option is to define a <code>body</code> field in your error object
-containing a static string, a lambda-formula, or a
+containing a static string, a <a href='as_function.html'>lambda-formula</a>, or a
 function with the same signature as <code>cnd_body()</code>. This field
 overrides the <code>cnd_body()</code> generic and makes it easy to generate an
 error message tailored to the state in which the error was
@@ -246,7 +246,7 @@ constructed.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

@@ -178,8 +178,8 @@ along the way to function parameters.</p></li>
 </ul>
 
 <p>Dynamic dots offer a few additional features:</p><ol>
-<li><p>You can <strong>splice</strong> arguments saved in a list with the big bang operator <code>!!!</code>.</p></li>
-<li><p>You can <strong>unquote</strong> names by using the bang bang
+<li><p>You can <strong>splice</strong> arguments saved in a list with the <a href='nse-force.html'>big bang</a> operator <code>!!!</code>.</p></li>
+<li><p>You can <strong>unquote</strong> names by using the <a href='nse-force.html'>bang bang</a>
 operator <code>!!</code> on the left-hand side of <code>:=</code>.</p></li>
 <li><p>Trailing commas are ignored, making it easier to copy and paste
 lines of arguments.</p></li>
@@ -195,36 +195,36 @@ lines of arguments.</p></li>
 
 
 <p>If your function takes dots, adding support for dynamic features is
-as easy as collecting the dots with <code>list2()</code> instead of <code><a href='https://rdrr.io/r/base/list.html'>list()</a></code>.</p>
-<p>Other dynamic dots collectors are <code>dots_list()</code>, which is more
-configurable than <code>list2()</code>, <code>vars()</code> which doesn't force its
-arguments, and <code>call2()</code> for creating calls.</p>
+as easy as collecting the dots with <code><a href='list2.html'>list2()</a></code> instead of <code><a href='https://rdrr.io/r/base/list.html'>list()</a></code>.</p>
+<p>Other dynamic dots collectors are <code><a href='list2.html'>dots_list()</a></code>, which is more
+configurable than <code><a href='list2.html'>list2()</a></code>, <code>vars()</code> which doesn't force its
+arguments, and <code><a href='call2.html'>call2()</a></code> for creating calls.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>f</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>...</span>) {
-  <span class='kw'>out</span> <span class='op'>&lt;-</span> <span class='fu'>list2</span>(<span class='kw'>...</span>)
-  <span class='fu'><a href='https://rdrr.io/r/base/rev.html'>rev</a></span>(<span class='kw'>out</span>)
+    <pre class="examples"><div class='input'><span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>...</span>) {
+  <span class='no'>out</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='list2.html'>list2</a></span>(<span class='no'>...</span>)
+  <span class='fu'><a href='https://rdrr.io/r/base/rev.html'>rev</a></span>(<span class='no'>out</span>)
 }
 
 <span class='co'># Splice</span>
-<span class='kw'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(alpha = <span class='st'>"first"</span>, omega = <span class='st'>"last"</span>)
-<span class='fu'>f</span>(<span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='kw'>x</span>)</div><div class='output co'>#&gt; $omega
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>alpha</span> <span class='kw'>=</span> <span class='st'>"first"</span>, <span class='kw'>omega</span> <span class='kw'>=</span> <span class='st'>"last"</span>)
+<span class='fu'>f</span>(!!!<span class='no'>x</span>)</div><div class='output co'>#&gt; $omega
 #&gt; [1] "last"
 #&gt; 
 #&gt; $alpha
 #&gt; [1] "first"
 #&gt; </div><div class='input'>
 <span class='co'># Unquote a name, showing both the `!!` bang bang and `{}` glue style</span>
-<span class='kw'>nm</span> <span class='op'>&lt;-</span> <span class='st'>"key"</span>
-<span class='fu'>f</span>(<span class='op'>!</span><span class='op'>!</span><span class='kw'>nm</span> <span class='op'>:=</span> <span class='st'>"value"</span>)</div><div class='output co'>#&gt; $key
+<span class='no'>nm</span> <span class='kw'>&lt;-</span> <span class='st'>"key"</span>
+<span class='fu'>f</span>(!!<span class='no'>nm</span> <span class='kw'>:=</span> <span class='st'>"value"</span>)</div><div class='output co'>#&gt; $key
 #&gt; [1] "value"
-#&gt; </div><div class='input'><span class='fu'>f</span>(<span class='st'>"{nm}"</span> <span class='op'>:=</span> <span class='st'>"value"</span>)</div><div class='output co'>#&gt; $key
+#&gt; </div><div class='input'><span class='fu'>f</span>(<span class='st'>"{nm}"</span> <span class='kw'>:=</span> <span class='st'>"value"</span>)</div><div class='output co'>#&gt; $key
 #&gt; [1] "value"
-#&gt; </div><div class='input'><span class='fu'>f</span>(<span class='st'>"prefix_{nm}"</span> <span class='op'>:=</span> <span class='st'>"value"</span>)</div><div class='output co'>#&gt; $prefix_key
+#&gt; </div><div class='input'><span class='fu'>f</span>(<span class='st'>"prefix_{nm}"</span> <span class='kw'>:=</span> <span class='st'>"value"</span>)</div><div class='output co'>#&gt; $prefix_key
 #&gt; [1] "value"
 #&gt; </div><div class='input'>
 <span class='co'># Tolerate a trailing comma</span>
-<span class='fu'>f</span>(this = <span class='st'>"that"</span>, )</div><div class='output co'>#&gt; $this
+<span class='fu'>f</span>(<span class='kw'>this</span> <span class='kw'>=</span> <span class='st'>"that"</span>, )</div><div class='output co'>#&gt; $this
 #&gt; [1] "that"
 #&gt; </div></pre>
   </div>
@@ -242,7 +242,7 @@ arguments, and <code>call2()</code> for creating calls.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

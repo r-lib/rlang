@@ -178,13 +178,13 @@ values and throw errors if you try to access non-existent values.
 evaluation framework. Like <code><a href='https://rdrr.io/r/base/eval.html'>eval()</a></code> it accepts user data as
 argument. Whereas <code><a href='https://rdrr.io/r/base/eval.html'>eval()</a></code> simply transforms the data to an
 environment, <code>eval_tidy()</code> transforms it to a <strong>data mask</strong> with
-<code>as_data_mask()</code>. Evaluating in a data mask enables the following
+<code><a href='as_data_mask.html'>as_data_mask()</a></code>. Evaluating in a data mask enables the following
 features:</p><ul>
-<li><p>Quosures. Quosures are expressions bundled with an
+<li><p><a href='nse-defuse.html'>Quosures</a>. Quosures are expressions bundled with an
 environment. If <code>data</code> is supplied, objects in the data mask
 always have precedence over the quosure environment, i.e. the
 data masks the environment.</p></li>
-<li><p>Pronouns. If <code>data</code> is supplied, the <code>.env</code> and <code>.data</code>
+<li><p><a href='tidyeval-data.html'>Pronouns</a>. If <code>data</code> is supplied, the <code>.env</code> and <code>.data</code>
 pronouns are installed in the data mask. <code>.env</code> is a reference to
 the calling environment and <code>.data</code> refers to the <code>data</code> argument.
 These pronouns lets you be explicit about where to find
@@ -193,7 +193,7 @@ values and throw errors if you try to access non-existent values.</p></li>
 
     </div>
 
-    <pre class="usage"><span class='fu'>eval_tidy</span>(<span class='kw'>expr</span>, data = <span class='kw'>NULL</span>, env = <span class='fu'>caller_env</span>())</pre>
+    <pre class="usage"><span class='fu'>eval_tidy</span>(<span class='no'>expr</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>())</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -205,8 +205,8 @@ values and throw errors if you try to access non-existent values.</p></li>
     <tr>
       <th>data</th>
       <td><p>A data frame, or named list or vector. Alternatively, a
-data mask created with <code>as_data_mask()</code> or
-<code>new_data_mask()</code>. Objects in <code>data</code> have priority over those in
+data mask created with <code><a href='as_data_mask.html'>as_data_mask()</a></code> or
+<code><a href='as_data_mask.html'>new_data_mask()</a></code>. Objects in <code>data</code> have priority over those in
 <code>env</code>. See the section about data masking.</p></td>
     </tr>
     <tr>
@@ -226,15 +226,15 @@ their own environments.</p></td>
 priority over objects defined in <code>env</code> (or in the quosure
 environment, if applicable). If there is a column <code>var</code> in <code>data</code>
 and an object <code>var</code> in <code>env</code>, and <code>expr</code> refers to <code>var</code>, the
-column has priority:</p><pre><span class='kw'>var</span> <span class='op'>&lt;-</span> <span class='st'>"this one?"</span>
-<span class='kw'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(var = <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"Or that one?"</span>, <span class='fl'>3</span>))
+column has priority:</p><pre><span class='no'>var</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='st'>"this one?"</span>
+<span class='no'>data</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>var</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"Or that one?"</span>, <span class='fl'>3</span>))
 
-<span class='kw'>within</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>data</span>, <span class='kw'>expr</span>) {
-  <span class='fu'>eval_tidy</span>(<span class='fu'>enquo</span>(<span class='kw'>expr</span>), <span class='kw'>data</span>)
+<span class='no'>within</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='kw'>function</span>(<span class='no'>data</span>, <span class='no'>expr</span>) {
+  <span class='fu'>eval_tidy</span>(<span class='fu'><a href='nse-defuse.html'>enquo</a></span>(<span class='no'>expr</span>), <span class='no'>data</span>)
 }
 
-<span class='fu'><a href='https://rdrr.io/r/base/with.html'>within</a></span>(<span class='kw'>data</span>, <span class='fu'><a href='https://rdrr.io/r/base/chartr.html'>toupper</a></span>(<span class='kw'>var</span>))
-<span class='co'>#&gt; [1] "OR THAT ONE?" "OR THAT ONE?" "OR THAT ONE?"</span></pre>
+<span class='fu'><a href='https://rdrr.io/r/base/with.html'>within</a></span>(<span class='no'>data</span>, <span class='fu'><a href='https://rdrr.io/r/base/chartr.html'>toupper</a></span>(<span class='no'>var</span>))
+<span class='co'>#&amp;gt; [1] "OR THAT ONE?" "OR THAT ONE?" "OR THAT ONE?"</span></pre>
 
 <p>Because the columns or objects in <code>data</code> are always found first,
 before objects from <code>env</code>, we say that the data "masks" the
@@ -250,21 +250,21 @@ the <code>.data</code> pronoun, or when you need to support quosures.</p>
 <p>If you're evaluating an expression captured with quasiquotation
 support, it is recommended to use <code>eval_tidy()</code> because users will
 likely unquote quosures.</p>
-<p>Note that unwrapping a quosure with <code>quo_get_expr()</code> does not
+<p>Note that unwrapping a quosure with <code><a href='quosure.html'>quo_get_expr()</a></code> does not
 guarantee that there is no quosures inside the expression. Quosures
 might be unquoted anywhere. For instance, the following does not
-work reliably in the presence of nested quosures:</p><pre><span class='kw'>my_quoting_fn</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>x</span>) {
-  <span class='kw'>x</span> <span class='op'>&lt;-</span> <span class='fu'>enquo</span>(<span class='kw'>x</span>)
-  <span class='kw'>expr</span> <span class='op'>&lt;-</span> <span class='fu'>quo_get_expr</span>(<span class='kw'>x</span>)
-  <span class='kw'>env</span> <span class='op'>&lt;-</span> <span class='fu'>quo_get_env</span>(<span class='kw'>x</span>)
-  <span class='fu'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span>(<span class='kw'>expr</span>, <span class='kw'>env</span>)
+work reliably in the presence of nested quosures:</p><pre><span class='no'>my_quoting_fn</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='kw'>function</span>(<span class='no'>x</span>) {
+  <span class='no'>x</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='fu'><a href='nse-defuse.html'>enquo</a></span>(<span class='no'>x</span>)
+  <span class='no'>expr</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='fu'><a href='quosure.html'>quo_get_expr</a></span>(<span class='no'>x</span>)
+  <span class='no'>env</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='fu'><a href='quosure.html'>quo_get_env</a></span>(<span class='no'>x</span>)
+  <span class='fu'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span>(<span class='no'>expr</span>, <span class='no'>env</span>)
 }
 
 <span class='co'># Works:</span>
-<span class='fu'>my_quoting_fn</span>(<span class='fu'><a href='https://rdrr.io/r/base/chartr.html'>toupper</a></span>(<span class='kw'>letters</span>))
+<span class='fu'>my_quoting_fn</span>(<span class='fu'><a href='https://rdrr.io/r/base/chartr.html'>toupper</a></span>(<span class='no'>letters</span>))
 
 <span class='co'># Fails because of a nested quosure:</span>
-<span class='fu'>my_quoting_fn</span>(<span class='fu'><a href='https://rdrr.io/r/base/chartr.html'>toupper</a></span>(<span class='op'>!</span><span class='op'>!</span><span class='fu'>quo</span>(<span class='kw'>letters</span>)))</pre>
+<span class='fu'>my_quoting_fn</span>(<span class='fu'><a href='https://rdrr.io/r/base/chartr.html'>toupper</a></span>(!!<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='no'>letters</span>)))</pre>
 
     <h2 class="hasAnchor" id="stack-semantics-of-eval-tidy-"><a class="anchor" href="#stack-semantics-of-eval-tidy-"></a>Stack semantics of <code>eval_tidy()</code></h2>
 
@@ -280,7 +280,7 @@ defined by <code><a href='https://rdrr.io/r/base/sys.parent.html'>sys.parent()</
 session with <code>lobstr::cst()</code>).</p></li>
 </ul>
 
-<p>See also <code>eval_bare()</code> for more information about these differences.</p>
+<p>See also <code><a href='eval_bare.html'>eval_bare()</a></code> for more information about these differences.</p>
     <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
 
     
@@ -288,31 +288,31 @@ session with <code>lobstr::cst()</code>).</p></li>
 
 <p><strong>rlang 0.3.0</strong></p>
 <p>Passing an environment to <code>data</code> is deprecated. Please construct an
-rlang data mask with <code>new_data_mask()</code>.</p>
+rlang data mask with <code><a href='as_data_mask.html'>new_data_mask()</a></code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>nse-force for the second leg of the tidy evaluation
+    <div class='dont-index'><p><a href='nse-force.html'>nse-force</a> for the second leg of the tidy evaluation
 framework.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='co'># With simple quoted expressions eval_tidy() works the same way as</span>
 <span class='co'># eval():</span>
-<span class='kw'>apple</span> <span class='op'>&lt;-</span> <span class='st'>"apple"</span>
-<span class='kw'>kiwi</span> <span class='op'>&lt;-</span> <span class='st'>"kiwi"</span>
-<span class='kw'>expr</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='kw'>apple</span>, <span class='kw'>kiwi</span>))
-<span class='kw'>expr</span></div><div class='output co'>#&gt; paste(apple, kiwi)</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span>(<span class='kw'>expr</span>)</div><div class='output co'>#&gt; [1] "apple kiwi"</div><div class='input'><span class='fu'>eval_tidy</span>(<span class='kw'>expr</span>)</div><div class='output co'>#&gt; [1] "apple kiwi"</div><div class='input'>
+<span class='no'>apple</span> <span class='kw'>&lt;-</span> <span class='st'>"apple"</span>
+<span class='no'>kiwi</span> <span class='kw'>&lt;-</span> <span class='st'>"kiwi"</span>
+<span class='no'>expr</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='no'>apple</span>, <span class='no'>kiwi</span>))
+<span class='no'>expr</span></div><div class='output co'>#&gt; paste(apple, kiwi)</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span>(<span class='no'>expr</span>)</div><div class='output co'>#&gt; [1] "apple kiwi"</div><div class='input'><span class='fu'>eval_tidy</span>(<span class='no'>expr</span>)</div><div class='output co'>#&gt; [1] "apple kiwi"</div><div class='input'>
 <span class='co'># Both accept a data mask as argument:</span>
-<span class='kw'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(apple = <span class='st'>"CARROT"</span>, kiwi = <span class='st'>"TOMATO"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span>(<span class='kw'>expr</span>, <span class='kw'>data</span>)</div><div class='output co'>#&gt; [1] "CARROT TOMATO"</div><div class='input'><span class='fu'>eval_tidy</span>(<span class='kw'>expr</span>, <span class='kw'>data</span>)</div><div class='output co'>#&gt; [1] "CARROT TOMATO"</div><div class='input'>
+<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>apple</span> <span class='kw'>=</span> <span class='st'>"CARROT"</span>, <span class='kw'>kiwi</span> <span class='kw'>=</span> <span class='st'>"TOMATO"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span>(<span class='no'>expr</span>, <span class='no'>data</span>)</div><div class='output co'>#&gt; [1] "CARROT TOMATO"</div><div class='input'><span class='fu'>eval_tidy</span>(<span class='no'>expr</span>, <span class='no'>data</span>)</div><div class='output co'>#&gt; [1] "CARROT TOMATO"</div><div class='input'>
 
 <span class='co'># In addition eval_tidy() has support for quosures:</span>
-<span class='kw'>with_data</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>data</span>, <span class='kw'>expr</span>) {
-  <span class='kw'>quo</span> <span class='op'>&lt;-</span> <span class='fu'>enquo</span>(<span class='kw'>expr</span>)
-  <span class='fu'>eval_tidy</span>(<span class='kw'>quo</span>, <span class='kw'>data</span>)
+<span class='no'>with_data</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>data</span>, <span class='no'>expr</span>) {
+  <span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='nse-defuse.html'>enquo</a></span>(<span class='no'>expr</span>)
+  <span class='fu'>eval_tidy</span>(<span class='no'>quo</span>, <span class='no'>data</span>)
 }
-<span class='fu'>with_data</span>(<span class='kw'>NULL</span>, <span class='kw'>apple</span>)</div><div class='output co'>#&gt; [1] "apple"</div><div class='input'><span class='fu'>with_data</span>(<span class='kw'>data</span>, <span class='kw'>apple</span>)</div><div class='output co'>#&gt; [1] "CARROT"</div><div class='input'><span class='fu'>with_data</span>(<span class='kw'>data</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>apple</span>, <span class='kw'>kiwi</span>))</div><div class='output co'>#&gt; [[1]]
+<span class='fu'>with_data</span>(<span class='kw'>NULL</span>, <span class='no'>apple</span>)</div><div class='output co'>#&gt; [1] "apple"</div><div class='input'><span class='fu'>with_data</span>(<span class='no'>data</span>, <span class='no'>apple</span>)</div><div class='output co'>#&gt; [1] "CARROT"</div><div class='input'><span class='fu'>with_data</span>(<span class='no'>data</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>apple</span>, <span class='no'>kiwi</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] "CARROT"
 #&gt; 
 #&gt; [[2]]
@@ -320,7 +320,7 @@ framework.</p></div>
 #&gt; </div><div class='input'>
 <span class='co'># Secondly eval_tidy() installs handy pronouns that allow users to</span>
 <span class='co'># be explicit about where to find symbols:</span>
-<span class='fu'>with_data</span>(<span class='kw'>data</span>, <span class='kw'>.data</span><span class='op'>$</span><span class='kw'>apple</span>)</div><div class='output co'>#&gt; [1] "CARROT"</div><div class='input'><span class='fu'>with_data</span>(<span class='kw'>data</span>, <span class='kw'>.env</span><span class='op'>$</span><span class='kw'>apple</span>)</div><div class='output co'>#&gt; [1] "apple"</div><div class='input'>
+<span class='fu'>with_data</span>(<span class='no'>data</span>, <span class='no'>.data</span>$<span class='no'>apple</span>)</div><div class='output co'>#&gt; [1] "CARROT"</div><div class='input'><span class='fu'>with_data</span>(<span class='no'>data</span>, <span class='no'>.env</span>$<span class='no'>apple</span>)</div><div class='output co'>#&gt; [1] "apple"</div><div class='input'>
 
 <span class='co'># Note that instead of using `.env` it is often equivalent and may</span>
 <span class='co'># be preferred to unquote a value. There are two differences. First</span>
@@ -333,9 +333,9 @@ framework.</p></div>
 <span class='co'># currently (as of v1.5.0) evaluates its operands in a *child* of</span>
 <span class='co'># the current environment (this child environment is where it</span>
 <span class='co'># defines the pronoun `.`).</span>
-<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-  <span class='kw'>data</span> <span class='op'>%&gt;%</span> <span class='fu'>with_data</span>(<span class='op'>!</span><span class='op'>!</span><span class='kw'>kiwi</span>)     <span class='co'># "kiwi"</span>
-  <span class='kw'>data</span> <span class='op'>%&gt;%</span> <span class='fu'>with_data</span>(<span class='kw'>.env</span><span class='op'>$</span><span class='kw'>kiwi</span>)  <span class='co'># NULL</span>
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+  <span class='no'>data</span> <span class='kw'>%&gt;%</span> <span class='fu'>with_data</span>(!!<span class='no'>kiwi</span>)     <span class='co'># "kiwi"</span>
+  <span class='no'>data</span> <span class='kw'>%&gt;%</span> <span class='fu'>with_data</span>(<span class='no'>.env</span>$<span class='no'>kiwi</span>)  <span class='co'># NULL</span>
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -352,7 +352,7 @@ framework.</p></div>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

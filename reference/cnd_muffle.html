@@ -160,14 +160,14 @@ being called for that condition." />
     </div>
 
     <div class="ref-description">
-    <p>Unlike <code>exiting()</code> handlers, <code>calling()</code> handlers must be explicit
+    <p>Unlike <code><a href='exiting.html'>exiting()</a></code> handlers, <code><a href='with_handlers.html'>calling()</a></code> handlers must be explicit
 that they have handled a condition to stop it from propagating to
 other handlers. Use <code>cnd_muffle()</code> within a calling handler (or as
 a calling handler, see examples) to prevent any other handlers from
 being called for that condition.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cnd_muffle</span>(<span class='kw'>cnd</span>)</pre>
+    <pre class="usage"><span class='fu'>cnd_muffle</span>(<span class='no'>cnd</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -194,7 +194,7 @@ conditions:</p><ul>
 <li><p><code>warning</code> and <code>message</code> conditions. In this case <code>cnd_muffle()</code>
 is equivalent to <code><a href='https://rdrr.io/r/base/message.html'>base::suppressMessages()</a></code> and
 <code><a href='https://rdrr.io/r/base/warning.html'>base::suppressWarnings()</a></code>.</p></li>
-<li><p>Bare conditions signalled with <code>signal()</code> or <code>cnd_signal()</code>. Note
+<li><p>Bare conditions signalled with <code><a href='abort.html'>signal()</a></code> or <code><a href='cnd_signal.html'>cnd_signal()</a></code>. Note
 that conditions signalled with <code><a href='https://rdrr.io/r/base/conditions.html'>base::signalCondition()</a></code> are not
 mufflable.</p></li>
 <li><p>Interrupts are sometimes signalled with a <code>resume</code> restart on
@@ -207,26 +207,26 @@ with <code><a href='https://rdrr.io/r/base/conditions.html'>base::findRestart("r
 you will cause a new error to be signalled.</p><ul>
 <li><p>Errors are not mufflable since they are signalled in critical
 situations where execution cannot continue safely.</p></li>
-<li><p>Conditions captured with <code><a href='https://rdrr.io/r/base/conditions.html'>base::tryCatch()</a></code>, <code>with_handlers()</code> or
-<code>catch_cnd()</code> are no longer mufflable. Muffling restarts <em>must</em>
-be called from a calling handler.</p></li>
+<li><p>Conditions captured with <code><a href='https://rdrr.io/r/base/conditions.html'>base::tryCatch()</a></code>, <code><a href='with_handlers.html'>with_handlers()</a></code> or
+<code><a href='catch_cnd.html'>catch_cnd()</a></code> are no longer mufflable. Muffling restarts <em>must</em>
+be called from a <a href='with_handlers.html'>calling</a> handler.</p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() {
-  <span class='fu'>inform</span>(<span class='st'>"Beware!"</span>, <span class='st'>"my_particular_msg"</span>)
-  <span class='fu'>inform</span>(<span class='st'>"On your guard!"</span>)
+    <pre class="examples"><div class='input'><span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
+  <span class='fu'><a href='abort.html'>inform</a></span>(<span class='st'>"Beware!"</span>, <span class='st'>"my_particular_msg"</span>)
+  <span class='fu'><a href='abort.html'>inform</a></span>(<span class='st'>"On your guard!"</span>)
   <span class='st'>"foobar"</span>
 }
 
 <span class='co'># Let's install a muffling handler for the condition thrown by `fn()`.</span>
 <span class='co'># This will suppress all `my_particular_wng` warnings but let other</span>
 <span class='co'># types of warnings go through:</span>
-<span class='fu'>with_handlers</span>(<span class='fu'>fn</span>(),
-  my_particular_msg = <span class='fu'>calling</span>(<span class='fu'>function</span>(<span class='kw'>cnd</span>) {
-    <span class='fu'>inform</span>(<span class='st'>"Dealt with this particular message"</span>)
-    <span class='fu'>cnd_muffle</span>(<span class='kw'>cnd</span>)
+<span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(<span class='fu'>fn</span>(),
+  <span class='kw'>my_particular_msg</span> <span class='kw'>=</span> <span class='fu'><a href='with_handlers.html'>calling</a></span>(<span class='kw'>function</span>(<span class='no'>cnd</span>) {
+    <span class='fu'><a href='abort.html'>inform</a></span>(<span class='st'>"Dealt with this particular message"</span>)
+    <span class='fu'>cnd_muffle</span>(<span class='no'>cnd</span>)
   })
 )</div><div class='output co'>#&gt; <span class='message'>Dealt with this particular message</span></div><div class='output co'>#&gt; <span class='message'>On your guard!</span></div><div class='output co'>#&gt; [1] "foobar"</div><div class='input'>
 <span class='co'># Note how execution of `fn()` continued normally after dealing</span>
@@ -234,8 +234,8 @@ be called from a calling handler.</p></li>
 
 <span class='co'># cnd_muffle() can also be passed to with_handlers() as a calling</span>
 <span class='co'># handler:</span>
-<span class='fu'>with_handlers</span>(<span class='fu'>fn</span>(),
-  my_particular_msg = <span class='fu'>calling</span>(<span class='kw'>cnd_muffle</span>)
+<span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(<span class='fu'>fn</span>(),
+  <span class='kw'>my_particular_msg</span> <span class='kw'>=</span> <span class='fu'><a href='with_handlers.html'>calling</a></span>(<span class='no'>cnd_muffle</span>)
 )</div><div class='output co'>#&gt; <span class='message'>On your guard!</span></div><div class='output co'>#&gt; [1] "foobar"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -252,7 +252,7 @@ be called from a calling handler.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

@@ -179,9 +179,9 @@ values. It is a simple wrapper around <code>local_bindings()</code>.</p></li>
 
     </div>
 
-    <pre class="usage"><span class='fu'>local_bindings</span>(<span class='kw'>...</span>, .env = <span class='kw'>.frame</span>, .frame = <span class='fu'>caller_env</span>())
+    <pre class="usage"><span class='fu'>local_bindings</span>(<span class='no'>...</span>, <span class='kw'>.env</span> <span class='kw'>=</span> <span class='no'>.frame</span>, <span class='kw'>.frame</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>())
 
-<span class='fu'>with_bindings</span>(<span class='kw'>.expr</span>, <span class='kw'>...</span>, .env = <span class='fu'>caller_env</span>())</pre>
+<span class='fu'>with_bindings</span>(<span class='no'>.expr</span>, <span class='no'>...</span>, <span class='kw'>.env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>())</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -213,11 +213,11 @@ stack, bindings are switched back to their original values.</p></td>
 invisibly; <code>with_bindings()</code> returns the value of <code>expr</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>foo</span> <span class='op'>&lt;-</span> <span class='st'>"foo"</span>
-<span class='kw'>bar</span> <span class='op'>&lt;-</span> <span class='st'>"bar"</span>
+    <pre class="examples"><div class='input'><span class='no'>foo</span> <span class='kw'>&lt;-</span> <span class='st'>"foo"</span>
+<span class='no'>bar</span> <span class='kw'>&lt;-</span> <span class='st'>"bar"</span>
 
 <span class='co'># `foo` will be temporarily rebinded while executing `expr`</span>
-<span class='fu'>with_bindings</span>(<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='kw'>foo</span>, <span class='kw'>bar</span>), foo = <span class='st'>"rebinded"</span>)</div><div class='output co'>#&gt; [1] "rebinded bar"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='kw'>foo</span>, <span class='kw'>bar</span>)</div><div class='output co'>#&gt; [1] "foo bar"</div></pre>
+<span class='fu'>with_bindings</span>(<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='no'>foo</span>, <span class='no'>bar</span>), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"rebinded"</span>)</div><div class='output co'>#&gt; [1] "rebinded bar"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='no'>foo</span>, <span class='no'>bar</span>)</div><div class='output co'>#&gt; [1] "foo bar"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -233,7 +233,7 @@ invisibly; <code>with_bindings()</code> returns the value of <code>expr</code>.<
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

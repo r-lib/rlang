@@ -160,12 +160,12 @@ value compared to using parse_expr() with new_quosure()." />
     <div class="ref-description">
     <p><a href='https://www.tidyverse.org/lifecycle/#questioning'><img src='figures/lifecycle-questioning.svg' alt='Questioning lifecycle'></a></p>
 <p>These functions are in the questioning stage because they don't add
-value compared to using <code>parse_expr()</code> with <code>new_quosure()</code>.</p>
+value compared to using <code><a href='parse_expr.html'>parse_expr()</a></code> with <code><a href='as_quosure.html'>new_quosure()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>parse_quo</span>(<span class='kw'>x</span>, <span class='kw'>env</span>)
+    <pre class="usage"><span class='fu'>parse_quo</span>(<span class='no'>x</span>, <span class='no'>env</span>)
 
-<span class='fu'>parse_quos</span>(<span class='kw'>x</span>, <span class='kw'>env</span>)</pre>
+<span class='fu'>parse_quos</span>(<span class='no'>x</span>, <span class='no'>env</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -173,16 +173,16 @@ value compared to using <code>parse_expr()</code> with <code>new_quosure()</code
     <tr>
       <th>x</th>
       <td><p>Text containing expressions to parse_expr for
-<code>parse_expr()</code> and <code>parse_exprs()</code>. Can also be an R connection,
+<code><a href='parse_expr.html'>parse_expr()</a></code> and <code><a href='parse_expr.html'>parse_exprs()</a></code>. Can also be an R connection,
 for instance to a file. If the supplied connection is not open,
 it will be automatically closed and destroyed.</p></td>
     </tr>
     <tr>
       <th>env</th>
       <td><p>The environment for the quosures. Depending on the use
-case, a good default might be the global environment but you might also want to evaluate the
+case, a good default might be the <a href='search_envs.html'>global environment</a> but you might also want to evaluate the
 R code in an isolated context (perhaps a child of the global
-environment or of the base environment).</p></td>
+environment or of the <a href='search_envs.html'>base environment</a>).</p></td>
     </tr>
     </table>
 
@@ -202,7 +202,7 @@ environment or of the base environment).</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

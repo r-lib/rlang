@@ -169,9 +169,9 @@ active context. They provide a way of performing arbitrary
 non-local jumps out of the function currently under evaluation.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>return_from</span>(<span class='kw'>frame</span>, value = <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>return_from</span>(<span class='no'>frame</span>, <span class='kw'>value</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>return_to</span>(<span class='kw'>frame</span>, value = <span class='kw'>NULL</span>)</pre>
+<span class='fu'>return_to</span>(<span class='no'>frame</span>, <span class='kw'>value</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -179,7 +179,7 @@ non-local jumps out of the function currently under evaluation.</p>
     <tr>
       <th>frame</th>
       <td><p>An environment, a frame object, or any object with an
-<code>get_env()</code> method. The environment should be an evaluation
+<code><a href='get_env.html'>get_env()</a></code> method. The environment should be an evaluation
 environment currently on the stack.</p></td>
     </tr>
     <tr>
@@ -210,19 +210,19 @@ considering simpler alternatives.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Passing fn() evaluation frame to g():</span>
-<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() {
-  <span class='kw'>val</span> <span class='op'>&lt;-</span> <span class='fu'>g</span>(<span class='fu'>current_env</span>())
-  <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"g returned:"</span>, <span class='kw'>val</span>, <span class='st'>"\n"</span>)
+<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
+  <span class='no'>val</span> <span class='kw'>&lt;-</span> <span class='fu'>g</span>(<span class='fu'><a href='caller_env.html'>current_env</a></span>())
+  <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"g returned:"</span>, <span class='no'>val</span>, <span class='st'>"\n"</span>)
   <span class='st'>"normal return"</span>
 }
-<span class='kw'>g</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>env</span>) <span class='fu'>h</span>(<span class='kw'>env</span>)
+<span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>env</span>) <span class='fu'>h</span>(<span class='no'>env</span>)
 
 <span class='co'># Here we return from fn() with a new return value:</span>
-<span class='kw'>h</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>env</span>) <span class='fu'>return_from</span>(<span class='kw'>env</span>, <span class='st'>"early return"</span>)
+<span class='no'>h</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>env</span>) <span class='fu'>return_from</span>(<span class='no'>env</span>, <span class='st'>"early return"</span>)
 <span class='fu'>fn</span>()</div><div class='output co'>#&gt; [1] "early return"</div><div class='input'>
 <span class='co'># Here we return to fn(). The call stack unwinds until the last frame</span>
 <span class='co'># called by fn(), which is g() in that case.</span>
-<span class='kw'>h</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>env</span>) <span class='fu'>return_to</span>(<span class='kw'>env</span>, <span class='st'>"early return"</span>)
+<span class='no'>h</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>env</span>) <span class='fu'>return_to</span>(<span class='no'>env</span>, <span class='st'>"early return"</span>)
 <span class='fu'>fn</span>()</div><div class='output co'>#&gt; g returned: early return </div><div class='output co'>#&gt; [1] "normal return"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -239,7 +239,7 @@ considering simpler alternatives.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

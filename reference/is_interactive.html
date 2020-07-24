@@ -47,8 +47,8 @@ The rlang_interactive global option. If set to a single TRUE
 or FALSE, is_interactive() returns that value immediately. This
 escape hatch is useful in unit tests or to manually turn on
 interactive features in RMarkdown outputs.
-Whether knitr, an RStudio notebook, or testthat is in progress
-(in which case is_interactive() returns FALSE).
+Whether knitr or testthat is in progress, in which case
+is_interactive() returns FALSE.
 
 
 with_interactive() and local_interactive() set the global
@@ -175,8 +175,8 @@ mode. It also checks, in this order:</p><ul>
 or <code>FALSE</code>, <code>is_interactive()</code> returns that value immediately. This
 escape hatch is useful in unit tests or to manually turn on
 interactive features in RMarkdown outputs.</p></li>
-<li><p>Whether knitr, an RStudio notebook, or testthat is in progress
-(in which case <code>is_interactive()</code> returns <code>FALSE</code>).</p></li>
+<li><p>Whether knitr or testthat is in progress, in which case
+<code>is_interactive()</code> returns <code>FALSE</code>.</p></li>
 </ul>
 
 <p><code>with_interactive()</code> and <code>local_interactive()</code> set the global
@@ -185,9 +185,9 @@ option conveniently.</p>
 
     <pre class="usage"><span class='fu'>is_interactive</span>()
 
-<span class='fu'>local_interactive</span>(value = <span class='fl'>TRUE</span>, frame = <span class='fu'>caller_env</span>())
+<span class='fu'>local_interactive</span>(<span class='kw'>value</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>frame</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>())
 
-<span class='fu'>with_interactive</span>(<span class='kw'>expr</span>, value = <span class='fl'>TRUE</span>)</pre>
+<span class='fu'>with_interactive</span>(<span class='no'>expr</span>, <span class='kw'>value</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -226,7 +226,7 @@ the options are reset to their original values.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

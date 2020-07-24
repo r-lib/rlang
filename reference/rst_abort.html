@@ -163,8 +163,8 @@ to deal with (see with_handlers())." />
     <p><a href='https://www.tidyverse.org/lifecycle/#questioning'><img src='figures/lifecycle-questioning.svg' alt='Questioning lifecycle'></a></p>
 <p>The abort restart is the only restart that is established at top
 level. It is used by R as a top-level target, most notably when an
-error is issued (see <code>abort()</code>) that no handler is able
-to deal with (see <code>with_handlers()</code>).</p>
+error is issued (see <code><a href='abort.html'>abort()</a></code>) that no handler is able
+to deal with (see <code><a href='with_handlers.html'>with_handlers()</a></code>).</p>
     </div>
 
     <pre class="usage"><span class='fu'>rst_abort</span>()</pre>
@@ -180,19 +180,19 @@ clear yet whether we want to recommend restarts as a style of
 programming in R.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>rst_jump()</code>, <code>abort()</code></p></div>
+    <div class='dont-index'><p><code><a href='rst_list.html'>rst_jump()</a></code>, <code><a href='abort.html'>abort()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># The `abort` restart is a bit special in that it is always</span>
 <span class='co'># registered in a R session. You will always find it on the restart</span>
 <span class='co'># stack because it is established at top level:</span>
-<span class='fu'>rst_list</span>()</div><div class='output co'>#&gt; [[1]]
+<span class='fu'><a href='rst_list.html'>rst_list</a></span>()</div><div class='output co'>#&gt; [[1]]
 #&gt; &lt;restart: abort &gt;
 #&gt; </div><div class='input'>
 <span class='co'># You can use the `above` restart to jump to top level without</span>
 <span class='co'># signalling an error:</span>
-<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() {
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
   <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"aborting...\n"</span>)
   <span class='fu'>rst_abort</span>()
   <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"This is never called\n"</span>)
@@ -205,22 +205,22 @@ programming in R.</p>
 
 <span class='co'># The `above` restart is the target that R uses to jump to top</span>
 <span class='co'># level when critical errors are signalled:</span>
-<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 {
-  <span class='fu'>abort</span>(<span class='st'>"error"</span>)
+  <span class='fu'><a href='abort.html'>abort</a></span>(<span class='st'>"error"</span>)
   <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"This is never called\n"</span>)
 }
 }
 
 <span class='co'># If another `abort` restart is specified, errors are signalled as</span>
 <span class='co'># usual but then control flow resumes with from the new restart:</span>
-<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='kw'>out</span> <span class='op'>&lt;-</span> <span class='kw'>NULL</span>
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='no'>out</span> <span class='kw'>&lt;-</span> <span class='kw'>NULL</span>
 {
-  <span class='kw'>out</span> <span class='op'>&lt;-</span> <span class='fu'>with_restarts</span>(<span class='fu'>abort</span>(<span class='st'>"error"</span>), abort = <span class='fu'>function</span>() <span class='st'>"restart!"</span>)
+  <span class='no'>out</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='with_restarts.html'>with_restarts</a></span>(<span class='fu'><a href='abort.html'>abort</a></span>(<span class='st'>"error"</span>), <span class='kw'>abort</span> <span class='kw'>=</span> <span class='kw'>function</span>() <span class='st'>"restart!"</span>)
   <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"This is called\n"</span>)
 }
-<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"`out` has now become:"</span>, <span class='kw'>out</span>, <span class='st'>"\n"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"`out` has now become:"</span>, <span class='no'>out</span>, <span class='st'>"\n"</span>)
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -237,7 +237,7 @@ programming in R.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

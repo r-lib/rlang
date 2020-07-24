@@ -181,11 +181,11 @@ with western locales often see strings looking like <code>&lt;U+xxxx&gt;</code>.
 alleviate some of the pain, rlang parses strings and looks for
 serialised unicode points to translate them back to the proper
 UTF-8 representation. This transformation occurs automatically in
-functions like <code>env_names()</code> and can be manually triggered with
-<code>as_utf8_character()</code> and <code>chr_unserialise_unicode()</code>.</p>
+functions like <code><a href='env_names.html'>env_names()</a></code> and can be manually triggered with
+<code><a href='as_utf8_character.html'>as_utf8_character()</a></code> and <code>chr_unserialise_unicode()</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>chr_unserialise_unicode</span>(<span class='kw'>chr</span>)</pre>
+    <pre class="usage"><span class='fu'>chr_unserialise_unicode</span>(<span class='no'>chr</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -204,9 +204,9 @@ functions like <code>env_names()</code> and can be manually triggered with
 <p>This function is experimental.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>ascii</span> <span class='op'>&lt;-</span> <span class='st'>"&lt;U+5E78&gt;"</span>
-<span class='fu'>chr_unserialise_unicode</span>(<span class='kw'>ascii</span>)</div><div class='output co'>#&gt; [1] "幸"</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'>chr_unserialise_unicode</span>(<span class='kw'>ascii</span>), <span class='st'>"\u5e78"</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>ascii</span> <span class='kw'>&lt;-</span> <span class='st'>"&lt;U+5E78&gt;"</span>
+<span class='fu'>chr_unserialise_unicode</span>(<span class='no'>ascii</span>)</div><div class='output co'>#&gt; [1] "幸"</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'>chr_unserialise_unicode</span>(<span class='no'>ascii</span>), <span class='st'>"\u5e78"</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -222,7 +222,7 @@ functions like <code>env_names()</code> and can be manually triggered with
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

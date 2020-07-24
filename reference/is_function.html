@@ -163,15 +163,15 @@ functions, which are low-level, and closures, which are the regular
 kind of functions.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>is_function</span>(<span class='kw'>x</span>)
+    <pre class="usage"><span class='fu'>is_function</span>(<span class='no'>x</span>)
 
-<span class='fu'>is_closure</span>(<span class='kw'>x</span>)
+<span class='fu'>is_closure</span>(<span class='no'>x</span>)
 
-<span class='fu'>is_primitive</span>(<span class='kw'>x</span>)
+<span class='fu'>is_primitive</span>(<span class='no'>x</span>)
 
-<span class='fu'>is_primitive_eager</span>(<span class='kw'>x</span>)
+<span class='fu'>is_primitive_eager</span>(<span class='no'>x</span>)
 
-<span class='fu'>is_primitive_lazy</span>(<span class='kw'>x</span>)</pre>
+<span class='fu'>is_primitive_lazy</span>(<span class='no'>x</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -191,7 +191,7 @@ root environment of the closure is called the closure
 environment. When closures are evaluated, a new environment called
 the evaluation frame is created with the closure environment as
 parent. This is where the body of the closure is evaluated. These
-closure frames appear on the evaluation stack (see <code>ctxt_stack()</code>),
+closure frames appear on the evaluation stack (see <code><a href='stack.html'>ctxt_stack()</a></code>),
 as opposed to primitive functions which do not necessarily have
 their own evaluation frame and never appear on the stack.</p>
 <p>Primitive functions are more efficient than closures for two
@@ -217,7 +217,7 @@ the R language. Instead, they are called via a call to
 <code><a href='https://rdrr.io/r/base/Internal.html'>base::.Internal()</a></code> within a regular closure. This ensures that
 they appear as normal R function objects: they obey all the usual
 rules of argument passing, and they appear on the evaluation stack
-as any other closures. As a result, <code>fn_fmls()</code> does not need to
+as any other closures. As a result, <code><a href='fn_fmls.html'>fn_fmls()</a></code> does not need to
 look in the <code>.ArgsEnv</code> environment to obtain a representation of
 their arguments, and there is no way of querying from R whether
 they are lazy ('special' in R terminology) or eager ('builtin').</p>
@@ -230,129 +230,124 @@ to crash if you call them with unexpected objects.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Primitive functions are not closures:</span>
-<span class='fu'>is_closure</span>(<span class='kw'>base</span>::<span class='kw'><a href='https://rdrr.io/r/base/c.html'>c</a></span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>is_primitive</span>(<span class='kw'>base</span>::<span class='kw'><a href='https://rdrr.io/r/base/c.html'>c</a></span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'>is_closure</span>(<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/r/base/c.html'>c</a></span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>is_primitive</span>(<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/r/base/c.html'>c</a></span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># On the other hand, internal functions are wrapped in a closure</span>
 <span class='co'># and appear as such from the R side:</span>
-<span class='fu'>is_closure</span>(<span class='kw'>base</span>::<span class='kw'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'>is_closure</span>(<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># Both closures and primitives are functions:</span>
-<span class='fu'>is_function</span>(<span class='kw'>base</span>::<span class='kw'><a href='https://rdrr.io/r/base/c.html'>c</a></span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_function</span>(<span class='kw'>base</span>::<span class='kw'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'>is_function</span>(<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/r/base/c.html'>c</a></span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_function</span>(<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># Primitive functions never appear in evaluation stacks:</span>
-<span class='fu'>is_primitive</span>(<span class='kw'>base</span>::<span class='kw'>`[[`</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_primitive</span>(<span class='kw'>base</span>::<span class='kw'><a href='https://rdrr.io/r/base/list.html'>list</a></span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'>ctxt_stack</span>())[[<span class='fl'>1</span>]]</div><div class='output co'>#&gt; [[1]]
-#&gt; &lt;frame 23&gt; (22)
+<span class='fu'>is_primitive</span>(<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'>`[[`</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_primitive</span>(<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/r/base/list.html'>list</a></span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='stack.html'>ctxt_stack</a></span>())<span class='kw'>[[</span><span class='fl'>1</span>]]</div><div class='output co'>#&gt; [[1]]
+#&gt; &lt;frame 22&gt; (21)
 #&gt; expr: eval(expr, envir, enclos)
-#&gt; env:  [local 0x7f9642609720]
+#&gt; env:  [local 0x7fd964c11a90]
 #&gt; 
 #&gt; [[2]]
-#&gt; &lt;frame 22&gt; (12)
+#&gt; &lt;frame 21&gt; (11)
 #&gt; expr: eval(expr, envir, enclos)
-#&gt; env:  [local 0x7f9640b9fa30]
+#&gt; env:  [local 0x7fd964a3a890]
 #&gt; 
 #&gt; [[3]]
-#&gt; &lt;frame 21&gt; (12)
+#&gt; &lt;frame 20&gt; (11)
 #&gt; expr: withVisible(eval(expr, envir, enclos))
-#&gt; env:  [local 0x7f9640b9f800]
+#&gt; env:  [local 0x7fd964a3aac0]
 #&gt; 
 #&gt; [[4]]
-#&gt; &lt;frame 20&gt; (12)
+#&gt; &lt;frame 19&gt; (11)
 #&gt; expr: withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler,  &lt;...&gt;
-#&gt; env:  [local 0x7f9640b9f218]
+#&gt; env:  [local 0x7fd964a3b070]
 #&gt; 
 #&gt; [[5]]
-#&gt; &lt;frame 19&gt; (18)
+#&gt; &lt;frame 18&gt; (17)
 #&gt; expr: doTryCatch(return(expr), name, parentenv, handler)
-#&gt; env:  [local 0x7f9640b9ec30]
+#&gt; env:  [local 0x7fd964a3b5e8]
 #&gt; 
 #&gt; [[6]]
-#&gt; &lt;frame 18&gt; (17)
+#&gt; &lt;frame 17&gt; (16)
 #&gt; expr: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-#&gt; env:  [local 0x7f9640b9e8b0]
+#&gt; env:  [local 0x7fd964a3b930]
 #&gt; 
 #&gt; [[7]]
-#&gt; &lt;frame 17&gt; (16)
+#&gt; &lt;frame 16&gt; (15)
 #&gt; expr: tryCatchList(expr, classes, parentenv, handlers)
-#&gt; env:  [local 0x7f9640ba2440]
+#&gt; env:  [local 0x7fd964a3bc78]
 #&gt; 
 #&gt; [[8]]
-#&gt; &lt;frame 16&gt; (15)
+#&gt; &lt;frame 15&gt; (14)
 #&gt; expr: tryCatch(expr, error = function(e) { &lt;...&gt;
-#&gt; env:  [local 0x7f9640ba1d40]
+#&gt; env:  [local 0x7fd964a38430]
 #&gt; 
 #&gt; [[9]]
-#&gt; &lt;frame 15&gt; (14)
+#&gt; &lt;frame 14&gt; (13)
 #&gt; expr: try(f, silent = TRUE)
-#&gt; env:  [local 0x7f9640ba1ad8]
+#&gt; env:  [local 0x7fd964a38660]
 #&gt; 
 #&gt; [[10]]
-#&gt; &lt;frame 14&gt; (12)
+#&gt; &lt;frame 13&gt; (11)
 #&gt; expr: handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, envir,  &lt;...&gt;
-#&gt; env:  [local 0x7f9640ba1950]
+#&gt; env:  [local 0x7fd964a387e8]
 #&gt; 
 #&gt; [[11]]
-#&gt; &lt;frame 13&gt; (12)
+#&gt; &lt;frame 12&gt; (11)
 #&gt; expr: timing_fn(handle(ev &lt;- withCallingHandlers(withVisible(eval(expr,  &lt;...&gt;
-#&gt; env:  [local 0x7f9640ba1838]
+#&gt; env:  [local 0x7fd964a388c8]
 #&gt; 
 #&gt; [[12]]
-#&gt; &lt;frame 12&gt; (11)
+#&gt; &lt;frame 11&gt; (10)
 #&gt; expr: evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos,  &lt;...&gt;
-#&gt; env:  [frame 0x7f9640bbaf08]
+#&gt; env:  [frame 0x7fd964a20238]
 #&gt; 
 #&gt; [[13]]
-#&gt; &lt;frame 11&gt; (10)
+#&gt; &lt;frame 10&gt; (9)
 #&gt; expr: evaluate::evaluate(x, child_env(env), new_device = TRUE)
-#&gt; env:  [frame 0x7f964233b850]
+#&gt; env:  [frame 0x7fd963646e08]
 #&gt; 
 #&gt; [[14]]
-#&gt; &lt;frame 10&gt; (9)
+#&gt; &lt;frame 9&gt; (8)
 #&gt; expr: highlight_examples(code, topic, env = env)
-#&gt; env:  [frame 0x7f96422a6700]
+#&gt; env:  [frame 0x7fd96363a878]
 #&gt; 
 #&gt; [[15]]
-#&gt; &lt;frame 9&gt; (8)
+#&gt; &lt;frame 8&gt; (7)
 #&gt; expr: run_examples(tags$tag_examples[[1]], env = new.env(parent = globalenv()),  &lt;...&gt;
-#&gt; env:  [frame 0x7f96407cf6e0]
+#&gt; env:  [frame 0x7fd96320d3c0]
 #&gt; 
 #&gt; [[16]]
-#&gt; &lt;frame 8&gt; (6)
+#&gt; &lt;frame 7&gt; (6)
 #&gt; expr: data_reference_topic(topic, pkg, examples = examples, run_dont_run = run_dont_run)
-#&gt; env:  [frame 0x7f9641af3bd0]
+#&gt; env:  [frame 0x7fd9649f6900]
 #&gt; 
 #&gt; [[17]]
-#&gt; &lt;frame 7&gt; (6)
-#&gt; expr: withCallingHandlers(data_reference_topic(topic, pkg, examples = examples,  &lt;...&gt;
-#&gt; env:  [frame 0x7f9641af42d0]
-#&gt; 
-#&gt; [[18]]
 #&gt; &lt;frame 6&gt; (5)
 #&gt; expr: .f(.x[[i]], ...)
-#&gt; env:  [frame 0x7f9641adec00]
+#&gt; env:  [frame 0x7fd96488c718]
 #&gt; 
-#&gt; [[19]]
+#&gt; [[18]]
 #&gt; &lt;frame 5&gt; (4)
 #&gt; expr: purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy,  &lt;...&gt;
-#&gt; env:  [frame 0x7f963eb06978]
+#&gt; env:  [frame 0x7fd962443270]
 #&gt; 
-#&gt; [[20]]
+#&gt; [[19]]
 #&gt; &lt;frame 4&gt; (3)
 #&gt; expr: build_reference(pkg, lazy = lazy, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;
-#&gt; env:  [frame 0x7f963f8a7240]
+#&gt; env:  [frame 0x7fd960cc7cf0]
 #&gt; 
-#&gt; [[21]]
+#&gt; [[20]]
 #&gt; &lt;frame 3&gt; (2)
 #&gt; expr: build_site_local(pkg = pkg, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;
-#&gt; env:  [frame 0x7f963aeba638]
+#&gt; env:  [frame 0x7fd96280ae80]
 #&gt; 
-#&gt; [[22]]
+#&gt; [[21]]
 #&gt; &lt;frame 2&gt; (1)
 #&gt; expr: build_site(pkg, devel = FALSE, preview = FALSE, install = FALSE,  &lt;...&gt;
-#&gt; env:  [frame 0x7f963aec93e0]
+#&gt; env:  [frame 0x7fd9627fc4b0]
 #&gt; 
-#&gt; [[23]]
+#&gt; [[22]]
 #&gt; &lt;frame 1&gt; (0)
 #&gt; expr: pkgdown::deploy_to_branch(new_process = FALSE)
-#&gt; env:  [frame 0x7f963d6ac540]
+#&gt; env:  [frame 0x7fd9608a5a18]
 #&gt; 
-#&gt; [[24]]
+#&gt; [[23]]
 #&gt; &lt;frame 0&gt; [global]
 #&gt; expr: NULL
 #&gt; env:  [global]
@@ -360,132 +355,127 @@ to crash if you call them with unexpected objects.</p>
 #&gt; attr(,"class")
 #&gt; [1] "ctxt_stack" "stack"     </div><div class='input'>
 <span class='co'># While closures do:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span>(<span class='fu'>ctxt_stack</span>()))</div><div class='output co'>#&gt; [[1]]
-#&gt; &lt;frame 25&gt; (23)
+<span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span>(<span class='fu'><a href='stack.html'>ctxt_stack</a></span>()))</div><div class='output co'>#&gt; [[1]]
+#&gt; &lt;frame 24&gt; (22)
 #&gt; expr: identity(ctxt_stack())
-#&gt; env:  [local 0x7f963ed4b9f0]
+#&gt; env:  [local 0x7fd964cd2280]
 #&gt; 
 #&gt; [[2]]
-#&gt; &lt;frame 24&gt; (23)
+#&gt; &lt;frame 23&gt; (22)
 #&gt; expr: identity(identity(ctxt_stack()))
-#&gt; env:  [local 0x7f963ed4b8d8]
+#&gt; env:  [local 0x7fd964cd2398]
 #&gt; 
 #&gt; [[3]]
-#&gt; &lt;frame 23&gt; (22)
+#&gt; &lt;frame 22&gt; (21)
 #&gt; expr: eval(expr, envir, enclos)
-#&gt; env:  [local 0x7f9642609720]
+#&gt; env:  [local 0x7fd964c11a90]
 #&gt; 
 #&gt; [[4]]
-#&gt; &lt;frame 22&gt; (12)
+#&gt; &lt;frame 21&gt; (11)
 #&gt; expr: eval(expr, envir, enclos)
-#&gt; env:  [local 0x7f963ed4b718]
+#&gt; env:  [local 0x7fd964cd2558]
 #&gt; 
 #&gt; [[5]]
-#&gt; &lt;frame 21&gt; (12)
+#&gt; &lt;frame 20&gt; (11)
 #&gt; expr: withVisible(eval(expr, envir, enclos))
-#&gt; env:  [local 0x7f963ed4b4e8]
+#&gt; env:  [local 0x7fd964cce878]
 #&gt; 
 #&gt; [[6]]
-#&gt; &lt;frame 20&gt; (12)
+#&gt; &lt;frame 19&gt; (11)
 #&gt; expr: withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler,  &lt;...&gt;
-#&gt; env:  [local 0x7f963ed4ae58]
+#&gt; env:  [local 0x7fd964ccee28]
 #&gt; 
 #&gt; [[7]]
-#&gt; &lt;frame 19&gt; (18)
+#&gt; &lt;frame 18&gt; (17)
 #&gt; expr: doTryCatch(return(expr), name, parentenv, handler)
-#&gt; env:  [local 0x7f963ed4a838]
+#&gt; env:  [local 0x7fd964ccf3a0]
 #&gt; 
 #&gt; [[8]]
-#&gt; &lt;frame 18&gt; (17)
+#&gt; &lt;frame 17&gt; (16)
 #&gt; expr: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-#&gt; env:  [local 0x7f963ed4e358]
+#&gt; env:  [local 0x7fd964ccf6e8]
 #&gt; 
 #&gt; [[9]]
-#&gt; &lt;frame 17&gt; (16)
+#&gt; &lt;frame 16&gt; (15)
 #&gt; expr: tryCatchList(expr, classes, parentenv, handlers)
-#&gt; env:  [local 0x7f963ed4d670]
+#&gt; env:  [local 0x7fd964ccfa30]
 #&gt; 
 #&gt; [[10]]
-#&gt; &lt;frame 16&gt; (15)
+#&gt; &lt;frame 15&gt; (14)
 #&gt; expr: tryCatch(expr, error = function(e) { &lt;...&gt;
-#&gt; env:  [local 0x7f963ed4cf70]
+#&gt; env:  [local 0x7fd964cd00f8]
 #&gt; 
 #&gt; [[11]]
-#&gt; &lt;frame 15&gt; (14)
+#&gt; &lt;frame 14&gt; (13)
 #&gt; expr: try(f, silent = TRUE)
-#&gt; env:  [local 0x7f963ed4cd40]
+#&gt; env:  [local 0x7fd964cd0328]
 #&gt; 
 #&gt; [[12]]
-#&gt; &lt;frame 14&gt; (12)
+#&gt; &lt;frame 13&gt; (11)
 #&gt; expr: handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, envir,  &lt;...&gt;
-#&gt; env:  [local 0x7f963ed4cb48]
+#&gt; env:  [local 0x7fd964cd04b0]
 #&gt; 
 #&gt; [[13]]
-#&gt; &lt;frame 13&gt; (12)
+#&gt; &lt;frame 12&gt; (11)
 #&gt; expr: timing_fn(handle(ev &lt;- withCallingHandlers(withVisible(eval(expr,  &lt;...&gt;
-#&gt; env:  [local 0x7f963ed4ca68]
+#&gt; env:  [local 0x7fd964cd05c8]
 #&gt; 
 #&gt; [[14]]
-#&gt; &lt;frame 12&gt; (11)
+#&gt; &lt;frame 11&gt; (10)
 #&gt; expr: evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos,  &lt;...&gt;
-#&gt; env:  [frame 0x7f963fdc3a98]
+#&gt; env:  [frame 0x7fd964cc06a8]
 #&gt; 
 #&gt; [[15]]
-#&gt; &lt;frame 11&gt; (10)
+#&gt; &lt;frame 10&gt; (9)
 #&gt; expr: evaluate::evaluate(x, child_env(env), new_device = TRUE)
-#&gt; env:  [frame 0x7f964233b850]
+#&gt; env:  [frame 0x7fd963646e08]
 #&gt; 
 #&gt; [[16]]
-#&gt; &lt;frame 10&gt; (9)
+#&gt; &lt;frame 9&gt; (8)
 #&gt; expr: highlight_examples(code, topic, env = env)
-#&gt; env:  [frame 0x7f96422a6700]
+#&gt; env:  [frame 0x7fd96363a878]
 #&gt; 
 #&gt; [[17]]
-#&gt; &lt;frame 9&gt; (8)
+#&gt; &lt;frame 8&gt; (7)
 #&gt; expr: run_examples(tags$tag_examples[[1]], env = new.env(parent = globalenv()),  &lt;...&gt;
-#&gt; env:  [frame 0x7f96407cf6e0]
+#&gt; env:  [frame 0x7fd96320d3c0]
 #&gt; 
 #&gt; [[18]]
-#&gt; &lt;frame 8&gt; (6)
+#&gt; &lt;frame 7&gt; (6)
 #&gt; expr: data_reference_topic(topic, pkg, examples = examples, run_dont_run = run_dont_run)
-#&gt; env:  [frame 0x7f9641af3bd0]
+#&gt; env:  [frame 0x7fd9649f6900]
 #&gt; 
 #&gt; [[19]]
-#&gt; &lt;frame 7&gt; (6)
-#&gt; expr: withCallingHandlers(data_reference_topic(topic, pkg, examples = examples,  &lt;...&gt;
-#&gt; env:  [frame 0x7f9641af42d0]
-#&gt; 
-#&gt; [[20]]
 #&gt; &lt;frame 6&gt; (5)
 #&gt; expr: .f(.x[[i]], ...)
-#&gt; env:  [frame 0x7f9641adec00]
+#&gt; env:  [frame 0x7fd96488c718]
 #&gt; 
-#&gt; [[21]]
+#&gt; [[20]]
 #&gt; &lt;frame 5&gt; (4)
 #&gt; expr: purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy,  &lt;...&gt;
-#&gt; env:  [frame 0x7f963eb06978]
+#&gt; env:  [frame 0x7fd962443270]
 #&gt; 
-#&gt; [[22]]
+#&gt; [[21]]
 #&gt; &lt;frame 4&gt; (3)
 #&gt; expr: build_reference(pkg, lazy = lazy, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;
-#&gt; env:  [frame 0x7f963f8a7240]
+#&gt; env:  [frame 0x7fd960cc7cf0]
 #&gt; 
-#&gt; [[23]]
+#&gt; [[22]]
 #&gt; &lt;frame 3&gt; (2)
 #&gt; expr: build_site_local(pkg = pkg, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;
-#&gt; env:  [frame 0x7f963aeba638]
+#&gt; env:  [frame 0x7fd96280ae80]
 #&gt; 
-#&gt; [[24]]
+#&gt; [[23]]
 #&gt; &lt;frame 2&gt; (1)
 #&gt; expr: build_site(pkg, devel = FALSE, preview = FALSE, install = FALSE,  &lt;...&gt;
-#&gt; env:  [frame 0x7f963aec93e0]
+#&gt; env:  [frame 0x7fd9627fc4b0]
 #&gt; 
-#&gt; [[25]]
+#&gt; [[24]]
 #&gt; &lt;frame 1&gt; (0)
 #&gt; expr: pkgdown::deploy_to_branch(new_process = FALSE)
-#&gt; env:  [frame 0x7f963d6ac540]
+#&gt; env:  [frame 0x7fd9608a5a18]
 #&gt; 
-#&gt; [[26]]
+#&gt; [[25]]
 #&gt; &lt;frame 0&gt; [global]
 #&gt; expr: NULL
 #&gt; env:  [global]
@@ -493,10 +483,10 @@ to crash if you call them with unexpected objects.</p>
 #&gt; attr(,"class")
 #&gt; [1] "ctxt_stack" "stack"     </div><div class='input'>
 <span class='co'># Many primitive functions evaluate arguments eagerly:</span>
-<span class='fu'>is_primitive_eager</span>(<span class='kw'>base</span>::<span class='kw'><a href='https://rdrr.io/r/base/c.html'>c</a></span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_primitive_eager</span>(<span class='kw'>base</span>::<span class='kw'><a href='https://rdrr.io/r/base/list.html'>list</a></span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_primitive_eager</span>(<span class='kw'>base</span>::<span class='kw'>`+`</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'>is_primitive_eager</span>(<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/r/base/c.html'>c</a></span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_primitive_eager</span>(<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/r/base/list.html'>list</a></span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_primitive_eager</span>(<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'>`+`</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># However, primitives that operate on expressions, like quote() or</span>
 <span class='co'># substitute(), are lazy:</span>
-<span class='fu'>is_primitive_lazy</span>(<span class='kw'>base</span>::<span class='kw'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_primitive_lazy</span>(<span class='kw'>base</span>::<span class='kw'><a href='https://rdrr.io/r/base/substitute.html'>substitute</a></span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+<span class='fu'>is_primitive_lazy</span>(<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_primitive_lazy</span>(<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/r/base/substitute.html'>substitute</a></span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -512,7 +502,7 @@ to crash if you call them with unexpected objects.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

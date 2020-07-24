@@ -163,11 +163,11 @@ prefix. They will be deprecated in the next minor version of rlang." />
 prefix. They will be deprecated in the next minor version of rlang.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>scoped_interactive</span>(value = <span class='fl'>TRUE</span>, frame = <span class='fu'>caller_env</span>())
+    <pre class="usage"><span class='fu'>scoped_interactive</span>(<span class='kw'>value</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>frame</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>())
 
-<span class='fu'>scoped_options</span>(<span class='kw'>...</span>, .frame = <span class='fu'>caller_env</span>())
+<span class='fu'>scoped_options</span>(<span class='no'>...</span>, <span class='kw'>.frame</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>())
 
-<span class='fu'>scoped_bindings</span>(<span class='kw'>...</span>, .env = <span class='kw'>.frame</span>, .frame = <span class='fu'>caller_env</span>())</pre>
+<span class='fu'>scoped_bindings</span>(<span class='no'>...</span>, <span class='kw'>.env</span> <span class='kw'>=</span> <span class='no'>.frame</span>, <span class='kw'>.frame</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>())</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -175,7 +175,7 @@ prefix. They will be deprecated in the next minor version of rlang.</p>
     <tr>
       <th>value</th>
       <td><p>A single <code>TRUE</code> or <code>FALSE</code>. This overrides the return
-value of <code>is_interactive()</code>.</p></td>
+value of <code><a href='is_interactive.html'>is_interactive()</a></code>.</p></td>
     </tr>
     <tr>
       <th>frame</th>
@@ -185,8 +185,8 @@ the options are reset to their original values.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>For <code>local_options()</code> and <code>push_options()</code>, named
-values defining new option values. For <code>peek_options()</code>, strings
+      <td><p>For <code><a href='local_options.html'>local_options()</a></code> and <code><a href='local_options.html'>push_options()</a></code>, named
+values defining new option values. For <code><a href='local_options.html'>peek_options()</a></code>, strings
 or character vectors of option names.</p></td>
     </tr>
     <tr>
@@ -217,7 +217,7 @@ the options are reset to their original values.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

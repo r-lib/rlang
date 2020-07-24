@@ -173,30 +173,30 @@ Use cnd_type() to determine the type of a condition." />
     <div class="ref-description">
     <p>The type of signal depends on the class of the condition:</p><ul>
 <li><p>A message is signalled if the condition inherits from
-<code>"message"</code>. This is equivalent to signalling with <code>inform()</code> or
+<code>"message"</code>. This is equivalent to signalling with <code><a href='abort.html'>inform()</a></code> or
 <code><a href='https://rdrr.io/r/base/message.html'>base::message()</a></code>.</p></li>
 <li><p>A warning is signalled if the condition inherits from
-<code>"warning"</code>. This is equivalent to signalling with <code>warn()</code> or
+<code>"warning"</code>. This is equivalent to signalling with <code><a href='abort.html'>warn()</a></code> or
 <code><a href='https://rdrr.io/r/base/warning.html'>base::warning()</a></code>.</p></li>
 <li><p>An error is signalled if the condition inherits from
-<code>"error"</code>. This is equivalent to signalling with <code>abort()</code> or
+<code>"error"</code>. This is equivalent to signalling with <code><a href='abort.html'>abort()</a></code> or
 <code><a href='https://rdrr.io/r/base/stop.html'>base::stop()</a></code>.</p></li>
 <li><p>An interrupt is signalled if the condition inherits from
 <code>"interrupt"</code>. This is equivalent to signalling with
-<code>interrupt()</code>.</p></li>
+<code><a href='abort.html'>interrupt()</a></code>.</p></li>
 </ul>
 
-<p>Use <code>cnd_type()</code> to determine the type of a condition.</p>
+<p>Use <code><a href='cnd_type.html'>cnd_type()</a></code> to determine the type of a condition.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cnd_signal</span>(<span class='kw'>cnd</span>, <span class='kw'>.cnd</span>, <span class='kw'>.mufflable</span>)</pre>
+    <pre class="usage"><span class='fu'>cnd_signal</span>(<span class='no'>cnd</span>, <span class='no'>.cnd</span>, <span class='no'>.mufflable</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>cnd</th>
-      <td><p>A condition object (see <code>cnd()</code>).</p></td>
+      <td><p>A condition object (see <code><a href='cnd.html'>cnd()</a></code>).</p></td>
     </tr>
     <tr>
       <th>.cnd, .mufflable</th>
@@ -214,23 +214,23 @@ Use cnd_type() to determine the type of a condition." />
 longer has any effect. Non-critical conditions are always
 signalled with a muffle restart.</p></li>
 <li><p>Creating a condition object with <code>cnd_signal()</code> is deprecated as
-of rlang 0.3.0. Please use <code>signal()</code> instead.</p></li>
+of rlang 0.3.0. Please use <code><a href='abort.html'>signal()</a></code> instead.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>abort()</code>, <code>warn()</code> and <code>inform()</code> for creating and
-signalling structured R conditions. See <code>with_handlers()</code> for
+    <div class='dont-index'><p><code><a href='abort.html'>abort()</a></code>, <code><a href='abort.html'>warn()</a></code> and <code><a href='abort.html'>inform()</a></code> for creating and
+signalling structured R conditions. See <code><a href='with_handlers.html'>with_handlers()</a></code> for
 establishing condition handlers.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># The type of signal depends on the class. If the condition</span>
 <span class='co'># inherits from "warning", a warning is issued:</span>
-<span class='kw'>cnd</span> <span class='op'>&lt;-</span> <span class='fu'>warning_cnd</span>(<span class='st'>"my_warning_class"</span>, message = <span class='st'>"This is a warning"</span>)
-<span class='fu'>cnd_signal</span>(<span class='kw'>cnd</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: This is a warning</span></div><div class='input'>
+<span class='no'>cnd</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cnd.html'>warning_cnd</a></span>(<span class='st'>"my_warning_class"</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"This is a warning"</span>)
+<span class='fu'>cnd_signal</span>(<span class='no'>cnd</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: This is a warning</span></div><div class='input'>
 <span class='co'># If it inherits from "error", an error is raised:</span>
-<span class='kw'>cnd</span> <span class='op'>&lt;-</span> <span class='fu'>error_cnd</span>(<span class='st'>"my_error_class"</span>, message = <span class='st'>"This is an error"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>cnd_signal</span>(<span class='kw'>cnd</span>))</div><div class='output co'>#&gt; Error : This is an error</div></pre>
+<span class='no'>cnd</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cnd.html'>error_cnd</a></span>(<span class='st'>"my_error_class"</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"This is an error"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>cnd_signal</span>(<span class='no'>cnd</span>))</div><div class='output co'>#&gt; Error : This is an error</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -246,7 +246,7 @@ establishing condition handlers.</p></div>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

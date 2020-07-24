@@ -160,9 +160,9 @@
     </div>
 
     <pre class="usage"><span class='fu'>dots_definitions</span>(
-  <span class='kw'>...</span>,
-  .named = <span class='fl'>FALSE</span>,
-  .ignore_empty = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>)
+  <span class='no'>...</span>,
+  <span class='kw'>.named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>)
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -170,15 +170,15 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>...</th>
-      <td><p>For <code>enexprs()</code>, <code>ensyms()</code> and <code>enquos()</code>, names of
+      <td><p>For <code><a href='nse-defuse.html'>enexprs()</a></code>, <code><a href='nse-defuse.html'>ensyms()</a></code> and <code><a href='nse-defuse.html'>enquos()</a></code>, names of
 arguments to capture without evaluation (including <code>...</code>). For
-<code>exprs()</code> and <code>quos()</code>, the expressions to capture unevaluated
+<code><a href='nse-defuse.html'>exprs()</a></code> and <code><a href='nse-defuse.html'>quos()</a></code>, the expressions to capture unevaluated
 (including expressions contained in <code>...</code>).</p></td>
     </tr>
     <tr>
       <th>.named</th>
       <td><p>Whether to ensure all dots are named. Unnamed
-elements are processed with <code>as_label()</code> to build a default
+elements are processed with <code><a href='as_label.html'>as_label()</a></code> to build a default
 name.</p></td>
     </tr>
     <tr>
@@ -214,7 +214,7 @@ arguments.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

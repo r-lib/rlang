@@ -171,7 +171,7 @@ copies. Modifying these references can thus have far reaching side
 effects.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>is_copyable</span>(<span class='kw'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>is_copyable</span>(<span class='no'>x</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -186,18 +186,18 @@ effects.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Let's add attributes with structure() to uncopyable types. Since</span>
 <span class='co'># they are not copied, the attributes are changed in place:</span>
-<span class='kw'>env</span> <span class='op'>&lt;-</span> <span class='fu'>env</span>()
-<span class='fu'><a href='https://rdrr.io/r/base/structure.html'>structure</a></span>(<span class='kw'>env</span>, foo = <span class='st'>"bar"</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7f96405fc360&gt;
+<span class='no'>env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>()
+<span class='fu'><a href='https://rdrr.io/r/base/structure.html'>structure</a></span>(<span class='no'>env</span>, <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"bar"</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7fd9631cac18&gt;
 #&gt; attr(,"foo")
-#&gt; [1] "bar"</div><div class='input'><span class='kw'>env</span></div><div class='output co'>#&gt; &lt;environment: 0x7f96405fc360&gt;
+#&gt; [1] "bar"</div><div class='input'><span class='no'>env</span></div><div class='output co'>#&gt; &lt;environment: 0x7fd9631cac18&gt;
 #&gt; attr(,"foo")
 #&gt; [1] "bar"</div><div class='input'>
 <span class='co'># These objects that can only be changed with side effect are not</span>
 <span class='co'># copyable:</span>
-<span class='fu'>is_copyable</span>(<span class='kw'>env</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/structure.html'>structure</a></span>(<span class='kw'>base</span>::<span class='kw'><a href='https://rdrr.io/r/base/list.html'>list</a></span>, foo = <span class='st'>"bar"</span>)</div><div class='output co'>#&gt; function (...)  .Primitive("list")
+<span class='fu'>is_copyable</span>(<span class='no'>env</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/structure.html'>structure</a></span>(<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/r/base/list.html'>list</a></span>, <span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"bar"</span>)</div><div class='output co'>#&gt; function (...)  .Primitive("list")
 #&gt; attr(,"foo")
-#&gt; [1] "bar"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='kw'>base</span>::<span class='kw'><a href='https://rdrr.io/r/base/list.html'>list</a></span>)</div><div class='output co'>#&gt; function (...)  
+#&gt; [1] "bar"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/r/base/list.html'>list</a></span>)</div><div class='output co'>#&gt; function (...)  
 #&gt;  - attr(*, "foo")= chr "bar"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -214,7 +214,7 @@ effects.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

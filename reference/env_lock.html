@@ -172,12 +172,12 @@ unlocked.</p>
 <p>Note that only the environment as a container is locked, not the
 individual bindings. You can't remove or add a binding but you can
 still modify the values of existing bindings. See
-<code>env_binding_lock()</code> for locking individual bindings.</p>
+<code><a href='env_binding_lock.html'>env_binding_lock()</a></code> for locking individual bindings.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>env_lock</span>(<span class='kw'>env</span>)
+    <pre class="usage"><span class='fu'>env_lock</span>(<span class='no'>env</span>)
 
-<span class='fu'>env_is_locked</span>(<span class='kw'>env</span>)</pre>
+<span class='fu'>env_is_locked</span>(<span class='no'>env</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -193,15 +193,15 @@ still modify the values of existing bindings. See
     <p>The old value of <code>env_is_locked()</code> invisibly.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>env_binding_lock()</code></p></div>
+    <div class='dont-index'><p><code><a href='env_binding_lock.html'>env_binding_lock()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># New environments are unlocked by default:</span>
-<span class='kw'>env</span> <span class='op'>&lt;-</span> <span class='fu'>env</span>(a = <span class='fl'>1</span>)
-<span class='fu'>env_is_locked</span>(<span class='kw'>env</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
+<span class='no'>env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='fu'>env_is_locked</span>(<span class='no'>env</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
 <span class='co'># Use env_lock() to lock them:</span>
-<span class='fu'>env_lock</span>(<span class='kw'>env</span>)
-<span class='fu'>env_is_locked</span>(<span class='kw'>env</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'>env_lock</span>(<span class='no'>env</span>)
+<span class='fu'>env_is_locked</span>(<span class='no'>env</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># Now that `env` is locked, it is no longer possible to remove or</span>
 <span class='co'># add bindings. If run, the following would fail:</span>
 <span class='co'># env_unbind(env, "a")</span>
@@ -209,7 +209,7 @@ still modify the values of existing bindings. See
 
 <span class='co'># Note that even though the environment as a container is locked,</span>
 <span class='co'># the individual bindings are still unlocked and can be modified:</span>
-<span class='kw'>env</span><span class='op'>$</span><span class='kw'>a</span> <span class='op'>&lt;-</span> <span class='fl'>10</span></div></pre>
+<span class='no'>env</span>$<span class='no'>a</span> <span class='kw'>&lt;-</span> <span class='fl'>10</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -225,7 +225,7 @@ still modify the values of existing bindings. See
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

@@ -159,17 +159,17 @@ argument instead." />
 
     <div class="ref-description">
     <p><img src='figures/lifecycle-deprecated.svg' alt='Deprecated lifecycle' /></p>
-<p>These functions are deprecated, please use <code>is_call()</code> and its <code>n</code>
+<p>These functions are deprecated, please use <code><a href='is_call.html'>is_call()</a></code> and its <code>n</code>
 argument instead.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>is_lang</span>(<span class='kw'>x</span>, name = <span class='kw'>NULL</span>, n = <span class='kw'>NULL</span>, ns = <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>is_lang</span>(<span class='no'>x</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ns</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>is_unary_lang</span>(<span class='kw'>x</span>, name = <span class='kw'>NULL</span>, ns = <span class='kw'>NULL</span>)
+<span class='fu'>is_unary_lang</span>(<span class='no'>x</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ns</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>is_binary_lang</span>(<span class='kw'>x</span>, name = <span class='kw'>NULL</span>, ns = <span class='kw'>NULL</span>)
+<span class='fu'>is_binary_lang</span>(<span class='no'>x</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ns</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>quo_is_lang</span>(<span class='kw'>quo</span>)</pre>
+<span class='fu'>quo_is_lang</span>(<span class='no'>quo</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -182,9 +182,9 @@ extracted.</p></td>
     <tr>
       <th>name</th>
       <td><p>An optional name that the call should match. It is
-passed to <code>sym()</code> before matching. This argument is vectorised
+passed to <code><a href='sym.html'>sym()</a></code> before matching. This argument is vectorised
 and you can supply a vector of names to match. In this case,
-<code>is_call()</code> returns <code>TRUE</code> if at least one name matches.</p></td>
+<code><a href='is_call.html'>is_call()</a></code> returns <code>TRUE</code> if at least one name matches.</p></td>
     </tr>
     <tr>
       <th>n</th>
@@ -195,11 +195,11 @@ match.</p></td>
       <th>ns</th>
       <td><p>The namespace of the call. If <code>NULL</code>, the namespace
 doesn't participate in the pattern-matching. If an empty string
-<code>""</code> and <code>x</code> is a namespaced call, <code>is_call()</code> returns
-<code>FALSE</code>. If any other string, <code>is_call()</code> checks that <code>x</code> is
+<code>""</code> and <code>x</code> is a namespaced call, <code><a href='is_call.html'>is_call()</a></code> returns
+<code>FALSE</code>. If any other string, <code><a href='is_call.html'>is_call()</a></code> checks that <code>x</code> is
 namespaced within <code>ns</code>.</p>
 <p>Can be a character vector of namespaces, in which case the call
-has to match at least one of them, otherwise <code>is_call()</code> returns
+has to match at least one of them, otherwise <code><a href='is_call.html'>is_call()</a></code> returns
 <code>FALSE</code>.</p></td>
     </tr>
     <tr>
@@ -224,7 +224,7 @@ has to match at least one of them, otherwise <code>is_call()</code> returns
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

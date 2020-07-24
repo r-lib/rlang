@@ -163,9 +163,9 @@ is the first step to interpret or evaluate a piece of R code
 written by a programmer.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>parse_expr</span>(<span class='kw'>x</span>)
+    <pre class="usage"><span class='fu'>parse_expr</span>(<span class='no'>x</span>)
 
-<span class='fu'>parse_exprs</span>(<span class='kw'>x</span>)</pre>
+<span class='fu'>parse_exprs</span>(<span class='no'>x</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -181,7 +181,7 @@ it will be automatically closed and destroyed.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>parse_expr()</code> returns an expression,
+    <p><code>parse_expr()</code> returns an <a href='is_expression.html'>expression</a>,
 <code>parse_exprs()</code> returns a list of expressions. Note that for the
 plural variants the length of the output may be greater than the
 length of the input. This would happen is one of the strings
@@ -213,7 +213,7 @@ functions also support R connections.</p>
 #&gt; foo(bar)
 #&gt; </div><div class='input'>
 <span class='co'># Use names to figure out which input produced an expression:</span>
-<span class='fu'>parse_exprs</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(foo = <span class='st'>"1; 2"</span>, bar = <span class='st'>"3"</span>))</div><div class='output co'>#&gt; $foo
+<span class='fu'>parse_exprs</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>foo</span> <span class='kw'>=</span> <span class='st'>"1; 2"</span>, <span class='kw'>bar</span> <span class='kw'>=</span> <span class='st'>"3"</span>))</div><div class='output co'>#&gt; $foo
 #&gt; [1] 1
 #&gt; 
 #&gt; $foo
@@ -224,11 +224,11 @@ functions also support R connections.</p>
 #&gt; </div><div class='input'>
 <span class='co'># You can also parse source files by passing a R connection. Let's</span>
 <span class='co'># create a file containing R code:</span>
-<span class='kw'>path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='st'>"my-file.R"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"1; 2; mtcars"</span>, file = <span class='kw'>path</span>)
+<span class='no'>path</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='st'>"my-file.R"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"1; 2; mtcars"</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='no'>path</span>)
 
 <span class='co'># We can now parse it by supplying a connection:</span>
-<span class='fu'>parse_exprs</span>(<span class='fu'><a href='https://rdrr.io/r/base/connections.html'>file</a></span>(<span class='kw'>path</span>))</div><div class='output co'>#&gt; [[1]]
+<span class='fu'>parse_exprs</span>(<span class='fu'><a href='https://rdrr.io/r/base/connections.html'>file</a></span>(<span class='no'>path</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] 1
 #&gt; 
 #&gt; [[2]]
@@ -252,7 +252,7 @@ functions also support R connections.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

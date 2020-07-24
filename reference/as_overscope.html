@@ -162,23 +162,23 @@ have a replacement." />
     <div class="ref-description">
     <p><img src='figures/lifecycle-deprecated.svg' alt='Deprecated lifecycle' /></p>
 <p>These functions have been deprecated in rlang 0.2.0. Please use
-<code>as_data_mask()</code> and <code>new_data_mask()</code> instead. We no longer
+<code><a href='as_data_mask.html'>as_data_mask()</a></code> and <code><a href='as_data_mask.html'>new_data_mask()</a></code> instead. We no longer
 require the mask to be cleaned up so <code>overscope_clean()</code> does not
 have a replacement.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>as_overscope</span>(<span class='kw'>quo</span>, data = <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>as_overscope</span>(<span class='no'>quo</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>new_overscope</span>(<span class='kw'>bottom</span>, top = <span class='kw'>NULL</span>, enclosure = <span class='kw'>NULL</span>)
+<span class='fu'>new_overscope</span>(<span class='no'>bottom</span>, <span class='kw'>top</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>enclosure</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>overscope_clean</span>(<span class='kw'>overscope</span>)</pre>
+<span class='fu'>overscope_clean</span>(<span class='no'>overscope</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>quo</th>
-      <td><p>A quosure.</p></td>
+      <td><p>A <a href='nse-defuse.html'>quosure</a>.</p></td>
     </tr>
     <tr>
       <th>data</th>
@@ -204,7 +204,7 @@ assumption about the parent of <code>top</code>.</p></td>
     </tr>
     <tr>
       <th>enclosure</th>
-      <td><p>The <code>parent</code> argument of <code>new_data_mask()</code>.</p></td>
+      <td><p>The <code>parent</code> argument of <code><a href='as_data_mask.html'>new_data_mask()</a></code>.</p></td>
     </tr>
     <tr>
       <th>overscope</th>
@@ -228,7 +228,7 @@ assumption about the parent of <code>top</code>.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

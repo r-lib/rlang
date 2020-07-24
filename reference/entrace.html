@@ -166,22 +166,22 @@ with_abort()." />
     </div>
 
     <div class="ref-description">
-    <p><code>entrace()</code> interrupts an error throw to add an rlang backtrace to the error. The error throw is
+    <p><code>entrace()</code> interrupts an error throw to add an <a href='trace_back.html'>rlang backtrace</a> to the error. The error throw is
 immediately resumed. <code>cnd_entrace()</code> adds a backtrace to a
 condition object, without any other effect. Both functions should
 be called directly from an error handler.</p>
 <p>Set the <code>error</code> global option to <code><a href='https://rdrr.io/r/base/substitute.html'>quote(rlang::entrace())</a></code> to
 transform base errors to rlang errors. These enriched errors
 include a backtrace. The RProfile is a good place to set the
-handler. See <code>rlang_backtrace_on_error</code> for details.</p>
-<p><code>entrace()</code> also works as a calling handler, though it
+handler. See <code><a href='rlang_backtrace_on_error.html'>rlang_backtrace_on_error</a></code> for details.</p>
+<p><code>entrace()</code> also works as a <a href='with_handlers.html'>calling</a> handler, though it
 is often more practical to use the higher-level function
-<code>with_abort()</code>.</p>
+<code><a href='with_abort.html'>with_abort()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>entrace</span>(<span class='kw'>cnd</span>, <span class='kw'>...</span>, top = <span class='kw'>NULL</span>, bottom = <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>entrace</span>(<span class='no'>cnd</span>, <span class='no'>...</span>, <span class='kw'>top</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bottom</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>cnd_entrace</span>(<span class='kw'>cnd</span>, <span class='kw'>...</span>, top = <span class='kw'>NULL</span>, bottom = <span class='kw'>NULL</span>)</pre>
+<span class='fu'>cnd_entrace</span>(<span class='no'>cnd</span>, <span class='no'>...</span>, <span class='kw'>top</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bottom</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -200,7 +200,7 @@ the condition to handle.</p></td>
       <td><p>The first frame environment to be included in the
 backtrace. This becomes the top of the backtrace tree and
 represents the oldest call in the backtrace.</p>
-<p>This is needed in particular when you call <code>trace_back()</code>
+<p>This is needed in particular when you call <code><a href='trace_back.html'>trace_back()</a></code>
 indirectly or from a larger context, for example in tests or
 inside an RMarkdown document where you don't want all of the
 knitr evaluation mechanisms to appear in the backtrace.</p></td>
@@ -212,21 +212,21 @@ backtrace. This becomes the rightmost leaf of the backtrace tree
 and represents the youngest call in the backtrace.</p>
 <p>Set this when you would like to capture a backtrace without the
 capture context.</p>
-<p>Can also be an integer that will be passed to <code>caller_env()</code>.</p></td>
+<p>Can also be an integer that will be passed to <code><a href='caller_env.html'>caller_env()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>with_abort()</code> to promote conditions to rlang errors.
+    <div class='dont-index'><p><code><a href='with_abort.html'>with_abort()</a></code> to promote conditions to rlang errors.
 <code>cnd_entrace()</code> to manually add a backtrace to a condition.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {  <span class='co'># Not run</span>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {  <span class='co'># Not run</span>
 
 <span class='co'># Set the error handler in your RProfile like this:</span>
-<span class='co'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"rlang"</span>, quietly = <span class='fl'>TRUE</span>)) {
-  <span class='fu'><a href='https://rdrr.io/r/base/options.html'>options</a></span>(error = <span class='kw'>rlang</span>::<span class='kw'><a href='https://rlang.r-lib.org/reference/entrace.html'>entrace</a></span>)
+<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"rlang"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
+  <span class='fu'><a href='https://rdrr.io/r/base/options.html'>options</a></span>(<span class='kw'>error</span> <span class='kw'>=</span> <span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='no'>entrace</span>)
 }
 
 }</div></pre>
@@ -245,7 +245,7 @@ capture context.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

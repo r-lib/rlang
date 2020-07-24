@@ -175,7 +175,7 @@ standards.</p></li>
 </ul>
 
 <p><code>arg_match()</code> derives the possible values from the
-caller frame.</p>
+<a href='caller_frame.html'>caller frame</a>.</p>
 <p><code>arg_match0()</code> is a bare-bones version if performance is at a premium.
 It requires a string as <code>arg</code> and explicit <code>values</code>.
 For convenience, <code>arg</code> may also be a character vector containing
@@ -183,9 +183,9 @@ every element of <code>values</code>, possibly permuted.
 In this case, the first element of <code>arg</code> is used.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>arg_match</span>(<span class='kw'>arg</span>, values = <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>arg_match</span>(<span class='no'>arg</span>, <span class='kw'>values</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>arg_match0</span>(<span class='kw'>arg</span>, <span class='kw'>values</span>, arg_nm = <span class='fu'>as_label</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>substitute</a></span>(<span class='kw'>arg</span>)))</pre>
+<span class='fu'>arg_match0</span>(<span class='no'>arg</span>, <span class='no'>values</span>, <span class='kw'>arg_nm</span> <span class='kw'>=</span> <span class='fu'><a href='as_label.html'>as_label</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>substitute</a></span>(<span class='no'>arg</span>)))</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -209,7 +209,7 @@ In this case, the first element of <code>arg</code> is used.</p>
     <p>The string supplied to <code>arg</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>x</span> = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>)) <span class='fu'>arg_match</span>(<span class='kw'>x</span>)
+    <pre class="examples"><div class='input'><span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>)) <span class='fu'>arg_match</span>(<span class='no'>x</span>)
 <span class='fu'>fn</span>(<span class='st'>"bar"</span>)</div><div class='output co'>#&gt; [1] "bar"</div><div class='input'>
 <span class='co'># Throws an informative error for mismatches:</span>
 <span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>fn</span>(<span class='st'>"b"</span>))</div><div class='output co'>#&gt; Error : `x` must be one of "foo" or "bar".
@@ -218,9 +218,9 @@ In this case, the first element of <code>arg</code> is used.</p>
 <span class='co'># Use the bare-bones version with explicit values for speed:</span>
 <span class='fu'>arg_match0</span>(<span class='st'>"bar"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>, <span class='st'>"baz"</span>))</div><div class='output co'>#&gt; [1] "bar"</div><div class='input'>
 <span class='co'># For convenience:</span>
-<span class='kw'>fn1</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>x</span> = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"bar"</span>, <span class='st'>"baz"</span>, <span class='st'>"foo"</span>)) <span class='fu'>fn3</span>(<span class='kw'>x</span>)
-<span class='kw'>fn2</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>x</span> = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"baz"</span>, <span class='st'>"bar"</span>, <span class='st'>"foo"</span>)) <span class='fu'>fn3</span>(<span class='kw'>x</span>)
-<span class='kw'>fn3</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>x</span>) <span class='fu'>arg_match0</span>(<span class='kw'>x</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>, <span class='st'>"baz"</span>))
+<span class='no'>fn1</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"bar"</span>, <span class='st'>"baz"</span>, <span class='st'>"foo"</span>)) <span class='fu'>fn3</span>(<span class='no'>x</span>)
+<span class='no'>fn2</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"baz"</span>, <span class='st'>"bar"</span>, <span class='st'>"foo"</span>)) <span class='fu'>fn3</span>(<span class='no'>x</span>)
+<span class='no'>fn3</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>arg_match0</span>(<span class='no'>x</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>, <span class='st'>"baz"</span>))
 <span class='fu'>fn1</span>()</div><div class='output co'>#&gt; [1] "bar"</div><div class='input'><span class='fu'>fn2</span>(<span class='st'>"bar"</span>)</div><div class='output co'>#&gt; [1] "bar"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>fn3</span>(<span class='st'>"zoo"</span>))</div><div class='output co'>#&gt; Error : `x` must be one of "foo", "bar", or "baz".
 #&gt; Did you mean "foo"?</div></pre>
   </div>
@@ -238,7 +238,7 @@ In this case, the first element of <code>arg</code> is used.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

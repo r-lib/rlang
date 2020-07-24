@@ -170,22 +170,22 @@ output is always the same length as its input. On the other hand,
 <code>is_na()</code> is a scalar predicate and always returns a scalar
 boolean, <code>TRUE</code> or <code>FALSE</code>. If its input is not scalar, it returns
 <code>FALSE</code>. Finally, there are typed versions that check for
-particular <a href='https://rdrr.io/r/base/missing.html'>missing types</a>.</p>
+particular <a href='missing.html'>missing types</a>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>are_na</span>(<span class='kw'>x</span>)
+    <pre class="usage"><span class='fu'>are_na</span>(<span class='no'>x</span>)
 
-<span class='fu'>is_na</span>(<span class='kw'>x</span>)
+<span class='fu'>is_na</span>(<span class='no'>x</span>)
 
-<span class='fu'>is_lgl_na</span>(<span class='kw'>x</span>)
+<span class='fu'>is_lgl_na</span>(<span class='no'>x</span>)
 
-<span class='fu'>is_int_na</span>(<span class='kw'>x</span>)
+<span class='fu'>is_int_na</span>(<span class='no'>x</span>)
 
-<span class='fu'>is_dbl_na</span>(<span class='kw'>x</span>)
+<span class='fu'>is_dbl_na</span>(<span class='no'>x</span>)
 
-<span class='fu'>is_chr_na</span>(<span class='kw'>x</span>)
+<span class='fu'>is_chr_na</span>(<span class='no'>x</span>)
 
-<span class='fu'>is_cpl_na</span>(<span class='kw'>x</span>)</pre>
+<span class='fu'>is_cpl_na</span>(<span class='no'>x</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -199,7 +199,7 @@ particular <a href='https://rdrr.io/r/base/missing.html'>missing types</a>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The scalar predicates accept non-vector inputs. They are equivalent
-to <code>is_null()</code> in that respect. In contrast the vectorised
+to <code><a href='type-predicates.html'>is_null()</a></code> in that respect. In contrast the vectorised
 predicate <code>are_na()</code> requires a vector input since it is defined
 over vector values.</p>
     <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
@@ -214,9 +214,9 @@ point. This is why they are marked as questioning.</p>
     <pre class="examples"><div class='input'><span class='co'># are_na() is vectorised and works regardless of the type</span>
 <span class='fu'>are_na</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>NA</span>))</div><div class='output co'>#&gt; [1] FALSE FALSE  TRUE</div><div class='input'><span class='fu'>are_na</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1L</span>, <span class='fl'>NA</span>, <span class='fl'>3L</span>))</div><div class='output co'>#&gt; [1] FALSE  TRUE FALSE</div><div class='input'>
 <span class='co'># is_na() checks for scalar input and works for all types</span>
-<span class='fu'>is_na</span>(<span class='fl'>NA</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_na</span>(<span class='kw'>na_dbl</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_na</span>(<span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(<span class='fl'>0</span>))</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
+<span class='fu'>is_na</span>(<span class='fl'>NA</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_na</span>(<span class='no'>na_dbl</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_na</span>(<span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(<span class='fl'>0</span>))</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
 <span class='co'># There are typed versions as well:</span>
-<span class='fu'>is_lgl_na</span>(<span class='fl'>NA</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_lgl_na</span>(<span class='kw'>na_dbl</span>)</div><div class='output co'>#&gt; [1] FALSE</div></pre>
+<span class='fu'>is_lgl_na</span>(<span class='fl'>NA</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_lgl_na</span>(<span class='no'>na_dbl</span>)</div><div class='output co'>#&gt; [1] FALSE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -232,7 +232,7 @@ point. This is why they are marked as questioning.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

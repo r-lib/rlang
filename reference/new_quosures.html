@@ -165,7 +165,7 @@ object." />
     </div>
 
     <div class="ref-description">
-    <p>This small S3 class provides methods for <code><a href='https://rdrr.io/r/base/Extract.html'>[</a></code> and <code><a href='https://rdrr.io/r/base/c.html'>c()</a></code> and ensures
+    <p>This small S3 class provides methods for <code>[</code> and <code><a href='https://rdrr.io/r/base/c.html'>c()</a></code> and ensures
 the following invariants:</p><ul>
 <li><p>The list only contains quosures.</p></li>
 <li><p>It is always named, possibly with a vector of empty strings.</p></li>
@@ -173,15 +173,15 @@ the following invariants:</p><ul>
 
 <p><code>new_quosures()</code> takes a list of quosures and adds the <code>quosures</code>
 class and a vector of empty names if needed. <code>as_quosures()</code> calls
-<code>as_quosure()</code> on all elements before creating the <code>quosures</code>
+<code><a href='as_quosure.html'>as_quosure()</a></code> on all elements before creating the <code>quosures</code>
 object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>new_quosures</span>(<span class='kw'>x</span>)
+    <pre class="usage"><span class='fu'>new_quosures</span>(<span class='no'>x</span>)
 
-<span class='fu'>as_quosures</span>(<span class='kw'>x</span>, <span class='kw'>env</span>, named = <span class='fl'>FALSE</span>)
+<span class='fu'>as_quosures</span>(<span class='no'>x</span>, <span class='no'>env</span>, <span class='kw'>named</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='fu'>is_quosures</span>(<span class='kw'>x</span>)</pre>
+<span class='fu'>is_quosures</span>(<span class='no'>x</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -196,7 +196,7 @@ object.</p>
     </tr>
     <tr>
       <th>named</th>
-      <td><p>Whether to name the list with <code>quos_auto_name()</code>.</p></td>
+      <td><p>Whether to name the list with <code><a href='exprs_auto_name.html'>quos_auto_name()</a></code>.</p></td>
     </tr>
     </table>
 
@@ -216,7 +216,7 @@ object.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

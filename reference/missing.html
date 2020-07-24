@@ -171,15 +171,15 @@ typed missing value appropriate for the target vector. The objects
 provided here are aliases for those typed <code>NA</code> objects.</p>
     </div>
 
-    <pre class="usage"><span class='kw'>na_lgl</span>
+    <pre class="usage"><span class='no'>na_lgl</span>
 
-<span class='kw'>na_int</span>
+<span class='no'>na_int</span>
 
-<span class='kw'>na_dbl</span>
+<span class='no'>na_dbl</span>
 
-<span class='kw'>na_chr</span>
+<span class='no'>na_chr</span>
 
-<span class='kw'>na_cpl</span></pre>
+<span class='no'>na_cpl</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
@@ -213,11 +213,11 @@ contain any types, expressions like <code><a href='https://rdrr.io/r/base/list.h
 point. This is why they are marked as questioning.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span>(<span class='fl'>NA</span>)</div><div class='output co'>#&gt; [1] "logical"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span>(<span class='kw'>na_lgl</span>)</div><div class='output co'>#&gt; [1] "logical"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span>(<span class='kw'>na_int</span>)</div><div class='output co'>#&gt; [1] "integer"</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span>(<span class='fl'>NA</span>)</div><div class='output co'>#&gt; [1] "logical"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span>(<span class='no'>na_lgl</span>)</div><div class='output co'>#&gt; [1] "logical"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span>(<span class='no'>na_int</span>)</div><div class='output co'>#&gt; [1] "integer"</div><div class='input'>
 <span class='co'># Note that while the base R missing symbols cannot be overwritten,</span>
 <span class='co'># that's not the case for rlang's aliases:</span>
-<span class='kw'>na_dbl</span> <span class='op'>&lt;-</span> <span class='fl'>NA</span>
-<span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span>(<span class='kw'>na_dbl</span>)</div><div class='output co'>#&gt; [1] "logical"</div></pre>
+<span class='no'>na_dbl</span> <span class='kw'>&lt;-</span> <span class='fl'>NA</span>
+<span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span>(<span class='no'>na_dbl</span>)</div><div class='output co'>#&gt; [1] "logical"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -233,7 +233,7 @@ point. This is why they are marked as questioning.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

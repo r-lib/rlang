@@ -167,13 +167,13 @@ preserve copy-by-value semantics." />
 modifying the copy leaves the original object intact. Since
 copying data in memory is an expensive operation, copies in R are
 as lazy as possible. They only happen when the new object is
-actually modified. However, some operations (like <code>node_poke_car()</code>
-or <code>node_poke_cdr()</code>) do not support copy-on-write. In those cases,
+actually modified. However, some operations (like <code><a href='new_node.html'>node_poke_car()</a></code>
+or <code><a href='new_node.html'>node_poke_cdr()</a></code>) do not support copy-on-write. In those cases,
 it is necessary to duplicate the object manually in order to
 preserve copy-by-value semantics.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>duplicate</span>(<span class='kw'>x</span>, shallow = <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>duplicate</span>(<span class='no'>x</span>, <span class='kw'>shallow</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -215,7 +215,7 @@ still the same.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>
