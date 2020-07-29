@@ -1,6 +1,10 @@
 
 # rlang (development version)
 
+* `get_env()` now returns the proper environment with primitive
+  functions, i.e. the base namespace rather than the base environment
+  (r-lib/downlit#32).
+
 * `entrace()` no longer handles non-rlang errors that carry a
   backtrace. This improves compatibility with packages like callr.
 

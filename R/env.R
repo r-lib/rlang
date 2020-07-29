@@ -447,7 +447,7 @@ get_env <- function(env, default = NULL) {
     language = if (is_formula(env)) attr(env, ".Environment"),
     builtin = ,
     special = ,
-    primitive = base_env(),
+    primitive = ns_env("base"),
     closure = environment(env)
   )
 

@@ -453,6 +453,10 @@ test_that("env_unbind() removes objects", {
   expect_false(env_has(env, "a"))
 })
 
+test_that("get_env() returns the base namespace for primitive functions (r-lib/downlit#32)", {
+  expect_identical(get_env(is.null), ns_env("base"))
+})
+
 
 #  Lifecycle ---------------------------------------------------------
 
