@@ -33,3 +33,19 @@ Backtrace:
   9. rlang:::g()
  10. rlang:::h()
 
+
+withCallingHandlers()
+=====================
+
+> print(err_wch)
+x
++-<error/rlang_error>
+| bar
+\-<error/rlang_error>
+  foo
+Backtrace:
+  1. rlang::catch_cnd(...)
+  9. rlang:::foo()
+ 10. rlang:::bar(cnd)
+ 11. rlang:::baz(cnd)
+
