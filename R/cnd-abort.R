@@ -295,6 +295,15 @@ NULL
 # the dev version to be installed locally.
 format_onerror_backtrace <- function(cnd) {
   trace <- cnd$trace
+
+  # Show backtrace of oldest parent
+  while (is_condition(cnd$parent)) {
+    cnd <- cnd$parent
+    if (!is_null(cnd$trace)) {
+      trace <- cnd$trace
+    }
+  }
+
   if (is_null(trace) || !trace_length(trace)) {
     return(NULL)
   }
@@ -332,25 +341,10 @@ format_onerror_backtrace <- function(cnd) {
     show_trace
   )
 
-  out <- paste_line(
+  paste_line(
     "Backtrace:",
     format(trace, simplify = simplify, max_frames = max_frames)
   )
-
-  if (simplify == "none") {
-    # Show parent backtraces
-    while (!is_null(cnd <- cnd$parent)) {
-      trace <- trace_trim_common(cnd$trace, trace)
-      out <- paste_line(
-        out,
-        rlang_error_header(cnd, child = TRUE),
-        "Backtrace:",
-        format(trace, simplify = simplify, max_frames = max_frames)
-      )
-    }
-  }
-
-  out
 }
 
 show_trace_p <- function() {

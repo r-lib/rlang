@@ -8,15 +8,16 @@ Execution halted
 > cat_line(non_interactive)
 Error: bar
 Backtrace:
-    x
- 1. \-global::a()
- 2.   \-global::b()
- 3.     \-global::c()
-<parent: error/rlang_error>
-Backtrace:
-    x
- 1. \-global::f()
- 2.   \-global::g()
- 3.     \-global::h()
+     x
+  1. \-global::a()
+  2.   \-global::b()
+  3.     \-global::c()
+  4.       +-base::tryCatch(...)
+  5.       | \-base:::tryCatchList(expr, classes, parentenv, handlers)
+  6.       |   \-base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+  7.       |     \-base:::doTryCatch(return(expr), name, parentenv, handler)
+  8.       \-global::f()
+  9.         \-global::g()
+ 10.           \-global::h()
 Execution halted
 
