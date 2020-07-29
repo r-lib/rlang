@@ -180,14 +180,14 @@ pairlist. Empty arguments are preserved.</p></td>
     <pre class="examples"><div class='input'><span class='co'># Unlike `exprs()`, `pairlist2()` evaluates its arguments.</span>
 <span class='fu'><a href='new_function.html'>new_function</a></span>(<span class='fu'>pairlist2</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='fl'>3</span> * <span class='fl'>6</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>x</span> * <span class='no'>y</span>))</div><div class='output co'>#&gt; function (x = 1, y = 18) 
 #&gt; x * y
-#&gt; &lt;environment: 0x7fae36b4bae8&gt;</div><div class='input'><span class='fu'><a href='new_function.html'>new_function</a></span>(<span class='fu'><a href='nse-defuse.html'>exprs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='fl'>3</span> * <span class='fl'>6</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>x</span> * <span class='no'>y</span>))</div><div class='output co'>#&gt; function (x = 1, y = 3 * 6) 
+#&gt; &lt;environment: 0x7fcb1f1c52a0&gt;</div><div class='input'><span class='fu'><a href='new_function.html'>new_function</a></span>(<span class='fu'><a href='nse-defuse.html'>exprs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='fl'>3</span> * <span class='fl'>6</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>x</span> * <span class='no'>y</span>))</div><div class='output co'>#&gt; function (x = 1, y = 3 * 6) 
 #&gt; x * y
-#&gt; &lt;environment: 0x7fae36b4bae8&gt;</div><div class='input'>
+#&gt; &lt;environment: 0x7fcb1f1c52a0&gt;</div><div class='input'>
 <span class='co'># It preserves missing arguments, which is useful for creating</span>
 <span class='co'># parameters without defaults:</span>
 <span class='fu'><a href='new_function.html'>new_function</a></span>(<span class='fu'>pairlist2</span>(<span class='kw'>x</span> <span class='kw'>=</span> , <span class='kw'>y</span> <span class='kw'>=</span> <span class='fl'>3</span> * <span class='fl'>6</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>x</span> * <span class='no'>y</span>))</div><div class='output co'>#&gt; function (x, y = 18) 
 #&gt; x * y
-#&gt; &lt;environment: 0x7fae36b4bae8&gt;</div></pre>
+#&gt; &lt;environment: 0x7fcb1f1c52a0&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
