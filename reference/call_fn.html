@@ -201,7 +201,7 @@ change.</p>
 #&gt;     .Internal(matrix(data, nrow, ncol, byrow, dimnames, missing(nrow), 
 #&gt;         missing(ncol)))
 #&gt; }
-#&gt; &lt;bytecode: 0x7fcd0c8ac940&gt;
+#&gt; &lt;bytecode: 0x7fae31046f40&gt;
 #&gt; &lt;environment: namespace:base&gt;</div><div class='input'><span class='fu'>call_fn</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>()))</div><div class='output co'>#&gt; function (data = NA, nrow = 1, ncol = 1, byrow = FALSE, dimnames = NULL) 
 #&gt; {
 #&gt;     if (is.object(data) || !is.atomic(data)) 
@@ -209,12 +209,12 @@ change.</p>
 #&gt;     .Internal(matrix(data, nrow, ncol, byrow, dimnames, missing(nrow), 
 #&gt;         missing(ncol)))
 #&gt; }
-#&gt; &lt;bytecode: 0x7fcd0c8ac940&gt;
+#&gt; &lt;bytecode: 0x7fae31046f40&gt;
 #&gt; &lt;environment: namespace:base&gt;</div><div class='input'>
 <span class='co'># Extract the calling function</span>
 <span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>call_fn</span>(<span class='fu'><a href='stack.html'>call_frame</a></span>())
 <span class='fu'>test</span>()</div><div class='output co'>#&gt; function() call_fn(call_frame())
-#&gt; &lt;environment: 0x7fcd0fee9dc8&gt;</div></pre>
+#&gt; &lt;environment: 0x7fae33334e00&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

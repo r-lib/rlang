@@ -158,6 +158,7 @@
 <a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li><p><code><a href="../reference/entrace.html">entrace()</a></code> no longer handles non-rlang errors that carry a backtrace. This improves compatibility with packages like callr.</p></li>
 <li><p>Backtraces of unhandled errors are now displayed without truncation in non-interactive sessions (<a href='https://github.com/r-lib/rlang/issues/856'>#856</a>).</p></li>
 <li><p><code><a href="../reference/is_interactive.html">is_interactive()</a></code> no longer consults “rstudio.notebook.executing” option (<a href='https://github.com/r-lib/rlang/issues/1031'>#1031</a>).</p></li>
 </ul>
