@@ -1,11 +1,13 @@
 > # Branch (depth 0)
 > cat_line(branch0)
 Error: foo
+
 Execution halted
 
 > # Full
 > cat_line(full0)
 Error: foo
+
 Execution halted
 
 > # Branch (depth 1)

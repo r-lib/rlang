@@ -19,6 +19,7 @@ Execution halted
 > # Reminder
 > cat_line(reminder)
 Error: Error message
+
 Execution halted
 
 > # Branch

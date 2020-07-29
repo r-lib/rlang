@@ -1,8 +1,12 @@
 
 # rlang (development version)
 
+* Backtraces of unhandled errors are now displayed without truncation
+  in non-interactive sessions (#856).
+
 * `is_interactive()` no longer consults "rstudio.notebook.executing"
   option (#1031).
+
 
 # rlang 0.4.7
 
