@@ -176,11 +176,27 @@ signal_abort <- function(cnd) {
   # Save the unhandled error for `rlang::last_error()`.
   last_error_env$cnd <- cnd
 
-  # Generate the error message, possibly with a backtrace or reminder
-  fallback$message <- paste_line(
-    conditionMessage(cnd),
-    format_onerror_backtrace(cnd)
-  )
+  if (is_interactive()) {
+    # Generate the error message, possibly with a backtrace or reminder
+    fallback$message <- paste_line(
+      conditionMessage(cnd),
+      format_onerror_backtrace(cnd)
+    )
+  } else {
+    file <- peek_option("rlang:::error_pipe") %||% stderr()
+    msg <- conditionMessage(cnd)
+    fallback$message <- msg
+
+    cat("Error: ", msg, "\n", sep = "", file = file)
+
+    # Print the backtrace eagerly in non-interactive sessions because
+    # the length of error messages is limited (#856)
+    cat(format_onerror_backtrace(cnd), "\n", sep = "", file = file)
+
+    # Turn off the regular error printing to avoid printing the error
+    # twice
+    local_options(show.error.messages = FALSE)
+  }
 
   stop(fallback)
 }
