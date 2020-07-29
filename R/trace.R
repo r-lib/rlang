@@ -959,3 +959,7 @@ call_add_namespace <- function(call, fn) {
   call[[1]] <- namespaced_sym
   call
 }
+
+is_trace <- function(x) {
+  inherits_any(x, c("rlang_trace", "rlib_trace"))
+}

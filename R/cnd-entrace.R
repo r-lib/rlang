@@ -37,7 +37,7 @@
 entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
   check_dots_empty(...)
 
-  if (!missing(cnd) && inherits(cnd, "rlang_error")) {
+  if (!missing(cnd) && is_trace(cnd$trace)) {
     return()
   }
 
@@ -174,7 +174,7 @@ entrace_handle_top <- function(trace) {
   from_stop <- is_call(stop_call, "stop", ns = c("", "base"))
 
   # No need to do anything for rlang errors
-  if (from_stop && inherits(cnd, "rlang_error")) {
+  if (from_stop && is_trace(cnd$trace)) {
     return(NULL)
   }
 

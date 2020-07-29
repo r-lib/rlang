@@ -1,6 +1,9 @@
 
 # rlang (development version)
 
+* `entrace()` no longer handles non-rlang errors that carry a
+  backtrace. This improves compatibility with packages like callr.
+
 * Backtraces of unhandled errors are now displayed without truncation
   in non-interactive sessions (#856).
 
