@@ -88,10 +88,9 @@ trace_back <- function(top = NULL, bottom = NULL) {
   calls <- map2(calls, seq_along(calls), maybe_add_namespace)
 
   parents <- normalise_parents(parents)
-  ids <- map_chr(frames, env_label)
 
-  trace <- new_trace(calls, parents, ids)
-  trace <- trace_trim_env(trace, top)
+  trace <- new_trace(calls, parents)
+  trace <- trace_trim_env(trace, frames, top)
 
   trace
 }
@@ -237,7 +236,7 @@ normalise_parents <- function(parents) {
   parents
 }
 
-new_trace <- function(calls, parents, ids, indices = NULL) {
+new_trace <- function(calls, parents, indices = NULL) {
   indices <- indices %||% seq_along(calls)
 
   n <- length(calls)
@@ -251,7 +250,6 @@ new_trace <- function(calls, parents, ids, indices = NULL) {
     list(
       calls = calls,
       parents = parents,
-      ids = ids,
       indices = indices
     ),
     class = "rlang_trace"
@@ -271,10 +269,9 @@ c.rlang_trace <- function(...) {
 
   calls <- flatten(map(traces, `[[`, "calls"))
   parents <- flatten_int(map(traces, `[[`, "parents"))
-  ids <- flatten_chr(map(traces, `[[`, "ids"))
   indices <- flatten_int(map(traces, `[[`, "indices"))
 
-  new_trace(calls, parents, ids, indices)
+  new_trace(calls, parents, indices)
 }
 
 #' @export
@@ -434,7 +431,7 @@ trace_length <- function(trace) {
 
 trace_subset <- function(x, i) {
   if (!length(i)) {
-    return(new_trace(list(), int(), list()))
+    return(new_trace(list(), int()))
   }
   stopifnot(is_integerish(i))
 
@@ -449,7 +446,6 @@ trace_subset <- function(x, i) {
   new_trace(
     calls = x$calls[i],
     parents = parents,
-    ids = x$ids[i],
     indices = x$indices[i]
   )
 }
@@ -508,20 +504,20 @@ parents_indices <- function(i, parents) {
 
 # Trimming ----------------------------------------------------------------
 
-trace_trim_env <- function(x, to = NULL) {
+trace_trim_env <- function(x, frames, to) {
   to <- to %||% peek_option("rlang_trace_top_env")
 
   if (is.null(to)) {
     return(x)
   }
 
-  is_top <- x$ids == env_label(to)
+  is_top <- map_lgl(frames, is_reference, to)
   if (!any(is_top)) {
     return(x)
   }
 
-  start <- last(which(is_top)) + 1
-  end <- length(x$ids)
+  start <- last(which(is_top)) + 1L
+  end <- trace_length(x)
 
   trace_subset(x, seq2(start, end))
 }
@@ -641,9 +637,6 @@ branch_uncollapse_pipe <- function(trace) {
     parent <- trace$parents[[idx]]
     pipe_parents <- seq(parent, parent + pointer - 1L)
 
-    # Assign the pipe frame as dummy ids for uncollapsed frames
-    pipe_ids <- rep(trace$ids[idx], pointer)
-
     # This assigns the same frame number to all pipe calls that have
     # already returned
     n_collapsed <- attr(pipe, "collapsed") %||% 0L
@@ -656,7 +649,6 @@ branch_uncollapse_pipe <- function(trace) {
 
     trace$calls <- c(trace_before$calls, pipe_calls, trace_after$calls)
     trace$parents <- c(trace_before$parents, pipe_parents, trace_after$parents)
-    trace$ids <- c(trace_before$ids, pipe_ids, trace_after$ids)
     trace$indices <- c(trace_before$indices, pipe_indices, trace_after$indices)
   }
 
@@ -768,21 +760,6 @@ trace_simplify_collapse <- function(trace) {
 
   trace$parents <- parents
   trace_subset(trace, rev(path))
-}
-
-# Typically the full trace is held by the child error and the partial
-# trace by the parent
-trace_trim_common <- function(full, partial) {
-  common <- map_lgl(full$ids, `%in%`, partial$ids)
-  out <- trace_subset(full, which(!common))
-
-  # Trim catching context if any
-  calls <- out$calls
-  if (length(calls) && is_call(calls[[1]], c("tryCatch", "with_handlers", "catch_cnd"))) {
-    out <- trace_subset_across(out, -1, 1)
-  }
-
-  out
 }
 
 

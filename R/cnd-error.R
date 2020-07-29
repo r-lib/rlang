@@ -67,9 +67,15 @@ format.rlang_error <- function(x,
     message
   )
 
+  trace <- x$trace
+
   while (is_rlang_error(parent)) {
     x <- parent
     parent <- parent$parent
+
+    if (!is_null(x$trace)) {
+      trace <- x$trace
+    }
 
     header <- rlang_error_header(x)
     header <- header_add_tree_node(header, style, parent)
@@ -94,16 +100,10 @@ format.rlang_error <- function(x,
     )
   }
 
-  trace <- x$trace
   simplify <- arg_match(simplify)
 
   if (!is_null(trace) && trace_length(trace)) {
     out <- paste_line(out, bold("Backtrace:"))
-
-    if (!is_null(child)) {
-      trace <- trace_trim_common(trace, child$trace)
-    }
-
     trace_lines <- format(trace, ..., simplify = simplify)
     out <- paste_line(out, trace_lines)
   }

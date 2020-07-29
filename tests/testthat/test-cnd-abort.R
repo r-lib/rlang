@@ -57,13 +57,13 @@ test_that("Invalid on_error option resets itself", {
 test_that("format_onerror_backtrace handles empty and size 1 traces", {
   local_options(rlang_backtrace_on_error = "branch")
 
-  trace <- new_trace(list(), int(), chr())
+  trace <- new_trace(list(), int())
   expect_identical(format_onerror_backtrace(trace), NULL)
 
-  trace <- new_trace(list(quote(foo)), int(0), chr(""))
+  trace <- new_trace(list(quote(foo)), int(0))
   expect_identical(format_onerror_backtrace(trace), NULL)
 
-  trace <- new_trace(list(quote(foo), quote(bar)), int(0, 1), chr("", ""))
+  trace <- new_trace(list(quote(foo), quote(bar)), int(0, 1))
   expect_match(format_onerror_backtrace(error_cnd(trace = trace)), "foo.*bar")
 })
 
@@ -223,6 +223,16 @@ test_that("capture context doesn't leak into low-level backtraces", {
     )
   }
 
+  foo <- function(cnd) bar(cnd)
+  bar <- function(cnd) baz(cnd)
+  baz <- function(cnd) abort("foo")
+  err_wch <- catch_cnd(
+    withCallingHandlers(
+      foo(),
+      error = function(cnd) abort("bar", parent = cnd)
+    )
+  )
+
   verify_output(test_path("output-cnd-abort-parent-trace.txt"), {
     parent <- TRUE
     wrapper <- FALSE
@@ -237,6 +247,9 @@ test_that("capture context doesn't leak into low-level backtraces", {
     parent <- FALSE
     err <- catch_cnd(f())
     print(err)
+
+    "# withCallingHandlers()"
+    print(err_wch)
   })
 })
 
