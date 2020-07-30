@@ -187,6 +187,7 @@ signal_abort <- function(cnd) {
       conditionMessage(cnd),
       format_onerror_backtrace(cnd)
     )
+    fallback$rlang_entraced <- TRUE
   } else {
     file <- peek_option("rlang:::error_pipe") %||% stderr()
     msg <- conditionMessage(cnd)
