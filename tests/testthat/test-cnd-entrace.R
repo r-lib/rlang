@@ -164,3 +164,22 @@ test_that("cnd_entrace() skips capture context", {
   last <- err$trace$calls[[4]]
   expect_match(deparse(last), "bar")
 })
+
+test_that("rlang and base errors are properly entraced", {
+  skip_if_stale_backtrace()
+
+  base <- run_script(test_path("fixtures", "error-entrace.R"))
+
+  rlang <- run_script(
+    test_path("fixtures", "error-entrace.R"),
+    envvars = "rlang_error_kind=rlang"
+  )
+
+  verify_output(test_path("test-entrace.txt"), {
+    "# base error"
+    cat_line(base)
+
+    "# rlang error"
+    cat_line(rlang)
+  })
+})
