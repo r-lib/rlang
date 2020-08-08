@@ -92,6 +92,14 @@ trace_back <- function(top = NULL, bottom = NULL) {
   trace <- new_trace(calls, parents)
   trace <- trace_trim_env(trace, frames, top)
 
+  trace_hook <- peek_option("rlang:::trace_hook")
+  if (is_function(trace_hook)) {
+    new_trace <- trace_hook(trace)
+    if (inherits(new_trace, "rlang_trace")) {
+      trace <- new_trace
+    }
+  }
+
   trace
 }
 
