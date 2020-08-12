@@ -10,14 +10,14 @@ sexp* r_push_attribute(sexp* x, sexp* tag, sexp* value) {
   return attrs;
 }
 
-// Unlike Rf_getAttrib(), this never allocates
+// Unlike Rf_getAttrib(), this never allocates. This also doesn't bump
+// refcounts or namedness.
 sexp* r_get_attribute(sexp* x, sexp* tag) {
   sexp* attrib = r_attrib(x);
 
   while (attrib != r_null) {
     if (r_node_tag(attrib) == tag) {
       sexp* attr = r_node_car(attrib);
-      r_mark_shared(attr);
       return attr;
     }
     attrib = r_node_cdr(attrib);
