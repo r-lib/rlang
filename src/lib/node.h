@@ -71,6 +71,11 @@ sexp* r_pairlist_find(sexp* node, sexp* tag);
 sexp* r_pairlist_rev(sexp* node);
 
 static inline
+sexp* r_pairlist_get(sexp* node, sexp* tag) {
+  return r_node_car(r_pairlist_find(node, tag));
+}
+
+static inline
 sexp* r_pairlist_find_last(sexp* x) {
   while (CDR(x) != R_NilValue)
     x = CDR(x);

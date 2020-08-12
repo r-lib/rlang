@@ -1,6 +1,7 @@
 #ifndef RLANG_ATTRS_H
 #define RLANG_ATTRS_H
 
+#include "node.h"
 #include "sym.h"
 
 
@@ -14,7 +15,13 @@ sexp* r_poke_attrib(sexp* x, sexp* attrs) {
   return x;
 }
 
-sexp* r_attrib_get(sexp* x, sexp* tag);
+// Unlike Rf_getAttrib(), this never allocates. This also doesn't bump
+// refcounts or namedness.
+static inline
+sexp* r_attrib_get(sexp* x, sexp* tag) {
+  return r_pairlist_get(r_attrib(x), tag);
+}
+
 sexp* r_attrib_push(sexp* x, sexp* tag, sexp* value);
 sexp* r_attrib_set(sexp* x, sexp* tag, sexp* value);
 

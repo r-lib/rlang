@@ -10,21 +10,6 @@ sexp* r_attrib_push(sexp* x, sexp* tag, sexp* value) {
   return attrs;
 }
 
-// Unlike Rf_getAttrib(), this never allocates. This also doesn't bump
-// refcounts or namedness.
-sexp* r_attrib_get(sexp* x, sexp* tag) {
-  sexp* attrib = r_attrib(x);
-
-  while (attrib != r_null) {
-    if (r_node_tag(attrib) == tag) {
-      sexp* attr = r_node_car(attrib);
-      return attr;
-    }
-    attrib = r_node_cdr(attrib);
-  }
-
-  return r_null;
-}
 
 sexp* r_attrs_set_at(sexp* attrs, sexp* node, sexp* value) {
   sexp* sentinel = r_node_cdr(node);
