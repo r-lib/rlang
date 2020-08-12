@@ -83,7 +83,7 @@ sexp* rlang_ext2_is_missing(sexp* _call, sexp* _op, sexp* args, sexp* env) {
     return r_shared_true;
   }
 
-  return r_lgl(r_eval(r_x_sym, env) == r_missing_sym);
+  return r_lgl(r_eval(r_syms_x, env) == r_syms_missing);
 }
 
 static sexp* stop_arg_match_call = NULL;

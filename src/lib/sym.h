@@ -2,27 +2,27 @@
 #define RLANG_SYM_H
 
 
-#define r_unbound_sym R_UnboundValue
-#define r_missing_sym R_MissingArg
-#define r_names_sym R_NamesSymbol
-#define r_class_sym R_ClassSymbol
-#define r_dots_sym R_DotsSymbol
-#define r_namespace_sym R_DoubleColonSymbol
-#define r_namespace3_sym R_TripleColonSymbol
+#define r_syms_unbound R_UnboundValue
+#define r_syms_missing R_MissingArg
+#define r_syms_names R_NamesSymbol
+#define r_syms_class R_ClassSymbol
+#define r_syms_dots R_DotsSymbol
+#define r_syms_namespace R_DoubleColonSymbol
+#define r_syms_namespace3 R_TripleColonSymbol
 
-extern sexp* r_dot_environment_sym;
-extern sexp* r_function_sym;
-extern sexp* r_srcref_sym;
-extern sexp* r_tilde_sym;
+extern sexp* r_syms_dot_environment;
+extern sexp* r_syms_function;
+extern sexp* r_syms_srcref;
+extern sexp* r_syms_tilde;
 
-extern sexp* r_w_sym;
-extern sexp* r_x_sym;
-extern sexp* r_y_sym;
-extern sexp* r_z_sym;
+extern sexp* r_syms_w;
+extern sexp* r_syms_x;
+extern sexp* r_syms_y;
+extern sexp* r_syms_z;
 
-extern sexp* r_dot_x_sym;
-extern sexp* r_dot_y_sym;
-extern sexp* r_dot_fn_sym;
+extern sexp* r_syms_dot_x;
+extern sexp* r_syms_dot_y;
+extern sexp* r_syms_dot_fn;
 
 
 sexp* r_new_symbol(sexp* x, int* err);

@@ -36,7 +36,7 @@ sexp* rlang_env_get_sym(sexp* env, sexp* sym, bool inherit, sexp* closure_env) {
     FREE(1);
   }
 
-  if (out == r_unbound_sym) {
+  if (out == r_syms_unbound) {
     out = r_eval(r_sym("default"), closure_env);
   }
 
@@ -136,7 +136,7 @@ sexp* rlang_env_poke(sexp* env, sexp* nm, sexp* value, sexp* inherit, sexp* crea
     old = r_env_find(env, sym);
   }
 
-  bool absent = (old == r_unbound_sym);
+  bool absent = (old == r_syms_unbound);
   if (absent) {
     if (!c_create) {
       r_abort("Can't find existing binding in `env` for \"%s\".",
@@ -290,7 +290,7 @@ static
 sexp* env_get(sexp* env, sexp* sym) {
   sexp* out = r_env_find(env, sym);
 
-  if (out == r_unbound_sym) {
+  if (out == r_syms_unbound) {
     return rlang_zap;
   }
 

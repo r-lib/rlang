@@ -33,7 +33,7 @@ bool r_f_has_env(sexp* f) {
 
 bool r_is_formula(sexp* x, int scoped, int lhs) {
   if (r_is_formulaish(x, scoped, lhs)) {
-    return r_node_car(x) == r_tilde_sym;
+    return r_node_car(x) == r_syms_tilde;
   } else {
     return false;
   }
