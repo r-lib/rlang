@@ -4,17 +4,11 @@
 #include "sym.h"
 
 
-static inline sexp* r_get_attributes(sexp* x) {
+static inline sexp* r_attrib(sexp* x) {
   return ATTRIB(x);
 }
-inline sexp* r_poke_attributes(sexp* x, sexp* attrs) {
+inline sexp* r_poke_attrib(sexp* x, sexp* attrs) {
   SET_ATTRIB(x, attrs);
-  return x;
-}
-static inline sexp* r_set_attributes(sexp* x, sexp* attrs) {
-  x = KEEP(r_clone(x));
-  SET_ATTRIB(x, attrs);
-  FREE(1);
   return x;
 }
 
@@ -50,7 +44,7 @@ static inline sexp* r_set_class(sexp* x, sexp* classes) {
 
   return x;
 }
-static inline sexp* r_get_class(sexp* x) {
+static inline sexp* r_class(sexp* x) {
   return r_get_attribute(x, r_class_sym);
 }
 

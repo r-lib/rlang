@@ -89,7 +89,7 @@ sexp* new_raw_formula(sexp* lhs, sexp* rhs, sexp* env) {
 
   sexp* attrs = KEEP(r_new_node(env, r_null));
   r_node_poke_tag(attrs, r_sym(".Environment"));
-  r_poke_attributes(f, attrs);
+  r_poke_attrib(f, attrs);
 
   FREE(3);
   return f;

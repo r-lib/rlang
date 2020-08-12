@@ -20,13 +20,13 @@ static sexp* quosures_attrib = NULL;
 sexp* rlang_new_splice_box(sexp* x) {
   sexp* out = KEEP(r_new_vector(r_type_list, 1));
   r_list_poke(out, 0, x);
-  r_poke_attributes(out, splice_box_attrib);
+  r_poke_attrib(out, splice_box_attrib);
   r_mark_object(out);
   FREE(1);
   return out;
 }
 bool is_splice_box(sexp* x) {
-  return r_get_attributes(x) == splice_box_attrib;
+  return r_attrib(x) == splice_box_attrib;
 }
 sexp* rlang_is_splice_box(sexp* x) {
   return r_lgl(is_splice_box(x));
@@ -807,7 +807,7 @@ sexp* rlang_quos_interp(sexp* frame_env,
 
   sexp* attrib = KEEP(r_new_node(r_names(dots), quosures_attrib));
   r_node_poke_tag(attrib, r_names_sym);
-  r_poke_attributes(dots, attrib);
+  r_poke_attrib(dots, attrib);
   r_mark_object(dots);
 
   FREE(4);

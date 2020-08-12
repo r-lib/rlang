@@ -289,7 +289,7 @@ test_that("can clone until sentinel", {
 })
 
 get_attributes <- function(x) {
-  .Call(rlang_get_attributes, x)
+  .Call(rlang_attrib, x)
 }
 c_set_attribute <- function(x, name, value) {
   .Call(rlang_test_set_attribute, x, sym(name), value)

@@ -3,7 +3,7 @@
 
 // attrs.c
 
-sexp* rlang_poke_attributes(sexp* x, sexp* attrs) {
+sexp* rlang_poke_attrib(sexp* x, sexp* attrs) {
   SET_ATTRIB(x, attrs);
   return x;
 }

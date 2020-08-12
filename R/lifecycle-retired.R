@@ -370,13 +370,13 @@ as_base_type <- function(x, as_type) {
   # method dispatch, but we also want to avoid an extra copy of atomic
   # vectors: the first when unclassing, the second when coercing. This
   # is also useful for uncopyable types like environments.
-  attrs <- .Call(rlang_get_attributes, x)
-  .Call(rlang_poke_attributes, x, NULL)
+  attrs <- .Call(rlang_attrib, x)
+  .Call(rlang_poke_attrib, x, NULL)
 
   # This function assumes that the target type is different than the
   # input type, otherwise no duplication is done and the output will
   # be modified by side effect when we restore the input attributes.
-  on.exit(.Call(rlang_poke_attributes, x, attrs))
+  on.exit(.Call(rlang_poke_attrib, x, attrs))
 
   as_type(x)
 }
@@ -399,7 +399,7 @@ coerce_type_vec <- function(.x, .to, ...) {
     # Avoid a copy of `out` when we restore the names, since it could be
     # a heavy atomic vector. We own `out`, so it is ok to change its
     # attributes inplace.
-    .Call(rlang_poke_attributes, out, pairlist(names = names(.x)))
+    .Call(rlang_poke_attrib, out, pairlist(names = names(.x)))
   }
 
   out
