@@ -292,7 +292,7 @@ sexp* big_bang(sexp* operand, sexp* env, sexp* prev, sexp* node) {
     node = prev;
   } else {
     // Insert coerced value into existing pairlist of args
-    sexp* tail = r_node_tail(value);
+    sexp* tail = r_pairlist_find_last(value);
     r_node_poke_cdr(tail, r_node_cdr(node));
     r_node_poke_cdr(prev, value);
     node = tail;

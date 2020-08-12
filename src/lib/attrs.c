@@ -30,7 +30,7 @@ sexp* r_attrs_set_at(sexp* attrs, sexp* node, sexp* value) {
   sexp* sentinel = r_node_cdr(node);
   sexp* new_node = r_null;
 
-  attrs = KEEP(r_node_list_clone_until(attrs, sentinel, &new_node));
+  attrs = KEEP(r_pairlist_clone_until(attrs, sentinel, &new_node));
   r_node_poke_car(new_node, value);
 
   FREE(1);
@@ -40,7 +40,7 @@ sexp* r_attrs_zap_at(sexp* attrs, sexp* node, sexp* value) {
   sexp* sentinel = node;
   sexp* new_node = r_null;
 
-  attrs = KEEP(r_node_list_clone_until(attrs, sentinel, &new_node));
+  attrs = KEEP(r_pairlist_clone_until(attrs, sentinel, &new_node));
 
   if (new_node == r_null) {
     // `node` is the first node of `attrs`

@@ -121,7 +121,7 @@ extern sexp* rlang_env_inherits(sexp*, sexp*);
 extern sexp* rlang_eval_top(sexp*, sexp*);
 extern sexp* rlang_attrib(sexp*);
 extern sexp* rlang_named(sexp*, sexp*);
-extern sexp* r_node_list_reverse(sexp*);
+extern sexp* r_pairlist_rev(sexp*);
 extern sexp* rlang_new_splice_box(sexp*);
 extern sexp* rlang_is_splice_box(sexp*);
 extern sexp* rlang_unbox(sexp*);
@@ -298,7 +298,7 @@ static const r_callable r_callables[] = {
   {"rlang_env_inherits",                (r_fn_ptr) &rlang_env_inherits, 2},
   {"rlang_eval_top",                    (r_fn_ptr) &rlang_eval_top, 2},
   {"rlang_named",                       (r_fn_ptr) &rlang_named, 2},
-  {"rlang_node_list_reverse",           (r_fn_ptr) &r_node_list_reverse, 1},
+  {"rlang_pairlist_rev",                (r_fn_ptr) &r_pairlist_rev, 1},
   {"rlang_new_splice_box",              (r_fn_ptr) &rlang_new_splice_box, 1},
   {"rlang_is_splice_box",               (r_fn_ptr) &rlang_is_splice_box, 1},
   {"rlang_new_function",                (r_fn_ptr) &rlang_new_function, 3},

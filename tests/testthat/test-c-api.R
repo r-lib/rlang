@@ -426,7 +426,7 @@ test_that("r_lgl_which() handles `NA` when propagation is disabled (#750)", {
   expect_identical(r_lgl_which(lgl(TRUE, NA, FALSE, NA, TRUE, FALSE, TRUE), FALSE), int(1, 5, 7))
 })
 
-test_that("r_node_list_reverse() reverses destructively", {
+test_that("r_pairlist_rev() reverses destructively", {
   x <- pairlist(1)
   y <- node_list_reverse(x)
   expect_true(is_reference(x, y))
