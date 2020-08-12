@@ -238,7 +238,7 @@ static const r_callable r_callables[] = {
   {"rlang_test_parse",                  (r_fn_ptr) &rlang_test_parse, 1},
   {"rlang_test_parse_eval",             (r_fn_ptr) &rlang_test_parse_eval, 2},
   {"rlang_test_node_list_clone_until",  (r_fn_ptr) &rlang_test_node_list_clone_until, 2},
-  {"rlang_test_set_attribute",          (r_fn_ptr) &r_set_attribute, 3},
+  {"rlang_test_attrib_set",             (r_fn_ptr) &r_attrib_set, 3},
   {"rlang_test_sys_frame",              (r_fn_ptr) &rlang_test_sys_frame, 1},
   {"rlang_test_sys_call",               (r_fn_ptr) &rlang_test_sys_call, 1},
   {"rlang_test_Rf_warningcall",         (r_fn_ptr) &rlang_test_Rf_warningcall, 2},

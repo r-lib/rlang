@@ -3,7 +3,7 @@
 extern sexp* rlang_attrib(sexp* x);
 extern sexp* r_poke_attrib(sexp* x, sexp* attrs);
 
-sexp* r_push_attribute(sexp* x, sexp* tag, sexp* value) {
+sexp* r_attrib_push(sexp* x, sexp* tag, sexp* value) {
   sexp* attrs = r_new_node(value, r_attrib(x));
   r_node_poke_tag(attrs, tag);
   r_poke_attrib(x, attrs);
@@ -12,7 +12,7 @@ sexp* r_push_attribute(sexp* x, sexp* tag, sexp* value) {
 
 // Unlike Rf_getAttrib(), this never allocates. This also doesn't bump
 // refcounts or namedness.
-sexp* r_get_attribute(sexp* x, sexp* tag) {
+sexp* r_attrib_get(sexp* x, sexp* tag) {
   sexp* attrib = r_attrib(x);
 
   while (attrib != r_null) {
@@ -64,7 +64,7 @@ sexp* r_clone2(sexp* x) {
   return out;
 }
 
-sexp* r_set_attribute(sexp* x, sexp* tag, sexp* value) {
+sexp* r_attrib_set(sexp* x, sexp* tag, sexp* value) {
   sexp* attrs = r_attrib(x);
   sexp* out = KEEP(r_clone2(x));
 

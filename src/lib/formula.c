@@ -24,7 +24,7 @@ sexp* r_f_lhs(sexp* f) {
   }
 }
 sexp* r_f_env(sexp* f) {
-  return r_get_attribute(f, r_sym(".Environment"));
+  return r_attrib_get(f, r_sym(".Environment"));
 }
 
 bool r_f_has_env(sexp* f) {
