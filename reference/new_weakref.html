@@ -226,8 +226,8 @@ want to use the weak reference like a weak pointer.</p></td>
 <span class='co'># the weak reference will not keep the object alive.</span>
 <span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span>(<span class='no'>e</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/gc.html'>gc</a></span>()</div><div class='output co'>#&gt;           used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
-#&gt; Ncells  848775 45.4    1542824 82.4         NA  1542824 82.4
-#&gt; Vcells 1620890 12.4    8388608 64.0      16384  2868569 21.9</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'><a href='wref_key.html'>wref_key</a></span>(<span class='no'>w</span>), <span class='kw'>NULL</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+#&gt; Ncells  849349 45.4    1457609 77.9         NA  1457609 77.9
+#&gt; Vcells 1621865 12.4    8388608 64.0      16384  2892034 22.1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'><a href='wref_key.html'>wref_key</a></span>(<span class='no'>w</span>), <span class='kw'>NULL</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 
 <span class='co'># A weak reference with a key and value. The value contains data about the</span>
 <span class='co'># key.</span>
@@ -239,13 +239,13 @@ want to use the weak reference like a weak pointer.</p></td>
 <span class='co'># When v is removed, the weak ref keeps it alive because k is still reachable.</span>
 <span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span>(<span class='no'>v</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/gc.html'>gc</a></span>()</div><div class='output co'>#&gt;           used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
-#&gt; Ncells  848915 45.4    1542824 82.4         NA  1542824 82.4
-#&gt; Vcells 1620670 12.4    8388608 64.0      16384  2868569 21.9</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'><a href='wref_key.html'>wref_value</a></span>(<span class='no'>w</span>), <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+#&gt; Ncells  849489 45.4    1457609 77.9         NA  1457609 77.9
+#&gt; Vcells 1621645 12.4    8388608 64.0      16384  2892034 22.1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'><a href='wref_key.html'>wref_value</a></span>(<span class='no'>w</span>), <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># When k is removed, the weak ref does not keep k or v alive.</span>
 <span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span>(<span class='no'>k</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/gc.html'>gc</a></span>()</div><div class='output co'>#&gt;           used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
-#&gt; Ncells  848932 45.4    1542824 82.4         NA  1542824 82.4
-#&gt; Vcells 1620692 12.4    8388608 64.0      16384  2868569 21.9</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'><a href='wref_key.html'>wref_key</a></span>(<span class='no'>w</span>), <span class='kw'>NULL</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'><a href='wref_key.html'>wref_value</a></span>(<span class='no'>w</span>), <span class='kw'>NULL</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+#&gt; Ncells  849506 45.4    1457609 77.9         NA  1457609 77.9
+#&gt; Vcells 1621667 12.4    8388608 64.0      16384  2892034 22.1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'><a href='wref_key.html'>wref_key</a></span>(<span class='no'>w</span>), <span class='kw'>NULL</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'><a href='wref_key.html'>wref_value</a></span>(<span class='no'>w</span>), <span class='kw'>NULL</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
