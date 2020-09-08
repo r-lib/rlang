@@ -904,7 +904,7 @@ trace_pkgs <- function(pkgs, max_level = Inf, ..., regexp = NULL) {
   for (i in seq_along(pkgs)) {
     pkg <- pkgs[[i]]
     ns <- ns_env(pkg)
-    ns_fns <- names(keep(is.function, as.list(ns)))
+    ns_fns <- names(keep(as.list(ns), is.function))
 
     if (!is_null(regexp)) {
       ns_fns <- ns_fns[grepl(regexp[[i]], ns_fns)]
