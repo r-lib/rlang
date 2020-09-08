@@ -187,25 +187,25 @@ object is a quosure, use the <code>quo_</code> prefixed predicates to check
 its contents, <code>quo_is_missing()</code>, <code>quo_is_symbol()</code>, etc.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>is_quosure</span>(<span class='no'>x</span>)
+    <pre class="usage"><span class='fu'>is_quosure</span>(<span class='kw'>x</span>)
 
-<span class='fu'>quo_is_missing</span>(<span class='no'>quo</span>)
+<span class='fu'>quo_is_missing</span>(<span class='kw'>quo</span>)
 
-<span class='fu'>quo_is_symbol</span>(<span class='no'>quo</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>quo_is_symbol</span>(<span class='kw'>quo</span>, name = <span class='kw'>NULL</span>)
 
-<span class='fu'>quo_is_call</span>(<span class='no'>quo</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ns</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>quo_is_call</span>(<span class='kw'>quo</span>, name = <span class='kw'>NULL</span>, n = <span class='kw'>NULL</span>, ns = <span class='kw'>NULL</span>)
 
-<span class='fu'>quo_is_symbolic</span>(<span class='no'>quo</span>)
+<span class='fu'>quo_is_symbolic</span>(<span class='kw'>quo</span>)
 
-<span class='fu'>quo_is_null</span>(<span class='no'>quo</span>)
+<span class='fu'>quo_is_null</span>(<span class='kw'>quo</span>)
 
-<span class='fu'>quo_get_expr</span>(<span class='no'>quo</span>)
+<span class='fu'>quo_get_expr</span>(<span class='kw'>quo</span>)
 
-<span class='fu'>quo_get_env</span>(<span class='no'>quo</span>)
+<span class='fu'>quo_get_env</span>(<span class='kw'>quo</span>)
 
-<span class='fu'>quo_set_expr</span>(<span class='no'>quo</span>, <span class='no'>expr</span>)
+<span class='fu'>quo_set_expr</span>(<span class='kw'>quo</span>, <span class='kw'>expr</span>)
 
-<span class='fu'>quo_set_env</span>(<span class='no'>quo</span>, <span class='no'>env</span>)</pre>
+<span class='fu'>quo_set_env</span>(<span class='kw'>quo</span>, <span class='kw'>env</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -258,13 +258,15 @@ has to match at least one of them, otherwise <code><a href='is_call.html'>is_cal
 <code><a href='nse-defuse.html'>enquo()</a></code> only capture an environment for <a href='is_expression.html'>symbolic expressions</a>. For instance, all of these return the
 <a href='empty_env.html'>empty environment</a>:</p><pre><span class='fu'>quo_get_env</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='st'>"constant"</span>))
 <span class='fu'>quo_get_env</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fl'>100</span>))
-<span class='fu'>quo_get_env</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fl'>NA</span>))</pre>
+<span class='fu'>quo_get_env</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fl'>NA</span>))
+</pre>
 
 <p>On the other hand, quosures capture the environment of symbolic
 expressions, i.e. expressions whose meaning depends on the
 environment in which they are evaluated and what objects are
-defined there:</p><pre><span class='fu'>quo_get_env</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='no'>some_object</span>))
-<span class='fu'>quo_get_env</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fu'>some_function</span>()))</pre>
+defined there:</p><pre><span class='fu'>quo_get_env</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='kw'>some_object</span>))
+<span class='fu'>quo_get_env</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fu'>some_function</span>()))
+</pre>
 
     <h2 class="hasAnchor" id="empty-quosures"><a class="anchor" href="#empty-quosures"></a>Empty quosures</h2>
 
@@ -290,32 +292,44 @@ have the <a href='empty_env.html'>empty environment</a> as enclosure.</p>
 and <code><a href='as_quosure.html'>new_quosure()</a></code> for constructing quosures manually.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='no'>my_quosure</span>)
-<span class='no'>quo</span></div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
+    <pre class="examples"><div class='input'><span class='kw'>quo</span> <span class='op'>&lt;-</span> <span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='kw'>my_quosure</span>)
+<span class='kw'>quo</span>
+</div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^my_quosure</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7f861fabb9f0</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7fe77fd51040</span><span></div><div class='input'>
 
 <span class='co'># Access and set the components of a quosure:</span>
-<span class='fu'>quo_get_expr</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; my_quosure</div><div class='input'><span class='fu'>quo_get_env</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7f861fabb9f0&gt;</div><div class='input'>
-<span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'>quo_set_expr</span>(<span class='no'>quo</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>baz</span>))
-<span class='no'>quo</span> <span class='kw'>&lt;-</span> <span class='fu'>quo_set_env</span>(<span class='no'>quo</span>, <span class='fu'><a href='empty_env.html'>empty_env</a></span>())
-<span class='no'>quo</span></div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
+<span class='fu'>quo_get_expr</span>(<span class='kw'>quo</span>)
+</div><div class='output co'>#&gt; my_quosure</div><div class='input'><span class='fu'>quo_get_env</span>(<span class='kw'>quo</span>)
+</div><div class='output co'>#&gt; &lt;environment: 0x7fe77fd51040&gt;</div><div class='input'>
+<span class='kw'>quo</span> <span class='op'>&lt;-</span> <span class='fu'>quo_set_expr</span>(<span class='kw'>quo</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>baz</span>))
+<span class='kw'>quo</span> <span class='op'>&lt;-</span> <span class='fu'>quo_set_env</span>(<span class='kw'>quo</span>, <span class='fu'><a href='empty_env.html'>empty_env</a></span>())
+<span class='kw'>quo</span>
+</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: ^baz
 #&gt; env:  empty</div><div class='input'>
 <span class='co'># Test wether an object is a quosure:</span>
-<span class='fu'>is_quosure</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'>is_quosure</span>(<span class='kw'>quo</span>)
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># If it is a quosure, you can use the specialised type predicates</span>
 <span class='co'># to check what is inside it:</span>
-<span class='fu'>quo_is_symbol</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>quo_is_call</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>quo_is_null</span>(<span class='no'>quo</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
+<span class='fu'>quo_is_symbol</span>(<span class='kw'>quo</span>)
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>quo_is_call</span>(<span class='kw'>quo</span>)
+</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>quo_is_null</span>(<span class='kw'>quo</span>)
+</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
 <span class='co'># quo_is_missing() checks for a special kind of quosure, the one</span>
 <span class='co'># that contains the missing argument:</span>
-<span class='fu'><a href='nse-defuse.html'>quo</a></span>()</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
+<span class='fu'><a href='nse-defuse.html'>quo</a></span>()
+</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: ^
-#&gt; env:  empty</div><div class='input'><span class='fu'>quo_is_missing</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>())</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>arg</span>) <span class='fu'><a href='nse-defuse.html'>enquo</a></span>(<span class='no'>arg</span>)
-<span class='fu'>fn</span>()</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
+#&gt; env:  empty</div><div class='input'><span class='fu'>quo_is_missing</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>())
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>arg</span>) <span class='fu'><a href='nse-defuse.html'>enquo</a></span>(<span class='kw'>arg</span>)
+<span class='fu'>fn</span>()
+</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: ^
-#&gt; env:  empty</div><div class='input'><span class='fu'>quo_is_missing</span>(<span class='fu'>fn</span>())</div><div class='output co'>#&gt; [1] TRUE</div></span></pre>
+#&gt; env:  empty</div><div class='input'><span class='fu'>quo_is_missing</span>(<span class='fu'>fn</span>())
+</div><div class='output co'>#&gt; [1] TRUE</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -331,7 +345,7 @@ and <code><a href='as_quosure.html'>new_quosure()</a></code> for constructing qu
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

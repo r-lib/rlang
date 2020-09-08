@@ -169,11 +169,11 @@ accepts calls. <code>expr_label()</code> formats the expression nicely for use
 in messages.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>expr_label</span>(<span class='no'>expr</span>)
+    <pre class="usage"><span class='fu'>expr_label</span>(<span class='kw'>expr</span>)
 
-<span class='fu'>expr_name</span>(<span class='no'>expr</span>)
+<span class='fu'>expr_name</span>(<span class='kw'>expr</span>)
 
-<span class='fu'>expr_text</span>(<span class='no'>expr</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>60L</span>, <span class='kw'>nlines</span> <span class='kw'>=</span> <span class='fl'>Inf</span>)</pre>
+<span class='fu'>expr_text</span>(<span class='kw'>expr</span>, width = <span class='fl'>60L</span>, nlines = <span class='fl'>Inf</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -203,17 +203,22 @@ redundant with the <code>quo_</code> variants and do not handle quosures.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># To labellise a function argument, first capture it with</span>
 <span class='co'># substitute():</span>
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>expr_label</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>substitute</a></span>(<span class='no'>x</span>))
-<span class='fu'>fn</span>(<span class='no'>x</span>:<span class='no'>y</span>)</div><div class='output co'>#&gt; [1] "`x:y`"</div><div class='input'>
+<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>x</span>) <span class='fu'>expr_label</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>substitute</a></span>(<span class='kw'>x</span>))
+<span class='fu'>fn</span>(<span class='kw'>x</span><span class='op'>:</span><span class='kw'>y</span>)
+</div><div class='output co'>#&gt; [1] "`x:y`"</div><div class='input'>
 <span class='co'># Strings are encoded</span>
-<span class='fu'>expr_label</span>(<span class='st'>"a\nb"</span>)</div><div class='output co'>#&gt; [1] "\"a\\nb\""</div><div class='input'>
+<span class='fu'>expr_label</span>(<span class='st'>"a\nb"</span>)
+</div><div class='output co'>#&gt; [1] "\"a\\nb\""</div><div class='input'>
 <span class='co'># Names and expressions are quoted with ``</span>
-<span class='fu'>expr_label</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>x</span>))</div><div class='output co'>#&gt; [1] "`x`"</div><div class='input'><span class='fu'>expr_label</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>a</span> + <span class='no'>b</span> + <span class='no'>c</span>))</div><div class='output co'>#&gt; [1] "`a + b + c`"</div><div class='input'>
+<span class='fu'>expr_label</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>x</span>))
+</div><div class='output co'>#&gt; [1] "`x`"</div><div class='input'><span class='fu'>expr_label</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>a</span> <span class='op'>+</span> <span class='kw'>b</span> <span class='op'>+</span> <span class='kw'>c</span>))
+</div><div class='output co'>#&gt; [1] "`a + b + c`"</div><div class='input'>
 <span class='co'># Long expressions are collapsed</span>
 <span class='fu'>expr_label</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'>foo</span>({
-  <span class='fl'>1</span> + <span class='fl'>2</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>)
-})))</div><div class='output co'>#&gt; [1] "`foo(...)`"</div></pre>
+  <span class='fl'>1</span> <span class='op'>+</span> <span class='fl'>2</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='kw'>x</span>)
+})))
+</div><div class='output co'>#&gt; [1] "`foo(...)`"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -229,7 +234,7 @@ redundant with the <code>quo_</code> variants and do not handle quosures.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

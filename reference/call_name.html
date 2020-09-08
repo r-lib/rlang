@@ -159,9 +159,9 @@
     <p>Extract function name or namespace of a call</p>
     </div>
 
-    <pre class="usage"><span class='fu'>call_name</span>(<span class='no'>call</span>)
+    <pre class="usage"><span class='fu'>call_name</span>(<span class='kw'>call</span>)
 
-<span class='fu'>call_ns</span>(<span class='no'>call</span>)</pre>
+<span class='fu'>call_ns</span>(<span class='kw'>call</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -190,15 +190,23 @@ this change.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Extract the function name from quoted calls:</span>
-<span class='fu'>call_name</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'>foo</span>(<span class='no'>bar</span>)))</div><div class='output co'>#&gt; [1] "foo"</div><div class='input'><span class='fu'>call_name</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fu'>foo</span>(<span class='no'>bar</span>)))</div><div class='output co'>#&gt; [1] "foo"</div><div class='input'>
+<span class='fu'>call_name</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'>foo</span>(<span class='kw'>bar</span>)))
+</div><div class='output co'>#&gt; [1] "foo"</div><div class='input'><span class='fu'>call_name</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fu'>foo</span>(<span class='kw'>bar</span>)))
+</div><div class='output co'>#&gt; [1] "foo"</div><div class='input'>
 <span class='co'># Namespaced calls are correctly handled:</span>
-<span class='fu'>call_name</span>(~<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='no'>baz</span>))</div><div class='output co'>#&gt; [1] "matrix"</div><div class='input'>
+<span class='fu'>call_name</span>(<span class='op'>~</span><span class='kw'>base</span>::<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='kw'>baz</span>))
+</div><div class='output co'>#&gt; [1] "matrix"</div><div class='input'>
 <span class='co'># Anonymous and subsetted functions return NULL:</span>
-<span class='fu'>call_name</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>foo</span>$<span class='fu'><a href='https://rdrr.io/r/grDevices/plotmath.html'>bar</a></span>()))</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'>call_name</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>foo</span><span class='kw'>[[</span><span class='no'>bar</span>]]()))</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'>call_name</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'>foo</span>()()))</div><div class='output co'>#&gt; NULL</div><div class='input'>
+<span class='fu'>call_name</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>foo</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/grDevices/plotmath.html'>bar</a></span>()))
+</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'>call_name</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>foo</span>[[<span class='kw'>bar</span>]]()))
+</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'>call_name</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'>foo</span>()()))
+</div><div class='output co'>#&gt; NULL</div><div class='input'>
 <span class='co'># Extract namespace of a call with call_ns():</span>
-<span class='fu'>call_ns</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw pkg'>base</span><span class='kw ns'>::</span><span class='fu'>bar</span>()))</div><div class='output co'>#&gt; [1] "base"</div><div class='input'>
+<span class='fu'>call_ns</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>base</span>::<span class='fu'>bar</span>()))
+</div><div class='output co'>#&gt; [1] "base"</div><div class='input'>
 <span class='co'># If not namespaced, call_ns() returns NULL:</span>
-<span class='fu'>call_ns</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'><a href='https://rdrr.io/r/grDevices/plotmath.html'>bar</a></span>()))</div><div class='output co'>#&gt; NULL</div></pre>
+<span class='fu'>call_ns</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'><a href='https://rdrr.io/r/grDevices/plotmath.html'>bar</a></span>()))
+</div><div class='output co'>#&gt; NULL</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -214,7 +222,7 @@ this change.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

@@ -167,7 +167,7 @@ of strings in R. They take character vectors or string-like objects
 string version checks that the input contains a scalar string.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>string</span>(<span class='no'>x</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>string</span>(<span class='kw'>x</span>, encoding = <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -190,15 +190,19 @@ declarative, no encoding conversion is performed.</p></td>
 <span class='co'># escapes. The characters corresponding to Unicode codepoints will</span>
 <span class='co'># be encoded in UTF-8, and the string will be marked as UTF-8</span>
 <span class='co'># automatically:</span>
-<span class='no'>cafe</span> <span class='kw'>&lt;-</span> <span class='fu'>string</span>(<span class='st'>"caf\uE9"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/Encoding.html'>Encoding</a></span>(<span class='no'>cafe</span>)</div><div class='output co'>#&gt; [1] "UTF-8"</div><div class='input'><span class='fu'><a href='as_bytes.html'>as_bytes</a></span>(<span class='no'>cafe</span>)</div><div class='output co'>#&gt; [1] 63 61 66 c3 a9</div><div class='input'>
+<span class='kw'>cafe</span> <span class='op'>&lt;-</span> <span class='fu'>string</span>(<span class='st'>"caf\uE9"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/Encoding.html'>Encoding</a></span>(<span class='kw'>cafe</span>)
+</div><div class='output co'>#&gt; [1] "UTF-8"</div><div class='input'><span class='fu'><a href='as_bytes.html'>as_bytes</a></span>(<span class='kw'>cafe</span>)
+</div><div class='output co'>#&gt; [1] 63 61 66 c3 a9</div><div class='input'>
 <span class='co'># In addition, string() provides useful conversions to let</span>
 <span class='co'># programmers control how the string is represented in memory. For</span>
 <span class='co'># encodings other than UTF-8, you'll need to supply the bytes in</span>
 <span class='co'># hexadecimal form. If it is a latin1 encoding, you can mark the</span>
 <span class='co'># string explicitly:</span>
-<span class='no'>cafe_latin1</span> <span class='kw'>&lt;-</span> <span class='fu'>string</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0x63</span>, <span class='fl'>0x61</span>, <span class='fl'>0x66</span>, <span class='fl'>0xE9</span>), <span class='st'>"latin1"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/Encoding.html'>Encoding</a></span>(<span class='no'>cafe_latin1</span>)</div><div class='output co'>#&gt; [1] "latin1"</div><div class='input'><span class='fu'><a href='as_bytes.html'>as_bytes</a></span>(<span class='no'>cafe_latin1</span>)</div><div class='output co'>#&gt; [1] 63 61 66 e9</div></pre>
+<span class='kw'>cafe_latin1</span> <span class='op'>&lt;-</span> <span class='fu'>string</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0x63</span>, <span class='fl'>0x61</span>, <span class='fl'>0x66</span>, <span class='fl'>0xE9</span>), <span class='st'>"latin1"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/Encoding.html'>Encoding</a></span>(<span class='kw'>cafe_latin1</span>)
+</div><div class='output co'>#&gt; [1] "latin1"</div><div class='input'><span class='fu'><a href='as_bytes.html'>as_bytes</a></span>(<span class='kw'>cafe_latin1</span>)
+</div><div class='output co'>#&gt; [1] 63 61 66 e9</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -214,7 +218,7 @@ declarative, no encoding conversion is performed.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

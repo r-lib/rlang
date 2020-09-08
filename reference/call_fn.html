@@ -163,7 +163,7 @@ associated environment. Otherwise, it is looked up in the calling
 frame.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>call_fn</span>(<span class='no'>call</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>())</pre>
+    <pre class="usage"><span class='fu'>call_fn</span>(<span class='kw'>call</span>, env = <span class='fu'><a href='caller_env.html'>caller_env</a></span>())</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -194,27 +194,30 @@ change.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Extract from a quoted call:</span>
-<span class='fu'>call_fn</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>()))</div><div class='output co'>#&gt; function (data = NA, nrow = 1, ncol = 1, byrow = FALSE, dimnames = NULL) 
+<span class='fu'>call_fn</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>()))
+</div><div class='output co'>#&gt; function (data = NA, nrow = 1, ncol = 1, byrow = FALSE, dimnames = NULL) 
 #&gt; {
 #&gt;     if (is.object(data) || !is.atomic(data)) 
 #&gt;         data &lt;- as.vector(data)
 #&gt;     .Internal(matrix(data, nrow, ncol, byrow, dimnames, missing(nrow), 
 #&gt;         missing(ncol)))
 #&gt; }
-#&gt; &lt;bytecode: 0x7f861d25b940&gt;
-#&gt; &lt;environment: namespace:base&gt;</div><div class='input'><span class='fu'>call_fn</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>()))</div><div class='output co'>#&gt; function (data = NA, nrow = 1, ncol = 1, byrow = FALSE, dimnames = NULL) 
+#&gt; &lt;bytecode: 0x7fe77d3fb940&gt;
+#&gt; &lt;environment: namespace:base&gt;</div><div class='input'><span class='fu'>call_fn</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>()))
+</div><div class='output co'>#&gt; function (data = NA, nrow = 1, ncol = 1, byrow = FALSE, dimnames = NULL) 
 #&gt; {
 #&gt;     if (is.object(data) || !is.atomic(data)) 
 #&gt;         data &lt;- as.vector(data)
 #&gt;     .Internal(matrix(data, nrow, ncol, byrow, dimnames, missing(nrow), 
 #&gt;         missing(ncol)))
 #&gt; }
-#&gt; &lt;bytecode: 0x7f861d25b940&gt;
+#&gt; &lt;bytecode: 0x7fe77d3fb940&gt;
 #&gt; &lt;environment: namespace:base&gt;</div><div class='input'>
 <span class='co'># Extract the calling function</span>
-<span class='no'>test</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='fu'>call_fn</span>(<span class='fu'><a href='stack.html'>call_frame</a></span>())
-<span class='fu'>test</span>()</div><div class='output co'>#&gt; function() call_fn(call_frame())
-#&gt; &lt;environment: 0x7f862427fef8&gt;</div></pre>
+<span class='kw'>test</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() <span class='fu'>call_fn</span>(<span class='fu'><a href='stack.html'>call_frame</a></span>())
+<span class='fu'>test</span>()
+</div><div class='output co'>#&gt; function() call_fn(call_frame())
+#&gt; &lt;environment: 0x7fe77efee178&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -230,7 +233,7 @@ change.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

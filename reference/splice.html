@@ -171,18 +171,18 @@ list inputs.</p></li>
 
     </div>
 
-    <pre class="usage"><span class='fu'>splice</span>(<span class='no'>x</span>)
+    <pre class="usage"><span class='fu'>splice</span>(<span class='kw'>x</span>)
 
-<span class='fu'>is_spliced</span>(<span class='no'>x</span>)
+<span class='fu'>is_spliced</span>(<span class='kw'>x</span>)
 
-<span class='fu'>is_spliced_bare</span>(<span class='no'>x</span>)
+<span class='fu'>is_spliced_bare</span>(<span class='kw'>x</span>)
 
 <span class='fu'>dots_splice</span>(
-  <span class='no'>...</span>,
-  <span class='kw'>.ignore_empty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
-  <span class='kw'>.preserve_empty</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>.homonyms</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>, <span class='st'>"error"</span>),
-  <span class='kw'>.check_assign</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>...</span>,
+  .ignore_empty = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
+  .preserve_empty = <span class='fl'>FALSE</span>,
+  .homonyms = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>, <span class='st'>"error"</span>),
+  .check_assign = <span class='fl'>FALSE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -222,7 +222,7 @@ error and indicate what arguments have duplicated names.</p></td>
       <th>.check_assign</th>
       <td><p>Whether to check for <code>&lt;-</code> calls passed in
 dots. When <code>TRUE</code> and a <code>&lt;-</code> call is detected, a warning is
-issued to advise users to use <code>=</code> if they meant to match a
+issued to advise users to use <code><a href='https://rdrr.io/r/base/assignOps.html'>=</a></code> if they meant to match a
 function parameter, or wrap the <code>&lt;-</code> call in braces otherwise.
 This ensures assignments are explicit.</p></td>
     </tr>
@@ -256,12 +256,14 @@ if you use a standard function taking tidy dots within a quoting
 function, the <code>!!!</code> operator will disaggregate its argument because
 the behaviour of the quasiquoting function has priority. You might
 then observe some performance cost in edge cases. Here is one
-example where this would happen:</p><pre><span class='kw pkg'>purrr</span><span class='kw ns'>::</span><span class='fu'><a href='https://purrr.tidyverse.org/reference/rerun.html'>rerun</a></span>(<span class='fl'>10</span>, <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'>bind_rows</span>(!!! <span class='no'>x</span>))</pre>
+example where this would happen:</p><pre><span class='kw'>purrr</span>::<span class='fu'><a href='https://purrr.tidyverse.org/reference/rerun.html'>rerun</a></span>(<span class='fl'>10</span>, <span class='kw'>dplyr</span>::<span class='fu'>bind_rows</span>(<span class='op'>!</span><span class='op'>!</span><span class='op'>!</span> <span class='kw'>x</span>))
+</pre>
 
 <p><code><a href='https://purrr.tidyverse.org/reference/rerun.html'>purrr::rerun()</a></code> is a quoting function and <code>dplyr::bind_rows()</code> is
 a standard function. Because <code>bind_rows()</code> is called <em>inside</em>
 <code>rerun()</code>, the list <code>x</code> will be disaggregated into a pairlist of
-arguments. To avoid this you can use <code>splice()</code> instead:</p><pre><span class='kw pkg'>purrr</span><span class='kw ns'>::</span><span class='fu'><a href='https://purrr.tidyverse.org/reference/rerun.html'>rerun</a></span>(<span class='fl'>10</span>, <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'>bind_rows</span>(<span class='fu'>splice</span>(<span class='no'>x</span>)))</pre>
+arguments. To avoid this you can use <code>splice()</code> instead:</p><pre><span class='kw'>purrr</span>::<span class='fu'><a href='https://purrr.tidyverse.org/reference/rerun.html'>rerun</a></span>(<span class='fl'>10</span>, <span class='kw'>dplyr</span>::<span class='fu'>bind_rows</span>(<span class='fu'>splice</span>(<span class='kw'>x</span>)))
+</pre>
 
     <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
 
@@ -294,7 +296,7 @@ issue discussed above.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

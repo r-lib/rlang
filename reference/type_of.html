@@ -177,7 +177,7 @@ make dispatching easier:</p><ul>
 
     </div>
 
-    <pre class="usage"><span class='fu'>type_of</span>(<span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>type_of</span>(<span class='kw'>x</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -196,24 +196,35 @@ make dispatching easier:</p><ul>
 <p><code>type_of()</code> is an experimental function. Expect API changes.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>type_of</span>(<span class='fl'>10L</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: `type_of()` is deprecated as of rlang 0.4.0.</span>
+    <pre class="examples"><div class='input'><span class='fu'>type_of</span>(<span class='fl'>10L</span>)
+</div><div class='output co'>#&gt; <span class='warning'>Warning: `type_of()` is deprecated as of rlang 0.4.0.</span>
 #&gt; <span class='warning'>Please use `typeof()` or your own version instead.</span>
 #&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once per session.</span><span></span></div><div class='output co'>#&gt; [1] "integer"</div><div class='input'>
 <span class='co'># Quosures are treated as a new base type but not formulas:</span>
-<span class='fu'>type_of</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fl'>10L</span>))</div><div class='output co'>#&gt; [1] "formula"</div><div class='input'><span class='fu'>type_of</span>(~<span class='fl'>10L</span>)</div><div class='output co'>#&gt; [1] "formula"</div><div class='input'>
+<span class='fu'>type_of</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fl'>10L</span>))
+</div><div class='output co'>#&gt; [1] "formula"</div><div class='input'><span class='fu'>type_of</span>(<span class='op'>~</span><span class='fl'>10L</span>)
+</div><div class='output co'>#&gt; [1] "formula"</div><div class='input'>
 <span class='co'># Compare to base::typeof():</span>
-<span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fl'>10L</span>))</div><div class='output co'>#&gt; [1] "language"</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fl'>10L</span>))
+</div><div class='output co'>#&gt; [1] "language"</div><div class='input'>
 <span class='co'># Strings are treated as a new base type:</span>
-<span class='fu'>type_of</span>(<span class='no'>letters</span>)</div><div class='output co'>#&gt; [1] "character"</div><div class='input'><span class='fu'>type_of</span>(<span class='no'>letters</span><span class='kw'>[[</span><span class='fl'>1</span>]])</div><div class='output co'>#&gt; [1] "string"</div><div class='input'>
+<span class='fu'>type_of</span>(<span class='kw'>letters</span>)
+</div><div class='output co'>#&gt; [1] "character"</div><div class='input'><span class='fu'>type_of</span>(<span class='kw'>letters</span>[[<span class='fl'>1</span>]])
+</div><div class='output co'>#&gt; [1] "string"</div><div class='input'>
 <span class='co'># This is a bit inconsistent with the core language tenet that data</span>
 <span class='co'># types are vectors. However, treating strings as a different</span>
 <span class='co'># scalar type is quite helpful for switching on function inputs</span>
 <span class='co'># since so many arguments expect strings:</span>
-<span class='fu'><a href='switch_type.html'>switch_type</a></span>(<span class='st'>"foo"</span>, <span class='kw'>character</span> <span class='kw'>=</span> <span class='fu'><a href='abort.html'>abort</a></span>(<span class='st'>"vector!"</span>), <span class='kw'>string</span> <span class='kw'>=</span> <span class='st'>"result"</span>)</div><div class='output co'>#&gt; [1] "result"</div><div class='input'>
+<span class='fu'><a href='switch_type.html'>switch_type</a></span>(<span class='st'>"foo"</span>, character = <span class='fu'><a href='abort.html'>abort</a></span>(<span class='st'>"vector!"</span>), string = <span class='st'>"result"</span>)
+</div><div class='output co'>#&gt; [1] "result"</div><div class='input'>
 <span class='co'># Special and builtin primitives are both treated as primitives.</span>
 <span class='co'># That's because it is often irrelevant which type of primitive an</span>
 <span class='co'># input is:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span>(<span class='no'>list</span>)</div><div class='output co'>#&gt; [1] "builtin"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span>(<span class='no'>`$`</span>)</div><div class='output co'>#&gt; [1] "special"</div><div class='input'><span class='fu'>type_of</span>(<span class='no'>list</span>)</div><div class='output co'>#&gt; [1] "primitive"</div><div class='input'><span class='fu'>type_of</span>(<span class='no'>`$`</span>)</div><div class='output co'>#&gt; [1] "primitive"</div></span></pre>
+<span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span>(<span class='kw'>list</span>)
+</div><div class='output co'>#&gt; [1] "builtin"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span>(<span class='kw'>`$`</span>)
+</div><div class='output co'>#&gt; [1] "special"</div><div class='input'><span class='fu'>type_of</span>(<span class='kw'>list</span>)
+</div><div class='output co'>#&gt; [1] "primitive"</div><div class='input'><span class='fu'>type_of</span>(<span class='kw'>`$`</span>)
+</div><div class='output co'>#&gt; [1] "primitive"</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -229,7 +240,7 @@ make dispatching easier:</p><ul>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

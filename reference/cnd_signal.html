@@ -189,14 +189,14 @@ Use cnd_type() to determine the type of a condition." />
 <p>Use <code><a href='cnd_type.html'>cnd_type()</a></code> to determine the type of a condition.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cnd_signal</span>(<span class='no'>cnd</span>, <span class='no'>.cnd</span>, <span class='no'>.mufflable</span>)</pre>
+    <pre class="usage"><span class='fu'>cnd_signal</span>(<span class='kw'>cnd</span>, <span class='kw'>.cnd</span>, <span class='kw'>.mufflable</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>cnd</th>
-      <td><p>A condition object (see <code><a href='cnd.html'>cnd()</a></code>).</p></td>
+      <td><p>A condition object (see <code><a href='error_cnd.html'>cnd()</a></code>).</p></td>
     </tr>
     <tr>
       <th>.cnd, .mufflable</th>
@@ -226,11 +226,13 @@ establishing condition handlers.</p></div>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># The type of signal depends on the class. If the condition</span>
 <span class='co'># inherits from "warning", a warning is issued:</span>
-<span class='no'>cnd</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cnd.html'>warning_cnd</a></span>(<span class='st'>"my_warning_class"</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"This is a warning"</span>)
-<span class='fu'>cnd_signal</span>(<span class='no'>cnd</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: This is a warning</span></div><div class='input'>
+<span class='kw'>cnd</span> <span class='op'>&lt;-</span> <span class='fu'><a href='error_cnd.html'>warning_cnd</a></span>(<span class='st'>"my_warning_class"</span>, message = <span class='st'>"This is a warning"</span>)
+<span class='fu'>cnd_signal</span>(<span class='kw'>cnd</span>)
+</div><div class='output co'>#&gt; <span class='warning'>Warning: This is a warning</span></div><div class='input'>
 <span class='co'># If it inherits from "error", an error is raised:</span>
-<span class='no'>cnd</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cnd.html'>error_cnd</a></span>(<span class='st'>"my_error_class"</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"This is an error"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>cnd_signal</span>(<span class='no'>cnd</span>))</div><div class='output co'>#&gt; Error : This is an error</div></pre>
+<span class='kw'>cnd</span> <span class='op'>&lt;-</span> <span class='fu'><a href='error_cnd.html'>error_cnd</a></span>(<span class='st'>"my_error_class"</span>, message = <span class='st'>"This is an error"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>cnd_signal</span>(<span class='kw'>cnd</span>))
+</div><div class='output co'>#&gt; Error : This is an error</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -246,7 +248,7 @@ establishing condition handlers.</p></div>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

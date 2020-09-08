@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Default value for <code>NULL</code> — op-null-default • rlang</title>
+<title>Default value for NULL — op-null-default • rlang</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Default value for <code>NULL</code> — op-null-default" />
+<meta property="og:title" content="Default value for NULL — op-null-default" />
 <meta property="og:description" content="This infix function makes it easy to replace NULLs with a default
 value. It's inspired by the way that Ruby's or operation (||)
 works." />
@@ -159,11 +159,11 @@ works." />
 
     <div class="ref-description">
     <p>This infix function makes it easy to replace <code>NULL</code>s with a default
-value. It's inspired by the way that Ruby's or operation (<code>||</code>)
+value. It's inspired by the way that Ruby's or operation (<code><a href='https://rdrr.io/r/base/Logic.html'>||</a></code>)
 works.</p>
     </div>
 
-    <pre class="usage"><span class='no'>x</span> <span class='kw'>%||%</span> <span class='no'>y</span></pre>
+    <pre class="usage"><span class='kw'>x</span> <span class='op'>%||%</span> <span class='kw'>y</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -176,7 +176,9 @@ works.</p>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fl'>1</span> <span class='kw'>%||%</span> <span class='fl'>2</span></div><div class='output co'>#&gt; [1] 1</div><div class='input'><span class='kw'>NULL</span> <span class='kw'>%||%</span> <span class='fl'>2</span></div><div class='output co'>#&gt; [1] 2</div></pre>
+    <pre class="examples"><div class='input'><span class='fl'>1</span> <span class='op'>%||%</span> <span class='fl'>2</span>
+</div><div class='output co'>#&gt; [1] 1</div><div class='input'><span class='kw'>NULL</span> <span class='op'>%||%</span> <span class='fl'>2</span>
+</div><div class='output co'>#&gt; [1] 2</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -192,7 +194,7 @@ works.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

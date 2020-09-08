@@ -185,7 +185,7 @@ to call and the arguments to call it with) separately.</p></li>
 constructors.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>call2</span>(<span class='no'>.fn</span>, <span class='no'>...</span>, <span class='kw'>.ns</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>call2</span>(<span class='kw'>.fn</span>, <span class='kw'>...</span>, .ns = <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -214,23 +214,26 @@ or symbol.</p></td>
 
 <p><code>call2()</code> is more flexible and convenient than <code><a href='https://rdrr.io/r/base/call.html'>base::call()</a></code>:</p><ul>
 <li><p>The function to call can be a string or a <a href='is_callable.html'>callable</a>
-object: a symbol, another call (e.g. a <code>$</code> or <code>[[</code> call), or a
+object: a symbol, another call (e.g. a <code><a href='https://rdrr.io/r/base/Extract.html'>$</a></code> or <code><a href='https://rdrr.io/r/base/Extract.html'>[[</a></code> call), or a
 function to inline. <code><a href='https://rdrr.io/r/base/call.html'>base::call()</a></code> only supports strings and you
 need to use <code><a href='https://rdrr.io/r/base/call.html'>base::as.call()</a></code> to construct a call with a callable
-object.</p><pre><span class='fu'>call2</span>(<span class='no'>list</span>, <span class='fl'>1</span>, <span class='fl'>2</span>)
+object.</p><pre><span class='fu'>call2</span>(<span class='kw'>list</span>, <span class='fl'>1</span>, <span class='fl'>2</span>)
 
-<span class='fu'><a href='https://rdrr.io/r/base/call.html'>as.call</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>list</span>, <span class='fl'>1</span>, <span class='fl'>2</span>))</pre></li>
-<li><p>The <code>.ns</code> argument is convenient for creating namespaced calls.</p><pre><span class='fu'>call2</span>(<span class='st'>"list"</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='kw'>.ns</span> <span class='kw'>=</span> <span class='st'>"base"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/call.html'>as.call</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>list</span>, <span class='fl'>1</span>, <span class='fl'>2</span>))
+</pre></li>
+<li><p>The <code>.ns</code> argument is convenient for creating namespaced calls.</p><pre><span class='fu'>call2</span>(<span class='st'>"list"</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, .ns = <span class='st'>"base"</span>)
 
-<span class='no'>ns_call</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='fu'><a href='https://rdrr.io/r/base/call.html'>as.call</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/name.html'>as.name</a></span>(<span class='st'>"::"</span>), <span class='fu'><a href='https://rdrr.io/r/base/name.html'>as.name</a></span>(<span class='st'>"list"</span>), <span class='fu'><a href='https://rdrr.io/r/base/name.html'>as.name</a></span>(<span class='st'>"base"</span>)))
-<span class='fu'><a href='https://rdrr.io/r/base/call.html'>as.call</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>ns_call</span>, <span class='fl'>1</span>, <span class='fl'>2</span>))</pre></li>
+<span class='kw'>ns_call</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/call.html'>as.call</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/name.html'>as.name</a></span>(<span class='st'>"::"</span>), <span class='fu'><a href='https://rdrr.io/r/base/name.html'>as.name</a></span>(<span class='st'>"list"</span>), <span class='fu'><a href='https://rdrr.io/r/base/name.html'>as.name</a></span>(<span class='st'>"base"</span>)))
+<span class='fu'><a href='https://rdrr.io/r/base/call.html'>as.call</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>ns_call</span>, <span class='fl'>1</span>, <span class='fl'>2</span>))
+</pre></li>
 <li><p><code>call2()</code> has <a href='list2.html'>tidy dots</a> support and you can splice lists
 of arguments with <code>!!!</code>. With base R, you need to use <code><a href='https://rdrr.io/r/base/call.html'>as.call()</a></code>
-instead of <code><a href='https://rdrr.io/r/base/call.html'>call()</a></code> if the arguments are in a list.</p><pre><span class='no'>args</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+instead of <code><a href='https://rdrr.io/r/base/call.html'>call()</a></code> if the arguments are in a list.</p><pre><span class='kw'>args</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(na.rm = <span class='fl'>TRUE</span>, trim = <span class='fl'>0</span>)
 
-<span class='fu'>call2</span>(<span class='st'>"mean"</span>, <span class='fl'>1</span>:<span class='fl'>10</span>, !!!<span class='no'>args</span>)
+<span class='fu'>call2</span>(<span class='st'>"mean"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='kw'>args</span>)
 
-<span class='fu'><a href='https://rdrr.io/r/base/call.html'>as.call</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/name.html'>as.name</a></span>(<span class='st'>"mean"</span>), <span class='fl'>1</span>:<span class='fl'>10</span>), <span class='no'>args</span>))</pre></li>
+<span class='fu'><a href='https://rdrr.io/r/base/call.html'>as.call</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/name.html'>as.name</a></span>(<span class='st'>"mean"</span>), <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>), <span class='kw'>args</span>))
+</pre></li>
 </ul>
 
     <h2 class="hasAnchor" id="caveats-of-inlining-objects-in-calls"><a class="anchor" href="#caveats-of-inlining-objects-in-calls"></a>Caveats of inlining objects in calls</h2>
@@ -252,13 +255,20 @@ in representations of the call stack, such as <code><a href='https://rdrr.io/r/b
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># fn can either be a string, a symbol or a call</span>
-<span class='fu'>call2</span>(<span class='st'>"f"</span>, <span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; f(a = 1)</div><div class='input'><span class='fu'>call2</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>f</span>), <span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; f(a = 1)</div><div class='input'><span class='fu'>call2</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'>f</span>()), <span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; f()(a = 1)</div><div class='input'>
+<span class='fu'>call2</span>(<span class='st'>"f"</span>, a = <span class='fl'>1</span>)
+</div><div class='output co'>#&gt; f(a = 1)</div><div class='input'><span class='fu'>call2</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>f</span>), a = <span class='fl'>1</span>)
+</div><div class='output co'>#&gt; f(a = 1)</div><div class='input'><span class='fu'>call2</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'>f</span>()), a = <span class='fl'>1</span>)
+</div><div class='output co'>#&gt; f()(a = 1)</div><div class='input'>
 <span class='co'>#' Can supply arguments individually or in a list</span>
-<span class='fu'>call2</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>f</span>), <span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; f(a = 1, b = 2)</div><div class='input'><span class='fu'>call2</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>f</span>), !!!<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>2</span>))</div><div class='output co'>#&gt; f(a = 1, b = 2)</div><div class='input'>
+<span class='fu'>call2</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>f</span>), a = <span class='fl'>1</span>, b = <span class='fl'>2</span>)
+</div><div class='output co'>#&gt; f(a = 1, b = 2)</div><div class='input'><span class='fu'>call2</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>f</span>), <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(a = <span class='fl'>1</span>, b = <span class='fl'>2</span>))
+</div><div class='output co'>#&gt; f(a = 1, b = 2)</div><div class='input'>
 <span class='co'># Creating namespaced calls is easy:</span>
-<span class='fu'>call2</span>(<span class='st'>"fun"</span>, <span class='kw'>arg</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>baz</span>), <span class='kw'>.ns</span> <span class='kw'>=</span> <span class='st'>"mypkg"</span>)</div><div class='output co'>#&gt; mypkg::fun(arg = baz)</div><div class='input'>
+<span class='fu'>call2</span>(<span class='st'>"fun"</span>, arg = <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>baz</span>), .ns = <span class='st'>"mypkg"</span>)
+</div><div class='output co'>#&gt; mypkg::fun(arg = baz)</div><div class='input'>
 <span class='co'># Empty arguments are preserved:</span>
-<span class='fu'>call2</span>(<span class='st'>"["</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>x</span>), , <span class='kw'>drop</span> <span class='kw'>=</span> )</div><div class='output co'>#&gt; x[, drop = ]</div></pre>
+<span class='fu'>call2</span>(<span class='st'>"["</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>x</span>), , drop = )
+</div><div class='output co'>#&gt; x[, drop = ]</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -274,7 +284,7 @@ in representations of the call stack, such as <code><a href='https://rdrr.io/r/b
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

@@ -158,14 +158,14 @@ tests in addition that x does not inherit from anything else than
     </div>
 
     <div class="ref-description">
-    <p><code>is_formula()</code> tests if <code>x</code> is a call to <code>~</code>. <code>is_bare_formula()</code>
+    <p><code>is_formula()</code> tests if <code>x</code> is a call to <code><a href='https://rdrr.io/r/base/tilde.html'>~</a></code>. <code>is_bare_formula()</code>
 tests in addition that <code>x</code> does not inherit from anything else than
 <code>"formula"</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>is_formula</span>(<span class='no'>x</span>, <span class='kw'>scoped</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>lhs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>is_formula</span>(<span class='kw'>x</span>, scoped = <span class='kw'>NULL</span>, lhs = <span class='kw'>NULL</span>)
 
-<span class='fu'>is_bare_formula</span>(<span class='no'>x</span>, <span class='kw'>scoped</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>lhs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+<span class='fu'>is_bare_formula</span>(<span class='kw'>x</span>, scoped = <span class='kw'>NULL</span>, lhs = <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -193,22 +193,30 @@ the LHS is not inspected.</p></td>
     <p>The <code>scoped</code> argument patterns-match on whether the scoped bundled
 with the quosure is valid or not. Invalid scopes may happen in
 nested quotations like <code>~~expr</code>, where the outer quosure is validly
-scoped but not the inner one. This is because <code>~</code> saves the
+scoped but not the inner one. This is because <code><a href='https://rdrr.io/r/base/tilde.html'>~</a></code> saves the
 environment when it is evaluated, and quoted formulas are by
 definition not evaluated.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='no'>disp</span> ~ <span class='no'>am</span>
-<span class='fu'>is_formula</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='fu'>is_formula</span>(~<span class='fl'>10</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_formula</span>(<span class='fl'>10</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
-<span class='fu'>is_formula</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='no'>foo</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_bare_formula</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='no'>foo</span>))</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='kw'>x</span> <span class='op'>&lt;-</span> <span class='kw'>disp</span> <span class='op'>~</span> <span class='kw'>am</span>
+<span class='fu'>is_formula</span>(<span class='kw'>x</span>)
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'>is_formula</span>(<span class='op'>~</span><span class='fl'>10</span>)
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_formula</span>(<span class='fl'>10</span>)
+</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
+<span class='fu'>is_formula</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='kw'>foo</span>))
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_bare_formula</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='kw'>foo</span>))
+</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
 <span class='co'># Note that unevaluated formulas are treated as bare formulas even</span>
 <span class='co'># though they don't inherit from "formula":</span>
-<span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(~<span class='no'>foo</span>)
-<span class='fu'>is_bare_formula</span>(<span class='no'>f</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
+<span class='kw'>f</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='op'>~</span><span class='kw'>foo</span>)
+<span class='fu'>is_bare_formula</span>(<span class='kw'>f</span>)
+</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
 <span class='co'># However you can specify `scoped` if you need the predicate to</span>
 <span class='co'># return FALSE for these unevaluated formulas:</span>
-<span class='fu'>is_bare_formula</span>(<span class='no'>f</span>, <span class='kw'>scoped</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>is_bare_formula</span>(<span class='fu'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span>(<span class='no'>f</span>), <span class='kw'>scoped</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+<span class='fu'>is_bare_formula</span>(<span class='kw'>f</span>, scoped = <span class='fl'>TRUE</span>)
+</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>is_bare_formula</span>(<span class='fu'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span>(<span class='kw'>f</span>), scoped = <span class='fl'>TRUE</span>)
+</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -224,7 +232,7 @@ definition not evaluated.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

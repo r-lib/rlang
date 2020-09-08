@@ -165,15 +165,15 @@ is especially useful for forwarding arguments in constructed calls." />
 is especially useful for forwarding arguments in <a href='lang.html'>constructed calls</a>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>fn_fmls</span>(<span class='kw'>fn</span> <span class='kw'>=</span> <span class='fu'><a href='caller_fn.html'>caller_fn</a></span>())
+    <pre class="usage"><span class='fu'>fn_fmls</span>(fn = <span class='fu'><a href='caller_fn.html'>caller_fn</a></span>())
 
-<span class='fu'>fn_fmls_names</span>(<span class='kw'>fn</span> <span class='kw'>=</span> <span class='fu'><a href='caller_fn.html'>caller_fn</a></span>())
+<span class='fu'>fn_fmls_names</span>(fn = <span class='fu'><a href='caller_fn.html'>caller_fn</a></span>())
 
-<span class='fu'>fn_fmls_syms</span>(<span class='kw'>fn</span> <span class='kw'>=</span> <span class='fu'><a href='caller_fn.html'>caller_fn</a></span>())
+<span class='fu'>fn_fmls_syms</span>(fn = <span class='fu'><a href='caller_fn.html'>caller_fn</a></span>())
 
-<span class='fu'>fn_fmls</span>(<span class='no'>fn</span>) <span class='kw'>&lt;-</span> <span class='no'>value</span>
+<span class='fu'>fn_fmls</span>(<span class='kw'>fn</span>) <span class='op'>&lt;-</span> <span class='kw'>value</span>
 
-<span class='fu'>fn_fmls_names</span>(<span class='no'>fn</span>) <span class='kw'>&lt;-</span> <span class='no'>value</span></pre>
+<span class='fu'>fn_fmls_names</span>(<span class='kw'>fn</span>) <span class='op'>&lt;-</span> <span class='kw'>value</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -199,25 +199,29 @@ functions instead of returning <code>NULL</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Extract from current call:</span>
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='no'>b</span> <span class='kw'>=</span> <span class='fl'>2</span>) <span class='fu'>fn_fmls</span>()
-<span class='fu'>fn</span>()</div><div class='output co'>#&gt; $a
+<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>a</span> = <span class='fl'>1</span>, <span class='kw'>b</span> = <span class='fl'>2</span>) <span class='fu'>fn_fmls</span>()
+<span class='fu'>fn</span>()
+</div><div class='output co'>#&gt; $a
 #&gt; [1] 1
 #&gt; 
 #&gt; $b
 #&gt; [1] 2
 #&gt; </div><div class='input'>
 <span class='co'># fn_fmls_syms() makes it easy to forward arguments:</span>
-<span class='fu'><a href='call2.html'>call2</a></span>(<span class='st'>"apply"</span>, !!! <span class='fu'>fn_fmls_syms</span>(<span class='no'>lapply</span>))</div><div class='output co'>#&gt; apply(X = X, FUN = FUN, ...)</div><div class='input'>
+<span class='fu'><a href='call2.html'>call2</a></span>(<span class='st'>"apply"</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span> <span class='fu'>fn_fmls_syms</span>(<span class='kw'>lapply</span>))
+</div><div class='output co'>#&gt; apply(X = X, FUN = FUN, ...)</div><div class='input'>
 <span class='co'># You can also change the formals:</span>
-<span class='fu'>fn_fmls</span>(<span class='no'>fn</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>A</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>20</span>)
-<span class='fu'>fn</span>()</div><div class='output co'>#&gt; $A
+<span class='fu'>fn_fmls</span>(<span class='kw'>fn</span>) <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(A = <span class='fl'>10</span>, B = <span class='fl'>20</span>)
+<span class='fu'>fn</span>()
+</div><div class='output co'>#&gt; $A
 #&gt; [1] 10
 #&gt; 
 #&gt; $B
 #&gt; [1] 20
 #&gt; </div><div class='input'>
-<span class='fu'>fn_fmls_names</span>(<span class='no'>fn</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>)
-<span class='fu'>fn</span>()</div><div class='output co'>#&gt; $foo
+<span class='fu'>fn_fmls_names</span>(<span class='kw'>fn</span>) <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>)
+<span class='fu'>fn</span>()
+</div><div class='output co'>#&gt; $foo
 #&gt; [1] 10
 #&gt; 
 #&gt; $bar
@@ -238,7 +242,7 @@ functions instead of returning <code>NULL</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

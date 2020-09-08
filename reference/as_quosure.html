@@ -163,9 +163,9 @@ formulas, or other quosures) into a quosure, <code>as_quosure()</code>
 converts formulas and quosures and does not double-wrap.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>as_quosure</span>(<span class='no'>x</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>as_quosure</span>(<span class='kw'>x</span>, env = <span class='kw'>NULL</span>)
 
-<span class='fu'>new_quosure</span>(<span class='no'>expr</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>())</pre>
+<span class='fu'>new_quosure</span>(<span class='kw'>expr</span>, env = <span class='fu'><a href='caller_env.html'>caller_env</a></span>())</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -206,23 +206,27 @@ might not be in the future.</p></li>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># as_quosure() converts expressions or any R object to a validly</span>
 <span class='co'># scoped quosure:</span>
-<span class='no'>env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>(<span class='kw'>var</span> <span class='kw'>=</span> <span class='st'>"thing"</span>)
-<span class='fu'>as_quosure</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>var</span>), <span class='no'>env</span>)</div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
+<span class='kw'>env</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>(var = <span class='st'>"thing"</span>)
+<span class='fu'>as_quosure</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>var</span>), <span class='kw'>env</span>)
+</div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^var</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7f861c7080a0</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7fe78172cb50</span><span></div><div class='input'>
 
 <span class='co'># The environment is ignored for formulas:</span>
-<span class='fu'>as_quosure</span>(~<span class='no'>foo</span>, <span class='no'>env</span>)</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
+<span class='fu'>as_quosure</span>(<span class='op'>~</span><span class='kw'>foo</span>, <span class='kw'>env</span>)
+</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^foo</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7f861c57df90</span><span></div><div class='input'><span class='fu'>as_quosure</span>(~<span class='no'>foo</span>)</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7fe7816e2d10</span><span></div><div class='input'><span class='fu'>as_quosure</span>(<span class='op'>~</span><span class='kw'>foo</span>)
+</div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^foo</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7f861c57df90</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7fe7816e2d10</span><span></div><div class='input'>
 <span class='co'># However you must supply it for symbols and calls:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>as_quosure</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>var</span>)))</div><div class='output co'>#&gt; <span class='warning'>Warning: `as_quosure()` requires an explicit environment as of rlang 0.3.0.</span>
+<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>as_quosure</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>var</span>)))
+</div><div class='output co'>#&gt; <span class='warning'>Warning: `as_quosure()` requires an explicit environment as of rlang 0.3.0.</span>
 #&gt; <span class='warning'>Please supply `env`.</span>
 #&gt; <span class='warning'></span><span style='color: #555555;'>This warning is displayed once per session.</span><span></span></div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^var</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7f861c57df90</span><span></div></span></pre>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7fe7816e2d10</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -238,7 +242,7 @@ might not be in the future.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

@@ -197,9 +197,9 @@ exiting) are given a chance to handle the condition.</p></li>
 calling handler.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>with_handlers</span>(<span class='no'>.expr</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>with_handlers</span>(<span class='kw'>.expr</span>, <span class='kw'>...</span>)
 
-<span class='fu'>calling</span>(<span class='no'>handler</span>)</pre>
+<span class='fu'>calling</span>(<span class='kw'>handler</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -233,31 +233,33 @@ default.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Signal a condition with signal():</span>
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
+<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() {
   <span class='fu'>g</span>()
   <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"called?\n"</span>)
   <span class='st'>"fn() return value"</span>
 }
-<span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
+<span class='kw'>g</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() {
   <span class='fu'>h</span>()
   <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"called?\n"</span>)
 }
-<span class='no'>h</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
+<span class='kw'>h</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() {
   <span class='fu'><a href='abort.html'>signal</a></span>(<span class='st'>"A foobar condition occurred"</span>, <span class='st'>"foo"</span>)
   <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"called?\n"</span>)
 }
 
 <span class='co'># Exiting handlers jump to with_handlers() before being</span>
 <span class='co'># executed. Their return value is handed over:</span>
-<span class='no'>handler</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>c</span>) <span class='st'>"handler return value"</span>
-<span class='fu'>with_handlers</span>(<span class='fu'>fn</span>(), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='no'>handler</span>)</div><div class='output co'>#&gt; [1] "handler return value"</div><div class='input'>
+<span class='kw'>handler</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>c</span>) <span class='st'>"handler return value"</span>
+<span class='fu'>with_handlers</span>(<span class='fu'>fn</span>(), foo = <span class='kw'>handler</span>)
+</div><div class='output co'>#&gt; [1] "handler return value"</div><div class='input'>
 <span class='co'># Calling handlers are called in turn and their return value is</span>
 <span class='co'># ignored. Returning just means they are declining to take charge of</span>
 <span class='co'># the condition. However, they can produce side-effects such as</span>
 <span class='co'># displaying a message:</span>
-<span class='no'>some_handler</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>c</span>) <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"some handler!\n"</span>)
-<span class='no'>other_handler</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>c</span>) <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"other handler!\n"</span>)
-<span class='fu'>with_handlers</span>(<span class='fu'>fn</span>(), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'>calling</span>(<span class='no'>some_handler</span>), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'>calling</span>(<span class='no'>other_handler</span>))</div><div class='output co'>#&gt; some handler!
+<span class='kw'>some_handler</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>c</span>) <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"some handler!\n"</span>)
+<span class='kw'>other_handler</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>c</span>) <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"other handler!\n"</span>)
+<span class='fu'>with_handlers</span>(<span class='fu'>fn</span>(), foo = <span class='fu'>calling</span>(<span class='kw'>some_handler</span>), foo = <span class='fu'>calling</span>(<span class='kw'>other_handler</span>))
+</div><div class='output co'>#&gt; some handler!
 #&gt; other handler!
 #&gt; called?
 #&gt; called?
@@ -267,11 +269,12 @@ default.</p>
 <span class='co'># deal with it. The canonical way of transferring control is by</span>
 <span class='co'># jumping to a restart. See with_restarts() and restarting()</span>
 <span class='co'># documentation for more on this:</span>
-<span class='no'>exiting_handler</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>c</span>) <span class='fu'><a href='rst_list.html'>rst_jump</a></span>(<span class='st'>"rst_foo"</span>)
-<span class='no'>fn2</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
-  <span class='fu'><a href='with_restarts.html'>with_restarts</a></span>(<span class='fu'>g</span>(), <span class='kw'>rst_foo</span> <span class='kw'>=</span> <span class='kw'>function</span>() <span class='st'>"restart value"</span>)
+<span class='kw'>exiting_handler</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>c</span>) <span class='fu'><a href='rst_list.html'>rst_jump</a></span>(<span class='st'>"rst_foo"</span>)
+<span class='kw'>fn2</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() {
+  <span class='fu'><a href='with_restarts.html'>with_restarts</a></span>(<span class='fu'>g</span>(), rst_foo = <span class='fu'>function</span>() <span class='st'>"restart value"</span>)
 }
-<span class='fu'>with_handlers</span>(<span class='fu'>fn2</span>(), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'>calling</span>(<span class='no'>exiting_handler</span>), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'>calling</span>(<span class='no'>other_handler</span>))</div><div class='output co'>#&gt; [1] "restart value"</div></pre>
+<span class='fu'>with_handlers</span>(<span class='fu'>fn2</span>(), foo = <span class='fu'>calling</span>(<span class='kw'>exiting_handler</span>), foo = <span class='fu'>calling</span>(<span class='kw'>other_handler</span>))
+</div><div class='output co'>#&gt; [1] "restart value"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -287,7 +290,7 @@ default.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

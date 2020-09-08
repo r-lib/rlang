@@ -165,7 +165,7 @@ the <a href='empty_env.html'>empty environment</a>, including <code>env</code>. 
 environment counts as a parent).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>env_depth</span>(<span class='no'>env</span>)</pre>
+    <pre class="usage"><span class='fu'>env_depth</span>(<span class='kw'>env</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -184,7 +184,9 @@ environment counts as a parent).</p>
     <div class='dont-index'><p>The section on inheritance in <code><a href='env.html'>env()</a></code> documentation.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>env_depth</span>(<span class='fu'><a href='empty_env.html'>empty_env</a></span>())</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='fu'>env_depth</span>(<span class='fu'><a href='search_envs.html'>pkg_env</a></span>(<span class='st'>"rlang"</span>))</div><div class='output co'>#&gt; [1] 9</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>env_depth</span>(<span class='fu'><a href='empty_env.html'>empty_env</a></span>())
+</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='fu'>env_depth</span>(<span class='fu'><a href='search_envs.html'>pkg_env</a></span>(<span class='st'>"rlang"</span>))
+</div><div class='output co'>#&gt; [1] 9</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -200,7 +202,7 @@ environment counts as a parent).</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

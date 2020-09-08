@@ -179,9 +179,9 @@ is often more practical to use the higher-level function
 <code><a href='with_abort.html'>with_abort()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>entrace</span>(<span class='no'>cnd</span>, <span class='no'>...</span>, <span class='kw'>top</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bottom</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>entrace</span>(<span class='kw'>cnd</span>, <span class='kw'>...</span>, top = <span class='kw'>NULL</span>, bottom = <span class='kw'>NULL</span>)
 
-<span class='fu'>cnd_entrace</span>(<span class='no'>cnd</span>, <span class='no'>...</span>, <span class='kw'>top</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bottom</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+<span class='fu'>cnd_entrace</span>(<span class='kw'>cnd</span>, <span class='kw'>...</span>, top = <span class='kw'>NULL</span>, bottom = <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -222,14 +222,15 @@ capture context.</p>
 <code>cnd_entrace()</code> to manually add a backtrace to a condition.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {  <span class='co'># Not run</span>
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {  <span class='co'># Not run</span>
 
 <span class='co'># Set the error handler in your RProfile like this:</span>
-<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"rlang"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
-  <span class='fu'><a href='https://rdrr.io/r/base/options.html'>options</a></span>(<span class='kw'>error</span> <span class='kw'>=</span> <span class='kw pkg'>rlang</span><span class='kw ns'>::</span><span class='no'>entrace</span>)
+<span class='co'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"rlang"</span>, quietly = <span class='fl'>TRUE</span>)) {
+  <span class='fu'><a href='https://rdrr.io/r/base/options.html'>options</a></span>(error = <span class='kw'>rlang</span>::<span class='kw'>entrace</span>)
 }
 
-}</div></pre>
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -245,7 +246,7 @@ capture context.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

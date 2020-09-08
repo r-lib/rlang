@@ -41,17 +41,19 @@
 
 <meta property="og:title" content="Data pronouns for tidy evaluation — tidyeval-data" />
 <meta property="og:description" content="These pronouns allow you to be explicit about where to find objects
-when programming with data masked functions.m &amp;amp;lt;- 10
-mtcars %&amp;amp;gt;% mutate(disp = .data$disp * .env$m)
+when programming with data masked functions.m &amp;lt;- 10
+mtcars %&amp;gt;% mutate(disp = .data$disp * .env$m)
+
 
 .data retrieves data-variables from the data frame.
 .env retrieves env-variables from the environment.
 
 
 Because the lookup is explicit, there is no ambiguity between both
-kinds of variables. Compare:disp &amp;amp;lt;- 10
-mtcars %&amp;amp;gt;% mutate(disp = .data$disp * .env$disp)
-mtcars %&amp;amp;gt;% mutate(disp = disp * disp)
+kinds of variables. Compare:disp &amp;lt;- 10
+mtcars %&amp;gt;% mutate(disp = .data$disp * .env$disp)
+mtcars %&amp;gt;% mutate(disp = disp * disp)
+
 
 The .data object exported from rlang is also useful to import in
 your package namespace to avoid a R CMD check note when referring
@@ -177,17 +179,19 @@ subsetting operators behave differently." />
 
     <div class="ref-description">
     <p>These pronouns allow you to be explicit about where to find objects
-when programming with data masked functions.</p><pre><span class='no'>m</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='fl'>10</span>
-<span class='no'>mtcars</span> <span class='kw'>%&amp;gt;%</span> <span class='fu'>mutate</span>(<span class='kw'>disp</span> <span class='kw'>=</span> <span class='no'>.data</span>$<span class='no'>disp</span> * <span class='no'>.env</span>$<span class='no'>m</span>)</pre>
+when programming with data masked functions.</p><pre><span class='kw'>m</span> <span class='op'>&lt;-</span> <span class='fl'>10</span>
+<span class='kw'>mtcars</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span>(disp = <span class='kw'>.data</span><span class='op'>$</span><span class='kw'>disp</span> <span class='op'>*</span> <span class='kw'>.env</span><span class='op'>$</span><span class='kw'>m</span>)
+</pre>
 <ul>
 <li><p><code>.data</code> retrieves data-variables from the data frame.</p></li>
 <li><p><code>.env</code> retrieves env-variables from the environment.</p></li>
 </ul>
 
 <p>Because the lookup is explicit, there is no ambiguity between both
-kinds of variables. Compare:</p><pre><span class='no'>disp</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='fl'>10</span>
-<span class='no'>mtcars</span> <span class='kw'>%&amp;gt;%</span> <span class='fu'>mutate</span>(<span class='kw'>disp</span> <span class='kw'>=</span> <span class='no'>.data</span>$<span class='no'>disp</span> * <span class='no'>.env</span>$<span class='no'>disp</span>)
-<span class='no'>mtcars</span> <span class='kw'>%&amp;gt;%</span> <span class='fu'>mutate</span>(<span class='kw'>disp</span> <span class='kw'>=</span> <span class='no'>disp</span> * <span class='no'>disp</span>)</pre>
+kinds of variables. Compare:</p><pre><span class='kw'>disp</span> <span class='op'>&lt;-</span> <span class='fl'>10</span>
+<span class='kw'>mtcars</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span>(disp = <span class='kw'>.data</span><span class='op'>$</span><span class='kw'>disp</span> <span class='op'>*</span> <span class='kw'>.env</span><span class='op'>$</span><span class='kw'>disp</span>)
+<span class='kw'>mtcars</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span>(disp = <span class='kw'>disp</span> <span class='op'>*</span> <span class='kw'>disp</span>)
+</pre>
 
 <p>The <code>.data</code> object exported from rlang is also useful to import in
 your package namespace to avoid a <code>R CMD check</code> note when referring
@@ -199,9 +203,9 @@ environment. For instance, it doesn't have a parent and the
 subsetting operators behave differently.</p>
     </div>
 
-    <pre class="usage"><span class='no'>.data</span>
+    <pre class="usage"><span class='kw'>.data</span>
 
-<span class='no'>.env</span></pre>
+<span class='kw'>.env</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
@@ -223,7 +227,7 @@ subsetting operators behave differently.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

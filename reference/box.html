@@ -169,11 +169,11 @@ value is wrapped in a box. <code><a href='as_box.html'>as_box_if()</a></code> do
 the value matches a predicate.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>new_box</span>(<span class='no'>.x</span>, <span class='kw'>class</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>new_box</span>(<span class='kw'>.x</span>, class = <span class='kw'>NULL</span>, <span class='kw'>...</span>)
 
-<span class='fu'>is_box</span>(<span class='no'>x</span>, <span class='kw'>class</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>is_box</span>(<span class='kw'>x</span>, class = <span class='kw'>NULL</span>)
 
-<span class='fu'>unbox</span>(<span class='no'>box</span>)</pre>
+<span class='fu'>unbox</span>(<span class='kw'>box</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -200,22 +200,29 @@ or vector of classes passed to <code><a href='inherits_any.html'>inherits_all()<
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>boxed</span> <span class='kw'>&lt;-</span> <span class='fu'>new_box</span>(<span class='no'>letters</span>, <span class='st'>"mybox"</span>)
-<span class='fu'>is_box</span>(<span class='no'>boxed</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_box</span>(<span class='no'>boxed</span>, <span class='st'>"mybox"</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_box</span>(<span class='no'>boxed</span>, <span class='st'>"otherbox"</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
-<span class='fu'>unbox</span>(<span class='no'>boxed</span>)</div><div class='output co'>#&gt;  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
+    <pre class="examples"><div class='input'><span class='kw'>boxed</span> <span class='op'>&lt;-</span> <span class='fu'>new_box</span>(<span class='kw'>letters</span>, <span class='st'>"mybox"</span>)
+<span class='fu'>is_box</span>(<span class='kw'>boxed</span>)
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_box</span>(<span class='kw'>boxed</span>, <span class='st'>"mybox"</span>)
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_box</span>(<span class='kw'>boxed</span>, <span class='st'>"otherbox"</span>)
+</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
+<span class='fu'>unbox</span>(<span class='kw'>boxed</span>)
+</div><div class='output co'>#&gt;  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
 #&gt; [20] "t" "u" "v" "w" "x" "y" "z"</div><div class='input'>
 <span class='co'># as_box() avoids double-boxing:</span>
-<span class='no'>boxed2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as_box.html'>as_box</a></span>(<span class='no'>boxed</span>, <span class='st'>"mybox"</span>)
-<span class='no'>boxed2</span></div><div class='output co'>#&gt; [[1]]
+<span class='kw'>boxed2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_box.html'>as_box</a></span>(<span class='kw'>boxed</span>, <span class='st'>"mybox"</span>)
+<span class='kw'>boxed2</span>
+</div><div class='output co'>#&gt; [[1]]
 #&gt;  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
 #&gt; [20] "t" "u" "v" "w" "x" "y" "z"
 #&gt; 
 #&gt; attr(,"class")
-#&gt; [1] "mybox"     "rlang_box"</div><div class='input'><span class='fu'>unbox</span>(<span class='no'>boxed2</span>)</div><div class='output co'>#&gt;  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
+#&gt; [1] "mybox"     "rlang_box"</div><div class='input'><span class='fu'>unbox</span>(<span class='kw'>boxed2</span>)
+</div><div class='output co'>#&gt;  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
 #&gt; [20] "t" "u" "v" "w" "x" "y" "z"</div><div class='input'>
 <span class='co'># Compare to:</span>
-<span class='no'>boxed_boxed</span> <span class='kw'>&lt;-</span> <span class='fu'>new_box</span>(<span class='no'>boxed</span>, <span class='st'>"mybox"</span>)
-<span class='no'>boxed_boxed</span></div><div class='output co'>#&gt; [[1]]
+<span class='kw'>boxed_boxed</span> <span class='op'>&lt;-</span> <span class='fu'>new_box</span>(<span class='kw'>boxed</span>, <span class='st'>"mybox"</span>)
+<span class='kw'>boxed_boxed</span>
+</div><div class='output co'>#&gt; [[1]]
 #&gt; [[1]]
 #&gt;  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
 #&gt; [20] "t" "u" "v" "w" "x" "y" "z"
@@ -224,15 +231,18 @@ or vector of classes passed to <code><a href='inherits_any.html'>inherits_all()<
 #&gt; [1] "mybox"     "rlang_box"
 #&gt; 
 #&gt; attr(,"class")
-#&gt; [1] "mybox"     "rlang_box"</div><div class='input'><span class='fu'>unbox</span>(<span class='fu'>unbox</span>(<span class='no'>boxed_boxed</span>))</div><div class='output co'>#&gt;  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
+#&gt; [1] "mybox"     "rlang_box"</div><div class='input'><span class='fu'>unbox</span>(<span class='fu'>unbox</span>(<span class='kw'>boxed_boxed</span>))
+</div><div class='output co'>#&gt;  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
 #&gt; [20] "t" "u" "v" "w" "x" "y" "z"</div><div class='input'>
 <span class='co'># Use `as_box_if()` with a predicate if you need to ensure a box</span>
 <span class='co'># only for a subset of values:</span>
-<span class='fu'><a href='as_box.html'>as_box_if</a></span>(<span class='kw'>NULL</span>, <span class='no'>is_null</span>, <span class='st'>"null_box"</span>)</div><div class='output co'>#&gt; [[1]]
+<span class='fu'><a href='as_box.html'>as_box_if</a></span>(<span class='kw'>NULL</span>, <span class='kw'>is_null</span>, <span class='st'>"null_box"</span>)
+</div><div class='output co'>#&gt; [[1]]
 #&gt; NULL
 #&gt; 
 #&gt; attr(,"class")
-#&gt; [1] "null_box"  "rlang_box"</div><div class='input'><span class='fu'><a href='as_box.html'>as_box_if</a></span>(<span class='st'>"foo"</span>, <span class='no'>is_null</span>, <span class='st'>"null_box"</span>)</div><div class='output co'>#&gt; [1] "foo"</div></pre>
+#&gt; [1] "null_box"  "rlang_box"</div><div class='input'><span class='fu'><a href='as_box.html'>as_box_if</a></span>(<span class='st'>"foo"</span>, <span class='kw'>is_null</span>, <span class='st'>"null_box"</span>)
+</div><div class='output co'>#&gt; [1] "foo"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -248,7 +258,7 @@ or vector of classes passed to <code><a href='inherits_any.html'>inherits_all()<
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

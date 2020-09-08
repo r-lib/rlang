@@ -175,7 +175,7 @@ objects.</p>
 
     <pre class="usage"><span class='fu'>zap</span>()
 
-<span class='fu'>is_zap</span>(<span class='no'>x</span>)</pre>
+<span class='fu'>is_zap</span>(<span class='kw'>x</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -189,9 +189,11 @@ objects.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Create one zap object:</span>
-<span class='fu'>zap</span>()</div><div class='output co'>#&gt; &lt;zap&gt;</div><div class='input'>
+<span class='fu'>zap</span>()
+</div><div class='output co'>#&gt; &lt;zap&gt;</div><div class='input'>
 <span class='co'># Create a list of zaps:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'>zap</span>()), <span class='fl'>3</span>)</div><div class='output co'>#&gt; [[1]]
+<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'>zap</span>()), <span class='fl'>3</span>)
+</div><div class='output co'>#&gt; [[1]]
 #&gt; &lt;zap&gt;
 #&gt; 
 #&gt; [[2]]
@@ -199,7 +201,8 @@ objects.</p>
 #&gt; 
 #&gt; [[3]]
 #&gt; &lt;zap&gt;
-#&gt; </div><div class='input'><span class='fu'><a href='rep_along.html'>rep_named</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>), <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'>zap</span>()))</div><div class='output co'>#&gt; $foo
+#&gt; </div><div class='input'><span class='fu'><a href='rep_along.html'>rep_named</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>), <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'>zap</span>()))
+</div><div class='output co'>#&gt; $foo
 #&gt; &lt;zap&gt;
 #&gt; 
 #&gt; $bar
@@ -220,7 +223,7 @@ objects.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

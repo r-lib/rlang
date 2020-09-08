@@ -171,11 +171,11 @@ helps simplifying code when writing generic functions for
 environments).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_env</span>(<span class='no'>env</span>, <span class='kw'>default</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>get_env</span>(<span class='kw'>env</span>, default = <span class='kw'>NULL</span>)
 
-<span class='fu'>set_env</span>(<span class='no'>env</span>, <span class='kw'>new_env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>())
+<span class='fu'>set_env</span>(<span class='kw'>env</span>, new_env = <span class='fu'><a href='caller_env.html'>caller_env</a></span>())
 
-<span class='fu'>env_poke_parent</span>(<span class='no'>env</span>, <span class='no'>new_env</span>)</pre>
+<span class='fu'>env_poke_parent</span>(<span class='kw'>env</span>, <span class='kw'>new_env</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -226,14 +226,17 @@ these functions.</p></li>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Environment of closure functions:</span>
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='st'>"foo"</span>
-<span class='fu'>get_env</span>(<span class='no'>fn</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7f86221e76d0&gt;</div><div class='input'>
+<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() <span class='st'>"foo"</span>
+<span class='fu'>get_env</span>(<span class='kw'>fn</span>)
+</div><div class='output co'>#&gt; &lt;environment: 0x7fe78042c388&gt;</div><div class='input'>
 <span class='co'># Or of quosures or formulas:</span>
-<span class='fu'>get_env</span>(~<span class='no'>foo</span>)</div><div class='output co'>#&gt; &lt;environment: 0x7f86221e76d0&gt;</div><div class='input'><span class='fu'>get_env</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='no'>foo</span>))</div><div class='output co'>#&gt; &lt;environment: 0x7f86221e76d0&gt;</div><div class='input'>
+<span class='fu'>get_env</span>(<span class='op'>~</span><span class='kw'>foo</span>)
+</div><div class='output co'>#&gt; &lt;environment: 0x7fe78042c388&gt;</div><div class='input'><span class='fu'>get_env</span>(<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='kw'>foo</span>))
+</div><div class='output co'>#&gt; &lt;environment: 0x7fe78042c388&gt;</div><div class='input'>
 
 <span class='co'># Provide a default in case the object doesn't bundle an environment.</span>
 <span class='co'># Let's create an unevaluated formula:</span>
-<span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(~<span class='no'>foo</span>)
+<span class='kw'>f</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='op'>~</span><span class='kw'>foo</span>)
 
 <span class='co'># The following line would fail if run because unevaluated formulas</span>
 <span class='co'># don't bundle an environment (they didn't have the chance to</span>
@@ -242,24 +245,30 @@ these functions.</p></li>
 
 <span class='co'># It is often useful to provide a default when you're writing</span>
 <span class='co'># functions accepting formulas as input:</span>
-<span class='no'>default</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>()
-<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'>get_env</span>(<span class='no'>f</span>, <span class='no'>default</span>), <span class='no'>default</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='kw'>default</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>()
+<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'>get_env</span>(<span class='kw'>f</span>, <span class='kw'>default</span>), <span class='kw'>default</span>)
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># set_env() can be used to set the enclosure of functions and</span>
 <span class='co'># formulas. Let's create a function with a particular environment:</span>
-<span class='no'>env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>child_env</a></span>(<span class='st'>"base"</span>)
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='fu'>set_env</span>(<span class='kw'>function</span>() <span class='kw'>NULL</span>, <span class='no'>env</span>)
+<span class='kw'>env</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>child_env</a></span>(<span class='st'>"base"</span>)
+<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>set_env</span>(<span class='fu'>function</span>() <span class='kw'>NULL</span>, <span class='kw'>env</span>)
 
 <span class='co'># That function now has `env` as enclosure:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'>get_env</span>(<span class='no'>fn</span>), <span class='no'>env</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'>get_env</span>(<span class='no'>fn</span>), <span class='fu'><a href='caller_env.html'>current_env</a></span>())</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'>get_env</span>(<span class='kw'>fn</span>), <span class='kw'>env</span>)
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'>get_env</span>(<span class='kw'>fn</span>), <span class='fu'><a href='caller_env.html'>current_env</a></span>())
+</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
 <span class='co'># set_env() does not work by side effect. Setting a new environment</span>
 <span class='co'># for fn has no effect on the original function:</span>
-<span class='no'>other_env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>child_env</a></span>(<span class='kw'>NULL</span>)
-<span class='fu'>set_env</span>(<span class='no'>fn</span>, <span class='no'>other_env</span>)</div><div class='output co'>#&gt; function() NULL
-#&gt; &lt;environment: 0x7f861de594e0&gt;</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'>get_env</span>(<span class='no'>fn</span>), <span class='no'>other_env</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
+<span class='kw'>other_env</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>child_env</a></span>(<span class='kw'>NULL</span>)
+<span class='fu'>set_env</span>(<span class='kw'>fn</span>, <span class='kw'>other_env</span>)
+</div><div class='output co'>#&gt; function() NULL
+#&gt; &lt;environment: 0x7fe78202a7b8&gt;</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'>get_env</span>(<span class='kw'>fn</span>), <span class='kw'>other_env</span>)
+</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
 <span class='co'># Since set_env() returns a new function with a different</span>
 <span class='co'># environment, you'll need to reassign the result:</span>
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='fu'>set_env</span>(<span class='no'>fn</span>, <span class='no'>other_env</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'>get_env</span>(<span class='no'>fn</span>), <span class='no'>other_env</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>set_env</span>(<span class='kw'>fn</span>, <span class='kw'>other_env</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'>get_env</span>(<span class='kw'>fn</span>), <span class='kw'>other_env</span>)
+</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -275,7 +284,7 @@ these functions.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

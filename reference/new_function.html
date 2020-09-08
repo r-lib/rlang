@@ -163,7 +163,7 @@ list of arguments, body code and parent environment." />
 list of arguments, body code and parent environment.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>new_function</span>(<span class='no'>args</span>, <span class='no'>body</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span>())</pre>
+    <pre class="usage"><span class='fu'>new_function</span>(<span class='kw'>args</span>, <span class='kw'>body</span>, env = <span class='fu'><a href='caller_env.html'>caller_env</a></span>())</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -190,30 +190,37 @@ calling environment of <code>new_function()</code></p></td>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='no'>letters</span>
-<span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='fu'>new_function</span>(<span class='kw'>NULL</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>letters</span>))
-<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='no'>f</span>, <span class='no'>g</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='kw'>f</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() <span class='kw'>letters</span>
+<span class='kw'>g</span> <span class='op'>&lt;-</span> <span class='fu'>new_function</span>(<span class='kw'>NULL</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>letters</span>))
+<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='kw'>f</span>, <span class='kw'>g</span>)
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># Pass a list or pairlist of named arguments to create a function</span>
 <span class='co'># with parameters. The name becomes the parameter name and the</span>
 <span class='co'># argument the default value for this parameter:</span>
-<span class='fu'>new_function</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>10</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>x</span>))</div><div class='output co'>#&gt; function (x = 10) 
+<span class='fu'>new_function</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(x = <span class='fl'>10</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>x</span>))
+</div><div class='output co'>#&gt; function (x = 10) 
 #&gt; x
-#&gt; &lt;environment: 0x7f861ded0588&gt;</div><div class='input'><span class='fu'>new_function</span>(<span class='fu'><a href='pairlist2.html'>pairlist2</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>10</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>x</span>))</div><div class='output co'>#&gt; function (x = 10) 
+#&gt; &lt;environment: 0x7fe78249b138&gt;</div><div class='input'><span class='fu'>new_function</span>(<span class='fu'><a href='pairlist2.html'>pairlist2</a></span>(x = <span class='fl'>10</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>x</span>))
+</div><div class='output co'>#&gt; function (x = 10) 
 #&gt; x
-#&gt; &lt;environment: 0x7f861ded0588&gt;</div><div class='input'>
+#&gt; &lt;environment: 0x7fe78249b138&gt;</div><div class='input'>
 <span class='co'># Use `exprs()` to create quoted defaults. Compare:</span>
-<span class='fu'>new_function</span>(<span class='fu'><a href='pairlist2.html'>pairlist2</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>5</span> + <span class='fl'>5</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>x</span>))</div><div class='output co'>#&gt; function (x = 10) 
+<span class='fu'>new_function</span>(<span class='fu'><a href='pairlist2.html'>pairlist2</a></span>(x = <span class='fl'>5</span> <span class='op'>+</span> <span class='fl'>5</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>x</span>))
+</div><div class='output co'>#&gt; function (x = 10) 
 #&gt; x
-#&gt; &lt;environment: 0x7f861ded0588&gt;</div><div class='input'><span class='fu'>new_function</span>(<span class='fu'><a href='nse-defuse.html'>exprs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>5</span> + <span class='fl'>5</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>x</span>))</div><div class='output co'>#&gt; function (x = 5 + 5) 
+#&gt; &lt;environment: 0x7fe78249b138&gt;</div><div class='input'><span class='fu'>new_function</span>(<span class='fu'><a href='nse-defuse.html'>exprs</a></span>(x = <span class='fl'>5</span> <span class='op'>+</span> <span class='fl'>5</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>x</span>))
+</div><div class='output co'>#&gt; function (x = 5 + 5) 
 #&gt; x
-#&gt; &lt;environment: 0x7f861ded0588&gt;</div><div class='input'>
+#&gt; &lt;environment: 0x7fe78249b138&gt;</div><div class='input'>
 <span class='co'># Pass empty arguments to omit defaults. `list()` doesn't allow</span>
 <span class='co'># empty arguments but `pairlist2()` does:</span>
-<span class='fu'>new_function</span>(<span class='fu'><a href='pairlist2.html'>pairlist2</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> , <span class='kw'>y</span> <span class='kw'>=</span> <span class='fl'>5</span> + <span class='fl'>5</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>x</span> + <span class='no'>y</span>))</div><div class='output co'>#&gt; function (x, y = 10) 
+<span class='fu'>new_function</span>(<span class='fu'><a href='pairlist2.html'>pairlist2</a></span>(x = , y = <span class='fl'>5</span> <span class='op'>+</span> <span class='fl'>5</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>x</span> <span class='op'>+</span> <span class='kw'>y</span>))
+</div><div class='output co'>#&gt; function (x, y = 10) 
 #&gt; x + y
-#&gt; &lt;environment: 0x7f861ded0588&gt;</div><div class='input'><span class='fu'>new_function</span>(<span class='fu'><a href='nse-defuse.html'>exprs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> , <span class='kw'>y</span> <span class='kw'>=</span> <span class='fl'>5</span> + <span class='fl'>5</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>x</span> + <span class='no'>y</span>))</div><div class='output co'>#&gt; function (x, y = 5 + 5) 
+#&gt; &lt;environment: 0x7fe78249b138&gt;</div><div class='input'><span class='fu'>new_function</span>(<span class='fu'><a href='nse-defuse.html'>exprs</a></span>(x = , y = <span class='fl'>5</span> <span class='op'>+</span> <span class='fl'>5</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>x</span> <span class='op'>+</span> <span class='kw'>y</span>))
+</div><div class='output co'>#&gt; function (x, y = 5 + 5) 
 #&gt; x + y
-#&gt; &lt;environment: 0x7f861ded0588&gt;</div></pre>
+#&gt; &lt;environment: 0x7fe78249b138&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -229,7 +236,7 @@ calling environment of <code>new_function()</code></p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

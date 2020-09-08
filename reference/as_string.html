@@ -159,7 +159,7 @@
     <p><code>as_string()</code> converts <a href='sym.html'>symbols</a> to character strings.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>as_string</span>(<span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>as_string</span>(<span class='kw'>x</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -207,12 +207,16 @@ that automatically unwraps quosures.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Let's create some symbols:</span>
-<span class='no'>foo</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>foo</span>)
-<span class='no'>bar</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sym.html'>sym</a></span>(<span class='st'>"bar"</span>)
+<span class='kw'>foo</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>foo</span>)
+<span class='kw'>bar</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sym.html'>sym</a></span>(<span class='st'>"bar"</span>)
 
 <span class='co'># as_string() converts symbols to strings:</span>
-<span class='no'>foo</span></div><div class='output co'>#&gt; foo</div><div class='input'><span class='fu'>as_string</span>(<span class='no'>foo</span>)</div><div class='output co'>#&gt; [1] "foo"</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span>(<span class='no'>bar</span>)</div><div class='output co'>#&gt; [1] "symbol"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span>(<span class='fu'>as_string</span>(<span class='no'>bar</span>))</div><div class='output co'>#&gt; [1] "character"</div></pre>
+<span class='kw'>foo</span>
+</div><div class='output co'>#&gt; foo</div><div class='input'><span class='fu'>as_string</span>(<span class='kw'>foo</span>)
+</div><div class='output co'>#&gt; [1] "foo"</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span>(<span class='kw'>bar</span>)
+</div><div class='output co'>#&gt; [1] "symbol"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span>(<span class='fu'>as_string</span>(<span class='kw'>bar</span>))
+</div><div class='output co'>#&gt; [1] "character"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -228,7 +232,7 @@ that automatically unwraps quosures.</p></div>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

@@ -173,17 +173,17 @@ the rules described in <a href='vector-coercion.html'>vector-coercion</a>.</p></
 
     </div>
 
-    <pre class="usage"><span class='fu'>lgl</span>(<span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>lgl</span>(<span class='kw'>...</span>)
 
-<span class='fu'>int</span>(<span class='no'>...</span>)
+<span class='fu'>int</span>(<span class='kw'>...</span>)
 
-<span class='fu'>dbl</span>(<span class='no'>...</span>)
+<span class='fu'>dbl</span>(<span class='kw'>...</span>)
 
-<span class='fu'>cpl</span>(<span class='no'>...</span>)
+<span class='fu'>cpl</span>(<span class='kw'>...</span>)
 
-<span class='fu'>chr</span>(<span class='no'>...</span>)
+<span class='fu'>chr</span>(<span class='kw'>...</span>)
 
-<span class='fu'>bytes</span>(<span class='no'>...</span>)</pre>
+<span class='fu'>bytes</span>(<span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -210,30 +210,42 @@ in a future version. Please splice explicitly with <code>!!!</code>.</p></li>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># These constructors are like a typed version of c():</span>
-<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [1]  TRUE FALSE</div><div class='input'><span class='fu'>lgl</span>(<span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [1]  TRUE FALSE</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>)
+</div><div class='output co'>#&gt; [1]  TRUE FALSE</div><div class='input'><span class='fu'>lgl</span>(<span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>)
+</div><div class='output co'>#&gt; [1]  TRUE FALSE</div><div class='input'>
 <span class='co'># They follow a restricted set of coercion rules:</span>
-<span class='fu'>int</span>(<span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>, <span class='fl'>20</span>)</div><div class='output co'>#&gt; [1]  1  0 20</div><div class='input'>
+<span class='fu'>int</span>(<span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>, <span class='fl'>20</span>)
+</div><div class='output co'>#&gt; [1]  1  0 20</div><div class='input'>
 <span class='co'># Lists can be spliced:</span>
-<span class='fu'>dbl</span>(<span class='fl'>10</span>, !!! <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>1</span>, <span class='fl'>2L</span>), <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] 10  1  2  1</div><div class='input'>
+<span class='fu'>dbl</span>(<span class='fl'>10</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>1</span>, <span class='fl'>2L</span>), <span class='fl'>TRUE</span>)
+</div><div class='output co'>#&gt; [1] 10  1  2  1</div><div class='input'>
 
 <span class='co'># They splice names a bit differently than c(). The latter</span>
 <span class='co'># automatically composes inner and outer names:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>A</span> <span class='kw'>=</span> <span class='fl'>10</span>), <span class='kw'>b</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>C</span> <span class='kw'>=</span> <span class='fl'>30</span>))</div><div class='output co'>#&gt; a.A b.B b.C 
+<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(a = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(A = <span class='fl'>10</span>), b = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(B = <span class='fl'>20</span>, C = <span class='fl'>30</span>))
+</div><div class='output co'>#&gt; a.A b.B b.C 
 #&gt;  10  20  30 </div><div class='input'>
 <span class='co'># On the other hand, rlang's ctors use the inner names and issue a</span>
 <span class='co'># warning to inform the user that the outer names are ignored:</span>
-<span class='fu'>dbl</span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>A</span> <span class='kw'>=</span> <span class='fl'>10</span>), <span class='kw'>b</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>C</span> <span class='kw'>=</span> <span class='fl'>30</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: Outer names are only allowed for unnamed scalar atomic inputs</span></div><div class='output co'>#&gt;  A  B  C 
-#&gt; 10 20 30 </div><div class='input'><span class='fu'>dbl</span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: Outer names are only allowed for unnamed scalar atomic inputs</span></div><div class='output co'>#&gt; [1] 1 2</div><div class='input'>
+<span class='fu'>dbl</span>(a = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(A = <span class='fl'>10</span>), b = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(B = <span class='fl'>20</span>, C = <span class='fl'>30</span>))
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Outer names are only allowed for unnamed scalar atomic inputs</span></div><div class='output co'>#&gt;  A  B  C 
+#&gt; 10 20 30 </div><div class='input'><span class='fu'>dbl</span>(a = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>))
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Outer names are only allowed for unnamed scalar atomic inputs</span></div><div class='output co'>#&gt; [1] 1 2</div><div class='input'>
 <span class='co'># As an exception, it is allowed to provide an outer name when the</span>
 <span class='co'># inner vector is an unnamed scalar atomic:</span>
-<span class='fu'>dbl</span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; a 
+<span class='fu'>dbl</span>(a = <span class='fl'>1</span>)
+</div><div class='output co'>#&gt; a 
 #&gt; 1 </div><div class='input'>
 <span class='co'># Spliced lists behave the same way:</span>
-<span class='fu'>dbl</span>(!!! <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>))</div><div class='output co'>#&gt; a 
-#&gt; 1 </div><div class='input'><span class='fu'>dbl</span>(!!! <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>A</span> <span class='kw'>=</span> <span class='fl'>1</span>)))</div><div class='output co'>#&gt; <span class='warning'>Warning: Outer names are only allowed for unnamed scalar atomic inputs</span></div><div class='output co'>#&gt; A 
+<span class='fu'>dbl</span>(<span class='op'>!</span><span class='op'>!</span><span class='op'>!</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(a = <span class='fl'>1</span>))
+</div><div class='output co'>#&gt; a 
+#&gt; 1 </div><div class='input'><span class='fu'>dbl</span>(<span class='op'>!</span><span class='op'>!</span><span class='op'>!</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(a = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(A = <span class='fl'>1</span>)))
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Outer names are only allowed for unnamed scalar atomic inputs</span></div><div class='output co'>#&gt; A 
 #&gt; 1 </div><div class='input'>
 <span class='co'># bytes() accepts integerish inputs</span>
-<span class='fu'>bytes</span>(<span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='output co'>#&gt;  [1] 01 02 03 04 05 06 07 08 09 0a</div><div class='input'><span class='fu'>bytes</span>(<span class='fl'>0x01</span>, <span class='fl'>0xff</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0x03</span>, <span class='fl'>0x05</span>), <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>10</span>, <span class='fl'>20</span>, <span class='fl'>30L</span>))</div><div class='output co'>#&gt; [1] 01 ff 03 05 0a 14 1e</div></pre>
+<span class='fu'>bytes</span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>)
+</div><div class='output co'>#&gt;  [1] 01 02 03 04 05 06 07 08 09 0a</div><div class='input'><span class='fu'>bytes</span>(<span class='fl'>0x01</span>, <span class='fl'>0xff</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0x03</span>, <span class='fl'>0x05</span>), <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>10</span>, <span class='fl'>20</span>, <span class='fl'>30L</span>))
+</div><div class='output co'>#&gt; [1] 01 ff 03 05 0a 14 1e</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -249,7 +261,7 @@ in a future version. Please splice explicitly with <code>!!!</code>.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

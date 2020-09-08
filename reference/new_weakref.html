@@ -185,7 +185,7 @@ from being collected, according to the following chain of ownership:
 object are replaced by <code>NULL</code>, and the finalizer is scheduled to execute.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>new_weakref</span>(<span class='no'>key</span>, <span class='kw'>value</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>finalizer</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>on_quit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>new_weakref</span>(<span class='kw'>key</span>, value = <span class='kw'>NULL</span>, finalizer = <span class='kw'>NULL</span>, on_quit = <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -215,37 +215,47 @@ want to use the weak reference like a weak pointer.</p></td>
     <div class='dont-index'><p><code><a href='is_weakref.html'>is_weakref()</a></code>, <code><a href='wref_key.html'>wref_key()</a></code> and <code><a href='wref_key.html'>wref_value()</a></code>.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>e</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>()
+    <pre class="examples"><div class='input'><span class='kw'>e</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>()
 
 <span class='co'># Create a weak reference to e</span>
-<span class='no'>w</span> <span class='kw'>&lt;-</span> <span class='fu'>new_weakref</span>(<span class='no'>e</span>, <span class='kw'>finalizer</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>e</span>) <span class='fu'><a href='https://rdrr.io/r/base/message.html'>message</a></span>(<span class='st'>"finalized"</span>))
+<span class='kw'>w</span> <span class='op'>&lt;-</span> <span class='fu'>new_weakref</span>(<span class='kw'>e</span>, finalizer = <span class='fu'>function</span>(<span class='kw'>e</span>) <span class='fu'><a href='https://rdrr.io/r/base/message.html'>message</a></span>(<span class='st'>"finalized"</span>))
 
 <span class='co'># Get the key object from the weak reference</span>
-<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'><a href='wref_key.html'>wref_key</a></span>(<span class='no'>w</span>), <span class='no'>e</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'><a href='wref_key.html'>wref_key</a></span>(<span class='kw'>w</span>), <span class='kw'>e</span>)
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># When the regular reference (the `e` binding) is removed and a GC occurs,</span>
 <span class='co'># the weak reference will not keep the object alive.</span>
-<span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span>(<span class='no'>e</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/gc.html'>gc</a></span>()</div><div class='output co'>#&gt;           used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
-#&gt; Ncells  849349 45.4    1457609 77.9         NA  1457609 77.9
-#&gt; Vcells 1621865 12.4    8388608 64.0      16384  2892034 22.1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'><a href='wref_key.html'>wref_key</a></span>(<span class='no'>w</span>), <span class='kw'>NULL</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span>(<span class='kw'>e</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/gc.html'>gc</a></span>()
+</div><div class='output co'>#&gt;           used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
+#&gt; Ncells  852398 45.6    1608492   86         NA  1608492 86.0
+#&gt; Vcells 1609661 12.3    8388608   64      16384  3015408 23.1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'><a href='wref_key.html'>wref_key</a></span>(<span class='kw'>w</span>), <span class='kw'>NULL</span>)
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 
 <span class='co'># A weak reference with a key and value. The value contains data about the</span>
 <span class='co'># key.</span>
-<span class='no'>k</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>()
-<span class='no'>v</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>)
-<span class='no'>w</span> <span class='kw'>&lt;-</span> <span class='fu'>new_weakref</span>(<span class='no'>k</span>, <span class='no'>v</span>)
+<span class='kw'>k</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>()
+<span class='kw'>v</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>)
+<span class='kw'>w</span> <span class='op'>&lt;-</span> <span class='fu'>new_weakref</span>(<span class='kw'>k</span>, <span class='kw'>v</span>)
 
-<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'><a href='wref_key.html'>wref_key</a></span>(<span class='no'>w</span>), <span class='no'>k</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'><a href='wref_key.html'>wref_value</a></span>(<span class='no'>w</span>), <span class='no'>v</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'><a href='wref_key.html'>wref_key</a></span>(<span class='kw'>w</span>), <span class='kw'>k</span>)
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'><a href='wref_key.html'>wref_value</a></span>(<span class='kw'>w</span>), <span class='kw'>v</span>)
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># When v is removed, the weak ref keeps it alive because k is still reachable.</span>
-<span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span>(<span class='no'>v</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/gc.html'>gc</a></span>()</div><div class='output co'>#&gt;           used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
-#&gt; Ncells  849489 45.4    1457609 77.9         NA  1457609 77.9
-#&gt; Vcells 1621645 12.4    8388608 64.0      16384  2892034 22.1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'><a href='wref_key.html'>wref_value</a></span>(<span class='no'>w</span>), <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span>(<span class='kw'>v</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/gc.html'>gc</a></span>()
+</div><div class='output co'>#&gt;           used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
+#&gt; Ncells  852538 45.6    1608492   86         NA  1608492 86.0
+#&gt; Vcells 1609441 12.3    8388608   64      16384  3015408 23.1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'><a href='wref_key.html'>wref_value</a></span>(<span class='kw'>w</span>), <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>))
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># When k is removed, the weak ref does not keep k or v alive.</span>
-<span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span>(<span class='no'>k</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/gc.html'>gc</a></span>()</div><div class='output co'>#&gt;           used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
-#&gt; Ncells  849506 45.4    1457609 77.9         NA  1457609 77.9
-#&gt; Vcells 1621667 12.4    8388608 64.0      16384  2892034 22.1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'><a href='wref_key.html'>wref_key</a></span>(<span class='no'>w</span>), <span class='kw'>NULL</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'><a href='wref_key.html'>wref_value</a></span>(<span class='no'>w</span>), <span class='kw'>NULL</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+<span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span>(<span class='kw'>k</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/gc.html'>gc</a></span>()
+</div><div class='output co'>#&gt;           used (Mb) gc trigger (Mb) limit (Mb) max used (Mb)
+#&gt; Ncells  852555 45.6    1608492   86         NA  1608492 86.0
+#&gt; Vcells 1609463 12.3    8388608   64      16384  3015408 23.1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'><a href='wref_key.html'>wref_key</a></span>(<span class='kw'>w</span>), <span class='kw'>NULL</span>)
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'><a href='wref_key.html'>wref_value</a></span>(<span class='kw'>w</span>), <span class='kw'>NULL</span>)
+</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -261,7 +271,7 @@ want to use the weak reference like a weak pointer.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

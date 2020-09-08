@@ -169,9 +169,9 @@ some subtle implications when evaluting stack sensitive functions
 (see help for <code><a href='eval_bare.html'>eval_bare()</a></code>).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>with_env</span>(<span class='no'>env</span>, <span class='no'>expr</span>)
+    <pre class="usage"><span class='fu'>with_env</span>(<span class='kw'>env</span>, <span class='kw'>expr</span>)
 
-<span class='fu'>locally</span>(<span class='no'>expr</span>)</pre>
+<span class='fu'>locally</span>(<span class='kw'>expr</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -202,30 +202,35 @@ more suited for experimenting with the R language.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># with_env() is handy to create formulas with a given environment:</span>
-<span class='no'>env</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='env.html'>child_env</a></span>(<span class='st'>"rlang"</span>)
-<span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='fu'>with_env</span>(<span class='no'>env</span>, ~<span class='fu'><a href='new_formula.html'>new_formula</a></span>())
-<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'><a href='f_rhs.html'>f_env</a></span>(<span class='no'>f</span>), <span class='no'>env</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='kw'>env</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>child_env</a></span>(<span class='st'>"rlang"</span>)
+<span class='kw'>f</span> <span class='op'>&lt;-</span> <span class='fu'>with_env</span>(<span class='kw'>env</span>, <span class='op'>~</span><span class='fu'><a href='new_formula.html'>new_formula</a></span>())
+<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'><a href='f_rhs.html'>f_env</a></span>(<span class='kw'>f</span>), <span class='kw'>env</span>)
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># Or functions with a given enclosure:</span>
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='fu'>with_env</span>(<span class='no'>env</span>, <span class='kw'>function</span>() <span class='kw'>NULL</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'><a href='get_env.html'>get_env</a></span>(<span class='no'>fn</span>), <span class='no'>env</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>with_env</span>(<span class='kw'>env</span>, <span class='fu'>function</span>() <span class='kw'>NULL</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'><a href='get_env.html'>get_env</a></span>(<span class='kw'>fn</span>), <span class='kw'>env</span>)
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 
 <span class='co'># Unlike eval() it doesn't create duplicates on the evaluation</span>
 <span class='co'># stack. You can thus use it e.g. to create non-local returns:</span>
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
+<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() {
   <span class='fu'>g</span>(<span class='fu'><a href='caller_env.html'>current_env</a></span>())
   <span class='st'>"normal return"</span>
 }
-<span class='no'>g</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>env</span>) {
-  <span class='fu'>with_env</span>(<span class='no'>env</span>, <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='st'>"early return"</span>))
+<span class='kw'>g</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>env</span>) {
+  <span class='fu'>with_env</span>(<span class='kw'>env</span>, <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='st'>"early return"</span>))
 }
-<span class='fu'>fn</span>()</div><div class='output co'>#&gt; [1] "early return"</div><div class='input'>
+<span class='fu'>fn</span>()
+</div><div class='output co'>#&gt; [1] "early return"</div><div class='input'>
 
 <span class='co'># Since env is passed to as_environment(), it can be any object with an</span>
 <span class='co'># as_environment() method. For strings, the pkg_env() is returned:</span>
-<span class='fu'>with_env</span>(<span class='st'>"base"</span>, ~<span class='no'>mtcars</span>)</div><div class='output co'>#&gt; ~mtcars
+<span class='fu'>with_env</span>(<span class='st'>"base"</span>, <span class='op'>~</span><span class='kw'>mtcars</span>)
+</div><div class='output co'>#&gt; ~mtcars
 #&gt; &lt;environment: base&gt;</div><div class='input'>
 <span class='co'># This can be handy to put dictionaries in scope:</span>
-<span class='fu'>with_env</span>(<span class='no'>mtcars</span>, <span class='no'>cyl</span>)</div><div class='output co'>#&gt;  [1] 6 6 4 6 8 6 8 4 4 6 6 8 8 8 8 8 8 4 4 4 4 8 8 8 8 4 4 4 8 6 8 4</div></pre>
+<span class='fu'>with_env</span>(<span class='kw'>mtcars</span>, <span class='kw'>cyl</span>)
+</div><div class='output co'>#&gt;  [1] 6 6 4 6 8 6 8 4 4 6 6 8 8 8 8 8 8 4 4 4 4 8 8 8 8 4 4 4 8 6 8 4</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -241,7 +246,7 @@ more suited for experimenting with the R language.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

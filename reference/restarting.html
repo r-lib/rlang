@@ -161,7 +161,7 @@ calling() handler that invokes a restart." />
 <code><a href='with_handlers.html'>calling()</a></code> handler that invokes a restart.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>restarting</span>(<span class='no'>.restart</span>, <span class='no'>...</span>, <span class='kw'>.fields</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>restarting</span>(<span class='kw'>.restart</span>, <span class='kw'>...</span>, .fields = <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -202,29 +202,30 @@ be passed on to other potential handlers established on the stack.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># This is a restart that takes a data frame and names as arguments</span>
-<span class='no'>rst_bar</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>df</span>, <span class='no'>nms</span>) {
-  <span class='kw pkg'>stats</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/setNames.html'>setNames</a></span>(<span class='no'>df</span>, <span class='no'>nms</span>)
+<span class='kw'>rst_bar</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>df</span>, <span class='kw'>nms</span>) {
+  <span class='kw'>stats</span>::<span class='fu'><a href='https://rdrr.io/r/stats/setNames.html'>setNames</a></span>(<span class='kw'>df</span>, <span class='kw'>nms</span>)
 }
 
 <span class='co'># This restart is simpler and does not take arguments</span>
-<span class='no'>rst_baz</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() <span class='st'>"baz"</span>
+<span class='kw'>rst_baz</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() <span class='st'>"baz"</span>
 
 <span class='co'># Signalling a condition parameterised with a data frame</span>
-<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
-  <span class='fu'><a href='with_restarts.html'>with_restarts</a></span>(<span class='fu'><a href='abort.html'>signal</a></span>(<span class='st'>"A foobar condition occurred"</span>, <span class='st'>"foo"</span>, <span class='kw'>foo_field</span> <span class='kw'>=</span> <span class='no'>mtcars</span>),
-    <span class='kw'>rst_bar</span> <span class='kw'>=</span> <span class='no'>rst_bar</span>,
-    <span class='kw'>rst_baz</span> <span class='kw'>=</span> <span class='no'>rst_baz</span>
+<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() {
+  <span class='fu'><a href='with_restarts.html'>with_restarts</a></span>(<span class='fu'><a href='abort.html'>signal</a></span>(<span class='st'>"A foobar condition occurred"</span>, <span class='st'>"foo"</span>, foo_field = <span class='kw'>mtcars</span>),
+    rst_bar = <span class='kw'>rst_bar</span>,
+    rst_baz = <span class='kw'>rst_baz</span>
   )
 }
 
 <span class='co'># Creating a restarting handler that passes arguments `nms` and</span>
 <span class='co'># `df`, the latter taken from a data field of the condition object</span>
-<span class='no'>restart_bar</span> <span class='kw'>&lt;-</span> <span class='fu'>restarting</span>(<span class='st'>"rst_bar"</span>,
-  <span class='kw'>nms</span> <span class='kw'>=</span> <span class='no'>LETTERS</span>[<span class='fl'>1</span>:<span class='fl'>11</span>], <span class='kw'>.fields</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>df</span> <span class='kw'>=</span> <span class='st'>"foo_field"</span>)
+<span class='kw'>restart_bar</span> <span class='op'>&lt;-</span> <span class='fu'>restarting</span>(<span class='st'>"rst_bar"</span>,
+  nms = <span class='kw'>LETTERS</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>11</span>], .fields = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(df = <span class='st'>"foo_field"</span>)
 )
 
 <span class='co'># The restarting handlers jumps to `rst_bar` when `foo` is signalled:</span>
-<span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(<span class='fu'>fn</span>(), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='no'>restart_bar</span>)</div><div class='output co'>#&gt;                        A B     C   D    E     F     G H I J K
+<span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(<span class='fu'>fn</span>(), foo = <span class='kw'>restart_bar</span>)
+</div><div class='output co'>#&gt;                        A B     C   D    E     F     G H I J K
 #&gt; Mazda RX4           21.0 6 160.0 110 3.90 2.620 16.46 0 1 4 4
 #&gt; Mazda RX4 Wag       21.0 6 160.0 110 3.90 2.875 17.02 0 1 4 4
 #&gt; Datsun 710          22.8 4 108.0  93 3.85 2.320 18.61 1 1 4 1
@@ -259,7 +260,8 @@ be passed on to other potential handlers established on the stack.</p>
 #&gt; Volvo 142E          21.4 4 121.0 109 4.11 2.780 18.60 1 1 4 2</div><div class='input'>
 <span class='co'># The restarting() constructor is especially nice to use with</span>
 <span class='co'># restarts that do not need arguments:</span>
-<span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(<span class='fu'>fn</span>(), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'>restarting</span>(<span class='st'>"rst_baz"</span>))</div><div class='output co'>#&gt; [1] "baz"</div></pre>
+<span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(<span class='fu'>fn</span>(), foo = <span class='fu'>restarting</span>(<span class='st'>"rst_baz"</span>))
+</div><div class='output co'>#&gt; [1] "baz"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -275,7 +277,7 @@ be passed on to other potential handlers established on the stack.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

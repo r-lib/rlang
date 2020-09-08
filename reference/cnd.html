@@ -163,13 +163,13 @@ Conditions are objects that power the error system in R. They can
 also be used for passing messages to pre-established handlers.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>error_cnd</span>(<span class='kw'>.subclass</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>trace</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>parent</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>error_cnd</span>(.subclass = <span class='kw'>NULL</span>, <span class='kw'>...</span>, message = <span class='st'>""</span>, trace = <span class='kw'>NULL</span>, parent = <span class='kw'>NULL</span>)
 
-<span class='fu'>cnd</span>(<span class='no'>class</span>, <span class='no'>...</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='no'>.subclass</span>)
+<span class='fu'>cnd</span>(<span class='kw'>class</span>, <span class='kw'>...</span>, message = <span class='st'>""</span>, <span class='kw'>.subclass</span>)
 
-<span class='fu'>warning_cnd</span>(<span class='kw'>class</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='no'>.subclass</span>)
+<span class='fu'>warning_cnd</span>(class = <span class='kw'>NULL</span>, <span class='kw'>...</span>, message = <span class='st'>""</span>, <span class='kw'>.subclass</span>)
 
-<span class='fu'>message_cnd</span>(<span class='kw'>class</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='no'>.subclass</span>)</pre>
+<span class='fu'>message_cnd</span>(class = <span class='kw'>NULL</span>, <span class='kw'>...</span>, message = <span class='st'>""</span>, <span class='kw'>.subclass</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -223,23 +223,25 @@ and <code>message</code>. They are deprecated as of rlang 0.3.0.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Create a condition inheriting from the s3 type "foo":</span>
-<span class='no'>cnd</span> <span class='kw'>&lt;-</span> <span class='fu'>cnd</span>(<span class='st'>"foo"</span>)
+<span class='kw'>cnd</span> <span class='op'>&lt;-</span> <span class='fu'>cnd</span>(<span class='st'>"foo"</span>)
 
 <span class='co'># Signal the condition to potential handlers. Since this is a bare</span>
 <span class='co'># condition the signal has no effect if no handlers are set up:</span>
-<span class='fu'><a href='cnd_signal.html'>cnd_signal</a></span>(<span class='no'>cnd</span>)
+<span class='fu'><a href='cnd_signal.html'>cnd_signal</a></span>(<span class='kw'>cnd</span>)
 
 <span class='co'># When a relevant handler is set up, the signal causes the handler</span>
 <span class='co'># to be called:</span>
-<span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(<span class='fu'><a href='cnd_signal.html'>cnd_signal</a></span>(<span class='no'>cnd</span>), <span class='kw'>foo</span> <span class='kw'>=</span> <span class='fu'><a href='exiting.html'>exiting</a></span>(<span class='kw'>function</span>(<span class='no'>c</span>) <span class='st'>"caught!"</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: `exiting()` is soft-deprecated as of rlang 0.4.0.</span>
+<span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(<span class='fu'><a href='cnd_signal.html'>cnd_signal</a></span>(<span class='kw'>cnd</span>), foo = <span class='fu'><a href='exiting.html'>exiting</a></span>(<span class='fu'>function</span>(<span class='kw'>c</span>) <span class='st'>"caught!"</span>))
+</div><div class='output co'>#&gt; <span class='warning'>Warning: `exiting()` is soft-deprecated as of rlang 0.4.0.</span>
 #&gt; <span class='warning'>Handlers are now treated as exiting by default.</span>
 #&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once per session.</span><span></span></div><div class='output co'>#&gt; [1] "caught!"</div><div class='input'>
 <span class='co'># Handlers can be thrown or executed inplace. See with_handlers()</span>
 <span class='co'># documentation for more on this.</span>
 
 <span class='co'># Signalling an error condition aborts the current computation:</span>
-<span class='no'>err</span> <span class='kw'>&lt;-</span> <span class='fu'>error_cnd</span>(<span class='st'>"foo"</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"I am an error"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'><a href='cnd_signal.html'>cnd_signal</a></span>(<span class='no'>err</span>))</div><div class='output co'>#&gt; Error : I am an error</div></span></pre>
+<span class='kw'>err</span> <span class='op'>&lt;-</span> <span class='fu'>error_cnd</span>(<span class='st'>"foo"</span>, message = <span class='st'>"I am an error"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'><a href='cnd_signal.html'>cnd_signal</a></span>(<span class='kw'>err</span>))
+</div><div class='output co'>#&gt; Error : I am an error</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -255,7 +257,7 @@ and <code>message</code>. They are deprecated as of rlang 0.3.0.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>
