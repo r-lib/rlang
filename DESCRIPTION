@@ -26,6 +26,7 @@ Suggests:
     rmarkdown,
     testthat (>= 2.3.0),
     vctrs (>= 0.2.3),
+    winch,
     withr
 Encoding: UTF-8
 RoxygenNote: 7.1.1
