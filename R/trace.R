@@ -90,14 +90,8 @@ trace_back <- function(top = NULL, bottom = NULL) {
   parents <- normalise_parents(parents)
 
   trace <- new_trace(calls, parents)
+  trace <- add_winch_trace(trace)
   trace <- trace_trim_env(trace, frames, top)
-
-  if (is_installed("winch")) {
-    new_trace <- winch::winch_add_trace_back(trace)
-    if (inherits(new_trace, "rlang_trace")) {
-      trace <- new_trace
-    }
-  }
 
   trace
 }
@@ -266,6 +260,29 @@ new_trace <- function(calls, parents, indices = NULL) {
 trace_reset_indices <- function(trace) {
   trace$indices <- seq_len(trace_length(trace))
   trace
+}
+
+winch_available_env <- new_environment()
+
+add_winch_trace <- function(trace) {
+  avail <- winch_available_env$installed
+  if (is_null(avail)) {
+    avail <- rlang::is_installed("winch")
+    winch_available_env$installed <- avail
+  }
+
+  if (!avail) {
+    return(trace)
+  }
+
+  # Increment this number when the internal format for the rlang_trace class
+  # changes
+  enabled <- identical(peek_option("rlang_trace_use_winch"), 1L)
+  if (!enabled) {
+    return(trace)
+  }
+
+  winch::winch_add_trace_back(trace)
 }
 
 # Methods -----------------------------------------------------------------
