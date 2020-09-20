@@ -262,7 +262,8 @@ trace_reset_indices <- function(trace) {
   trace
 }
 
-winch_available_env <- new_environment()
+# Can't use new_environment() here
+winch_available_env <- new.env(parent = emptyenv())
 
 add_winch_trace <- function(trace) {
   avail <- winch_available_env$installed
