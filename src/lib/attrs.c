@@ -1,36 +1,21 @@
 #include "rlang.h"
 
-extern sexp* rlang_get_attributes(sexp* x);
-extern sexp* r_poke_attributes(sexp* x, sexp* attrs);
+extern sexp* rlang_attrib(sexp* x);
+extern sexp* r_poke_attrib(sexp* x, sexp* attrs);
 
-sexp* r_push_attribute(sexp* x, sexp* tag, sexp* value) {
-  sexp* attrs = r_new_node(value, r_get_attributes(x));
+sexp* r_attrib_push(sexp* x, sexp* tag, sexp* value) {
+  sexp* attrs = r_new_node(value, r_attrib(x));
   r_node_poke_tag(attrs, tag);
-  r_poke_attributes(x, attrs);
+  r_poke_attrib(x, attrs);
   return attrs;
 }
 
-// Unlike Rf_getAttrib(), this never allocates
-sexp* r_get_attribute(sexp* x, sexp* tag) {
-  sexp* attrs = r_get_attributes(x);
-
-  while (attrs != r_null) {
-    if (r_node_tag(attrs) == tag) {
-      sexp* attr = r_node_car(attrs);
-      r_mark_shared(attr);
-      return attr;
-    }
-    attrs = r_node_cdr(attrs);
-  }
-
-  return r_null;
-}
 
 sexp* r_attrs_set_at(sexp* attrs, sexp* node, sexp* value) {
   sexp* sentinel = r_node_cdr(node);
   sexp* new_node = r_null;
 
-  attrs = KEEP(r_node_list_clone_until(attrs, sentinel, &new_node));
+  attrs = KEEP(r_pairlist_clone_until(attrs, sentinel, &new_node));
   r_node_poke_car(new_node, value);
 
   FREE(1);
@@ -40,7 +25,7 @@ sexp* r_attrs_zap_at(sexp* attrs, sexp* node, sexp* value) {
   sexp* sentinel = node;
   sexp* new_node = r_null;
 
-  attrs = KEEP(r_node_list_clone_until(attrs, sentinel, &new_node));
+  attrs = KEEP(r_pairlist_clone_until(attrs, sentinel, &new_node));
 
   if (new_node == r_null) {
     // `node` is the first node of `attrs`
@@ -53,19 +38,19 @@ sexp* r_attrs_zap_at(sexp* attrs, sexp* node, sexp* value) {
   return attrs;
 }
 sexp* r_clone2(sexp* x) {
-  sexp* attrs = r_get_attributes(x);
+  sexp* attrs = r_attrib(x);
 
   // Prevent attributes from being cloned
-  r_poke_attributes(x, r_null);
+  r_poke_attrib(x, r_null);
   sexp* out = r_clone(x);
-  r_poke_attributes(x, attrs);
-  r_poke_attributes(out, attrs);
+  r_poke_attrib(x, attrs);
+  r_poke_attrib(out, attrs);
 
   return out;
 }
 
-sexp* r_set_attribute(sexp* x, sexp* tag, sexp* value) {
-  sexp* attrs = r_get_attributes(x);
+sexp* r_attrib_set(sexp* x, sexp* tag, sexp* value) {
+  sexp* attrs = r_attrib(x);
   sexp* out = KEEP(r_clone2(x));
 
   sexp* node = attrs;
@@ -76,7 +61,7 @@ sexp* r_set_attribute(sexp* x, sexp* tag, sexp* value) {
       } else {
         attrs = r_attrs_set_at(attrs, node, value);
       }
-      r_poke_attributes(out, attrs);
+      r_poke_attrib(out, attrs);
 
       FREE(1);
       return out;
@@ -90,7 +75,7 @@ sexp* r_set_attribute(sexp* x, sexp* tag, sexp* value) {
     attrs = KEEP(r_new_node(out, attrs));
     r_node_poke_tag(attrs, tag);
     r_node_poke_car(attrs, value);
-    r_poke_attributes(out, attrs);
+    r_poke_attrib(out, attrs);
     FREE(1);
   }
 
@@ -108,7 +93,7 @@ sexp* r_set_attribute(sexp* x, sexp* tag, sexp* value) {
 sexp* r_node_push_classes(sexp* node, const char** tags) {
   sexp* tags_chr = KEEP(r_new_character(tags));
   sexp* attrs = r_new_node(tags_chr, node);
-  r_node_poke_tag(attrs, r_class_sym);
+  r_node_poke_tag(attrs, r_syms_class);
 
   FREE(1);
   return attrs;
@@ -120,7 +105,7 @@ sexp* r_node_push_class(sexp* x, const char* tag) {
 }
 
 void r_push_classes(sexp* x, const char** tags) {
-  sexp* attrs = r_get_attributes(x);
+  sexp* attrs = r_attrib(x);
   attrs = r_node_push_classes(attrs, tags);
   SET_ATTRIB(x, attrs);
   SET_OBJECT(x, 1);

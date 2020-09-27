@@ -4,7 +4,7 @@
 sexp* r_eval_with_x(sexp* call, sexp* parent, sexp* x) {
   sexp* env = KEEP(r_new_environment(parent, 1));
   sexp* out = r_eval_in_with_x(call, env,
-                               x, r_x_sym);
+                               x, r_syms_x);
 
   FREE(1);
   return out;
@@ -12,8 +12,8 @@ sexp* r_eval_with_x(sexp* call, sexp* parent, sexp* x) {
 sexp* r_eval_with_xy(sexp* call, sexp* parent, sexp* x, sexp* y) {
   sexp* env = KEEP(r_new_environment(parent, 1));
   sexp* out = r_eval_in_with_xy(call, env,
-                                x, r_x_sym,
-                                y, r_y_sym);
+                                x, r_syms_x,
+                                y, r_syms_y);
 
   FREE(1);
   return out;
@@ -21,9 +21,9 @@ sexp* r_eval_with_xy(sexp* call, sexp* parent, sexp* x, sexp* y) {
 sexp* r_eval_with_xyz(sexp* call, sexp* parent, sexp* x, sexp* y, sexp* z) {
   sexp* env = KEEP(r_new_environment(parent, 1));
   sexp* out = r_eval_in_with_xyz(call, env,
-                                 x, r_x_sym,
-                                 y, r_y_sym,
-                                 z, r_z_sym);
+                                 x, r_syms_x,
+                                 y, r_syms_y,
+                                 z, r_syms_z);
 
   FREE(1);
   return out;
@@ -31,10 +31,10 @@ sexp* r_eval_with_xyz(sexp* call, sexp* parent, sexp* x, sexp* y, sexp* z) {
 sexp* r_eval_with_wxyz(sexp* call, sexp* parent, sexp* w, sexp* x, sexp* y, sexp* z) {
   sexp* env = KEEP(r_new_environment(parent, 1));
   sexp* out = r_eval_in_with_wxyz(call, env,
-                                  w, r_w_sym,
-                                  x, r_x_sym,
-                                  y, r_y_sym,
-                                  z, r_z_sym);
+                                  w, r_syms_w,
+                                  x, r_syms_x,
+                                  y, r_syms_y,
+                                  z, r_syms_z);
 
   FREE(1);
   return out;
@@ -85,42 +85,42 @@ static sexp* shared_xyz_env;
 // evaluate pure R calls or functions from other packages, such as the
 // base package.
 sexp* eval_with_x(sexp* call, sexp* x) {
-  r_env_poke(shared_x_env, r_x_sym, x);
+  r_env_poke(shared_x_env, r_syms_x, x);
 
   sexp* out = KEEP(r_eval(call, shared_x_env));
 
   // Release for gc
-  r_env_poke(shared_x_env, r_x_sym, r_null);
+  r_env_poke(shared_x_env, r_syms_x, r_null);
 
   FREE(1);
   return out;
 }
 
 sexp* eval_with_xy(sexp* call, sexp* x, sexp* y) {
-  r_env_poke(shared_xy_env, r_x_sym, x);
-  r_env_poke(shared_xy_env, r_y_sym, y);
+  r_env_poke(shared_xy_env, r_syms_x, x);
+  r_env_poke(shared_xy_env, r_syms_y, y);
 
   sexp* out = KEEP(r_eval(call, shared_xy_env));
 
   // Release for gc
-  r_env_poke(shared_xy_env, r_x_sym, r_null);
-  r_env_poke(shared_xy_env, r_y_sym, r_null);
+  r_env_poke(shared_xy_env, r_syms_x, r_null);
+  r_env_poke(shared_xy_env, r_syms_y, r_null);
 
   FREE(1);
   return out;
 }
 
 sexp* eval_with_xyz(sexp* call, sexp* x, sexp* y, sexp* z) {
-  r_env_poke(shared_xyz_env, r_x_sym, x);
-  r_env_poke(shared_xyz_env, r_y_sym, y);
-  r_env_poke(shared_xyz_env, r_z_sym, z);
+  r_env_poke(shared_xyz_env, r_syms_x, x);
+  r_env_poke(shared_xyz_env, r_syms_y, y);
+  r_env_poke(shared_xyz_env, r_syms_z, z);
 
   sexp* out = KEEP(r_eval(call, shared_xyz_env));
 
   // Release for gc
-  r_env_poke(shared_xyz_env, r_x_sym, r_null);
-  r_env_poke(shared_xyz_env, r_y_sym, r_null);
-  r_env_poke(shared_xyz_env, r_z_sym, r_null);
+  r_env_poke(shared_xyz_env, r_syms_x, r_null);
+  r_env_poke(shared_xyz_env, r_syms_y, r_null);
+  r_env_poke(shared_xyz_env, r_syms_z, r_null);
 
   FREE(1);
   return out;

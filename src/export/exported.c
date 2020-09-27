@@ -3,7 +3,7 @@
 
 // attrs.c
 
-sexp* rlang_poke_attributes(sexp* x, sexp* attrs) {
+sexp* rlang_poke_attrib(sexp* x, sexp* attrs) {
   SET_ATTRIB(x, attrs);
   return x;
 }
@@ -350,7 +350,7 @@ sexp* rlang_promise_env(sexp* x, sexp* env) {
 sexp* rlang_promise_value(sexp* x, sexp* env) {
   sexp* prom = rlang_get_promise(x, env);
   sexp* value = PRVALUE(prom);
-  if (value == r_unbound_sym) {
+  if (value == r_syms_unbound) {
     return r_sym("R_UnboundValue");
   } else {
     return value;

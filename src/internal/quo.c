@@ -34,14 +34,14 @@ sexp* rlang_quo_set_expr(sexp* quo, sexp* expr) {
 
 sexp* rlang_quo_get_env(sexp* quo) {
   check_quosure(quo);
-  return r_get_attribute(quo, r_dot_environment_sym);
+  return r_attrib_get(quo, r_syms_dot_environment);
 }
 sexp* rlang_quo_set_env(sexp* quo, sexp* env) {
   check_quosure(quo);
   if (r_typeof(env) != r_type_environment) {
     r_abort("`env` must be an environment");
   }
-  return r_set_attribute(quo, r_dot_environment_sym, env);
+  return r_attrib_set(quo, r_syms_dot_environment, env);
 }
 
 sexp* rlang_get_expression(sexp* x, sexp* alternate) {

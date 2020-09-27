@@ -289,13 +289,13 @@ test_that("can clone until sentinel", {
 })
 
 get_attributes <- function(x) {
-  .Call(rlang_get_attributes, x)
+  .Call(rlang_attrib, x)
 }
 c_set_attribute <- function(x, name, value) {
-  .Call(rlang_test_set_attribute, x, sym(name), value)
+  .Call(rlang_test_attrib_set, x, sym(name), value)
 }
 
-test_that("r_set_attribute() sets elements", {
+test_that("r_attrib_set() sets elements", {
   x <- list()
   out1 <- c_set_attribute(x, "foo", 1L)
   attrs1 <- get_attributes(out1)
@@ -311,7 +311,7 @@ test_that("r_set_attribute() sets elements", {
   expect_reference(node_cdr(attrs2), attrs1)
 })
 
-test_that("r_set_attribute() zaps one element", {
+test_that("r_attrib_set() zaps one element", {
   x <- structure(list(), foo = 1)
   attrs <- get_attributes(x)
   out <- c_set_attribute(x, "foo", NULL)
@@ -320,7 +320,7 @@ test_that("r_set_attribute() zaps one element", {
   expect_null(get_attributes(out))
 })
 
-test_that("r_set_attribute() zaps several elements", {
+test_that("r_attrib_set() zaps several elements", {
   x <- structure(list(), foo = 1, bar = 2, baz = 3)
   attrs <- get_attributes(x)
 
@@ -426,7 +426,7 @@ test_that("r_lgl_which() handles `NA` when propagation is disabled (#750)", {
   expect_identical(r_lgl_which(lgl(TRUE, NA, FALSE, NA, TRUE, FALSE, TRUE), FALSE), int(1, 5, 7))
 })
 
-test_that("r_node_list_reverse() reverses destructively", {
+test_that("r_pairlist_rev() reverses destructively", {
   x <- pairlist(1)
   y <- node_list_reverse(x)
   expect_true(is_reference(x, y))

@@ -116,14 +116,14 @@ sexp* rlang_set_names(sexp* x, sexp* mold, sexp* nm, sexp* env) {
 }
 
 static inline sexp* r_fn_eval_in_with_x_dots(sexp* fn, sexp* x, sexp* dots, sexp* env) {
-  sexp* args = KEEP(r_new_node(r_dot_x_sym, dots));
-  sexp* call = KEEP(r_new_call(r_dot_fn_sym, args));
+  sexp* args = KEEP(r_new_node(r_syms_dot_x, dots));
+  sexp* call = KEEP(r_new_call(r_syms_dot_fn, args));
 
   // This evaluates `fn(x, ...)`
   // `.x` is the first input, x
   // `.fn` is the function, fn
   // The dots are a pairlist already in the call
-  sexp* out = r_eval_in_with_xy(call, env, x, r_dot_x_sym, fn, r_dot_fn_sym);
+  sexp* out = r_eval_in_with_xy(call, env, x, r_syms_dot_x, fn, r_syms_dot_fn);
   FREE(2);
   return out;
 }
@@ -135,12 +135,12 @@ static inline sexp* r_c_eval_in_with_x_dots(sexp* x, sexp* dots, sexp* env) {
 
 static sexp* as_character_call = NULL;
 static inline sexp* r_as_character(sexp* x, sexp* env) {
-  return r_eval_in_with_x(as_character_call, env, x, r_dot_x_sym);
+  return r_eval_in_with_x(as_character_call, env, x, r_syms_dot_x);
 }
 
 static sexp* names_call = NULL;
 static inline sexp* r_names_dispatch(sexp* x, sexp* env) {
-  return r_eval_in_with_x(names_call, env, x, r_dot_x_sym);
+  return r_eval_in_with_x(names_call, env, x, r_syms_dot_x);
 }
 
 extern sexp* rlang_ns_env;
@@ -156,12 +156,12 @@ static inline sexp* r_as_function(sexp* x, sexp* env) {
 // attributes using ALTREP wrappers, which is not in R's public API.
 static sexp* set_names_call = NULL;
 static inline sexp* r_set_names_dispatch(sexp* x, sexp* nm, sexp* env) {
-  return r_eval_in_with_xy(set_names_call, env, x, r_dot_x_sym, nm, r_dot_y_sym);
+  return r_eval_in_with_xy(set_names_call, env, x, r_syms_dot_x, nm, r_syms_dot_y);
 }
 
 static sexp* length_call = NULL;
 static inline r_ssize r_length_dispatch(sexp* x, sexp* env) {
-  sexp* n = KEEP(r_eval_in_with_x(length_call, env, x, r_dot_x_sym));
+  sexp* n = KEEP(r_eval_in_with_x(length_call, env, x, r_syms_dot_x));
 
   if (r_length(n) != 1) {
     r_abort("Object length must have size 1, not %i", r_length(n));

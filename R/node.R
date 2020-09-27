@@ -192,7 +192,7 @@ node_append <- function(.x, .y) {
 }
 
 node_list_reverse <- function(x) {
-  .Call(rlang_node_list_reverse, x)
+  .Call(rlang_pairlist_rev, x)
 }
 
 

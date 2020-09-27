@@ -184,7 +184,7 @@ void r_interrupt() {
 #endif
 
 enum r_condition_type r_cnd_type(sexp* cnd) {
-  sexp* classes = r_get_class(cnd);
+  sexp* classes = r_class(cnd);
   if (r_typeof(cnd) != r_type_list ||
       r_typeof(classes) != r_type_character) {
     goto error;

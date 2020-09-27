@@ -64,32 +64,32 @@ bool r_is_special_op_sym(sexp* x) {
 }
 
 
-sexp* r_dot_environment_sym;
-sexp* r_function_sym;
-sexp* r_srcref_sym;
-sexp* r_tilde_sym;
+sexp* r_syms_dot_environment;
+sexp* r_syms_function;
+sexp* r_syms_srcref;
+sexp* r_syms_tilde;
 
-sexp* r_w_sym;
-sexp* r_x_sym;
-sexp* r_y_sym;
-sexp* r_z_sym;
+sexp* r_syms_w;
+sexp* r_syms_x;
+sexp* r_syms_y;
+sexp* r_syms_z;
 
-sexp* r_dot_x_sym;
-sexp* r_dot_y_sym;
-sexp* r_dot_fn_sym;
+sexp* r_syms_dot_x;
+sexp* r_syms_dot_y;
+sexp* r_syms_dot_fn;
 
 void r_init_library_sym() {
-  r_dot_environment_sym = r_sym(".Environment");
-  r_function_sym = r_sym("function");
-  r_srcref_sym = r_sym("srcref");
-  r_tilde_sym = r_sym("~");
+  r_syms_dot_environment = r_sym(".Environment");
+  r_syms_function = r_sym("function");
+  r_syms_srcref = r_sym("srcref");
+  r_syms_tilde = r_sym("~");
 
-  r_w_sym = r_sym("w");
-  r_x_sym = r_sym("x");
-  r_y_sym = r_sym("y");
-  r_z_sym = r_sym("z");
+  r_syms_w = r_sym("w");
+  r_syms_x = r_sym("x");
+  r_syms_y = r_sym("y");
+  r_syms_z = r_sym("z");
 
-  r_dot_x_sym = r_sym(".x");
-  r_dot_y_sym = r_sym(".y");
-  r_dot_fn_sym = r_sym(".fn");
+  r_syms_dot_x = r_sym(".x");
+  r_syms_dot_y = r_sym(".y");
+  r_syms_dot_fn = r_sym(".fn");
 }

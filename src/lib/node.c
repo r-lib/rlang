@@ -1,13 +1,6 @@
 #include "rlang.h"
 
 
-sexp* r_new_tagged_node(const char* tag, sexp* car, sexp* cdr) {
-  sexp* node = KEEP(r_new_node(car, cdr));
-  r_node_poke_tag(node, r_sym(tag));
-  FREE(1);
-  return node;
-}
-
 // Shallow copy of a node tree
 sexp* r_node_tree_clone(sexp* x) {
   if (r_typeof(x) != r_type_pairlist) {
@@ -36,7 +29,7 @@ sexp* r_node_tree_clone(sexp* x) {
  * - If `sentinel` is `r_null`, this is like a full shallow duplication
  *   but returns tail node
  */
-sexp* r_node_list_clone_until(sexp* node, sexp* sentinel, sexp** parent_out) {
+sexp* r_pairlist_clone_until(sexp* node, sexp* sentinel, sexp** parent_out) {
   sexp* parent = r_null;
   sexp* cur = node;
   int n_protect = 0;
@@ -69,10 +62,10 @@ sexp* r_node_list_clone_until(sexp* node, sexp* sentinel, sexp** parent_out) {
     cur = r_node_cdr(cur);
   }
 
-  r_abort("Internal error in r_node_list_clone_until()");
+  r_abort("Internal error in r_pairlist_clone_until()");
 }
 
-sexp* r_node_list_find_tag(sexp* node, sexp* tag) {
+sexp* r_pairlist_find(sexp* node, sexp* tag) {
   while (node != r_null) {
     if (r_node_tag(node) == tag) {
       return node;
@@ -83,7 +76,7 @@ sexp* r_node_list_find_tag(sexp* node, sexp* tag) {
   return r_null;
 }
 
-sexp* r_node_list_reverse(sexp* node) {
+sexp* r_pairlist_rev(sexp* node) {
   if (node == r_null) {
     return node;
   }

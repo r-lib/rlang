@@ -121,7 +121,7 @@ extern sexp* rlang_env_inherits(sexp*, sexp*);
 extern sexp* rlang_eval_top(sexp*, sexp*);
 extern sexp* rlang_attrib(sexp*);
 extern sexp* rlang_named(sexp*, sexp*);
-extern sexp* r_node_list_reverse(sexp*);
+extern sexp* r_pairlist_rev(sexp*);
 extern sexp* rlang_new_splice_box(sexp*);
 extern sexp* rlang_is_splice_box(sexp*);
 extern sexp* rlang_unbox(sexp*);
@@ -190,8 +190,8 @@ static const r_callable r_callables[] = {
   {"rlang_is_reference",                (r_fn_ptr) &rlang_is_reference, 2},
   {"rlang_length",                      (r_fn_ptr) &rlang_length, 1},
   {"rlang_true_length",                 (r_fn_ptr) &rlang_true_length, 1},
-  {"rlang_get_attributes",              (r_fn_ptr) &r_get_attributes, 1},
-  {"rlang_poke_attributes",             (r_fn_ptr) &r_poke_attributes, 2},
+  {"rlang_attrib",                      (r_fn_ptr) &r_attrib, 1},
+  {"rlang_poke_attrib",                 (r_fn_ptr) &r_poke_attrib, 2},
   {"rlang_missing_arg",                 (r_fn_ptr) &rlang_missing_arg, 0},
   {"rlang_node_car",                    (r_fn_ptr) &rlang_node_car, 1},
   {"rlang_node_cdr",                    (r_fn_ptr) &rlang_node_cdr, 1},
@@ -238,7 +238,7 @@ static const r_callable r_callables[] = {
   {"rlang_test_parse",                  (r_fn_ptr) &rlang_test_parse, 1},
   {"rlang_test_parse_eval",             (r_fn_ptr) &rlang_test_parse_eval, 2},
   {"rlang_test_node_list_clone_until",  (r_fn_ptr) &rlang_test_node_list_clone_until, 2},
-  {"rlang_test_set_attribute",          (r_fn_ptr) &r_set_attribute, 3},
+  {"rlang_test_attrib_set",             (r_fn_ptr) &r_attrib_set, 3},
   {"rlang_test_sys_frame",              (r_fn_ptr) &rlang_test_sys_frame, 1},
   {"rlang_test_sys_call",               (r_fn_ptr) &rlang_test_sys_call, 1},
   {"rlang_test_Rf_warningcall",         (r_fn_ptr) &rlang_test_Rf_warningcall, 2},
@@ -297,9 +297,8 @@ static const r_callable r_callables[] = {
   {"rlang_cnd_type",                    (r_fn_ptr) &rlang_cnd_type, 1},
   {"rlang_env_inherits",                (r_fn_ptr) &rlang_env_inherits, 2},
   {"rlang_eval_top",                    (r_fn_ptr) &rlang_eval_top, 2},
-  {"rlang_attrib",                      (r_fn_ptr) &rlang_attrib, 1},
   {"rlang_named",                       (r_fn_ptr) &rlang_named, 2},
-  {"rlang_node_list_reverse",           (r_fn_ptr) &r_node_list_reverse, 1},
+  {"rlang_pairlist_rev",                (r_fn_ptr) &r_pairlist_rev, 1},
   {"rlang_new_splice_box",              (r_fn_ptr) &rlang_new_splice_box, 1},
   {"rlang_is_splice_box",               (r_fn_ptr) &rlang_is_splice_box, 1},
   {"rlang_new_function",                (r_fn_ptr) &rlang_new_function, 3},
