@@ -327,7 +327,7 @@ sexp* rlang_get_promise(sexp* x, sexp* env) {
     }
     // fallthrough
   case r_type_symbol: {
-      sexp* prom = r_env_find(env, x);
+      sexp* prom = r_env_find_anywhere(env, x);
       if (r_typeof(prom) == r_type_promise) {
         return prom;
       }
