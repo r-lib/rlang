@@ -173,7 +173,7 @@ consistently when you pass an enviroment of a frame on the call
 stack.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>eval_bare</span>(<span class='kw'>expr</span>, env = <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>())</pre>
+    <pre class="usage"><span class='fu'>eval_bare</span><span class='op'>(</span><span class='va'>expr</span>, env <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -224,58 +224,58 @@ support.</p></div>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># eval_bare() works just like base::eval() but you have to create</span>
 <span class='co'># the evaluation environment yourself:</span>
-<span class='fu'>eval_bare</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>foo</span>), <span class='fu'><a href='env.html'>env</a></span>(foo = <span class='st'>"bar"</span>))
+<span class='fu'>eval_bare</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>foo</span><span class='op'>)</span>, <span class='fu'><a href='env.html'>env</a></span><span class='op'>(</span>foo <span class='op'>=</span> <span class='st'>"bar"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "bar"</div><div class='input'>
 <span class='co'># eval() has different evaluation semantics than eval_bare(). It</span>
 <span class='co'># can return from the supplied environment even if its an</span>
 <span class='co'># environment that is not on the call stack (i.e. because you've</span>
 <span class='co'># created it yourself). The following would trigger an error with</span>
 <span class='co'># eval_bare():</span>
-<span class='kw'>ret</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='st'>"foo"</span>))
-<span class='fu'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span>(<span class='kw'>ret</span>, <span class='fu'><a href='env.html'>env</a></span>())
+<span class='va'>ret</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='st'>"foo"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span><span class='op'>(</span><span class='va'>ret</span>, <span class='fu'><a href='env.html'>env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "foo"</div><div class='input'><span class='co'># eval_bare(ret, env())  # "no function to return from" error</span>
 
 <span class='co'># Another feature of eval() is that you can control surround loops:</span>
-<span class='kw'>bail</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='co'>break</span>)
-<span class='co'>while</span> (<span class='fl'>TRUE</span>) {
-  <span class='fu'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span>(<span class='kw'>bail</span>)
+<span class='va'>bail</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='kw'>break</span><span class='op'>)</span>
+<span class='kw'>while</span> <span class='op'>(</span><span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span><span class='op'>(</span><span class='va'>bail</span><span class='op'>)</span>
   <span class='co'># eval_bare(bail)  # "no loop for break/next" error</span>
-}
+<span class='op'>}</span>
 
 <span class='co'># To explore the consequences of stack inconsistent semantics, let's</span>
 <span class='co'># create a function that evaluates `parent.frame()` deep in the call</span>
 <span class='co'># stack, in an environment corresponding to a frame in the middle of</span>
 <span class='co'># the stack. For consistency with R's lazy evaluation semantics, we'd</span>
 <span class='co'># expect to get the caller of that frame as result:</span>
-<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>eval_fn</span>) {
-  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
-    returned_env = <span class='fu'>middle</span>(<span class='kw'>eval_fn</span>),
-    actual_env = <span class='fu'><a href='caller_env.html'>current_env</a></span>()
-  )
-}
-<span class='kw'>middle</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>eval_fn</span>) {
-  <span class='fu'>deep</span>(<span class='kw'>eval_fn</span>, <span class='fu'><a href='caller_env.html'>current_env</a></span>())
-}
-<span class='kw'>deep</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>eval_fn</span>, <span class='kw'>eval_env</span>) {
-  <span class='kw'>expr</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>())
-  <span class='fu'>eval_fn</span>(<span class='kw'>expr</span>, <span class='kw'>eval_env</span>)
-}
+<span class='va'>fn</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>eval_fn</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
+    returned_env <span class='op'>=</span> <span class='fu'>middle</span><span class='op'>(</span><span class='va'>eval_fn</span><span class='op'>)</span>,
+    actual_env <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>current_env</a></span><span class='op'>(</span><span class='op'>)</span>
+  <span class='op'>)</span>
+<span class='op'>}</span>
+<span class='va'>middle</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>eval_fn</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='fu'>deep</span><span class='op'>(</span><span class='va'>eval_fn</span>, <span class='fu'><a href='caller_env.html'>current_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
+<span class='va'>deep</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>eval_fn</span>, <span class='va'>eval_env</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>expr</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='fu'>eval_fn</span><span class='op'>(</span><span class='va'>expr</span>, <span class='va'>eval_env</span><span class='op'>)</span>
+<span class='op'>}</span>
 
 <span class='co'># With eval_bare(), we do get the expected environment:</span>
-<span class='fu'>fn</span>(<span class='kw'>rlang</span>::<span class='kw'>eval_bare</span>)
+<span class='fu'>fn</span><span class='op'>(</span><span class='fu'>rlang</span><span class='fu'>::</span><span class='va'>eval_bare</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $returned_env
-#&gt; &lt;environment: 0x7fe77c6d2408&gt;
+#&gt; &lt;environment: 0x7fa525ad9550&gt;
 #&gt; 
 #&gt; $actual_env
-#&gt; &lt;environment: 0x7fe77c6d2408&gt;
+#&gt; &lt;environment: 0x7fa525ad9550&gt;
 #&gt; </div><div class='input'>
 <span class='co'># But that's not the case with base::eval():</span>
-<span class='fu'>fn</span>(<span class='kw'>base</span>::<span class='kw'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span>)
+<span class='fu'>fn</span><span class='op'>(</span><span class='fu'>base</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $returned_env
-#&gt; &lt;environment: 0x7fe77c69d9c0&gt;
+#&gt; &lt;environment: 0x7fa525a6e980&gt;
 #&gt; 
 #&gt; $actual_env
-#&gt; &lt;environment: 0x7fe77c6a02b8&gt;
+#&gt; &lt;environment: 0x7fa525a712b0&gt;
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -292,7 +292,7 @@ support.</p></div>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

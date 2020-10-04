@@ -165,9 +165,9 @@ default, it does not look in the parent environments.
 a named list.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>env_get</span>(env = <span class='fu'><a href='caller_env.html'>caller_env</a></span>(), <span class='kw'>nm</span>, <span class='kw'>default</span>, inherit = <span class='fl'>FALSE</span>)
+    <pre class="usage"><span class='fu'>env_get</span><span class='op'>(</span>env <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>nm</span>, <span class='va'>default</span>, inherit <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
-<span class='fu'>env_get_list</span>(env = <span class='fu'><a href='caller_env.html'>caller_env</a></span>(), <span class='kw'>nms</span>, <span class='kw'>default</span>, inherit = <span class='fl'>FALSE</span>)</pre>
+<span class='fu'>env_get_list</span><span class='op'>(</span>env <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>nms</span>, <span class='va'>default</span>, inherit <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -197,17 +197,17 @@ environments.</p></td>
     <p>An object if it exists. Otherwise, throws an error.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>parent</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>child_env</a></span>(<span class='kw'>NULL</span>, foo = <span class='st'>"foo"</span>)
-<span class='kw'>env</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>child_env</a></span>(<span class='kw'>parent</span>, bar = <span class='st'>"bar"</span>)
+    <pre class="examples"><div class='input'><span class='va'>parent</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>child_env</a></span><span class='op'>(</span><span class='cn'>NULL</span>, foo <span class='op'>=</span> <span class='st'>"foo"</span><span class='op'>)</span>
+<span class='va'>env</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>child_env</a></span><span class='op'>(</span><span class='va'>parent</span>, bar <span class='op'>=</span> <span class='st'>"bar"</span><span class='op'>)</span>
 
 <span class='co'># This throws an error because `foo` is not directly defined in env:</span>
 <span class='co'># env_get(env, "foo")</span>
 
 <span class='co'># However `foo` can be fetched in the parent environment:</span>
-<span class='fu'>env_get</span>(<span class='kw'>env</span>, <span class='st'>"foo"</span>, inherit = <span class='fl'>TRUE</span>)
+<span class='fu'>env_get</span><span class='op'>(</span><span class='va'>env</span>, <span class='st'>"foo"</span>, inherit <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "foo"</div><div class='input'>
 <span class='co'># You can also avoid an error by supplying a default value:</span>
-<span class='fu'>env_get</span>(<span class='kw'>env</span>, <span class='st'>"foo"</span>, default = <span class='st'>"FOO"</span>)
+<span class='fu'>env_get</span><span class='op'>(</span><span class='va'>env</span>, <span class='st'>"foo"</span>, default <span class='op'>=</span> <span class='st'>"FOO"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "FOO"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -224,7 +224,7 @@ environments.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

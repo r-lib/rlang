@@ -159,7 +159,7 @@
     <p>Create a formula</p>
     </div>
 
-    <pre class="usage"><span class='fu'>new_formula</span>(<span class='kw'>lhs</span>, <span class='kw'>rhs</span>, env = <span class='fu'><a href='caller_env.html'>caller_env</a></span>())</pre>
+    <pre class="usage"><span class='fu'>new_formula</span><span class='op'>(</span><span class='va'>lhs</span>, <span class='va'>rhs</span>, env <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -182,11 +182,11 @@
     <div class='dont-index'><p><code><a href='as_quosure.html'>new_quosure()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>new_formula</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>a</span>), <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>b</span>))
+    <pre class="examples"><div class='input'><span class='fu'>new_formula</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>a</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>b</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; a ~ b
-#&gt; &lt;environment: 0x7fe77c6a5c98&gt;</div><div class='input'><span class='fu'>new_formula</span>(<span class='kw'>NULL</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>b</span>))
+#&gt; &lt;environment: 0x7fa527053e08&gt;</div><div class='input'><span class='fu'>new_formula</span><span class='op'>(</span><span class='cn'>NULL</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>b</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; ~b
-#&gt; &lt;environment: 0x7fe77c6a5c98&gt;</div></pre>
+#&gt; &lt;environment: 0x7fa527053e08&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -202,7 +202,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

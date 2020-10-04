@@ -165,7 +165,7 @@ particularly suitable to be set as <em>parent errors</em> (see <code>parent</cod
 argument of <code><a href='abort.html'>abort()</a></code>).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>with_abort</span>(<span class='kw'>expr</span>, classes = <span class='st'>"error"</span>)</pre>
+    <pre class="usage"><span class='fu'>with_abort</span><span class='op'>(</span><span class='va'>expr</span>, classes <span class='op'>=</span> <span class='st'>"error"</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -195,15 +195,15 @@ you should use <code><a href='https://rdrr.io/r/base/conditions.html'>tryCatch()
 <span class='co'># to rlang errors. It is is handy for rethrowing low level</span>
 <span class='co'># errors. The backtraces are then segmented between the low level</span>
 <span class='co'># and high level contexts.</span>
-<span class='kw'>f</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() <span class='fu'>g</span>()
-<span class='kw'>g</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() <span class='fu'><a href='https://rdrr.io/r/base/stop.html'>stop</a></span>(<span class='st'>"Low level error"</span>)
+<span class='va'>f</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='fu'>g</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>g</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='kw'><a href='https://rdrr.io/r/base/stop.html'>stop</a></span><span class='op'>(</span><span class='st'>"Low level error"</span><span class='op'>)</span>
 
-<span class='kw'>high_level</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() {
-  <span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(
-    <span class='fu'>with_abort</span>(<span class='fu'>f</span>()),
-    error = <span class='op'>~</span> <span class='fu'><a href='abort.html'>abort</a></span>(<span class='st'>"High level error"</span>, parent = <span class='kw'>.</span>)
-  )
-}
+<span class='va'>high_level</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='fu'><a href='with_handlers.html'>with_handlers</a></span><span class='op'>(</span>
+    <span class='fu'>with_abort</span><span class='op'>(</span><span class='fu'>f</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>,
+    error <span class='op'>=</span> <span class='op'>~</span> <span class='fu'><a href='abort.html'>abort</a></span><span class='op'>(</span><span class='st'>"High level error"</span>, parent <span class='op'>=</span> <span class='va'>.</span><span class='op'>)</span>
+  <span class='op'>)</span>
+<span class='op'>}</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -220,7 +220,7 @@ you should use <code><a href='https://rdrr.io/r/base/conditions.html'>tryCatch()
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

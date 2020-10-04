@@ -179,11 +179,11 @@ empty environment. This list is named using <code><a href='env_name.html'>env_na
 <p>See the section on <em>inheritance</em> in <code><a href='env.html'>env()</a></code>'s documentation.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>env_parent</span>(env = <span class='fu'><a href='caller_env.html'>caller_env</a></span>(), n = <span class='fl'>1</span>)
+    <pre class="usage"><span class='fu'>env_parent</span><span class='op'>(</span>env <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span>, n <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 
-<span class='fu'>env_tail</span>(env = <span class='fu'><a href='caller_env.html'>caller_env</a></span>(), last = <span class='fu'><a href='search_envs.html'>global_env</a></span>())
+<span class='fu'>env_tail</span><span class='op'>(</span>env <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span>, last <span class='op'>=</span> <span class='fu'><a href='search_envs.html'>global_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>env_parents</span>(env = <span class='fu'><a href='caller_env.html'>caller_env</a></span>(), last = <span class='fu'><a href='search_envs.html'>global_env</a></span>())</pre>
+<span class='fu'>env_parents</span><span class='op'>(</span>env <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span>, last <span class='op'>=</span> <span class='fu'><a href='search_envs.html'>global_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -214,27 +214,27 @@ of environments for <code>env_parents()</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Get the parent environment with env_parent():</span>
-<span class='fu'>env_parent</span>(<span class='fu'><a href='search_envs.html'>global_env</a></span>())
+<span class='fu'>env_parent</span><span class='op'>(</span><span class='fu'><a href='search_envs.html'>global_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;environment: package:rlang&gt;
 #&gt; attr(,"name")
 #&gt; [1] "package:rlang"
 #&gt; attr(,"path")
 #&gt; [1] "/Users/runner/work/_temp/Library/rlang"</div><div class='input'>
 <span class='co'># Or the tail environment with env_tail():</span>
-<span class='fu'>env_tail</span>(<span class='fu'><a href='search_envs.html'>global_env</a></span>())
+<span class='fu'>env_tail</span><span class='op'>(</span><span class='fu'><a href='search_envs.html'>global_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;environment: base&gt;</div><div class='input'>
 <span class='co'># By default, env_parent() returns the parent environment of the</span>
 <span class='co'># current evaluation frame. If called at top-level (the global</span>
 <span class='co'># frame), the following two expressions are equivalent:</span>
-<span class='fu'>env_parent</span>()
-</div><div class='output co'>#&gt; &lt;environment: 0x7fe7826af570&gt;</div><div class='input'><span class='fu'>env_parent</span>(<span class='fu'><a href='search_envs.html'>base_env</a></span>())
+<span class='fu'>env_parent</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;environment: 0x7fa52a04db90&gt;</div><div class='input'><span class='fu'>env_parent</span><span class='op'>(</span><span class='fu'><a href='search_envs.html'>base_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;environment: R_EmptyEnv&gt;</div><div class='input'>
 <span class='co'># This default is more handy when called within a function. In this</span>
 <span class='co'># case, the enclosure environment of the function is returned</span>
 <span class='co'># (since it is the parent of the evaluation frame):</span>
-<span class='kw'>enclos_env</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>()
-<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_env.html'>set_env</a></span>(<span class='fu'>function</span>() <span class='fu'>env_parent</span>(), <span class='kw'>enclos_env</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='kw'>enclos_env</span>, <span class='fu'>fn</span>())
+<span class='va'>enclos_env</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>fn</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_env.html'>set_env</a></span><span class='op'>(</span><span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='fu'>env_parent</span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>enclos_env</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span><span class='op'>(</span><span class='va'>enclos_env</span>, <span class='fu'>fn</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -251,7 +251,7 @@ of environments for <code>env_parents()</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

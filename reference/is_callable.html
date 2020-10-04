@@ -165,7 +165,7 @@ position of a call (as opposed to argument position). This includes
 literal functions embedded in the call.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>is_callable</span>(<span class='kw'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>is_callable</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -185,23 +185,23 @@ is not legal to manually set language heads to strings.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Symbolic objects and functions are callable:</span>
-<span class='fu'>is_callable</span>(<span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>foo</span>))
-</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_callable</span>(<span class='kw'>base</span>::<span class='kw'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span>)
+<span class='fu'>is_callable</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>foo</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_callable</span><span class='op'>(</span><span class='fu'>base</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># node_poke_car() lets you modify calls without any checking:</span>
-<span class='kw'>lang</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'>foo</span>(<span class='fl'>10</span>))
-<span class='fu'><a href='new_node.html'>node_poke_car</a></span>(<span class='kw'>lang</span>, <span class='fu'><a href='caller_env.html'>current_env</a></span>())
+<span class='va'>lang</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='fu'>foo</span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='new_node.html'>node_poke_car</a></span><span class='op'>(</span><span class='va'>lang</span>, <span class='fu'><a href='caller_env.html'>current_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># Use is_callable() to check an input object is safe to put as CAR:</span>
-<span class='kw'>obj</span> <span class='op'>&lt;-</span> <span class='kw'>base</span>::<span class='kw'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span>
+<span class='va'>obj</span> <span class='op'>&lt;-</span> <span class='fu'>base</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span>
 
-<span class='co'>if</span> (<span class='fu'>is_callable</span>(<span class='kw'>obj</span>)) {
-  <span class='kw'>lang</span> <span class='op'>&lt;-</span> <span class='fu'><a href='new_node.html'>node_poke_car</a></span>(<span class='kw'>lang</span>, <span class='kw'>obj</span>)
-} <span class='co'>else</span> {
-  <span class='fu'><a href='abort.html'>abort</a></span>(<span class='st'>"`obj` must be callable"</span>)
-}
+<span class='kw'>if</span> <span class='op'>(</span><span class='fu'>is_callable</span><span class='op'>(</span><span class='va'>obj</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>lang</span> <span class='op'>&lt;-</span> <span class='fu'><a href='new_node.html'>node_poke_car</a></span><span class='op'>(</span><span class='va'>lang</span>, <span class='va'>obj</span><span class='op'>)</span>
+<span class='op'>}</span> <span class='kw'>else</span> <span class='op'>{</span>
+  <span class='fu'><a href='abort.html'>abort</a></span><span class='op'>(</span><span class='st'>"`obj` must be callable"</span><span class='op'>)</span>
+<span class='op'>}</span>
 
-<span class='fu'><a href='eval_bare.html'>eval_bare</a></span>(<span class='kw'>lang</span>)
+<span class='fu'><a href='eval_bare.html'>eval_bare</a></span><span class='op'>(</span><span class='va'>lang</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] 10</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -218,7 +218,7 @@ is not legal to manually set language heads to strings.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

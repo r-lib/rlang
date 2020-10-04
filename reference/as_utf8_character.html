@@ -203,7 +203,7 @@ character-to-symbol-to-character roundtrips on systems with
 non-UTF-8 native encoding.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>as_utf8_character</span>(<span class='kw'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>as_utf8_character</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -218,9 +218,9 @@ non-UTF-8 native encoding.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Let's create a string marked as UTF-8 (which is guaranteed by the</span>
 <span class='co'># Unicode escaping in the string):</span>
-<span class='kw'>utf8</span> <span class='op'>&lt;-</span> <span class='st'>"caf\uE9"</span>
-<span class='fu'><a href='https://rdrr.io/r/base/Encoding.html'>Encoding</a></span>(<span class='kw'>utf8</span>)
-</div><div class='output co'>#&gt; [1] "UTF-8"</div><div class='input'><span class='fu'><a href='as_bytes.html'>as_bytes</a></span>(<span class='kw'>utf8</span>)
+<span class='va'>utf8</span> <span class='op'>&lt;-</span> <span class='st'>"caf\uE9"</span>
+<span class='fu'><a href='https://rdrr.io/r/base/Encoding.html'>Encoding</a></span><span class='op'>(</span><span class='va'>utf8</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "UTF-8"</div><div class='input'><span class='fu'><a href='as_bytes.html'>as_bytes</a></span><span class='op'>(</span><span class='va'>utf8</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] 63 61 66 c3 a9</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -237,7 +237,7 @@ non-UTF-8 native encoding.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

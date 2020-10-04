@@ -183,15 +183,15 @@ list.</p></li>
 
     </div>
 
-    <pre class="usage"><span class='fu'>local_options</span>(<span class='kw'>...</span>, .frame = <span class='fu'><a href='caller_env.html'>caller_env</a></span>())
+    <pre class="usage"><span class='fu'>local_options</span><span class='op'>(</span><span class='va'>...</span>, .frame <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>with_options</span>(<span class='kw'>.expr</span>, <span class='kw'>...</span>)
+<span class='fu'>with_options</span><span class='op'>(</span><span class='va'>.expr</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>push_options</span>(<span class='kw'>...</span>)
+<span class='fu'>push_options</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>peek_options</span>(<span class='kw'>...</span>)
+<span class='fu'>peek_options</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>peek_option</span>(<span class='kw'>name</span>)</pre>
+<span class='fu'>peek_option</span><span class='op'>(</span><span class='va'>name</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -233,26 +233,26 @@ option values.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Store and retrieve a global option:</span>
-<span class='fu'>push_options</span>(my_option = <span class='fl'>10</span>)
-<span class='fu'>peek_option</span>(<span class='st'>"my_option"</span>)
+<span class='fu'>push_options</span><span class='op'>(</span>my_option <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
+<span class='fu'>peek_option</span><span class='op'>(</span><span class='st'>"my_option"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] 10</div><div class='input'>
 <span class='co'># Change the option temporarily:</span>
-<span class='fu'>with_options</span>(my_option = <span class='fl'>100</span>, <span class='fu'>peek_option</span>(<span class='st'>"my_option"</span>))
-</div><div class='output co'>#&gt; [1] 100</div><div class='input'><span class='fu'>peek_option</span>(<span class='st'>"my_option"</span>)
+<span class='fu'>with_options</span><span class='op'>(</span>my_option <span class='op'>=</span> <span class='fl'>100</span>, <span class='fu'>peek_option</span><span class='op'>(</span><span class='st'>"my_option"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 100</div><div class='input'><span class='fu'>peek_option</span><span class='op'>(</span><span class='st'>"my_option"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] 10</div><div class='input'>
 <span class='co'># The scoped variant is useful within functions:</span>
-<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() {
-  <span class='fu'>local_options</span>(my_option = <span class='fl'>100</span>)
-  <span class='fu'>peek_option</span>(<span class='st'>"my_option"</span>)
-}
-<span class='fu'>fn</span>()
-</div><div class='output co'>#&gt; [1] 100</div><div class='input'><span class='fu'>peek_option</span>(<span class='st'>"my_option"</span>)
+<span class='va'>fn</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='fu'>local_options</span><span class='op'>(</span>my_option <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span>
+  <span class='fu'>peek_option</span><span class='op'>(</span><span class='st'>"my_option"</span><span class='op'>)</span>
+<span class='op'>}</span>
+<span class='fu'>fn</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 100</div><div class='input'><span class='fu'>peek_option</span><span class='op'>(</span><span class='st'>"my_option"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] 10</div><div class='input'>
 <span class='co'># The plural peek returns a named list:</span>
-<span class='fu'>peek_options</span>(<span class='st'>"my_option"</span>)
+<span class='fu'>peek_options</span><span class='op'>(</span><span class='st'>"my_option"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $my_option
 #&gt; [1] 10
-#&gt; </div><div class='input'><span class='fu'>peek_options</span>(<span class='st'>"my_option"</span>, <span class='st'>"digits"</span>)
+#&gt; </div><div class='input'><span class='fu'>peek_options</span><span class='op'>(</span><span class='st'>"my_option"</span>, <span class='st'>"digits"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $my_option
 #&gt; [1] 10
 #&gt; 
@@ -274,7 +274,7 @@ option values.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

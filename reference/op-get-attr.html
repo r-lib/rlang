@@ -161,9 +161,9 @@ S4 fields for S4 objects." />
 S4 fields for S4 objects.</p>
     </div>
 
-    <pre class="usage"><span class='kw'>x</span> <span class='op'>%@%</span> <span class='kw'>name</span>
+    <pre class="usage"><span class='va'>x</span> <span class='op'>%@%</span> <span class='va'>name</span>
 
-<span class='kw'>x</span> <span class='op'>%@%</span> <span class='kw'>name</span> <span class='op'>&lt;-</span> <span class='kw'>value</span></pre>
+<span class='va'>x</span> <span class='op'>%@%</span> <span class='va'>name</span> <span class='op'>&lt;-</span> <span class='va'>value</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -186,11 +186,11 @@ S4 fields for S4 objects.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Unlike `@`, this operator extracts attributes for any kind of</span>
 <span class='co'># objects:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>) <span class='op'>%@%</span> <span class='st'>"levels"</span>
-</div><div class='output co'>#&gt; [1] "1" "2" "3"</div><div class='input'><span class='kw'>mtcars</span> <span class='op'>%@%</span> <span class='kw'>class</span>
+<span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span> <span class='op'>%@%</span> <span class='st'>"levels"</span>
+</div><div class='output co'>#&gt; [1] "1" "2" "3"</div><div class='input'><span class='va'>mtcars</span> <span class='op'>%@%</span> <span class='va'>class</span>
 </div><div class='output co'>#&gt; [1] "data.frame"</div><div class='input'>
-<span class='kw'>mtcars</span> <span class='op'>%@%</span> <span class='kw'>class</span> <span class='op'>&lt;-</span> <span class='kw'>NULL</span>
-<span class='kw'>mtcars</span>
+<span class='va'>mtcars</span> <span class='op'>%@%</span> <span class='va'>class</span> <span class='op'>&lt;-</span> <span class='cn'>NULL</span>
+<span class='va'>mtcars</span>
 </div><div class='output co'>#&gt; $mpg
 #&gt;  [1] 21.0 21.0 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 17.8 16.4 17.3 15.2 10.4
 #&gt; [16] 10.4 14.7 32.4 30.4 33.9 21.5 15.5 15.2 13.3 19.2 27.3 26.0 30.4 15.8 19.7
@@ -248,9 +248,9 @@ S4 fields for S4 objects.</p>
 #&gt; [28] "Lotus Europa"        "Ford Pantera L"      "Ferrari Dino"       
 #&gt; [31] "Maserati Bora"       "Volvo 142E"         </div><div class='input'>
 <span class='co'># It also works on S4 objects:</span>
-<span class='kw'>.Person</span> <span class='op'>&lt;-</span> <span class='fu'>setClass</span>(<span class='st'>"Person"</span>, slots = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(name = <span class='st'>"character"</span>, species = <span class='st'>"character"</span>))
-<span class='kw'>fievel</span> <span class='op'>&lt;-</span> <span class='fu'>.Person</span>(name = <span class='st'>"Fievel"</span>, species = <span class='st'>"mouse"</span>)
-<span class='kw'>fievel</span> <span class='op'>%@%</span> <span class='kw'>name</span>
+<span class='va'>.Person</span> <span class='op'>&lt;-</span> <span class='kw'>setClass</span><span class='op'>(</span><span class='st'>"Person"</span>, slots <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>"character"</span>, species <span class='op'>=</span> <span class='st'>"character"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>fievel</span> <span class='op'>&lt;-</span> <span class='fu'>.Person</span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>"Fievel"</span>, species <span class='op'>=</span> <span class='st'>"mouse"</span><span class='op'>)</span>
+<span class='va'>fievel</span> <span class='op'>%@%</span> <span class='va'>name</span>
 </div><div class='output co'>#&gt; [1] "Fievel"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -267,7 +267,7 @@ S4 fields for S4 objects.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

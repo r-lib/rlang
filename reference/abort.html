@@ -183,37 +183,37 @@ kind that is signalled with <code>Ctrl-C</code>. It is currently not possible
 to create custom interrupt condition objects.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>abort</span>(
-  message = <span class='kw'>NULL</span>,
-  class = <span class='kw'>NULL</span>,
-  <span class='kw'>...</span>,
-  trace = <span class='kw'>NULL</span>,
-  parent = <span class='kw'>NULL</span>,
-  <span class='kw'>.subclass</span>
-)
+    <pre class="usage"><span class='fu'>abort</span><span class='op'>(</span>
+  message <span class='op'>=</span> <span class='cn'>NULL</span>,
+  class <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>,
+  trace <span class='op'>=</span> <span class='cn'>NULL</span>,
+  parent <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>.subclass</span>
+<span class='op'>)</span>
 
-<span class='fu'>warn</span>(
-  message = <span class='kw'>NULL</span>,
-  class = <span class='kw'>NULL</span>,
-  <span class='kw'>...</span>,
-  .frequency = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"always"</span>, <span class='st'>"regularly"</span>, <span class='st'>"once"</span>),
-  .frequency_id = <span class='kw'>NULL</span>,
-  <span class='kw'>.subclass</span>
-)
+<span class='fu'>warn</span><span class='op'>(</span>
+  message <span class='op'>=</span> <span class='cn'>NULL</span>,
+  class <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>,
+  .frequency <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"always"</span>, <span class='st'>"regularly"</span>, <span class='st'>"once"</span><span class='op'>)</span>,
+  .frequency_id <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>.subclass</span>
+<span class='op'>)</span>
 
-<span class='fu'>inform</span>(
-  message = <span class='kw'>NULL</span>,
-  class = <span class='kw'>NULL</span>,
-  <span class='kw'>...</span>,
-  .file = <span class='kw'>NULL</span>,
-  .frequency = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"always"</span>, <span class='st'>"regularly"</span>, <span class='st'>"once"</span>),
-  .frequency_id = <span class='kw'>NULL</span>,
-  <span class='kw'>.subclass</span>
-)
+<span class='fu'>inform</span><span class='op'>(</span>
+  message <span class='op'>=</span> <span class='cn'>NULL</span>,
+  class <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>,
+  .file <span class='op'>=</span> <span class='cn'>NULL</span>,
+  .frequency <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"always"</span>, <span class='st'>"regularly"</span>, <span class='st'>"once"</span><span class='op'>)</span>,
+  .frequency_id <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>.subclass</span>
+<span class='op'>)</span>
 
-<span class='fu'>signal</span>(<span class='kw'>message</span>, <span class='kw'>class</span>, <span class='kw'>...</span>, <span class='kw'>.subclass</span>)
+<span class='fu'>signal</span><span class='op'>(</span><span class='va'>message</span>, <span class='va'>class</span>, <span class='va'>...</span>, <span class='va'>.subclass</span><span class='op'>)</span>
 
-<span class='fu'>interrupt</span>()</pre>
+<span class='fu'>interrupt</span><span class='op'>(</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -314,60 +314,60 @@ guaranteed.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># These examples are guarded to avoid throwing errors</span>
-<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
 <span class='co'># Signal an error with a message just like stop():</span>
-<span class='fu'>abort</span>(<span class='st'>"Something bad happened"</span>)
+<span class='fu'>abort</span><span class='op'>(</span><span class='st'>"Something bad happened"</span><span class='op'>)</span>
 
 <span class='co'># Give a class to the error:</span>
-<span class='fu'>abort</span>(<span class='st'>"Something bad happened"</span>, <span class='st'>"somepkg_bad_error"</span>)
+<span class='fu'>abort</span><span class='op'>(</span><span class='st'>"Something bad happened"</span>, <span class='st'>"somepkg_bad_error"</span><span class='op'>)</span>
 
 <span class='co'># This will allow your users to handle the error selectively</span>
-<span class='fu'><a href='https://rdrr.io/r/base/conditions.html'>tryCatch</a></span>(
-  <span class='fu'>somepkg_function</span>(),
-  somepkg_bad_error = <span class='fu'>function</span>(<span class='kw'>err</span>) {
-    <span class='fu'>warn</span>(<span class='fu'><a href='https://rdrr.io/r/base/conditions.html'>conditionMessage</a></span>(<span class='kw'>err</span>)) <span class='co'># Demote the error to a warning</span>
-    <span class='fl'>NA</span>                          <span class='co'># Return an alternative value</span>
-  }
-)
+<span class='kw'><a href='https://rdrr.io/r/base/conditions.html'>tryCatch</a></span><span class='op'>(</span>
+  <span class='fu'>somepkg_function</span><span class='op'>(</span><span class='op'>)</span>,
+  somepkg_bad_error <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>err</span><span class='op'>)</span> <span class='op'>{</span>
+    <span class='fu'>warn</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/conditions.html'>conditionMessage</a></span><span class='op'>(</span><span class='va'>err</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># Demote the error to a warning</span>
+    <span class='cn'>NA</span>                          <span class='co'># Return an alternative value</span>
+  <span class='op'>}</span>
+<span class='op'>)</span>
 
 <span class='co'># You can also specify metadata that will be stored in the condition:</span>
-<span class='fu'>abort</span>(<span class='st'>"Something bad happened"</span>, <span class='st'>"somepkg_bad_error"</span>, data = <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>)
+<span class='fu'>abort</span><span class='op'>(</span><span class='st'>"Something bad happened"</span>, <span class='st'>"somepkg_bad_error"</span>, data <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span>
 
 <span class='co'># This data can then be consulted by user handlers:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/conditions.html'>tryCatch</a></span>(
-  <span class='fu'>somepkg_function</span>(),
-  somepkg_bad_error = <span class='fu'>function</span>(<span class='kw'>err</span>) {
+<span class='kw'><a href='https://rdrr.io/r/base/conditions.html'>tryCatch</a></span><span class='op'>(</span>
+  <span class='fu'>somepkg_function</span><span class='op'>(</span><span class='op'>)</span>,
+  somepkg_bad_error <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>err</span><span class='op'>)</span> <span class='op'>{</span>
     <span class='co'># Compute an alternative return value with the data:</span>
-    <span class='fu'>recover_error</span>(<span class='kw'>err</span><span class='op'>$</span><span class='kw'>data</span>)
-  }
-)
+    <span class='fu'>recover_error</span><span class='op'>(</span><span class='va'>err</span><span class='op'>$</span><span class='va'>data</span><span class='op'>)</span>
+  <span class='op'>}</span>
+<span class='op'>)</span>
 
 <span class='co'># If you call low-level APIs it is good practice to handle</span>
 <span class='co'># technical errors and rethrow them with a more meaningful</span>
 <span class='co'># message. Always prefer doing this from `withCallinghandlers()`</span>
 <span class='co'># rather than `tryCatch()` because the former preserves the stack</span>
 <span class='co'># on error and makes it possible for users to use `recover()`.</span>
-<span class='kw'>file</span> <span class='op'>&lt;-</span> <span class='st'>"http://foo.bar/baz"</span>
-<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>withCallinghandlers</span>(
-  <span class='fu'>download</span>(<span class='kw'>file</span>),
-  error = <span class='fu'>function</span>(<span class='kw'>err</span>) {
-    <span class='kw'>msg</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"Can't download `%s`"</span>, <span class='kw'>file</span>)
-    <span class='fu'>abort</span>(<span class='kw'>msg</span>, parent = <span class='kw'>err</span>)
-}))
+<span class='va'>file</span> <span class='op'>&lt;-</span> <span class='st'>"http://foo.bar/baz"</span>
+<span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'>withCallinghandlers</span><span class='op'>(</span>
+  <span class='fu'>download</span><span class='op'>(</span><span class='va'>file</span><span class='op'>)</span>,
+  error <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>err</span><span class='op'>)</span> <span class='op'>{</span>
+    <span class='va'>msg</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span><span class='op'>(</span><span class='st'>"Can't download `%s`"</span>, <span class='va'>file</span><span class='op'>)</span>
+    <span class='fu'>abort</span><span class='op'>(</span><span class='va'>msg</span>, parent <span class='op'>=</span> <span class='va'>err</span><span class='op'>)</span>
+<span class='op'>}</span><span class='op'>)</span><span class='op'>)</span>
 <span class='co'># Note how we supplied the parent error to `abort()` as `parent` to</span>
 <span class='co'># get a decomposition of error messages across error contexts.</span>
 
 <span class='co'># Unhandled errors are saved automatically by `abort()` and can be</span>
 <span class='co'># retrieved with `last_error()`. The error prints with a simplified</span>
 <span class='co'># backtrace:</span>
-<span class='fu'>abort</span>(<span class='st'>"Saved error?"</span>)
-<span class='fu'><a href='last_error.html'>last_error</a></span>()
+<span class='fu'>abort</span><span class='op'>(</span><span class='st'>"Saved error?"</span><span class='op'>)</span>
+<span class='fu'><a href='last_error.html'>last_error</a></span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='co'># Use `summary()` to print the full backtrace and the condition fields:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'><a href='last_error.html'>last_error</a></span>())
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='fu'><a href='last_error.html'>last_error</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 
-}
+<span class='op'>}</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -384,7 +384,7 @@ guaranteed.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

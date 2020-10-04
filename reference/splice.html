@@ -171,19 +171,19 @@ list inputs.</p></li>
 
     </div>
 
-    <pre class="usage"><span class='fu'>splice</span>(<span class='kw'>x</span>)
+    <pre class="usage"><span class='fu'>splice</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 
-<span class='fu'>is_spliced</span>(<span class='kw'>x</span>)
+<span class='fu'>is_spliced</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 
-<span class='fu'>is_spliced_bare</span>(<span class='kw'>x</span>)
+<span class='fu'>is_spliced_bare</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 
-<span class='fu'>dots_splice</span>(
-  <span class='kw'>...</span>,
-  .ignore_empty = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
-  .preserve_empty = <span class='fl'>FALSE</span>,
-  .homonyms = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>, <span class='st'>"error"</span>),
-  .check_assign = <span class='fl'>FALSE</span>
-)</pre>
+<span class='fu'>dots_splice</span><span class='op'>(</span>
+  <span class='va'>...</span>,
+  .ignore_empty <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span><span class='op'>)</span>,
+  .preserve_empty <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  .homonyms <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>, <span class='st'>"error"</span><span class='op'>)</span>,
+  .check_assign <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -256,13 +256,13 @@ if you use a standard function taking tidy dots within a quoting
 function, the <code>!!!</code> operator will disaggregate its argument because
 the behaviour of the quasiquoting function has priority. You might
 then observe some performance cost in edge cases. Here is one
-example where this would happen:</p><pre><span class='kw'>purrr</span>::<span class='fu'><a href='https://purrr.tidyverse.org/reference/rerun.html'>rerun</a></span>(<span class='fl'>10</span>, <span class='kw'>dplyr</span>::<span class='fu'>bind_rows</span>(<span class='op'>!</span><span class='op'>!</span><span class='op'>!</span> <span class='kw'>x</span>))
+example where this would happen:</p><pre><span class='fu'>purrr</span><span class='fu'>::</span><span class='fu'><a href='https://purrr.tidyverse.org/reference/rerun.html'>rerun</a></span><span class='op'>(</span><span class='fl'>10</span>, <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'>bind_rows</span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='op'>!</span> <span class='va'>x</span><span class='op'>)</span><span class='op'>)</span>
 </pre>
 
 <p><code><a href='https://purrr.tidyverse.org/reference/rerun.html'>purrr::rerun()</a></code> is a quoting function and <code>dplyr::bind_rows()</code> is
 a standard function. Because <code>bind_rows()</code> is called <em>inside</em>
 <code>rerun()</code>, the list <code>x</code> will be disaggregated into a pairlist of
-arguments. To avoid this you can use <code>splice()</code> instead:</p><pre><span class='kw'>purrr</span>::<span class='fu'><a href='https://purrr.tidyverse.org/reference/rerun.html'>rerun</a></span>(<span class='fl'>10</span>, <span class='kw'>dplyr</span>::<span class='fu'>bind_rows</span>(<span class='fu'>splice</span>(<span class='kw'>x</span>)))
+arguments. To avoid this you can use <code>splice()</code> instead:</p><pre><span class='fu'>purrr</span><span class='fu'>::</span><span class='fu'><a href='https://purrr.tidyverse.org/reference/rerun.html'>rerun</a></span><span class='op'>(</span><span class='fl'>10</span>, <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'>bind_rows</span><span class='op'>(</span><span class='fu'>splice</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 </pre>
 
     <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
@@ -296,7 +296,7 @@ issue discussed above.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

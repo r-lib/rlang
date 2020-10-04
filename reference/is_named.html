@@ -167,11 +167,11 @@ in addition that there are no duplicated names. <code>have_name()</code>
 is a vectorised version of <code>is_named()</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>is_named</span>(<span class='kw'>x</span>)
+    <pre class="usage"><span class='fu'>is_named</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 
-<span class='fu'>is_dictionaryish</span>(<span class='kw'>x</span>)
+<span class='fu'>is_dictionaryish</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 
-<span class='fu'>have_name</span>(<span class='kw'>x</span>)</pre>
+<span class='fu'>have_name</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -190,42 +190,42 @@ returns a logical vector as long as the input.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># A data frame usually has valid, unique names</span>
-<span class='fu'>is_named</span>(<span class='kw'>mtcars</span>)
-</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>have_name</span>(<span class='kw'>mtcars</span>)
-</div><div class='output co'>#&gt;  [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE</div><div class='input'><span class='fu'>is_dictionaryish</span>(<span class='kw'>mtcars</span>)
+<span class='fu'>is_named</span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>have_name</span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;  [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE</div><div class='input'><span class='fu'>is_dictionaryish</span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># But data frames can also have duplicated columns:</span>
-<span class='kw'>dups</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='kw'>mtcars</span>, cyl = <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='kw'>mtcars</span>)))
-<span class='fu'>is_dictionaryish</span>(<span class='kw'>dups</span>)
+<span class='va'>dups</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='va'>mtcars</span>, cyl <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>is_dictionaryish</span><span class='op'>(</span><span class='va'>dups</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
 <span class='co'># The names are still valid:</span>
-<span class='fu'>is_named</span>(<span class='kw'>dups</span>)
-</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>have_name</span>(<span class='kw'>dups</span>)
+<span class='fu'>is_named</span><span class='op'>(</span><span class='va'>dups</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>have_name</span><span class='op'>(</span><span class='va'>dups</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;  [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE</div><div class='input'>
 
 <span class='co'># For empty objects the semantics are slightly different.</span>
 <span class='co'># is_dictionaryish() returns TRUE for empty objects:</span>
-<span class='fu'>is_dictionaryish</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())
+<span class='fu'>is_dictionaryish</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># But is_named() will only return TRUE if there is a names</span>
 <span class='co'># attribute (a zero-length character vector in this case):</span>
-<span class='kw'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='set_names.html'>set_names</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(), <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(<span class='fl'>0</span>))
-<span class='fu'>is_named</span>(<span class='kw'>x</span>)
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='set_names.html'>set_names</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>is_named</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 
 <span class='co'># Empty and missing names are invalid:</span>
-<span class='kw'>invalid</span> <span class='op'>&lt;-</span> <span class='kw'>dups</span>
-<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='kw'>invalid</span>)[<span class='fl'>2</span>] <span class='op'>&lt;-</span> <span class='st'>""</span>
-<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='kw'>invalid</span>)[<span class='fl'>5</span>] <span class='op'>&lt;-</span> <span class='fl'>NA</span>
+<span class='va'>invalid</span> <span class='op'>&lt;-</span> <span class='va'>dups</span>
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>invalid</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='st'>""</span>
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>invalid</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>5</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='cn'>NA</span>
 
 <span class='co'># is_named() performs a global check while have_name() can show you</span>
 <span class='co'># where the problem is:</span>
-<span class='fu'>is_named</span>(<span class='kw'>invalid</span>)
-</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>have_name</span>(<span class='kw'>invalid</span>)
+<span class='fu'>is_named</span><span class='op'>(</span><span class='va'>invalid</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>have_name</span><span class='op'>(</span><span class='va'>invalid</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;  [1]  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE</div><div class='input'>
 <span class='co'># have_name() will work even with vectors that don't have a names</span>
 <span class='co'># attribute:</span>
-<span class='fu'>have_name</span>(<span class='kw'>letters</span>)
+<span class='fu'>have_name</span><span class='op'>(</span><span class='va'>letters</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
 #&gt; [13] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
 #&gt; [25] FALSE FALSE</div></pre>
@@ -244,7 +244,7 @@ returns a logical vector as long as the input.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

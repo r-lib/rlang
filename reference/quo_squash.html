@@ -175,7 +175,7 @@ source of bugs so it is good practice to set <code>warn</code> to <code>TRUE</co
 let the user know about the lossy squashing.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>quo_squash</span>(<span class='kw'>quo</span>, warn = <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>quo_squash</span><span class='op'>(</span><span class='va'>quo</span>, warn <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -207,13 +207,13 @@ a lossy operation that squashed all nested quosures.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Quosures can contain nested quosures:</span>
-<span class='kw'>quo</span> <span class='op'>&lt;-</span> <span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fu'>wrapper</span>(<span class='op'>!</span><span class='op'>!</span><span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='kw'>wrappee</span>)))
-<span class='kw'>quo</span>
+<span class='va'>quo</span> <span class='op'>&lt;-</span> <span class='fu'><a href='nse-defuse.html'>quo</a></span><span class='op'>(</span><span class='fu'>wrapper</span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='fu'><a href='nse-defuse.html'>quo</a></span><span class='op'>(</span><span class='va'>wrappee</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>quo</span>
 </div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^wrapper(^wrappee)</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7fe7825e02f8</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7fa52ad58258</span><span></div><div class='input'>
 <span class='co'># quo_squash() flattens all the quosures and returns a simple expression:</span>
-<span class='fu'>quo_squash</span>(<span class='kw'>quo</span>)
+<span class='fu'>quo_squash</span><span class='op'>(</span><span class='va'>quo</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; wrapper(wrappee)</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -230,7 +230,7 @@ a lossy operation that squashed all nested quosures.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

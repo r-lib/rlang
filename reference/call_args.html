@@ -159,9 +159,9 @@
     <p>Extract arguments from a call</p>
     </div>
 
-    <pre class="usage"><span class='fu'>call_args</span>(<span class='kw'>call</span>)
+    <pre class="usage"><span class='fu'>call_args</span><span class='op'>(</span><span class='va'>call</span><span class='op'>)</span>
 
-<span class='fu'>call_args_names</span>(<span class='kw'>call</span>)</pre>
+<span class='fu'>call_args_names</span><span class='op'>(</span><span class='va'>call</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -188,21 +188,21 @@ See lifecycle section in <code><a href='call2.html'>call2()</a></code> for more 
     <div class='dont-index'><p><code><a href='fn_fmls.html'>fn_fmls()</a></code> and <code><a href='fn_fmls.html'>fn_fmls_names()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>call</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'>f</span>(<span class='kw'>a</span>, <span class='kw'>b</span>))
+    <pre class="examples"><div class='input'><span class='va'>call</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='fu'>f</span><span class='op'>(</span><span class='va'>a</span>, <span class='va'>b</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># Subsetting a call returns the arguments converted to a language</span>
 <span class='co'># object:</span>
-<span class='kw'>call</span>[<span class='op'>-</span><span class='fl'>1</span>]
+<span class='va'>call</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>1</span><span class='op'>]</span>
 </div><div class='output co'>#&gt; a(b)</div><div class='input'>
 <span class='co'># On the other hand, call_args() returns a regular list that is</span>
 <span class='co'># often easier to work with:</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='fu'>call_args</span>(<span class='kw'>call</span>))
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='fu'>call_args</span><span class='op'>(</span><span class='va'>call</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; List of 2
 #&gt;  $ : symbol a
 #&gt;  $ : symbol b</div><div class='input'>
 <span class='co'># When the arguments are unnamed, a vector of empty strings is</span>
 <span class='co'># supplied (rather than NULL):</span>
-<span class='fu'>call_args_names</span>(<span class='kw'>call</span>)
+<span class='fu'>call_args_names</span><span class='op'>(</span><span class='va'>call</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "" ""</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -219,7 +219,7 @@ See lifecycle section in <code><a href='call2.html'>call2()</a></code> for more 
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

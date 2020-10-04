@@ -167,7 +167,7 @@ a calling handler, see examples) to prevent any other handlers from
 being called for that condition.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cnd_muffle</span>(<span class='kw'>cnd</span>)</pre>
+    <pre class="usage"><span class='fu'>cnd_muffle</span><span class='op'>(</span><span class='va'>cnd</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -214,30 +214,30 @@ be called from a <a href='with_handlers.html'>calling</a> handler.</p></li>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() {
-  <span class='fu'><a href='abort.html'>inform</a></span>(<span class='st'>"Beware!"</span>, <span class='st'>"my_particular_msg"</span>)
-  <span class='fu'><a href='abort.html'>inform</a></span>(<span class='st'>"On your guard!"</span>)
+    <pre class="examples"><div class='input'><span class='va'>fn</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='fu'><a href='abort.html'>inform</a></span><span class='op'>(</span><span class='st'>"Beware!"</span>, <span class='st'>"my_particular_msg"</span><span class='op'>)</span>
+  <span class='fu'><a href='abort.html'>inform</a></span><span class='op'>(</span><span class='st'>"On your guard!"</span><span class='op'>)</span>
   <span class='st'>"foobar"</span>
-}
+<span class='op'>}</span>
 
 <span class='co'># Let's install a muffling handler for the condition thrown by `fn()`.</span>
 <span class='co'># This will suppress all `my_particular_wng` warnings but let other</span>
 <span class='co'># types of warnings go through:</span>
-<span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(<span class='fu'>fn</span>(),
-  my_particular_msg = <span class='fu'><a href='with_handlers.html'>calling</a></span>(<span class='fu'>function</span>(<span class='kw'>cnd</span>) {
-    <span class='fu'><a href='abort.html'>inform</a></span>(<span class='st'>"Dealt with this particular message"</span>)
-    <span class='fu'>cnd_muffle</span>(<span class='kw'>cnd</span>)
-  })
-)
+<span class='fu'><a href='with_handlers.html'>with_handlers</a></span><span class='op'>(</span><span class='fu'>fn</span><span class='op'>(</span><span class='op'>)</span>,
+  my_particular_msg <span class='op'>=</span> <span class='fu'><a href='with_handlers.html'>calling</a></span><span class='op'>(</span><span class='kw'>function</span><span class='op'>(</span><span class='va'>cnd</span><span class='op'>)</span> <span class='op'>{</span>
+    <span class='fu'><a href='abort.html'>inform</a></span><span class='op'>(</span><span class='st'>"Dealt with this particular message"</span><span class='op'>)</span>
+    <span class='fu'>cnd_muffle</span><span class='op'>(</span><span class='va'>cnd</span><span class='op'>)</span>
+  <span class='op'>}</span><span class='op'>)</span>
+<span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Dealt with this particular message</span></div><div class='output co'>#&gt; <span class='message'>On your guard!</span></div><div class='output co'>#&gt; [1] "foobar"</div><div class='input'>
 <span class='co'># Note how execution of `fn()` continued normally after dealing</span>
 <span class='co'># with that particular message.</span>
 
 <span class='co'># cnd_muffle() can also be passed to with_handlers() as a calling</span>
 <span class='co'># handler:</span>
-<span class='fu'><a href='with_handlers.html'>with_handlers</a></span>(<span class='fu'>fn</span>(),
-  my_particular_msg = <span class='fu'><a href='with_handlers.html'>calling</a></span>(<span class='kw'>cnd_muffle</span>)
-)
+<span class='fu'><a href='with_handlers.html'>with_handlers</a></span><span class='op'>(</span><span class='fu'>fn</span><span class='op'>(</span><span class='op'>)</span>,
+  my_particular_msg <span class='op'>=</span> <span class='fu'><a href='with_handlers.html'>calling</a></span><span class='op'>(</span><span class='va'>cnd_muffle</span><span class='op'>)</span>
+<span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>On your guard!</span></div><div class='output co'>#&gt; [1] "foobar"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -254,7 +254,7 @@ be called from a <a href='with_handlers.html'>calling</a> handler.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

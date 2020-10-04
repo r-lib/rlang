@@ -179,8 +179,8 @@ subsetting operators behave differently." />
 
     <div class="ref-description">
     <p>These pronouns allow you to be explicit about where to find objects
-when programming with data masked functions.</p><pre><span class='kw'>m</span> <span class='op'>&lt;-</span> <span class='fl'>10</span>
-<span class='kw'>mtcars</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span>(disp = <span class='kw'>.data</span><span class='op'>$</span><span class='kw'>disp</span> <span class='op'>*</span> <span class='kw'>.env</span><span class='op'>$</span><span class='kw'>m</span>)
+when programming with data masked functions.</p><pre><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fl'>10</span>
+<span class='va'>mtcars</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>disp <span class='op'>=</span> <span class='va'>.data</span><span class='op'>$</span><span class='va'>disp</span> <span class='op'>*</span> <span class='va'>.env</span><span class='op'>$</span><span class='va'>m</span><span class='op'>)</span>
 </pre>
 <ul>
 <li><p><code>.data</code> retrieves data-variables from the data frame.</p></li>
@@ -188,9 +188,9 @@ when programming with data masked functions.</p><pre><span class='kw'>m</span> <
 </ul>
 
 <p>Because the lookup is explicit, there is no ambiguity between both
-kinds of variables. Compare:</p><pre><span class='kw'>disp</span> <span class='op'>&lt;-</span> <span class='fl'>10</span>
-<span class='kw'>mtcars</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span>(disp = <span class='kw'>.data</span><span class='op'>$</span><span class='kw'>disp</span> <span class='op'>*</span> <span class='kw'>.env</span><span class='op'>$</span><span class='kw'>disp</span>)
-<span class='kw'>mtcars</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span>(disp = <span class='kw'>disp</span> <span class='op'>*</span> <span class='kw'>disp</span>)
+kinds of variables. Compare:</p><pre><span class='va'>disp</span> <span class='op'>&lt;-</span> <span class='fl'>10</span>
+<span class='va'>mtcars</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>disp <span class='op'>=</span> <span class='va'>.data</span><span class='op'>$</span><span class='va'>disp</span> <span class='op'>*</span> <span class='va'>.env</span><span class='op'>$</span><span class='va'>disp</span><span class='op'>)</span>
+<span class='va'>mtcars</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>disp <span class='op'>=</span> <span class='va'>disp</span> <span class='op'>*</span> <span class='va'>disp</span><span class='op'>)</span>
 </pre>
 
 <p>The <code>.data</code> object exported from rlang is also useful to import in
@@ -203,9 +203,9 @@ environment. For instance, it doesn't have a parent and the
 subsetting operators behave differently.</p>
     </div>
 
-    <pre class="usage"><span class='kw'>.data</span>
+    <pre class="usage"><span class='va'>.data</span>
 
-<span class='kw'>.env</span></pre>
+<span class='va'>.env</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
@@ -227,7 +227,7 @@ subsetting operators behave differently.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

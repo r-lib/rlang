@@ -201,14 +201,14 @@ configurable than <code><a href='list2.html'>list2()</a></code>, <code>vars()</c
 arguments, and <code><a href='call2.html'>call2()</a></code> for creating calls.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>f</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>...</span>) {
-  <span class='kw'>out</span> <span class='op'>&lt;-</span> <span class='fu'><a href='list2.html'>list2</a></span>(<span class='kw'>...</span>)
-  <span class='fu'><a href='https://rdrr.io/r/base/rev.html'>rev</a></span>(<span class='kw'>out</span>)
-}
+    <pre class="examples"><div class='input'><span class='va'>f</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>out</span> <span class='op'>&lt;-</span> <span class='fu'><a href='list2.html'>list2</a></span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/rev.html'>rev</a></span><span class='op'>(</span><span class='va'>out</span><span class='op'>)</span>
+<span class='op'>}</span>
 
 <span class='co'># Splice</span>
-<span class='kw'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(alpha = <span class='st'>"first"</span>, omega = <span class='st'>"last"</span>)
-<span class='fu'>f</span>(<span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='kw'>x</span>)
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>alpha <span class='op'>=</span> <span class='st'>"first"</span>, omega <span class='op'>=</span> <span class='st'>"last"</span><span class='op'>)</span>
+<span class='fu'>f</span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='va'>x</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $omega
 #&gt; [1] "last"
 #&gt; 
@@ -216,19 +216,19 @@ arguments, and <code><a href='call2.html'>call2()</a></code> for creating calls.
 #&gt; [1] "first"
 #&gt; </div><div class='input'>
 <span class='co'># Unquote a name, showing both the `!!` bang bang and `{}` glue style</span>
-<span class='kw'>nm</span> <span class='op'>&lt;-</span> <span class='st'>"key"</span>
-<span class='fu'>f</span>(<span class='op'>!</span><span class='op'>!</span><span class='kw'>nm</span> <span class='op'>:=</span> <span class='st'>"value"</span>)
+<span class='va'>nm</span> <span class='op'>&lt;-</span> <span class='st'>"key"</span>
+<span class='fu'>f</span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='va'>nm</span> <span class='op'>:=</span> <span class='st'>"value"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $key
 #&gt; [1] "value"
-#&gt; </div><div class='input'><span class='fu'>f</span>(<span class='st'>"{nm}"</span> <span class='op'>:=</span> <span class='st'>"value"</span>)
+#&gt; </div><div class='input'><span class='fu'>f</span><span class='op'>(</span><span class='st'>"{nm}"</span> <span class='op'>:=</span> <span class='st'>"value"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $key
 #&gt; [1] "value"
-#&gt; </div><div class='input'><span class='fu'>f</span>(<span class='st'>"prefix_{nm}"</span> <span class='op'>:=</span> <span class='st'>"value"</span>)
+#&gt; </div><div class='input'><span class='fu'>f</span><span class='op'>(</span><span class='st'>"prefix_{nm}"</span> <span class='op'>:=</span> <span class='st'>"value"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $prefix_key
 #&gt; [1] "value"
 #&gt; </div><div class='input'>
 <span class='co'># Tolerate a trailing comma</span>
-<span class='fu'>f</span>(this = <span class='st'>"that"</span>, )
+<span class='fu'>f</span><span class='op'>(</span>this <span class='op'>=</span> <span class='st'>"that"</span>, <span class='op'>)</span>
 </div><div class='output co'>#&gt; $this
 #&gt; [1] "that"
 #&gt; </div></pre>
@@ -247,7 +247,7 @@ arguments, and <code><a href='call2.html'>call2()</a></code> for creating calls.
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

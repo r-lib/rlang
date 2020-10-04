@@ -167,7 +167,7 @@ error is issued (see <code><a href='abort.html'>abort()</a></code>) that no hand
 to deal with (see <code><a href='with_handlers.html'>with_handlers()</a></code>).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>rst_abort</span>()</pre>
+    <pre class="usage"><span class='fu'>rst_abort</span><span class='op'>(</span><span class='op'>)</span></pre>
 
 
     <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
@@ -186,43 +186,43 @@ programming in R.</p>
     <pre class="examples"><div class='input'><span class='co'># The `abort` restart is a bit special in that it is always</span>
 <span class='co'># registered in a R session. You will always find it on the restart</span>
 <span class='co'># stack because it is established at top level:</span>
-<span class='fu'><a href='rst_list.html'>rst_list</a></span>()
+<span class='fu'><a href='rst_list.html'>rst_list</a></span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [[1]]
 #&gt; &lt;restart: abort &gt;
 #&gt; </div><div class='input'>
 <span class='co'># You can use the `above` restart to jump to top level without</span>
 <span class='co'># signalling an error:</span>
-<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() {
-  <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"aborting...\n"</span>)
-  <span class='fu'>rst_abort</span>()
-  <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"This is never called\n"</span>)
-}
-{
-  <span class='fu'>fn</span>()
-  <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"This is never called\n"</span>)
-}
-}
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='va'>fn</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='st'>"aborting...\n"</span><span class='op'>)</span>
+  <span class='fu'>rst_abort</span><span class='op'>(</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='st'>"This is never called\n"</span><span class='op'>)</span>
+<span class='op'>}</span>
+<span class='op'>{</span>
+  <span class='fu'>fn</span><span class='op'>(</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='st'>"This is never called\n"</span><span class='op'>)</span>
+<span class='op'>}</span>
+<span class='op'>}</span>
 
 <span class='co'># The `above` restart is the target that R uses to jump to top</span>
 <span class='co'># level when critical errors are signalled:</span>
-<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-{
-  <span class='fu'><a href='abort.html'>abort</a></span>(<span class='st'>"error"</span>)
-  <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"This is never called\n"</span>)
-}
-}
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='op'>{</span>
+  <span class='fu'><a href='abort.html'>abort</a></span><span class='op'>(</span><span class='st'>"error"</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='st'>"This is never called\n"</span><span class='op'>)</span>
+<span class='op'>}</span>
+<span class='op'>}</span>
 
 <span class='co'># If another `abort` restart is specified, errors are signalled as</span>
 <span class='co'># usual but then control flow resumes with from the new restart:</span>
-<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='kw'>out</span> <span class='op'>&lt;-</span> <span class='kw'>NULL</span>
-{
-  <span class='kw'>out</span> <span class='op'>&lt;-</span> <span class='fu'><a href='with_restarts.html'>with_restarts</a></span>(<span class='fu'><a href='abort.html'>abort</a></span>(<span class='st'>"error"</span>), abort = <span class='fu'>function</span>() <span class='st'>"restart!"</span>)
-  <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"This is called\n"</span>)
-}
-<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"`out` has now become:"</span>, <span class='kw'>out</span>, <span class='st'>"\n"</span>)
-}
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='va'>out</span> <span class='op'>&lt;-</span> <span class='cn'>NULL</span>
+<span class='op'>{</span>
+  <span class='va'>out</span> <span class='op'>&lt;-</span> <span class='fu'><a href='with_restarts.html'>with_restarts</a></span><span class='op'>(</span><span class='fu'><a href='abort.html'>abort</a></span><span class='op'>(</span><span class='st'>"error"</span><span class='op'>)</span>, abort <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='st'>"restart!"</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='st'>"This is called\n"</span><span class='op'>)</span>
+<span class='op'>}</span>
+<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='st'>"`out` has now become:"</span>, <span class='va'>out</span>, <span class='st'>"\n"</span><span class='op'>)</span>
+<span class='op'>}</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -239,7 +239,7 @@ programming in R.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

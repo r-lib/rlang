@@ -163,13 +163,13 @@ arguments are standardised with <code><a href='call_standardise.html'>call_stand
 modifying the call.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>call_modify</span>(
-  <span class='kw'>.call</span>,
-  <span class='kw'>...</span>,
-  .homonyms = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>, <span class='st'>"error"</span>),
-  .standardise = <span class='kw'>NULL</span>,
-  .env = <span class='fu'><a href='caller_env.html'>caller_env</a></span>()
-)</pre>
+    <pre class="usage"><span class='fu'>call_modify</span><span class='op'>(</span>
+  <span class='va'>.call</span>,
+  <span class='va'>...</span>,
+  .homonyms <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>, <span class='st'>"error"</span><span class='op'>)</span>,
+  .standardise <span class='op'>=</span> <span class='cn'>NULL</span>,
+  .env <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -217,69 +217,69 @@ this change.</p></li>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>call</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='kw'>x</span>, na.rm = <span class='fl'>TRUE</span>))
+    <pre class="examples"><div class='input'><span class='va'>call</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>x</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># Modify an existing argument</span>
-<span class='fu'>call_modify</span>(<span class='kw'>call</span>, na.rm = <span class='fl'>FALSE</span>)
-</div><div class='output co'>#&gt; mean(x, na.rm = FALSE)</div><div class='input'><span class='fu'>call_modify</span>(<span class='kw'>call</span>, x = <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>y</span>))
+<span class='fu'>call_modify</span><span class='op'>(</span><span class='va'>call</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; mean(x, na.rm = FALSE)</div><div class='input'><span class='fu'>call_modify</span><span class='op'>(</span><span class='va'>call</span>, x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>y</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; mean(x, na.rm = TRUE, x = y)</div><div class='input'>
 <span class='co'># Remove an argument</span>
-<span class='fu'>call_modify</span>(<span class='kw'>call</span>, na.rm = <span class='fu'><a href='zap.html'>zap</a></span>())
+<span class='fu'>call_modify</span><span class='op'>(</span><span class='va'>call</span>, na.rm <span class='op'>=</span> <span class='fu'><a href='zap.html'>zap</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; mean(x)</div><div class='input'>
 <span class='co'># Add a new argument</span>
-<span class='fu'>call_modify</span>(<span class='kw'>call</span>, trim = <span class='fl'>0.1</span>)
+<span class='fu'>call_modify</span><span class='op'>(</span><span class='va'>call</span>, trim <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; mean(x, na.rm = TRUE, trim = 0.1)</div><div class='input'>
 <span class='co'># Add an explicit missing argument:</span>
-<span class='fu'>call_modify</span>(<span class='kw'>call</span>, na.rm = )
+<span class='fu'>call_modify</span><span class='op'>(</span><span class='va'>call</span>, na.rm <span class='op'>=</span> <span class='op'>)</span>
 </div><div class='output co'>#&gt; mean(x, na.rm = )</div><div class='input'>
 <span class='co'># Supply a list of new arguments with `!!!`</span>
-<span class='kw'>newargs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(na.rm = <span class='kw'>NULL</span>, trim = <span class='fl'>0.1</span>)
-<span class='kw'>call</span> <span class='op'>&lt;-</span> <span class='fu'>call_modify</span>(<span class='kw'>call</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='kw'>newargs</span>)
-<span class='kw'>call</span>
+<span class='va'>newargs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>na.rm <span class='op'>=</span> <span class='cn'>NULL</span>, trim <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span>
+<span class='va'>call</span> <span class='op'>&lt;-</span> <span class='fu'>call_modify</span><span class='op'>(</span><span class='va'>call</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='va'>newargs</span><span class='op'>)</span>
+<span class='va'>call</span>
 </div><div class='output co'>#&gt; mean(x, na.rm = NULL, trim = 0.1)</div><div class='input'>
 <span class='co'># Remove multiple arguments by splicing zaps:</span>
-<span class='kw'>newargs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='rep_along.html'>rep_named</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"na.rm"</span>, <span class='st'>"trim"</span>), <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='zap.html'>zap</a></span>()))
-<span class='kw'>call</span> <span class='op'>&lt;-</span> <span class='fu'>call_modify</span>(<span class='kw'>call</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='kw'>newargs</span>)
-<span class='kw'>call</span>
+<span class='va'>newargs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='rep_along.html'>rep_named</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"na.rm"</span>, <span class='st'>"trim"</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='zap.html'>zap</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>call</span> <span class='op'>&lt;-</span> <span class='fu'>call_modify</span><span class='op'>(</span><span class='va'>call</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='va'>newargs</span><span class='op'>)</span>
+<span class='va'>call</span>
 </div><div class='output co'>#&gt; mean(x)</div><div class='input'>
 
 <span class='co'># Modify the `...` arguments as if it were a named argument:</span>
-<span class='kw'>call</span> <span class='op'>&lt;-</span> <span class='fu'>call_modify</span>(<span class='kw'>call</span>, ... = )
-<span class='kw'>call</span>
+<span class='va'>call</span> <span class='op'>&lt;-</span> <span class='fu'>call_modify</span><span class='op'>(</span><span class='va'>call</span>, ... <span class='op'>=</span> <span class='op'>)</span>
+<span class='va'>call</span>
 </div><div class='output co'>#&gt; mean(x, ...)</div><div class='input'>
-<span class='kw'>call</span> <span class='op'>&lt;-</span> <span class='fu'>call_modify</span>(<span class='kw'>call</span>, ... = <span class='fu'><a href='zap.html'>zap</a></span>())
-<span class='kw'>call</span>
+<span class='va'>call</span> <span class='op'>&lt;-</span> <span class='fu'>call_modify</span><span class='op'>(</span><span class='va'>call</span>, ... <span class='op'>=</span> <span class='fu'><a href='zap.html'>zap</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>call</span>
 </div><div class='output co'>#&gt; mean(x)</div><div class='input'>
 
 <span class='co'># When you're working with a user-supplied call, standardise it</span>
 <span class='co'># beforehand because it might contain unmatched arguments:</span>
-<span class='kw'>user_call</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='kw'>x</span>, nc = <span class='fl'>3</span>))
-<span class='fu'>call_modify</span>(<span class='kw'>user_call</span>, ncol = <span class='fl'>1</span>)
+<span class='va'>user_call</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='va'>x</span>, nc <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>call_modify</span><span class='op'>(</span><span class='va'>user_call</span>, ncol <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; matrix(x, nc = 3, ncol = 1)</div><div class='input'>
 <span class='co'># Standardising applies the usual argument matching rules:</span>
-<span class='kw'>user_call</span> <span class='op'>&lt;-</span> <span class='fu'><a href='call_standardise.html'>call_standardise</a></span>(<span class='kw'>user_call</span>)
-<span class='kw'>user_call</span>
-</div><div class='output co'>#&gt; matrix(data = x, ncol = 3)</div><div class='input'><span class='fu'>call_modify</span>(<span class='kw'>user_call</span>, ncol = <span class='fl'>1</span>)
+<span class='va'>user_call</span> <span class='op'>&lt;-</span> <span class='fu'><a href='call_standardise.html'>call_standardise</a></span><span class='op'>(</span><span class='va'>user_call</span><span class='op'>)</span>
+<span class='va'>user_call</span>
+</div><div class='output co'>#&gt; matrix(data = x, ncol = 3)</div><div class='input'><span class='fu'>call_modify</span><span class='op'>(</span><span class='va'>user_call</span>, ncol <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; matrix(data = x, ncol = 1)</div><div class='input'>
 
 <span class='co'># You can also modify quosures inplace:</span>
-<span class='kw'>f</span> <span class='op'>&lt;-</span> <span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='kw'>bar</span>))
-<span class='fu'>call_modify</span>(<span class='kw'>f</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>foo</span>))
+<span class='va'>f</span> <span class='op'>&lt;-</span> <span class='fu'><a href='nse-defuse.html'>quo</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='va'>bar</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>call_modify</span><span class='op'>(</span><span class='va'>f</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>foo</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^matrix(bar, foo)</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7fe78417ec40</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7fa528c75e38</span><span></div><div class='input'>
 
 <span class='co'># By default, arguments with the same name are kept. This has</span>
 <span class='co'># subtle implications, for instance you can move an argument to</span>
 <span class='co'># last position by removing it and remapping it:</span>
-<span class='kw'>call</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'>foo</span>(bar = , <span class='kw'>baz</span>))
-<span class='fu'>call_modify</span>(<span class='kw'>call</span>, bar = <span class='kw'>NULL</span>, bar = <span class='fu'><a href='missing_arg.html'>missing_arg</a></span>())
+<span class='va'>call</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='fu'>foo</span><span class='op'>(</span>bar <span class='op'>=</span> , <span class='va'>baz</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>call_modify</span><span class='op'>(</span><span class='va'>call</span>, bar <span class='op'>=</span> <span class='cn'>NULL</span>, bar <span class='op'>=</span> <span class='fu'><a href='missing_arg.html'>missing_arg</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; foo(bar = , baz)</div><div class='input'>
 <span class='co'># You can also choose to keep only the first or last homonym</span>
 <span class='co'># arguments:</span>
-<span class='kw'>args</span> <span class='op'>&lt;-</span>  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(bar = <span class='kw'>NULL</span>, bar = <span class='fu'><a href='missing_arg.html'>missing_arg</a></span>())
-<span class='fu'>call_modify</span>(<span class='kw'>call</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='kw'>args</span>, .homonyms = <span class='st'>"first"</span>)
-</div><div class='output co'>#&gt; foo(bar = NULL, baz)</div><div class='input'><span class='fu'>call_modify</span>(<span class='kw'>call</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='kw'>args</span>, .homonyms = <span class='st'>"last"</span>)
+<span class='va'>args</span> <span class='op'>&lt;-</span>  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>bar <span class='op'>=</span> <span class='cn'>NULL</span>, bar <span class='op'>=</span> <span class='fu'><a href='missing_arg.html'>missing_arg</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>call_modify</span><span class='op'>(</span><span class='va'>call</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='va'>args</span>, .homonyms <span class='op'>=</span> <span class='st'>"first"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; foo(bar = NULL, baz)</div><div class='input'><span class='fu'>call_modify</span><span class='op'>(</span><span class='va'>call</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='va'>args</span>, .homonyms <span class='op'>=</span> <span class='st'>"last"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; foo(bar = , baz)</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -296,7 +296,7 @@ this change.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -171,9 +171,9 @@ expression depending on the input type. Note that <code>set_expr()</code> does
 not change its input, it creates a new object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>set_expr</span>(<span class='kw'>x</span>, <span class='kw'>value</span>)
+    <pre class="usage"><span class='fu'>set_expr</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>value</span><span class='op'>)</span>
 
-<span class='fu'>get_expr</span>(<span class='kw'>x</span>, default = <span class='kw'>x</span>)</pre>
+<span class='fu'>get_expr</span><span class='op'>(</span><span class='va'>x</span>, default <span class='op'>=</span> <span class='va'>x</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -204,18 +204,18 @@ expression for <code>get_expr()</code>.</p>
 <code>get_expr()</code> and <code>set_expr()</code> that only work on quosures.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>f</span> <span class='op'>&lt;-</span> <span class='op'>~</span><span class='fu'>foo</span>(<span class='kw'>bar</span>)
-<span class='kw'>e</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='fu'>foo</span>(<span class='kw'>bar</span>))
-<span class='kw'>frame</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span>(<span class='fu'><a href='stack.html'>ctxt_frame</a></span>()))
+    <pre class="examples"><div class='input'><span class='va'>f</span> <span class='op'>&lt;-</span> <span class='op'>~</span><span class='fu'>foo</span><span class='op'>(</span><span class='va'>bar</span><span class='op'>)</span>
+<span class='va'>e</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='fu'>foo</span><span class='op'>(</span><span class='va'>bar</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>frame</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span><span class='op'>(</span><span class='fu'><a href='stack.html'>ctxt_frame</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='warning'>Warning: `ctxt_frame()` is deprecated as of rlang 0.3.0.</span>
 #&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once per session.</span><span></span></div><div class='input'>
-<span class='fu'>get_expr</span>(<span class='kw'>f</span>)
-</div><div class='output co'>#&gt; foo(bar)</div><div class='input'><span class='fu'>get_expr</span>(<span class='kw'>e</span>)
-</div><div class='output co'>#&gt; foo(bar)</div><div class='input'><span class='fu'>get_expr</span>(<span class='kw'>frame</span>)
+<span class='fu'>get_expr</span><span class='op'>(</span><span class='va'>f</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; foo(bar)</div><div class='input'><span class='fu'>get_expr</span><span class='op'>(</span><span class='va'>e</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; foo(bar)</div><div class='input'><span class='fu'>get_expr</span><span class='op'>(</span><span class='va'>frame</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; identity(ctxt_frame())</div><div class='input'>
-<span class='fu'>set_expr</span>(<span class='kw'>f</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>baz</span>))
+<span class='fu'>set_expr</span><span class='op'>(</span><span class='va'>f</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>baz</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; ~baz
-#&gt; &lt;environment: 0x7fe7851652e0&gt;</div><div class='input'><span class='fu'>set_expr</span>(<span class='kw'>e</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='kw'>baz</span>))
+#&gt; &lt;environment: 0x7fa52829db10&gt;</div><div class='input'><span class='fu'>set_expr</span><span class='op'>(</span><span class='va'>e</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>baz</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; baz</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -232,7 +232,7 @@ expression for <code>get_expr()</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

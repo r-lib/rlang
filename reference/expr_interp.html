@@ -169,7 +169,7 @@ called in all user-facing functions expecting a formula as argument
 to provide the same quasiquotation functionality as NSE functions.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>expr_interp</span>(<span class='kw'>x</span>, env = <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>expr_interp</span><span class='op'>(</span><span class='va'>x</span>, env <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -189,35 +189,35 @@ formula or a function, or the current environment otherwise.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># All tidy NSE functions like quo() unquote on capture:</span>
-<span class='fu'><a href='nse-defuse.html'>quo</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='op'>!</span><span class='op'>!</span>(<span class='fl'>1</span> <span class='op'>+</span> <span class='fl'>2</span>)))
+<span class='fu'><a href='nse-defuse.html'>quo</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='op'>(</span><span class='fl'>1</span> <span class='op'>+</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^list(3)</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7fe7827d8ee0</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7fa5272a1d38</span><span></div><div class='input'>
 <span class='co'># expr_interp() is meant to provide the same functionality when you</span>
 <span class='co'># have a formula or expression that might contain unquoting</span>
 <span class='co'># operators:</span>
-<span class='kw'>f</span> <span class='op'>&lt;-</span> <span class='op'>~</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='op'>!</span><span class='op'>!</span>(<span class='fl'>1</span> <span class='op'>+</span> <span class='fl'>2</span>))
-<span class='fu'>expr_interp</span>(<span class='kw'>f</span>)
+<span class='va'>f</span> <span class='op'>&lt;-</span> <span class='op'>~</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='op'>(</span><span class='fl'>1</span> <span class='op'>+</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>expr_interp</span><span class='op'>(</span><span class='va'>f</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; ~list(3)
-#&gt; &lt;environment: 0x7fe7827d8ee0&gt;</div><div class='input'>
+#&gt; &lt;environment: 0x7fa5272a1d38&gt;</div><div class='input'>
 <span class='co'># Note that only the outer formula is unquoted (which is a reason</span>
 <span class='co'># to use expr_interp() as early as possible in all user-facing</span>
 <span class='co'># functions):</span>
-<span class='kw'>f</span> <span class='op'>&lt;-</span> <span class='op'>~</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='op'>~</span><span class='op'>!</span><span class='op'>!</span>(<span class='fl'>1</span> <span class='op'>+</span> <span class='fl'>2</span>), <span class='op'>!</span><span class='op'>!</span>(<span class='fl'>1</span> <span class='op'>+</span> <span class='fl'>2</span>))
-<span class='fu'>expr_interp</span>(<span class='kw'>f</span>)
+<span class='va'>f</span> <span class='op'>&lt;-</span> <span class='op'>~</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>~</span><span class='op'>!</span><span class='op'>!</span><span class='op'>(</span><span class='fl'>1</span> <span class='op'>+</span> <span class='fl'>2</span><span class='op'>)</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>(</span><span class='fl'>1</span> <span class='op'>+</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>expr_interp</span><span class='op'>(</span><span class='va'>f</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; ~list(~3, 3)
-#&gt; &lt;environment: 0x7fe7827d8ee0&gt;</div><div class='input'>
+#&gt; &lt;environment: 0x7fa5272a1d38&gt;</div><div class='input'>
 
 <span class='co'># Another purpose for expr_interp() is to interpolate a closure's</span>
 <span class='co'># body. This is useful to inline a function within another. The</span>
 <span class='co'># important limitation is that all formal arguments of the inlined</span>
 <span class='co'># function should be defined in the receiving function:</span>
-<span class='kw'>other_fn</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>x</span>) <span class='fu'><a href='https://rdrr.io/r/base/chartr.html'>toupper</a></span>(<span class='kw'>x</span>)
+<span class='va'>other_fn</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/chartr.html'>toupper</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 
-<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>expr_interp</span>(<span class='fu'>function</span>(<span class='kw'>x</span>) {
-  <span class='kw'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='kw'>x</span>, <span class='st'>"_suffix"</span>)
-  <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span> <span class='fu'><a href='https://rdrr.io/r/base/body.html'>body</a></span>(<span class='kw'>other_fn</span>)
-})
+<span class='va'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>expr_interp</span><span class='op'>(</span><span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"_suffix"</span><span class='op'>)</span>
+  <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span> <span class='fu'><a href='https://rdrr.io/r/base/body.html'>body</a></span><span class='op'>(</span><span class='va'>other_fn</span><span class='op'>)</span>
+<span class='op'>}</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='warning'>Warning: Unquoting language objects with `!!!` is deprecated as of rlang 0.4.0.</span>
 #&gt; <span class='warning'>Please use `!!` instead.</span>
 #&gt; <span class='warning'></span>
@@ -228,13 +228,13 @@ formula or a function, or the current environment otherwise.</p></td>
 #&gt; <span class='warning'>  dplyr::select(data, !!enquo(x))    # Unquote single quosure</span>
 #&gt; <span class='warning'>  dplyr::select(data, !!!enquos(x))  # Splice list of quosures</span>
 #&gt; <span class='warning'></span>
-#&gt; <span class='warning'></span><span style='color: #555555;'>This warning is displayed once per session.</span><span></span></div><div class='input'><span class='kw'>fn</span>
+#&gt; <span class='warning'></span><span style='color: #555555;'>This warning is displayed once per session.</span><span></span></div><div class='input'><span class='va'>fn</span>
 </div><div class='output co'>#&gt; function (x) 
 #&gt; {
 #&gt;     x &lt;- paste0(x, "_suffix")
 #&gt;     toupper(x)
 #&gt; }
-#&gt; &lt;environment: 0x7fe7827d8ee0&gt;</div><div class='input'><span class='fu'>fn</span>(<span class='st'>"foo"</span>)
+#&gt; &lt;environment: 0x7fa5272a1d38&gt;</div><div class='input'><span class='fu'>fn</span><span class='op'>(</span><span class='st'>"foo"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "FOO_SUFFIX"</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -251,7 +251,7 @@ formula or a function, or the current environment otherwise.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

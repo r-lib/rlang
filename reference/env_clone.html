@@ -161,7 +161,7 @@ optionally with a new parent." />
 optionally with a new parent.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>env_clone</span>(<span class='kw'>env</span>, parent = <span class='fu'><a href='env_parent.html'>env_parent</a></span>(<span class='kw'>env</span>))</pre>
+    <pre class="usage"><span class='fu'>env_clone</span><span class='op'>(</span><span class='va'>env</span>, parent <span class='op'>=</span> <span class='fu'><a href='env_parent.html'>env_parent</a></span><span class='op'>(</span><span class='va'>env</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -178,10 +178,10 @@ optionally with a new parent.</p>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>env</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span>(<span class='op'>!</span><span class='op'>!</span><span class='op'>!</span> <span class='kw'>mtcars</span>)
-<span class='kw'>clone</span> <span class='op'>&lt;-</span> <span class='fu'>env_clone</span>(<span class='kw'>env</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='kw'>env</span>, <span class='kw'>clone</span>)
-</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='kw'>env</span><span class='op'>$</span><span class='kw'>cyl</span>, <span class='kw'>clone</span><span class='op'>$</span><span class='kw'>cyl</span>)
+    <pre class="examples"><div class='input'><span class='va'>env</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='op'>!</span> <span class='va'>mtcars</span><span class='op'>)</span>
+<span class='va'>clone</span> <span class='op'>&lt;-</span> <span class='fu'>env_clone</span><span class='op'>(</span><span class='va'>env</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span><span class='op'>(</span><span class='va'>env</span>, <span class='va'>clone</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span><span class='op'>(</span><span class='va'>env</span><span class='op'>$</span><span class='va'>cyl</span>, <span class='va'>clone</span><span class='op'>$</span><span class='va'>cyl</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -198,7 +198,7 @@ optionally with a new parent.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

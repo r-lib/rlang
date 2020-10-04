@@ -165,7 +165,7 @@ powerful alternative is to call a function with a list of arguments
 assembled programmatically. This is the purpose of <code>invoke()</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>invoke</span>(<span class='kw'>.fn</span>, .args = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(), <span class='kw'>...</span>, .env = <span class='fu'><a href='caller_env.html'>caller_env</a></span>(), .bury = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>".fn"</span>, <span class='st'>""</span>))</pre>
+    <pre class="usage"><span class='fu'>invoke</span><span class='op'>(</span><span class='va'>.fn</span>, .args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>...</span>, .env <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span>, .bury <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>".fn"</span>, <span class='st'>""</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -217,17 +217,17 @@ or complex expressions.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># invoke() has the same purpose as do.call():</span>
-<span class='fu'>invoke</span>(<span class='kw'>paste</span>, <span class='kw'>letters</span>)
+<span class='fu'>invoke</span><span class='op'>(</span><span class='va'>paste</span>, <span class='va'>letters</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='warning'>Warning: `invoke()` is deprecated as of rlang 0.4.0.</span>
 #&gt; <span class='warning'>Please use `exec()` or `eval(expr())`instead.</span>
 #&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once per session.</span><span></span></div><div class='output co'>#&gt; [1] "a b c d e f g h i j k l m n o p q r s t u v w x y z"</div><div class='input'>
 <span class='co'># But it creates much cleaner calls:</span>
-<span class='fu'>invoke</span>(<span class='kw'>call_inspect</span>, <span class='kw'>mtcars</span>)
+<span class='fu'>invoke</span><span class='op'>(</span><span class='va'>call_inspect</span>, <span class='va'>mtcars</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; .fn(mpg = `1`, cyl = `2`, disp = `3`, hp = `4`, drat = `5`, wt = `6`, 
 #&gt;     qsec = `7`, vs = `8`, am = `9`, gear = `10`, carb = `11`)</div><div class='input'>
 <span class='co'># and stacktraces:</span>
-<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>...</span>) <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>sys.calls</a></span>()
-<span class='fu'>invoke</span>(<span class='kw'>fn</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>mtcars</span>))
+<span class='va'>fn</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>sys.calls</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'>invoke</span><span class='op'>(</span><span class='va'>fn</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [[1]]
 #&gt; pkgdown::deploy_to_branch(new_process = FALSE)
 #&gt; 
@@ -350,7 +350,7 @@ or complex expressions.</p>
 #&gt; .fn(`1`)
 #&gt; </div><div class='input'>
 <span class='co'># Compare to do.call():</span>
-<span class='fu'><a href='https://rdrr.io/r/base/do.call.html'>do.call</a></span>(<span class='kw'>call_inspect</span>, <span class='kw'>mtcars</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/do.call.html'>do.call</a></span><span class='op'>(</span><span class='va'>call_inspect</span>, <span class='va'>mtcars</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; (function (...) 
 #&gt; match.call())(mpg = c(21, 21, 22.8, 21.4, 18.7, 18.1, 14.3, 24.4, 
 #&gt; 22.8, 19.2, 17.8, 16.4, 17.3, 15.2, 10.4, 10.4, 14.7, 32.4, 30.4, 
@@ -379,7 +379,7 @@ or complex expressions.</p>
 #&gt;     3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 4, 4, 3, 3, 3, 3, 
 #&gt;     3, 4, 5, 5, 5, 5, 5, 4), carb = c(4, 4, 1, 1, 2, 1, 4, 2, 
 #&gt;     2, 4, 4, 3, 3, 3, 4, 4, 4, 1, 2, 1, 1, 2, 2, 4, 2, 1, 2, 
-#&gt;     2, 4, 6, 8, 2))</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/do.call.html'>do.call</a></span>(<span class='kw'>fn</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>mtcars</span>))
+#&gt;     2, 4, 6, 8, 2))</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/do.call.html'>do.call</a></span><span class='op'>(</span><span class='va'>fn</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [[1]]
 #&gt; pkgdown::deploy_to_branch(new_process = FALSE)
 #&gt; 
@@ -531,13 +531,13 @@ or complex expressions.</p>
 
 <span class='co'># Specify the function name either by supplying a string</span>
 <span class='co'># identifying the function (it should be visible in .env):</span>
-<span class='fu'>invoke</span>(<span class='st'>"call_inspect"</span>, <span class='kw'>letters</span>)
+<span class='fu'>invoke</span><span class='op'>(</span><span class='st'>"call_inspect"</span>, <span class='va'>letters</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; call_inspect(`1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, 
 #&gt;     `11`, `12`, `13`, `14`, `15`, `16`, `17`, `18`, `19`, `20`, 
 #&gt;     `21`, `22`, `23`, `24`, `25`, `26`)</div><div class='input'>
 <span class='co'># Or by changing the .bury argument, with which you can also change</span>
 <span class='co'># the argument prefix:</span>
-<span class='fu'>invoke</span>(<span class='kw'>call_inspect</span>, <span class='kw'>mtcars</span>, .bury = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"inspect!"</span>, <span class='st'>"col"</span>))
+<span class='fu'>invoke</span><span class='op'>(</span><span class='va'>call_inspect</span>, <span class='va'>mtcars</span>, .bury <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"inspect!"</span>, <span class='st'>"col"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; `inspect!`(mpg = col1, cyl = col2, disp = col3, hp = col4, drat = col5, 
 #&gt;     wt = col6, qsec = col7, vs = col8, am = col9, gear = col10, 
 #&gt;     carb = col11)</div></span></pre>
@@ -556,7 +556,7 @@ or complex expressions.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

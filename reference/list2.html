@@ -165,16 +165,16 @@ features, collectively called <a href='dyn-dots.html'>dynamic dots</a>. While
 version that offers more control.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>list2</span>(<span class='kw'>...</span>)
+    <pre class="usage"><span class='fu'>list2</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>dots_list</span>(
-  <span class='kw'>...</span>,
-  .named = <span class='fl'>FALSE</span>,
-  .ignore_empty = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
-  .preserve_empty = <span class='fl'>FALSE</span>,
-  .homonyms = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>, <span class='st'>"error"</span>),
-  .check_assign = <span class='fl'>FALSE</span>
-)</pre>
+<span class='fu'>dots_list</span><span class='op'>(</span>
+  <span class='va'>...</span>,
+  .named <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  .ignore_empty <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span><span class='op'>)</span>,
+  .preserve_empty <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  .homonyms <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>, <span class='st'>"error"</span><span class='op'>)</span>,
+  .check_assign <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -227,66 +227,66 @@ This ensures assignments are explicit.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Let's create a function that takes a variable number of arguments:</span>
-<span class='kw'>numeric</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>...</span>) {
-  <span class='kw'>dots</span> <span class='op'>&lt;-</span> <span class='fu'>list2</span>(<span class='kw'>...</span>)
-  <span class='kw'>num</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='kw'>dots</span>)
-  <span class='fu'><a href='set_names.html'>set_names</a></span>(<span class='kw'>num</span>, <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='kw'>dots</span>))
-}
-<span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>numeric</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>)
+<span class='va'>numeric</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>dots</span> <span class='op'>&lt;-</span> <span class='fu'>list2</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span>
+  <span class='va'>num</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>dots</span><span class='op'>)</span>
+  <span class='fu'><a href='set_names.html'>set_names</a></span><span class='op'>(</span><span class='va'>num</span>, <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>dots</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
+<span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>numeric</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] 1 2 3</div><div class='input'>
 <span class='co'># The main difference with list(...) is that list2(...) enables</span>
 <span class='co'># the `!!!` syntax to splice lists:</span>
-<span class='kw'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>2</span>, <span class='fl'>3</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>numeric</a></span>(<span class='fl'>1</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span> <span class='kw'>x</span>, <span class='fl'>4</span>)
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>3</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>numeric</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span> <span class='va'>x</span>, <span class='fl'>4</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] 1 2 3 4</div><div class='input'>
 <span class='co'># As well as unquoting of names:</span>
-<span class='kw'>nm</span> <span class='op'>&lt;-</span> <span class='st'>"yup!"</span>
-<span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>numeric</a></span>(<span class='op'>!</span><span class='op'>!</span><span class='kw'>nm</span> <span class='op'>:=</span> <span class='fl'>1</span>)
+<span class='va'>nm</span> <span class='op'>&lt;-</span> <span class='st'>"yup!"</span>
+<span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>numeric</a></span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='va'>nm</span> <span class='op'>:=</span> <span class='fl'>1</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; yup! 
 #&gt;    1 </div><div class='input'>
 
 <span class='co'># One useful application of splicing is to work around exact and</span>
 <span class='co'># partial matching of arguments. Let's create a function taking</span>
 <span class='co'># named arguments and dots:</span>
-<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>data</span>, <span class='kw'>...</span>) {
-  <span class='fu'>list2</span>(<span class='kw'>...</span>)
-}
+<span class='va'>fn</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>...</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='fu'>list2</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span>
+<span class='op'>}</span>
 
 <span class='co'># You normally cannot pass an argument named `data` through the dots</span>
 <span class='co'># as it will match `fn`'s `data` argument. The splicing syntax</span>
 <span class='co'># provides a workaround:</span>
-<span class='fu'>fn</span>(<span class='st'>"wrong!"</span>, data = <span class='kw'>letters</span>)  <span class='co'># exact matching of `data`</span>
+<span class='fu'>fn</span><span class='op'>(</span><span class='st'>"wrong!"</span>, data <span class='op'>=</span> <span class='va'>letters</span><span class='op'>)</span>  <span class='co'># exact matching of `data`</span>
 </div><div class='output co'>#&gt; [[1]]
 #&gt; [1] "wrong!"
-#&gt; </div><div class='input'><span class='fu'>fn</span>(<span class='st'>"wrong!"</span>, dat = <span class='kw'>letters</span>)   <span class='co'># partial matching of `data`</span>
+#&gt; </div><div class='input'><span class='fu'>fn</span><span class='op'>(</span><span class='st'>"wrong!"</span>, dat <span class='op'>=</span> <span class='va'>letters</span><span class='op'>)</span>   <span class='co'># partial matching of `data`</span>
 </div><div class='output co'>#&gt; [[1]]
 #&gt; [1] "wrong!"
-#&gt; </div><div class='input'><span class='fu'>fn</span>(<span class='kw'>some_data</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(data = <span class='kw'>letters</span>))  <span class='co'># no matching</span>
+#&gt; </div><div class='input'><span class='fu'>fn</span><span class='op'>(</span><span class='va'>some_data</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>letters</span><span class='op'>)</span><span class='op'>)</span>  <span class='co'># no matching</span>
 </div><div class='output co'>#&gt; $data
 #&gt;  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
 #&gt; [20] "t" "u" "v" "w" "x" "y" "z"
 #&gt; </div><div class='input'>
 
 <span class='co'># Empty arguments trigger an error by default:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>fn</span>(, ))
+<span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'>fn</span><span class='op'>(</span>, <span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; list()</div><div class='input'>
 <span class='co'># You can choose to preserve empty arguments instead:</span>
-<span class='kw'>list3</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>...</span>) <span class='fu'>dots_list</span>(<span class='kw'>...</span>, .preserve_empty = <span class='fl'>TRUE</span>)
+<span class='va'>list3</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span> <span class='fu'>dots_list</span><span class='op'>(</span><span class='va'>...</span>, .preserve_empty <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
 <span class='co'># Note how the last empty argument is still ignored because</span>
 <span class='co'># `.ignore_empty` defaults to "trailing":</span>
-<span class='fu'>list3</span>(, )
+<span class='fu'>list3</span><span class='op'>(</span>, <span class='op'>)</span>
 </div><div class='output co'>#&gt; [[1]]
 #&gt; 
 #&gt; </div><div class='input'>
 <span class='co'># The list with preserved empty arguments is equivalent to:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='missing_arg.html'>missing_arg</a></span>())
+<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='missing_arg.html'>missing_arg</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [[1]]
 #&gt; 
 #&gt; </div><div class='input'>
 
 <span class='co'># Arguments with duplicated names are kept by default:</span>
-<span class='fu'>list2</span>(a = <span class='fl'>1</span>, a = <span class='fl'>2</span>, b = <span class='fl'>3</span>, b = <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>)
+<span class='fu'>list2</span><span class='op'>(</span>a <span class='op'>=</span> <span class='fl'>1</span>, a <span class='op'>=</span> <span class='fl'>2</span>, b <span class='op'>=</span> <span class='fl'>3</span>, b <span class='op'>=</span> <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $a
 #&gt; [1] 1
 #&gt; 
@@ -306,7 +306,7 @@ This ensures assignments are explicit.</p></td>
 #&gt; [1] 6
 #&gt; </div><div class='input'>
 <span class='co'># Use the `.homonyms` argument to keep only the first of these:</span>
-<span class='fu'>dots_list</span>(a = <span class='fl'>1</span>, a = <span class='fl'>2</span>, b = <span class='fl'>3</span>, b = <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>, .homonyms = <span class='st'>"first"</span>)
+<span class='fu'>dots_list</span><span class='op'>(</span>a <span class='op'>=</span> <span class='fl'>1</span>, a <span class='op'>=</span> <span class='fl'>2</span>, b <span class='op'>=</span> <span class='fl'>3</span>, b <span class='op'>=</span> <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>, .homonyms <span class='op'>=</span> <span class='st'>"first"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $a
 #&gt; [1] 1
 #&gt; 
@@ -320,7 +320,7 @@ This ensures assignments are explicit.</p></td>
 #&gt; [1] 6
 #&gt; </div><div class='input'>
 <span class='co'># Or the last:</span>
-<span class='fu'>dots_list</span>(a = <span class='fl'>1</span>, a = <span class='fl'>2</span>, b = <span class='fl'>3</span>, b = <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>, .homonyms = <span class='st'>"last"</span>)
+<span class='fu'>dots_list</span><span class='op'>(</span>a <span class='op'>=</span> <span class='fl'>1</span>, a <span class='op'>=</span> <span class='fl'>2</span>, b <span class='op'>=</span> <span class='fl'>3</span>, b <span class='op'>=</span> <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>, .homonyms <span class='op'>=</span> <span class='st'>"last"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $a
 #&gt; [1] 2
 #&gt; 
@@ -334,15 +334,15 @@ This ensures assignments are explicit.</p></td>
 #&gt; [1] 6
 #&gt; </div><div class='input'>
 <span class='co'># Or raise an informative error:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>dots_list</span>(a = <span class='fl'>1</span>, a = <span class='fl'>2</span>, b = <span class='fl'>3</span>, b = <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>, .homonyms = <span class='st'>"error"</span>))
+<span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'>dots_list</span><span class='op'>(</span>a <span class='op'>=</span> <span class='fl'>1</span>, a <span class='op'>=</span> <span class='fl'>2</span>, b <span class='op'>=</span> <span class='fl'>3</span>, b <span class='op'>=</span> <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>, .homonyms <span class='op'>=</span> <span class='st'>"error"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Error : Arguments can't have the same name. We found these problems:
 #&gt; * Multiple arguments named `a` at positions 1 and 2
 #&gt; * Multiple arguments named `b` at positions 3 and 4</div><div class='input'>
 
 <span class='co'># dots_list() can be configured to warn when a `&lt;-` call is</span>
 <span class='co'># detected:</span>
-<span class='kw'>my_list</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>...</span>) <span class='fu'>dots_list</span>(<span class='kw'>...</span>, .check_assign = <span class='fl'>TRUE</span>)
-<span class='fu'>my_list</span>(<span class='kw'>a</span> <span class='op'>&lt;-</span> <span class='fl'>1</span>)
+<span class='va'>my_list</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span> <span class='fu'>dots_list</span><span class='op'>(</span><span class='va'>...</span>, .check_assign <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'>my_list</span><span class='op'>(</span><span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='warning'>Warning: Using `&lt;-` as argument is often a mistake.</span>
 #&gt; <span class='warning'>Do you need to use `=` to match an argument?</span>
 #&gt; <span class='warning'></span>
@@ -358,7 +358,7 @@ This ensures assignments are explicit.</p></td>
 #&gt; </div><div class='input'>
 <span class='co'># There is no warning if the assignment is wrapped in braces.</span>
 <span class='co'># This requires users to be explicit about their intent:</span>
-<span class='fu'>my_list</span>({ <span class='kw'>a</span> <span class='op'>&lt;-</span> <span class='fl'>1</span> })
+<span class='fu'>my_list</span><span class='op'>(</span><span class='op'>{</span> <span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fl'>1</span> <span class='op'>}</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [[1]]
 #&gt; [1] 1
 #&gt; </div></pre>
@@ -377,7 +377,7 @@ This ensures assignments are explicit.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

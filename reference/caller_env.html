@@ -173,9 +173,9 @@ function that called the current function.</p></li>
 
     </div>
 
-    <pre class="usage"><span class='fu'>caller_env</span>(n = <span class='fl'>1</span>)
+    <pre class="usage"><span class='fu'>caller_env</span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 
-<span class='fu'>current_env</span>()</pre>
+<span class='fu'>current_env</span><span class='op'>(</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -191,25 +191,25 @@ function that called the current function.</p></li>
     <div class='dont-index'><p><code><a href='caller_frame.html'>caller_frame()</a></code> and <code><a href='stack.html'>current_frame()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
 <span class='co'># Let's create a function that returns its current environment and</span>
 <span class='co'># its caller environment:</span>
-<span class='kw'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(current = <span class='fu'>current_env</span>(), caller = <span class='fu'>caller_env</span>())
+<span class='va'>fn</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>current <span class='op'>=</span> <span class='fu'>current_env</span><span class='op'>(</span><span class='op'>)</span>, caller <span class='op'>=</span> <span class='fu'>caller_env</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># The current environment is an unique execution environment</span>
 <span class='co'># created when `fn()` was called. The caller environment is the</span>
 <span class='co'># global env because that's where we called `fn()`.</span>
-<span class='fu'>fn</span>()
+<span class='fu'>fn</span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='co'># Let's call `fn()` again but this time within a function:</span>
-<span class='kw'>g</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>() <span class='fu'>fn</span>()
+<span class='va'>g</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='fu'>fn</span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='co'># Now the caller environment is also a unique execution environment.</span>
 <span class='co'># This is the exec env created by R for our call to g():</span>
-<span class='fu'>g</span>()
+<span class='fu'>g</span><span class='op'>(</span><span class='op'>)</span>
 
-}
+<span class='op'>}</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -226,7 +226,7 @@ function that called the current function.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

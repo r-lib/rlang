@@ -159,9 +159,9 @@
     <p>These functions take strings as input and turn them into symbols.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>sym</span>(<span class='kw'>x</span>)
+    <pre class="usage"><span class='fu'>sym</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 
-<span class='fu'>syms</span>(<span class='kw'>x</span>)</pre>
+<span class='fu'>syms</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -178,11 +178,11 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># The empty string returns the missing argument:</span>
-<span class='fu'>sym</span>(<span class='st'>""</span>)
+<span class='fu'>sym</span><span class='op'>(</span><span class='st'>""</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </div><div class='input'>
 <span class='co'># This way sym() and as_string() are inverse of each other:</span>
-<span class='fu'><a href='as_string.html'>as_string</a></span>(<span class='fu'><a href='missing_arg.html'>missing_arg</a></span>())
-</div><div class='output co'>#&gt; [1] ""</div><div class='input'><span class='fu'>sym</span>(<span class='fu'><a href='as_string.html'>as_string</a></span>(<span class='fu'><a href='missing_arg.html'>missing_arg</a></span>()))
+<span class='fu'><a href='as_string.html'>as_string</a></span><span class='op'>(</span><span class='fu'><a href='missing_arg.html'>missing_arg</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] ""</div><div class='input'><span class='fu'>sym</span><span class='op'>(</span><span class='fu'><a href='as_string.html'>as_string</a></span><span class='op'>(</span><span class='fu'><a href='missing_arg.html'>missing_arg</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -199,7 +199,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

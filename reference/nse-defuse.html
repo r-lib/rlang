@@ -197,56 +197,56 @@ on, in a context where the data-variables have been defined.</p>
 evaluation inside a defused expression with the <a href='nse-force.html'>forcing operators</a> <code>!!</code> and <code>!!!</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>expr</span>(<span class='kw'>expr</span>)
+    <pre class="usage"><span class='fu'>expr</span><span class='op'>(</span><span class='va'>expr</span><span class='op'>)</span>
 
-<span class='fu'>enexpr</span>(<span class='kw'>arg</span>)
+<span class='fu'>enexpr</span><span class='op'>(</span><span class='va'>arg</span><span class='op'>)</span>
 
-<span class='fu'>exprs</span>(
-  <span class='kw'>...</span>,
-  .named = <span class='fl'>FALSE</span>,
-  .ignore_empty = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
-  .unquote_names = <span class='fl'>TRUE</span>
-)
+<span class='fu'>exprs</span><span class='op'>(</span>
+  <span class='va'>...</span>,
+  .named <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  .ignore_empty <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span><span class='op'>)</span>,
+  .unquote_names <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span>
 
-<span class='fu'>enexprs</span>(
-  <span class='kw'>...</span>,
-  .named = <span class='fl'>FALSE</span>,
-  .ignore_empty = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
-  .unquote_names = <span class='fl'>TRUE</span>,
-  .homonyms = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>, <span class='st'>"error"</span>),
-  .check_assign = <span class='fl'>FALSE</span>
-)
+<span class='fu'>enexprs</span><span class='op'>(</span>
+  <span class='va'>...</span>,
+  .named <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  .ignore_empty <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span><span class='op'>)</span>,
+  .unquote_names <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  .homonyms <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>, <span class='st'>"error"</span><span class='op'>)</span>,
+  .check_assign <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span>
 
-<span class='fu'>ensym</span>(<span class='kw'>arg</span>)
+<span class='fu'>ensym</span><span class='op'>(</span><span class='va'>arg</span><span class='op'>)</span>
 
-<span class='fu'>ensyms</span>(
-  <span class='kw'>...</span>,
-  .named = <span class='fl'>FALSE</span>,
-  .ignore_empty = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
-  .unquote_names = <span class='fl'>TRUE</span>,
-  .homonyms = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>, <span class='st'>"error"</span>),
-  .check_assign = <span class='fl'>FALSE</span>
-)
+<span class='fu'>ensyms</span><span class='op'>(</span>
+  <span class='va'>...</span>,
+  .named <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  .ignore_empty <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span><span class='op'>)</span>,
+  .unquote_names <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  .homonyms <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>, <span class='st'>"error"</span><span class='op'>)</span>,
+  .check_assign <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span>
 
-<span class='fu'>quo</span>(<span class='kw'>expr</span>)
+<span class='fu'>quo</span><span class='op'>(</span><span class='va'>expr</span><span class='op'>)</span>
 
-<span class='fu'>enquo</span>(<span class='kw'>arg</span>)
+<span class='fu'>enquo</span><span class='op'>(</span><span class='va'>arg</span><span class='op'>)</span>
 
-<span class='fu'>quos</span>(
-  <span class='kw'>...</span>,
-  .named = <span class='fl'>FALSE</span>,
-  .ignore_empty = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
-  .unquote_names = <span class='fl'>TRUE</span>
-)
+<span class='fu'>quos</span><span class='op'>(</span>
+  <span class='va'>...</span>,
+  .named <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  .ignore_empty <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span><span class='op'>)</span>,
+  .unquote_names <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span>
 
-<span class='fu'>enquos</span>(
-  <span class='kw'>...</span>,
-  .named = <span class='fl'>FALSE</span>,
-  .ignore_empty = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span>),
-  .unquote_names = <span class='fl'>TRUE</span>,
-  .homonyms = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>, <span class='st'>"error"</span>),
-  .check_assign = <span class='fl'>FALSE</span>
-)</pre>
+<span class='fu'>enquos</span><span class='op'>(</span>
+  <span class='va'>...</span>,
+  .named <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  .ignore_empty <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"trailing"</span>, <span class='st'>"none"</span>, <span class='st'>"all"</span><span class='op'>)</span>,
+  .unquote_names <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  .homonyms <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"keep"</span>, <span class='st'>"first"</span>, <span class='st'>"last"</span>, <span class='st'>"error"</span><span class='op'>)</span>,
+  .check_assign <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -322,19 +322,19 @@ data-variable.</p></li>
 
 <p>You can create new call or symbol objects by using the defusing
 function <code>expr()</code>:</p><pre><span class='co'># Create a symbol representing objects called `foo`</span>
-<span class='fu'>expr</span>(<span class='kw'>foo</span>)
+<span class='fu'>expr</span><span class='op'>(</span><span class='va'>foo</span><span class='op'>)</span>
 
 <span class='co'># Create a call representing the computation of the mean of `foo`</span>
-<span class='fu'>expr</span>(<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='kw'>foo</span>, na.rm = <span class='fl'>TRUE</span>))
+<span class='fu'>expr</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>foo</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
 </pre>
 
 <p>Defusing is not the only way to create defused expressions. You can
 also assemble them from data:</p><pre><span class='co'># Assemble a symbol from a string</span>
-<span class='kw'>var</span> <span class='op'>&lt;-</span> <span class='st'>"foo"</span>
-<span class='fu'><a href='sym.html'>sym</a></span>(<span class='kw'>var</span>)
+<span class='va'>var</span> <span class='op'>&lt;-</span> <span class='st'>"foo"</span>
+<span class='fu'><a href='sym.html'>sym</a></span><span class='op'>(</span><span class='va'>var</span><span class='op'>)</span>
 
 <span class='co'># Assemble a call from strings, symbols, and other objects</span>
-<span class='fu'><a href='https://rdrr.io/r/base/call.html'>call</a></span>(<span class='st'>"mean"</span>, <span class='fu'><a href='sym.html'>sym</a></span>(<span class='kw'>var</span>), na.rm = <span class='fl'>TRUE</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/call.html'>call</a></span><span class='op'>(</span><span class='st'>"mean"</span>, <span class='fu'><a href='sym.html'>sym</a></span><span class='op'>(</span><span class='va'>var</span><span class='op'>)</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </pre>
 
     <h2 class="hasAnchor" id="defusing-function-arguments"><a class="anchor" href="#defusing-function-arguments"></a>Defusing function arguments</h2>
@@ -380,8 +380,8 @@ of an expression.</p></li>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># expr() and exprs() capture expressions that you supply:</span>
-<span class='fu'>expr</span>(<span class='kw'>symbol</span>)
-</div><div class='output co'>#&gt; symbol</div><div class='input'><span class='fu'>exprs</span>(<span class='kw'>several</span>, <span class='kw'>such</span>, <span class='kw'>symbols</span>)
+<span class='fu'>expr</span><span class='op'>(</span><span class='va'>symbol</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; symbol</div><div class='input'><span class='fu'>exprs</span><span class='op'>(</span><span class='va'>several</span>, <span class='va'>such</span>, <span class='va'>symbols</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [[1]]
 #&gt; several
 #&gt; 
@@ -392,14 +392,14 @@ of an expression.</p></li>
 #&gt; symbols
 #&gt; </div><div class='input'>
 <span class='co'># enexpr() and enexprs() capture expressions that your user supplied:</span>
-<span class='kw'>expr_inputs</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>arg</span>, <span class='kw'>...</span>) {
-  <span class='kw'>user_exprs</span> <span class='op'>&lt;-</span> <span class='fu'>enexprs</span>(<span class='kw'>arg</span>, <span class='kw'>...</span>)
-  <span class='kw'>user_exprs</span>
-}
-<span class='fu'>expr_inputs</span>(<span class='kw'>hello</span>)
+<span class='va'>expr_inputs</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>arg</span>, <span class='va'>...</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>user_exprs</span> <span class='op'>&lt;-</span> <span class='fu'>enexprs</span><span class='op'>(</span><span class='va'>arg</span>, <span class='va'>...</span><span class='op'>)</span>
+  <span class='va'>user_exprs</span>
+<span class='op'>}</span>
+<span class='fu'>expr_inputs</span><span class='op'>(</span><span class='va'>hello</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [[1]]
 #&gt; hello
-#&gt; </div><div class='input'><span class='fu'>expr_inputs</span>(<span class='kw'>hello</span>, <span class='kw'>bonjour</span>, <span class='kw'>ciao</span>)
+#&gt; </div><div class='input'><span class='fu'>expr_inputs</span><span class='op'>(</span><span class='va'>hello</span>, <span class='va'>bonjour</span>, <span class='va'>ciao</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [[1]]
 #&gt; hello
 #&gt; 
@@ -411,18 +411,18 @@ of an expression.</p></li>
 #&gt; </div><div class='input'>
 <span class='co'># ensym() and ensyms() provide additional type checking to ensure</span>
 <span class='co'># the user calling your function has supplied bare object names:</span>
-<span class='kw'>sym_inputs</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>...</span>) {
-  <span class='kw'>user_symbols</span> <span class='op'>&lt;-</span> <span class='fu'>ensyms</span>(<span class='kw'>...</span>)
-  <span class='kw'>user_symbols</span>
-}
-<span class='fu'>sym_inputs</span>(<span class='kw'>hello</span>, <span class='st'>"bonjour"</span>)
+<span class='va'>sym_inputs</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>user_symbols</span> <span class='op'>&lt;-</span> <span class='fu'>ensyms</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span>
+  <span class='va'>user_symbols</span>
+<span class='op'>}</span>
+<span class='fu'>sym_inputs</span><span class='op'>(</span><span class='va'>hello</span>, <span class='st'>"bonjour"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [[1]]
 #&gt; hello
 #&gt; 
 #&gt; [[2]]
 #&gt; bonjour
 #&gt; </div><div class='input'><span class='co'>## sym_inputs(say(hello))  # Error: Must supply symbols or strings</span>
-<span class='fu'>expr_inputs</span>(<span class='fu'>say</span>(<span class='kw'>hello</span>))
+<span class='fu'>expr_inputs</span><span class='op'>(</span><span class='fu'>say</span><span class='op'>(</span><span class='va'>hello</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [[1]]
 #&gt; say(hello)
 #&gt; </div><div class='input'>
@@ -430,14 +430,14 @@ of an expression.</p></li>
 <span class='co'># All these quoting functions have quasiquotation support. This</span>
 <span class='co'># means that you can unquote (evaluate and inline) part of the</span>
 <span class='co'># captured expression:</span>
-<span class='kw'>what</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sym.html'>sym</a></span>(<span class='st'>"bonjour"</span>)
-<span class='fu'>expr</span>(<span class='fu'>say</span>(<span class='kw'>what</span>))
-</div><div class='output co'>#&gt; say(what)</div><div class='input'><span class='fu'>expr</span>(<span class='fu'>say</span>(<span class='op'>!</span><span class='op'>!</span><span class='kw'>what</span>))
+<span class='va'>what</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sym.html'>sym</a></span><span class='op'>(</span><span class='st'>"bonjour"</span><span class='op'>)</span>
+<span class='fu'>expr</span><span class='op'>(</span><span class='fu'>say</span><span class='op'>(</span><span class='va'>what</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; say(what)</div><div class='input'><span class='fu'>expr</span><span class='op'>(</span><span class='fu'>say</span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='va'>what</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; say(bonjour)</div><div class='input'>
 <span class='co'># This also applies to expressions supplied by the user. This is</span>
 <span class='co'># like an escape hatch that allows control over the captured</span>
 <span class='co'># expression:</span>
-<span class='fu'>expr_inputs</span>(<span class='fu'>say</span>(<span class='op'>!</span><span class='op'>!</span><span class='kw'>what</span>), <span class='op'>!</span><span class='op'>!</span><span class='kw'>what</span>)
+<span class='fu'>expr_inputs</span><span class='op'>(</span><span class='fu'>say</span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='va'>what</span><span class='op'>)</span>, <span class='op'>!</span><span class='op'>!</span><span class='va'>what</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [[1]]
 #&gt; say(bonjour)
 #&gt; 
@@ -447,45 +447,45 @@ of an expression.</p></li>
 
 <span class='co'># Finally, you can capture expressions as quosures. A quosure is an</span>
 <span class='co'># object that contains both the expression and its environment:</span>
-<span class='kw'>quo</span> <span class='op'>&lt;-</span> <span class='fu'>quo</span>(<span class='kw'>letters</span>)
-<span class='kw'>quo</span>
+<span class='va'>quo</span> <span class='op'>&lt;-</span> <span class='fu'>quo</span><span class='op'>(</span><span class='va'>letters</span><span class='op'>)</span>
+<span class='va'>quo</span>
 </div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^letters</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7fe7842bda40</span><span></div><div class='input'>
-<span class='fu'><a href='set_expr.html'>get_expr</a></span>(<span class='kw'>quo</span>)
-</div><div class='output co'>#&gt; letters</div><div class='input'><span class='fu'><a href='get_env.html'>get_env</a></span>(<span class='kw'>quo</span>)
-</div><div class='output co'>#&gt; &lt;environment: 0x7fe7842bda40&gt;</div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7fa5286997a0</span><span></div><div class='input'>
+<span class='fu'><a href='set_expr.html'>get_expr</a></span><span class='op'>(</span><span class='va'>quo</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; letters</div><div class='input'><span class='fu'><a href='get_env.html'>get_env</a></span><span class='op'>(</span><span class='va'>quo</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;environment: 0x7fa5286997a0&gt;</div><div class='input'>
 <span class='co'># Quosures can be evaluated with eval_tidy():</span>
-<span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='kw'>quo</span>)
+<span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span><span class='op'>(</span><span class='va'>quo</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
 #&gt; [20] "t" "u" "v" "w" "x" "y" "z"</div><div class='input'>
 <span class='co'># They have the nice property that you can pass them around from</span>
 <span class='co'># context to context (that is, from function to function) and they</span>
 <span class='co'># still evaluate in their original environment:</span>
-<span class='kw'>multiply_expr_by_10</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>expr</span>) {
+<span class='va'>multiply_expr_by_10</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>expr</span><span class='op'>)</span> <span class='op'>{</span>
   <span class='co'># We capture the user expression and its environment:</span>
-  <span class='kw'>expr</span> <span class='op'>&lt;-</span> <span class='fu'>enquo</span>(<span class='kw'>expr</span>)
+  <span class='va'>expr</span> <span class='op'>&lt;-</span> <span class='fu'>enquo</span><span class='op'>(</span><span class='va'>expr</span><span class='op'>)</span>
 
   <span class='co'># Then create an object that only exists in this function:</span>
-  <span class='kw'>local_ten</span> <span class='op'>&lt;-</span> <span class='fl'>10</span>
+  <span class='va'>local_ten</span> <span class='op'>&lt;-</span> <span class='fl'>10</span>
 
   <span class='co'># Now let's create a multiplication expression that (a) inlines</span>
   <span class='co'># the user expression as LHS (still wrapped in its quosure) and</span>
   <span class='co'># (b) refers to the local object in the RHS:</span>
-  <span class='fu'>quo</span>(<span class='op'>!</span><span class='op'>!</span><span class='kw'>expr</span> <span class='op'>*</span> <span class='kw'>local_ten</span>)
-}
-<span class='kw'>quo</span> <span class='op'>&lt;-</span> <span class='fu'>multiply_expr_by_10</span>(<span class='fl'>2</span> <span class='op'>+</span> <span class='fl'>3</span>)
+  <span class='fu'>quo</span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='va'>expr</span> <span class='op'>*</span> <span class='va'>local_ten</span><span class='op'>)</span>
+<span class='op'>}</span>
+<span class='va'>quo</span> <span class='op'>&lt;-</span> <span class='fu'>multiply_expr_by_10</span><span class='op'>(</span><span class='fl'>2</span> <span class='op'>+</span> <span class='fl'>3</span><span class='op'>)</span>
 
 <span class='co'># The local parts of the quosure are printed in colour if your</span>
 <span class='co'># terminal is capable of displaying colours:</span>
-<span class='kw'>quo</span>
+<span class='va'>quo</span>
 </div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^(</span><span style='color: #00BB00;'>^2 + 3</span><span style='color: #0000BB;'>) * local_ten</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7fe782f6bff8</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7fa527f34e78</span><span></div><div class='input'>
 <span class='co'># All the quosures in the expression evaluate in their original</span>
 <span class='co'># context. The local objects are looked up properly and we get the</span>
 <span class='co'># expected result:</span>
-<span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span>(<span class='kw'>quo</span>)
+<span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span><span class='op'>(</span><span class='va'>quo</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] 50</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -502,7 +502,7 @@ of an expression.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
