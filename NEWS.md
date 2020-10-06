@@ -1,6 +1,10 @@
 
 # rlang (development version)
 
+* Backtraces now include native stacks (e.g. from C code) when the
+  [winch](https://r-prof.github.io/winch/) package is installed and
+  `rlang_trace_use_winch` is set to `1L` (@krlmlr).
+
 * Compatibility with upcoming testthat 3 and magrittr 2 releases.
 
 * `get_env()` now returns the proper environment with primitive
