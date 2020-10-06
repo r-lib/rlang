@@ -762,7 +762,7 @@ is_winch_frame <- function(call) {
   }
 
   name <- as_string(lhs)
-  grepl("^/.+[.].+", name)
+  grepl("^[/\\\\].+[.]", name)
 }
 
 trace_simplify_collapse <- function(trace) {
