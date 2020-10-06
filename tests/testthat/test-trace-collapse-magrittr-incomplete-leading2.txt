@@ -1,20 +1,17 @@
 Full:
     █
- 1. └─F(NA) %>% F() %>% T() %>% F() %>% F()
- 2.   ├─base::withVisible(eval(quote(`_fseq`(`_lhs`)), env, env))
- 3.   └─base::eval(quote(`_fseq`(`_lhs`)), env, env)
- 4.     └─base::eval(quote(`_fseq`(`_lhs`)), env, env)
- 5.       └─rlang:::`_fseq`(`_lhs`)
- 6.         └─magrittr::freduce(value, `_function_list`)
- 7.           └─function_list[[i]](value)
- 8.             └─rlang:::T(.)
+ 1. ├─F(NA) %>% F() %>% T() %>% F() %>% F()
+ 2. ├─rlang:::F(.)
+ 3. ├─rlang:::F(.)
+ 4. └─rlang:::T(.)
 
 Collapsed:
     █
- 1. └─[ F(NA) %>% F() %>% T() %>% F() %>% F() ] with 6 more calls
- 8.   └─rlang:::T(.)
+ 1. ├─[ F(NA) %>% F() %>% T() %>% F() %>% F() ]
+ 2. ├─[ rlang:::F(...) ]
+ 3. ├─[ rlang:::F(...) ]
+ 4. └─rlang:::T(.)
 
 Branch:
- 1. rlang:::F(NA)
- 1. rlang:::F(.)
- 8. rlang:::T(.)
+ 1. F(NA) %>% F() %>% T() %>% F() %>% F()
+ 4. rlang:::T(.)
