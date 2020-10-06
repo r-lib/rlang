@@ -253,7 +253,8 @@ new_trace <- function(calls, parents, indices = NULL) {
       parents = parents,
       indices = indices
     ),
-    class = "rlang_trace"
+    class = "rlang_trace",
+    version = 1L
   )
 }
 
@@ -278,8 +279,8 @@ add_winch_trace <- function(trace) {
 
   # Increment this number when the internal format for the rlang_trace class
   # changes
-  enabled <- identical(peek_option("rlang_trace_use_winch"), 1L)
-  if (!enabled) {
+  use_winch <- peek_option("rlang_trace_use_winch") %||% FALSE
+  if (!is_true(as.logical(use_winch))) {
     return(trace)
   }
 
