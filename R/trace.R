@@ -728,6 +728,10 @@ is_uninformative_call <- function(call) {
 
   fn <- call[[1]]
 
+  if (is_winch_frame(fn)) {
+    return(TRUE)
+  }
+
   # Inlined functions occur with active bindings
   if (is_function(fn)) {
     return(TRUE)
@@ -742,6 +746,22 @@ is_uninformative_call <- function(call) {
   }
 
   FALSE
+}
+
+# To be replaced with a more structured way of disabling frames in
+# various displays
+is_winch_frame <- function(call) {
+  if (!is_call(call, "::")) {
+    return(FALSE)
+  }
+
+  lhs <- call[[2]]
+  if (!is_symbol(lhs)) {
+    return(FALSE)
+  }
+
+  name <- as_string(lhs)
+  grepl("^/.+[.].+", name)
 }
 
 trace_simplify_collapse <- function(trace) {
