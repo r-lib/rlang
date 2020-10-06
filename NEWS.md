@@ -1,7 +1,7 @@
 
 # rlang (development version)
 
-* Compatibility with upcoming testthat 3.
+* Compatibility with upcoming testthat 3 and magrittr 2 releases.
 
 * `get_env()` now returns the proper environment with primitive
   functions, i.e. the base namespace rather than the base environment

@@ -1,23 +1,15 @@
 Full:
-     █
-  1. ├─rlang:::f(g(NULL %>% f()) %>% h())
-  2. └─g(NULL %>% f()) %>% h()
-  3.   ├─base::withVisible(eval(quote(`_fseq`(`_lhs`)), env, env))
-  4.   └─base::eval(quote(`_fseq`(`_lhs`)), env, env)
-  5.     └─base::eval(quote(`_fseq`(`_lhs`)), env, env)
-  6.       └─rlang:::`_fseq`(`_lhs`)
-  7.         └─magrittr::freduce(value, `_function_list`)
-  8.           ├─base::withVisible(function_list[[k]](value))
-  9.           └─function_list[[k]](value)
- 10.             └─rlang:::h(.)
+    █
+ 1. ├─rlang:::f(g(NULL %>% f()) %>% h())
+ 2. ├─g(NULL %>% f()) %>% h()
+ 3. └─rlang:::h(.)
 
 Collapsed:
-     █
-  1. ├─[ rlang:::f(...) ]
-  2. └─[ g(NULL %>% f()) %>% h() ] with 7 more calls
- 10.   └─rlang:::h(.)
+    █
+ 1. ├─[ rlang:::f(...) ]
+ 2. ├─[ g(NULL %>% f()) %>% h() ]
+ 3. └─rlang:::h(.)
 
 Branch:
-  1. rlang:::f(g(NULL %>% f()) %>% h())
-  2. rlang:::g(NULL %>% f())
- 10. rlang:::h(.)
+ 1. rlang:::f(g(NULL %>% f()) %>% h())
+ 3. rlang:::h(.)

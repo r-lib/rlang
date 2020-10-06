@@ -1,10 +1,15 @@
 Full:
     █
- 1. └─rlang:::T(NA)
+ 1. ├─T(NA) %>% F()
+ 2. ├─rlang:::F(.)
+ 3. └─rlang:::T(NA)
 
 Collapsed:
     █
- 1. └─rlang:::T(NA)
+ 1. ├─[ T(NA) %>% F() ]
+ 2. ├─[ rlang:::F(...) ]
+ 3. └─rlang:::T(NA)
 
 Branch:
- 1. rlang:::T(NA)
+ 1. T(NA) %>% F()
+ 3. rlang:::T(NA)

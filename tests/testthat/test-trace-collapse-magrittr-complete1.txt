@@ -1,19 +1,13 @@
 Full:
     █
- 1. └─NA %>% T()
- 2.   ├─base::withVisible(eval(quote(`_fseq`(`_lhs`)), env, env))
- 3.   └─base::eval(quote(`_fseq`(`_lhs`)), env, env)
- 4.     └─base::eval(quote(`_fseq`(`_lhs`)), env, env)
- 5.       └─rlang:::`_fseq`(`_lhs`)
- 6.         └─magrittr::freduce(value, `_function_list`)
- 7.           ├─base::withVisible(function_list[[k]](value))
- 8.           └─function_list[[k]](value)
- 9.             └─rlang:::T(.)
+ 1. ├─NA %>% T()
+ 2. └─rlang:::T(.)
 
 Collapsed:
     █
- 1. └─[ NA %>% T() ] with 7 more calls
- 9.   └─rlang:::T(.)
+ 1. ├─[ NA %>% T() ]
+ 2. └─rlang:::T(.)
 
 Branch:
- 9. rlang:::T(.)
+ 1. NA %>% T()
+ 2. rlang:::T(.)
