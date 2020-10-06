@@ -1,12 +1,12 @@
 Full:
      █
   1. └─rlang:::f()
-  2.   ├─base::eval(quote(eval(quote(g())))) testthat/test-trace.R:58:7
+  2.   ├─base::eval(quote(eval(quote(g())))) test-trace.R:66:7
   3.   │ └─base::eval(quote(eval(quote(g()))))
   4.   ├─base::eval(quote(g()))
   5.   │ └─base::eval(quote(g()))
   6.   └─rlang:::g()
-  7.     ├─base::tryCatch(eval(quote(h())), foo = identity, bar = identity) testthat/test-trace.R:59:7
+  7.     ├─base::tryCatch(eval(quote(h())), foo = identity, bar = identity) test-trace.R:67:7
   8.     │ └─base:::tryCatchList(expr, classes, parentenv, handlers)
   9.     │   ├─base:::tryCatchOne(...)
  10.     │   │ └─base:::doTryCatch(return(expr), name, parentenv, handler)
@@ -20,10 +20,10 @@ Full:
 Collapsed:
      █
   1. └─rlang:::f()
-  2.   ├─[ base::eval(...) ] with 1 more call testthat/test-trace.R:58:7
+  2.   ├─[ base::eval(...) ] with 1 more call test-trace.R:66:7
   4.   ├─[ base::eval(...) ] with 1 more call
   6.   └─rlang:::g()
-  7.     ├─[ base::tryCatch(...) ] with 6 more calls testthat/test-trace.R:59:7
+  7.     ├─[ base::tryCatch(...) ] with 6 more calls test-trace.R:67:7
  14.     ├─[ base::eval(...) ] with 1 more call
  16.     └─rlang:::h()
 

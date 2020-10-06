@@ -4,6 +4,10 @@ context("trace.R")
 test_that("tree printing only changes deliberately", {
   skip_unless_utf8()
 
+  # Because of srcrefs
+  skip_on_cran()
+  skip_if_not_installed("testthat", "2.99.0")
+
   local_options(
     rlang_trace_format_srcrefs = TRUE,
     `rlang:::trace_force_dangling_srcrefs` = TRUE
@@ -30,6 +34,10 @@ test_that("tree printing only changes deliberately", {
 
 test_that("can print tree with collapsed branches", {
   skip_unless_utf8()
+
+  # Because of srcrefs
+  skip_on_cran()
+  skip_if_not_installed("testthat", "2.99.0")
 
   # Fake eval() call does not have same signature on old R
   skip_if(getRversion() < "3.4")
