@@ -1,5 +1,5 @@
 
-# rlang (development version)
+# rlang 0.4.8
 
 * Backtraces now include native stacks (e.g. from C code) when the
   [winch](https://r-prof.github.io/winch/) package is installed and
