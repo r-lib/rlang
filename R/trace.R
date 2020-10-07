@@ -90,6 +90,7 @@ trace_back <- function(top = NULL, bottom = NULL) {
   parents <- normalise_parents(parents)
 
   trace <- new_trace(calls, parents)
+  trace <- add_winch_trace(trace)
   trace <- trace_trim_env(trace, frames, top)
 
   trace
@@ -252,13 +253,37 @@ new_trace <- function(calls, parents, indices = NULL) {
       parents = parents,
       indices = indices
     ),
-    class = "rlang_trace"
+    class = "rlang_trace",
+    # Increment this number when the internal format for the class changes
+    version = 1L
   )
 }
 
 trace_reset_indices <- function(trace) {
   trace$indices <- seq_len(trace_length(trace))
   trace
+}
+
+# Can't use new_environment() here
+winch_available_env <- new.env(parent = emptyenv())
+
+add_winch_trace <- function(trace) {
+  avail <- winch_available_env$installed
+  if (is_null(avail)) {
+    avail <- rlang::is_installed("winch")
+    winch_available_env$installed <- avail
+  }
+
+  if (!avail) {
+    return(trace)
+  }
+
+  use_winch <- peek_option("rlang_trace_use_winch") %||% FALSE
+  if (!is_true(as.logical(use_winch))) {
+    return(trace)
+  }
+
+  winch::winch_add_trace_back(trace)
 }
 
 # Methods -----------------------------------------------------------------
@@ -703,6 +728,10 @@ is_uninformative_call <- function(call) {
 
   fn <- call[[1]]
 
+  if (is_winch_frame(fn)) {
+    return(TRUE)
+  }
+
   # Inlined functions occur with active bindings
   if (is_function(fn)) {
     return(TRUE)
@@ -717,6 +746,22 @@ is_uninformative_call <- function(call) {
   }
 
   FALSE
+}
+
+# To be replaced with a more structured way of disabling frames in
+# various displays
+is_winch_frame <- function(call) {
+  if (!is_call(call, "::")) {
+    return(FALSE)
+  }
+
+  lhs <- call[[2]]
+  if (!is_symbol(lhs)) {
+    return(FALSE)
+  }
+
+  name <- as_string(lhs)
+  grepl("^[/\\\\].+[.]", name)
 }
 
 trace_simplify_collapse <- function(trace) {

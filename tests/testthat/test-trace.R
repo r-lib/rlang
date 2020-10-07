@@ -1,5 +1,9 @@
 context("trace.R")
 
+local_options(
+  rlang_trace_use_winch = FALSE
+)
+
 # These tests must come first because print method includes srcrefs
 test_that("tree printing only changes deliberately", {
   skip_unless_utf8()
