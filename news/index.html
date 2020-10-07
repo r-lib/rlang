@@ -158,6 +158,7 @@
 <a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li><p>Backtraces now include native stacks (e.g. from C code) when the <a href="https://r-prof.github.io/winch/">winch</a> package is installed and <code>rlang_trace_use_winch</code> is set to <code>TRUE</code> (<a href='https://github.com/krlmlr'>@krlmlr</a>).</p></li>
 <li><p>Compatibility with upcoming testthat 3 and magrittr 2 releases.</p></li>
 <li><p><code><a href="../reference/get_env.html">get_env()</a></code> now returns the proper environment with primitive functions, i.e. the base namespace rather than the base environment (r-lib/downlit<a href='https://github.com/r-lib/rlang/issues/32'>#32</a>).</p></li>
 <li><p><code><a href="../reference/entrace.html">entrace()</a></code> no longer handles non-rlang errors that carry a backtrace. This improves compatibility with packages like callr.</p></li>
