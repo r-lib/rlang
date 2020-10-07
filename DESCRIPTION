@@ -32,5 +32,5 @@ Enhances:
 Encoding: UTF-8
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
-URL: http://rlang.r-lib.org, https://github.com/r-lib/rlang
+URL: https://rlang.r-lib.org, https://github.com/r-lib/rlang
 BugReports: https://github.com/r-lib/rlang/issues

@@ -43,8 +43,8 @@ Environments also constitute a data structure in their own
 right. They are a collection of uniquely named objects, subsettable
 by name and modifiable by reference. This latter property (see
 section on reference semantics) is especially useful for creating
-mutable OO systems (cf the \href{https://github.com/wch/R6}{R6 package}
-and the \href{http://ggplot2.tidyverse.org/articles/extending-ggplot2.html}{ggproto system}
+mutable OO systems (cf the \href{https://github.com/r-lib/R6}{R6 package}
+and the \href{https://ggplot2.tidyverse.org/articles/extending-ggplot2.html}{ggproto system}
 for extending ggplot2).
 }
 

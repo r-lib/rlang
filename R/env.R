@@ -24,9 +24,9 @@
 #' right. They are a collection of uniquely named objects, subsettable
 #' by name and modifiable by reference. This latter property (see
 #' section on reference semantics) is especially useful for creating
-#' mutable OO systems (cf the [R6 package](https://github.com/wch/R6)
+#' mutable OO systems (cf the [R6 package](https://github.com/r-lib/R6)
 #' and the [ggproto
-#' system](http://ggplot2.tidyverse.org/articles/extending-ggplot2.html)
+#' system](https://ggplot2.tidyverse.org/articles/extending-ggplot2.html)
 #' for extending ggplot2).
 #'
 #'
