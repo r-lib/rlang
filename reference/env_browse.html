@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create pairlists with splicing support — pairlist2 • rlang</title>
+<title>Browse environments — env_browse • rlang</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,8 @@
 
 
 
-<meta property="og:title" content="Create pairlists with splicing support — pairlist2" />
-<meta property="og:description" content="This pairlist constructor uses dynamic dots. Use
-it to manually create argument lists for calls or parameter lists
-for functions." />
+<meta property="og:title" content="Browse environments — env_browse" />
+<meta property="og:description" content="Browse environments" />
 
 
 
@@ -152,45 +150,37 @@ for functions." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create pairlists with splicing support</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/call.R'><code>R/call.R</code></a></small>
-    <div class="hidden name"><code>pairlist2.Rd</code></div>
+    <h1>Browse environments</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/env.R'><code>R/env.R</code></a></small>
+    <div class="hidden name"><code>env_browse.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This pairlist constructor uses <a href='dyn-dots.html'>dynamic dots</a>. Use
-it to manually create argument lists for calls or parameter lists
-for functions.</p>
+    <p>Browse environments</p>
     </div>
 
-    <pre class="usage"><span class='fu'>pairlist2</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>env_browse</span><span class='op'>(</span><span class='va'>env</span>, value <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+
+<span class='fu'>env_is_browsed</span><span class='op'>(</span><span class='va'>env</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>...</th>
-      <td><p>&lt;<a href='dyn-dots.html'>dynamic</a>&gt; Arguments stored in the
-pairlist. Empty arguments are preserved.</p></td>
+      <th>env</th>
+      <td><p>An environment.</p></td>
+    </tr>
+    <tr>
+      <th>value</th>
+      <td><p>Whether to browse <code>env</code>.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Unlike `exprs()`, `pairlist2()` evaluates its arguments.</span>
-<span class='fu'><a href='new_function.html'>new_function</a></span><span class='op'>(</span><span class='fu'>pairlist2</span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>1</span>, y <span class='op'>=</span> <span class='fl'>3</span> <span class='op'>*</span> <span class='fl'>6</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>x</span> <span class='op'>*</span> <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; function (x = 1, y = 18) 
-#&gt; x * y
-#&gt; &lt;environment: 0x7fa0b3d35608&gt;</div><div class='input'><span class='fu'><a href='new_function.html'>new_function</a></span><span class='op'>(</span><span class='fu'><a href='nse-defuse.html'>exprs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>1</span>, y <span class='op'>=</span> <span class='fl'>3</span> <span class='op'>*</span> <span class='fl'>6</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>x</span> <span class='op'>*</span> <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; function (x = 1, y = 3 * 6) 
-#&gt; x * y
-#&gt; &lt;environment: 0x7fa0b3d35608&gt;</div><div class='input'>
-<span class='co'># It preserves missing arguments, which is useful for creating</span>
-<span class='co'># parameters without defaults:</span>
-<span class='fu'><a href='new_function.html'>new_function</a></span><span class='op'>(</span><span class='fu'>pairlist2</span><span class='op'>(</span>x <span class='op'>=</span> , y <span class='op'>=</span> <span class='fl'>3</span> <span class='op'>*</span> <span class='fl'>6</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>x</span> <span class='op'>*</span> <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; function (x, y = 18) 
-#&gt; x * y
-#&gt; &lt;environment: 0x7fa0b3d35608&gt;</div></pre>
+    <p><code>env_browse()</code> returns the previous value of
+<code>env_is_browsed()</code> (a logical), invisibly.</p>
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
