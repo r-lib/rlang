@@ -40,7 +40,15 @@
 
 
 <meta property="og:title" content="Browse environments — env_browse" />
-<meta property="og:description" content="Browse environments" />
+<meta property="og:description" content="
+
+env_browse(env) is equivalent to evaluating browser() in
+env. It persistently sets the environment for step-debugging.
+Supply value = FALSE to disable browsing.
+env_is_browsed() is a predicate that inspects whether an
+environment is being browsed.
+
+" />
 
 
 
@@ -156,7 +164,15 @@
     </div>
 
     <div class="ref-description">
-    <p>Browse environments</p>
+    
+<ul>
+<li><p><code>env_browse(env)</code> is equivalent to evaluating <code><a href='https://rdrr.io/r/base/browser.html'>browser()</a></code> in
+<code>env</code>. It persistently sets the environment for step-debugging.
+Supply <code>value = FALSE</code> to disable browsing.</p></li>
+<li><p><code>env_is_browsed()</code> is a predicate that inspects whether an
+environment is being browsed.</p></li>
+</ul>
+
     </div>
 
     <pre class="usage"><span class='fu'>env_browse</span><span class='op'>(</span><span class='va'>env</span>, value <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
