@@ -477,3 +477,8 @@ test_that("infix operators are sticky", {
 test_that("argument names are backticked if needed (#950)", {
   expect_identical(expr_deparse(quote(list(`a b` = 1))), "list(`a b` = 1)")
 })
+
+test_that("`next` and `break` are deparsed", {
+  expect_equal(expr_deparse(quote({ next; (break) })), c("{", "  next",  "  (break)", "}"))
+  expect_equal(expr_deparse(quote(a <- next <- break)), c("a <- next <- break"))
+})

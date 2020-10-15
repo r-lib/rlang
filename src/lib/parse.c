@@ -34,6 +34,8 @@ sexp* r_parse_eval(const char* str, sexp* env) {
 
 const struct r_op_precedence r_ops_precedence[R_OP_MAX] = {
   [R_OP_NONE]           = { .power =   0,  .assoc =  0,  .unary = false,  .delimited = false },
+  [R_OP_BREAK]          = { .power =   1,  .assoc =  0,  .unary = false,  .delimited =  true },
+  [R_OP_NEXT]           = { .power =   1,  .assoc =  0,  .unary = false,  .delimited =  true },
   [R_OP_FUNCTION]       = { .power =   5,  .assoc =  1,  .unary =  true,  .delimited = false },
   [R_OP_QUESTION]       = { .power =  10,  .assoc = -1,  .unary = false,  .delimited = false },
   [R_OP_QUESTION_UNARY] = { .power =  10,  .assoc = -1,  .unary =  true,  .delimited = false },
@@ -95,9 +97,9 @@ enum r_operator r_which_operator(sexp* call) {
   bool is_unary = r_node_cddr(call) == r_null;
 
   switch (name[0]) {
-  case 'w':
-    if (strcmp(name, "while") == 0) {
-      return R_OP_WHILE;
+  case 'b':
+    if (strcmp(name, "break") == 0) {
+      return R_OP_BREAK;
     } else {
       goto none;
     }
@@ -109,15 +111,27 @@ enum r_operator r_which_operator(sexp* call) {
     } else {
       goto none;
     }
+  case 'i':
+    if (strcmp(name, "if") == 0) {
+      return R_OP_IF;
+    } else {
+      goto none;
+    }
+  case 'n':
+    if (strcmp(name, "next") == 0) {
+      return R_OP_NEXT;
+    } else {
+      goto none;
+    }
   case 'r':
     if (strcmp(name, "repeat") == 0) {
       return R_OP_REPEAT;
     } else {
       goto none;
     }
-  case 'i':
-    if (strcmp(name, "if") == 0) {
-      return R_OP_IF;
+  case 'w':
+    if (strcmp(name, "while") == 0) {
+      return R_OP_WHILE;
     } else {
       goto none;
     }
@@ -368,6 +382,8 @@ enum r_operator r_which_operator(sexp* call) {
 const char* r_op_as_c_string(enum r_operator op) {
   switch (op) {
   case R_OP_NONE:           return "";
+  case R_OP_BREAK:          return "break";
+  case R_OP_NEXT:           return "next";
   case R_OP_WHILE:          return "while";
   case R_OP_FOR:            return "for";
   case R_OP_REPEAT:         return "repeat";

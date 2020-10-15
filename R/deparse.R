@@ -286,6 +286,14 @@ repeat_deparse <- function(x, lines = new_lines()) {
   lines$deparse(node_cadr(x))
   lines$get_lines()
 }
+next_deparse <- function(x, lines = new_lines()) {
+  lines$push("next")
+  lines$get_lines()
+}
+break_deparse <- function(x, lines = new_lines()) {
+  lines$push("break")
+  lines$get_lines()
+}
 if_deparse <- function(x, lines = new_lines()) {
   x <- node_cdr(x)
   lines$push("if (")
@@ -531,6 +539,8 @@ op_deparse <- function(op, x, lines) {
     `for` = for_deparse,
     `repeat` = repeat_deparse,
     `if` = if_deparse,
+    `next` = next_deparse,
+    `break` = break_deparse,
     `?` = ,
     `<-` = ,
     `<<-` = ,

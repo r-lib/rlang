@@ -8,6 +8,8 @@ sexp* r_parse_eval(const char* str, sexp* env);
 // Examples of silent operators are `else` and `in`.
 enum r_operator {
   R_OP_NONE = 0,
+  R_OP_BREAK,
+  R_OP_NEXT,
   R_OP_FUNCTION,
   R_OP_WHILE,
   R_OP_FOR,

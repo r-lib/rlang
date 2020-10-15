@@ -92,7 +92,7 @@ SEXP r_init_library() {
 
   for (int i = R_OP_NONE + 1; i < R_OP_MAX; ++i) {
     if (r_ops_precedence[i].power == 0) {
-      r_abort("Internal error: `r_ops_precedence` is not fully initialised");
+      Rf_error("Internal error: `r_ops_precedence` is not fully initialised");
     }
   }
 
