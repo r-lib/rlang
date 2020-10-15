@@ -169,6 +169,9 @@
     <loc>https://rlang.r-lib.org/reference/env_inherits.html</loc>
   </url>
   <url>
+    <loc>https://rlang.r-lib.org/reference/env_is_browsed.html</loc>
+  </url>
+  <url>
     <loc>https://rlang.r-lib.org/reference/env_lock.html</loc>
   </url>
   <url>

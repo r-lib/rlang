@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Is an object copyable? — is_copyable • rlang</title>
+<title>Is an environment being browsed? — env_is_browsed • rlang</title>
 
 
 <!-- jquery -->
@@ -39,14 +39,8 @@
 
 
 
-<meta property="og:title" content="Is an object copyable? — is_copyable" />
-<meta property="og:description" content="When an object is modified, R generally copies it (sometimes
-lazily) to enforce value semantics.
-However, some internal types are uncopyable. If you try to copy
-them, either with &amp;lt;- or by argument passing, you actually create
-references to the original object rather than actual
-copies. Modifying these references can thus have far reaching side
-effects." />
+<meta property="og:title" content="Is an environment being browsed? — env_is_browsed" />
+<meta property="og:description" content="Is an environment being browsed?" />
 
 
 
@@ -156,54 +150,27 @@ effects." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Is an object copyable?</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/types.R'><code>R/types.R</code></a></small>
-    <div class="hidden name"><code>is_copyable.Rd</code></div>
+    <h1>Is an environment being browsed?</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/env.R'><code>R/env.R</code></a></small>
+    <div class="hidden name"><code>env_is_browsed.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>When an object is modified, R generally copies it (sometimes
-lazily) to enforce <a href='https://en.wikipedia.org/wiki/Value_semantics'>value semantics</a>.
-However, some internal types are uncopyable. If you try to copy
-them, either with <code>&lt;-</code> or by argument passing, you actually create
-references to the original object rather than actual
-copies. Modifying these references can thus have far reaching side
-effects.</p>
+    <p>Is an environment being browsed?</p>
     </div>
 
-    <pre class="usage"><span class='fu'>is_copyable</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>env_is_browsed</span><span class='op'>(</span><span class='va'>env</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>An object to test.</p></td>
+      <th>env</th>
+      <td><p>An environment.</p></td>
     </tr>
     </table>
 
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Let's add attributes with structure() to uncopyable types. Since</span>
-<span class='co'># they are not copied, the attributes are changed in place:</span>
-<span class='va'>env</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/structure.html'>structure</a></span><span class='op'>(</span><span class='va'>env</span>, foo <span class='op'>=</span> <span class='st'>"bar"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;environment: 0x7ffe84ba1e48&gt;
-#&gt; attr(,"foo")
-#&gt; [1] "bar"</div><div class='input'><span class='va'>env</span>
-</div><div class='output co'>#&gt; &lt;environment: 0x7ffe84ba1e48&gt;
-#&gt; attr(,"foo")
-#&gt; [1] "bar"</div><div class='input'>
-<span class='co'># These objects that can only be changed with side effect are not</span>
-<span class='co'># copyable:</span>
-<span class='fu'>is_copyable</span><span class='op'>(</span><span class='va'>env</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/structure.html'>structure</a></span><span class='op'>(</span><span class='fu'>base</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/r/base/list.html'>list</a></span>, foo <span class='op'>=</span> <span class='st'>"bar"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; function (...)  .Primitive("list")
-#&gt; attr(,"foo")
-#&gt; [1] "bar"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='fu'>base</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>)</span>
-</div><div class='output co'>#&gt; function (...)  
-#&gt;  - attr(*, "foo")= chr "bar"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
