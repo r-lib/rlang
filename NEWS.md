@@ -1,6 +1,8 @@
 
 # rlang (development version)
 
+* `next` and `break` are now properly deparsed as nullary operators.
+
 * New `env_browse()` and `env_is_browsed()` functions. `env_browse()`
   is equivalent to evaluating `browser()` within an environment. It
   sets the environment to be persistently browsable (or unsets it if
