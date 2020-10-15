@@ -457,6 +457,19 @@ test_that("get_env() returns the base namespace for primitive functions (r-lib/d
   expect_identical(get_env(is.null), ns_env("base"))
 })
 
+test_that("can browse environments", {
+  env <- env()
+  expect_false(env_is_browsed(env))
+
+  old <- env_browse(env)
+  expect_false(old)
+  expect_true(env_is_browsed(env))
+
+  old <- env_browse(env, FALSE)
+  expect_true(old)
+  expect_false(env_is_browsed(env))
+})
+
 
 #  Lifecycle ---------------------------------------------------------
 

@@ -142,6 +142,8 @@ extern sexp* rlang_env_has(sexp*, sexp*, sexp*);
 extern sexp* rlang_env_poke(sexp*, sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_env_bind(sexp*, sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_raw_deparse_str(sexp*, sexp*, sexp*);
+extern sexp* rlang_env_browse(sexp*, sexp*);
+extern sexp* rlang_env_is_browsed(sexp*);
 
 // Library initialisation defined below
 sexp* rlang_library_load(sexp*);
@@ -318,6 +320,8 @@ static const r_callable r_callables[] = {
   {"rlang_env_poke",                    (r_fn_ptr) &rlang_env_poke, 5},
   {"rlang_env_bind",                    (r_fn_ptr) &rlang_env_bind, 5},
   {"rlang_raw_deparse_str",             (r_fn_ptr) &rlang_raw_deparse_str, 3},
+  {"rlang_env_browse",                  (r_fn_ptr) &rlang_env_browse, 2},
+  {"rlang_env_is_browsed",              (r_fn_ptr) &rlang_env_is_browsed, 1},
   {NULL, NULL, 0}
 };
 

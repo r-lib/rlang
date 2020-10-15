@@ -1,6 +1,11 @@
 
 # rlang (development version)
 
+* New `env_browse()` and `env_is_browsed()` functions. `env_browse()`
+  is equivalent to evaluating `browser()` within an environment. It
+  sets the environment to be persistently browsable (or unsets it if
+  `value = FALSE` is supplied).
+
 
 # rlang 0.4.8
 

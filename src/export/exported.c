@@ -96,6 +96,26 @@ sexp* rlang_env_bind_list(sexp* env, sexp* names, sexp* data) {
   return r_null;
 }
 
+sexp* rlang_env_browse(sexp* env, sexp* value) {
+  if (r_typeof(env) != r_type_environment) {
+    r_abort("`env` must be an environment.");
+  }
+  if (!r_is_bool(value)) {
+    r_abort("`value` must be a single logical value.");
+  }
+
+  sexp* old = r_lgl(RDEBUG(env));
+  SET_RDEBUG(env, r_lgl_get(value, 0));
+  return old;
+}
+
+sexp* rlang_env_is_browsed(sexp* env) {
+  if (r_typeof(env) != r_type_environment) {
+    r_abort("`env` must be an environment.");
+  }
+  return r_lgl(RDEBUG(env));
+}
+
 
 // eval.c
 
