@@ -101,7 +101,7 @@ double r_double_mult(double x, double y) {
   double out = x * y;
 
   if (!isfinite(out)) {
-    r_stop_internal("r_double_mult", "Can't multiple double values.");
+    r_stop_internal("r_double_mult", "Can't multiply double values.");
   }
 
   return out;
