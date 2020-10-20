@@ -65,4 +65,13 @@ r_ssize r_ssize_mult(r_ssize x, r_ssize y) {
   r_stop_internal("r_ssize_mult", "Result too large for an `r_ssize`.");
 }
 
+static inline
+r_ssize r_ssize_min(r_ssize x, r_ssize y) {
+  return (y < x) ? y : x;
+}
+static inline
+r_ssize r_ssize_max(r_ssize x, r_ssize y) {
+  return (y < x) ? x : y;
+}
+
 #endif
