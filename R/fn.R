@@ -430,11 +430,8 @@ as_function <- function(x, env = caller_env()) {
   }
 
   if (is_quosure(x)) {
-    fn <- blast(function(...) eval_tidy(!!x))
-
-    # Zap srcrefs
-    fn <- unstructure(fn)
-
+    mask <- eval_tidy(call2(environment), env = quo_get_env(x))
+    fn <- new_function(pairlist2(... = ), quo_get_expr(x), mask)
     return(fn)
   }
 

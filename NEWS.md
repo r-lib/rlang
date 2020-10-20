@@ -1,6 +1,9 @@
 
 # rlang (development version)
 
+* Functions created from quosures with `as_function()` now print in a
+  more user friendly way.
+
 * The exit status of is now preserved in non-interactive sessions when
   `entrace()` is used as an `options(error = )` handler (#1052,
   rstudio/bookdown#920).

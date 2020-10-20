@@ -289,3 +289,8 @@ test_that("arguments of closured primitives are matched by name after `...`", {
 test_that("transforming defused formula to function causes an informative error (#953)", {
   expect_error(as_function(quote(~foo)), "defused formula")
 })
+
+test_that("functions created from quosures with as_function() print properly", {
+  fn <- as_function(quo(x))
+  expect_equal(body(fn), quote(x))
+})
