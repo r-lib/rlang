@@ -430,7 +430,12 @@ as_function <- function(x, env = caller_env()) {
   }
 
   if (is_quosure(x)) {
-    return(eval(expr(function(...) eval_tidy(!!x))))
+    fn <- blast(function(...) eval_tidy(!!x))
+
+    # Zap srcrefs
+    fn <- unstructure(fn)
+
+    return(fn)
   }
 
   if (is_formula(x)) {
