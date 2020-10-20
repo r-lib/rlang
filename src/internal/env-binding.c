@@ -189,7 +189,7 @@ sexp* rlang_env_bind(sexp* env,
   enum bind_type c_bind_type = parse_bind_type(bind_type);
 
   if (r_typeof(values) != r_type_list) {
-    r_stop_internal_error("rlang_env_bind", "`values` must be a list.");
+    r_stop_internal("rlang_env_bind", "`values` must be a list.");
   }
 
   r_ssize n = r_length(values);

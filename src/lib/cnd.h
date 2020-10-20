@@ -38,7 +38,7 @@ enum r_condition_type r_cnd_type(sexp* cnd);
 
 static inline
 __attribute__((noreturn))
-void r_stop_internal_error(const char* fn, const char* msg) {
+void r_stop_internal(const char* fn, const char* msg) {
   r_abort("Internal error in `%s()`: %s", fn, msg);
 }
 
