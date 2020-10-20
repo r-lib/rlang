@@ -163,7 +163,7 @@ sys_body <- function(n) {
 entrace_handle_top <- function(trace) {
   # Happens with ctrl-c at top-level
   if (!trace_length(trace)) {
-    return()
+    return(entrace_exit())
   }
 
   stop_call <- sys.call(-2)
@@ -175,7 +175,7 @@ entrace_handle_top <- function(trace) {
 
   # No need to do anything for rlang errors
   if (from_stop && (is_trace(cnd$trace) || is_true(cnd$rlang_entraced))) {
-    return(NULL)
+    return(entrace_exit())
   }
 
   if (from_stop) {
@@ -197,6 +197,16 @@ entrace_handle_top <- function(trace) {
   backtrace_lines <- format_onerror_backtrace(err)
   if (length(backtrace_lines)) {
     cat_line(backtrace_lines)
+  }
+
+  entrace_exit()
+}
+
+entrace_exit <- function() {
+  # Disable error handler in non-interactive sessions to force
+  # non-zero exit (#1052, rstudio/bookdown#920)
+  if (!is_interactive()) {
+    options(error = NULL)
   }
 
   NULL

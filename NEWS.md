@@ -1,6 +1,10 @@
 
 # rlang (development version)
 
+* The exit status of is now preserved in non-interactive sessions when
+  `entrace()` is used as an `options(error = )` handler (#1052,
+  rstudio/bookdown#920).
+
 * `next` and `break` are now properly deparsed as nullary operators.
 
 * New `env_browse()` and `env_is_browsed()` functions. `env_browse()`
