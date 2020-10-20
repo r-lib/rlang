@@ -186,7 +186,7 @@ test_that("rlang and base errors are properly entraced", {
 
 test_that("entrace() preserves exit status in non-interactive sessions (#1052, rstudio/bookdown#920)", {
   out <- Rscript(shQuote(c("--vanilla", "-e", 'options(error = rlang::entrace); stop("An error")')))
-  expect_equal(out$status, 1L)
+  expect_false(out$status == 0L)
 
   code <- '
   {
@@ -197,5 +197,5 @@ test_that("entrace() preserves exit status in non-interactive sessions (#1052, r
     f()
   }'
   out <- Rscript(shQuote(c("--vanilla", "-e", code)))
-  expect_equal(out$status, 1L)
+  expect_false(out$status == 0L)
 })
