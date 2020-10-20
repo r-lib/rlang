@@ -50,8 +50,7 @@ Rscript <- function(args, ...) {
     args,
     ...,
     stdout = TRUE,
-    stderr = TRUE,
-    timeout = 3
+    stderr = TRUE
   ))
 
   list(
