@@ -158,6 +158,7 @@
 <a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li><p>Functions created from quosures with <code><a href="../reference/as_function.html">as_function()</a></code> now print in a more user friendly way.</p></li>
 <li><p>The exit status of is now preserved in non-interactive sessions when <code><a href="../reference/entrace.html">entrace()</a></code> is used as an <code><a href="https://rdrr.io/r/base/options.html">options(error = )</a></code> handler (<a href='https://github.com/r-lib/rlang/issues/1052'>#1052</a>, rstudio/bookdown<a href='https://github.com/r-lib/rlang/issues/920'>#920</a>).</p></li>
 <li><p><code>next</code> and <code>break</code> are now properly deparsed as nullary operators.</p></li>
 <li><p>New <code><a href="../reference/env_browse.html">env_browse()</a></code> and <code><a href="../reference/env_browse.html">env_is_browsed()</a></code> functions. <code><a href="../reference/env_browse.html">env_browse()</a></code> is equivalent to evaluating <code><a href="https://rdrr.io/r/base/browser.html">browser()</a></code> within an environment. It sets the environment to be persistently browsable (or unsets it if <code>value = FALSE</code> is supplied).</p></li>
