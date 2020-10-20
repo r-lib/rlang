@@ -1,6 +1,9 @@
 
 # rlang (development version)
 
+* Fixed bug that prevented splicing a named empty vector with the
+  `!!!` operator (#1045).
+
 * Functions created from quosures with `as_function()` now print in a
   more user friendly way.
 

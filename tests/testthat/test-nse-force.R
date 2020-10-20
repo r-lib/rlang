@@ -722,3 +722,9 @@ test_that(".data[[quo(foo)]] creates strings (#807)", {
   expect_identical(expr(call(.data[[quo(foo)]])), quote(call(.data[["foo"]])))
   expect_identical(expr(call(.data[[!!quo(foo)]])), quote(call(.data[["foo"]])))
 })
+
+test_that("can splice named empty vectors (#1045)", {
+  # Work around bug in `Rf_coerceVector()`
+  x <- named(dbl())
+  expect_equal(expr(foo(!!!x)), quote(foo()))
+})

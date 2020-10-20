@@ -254,7 +254,13 @@ sexp* big_bang_coerce_pairlist(sexp* x, bool deep) {
   case r_type_character:
   case r_type_raw:
   case r_type_list:
-    x = r_vec_coerce(x, r_type_pairlist);
+    // Check for length because `Rf_coerceVector()` to pairlist fails
+    // with named empty vectors (#1045)
+    if (r_length(x)) {
+      x = r_vec_coerce(x, r_type_pairlist);
+    } else {
+      x = r_null;
+    }
     break;
   case r_type_call:
     if (deep && r_is_symbol(r_node_car(x), "{")) {
