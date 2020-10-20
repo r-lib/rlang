@@ -51,6 +51,9 @@ the form \code{package:name}.
 environment of packages if they are attached to the search path,
 and throws an error otherwise. It is a shortcut for
 \code{search_env(pkg_env_name("pkgname"))}.
+\item \code{global_env()} and \code{base_env()} (simple aliases for \code{\link[=globalenv]{globalenv()}}
+and \code{\link[=baseenv]{baseenv()}}). These are respectively the first and last
+environments of the search path.
 \item \code{is_attached()} returns \code{TRUE} when its argument (a search name
 or a package environment) is attached to the search path.
 }
@@ -62,8 +65,8 @@ This chain of environments determines what objects are visible from
 the global workspace. It contains the following elements:
 \itemize{
 \item The chain always starts with \code{global_env()} and finishes with
-\code{base_env()} (technically, it finishes with the \code{empty_env()}
-which the base package environment inherits from).
+\code{base_env()} which inherits from the terminal environment
+\code{empty_env()}.
 \item Each \code{\link[base:library]{base::library()}} call attaches a new package environment to
 the search path. Attached packages are associated with a \link[=env_name]{search name}.
 \item In addition, any list, data frame, or environment can be attached

@@ -22,6 +22,10 @@
 #'   and throws an error otherwise. It is a shortcut for
 #'   `search_env(pkg_env_name("pkgname"))`.
 #'
+#' - `global_env()` and `base_env()` (simple aliases for [globalenv()]
+#'   and [baseenv()]). These are respectively the first and last
+#'   environments of the search path.
+#'
 #' - `is_attached()` returns `TRUE` when its argument (a search name
 #'   or a package environment) is attached to the search path.
 #'
@@ -32,8 +36,8 @@
 #' the global workspace. It contains the following elements:
 #'
 #' - The chain always starts with `global_env()` and finishes with
-#'   `base_env()` (technically, it finishes with the `empty_env()`
-#'   which the base package environment inherits from).
+#'   `base_env()` which inherits from the terminal environment
+#'   `empty_env()`.
 #'
 #' - Each [base::library()] call attaches a new package environment to
 #'   the search path. Attached packages are associated with a [search
