@@ -43,3 +43,18 @@ skip_if_stale_backtrace <- local({
     skip_if(has_stale_backtrace)
   }
 })
+
+Rscript <- function(args, ...) {
+  out <- suppressWarnings(system2(
+    file.path(R.home("bin"), "Rscript"),
+    args,
+    ...,
+    stdout = TRUE,
+    stderr = TRUE
+  ))
+
+  list(
+    out = unstructure(out),
+    status = attr(out, "status")
+  )
+}

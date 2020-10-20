@@ -183,3 +183,22 @@ test_that("rlang and base errors are properly entraced", {
     cat_line(rlang)
   })
 })
+
+test_that("entrace() preserves exit status in non-interactive sessions (#1052, rstudio/bookdown#920)", {
+  # Probably because of <https://github.com/wch/r-source/commit/3055aa86>
+  skip_if(getRversion() < "3.3")
+
+  out <- Rscript(shQuote(c("--vanilla", "-e", 'options(error = rlang::entrace); stop("An error")')))
+  expect_false(out$status == 0L)
+
+  code <- '
+  {
+    options(error = rlang::entrace)
+    f <- function() g()
+    g <- function() h()
+    h <- function() stop("An error")
+    f()
+  }'
+  out <- Rscript(shQuote(c("--vanilla", "-e", code)))
+  expect_false(out$status == 0L)
+})
