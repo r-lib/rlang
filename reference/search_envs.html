@@ -54,6 +54,9 @@ pkg_env() takes a bare package name and returns the scoped
 environment of packages if they are attached to the search path,
 and throws an error otherwise. It is a shortcut for
 search_env(pkg_env_name(&quot;pkgname&quot;)).
+global_env() and base_env() (simple aliases for globalenv()
+and baseenv()). These are respectively the first and last
+environments of the search path.
 is_attached() returns TRUE when its argument (a search name
 or a package environment) is attached to the search path.
 
@@ -187,6 +190,9 @@ the form <code>package:name</code>.</p></li>
 environment of packages if they are attached to the search path,
 and throws an error otherwise. It is a shortcut for
 <code>search_env(pkg_env_name("pkgname"))</code>.</p></li>
+<li><p><code>global_env()</code> and <code>base_env()</code> (simple aliases for <code><a href='https://rdrr.io/r/base/environment.html'>globalenv()</a></code>
+and <code><a href='https://rdrr.io/r/base/environment.html'>baseenv()</a></code>). These are respectively the first and last
+environments of the search path.</p></li>
 <li><p><code>is_attached()</code> returns <code>TRUE</code> when its argument (a search name
 or a package environment) is attached to the search path.</p></li>
 </ul>
@@ -235,8 +241,8 @@ of a package environment is prefixed with <code>"package:"</code>.</p></td>
 <p>This chain of environments determines what objects are visible from
 the global workspace. It contains the following elements:</p><ul>
 <li><p>The chain always starts with <code>global_env()</code> and finishes with
-<code>base_env()</code> (technically, it finishes with the <code><a href='empty_env.html'>empty_env()</a></code>
-which the base package environment inherits from).</p></li>
+<code>base_env()</code> which inherits from the terminal environment
+<code><a href='empty_env.html'>empty_env()</a></code>.</p></li>
 <li><p>Each <code><a href='https://rdrr.io/r/base/library.html'>base::library()</a></code> call attaches a new package environment to
 the search path. Attached packages are associated with a <a href='env_name.html'>search name</a>.</p></li>
 <li><p>In addition, any list, data frame, or environment can be attached
