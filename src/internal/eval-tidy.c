@@ -160,14 +160,14 @@ sexp* rlang_new_data_mask(sexp* bottom, sexp* top) {
   sexp* data_mask;
 
   if (bottom == r_null) {
-    bottom = KEEP(r_new_environment(r_empty_env, 0));
+    bottom = KEEP(r_new_environment(r_empty_env, 100));
     data_mask = bottom;
   } else {
     check_data_mask_input(bottom, "bottom");
     // Create a child because we don't know what might be in `bottom`
     // and we need to clear its contents without deleting any object
     // created in the data mask environment
-    data_mask = KEEP(r_new_environment(bottom, 0));
+    data_mask = KEEP(r_new_environment(bottom, 100));
   }
 
   if (top == r_null) {
@@ -271,6 +271,7 @@ static void warn_env_as_mask_once() {
 }
 
 static sexp* data_pronoun_sym = NULL;
+static r_ssize mask_length(r_ssize n);
 
 sexp* rlang_as_data_mask(sexp* data) {
   if (mask_info(data).type == RLANG_MASK_DATA) {
@@ -304,7 +305,9 @@ sexp* rlang_as_data_mask(sexp* data) {
     check_unique_names(data);
 
     sexp* names = r_names(data);
-    bottom = KEEP_N(r_new_environment(r_empty_env, 0), n_protect);
+
+    r_ssize n_mask = mask_length(r_length(data));
+    bottom = KEEP_N(r_new_environment(r_empty_env, n_mask), n_protect);
 
     if (names != r_null) {
       r_ssize n = r_length(data);
@@ -333,6 +336,12 @@ sexp* rlang_as_data_mask(sexp* data) {
 
   FREE(n_protect);
   return data_mask;
+}
+
+static
+r_ssize mask_length(r_ssize n) {
+  r_ssize n_grown = r_double_as_ssize(r_double_mult(r_ssize_as_double(n), 1.05));
+  return r_ssize_max(n_grown, r_ssize_add(n, 20));
 }
 
 // For compatibility of the exported C callable
