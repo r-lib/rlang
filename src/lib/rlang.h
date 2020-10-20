@@ -14,6 +14,7 @@ typedef Rcomplex r_complex_t;
 
 typedef R_xlen_t r_ssize;
 #define R_SSIZE_MAX R_XLEN_T_MAX
+#define R_SSIZE_MIN (-R_XLEN_T_MAX)
 
 r_ssize r_as_ssize(sexp* n);
 
