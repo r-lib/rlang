@@ -87,8 +87,6 @@ double r_ssize_as_double(r_ssize x) {
 
 static inline
 r_ssize r_double_as_ssize(double x) {
-  x = round(x);
-
   if (x > R_SSIZE_MAX || x < R_SSIZE_MIN) {
     r_stop_internal("r_ssize_as_double", "Result can't be represented as `r_ssize`.");
   }
