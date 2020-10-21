@@ -1,6 +1,9 @@
 
 # rlang (development version)
 
+* `as_data_mask()` now intialises environments of the correct size to
+  improve efficiency (#1048).
+
 * Fixed bug that prevented splicing a named empty vector with the
   `!!!` operator (#1045).
 

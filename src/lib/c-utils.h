@@ -1,6 +1,7 @@
 #ifndef RLANG_C_UTILS_H
 #define RLANG_C_UTILS_H
 
+#include <float.h>
 #include "cnd.h"
 
 
@@ -69,9 +70,39 @@ static inline
 r_ssize r_ssize_min(r_ssize x, r_ssize y) {
   return (y < x) ? y : x;
 }
+
 static inline
 r_ssize r_ssize_max(r_ssize x, r_ssize y) {
   return (y < x) ? x : y;
+}
+
+static inline
+double r_ssize_as_double(r_ssize x) {
+  if (x > DBL_MAX || x < -DBL_MAX) {
+    r_stop_internal("r_ssize_as_double", "Result can't be represented as `double`.");
+  }
+
+  return (double) x;
+}
+
+static inline
+r_ssize r_double_as_ssize(double x) {
+  if (x > R_SSIZE_MAX || x < R_SSIZE_MIN) {
+    r_stop_internal("r_ssize_as_double", "Result can't be represented as `r_ssize`.");
+  }
+
+  return (r_ssize) x;
+}
+
+static inline
+double r_double_mult(double x, double y) {
+  double out = x * y;
+
+  if (!isfinite(out)) {
+    r_stop_internal("r_double_mult", "Can't multiply double values.");
+  }
+
+  return out;
 }
 
 #endif
