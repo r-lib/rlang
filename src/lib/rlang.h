@@ -50,6 +50,13 @@ enum r_type {
   r_type_function    = 99
 };
 
+#include <Rversion.h>
+#if (R_VERSION < R_Version(3, 5, 0))
+# define r_list_deref_const(x) ((sexp* const *) STRING_PTR(x))
+#else
+# define r_list_deref_const(x) ((sexp* const *) DATAPTR_RO(x))
+#endif
+
 
 #define r_null R_NilValue
 extern sexp* r_shared_true;

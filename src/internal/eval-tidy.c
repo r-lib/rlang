@@ -312,12 +312,14 @@ sexp* rlang_as_data_mask(sexp* data) {
     if (names != r_null) {
       r_ssize n = r_length(data);
 
+      sexp* const * p_names = r_chr_deref_const(names);
+      sexp* const * p_data = r_list_deref_const(data);
+
       for (r_ssize i = 0; i < n; ++i) {
         // Ignore empty or missing names
-        sexp* nm = r_chr_get(names, i);
+        sexp* nm = p_names[i];
         if (r_str_is_name(nm)) {
-          sexp* elt = r_list_get(data, i);
-          r_env_poke(bottom, r_str_as_symbol(nm), elt);
+          r_env_poke(bottom, r_str_as_symbol(nm), p_data[i]);
         }
       }
     }
