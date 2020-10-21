@@ -158,6 +158,7 @@
 <a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li><p><code><a href="../reference/as_data_mask.html">as_data_mask()</a></code> now intialises environments of the correct size to improve efficiency (<a href='https://github.com/r-lib/rlang/issues/1048'>#1048</a>).</p></li>
 <li><p>Fixed bug that prevented splicing a named empty vector with the <code>!!!</code> operator (<a href='https://github.com/r-lib/rlang/issues/1045'>#1045</a>).</p></li>
 <li><p>Functions created from quosures with <code><a href="../reference/as_function.html">as_function()</a></code> now print in a more user friendly way.</p></li>
 <li><p>The exit status of is now preserved in non-interactive sessions when <code><a href="../reference/entrace.html">entrace()</a></code> is used as an <code><a href="https://rdrr.io/r/base/options.html">options(error = )</a></code> handler (<a href='https://github.com/r-lib/rlang/issues/1052'>#1052</a>, rstudio/bookdown<a href='https://github.com/r-lib/rlang/issues/920'>#920</a>).</p></li>
