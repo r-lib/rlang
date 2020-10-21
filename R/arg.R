@@ -241,7 +241,7 @@ missing_arg <- function() {
 #' @rdname missing_arg
 #' @export
 is_missing <- function(x) {
-  .External2(rlang_ext2_is_missing, missing(x))
+  missing(x) || is_reference(x, quote(expr = ))
 }
 
 #' @rdname missing_arg

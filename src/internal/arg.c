@@ -75,17 +75,6 @@ sexp* rlang_enquo(sexp* sym, sexp* frame) {
   return quo;
 }
 
-sexp* rlang_ext2_is_missing(sexp* _call, sexp* _op, sexp* args, sexp* env) {
-  args = r_node_cdr(args);
-
-  sexp* missing = r_eval(r_node_car(args), env);
-  if (r_lgl_get(missing, 0)) {
-    return r_shared_true;
-  }
-
-  return r_lgl(r_eval(r_syms_x, env) == r_syms_missing);
-}
-
 static sexp* stop_arg_match_call = NULL;
 static sexp* arg_nm_sym = NULL;
 void arg_match0_abort(const char* msg, sexp* env);
