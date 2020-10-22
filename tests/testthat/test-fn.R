@@ -294,3 +294,17 @@ test_that("functions created from quosures with as_function() print properly", {
   fn <- as_function(quo(x))
   expect_equal(body(fn), quote(x))
 })
+
+test_that("as_function() creates functions that respect visibility", {
+  f <- as_function(quo(invisible(1)))
+  expect_invisible(f())
+
+  f <- as_function(quo(1))
+  expect_visible(f())
+
+  f <- as_function(~ invisible(1))
+  expect_invisible(f())
+
+  f <- as_function(~ 1)
+  expect_visible(f())
+})
