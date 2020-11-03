@@ -163,7 +163,7 @@ Conditions are objects that power the error system in R. They can
 also be used for passing messages to pre-established handlers.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>error_cnd</span><span class='op'>(</span>.subclass <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span>, message <span class='op'>=</span> <span class='st'>""</span>, trace <span class='op'>=</span> <span class='cn'>NULL</span>, parent <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>error_cnd</span><span class='op'>(</span>class <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span>, message <span class='op'>=</span> <span class='st'>""</span>, trace <span class='op'>=</span> <span class='cn'>NULL</span>, parent <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
 <span class='fu'>cnd</span><span class='op'>(</span><span class='va'>class</span>, <span class='va'>...</span>, message <span class='op'>=</span> <span class='st'>""</span>, <span class='va'>.subclass</span><span class='op'>)</span>
 
@@ -175,11 +175,8 @@ also be used for passing messages to pre-established handlers.</p>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>.subclass</th>
-      <td><p>This argument was renamed to <code>class</code> in rlang
-0.4.2.  It will be deprecated in the next major version. This is
-for consistency with our conventions for class constructors
-documented in <a href='https://adv-r.hadley.nz/s3.html#s3-subclassing'>https://adv-r.hadley.nz/s3.html#s3-subclassing</a>.</p></td>
+      <th>class</th>
+      <td><p>The condition subclass.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -200,8 +197,11 @@ condition when it is signalled.</p></td>
       <td><p>A parent condition object created by <code><a href='abort.html'>abort()</a></code>.</p></td>
     </tr>
     <tr>
-      <th>class</th>
-      <td><p>The condition subclass.</p></td>
+      <th>.subclass</th>
+      <td><p>This argument was renamed to <code>class</code> in rlang
+0.4.2.  It will be deprecated in the next major version. This is
+for consistency with our conventions for class constructors
+documented in <a href='https://adv-r.hadley.nz/s3.html#s3-subclassing'>https://adv-r.hadley.nz/s3.html#s3-subclassing</a>.</p></td>
     </tr>
     </table>
 
