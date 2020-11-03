@@ -7,7 +7,7 @@
 \alias{message_cnd}
 \title{Create a condition object}
 \usage{
-error_cnd(.subclass = NULL, ..., message = "", trace = NULL, parent = NULL)
+error_cnd(class = NULL, ..., message = "", trace = NULL, parent = NULL)
 
 cnd(class, ..., message = "", .subclass)
 
@@ -16,10 +16,7 @@ warning_cnd(class = NULL, ..., message = "", .subclass)
 message_cnd(class = NULL, ..., message = "", .subclass)
 }
 \arguments{
-\item{.subclass}{This argument was renamed to \code{class} in rlang
-0.4.2.  It will be deprecated in the next major version. This is
-for consistency with our conventions for class constructors
-documented in \url{https://adv-r.hadley.nz/s3.html#s3-subclassing}.}
+\item{class}{The condition subclass.}
 
 \item{...}{<\link[=dyn-dots]{dynamic}> Named data fields stored inside
 the condition object.}
@@ -31,7 +28,10 @@ condition when it is signalled.}
 
 \item{parent}{A parent condition object created by \code{\link[=abort]{abort()}}.}
 
-\item{class}{The condition subclass.}
+\item{.subclass}{This argument was renamed to \code{class} in rlang
+0.4.2.  It will be deprecated in the next major version. This is
+for consistency with our conventions for class constructors
+documented in \url{https://adv-r.hadley.nz/s3.html#s3-subclassing}.}
 }
 \description{
 These constructors make it easy to create subclassed conditions.

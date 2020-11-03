@@ -1,7 +1,7 @@
 
 #' @rdname cnd
 #' @export
-error_cnd <- function(.subclass = NULL,
+error_cnd <- function(class = NULL,
                       ...,
                       message = "",
                       trace = NULL,
@@ -12,8 +12,15 @@ error_cnd <- function(.subclass = NULL,
   if (!is_null(parent) && !inherits(parent, "condition")) {
     abort("`parent` must be NULL or a condition object")
   }
-  fields <- dots_list(trace = trace, parent = parent, ...)
-  .Call(rlang_new_condition, c(.subclass, "rlang_error", "error"), message, fields)
+  fields <- error_cnd_fields(trace = trace, parent = parent, ...)
+
+  .Call(rlang_new_condition, c(class, "rlang_error", "error"), message, fields)
+}
+error_cnd_fields <- function(trace, parent, ..., .subclass = NULL, env = caller_env()) {
+  if (!is_null(.subclass)) {
+    deprecate_subclass(.subclass, env)
+  }
+  list2(trace = trace, parent = parent, ...)
 }
 
 #' @export
