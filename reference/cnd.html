@@ -167,7 +167,7 @@ also be used for passing messages to pre-established handlers.</p>
 
 <span class='fu'>cnd</span><span class='op'>(</span><span class='va'>class</span>, <span class='va'>...</span>, message <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span>
 
-<span class='fu'>warning_cnd</span><span class='op'>(</span>class <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span>, message <span class='op'>=</span> <span class='st'>""</span>, <span class='va'>.subclass</span><span class='op'>)</span>
+<span class='fu'>warning_cnd</span><span class='op'>(</span>class <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span>, message <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span>
 
 <span class='fu'>message_cnd</span><span class='op'>(</span>class <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span>, message <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span></pre>
 
@@ -196,13 +196,6 @@ condition when it is signalled.</p></td>
       <th>parent</th>
       <td><p>A parent condition object created by <code><a href='abort.html'>abort()</a></code>.</p></td>
     </tr>
-    <tr>
-      <th>.subclass</th>
-      <td><p>This argument was renamed to <code>class</code> in rlang
-0.4.2.  It will be deprecated in the next major version. This is
-for consistency with our conventions for class constructors
-documented in <a href='https://adv-r.hadley.nz/s3.html#s3-subclassing'>https://adv-r.hadley.nz/s3.html#s3-subclassing</a>.</p></td>
-    </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -210,13 +203,6 @@ documented in <a href='https://adv-r.hadley.nz/s3.html#s3-subclassing'>https://a
     <p><code>cnd()</code> creates objects inheriting from <code>condition</code>. Conditions
 created with <code>error_cnd()</code>, <code>warning_cnd()</code> and <code>message_cnd()</code>
 inherit from <code>error</code>, <code>warning</code> or <code>message</code>.</p>
-    <h2 class="hasAnchor" id="lifecycle"><a class="anchor" href="#lifecycle"></a>Lifecycle</h2>
-
-    
-
-
-<p>The <code>.type</code> and <code>.msg</code> arguments have been renamed to <code>.subclass</code>
-and <code>message</code>. They are deprecated as of rlang 0.3.0.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='cnd_signal.html'>cnd_signal()</a></code>, <code><a href='with_handlers.html'>with_handlers()</a></code>.</p></div>

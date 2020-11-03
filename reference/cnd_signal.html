@@ -204,19 +204,6 @@ Use cnd_type() to determine the type of a condition." />
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="lifecycle"><a class="anchor" href="#lifecycle"></a>Lifecycle</h2>
-
-    
-
-<ul>
-<li><p><code>.cnd</code> has been renamed to <code>cnd</code> and is deprecated as of rlang 0.3.0.</p></li>
-<li><p>The <code>.mufflable</code> argument is deprecated as of rlang 0.3.0 and no
-longer has any effect. Non-critical conditions are always
-signalled with a muffle restart.</p></li>
-<li><p>Creating a condition object with <code>cnd_signal()</code> is deprecated as
-of rlang 0.3.0. Please use <code><a href='abort.html'>signal()</a></code> instead.</p></li>
-</ul>
-
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='abort.html'>abort()</a></code>, <code><a href='abort.html'>warn()</a></code> and <code><a href='abort.html'>inform()</a></code> for creating and
