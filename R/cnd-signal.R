@@ -1,4 +1,4 @@
-#' Signal a condition object
+ #' Signal a condition object
 #'
 #' @description
 #'
@@ -35,7 +35,7 @@
 #'   of rlang 0.3.0. Please use [signal()] instead.
 #'
 #' @param cnd A condition object (see [cnd()]).
-#' @param .cnd,.mufflable These arguments are deprecated.
+#' @param ... These dots are for extensions and must be empty.
 #' @seealso [abort()], [warn()] and [inform()] for creating and
 #'   signalling structured R conditions. See [with_handlers()] for
 #'   establishing condition handlers.
@@ -49,8 +49,8 @@
 #' # If it inherits from "error", an error is raised:
 #' cnd <- error_cnd("my_error_class", message = "This is an error")
 #' try(cnd_signal(cnd))
-cnd_signal <- function(cnd, .cnd, .mufflable) {
-  validate_cnd_signal_args(cnd, .cnd, .mufflable)
+cnd_signal <- function(cnd, ...) {
+  validate_cnd_signal_args(cnd, ...)
   if (inherits(cnd, "rlang_error") && is_null(cnd$trace)) {
     trace <- trace_back()
     cnd$trace <- trace_trim_context(trace, trace_length(trace))
@@ -59,8 +59,14 @@ cnd_signal <- function(cnd, .cnd, .mufflable) {
     invisible(.Call(rlang_cnd_signal, cnd))
   }
 }
-validate_cnd_signal_args <- function(cnd, .cnd, .mufflable,
+validate_cnd_signal_args <- function(cnd,
+                                     ...,
+                                     .cnd,
+                                     .mufflable,
                                      env = parent.frame()) {
+  if (dots_n(...)) {
+    abort("`...` must be empty.")
+  }
   if (is_character(cnd)) {
     warn_deprecated(paste_line(
       "Creating a condition with `cnd_signal()` is deprecated as of rlang 0.3.0.",

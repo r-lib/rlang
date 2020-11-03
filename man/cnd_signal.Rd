@@ -4,12 +4,12 @@
 \alias{cnd_signal}
 \title{Signal a condition object}
 \usage{
-cnd_signal(cnd, .cnd, .mufflable)
+cnd_signal(cnd, ...)
 }
 \arguments{
 \item{cnd}{A condition object (see \code{\link[=cnd]{cnd()}}).}
 
-\item{.cnd, .mufflable}{These arguments are deprecated.}
+\item{...}{These dots are for extensions and must be empty.}
 }
 \description{
 The type of signal depends on the class of the condition:
