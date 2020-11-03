@@ -38,13 +38,6 @@ also be used for passing messages to pre-established handlers.
 created with \code{error_cnd()}, \code{warning_cnd()} and \code{message_cnd()}
 inherit from \code{error}, \code{warning} or \code{message}.
 }
-\section{Lifecycle}{
-
-
-The \code{.type} and \code{.msg} arguments have been renamed to \code{.subclass}
-and \code{message}. They are deprecated as of rlang 0.3.0.
-}
-
 \examples{
 # Create a condition inheriting from the s3 type "foo":
 cnd <- cnd("foo")

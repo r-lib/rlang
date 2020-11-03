@@ -8,11 +8,6 @@
 #' created with `error_cnd()`, `warning_cnd()` and `message_cnd()`
 #' inherit from `error`, `warning` or `message`.
 #'
-#' @section Lifecycle:
-#'
-#' The `.type` and `.msg` arguments have been renamed to `.subclass`
-#' and `message`. They are deprecated as of rlang 0.3.0.
-#'
 #' @param class The condition subclass.
 #' @param ... <[dynamic][dyn-dots]> Named data fields stored inside
 #'   the condition object.
