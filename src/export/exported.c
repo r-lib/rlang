@@ -116,6 +116,10 @@ sexp* rlang_env_is_browsed(sexp* env) {
   return r_lgl(RDEBUG(env));
 }
 
+sexp* rlang_ns_registry_env() {
+  return R_NamespaceRegistry;
+}
+
 
 // eval.c
 
