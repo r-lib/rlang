@@ -1,5 +1,5 @@
 hash <- function(x) {
-  raw <- serialize(x, connection = NULL, version = 2L)
+  raw <- serialize(x, connection = NULL, version = 2L, ascii = FALSE)
   .Call(rlang_hash_raw, raw)
 }
 
