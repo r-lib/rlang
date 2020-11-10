@@ -15,5 +15,5 @@ test_that("only strings can be hashed", {
 
 test_that("arbitrary R objects can be hashed", {
   expect_identical(hash(c(1, 2, 3)), "af9e5c24af013c970922362b8850b060")
-  expect_identical(hash(data.frame(x = 1)), "65a37f3d72f58de9eb80cd1674896a60")
+  expect_identical(hash(c("x", "y", "z")), "6613cdf8668cb6e65ea0f9f29a6061f1")
 })
