@@ -308,3 +308,9 @@ test_that("as_function() creates functions that respect visibility", {
   f <- as_function(~ 1)
   expect_visible(f())
 })
+
+test_that("as_function() with a quosure can be serialised", {
+  fn <- as_function(local({ a <- 10; quo(a) }))
+  blob <- serialize(fn, NULL)
+  expect_equal(eval_tidy(fn), eval_tidy(unserialize(blob)))
+})
