@@ -1,6 +1,8 @@
 
 # rlang (development version)
 
+* Dropped support for the R 3.2 series.
+
 * `cnd_signal()` now ignores `NULL` inputs.
 
 * `as_data_mask()` now intialises environments of the correct size to
