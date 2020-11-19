@@ -351,8 +351,6 @@ extern sexp* rlang_env_dots_values(sexp*);
 extern sexp* rlang_env_dots_list(sexp*);
 
 export void R_init_rlang(r_dll_info* dll) {
-  r_register_c_callable("rlang", "rlang_squash_if", (r_fn_ptr) &r_squash_if);
-
   // The quosure functions are stable
   r_register_c_callable("rlang", "rlang_new_quosure", (r_fn_ptr) &rlang_new_quosure);
   r_register_c_callable("rlang", "rlang_is_quosure", (r_fn_ptr) &rlang_is_quosure);
@@ -375,9 +373,13 @@ export void R_init_rlang(r_dll_info* dll) {
   r_register_c_callable("rlang", "rlang_env_dots_values", (r_fn_ptr) &rlang_env_dots_values);
   r_register_c_callable("rlang", "rlang_env_dots_list", (r_fn_ptr) &rlang_env_dots_list);
   r_register_c_callable("rlang", "rlang_sym_as_character", (r_fn_ptr) &rlang_sym_as_character);
+  r_register_c_callable("rlang", "rlang_str_as_symbol", (r_fn_ptr) &r_str_as_symbol);
 
   // Experimental method for exporting C function pointers as actual R objects
   rlang_register_pointer("rlang", "rlang_test_is_spliceable", (r_fn_ptr) &rlang_is_clevel_spliceable);
+
+  // Experimental
+  r_register_c_callable("rlang", "rlang_squash_if", (r_fn_ptr) &r_squash_if);
 
   // Compatibility
   r_register_c_callable("rlang", "rlang_as_data_mask", (r_fn_ptr) &rlang_as_data_mask_compat);
