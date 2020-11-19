@@ -10,3 +10,17 @@ test_that("supports tidy dots", {
 test_that("does not inline expressions", {
   expect_equal(exec(list, x = expr(x), y = expr(y)), exprs(x = x, y = y))
 })
+
+test_that("inject() injects", {
+  expect_equal(
+    inject(quote(foo(!!(1:2), !!!1:3))),
+    call2("foo", 1:2, !!!1:3)
+  )
+
+  g <- function(x) substitute(x)
+  f <- function(x) inject(g({{ x }}))
+  expect_equal(
+    f(foo()),
+    quo(foo())
+  )
+})
