@@ -1,4 +1,3 @@
-context("test-exec")
 
 test_that("supports tidy dots", {
   expect_equal(exec(list, x = 1), list(x = 1))
