@@ -22,7 +22,8 @@
 #'
 #' Use [cnd_type()] to determine the type of a condition.
 #'
-#' @param cnd A condition object (see [cnd()]).
+#' @param cnd A condition object (see [cnd()]). If `NULL`,
+#'   `cnd_signal()` returns without signalling a condition.
 #' @param ... These dots are for extensions and must be empty.
 #' @seealso [abort()], [warn()] and [inform()] for creating and
 #'   signalling structured R conditions. See [with_handlers()] for
@@ -39,6 +40,10 @@
 #' try(cnd_signal(cnd))
 cnd_signal <- function(cnd, ...) {
   validate_cnd_signal_args(cnd, ...)
+  if (is_null(cnd)) {
+    return(invisible(NULL))
+  }
+
   if (inherits(cnd, "rlang_error") && is_null(cnd$trace)) {
     trace <- trace_back()
     cnd$trace <- trace_trim_context(trace, trace_length(trace))

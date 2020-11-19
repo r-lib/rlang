@@ -179,6 +179,10 @@ test_that("`.frequency_id` is mandatory", {
   expect_error(warn("foo", .frequency = "once"), "frequency_id")
 })
 
+test_that("cnd_signal() is a no-op with `NULL`", {
+  expect_null(catch_cnd(cnd_signal(NULL)))
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

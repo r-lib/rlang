@@ -1,6 +1,8 @@
 
 # rlang (development version)
 
+* `cnd_signal()` now ignores `NULL` inputs.
+
 * `as_data_mask()` now intialises environments of the correct size to
   improve efficiency (#1048).
 

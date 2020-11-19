@@ -7,7 +7,8 @@
 cnd_signal(cnd, ...)
 }
 \arguments{
-\item{cnd}{A condition object (see \code{\link[=cnd]{cnd()}}).}
+\item{cnd}{A condition object (see \code{\link[=cnd]{cnd()}}). If \code{NULL},
+\code{cnd_signal()} returns without signalling a condition.}
 
 \item{...}{These dots are for extensions and must be empty.}
 }
