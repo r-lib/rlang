@@ -40,7 +40,6 @@ extern sexp* rlang_duplicate(sexp*, sexp*);
 extern sexp* r_node_tree_clone(sexp*);
 extern sexp* rlang_node_tag(sexp*);
 extern sexp* rlang_node_poke_tag(sexp*, sexp*);
-extern sexp* rlang_eval(sexp*, sexp*);
 extern sexp* rlang_interp(sexp*, sexp*);
 extern sexp* rlang_is_function(sexp*);
 extern sexp* rlang_is_closure(sexp*);
@@ -182,7 +181,6 @@ static const r_callable r_callables[] = {
   {"rlang_capturedots",                 (r_fn_ptr) &rlang_capturedots, 4},
   {"rlang_duplicate",                   (r_fn_ptr) &rlang_duplicate, 2},
   {"rlang_node_tree_clone",             (r_fn_ptr) &r_node_tree_clone, 1},
-  {"rlang_eval",                        (r_fn_ptr) &rlang_eval, 2},
   {"rlang_interp",                      (r_fn_ptr) &rlang_interp, 2},
   {"rlang_is_function",                 (r_fn_ptr) &rlang_is_function, 1},
   {"rlang_is_closure",                  (r_fn_ptr) &rlang_is_closure, 1},
@@ -336,6 +334,7 @@ extern sexp* rlang_ext2_dots_values(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_ext2_exec(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_ext2_capturearginfo(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_ext2_capturedots(sexp*, sexp*, sexp*, sexp*);
+extern sexp* rlang_ext2_eval(sexp*, sexp*, sexp*, sexp*);
 
 static const r_external externals[] = {
   {"rlang_ext_arg_match0",              (r_fn_ptr) &rlang_ext_arg_match0, 3},
@@ -345,6 +344,7 @@ static const r_external externals[] = {
   {"rlang_ext2_exec",                   (r_fn_ptr) &rlang_ext2_exec, 2},
   {"rlang_ext2_capturearginfo",         (r_fn_ptr) &rlang_ext2_capturearginfo, 1},
   {"rlang_ext2_capturedots",            (r_fn_ptr) &rlang_ext2_capturedots, 1},
+  {"rlang_ext2_eval",                   (r_fn_ptr) &rlang_ext2_eval, 2},
   {NULL, NULL, 0}
 };
 

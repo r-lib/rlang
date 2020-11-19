@@ -1,4 +1,5 @@
 #include <rlang.h>
+#include "../internal/utils.h"
 
 
 // attrs.c
@@ -123,8 +124,9 @@ sexp* rlang_ns_registry_env() {
 
 // eval.c
 
-sexp* rlang_eval(sexp* expr, sexp* env) {
-  return Rf_eval(expr, env);
+sexp* rlang_ext2_eval(sexp* call, sexp* op, sexp* args, sexp* env) {
+  args = r_node_cdr(args);
+  return Rf_eval(r_node_car(args), r_node_cadr(args));
 }
 
 sexp* rlang_eval_top(sexp* expr, sexp* env) {

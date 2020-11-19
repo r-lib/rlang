@@ -96,7 +96,7 @@
 #' # But that's not the case with base::eval():
 #' fn(base::eval)
 eval_bare <- function(expr, env = parent.frame()) {
-  .Call(rlang_eval, expr, env)
+  .External2(rlang_ext2_eval, expr, env)
 }
 
 #' Evaluate an expression within a given environment
@@ -154,12 +154,12 @@ eval_bare <- function(expr, env = parent.frame()) {
 #' # This can be handy to put dictionaries in scope:
 #' with_env(mtcars, cyl)
 with_env <- function(env, expr) {
-  .Call(rlang_eval, substitute(expr), as_environment(env, caller_env()))
+  .External2(rlang_ext2_eval, substitute(expr), as_environment(env, caller_env()))
 }
 #' @rdname with_env
 #' @export
 locally <- function(expr) {
-  .Call(rlang_eval, substitute(expr), child_env(caller_env()))
+  .External2(rlang_ext2_eval, substitute(expr), child_env(caller_env()))
 }
 
 #' Invoke a function with a list of arguments
@@ -242,7 +242,7 @@ invoke <- function(.fn, .args = list(), ...,
       .fn <- env_get(.env, .fn, inherit = TRUE)
     }
     call <- call2(.fn, !!! args)
-    return(.Call(rlang_eval, call, .env))
+    return(.External2(rlang_ext2_eval, call, .env))
   }
 
 
@@ -264,7 +264,7 @@ invoke <- function(.fn, .args = list(), ...,
   }
 
   call <- call2(.fn, !!! args)
-  .Call(rlang_eval, call, .env)
+  .External2(rlang_ext2_eval, call, .env)
 }
 
 value <- function(expr) {
@@ -365,5 +365,5 @@ exec <- function(.fn, ..., .env = caller_env()) {
 #' args <- list(na.rm = TRUE, finite = 0.2)
 #' inject(mean(1:10, !!!args))
 inject <- function(expr, env = caller_env()) {
-  .Call(rlang_eval, enexpr(expr), env)
+  .External2(rlang_ext2_eval, enexpr(expr), env)
 }

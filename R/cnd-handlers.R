@@ -96,7 +96,7 @@ with_handlers <- function(.expr, ...) {
     expr <- expr(tryCatch(!!expr, !!!exiting))
   }
 
-  .Call(rlang_eval, expr, environment())
+  .External2(rlang_ext2_eval, expr, environment())
 }
 
 #' @rdname with_handlers

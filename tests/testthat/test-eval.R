@@ -12,7 +12,7 @@ test_that("does not inline expressions", {
 })
 
 test_that("inject() injects", {
-  expect_equal(
+  expect_equal_(
     inject(quote(foo(!!(1:2), !!!1:3))),
     call2("foo", 1:2, !!!1:3)
   )
@@ -23,4 +23,9 @@ test_that("inject() injects", {
     f(foo()),
     quo(foo())
   )
+})
+
+test_that("inject() and eval_bare() propagate visibility", {
+  expect_invisible(eval_bare(quote(invisible(list()))))
+  expect_invisible(inject(invisible(list())))
 })
