@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get the empty environment — empty_env • rlang</title>
+<title>Inject objects in an R expression — inject • rlang</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,9 @@
 
 
 
-<meta property="og:title" content="Get the empty environment — empty_env" />
-<meta property="og:description" content="The empty environment is the only one that does not have a parent.
-It is always used as the tail of an environment chain such as the
-search path (see search_envs())." />
+<meta property="og:title" content="Inject objects in an R expression — inject" />
+<meta property="og:description" content="inject() evaluates an expression with injection
+(unquotation) support. There are three main usages:" />
 
 
 
@@ -152,25 +151,68 @@ search path (see search_envs())." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get the empty environment</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/env-special.R'><code>R/env-special.R</code></a></small>
-    <div class="hidden name"><code>empty_env.Rd</code></div>
+    <h1>Inject objects in an R expression</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/eval.R'><code>R/eval.R</code></a></small>
+    <div class="hidden name"><code>inject.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The empty environment is the only one that does not have a parent.
-It is always used as the tail of an environment chain such as the
-search path (see <code><a href='search_envs.html'>search_envs()</a></code>).</p>
+    <p><code>inject()</code> evaluates an expression with <a href='nse-force.html'>injection</a>
+(unquotation) support. There are three main usages:</p>
     </div>
 
-    <pre class="usage"><span class='fu'>empty_env</span><span class='op'>(</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>inject</span><span class='op'>(</span><span class='va'>expr</span>, env <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>expr</th>
+      <td><p>An argument to evaluate. This argument is immediately
+evaluated in <code>env</code> (the current environment by default) with
+injected objects and expressions.</p></td>
+    </tr>
+    <tr>
+      <th>env</th>
+      <td><p>The environment in which to evaluate <code>expr</code>. Defaults to
+the current environment. For expert use only.</p></td>
+    </tr>
+    </table>
+
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    
+<ul>
+<li><p><a href='nse-force.html'>Splicing</a> lists of arguments in a function call.</p></li>
+<li><p>Inline objects or other expressions in an expression with <code>!!</code>
+and <code>!!!</code>. For instance to create functions or formulas
+programmatically.</p></li>
+<li><p>Pass arguments to NSE functions that <a href='nse-defuse.html'>defuse</a> their
+arguments without injection support (see for instance
+<code><a href='enquo0.html'>enquo0()</a></code>). You can use <code>{{ arg }}</code> with functions documented
+to support quosures. Otherwise, use <code>!!enexpr(arg)</code>.</p></li>
+</ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Create environments with nothing in scope:</span>
-<span class='fu'><a href='env.html'>child_env</a></span><span class='op'>(</span><span class='fu'>empty_env</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;environment: 0x7f9c653ec518&gt;</div></pre>
+    <pre class="examples"><div class='input'><span class='co'># inject() simply evaluates its argument with injection</span>
+<span class='co'># support. These expressions are equivalent:</span>
+<span class='fl'>2</span> <span class='op'>*</span> <span class='fl'>3</span>
+</div><div class='output co'>#&gt; [1] 6</div><div class='input'><span class='fu'>inject</span><span class='op'>(</span><span class='fl'>2</span> <span class='op'>*</span> <span class='fl'>3</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 6</div><div class='input'><span class='fu'>inject</span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='fl'>2</span> <span class='op'>*</span> <span class='op'>!</span><span class='op'>!</span><span class='fl'>3</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 6</div><div class='input'>
+<span class='co'># Injection with `!!` can be useful to insert objects or</span>
+<span class='co'># expressions within other expressions, like formulas:</span>
+<span class='va'>lhs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sym.html'>sym</a></span><span class='op'>(</span><span class='st'>"foo"</span><span class='op'>)</span>
+<span class='va'>rhs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sym.html'>sym</a></span><span class='op'>(</span><span class='st'>"bar"</span><span class='op'>)</span>
+<span class='fu'>inject</span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='va'>lhs</span> <span class='op'>~</span> <span class='op'>!</span><span class='op'>!</span><span class='va'>rhs</span> <span class='op'>+</span> <span class='fl'>10</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; foo ~ bar + 10
+#&gt; &lt;environment: 0x7f9c636b6978&gt;</div><div class='input'>
+<span class='co'># Injection with `!!!` splices lists of arguments in function</span>
+<span class='co'># calls:</span>
+<span class='va'>args</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>na.rm <span class='op'>=</span> <span class='cn'>TRUE</span>, finite <span class='op'>=</span> <span class='fl'>0.2</span><span class='op'>)</span>
+<span class='fu'>inject</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='va'>args</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 5.5</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
