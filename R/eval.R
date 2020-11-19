@@ -343,6 +343,8 @@ exec <- function(.fn, ..., .env = caller_env()) {
 #' @param expr An argument to evaluate. This argument is immediately
 #'   evaluated in `env` (the current environment by default) with
 #'   injected objects and expressions.
+#' @param env The environment in which to evaluate `expr`. Defaults to
+#'   the current environment. For expert use only.
 #'
 #' @export
 #' @examples
@@ -362,6 +364,6 @@ exec <- function(.fn, ..., .env = caller_env()) {
 #' # calls:
 #' args <- list(na.rm = TRUE, finite = 0.2)
 #' inject(mean(1:10, !!!args))
-inject <- function(expr) {
-  eval_bare(enexpr(expr), caller_env())
+inject <- function(expr, env = caller_env()) {
+  .Call(rlang_eval, enexpr(expr), env)
 }

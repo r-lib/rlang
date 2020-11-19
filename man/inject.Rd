@@ -4,12 +4,15 @@
 \alias{inject}
 \title{Inject objects in an R expression}
 \usage{
-inject(expr)
+inject(expr, env = caller_env())
 }
 \arguments{
 \item{expr}{An argument to evaluate. This argument is immediately
 evaluated in \code{env} (the current environment by default) with
 injected objects and expressions.}
+
+\item{env}{The environment in which to evaluate \code{expr}. Defaults to
+the current environment. For expert use only.}
 }
 \description{
 \code{inject()} evaluates an expression with \link[=quasiquotation]{injection}
