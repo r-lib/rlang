@@ -1,6 +1,9 @@
 
 # rlang (development version)
 
+* New `enquo0()` and `enquos0()` operators for defusing function
+  arguments without automatic injection (unquotation).
+
 * Dropped support for the R 3.2 series.
 
 * `cnd_signal()` now ignores `NULL` inputs.

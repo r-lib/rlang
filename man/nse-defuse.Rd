@@ -274,3 +274,7 @@ quo
 # expected result:
 eval_tidy(quo)
 }
+\seealso{
+\code{\link[=enquo0]{enquo0()}} and \code{\link[=enquos0]{enquos0()}} for variants that do not
+perform automatic injection/unquotation.
+}

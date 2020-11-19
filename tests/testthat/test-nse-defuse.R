@@ -509,3 +509,27 @@ test_that("ensyms() unwraps quosures", {
   expect_identical(fn(!!!quos(foo, "bar")), exprs(foo, bar))
   expect_error(fn(!!!quos(foo, bar())), "Only strings can be converted to symbols")
 })
+
+test_that("enquo0() and enquos0() capture arguments without injection", {
+  fn <- function(arg) enquo0(arg)
+  expect_equal(
+    fn(foo(!!1)),
+    quo(foo(!!quote(!!1)))
+  )
+
+  fn <- function(...) enquos0(...)
+  expect_equal_(
+    fn(x = foo(!!1), !!!1:3, z = 3),
+    list(x = quo(foo(!!quote(!!1))), quo(!!quote(!!!1:3)), z = quo(3))
+  )
+})
+
+test_that("enquo0() and enquos0() don't rewrap quosures", {
+  fn <- function(arg) enquo0(arg)
+  quo <- local(quo(x))
+  expect_equal(fn(!!quo), quo)
+
+  fn <- function(...) enquos0(...)
+  quo <- local(quo(x))
+  expect_equal(fn(!!quo), list(quo))
+})

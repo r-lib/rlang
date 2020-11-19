@@ -120,6 +120,8 @@
 #'   `:=` syntax supports `!!` unquoting on the LHS.
 #' @name nse-defuse
 #' @aliases quotation
+#' @seealso [enquo0()] and [enquos0()] for variants that do not
+#'   perform automatic injection/unquotation.
 #' @examples
 #' # expr() and exprs() capture expressions that you supply:
 #' expr(symbol)
@@ -442,4 +444,41 @@ captureArgInfo <- function(arg) {
 }
 captureDots <- function() {
   .External2(rlang_ext2_capturedots, parent.frame())
+}
+
+
+#' Defuse arguments without automatic injection
+#'
+#' The 0-suffixed variants of [enquo()] and [enquos()] defuse function
+#' arguments without automatic injection (unquotation). They are
+#' useful when defusing expressions that potentially include `!!`,
+#' `!!!`, or `{{` operations, for instance tidyverse code. In that
+#' case, `enquo()` would process these operators too early, creating a
+#' confusing experience for users. Callers can still inject objects
+#' or expressions using manual injection with `inject()`.
+#'
+#' None of the features of [dynamic dots][dyn-dots] are available when
+#' defusing with `enquos0()`. For instance, trailing empty arguments
+#' are not automatically trimmed.
+#'
+#' @param arg A symbol for a function argument to defuse.
+#' @param ... Dots to defuse.
+#'
+#' @seealso [enquo()] and [enquos()]
+#' @examples
+#' automatic_injection <- function(x) enquo(x)
+#' no_injection <- function(x) enquo0(x)
+#'
+#' automatic_injection(foo(!!!1:3))
+#' no_injection(foo(!!!1:3))
+#' @export
+enquo0 <- function(arg) {
+  info <- .External2(rlang_ext2_capturearginfo, parent.frame())
+  as_quosure(info$expr, info$env)
+}
+#' @rdname enquo0
+#' @export
+enquos0 <- function(...) {
+  dots <- .External2(rlang_ext2_capturedots, environment())
+  lapply(dots, function(dot) as_quosure(dot$expr, dot$env))
 }
