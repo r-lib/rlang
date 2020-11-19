@@ -324,6 +324,46 @@ exec <- function(.fn, ..., .env = caller_env()) {
   .External2(rlang_ext2_exec, .fn, .env)
 }
 
-blast <- function(expr, env = caller_env()) {
-  eval_bare(enexpr(expr), env)
+#' Inject objects in an R expression
+#'
+#' `inject()` evaluates an expression with [injection][quasiquotation]
+#' (unquotation) support. There are three main usages:
+#'
+#' - [Splicing][!!!] lists of arguments in a function call.
+#'
+#' - Inline objects or other expressions in an expression with `!!`
+#'   and `!!!`. For instance to create functions or formulas
+#'   programmatically.
+#'
+#' - Pass arguments to NSE functions that [defuse][nse-defuse] their
+#'   arguments without injection support (see for instance
+#'   [enquo0()]). You can use `{{ arg }}` with functions documented
+#'   to support quosures. Otherwise, use `!!enexpr(arg)`.
+#'
+#' @param expr An argument to evaluate. This argument is immediately
+#'   evaluated in `env` (the current environment by default) with
+#'   injected objects and expressions.
+#' @param env The environment in which to evaluate `expr`. Defaults to
+#'   the current environment. For expert use only.
+#'
+#' @export
+#' @examples
+#' # inject() simply evaluates its argument with injection
+#' # support. These expressions are equivalent:
+#' 2 * 3
+#' inject(2 * 3)
+#' inject(!!2 * !!3)
+#'
+#' # Injection with `!!` can be useful to insert objects or
+#' # expressions within other expressions, like formulas:
+#' lhs <- sym("foo")
+#' rhs <- sym("bar")
+#' inject(!!lhs ~ !!rhs + 10)
+#'
+#' # Injection with `!!!` splices lists of arguments in function
+#' # calls:
+#' args <- list(na.rm = TRUE, finite = 0.2)
+#' inject(mean(1:10, !!!args))
+inject <- function(expr, env = caller_env()) {
+  .Call(rlang_eval, enexpr(expr), env)
 }

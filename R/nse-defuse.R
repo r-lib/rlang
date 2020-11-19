@@ -455,7 +455,7 @@ captureDots <- function() {
 #' `!!!`, or `{{` operations, for instance tidyverse code. In that
 #' case, `enquo()` would process these operators too early, creating a
 #' confusing experience for users. Callers can still inject objects
-#' or expressions using manual injection with `inject()`.
+#' or expressions using manual injection with [inject()].
 #'
 #' None of the features of [dynamic dots][dyn-dots] are available when
 #' defusing with `enquos0()`. For instance, trailing empty arguments

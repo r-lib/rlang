@@ -1,6 +1,9 @@
 
 # rlang (development version)
 
+* `inject()` evaluates its argument with `!!`, `!!!`, and `{{`
+  support.
+
 * New `enquo0()` and `enquos0()` operators for defusing function
   arguments without automatic injection (unquotation).
 
