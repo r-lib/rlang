@@ -1,8 +1,8 @@
 
 # rlang (development version)
 
-* `inject()` evaluates its argument with quasiquotation. It you to use
-  the `!!` and `!!!` operators with any R function.
+* `inject()` evaluates its argument with `!!`, `!!!`, and `{{`
+  support.
 
 * New `enquo0()` and `enquos0()` operators for defusing function
   arguments without automatic injection (unquotation).

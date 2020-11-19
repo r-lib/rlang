@@ -21,7 +21,7 @@ useful when defusing expressions that potentially include \verb{!!},
 \verb{!!!}, or \verb{\{\{} operations, for instance tidyverse code. In that
 case, \code{enquo()} would process these operators too early, creating a
 confusing experience for users. Callers can still inject objects
-or expressions using manual injection with \code{inject()}.
+or expressions using manual injection with \code{\link[=inject]{inject()}}.
 }
 \details{
 None of the features of \link[=dyn-dots]{dynamic dots} are available when

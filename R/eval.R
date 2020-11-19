@@ -326,60 +326,42 @@ exec <- function(.fn, ..., .env = caller_env()) {
 
 #' Inject objects in an R expression
 #'
-#' `inject()` evaluates an expression with
-#' [quasiquotation][quasiquotation] support. This is mostly useful for
-#' [splicing][!!!] lists of arguments in a call. Another use is to
-#' inline objects or expressions in quoted structures, for instance
-#' to create functions or formulas programmatically.
+#' `inject()` evaluates an expression with [injection][quasiquotation]
+#' (unquotation) support. There are three main usages:
 #'
-#' @param expr An argument to evaluate. This argument is quasiquoted
-#'   and immediately evaluated in the current environment.
+#' - [Splicing][!!!] lists of arguments in a function call.
+#'
+#' - Inline objects or other expressions in an expression with `!!`
+#'   and `!!!`. For instance to create functions or formulas
+#'   programmatically.
+#'
+#' - Pass arguments to NSE functions that [defuse][nse-defuse] their
+#'   arguments without injection support (see for instance
+#'   [enquo0()]). You can use `{{ arg }}` with functions documented
+#'   to support quosures. Otherwise, use `!!enexpr(arg)`.
+#'
+#' @param expr An argument to evaluate. This argument is immediately
+#'   evaluated in `env` (the current environment by default) with
+#'   injected objects and expressions.
 #'
 #' @export
 #' @examples
-#' # inject() simply evaluates its argument. These two expressions are
-#' # equivalent:
+#' # inject() simply evaluates its argument with injection
+#' # support. These expressions are equivalent:
 #' 2 * 3
 #' inject(2 * 3)
+#' inject(!!2 * !!3)
 #'
-#' # Quasiquotation is enabled within inject(). You can use `!!`:
-#' arg <- 3
-#' inject(2 * !!arg)
-#'
-#' # Splicing with big inject is extremely useful. It lets you call any
-#' # function with a list of arguments:
-#' args <- list(na.rm = TRUE, finite = 0.2)
-#' inject(mean(1:10, !!!args))
-#'
-#'
-#' # You can also unquote stuff in any base R quoted objects such as
-#' # formulas:
+#' # Injection with `!!` can be useful to insert objects or
+#' # expressions within other expressions, like formulas:
 #' lhs <- sym("foo")
 #' rhs <- sym("bar")
 #' inject(!!lhs ~ !!rhs + 10)
 #'
-#' # Note however that `!!!` can't be used to create a `+` sum of
-#' # terms inside a formula.
-#' args <- syms(c("foo", "bar", "baz"))
-#' inject(~!!!args)
-#'
-#' # Instead you need to reduce the arguments to a single expression:
-#' sum <- Reduce(function(x, y) expr(!!x + !!y), args)
-#' sum
-#'
-#' # You can then unquote the sum with !!
-#' inject(~!!sum)
-#'
-#'
-#' # inject() is the quoting counterpart to exec() which constructs a
-#' # call from its components:
-#' exec("mean", !!!args)
-#'
-#' # Because exec() is an evaluating function, it can be mapped over a
-#' # list of functions, unlike inject():
-#' fns <- list(mean, median)
-#' args <- list(na.rm = TRUE)
-#' lapply(fns, exec, mtcars$disp, !!!args)
+#' # Injection with `!!!` splices lists of arguments in function
+#' # calls:
+#' args <- list(na.rm = TRUE, finite = 0.2)
+#' inject(mean(1:10, !!!args))
 inject <- function(expr) {
   eval_bare(enexpr(expr), caller_env())
 }
