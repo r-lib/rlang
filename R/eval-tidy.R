@@ -165,7 +165,7 @@
 #' }
 #' @export
 eval_tidy <- function(expr, data = NULL, env = caller_env()) {
-  .Call(rlang_eval_tidy, expr, data, env)
+  .External2(rlang_ext2_eval_tidy, expr, data, env)
 }
 
 # Helps work around roxygen loading issues

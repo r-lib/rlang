@@ -97,7 +97,6 @@ extern sexp* rlang_new_data_mask_compat(sexp*, sexp*, sexp*);
 extern sexp* rlang_as_data_mask(sexp*);
 extern sexp* rlang_as_data_mask_compat(sexp*, sexp*);
 extern sexp* rlang_data_mask_clean(sexp*);
-extern sexp* rlang_eval_tidy(sexp*, sexp*, sexp*);
 extern sexp* rlang_as_data_pronoun(sexp*);
 extern sexp* rlang_env_get(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_env_get_list(sexp*, sexp*, sexp*, sexp*);
@@ -279,7 +278,6 @@ static const r_callable r_callables[] = {
   {"rlang_is_data_mask",                (r_fn_ptr) &rlang_is_data_mask, 1},
   {"rlang_data_pronoun_get",            (r_fn_ptr) &rlang_data_pronoun_get, 2},
   {"rlang_data_mask_clean",             (r_fn_ptr) &rlang_data_mask_clean, 1},
-  {"rlang_eval_tidy",                   (r_fn_ptr) &rlang_eval_tidy, 3},
   {"rlang_as_data_pronoun",             (r_fn_ptr) &rlang_as_data_pronoun, 1},
   {"rlang_env_binding_types",           (r_fn_ptr) &r_env_binding_types, 2},
   {"rlang_env_get",                     (r_fn_ptr) &rlang_env_get, 4},
@@ -335,6 +333,7 @@ extern sexp* rlang_ext_dots_values(sexp*);
 extern sexp* rlang_ext2_call2(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_ext2_exec(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_ext2_eval(sexp*, sexp*, sexp*, sexp*);
+extern sexp* rlang_ext2_eval_tidy(sexp*, sexp*, sexp*, sexp*);
 
 static const r_external externals[] = {
   {"rlang_ext_arg_match0",              (r_fn_ptr) &rlang_ext_arg_match0, 3},
@@ -345,6 +344,7 @@ static const r_external externals[] = {
   {"rlang_ext2_call2",                  (r_fn_ptr) &rlang_ext2_call2, 2},
   {"rlang_ext2_exec",                   (r_fn_ptr) &rlang_ext2_exec, 2},
   {"rlang_ext2_eval",                   (r_fn_ptr) &rlang_ext2_eval, 2},
+  {"rlang_ext2_eval_tidy",              (r_fn_ptr) &rlang_ext2_eval_tidy, 3},
   {NULL, NULL, 0}
 };
 
@@ -352,6 +352,7 @@ static const r_external externals[] = {
 extern bool is_splice_box(sexp*);
 extern sexp* rlang_env_dots_values(sexp*);
 extern sexp* rlang_env_dots_list(sexp*);
+extern sexp* rlang_eval_tidy(sexp*, sexp*, sexp*);
 
 export void R_init_rlang(r_dll_info* dll) {
   // The quosure functions are stable

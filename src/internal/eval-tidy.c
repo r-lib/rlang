@@ -530,6 +530,14 @@ sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* env) {
   return out;
 }
 
+sexp* rlang_ext2_eval_tidy(sexp* call, sexp* op, sexp* args, sexp* rho) {
+  args = r_node_cdr(args);
+  sexp* expr = r_node_car(args); args = r_node_cdr(args);
+  sexp* data = r_node_car(args); args = r_node_cdr(args);
+  sexp* env = r_node_car(args);
+  return rlang_eval_tidy(expr, data, env);
+}
+
 
 void rlang_init_eval_tidy() {
   sexp* rlang_ns_env = KEEP(r_ns_env("rlang"));
