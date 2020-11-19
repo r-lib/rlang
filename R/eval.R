@@ -324,13 +324,9 @@ exec <- function(.fn, ..., .env = caller_env()) {
   .External2(rlang_ext2_exec, .fn, .env)
 }
 
-blast <- function(expr, env = caller_env()) {
-  eval_bare(enexpr(expr), env)
-}
-
-#' Evaluate an expression with quasiquotation
+#' Inject objects in an R expression
 #'
-#' `bang()` evaluates an expression with
+#' `inject()` evaluates an expression with
 #' [quasiquotation][quasiquotation] support. This is mostly useful for
 #' [splicing][!!!] lists of arguments in a call. Another use is to
 #' inline objects or expressions in quoted structures, for instance
@@ -341,49 +337,49 @@ blast <- function(expr, env = caller_env()) {
 #'
 #' @export
 #' @examples
-#' # bang() simply evaluates its argument. These two expressions are
+#' # inject() simply evaluates its argument. These two expressions are
 #' # equivalent:
 #' 2 * 3
-#' bang(2 * 3)
+#' inject(2 * 3)
 #'
-#' # Quasiquotation is enabled within bang(). You can use `!!`:
+#' # Quasiquotation is enabled within inject(). You can use `!!`:
 #' arg <- 3
-#' bang(2 * !!arg)
+#' inject(2 * !!arg)
 #'
-#' # Splicing with big bang is extremely useful. It lets you call any
+#' # Splicing with big inject is extremely useful. It lets you call any
 #' # function with a list of arguments:
 #' args <- list(na.rm = TRUE, finite = 0.2)
-#' bang(mean(1:10, !!!args))
+#' inject(mean(1:10, !!!args))
 #'
 #'
 #' # You can also unquote stuff in any base R quoted objects such as
 #' # formulas:
 #' lhs <- sym("foo")
 #' rhs <- sym("bar")
-#' bang(!!lhs ~ !!rhs + 10)
+#' inject(!!lhs ~ !!rhs + 10)
 #'
 #' # Note however that `!!!` can't be used to create a `+` sum of
 #' # terms inside a formula.
 #' args <- syms(c("foo", "bar", "baz"))
-#' bang(~!!!args)
+#' inject(~!!!args)
 #'
 #' # Instead you need to reduce the arguments to a single expression:
 #' sum <- Reduce(function(x, y) expr(!!x + !!y), args)
 #' sum
 #'
 #' # You can then unquote the sum with !!
-#' bang(~!!sum)
+#' inject(~!!sum)
 #'
 #'
-#' # bang() is the quoting counterpart to exec() which constructs a
+#' # inject() is the quoting counterpart to exec() which constructs a
 #' # call from its components:
 #' exec("mean", !!!args)
 #'
 #' # Because exec() is an evaluating function, it can be mapped over a
-#' # list of functions, unlike bang():
+#' # list of functions, unlike inject():
 #' fns <- list(mean, median)
 #' args <- list(na.rm = TRUE)
 #' lapply(fns, exec, mtcars$disp, !!!args)
-bang <- function(expr) {
+inject <- function(expr) {
   eval_bare(enexpr(expr), caller_env())
 }
