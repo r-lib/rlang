@@ -328,22 +328,22 @@ static const r_callable r_callables[] = {
 
 
 extern sexp* rlang_ext_arg_match0(sexp*);
+extern sexp* rlang_ext_capturearginfo(sexp*);
+extern sexp* rlang_ext_capturedots(sexp*);
 extern sexp* rlang_ext_dots_values(sexp*);
 
 extern sexp* rlang_ext2_call2(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_ext2_exec(sexp*, sexp*, sexp*, sexp*);
-extern sexp* rlang_ext2_capturearginfo(sexp*, sexp*, sexp*, sexp*);
-extern sexp* rlang_ext2_capturedots(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_ext2_eval(sexp*, sexp*, sexp*, sexp*);
 
 static const r_external externals[] = {
   {"rlang_ext_arg_match0",              (r_fn_ptr) &rlang_ext_arg_match0, 3},
+  {"rlang_ext_capturearginfo",          (r_fn_ptr) &rlang_ext_capturearginfo, 2},
+  {"rlang_ext_capturedots",             (r_fn_ptr) &rlang_ext_capturedots, 1},
   {"rlang_ext_dots_values",             (r_fn_ptr) &rlang_ext_dots_values, 7},
 
   {"rlang_ext2_call2",                  (r_fn_ptr) &rlang_ext2_call2, 2},
   {"rlang_ext2_exec",                   (r_fn_ptr) &rlang_ext2_exec, 2},
-  {"rlang_ext2_capturearginfo",         (r_fn_ptr) &rlang_ext2_capturearginfo, 1},
-  {"rlang_ext2_capturedots",            (r_fn_ptr) &rlang_ext2_capturedots, 1},
   {"rlang_ext2_eval",                   (r_fn_ptr) &rlang_ext2_eval, 2},
   {NULL, NULL, 0}
 };
