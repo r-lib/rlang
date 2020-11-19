@@ -53,7 +53,7 @@ SEXP attribute_hidden rlang_capturearginfo(SEXP call, SEXP op, SEXP args, SEXP r
     int nProt = 0;
 
     // Unwrap first layer of promise
-    SEXP sym = findVarInFrame3(rho, install("x"), TRUE);
+    SEXP sym = findVarInFrame3(rho, install("arg"), TRUE);
     PROTECT(sym); ++nProt;
 
     // May be a literal if compiler did not wrap in a promise

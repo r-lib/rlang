@@ -14,5 +14,7 @@ void never_reached(const char* fn) {
   r_abort("Internal error in `%s()`: Reached the unreachable.", fn);
 }
 
+sexp* eval_ext2_args(sexp* args, sexp* env);
+
 
 #endif

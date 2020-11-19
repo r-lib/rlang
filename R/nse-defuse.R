@@ -435,3 +435,11 @@ exprs_auto_name <- function(exprs, width = NULL, printer = NULL) {
 quos_auto_name <- function(quos, width = NULL) {
   exprs_auto_name(quos, width = width)
 }
+
+
+captureArgInfo <- function(arg) {
+  .External2(rlang_ext2_capturearginfo, parent.frame())
+}
+captureDots <- function() {
+  .External2(rlang_ext2_capturedots, parent.frame())
+}

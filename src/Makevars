@@ -42,6 +42,7 @@ internal-files = \
         internal/expr-interp-rotate.c \
         internal/fn.c \
         internal/internal.c \
+        internal/nse-defuse.c \
         internal/quo.c \
         internal/utils.c \
         internal/vec-raw.c

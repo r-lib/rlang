@@ -72,15 +72,6 @@ discard_unnamed <- function(x) {
   }
 }
 
-captureArgInfo <- function(x) {
-  args <- pairlist(parent.frame())
-  .Call(rlang_capturearginfo, NULL, NULL, args, environment())
-}
-captureDots <- function() {
-  args <- pairlist(parent.frame())
-  .Call(rlang_capturedots, NULL, NULL, args, environment())
-}
-
 cat_line <- function(..., .trailing = TRUE, file = "") {
   cat(paste_line(..., .trailing = .trailing), file = file)
 }

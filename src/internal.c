@@ -10,6 +10,7 @@
 #include "internal/expr-interp-rotate.c"
 #include "internal/fn.c"
 #include "internal/internal.c"
+#include "internal/nse-defuse.c"
 #include "internal/quo.c"
 #include "internal/utils.c"
 #include "internal/vec-raw.c"
