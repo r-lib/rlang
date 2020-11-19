@@ -472,8 +472,6 @@ test_that("can evaluate tilde in nested masks", {
 test_that("eval_tidy() propagates visibility", {
   expect_visible(eval_tidy(quo(list(invisible(list())))))
   expect_invisible(eval_tidy(quo(invisible(list()))))
-
-  skip("FIXME")
   expect_invisible(eval_tidy(quo(identity(!!local(quo(invisible(list())))))))
 })
 

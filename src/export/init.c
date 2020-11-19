@@ -225,6 +225,8 @@ static const r_callable r_callables[] = {
   {"rlang_sexp_address",                (r_fn_ptr) &rlang_sexp_address, 1},
   {"rlang_symbol",                      (r_fn_ptr) &rlang_symbol, 1},
   {"rlang_sym_as_character",            (r_fn_ptr) &rlang_sym_as_character, 1},
+  // No longer necessary but keep this around for a while in case
+  // quosures ended up saved as RDS.
   {"rlang_tilde_eval",                  (r_fn_ptr) &rlang_tilde_eval, 3},
   {"rlang_unescape_character",          (r_fn_ptr) &rlang_unescape_character, 1},
   {"rlang_new_call",                    (r_fn_ptr) &rlang_new_call_node, 2},
@@ -334,6 +336,8 @@ extern sexp* rlang_ext2_call2(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_ext2_exec(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_ext2_eval(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_ext2_eval_tidy(sexp*, sexp*, sexp*, sexp*);
+extern sexp* rlang_ext2_tilde_eval(sexp*, sexp*, sexp*, sexp*);
+
 
 static const r_external externals[] = {
   {"rlang_ext_arg_match0",              (r_fn_ptr) &rlang_ext_arg_match0, 3},
@@ -345,6 +349,7 @@ static const r_external externals[] = {
   {"rlang_ext2_exec",                   (r_fn_ptr) &rlang_ext2_exec, 2},
   {"rlang_ext2_eval",                   (r_fn_ptr) &rlang_ext2_eval, 2},
   {"rlang_ext2_eval_tidy",              (r_fn_ptr) &rlang_ext2_eval_tidy, 3},
+  {"rlang_ext2_tilde_eval",             (r_fn_ptr) &rlang_ext2_tilde_eval, 3},
   {NULL, NULL, 0}
 };
 

@@ -1,7 +1,7 @@
 
 # rlang (development version)
 
-* `eval_bare()` now propagates visibility.
+* `eval_bare()` and `eval_tidy()` (#961) now propagate visibility.
 
 * `inject()` evaluates its argument with `!!`, `!!!`, and `{{`
   support.
