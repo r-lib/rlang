@@ -443,6 +443,14 @@ sexp* rlang_tilde_eval(sexp* tilde, sexp* current_frame, sexp* caller_frame) {
   return r_eval(expr, info.mask);
 }
 
+sexp* rlang_ext2_tilde_eval(sexp* call, sexp* op, sexp* args, sexp* rho) {
+  args = r_node_cdr(args);
+  sexp* tilde = r_node_car(args); args = r_node_cdr(args);
+  sexp* current_frame = r_node_car(args); args = r_node_cdr(args);
+  sexp* caller_frame = r_node_car(args);
+  return rlang_tilde_eval(tilde, current_frame, caller_frame);
+}
+
 static const char* data_mask_objects_names[5] = {
   ".__tidyeval_data_mask__.", "~", ".top_env", ".env", NULL
 };
@@ -530,13 +538,21 @@ sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* env) {
   return out;
 }
 
+sexp* rlang_ext2_eval_tidy(sexp* call, sexp* op, sexp* args, sexp* rho) {
+  args = r_node_cdr(args);
+  sexp* expr = r_node_car(args); args = r_node_cdr(args);
+  sexp* data = r_node_car(args); args = r_node_cdr(args);
+  sexp* env = r_node_car(args);
+  return rlang_eval_tidy(expr, data, env);
+}
+
 
 void rlang_init_eval_tidy() {
   sexp* rlang_ns_env = KEEP(r_ns_env("rlang"));
 
   tilde_fn = r_parse_eval(
     "function(...) {                          \n"
-    "  .Call(rlang_tilde_eval,                \n"
+    "  .External2(rlang_ext2_tilde_eval,      \n"
     "    sys.call(),     # Quosure env        \n"
     "    environment(),  # Unwind-protect env \n"
     "    parent.frame()  # Lexical env        \n"

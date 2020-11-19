@@ -1168,7 +1168,7 @@ overscope_eval_next <- function(overscope, quo, env = base_env()) {
     "`overscope_eval_next()` is deprecated as of rlang 0.2.0.",
     "Please use `eval_tidy()` with a data mask instead."
   ))
-  .Call(rlang_eval_tidy, quo, overscope, env)
+  .External2(rlang_ext2_eval_tidy, quo, overscope, env)
 }
 
 

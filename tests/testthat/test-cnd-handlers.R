@@ -81,3 +81,8 @@ test_that("cnd_muffle() returns FALSE if the condition is not mufflable", {
   ))
   expect_false(value)
 })
+
+test_that("with_handlers() propagates visibility", {
+  expect_visible(with_handlers(list(invisible(1))))
+  expect_invisible(with_handlers(invisible(1)))
+})
