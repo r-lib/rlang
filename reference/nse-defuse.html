@@ -377,6 +377,10 @@ of an expression.</p></li>
 <code><a href='https://rdrr.io/r/base/substitute.html'>substitute()</a></code>.</p></li>
 </ul>
 
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='enquo0.html'>enquo0()</a></code> and <code><a href='enquo0.html'>enquos0()</a></code> for variants that do not
+perform automatic injection/unquotation.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># expr() and exprs() capture expressions that you supply:</span>
@@ -451,10 +455,10 @@ of an expression.</p></li>
 <span class='va'>quo</span>
 </div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^letters</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7fb2d07653c0</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7fa5b1391bf0</span><span></div><div class='input'>
 <span class='fu'><a href='set_expr.html'>get_expr</a></span><span class='op'>(</span><span class='va'>quo</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; letters</div><div class='input'><span class='fu'><a href='get_env.html'>get_env</a></span><span class='op'>(</span><span class='va'>quo</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;environment: 0x7fb2d07653c0&gt;</div><div class='input'>
+</div><div class='output co'>#&gt; &lt;environment: 0x7fa5b1391bf0&gt;</div><div class='input'>
 <span class='co'># Quosures can be evaluated with eval_tidy():</span>
 <span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span><span class='op'>(</span><span class='va'>quo</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
@@ -481,7 +485,7 @@ of an expression.</p></li>
 <span class='va'>quo</span>
 </div><div class='output co'>#&gt; </span><span style='font-weight: bold;'>&lt;quosure&gt;</span><span>
 #&gt; expr: </span><span style='color: #0000BB;'>^(</span><span style='color: #00BB00;'>^2 + 3</span><span style='color: #0000BB;'>) * local_ten</span><span>
-#&gt; env:  </span><span style='color: #0000BB;'>0x7fb2cca1e4a0</span><span></div><div class='input'>
+#&gt; env:  </span><span style='color: #0000BB;'>0x7fa5b533c060</span><span></div><div class='input'>
 <span class='co'># All the quosures in the expression evaluate in their original</span>
 <span class='co'># context. The local objects are looked up properly and we get the</span>
 <span class='co'># expected result:</span>
