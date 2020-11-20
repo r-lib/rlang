@@ -127,7 +127,10 @@ warn <- function(message = NULL,
 #'   By default, `inform()` prints to standard output in interactive
 #'   sessions and standard error otherwise. This way IDEs can treat
 #'   messages distinctly from warnings and errors, and R scripts can
-#'   still filter out the messages easily by redirecting `stderr`.
+#'   still filter out the messages easily by redirecting `stderr`. If
+#'   a sink is active, either on output or on messages, messages are
+#'   printed to `stderr`. This ensures consistency of behaviour in
+#'   interactive and non-interactive sessions.
 #' @export
 inform <- function(message = NULL,
                    class = NULL,
@@ -154,9 +157,7 @@ inform <- function(message = NULL,
 
   withRestarts(muffleMessage = function() NULL, {
     signalCondition(cnd)
-
-    .file <- .file %||% if (is_interactive()) stdout() else stderr()
-    cat(message, file = .file)
+    cat(message, file = .file %||% default_message_file())
   })
 
   invisible()
@@ -168,6 +169,16 @@ signal <- function(message, class, ..., .subclass = deprecated()) {
   message <- collapse_cnd_message(message)
   cnd <- cnd(class, ..., message = message)
   cnd_signal(cnd)
+}
+
+default_message_file <- function() {
+  if (is_interactive() &&
+      sink.number("output") == 0 &&
+      sink.number("message") == 2) {
+    stdout()
+  } else {
+    stderr()
+  }
 }
 
 validate_signal_args <- function(subclass, env = caller_env()) {
