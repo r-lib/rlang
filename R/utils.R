@@ -264,6 +264,8 @@ stop_internal <- function(fn, msg) {
 
 with_srcref <- function(src, env = caller_env(), file = NULL) {
   file <- file %||% tempfile("sourced", fileext = ".R")
+  on.exit(unlink(file))
+
   writeLines(src, file)
   source(file, local = env, keep.source = TRUE)
 }
