@@ -105,8 +105,6 @@ cnd_footer.default <- function(cnd, ...) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
-#'
 #' `format_error_bullets()` takes a character vector and returns a single
 #' string (or an empty vector if the input is empty). The elements of
 #' the input vector are assembled as a list of bullets, depending on

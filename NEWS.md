@@ -1,6 +1,12 @@
 
 # rlang (development version)
 
+* `format_error_bullets()` is no longer experimental. The `message`
+  arguments of `abort()`, `warn()`, and `inform()` are automatically
+  passed to that function to make it easy to create messages with
+  regular, info, and error bullets. See `?format_error_bullets` for
+  more information.
+
 * New `rlang_print_backtrace` C callable for debugging from C
   interpreters (#1059).
 

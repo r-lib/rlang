@@ -50,12 +50,18 @@
 #' guaranteed.
 #'
 #' @inheritParams cnd
-#' @param message The message to display.
+#' @param message The message to display. Character vectors are
+#'   formatted with [format_error_bullets()]. The first element
+#'   defines a message header and the rest of the vector defines
+#'   bullets. Bullets named `i` and `x` define info and error bullets
+#'   respectively, with special Unicode and colour formatting applied
+#'   if possible.
 #'
-#'   If not supplied, it is expected that the message is generated
-#'   lazily through [conditionMessage()][cnd_message]. In that case,
-#'   `class` must be supplied. Only `inform()` allows empty messages
-#'   as it is occasionally useful to build user output incrementally.
+#'   If a message is not supplied, it is expected that the message is
+#'   generated lazily through [conditionMessage()][cnd_message]. In
+#'   that case, `class` must be supplied. Only `inform()` allows empty
+#'   messages as it is occasionally useful to build user output
+#'   incrementally.
 #' @param class Subclass of the condition. This allows your users
 #'   to selectively handle the conditions signalled by your functions.
 #' @param ... Additional data to be stored in the condition object.
