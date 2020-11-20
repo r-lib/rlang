@@ -133,7 +133,7 @@ abort <- function(message = NULL,
                   ...,
                   trace = NULL,
                   parent = NULL,
-                  .subclass) {
+                  .subclass = deprecated()) {
   validate_signal_args(.subclass)
 
   if (is_null(trace) && is_null(peek_option("rlang:::disable_trace_capture"))) {

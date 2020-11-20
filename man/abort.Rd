@@ -14,7 +14,7 @@ abort(
   ...,
   trace = NULL,
   parent = NULL,
-  .subclass
+  .subclass = deprecated()
 )
 
 warn(
@@ -23,7 +23,7 @@ warn(
   ...,
   .frequency = c("always", "regularly", "once"),
   .frequency_id = NULL,
-  .subclass
+  .subclass = deprecated()
 )
 
 inform(
@@ -33,10 +33,10 @@ inform(
   .file = NULL,
   .frequency = c("always", "regularly", "once"),
   .frequency_id = NULL,
-  .subclass
+  .subclass = deprecated()
 )
 
-signal(message, class, ..., .subclass)
+signal(message, class, ..., .subclass = deprecated())
 
 interrupt()
 }

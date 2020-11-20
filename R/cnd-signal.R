@@ -103,7 +103,7 @@ warn <- function(message = NULL,
                  ...,
                  .frequency = c("always", "regularly", "once"),
                  .frequency_id = NULL,
-                 .subclass) {
+                 .subclass = deprecated()) {
   validate_signal_args(.subclass)
 
   message <- validate_signal_message(message, class)
@@ -135,7 +135,7 @@ inform <- function(message = NULL,
                    .file = NULL,
                    .frequency = c("always", "regularly", "once"),
                    .frequency_id = NULL,
-                   .subclass) {
+                   .subclass = deprecated()) {
   validate_signal_args(.subclass)
 
   message <- message %||% ""
@@ -163,17 +163,15 @@ inform <- function(message = NULL,
 }
 #' @rdname abort
 #' @export
-signal <- function(message, class, ..., .subclass) {
-  if (!missing(.subclass)) {
-    deprecate_subclass(.subclass)
-  }
+signal <- function(message, class, ..., .subclass = deprecated()) {
+  validate_signal_args(.subclass)
   message <- collapse_cnd_message(message)
   cnd <- cnd(class, ..., message = message)
   cnd_signal(cnd)
 }
 
 validate_signal_args <- function(subclass, env = caller_env()) {
-  if (!missing(subclass)) {
+  if (!is_missing(subclass)) {
     deprecate_subclass(subclass, env = env)
   }
 }

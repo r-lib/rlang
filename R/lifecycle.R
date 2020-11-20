@@ -190,3 +190,5 @@
 #' @keywords internal
 #' @name lifecycle
 NULL
+
+deprecated <- function() missing_arg()
