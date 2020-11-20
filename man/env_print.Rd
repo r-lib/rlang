@@ -22,4 +22,10 @@ otherwise uses an internal version of that generic). In addition
 indicated as such.
 \item Locked bindings get a \verb{[L]} tag
 }
+
+Note that printing a package namespace (see \code{\link[=ns_env]{ns_env()}}) with
+\code{env_print()} will typically tag function bindings as \verb{<lazy>}
+until they are evaluated the first time. This is because package
+functions are lazily-loaded from disk to improve performance when
+loading a package.
 }

@@ -639,6 +639,12 @@ env_unlock <- function(env) {
 #'
 #' * Locked bindings get a `[L]` tag
 #'
+#' Note that printing a package namespace (see [ns_env()]) with
+#' `env_print()` will typically tag function bindings as `<lazy>`
+#' until they are evaluated the first time. This is because package
+#' functions are lazily-loaded from disk to improve performance when
+#' loading a package.
+#'
 #' @param env An environment, or object that can be converted to an
 #'   environment by [get_env()].
 #'
