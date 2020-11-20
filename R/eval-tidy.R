@@ -219,6 +219,7 @@ print.rlang_fake_data_pronoun <- function(...) cat_line("<pronoun>")
 #' @export
 .data <- structure(list(), class = "rlang_fake_data_pronoun")
 #' @rdname tidyeval-data
+#' @format NULL
 #' @export
 .env <- .data
 
