@@ -158,6 +158,7 @@
 <a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li><p><code><a href="../reference/format_error_bullets.html">format_error_bullets()</a></code> is no longer experimental. The <code>message</code> arguments of <code><a href="../reference/abort.html">abort()</a></code>, <code><a href="../reference/abort.html">warn()</a></code>, and <code><a href="../reference/abort.html">inform()</a></code> are automatically passed to that function to make it easy to create messages with regular, info, and error bullets. See <code><a href="../reference/format_error_bullets.html">?format_error_bullets</a></code> for more information.</p></li>
 <li><p>New <code>rlang_print_backtrace</code> C callable for debugging from C interpreters (<a href='https://github.com/r-lib/rlang/issues/1059'>#1059</a>).</p></li>
 <li><p>New <code><a href="../reference/zap_srcref.html">zap_srcref()</a></code> function to recursively remove source references from functions and calls.</p></li>
 <li><p><code><a href="../reference/eval_bare.html">eval_bare()</a></code>, <code><a href="../reference/eval_tidy.html">eval_tidy()</a></code> (<a href='https://github.com/r-lib/rlang/issues/961'>#961</a>), and <code><a href="../reference/with_handlers.html">with_handlers()</a></code> (<a href='https://github.com/r-lib/rlang/issues/518'>#518</a>) now propagate visibility.</p></li>

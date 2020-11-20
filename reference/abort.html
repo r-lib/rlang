@@ -220,11 +220,17 @@ to create custom interrupt condition objects.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>message</th>
-      <td><p>The message to display.</p>
-<p>If not supplied, it is expected that the message is generated
-lazily through <a href='cnd_message.html'>conditionMessage()</a>. In that case,
-<code>class</code> must be supplied. Only <code>inform()</code> allows empty messages
-as it is occasionally useful to build user output incrementally.</p></td>
+      <td><p>The message to display. Character vectors are
+formatted with <code><a href='format_error_bullets.html'>format_error_bullets()</a></code>. The first element
+defines a message header and the rest of the vector defines
+bullets. Bullets named <code>i</code> and <code>x</code> define info and error bullets
+respectively, with special Unicode and colour formatting applied
+if possible.</p>
+<p>If a message is not supplied, it is expected that the message is
+generated lazily through <a href='cnd_message.html'>conditionMessage()</a>. In
+that case, <code>class</code> must be supplied. Only <code>inform()</code> allows empty
+messages as it is occasionally useful to build user output
+incrementally.</p></td>
     </tr>
     <tr>
       <th>class</th>
