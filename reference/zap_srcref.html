@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Name of a primitive function — prim_name • rlang</title>
+<title>Zap source references — zap_srcref • rlang</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,18 @@
 
 
 
-<meta property="og:title" content="Name of a primitive function — prim_name" />
-<meta property="og:description" content="Name of a primitive function" />
+<meta property="og:title" content="Zap source references — zap_srcref" />
+<meta property="og:description" content="There are a number of situations where R creates source references:
+Reading R code from a file with source() and parse() might save
+source references inside calls to function and {.
+sys.call() includes a source reference if possible.
+Creating a closure stores the source reference from the call to
+function, if any.
+
+
+These source references take up space and might cause a number of
+issues. zap_srcref() recursively walks through expressions and
+functions to remove all source references." />
 
 
 
@@ -150,23 +160,33 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Name of a primitive function</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/fn.R'><code>R/fn.R</code></a></small>
-    <div class="hidden name"><code>prim_name.Rd</code></div>
+    <h1>Zap source references</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/attr.R'><code>R/attr.R</code></a></small>
+    <div class="hidden name"><code>zap_srcref.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Name of a primitive function</p>
+    <p>There are a number of situations where R creates source references:</p><ul>
+<li><p>Reading R code from a file with <code><a href='https://rdrr.io/r/base/source.html'>source()</a></code> and <code><a href='https://rdrr.io/r/base/parse.html'>parse()</a></code> might save
+source references inside calls to <code>function</code> and <code>{</code>.</p></li>
+<li><p><code><a href='https://rdrr.io/r/base/sys.parent.html'>sys.call()</a></code> includes a source reference if possible.</p></li>
+<li><p>Creating a closure stores the source reference from the call to
+<code>function</code>, if any.</p></li>
+</ul>
+
+<p>These source references take up space and might cause a number of
+issues. <code>zap_srcref()</code> recursively walks through expressions and
+functions to remove all source references.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>prim_name</span><span class='op'>(</span><span class='va'>prim</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>zap_srcref</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>prim</th>
-      <td><p>A primitive function such as <code><a href='https://rdrr.io/r/base/c.html'>base::c()</a></code>.</p></td>
+      <th>x</th>
+      <td><p>An R object. Functions and calls are walked recursively.</p></td>
     </tr>
     </table>
 

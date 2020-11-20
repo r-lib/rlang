@@ -561,4 +561,7 @@
   <url>
     <loc>https://rlang.r-lib.org/reference/zap.html</loc>
   </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/zap_srcref.html</loc>
+  </url>
 </urlset>
