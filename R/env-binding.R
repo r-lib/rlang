@@ -274,8 +274,7 @@ with_bindings <- function(.expr, ..., .env = caller_env()) {
 #' `inherit` to `TRUE` to track down bindings in parent environments.
 #'
 #' @inheritParams get_env
-#' @param nms A character vector containing the names of the bindings
-#'   to remove.
+#' @param nms A character vector of binding names to remove.
 #' @param inherit Whether to look for bindings in the parent
 #'   environments.
 #' @return The input object `env` with its associated environment
@@ -310,6 +309,8 @@ env_unbind <- function(env = caller_env(), nms, inherit = FALSE) {
 #' any of its parents (with `inherit = TRUE`).
 #'
 #' @inheritParams env_unbind
+#' @param nms A character vector of binding names for which to check
+#'   existence.
 #' @return A named logical vector as long as `nms`.
 #' @export
 #' @examples

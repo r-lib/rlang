@@ -9,8 +9,7 @@ env_unbind(env = caller_env(), nms, inherit = FALSE)
 \arguments{
 \item{env}{An environment.}
 
-\item{nms}{A character vector containing the names of the bindings
-to remove.}
+\item{nms}{A character vector of binding names to remove.}
 
 \item{inherit}{Whether to look for bindings in the parent
 environments.}
