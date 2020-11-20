@@ -243,3 +243,51 @@ has_length <- function(x, n = NULL) {
 poke_attributes <- function(x, attrs) {
   .Call(rlang_poke_attrib, x, attrs)
 }
+
+#' Zap source references
+#'
+#' @description
+#'
+#' There are a number of situations where R creates source references:
+#'
+#' - Reading R code from a file with `source()` and `parse()` might save
+#'   source references inside calls to `function` and `{`.
+#' - [sys.call()] includes a source reference if possible.
+#' - Creating a closure stores the source reference from the call to
+#'   `function`, if any.
+#'
+#' These source references take up space and might cause a number of
+#' issues. `zap_srcref()` recursively walks through expressions and
+#' functions to remove all source references.
+#'
+#' @param x An R object. Functions and calls are walked recursively.
+#'
+#' @export
+zap_srcref <- function(x) {
+  if (is_closure(x)) {
+    body(x) <- zap_srcref(body(x))
+    return(x)
+  }
+  if (!is_call(x)) {
+    return(x)
+  }
+
+  if (!is_null(sexp_attrib(x))) {
+    attr(x, "srcref") <- NULL
+    attr(x, "wholeSrcref") <- NULL
+    attr(x, "srcfile") <- NULL
+  }
+  if (is_call(x, "function")) {
+    x[[4]] <- NULL
+  }
+
+  x <- duplicate(x, shallow = TRUE)
+
+  node <- x
+  while (!is_null(node)) {
+    node_poke_car(node, zap_srcref(node_car(node)))
+    node <- node_cdr(node)
+  }
+
+  x
+}

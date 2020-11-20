@@ -1,6 +1,9 @@
 
 # rlang (development version)
 
+* New `zap_srcref()` function to recursively remove source references
+  from functions and calls.
+
 * `eval_bare()`, `eval_tidy()` (#961), and `with_handlers()` (#518)
   now propagate visibility.
 

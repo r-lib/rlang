@@ -273,7 +273,7 @@ is_call <- function(x, name = NULL, n = NULL, ns = NULL) {
 
     unmatched <- TRUE
     for (elt in name) {
-      if (identical(x[[1]], sym(elt))) {
+      if (identical(node_car(x), sym(elt))) {
         unmatched <- FALSE
         break
       }

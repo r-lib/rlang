@@ -60,3 +60,42 @@ test_that("set_names2() fills in empty names", {
   chr <- c("a", b = "B", "c")
   expect_equal(set_names2(chr), c(a = "a", b = "B", c = "c"))
 })
+
+test_that("zap_srcref() removes source references", {
+  with_srcref("x <- quote({ NULL })")
+  expect_null(attributes(zap_srcref(x)))
+})
+
+test_that("zap_srcref() handles nested functions (r-lib/testthat#1228)", {
+  with_srcref("
+    factory <- function() {
+      function() {
+        function() {
+          1
+        }
+      }
+    }"
+  )
+
+  fn <- zap_srcref(factory())
+  expect_null(attributes(fn))
+
+  curly <- body(fn)
+  expect_null(attributes(curly))
+
+  fn_call <- curly[[2]]
+  expect_null(attributes(fn_call))
+
+  # Calls to `function` store srcrefs in 4th cell
+  expect_length(fn_call, 3)
+})
+
+test_that("zap_srcref() works with quosures", {
+  with_srcref("x <- expr({ !!quo({ NULL }) })")
+
+  out <- zap_srcref(x)
+  expect_null(attributes(out))
+
+  quo <- out[[2]]
+  expect_null(attributes(quo_get_expr(quo)))
+})

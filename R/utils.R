@@ -261,3 +261,9 @@ split_lines <- function(x) {
 stop_internal <- function(fn, msg) {
   abort(sprintf("Internal error in `%s()`: %s"), fn, msg)
 }
+
+with_srcref <- function(src, env = caller_env(), file = NULL) {
+  file <- file %||% tempfile("sourced", fileext = ".R")
+  writeLines(src, file)
+  source(file, local = env, keep.source = TRUE)
+}

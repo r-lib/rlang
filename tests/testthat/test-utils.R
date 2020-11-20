@@ -27,3 +27,9 @@ test_that("trailing newlines are trimmed", {
   expect_identical(strip_trailing_newline("foo\n"), "foo")
   expect_identical(strip_trailing_newline("\n"), "")
 })
+
+test_that("source_refs() creates source references", {
+  with_srcref("x <- quote({ NULL })")
+  attrib_names <- names(attributes(x))
+  expect_true(all(c("srcref", "srcfile", "wholeSrcref") %in% attrib_names))
+})
