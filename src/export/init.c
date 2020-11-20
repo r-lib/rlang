@@ -358,6 +358,7 @@ extern bool is_splice_box(sexp*);
 extern sexp* rlang_env_dots_values(sexp*);
 extern sexp* rlang_env_dots_list(sexp*);
 extern sexp* rlang_eval_tidy(sexp*, sexp*, sexp*);
+extern void rlang_print_backtrace(bool full);
 
 export void R_init_rlang(r_dll_info* dll) {
   // The quosure functions are stable
@@ -393,6 +394,9 @@ export void R_init_rlang(r_dll_info* dll) {
   // Compatibility
   r_register_c_callable("rlang", "rlang_as_data_mask", (r_fn_ptr) &rlang_as_data_mask_compat);
   r_register_c_callable("rlang", "rlang_new_data_mask", (r_fn_ptr) &rlang_new_data_mask_compat);
+
+  // Only for debugging - no stability guaranteed
+  r_register_c_callable("rlang", "rlang_print_backtrace", (r_fn_ptr) &rlang_print_backtrace);
 
   r_register_r_callables(dll, r_callables, externals);
 }

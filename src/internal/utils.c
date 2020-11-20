@@ -21,4 +21,31 @@ void signal_soft_deprecated(const char* msg) {
 }
 
 
+/* For debugging with gdb or lldb. Exported as a C callable.
+ * Usage with lldb:
+ *
+ * ```
+ * // Full backtrace:
+ * expr R_GetCCallable("rlang", "rlang_print_backtrace")(true)
+ *
+ * // Linear backtrace:
+ * expr R_GetCCallable("rlang", "rlang_print_backtrace")(false)
+ * ```
+ */
+void rlang_print_backtrace(bool full) {
+  sexp* env = KEEP(r_current_frame());
+  sexp* trace = KEEP(r_parse_eval("rlang::trace_back()", env));
+
+  const char* source = full ?
+    "print(x, simplify = 'none')" :
+    "print(x, simplify = 'branch')";
+  sexp* call = KEEP(r_parse(source));
+
+  r_eval_with_x(call, r_base_env, trace);
+
+  FREE(2);
+  return;
+}
+
+
 void rlang_init_utils() { }

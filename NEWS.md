@@ -1,6 +1,9 @@
 
 # rlang (development version)
 
+* New `rlang_print_backtrace` C callable for debugging from C
+  interpreters (#1059).
+
 * New `zap_srcref()` function to recursively remove source references
   from functions and calls.
 
