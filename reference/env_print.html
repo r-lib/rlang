@@ -50,7 +50,12 @@ fancy bindings (actives and promises) are
 indicated as such.
 Locked bindings get a [L] tag
 
-" />
+
+Note that printing a package namespace (see ns_env()) with
+env_print() will typically tag function bindings as &amp;lt;lazy&amp;gt;
+until they are evaluated the first time. This is because package
+functions are lazily-loaded from disk to improve performance when
+loading a package." />
 
 
 
@@ -177,6 +182,11 @@ indicated as such.</p></li>
 <li><p>Locked bindings get a <code>[L]</code> tag</p></li>
 </ul>
 
+<p>Note that printing a package namespace (see <code><a href='ns_env.html'>ns_env()</a></code>) with
+<code>env_print()</code> will typically tag function bindings as <code>&lt;lazy&gt;</code>
+until they are evaluated the first time. This is because package
+functions are lazily-loaded from disk to improve performance when
+loading a package.</p>
     </div>
 
     <pre class="usage"><span class='fu'>env_print</span><span class='op'>(</span>env <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
