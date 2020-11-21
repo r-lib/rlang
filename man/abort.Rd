@@ -84,7 +84,10 @@ connection or character string which will be passed to \code{\link[=cat]{cat()}}
 By default, \code{inform()} prints to standard output in interactive
 sessions and standard error otherwise. This way IDEs can treat
 messages distinctly from warnings and errors, and R scripts can
-still filter out the messages easily by redirecting \code{stderr}.}
+still filter out the messages easily by redirecting \code{stderr}. If
+a sink is active, either on output or on messages, messages are
+printed to \code{stderr}. This ensures consistency of behaviour in
+interactive and non-interactive sessions.}
 }
 \description{
 These functions are equivalent to base functions \code{\link[base:stop]{base::stop()}},
