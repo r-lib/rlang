@@ -277,7 +277,10 @@ connection or character string which will be passed to <code><a href='https://rd
 <p>By default, <code>inform()</code> prints to standard output in interactive
 sessions and standard error otherwise. This way IDEs can treat
 messages distinctly from warnings and errors, and R scripts can
-still filter out the messages easily by redirecting <code>stderr</code>.</p></td>
+still filter out the messages easily by redirecting <code>stderr</code>. If
+a sink is active, either on output or on messages, messages are
+printed to <code>stderr</code>. This ensures consistency of behaviour in
+interactive and non-interactive sessions.</p></td>
     </tr>
     </table>
 
