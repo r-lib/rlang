@@ -1,6 +1,10 @@
 
 # rlang (development version)
 
+* The `.data` pronoun no longer skips functions (#1061). This solves a
+  dplyr issue involving rowwise data frames and list-columns of
+  functions (tidyverse/dplyr#5608).
+
 * `format_error_bullets()` is no longer experimental. The `message`
   arguments of `abort()`, `warn()`, and `inform()` are automatically
   passed to that function to make it easy to create messages with

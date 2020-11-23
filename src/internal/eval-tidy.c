@@ -221,7 +221,7 @@ static sexp* mask_find(sexp* env, sexp* sym) {
       FREE(1);
     }
 
-    if (obj != r_syms_unbound && !r_is_function(obj)) {
+    if (obj != r_syms_unbound) {
       FREE(n_kept);
       return obj;
     }

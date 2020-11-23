@@ -376,13 +376,13 @@ test_that("can inspect the exported pronoun", {
   expect_output(print(rlang::.data), "<pronoun>")
 })
 
-test_that("data pronoun always skips functions", {
+test_that("data pronoun doesn't skip functions (#1061, #5608)", {
   top <- env(c = "c")
   bottom <- env(top, c = base::c)
   mask <- new_data_mask(bottom, top)
 
   .data <- as_data_pronoun(mask)
-  expect_identical(.data$c, "c")
+  expect_identical(.data$c, base::c)
 })
 
 test_that("leaked quosure masks are not mistaken with data masks", {
