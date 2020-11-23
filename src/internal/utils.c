@@ -43,7 +43,7 @@ void rlang_print_backtrace(bool full) {
 
   r_eval_with_x(call, r_base_env, trace);
 
-  FREE(2);
+  FREE(3);
   return;
 }
 
