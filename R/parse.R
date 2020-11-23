@@ -1,15 +1,28 @@
 #' Parse R code
 #'
+#' @description
 #' These functions parse and transform text into R expressions. This
 #' is the first step to interpret or evaluate a piece of R code
 #' written by a programmer.
 #'
-#' `parse_expr()` returns one expression. If the text contains more
-#' than one expression (separated by semicolons or new lines), an error is
-#' issued. On the other hand `parse_exprs()` can handle multiple
-#' expressions. It always returns a list of expressions (compare to
-#' [base::parse()] which returns a base::expression vector). All
-#' functions also support R connections.
+#' * `parse_expr()` returns one expression. If the text contains more
+#'   than one expression (separated by semicolons or new lines), an
+#'   error is issued. On the other hand `parse_exprs()` can handle
+#'   multiple expressions. It always returns a list of expressions
+#'   (compare to [base::parse()] which returns a base::expression
+#'   vector). All functions also support R connections.
+#'
+#' * `parse_quo()` and `parse_quos()` are variants that create a
+#'   [quosure][quo] that inherits from the global environment by
+#'   default. This is appropriate when you're parsing external user
+#'   input to be evaluated in user context (rather than the private
+#'   contexts of your functions).
+#'
+#'   Unlike quosures created with [enquo()], [enquos()], or `{{`, a
+#'   parsed quosure never contains injected quosures. It is thus safe
+#'   to evaluate them with `eval()` instead of [eval_tidy()], though
+#'   the latter is more convenient as you don't need to extract `expr`
+#'   and `env`.
 #'
 #' @param x Text containing expressions to parse_expr for
 #'   `parse_expr()` and `parse_exprs()`. Can also be an R connection,
@@ -21,6 +34,7 @@
 #'   length of the input. This would happen is one of the strings
 #'   contain several expressions (such as `"foo; bar"`). The names of
 #'   `x` are preserved (and recycled in case of multiple expressions).
+#'   The `_quo` suffixed variants return quosures.
 #' @seealso [base::parse()]
 #' @export
 #' @examples
@@ -83,31 +97,22 @@ chr_parse_exprs <- function(x) {
   set_names(parsed, nms)
 }
 
-#' Parsing variants that return quosures
-#'
-#' @description
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
-#'
-#' These functions are in the questioning stage because they don't add
-#' value compared to using [parse_expr()] with [new_quosure()].
-#'
-#' @inheritParams parse_expr
-#' @param env The environment for the quosures. Depending on the use
-#'   case, a good default might be the [global
-#'   environment][global_env] but you might also want to evaluate the
-#'   R code in an isolated context (perhaps a child of the global
-#'   environment or of the [base environment][base_env]).
-#' @keywords internal
+#' @rdname parse_expr
+#' @param env The environment for the quosures. The [global
+#'   environment][global_env] (the default) may be the right choice
+#'   when you are parsing external user inputs. You might also want to
+#'   evaluate the R code in an isolated context (perhaps a child of
+#'   the global environment or of the [base environment][base_env]).
 #' @export
-parse_quo <- function(x, env) {
+parse_quo <- function(x, env = global_env()) {
   if (missing(env)) {
     abort("The quosure environment should be explicitly supplied as `env`")
   }
   new_quosure(parse_expr(x), as_environment(env))
 }
-#' @rdname parse_quo
+#' @rdname parse_expr
 #' @export
-parse_quos <- function(x, env) {
+parse_quos <- function(x, env = global_env()) {
   if (missing(env)) {
     abort("The quosure environment should be explicitly supplied as `env`")
   }

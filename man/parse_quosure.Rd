@@ -14,6 +14,11 @@ parse_quosures(x, env = caller_env())
 \code{parse_expr()} and \code{parse_exprs()}. Can also be an R connection,
 for instance to a file. If the supplied connection is not open,
 it will be automatically closed and destroyed.}
+
+\item{env}{The environment for the quosures. The \link[=global_env]{global environment} (the default) may be the right choice
+when you are parsing external user inputs. You might also want to
+evaluate the R code in an isolated context (perhaps a child of
+the global environment or of the \link[=base_env]{base environment}).}
 }
 \description{
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}

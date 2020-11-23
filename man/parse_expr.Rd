@@ -3,17 +3,28 @@
 \name{parse_expr}
 \alias{parse_expr}
 \alias{parse_exprs}
+\alias{parse_quo}
+\alias{parse_quos}
 \title{Parse R code}
 \usage{
 parse_expr(x)
 
 parse_exprs(x)
+
+parse_quo(x, env = global_env())
+
+parse_quos(x, env = global_env())
 }
 \arguments{
 \item{x}{Text containing expressions to parse_expr for
 \code{parse_expr()} and \code{parse_exprs()}. Can also be an R connection,
 for instance to a file. If the supplied connection is not open,
 it will be automatically closed and destroyed.}
+
+\item{env}{The environment for the quosures. The \link[=global_env]{global environment} (the default) may be the right choice
+when you are parsing external user inputs. You might also want to
+evaluate the R code in an isolated context (perhaps a child of
+the global environment or of the \link[=base_env]{base environment}).}
 }
 \value{
 \code{parse_expr()} returns an \link[=is_expression]{expression},
@@ -22,19 +33,31 @@ plural variants the length of the output may be greater than the
 length of the input. This would happen is one of the strings
 contain several expressions (such as \code{"foo; bar"}). The names of
 \code{x} are preserved (and recycled in case of multiple expressions).
+The \verb{_quo} suffixed variants return quosures.
 }
 \description{
 These functions parse and transform text into R expressions. This
 is the first step to interpret or evaluate a piece of R code
 written by a programmer.
+\itemize{
+\item \code{parse_expr()} returns one expression. If the text contains more
+than one expression (separated by semicolons or new lines), an
+error is issued. On the other hand \code{parse_exprs()} can handle
+multiple expressions. It always returns a list of expressions
+(compare to \code{\link[base:parse]{base::parse()}} which returns a base::expression
+vector). All functions also support R connections.
+\item \code{parse_quo()} and \code{parse_quos()} are variants that create a
+\link[=quo]{quosure} that inherits from the global environment by
+default. This is appropriate when you're parsing external user
+input to be evaluated in user context (rather than the private
+contexts of your functions).
+
+Unlike quosures created with \code{\link[=enquo]{enquo()}}, \code{\link[=enquos]{enquos()}}, or \verb{\{\{}, a
+parsed quosure never contains injected quosures. It is thus safe
+to evaluate them with \code{eval()} instead of \code{\link[=eval_tidy]{eval_tidy()}}, though
+the latter is more convenient as you don't need to extract \code{expr}
+and \code{env}.
 }
-\details{
-\code{parse_expr()} returns one expression. If the text contains more
-than one expression (separated by semicolons or new lines), an error is
-issued. On the other hand \code{parse_exprs()} can handle multiple
-expressions. It always returns a list of expressions (compare to
-\code{\link[base:parse]{base::parse()}} which returns a base::expression vector). All
-functions also support R connections.
 }
 \examples{
 # parse_expr() can parse any R expression:
