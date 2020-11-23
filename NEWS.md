@@ -1,6 +1,9 @@
 
 # rlang (development version)
 
+* A new compat file for the zeallot operator `%<-%` is now available
+  in the rlang repository.
+
 * New `%<~%` operator to define a variable lazily.
 
 * The `.data` pronoun no longer skips functions (#1061). This solves a
