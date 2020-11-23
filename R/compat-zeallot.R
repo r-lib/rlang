@@ -4,7 +4,7 @@
 # Please find the most recent version in rlang's repository.
 
 
-`%<-%` <- function(lhs, rhs) {
+`%<-%` <- function(lhs, value) {
   lhs <- substitute(lhs)
   env <- caller_env()
 
@@ -14,7 +14,7 @@
 
   vars <- as.list(lhs[-1])
 
-  if (length(rhs) < length(vars)) {
+  if (length(value) < length(vars)) {
     abort("The RHS of `%<-%` must be long enough for the number of assigned variables.")
   }
 
@@ -24,10 +24,10 @@
       abort("The LHS of `%<-%` must refer to symbols.")
     }
 
-    env[[as_string(var)]] <- rhs[[i]]
+    env[[as_string(var)]] <- value[[i]]
   }
 
-  invisible(rhs)
+  invisible(value)
 }
 
 
