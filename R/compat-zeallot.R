@@ -9,19 +9,19 @@
   env <- caller_env()
 
   if (!is_call(lhs, "c")) {
-    abort("The LHS of `%<-%` must be a `c()` call.")
+    abort("The left-hand side of `%<-%` must be a call to `c()`.")
   }
 
   vars <- as.list(lhs[-1])
 
   if (length(value) < length(vars)) {
-    abort("The RHS of `%<-%` must be long enough for the number of assigned variables.")
+    abort("The right-hand side of `%<-%` must match the number of assigned variables.")
   }
 
   for (i in seq_along(vars)) {
     var <- vars[[i]]
     if (!is_symbol(var)) {
-      abort("The LHS of `%<-%` must refer to symbols.")
+      abort(paste0("Element ", i, " of the left-hand side of `%<-%` must be a symbol."))
     }
 
     env[[as_string(var)]] <- value[[i]]

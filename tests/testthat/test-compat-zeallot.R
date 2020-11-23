@@ -2,13 +2,13 @@
 test_that("LHS must be a list of symbols wrapped in `c()`", {
   expect_error(
     foo %<-% list(1),
-    "must be a `c()` call",
+    "must be a call to `c()`",
     fixed = TRUE
   )
 
   expect_error(
     c(foo()) %<-% list(1),
-    "must refer to symbols"
+    "Element 1 of the left-hand side .* must be a symbol"
   )
 })
 
@@ -28,6 +28,6 @@ test_that("unused elements are ignored", {
 test_that("must supply a long enough list", {
   expect_error(
     c(foo) %<-% list(),
-    "must be long enough"
+    "must match"
   )
 })
