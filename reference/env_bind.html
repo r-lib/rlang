@@ -67,6 +67,8 @@ evaluated immediately but lazily. Once a symbol is evaluated, the
 corresponding expression is evaluated in turn and its value is
 bound to the symbol (the expressions are thus evaluated only
 once, if at all).
+%&amp;lt;~% is a shortcut for env_bind_lazy(). It works like &amp;lt;-
+but the RHS is evaluated lazily.
 
 " />
 
@@ -211,6 +213,8 @@ evaluated immediately but lazily. Once a symbol is evaluated, the
 corresponding expression is evaluated in turn and its value is
 bound to the symbol (the expressions are thus evaluated only
 once, if at all).</p></li>
+<li><p><code>%&lt;~%</code> is a shortcut for <code>env_bind_lazy()</code>. It works like <code>&lt;-</code>
+but the RHS is evaluated lazily.</p></li>
 </ul>
 
     </div>
@@ -219,7 +223,9 @@ once, if at all).</p></li>
 
 <span class='fu'>env_bind_lazy</span><span class='op'>(</span><span class='va'>.env</span>, <span class='va'>...</span>, .eval_env <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>env_bind_active</span><span class='op'>(</span><span class='va'>.env</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'>env_bind_active</span><span class='op'>(</span><span class='va'>.env</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='va'>lhs</span> <span class='op'>%&lt;~%</span> <span class='va'>rhs</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -238,6 +244,14 @@ Use <code><a href='zap.html'>zap()</a></code> to remove bindings.</p></td>
       <th>.eval_env</th>
       <td><p>The environment where the expressions will be
 evaluated when the symbols are forced.</p></td>
+    </tr>
+    <tr>
+      <th>lhs</th>
+      <td><p>The variable name to which <code>rhs</code> will be lazily assigned.</p></td>
+    </tr>
+    <tr>
+      <th>rhs</th>
+      <td><p>An expression lazily evaluated and assigned to <code>lhs</code>.</p></td>
     </tr>
     </table>
 

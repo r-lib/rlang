@@ -42,7 +42,25 @@
 <meta property="og:title" content="Parse R code — parse_expr" />
 <meta property="og:description" content="These functions parse and transform text into R expressions. This
 is the first step to interpret or evaluate a piece of R code
-written by a programmer." />
+written by a programmer.
+parse_expr() returns one expression. If the text contains more
+than one expression (separated by semicolons or new lines), an
+error is issued. On the other hand parse_exprs() can handle
+multiple expressions. It always returns a list of expressions
+(compare to base::parse() which returns a base::expression
+vector). All functions also support R connections.
+parse_quo() and parse_quos() are variants that create a
+quosure that inherits from the global environment by
+default. This is appropriate when you're parsing external user
+input to be evaluated in user context (rather than the private
+contexts of your functions).
+Unlike quosures created with enquo(), enquos(), or {{, a
+parsed quosure never contains injected quosures. It is thus safe
+to evaluate them with eval() instead of eval_tidy(), though
+the latter is more convenient as you don't need to extract expr
+and env.
+
+" />
 
 
 
@@ -160,12 +178,34 @@ written by a programmer." />
     <div class="ref-description">
     <p>These functions parse and transform text into R expressions. This
 is the first step to interpret or evaluate a piece of R code
-written by a programmer.</p>
+written by a programmer.</p><ul>
+<li><p><code>parse_expr()</code> returns one expression. If the text contains more
+than one expression (separated by semicolons or new lines), an
+error is issued. On the other hand <code>parse_exprs()</code> can handle
+multiple expressions. It always returns a list of expressions
+(compare to <code><a href='https://rdrr.io/r/base/parse.html'>base::parse()</a></code> which returns a base::expression
+vector). All functions also support R connections.</p></li>
+<li><p><code>parse_quo()</code> and <code>parse_quos()</code> are variants that create a
+<a href='nse-defuse.html'>quosure</a> that inherits from the global environment by
+default. This is appropriate when you're parsing external user
+input to be evaluated in user context (rather than the private
+contexts of your functions).</p>
+<p>Unlike quosures created with <code><a href='nse-defuse.html'>enquo()</a></code>, <code><a href='nse-defuse.html'>enquos()</a></code>, or <code>{{</code>, a
+parsed quosure never contains injected quosures. It is thus safe
+to evaluate them with <code><a href='https://rdrr.io/r/base/eval.html'>eval()</a></code> instead of <code><a href='eval_tidy.html'>eval_tidy()</a></code>, though
+the latter is more convenient as you don't need to extract <code>expr</code>
+and <code>env</code>.</p></li>
+</ul>
+
     </div>
 
     <pre class="usage"><span class='fu'>parse_expr</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 
-<span class='fu'>parse_exprs</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
+<span class='fu'>parse_exprs</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='fu'>parse_quo</span><span class='op'>(</span><span class='va'>x</span>, env <span class='op'>=</span> <span class='fu'><a href='search_envs.html'>global_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='fu'>parse_quos</span><span class='op'>(</span><span class='va'>x</span>, env <span class='op'>=</span> <span class='fu'><a href='search_envs.html'>global_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -177,6 +217,13 @@ written by a programmer.</p>
 for instance to a file. If the supplied connection is not open,
 it will be automatically closed and destroyed.</p></td>
     </tr>
+    <tr>
+      <th>env</th>
+      <td><p>The environment for the quosures. The <a href='search_envs.html'>global environment</a> (the default) may be the right choice
+when you are parsing external user inputs. You might also want to
+evaluate the R code in an isolated context (perhaps a child of
+the global environment or of the <a href='search_envs.html'>base environment</a>).</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -186,15 +233,8 @@ it will be automatically closed and destroyed.</p></td>
 plural variants the length of the output may be greater than the
 length of the input. This would happen is one of the strings
 contain several expressions (such as <code>"foo; bar"</code>). The names of
-<code>x</code> are preserved (and recycled in case of multiple expressions).</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p><code>parse_expr()</code> returns one expression. If the text contains more
-than one expression (separated by semicolons or new lines), an error is
-issued. On the other hand <code>parse_exprs()</code> can handle multiple
-expressions. It always returns a list of expressions (compare to
-<code><a href='https://rdrr.io/r/base/parse.html'>base::parse()</a></code> which returns a base::expression vector). All
-functions also support R connections.</p>
+<code>x</code> are preserved (and recycled in case of multiple expressions).
+The <code>_quo</code> suffixed variants return quosures.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='https://rdrr.io/r/base/parse.html'>base::parse()</a></code></p></div>

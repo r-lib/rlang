@@ -161,8 +161,8 @@ abbreviated." />
 
     <div class="ref-description">
     <p><img src='figures/lifecycle-deprecated.svg' alt='Deprecated lifecycle' /></p>
-<p>These functions were deprecated and renamed to <code><a href='parse_quo.html'>parse_quo()</a></code>
-and <code><a href='parse_quo.html'>parse_quos()</a></code> in rlang 0.2.0. This is for consistency with the
+<p>These functions were deprecated and renamed to <code><a href='parse_expr.html'>parse_quo()</a></code>
+and <code><a href='parse_expr.html'>parse_quos()</a></code> in rlang 0.2.0. This is for consistency with the
 convention that suffixes indicating return types are not
 abbreviated.</p>
     </div>
@@ -180,6 +180,13 @@ abbreviated.</p>
 <code><a href='parse_expr.html'>parse_expr()</a></code> and <code><a href='parse_expr.html'>parse_exprs()</a></code>. Can also be an R connection,
 for instance to a file. If the supplied connection is not open,
 it will be automatically closed and destroyed.</p></td>
+    </tr>
+    <tr>
+      <th>env</th>
+      <td><p>The environment for the quosures. The <a href='search_envs.html'>global environment</a> (the default) may be the right choice
+when you are parsing external user inputs. You might also want to
+evaluate the R code in an isolated context (perhaps a child of
+the global environment or of the <a href='search_envs.html'>base environment</a>).</p></td>
     </tr>
     </table>
 
