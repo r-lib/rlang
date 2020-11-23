@@ -1,49 +1,30 @@
 # Revdeps
 
-## Failed to check (42)
+## Failed to check (23)
 
-|package              |version |error |warning |note |
-|:--------------------|:-------|:-----|:-------|:----|
-|anglr                |?       |      |        |     |
-|butcher              |?       |      |        |     |
-|ceramic              |?       |      |        |     |
-|clustree             |?       |      |        |     |
-|conflicted           |?       |      |        |     |
-|cowplot              |?       |      |        |     |
-|crossmap             |?       |      |        |     |
-|ctDNAtools           |?       |      |        |     |
-|devtools             |?       |      |        |     |
-|dmdScheme            |1.2.6   |1     |        |     |
-|DSAIRM               |?       |      |        |     |
-|fingertipscharts     |0.0.11  |1     |        |     |
-|fishualize           |?       |      |        |     |
-|getTBinR             |?       |      |        |     |
-|ggdist               |?       |      |        |     |
-|golem                |?       |      |        |     |
-|gtsummary            |?       |      |        |     |
-|htmltools            |?       |      |        |     |
-|immunarch            |?       |      |        |     |
-|jstor                |?       |      |        |     |
-|lobstr               |?       |      |        |     |
-|metagam              |?       |      |        |     |
-|pkgdown              |?       |      |        |     |
-|portalr              |?       |      |        |     |
-|radiant.data         |?       |      |        |     |
-|radiant.model        |?       |      |        |     |
-|radiant.multivariate |?       |      |        |     |
-|rbgm                 |?       |      |        |     |
-|RFishBC              |?       |      |        |     |
-|rmdpartials          |?       |      |        |     |
-|sccore               |?       |      |        |     |
-|SDMtune              |?       |      |        |     |
-|Seurat               |?       |      |        |     |
-|shiny                |?       |      |        |     |
-|silicate             |?       |      |        |     |
-|simhelpers           |?       |      |        |     |
-|spbabel              |?       |      |        |     |
-|tidybayes            |?       |      |        |     |
-|trackr               |?       |      |        |     |
-|usethis              |?       |      |        |     |
-|vctrs                |?       |      |        |     |
-|ymlthis              |?       |      |        |     |
+|package                    |version |error  |warning |note |
+|:--------------------------|:-------|:------|:-------|:----|
+|NA                         |?       |       |        |     |
+|NA                         |?       |       |        |     |
+|butcher                    |?       |       |        |     |
+|crossmap                   |?       |       |        |     |
+|NA                         |?       |       |        |     |
+|ESTER                      |0.2.0   |1      |        |     |
+|NA                         |?       |       |        |     |
+|ggstatsplot                |0.6.5   |1      |        |     |
+|NA                         |?       |       |        |     |
+|jstor                      |?       |       |        |     |
+|NA                         |?       |       |        |     |
+|metagam                    |?       |       |        |     |
+|NA                         |?       |       |        |     |
+|precautionary              |0.1-5   |1      |        |     |
+|NA                         |?       |       |        |     |
+|Seurat                     |?       |       |        |     |
+|statsExpressions           |0.6.0   |1      |        |     |
+|NA                         |?       |       |        |     |
+|NA                         |?       |       |        |     |
+|NA                         |?       |       |        |     |
+|[torch](failures.md#torch) |0.1.1   |__+1__ |        |-1   |
+|trackr                     |?       |       |        |     |
+|NA                         |?       |       |        |     |
 
