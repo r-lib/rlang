@@ -1,6 +1,8 @@
 
 # rlang (development version)
 
+* New `%<~%` operator to define a variable lazily.
+
 * The `.data` pronoun no longer skips functions (#1061). This solves a
   dplyr issue involving rowwise data frames and list-columns of
   functions (tidyverse/dplyr#5608).

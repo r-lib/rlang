@@ -4,6 +4,7 @@
 \alias{env_bind}
 \alias{env_bind_lazy}
 \alias{env_bind_active}
+\alias{\%<~\%}
 \title{Bind symbols to objects in an environment}
 \usage{
 env_bind(.env, ...)
@@ -11,6 +12,8 @@ env_bind(.env, ...)
 env_bind_lazy(.env, ..., .eval_env = caller_env())
 
 env_bind_active(.env, ...)
+
+lhs \%<~\% rhs
 }
 \arguments{
 \item{.env}{An environment.}
@@ -21,6 +24,10 @@ Use \code{\link[=zap]{zap()}} to remove bindings.}
 
 \item{.eval_env}{The environment where the expressions will be
 evaluated when the symbols are forced.}
+
+\item{lhs}{The variable name to which \code{rhs} will be lazily assigned.}
+
+\item{rhs}{An expression lazily evaluated and assigned to \code{lhs}.}
 }
 \value{
 The input object \code{.env}, with its associated environment
@@ -56,6 +63,8 @@ evaluated immediately but lazily. Once a symbol is evaluated, the
 corresponding expression is evaluated in turn and its value is
 bound to the symbol (the expressions are thus evaluated only
 once, if at all).
+\item \verb{\%<~\%} is a shortcut for \code{env_bind_lazy()}. It works like \verb{<-}
+but the RHS is evaluated lazily.
 }
 }
 \section{Side effects}{

@@ -34,6 +34,9 @@
 #'   bound to the symbol (the expressions are thus evaluated only
 #'   once, if at all).
 #'
+#' - `%<~%` is a shortcut for `env_bind_lazy()`. It works like `<-`
+#'   but the RHS is evaluated lazily.
+#'
 #'
 #' @section Side effects:
 #'
@@ -220,6 +223,18 @@ env_bind_active <- function(.env, ...) {
     eval_env = caller_env()
   ))
 }
+#' @rdname env_bind
+#' @param lhs The variable name to which `rhs` will be lazily assigned.
+#' @param rhs An expression lazily evaluated and assigned to `lhs`.
+#' @export
+`%<~%` <- function(lhs, rhs) {
+  env_bind_lazy(
+    env,
+    !!substitute(lhs) := !!substitute(rhs),
+    .eval_env = caller_env()
+  )
+}
+
 
 #' Temporarily change bindings of an environment
 #'
