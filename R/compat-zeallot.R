@@ -14,8 +14,8 @@
 
   vars <- as.list(lhs[-1])
 
-  if (length(value) < length(vars)) {
-    abort("The right-hand side of `%<-%` must match the number of assigned variables.")
+  if (length(value) != length(vars)) {
+    abort("The left- and right-hand sides of `%<-%` must be the same length.")
   }
 
   for (i in seq_along(vars)) {

@@ -20,14 +20,14 @@ test_that("can assign lists and vectors", {
   expect_equal(list(foo, bar), list(1, 2))
 })
 
-test_that("unused elements are ignored", {
-  c(foo, bar) %<-% as.list(1:10)
-  expect_equal(list(foo, bar), list(1, 2))
-})
-
-test_that("must supply a long enough list", {
+test_that("RHS and LHS must have the same length", {
   expect_error(
     c(foo) %<-% list(),
-    "must match"
+    "must be the same length"
+  )
+
+  expect_error(
+    c(foo, bar) %<-% as.list(1:10),
+    "must be the same length"
   )
 })
