@@ -6,3 +6,7 @@ hash <- function(x) {
 hash_string <- function(x) {
   .Call(rlang_hash_string, x)
 }
+
+xxhash <- function(x) {
+  .Call(rlang_xxhash, x)
+}
