@@ -66,6 +66,74 @@ Run `cloud_details(, "NA")` for more info
 
 
 ```
+# BiodiversityR
+
+<details>
+
+* Version: 2.12-2
+* Source code: https://github.com/cran/BiodiversityR
+* URL: http://www.worldagroforestry.org/output/tree-diversity-analysis
+* Date/Publication: 2020-11-19 14:20:02 UTC
+* Number of recursive dependencies: 219
+
+Run `cloud_details(, "BiodiversityR")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+* using log directory ‘/tmp/workdir/BiodiversityR/new/BiodiversityR.Rcheck’
+* using R version 3.6.3 (2020-02-29)
+* using platform: x86_64-pc-linux-gnu (64-bit)
+* using session charset: UTF-8
+* using options ‘--no-manual --no-build-vignettes’
+* checking for file ‘BiodiversityR/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘BiodiversityR’ version ‘2.12-2’
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘rgl’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+* DONE
+Status: 1 ERROR
+
+
+
+
+
+
+```
+### CRAN
+
+```
+* using log directory ‘/tmp/workdir/BiodiversityR/old/BiodiversityR.Rcheck’
+* using R version 3.6.3 (2020-02-29)
+* using platform: x86_64-pc-linux-gnu (64-bit)
+* using session charset: UTF-8
+* using options ‘--no-manual --no-build-vignettes’
+* checking for file ‘BiodiversityR/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘BiodiversityR’ version ‘2.12-2’
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘rgl’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+* DONE
+Status: 1 ERROR
+
+
+
+
+
+
+```
 # butcher
 
 <details>
@@ -536,9 +604,7 @@ Run `cloud_details(, "jstor")` for more info
 * checking files in ‘vignettes’ ... OK
 * checking examples ... OK
 * checking for unstated dependencies in ‘tests’ ... OK
-* checking tests ... ERROR
-  Running ‘testthat.R’
-
+* checking tests ...
 
 
 
@@ -756,6 +822,77 @@ Error: package ‘escalation’ could not be loaded
 Execution halted
 ERROR: lazy loading failed for package ‘precautionary’
 * removing ‘/tmp/workdir/precautionary/old/precautionary.Rcheck/precautionary’
+
+```
+# processR
+
+<details>
+
+* Version: 0.2.3
+* Source code: https://github.com/cran/processR
+* URL: https://github.com/cardiomoon/processR
+* BugReports: https://github.com/cardiomoon/processR/issues
+* Date/Publication: 2020-01-27 14:10:02 UTC
+* Number of recursive dependencies: 172
+
+Run `cloud_details(, "processR")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+* using log directory ‘/tmp/workdir/processR/new/processR.Rcheck’
+* using R version 3.6.3 (2020-02-29)
+* using platform: x86_64-pc-linux-gnu (64-bit)
+* using session charset: UTF-8
+* using options ‘--no-manual --no-build-vignettes’
+* checking for file ‘processR/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘processR’ version ‘0.2.3’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘predict3d’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+* DONE
+Status: 1 ERROR
+
+
+
+
+
+
+```
+### CRAN
+
+```
+* using log directory ‘/tmp/workdir/processR/old/processR.Rcheck’
+* using R version 3.6.3 (2020-02-29)
+* using platform: x86_64-pc-linux-gnu (64-bit)
+* using session charset: UTF-8
+* using options ‘--no-manual --no-build-vignettes’
+* checking for file ‘processR/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘processR’ version ‘0.2.3’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘predict3d’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+* DONE
+Status: 1 ERROR
+
+
+
+
+
 
 ```
 # NA

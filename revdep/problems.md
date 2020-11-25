@@ -1,3 +1,85 @@
+# alfred
+
+<details>
+
+* Version: 0.1.8
+* Source code: https://github.com/cran/alfred
+* URL: https://github.com/onnokleen/alfred/
+* BugReports: https://github.com/onnokleen/alfred/issues
+* Date/Publication: 2020-09-11 14:50:03 UTC
+* Number of recursive dependencies: 77
+
+Run `cloud_details(, "alfred")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking tests ... ERROR
+    ```
+      Running ‘testthat.R’
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      ── ERROR (test_download.R:2:3): Downloaded data is as expected ─────────────────
+      Error: Download of specified time-series failed - did you misspell the identifier?
+      Backtrace:
+          █
+       1. ├─testthat::expect_equal(...) test_download.R:2:2
+       2. │ └─testthat::quasi_label(enquo(object), label, arg = "object")
+       3. │   └─rlang::eval_bare(expr, quo_get_env(quo))
+       4. └─alfred::get_alfred_series(...)
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      ERROR (test_download.R:2:3): Downloaded data is as expected
+      
+      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 0 ]
+      Error: Test failures
+      Execution halted
+    ```
+
+# highcharter
+
+<details>
+
+* Version: 0.8.2
+* Source code: https://github.com/cran/highcharter
+* URL: http://jkunst.com/highcharter, https://github.com/jbkunst/highcharter
+* BugReports: https://github.com/jbkunst/highcharter/issues
+* Date/Publication: 2020-07-26 08:50:12 UTC
+* Number of recursive dependencies: 135
+
+Run `cloud_details(, "highcharter")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking examples ... ERROR
+    ```
+    ...
+    >   
+    > 
+    > # Retrieve stock data to plot.
+    > aapl <- quantmod::getSymbols("AAPL", 
+    +   src = "yahoo",
+    +   from = "2020-01-01",
+    +   auto.assign = FALSE
+    + )
+    ‘getSymbols’ currently uses auto.assign=TRUE by default, but will
+    use auto.assign=FALSE in 0.5-0. You will still be able to use
+    ‘loadSymbols’ to automatically load data. getOption("getSymbols.env")
+    and getOption("getSymbols.auto.assign") will still be checked for
+    alternate defaults.
+    
+    This message is shown once per session and may be disabled by setting 
+    options("getSymbols.warning4.0"=FALSE). See ?getSymbols for details.
+    
+    Error in curl::curl_fetch_memory(cu, handle = h) : 
+      Timeout was reached: [finance.yahoo.com] Operation timed out after 10001 milliseconds with 0 out of 0 bytes received
+    Calls: <Anonymous> ... getSymbols.yahoo -> .getHandle -> new.session -> <Anonymous>
+    Execution halted
+    ```
+
 # torch
 
 <details>
