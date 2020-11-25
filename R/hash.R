@@ -1,3 +1,3 @@
-xxhash <- function(x) {
-  .Call(rlang_xxhash, x)
+hash <- function(x) {
+  .Call(rlang_hash, x)
 }

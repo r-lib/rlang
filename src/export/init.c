@@ -143,7 +143,7 @@ extern sexp* rlang_raw_deparse_str(sexp*, sexp*, sexp*);
 extern sexp* rlang_env_browse(sexp*, sexp*);
 extern sexp* rlang_env_is_browsed(sexp*);
 extern sexp* rlang_ns_registry_env();
-extern sexp* rlang_xxhash(sexp*);
+extern sexp* rlang_hash(sexp*);
 
 
 // Library initialisation defined below
@@ -324,7 +324,7 @@ static const r_callable r_callables[] = {
   {"rlang_env_browse",                  (r_fn_ptr) &rlang_env_browse, 2},
   {"rlang_env_is_browsed",              (r_fn_ptr) &rlang_env_is_browsed, 1},
   {"rlang_ns_registry_env",             (r_fn_ptr) &rlang_ns_registry_env, 0},
-  {"rlang_xxhash",                      (r_fn_ptr) &rlang_xxhash, 1},
+  {"rlang_hash",                        (r_fn_ptr) &rlang_hash, 1},
   {NULL, NULL, 0}
 };
 
