@@ -157,25 +157,41 @@
 <h1 class="page-header" data-toc-text="0.4.9">
 <a href="#rlang-049" class="anchor"></a>rlang 0.4.9<small> Unreleased </small>
 </h1>
+<div id="breaking-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#breaking-changes" class="anchor"></a>Breaking changes</h2>
 <ul>
-<li><p>A new compat file for the zeallot operator <code>%&lt;-%</code> is now available in the rlang repository.</p></li>
-<li><p>New <code><a href="../reference/env_bind.html">%&lt;~%</a></code> operator to define a variable lazily.</p></li>
-<li><p>The <code>.data</code> pronoun no longer skips functions (<a href='https://github.com/r-lib/rlang/issues/1061'>#1061</a>). This solves a dplyr issue involving rowwise data frames and list-columns of functions (tidyverse/dplyr<a href='https://github.com/r-lib/rlang/issues/5608'>#5608</a>).</p></li>
-<li><p><code><a href="../reference/format_error_bullets.html">format_error_bullets()</a></code> is no longer experimental. The <code>message</code> arguments of <code><a href="../reference/abort.html">abort()</a></code>, <code><a href="../reference/abort.html">warn()</a></code>, and <code><a href="../reference/abort.html">inform()</a></code> are automatically passed to that function to make it easy to create messages with regular, info, and error bullets. See <code><a href="../reference/format_error_bullets.html">?format_error_bullets</a></code> for more information.</p></li>
-<li><p>New <code>rlang_print_backtrace</code> C callable for debugging from C interpreters (<a href='https://github.com/r-lib/rlang/issues/1059'>#1059</a>).</p></li>
-<li><p>New <code><a href="../reference/zap_srcref.html">zap_srcref()</a></code> function to recursively remove source references from functions and calls.</p></li>
-<li><p><code><a href="../reference/eval_bare.html">eval_bare()</a></code>, <code><a href="../reference/eval_tidy.html">eval_tidy()</a></code> (<a href='https://github.com/r-lib/rlang/issues/961'>#961</a>), and <code><a href="../reference/with_handlers.html">with_handlers()</a></code> (<a href='https://github.com/r-lib/rlang/issues/518'>#518</a>) now propagate visibility.</p></li>
+<li>Dropped support for the R 3.2 series.</li>
+</ul>
+</div>
+<div id="new-features" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features" class="anchor"></a>New features</h2>
+<ul>
 <li><p><code><a href="../reference/inject.html">inject()</a></code> evaluates its argument with <code>!!</code>, <code>!!!</code>, and <code>{{</code> support.</p></li>
 <li><p>New <code><a href="../reference/enquo0.html">enquo0()</a></code> and <code><a href="../reference/enquo0.html">enquos0()</a></code> operators for defusing function arguments without automatic injection (unquotation).</p></li>
-<li><p>Dropped support for the R 3.2 series.</p></li>
-<li><p><code><a href="../reference/cnd_signal.html">cnd_signal()</a></code> now ignores <code>NULL</code> inputs.</p></li>
-<li><p><code><a href="../reference/as_data_mask.html">as_data_mask()</a></code> now intialises environments of the correct size to improve efficiency (<a href='https://github.com/r-lib/rlang/issues/1048'>#1048</a>).</p></li>
-<li><p>Fixed bug that prevented splicing a named empty vector with the <code>!!!</code> operator (<a href='https://github.com/r-lib/rlang/issues/1045'>#1045</a>).</p></li>
+<li><p><code><a href="../reference/format_error_bullets.html">format_error_bullets()</a></code> is no longer experimental. The <code>message</code> arguments of <code><a href="../reference/abort.html">abort()</a></code>, <code><a href="../reference/abort.html">warn()</a></code>, and <code><a href="../reference/abort.html">inform()</a></code> are automatically passed to that function to make it easy to create messages with regular, info, and error bullets. See <code><a href="../reference/format_error_bullets.html">?format_error_bullets</a></code> for more information.</p></li>
+<li><p>New <code><a href="../reference/zap_srcref.html">zap_srcref()</a></code> function to recursively remove source references from functions and calls.</p></li>
+<li><p>A new compat file for the zeallot operator <code>%&lt;-%</code> is now available in the rlang repository.</p></li>
+<li><p>New <code><a href="../reference/env_bind.html">%&lt;~%</a></code> operator to define a variable lazily.</p></li>
+<li><p>New <code><a href="../reference/env_browse.html">env_browse()</a></code> and <code><a href="../reference/env_browse.html">env_is_browsed()</a></code> functions. <code><a href="../reference/env_browse.html">env_browse()</a></code> is equivalent to evaluating <code><a href="https://rdrr.io/r/base/browser.html">browser()</a></code> within an environment. It sets the environment to be persistently browsable (or unsets it if <code>value = FALSE</code> is supplied).</p></li>
 <li><p>Functions created from quosures with <code><a href="../reference/as_function.html">as_function()</a></code> now print in a more user friendly way.</p></li>
+<li><p>New <code>rlang_print_backtrace</code> C callable for debugging from C interpreters (<a href='https://github.com/r-lib/rlang/issues/1059'>#1059</a>).</p></li>
+</ul>
+</div>
+<div id="bugfixes-and-improvements" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bugfixes-and-improvements" class="anchor"></a>Bugfixes and improvements</h2>
+<ul>
+<li><p>The <code>.data</code> pronoun no longer skips functions (<a href='https://github.com/r-lib/rlang/issues/1061'>#1061</a>). This solves a dplyr issue involving rowwise data frames and list-columns of functions (tidyverse/dplyr<a href='https://github.com/r-lib/rlang/issues/5608'>#5608</a>).</p></li>
+<li><p><code><a href="../reference/as_data_mask.html">as_data_mask()</a></code> now intialises environments of the correct size to improve efficiency (<a href='https://github.com/r-lib/rlang/issues/1048'>#1048</a>).</p></li>
+<li><p><code><a href="../reference/eval_bare.html">eval_bare()</a></code>, <code><a href="../reference/eval_tidy.html">eval_tidy()</a></code> (<a href='https://github.com/r-lib/rlang/issues/961'>#961</a>), and <code><a href="../reference/with_handlers.html">with_handlers()</a></code> (<a href='https://github.com/r-lib/rlang/issues/518'>#518</a>) now propagate visibility.</p></li>
+<li><p><code><a href="../reference/cnd_signal.html">cnd_signal()</a></code> now ignores <code>NULL</code> inputs.</p></li>
+<li><p>Fixed bug that prevented splicing a named empty vector with the <code>!!!</code> operator (<a href='https://github.com/r-lib/rlang/issues/1045'>#1045</a>).</p></li>
 <li><p>The exit status of is now preserved in non-interactive sessions when <code><a href="../reference/entrace.html">entrace()</a></code> is used as an <code><a href="https://rdrr.io/r/base/options.html">options(error = )</a></code> handler (<a href='https://github.com/r-lib/rlang/issues/1052'>#1052</a>, rstudio/bookdown<a href='https://github.com/r-lib/rlang/issues/920'>#920</a>).</p></li>
 <li><p><code>next</code> and <code>break</code> are now properly deparsed as nullary operators.</p></li>
-<li><p>New <code><a href="../reference/env_browse.html">env_browse()</a></code> and <code><a href="../reference/env_browse.html">env_is_browsed()</a></code> functions. <code><a href="../reference/env_browse.html">env_browse()</a></code> is equivalent to evaluating <code><a href="https://rdrr.io/r/base/browser.html">browser()</a></code> within an environment. It sets the environment to be persistently browsable (or unsets it if <code>value = FALSE</code> is supplied).</p></li>
 </ul>
+</div>
 </div>
     <div id="rlang-048" class="section level1">
 <h1 class="page-header" data-toc-text="0.4.8">
@@ -527,9 +543,9 @@ letters %&gt;% set_names(toupper)</code></pre>
 <h1 class="page-header" data-toc-text="0.3.0">
 <a href="#rlang-030" class="anchor"></a>rlang 0.3.0<small> 2018-10-22 </small>
 </h1>
-<div id="breaking-changes" class="section level2">
+<div id="breaking-changes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#breaking-changes" class="anchor"></a>Breaking changes</h2>
+<a href="#breaking-changes-1" class="anchor"></a>Breaking changes</h2>
 <p>The rlang API is still maturing. In this section, you’ll find hard breaking changes. See the life cycle section below for an exhaustive list of API changes.</p>
 <ul>
 <li>
@@ -922,9 +938,9 @@ quo(call(`!!!`(var)))</a></code></pre>
 </li>
 <li><p>We no longer require a data mask (previously called overscope) to be cleaned up after evaluation. <code><a href="../reference/as_overscope.html">overscope_clean()</a></code> is thus soft-deprecated without replacement.</p></li>
 </ul>
-<div id="breaking-changes-1" class="section level3">
+<div id="breaking-changes-2" class="section level3">
 <h3 class="hasAnchor">
-<a href="#breaking-changes-1" class="anchor"></a>Breaking changes</h3>
+<a href="#breaking-changes-2" class="anchor"></a>Breaking changes</h3>
 <ul>
 <li><p><code>!!</code> now binds tightly in order to match intuitive parsing of tidy eval code, e.g. <code>!! x &gt; y</code> is now equivalent to <code>(!! x) &gt; y</code>. A corollary of this new syntax is that you now have to be explicit when you want to unquote the whole expression on the right of <code>!!</code>. For instance you have to explicitly write <code>!! (x &gt; y)</code> to unquote <code>x &gt; y</code> rather than just <code>x</code>.</p></li>
 <li><p><code><a href="../reference/nse-force.html">UQ()</a></code>, <code><a href="../reference/nse-force.html">UQS()</a></code> and <code>:=</code> now issue an error when called directly. The previous definitions caused surprising results when the operators were invoked in wrong places (i.e. not in quasiquoted arguments).</p></li>
