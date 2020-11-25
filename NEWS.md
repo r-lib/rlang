@@ -1,29 +1,12 @@
 
 # rlang 0.4.9
 
-* A new compat file for the zeallot operator `%<-%` is now available
-  in the rlang repository.
+## Breaking changes
 
-* New `%<~%` operator to define a variable lazily.
+* Dropped support for the R 3.2 series.
 
-* The `.data` pronoun no longer skips functions (#1061). This solves a
-  dplyr issue involving rowwise data frames and list-columns of
-  functions (tidyverse/dplyr#5608).
 
-* `format_error_bullets()` is no longer experimental. The `message`
-  arguments of `abort()`, `warn()`, and `inform()` are automatically
-  passed to that function to make it easy to create messages with
-  regular, info, and error bullets. See `?format_error_bullets` for
-  more information.
-
-* New `rlang_print_backtrace` C callable for debugging from C
-  interpreters (#1059).
-
-* New `zap_srcref()` function to recursively remove source references
-  from functions and calls.
-
-* `eval_bare()`, `eval_tidy()` (#961), and `with_handlers()` (#518)
-  now propagate visibility.
+## New features
 
 * `inject()` evaluates its argument with `!!`, `!!!`, and `{{`
   support.
@@ -31,29 +14,54 @@
 * New `enquo0()` and `enquos0()` operators for defusing function
   arguments without automatic injection (unquotation).
 
-* Dropped support for the R 3.2 series.
+* `format_error_bullets()` is no longer experimental. The `message`
+  arguments of `abort()`, `warn()`, and `inform()` are automatically
+  passed to that function to make it easy to create messages with
+  regular, info, and error bullets. See `?format_error_bullets` for
+  more information.
 
-* `cnd_signal()` now ignores `NULL` inputs.
+* New `zap_srcref()` function to recursively remove source references
+  from functions and calls.
+
+* A new compat file for the zeallot operator `%<-%` is now available
+  in the rlang repository.
+
+* New `%<~%` operator to define a variable lazily.
+
+* New `env_browse()` and `env_is_browsed()` functions. `env_browse()`
+  is equivalent to evaluating `browser()` within an environment. It
+  sets the environment to be persistently browsable (or unsets it if
+  `value = FALSE` is supplied).
+
+* Functions created from quosures with `as_function()` now print in a
+  more user friendly way.
+
+* New `rlang_print_backtrace` C callable for debugging from C
+  interpreters (#1059).
+
+
+## Bugfixes and improvements
+
+* The `.data` pronoun no longer skips functions (#1061). This solves a
+  dplyr issue involving rowwise data frames and list-columns of
+  functions (tidyverse/dplyr#5608).
 
 * `as_data_mask()` now intialises environments of the correct size to
   improve efficiency (#1048).
 
+* `eval_bare()`, `eval_tidy()` (#961), and `with_handlers()` (#518)
+  now propagate visibility.
+
+* `cnd_signal()` now ignores `NULL` inputs.
+
 * Fixed bug that prevented splicing a named empty vector with the
   `!!!` operator (#1045).
-
-* Functions created from quosures with `as_function()` now print in a
-  more user friendly way.
 
 * The exit status of is now preserved in non-interactive sessions when
   `entrace()` is used as an `options(error = )` handler (#1052,
   rstudio/bookdown#920).
 
 * `next` and `break` are now properly deparsed as nullary operators.
-
-* New `env_browse()` and `env_is_browsed()` functions. `env_browse()`
-  is equivalent to evaluating `browser()` within an environment. It
-  sets the environment to be persistently browsable (or unsets it if
-  `value = FALSE` is supplied).
 
 
 # rlang 0.4.8
