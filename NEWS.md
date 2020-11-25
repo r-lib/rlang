@@ -1,5 +1,5 @@
 
-# rlang (development version)
+# rlang 0.4.9
 
 * A new compat file for the zeallot operator `%<-%` is now available
   in the rlang repository.
