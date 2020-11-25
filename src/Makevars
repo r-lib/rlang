@@ -43,7 +43,6 @@ internal-files = \
         internal/fn.c \
         internal/hash.c \
         internal/internal.c \
-        internal/md5/md5.c \
         internal/nse-defuse.c \
         internal/quo.c \
         internal/utils.c \
