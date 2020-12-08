@@ -18,6 +18,11 @@
 #include <stdio.h> // sprintf()
 #include <inttypes.h> // PRIx64
 
+/*
+ * Construct a define specifying whether version 2 or 3 of
+ * `R_Serialize()` should be used. Version 3 is used with R >= 3.5.0, and
+ * has support for ALTREP.
+ */
 #ifdef R_VERSION
 #  if (R_VERSION >= R_Version(3, 5, 0))
 #    define USE_VERSION_3 1
