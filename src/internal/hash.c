@@ -1,6 +1,19 @@
 #include <rlang.h>
 
-#define XXH_INLINE_ALL
+/*
+ * On 32-bit Windows with Rtools40 (i.e. gcc 8.3.0), a warning
+ * is thrown when XXH_INLINE_ALL is used. Instead, on this platform
+ * we use the standard defines which don't force inlining.
+ * https://github.com/Cyan4973/xxHash/blob/4c881f796d6af27ef7d9c48f87817da0d3d75dc1/xxhash.c#L40-L41
+ * https://github.com/Cyan4973/xxHash/issues/482
+ */
+#if defined(_WIN32) && !defined(_WIN64)
+#  define XXH_STATIC_LINKING_ONLY
+#  define XXH_IMPLEMENTATION
+#else
+#  define XXH_INLINE_ALL
+#endif
+
 #include "xxhash/xxhash.h"
 
 #include <stdio.h> // sprintf()
