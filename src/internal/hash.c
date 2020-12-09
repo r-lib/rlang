@@ -169,8 +169,9 @@ void hash_bytes(R_outpstream_t stream, void* p_input, int n) {
 static inline
 void hash_char(R_outpstream_t stream, int input) {
   static int n = 1;
-  void* p_input = (void*) (&input);
-  hash_bytes(stream, p_input, n);
+  unsigned char byte = (unsigned char) input;
+  unsigned char* p_byte = &byte;
+  hash_bytes(stream, p_byte, n);
 }
 
 #if USE_VERSION_3
