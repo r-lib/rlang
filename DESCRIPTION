@@ -11,6 +11,10 @@ Authors@R: c(
            email = "mikefc@coolbutuseless.com", 
            role = "cph", 
            comment = "Hash implementation based on Mike's xxhashlite"),
+    person(given = "Yann",
+           family = "Collet",
+           role = "cph", 
+           comment = "Author of the embedded xxHash library"),
     person("RStudio", role = "cph")
     )
 License: GPL-3
