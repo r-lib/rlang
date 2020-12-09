@@ -19,6 +19,10 @@ not across R versions.
 \code{hash()} uses the XXH128 hash algorithm of the xxHash library, which
 generates a 128-bit hash. It is implemented as a streaming hash, which
 generates the hash with minimal extra memory usage.
+
+Objects are converted to binary using R's native serialization tools.
+On R >= 3.5.0, serialization version 3 is used, otherwise version 2 is used.
+See \code{\link[=serialize]{serialize()}} for more information about the serialization version.
 }
 \examples{
 hash(c(1, 2, 3))
