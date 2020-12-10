@@ -6,8 +6,10 @@ template:
 
 home:
   links:
-  - text: The tidy eval bookdown
-    href: https://tidyeval.tidyverse.org
+  - text: Programming with dplyr
+    href: https://dplyr.tidyverse.org/articles/programming.html
+  - text: Using ggplot2 in packages
+    href: https://ggplot2.tidyverse.org/articles/ggplot2-in-packages.html
 
 navbar:
   structure:
