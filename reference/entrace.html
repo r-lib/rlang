@@ -44,7 +44,7 @@
 immediately resumed. cnd_entrace() adds a backtrace to a
 condition object, without any other effect. Both functions should
 be called directly from an error handler.
-Set the error global option to quote(rlang::entrace()) to
+Set the error global option to rlang::entrace to
 transform base errors to rlang errors. These enriched errors
 include a backtrace. The RProfile is a good place to set the
 handler. See rlang_backtrace_on_error for details.
@@ -170,7 +170,7 @@ with_abort()." />
 immediately resumed. <code>cnd_entrace()</code> adds a backtrace to a
 condition object, without any other effect. Both functions should
 be called directly from an error handler.</p>
-<p>Set the <code>error</code> global option to <code><a href='https://rdrr.io/r/base/substitute.html'>quote(rlang::entrace())</a></code> to
+<p>Set the <code>error</code> global option to <code>rlang::entrace</code> to
 transform base errors to rlang errors. These enriched errors
 include a backtrace. The RProfile is a good place to set the
 handler. See <code><a href='rlang_backtrace_on_error.html'>rlang_backtrace_on_error</a></code> for details.</p>
