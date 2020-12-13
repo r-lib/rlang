@@ -21,8 +21,8 @@ test_that("fails with non-callable objects", {
 })
 
 test_that("succeeds with literal functions", {
-  expect_error(regex = NA, call2(base::mean, 1:10))
-  expect_error(regex = NA, call2(base::list, 1:10))
+  expect_error(regexp = NA, call2(base::mean, 1:10))
+  expect_error(regexp = NA, call2(base::list, 1:10))
 })
 
 test_that("call2() preserves empty arguments", {

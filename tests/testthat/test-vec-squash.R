@@ -10,7 +10,7 @@ test_that("vectors and names are squashed", {
 })
 
 test_that("bad outer names warn even at depth", {
-  expect_warning(regex = "Outer names",
+  expect_warning(regexp = "Outer names",
     expect_identical(squash_dbl(list(list(list(A = c(a = 1))))), c(a = 1))
   )
 })
