@@ -358,6 +358,13 @@ spaced_op_deparse <- function(x, lines = new_lines()) {
 unspaced_op_deparse <- function(x, lines = new_lines()) {
   binary_op_deparse(x, lines, space = "")
 }
+tight_op_deparse <- function(x, lines = new_lines()) {
+  sub_lines <- new_lines(width = Inf)
+  out <- binary_op_deparse(x, sub_lines, space = "")
+
+  lines$push(out)
+  lines$get_lines()
+}
 
 unary_op_deparse <- function(x, lines = new_lines()) {
   op <- as_string(node_car(x))
@@ -566,9 +573,9 @@ op_deparse <- function(op, x, lines) {
     `:` = ,
     `^` = ,
     `$` = ,
-    `@` = ,
+    `@` = unspaced_op_deparse,
     `::` = ,
-    `:::` = unspaced_op_deparse,
+    `:::` = tight_op_deparse,
     `?unary` = ,
     `~unary` = ,
     `!` = ,
