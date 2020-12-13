@@ -489,9 +489,9 @@ test_that("double colon is never wrapped (#1072)", {
     "some.very.long::construct"
   )
   expect_identical(
-    expr_deparse(quote(identity_fun <- base::identity), width = 20),
+    expr_deparse(quote(id_fun <- base::identity), width = 20),
     c(
-      "identity_fun <-",
+      "id_fun <-",
       "  base::identity"
     )
   )
@@ -503,9 +503,9 @@ test_that("triple colon is never wrapped (#1072)", {
     "some.very.long:::construct"
   )
   expect_identical(
-    expr_deparse(quote(identity_fun <- base:::identity), width = 20),
+    expr_deparse(quote(id_fun <- base:::identity), width = 20),
     c(
-      "identity_fun <-",
+      "id_fun <-",
       "  base:::identity"
     )
   )
