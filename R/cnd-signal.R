@@ -254,5 +254,5 @@ add_message_freq <- function(message, frequency, type) {
   }
   info <- sprintf(info, type)
 
-  paste_line(message, info)
+  paste_line(message, info, "")
 }
