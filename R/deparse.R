@@ -330,7 +330,7 @@ operand_deparse <- function(x, parent, side, lines) {
   }
 }
 
-binary_op_deparse <- function(x, lines = new_lines(), space = " ") {
+binary_op_deparse <- function(x, lines = new_lines(), space = " ", sticky_rhs = FALSE) {
   # Constructed call without second argument
   if (is_null(node_cddr(x))) {
     return(call_deparse(x, lines))
@@ -343,6 +343,10 @@ binary_op_deparse <- function(x, lines = new_lines(), space = " ") {
   operand_deparse(node_car(x), outer, "lhs", lines)
 
   lines$push_sticky(paste0(space, op, space))
+
+  if (sticky_rhs) {
+    lines$make_next_sticky()
+  }
 
   x <- node_cdr(x)
 
@@ -359,11 +363,7 @@ unspaced_op_deparse <- function(x, lines = new_lines()) {
   binary_op_deparse(x, lines, space = "")
 }
 tight_op_deparse <- function(x, lines = new_lines()) {
-  sub_lines <- new_lines(width = Inf)
-  out <- binary_op_deparse(x, sub_lines, space = "")
-
-  lines$push(out)
-  lines$get_lines()
+  binary_op_deparse(x, lines, space = "", sticky_rhs = TRUE)
 }
 
 unary_op_deparse <- function(x, lines = new_lines()) {
