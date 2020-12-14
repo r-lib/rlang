@@ -147,7 +147,7 @@ test_that("as_quosure() coerces formulas", {
 })
 
 test_that("quo_squash() warns", {
-  expect_warning(regex = NA, quo_squash(quo(foo), warn = TRUE))
+  expect_warning(regexp = NA, quo_squash(quo(foo), warn = TRUE))
   expect_warning(quo_squash(quo(list(!! quo(foo))), warn = TRUE), "inner quosure")
 })
 
