@@ -1,6 +1,8 @@
 
 # rlang (development version)
 
+* `expr_deparse()` now correctly wraps code using `::` and `:::` (#1072, @krlmlr).
+
 
 # rlang 0.4.9
 
