@@ -32,6 +32,12 @@
 #' configurable than [list2()], `vars()` which doesn't force its
 #' arguments, and [call2()] for creating calls.
 #'
+#' Document dynamic docs using this standard tag:
+#'
+#' ```
+#'  @@param ... <[`dynamic-dots`][rlang::dyn-dots]> What these dots do.
+#' ```
+#'
 #' @name dyn-dots
 #' @aliases tidy-dots
 #'
