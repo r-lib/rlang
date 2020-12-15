@@ -49,8 +49,9 @@ list().
 
 Dynamic dots offer a few additional features:
 You can splice arguments saved in a list with the big bang operator !!!.
-You can unquote names by using the bang bang
-operator !! on the left-hand side of :=.
+You can unquote names by using the glue syntax
+or the bang bang operator !! on the
+left-hand side of :=.
 Trailing commas are ignored, making it easier to copy and paste
 lines of arguments.
 
@@ -179,8 +180,9 @@ along the way to function parameters.</p></li>
 
 <p>Dynamic dots offer a few additional features:</p><ol>
 <li><p>You can <strong>splice</strong> arguments saved in a list with the <a href='nse-force.html'>big bang</a> operator <code>!!!</code>.</p></li>
-<li><p>You can <strong>unquote</strong> names by using the <a href='nse-force.html'>bang bang</a>
-operator <code>!!</code> on the left-hand side of <code>:=</code>.</p></li>
+<li><p>You can <strong>unquote</strong> names by using the <a href='https://glue.tidyverse.org/reference/glue.html'>glue</a> syntax
+or the <a href='nse-force.html'>bang bang</a> operator <code>!!</code> on the
+left-hand side of <code>:=</code>.</p></li>
 <li><p>Trailing commas are ignored, making it easier to copy and paste
 lines of arguments.</p></li>
 </ol>
@@ -199,6 +201,9 @@ as easy as collecting the dots with <code><a href='list2.html'>list2()</a></code
 <p>Other dynamic dots collectors are <code><a href='list2.html'>dots_list()</a></code>, which is more
 configurable than <code><a href='list2.html'>list2()</a></code>, <code>vars()</code> which doesn't force its
 arguments, and <code><a href='call2.html'>call2()</a></code> for creating calls.</p>
+<p>Document dynamic docs using this standard tag:</p><pre> @param ... &lt;[`dynamic-dots`][rlang::dyn-dots]&gt; What these dots do.
+</pre>
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>f</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span> <span class='op'>{</span>
