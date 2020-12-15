@@ -1,5 +1,3 @@
-context("vec-new")
-
 test_that("atomic vectors are spliced", {
   lgl <- lgl(TRUE, c(TRUE, FALSE), list(FALSE, FALSE))
   expect_identical(lgl, c(TRUE, TRUE, FALSE, FALSE, FALSE))

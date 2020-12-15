@@ -1,5 +1,3 @@
-context("env-binding")
-
 test_that("promises are created", {
   env <- child_env(NULL)
 

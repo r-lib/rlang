@@ -1,5 +1,3 @@
-context("cnd-message")
-
 test_that("format_error_bullets() formats bullets depending on names", {
   local_options(
     crayon.enabled = FALSE,

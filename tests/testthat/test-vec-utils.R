@@ -1,5 +1,3 @@
-context("vec-utils")
-
 test_that("seq2() creates increasing sequences", {
   expect_identical(seq2(2, 3), 2:3)
   expect_identical(seq2(3, 2), int())

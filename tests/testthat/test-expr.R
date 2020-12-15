@@ -1,5 +1,3 @@
-context("expr")
-
 # expr_text() --------------------------------------------------------
 
 test_that("always returns single string", {

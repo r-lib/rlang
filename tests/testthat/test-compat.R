@@ -1,5 +1,3 @@
-context("compat")
-
 test_that("names() dispatches on environment", {
   env <- child_env(NULL, foo = "foo", bar = "bar")
   expect_identical(sort(names(env)), c("bar", "foo"))

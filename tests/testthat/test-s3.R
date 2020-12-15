@@ -1,5 +1,3 @@
-context("s3")
-
 test_that("inherits from all classes", {
   x <- structure(list(), class = c("foo", "bar", "baz"))
 
@@ -77,7 +75,7 @@ test_that("unboxing a non-boxed value is an error", {
 })
 
 test_that("zap() creates a zap", {
-  expect_is(zap(), "rlang_zap")
+  expect_s3_class(zap(), "rlang_zap")
   expect_true(is_zap(zap()))
 })
 
@@ -98,7 +96,7 @@ test_that("done() can be empty", {
   expect_identical(unbox(empty), missing_arg())
 
   expect_true(is_done_box(empty))
-  expect_is(empty, "rlang_box_done")
+  expect_s3_class(empty, "rlang_box_done")
   expect_identical(empty %@% empty, TRUE)
 
   expect_true(is_done_box(empty, empty = TRUE))

@@ -1,5 +1,3 @@
-context("nse-force")
-
 test_that("interpolation does not recurse over spliced arguments", {
   var2 <- quote({foo; !! stop(); bar})
   expr_var2 <- tryCatch(expr(list(!!! var2)), error = identity)
@@ -62,7 +60,7 @@ test_that("unquoting is frame-consistent", {
 
 test_that("unquoted quosure has S3 class", {
   quo <- quo(!! ~quo)
-  expect_is(quo, "quosure")
+  expect_s3_class(quo, "quosure")
 })
 
 test_that("unquoted quosures are not guarded", {
@@ -170,10 +168,10 @@ test_that("UQ() fails if called without argument", {
   local_lifecycle_silence()
 
   quo <- quo(UQ(NULL))
-  expect_equal(quo, ~NULL)
+  expect_equal(quo, quo(NULL))
 
   quo <- tryCatch(quo(UQ()), error = identity)
-  expect_is(quo, "error")
+  expect_s3_class(quo, "error")
   expect_match(quo$message, "must be called with an argument")
 })
 
@@ -642,10 +640,10 @@ test_that("unquoting with rlang namespace is deprecated", {
   expect_identical(quo(list(rlang::UQS(list(a = 1, b = 2)))), quo(list(a = 1, b = 2)))
 
   quo <- quo(rlang::UQ(NULL))
-  expect_equal(quo, ~NULL)
+  expect_equal(quo, quo(NULL))
 
   quo <- tryCatch(quo(rlang::UQ()), error = identity)
-  expect_is(quo, "error")
+  expect_s3_class(quo, "error")
   expect_match(quo$message, "must be called with an argument")
 
   expect_error_(dots_values(rlang::UQ(quote(.))), "`!!` in a non-quoting function")

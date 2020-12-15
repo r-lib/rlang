@@ -1,5 +1,3 @@
-context("arg")
-
 test_that("matches arg", {
   myarg <- "foo"
   expect_identical(arg_match0(myarg, c("bar", "foo")), "foo")

@@ -24,7 +24,7 @@ Suggests:
     methods,
     pillar,
     rmarkdown,
-    testthat (>= 2.3.0),
+    testthat (>= 3.0.0),
     vctrs (>= 0.2.3),
     withr
 Enhances: 
@@ -34,3 +34,4 @@ RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
 URL: https://rlang.r-lib.org, https://github.com/r-lib/rlang
 BugReports: https://github.com/r-lib/rlang/issues
+Config/testthat/edition: 3
