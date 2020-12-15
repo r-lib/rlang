@@ -1,9 +1,7 @@
-context("cnd")
-
 test_that("cnd() constructs all fields", {
   cond <- cnd("cnd_class", message = "cnd message")
   expect_identical(conditionMessage(cond), "cnd message")
-  expect_is(cond, "cnd_class")
+  expect_s3_class(cond, "cnd_class")
 })
 
 test_that("cnd() throws with unnamed fields", {

@@ -1,8 +1,6 @@
-context("node")
-
 test_that("node() creates a pairlist node", {
   x <- new_node("foo", "bar")
-  expect_is(x, "pairlist")
+  expect_type(x, "pairlist")
   expect_identical(node_car(x), "foo")
   expect_identical(node_cdr(x), "bar")
 })

@@ -1,5 +1,3 @@
-context("cnd-signal")
-
 test_that("cnd_signal() creates muffle restarts", {
   withCallingHandlers(cnd_signal(cnd("foo")),
     foo = function(c) {
@@ -39,13 +37,13 @@ test_that("can pass condition metadata", {
 })
 
 test_that("can signal and catch interrupts", {
-  expect_is(catch_cnd(interrupt()), "interrupt")
+  expect_s3_class(catch_cnd(interrupt()), "interrupt")
 })
 
 test_that("can signal interrupts with cnd_signal()", {
   intr <- catch_cnd(interrupt())
   with_handlers(cnd_signal(intr),
-    condition = function(cnd) expect_is(cnd, "interrupt")
+    condition = function(cnd) expect_s3_class(cnd, "interrupt")
   )
 })
 
@@ -57,8 +55,6 @@ test_that("conditions have correct subclasses", {
 })
 
 test_that("cnd_signal() creates a backtrace if needed", {
-  skip_unless_utf8()
-
   local_options(
     rlang_trace_top_env = current_env(),
     rlang_trace_format_srcrefs = FALSE
@@ -70,7 +66,7 @@ test_that("cnd_signal() creates a backtrace if needed", {
   h <- function() cnd_signal(err)
 
   err <- catch_cnd(f())
-  expect_known_output(file = test_path("test-cnd-signal-trace.txt"), print(err))
+  expect_snapshot(print(err))
 })
 
 test_that("`inform()` appends newline to message", {

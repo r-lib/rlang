@@ -1,5 +1,3 @@
-context("weakref")
-
 test_that("weakref with key and no value allows key to be GC'd", {
   # This is the case when a weakref is used like a weak pointer (with no
   # value).

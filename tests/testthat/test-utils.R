@@ -1,5 +1,3 @@
-context("utils")
-
 test_that("locale setters report old locale", {
   tryCatch(
     old <- suppressMessages(poke_mbcs_locale()),

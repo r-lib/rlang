@@ -1,14 +1,14 @@
 
-expect_known_trace_output <- function(trace,
-                                      file,
-                                      dir = normalizePath(test_path("..")),
-                                      srcrefs = FALSE) {
-  expect_known_output(file = test_path(file), {
-    cat("Full:\n")
+expect_snapshot_trace <- function(trace,
+                                  file,
+                                  dir = normalizePath(test_path("..")),
+                                  srcrefs = FALSE) {
+  expect_snapshot({
+    "Full"
     print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
-    cat("\nCollapsed:\n")
+    "Collapsed"
     print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
-    cat("\nBranch:\n")
+    "Branch"
     print(trace, simplify = "branch", dir = dir, srcrefs = srcrefs)
   })
 }

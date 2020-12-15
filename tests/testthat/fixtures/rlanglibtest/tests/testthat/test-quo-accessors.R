@@ -1,5 +1,3 @@
-context("quo_accessors")
-
 test_that("r_quo_get_expr() gets expression", {
   r_quo_get_expr <- function(quo) {
     .Call(rlanglibtest_r_quo_get_expr, quo)

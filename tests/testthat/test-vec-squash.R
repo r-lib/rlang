@@ -1,5 +1,3 @@
-context("vec-squash")
-
 # Squashing ----------------------------------------------------------
 
 test_that("vectors and names are squashed", {
@@ -76,7 +74,7 @@ test_that("flatten_if() handles external pointers", {
   ptr <- rlang_test_is_spliceable[[1]]
   expect_identical(flatten_if(x, ptr), list(obj[[1]], splice(obj), unclass(obj)))
 
-  expect_is(rlang_test_is_spliceable, "fn_pointer")
+  expect_s3_class(rlang_test_is_spliceable, "fn_pointer")
 })
 
 test_that("flatten() splices names", {

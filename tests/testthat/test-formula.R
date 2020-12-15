@@ -1,5 +1,3 @@
-context("formula")
-
 # Creation ----------------------------------------------------------------
 
 test_that("is_formula works", {

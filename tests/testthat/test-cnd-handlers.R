@@ -1,5 +1,3 @@
-context("cnd-handlers")
-
 test_that("with_handlers() establishes inplace and exiting handlers", {
   handlers <- list(
     error = function(c) "caught error",
@@ -32,7 +30,7 @@ test_that("can muffle conditions", {
     expect_identical(with_handlers({ warning(""); "foo" }, warning = calling(cnd_muffle)), "foo")
   )
   cnd_expect_muffle <- calling(function(cnd) {
-    expect_is(findRestart("rlang_muffle"), "restart")
+    expect_s3_class(findRestart("rlang_muffle"), "restart")
     cnd_muffle(cnd)
   })
   expect_identical(with_handlers({ signal("", "cnd"); "foo" }, cnd = cnd_expect_muffle), "foo")
@@ -40,15 +38,15 @@ test_that("can muffle conditions", {
 
 test_that("can catch condition of specific classes", {
   expect_null(catch_cnd(signal("", "bar"), "foo"))
-  expect_is(catch_cnd(signal("", "bar"), "bar"), "bar")
-  expect_is(catch_cnd(stop(""), "error"), "error")
+  expect_s3_class(catch_cnd(signal("", "bar"), "bar"), "bar")
+  expect_s3_class(catch_cnd(stop(""), "error"), "error")
 
-  expect_is(catch_cnd(stop("tilt")), "error")
+  expect_s3_class(catch_cnd(stop("tilt")), "error")
   expect_error(catch_cnd(stop("tilt"), "foo"), "tilt")
 
   classes <- c("foo", "bar")
-  expect_is(catch_cnd(signal("", "bar"), classes), "bar")
-  expect_is(catch_cnd(signal("", "foo"), classes), "foo")
+  expect_s3_class(catch_cnd(signal("", "bar"), classes), "bar")
+  expect_s3_class(catch_cnd(signal("", "foo"), classes), "foo")
 })
 
 test_that("with_handlers() registers calling handlers first (#718)", {

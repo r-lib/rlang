@@ -1,9 +1,7 @@
-context("cnd-abort")
-
 test_that("errors are signalled with backtrace", {
   fn <- function() abort("")
   err <- catch_cnd(fn())
-  expect_is(err$trace, "rlang_trace")
+  expect_s3_class(err$trace, "rlang_trace")
 })
 
 test_that("can pass classed strings as error message", {
@@ -68,7 +66,6 @@ test_that("format_onerror_backtrace handles empty and size 1 traces", {
 })
 
 test_that("error is printed with backtrace", {
-  skip_unless_utf8()
   skip_if_stale_backtrace()
 
   run_error_script <- function(envvars = chr()) {
@@ -118,7 +115,6 @@ test_that("error is printed with backtrace", {
 })
 
 test_that("empty backtraces are not printed", {
-  skip_unless_utf8()
   skip_if_stale_backtrace()
 
   run_error_script <- function(envvars = chr()) {
@@ -146,7 +142,6 @@ test_that("empty backtraces are not printed", {
 })
 
 test_that("parent errors are not displayed in error message and backtrace", {
-  skip_unless_utf8()
   skip_if_stale_backtrace()
 
   run_error_script <- function(envvars = chr()) {

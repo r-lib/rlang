@@ -1,5 +1,3 @@
-context("call")
-
 # Creation ----------------------------------------------------------------
 
 test_that("character vector must be length 1", {

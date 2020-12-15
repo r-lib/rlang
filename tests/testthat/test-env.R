@@ -1,5 +1,3 @@
-context("env")
-
 test_that("env_parent() returns enclosure frame by default", {
   enclos_env <- child_env(pkg_env("rlang"))
   fn <- with_env(enclos_env, function() env_parent())
@@ -419,11 +417,11 @@ test_that("can subset `rlang_envs` list", {
 
   out <- envs[1:2]
   expect_length(out, 2)
-  expect_is(out, "rlang_envs")
+  expect_s3_class(out, "rlang_envs")
 
   out <- envs[3]
   expect_length(out, 1)
-  expect_is(out, "rlang_envs")
+  expect_s3_class(out, "rlang_envs")
 })
 
 test_that("can concatenate `rlang_envs` lists", {
@@ -431,7 +429,7 @@ test_that("can concatenate `rlang_envs` lists", {
   envs2 <- new_environments(list(env(), env()))
   out <- c(envs1, envs2)
   expect_length(out, 3)
-  expect_is(out, "rlang_envs")
+  expect_s3_class(out, "rlang_envs")
 })
 
 test_that("env_name() requires an environment", {

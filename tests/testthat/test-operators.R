@@ -1,5 +1,3 @@
-context("operators")
-
 test_that("%|% returns default value", {
   lgl <- c(TRUE, TRUE, NA, FALSE) %|% FALSE
   expect_identical(lgl, c(TRUE, TRUE, FALSE, FALSE))

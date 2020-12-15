@@ -1,5 +1,3 @@
-context("deparse")
-
 test_that("line_push() adds indentation", {
   out <- line_push("foo", "bar", width = 4, indent = 2)
   expect_identical(out, c("foo", "  bar"))
@@ -32,6 +30,7 @@ test_that("line_push() handles the nchar(line) == boundary case", {
 })
 
 test_that("line_push() strips ANSI codes before computing overflow", {
+  local_options(crayon.enabled = TRUE)
   if (!has_crayon()) {
     skip("test needs crayon")
   }
@@ -182,11 +181,15 @@ test_that("call_deparse() handles multi-line arguments", {
 })
 
 test_that("call_deparse() delimits CAR when needed", {
-  call <- expr((!!quote(function() x + 1))())
+  fn_call <- quote(function() x + 1)
+  call <- expr((!!fn_call)())
   expect_identical(call_deparse(call), "(function() x + 1)()")
 
-  # Only equal because of the extra parentheses
-  expect_equal(parse_expr(expr_deparse(call)), call)
+  roundtrip <- parse_expr(expr_deparse(call))
+  exp <- call2(call("(", fn_call))
+
+  # Zap srcref to work around https://github.com/r-lib/waldo/issues/59
+  expect_equal(zap_srcref(roundtrip), zap_srcref(exp))
 
   call <- expr((!!quote(f + g))(x))
   expect_identical(call_deparse(call), "`+`(f, g)(x)")
@@ -407,7 +410,6 @@ test_that("non-syntactic symbols are deparsed with backticks", {
 })
 
 test_that("symbols with unicode are deparsed consistently (#691)", {
-  skip_unless_utf8()
   skip_if(getRversion() < "3.2")
 
   expect_identical(expr_text(sym("\u00e2a")), "\u00e2a")

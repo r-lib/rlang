@@ -28,7 +28,15 @@ get_alien_lang_string <- function() {
   lang_strings$different[[1L]]
 }
 
+local_utf8_test <- function(frame = caller_env()) {
+  reporter <- get_reporter()
+  old <- reporter$unicode
+  defer(reporter$unicode <- old, envir = frame)
+  reporter$unicode <- FALSE
+}
+
 with_non_utf8_locale <- function(code) {
+  local_utf8_test()
   old_locale <- mut_non_utf8_locale()
   on.exit(poke_ctype_locale(old_locale), add = TRUE)
   code
@@ -46,6 +54,7 @@ mut_non_utf8_locale <- function() {
 }
 
 with_latin1_locale <- function(expr) {
+  local_utf8_test()
   old_locale <- suppressMessages(poke_latin1_locale())
   on.exit(poke_ctype_locale(old_locale))
   expr
