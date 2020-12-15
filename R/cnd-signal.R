@@ -143,7 +143,6 @@ inform <- function(message = NULL,
 
   message <- message %||% ""
   message <- collapse_cnd_message(message)
-  message <- paste0(message, "\n")
 
   .frequency <- arg_match(.frequency, c("always", "regularly", "once"))
 
@@ -157,7 +156,7 @@ inform <- function(message = NULL,
 
   withRestarts(muffleMessage = function() NULL, {
     signalCondition(cnd)
-    cat(message, file = .file %||% default_message_file())
+    cat(paste0(message, "\n"), file = .file %||% default_message_file())
   })
 
   invisible()
@@ -254,5 +253,5 @@ add_message_freq <- function(message, frequency, type) {
   }
   info <- sprintf(info, type)
 
-  paste_line(message, info, "")
+  paste_line(message, info)
 }
