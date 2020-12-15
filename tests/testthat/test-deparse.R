@@ -482,3 +482,39 @@ test_that("`next` and `break` are deparsed", {
   expect_equal(expr_deparse(quote({ next; (break) })), c("{", "  next",  "  (break)", "}"))
   expect_equal(expr_deparse(quote(a <- next <- break)), c("a <- next <- break"))
 })
+
+test_that("double colon is never wrapped (#1072)", {
+  expect_identical(
+    expr_deparse(quote(some.very.long::construct), width = 20),
+    "some.very.long::construct"
+  )
+  expect_identical(
+    expr_deparse(quote(id_function <- base::identity), width = 15),
+    c(
+      "id_function <-",
+      "  base::identity"
+    )
+  )
+  expect_identical(
+    expr_deparse(quote(id_fun <- base::identity), width = 20),
+    "id_fun <- base::identity"
+  )
+})
+
+test_that("triple colon is never wrapped (#1072)", {
+  expect_identical(
+    expr_deparse(quote(some.very.long:::construct), width = 20),
+    "some.very.long:::construct"
+  )
+  expect_identical(
+    expr_deparse(quote(id_function <- base:::identity), width = 15),
+    c(
+      "id_function <-",
+      "  base:::identity"
+    )
+  )
+  expect_identical(
+    expr_deparse(quote(id_fun <- base:::identity), width = 20),
+    "id_fun <- base:::identity"
+  )
+})
