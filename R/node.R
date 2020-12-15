@@ -87,6 +87,20 @@ node_poke_cddr <- function(x, newcdr) {
   invisible(.Call(rlang_node_poke_cddr, x, newcdr))
 }
 
+node_get <- function(node, i) {
+  if (node < 1L) {
+    abort("`i` must be an integer greater than 0.")
+  }
+  while (i > 1L) {
+    node <- node_cdr(node)
+    i <- i - 1L
+  }
+  node
+}
+node_get_car <- function(node, i) {
+  node_car(node_get(node, i))
+}
+
 #' @rdname new_node
 #' @export
 node_tag <- function(x) {

@@ -272,16 +272,19 @@ zap_srcref <- function(x) {
     return(x)
   }
 
+  x <- duplicate(x, shallow = TRUE)
+
   if (!is_null(sexp_attrib(x))) {
     attr(x, "srcref") <- NULL
     attr(x, "wholeSrcref") <- NULL
     attr(x, "srcfile") <- NULL
   }
   if (is_call(x, "function")) {
-    x[[4]] <- NULL
+    node <- node_get(x, 3)
+    if (!is_null(node)) {
+      node_poke_cdr(node, NULL)
+    }
   }
-
-  x <- duplicate(x, shallow = TRUE)
 
   node <- x
   while (!is_null(node)) {
