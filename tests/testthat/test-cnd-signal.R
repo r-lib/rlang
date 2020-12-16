@@ -193,6 +193,15 @@ test_that("`inform()` behaves consistently in interactive and non-interactive se
   expect_equal(out1$out, out2$out)
 })
 
+test_that("`inform()` and `warn()` with recurrent footer handle newlines correctly", {
+  expect_snapshot({
+    inform("foo", .frequency = "regularly", .frequency_id = as.character(runif(1)))
+    inform("bar", .frequency = "regularly", .frequency_id = as.character(runif(1)))
+
+    warn("foo", .frequency = "regularly", .frequency_id = as.character(runif(1)))
+    warn("bar", .frequency = "regularly", .frequency_id = as.character(runif(1)))
+  })
+})
 
 # Lifecycle ----------------------------------------------------------
 
