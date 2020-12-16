@@ -1,7 +1,10 @@
-
 # rlang (development version)
 
-* `expr_deparse()` now correctly wraps code using `::` and `:::` (#1072, @krlmlr).
+* Fixed an issue causing extra empty lines in `inform()` messages with
+  `.frequency` (#1076, @schloerke).
+
+* `expr_deparse()` now correctly wraps code using `::` and `:::`
+  (#1072, @krlmlr).
 
 
 # rlang 0.4.9

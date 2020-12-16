@@ -16,13 +16,11 @@
       inform("foo", .frequency = "regularly", .frequency_id = as.character(runif(1)))
     Message <message>
       foo
-      
       This message is displayed once every 8 hours.
     Code
       inform("bar", .frequency = "regularly", .frequency_id = as.character(runif(1)))
     Message <message>
       bar
-      
       This message is displayed once every 8 hours.
     Code
       warn("foo", .frequency = "regularly", .frequency_id = as.character(runif(1)))

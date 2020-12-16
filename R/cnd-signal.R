@@ -141,17 +141,15 @@ inform <- function(message = NULL,
                    .subclass = deprecated()) {
   validate_signal_args(.subclass)
 
-  message <- message %||% ""
-  message <- collapse_cnd_message(message)
-  message <- paste0(message, "\n")
-
   .frequency <- arg_match(.frequency, c("always", "regularly", "once"))
-
-  if (needs_signal(.frequency, .frequency_id, message_freq_env)) {
-    message <- add_message_freq(message, .frequency, "message")
-  } else {
+  if (!needs_signal(.frequency, .frequency_id, message_freq_env)) {
     return(invisible(NULL))
   }
+
+  message <- message %||% ""
+  message <- collapse_cnd_message(message)
+  message <- add_message_freq(message, .frequency, "message")
+  message <- paste0(message, "\n")
 
   cnd <- message_cnd(class, ..., message = message)
 
