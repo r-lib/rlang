@@ -251,7 +251,7 @@ is a string.</p></td>
 #&gt;         .x
 #&gt;     else .x + .y
 #&gt; }
-#&gt; &lt;environment: 0x7fb2060464a8&gt;</div><div class='input'><span class='fu'>as_closure</span><span class='op'>(</span><span class='va'>`~`</span><span class='op'>)</span>
+#&gt; &lt;environment: 0x7ffb5c8d6288&gt;</div><div class='input'><span class='fu'>as_closure</span><span class='op'>(</span><span class='va'>`~`</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; function (.x, .y) 
 #&gt; {
 #&gt;     if (is_missing(substitute(.y))) {
@@ -261,8 +261,8 @@ is a string.</p></td>
 #&gt;         new_formula(substitute(.x), substitute(.y), caller_env())
 #&gt;     }
 #&gt; }
-#&gt; &lt;bytecode: 0x7fb20004e720&gt;
-#&gt; &lt;environment: 0x7fb2060e3008&gt;</div><div class='input'>
+#&gt; &lt;bytecode: 0x7ffb57991878&gt;
+#&gt; &lt;environment: 0x7ffb5c96ce68&gt;</div><div class='input'>
 <span class='co'># Use a regular function for tidy evaluation, also when calling functions</span>
 <span class='co'># that use tidy evaluation:</span>
 <span class='co'>## Bad:</span>
