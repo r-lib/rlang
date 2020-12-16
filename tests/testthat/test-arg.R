@@ -50,32 +50,28 @@ test_that("informative error message on partial match", {
   )
 })
 
-test_that("informative error message on a typo", {
-  verify_output("test-typo-suggest.txt", {
-    myarg <- "continuuos"
-    arg_match0(myarg, c("discrete", "continuous"))
-    myarg <- "fou"
-    arg_match0(myarg, c("bar", "foo"))
-    myarg <- "fu"
-    arg_match0(myarg, c("ba", "fo"))
-
-    "# No suggestion when the edit distance is too large"
-    myarg <- "foobaz"
-    arg_match0(myarg, c("fooquxs", "discrete"))
-    myarg <- "a"
-    arg_match0(myarg, c("b", "c"))
-
-    "# Even with small possible typos, if there's a match it returns the match"
-    myarg <- "bas"
-    arg_match0(myarg, c("foo", "baz", "bas"))
-
-    "# arg_nm is honored"
-    myarg <- "baq"
-    arg_match0(myarg, c("foo", "baz", "bas"), arg_nm = "arg")
-
-    "# Corner case"
-    arg_match0("", character())
+test_that("`arg_match()` has informative error messages", {
+  expect_snapshot({
+    cnd_cat(expect_error(arg_match0("continuuos", c("discrete", "continuous"))))
+    cnd_cat(expect_error(arg_match0("fou", c("bar", "foo"))))
+    cnd_cat(expect_error(arg_match0("fu", c("ba", "fo"))))
+    cnd_cat(expect_error(arg_match0("baq", c("foo", "baz", "bas"), arg_nm = "arg")))
+    cnd_cat(expect_error(arg_match0("", character())))
   })
+})
+
+test_that("`arg_match()` provides no suggestion when the edit distance is too large", {
+  expect_snapshot({
+    cnd_cat(expect_error(arg_match0("foobaz", c("fooquxs", "discrete"))))
+    cnd_cat(expect_error(arg_match0("a", c("b", "c"))))
+  })
+})
+
+test_that("`arg_match()` finds a match even with small possible typos", {
+  expect_equal(
+    arg_match0("bas", c("foo", "baz", "bas")),
+    "bas"
+  )
 })
 
 test_that("gets choices from function", {

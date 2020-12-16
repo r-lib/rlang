@@ -169,11 +169,8 @@ test_that("rlang and base errors are properly entraced", {
     envvars = "rlang_error_kind=rlang"
   )
 
-  verify_output(test_path("test-entrace.txt"), {
-    "# base error"
+  expect_snapshot({
     cat_line(base)
-
-    "# rlang error"
     cat_line(rlang)
   })
 })

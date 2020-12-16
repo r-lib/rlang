@@ -1,3 +1,6 @@
+cnd_cat <- function(x) {
+  cat(paste0(conditionMessage(x), "\n"))
+}
 
 expect_no_error <- function(...) {
   expect_error(regexp = NA, ...)

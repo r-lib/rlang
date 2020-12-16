@@ -47,3 +47,45 @@
        19.         \-rlang:::g()
        20.           \-rlang:::h()
 
+# rlang and base errors are properly entraced
+
+    Code
+      cat_line(base)
+    Output
+      Error in h() : foo
+      Calls: f -> g -> h
+      Run `rlang::last_error()` to see where the error occurred.
+      <error/rlang_error>
+      foo
+      Backtrace:
+       1. global::f()
+       2. global::g()
+       3. global::h()
+      Run `rlang::last_trace()` to see the full context.
+      <error/rlang_error>
+      foo
+      Backtrace:
+          █
+       1. └─global::f()
+       2.   └─global::g()
+       3.     └─global::h()
+    Code
+      cat_line(rlang)
+    Output
+      Error: foo
+      Run `rlang::last_error()` to see where the error occurred.
+      <error/rlang_error>
+      foo
+      Backtrace:
+       1. global::f()
+       2. global::g()
+       3. global::h()
+      Run `rlang::last_trace()` to see the full context.
+      <error/rlang_error>
+      foo
+      Backtrace:
+          █
+       1. └─global::f()
+       2.   └─global::g()
+       3.     └─global::h()
+

@@ -1,3 +1,35 @@
+# can use conditionMessage() method in subclasses of rlang errors
+
+    Code
+      cat_line(interactive)
+    Output
+      Error: dispatched!
+      Run `rlang::last_error()` to see where the error occurred.
+      Execution halted
+    Code
+      cat_line(non_interactive)
+    Output
+      Error: dispatched!
+      Backtrace:
+          x
+       1. \-global::f()
+       2.   \-global::g()
+       3.     \-global::h()
+      Execution halted
+
+# rlang_error.print() calls conditionMessage() method
+
+    Code
+      print(err)
+    Output
+      <error/foobar>
+      Low-level message
+      Backtrace:
+        1. rlang::catch_cnd(f())
+        8. rlang:::f()
+        9. rlang:::g()
+       10. rlang:::h()
+
 # error is printed with parent backtrace
 
     Code

@@ -87,29 +87,14 @@ test_that("error is printed with backtrace", {
     test_path("fixtures", "error-backtrace-rethrown.R")
   )
 
-  verify_output(test_path("test-cnd-error.txt"), {
-    "Default (interactive)"
+  expect_snapshot({
     cat_line(default_interactive)
-
-    "Default (non-interactive)"
     cat_line(default_non_interactive)
-
-    "Reminder"
     cat_line(reminder)
-
-    "Branch"
     cat_line(branch)
-
-    "Collapse"
     cat_line(collapse)
-
-    "Full"
     cat_line(full)
-
-    "Rethrown (interactive)"
     cat_line(rethrown_interactive)
-
-    "Rethrown (non-interactive)"
     cat_line(rethrown_non_interactive)
   })
 })
@@ -121,23 +106,16 @@ test_that("empty backtraces are not printed", {
     run_script(test_path("fixtures", "error-backtrace-empty.R"), envvars = envvars)
   }
 
-  branch0 <- run_error_script(envvars = c("rlang_backtrace_on_error=branch", "trace_depth=0"))
-  full0 <- run_error_script(envvars = c("rlang_backtrace_on_error=full", "trace_depth=0"))
-  branch1 <- run_error_script(envvars = c("rlang_backtrace_on_error=branch", "trace_depth=1"))
-  full1 <- run_error_script(envvars = c("rlang_backtrace_on_error=full", "trace_depth=1"))
+  branch_depth_0 <- run_error_script(envvars = c("rlang_backtrace_on_error=branch", "trace_depth=0"))
+  full_depth_0 <- run_error_script(envvars = c("rlang_backtrace_on_error=full", "trace_depth=0"))
+  branch_depth_1 <- run_error_script(envvars = c("rlang_backtrace_on_error=branch", "trace_depth=1"))
+  full_depth_1 <- run_error_script(envvars = c("rlang_backtrace_on_error=full", "trace_depth=1"))
 
-  verify_output(test_path("test-cnd-error-empty.txt"), {
-    "Branch (depth 0)"
-    cat_line(branch0)
-
-    "Full"
-    cat_line(full0)
-
-    "Branch (depth 1)"
-    cat_line(branch1)
-
-    "Full (depth 1)"
-    cat_line(full1)
+  expect_snapshot({
+    cat_line(branch_depth_0)
+    cat_line(full_depth_0)
+    cat_line(branch_depth_1)
+    cat_line(full_depth_1)
   })
 })
 
@@ -153,11 +131,8 @@ test_that("parent errors are not displayed in error message and backtrace", {
   non_interactive <- run_error_script()
   interactive <- run_error_script(envvars = "rlang_interactive=true")
 
-  verify_output(test_path("test-cnd-error-parent.txt"), {
-    "Interactive"
+  expect_snapshot({
     cat_line(interactive)
-
-    "Non-interactive"
     cat_line(non_interactive)
   })
 })
@@ -175,7 +150,7 @@ test_that("backtrace reminder is displayed when called from `last_error()`", {
 
   last_error_env$cnd <- err
 
-  verify_output(test_path("output-cnd-abort-trace-reminder.txt"), {
+  expect_snapshot({
     "Normal case"
     print(err)
 
@@ -183,12 +158,16 @@ test_that("backtrace reminder is displayed when called from `last_error()`", {
     print(last_error())
 
     "Saved from `last_error()`"
-    saved <- last_error()
-    print(saved)
+    {
+      saved <- last_error()
+      print(saved)
+    }
 
     "Saved from `last_error()`, but no longer last"
-    last_error_env$cnd <- error_cnd("foo")
-    print(saved)
+    {
+      last_error_env$cnd <- error_cnd("foo")
+      print(saved)
+    }
   })
 })
 
@@ -228,22 +207,30 @@ test_that("capture context doesn't leak into low-level backtraces", {
     )
   )
 
-  verify_output(test_path("output-cnd-abort-parent-trace.txt"), {
-    parent <- TRUE
-    wrapper <- FALSE
-    err <- catch_cnd(f())
-    print(err)
+  expect_snapshot({
+    "Non wrapped case"
+    {
+      parent <- TRUE
+      wrapper <- FALSE
+      err <- catch_cnd(f())
+      print(err)
+    }
 
-    wrapper <- TRUE
-    err <- catch_cnd(f())
-    print(err)
+    "Wrapped case"
+    {
+      wrapper <- TRUE
+      err <- catch_cnd(f())
+      print(err)
+    }
 
     "FIXME?"
-    parent <- FALSE
-    err <- catch_cnd(f())
-    print(err)
+    {
+      parent <- FALSE
+      err <- catch_cnd(f())
+      print(err)
+    }
 
-    "# withCallingHandlers()"
+    "withCallingHandlers()"
     print(err_wch)
   })
 })

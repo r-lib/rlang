@@ -17,11 +17,8 @@ test_that("can use conditionMessage() method in subclasses of rlang errors", {
   non_interactive <- run_error_script()
   interactive <- run_error_script(envvars = "rlang_interactive=true")
 
-  verify_output(test_path("test-cnd-error-conditionMessage.txt"), {
-    "Interactive"
+  expect_snapshot({
     cat_line(interactive)
-
-    "Non-interactive"
     cat_line(non_interactive)
   })
 })
@@ -41,7 +38,7 @@ test_that("rlang_error.print() calls conditionMessage() method", {
 
   # Handled error
   err <- catch_cnd(f())
-  verify_output(test_path("test-error-print-conditionMessage.txt"), print(err))
+  expect_snapshot(print(err))
 })
 
 test_that("error is printed with parent backtrace", {
