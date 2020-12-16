@@ -28,6 +28,8 @@ base_pkg_env <- NULL
   .Call(r_init_library)
   .Call(rlang_library_load, ns_env("rlang"))
 
+  run_on_load()
+
   s3_register("pillar::pillar_shaft", "quosures", pillar_shaft.quosures)
   s3_register("pillar::type_sum", "quosures", type_sum.quosures)
 

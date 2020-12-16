@@ -34,18 +34,18 @@ test_that("%|% also works when y is of same length as x", {
 
 test_that("%|% fails with wrong types", {
   expect_snapshot({
-    cnd_cat(expect_error(c(1L, NA) %|% 2))
-    cnd_cat(expect_error(c(1, NA) %|% ""))
-    cnd_cat(expect_error(c(1, NA) %|% call("fn")))
-    cnd_cat(expect_error(call("fn") %|% 1))
+    (expect_error(c(1L, NA) %|% 2))
+    (expect_error(c(1, NA) %|% ""))
+    (expect_error(c(1, NA) %|% call("fn")))
+    (expect_error(call("fn") %|% 1))
   })
 })
 
 test_that("%|% fails with wrong length", {
   expect_snapshot({
-    cnd_cat(expect_error(c(1L, NA) %|% 1:3))
-    cnd_cat(expect_error(1:10 %|% 1:4))
-    cnd_cat(expect_error(1L %|% 1:4))
+    (expect_error(c(1L, NA) %|% 1:3))
+    (expect_error(1:10 %|% 1:4))
+    (expect_error(1L %|% 1:4))
   })
 })
 

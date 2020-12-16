@@ -52,18 +52,18 @@ test_that("informative error message on partial match", {
 
 test_that("`arg_match()` has informative error messages", {
   expect_snapshot({
-    cnd_cat(expect_error(arg_match0("continuuos", c("discrete", "continuous"))))
-    cnd_cat(expect_error(arg_match0("fou", c("bar", "foo"))))
-    cnd_cat(expect_error(arg_match0("fu", c("ba", "fo"))))
-    cnd_cat(expect_error(arg_match0("baq", c("foo", "baz", "bas"), arg_nm = "arg")))
-    cnd_cat(expect_error(arg_match0("", character())))
+    (expect_error(arg_match0("continuuos", c("discrete", "continuous"))))
+    (expect_error(arg_match0("fou", c("bar", "foo"))))
+    (expect_error(arg_match0("fu", c("ba", "fo"))))
+    (expect_error(arg_match0("baq", c("foo", "baz", "bas"), arg_nm = "arg")))
+    (expect_error(arg_match0("", character())))
   })
 })
 
 test_that("`arg_match()` provides no suggestion when the edit distance is too large", {
   expect_snapshot({
-    cnd_cat(expect_error(arg_match0("foobaz", c("fooquxs", "discrete"))))
-    cnd_cat(expect_error(arg_match0("a", c("b", "c"))))
+    (expect_error(arg_match0("foobaz", c("fooquxs", "discrete"))))
+    (expect_error(arg_match0("a", c("b", "c"))))
   })
 })
 
