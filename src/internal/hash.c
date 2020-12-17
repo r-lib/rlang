@@ -91,7 +91,8 @@ static inline int hash_version();
 static inline void hash_bytes(R_outpstream_t stream, void* p_input, int n);
 static inline void hash_char(R_outpstream_t stream, int input);
 
-static sexp* hash_impl(void* p_data) {
+static
+sexp* hash_impl(void* p_data) {
   struct exec_data* p_exec_data = (struct exec_data*) p_data;
   sexp* x = p_exec_data->x;
   XXH3_state_t* p_xx_state = p_exec_data->p_xx_state;
@@ -143,7 +144,8 @@ static sexp* hash_impl(void* p_data) {
   return r_chr(out);
 }
 
-static void hash_cleanup(void* p_data) {
+static
+void hash_cleanup(void* p_data) {
   struct exec_data* p_exec_data = (struct exec_data*) p_data;
   XXH3_state_t* p_xx_state = p_exec_data->p_xx_state;
   XXH3_freeState(p_xx_state);
