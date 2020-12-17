@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* rlang is now licensed as MIT (#1063).
+
 * Fixed an issue causing extra empty lines in `inform()` messages with
   `.frequency` (#1076, @schloerke).
 

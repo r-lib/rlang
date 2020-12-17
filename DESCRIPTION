@@ -9,7 +9,7 @@ Authors@R: c(
     person("Hadley", "Wickham", ,"hadley@rstudio.com", "aut"),
     person("RStudio", role = "cph")
     )
-License: GPL-3
+License: MIT + file LICENSE
 LazyData: true
 ByteCompile: true
 Biarch: true
