@@ -119,7 +119,7 @@ sexp* rlang_hash(sexp* x) {
   // 32 for hash, 1 for terminating null added by `sprintf()`
   char out[32 + 1];
 
-  sprintf(out, "%" PRIx64 "%" PRIx64, high, low);
+  sprintf(out, "%016" PRIx64 "%016" PRIx64, high, low);
 
   return r_chr(out);
 }
