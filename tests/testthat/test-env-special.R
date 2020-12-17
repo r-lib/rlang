@@ -84,3 +84,13 @@ test_that("ns_env() and variants have default argument", {
 test_that("is_installed() properly checks multiple packages", {
   expect_false(is_installed(c("base", "no.notarealpackagename")))
 })
+
+test_that("check_installed() fails if packages are not installed", {
+  local_options(rlang_interactive = FALSE)
+
+  expect_snapshot({
+    (expect_error(check_installed("_foo")))
+    (expect_error(check_installed(c("_foo", "_bar"))))
+    (expect_error(check_installed(c("_foo", "_bar"), "to proceed.")))
+  })
+})

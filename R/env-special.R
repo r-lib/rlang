@@ -274,12 +274,30 @@ is_namespace <- function(x) {
 
 #' Are packages installed in any of the libraries?
 #'
-#' This checks that packages are installed with minimal side effects.
-#' If installed, the packages will be loaded but not attached.
+#' @description
+#' These functions check that packages are installed with minimal side
+#' effects. If installed, the packages will be loaded but not
+#' attached.
+#'
+#' - `is_installed()` doesn't interact with the user. It simply
+#'   returns `TRUE` or `FALSE` depending on whether the packages are
+#'   installed.
+#'
+#' - In interactive sessions, `check_installed()` asks the user
+#'  whether to install missing packages. If the user accepts, the
+#'  packages are installed with `pak::pkg_install()` if available, or
+#'  [utils::install.packages()] otherwise. If the session is non
+#'  interactive or if the user chooses not to install the packages,
+#'  the current evaluation is aborted.
 #'
 #' @param pkg The package names.
-#' @return `TRUE` if _all_ package names provided in `pkg` are installed,
-#'   `FALSE` otherwise.
+#' @param reason Optional string indicating why is `pkg` needed.
+#'   Appears in error messages (if non-interactive) and user prompts
+#'   (if interactive).
+#' @return `is_installed()` returns `TRUE` if _all_ package names
+#'   provided in `pkg` are installed, `FALSE`
+#'   otherwise. `check_installed()` either doesn't return or returns
+#'   `NULL`.
 #' @export
 #' @examples
 #' is_installed("utils")
@@ -287,7 +305,58 @@ is_namespace <- function(x) {
 is_installed <- function(pkg) {
   all(map_lgl(pkg, function(x) is_true(requireNamespace(x, quietly = TRUE))))
 }
+#' @rdname is_installed
+#' @export
+check_installed <- function(pkg, reason = NULL) {
+  if (!is_character(pkg)) {
+    abort("`pkg` must be a package name or a vector of package names.")
+  }
+  needs_install <- !map_lgl(pkg, function(x) is_true(requireNamespace(x, quietly = TRUE)))
 
+  if (any(needs_install)) {
+    missing_pkgs <- pkg[needs_install]
+    missing_pkgs_enum <- chr_enumerate(chr_quoted(missing_pkgs), final = "and")
+
+    n <- length(missing_pkgs)
+    info <- pluralise(
+      n,
+      paste0("The ", missing_pkgs_enum, " package is required"),
+      paste0("The ", missing_pkgs_enum, " packages are required")
+    )
+    if (is_null(reason)) {
+      info <- paste0(info, ".")
+    } else {
+      info <- paste(info, reason)
+    }
+
+    question <- pluralise(
+      n,
+      "Would you like to install it?",
+      "Would you like to install them?"
+    )
+
+    if (!is_interactive()) {
+      abort(info)
+    }
+
+    cat(paste_line(
+      paste0(info(), " ", info),
+      paste0(cross(), " ", question),
+      .trailing = TRUE
+    ))
+
+    if (utils::menu(c("Yes", "No")) != 1) {
+      invokeRestart("abort")
+    }
+    if (is_installed("pak")) {
+      pak::pkg_install(missing_pkgs, ask = FALSE)
+    } else {
+      utils::install.packages(missing_pkgs)
+    }
+  }
+
+  invisible(NULL)
+}
 
 env_type <- function(env) {
   if (is_reference(env, global_env())) {

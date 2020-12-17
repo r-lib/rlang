@@ -1,5 +1,12 @@
 # rlang (development version)
 
+* New `check_installed()` function. Unlike `is_installed()`, it asks
+  the user whether to install missing packages. If the user accepts,
+  the packages are installed with `pak::pkg_install()` if available,
+  or `utils::install.packages()` otherwise. If the session is non
+  interactive or if the user chooses not to install the packages, the
+  current evaluation is aborted (#1075).
+
 * rlang is now licensed as MIT (#1063).
 
 * Fixed an issue causing extra empty lines in `inform()` messages with

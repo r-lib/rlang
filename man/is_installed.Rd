@@ -2,20 +2,41 @@
 % Please edit documentation in R/env-special.R
 \name{is_installed}
 \alias{is_installed}
+\alias{check_installed}
 \title{Are packages installed in any of the libraries?}
 \usage{
 is_installed(pkg)
+
+check_installed(pkg, reason = NULL)
 }
 \arguments{
 \item{pkg}{The package names.}
+
+\item{reason}{Optional string indicating why is \code{pkg} needed.
+Appears in error messages (if non-interactive) and user prompts
+(if interactive).}
 }
 \value{
-\code{TRUE} if \emph{all} package names provided in \code{pkg} are installed,
-\code{FALSE} otherwise.
+\code{is_installed()} returns \code{TRUE} if \emph{all} package names
+provided in \code{pkg} are installed, \code{FALSE}
+otherwise. \code{check_installed()} either doesn't return or returns
+\code{NULL}.
 }
 \description{
-This checks that packages are installed with minimal side effects.
-If installed, the packages will be loaded but not attached.
+These functions check that packages are installed with minimal side
+effects. If installed, the packages will be loaded but not
+attached.
+\itemize{
+\item \code{is_installed()} doesn't interact with the user. It simply
+returns \code{TRUE} or \code{FALSE} depending on whether the packages are
+installed.
+\item In interactive sessions, \code{check_installed()} asks the user
+whether to install missing packages. If the user accepts, the
+packages are installed with \code{pak::pkg_install()} if available, or
+\code{\link[utils:install.packages]{utils::install.packages()}} otherwise. If the session is non
+interactive or if the user chooses not to install the packages,
+the current evaluation is aborted.
+}
 }
 \examples{
 is_installed("utils")
