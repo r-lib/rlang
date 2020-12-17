@@ -58,6 +58,25 @@
 
 // -----------------------------------------------------------------------------
 
+struct exec_data {
+  sexp* x;
+  XXH3_state_t* p_xx_state;
+};
+
+static sexp* hash_impl(void* p_data);
+static void hash_cleanup(void* p_data);
+
+sexp* rlang_hash(sexp* x) {
+  XXH3_state_t* p_xx_state = XXH3_createState();
+
+  struct exec_data data = {
+    .x = x,
+    .p_xx_state = p_xx_state
+  };
+
+  return R_ExecWithCleanup(hash_impl, &data, hash_cleanup, &data);
+}
+
 struct hash_state_t {
   bool skip;
   int n_skipped;
@@ -72,12 +91,13 @@ static inline int hash_version();
 static inline void hash_bytes(R_outpstream_t stream, void* p_input, int n);
 static inline void hash_char(R_outpstream_t stream, int input);
 
-sexp* rlang_hash(sexp* x) {
-  XXH3_state_t* p_xx_state = XXH3_createState();
-  XXH_errorcode err = XXH3_128bits_reset(p_xx_state);
+static sexp* hash_impl(void* p_data) {
+  struct exec_data* p_exec_data = (struct exec_data*) p_data;
+  sexp* x = p_exec_data->x;
+  XXH3_state_t* p_xx_state = p_exec_data->p_xx_state;
 
+  XXH_errorcode err = XXH3_128bits_reset(p_xx_state);
   if (err == XXH_ERROR) {
-    XXH3_freeState(p_xx_state);
     r_abort("Couldn't initialize hash state.");
   }
 
@@ -110,7 +130,6 @@ sexp* rlang_hash(sexp* x) {
   R_Serialize(x, &stream);
 
   XXH128_hash_t hash = XXH3_128bits_digest(p_xx_state);
-  XXH3_freeState(p_xx_state);
 
   // R assumes C99, so these are always defined as `uint64_t` in xxhash.h
   XXH64_hash_t high = hash.high64;
@@ -122,6 +141,12 @@ sexp* rlang_hash(sexp* x) {
   sprintf(out, "%016" PRIx64 "%016" PRIx64, high, low);
 
   return r_chr(out);
+}
+
+static void hash_cleanup(void* p_data) {
+  struct exec_data* p_exec_data = (struct exec_data*) p_data;
+  XXH3_state_t* p_xx_state = p_exec_data->p_xx_state;
+  XXH3_freeState(p_xx_state);
 }
 
 static inline
@@ -160,7 +185,6 @@ void hash_bytes(R_outpstream_t stream, void* p_input, int n) {
   XXH_errorcode err = XXH3_128bits_update(p_xx_state, p_input, n);
 
   if (err == XXH_ERROR) {
-    XXH3_freeState(p_xx_state);
     r_abort("Couldn't update hash state.");
   }
 }
