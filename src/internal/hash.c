@@ -89,12 +89,17 @@ sexp* rlang_hash(sexp* x) {
   sexp* (*hook)(sexp*, sexp*) = NULL;
   sexp* hook_data = r_null;
 
+  // We use the unstructured binary format, rather than XDR, as that is faster.
+  // In theory it may result in different hashes on different platforms, but
+  // in practice only integers can have variable width and here they are 32 bit.
+  R_pstream_format_t format = R_pstream_binary_format;
+
   struct R_outpstream_st stream;
 
   R_InitOutPStream(
     &stream,
     (R_pstream_data_t) &state,
-    R_pstream_binary_format,
+    format,
     version,
     hash_char,
     hash_bytes,
