@@ -40,8 +40,20 @@
 
 
 <meta property="og:title" content="Are packages installed in any of the libraries? — is_installed" />
-<meta property="og:description" content="This checks that packages are installed with minimal side effects.
-If installed, the packages will be loaded but not attached." />
+<meta property="og:description" content="These functions check that packages are installed with minimal side
+effects. If installed, the packages will be loaded but not
+attached.
+is_installed() doesn't interact with the user. It simply
+returns TRUE or FALSE depending on whether the packages are
+installed.
+In interactive sessions, check_installed() asks the user
+whether to install missing packages. If the user accepts, the
+packages are installed with pak::pkg_install() if available, or
+utils::install.packages() otherwise. If the session is non
+interactive or if the user chooses not to install the packages,
+the current evaluation is aborted.
+
+" />
 
 
 
@@ -157,11 +169,25 @@ If installed, the packages will be loaded but not attached." />
     </div>
 
     <div class="ref-description">
-    <p>This checks that packages are installed with minimal side effects.
-If installed, the packages will be loaded but not attached.</p>
+    <p>These functions check that packages are installed with minimal side
+effects. If installed, the packages will be loaded but not
+attached.</p><ul>
+<li><p><code>is_installed()</code> doesn't interact with the user. It simply
+returns <code>TRUE</code> or <code>FALSE</code> depending on whether the packages are
+installed.</p></li>
+<li><p>In interactive sessions, <code>check_installed()</code> asks the user
+whether to install missing packages. If the user accepts, the
+packages are installed with <code><a href='http://pak.r-lib.org/reference/pkg_install.html'>pak::pkg_install()</a></code> if available, or
+<code><a href='https://rdrr.io/r/utils/install.packages.html'>utils::install.packages()</a></code> otherwise. If the session is non
+interactive or if the user chooses not to install the packages,
+the current evaluation is aborted.</p></li>
+</ul>
+
     </div>
 
-    <pre class="usage"><span class='fu'>is_installed</span><span class='op'>(</span><span class='va'>pkg</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>is_installed</span><span class='op'>(</span><span class='va'>pkg</span><span class='op'>)</span>
+
+<span class='fu'>check_installed</span><span class='op'>(</span><span class='va'>pkg</span>, reason <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -170,12 +196,20 @@ If installed, the packages will be loaded but not attached.</p>
       <th>pkg</th>
       <td><p>The package names.</p></td>
     </tr>
+    <tr>
+      <th>reason</th>
+      <td><p>Optional string indicating why is <code>pkg</code> needed.
+Appears in error messages (if non-interactive) and user prompts
+(if interactive).</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>TRUE</code> if <em>all</em> package names provided in <code>pkg</code> are installed,
-<code>FALSE</code> otherwise.</p>
+    <p><code>is_installed()</code> returns <code>TRUE</code> if <em>all</em> package names
+provided in <code>pkg</code> are installed, <code>FALSE</code>
+otherwise. <code>check_installed()</code> either doesn't return or returns
+<code>NULL</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>is_installed</span><span class='op'>(</span><span class='st'>"utils"</span><span class='op'>)</span>
