@@ -264,18 +264,18 @@ support.</p></div>
 <span class='co'># With eval_bare(), we do get the expected environment:</span>
 <span class='fu'>fn</span><span class='op'>(</span><span class='fu'>rlang</span><span class='fu'>::</span><span class='va'>eval_bare</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $returned_env
-#&gt; &lt;environment: 0x7fda4d31d838&gt;
+#&gt; &lt;environment: 0x7fd7e0878148&gt;
 #&gt; 
 #&gt; $actual_env
-#&gt; &lt;environment: 0x7fda4d31d838&gt;
+#&gt; &lt;environment: 0x7fd7e0878148&gt;
 #&gt; </div><div class='input'>
 <span class='co'># But that's not the case with base::eval():</span>
 <span class='fu'>fn</span><span class='op'>(</span><span class='fu'>base</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $returned_env
-#&gt; &lt;environment: 0x7fda4d2a9fe0&gt;
+#&gt; &lt;environment: 0x7fd7e09a0d48&gt;
 #&gt; 
 #&gt; $actual_env
-#&gt; &lt;environment: 0x7fda4d2cf608&gt;
+#&gt; &lt;environment: 0x7fd7e099e370&gt;
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -273,13 +273,17 @@ work reliably in the presence of nested quosures:</p><pre><span class='va'>my_qu
     
 
 
-<p><code>eval_tidy()</code> has different stack semantics than <code><a href='https://rdrr.io/r/base/eval.html'>base::eval()</a></code>:</p><ul>
+<p><code>eval_tidy()</code> always evaluates in a data mask, even when <code>data</code> is
+<code>NULL</code>. Because of this, it has different stack semantics than
+<code><a href='https://rdrr.io/r/base/eval.html'>base::eval()</a></code>:</p><ul>
+<li><p>Lexical side effects, such as assignment with <code>&lt;-</code>, occur in the
+mask rather than <code>env</code>.</p></li>
 <li><p>Functions that require the evaluation environment to correspond
 to a frame on the call stack do not work. This is why <code><a href='https://rdrr.io/r/base/function.html'>return()</a></code>
 called from a quosure does not work.</p></li>
-<li><p>The mask environment creates a new branch in the call tree
-defined by <code><a href='https://rdrr.io/r/base/sys.parent.html'>sys.parent()</a></code> (you can visualise it in a <code><a href='https://rdrr.io/r/base/browser.html'>browser()</a></code>
-session with <code>lobstr::cst()</code>).</p></li>
+<li><p>The mask environment creates a new branch in the tree
+representation of backtraces (which you can visualise in a
+<code><a href='https://rdrr.io/r/base/browser.html'>browser()</a></code> session with <code>lobstr::cst()</code>).</p></li>
 </ul>
 
 <p>See also <code><a href='eval_bare.html'>eval_bare()</a></code> for more information about these differences.</p>
