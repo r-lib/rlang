@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get parent environments — env_parent • rlang</title>
+<title>Hash an object — hash • rlang</title>
 
 
 <!-- jquery -->
@@ -39,18 +39,10 @@
 
 
 
-<meta property="og:title" content="Get parent environments — env_parent" />
-<meta property="og:description" content="
-
-env_parent() returns the parent environment of env if called
-with n = 1, the grandparent with n = 2, etc.
-env_tail() searches through the parents and returns the one
-which has empty_env() as parent.
-env_parents() returns the list of all parents, including the
-empty environment. This list is named using env_name().
-
-
-See the section on inheritance in env()'s documentation." />
+<meta property="og:title" content="Hash an object — hash" />
+<meta property="og:description" content="hash() hashes an arbitrary R object.
+The generated hash is guaranteed to be reproducible across platforms, but
+not across R versions." />
 
 
 
@@ -160,82 +152,41 @@ See the section on inheritance in env()'s documentation." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get parent environments</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/env.R'><code>R/env.R</code></a></small>
-    <div class="hidden name"><code>env_parent.Rd</code></div>
+    <h1>Hash an object</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/hash.R'><code>R/hash.R</code></a></small>
+    <div class="hidden name"><code>hash.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
-<ul>
-<li><p><code>env_parent()</code> returns the parent environment of <code>env</code> if called
-with <code>n = 1</code>, the grandparent with <code>n = 2</code>, etc.</p></li>
-<li><p><code>env_tail()</code> searches through the parents and returns the one
-which has <code><a href='empty_env.html'>empty_env()</a></code> as parent.</p></li>
-<li><p><code>env_parents()</code> returns the list of all parents, including the
-empty environment. This list is named using <code><a href='env_name.html'>env_name()</a></code>.</p></li>
-</ul>
-
-<p>See the section on <em>inheritance</em> in <code><a href='env.html'>env()</a></code>'s documentation.</p>
+    <p><code>hash()</code> hashes an arbitrary R object.</p>
+<p>The generated hash is guaranteed to be reproducible across platforms, but
+not across R versions.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>env_parent</span><span class='op'>(</span>env <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span>, n <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
-
-<span class='fu'>env_tail</span><span class='op'>(</span>env <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span>, last <span class='op'>=</span> <span class='fu'><a href='search_envs.html'>global_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='fu'>env_parents</span><span class='op'>(</span>env <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span>, last <span class='op'>=</span> <span class='fu'><a href='search_envs.html'>global_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>hash</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>env</th>
-      <td><p>An environment.</p></td>
-    </tr>
-    <tr>
-      <th>n</th>
-      <td><p>The number of generations to go up.</p></td>
-    </tr>
-    <tr>
-      <th>last</th>
-      <td><p>The environment at which to stop. Defaults to the
-global environment. The empty environment is always a stopping
-condition so it is safe to leave the default even when taking the
-tail or the parents of an environment on the search path.</p>
-<p><code>env_tail()</code> returns the environment which has <code>last</code> as parent
-and <code>env_parents()</code> returns the list of environments up to <code>last</code>.</p></td>
+      <th>x</th>
+      <td><p>An object.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>An environment for <code>env_parent()</code> and <code>env_tail()</code>, a list
-of environments for <code>env_parents()</code>.</p>
+    <p><code>hash()</code> uses the XXH128 hash algorithm of the xxHash library, which
+generates a 128-bit hash. It is implemented as a streaming hash, which
+generates the hash with minimal extra memory usage.</p>
+<p>Objects are converted to binary using R's native serialization tools.
+On R &gt;= 3.5.0, serialization version 3 is used, otherwise version 2 is used.
+See <code><a href='https://rdrr.io/r/base/serialize.html'>serialize()</a></code> for more information about the serialization version.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Get the parent environment with env_parent():</span>
-<span class='fu'>env_parent</span><span class='op'>(</span><span class='fu'><a href='search_envs.html'>global_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;environment: package:rlang&gt;
-#&gt; attr(,"name")
-#&gt; [1] "package:rlang"
-#&gt; attr(,"path")
-#&gt; [1] "/Users/runner/work/_temp/Library/rlang"</div><div class='input'>
-<span class='co'># Or the tail environment with env_tail():</span>
-<span class='fu'>env_tail</span><span class='op'>(</span><span class='fu'><a href='search_envs.html'>global_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;environment: base&gt;</div><div class='input'>
-<span class='co'># By default, env_parent() returns the parent environment of the</span>
-<span class='co'># current evaluation frame. If called at top-level (the global</span>
-<span class='co'># frame), the following two expressions are equivalent:</span>
-<span class='fu'>env_parent</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;environment: 0x7fdd22058828&gt;</div><div class='input'><span class='fu'>env_parent</span><span class='op'>(</span><span class='fu'><a href='search_envs.html'>base_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;environment: R_EmptyEnv&gt;</div><div class='input'>
-<span class='co'># This default is more handy when called within a function. In this</span>
-<span class='co'># case, the enclosure environment of the function is returned</span>
-<span class='co'># (since it is the parent of the evaluation frame):</span>
-<span class='va'>enclos_env</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>fn</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_env.html'>set_env</a></span><span class='op'>(</span><span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='fu'>env_parent</span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>enclos_env</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span><span class='op'>(</span><span class='va'>enclos_env</span>, <span class='fu'>fn</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>hash</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "702f7dd6e81ea41d26ea3b248627ece4"</div><div class='input'><span class='fu'>hash</span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "d0487363db4e6cc64fdb740cb6617fc0"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
