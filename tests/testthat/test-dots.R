@@ -1,5 +1,3 @@
-context("dots")
-
 test_that("exprs() without arguments creates an empty named list", {
   expect_identical(exprs(), named_list())
 })

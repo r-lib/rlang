@@ -1,5 +1,3 @@
-context("vec")
-
 test_that("can poke a range to a vector", {
   y <- 11:15
   x <- 1:5

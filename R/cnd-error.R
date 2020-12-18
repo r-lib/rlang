@@ -34,7 +34,7 @@ print.rlang_error <- function(x,
                               simplify = c("branch", "collapse", "none"),
                               fields = FALSE) {
   simplify <- arg_match(simplify)
-  cat_line(format(x, simplify = simplify, fields = fields))
+  cat_line(format(x, simplify = simplify, fields = fields, ...))
   invisible(x)
 }
 
@@ -45,6 +45,7 @@ is_rlang_error <- function(x) {
 #' @export
 format.rlang_error <- function(x,
                                ...,
+                               backtrace = TRUE,
                                child = NULL,
                                simplify = c("branch", "collapse", "none"),
                                fields = FALSE) {
@@ -109,7 +110,7 @@ format.rlang_error <- function(x,
 
   simplify <- arg_match(simplify)
 
-  if (!is_null(trace) && trace_length(trace)) {
+  if (backtrace && !is_null(trace) && trace_length(trace)) {
     out <- paste_line(out, bold("Backtrace:"))
     trace_lines <- format(trace, ..., simplify = simplify)
     out <- paste_line(out, trace_lines)
@@ -188,3 +189,7 @@ rlang_error_header <- function(cnd, child = NULL) {
     bold(sprintf("<parent: %s>", class))
   }
 }
+
+on_load(s3_register("testthat::testthat_print", "rlang_error", function(x) {
+  print(x, backtrace = FALSE)
+}))

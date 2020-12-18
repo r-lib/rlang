@@ -15,8 +15,9 @@
 #' 1. You can __splice__ arguments saved in a list with the [big
 #'    bang][quasiquotation] operator `!!!`.
 #'
-#' 2. You can __unquote__ names by using the [bang bang][quasiquotation]
-#'    operator `!!` on the left-hand side of `:=`.
+#' 2. You can __unquote__ names by using the [glue][glue::glue] syntax
+#'    or the [bang bang][quasiquotation] operator `!!` on the
+#'    left-hand side of `:=`.
 #'
 #' 3. Trailing commas are ignored, making it easier to copy and paste
 #'    lines of arguments.
@@ -30,6 +31,12 @@
 #' Other dynamic dots collectors are [dots_list()], which is more
 #' configurable than [list2()], `vars()` which doesn't force its
 #' arguments, and [call2()] for creating calls.
+#'
+#' Document dynamic docs using this standard tag:
+#'
+#' ```
+#'  @@param ... <[`dynamic-dots`][rlang::dyn-dots]> What these dots do.
+#' ```
 #'
 #' @name dyn-dots
 #' @aliases tidy-dots

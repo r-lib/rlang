@@ -1,5 +1,3 @@
-context("C API")
-
 r_string <- function(str) {
   stopifnot(is_string(str))
   .Call(rlang_r_string, str)

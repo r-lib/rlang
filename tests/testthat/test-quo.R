@@ -1,5 +1,3 @@
-context("quo")
-
 test_that("quo_get_expr() and quo_get_env() retrieve quosure components", {
   quo <- quo(foo)
   expect_identical(quo_get_expr(quo), quote(foo))
@@ -82,14 +80,6 @@ test_that("as_quosure() uses correct env", {
   expect_identical(out_quo$quo, quo)
 })
 
-test_that("explicit promise makes a formula", {
-  capture <- function(x) enquo(x)
-  f1 <- capture(1 + 2 + 3)
-  f2 <- ~ 1 + 2 + 3
-
-  expect_equal(f1, f2)
-})
-
 test_that("explicit promise works only one level deep", {
   f <- function(x) list(env = current_env(), f = g(x))
   g <- function(y) enquo(y)
@@ -147,7 +137,7 @@ test_that("as_quosure() coerces formulas", {
 })
 
 test_that("quo_squash() warns", {
-  expect_warning(regex = NA, quo_squash(quo(foo), warn = TRUE))
+  expect_warning(regexp = NA, quo_squash(quo(foo), warn = TRUE))
   expect_warning(quo_squash(quo(list(!! quo(foo))), warn = TRUE), "inner quosure")
 })
 

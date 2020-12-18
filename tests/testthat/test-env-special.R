@@ -1,5 +1,3 @@
-context("env-special")
-
 test_that("search_envs() includes the global and base env", {
   envs <- search_envs()
   expect_identical(envs[[1]], global_env())
@@ -11,7 +9,7 @@ test_that("search_envs() returns named environments", {
 })
 
 test_that("search_envs() returns an rlang_envs object", {
-  expect_is(search_envs(), "rlang_envs")
+  expect_s3_class(search_envs(), "rlang_envs")
 })
 
 test_that("is_namespace() recognises namespaces", {
@@ -85,4 +83,14 @@ test_that("ns_env() and variants have default argument", {
 
 test_that("is_installed() properly checks multiple packages", {
   expect_false(is_installed(c("base", "no.notarealpackagename")))
+})
+
+test_that("check_installed() fails if packages are not installed", {
+  local_options(rlang_interactive = FALSE)
+
+  expect_snapshot({
+    (expect_error(check_installed("_foo")))
+    (expect_error(check_installed(c("_foo", "_bar"))))
+    (expect_error(check_installed(c("_foo", "_bar"), "to proceed.")))
+  })
 })

@@ -1,9 +1,0 @@
-> print(err)
-<error/foobar>
-Low-level message
-Backtrace:
-  1. rlang::catch_cnd(f())
-  8. rlang:::f()
-  9. rlang:::g()
- 10. rlang:::h()
-

@@ -39,7 +39,7 @@ immediately resumed. \code{cnd_entrace()} adds a backtrace to a
 condition object, without any other effect. Both functions should
 be called directly from an error handler.
 
-Set the \code{error} global option to \code{quote(rlang::entrace())} to
+Set the \code{error} global option to \code{rlang::entrace} to
 transform base errors to rlang errors. These enriched errors
 include a backtrace. The RProfile is a good place to set the
 handler. See \code{\link{rlang_backtrace_on_error}} for details.

@@ -1,5 +1,3 @@
-context("stack")
-
 test_that("can return from frame", {
   fn <- function() {
     val <- g()

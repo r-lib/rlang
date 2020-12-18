@@ -58,3 +58,7 @@ Rscript <- function(args, ...) {
     status = attr(out, "status")
   )
 }
+
+expect_reference <- function(object, expected) {
+  expect_true(is_reference(object, expected))
+}

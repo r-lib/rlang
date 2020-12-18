@@ -1,5 +1,3 @@
-context("eval-tidy")
-
 test_that("accepts expressions", {
   expect_identical(eval_tidy(10), 10)
   expect_identical(eval_tidy(quote(letters)), letters)
@@ -128,8 +126,16 @@ test_that("can unquote hygienically within captured arg", {
   var <- quo(cyl)
   expect_identical(fn(mtcars, (!!var) > 4), mtcars$cyl > 4)
   expect_identical(fn(mtcars, list(var, !!var)), list(quo(cyl), mtcars$cyl))
-  expect_equal(fn(mtcars, list(~var, !!var)), list(~var, mtcars$cyl))
-  expect_equal(fn(mtcars, list(~~var, !!quo(var), !!quo(quo(var)))), list(~~var, quo(cyl), quo(var)))
+  expect_equal(
+    fn(mtcars, list(~var, !!var)),
+    list(~var, mtcars$cyl),
+    ignore_formula_env = TRUE
+  )
+  expect_equal(
+    fn(mtcars, list(~~var, !!quo(var), !!quo(quo(var)))),
+    list(~~var, quo(cyl), quo(var)),
+    ignore_formula_env = TRUE
+  )
 })
 
 test_that("can unquote for old-style NSE functions", {
@@ -194,7 +200,7 @@ test_that("tilde calls are evaluated in overscope", {
     ~foo
   })
   f <- eval_tidy(quo)
-  expect_true(env_has(f, "foo"))
+  expect_true(env_has(f_env(f), "foo"))
 })
 
 test_that(".env pronoun refers to current quosure (#174)", {
@@ -212,8 +218,16 @@ test_that(".env pronoun refers to current quosure (#174)", {
 })
 
 test_that("can call tilde with named arguments (#226)", {
-  expect_equal(eval_tidy(quote(`~`(foo = x, bar = y))), x ~ y)
-  expect_equal(eval_tidy(quote(`~`(foo = x, bar = y, baz = z))), `~`(foo = x, bar = y, baz = z))
+  expect_equal(
+    eval_tidy(quote(`~`(foo = x, bar = y))),
+    `~`(foo = x, bar = y),
+    ignore_formula_env = TRUE
+  )
+  expect_equal(
+    eval_tidy(quote(`~`(foo = x, bar = y, baz = z))),
+    `~`(foo = x, bar = y, baz = z),
+    ignore_formula_env = TRUE
+  )
 })
 
 test_that("Arguments to formulas are not stripped from their attributes (#227)", {
@@ -238,7 +252,7 @@ test_that("can supply a data mask as data", {
 
 test_that("as_data_pronoun() creates pronoun", {
   data <- as_data_pronoun(mtcars)
-  expect_is(data, "rlang_data_pronoun")
+  expect_s3_class(data, "rlang_data_pronoun")
 
   data_env <- .subset2(data, 1)
   expect_reference(env_parent(data_env), empty_env())
@@ -254,7 +268,7 @@ test_that("can create pronoun from a mask", {
   mask <- new_data_mask(bottom, top)
 
   .data <- as_data_pronoun(mask)
-  expect_is(.data, "rlang_data_pronoun")
+  expect_s3_class(.data, "rlang_data_pronoun")
   expect_identical(.data$a, 1)
   expect_identical(.data$b, 2)
 })
@@ -409,7 +423,7 @@ test_that("can evaluate quosures created in the data mask without infloop", {
 
 test_that("`.env` pronoun is constructed", {
   pronoun <- eval_tidy(quote(.env), mtcars)
-  expect_is(pronoun, "rlang_ctxt_pronoun")
+  expect_s3_class(pronoun, "rlang_ctxt_pronoun")
   expect_reference(env_parent(pronoun), current_env())
 })
 

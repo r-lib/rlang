@@ -1,5 +1,3 @@
-context("state")
-
 test_that("options are set temporarily", {
   local_options(foo = "foo")
   expect_identical(with_options(foo = "bar", peek_option("foo")), "bar")

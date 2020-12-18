@@ -16,8 +16,9 @@ along the way to function parameters.
 Dynamic dots offer a few additional features:
 \enumerate{
 \item You can \strong{splice} arguments saved in a list with the \link[=quasiquotation]{big bang} operator \verb{!!!}.
-\item You can \strong{unquote} names by using the \link[=quasiquotation]{bang bang}
-operator \verb{!!} on the left-hand side of \verb{:=}.
+\item You can \strong{unquote} names by using the \link[glue:glue]{glue} syntax
+or the \link[=quasiquotation]{bang bang} operator \verb{!!} on the
+left-hand side of \verb{:=}.
 \item Trailing commas are ignored, making it easier to copy and paste
 lines of arguments.
 }
@@ -31,6 +32,9 @@ as easy as collecting the dots with \code{\link[=list2]{list2()}} instead of \co
 Other dynamic dots collectors are \code{\link[=dots_list]{dots_list()}}, which is more
 configurable than \code{\link[=list2]{list2()}}, \code{vars()} which doesn't force its
 arguments, and \code{\link[=call2]{call2()}} for creating calls.
+
+Document dynamic docs using this standard tag:\preformatted{ @param ... <[`dynamic-dots`][rlang::dyn-dots]> What these dots do.
+}
 }
 
 \examples{

@@ -1,5 +1,3 @@
-context("attributes")
-
 test_that("names2() takes care of missing values", {
   x <- set_names(1:3, c("a", NA, "b"))
   expect_identical(names2(x), c("a", "", "b"))
@@ -88,6 +86,12 @@ test_that("zap_srcref() handles nested functions (r-lib/testthat#1228)", {
 
   # Calls to `function` store srcrefs in 4th cell
   expect_length(fn_call, 3)
+
+  # Can call `zap_srcref()` repeatedly
+  expect_equal(
+    zap_srcref(fn),
+    fn
+  )
 })
 
 test_that("zap_srcref() works with quosures", {
@@ -98,4 +102,13 @@ test_that("zap_srcref() works with quosures", {
 
   quo <- out[[2]]
   expect_null(attributes(quo_get_expr(quo)))
+})
+
+test_that("can zap_srcref() on functions with `[[` methods", {
+  local_methods(
+    `[[.rlang:::not_subsettable` = function(...) stop("Can't subset!"),
+    `[[<-.rlang:::not_subsettable` = function(...) stop("Can't subset!")
+  )
+  fn <- structure(quote(function() NULL), class = "rlang:::not_subsettable")
+  expect_error(zap_srcref(fn), NA)
 })

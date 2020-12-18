@@ -1,5 +1,3 @@
-context("function")
-
 test_that("new_function equivalent to regular function", {
   f1 <- function(x = a + b, y) {
     x + y
@@ -251,7 +249,7 @@ test_that("fn_body() always returns a `{` block", {
 
 test_that("as_function() adds a class to lambda functions", {
   out <- as_function(~foo)
-  expect_is(out, c("rlang_lambda_function", "function"))
+  expect_s3_class(out, c("rlang_lambda_function", "function"))
   expect_output(print(out), "<lambda>")
 })
 
@@ -312,5 +310,9 @@ test_that("as_function() creates functions that respect visibility", {
 test_that("as_function() with a quosure can be serialised", {
   fn <- as_function(local({ a <- 10; quo(a) }))
   blob <- serialize(fn, NULL)
-  expect_equal(eval_tidy(fn), eval_tidy(unserialize(blob)))
+  expect_equal(
+    eval_tidy(fn),
+    eval_tidy(unserialize(blob)),
+    ignore_function_env = TRUE
+  )
 })

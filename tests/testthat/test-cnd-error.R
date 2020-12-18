@@ -1,5 +1,3 @@
-context("cnd-error")
-
 test_that("error_cnd() checks its fields", {
   expect_no_error(error_cnd(trace = NULL))
   expect_error(error_cnd(trace = env()), "`trace` must be NULL or an rlang backtrace")
@@ -8,7 +6,6 @@ test_that("error_cnd() checks its fields", {
 })
 
 test_that("can use conditionMessage() method in subclasses of rlang errors", {
-  skip_unless_utf8()
   skip_if_stale_backtrace()
 
   run_error_script <- function(envvars = chr()) {
@@ -20,11 +17,8 @@ test_that("can use conditionMessage() method in subclasses of rlang errors", {
   non_interactive <- run_error_script()
   interactive <- run_error_script(envvars = "rlang_interactive=true")
 
-  verify_output(test_path("test-cnd-error-conditionMessage.txt"), {
-    "Interactive"
+  expect_snapshot({
     cat_line(interactive)
-
-    "Non-interactive"
     cat_line(non_interactive)
   })
 })
@@ -44,12 +38,10 @@ test_that("rlang_error.print() calls conditionMessage() method", {
 
   # Handled error
   err <- catch_cnd(f())
-  verify_output(test_path("test-error-print-conditionMessage.txt"), print(err))
+  expect_snapshot(print(err))
 })
 
 test_that("error is printed with parent backtrace", {
-  skip_unless_utf8()
-
   # Test low-level error can use conditionMessage()
   local_bindings(.env = global_env(),
     conditionMessage.foobar = function(c) c$foobar_msg
@@ -84,19 +76,17 @@ test_that("error is printed with parent backtrace", {
     `rlang:::error_pipe` = tempfile()
   )
 
-  expect_known_output(file = test_path("test-cnd-error-parent-default.txt"), {
+  expect_snapshot({
     print(err)
     print(err_force)
   })
-  expect_known_output(file = test_path("test-cnd-error-parent-full.txt"), {
+  expect_snapshot({
     print(err, simplify = "none")
   })
-  expect_known_trace_output(err, file = "test-cnd-error-parent-trace.txt")
+  expect_snapshot_trace(err)
 })
 
 test_that("summary.rlang_error() prints full backtrace", {
-  skip_unless_utf8()
-
   local_options(
     rlang_trace_top_env = current_env(),
     rlang_trace_format_srcrefs = FALSE
@@ -115,7 +105,7 @@ test_that("summary.rlang_error() prints full backtrace", {
   c <- function() tryCatch(f(), error = handler)
 
   err <- catch_cnd(a())
-  expect_known_output(file = test_path("test-cnd-error-str.txt"), summary(err))
+  expect_snapshot(summary(err))
 })
 
 test_that("can take the str() of an rlang error (#615)", {
@@ -125,11 +115,11 @@ test_that("can take the str() of an rlang error (#615)", {
 
 test_that("don't print message or backtrace fields if empty", {
   err <- error_cnd("foo", message = "")
-  expect_known_output(print(err), test_path("test-cnd-error-print-no-message.txt"))
+  expect_snapshot(print(err))
 })
 
 test_that("base parent errors are printed with rlang method", {
   base_err <- simpleError("foo")
   rlang_err <- error_cnd("bar", message = "", parent = base_err)
-  expect_known_output(print(rlang_err), test_path("test-cnd-error-print-base-parent.txt"))
+  expect_snapshot(print(rlang_err))
 })

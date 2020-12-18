@@ -1,5 +1,3 @@
-context("lifecycle")
-
 test_that("signal_soft_deprecated() warns when called from global env", {
   old <- Sys.getenv("TESTTHAT_PKG")
   Sys.setenv("TESTTHAT_PKG" = "")

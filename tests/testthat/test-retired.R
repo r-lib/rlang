@@ -1,5 +1,3 @@
-context("retired")
-
 local_lifecycle_silence()
 
 
@@ -17,12 +15,12 @@ test_that("type_of() returns correct type", {
   expect_identical(type_of(quote(foo())), "language")
 })
 
-test_that("Unicode escapes are always converted to UTF8 characters in as_list()", {
+test_that("Unicode escapes are converted to UTF8 characters in env_names()", {
   with_non_utf8_locale({
     env <- child_env(empty_env())
-    env_bind(env, !! get_alien_lang_string() := NULL)
-    list <- as_list(env)
-    expect_identical(names(list), get_alien_lang_string())
+    env_bind(env, !!get_alien_lang_string() := NULL)
+    nms <- env_names(env)
+    expect_identical(nms, get_alien_lang_string())
   })
 })
 
@@ -54,7 +52,7 @@ test_that("as_list() bypasses environment method and leaves input intact", {
   x <- structure(child_env(NULL), class = "foo")
   y <- as_list(x)
 
-  expect_is(x, "foo")
+  expect_s3_class(x, "foo")
   expect_identical(y, set_names(list(), character(0)))
 })
 
@@ -170,7 +168,7 @@ test_that("overscope functions forward to mask functions", {
 test_that("as_env() forwards to as_environment()", {
   x <- as_env(mtcars, base_env())
   y <- as_environment(mtcars, base_env())
-  expect_equal(x, y)
+  expect_equal(as.list(x), as.list(y))
   expect_identical(env_parent(x), env_parent(y))
 })
 

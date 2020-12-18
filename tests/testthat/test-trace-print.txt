@@ -1,7 +1,0 @@
-    █
- 1. └─rlang:::i() test-trace.R:30:2
- 2.   └─rlang:::j(i) test-trace.R:23:7
- 3.     └─rlang:::k(i) test-trace.R:24:21
- 4.       └─rlang:::l(i) test-trace.R:27:4
-
-█

@@ -17,12 +17,14 @@ Authors@R: c(
            comment = "Author of the embedded xxHash library"),
     person("RStudio", role = "cph")
     )
-License: GPL-3
+License: MIT + file LICENSE
 LazyData: true
 ByteCompile: true
 Biarch: true
 Depends:
     R (>= 3.3.0)
+Imports:
+    utils
 Suggests:
     cli,
     covr,
@@ -30,9 +32,10 @@ Suggests:
     glue,
     magrittr,
     methods,
+    pak,
     pillar,
     rmarkdown,
-    testthat (>= 2.3.0),
+    testthat (>= 3.0.0),
     vctrs (>= 0.2.3),
     withr
 Enhances: 
@@ -42,3 +45,4 @@ RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
 URL: https://rlang.r-lib.org, https://github.com/r-lib/rlang
 BugReports: https://github.com/r-lib/rlang/issues
+Config/testthat/edition: 3

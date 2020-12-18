@@ -94,15 +94,20 @@
 #'
 #' @section Stack semantics of `eval_tidy()`:
 #'
-#' `eval_tidy()` has different stack semantics than [base::eval()]:
+#' `eval_tidy()` always evaluates in a data mask, even when `data` is
+#' `NULL`. Because of this, it has different stack semantics than
+#' [base::eval()]:
+#'
+#' - Lexical side effects, such as assignment with `<-`, occur in the
+#'   mask rather than `env`.
 #'
 #' - Functions that require the evaluation environment to correspond
 #'   to a frame on the call stack do not work. This is why `return()`
 #'   called from a quosure does not work.
 #'
-#' - The mask environment creates a new branch in the call tree
-#'   defined by `sys.parent()` (you can visualise it in a [browser()]
-#'   session with `lobstr::cst()`).
+#' - The mask environment creates a new branch in the tree
+#'   representation of backtraces (which you can visualise in a
+#'   [browser()] session with `lobstr::cst()`).
 #'
 #' See also [eval_bare()] for more information about these differences.
 #'

@@ -1,8 +1,4 @@
-context("cnd-entrace")
-
 test_that("with_abort() promotes base errors to rlang errors", {
-  skip_unless_utf8()
-
   f <- function() g()
   g <- function() h()
   h <- function() stop("Low-level message")
@@ -24,11 +20,9 @@ test_that("with_abort() promotes base errors to rlang errors", {
   )
   err <- identity(catch_cnd(a()))
 
-  expect_known_output(file = test_path("test-with-abort.txt"), {
-    cat_line("print():", "")
+  expect_snapshot({
     print(err)
 
-    cat_line("", "", "summary():", "")
     summary(err)
   })
 })
@@ -47,7 +41,7 @@ test_that("with_abort() entraces conditions properly", {
                                  native = NULL,
                                  classes = "error") {
     err <- catch_abort(signaller, arg, classes = classes)
-    expect_is(err, "rlang_error")
+    expect_s3_class(err, "rlang_error")
 
     trace <- err$trace
     n <- trace_length(err$trace)
@@ -79,7 +73,7 @@ test_that("with_abort() entraces conditions properly", {
   expect_true(inherits_all(msg, c("message", "condition")))
 
   err <- catch_abort(base::message, "", classes = "message")
-  expect_is(err, "rlang_error")
+  expect_s3_class(err, "rlang_error")
 
   expect_abort_trace(base::stop, "")
   expect_abort_trace(base::stop, cnd("error"))
@@ -175,11 +169,8 @@ test_that("rlang and base errors are properly entraced", {
     envvars = "rlang_error_kind=rlang"
   )
 
-  verify_output(test_path("test-entrace.txt"), {
-    "# base error"
+  expect_snapshot({
     cat_line(base)
-
-    "# rlang error"
     cat_line(rlang)
   })
 })

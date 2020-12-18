@@ -1,5 +1,3 @@
-context("nse-defuse")
-
 test_that("quos() creates quosures", {
   fs <- quos(x = 1 + 2, y = 2 + 3)
   expect_identical(fs$x, as_quosure(~ 1 + 2))
@@ -435,7 +433,11 @@ test_that("closures are captured with their calling environment", {
 })
 
 test_that("the missing argument is captured", {
-  expect_equal_(quos(!!missing_arg()), quos(, ))
+  expect_equal_(
+    quos(!!missing_arg()),
+    quos(, ),
+    ignore_formula_env = TRUE
+  )
 
   fn <- function(x) {
     g(!!enquo(x))
@@ -443,7 +445,11 @@ test_that("the missing argument is captured", {
   g <- function(...) {
     quos(...)
   }
-  expect_equal_(fn(), quos(!!missing_arg()))
+  expect_equal_(
+    fn(),
+    quos(!!missing_arg()),
+    ignore_formula_env = TRUE
+  )
 })
 
 test_that("missing names are forwarded", {

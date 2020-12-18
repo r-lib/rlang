@@ -94,14 +94,18 @@ my_quoting_fn(toupper(!!quo(letters)))
 \section{Stack semantics of \code{eval_tidy()}}{
 
 
-\code{eval_tidy()} has different stack semantics than \code{\link[base:eval]{base::eval()}}:
+\code{eval_tidy()} always evaluates in a data mask, even when \code{data} is
+\code{NULL}. Because of this, it has different stack semantics than
+\code{\link[base:eval]{base::eval()}}:
 \itemize{
+\item Lexical side effects, such as assignment with \verb{<-}, occur in the
+mask rather than \code{env}.
 \item Functions that require the evaluation environment to correspond
 to a frame on the call stack do not work. This is why \code{return()}
 called from a quosure does not work.
-\item The mask environment creates a new branch in the call tree
-defined by \code{sys.parent()} (you can visualise it in a \code{\link[=browser]{browser()}}
-session with \code{lobstr::cst()}).
+\item The mask environment creates a new branch in the tree
+representation of backtraces (which you can visualise in a
+\code{\link[=browser]{browser()}} session with \code{lobstr::cst()}).
 }
 
 See also \code{\link[=eval_bare]{eval_bare()}} for more information about these differences.

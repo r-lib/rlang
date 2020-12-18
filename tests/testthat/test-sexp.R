@@ -1,5 +1,3 @@
-context("sexp")
-
 test_that("poke_type() changes object type", {
   x <- new_node(quote(foo), NULL)
   out <- withVisible(poke_type(x, "language"))

@@ -8,7 +8,7 @@
 #' condition object, without any other effect. Both functions should
 #' be called directly from an error handler.
 #'
-#' Set the `error` global option to `quote(rlang::entrace())` to
+#' Set the `error` global option to `rlang::entrace` to
 #' transform base errors to rlang errors. These enriched errors
 #' include a backtrace. The RProfile is a good place to set the
 #' handler. See [`rlang_backtrace_on_error`] for details.
