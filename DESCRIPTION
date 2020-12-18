@@ -7,6 +7,14 @@ Description: A toolbox for working with base types, core R features
 Authors@R: c(
     person("Lionel", "Henry", ,"lionel@rstudio.com", c("aut", "cre")),
     person("Hadley", "Wickham", ,"hadley@rstudio.com", "aut"),
+    person(given = "mikefc",
+           email = "mikefc@coolbutuseless.com", 
+           role = "cph", 
+           comment = "Hash implementation based on Mike's xxhashlite"),
+    person(given = "Yann",
+           family = "Collet",
+           role = "cph", 
+           comment = "Author of the embedded xxHash library"),
     person("RStudio", role = "cph")
     )
 License: MIT + file LICENSE

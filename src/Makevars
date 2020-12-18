@@ -41,6 +41,7 @@ internal-files = \
         internal/expr-interp.c \
         internal/expr-interp-rotate.c \
         internal/fn.c \
+        internal/hash.c \
         internal/internal.c \
         internal/nse-defuse.c \
         internal/quo.c \
