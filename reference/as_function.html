@@ -91,7 +91,7 @@ can't be coerced to a closure.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.10</span>
       </span>
     </div>
 
@@ -251,7 +251,7 @@ is a string.</p></td>
 #&gt;         .x
 #&gt;     else .x + .y
 #&gt; }
-#&gt; &lt;environment: 0x7fdd22d153a8&gt;</div><div class='input'><span class='fu'>as_closure</span><span class='op'>(</span><span class='va'>`~`</span><span class='op'>)</span>
+#&gt; &lt;environment: 0x7fa225b035e0&gt;</div><div class='input'><span class='fu'>as_closure</span><span class='op'>(</span><span class='va'>`~`</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; function (.x, .y) 
 #&gt; {
 #&gt;     if (is_missing(substitute(.y))) {
@@ -261,8 +261,8 @@ is a string.</p></td>
 #&gt;         new_formula(substitute(.x), substitute(.y), caller_env())
 #&gt;     }
 #&gt; }
-#&gt; &lt;bytecode: 0x7fdd20602b38&gt;
-#&gt; &lt;environment: 0x7fdd22c81d58&gt;</div><div class='input'>
+#&gt; &lt;bytecode: 0x7fa22393c258&gt;
+#&gt; &lt;environment: 0x7fa225bb81b0&gt;</div><div class='input'>
 <span class='co'># Use a regular function for tidy evaluation, also when calling functions</span>
 <span class='co'># that use tidy evaluation:</span>
 <span class='co'>## Bad:</span>
