@@ -1,4 +1,4 @@
-# rlang (development version)
+# rlang 0.4.10
 
 * New `hash()` function to generate 128-bit hashes for arbitrary R objects
   using the xxHash library. The implementation is modeled after
