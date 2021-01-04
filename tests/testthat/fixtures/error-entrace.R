@@ -1,7 +1,13 @@
 
 options(
   error = rlang::entrace,
-  rlang_interactive = TRUE
+  rlang_interactive = TRUE,
+  crayon.enabled = FALSE,
+  cli.unicode = FALSE,
+  cli.dynamic = FALSE,
+  useFancyQuotes = FALSE,
+  OutDec = ".",
+  width = 80L
 )
 
 f <- function() g()

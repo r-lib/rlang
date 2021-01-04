@@ -65,10 +65,10 @@
       <error/rlang_error>
       foo
       Backtrace:
-          █
-       1. └─global::f()
-       2.   └─global::g()
-       3.     └─global::h()
+          x
+       1. \-global::f()
+       2.   \-global::g()
+       3.     \-global::h()
     Code
       cat_line(rlang)
     Output
@@ -84,8 +84,8 @@
       <error/rlang_error>
       foo
       Backtrace:
-          █
-       1. └─global::f()
-       2.   └─global::g()
-       3.     └─global::h()
+          x
+       1. \-global::f()
+       2.   \-global::g()
+       3.     \-global::h()
 
