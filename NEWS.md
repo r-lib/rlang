@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* `hash()` results are now independent of endianness (#1086).
+
 * Fixed a gcc11 warning related to `hash()` (#1088).
 
 * `XXH3_64bits()` from the XXHash library is now exposed as C callable
