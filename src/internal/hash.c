@@ -132,14 +132,18 @@ sexp* hash_impl(void* p_data) {
 
   XXH128_hash_t hash = XXH3_128bits_digest(p_xx_state);
 
-  // R assumes C99, so these are always defined as `uint64_t` in xxhash.h
-  XXH64_hash_t high = hash.high64;
-  XXH64_hash_t low = hash.low64;
+  // Make the hash independent of endianness.
+  // `XXH128_canonical_t` is a struct holding an array of 16 unsigned chars.
+  XXH128_canonical_t canonical;
+  XXH128_canonicalFromHash(&canonical, hash);
+  const unsigned char* p_digest = canonical.digest;
 
   // 32 for hash, 1 for terminating null added by `sprintf()`
   char out[32 + 1];
 
-  sprintf(out, "%016" PRIx64 "%016" PRIx64, high, low);
+  for (int i = 0; i < 16; ++i) {
+    sprintf(out + i * 2, "%02x", p_digest[i]);
+  }
 
   return r_chr(out);
 }
