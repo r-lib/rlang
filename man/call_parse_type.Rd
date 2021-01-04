@@ -6,6 +6,58 @@
 \usage{
 call_parse_type(call)
 }
+\value{
+A string, one of:
+\itemize{
+\item \code{""}
+\item \code{"break"}
+\item \code{"next"}
+\item \code{"while"}
+\item \code{"for"}
+\item \code{"repeat"}
+\item \code{"if"}
+\item \code{"function"}
+\item \code{"?"}
+\item \code{"?unary"}
+\item \code{"<-"}
+\item \code{"<<-"}
+\item \code{"="}
+\item \code{":="}
+\item \code{"~"}
+\item \code{"~unary"}
+\item \code{"|"}
+\item \code{"||"}
+\item \code{"&"}
+\item \code{"&&"}
+\item \code{"!"}
+\item \code{"!!!"}
+\item \code{">"}
+\item \code{">="}
+\item \code{"<"}
+\item \code{"<="}
+\item \code{"=="}
+\item \code{"!="}
+\item \code{"+"}
+\item \code{"-"}
+\item \code{"*"}
+\item \code{"/"}
+\item \code{"\%\%"}
+\item \code{"special"}
+\item \code{":"}
+\item \code{"!!"}
+\item \code{"+unary"}
+\item \code{"-unary"}
+\item \code{"^"}
+\item \code{"$"}
+\item \code{"@"}
+\item \code{"::"}
+\item \code{":::"}
+\item \code{"("}
+\item \code{"["}
+\item \code{"[["}
+\item \code{"{"}
+}
+}
 \description{
 What is the parser type of a call?
 }
