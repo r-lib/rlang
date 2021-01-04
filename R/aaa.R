@@ -1,5 +1,6 @@
 
 on_load <- function(expr, env = topenv(parent.frame())) {
+  expr <- substitute(expr)
   callback <- function() eval_bare(expr, env)
   env$.__rlang_hook__. <- c(env$.__rlang_hook__., list(callback))
 }
