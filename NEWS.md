@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* Fixed a gcc11 warning related to `hash()` (#1088).
+
 * `XXH3_64bits()` from the XXHash library is now exposed as C callable
   under the name `rlang_xxh3_64bits()`.
 
