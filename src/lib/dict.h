@@ -16,12 +16,18 @@ struct r_dict {
 
   r_ssize n_buckets;
   r_ssize n_entries;
+
+  // For testing collisions
+  bool prevent_resize;
 };
 
 struct r_dict r_new_dict(r_ssize size);
 sexp* r_dict_put(struct r_dict* dict, sexp* key, sexp* value);
 bool r_dict_has(struct r_dict* dict, sexp* key);
 sexp* r_dict_get(struct r_dict* dict, sexp* key);
+
+// Pass a negative size to resize by the default growth factor
+void r_dict_resize(struct r_dict* dict, r_ssize size);
 
 
 #endif

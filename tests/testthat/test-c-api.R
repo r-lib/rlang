@@ -480,10 +480,15 @@ test_that("key has reference semantics", {
 })
 
 test_that("collisions are handled", {
-  dict <- new_dict(1L, resize = FALSE)
+  dict <- new_dict(1L, prevent_resize = TRUE)
+
   expect_null(dict_put(dict, quote(foo), 1))
   expect_null(dict_put(dict, quote(bar), 2))
   expect_equal(dict_put(dict, quote(bar), 3), 2)
+
+  # Check that dictionary was not resized and we indeed have colliding
+  # elements
+  expect_equal(dict_size(dict), 1L)
 })
 
 test_that("can check existing and retrieve values", {
@@ -500,4 +505,27 @@ test_that("can check existing and retrieve values", {
   expect_equal(dict_get(dict, quote(foo)), 1)
   expect_equal(dict_get(dict, quote(bar)), 2)
   expect_error(dict_get(dict, quote(baz)), "Can't find key")
+})
+
+test_that("dictionary size is rounded to next power of 2", {
+  dict <- new_dict(3L)
+  expect_equal(dict_size(dict), 4L)
+})
+
+test_that("can resize dictionary", {
+  dict <- new_dict(3L)
+  dict_resize(dict, 5L)
+  expect_equal(dict_size(dict), 8L)
+})
+
+test_that("dictionary grows", {
+  dict <- new_dict(3L)
+
+  dict_put(dict, quote(foo), 1)
+  dict_put(dict, quote(bar), 2)
+  dict_put(dict, quote(baz), 3)
+  expect_equal(dict_size(dict), 4L)
+
+  dict_put(dict, quote(quux), 4)
+  expect_equal(dict_size(dict), 8L)
 })

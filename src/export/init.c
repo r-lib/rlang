@@ -171,6 +171,7 @@ extern sexp* rlang_new_dict(sexp*, sexp*);
 extern sexp* rlang_dict_put(sexp*, sexp*, sexp*);
 extern sexp* rlang_dict_has(sexp*, sexp*);
 extern sexp* rlang_dict_get(sexp*, sexp*);
+extern sexp* rlang_dict_resize(sexp*, sexp*);
 
 static const r_callable r_callables[] = {
   {"r_init_library",                    (r_fn_ptr) &r_init_library, 0},
@@ -332,6 +333,7 @@ static const r_callable r_callables[] = {
   {"rlang_dict_put",                    (r_fn_ptr) &rlang_dict_put, 3},
   {"rlang_dict_has",                    (r_fn_ptr) &rlang_dict_has, 2},
   {"rlang_dict_get",                    (r_fn_ptr) &rlang_dict_get, 2},
+  {"rlang_dict_resize",                 (r_fn_ptr) &rlang_dict_resize, 2},
   {NULL, NULL, 0}
 };
 

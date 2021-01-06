@@ -1,8 +1,16 @@
 
 # dict.c
 
-new_dict <- function(size, resize = TRUE) {
-  .Call(rlang_new_dict, size, resize)
+new_dict <- function(size, prevent_resize = FALSE) {
+  .Call(rlang_new_dict, size, prevent_resize)
+}
+
+dict_size <- function(dict) {
+  length(dict[[2]][[1]])
+}
+
+dict_resize <- function(dict, size) {
+  .Call(rlang_dict_resize, dict, size)
 }
 
 dict_put <- function(dict, key, value) {
