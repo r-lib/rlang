@@ -11,6 +11,7 @@ struct r_dict r_new_dict(r_ssize size) {
   dict.n_buckets = size;
   dict.n_entries = 0;
 
+  dict.shelter = dict.buckets;
   return dict;
 }
 
