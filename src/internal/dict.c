@@ -1,6 +1,5 @@
 #include <rlang.h>
 #include "dict.h"
-#include "xxhash/xxhash.h"
 
 struct r_dict r_new_dict(r_ssize size) {
   struct r_dict dict;
@@ -17,7 +16,7 @@ struct r_dict r_new_dict(r_ssize size) {
 
 static
 r_ssize dict_hash(const struct r_dict* dict, sexp* key) {
-  uint64_t hash = XXH3_64bits(&key, sizeof(sexp*));
+  uint64_t hash = r_xxh3_64bits(&key, sizeof(sexp*));
   return hash % dict->n_buckets;
 }
 

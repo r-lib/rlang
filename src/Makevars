@@ -27,6 +27,7 @@ lib-files = \
         lib/vec-chr.c \
         lib/vec-lgl.c \
         lib/vec-list.c \
+        lib/vendor.c \
         lib/weakref.c
 
 internal-files = \

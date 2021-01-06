@@ -1,5 +1,9 @@
 # rlang (development version)
 
+* `XXH3_64bits()` from the XXHash library is now exposed as C callable
+  under the name `rlang_xxh3_64bits()`.
+
+
 # rlang 0.4.10
 
 * New `hash()` function to generate 128-bit hashes for arbitrary R objects
