@@ -455,3 +455,33 @@ test_that("r_pairlist_rev() reverses destructively", {
   expect_true(is_reference(node_cddr(y), n1))
   expect_true(is_null(node_cdr(n1)))
 })
+
+test_that("r_dict_put() hashes object", {
+  dict <- new_dict(10L)
+
+  expect_null(dict_put(dict, quote(foo), 1))
+  expect_null(dict_put(dict, quote(bar), 2))
+
+  expect_equal(dict_put(dict, quote(foo), 2), 1)
+  expect_equal(dict_put(dict, quote(bar), 2), 2)
+})
+
+test_that("key has reference semantics", {
+  dict <- new_dict(10L)
+  keys <- c("foo", "bar")
+
+  # Fresh character vector returned by `[[`
+  expect_null(dict_put(dict, keys[[1]], 1))
+  expect_null(dict_put(dict, keys[[1]], 2))
+
+  # CHARSXP are interned and unique
+  expect_null(dict_put(dict, chr_get(keys[[1]], 0L), 3))
+  expect_equal(dict_put(dict, chr_get(keys[[1]], 0L), 4), 3)
+})
+
+test_that("collisions are handled", {
+  dict <- new_dict(1L, resize = FALSE)
+  expect_null(dict_put(dict, quote(foo), 1))
+  expect_null(dict_put(dict, quote(bar), 2))
+  expect_equal(dict_put(dict, quote(bar), 3), 2)
+})

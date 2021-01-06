@@ -168,6 +168,8 @@ extern sexp* rlang_test_Rf_warningcall(sexp*, sexp*);
 extern sexp* rlang_test_Rf_errorcall(sexp*, sexp*);
 extern sexp* rlang_test_lgl_sum(sexp*, sexp*);
 extern sexp* rlang_test_lgl_which(sexp*, sexp*);
+extern sexp* rlang_new_dict(sexp*, sexp*);
+extern sexp* rlang_dict_put(sexp*, sexp*, sexp*);
 
 static const r_callable r_callables[] = {
   {"r_init_library",                    (r_fn_ptr) &r_init_library, 0},
@@ -325,6 +327,8 @@ static const r_callable r_callables[] = {
   {"rlang_env_is_browsed",              (r_fn_ptr) &rlang_env_is_browsed, 1},
   {"rlang_ns_registry_env",             (r_fn_ptr) &rlang_ns_registry_env, 0},
   {"rlang_hash",                        (r_fn_ptr) &rlang_hash, 1},
+  {"rlang_new_dict",                    (r_fn_ptr) &rlang_new_dict, 2},
+  {"rlang_dict_put",                    (r_fn_ptr) &rlang_dict_put, 3},
   {NULL, NULL, 0}
 };
 

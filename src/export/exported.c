@@ -35,6 +35,46 @@ sexp* rlang_interrupt() {
 }
 
 
+// dict.c
+
+#include "../internal/dict.h"
+
+sexp* rlang_new_dict(sexp* size, sexp* resize) {
+  if (!r_is_number(size)) {
+    r_abort("`size` must be an integer.");
+  }
+  if (!r_is_bool(resize)) {
+    r_abort("`resize` must be a logical value.");
+  }
+
+  sexp* out = KEEP(r_new_vector(r_type_list, 2));
+
+  struct r_dict dict = r_new_dict(r_int_get(size, 0));
+  r_list_poke(out, 0, r_copy_in_raw(&dict, sizeof(dict)));
+  r_list_poke(out, 1, dict.shelter);
+
+  FREE(1);
+  return out;
+}
+
+sexp* rlang_dict_put(sexp* dict, sexp* key, sexp* value) {
+  if (r_typeof(dict) != r_type_list) {
+    goto dict_input_error;
+  }
+
+  sexp* dict_raw = r_list_get(dict, 0);
+  if (r_typeof(dict_raw) != r_type_raw) {
+    goto dict_input_error;
+  }
+
+  struct r_dict* p_dict = r_raw_deref(dict_raw);
+  return r_dict_put(p_dict, key, value);
+
+  dict_input_error:
+    r_abort("`dict` must be a dictionary handle.");
+}
+
+
 // env.c
 
 sexp* rlang_env_poke_parent(sexp* env, sexp* new_parent) {
