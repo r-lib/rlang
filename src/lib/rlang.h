@@ -9,7 +9,6 @@
 #include <Rinternals.h>
 
 typedef struct SEXPREC sexp;
-typedef Rbyte r_byte_t;
 typedef Rcomplex r_complex_t;
 
 typedef R_xlen_t r_ssize;

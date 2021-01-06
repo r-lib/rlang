@@ -17,7 +17,7 @@ static inline double* r_dbl_deref(sexp* x) {
 static inline r_complex_t* r_cpl_deref(sexp* x) {
   return COMPLEX(x);
 }
-static inline r_byte_t* r_raw_deref(sexp* x) {
+static inline void* r_raw_deref(sexp* x) {
   return RAW(x);
 }
 
@@ -38,8 +38,8 @@ const r_complex_t* r_cpl_deref_const(sexp* x) {
   return (const r_complex_t*) COMPLEX(x);
 }
 static inline
-const r_byte_t* r_raw_deref_const(sexp* x) {
-  return (const r_byte_t*) RAW(x);
+const void* r_raw_deref_const(sexp* x) {
+  return (const void*) RAW(x);
 }
 static inline
 sexp* const * r_chr_deref_const(sexp* x) {
@@ -68,10 +68,6 @@ static inline r_complex_t r_cpl_get(sexp* x, r_ssize i) {
   r_vec_get_check(x, i, "r_cpl_get");
   return COMPLEX(x)[i];
 }
-static inline r_byte_t r_raw_get(sexp* x, r_ssize i) {
-  r_vec_get_check(x, i, "r_raw_get");
-  return RAW(x)[i];
-}
 
 static inline void r_lgl_poke(sexp* x, r_ssize i, int y) {
   r_vec_get_check(x, i, "r_lgl_poke");
@@ -88,10 +84,6 @@ static inline void r_dbl_poke(sexp* x, r_ssize i, double y) {
 static inline void r_cpl_poke(sexp* x, r_ssize i, r_complex_t y) {
   r_vec_get_check(x, i, "r_cpl_poke");
   COMPLEX(x)[i] = y;
-}
-static inline void r_raw_poke(sexp* x, r_ssize i, r_byte_t y) {
-  r_vec_get_check(x, i, "r_raw_poke");
-  RAW(x)[i] = y;
 }
 
 sexp* r_vec_get(sexp* vec, r_ssize i);

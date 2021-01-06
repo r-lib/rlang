@@ -39,7 +39,7 @@ sexp* rlang_raw_deparse_str(sexp* x, sexp* prefix, sexp* suffix) {
   const char* lookup = "0123456789abcdef";
 
   for (r_ssize i = 0; i < len_data; ++i) {
-    r_byte_t value = p_x[i];
+    unsigned char value = p_x[i];
     *p_buf++ = lookup[value / 16];
     *p_buf++ = lookup[value % 16];
   }

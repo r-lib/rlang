@@ -247,8 +247,8 @@ void r_vec_poke_n(sexp* x, r_ssize offset,
     break;
   }
   case RAWSXP: {
-    r_byte_t* src_data = RAW(y);
-    r_byte_t* dest_data = RAW(x);
+    unsigned char* src_data = RAW(y);
+    unsigned char* dest_data = RAW(x);
     for (r_ssize i = 0; i != n; ++i)
       dest_data[i + offset] = src_data[i + from];
     break;
