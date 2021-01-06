@@ -37,8 +37,6 @@ sexp* rlang_interrupt() {
 
 // dict.c
 
-#include "../internal/dict.h"
-
 sexp* rlang_new_dict(sexp* size, sexp* resize) {
   if (!r_is_number(size)) {
     r_abort("`size` must be an integer.");

@@ -1,5 +1,5 @@
-#ifndef RLANG_INTERNAL_DICT_H
-#define RLANG_INTERNAL_DICT_H
+#ifndef RLANG_DICT_H
+#define RLANG_DICT_H
 
 /**
  * This is a simple hash table of `sexp*`. It is structured like R

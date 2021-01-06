@@ -1,7 +1,6 @@
 #include "internal/arg.c"
 #include "internal/attr.c"
 #include "internal/call.c"
-#include "internal/dict.c"
 #include "internal/dots.c"
 #include "internal/env.c"
 #include "internal/env-binding.c"

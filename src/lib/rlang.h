@@ -79,6 +79,7 @@ extern sexp* r_shared_false;
 #include "debug.h"
 #include "c-utils.h"
 #include "cnd.h"
+#include "dict.h"
 #include "env.h"
 #include "env-binding.h"
 #include "eval.h"

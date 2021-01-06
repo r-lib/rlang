@@ -6,6 +6,7 @@ lib-files = \
         lib/attrs.c \
         lib/cnd.c \
         lib/debug.c \
+        lib/dict.c \
         lib/env.c \
         lib/env-binding.c \
         lib/eval.c \
@@ -34,7 +35,6 @@ internal-files = \
         internal/arg.c \
         internal/attr.c \
         internal/call.c \
-        internal/dict.c \
         internal/dots.c \
         internal/env.c \
         internal/env-binding.c \
