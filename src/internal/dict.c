@@ -50,3 +50,32 @@ sexp* r_dict_put(struct r_dict* dict, sexp* key, sexp* value) {
   FREE(1);
   return r_null;
 }
+
+static
+sexp* dict_find_node(struct r_dict* dict, sexp* key) {
+  r_ssize i = dict_hash(dict, key);
+  sexp* bucket = dict->p_buckets[i];
+
+  while (bucket != r_null) {
+    if (r_node_tag(bucket) == key) {
+      return bucket;
+    }
+    bucket = r_node_cdr(bucket);
+  }
+
+  return r_null;
+}
+
+bool r_dict_has(struct r_dict* dict, sexp* key) {
+  return dict_find_node(dict, key) != r_null;
+}
+
+sexp* r_dict_get(struct r_dict* dict, sexp* key) {
+  sexp* node = dict_find_node(dict, key);
+
+  if (node == r_null) {
+    r_abort("Can't find key in dictionary.");
+  }
+
+  return r_node_car(node);
+}

@@ -170,6 +170,8 @@ extern sexp* rlang_test_lgl_sum(sexp*, sexp*);
 extern sexp* rlang_test_lgl_which(sexp*, sexp*);
 extern sexp* rlang_new_dict(sexp*, sexp*);
 extern sexp* rlang_dict_put(sexp*, sexp*, sexp*);
+extern sexp* rlang_dict_has(sexp*, sexp*);
+extern sexp* rlang_dict_get(sexp*, sexp*);
 
 static const r_callable r_callables[] = {
   {"r_init_library",                    (r_fn_ptr) &r_init_library, 0},
@@ -329,6 +331,8 @@ static const r_callable r_callables[] = {
   {"rlang_hash",                        (r_fn_ptr) &rlang_hash, 1},
   {"rlang_new_dict",                    (r_fn_ptr) &rlang_new_dict, 2},
   {"rlang_dict_put",                    (r_fn_ptr) &rlang_dict_put, 3},
+  {"rlang_dict_has",                    (r_fn_ptr) &rlang_dict_has, 2},
+  {"rlang_dict_get",                    (r_fn_ptr) &rlang_dict_get, 2},
   {NULL, NULL, 0}
 };
 

@@ -485,3 +485,19 @@ test_that("collisions are handled", {
   expect_null(dict_put(dict, quote(bar), 2))
   expect_equal(dict_put(dict, quote(bar), 3), 2)
 })
+
+test_that("can check existing and retrieve values", {
+  dict <- new_dict(10L)
+
+  dict_put(dict, quote(foo), 1)
+  dict_put(dict, quote(bar), 2)
+  dict_put(dict, quote(foo), 3)
+
+  expect_true(dict_has(dict, quote(foo)))
+  expect_true(dict_has(dict, quote(bar)))
+  expect_false(dict_has(dict, quote(baz)))
+
+  expect_equal(dict_get(dict, quote(foo)), 1)
+  expect_equal(dict_get(dict, quote(bar)), 2)
+  expect_error(dict_get(dict, quote(baz)), "Can't find key")
+})

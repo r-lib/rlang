@@ -57,7 +57,8 @@ sexp* rlang_new_dict(sexp* size, sexp* resize) {
   return out;
 }
 
-sexp* rlang_dict_put(sexp* dict, sexp* key, sexp* value) {
+static
+struct r_dict* dict_deref(sexp* dict) {
   if (r_typeof(dict) != r_type_list) {
     goto dict_input_error;
   }
@@ -67,11 +68,25 @@ sexp* rlang_dict_put(sexp* dict, sexp* key, sexp* value) {
     goto dict_input_error;
   }
 
-  struct r_dict* p_dict = r_raw_deref(dict_raw);
-  return r_dict_put(p_dict, key, value);
+  return r_raw_deref(dict_raw);
 
   dict_input_error:
     r_abort("`dict` must be a dictionary handle.");
+};
+
+sexp* rlang_dict_put(sexp* dict, sexp* key, sexp* value) {
+  struct r_dict* p_dict = dict_deref(dict);
+  return r_dict_put(p_dict, key, value);
+}
+
+sexp* rlang_dict_has(sexp* dict, sexp* key) {
+  struct r_dict* p_dict = dict_deref(dict);
+  return r_lgl(r_dict_has(p_dict, key));
+}
+
+sexp* rlang_dict_get(sexp* dict, sexp* key) {
+  struct r_dict* p_dict = dict_deref(dict);
+  return r_dict_get(p_dict, key);
 }
 
 
