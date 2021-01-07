@@ -72,11 +72,11 @@ struct r_dict* dict_deref(sexp* dict) {
 
   dict_input_error:
     r_abort("`dict` must be a dictionary handle.");
-};
+}
 
 sexp* rlang_dict_put(sexp* dict, sexp* key, sexp* value) {
   struct r_dict* p_dict = dict_deref(dict);
-  return r_dict_put(p_dict, key, value);
+  return r_lgl(r_dict_put(p_dict, key, value));
 }
 
 sexp* rlang_dict_has(sexp* dict, sexp* key) {

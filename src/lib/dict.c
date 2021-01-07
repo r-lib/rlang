@@ -74,9 +74,9 @@ r_ssize dict_hash(const struct r_dict* dict, sexp* key) {
   return hash % dict->n_buckets;
 }
 
-// Returns r_null if successful, the existing object otherwise. The
-// key is compared by pointer.
-sexp* r_dict_put(struct r_dict* dict, sexp* key, sexp* value) {
+// Returns `false` if `key` already exists in the dictionary, `true`
+// otherwise
+bool r_dict_put(struct r_dict* dict, sexp* key, sexp* value) {
   r_ssize i = dict_hash(dict, key);
 
   sexp* bucket = dict->p_buckets[i];
@@ -84,7 +84,7 @@ sexp* r_dict_put(struct r_dict* dict, sexp* key, sexp* value) {
 
   while (bucket != r_null) {
     if (r_node_tag(bucket) == key) {
-      return r_node_car(bucket);
+      return false;
     }
     prev = bucket;
     bucket = r_node_cdr(bucket);
@@ -109,7 +109,7 @@ sexp* r_dict_put(struct r_dict* dict, sexp* key, sexp* value) {
   }
 
   FREE(1);
-  return r_null;
+  return true;
 }
 
 static

@@ -459,11 +459,11 @@ test_that("r_pairlist_rev() reverses destructively", {
 test_that("r_dict_put() hashes object", {
   dict <- new_dict(10L)
 
-  expect_null(dict_put(dict, quote(foo), 1))
-  expect_null(dict_put(dict, quote(bar), 2))
+  expect_true(dict_put(dict, quote(foo), 1))
+  expect_true(dict_put(dict, quote(bar), 2))
 
-  expect_equal(dict_put(dict, quote(foo), 2), 1)
-  expect_equal(dict_put(dict, quote(bar), 2), 2)
+  expect_false(dict_put(dict, quote(foo), 2))
+  expect_false(dict_put(dict, quote(bar), 2))
 })
 
 test_that("key has reference semantics", {
@@ -471,20 +471,26 @@ test_that("key has reference semantics", {
   keys <- c("foo", "bar")
 
   # Fresh character vector returned by `[[`
-  expect_null(dict_put(dict, keys[[1]], 1))
-  expect_null(dict_put(dict, keys[[1]], 2))
+  expect_true(dict_put(dict, keys[[1]], 1))
+  expect_true(dict_put(dict, keys[[1]], 2))
 
   # CHARSXP are interned and unique
-  expect_null(dict_put(dict, chr_get(keys[[1]], 0L), 3))
-  expect_equal(dict_put(dict, chr_get(keys[[1]], 0L), 4), 3)
+  expect_true(dict_put(dict, chr_get(keys[[1]], 0L), 3))
+  expect_false(dict_put(dict, chr_get(keys[[1]], 0L), 4))
+})
+
+test_that("key can be `NULL`", {
+  dict <- new_dict(10L)
+  expect_true(dict_put(dict, NULL, 1))
+  expect_false(dict_put(dict, NULL, 2))
 })
 
 test_that("collisions are handled", {
   dict <- new_dict(1L, prevent_resize = TRUE)
 
-  expect_null(dict_put(dict, quote(foo), 1))
-  expect_null(dict_put(dict, quote(bar), 2))
-  expect_equal(dict_put(dict, quote(bar), 3), 2)
+  expect_true(dict_put(dict, quote(foo), 1))
+  expect_true(dict_put(dict, quote(bar), 2))
+  expect_false(dict_put(dict, quote(bar), 3))
 
   # Check that dictionary was not resized and we indeed have colliding
   # elements
