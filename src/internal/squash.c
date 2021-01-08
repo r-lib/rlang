@@ -11,6 +11,13 @@ static sexp* maybe_unbox(sexp* x, bool (*is_spliceable)(sexp*)) {
   }
 }
 
+bool has_name_at(sexp* x, r_ssize i) {
+  sexp* nms = r_names(x);
+  return
+    r_typeof(nms) == r_type_character &&
+    r_chr_get(nms, i) != r_empty_str;
+}
+
 
 typedef struct {
   r_ssize size;
@@ -58,7 +65,7 @@ static r_ssize atom_squash(enum r_type kind, squash_info_t info,
         sexp* nms = r_names(inner);
         if (r_typeof(nms) == r_type_character) {
           r_vec_poke_n(out_names, count, nms, 0, n_inner);
-        } else if (n_inner == 1 && r_has_name_at(outer, i)) {
+        } else if (n_inner == 1 && has_name_at(outer, i)) {
           SET_STRING_ELT(out_names, count, STRING_ELT(r_names(outer), i));
         }
       }
@@ -116,7 +123,7 @@ static void squash_warn_names(void) {
 }
 
 static void update_info_outer(squash_info_t* info, sexp* outer, r_ssize i) {
-  if (!info->warned && info->recursive && r_has_name_at(outer, i)) {
+  if (!info->warned && info->recursive && has_name_at(outer, i)) {
     squash_warn_names();
     info->warned = true;
   }
@@ -140,7 +147,7 @@ static void update_info_inner(squash_info_t* info, sexp* outer, r_ssize i, sexp*
     info->named = true;
   }
 
-  if (r_has_name_at(outer, i)) {
+  if (has_name_at(outer, i)) {
     if (!recursive && (n_inner != 1 || named) && !info->warned) {
       squash_warn_names();
       info->warned = true;
