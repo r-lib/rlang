@@ -1,6 +1,7 @@
 #include <rlang.h>
 
 #include "attrib.c"
+#include "call.c"
 #include "cnd.c"
 #include "debug.c"
 #include "dict.c"
@@ -10,7 +11,6 @@
 #include "export.c"
 #include "fn.c"
 #include "formula.c"
-#include "lang.c"
 #include "node.c"
 #include "parse.c"
 #include "quo.c"

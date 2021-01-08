@@ -4,6 +4,7 @@ PKG_CFLAGS = $(C_VISIBILITY)
 lib-files = \
         rlang/rlang.h \
         rlang/attrib.c \
+        rlang/call.c \
         rlang/cnd.c \
         rlang/debug.c \
         rlang/dict.c \
@@ -13,7 +14,6 @@ lib-files = \
         rlang/export.c \
         rlang/fn.c \
         rlang/formula.c \
-        rlang/lang.c \
         rlang/node.c \
         rlang/parse.c \
         rlang/quo.c \
