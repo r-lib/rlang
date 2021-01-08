@@ -103,6 +103,69 @@ static void signal_retirement(const char* source, const char* buf) {
   FREE(2);
 }
 
+
+#define R_SUBSET_NAMES_N 4
+static const char* r_subset_names[R_SUBSET_NAMES_N] = { "$", "@", "::", ":::" };
+
+bool r_is_prefixed_call(sexp* x, const char* name) {
+  if (r_typeof(x) != LANGSXP) {
+    return false;
+  }
+
+  sexp* head = r_node_car(x);
+  if (!r_is_call_any(head, r_subset_names, R_SUBSET_NAMES_N)) {
+    return false;
+  }
+
+  if (name) {
+    sexp* rhs = r_node_cadr(r_node_cdr(head));
+    if (!r_is_symbol(rhs, name)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+bool r_is_namespaced_call(sexp* x, const char* ns, const char* name) {
+  if (r_typeof(x) != LANGSXP) {
+    return false;
+  }
+
+  sexp* head = r_node_car(x);
+  if (!r_is_call(head, "::")) {
+    return false;
+  }
+
+  if (ns) {
+    sexp* lhs = r_node_cadr(head);
+    if (!r_is_symbol(lhs, ns)) {
+      return false;
+    }
+  }
+
+  if (name) {
+    sexp* rhs = r_node_cadr(r_node_cdar(x));
+    if (!r_is_symbol(rhs, name)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+bool r_is_namespaced_call_any(sexp* x, const char* ns,
+                              const char** names, int n) {
+  if (!r_is_namespaced_call(x, ns, NULL)) {
+    return false;
+  }
+
+  sexp* args = r_node_cdar(x);
+  sexp* sym = r_node_cadr(args);
+  return r_is_symbol_any(sym, names, n);
+}
+
+
 void rlang_init_utils() {
   warn_deprecated_call = r_parse("rlang:::warn_deprecated(x, id = y)");
   r_mark_precious(warn_deprecated_call);

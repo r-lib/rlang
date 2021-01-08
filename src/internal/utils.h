@@ -12,5 +12,9 @@ void signal_soft_deprecated(const char* msg, const char* id, sexp* env);
 void warn_deprecated(const char* id, const char* fmt, ...);
 void stop_defunct(const char* fmt, ...);
 
+bool r_is_prefixed_call(sexp* x, const char* name);
+bool r_is_namespaced_call(sexp* x, const char* ns, const char* name);
+bool r_is_namespaced_call_any(sexp* x, const char* ns, const char** names, int n);
+
 
 #endif
