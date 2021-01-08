@@ -12,15 +12,9 @@
 extern sexp* r_methods_ns_env;
 
 
-#if (!defined(R_VERSION) || R_VERSION < R_Version(3, 2, 0))
-static inline sexp* r_env_names(sexp* env) {
-  return R_lsInternal(env, true);
-}
-#else
 static inline sexp* r_env_names(sexp* env) {
   return R_lsInternal3(env, true, false);
 }
-#endif
 
 static inline r_ssize r_env_length(sexp* env) {
   if (r_typeof(env) != r_type_environment) {
