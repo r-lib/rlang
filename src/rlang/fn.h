@@ -2,23 +2,28 @@
 #define RLANG_FN_H
 
 
-static inline sexp* r_fn_body(sexp* fn) {
+static inline
+sexp* r_fn_body(sexp* fn) {
   return BODY_EXPR(fn);
 }
-static inline void r_fn_poke_body(sexp* fn, sexp* body) {
+static inline
+void r_fn_poke_body(sexp* fn, sexp* body) {
   SET_BODY(fn, body);
 }
 
-static inline sexp* r_fn_env(sexp* fn) {
+static inline
+sexp* r_fn_env(sexp* fn) {
   return CLOENV(fn);
 }
-static inline void r_fn_poke_env(sexp* fn, sexp* env) {
+static inline
+void r_fn_poke_env(sexp* fn, sexp* env) {
   SET_CLOENV(fn, env);
 }
 
 sexp* r_new_function(sexp* formals, sexp* body, sexp* env);
 
-static inline bool r_is_function(sexp* x) {
+static inline
+bool r_is_function(sexp* x) {
   switch (r_typeof(x)) {
   case r_type_closure:
   case r_type_builtin:
@@ -29,11 +34,13 @@ static inline bool r_is_function(sexp* x) {
   }
 }
 
-static inline bool r_is_closure(sexp* x) {
+static inline
+bool r_is_closure(sexp* x) {
   return r_typeof(x) == r_type_closure;
 }
 
-static inline bool r_is_primitive(sexp* x) {
+static inline
+bool r_is_primitive(sexp* x) {
   switch (r_typeof(x)) {
   case r_type_builtin:
   case r_type_special:
@@ -42,10 +49,12 @@ static inline bool r_is_primitive(sexp* x) {
     return false;
   }
 }
-static inline bool r_is_primitive_eager(sexp* x) {
+static inline
+bool r_is_primitive_eager(sexp* x) {
   return r_typeof(x) == r_type_builtin;
 }
-static inline bool r_is_primitive_lazy(sexp* x) {
+static inline
+bool r_is_primitive_lazy(sexp* x) {
   return r_typeof(x) == r_type_special;
 }
 

@@ -14,7 +14,8 @@ sexp* r_ns_env(const char* pkg) {
   return ns;
 }
 
-static sexp* ns_env_get(sexp* env, const char* name) {
+static
+sexp* ns_env_get(sexp* env, const char* name) {
   sexp* obj = KEEP(r_env_find(env, r_sym(name)));
 
   // Can be a promise to a lazyLoadDBfetch() call
