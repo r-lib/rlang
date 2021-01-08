@@ -212,17 +212,17 @@ sexp* rlang_is_function(sexp* x) {
 }
 
 sexp* rlang_is_closure(sexp* x) {
-  return r_shared_lgl(r_is_closure(x));
+  return r_shared_lgl(r_typeof(x) == r_type_closure);
 }
 
 sexp* rlang_is_primitive(sexp* x) {
   return r_shared_lgl(r_is_primitive(x));
 }
 sexp* rlang_is_primitive_lazy(sexp* x) {
-  return r_shared_lgl(r_is_primitive_lazy(x));
+  return r_shared_lgl(r_typeof(x) == r_type_special);
 }
 sexp* rlang_is_primitive_eager(sexp* x) {
-  return r_shared_lgl(r_is_primitive_eager(x));
+  return r_shared_lgl(r_typeof(x) == r_type_builtin);
 }
 
 
