@@ -172,7 +172,7 @@ enum bind_type parse_bind_type(sexp* bind_type) {
   case 'v': return BIND_TYPE_value;
   case 'a': return BIND_TYPE_active;
   case 'l': return BIND_TYPE_lazy;
-  default: never_reached("parse_bind_type");
+  default: r_stop_unreached("parse_bind_type");
   }
 }
 

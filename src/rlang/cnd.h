@@ -11,6 +11,19 @@ void r_abort(const char* fmt, ...) __attribute__((noreturn));
 void r_interrupt();
 
 static inline
+__attribute__((noreturn))
+void r_stop_internal(const char* fn, const char* msg) {
+  r_abort("Internal error in `%s()`: %s", fn, msg);
+}
+
+static inline
+__attribute__((noreturn))
+void r_stop_unreached(const char* fn) {
+  r_stop_internal(fn, "Reached the unreachable.");
+}
+
+
+static inline
 bool r_is_condition(sexp* x) {
   return r_typeof(x) == r_type_list && r_inherits(x, "condition");
 }
@@ -30,12 +43,6 @@ enum r_condition_type {
 };
 
 enum r_condition_type r_cnd_type(sexp* cnd);
-
-static inline
-__attribute__((noreturn))
-void r_stop_internal(const char* fn, const char* msg) {
-  r_abort("Internal error in `%s()`: %s", fn, msg);
-}
 
 
 #endif

@@ -114,7 +114,7 @@ sexp* rlang_ext_arg_match0(sexp* args) {
     sexp* arg_nm = KEEP(r_eval(arg_nm_sym, env));
     r_eval_with_xyz(stop_arg_match_call, rlang_ns_env, arg, values, arg_nm);
 
-    never_reached("rlang_ext2_arg_match0");
+    r_stop_unreached("rlang_ext2_arg_match0");
   }
 
   sexp* const* p_arg = r_chr_deref_const(arg);
@@ -159,7 +159,7 @@ sexp* rlang_ext_arg_match0(sexp* args) {
       sexp* arg_nm = KEEP(r_eval(arg_nm_sym, env));
       r_eval_with_xyz(stop_arg_match_call, rlang_ns_env, arg, values, arg_nm);
 
-      never_reached("rlang_ext2_arg_match0");
+      r_stop_unreached("rlang_ext2_arg_match0");
     }
   }
 

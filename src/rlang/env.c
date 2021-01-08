@@ -28,7 +28,7 @@ static sexp* ns_env_get(sexp* env, const char* name) {
 
   // Trigger object not found error
   r_eval(r_sym(name), env);
-  r_abort("Internal error: `ns_env_get()` should have failed earlier");
+  r_stop_unreached("ns_env_get");
 }
 sexp* r_base_ns_get(const char* name) {
   return ns_env_get(r_base_env, name);

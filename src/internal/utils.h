@@ -8,12 +8,6 @@ sexp* rlang_enquo(sexp* sym, sexp* frame);
 
 extern sexp* rlang_ns_env;
 
-__attribute__((noreturn))
-static inline
-void never_reached(const char* fn) {
-  r_abort("Internal error in `%s()`: Reached the unreachable.", fn);
-}
-
 void signal_soft_deprecated(const char* msg, const char* id, sexp* env);
 void warn_deprecated(const char* id, const char* fmt, ...);
 void stop_defunct(const char* fmt, ...);
