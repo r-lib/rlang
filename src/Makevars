@@ -28,8 +28,7 @@ lib-files = \
         rlang/vec-chr.c \
         rlang/vec-lgl.c \
         rlang/vec-list.c \
-        rlang/vendor.c \
-        rlang/weakref.c
+        rlang/vendor.c
 
 internal-files = \
         internal/arg.c \
@@ -48,7 +47,8 @@ internal-files = \
         internal/nse-defuse.c \
         internal/quo.c \
         internal/utils.c \
-        internal/vec-raw.c
+        internal/vec-raw.c \
+        internal/weakref.c
 
 export-files = \
         export/exported.c \

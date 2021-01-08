@@ -15,4 +15,4 @@
 #include "internal/quo.c"
 #include "internal/utils.c"
 #include "internal/vec-raw.c"
-
+#include "internal/weakref.c"

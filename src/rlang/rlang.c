@@ -26,7 +26,6 @@
 #include "vec-lgl.c"
 #include "vec-list.c"
 #include "vendor.c"
-#include "weakref.c"
 
 
 // Allows long vectors to be indexed with doubles
