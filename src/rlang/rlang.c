@@ -1,6 +1,6 @@
 #include <rlang.h>
 
-#include "attrs.c"
+#include "attrib.c"
 #include "cnd.c"
 #include "debug.c"
 #include "dict.c"

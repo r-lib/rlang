@@ -1,5 +1,5 @@
-#ifndef RLANG_ATTRS_H
-#define RLANG_ATTRS_H
+#ifndef RLANG_ATTRIB_H
+#define RLANG_ATTRIB_H
 
 #include "node.h"
 #include "sym.h"

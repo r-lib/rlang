@@ -75,7 +75,7 @@ extern sexp* r_shared_false;
 
 #include "sexp.h"
 
-#include "attrs.h"
+#include "attrib.h"
 #include "debug.h"
 #include "c-utils.h"
 #include "cnd.h"

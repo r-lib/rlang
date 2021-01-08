@@ -3,7 +3,7 @@ PKG_CFLAGS = $(C_VISIBILITY)
 
 lib-files = \
         rlang/rlang.h \
-        rlang/attrs.c \
+        rlang/attrib.c \
         rlang/cnd.c \
         rlang/debug.c \
         rlang/dict.c \
