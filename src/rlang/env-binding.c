@@ -1,4 +1,5 @@
 #include "rlang.h"
+#include "env.h"
 
 
 bool r_env_binding_is_promise(sexp* env, sexp* sym) {
