@@ -455,3 +455,83 @@ test_that("r_pairlist_rev() reverses destructively", {
   expect_true(is_reference(node_cddr(y), n1))
   expect_true(is_null(node_cdr(n1)))
 })
+
+test_that("r_dict_put() hashes object", {
+  dict <- new_dict(10L)
+
+  expect_true(dict_put(dict, quote(foo), 1))
+  expect_true(dict_put(dict, quote(bar), 2))
+
+  expect_false(dict_put(dict, quote(foo), 2))
+  expect_false(dict_put(dict, quote(bar), 2))
+})
+
+test_that("key has reference semantics", {
+  dict <- new_dict(10L)
+  keys <- c("foo", "bar")
+
+  # Fresh character vector returned by `[[`
+  expect_true(dict_put(dict, keys[[1]], 1))
+  expect_true(dict_put(dict, keys[[1]], 2))
+
+  # CHARSXP are interned and unique
+  expect_true(dict_put(dict, chr_get(keys[[1]], 0L), 3))
+  expect_false(dict_put(dict, chr_get(keys[[1]], 0L), 4))
+})
+
+test_that("key can be `NULL`", {
+  dict <- new_dict(10L)
+  expect_true(dict_put(dict, NULL, 1))
+  expect_false(dict_put(dict, NULL, 2))
+})
+
+test_that("collisions are handled", {
+  dict <- new_dict(1L, prevent_resize = TRUE)
+
+  expect_true(dict_put(dict, quote(foo), 1))
+  expect_true(dict_put(dict, quote(bar), 2))
+  expect_false(dict_put(dict, quote(bar), 3))
+
+  # Check that dictionary was not resized and we indeed have colliding
+  # elements
+  expect_equal(dict_size(dict), 1L)
+})
+
+test_that("can check existing and retrieve values", {
+  dict <- new_dict(10L)
+
+  dict_put(dict, quote(foo), 1)
+  dict_put(dict, quote(bar), 2)
+  dict_put(dict, quote(foo), 3)
+
+  expect_true(dict_has(dict, quote(foo)))
+  expect_true(dict_has(dict, quote(bar)))
+  expect_false(dict_has(dict, quote(baz)))
+
+  expect_equal(dict_get(dict, quote(foo)), 1)
+  expect_equal(dict_get(dict, quote(bar)), 2)
+  expect_error(dict_get(dict, quote(baz)), "Can't find key")
+})
+
+test_that("dictionary size is rounded to next power of 2", {
+  dict <- new_dict(3L)
+  expect_equal(dict_size(dict), 4L)
+})
+
+test_that("can resize dictionary", {
+  dict <- new_dict(3L)
+  dict_resize(dict, 5L)
+  expect_equal(dict_size(dict), 8L)
+})
+
+test_that("dictionary grows", {
+  dict <- new_dict(3L)
+
+  dict_put(dict, quote(foo), 1)
+  dict_put(dict, quote(bar), 2)
+  dict_put(dict, quote(baz), 3)
+  expect_equal(dict_size(dict), 4L)
+
+  dict_put(dict, quote(quux), 4)
+  expect_equal(dict_size(dict), 8L)
+})

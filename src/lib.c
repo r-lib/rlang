@@ -7,6 +7,7 @@
 #include "lib/attrs.c"
 #include "lib/cnd.c"
 #include "lib/debug.c"
+#include "lib/dict.c"
 #include "lib/env.c"
 #include "lib/env-binding.c"
 #include "lib/eval.c"
@@ -29,4 +30,5 @@
 #include "lib/vec-chr.c"
 #include "lib/vec-lgl.c"
 #include "lib/vec-list.c"
+#include "lib/vendor.c"
 #include "lib/weakref.c"

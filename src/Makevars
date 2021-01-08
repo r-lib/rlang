@@ -6,6 +6,7 @@ lib-files = \
         lib/attrs.c \
         lib/cnd.c \
         lib/debug.c \
+        lib/dict.c \
         lib/env.c \
         lib/env-binding.c \
         lib/eval.c \
@@ -27,13 +28,14 @@ lib-files = \
         lib/vec-chr.c \
         lib/vec-lgl.c \
         lib/vec-list.c \
+        lib/vendor.c \
         lib/weakref.c
 
 internal-files = \
         internal/arg.c \
         internal/attr.c \
-        internal/dots.c \
         internal/call.c \
+        internal/dots.c \
         internal/env.c \
         internal/env-binding.c \
         internal/eval.c \

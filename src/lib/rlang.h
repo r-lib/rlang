@@ -79,6 +79,7 @@ extern sexp* r_shared_false;
 #include "debug.h"
 #include "c-utils.h"
 #include "cnd.h"
+#include "dict.h"
 #include "env.h"
 #include "env-binding.h"
 #include "eval.h"
@@ -99,6 +100,7 @@ extern sexp* r_shared_false;
 #include "vec-chr.h"
 #include "vec-lgl.h"
 #include "vec-list.h"
+#include "vendor.h"
 
 sexp* r_init_library();
 

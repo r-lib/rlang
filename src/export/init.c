@@ -145,7 +145,6 @@ extern sexp* rlang_env_is_browsed(sexp*);
 extern sexp* rlang_ns_registry_env();
 extern sexp* rlang_hash(sexp*);
 
-
 // Library initialisation defined below
 sexp* rlang_library_load(sexp*);
 sexp* rlang_library_unload();
@@ -168,6 +167,11 @@ extern sexp* rlang_test_Rf_warningcall(sexp*, sexp*);
 extern sexp* rlang_test_Rf_errorcall(sexp*, sexp*);
 extern sexp* rlang_test_lgl_sum(sexp*, sexp*);
 extern sexp* rlang_test_lgl_which(sexp*, sexp*);
+extern sexp* rlang_new_dict(sexp*, sexp*);
+extern sexp* rlang_dict_put(sexp*, sexp*, sexp*);
+extern sexp* rlang_dict_has(sexp*, sexp*);
+extern sexp* rlang_dict_get(sexp*, sexp*);
+extern sexp* rlang_dict_resize(sexp*, sexp*);
 
 static const r_callable r_callables[] = {
   {"r_init_library",                    (r_fn_ptr) &r_init_library, 0},
@@ -325,6 +329,11 @@ static const r_callable r_callables[] = {
   {"rlang_env_is_browsed",              (r_fn_ptr) &rlang_env_is_browsed, 1},
   {"rlang_ns_registry_env",             (r_fn_ptr) &rlang_ns_registry_env, 0},
   {"rlang_hash",                        (r_fn_ptr) &rlang_hash, 1},
+  {"rlang_new_dict",                    (r_fn_ptr) &rlang_new_dict, 2},
+  {"rlang_dict_put",                    (r_fn_ptr) &rlang_dict_put, 3},
+  {"rlang_dict_has",                    (r_fn_ptr) &rlang_dict_has, 2},
+  {"rlang_dict_get",                    (r_fn_ptr) &rlang_dict_get, 2},
+  {"rlang_dict_resize",                 (r_fn_ptr) &rlang_dict_resize, 2},
   {NULL, NULL, 0}
 };
 
@@ -362,22 +371,22 @@ extern sexp* rlang_env_dots_list(sexp*);
 extern sexp* rlang_eval_tidy(sexp*, sexp*, sexp*);
 extern void rlang_print_backtrace(bool full);
 
+// From xxhash.h
+extern uint64_t XXH3_64bits(const void*, size_t);
+
 export void R_init_rlang(r_dll_info* dll) {
-  // The quosure functions are stable
   r_register_c_callable("rlang", "rlang_new_quosure", (r_fn_ptr) &rlang_new_quosure);
   r_register_c_callable("rlang", "rlang_is_quosure", (r_fn_ptr) &rlang_is_quosure);
   r_register_c_callable("rlang", "rlang_quo_get_expr", (r_fn_ptr) &rlang_quo_get_expr);
   r_register_c_callable("rlang", "rlang_quo_set_expr", (r_fn_ptr) &rlang_quo_set_expr);
   r_register_c_callable("rlang", "rlang_quo_get_env", (r_fn_ptr) &rlang_quo_get_env);
   r_register_c_callable("rlang", "rlang_quo_set_env", (r_fn_ptr) &rlang_quo_set_env);
-
-  // The data mask functions are stable
   r_register_c_callable("rlang", "rlang_as_data_pronoun", (r_fn_ptr) &rlang_as_data_pronoun);
   r_register_c_callable("rlang", "rlang_as_data_mask_3.0.0", (r_fn_ptr) &rlang_as_data_mask);
   r_register_c_callable("rlang", "rlang_new_data_mask_3.0.0", (r_fn_ptr) &rlang_new_data_mask);
-
-  // eval_tidy() is stable
   r_register_c_callable("rlang", "rlang_eval_tidy", (r_fn_ptr) &rlang_eval_tidy);
+
+  r_register_c_callable("rlang", "rlang_xxh3_64bits", (r_fn_ptr) &XXH3_64bits);
 
   // Maturing
   r_register_c_callable("rlang", "rlang_is_splice_box", (r_fn_ptr) &is_splice_box);

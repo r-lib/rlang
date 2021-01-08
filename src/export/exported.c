@@ -35,6 +35,71 @@ sexp* rlang_interrupt() {
 }
 
 
+// dict.c
+
+sexp* rlang_new_dict(sexp* size, sexp* prevent_resize) {
+  if (!r_is_number(size)) {
+    r_abort("`size` must be an integer.");
+  }
+  if (!r_is_bool(prevent_resize)) {
+    r_abort("`prevent_resize` must be a logical value.");
+  }
+
+  sexp* out = KEEP(r_new_vector(r_type_list, 2));
+
+  struct r_dict dict = r_new_dict(r_int_get(size, 0));
+  dict.prevent_resize = r_lgl_get(prevent_resize, 0);
+
+  r_list_poke(out, 0, r_copy_in_raw(&dict, sizeof(dict)));
+  r_list_poke(out, 1, dict.shelter);
+
+  FREE(1);
+  return out;
+}
+
+static
+struct r_dict* dict_deref(sexp* dict) {
+  if (r_typeof(dict) != r_type_list) {
+    goto dict_input_error;
+  }
+
+  sexp* dict_raw = r_list_get(dict, 0);
+  if (r_typeof(dict_raw) != r_type_raw) {
+    goto dict_input_error;
+  }
+
+  return r_raw_deref(dict_raw);
+
+  dict_input_error:
+    r_abort("`dict` must be a dictionary handle.");
+}
+
+sexp* rlang_dict_put(sexp* dict, sexp* key, sexp* value) {
+  struct r_dict* p_dict = dict_deref(dict);
+  return r_lgl(r_dict_put(p_dict, key, value));
+}
+
+sexp* rlang_dict_has(sexp* dict, sexp* key) {
+  struct r_dict* p_dict = dict_deref(dict);
+  return r_lgl(r_dict_has(p_dict, key));
+}
+
+sexp* rlang_dict_get(sexp* dict, sexp* key) {
+  struct r_dict* p_dict = dict_deref(dict);
+  return r_dict_get(p_dict, key);
+}
+
+sexp* rlang_dict_resize(sexp* dict, sexp* size) {
+  if (!r_is_number(size)) {
+    r_abort("`size` must be an integer.");
+  }
+  struct r_dict* p_dict = dict_deref(dict);
+
+  r_dict_resize(p_dict, r_int_get(size, 0));
+  return r_null;
+}
+
+
 // env.c
 
 sexp* rlang_env_poke_parent(sexp* env, sexp* new_parent) {

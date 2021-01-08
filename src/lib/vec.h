@@ -1,6 +1,8 @@
 #ifndef RLANG_VECTOR_H
 #define RLANG_VECTOR_H
 
+#include <string.h>
+
 
 r_ssize r_vec_length(sexp* x);
 
@@ -101,6 +103,12 @@ bool r_is_double(sexp* x, r_ssize n, int finite);
 bool r_is_character(sexp* x, r_ssize n);
 bool r_is_raw(sexp* x, r_ssize n);
 
+static inline
+bool r_is_number(SEXP x) {
+  return r_typeof(x) == r_type_integer &&
+    r_length(x) == 1 &&
+    r_int_get(x, 0) != NA_INTEGER;
+}
 
 static inline sexp* r_int(int x) {
   return Rf_ScalarInteger(x);
@@ -148,6 +156,14 @@ static inline sexp* r_vec_are_duplicated(sexp* x) {
 bool r_vec_find_first_identical_any(sexp* x, sexp* y, r_ssize* index);
 
 extern sexp* r_shared_empty_list;
+
+
+static inline
+sexp* r_copy_in_raw(void* src, size_t size) {
+  sexp* out = r_new_vector(r_type_raw, size);
+  memcpy(r_raw_deref(out), src, size);
+  return out;
+}
 
 
 #endif
