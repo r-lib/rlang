@@ -51,9 +51,11 @@ sexp* r_pairlist_get(sexp* node, sexp* tag) {
 }
 
 static inline
-sexp* r_pairlist_find_last(sexp* x) {
-  while (CDR(x) != R_NilValue)
-    x = CDR(x);
+sexp* r_pairlist_tail(sexp* x) {
+  sexp* cdr = r_null;
+  while ((cdr = r_node_cdr(x)) != r_null) {
+    x = cdr;
+  }
   return x;
 }
 

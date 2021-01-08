@@ -665,7 +665,7 @@ sexp* dots_as_pairlist(sexp* dots, struct dots_capture_info* capture_info) {
       r_node_poke_cdr(prev, elt);
 
       sexp* next = r_node_cdr(dots);
-      sexp* tail = r_pairlist_find_last(elt);
+      sexp* tail = r_pairlist_tail(elt);
       r_node_poke_cdr(tail, next);
 
       prev = tail;
