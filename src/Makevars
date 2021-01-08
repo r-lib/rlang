@@ -1,35 +1,35 @@
-PKG_CPPFLAGS = -I./lib/
+PKG_CPPFLAGS = -I./rlang/
 PKG_CFLAGS = $(C_VISIBILITY)
 
 lib-files = \
-        lib/rlang.h \
-        lib/attrs.c \
-        lib/cnd.c \
-        lib/debug.c \
-        lib/dict.c \
-        lib/env.c \
-        lib/env-binding.c \
-        lib/eval.c \
-        lib/export.c \
-        lib/fn.c \
-        lib/formula.c \
-        lib/lang.c \
-        lib/node.c \
-        lib/parse.c \
-        lib/quo.c \
-        lib/replace-na.c \
-        lib/rlang.c \
-        lib/sexp.c \
-        lib/squash.c \
-        lib/stack.c \
-        lib/sym.c \
-        lib/sym-unescape.c \
-        lib/vec.c \
-        lib/vec-chr.c \
-        lib/vec-lgl.c \
-        lib/vec-list.c \
-        lib/vendor.c \
-        lib/weakref.c
+        rlang/rlang.h \
+        rlang/attrs.c \
+        rlang/cnd.c \
+        rlang/debug.c \
+        rlang/dict.c \
+        rlang/env.c \
+        rlang/env-binding.c \
+        rlang/eval.c \
+        rlang/export.c \
+        rlang/fn.c \
+        rlang/formula.c \
+        rlang/lang.c \
+        rlang/node.c \
+        rlang/parse.c \
+        rlang/quo.c \
+        rlang/replace-na.c \
+        rlang/rlang.c \
+        rlang/sexp.c \
+        rlang/squash.c \
+        rlang/stack.c \
+        rlang/sym.c \
+        rlang/sym-unescape.c \
+        rlang/vec.c \
+        rlang/vec-chr.c \
+        rlang/vec-lgl.c \
+        rlang/vec-list.c \
+        rlang/vendor.c \
+        rlang/weakref.c
 
 internal-files = \
         internal/arg.c \
@@ -58,10 +58,10 @@ export-files = \
 
 all: $(SHLIB)
 
-$(SHLIB): lib.o internal.o export.o
+$(SHLIB): rlang.o internal.o export.o
 
-lib.c: $(lib-files)
-	touch lib.c
+rlang.c: $(lib-files)
+	touch rlang.c
 internal.c: $(internal-files)
 	touch internal.c
 export.c: $(export-files)
