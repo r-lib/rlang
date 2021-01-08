@@ -45,7 +45,7 @@ static sexp* rlang_new_data_pronoun(sexp* mask) {
   sexp* pronoun = KEEP(r_new_vector(r_type_list, 1));
 
   r_list_poke(pronoun, 0, mask);
-  r_poke_attribute(pronoun, r_syms_class, data_pronoun_class);
+  r_attrib_poke(pronoun, r_syms_class, data_pronoun_class);
 
   FREE(1);
   return pronoun;
@@ -53,7 +53,7 @@ static sexp* rlang_new_data_pronoun(sexp* mask) {
 static sexp* rlang_new_ctxt_pronoun(sexp* top) {
   sexp* pronoun = KEEP(r_new_environment(r_env_parent(top), 0));
 
-  r_poke_attribute(pronoun, r_syms_class, ctxt_pronoun_class);
+  r_attrib_poke(pronoun, r_syms_class, ctxt_pronoun_class);
 
   FREE(1);
   return pronoun;
@@ -394,7 +394,7 @@ static sexp* env_poke_fn = NULL;
 
 sexp* rlang_tilde_eval(sexp* tilde, sexp* current_frame, sexp* caller_frame) {
   // Remove srcrefs from system call
-  r_poke_attribute(tilde, r_syms_srcref, r_null);
+  r_attrib_poke(tilde, r_syms_srcref, r_null);
 
   if (!rlang_is_quosure(tilde)) {
     return base_tilde_eval(tilde, caller_frame);

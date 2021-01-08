@@ -21,9 +21,14 @@ static inline
 sexp* r_attrib_get(sexp* x, sexp* tag) {
   return r_pairlist_get(r_attrib(x), tag);
 }
+static inline
+void r_attrib_poke(sexp* x, sexp* sym, sexp* value) {
+  Rf_setAttrib(x, sym, value);
+}
 
 sexp* r_attrib_push(sexp* x, sexp* tag, sexp* value);
 sexp* r_attrib_set(sexp* x, sexp* tag, sexp* value);
+
 
 static inline
 void r_push_names(sexp* x, sexp* value) {
@@ -34,17 +39,12 @@ void r_push_classes(sexp* x, const char** tags);
 void r_push_class(sexp* x, const char* tag);
 
 static inline
-void r_poke_attribute(sexp* x, sexp* sym, sexp* value) {
-  Rf_setAttrib(x, sym, value);
-}
-
-static inline
 sexp* r_class(sexp* x) {
   return r_attrib_get(x, r_syms_class);
 }
 static inline
 void r_poke_class(sexp* x, sexp* classes) {
-  r_poke_attribute(x, r_syms_class, classes);
+  r_attrib_poke(x, r_syms_class, classes);
 }
 
 static inline
@@ -53,7 +53,7 @@ sexp* r_names(sexp* x) {
 }
 static inline
 void r_poke_names(sexp* x, sexp* nms) {
-  r_poke_attribute(x, r_syms_names, nms);
+  r_attrib_poke(x, r_syms_names, nms);
 }
 
 bool r_is_named(sexp* x);
