@@ -2,6 +2,7 @@
 #define RLANG_CND_H
 
 #include <stdbool.h>
+#include "rlang.h"
 
 
 void r_inform(const char* fmt, ...);
@@ -15,11 +16,11 @@ void r_stop_defunct(const char* fmt, ...);
 
 sexp* r_interp_str(const char* fmt, ...);
 
-sexp* r_new_condition(sexp* type, sexp* msg, sexp* data);
-
-static inline bool r_is_condition(sexp* x) {
-  return TYPEOF(x) == VECSXP && Rf_inherits(x, "condition");
+static inline
+bool r_is_condition(sexp* x) {
+  return r_typeof(x) == r_type_list && r_inherits(x, "condition");
 }
+sexp* r_new_condition(sexp* type, sexp* msg, sexp* data);
 
 void r_cnd_signal(sexp* cnd);
 void r_cnd_inform(sexp* cnd, bool mufflable);
