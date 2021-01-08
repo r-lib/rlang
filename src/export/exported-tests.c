@@ -5,6 +5,22 @@ sexp* rlang_r_string(sexp* str) {
 }
 
 
+// attrib.c
+
+sexp* r_pairlist_clone_until(sexp* node, sexp* sentinel, sexp** parent_out);
+sexp* rlang_test_node_list_clone_until(sexp* node, sexp* sentinel) {
+  sexp* sentinel_out;
+  node = KEEP(r_pairlist_clone_until(node, sentinel, &sentinel_out));
+
+  sexp* out = r_new_vector(r_type_list, 2);
+  r_list_poke(out, 0, node);
+  r_list_poke(out, 1, sentinel_out);
+
+  FREE(1);
+  return out;
+}
+
+
 // chr.c
 
 sexp* rlang_test_nms_are_duplicated(sexp* nms, sexp* from_last) {
@@ -52,20 +68,6 @@ sexp* rlang_test_parse(sexp* str) {
 }
 sexp* rlang_test_parse_eval(sexp* str, sexp* env) {
   return r_parse_eval(r_chr_get_c_string(str, 0), env);
-}
-
-// node.c
-
-sexp* rlang_test_node_list_clone_until(sexp* node, sexp* sentinel) {
-  sexp* sentinel_out;
-  node = KEEP(r_pairlist_clone_until(node, sentinel, &sentinel_out));
-
-  sexp* out = r_new_vector(r_type_list, 2);
-  r_list_poke(out, 0, node);
-  r_list_poke(out, 1, sentinel_out);
-
-  FREE(1);
-  return out;
 }
 
 

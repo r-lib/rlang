@@ -58,7 +58,6 @@ sexp* r_pairlist_find_last(sexp* x) {
 }
 
 sexp* r_node_tree_clone(sexp* x);
-sexp* r_pairlist_clone_until(sexp* node, sexp* sentinel, sexp** sentinel_out);
 
 
 #endif

@@ -7,6 +7,49 @@ sexp* r_attrib_push(sexp* x, sexp* tag, sexp* value) {
   return attrs;
 }
 
+/**
+ * - If `sentinel` is found in the first node: `parent_out` is `r_null`
+ * - If `sentinel` is not found: both return value and `parent_out`
+ *   are `r_null`
+ * - If `sentinel` is `r_null`, this is like a full shallow duplication
+ *   but returns tail node
+ */
+sexp* r_pairlist_clone_until(sexp* node, sexp* sentinel, sexp** parent_out) {
+  sexp* parent = r_null;
+  sexp* cur = node;
+  int n_protect = 0;
+
+  while (true) {
+    if (cur == sentinel) {
+      FREE(n_protect);
+      *parent_out = parent;
+      return node;
+    }
+    // Return NULL if sentinel is not found
+    if (cur == r_null) {
+      FREE(n_protect);
+      *parent_out = r_null;
+      return r_null;
+    }
+
+    sexp* tag = r_node_tag(cur);
+    cur = r_new_node(r_node_car(cur), r_node_cdr(cur));
+    r_node_poke_tag(cur, tag);
+
+    if (parent == r_null) {
+      KEEP_N(cur, n_protect);
+      node = cur;
+    } else {
+      r_node_poke_cdr(parent, cur);
+    }
+
+    parent = cur;
+    cur = r_node_cdr(cur);
+  }
+
+  r_stop_unreached("r_pairlist_clone_until");
+}
+
 
 sexp* r_attrs_set_at(sexp* attrs, sexp* node, sexp* value) {
   sexp* sentinel = r_node_cdr(node);
