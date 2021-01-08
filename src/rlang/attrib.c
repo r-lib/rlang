@@ -1,8 +1,5 @@
 #include "rlang.h"
 
-extern sexp* rlang_attrib(sexp* x);
-extern sexp* r_poke_attrib(sexp* x, sexp* attrs);
-
 sexp* r_attrib_push(sexp* x, sexp* tag, sexp* value) {
   sexp* attrs = r_new_node(value, r_attrib(x));
   r_node_poke_tag(attrs, tag);
@@ -90,7 +87,8 @@ sexp* r_attrib_set(sexp* x, sexp* tag, sexp* value) {
  */
 
 // Caller must poke the object bit
-sexp* r_node_push_classes(sexp* node, const char** tags) {
+static
+sexp* node_push_classes(sexp* node, const char** tags) {
   sexp* tags_chr = KEEP(r_new_character(tags));
   sexp* attrs = r_new_node(tags_chr, node);
   r_node_poke_tag(attrs, r_syms_class);
@@ -98,15 +96,10 @@ sexp* r_node_push_classes(sexp* node, const char** tags) {
   FREE(1);
   return attrs;
 }
-sexp* r_node_push_class(sexp* x, const char* tag) {
-  static const char* tags[2] = { "", NULL };
-  tags[0] = tag;
-  return r_node_push_classes(x, tags);
-}
 
 void r_push_classes(sexp* x, const char** tags) {
   sexp* attrs = r_attrib(x);
-  attrs = r_node_push_classes(attrs, tags);
+  attrs = node_push_classes(attrs, tags);
   SET_ATTRIB(x, attrs);
   SET_OBJECT(x, 1);
 }

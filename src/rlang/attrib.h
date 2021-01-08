@@ -30,9 +30,6 @@ void r_push_names(sexp* x, sexp* value) {
   r_attrib_push(x, r_syms_names, value);
 }
 
-sexp* r_node_push_classes(sexp* x, const char** tags);
-sexp* r_node_push_class(sexp* x, const char* tag);
-
 void r_push_classes(sexp* x, const char** tags);
 void r_push_class(sexp* x, const char* tag);
 
