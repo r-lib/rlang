@@ -10,41 +10,13 @@ static inline sexp* r_node_cadr(sexp* x) { return CADR(x); }
 static inline sexp* r_node_cdar(sexp* x) { return CDAR(x); }
 static inline sexp* r_node_cddr(sexp* x) { return CDDR(x); }
 
-static inline
-sexp* r_node_poke_car(sexp* x, sexp* newcar) {
-  SETCAR(x, newcar);
-  return x;
-}
-static inline
-sexp* r_node_poke_cdr(sexp* x, sexp* newcdr) {
-  SETCDR(x, newcdr);
-  return x;
-}
-static inline
-sexp* r_node_poke_tag(sexp* x, sexp* tag) {
-  SET_TAG(x, tag);
-  return x;
-}
-static inline
-sexp* r_node_poke_caar(sexp* x, sexp* newcaar) {
-  SETCAR(CAR(x), newcaar);
-  return x;
-}
-static inline
-sexp* r_node_poke_cadr(sexp* x, sexp* newcar) {
-  SETCADR(x, newcar);
-  return x;
-}
-static inline
-sexp* r_node_poke_cdar(sexp* x, sexp* newcdar) {
-  SETCDR(CAR(x), newcdar);
-  return x;
-}
-static inline
-sexp* r_node_poke_cddr(sexp* x, sexp* newcdr) {
-  SETCDR(CDR(x), newcdr);
-  return x;
-}
+static inline void r_node_poke_car(sexp* x, sexp* newcar) { SETCAR(x, newcar); }
+static inline void r_node_poke_cdr(sexp* x, sexp* newcdr) { SETCDR(x, newcdr); }
+static inline void r_node_poke_tag(sexp* x, sexp* tag) { SET_TAG(x, tag); }
+static inline void r_node_poke_caar(sexp* x, sexp* newcaar) { SETCAR(CAR(x), newcaar); }
+static inline void r_node_poke_cadr(sexp* x, sexp* newcar) { SETCADR(x, newcar); }
+static inline void r_node_poke_cdar(sexp* x, sexp* newcdar) { SETCDR(CAR(x), newcdar); }
+static inline void r_node_poke_cddr(sexp* x, sexp* newcdr) { SETCDR(CDR(x), newcdr); }
 
 static inline
 sexp* r_new_node(sexp* car, sexp* cdr) {

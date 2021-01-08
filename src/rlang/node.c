@@ -62,7 +62,7 @@ sexp* r_pairlist_clone_until(sexp* node, sexp* sentinel, sexp** parent_out) {
     cur = r_node_cdr(cur);
   }
 
-  r_abort("Internal error in r_pairlist_clone_until()");
+  r_stop_unreached("r_pairlist_clone_until");
 }
 
 sexp* r_pairlist_find(sexp* node, sexp* tag) {

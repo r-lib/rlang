@@ -29,7 +29,8 @@ sexp* rlang_quo_get_expr(sexp* quo) {
 sexp* rlang_quo_set_expr(sexp* quo, sexp* expr) {
   check_quosure(quo);
   quo = r_clone(quo);
-  return r_node_poke_cadr(quo, expr);
+  r_node_poke_cadr(quo, expr);
+  return quo;
 }
 
 sexp* rlang_quo_get_env(sexp* quo) {
