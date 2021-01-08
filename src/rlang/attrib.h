@@ -40,26 +40,14 @@ static inline
 void r_poke_attribute(sexp* x, sexp* sym, sexp* value) {
   Rf_setAttrib(x, sym, value);
 }
-static inline
-void r_poke_class(sexp* x, sexp* classes) {
-  r_poke_attribute(x, r_syms_class, classes);
-}
 
-static inline
-sexp* r_set_class(sexp* x, sexp* classes) {
-  x = r_attrib_set(x, r_syms_class, classes);
-
-  if (classes == r_null) {
-    r_unmark_object(x);
-  } else {
-    r_mark_object(x);
-  }
-
-  return x;
-}
 static inline
 sexp* r_class(sexp* x) {
   return r_attrib_get(x, r_syms_class);
+}
+static inline
+void r_poke_class(sexp* x, sexp* classes) {
+  r_poke_attribute(x, r_syms_class, classes);
 }
 
 static inline
@@ -73,7 +61,6 @@ void r_poke_names(sexp* x, sexp* nms) {
 
 bool r_has_name_at(sexp* x, r_ssize i);
 bool r_is_named(sexp* x);
-
 
 
 #endif
