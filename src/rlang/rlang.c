@@ -1,5 +1,33 @@
 #include <rlang.h>
 
+#include "attrs.c"
+#include "cnd.c"
+#include "debug.c"
+#include "dict.c"
+#include "env.c"
+#include "env-binding.c"
+#include "eval.c"
+#include "export.c"
+#include "fn.c"
+#include "formula.c"
+#include "lang.c"
+#include "node.c"
+#include "parse.c"
+#include "quo.c"
+#include "replace-na.c"
+#include "session.c"
+#include "sexp.c"
+#include "squash.c"
+#include "stack.c"
+#include "sym.c"
+#include "sym-unescape.c"
+#include "vec.c"
+#include "vec-chr.c"
+#include "vec-lgl.c"
+#include "vec-list.c"
+#include "vendor.c"
+#include "weakref.c"
+
 
 // Allows long vectors to be indexed with doubles
 r_ssize r_as_ssize(sexp* n) {
