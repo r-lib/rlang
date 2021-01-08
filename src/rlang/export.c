@@ -23,17 +23,3 @@ sexp* rlang_namespace(const char* ns) {
   FREE(3);
   return ns_env;
 }
-
-void rlang_register_pointer(const char* ns, const char* ptr_name, DL_FUNC fn) {
-  sexp* ptr = KEEP(R_MakeExternalPtrFn(fn, r_null, r_null));
-
-  sexp* ptr_obj = KEEP(r_new_vector(VECSXP, 1));
-  SET_VECTOR_ELT(ptr_obj, 0, ptr);
-
-  sexp* ptr_class = KEEP(Rf_mkString("fn_pointer"));
-  Rf_setAttrib(ptr_obj, R_ClassSymbol, ptr_class);
-
-  sexp* ns_env = KEEP(rlang_namespace(ns));
-  Rf_defineVar(r_sym(ptr_name), ptr_obj, ns_env);
-  FREE(4);
-}

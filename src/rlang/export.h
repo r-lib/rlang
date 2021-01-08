@@ -17,8 +17,6 @@ typedef R_ExternalMethodDef r_external;
 typedef DllInfo r_dll_info;
 
 
-void rlang_register_pointer(const char* ns, const char* ptr_name, DL_FUNC fn);
-
 static inline void r_register_c_callable(const char* pkg, const char* ptr_name, r_void_fn fn) {
   R_RegisterCCallable(pkg, ptr_name, fn);
 }
