@@ -42,12 +42,6 @@ void r_abort(const char* fmt, ...) {
 
   while (1); // No return
 }
-sexp* r_interp_str(const char* fmt, ...) {
-  char buf[BUFSIZE];
-  INTERP(buf, fmt, ...);
-
-  return r_chr(buf);
-}
 
 static sexp* new_condition_names(sexp* data) {
   if (!r_is_named(data)) {

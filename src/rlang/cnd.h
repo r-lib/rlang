@@ -10,8 +10,6 @@ void r_warn(const char* fmt, ...);
 void r_abort(const char* fmt, ...) __attribute__((noreturn));
 void r_interrupt();
 
-sexp* r_interp_str(const char* fmt, ...);
-
 static inline
 bool r_is_condition(sexp* x) {
   return r_typeof(x) == r_type_list && r_inherits(x, "condition");
