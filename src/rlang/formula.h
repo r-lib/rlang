@@ -3,7 +3,6 @@
 
 
 bool r_is_formula(sexp* x, int scoped, int lhs);
-bool r_is_formulaish(sexp* x, int scoped, int lhs);
 
 sexp* r_f_rhs(sexp* f);
 sexp* r_f_lhs(sexp* f);

@@ -236,11 +236,12 @@ sexp* rlang_is_formula(sexp* x, sexp* scoped, sexp* lhs) {
   return r_lgl(out);
 }
 
+bool is_formulaish(sexp* x, int scoped, int lhs);
 sexp* rlang_is_formulaish(sexp* x, sexp* scoped, sexp* lhs) {
   int scoped_int = r_as_optional_bool(scoped);
   int lhs_int = r_as_optional_bool(lhs);
 
-  bool out = r_is_formulaish(x, scoped_int, lhs_int);
+  bool out = is_formulaish(x, scoped_int, lhs_int);
   return r_lgl(out);
 }
 
