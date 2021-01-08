@@ -19,7 +19,6 @@ lib-files = \
         rlang/quo.c \
         rlang/replace-na.c \
         rlang/rlang.c \
-        rlang/sexp.c \
         rlang/stack.c \
         rlang/sym.c \
         rlang/sym-unescape.c \

@@ -16,7 +16,6 @@
 #include "quo.c"
 #include "replace-na.c"
 #include "session.c"
-#include "sexp.c"
 #include "stack.c"
 #include "sym.c"
 #include "sym-unescape.c"
