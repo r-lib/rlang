@@ -49,57 +49,6 @@ sexp* r_interp_str(const char* fmt, ...) {
   return r_chr(buf);
 }
 
-static sexp* signal_soft_deprecated_call = NULL;
-void r_signal_soft_deprecated(const char* msg,
-                              const char* id,
-                              sexp* env) {
-  id = id ? id : msg;
-  env = env ? env : r_empty_env;
-  if (!msg) {
-    r_abort("Internal error: NULL `msg` in r_signal_soft_deprecated()");
-  }
-
-  sexp* msg_ = KEEP(r_chr(msg));
-  sexp* id_ = KEEP(r_chr(id));
-
-  r_eval_with_xyz(signal_soft_deprecated_call, r_base_env, msg_, id_, env);
-
-  FREE(2);
-}
-
-static void signal_retirement(const char* source, const char* buf);
-static sexp* warn_deprecated_call = NULL;
-
-void r_warn_deprecated(const char* id, const char* fmt, ...) {
-  char buf[BUFSIZE];
-  INTERP(buf, fmt, ...);
-  sexp* msg_ = KEEP(r_chr(buf));
-
-  id = id ? id : buf;
-  sexp* id_ = KEEP(r_chr(id));
-
-  r_eval_with_xy(warn_deprecated_call, r_base_env, msg_, id_);
-  FREE(2);
-}
-
-void r_stop_defunct(const char* fmt, ...) {
-  char buf[BUFSIZE];
-  INTERP(buf, fmt, ...);
-
-  signal_retirement("stop_defunct(msg = x)", buf);
-
-  r_abort("Internal error: Unexpected return after `.Defunct()`");
-}
-
-static void signal_retirement(const char* source, const char* buf) {
-  sexp* call = KEEP(r_parse(source));
-  sexp* msg = KEEP(r_chr(buf));
-
-  r_eval_with_x(call, r_ns_env("rlang"), msg);
-
-  FREE(2);
-}
-
 static sexp* new_condition_names(sexp* data) {
   if (!r_is_named(data)) {
     r_abort("Conditions must have named data fields");
@@ -256,10 +205,4 @@ void r_init_library_cnd() {
     "withRestarts(rlang_muffle = function() NULL, signalCondition(x))";
   cnd_signal_call = r_parse(cnd_signal_source);
   r_mark_precious(cnd_signal_call);
-
-  warn_deprecated_call = r_parse("rlang:::warn_deprecated(x, id = y)");
-  r_mark_precious(warn_deprecated_call);
-
-  signal_soft_deprecated_call = r_parse("rlang:::signal_soft_deprecated(x, id = y, env = z)");
-  r_mark_precious(signal_soft_deprecated_call);
 }

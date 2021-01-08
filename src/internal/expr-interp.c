@@ -90,21 +90,21 @@ struct expansion_info which_curly_op(sexp* second, struct expansion_info info) {
 // future
 void signal_uq_soft_deprecation() {
   return ;
-  signal_soft_deprecated(
+  const char* msg =
     "`UQ()` is soft-deprecated as of rlang 0.2.0. "
-    "Please use the prefix form of `!!` instead."
-  );
+    "Please use the prefix form of `!!` instead.";
+  signal_soft_deprecated(msg, msg, r_empty_env);
 }
 void signal_uqs_soft_deprecation() {
   return ;
-  signal_soft_deprecated(
+  const char* msg =
     "`UQS()` is soft-deprecated as of rlang 0.2.0. "
-    "Please use the prefix form of `!!!` instead."
-  );
+    "Please use the prefix form of `!!!` instead.";
+  signal_soft_deprecated(msg, msg, r_empty_env);
 }
 
 void signal_namespaced_uq_deprecation() {
-  r_warn_deprecated("namespaced rlang::UQ()",
+  warn_deprecated("namespaced rlang::UQ()",
     "Prefixing `UQ()` with the rlang namespace is deprecated as of rlang 0.3.0.\n"
     "Please use the non-prefixed form or `!!` instead.\n"
     "\n"
@@ -119,7 +119,7 @@ void signal_namespaced_uq_deprecation() {
   );
 }
 void signal_namespaced_uqs_deprecation() {
-  r_warn_deprecated("namespaced rlang::UQS()",
+  warn_deprecated("namespaced rlang::UQS()",
     "Prefixing `UQS()` with the rlang namespace is deprecated as of rlang 0.3.0.\n"
     "Please use the non-prefixed form or `!!!` instead.\n"
     "\n"
@@ -240,7 +240,7 @@ struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
     struct expansion_info nested = which_expansion_op(info.operand, false);
     if (nested.op == OP_EXPAND_UQ) {
       const char* msg = "It is no longer necessary to unquote within the `.data` pronoun";
-      r_signal_soft_deprecated(msg, msg, r_empty_env);
+      signal_soft_deprecated(msg, msg, r_empty_env);
       info.operand = nested.operand;
     }
 

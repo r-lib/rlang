@@ -192,7 +192,7 @@ void signal_retired_splice() {
     "  # Good:\n"
     "  dplyr::select(data, !!enquo(x))    # Unquote single quosure\n"
     "  dplyr::select(data, !!!enquos(x))  # Splice list of quosures\n";
-    r_warn_deprecated(msg, msg);
+    warn_deprecated(msg, msg);
 }
 
 static sexp* dots_big_bang_coerce(sexp* x) {
@@ -520,7 +520,7 @@ static enum dots_homonyms arg_match_homonyms(sexp* homonyms) {
 
 static void warn_deprecated_width() {
   const char* msg = "`.named` can no longer be a width";
-  r_warn_deprecated(msg, msg);
+  warn_deprecated(msg, msg);
 }
 static bool should_auto_name(sexp* named) {
   if (r_length(named) != 1) {
@@ -582,7 +582,7 @@ static bool any_name(sexp* x, bool splice) {
 static void check_named_splice(sexp* node) {
   if (r_node_tag(node) != r_null) {
     const char* msg = "`!!!` can't be supplied with a name. Only the operand's names are retained.";
-    r_stop_defunct(msg);
+    stop_defunct(msg);
   }
 }
 

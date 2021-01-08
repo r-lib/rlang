@@ -13,13 +13,6 @@ sexp* new_preserved_empty_list() {
   return empty_list;
 }
 
-void signal_soft_deprecated(const char* msg) {
-  sexp* opt = r_peek_option("lifecycle_verbose_soft_deprecation");
-  if (r_is_true(opt)) {
-    r_warn(msg);
-  }
-}
-
 
 /* For debugging with gdb or lldb. Exported as a C callable.
  * Usage with lldb:
@@ -48,4 +41,72 @@ void rlang_print_backtrace(bool full) {
 }
 
 
-void rlang_init_utils() { }
+static sexp* signal_soft_deprecated_call = NULL;
+void signal_soft_deprecated(const char* msg,
+                            const char* id,
+                            sexp* env) {
+  id = id ? id : msg;
+  env = env ? env : r_empty_env;
+  if (!msg) {
+    r_abort("Internal error: NULL `msg` in r_signal_soft_deprecated()");
+  }
+
+  sexp* msg_ = KEEP(r_chr(msg));
+  sexp* id_ = KEEP(r_chr(id));
+
+  r_eval_with_xyz(signal_soft_deprecated_call, r_base_env, msg_, id_, env);
+
+  FREE(2);
+}
+
+#define BUFSIZE 8192
+#define INTERP(BUF, FMT, DOTS)                  \
+  {                                             \
+    va_list dots;                               \
+    va_start(dots, FMT);                        \
+    vsnprintf(BUF, BUFSIZE, FMT, dots);         \
+    va_end(dots);                               \
+                                                \
+    BUF[BUFSIZE - 1] = '\0';                    \
+  }
+
+static void signal_retirement(const char* source, const char* buf);
+static sexp* warn_deprecated_call = NULL;
+
+void warn_deprecated(const char* id, const char* fmt, ...) {
+  char buf[BUFSIZE];
+  INTERP(buf, fmt, ...);
+  sexp* msg_ = KEEP(r_chr(buf));
+
+  id = id ? id : buf;
+  sexp* id_ = KEEP(r_chr(id));
+
+  r_eval_with_xy(warn_deprecated_call, r_base_env, msg_, id_);
+  FREE(2);
+}
+
+void stop_defunct(const char* fmt, ...) {
+  char buf[BUFSIZE];
+  INTERP(buf, fmt, ...);
+
+  signal_retirement("stop_defunct(msg = x)", buf);
+
+  r_abort("Internal error: Unexpected return after `.Defunct()`");
+}
+
+static void signal_retirement(const char* source, const char* buf) {
+  sexp* call = KEEP(r_parse(source));
+  sexp* msg = KEEP(r_chr(buf));
+
+  r_eval_with_x(call, r_ns_env("rlang"), msg);
+
+  FREE(2);
+}
+
+void rlang_init_utils() {
+  warn_deprecated_call = r_parse("rlang:::warn_deprecated(x, id = y)");
+  r_mark_precious(warn_deprecated_call);
+
+  signal_soft_deprecated_call = r_parse("rlang:::signal_soft_deprecated(x, id = y, env = z)");
+  r_mark_precious(signal_soft_deprecated_call);
+}
