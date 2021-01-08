@@ -20,7 +20,6 @@ lib-files = \
         rlang/replace-na.c \
         rlang/rlang.c \
         rlang/sexp.c \
-        rlang/squash.c \
         rlang/stack.c \
         rlang/sym.c \
         rlang/sym-unescape.c \
@@ -46,6 +45,7 @@ internal-files = \
         internal/internal.c \
         internal/nse-defuse.c \
         internal/quo.c \
+        internal/squash.c \
         internal/utils.c \
         internal/vec-raw.c \
         internal/weakref.c

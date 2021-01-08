@@ -2,6 +2,7 @@
 #include "dots.h"
 #include "expr-interp.h"
 #include "internal.h"
+#include "squash.h"
 #include "utils.h"
 
 sexp* rlang_ns_get(const char* name);

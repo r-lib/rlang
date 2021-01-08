@@ -17,7 +17,6 @@
 #include "replace-na.c"
 #include "session.c"
 #include "sexp.c"
-#include "squash.c"
 #include "stack.c"
 #include "sym.c"
 #include "sym-unescape.c"
@@ -61,7 +60,6 @@ void r_init_library_arg();
 void r_init_library_cnd();
 void r_init_library_env();
 void r_init_library_session();
-void r_init_library_squash();
 void r_init_library_stack();
 void r_init_library_sym();
 void r_init_library_vec();
@@ -86,7 +84,6 @@ SEXP r_init_library() {
   r_init_library_cnd();
   r_init_library_env();
   r_init_library_session();
-  r_init_library_squash();
   r_init_library_stack();
   r_init_library_vec();
   r_init_library_vec_chr();

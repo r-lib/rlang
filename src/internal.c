@@ -13,6 +13,7 @@
 #include "internal/internal.c"
 #include "internal/nse-defuse.c"
 #include "internal/quo.c"
+#include "internal/squash.c"
 #include "internal/utils.c"
 #include "internal/vec-raw.c"
 #include "internal/weakref.c"

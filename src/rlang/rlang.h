@@ -92,7 +92,6 @@ extern sexp* r_shared_false;
 #include "quo.h"
 #include "replace-na.h"
 #include "session.h"
-#include "squash.h"
 #include "stack.h"
 #include "state.h"
 #include "sym.h"
