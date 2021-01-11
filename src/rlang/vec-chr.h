@@ -93,11 +93,6 @@ sexp* r_str_as_symbol(sexp* str) {
 }
 
 static inline
-sexp* r_chr_as_symbol(sexp* str) {
-  return r_sym(Rf_translateChar(r_chr_get(str, 0)));
-}
-
-static inline
 bool r_str_is_name(sexp* str) {
   if (str == r_strings_na) {
     return false;

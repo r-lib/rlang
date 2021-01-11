@@ -460,7 +460,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
       } else {
         if (needs_autoname && r_node_tag(node) == r_null) {
           sexp* label = KEEP(r_as_label(orig));
-          r_node_poke_tag(node, r_chr_as_symbol(label));
+          r_node_poke_tag(node, r_str_as_symbol(r_chr_get(label, 0)));
           FREE(1);
         }
         capture_info->count += 1;
