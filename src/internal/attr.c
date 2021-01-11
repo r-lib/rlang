@@ -37,7 +37,7 @@ sexp* rlang_names2(sexp* x, sexp* env) {
     nms = KEEP(r_new_vector(r_type_character, n));
     r_chr_fill(nms, r_empty_str, n);
   } else {
-    nms = KEEP(rlang_replace_na(nms, r_shared_empty_chr));
+    nms = KEEP(rlang_replace_na(nms, r_chrs_empty));
   }
 
   FREE(2);

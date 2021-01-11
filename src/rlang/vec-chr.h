@@ -6,7 +6,7 @@
 
 #define r_strings_na R_NaString
 
-extern sexp* r_shared_empty_chr;
+extern sexp* r_chrs_empty;
 extern sexp* r_empty_str;
 
 
