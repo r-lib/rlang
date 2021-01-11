@@ -59,7 +59,8 @@ bool r_chr_has_any(sexp* chr, const char** c_strings) {
   return false;
 }
 
-void r_chr_fill(sexp* chr, sexp* value, r_ssize n) {
+void r_chr_fill(sexp* chr, sexp* value) {
+  r_ssize n = r_length(chr);
   for (r_ssize i = 0; i < n; ++i) {
     SET_STRING_ELT(chr, i, value);
   }
