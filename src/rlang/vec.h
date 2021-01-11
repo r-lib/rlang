@@ -136,10 +136,6 @@ static inline
 sexp* r_new_vector(enum r_type type, r_ssize n) {
   return Rf_allocVector(type, n);
 }
-static inline
-sexp* r_vec_coerce(sexp* x, enum r_type to) {
-  return Rf_coerceVector(x, to);
-}
 
 void r_vec_poke_n(sexp* x, r_ssize offset,
                   sexp* y, r_ssize from, r_ssize n);

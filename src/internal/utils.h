@@ -30,5 +30,10 @@ sexp* r_new_list(sexp* x, const char* name);
 
 bool vec_find_first_duplicate(sexp* x, sexp* except, r_ssize* index);
 
+static inline
+sexp* r_vec_coerce(sexp* x, enum r_type to) {
+  return Rf_coerceVector(x, to);
+}
+
 
 #endif
