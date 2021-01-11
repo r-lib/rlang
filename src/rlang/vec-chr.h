@@ -53,14 +53,11 @@ sexp* r_nms_are_duplicated(sexp* nms, bool from_last);
 sexp* r_str_unserialise_unicode(sexp* r_string);
 
 static inline
-bool r_is_string(sexp* x, const char* string) {
-  if (r_typeof(x) != r_type_character || r_length(x) != 1) {
-    return false;
-  }
-  if (string && strcmp(r_chr_get_c_string(x, 0), string) != 0) {
-    return false;
-  }
-  return true;
+bool r_is_string(sexp* x) {
+  return
+    r_typeof(x) == r_type_character &&
+    r_length(x) == 1 &&
+    r_chr_get(x, 0) != r_strings_na;
 }
 
 static inline

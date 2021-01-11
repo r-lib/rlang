@@ -28,7 +28,7 @@ sexp* rlang_call2(sexp* fn, sexp* args, sexp* ns) {
   int n_kept = 0;
 
   if (ns != r_null) {
-    if (!r_is_string(ns, NULL)) {
+    if (!r_is_string(ns)) {
       r_abort("`ns` must be a string");
     }
     if (r_typeof(fn) != r_type_symbol) {

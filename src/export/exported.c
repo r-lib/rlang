@@ -251,15 +251,21 @@ sexp* rlang_is_formulaish(sexp* x, sexp* scoped, sexp* lhs) {
 #include "../internal/parse.h"
 
 sexp* rlang_call_has_precedence(sexp* x, sexp* y, sexp* side) {
+  int c_side = r_int_get(side, 0);
+
   bool has_predence;
-  if (side == r_null) {
-    has_predence = r_call_has_precedence(x, y);
-  } else if (r_is_string(side, "lhs")) {
+  switch (c_side) {
+  case -1:
     has_predence = r_lhs_call_has_precedence(x, y);
-  } else if (r_is_string(side, "rhs")) {
+    break;
+  case 0:
+    has_predence = r_call_has_precedence(x, y);
+    break;
+  case 1:
     has_predence = r_rhs_call_has_precedence(x, y);
-  } else {
-    r_abort("`side` must be NULL, \"lhs\" or \"rhs\"");
+    break;
+  default:
+    r_stop_internal("rlang_call_has_precedence", "Unexpected `side` value.");
   }
   return r_lgl(has_predence);
 }

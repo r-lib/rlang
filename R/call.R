@@ -919,6 +919,13 @@ call_parse_type <- function(call) {
   .Call(rlang_which_operator, call)
 }
 call_has_precedence <- function(call, parent_call, side = NULL) {
+  side <- switch(
+    side %||% "none",
+    lhs = -1L,
+    none = 0L,
+    rhs = 1L,
+    abort("Unexpected `side` value in `call_has_precendence()`.")
+  )
   .Call(rlang_call_has_precedence, call, parent_call, side)
 }
 

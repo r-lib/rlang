@@ -8,7 +8,7 @@ sexp* rlang_env_get(sexp* env, sexp* nm, sexp* inherit, sexp* closure_env) {
   if (r_typeof(env) != r_type_environment) {
     r_abort("`env` must be an environment.");
   }
-  if (!r_is_string(nm, NULL)) {
+  if (!r_is_string(nm)) {
     r_abort("`nm` must be a string.");
   }
   if (!r_is_bool(inherit)) {
@@ -115,7 +115,7 @@ sexp* rlang_env_poke(sexp* env, sexp* nm, sexp* value, sexp* inherit, sexp* crea
   if (r_typeof(env) != r_type_environment) {
     r_abort("`env` must be an environment.");
   }
-  if (!r_is_string(nm, NULL)) {
+  if (!r_is_string(nm)) {
     r_abort("`nm` must be a string.");
   }
   if (!r_is_bool(inherit)) {
