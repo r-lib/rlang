@@ -12,6 +12,7 @@
 #include "internal/hash.c"
 #include "internal/internal.c"
 #include "internal/nse-defuse.c"
+#include "internal/parse.c"
 #include "internal/quo.c"
 #include "internal/squash.c"
 #include "internal/utils.c"

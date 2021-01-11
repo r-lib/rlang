@@ -43,6 +43,7 @@ internal-files = \
         internal/hash.c \
         internal/internal.c \
         internal/nse-defuse.c \
+        internal/parse.c \
         internal/quo.c \
         internal/squash.c \
         internal/utils.c \

@@ -248,6 +248,8 @@ sexp* rlang_is_formulaish(sexp* x, sexp* scoped, sexp* lhs) {
 
 // parse.c
 
+#include "../internal/parse.h"
+
 sexp* rlang_call_has_precedence(sexp* x, sexp* y, sexp* side) {
   bool has_predence;
   if (side == r_null) {

@@ -1,6 +1,8 @@
 #ifndef RLANG_INTERNAL_EXPR_INTERP_FIXUP_H
 #define RLANG_INTERNAL_EXPR_INTERP_FIXUP_H
 
+#include "parse.h"
+
 
 static inline bool op_needs_fixup(enum r_operator op) {
   switch (op) {

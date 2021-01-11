@@ -17,6 +17,7 @@ void rlang_init_dots(sexp* ns);
 void rlang_init_expr_interp();
 void rlang_init_eval_tidy();
 void rlang_init_attr(sexp* ns);
+void rlang_init_parse(sexp* ns);
 
 void rlang_init_internal(sexp* ns) {
   rlang_init_utils();
