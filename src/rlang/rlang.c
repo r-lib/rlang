@@ -14,7 +14,6 @@
 #include "node.c"
 #include "parse.c"
 #include "quo.c"
-#include "replace-na.c"
 #include "session.c"
 #include "stack.c"
 #include "sym.c"

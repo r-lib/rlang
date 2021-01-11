@@ -17,7 +17,6 @@ lib-files = \
         rlang/node.c \
         rlang/parse.c \
         rlang/quo.c \
-        rlang/replace-na.c \
         rlang/rlang.c \
         rlang/stack.c \
         rlang/sym.c \
@@ -45,6 +44,7 @@ internal-files = \
         internal/nse-defuse.c \
         internal/parse.c \
         internal/quo.c \
+        internal/replace-na.c \
         internal/squash.c \
         internal/utils.c \
         internal/vec-raw.c \

@@ -17,6 +17,7 @@
 #include "nse-defuse.c"
 #include "parse.c"
 #include "quo.c"
+#include "replace-na.c"
 #include "squash.c"
 #include "utils.c"
 #include "vec-raw.c"
