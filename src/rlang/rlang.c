@@ -17,7 +17,6 @@
 #include "session.c"
 #include "stack.c"
 #include "sym.c"
-#include "sym-unescape.c"
 #include "vec.c"
 #include "vec-chr.c"
 #include "vec-lgl.c"
