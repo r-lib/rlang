@@ -116,7 +116,7 @@ sexp* r_nms_are_duplicated(sexp* nms, bool from_last) {
   sexp* const * p_nms = r_chr_deref_const(nms);
 
   for (r_ssize i = 0; i < n; ++i) {
-    if (p_nms[i] == r_empty_str || p_nms[i] == r_strings_na) {
+    if (p_nms[i] == r_strings_empty || p_nms[i] == r_strings_na) {
       p_dups[i] = false;
     }
   }
@@ -127,12 +127,12 @@ sexp* r_nms_are_duplicated(sexp* nms, bool from_last) {
 
 
 sexp* r_chrs_empty = NULL;
-sexp* r_empty_str = NULL;
+sexp* r_strings_empty = NULL;
 
 void r_init_library_vec_chr() {
   r_chrs_empty = r_chr("");
   r_mark_shared(r_chrs_empty);
   r_mark_precious(r_chrs_empty);
 
-  r_empty_str = r_chr_get(r_chrs_empty, 0);
+  r_strings_empty = r_chr_get(r_chrs_empty, 0);
 }

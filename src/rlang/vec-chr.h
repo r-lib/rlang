@@ -7,7 +7,7 @@
 #define r_strings_na R_NaString
 
 extern sexp* r_chrs_empty;
-extern sexp* r_empty_str;
+extern sexp* r_strings_empty;
 
 
 static inline
@@ -32,7 +32,7 @@ const char* r_chr_get_c_string(sexp* chr, r_ssize i) {
 static inline
 sexp* r_nms_get(sexp* nms, r_ssize i) {
   if (nms == r_null) {
-    return r_empty_str;
+    return r_strings_empty;
   } else {
     return r_chr_get(nms, i);
   }
@@ -119,7 +119,7 @@ bool r_str_is_name(sexp* str) {
   if (str == r_strings_na) {
     return false;
   }
-  if (str == r_empty_str) {
+  if (str == r_strings_empty) {
     return false;
   }
   return true;
