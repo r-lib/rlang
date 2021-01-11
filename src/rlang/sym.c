@@ -49,20 +49,6 @@ bool r_is_symbol_any(sexp* x, const char** strings, int n) {
   return false;
 }
 
-bool r_is_special_op_sym(sexp* x) {
-  if (r_typeof(x) != SYMSXP) {
-    return false;
-  }
-
-  const char* name = CHAR(PRINTNAME(x));
-  int len = strlen(name);
-
-  return
-    len > 2 &&
-    name[0] == '%' &&
-    name[len - 1] == '%';
-}
-
 
 sexp* r_syms_dot_environment;
 sexp* r_syms_function;

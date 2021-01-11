@@ -154,7 +154,6 @@ extern sexp* chr_prepend(sexp*, sexp*);
 extern sexp* chr_append(sexp*, sexp*);
 extern sexp* rlang_test_r_warn(sexp*);
 extern sexp* rlang_on_exit(sexp*, sexp*);
-extern sexp* rlang_test_is_special_op_sym(sexp*);
 extern sexp* rlang_test_base_ns_get(sexp*);
 extern sexp* rlang_test_parse(sexp*);
 extern sexp* rlang_test_parse_eval(sexp*, sexp*);
@@ -240,7 +239,6 @@ static const R_CallMethodDef r_callables[] = {
   {"rlang_test_chr_append",             (DL_FUNC) &chr_append, 2},
   {"rlang_test_r_warn",                 (DL_FUNC) &rlang_test_r_warn, 1},
   {"rlang_test_r_on_exit",              (DL_FUNC) &rlang_on_exit, 2},
-  {"rlang_test_is_special_op_sym",      (DL_FUNC) &rlang_test_is_special_op_sym, 1},
   {"rlang_test_base_ns_get",            (DL_FUNC) &rlang_test_base_ns_get, 1},
   {"rlang_test_current_frame",          (DL_FUNC) &r_peek_frame, 0},
   {"rlang_test_parse",                  (DL_FUNC) &rlang_test_parse, 1},

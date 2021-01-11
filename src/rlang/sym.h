@@ -50,7 +50,5 @@ sexp* r_sym_as_character(sexp* x) {
 bool r_is_symbol(sexp* sym, const char* string);
 bool r_is_symbol_any(sexp* x, const char** strings, int n);
 
-bool r_is_special_op_sym(sexp* x);
-
 
 #endif

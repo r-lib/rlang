@@ -71,13 +71,6 @@ sexp* rlang_test_parse_eval(sexp* str, sexp* env) {
 }
 
 
-// sym.c
-
-sexp* rlang_test_is_special_op_sym(sexp* x) {
-  return r_lgl(r_is_special_op_sym(x));
-}
-
-
 // squash.c
 
 bool rlang_is_clevel_spliceable(sexp* x) {
