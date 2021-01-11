@@ -27,18 +27,22 @@ extern sexp* r_syms_dot_fn;
 
 sexp* r_new_symbol(sexp* x, int* err);
 
-static inline sexp* r_sym(const char* c_string) {
+static inline
+sexp* r_sym(const char* c_string) {
   return Rf_install(c_string);
 }
 
-static inline sexp* r_sym_get_string(sexp* sym) {
+static inline
+sexp* r_sym_get_string(sexp* sym) {
   return PRINTNAME(sym);
 }
-static inline const char* r_sym_get_c_string(sexp* sym) {
+static inline
+const char* r_sym_get_c_string(sexp* sym) {
   return CHAR(PRINTNAME(sym));
 }
 
-static inline sexp* r_sym_as_character(sexp* x) {
+static inline
+sexp* r_sym_as_character(sexp* x) {
   return Rf_ScalarString(PRINTNAME(x));
 }
 

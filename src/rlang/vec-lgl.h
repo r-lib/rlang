@@ -4,7 +4,8 @@
 
 int r_as_optional_bool(sexp* lgl);
 
-static inline sexp* r_lgl(bool x) {
+static inline
+sexp* r_lgl(bool x) {
   return Rf_ScalarLogical(x);
 }
 
@@ -18,7 +19,8 @@ bool r_is_bool(SEXP x) {
 
 bool r_is_true(sexp* x);
 
-static inline sexp* r_shared_lgl(bool x) {
+static inline
+sexp* r_shared_lgl(bool x) {
   if (x) {
     return r_shared_true;
   } else {

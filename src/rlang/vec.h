@@ -7,19 +7,24 @@
 r_ssize r_vec_length(sexp* x);
 
 
-static inline int* r_lgl_deref(sexp* x) {
+static inline
+int* r_lgl_deref(sexp* x) {
   return LOGICAL(x);
 }
-static inline int* r_int_deref(sexp* x) {
+static inline
+int* r_int_deref(sexp* x) {
   return INTEGER(x);
 }
-static inline double* r_dbl_deref(sexp* x) {
+static inline
+double* r_dbl_deref(sexp* x) {
   return REAL(x);
 }
-static inline r_complex_t* r_cpl_deref(sexp* x) {
+static inline
+r_complex_t* r_cpl_deref(sexp* x) {
   return COMPLEX(x);
 }
-static inline void* r_raw_deref(sexp* x) {
+static inline
+void* r_raw_deref(sexp* x) {
   return RAW(x);
 }
 
@@ -48,42 +53,51 @@ sexp* const * r_chr_deref_const(sexp* x) {
   return (sexp* const *) STRING_PTR(x);
 }
 
-static inline void r_vec_get_check(sexp*x, r_ssize i, const char* fn) {
+static inline
+void r_vec_get_check(sexp*x, r_ssize i, const char* fn) {
   if ((r_length(x) - 1) < i) {
     r_abort("Internal error in `%s()`: Vector is too small", fn);
   }
 }
 
-static inline int r_lgl_get(sexp* x, r_ssize i) {
+static inline
+int r_lgl_get(sexp* x, r_ssize i) {
   r_vec_get_check(x, i, "r_lgl_get");
   return LOGICAL(x)[i];
 }
-static inline int r_int_get(sexp* x, r_ssize i) {
+static inline
+int r_int_get(sexp* x, r_ssize i) {
   r_vec_get_check(x, i, "r_int_get");
   return INTEGER(x)[i];
 }
-static inline double r_dbl_get(sexp* x, r_ssize i) {
+static inline
+double r_dbl_get(sexp* x, r_ssize i) {
   r_vec_get_check(x, i, "r_dbl_get");
   return REAL(x)[i];
 }
-static inline r_complex_t r_cpl_get(sexp* x, r_ssize i) {
+static inline
+r_complex_t r_cpl_get(sexp* x, r_ssize i) {
   r_vec_get_check(x, i, "r_cpl_get");
   return COMPLEX(x)[i];
 }
 
-static inline void r_lgl_poke(sexp* x, r_ssize i, int y) {
+static inline
+void r_lgl_poke(sexp* x, r_ssize i, int y) {
   r_vec_get_check(x, i, "r_lgl_poke");
   LOGICAL(x)[i] = y;
 }
-static inline void r_int_poke(sexp* x, r_ssize i, int y) {
+static inline
+void r_int_poke(sexp* x, r_ssize i, int y) {
   r_vec_get_check(x, i, "r_int_poke");
   INTEGER(x)[i] = y;
 }
-static inline void r_dbl_poke(sexp* x, r_ssize i, double y) {
+static inline
+void r_dbl_poke(sexp* x, r_ssize i, double y) {
   r_vec_get_check(x, i, "r_dbl_poke");
   REAL(x)[i] = y;
 }
-static inline void r_cpl_poke(sexp* x, r_ssize i, r_complex_t y) {
+static inline
+void r_cpl_poke(sexp* x, r_ssize i, r_complex_t y) {
   r_vec_get_check(x, i, "r_cpl_poke");
   COMPLEX(x)[i] = y;
 }
@@ -110,14 +124,17 @@ bool r_is_number(SEXP x) {
     r_int_get(x, 0) != NA_INTEGER;
 }
 
-static inline sexp* r_int(int x) {
+static inline
+sexp* r_int(int x) {
   return Rf_ScalarInteger(x);
 }
 
-static inline sexp* r_new_vector(enum r_type type, r_ssize n) {
+static inline
+sexp* r_new_vector(enum r_type type, r_ssize n) {
   return Rf_allocVector(type, n);
 }
-static inline sexp* r_vec_coerce(sexp* x, enum r_type to) {
+static inline
+sexp* r_vec_coerce(sexp* x, enum r_type to) {
   return Rf_coerceVector(x, to);
 }
 
@@ -131,7 +148,8 @@ void r_vec_poke_coerce_n(sexp* x, r_ssize offset,
 void r_vec_poke_coerce_range(sexp* x, r_ssize offset,
                              sexp* y, r_ssize from, r_ssize to);
 
-static inline bool r_vec_find_first_duplicate(sexp* x, sexp* except, r_ssize* index) {
+static inline
+bool r_vec_find_first_duplicate(sexp* x, sexp* except, r_ssize* index) {
   r_ssize idx;
   if (except) {
     idx = Rf_any_duplicated3(x, except, false);
@@ -149,7 +167,8 @@ static inline bool r_vec_find_first_duplicate(sexp* x, sexp* except, r_ssize* in
   }
 }
 
-static inline sexp* r_vec_are_duplicated(sexp* x) {
+static inline
+sexp* r_vec_are_duplicated(sexp* x) {
   return Rf_duplicated(x, false);
 }
 

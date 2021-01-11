@@ -12,42 +12,52 @@
 extern sexp* r_methods_ns_env;
 
 
-static inline sexp* r_env_names(sexp* env) {
+static inline
+sexp* r_env_names(sexp* env) {
   return R_lsInternal3(env, true, false);
 }
 
-static inline r_ssize r_env_length(sexp* env) {
+static inline
+r_ssize r_env_length(sexp* env) {
   if (r_typeof(env) != r_type_environment) {
     r_abort("Expected an environment");
   }
   return Rf_xlength(env);
 }
 
-static inline sexp* r_env_parent(sexp* env) {
+static inline
+sexp* r_env_parent(sexp* env) {
   return ENCLOS(env);
 }
-static inline void r_env_poke_parent(sexp* env, sexp* new_parent) {
+static inline
+void r_env_poke_parent(sexp* env, sexp* new_parent) {
   SET_ENCLOS(env, new_parent);
 }
 
-static inline bool r_is_environment(sexp* x) {
+static inline
+bool r_is_environment(sexp* x) {
   return TYPEOF(x) == ENVSXP;
 }
-static inline bool r_is_namespace(sexp* x) {
+static inline
+bool r_is_namespace(sexp* x) {
   return R_IsNamespaceEnv(x);
 }
 
-static inline sexp* r_env_find(sexp* env, sexp* sym) {
+static inline
+sexp* r_env_find(sexp* env, sexp* sym) {
   return Rf_findVarInFrame3(env, sym, FALSE);
 }
-static inline sexp* r_env_find_anywhere(sexp* env, sexp* sym) {
+static inline
+sexp* r_env_find_anywhere(sexp* env, sexp* sym) {
   return Rf_findVar(sym, env);
 }
 
-static inline bool r_env_has(sexp* env, sexp* sym) {
+static inline
+bool r_env_has(sexp* env, sexp* sym) {
   return r_env_find(env, sym) != r_syms_unbound;
 }
-static inline bool r_env_has_anywhere(sexp* env, sexp* sym) {
+static inline
+bool r_env_has_anywhere(sexp* env, sexp* sym) {
   return r_env_find_anywhere(env, sym) != r_syms_unbound;
 }
 
@@ -71,7 +81,8 @@ void r_env_unbind(sexp* env, sexp* sym) {
 #endif
 }
 
-static inline sexp* r_env_poke(sexp* env, sexp* sym, sexp* value) {
+static inline
+sexp* r_env_poke(sexp* env, sexp* sym, sexp* value) {
   Rf_defineVar(sym, value, env);
   return env;
 }

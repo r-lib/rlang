@@ -88,12 +88,14 @@ sexp* r_str_unserialise_unicode(sexp* r_string) {
   }
 }
 
-static sexp* unescape_char_to_sexp(char* tmp) {
+static
+sexp* unescape_char_to_sexp(char* tmp) {
   int len = unescape_char(tmp);
   return Rf_mkCharLenCE(tmp, len, CE_UTF8);
 }
 
-static bool has_unicode_escape(const char* chr) {
+static
+bool has_unicode_escape(const char* chr) {
   while (*chr) {
     if (has_codepoint(chr)) {
       return true;
@@ -104,7 +106,8 @@ static bool has_unicode_escape(const char* chr) {
   return false;
 }
 
-static int unescape_char(char* chr) {
+static
+int unescape_char(char* chr) {
   int len = 0;
 
   while (*chr) {
@@ -119,7 +122,8 @@ static int unescape_char(char* chr) {
   return len;
 }
 
-static int unescape_char_found(char* chr) {
+static
+int unescape_char_found(char* chr) {
   char* source = chr;
   char* target = chr;
   int len = 0;
@@ -136,7 +140,8 @@ static int unescape_char_found(char* chr) {
   return len;
 }
 
-static int process_byte(char* tgt, char* const src, int* len_processed) {
+static
+int process_byte(char* tgt, char* const src, int* len_processed) {
   if (!has_codepoint(src)) {
     // Copy only the first character (angle bracket or not), advance
     *tgt = *src;
@@ -151,7 +156,8 @@ static int process_byte(char* tgt, char* const src, int* len_processed) {
   return (int)Rf_ucstoutf8(tgt, codepoint);
 }
 
-static bool has_codepoint(const char* src) {
+static
+bool has_codepoint(const char* src) {
   if (src[0] != '<') return false;
   if (src[1] != 'U') return false;
   if (src[2] != '+') return false;
@@ -162,7 +168,8 @@ static bool has_codepoint(const char* src) {
   return true;
 }
 
-static bool is_hex(const char chr) {
+static
+bool is_hex(const char chr) {
   if (chr >= '0' && chr <= '9') return true;
   if (chr >= 'A' && chr <= 'F') return true;
   return false;
