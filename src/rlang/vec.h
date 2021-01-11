@@ -151,25 +151,6 @@ void r_vec_poke_coerce_n(sexp* x, r_ssize offset,
 void r_vec_poke_coerce_range(sexp* x, r_ssize offset,
                              sexp* y, r_ssize from, r_ssize to);
 
-static inline
-bool r_vec_find_first_duplicate(sexp* x, sexp* except, r_ssize* index) {
-  r_ssize idx;
-  if (except) {
-    idx = Rf_any_duplicated3(x, except, false);
-  } else {
-    idx = Rf_any_duplicated(x, false);
-  }
-
-  if (idx) {
-    if (index) {
-      *index = idx - 1;
-    }
-    return true;
-  } else {
-    return false;
-  }
-}
-
 extern sexp* r_shared_empty_list;
 
 
