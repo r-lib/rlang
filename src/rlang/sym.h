@@ -33,11 +33,11 @@ sexp* r_sym(const char* c_string) {
 }
 
 static inline
-sexp* r_sym_get_string(sexp* sym) {
+sexp* r_sym_string(sexp* sym) {
   return PRINTNAME(sym);
 }
 static inline
-const char* r_sym_get_c_string(sexp* sym) {
+const char* r_sym_c_string(sexp* sym) {
   return CHAR(PRINTNAME(sym));
 }
 

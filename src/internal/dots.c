@@ -630,7 +630,7 @@ sexp* dots_as_list(sexp* dots, struct dots_capture_info* capture_info) {
 
       sexp* name = r_node_tag(dots);
       if (name != r_null) {
-        r_chr_poke(out_names, count, r_string(r_sym_get_c_string(name)));
+        r_chr_poke(out_names, count, r_string(r_sym_c_string(name)));
       }
 
       ++count;

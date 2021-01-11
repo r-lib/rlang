@@ -140,7 +140,7 @@ sexp* rlang_env_poke(sexp* env, sexp* nm, sexp* value, sexp* inherit, sexp* crea
   if (absent) {
     if (!c_create) {
       r_abort("Can't find existing binding in `env` for \"%s\".",
-              r_sym_get_c_string(sym));
+              r_sym_c_string(sym));
     }
     old = rlang_zap;
   }
