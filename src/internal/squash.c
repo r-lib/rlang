@@ -2,6 +2,9 @@
 #include "export.h"
 #include "squash.h"
 
+static r_ssize r_vec_length(sexp* x);
+
+
 // The vector to splice might be boxed in a sentinel wrapper
 static sexp* maybe_unbox(sexp* x, bool (*is_spliceable)(sexp*)) {
   if (is_spliceable(x) && is_splice_box(x)) {
@@ -319,5 +322,24 @@ sexp* rlang_squash(sexp* dots, sexp* type, sexp* pred, sexp* depth_) {
   default:
     is_spliceable = predicate_pointer(pred);
     return r_squash_if(dots, kind, is_spliceable, depth);
+  }
+}
+
+static
+r_ssize r_vec_length(sexp* x) {
+  switch(r_typeof(x)) {
+  case r_type_null:
+    return 0;
+  case r_type_logical:
+  case r_type_integer:
+  case r_type_double:
+  case r_type_complex:
+  case r_type_character:
+  case r_type_raw:
+  case r_type_list:
+  case r_type_string:
+    return XLENGTH(x);
+  default:
+    r_abort("Internal error: expected a vector");
   }
 }

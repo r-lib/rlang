@@ -149,24 +149,6 @@ bool r_is_raw(sexp* x, r_ssize n) {
   return r_typeof(x) == r_type_raw && has_correct_length(x, n);
 }
 
-r_ssize r_vec_length(sexp* x) {
-  switch(r_typeof(x)) {
-  case r_type_null:
-    return 0;
-  case r_type_logical:
-  case r_type_integer:
-  case r_type_double:
-  case r_type_complex:
-  case r_type_character:
-  case r_type_raw:
-  case r_type_list:
-  case r_type_string:
-    return XLENGTH(x);
-  default:
-    r_abort("Internal error: expected a vector");
-  }
-}
-
 sexp* r_vec_get(sexp* vec, r_ssize i) {
   switch (r_typeof(vec)) {
   case r_type_character:

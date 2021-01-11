@@ -4,9 +4,6 @@
 #include <string.h>
 
 
-r_ssize r_vec_length(sexp* x);
-
-
 static inline
 int* r_lgl_deref(sexp* x) {
   return LOGICAL(x);

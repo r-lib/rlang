@@ -14,7 +14,7 @@ r_ssize r_lgl_sum(sexp* x, bool na_true) {
     r_abort("Internal error: Excepted logical vector in `r_lgl_sum()`");
   }
 
-  r_ssize n = r_vec_length(x);
+  r_ssize n = r_length(x);
 
   r_ssize sum = 0;
   const int* p_x = r_lgl_deref_const(x);
