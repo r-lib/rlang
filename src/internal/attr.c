@@ -4,7 +4,6 @@
 static sexp* c_fn = NULL;
 static sexp* as_character_call = NULL;
 static sexp* names_call = NULL;
-static sexp* as_function_call = NULL;
 static sexp* set_names_call = NULL;
 static sexp* length_call = NULL;
 
@@ -69,7 +68,6 @@ sexp* node_names(sexp* x) {
 
 static inline sexp* eval_fn_dots(sexp* fn, sexp* x, sexp* dots, sexp* env);
 static inline sexp* eval_as_character(sexp* x, sexp* env);
-static inline sexp* r_as_function(sexp* x, sexp* env);
 static inline sexp* set_names_dispatch(sexp* x, sexp* nm, sexp* env);
 static inline r_ssize length_dispatch(sexp* x, sexp* env);
 
@@ -153,14 +151,6 @@ sexp* names_dispatch(sexp* x, sexp* env) {
   return r_eval(names_call, env);
 }
 
-extern sexp* rlang_ns_env;
-
-// TODO: Replace with C implementation of `as_function()`
-static inline
-sexp* r_as_function(sexp* x, sexp* env) {
-  return r_eval_with_xy(as_function_call, x, env, rlang_ns_env);
-}
-
 // Use `names<-()` rather than setting names directly with `r_poke_names()`
 // for genericity and for speed. `names<-()` can shallow duplicate `x`'s
 // attributes using ALTREP wrappers, which is not in R's public API.
@@ -206,9 +196,6 @@ void rlang_init_attr(sexp* ns) {
 
   names_call = r_parse("names(.x)");
   r_mark_precious(names_call);
-
-  as_function_call = r_parse("as_function(x, env = y)");
-  r_mark_precious(as_function_call);
 
   set_names_call = r_parse("`names<-`(.x, .y)");
   r_mark_precious(set_names_call);

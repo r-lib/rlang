@@ -21,6 +21,7 @@ void r_fn_poke_env(sexp* fn, sexp* env) {
 }
 
 sexp* r_new_function(sexp* formals, sexp* body, sexp* env);
+sexp* r_as_function(sexp* x, sexp* env);
 
 static inline
 bool r_is_function(sexp* x) {
