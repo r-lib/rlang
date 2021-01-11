@@ -386,7 +386,11 @@ sexp* rlang_missing_arg() {
 }
 
 sexp* rlang_duplicate(sexp* x, sexp* shallow) {
-  return r_duplicate(x, r_lgl_get(shallow, 0));
+  if (r_lgl_get(shallow, 0)) {
+    return Rf_shallow_duplicate(x);
+  } else {
+    return Rf_duplicate(x);
+  }
 }
 
 sexp* rlang_sexp_address(sexp* x) {

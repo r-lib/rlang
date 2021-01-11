@@ -133,7 +133,7 @@ sexp* rlang_ext_arg_match0(sexp* args) {
     return(r_str_as_character(p_arg[0]));
   }
 
-  sexp* my_values = KEEP(r_duplicate(values, true));
+  sexp* my_values = KEEP(r_clone(values));
   sexp* const * p_my_values = r_chr_deref_const(my_values);
 
   // Invariant: my_values[i:(len-1)] contains the values we haven't matched yet
