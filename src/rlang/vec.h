@@ -80,6 +80,10 @@ r_complex_t r_cpl_get(sexp* x, r_ssize i) {
   r_vec_get_check(x, i, "r_cpl_get");
   return COMPLEX(x)[i];
 }
+static inline
+sexp* r_list_get(sexp* list, r_ssize i) {
+  return VECTOR_ELT(list, i);
+}
 
 static inline
 void r_lgl_poke(sexp* x, r_ssize i, int y) {
@@ -100,6 +104,10 @@ static inline
 void r_cpl_poke(sexp* x, r_ssize i, r_complex_t y) {
   r_vec_get_check(x, i, "r_cpl_poke");
   COMPLEX(x)[i] = y;
+}
+static inline
+void r_list_poke(sexp* list, r_ssize i, sexp* elt) {
+  SET_VECTOR_ELT(list, i, elt);
 }
 
 sexp* r_vec_get(sexp* vec, r_ssize i);

@@ -45,7 +45,6 @@ r_ssize r_as_ssize(sexp* n);
 #include "vec.h"
 #include "vec-chr.h"
 #include "vec-lgl.h"
-#include "vec-list.h"
 #include "vendor.h"
 
 sexp* r_init_library();

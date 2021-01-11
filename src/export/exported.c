@@ -593,7 +593,13 @@ sexp* rlang_is_finite(sexp* x) {
 
 sexp* rlang_is_list(sexp* x, sexp* n_) {
   r_ssize n = validate_n(n_);
-  return r_shared_lgl(r_is_list(x, n));
+  if (r_typeof(x) != r_type_list) {
+    return r_shared_false;
+  }
+  if (n < 0) {
+    return r_shared_true;
+  }
+  return r_shared_lgl(r_length(x) == n);
 }
 
 sexp* rlang_is_atomic(sexp* x, sexp* n_) {
