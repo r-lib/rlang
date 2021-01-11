@@ -45,7 +45,7 @@ test_that("r_base_ns_get() fail if object does not exist", {
   expect_error(.Call(rlang_test_base_ns_get, "foobar"))
 })
 
-test_that("r_current_frame() returns current frame", {
+test_that("r_peek_frame() returns current frame", {
   current_frame <- function() {
     list(.Call(rlang_test_current_frame), environment())
   }

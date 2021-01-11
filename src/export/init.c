@@ -158,7 +158,7 @@ extern sexp* rlang_test_is_special_op_sym(sexp*);
 extern sexp* rlang_test_base_ns_get(sexp*);
 extern sexp* rlang_test_parse(sexp*);
 extern sexp* rlang_test_parse_eval(sexp*, sexp*);
-extern sexp* r_current_frame();
+extern sexp* r_peek_frame();
 extern sexp* rlang_test_node_list_clone_until(sexp*, sexp*);
 extern sexp* rlang_test_sys_frame(sexp*);
 extern sexp* rlang_test_sys_call(sexp*);
@@ -242,7 +242,7 @@ static const R_CallMethodDef r_callables[] = {
   {"rlang_test_r_on_exit",              (DL_FUNC) &rlang_on_exit, 2},
   {"rlang_test_is_special_op_sym",      (DL_FUNC) &rlang_test_is_special_op_sym, 1},
   {"rlang_test_base_ns_get",            (DL_FUNC) &rlang_test_base_ns_get, 1},
-  {"rlang_test_current_frame",          (DL_FUNC) &r_current_frame, 0},
+  {"rlang_test_current_frame",          (DL_FUNC) &r_peek_frame, 0},
   {"rlang_test_parse",                  (DL_FUNC) &rlang_test_parse, 1},
   {"rlang_test_parse_eval",             (DL_FUNC) &rlang_test_parse_eval, 2},
   {"rlang_test_node_list_clone_until",  (DL_FUNC) &rlang_test_node_list_clone_until, 2},

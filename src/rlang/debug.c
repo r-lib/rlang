@@ -13,7 +13,7 @@ void r_browse(SEXP x) {
   Rprintf("Object saved in `.debug`:\n");
   Rf_PrintValue(x);
 
-  r_browse_at(KEEP(r_current_frame())); FREE(1);
+  r_browse_at(KEEP(r_peek_frame())); FREE(1);
 }
 void r_browse_at(sexp* env) {
   // The NULL expression is needed because of a limitation in ESS

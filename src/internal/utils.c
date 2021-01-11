@@ -26,7 +26,7 @@ sexp* new_preserved_empty_list() {
  * ```
  */
 void rlang_print_backtrace(bool full) {
-  sexp* env = KEEP(r_current_frame());
+  sexp* env = KEEP(r_peek_frame());
   sexp* trace = KEEP(r_parse_eval("rlang::trace_back()", env));
 
   const char* source = full ?

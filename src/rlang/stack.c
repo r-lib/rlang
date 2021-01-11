@@ -19,7 +19,7 @@ void r_on_exit(sexp* expr, sexp* frame) {
 
 static sexp* current_frame_call = NULL;
 
-sexp* r_current_frame() {
+sexp* r_peek_frame() {
   return r_eval(current_frame_call, r_empty_env);
 }
 
@@ -33,7 +33,7 @@ static int* sys_call_n_addr = NULL;
 sexp* r_sys_frame(int n, sexp* frame) {
   int n_kept = 0;
   if (!frame) {
-    frame = r_current_frame();
+    frame = r_peek_frame();
     KEEP_N(frame, &n_kept);
   }
 
@@ -46,7 +46,7 @@ sexp* r_sys_frame(int n, sexp* frame) {
 sexp* r_sys_call(int n, sexp* frame) {
   int n_kept = 0;
   if (!frame) {
-    frame = r_current_frame();
+    frame = r_peek_frame();
     KEEP_N(frame, &n_kept);
   }
 
