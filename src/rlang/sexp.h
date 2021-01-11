@@ -70,11 +70,6 @@ sexp* r_poke_type(sexp* x, enum r_type type) {
   SET_TYPEOF(x, type);
   return x;
 }
-static inline
-sexp* r_poke_str_type(sexp* x, const char* type) {
-  SET_TYPEOF(x, Rf_str2type(type));
-  return x;
-}
 
 static inline
 const char* r_type_as_c_string(enum r_type type) {
