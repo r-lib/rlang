@@ -21,12 +21,6 @@ sexp* rlang_test_node_list_clone_until(sexp* node, sexp* sentinel) {
 }
 
 
-// chr.c
-
-sexp* rlang_test_nms_are_duplicated(sexp* nms, sexp* from_last) {
-  return r_nms_are_duplicated(nms, r_lgl_get(from_last, 0));
-}
-
 // cnd.c
 
 sexp* rlang_test_r_warn(sexp* x) {
@@ -85,4 +79,13 @@ sexp* rlang_test_sys_call(sexp* n) {
 }
 sexp* rlang_test_sys_frame(sexp* n) {
   return r_sys_frame(r_int_get(n, 0), NULL);
+}
+
+
+// internals/utils.c
+
+sexp* nms_are_duplicated(sexp* nms, bool from_last);
+
+sexp* rlang_test_nms_are_duplicated(sexp* nms, sexp* from_last) {
+  return nms_are_duplicated(nms, r_lgl_get(from_last, 0));
 }

@@ -383,16 +383,16 @@ test_that("r_warn_deprecated() warns once", {
   expect_warning(warn_deprecated("retired", "bar"), "retired")
 })
 
-test_that("r_nms_are_duplicated() detects duplicates", {
-  out <- r_nms_are_duplicated(letters)
+test_that("nms_are_duplicated() detects duplicates", {
+  out <- nms_are_duplicated(letters)
   expect_identical(out, rep(FALSE, length(letters)))
 
-  out <- r_nms_are_duplicated(c("a", "b", "a", "a", "c", "c"))
+  out <- nms_are_duplicated(c("a", "b", "a", "a", "c", "c"))
   expect_identical(out, c(FALSE, FALSE, TRUE, TRUE, FALSE, TRUE))
 })
 
-test_that("r_nms_are_duplicated() handles empty and missing names", {
-  out <- r_nms_are_duplicated(c("a", NA, NA, "b", "", "", "a"))
+test_that("nms_are_duplicated() handles empty and missing names", {
+  out <- nms_are_duplicated(c("a", NA, NA, "b", "", "", "a"))
   expect_identical(out, c(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE))
 })
 

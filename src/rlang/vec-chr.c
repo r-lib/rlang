@@ -106,27 +106,6 @@ sexp* chr_append(sexp* chr, sexp* r_str) {
   return out;
 }
 
-sexp* r_nms_are_duplicated(sexp* nms, bool from_last) {
-  if (r_typeof(nms) != r_type_character) {
-    r_abort("Internal error: Expected a character vector of names for checking duplication");
-  }
-  sexp* dups = KEEP(Rf_duplicated(nms, from_last));
-
-  r_ssize n = r_length(dups);
-  int* p_dups = r_lgl_deref(dups);
-  sexp* const * p_nms = r_chr_deref_const(nms);
-
-  for (r_ssize i = 0; i < n; ++i) {
-    if (p_nms[i] == r_strings_empty || p_nms[i] == r_strings_na) {
-      p_dups[i] = false;
-    }
-  }
-
-  FREE(1);
-  return dups;
-}
-
-
 sexp* r_chrs_empty = NULL;
 sexp* r_strings_empty = NULL;
 

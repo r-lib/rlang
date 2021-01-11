@@ -48,8 +48,6 @@ sexp* r_chr(const char* c_string) {
 }
 
 
-sexp* r_nms_are_duplicated(sexp* nms, bool from_last);
-
 sexp* r_str_unserialise_unicode(sexp* r_string);
 
 static inline
