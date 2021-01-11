@@ -107,8 +107,6 @@ void r_list_poke(sexp* list, r_ssize i, sexp* elt) {
   SET_VECTOR_ELT(list, i, elt);
 }
 
-sexp* r_vec_get(sexp* vec, r_ssize i);
-
 
 bool r_is_vector(sexp* x, r_ssize n);
 bool r_is_scalar_atomic(sexp* x);
@@ -171,13 +169,6 @@ bool r_vec_find_first_duplicate(sexp* x, sexp* except, r_ssize* index) {
     return false;
   }
 }
-
-static inline
-sexp* r_vec_are_duplicated(sexp* x) {
-  return Rf_duplicated(x, false);
-}
-
-bool r_vec_find_first_identical_any(sexp* x, sexp* y, r_ssize* index);
 
 extern sexp* r_shared_empty_list;
 
