@@ -54,12 +54,12 @@ void r_env_unbind_anywhere_names(sexp* env, sexp* names) {
 }
 
 void r_env_unbind_strings(sexp* env, const char** names) {
-  sexp* nms = KEEP(r_new_character(names));
+  sexp* nms = KEEP(r_chr_n(names));
   r_env_unbind_names(env, nms);
   FREE(1);
 }
 void r_env_unbind_anywhere_strings(sexp* env, const char** names) {
-  sexp* nms = KEEP(r_new_character(names));
+  sexp* nms = KEEP(r_chr_n(names));
   r_env_unbind_anywhere_names(env, nms);
   FREE(1);
 }

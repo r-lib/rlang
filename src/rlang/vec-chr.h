@@ -35,8 +35,6 @@ r_ssize r_chr_detect_index(sexp* chr, const char* c_string);
 
 void r_chr_fill(sexp* chr, sexp* value);
 
-sexp* r_new_character(const char** strings);
-
 static inline
 sexp* r_new_string(const char* c_string) {
   return Rf_mkChar(c_string);
@@ -46,6 +44,7 @@ static inline
 sexp* r_chr(const char* c_string) {
   return Rf_mkString(c_string);
 }
+sexp* r_chr_n(const char** strings);
 
 
 sexp* r_str_unserialise_unicode(sexp* r_string);

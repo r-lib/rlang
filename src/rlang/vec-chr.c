@@ -13,7 +13,7 @@ r_ssize ptrs_array_length(void** ptrs) {
   return n;
 }
 
-sexp* r_new_character(const char** strings) {
+sexp* r_chr_n(const char** strings) {
   r_ssize n = ptrs_array_length((void**) strings);
   sexp* out = KEEP(r_new_vector(STRSXP, n));
 

@@ -132,7 +132,7 @@ sexp* r_attrib_set(sexp* x, sexp* tag, sexp* value) {
 // Caller must poke the object bit
 static
 sexp* node_push_classes(sexp* node, const char** tags) {
-  sexp* tags_chr = KEEP(r_new_character(tags));
+  sexp* tags_chr = KEEP(r_chr_n(tags));
   sexp* attrs = r_new_node(tags_chr, node);
   r_node_poke_tag(attrs, r_syms_class);
 
