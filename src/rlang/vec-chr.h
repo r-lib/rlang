@@ -29,15 +29,6 @@ const char* r_chr_get_c_string(sexp* chr, r_ssize i) {
   return CHAR(r_chr_get(chr, i));
 }
 
-static inline
-sexp* r_nms_get(sexp* nms, r_ssize i) {
-  if (nms == r_null) {
-    return r_strings_empty;
-  } else {
-    return r_chr_get(nms, i);
-  }
-}
-
 bool r_chr_has(sexp* chr, const char* c_string);
 bool r_chr_has_any(sexp* chr, const char** c_strings);
 r_ssize r_chr_detect_index(sexp* chr, const char* c_string);

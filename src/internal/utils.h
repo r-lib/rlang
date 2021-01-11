@@ -16,5 +16,14 @@ bool r_is_prefixed_call(sexp* x, const char* name);
 bool r_is_namespaced_call(sexp* x, const char* ns, const char* name);
 bool r_is_namespaced_call_any(sexp* x, const char* ns, const char** names, int n);
 
+static inline
+sexp* r_nms_get(sexp* nms, r_ssize i) {
+  if (nms == r_null) {
+    return r_strings_empty;
+  } else {
+    return r_chr_get(nms, i);
+  }
+}
+
 
 #endif
