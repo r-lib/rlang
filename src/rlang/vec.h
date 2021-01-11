@@ -121,7 +121,7 @@ bool r_is_character(sexp* x, r_ssize n);
 bool r_is_raw(sexp* x, r_ssize n);
 
 static inline
-bool r_is_number(SEXP x) {
+bool r_is_int(SEXP x) {
   return r_typeof(x) == r_type_integer &&
     r_length(x) == 1 &&
     r_int_get(x, 0) != NA_INTEGER;

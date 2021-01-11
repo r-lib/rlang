@@ -38,7 +38,7 @@ sexp* rlang_interrupt() {
 // dict.c
 
 sexp* rlang_new_dict(sexp* size, sexp* prevent_resize) {
-  if (!r_is_number(size)) {
+  if (!r_is_int(size)) {
     r_abort("`size` must be an integer.");
   }
   if (!r_is_bool(prevent_resize)) {
@@ -90,7 +90,7 @@ sexp* rlang_dict_get(sexp* dict, sexp* key) {
 }
 
 sexp* rlang_dict_resize(sexp* dict, sexp* size) {
-  if (!r_is_number(size)) {
+  if (!r_is_int(size)) {
     r_abort("`size` must be an integer.");
   }
   struct r_dict* p_dict = dict_deref(dict);
