@@ -3,6 +3,9 @@
 #include <string.h>
 #include <stdlib.h>
 
+sexp* str_unserialise_unicode(sexp* r_string);
+
+
 // Interface functions ---------------------------------------------------------
 
 void copy_character(sexp* tgt, sexp* src, R_xlen_t len);
@@ -13,7 +16,7 @@ sexp* rlang_symbol(sexp* chr) {
 }
 
 sexp* rlang_sym_as_character(sexp* sym) {
-  sexp* str = KEEP(r_str_unserialise_unicode(PRINTNAME(sym)));
+  sexp* str = KEEP(str_unserialise_unicode(PRINTNAME(sym)));
   sexp* out = r_str_as_character(str);
   FREE(1);
   return out;
@@ -53,7 +56,7 @@ R_xlen_t unescape_character_in_copy(sexp* tgt, sexp* src, R_xlen_t i) {
 
   for (; i < len; ++i) {
     sexp* old_elt = STRING_ELT(src, i);
-    sexp* new_elt = r_str_unserialise_unicode(old_elt);
+    sexp* new_elt = str_unserialise_unicode(old_elt);
     if (dry_run) {
       if (old_elt != new_elt) return i;
     } else {
@@ -64,7 +67,7 @@ R_xlen_t unescape_character_in_copy(sexp* tgt, sexp* src, R_xlen_t i) {
   return i;
 }
 
-sexp* r_str_unserialise_unicode(sexp* r_string) {
+sexp* str_unserialise_unicode(sexp* r_string) {
   int ce = Rf_getCharCE(r_string);
   const char* src = CHAR(r_string);
 

@@ -47,8 +47,6 @@ sexp* r_chr(const char* c_string) {
 sexp* r_chr_n(const char** strings);
 
 
-sexp* r_str_unserialise_unicode(sexp* r_string);
-
 static inline
 bool r_is_string(sexp* x) {
   return
