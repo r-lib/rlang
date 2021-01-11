@@ -458,17 +458,17 @@ sexp* rlang_attrib(sexp* x) {
 // Picks up symbols from parent environment to avoid bumping namedness
 // during promise resolution
 sexp* rlang_named(sexp* x, sexp* env) {
-  int n_protect = 0;
+  int n_kept = 0;
 
   x = PROTECT(Rf_findVarInFrame3(env, x, FALSE));
-  ++n_protect;
+  ++n_kept;
 
   if (TYPEOF(x) == PROMSXP) {
     x = PROTECT(Rf_eval(x, env));
-    ++n_protect;
+    ++n_kept;
   }
 
-  UNPROTECT(n_protect);
+  UNPROTECT(n_kept);
   return Rf_ScalarInteger(NAMED(x));
 }
 

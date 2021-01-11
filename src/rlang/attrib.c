@@ -17,17 +17,17 @@ sexp* r_attrib_push(sexp* x, sexp* tag, sexp* value) {
 sexp* r_pairlist_clone_until(sexp* node, sexp* sentinel, sexp** parent_out) {
   sexp* parent = r_null;
   sexp* cur = node;
-  int n_protect = 0;
+  int n_kept = 0;
 
   while (true) {
     if (cur == sentinel) {
-      FREE(n_protect);
+      FREE(n_kept);
       *parent_out = parent;
       return node;
     }
     // Return NULL if sentinel is not found
     if (cur == r_null) {
-      FREE(n_protect);
+      FREE(n_kept);
       *parent_out = r_null;
       return r_null;
     }
@@ -37,7 +37,7 @@ sexp* r_pairlist_clone_until(sexp* node, sexp* sentinel, sexp** parent_out) {
     r_node_poke_tag(cur, tag);
 
     if (parent == r_null) {
-      KEEP_N(cur, n_protect);
+      KEEP_N(cur, &n_kept);
       node = cur;
     } else {
       r_node_poke_cdr(parent, cur);

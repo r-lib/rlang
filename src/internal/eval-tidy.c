@@ -96,11 +96,11 @@ sexp* rlang_as_data_pronoun(sexp* x) {
   case r_type_complex:
   case r_type_character:
   case r_type_raw:
-    x = KEEP_N(r_vec_coerce(x, r_type_list), n_kept);
+    x = KEEP_N(r_vec_coerce(x, r_type_list), &n_kept);
     // fallthrough
   case r_type_list:
     check_unique_names(x);
-    x = KEEP_N(r_list_as_environment(x, r_empty_env), n_kept);
+    x = KEEP_N(r_list_as_environment(x, r_empty_env), &n_kept);
     break;
   case r_type_environment:
     break;
@@ -210,7 +210,7 @@ static sexp* mask_find(sexp* env, sexp* sym) {
     top_env = env;
   }
   int n_kept = 0;
-  KEEP_N(top_env, n_kept);
+  KEEP_N(top_env, &n_kept);
 
   sexp* cur = env;
   do {
@@ -281,14 +281,14 @@ sexp* rlang_as_data_mask(sexp* data) {
     return rlang_new_data_mask(r_null, r_null);
   }
 
-  int n_protect = 0;
+  int n_kept = 0;
 
   sexp* bottom = NULL;
 
   switch (r_typeof(data)) {
   case r_type_environment:
     warn_env_as_mask_once();
-    bottom = KEEP_N(r_env_clone(data, NULL), n_protect);
+    bottom = KEEP_N(r_env_clone(data, NULL), &n_kept);
     break;
 
   case r_type_logical:
@@ -298,7 +298,7 @@ sexp* rlang_as_data_mask(sexp* data) {
   case r_type_character:
   case r_type_raw:
     data = r_vec_coerce(data, r_type_list);
-    KEEP_N(data, n_protect);
+    KEEP_N(data, &n_kept);
     // fallthrough:
 
   case r_type_list: {
@@ -307,7 +307,7 @@ sexp* rlang_as_data_mask(sexp* data) {
     sexp* names = r_names(data);
 
     r_ssize n_mask = mask_length(r_length(data));
-    bottom = KEEP_N(r_new_environment(r_empty_env, n_mask), n_protect);
+    bottom = KEEP_N(r_new_environment(r_empty_env, n_mask), &n_kept);
 
     if (names != r_null) {
       r_ssize n = r_length(data);
@@ -331,12 +331,12 @@ sexp* rlang_as_data_mask(sexp* data) {
     r_abort("`data` must be a vector, list, data frame, or environment");
   }
 
-  sexp* data_mask = KEEP_N(rlang_new_data_mask(bottom, bottom), n_protect);
+  sexp* data_mask = KEEP_N(rlang_new_data_mask(bottom, bottom), &n_kept);
 
-  sexp* data_pronoun = KEEP_N(rlang_as_data_pronoun(data_mask), n_protect);
+  sexp* data_pronoun = KEEP_N(rlang_as_data_pronoun(data_mask), &n_kept);
   r_env_poke(bottom, data_pronoun_sym, data_pronoun);
 
-  FREE(n_protect);
+  FREE(n_kept);
   return data_mask;
 }
 
@@ -413,13 +413,13 @@ sexp* rlang_tilde_eval(sexp* tilde, sexp* current_frame, sexp* caller_frame) {
     r_abort("Internal error: Quosure environment is corrupt");
   }
 
-  int n_protect = 0;
+  int n_kept = 0;
   sexp* top;
   struct rlang_mask_info info = mask_info(caller_frame);
 
   switch (info.type) {
   case RLANG_MASK_DATA:
-    top = KEEP_N(env_get_top_binding(info.mask), n_protect);
+    top = KEEP_N(env_get_top_binding(info.mask), &n_kept);
     // Update `.env` pronoun to current quosure env temporarily
     poke_ctxt_env(info.mask, quo_env);
     break;
@@ -439,7 +439,7 @@ sexp* rlang_tilde_eval(sexp* tilde, sexp* current_frame, sexp* caller_frame) {
     r_env_poke_parent(top, quo_env);
   }
 
-  FREE(n_protect);
+  FREE(n_kept);
   return r_eval(expr, info.mask);
 }
 
@@ -493,7 +493,7 @@ static sexp* new_quosure_mask(sexp* env) {
 }
 
 sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* env) {
-  int n_protect = 0;
+  int n_kept = 0;
 
   if (rlang_is_quosure(expr)) {
     env = r_quo_get_env(expr);
@@ -504,14 +504,14 @@ sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* env) {
   // for quosure thunks. Otherwise we create a heavier data mask with
   // all the masking objects, data pronouns, etc.
   if (data == r_null) {
-    sexp* mask = KEEP_N(new_quosure_mask(env), n_protect);
+    sexp* mask = KEEP_N(new_quosure_mask(env), &n_kept);
     sexp* out = r_eval(expr, mask);
-    FREE(n_protect);
+    FREE(n_kept);
     return out;
   }
 
-  sexp* mask = KEEP_N(rlang_as_data_mask(data), n_protect);
-  sexp* top = KEEP_N(env_get_top_binding(mask), n_protect);
+  sexp* mask = KEEP_N(rlang_as_data_mask(data), &n_kept);
+  sexp* top = KEEP_N(env_get_top_binding(mask), &n_kept);
 
   // Rechain the mask on the new lexical env but don't restore it on
   // exit. This way leaked masks inherit from a somewhat sensible
@@ -534,7 +534,7 @@ sexp* rlang_eval_tidy(sexp* expr, sexp* data, sexp* env) {
   }
 
   sexp* out = r_eval(expr, mask);
-  FREE(n_protect);
+  FREE(n_kept);
   return out;
 }
 

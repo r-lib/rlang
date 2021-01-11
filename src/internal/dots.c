@@ -150,13 +150,13 @@ static sexp* def_unquote_name(sexp* expr, sexp* env) {
 
   switch (info.op) {
   case OP_EXPAND_NONE:
-    lhs = KEEP_N(glue_unquote(lhs, env), n_kept);
+    lhs = KEEP_N(glue_unquote(lhs, env), &n_kept);
     break;
   case OP_EXPAND_UQ:
-    lhs = KEEP_N(r_eval(info.operand, env), n_kept);
+    lhs = KEEP_N(r_eval(info.operand, env), &n_kept);
     break;
   case OP_EXPAND_CURLY:
-    lhs = KEEP_N(rlang_enquo(info.operand, env), n_kept);
+    lhs = KEEP_N(rlang_enquo(info.operand, env), &n_kept);
     break;
   case OP_EXPAND_UQS:
     r_abort("The LHS of `:=` can't be spliced with `!!!`");
@@ -239,10 +239,10 @@ static sexp* dots_big_bang_coerce(sexp* x) {
 
 // Also used in expr-interp.c
 sexp* big_bang_coerce_pairlist(sexp* x, bool deep) {
-  int n_protect = 0;
+  int n_kept = 0;
 
   if (r_is_object(x)) {
-    x = KEEP_N(dots_big_bang_coerce(x), n_protect);
+    x = KEEP_N(dots_big_bang_coerce(x), &n_kept);
   }
 
   switch (r_typeof(x)) {
@@ -286,7 +286,7 @@ sexp* big_bang_coerce_pairlist(sexp* x, bool deep) {
     );
   }
 
-  FREE(n_protect);
+  FREE(n_kept);
   return x;
 }
 static sexp* dots_big_bang_coerce_pairlist(sexp* x) {
@@ -589,14 +589,14 @@ static void check_named_splice(sexp* node) {
 }
 
 sexp* dots_as_list(sexp* dots, struct dots_capture_info* capture_info) {
-  int n_protect = 0;
+  int n_kept = 0;
 
-  sexp* out = KEEP_N(r_new_vector(r_type_list, capture_info->count), n_protect);
+  sexp* out = KEEP_N(r_new_vector(r_type_list, capture_info->count), &n_kept);
 
   // Add default empty names unless dots are captured by values
   sexp* out_names = r_null;
   if (capture_info->type != DOTS_VALUE || any_name(dots, capture_info->splice)) {
-    out_names = KEEP_N(r_new_vector(r_type_character, capture_info->count), n_protect);
+    out_names = KEEP_N(r_new_vector(r_type_character, capture_info->count), &n_kept);
     r_push_names(out, out_names);
   }
 
@@ -637,7 +637,7 @@ sexp* dots_as_list(sexp* dots, struct dots_capture_info* capture_info) {
     }
   }
 
-  FREE(n_protect);
+  FREE(n_kept);
   return out;
 }
 

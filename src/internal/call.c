@@ -25,7 +25,7 @@ sexp* rlang_call2(sexp* fn, sexp* args, sexp* ns) {
     r_abort("Can't create call to non-callable object");
   }
 
-  int n_protect = 0;
+  int n_kept = 0;
 
   if (ns != r_null) {
     if (!r_is_string(ns, NULL)) {
@@ -35,12 +35,12 @@ sexp* rlang_call2(sexp* fn, sexp* args, sexp* ns) {
       r_abort("`fn` must be a string or symbol when a namespace is supplied");
     }
     ns = r_sym(r_chr_get_c_string(ns, 0));
-    fn = KEEP_N(r_call3(r_syms_namespace, ns, fn), n_protect);
+    fn = KEEP_N(r_call3(r_syms_namespace, ns, fn), &n_kept);
   }
 
   sexp* out = r_new_call(fn, args);
 
-  FREE(n_protect);
+  FREE(n_kept);
   return out;
 }
 

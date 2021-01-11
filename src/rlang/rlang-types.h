@@ -49,7 +49,7 @@ enum r_type {
 
 #define KEEP PROTECT
 #define FREE UNPROTECT
-#define KEEP_N(x, n) (++n, KEEP(x))
+#define KEEP_N(x, n) (++(*n), KEEP(x))
 
 #define r_keep_t PROTECT_INDEX
 #define KEEP_AT REPROTECT

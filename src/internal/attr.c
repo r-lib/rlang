@@ -74,7 +74,7 @@ static inline r_ssize length_dispatch(sexp* x, sexp* env);
 sexp* rlang_set_names(sexp* x, sexp* mold, sexp* nm, sexp* env) {
   int n_kept = 0;
 
-  sexp* dots = KEEP_N(rlang_dots(env), n_kept);
+  sexp* dots = KEEP_N(rlang_dots(env), &n_kept);
 
   if (!r_is_vector(x, -1)) {
     r_abort("`x` must be a vector");
@@ -89,19 +89,19 @@ sexp* rlang_set_names(sexp* x, sexp* mold, sexp* nm, sexp* env) {
 
   if (r_is_function(nm) || r_is_formula(nm, -1, -1)) {
     if (r_is_null(r_names(mold))) {
-      mold = KEEP_N(eval_as_character(mold, env), n_kept);
+      mold = KEEP_N(eval_as_character(mold, env), &n_kept);
     } else {
-      mold = KEEP_N(rlang_names2(mold, env), n_kept);
+      mold = KEEP_N(rlang_names2(mold, env), &n_kept);
     }
 
-    nm = KEEP_N(r_as_function(nm, env), n_kept);
-    nm = KEEP_N(eval_fn_dots(nm, mold, dots, env), n_kept);
+    nm = KEEP_N(r_as_function(nm, env), &n_kept);
+    nm = KEEP_N(eval_fn_dots(nm, mold, dots, env), &n_kept);
   } else {
     if (r_length(dots) > 0) {
-      nm = KEEP_N(eval_fn_dots(c_fn, nm, dots, env), n_kept);
+      nm = KEEP_N(eval_fn_dots(c_fn, nm, dots, env), &n_kept);
     }
 
-    nm = KEEP_N(eval_as_character(nm, env), n_kept);
+    nm = KEEP_N(eval_as_character(nm, env), &n_kept);
   }
 
   r_ssize n;

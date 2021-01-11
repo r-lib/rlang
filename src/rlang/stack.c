@@ -31,29 +31,29 @@ static int* sys_frame_n_addr = NULL;
 static int* sys_call_n_addr = NULL;
 
 sexp* r_sys_frame(int n, sexp* frame) {
-  int n_protect = 0;
+  int n_kept = 0;
   if (!frame) {
     frame = r_current_frame();
-    KEEP_N(frame, n_protect);
+    KEEP_N(frame, &n_kept);
   }
 
   *sys_frame_n_addr = n;
   SEXP value = r_eval(sys_frame_call, frame);
 
-  FREE(n_protect);
+  FREE(n_kept);
   return value;
 }
 sexp* r_sys_call(int n, sexp* frame) {
-  int n_protect = 0;
+  int n_kept = 0;
   if (!frame) {
     frame = r_current_frame();
-    KEEP_N(frame, n_protect);
+    KEEP_N(frame, &n_kept);
   }
 
   *sys_call_n_addr = n;
   SEXP value = r_eval(sys_call_call, frame);
 
-  FREE(n_protect);
+  FREE(n_kept);
   return value;
 }
 
