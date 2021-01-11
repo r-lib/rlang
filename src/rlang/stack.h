@@ -8,7 +8,8 @@ sexp* r_peek_frame();
 sexp* r_sys_frame(int n, sexp* frame);
 sexp* r_sys_call(int n, sexp* frame);
 
-static inline void r_maybe_interrupt() {
+static inline
+void r_yield_interrupt() {
   R_CheckUserInterrupt();
 }
 
