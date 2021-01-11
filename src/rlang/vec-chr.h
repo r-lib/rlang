@@ -38,7 +38,7 @@ void r_chr_fill(sexp* chr, sexp* value);
 sexp* r_new_character(const char** strings);
 
 static inline
-sexp* r_string(const char* c_string) {
+sexp* r_new_string(const char* c_string) {
   return Rf_mkChar(c_string);
 }
 

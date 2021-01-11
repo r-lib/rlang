@@ -18,7 +18,7 @@ sexp* r_new_character(const char** strings) {
   sexp* out = KEEP(r_new_vector(STRSXP, n));
 
   for (r_ssize i = 0; i < n; ++i) {
-    r_chr_poke(out, i, r_string(strings[i]));
+    r_chr_poke(out, i, r_new_string(strings[i]));
   }
 
   FREE(1);
