@@ -7,10 +7,10 @@ sexp* r_eval(sexp* expr, sexp* env) {
   return Rf_eval(expr, env);
 }
 
-sexp* r_eval_with_x(sexp* call, sexp* parent, sexp* x);
-sexp* r_eval_with_xy(sexp* call, sexp* parent, sexp* x, sexp* y);
-sexp* r_eval_with_xyz(sexp* call, sexp* parent, sexp* x, sexp* y, sexp* z);
-sexp* r_eval_with_wxyz(sexp* call, sexp* parent, sexp* w, sexp* x, sexp* y, sexp* z);
+sexp* r_eval_with_x(sexp* call, sexp* x, sexp* parent);
+sexp* r_eval_with_xy(sexp* call, sexp* x, sexp* y, sexp* parent);
+sexp* r_eval_with_xyz(sexp* call, sexp* x, sexp* y, sexp* z, sexp* parent);
+sexp* r_eval_with_wxyz(sexp* call, sexp* w, sexp* x, sexp* y, sexp* z, sexp* parent);
 
 sexp* r_eval_in_with_x(sexp* call, sexp* env,
                        sexp* x, sexp* x_sym);

@@ -245,7 +245,7 @@ sexp* rlang_data_pronoun_get(sexp* pronoun, sexp* sym) {
 
   if (obj == r_syms_unbound) {
     sexp* call = KEEP(r_parse("rlang:::abort_data_pronoun(x)"));
-    r_eval_with_x(call, r_base_env, sym);
+    r_eval_with_x(call, sym, r_base_env);
     r_abort("Internal error: .data subsetting should have failed earlier");
   }
 

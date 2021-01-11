@@ -3,7 +3,7 @@
 
 void r_sexp_inspect(sexp* x) {
   sexp* call = KEEP(r_parse(".Internal(inspect(x))"));
-  r_eval_with_x(call, r_base_env, x);
+  r_eval_with_x(call, x, r_base_env);
   FREE(1);
 }
 

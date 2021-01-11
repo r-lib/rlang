@@ -9,8 +9,10 @@ sexp* rlang_ns_get(const char* name);
 static bool should_auto_name(sexp* named);
 
 static sexp* as_label_call = NULL;
-static sexp* r_as_label(sexp* x) {
-  return r_eval_with_x(as_label_call, rlang_ns_env, x);
+
+static inline
+sexp* r_as_label(sexp* x) {
+  return r_eval_with_x(as_label_call, x, rlang_ns_env);
 }
 
 // Initialised at load time
@@ -206,18 +208,18 @@ static sexp* dots_big_bang_coerce(sexp* x) {
   case r_type_character:
   case r_type_raw:
     if (r_is_object(x)) {
-      return r_eval_with_x(rlang_as_list_call, rlang_ns_env, x);
+      return r_eval_with_x(rlang_as_list_call, x, rlang_ns_env);
     } else {
       return r_vec_coerce(x, r_type_list);
     }
   case r_type_list:
     if (r_is_object(x)) {
-      return r_eval_with_x(rlang_as_list_call, rlang_ns_env, x);
+      return r_eval_with_x(rlang_as_list_call, x, rlang_ns_env);
     } else {
       return x;
     }
   case r_type_s4:
-    return r_eval_with_x(rlang_as_list_call, rlang_ns_env, x);
+    return r_eval_with_x(rlang_as_list_call, x, rlang_ns_env);
   case r_type_call:
     if (r_is_symbol(r_node_car(x), "{")) {
       return r_vec_coerce(r_node_cdr(x), r_type_list);
@@ -553,7 +555,7 @@ static sexp* maybe_auto_name(sexp* x, sexp* named) {
   sexp* names = r_names(x);
 
   if (should_auto_name(named) && (names == r_null || r_chr_has(names, ""))) {
-    x = r_eval_with_x(auto_name_call, r_base_env, x);
+    x = r_eval_with_x(auto_name_call, x, r_base_env);
   }
 
   return x;
@@ -712,7 +714,7 @@ static void dots_check_homonyms(sexp* dots, sexp* nms) {
   sexp* dups = KEEP(r_nms_are_duplicated(nms, false));
 
   if (r_lgl_sum(dups, false)) {
-    r_eval_with_xy(abort_dots_homonyms_call, r_base_env, dots, dups);
+    r_eval_with_xy(abort_dots_homonyms_call, dots, dups, r_base_env);
     r_abort("Internal error: `dots_check_homonyms()` should have failed earlier");
   }
 

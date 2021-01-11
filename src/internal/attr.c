@@ -148,7 +148,7 @@ extern sexp* rlang_ns_env;
 // TODO: Replace with C implementation of `as_function()`
 static sexp* as_function_call = NULL;
 static inline sexp* r_as_function(sexp* x, sexp* env) {
-  return r_eval_with_xy(as_function_call, rlang_ns_env, x, env);
+  return r_eval_with_xy(as_function_call, x, env, rlang_ns_env);
 }
 
 // Use `names<-()` rather than setting names directly with `r_poke_names()`

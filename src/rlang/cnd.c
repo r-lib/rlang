@@ -18,7 +18,7 @@ void r_inform(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
 
-  r_eval_with_x(msg_call, r_base_env, KEEP(r_chr(buf)));
+  r_eval_with_x(msg_call, KEEP(r_chr(buf)), r_base_env);
 
   FREE(1);
 }
@@ -28,7 +28,7 @@ void r_warn(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
 
-  r_eval_with_x(wng_call, r_base_env, KEEP(r_chr(buf)));
+  r_eval_with_x(wng_call, KEEP(r_chr(buf)), r_base_env);
 
   FREE(1);
 }
@@ -38,7 +38,7 @@ void r_abort(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
 
-  r_eval_with_x(err_call, r_base_env, KEEP(r_chr(buf)));
+  r_eval_with_x(err_call, KEEP(r_chr(buf)), r_base_env);
 
   while (1); // No return
 }
@@ -107,7 +107,7 @@ void r_cnd_signal(sexp* cnd) {
     break;
   }
 
-  r_eval_with_x(call, r_base_env, cnd);
+  r_eval_with_x(call, cnd, r_base_env);
 }
 
 

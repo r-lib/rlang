@@ -139,7 +139,7 @@ void r_env_poke_lazy(sexp* env, sexp* sym, sexp* expr, sexp* eval_env) {
   sexp* name = KEEP(r_sym_as_character(sym));
 
   r_node_poke_car(poke_lazy_value_node, expr);
-  r_eval_with_xyz(poke_lazy_call, rlang_ns_env, name, env, eval_env);
+  r_eval_with_xyz(poke_lazy_call, name, env, eval_env, rlang_ns_env);
   r_node_poke_car(poke_lazy_value_node, r_null);
 
   FREE(1);

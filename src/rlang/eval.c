@@ -1,7 +1,7 @@
 #include "rlang.h"
 
 
-sexp* r_eval_with_x(sexp* call, sexp* parent, sexp* x) {
+sexp* r_eval_with_x(sexp* call, sexp* x, sexp* parent) {
   sexp* env = KEEP(r_new_environment(parent, 1));
   sexp* out = r_eval_in_with_x(call, env,
                                x, r_syms_x);
@@ -9,33 +9,30 @@ sexp* r_eval_with_x(sexp* call, sexp* parent, sexp* x) {
   FREE(1);
   return out;
 }
-sexp* r_eval_with_xy(sexp* call, sexp* parent, sexp* x, sexp* y) {
+sexp* r_eval_with_xy(sexp* call, sexp* x, sexp* y, sexp* parent) {
   sexp* env = KEEP(r_new_environment(parent, 1));
   sexp* out = r_eval_in_with_xy(call, env,
                                 x, r_syms_x,
                                 y, r_syms_y);
-
   FREE(1);
   return out;
 }
-sexp* r_eval_with_xyz(sexp* call, sexp* parent, sexp* x, sexp* y, sexp* z) {
+sexp* r_eval_with_xyz(sexp* call, sexp* x, sexp* y, sexp* z, sexp* parent) {
   sexp* env = KEEP(r_new_environment(parent, 1));
   sexp* out = r_eval_in_with_xyz(call, env,
                                  x, r_syms_x,
                                  y, r_syms_y,
                                  z, r_syms_z);
-
   FREE(1);
   return out;
 }
-sexp* r_eval_with_wxyz(sexp* call, sexp* parent, sexp* w, sexp* x, sexp* y, sexp* z) {
+sexp* r_eval_with_wxyz(sexp* call, sexp* w, sexp* x, sexp* y, sexp* z, sexp* parent) {
   sexp* env = KEEP(r_new_environment(parent, 1));
   sexp* out = r_eval_in_with_wxyz(call, env,
                                   w, r_syms_w,
                                   x, r_syms_x,
                                   y, r_syms_y,
                                   z, r_syms_z);
-
   FREE(1);
   return out;
 }

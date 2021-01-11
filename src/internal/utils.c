@@ -34,7 +34,7 @@ void rlang_print_backtrace(bool full) {
     "print(x, simplify = 'branch')";
   sexp* call = KEEP(r_parse(source));
 
-  r_eval_with_x(call, r_base_env, trace);
+  r_eval_with_x(call, trace, r_base_env);
 
   FREE(3);
   return;
@@ -54,7 +54,7 @@ void signal_soft_deprecated(const char* msg,
   sexp* msg_ = KEEP(r_chr(msg));
   sexp* id_ = KEEP(r_chr(id));
 
-  r_eval_with_xyz(signal_soft_deprecated_call, r_base_env, msg_, id_, env);
+  r_eval_with_xyz(signal_soft_deprecated_call, msg_, id_, env, r_base_env);
 
   FREE(2);
 }
@@ -81,7 +81,7 @@ void warn_deprecated(const char* id, const char* fmt, ...) {
   id = id ? id : buf;
   sexp* id_ = KEEP(r_chr(id));
 
-  r_eval_with_xy(warn_deprecated_call, r_base_env, msg_, id_);
+  r_eval_with_xy(warn_deprecated_call, msg_, id_, r_base_env);
   FREE(2);
 }
 
@@ -98,7 +98,7 @@ static void signal_retirement(const char* source, const char* buf) {
   sexp* call = KEEP(r_parse(source));
   sexp* msg = KEEP(r_chr(buf));
 
-  r_eval_with_x(call, r_ns_env("rlang"), msg);
+  r_eval_with_x(call, msg, rlang_ns_env);
 
   FREE(2);
 }
