@@ -2,22 +2,33 @@
 #include "internal.h"
 
 
+#include "arg.c"
+#include "attr.c"
+#include "call.c"
+#include "dots.c"
+#include "env.c"
+#include "env-binding.c"
+#include "eval.c"
+#include "eval-tidy.c"
+#include "expr-interp.c"
+#include "expr-interp-rotate.c"
+#include "fn.c"
+#include "hash.c"
+#include "nse-defuse.c"
+#include "parse.c"
+#include "quo.c"
+#include "squash.c"
+#include "utils.c"
+#include "vec-raw.c"
+#include "weakref.c"
+
+
 sexp* rlang_zap = NULL;
-
 sexp* rlang_as_list_call = NULL;
-
 sexp* rlang_objs_keep = NULL;
 sexp* rlang_objs_trailing = NULL;
-
 sexp* fns_function = NULL;
 sexp* fns_quote = NULL;
-
-void rlang_init_utils();
-void rlang_init_dots(sexp* ns);
-void rlang_init_expr_interp();
-void rlang_init_eval_tidy();
-void rlang_init_attr(sexp* ns);
-void rlang_init_parse(sexp* ns);
 
 void rlang_init_internal(sexp* ns) {
   rlang_init_utils();
