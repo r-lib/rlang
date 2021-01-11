@@ -2,8 +2,6 @@
 #define RLANG_VECTOR_LGL_H
 
 
-int r_as_optional_bool(sexp* lgl);
-
 static inline
 sexp* r_lgl(bool x) {
   return Rf_ScalarLogical(x);
