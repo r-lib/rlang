@@ -4,7 +4,7 @@
 #include <string.h>
 
 
-#define r_missing_str R_NaString
+#define r_strings_na R_NaString
 
 extern sexp* r_shared_empty_chr;
 extern sexp* r_empty_str;
@@ -116,7 +116,7 @@ sexp* r_chr_as_symbol(sexp* str) {
 
 static inline
 bool r_str_is_name(sexp* str) {
-  if (str == r_missing_str) {
+  if (str == r_strings_na) {
     return false;
   }
   if (str == r_empty_str) {
