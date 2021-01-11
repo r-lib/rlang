@@ -98,7 +98,7 @@ sexp* r_env_as_list_compat(sexp* env, sexp* out) {
   for (r_ssize i = 0; i < n; ++i) {
     enum r_env_binding_type type = p_types[i];
     if (type == R_ENV_BINDING_ACTIVE) {
-      r_ssize fn_idx = r_chr_detect_index(nms, r_str_deref(p_nms[i]));
+      r_ssize fn_idx = r_chr_detect_index(nms, r_str_c_string(p_nms[i]));
       if (fn_idx < 0) {
         r_abort("Internal error: Can't find active binding in list");
       }

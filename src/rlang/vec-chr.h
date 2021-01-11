@@ -20,7 +20,7 @@ void r_chr_poke(sexp* chr, r_ssize i, sexp* elt) {
 }
 
 static inline
-const char* r_str_deref(sexp* str) {
+const char* r_str_c_string(sexp* str) {
   return CHAR(str);
 }
 

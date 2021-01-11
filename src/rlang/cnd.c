@@ -136,7 +136,7 @@ enum r_condition_type r_cnd_type(sexp* cnd) {
   r_ssize n_classes = r_length(classes);
 
   for (r_ssize i = 0; i < n_classes; ++i) {
-    const char* class_str = r_str_deref(r_chr_get(classes, i));
+    const char* class_str = r_str_c_string(r_chr_get(classes, i));
     switch (class_str[0]) {
     case 'c':
       if (strcmp(class_str, "condition")) {
