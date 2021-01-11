@@ -48,9 +48,6 @@ sexp* r_chr(const char* c_string) {
 }
 
 
-sexp* chr_prepend(sexp* chr, sexp* r_string);
-sexp* chr_append(sexp* chr, sexp* r_string);
-
 sexp* r_nms_are_duplicated(sexp* nms, bool from_last);
 
 sexp* r_str_unserialise_unicode(sexp* r_string);

@@ -43,6 +43,9 @@ void r_abort(const char* fmt, ...) {
   while (1); // No return
 }
 
+// From vec-chr.c
+sexp* chr_append(sexp* chr, sexp* r_string);
+
 static sexp* new_condition_names(sexp* data) {
   if (!r_is_named(data)) {
     r_abort("Conditions must have named data fields");
