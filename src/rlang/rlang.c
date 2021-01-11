@@ -20,7 +20,6 @@
 #include "vec.c"
 #include "vec-chr.c"
 #include "vec-lgl.c"
-#include "vec-list.c"
 #include "vendor.c"
 
 

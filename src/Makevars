@@ -23,7 +23,6 @@ lib-files = \
         rlang/vec.c \
         rlang/vec-chr.c \
         rlang/vec-lgl.c \
-        rlang/vec-list.c \
         rlang/vendor.c
 
 internal-files = \

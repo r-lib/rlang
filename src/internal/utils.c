@@ -185,6 +185,21 @@ sexp* nms_are_duplicated(sexp* nms, bool from_last) {
   return dups;
 }
 
+sexp* r_new_list(sexp* x, const char* name) {
+  sexp* out = KEEP(r_new_vector(r_type_list, 1));
+  r_list_poke(out, 0, x);
+
+  if (name) {
+    sexp* nms = KEEP(r_new_vector(r_type_character, 1));
+    r_push_names(x, nms);
+    r_chr_poke(nms, 0, r_new_string(name));
+    FREE(1);
+  }
+
+  FREE(1);
+  return out;
+}
+
 
 void rlang_init_utils() {
   warn_deprecated_call = r_parse("rlang:::warn_deprecated(x, id = y)");

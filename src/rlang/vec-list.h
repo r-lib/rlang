@@ -11,8 +11,6 @@ void r_list_poke(sexp* list, r_ssize i, sexp* elt) {
   SET_VECTOR_ELT(list, i, elt);
 }
 
-sexp* r_new_list(sexp* x, const char* name);
-
 static inline
 bool r_is_list(sexp* x, r_ssize n) {
   if (r_typeof(x) != r_type_list) {

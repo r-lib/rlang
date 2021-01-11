@@ -26,6 +26,7 @@ sexp* r_nms_get(sexp* nms, r_ssize i) {
 }
 
 sexp* nms_are_duplicated(sexp* nms, bool from_last);
+sexp* r_new_list(sexp* x, const char* name);
 
 
 #endif
