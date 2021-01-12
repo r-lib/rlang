@@ -29,14 +29,16 @@ sexp* dots_values_node_impl(sexp* frame_env,
 
 static inline sexp* rlang_dots(sexp* env) {
   return dots_values_node_impl(env,
-                               r_shared_false,
+                               r_false,
                                rlang_objs_trailing,
-                               r_shared_true,
-                               r_shared_true,
+                               r_true,
+                               r_true,
                                rlang_objs_keep,
-                               r_shared_false,
+                               r_false,
                                true);
 }
+
+sexp* rlang_replace_na(sexp* x, sexp* replacement);
 
 
 #endif

@@ -5,11 +5,21 @@ sexp* rlang_r_string(sexp* str) {
 }
 
 
-// chr.c
+// attrib.c
 
-sexp* rlang_test_nms_are_duplicated(sexp* nms, sexp* from_last) {
-  return r_nms_are_duplicated(nms, r_lgl_get(from_last, 0));
+sexp* r_pairlist_clone_until(sexp* node, sexp* sentinel, sexp** parent_out);
+sexp* rlang_test_node_list_clone_until(sexp* node, sexp* sentinel) {
+  sexp* sentinel_out;
+  node = KEEP(r_pairlist_clone_until(node, sentinel, &sentinel_out));
+
+  sexp* out = r_new_vector(r_type_list, 2);
+  r_list_poke(out, 0, node);
+  r_list_poke(out, 1, sentinel_out);
+
+  FREE(1);
+  return out;
 }
+
 
 // cnd.c
 
@@ -54,27 +64,6 @@ sexp* rlang_test_parse_eval(sexp* str, sexp* env) {
   return r_parse_eval(r_chr_get_c_string(str, 0), env);
 }
 
-// node.c
-
-sexp* rlang_test_node_list_clone_until(sexp* node, sexp* sentinel) {
-  sexp* sentinel_out;
-  node = KEEP(r_pairlist_clone_until(node, sentinel, &sentinel_out));
-
-  sexp* out = r_new_vector(r_type_list, 2);
-  r_list_poke(out, 0, node);
-  r_list_poke(out, 1, sentinel_out);
-
-  FREE(1);
-  return out;
-}
-
-
-// sym.c
-
-sexp* rlang_test_is_special_op_sym(sexp* x) {
-  return r_lgl(r_is_special_op_sym(x));
-}
-
 
 // squash.c
 
@@ -90,4 +79,13 @@ sexp* rlang_test_sys_call(sexp* n) {
 }
 sexp* rlang_test_sys_frame(sexp* n) {
   return r_sys_frame(r_int_get(n, 0), NULL);
+}
+
+
+// internals/utils.c
+
+sexp* nms_are_duplicated(sexp* nms, bool from_last);
+
+sexp* rlang_test_nms_are_duplicated(sexp* nms, sexp* from_last) {
+  return nms_are_duplicated(nms, r_lgl_get(from_last, 0));
 }

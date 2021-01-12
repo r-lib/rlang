@@ -112,9 +112,9 @@ sexp* rlang_ext_arg_match0(sexp* args) {
     }
 
     sexp* arg_nm = KEEP(r_eval(arg_nm_sym, env));
-    r_eval_with_xyz(stop_arg_match_call, rlang_ns_env, arg, values, arg_nm);
+    r_eval_with_xyz(stop_arg_match_call, arg, values, arg_nm, rlang_ns_env);
 
-    never_reached("rlang_ext2_arg_match0");
+    r_stop_unreached("rlang_ext2_arg_match0");
   }
 
   sexp* const* p_arg = r_chr_deref_const(arg);
@@ -133,7 +133,7 @@ sexp* rlang_ext_arg_match0(sexp* args) {
     return(r_str_as_character(p_arg[0]));
   }
 
-  sexp* my_values = KEEP(r_duplicate(values, true));
+  sexp* my_values = KEEP(r_clone(values));
   sexp* const * p_my_values = r_chr_deref_const(my_values);
 
   // Invariant: my_values[i:(len-1)] contains the values we haven't matched yet
@@ -157,9 +157,9 @@ sexp* rlang_ext_arg_match0(sexp* args) {
     if (!matched) {
       arg = KEEP(r_str_as_character(r_chr_get(arg, 0)));
       sexp* arg_nm = KEEP(r_eval(arg_nm_sym, env));
-      r_eval_with_xyz(stop_arg_match_call, rlang_ns_env, arg, values, arg_nm);
+      r_eval_with_xyz(stop_arg_match_call, arg, values, arg_nm, rlang_ns_env);
 
-      never_reached("rlang_ext2_arg_match0");
+      r_stop_unreached("rlang_ext2_arg_match0");
     }
   }
 

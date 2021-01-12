@@ -1,5 +1,12 @@
 #include <rlang.h>
 #include "../internal/utils.h"
+#include "../internal/vec.h"
+
+// From rlang/vec.c
+void r_vec_poke_n(sexp* x, r_ssize offset,
+                  sexp* y, r_ssize from, r_ssize n);
+void r_vec_poke_range(sexp* x, r_ssize offset,
+                      sexp* y, r_ssize from, r_ssize to);
 
 
 // attrs.c
@@ -38,7 +45,7 @@ sexp* rlang_interrupt() {
 // dict.c
 
 sexp* rlang_new_dict(sexp* size, sexp* prevent_resize) {
-  if (!r_is_number(size)) {
+  if (!r_is_int(size)) {
     r_abort("`size` must be an integer.");
   }
   if (!r_is_bool(prevent_resize)) {
@@ -90,7 +97,7 @@ sexp* rlang_dict_get(sexp* dict, sexp* key) {
 }
 
 sexp* rlang_dict_resize(sexp* dict, sexp* size) {
-  if (!r_is_number(size)) {
+  if (!r_is_int(size)) {
     r_abort("`size` must be an integer.");
   }
   struct r_dict* p_dict = dict_deref(dict);
@@ -212,51 +219,69 @@ sexp* rlang_is_function(sexp* x) {
 }
 
 sexp* rlang_is_closure(sexp* x) {
-  return r_shared_lgl(r_is_closure(x));
+  return r_shared_lgl(r_typeof(x) == r_type_closure);
 }
 
 sexp* rlang_is_primitive(sexp* x) {
   return r_shared_lgl(r_is_primitive(x));
 }
 sexp* rlang_is_primitive_lazy(sexp* x) {
-  return r_shared_lgl(r_is_primitive_lazy(x));
+  return r_shared_lgl(r_typeof(x) == r_type_special);
 }
 sexp* rlang_is_primitive_eager(sexp* x) {
-  return r_shared_lgl(r_is_primitive_eager(x));
+  return r_shared_lgl(r_typeof(x) == r_type_builtin);
 }
 
 
 // formula.c
 
+static
+int as_optional_bool(sexp* lgl) {
+  if (lgl == r_null) {
+    return -1;
+  } else {
+    return r_lgl_get(lgl, 0);
+  }
+}
+
 sexp* rlang_is_formula(sexp* x, sexp* scoped, sexp* lhs) {
-  int scoped_int = r_as_optional_bool(scoped);
-  int lhs_int = r_as_optional_bool(lhs);
+  int scoped_int = as_optional_bool(scoped);
+  int lhs_int = as_optional_bool(lhs);
 
   bool out = r_is_formula(x, scoped_int, lhs_int);
   return r_lgl(out);
 }
 
+bool is_formulaish(sexp* x, int scoped, int lhs);
 sexp* rlang_is_formulaish(sexp* x, sexp* scoped, sexp* lhs) {
-  int scoped_int = r_as_optional_bool(scoped);
-  int lhs_int = r_as_optional_bool(lhs);
+  int scoped_int = as_optional_bool(scoped);
+  int lhs_int = as_optional_bool(lhs);
 
-  bool out = r_is_formulaish(x, scoped_int, lhs_int);
+  bool out = is_formulaish(x, scoped_int, lhs_int);
   return r_lgl(out);
 }
 
 
 // parse.c
 
+#include "../internal/parse.h"
+
 sexp* rlang_call_has_precedence(sexp* x, sexp* y, sexp* side) {
+  int c_side = r_int_get(side, 0);
+
   bool has_predence;
-  if (side == r_null) {
-    has_predence = r_call_has_precedence(x, y);
-  } else if (r_is_string(side, "lhs")) {
+  switch (c_side) {
+  case -1:
     has_predence = r_lhs_call_has_precedence(x, y);
-  } else if (r_is_string(side, "rhs")) {
+    break;
+  case 0:
+    has_predence = r_call_has_precedence(x, y);
+    break;
+  case 1:
     has_predence = r_rhs_call_has_precedence(x, y);
-  } else {
-    r_abort("`side` must be NULL, \"lhs\" or \"rhs\"");
+    break;
+  default:
+    r_stop_internal("rlang_call_has_precedence", "Unexpected `side` value.");
   }
   return r_lgl(has_predence);
 }
@@ -383,7 +408,11 @@ sexp* rlang_missing_arg() {
 }
 
 sexp* rlang_duplicate(sexp* x, sexp* shallow) {
-  return r_duplicate(x, r_lgl_get(shallow, 0));
+  if (r_lgl_get(shallow, 0)) {
+    return Rf_shallow_duplicate(x);
+  } else {
+    return Rf_duplicate(x);
+  }
 }
 
 sexp* rlang_sexp_address(sexp* x) {
@@ -455,17 +484,17 @@ sexp* rlang_attrib(sexp* x) {
 // Picks up symbols from parent environment to avoid bumping namedness
 // during promise resolution
 sexp* rlang_named(sexp* x, sexp* env) {
-  int n_protect = 0;
+  int n_kept = 0;
 
   x = PROTECT(Rf_findVarInFrame3(env, x, FALSE));
-  ++n_protect;
+  ++n_kept;
 
   if (TYPEOF(x) == PROMSXP) {
     x = PROTECT(Rf_eval(x, env));
-    ++n_protect;
+    ++n_kept;
   }
 
-  UNPROTECT(n_protect);
+  UNPROTECT(n_kept);
   return Rf_ScalarInteger(NAMED(x));
 }
 
@@ -571,7 +600,13 @@ sexp* rlang_is_finite(sexp* x) {
 
 sexp* rlang_is_list(sexp* x, sexp* n_) {
   r_ssize n = validate_n(n_);
-  return r_shared_lgl(r_is_list(x, n));
+  if (r_typeof(x) != r_type_list) {
+    return r_false;
+  }
+  if (n < 0) {
+    return r_true;
+  }
+  return r_shared_lgl(r_length(x) == n);
 }
 
 sexp* rlang_is_atomic(sexp* x, sexp* n_) {
@@ -613,17 +648,17 @@ sexp* rlang_is_raw(sexp* x, sexp* n_) {
 
 sexp* rlang_is_string(sexp* x, sexp* string) {
   if (r_typeof(x) != r_type_character || r_length(x) != 1) {
-    return r_shared_false;
+    return r_false;
   }
 
   sexp* value = r_chr_get(x, 0);
 
   if (value == NA_STRING) {
-    return r_shared_false;
+    return r_false;
   }
 
   if (string == r_null) {
-    return r_shared_true;
+    return r_true;
   }
 
   if (!rlang_is_string(string, r_null)) {

@@ -9,7 +9,7 @@ sexp* rlang_new_quosure(sexp* expr, sexp* env) {
     r_abort("`env` must be an environment");
   }
   sexp* quo = KEEP(new_raw_formula(r_null, expr, env));
-  r_push_classes(quo, quo_tags);
+  r_attrib_push_classes(quo, quo_tags);
   FREE(1);
   return quo;
 }
@@ -29,7 +29,8 @@ sexp* rlang_quo_get_expr(sexp* quo) {
 sexp* rlang_quo_set_expr(sexp* quo, sexp* expr) {
   check_quosure(quo);
   quo = r_clone(quo);
-  return r_node_poke_cadr(quo, expr);
+  r_node_poke_cadr(quo, expr);
+  return quo;
 }
 
 sexp* rlang_quo_get_env(sexp* quo) {
@@ -44,10 +45,13 @@ sexp* rlang_quo_set_env(sexp* quo, sexp* env) {
   return r_attrib_set(quo, r_syms_dot_environment, env);
 }
 
+// FIXME: From rlang/formula.c
+bool is_formulaish(sexp* x, int scoped, int lhs);
+
 sexp* rlang_get_expression(sexp* x, sexp* alternate) {
   switch (r_typeof(x)) {
   case LANGSXP:
-    if (r_is_formulaish(x, -1, 0)) {
+    if (is_formulaish(x, -1, 0)) {
       return r_f_rhs(x);
     }
     break;

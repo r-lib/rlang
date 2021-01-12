@@ -11,7 +11,7 @@ sexp* rlang_raw_deparse_str(sexp* x, sexp* prefix, sexp* suffix) {
   const char* s_prefix = "";
   r_ssize len_prefix = 0;
   if (prefix != r_null) {
-    if (!r_is_string(prefix, NULL)) {
+    if (!r_is_string(prefix)) {
       r_abort("`prefix` must be a string or NULL.");
     }
     s_prefix = r_chr_get_c_string(prefix, 0);
@@ -21,7 +21,7 @@ sexp* rlang_raw_deparse_str(sexp* x, sexp* prefix, sexp* suffix) {
   const char* s_suffix = "";
   r_ssize len_suffix = 0;
   if (suffix != r_null) {
-    if (!r_is_string(suffix, NULL)) {
+    if (!r_is_string(suffix)) {
       r_abort("`suffix` must be a string or NULL.");
     }
     s_suffix = r_chr_get_c_string(suffix, 0);

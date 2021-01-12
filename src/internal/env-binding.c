@@ -8,7 +8,7 @@ sexp* rlang_env_get(sexp* env, sexp* nm, sexp* inherit, sexp* closure_env) {
   if (r_typeof(env) != r_type_environment) {
     r_abort("`env` must be an environment.");
   }
-  if (!r_is_string(nm, NULL)) {
+  if (!r_is_string(nm)) {
     r_abort("`nm` must be a string.");
   }
   if (!r_is_bool(inherit)) {
@@ -58,7 +58,7 @@ sexp* rlang_env_get_list(sexp* env, sexp* nms, sexp* inherit, sexp* closure_env)
   r_ssize n = r_length(nms);
 
   sexp* out = KEEP(r_new_vector(r_type_list, n));
-  r_poke_names(out, nms);
+  r_attrib_poke_names(out, nms);
 
   sexp* const * p_nms = r_chr_deref_const(nms);
 
@@ -101,7 +101,7 @@ sexp* rlang_env_has(sexp* env, sexp* nms, sexp* inherit) {
     }
   }
 
-  r_poke_names(out, nms);
+  r_attrib_poke_names(out, nms);
   FREE(1);
   return out;
 }
@@ -115,7 +115,7 @@ sexp* rlang_env_poke(sexp* env, sexp* nm, sexp* value, sexp* inherit, sexp* crea
   if (r_typeof(env) != r_type_environment) {
     r_abort("`env` must be an environment.");
   }
-  if (!r_is_string(nm, NULL)) {
+  if (!r_is_string(nm)) {
     r_abort("`nm` must be a string.");
   }
   if (!r_is_bool(inherit)) {
@@ -140,7 +140,7 @@ sexp* rlang_env_poke(sexp* env, sexp* nm, sexp* value, sexp* inherit, sexp* crea
   if (absent) {
     if (!c_create) {
       r_abort("Can't find existing binding in `env` for \"%s\".",
-              r_sym_get_c_string(sym));
+              r_sym_c_string(sym));
     }
     old = rlang_zap;
   }
@@ -172,7 +172,7 @@ enum bind_type parse_bind_type(sexp* bind_type) {
   case 'v': return BIND_TYPE_value;
   case 'a': return BIND_TYPE_active;
   case 'l': return BIND_TYPE_lazy;
-  default: never_reached("parse_bind_type");
+  default: r_stop_unreached("parse_bind_type");
   }
 }
 
@@ -194,7 +194,7 @@ sexp* rlang_env_bind(sexp* env,
 
   r_ssize n = r_length(values);
   if (!n) {
-    return r_shared_empty_list;
+    return r_lists_empty;
   }
 
   sexp* names = r_names(values);
@@ -206,7 +206,7 @@ sexp* rlang_env_bind(sexp* env,
   sexp* old = r_null;
   if (c_needs_old) {
     old = KEEP(r_new_vector(r_type_list, n));
-    r_poke_names(old, names);
+    r_attrib_poke_names(old, names);
   } else {
     KEEP(old);
   }

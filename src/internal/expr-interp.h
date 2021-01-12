@@ -2,6 +2,7 @@
 #define RLANG_INTERNAL_EXPR_INTERP_H
 
 #include "quo.h"
+#include "utils.h"
 
 
 #define UQ_N 2

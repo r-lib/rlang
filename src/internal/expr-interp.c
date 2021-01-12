@@ -38,7 +38,7 @@ struct expansion_info which_uq_op(sexp* first) {
     return info;
   }
 
-  const char* nm = r_sym_get_c_string(head);
+  const char* nm = r_sym_c_string(head);
 
   if (strcmp(nm, "!") == 0) {
     return which_bang_op(r_node_cadr(first), info);
@@ -90,21 +90,21 @@ struct expansion_info which_curly_op(sexp* second, struct expansion_info info) {
 // future
 void signal_uq_soft_deprecation() {
   return ;
-  signal_soft_deprecated(
+  const char* msg =
     "`UQ()` is soft-deprecated as of rlang 0.2.0. "
-    "Please use the prefix form of `!!` instead."
-  );
+    "Please use the prefix form of `!!` instead.";
+  signal_soft_deprecated(msg, msg, r_empty_env);
 }
 void signal_uqs_soft_deprecation() {
   return ;
-  signal_soft_deprecated(
+  const char* msg =
     "`UQS()` is soft-deprecated as of rlang 0.2.0. "
-    "Please use the prefix form of `!!!` instead."
-  );
+    "Please use the prefix form of `!!!` instead.";
+  signal_soft_deprecated(msg, msg, r_empty_env);
 }
 
 void signal_namespaced_uq_deprecation() {
-  r_warn_deprecated("namespaced rlang::UQ()",
+  warn_deprecated("namespaced rlang::UQ()",
     "Prefixing `UQ()` with the rlang namespace is deprecated as of rlang 0.3.0.\n"
     "Please use the non-prefixed form or `!!` instead.\n"
     "\n"
@@ -119,7 +119,7 @@ void signal_namespaced_uq_deprecation() {
   );
 }
 void signal_namespaced_uqs_deprecation() {
-  r_warn_deprecated("namespaced rlang::UQS()",
+  warn_deprecated("namespaced rlang::UQS()",
     "Prefixing `UQS()` with the rlang namespace is deprecated as of rlang 0.3.0.\n"
     "Please use the non-prefixed form or `!!!` instead.\n"
     "\n"
@@ -146,7 +146,7 @@ void maybe_poke_big_bang_op(sexp* x, struct expansion_info* info) {
 
   // Handle expressions like foo::`!!`(bar) or foo$`!!`(bar)
   if (r_is_prefixed_call(x, "!!!")) {
-    const char* name = r_sym_get_c_string(r_node_caar(x));
+    const char* name = r_sym_c_string(r_node_caar(x));
     r_abort("Prefix form of `!!!` can't be used with `%s`", name);
   }
 
@@ -240,7 +240,7 @@ struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
     struct expansion_info nested = which_expansion_op(info.operand, false);
     if (nested.op == OP_EXPAND_UQ) {
       const char* msg = "It is no longer necessary to unquote within the `.data` pronoun";
-      r_signal_soft_deprecated(msg, msg, r_empty_env);
+      signal_soft_deprecated(msg, msg, r_empty_env);
       info.operand = nested.operand;
     }
 
@@ -292,7 +292,7 @@ sexp* big_bang(sexp* operand, sexp* env, sexp* prev, sexp* node) {
     node = prev;
   } else {
     // Insert coerced value into existing pairlist of args
-    sexp* tail = r_pairlist_find_last(value);
+    sexp* tail = r_pairlist_tail(value);
     r_node_poke_cdr(tail, r_node_cdr(node));
     r_node_poke_cdr(prev, value);
     node = tail;
