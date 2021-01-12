@@ -3,6 +3,9 @@
 #include <stdint.h>
 
 
+sexp* r_shared_empty_list = NULL;
+
+
 // FIXME: Does this have a place in the library?
 void r_vec_poke_n(sexp* x, r_ssize offset,
                   sexp* y, r_ssize from, r_ssize n) {
@@ -76,8 +79,6 @@ void r_vec_poke_range(sexp* x, r_ssize offset,
   r_vec_poke_n(x, offset, y, from, to - from + 1);
 }
 
-
-sexp* r_shared_empty_list = NULL;
 
 void r_init_library_vec() {
   r_shared_empty_list = r_new_vector(r_type_list, 0);

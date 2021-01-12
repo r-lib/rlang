@@ -4,6 +4,8 @@
 #include <string.h>
 
 
+extern sexp* r_shared_empty_list;
+
 static inline
 int* r_lgl_deref(sexp* x) {
   return LOGICAL(x);
@@ -117,8 +119,6 @@ static inline
 sexp* r_new_vector(enum r_type type, r_ssize n) {
   return Rf_allocVector(type, n);
 }
-
-extern sexp* r_shared_empty_list;
 
 
 static inline
