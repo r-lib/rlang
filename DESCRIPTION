@@ -29,6 +29,7 @@ Suggests:
     cli,
     covr,
     crayon,
+    fs,
     glue,
     magrittr,
     methods,
@@ -36,6 +37,7 @@ Suggests:
     pillar,
     rmarkdown,
     testthat (>= 3.0.0),
+    usethis,
     vctrs (>= 0.2.3),
     withr
 Enhances: 
