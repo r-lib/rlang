@@ -140,16 +140,16 @@ sexp* node_push_classes(sexp* node, const char** tags) {
   return attrs;
 }
 
-void r_push_classes(sexp* x, const char** tags) {
+void r_attrib_push_classes(sexp* x, const char** tags) {
   sexp* attrs = r_attrib(x);
   attrs = node_push_classes(attrs, tags);
   SET_ATTRIB(x, attrs);
   SET_OBJECT(x, 1);
 }
-void r_push_class(sexp* x, const char* tag) {
+void r_attrib_push_class(sexp* x, const char* tag) {
   static const char* tags[2] = { "", NULL };
   tags[0] = tag;
-  r_push_classes(x, tags);
+  r_attrib_push_classes(x, tags);
 }
 
 bool r_is_named(sexp* x) {

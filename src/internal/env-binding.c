@@ -58,7 +58,7 @@ sexp* rlang_env_get_list(sexp* env, sexp* nms, sexp* inherit, sexp* closure_env)
   r_ssize n = r_length(nms);
 
   sexp* out = KEEP(r_new_vector(r_type_list, n));
-  r_poke_names(out, nms);
+  r_attrib_poke_names(out, nms);
 
   sexp* const * p_nms = r_chr_deref_const(nms);
 
@@ -101,7 +101,7 @@ sexp* rlang_env_has(sexp* env, sexp* nms, sexp* inherit) {
     }
   }
 
-  r_poke_names(out, nms);
+  r_attrib_poke_names(out, nms);
   FREE(1);
   return out;
 }
@@ -206,7 +206,7 @@ sexp* rlang_env_bind(sexp* env,
   sexp* old = r_null;
   if (c_needs_old) {
     old = KEEP(r_new_vector(r_type_list, n));
-    r_poke_names(old, names);
+    r_attrib_poke_names(old, names);
   } else {
     KEEP(old);
   }

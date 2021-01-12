@@ -7,7 +7,7 @@ sexp* new_preserved_empty_list() {
   r_mark_shared(empty_list);
 
   sexp* nms = KEEP(r_new_vector(r_type_character, 0));
-  r_poke_names(empty_list, nms);
+  r_attrib_poke_names(empty_list, nms);
   FREE(1);
 
   return empty_list;

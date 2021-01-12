@@ -749,7 +749,7 @@ static sexp* dots_finalise(struct dots_capture_info* capture_info, sexp* dots) {
     // Serialised unicode points might arise when unquoting lists
     // because of the conversion to pairlist
     nms = KEEP(rlang_unescape_character(nms));
-    r_poke_names(dots, nms);
+    r_attrib_poke_names(dots, nms);
 
     dots = KEEP(maybe_auto_name(dots, capture_info->named));
 

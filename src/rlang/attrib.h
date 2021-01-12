@@ -29,25 +29,23 @@ void r_attrib_poke(sexp* x, sexp* sym, sexp* value) {
 sexp* r_attrib_push(sexp* x, sexp* tag, sexp* value);
 sexp* r_attrib_set(sexp* x, sexp* tag, sexp* value);
 
-
-void r_push_classes(sexp* x, const char** tags);
-void r_push_class(sexp* x, const char* tag);
-
 static inline
 sexp* r_class(sexp* x) {
   return r_attrib_get(x, r_syms_class);
 }
 static inline
-void r_poke_class(sexp* x, sexp* classes) {
+void r_attrib_poke_class(sexp* x, sexp* classes) {
   r_attrib_poke(x, r_syms_class, classes);
 }
+void r_attrib_push_classes(sexp* x, const char** tags);
+void r_attrib_push_class(sexp* x, const char* tag);
 
 static inline
 sexp* r_names(sexp* x) {
   return r_attrib_get(x, r_syms_names);
 }
 static inline
-void r_poke_names(sexp* x, sexp* nms) {
+void r_attrib_poke_names(sexp* x, sexp* nms) {
   r_attrib_poke(x, r_syms_names, nms);
 }
 

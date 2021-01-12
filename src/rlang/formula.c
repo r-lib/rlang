@@ -96,7 +96,7 @@ sexp* new_raw_formula(sexp* lhs, sexp* rhs, sexp* env) {
 }
 sexp* r_new_formula(sexp* lhs, sexp* rhs, sexp* env) {
   sexp* f = KEEP(new_raw_formula(lhs, rhs, env));
-  r_push_class(f, "formula");
+  r_attrib_push_class(f, "formula");
 
   FREE(1);
   return f;

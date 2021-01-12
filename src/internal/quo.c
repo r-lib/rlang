@@ -9,7 +9,7 @@ sexp* rlang_new_quosure(sexp* expr, sexp* env) {
     r_abort("`env` must be an environment");
   }
   sexp* quo = KEEP(new_raw_formula(r_null, expr, env));
-  r_push_classes(quo, quo_tags);
+  r_attrib_push_classes(quo, quo_tags);
   FREE(1);
   return quo;
 }

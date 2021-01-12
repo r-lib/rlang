@@ -152,7 +152,7 @@ sexp* names_dispatch(sexp* x, sexp* env) {
   return r_eval(names_call, env);
 }
 
-// Use `names<-()` rather than setting names directly with `r_poke_names()`
+// Use `names<-()` rather than setting names directly with `r_attrib_poke_names()`
 // for genericity and for speed. `names<-()` can shallow duplicate `x`'s
 // attributes using ALTREP wrappers, which is not in R's public API.
 static inline
