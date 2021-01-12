@@ -49,6 +49,14 @@ static inline
 sexp* const * r_chr_deref_const(sexp* x) {
   return (sexp* const *) STRING_PTR(x);
 }
+static inline
+sexp* const * r_list_deref_const(sexp* x) {
+#if (R_VERSION < R_Version(3, 5, 0))
+  return ((sexp* const *) STRING_PTR(x));
+#else
+  return ((sexp* const *) DATAPTR_RO(x));
+#endif
+}
 
 static inline
 int r_lgl_get(sexp* x, r_ssize i) {

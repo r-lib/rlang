@@ -3,17 +3,10 @@
 
 #define R_NO_REMAP
 #include <Rinternals.h>
+#include <Rversion.h>
 #include <inttypes.h>
 #include <stdbool.h>
 #include "rlang-types.h"
-
-
-#include <Rversion.h>
-#if (R_VERSION < R_Version(3, 5, 0))
-# define r_list_deref_const(x) ((sexp* const *) STRING_PTR(x))
-#else
-# define r_list_deref_const(x) ((sexp* const *) DATAPTR_RO(x))
-#endif
 
 extern sexp* r_shared_true;
 extern sexp* r_shared_false;
