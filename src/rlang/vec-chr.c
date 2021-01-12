@@ -57,7 +57,7 @@ void r_vec_poke_n(sexp* x, r_ssize offset,
                   sexp* y, r_ssize from, r_ssize n);
 
 sexp* chr_prepend(sexp* chr, sexp* r_string) {
-  if (r_is_null(chr)) {
+  if (chr == r_null) {
     return r_str_as_character(r_string);
   } else {
     validate_chr_setter(chr, r_string);
@@ -73,7 +73,7 @@ sexp* chr_prepend(sexp* chr, sexp* r_string) {
   return out;
 }
 sexp* chr_append(sexp* chr, sexp* r_str) {
-  if (r_is_null(chr)) {
+  if (chr == r_null) {
     return r_str_as_character(r_str);
   }
   validate_chr_setter(chr, r_str);

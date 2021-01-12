@@ -33,7 +33,7 @@ sexp* rlang_names2(sexp* x, sexp* env) {
     nms = KEEP(r_names(x));
   }
 
-  if (r_is_null(nms)) {
+  if (nms == r_null) {
     r_ssize n = r_length(x);
     nms = KEEP(r_new_vector(r_type_character, n));
     r_chr_fill(nms, r_strs_empty);
@@ -89,7 +89,7 @@ sexp* rlang_set_names(sexp* x, sexp* mold, sexp* nm, sexp* env) {
   }
 
   if (r_is_function(nm) || r_is_formula(nm, -1, -1)) {
-    if (r_is_null(r_names(mold))) {
+    if (r_names(mold) == r_null) {
       mold = KEEP_N(eval_as_character(mold, env), &n_kept);
     } else {
       mold = KEEP_N(rlang_names2(mold, env), &n_kept);

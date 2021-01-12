@@ -52,11 +52,6 @@ bool r_is_missing(sexp* x) {
 }
 
 static inline
-bool r_is_null(sexp* x) {
-  return x == R_NilValue;
-}
-
-static inline
 sexp* r_copy(sexp* x) {
   return Rf_duplicate(x);
 }
