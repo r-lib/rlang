@@ -1,10 +1,5 @@
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
-
-// Compile with `-fvisibility=hidden -DHAVE_VISIBILITY_ATTRIBUTE` if you link to this library
-#include <R_ext/Visibility.h>
-#define export attribute_visible extern
-
 #include <rlang.h>
 
 // Callable from other packages
@@ -372,7 +367,7 @@ extern void rlang_print_backtrace(bool full);
 // From xxhash.h
 extern uint64_t XXH3_64bits(const void*, size_t);
 
-export
+r_visible
 void R_init_rlang(DllInfo* dll) {
   R_RegisterCCallable("rlang", "rlang_new_quosure", (DL_FUNC) &rlang_new_quosure);
   R_RegisterCCallable("rlang", "rlang_is_quosure", (DL_FUNC) &rlang_is_quosure);

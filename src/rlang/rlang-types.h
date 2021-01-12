@@ -4,6 +4,13 @@
 
 #define R_NO_REMAP
 #include <Rinternals.h>
+#include <R_ext/Visibility.h>
+
+// Use `r_visible` to mark your init function. Then users can compile
+// with `-fvisibility=hidden -DHAVE_VISIBILITY_ATTRIBUTE` to link to
+// your library (as opposed to dynamically loading it) without risking
+// symbol clashes.
+#define r_visible attribute_visible extern
 
 typedef struct SEXPREC sexp;
 typedef Rcomplex r_complex_t;
