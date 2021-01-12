@@ -1,5 +1,6 @@
 #include <rlang.h>
 #include "../internal/utils.h"
+#include "../internal/vec.h"
 
 
 // attrs.c

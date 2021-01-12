@@ -76,44 +76,6 @@ void r_vec_poke_range(sexp* x, r_ssize offset,
 }
 
 
-// Coercion ----------------------------------------------------------
-
-sexp* rlang_vec_coercer(sexp* dest) {
-  switch(r_typeof(dest)) {
-  case LGLSXP: return rlang_ns_get("as_logical");
-  case INTSXP: return rlang_ns_get("as_integer");
-  case REALSXP: return rlang_ns_get("as_double");
-  case CPLXSXP: return rlang_ns_get("as_complex");
-  case STRSXP: return rlang_ns_get("as_character");
-  case RAWSXP: return rlang_ns_get("as_bytes");
-  default: r_abort("No coercion implemented for `%s`", Rf_type2str(r_typeof(dest)));
-  }
-}
-
-void r_vec_poke_coerce_n(sexp* x, r_ssize offset,
-                         sexp* y, r_ssize from, r_ssize n) {
-  if (r_typeof(y) == r_typeof(x)) {
-    r_vec_poke_n(x, offset, y, from, n);
-    return ;
-  }
-  if (r_is_object(y)) {
-    r_abort("Can't splice S3 objects");
-  }
-
-  // FIXME: This callbacks to rlang R coercers with an extra copy.
-  sexp* coercer = rlang_vec_coercer(x);
-  sexp* call = KEEP(Rf_lang2(coercer, y));
-  sexp* coerced = KEEP(r_eval(call, R_BaseEnv));
-
-  r_vec_poke_n(x, offset, coerced, from, n);
-  FREE(2);
-}
-
-void r_vec_poke_coerce_range(sexp* x, r_ssize offset,
-                             sexp* y, r_ssize from, r_ssize to) {
-  r_vec_poke_coerce_n(x, offset, y, from, to - from + 1);
-}
-
 sexp* r_shared_empty_list = NULL;
 
 void r_init_library_vec() {
