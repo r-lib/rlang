@@ -598,7 +598,7 @@ sexp* dots_as_list(sexp* dots, struct dots_capture_info* capture_info) {
   sexp* out_names = r_null;
   if (capture_info->type != DOTS_VALUE || any_name(dots, capture_info->splice)) {
     out_names = KEEP_N(r_new_vector(r_type_character, capture_info->count), &n_kept);
-    r_push_names(out, out_names);
+    r_attrib_push(out, r_syms_names, out_names);
   }
 
   for (r_ssize i = 0, count = 0; dots != r_null; ++i, dots = r_node_cdr(dots)) {
@@ -693,7 +693,7 @@ static sexp* dots_keep(sexp* dots, sexp* nms, bool first) {
 
   sexp* out = KEEP(r_new_vector(r_type_list, out_n));
   sexp* out_nms = KEEP(r_new_vector(r_type_character, out_n));
-  r_push_names(out, out_nms);
+  r_attrib_push(out, r_syms_names, out_nms);
 
   sexp* const * p_nms = r_chr_deref_const(nms);
   const int* p_dups = r_lgl_deref_const(dups);

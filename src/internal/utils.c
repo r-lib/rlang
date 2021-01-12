@@ -191,7 +191,7 @@ sexp* r_new_list(sexp* x, const char* name) {
 
   if (name) {
     sexp* nms = KEEP(r_new_vector(r_type_character, 1));
-    r_push_names(x, nms);
+    r_attrib_push(x, r_syms_names, nms);
     r_chr_poke(nms, 0, r_str(name));
     FREE(1);
   }

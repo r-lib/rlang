@@ -30,11 +30,6 @@ sexp* r_attrib_push(sexp* x, sexp* tag, sexp* value);
 sexp* r_attrib_set(sexp* x, sexp* tag, sexp* value);
 
 
-static inline
-void r_push_names(sexp* x, sexp* value) {
-  r_attrib_push(x, r_syms_names, value);
-}
-
 void r_push_classes(sexp* x, const char** tags);
 void r_push_class(sexp* x, const char* tag);
 
