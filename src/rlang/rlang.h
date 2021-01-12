@@ -8,8 +8,8 @@
 #include <stdbool.h>
 #include "rlang-types.h"
 
-extern sexp* r_shared_true;
-extern sexp* r_shared_false;
+
+sexp* r_init_library();
 
 r_ssize r_as_ssize(sexp* n);
 
@@ -39,8 +39,6 @@ r_ssize r_as_ssize(sexp* n);
 #include "vec-chr.h"
 #include "vec-lgl.h"
 #include "vendor.h"
-
-sexp* r_init_library();
 
 
 #endif

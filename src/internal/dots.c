@@ -778,7 +778,7 @@ sexp* rlang_exprs_interp(sexp* frame_env,
   capture_info = init_capture_info(DOTS_EXPR,
                                    named,
                                    ignore_empty,
-                                   r_shared_true,
+                                   r_true,
                                    unquote_names,
                                    homonyms,
                                    check_assign,
@@ -803,7 +803,7 @@ sexp* rlang_quos_interp(sexp* frame_env,
   capture_info = init_capture_info(DOTS_QUO,
                                    named,
                                    ignore_empty,
-                                   r_shared_true,
+                                   r_true,
                                    unquote_names,
                                    homonyms,
                                    check_assign,
@@ -894,22 +894,22 @@ sexp* rlang_ext_dots_values(sexp* args) {
 }
 sexp* rlang_env_dots_values(sexp* env) {
   return dots_values_impl(env,
-                          r_shared_false,
+                          r_false,
                           rlang_objs_trailing,
-                          r_shared_false,
-                          r_shared_true,
+                          r_false,
+                          r_true,
                           rlang_objs_keep,
-                          r_shared_false,
+                          r_false,
                           false);
 }
 sexp* rlang_env_dots_list(sexp* env) {
   return dots_values_impl(env,
-                          r_shared_false,
+                          r_false,
                           rlang_objs_trailing,
-                          r_shared_false,
-                          r_shared_true,
+                          r_false,
+                          r_true,
                           rlang_objs_keep,
-                          r_shared_false,
+                          r_false,
                           true);
 }
 

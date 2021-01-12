@@ -3,7 +3,11 @@
 
 #include <string.h>
 
+extern sexp* r_true;
+extern sexp* r_false;
+
 extern sexp* r_shared_empty_list;
+
 extern sexp* r_chrs_empty;
 extern sexp* r_strs_empty;
 #define r_strings_na R_NaString
@@ -145,9 +149,9 @@ sexp* r_chr_n(const char** strings);
 static inline
 sexp* r_shared_lgl(bool x) {
   if (x) {
-    return r_shared_true;
+    return r_true;
   } else {
-    return r_shared_false;
+    return r_false;
   }
 }
 

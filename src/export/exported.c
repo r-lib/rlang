@@ -601,10 +601,10 @@ sexp* rlang_is_finite(sexp* x) {
 sexp* rlang_is_list(sexp* x, sexp* n_) {
   r_ssize n = validate_n(n_);
   if (r_typeof(x) != r_type_list) {
-    return r_shared_false;
+    return r_false;
   }
   if (n < 0) {
-    return r_shared_true;
+    return r_true;
   }
   return r_shared_lgl(r_length(x) == n);
 }
@@ -648,17 +648,17 @@ sexp* rlang_is_raw(sexp* x, sexp* n_) {
 
 sexp* rlang_is_string(sexp* x, sexp* string) {
   if (r_typeof(x) != r_type_character || r_length(x) != 1) {
-    return r_shared_false;
+    return r_false;
   }
 
   sexp* value = r_chr_get(x, 0);
 
   if (value == NA_STRING) {
-    return r_shared_false;
+    return r_false;
   }
 
   if (string == r_null) {
-    return r_shared_true;
+    return r_true;
   }
 
   if (!rlang_is_string(string, r_null)) {

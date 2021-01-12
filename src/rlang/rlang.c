@@ -62,9 +62,6 @@ void r_init_library_sym();
 void r_init_library_vec();
 void r_init_library_vendor();
 
-sexp* r_shared_true;
-sexp* r_shared_false;
-
 static sexp* shared_x_env;
 static sexp* shared_xy_env;
 static sexp* shared_xyz_env;
@@ -84,16 +81,6 @@ SEXP r_init_library() {
   r_init_library_stack();
   r_init_library_vec();
   r_init_library_vendor();
-
-  r_shared_true = r_new_vector(r_type_logical, 1);
-  r_mark_precious(r_shared_true);
-  r_mark_shared(r_shared_true);
-  *r_lgl_deref(r_shared_true) = 1;
-
-  r_shared_false = r_new_vector(r_type_logical, 1);
-  r_mark_precious(r_shared_false);
-  r_mark_shared(r_shared_false);
-  *r_lgl_deref(r_shared_false) = 0;
 
   shared_x_env = r_parse_eval("new.env(hash = FALSE, parent = baseenv(), size = 1L)", r_base_env);
   r_mark_precious(shared_x_env);

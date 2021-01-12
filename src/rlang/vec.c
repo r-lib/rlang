@@ -5,7 +5,8 @@
 sexp* r_shared_empty_list = NULL;
 sexp* r_chrs_empty = NULL;
 sexp* r_strs_empty = NULL;
-
+sexp* r_true = NULL;
+sexp* r_false = NULL;
 
 static
 r_ssize ptrs_array_length(void** ptrs) {
@@ -116,4 +117,14 @@ void r_init_library_vec() {
   r_mark_precious(r_chrs_empty);
 
   r_strs_empty = r_chr_get(r_chrs_empty, 0);
+
+  r_true = r_new_vector(r_type_logical, 1);
+  r_mark_precious(r_true);
+  r_mark_shared(r_true);
+  *r_lgl_deref(r_true) = 1;
+
+  r_false = r_new_vector(r_type_logical, 1);
+  r_mark_precious(r_false);
+  r_mark_shared(r_false);
+  *r_lgl_deref(r_false) = 0;
 }

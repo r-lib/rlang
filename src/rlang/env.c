@@ -153,7 +153,7 @@ void r__env_unbind(sexp* env, sexp* sym) {
   // Check if binding exists to avoid `rm()` warning
   if (r_env_has(env, sym)) {
     sexp* nm = KEEP(r_sym_as_character(sym));
-    eval_with_xyz(remove_call, env, nm, r_shared_false);
+    eval_with_xyz(remove_call, env, nm, r_false);
     FREE(1);
   }
 }

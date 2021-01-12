@@ -7,7 +7,7 @@
 // Should only be used in development tools
 sexp* rlang_env_unlock(sexp* env) {
   UNLOCK_FRAME(env);
-  return FRAME_IS_LOCKED(env) == 0 ? r_shared_true : r_shared_false;
+  return FRAME_IS_LOCKED(env) == 0 ? r_true : r_false;
 }
 
 
