@@ -1,5 +1,9 @@
 #include "rlang.h"
 
+// From rlang/vec.c
+void r_vec_poke_n(sexp* x, r_ssize offset,
+                  sexp* y, r_ssize from, r_ssize n);
+
 
 #define BUFSIZE 8192
 

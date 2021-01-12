@@ -2,6 +2,12 @@
 #include "../internal/utils.h"
 #include "../internal/vec.h"
 
+// From rlang/vec.c
+void r_vec_poke_n(sexp* x, r_ssize offset,
+                  sexp* y, r_ssize from, r_ssize n);
+void r_vec_poke_range(sexp* x, r_ssize offset,
+                      sexp* y, r_ssize from, r_ssize to);
+
 
 // attrs.c
 

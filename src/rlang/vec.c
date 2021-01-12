@@ -3,6 +3,7 @@
 #include <stdint.h>
 
 
+// FIXME: Does this have a place in the library?
 void r_vec_poke_n(sexp* x, r_ssize offset,
                   sexp* y, r_ssize from, r_ssize n) {
 

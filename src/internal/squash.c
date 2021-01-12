@@ -4,6 +4,10 @@
 
 static r_ssize r_vec_length(sexp* x);
 
+// From rlang/vec.c
+void r_vec_poke_n(sexp* x, r_ssize offset,
+                  sexp* y, r_ssize from, r_ssize n);
+
 
 // The vector to splice might be boxed in a sentinel wrapper
 static sexp* maybe_unbox(sexp* x, bool (*is_spliceable)(sexp*)) {

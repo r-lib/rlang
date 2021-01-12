@@ -74,6 +74,11 @@ static void validate_chr_setter(sexp* chr, sexp* r_string) {
     r_abort("`r_string` must be an internal R string");
   }
 }
+
+// From rlang/vec.c
+void r_vec_poke_n(sexp* x, r_ssize offset,
+                  sexp* y, r_ssize from, r_ssize n);
+
 sexp* chr_prepend(sexp* chr, sexp* r_string) {
   if (r_is_null(chr)) {
     return r_str_as_character(r_string);

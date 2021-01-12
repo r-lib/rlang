@@ -118,11 +118,6 @@ sexp* r_new_vector(enum r_type type, r_ssize n) {
   return Rf_allocVector(type, n);
 }
 
-void r_vec_poke_n(sexp* x, r_ssize offset,
-                  sexp* y, r_ssize from, r_ssize n);
-void r_vec_poke_range(sexp* x, r_ssize offset,
-                      sexp* y, r_ssize from, r_ssize to);
-
 extern sexp* r_shared_empty_list;
 
 
