@@ -1,14 +1,5 @@
 #include "rlang.h"
 
-bool r_is_true(sexp* x) {
-  if (!r_is_bool(x)) {
-    return false;
-  } else {
-    int value = LOGICAL(x)[0];
-    return value == NA_LOGICAL ? 0 : value;
-  }
-}
-
 r_ssize r_lgl_sum(sexp* x, bool na_true) {
   if (r_typeof(x) != r_type_logical) {
     r_abort("Internal error: Excepted logical vector in `r_lgl_sum()`");

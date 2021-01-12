@@ -3,8 +3,11 @@
 
 #include <string.h>
 
-
 extern sexp* r_shared_empty_list;
+extern sexp* r_chrs_empty;
+extern sexp* r_strings_empty;
+#define r_strings_na R_NaString
+
 
 static inline
 int* r_lgl_deref(sexp* x) {
@@ -77,8 +80,16 @@ r_complex_t r_cpl_get(sexp* x, r_ssize i) {
   return COMPLEX(x)[i];
 }
 static inline
-sexp* r_list_get(sexp* list, r_ssize i) {
-  return VECTOR_ELT(list, i);
+sexp* r_chr_get(sexp* x, r_ssize i) {
+  return STRING_ELT(x, i);
+}
+static inline
+const char* r_chr_get_c_string(sexp* x, r_ssize i) {
+  return CHAR(r_chr_get(x, i));
+}
+static inline
+sexp* r_list_get(sexp* x, r_ssize i) {
+  return VECTOR_ELT(x, i);
 }
 
 static inline
@@ -98,26 +109,77 @@ void r_cpl_poke(sexp* x, r_ssize i, r_complex_t y) {
   COMPLEX(x)[i] = y;
 }
 static inline
-void r_list_poke(sexp* list, r_ssize i, sexp* elt) {
-  SET_VECTOR_ELT(list, i, elt);
+void r_chr_poke(sexp* x, r_ssize i, sexp* y) {
+  SET_STRING_ELT(x, i, y);
 }
-
-
 static inline
-bool r_is_int(SEXP x) {
-  return r_typeof(x) == r_type_integer &&
-    r_length(x) == 1 &&
-    r_int_get(x, 0) != NA_INTEGER;
+void r_list_poke(sexp* x, r_ssize i, sexp* y) {
+  SET_VECTOR_ELT(x, i, y);
 }
 
-static inline
-sexp* r_int(int x) {
-  return Rf_ScalarInteger(x);
-}
 
 static inline
 sexp* r_new_vector(enum r_type type, r_ssize n) {
   return Rf_allocVector(type, n);
+}
+static inline
+sexp* r_new_string(const char* c_string) {
+  return Rf_mkChar(c_string);
+}
+
+static inline
+sexp* r_lgl(bool x) {
+  return Rf_ScalarLogical(x);
+}
+static inline
+sexp* r_int(int x) {
+  return Rf_ScalarInteger(x);
+}
+static inline
+sexp* r_chr(const char* c_string) {
+  return Rf_mkString(c_string);
+}
+sexp* r_chr_n(const char** strings);
+
+// FIXME: Redundant with `r_lgl()`
+static inline
+sexp* r_shared_lgl(bool x) {
+  if (x) {
+    return r_shared_true;
+  } else {
+    return r_shared_false;
+  }
+}
+
+static inline
+bool r_is_bool(SEXP x) {
+  return
+    r_typeof(x) == r_type_logical &&
+    r_length(x) == 1 &&
+    r_lgl_get(x, 0) != NA_LOGICAL;
+}
+static inline
+bool r_is_int(SEXP x) {
+  return
+    r_typeof(x) == r_type_integer &&
+    r_length(x) == 1 &&
+    r_int_get(x, 0) != NA_INTEGER;
+}
+static inline
+bool r_is_true(sexp* x) {
+  if (!r_is_bool(x)) {
+    return false;
+  } else {
+    int value = r_lgl_get(x, 0);
+    return value == NA_LOGICAL ? 0 : value;
+  }
+}
+static inline
+bool r_is_string(sexp* x) {
+  return
+    r_typeof(x) == r_type_character &&
+    r_length(x) == 1 &&
+    r_chr_get(x, 0) != R_NaString;
 }
 
 

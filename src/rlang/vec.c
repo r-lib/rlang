@@ -2,8 +2,34 @@
 #include <math.h>
 #include <stdint.h>
 
-
 sexp* r_shared_empty_list = NULL;
+sexp* r_chrs_empty = NULL;
+sexp* r_strings_empty = NULL;
+
+
+static
+r_ssize ptrs_array_length(void** ptrs) {
+  r_ssize n = 0;
+
+  while (*ptrs) {
+    ++ptrs;
+    ++n;
+  }
+
+  return n;
+}
+
+sexp* r_chr_n(const char** strings) {
+  r_ssize n = ptrs_array_length((void**) strings);
+  sexp* out = KEEP(r_new_vector(STRSXP, n));
+
+  for (r_ssize i = 0; i < n; ++i) {
+    r_chr_poke(out, i, r_new_string(strings[i]));
+  }
+
+  FREE(1);
+  return out;
+}
 
 
 // FIXME: Does this have a place in the library?
@@ -84,4 +110,10 @@ void r_init_library_vec() {
   r_shared_empty_list = r_new_vector(r_type_list, 0);
   r_mark_shared(r_shared_empty_list);
   r_mark_precious(r_shared_empty_list);
+
+  r_chrs_empty = r_chr("");
+  r_mark_shared(r_chrs_empty);
+  r_mark_precious(r_chrs_empty);
+
+  r_strings_empty = r_chr_get(r_chrs_empty, 0);
 }

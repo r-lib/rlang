@@ -2,29 +2,6 @@
 #include "rlang.h"
 
 
-r_ssize ptrs_array_length(void** ptrs) {
-  r_ssize n = 0;
-
-  while (*ptrs) {
-    ++ptrs;
-    ++n;
-  }
-
-  return n;
-}
-
-sexp* r_chr_n(const char** strings) {
-  r_ssize n = ptrs_array_length((void**) strings);
-  sexp* out = KEEP(r_new_vector(STRSXP, n));
-
-  for (r_ssize i = 0; i < n; ++i) {
-    r_chr_poke(out, i, r_new_string(strings[i]));
-  }
-
-  FREE(1);
-  return out;
-}
-
 r_ssize r_chr_detect_index(sexp* chr, const char* c_string) {
   r_ssize n = r_length(chr);
 
@@ -109,15 +86,4 @@ sexp* chr_append(sexp* chr, sexp* r_str) {
 
   FREE(1);
   return out;
-}
-
-sexp* r_chrs_empty = NULL;
-sexp* r_strings_empty = NULL;
-
-void r_init_library_vec_chr() {
-  r_chrs_empty = r_chr("");
-  r_mark_shared(r_chrs_empty);
-  r_mark_precious(r_chrs_empty);
-
-  r_strings_empty = r_chr_get(r_chrs_empty, 0);
 }

@@ -4,29 +4,9 @@
 #include <string.h>
 
 
-#define r_strings_na R_NaString
-
-extern sexp* r_chrs_empty;
-extern sexp* r_strings_empty;
-
-
-static inline
-sexp* r_chr_get(sexp* chr, r_ssize i) {
-  return STRING_ELT(chr, i);
-}
-static inline
-void r_chr_poke(sexp* chr, r_ssize i, sexp* elt) {
-  SET_STRING_ELT(chr, i, elt);
-}
-
 static inline
 const char* r_str_c_string(sexp* str) {
   return CHAR(str);
-}
-
-static inline
-const char* r_chr_get_c_string(sexp* chr, r_ssize i) {
-  return CHAR(r_chr_get(chr, i));
 }
 
 bool r_chr_has(sexp* chr, const char* c_string);
@@ -35,25 +15,6 @@ r_ssize r_chr_detect_index(sexp* chr, const char* c_string);
 
 void r_chr_fill(sexp* chr, sexp* value);
 
-static inline
-sexp* r_new_string(const char* c_string) {
-  return Rf_mkChar(c_string);
-}
-
-static inline
-sexp* r_chr(const char* c_string) {
-  return Rf_mkString(c_string);
-}
-sexp* r_chr_n(const char** strings);
-
-
-static inline
-bool r_is_string(sexp* x) {
-  return
-    r_typeof(x) == r_type_character &&
-    r_length(x) == 1 &&
-    r_chr_get(x, 0) != r_strings_na;
-}
 
 static inline
 sexp* r_str_as_character(sexp* x) {
