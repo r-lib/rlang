@@ -21,6 +21,7 @@
 #include "squash.c"
 #include "sym-unescape.c"
 #include "utils.c"
+#include "vec.c"
 #include "vec-raw.c"
 #include "weakref.c"
 

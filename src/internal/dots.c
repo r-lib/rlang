@@ -4,6 +4,7 @@
 #include "internal.h"
 #include "squash.h"
 #include "utils.h"
+#include "vec.h"
 
 sexp* rlang_ns_get(const char* name);
 static bool should_auto_name(sexp* named);

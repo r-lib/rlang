@@ -1,5 +1,6 @@
 #include <rlang.h>
 #include "internal.h"
+#include "vec.h"
 
 static sexp* c_fn = NULL;
 static sexp* as_character_call = NULL;

@@ -219,7 +219,6 @@ bool vec_find_first_duplicate(sexp* x, sexp* except, r_ssize* index) {
 }
 
 
-
 void rlang_init_utils() {
   warn_deprecated_call = r_parse("rlang:::warn_deprecated(x, id = y)");
   r_mark_precious(warn_deprecated_call);

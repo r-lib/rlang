@@ -46,6 +46,7 @@ internal-files = \
         internal/squash.c \
         internal/sym-unescape.c \
         internal/utils.c \
+        internal/vec.c \
         internal/vec-raw.c \
         internal/weakref.c
 

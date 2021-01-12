@@ -1,4 +1,5 @@
-#include "rlang.h"
+#include <rlang.h>
+#include "vec.h"
 
 static sexp* replace_na_(sexp* x, sexp* replacement, int start);
 static sexp* replace_na_vec_(sexp* x, sexp* replacement, int start);
