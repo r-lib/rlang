@@ -102,7 +102,6 @@ void r_list_poke(sexp* list, r_ssize i, sexp* elt) {
 
 
 bool r_is_vector(sexp* x, r_ssize n);
-bool r_is_scalar_atomic(sexp* x);
 bool r_is_atomic(sexp* x, r_ssize n);
 
 bool r_is_finite(sexp* x);

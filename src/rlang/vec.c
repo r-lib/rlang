@@ -19,9 +19,6 @@ bool r_is_atomic(sexp* x, r_ssize n) {
     return false;
   }
 }
-bool r_is_scalar_atomic(sexp* x) {
-  return r_is_atomic(x, 1);
-}
 
 bool r_is_vector(sexp* x, r_ssize n) {
   switch(r_typeof(x)) {
