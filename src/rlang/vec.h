@@ -6,7 +6,7 @@
 extern sexp* r_true;
 extern sexp* r_false;
 
-extern sexp* r_shared_empty_list;
+extern sexp* r_lists_empty;
 
 extern sexp* r_chrs_empty;
 extern sexp* r_strs_empty;

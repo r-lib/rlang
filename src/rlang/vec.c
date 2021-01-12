@@ -2,9 +2,9 @@
 #include <math.h>
 #include <stdint.h>
 
-sexp* r_shared_empty_list = NULL;
 sexp* r_chrs_empty = NULL;
 sexp* r_strs_empty = NULL;
+sexp* r_lists_empty = NULL;
 sexp* r_true = NULL;
 sexp* r_false = NULL;
 
@@ -108,9 +108,9 @@ void r_vec_poke_range(sexp* x, r_ssize offset,
 
 
 void r_init_library_vec() {
-  r_shared_empty_list = r_new_vector(r_type_list, 0);
-  r_mark_shared(r_shared_empty_list);
-  r_mark_precious(r_shared_empty_list);
+  r_lists_empty = r_new_vector(r_type_list, 0);
+  r_mark_shared(r_lists_empty);
+  r_mark_precious(r_lists_empty);
 
   r_chrs_empty = r_chr("");
   r_mark_shared(r_chrs_empty);
