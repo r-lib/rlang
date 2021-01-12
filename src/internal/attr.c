@@ -36,7 +36,7 @@ sexp* rlang_names2(sexp* x, sexp* env) {
   if (r_is_null(nms)) {
     r_ssize n = r_length(x);
     nms = KEEP(r_new_vector(r_type_character, n));
-    r_chr_fill(nms, r_strings_empty);
+    r_chr_fill(nms, r_strs_empty);
   } else {
     nms = KEEP(rlang_replace_na(nms, r_chrs_empty));
   }
@@ -57,7 +57,7 @@ sexp* node_names(sexp* x) {
     sexp* tag = r_node_tag(x);
 
     if (tag == r_null) {
-      SET_STRING_ELT(out, i, r_strings_empty);
+      SET_STRING_ELT(out, i, r_strs_empty);
     } else {
       SET_STRING_ELT(out, i, PRINTNAME(tag));
     }

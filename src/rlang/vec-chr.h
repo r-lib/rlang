@@ -55,7 +55,7 @@ bool r_str_is_name(sexp* str) {
   if (str == r_strings_na) {
     return false;
   }
-  if (str == r_strings_empty) {
+  if (str == r_strs_empty) {
     return false;
   }
   return true;

@@ -62,7 +62,7 @@ static sexp* new_condition_names(sexp* data) {
   }
 
   sexp* nms = KEEP(r_new_vector(r_type_character, r_length(data) + 1));
-  r_chr_poke(nms, 0, r_new_string("message"));
+  r_chr_poke(nms, 0, r_str("message"));
   r_vec_poke_n(nms, 1, data_nms, 0, r_length(nms) - 1);
 
   FREE(1);
@@ -82,7 +82,7 @@ sexp* r_new_condition(sexp* subclass, sexp* msg, sexp* data) {
   r_vec_poke_n(cnd, 1, data, 0, r_length(cnd) - 1);
 
   r_poke_names(cnd, KEEP(new_condition_names(data)));
-  r_poke_class(cnd, KEEP(chr_append(subclass, KEEP(r_new_string("condition")))));
+  r_poke_class(cnd, KEEP(chr_append(subclass, KEEP(r_str("condition")))));
 
   FREE(4);
   return cnd;

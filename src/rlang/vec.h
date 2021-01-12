@@ -5,7 +5,7 @@
 
 extern sexp* r_shared_empty_list;
 extern sexp* r_chrs_empty;
-extern sexp* r_strings_empty;
+extern sexp* r_strs_empty;
 #define r_strings_na R_NaString
 
 
@@ -122,10 +122,6 @@ static inline
 sexp* r_new_vector(enum r_type type, r_ssize n) {
   return Rf_allocVector(type, n);
 }
-static inline
-sexp* r_new_string(const char* c_string) {
-  return Rf_mkChar(c_string);
-}
 
 static inline
 sexp* r_lgl(bool x) {
@@ -134,6 +130,10 @@ sexp* r_lgl(bool x) {
 static inline
 sexp* r_int(int x) {
   return Rf_ScalarInteger(x);
+}
+static inline
+sexp* r_str(const char* c_string) {
+  return Rf_mkChar(c_string);
 }
 static inline
 sexp* r_chr(const char* c_string) {

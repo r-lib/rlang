@@ -176,7 +176,7 @@ sexp* nms_are_duplicated(sexp* nms, bool from_last) {
   sexp* const * p_nms = r_chr_deref_const(nms);
 
   for (r_ssize i = 0; i < n; ++i) {
-    if (p_nms[i] == r_strings_empty || p_nms[i] == r_strings_na) {
+    if (p_nms[i] == r_strs_empty || p_nms[i] == r_strings_na) {
       p_dups[i] = false;
     }
   }
@@ -192,7 +192,7 @@ sexp* r_new_list(sexp* x, const char* name) {
   if (name) {
     sexp* nms = KEEP(r_new_vector(r_type_character, 1));
     r_push_names(x, nms);
-    r_chr_poke(nms, 0, r_new_string(name));
+    r_chr_poke(nms, 0, r_str(name));
     FREE(1);
   }
 

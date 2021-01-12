@@ -399,7 +399,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
 
     // Ignore empty arguments
     if (expr == r_syms_missing
-        && (name == r_null || name == r_strings_empty)
+        && (name == r_null || name == r_strs_empty)
         && should_ignore(capture_info->ignore_empty, i, n)) {
       capture_info->needs_expansion = true;
       r_node_poke_car(node, empty_spliced_arg);
@@ -620,7 +620,7 @@ sexp* dots_as_list(sexp* dots, struct dots_capture_info* capture_info) {
         r_list_poke(out, count, value);
 
         sexp* name = r_nms_get(nms, i);
-        if (name != r_strings_empty) {
+        if (name != r_strs_empty) {
           r_chr_poke(out_names, count, name);
         }
 
@@ -631,7 +631,7 @@ sexp* dots_as_list(sexp* dots, struct dots_capture_info* capture_info) {
 
       sexp* name = r_node_tag(dots);
       if (name != r_null) {
-        r_chr_poke(out_names, count, r_new_string(r_sym_c_string(name)));
+        r_chr_poke(out_names, count, r_str(r_sym_c_string(name)));
       }
 
       ++count;
@@ -1016,8 +1016,8 @@ void rlang_init_dots(sexp* ns) {
 
   {
     sexp* splice_box_class = KEEP(r_new_vector(r_type_character, 2));
-    r_chr_poke(splice_box_class, 0, r_new_string("rlang_box_splice"));
-    r_chr_poke(splice_box_class, 1, r_new_string("rlang_box"));
+    r_chr_poke(splice_box_class, 0, r_str("rlang_box_splice"));
+    r_chr_poke(splice_box_class, 1, r_str("rlang_box"));
 
     splice_box_attrib = r_pairlist(splice_box_class);
     r_mark_precious(splice_box_attrib);
@@ -1037,8 +1037,8 @@ void rlang_init_dots(sexp* ns) {
 
   {
     sexp* quosures_class = KEEP(r_new_vector(r_type_character, 2));
-    r_chr_poke(quosures_class, 0, r_new_string("quosures"));
-    r_chr_poke(quosures_class, 1, r_new_string("list"));
+    r_chr_poke(quosures_class, 0, r_str("quosures"));
+    r_chr_poke(quosures_class, 1, r_str("list"));
 
     quosures_attrib = r_pairlist(quosures_class);
     r_mark_precious(quosures_attrib);

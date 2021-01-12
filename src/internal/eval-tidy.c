@@ -570,7 +570,7 @@ void rlang_init_eval_tidy() {
 
   empty_names_chr = r_new_vector(r_type_character, 2);
   r_mark_precious(empty_names_chr);
-  r_chr_poke(empty_names_chr, 0, r_new_string(""));
+  r_chr_poke(empty_names_chr, 0, r_str(""));
   r_chr_poke(empty_names_chr, 1, r_strings_na);
 
   quo_mask_flag_sym = r_sym(".__tidyeval_quosure_mask__.");

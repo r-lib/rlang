@@ -4,7 +4,7 @@
 
 sexp* r_shared_empty_list = NULL;
 sexp* r_chrs_empty = NULL;
-sexp* r_strings_empty = NULL;
+sexp* r_strs_empty = NULL;
 
 
 static
@@ -24,7 +24,7 @@ sexp* r_chr_n(const char** strings) {
   sexp* out = KEEP(r_new_vector(STRSXP, n));
 
   for (r_ssize i = 0; i < n; ++i) {
-    r_chr_poke(out, i, r_new_string(strings[i]));
+    r_chr_poke(out, i, r_str(strings[i]));
   }
 
   FREE(1);
@@ -115,5 +115,5 @@ void r_init_library_vec() {
   r_mark_shared(r_chrs_empty);
   r_mark_precious(r_chrs_empty);
 
-  r_strings_empty = r_chr_get(r_chrs_empty, 0);
+  r_strs_empty = r_chr_get(r_chrs_empty, 0);
 }
