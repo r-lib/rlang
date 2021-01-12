@@ -1,6 +1,8 @@
 #ifndef RLANG_SEXP_H
 #define RLANG_SEXP_H
 
+#define r_missing_arg R_MissingArg
+
 
 static inline
 r_ssize r_length(sexp* x) {
@@ -40,15 +42,6 @@ bool r_is_object(sexp* x) {
 static inline
 bool r_inherits(sexp* x, const char* tag) {
   return Rf_inherits(x, tag);
-}
-
-static inline
-sexp* r_missing_arg() {
-  return R_MissingArg;
-}
-static inline
-bool r_is_missing(sexp* x) {
-  return x == R_MissingArg;
 }
 
 static inline

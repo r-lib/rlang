@@ -400,7 +400,7 @@ sexp* rlang_tilde_eval(sexp* tilde, sexp* current_frame, sexp* caller_frame) {
     return base_tilde_eval(tilde, caller_frame);
   }
   if (quo_is_missing(tilde)) {
-    return(r_missing_arg());
+    return(r_missing_arg);
   }
 
   sexp* expr = rlang_quo_get_expr(tilde);
