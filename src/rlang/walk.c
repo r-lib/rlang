@@ -19,6 +19,7 @@ bool sexp_iterate_recurse(sexp* x,
                           sexp* parent,
                           enum r_node_relation rel,
                           sexp_iterator_fn* it) {
+ recurse:
   if (depth % 10 == 0) {
     R_CheckStack();
   }
@@ -41,13 +42,6 @@ bool sexp_iterate_recurse(sexp* x,
   case r_type_builtin:
   case r_type_string:
   case r_type_s4:
-    return true;
-  case r_type_pairlist:
-  case r_type_call:
-  case r_type_dots:
-    if (!sexp_iterate_recurse(CAR(x), depth, x, R_NODE_RELATION_node_car, it)) return false;
-    if (!sexp_iterate_recurse(CDR(x), depth, x, R_NODE_RELATION_node_cdr, it)) return false;
-    if (!sexp_iterate_recurse(TAG(x), depth, x, R_NODE_RELATION_node_tag, it)) return false;
     return true;
   case r_type_symbol:
     if (!sexp_iterate_recurse(PRINTNAME(x), depth, x, R_NODE_RELATION_symbol_string, it)) return false;
@@ -73,6 +67,16 @@ bool sexp_iterate_recurse(sexp* x,
     if (!sexp_iterate_recurse(EXTPTR_PROT(x), depth, x, R_NODE_RELATION_pointer_prot, it)) return false;
     if (!sexp_iterate_recurse(EXTPTR_TAG(x), depth, x, R_NODE_RELATION_pointer_tag, it)) return false;
     return true;
+
+  case r_type_pairlist:
+  case r_type_call:
+  case r_type_dots:
+    if (!sexp_iterate_recurse(TAG(x), depth, x, R_NODE_RELATION_node_tag, it)) return false;
+    if (!sexp_iterate_recurse(CAR(x), depth, x, R_NODE_RELATION_node_car, it)) return false;
+    parent = x;
+    x = CDR(x);
+    rel = R_NODE_RELATION_node_cdr;
+    goto recurse;
 
   case r_type_list:
   case r_type_expression:
