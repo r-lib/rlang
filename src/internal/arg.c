@@ -178,7 +178,7 @@ void arg_match0_abort(const char* msg, sexp* env) {
   r_abort(msg, arg_nm_chr);
 }
 
-void r_init_library_arg() {
+void rlang_init_arg(sexp* ns) {
   stop_arg_match_call = r_parse("stop_arg_match(x, y, z)");
   r_mark_precious(stop_arg_match_call);
 
