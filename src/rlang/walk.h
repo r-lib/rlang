@@ -47,14 +47,15 @@ enum r_node_raw_relation {
 };
 
 
-typedef bool (sexp_iterator_fn)(sexp* x,
+typedef bool (sexp_iterator_fn)(void* data,
+                                sexp* x,
                                 enum r_type type,
                                 int depth,
                                 sexp* parent,
                                 enum r_node_relation rel,
                                 r_ssize i);
 
-void sexp_iterate(sexp* x, sexp_iterator_fn* it);
+void sexp_iterate(sexp* x, sexp_iterator_fn* it, void* data);
 
 
 static inline
