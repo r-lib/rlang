@@ -6,11 +6,12 @@ bool sexp_iterate_recurse(sexp* x,
                           int depth,
                           sexp* parent,
                           enum r_node_relation rel,
+                          r_ssize i,
                           sexp_iterator_fn* it);
 
 
 void sexp_iterate(sexp* x, sexp_iterator_fn* it) {
-  sexp_iterate_recurse(x, 0, r_null, R_NODE_RELATION_root, it);
+  sexp_iterate_recurse(x, 0, r_null, R_NODE_RELATION_root, 0, it);
 }
 
 static
@@ -18,6 +19,7 @@ bool sexp_iterate_recurse(sexp* x,
                           int depth,
                           sexp* parent,
                           enum r_node_relation rel,
+                          r_ssize i,
                           sexp_iterator_fn* it) {
  recurse:
   if (depth % 10 == 0) {
@@ -25,11 +27,11 @@ bool sexp_iterate_recurse(sexp* x,
   }
 
   enum r_type type = r_typeof(x);
-  if (!it(x, type, depth, parent, rel)) return false;
+  if (!it(x, type, depth, parent, rel, i)) return false;
 
   ++depth;
 
-  if (!sexp_iterate_recurse(ATTRIB(x), depth, x, R_NODE_RELATION_attrib, it)) return false;
+  if (!sexp_iterate_recurse(ATTRIB(x), depth, x, R_NODE_RELATION_attrib, 0, it)) return false;
 
   switch (type) {
   case r_type_null:
@@ -44,35 +46,35 @@ bool sexp_iterate_recurse(sexp* x,
   case r_type_s4:
     return true;
   case r_type_symbol:
-    if (!sexp_iterate_recurse(PRINTNAME(x), depth, x, R_NODE_RELATION_symbol_string, it)) return false;
-    if (!sexp_iterate_recurse(SYMVALUE(x), depth, x, R_NODE_RELATION_symbol_value, it)) return false;
-    if (!sexp_iterate_recurse(INTERNAL(x), depth, x, R_NODE_RELATION_symbol_internal, it)) return false;
+    if (!sexp_iterate_recurse(PRINTNAME(x), depth, x, R_NODE_RELATION_symbol_string, 0, it)) return false;
+    if (!sexp_iterate_recurse(SYMVALUE(x), depth, x, R_NODE_RELATION_symbol_value, 0, it)) return false;
+    if (!sexp_iterate_recurse(INTERNAL(x), depth, x, R_NODE_RELATION_symbol_internal, 0, it)) return false;
     return true;
   case r_type_closure:
-    if (!sexp_iterate_recurse(FORMALS(x), depth, x, R_NODE_RELATION_function_fmls, it)) return false;
-    if (!sexp_iterate_recurse(BODY(x), depth, x, R_NODE_RELATION_function_body, it)) return false;
-    if (!sexp_iterate_recurse(CLOENV(x), depth, x, R_NODE_RELATION_function_env, it)) return false;
+    if (!sexp_iterate_recurse(FORMALS(x), depth, x, R_NODE_RELATION_function_fmls, 0, it)) return false;
+    if (!sexp_iterate_recurse(BODY(x), depth, x, R_NODE_RELATION_function_body, 0, it)) return false;
+    if (!sexp_iterate_recurse(CLOENV(x), depth, x, R_NODE_RELATION_function_env, 0, it)) return false;
     return true;
   case r_type_environment:
-    if (!sexp_iterate_recurse(FRAME(x), depth, x, R_NODE_RELATION_environment_frame, it)) return false;
-    if (!sexp_iterate_recurse(ENCLOS(x), depth, x, R_NODE_RELATION_environment_enclos, it)) return false;
-    if (!sexp_iterate_recurse(HASHTAB(x), depth, x, R_NODE_RELATION_environment_hashtab, it)) return false;
+    if (!sexp_iterate_recurse(FRAME(x), depth, x, R_NODE_RELATION_environment_frame, 0, it)) return false;
+    if (!sexp_iterate_recurse(ENCLOS(x), depth, x, R_NODE_RELATION_environment_enclos, 0, it)) return false;
+    if (!sexp_iterate_recurse(HASHTAB(x), depth, x, R_NODE_RELATION_environment_hashtab, 0, it)) return false;
     return true;
   case r_type_promise:
-    if (!sexp_iterate_recurse(PRVALUE(x), depth, x, R_NODE_RELATION_promise_value, it)) return false;
-    if (!sexp_iterate_recurse(PREXPR(x), depth, x, R_NODE_RELATION_promise_expr, it)) return false;
-    if (!sexp_iterate_recurse(PRENV(x), depth, x, R_NODE_RELATION_promise_env, it)) return false;
+    if (!sexp_iterate_recurse(PRVALUE(x), depth, x, R_NODE_RELATION_promise_value, 0, it)) return false;
+    if (!sexp_iterate_recurse(PREXPR(x), depth, x, R_NODE_RELATION_promise_expr, 0, it)) return false;
+    if (!sexp_iterate_recurse(PRENV(x), depth, x, R_NODE_RELATION_promise_env, 0, it)) return false;
     return true;
   case r_type_pointer:
-    if (!sexp_iterate_recurse(EXTPTR_PROT(x), depth, x, R_NODE_RELATION_pointer_prot, it)) return false;
-    if (!sexp_iterate_recurse(EXTPTR_TAG(x), depth, x, R_NODE_RELATION_pointer_tag, it)) return false;
+    if (!sexp_iterate_recurse(EXTPTR_PROT(x), depth, x, R_NODE_RELATION_pointer_prot, 0, it)) return false;
+    if (!sexp_iterate_recurse(EXTPTR_TAG(x), depth, x, R_NODE_RELATION_pointer_tag, 0, it)) return false;
     return true;
 
   case r_type_pairlist:
   case r_type_call:
   case r_type_dots:
-    if (!sexp_iterate_recurse(TAG(x), depth, x, R_NODE_RELATION_node_tag, it)) return false;
-    if (!sexp_iterate_recurse(CAR(x), depth, x, R_NODE_RELATION_node_car, it)) return false;
+    if (!sexp_iterate_recurse(TAG(x), depth, x, R_NODE_RELATION_node_tag, 0, it)) return false;
+    if (!sexp_iterate_recurse(CAR(x), depth, x, R_NODE_RELATION_node_car, 0, it)) return false;
     parent = x;
     x = CDR(x);
     rel = R_NODE_RELATION_node_cdr;
@@ -101,7 +103,7 @@ bool sexp_iterate_recurse(sexp* x,
     }
 
     for (r_ssize i = 0; i < n; ++i) {
-      if (!sexp_iterate_recurse(p_x[i], depth, x, vec_rel, it)) return false;
+      if (!sexp_iterate_recurse(p_x[i], depth, x, vec_rel, i, it)) return false;
     }
     return true;
   }

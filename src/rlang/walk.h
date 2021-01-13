@@ -51,7 +51,8 @@ typedef bool (sexp_iterator_fn)(sexp* x,
                                 enum r_type type,
                                 int depth,
                                 sexp* parent,
-                                enum r_node_relation rel);
+                                enum r_node_relation rel,
+                                r_ssize i);
 
 void sexp_iterate(sexp* x, sexp_iterator_fn* it);
 
