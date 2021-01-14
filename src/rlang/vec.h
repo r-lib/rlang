@@ -171,11 +171,10 @@ bool r_is_int(SEXP x) {
 }
 static inline
 bool r_is_true(sexp* x) {
-  if (!r_is_bool(x)) {
-    return false;
+  if (r_is_bool(x)) {
+    return r_lgl_get(x, 0);
   } else {
-    int value = r_lgl_get(x, 0);
-    return value == NA_LOGICAL ? 0 : value;
+    return false;
   }
 }
 static inline
