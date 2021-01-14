@@ -416,9 +416,7 @@ sexp* rlang_duplicate(sexp* x, sexp* shallow) {
 }
 
 sexp* rlang_sexp_address(sexp* x) {
-  static char str[1000];
-  snprintf(str, 1000, "%p", (void*) x);
-  return Rf_mkString(str);
+  return r_str_as_character(r_sexp_address(x));
 }
 
 sexp* rlang_poke_type(sexp* x, sexp* type) {

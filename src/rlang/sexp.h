@@ -93,5 +93,11 @@ bool r_is_identical(sexp* x, sexp* y) {
   return R_compute_identical(x, y, 16);
 }
 
+static inline
+sexp* r_sexp_address(sexp* x) {
+  static char buf[1000];
+  snprintf(buf, 1000, "%p", (void*) x);
+  return Rf_mkChar(buf);
+}
 
 #endif
