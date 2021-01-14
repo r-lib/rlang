@@ -60,6 +60,16 @@ sexp* r_poke_type(sexp* x, enum r_type type) {
 }
 
 static inline
+sexp* r_type_as_string(enum r_type type) {
+  return Rf_type2str(type);
+}
+static inline
+sexp* r_type_as_character(enum r_type type) {
+  sexp* str = KEEP(r_type_as_string(type));
+  sexp* out = Rf_ScalarString(str);
+  return FREE(1), out;
+}
+static inline
 const char* r_type_as_c_string(enum r_type type) {
   return CHAR(Rf_type2str(type));
 }
