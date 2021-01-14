@@ -55,12 +55,14 @@ sexp* rlang_new_dict(sexp* size, sexp* prevent_resize) {
   sexp* out = KEEP(r_new_vector(r_type_list, 2));
 
   struct r_dict dict = r_new_dict(r_int_get(size, 0));
+  KEEP(dict.shelter);
+
   dict.prevent_resize = r_lgl_get(prevent_resize, 0);
 
   r_list_poke(out, 0, r_copy_in_raw(&dict, sizeof(dict)));
   r_list_poke(out, 1, dict.shelter);
 
-  FREE(1);
+  FREE(2);
   return out;
 }
 
