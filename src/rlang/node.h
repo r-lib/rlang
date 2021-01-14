@@ -29,18 +29,11 @@ sexp* r_new_node3(sexp* car, sexp* cdr, sexp* tag) {
   return out;
 }
 
-static inline
-sexp* r_pairlist(sexp* car) {
-  return Rf_list1(car);
-}
-static inline
-sexp* r_pairlist2(sexp* car1, sexp* car2) {
-  return Rf_list2(car1, car2);
-}
-static inline
-sexp* r_pairlist3(sexp* car1, sexp* car2, sexp* car3) {
-  return Rf_list3(car1, car2, car3);
-}
+#define r_pairlist Rf_list1
+#define r_pairlist2 Rf_list2
+#define r_pairlist3 Rf_list3
+#define r_pairlist4 Rf_list4
+#define r_pairlist5 Rf_list5
 
 sexp* r_pairlist_find(sexp* node, sexp* tag);
 sexp* r_pairlist_rev(sexp* node);
