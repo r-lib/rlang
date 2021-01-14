@@ -7,13 +7,15 @@ void r_sexp_inspect(sexp* x) {
   FREE(1);
 }
 
-void r_browse(SEXP x) {
-  r_env_poke(R_GlobalEnv, Rf_install(".debug"), x);
+void r_browse(sexp* x) {
+  r_env_poke(r_global_env, r_sym(".debug"), x);
 
-  Rprintf("Object saved in `.debug`:\n");
-  Rf_PrintValue(x);
+  r_printf("Object saved in `.debug`:\n");
+  r_sexp_print(x);
 
-  r_browse_at(KEEP(r_peek_frame())); FREE(1);
+  sexp* frame = KEEP(r_peek_frame());
+  r_browse_at(frame);
+  FREE(1);
 }
 void r_browse_at(sexp* env) {
   // The NULL expression is needed because of a limitation in ESS
