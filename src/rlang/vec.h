@@ -188,7 +188,7 @@ bool r_is_string(sexp* x) {
 
 
 static inline
-sexp* r_copy_in_raw(void* src, size_t size) {
+sexp* r_copy_in_raw(const void* src, size_t size) {
   sexp* out = r_new_vector(r_type_raw, size);
   memcpy(r_raw_deref(out), src, size);
   return out;
