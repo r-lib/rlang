@@ -101,5 +101,7 @@ enum r_node_raw_relation r_node_raw_relation(enum r_node_relation rel) {
   }
 }
 
+const char* r_node_relation_as_c_string(enum r_node_relation rel);
+
 
 #endif

@@ -114,3 +114,41 @@ bool sexp_iterate_recurse(sexp* x,
     r_abort("Unimplemented type");
   }
 }
+
+
+const char* r_node_relation_as_c_string(enum r_node_relation rel) {
+  switch (rel) {
+  case R_NODE_RELATION_root: return "root";
+  case R_NODE_RELATION_attrib: return "attrib";
+
+  case R_NODE_RELATION_node_car: return "node_car";
+  case R_NODE_RELATION_node_cdr: return "node_cdr";
+  case R_NODE_RELATION_node_tag: return "node_tag";
+
+  case R_NODE_RELATION_symbol_string: return "symbol_string";
+  case R_NODE_RELATION_symbol_value: return "symbol_value";
+  case R_NODE_RELATION_symbol_internal: return "symbol_internal";
+
+  case R_NODE_RELATION_function_fmls: return "function_fmls";
+  case R_NODE_RELATION_function_body: return "function_body";
+  case R_NODE_RELATION_function_env: return "function_env";
+
+  case R_NODE_RELATION_environment_frame: return "environment_frame";
+  case R_NODE_RELATION_environment_enclos: return "environment_enclos";
+  case R_NODE_RELATION_environment_hashtab: return "environment_hashtab";
+
+  case R_NODE_RELATION_promise_value: return "promise_value";
+  case R_NODE_RELATION_promise_expr: return "promise_expr";
+  case R_NODE_RELATION_promise_env: return "promise_env";
+
+  case R_NODE_RELATION_pointer_prot: return "pointer_prot";
+  case R_NODE_RELATION_pointer_tag: return "pointer_tag";
+
+  case R_NODE_RELATION_list_elt: return "list_elt";
+  case R_NODE_RELATION_character_elt: return "character_elt";
+  case R_NODE_RELATION_expression_elt: return "expression_elt";
+  case R_NODE_RELATION_weakref_elt: return "weakref_elt";
+
+  default: r_stop_unreached("r_node_relation_as_c_string");
+  }
+}
