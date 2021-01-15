@@ -285,3 +285,10 @@ list_compact <- function(x) {
 vec_resize <- function(x, n) {
   .Call(c_ptr_vec_resize, x, n) 
 }
+
+
+# walk.c
+
+sexp_iterate <- function(x, fn) {
+  .Call(ffi_sexp_iterate, x, fn)
+}

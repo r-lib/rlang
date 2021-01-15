@@ -190,6 +190,7 @@ extern sexp* rlang_ptr_lof_info(sexp*);
 extern sexp* rlang_ptr_lof_push_back(sexp*);
 extern sexp* rlang_ptr_lof_arr_push_back(sexp*, sexp*, sexp*);
 extern sexp* rlang_ptr_lof_unwrap(sexp*);
+extern sexp* ffi_sexp_iterate(sexp*, sexp*);
 
 static const R_CallMethodDef r_callables[] = {
   {"r_init_library",                    (DL_FUNC) &r_init_library, 1},
@@ -377,6 +378,7 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_lof_unwrap",                    (DL_FUNC) &ffi_lof_unwrap, 1},
   {"ffi_lof_push_back",                 (DL_FUNC) &ffi_lof_push_back, 1},
   {"ffi_lof_arr_push_back",             (DL_FUNC) &ffi_lof_arr_push_back, 3},
+  {"ffi_sexp_iterate",                  (DL_FUNC) &ffi_sexp_iterate, 2},
   {NULL, NULL, 0}
 };
 

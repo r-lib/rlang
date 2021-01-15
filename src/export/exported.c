@@ -926,3 +926,69 @@ sexp* rlang_list_poke(sexp* x, sexp* i, sexp* value) {
   r_list_poke(x, r_as_ssize(i), value);
   return r_null;
 }
+
+
+// walk.c
+
+struct iterator_data {
+  sexp* fn;
+  sexp* last;
+};
+
+static
+bool iterator(void* state,
+              sexp* x,
+              enum r_type type,
+              int depth,
+              sexp* parent,
+              enum r_node_relation rel,
+              r_ssize i) {
+  struct iterator_data* p_data = (struct iterator_data*) state;
+
+  sexp* obj_x = KEEP(r_expr_protect(x));
+  sexp* obj_parent = KEEP(r_expr_protect(parent));
+
+  sexp* obj_type = KEEP(r_type_as_character(type));
+  sexp* obj_depth = KEEP(r_int(depth));
+  sexp* obj_rel = KEEP(r_chr(r_node_relation_as_c_string(rel)));
+  sexp* obj_i = KEEP(r_int(i + 1));
+
+  struct r_pair args[] = {
+    { r_sym("x"), obj_x, },
+    { r_sym("type"), obj_type, },
+    { r_sym("depth"), obj_depth, },
+    { r_sym("parent"), obj_parent, },
+    { r_sym("rel"), obj_rel, },
+    { r_sym("i"), obj_i, }
+  };
+
+  sexp* out = KEEP(r_exec_mask_n(r_sym("fn"), p_data->fn,
+                                 args,
+                                 R_ARR_SIZEOF(args),
+                                 r_base_env));
+
+  sexp* node = r_new_node(out, r_null);
+  r_node_poke_cdr(p_data->last, node);
+  p_data->last = node;
+
+  FREE(7);
+  return true;
+}
+
+// [[ register() ]]
+sexp* ffi_sexp_iterate(sexp* x, sexp* fn) {
+  sexp* out = KEEP(r_new_node(r_null, r_null));
+
+  struct iterator_data data = {
+    .fn = fn,
+    .last = out
+  };
+
+  sexp_iterate(x, &iterator, &data);
+
+  out = r_node_cdr(out);
+  out = r_vec_coerce(out, r_type_list);
+
+  FREE(1);
+  return out;
+}
