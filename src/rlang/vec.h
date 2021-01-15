@@ -145,6 +145,14 @@ sexp* r_chr(const char* c_string) {
 }
 sexp* r_chr_n(const char** strings);
 
+static inline
+SEXP r_list(SEXP x) {
+  SEXP out = r_new_vector(r_type_list, 1);
+  r_list_poke(out, 0, x);
+  return out;
+}
+
+
 // FIXME: Redundant with `r_lgl()`
 static inline
 sexp* r_shared_lgl(bool x) {
