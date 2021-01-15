@@ -185,6 +185,13 @@ bool r_is_string(sexp* x) {
     r_chr_get(x, 0) != R_NaString;
 }
 
+sexp* r_lgl_resize(sexp* x, r_ssize size);
+sexp* r_int_resize(sexp* x, r_ssize size);
+sexp* r_dbl_resize(sexp* x, r_ssize size);
+sexp* r_cpl_resize(sexp* x, r_ssize size);
+sexp* r_raw_resize(sexp* x, r_ssize size);
+sexp* r_chr_resize(sexp* x, r_ssize size);
+sexp* r_list_resize(sexp* x, r_ssize size);
 
 static inline
 sexp* r_copy_in_raw(const void* src, size_t size) {
