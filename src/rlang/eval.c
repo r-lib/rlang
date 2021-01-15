@@ -98,3 +98,56 @@ sexp* eval_with_xyz(sexp* call, sexp* x, sexp* y, sexp* z) {
   FREE(1);
   return out;
 }
+
+
+sexp* r_exec_mask_n(sexp* fn_sym,
+                    sexp* fn,
+                    const struct r_pair* args,
+                    int n,
+                    sexp* parent) {
+  sexp* mask = KEEP(r_new_environment(parent, n + 1));
+  sexp* call = KEEP(r_exec_mask_n_call_poke(fn_sym, fn, args, n, mask));
+
+  sexp* out = r_eval(call, mask);
+
+  FREE(2);
+  return out;
+}
+
+// Create a call from arguments and poke elements with a non-NULL
+// symbol in `env`
+sexp* r_exec_mask_n_call_poke(sexp* fn_sym,
+                              sexp* fn,
+                              const struct r_pair* args,
+                              int n,
+                              sexp* env) {
+  if (fn_sym != r_null) {
+    r_env_poke(env, fn_sym, fn);
+    fn = fn_sym;
+  }
+
+  sexp* shelter = KEEP(r_new_node(R_NilValue, R_NilValue));
+  sexp* node = shelter;
+
+  for (int i = 0; i < n; ++i) {
+    struct r_pair arg = args[i];
+    sexp* tag = arg.x;
+    sexp* car = arg.y;
+
+    if (tag != r_null) {
+      r_env_poke(env, tag, car);
+      car = tag;
+    }
+
+    sexp* cdr = r_new_node(car, r_null);
+    r_node_poke_tag(cdr, tag);
+
+    r_node_poke_cdr(node, cdr);
+    node = cdr;
+  }
+
+  sexp* call = r_new_call(fn, r_node_cdr(shelter));
+
+  FREE(1);
+  return call;
+}

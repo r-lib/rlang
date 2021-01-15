@@ -4,6 +4,8 @@
 #include <float.h>
 #include "cnd.h"
 
+#define R_ARR_SIZEOF(X) sizeof(X) / sizeof(X[0])
+
 
 // Adapted from CERT C coding standards
 static inline
