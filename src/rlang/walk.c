@@ -33,7 +33,9 @@ bool sexp_iterate_recurse(sexp* x,
 
   ++depth;
 
-  if (!sexp_iterate_recurse(ATTRIB(x), depth, x, R_NODE_RELATION_attrib, 0, it, data)) return false;
+  if (x != r_null) {
+    if (!sexp_iterate_recurse(ATTRIB(x), depth, x, R_NODE_RELATION_attrib, 0, it, data)) return false;
+  }
 
   switch (type) {
   case r_type_null:
