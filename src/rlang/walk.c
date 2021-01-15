@@ -47,12 +47,8 @@ bool sexp_iterate_recurse(sexp* x,
   case r_type_special:
   case r_type_builtin:
   case r_type_string:
-  case r_type_s4:
-    return true;
   case r_type_symbol:
-    if (!sexp_iterate_recurse(PRINTNAME(x), depth, x, R_NODE_RELATION_symbol_string, 0, it, data)) return false;
-    if (!sexp_iterate_recurse(SYMVALUE(x), depth, x, R_NODE_RELATION_symbol_value, 0, it, data)) return false;
-    if (!sexp_iterate_recurse(INTERNAL(x), depth, x, R_NODE_RELATION_symbol_internal, 0, it, data)) return false;
+  case r_type_s4:
     return true;
   case r_type_closure:
     if (!sexp_iterate_recurse(FORMALS(x), depth, x, R_NODE_RELATION_function_fmls, 0, it, data)) return false;
