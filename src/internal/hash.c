@@ -193,11 +193,10 @@ void hash_bytes(R_outpstream_t stream, void* p_input, int n) {
 
 static inline
 void hash_char(R_outpstream_t stream, int input) {
-  // Despite the confusing signature, which is required by `R_Serialize()`,
-  // `input` is always a `char` so this conversion is safe
-  unsigned char byte = (unsigned char) input;
-  unsigned char* p_byte = &byte;
-  hash_bytes(stream, p_byte, 1);
+  // `R_Serialize()` only ever calls `stream->OutChar()` for ASCII and
+  // ASCIIHEX formats, neither of which we are using.
+  // https://github.com/wch/r-source/blob/161e21346c024b79db2654d3331298f96cdf6968/src/main/serialize.c#L376
+  r_stop_internal("hash_char", "Should never be called with binary format.");
 }
 
 #if USE_VERSION_3
