@@ -49,6 +49,7 @@ bool sexp_iterate_recurse(sexp* x,
   case r_type_string:
   case r_type_symbol:
   case r_type_s4:
+  case r_type_bytecode:
     return true;
   case r_type_closure:
     if (!sexp_iterate_recurse(FORMALS(x), depth, x, R_NODE_RELATION_function_fmls, 0, it, data)) return false;
@@ -109,7 +110,7 @@ bool sexp_iterate_recurse(sexp* x,
   }
 
   default:
-    r_abort("Unimplemented type");
+    r_abort("Unimplemented type %s", r_type_as_c_string(type));
   }
 }
 
