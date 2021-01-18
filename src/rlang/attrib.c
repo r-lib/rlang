@@ -131,8 +131,8 @@ sexp* r_attrib_set(sexp* x, sexp* tag, sexp* value) {
 
 // Caller must poke the object bit
 static
-sexp* node_push_classes(sexp* node, const char** tags) {
-  sexp* tags_chr = KEEP(r_chr_n(tags));
+sexp* node_push_classes(sexp* node, const char** tags, r_ssize n) {
+  sexp* tags_chr = KEEP(r_chr_n(tags, n));
   sexp* attrs = r_new_node(tags_chr, node);
   r_node_poke_tag(attrs, r_syms_class);
 
@@ -140,16 +140,16 @@ sexp* node_push_classes(sexp* node, const char** tags) {
   return attrs;
 }
 
-void r_attrib_push_classes(sexp* x, const char** tags) {
+void r_attrib_push_classes(sexp* x, const char** tags, r_ssize n) {
   sexp* attrs = r_attrib(x);
-  attrs = node_push_classes(attrs, tags);
+  attrs = node_push_classes(attrs, tags, n);
   SET_ATTRIB(x, attrs);
   SET_OBJECT(x, 1);
 }
 void r_attrib_push_class(sexp* x, const char* tag) {
-  static const char* tags[2] = { "", NULL };
+  static const char* tags[1] = { "" };
   tags[0] = tag;
-  r_attrib_push_classes(x, tags);
+  r_attrib_push_classes(x, tags, 1);
 }
 
 bool r_is_named(sexp* x) {

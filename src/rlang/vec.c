@@ -8,20 +8,7 @@ sexp* r_lists_empty = NULL;
 sexp* r_true = NULL;
 sexp* r_false = NULL;
 
-static
-r_ssize ptrs_array_length(void** ptrs) {
-  r_ssize n = 0;
-
-  while (*ptrs) {
-    ++ptrs;
-    ++n;
-  }
-
-  return n;
-}
-
-sexp* r_chr_n(const char** strings) {
-  r_ssize n = ptrs_array_length((void**) strings);
+sexp* r_chr_n(const char** strings, r_ssize n) {
   sexp* out = KEEP(r_new_vector(STRSXP, n));
 
   for (r_ssize i = 0; i < n; ++i) {

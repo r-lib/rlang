@@ -1,6 +1,7 @@
 #include <rlang.h>
 
-static const char* quo_tags[3] = { "quosure", "formula", NULL };
+static
+const char* quo_tags[2] = { "quosure", "formula" };
 
 sexp* new_raw_formula(sexp* lhs, sexp* rhs, sexp* env);
 
@@ -9,7 +10,7 @@ sexp* rlang_new_quosure(sexp* expr, sexp* env) {
     r_abort("`env` must be an environment");
   }
   sexp* quo = KEEP(new_raw_formula(r_null, expr, env));
-  r_attrib_push_classes(quo, quo_tags);
+  r_attrib_push_classes(quo, quo_tags, R_ARR_SIZEOF(quo_tags));
   FREE(1);
   return quo;
 }

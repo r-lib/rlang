@@ -37,8 +37,9 @@ static inline
 void r_attrib_poke_class(sexp* x, sexp* classes) {
   r_attrib_poke(x, r_syms_class, classes);
 }
-void r_attrib_push_classes(sexp* x, const char** tags);
+
 void r_attrib_push_class(sexp* x, const char* tag);
+void r_attrib_push_classes(sexp* x, const char** tags, r_ssize n);
 
 static inline
 sexp* r_names(sexp* x) {

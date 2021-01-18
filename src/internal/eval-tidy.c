@@ -451,8 +451,8 @@ sexp* rlang_ext2_tilde_eval(sexp* call, sexp* op, sexp* args, sexp* rho) {
   return rlang_tilde_eval(tilde, current_frame, caller_frame);
 }
 
-static const char* data_mask_objects_names[5] = {
-  ".__tidyeval_data_mask__.", "~", ".top_env", ".env", NULL
+static const char* data_mask_objects_names[4] = {
+  ".__tidyeval_data_mask__.", "~", ".top_env", ".env"
 };
 
 // Soft-deprecated in rlang 0.2.0
@@ -467,7 +467,9 @@ sexp* rlang_data_mask_clean(sexp* mask) {
   }
 
   // At this level we only want to remove our own stuff
-  r_env_unbind_strings(mask, data_mask_objects_names);
+  r_env_unbind_strings(mask,
+                       data_mask_objects_names,
+                       R_ARR_SIZEOF(data_mask_objects_names));
 
   // Remove everything in the other levels
   sexp* env = bottom;

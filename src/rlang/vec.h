@@ -143,7 +143,7 @@ static inline
 sexp* r_chr(const char* c_string) {
   return Rf_mkString(c_string);
 }
-sexp* r_chr_n(const char** strings);
+sexp* r_chr_n(const char** strings, r_ssize n);
 
 static inline
 SEXP r_list(SEXP x) {

@@ -22,12 +22,6 @@ void r_env_unbind_anywhere(sexp* env, sexp* sym) {
   }
 }
 
-void r_env_unbind_syms(sexp* env, sexp** syms) {
-  while (syms) {
-    r_env_unbind(env, *syms++);
-  }
-}
-
 static
 void env_unbind_names(sexp* env, sexp* names, bool inherit) {
   sexp* const * p_names = r_chr_deref_const(names);
@@ -53,24 +47,24 @@ void r_env_unbind_anywhere_names(sexp* env, sexp* names) {
   env_unbind_names(env, names, true);
 }
 
-void r_env_unbind_strings(sexp* env, const char** names) {
-  sexp* nms = KEEP(r_chr_n(names));
+void r_env_unbind_strings(sexp* env, const char** names, r_ssize n) {
+  sexp* nms = KEEP(r_chr_n(names, n));
   r_env_unbind_names(env, nms);
   FREE(1);
 }
-void r_env_unbind_anywhere_strings(sexp* env, const char** names) {
-  sexp* nms = KEEP(r_chr_n(names));
+void r_env_unbind_anywhere_strings(sexp* env, const char** names, r_ssize n) {
+  sexp* nms = KEEP(r_chr_n(names, n));
   r_env_unbind_anywhere_names(env, nms);
   FREE(1);
 }
 
 void r_env_unbind_string(sexp* env, const char* name) {
-  static const char* names[2] = { "", NULL };
+  static const char* names[1] = { "" };
   names[0] = name;
-  r_env_unbind_strings(env, names);
+  r_env_unbind_strings(env, names, 1);
 }
 void r_env_unbind_string_anywhere(sexp* env, const char* name) {
-  static const char* names[2] = { "", NULL };
+  static const char* names[1] = { "" };
   names[0] = name;
-  r_env_unbind_anywhere_strings(env, names);
+  r_env_unbind_anywhere_strings(env, names, 1);
 }
