@@ -1,8 +1,25 @@
 #include <rlang.h>
 #include "walk.h"
+#include "decl/walk-decl.h"
+
+struct sexp_stack_info {
+  sexp* x;
+  int depth;
+  sexp* parent;
+  enum r_node_relation rel;
+};
+
+struct sexp_stack {
+  sexp* shelter;
+  int n;
+  int size;
+  struct sexp_stack_info v_info[];
+};
+
 
 static
-bool sexp_iterate_recurse(sexp* x,
+bool sexp_iterate_recurse(struct sexp_stack* p_stack,
+                          sexp* x,
                           int depth,
                           sexp* parent,
                           enum r_node_relation rel,
@@ -10,19 +27,30 @@ bool sexp_iterate_recurse(sexp* x,
                           sexp_iterator_fn* it,
                           void* data);
 
-
 void sexp_iterate(sexp* x, sexp_iterator_fn* it, void* data) {
-  sexp_iterate_recurse(x, 0, r_null, R_NODE_RELATION_root, 0, it, data);
+  struct sexp_stack* p_stack = new_sexp_stack();
+  KEEP(p_stack->shelter);
+
+  sexp_iterate_recurse(p_stack, x, 0, r_null, R_NODE_RELATION_root, 0, it, data);
+
+  FREE(1);
 }
 
 static
-bool sexp_iterate_recurse(sexp* x,
+bool sexp_iterate_recurse(struct sexp_stack* p_stack,
+                          sexp* x,
                           int depth,
                           sexp* parent,
                           enum r_node_relation rel,
                           r_ssize i,
                           sexp_iterator_fn* it,
                           void* data) {
+  // This is the number of pairlist nodes on the heap stack. We
+  // maintain this stack on the heap to allow tail-call recursion with
+  // a goto. The stack is used to visit the pairlist nodes on the
+  // outgoing trip.
+  int heap_stack_n = 0;
+
  recurse:
   if (depth % 10 == 0) {
     R_CheckStack();
@@ -52,11 +80,8 @@ bool sexp_iterate_recurse(sexp* x,
     break;
   }
 
+  // Visit the node -- incoming trip
   if (!it(data, x, type, depth, parent, rel, i, dir)) return false;
-
-  if (dir == R_NODE_DIRECTION_leaf) {
-    return true;
-  }
 
   ++depth;
 
@@ -68,73 +93,104 @@ bool sexp_iterate_recurse(sexp* x,
   case r_type_string:
     break;
   default:
-    if (!sexp_iterate_recurse(ATTRIB(x), depth, x, R_NODE_RELATION_attrib, 0, it, data)) return false;
+    if (!sexp_iterate_recurse(p_stack, ATTRIB(x), depth, x, R_NODE_RELATION_attrib, 0, it, data)) return false;
   }
 
-  switch (type) {
-  case r_type_closure:
-    if (!sexp_iterate_recurse(FORMALS(x), depth, x, R_NODE_RELATION_function_fmls, 0, it, data)) return false;
-    if (!sexp_iterate_recurse(BODY(x), depth, x, R_NODE_RELATION_function_body, 0, it, data)) return false;
-    if (!sexp_iterate_recurse(CLOENV(x), depth, x, R_NODE_RELATION_function_env, 0, it, data)) return false;
-    break;
-  case r_type_environment:
-    if (!sexp_iterate_recurse(FRAME(x), depth, x, R_NODE_RELATION_environment_frame, 0, it, data)) return false;
-    if (!sexp_iterate_recurse(ENCLOS(x), depth, x, R_NODE_RELATION_environment_enclos, 0, it, data)) return false;
-    if (!sexp_iterate_recurse(HASHTAB(x), depth, x, R_NODE_RELATION_environment_hashtab, 0, it, data)) return false;
-    break;
-  case r_type_promise:
-    if (!sexp_iterate_recurse(PRVALUE(x), depth, x, R_NODE_RELATION_promise_value, 0, it, data)) return false;
-    if (!sexp_iterate_recurse(PREXPR(x), depth, x, R_NODE_RELATION_promise_expr, 0, it, data)) return false;
-    if (!sexp_iterate_recurse(PRENV(x), depth, x, R_NODE_RELATION_promise_env, 0, it, data)) return false;
-    break;
-  case r_type_pointer:
-    if (!sexp_iterate_recurse(EXTPTR_PROT(x), depth, x, R_NODE_RELATION_pointer_prot, 0, it, data)) return false;
-    if (!sexp_iterate_recurse(EXTPTR_TAG(x), depth, x, R_NODE_RELATION_pointer_tag, 0, it, data)) return false;
-    break;
-
-  case r_type_pairlist:
-  case r_type_call:
-  case r_type_dots:
-    if (!sexp_iterate_recurse(TAG(x), depth, x, R_NODE_RELATION_node_tag, 0, it, data)) return false;
-    if (!sexp_iterate_recurse(CAR(x), depth, x, R_NODE_RELATION_node_car, 0, it, data)) return false;
-    parent = x;
-    x = CDR(x);
-    rel = R_NODE_RELATION_node_cdr;
-    goto recurse;
-    // FIXME: Problematic for outgoing direction
-
-  case r_type_list:
-  case r_type_expression:
-  case r_type_character: {
-    r_ssize n = r_length(x);
-
-    sexp* const * p_x;
-    if (type == r_type_character) {
-      p_x = r_chr_deref_const(x);
-    } else {
-      p_x = r_list_deref_const(x);
-    }
-
-    enum r_node_relation vec_rel = 0;
+  if (dir != R_NODE_DIRECTION_leaf) {
     switch (type) {
-    case r_type_list: vec_rel = R_NODE_RELATION_list_elt; break;
-    case r_type_expression: vec_rel = R_NODE_RELATION_expression_elt; break;
-    case r_type_character: vec_rel = R_NODE_RELATION_character_elt; break;
-    default: r_stop_internal("sexp_iterate_recurse", "while setting `vec_rel`.");
+    case r_type_closure:
+      if (!sexp_iterate_recurse(p_stack, FORMALS(x), depth, x, R_NODE_RELATION_function_fmls, 0, it, data)) return false;
+      if (!sexp_iterate_recurse(p_stack, BODY(x), depth, x, R_NODE_RELATION_function_body, 0, it, data)) return false;
+      if (!sexp_iterate_recurse(p_stack, CLOENV(x), depth, x, R_NODE_RELATION_function_env, 0, it, data)) return false;
+      break;
+    case r_type_environment:
+      if (!sexp_iterate_recurse(p_stack, FRAME(x), depth, x, R_NODE_RELATION_environment_frame, 0, it, data)) return false;
+      if (!sexp_iterate_recurse(p_stack, ENCLOS(x), depth, x, R_NODE_RELATION_environment_enclos, 0, it, data)) return false;
+      if (!sexp_iterate_recurse(p_stack, HASHTAB(x), depth, x, R_NODE_RELATION_environment_hashtab, 0, it, data)) return false;
+      break;
+    case r_type_promise:
+      if (!sexp_iterate_recurse(p_stack, PRVALUE(x), depth, x, R_NODE_RELATION_promise_value, 0, it, data)) return false;
+      if (!sexp_iterate_recurse(p_stack, PREXPR(x), depth, x, R_NODE_RELATION_promise_expr, 0, it, data)) return false;
+      if (!sexp_iterate_recurse(p_stack, PRENV(x), depth, x, R_NODE_RELATION_promise_env, 0, it, data)) return false;
+      break;
+    case r_type_pointer:
+      if (!sexp_iterate_recurse(p_stack, EXTPTR_PROT(x), depth, x, R_NODE_RELATION_pointer_prot, 0, it, data)) return false;
+      if (!sexp_iterate_recurse(p_stack, EXTPTR_TAG(x), depth, x, R_NODE_RELATION_pointer_tag, 0, it, data)) return false;
+      break;
+
+    case r_type_pairlist:
+    case r_type_call:
+    case r_type_dots: {
+      if (!sexp_iterate_recurse(p_stack, TAG(x), depth, x, R_NODE_RELATION_node_tag, 0, it, data)) return false;
+      if (!sexp_iterate_recurse(p_stack, CAR(x), depth, x, R_NODE_RELATION_node_car, 0, it, data)) return false;
+
+      // We're going to make a tail call goto to recurse into the
+      // pairlist CDR. First save the current node value so we can visit
+      // it back on the outgoing trip.
+      struct sexp_stack_info x_info = {
+        .x = x,
+        .depth = depth,
+        .parent = parent,
+        .rel = rel
+      };
+      sexp_stack_push(p_stack, x_info);
+      ++heap_stack_n;
+
+      // Now set the CDR as current value and recurse
+      parent = x;
+      x = CDR(x);
+      rel = R_NODE_RELATION_node_cdr;
+      ++depth;
+      goto recurse;
     }
 
-    for (r_ssize i = 0; i < n; ++i) {
-      if (!sexp_iterate_recurse(p_x[i], depth, x, vec_rel, i, it, data)) return false;
+    case r_type_list:
+    case r_type_expression:
+    case r_type_character: {
+      r_ssize n = r_length(x);
+
+      sexp* const * p_x;
+      if (type == r_type_character) {
+        p_x = r_chr_deref_const(x);
+      } else {
+        p_x = r_list_deref_const(x);
+      }
+
+      enum r_node_relation vec_rel = 0;
+      switch (type) {
+      case r_type_list: vec_rel = R_NODE_RELATION_list_elt; break;
+      case r_type_expression: vec_rel = R_NODE_RELATION_expression_elt; break;
+      case r_type_character: vec_rel = R_NODE_RELATION_character_elt; break;
+      default: r_stop_internal("sexp_iterate_recurse", "while setting `vec_rel`.");
+      }
+
+      for (r_ssize i = 0; i < n; ++i) {
+        if (!sexp_iterate_recurse(p_stack, p_x[i], depth, x, vec_rel, i, it, data)) return false;
+      }
+      break;
     }
-    break;
+
+    default:
+      r_abort("Unexpected type `%s` in `sexp_iterate_recurse()`.", r_type_as_c_string(type));
+    }
   }
 
-  default:
-    r_abort("Unexpected type `%s` in `sexp_iterate_recurse()`.", r_type_as_c_string(type));
+  // Visit node a second time on the way back (outgoing direction).
+  // Start with the pairlist nodes pushed on the heap stack.
+  for (int i = 0; i < heap_stack_n; ++i) {
+    struct sexp_stack_info info = sexp_stack_pop(p_stack);
+    if (!it(data, info.x, r_typeof(info.x), info.depth, info.parent, R_NODE_RELATION_node_cdr, 0, R_NODE_DIRECTION_outgoing)) {
+      // Pop the remaining stack
+      // TODO: Test this
+      p_stack->n -= heap_stack_n - (i + 1);
+      return false;
+    }
   }
 
-  // Visit node a second time on the way back
-  if (!it(data, x, type, depth, parent, rel, i, R_NODE_DIRECTION_outgoing)) return false;
+  // Visit the node -- outgoing trip
+  if (dir != R_NODE_DIRECTION_leaf) {
+    if (!it(data, x, type, depth, parent, rel, i, R_NODE_DIRECTION_outgoing)) return false;
+  }
 
   return true;
 }
@@ -183,4 +239,36 @@ const char* r_node_relation_as_c_string(enum r_node_relation rel) {
 
   default: r_stop_unreached("r_node_relation_as_c_string");
   }
+}
+
+
+#define SEXP_STACK_INIT_SIZE 1000
+
+static
+struct sexp_stack* new_sexp_stack() {
+  r_ssize size = sizeof(struct sexp_stack) + sizeof(struct sexp_stack_info) * SEXP_STACK_INIT_SIZE;
+  sexp* shelter = r_new_vector(r_type_raw, size);
+
+  struct sexp_stack* stack = (struct sexp_stack*) r_raw_deref(shelter);
+
+  stack->shelter = shelter;
+  stack->n = 0;
+  stack->size = SEXP_STACK_INIT_SIZE;
+
+  return stack;
+}
+
+static
+void sexp_stack_push(struct sexp_stack* p_stack, struct sexp_stack_info info) {
+  int i = ++p_stack->n;
+  if (i == p_stack->size) {
+    r_abort("TODO: Grow stack.");
+  }
+
+  p_stack->v_info[i] = info;
+}
+
+static inline
+struct sexp_stack_info sexp_stack_pop(struct sexp_stack* p_stack) {
+  return p_stack->v_info[p_stack->n--];
 }
