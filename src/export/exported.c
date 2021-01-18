@@ -933,6 +933,7 @@ sexp* rlang_list_poke(sexp* x, sexp* i, sexp* value) {
 struct iterator_data {
   sexp* fn;
   sexp* last;
+  struct r_dict* p_dict;
 };
 
 static
@@ -944,6 +945,11 @@ bool iterator(void* state,
               enum r_node_relation rel,
               r_ssize i) {
   struct iterator_data* p_data = (struct iterator_data*) state;
+
+  if (r_typeof(x) == r_type_environment &&
+      !r_dict_put(p_data->p_dict, x, r_null)) {
+    return false;
+  }
 
   sexp* obj_x = KEEP(r_expr_protect(x));
   sexp* obj_parent = KEEP(r_expr_protect(parent));
@@ -979,9 +985,13 @@ bool iterator(void* state,
 sexp* ffi_sexp_iterate(sexp* x, sexp* fn) {
   sexp* out = KEEP(r_new_node(r_null, r_null));
 
+  struct r_dict dict = r_new_dict(1024);
+  KEEP(dict.shelter);
+
   struct iterator_data data = {
     .fn = fn,
-    .last = out
+    .last = out,
+    .p_dict = &dict
   };
 
   sexp_iterate(x, &iterator, &data);
@@ -989,6 +999,6 @@ sexp* ffi_sexp_iterate(sexp* x, sexp* fn) {
   out = r_node_cdr(out);
   out = r_vec_coerce(out, r_type_list);
 
-  FREE(1);
+  FREE(2);
   return out;
 }
