@@ -936,6 +936,15 @@ struct iterator_data {
   struct r_dict* p_dict;
 };
 
+static inline
+sexp* protect_missing(sexp* x) {
+  if (x == r_missing_arg) {
+    return r_expr_protect(x);
+  } else {
+    return x;
+  }
+}
+
 static
 bool iterator(void* state,
               sexp* x,
@@ -951,8 +960,8 @@ bool iterator(void* state,
     return false;
   }
 
-  sexp* obj_x = KEEP(r_expr_protect(x));
-  sexp* obj_parent = KEEP(r_expr_protect(parent));
+  sexp* obj_x = KEEP(protect_missing(x));
+  sexp* obj_parent = KEEP(protect_missing(parent));
 
   sexp* obj_type = KEEP(r_type_as_character(type));
   sexp* obj_depth = KEEP(r_int(depth));
