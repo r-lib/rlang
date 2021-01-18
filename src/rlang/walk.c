@@ -33,7 +33,14 @@ bool sexp_iterate_recurse(sexp* x,
 
   ++depth;
 
-  if (x != r_null) {
+  // Recursing on the attributes of `NULL`causes an infinite
+  // recursion. The attributes of strings contain private data for the
+  // garbage collector.
+  switch (r_typeof(x)) {
+  case r_type_null:
+  case r_type_string:
+    break;
+  default:
     if (!sexp_iterate_recurse(ATTRIB(x), depth, x, R_NODE_RELATION_attrib, 0, it, data)) return false;
   }
 
