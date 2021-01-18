@@ -29,20 +29,7 @@ bool sexp_iterate_recurse(sexp* x,
   }
 
   enum r_type type = r_typeof(x);
-  if (!it(data, x, type, depth, parent, rel, i)) return false;
-
-  ++depth;
-
-  // Recursing on the attributes of `NULL`causes an infinite
-  // recursion. The attributes of strings contain private data for the
-  // garbage collector.
-  switch (r_typeof(x)) {
-  case r_type_null:
-  case r_type_string:
-    break;
-  default:
-    if (!sexp_iterate_recurse(ATTRIB(x), depth, x, R_NODE_RELATION_attrib, 0, it, data)) return false;
-  }
+  enum r_node_direction dir;
 
   switch (type) {
   case r_type_null:
@@ -58,26 +45,52 @@ bool sexp_iterate_recurse(sexp* x,
   case r_type_s4:
   case r_type_bytecode:
   case r_type_weakref:
+    dir = R_NODE_DIRECTION_leaf;
+    break;
+  default:
+    dir = R_NODE_DIRECTION_incoming;
+    break;
+  }
+
+  if (!it(data, x, type, depth, parent, rel, i, dir)) return false;
+
+  if (dir == R_NODE_DIRECTION_leaf) {
     return true;
+  }
+
+  ++depth;
+
+  // Recursing on the attributes of `NULL`causes an infinite
+  // recursion. The attributes of strings contain private data for the
+  // garbage collector.
+  switch (r_typeof(x)) {
+  case r_type_null:
+  case r_type_string:
+    break;
+  default:
+    if (!sexp_iterate_recurse(ATTRIB(x), depth, x, R_NODE_RELATION_attrib, 0, it, data)) return false;
+  }
+
+  switch (type) {
   case r_type_closure:
     if (!sexp_iterate_recurse(FORMALS(x), depth, x, R_NODE_RELATION_function_fmls, 0, it, data)) return false;
     if (!sexp_iterate_recurse(BODY(x), depth, x, R_NODE_RELATION_function_body, 0, it, data)) return false;
     if (!sexp_iterate_recurse(CLOENV(x), depth, x, R_NODE_RELATION_function_env, 0, it, data)) return false;
-    return true;
+    break;
   case r_type_environment:
     if (!sexp_iterate_recurse(FRAME(x), depth, x, R_NODE_RELATION_environment_frame, 0, it, data)) return false;
     if (!sexp_iterate_recurse(ENCLOS(x), depth, x, R_NODE_RELATION_environment_enclos, 0, it, data)) return false;
     if (!sexp_iterate_recurse(HASHTAB(x), depth, x, R_NODE_RELATION_environment_hashtab, 0, it, data)) return false;
-    return true;
+    break;
   case r_type_promise:
     if (!sexp_iterate_recurse(PRVALUE(x), depth, x, R_NODE_RELATION_promise_value, 0, it, data)) return false;
     if (!sexp_iterate_recurse(PREXPR(x), depth, x, R_NODE_RELATION_promise_expr, 0, it, data)) return false;
     if (!sexp_iterate_recurse(PRENV(x), depth, x, R_NODE_RELATION_promise_env, 0, it, data)) return false;
-    return true;
+    break;
   case r_type_pointer:
     if (!sexp_iterate_recurse(EXTPTR_PROT(x), depth, x, R_NODE_RELATION_pointer_prot, 0, it, data)) return false;
     if (!sexp_iterate_recurse(EXTPTR_TAG(x), depth, x, R_NODE_RELATION_pointer_tag, 0, it, data)) return false;
-    return true;
+    break;
 
   case r_type_pairlist:
   case r_type_call:
@@ -88,6 +101,7 @@ bool sexp_iterate_recurse(sexp* x,
     x = CDR(x);
     rel = R_NODE_RELATION_node_cdr;
     goto recurse;
+    // FIXME: Problematic for outgoing direction
 
   case r_type_list:
   case r_type_expression:
@@ -112,14 +126,28 @@ bool sexp_iterate_recurse(sexp* x,
     for (r_ssize i = 0; i < n; ++i) {
       if (!sexp_iterate_recurse(p_x[i], depth, x, vec_rel, i, it, data)) return false;
     }
-    return true;
+    break;
   }
 
   default:
-    r_abort("Unimplemented type %s", r_type_as_c_string(type));
+    r_abort("Unexpected type `%s` in `sexp_iterate_recurse()`.", r_type_as_c_string(type));
   }
+
+  // Visit node a second time on the way back
+  if (!it(data, x, type, depth, parent, rel, i, R_NODE_DIRECTION_outgoing)) return false;
+
+  return true;
 }
 
+
+const char* r_node_direction_as_c_string(enum r_node_direction dir) {
+  switch (dir) {
+  case R_NODE_DIRECTION_leaf: return "leaf";
+  case R_NODE_DIRECTION_incoming: return "incoming";
+  case R_NODE_DIRECTION_outgoing: return "outgoing";
+  default: r_stop_unreached("r_node_direction_as_c_string");
+  }
+}
 
 const char* r_node_relation_as_c_string(enum r_node_relation rel) {
   switch (rel) {

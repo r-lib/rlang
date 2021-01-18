@@ -1,6 +1,11 @@
 #ifndef RLANG_INTERNAL_WALK_H
 #define RLANG_INTERNAL_WALK_H
 
+enum r_node_direction {
+  R_NODE_DIRECTION_leaf = 0,
+  R_NODE_DIRECTION_incoming,
+  R_NODE_DIRECTION_outgoing
+};
 
 enum r_node_relation {
   R_NODE_RELATION_root = 0,
@@ -52,7 +57,8 @@ typedef bool (sexp_iterator_fn)(void* data,
                                 int depth,
                                 sexp* parent,
                                 enum r_node_relation rel,
-                                r_ssize i);
+                                r_ssize i,
+                                enum r_node_direction dir);
 
 void sexp_iterate(sexp* x, sexp_iterator_fn* it, void* data);
 
@@ -99,6 +105,7 @@ enum r_node_raw_relation r_node_raw_relation(enum r_node_relation rel) {
   }
 }
 
+const char* r_node_direction_as_c_string(enum r_node_direction dir);
 const char* r_node_relation_as_c_string(enum r_node_relation rel);
 
 

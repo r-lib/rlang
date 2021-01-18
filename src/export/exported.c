@@ -952,7 +952,8 @@ bool iterator(void* state,
               int depth,
               sexp* parent,
               enum r_node_relation rel,
-              r_ssize i) {
+              r_ssize i,
+              enum r_node_direction dir) {
   struct iterator_data* p_data = (struct iterator_data*) state;
 
   if (r_typeof(x) == r_type_environment &&
@@ -961,20 +962,23 @@ bool iterator(void* state,
   }
 
   sexp* obj_x = KEEP(protect_missing(x));
+  sexp* obj_addr = KEEP(r_str_as_character(r_sexp_address(x)));
   sexp* obj_parent = KEEP(protect_missing(parent));
-
   sexp* obj_type = KEEP(r_type_as_character(type));
   sexp* obj_depth = KEEP(r_int(depth));
   sexp* obj_rel = KEEP(r_chr(r_node_relation_as_c_string(rel)));
   sexp* obj_i = KEEP(r_int(i + 1));
+  sexp* obj_dir = KEEP(r_chr(r_node_direction_as_c_string(dir)));
 
   struct r_pair args[] = {
-    { r_sym("x"), obj_x, },
-    { r_sym("type"), obj_type, },
-    { r_sym("depth"), obj_depth, },
-    { r_sym("parent"), obj_parent, },
-    { r_sym("rel"), obj_rel, },
-    { r_sym("i"), obj_i, }
+    { r_sym("x"), obj_x },
+    { r_sym("addr"), obj_addr },
+    { r_sym("type"), obj_type },
+    { r_sym("depth"), obj_depth },
+    { r_sym("parent"), obj_parent },
+    { r_sym("rel"), obj_rel },
+    { r_sym("i"), obj_i },
+    { r_sym("dir"), obj_dir },
   };
 
   sexp* out = KEEP(r_exec_mask_n(r_sym("fn"), p_data->fn,
@@ -986,7 +990,7 @@ bool iterator(void* state,
   r_node_poke_cdr(p_data->last, node);
   p_data->last = node;
 
-  FREE(7);
+  FREE(9);
   return true;
 }
 
