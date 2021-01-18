@@ -1,5 +1,8 @@
 #include "rlang.h"
 
+static sexp* quote_prim = NULL;
+
+
 bool r_is_call(sexp* x, const char* name) {
   if (r_typeof(x) != LANGSXP) {
     return false;
@@ -17,12 +20,16 @@ bool r_is_call_any(sexp* x, const char** names, int n) {
 }
 
 sexp* r_expr_protect(sexp* x) {
-  static sexp* quote_prim = NULL;
-  if (!quote_prim) quote_prim = r_base_ns_get("quote");
+  switch (r_typeof(x)) {
+  case r_type_symbol:
+  case r_type_call:
+    return r_call2(quote_prim, x);
+  default:
+    return x;
+  }
+}
 
-  sexp* args = KEEP(r_new_node(x, r_null));
-  sexp* out = r_new_call(quote_prim, args);
 
-  FREE(1);
-  return out;
+void r_init_library_call() {
+  quote_prim = r_base_ns_get("quote");
 }
