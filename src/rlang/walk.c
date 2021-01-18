@@ -50,6 +50,7 @@ bool sexp_iterate_recurse(sexp* x,
   case r_type_symbol:
   case r_type_s4:
   case r_type_bytecode:
+  case r_type_weakref:
     return true;
   case r_type_closure:
     if (!sexp_iterate_recurse(FORMALS(x), depth, x, R_NODE_RELATION_function_fmls, 0, it, data)) return false;
@@ -83,8 +84,7 @@ bool sexp_iterate_recurse(sexp* x,
 
   case r_type_list:
   case r_type_expression:
-  case r_type_character:
-  case r_type_weakref: {
+  case r_type_character: {
     r_ssize n = r_length(x);
 
     sexp* const * p_x;
@@ -99,7 +99,6 @@ bool sexp_iterate_recurse(sexp* x,
     case r_type_list: vec_rel = R_NODE_RELATION_list_elt; break;
     case r_type_expression: vec_rel = R_NODE_RELATION_expression_elt; break;
     case r_type_character: vec_rel = R_NODE_RELATION_character_elt; break;
-    case r_type_weakref: vec_rel = R_NODE_RELATION_weakref_elt; break;
     default: r_stop_internal("sexp_iterate_recurse", "while setting `vec_rel`.");
     }
 
@@ -146,7 +145,6 @@ const char* r_node_relation_as_c_string(enum r_node_relation rel) {
   case R_NODE_RELATION_list_elt: return "list_elt";
   case R_NODE_RELATION_character_elt: return "character_elt";
   case R_NODE_RELATION_expression_elt: return "expression_elt";
-  case R_NODE_RELATION_weakref_elt: return "weakref_elt";
 
   default: r_stop_unreached("r_node_relation_as_c_string");
   }

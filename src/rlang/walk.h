@@ -33,8 +33,7 @@ enum r_node_relation {
   // Vectors
   R_NODE_RELATION_list_elt,
   R_NODE_RELATION_character_elt,
-  R_NODE_RELATION_expression_elt,
-  R_NODE_RELATION_weakref_elt,
+  R_NODE_RELATION_expression_elt
 };
 
 enum r_node_raw_relation {
@@ -93,7 +92,6 @@ enum r_node_raw_relation r_node_raw_relation(enum r_node_relation rel) {
   case R_NODE_RELATION_list_elt:
   case R_NODE_RELATION_character_elt:
   case R_NODE_RELATION_expression_elt:
-  case R_NODE_RELATION_weakref_elt:
     return R_NODE_RAW_RELATION_vector_elt;
 
   default:
