@@ -946,19 +946,19 @@ sexp* protect_missing(sexp* x) {
 }
 
 static
-bool iterator(void* state,
-              sexp* x,
-              enum r_type type,
-              int depth,
-              sexp* parent,
-              enum r_node_relation rel,
-              r_ssize i,
-              enum r_node_direction dir) {
+enum r_sexp_iterate iterator(void* state,
+                             sexp* x,
+                             enum r_type type,
+                             int depth,
+                             sexp* parent,
+                             enum r_node_relation rel,
+                             r_ssize i,
+                             enum r_node_direction dir) {
   struct iterator_data* p_data = (struct iterator_data*) state;
 
   if (r_typeof(x) == r_type_environment &&
       !r_dict_put(p_data->p_dict, x, r_null)) {
-    return false;
+    return R_SEXP_ITERATE_skip;
   }
 
   sexp* obj_x = KEEP(protect_missing(x));
@@ -991,7 +991,7 @@ bool iterator(void* state,
   p_data->last = node;
 
   FREE(9);
-  return true;
+  return R_SEXP_ITERATE_next;
 }
 
 // [[ register() ]]

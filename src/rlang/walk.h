@@ -1,6 +1,21 @@
 #ifndef RLANG_INTERNAL_WALK_H
 #define RLANG_INTERNAL_WALK_H
 
+/**
+ * Return value of an iterator callback
+ *
+ * - `abort`: Interrupt iteration. This causes a full unwind back to
+ *   the caller of `r_sexp_iterate()`.
+ * - `next`: Continue iteration.
+ * - `skip`: Skip the children of an incoming node. This has no effect
+ *   when visiting a leaf or a node on an outgoing trip.
+ */
+enum r_sexp_iterate {
+  R_SEXP_ITERATE_abort = 0,
+  R_SEXP_ITERATE_next,
+  R_SEXP_ITERATE_skip
+};
+
 enum r_node_direction {
   R_NODE_DIRECTION_leaf = 0,
   R_NODE_DIRECTION_incoming,
@@ -51,14 +66,15 @@ enum r_node_raw_relation {
 };
 
 
-typedef bool (sexp_iterator_fn)(void* data,
-                                sexp* x,
-                                enum r_type type,
-                                int depth,
-                                sexp* parent,
-                                enum r_node_relation rel,
-                                r_ssize i,
-                                enum r_node_direction dir);
+typedef
+enum r_sexp_iterate (sexp_iterator_fn)(void* data,
+                                       sexp* x,
+                                       enum r_type type,
+                                       int depth,
+                                       sexp* parent,
+                                       enum r_node_relation rel,
+                                       r_ssize i,
+                                       enum r_node_direction dir);
 
 void sexp_iterate(sexp* x, sexp_iterator_fn* it, void* data);
 

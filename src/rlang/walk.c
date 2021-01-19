@@ -81,7 +81,13 @@ bool sexp_iterate_recurse(struct sexp_stack* p_stack,
   }
 
   // Visit the node -- incoming trip
-  if (!it(data, x, type, depth, parent, rel, i, dir)) return false;
+  enum r_sexp_iterate out = it(data, x, type, depth, parent, rel, i, dir);
+
+  switch (out) {
+  case R_SEXP_ITERATE_abort: return false;
+  case R_SEXP_ITERATE_skip: return true;
+  case R_SEXP_ITERATE_next: break;
+  }
 
   ++depth;
 
@@ -189,7 +195,10 @@ bool sexp_iterate_recurse(struct sexp_stack* p_stack,
 
   // Visit the node -- outgoing trip
   if (dir != R_NODE_DIRECTION_leaf) {
-    if (!it(data, x, type, depth, parent, rel, i, R_NODE_DIRECTION_outgoing)) return false;
+    enum r_sexp_iterate out = it(data, x, type, depth, parent, rel, i, R_NODE_DIRECTION_outgoing);
+    if (out == R_SEXP_ITERATE_abort) {
+      return false;
+    }
   }
 
   return true;
