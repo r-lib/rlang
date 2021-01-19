@@ -73,7 +73,7 @@ bool sexp_iterate_recurse(struct sexp_stack* p_stack,
   case r_type_s4:
   case r_type_bytecode:
   case r_type_weakref:
-    dir = R_NODE_DIRECTION_leaf;
+    dir = R_NODE_DIRECTION_pivot;
     break;
   default:
     dir = R_NODE_DIRECTION_incoming;
@@ -102,7 +102,7 @@ bool sexp_iterate_recurse(struct sexp_stack* p_stack,
     if (!sexp_iterate_recurse(p_stack, ATTRIB(x), depth, x, R_NODE_RELATION_attrib, 0, it, data)) return false;
   }
 
-  if (dir != R_NODE_DIRECTION_leaf) {
+  if (dir != R_NODE_DIRECTION_pivot) {
     switch (type) {
     case r_type_closure:
       if (!sexp_iterate_recurse(p_stack, FORMALS(x), depth, x, R_NODE_RELATION_function_fmls, 0, it, data)) return false;
@@ -194,7 +194,7 @@ bool sexp_iterate_recurse(struct sexp_stack* p_stack,
   }
 
   // Visit the node -- outgoing trip
-  if (dir != R_NODE_DIRECTION_leaf) {
+  if (dir != R_NODE_DIRECTION_pivot) {
     enum r_sexp_iterate out = it(data, x, type, depth, parent, rel, i, R_NODE_DIRECTION_outgoing);
     if (out == R_SEXP_ITERATE_abort) {
       return false;
@@ -207,7 +207,7 @@ bool sexp_iterate_recurse(struct sexp_stack* p_stack,
 
 const char* r_node_direction_as_c_string(enum r_node_direction dir) {
   switch (dir) {
-  case R_NODE_DIRECTION_leaf: return "leaf";
+  case R_NODE_DIRECTION_pivot: return "pivot";
   case R_NODE_DIRECTION_incoming: return "incoming";
   case R_NODE_DIRECTION_outgoing: return "outgoing";
   default: r_stop_unreached("r_node_direction_as_c_string");

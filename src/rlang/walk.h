@@ -16,8 +16,23 @@ enum r_sexp_iterate {
   R_SEXP_ITERATE_skip
 };
 
+/**
+ * Direction of iteration
+ *
+ * Each non-leaf node of the sexp tree is visited twice: First before
+ * visiting the children, and again after the children have been
+ * visited. See
+ * <https://stlab.adobe.com/group__asl__tutorials__forest.html> about
+ * this iteration process.
+ *
+ * There are three directions:
+ * - Incoming: The first time a non-leaf node is visited.
+ * - Pivot: Only for leaf nodes. The direction is changing from
+ *   incoming to outgoing.
+ * - Outgoing: The second time a non-leaf node is visited on the way back.
+ */
 enum r_node_direction {
-  R_NODE_DIRECTION_leaf = 0,
+  R_NODE_DIRECTION_pivot = 0,
   R_NODE_DIRECTION_incoming,
   R_NODE_DIRECTION_outgoing
 };
