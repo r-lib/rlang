@@ -161,9 +161,7 @@ void r_vec_poke_range(sexp* x, r_ssize offset,
 
 
 void r_init_library_vec() {
-  r_lists_empty = r_new_vector(r_type_list, 0);
-  r_mark_shared(r_lists_empty);
-  r_mark_precious(r_lists_empty);
+  r_lists_empty = r_new_vector_global(r_type_list, 0);
 
   r_chrs_empty = r_chr("");
   r_mark_shared(r_chrs_empty);
@@ -171,13 +169,9 @@ void r_init_library_vec() {
 
   r_strs_empty = r_chr_get(r_chrs_empty, 0);
 
-  r_true = r_new_vector(r_type_logical, 1);
-  r_mark_precious(r_true);
-  r_mark_shared(r_true);
+  r_true = r_new_vector_global(r_type_logical, 1);
   *r_lgl_deref(r_true) = 1;
 
-  r_false = r_new_vector(r_type_logical, 1);
-  r_mark_precious(r_false);
-  r_mark_shared(r_false);
+  r_false = r_new_vector_global(r_type_logical, 1);
   *r_lgl_deref(r_false) = 0;
 }
