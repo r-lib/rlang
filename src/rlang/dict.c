@@ -6,6 +6,8 @@
 
 static size_t size_round_power_2(size_t size);
 
+#include "decl/dict-decl.h"
+
 
 struct r_dict r_new_dict(r_ssize size) {
   if (size <= 0) {
@@ -77,28 +79,23 @@ r_ssize dict_hash(const struct r_dict* dict, sexp* key) {
 // Returns `false` if `key` already exists in the dictionary, `true`
 // otherwise
 bool r_dict_put(struct r_dict* dict, sexp* key, sexp* value) {
-  r_ssize i = dict_hash(dict, key);
+  r_ssize hash;
+  sexp* parent;
+  sexp* node = dict_find_node_info(dict, key, &hash, &parent);
 
-  sexp* bucket = dict->p_buckets[i];
-  sexp* prev = r_null;
-
-  while (bucket != r_null) {
-    if (r_node_tag(bucket) == key) {
-      return false;
-    }
-    prev = bucket;
-    bucket = r_node_cdr(bucket);
+  if (node != r_null) {
+    return false;
   }
 
   // Can't find `key` in the bucket. Create a new node.
-  sexp* node = KEEP(r_new_node(value, r_null));
+  node = KEEP(r_new_node(value, r_null));
   r_node_poke_tag(node, key);
 
-  if (prev == r_null) {
+  if (parent == r_null) {
     // Empty bucket
-    r_list_poke(dict->buckets, i, node);
+    r_list_poke(dict->buckets, hash, node);
   } else {
-    r_node_poke_cdr(prev, node);
+    r_node_poke_cdr(parent, node);
   }
 
   ++dict->n_entries;
@@ -110,6 +107,20 @@ bool r_dict_put(struct r_dict* dict, sexp* key, sexp* value) {
 
   FREE(1);
   return true;
+}
+
+bool r_dict_has(struct r_dict* dict, sexp* key) {
+  return dict_find_node(dict, key) != r_null;
+}
+
+sexp* r_dict_get(struct r_dict* dict, sexp* key) {
+  sexp* node = dict_find_node(dict, key);
+
+  if (node == r_null) {
+    r_abort("Can't find key in dictionary.");
+  }
+
+  return r_node_car(node);
 }
 
 static
@@ -127,16 +138,25 @@ sexp* dict_find_node(struct r_dict* dict, sexp* key) {
   return r_null;
 }
 
-bool r_dict_has(struct r_dict* dict, sexp* key) {
-  return dict_find_node(dict, key) != r_null;
-}
+// Also returns hash and parent node if any
+static
+sexp* dict_find_node_info(struct r_dict* dict,
+                          sexp* key,
+                          r_ssize* hash,
+                          sexp** parent) {
+  r_ssize i = dict_hash(dict, key);
+  *hash = i;
 
-sexp* r_dict_get(struct r_dict* dict, sexp* key) {
-  sexp* node = dict_find_node(dict, key);
+  sexp* bucket = dict->p_buckets[i];
+  *parent = r_null;
 
-  if (node == r_null) {
-    r_abort("Can't find key in dictionary.");
+  while (bucket != r_null) {
+    if (r_node_tag(bucket) == key) {
+      return bucket;
+    }
+    *parent = bucket;
+    bucket = r_node_cdr(bucket);
   }
 
-  return r_node_car(node);
+  return r_null;
 }
