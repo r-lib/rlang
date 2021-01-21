@@ -88,6 +88,11 @@ sexp* rlang_dict_put(sexp* dict, sexp* key, sexp* value) {
   return r_lgl(r_dict_put(p_dict, key, value));
 }
 
+sexp* rlang_dict_del(sexp* dict, sexp* key) {
+  struct r_dict* p_dict = dict_deref(dict);
+  return r_lgl(r_dict_del(p_dict, key));
+}
+
 sexp* rlang_dict_has(sexp* dict, sexp* key) {
   struct r_dict* p_dict = dict_deref(dict);
   return r_lgl(r_dict_has(p_dict, key));

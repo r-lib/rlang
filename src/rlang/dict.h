@@ -23,6 +23,7 @@ struct r_dict {
 
 struct r_dict r_new_dict(r_ssize size);
 bool r_dict_put(struct r_dict* dict, sexp* key, sexp* value);
+bool r_dict_del(struct r_dict* dict, sexp* key);
 bool r_dict_has(struct r_dict* dict, sexp* key);
 sexp* r_dict_get(struct r_dict* dict, sexp* key);
 

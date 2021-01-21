@@ -529,3 +529,18 @@ test_that("dictionary grows", {
   dict_put(dict, quote(quux), 4)
   expect_equal(dict_size(dict), 8L)
 })
+
+test_that("can delete elements from dict", {
+  dict <- new_dict(3L)
+
+  dict_put(dict, quote(foo), 1)
+  dict_put(dict, quote(bar), 2)
+
+  expect_true(dict_del(dict, quote(bar)))
+  expect_false(dict_has(dict, quote(bar)))
+  expect_false(dict_del(dict, quote(bar)))
+
+  expect_true(dict_del(dict, quote(foo)))
+  expect_false(dict_has(dict, quote(foo)))
+  expect_false(dict_del(dict, quote(foo)))
+})
