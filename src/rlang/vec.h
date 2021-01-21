@@ -174,8 +174,8 @@ sexp* r_chr(const char* c_string) {
 sexp* r_chr_n(const char** strings, r_ssize n);
 
 static inline
-SEXP r_list(SEXP x) {
-  SEXP out = r_new_vector(r_type_list, 1);
+sexp* r_list(sexp* x) {
+  sexp* out = r_new_vector(r_type_list, 1);
   r_list_poke(out, 0, x);
   return out;
 }
@@ -192,14 +192,14 @@ sexp* r_shared_lgl(bool x) {
 }
 
 static inline
-bool r_is_bool(SEXP x) {
+bool r_is_bool(sexp* x) {
   return
     r_typeof(x) == r_type_logical &&
     r_length(x) == 1 &&
     r_lgl_get(x, 0) != NA_LOGICAL;
 }
 static inline
-bool r_is_int(SEXP x) {
+bool r_is_int(sexp* x) {
   return
     r_typeof(x) == r_type_integer &&
     r_length(x) == 1 &&

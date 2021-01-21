@@ -6,7 +6,7 @@
 
 sexp* rlang_ns_get(const char* name);
 
-sexp* capture(sexp* sym, sexp* frame, SEXP* arg_env) {
+sexp* capture(sexp* sym, sexp* frame, sexp** arg_env) {
   static sexp* capture_call = NULL;
   if (!capture_call) {
     sexp* args = KEEP(r_new_node(r_null, r_null));
