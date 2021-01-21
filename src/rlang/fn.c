@@ -22,5 +22,5 @@ sexp* r_as_function(sexp* x, sexp* env) {
 
 void r_init_library_fn() {
   as_function_call = r_parse("as_function(x, env = y)");
-  r_mark_precious(as_function_call);
+  r_preserve(as_function_call);
 }

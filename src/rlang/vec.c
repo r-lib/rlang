@@ -165,7 +165,7 @@ void r_init_library_vec() {
 
   r_chrs_empty = r_chr("");
   r_mark_shared(r_chrs_empty);
-  r_mark_precious(r_chrs_empty);
+  r_preserve(r_chrs_empty);
 
   r_strs_empty = r_chr_get(r_chrs_empty, 0);
 

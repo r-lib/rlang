@@ -11,7 +11,7 @@ sexp* capture(sexp* sym, sexp* frame, sexp** arg_env) {
   if (!capture_call) {
     sexp* args = KEEP(r_new_node(r_null, r_null));
     capture_call = r_new_call(rlang_ns_get("captureArgInfo"), args);
-    r_mark_precious(capture_call);
+    r_preserve(capture_call);
     r_mark_shared(capture_call);
     FREE(1);
   }
@@ -180,7 +180,7 @@ void arg_match0_abort(const char* msg, sexp* env) {
 
 void rlang_init_arg(sexp* ns) {
   stop_arg_match_call = r_parse("stop_arg_match(x, y, z)");
-  r_mark_precious(stop_arg_match_call);
+  r_preserve(stop_arg_match_call);
 
   arg_nm_sym = r_sym("arg_nm");
 }

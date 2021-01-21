@@ -46,14 +46,14 @@ void rlang_init_internal(sexp* ns) {
   rlang_zap = rlang_ns_get("zap!");
 
   rlang_as_list_call = r_parse("rlang_as_list(x)");
-  r_mark_precious(rlang_as_list_call);
+  r_preserve(rlang_as_list_call);
 
 
   rlang_objs_keep = r_chr("keep");
-  r_mark_precious(rlang_objs_keep);
+  r_preserve(rlang_objs_keep);
 
   rlang_objs_trailing = r_chr("trailing");
-  r_mark_precious(rlang_objs_trailing);
+  r_preserve(rlang_objs_trailing);
 
 
   fns_function = r_eval(r_sym("function"), r_base_env);

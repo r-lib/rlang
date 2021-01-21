@@ -27,8 +27,8 @@ bool r_has_colour() {
 
 void r_init_library_session() {
   is_installed_call = r_parse("requireNamespace(x, quietly = TRUE)");
-  r_mark_precious(is_installed_call);
+  r_preserve(is_installed_call);
 
   has_colour_call = r_parse("crayon::has_color()");
-  r_mark_precious(has_colour_call);
+  r_preserve(has_colour_call);
 }

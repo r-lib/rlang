@@ -562,16 +562,16 @@ void rlang_init_eval_tidy() {
     "}                                        \n",
     rlang_ns_env
   );
-  r_mark_precious(tilde_fn);
+  r_preserve(tilde_fn);
 
   data_pronoun_class = r_chr("rlang_data_pronoun");
-  r_mark_precious(data_pronoun_class);
+  r_preserve(data_pronoun_class);
 
   ctxt_pronoun_class = r_chr("rlang_ctxt_pronoun");
-  r_mark_precious(ctxt_pronoun_class);
+  r_preserve(ctxt_pronoun_class);
 
   empty_names_chr = r_new_vector(r_type_character, 2);
-  r_mark_precious(empty_names_chr);
+  r_preserve(empty_names_chr);
   r_chr_poke(empty_names_chr, 0, r_str(""));
   r_chr_poke(empty_names_chr, 1, r_strings_na);
 
@@ -605,7 +605,7 @@ void rlang_init_eval_tidy() {
     "}                                     \n",
     r_base_env
   );
-  r_mark_precious(restore_mask_fn);
+  r_preserve(restore_mask_fn);
 
   FREE(1);
 }

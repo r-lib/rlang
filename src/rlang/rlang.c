@@ -83,13 +83,13 @@ SEXP r_init_library() {
   r_init_library_vendor();
 
   shared_x_env = r_parse_eval("new.env(hash = FALSE, parent = baseenv(), size = 1L)", r_base_env);
-  r_mark_precious(shared_x_env);
+  r_preserve(shared_x_env);
 
   shared_xy_env = r_parse_eval("new.env(hash = FALSE, parent = baseenv(), size = 1L)", r_base_env);
-  r_mark_precious(shared_xy_env);
+  r_preserve(shared_xy_env);
 
   shared_xyz_env = r_parse_eval("new.env(hash = FALSE, parent = baseenv(), size = 1L)", r_base_env);
-  r_mark_precious(shared_xyz_env);
+  r_preserve(shared_xyz_env);
 
   r_quo_get_expr = (sexp* (*)(sexp*)) r_peek_c_callable("rlang", "rlang_quo_get_expr");
   r_quo_set_expr = (sexp* (*)(sexp*, sexp*)) r_peek_c_callable("rlang", "rlang_quo_set_expr");

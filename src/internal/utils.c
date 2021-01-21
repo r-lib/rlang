@@ -3,7 +3,7 @@
 
 sexp* new_preserved_empty_list() {
   sexp* empty_list = r_new_vector(r_type_list, 0);
-  r_mark_precious(empty_list);
+  r_preserve(empty_list);
   r_mark_shared(empty_list);
 
   sexp* nms = KEEP(r_new_vector(r_type_character, 0));
@@ -206,8 +206,8 @@ bool vec_find_first_duplicate(sexp* x, sexp* except, r_ssize* index) {
 
 void rlang_init_utils() {
   warn_deprecated_call = r_parse("rlang:::warn_deprecated(x, id = y)");
-  r_mark_precious(warn_deprecated_call);
+  r_preserve(warn_deprecated_call);
 
   signal_soft_deprecated_call = r_parse("rlang:::signal_soft_deprecated(x, id = y, env = z)");
-  r_mark_precious(signal_soft_deprecated_call);
+  r_preserve(signal_soft_deprecated_call);
 }

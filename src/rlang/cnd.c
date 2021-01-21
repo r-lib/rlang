@@ -188,22 +188,22 @@ sexp* rlang_ns_get(const char* name);
 
 void r_init_library_cnd() {
   msg_call = r_parse("message(x)");
-  r_mark_precious(msg_call);
+  r_preserve(msg_call);
 
   wng_call = r_parse("warning(x, call. = FALSE)");
-  r_mark_precious(wng_call);
+  r_preserve(wng_call);
 
   err_call = r_parse("rlang::abort(x)");
-  r_mark_precious(err_call);
+  r_preserve(err_call);
 
   wng_signal_call = r_parse("warning(x)");
-  r_mark_precious(wng_signal_call);
+  r_preserve(wng_signal_call);
 
   err_signal_call = r_parse("rlang:::signal_abort(x)");
-  r_mark_precious(err_signal_call);
+  r_preserve(err_signal_call);
 
   const char* cnd_signal_source =
     "withRestarts(rlang_muffle = function() NULL, signalCondition(x))";
   cnd_signal_call = r_parse(cnd_signal_source);
-  r_mark_precious(cnd_signal_call);
+  r_preserve(cnd_signal_call);
 }

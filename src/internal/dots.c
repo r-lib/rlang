@@ -1009,10 +1009,10 @@ void rlang_init_dots(sexp* ns) {
   glue_unquote_fn = r_eval(r_sym("glue_unquote"), ns);
 
   auto_name_call = r_parse("rlang:::quos_auto_name(x)");
-  r_mark_precious(auto_name_call);
+  r_preserve(auto_name_call);
 
   abort_dots_homonyms_call = r_parse("rlang:::abort_dots_homonyms(x, y)");
-  r_mark_precious(abort_dots_homonyms_call);
+  r_preserve(abort_dots_homonyms_call);
 
   {
     sexp* splice_box_class = KEEP(r_new_vector(r_type_character, 2));
@@ -1020,7 +1020,7 @@ void rlang_init_dots(sexp* ns) {
     r_chr_poke(splice_box_class, 1, r_str("rlang_box"));
 
     splice_box_attrib = r_pairlist(splice_box_class);
-    r_mark_precious(splice_box_attrib);
+    r_preserve(splice_box_attrib);
     r_mark_shared(splice_box_attrib);
 
     r_node_poke_tag(splice_box_attrib, r_syms_class);
@@ -1030,7 +1030,7 @@ void rlang_init_dots(sexp* ns) {
   {
     sexp* list = KEEP(r_new_vector(r_type_list, 0));
     empty_spliced_arg = rlang_new_splice_box(list);
-    r_mark_precious(empty_spliced_arg);
+    r_preserve(empty_spliced_arg);
     r_mark_shared(empty_spliced_arg);
     FREE(1);
   }
@@ -1041,7 +1041,7 @@ void rlang_init_dots(sexp* ns) {
     r_chr_poke(quosures_class, 1, r_str("list"));
 
     quosures_attrib = r_pairlist(quosures_class);
-    r_mark_precious(quosures_attrib);
+    r_preserve(quosures_attrib);
     r_mark_shared(quosures_attrib);
 
     r_node_poke_tag(quosures_attrib, r_syms_class);
@@ -1049,5 +1049,5 @@ void rlang_init_dots(sexp* ns) {
   }
 
   as_label_call = r_parse("as_label(x)");
-  r_mark_precious(as_label_call);
+  r_preserve(as_label_call);
 }

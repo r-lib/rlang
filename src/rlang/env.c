@@ -195,24 +195,24 @@ sexp* r_methods_ns_env = NULL;
 
 void r_init_library_env() {
   new_env_call = r_parse_eval("as.call(list(new.env, TRUE, NULL, NULL))", r_base_env);
-  r_mark_precious(new_env_call);
+  r_preserve(new_env_call);
 
   new_env__parent_node = r_node_cddr(new_env_call);
   new_env__size_node = r_node_cdr(new_env__parent_node);
 
   env2list_call = r_parse("as.list.environment(x, all.names = TRUE)");
-  r_mark_precious(env2list_call);
+  r_preserve(env2list_call);
 
   list2env_call = r_parse("list2env(x, envir = NULL, parent = y, hash = TRUE)");
-  r_mark_precious(list2env_call);
+  r_preserve(list2env_call);
 
   poke_lazy_call = r_parse("delayedAssign(x, value = NULL, assign.env = y, eval.env = z)");
-  r_mark_precious(poke_lazy_call);
+  r_preserve(poke_lazy_call);
 
   poke_lazy_value_node = r_node_cddr(poke_lazy_call);
 
   remove_call = r_parse("remove(list = y, envir = x, inherits = z)");
-  r_mark_precious(remove_call);
+  r_preserve(remove_call);
 
   r_methods_ns_env = r_parse_eval("asNamespace('methods')", r_base_env);
 }

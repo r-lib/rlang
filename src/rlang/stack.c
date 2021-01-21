@@ -64,7 +64,7 @@ static sexp* generate_sys_call(const char* name, int** n_addr) {
 
   sexp* sys_args = KEEP(r_new_node(sys_n, r_null));
   sexp* sys_call = KEEP(r_new_call(r_base_ns_get(name), sys_args));
-  r_mark_precious(sys_call);
+  r_preserve(sys_call);
 
   FREE(3);
   return sys_call;
@@ -74,7 +74,7 @@ void r_init_library_stack() {
   sexp* current_frame_body = KEEP(r_parse_eval("as.call(list(sys.frame, -1))", r_base_env));
   sexp* current_frame_fn = KEEP(r_new_function(r_null, current_frame_body, r_empty_env));
   current_frame_call = r_new_call(current_frame_fn, r_null);
-  r_mark_precious(current_frame_call);
+  r_preserve(current_frame_call);
   FREE(2);
 
   sys_frame_call = generate_sys_call("sys.frame", &sys_frame_n_addr);

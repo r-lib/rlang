@@ -193,14 +193,14 @@ void rlang_init_attr(sexp* ns) {
   c_fn = r_eval(r_sym("c"), r_base_env);
 
   as_character_call = r_parse("as.character(.x)");
-  r_mark_precious(as_character_call);
+  r_preserve(as_character_call);
 
   names_call = r_parse("names(.x)");
-  r_mark_precious(names_call);
+  r_preserve(names_call);
 
   set_names_call = r_parse("`names<-`(.x, .y)");
-  r_mark_precious(set_names_call);
+  r_preserve(set_names_call);
 
   length_call = r_parse("length(.x)");
-  r_mark_precious(length_call);
+  r_preserve(length_call);
 }
