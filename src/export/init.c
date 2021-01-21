@@ -169,7 +169,7 @@ extern sexp* rlang_dict_get(sexp*, sexp*);
 extern sexp* rlang_dict_resize(sexp*, sexp*);
 
 static const R_CallMethodDef r_callables[] = {
-  {"r_init_library",                    (DL_FUNC) &r_init_library, 0},
+  {"r_init_library",                    (DL_FUNC) &r_init_library, 1},
   {"rlang_library_load",                (DL_FUNC) &rlang_library_load, 1},
   {"rlang_library_unload",              (DL_FUNC) &rlang_library_unload, 0},
   {"r_f_lhs",                           (DL_FUNC) &r_f_lhs, 1},

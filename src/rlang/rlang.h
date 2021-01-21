@@ -9,7 +9,7 @@
 #include "rlang-types.h"
 
 
-sexp* r_init_library();
+sexp* r_init_library(sexp* ns);
 
 r_ssize r_as_ssize(sexp* n);
 

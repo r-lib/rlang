@@ -25,8 +25,9 @@ base_pkg_env <- NULL
 
   on_package_load("glue", .Call(rlang_glue_is_there))
 
-  .Call(r_init_library)
-  .Call(rlang_library_load, ns_env("rlang"))
+  rlang_ns <- topenv(environment())
+  .Call(r_init_library, rlang_ns)
+  .Call(rlang_library_load, rlang_ns)
 
   run_on_load()
 

@@ -14,8 +14,8 @@ enum r_type r_typeof(sexp* x) {
   return TYPEOF(x);
 }
 
-#define r_preserve R_PreserveObject
-#define r_unpreserve R_ReleaseObject
+void r_preserve(sexp* x);
+void r_unpreserve(sexp* x);
 
 static inline
 void r_mark_shared(sexp* x) {
