@@ -109,6 +109,26 @@ bool r_dict_put(struct r_dict* dict, sexp* key, sexp* value) {
   return true;
 }
 
+// Returns `true` if key existed and was deleted. Returns `false` if
+// the key could not be deleted because it did not exist in the dict.
+bool r_dict_del(struct r_dict* dict, sexp* key) {
+  r_ssize hash;
+  sexp* parent;
+  sexp* node = dict_find_node_info(dict, key, &hash, &parent);
+
+  if (node == r_null) {
+    return false;
+  }
+
+  if (parent == r_null) {
+    r_list_poke(dict->buckets, hash, r_null);
+  }  else {
+    r_node_poke_cdr(parent, r_node_cdr(node));
+  }
+
+  return true;
+}
+
 bool r_dict_has(struct r_dict* dict, sexp* key) {
   return dict_find_node(dict, key) != r_null;
 }
