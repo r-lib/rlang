@@ -126,6 +126,34 @@ static inline
 sexp* r_new_vector(enum r_type type, r_ssize n) {
   return Rf_allocVector(type, n);
 }
+static inline
+sexp* r_new_logical(r_ssize n) {
+  return Rf_allocVector(r_type_logical, n);
+}
+static inline
+sexp* r_new_integer(r_ssize n) {
+  return Rf_allocVector(r_type_integer, n);
+}
+static inline
+sexp* r_new_double(r_ssize n) {
+  return Rf_allocVector(r_type_double, n);
+}
+static inline
+sexp* r_new_complex(r_ssize n) {
+  return Rf_allocVector(r_type_complex, n);
+}
+static inline
+sexp* r_new_raw(r_ssize n) {
+  return Rf_allocVector(r_type_raw, n);
+}
+static inline
+sexp* r_new_character(r_ssize n) {
+  return Rf_allocVector(r_type_character, n);
+}
+static inline
+sexp* r_new_list(r_ssize n) {
+  return Rf_allocVector(r_type_list, n);
+}
 
 static inline
 sexp* r_lgl(bool x) {

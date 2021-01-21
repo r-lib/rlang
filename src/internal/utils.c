@@ -185,21 +185,6 @@ sexp* nms_are_duplicated(sexp* nms, bool from_last) {
   return dups;
 }
 
-sexp* r_new_list(sexp* x, const char* name) {
-  sexp* out = KEEP(r_new_vector(r_type_list, 1));
-  r_list_poke(out, 0, x);
-
-  if (name) {
-    sexp* nms = KEEP(r_new_vector(r_type_character, 1));
-    r_attrib_push(x, r_syms_names, nms);
-    r_chr_poke(nms, 0, r_str(name));
-    FREE(1);
-  }
-
-  FREE(1);
-  return out;
-}
-
 bool vec_find_first_duplicate(sexp* x, sexp* except, r_ssize* index) {
   r_ssize idx;
   if (except) {

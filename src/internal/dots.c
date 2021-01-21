@@ -228,7 +228,7 @@ static sexp* dots_big_bang_coerce(sexp* x) {
     // else fallthrough
   case r_type_symbol:
     signal_retired_splice();
-    return r_new_list(x, NULL);
+    return r_list(x);
 
   default:
     r_abort(
