@@ -202,6 +202,35 @@ void hash_char(R_outpstream_t stream, int input) {
 
 #if USE_VERSION_3
 
+// ntohl() byte swapper brought in from:
+// https://github.com/wch/r-source/blob/d22ee2fc0dc8142b23eed9f46edf76ea9d3ca69a/src/extra/xdr/xdr_mem.c#L11-L35
+
+/* Local mod: the assembly assumes i386 and little-endian generic is 32-bit */
+#if defined(_WIN32) && !defined(_WIN64)
+static uint32_t r__ntohl(uint32_t x)
+{ /* could write VC++ inline assembler, but not worth it for now */
+#ifdef _MSC_VER
+  return((x << 24) | ((x & 0xff00) << 8) | ((x & 0xff0000) >> 8) | (x >> 24));
+#else
+  __asm__("xchgb %b0,%h0\n\t"	/* swap lower bytes	*/
+	  "rorl $16,%0\n\t"	/* swap words		*/
+	  "xchgb %b0,%h0"       /* swap higher bytes	*/
+	  :"=q" (x)
+	  : "0" (x));
+  return x;
+#endif
+}
+#else /* net is big-endian: little-endian hosts need byte-swap code */
+#ifndef WORDS_BIGENDIAN
+static uint32_t r__ntohl(uint32_t x)
+{
+  return((x << 24) | ((x & 0xff00) << 8) | ((x & 0xff0000) >> 8) | (x >> 24));
+}
+#else
+#define r__ntohl(x) (x)
+#endif
+#endif
+
 static inline
 void hash_skip(struct hash_state_t* p_state, void* p_input, int n) {
   if (p_state->n_skipped < N_BYTES_SERIALIZATION_INFO) {
@@ -212,10 +241,14 @@ void hash_skip(struct hash_state_t* p_state, void* p_input, int n) {
 
   if (p_state->n_skipped == N_BYTES_SERIALIZATION_INFO) {
     // We've skipped all serialization info bytes.
-    // Incoming bytes tell the size of the native encoding string.
+    // Incoming bytes tell the size of the native encoding string, but
+    // they've been byte swapped on little-endian systems,
+    // so we need to undo that with `r__ntohl()`.
     char buf[128];
     memcpy(buf, p_input, n);
-    p_state->n_native_enc = R_XDRDecodeInteger(buf);
+    const int32_t* p_buf = (const int32_t*) buf;
+    int32_t val = *p_buf;
+    p_state->n_native_enc = (int32_t) r__ntohl((uint32_t) val);
     p_state->n_skipped += n;
     return;
   }
