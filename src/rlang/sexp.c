@@ -9,6 +9,8 @@ struct r_dict precious_dict = { 0 };
 
 
 void r_preserve(sexp* x) {
+  KEEP(x);
+
   sexp* stack = r_dict_get0(&precious_dict, x);
   if (!stack) {
     stack = KEEP(new_precious_stack(x));
@@ -17,6 +19,7 @@ void r_preserve(sexp* x) {
   }
 
   push_precious(stack);
+  FREE(1);
 }
 
 void r_unpreserve(sexp* x) {
