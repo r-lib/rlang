@@ -27,6 +27,13 @@ bool r_is_shared(sexp* x) {
 }
 
 static inline
+sexp* r_preserve_global(sexp* x) {
+  r_preserve(x);
+  r_mark_shared(x);
+  return x;
+}
+
+static inline
 void r_mark_object(sexp* x) {
   SET_OBJECT(x, 1);
 }

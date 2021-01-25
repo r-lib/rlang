@@ -165,8 +165,7 @@ sexp* r_new_list(r_ssize n) {
 static inline
 sexp* r_new_vector_global(enum r_type type, r_ssize n) {
   sexp* out = r_new_vector(type, n);
-  r_preserve(out);
-  r_mark_shared(out);
+  r_preserve_global(out);
   return out;
 }
 
