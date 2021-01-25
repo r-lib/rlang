@@ -44,6 +44,17 @@ sexp* rlang_interrupt() {
 
 // dict.c
 
+static
+sexp* wrap_dict(struct r_dict* p_dict) {
+  sexp* out = KEEP(r_new_vector(r_type_list, 2));
+
+  r_list_poke(out, 0, r_copy_in_raw(p_dict, sizeof(*p_dict)));
+  r_list_poke(out, 1, p_dict->shelter);
+
+  FREE(1);
+  return out;
+}
+
 sexp* rlang_new_dict(sexp* size, sexp* prevent_resize) {
   if (!r_is_int(size)) {
     r_abort("`size` must be an integer.");
@@ -52,17 +63,14 @@ sexp* rlang_new_dict(sexp* size, sexp* prevent_resize) {
     r_abort("`prevent_resize` must be a logical value.");
   }
 
-  sexp* out = KEEP(r_new_vector(r_type_list, 2));
-
   struct r_dict dict = r_new_dict(r_int_get(size, 0));
   KEEP(dict.shelter);
 
   dict.prevent_resize = r_lgl_get(prevent_resize, 0);
 
-  r_list_poke(out, 0, r_copy_in_raw(&dict, sizeof(dict)));
-  r_list_poke(out, 1, dict.shelter);
+  sexp* out = wrap_dict(&dict);
 
-  FREE(2);
+  FREE(1);
   return out;
 }
 
@@ -518,6 +526,23 @@ sexp* rlang_chr_get(sexp* x, sexp* i) {
   }
 
   return r_chr_get(x, c_i);
+}
+
+// Returns a copy
+sexp* rlang_precious_dict() {
+  // From rlang/sexp.c
+  struct r_dict* rlang__precious_dict();
+
+  struct r_dict* p_dict = rlang__precious_dict();
+  return wrap_dict(p_dict);
+}
+sexp* rlang_preserve(sexp* x) {
+  r_preserve(x);
+  return r_null;
+}
+sexp* rlang_unpreserve(sexp* x) {
+  r_unpreserve(x);
+  return r_null;
 }
 
 

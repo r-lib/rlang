@@ -169,3 +169,16 @@ dict_has <- function(dict, key) {
 dict_get <- function(dict, key) {
   .Call(rlang_dict_get, dict, key)
 }
+
+
+# sexp.c
+
+rlang_precious_dict <- function() {
+  .Call(c_ptr_precious_dict)
+}
+rlang_preserve <- function(x) {
+  .Call(c_ptr_preserve, x)
+}
+rlang_unpreserve <- function(x) {
+  .Call(c_ptr_unpreserve, x)
+}

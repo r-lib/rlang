@@ -62,6 +62,11 @@ int pop_precious(sexp* stack) {
   return --(*p_n);
 }
 
+// For unit tests
+struct r_dict* rlang__precious_dict() {
+  return &precious_dict;
+}
+
 
 void r_init_library_sexp(sexp* ns) {
   precious_dict = r_new_dict(PRECIOUS_DICT_INIT_SIZE);

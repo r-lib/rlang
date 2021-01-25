@@ -167,6 +167,9 @@ extern sexp* rlang_dict_del(sexp*, sexp*);
 extern sexp* rlang_dict_has(sexp*, sexp*);
 extern sexp* rlang_dict_get(sexp*, sexp*);
 extern sexp* rlang_dict_resize(sexp*, sexp*);
+extern sexp* rlang_precious_dict();
+extern sexp* rlang_preserve(sexp*);
+extern sexp* rlang_unpreserve(sexp*);
 
 static const R_CallMethodDef r_callables[] = {
   {"r_init_library",                    (DL_FUNC) &r_init_library, 1},
@@ -329,9 +332,11 @@ static const R_CallMethodDef r_callables[] = {
   {"rlang_dict_has",                    (DL_FUNC) &rlang_dict_has, 2},
   {"rlang_dict_get",                    (DL_FUNC) &rlang_dict_get, 2},
   {"rlang_dict_resize",                 (DL_FUNC) &rlang_dict_resize, 2},
+  {"c_ptr_precious_dict",               (DL_FUNC) &rlang_precious_dict, 0},
+  {"c_ptr_preserve",                    (DL_FUNC) &rlang_preserve, 1},
+  {"c_ptr_unpreserve",                  (DL_FUNC) &rlang_unpreserve, 1},
   {NULL, NULL, 0}
 };
-
 
 extern sexp* rlang_ext_arg_match0(sexp*);
 extern sexp* rlang_ext_capturearginfo(sexp*);
