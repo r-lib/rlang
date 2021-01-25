@@ -424,9 +424,9 @@ sexp* rlang_missing_arg() {
 
 sexp* rlang_duplicate(sexp* x, sexp* shallow) {
   if (r_lgl_get(shallow, 0)) {
-    return Rf_shallow_duplicate(x);
+    return r_clone(x);
   } else {
-    return Rf_duplicate(x);
+    return r_copy(x);
   }
 }
 

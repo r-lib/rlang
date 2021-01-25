@@ -95,7 +95,7 @@ sexp* rlang_replace_na(sexp* x, sexp* replacement) {
 }
 
 static sexp* replace_na_(sexp* x, sexp* replacement, int i) {
-  KEEP(x = Rf_duplicate(x));
+  KEEP(x = r_copy(x));
   int n = r_length(x);
 
   switch(r_typeof(x)) {
@@ -165,7 +165,7 @@ static sexp* replace_na_(sexp* x, sexp* replacement, int i) {
 
 
 static sexp* replace_na_vec_(sexp* x, sexp* replacement, int i) {
-  KEEP(x = Rf_duplicate(x));
+  KEEP(x = r_copy(x));
   int n = r_length(x);
 
   switch(r_typeof(x)) {
