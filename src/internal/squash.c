@@ -58,7 +58,7 @@ static r_ssize atom_squash(enum r_type kind, squash_info_t info,
   r_ssize n_inner;
 
   for (r_ssize i = 0; i != n_outer; ++i) {
-    inner = VECTOR_ELT(outer, i);
+    inner = r_list_get(outer, i);
     n_inner = r_vec_length(maybe_unbox(inner, is_spliceable));
 
     if (depth != 0 && is_spliceable(inner)) {
@@ -100,14 +100,14 @@ static r_ssize list_squash(squash_info_t info, sexp* outer,
   r_ssize n_outer = r_length(outer);
 
   for (r_ssize i = 0; i != n_outer; ++i) {
-    inner = VECTOR_ELT(outer, i);
+    inner = r_list_get(outer, i);
 
     if (depth != 0 && is_spliceable(inner)) {
       inner = PROTECT(maybe_unbox(inner, is_spliceable));
       count = list_squash(info, inner, out, count, is_spliceable, depth - 1);
       UNPROTECT(1);
     } else {
-      SET_VECTOR_ELT(out, count, inner);
+      r_list_poke(out, count, inner);
 
       if (info.named && r_typeof(r_names(outer)) == r_type_character) {
         sexp* name = r_chr_get(r_names(outer), i);
@@ -175,7 +175,7 @@ static void squash_info(squash_info_t* info, sexp* outer,
   r_ssize n_outer = r_length(outer);
 
   for (r_ssize i = 0; i != n_outer; ++i) {
-    inner = VECTOR_ELT(outer, i);
+    inner = r_list_get(outer, i);
 
     if (depth != 0 && is_spliceable(inner)) {
       update_info_outer(info, outer, i);
@@ -228,7 +228,7 @@ static is_spliceable_t predicate_pointer(sexp* x) {
   switch (r_typeof(x)) {
   case VECSXP:
     if (Rf_inherits(x, "fn_pointer") && r_length(x) == 1) {
-      sexp* ptr = VECTOR_ELT(x, 0);
+      sexp* ptr = r_list_get(x, 0);
       if (r_typeof(ptr) == EXTPTRSXP) {
         return (is_spliceable_t) R_ExternalPtrAddrFn(ptr);
       }
