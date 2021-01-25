@@ -27,7 +27,7 @@ sexp* rlang_unescape_character(sexp* chr) {
   R_xlen_t i = unescape_character_in_copy(r_null, chr, 0);
   if (i == len) return chr;
 
-  sexp* ret = KEEP(r_new_vector(STRSXP, len));
+  sexp* ret = KEEP(r_new_vector(r_type_character, len));
   copy_character(ret, chr, i);
   unescape_character_in_copy(ret, chr, i);
   FREE(1);

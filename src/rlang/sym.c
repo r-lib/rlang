@@ -9,7 +9,7 @@ sexp* r_new_symbol(sexp* x, int* err) {
   switch (r_typeof(x)) {
   case SYMSXP:
     return x;
-  case STRSXP:
+  case r_type_character:
     if (r_length(x) == 1) {
       const char* string = Rf_translateChar(r_chr_get(x, 0));
       return r_sym(string);

@@ -284,11 +284,11 @@ static bool is_spliceable_closure(sexp* x) {
 
 sexp* r_squash_if(sexp* dots, enum r_type kind, bool (*is_spliceable)(sexp*), int depth) {
   switch (kind) {
-  case LGLSXP:
-  case INTSXP:
-  case REALSXP:
-  case CPLXSXP:
-  case STRSXP:
+  case r_type_logical:
+  case r_type_integer:
+  case r_type_double:
+  case r_type_complex:
+  case r_type_character:
   case RAWSXP:
   case VECSXP:
     return squash(kind, dots, is_spliceable, depth);

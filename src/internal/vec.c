@@ -8,11 +8,11 @@ bool has_correct_length(sexp* x, r_ssize n) {
 
 bool r_is_atomic(sexp* x, r_ssize n) {
   switch(r_typeof(x)) {
-  case LGLSXP:
-  case INTSXP:
-  case REALSXP:
-  case CPLXSXP:
-  case STRSXP:
+  case r_type_logical:
+  case r_type_integer:
+  case r_type_double:
+  case r_type_complex:
+  case r_type_character:
   case RAWSXP:
     return has_correct_length(x, n);
   default:
@@ -22,11 +22,11 @@ bool r_is_atomic(sexp* x, r_ssize n) {
 
 bool r_is_vector(sexp* x, r_ssize n) {
   switch(r_typeof(x)) {
-  case LGLSXP:
-  case INTSXP:
-  case REALSXP:
-  case CPLXSXP:
-  case STRSXP:
+  case r_type_logical:
+  case r_type_integer:
+  case r_type_double:
+  case r_type_complex:
+  case r_type_character:
   case RAWSXP:
   case VECSXP:
     return has_correct_length(x, n);
@@ -151,11 +151,11 @@ bool r_is_raw(sexp* x, r_ssize n) {
 
 sexp* rlang_vec_coercer(sexp* dest) {
   switch(r_typeof(dest)) {
-  case LGLSXP: return rlang_ns_get("as_logical");
-  case INTSXP: return rlang_ns_get("as_integer");
-  case REALSXP: return rlang_ns_get("as_double");
-  case CPLXSXP: return rlang_ns_get("as_complex");
-  case STRSXP: return rlang_ns_get("as_character");
+  case r_type_logical: return rlang_ns_get("as_logical");
+  case r_type_integer: return rlang_ns_get("as_integer");
+  case r_type_double: return rlang_ns_get("as_double");
+  case r_type_complex: return rlang_ns_get("as_complex");
+  case r_type_character: return rlang_ns_get("as_character");
   case RAWSXP: return rlang_ns_get("as_bytes");
   default: r_abort("No coercion implemented for `%s`", Rf_type2str(r_typeof(dest)));
   }

@@ -155,7 +155,7 @@ void r_attrib_push_class(sexp* x, const char* tag) {
 bool r_is_named(sexp* x) {
   sexp* nms = r_names(x);
 
-  if (r_typeof(nms) != STRSXP) {
+  if (r_typeof(nms) != r_type_character) {
     return false;
   }
 

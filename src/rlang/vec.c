@@ -17,7 +17,7 @@ sexp* r_true = NULL;
 sexp* r_false = NULL;
 
 sexp* r_chr_n(const char** strings, r_ssize n) {
-  sexp* out = KEEP(r_new_vector(STRSXP, n));
+  sexp* out = KEEP(r_new_vector(r_type_character, n));
 
   for (r_ssize i = 0; i < n; ++i) {
     r_chr_poke(out, i, r_str(strings[i]));
@@ -106,28 +106,28 @@ void r_vec_poke_n(sexp* x, r_ssize offset,
   }
 
   switch (r_typeof(x)) {
-  case LGLSXP: {
+  case r_type_logical: {
     int* src_data = r_lgl_deref(y);
     int* dest_data = r_lgl_deref(x);
     for (r_ssize i = 0; i != n; ++i)
       dest_data[i + offset] = src_data[i + from];
     break;
   }
-  case INTSXP: {
+  case r_type_integer: {
     int* src_data = r_int_deref(y);
     int* dest_data = r_int_deref(x);
     for (r_ssize i = 0; i != n; ++i)
       dest_data[i + offset] = src_data[i + from];
     break;
   }
-  case REALSXP: {
+  case r_type_double: {
     double* src_data = r_dbl_deref(y);
     double* dest_data = r_dbl_deref(x);
     for (r_ssize i = 0; i != n; ++i)
       dest_data[i + offset] = src_data[i + from];
     break;
   }
-  case CPLXSXP: {
+  case r_type_complex: {
     r_complex_t* src_data = r_cpl_deref(y);
     r_complex_t* dest_data = r_cpl_deref(x);
     for (r_ssize i = 0; i != n; ++i)
@@ -141,7 +141,7 @@ void r_vec_poke_n(sexp* x, r_ssize offset,
       dest_data[i + offset] = src_data[i + from];
     break;
   }
-  case STRSXP: {
+  case r_type_character: {
     sexp* elt;
     for (r_ssize i = 0; i != n; ++i) {
       elt = STRING_ELT(y, i + from);

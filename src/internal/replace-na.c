@@ -30,7 +30,7 @@ sexp* rlang_replace_na(sexp* x, sexp* replacement) {
   int i = 0;
 
   switch(x_type) {
-  case LGLSXP: {
+  case r_type_logical: {
     int* arr = r_lgl_deref(x);
     for (; i < n; ++i) {
       if (arr[i] == r_lgls_na) {
@@ -40,7 +40,7 @@ sexp* rlang_replace_na(sexp* x, sexp* replacement) {
     break;
   }
 
-  case INTSXP: {
+  case r_type_integer: {
     int* arr = r_int_deref(x);
     for (; i < n; ++i) {
       if (arr[i] == r_ints_na) {
@@ -50,7 +50,7 @@ sexp* rlang_replace_na(sexp* x, sexp* replacement) {
     break;
   }
 
-  case REALSXP: {
+  case r_type_double: {
     double* arr = r_dbl_deref(x);
     for (; i < n; ++i) {
       if (ISNA(arr[i])) {
@@ -60,7 +60,7 @@ sexp* rlang_replace_na(sexp* x, sexp* replacement) {
     break;
   }
 
-  case STRSXP: {
+  case r_type_character: {
     for (; i < n; ++i) {
       if (STRING_ELT(x, i) == r_strs_na) {
         break;
@@ -69,7 +69,7 @@ sexp* rlang_replace_na(sexp* x, sexp* replacement) {
     break;
   }
 
-  case CPLXSXP: {
+  case r_type_complex: {
     r_complex_t* arr = r_cpl_deref(x);
 
     for (; i < n; ++i) {
@@ -99,7 +99,7 @@ static sexp* replace_na_(sexp* x, sexp* replacement, int i) {
   int n = r_length(x);
 
   switch(r_typeof(x)) {
-  case LGLSXP: {
+  case r_type_logical: {
     int* arr = r_lgl_deref(x);
     int new_value = r_lgl_deref(replacement)[0];
     for (; i < n; ++i) {
@@ -110,7 +110,7 @@ static sexp* replace_na_(sexp* x, sexp* replacement, int i) {
     break;
   }
 
-  case INTSXP: {
+  case r_type_integer: {
     int* arr = r_int_deref(x);
     int new_value = r_int_deref(replacement)[0];
     for (; i < n; ++i) {
@@ -121,7 +121,7 @@ static sexp* replace_na_(sexp* x, sexp* replacement, int i) {
     break;
   }
 
-  case REALSXP: {
+  case r_type_double: {
     double* arr = r_dbl_deref(x);
     double new_value = r_dbl_deref(replacement)[0];
     for (; i < n; ++i) {
@@ -132,7 +132,7 @@ static sexp* replace_na_(sexp* x, sexp* replacement, int i) {
     break;
   }
 
-  case STRSXP: {
+  case r_type_character: {
     sexp* new_value = STRING_ELT(replacement, 0);
     for (; i < n; ++i) {
       if (STRING_ELT(x, i) == r_strs_na) {
@@ -142,7 +142,7 @@ static sexp* replace_na_(sexp* x, sexp* replacement, int i) {
     break;
   }
 
-  case CPLXSXP: {
+  case r_type_complex: {
     r_complex_t* arr = r_cpl_deref(x);
     r_complex_t new_value = r_cpl_get(replacement, 0);
 
@@ -169,7 +169,7 @@ static sexp* replace_na_vec_(sexp* x, sexp* replacement, int i) {
   int n = r_length(x);
 
   switch(r_typeof(x)) {
-  case LGLSXP: {
+  case r_type_logical: {
     int* arr = r_lgl_deref(x);
     for (; i < n; ++i) {
       if (arr[i] == r_lgls_na) {
@@ -179,7 +179,7 @@ static sexp* replace_na_vec_(sexp* x, sexp* replacement, int i) {
     break;
   }
 
-  case INTSXP: {
+  case r_type_integer: {
     int* arr = r_int_deref(x);
     for (; i < n; ++i) {
       if (arr[i] == r_ints_na) {
@@ -189,7 +189,7 @@ static sexp* replace_na_vec_(sexp* x, sexp* replacement, int i) {
     break;
   }
 
-  case REALSXP: {
+  case r_type_double: {
     double* arr = r_dbl_deref(x);
     for (; i < n; ++i) {
       if (ISNA(arr[i])) {
@@ -199,7 +199,7 @@ static sexp* replace_na_vec_(sexp* x, sexp* replacement, int i) {
     break;
   }
 
-  case STRSXP: {
+  case r_type_character: {
     for (; i < n; ++i) {
       if (STRING_ELT(x, i) == r_strs_na) {
         SET_STRING_ELT(x, i, STRING_ELT(replacement, i));
@@ -208,7 +208,7 @@ static sexp* replace_na_vec_(sexp* x, sexp* replacement, int i) {
     break;
   }
 
-  case CPLXSXP: {
+  case r_type_complex: {
     r_complex_t* arr = r_cpl_deref(x);
     for (; i < n; ++i) {
       if (ISNA(arr[i].r)) {

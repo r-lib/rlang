@@ -64,7 +64,7 @@ sexp* chr_prepend(sexp* chr, sexp* r_string) {
   }
 
   int n = r_length(chr);
-  sexp* out = KEEP(r_new_vector(STRSXP, n + 1));
+  sexp* out = KEEP(r_new_vector(r_type_character, n + 1));
 
   r_vec_poke_n(out, 1, chr, 0, n);
   r_chr_poke(out, 0, r_string);
@@ -79,7 +79,7 @@ sexp* chr_append(sexp* chr, sexp* r_str) {
   validate_chr_setter(chr, r_str);
 
   int n = r_length(chr);
-  sexp* out = KEEP(r_new_vector(STRSXP, n + 1));
+  sexp* out = KEEP(r_new_vector(r_type_character, n + 1));
 
   r_vec_poke_n(out, 0, chr, 0, n);
   r_chr_poke(out, n, r_str);
