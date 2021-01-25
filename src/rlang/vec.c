@@ -2,10 +2,15 @@
 #include <math.h>
 #include <stdint.h>
 
+sexp* r_lgls_empty = NULL;
+sexp* r_ints_empty = NULL;
+sexp* r_dbls_empty = NULL;
+sexp* r_cpls_empty = NULL;
 sexp* r_chrs_empty = NULL;
 sexp* r_strs_empty = NULL;
+sexp* r_raws_empty = NULL;
 sexp* r_lists_empty = NULL;
-sexp* r_ints_empty = NULL;
+
 sexp* r_true = NULL;
 sexp* r_false = NULL;
 
@@ -162,7 +167,11 @@ void r_vec_poke_range(sexp* x, r_ssize offset,
 
 
 void r_init_library_vec() {
+  r_lgls_empty = r_preserve_global(r_new_logical(0));
   r_ints_empty = r_preserve_global(r_new_integer(0));
+  r_dbls_empty = r_preserve_global(r_new_double(0));
+  r_cpls_empty = r_preserve_global(r_new_complex(0));
+  r_raws_empty = r_preserve_global(r_new_raw(0));
   r_lists_empty = r_preserve_global(r_new_list(0));
 
   // FIXME: Inconsistent naming
