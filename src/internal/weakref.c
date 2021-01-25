@@ -5,7 +5,7 @@ sexp* rlang_new_weakref(sexp* key, sexp* value, sexp* finalizer, sexp* on_quit) 
   if (r_typeof(key) != ENVSXP && r_typeof(key) != EXTPTRSXP) {
     r_abort("`key` must be an environment or external pointer");
   }
-  return R_MakeWeakRef(key, value, finalizer, LOGICAL(on_quit)[0]);
+  return R_MakeWeakRef(key, value, finalizer, r_lgl_deref(on_quit)[0]);
 }
 
 sexp* rlang_wref_key(sexp* x) {

@@ -535,11 +535,11 @@ static bool should_auto_name(sexp* named) {
     return r_lgl_get(named, 0);
   case r_type_integer:
     warn_deprecated_width();
-    return INTEGER(named)[0];
+    return r_int_deref(named)[0];
   case r_type_double:
     if (r_is_integerish(named, -1, true)) {
       warn_deprecated_width();
-      return REAL(named)[0];
+      return r_dbl_deref(named)[0];
     }
     // else fallthrough
   default:

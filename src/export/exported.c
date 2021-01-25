@@ -558,8 +558,8 @@ sexp* rlang_vec_coerce(sexp* x, sexp* type) {
 // TODO: C-level check for scalar integerish
 int r_as_int(sexp* x) {
   switch(r_typeof(x)) {
-  case r_type_integer: return *INTEGER(x);
-  case r_type_double: return (int) *REAL(x);
+  case r_type_integer: return r_lgl_get(x, 0);
+  case r_type_double: return (int) r_dbl_get(x, 0);
   default: r_abort("Internal error: Expected integerish input");
   }
 }

@@ -107,29 +107,29 @@ void r_vec_poke_n(sexp* x, r_ssize offset,
 
   switch (r_typeof(x)) {
   case LGLSXP: {
-    int* src_data = LOGICAL(y);
-    int* dest_data = LOGICAL(x);
+    int* src_data = r_lgl_deref(y);
+    int* dest_data = r_lgl_deref(x);
     for (r_ssize i = 0; i != n; ++i)
       dest_data[i + offset] = src_data[i + from];
     break;
   }
   case INTSXP: {
-    int* src_data = INTEGER(y);
-    int* dest_data = INTEGER(x);
+    int* src_data = r_int_deref(y);
+    int* dest_data = r_int_deref(x);
     for (r_ssize i = 0; i != n; ++i)
       dest_data[i + offset] = src_data[i + from];
     break;
   }
   case REALSXP: {
-    double* src_data = REAL(y);
-    double* dest_data = REAL(x);
+    double* src_data = r_dbl_deref(y);
+    double* dest_data = r_dbl_deref(x);
     for (r_ssize i = 0; i != n; ++i)
       dest_data[i + offset] = src_data[i + from];
     break;
   }
   case CPLXSXP: {
-    r_complex_t* src_data = COMPLEX(y);
-    r_complex_t* dest_data = COMPLEX(x);
+    r_complex_t* src_data = r_cpl_deref(y);
+    r_complex_t* dest_data = r_cpl_deref(x);
     for (r_ssize i = 0; i != n; ++i)
       dest_data[i + offset] = src_data[i + from];
     break;
