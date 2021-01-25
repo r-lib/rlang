@@ -134,13 +134,25 @@ bool r_dict_has(struct r_dict* dict, sexp* key) {
 }
 
 sexp* r_dict_get(struct r_dict* dict, sexp* key) {
-  sexp* node = dict_find_node(dict, key);
+  sexp* out = r_dict_get0(dict, key);
 
-  if (node == r_null) {
+  if (!out) {
     r_abort("Can't find key in dictionary.");
   }
 
-  return r_node_car(node);
+  return out;
+}
+
+/* The 0-suffixed variant returns a C `NULL` if the object doesn't
+   exist. The regular variant throws an error in that case. */
+sexp* r_dict_get0(struct r_dict* dict, sexp* key) {
+  sexp* node = dict_find_node(dict, key);
+
+  if (node == r_null) {
+    return NULL;
+  } else {
+    return r_node_car(node);
+  }
 }
 
 static
