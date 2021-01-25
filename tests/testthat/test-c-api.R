@@ -544,3 +544,37 @@ test_that("can delete elements from dict", {
   expect_false(dict_has(dict, quote(foo)))
   expect_false(dict_del(dict, quote(foo)))
 })
+
+test_that("can preserve and unpreserve repeatedly", {
+  x <- env()
+
+  # Need to call rlang_precious_dict() repeatedly because it returns a
+  # clone of the dict
+  dict <- function() rlang_precious_dict()
+  peek_stack <- function() dict_get(dict(), x)
+  peek_count <- function() peek_stack()[[1]]
+
+  expect_false(dict_has(dict(), x))
+
+  rlang_preserve(x)
+  on.exit(while (dict_has(dict(), x)) {
+    rlang_unpreserve(x)
+  })
+
+  expect_true(dict_has(dict(), x))
+
+  stack <- peek_stack()
+  expect_equal(stack[[1]], 1L)
+  expect_equal(stack[[2]], x)
+
+  rlang_preserve(x)
+  expect_equal(peek_count(), 2L)
+
+  rlang_unpreserve(x)
+  expect_equal(peek_count(), 1L)
+
+  rlang_unpreserve(x)
+  expect_false(dict_has(dict(), x))
+
+  expect_error(rlang_unpreserve(x), "Can't unpreserve")
+})

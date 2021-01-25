@@ -26,6 +26,7 @@ bool r_dict_put(struct r_dict* dict, sexp* key, sexp* value);
 bool r_dict_del(struct r_dict* dict, sexp* key);
 bool r_dict_has(struct r_dict* dict, sexp* key);
 sexp* r_dict_get(struct r_dict* dict, sexp* key);
+sexp* r_dict_get0(struct r_dict* dict, sexp* key);
 
 // Pass a negative size to resize by the default growth factor
 void r_dict_resize(struct r_dict* dict, r_ssize size);
