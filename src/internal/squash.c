@@ -73,7 +73,7 @@ static r_ssize atom_squash(enum r_type kind, squash_info_t info,
         if (r_typeof(nms) == r_type_character) {
           r_vec_poke_n(out_names, count, nms, 0, n_inner);
         } else if (n_inner == 1 && has_name_at(outer, i)) {
-          SET_STRING_ELT(out_names, count, STRING_ELT(r_names(outer), i));
+          r_chr_poke(out_names, count, r_chr_get(r_names(outer), i));
         }
       }
 
@@ -110,8 +110,8 @@ static r_ssize list_squash(squash_info_t info, sexp* outer,
       SET_VECTOR_ELT(out, count, inner);
 
       if (info.named && r_typeof(r_names(outer)) == r_type_character) {
-        sexp* name = STRING_ELT(r_names(outer), i);
-        SET_STRING_ELT(out_names, count, name);
+        sexp* name = r_chr_get(r_names(outer), i);
+        r_chr_poke(out_names, count, name);
       }
 
       count += 1;
@@ -309,7 +309,7 @@ sexp* rlang_squash_closure(sexp* dots, enum r_type kind, sexp* pred, int depth) 
   return out;
 }
 sexp* rlang_squash(sexp* dots, sexp* type, sexp* pred, sexp* depth_) {
-  enum r_type kind = Rf_str2type(CHAR(STRING_ELT(type, 0)));
+  enum r_type kind = Rf_str2type(CHAR(r_chr_get(type, 0)));
   int depth = Rf_asInteger(depth_);
 
   is_spliceable_t is_spliceable;

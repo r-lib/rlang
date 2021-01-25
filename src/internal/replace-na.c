@@ -62,7 +62,7 @@ sexp* rlang_replace_na(sexp* x, sexp* replacement) {
 
   case r_type_character: {
     for (; i < n; ++i) {
-      if (STRING_ELT(x, i) == r_strs_na) {
+      if (r_chr_get(x, i) == r_strs_na) {
         break;
       }
     }
@@ -133,10 +133,10 @@ static sexp* replace_na_(sexp* x, sexp* replacement, int i) {
   }
 
   case r_type_character: {
-    sexp* new_value = STRING_ELT(replacement, 0);
+    sexp* new_value = r_chr_get(replacement, 0);
     for (; i < n; ++i) {
-      if (STRING_ELT(x, i) == r_strs_na) {
-        SET_STRING_ELT(x, i, new_value);
+      if (r_chr_get(x, i) == r_strs_na) {
+        r_chr_poke(x, i, new_value);
       }
     }
     break;
@@ -201,8 +201,8 @@ static sexp* replace_na_vec_(sexp* x, sexp* replacement, int i) {
 
   case r_type_character: {
     for (; i < n; ++i) {
-      if (STRING_ELT(x, i) == r_strs_na) {
-        SET_STRING_ELT(x, i, STRING_ELT(replacement, i));
+      if (r_chr_get(x, i) == r_strs_na) {
+        r_chr_poke(x, i, r_chr_get(replacement, i));
       }
     }
     break;

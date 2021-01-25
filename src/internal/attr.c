@@ -57,9 +57,9 @@ sexp* node_names(sexp* x) {
     sexp* tag = r_node_tag(x);
 
     if (tag == r_null) {
-      SET_STRING_ELT(out, i, r_strs_empty);
+      r_chr_poke(out, i, r_strs_empty);
     } else {
-      SET_STRING_ELT(out, i, PRINTNAME(tag));
+      r_chr_poke(out, i, PRINTNAME(tag));
     }
   }
 

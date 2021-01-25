@@ -1,7 +1,7 @@
 #include <rlang.h>
 
 sexp* rlang_r_string(sexp* str) {
-  return STRING_ELT(str, 0);
+  return r_chr_get(str, 0);
 }
 
 

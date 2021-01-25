@@ -46,7 +46,7 @@ static bool is_hex(const char chr);
 
 void copy_character(sexp* tgt, sexp* src, R_xlen_t len) {
   for (int i = 0; i < len; ++i) {
-    SET_STRING_ELT(tgt, i, STRING_ELT(src, i));
+    r_chr_poke(tgt, i, r_chr_get(src, i));
   }
 }
 
@@ -55,12 +55,12 @@ R_xlen_t unescape_character_in_copy(sexp* tgt, sexp* src, R_xlen_t i) {
   int dry_run = Rf_isNull(tgt);
 
   for (; i < len; ++i) {
-    sexp* old_elt = STRING_ELT(src, i);
+    sexp* old_elt = r_chr_get(src, i);
     sexp* new_elt = str_unserialise_unicode(old_elt);
     if (dry_run) {
       if (old_elt != new_elt) return i;
     } else {
-      SET_STRING_ELT(tgt, i, new_elt);
+      r_chr_poke(tgt, i, new_elt);
     }
   }
 

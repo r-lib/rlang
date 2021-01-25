@@ -6,7 +6,7 @@ r_ssize r_chr_detect_index(sexp* chr, const char* c_string) {
   r_ssize n = r_length(chr);
 
   for (r_ssize i = 0; i != n; ++i) {
-    const char* cur = CHAR(STRING_ELT(chr, i));
+    const char* cur = CHAR(r_chr_get(chr, i));
     if (strcmp(cur, c_string) == 0) {
       return i;
     }
@@ -23,7 +23,7 @@ bool r_chr_has_any(sexp* chr, const char** c_strings) {
   r_ssize n = r_length(chr);
 
   for (r_ssize i = 0; i != n; ++i) {
-    const char* cur = CHAR(STRING_ELT(chr, i));
+    const char* cur = CHAR(r_chr_get(chr, i));
 
     while (*c_strings) {
       if (strcmp(cur, *c_strings) == 0) {
@@ -39,7 +39,7 @@ bool r_chr_has_any(sexp* chr, const char** c_strings) {
 void r_chr_fill(sexp* chr, sexp* value) {
   r_ssize n = r_length(chr);
   for (r_ssize i = 0; i < n; ++i) {
-    SET_STRING_ELT(chr, i, value);
+    r_chr_poke(chr, i, value);
   }
 }
 

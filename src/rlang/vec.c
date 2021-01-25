@@ -144,8 +144,8 @@ void r_vec_poke_n(sexp* x, r_ssize offset,
   case r_type_character: {
     sexp* elt;
     for (r_ssize i = 0; i != n; ++i) {
-      elt = STRING_ELT(y, i + from);
-      SET_STRING_ELT(x, i + offset, elt);
+      elt = r_chr_get(y, i + from);
+      r_chr_poke(x, i + offset, elt);
     }
     break;
   }

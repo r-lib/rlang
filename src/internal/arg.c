@@ -149,7 +149,7 @@ sexp* rlang_ext_arg_match0(sexp* args) {
         matched = true;
 
         // Replace matched value by the element that failed to match at this iteration
-        SET_STRING_ELT(my_values, j, p_my_values[i]);
+        r_chr_poke(my_values, j, p_my_values[i]);
         break;
       }
     }
