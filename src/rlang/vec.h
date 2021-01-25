@@ -10,6 +10,7 @@ extern sexp* r_lists_empty;
 
 extern sexp* r_chrs_empty;
 extern sexp* r_strs_empty;
+extern sexp* r_ints_empty;
 #define r_strings_na R_NaString
 
 

@@ -5,6 +5,7 @@
 sexp* r_chrs_empty = NULL;
 sexp* r_strs_empty = NULL;
 sexp* r_lists_empty = NULL;
+sexp* r_ints_empty = NULL;
 sexp* r_true = NULL;
 sexp* r_false = NULL;
 
@@ -161,7 +162,10 @@ void r_vec_poke_range(sexp* x, r_ssize offset,
 
 
 void r_init_library_vec() {
+  r_ints_empty = r_preserve_global(r_new_integer(0));
   r_lists_empty = r_preserve_global(r_new_list(0));
+
+  // FIXME: Inconsistent naming
   r_chrs_empty = r_preserve_global(r_chr(""));
   r_strs_empty = r_chr_get(r_chrs_empty, 0);
 
