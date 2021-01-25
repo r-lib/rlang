@@ -11,9 +11,11 @@ extern sexp* r_ints_empty;
 extern sexp* r_dbls_empty;
 extern sexp* r_cpls_empty;
 extern sexp* r_chrs_empty;
-extern sexp* r_strs_empty;
 extern sexp* r_raws_empty;
 extern sexp* r_lists_empty;
+
+extern sexp* r_chrs_empty_string;
+extern sexp* r_strs_empty;
 
 #define r_lgls_na NA_LOGICAL
 #define r_ints_na NA_INTEGER

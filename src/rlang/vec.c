@@ -7,9 +7,11 @@ sexp* r_ints_empty = NULL;
 sexp* r_dbls_empty = NULL;
 sexp* r_cpls_empty = NULL;
 sexp* r_chrs_empty = NULL;
-sexp* r_strs_empty = NULL;
 sexp* r_raws_empty = NULL;
 sexp* r_lists_empty = NULL;
+
+sexp* r_chrs_empty_string = NULL;
+sexp* r_strs_empty = NULL;
 
 sexp* r_true = NULL;
 sexp* r_false = NULL;
@@ -172,11 +174,11 @@ void r_init_library_vec() {
   r_dbls_empty = r_preserve_global(r_new_double(0));
   r_cpls_empty = r_preserve_global(r_new_complex(0));
   r_raws_empty = r_preserve_global(r_new_raw(0));
+  r_chrs_empty = r_preserve_global(r_new_character(0));
   r_lists_empty = r_preserve_global(r_new_list(0));
 
-  // FIXME: Inconsistent naming
-  r_chrs_empty = r_preserve_global(r_chr(""));
-  r_strs_empty = r_chr_get(r_chrs_empty, 0);
+  r_chrs_empty_string = r_preserve_global(r_chr(""));
+  r_strs_empty = r_chr_get(r_chrs_empty_string, 0);
 
   r_false = r_preserve_global(r_lgl(0));
   r_true = r_preserve_global(r_lgl(1));
