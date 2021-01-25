@@ -155,20 +155,6 @@ sexp* r_new_list(r_ssize n) {
   return Rf_allocVector(r_type_list, n);
 }
 
-/**
- * Create new global vector
- *
- * This creates a vector just like `r_new_vector()`. The refcounts of
- * the vector are maxed and it is permanently protected.
- *
- */
-static inline
-sexp* r_new_vector_global(enum r_type type, r_ssize n) {
-  sexp* out = r_new_vector(type, n);
-  r_preserve_global(out);
-  return out;
-}
-
 static inline
 sexp* r_lgl(bool x) {
   return Rf_ScalarLogical(x);
