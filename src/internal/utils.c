@@ -176,7 +176,7 @@ sexp* nms_are_duplicated(sexp* nms, bool from_last) {
   sexp* const * p_nms = r_chr_deref_const(nms);
 
   for (r_ssize i = 0; i < n; ++i) {
-    if (p_nms[i] == r_strs_empty || p_nms[i] == r_strings_na) {
+    if (p_nms[i] == r_strs_empty || p_nms[i] == r_strs_na) {
       p_dups[i] = false;
     }
   }

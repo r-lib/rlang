@@ -52,7 +52,7 @@ sexp* r_str_as_symbol(sexp* str) {
 
 static inline
 bool r_str_is_name(sexp* str) {
-  if (str == r_strings_na) {
+  if (str == r_strs_na) {
     return false;
   }
   if (str == r_strs_empty) {

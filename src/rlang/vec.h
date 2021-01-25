@@ -15,7 +15,7 @@ extern sexp* r_ints_empty;
 #define r_lgls_na NA_LOGICAL
 #define r_ints_na NA_INTEGER
 #define r_dbls_na NA_REAL
-#define r_strings_na NA_STRING
+#define r_strs_na NA_STRING
 
 
 static inline

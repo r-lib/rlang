@@ -62,7 +62,7 @@ sexp* rlang_replace_na(sexp* x, sexp* replacement) {
 
   case STRSXP: {
     for (; i < n; ++i) {
-      if (STRING_ELT(x, i) == r_strings_na) {
+      if (STRING_ELT(x, i) == r_strs_na) {
         break;
       }
     }
@@ -135,7 +135,7 @@ static sexp* replace_na_(sexp* x, sexp* replacement, int i) {
   case STRSXP: {
     sexp* new_value = STRING_ELT(replacement, 0);
     for (; i < n; ++i) {
-      if (STRING_ELT(x, i) == r_strings_na) {
+      if (STRING_ELT(x, i) == r_strs_na) {
         SET_STRING_ELT(x, i, new_value);
       }
     }
@@ -201,7 +201,7 @@ static sexp* replace_na_vec_(sexp* x, sexp* replacement, int i) {
 
   case STRSXP: {
     for (; i < n; ++i) {
-      if (STRING_ELT(x, i) == r_strings_na) {
+      if (STRING_ELT(x, i) == r_strs_na) {
         SET_STRING_ELT(x, i, STRING_ELT(replacement, i));
       }
     }

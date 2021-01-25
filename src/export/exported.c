@@ -683,7 +683,7 @@ sexp* rlang_is_string(sexp* x, sexp* string) {
 
   sexp* value = r_chr_get(x, 0);
 
-  if (value == r_strings_na) {
+  if (value == r_strs_na) {
     return r_false;
   }
 
