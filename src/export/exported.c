@@ -615,7 +615,7 @@ static int validate_finite(sexp* finite) {
     finite = r_vec_coerce(finite, r_type_logical);
   case r_type_logical: {
     int value = r_lgl_get(finite, 0);
-    if (value != NA_LOGICAL) {
+    if (value != r_lgls_na) {
       return r_lgl_get(finite, 0);
     } // else fallthrough
   }
@@ -683,7 +683,7 @@ sexp* rlang_is_string(sexp* x, sexp* string) {
 
   sexp* value = r_chr_get(x, 0);
 
-  if (value == NA_STRING) {
+  if (value == r_strings_na) {
     return r_false;
   }
 

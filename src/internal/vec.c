@@ -46,7 +46,7 @@ bool r_is_finite(sexp* x) {
   case r_type_integer: {
     const int* p_x = r_int_deref_const(x);
     for (r_ssize i = 0; i < n; ++i) {
-      if (p_x[i] == NA_INTEGER) {
+      if (p_x[i] == r_ints_na) {
         return false;
       }
     }

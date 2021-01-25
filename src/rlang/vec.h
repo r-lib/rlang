@@ -11,7 +11,11 @@ extern sexp* r_lists_empty;
 extern sexp* r_chrs_empty;
 extern sexp* r_strs_empty;
 extern sexp* r_ints_empty;
-#define r_strings_na R_NaString
+
+#define r_lgls_na NA_LOGICAL
+#define r_ints_na NA_INTEGER
+#define r_dbls_na NA_REAL
+#define r_strings_na NA_STRING
 
 
 static inline
@@ -197,14 +201,14 @@ bool r_is_bool(sexp* x) {
   return
     r_typeof(x) == r_type_logical &&
     r_length(x) == 1 &&
-    r_lgl_get(x, 0) != NA_LOGICAL;
+    r_lgl_get(x, 0) != r_lgls_na;
 }
 static inline
 bool r_is_int(sexp* x) {
   return
     r_typeof(x) == r_type_integer &&
     r_length(x) == 1 &&
-    r_int_get(x, 0) != NA_INTEGER;
+    r_int_get(x, 0) != r_ints_na;
 }
 static inline
 bool r_is_true(sexp* x) {

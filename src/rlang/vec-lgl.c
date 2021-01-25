@@ -46,10 +46,10 @@ sexp* r_lgl_which(sexp* x, bool na_propagate) {
     int elt = p_x[i];
 
     if (elt) {
-      if (na_propagate && elt == NA_LOGICAL) {
-        *p_which = NA_INTEGER;
+      if (na_propagate && elt == r_lgls_na) {
+        *p_which = r_ints_na;
         ++p_which;
-      } else if (elt != NA_LOGICAL) {
+      } else if (elt != r_lgls_na) {
         *p_which = i + 1;
         ++p_which;
       }

@@ -33,7 +33,7 @@ sexp* rlang_replace_na(sexp* x, sexp* replacement) {
   case LGLSXP: {
     int* arr = LOGICAL(x);
     for (; i < n; ++i) {
-      if (arr[i] == NA_LOGICAL) {
+      if (arr[i] == r_lgls_na) {
         break;
       }
     }
@@ -43,7 +43,7 @@ sexp* rlang_replace_na(sexp* x, sexp* replacement) {
   case INTSXP: {
     int* arr = INTEGER(x);
     for (; i < n; ++i) {
-      if (arr[i] == NA_INTEGER) {
+      if (arr[i] == r_ints_na) {
         break;
       }
     }
@@ -62,7 +62,7 @@ sexp* rlang_replace_na(sexp* x, sexp* replacement) {
 
   case STRSXP: {
     for (; i < n; ++i) {
-      if (STRING_ELT(x, i) == NA_STRING) {
+      if (STRING_ELT(x, i) == r_strings_na) {
         break;
       }
     }
@@ -103,7 +103,7 @@ static sexp* replace_na_(sexp* x, sexp* replacement, int i) {
     int* arr = LOGICAL(x);
     int new_value = LOGICAL(replacement)[0];
     for (; i < n; ++i) {
-      if (arr[i] == NA_LOGICAL) {
+      if (arr[i] == r_lgls_na) {
         arr[i] = new_value;
       }
     }
@@ -114,7 +114,7 @@ static sexp* replace_na_(sexp* x, sexp* replacement, int i) {
     int* arr = INTEGER(x);
     int new_value = INTEGER(replacement)[0];
     for (; i < n; ++i) {
-      if (arr[i] == NA_INTEGER) {
+      if (arr[i] == r_ints_na) {
         arr[i] = new_value;
       }
     }
@@ -135,7 +135,7 @@ static sexp* replace_na_(sexp* x, sexp* replacement, int i) {
   case STRSXP: {
     sexp* new_value = STRING_ELT(replacement, 0);
     for (; i < n; ++i) {
-      if (STRING_ELT(x, i) == NA_STRING) {
+      if (STRING_ELT(x, i) == r_strings_na) {
         SET_STRING_ELT(x, i, new_value);
       }
     }
@@ -172,7 +172,7 @@ static sexp* replace_na_vec_(sexp* x, sexp* replacement, int i) {
   case LGLSXP: {
     int* arr = LOGICAL(x);
     for (; i < n; ++i) {
-      if (arr[i] == NA_LOGICAL) {
+      if (arr[i] == r_lgls_na) {
         arr[i] = LOGICAL(replacement)[i];
       }
     }
@@ -182,7 +182,7 @@ static sexp* replace_na_vec_(sexp* x, sexp* replacement, int i) {
   case INTSXP: {
     int* arr = INTEGER(x);
     for (; i < n; ++i) {
-      if (arr[i] == NA_INTEGER) {
+      if (arr[i] == r_ints_na) {
         arr[i] = INTEGER(replacement)[i];
       }
     }
@@ -201,7 +201,7 @@ static sexp* replace_na_vec_(sexp* x, sexp* replacement, int i) {
 
   case STRSXP: {
     for (; i < n; ++i) {
-      if (STRING_ELT(x, i) == NA_STRING) {
+      if (STRING_ELT(x, i) == r_strings_na) {
         SET_STRING_ELT(x, i, STRING_ELT(replacement, i));
       }
     }
