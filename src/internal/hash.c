@@ -31,7 +31,7 @@
  * Before any R object data is serialized, `R_Serialize()` will first write out:
  *
  * Serialization info:
- * - 2 bytes for `"X\n"` to declare "binary" serialization (i.e. not "ascii")
+ * - 2 bytes for `"X\n"` to declare "xdr" serialization (i.e. not "ascii" or "binary")
  * - An `int` representing the serialization version
  * - An `int` representing `R_VERSION`
  * - An `int` representing the minimum R version where this serialization
@@ -50,10 +50,10 @@
  * Reference to show where R appends this information:
  * https://github.com/wch/r-source/blob/d48ecd61012fa6ae645d087d9a6e97e200c32fbc/src/main/serialize.c#L1382-L1389
  */
-#define N_BYTES_SERIALIZATION_INFO (2 + 3 * sizeof(int))
+#define N_BYTES_SERIALIZATION_INFO (2 + 3 * R_XDR_INTEGER_SIZE)
 
 #if USE_VERSION_3
-#  define N_BYTES_N_NATIVE_ENC (sizeof(int))
+#  define N_BYTES_N_NATIVE_ENC R_XDR_INTEGER_SIZE
 #endif
 
 // -----------------------------------------------------------------------------
@@ -110,10 +110,7 @@ sexp* hash_impl(void* p_data) {
   sexp* (*hook)(sexp*, sexp*) = NULL;
   sexp* hook_data = r_null;
 
-  // We use the unstructured binary format, rather than XDR, as that is faster.
-  // In theory it may result in different hashes on different platforms, but
-  // in practice only integers can have variable width and here they are 32 bit.
-  R_pstream_format_t format = R_pstream_binary_format;
+  R_pstream_format_t format = R_pstream_xdr_format;
 
   struct R_outpstream_st stream;
 
@@ -216,7 +213,9 @@ void hash_skip(struct hash_state_t* p_state, void* p_input, int n) {
   if (p_state->n_skipped == N_BYTES_SERIALIZATION_INFO) {
     // We've skipped all serialization info bytes.
     // Incoming bytes tell the size of the native encoding string.
-    memcpy(&p_state->n_native_enc, p_input, sizeof(int));
+    char buf[128];
+    memcpy(buf, p_input, n);
+    p_state->n_native_enc = R_XDRDecodeInteger(buf);
     p_state->n_skipped += n;
     return;
   }
