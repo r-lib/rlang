@@ -146,6 +146,13 @@ detect_rlang_lib_usage <- function(src_path) {
 }
 
 
+# df.c
+
+alloc_data_frame <- function(n_rows, names, types) {
+  .Call(c_ptr_alloc_data_frame, n_rows, names, types)
+}
+
+
 # dict.c
 
 new_dict <- function(size, prevent_resize = FALSE) {

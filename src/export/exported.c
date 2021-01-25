@@ -42,6 +42,26 @@ sexp* rlang_interrupt() {
 }
 
 
+// df.c
+
+sexp* rlang_alloc_data_frame(sexp* n_rows, sexp* names, sexp* types) {
+  if (!r_is_int(n_rows)) {
+    r_abort("`n_rows` must be an integer value.");
+  }
+  if (r_typeof(names) != r_type_character) {
+    r_abort("`names` must be a character vector.");
+  }
+  if (r_typeof(types) != r_type_integer) {
+    r_abort("`types` must be an integer vector.");
+  }
+
+  return r_alloc_data_frame(r_int_get(n_rows, 0),
+                            names,
+                            (enum r_type*) r_int_deref(types),
+                            r_length(names));
+}
+
+
 // dict.c
 
 static

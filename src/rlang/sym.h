@@ -9,6 +9,7 @@
 #define r_syms_dots R_DotsSymbol
 #define r_syms_namespace R_DoubleColonSymbol
 #define r_syms_namespace3 R_TripleColonSymbol
+#define r_syms_row_names R_RowNamesSymbol
 
 extern sexp* r_syms_dot_environment;
 extern sexp* r_syms_function;
