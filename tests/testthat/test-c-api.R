@@ -593,4 +593,9 @@ test_that("alloc_data_frame() creates data frame", {
   expect_equal(nrow(df), 0)
   expect_equal(ncol(df), 0)
   expect_equal(names(df), chr())
+
+  df <- alloc_data_frame(3L, chr(), int())
+  expect_equal(nrow(df), 3)
+  expect_equal(ncol(df), 0)
+  expect_equal(names(df), chr())
 })
