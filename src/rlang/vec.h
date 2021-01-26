@@ -236,6 +236,8 @@ bool r_is_string(sexp* x) {
     r_chr_get(x, 0) != R_NaString;
 }
 
+sexp* r_list_compact(sexp* x);
+
 sexp* r_lgl_resize(sexp* x, r_ssize size);
 sexp* r_int_resize(sexp* x, r_ssize size);
 sexp* r_dbl_resize(sexp* x, r_ssize size);

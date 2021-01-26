@@ -189,3 +189,10 @@ rlang_preserve <- function(x) {
 rlang_unpreserve <- function(x) {
   .Call(c_ptr_unpreserve, x)
 }
+
+
+# vec.c
+
+list_compact <- function(x) {
+  .Call(c_ptr_list_compact, x)
+}

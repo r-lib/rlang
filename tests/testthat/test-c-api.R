@@ -599,3 +599,12 @@ test_that("alloc_data_frame() creates data frame", {
   expect_equal(ncol(df), 0)
   expect_equal(names(df), chr())
 })
+
+test_that("r_list_compact() compacts lists", {
+  expect_equal(list_compact(list()), list())
+  expect_equal(list_compact(list(1, 2)), list(1, 2))
+  expect_equal(list_compact(list(NULL)), list())
+  expect_equal(list_compact(list(NULL, 1)), list(1))
+  expect_equal(list_compact(list(1, NULL)), list(1))
+  expect_equal(list_compact(list(NULL, 1, NULL, 2, NULL)), list(1, 2))
+})

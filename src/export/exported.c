@@ -609,9 +609,6 @@ sexp* rlang_vec_poke_range(sexp* x, sexp* offset,
   return x;
 }
 
-
-// vec-list.h
-
 static r_ssize validate_n(sexp* n) {
   if (n == r_null) {
     return -1;

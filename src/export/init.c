@@ -337,6 +337,8 @@ static const R_CallMethodDef r_callables[] = {
   {"c_ptr_preserve",                    (DL_FUNC) &rlang_preserve, 1},
   {"c_ptr_unpreserve",                  (DL_FUNC) &rlang_unpreserve, 1},
   {"c_ptr_alloc_data_frame",            (DL_FUNC) &rlang_alloc_data_frame, 3},
+  {"c_ptr_list_compact",                (DL_FUNC) &r_list_compact, 1},
+  {"c_ptr_list_compact",                (DL_FUNC) &r_list_compact, 1},
   {NULL, NULL, 0}
 };
 

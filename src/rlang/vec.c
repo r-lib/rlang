@@ -117,6 +117,31 @@ sexp* r_list_resize(sexp* x, r_ssize size) {
 #undef RESIZE_BARRIER
 
 
+sexp* r_list_compact(sexp* x) {
+  r_ssize n = r_length(x);
+  sexp* inc = KEEP(r_new_logical(n));
+
+  int* v_inc = r_int_deref(inc);
+  sexp* const * v_x = r_list_deref_const(x);
+
+  r_ssize new_n = 0;
+  for (r_ssize i = 0; i < n; ++i) {
+    v_inc[i] = v_x[i] != r_null;
+    new_n += v_inc[i];
+  }
+
+  sexp* out = KEEP(r_new_list(new_n));
+  for (r_ssize i = 0, count = 0; i < n; ++i) {
+    if (v_inc[i]) {
+      r_list_poke(out, count, v_x[i]);
+      ++count;
+    }
+  }
+
+  FREE(2);
+  return out;
+}
+
 
 // FIXME: Does this have a place in the library?
 void r_vec_poke_n(sexp* x, r_ssize offset,
