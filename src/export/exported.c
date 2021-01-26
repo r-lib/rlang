@@ -55,10 +55,15 @@ sexp* rlang_alloc_data_frame(sexp* n_rows, sexp* names, sexp* types) {
     r_abort("`types` must be an integer vector.");
   }
 
-  return r_alloc_data_frame(r_int_get(n_rows, 0),
-                            names,
-                            (enum r_type*) r_int_deref(types),
-                            r_length(names));
+  r_ssize n_rows_val = r_int_get(n_rows, 0);
+  sexp* df = KEEP(r_alloc_df_list(n_rows_val,
+                                  names,
+                                  (enum r_type*) r_int_deref(types),
+                                  r_length(names)));
+  r_init_data_frame(df, n_rows_val);
+
+  FREE(1);
+  return df;
 }
 
 

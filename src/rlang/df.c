@@ -6,30 +6,6 @@ sexp* r_classes_tibble = NULL;
 #include "decl/df-decl.h"
 
 
-sexp* r_alloc_data_frame(r_ssize n_rows,
-                         sexp* names,
-                         const enum r_type* v_types, r_ssize types_size) {
-  sexp* df = KEEP(r_new_list(types_size));
-
-  if (r_typeof(names) != r_type_character) {
-    r_abort("`names` must be a character vector.");
-  }
-  if (r_length(names) != types_size) {
-    r_abort("`names` must match the number of columns.");
-  }
-  r_attrib_push(df, r_syms_names, names);
-
-  for (r_ssize i = 0; i < types_size; ++i) {
-    sexp* col = r_new_vector(v_types[i], n_rows);
-    r_list_poke(df, i, col);
-  }
-
-  r_init_data_frame(df, n_rows);
-
-  FREE(1);
-  return df;
-}
-
 void r_init_data_frame(sexp* x, r_ssize n_rows) {
   init_compact_rownames(x, n_rows);
   r_attrib_poke(x, r_syms_class, r_classes_data_frame);
