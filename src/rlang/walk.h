@@ -27,12 +27,12 @@ enum r_sexp_iterate {
  *
  * There are three directions:
  * - Incoming: The first time a non-leaf node is visited.
- * - Pivot: Only for leaf nodes. The direction is changing from
+ * - Leaf: After reaching a leaf node, the direction changes from
  *   incoming to outgoing.
  * - Outgoing: The second time a non-leaf node is visited on the way back.
  */
 enum r_node_direction {
-  R_NODE_DIRECTION_pivot = 0,
+  R_NODE_DIRECTION_leaf = 0,
   R_NODE_DIRECTION_incoming,
   R_NODE_DIRECTION_outgoing
 };
