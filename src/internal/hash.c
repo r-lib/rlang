@@ -110,6 +110,8 @@ sexp* hash_impl(void* p_data) {
   sexp* (*hook)(sexp*, sexp*) = NULL;
   sexp* hook_data = r_null;
 
+  // XDR format is slower than binary format, but results in a big-endian
+  // encoded data stream on any platform
   R_pstream_format_t format = R_pstream_xdr_format;
 
   struct R_outpstream_st stream;
