@@ -16,7 +16,7 @@ sexp* r_strs_empty = NULL;
 sexp* r_true = NULL;
 sexp* r_false = NULL;
 
-sexp* r_chr_n(const char** strings, r_ssize n) {
+sexp* r_chr_n(const char* const * strings, r_ssize n) {
   sexp* out = KEEP(r_new_vector(r_type_character, n));
 
   for (r_ssize i = 0; i < n; ++i) {

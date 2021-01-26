@@ -8,7 +8,7 @@ sexp* r_classes_tibble = NULL;
 
 sexp* r_alloc_data_frame(r_ssize n_rows,
                          sexp* names,
-                         enum r_type* v_types, r_ssize types_size) {
+                         const enum r_type* v_types, r_ssize types_size) {
   sexp* df = KEEP(r_new_list(types_size));
 
   if (r_typeof(names) != r_type_character) {
