@@ -5,6 +5,7 @@
 #include "cnd.c"
 #include "debug.c"
 #include "dict.c"
+#include "df.c"
 #include "env.c"
 #include "env-binding.c"
 #include "eval.c"
@@ -55,6 +56,7 @@ r_ssize r_as_ssize(sexp* n) {
 void r_init_rlang_ns_env();
 void r_init_library_call();
 void r_init_library_cnd();
+void r_init_library_df();
 void r_init_library_env();
 void r_init_library_fn();
 void r_init_library_session();
@@ -86,6 +88,7 @@ sexp* r_init_library(sexp* ns) {
   r_init_rlang_ns_env();
   r_init_library_call();
   r_init_library_cnd();
+  r_init_library_df();
   r_init_library_env();
   r_init_library_fn();
   r_init_library_session();

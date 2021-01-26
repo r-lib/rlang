@@ -578,3 +578,24 @@ test_that("can preserve and unpreserve repeatedly", {
 
   expect_error(rlang_unpreserve(x), "Can't unpreserve")
 })
+
+test_that("alloc_data_frame() creates data frame", {
+  df <- alloc_data_frame(2L, c("a", "b", "c"), c(13L, 14L, 16L))
+
+  expect_equal(nrow(df), 2)
+  expect_equal(ncol(df), 3)
+  expect_equal(class(df), "data.frame")
+  expect_equal(names(df), c("a", "b", "c"))
+  expect_equal(lapply(df, typeof), list(a = "integer", b = "double", c = "character"))
+  expect_equal(lapply(df, length), list(a = 2, b = 2, c = 2))
+
+  df <- alloc_data_frame(0L, chr(), int())
+  expect_equal(nrow(df), 0)
+  expect_equal(ncol(df), 0)
+  expect_equal(names(df), chr())
+
+  df <- alloc_data_frame(3L, chr(), int())
+  expect_equal(nrow(df), 3)
+  expect_equal(ncol(df), 0)
+  expect_equal(names(df), chr())
+})
