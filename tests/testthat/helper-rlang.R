@@ -44,6 +44,13 @@ skip_if_stale_backtrace <- local({
   }
 })
 
+skip_if_big_endian <- function() {
+  skip_if(
+    identical(.Platform$endian, "big"),
+    "Skipping on big-endian platform."
+  )
+}
+
 Rscript <- function(args, ...) {
   out <- suppressWarnings(system2(
     file.path(R.home("bin"), "Rscript"),
