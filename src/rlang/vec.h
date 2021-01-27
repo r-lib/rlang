@@ -174,6 +174,10 @@ sexp* r_int(int x) {
   return Rf_ScalarInteger(x);
 }
 static inline
+sexp* r_dbl(double x) {
+  return Rf_ScalarReal(x);
+}
+static inline
 sexp* r_str(const char* c_string) {
   return Rf_mkChar(c_string);
 }
@@ -181,13 +185,22 @@ static inline
 sexp* r_chr(const char* c_string) {
   return Rf_mkString(c_string);
 }
-sexp* r_chr_n(const char* const * strings, r_ssize n);
-
 static inline
 sexp* r_list(sexp* x) {
   sexp* out = r_new_vector(r_type_list, 1);
   r_list_poke(out, 0, x);
   return out;
+}
+
+sexp* r_chr_n(const char* const * strings, r_ssize n);
+
+static inline
+sexp* r_len(r_ssize x) {
+  if (x > INT_MAX) {
+    return r_dbl(x);
+  } else {
+    return r_int(x);
+  }
 }
 
 sexp* r_alloc_df_list(r_ssize n_rows,
