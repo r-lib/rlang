@@ -236,6 +236,21 @@ bool r_is_string(sexp* x) {
     r_chr_get(x, 0) != R_NaString;
 }
 
+static inline
+bool r_as_bool(sexp* x) {
+  if (!r_is_bool(x)) {
+    r_abort("`x` must be a logical value");
+  }
+  return r_lgl_get(x, 0);
+}
+static inline
+int r_as_int(sexp* x) {
+  if (!r_is_int(x)) {
+    r_abort("`x` must be an integer value");
+  }
+  return r_int_get(x, 0);
+}
+
 sexp* r_list_compact(sexp* x);
 
 sexp* r_lgl_resize(sexp* x, r_ssize size);
