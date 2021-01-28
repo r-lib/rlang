@@ -79,6 +79,14 @@ r_ssize r_ssize_max(r_ssize x, r_ssize y) {
 }
 
 static inline
+int r_ssize_as_integer(r_ssize x) {
+  if (x > INT_MAX || x < INT_MIN) {
+    r_stop_internal("r_ssize_as_integer", "Result can't be represented as `int`.");
+  }
+
+  return (int) x;
+}
+static inline
 double r_ssize_as_double(r_ssize x) {
   if (x > DBL_MAX || x < -DBL_MAX) {
     r_stop_internal("r_ssize_as_double", "Result can't be represented as `double`.");
