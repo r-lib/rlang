@@ -3,8 +3,8 @@
 #' @description
 #' `hash()` hashes an arbitrary R object.
 #'
-#' The generated hash is guaranteed to be reproducible across platforms, but
-#' not across R versions.
+#' The generated hash is guaranteed to be reproducible across platforms that
+#' have the same endianness and are using the same R version.
 #'
 #' @details
 #' `hash()` uses the XXH128 hash algorithm of the xxHash library, which
