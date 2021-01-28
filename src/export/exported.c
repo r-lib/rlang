@@ -956,7 +956,12 @@ enum r_sexp_iterate iterator(void* state,
                              enum r_node_direction dir) {
   struct iterator_data* p_data = (struct iterator_data*) state;
 
-  if (r_typeof(x) == r_type_environment &&
+  if (x == r_global_env) {
+    return R_SEXP_ITERATE_skip;
+  }
+
+  if (dir != R_NODE_DIRECTION_outgoing &&
+      r_typeof(x) == r_type_environment &&
       !r_dict_put(p_data->p_dict, x, r_null)) {
     return R_SEXP_ITERATE_skip;
   }
