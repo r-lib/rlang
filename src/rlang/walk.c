@@ -59,6 +59,9 @@ bool sexp_iterate_recurse(struct sexp_stack* p_stack,
   enum r_type type = r_typeof(x);
   enum r_node_direction dir;
 
+  // Strings have private data stored in attributes
+  sexp* attrib = (type == r_type_string) ? r_null : r_attrib(x);
+
   switch (type) {
   case r_type_null:
   case r_type_logical:
@@ -66,14 +69,18 @@ bool sexp_iterate_recurse(struct sexp_stack* p_stack,
   case r_type_double:
   case r_type_complex:
   case r_type_raw:
+  case r_type_string:
   case r_type_special:
   case r_type_builtin:
-  case r_type_string:
   case r_type_symbol:
   case r_type_s4:
   case r_type_bytecode:
   case r_type_weakref:
-    dir = R_NODE_DIRECTION_leaf;
+    if (attrib == r_null) {
+      dir = R_NODE_DIRECTION_leaf;
+    } else {
+      dir = R_NODE_DIRECTION_incoming;
+    }
     break;
   default:
     dir = R_NODE_DIRECTION_incoming;
@@ -91,19 +98,23 @@ bool sexp_iterate_recurse(struct sexp_stack* p_stack,
 
   ++depth;
 
-  // Recursing on the attributes of `NULL`causes an infinite
-  // recursion. The attributes of strings contain private data for the
-  // garbage collector.
-  switch (r_typeof(x)) {
-  case r_type_null:
-  case r_type_string:
-    break;
-  default:
-    if (!sexp_iterate_recurse(p_stack, ATTRIB(x), depth, x, R_NODE_RELATION_attrib, 0, it, data)) return false;
+  // The attributes of strings contain private data for the garbage
+  // collector
+  if (attrib != r_null && type != r_type_string) {
+    if (!sexp_iterate_recurse(p_stack, attrib, depth, x, R_NODE_RELATION_attrib, 0, it, data)) return false;
   }
 
   if (dir != R_NODE_DIRECTION_leaf) {
     switch (type) {
+    case r_type_logical:
+    case r_type_integer:
+    case r_type_double:
+    case r_type_complex:
+    case r_type_raw:
+    case r_type_string:
+    case r_type_s4:
+      break;
+
     case r_type_closure:
       if (!sexp_iterate_recurse(p_stack, FORMALS(x), depth, x, R_NODE_RELATION_function_fmls, 0, it, data)) return false;
       if (!sexp_iterate_recurse(p_stack, BODY(x), depth, x, R_NODE_RELATION_function_body, 0, it, data)) return false;
