@@ -26,70 +26,12 @@ void sexp_iterate(sexp* x, sexp_iterator_fn* it, void* data) {
   FREE(1);
 }
 
-
-static inline
-sexp* sexp_node_attrib(sexp* x, enum r_type type) {
-  // Strings have private data stored in attributes
-  switch (type) {
-  case r_type_string:      return r_null;
-  default:                 return ATTRIB(x);
-  }
-}
-static inline
-sexp* sexp_node_car(sexp* x, enum r_type type) {
-  switch (type) {
-  case r_type_closure:     return FORMALS(x);
-  case r_type_environment: return FRAME(x);
-  case r_type_promise:     return PRVALUE(x);
-  case r_type_pointer:     return r_null;
-  case r_type_pairlist:
-  case r_type_call:
-  case r_type_dots:        return CAR(x);
-  default:                 return r_null;
-  }
-}
-static inline
-sexp* sexp_node_cdr(sexp* x, enum r_type type) {
-  switch (type) {
-  case r_type_closure:     return BODY(x);
-  case r_type_environment: return ENCLOS(x);
-  case r_type_promise:     return PREXPR(x);
-  case r_type_pointer:     return EXTPTR_PROT(x);
-  case r_type_pairlist:
-  case r_type_call:
-  case r_type_dots:        return CDR(x);
-  default:                 return r_null;
-  }
-}
-static inline
-sexp* sexp_node_tag(sexp* x, enum r_type type) {
-  switch (type) {
-  case r_type_closure:     return CLOENV(x);
-  case r_type_environment: return HASHTAB(x);
-  case r_type_promise:     return PRENV(x);
-  case r_type_pointer:     return EXTPTR_TAG(x);
-  case r_type_pairlist:
-  case r_type_call:
-  case r_type_dots:        return TAG(x);
-  default:                 return r_null;
-  }
-}
-static inline
-sexp* const * sexp_node_arr(sexp* x, enum r_type type) {
-  switch (type) {
-  case r_type_list:
-  case r_type_expression:  return r_list_deref_const(x);
-  case r_type_character:   return r_chr_deref_const(x);
-  default:                 return NULL;
-  }
-}
-
 static
 bool sexp_iterate_recurse(struct sexp_stack* p_stack,
                           sexp* x,
                           int depth,
                           sexp* parent,
-                          enum r_node_raw_relation rel,
+                          enum r_node_relation rel,
                           r_ssize i,
                           sexp_iterator_fn* it,
                           void* data) {
@@ -107,11 +49,16 @@ bool sexp_iterate_recurse(struct sexp_stack* p_stack,
   enum r_type type = r_typeof(x);
   enum r_node_direction dir;
 
-  sexp* tag = sexp_node_tag(x, type);
-  sexp* car = sexp_node_car(x, type);
-  sexp* cdr = sexp_node_cdr(x, type);
+  enum r_node_relation tag_rel = 0;
+  enum r_node_relation car_rel = 0;
+  enum r_node_relation cdr_rel = 0;
+  enum r_node_relation arr_rel = 0;
+
   sexp* attrib = sexp_node_attrib(x, type);
-  sexp* const * v_arr = sexp_node_arr(x, type);
+  sexp* tag = sexp_node_tag(x, type, &tag_rel);
+  sexp* car = sexp_node_car(x, type, &car_rel);
+  sexp* cdr = sexp_node_cdr(x, type, &cdr_rel);
+  sexp* const * v_arr = sexp_node_arr(x, type, &arr_rel);
 
   if (attrib != r_null || tag != r_null || car != r_null || cdr != r_null || v_arr != NULL) {
     dir = R_NODE_DIRECTION_incoming;
@@ -131,27 +78,27 @@ bool sexp_iterate_recurse(struct sexp_stack* p_stack,
   ++depth;
 
   if (attrib != r_null) {
-    if (!sexp_iterate_recurse(p_stack, attrib, depth, x, R_NODE_RAW_RELATION_attrib, 0, it, data)) return false;
+    if (!sexp_iterate_recurse(p_stack, attrib, depth, x, R_NODE_RELATION_attrib, 0, it, data)) return false;
   }
 
   if (v_arr != NULL) {
       r_ssize n = r_length(x);
       for (r_ssize i = 0; i < n; ++i) {
-        if (!sexp_iterate_recurse(p_stack, v_arr[i], depth, x, R_NODE_RAW_RELATION_vector_elt, i, it, data)) return false;
+        if (!sexp_iterate_recurse(p_stack, v_arr[i], depth, x, arr_rel, i, it, data)) return false;
       }
   }
 
   if (tag != r_null) {
-    if (!sexp_iterate_recurse(p_stack, tag, depth, x, R_NODE_RAW_RELATION_node_tag, 0, it, data)) return false;
+    if (!sexp_iterate_recurse(p_stack, tag, depth, x, tag_rel, 0, it, data)) return false;
   }
   if (car != r_null) {
-    if (!sexp_iterate_recurse(p_stack, car, depth, x, R_NODE_RAW_RELATION_node_car, 0, it, data)) return false;
+    if (!sexp_iterate_recurse(p_stack, car, depth, x, car_rel, 0, it, data)) return false;
   }
 
   if (cdr != r_null) {
     switch (type) {
     default:
-      if (!sexp_iterate_recurse(p_stack, cdr, depth, x, R_NODE_RAW_RELATION_node_cdr, 0, it, data)) return false;
+      if (!sexp_iterate_recurse(p_stack, cdr, depth, x, cdr_rel, 0, it, data)) return false;
       break;
     case r_type_pairlist:
     case r_type_call:
@@ -181,7 +128,7 @@ bool sexp_iterate_recurse(struct sexp_stack* p_stack,
   // Start with the pairlist nodes pushed on the heap stack.
   for (int i = 0; i < heap_stack_n; ++i) {
     struct sexp_stack_info info = sexp_stack_pop(p_stack);
-    if (!it(data, info.x, r_typeof(info.x), info.depth, info.parent, R_NODE_RAW_RELATION_node_cdr, 0, R_NODE_DIRECTION_outgoing)) {
+    if (!it(data, info.x, r_typeof(info.x), info.depth, info.parent, R_NODE_RELATION_node_cdr, 0, R_NODE_DIRECTION_outgoing)) {
       // Pop the remaining stack
       // TODO: Test this
       p_stack->n -= heap_stack_n - (i + 1);
@@ -198,6 +145,74 @@ bool sexp_iterate_recurse(struct sexp_stack* p_stack,
   }
 
   return true;
+}
+
+static inline
+sexp* sexp_node_attrib(sexp* x, enum r_type type) {
+  // Strings have private data stored in attributes
+  switch (type) {
+  case r_type_string:      return r_null;
+  default:                 return ATTRIB(x);
+  }
+}
+static inline
+sexp* sexp_node_car(sexp* x, enum r_type type,
+                    enum r_node_relation* p_rel) {
+  switch (type) {
+  case r_type_closure:     *p_rel = R_NODE_RELATION_function_fmls; return FORMALS(x);
+  case r_type_environment: *p_rel = R_NODE_RELATION_environment_frame; return FRAME(x);
+  case r_type_promise:     *p_rel = R_NODE_RELATION_promise_value; return PRVALUE(x);
+  case r_type_pairlist:
+  case r_type_call:
+  case r_type_dots:        *p_rel = R_NODE_RELATION_node_car; return CAR(x);
+  case r_type_pointer:
+  default:                 *p_rel = -1; return r_null;
+  }
+}
+static inline
+sexp* sexp_node_cdr(sexp* x, enum r_type type,
+                    enum r_node_relation* p_rel) {
+  switch (type) {
+  case r_type_closure:     *p_rel = R_NODE_RELATION_function_body; return BODY(x);
+  case r_type_environment: *p_rel = R_NODE_RELATION_environment_enclos; return ENCLOS(x);
+  case r_type_promise:     *p_rel = R_NODE_RELATION_promise_expr; return PREXPR(x);
+  case r_type_pointer:     *p_rel = R_NODE_RELATION_pointer_prot; return EXTPTR_PROT(x);
+  case r_type_pairlist:
+  case r_type_call:
+  case r_type_dots:        *p_rel = R_NODE_RELATION_node_cdr; return CDR(x);
+  default:                 *p_rel = -1; return r_null;
+  }
+}
+static inline
+sexp* sexp_node_tag(sexp* x, enum r_type type,
+                    enum r_node_relation* p_rel) {
+  switch (type) {
+  case r_type_closure:     *p_rel = R_NODE_RELATION_function_env; return CLOENV(x);
+  case r_type_environment: *p_rel = R_NODE_RELATION_environment_hashtab; return HASHTAB(x);
+  case r_type_promise:     *p_rel = R_NODE_RELATION_promise_env; return PRENV(x);
+  case r_type_pointer:     *p_rel = R_NODE_RELATION_pointer_tag; return EXTPTR_TAG(x);
+  case r_type_pairlist:
+  case r_type_call:
+  case r_type_dots:        *p_rel = R_NODE_RELATION_node_tag; return TAG(x);
+  default:                 *p_rel = -1; return r_null;
+  }
+}
+static inline
+sexp* const * sexp_node_arr(sexp* x, enum r_type type,
+                            enum r_node_relation* p_rel) {
+  switch (type) {
+  case r_type_list:
+    *p_rel = R_NODE_RELATION_list_elt;
+    return r_list_deref_const(x);
+  case r_type_expression:
+    *p_rel = R_NODE_RELATION_expression_elt;
+    return r_list_deref_const(x);
+  case r_type_character:
+    *p_rel = R_NODE_RELATION_character_elt;
+    return r_chr_deref_const(x);
+  default:
+    return NULL;
+  }
 }
 
 

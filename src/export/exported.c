@@ -954,7 +954,7 @@ enum r_sexp_iterate iterator(void* state,
                              enum r_type type,
                              int depth,
                              sexp* parent,
-                             enum r_node_raw_relation rel,
+                             enum r_node_relation rel,
                              r_ssize i,
                              enum r_node_direction dir) {
   struct iterator_data* p_data = (struct iterator_data*) state;
@@ -974,7 +974,7 @@ enum r_sexp_iterate iterator(void* state,
   sexp* obj_parent = KEEP(protect_missing(parent));
   sexp* obj_type = KEEP(r_type_as_character(type));
   sexp* obj_depth = KEEP(r_int(depth));
-  sexp* obj_rel = KEEP(r_chr(r_node_raw_relation_as_c_string(rel)));
+  sexp* obj_rel = KEEP(r_chr(r_node_relation_as_c_string(rel)));
   sexp* obj_i = KEEP(r_int(i + 1));
   sexp* obj_dir = KEEP(r_chr(r_node_direction_as_c_string(dir)));
 
