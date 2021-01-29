@@ -87,7 +87,7 @@ enum r_sexp_iterate (sexp_iterator_fn)(void* data,
                                        enum r_type type,
                                        int depth,
                                        sexp* parent,
-                                       enum r_node_relation rel,
+                                       enum r_node_raw_relation rel,
                                        r_ssize i,
                                        enum r_node_direction dir);
 
@@ -138,6 +138,7 @@ enum r_node_raw_relation r_node_raw_relation(enum r_node_relation rel) {
 
 const char* r_node_direction_as_c_string(enum r_node_direction dir);
 const char* r_node_relation_as_c_string(enum r_node_relation rel);
+const char* r_node_raw_relation_as_c_string(enum r_node_raw_relation rel);
 
 
 #endif
