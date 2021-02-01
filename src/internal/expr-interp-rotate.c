@@ -361,7 +361,10 @@ sexp* fixup_interp_first(sexp* x, sexp* env) {
   sexp* parent = NULL; // `parent` will always be initialised in the loop
   sexp* target = x;
   while (is_problematic_op((parent = target, target = r_node_cadr(target)))
-         && !is_unary(target));
+         && !is_unary(target)) {
+    sexp* rhs = r_node_cddr(target);
+    r_node_poke_car(rhs, call_interp(r_node_car(rhs), env));
+  };
 
   // Unquote target
   r_node_poke_cadr(parent, r_eval(target, env));
@@ -370,7 +373,7 @@ sexp* fixup_interp_first(sexp* x, sexp* env) {
   struct ast_rotation_info rotation_info;
   initialise_rotation_info(&rotation_info);
 
-  node_list_interp_fixup(x, NULL, env, &rotation_info, true);
+  node_list_interp_fixup(x, NULL, env, &rotation_info, false);
   return maybe_rotate(x, env, &rotation_info);
 }
 
