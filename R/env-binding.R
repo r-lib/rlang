@@ -228,10 +228,13 @@ env_bind_active <- function(.env, ...) {
 #' @param rhs An expression lazily evaluated and assigned to `lhs`.
 #' @export
 `%<~%` <- function(lhs, rhs, env = caller_env()) {
-  env_bind_lazy(
-    env,
-    !!substitute(lhs) := !!substitute(rhs),
-    .eval_env = env
+  inject(
+    base::delayedAssign(
+      as_string(substitute(lhs)),
+      !!substitute(rhs),
+      eval.env = env,
+      assign.env = env
+    )
   )
 }
 

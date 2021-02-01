@@ -401,6 +401,10 @@ test_that("`%<~%` assigns lazily", {
 
   x %<~% stop("foo")
   expect_error(x, "foo")
+
+  # Can reassign over a throwing promise
+  x %<~% stop("bar")
+  expect_error(x, "bar")
 })
 
 
