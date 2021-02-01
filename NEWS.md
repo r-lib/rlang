@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* `%<~%` now actually works.
+
 * Fixed a bug in the AST rotation algorithm that caused the `!!`
   operator to unexpectedly mutate injected objects (#1103).
 

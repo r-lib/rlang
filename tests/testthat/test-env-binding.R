@@ -395,6 +395,14 @@ test_that("new_environment() supports non-list data", {
   expect_equal(env$a, 1)
 })
 
+test_that("`%<~%` assigns lazily", {
+  x %<~% 1
+  expect_equal(x, 1)
+
+  x %<~% stop("foo")
+  expect_error(x, "foo")
+})
+
 
 # Lifecycle ----------------------------------------------------------
 
