@@ -21,6 +21,9 @@ bool sexp_iterate_recurse(struct sexp_stack* p_stack,
                           void* data);
 
 static inline
+bool sexp_is_node(sexp* x, enum r_type type);
+
+static inline
 sexp* sexp_node_attrib(sexp* x, enum r_type type);
 
 static inline

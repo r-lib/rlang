@@ -60,7 +60,9 @@ bool sexp_iterate_recurse(struct sexp_stack* p_stack,
   sexp* cdr = sexp_node_cdr(x, type, &cdr_rel);
   sexp* const * v_arr = sexp_node_arr(x, type, &arr_rel);
 
-  if (attrib != r_null || tag != r_null || car != r_null || cdr != r_null || v_arr != NULL) {
+  bool is_node = sexp_is_node(x, type);
+
+  if (attrib != r_null || is_node || v_arr != NULL) {
     dir = R_NODE_DIRECTION_incoming;
   } else {
     dir = R_NODE_DIRECTION_leaf;
@@ -88,14 +90,13 @@ bool sexp_iterate_recurse(struct sexp_stack* p_stack,
       }
   }
 
-  if (tag != r_null) {
+  if (is_node) {
     if (!sexp_iterate_recurse(p_stack, tag, depth, x, tag_rel, 0, it, data)) return false;
-  }
-  if (car != r_null) {
-    if (!sexp_iterate_recurse(p_stack, car, depth, x, car_rel, 0, it, data)) return false;
-  }
 
-  if (cdr != r_null) {
+    if (car_rel != R_NODE_RELATION_none) {
+      if (!sexp_iterate_recurse(p_stack, car, depth, x, car_rel, 0, it, data)) return false;
+    }
+
     switch (type) {
     default:
       if (!sexp_iterate_recurse(p_stack, cdr, depth, x, cdr_rel, 0, it, data)) return false;
@@ -147,6 +148,21 @@ bool sexp_iterate_recurse(struct sexp_stack* p_stack,
   return true;
 }
 
+static inline
+bool sexp_is_node(sexp* x, enum r_type type) {
+  switch (type) {
+  case r_type_closure:
+  case r_type_environment:
+  case r_type_promise:
+  case r_type_pointer:
+  case r_type_pairlist:
+  case r_type_call:
+  case r_type_dots:
+    return true;
+  default:
+    return false;
+  }
+}
 static inline
 sexp* sexp_node_attrib(sexp* x, enum r_type type) {
   // Strings have private data stored in attributes
@@ -257,6 +273,8 @@ const char* r_node_relation_as_c_string(enum r_node_relation rel) {
   case R_NODE_RELATION_character_elt: return "character_elt";
   case R_NODE_RELATION_expression_elt: return "expression_elt";
 
+  case R_NODE_RELATION_none: r_stop_internal("r_node_relation_as_c_string",
+                                             "Found `R_NODE_RELATION_none`.");
   default: r_stop_unreached("r_node_relation_as_c_string");
   }
 }
@@ -269,7 +287,7 @@ const char* r_node_raw_relation_as_c_string(enum r_node_raw_relation rel) {
   case R_NODE_RAW_RELATION_node_cdr: return "node_cdr";
   case R_NODE_RAW_RELATION_node_tag: return "node_tag";
   case R_NODE_RAW_RELATION_vector_elt: return "vector_elt";
-  default: r_stop_unreached("r_node_relation_as_c_string");
+  default: r_stop_unreached("r_node_raw_relation_as_c_string");
   }
 }
 
