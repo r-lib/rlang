@@ -726,3 +726,17 @@ test_that("can splice named empty vectors (#1045)", {
   x <- named(dbl())
   expect_equal(expr(foo(!!!x)), quote(foo()))
 })
+
+test_that("Unquoted LHS is not recursed into and mutated (#1103)", {
+  x <- quote(!!1 / !!2)
+  x_cpy <- duplicate(x)
+  out <- expr(!!x + 5)
+  expect_equal(out, call("+", x, 5))
+  expect_equal(x, x_cpy)
+
+  x <- quote(!!1 / !!2)
+  x_cpy <- duplicate(x)
+  out <- expr(!!x)
+  expect_equal(out, x_cpy)
+  expect_equal(x, x_cpy)
+})
