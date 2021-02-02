@@ -177,6 +177,12 @@ dict_get <- function(dict, key) {
   .Call(rlang_dict_get, dict, key)
 }
 
+#' @export
+print.rlang_dict <- function(x, ...) {
+  writeLines(sprintf("<rlang/dict: %s>", sexp_address(x)))
+  writeLines(paste0("size: ", dict_size(x)))
+}
+
 
 # sexp.c
 

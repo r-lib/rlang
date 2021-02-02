@@ -8,6 +8,9 @@ static size_t size_round_power_2(size_t size);
 
 #include "decl/dict-decl.h"
 
+static
+sexp* classes_dict = NULL;
+
 
 struct r_dict* r_new_dict(r_ssize size) {
   if (size <= 0) {
@@ -31,6 +34,8 @@ struct r_dict* r_new_dict(r_ssize size) {
 
   p_dict->p_buckets = r_list_deref_const(p_dict->buckets);
   p_dict->n_buckets = size;
+
+  r_attrib_poke(shelter, r_syms_class, r_chr("rlang_dict"));
 
   FREE(1);
   return p_dict;
