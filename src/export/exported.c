@@ -1006,13 +1006,13 @@ enum r_sexp_iterate iterator(void* state,
 sexp* ffi_sexp_iterate(sexp* x, sexp* fn) {
   sexp* out = KEEP(r_new_node(r_null, r_null));
 
-  struct r_dict dict = r_new_dict(1024);
-  KEEP(dict.shelter);
+  struct r_dict* p_dict = r_new_dict(1024);
+  KEEP(p_dict->shelter);
 
   struct iterator_data data = {
     .fn = fn,
     .last = out,
-    .p_dict = &dict
+    .p_dict = p_dict
   };
 
   sexp_iterate(x, &iterator, &data);
