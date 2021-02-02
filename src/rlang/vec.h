@@ -166,6 +166,16 @@ sexp* r_new_list(r_ssize n) {
 }
 
 static inline
+sexp* r_new_raw0(r_ssize n) {
+  sexp* out = r_new_raw(n);
+
+  unsigned char* p_out = r_raw_deref(out);
+  memset(p_out, 0, n);
+
+  return out;
+}
+
+static inline
 sexp* r_lgl(bool x) {
   return Rf_ScalarLogical(x);
 }
