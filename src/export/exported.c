@@ -71,13 +71,7 @@ sexp* rlang_alloc_data_frame(sexp* n_rows, sexp* names, sexp* types) {
 
 static
 sexp* wrap_dict(struct r_dict* p_dict) {
-  sexp* out = KEEP(r_new_vector(r_type_list, 2));
-
-  r_list_poke(out, 0, r_copy_in_raw(p_dict, sizeof(*p_dict)));
-  r_list_poke(out, 1, p_dict->shelter);
-
-  FREE(1);
-  return out;
+  return p_dict->shelter;
 }
 
 sexp* rlang_new_dict(sexp* size, sexp* prevent_resize) {
@@ -88,15 +82,10 @@ sexp* rlang_new_dict(sexp* size, sexp* prevent_resize) {
     r_abort("`prevent_resize` must be a logical value.");
   }
 
-  struct r_dict dict = r_new_dict(r_int_get(size, 0));
-  KEEP(dict.shelter);
+  struct r_dict* dict = r_new_dict(r_int_get(size, 0));
+  dict->prevent_resize = r_lgl_get(prevent_resize, 0);
 
-  dict.prevent_resize = r_lgl_get(prevent_resize, 0);
-
-  sexp* out = wrap_dict(&dict);
-
-  FREE(1);
-  return out;
+  return dict->shelter;
 }
 
 static

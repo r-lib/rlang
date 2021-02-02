@@ -159,7 +159,7 @@ new_dict <- function(size, prevent_resize = FALSE) {
   .Call(rlang_new_dict, size, prevent_resize)
 }
 dict_size <- function(dict) {
-  length(dict[[2]][[1]])
+  length(dict[[2]])
 }
 dict_resize <- function(dict, size) {
   .Call(rlang_dict_resize, dict, size)
