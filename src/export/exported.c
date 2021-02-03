@@ -197,6 +197,12 @@ sexp* rlang_arr_push_back_bool(sexp* arr_sexp, sexp* x_sexp) {
   return r_null;
 }
 // [[ register() ]]
+sexp* rlang_arr_pop_back(sexp* arr_sexp) {
+  struct r_dyn_array* arr = rlang_arr_deref(arr_sexp);
+  r_arr_pop_back(arr);
+  return r_null;
+}
+// [[ register() ]]
 sexp* rlang_arr_resize(sexp* arr_sexp, sexp* capacity_sexp) {
   struct r_dyn_array* arr = rlang_arr_deref(arr_sexp);
   r_arr_resize(arr, r_as_ssize(capacity_sexp));

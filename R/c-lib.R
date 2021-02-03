@@ -197,6 +197,9 @@ arr_info <- function(arr) {
 arr_push_back_bool <- function(arr, x) {
   .Call(c_ptr_arr_push_back_bool, arr, x)
 }
+arr_pop_back <- function(arr) {
+  .Call(c_ptr_arr_pop_back, arr)
+}
 arr_resize <- function(arr, capacity) {
   .Call(c_ptr_arr_resize, arr, capacity)
 }

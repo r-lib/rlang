@@ -635,7 +635,7 @@ test_that("can shrink vectors", {
   expect_equal(out, as.list(1:2))
 })
 
-test_that("can grow dynamic arrays", {
+test_that("can grow and shrink dynamic arrays", {
   arr <- new_dyn_array(3, 1)
 
   expect_equal(
@@ -680,7 +680,18 @@ test_that("can grow dynamic arrays", {
     )
   )
 
-  expect_equal(arr[[2]], bytes(0, 1, 1, 0, 0, 1))
+  exp <- bytes(0, 1, 1, 0, 0, 1)
+  expect_equal(arr[[2]], exp)
+
+  arr_pop_back(arr)
+  expect_equal(
+    arr_info(arr)[1:2],
+    list(
+      count = 5,
+      capacity = 6
+    )
+  )
+  expect_equal(arr[[2]], exp)
 })
 
 test_that("can resize dynamic arrays", {
