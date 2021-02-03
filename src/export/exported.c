@@ -710,3 +710,18 @@ sexp* rlang_is_string(sexp* x, sexp* string) {
 
   return r_shared_lgl(out);
 }
+
+sexp* rlang_vec_resize(sexp* x, sexp* n) {
+  r_ssize n_ssize = r_as_ssize(n);
+
+  switch (r_typeof(x)) {
+  case r_type_logical: return r_lgl_resize(x, n_ssize);
+  case r_type_integer: return r_int_resize(x, n_ssize);
+  case r_type_double: return r_dbl_resize(x, n_ssize);
+  case r_type_complex: return r_cpl_resize(x, n_ssize);
+  case r_type_raw: return r_raw_resize(x, n_ssize);
+  case r_type_character: return r_chr_resize(x, n_ssize);
+  case r_type_list: return r_list_resize(x, n_ssize);
+  default: r_stop_unimplemented_type("rlang_vec_resize", r_typeof(x));
+  }
+}

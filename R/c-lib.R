@@ -202,3 +202,7 @@ rlang_unpreserve <- function(x) {
 list_compact <- function(x) {
   .Call(c_ptr_list_compact, x)
 }
+
+vec_resize <- function(x, n) {
+  .Call(c_ptr_vec_resize, x, n) 
+}

@@ -608,3 +608,17 @@ test_that("r_list_compact() compacts lists", {
   expect_equal(list_compact(list(1, NULL)), list(1))
   expect_equal(list_compact(list(NULL, 1, NULL, 2, NULL)), list(1, 2))
 })
+
+test_that("resizing works", {
+  x <- 1:3
+  out <- vec_resize(x, 5)
+  expect_length(out, 5)
+  expect_equal(x, 1:3)
+  expect_equal(out[1:3], x)
+
+  x <- as.list(1:3)
+  out <- vec_resize(x, 5)
+  expect_length(out, 5)
+  expect_equal(x, as.list(1:3))
+  expect_equal(out[1:3], x)
+})

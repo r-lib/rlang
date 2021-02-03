@@ -171,6 +171,7 @@ extern sexp* rlang_precious_dict();
 extern sexp* rlang_preserve(sexp*);
 extern sexp* rlang_unpreserve(sexp*);
 extern sexp* rlang_alloc_data_frame(sexp*, sexp*, sexp*);
+extern sexp* rlang_vec_resize(sexp*, sexp*);
 
 static const R_CallMethodDef r_callables[] = {
   {"r_init_library",                    (DL_FUNC) &r_init_library, 1},
@@ -338,6 +339,7 @@ static const R_CallMethodDef r_callables[] = {
   {"c_ptr_unpreserve",                  (DL_FUNC) &rlang_unpreserve, 1},
   {"c_ptr_alloc_data_frame",            (DL_FUNC) &rlang_alloc_data_frame, 3},
   {"c_ptr_list_compact",                (DL_FUNC) &r_list_compact, 1},
+  {"c_ptr_vec_resize",                  (DL_FUNC) &rlang_vec_resize, 2},
   {NULL, NULL, 0}
 };
 
