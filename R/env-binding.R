@@ -227,7 +227,8 @@ env_bind_active <- function(.env, ...) {
 #' @param lhs The variable name to which `rhs` will be lazily assigned.
 #' @param rhs An expression lazily evaluated and assigned to `lhs`.
 #' @export
-`%<~%` <- function(lhs, rhs, env = caller_env()) {
+`%<~%` <- function(lhs, rhs) {
+  env <- caller_env()
   inject(
     base::delayedAssign(
       as_string(substitute(lhs)),
