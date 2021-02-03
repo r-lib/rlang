@@ -609,7 +609,7 @@ test_that("r_list_compact() compacts lists", {
   expect_equal(list_compact(list(NULL, 1, NULL, 2, NULL)), list(1, 2))
 })
 
-test_that("resizing works", {
+test_that("can grow vectors", {
   x <- 1:3
   out <- vec_resize(x, 5)
   expect_length(out, 5)
@@ -621,4 +621,16 @@ test_that("resizing works", {
   expect_length(out, 5)
   expect_equal(x, as.list(1:3))
   expect_equal(out[1:3], x)
+})
+
+test_that("can shrink vectors", {
+  x <- 1:3
+  out <- vec_resize(x, 2)
+  expect_equal(x, 1:3)
+  expect_equal(out, 1:2)
+
+  x <- as.list(1:3)
+  out <- vec_resize(x, 2)
+  expect_equal(x, as.list(1:3))
+  expect_equal(out, as.list(1:2))
 })
