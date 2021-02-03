@@ -136,6 +136,74 @@ sexp* rlang_dict_resize(sexp* dict, sexp* size) {
 }
 
 
+// dyn-array.c
+
+// [[ register() ]]
+sexp* rlang_new_dyn_array(sexp* capacity,
+                          sexp* elt_byte_size) {
+  struct r_dyn_array* arr = r_new_dyn_array(r_as_ssize(capacity),
+                                            r_as_ssize(elt_byte_size));
+  return arr->shelter;
+}
+
+static
+struct r_dyn_array* rlang_arr_deref(sexp* arr) {
+  if (r_typeof(arr) != r_type_list || r_length(arr) != 2) {
+    goto err;
+  }
+
+  sexp* raw = r_list_get(arr, 0);
+  if (r_typeof(raw) != r_type_raw) {
+    goto err;
+  }
+
+  return r_raw_deref(raw);
+
+ err:
+  r_stop_internal("rlang_arr_deref", "Expected a dynamic array handle.");
+};
+
+// [[ register() ]]
+sexp* rlang_arr_info(sexp* arr_sexp) {
+  struct r_dyn_array* arr = rlang_arr_deref(arr_sexp);
+
+  const char* names_c_strs[] = {
+    "count",
+    "capacity",
+    "growth_factor",
+    "elt_byte_size"
+  };
+  int info_n = R_ARR_SIZEOF(names_c_strs);
+
+  sexp* info = KEEP(r_new_list(info_n));
+
+  sexp* nms = r_chr_n(names_c_strs, info_n);
+  r_attrib_poke_names(info, nms);
+
+  r_list_poke(info, 0, r_dbl(arr->count));
+  r_list_poke(info, 1, r_dbl(arr->capacity));
+  r_list_poke(info, 2, r_int(arr->growth_factor));
+  r_list_poke(info, 3, r_int(arr->elt_byte_size));
+
+  FREE(1);
+  return info;
+}
+
+// [[ register() ]]
+sexp* rlang_arr_push_back_bool(sexp* arr_sexp, sexp* x_sexp) {
+  struct r_dyn_array* arr = rlang_arr_deref(arr_sexp);
+  bool x = r_as_bool(x_sexp);
+  r_arr_push_back(arr, &x);
+  return r_null;
+}
+// [[ register() ]]
+sexp* rlang_arr_resize(sexp* arr_sexp, sexp* capacity_sexp) {
+  struct r_dyn_array* arr = rlang_arr_deref(arr_sexp);
+  r_arr_resize(arr, r_as_ssize(capacity_sexp));
+  return r_null;
+}
+
+
 // env.c
 
 sexp* rlang_env_poke_parent(sexp* env, sexp* new_parent) {

@@ -9,6 +9,7 @@ lib-files = \
         rlang/debug.c \
         rlang/dict.c \
         rlang/df.c \
+        rlang/dyn-array.c \
         rlang/env.c \
         rlang/env-binding.c \
         rlang/eval.c \
