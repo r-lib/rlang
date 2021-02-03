@@ -17,6 +17,16 @@ void r_vec_poke_n(sexp* x, r_ssize offset,
     BUF[BUFSIZE - 1] = '\0';                    \
   }
 
+__attribute__((noreturn))
+void r_stop_internal(const char* fn, const char* fmt, ...) {
+  R_CheckStack2(BUFSIZE);
+
+  char msg[BUFSIZE];
+  INTERP(msg, fmt, ...);
+
+  r_abort("Internal error in `%s()`: %s", fn, msg);
+}
+
 static sexp* msg_call = NULL;
 void r_inform(const char* fmt, ...) {
   char buf[BUFSIZE];

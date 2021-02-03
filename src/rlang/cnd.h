@@ -10,16 +10,19 @@ void r_warn(const char* fmt, ...);
 void r_abort(const char* fmt, ...) __attribute__((noreturn));
 void r_interrupt();
 
-static inline
 __attribute__((noreturn))
-void r_stop_internal(const char* fn, const char* msg) {
-  r_abort("Internal error in `%s()`: %s", fn, msg);
-}
+void r_stop_internal(const char* fn, const char* fmt, ...);
 
 static inline
 __attribute__((noreturn))
 void r_stop_unreached(const char* fn) {
   r_stop_internal(fn, "Reached the unreachable.");
+}
+
+static inline
+__attribute__((noreturn))
+void r_stop_unimplemented_type(const char* fn, enum r_type type) {
+  r_stop_internal(fn, "Unimplemented type `%s`.", Rf_type2char(type));
 }
 
 
