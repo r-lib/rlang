@@ -634,3 +634,91 @@ test_that("can shrink vectors", {
   expect_equal(x, as.list(1:3))
   expect_equal(out, as.list(1:2))
 })
+
+test_that("can grow and shrink dynamic arrays", {
+  arr <- new_dyn_array(3, 1)
+
+  expect_equal(
+    arr_info(arr),
+    list(
+      count = 0,
+      capacity = 3,
+      growth_factor = 2,
+      elt_byte_size = 1
+    )
+  )
+
+  arr_push_back_bool(arr, FALSE)
+  arr_push_back_bool(arr, TRUE)
+  arr_push_back_bool(arr, TRUE)
+  expect_equal(
+    arr_info(arr),
+    list(
+      count = 3,
+      capacity = 3,
+      growth_factor = 2,
+      elt_byte_size = 1
+    )
+  )
+
+  arr_push_back_bool(arr, FALSE)
+  expect_equal(
+    arr_info(arr)[1:2],
+    list(
+      count = 4,
+      capacity = 6
+    )
+  )
+
+  arr_push_back_bool(arr, FALSE)
+  arr_push_back_bool(arr, TRUE)
+  expect_equal(
+    arr_info(arr)[1:2],
+    list(
+      count = 6,
+      capacity = 6
+    )
+  )
+
+  exp <- bytes(0, 1, 1, 0, 0, 1)
+  expect_equal(arr[[2]], exp)
+
+  arr_pop_back(arr)
+  expect_equal(
+    arr_info(arr)[1:2],
+    list(
+      count = 5,
+      capacity = 6
+    )
+  )
+  expect_equal(arr[[2]], exp)
+})
+
+test_that("can resize dynamic arrays", {
+  arr <- new_dyn_array(4, 1)
+  arr_push_back_bool(arr, TRUE)
+  arr_push_back_bool(arr, FALSE)
+  arr_push_back_bool(arr, TRUE)
+
+  arr_resize(arr, 2L)
+  expect_equal(
+    arr_info(arr),
+    list(
+      count = 2,
+      capacity = 2,
+      growth_factor = 2,
+      elt_byte_size = 1
+    )
+  )
+  expect_equal(arr[[2]], bytes(1, 0))
+
+  arr_resize(arr, 4L)
+  expect_equal(
+    arr_info(arr)[1:2],
+    list(
+      count = 2,
+      capacity = 4
+    )
+  )
+  expect_equal(arr[[2]][1:2], bytes(1, 0))
+})

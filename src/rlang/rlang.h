@@ -23,6 +23,7 @@ r_ssize r_as_ssize(sexp* n);
 #include "cnd.h"
 #include "dict.h"
 #include "df.h"
+#include "dyn-array.h"
 #include "env.h"
 #include "env-binding.h"
 #include "eval.h"

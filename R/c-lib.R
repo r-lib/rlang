@@ -184,6 +184,38 @@ print.rlang_dict <- function(x, ...) {
 }
 
 
+# dyn-array.c
+
+new_dyn_array <- function(capacity, elt_size) {
+  .Call(c_ptr_new_dyn_array, capacity, elt_size)
+}
+
+arr_info <- function(arr) {
+  .Call(c_ptr_arr_info, arr)
+}
+
+arr_push_back_bool <- function(arr, x) {
+  .Call(c_ptr_arr_push_back_bool, arr, x)
+}
+arr_pop_back <- function(arr) {
+  .Call(c_ptr_arr_pop_back, arr)
+}
+arr_resize <- function(arr, capacity) {
+  .Call(c_ptr_arr_resize, arr, capacity)
+}
+
+#' @export
+print.rlang_dyn_array <- function(x, ...) {
+  writeLines(sprintf("<rlang/dyn_array: %s>", sexp_address(x)))
+
+  info <- arr_info(x)
+  writeLines(paste0("count: ", info$count))
+  writeLines(paste0("capacity: ", info$capacity))
+  writeLines(paste0("growth_factor: ", info$growth_factor))
+  writeLines(paste0("elt_byte_size: ", info$elt_byte_size))
+}
+
+
 # sexp.c
 
 rlang_precious_dict <- function() {
