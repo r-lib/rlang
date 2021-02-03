@@ -8,6 +8,8 @@ struct r_dyn_array {
   r_ssize capacity;
   int growth_factor;
   void* v_data;
+
+  // private:
   r_ssize elt_byte_size;
 };
 
