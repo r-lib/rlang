@@ -186,9 +186,6 @@ print.rlang_dict <- function(x, ...) {
 
 # dyn-array.c
 
-new_dyn_vector <- function(type, capacity) {
-  .Call(c_ptr_new_dyn_vector, type, capacity)
-}
 new_dyn_array <- function(elt_size, capacity) {
   .Call(c_ptr_new_dyn_array, elt_size, capacity)
 }

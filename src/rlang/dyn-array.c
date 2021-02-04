@@ -7,8 +7,8 @@ static
 sexp* attribs_dyn_array = NULL;
 
 
-struct r_dyn_array* r_new_dyn_vector(enum r_type type,
-                                     r_ssize capacity) {
+struct r_dyn_array* r_new_dyn_array(enum r_type type,
+                                    r_ssize capacity) {
   sexp* shelter = KEEP(r_new_list(2));
   r_poke_attrib(shelter, attribs_dyn_array);
   r_mark_object(shelter);
@@ -47,13 +47,6 @@ struct r_dyn_array* r_new_dyn_vector(enum r_type type,
   FREE(1);
   return p_vec;
 }
-
-struct r_dyn_array* r_new_dyn_array(r_ssize elt_byte_size,
-                                    r_ssize capacity) {
-  r_ssize arr_byte_size = r_ssize_mult(capacity, elt_byte_size);
-  return r_new_dyn_vector(r_type_raw, arr_byte_size);
-}
-
 
 void r_arr_push_back(struct r_dyn_array* p_arr, void* p_elt) {
   r_ssize count = ++p_arr->count;

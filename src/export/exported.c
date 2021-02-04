@@ -139,17 +139,9 @@ sexp* rlang_dict_resize(sexp* dict, sexp* size) {
 // dyn-array.c
 
 // [[ register() ]]
-sexp* rlang_new_dyn_vector(sexp* type,
-                           sexp* capacity) {
-  struct r_dyn_array* arr = r_new_dyn_vector(r_chr_as_r_type(type),
-                                             r_as_ssize(capacity));
-  return arr->shelter;
-}
-
-// [[ register() ]]
-sexp* rlang_new_dyn_array(sexp* elt_byte_size,
+sexp* rlang_new_dyn_array(sexp* type,
                           sexp* capacity) {
-  struct r_dyn_array* arr = r_new_dyn_array(r_as_ssize(elt_byte_size),
+  struct r_dyn_array* arr = r_new_dyn_array(r_chr_as_r_type(type),
                                             r_as_ssize(capacity));
   return arr->shelter;
 }

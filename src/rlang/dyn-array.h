@@ -18,11 +18,8 @@ struct r_dyn_array {
   void (*barrier_set)(sexp* x, r_ssize i, sexp* value);
 };
 
-struct r_dyn_array* r_new_dyn_vector(enum r_type type,
-                                     r_ssize capacity);
-
-struct r_dyn_array* r_new_dyn_array(r_ssize capacity,
-                                    r_ssize elt_byte_size);
+struct r_dyn_array* r_new_dyn_array(enum r_type type,
+                                    r_ssize capacity);
 
 void r_arr_resize(struct r_dyn_array* p_arr,
                   r_ssize capacity);
