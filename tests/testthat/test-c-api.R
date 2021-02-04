@@ -631,8 +631,12 @@ test_that("can shrink vectors", {
 
   x <- as.list(1:3)
   out <- vec_resize(x, 2)
-  expect_equal(x, as.list(1:3))
   expect_equal(out, as.list(1:2))
+
+  # Uses truelength to modify in place on recent R
+  if (getRversion() >= "3.4.0") {
+    expect_equal(x, as.list(1:2))
+  }
 })
 
 test_that("can grow and shrink dynamic arrays", {
