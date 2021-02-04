@@ -78,6 +78,58 @@ sexp* const * r_list_deref_const(sexp* x) {
 }
 
 static inline
+void* r_vec_deref0(enum r_type type, sexp* x) {
+  switch (type) {
+  case r_type_logical: return r_lgl_deref(x);
+  case r_type_integer: return r_int_deref(x);
+  case r_type_double: return r_dbl_deref(x);
+  case r_type_complex: return r_cpl_deref(x);
+  case r_type_raw: return r_raw_deref(x);
+  default: r_stop_unimplemented_type("r_vec_deref", type);
+  }
+}
+static inline
+void* r_vec_deref(sexp* x) {
+  return r_vec_deref0(r_typeof(x), x);
+}
+
+static inline
+const void* r_vec_deref_const0(enum r_type type, sexp* x) {
+  switch (type) {
+  case r_type_logical: return r_lgl_deref_const(x);
+  case r_type_integer: return r_int_deref_const(x);
+  case r_type_double: return r_dbl_deref_const(x);
+  case r_type_complex: return r_cpl_deref_const(x);
+  case r_type_raw: return r_raw_deref_const(x);
+  case r_type_character: return r_chr_deref_const(x);
+  case r_type_list: return r_list_deref_const(x);
+  default: r_stop_unimplemented_type("r_vec_deref_const", type);
+  }
+}
+static inline
+const void* r_vec_deref_const(sexp* x) {
+  return r_vec_deref_const0(r_typeof(x), x);
+}
+
+static inline
+int r_vec_elt_sizeof0(enum r_type type) {
+  switch (type) {
+  case r_type_logical: return sizeof(int);
+  case r_type_integer: return sizeof(int);
+  case r_type_double: return sizeof(double);
+  case r_type_complex: return sizeof(r_complex_t);
+  case r_type_raw: return sizeof(char);
+  case r_type_character: return sizeof(sexp*);
+  case r_type_list: return sizeof(sexp*);
+  default: r_stop_unimplemented_type("r_vec_elt_sizeof", type);
+  }
+}
+static inline
+int r_vec_elt_sizeof(sexp* x) {
+  return r_vec_elt_sizeof0(r_typeof(x));
+}
+
+static inline
 int r_lgl_get(sexp* x, r_ssize i) {
   return LOGICAL(x)[i];
 }
@@ -283,6 +335,24 @@ sexp* r_cpl_resize(sexp* x, r_ssize size);
 sexp* r_raw_resize(sexp* x, r_ssize size);
 sexp* r_chr_resize(sexp* x, r_ssize size);
 sexp* r_list_resize(sexp* x, r_ssize size);
+
+static inline
+sexp* r_vec_resize0(enum r_type type, sexp* x, r_ssize size) {
+  switch (type) {
+  case r_type_logical: return r_lgl_resize(x, size);
+  case r_type_integer: return r_int_resize(x, size);
+  case r_type_double: return r_dbl_resize(x, size);
+  case r_type_complex: return r_cpl_resize(x, size);
+  case r_type_raw: return r_raw_resize(x, size);
+  case r_type_character: return r_chr_resize(x, size);
+  case r_type_list: return r_list_resize(x, size);
+  default: r_stop_unimplemented_type("r_vec_resize", type);
+  }
+}
+static inline
+sexp* r_vec_resize(sexp* x, r_ssize size) {
+  return r_vec_resize0(r_typeof(x), x, size);
+}
 
 static inline
 sexp* r_copy_in_raw(const void* src, size_t size) {
