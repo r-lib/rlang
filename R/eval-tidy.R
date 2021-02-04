@@ -175,7 +175,7 @@ eval_tidy <- function(expr, data = NULL, env = caller_env()) {
 
 # Helps work around roxygen loading issues
 #' @export
-length.rlang_fake_data_pronoun <- function(...) NULL
+length.rlang_fake_data_pronoun <- function(...) 0L
 #' @export
 names.rlang_fake_data_pronoun <- function(...) NULL
 #' @export
