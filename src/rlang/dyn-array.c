@@ -48,6 +48,14 @@ struct r_dyn_array* r_new_dyn_array(enum r_type type,
   return p_vec;
 }
 
+sexp* r_arr_unwrap(struct r_dyn_array* p_arr) {
+  if (p_arr->type == r_type_raw) {
+    return r_raw_resize(p_arr->data, p_arr->count * p_arr->elt_byte_size);
+  } else {
+    return r_vec_resize0(p_arr->type, p_arr->data, p_arr->count);
+  }
+}
+
 void r_arr_push_back(struct r_dyn_array* p_arr, void* p_elt) {
   r_ssize count = ++p_arr->count;
   if (count > p_arr->capacity) {

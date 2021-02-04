@@ -164,6 +164,11 @@ struct r_dyn_array* rlang_arr_deref(sexp* arr) {
 };
 
 // [[ register() ]]
+sexp* rlang_arr_unwrap(sexp* arr) {
+  return r_arr_unwrap(rlang_arr_deref(arr));
+}
+
+// [[ register() ]]
 sexp* rlang_arr_info(sexp* arr_sexp) {
   struct r_dyn_array* arr = rlang_arr_deref(arr_sexp);
 

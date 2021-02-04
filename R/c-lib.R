@@ -189,6 +189,9 @@ print.rlang_dict <- function(x, ...) {
 new_dyn_array <- function(elt_size, capacity) {
   .Call(c_ptr_new_dyn_array, elt_size, capacity)
 }
+arr_unwrap <- function(arr) {
+  .Call(c_ptr_arr_unwrap, arr)
+}
 
 arr_info <- function(arr) {
   .Call(c_ptr_arr_info, arr)

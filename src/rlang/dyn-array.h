@@ -31,6 +31,8 @@ void r_arr_pop_back(struct r_dyn_array* p_arr) {
   --p_arr->count;
 }
 
+sexp* r_arr_unwrap(struct r_dyn_array* p_arr);
+
 static inline
 void* r_arr_ptr(struct r_dyn_array* p_arr, r_ssize i) {
   if (p_arr->barrier_set) {

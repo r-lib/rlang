@@ -724,6 +724,7 @@ test_that("can resize dynamic arrays", {
     )
   )
   expect_equal(arr[[2]][1:2], bytes(1, 0))
+  expect_equal(arr_unwrap(arr), bytes(1, 0))
 })
 
 test_that("can shrink and grow dynamic atomic vectors", {
@@ -763,6 +764,7 @@ test_that("can shrink and grow dynamic atomic vectors", {
     )
   )
   expect_identical(arr[[2]][1:4], dbl(1:4))
+  expect_identical(arr_unwrap(arr), dbl(1:4))
 })
 
 test_that("can shrink and grow dynamic barrier vectors", {
@@ -800,4 +802,5 @@ test_that("can shrink and grow dynamic barrier vectors", {
     )
   )
   expect_identical(arr[[2]][1:4], as.list(dbl(1:4)))
+  expect_identical(arr_unwrap(arr), as.list(dbl(1:4)))
 })
