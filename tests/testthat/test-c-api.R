@@ -640,7 +640,7 @@ test_that("can shrink vectors", {
 })
 
 test_that("can grow and shrink dynamic arrays", {
-  arr <- new_dyn_array("raw", 3 * 1)
+  arr <- new_dyn_array(1, 3)
 
   expect_equal(
     arr_info(arr),
@@ -701,7 +701,7 @@ test_that("can grow and shrink dynamic arrays", {
 })
 
 test_that("can resize dynamic arrays", {
-  arr <- new_dyn_array("raw", 4 * 1)
+  arr <- new_dyn_array(1, 4)
   arr_push_back_bool(arr, TRUE)
   arr_push_back_bool(arr, FALSE)
   arr_push_back_bool(arr, TRUE)
@@ -732,7 +732,7 @@ test_that("can resize dynamic arrays", {
 })
 
 test_that("can shrink and grow dynamic atomic vectors", {
-  arr <- new_dyn_array("double", 3)
+  arr <- new_dyn_vector("double", 3)
   expect_equal(
     arr_info(arr),
     list(
@@ -772,7 +772,7 @@ test_that("can shrink and grow dynamic atomic vectors", {
 })
 
 test_that("can shrink and grow dynamic barrier vectors", {
-  arr <- new_dyn_array("list", 3)
+  arr <- new_dyn_vector("list", 3)
   expect_equal(
     arr_info(arr)[1:4],
     list(
