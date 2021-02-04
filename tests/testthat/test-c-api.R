@@ -636,7 +636,7 @@ test_that("can shrink vectors", {
 })
 
 test_that("can grow and shrink dynamic arrays", {
-  arr <- new_dyn_array(3, 1)
+  arr <- new_dyn_array(1, 3)
 
   expect_equal(
     arr_info(arr),
@@ -644,6 +644,7 @@ test_that("can grow and shrink dynamic arrays", {
       count = 0,
       capacity = 3,
       growth_factor = 2,
+      type = "raw",
       elt_byte_size = 1
     )
   )
@@ -657,6 +658,7 @@ test_that("can grow and shrink dynamic arrays", {
       count = 3,
       capacity = 3,
       growth_factor = 2,
+      type = "raw",
       elt_byte_size = 1
     )
   )
@@ -695,7 +697,7 @@ test_that("can grow and shrink dynamic arrays", {
 })
 
 test_that("can resize dynamic arrays", {
-  arr <- new_dyn_array(4, 1)
+  arr <- new_dyn_array(1, 4)
   arr_push_back_bool(arr, TRUE)
   arr_push_back_bool(arr, FALSE)
   arr_push_back_bool(arr, TRUE)
@@ -707,6 +709,7 @@ test_that("can resize dynamic arrays", {
       count = 2,
       capacity = 2,
       growth_factor = 2,
+      type = "raw",
       elt_byte_size = 1
     )
   )
@@ -721,4 +724,43 @@ test_that("can resize dynamic arrays", {
     )
   )
   expect_equal(arr[[2]][1:2], bytes(1, 0))
+})
+
+test_that("can shrink and grow dynamic atomic vectors", {
+  arr <- new_dyn_vector("double", 3)
+  expect_equal(
+    arr_info(arr),
+    list(
+      count = 0,
+      capacity = 3,
+      growth_factor = 2,
+      type = "double",
+      elt_byte_size = 8
+    )
+  )
+
+  arr_push_back(arr, 1)
+  arr_push_back(arr, 2)
+  arr_push_back(arr, 3)
+  expect_equal(
+    arr_info(arr)[1:2],
+    list(
+      count = 3,
+      capacity = 3
+    )
+  )
+  expect_identical(arr[[2]], dbl(1:3))
+
+  arr_push_back(arr, 4)
+  expect_equal(
+    arr_info(arr),
+    list(
+      count = 4,
+      capacity = 6,
+      growth_factor = 2,
+      type = "double",
+      elt_byte_size = 8
+    )
+  )
+  expect_identical(arr[[2]][1:4], dbl(1:4))
 })

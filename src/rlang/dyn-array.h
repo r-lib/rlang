@@ -10,8 +10,12 @@ struct r_dyn_array {
   void* v_data;
 
   // private:
+  enum r_type type;
   r_ssize elt_byte_size;
 };
+
+struct r_dyn_array* r_new_dyn_vector(enum r_type type,
+                                     r_ssize capacity);
 
 struct r_dyn_array* r_new_dyn_array(r_ssize capacity,
                                     r_ssize elt_byte_size);
@@ -44,6 +48,23 @@ void* r_arr_ptr_end(struct r_dyn_array* p_arr) {
   return r_arr_ptr(p_arr, p_arr->count);
 }
 
+
+static inline
+void r_lgl_push_back(struct r_dyn_array* p_vec, int elt) {
+  r_arr_push_back(p_vec, &elt);
+}
+static inline
+void r_int_push_back(struct r_dyn_array* p_vec, int elt) {
+  r_arr_push_back(p_vec, &elt);
+}
+static inline
+void r_dbl_push_back(struct r_dyn_array* p_vec, double elt) {
+  r_arr_push_back(p_vec, &elt);
+}
+static inline
+void r_cpl_push_back(struct r_dyn_array* p_vec, r_complex_t elt) {
+  r_arr_push_back(p_vec, &elt);
+}
 
 
 #endif

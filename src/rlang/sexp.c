@@ -71,6 +71,14 @@ struct r_dict* rlang__precious_dict() {
 }
 
 
+enum r_type r_chr_as_r_type(sexp* type) {
+  if (!r_is_string(type)) {
+    r_abort("`type` must be a character string.");
+  }
+  return r_c_str_as_r_type(r_chr_get_c_string(type, 0));
+}
+
+
 void r_init_library_sexp(sexp* ns) {
   precious_dict = r_new_dict(PRECIOUS_DICT_INIT_SIZE);
   KEEP(precious_dict->shelter);

@@ -139,10 +139,18 @@ sexp* rlang_dict_resize(sexp* dict, sexp* size) {
 // dyn-array.c
 
 // [[ register() ]]
-sexp* rlang_new_dyn_array(sexp* capacity,
-                          sexp* elt_byte_size) {
-  struct r_dyn_array* arr = r_new_dyn_array(r_as_ssize(capacity),
-                                            r_as_ssize(elt_byte_size));
+sexp* rlang_new_dyn_vector(sexp* type,
+                           sexp* capacity) {
+  struct r_dyn_array* arr = r_new_dyn_vector(r_chr_as_r_type(type),
+                                             r_as_ssize(capacity));
+  return arr->shelter;
+}
+
+// [[ register() ]]
+sexp* rlang_new_dyn_array(sexp* elt_byte_size,
+                          sexp* capacity) {
+  struct r_dyn_array* arr = r_new_dyn_array(r_as_ssize(elt_byte_size),
+                                            r_as_ssize(capacity));
   return arr->shelter;
 }
 
@@ -171,6 +179,7 @@ sexp* rlang_arr_info(sexp* arr_sexp) {
     "count",
     "capacity",
     "growth_factor",
+    "type",
     "elt_byte_size"
   };
   int info_n = R_ARR_SIZEOF(names_c_strs);
@@ -183,12 +192,24 @@ sexp* rlang_arr_info(sexp* arr_sexp) {
   r_list_poke(info, 0, r_dbl(arr->count));
   r_list_poke(info, 1, r_dbl(arr->capacity));
   r_list_poke(info, 2, r_int(arr->growth_factor));
-  r_list_poke(info, 3, r_int(arr->elt_byte_size));
+  r_list_poke(info, 3, r_type_as_character(arr->type));
+  r_list_poke(info, 4, r_int(arr->elt_byte_size));
 
   FREE(1);
   return info;
 }
 
+// [[ register() ]]
+sexp* rlang_arr_push_back(sexp* arr_sexp, sexp* x) {
+  struct r_dyn_array* p_arr = rlang_arr_deref(arr_sexp);
+
+  if (r_vec_elt_sizeof(x) != p_arr->elt_byte_size) {
+    r_stop_internal("rlang_arr_push_back", "Incompatible byte sizes.");
+  }
+
+  r_arr_push_back(p_arr, r_vec_deref(x));
+  return r_null;
+}
 // [[ register() ]]
 sexp* rlang_arr_push_back_bool(sexp* arr_sexp, sexp* x_sexp) {
   struct r_dyn_array* arr = rlang_arr_deref(arr_sexp);
