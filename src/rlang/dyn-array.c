@@ -33,24 +33,17 @@ struct r_dyn_array* r_new_dyn_array(r_ssize capacity,
 
 void r_arr_push_back(struct r_dyn_array* p_arr, void* p_elt) {
   r_ssize count = ++p_arr->count;
-  r_arr_grow(p_arr, count);
+  if (count > p_arr->capacity) {
+    r_ssize new_capacity = r_ssize_mult(p_arr->capacity,
+                                        p_arr->growth_factor);
+    r_arr_resize(p_arr, new_capacity);
+  }
 
   if (p_elt) {
     memcpy(r_arr_ptr_back(p_arr), p_elt, p_arr->elt_byte_size);
   } else {
     memset(r_arr_ptr_back(p_arr), 0, p_arr->elt_byte_size);
   }
-}
-
-void r_arr_grow(struct r_dyn_array* p_arr,
-                r_ssize capacity) {
-  if (capacity <= p_arr->capacity) {
-    return;
-  }
-
-  r_ssize new_capacity = r_ssize_mult(p_arr->capacity,
-                                      p_arr->growth_factor);
-  r_arr_resize(p_arr, new_capacity);
 }
 
 void r_arr_resize(struct r_dyn_array* p_arr,

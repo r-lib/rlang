@@ -19,9 +19,6 @@ struct r_dyn_array* r_new_dyn_array(r_ssize capacity,
 void r_arr_resize(struct r_dyn_array* p_arr,
                   r_ssize capacity);
 
-void r_arr_grow(struct r_dyn_array* p_arr,
-                r_ssize capacity);
-
 void r_arr_push_back(struct r_dyn_array* p_arr, void* p_elt);
 
 static inline
