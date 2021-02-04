@@ -59,7 +59,12 @@ sexp* r_arr_unwrap(struct r_dyn_array* p_arr) {
 struct r_dyn_array* r_new_dyn_array(r_ssize elt_byte_size,
                                     r_ssize capacity) {
   r_ssize arr_byte_size = r_ssize_mult(capacity, elt_byte_size);
-  return r_new_dyn_vector(r_type_raw, arr_byte_size);
+
+  struct r_dyn_array* p_arr = r_new_dyn_vector(r_type_raw, arr_byte_size);
+  p_arr->capacity = capacity;
+  p_arr->elt_byte_size = elt_byte_size;
+
+  return p_arr;
 }
 
 
