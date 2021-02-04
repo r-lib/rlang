@@ -764,3 +764,40 @@ test_that("can shrink and grow dynamic atomic vectors", {
   )
   expect_identical(arr[[2]][1:4], dbl(1:4))
 })
+
+test_that("can shrink and grow dynamic barrier vectors", {
+  arr <- new_dyn_vector("list", 3)
+  expect_equal(
+    arr_info(arr)[1:4],
+    list(
+      count = 0,
+      capacity = 3,
+      growth_factor = 2,
+      type = "list"
+    )
+  )
+
+  arr_push_back(arr, 1)
+  arr_push_back(arr, 2)
+  arr_push_back(arr, 3)
+  expect_equal(
+    arr_info(arr)[1:2],
+    list(
+      count = 3,
+      capacity = 3
+    )
+  )
+  expect_identical(arr[[2]], as.list(dbl(1:3)))
+
+  arr_push_back(arr, 4)
+  expect_equal(
+    arr_info(arr)[1:4],
+    list(
+      count = 4,
+      capacity = 6,
+      growth_factor = 2,
+      type = "list"
+    )
+  )
+  expect_identical(arr[[2]][1:4], as.list(dbl(1:4)))
+})

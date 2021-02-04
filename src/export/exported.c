@@ -207,8 +207,15 @@ sexp* rlang_arr_push_back(sexp* arr_sexp, sexp* x) {
     r_stop_internal("rlang_arr_push_back", "Incompatible byte sizes.");
   }
 
-  r_arr_push_back(p_arr, r_vec_deref(x));
-  return r_null;
+  switch (p_arr->type) {
+  case r_type_character:
+  case r_type_list:
+    r_arr_push_back(p_arr, x);
+    return r_null;
+  default:
+    r_arr_push_back(p_arr, r_vec_deref(x));
+    return r_null;
+  }
 }
 // [[ register() ]]
 sexp* rlang_arr_push_back_bool(sexp* arr_sexp, sexp* x_sexp) {
