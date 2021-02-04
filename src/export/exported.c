@@ -201,7 +201,10 @@ sexp* rlang_arr_push_back(sexp* arr_sexp, sexp* x) {
   struct r_dyn_array* p_arr = rlang_arr_deref(arr_sexp);
 
   if (r_vec_elt_sizeof(x) != p_arr->elt_byte_size) {
-    r_stop_internal("rlang_arr_push_back", "Incompatible byte sizes.");
+    r_stop_internal("rlang_arr_push_back",
+                    "Incompatible byte sizes %d/%d.",
+                    r_vec_elt_sizeof(x),
+                    p_arr->elt_byte_size);
   }
 
   switch (p_arr->type) {
