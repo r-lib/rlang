@@ -186,14 +186,20 @@ print.rlang_dict <- function(x, ...) {
 
 # dyn-array.c
 
-new_dyn_array <- function(capacity, elt_size) {
-  .Call(c_ptr_new_dyn_array, capacity, elt_size)
+new_dyn_array <- function(elt_size, capacity) {
+  .Call(c_ptr_new_dyn_array, elt_size, capacity)
+}
+arr_unwrap <- function(arr) {
+  .Call(c_ptr_arr_unwrap, arr)
 }
 
 arr_info <- function(arr) {
   .Call(c_ptr_arr_info, arr)
 }
 
+arr_push_back <- function(arr, x) {
+  .Call(c_ptr_arr_push_back, arr, x)
+}
 arr_push_back_bool <- function(arr, x) {
   .Call(c_ptr_arr_push_back_bool, arr, x)
 }
@@ -212,6 +218,7 @@ print.rlang_dyn_array <- function(x, ...) {
   writeLines(paste0("count: ", info$count))
   writeLines(paste0("capacity: ", info$capacity))
   writeLines(paste0("growth_factor: ", info$growth_factor))
+  writeLines(paste0("type: ", info$type))
   writeLines(paste0("elt_byte_size: ", info$elt_byte_size))
 }
 

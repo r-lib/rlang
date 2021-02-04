@@ -82,6 +82,12 @@ const char* r_type_as_c_string(enum r_type type) {
 }
 
 static inline
+enum r_type r_c_str_as_r_type(const char* type) {
+  return Rf_str2type(type);
+}
+enum r_type r_chr_as_r_type(sexp* type);
+
+static inline
 bool r_is_symbolic(sexp* x) {
   return
     r_typeof(x) == LANGSXP ||

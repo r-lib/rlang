@@ -174,6 +174,7 @@ extern sexp* rlang_alloc_data_frame(sexp*, sexp*, sexp*);
 extern sexp* rlang_vec_resize(sexp*, sexp*);
 extern sexp* rlang_new_dyn_array(sexp*, sexp*);
 extern sexp* rlang_arr_info(sexp*);
+extern sexp* rlang_arr_push_back(sexp*, sexp*);
 extern sexp* rlang_arr_push_back_bool(sexp*, sexp*);
 extern sexp* rlang_arr_pop_back(sexp*);
 extern sexp* rlang_arr_resize(sexp*, sexp*);
@@ -346,7 +347,9 @@ static const R_CallMethodDef r_callables[] = {
   {"c_ptr_list_compact",                (DL_FUNC) &r_list_compact, 1},
   {"c_ptr_vec_resize",                  (DL_FUNC) &rlang_vec_resize, 2},
   {"c_ptr_new_dyn_array",               (DL_FUNC) &rlang_new_dyn_array, 2},
+  {"c_ptr_arr_unwrap",                  (DL_FUNC) &rlang_arr_unwrap, 1},
   {"c_ptr_arr_info",                    (DL_FUNC) &rlang_arr_info, 1},
+  {"c_ptr_arr_push_back",               (DL_FUNC) &rlang_arr_push_back, 2},
   {"c_ptr_arr_push_back_bool",          (DL_FUNC) &rlang_arr_push_back_bool, 2},
   {"c_ptr_arr_pop_back",                (DL_FUNC) &rlang_arr_pop_back, 1},
   {"c_ptr_arr_resize",                  (DL_FUNC) &rlang_arr_resize, 2},
