@@ -80,7 +80,8 @@ enum r_type r_chr_as_r_type(sexp* type) {
 
 
 void r_init_library_sexp(sexp* ns) {
-  p_precious_dict = KEEP(r_new_dict(PRECIOUS_DICT_INIT_SIZE));
+  p_precious_dict = r_new_dict(PRECIOUS_DICT_INIT_SIZE);
+  KEEP(p_precious_dict->shelter);
   r_env_poke(ns,
              r_sym(".__rlang_lib_precious_dict__."),
              p_precious_dict->shelter);
