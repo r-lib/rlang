@@ -265,11 +265,6 @@ sexp* r_len(r_ssize x) {
   }
 }
 
-sexp* r_alloc_df_list(r_ssize n_rows,
-                      sexp* names,
-                      const enum r_type* v_types,
-                      r_ssize types_size);
-
 
 // FIXME: Redundant with `r_lgl()`
 static inline

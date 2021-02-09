@@ -17,29 +17,6 @@ sexp* r_true = NULL;
 sexp* r_false = NULL;
 
 
-sexp* r_alloc_df_list(r_ssize n_rows,
-                      sexp* names,
-                      const enum r_type* v_types,
-                      r_ssize types_size) {
-  sexp* out = KEEP(r_new_list(types_size));
-
-  if (r_typeof(names) != r_type_character) {
-    r_abort("`names` must be a character vector.");
-  }
-  if (r_length(names) != types_size) {
-    r_abort("`names` must match the number of columns.");
-  }
-  r_attrib_push(out, r_syms_names, names);
-
-  for (r_ssize i = 0; i < types_size; ++i) {
-    sexp* col = r_new_vector(v_types[i], n_rows);
-    r_list_poke(out, i, col);
-  }
-
-  FREE(1);
-  return out;
-}
-
 sexp* r_chr_n(const char* const * strings, r_ssize n) {
   sexp* out = KEEP(r_new_vector(r_type_character, n));
 
