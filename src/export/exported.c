@@ -118,6 +118,10 @@ sexp* rlang_dict_resize(sexp* dict, sexp* size) {
   return r_null;
 }
 
+sexp* rlang_dict_as_df_list(sexp* dict) {
+  return r_dict_as_df_list(r_shelter_deref(dict));
+}
+
 sexp* rlang_new_dict_iterator(sexp* dict) {
   struct r_dict* p_dict = r_shelter_deref(dict);
   return r_new_dict_iterator(p_dict)->shelter;

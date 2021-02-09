@@ -183,6 +183,7 @@ extern sexp* rlang_arr_resize(sexp*, sexp*);
 extern sexp* rlang_new_dict_iterator(sexp*);
 extern sexp* rlang_dict_it_info(sexp*);
 extern sexp* rlang_dict_it_next(sexp*);
+extern sexp* rlang_dict_as_df_list(sexp*);
 
 static const R_CallMethodDef r_callables[] = {
   {"r_init_library",                    (DL_FUNC) &r_init_library, 1},
@@ -363,6 +364,7 @@ static const R_CallMethodDef r_callables[] = {
   {"c_ptr_new_dict_iterator",           (DL_FUNC) &rlang_new_dict_iterator, 1},
   {"c_ptr_dict_it_info",                (DL_FUNC) &rlang_dict_it_info, 1},
   {"c_ptr_dict_it_next",                (DL_FUNC) &rlang_dict_it_next, 1},
+  {"c_ptr_dict_as_df_list",             (DL_FUNC) &rlang_dict_as_df_list, 1},
   {NULL, NULL, 0}
 };
 

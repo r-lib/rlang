@@ -621,6 +621,28 @@ test_that("can iterate over dict (edge case)", {
   expect_false(dict_it_next(it))
 })
 
+test_that("can transform dict to df-list", {
+  dict <- new_dict(10L)
+
+  dict_put(dict, quote(foo), 1)
+  dict_put(dict, quote(bar), 2)
+
+  out <- dict_as_df_list(dict)
+  if (as_string(out$key[[1]]) == "foo") {
+    exp <- list(
+      key = list(quote(foo), quote(bar)),
+      value = list(1, 2)
+    )
+  } else {
+    exp <- list(
+      key = list(quote(bar), quote(foo)),
+      value = list(2, 1)
+    )
+  }
+
+  expect_equal(out, exp)
+})
+
 test_that("can preserve and unpreserve repeatedly", {
   x <- env()
 

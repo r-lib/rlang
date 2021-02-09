@@ -177,6 +177,10 @@ dict_get <- function(dict, key) {
   .Call(rlang_dict_get, dict, key)
 }
 
+dict_as_df_list <- function(dict) {
+  .Call(c_ptr_dict_as_df_list, dict)
+}
+
 #' @export
 print.rlang_dict <- function(x, ...) {
   writeLines(sprintf("<rlang/dict: %s>", sexp_address(x)))

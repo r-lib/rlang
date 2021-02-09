@@ -248,3 +248,42 @@ bool r_dict_it_next(struct r_dict_iterator* p_it) {
   p_it->node = r_node_cdr(node);
   return true;
 }
+
+static
+const char* v_dict_it_df_names_c_strings[] = {
+  "key",
+  "value"
+};
+static
+const enum r_type v_dict_it_df_types[] = {
+  r_type_list,
+  r_type_list
+};
+enum dict_it_df_locs {
+  DICT_IT_DF_LOCS_key,
+  DICT_IT_DF_LOCS_value
+};
+#define DICT_IT_DF_SIZE R_ARR_SIZEOF(v_dict_it_df_types)
+
+sexp* r_dict_as_df_list(struct r_dict* p_dict) {
+  sexp* nms = KEEP(r_chr_n(v_dict_it_df_names_c_strings,
+                           DICT_IT_DF_SIZE));
+
+  sexp* out = KEEP(r_alloc_df_list(p_dict->n_entries,
+                                   nms,
+                                   v_dict_it_df_types,
+                                   DICT_IT_DF_SIZE));
+
+  sexp* key = r_list_get(out, DICT_IT_DF_LOCS_key);
+  sexp* value = r_list_get(out, DICT_IT_DF_LOCS_value);
+
+  struct r_dict_iterator* p_it = KEEP(r_new_dict_iterator(p_dict));
+
+  for (r_ssize i = 0; r_dict_it_next(p_it); ++i) {
+    r_list_poke(key, i, p_it->key);
+    r_list_poke(value, i, p_it->value);
+  }
+
+  FREE(3);
+  return out;
+}
