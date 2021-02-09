@@ -228,11 +228,11 @@ these functions.</p></li>
     <pre class="examples"><div class='input'><span class='co'># Environment of closure functions:</span>
 <span class='va'>fn</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='st'>"foo"</span>
 <span class='fu'>get_env</span><span class='op'>(</span><span class='va'>fn</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;environment: 0x7fb8f7a75e40&gt;</div><div class='input'>
+</div><div class='output co'>#&gt; &lt;environment: 0x7fb981a2b8f0&gt;</div><div class='input'>
 <span class='co'># Or of quosures or formulas:</span>
 <span class='fu'>get_env</span><span class='op'>(</span><span class='op'>~</span><span class='va'>foo</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;environment: 0x7fb8f7a75e40&gt;</div><div class='input'><span class='fu'>get_env</span><span class='op'>(</span><span class='fu'><a href='nse-defuse.html'>quo</a></span><span class='op'>(</span><span class='va'>foo</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;environment: 0x7fb8f7a75e40&gt;</div><div class='input'>
+</div><div class='output co'>#&gt; &lt;environment: 0x7fb981a2b8f0&gt;</div><div class='input'><span class='fu'>get_env</span><span class='op'>(</span><span class='fu'><a href='nse-defuse.html'>quo</a></span><span class='op'>(</span><span class='va'>foo</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;environment: 0x7fb981a2b8f0&gt;</div><div class='input'>
 
 <span class='co'># Provide a default in case the object doesn't bundle an environment.</span>
 <span class='co'># Let's create an unevaluated formula:</span>
@@ -262,7 +262,7 @@ these functions.</p></li>
 <span class='va'>other_env</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>child_env</a></span><span class='op'>(</span><span class='cn'>NULL</span><span class='op'>)</span>
 <span class='fu'>set_env</span><span class='op'>(</span><span class='va'>fn</span>, <span class='va'>other_env</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; function() NULL
-#&gt; &lt;environment: 0x7fb8f904dac0&gt;</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span><span class='op'>(</span><span class='fu'>get_env</span><span class='op'>(</span><span class='va'>fn</span><span class='op'>)</span>, <span class='va'>other_env</span><span class='op'>)</span>
+#&gt; &lt;environment: 0x7fb98090c2b0&gt;</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span><span class='op'>(</span><span class='fu'>get_env</span><span class='op'>(</span><span class='va'>fn</span><span class='op'>)</span>, <span class='va'>other_env</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
 <span class='co'># Since set_env() returns a new function with a different</span>
 <span class='co'># environment, you'll need to reassign the result:</span>
