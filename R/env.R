@@ -67,8 +67,7 @@
 #' @param ...,data <[dynamic][dyn-dots]> Named values. You can
 #'   supply one unnamed to specify a custom parent, otherwise it
 #'   defaults to the current environment.
-#' @param .parent,parent A parent environment. Can be an object
-#'   supported by [as_environment()].
+#' @param .parent,parent A parent environment.
 #' @seealso [env_has()], [env_bind()].
 #' @export
 #' @examples

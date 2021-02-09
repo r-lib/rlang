@@ -17,8 +17,7 @@ new_environment(data = list(), parent = empty_env())
 supply one unnamed to specify a custom parent, otherwise it
 defaults to the current environment.}
 
-\item{.parent, parent}{A parent environment. Can be an object
-supported by \code{\link[=as_environment]{as_environment()}}.}
+\item{.parent, parent}{A parent environment.}
 }
 \description{
 These functions create new environments.
