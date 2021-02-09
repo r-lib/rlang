@@ -65,7 +65,11 @@ struct r_triple {
 };
 
 
-#define KEEP PROTECT
+static inline
+void* KEEP(void* p) {
+  PROTECT((sexp*) p);
+  return p;
+}
 #define FREE UNPROTECT
 #define KEEP2(x, y) (KEEP(x), KEEP(y))
 #define KEEP_N(x, n) (++(*n), KEEP(x))

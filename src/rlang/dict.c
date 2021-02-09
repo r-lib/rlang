@@ -45,8 +45,7 @@ void r_dict_resize(struct r_dict* p_dict, r_ssize size) {
   if (size < 0) {
     size = p_dict->n_buckets * DICT_GROWTH_FACTOR;
   }
-  struct r_dict* p_new_dict = r_new_dict(size);
-  KEEP(p_new_dict->shelter);
+  struct r_dict* p_new_dict = KEEP(r_new_dict(size));
 
   r_ssize n = r_length(p_dict->buckets);
   sexp* const * p_buckets = p_dict->p_buckets;
