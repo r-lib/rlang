@@ -42,6 +42,7 @@ struct r_dict_iterator {
   r_ssize i;
   r_ssize n;
   sexp* const * v_buckets;
+  sexp* node;
 };
 
 struct r_dict_iterator* r_new_dict_iterator(struct r_dict* p_dict);

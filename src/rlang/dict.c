@@ -218,6 +218,11 @@ struct r_dict_iterator* r_new_dict_iterator(struct r_dict* p_dict) {
   p_it->n = p_dict->n_buckets;
   p_it->v_buckets = p_dict->p_buckets;
 
+  if (p_it->n == 0) {
+    r_stop_internal("r_new_dict_iterator", "Empty dictionary.");
+  }
+  p_it->node = p_it->v_buckets[0];
+
   return p_it;
 }
 
@@ -226,7 +231,7 @@ bool r_dict_it_next(struct r_dict_iterator* p_it) {
     return false;
   }
 
-  sexp* node = r_node_cdr(p_it->v_buckets[p_it->i]);
+  sexp* node = p_it->node;
   while (node == r_null) {
     r_ssize i = ++p_it->i;
 
@@ -236,9 +241,11 @@ bool r_dict_it_next(struct r_dict_iterator* p_it) {
     }
 
     node = p_it->v_buckets[i];
+    p_it->node = node;
   }
 
   p_it->key = r_node_tag(node);
   p_it->value = r_node_car(node);
+  p_it->node = r_node_cdr(node);
   return true;
 }

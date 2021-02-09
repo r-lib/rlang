@@ -583,6 +583,44 @@ test_that("can iterate over dict", {
   expect_false(dict_it_next(it))
 })
 
+test_that("can iterate over dict (edge case)", {
+  dict <- new_dict(1L, prevent_resize = TRUE)
+
+  dict_put(dict, quote(foo), 1)
+  dict_put(dict, quote(bar), 2)
+
+  it <- new_dict_iterator(dict)
+  expect_equal(
+    dict_it_info(it),
+    list(
+      key = NULL,
+      value = NULL,
+      i = 0L,
+      n = 1L
+    )
+  )
+
+  exp_foo <- list(key = quote(foo), value = 1)
+  exp_bar <- list(key = quote(bar), value = 2)
+
+  expect_true(dict_it_next(it))
+  info1 <- dict_it_info(it)[1:2]
+
+  expect_true(dict_it_next(it))
+  info2 <- dict_it_info(it)[1:2]
+
+  if (as_string(info1$key) == "foo") {
+    expect_equal(info1, exp_foo)
+    expect_equal(info2, exp_bar)
+  } else {
+    expect_equal(info1, exp_bar)
+    expect_equal(info2, exp_foo)
+  }
+
+  expect_false(dict_it_next(it))
+  expect_false(dict_it_next(it))
+})
+
 test_that("can preserve and unpreserve repeatedly", {
   x <- env()
 
