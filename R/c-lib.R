@@ -180,6 +180,9 @@ dict_get <- function(dict, key) {
 dict_as_df_list <- function(dict) {
   .Call(c_ptr_dict_as_df_list, dict)
 }
+dict_as_list <- function(dict) {
+  .Call(c_ptr_dict_as_list, dict)
+}
 
 #' @export
 print.rlang_dict <- function(x, ...) {

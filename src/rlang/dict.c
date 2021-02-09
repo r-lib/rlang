@@ -287,3 +287,15 @@ sexp* r_dict_as_df_list(struct r_dict* p_dict) {
   FREE(3);
   return out;
 }
+sexp* r_dict_as_list(struct r_dict* p_dict) {
+  sexp* out = KEEP(r_new_list(p_dict->n_entries));
+
+  struct r_dict_iterator* p_it = KEEP(r_new_dict_iterator(p_dict));
+
+  for (r_ssize i = 0; r_dict_it_next(p_it); ++i) {
+    r_list_poke(out, i, p_it->value);
+  }
+
+  FREE(2);
+  return out;
+}

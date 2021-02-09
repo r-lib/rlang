@@ -33,6 +33,7 @@ sexp* r_dict_get0(struct r_dict* p_dict, sexp* key);
 void r_dict_resize(struct r_dict* p_dict, r_ssize size);
 
 sexp* r_dict_as_df_list(struct r_dict* p_dict);
+sexp* r_dict_as_list(struct r_dict* p_dict);
 
 
 struct r_dict_iterator {
