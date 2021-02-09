@@ -205,3 +205,40 @@ sexp* dict_find_node_info(struct r_dict* p_dict,
 
   return r_null;
 }
+
+
+struct r_dict_iterator* r_new_dict_iterator(struct r_dict* p_dict) {
+  sexp* shelter = r_new_raw(sizeof(struct r_dict_iterator));
+  struct r_dict_iterator* p_it = r_raw_deref(shelter);
+
+  p_it->shelter = shelter;
+  p_it->key = r_null;
+  p_it->value = r_null;
+  p_it->i = 0;
+  p_it->n = p_dict->n_buckets;
+  p_it->v_buckets = p_dict->p_buckets;
+
+  return p_it;
+}
+
+bool r_dict_it_next(struct r_dict_iterator* p_it) {
+  if (p_it->v_buckets == NULL) {
+    return false;
+  }
+
+  sexp* node = r_node_cdr(p_it->v_buckets[p_it->i]);
+  while (node == r_null) {
+    r_ssize i = ++p_it->i;
+
+    if (i >= p_it->n) {
+      p_it->v_buckets = NULL;
+      return false;
+    }
+
+    node = p_it->v_buckets[i];
+  }
+
+  p_it->key = r_node_tag(node);
+  p_it->value = r_node_car(node);
+  return true;
+}

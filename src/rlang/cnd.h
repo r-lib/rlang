@@ -24,6 +24,11 @@ __attribute__((noreturn))
 void r_stop_unimplemented_type(const char* fn, enum r_type type) {
   r_stop_internal(fn, "Unimplemented type `%s`.", Rf_type2char(type));
 }
+static inline
+__attribute__((noreturn))
+void r_stop_unexpected_type(const char* fn, enum r_type type) {
+  r_stop_internal(fn, "Unexpected type `%s`.", Rf_type2char(type));
+}
 
 
 static inline

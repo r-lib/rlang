@@ -6,6 +6,7 @@ lib-files = \
         rlang/attrib.c \
         rlang/call.c \
         rlang/cnd.c \
+        rlang/c-utils.c \
         rlang/debug.c \
         rlang/dict.c \
         rlang/df.c \

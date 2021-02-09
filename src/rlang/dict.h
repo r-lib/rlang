@@ -10,7 +10,7 @@
 struct r_dict {
   sexp* shelter;
 
-  // private:
+  /* private: */
   sexp* buckets;
   sexp* const * p_buckets;
 
@@ -31,6 +31,21 @@ sexp* r_dict_get0(struct r_dict* p_dict, sexp* key);
 
 // Pass a negative size to resize by the default growth factor
 void r_dict_resize(struct r_dict* p_dict, r_ssize size);
+
+
+struct r_dict_iterator {
+  sexp* shelter;
+  sexp* key;
+  sexp* value;
+
+  /* private: */
+  r_ssize i;
+  r_ssize n;
+  sexp* const * v_buckets;
+};
+
+struct r_dict_iterator* r_new_dict_iterator(struct r_dict* p_dict);
+bool r_dict_it_next(struct r_dict_iterator* p_it);
 
 
 #endif

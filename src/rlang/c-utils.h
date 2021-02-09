@@ -6,6 +6,8 @@
 
 #define R_ARR_SIZEOF(X) sizeof(X) / sizeof(X[0])
 
+void* r_shelter_deref(sexp* x);
+
 
 // Adapted from CERT C coding standards
 static inline

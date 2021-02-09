@@ -183,6 +183,16 @@ print.rlang_dict <- function(x, ...) {
   writeLines(paste0("size: ", dict_size(x)))
 }
 
+new_dict_iterator <- function(dict) {
+  .Call(c_ptr_new_dict_iterator, dict)
+}
+dict_it_info <- function(it) {
+  .Call(c_ptr_dict_it_info, it)
+}
+dict_it_next <- function(it) {
+  .Call(c_ptr_dict_it_next, it)
+}
+
 
 # dyn-array.c
 

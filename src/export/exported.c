@@ -135,6 +135,36 @@ sexp* rlang_dict_resize(sexp* dict, sexp* size) {
   return r_null;
 }
 
+sexp* rlang_new_dict_iterator(sexp* dict) {
+  struct r_dict* p_dict = r_shelter_deref(dict);
+  return r_new_dict_iterator(p_dict)->shelter;
+}
+sexp* rlang_dict_it_info(sexp* dict_it) {
+  struct r_dict_iterator* p_it = r_shelter_deref(dict_it);
+
+  const char* v_nms[] = {
+    "key",
+    "value",
+    "i",
+    "n"
+  };
+  int n = R_ARR_SIZEOF(v_nms);
+
+  sexp* info = KEEP(r_new_list(n));
+  r_attrib_poke_names(info, r_chr_n(v_nms, n));
+  r_list_poke(info, 0, p_it->key);
+  r_list_poke(info, 1, p_it->value);
+  r_list_poke(info, 2, r_len(p_it->i));
+  r_list_poke(info, 3, r_len(p_it->n));
+
+  FREE(1);
+  return info;
+}
+sexp* rlang_dict_it_next(sexp* dict_it) {
+  struct r_dict_iterator* p_dict_it = r_shelter_deref(dict_it);
+  return r_lgl(r_dict_it_next(p_dict_it));
+}
+
 
 // dyn-array.c
 
