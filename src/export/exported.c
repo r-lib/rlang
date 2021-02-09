@@ -88,40 +88,23 @@ sexp* rlang_new_dict(sexp* size, sexp* prevent_resize) {
   return dict->shelter;
 }
 
-static
-struct r_dict* dict_deref(sexp* dict) {
-  if (r_typeof(dict) != r_type_list) {
-    goto dict_input_error;
-  }
-
-  sexp* dict_raw = r_list_get(dict, 0);
-  if (r_typeof(dict_raw) != r_type_raw) {
-    goto dict_input_error;
-  }
-
-  return r_raw_deref(dict_raw);
-
-  dict_input_error:
-    r_abort("`dict` must be a dictionary handle.");
-}
-
 sexp* rlang_dict_put(sexp* dict, sexp* key, sexp* value) {
-  struct r_dict* p_dict = dict_deref(dict);
+  struct r_dict* p_dict = r_shelter_deref(dict);
   return r_lgl(r_dict_put(p_dict, key, value));
 }
 
 sexp* rlang_dict_del(sexp* dict, sexp* key) {
-  struct r_dict* p_dict = dict_deref(dict);
+  struct r_dict* p_dict = r_shelter_deref(dict);
   return r_lgl(r_dict_del(p_dict, key));
 }
 
 sexp* rlang_dict_has(sexp* dict, sexp* key) {
-  struct r_dict* p_dict = dict_deref(dict);
+  struct r_dict* p_dict = r_shelter_deref(dict);
   return r_lgl(r_dict_has(p_dict, key));
 }
 
 sexp* rlang_dict_get(sexp* dict, sexp* key) {
-  struct r_dict* p_dict = dict_deref(dict);
+  struct r_dict* p_dict = r_shelter_deref(dict);
   return r_dict_get(p_dict, key);
 }
 
@@ -129,7 +112,7 @@ sexp* rlang_dict_resize(sexp* dict, sexp* size) {
   if (!r_is_int(size)) {
     r_abort("`size` must be an integer.");
   }
-  struct r_dict* p_dict = dict_deref(dict);
+  struct r_dict* p_dict = r_shelter_deref(dict);
 
   r_dict_resize(p_dict, r_int_get(size, 0));
   return r_null;
@@ -184,31 +167,14 @@ sexp* rlang_new_dyn_array(sexp* elt_byte_size,
   return arr->shelter;
 }
 
-static
-struct r_dyn_array* rlang_arr_deref(sexp* arr) {
-  if (r_typeof(arr) != r_type_list || r_length(arr) != 2) {
-    goto err;
-  }
-
-  sexp* raw = r_list_get(arr, 0);
-  if (r_typeof(raw) != r_type_raw) {
-    goto err;
-  }
-
-  return r_raw_deref(raw);
-
- err:
-  r_stop_internal("rlang_arr_deref", "Expected a dynamic array handle.");
-};
-
 // [[ register() ]]
 sexp* rlang_arr_unwrap(sexp* arr) {
-  return r_arr_unwrap(rlang_arr_deref(arr));
+  return r_arr_unwrap(r_shelter_deref(arr));
 }
 
 // [[ register() ]]
 sexp* rlang_arr_info(sexp* arr_sexp) {
-  struct r_dyn_array* arr = rlang_arr_deref(arr_sexp);
+  struct r_dyn_array* arr = r_shelter_deref(arr_sexp);
 
   const char* names_c_strs[] = {
     "count",
@@ -236,7 +202,7 @@ sexp* rlang_arr_info(sexp* arr_sexp) {
 
 // [[ register() ]]
 sexp* rlang_arr_push_back(sexp* arr_sexp, sexp* x) {
-  struct r_dyn_array* p_arr = rlang_arr_deref(arr_sexp);
+  struct r_dyn_array* p_arr = r_shelter_deref(arr_sexp);
 
   if (!p_arr->barrier_set && r_vec_elt_sizeof(x) != p_arr->elt_byte_size) {
     r_stop_internal("rlang_arr_push_back",
@@ -257,20 +223,20 @@ sexp* rlang_arr_push_back(sexp* arr_sexp, sexp* x) {
 }
 // [[ register() ]]
 sexp* rlang_arr_push_back_bool(sexp* arr_sexp, sexp* x_sexp) {
-  struct r_dyn_array* arr = rlang_arr_deref(arr_sexp);
+  struct r_dyn_array* arr = r_shelter_deref(arr_sexp);
   bool x = r_as_bool(x_sexp);
   r_arr_push_back(arr, &x);
   return r_null;
 }
 // [[ register() ]]
 sexp* rlang_arr_pop_back(sexp* arr_sexp) {
-  struct r_dyn_array* arr = rlang_arr_deref(arr_sexp);
+  struct r_dyn_array* arr = r_shelter_deref(arr_sexp);
   r_arr_pop_back(arr);
   return r_null;
 }
 // [[ register() ]]
 sexp* rlang_arr_resize(sexp* arr_sexp, sexp* capacity_sexp) {
-  struct r_dyn_array* arr = rlang_arr_deref(arr_sexp);
+  struct r_dyn_array* arr = r_shelter_deref(arr_sexp);
   r_arr_resize(arr, r_as_ssize(capacity_sexp));
   return r_null;
 }
