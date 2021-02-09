@@ -94,4 +94,8 @@ chr_get <- function(x, i = 0L) {
   .Call(rlang_chr_get, x, i)
 }
 
+list_poke <- function(x, i, value) {
+  .Call(c_ptr_list_poke, x, i, value)
+}
+
 # nocov end

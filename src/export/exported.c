@@ -835,3 +835,8 @@ sexp* rlang_vec_resize(sexp* x, sexp* n) {
   default: r_stop_unimplemented_type("rlang_vec_resize", r_typeof(x));
   }
 }
+
+sexp* rlang_list_poke(sexp* x, sexp* i, sexp* value) {
+  r_list_poke(x, r_as_ssize(i), value);
+  return r_null;
+}

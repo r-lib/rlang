@@ -139,6 +139,7 @@ extern sexp* rlang_env_browse(sexp*, sexp*);
 extern sexp* rlang_env_is_browsed(sexp*);
 extern sexp* rlang_ns_registry_env();
 extern sexp* rlang_hash(sexp*);
+extern sexp* rlang_list_poke(sexp*, sexp*, sexp*);
 
 // Library initialisation defined below
 sexp* rlang_library_load(sexp*);
@@ -355,6 +356,7 @@ static const R_CallMethodDef r_callables[] = {
   {"c_ptr_arr_push_back_bool",          (DL_FUNC) &rlang_arr_push_back_bool, 2},
   {"c_ptr_arr_pop_back",                (DL_FUNC) &rlang_arr_pop_back, 1},
   {"c_ptr_arr_resize",                  (DL_FUNC) &rlang_arr_resize, 2},
+  {"c_ptr_list_poke",                   (DL_FUNC) &rlang_list_poke, 3},
   {NULL, NULL, 0}
 };
 
