@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* `sexp_address()` is now exported.
+
 * `%<~%` now actually works.
 
 * Fixed a bug in the AST rotation algorithm that caused the `!!`

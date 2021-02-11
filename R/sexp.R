@@ -25,14 +25,19 @@ duplicate <- function(x, shallow = FALSE) {
   .Call(rlang_duplicate, x, shallow)
 }
 
+#' Address of an R object
+#' @param x Any R object.
+#' @return Its address in memory in a string.
+#' @keywords internal
+#' @export
+sexp_address <- function(x) {
+  .Call(rlang_sexp_address, x)
+}
 
 # nocov start - These functions are mostly for interactive experimentation
 
 poke_type <- function(x, type) {
   invisible(.Call(rlang_poke_type, x, type))
-}
-sexp_address <- function(x) {
-  .Call(rlang_sexp_address, x)
 }
 sexp_named <- function(x) {
   # Don't use `substitute()` because dots might be forwarded
