@@ -21,18 +21,13 @@ struct r_dyn_array {
 struct r_dyn_array* r_new_dyn_vector(enum r_type type,
                                      r_ssize capacity);
 
-struct r_dyn_array* r_new_dyn_array(r_ssize capacity,
-                                    r_ssize elt_byte_size);
+struct r_dyn_array* r_new_dyn_array(r_ssize elt_byte_size,
+                                    r_ssize capacity);
 
 void r_arr_resize(struct r_dyn_array* p_arr,
                   r_ssize capacity);
 
 void r_arr_push_back(struct r_dyn_array* p_arr, void* p_elt);
-
-static inline
-void r_arr_pop_back(struct r_dyn_array* p_arr) {
-  --p_arr->count;
-}
 
 sexp* r_arr_unwrap(struct r_dyn_array* p_arr);
 
@@ -75,6 +70,12 @@ const void* r_arr_ptr_const_end(struct r_dyn_array* p_arr) {
   return r_arr_ptr_const(p_arr, p_arr->count);
 }
 
+static inline
+void* const * r_arr_pop_back(struct r_dyn_array* p_arr) {
+  void* const * out = (void* const *) r_arr_ptr_const_back(p_arr);
+  --p_arr->count;
+  return out;
+}
 
 static inline
 void r_lgl_push_back(struct r_dyn_array* p_vec, int elt) {
