@@ -74,6 +74,13 @@ struct r_triple {
 #define KEEP_AT REPROTECT
 #define KEEP_HERE PROTECT_WITH_INDEX
 
+#define KEEP_WHILE(X, EXPR) do {                \
+    KEEP(X);                                    \
+    EXPR;                                       \
+    FREE(1);                                    \
+  } while (0)
+
+
 #define RLANG_ASSERT(condition) ((void)sizeof(char[1 - 2*!(condition)]))
 
 
