@@ -27,7 +27,8 @@ struct r_dyn_array* r_new_dyn_array(r_ssize elt_byte_size,
 void r_arr_resize(struct r_dyn_array* p_arr,
                   r_ssize capacity);
 
-void r_arr_push_back(struct r_dyn_array* p_arr, void* p_elt);
+void r_arr_push_back(struct r_dyn_array* p_arr,
+                     const void* p_elt);
 
 sexp* r_arr_unwrap(struct r_dyn_array* p_arr);
 
@@ -93,6 +94,15 @@ static inline
 void r_cpl_push_back(struct r_dyn_array* p_vec, r_complex_t elt) {
   r_arr_push_back(p_vec, &elt);
 }
+static inline
+void r_list_push_back(struct r_dyn_array* p_vec, sexp* elt) {
+  KEEP(elt);
+  r_arr_push_back(p_vec, &elt);
+  FREE(1);
+}
+
+#define R_ARR_GET(TYPE, X, I) (*((TYPE*) r_arr_ptr((X), (I))))
+#define R_ARR_POKE(TYPE, X, I, VAL) (*((TYPE*) r_arr_ptr((X), (I))) = (VAL))
 
 
 #endif

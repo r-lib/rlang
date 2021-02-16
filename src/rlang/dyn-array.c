@@ -68,7 +68,8 @@ struct r_dyn_array* r_new_dyn_array(r_ssize elt_byte_size,
 }
 
 
-void r_arr_push_back(struct r_dyn_array* p_arr, void* p_elt) {
+void r_arr_push_back(struct r_dyn_array* p_arr,
+                     const void* p_elt) {
   r_ssize count = ++p_arr->count;
   if (count > p_arr->capacity) {
     r_ssize new_capacity = r_ssize_mult(p_arr->capacity,
@@ -77,7 +78,8 @@ void r_arr_push_back(struct r_dyn_array* p_arr, void* p_elt) {
   }
 
   if (p_arr->barrier_set) {
-    p_arr->barrier_set(p_arr->data, count - 1, (sexp*) p_elt);
+    sexp* value = *((sexp* const *) p_elt);
+    p_arr->barrier_set(p_arr->data, count - 1, value);
     return;
   }
 

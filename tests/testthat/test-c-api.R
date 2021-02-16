@@ -920,14 +920,97 @@ test_that("can create dynamic list-of", {
   info <- lof_info(lof)
 
   expect_equal(
-    info[names(info) != "reserve"],
+    info[c(
+      "count",
+      "growth_factor",
+      "arrays",
+      "arr_capacities",
+      "reserve_size",
+      "type",
+      "elt_byte_size"
+    )],
     list(
       count = 0,
-      capacity = 5,
       growth_factor = 2,
+      arrays = list(),
+      arr_capacities = 2,
+      reserve_size = 5,
       type = "integer",
       elt_byte_size = 4
     )
   )
+
   expect_length(lof[[2]], 5 * 2)
+})
+
+test_that("can push to dynamic list-of", {
+  lof <- new_dyn_list_of("integer", 2, 2)
+  info <- lof_info(lof)
+
+  expect_equal(lof_unwrap(lof), list())
+
+  lof_push_back(lof)
+  expect_equal(lof_unwrap(lof), list(int()))
+
+  lof_push_back(lof)
+  expect_equal(lof_unwrap(lof), list(int(), int()))
+
+  lof_push_back(lof)
+  expect_equal(arr_info(info$extra_array)$count, 1)
+  expect_equal(lof_unwrap(lof), list(int(), int(), int()))
+})
+
+test_that("can push to arrays in dynamic list-of", {
+
+  lof <- new_dyn_list_of("integer", 3, 2)
+  expect_error(
+    lof_arr_push_back(lof, 0, 42L),
+    "Location 0 does not exist"
+  )
+  expect_error(
+    lof_arr_push_back(lof, 10, 42L),
+    "Location 10 does not exist"
+  )
+  lof_push_back(lof)
+  lof_push_back(lof)
+  lof_push_back(lof)
+  lof_push_back(lof)
+
+  expect_error(lof_arr_push_back(lof, 0, 42), "type double")
+
+  lof_arr_push_back(lof, 0, 42L)
+  expect_equal(
+    lof_unwrap(lof),
+    list(42L, int(), int(), int())
+  )
+
+  lof_arr_push_back(lof, 3, 42L)
+  expect_equal(
+    lof_unwrap(lof),
+    list(42L, int(), int(), 42L)
+  )
+
+  # Trigger resizes in the reserved arrays
+  lof_arr_push_back(lof, 0, 43L)
+  lof_arr_push_back(lof, 0, 44L)
+  expect_equal(
+    lof_unwrap(lof),
+    list(42:44, int(), int(), 42L)
+  )
+
+  lof_arr_push_back(lof, 2, 42L)
+  lof_arr_push_back(lof, 2, 43L)
+  lof_arr_push_back(lof, 2, 44L)
+  expect_equal(
+    lof_unwrap(lof),
+    list(42:44, int(), 42:44, 42L)
+  )
+
+  # Trigger resize in the extra array
+  lof_arr_push_back(lof, 3, 43L)
+  lof_arr_push_back(lof, 3, 44L)
+  expect_equal(
+    lof_unwrap(lof),
+    list(42:44, int(), 42:44, 42:44)
+  )
 })

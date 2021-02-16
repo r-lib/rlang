@@ -221,10 +221,10 @@ sexp* rlang_arr_push_back(sexp* arr_sexp, sexp* x) {
   switch (p_arr->type) {
   case r_type_character:
   case r_type_list:
-    r_arr_push_back(p_arr, x);
+    r_arr_push_back(p_arr, &x);
     return r_null;
   default:
-    r_arr_push_back(p_arr, r_vec_deref(x));
+    r_arr_push_back(p_arr, r_vec_deref_const(x));
     return r_null;
   }
 }
@@ -259,34 +259,79 @@ sexp* rlang_ptr_new_dyn_list_of(sexp* type, sexp* capacity, sexp* arr_capacities
   return lof->shelter;
 }
 
+enum info_lof {
+  INFO_LOF_count,
+  INFO_LOF_growth_factor,
+  INFO_LOF_arrays,
+  INFO_LOF_arr_capacities,
+  INFO_LOF_reserve,
+  INFO_LOF_reserve_size,
+  INFO_LOF_extra_array,
+  INFO_LOF_reserve_moved_array,
+  INFO_LOF_type,
+  INFO_LOF_elt_byte_size,
+  INFO_LOF_SIZE
+};
+static
+const char* info_lof_c_strs[INFO_LOF_SIZE] = {
+  "count",
+  "growth_factor",
+  "arrays",
+  "arr_capacities",
+  "reserve",
+  "reserve_size",
+  "extra_array",
+  "reserve_moved_array",
+  "type",
+  "elt_byte_size",
+};
+
 // [[ register() ]]
-sexp* rlang_ptr_lof_info(sexp* lof_sexp) {
-  struct r_dyn_list_of* lof = r_shelter_deref(lof_sexp);
+sexp* rlang_ptr_lof_info(sexp* lof) {
+  struct r_dyn_list_of* p_lof = r_shelter_deref(lof);
 
-  const char* names_c_strs[] = {
-    "count",
-    "capacity",
-    "growth_factor",
-    "reserve",
-    "type",
-    "elt_byte_size"
-  };
-  int info_n = R_ARR_SIZEOF(names_c_strs);
+  sexp* info = KEEP(r_new_list(INFO_LOF_SIZE));
 
-  sexp* info = KEEP(r_new_list(info_n));
-
-  sexp* nms = r_chr_n(names_c_strs, info_n);
+  sexp* nms = r_chr_n(info_lof_c_strs, INFO_LOF_SIZE);
   r_attrib_poke_names(info, nms);
 
-  r_list_poke(info, 0, r_dbl(lof->count));
-  r_list_poke(info, 1, r_dbl(lof->capacity));
-  r_list_poke(info, 2, r_int(lof->growth_factor));
-  r_list_poke(info, 3, lof->reserve);
-  r_list_poke(info, 4, r_type_as_character(lof->type));
-  r_list_poke(info, 5, r_int(lof->elt_byte_size));
+  r_list_poke(info, INFO_LOF_count, r_dbl(p_lof->count));
+  r_list_poke(info, INFO_LOF_growth_factor, r_int(p_lof->growth_factor));
+  r_list_poke(info, INFO_LOF_arrays, r_lof_unwrap(p_lof));
+  r_list_poke(info, INFO_LOF_arr_capacities, r_len(p_lof->arr_capacities));
+  r_list_poke(info, INFO_LOF_reserve, p_lof->reserve);
+  r_list_poke(info, INFO_LOF_reserve_size, r_len(p_lof->reserve_size));
+  r_list_poke(info, INFO_LOF_extra_array, p_lof->p_extra_array->shelter);
+  r_list_poke(info, INFO_LOF_reserve_moved_array, p_lof->p_reserve_moved_array->shelter);
+  r_list_poke(info, INFO_LOF_type, r_type_as_character(p_lof->type));
+  r_list_poke(info, INFO_LOF_elt_byte_size, r_int(p_lof->elt_byte_size));
 
   FREE(1);
   return info;
+}
+
+// [[ register() ]]
+sexp* ffi_lof_unwrap(sexp* lof) {
+  return r_lof_unwrap(r_shelter_deref(lof));
+}
+
+// [[ register() ]]
+sexp* ffi_lof_push_back(sexp* lof) {
+  r_lof_push_back(r_shelter_deref(lof));
+  return r_null;
+}
+// [[ register() ]]
+sexp* ffi_lof_arr_push_back(sexp* lof, sexp* i, sexp* value) {
+  struct r_dyn_list_of* p_lof = r_shelter_deref(lof);
+  if (r_typeof(value) != p_lof->type) {
+    r_abort("Can't push value of type %s in dyn-list-of %s",
+            r_type_as_c_string(r_typeof(value)),
+            r_type_as_c_string(p_lof->type));
+  }
+  r_lof_arr_push_back(p_lof,
+                      r_as_ssize(i),
+                      r_vec_deref(value));
+  return r_null;
 }
 
 
