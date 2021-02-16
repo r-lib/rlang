@@ -243,6 +243,17 @@ print.rlang_dyn_array <- function(x, ...) {
 }
 
 
+# dyn-list-of.c
+
+new_dyn_list_of <- function(type, capacity, arr_capacities) {
+  .Call(c_ptr_new_dyn_list_of, type, capacity, arr_capacities)
+}
+
+lof_info <- function(lof) {
+  .Call(c_ptr_lof_info, lof)
+}
+
+
 # sexp.c
 
 rlang_precious_dict <- function() {

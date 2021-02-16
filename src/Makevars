@@ -11,6 +11,7 @@ lib-files = \
         rlang/dict.c \
         rlang/df.c \
         rlang/dyn-array.c \
+        rlang/dyn-list-of.c \
         rlang/env.c \
         rlang/env-binding.c \
         rlang/eval.c \

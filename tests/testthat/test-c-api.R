@@ -914,3 +914,20 @@ test_that("can shrink and grow dynamic barrier vectors", {
   expect_identical(arr[[2]][1:4], as.list(dbl(1:4)))
   expect_identical(arr_unwrap(arr), as.list(dbl(1:4)))
 })
+
+test_that("can create dynamic list-of", {
+  lof <- new_dyn_list_of("integer", 5, 2)
+  info <- lof_info(lof)
+
+  expect_equal(
+    info[names(info) != "reserve"],
+    list(
+      count = 0,
+      capacity = 5,
+      growth_factor = 2,
+      type = "integer",
+      elt_byte_size = 4
+    )
+  )
+  expect_length(lof[[2]], 5 * 2)
+})

@@ -249,6 +249,47 @@ sexp* rlang_arr_resize(sexp* arr_sexp, sexp* capacity_sexp) {
 }
 
 
+// dyn-list-of.c
+
+// [[ register() ]]
+sexp* rlang_ptr_new_dyn_list_of(sexp* type, sexp* capacity, sexp* arr_capacities) {
+  struct r_dyn_list_of* lof = r_new_dyn_list_of(r_chr_as_r_type(type),
+                                                r_as_ssize(capacity),
+                                                r_as_ssize(arr_capacities));
+  return lof->shelter;
+}
+
+// [[ register() ]]
+sexp* rlang_ptr_lof_info(sexp* lof_sexp) {
+  struct r_dyn_list_of* lof = r_shelter_deref(lof_sexp);
+
+  const char* names_c_strs[] = {
+    "count",
+    "capacity",
+    "growth_factor",
+    "reserve",
+    "type",
+    "elt_byte_size"
+  };
+  int info_n = R_ARR_SIZEOF(names_c_strs);
+
+  sexp* info = KEEP(r_new_list(info_n));
+
+  sexp* nms = r_chr_n(names_c_strs, info_n);
+  r_attrib_poke_names(info, nms);
+
+  r_list_poke(info, 0, r_dbl(lof->count));
+  r_list_poke(info, 1, r_dbl(lof->capacity));
+  r_list_poke(info, 2, r_int(lof->growth_factor));
+  r_list_poke(info, 3, lof->reserve);
+  r_list_poke(info, 4, r_type_as_character(lof->type));
+  r_list_poke(info, 5, r_int(lof->elt_byte_size));
+
+  FREE(1);
+  return info;
+}
+
+
 // env.c
 
 sexp* rlang_env_poke_parent(sexp* env, sexp* new_parent) {
