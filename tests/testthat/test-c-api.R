@@ -956,12 +956,10 @@ test_that("can push to dynamic list-of", {
   expect_equal(lof_unwrap(lof), list(int(), int()))
 
   lof_push_back(lof)
-  expect_equal(arr_info(info$extra_array)$count, 1)
   expect_equal(lof_unwrap(lof), list(int(), int(), int()))
 })
 
 test_that("can push to arrays in dynamic list-of", {
-
   lof <- new_dyn_list_of("integer", 3, 2)
   expect_error(
     lof_arr_push_back(lof, 0, 42L),
@@ -990,7 +988,7 @@ test_that("can push to arrays in dynamic list-of", {
     list(42L, int(), int(), 42L)
   )
 
-  # Trigger resizes in the reserved arrays
+  # Trigger resizes of the reserve
   lof_arr_push_back(lof, 0, 43L)
   lof_arr_push_back(lof, 0, 44L)
   expect_equal(
@@ -1006,7 +1004,7 @@ test_that("can push to arrays in dynamic list-of", {
     list(42:44, int(), 42:44, 42L)
   )
 
-  # Trigger resize in the extra array
+  # Trigger resize in the moved array
   lof_arr_push_back(lof, 3, 43L)
   lof_arr_push_back(lof, 3, 44L)
   expect_equal(

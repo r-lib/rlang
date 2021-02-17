@@ -17,6 +17,7 @@ struct r_dyn_list_of {
 
   sexp* data;
   void* v_data;
+  sexp* data_arr_locs;
   r_ssize* v_data_arr_locs;
 
   struct r_dyn_array* p_moved_arr;
