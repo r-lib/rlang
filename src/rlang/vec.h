@@ -350,6 +350,48 @@ sexp* r_vec_resize(sexp* x, r_ssize size) {
 }
 
 static inline
+sexp* r_vec_n(enum r_type type, void* v_src, r_ssize n) {
+  switch (type) {
+  case r_type_logical:
+  case r_type_integer:
+  case r_type_double:
+  case r_type_complex:
+  case r_type_raw: {
+    sexp* out = r_new_vector(type, n);
+    memcpy(r_vec_deref(out), v_src, n * r_vec_elt_sizeof0(type));
+    return out;
+  }
+  case r_type_character:
+  case r_type_list:
+    r_abort("TODO: barrier types in `r_vec_n()`");
+  default:
+    r_stop_unimplemented_type("r_vec_n", type);
+  }
+}
+
+static inline
+sexp* r_lgl_n(int* v_src, r_ssize n) {
+  return r_vec_n(r_type_logical, v_src, n);
+}
+static inline
+sexp* r_int_n(int* v_src, r_ssize n) {
+  return r_vec_n(r_type_integer, v_src, n);
+}
+static inline
+sexp* r_dbl_n(int* v_src, r_ssize n) {
+  return r_vec_n(r_type_double, v_src, n);
+}
+static inline
+sexp* r_cpl_n(int* v_src, r_ssize n) {
+  return r_vec_n(r_type_complex, v_src, n);
+}
+static inline
+sexp* r_raw_n(int* v_src, r_ssize n) {
+  return r_vec_n(r_type_raw, v_src, n);
+}
+
+
+static inline
 sexp* r_copy_in_raw(const void* src, size_t size) {
   sexp* out = r_new_vector(r_type_raw, size);
   memcpy(r_raw_deref(out), src, size);
