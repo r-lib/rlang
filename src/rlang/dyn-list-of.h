@@ -19,9 +19,6 @@ struct r_dyn_list_of {
   void* v_data;
   r_ssize* v_data_arr_locs;
 
-  struct r_dyn_array* p_extra_array;
-  struct r_dyn_array* p_extra_shelter_array;
-
   struct r_dyn_array* p_moved_arr;
   struct r_dyn_array* p_moved_shelter_arr;
 

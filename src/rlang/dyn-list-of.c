@@ -33,14 +33,8 @@ struct r_dyn_list_of* r_new_dyn_list_of(enum r_type type,
   sexp* lof_raw = r_new_raw(sizeof(struct r_dyn_list_of));
   r_list_poke(shelter, SHELTER_DYN_LOF_raw, lof_raw);
 
-  struct r_dyn_array* p_extra_array = r_new_dyn_array(sizeof(struct r_dyn_array*), R_DYN_LOF_INIT_SIZE);
-  r_list_poke(shelter, SHELTER_DYN_LOF_extra_array, p_extra_array->shelter);
-
   struct r_dyn_array* p_moved_arr = r_new_dyn_array(sizeof(struct r_dyn_array*), R_DYN_LOF_INIT_SIZE);
   r_list_poke(shelter, SHELTER_DYN_LOF_moved_arr, p_moved_arr->shelter);
-
-  struct r_dyn_array* p_extra_shelter_array = r_new_dyn_vector(r_type_list, R_DYN_LOF_INIT_SIZE);
-  r_list_poke(shelter, SHELTER_DYN_LOF_extra_shelter_array, p_extra_shelter_array->shelter);
 
   struct r_dyn_array* p_moved_shelter_arr = r_new_dyn_vector(r_type_list, R_DYN_LOF_INIT_SIZE);
   r_list_poke(shelter, SHELTER_DYN_LOF_moved_shelter_arr, p_moved_shelter_arr->shelter);
@@ -73,8 +67,6 @@ struct r_dyn_list_of* r_new_dyn_list_of(enum r_type type,
     .v_data_arr_locs = v_data_arr_locs,
     .capacity = capacity,
 
-    .p_extra_array = p_extra_array,
-    .p_extra_shelter_array = p_extra_shelter_array,
     .p_moved_arr = p_moved_arr,
     .p_moved_shelter_arr = p_moved_shelter_arr,
 
@@ -108,16 +100,13 @@ void r_lof_push_back(struct r_dyn_list_of* p_lof) {
   struct r_pair_ptr_ssize info;
   info.size = 0;
 
-  if (count <= p_lof->capacity) {
-    unsigned char* v_data_u = (unsigned char*) p_lof->v_data;
-    r_ssize offset = (count - 1) * p_lof->width * p_lof->elt_byte_size;
-    info.ptr = v_data_u + offset;
-  } else {
-    struct r_dyn_array* p_new = r_new_dyn_vector(p_lof->type, p_lof->width);
-    r_list_push_back(p_lof->p_extra_shelter_array, p_new->shelter);
-    r_arr_push_back(p_lof->p_extra_array, &p_new);
-    info.ptr = r_arr_ptr_front(p_new);
+  if (count > p_lof->capacity) {
+    r_abort("TODO: resize");
   }
+
+  unsigned char* v_data_u = (unsigned char*) p_lof->v_data;
+  r_ssize offset = (count - 1) * p_lof->width * p_lof->elt_byte_size;
+  info.ptr = v_data_u + offset;
 
   r_arr_push_back(p_lof->p_arrays, &info);
 }
@@ -125,26 +114,18 @@ void r_lof_push_back(struct r_dyn_list_of* p_lof) {
 void r_lof_arr_push_back(struct r_dyn_list_of* p_lof,
                          r_ssize i,
                          void* p_elt) {
-  struct r_dyn_array* p_arr;
-
   if (i >= p_lof->count) {
     r_stop_internal("r_lof_arr_push_back",
                     "Location %d does not exist.",
                     i);
   }
 
-  r_ssize arr_i = i;
-
-  if (i < p_lof->capacity) {
-    if (reserve_push_back(p_lof, i, p_elt)) {
-      return;
-    }
-    p_arr = p_lof->p_moved_arr;
-    arr_i = p_lof->v_data_arr_locs[i];
-  } else {
-    p_arr = p_lof->p_extra_array;
-    arr_i -= p_lof->capacity;
+  if (reserve_push_back(p_lof, i, p_elt)) {
+    return;
   }
+
+  struct r_dyn_array* p_arr = p_lof->p_moved_arr;
+  r_ssize arr_i = p_lof->v_data_arr_locs[i];
 
   if (arr_i >= p_arr->count) {
     r_stop_internal("r_lof_arr_push_back",
