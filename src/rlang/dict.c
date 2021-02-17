@@ -8,9 +8,6 @@ static size_t size_round_power_2(size_t size);
 
 #include "decl/dict-decl.h"
 
-static
-sexp* classes_dict = NULL;
-
 
 struct r_dict* r_new_dict(r_ssize size) {
   if (size <= 0) {
