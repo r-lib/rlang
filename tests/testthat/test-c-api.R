@@ -924,8 +924,8 @@ test_that("can create dynamic list-of", {
       "count",
       "growth_factor",
       "arrays",
-      "arr_capacities",
-      "reserve_size",
+      "width",
+      "capacity",
       "type",
       "elt_byte_size"
     )],
@@ -933,8 +933,8 @@ test_that("can create dynamic list-of", {
       count = 0,
       growth_factor = 2,
       arrays = list(),
-      arr_capacities = 2,
-      reserve_size = 5,
+      width = 2,
+      capacity = 5,
       type = "integer",
       elt_byte_size = 4
     )

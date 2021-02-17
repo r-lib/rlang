@@ -245,8 +245,8 @@ print.rlang_dyn_array <- function(x, ...) {
 
 # dyn-list-of.c
 
-new_dyn_list_of <- function(type, capacity, arr_capacities) {
-  .Call(c_ptr_new_dyn_list_of, type, capacity, arr_capacities)
+new_dyn_list_of <- function(type, capacity, width) {
+  .Call(c_ptr_new_dyn_list_of, type, capacity, width)
 }
 lof_info <- function(lof) {
   .Call(c_ptr_lof_info, lof)

@@ -252,10 +252,10 @@ sexp* rlang_arr_resize(sexp* arr_sexp, sexp* capacity_sexp) {
 // dyn-list-of.c
 
 // [[ register() ]]
-sexp* rlang_ptr_new_dyn_list_of(sexp* type, sexp* capacity, sexp* arr_capacities) {
+sexp* rlang_ptr_new_dyn_list_of(sexp* type, sexp* capacity, sexp* width) {
   struct r_dyn_list_of* lof = r_new_dyn_list_of(r_chr_as_r_type(type),
                                                 r_as_ssize(capacity),
-                                                r_as_ssize(arr_capacities));
+                                                r_as_ssize(width));
   return lof->shelter;
 }
 
@@ -263,11 +263,11 @@ enum info_lof {
   INFO_LOF_count,
   INFO_LOF_growth_factor,
   INFO_LOF_arrays,
-  INFO_LOF_arr_capacities,
-  INFO_LOF_reserve,
-  INFO_LOF_reserve_size,
+  INFO_LOF_width,
+  INFO_LOF_data,
+  INFO_LOF_capacity,
   INFO_LOF_extra_array,
-  INFO_LOF_reserve_moved_array,
+  INFO_LOF_moved_array,
   INFO_LOF_type,
   INFO_LOF_elt_byte_size,
   INFO_LOF_SIZE
@@ -277,11 +277,11 @@ const char* info_lof_c_strs[INFO_LOF_SIZE] = {
   "count",
   "growth_factor",
   "arrays",
-  "arr_capacities",
-  "reserve",
-  "reserve_size",
+  "width",
+  "data",
+  "capacity",
   "extra_array",
-  "reserve_moved_array",
+  "moved_array",
   "type",
   "elt_byte_size",
 };
@@ -298,11 +298,11 @@ sexp* rlang_ptr_lof_info(sexp* lof) {
   r_list_poke(info, INFO_LOF_count, r_dbl(p_lof->count));
   r_list_poke(info, INFO_LOF_growth_factor, r_int(p_lof->growth_factor));
   r_list_poke(info, INFO_LOF_arrays, r_lof_unwrap(p_lof));
-  r_list_poke(info, INFO_LOF_arr_capacities, r_len(p_lof->arr_capacities));
-  r_list_poke(info, INFO_LOF_reserve, p_lof->reserve);
-  r_list_poke(info, INFO_LOF_reserve_size, r_len(p_lof->reserve_size));
+  r_list_poke(info, INFO_LOF_width, r_len(p_lof->width));
+  r_list_poke(info, INFO_LOF_data, p_lof->data);
+  r_list_poke(info, INFO_LOF_capacity, r_len(p_lof->capacity));
   r_list_poke(info, INFO_LOF_extra_array, p_lof->p_extra_array->shelter);
-  r_list_poke(info, INFO_LOF_reserve_moved_array, p_lof->p_reserve_moved_array->shelter);
+  r_list_poke(info, INFO_LOF_moved_array, p_lof->p_moved_arr->shelter);
   r_list_poke(info, INFO_LOF_type, r_type_as_character(p_lof->type));
   r_list_poke(info, INFO_LOF_elt_byte_size, r_int(p_lof->elt_byte_size));
 

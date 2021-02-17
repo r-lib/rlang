@@ -5,6 +5,7 @@
 struct r_dyn_list_of {
   sexp* shelter;
   r_ssize count;
+  r_ssize capacity;
   int growth_factor;
 
   // Dynamic array of `struct r_pair_ptr_ssize` containing the
@@ -12,18 +13,17 @@ struct r_dyn_list_of {
   struct r_dyn_array* p_arrays;
 
   // private:
-  r_ssize arr_capacities;
+  r_ssize width;
 
-  sexp* reserve;
-  void* v_reserve;
-  r_ssize reserve_size;
-  r_ssize* v_reserve_arr_locs;
+  sexp* data;
+  void* v_data;
+  r_ssize* v_data_arr_locs;
 
   struct r_dyn_array* p_extra_array;
   struct r_dyn_array* p_extra_shelter_array;
 
-  struct r_dyn_array* p_reserve_moved_array;
-  struct r_dyn_array* p_reserve_moved_shelter_array;
+  struct r_dyn_array* p_moved_arr;
+  struct r_dyn_array* p_moved_shelter_arr;
 
   enum r_type type;
   r_ssize elt_byte_size;
@@ -31,7 +31,7 @@ struct r_dyn_list_of {
 
 struct r_dyn_list_of* r_new_dyn_list_of(enum r_type type,
                                         r_ssize capacity,
-                                        r_ssize arr_capacities);
+                                        r_ssize width);
 
 sexp* r_lof_unwrap(struct r_dyn_list_of* p_lof);
 
