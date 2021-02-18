@@ -7,8 +7,8 @@
 
 enum shelter_dyn_list_of {
   SHELTER_DYN_LOF_raw,
-  SHELTER_DYN_LOF_data,
-  SHELTER_DYN_LOF_data_arr_locs,
+  SHELTER_DYN_LOF_reserve,
+  SHELTER_DYN_LOF_arr_locs,
   SHELTER_DYN_LOF_extra_array,
   SHELTER_DYN_LOF_extra_shelter_array,
   SHELTER_DYN_LOF_moved_arr,
@@ -39,14 +39,14 @@ struct r_dyn_list_of* r_new_dyn_list_of(enum r_type type,
   struct r_dyn_array* p_moved_shelter_arr = r_new_dyn_vector(r_type_list, R_DYN_LOF_INIT_SIZE);
   r_list_poke(shelter, SHELTER_DYN_LOF_moved_shelter_arr, p_moved_shelter_arr->shelter);
 
-  sexp* data = r_new_vector(type, r_ssize_mult(capacity, width));
-  r_list_poke(shelter, SHELTER_DYN_LOF_data, data);
-  void* v_data = r_vec_deref(data);
+  sexp* reserve = r_new_vector(type, r_ssize_mult(capacity, width));
+  r_list_poke(shelter, SHELTER_DYN_LOF_reserve, reserve);
+  void* v_reserve = r_vec_deref(reserve);
 
-  sexp* data_arr_locs = r_new_raw(sizeof(r_ssize) * capacity);
-  r_list_poke(shelter, SHELTER_DYN_LOF_data_arr_locs, data_arr_locs);
-  r_ssize* v_data_arr_locs = r_raw_deref(data_arr_locs);
-  R_MEM_SET(r_ssize, v_data_arr_locs, -1, capacity);
+  sexp* arr_locs = r_new_raw(sizeof(r_ssize) * capacity);
+  r_list_poke(shelter, SHELTER_DYN_LOF_arr_locs, arr_locs);
+  r_ssize* v_arr_locs = r_raw_deref(arr_locs);
+  R_MEM_SET(r_ssize, v_arr_locs, -1, capacity);
 
   struct r_dyn_array* p_arrays = r_new_dyn_array(sizeof(struct r_pair_ptr_ssize), capacity);
   r_list_poke(shelter, SHELTER_DYN_LOF_arrays, p_arrays->shelter);
@@ -62,17 +62,17 @@ struct r_dyn_list_of* r_new_dyn_list_of(enum r_type type,
 
     // private:
     .width = width,
+    .type = type,
+    .elt_byte_size = r_vec_elt_sizeof0(type),
 
-    .data = data,
-    .v_data = v_data,
-    .data_arr_locs = data_arr_locs,
-    .v_data_arr_locs = v_data_arr_locs,
+    .reserve = reserve,
+    .v_reserve = v_reserve,
 
     .p_moved_arr = p_moved_arr,
     .p_moved_shelter_arr = p_moved_shelter_arr,
 
-    .type = type,
-    .elt_byte_size = r_vec_elt_sizeof0(type),
+    .arr_locs = arr_locs,
+    .v_arr_locs = v_arr_locs,
   };
 
   FREE(1);
@@ -100,39 +100,39 @@ void r_lof_resize(struct r_dyn_list_of* p_lof, r_ssize capacity) {
   r_ssize count = p_lof->count;
 
   // Resize reserve
-  sexp* data = r_vec_resize0(p_lof->type,
-                             p_lof->data,
-                             r_ssize_mult(capacity, p_lof->width));
-  r_list_poke(p_lof->shelter, SHELTER_DYN_LOF_data, data);
+  sexp* reserve = r_vec_resize0(p_lof->type,
+                                p_lof->reserve,
+                                r_ssize_mult(capacity, p_lof->width));
+  r_list_poke(p_lof->shelter, SHELTER_DYN_LOF_reserve, reserve);
 
-  p_lof->data = data;
-  p_lof->v_data = r_vec_deref0(p_lof->type, data);
+  p_lof->reserve = reserve;
+  p_lof->v_reserve = r_vec_deref0(p_lof->type, reserve);
   p_lof->capacity = capacity;
 
   // Resize array indirections
-  sexp* data_arr_locs = r_raw_resize(p_lof->data_arr_locs,
-                                     r_ssize_mult(sizeof(r_ssize), capacity));
-  r_list_poke(p_lof->shelter, SHELTER_DYN_LOF_data_arr_locs, data_arr_locs);
+  sexp* arr_locs = r_raw_resize(p_lof->arr_locs,
+                                r_ssize_mult(sizeof(r_ssize), capacity));
+  r_list_poke(p_lof->shelter, SHELTER_DYN_LOF_arr_locs, arr_locs);
 
-  r_ssize* v_data_arr_locs = r_raw_deref(data_arr_locs);
+  r_ssize* v_arr_locs = r_raw_deref(arr_locs);
   r_ssize n_new = capacity - count;
-  R_MEM_SET(r_ssize, v_data_arr_locs + count, -1, n_new);
+  R_MEM_SET(r_ssize, v_arr_locs + count, -1, n_new);
 
-  p_lof->data_arr_locs = data_arr_locs;
-  p_lof->v_data_arr_locs = v_data_arr_locs;
+  p_lof->arr_locs = arr_locs;
+  p_lof->v_arr_locs = v_arr_locs;
 
   // Resize addresses and update them to point to the new memory
   r_arr_resize(p_lof->p_arrays, capacity);
 
   struct r_pair_ptr_ssize* v_arrays = r_arr_ptr_front(p_lof->p_arrays);
-  unsigned char* v_data_u = (unsigned char*) p_lof->v_data;
+  unsigned char* v_reserve_u = (unsigned char*) p_lof->v_reserve;
   r_ssize bytes = p_lof->width * p_lof->elt_byte_size;
 
   for (r_ssize i = 0; i < count; ++i) {
     // Preserve addresses of moved arrays
-    if (v_data_arr_locs[i] < 0) {
+    if (v_arr_locs[i] < 0) {
       r_ssize offset = i * bytes;
-      v_arrays[i].ptr = v_data_u + offset;
+      v_arrays[i].ptr = v_reserve_u + offset;
     }
   }
 }
@@ -146,11 +146,11 @@ void r_lof_push_back(struct r_dyn_list_of* p_lof) {
   }
   p_lof->count = count;
 
-  unsigned char* v_data_u = (unsigned char*) p_lof->v_data;
+  unsigned char* v_reserve_u = (unsigned char*) p_lof->v_reserve;
   r_ssize offset = (count - 1) * p_lof->width * p_lof->elt_byte_size;
 
   struct r_pair_ptr_ssize info = {
-    .ptr = v_data_u + offset,
+    .ptr = v_reserve_u + offset,
     .size = 0
   };
   r_arr_push_back(p_lof->p_arrays, &info);
@@ -170,7 +170,7 @@ void r_lof_arr_push_back(struct r_dyn_list_of* p_lof,
   }
 
   struct r_dyn_array* p_arr = p_lof->p_moved_arr;
-  r_ssize arr_i = p_lof->v_data_arr_locs[i];
+  r_ssize arr_i = p_lof->v_arr_locs[i];
 
   if (arr_i >= p_arr->count) {
     r_stop_internal("r_lof_arr_push_back",
@@ -190,7 +190,7 @@ void r_lof_arr_push_back(struct r_dyn_list_of* p_lof,
 
 static
 bool reserve_push_back(struct r_dyn_list_of* p_lof, r_ssize i, void* p_elt) {
-  if (p_lof->v_data_arr_locs[i] >= 0) {
+  if (p_lof->v_arr_locs[i] >= 0) {
     return false;
   }
 
@@ -205,7 +205,7 @@ bool reserve_push_back(struct r_dyn_list_of* p_lof, r_ssize i, void* p_elt) {
   r_ssize count = ++p_arr_info->size;
 
   r_ssize offset = (i * p_lof->width + count - 1) * p_lof->elt_byte_size;
-  void* p = ((unsigned char*) p_lof->v_data) + offset;
+  void* p = ((unsigned char*) p_lof->v_reserve) + offset;
 
   if (p_elt) {
     memcpy(p, p_elt, p_lof->elt_byte_size);
@@ -236,5 +236,5 @@ void reserve_move(struct r_dyn_list_of* p_lof, r_ssize i, void* p_elt) {
     .size = n
   }));
 
-  p_lof->v_data_arr_locs[i] = p_moved_arr->count - 1;
+  p_lof->v_arr_locs[i] = p_moved_arr->count - 1;
 }

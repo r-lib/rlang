@@ -264,7 +264,7 @@ enum info_lof {
   INFO_LOF_growth_factor,
   INFO_LOF_arrays,
   INFO_LOF_width,
-  INFO_LOF_data,
+  INFO_LOF_reserve,
   INFO_LOF_capacity,
   INFO_LOF_moved_array,
   INFO_LOF_type,
@@ -277,7 +277,7 @@ const char* info_lof_c_strs[INFO_LOF_SIZE] = {
   "growth_factor",
   "arrays",
   "width",
-  "data",
+  "reserve",
   "capacity",
   "moved_array",
   "type",
@@ -297,7 +297,7 @@ sexp* rlang_ptr_lof_info(sexp* lof) {
   r_list_poke(info, INFO_LOF_growth_factor, r_int(p_lof->growth_factor));
   r_list_poke(info, INFO_LOF_arrays, r_lof_unwrap(p_lof));
   r_list_poke(info, INFO_LOF_width, r_len(p_lof->width));
-  r_list_poke(info, INFO_LOF_data, p_lof->data);
+  r_list_poke(info, INFO_LOF_reserve, p_lof->reserve);
   r_list_poke(info, INFO_LOF_capacity, r_len(p_lof->capacity));
   r_list_poke(info, INFO_LOF_moved_array, p_lof->p_moved_arr->shelter);
   r_list_poke(info, INFO_LOF_type, r_type_as_character(p_lof->type));

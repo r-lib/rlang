@@ -14,17 +14,17 @@ struct r_dyn_list_of {
 
   // private:
   r_ssize width;
+  enum r_type type;
+  r_ssize elt_byte_size;
 
-  sexp* data;
-  void* v_data;
-  sexp* data_arr_locs;
-  r_ssize* v_data_arr_locs;
+  sexp* reserve;
+  void* v_reserve;
 
   struct r_dyn_array* p_moved_arr;
   struct r_dyn_array* p_moved_shelter_arr;
 
-  enum r_type type;
-  r_ssize elt_byte_size;
+  sexp* arr_locs;
+  r_ssize* v_arr_locs;
 };
 
 struct r_dyn_list_of* r_new_dyn_list_of(enum r_type type,
