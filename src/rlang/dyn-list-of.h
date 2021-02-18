@@ -8,9 +8,10 @@ struct r_dyn_list_of {
   r_ssize capacity;
   int growth_factor;
 
-  // Dynamic array of `struct r_pair_ptr_ssize` containing the
-  // addresses and sizes of each element of the list-of
-  struct r_dyn_array* p_arrays;
+  // Contains the addresses and sizes of each element of the
+  // list-of. If you copy that pointer, consider it invalid after a
+  // push because it might have moved in memory due to a resize.
+  struct r_pair_ptr_ssize* v_data;
 
   // private:
   r_ssize width;
@@ -25,6 +26,8 @@ struct r_dyn_list_of {
 
   sexp* arr_locs;
   r_ssize* v_arr_locs;
+
+  struct r_dyn_array* p_arrays;
 };
 
 struct r_dyn_list_of* r_new_dyn_list_of(enum r_type type,

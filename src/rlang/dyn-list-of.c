@@ -58,7 +58,7 @@ struct r_dyn_list_of* r_new_dyn_list_of(enum r_type type,
     .capacity = capacity,
     .growth_factor = R_DYN_LOF_GROWTH_FACTOR,
 
-    .p_arrays = p_arrays,
+    .v_data = r_arr_ptr_front(p_arrays),
 
     // private:
     .width = width,
@@ -73,6 +73,8 @@ struct r_dyn_list_of* r_new_dyn_list_of(enum r_type type,
 
     .arr_locs = arr_locs,
     .v_arr_locs = v_arr_locs,
+
+    .p_arrays = p_arrays,
   };
 
   FREE(1);
@@ -124,7 +126,9 @@ void r_lof_resize(struct r_dyn_list_of* p_lof, r_ssize capacity) {
   // Resize addresses and update them to point to the new memory
   r_arr_resize(p_lof->p_arrays, capacity);
 
-  struct r_pair_ptr_ssize* v_arrays = r_arr_ptr_front(p_lof->p_arrays);
+  struct r_pair_ptr_ssize* v_data = r_arr_ptr_front(p_lof->p_arrays);
+  p_lof->v_data = v_data;
+
   unsigned char* v_reserve_u = (unsigned char*) p_lof->v_reserve;
   r_ssize bytes = p_lof->width * p_lof->elt_byte_size;
 
@@ -132,7 +136,7 @@ void r_lof_resize(struct r_dyn_list_of* p_lof, r_ssize capacity) {
     // Preserve addresses of moved arrays
     if (v_arr_locs[i] < 0) {
       r_ssize offset = i * bytes;
-      v_arrays[i].ptr = v_reserve_u + offset;
+      v_data[i].ptr = v_reserve_u + offset;
     }
   }
 }
