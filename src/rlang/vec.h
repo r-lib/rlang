@@ -321,8 +321,6 @@ int r_as_int(sexp* x) {
   return r_int_get(x, 0);
 }
 
-sexp* r_list_compact(sexp* x);
-
 sexp* r_lgl_resize(sexp* x, r_ssize size);
 sexp* r_int_resize(sexp* x, r_ssize size);
 sexp* r_dbl_resize(sexp* x, r_ssize size);
@@ -408,6 +406,13 @@ static inline
 void r_int_fill_iota(sexp* x) {
   r_int_fill_iota0(r_int_deref(x), 0, r_length(x));
 }
+
+
+sexp* r_list_compact(sexp* x);
+
+sexp* r_list_of_as_ptr_ssize(sexp* xs,
+                             enum r_type type,
+                             struct r_pair_ptr_ssize** p_v_out);
 
 
 #endif

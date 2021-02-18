@@ -136,6 +136,37 @@ sexp* r_list_compact(sexp* x) {
   return out;
 }
 
+sexp* r_list_of_as_ptr_ssize(sexp* xs,
+                             enum r_type type,
+                             struct r_pair_ptr_ssize** p_v_out) {
+  if (r_typeof(xs) != r_type_list) {
+    r_abort("`xs` must be a list.");
+  }
+  r_ssize n = r_length(xs);
+
+  sexp* shelter = KEEP(r_new_raw(sizeof(struct r_pair_ptr_ssize) * n));
+  struct r_pair_ptr_ssize* v_out = r_raw_deref(shelter);
+
+  sexp* const * v_xs = r_list_deref_const(xs);
+
+  for (r_ssize i = 0; i < n; ++i) {
+    sexp* x = v_xs[i];
+    if (r_typeof(x) != type) {
+      r_abort("`xs` must be a list of vectors of type `%s`.",
+              r_type_as_c_string(type));
+    }
+
+    v_out[i] = (struct r_pair_ptr_ssize) {
+      .ptr = r_int_deref(x),
+      .size = r_length(x)
+    };
+  }
+
+  FREE(1);
+  *p_v_out = v_out;
+  return shelter;
+}
+
 
 // FIXME: Does this have a place in the library?
 void r_vec_poke_n(sexp* x, r_ssize offset,
