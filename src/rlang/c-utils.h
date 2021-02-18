@@ -9,7 +9,7 @@
 // Like `memset()` with support for multi-byte types
 #define R_MEM_SET(TYPE, PTR, VALUE, N) do {     \
     TYPE* v = (PTR);                            \
-    TYPE value = (TYPE) (VALUE);                \
+    TYPE value = (VALUE);                       \
     size_t n = (N);                             \
     for (size_t i = 0; i < n; ++i) {            \
       v[i] = value;                             \
