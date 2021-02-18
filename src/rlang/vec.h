@@ -398,5 +398,16 @@ sexp* r_copy_in_raw(const void* src, size_t size) {
   return out;
 }
 
+static inline
+void r_int_fill_iota0(int* p_x, int start, r_ssize n) {
+  for (r_ssize i = 0; i < n; ++i) {
+    p_x[i] = start++;
+  }
+}
+static inline
+void r_int_fill_iota(sexp* x) {
+  r_int_fill_iota0(r_int_deref(x), 0, r_length(x));
+}
+
 
 #endif
