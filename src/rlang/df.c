@@ -21,8 +21,12 @@ sexp* r_alloc_df_list(r_ssize n_rows,
   r_attrib_push(out, r_syms_names, names);
 
   for (r_ssize i = 0; i < types_size; ++i) {
-    sexp* col = r_new_vector(v_types[i], n_rows);
-    r_list_poke(out, i, col);
+    // A nil type stands for no column allocation
+    enum r_type type = v_types[i];
+    if (type != r_type_null) {
+      sexp* col = r_new_vector(type, n_rows);
+      r_list_poke(out, i, col);
+    }
   }
 
   FREE(1);
