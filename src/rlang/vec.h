@@ -415,4 +415,14 @@ sexp* r_list_of_as_ptr_ssize(sexp* xs,
                              struct r_pair_ptr_ssize** p_v_out);
 
 
+// From cpp/vec.cpp
+
+int* r_int_unique0(int* v_data, r_ssize size);
+
+static inline
+int* r_int_unique(sexp* x) {
+  return r_int_unique0(r_int_deref(x), r_length(x));
+}
+
+
 #endif

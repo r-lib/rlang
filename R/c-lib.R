@@ -21,7 +21,7 @@ use_rlang_c_library <- function() {
 
   check_rlang(rlang_path)
   rlang_lib_path <- fs::path(rlang_path, "src", "rlang")
-  rlang_lib_include_path <- fs::path(rlang_path, "src", "rlang.c")
+  rlang_lib_include_path <- fs::path(rlang_path, "src", c("rlang.c", "rlang-rcc.cpp"))
 
   proj_path <- usethis::proj_path()
   if (is_rlang_dir(proj_path)) {
@@ -33,7 +33,7 @@ use_rlang_c_library <- function() {
 
   src_path <- fs::path(proj_path, "src")
   lib_path <- fs::path(src_path, "rlang")
-  lib_include_path <- fs::path(src_path, "rlang.c")
+  lib_include_path <- fs::path(src_path, c("rlang.c", "rlang-rcc.cpp"))
 
   has_library <- any(fs::file_exists(c(lib_path, lib_include_path)))
 
@@ -49,7 +49,7 @@ use_rlang_c_library <- function() {
     if (fs::file_exists(lib_path)) {
       fs::file_delete(lib_path)
     }
-    if (fs::file_exists(lib_include_path)) {
+    if (any(fs::file_exists(lib_include_path))) {
       fs::file_delete(lib_include_path)
     }
   }

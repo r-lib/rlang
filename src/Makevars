@@ -30,6 +30,10 @@ lib-files = \
         rlang/vec-lgl.c \
         rlang/vendor.c
 
+lib-cpp-files = \
+        rlang/cpp/rlang.cpp \
+        rlang/cpp/vec.cpp
+
 internal-files = \
         internal/arg.c \
         internal/attr.c \
@@ -67,6 +71,8 @@ $(SHLIB): rlang.o internal.o export.o
 
 rlang.c: $(lib-files)
 	touch rlang.c
+rlang-rcc.cpp: $(lib-cpp-files)
+	touch rlang-rcc.cpp
 internal.c: $(internal-files)
 	touch internal.c
 export.c: $(export-files)
