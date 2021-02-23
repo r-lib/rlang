@@ -14,7 +14,7 @@ extern sexp* r_methods_ns_env;
 
 static inline
 sexp* r_env_names(sexp* env) {
-  return R_lsInternal3(env, true, false);
+  return R_lsInternal3(env, TRUE, FALSE);
 }
 
 static inline

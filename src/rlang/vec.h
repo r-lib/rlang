@@ -221,7 +221,7 @@ static inline
 sexp* r_new_raw0(r_ssize n) {
   sexp* out = r_new_raw(n);
 
-  unsigned char* p_out = r_raw_deref(out);
+  unsigned char* p_out = (unsigned char*) r_raw_deref(out);
   memset(p_out, 0, n);
 
   return out;
