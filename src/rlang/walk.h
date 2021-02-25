@@ -79,7 +79,7 @@ enum r_node_raw_relation {
   R_NODE_RAW_RELATION_node_tag,
   R_NODE_RAW_RELATION_node_car,
   R_NODE_RAW_RELATION_node_cdr,
-  R_NODE_RAW_RELATION_vector_elt,
+  R_NODE_RAW_RELATION_vector_elt
 };
 
 
