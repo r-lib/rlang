@@ -414,7 +414,7 @@ sexp* rlang_tilde_eval(sexp* tilde, sexp* current_frame, sexp* caller_frame) {
   }
 
   int n_kept = 0;
-  sexp* top;
+  sexp* top = r_null;
   struct rlang_mask_info info = mask_info(caller_frame);
 
   switch (info.type) {
