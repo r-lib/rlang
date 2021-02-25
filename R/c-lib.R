@@ -243,6 +243,26 @@ print.rlang_dyn_array <- function(x, ...) {
 }
 
 
+# dyn-list-of.c
+
+new_dyn_list_of <- function(type, capacity, width) {
+  .Call(ffi_new_dyn_list_of, type, capacity, width)
+}
+lof_info <- function(lof) {
+  .Call(ffi_lof_info, lof)
+}
+lof_unwrap <- function(lof) {
+  .Call(ffi_lof_unwrap, lof)
+}
+
+lof_push_back <- function(lof) {
+  .Call(ffi_lof_push_back, lof)
+}
+lof_arr_push_back <- function(lof, i, value) {
+  .Call(ffi_lof_arr_push_back, lof, i, value)
+}
+
+
 # sexp.c
 
 rlang_precious_dict <- function() {

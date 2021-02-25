@@ -730,18 +730,18 @@ test_that("can grow vectors", {
 })
 
 test_that("can shrink vectors", {
-  x <- 1:3
-  out <- vec_resize(x, 2)
-  expect_equal(x, 1:3)
+  x_atomic <- 1:3 + 0L
+  out <- vec_resize(x_atomic, 2)
   expect_equal(out, 1:2)
 
-  x <- as.list(1:3)
-  out <- vec_resize(x, 2)
+  x_list <- as.list(1:3)
+  out <- vec_resize(x_list, 2)
   expect_equal(out, as.list(1:2))
 
   # Uses truelength to modify in place on recent R
   if (getRversion() >= "3.4.0") {
-    expect_equal(x, as.list(1:2))
+    expect_equal(x_atomic, 1:2)
+    expect_equal(x_list, as.list(1:2))
   }
 })
 
@@ -913,4 +913,102 @@ test_that("can shrink and grow dynamic barrier vectors", {
   )
   expect_identical(arr[[2]][1:4], as.list(dbl(1:4)))
   expect_identical(arr_unwrap(arr), as.list(dbl(1:4)))
+})
+
+test_that("can create dynamic list-of", {
+  lof <- new_dyn_list_of("integer", 5, 2)
+  info <- lof_info(lof)
+
+  expect_equal(
+    info[c(
+      "count",
+      "growth_factor",
+      "arrays",
+      "width",
+      "capacity",
+      "type",
+      "elt_byte_size"
+    )],
+    list(
+      count = 0,
+      growth_factor = 2,
+      arrays = list(),
+      width = 2,
+      capacity = 5,
+      type = "integer",
+      elt_byte_size = 4
+    )
+  )
+
+  expect_length(lof[[2]], 5 * 2)
+})
+
+test_that("can push to dynamic list-of", {
+  lof <- new_dyn_list_of("integer", 2, 2)
+  info <- lof_info(lof)
+
+  expect_equal(lof_unwrap(lof), list())
+
+  lof_push_back(lof)
+  expect_equal(lof_unwrap(lof), list(int()))
+
+  lof_push_back(lof)
+  expect_equal(lof_unwrap(lof), list(int(), int()))
+
+  lof_push_back(lof)
+  expect_equal(lof_unwrap(lof), list(int(), int(), int()))
+})
+
+test_that("can push to arrays in dynamic list-of", {
+  lof <- new_dyn_list_of("integer", 3, 2)
+  expect_error(
+    lof_arr_push_back(lof, 0, 42L),
+    "Location 0 does not exist"
+  )
+  expect_error(
+    lof_arr_push_back(lof, 10, 42L),
+    "Location 10 does not exist"
+  )
+  lof_push_back(lof)
+  lof_push_back(lof)
+  lof_push_back(lof)
+  lof_push_back(lof)
+
+  expect_error(lof_arr_push_back(lof, 0, 42), "type double")
+
+  lof_arr_push_back(lof, 0, 42L)
+  expect_equal(
+    lof_unwrap(lof),
+    list(42L, int(), int(), int())
+  )
+
+  lof_arr_push_back(lof, 3, 42L)
+  expect_equal(
+    lof_unwrap(lof),
+    list(42L, int(), int(), 42L)
+  )
+
+  # Trigger resizes of the reserve
+  lof_arr_push_back(lof, 0, 43L)
+  lof_arr_push_back(lof, 0, 44L)
+  expect_equal(
+    lof_unwrap(lof),
+    list(42:44, int(), int(), 42L)
+  )
+
+  lof_arr_push_back(lof, 2, 42L)
+  lof_arr_push_back(lof, 2, 43L)
+  lof_arr_push_back(lof, 2, 44L)
+  expect_equal(
+    lof_unwrap(lof),
+    list(42:44, int(), 42:44, 42L)
+  )
+
+  # Trigger resize in the moved array
+  lof_arr_push_back(lof, 3, 43L)
+  lof_arr_push_back(lof, 3, 44L)
+  expect_equal(
+    lof_unwrap(lof),
+    list(42:44, int(), 42:44, 42:44)
+  )
 })

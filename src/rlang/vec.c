@@ -28,54 +28,59 @@ sexp* r_chr_n(const char* const * strings, r_ssize n) {
   return out;
 }
 
-
-#define RESIZE(R_TYPE, C_TYPE, CONST_DEREF, DEREF)      \
-  do {                                                  \
-    r_ssize x_size = r_length(x);                       \
-    if (x_size == size) {                               \
-      return x;                                         \
-    }                                                   \
-                                                        \
-    const C_TYPE* p_x = CONST_DEREF(x);                 \
-    sexp* out = KEEP(r_new_vector(R_TYPE, size));       \
-    C_TYPE* p_out = DEREF(out);                         \
-                                                        \
-    r_ssize cpy_size = (size > x_size) ? x_size : size; \
-    memcpy(p_out, p_x, cpy_size * sizeof(C_TYPE));      \
-                                                        \
-    FREE(1);                                            \
-    return out;                                         \
-  } while (0)
-
 #if R_VERSION >= R_Version(3, 4, 0)
 #define HAS_VIRTUAL_SIZE 1
 #else
 #define HAS_VIRTUAL_SIZE 0
 #endif
 
-#define RESIZE_BARRIER(R_TYPE, CONST_DEREF, SET)        \
-  do {                                                  \
-    r_ssize x_size = r_length(x);                       \
-    if (x_size == size) {                               \
-      return x;                                         \
-    }                                                   \
-    if (size < x_size && HAS_VIRTUAL_SIZE) {            \
-      SETLENGTH(x, size);                               \
-      SET_TRUELENGTH(x, x_size);                        \
-      SET_GROWABLE_BIT(x);                              \
-      return x;                                         \
-    }                                                   \
-                                                        \
-    sexp* const * p_x = CONST_DEREF(x);                 \
-    sexp* out = KEEP(r_new_vector(R_TYPE, size));       \
-                                                        \
-    r_ssize cpy_size = (size > x_size) ? x_size : size; \
-    for (r_ssize i = 0; i < cpy_size; ++i) {            \
-      SET(out, i, p_x[i]);                              \
-    }                                                   \
-                                                        \
-    FREE(1);                                            \
-    return out;                                         \
+#define RESIZE(R_TYPE, C_TYPE, CONST_DEREF, DEREF)              \
+  do {                                                          \
+    r_ssize x_size = r_length(x);                               \
+    if (x_size == size) {                                       \
+      return x;                                                 \
+    }                                                           \
+    if (!ALTREP(x) && size < x_size && HAS_VIRTUAL_SIZE) {      \
+      SETLENGTH(x, size);                                       \
+      SET_TRUELENGTH(x, x_size);                                \
+      SET_GROWABLE_BIT(x);                                      \
+      return x;                                                 \
+    }                                                           \
+                                                                \
+    const C_TYPE* p_x = CONST_DEREF(x);                         \
+    sexp* out = KEEP(r_new_vector(R_TYPE, size));               \
+    C_TYPE* p_out = DEREF(out);                                 \
+                                                                \
+    r_ssize cpy_size = (size > x_size) ? x_size : size;         \
+    memcpy(p_out, p_x, cpy_size * sizeof(C_TYPE));              \
+                                                                \
+    FREE(1);                                                    \
+    return out;                                                 \
+  } while (0)
+
+#define RESIZE_BARRIER(R_TYPE, CONST_DEREF, SET)                \
+  do {                                                          \
+    r_ssize x_size = r_length(x);                               \
+    if (x_size == size) {                                       \
+      return x;                                                 \
+    }                                                           \
+    if (!ALTREP(x) && size < x_size && HAS_VIRTUAL_SIZE) {      \
+      SETLENGTH(x, size);                                       \
+      SET_TRUELENGTH(x, x_size);                                \
+      SET_GROWABLE_BIT(x);                                      \
+      return x;                                                 \
+    }                                                           \
+                                                                \
+    sexp* const * p_x = CONST_DEREF(x);                         \
+    sexp* out = KEEP(r_new_vector(R_TYPE, size));               \
+                                                                \
+    r_ssize cpy_size = (size > x_size) ? x_size : size;         \
+    for (r_ssize i = 0; i < cpy_size; ++i) {                    \
+      SET(out, i, p_x[i]);                                      \
+    }                                                           \
+                                                                \
+    FREE(1);                                                    \
+    return out;                                                 \
   } while (0)
 
 // Compared to `Rf_xlengthgets()` this does not initialise the new
@@ -129,6 +134,37 @@ sexp* r_list_compact(sexp* x) {
 
   FREE(2);
   return out;
+}
+
+sexp* r_list_of_as_ptr_ssize(sexp* xs,
+                             enum r_type type,
+                             struct r_pair_ptr_ssize** p_v_out) {
+  if (r_typeof(xs) != r_type_list) {
+    r_abort("`xs` must be a list.");
+  }
+  r_ssize n = r_length(xs);
+
+  sexp* shelter = KEEP(r_new_raw(sizeof(struct r_pair_ptr_ssize) * n));
+  struct r_pair_ptr_ssize* v_out = r_raw_deref(shelter);
+
+  sexp* const * v_xs = r_list_deref_const(xs);
+
+  for (r_ssize i = 0; i < n; ++i) {
+    sexp* x = v_xs[i];
+    if (r_typeof(x) != type) {
+      r_abort("`xs` must be a list of vectors of type `%s`.",
+              r_type_as_c_string(type));
+    }
+
+    v_out[i] = (struct r_pair_ptr_ssize) {
+      .ptr = r_int_deref(x),
+      .size = r_length(x)
+    };
+  }
+
+  FREE(1);
+  *p_v_out = v_out;
+  return shelter;
 }
 
 

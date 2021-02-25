@@ -53,6 +53,7 @@ enum r_type {
 
 #define r_null R_NilValue
 
+
 struct r_pair {
   sexp* x;
   sexp* y;
@@ -62,6 +63,11 @@ struct r_triple {
   sexp* x;
   sexp* y;
   sexp* z;
+};
+
+struct r_pair_ptr_ssize {
+  void* ptr;
+  r_ssize size;
 };
 
 

@@ -8,6 +8,7 @@
 #include "dict.c"
 #include "df.c"
 #include "dyn-array.c"
+#include "dyn-list-of.c"
 #include "env.c"
 #include "env-binding.c"
 #include "eval.c"
