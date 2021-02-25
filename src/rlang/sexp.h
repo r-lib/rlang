@@ -11,7 +11,7 @@ r_ssize r_length(sexp* x) {
 
 static inline
 enum r_type r_typeof(sexp* x) {
-  return TYPEOF(x);
+  return (enum r_type) TYPEOF(x);
 }
 
 void r_preserve(sexp* x);
@@ -83,7 +83,7 @@ const char* r_type_as_c_string(enum r_type type) {
 
 static inline
 enum r_type r_c_str_as_r_type(const char* type) {
-  return Rf_str2type(type);
+  return (enum r_type) Rf_str2type(type);
 }
 enum r_type r_chr_as_r_type(sexp* type);
 

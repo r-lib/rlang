@@ -221,7 +221,7 @@ static inline
 sexp* r_new_raw0(r_ssize n) {
   sexp* out = r_new_raw(n);
 
-  unsigned char* p_out = r_raw_deref(out);
+  unsigned char* p_out = (unsigned char*) r_raw_deref(out);
   memset(p_out, 0, n);
 
   return out;
@@ -413,6 +413,16 @@ sexp* r_list_compact(sexp* x);
 sexp* r_list_of_as_ptr_ssize(sexp* xs,
                              enum r_type type,
                              struct r_pair_ptr_ssize** p_v_out);
+
+
+// From cpp/vec.cpp
+
+int* r_int_unique0(int* v_data, r_ssize size);
+
+static inline
+int* r_int_unique(sexp* x) {
+  return r_int_unique0(r_int_deref(x), r_length(x));
+}
 
 
 #endif
