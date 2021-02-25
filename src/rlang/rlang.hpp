@@ -2,7 +2,12 @@
 using std::isfinite;
 
 extern "C" {
+// The altrep header uses `class` as a normal symbol
+#define class rlang_class
+
 #include <rlang.h>
+
+#undef class
 }
 
 
