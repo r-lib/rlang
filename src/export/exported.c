@@ -252,7 +252,7 @@ sexp* rlang_arr_resize(sexp* arr_sexp, sexp* capacity_sexp) {
 // dyn-list-of.c
 
 // [[ register() ]]
-sexp* rlang_ptr_new_dyn_list_of(sexp* type, sexp* capacity, sexp* width) {
+sexp* ffi_new_dyn_list_of(sexp* type, sexp* capacity, sexp* width) {
   struct r_dyn_list_of* lof = r_new_dyn_list_of(r_chr_as_r_type(type),
                                                 r_as_ssize(capacity),
                                                 r_as_ssize(width));
@@ -285,7 +285,7 @@ const char* info_lof_c_strs[INFO_LOF_SIZE] = {
 };
 
 // [[ register() ]]
-sexp* rlang_ptr_lof_info(sexp* lof) {
+sexp* ffi_lof_info(sexp* lof) {
   struct r_dyn_list_of* p_lof = r_shelter_deref(lof);
 
   sexp* info = KEEP(r_new_list(INFO_LOF_SIZE));

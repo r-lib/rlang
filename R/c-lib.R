@@ -246,10 +246,10 @@ print.rlang_dyn_array <- function(x, ...) {
 # dyn-list-of.c
 
 new_dyn_list_of <- function(type, capacity, width) {
-  .Call(c_ptr_new_dyn_list_of, type, capacity, width)
+  .Call(ffi_new_dyn_list_of, type, capacity, width)
 }
 lof_info <- function(lof) {
-  .Call(c_ptr_lof_info, lof)
+  .Call(ffi_lof_info, lof)
 }
 lof_unwrap <- function(lof) {
   .Call(ffi_lof_unwrap, lof)
