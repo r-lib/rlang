@@ -730,18 +730,18 @@ test_that("can grow vectors", {
 })
 
 test_that("can shrink vectors", {
-  x <- 1:3
-  out <- vec_resize(x, 2)
-  expect_equal(x, 1:3)
+  x_atomic <- 1:3 + 0L
+  out <- vec_resize(x_atomic, 2)
   expect_equal(out, 1:2)
 
-  x <- as.list(1:3)
-  out <- vec_resize(x, 2)
+  x_list <- as.list(1:3)
+  out <- vec_resize(x_list, 2)
   expect_equal(out, as.list(1:2))
 
   # Uses truelength to modify in place on recent R
   if (getRversion() >= "3.4.0") {
-    expect_equal(x, as.list(1:2))
+    expect_equal(x_atomic, 1:2)
+    expect_equal(x_list, as.list(1:2))
   }
 })
 
