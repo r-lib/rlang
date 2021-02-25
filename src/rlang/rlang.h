@@ -16,6 +16,7 @@ r_ssize r_as_ssize(sexp* n);
 
 #include "sexp.h"
 
+#include "altrep.h"
 #include "attrib.h"
 #include "debug.h"
 #include "c-utils.h"
