@@ -97,7 +97,6 @@
 
     Code
       # Full
-    Code
       print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
     Output
       x
@@ -125,7 +124,6 @@
        17.           \-rlang:::h()
     Code
       # Collapsed
-    Code
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
       x
@@ -144,7 +142,6 @@
        17.           \-rlang:::h()
     Code
       # Branch
-    Code
       print(trace, simplify = "branch", dir = dir, srcrefs = srcrefs)
     Output
       x

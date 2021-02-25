@@ -139,7 +139,6 @@
 
     Code
       # Normal case
-    Code
       print(err)
     Output
       <error/rlang_error>
@@ -151,7 +150,6 @@
        10. rlang:::h()
     Code
       # From `last_error()`
-    Code
       print(last_error())
     Output
       <error/rlang_error>
@@ -164,7 +162,6 @@
       Run `rlang::last_trace()` to see the full context.
     Code
       # Saved from `last_error()`
-    Code
       {
         saved <- last_error()
         print(saved)
@@ -180,7 +177,6 @@
       Run `rlang::last_trace()` to see the full context.
     Code
       # Saved from `last_error()`, but no longer last
-    Code
       {
         last_error_env$cnd <- error_cnd("foo")
         print(saved)
@@ -199,7 +195,6 @@
 
     Code
       # Non wrapped case
-    Code
       {
         parent <- TRUE
         wrapper <- FALSE
@@ -216,7 +211,6 @@
        10. rlang:::h()
     Code
       # Wrapped case
-    Code
       {
         wrapper <- TRUE
         err <- catch_cnd(f())
@@ -232,7 +226,6 @@
        10. rlang:::h()
     Code
       # FIXME?
-    Code
       {
         parent <- FALSE
         err <- catch_cnd(f())
@@ -248,7 +241,6 @@
        10. rlang:::h()
     Code
       # withCallingHandlers()
-    Code
       print(err_wch)
     Output
       x
