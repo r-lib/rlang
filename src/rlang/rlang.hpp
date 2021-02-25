@@ -1,3 +1,6 @@
+#include <cmath>
+using std::isfinite;
+
 extern "C" {
 #include <rlang.h>
 }
