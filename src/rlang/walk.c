@@ -1,12 +1,68 @@
 #include <rlang.h>
 #include "walk.h"
+
+enum sexp_iterator_type {
+  SEXP_ITERATOR_TYPE_node,
+  SEXP_ITERATOR_TYPE_pointer,
+  SEXP_ITERATOR_TYPE_vector,
+  SEXP_ITERATOR_TYPE_atomic
+};
+
+enum sexp_iterator_state {
+  SEXP_ITERATOR_STATE_done,
+  SEXP_ITERATOR_STATE_attrib,
+  SEXP_ITERATOR_STATE_tag,
+  SEXP_ITERATOR_STATE_car,
+  SEXP_ITERATOR_STATE_cdr,
+  SEXP_ITERATOR_STATE_elt
+};
+
 #include "decl/walk-decl.h"
+
+
+static
+const enum sexp_iterator_state node_states[] = {
+  SEXP_ITERATOR_STATE_attrib,
+  SEXP_ITERATOR_STATE_tag,
+  SEXP_ITERATOR_STATE_car,
+  SEXP_ITERATOR_STATE_cdr,
+  SEXP_ITERATOR_STATE_done
+};
+static
+const enum sexp_iterator_state pointer_states[] = {
+  SEXP_ITERATOR_STATE_attrib,
+  SEXP_ITERATOR_STATE_tag,
+  SEXP_ITERATOR_STATE_cdr,
+  SEXP_ITERATOR_STATE_done
+};
+static
+const enum sexp_iterator_state vector_states[] = {
+  SEXP_ITERATOR_STATE_attrib,
+  SEXP_ITERATOR_STATE_elt,
+  SEXP_ITERATOR_STATE_done
+};
+static
+const enum sexp_iterator_state structure_states[] = {
+  SEXP_ITERATOR_STATE_attrib,
+  SEXP_ITERATOR_STATE_done
+};
+static
+const enum sexp_iterator_state done_state[] = {
+  SEXP_ITERATOR_STATE_done
+};
 
 struct sexp_stack_info {
   sexp* x;
+  enum r_type type;
+
+  const enum sexp_iterator_state* p_state;
+  sexp* const * v_arr;
+  sexp* const * v_arr_end;
+
   int depth;
   sexp* parent;
   enum r_node_relation rel;
+  enum r_node_direction dir;
 };
 
 struct sexp_stack {
@@ -18,161 +74,243 @@ struct sexp_stack {
 
 
 void sexp_iterate(sexp* x, sexp_iterator_fn* it, void* data) {
+  enum r_type type = r_typeof(x);
+  enum sexp_iterator_type it_type = sexp_iterator_type(type, x);
+  bool has_attrib = sexp_node_attrib(type, x) != r_null;
+
+  if (it_type == SEXP_ITERATOR_TYPE_atomic && !has_attrib) {
+    it(data, x, type, 0, r_null, R_NODE_RELATION_root, 0, R_NODE_DIRECTION_leaf);
+    return;
+  }
+
+  it(data, x, type, 0, r_null, R_NODE_RELATION_root, 0, R_NODE_DIRECTION_incoming);
+
   struct sexp_stack* p_stack = new_sexp_stack();
   KEEP(p_stack->shelter);
 
-  sexp_iterate_recurse(p_stack, x, 0, r_null, R_NODE_RELATION_root, 0, it, data);
+  struct sexp_stack_info root = {
+    .x = x,
+    .type = type,
+    .depth = 0,
+    .parent = r_null,
+    .rel = R_NODE_RELATION_root
+  };
+  init_incoming_stack_info(&root, it_type, has_attrib);
+
+  sexp_stack_push(p_stack, root);
+  sexp_iterate_recurse(p_stack, it, data);
 
   FREE(1);
 }
 
 static
-bool sexp_iterate_recurse(struct sexp_stack* p_stack,
-                          sexp* x,
-                          int depth,
-                          sexp* parent,
-                          enum r_node_relation rel,
-                          r_ssize i,
+void sexp_iterate_recurse(struct sexp_stack* p_stack,
                           sexp_iterator_fn* it,
                           void* data) {
-  // This is the number of pairlist nodes on the heap stack. We
-  // maintain this stack on the heap to allow tail-call recursion with
-  // a goto. The stack is used to visit the pairlist nodes on the
-  // outgoing trip.
-  int heap_stack_n = 0;
-
  recurse:
-  if (depth % 10 == 0) {
-    R_CheckStack();
+  if (!p_stack->n) {
+    return;
   }
 
-  enum r_type type = r_typeof(x);
-  enum r_node_direction dir;
+  struct sexp_stack_info info = sexp_stack_pop(p_stack);
 
-  enum r_node_relation tag_rel = 0;
-  enum r_node_relation car_rel = 0;
-  enum r_node_relation cdr_rel = 0;
-  enum r_node_relation arr_rel = 0;
-
-  sexp* attrib = sexp_node_attrib(x, type);
-  sexp* tag = sexp_node_tag(x, type, &tag_rel);
-  sexp* car = sexp_node_car(x, type, &car_rel);
-  sexp* cdr = sexp_node_cdr(x, type, &cdr_rel);
-  sexp* const * v_arr = sexp_node_arr(x, type, &arr_rel);
-
-  bool is_node = sexp_is_node(x, type);
-
-  if (attrib != r_null || is_node || v_arr != NULL) {
-    dir = R_NODE_DIRECTION_incoming;
-  } else {
-    dir = R_NODE_DIRECTION_leaf;
+  r_ssize i = -1;
+  if (info.v_arr) {
+    i = info.v_arr_end - info.v_arr;
   }
 
-  // Visit the node -- incoming trip
-  enum r_sexp_iterate out = it(data, x, type, depth, parent, rel, i, dir);
+  // Visit the node
+  enum r_sexp_iterate out = it(data,
+                               info.x,
+                               info.type,
+                               info.depth,
+                               info.parent,
+                               info.rel,
+                               i,
+                               info.dir);
 
   switch (out) {
-  case R_SEXP_ITERATE_abort: return false;
-  case R_SEXP_ITERATE_skip: return true;
-  case R_SEXP_ITERATE_next: break;
-  }
-
-  ++depth;
-
-  if (attrib != r_null) {
-    if (!sexp_iterate_recurse(p_stack, attrib, depth, x, R_NODE_RELATION_attrib, 0, it, data)) return false;
-  }
-
-  if (v_arr != NULL) {
-      r_ssize n = r_length(x);
-      for (r_ssize i = 0; i < n; ++i) {
-        if (!sexp_iterate_recurse(p_stack, v_arr[i], depth, x, arr_rel, i, it, data)) return false;
-      }
-  }
-
-  if (is_node) {
-    if (!sexp_iterate_recurse(p_stack, tag, depth, x, tag_rel, 0, it, data)) return false;
-
-    if (car_rel != R_NODE_RELATION_none) {
-      if (!sexp_iterate_recurse(p_stack, car, depth, x, car_rel, 0, it, data)) return false;
+  case R_SEXP_ITERATE_next:
+    break;
+  case R_SEXP_ITERATE_skip: {
+    if (info.dir == R_NODE_DIRECTION_incoming) {
+      --p_stack->n;
     }
+    break;
+  case R_SEXP_ITERATE_abort:
+    return;
+  }}
 
-    switch (type) {
-    default:
-      if (!sexp_iterate_recurse(p_stack, cdr, depth, x, cdr_rel, 0, it, data)) return false;
-      break;
-    case r_type_pairlist:
-    case r_type_call:
-    case r_type_dots: {
-      // We're going to make a tail call goto to recurse into the
-      // pairlist CDR. First save the current node value so we can visit
-      // it back on the outgoing trip.
-      struct sexp_stack_info x_info = {
-        .x = x,
-        .depth = depth,
-        .parent = parent,
-        .rel = rel
-      };
-      sexp_stack_push(p_stack, x_info);
-      ++heap_stack_n;
+  goto recurse;
+}
 
-      // Now set the CDR as current value and recurse
-      parent = x;
-      x = CDR(x);
-      rel = R_NODE_RELATION_node_cdr;
-      ++depth;
-      goto recurse;
-    }}
+#define SEXP_STACK_INIT_SIZE 1000
+
+static
+struct sexp_stack* new_sexp_stack() {
+  r_ssize size = sizeof(struct sexp_stack) + sizeof(struct sexp_stack_info) * SEXP_STACK_INIT_SIZE;
+  sexp* shelter = r_new_vector(r_type_raw, size);
+
+  struct sexp_stack* stack = (struct sexp_stack*) r_raw_deref(shelter);
+
+  stack->shelter = shelter;
+  stack->n = 0;
+  stack->size = SEXP_STACK_INIT_SIZE;
+
+  return stack;
+}
+
+static
+void sexp_stack_push(struct sexp_stack* p_stack, struct sexp_stack_info info) {
+  int i = ++p_stack->n;
+  if (i == p_stack->size) {
+    r_abort("TODO: Grow stack.");
   }
 
-  // Visit node a second time on the way back (outgoing direction).
-  // Start with the pairlist nodes pushed on the heap stack.
-  for (int i = 0; i < heap_stack_n; ++i) {
-    struct sexp_stack_info info = sexp_stack_pop(p_stack);
-    if (!it(data, info.x, r_typeof(info.x), info.depth, info.parent, R_NODE_RELATION_node_cdr, 0, R_NODE_DIRECTION_outgoing)) {
-      // Pop the remaining stack
-      // TODO: Test this
-      p_stack->n -= heap_stack_n - (i + 1);
-      return false;
+  p_stack->v_info[i] = info;
+}
+
+
+/*
+ * An incoming node has a state indicating which edge we're at. An
+ * outgoing node just need to be visited again and then popped. A
+ * leaf node is just visited once and then popped.
+ */
+static inline
+struct sexp_stack_info sexp_stack_pop(struct sexp_stack* p_stack) {
+  struct sexp_stack_info* p_info = p_stack->v_info + p_stack->n;
+
+  if (p_info->dir != R_NODE_DIRECTION_incoming) {
+    --p_stack->n;
+    return *p_info;
+  }
+
+  enum sexp_iterator_state state = *p_info->p_state;
+
+  struct sexp_stack_info child = { 0 };
+  child.parent = p_info->x;
+  child.depth = p_info->depth + 1;
+
+  switch (state) {
+  case SEXP_ITERATOR_STATE_attrib:
+    child.x = r_attrib(p_info->x);
+    child.rel = R_NODE_RELATION_attrib;
+    break;
+  case SEXP_ITERATOR_STATE_elt:
+    child.x = *p_info->v_arr;
+    child.rel = R_NODE_RELATION_list_elt;
+    break;
+  case SEXP_ITERATOR_STATE_tag:
+    child.x = sexp_node_tag(p_info->type, p_info->x, &child.rel);
+    break;
+  case SEXP_ITERATOR_STATE_car:
+    child.x = sexp_node_car(p_info->type, p_info->x, &child.rel);
+    break;
+  case SEXP_ITERATOR_STATE_cdr:
+    child.x = sexp_node_cdr(p_info->type, p_info->x, &child.rel);
+    break;
+  case SEXP_ITERATOR_STATE_done:
+    r_stop_unreached("sexp_stack_pop");
+  }
+
+  child.type = r_typeof(child.x);
+  bool has_attrib = sexp_node_attrib(child.type, child.x) != r_null;
+  enum sexp_iterator_type it_type = sexp_iterator_type(child.type, child.x);
+
+  if (it_type == SEXP_ITERATOR_TYPE_atomic && !has_attrib) {
+    child.p_state = NULL;
+    child.dir = R_NODE_DIRECTION_leaf;
+  } else {
+    init_incoming_stack_info(&child, it_type, has_attrib);
+
+    // Push incoming node on the stack so it can be visited again,
+    // either to descend its children or to visit it again on the
+    // outgoing trip
+    sexp_stack_push(p_stack, child);
+  }
+
+  // Bump state for next iteration
+  if (state == SEXP_ITERATOR_STATE_elt) {
+    ++p_info->v_arr;
+    if (p_info->v_arr == p_info->v_arr_end) {
+      p_info->p_state = done_state;
     }
+  } else {
+    ++p_info->p_state;
   }
 
-  // Visit the node -- outgoing trip
-  if (dir != R_NODE_DIRECTION_leaf) {
-    enum r_sexp_iterate out = it(data, x, type, depth, parent, rel, i, R_NODE_DIRECTION_outgoing);
-    if (out == R_SEXP_ITERATE_abort) {
-      return false;
-    }
+  // Flip incoming to outgoing if we're done visiting children after
+  // this iteration. We don't leave a done node on the stack because
+  // that would break the invariant that there are remaining nodes to
+  // visit when `n > 0` and that the stack can be popped.
+  if (*p_info->p_state == SEXP_ITERATOR_STATE_done) {
+    p_info->dir = R_NODE_DIRECTION_outgoing;
   }
 
-  return true;
+  return child;
 }
 
 static inline
-bool sexp_is_node(sexp* x, enum r_type type) {
+void init_incoming_stack_info(struct sexp_stack_info* p_info,
+                              enum sexp_iterator_type it_type,
+                              bool has_attrib) {
+  p_info->dir = R_NODE_DIRECTION_incoming;
+
+  switch (it_type) {
+  case SEXP_ITERATOR_TYPE_atomic:
+    p_info->p_state = structure_states;
+    break;
+  case SEXP_ITERATOR_TYPE_node:
+    p_info->p_state = node_states + !has_attrib;
+    break;
+  case SEXP_ITERATOR_TYPE_pointer:
+    p_info->p_state = pointer_states + !has_attrib;
+    break;
+  case SEXP_ITERATOR_TYPE_vector:
+    p_info->v_arr = r_vec_deref_const(p_info->x);
+    p_info->v_arr_end = p_info->v_arr + r_length(p_info->x);
+    p_info->p_state = vector_states + !has_attrib;
+    break;
+  }
+}
+
+static inline
+enum sexp_iterator_type sexp_iterator_type(enum r_type type,
+                                           sexp* x) {
   switch (type) {
   case r_type_closure:
   case r_type_environment:
   case r_type_promise:
-  case r_type_pointer:
   case r_type_pairlist:
   case r_type_call:
   case r_type_dots:
-    return true;
+    return SEXP_ITERATOR_TYPE_node;
+  case r_type_pointer:
+    return SEXP_ITERATOR_TYPE_pointer;
+  case r_type_list:
+  case r_type_expression:
+  case r_type_character:
+    if (r_length(x)) {
+      return SEXP_ITERATOR_TYPE_vector;
+    } else {
+      return SEXP_ITERATOR_TYPE_atomic;
+    }
   default:
-    return false;
+    return SEXP_ITERATOR_TYPE_atomic;
   }
 }
 static inline
-sexp* sexp_node_attrib(sexp* x, enum r_type type) {
+sexp* sexp_node_attrib(enum r_type type, sexp* x) {
   // Strings have private data stored in attributes
-  switch (type) {
-  case r_type_string:      return r_null;
-  default:                 return ATTRIB(x);
+  if (type == r_type_string) {
+    return r_null;
+  } else {
+    return ATTRIB(x);
   }
 }
 static inline
-sexp* sexp_node_car(sexp* x, enum r_type type,
+sexp* sexp_node_car(enum r_type type,
+                    sexp* x,
                     enum r_node_relation* p_rel) {
   switch (type) {
   case r_type_closure:     *p_rel = R_NODE_RELATION_function_fmls; return FORMALS(x);
@@ -186,7 +324,8 @@ sexp* sexp_node_car(sexp* x, enum r_type type,
   }
 }
 static inline
-sexp* sexp_node_cdr(sexp* x, enum r_type type,
+sexp* sexp_node_cdr(enum r_type type,
+                    sexp* x,
                     enum r_node_relation* p_rel) {
   switch (type) {
   case r_type_closure:     *p_rel = R_NODE_RELATION_function_body; return BODY(x);
@@ -200,7 +339,8 @@ sexp* sexp_node_cdr(sexp* x, enum r_type type,
   }
 }
 static inline
-sexp* sexp_node_tag(sexp* x, enum r_type type,
+sexp* sexp_node_tag(enum r_type type,
+                    sexp* x,
                     enum r_node_relation* p_rel) {
   switch (type) {
   case r_type_closure:     *p_rel = R_NODE_RELATION_function_env; return CLOENV(x);
@@ -211,23 +351,6 @@ sexp* sexp_node_tag(sexp* x, enum r_type type,
   case r_type_call:
   case r_type_dots:        *p_rel = R_NODE_RELATION_node_tag; return TAG(x);
   default:                 *p_rel = -1; return r_null;
-  }
-}
-static inline
-sexp* const * sexp_node_arr(sexp* x, enum r_type type,
-                            enum r_node_relation* p_rel) {
-  switch (type) {
-  case r_type_list:
-    *p_rel = R_NODE_RELATION_list_elt;
-    return r_list_deref_const(x);
-  case r_type_expression:
-    *p_rel = R_NODE_RELATION_expression_elt;
-    return r_list_deref_const(x);
-  case r_type_character:
-    *p_rel = R_NODE_RELATION_character_elt;
-    return r_chr_deref_const(x);
-  default:
-    return NULL;
   }
 }
 
@@ -289,36 +412,4 @@ const char* r_node_raw_relation_as_c_string(enum r_node_raw_relation rel) {
   case R_NODE_RAW_RELATION_vector_elt: return "vector_elt";
   default: r_stop_unreached("r_node_raw_relation_as_c_string");
   }
-}
-
-
-#define SEXP_STACK_INIT_SIZE 1000
-
-static
-struct sexp_stack* new_sexp_stack() {
-  r_ssize size = sizeof(struct sexp_stack) + sizeof(struct sexp_stack_info) * SEXP_STACK_INIT_SIZE;
-  sexp* shelter = r_new_vector(r_type_raw, size);
-
-  struct sexp_stack* stack = (struct sexp_stack*) r_raw_deref(shelter);
-
-  stack->shelter = shelter;
-  stack->n = 0;
-  stack->size = SEXP_STACK_INIT_SIZE;
-
-  return stack;
-}
-
-static
-void sexp_stack_push(struct sexp_stack* p_stack, struct sexp_stack_info info) {
-  int i = ++p_stack->n;
-  if (i == p_stack->size) {
-    r_abort("TODO: Grow stack.");
-  }
-
-  p_stack->v_info[i] = info;
-}
-
-static inline
-struct sexp_stack_info sexp_stack_pop(struct sexp_stack* p_stack) {
-  return p_stack->v_info[p_stack->n--];
 }

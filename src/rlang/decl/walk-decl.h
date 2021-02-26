@@ -1,4 +1,3 @@
-
 struct sexp_stack;
 
 static
@@ -11,33 +10,37 @@ static
 void sexp_stack_push(struct sexp_stack* p_stack, struct sexp_stack_info info);
 
 static
-bool sexp_iterate_recurse(struct sexp_stack* p_stack,
-                          sexp* x,
-                          int depth,
-                          sexp* parent,
-                          enum r_node_relation rel,
-                          r_ssize i,
+void sexp_iterate_recurse(struct sexp_stack* p_stack,
                           sexp_iterator_fn* it,
                           void* data);
 
 static inline
-bool sexp_is_node(sexp* x, enum r_type type);
+enum sexp_iterator_type sexp_iterator_type(enum r_type type,
+                                           sexp* x);
 
 static inline
-sexp* sexp_node_attrib(sexp* x, enum r_type type);
+sexp* sexp_node_attrib(enum r_type type, sexp* x);
 
 static inline
-sexp* sexp_node_car(sexp* x, enum r_type type,
+sexp* sexp_node_car(enum r_type type,
+                    sexp* x,
                     enum r_node_relation* p_rel);
 
 static inline
-sexp* sexp_node_cdr(sexp* x, enum r_type type,
+sexp* sexp_node_cdr(enum r_type type,
+                    sexp* x,
                     enum r_node_relation* p_rel);
 
 static inline
-sexp* sexp_node_tag(sexp* x, enum r_type type,
+sexp* sexp_node_tag(enum r_type type,
+                    sexp* x,
                     enum r_node_relation* p_rel);
 
 static inline
 sexp* const * sexp_node_arr(sexp* x, enum r_type type,
                             enum r_node_relation* p_rel);
+
+static inline
+void init_incoming_stack_info(struct sexp_stack_info* p_info,
+                              enum sexp_iterator_type it_type,
+                              bool has_attrib);
