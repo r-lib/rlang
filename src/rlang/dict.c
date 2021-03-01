@@ -17,12 +17,9 @@ struct r_dict* r_new_dict(r_ssize size) {
 
   sexp* shelter = KEEP(r_new_list(2));
 
-  // TODO: r_new_raw0()
-  sexp* dict_raw = r_new_raw(sizeof(struct r_dict));
+  sexp* dict_raw = r_new_raw0(sizeof(struct r_dict));
   r_list_poke(shelter, 0, dict_raw);
-
   struct r_dict* p_dict = r_raw_deref(dict_raw);
-  memset(p_dict, 0, sizeof(struct r_dict));
 
   p_dict->shelter = shelter;
 
