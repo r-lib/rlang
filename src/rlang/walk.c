@@ -1,6 +1,8 @@
 #include <rlang.h>
 #include "walk.h"
 
+#define SEXP_STACK_INIT_SIZE 1000
+
 enum sexp_iterator_type {
   SEXP_ITERATOR_TYPE_node,
   SEXP_ITERATOR_TYPE_pointer,
@@ -65,13 +67,6 @@ struct sexp_stack_info {
   enum r_node_direction dir;
 };
 
-struct sexp_stack {
-  sexp* shelter;
-  int n;
-  int size;
-  struct sexp_stack_info v_info[];
-};
-
 
 void sexp_iterate(sexp* x, sexp_iterator_fn* it, void* data) {
   enum r_type type = r_typeof(x);
@@ -85,7 +80,8 @@ void sexp_iterate(sexp* x, sexp_iterator_fn* it, void* data) {
 
   it(data, x, type, 0, r_null, R_NODE_RELATION_root, 0, R_NODE_DIRECTION_incoming);
 
-  struct sexp_stack* p_stack = new_sexp_stack();
+  // HERE
+  struct r_dyn_array* p_stack = r_new_dyn_array(sizeof(struct sexp_stack_info), SEXP_STACK_INIT_SIZE);
   KEEP(p_stack->shelter);
 
   struct sexp_stack_info root = {
@@ -97,18 +93,18 @@ void sexp_iterate(sexp* x, sexp_iterator_fn* it, void* data) {
   };
   init_incoming_stack_info(&root, it_type, has_attrib);
 
-  sexp_stack_push(p_stack, root);
+  r_arr_push_back(p_stack, &root);
   sexp_iterate_recurse(p_stack, it, data);
 
   FREE(1);
 }
 
 static
-void sexp_iterate_recurse(struct sexp_stack* p_stack,
+void sexp_iterate_recurse(struct r_dyn_array* p_stack,
                           sexp_iterator_fn* it,
                           void* data) {
  recurse:
-  if (!p_stack->n) {
+  if (!p_stack->count) {
     return;
   }
 
@@ -134,7 +130,7 @@ void sexp_iterate_recurse(struct sexp_stack* p_stack,
     break;
   case R_SEXP_ITERATE_skip: {
     if (info.dir == R_NODE_DIRECTION_incoming) {
-      --p_stack->n;
+      r_arr_pop_back(p_stack);
     }
     break;
   case R_SEXP_ITERATE_abort:
@@ -144,44 +140,17 @@ void sexp_iterate_recurse(struct sexp_stack* p_stack,
   goto recurse;
 }
 
-#define SEXP_STACK_INIT_SIZE 1000
-
-static
-struct sexp_stack* new_sexp_stack() {
-  r_ssize size = sizeof(struct sexp_stack) + sizeof(struct sexp_stack_info) * SEXP_STACK_INIT_SIZE;
-  sexp* shelter = r_new_vector(r_type_raw, size);
-
-  struct sexp_stack* stack = (struct sexp_stack*) r_raw_deref(shelter);
-
-  stack->shelter = shelter;
-  stack->n = 0;
-  stack->size = SEXP_STACK_INIT_SIZE;
-
-  return stack;
-}
-
-static
-void sexp_stack_push(struct sexp_stack* p_stack, struct sexp_stack_info info) {
-  int i = ++p_stack->n;
-  if (i == p_stack->size) {
-    r_abort("TODO: Grow stack.");
-  }
-
-  p_stack->v_info[i] = info;
-}
-
-
 /*
  * An incoming node has a state indicating which edge we're at. An
  * outgoing node just need to be visited again and then popped. A
  * leaf node is just visited once and then popped.
  */
 static inline
-struct sexp_stack_info sexp_stack_pop(struct sexp_stack* p_stack) {
-  struct sexp_stack_info* p_info = p_stack->v_info + p_stack->n;
+struct sexp_stack_info sexp_stack_pop(struct r_dyn_array* p_stack) {
+  struct sexp_stack_info* p_info = (struct sexp_stack_info*) r_arr_ptr_back(p_stack);
 
   if (p_info->dir != R_NODE_DIRECTION_incoming) {
-    --p_stack->n;
+    r_arr_pop_back(p_stack);
     return *p_info;
   }
 
@@ -226,7 +195,7 @@ struct sexp_stack_info sexp_stack_pop(struct sexp_stack* p_stack) {
     // Push incoming node on the stack so it can be visited again,
     // either to descend its children or to visit it again on the
     // outgoing trip
-    sexp_stack_push(p_stack, child);
+    r_arr_push_back(p_stack, &child);
   }
 
   // Bump state for next iteration
