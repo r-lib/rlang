@@ -1012,3 +1012,22 @@ test_that("can push to arrays in dynamic list-of", {
     list(42:44, int(), 42:44, 42:44)
   )
 })
+
+test_that("sexp iterator visits in full order", {
+  it_dirs <- function(snapshot) {
+    dirs <- sapply(snapshot, `[[`, "dir")
+    dirs <- table(dirs)
+    nms <- names(dirs)
+    dim(dirs) <- NULL
+    set_names(dirs, nms)
+  }
+  expect_symmetric_dirs <- function(s) {
+    dirs <- it_dirs(s)
+    expect_equal(s[["incoming"]], s[["outgoing"]])
+  }
+  expect_symmetric_dirs(sexp_iterate(list(1), list))
+  expect_symmetric_dirs(sexp_iterate(list(1, 2), list))
+  expect_symmetric_dirs(sexp_iterate(list(1, list()), list))
+  expect_symmetric_dirs(sexp_iterate(list(1, list(2)), list))
+  expect_symmetric_dirs(sexp_iterate(list(emptyenv(), emptyenv()), list))
+})
