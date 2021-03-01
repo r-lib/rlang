@@ -8,6 +8,27 @@ static size_t size_round_power_2(size_t size);
 
 #include "decl/dict-decl.h"
 
+#define DICT_DEREF(D) r_list_deref_const(D)
+
+#define DICT_KEY(V) r_list_get(V, 0)
+#define DICT_VALUE(V) r_list_get(V, 1)
+#define DICT_CDR(V) r_list_get(V, 2)
+
+#define DICT_POKE_KEY(D, K) r_list_poke(D, 0, K)
+#define DICT_POKE_VALUE(D, V) r_list_poke(D, 1, V)
+#define DICT_POKE_CDR(D, N) r_list_poke(D, 2, N)
+
+#define V_DICT_KEY(V) (V)[0]
+#define V_DICT_VALUE(V) (V)[1]
+#define V_DICT_CDR(V) (V)[2]
+
+static
+sexp* new_bucket(sexp* key, sexp* value) {
+  sexp* bucket = r_new_list(3);
+  DICT_POKE_KEY(bucket, key);
+  DICT_POKE_VALUE(bucket, value);
+  return bucket;
+}
 
 struct r_dict* r_new_dict(r_ssize size) {
   if (size <= 0) {
@@ -49,11 +70,13 @@ void r_dict_resize(struct r_dict* p_dict, r_ssize size) {
     sexp* bucket = p_buckets[i];
 
     while (bucket != r_null) {
-      sexp* key = r_node_tag(bucket);
-      sexp* value = r_node_car(bucket);
+      sexp* const * v_bucket = DICT_DEREF(p_buckets[i]);
+
+      sexp* key = V_DICT_KEY(v_bucket);
+      sexp* value = V_DICT_VALUE(v_bucket);
       r_dict_put(p_new_dict, key, value);
 
-      bucket = r_node_cdr(bucket);
+      bucket = V_DICT_CDR(v_bucket);
     }
   }
 
@@ -95,14 +118,13 @@ bool r_dict_put(struct r_dict* p_dict, sexp* key, sexp* value) {
   }
 
   // Can't find `key` in the bucket. Create a new node.
-  node = KEEP(r_new_node(value, r_null));
-  r_node_poke_tag(node, key);
+  node = KEEP(new_bucket(key, value));
 
   if (parent == r_null) {
     // Empty bucket
     r_list_poke(p_dict->buckets, hash, node);
   } else {
-    r_node_poke_cdr(parent, node);
+    DICT_POKE_CDR(parent, node);
   }
 
   ++p_dict->n_entries;
@@ -130,7 +152,7 @@ bool r_dict_del(struct r_dict* p_dict, sexp* key) {
   if (parent == r_null) {
     r_list_poke(p_dict->buckets, hash, r_null);
   }  else {
-    r_node_poke_cdr(parent, r_node_cdr(node));
+    DICT_POKE_CDR(parent, DICT_CDR(node));
   }
 
   return true;
@@ -158,7 +180,7 @@ sexp* r_dict_get0(struct r_dict* p_dict, sexp* key) {
   if (node == r_null) {
     return NULL;
   } else {
-    return r_node_car(node);
+    return DICT_VALUE(node);
   }
 }
 
@@ -168,10 +190,11 @@ sexp* dict_find_node(struct r_dict* p_dict, sexp* key) {
   sexp* bucket = p_dict->p_buckets[i];
 
   while (bucket != r_null) {
-    if (r_node_tag(bucket) == key) {
+    sexp* const * v_bucket = DICT_DEREF(bucket);
+    if (V_DICT_KEY(v_bucket) == key) {
       return bucket;
     }
-    bucket = r_node_cdr(bucket);
+    bucket = V_DICT_CDR(v_bucket);
   }
 
   return r_null;
@@ -190,11 +213,13 @@ sexp* dict_find_node_info(struct r_dict* p_dict,
   *parent = r_null;
 
   while (bucket != r_null) {
-    if (r_node_tag(bucket) == key) {
+    sexp* const * v_bucket = DICT_DEREF(bucket);
+
+    if (V_DICT_KEY(v_bucket) == key) {
       return bucket;
     }
     *parent = bucket;
-    bucket = r_node_cdr(bucket);
+    bucket = V_DICT_CDR(v_bucket);
   }
 
   return r_null;
@@ -238,9 +263,10 @@ bool r_dict_it_next(struct r_dict_iterator* p_it) {
     p_it->node = node;
   }
 
-  p_it->key = r_node_tag(node);
-  p_it->value = r_node_car(node);
-  p_it->node = r_node_cdr(node);
+  sexp* const * v_node = DICT_DEREF(node);
+  p_it->key = V_DICT_KEY(v_node);
+  p_it->value = V_DICT_VALUE(v_node);
+  p_it->node = V_DICT_CDR(v_node);
   return true;
 }
 
