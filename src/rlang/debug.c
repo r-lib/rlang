@@ -21,3 +21,9 @@ void r_browse_at(sexp* env) {
   // The NULL expression is needed because of a limitation in ESS
   r_parse_eval("{ browser(); NULL }", env);
 }
+
+void r_dbg_str(sexp* x) {
+  sexp* call = KEEP(r_parse("str(x)"));
+  r_eval_with_x(call, x, r_ns_env("utils"));
+  FREE(1);
+}
