@@ -70,7 +70,7 @@ void r_dict_resize(struct r_dict* p_dict, r_ssize size) {
     sexp* bucket = p_buckets[i];
 
     while (bucket != r_null) {
-      sexp* const * v_bucket = DICT_DEREF(p_buckets[i]);
+      sexp* const * v_bucket = DICT_DEREF(bucket);
 
       sexp* key = V_DICT_KEY(v_bucket);
       sexp* value = V_DICT_VALUE(v_bucket);
