@@ -4,14 +4,14 @@
 
 bool r_env_binding_is_promise(sexp* env, sexp* sym) {
   sexp* obj = r_env_find(env, sym);
-  return r_typeof(obj) == r_type_promise && PRVALUE(obj) == r_syms_unbound;
+  return r_typeof(obj) == R_TYPE_promise && PRVALUE(obj) == r_syms_unbound;
 }
 bool r_env_binding_is_active(sexp* env, sexp* sym) {
   return R_BindingIsActive(sym, env);
 }
 
 static sexp* new_binding_types(r_ssize n) {
-  sexp* types = r_new_vector(r_type_integer, n);
+  sexp* types = r_new_vector(R_TYPE_integer, n);
 
   int* types_ptr = r_int_deref(types);
   memset(types_ptr, 0, n * sizeof *types_ptr);
@@ -35,7 +35,7 @@ static inline sexp* binding_as_sym(bool list, sexp* bindings, r_ssize i) {
   if (list) {
     sexp* out = r_list_get(bindings, i);
 
-    if (r_typeof(out) != r_type_symbol) {
+    if (r_typeof(out) != R_TYPE_symbol) {
       r_abort("Binding must be a symbol.");
     }
 
@@ -62,14 +62,14 @@ static r_ssize detect_special_binding(sexp* env,
 
 // Returns NULL if all values to spare an alloc
 sexp* r_env_binding_types(sexp* env, sexp* bindings) {
-  if (r_typeof(env) != r_type_environment) {
+  if (r_typeof(env) != R_TYPE_environment) {
     r_abort("Expected environment in promise binding predicate.");
   }
 
   bool symbols;
   switch (r_typeof(bindings)) {
-  case r_type_list: symbols = true; break;
-  case r_type_character: symbols = false; break;
+  case R_TYPE_list: symbols = true; break;
+  case R_TYPE_character: symbols = false; break;
   default: r_abort("Internal error: Unexpected `bindings` type in `r_env_binding_types()`");
   }
 

@@ -2,11 +2,11 @@
 
 
 sexp* new_preserved_empty_list() {
-  sexp* empty_list = r_new_vector(r_type_list, 0);
+  sexp* empty_list = r_new_vector(R_TYPE_list, 0);
   r_preserve(empty_list);
   r_mark_shared(empty_list);
 
-  sexp* nms = KEEP(r_new_vector(r_type_character, 0));
+  sexp* nms = KEEP(r_new_vector(R_TYPE_character, 0));
   r_attrib_poke_names(empty_list, nms);
   FREE(1);
 
@@ -166,7 +166,7 @@ bool r_is_namespaced_call_any(sexp* x, const char* ns,
 }
 
 sexp* nms_are_duplicated(sexp* nms, bool from_last) {
-  if (r_typeof(nms) != r_type_character) {
+  if (r_typeof(nms) != R_TYPE_character) {
     r_abort("Internal error: Expected a character vector of names for checking duplication");
   }
   sexp* dups = KEEP(Rf_duplicated(nms, from_last));

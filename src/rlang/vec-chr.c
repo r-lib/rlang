@@ -44,10 +44,10 @@ void r_chr_fill(sexp* chr, sexp* value) {
 }
 
 static void validate_chr_setter(sexp* chr, sexp* r_string) {
-  if (r_typeof(chr) != r_type_character) {
+  if (r_typeof(chr) != R_TYPE_character) {
     r_abort("`chr` must be a character vector");
   }
-  if (r_typeof(r_string) != r_type_string) {
+  if (r_typeof(r_string) != R_TYPE_string) {
     r_abort("`r_string` must be an internal R string");
   }
 }
@@ -64,7 +64,7 @@ sexp* chr_prepend(sexp* chr, sexp* r_string) {
   }
 
   int n = r_length(chr);
-  sexp* out = KEEP(r_new_vector(r_type_character, n + 1));
+  sexp* out = KEEP(r_new_vector(R_TYPE_character, n + 1));
 
   r_vec_poke_n(out, 1, chr, 0, n);
   r_chr_poke(out, 0, r_string);
@@ -79,7 +79,7 @@ sexp* chr_append(sexp* chr, sexp* r_str) {
   validate_chr_setter(chr, r_str);
 
   int n = r_length(chr);
-  sexp* out = KEEP(r_new_vector(r_type_character, n + 1));
+  sexp* out = KEEP(r_new_vector(R_TYPE_character, n + 1));
 
   r_vec_poke_n(out, 0, chr, 0, n);
   r_chr_poke(out, n, r_str);

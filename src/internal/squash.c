@@ -12,7 +12,7 @@ void r_vec_poke_n(sexp* x, r_ssize offset,
 // The vector to splice might be boxed in a sentinel wrapper
 static sexp* maybe_unbox(sexp* x, bool (*is_spliceable)(sexp*)) {
   if (is_spliceable(x) && is_splice_box(x)) {
-    return r_vec_coerce(rlang_unbox(x), r_type_list);
+    return r_vec_coerce(rlang_unbox(x), R_TYPE_list);
   } else {
     return x;
   }
@@ -21,7 +21,7 @@ static sexp* maybe_unbox(sexp* x, bool (*is_spliceable)(sexp*)) {
 bool has_name_at(sexp* x, r_ssize i) {
   sexp* nms = r_names(x);
   return
-    r_typeof(nms) == r_type_character &&
+    r_typeof(nms) == R_TYPE_character &&
     r_chr_get(nms, i) != r_strs_empty;
 }
 
@@ -70,7 +70,7 @@ static r_ssize atom_squash(enum r_type kind, squash_info_t info,
 
       if (info.named) {
         sexp* nms = r_names(inner);
-        if (r_typeof(nms) == r_type_character) {
+        if (r_typeof(nms) == R_TYPE_character) {
           r_vec_poke_n(out_names, count, nms, 0, n_inner);
         } else if (n_inner == 1 && has_name_at(outer, i)) {
           r_chr_poke(out_names, count, r_chr_get(r_names(outer), i));
@@ -109,7 +109,7 @@ static r_ssize list_squash(squash_info_t info, sexp* outer,
     } else {
       r_list_poke(out, count, inner);
 
-      if (info.named && r_typeof(r_names(outer)) == r_type_character) {
+      if (info.named && r_typeof(r_names(outer)) == R_TYPE_character) {
         sexp* name = r_chr_get(r_names(outer), i);
         r_chr_poke(out_names, count, name);
       }
@@ -144,7 +144,7 @@ static void update_info_inner(squash_info_t* info, sexp* outer, r_ssize i, sexp*
     return;
   }
 
-  bool named = r_typeof(r_names(inner)) == r_type_character;
+  bool named = r_typeof(r_names(inner)) == R_TYPE_character;
   bool recursive = info->recursive;
 
   bool copy_outer = recursive || n_inner == 1;
@@ -167,7 +167,7 @@ static void update_info_inner(squash_info_t* info, sexp* outer, r_ssize i, sexp*
 
 static void squash_info(squash_info_t* info, sexp* outer,
                         bool (*is_spliceable)(sexp*), int depth) {
-  if (r_typeof(outer) != r_type_list) {
+  if (r_typeof(outer) != R_TYPE_list) {
     r_abort("Only lists can be spliced");
   }
 
@@ -196,7 +196,7 @@ static sexp* squash(enum r_type kind, sexp* dots, bool (*is_spliceable)(sexp*), 
 
   sexp* out = KEEP(r_new_vector(kind, info.size));
   if (info.named) {
-    sexp* nms = KEEP(r_new_vector(r_type_character, info.size));
+    sexp* nms = KEEP(r_new_vector(R_TYPE_character, info.size));
     r_attrib_poke_names(out, nms);
     FREE(1);
   }
@@ -218,7 +218,7 @@ typedef bool (*is_spliceable_t)(sexp*);
 
 static bool is_spliced_bare(sexp* x) {
   if (!r_is_object(x)) {
-    return r_typeof(x) == r_type_list;
+    return r_typeof(x) == R_TYPE_list;
   } else {
     return is_splice_box(x);
   }
@@ -284,11 +284,11 @@ static bool is_spliceable_closure(sexp* x) {
 
 sexp* r_squash_if(sexp* dots, enum r_type kind, bool (*is_spliceable)(sexp*), int depth) {
   switch (kind) {
-  case r_type_logical:
-  case r_type_integer:
-  case r_type_double:
-  case r_type_complex:
-  case r_type_character:
+  case R_TYPE_logical:
+  case R_TYPE_integer:
+  case R_TYPE_double:
+  case R_TYPE_complex:
+  case R_TYPE_character:
   case RAWSXP:
   case VECSXP:
     return squash(kind, dots, is_spliceable, depth);
@@ -315,13 +315,13 @@ sexp* rlang_squash(sexp* dots, sexp* type, sexp* pred, sexp* depth_) {
   is_spliceable_t is_spliceable;
 
   switch (r_typeof(pred)) {
-  case r_type_closure:
+  case R_TYPE_closure:
     is_spliceable = predicate_internal(pred);
     if (is_spliceable) {
       return r_squash_if(dots, kind, is_spliceable, depth);
     } // else fallthrough
-  case r_type_builtin:
-  case r_type_special:
+  case R_TYPE_builtin:
+  case R_TYPE_special:
     return rlang_squash_closure(dots, kind, pred, depth);
   default:
     is_spliceable = predicate_pointer(pred);
@@ -332,16 +332,16 @@ sexp* rlang_squash(sexp* dots, sexp* type, sexp* pred, sexp* depth_) {
 static
 r_ssize r_vec_length(sexp* x) {
   switch(r_typeof(x)) {
-  case r_type_null:
+  case R_TYPE_null:
     return 0;
-  case r_type_logical:
-  case r_type_integer:
-  case r_type_double:
-  case r_type_complex:
-  case r_type_character:
-  case r_type_raw:
-  case r_type_list:
-  case r_type_string:
+  case R_TYPE_logical:
+  case R_TYPE_integer:
+  case R_TYPE_double:
+  case R_TYPE_complex:
+  case R_TYPE_character:
+  case R_TYPE_raw:
+  case R_TYPE_list:
+  case R_TYPE_string:
     return XLENGTH(x);
   default:
     r_abort("Internal error: expected a vector");

@@ -279,18 +279,18 @@ static inline
 enum sexp_iterator_type sexp_iterator_type(enum r_type type,
                                            sexp* x) {
   switch (type) {
-  case r_type_closure:
-  case r_type_environment:
-  case r_type_promise:
-  case r_type_pairlist:
-  case r_type_call:
-  case r_type_dots:
+  case R_TYPE_closure:
+  case R_TYPE_environment:
+  case R_TYPE_promise:
+  case R_TYPE_pairlist:
+  case R_TYPE_call:
+  case R_TYPE_dots:
     return SEXP_ITERATOR_TYPE_node;
-  case r_type_pointer:
+  case R_TYPE_pointer:
     return SEXP_ITERATOR_TYPE_pointer;
-  case r_type_list:
-  case r_type_expression:
-  case r_type_character:
+  case R_TYPE_list:
+  case R_TYPE_expression:
+  case R_TYPE_character:
     if (r_length(x)) {
       return SEXP_ITERATOR_TYPE_vector;
     } else {
@@ -303,7 +303,7 @@ enum sexp_iterator_type sexp_iterator_type(enum r_type type,
 static inline
 sexp* sexp_node_attrib(enum r_type type, sexp* x) {
   // Strings have private data stored in attributes
-  if (type == r_type_string) {
+  if (type == R_TYPE_string) {
     return r_null;
   } else {
     return ATTRIB(x);
@@ -314,13 +314,13 @@ sexp* sexp_node_car(enum r_type type,
                     sexp* x,
                     enum r_node_relation* p_rel) {
   switch (type) {
-  case r_type_closure:     *p_rel = R_NODE_RELATION_function_fmls; return FORMALS(x);
-  case r_type_environment: *p_rel = R_NODE_RELATION_environment_frame; return FRAME(x);
-  case r_type_promise:     *p_rel = R_NODE_RELATION_promise_value; return PRVALUE(x);
-  case r_type_pairlist:
-  case r_type_call:
-  case r_type_dots:        *p_rel = R_NODE_RELATION_node_car; return CAR(x);
-  case r_type_pointer:
+  case R_TYPE_closure:     *p_rel = R_NODE_RELATION_function_fmls; return FORMALS(x);
+  case R_TYPE_environment: *p_rel = R_NODE_RELATION_environment_frame; return FRAME(x);
+  case R_TYPE_promise:     *p_rel = R_NODE_RELATION_promise_value; return PRVALUE(x);
+  case R_TYPE_pairlist:
+  case R_TYPE_call:
+  case R_TYPE_dots:        *p_rel = R_NODE_RELATION_node_car; return CAR(x);
+  case R_TYPE_pointer:
   default:                 *p_rel = -1; return r_null;
   }
 }
@@ -329,13 +329,13 @@ sexp* sexp_node_cdr(enum r_type type,
                     sexp* x,
                     enum r_node_relation* p_rel) {
   switch (type) {
-  case r_type_closure:     *p_rel = R_NODE_RELATION_function_body; return BODY(x);
-  case r_type_environment: *p_rel = R_NODE_RELATION_environment_enclos; return ENCLOS(x);
-  case r_type_promise:     *p_rel = R_NODE_RELATION_promise_expr; return PREXPR(x);
-  case r_type_pointer:     *p_rel = R_NODE_RELATION_pointer_prot; return EXTPTR_PROT(x);
-  case r_type_pairlist:
-  case r_type_call:
-  case r_type_dots:        *p_rel = R_NODE_RELATION_node_cdr; return CDR(x);
+  case R_TYPE_closure:     *p_rel = R_NODE_RELATION_function_body; return BODY(x);
+  case R_TYPE_environment: *p_rel = R_NODE_RELATION_environment_enclos; return ENCLOS(x);
+  case R_TYPE_promise:     *p_rel = R_NODE_RELATION_promise_expr; return PREXPR(x);
+  case R_TYPE_pointer:     *p_rel = R_NODE_RELATION_pointer_prot; return EXTPTR_PROT(x);
+  case R_TYPE_pairlist:
+  case R_TYPE_call:
+  case R_TYPE_dots:        *p_rel = R_NODE_RELATION_node_cdr; return CDR(x);
   default:                 *p_rel = -1; return r_null;
   }
 }
@@ -344,13 +344,13 @@ sexp* sexp_node_tag(enum r_type type,
                     sexp* x,
                     enum r_node_relation* p_rel) {
   switch (type) {
-  case r_type_closure:     *p_rel = R_NODE_RELATION_function_env; return CLOENV(x);
-  case r_type_environment: *p_rel = R_NODE_RELATION_environment_hashtab; return HASHTAB(x);
-  case r_type_promise:     *p_rel = R_NODE_RELATION_promise_env; return PRENV(x);
-  case r_type_pointer:     *p_rel = R_NODE_RELATION_pointer_tag; return EXTPTR_TAG(x);
-  case r_type_pairlist:
-  case r_type_call:
-  case r_type_dots:        *p_rel = R_NODE_RELATION_node_tag; return TAG(x);
+  case R_TYPE_closure:     *p_rel = R_NODE_RELATION_function_env; return CLOENV(x);
+  case R_TYPE_environment: *p_rel = R_NODE_RELATION_environment_hashtab; return HASHTAB(x);
+  case R_TYPE_promise:     *p_rel = R_NODE_RELATION_promise_env; return PRENV(x);
+  case R_TYPE_pointer:     *p_rel = R_NODE_RELATION_pointer_tag; return EXTPTR_TAG(x);
+  case R_TYPE_pairlist:
+  case R_TYPE_call:
+  case R_TYPE_dots:        *p_rel = R_NODE_RELATION_node_tag; return TAG(x);
   default:                 *p_rel = -1; return r_null;
   }
 }

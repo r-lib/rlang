@@ -8,11 +8,11 @@ bool has_correct_length(sexp* x, r_ssize n) {
 
 bool r_is_atomic(sexp* x, r_ssize n) {
   switch(r_typeof(x)) {
-  case r_type_logical:
-  case r_type_integer:
-  case r_type_double:
-  case r_type_complex:
-  case r_type_character:
+  case R_TYPE_logical:
+  case R_TYPE_integer:
+  case R_TYPE_double:
+  case R_TYPE_complex:
+  case R_TYPE_character:
   case RAWSXP:
     return has_correct_length(x, n);
   default:
@@ -22,11 +22,11 @@ bool r_is_atomic(sexp* x, r_ssize n) {
 
 bool r_is_vector(sexp* x, r_ssize n) {
   switch(r_typeof(x)) {
-  case r_type_logical:
-  case r_type_integer:
-  case r_type_double:
-  case r_type_complex:
-  case r_type_character:
+  case R_TYPE_logical:
+  case R_TYPE_integer:
+  case R_TYPE_double:
+  case R_TYPE_complex:
+  case R_TYPE_character:
   case RAWSXP:
   case VECSXP:
     return has_correct_length(x, n);
@@ -36,14 +36,14 @@ bool r_is_vector(sexp* x, r_ssize n) {
 }
 
 bool r_is_logical(sexp* x, r_ssize n) {
-  return r_typeof(x) == r_type_logical && has_correct_length(x, n);
+  return r_typeof(x) == R_TYPE_logical && has_correct_length(x, n);
 }
 
 bool r_is_finite(sexp* x) {
   r_ssize n = r_length(x);
 
   switch(r_typeof(x)) {
-  case r_type_integer: {
+  case R_TYPE_integer: {
     const int* p_x = r_int_deref_const(x);
     for (r_ssize i = 0; i < n; ++i) {
       if (p_x[i] == r_ints_na) {
@@ -52,7 +52,7 @@ bool r_is_finite(sexp* x) {
     }
     break;
   }
-  case r_type_double: {
+  case R_TYPE_double: {
     const double* p_x = r_dbl_deref_const(x);
     for (r_ssize i = 0; i < n; ++i) {
       if (!isfinite(p_x[i])) {
@@ -61,7 +61,7 @@ bool r_is_finite(sexp* x) {
     }
     break;
   }
-  case r_type_complex: {
+  case R_TYPE_complex: {
     const r_complex_t* p_x = r_cpl_deref_const(x);
     for (r_ssize i = 0; i < n; ++i) {
       if (!isfinite(p_x[i].r) || !isfinite(p_x[i].i)) {
@@ -77,7 +77,7 @@ bool r_is_finite(sexp* x) {
   return true;
 }
 bool r_is_integer(sexp* x, r_ssize n, int finite) {
-  if (r_typeof(x) != r_type_integer || !has_correct_length(x, n)) {
+  if (r_typeof(x) != R_TYPE_integer || !has_correct_length(x, n)) {
     return false;
   }
   if (finite >= 0 && (bool) finite != r_is_finite(x)) {
@@ -86,7 +86,7 @@ bool r_is_integer(sexp* x, r_ssize n, int finite) {
   return true;
 }
 bool r_is_double(sexp* x, r_ssize n, int finite) {
-  if (r_typeof(x) != r_type_double || !has_correct_length(x, n)) {
+  if (r_typeof(x) != R_TYPE_double || !has_correct_length(x, n)) {
     return false;
   }
   if (finite >= 0 && (bool) finite != r_is_finite(x)) {
@@ -100,10 +100,10 @@ bool r_is_double(sexp* x, r_ssize n, int finite) {
 #define RLANG_MAX_DOUBLE_INT 4503599627370496
 
 bool r_is_integerish(sexp* x, r_ssize n, int finite) {
-  if (r_typeof(x) == r_type_integer) {
+  if (r_typeof(x) == R_TYPE_integer) {
     return r_is_integer(x, n, finite);
   }
-  if (r_typeof(x) != r_type_double || !has_correct_length(x, n)) {
+  if (r_typeof(x) != R_TYPE_double || !has_correct_length(x, n)) {
     return false;
   }
 
@@ -140,10 +140,10 @@ bool r_is_integerish(sexp* x, r_ssize n, int finite) {
 #undef RLANG_MAX_DOUBLE_INT
 
 bool r_is_character(sexp* x, r_ssize n) {
-  return r_typeof(x) == r_type_character && has_correct_length(x, n);
+  return r_typeof(x) == R_TYPE_character && has_correct_length(x, n);
 }
 bool r_is_raw(sexp* x, r_ssize n) {
-  return r_typeof(x) == r_type_raw && has_correct_length(x, n);
+  return r_typeof(x) == R_TYPE_raw && has_correct_length(x, n);
 }
 
 
@@ -151,11 +151,11 @@ bool r_is_raw(sexp* x, r_ssize n) {
 
 sexp* rlang_vec_coercer(sexp* dest) {
   switch(r_typeof(dest)) {
-  case r_type_logical: return rlang_ns_get("as_logical");
-  case r_type_integer: return rlang_ns_get("as_integer");
-  case r_type_double: return rlang_ns_get("as_double");
-  case r_type_complex: return rlang_ns_get("as_complex");
-  case r_type_character: return rlang_ns_get("as_character");
+  case R_TYPE_logical: return rlang_ns_get("as_logical");
+  case R_TYPE_integer: return rlang_ns_get("as_integer");
+  case R_TYPE_double: return rlang_ns_get("as_double");
+  case R_TYPE_complex: return rlang_ns_get("as_complex");
+  case R_TYPE_character: return rlang_ns_get("as_character");
   case RAWSXP: return rlang_ns_get("as_bytes");
   default: r_abort("No coercion implemented for `%s`", Rf_type2str(r_typeof(dest)));
   }

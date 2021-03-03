@@ -4,11 +4,11 @@
 
 
 sexp* rlang_new_function(sexp* args, sexp* body, sexp* env) {
-  if (r_typeof(env) != r_type_environment) {
+  if (r_typeof(env) != R_TYPE_environment) {
     r_abort("`env` must be an environment");
   }
 
-  args = KEEP(r_vec_coerce(args, r_type_pairlist));
+  args = KEEP(r_vec_coerce(args, R_TYPE_pairlist));
 
   sexp* node = args;
   while (node != r_null) {

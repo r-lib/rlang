@@ -6,7 +6,7 @@ const char* quo_tags[2] = { "quosure", "formula" };
 sexp* new_raw_formula(sexp* lhs, sexp* rhs, sexp* env);
 
 sexp* rlang_new_quosure(sexp* expr, sexp* env) {
-  if (r_typeof(env) != r_type_environment) {
+  if (r_typeof(env) != R_TYPE_environment) {
     r_abort("`env` must be an environment");
   }
   sexp* quo = KEEP(new_raw_formula(r_null, expr, env));
@@ -15,7 +15,7 @@ sexp* rlang_new_quosure(sexp* expr, sexp* env) {
   return quo;
 }
 bool rlang_is_quosure(sexp* x) {
-  return r_typeof(x) == r_type_call && Rf_inherits(x, "quosure");
+  return r_typeof(x) == R_TYPE_call && Rf_inherits(x, "quosure");
 }
 
 inline void check_quosure(sexp* quo) {
@@ -40,7 +40,7 @@ sexp* rlang_quo_get_env(sexp* quo) {
 }
 sexp* rlang_quo_set_env(sexp* quo, sexp* env) {
   check_quosure(quo);
-  if (r_typeof(env) != r_type_environment) {
+  if (r_typeof(env) != R_TYPE_environment) {
     r_abort("`env` must be an environment");
   }
   return r_attrib_set(quo, r_syms_dot_environment, env);
@@ -78,10 +78,10 @@ bool quo_is_missing(sexp* quo) {
   return r_node_cadr(quo) == R_MissingArg;
 }
 bool quo_is_symbol(sexp* quo) {
-  return r_typeof(r_node_cadr(quo)) == r_type_symbol;
+  return r_typeof(r_node_cadr(quo)) == R_TYPE_symbol;
 }
 bool quo_is_call(sexp* quo) {
-  return r_typeof(r_node_cadr(quo)) == r_type_call;
+  return r_typeof(r_node_cadr(quo)) == R_TYPE_call;
 }
 bool quo_is_symbolic(sexp* quo) {
   return r_is_symbolic(r_node_cadr(quo));

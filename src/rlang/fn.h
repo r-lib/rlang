@@ -26,9 +26,9 @@ sexp* r_as_function(sexp* x, sexp* env);
 static inline
 bool r_is_function(sexp* x) {
   switch (r_typeof(x)) {
-  case r_type_closure:
-  case r_type_builtin:
-  case r_type_special:
+  case R_TYPE_closure:
+  case R_TYPE_builtin:
+  case R_TYPE_special:
     return true;
   default:
     return false;
@@ -38,8 +38,8 @@ bool r_is_function(sexp* x) {
 static inline
 bool r_is_primitive(sexp* x) {
   switch (r_typeof(x)) {
-  case r_type_builtin:
-  case r_type_special:
+  case R_TYPE_builtin:
+  case R_TYPE_special:
     return true;
   default:
     return false;

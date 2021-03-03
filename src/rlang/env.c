@@ -163,13 +163,13 @@ void r__env_unbind(sexp* env, sexp* sym) {
 bool r_env_inherits(sexp* env, sexp* ancestor, sexp* top) {
   top = top ? top : r_empty_env;
 
-  if (r_typeof(env) != r_type_environment) {
+  if (r_typeof(env) != R_TYPE_environment) {
     r_abort("`env` must be an environment");
   }
-  if (r_typeof(ancestor) != r_type_environment) {
+  if (r_typeof(ancestor) != R_TYPE_environment) {
     r_abort("`ancestor` must be an environment");
   }
-  if (r_typeof(top) != r_type_environment) {
+  if (r_typeof(top) != R_TYPE_environment) {
     r_abort("`top` must be an environment");
   }
 

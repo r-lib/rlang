@@ -1,7 +1,7 @@
 #include "rlang.h"
 
 r_ssize r_lgl_sum(sexp* x, bool na_true) {
-  if (r_typeof(x) != r_type_logical) {
+  if (r_typeof(x) != R_TYPE_logical) {
     r_abort("Internal error: Excepted logical vector in `r_lgl_sum()`");
   }
 
@@ -26,7 +26,7 @@ r_ssize r_lgl_sum(sexp* x, bool na_true) {
 }
 
 sexp* r_lgl_which(sexp* x, bool na_propagate) {
-  if (r_typeof(x) != r_type_logical) {
+  if (r_typeof(x) != R_TYPE_logical) {
     r_abort("Internal error: Expected logical vector in `r_lgl_which()`");
   }
 
@@ -39,7 +39,7 @@ sexp* r_lgl_which(sexp* x, bool na_propagate) {
     r_abort("Internal error: Can't fit result of `r_lgl_which()` in an integer vector");
   }
 
-  sexp* which = KEEP(r_new_vector(r_type_integer, which_n));
+  sexp* which = KEEP(r_new_vector(R_TYPE_integer, which_n));
   int* p_which = r_int_deref(which);
 
   for (int i = 0; i < n; ++i) {

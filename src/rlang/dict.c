@@ -277,8 +277,8 @@ const char* v_dict_it_df_names_c_strings[] = {
 };
 static
 const enum r_type v_dict_it_df_types[] = {
-  r_type_list,
-  r_type_list
+  R_TYPE_list,
+  R_TYPE_list
 };
 enum dict_it_df_locs {
   DICT_IT_DF_LOCS_key,

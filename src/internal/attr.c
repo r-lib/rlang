@@ -15,14 +15,14 @@ static sexp* names_dispatch(sexp* x, sexp* env);
 sexp* rlang_names2(sexp* x, sexp* env) {
   const enum r_type type = r_typeof(x);
 
-  if (type == r_type_environment) {
+  if (type == R_TYPE_environment) {
     r_abort("Use `env_names()` for environments.");
   }
 
   // Handle pairlists and language objects specially like `getAttrib()`
   // does. `r_names()` will not find these names because it has a guarantee
   // to never allocate.
-  if (type == r_type_pairlist || type == r_type_call) {
+  if (type == R_TYPE_pairlist || type == R_TYPE_call) {
     return node_names(x);
   }
 
@@ -35,7 +35,7 @@ sexp* rlang_names2(sexp* x, sexp* env) {
 
   if (nms == r_null) {
     r_ssize n = r_length(x);
-    nms = KEEP(r_new_vector(r_type_character, n));
+    nms = KEEP(r_new_vector(R_TYPE_character, n));
     r_chr_fill(nms, r_strs_empty);
   } else {
     nms = KEEP(rlang_replace_na(nms, r_chrs_empty_string));
@@ -49,7 +49,7 @@ static
 sexp* node_names(sexp* x) {
   r_ssize n = r_length(x);
 
-  sexp* out = KEEP(r_new_vector(r_type_character, n));
+  sexp* out = KEEP(r_new_vector(R_TYPE_character, n));
 
   int i = 0;
 
@@ -174,10 +174,10 @@ r_ssize length_dispatch(sexp* x, sexp* env) {
   r_ssize out;
 
   switch (r_typeof(n)) {
-  case r_type_integer:
+  case R_TYPE_integer:
     out = (r_ssize) r_int_deref(n)[0];
     break;
-  case r_type_double:
+  case R_TYPE_double:
     out = r_dbl_deref(n)[0];
     break;
   default:

@@ -5,7 +5,7 @@
 static sexp* rlang_env_get_sym(sexp* env, sexp* nm, bool inherit, sexp* closure_env);
 
 sexp* rlang_env_get(sexp* env, sexp* nm, sexp* inherit, sexp* closure_env) {
-  if (r_typeof(env) != r_type_environment) {
+  if (r_typeof(env) != R_TYPE_environment) {
     r_abort("`env` must be an environment.");
   }
   if (!r_is_string(nm)) {
@@ -30,7 +30,7 @@ sexp* rlang_env_get_sym(sexp* env, sexp* sym, bool inherit, sexp* closure_env) {
     out = r_env_find(env, sym);
   }
 
-  if (r_typeof(out) == r_type_promise) {
+  if (r_typeof(out) == R_TYPE_promise) {
     KEEP(out);
     out = r_eval(out, r_empty_env);
     FREE(1);
@@ -44,10 +44,10 @@ sexp* rlang_env_get_sym(sexp* env, sexp* sym, bool inherit, sexp* closure_env) {
 }
 
 sexp* rlang_env_get_list(sexp* env, sexp* nms, sexp* inherit, sexp* closure_env) {
-  if (r_typeof(env) != r_type_environment) {
+  if (r_typeof(env) != R_TYPE_environment) {
     r_abort("`env` must be an environment.");
   }
-  if (r_typeof(nms) != r_type_character) {
+  if (r_typeof(nms) != R_TYPE_character) {
     r_abort("`nm` must be a string.");
   }
   if (!r_is_bool(inherit)) {
@@ -57,7 +57,7 @@ sexp* rlang_env_get_list(sexp* env, sexp* nms, sexp* inherit, sexp* closure_env)
   bool c_inherit = r_lgl_get(inherit, 0);
   r_ssize n = r_length(nms);
 
-  sexp* out = KEEP(r_new_vector(r_type_list, n));
+  sexp* out = KEEP(r_new_vector(R_TYPE_list, n));
   r_attrib_poke_names(out, nms);
 
   sexp* const * p_nms = r_chr_deref_const(nms);
@@ -73,18 +73,18 @@ sexp* rlang_env_get_list(sexp* env, sexp* nms, sexp* inherit, sexp* closure_env)
 }
 
 sexp* rlang_env_has(sexp* env, sexp* nms, sexp* inherit) {
-  if (r_typeof(env) != r_type_environment) {
+  if (r_typeof(env) != R_TYPE_environment) {
     r_abort("`env` must be an environment.");
   }
-  if (r_typeof(nms) != r_type_character) {
+  if (r_typeof(nms) != R_TYPE_character) {
     r_abort("`nms` must be a character vector.");
   }
-  if (r_typeof(inherit) != r_type_logical) {
+  if (r_typeof(inherit) != R_TYPE_logical) {
     r_abort("`inherit` must be a logical value.");
   }
 
   r_ssize n = r_length(nms);
-  sexp* out = KEEP(r_new_vector(r_type_logical, n));
+  sexp* out = KEEP(r_new_vector(R_TYPE_logical, n));
 
   int* p_out = r_lgl_deref(out);
   sexp* const * p_nms = r_chr_deref_const(nms);
@@ -112,7 +112,7 @@ static void env_poke_active(sexp* env, sexp* sym, sexp* fn, sexp* eval_env);
 static sexp* env_get(sexp* env, sexp* sym);
 
 sexp* rlang_env_poke(sexp* env, sexp* nm, sexp* value, sexp* inherit, sexp* create) {
-  if (r_typeof(env) != r_type_environment) {
+  if (r_typeof(env) != R_TYPE_environment) {
     r_abort("`env` must be an environment.");
   }
   if (!r_is_string(nm)) {
@@ -181,14 +181,14 @@ sexp* rlang_env_bind(sexp* env,
                      sexp* needs_old,
                      sexp* bind_type,
                      sexp* eval_env) {
-  if (r_typeof(env) != r_type_environment) {
+  if (r_typeof(env) != R_TYPE_environment) {
     r_abort("`env` must be an environment.");
   }
 
   bool c_needs_old = r_lgl_get(needs_old, 0);
   enum bind_type c_bind_type = parse_bind_type(bind_type);
 
-  if (r_typeof(values) != r_type_list) {
+  if (r_typeof(values) != R_TYPE_list) {
     r_stop_internal("rlang_env_bind", "`values` must be a list.");
   }
 
@@ -205,7 +205,7 @@ sexp* rlang_env_bind(sexp* env,
 
   sexp* old = r_null;
   if (c_needs_old) {
-    old = KEEP(r_new_vector(r_type_list, n));
+    old = KEEP(r_new_vector(R_TYPE_list, n));
     r_attrib_poke_names(old, names);
   } else {
     KEEP(old);
@@ -235,10 +235,10 @@ sexp* rlang_env_bind(sexp* env,
 }
 
 sexp* rlang_env_unbind(sexp* env, sexp* names, sexp* inherits) {
-  if (r_typeof(env) != r_type_environment) {
+  if (r_typeof(env) != R_TYPE_environment) {
     r_abort("`env` must be an environment.");
   }
-  if (r_typeof(names) != r_type_character) {
+  if (r_typeof(names) != R_TYPE_character) {
     r_abort("`names` must be a character vector.");
   }
   if (!r_is_bool(inherits)) {
@@ -294,7 +294,7 @@ sexp* env_get(sexp* env, sexp* sym) {
     return rlang_zap;
   }
 
-  if (r_typeof(out) == r_type_promise) {
+  if (r_typeof(out) == R_TYPE_promise) {
     KEEP(out);
     out = r_eval(out, r_base_env);
     FREE(1);

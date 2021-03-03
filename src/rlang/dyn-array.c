@@ -29,11 +29,11 @@ struct r_dyn_array* r_new_dyn_vector(enum r_type type,
   p_vec->data = vec_data;
 
   switch (type) {
-  case r_type_character:
+  case R_TYPE_character:
     p_vec->v_data = NULL;
     p_vec->barrier_set = &r_chr_poke;
     break;
-  case r_type_list:
+  case R_TYPE_list:
     p_vec->v_data = NULL;
     p_vec->barrier_set = &r_list_poke;
     break;
@@ -49,7 +49,7 @@ struct r_dyn_array* r_new_dyn_vector(enum r_type type,
 }
 
 sexp* r_arr_unwrap(struct r_dyn_array* p_arr) {
-  if (p_arr->type == r_type_raw) {
+  if (p_arr->type == R_TYPE_raw) {
     return r_raw_resize(p_arr->data, p_arr->count * p_arr->elt_byte_size);
   } else {
     return r_vec_resize0(p_arr->type, p_arr->data, p_arr->count);
@@ -60,7 +60,7 @@ struct r_dyn_array* r_new_dyn_array(r_ssize elt_byte_size,
                                     r_ssize capacity) {
   r_ssize arr_byte_size = r_ssize_mult(capacity, elt_byte_size);
 
-  struct r_dyn_array* p_arr = r_new_dyn_vector(r_type_raw, arr_byte_size);
+  struct r_dyn_array* p_arr = r_new_dyn_vector(R_TYPE_raw, arr_byte_size);
   p_arr->capacity = capacity;
   p_arr->elt_byte_size = elt_byte_size;
 
@@ -104,8 +104,8 @@ void r_arr_resize(struct r_dyn_array* p_arr,
   p_arr->data = data;
 
   switch (type) {
-  case r_type_character:
-  case r_type_list:
+  case R_TYPE_character:
+  case R_TYPE_list:
     break;
   default:
     p_arr->v_data = r_vec_deref0(type, data);

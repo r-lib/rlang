@@ -18,7 +18,7 @@ sexp* r_false = NULL;
 
 
 sexp* r_chr_n(const char* const * strings, r_ssize n) {
-  sexp* out = KEEP(r_new_vector(r_type_character, n));
+  sexp* out = KEEP(r_new_vector(R_TYPE_character, n));
 
   for (r_ssize i = 0; i < n; ++i) {
     r_chr_poke(out, i, r_str(strings[i]));
@@ -86,25 +86,25 @@ sexp* r_chr_n(const char* const * strings, r_ssize n) {
 // Compared to `Rf_xlengthgets()` this does not initialise the new
 // extended locations with `NA`
 sexp* r_lgl_resize(sexp* x, r_ssize size) {
-  RESIZE(r_type_logical, int, r_lgl_deref_const, r_lgl_deref);
+  RESIZE(R_TYPE_logical, int, r_lgl_deref_const, r_lgl_deref);
 }
 sexp* r_int_resize(sexp* x, r_ssize size) {
-  RESIZE(r_type_integer, int, r_int_deref_const, r_int_deref);
+  RESIZE(R_TYPE_integer, int, r_int_deref_const, r_int_deref);
 }
 sexp* r_dbl_resize(sexp* x, r_ssize size) {
-  RESIZE(r_type_double, double, r_dbl_deref_const, r_dbl_deref);
+  RESIZE(R_TYPE_double, double, r_dbl_deref_const, r_dbl_deref);
 }
 sexp* r_cpl_resize(sexp* x, r_ssize size) {
-  RESIZE(r_type_complex, r_complex_t, r_cpl_deref_const, r_cpl_deref);
+  RESIZE(R_TYPE_complex, r_complex_t, r_cpl_deref_const, r_cpl_deref);
 }
 sexp* r_raw_resize(sexp* x, r_ssize size) {
-  RESIZE(r_type_raw, unsigned char, r_raw_deref_const, r_raw_deref);
+  RESIZE(R_TYPE_raw, unsigned char, r_raw_deref_const, r_raw_deref);
 }
 sexp* r_chr_resize(sexp* x, r_ssize size) {
-  RESIZE_BARRIER(r_type_character, r_chr_deref_const, r_chr_poke);
+  RESIZE_BARRIER(R_TYPE_character, r_chr_deref_const, r_chr_poke);
 }
 sexp* r_list_resize(sexp* x, r_ssize size) {
-  RESIZE_BARRIER(r_type_list, r_list_deref_const, r_list_poke);
+  RESIZE_BARRIER(R_TYPE_list, r_list_deref_const, r_list_poke);
 }
 
 #undef RESIZE
@@ -139,7 +139,7 @@ sexp* r_list_compact(sexp* x) {
 sexp* r_list_of_as_ptr_ssize(sexp* xs,
                              enum r_type type,
                              struct r_pair_ptr_ssize** p_v_out) {
-  if (r_typeof(xs) != r_type_list) {
+  if (r_typeof(xs) != R_TYPE_list) {
     r_abort("`xs` must be a list.");
   }
   r_ssize n = r_length(xs);
@@ -180,42 +180,42 @@ void r_vec_poke_n(sexp* x, r_ssize offset,
   }
 
   switch (r_typeof(x)) {
-  case r_type_logical: {
+  case R_TYPE_logical: {
     int* src_data = r_lgl_deref(y);
     int* dest_data = r_lgl_deref(x);
     for (r_ssize i = 0; i != n; ++i)
       dest_data[i + offset] = src_data[i + from];
     break;
   }
-  case r_type_integer: {
+  case R_TYPE_integer: {
     int* src_data = r_int_deref(y);
     int* dest_data = r_int_deref(x);
     for (r_ssize i = 0; i != n; ++i)
       dest_data[i + offset] = src_data[i + from];
     break;
   }
-  case r_type_double: {
+  case R_TYPE_double: {
     double* src_data = r_dbl_deref(y);
     double* dest_data = r_dbl_deref(x);
     for (r_ssize i = 0; i != n; ++i)
       dest_data[i + offset] = src_data[i + from];
     break;
   }
-  case r_type_complex: {
+  case R_TYPE_complex: {
     r_complex_t* src_data = r_cpl_deref(y);
     r_complex_t* dest_data = r_cpl_deref(x);
     for (r_ssize i = 0; i != n; ++i)
       dest_data[i + offset] = src_data[i + from];
     break;
   }
-  case RAWSXP: {
+  case R_TYPE_raw: {
     unsigned char* src_data = RAW(y);
     unsigned char* dest_data = RAW(x);
     for (r_ssize i = 0; i != n; ++i)
       dest_data[i + offset] = src_data[i + from];
     break;
   }
-  case r_type_character: {
+  case R_TYPE_character: {
     sexp* elt;
     for (r_ssize i = 0; i != n; ++i) {
       elt = r_chr_get(y, i + from);
@@ -223,7 +223,7 @@ void r_vec_poke_n(sexp* x, r_ssize offset,
     }
     break;
   }
-  case VECSXP: {
+  case R_TYPE_list: {
     sexp* elt;
     for (r_ssize i = 0; i != n; ++i) {
       elt = r_list_get(y, i + from);

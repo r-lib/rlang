@@ -53,12 +53,12 @@ const struct r_op_precedence r_ops_precedence[R_OP_MAX] = {
 };
 
 enum r_operator r_which_operator(sexp* call) {
-  if (r_typeof(call) != r_type_call) {
+  if (r_typeof(call) != R_TYPE_call) {
     return R_OP_NONE;
   }
 
   sexp* head = r_node_car(call);
-  if (r_typeof(head) != r_type_symbol) {
+  if (r_typeof(head) != R_TYPE_symbol) {
     return R_OP_NONE;
   }
 

@@ -33,7 +33,7 @@ void r_stop_unexpected_type(const char* fn, enum r_type type) {
 
 static inline
 bool r_is_condition(sexp* x) {
-  return r_typeof(x) == r_type_list && r_inherits(x, "condition");
+  return r_typeof(x) == R_TYPE_list && r_inherits(x, "condition");
 }
 sexp* r_new_condition(sexp* type, sexp* msg, sexp* data);
 

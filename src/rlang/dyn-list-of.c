@@ -21,8 +21,8 @@ struct r_dyn_list_of* r_new_dyn_list_of(enum r_type type,
                                         r_ssize capacity,
                                         r_ssize width) {
   switch (type) {
-  case r_type_character:
-  case r_type_list:
+  case R_TYPE_character:
+  case R_TYPE_list:
     r_abort("Can't create a dynamic list of barrier vectors.");
   default:
     break;
@@ -36,7 +36,7 @@ struct r_dyn_list_of* r_new_dyn_list_of(enum r_type type,
   struct r_dyn_array* p_moved_arr = r_new_dyn_array(sizeof(struct r_dyn_array*), R_DYN_LOF_INIT_SIZE);
   r_list_poke(shelter, SHELTER_DYN_LOF_moved_arr, p_moved_arr->shelter);
 
-  struct r_dyn_array* p_moved_shelter_arr = r_new_dyn_vector(r_type_list, R_DYN_LOF_INIT_SIZE);
+  struct r_dyn_array* p_moved_shelter_arr = r_new_dyn_vector(R_TYPE_list, R_DYN_LOF_INIT_SIZE);
   r_list_poke(shelter, SHELTER_DYN_LOF_moved_shelter_arr, p_moved_shelter_arr->shelter);
 
   sexp* reserve = r_new_vector(type, r_ssize_mult(capacity, width));

@@ -17,7 +17,7 @@ struct rlang_mask_info {
 };
 
 static struct rlang_mask_info mask_info(sexp* mask) {
-  if (r_typeof(mask) != r_type_environment) {
+  if (r_typeof(mask) != R_TYPE_environment) {
     return (struct rlang_mask_info) { r_null, RLANG_MASK_NONE };
   }
 
@@ -42,7 +42,7 @@ static sexp* ctxt_pronoun_class = NULL;
 static sexp* data_mask_env_sym = NULL;
 
 static sexp* rlang_new_data_pronoun(sexp* mask) {
-  sexp* pronoun = KEEP(r_new_vector(r_type_list, 1));
+  sexp* pronoun = KEEP(r_new_vector(R_TYPE_list, 1));
 
   r_list_poke(pronoun, 0, mask);
   r_attrib_poke(pronoun, r_syms_class, data_pronoun_class);
@@ -90,19 +90,19 @@ sexp* rlang_as_data_pronoun(sexp* x) {
   int n_kept = 0;
 
   switch (r_typeof(x)) {
-  case r_type_logical:
-  case r_type_integer:
-  case r_type_double:
-  case r_type_complex:
-  case r_type_character:
-  case r_type_raw:
-    x = KEEP_N(r_vec_coerce(x, r_type_list), &n_kept);
+  case R_TYPE_logical:
+  case R_TYPE_integer:
+  case R_TYPE_double:
+  case R_TYPE_complex:
+  case R_TYPE_character:
+  case R_TYPE_raw:
+    x = KEEP_N(r_vec_coerce(x, R_TYPE_list), &n_kept);
     // fallthrough
-  case r_type_list:
+  case R_TYPE_list:
     check_unique_names(x);
     x = KEEP_N(r_list_as_environment(x, r_empty_env), &n_kept);
     break;
-  case r_type_environment:
+  case R_TYPE_environment:
     break;
   default:
     r_abort("`data` must be an uniquely named vector, list, data frame or environment");
@@ -118,7 +118,7 @@ sexp* rlang_as_data_pronoun(sexp* x) {
 static sexp* data_mask_top_env_sym = NULL;
 
 static void check_data_mask_input(sexp* env, const char* arg) {
-  if (r_typeof(env) != r_type_environment) {
+  if (r_typeof(env) != R_TYPE_environment) {
     r_abort("Can't create data mask because `%s` must be an environment", arg);
   }
 }
@@ -196,12 +196,12 @@ sexp* rlang_is_data_mask(sexp* env) {
 }
 
 static sexp* mask_find(sexp* env, sexp* sym) {
-  if (r_typeof(sym) != r_type_symbol) {
+  if (r_typeof(sym) != R_TYPE_symbol) {
     r_abort("Internal error: Data pronoun must be subset with a symbol");
   }
 
   sexp* top_env = r_env_find(env, data_mask_top_env_sym);
-  if (r_typeof(top_env) == r_type_environment) {
+  if (r_typeof(top_env) == R_TYPE_environment) {
     // Start lookup in the parent if the pronoun wraps a data mask
     env = r_env_parent(env);
   } else {
@@ -237,7 +237,7 @@ static sexp* mask_find(sexp* env, sexp* sym) {
   return r_syms_unbound;
 }
 sexp* rlang_data_pronoun_get(sexp* pronoun, sexp* sym) {
-  if (r_typeof(pronoun) != r_type_environment) {
+  if (r_typeof(pronoun) != R_TYPE_environment) {
     r_abort("Internal error: Data pronoun must wrap an environment");
   }
 
@@ -286,22 +286,22 @@ sexp* rlang_as_data_mask(sexp* data) {
   sexp* bottom = NULL;
 
   switch (r_typeof(data)) {
-  case r_type_environment:
+  case R_TYPE_environment:
     warn_env_as_mask_once();
     bottom = KEEP_N(r_env_clone(data, NULL), &n_kept);
     break;
 
-  case r_type_logical:
-  case r_type_integer:
-  case r_type_double:
-  case r_type_complex:
-  case r_type_character:
-  case r_type_raw:
-    data = r_vec_coerce(data, r_type_list);
+  case R_TYPE_logical:
+  case R_TYPE_integer:
+  case R_TYPE_double:
+  case R_TYPE_complex:
+  case R_TYPE_character:
+  case R_TYPE_raw:
+    data = r_vec_coerce(data, R_TYPE_list);
     KEEP_N(data, &n_kept);
     // fallthrough:
 
-  case r_type_list: {
+  case R_TYPE_list: {
     check_unique_names(data);
 
     sexp* names = r_names(data);
@@ -381,7 +381,7 @@ sexp* env_get_top_binding(sexp* mask) {
   if (top == r_syms_unbound) {
     r_abort("Internal error: Can't find .top pronoun in data mask");
   }
-  if (r_typeof(top) != r_type_environment) {
+  if (r_typeof(top) != R_TYPE_environment) {
     r_abort("Internal error: Unexpected .top pronoun type");
   }
 
@@ -409,7 +409,7 @@ sexp* rlang_tilde_eval(sexp* tilde, sexp* current_frame, sexp* caller_frame) {
   }
 
   sexp* quo_env = rlang_quo_get_env(tilde);
-  if (r_typeof(quo_env) != r_type_environment) {
+  if (r_typeof(quo_env) != R_TYPE_environment) {
     r_abort("Internal error: Quosure environment is corrupt");
   }
 
@@ -570,7 +570,7 @@ void rlang_init_eval_tidy() {
   ctxt_pronoun_class = r_chr("rlang_ctxt_pronoun");
   r_preserve(ctxt_pronoun_class);
 
-  empty_names_chr = r_new_vector(r_type_character, 2);
+  empty_names_chr = r_new_vector(R_TYPE_character, 2);
   r_preserve(empty_names_chr);
   r_chr_poke(empty_names_chr, 0, r_str(""));
   r_chr_poke(empty_names_chr, 1, r_strs_na);

@@ -49,9 +49,9 @@ sexp* rlang_ensym(sexp* sym, sexp* frame) {
   }
 
   switch (r_typeof(expr)) {
-  case r_type_symbol:
+  case R_TYPE_symbol:
     break;
-  case r_type_character:
+  case R_TYPE_character:
     if (r_length(expr) == 1) {
       KEEP(expr);
       expr = r_sym(r_chr_get_c_string(expr, 0));
@@ -86,10 +86,10 @@ sexp* rlang_ext_arg_match0(sexp* args) {
   sexp* values = r_node_car(args); args = r_node_cdr(args);
   sexp* env = r_node_car(args);
 
-  if (r_typeof(arg) != r_type_character) {
+  if (r_typeof(arg) != R_TYPE_character) {
     arg_match0_abort("`%s` must be a character vector.", env);
   }
-  if (r_typeof(values) != r_type_character) {
+  if (r_typeof(values) != R_TYPE_character) {
     r_abort("`values` must be a character vector.");
   }
 
@@ -170,7 +170,7 @@ sexp* rlang_ext_arg_match0(sexp* args) {
 void arg_match0_abort(const char* msg, sexp* env) {
   sexp* arg_nm = KEEP(r_eval(arg_nm_sym, env));
 
-  if (r_typeof(arg_nm) != r_type_character || r_length(arg_nm) != 1) {
+  if (r_typeof(arg_nm) != R_TYPE_character || r_length(arg_nm) != 1) {
     r_abort(msg, "<arg_nm>");
   }
 

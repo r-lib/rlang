@@ -33,7 +33,7 @@
 r_ssize r_as_ssize(sexp* n) {
   switch (r_typeof(n)) {
 
-  case r_type_double: {
+  case R_TYPE_double: {
     if (r_length(n) != 1) {
       goto invalid;
     }
@@ -44,7 +44,7 @@ r_ssize r_as_ssize(sexp* n) {
     return (r_ssize) floor(out);
   }
 
-  case r_type_integer: {
+  case R_TYPE_integer: {
     if (r_length(n) != 1) {
       goto invalid;
     }

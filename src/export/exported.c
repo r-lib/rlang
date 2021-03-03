@@ -48,10 +48,10 @@ sexp* rlang_alloc_data_frame(sexp* n_rows, sexp* names, sexp* types) {
   if (!r_is_int(n_rows)) {
     r_abort("`n_rows` must be an integer value.");
   }
-  if (r_typeof(names) != r_type_character) {
+  if (r_typeof(names) != R_TYPE_character) {
     r_abort("`names` must be a character vector.");
   }
-  if (r_typeof(types) != r_type_integer) {
+  if (r_typeof(types) != R_TYPE_integer) {
     r_abort("`types` must be an integer vector.");
   }
 
@@ -219,8 +219,8 @@ sexp* rlang_arr_push_back(sexp* arr_sexp, sexp* x) {
   }
 
   switch (p_arr->type) {
-  case r_type_character:
-  case r_type_list:
+  case R_TYPE_character:
+  case R_TYPE_list:
     r_arr_push_back(p_arr, &x);
     return r_null;
   default:
@@ -370,13 +370,13 @@ sexp* rlang_env_inherits(sexp* env, sexp* ancestor) {
 }
 
 sexp* rlang_env_bind_list(sexp* env, sexp* names, sexp* data) {
-  if (r_typeof(env) != r_type_environment) {
+  if (r_typeof(env) != R_TYPE_environment) {
     r_abort("Internal error: `env` must be an environment.");
   }
-  if (r_typeof(names) != r_type_character) {
+  if (r_typeof(names) != R_TYPE_character) {
     r_abort("Internal error: `names` must be a character vector.");
   }
-  if (r_typeof(data) != r_type_list) {
+  if (r_typeof(data) != R_TYPE_list) {
     r_abort("Internal error: `data` must be a list.");
   }
 
@@ -395,7 +395,7 @@ sexp* rlang_env_bind_list(sexp* env, sexp* names, sexp* data) {
 }
 
 sexp* rlang_env_browse(sexp* env, sexp* value) {
-  if (r_typeof(env) != r_type_environment) {
+  if (r_typeof(env) != R_TYPE_environment) {
     r_abort("`env` must be an environment.");
   }
   if (!r_is_bool(value)) {
@@ -408,7 +408,7 @@ sexp* rlang_env_browse(sexp* env, sexp* value) {
 }
 
 sexp* rlang_env_is_browsed(sexp* env) {
-  if (r_typeof(env) != r_type_environment) {
+  if (r_typeof(env) != R_TYPE_environment) {
     r_abort("`env` must be an environment.");
   }
   return r_lgl(RDEBUG(env));
@@ -444,17 +444,17 @@ sexp* rlang_is_function(sexp* x) {
 }
 
 sexp* rlang_is_closure(sexp* x) {
-  return r_shared_lgl(r_typeof(x) == r_type_closure);
+  return r_shared_lgl(r_typeof(x) == R_TYPE_closure);
 }
 
 sexp* rlang_is_primitive(sexp* x) {
   return r_shared_lgl(r_is_primitive(x));
 }
 sexp* rlang_is_primitive_lazy(sexp* x) {
-  return r_shared_lgl(r_typeof(x) == r_type_special);
+  return r_shared_lgl(r_typeof(x) == R_TYPE_special);
 }
 sexp* rlang_is_primitive_eager(sexp* x) {
-  return r_shared_lgl(r_typeof(x) == r_type_builtin);
+  return r_shared_lgl(r_typeof(x) == R_TYPE_builtin);
 }
 
 
@@ -660,18 +660,18 @@ sexp* rlang_unmark_object(sexp* x) {
 
 sexp* rlang_get_promise(sexp* x, sexp* env) {
   switch (r_typeof(x)) {
-  case r_type_promise:
+  case R_TYPE_promise:
     return x;
-  case r_type_character:
+  case R_TYPE_character:
     if (r_length(x) == 1) {
       x = r_sym(r_chr_get_c_string(x, 0));
     } else {
       goto error;
     }
     // fallthrough
-  case r_type_symbol: {
+  case R_TYPE_symbol: {
       sexp* prom = r_env_find_anywhere(env, x);
-      if (r_typeof(prom) == r_type_promise) {
+      if (r_typeof(prom) == R_TYPE_promise) {
         return prom;
       }
       // fallthrough
@@ -726,7 +726,7 @@ sexp* rlang_find_var(sexp* env, sexp* sym) {
 }
 
 sexp* rlang_chr_get(sexp* x, sexp* i) {
-  if (r_typeof(i) != r_type_integer || r_length(i) != 1) {
+  if (r_typeof(i) != R_TYPE_integer || r_length(i) != 1) {
     r_abort("`i` must be an integer value.");
   }
 
@@ -791,8 +791,8 @@ static r_ssize validate_n(sexp* n) {
   }
 
   switch (r_typeof(n)) {
-  case r_type_integer:
-  case r_type_double:
+  case R_TYPE_integer:
+  case R_TYPE_double:
     if (r_length(n) == 1) {
       break;
     }
@@ -806,12 +806,12 @@ static r_ssize validate_n(sexp* n) {
 
 static int validate_finite(sexp* finite) {
   switch (r_typeof(finite)) {
-  case r_type_null:
+  case R_TYPE_null:
     return -1;
-  case r_type_integer:
-  case r_type_double:
-    finite = r_vec_coerce(finite, r_type_logical);
-  case r_type_logical: {
+  case R_TYPE_integer:
+  case R_TYPE_double:
+    finite = r_vec_coerce(finite, R_TYPE_logical);
+  case R_TYPE_logical: {
     int value = r_lgl_get(finite, 0);
     if (value != r_lgls_na) {
       return r_lgl_get(finite, 0);
@@ -828,7 +828,7 @@ sexp* rlang_is_finite(sexp* x) {
 
 sexp* rlang_is_list(sexp* x, sexp* n_) {
   r_ssize n = validate_n(n_);
-  if (r_typeof(x) != r_type_list) {
+  if (r_typeof(x) != R_TYPE_list) {
     return r_false;
   }
   if (n < 0) {
@@ -875,7 +875,7 @@ sexp* rlang_is_raw(sexp* x, sexp* n_) {
 }
 
 sexp* rlang_is_string(sexp* x, sexp* string) {
-  if (r_typeof(x) != r_type_character || r_length(x) != 1) {
+  if (r_typeof(x) != R_TYPE_character || r_length(x) != 1) {
     return r_false;
   }
 
@@ -911,13 +911,13 @@ sexp* rlang_vec_resize(sexp* x, sexp* n) {
   r_ssize n_ssize = r_as_ssize(n);
 
   switch (r_typeof(x)) {
-  case r_type_logical: return r_lgl_resize(x, n_ssize);
-  case r_type_integer: return r_int_resize(x, n_ssize);
-  case r_type_double: return r_dbl_resize(x, n_ssize);
-  case r_type_complex: return r_cpl_resize(x, n_ssize);
-  case r_type_raw: return r_raw_resize(x, n_ssize);
-  case r_type_character: return r_chr_resize(x, n_ssize);
-  case r_type_list: return r_list_resize(x, n_ssize);
+  case R_TYPE_logical: return r_lgl_resize(x, n_ssize);
+  case R_TYPE_integer: return r_int_resize(x, n_ssize);
+  case R_TYPE_double: return r_dbl_resize(x, n_ssize);
+  case R_TYPE_complex: return r_cpl_resize(x, n_ssize);
+  case R_TYPE_raw: return r_raw_resize(x, n_ssize);
+  case R_TYPE_character: return r_chr_resize(x, n_ssize);
+  case R_TYPE_list: return r_list_resize(x, n_ssize);
   default: r_stop_unimplemented_type("rlang_vec_resize", r_typeof(x));
   }
 }
@@ -935,7 +935,7 @@ sexp* protect_missing(sexp* x) {
   // FIXME: Include in `exec_` functions?
   if (x == r_missing_arg ||
       x == r_syms_unbound ||
-      r_typeof(x) == r_type_promise) {
+      r_typeof(x) == R_TYPE_promise) {
     return r_expr_protect(x);
   } else {
     return x;
@@ -944,7 +944,7 @@ sexp* protect_missing(sexp* x) {
 
 // [[ register() ]]
 sexp* ffi_sexp_iterate(sexp* x, sexp* fn) {
-  struct r_dyn_array* p_out = r_new_dyn_vector(r_type_list, 256);
+  struct r_dyn_array* p_out = r_new_dyn_vector(R_TYPE_list, 256);
   KEEP(p_out->shelter);
 
   struct r_dict* p_dict = r_new_dict(1024);
@@ -972,7 +972,7 @@ sexp* ffi_sexp_iterate(sexp* x, sexp* fn) {
     enum r_node_direction dir = p_it->dir;
 
     if (dir == R_NODE_DIRECTION_incoming &&
-        type == r_type_environment &&
+        type == R_TYPE_environment &&
         !r_dict_put(p_dict, x, r_null)) {
       p_it->skip_incoming = true;
       continue;

@@ -4,11 +4,11 @@
 
 static bool is_callable(sexp* x) {
   switch (r_typeof(x)) {
-  case r_type_symbol:
-  case r_type_call:
-  case r_type_closure:
-  case r_type_builtin:
-  case r_type_special:
+  case R_TYPE_symbol:
+  case R_TYPE_call:
+  case R_TYPE_closure:
+  case R_TYPE_builtin:
+  case R_TYPE_special:
     return true;
   default:
     return false;
@@ -16,7 +16,7 @@ static bool is_callable(sexp* x) {
 }
 
 sexp* rlang_call2(sexp* fn, sexp* args, sexp* ns) {
-  if (r_typeof(fn) == r_type_character) {
+  if (r_typeof(fn) == R_TYPE_character) {
     if (r_length(fn) != 1) {
       r_abort("`.fn` must be a string, a symbol, a call, or a function");
     }
@@ -31,7 +31,7 @@ sexp* rlang_call2(sexp* fn, sexp* args, sexp* ns) {
     if (!r_is_string(ns)) {
       r_abort("`ns` must be a string");
     }
-    if (r_typeof(fn) != r_type_symbol) {
+    if (r_typeof(fn) != R_TYPE_symbol) {
       r_abort("`fn` must be a string or symbol when a namespace is supplied");
     }
     ns = r_sym(r_chr_get_c_string(ns, 0));

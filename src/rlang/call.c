@@ -21,9 +21,9 @@ bool r_is_call_any(sexp* x, const char** names, int n) {
 
 sexp* r_expr_protect(sexp* x) {
   switch (r_typeof(x)) {
-  case r_type_symbol:
-  case r_type_call:
-  case r_type_promise:
+  case R_TYPE_symbol:
+  case R_TYPE_call:
+  case R_TYPE_promise:
     return r_call2(quote_prim, x);
   default:
     return x;

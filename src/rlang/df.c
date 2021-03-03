@@ -12,7 +12,7 @@ sexp* r_alloc_df_list(r_ssize n_rows,
                       r_ssize types_size) {
   sexp* out = KEEP(r_new_list(types_size));
 
-  if (r_typeof(names) != r_type_character) {
+  if (r_typeof(names) != R_TYPE_character) {
     r_abort("`names` must be a character vector.");
   }
   if (r_length(names) != types_size) {
@@ -23,7 +23,7 @@ sexp* r_alloc_df_list(r_ssize n_rows,
   for (r_ssize i = 0; i < types_size; ++i) {
     // A nil type stands for no column allocation
     enum r_type type = v_types[i];
-    if (type != r_type_null) {
+    if (type != R_TYPE_null) {
       sexp* col = r_new_vector(type, n_rows);
       r_list_poke(out, i, col);
     }

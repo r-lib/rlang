@@ -28,13 +28,13 @@ struct expansion_info which_uq_op(sexp* first) {
     }
   }
 
-  if (r_typeof(first) != r_type_call) {
+  if (r_typeof(first) != R_TYPE_call) {
     return info;
   }
 
   sexp* head = r_node_car(first);
 
-  if (r_typeof(head) != r_type_symbol) {
+  if (r_typeof(head) != R_TYPE_symbol) {
     return info;
   }
 
@@ -167,7 +167,7 @@ static sexp* dot_data_sym = NULL;
 struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
   struct expansion_info info = which_uq_op(x);
 
-  if (r_typeof(x) != r_type_call) {
+  if (r_typeof(x) != R_TYPE_call) {
     return info;
   }
   if (info.op) {
@@ -325,7 +325,7 @@ sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
 
   switch (info.op) {
   case OP_EXPAND_NONE:
-    if (r_typeof(x) != r_type_call) {
+    if (r_typeof(x) != R_TYPE_call) {
       return x;
     } else {
       sexp* out = call_list_interp(x, env);
@@ -346,7 +346,7 @@ sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
     if (rlang_is_quosure(subscript)) {
       subscript = r_node_cadr(subscript);
     }
-    if (r_typeof(subscript) == r_type_symbol) {
+    if (r_typeof(subscript) == R_TYPE_symbol) {
       subscript = r_sym_as_character(subscript);
       r_node_poke_car(subscript_node, subscript);
     }
@@ -373,7 +373,7 @@ sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
 // Make (!!"foo")() and "foo"() equivalent
 static void call_maybe_poke_string_head(sexp* call) {
   sexp* head = r_node_car(call);
-  if (r_typeof(head) != r_type_character) {
+  if (r_typeof(head) != R_TYPE_character) {
     return ;
   }
 
@@ -415,7 +415,7 @@ sexp* rlang_interp(sexp* x, sexp* env) {
   if (!r_is_environment(env)) {
     r_abort("`env` must be an environment");
   }
-  if (r_typeof(x) != r_type_call) {
+  if (r_typeof(x) != R_TYPE_call) {
     return x;
   }
 

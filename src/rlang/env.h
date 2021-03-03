@@ -19,7 +19,7 @@ sexp* r_env_names(sexp* env) {
 
 static inline
 r_ssize r_env_length(sexp* env) {
-  if (r_typeof(env) != r_type_environment) {
+  if (r_typeof(env) != R_TYPE_environment) {
     r_abort("Expected an environment");
   }
   return Rf_xlength(env);

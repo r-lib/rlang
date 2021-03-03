@@ -71,7 +71,7 @@ static sexp* new_condition_names(sexp* data) {
     r_abort("Conditions can't have a `message` data field");
   }
 
-  sexp* nms = KEEP(r_new_vector(r_type_character, r_length(data) + 1));
+  sexp* nms = KEEP(r_new_vector(R_TYPE_character, r_length(data) + 1));
   r_chr_poke(nms, 0, r_str("message"));
   r_vec_poke_n(nms, 1, data_nms, 0, r_length(nms) - 1);
 
@@ -145,8 +145,8 @@ void r_interrupt() {
 
 enum r_condition_type r_cnd_type(sexp* cnd) {
   sexp* classes = r_class(cnd);
-  if (r_typeof(cnd) != r_type_list ||
-      r_typeof(classes) != r_type_character) {
+  if (r_typeof(cnd) != R_TYPE_list ||
+      r_typeof(classes) != R_TYPE_character) {
     goto error;
   }
 
