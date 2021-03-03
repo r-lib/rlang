@@ -944,8 +944,8 @@ sexp* protect_missing(sexp* x) {
 
 // [[ register() ]]
 sexp* ffi_sexp_iterate(sexp* x, sexp* fn) {
-  sexp* out = KEEP(r_new_node(r_null, r_null));
-  sexp* last = out;
+  struct r_dyn_array* p_out = r_new_dyn_vector(r_type_list, 256);
+  KEEP(p_out->shelter);
 
   struct r_dict* p_dict = r_new_dict(1024);
   KEEP(p_dict->shelter);
@@ -993,17 +993,10 @@ sexp* ffi_sexp_iterate(sexp* x, sexp* fn) {
                                    R_ARR_SIZEOF(args),
                                    r_base_env));
 
+    r_list_push_back(p_out, out);
     FREE(9);
-
-    sexp* node = r_new_node(out, r_null);
-    r_node_poke_cdr(last, node);
-    last = node;
   }
 
-  // FIXME: dyn-list
-  out = r_node_cdr(out);
-  out = r_vec_coerce(out, r_type_list);
-
   FREE(3);
-  return out;
+  return r_arr_unwrap(p_out);
 }
