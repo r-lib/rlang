@@ -152,7 +152,7 @@ sexp* rlang_dict_it_info(sexp* dict_it) {
 }
 sexp* rlang_dict_it_next(sexp* dict_it) {
   struct r_dict_iterator* p_dict_it = r_shelter_deref(dict_it);
-  return r_lgl(r_dict_it_next(p_dict_it));
+  return r_lgl(r_dict_next(p_dict_it));
 }
 
 

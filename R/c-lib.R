@@ -197,7 +197,7 @@ dict_it_info <- function(it) {
   .Call(c_ptr_dict_it_info, it)
 }
 dict_it_next <- function(it) {
-  .Call(c_ptr_dict_it_next, it)
+  .Call(c_ptr_dict_next, it)
 }
 
 

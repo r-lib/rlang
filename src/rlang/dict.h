@@ -49,7 +49,7 @@ struct r_dict_iterator {
 };
 
 struct r_dict_iterator* r_new_dict_iterator(struct r_dict* p_dict);
-bool r_dict_it_next(struct r_dict_iterator* p_it);
+bool r_dict_next(struct r_dict_iterator* p_it);
 
 
 #endif

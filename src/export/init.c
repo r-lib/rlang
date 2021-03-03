@@ -370,7 +370,7 @@ static const R_CallMethodDef r_callables[] = {
   {"c_ptr_list_poke",                   (DL_FUNC) &rlang_list_poke, 3},
   {"c_ptr_new_dict_iterator",           (DL_FUNC) &rlang_new_dict_iterator, 1},
   {"c_ptr_dict_it_info",                (DL_FUNC) &rlang_dict_it_info, 1},
-  {"c_ptr_dict_it_next",                (DL_FUNC) &rlang_dict_it_next, 1},
+  {"c_ptr_dict_next",                   (DL_FUNC) &rlang_dict_it_next, 1},
   {"c_ptr_dict_as_df_list",             (DL_FUNC) &rlang_dict_as_df_list, 1},
   {"c_ptr_dict_as_list",                (DL_FUNC) &rlang_dict_as_list, 1},
   {"ffi_new_dyn_list_of",               (DL_FUNC) &ffi_new_dyn_list_of, 3},

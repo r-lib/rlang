@@ -245,7 +245,7 @@ struct r_dict_iterator* r_new_dict_iterator(struct r_dict* p_dict) {
   return p_it;
 }
 
-bool r_dict_it_next(struct r_dict_iterator* p_it) {
+bool r_dict_next(struct r_dict_iterator* p_it) {
   if (p_it->v_buckets == NULL) {
     return false;
   }
@@ -301,7 +301,7 @@ sexp* r_dict_as_df_list(struct r_dict* p_dict) {
   struct r_dict_iterator* p_it = r_new_dict_iterator(p_dict);
   KEEP(p_it->shelter);
 
-  for (r_ssize i = 0; r_dict_it_next(p_it); ++i) {
+  for (r_ssize i = 0; r_dict_next(p_it); ++i) {
     r_list_poke(key, i, p_it->key);
     r_list_poke(value, i, p_it->value);
   }
@@ -315,7 +315,7 @@ sexp* r_dict_as_list(struct r_dict* p_dict) {
   struct r_dict_iterator* p_it = r_new_dict_iterator(p_dict);
   KEEP(p_it->shelter);
 
-  for (r_ssize i = 0; r_dict_it_next(p_it); ++i) {
+  for (r_ssize i = 0; r_dict_next(p_it); ++i) {
     r_list_poke(out, i, p_it->value);
   }
 
