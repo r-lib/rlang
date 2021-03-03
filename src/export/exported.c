@@ -152,7 +152,7 @@ sexp* rlang_dict_it_info(sexp* dict_it) {
 }
 sexp* rlang_dict_it_next(sexp* dict_it) {
   struct r_dict_iterator* p_dict_it = r_shelter_deref(dict_it);
-  return r_lgl(r_dict_it_next(p_dict_it));
+  return r_lgl(r_dict_next(p_dict_it));
 }
 
 
@@ -925,4 +925,78 @@ sexp* rlang_vec_resize(sexp* x, sexp* n) {
 sexp* rlang_list_poke(sexp* x, sexp* i, sexp* value) {
   r_list_poke(x, r_as_ssize(i), value);
   return r_null;
+}
+
+
+// walk.c
+
+static inline
+sexp* protect_missing(sexp* x) {
+  // FIXME: Include in `exec_` functions?
+  if (x == r_missing_arg ||
+      x == r_syms_unbound ||
+      r_typeof(x) == r_type_promise) {
+    return r_expr_protect(x);
+  } else {
+    return x;
+  }
+}
+
+// [[ register() ]]
+sexp* ffi_sexp_iterate(sexp* x, sexp* fn) {
+  struct r_dyn_array* p_out = r_new_dyn_vector(r_type_list, 256);
+  KEEP(p_out->shelter);
+
+  struct r_dict* p_dict = r_new_dict(1024);
+  KEEP(p_dict->shelter);
+
+  struct r_sexp_iterator* p_it = r_new_sexp_iterator(x);
+  KEEP(p_it->shelter);
+
+  for (int i = 0; r_sexp_next(p_it); ++i) {
+    if (i % 100 == 0) {
+      r_yield_interrupt();
+    }
+
+    if (p_it->x == r_global_env) {
+      p_it->skip_incoming = true;
+      continue;
+    }
+
+    sexp* x = p_it->x;
+    enum r_type type = p_it->type;
+    int depth = p_it->depth;
+    sexp* parent = p_it->parent;
+    enum r_node_relation rel = p_it->rel;
+    r_ssize i = p_it->i;
+    enum r_node_direction dir = p_it->dir;
+
+    if (dir == R_NODE_DIRECTION_incoming &&
+        type == r_type_environment &&
+        !r_dict_put(p_dict, x, r_null)) {
+      p_it->skip_incoming = true;
+      continue;
+    }
+
+    struct r_pair args[] = {
+      { r_sym("x"), KEEP(protect_missing(x)) },
+      { r_sym("addr"), KEEP(r_str_as_character(r_sexp_address(x))) },
+      { r_sym("type"), KEEP(protect_missing(parent)) },
+      { r_sym("depth"), KEEP(r_type_as_character(type)) },
+      { r_sym("parent"), KEEP(r_int(depth)) },
+      { r_sym("rel"), KEEP(r_chr(r_node_relation_as_c_string(rel))) },
+      { r_sym("i"), KEEP(r_int(i + 1)) },
+      { r_sym("dir"), KEEP(r_chr(r_node_direction_as_c_string(dir))) }
+    };
+    sexp* out = KEEP(r_exec_mask_n(r_sym("fn"), fn,
+                                   args,
+                                   R_ARR_SIZEOF(args),
+                                   r_base_env));
+
+    r_list_push_back(p_out, out);
+    FREE(9);
+  }
+
+  FREE(3);
+  return r_arr_unwrap(p_out);
 }

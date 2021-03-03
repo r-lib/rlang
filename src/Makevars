@@ -28,7 +28,8 @@ lib-files = \
         rlang/vec.c \
         rlang/vec-chr.c \
         rlang/vec-lgl.c \
-        rlang/vendor.c
+        rlang/vendor.c \
+        rlang/walk.c
 
 lib-cpp-files = \
         rlang/cpp/rlang.cpp \

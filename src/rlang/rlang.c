@@ -26,6 +26,7 @@
 #include "vec-chr.c"
 #include "vec-lgl.c"
 #include "vendor.c"
+#include "walk.c"
 
 
 // Allows long vectors to be indexed with doubles

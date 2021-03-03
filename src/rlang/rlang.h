@@ -43,6 +43,7 @@ r_ssize r_as_ssize(sexp* n);
 #include "vec-chr.h"
 #include "vec-lgl.h"
 #include "vendor.h"
+#include "walk.h"
 
 
 #endif

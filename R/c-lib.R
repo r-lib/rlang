@@ -197,7 +197,7 @@ dict_it_info <- function(it) {
   .Call(c_ptr_dict_it_info, it)
 }
 dict_it_next <- function(it) {
-  .Call(c_ptr_dict_it_next, it)
+  .Call(c_ptr_dict_next, it)
 }
 
 
@@ -284,4 +284,11 @@ list_compact <- function(x) {
 
 vec_resize <- function(x, n) {
   .Call(c_ptr_vec_resize, x, n) 
+}
+
+
+# walk.c
+
+sexp_iterate <- function(x, fn) {
+  .Call(ffi_sexp_iterate, x, fn)
 }
