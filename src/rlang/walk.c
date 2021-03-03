@@ -68,76 +68,46 @@ struct sexp_stack_info {
 };
 
 
-void sexp_iterate(sexp* x, sexp_iterator_fn* it, void* data) {
-  enum r_type type = r_typeof(x);
-  enum sexp_iterator_type it_type = sexp_iterator_type(type, x);
-  bool has_attrib = sexp_node_attrib(type, x) != r_null;
+struct r_sexp_iterator* r_new_sexp_iterator(sexp* root) {
+  sexp* shelter = KEEP(r_new_list(2));
 
-  if (it_type == SEXP_ITERATOR_TYPE_atomic && !has_attrib) {
-    it(data, x, type, 0, r_null, R_NODE_RELATION_root, 0, R_NODE_DIRECTION_leaf);
-    return;
-  }
+  sexp* it = r_new_raw(sizeof(struct r_sexp_iterator));
+  r_list_poke(shelter, 0, it);
+  struct r_sexp_iterator* p_it = r_raw_deref(it);
 
-  it(data, x, type, 0, r_null, R_NODE_RELATION_root, 0, R_NODE_DIRECTION_incoming);
-
-  // HERE
   struct r_dyn_array* p_stack = r_new_dyn_array(sizeof(struct sexp_stack_info), SEXP_STACK_INIT_SIZE);
-  KEEP(p_stack->shelter);
+  r_list_poke(shelter, 1, p_stack->shelter);
 
-  struct sexp_stack_info root = {
-    .x = x,
+  enum r_type type = r_typeof(root);
+  enum sexp_iterator_type it_type = sexp_iterator_type(type, root);
+  bool has_attrib = sexp_node_attrib(type, root) != r_null;
+
+  struct sexp_stack_info root_info = {
+    .x = root,
     .type = type,
-    .depth = 0,
+    .depth = -1,
     .parent = r_null,
     .rel = R_NODE_RELATION_root
   };
-  init_incoming_stack_info(&root, it_type, has_attrib);
 
-  r_arr_push_back(p_stack, &root);
-  sexp_iterate_recurse(p_stack, it, data);
+  if (it_type == SEXP_ITERATOR_TYPE_atomic && !has_attrib) {
+    root_info.p_state = NULL;
+    root_info.dir = R_NODE_DIRECTION_leaf;
+  } else {
+    init_incoming_stack_info(&root_info, it_type, has_attrib);
+  }
 
+  r_arr_push_back(p_stack, &root_info);
+
+  *p_it = (struct r_sexp_iterator) {
+    .shelter = shelter,
+    .p_stack = p_stack,
+    .x = r_null,
+    .parent = r_null,
+  };
+  
   FREE(1);
-}
-
-static
-void sexp_iterate_recurse(struct r_dyn_array* p_stack,
-                          sexp_iterator_fn* it,
-                          void* data) {
- recurse:
-  if (!p_stack->count) {
-    return;
-  }
-
-  struct sexp_stack_info info = sexp_stack_pop(p_stack);
-
-  r_ssize i = -1;
-  if (info.v_arr) {
-    i = info.v_arr_end - info.v_arr;
-  }
-
-  // Visit the node
-  enum r_sexp_iterate out = it(data,
-                               info.x,
-                               info.type,
-                               info.depth,
-                               info.parent,
-                               info.rel,
-                               i,
-                               info.dir);
-
-  switch (out) {
-  case R_SEXP_ITERATE_next:
-    break;
-  case R_SEXP_ITERATE_skip: {
-    if (info.dir == R_NODE_DIRECTION_incoming) {
-      r_arr_pop_back(p_stack);
-    }
-    break;
-  case R_SEXP_ITERATE_abort:
-    return;
-  }}
-
-  goto recurse;
+  return p_it;
 }
 
 /*
@@ -145,24 +115,73 @@ void sexp_iterate_recurse(struct r_dyn_array* p_stack,
  * outgoing node just need to be visited again and then popped. A
  * leaf node is just visited once and then popped.
  */
-static inline
-struct sexp_stack_info sexp_stack_pop(struct r_dyn_array* p_stack) {
-  struct sexp_stack_info* p_info = (struct sexp_stack_info*) r_arr_ptr_back(p_stack);
-
-  if (p_info->dir != R_NODE_DIRECTION_incoming) {
-    r_arr_pop_back(p_stack);
-    return *p_info;
+bool r_sexp_next(struct r_sexp_iterator* p_it) {
+  struct r_dyn_array* p_stack = p_it->p_stack;
+  if (!p_stack->count) {
+    return false;
   }
 
+  struct sexp_stack_info* p_info = (struct sexp_stack_info*) r_arr_ptr_back(p_stack);
+
+  if (p_it->skip_incoming) {
+    p_it->skip_incoming = false;
+
+    if (p_it->dir == R_NODE_DIRECTION_incoming) {
+      r_arr_pop_back(p_stack);
+      return r_sexp_next(p_it);
+    }
+  }
+
+  // In the normal case, if we push an "incoming" node on the stack it
+  // means that we have already visited it and we are now visiting its
+  // children. The root node is signalled with a depth of -1 so it can
+  // be visited first before being visited as an incoming node.
+  bool root = (p_info->depth == -1);
+
+  if (!root && p_info->dir == R_NODE_DIRECTION_incoming) {
+    return sexp_next_incoming(p_it, p_info);
+  }
+
+  r_ssize i = -1;
+  if (p_info->v_arr) {
+    i = p_info->v_arr_end - p_info->v_arr;
+  }
+  p_it->x = p_info->x;
+  p_it->type = p_info->type;
+  p_it->depth = p_info->depth;
+  p_it->parent = p_info->parent;
+  p_it->rel = p_info->rel;
+  p_it->i = i;
+  p_it->dir = p_info->dir;
+
+  if (root) {
+    ++p_it->depth;
+    ++p_info->depth;
+
+    // Incoming visit for the root node
+    if (p_it->dir == R_NODE_DIRECTION_incoming) {
+      return true;
+    }
+  }
+
+  r_arr_pop_back(p_stack);
+  return true;
+}
+
+static
+bool sexp_next_incoming(struct r_sexp_iterator* p_it,
+                        struct sexp_stack_info* p_info) {
   enum sexp_iterator_state state = *p_info->p_state;
+  sexp* x = p_info->x;
+  enum r_type type = p_info->type;
 
   struct sexp_stack_info child = { 0 };
-  child.parent = p_info->x;
+  child.parent = x;
   child.depth = p_info->depth + 1;
 
   switch (state) {
   case SEXP_ITERATOR_STATE_attrib:
-    child.x = r_attrib(p_info->x);
+    child.x = r_attrib(x);
     child.rel = R_NODE_RELATION_attrib;
     break;
   case SEXP_ITERATOR_STATE_elt:
@@ -170,16 +189,16 @@ struct sexp_stack_info sexp_stack_pop(struct r_dyn_array* p_stack) {
     child.rel = R_NODE_RELATION_list_elt;
     break;
   case SEXP_ITERATOR_STATE_tag:
-    child.x = sexp_node_tag(p_info->type, p_info->x, &child.rel);
+    child.x = sexp_node_tag(type, x, &child.rel);
     break;
   case SEXP_ITERATOR_STATE_car:
-    child.x = sexp_node_car(p_info->type, p_info->x, &child.rel);
+    child.x = sexp_node_car(type, x, &child.rel);
     break;
   case SEXP_ITERATOR_STATE_cdr:
-    child.x = sexp_node_cdr(p_info->type, p_info->x, &child.rel);
+    child.x = sexp_node_cdr(type, x, &child.rel);
     break;
   case SEXP_ITERATOR_STATE_done:
-    r_stop_unreached("sexp_stack_pop");
+    r_stop_unreached("r_sexp_next");
   }
 
   child.type = r_typeof(child.x);
@@ -195,7 +214,7 @@ struct sexp_stack_info sexp_stack_pop(struct r_dyn_array* p_stack) {
     // Push incoming node on the stack so it can be visited again,
     // either to descend its children or to visit it again on the
     // outgoing trip
-    r_arr_push_back(p_stack, &child);
+    r_arr_push_back(p_it->p_stack, &child);
   }
 
   // Bump state for next iteration
@@ -216,8 +235,21 @@ struct sexp_stack_info sexp_stack_pop(struct r_dyn_array* p_stack) {
     p_info->dir = R_NODE_DIRECTION_outgoing;
   }
 
-  return child;
+  r_ssize i = -1;
+  if (child.v_arr) {
+    i = child.v_arr_end - child.v_arr;
+  }
+
+  p_it->x = child.x;
+  p_it->type = child.type;
+  p_it->depth = child.depth;
+  p_it->parent = child.parent;
+  p_it->rel = child.rel;
+  p_it->i = i;
+  p_it->dir = child.dir;
+  return true;
 }
+
 
 static inline
 void init_incoming_stack_info(struct sexp_stack_info* p_info,

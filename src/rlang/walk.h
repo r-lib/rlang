@@ -83,17 +83,26 @@ enum r_node_raw_relation {
 };
 
 
-typedef
-enum r_sexp_iterate (sexp_iterator_fn)(void* data,
-                                       sexp* x,
-                                       enum r_type type,
-                                       int depth,
-                                       sexp* parent,
-                                       enum r_node_relation rel,
-                                       r_ssize i,
-                                       enum r_node_direction dir);
+struct r_sexp_iterator {
+  sexp* shelter;
+  bool skip_incoming;
 
-void sexp_iterate(sexp* x, sexp_iterator_fn* it, void* data);
+  sexp* x;
+  enum r_type type;
+  int depth;
+  sexp* parent;
+  enum r_node_relation rel;
+  r_ssize i;
+  enum r_node_direction dir;
+
+  /* private: */
+  struct r_dyn_array* p_stack;
+};
+
+struct r_sexp_iterator* r_new_sexp_iterator(sexp* root);
+
+bool r_sexp_next(struct r_sexp_iterator* p_it);
+bool r_sexp_skip(struct r_sexp_iterator* p_it);
 
 
 static inline

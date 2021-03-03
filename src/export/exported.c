@@ -930,12 +930,6 @@ sexp* rlang_list_poke(sexp* x, sexp* i, sexp* value) {
 
 // walk.c
 
-struct iterator_data {
-  sexp* fn;
-  sexp* last;
-  struct r_dict* p_dict;
-};
-
 static inline
 sexp* protect_missing(sexp* x) {
   // FIXME: Include in `exec_` functions?
@@ -948,78 +942,68 @@ sexp* protect_missing(sexp* x) {
   }
 }
 
-static
-enum r_sexp_iterate iterator(void* state,
-                             sexp* x,
-                             enum r_type type,
-                             int depth,
-                             sexp* parent,
-                             enum r_node_relation rel,
-                             r_ssize i,
-                             enum r_node_direction dir) {
-  struct iterator_data* p_data = (struct iterator_data*) state;
-
-  if (x == r_global_env) {
-    return R_SEXP_ITERATE_skip;
-  }
-
-  if (dir != R_NODE_DIRECTION_outgoing &&
-      r_typeof(x) == r_type_environment &&
-      !r_dict_put(p_data->p_dict, x, r_null)) {
-    return R_SEXP_ITERATE_skip;
-  }
-
-  sexp* obj_x = KEEP(protect_missing(x));
-  sexp* obj_addr = KEEP(r_str_as_character(r_sexp_address(x)));
-  sexp* obj_parent = KEEP(protect_missing(parent));
-  sexp* obj_type = KEEP(r_type_as_character(type));
-  sexp* obj_depth = KEEP(r_int(depth));
-  sexp* obj_rel = KEEP(r_chr(r_node_relation_as_c_string(rel)));
-  sexp* obj_i = KEEP(r_int(i + 1));
-  sexp* obj_dir = KEEP(r_chr(r_node_direction_as_c_string(dir)));
-
-  struct r_pair args[] = {
-    { r_sym("x"), obj_x },
-    { r_sym("addr"), obj_addr },
-    { r_sym("type"), obj_type },
-    { r_sym("depth"), obj_depth },
-    { r_sym("parent"), obj_parent },
-    { r_sym("rel"), obj_rel },
-    { r_sym("i"), obj_i },
-    { r_sym("dir"), obj_dir },
-  };
-
-  sexp* out = KEEP(r_exec_mask_n(r_sym("fn"), p_data->fn,
-                                 args,
-                                 R_ARR_SIZEOF(args),
-                                 r_base_env));
-
-  sexp* node = r_new_node(out, r_null);
-  r_node_poke_cdr(p_data->last, node);
-  p_data->last = node;
-
-  FREE(9);
-  return R_SEXP_ITERATE_next;
-}
-
 // [[ register() ]]
 sexp* ffi_sexp_iterate(sexp* x, sexp* fn) {
   sexp* out = KEEP(r_new_node(r_null, r_null));
+  sexp* last = out;
 
   struct r_dict* p_dict = r_new_dict(1024);
   KEEP(p_dict->shelter);
 
-  struct iterator_data data = {
-    .fn = fn,
-    .last = out,
-    .p_dict = p_dict
-  };
+  struct r_sexp_iterator* p_it = r_new_sexp_iterator(x);
+  KEEP(p_it->shelter);
 
-  sexp_iterate(x, &iterator, &data);
+  for (int i = 0; r_sexp_next(p_it); ++i) {
+    if (i % 100 == 0) {
+      r_yield_interrupt();
+    }
 
+    if (p_it->x == r_global_env) {
+      p_it->skip_incoming = true;
+      continue;
+    }
+
+    sexp* x = p_it->x;
+    enum r_type type = p_it->type;
+    int depth = p_it->depth;
+    sexp* parent = p_it->parent;
+    enum r_node_relation rel = p_it->rel;
+    r_ssize i = p_it->i;
+    enum r_node_direction dir = p_it->dir;
+
+    if (dir == R_NODE_DIRECTION_incoming &&
+        type == r_type_environment &&
+        !r_dict_put(p_dict, x, r_null)) {
+      p_it->skip_incoming = true;
+      continue;
+    }
+
+    struct r_pair args[] = {
+      { r_sym("x"), KEEP(protect_missing(x)) },
+      { r_sym("addr"), KEEP(r_str_as_character(r_sexp_address(x))) },
+      { r_sym("type"), KEEP(protect_missing(parent)) },
+      { r_sym("depth"), KEEP(r_type_as_character(type)) },
+      { r_sym("parent"), KEEP(r_int(depth)) },
+      { r_sym("rel"), KEEP(r_chr(r_node_relation_as_c_string(rel))) },
+      { r_sym("i"), KEEP(r_int(i + 1)) },
+      { r_sym("dir"), KEEP(r_chr(r_node_direction_as_c_string(dir))) }
+    };
+    sexp* out = KEEP(r_exec_mask_n(r_sym("fn"), fn,
+                                   args,
+                                   R_ARR_SIZEOF(args),
+                                   r_base_env));
+
+    FREE(9);
+
+    sexp* node = r_new_node(out, r_null);
+    r_node_poke_cdr(last, node);
+    last = node;
+  }
+
+  // FIXME: dyn-list
   out = r_node_cdr(out);
   out = r_vec_coerce(out, r_type_list);
 
-  FREE(2);
+  FREE(3);
   return out;
 }
