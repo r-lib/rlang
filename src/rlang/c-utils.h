@@ -83,10 +83,18 @@ r_ssize r_ssize_mult(r_ssize x, r_ssize y) {
 }
 
 static inline
+int r_int_min(int x, int y) {
+  return (y < x) ? y : x;
+}
+static inline
+int r_int_max(int x, int y) {
+  return (y < x) ? x : y;
+}
+
+static inline
 r_ssize r_ssize_min(r_ssize x, r_ssize y) {
   return (y < x) ? y : x;
 }
-
 static inline
 r_ssize r_ssize_max(r_ssize x, r_ssize y) {
   return (y < x) ? x : y;
