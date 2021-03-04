@@ -42,7 +42,7 @@ static sexp* ctxt_pronoun_class = NULL;
 static sexp* data_mask_env_sym = NULL;
 
 static sexp* rlang_new_data_pronoun(sexp* mask) {
-  sexp* pronoun = KEEP(r_new_vector(R_TYPE_list, 1));
+  sexp* pronoun = KEEP(r_alloc_list(1));
 
   r_list_poke(pronoun, 0, mask);
   r_attrib_poke(pronoun, r_syms_class, data_pronoun_class);
@@ -570,7 +570,7 @@ void rlang_init_eval_tidy() {
   ctxt_pronoun_class = r_chr("rlang_ctxt_pronoun");
   r_preserve(ctxt_pronoun_class);
 
-  empty_names_chr = r_new_vector(R_TYPE_character, 2);
+  empty_names_chr = r_alloc_character(2);
   r_preserve(empty_names_chr);
   r_chr_poke(empty_names_chr, 0, r_str(""));
   r_chr_poke(empty_names_chr, 1, r_strs_na);

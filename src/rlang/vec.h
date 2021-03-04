@@ -185,7 +185,7 @@ void r_list_poke(sexp* x, r_ssize i, sexp* y) {
 
 
 static inline
-sexp* r_new_vector(enum r_type type, r_ssize n) {
+sexp* r_alloc_vector(enum r_type type, r_ssize n) {
   return Rf_allocVector(type, n);
 }
 static inline
@@ -249,7 +249,7 @@ sexp* r_chr(const char* c_string) {
 }
 static inline
 sexp* r_list(sexp* x) {
-  sexp* out = r_new_vector(R_TYPE_list, 1);
+  sexp* out = r_alloc_list(1);
   r_list_poke(out, 0, x);
   return out;
 }
@@ -355,7 +355,7 @@ sexp* r_vec_n(enum r_type type, void* v_src, r_ssize n) {
   case R_TYPE_double:
   case R_TYPE_complex:
   case R_TYPE_raw: {
-    sexp* out = r_new_vector(type, n);
+    sexp* out = r_alloc_vector(type, n);
     memcpy(r_vec_deref(out), v_src, n * r_vec_elt_sizeof0(type));
     return out;
   }
@@ -391,7 +391,7 @@ sexp* r_raw_n(int* v_src, r_ssize n) {
 
 static inline
 sexp* r_copy_in_raw(const void* src, size_t size) {
-  sexp* out = r_new_vector(R_TYPE_raw, size);
+  sexp* out = r_alloc_raw(size);
   memcpy(r_raw_deref(out), src, size);
   return out;
 }

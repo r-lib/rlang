@@ -24,7 +24,7 @@ sexp* r_alloc_df_list(r_ssize n_rows,
     // A nil type stands for no column allocation
     enum r_type type = v_types[i];
     if (type != R_TYPE_null) {
-      sexp* col = r_new_vector(type, n_rows);
+      sexp* col = r_alloc_vector(type, n_rows);
       r_list_poke(out, i, col);
     }
   }

@@ -57,7 +57,7 @@ sexp* rlang_env_get_list(sexp* env, sexp* nms, sexp* inherit, sexp* closure_env)
   bool c_inherit = r_lgl_get(inherit, 0);
   r_ssize n = r_length(nms);
 
-  sexp* out = KEEP(r_new_vector(R_TYPE_list, n));
+  sexp* out = KEEP(r_alloc_list(n));
   r_attrib_poke_names(out, nms);
 
   sexp* const * p_nms = r_chr_deref_const(nms);
@@ -84,7 +84,7 @@ sexp* rlang_env_has(sexp* env, sexp* nms, sexp* inherit) {
   }
 
   r_ssize n = r_length(nms);
-  sexp* out = KEEP(r_new_vector(R_TYPE_logical, n));
+  sexp* out = KEEP(r_alloc_logical(n));
 
   int* p_out = r_lgl_deref(out);
   sexp* const * p_nms = r_chr_deref_const(nms);
@@ -205,7 +205,7 @@ sexp* rlang_env_bind(sexp* env,
 
   sexp* old = r_null;
   if (c_needs_old) {
-    old = KEEP(r_new_vector(R_TYPE_list, n));
+    old = KEEP(r_alloc_list(n));
     r_attrib_poke_names(old, names);
   } else {
     KEEP(old);

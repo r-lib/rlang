@@ -39,7 +39,7 @@ struct r_dyn_list_of* r_new_dyn_list_of(enum r_type type,
   struct r_dyn_array* p_moved_shelter_arr = r_new_dyn_vector(R_TYPE_list, R_DYN_LOF_INIT_SIZE);
   r_list_poke(shelter, SHELTER_DYN_LOF_moved_shelter_arr, p_moved_shelter_arr->shelter);
 
-  sexp* reserve = r_new_vector(type, r_ssize_mult(capacity, width));
+  sexp* reserve = r_alloc_vector(type, r_ssize_mult(capacity, width));
   r_list_poke(shelter, SHELTER_DYN_LOF_reserve, reserve);
   void* v_reserve = r_vec_deref(reserve);
 

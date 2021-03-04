@@ -16,7 +16,7 @@ struct r_dyn_array* r_new_dyn_vector(enum r_type type,
   sexp* vec_raw = r_alloc_raw(sizeof(struct r_dyn_array));
   r_list_poke(shelter, 0, vec_raw);
 
-  sexp* vec_data = r_new_vector(type, capacity);
+  sexp* vec_data = r_alloc_vector(type, capacity);
   r_list_poke(shelter, 1, vec_data);
 
   struct r_dyn_array* p_vec = r_raw_deref(vec_raw);

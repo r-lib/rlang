@@ -2,11 +2,11 @@
 
 
 sexp* new_preserved_empty_list() {
-  sexp* empty_list = r_new_vector(R_TYPE_list, 0);
+  sexp* empty_list = r_alloc_list(0);
   r_preserve(empty_list);
   r_mark_shared(empty_list);
 
-  sexp* nms = KEEP(r_new_vector(R_TYPE_character, 0));
+  sexp* nms = KEEP(r_alloc_character(0));
   r_attrib_poke_names(empty_list, nms);
   FREE(1);
 

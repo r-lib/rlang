@@ -30,7 +30,7 @@ sexp* rlang_raw_deparse_str(sexp* x, sexp* prefix, sexp* suffix) {
 
   r_ssize len = len_prefix + (2 * len_data) + len_suffix;
 
-  sexp* buf = KEEP(r_new_vector(R_TYPE_raw, len));
+  sexp* buf = KEEP(r_alloc_raw(len));
   char* p_buf = (char*) r_raw_deref(buf);
 
   memcpy(p_buf, s_prefix, len_prefix);

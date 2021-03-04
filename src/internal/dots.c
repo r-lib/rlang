@@ -22,7 +22,7 @@ static sexp* splice_box_attrib = NULL;
 static sexp* quosures_attrib = NULL;
 
 sexp* rlang_new_splice_box(sexp* x) {
-  sexp* out = KEEP(r_new_vector(R_TYPE_list, 1));
+  sexp* out = KEEP(r_alloc_list(1));
   r_list_poke(out, 0, x);
   r_poke_attrib(out, splice_box_attrib);
   r_mark_object(out);
@@ -592,12 +592,12 @@ static void check_named_splice(sexp* node) {
 sexp* dots_as_list(sexp* dots, struct dots_capture_info* capture_info) {
   int n_kept = 0;
 
-  sexp* out = KEEP_N(r_new_vector(R_TYPE_list, capture_info->count), &n_kept);
+  sexp* out = KEEP_N(r_alloc_list(capture_info->count), &n_kept);
 
   // Add default empty names unless dots are captured by values
   sexp* out_names = r_null;
   if (capture_info->type != DOTS_VALUE || any_name(dots, capture_info->splice)) {
-    out_names = KEEP_N(r_new_vector(R_TYPE_character, capture_info->count), &n_kept);
+    out_names = KEEP_N(r_alloc_character(capture_info->count), &n_kept);
     r_attrib_push(out, r_syms_names, out_names);
   }
 
@@ -691,8 +691,8 @@ static sexp* dots_keep(sexp* dots, sexp* nms, bool first) {
   sexp* dups = KEEP(nms_are_duplicated(nms, !first));
   r_ssize out_n = n - r_lgl_sum(dups, false);
 
-  sexp* out = KEEP(r_new_vector(R_TYPE_list, out_n));
-  sexp* out_nms = KEEP(r_new_vector(R_TYPE_character, out_n));
+  sexp* out = KEEP(r_alloc_list(out_n));
+  sexp* out_nms = KEEP(r_alloc_character(out_n));
   r_attrib_push(out, r_syms_names, out_nms);
 
   sexp* const * p_nms = r_chr_deref_const(nms);
@@ -740,7 +740,7 @@ static sexp* dots_finalise(struct dots_capture_info* capture_info, sexp* dots) {
 
   if (capture_info->type == DOTS_VALUE && should_auto_name(capture_info->named)) {
     if (nms == r_null) {
-      nms = r_new_vector(R_TYPE_character, r_length(dots));
+      nms = r_alloc_character(r_length(dots));
     }
   }
   KEEP(nms);
@@ -1015,7 +1015,7 @@ void rlang_init_dots(sexp* ns) {
   r_preserve(abort_dots_homonyms_call);
 
   {
-    sexp* splice_box_class = KEEP(r_new_vector(R_TYPE_character, 2));
+    sexp* splice_box_class = KEEP(r_alloc_character(2));
     r_chr_poke(splice_box_class, 0, r_str("rlang_box_splice"));
     r_chr_poke(splice_box_class, 1, r_str("rlang_box"));
 
@@ -1028,7 +1028,7 @@ void rlang_init_dots(sexp* ns) {
   }
 
   {
-    sexp* list = KEEP(r_new_vector(R_TYPE_list, 0));
+    sexp* list = KEEP(r_alloc_list(0));
     empty_spliced_arg = rlang_new_splice_box(list);
     r_preserve(empty_spliced_arg);
     r_mark_shared(empty_spliced_arg);
@@ -1036,7 +1036,7 @@ void rlang_init_dots(sexp* ns) {
   }
 
   {
-    sexp* quosures_class = KEEP(r_new_vector(R_TYPE_character, 2));
+    sexp* quosures_class = KEEP(r_alloc_character(2));
     r_chr_poke(quosures_class, 0, r_str("quosures"));
     r_chr_poke(quosures_class, 1, r_str("list"));
 

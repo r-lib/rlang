@@ -18,7 +18,7 @@ sexp* r_false = NULL;
 
 
 sexp* r_chr_n(const char* const * strings, r_ssize n) {
-  sexp* out = KEEP(r_new_vector(R_TYPE_character, n));
+  sexp* out = KEEP(r_alloc_character(n));
 
   for (r_ssize i = 0; i < n; ++i) {
     r_chr_poke(out, i, r_str(strings[i]));
@@ -48,7 +48,7 @@ sexp* r_chr_n(const char* const * strings, r_ssize n) {
     }                                                           \
                                                                 \
     const C_TYPE* p_x = CONST_DEREF(x);                         \
-    sexp* out = KEEP(r_new_vector(R_TYPE, size));               \
+    sexp* out = KEEP(r_alloc_vector(R_TYPE, size));               \
     C_TYPE* p_out = DEREF(out);                                 \
                                                                 \
     r_ssize cpy_size = (size > x_size) ? x_size : size;         \
@@ -72,7 +72,7 @@ sexp* r_chr_n(const char* const * strings, r_ssize n) {
     }                                                           \
                                                                 \
     sexp* const * p_x = CONST_DEREF(x);                         \
-    sexp* out = KEEP(r_new_vector(R_TYPE, size));               \
+    sexp* out = KEEP(r_alloc_vector(R_TYPE, size));               \
                                                                 \
     r_ssize cpy_size = (size > x_size) ? x_size : size;         \
     for (r_ssize i = 0; i < cpy_size; ++i) {                    \

@@ -11,7 +11,7 @@ bool r_env_binding_is_active(sexp* env, sexp* sym) {
 }
 
 static sexp* new_binding_types(r_ssize n) {
-  sexp* types = r_new_vector(R_TYPE_integer, n);
+  sexp* types = r_alloc_integer(n);
 
   int* types_ptr = r_int_deref(types);
   memset(types_ptr, 0, n * sizeof *types_ptr);

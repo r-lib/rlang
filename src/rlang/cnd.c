@@ -71,7 +71,7 @@ static sexp* new_condition_names(sexp* data) {
     r_abort("Conditions can't have a `message` data field");
   }
 
-  sexp* nms = KEEP(r_new_vector(R_TYPE_character, r_length(data) + 1));
+  sexp* nms = KEEP(r_alloc_character(r_length(data) + 1));
   r_chr_poke(nms, 0, r_str("message"));
   r_vec_poke_n(nms, 1, data_nms, 0, r_length(nms) - 1);
 
@@ -86,7 +86,7 @@ sexp* r_new_condition(sexp* subclass, sexp* msg, sexp* data) {
   }
 
   r_ssize n_data = r_length(data);
-  sexp* cnd = KEEP(r_new_vector(VECSXP, n_data + 1));
+  sexp* cnd = KEEP(r_alloc_list(n_data + 1));
 
   r_list_poke(cnd, 0, msg);
   r_vec_poke_n(cnd, 1, data, 0, r_length(cnd) - 1);

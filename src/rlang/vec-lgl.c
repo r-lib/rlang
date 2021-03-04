@@ -39,7 +39,7 @@ sexp* r_lgl_which(sexp* x, bool na_propagate) {
     r_abort("Internal error: Can't fit result of `r_lgl_which()` in an integer vector");
   }
 
-  sexp* which = KEEP(r_new_vector(R_TYPE_integer, which_n));
+  sexp* which = KEEP(r_alloc_integer(which_n));
   int* p_which = r_int_deref(which);
 
   for (int i = 0; i < n; ++i) {
