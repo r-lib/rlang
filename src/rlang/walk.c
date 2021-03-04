@@ -69,9 +69,9 @@ struct sexp_stack_info {
 
 
 struct r_sexp_iterator* r_new_sexp_iterator(sexp* root) {
-  sexp* shelter = KEEP(r_new_list(2));
+  sexp* shelter = KEEP(r_alloc_list(2));
 
-  sexp* it = r_new_raw(sizeof(struct r_sexp_iterator));
+  sexp* it = r_alloc_raw(sizeof(struct r_sexp_iterator));
   r_list_poke(shelter, 0, it);
   struct r_sexp_iterator* p_it = r_raw_deref(it);
 

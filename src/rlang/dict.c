@@ -24,7 +24,7 @@ static size_t size_round_power_2(size_t size);
 
 static
 sexp* new_bucket(sexp* key, sexp* value) {
-  sexp* bucket = r_new_list(3);
+  sexp* bucket = r_alloc_list(3);
   DICT_POKE_KEY(bucket, key);
   DICT_POKE_VALUE(bucket, value);
   return bucket;
@@ -36,15 +36,15 @@ struct r_dict* r_new_dict(r_ssize size) {
   }
   size = size_round_power_2(size);
 
-  sexp* shelter = KEEP(r_new_list(2));
+  sexp* shelter = KEEP(r_alloc_list(2));
 
-  sexp* dict_raw = r_new_raw0(sizeof(struct r_dict));
+  sexp* dict_raw = r_alloc_raw0(sizeof(struct r_dict));
   r_list_poke(shelter, 0, dict_raw);
   struct r_dict* p_dict = r_raw_deref(dict_raw);
 
   p_dict->shelter = shelter;
 
-  p_dict->buckets = r_new_list(size);
+  p_dict->buckets = r_alloc_list(size);
   r_list_poke(shelter, 1, p_dict->buckets);
 
   p_dict->p_buckets = r_list_deref_const(p_dict->buckets);
@@ -227,7 +227,7 @@ sexp* dict_find_node_info(struct r_dict* p_dict,
 
 
 struct r_dict_iterator* r_new_dict_iterator(struct r_dict* p_dict) {
-  sexp* shelter = r_new_raw(sizeof(struct r_dict_iterator));
+  sexp* shelter = r_alloc_raw(sizeof(struct r_dict_iterator));
   struct r_dict_iterator* p_it = r_raw_deref(shelter);
 
   p_it->shelter = shelter;
@@ -310,7 +310,7 @@ sexp* r_dict_as_df_list(struct r_dict* p_dict) {
   return out;
 }
 sexp* r_dict_as_list(struct r_dict* p_dict) {
-  sexp* out = KEEP(r_new_list(p_dict->n_entries));
+  sexp* out = KEEP(r_alloc_list(p_dict->n_entries));
 
   struct r_dict_iterator* p_it = r_new_dict_iterator(p_dict);
   KEEP(p_it->shelter);

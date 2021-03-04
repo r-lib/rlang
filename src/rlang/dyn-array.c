@@ -9,11 +9,11 @@ sexp* attribs_dyn_array = NULL;
 
 struct r_dyn_array* r_new_dyn_vector(enum r_type type,
                                      r_ssize capacity) {
-  sexp* shelter = KEEP(r_new_list(2));
+  sexp* shelter = KEEP(r_alloc_list(2));
   r_poke_attrib(shelter, attribs_dyn_array);
   r_mark_object(shelter);
 
-  sexp* vec_raw = r_new_raw(sizeof(struct r_dyn_array));
+  sexp* vec_raw = r_alloc_raw(sizeof(struct r_dyn_array));
   r_list_poke(shelter, 0, vec_raw);
 
   sexp* vec_data = r_new_vector(type, capacity);

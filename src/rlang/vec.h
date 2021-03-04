@@ -189,37 +189,37 @@ sexp* r_new_vector(enum r_type type, r_ssize n) {
   return Rf_allocVector(type, n);
 }
 static inline
-sexp* r_new_logical(r_ssize n) {
+sexp* r_alloc_logical(r_ssize n) {
   return Rf_allocVector(R_TYPE_logical, n);
 }
 static inline
-sexp* r_new_integer(r_ssize n) {
+sexp* r_alloc_integer(r_ssize n) {
   return Rf_allocVector(R_TYPE_integer, n);
 }
 static inline
-sexp* r_new_double(r_ssize n) {
+sexp* r_alloc_double(r_ssize n) {
   return Rf_allocVector(R_TYPE_double, n);
 }
 static inline
-sexp* r_new_complex(r_ssize n) {
+sexp* r_alloc_complex(r_ssize n) {
   return Rf_allocVector(R_TYPE_complex, n);
 }
 static inline
-sexp* r_new_raw(r_ssize n) {
+sexp* r_alloc_raw(r_ssize n) {
   return Rf_allocVector(R_TYPE_raw, n);
 }
 static inline
-sexp* r_new_character(r_ssize n) {
+sexp* r_alloc_character(r_ssize n) {
   return Rf_allocVector(R_TYPE_character, n);
 }
 static inline
-sexp* r_new_list(r_ssize n) {
+sexp* r_alloc_list(r_ssize n) {
   return Rf_allocVector(R_TYPE_list, n);
 }
 
 static inline
-sexp* r_new_raw0(r_ssize n) {
-  sexp* out = r_new_raw(n);
+sexp* r_alloc_raw0(r_ssize n) {
+  sexp* out = r_alloc_raw(n);
 
   unsigned char* p_out = (unsigned char*) r_raw_deref(out);
   memset(p_out, 0, n);

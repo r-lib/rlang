@@ -113,7 +113,7 @@ sexp* r_list_resize(sexp* x, r_ssize size) {
 
 sexp* r_list_compact(sexp* x) {
   r_ssize n = r_length(x);
-  sexp* inc = KEEP(r_new_logical(n));
+  sexp* inc = KEEP(r_alloc_logical(n));
 
   int* v_inc = r_int_deref(inc);
   sexp* const * v_x = r_list_deref_const(x);
@@ -124,7 +124,7 @@ sexp* r_list_compact(sexp* x) {
     new_n += v_inc[i];
   }
 
-  sexp* out = KEEP(r_new_list(new_n));
+  sexp* out = KEEP(r_alloc_list(new_n));
   for (r_ssize i = 0, count = 0; i < n; ++i) {
     if (v_inc[i]) {
       r_list_poke(out, count, v_x[i]);
@@ -144,7 +144,7 @@ sexp* r_list_of_as_ptr_ssize(sexp* xs,
   }
   r_ssize n = r_length(xs);
 
-  sexp* shelter = KEEP(r_new_raw(sizeof(struct r_pair_ptr_ssize) * n));
+  sexp* shelter = KEEP(r_alloc_raw(sizeof(struct r_pair_ptr_ssize) * n));
   struct r_pair_ptr_ssize* v_out = r_raw_deref(shelter);
 
   sexp* const * v_xs = r_list_deref_const(xs);
@@ -243,13 +243,13 @@ void r_vec_poke_range(sexp* x, r_ssize offset,
 
 
 void r_init_library_vec() {
-  r_lgls_empty = r_preserve_global(r_new_logical(0));
-  r_ints_empty = r_preserve_global(r_new_integer(0));
-  r_dbls_empty = r_preserve_global(r_new_double(0));
-  r_cpls_empty = r_preserve_global(r_new_complex(0));
-  r_raws_empty = r_preserve_global(r_new_raw(0));
-  r_chrs_empty = r_preserve_global(r_new_character(0));
-  r_lists_empty = r_preserve_global(r_new_list(0));
+  r_lgls_empty = r_preserve_global(r_alloc_logical(0));
+  r_ints_empty = r_preserve_global(r_alloc_integer(0));
+  r_dbls_empty = r_preserve_global(r_alloc_double(0));
+  r_cpls_empty = r_preserve_global(r_alloc_complex(0));
+  r_raws_empty = r_preserve_global(r_alloc_raw(0));
+  r_chrs_empty = r_preserve_global(r_alloc_character(0));
+  r_lists_empty = r_preserve_global(r_alloc_list(0));
 
   r_chrs_empty_string = r_preserve_global(r_chr(""));
   r_strs_empty = r_chr_get(r_chrs_empty_string, 0);

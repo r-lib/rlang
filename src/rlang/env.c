@@ -47,7 +47,7 @@ static sexp* new_env_call = NULL;
 static sexp* new_env__parent_node = NULL;
 static sexp* new_env__size_node = NULL;
 
-sexp* r_new_environment(sexp* parent, r_ssize size) {
+sexp* r_alloc_environment(sexp* parent, r_ssize size) {
   parent = parent ? parent : r_empty_env;
   r_node_poke_car(new_env__parent_node, parent);
 

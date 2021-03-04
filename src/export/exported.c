@@ -140,7 +140,7 @@ sexp* rlang_dict_it_info(sexp* dict_it) {
   };
   int n = R_ARR_SIZEOF(v_nms);
 
-  sexp* info = KEEP(r_new_list(n));
+  sexp* info = KEEP(r_alloc_list(n));
   r_attrib_poke_names(info, r_chr_n(v_nms, n));
   r_list_poke(info, 0, p_it->key);
   r_list_poke(info, 1, p_it->value);
@@ -192,7 +192,7 @@ sexp* rlang_arr_info(sexp* arr_sexp) {
   };
   int info_n = R_ARR_SIZEOF(names_c_strs);
 
-  sexp* info = KEEP(r_new_list(info_n));
+  sexp* info = KEEP(r_alloc_list(info_n));
 
   sexp* nms = r_chr_n(names_c_strs, info_n);
   r_attrib_poke_names(info, nms);
@@ -288,7 +288,7 @@ const char* info_lof_c_strs[INFO_LOF_SIZE] = {
 sexp* ffi_lof_info(sexp* lof) {
   struct r_dyn_list_of* p_lof = r_shelter_deref(lof);
 
-  sexp* info = KEEP(r_new_list(INFO_LOF_SIZE));
+  sexp* info = KEEP(r_alloc_list(INFO_LOF_SIZE));
 
   sexp* nms = r_chr_n(info_lof_c_strs, INFO_LOF_SIZE);
   r_attrib_poke_names(info, nms);

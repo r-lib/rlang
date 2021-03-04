@@ -51,7 +51,7 @@ static sexp* rlang_new_data_pronoun(sexp* mask) {
   return pronoun;
 }
 static sexp* rlang_new_ctxt_pronoun(sexp* top) {
-  sexp* pronoun = KEEP(r_new_environment(r_env_parent(top), 0));
+  sexp* pronoun = KEEP(r_alloc_environment(r_env_parent(top), 0));
 
   r_attrib_poke(pronoun, r_syms_class, ctxt_pronoun_class);
 
@@ -145,7 +145,7 @@ static sexp* restore_mask_fn = NULL;
 static void on_exit_restore_lexical_env(sexp* mask, sexp* old, sexp* frame) {
   sexp* fn = KEEP(r_clone(restore_mask_fn));
 
-  sexp* env = KEEP(r_new_environment(r_base_env, 2));
+  sexp* env = KEEP(r_alloc_environment(r_base_env, 2));
   r_env_poke(env, mask_sym, mask);
   r_env_poke(env, old_sym, old);
   r_fn_poke_env(fn, env);
@@ -160,14 +160,14 @@ sexp* rlang_new_data_mask(sexp* bottom, sexp* top) {
   sexp* data_mask;
 
   if (bottom == r_null) {
-    bottom = KEEP(r_new_environment(r_empty_env, 100));
+    bottom = KEEP(r_alloc_environment(r_empty_env, 100));
     data_mask = bottom;
   } else {
     check_data_mask_input(bottom, "bottom");
     // Create a child because we don't know what might be in `bottom`
     // and we need to clear its contents without deleting any object
     // created in the data mask environment
-    data_mask = KEEP(r_new_environment(bottom, 100));
+    data_mask = KEEP(r_alloc_environment(bottom, 100));
   }
 
   if (top == r_null) {
@@ -307,7 +307,7 @@ sexp* rlang_as_data_mask(sexp* data) {
     sexp* names = r_names(data);
 
     r_ssize n_mask = mask_length(r_length(data));
-    bottom = KEEP_N(r_new_environment(r_empty_env, n_mask), &n_kept);
+    bottom = KEEP_N(r_alloc_environment(r_empty_env, n_mask), &n_kept);
 
     if (names != r_null) {
       r_ssize n = r_length(data);
@@ -487,7 +487,7 @@ sexp* rlang_data_mask_clean(sexp* mask) {
 
 
 static sexp* new_quosure_mask(sexp* env) {
-  sexp* mask = KEEP(r_new_environment(env, 3));
+  sexp* mask = KEEP(r_alloc_environment(env, 3));
   r_env_poke(mask, r_syms_tilde, tilde_fn);
   r_env_poke(mask, quo_mask_flag_sym, mask);
   FREE(1);

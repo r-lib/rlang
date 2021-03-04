@@ -41,7 +41,7 @@ void r_unpreserve(sexp* x) {
 
 static
 sexp* new_precious_stack(sexp* x) {
-  sexp* stack = KEEP(r_new_list(2));
+  sexp* stack = KEEP(r_alloc_list(2));
 
   // Store (0) protection count and (1) element to protect
   r_list_poke(stack, 0, r_int(0));

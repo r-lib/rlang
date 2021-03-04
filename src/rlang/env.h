@@ -64,7 +64,7 @@ bool r_env_has_anywhere(sexp* env, sexp* sym) {
 sexp* r_ns_env(const char* pkg);
 sexp* r_base_ns_get(const char* name);
 
-sexp* r_new_environment(sexp* parent, r_ssize size);
+sexp* r_alloc_environment(sexp* parent, r_ssize size);
 
 sexp* r_env_as_list(sexp* x);
 sexp* r_list_as_environment(sexp* x, sexp* parent);
