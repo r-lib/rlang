@@ -2,7 +2,7 @@
 
 
 sexp* r_eval_with_x(sexp* call, sexp* x, sexp* parent) {
-  sexp* env = KEEP(r_alloc_environment(parent, 1));
+  sexp* env = KEEP(r_alloc_environment(1, parent));
   r_env_poke(env, r_syms_x, x);
 
   sexp* out = r_eval(call, env);
@@ -11,7 +11,7 @@ sexp* r_eval_with_x(sexp* call, sexp* x, sexp* parent) {
   return out;
 }
 sexp* r_eval_with_xy(sexp* call, sexp* x, sexp* y, sexp* parent) {
-  sexp* env = KEEP(r_alloc_environment(parent, 1));
+  sexp* env = KEEP(r_alloc_environment(1, parent));
   r_env_poke(env, r_syms_x, x);
   r_env_poke(env, r_syms_y, y);
 
@@ -21,7 +21,7 @@ sexp* r_eval_with_xy(sexp* call, sexp* x, sexp* y, sexp* parent) {
   return out;
 }
 sexp* r_eval_with_xyz(sexp* call, sexp* x, sexp* y, sexp* z, sexp* parent) {
-  sexp* env = KEEP(r_alloc_environment(parent, 1));
+  sexp* env = KEEP(r_alloc_environment(1, parent));
   r_env_poke(env, r_syms_x, x);
   r_env_poke(env, r_syms_y, y);
   r_env_poke(env, r_syms_z, z);
@@ -32,7 +32,7 @@ sexp* r_eval_with_xyz(sexp* call, sexp* x, sexp* y, sexp* z, sexp* parent) {
   return out;
 }
 sexp* r_eval_with_wxyz(sexp* call, sexp* w, sexp* x, sexp* y, sexp* z, sexp* parent) {
-  sexp* env = KEEP(r_alloc_environment(parent, 1));
+  sexp* env = KEEP(r_alloc_environment(1, parent));
   r_env_poke(env, r_syms_w, w);
   r_env_poke(env, r_syms_x, x);
   r_env_poke(env, r_syms_y, y);
@@ -105,7 +105,7 @@ sexp* r_exec_mask_n(sexp* fn_sym,
                     const struct r_pair* args,
                     int n,
                     sexp* parent) {
-  sexp* mask = KEEP(r_alloc_environment(parent, n + 1));
+  sexp* mask = KEEP(r_alloc_environment(n + 1, parent));
   sexp* call = KEEP(r_exec_mask_n_call_poke(fn_sym, fn, args, n, mask));
 
   sexp* out = r_eval(call, mask);
