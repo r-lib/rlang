@@ -2,6 +2,11 @@
 #define RLANG_GLOBALS_H
 
 
+struct r_globals_classes {
+  sexp* data_frame;
+  sexp* tibble;
+};
+
 struct r_globals_syms {
   sexp* class;
   sexp* dots;
@@ -24,6 +29,7 @@ struct r_globals_syms {
   sexp* z;
 };
 
+extern struct r_globals_classes r_classes;
 extern struct r_globals_syms r_syms;
 
 

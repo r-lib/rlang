@@ -61,10 +61,10 @@ r_ssize r_as_ssize(sexp* n) {
 void r_init_rlang_ns_env();
 void r_init_library_call();
 void r_init_library_cnd();
-void r_init_library_df();
 void r_init_library_dyn_array();
 void r_init_library_env();
 void r_init_library_fn();
+void r_init_library_globals();
 void r_init_library_globals_syms();
 void r_init_library_session();
 void r_init_library_sexp(sexp*);
@@ -90,11 +90,11 @@ sexp* r_init_library(sexp* ns) {
   r_init_library_vendor(); // Needed for xxh used in `r_preserve()`
   r_init_library_globals_syms();
   r_init_library_sexp(ns);
+  r_init_library_globals();
 
   r_init_rlang_ns_env();
   r_init_library_call();
   r_init_library_cnd();
-  r_init_library_df();
   r_init_library_dyn_array();
   r_init_library_env();
   r_init_library_fn();

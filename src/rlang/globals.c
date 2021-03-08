@@ -2,8 +2,17 @@
 #include "sym.h"
 
 
+struct r_globals_classes r_classes;
 struct r_globals_syms r_syms;
 
+
+void r_init_library_globals() {
+  r_classes.data_frame = r_preserve_global(r_chr("data.frame"));
+
+  const char* v_tibble_class[] = { "tbl_df", "tbl", "data.frame" };
+  r_classes.tibble = r_chr_n(v_tibble_class, R_ARR_SIZEOF(v_tibble_class));
+  r_preserve_global(r_classes.tibble);
+}
 
 void r_init_library_globals_syms() {
   r_syms.class = R_ClassSymbol;

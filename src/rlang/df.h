@@ -1,8 +1,6 @@
 #ifndef RLANG_DF_H
 #define RLANG_DF_H
 
-extern sexp* r_classes_data_frame;
-extern sexp* r_classes_tibble;
 
 sexp* r_alloc_df_list(r_ssize n_rows,
                       sexp* names,

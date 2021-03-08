@@ -1,8 +1,4 @@
 #include "rlang.h"
-
-sexp* r_classes_data_frame = NULL;
-sexp* r_classes_tibble = NULL;
-
 #include "decl/df-decl.h"
 
 
@@ -36,11 +32,11 @@ sexp* r_alloc_df_list(r_ssize n_rows,
 
 void r_init_data_frame(sexp* x, r_ssize n_rows) {
   init_compact_rownames(x, n_rows);
-  r_attrib_poke(x, r_syms.class, r_classes_data_frame);
+  r_attrib_poke(x, r_syms.class, r_classes.data_frame);
 }
 void r_init_tibble(sexp* x, r_ssize n_rows) {
   r_init_data_frame(x, n_rows);
-  r_attrib_poke(x, r_syms.class, r_classes_tibble);
+  r_attrib_poke(x, r_syms.class, r_classes.tibble);
 }
 
 static
@@ -62,13 +58,4 @@ sexp* new_compact_rownames(r_ssize n_rows) {
   p_out[1] = -n_rows;
 
   return out;
-}
-
-
-void r_init_library_df() {
-  r_classes_data_frame = r_preserve_global(r_chr("data.frame"));
-
-  const char* v_tibble_class[] = { "tbl_df", "tbl", "data.frame" };
-  r_classes_tibble = r_chr_n(v_tibble_class, R_ARR_SIZEOF(v_tibble_class));
-  r_preserve_global(r_classes_tibble);
 }
