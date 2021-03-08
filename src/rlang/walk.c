@@ -1,7 +1,7 @@
 #include <rlang.h>
 #include "walk.h"
 
-#define SEXP_STACK_INIT_SIZE 1000
+#define SEXP_STACK_INIT_SIZE 256
 
 enum sexp_iterator_type {
   SEXP_ITERATOR_TYPE_node,
