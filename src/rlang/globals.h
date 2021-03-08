@@ -7,6 +7,26 @@ struct r_globals_classes {
   sexp* tibble;
 };
 
+struct r_globals_chrs {
+  sexp* empty_string;
+};
+
+struct r_globals {
+  sexp* empty_lgl;
+  sexp* empty_int;
+  sexp* empty_dbl;
+  sexp* empty_cpl;
+  sexp* empty_raw;
+  sexp* empty_str;
+  sexp* empty_chr;
+  sexp* empty_list;
+
+  int na_lgl;
+  int na_int;
+  double na_dbl;
+  sexp* na_str;
+};
+
 struct r_globals_syms {
   sexp* class;
   sexp* dots;
@@ -29,8 +49,13 @@ struct r_globals_syms {
   sexp* z;
 };
 
+extern struct r_globals r_globals;
+extern struct r_globals_chrs r_chrs;
 extern struct r_globals_classes r_classes;
 extern struct r_globals_syms r_syms;
+
+extern sexp* r_true;
+extern sexp* r_false;
 
 
 #endif

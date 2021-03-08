@@ -573,7 +573,7 @@ void rlang_init_eval_tidy() {
   empty_names_chr = r_alloc_character(2);
   r_preserve(empty_names_chr);
   r_chr_poke(empty_names_chr, 0, r_str(""));
-  r_chr_poke(empty_names_chr, 1, r_strs_na);
+  r_chr_poke(empty_names_chr, 1, r_globals.na_str);
 
   quo_mask_flag_sym = r_sym(".__tidyeval_quosure_mask__.");
   data_mask_flag_sym = r_sym(".__tidyeval_data_mask__.");

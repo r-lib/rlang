@@ -36,9 +36,9 @@ sexp* rlang_names2(sexp* x, sexp* env) {
   if (nms == r_null) {
     r_ssize n = r_length(x);
     nms = KEEP(r_alloc_character(n));
-    r_chr_fill(nms, r_strs_empty);
+    r_chr_fill(nms, r_globals.empty_str);
   } else {
-    nms = KEEP(rlang_replace_na(nms, r_chrs_empty_string));
+    nms = KEEP(rlang_replace_na(nms, r_chrs.empty_string));
   }
 
   FREE(2);
@@ -57,7 +57,7 @@ sexp* node_names(sexp* x) {
     sexp* tag = r_node_tag(x);
 
     if (tag == r_null) {
-      r_chr_poke(out, i, r_strs_empty);
+      r_chr_poke(out, i, r_globals.empty_str);
     } else {
       r_chr_poke(out, i, PRINTNAME(tag));
     }

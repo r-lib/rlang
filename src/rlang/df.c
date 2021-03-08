@@ -49,12 +49,12 @@ void init_compact_rownames(sexp* x, r_ssize n_rows) {
 static
 sexp* new_compact_rownames(r_ssize n_rows) {
   if (n_rows <= 0) {
-    return r_ints_empty;
+    return r_globals.empty_int;
   }
 
   sexp* out = r_alloc_integer(2);
   int* p_out = r_int_deref(out);
-  p_out[0] = r_ints_na;
+  p_out[0] = r_globals.na_int;
   p_out[1] = -n_rows;
 
   return out;

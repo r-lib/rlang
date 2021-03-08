@@ -2,20 +2,6 @@
 #include <math.h>
 #include <stdint.h>
 
-sexp* r_lgls_empty = NULL;
-sexp* r_ints_empty = NULL;
-sexp* r_dbls_empty = NULL;
-sexp* r_cpls_empty = NULL;
-sexp* r_chrs_empty = NULL;
-sexp* r_raws_empty = NULL;
-sexp* r_lists_empty = NULL;
-
-sexp* r_chrs_empty_string = NULL;
-sexp* r_strs_empty = NULL;
-
-sexp* r_true = NULL;
-sexp* r_false = NULL;
-
 
 sexp* r_chr_n(const char* const * strings, r_ssize n) {
   sexp* out = KEEP(r_alloc_character(n));
@@ -239,21 +225,4 @@ void r_vec_poke_n(sexp* x, r_ssize offset,
 void r_vec_poke_range(sexp* x, r_ssize offset,
                       sexp* y, r_ssize from, r_ssize to) {
   r_vec_poke_n(x, offset, y, from, to - from + 1);
-}
-
-
-void r_init_library_vec() {
-  r_lgls_empty = r_preserve_global(r_alloc_logical(0));
-  r_ints_empty = r_preserve_global(r_alloc_integer(0));
-  r_dbls_empty = r_preserve_global(r_alloc_double(0));
-  r_cpls_empty = r_preserve_global(r_alloc_complex(0));
-  r_raws_empty = r_preserve_global(r_alloc_raw(0));
-  r_chrs_empty = r_preserve_global(r_alloc_character(0));
-  r_lists_empty = r_preserve_global(r_alloc_list(0));
-
-  r_chrs_empty_string = r_preserve_global(r_chr(""));
-  r_strs_empty = r_chr_get(r_chrs_empty_string, 0);
-
-  r_false = r_preserve_global(r_lgl(0));
-  r_true = r_preserve_global(r_lgl(1));
 }

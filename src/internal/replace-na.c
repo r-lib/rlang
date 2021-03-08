@@ -33,7 +33,7 @@ sexp* rlang_replace_na(sexp* x, sexp* replacement) {
   case R_TYPE_logical: {
     int* arr = r_lgl_deref(x);
     for (; i < n; ++i) {
-      if (arr[i] == r_lgls_na) {
+      if (arr[i] == r_globals.na_lgl) {
         break;
       }
     }
@@ -43,7 +43,7 @@ sexp* rlang_replace_na(sexp* x, sexp* replacement) {
   case R_TYPE_integer: {
     int* arr = r_int_deref(x);
     for (; i < n; ++i) {
-      if (arr[i] == r_ints_na) {
+      if (arr[i] == r_globals.na_int) {
         break;
       }
     }
@@ -62,7 +62,7 @@ sexp* rlang_replace_na(sexp* x, sexp* replacement) {
 
   case R_TYPE_character: {
     for (; i < n; ++i) {
-      if (r_chr_get(x, i) == r_strs_na) {
+      if (r_chr_get(x, i) == r_globals.na_str) {
         break;
       }
     }
@@ -103,7 +103,7 @@ static sexp* replace_na_(sexp* x, sexp* replacement, int i) {
     int* arr = r_lgl_deref(x);
     int new_value = r_lgl_deref(replacement)[0];
     for (; i < n; ++i) {
-      if (arr[i] == r_lgls_na) {
+      if (arr[i] == r_globals.na_lgl) {
         arr[i] = new_value;
       }
     }
@@ -114,7 +114,7 @@ static sexp* replace_na_(sexp* x, sexp* replacement, int i) {
     int* arr = r_int_deref(x);
     int new_value = r_int_deref(replacement)[0];
     for (; i < n; ++i) {
-      if (arr[i] == r_ints_na) {
+      if (arr[i] == r_globals.na_int) {
         arr[i] = new_value;
       }
     }
@@ -135,7 +135,7 @@ static sexp* replace_na_(sexp* x, sexp* replacement, int i) {
   case R_TYPE_character: {
     sexp* new_value = r_chr_get(replacement, 0);
     for (; i < n; ++i) {
-      if (r_chr_get(x, i) == r_strs_na) {
+      if (r_chr_get(x, i) == r_globals.na_str) {
         r_chr_poke(x, i, new_value);
       }
     }
@@ -172,7 +172,7 @@ static sexp* replace_na_vec_(sexp* x, sexp* replacement, int i) {
   case R_TYPE_logical: {
     int* arr = r_lgl_deref(x);
     for (; i < n; ++i) {
-      if (arr[i] == r_lgls_na) {
+      if (arr[i] == r_globals.na_lgl) {
         arr[i] = r_lgl_get(replacement, i);
       }
     }
@@ -182,7 +182,7 @@ static sexp* replace_na_vec_(sexp* x, sexp* replacement, int i) {
   case R_TYPE_integer: {
     int* arr = r_int_deref(x);
     for (; i < n; ++i) {
-      if (arr[i] == r_ints_na) {
+      if (arr[i] == r_globals.na_int) {
         arr[i] = r_int_get(replacement, i);
       }
     }
@@ -201,7 +201,7 @@ static sexp* replace_na_vec_(sexp* x, sexp* replacement, int i) {
 
   case R_TYPE_character: {
     for (; i < n; ++i) {
-      if (r_chr_get(x, i) == r_strs_na) {
+      if (r_chr_get(x, i) == r_globals.na_str) {
         r_chr_poke(x, i, r_chr_get(replacement, i));
       }
     }

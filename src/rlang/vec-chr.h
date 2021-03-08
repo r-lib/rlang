@@ -52,10 +52,10 @@ sexp* r_str_as_symbol(sexp* str) {
 
 static inline
 bool r_str_is_name(sexp* str) {
-  if (str == r_strs_na) {
+  if (str == r_globals.na_str) {
     return false;
   }
-  if (str == r_strs_empty) {
+  if (str == r_globals.empty_str) {
     return false;
   }
   return true;

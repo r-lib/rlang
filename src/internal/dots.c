@@ -399,7 +399,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
 
     // Ignore empty arguments
     if (expr == r_syms.missing
-        && (name == r_null || name == r_strs_empty)
+        && (name == r_null || name == r_globals.empty_str)
         && should_ignore(capture_info->ignore_empty, i, n)) {
       capture_info->needs_expansion = true;
       r_node_poke_car(node, empty_spliced_arg);
@@ -620,7 +620,7 @@ sexp* dots_as_list(sexp* dots, struct dots_capture_info* capture_info) {
         r_list_poke(out, count, value);
 
         sexp* name = r_nms_get(nms, i);
-        if (name != r_strs_empty) {
+        if (name != r_globals.empty_str) {
           r_chr_poke(out_names, count, name);
         }
 

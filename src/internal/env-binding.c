@@ -194,7 +194,7 @@ sexp* rlang_env_bind(sexp* env,
 
   r_ssize n = r_length(values);
   if (!n) {
-    return r_lists_empty;
+    return r_globals.empty_list;
   }
 
   sexp* names = r_names(values);

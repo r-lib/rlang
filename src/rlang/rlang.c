@@ -69,7 +69,6 @@ void r_init_library_globals_syms();
 void r_init_library_session();
 void r_init_library_sexp(sexp*);
 void r_init_library_stack();
-void r_init_library_vec();
 void r_init_library_vendor();
 
 static sexp* shared_x_env;
@@ -100,7 +99,6 @@ sexp* r_init_library(sexp* ns) {
   r_init_library_fn();
   r_init_library_session();
   r_init_library_stack();
-  r_init_library_vec();
 
   shared_x_env = r_parse_eval("new.env(hash = FALSE, parent = baseenv(), size = 1L)", r_base_env);
   r_preserve(shared_x_env);

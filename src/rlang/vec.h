@@ -3,25 +3,6 @@
 
 #include <string.h>
 
-extern sexp* r_true;
-extern sexp* r_false;
-
-extern sexp* r_lgls_empty;
-extern sexp* r_ints_empty;
-extern sexp* r_dbls_empty;
-extern sexp* r_cpls_empty;
-extern sexp* r_chrs_empty;
-extern sexp* r_raws_empty;
-extern sexp* r_lists_empty;
-
-extern sexp* r_chrs_empty_string;
-extern sexp* r_strs_empty;
-
-#define r_lgls_na NA_LOGICAL
-#define r_ints_na NA_INTEGER
-#define r_dbls_na NA_REAL
-#define r_strs_na NA_STRING
-
 
 static inline
 int* r_lgl_deref(sexp* x) {
@@ -281,14 +262,14 @@ bool r_is_bool(sexp* x) {
   return
     r_typeof(x) == R_TYPE_logical &&
     r_length(x) == 1 &&
-    r_lgl_get(x, 0) != r_lgls_na;
+    r_lgl_get(x, 0) != r_globals.na_lgl;
 }
 static inline
 bool r_is_int(sexp* x) {
   return
     r_typeof(x) == R_TYPE_integer &&
     r_length(x) == 1 &&
-    r_int_get(x, 0) != r_ints_na;
+    r_int_get(x, 0) != r_globals.na_int;
 }
 static inline
 bool r_is_true(sexp* x) {

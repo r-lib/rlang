@@ -22,7 +22,7 @@ bool has_name_at(sexp* x, r_ssize i) {
   sexp* nms = r_names(x);
   return
     r_typeof(nms) == R_TYPE_character &&
-    r_chr_get(nms, i) != r_strs_empty;
+    r_chr_get(nms, i) != r_globals.empty_str;
 }
 
 
