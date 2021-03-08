@@ -63,7 +63,7 @@ bool is_formulaish(sexp* x, int scoped, int lhs) {
 
 bool r_is_formula(sexp* x, int scoped, int lhs) {
   if (is_formulaish(x, scoped, lhs)) {
-    return r_node_car(x) == r_syms_tilde;
+    return r_node_car(x) == r_syms.tilde;
   } else {
     return false;
   }

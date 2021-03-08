@@ -2,30 +2,6 @@
 #define RLANG_SYM_H
 
 
-#define r_syms_unbound R_UnboundValue
-#define r_syms_missing R_MissingArg
-#define r_syms_names R_NamesSymbol
-#define r_syms_class R_ClassSymbol
-#define r_syms_dots R_DotsSymbol
-#define r_syms_namespace R_DoubleColonSymbol
-#define r_syms_namespace3 R_TripleColonSymbol
-#define r_syms_row_names R_RowNamesSymbol
-
-extern sexp* r_syms_dot_environment;
-extern sexp* r_syms_function;
-extern sexp* r_syms_srcref;
-extern sexp* r_syms_tilde;
-
-extern sexp* r_syms_w;
-extern sexp* r_syms_x;
-extern sexp* r_syms_y;
-extern sexp* r_syms_z;
-
-extern sexp* r_syms_dot_x;
-extern sexp* r_syms_dot_y;
-extern sexp* r_syms_dot_fn;
-
-
 sexp* r_new_symbol(sexp* x, int* err);
 
 static inline

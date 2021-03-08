@@ -134,7 +134,7 @@ static
 sexp* node_push_classes(sexp* node, const char** tags, r_ssize n) {
   sexp* tags_chr = KEEP(r_chr_n(tags, n));
   sexp* attrs = r_new_node(tags_chr, node);
-  r_node_poke_tag(attrs, r_syms_class);
+  r_node_poke_tag(attrs, r_syms.class);
 
   FREE(1);
   return attrs;

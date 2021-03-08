@@ -4,7 +4,7 @@
 
 bool r_env_binding_is_promise(sexp* env, sexp* sym) {
   sexp* obj = r_env_find(env, sym);
-  return r_typeof(obj) == R_TYPE_promise && PRVALUE(obj) == r_syms_unbound;
+  return r_typeof(obj) == R_TYPE_promise && PRVALUE(obj) == r_syms.unbound;
 }
 bool r_env_binding_is_active(sexp* env, sexp* sym) {
   return R_BindingIsActive(sym, env);

@@ -124,15 +124,15 @@ sexp* rlang_set_names(sexp* x, sexp* mold, sexp* nm, sexp* env) {
 
 static
 sexp* eval_fn_dots(sexp* fn, sexp* x, sexp* dots, sexp* env) {
-  sexp* args = KEEP(r_new_node(r_syms_dot_x, dots));
-  sexp* call = KEEP(r_new_call(r_syms_dot_fn, args));
+  sexp* args = KEEP(r_new_node(r_syms.dot_x, dots));
+  sexp* call = KEEP(r_new_call(r_syms.dot_fn, args));
 
   // This evaluates `.fn(.x, ...)`
   // `.x` is the first input, x
   // `.fn` is the function, fn
   // The dots are a pairlist already in the call
-  r_env_poke(env, r_syms_dot_x, x);
-  r_env_poke(env, r_syms_dot_fn, fn);
+  r_env_poke(env, r_syms.dot_x, x);
+  r_env_poke(env, r_syms.dot_fn, fn);
 
   sexp* out = r_eval(call, env);
 
@@ -142,13 +142,13 @@ sexp* eval_fn_dots(sexp* fn, sexp* x, sexp* dots, sexp* env) {
 
 static inline
 sexp* eval_as_character(sexp* x, sexp* env) {
-  r_env_poke(env, r_syms_dot_x, x);
+  r_env_poke(env, r_syms.dot_x, x);
   return r_eval(as_character_call, env);
 }
 
 static inline
 sexp* names_dispatch(sexp* x, sexp* env) {
-  r_env_poke(env, r_syms_dot_x, x);
+  r_env_poke(env, r_syms.dot_x, x);
   return r_eval(names_call, env);
 }
 
@@ -157,14 +157,14 @@ sexp* names_dispatch(sexp* x, sexp* env) {
 // attributes using ALTREP wrappers, which is not in R's public API.
 static inline
 sexp* set_names_dispatch(sexp* x, sexp* nm, sexp* env) {
-  r_env_poke(env, r_syms_dot_x, x);
-  r_env_poke(env, r_syms_dot_y, nm);
+  r_env_poke(env, r_syms.dot_x, x);
+  r_env_poke(env, r_syms.dot_y, nm);
   return r_eval(set_names_call, env);
 }
 
 static inline
 r_ssize length_dispatch(sexp* x, sexp* env) {
-  r_env_poke(env, r_syms_dot_x, x);
+  r_env_poke(env, r_syms.dot_x, x);
   sexp* n = KEEP(r_eval(length_call, env));
 
   if (r_length(n) != 1) {

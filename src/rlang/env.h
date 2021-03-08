@@ -54,11 +54,11 @@ sexp* r_env_find_anywhere(sexp* env, sexp* sym) {
 
 static inline
 bool r_env_has(sexp* env, sexp* sym) {
-  return r_env_find(env, sym) != r_syms_unbound;
+  return r_env_find(env, sym) != r_syms.unbound;
 }
 static inline
 bool r_env_has_anywhere(sexp* env, sexp* sym) {
-  return r_env_find_anywhere(env, sym) != r_syms_unbound;
+  return r_env_find_anywhere(env, sym) != r_syms.unbound;
 }
 
 sexp* r_ns_env(const char* pkg);

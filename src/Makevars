@@ -18,6 +18,7 @@ lib-files = \
         rlang/export.c \
         rlang/fn.c \
         rlang/formula.c \
+        rlang/globals.c \
         rlang/node.c \
         rlang/parse.c \
         rlang/quo.c \

@@ -693,7 +693,7 @@ sexp* rlang_promise_env(sexp* x, sexp* env) {
 sexp* rlang_promise_value(sexp* x, sexp* env) {
   sexp* prom = rlang_get_promise(x, env);
   sexp* value = PRVALUE(prom);
-  if (value == r_syms_unbound) {
+  if (value == r_syms.unbound) {
     return r_sym("R_UnboundValue");
   } else {
     return value;
@@ -934,7 +934,7 @@ static inline
 sexp* protect_missing(sexp* x) {
   // FIXME: Include in `exec_` functions?
   if (x == r_missing_arg ||
-      x == r_syms_unbound ||
+      x == r_syms.unbound ||
       r_typeof(x) == R_TYPE_promise) {
     return r_expr_protect(x);
   } else {

@@ -35,7 +35,7 @@ sexp* rlang_call2(sexp* fn, sexp* args, sexp* ns) {
       r_abort("`fn` must be a string or symbol when a namespace is supplied");
     }
     ns = r_sym(r_chr_get_c_string(ns, 0));
-    fn = KEEP_N(r_call3(r_syms_namespace, ns, fn), &n_kept);
+    fn = KEEP_N(r_call3(r_syms.colon2, ns, fn), &n_kept);
   }
 
   sexp* out = r_new_call(fn, args);

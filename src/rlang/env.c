@@ -8,7 +8,7 @@ sexp* eval_with_xyz(sexp* call, sexp* x, sexp* y, sexp* z);
 
 sexp* r_ns_env(const char* pkg) {
   sexp* ns = r_env_find(R_NamespaceRegistry, r_sym(pkg));
-  if (ns == r_syms_unbound) {
+  if (ns == r_syms.unbound) {
     r_abort("Can't find namespace `%s`", pkg);
   }
   return ns;
@@ -22,7 +22,7 @@ sexp* ns_env_get(sexp* env, const char* name) {
   if (r_typeof(obj) == PROMSXP) {
     obj = r_eval(obj, r_empty_env);
   }
-  if (obj != r_syms_unbound) {
+  if (obj != r_syms.unbound) {
     FREE(1);
     return obj;
   }

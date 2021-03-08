@@ -24,12 +24,12 @@ static struct rlang_mask_info mask_info(sexp* mask) {
   sexp* flag;
 
   flag = r_env_find_anywhere(mask, data_mask_flag_sym);
-  if (flag != r_syms_unbound) {
+  if (flag != r_syms.unbound) {
     return (struct rlang_mask_info) { flag, RLANG_MASK_DATA };
   }
 
   flag = r_env_find_anywhere(mask, quo_mask_flag_sym);
-  if (flag != r_syms_unbound) {
+  if (flag != r_syms.unbound) {
     return (struct rlang_mask_info) { flag, RLANG_MASK_QUOSURE };
   }
 
@@ -45,7 +45,7 @@ static sexp* rlang_new_data_pronoun(sexp* mask) {
   sexp* pronoun = KEEP(r_alloc_list(1));
 
   r_list_poke(pronoun, 0, mask);
-  r_attrib_poke(pronoun, r_syms_class, data_pronoun_class);
+  r_attrib_poke(pronoun, r_syms.class, data_pronoun_class);
 
   FREE(1);
   return pronoun;
@@ -53,7 +53,7 @@ static sexp* rlang_new_data_pronoun(sexp* mask) {
 static sexp* rlang_new_ctxt_pronoun(sexp* top) {
   sexp* pronoun = KEEP(r_alloc_environment(0, r_env_parent(top)));
 
-  r_attrib_poke(pronoun, r_syms_class, ctxt_pronoun_class);
+  r_attrib_poke(pronoun, r_syms.class, ctxt_pronoun_class);
 
   FREE(1);
   return pronoun;
@@ -62,7 +62,7 @@ static sexp* rlang_new_ctxt_pronoun(sexp* top) {
 void poke_ctxt_env(sexp* mask, sexp* env) {
   sexp* ctxt_pronoun = r_env_find(mask, data_mask_env_sym);
 
-  if (ctxt_pronoun == r_syms_unbound) {
+  if (ctxt_pronoun == r_syms.unbound) {
     r_abort("Internal error: Can't find context pronoun in data mask");
   }
 
@@ -181,7 +181,7 @@ sexp* rlang_new_data_mask(sexp* bottom, sexp* top) {
 
   sexp* ctxt_pronoun = KEEP(rlang_new_ctxt_pronoun(top));
 
-  r_env_poke(data_mask, r_syms_tilde, tilde_fn);
+  r_env_poke(data_mask, r_syms.tilde, tilde_fn);
   r_env_poke(data_mask, data_mask_flag_sym, data_mask);
   r_env_poke(data_mask, data_mask_env_sym, ctxt_pronoun);
   r_env_poke(data_mask, data_mask_top_env_sym, top);
@@ -221,7 +221,7 @@ static sexp* mask_find(sexp* env, sexp* sym) {
       FREE(1);
     }
 
-    if (obj != r_syms_unbound) {
+    if (obj != r_syms.unbound) {
       FREE(n_kept);
       return obj;
     }
@@ -234,7 +234,7 @@ static sexp* mask_find(sexp* env, sexp* sym) {
   } while (cur != r_empty_env);
 
   FREE(n_kept);
-  return r_syms_unbound;
+  return r_syms.unbound;
 }
 sexp* rlang_data_pronoun_get(sexp* pronoun, sexp* sym) {
   if (r_typeof(pronoun) != R_TYPE_environment) {
@@ -243,7 +243,7 @@ sexp* rlang_data_pronoun_get(sexp* pronoun, sexp* sym) {
 
   sexp* obj = mask_find(pronoun, sym);
 
-  if (obj == r_syms_unbound) {
+  if (obj == r_syms.unbound) {
     sexp* call = KEEP(r_parse("rlang:::abort_data_pronoun(x)"));
     r_eval_with_x(call, sym, r_base_env);
     r_abort("Internal error: .data subsetting should have failed earlier");
@@ -369,7 +369,7 @@ static sexp* base_tilde_eval(sexp* tilde, sexp* quo_env) {
   tilde = KEEP(r_eval(tilde, quo_env));
 
   // Change it back because the result still has the primitive inlined
-  r_node_poke_car(tilde, r_syms_tilde);
+  r_node_poke_car(tilde, r_syms.tilde);
 
   FREE(2);
   return tilde;
@@ -378,7 +378,7 @@ static sexp* base_tilde_eval(sexp* tilde, sexp* quo_env) {
 sexp* env_get_top_binding(sexp* mask) {
   sexp* top = r_env_find(mask, data_mask_top_env_sym);
 
-  if (top == r_syms_unbound) {
+  if (top == r_syms.unbound) {
     r_abort("Internal error: Can't find .top pronoun in data mask");
   }
   if (r_typeof(top) != R_TYPE_environment) {
@@ -394,7 +394,7 @@ static sexp* env_poke_fn = NULL;
 
 sexp* rlang_tilde_eval(sexp* tilde, sexp* current_frame, sexp* caller_frame) {
   // Remove srcrefs from system call
-  r_attrib_poke(tilde, r_syms_srcref, r_null);
+  r_attrib_poke(tilde, r_syms.srcref, r_null);
 
   if (!rlang_is_quosure(tilde)) {
     return base_tilde_eval(tilde, caller_frame);
@@ -488,7 +488,7 @@ sexp* rlang_data_mask_clean(sexp* mask) {
 
 static sexp* new_quosure_mask(sexp* env) {
   sexp* mask = KEEP(r_alloc_environment(3, env));
-  r_env_poke(mask, r_syms_tilde, tilde_fn);
+  r_env_poke(mask, r_syms.tilde, tilde_fn);
   r_env_poke(mask, quo_mask_flag_sym, mask);
   FREE(1);
   return mask;

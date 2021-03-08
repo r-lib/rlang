@@ -3,7 +3,7 @@
 
 sexp* r_eval_with_x(sexp* call, sexp* x, sexp* parent) {
   sexp* env = KEEP(r_alloc_environment(1, parent));
-  r_env_poke(env, r_syms_x, x);
+  r_env_poke(env, r_syms.x, x);
 
   sexp* out = r_eval(call, env);
 
@@ -12,8 +12,8 @@ sexp* r_eval_with_x(sexp* call, sexp* x, sexp* parent) {
 }
 sexp* r_eval_with_xy(sexp* call, sexp* x, sexp* y, sexp* parent) {
   sexp* env = KEEP(r_alloc_environment(1, parent));
-  r_env_poke(env, r_syms_x, x);
-  r_env_poke(env, r_syms_y, y);
+  r_env_poke(env, r_syms.x, x);
+  r_env_poke(env, r_syms.y, y);
 
   sexp* out = r_eval(call, env);
 
@@ -22,9 +22,9 @@ sexp* r_eval_with_xy(sexp* call, sexp* x, sexp* y, sexp* parent) {
 }
 sexp* r_eval_with_xyz(sexp* call, sexp* x, sexp* y, sexp* z, sexp* parent) {
   sexp* env = KEEP(r_alloc_environment(1, parent));
-  r_env_poke(env, r_syms_x, x);
-  r_env_poke(env, r_syms_y, y);
-  r_env_poke(env, r_syms_z, z);
+  r_env_poke(env, r_syms.x, x);
+  r_env_poke(env, r_syms.y, y);
+  r_env_poke(env, r_syms.z, z);
 
   sexp* out = r_eval(call, env);
 
@@ -33,10 +33,10 @@ sexp* r_eval_with_xyz(sexp* call, sexp* x, sexp* y, sexp* z, sexp* parent) {
 }
 sexp* r_eval_with_wxyz(sexp* call, sexp* w, sexp* x, sexp* y, sexp* z, sexp* parent) {
   sexp* env = KEEP(r_alloc_environment(1, parent));
-  r_env_poke(env, r_syms_w, w);
-  r_env_poke(env, r_syms_x, x);
-  r_env_poke(env, r_syms_y, y);
-  r_env_poke(env, r_syms_z, z);
+  r_env_poke(env, r_syms.w, w);
+  r_env_poke(env, r_syms.x, x);
+  r_env_poke(env, r_syms.y, y);
+  r_env_poke(env, r_syms.z, z);
 
   sexp* out = r_eval(call, env);
 
@@ -58,42 +58,42 @@ static sexp* shared_xy_env;
 static sexp* shared_xyz_env;
 
 sexp* eval_with_x(sexp* call, sexp* x) {
-  r_env_poke(shared_x_env, r_syms_x, x);
+  r_env_poke(shared_x_env, r_syms.x, x);
 
   sexp* out = KEEP(r_eval(call, shared_x_env));
 
   // Release for gc
-  r_env_poke(shared_x_env, r_syms_x, r_null);
+  r_env_poke(shared_x_env, r_syms.x, r_null);
 
   FREE(1);
   return out;
 }
 
 sexp* eval_with_xy(sexp* call, sexp* x, sexp* y) {
-  r_env_poke(shared_xy_env, r_syms_x, x);
-  r_env_poke(shared_xy_env, r_syms_y, y);
+  r_env_poke(shared_xy_env, r_syms.x, x);
+  r_env_poke(shared_xy_env, r_syms.y, y);
 
   sexp* out = KEEP(r_eval(call, shared_xy_env));
 
   // Release for gc
-  r_env_poke(shared_xy_env, r_syms_x, r_null);
-  r_env_poke(shared_xy_env, r_syms_y, r_null);
+  r_env_poke(shared_xy_env, r_syms.x, r_null);
+  r_env_poke(shared_xy_env, r_syms.y, r_null);
 
   FREE(1);
   return out;
 }
 
 sexp* eval_with_xyz(sexp* call, sexp* x, sexp* y, sexp* z) {
-  r_env_poke(shared_xyz_env, r_syms_x, x);
-  r_env_poke(shared_xyz_env, r_syms_y, y);
-  r_env_poke(shared_xyz_env, r_syms_z, z);
+  r_env_poke(shared_xyz_env, r_syms.x, x);
+  r_env_poke(shared_xyz_env, r_syms.y, y);
+  r_env_poke(shared_xyz_env, r_syms.z, z);
 
   sexp* out = KEEP(r_eval(call, shared_xyz_env));
 
   // Release for gc
-  r_env_poke(shared_xyz_env, r_syms_x, r_null);
-  r_env_poke(shared_xyz_env, r_syms_y, r_null);
-  r_env_poke(shared_xyz_env, r_syms_z, r_null);
+  r_env_poke(shared_xyz_env, r_syms.x, r_null);
+  r_env_poke(shared_xyz_env, r_syms.y, r_null);
+  r_env_poke(shared_xyz_env, r_syms.z, r_null);
 
   FREE(1);
   return out;

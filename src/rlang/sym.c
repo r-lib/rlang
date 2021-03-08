@@ -48,34 +48,3 @@ bool r_is_symbol_any(sexp* x, const char** strings, int n) {
 
   return false;
 }
-
-
-sexp* r_syms_dot_environment;
-sexp* r_syms_function;
-sexp* r_syms_srcref;
-sexp* r_syms_tilde;
-
-sexp* r_syms_w;
-sexp* r_syms_x;
-sexp* r_syms_y;
-sexp* r_syms_z;
-
-sexp* r_syms_dot_x;
-sexp* r_syms_dot_y;
-sexp* r_syms_dot_fn;
-
-void r_init_library_sym() {
-  r_syms_dot_environment = r_sym(".Environment");
-  r_syms_function = r_sym("function");
-  r_syms_srcref = r_sym("srcref");
-  r_syms_tilde = r_sym("~");
-
-  r_syms_w = r_sym("w");
-  r_syms_x = r_sym("x");
-  r_syms_y = r_sym("y");
-  r_syms_z = r_sym("z");
-
-  r_syms_dot_x = r_sym(".x");
-  r_syms_dot_y = r_sym(".y");
-  r_syms_dot_fn = r_sym(".fn");
-}

@@ -31,11 +31,11 @@ sexp* r_attrib_set(sexp* x, sexp* tag, sexp* value);
 
 static inline
 sexp* r_class(sexp* x) {
-  return r_attrib_get(x, r_syms_class);
+  return r_attrib_get(x, r_syms.class);
 }
 static inline
 void r_attrib_poke_class(sexp* x, sexp* classes) {
-  r_attrib_poke(x, r_syms_class, classes);
+  r_attrib_poke(x, r_syms.class, classes);
 }
 
 void r_attrib_push_class(sexp* x, const char* tag);
@@ -43,11 +43,11 @@ void r_attrib_push_classes(sexp* x, const char** tags, r_ssize n);
 
 static inline
 sexp* r_names(sexp* x) {
-  return r_attrib_get(x, r_syms_names);
+  return r_attrib_get(x, r_syms.names);
 }
 static inline
 void r_attrib_poke_names(sexp* x, sexp* nms) {
-  r_attrib_poke(x, r_syms_names, nms);
+  r_attrib_poke(x, r_syms.names, nms);
 }
 
 bool r_is_named(sexp* x);

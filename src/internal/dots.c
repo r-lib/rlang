@@ -398,7 +398,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
     sexp* name = r_node_tag(node);
 
     // Ignore empty arguments
-    if (expr == r_syms_missing
+    if (expr == r_syms.missing
         && (name == r_null || name == r_strs_empty)
         && should_ignore(capture_info->ignore_empty, i, n)) {
       capture_info->needs_expansion = true;
@@ -439,7 +439,7 @@ static sexp* dots_unquote(sexp* dots, struct dots_capture_info* capture_info) {
     case OP_VALUE_DOT_DATA: {
       sexp* orig = expr;
 
-      if (expr == r_syms_missing) {
+      if (expr == r_syms.missing) {
         if (!capture_info->preserve_empty) {
           r_abort("Argument %d is empty", i + 1);
         }
@@ -598,7 +598,7 @@ sexp* dots_as_list(sexp* dots, struct dots_capture_info* capture_info) {
   sexp* out_names = r_null;
   if (capture_info->type != DOTS_VALUE || any_name(dots, capture_info->splice)) {
     out_names = KEEP_N(r_alloc_character(capture_info->count), &n_kept);
-    r_attrib_push(out, r_syms_names, out_names);
+    r_attrib_push(out, r_syms.names, out_names);
   }
 
   for (r_ssize i = 0, count = 0; dots != r_null; ++i, dots = r_node_cdr(dots)) {
@@ -693,7 +693,7 @@ static sexp* dots_keep(sexp* dots, sexp* nms, bool first) {
 
   sexp* out = KEEP(r_alloc_list(out_n));
   sexp* out_nms = KEEP(r_alloc_character(out_n));
-  r_attrib_push(out, r_syms_names, out_nms);
+  r_attrib_push(out, r_syms.names, out_nms);
 
   sexp* const * p_nms = r_chr_deref_const(nms);
   const int* p_dups = r_lgl_deref_const(dups);
@@ -816,7 +816,7 @@ sexp* rlang_quos_interp(sexp* frame_env,
   dots = KEEP(dots_finalise(&capture_info, dots));
 
   sexp* attrib = KEEP(r_new_node(r_names(dots), quosures_attrib));
-  r_node_poke_tag(attrib, r_syms_names);
+  r_node_poke_tag(attrib, r_syms.names);
   r_poke_attrib(dots, attrib);
   r_mark_object(dots);
 
@@ -1023,7 +1023,7 @@ void rlang_init_dots(sexp* ns) {
     r_preserve(splice_box_attrib);
     r_mark_shared(splice_box_attrib);
 
-    r_node_poke_tag(splice_box_attrib, r_syms_class);
+    r_node_poke_tag(splice_box_attrib, r_syms.class);
     FREE(1);
   }
 
@@ -1044,7 +1044,7 @@ void rlang_init_dots(sexp* ns) {
     r_preserve(quosures_attrib);
     r_mark_shared(quosures_attrib);
 
-    r_node_poke_tag(quosures_attrib, r_syms_class);
+    r_node_poke_tag(quosures_attrib, r_syms.class);
     FREE(1);
   }
 

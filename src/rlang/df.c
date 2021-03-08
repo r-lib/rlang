@@ -18,7 +18,7 @@ sexp* r_alloc_df_list(r_ssize n_rows,
   if (r_length(names) != types_size) {
     r_abort("`names` must match the number of columns.");
   }
-  r_attrib_push(out, r_syms_names, names);
+  r_attrib_push(out, r_syms.names, names);
 
   for (r_ssize i = 0; i < types_size; ++i) {
     // A nil type stands for no column allocation
@@ -36,17 +36,17 @@ sexp* r_alloc_df_list(r_ssize n_rows,
 
 void r_init_data_frame(sexp* x, r_ssize n_rows) {
   init_compact_rownames(x, n_rows);
-  r_attrib_poke(x, r_syms_class, r_classes_data_frame);
+  r_attrib_poke(x, r_syms.class, r_classes_data_frame);
 }
 void r_init_tibble(sexp* x, r_ssize n_rows) {
   r_init_data_frame(x, n_rows);
-  r_attrib_poke(x, r_syms_class, r_classes_tibble);
+  r_attrib_poke(x, r_syms.class, r_classes_tibble);
 }
 
 static
 void init_compact_rownames(sexp* x, r_ssize n_rows) {
   sexp* rn = KEEP(new_compact_rownames(n_rows));
-  r_attrib_poke(x, r_syms_row_names, rn);
+  r_attrib_poke(x, r_syms.row_names, rn);
   FREE(1);
 }
 
