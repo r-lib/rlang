@@ -967,11 +967,11 @@ sexp* ffi_sexp_iterate(sexp* x, sexp* fn) {
     enum r_type type = p_it->type;
     int depth = p_it->depth;
     sexp* parent = p_it->parent;
-    enum r_node_relation rel = p_it->rel;
+    enum r_sexp_it_relation rel = p_it->rel;
     r_ssize i = p_it->i;
-    enum r_node_direction dir = p_it->dir;
+    enum r_sexp_it_direction dir = p_it->dir;
 
-    if (dir == R_NODE_DIRECTION_incoming &&
+    if (dir == R_SEXP_IT_DIRECTION_incoming &&
         type == R_TYPE_environment &&
         !r_dict_put(p_dict, x, r_null)) {
       p_it->skip_incoming = true;
@@ -984,9 +984,9 @@ sexp* ffi_sexp_iterate(sexp* x, sexp* fn) {
       { r_sym("type"), KEEP(protect_missing(parent)) },
       { r_sym("depth"), KEEP(r_type_as_character(type)) },
       { r_sym("parent"), KEEP(r_int(depth)) },
-      { r_sym("rel"), KEEP(r_chr(r_node_relation_as_c_string(rel))) },
+      { r_sym("rel"), KEEP(r_chr(r_sexp_it_relation_as_c_string(rel))) },
       { r_sym("i"), KEEP(r_int(i + 1)) },
-      { r_sym("dir"), KEEP(r_chr(r_node_direction_as_c_string(dir))) }
+      { r_sym("dir"), KEEP(r_chr(r_sexp_it_direction_as_c_string(dir))) }
     };
     sexp* out = KEEP(r_exec_mask_n(r_sym("fn"), fn,
                                    args,
