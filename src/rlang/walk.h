@@ -2,21 +2,6 @@
 #define RLANG_INTERNAL_WALK_H
 
 /**
- * Return value of an iterator callback
- *
- * - `abort`: Interrupt iteration. This causes a full unwind back to
- *   the caller of `r_sexp_iterate()`.
- * - `next`: Continue iteration.
- * - `skip`: Skip the children of an incoming node. This has no effect
- *   when visiting a leaf or a node on an outgoing trip.
- */
-enum r_sexp_iterate {
-  R_SEXP_ITERATE_abort = 0,
-  R_SEXP_ITERATE_next,
-  R_SEXP_ITERATE_skip
-};
-
-/**
  * Direction of iteration
  *
  * Each non-leaf node of the sexp tree is visited twice: First before
