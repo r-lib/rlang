@@ -170,7 +170,16 @@
 #' }
 #' @export
 eval_tidy <- function(expr, data = NULL, env = caller_env()) {
-  .External2(rlang_ext2_eval_tidy, expr, data, env)
+  .External2(ffi_eval_tidy, expr, data, env)
+}
+
+tilde_eval <- function(...) {
+  .External2(
+    ffi_tilde_eval,
+    sys.call(),     # Quosure env
+    environment(),  # Unwind-protect env
+    parent.frame()  # Lexical env
+  )
 }
 
 # Helps work around roxygen loading issues

@@ -390,8 +390,8 @@ extern sexp* rlang_ext_dots_values(sexp*);
 extern sexp* rlang_ext2_call2(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_ext2_exec(sexp*, sexp*, sexp*, sexp*);
 extern sexp* rlang_ext2_eval(sexp*, sexp*, sexp*, sexp*);
-extern sexp* rlang_ext2_eval_tidy(sexp*, sexp*, sexp*, sexp*);
-extern sexp* rlang_ext2_tilde_eval(sexp*, sexp*, sexp*, sexp*);
+extern sexp* ffi_eval_tidy(sexp*, sexp*, sexp*, sexp*);
+extern sexp* ffi_tilde_eval(sexp*, sexp*, sexp*, sexp*);
 
 
 static const R_ExternalMethodDef externals[] = {
@@ -403,8 +403,8 @@ static const R_ExternalMethodDef externals[] = {
   {"rlang_ext2_call2",                  (DL_FUNC) &rlang_ext2_call2, 2},
   {"rlang_ext2_exec",                   (DL_FUNC) &rlang_ext2_exec, 2},
   {"rlang_ext2_eval",                   (DL_FUNC) &rlang_ext2_eval, 2},
-  {"rlang_ext2_eval_tidy",              (DL_FUNC) &rlang_ext2_eval_tidy, 3},
-  {"rlang_ext2_tilde_eval",             (DL_FUNC) &rlang_ext2_tilde_eval, 3},
+  {"ffi_eval_tidy",                     (DL_FUNC) &ffi_eval_tidy, 3},
+  {"ffi_tilde_eval",                    (DL_FUNC) &ffi_tilde_eval, 3},
   {NULL, NULL, 0}
 };
 
