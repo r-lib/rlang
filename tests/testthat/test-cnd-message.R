@@ -4,7 +4,7 @@ test_that("format_error_bullets() formats bullets depending on names", {
     cli.unicode = FALSE
   )
   expect_identical(format_error_bullets(c("foo", "bar")), "* foo\n* bar")
-  expect_identical(format_error_bullets(c(i = "foo", "baz", x = "bar")), "i foo\n* baz\nx bar")
+  expect_identical(format_error_bullets(c(i = "foo", "baz", x = "bar", v = "bam")), "i foo\n* baz\nx bar\nv bam")
   expect_error(format_error_bullets(c(i = "foo", u = "bar")))
   expect_identical(format_error_bullets(chr()), chr())
 })

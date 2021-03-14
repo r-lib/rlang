@@ -112,6 +112,7 @@ cnd_footer.default <- function(cnd, ...) {
 #'
 #' - Elements named `"i"` are bulleted with a blue "info" symbol.
 #' - Elements named `"x"` are bulleted with a red "cross" symbol.
+#' - Elements named `"v"` are bulleted with a green "tick" symbol.
 #' - Unnamed elements are bulleted with a "*" symbol.
 #'
 #' This experimental infrastructure is based on the idea that
@@ -124,7 +125,7 @@ cnd_footer.default <- function(cnd, ...) {
 #' [cnd_header()].
 #'
 #' @param x A named character vector of messages. Elements named as
-#'   `x` or `i` are prefixed with the corresponding bullet.
+#'   `x`, `i` or `v` are prefixed with the corresponding bullet.
 #' @export
 format_error_bullets <- function(x) {
   if (!length(x)) {
@@ -132,9 +133,18 @@ format_error_bullets <- function(x) {
   }
 
   nms <- names2(x)
-  stopifnot(nms %in% c("i", "x", ""))
+  stopifnot(nms %in% c("i", "x", "v", ""))
 
-  bullets <- ifelse(nms == "i", info(), ifelse(nms == "x", cross(), "*"))
+  bullets <- ifelse(
+    nms == "i", info(),
+    ifelse(
+      nms == "x", cross(),
+      ifelse(
+        nms == "v", tick(),
+        "*"
+      )
+    )
+  )
   bullets <- paste(bullets, x, collapse = "\n")
   bullets
 }
