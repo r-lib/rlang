@@ -1,4 +1,3 @@
-
 on_load <- function(expr, env = topenv(parent.frame())) {
   expr <- substitute(expr)
   callback <- function() eval_bare(expr, env)
