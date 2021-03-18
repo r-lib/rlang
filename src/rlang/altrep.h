@@ -11,10 +11,6 @@
 
 #if !R_HAS_ALTREP
 # define ALTREP(x) false
-# define ALTVEC_EXTRACT_SUBSET_PROXY(x, indx, call)     \
-  ((void) x, (void) indx, (void) call, NULL)
-#else
-# include "R_ext/Altrep.h"
 #endif
 
 

@@ -2,8 +2,16 @@
 using std::isfinite;
 
 extern "C" {
-// The altrep header uses `class` as a normal symbol
+#ifdef __clang__
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wkeyword-macro"
+#endif
+
 #define class rlang_class
+
+#ifdef __clang__
+# pragma clang diagnostic pop
+#endif
 
 #include <rlang.h>
 
