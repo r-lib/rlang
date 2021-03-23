@@ -58,9 +58,9 @@ SEXP attribute_hidden rlang_capturearginfo(SEXP call, SEXP op, SEXP args, SEXP r
 
     // May be a literal if compiler did not wrap in a promise
     if (TYPEOF(sym) != PROMSXP) {
-      SEXP value = new_captured_literal(sym);
-      UNPROTECT(nProt);
-      return value;
+	SEXP value = new_captured_literal(sym);
+	UNPROTECT(nProt);
+	return value;
     }
 
     sym = PREXPR(sym);
@@ -130,3 +130,9 @@ SEXP attribute_hidden rlang_capturedots(SEXP call, SEXP op, SEXP args, SEXP rho)
     SEXP caller_env = CAR(args);
     return capturedots(caller_env);
 }
+
+// Local Variables:
+// tab-width: 8
+// c-basic-offset: 4
+// indent-tabs-mode: t
+// End:
