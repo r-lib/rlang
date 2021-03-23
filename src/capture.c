@@ -1,6 +1,6 @@
 #include <Rinternals.h>
 #include <stdlib.h>
-#include <rlang.h>
+#include <string.h>
 
 #define attribute_hidden
 #define _(string) (string)
