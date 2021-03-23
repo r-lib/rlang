@@ -539,3 +539,52 @@ test_that("enquo0() and enquos0() don't rewrap quosures", {
   quo <- local(quo(x))
   expect_equal(fn(!!quo), list(quo))
 })
+
+test_that("enquo() defuses numbered dots (#1137)", {
+  f <- function(arg) enquo(..1)
+  expect_error(
+    f(foo),
+    "'...' used in an incorrect context"
+  )
+
+  f <- function(...) enquo(..1)
+  expect_error(
+    f(),
+    "fewer than 1"
+  )
+
+  f <- function(...) enquo(..2)
+  expect_error(
+    f(1),
+    "fewer than 2"
+  )
+})
+
+test_that("enquos() defuses numbered dots (#1137)", {
+  f <- function(...) enquos(...)
+  g <- function(...) f(..1)
+  expect_equal(
+    g(foo),
+    quos(foo)
+  )
+
+  f <- function(...) enquos(...)
+  g <- function(...) f(..1, ..2)
+  h <- function(...) g(..1, ...)
+  expect_equal(
+    h(foo, bar),
+    quos(foo, foo)
+  )
+
+  g <- function(...) f(..1, ..3)
+  expect_equal(
+    h(foo, bar),
+    quos(foo, bar)
+  )
+
+  g <- function(...) f(..1, ..4)
+  expect_error(
+    h(foo, bar),
+    "fewer than 4 elements"
+  )
+})
