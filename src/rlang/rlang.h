@@ -1,6 +1,23 @@
 #ifndef RLANG_RLANG_H
 #define RLANG_RLANG_H
 
+/*
+ * `_ISOC99_SOURCE` is defined to avoid warnings on Windows UCRT builds where
+ * usage of `PRIx64` in Microsoft's `printf()` can generate the warnings shown
+ * below. Defining this before including `<stdio.h>` forces usage of MinGW's
+ * custom `printf()`, which is C99 compliant.
+ * warning: unknown conversion type character 'l' in format [-Wformat]
+ * warning: too many arguments for format [-Wformat-extra-args]
+ *
+ * The conventional define for this is `__USE_MINGW_ANSI_STDIO`, but according
+ * to the thread below it is recommended to instead use a feature test macro
+ * (such as `_ISOC99_SOURCE`) which will indirectly define the internal
+ * `__USE_MINGW_ANSI_STDIO` macro for us.
+ * https://osdn.net/projects/mingw/lists/archive/users/2019-January/000199.html
+ */
+#define _ISOC99_SOURCE
+#include <stdio.h>
+
 #define R_NO_REMAP
 #include <Rinternals.h>
 #include <Rversion.h>
