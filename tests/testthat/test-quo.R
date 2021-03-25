@@ -265,7 +265,7 @@ test_that("new_quosure() checks input", {
 })
 
 test_that("as_string(quo) produces informative error message", {
-  expect_error(as_string(quo(foo)), "a <quosure/formula> object to a string")
+  expect_error(as_string(quo(foo)), "a <quosure> object to a string")
 })
 
 test_that("`[` properly reconstructs quosure lists", {

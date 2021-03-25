@@ -1,8 +1,13 @@
-# nocov start --- r-lib/rlang compat-friendly-type --- 2021-03-25 Thu 09:22
+# nocov start --- r-lib/rlang compat-friendly-type --- 2021-03-25 Thu 09:25
 
 friendly_type_of <- function(x, length = FALSE) {
   if (is.object(x)) {
-    return(sprintf("a <%s> object", paste(class(x), collapse = "/")))
+    if (inherits(x, "quosure")) {
+      type <- "quosure"
+    } else {
+      type <- paste(class(x), collapse = "/")
+    }
+    return(sprintf("a <%s> object", type))
   }
 
   friendly <- as_friendly_type(typeof(x))
