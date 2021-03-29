@@ -815,7 +815,7 @@ sexp* rlang_quos_interp(sexp* frame_env,
   dots = KEEP(dots_as_list(dots, &capture_info));
   dots = KEEP(dots_finalise(&capture_info, dots));
 
-  sexp* attrib = KEEP(r_new_node(r_names(dots), quosures_attrib));
+  sexp* attrib = KEEP(r_new_node(r_names(dots), r_clone(quosures_attrib)));
   r_node_poke_tag(attrib, r_syms.names);
   r_poke_attrib(dots, attrib);
   r_mark_object(dots);

@@ -279,6 +279,13 @@ test_that("quosure lists are considered vectors", {
   expect_identical(vctrs::vec_slice(quos(1, 2, 3), 2:3), quos(2, 3))
 })
 
+test_that("quosure attributes are cloned (#1142)", {
+  x <- quos()
+  attr(x, "foo") <- TRUE
+  y <- quos()
+  expect_true(setequal(names(attributes(y)), c("names", "class")))
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

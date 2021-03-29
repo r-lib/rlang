@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* Attributes of quosure lists are no longer modified by side effect
+  (#1142).
+
 * `enquo()`, `enquos()` and variants now support numbered dots like
   `..1` (#1137).
 
