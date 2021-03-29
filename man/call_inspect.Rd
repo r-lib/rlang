@@ -10,12 +10,14 @@ call_inspect(...)
 \item{...}{Arguments to display in the returned call.}
 }
 \description{
-This function is useful for quick testing and debugging when you
-manipulate expressions and calls. It lets you check that a function
-is called with the right arguments. This can be useful in unit
-tests for instance. Note that this is just a simple wrapper around
-\code{\link[base:match.call]{base::match.call()}}.
+This function is a wrapper around \code{\link[base:match.call]{base::match.call()}}. It returns
+its own function call.
 }
 \examples{
+# When you call it directly, it simply returns what you typed
 call_inspect(foo(bar), "" \%>\% identity())
+
+# Pass `call_inspect` to functionals like `lapply()` or `map()` to
+# inspect the calls they create around the supplied function
+lapply(1:3, call_inspect)
 }
