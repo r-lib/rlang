@@ -1031,3 +1031,10 @@ test_that("sexp iterator visits in full order", {
   expect_symmetric_dirs(sexp_iterate(list(1, list(2)), list))
   expect_symmetric_dirs(sexp_iterate(list(emptyenv(), emptyenv()), list))
 })
+
+test_that("addresses have hexadecimal prefix `0x` (#1135)", {
+  expect_equal(
+    substring(sexp_address(NULL), 1, 2),
+    "0x"
+  )
+})

@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* The C function `r_sexp_address()` now properly prefixes addresses
+  with the hexadecimal prefix `0x` on Windows (#1135).
+
 * Fixed performance issue when splicing classes that explicitly
   inherit from list with `!!!` (#1140, r-lib/vctrs#1170).
 

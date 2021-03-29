@@ -78,6 +78,13 @@ enum r_type r_chr_as_r_type(sexp* type) {
   return r_c_str_as_r_type(r_chr_get_c_string(type, 0));
 }
 
+const char* sexp_address_formatter = "%p";
+
+sexp* r_sexp_address(sexp* x) {
+  static char buf[1000];
+  snprintf(buf, 1000, sexp_address_formatter, (void*) x);
+  return Rf_mkChar(buf);
+}
 
 void r_init_library_sexp(sexp* ns) {
   p_precious_dict = r_new_dict(PRECIOUS_DICT_INIT_SIZE);
@@ -86,4 +93,9 @@ void r_init_library_sexp(sexp* ns) {
              r_sym(".__rlang_lib_precious_dict__."),
              p_precious_dict->shelter);
   FREE(1);
+
+  const char* null_addr = r_str_c_string(r_sexp_address(r_null));
+  if (null_addr[0] != '0' || null_addr[1] != 'x') {
+    sexp_address_formatter = "0x%p";
+  }
 }
