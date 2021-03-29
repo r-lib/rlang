@@ -10,7 +10,7 @@ is_named(x)
 have_name(x)
 }
 \arguments{
-\item{x}{An object to test.}
+\item{x}{A vector to test.}
 }
 \value{
 \code{is_named()} is a scalar predicate that returns \code{TRUE} or
@@ -18,22 +18,24 @@ have_name(x)
 as long as the input.
 }
 \description{
-\code{is_named()} checks that \code{x} has names attributes, and that none of
-the names are missing or empty (\code{NA} or \code{""}). \code{have_name()} is a
+\code{is_named()} checks that \code{x} has vector names, and that none of the
+names are missing or empty (\code{NA} or \code{""}). \code{have_name()} is a
 vectorised version of \code{is_named()}.
 }
 \examples{
-# A data frame normally has valid, unique names
-is_named(mtcars)
-have_name(mtcars)
+# is_named() is a scalar predicate about the whole vector of names:
+is_named(c(a = 1, b = 2))
+is_named(c(a = 1, 2))
 
-# Empty and missing names are invalid:
-invalid <- dups
-names(invalid)[2] <- ""
-names(invalid)[5] <- NA
+# have_name() is a vectorised predicate
+have_name(c(a = 1, b = 2))
+have_name(c(a = 1, 2))
 
-# is_named() performs a global check while have_name() can show you
-# where the problem is:
+# Empty and missing names are treated as invalid:
+invalid <- set_names(letters[1:5])
+names(invalid)[1] <- ""
+names(invalid)[3] <- NA
+
 is_named(invalid)
 have_name(invalid)
 
@@ -45,4 +47,16 @@ is_named(x)
 # have_name() will work even with vectors that don't have a names
 # attribute:
 have_name(letters)
+
+
+# A data frame normally has valid, unique names
+is_named(mtcars)
+have_name(mtcars)
+
+# A matrix usually doesn't because the names are stored in a
+# different attribute
+mat <- matrix(1:4, 2)
+colnames(mat) <- c("a", "b")
+is_named(mat)
+names(mat)
 }
