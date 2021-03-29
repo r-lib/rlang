@@ -431,6 +431,9 @@ void R_init_rlang(DllInfo* dll) {
   R_RegisterCCallable("rlang", "rlang_new_data_mask_3.0.0", (DL_FUNC) &rlang_new_data_mask);
   R_RegisterCCallable("rlang", "rlang_eval_tidy", (DL_FUNC) &rlang_eval_tidy);
 
+  sexp* as_function(sexp* x, const char* arg);
+  R_RegisterCCallable("rlang", "rlang_as_function", (DL_FUNC) &as_function);
+
   R_RegisterCCallable("rlang", "rlang_xxh3_64bits", (DL_FUNC) &XXH3_64bits);
 
   // Maturing
