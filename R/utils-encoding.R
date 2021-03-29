@@ -38,7 +38,7 @@
 #' Encoding(utf8)
 #' as_bytes(utf8)
 as_utf8_character <- function(x) {
-  .Call(rlang_unescape_character, as_character(x))
+  .Call(rlang_unescape_character, as.character(x))
 }
 
 #' Translate unicode points to UTF-8
