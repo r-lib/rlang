@@ -16,12 +16,19 @@
 
 #' Replace missing values
 #'
+#' @description
+#' __Note__: This operator is now out of scope for rlang. It will be
+#' replaced by a vctrs-powered operator (probably in the [funs
+#' package](https://github.com/tidyverse/funs)) at which point the
+#' rlang version of `%|%` will be deprecated.
+#'
 #' This infix function is similar to \code{\%||\%} but is vectorised
 #' and provides a default value for missing elements. It is faster
 #' than using [base::ifelse()] and does not perform type conversions.
 #'
 #' @param x The original values.
 #' @param y The replacement values. Must be of length 1 or the same length as `x`.
+#' @keywords internal
 #' @export
 #' @name op-na-default
 #' @seealso [op-null-default]

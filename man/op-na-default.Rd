@@ -13,6 +13,10 @@ x \%|\% y
 \item{y}{The replacement values. Must be of length 1 or the same length as \code{x}.}
 }
 \description{
+\strong{Note}: This operator is now out of scope for rlang. It will be
+replaced by a vctrs-powered operator (probably in the \href{https://github.com/tidyverse/funs}{funs package}) at which point the
+rlang version of \verb{\%|\%} will be deprecated.
+
 This infix function is similar to \code{\%||\%} but is vectorised
 and provides a default value for missing elements. It is faster
 than using \code{\link[base:ifelse]{base::ifelse()}} and does not perform type conversions.
@@ -24,3 +28,4 @@ c(1L, NA, 3L, NA, NA) \%|\% (6L:10L)
 \seealso{
 \link{op-null-default}
 }
+\keyword{internal}
