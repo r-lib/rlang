@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* Fixed performance issue when splicing classes that explicitly
+  inherit from list with `!!!` (#1140, r-lib/vctrs#1170).
+
 * Attributes of quosure lists are no longer modified by side effect
   (#1142).
 

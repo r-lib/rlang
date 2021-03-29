@@ -524,7 +524,12 @@ check_dots_empty <- function(...) {
 # `x` always end up on the names of the output list,
 # unlike `as.list.factor()`.
 rlang_as_list <- function(x) {
-  if (is.list(x)) {
+  if ("list" %in% class(x)) {
+    # `x` explicitly inherits from `"list"`, which we take it to mean
+    # that it has list storage (i.e. it's not a class like POSIXlt,
+    # it's not proxied, and it's not a scalar object like `"lm"`)
+    out <- unstructure(x)
+  } else if (is.list(x)) {
     out <- rlang_as_list_from_list_impl(x)
   } else {
     out <- rlang_as_list_impl(x)
