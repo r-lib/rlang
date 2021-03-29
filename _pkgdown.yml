@@ -47,6 +47,7 @@ reference:
       - quo
       - quos
       - enquo
+      - enquo0
       - enquos
       - expr
       - exprs
@@ -85,6 +86,7 @@ reference:
       - eval_tidy
       - eval_bare
       - exec
+      - inject
   - title: Symbols
     contents:
       - sym
@@ -148,6 +150,7 @@ reference:
       - is_bare_environment
       - as_environment
       - caller_env
+      - env_browse
   - title: Environment bindings
     contents:
       - env_bind
@@ -211,6 +214,7 @@ reference:
       - names2
       - has_name
       - is_named
+      - zap_srcref
   - title: Type predicates
     contents:
       - is_list
@@ -284,6 +288,9 @@ reference:
     contents:
       - matches("weakref")
       - matches("wref")
+  - title: R objects
+    contents:
+      - hash
   - title: FAQ
     contents:
       - matches("faq")
