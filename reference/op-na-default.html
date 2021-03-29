@@ -40,7 +40,10 @@
 
 
 <meta property="og:title" content="Replace missing values — op-na-default" />
-<meta property="og:description" content="This infix function is similar to %||% but is vectorised
+<meta property="og:description" content="Note: This operator is now out of scope for rlang. It will be
+replaced by a vctrs-powered operator (probably in the funs package) at which point the
+rlang version of %|% will be deprecated.
+This infix function is similar to %||% but is vectorised
 and provides a default value for missing elements. It is faster
 than using base::ifelse() and does not perform type conversions." />
 
@@ -158,7 +161,10 @@ than using base::ifelse() and does not perform type conversions." />
     </div>
 
     <div class="ref-description">
-    <p>This infix function is similar to <code><a href='op-null-default.html'>%||%</a></code> but is vectorised
+    <p><strong>Note</strong>: This operator is now out of scope for rlang. It will be
+replaced by a vctrs-powered operator (probably in the <a href='https://github.com/tidyverse/funs'>funs package</a>) at which point the
+rlang version of <code>%|%</code> will be deprecated.</p>
+<p>This infix function is similar to <code><a href='op-null-default.html'>%||%</a></code> but is vectorised
 and provides a default value for missing elements. It is faster
 than using <code><a href='https://rdrr.io/r/base/ifelse.html'>base::ifelse()</a></code> and does not perform type conversions.</p>
     </div>
