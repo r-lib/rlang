@@ -41,6 +41,9 @@ as_utf8_character <- function(x) {
   .Call(rlang_unescape_character, as.character(x))
 }
 
+# `as_utf8_character()` is currently used in dplyr and tidyr as an
+# interface for `chr_unserialise_unicode()`
+
 #' Translate unicode points to UTF-8
 #'
 #' @description
