@@ -62,6 +62,11 @@ is_double <- function(x, n = NULL, finite = NULL) {
 }
 #' @export
 #' @rdname type-predicates
+is_complex <- function(x, n = NULL, finite = NULL) {
+  .Call(ffi_is_complex, x, n, finite)
+}
+#' @export
+#' @rdname type-predicates
 is_character <- function(x, n = NULL) {
   .Call(rlang_is_character, x, n)
 }
@@ -125,6 +130,11 @@ is_scalar_integer <- function(x) {
 #' @rdname scalar-type-predicates
 is_scalar_double <- function(x) {
   .Call(rlang_is_double, x, 1L, NULL)
+}
+#' @export
+#' @rdname scalar-type-predicates
+is_scalar_complex <- function(x) {
+  .Call(ffi_is_complex, x, 1L, NULL)
 }
 #' @export
 #' @rdname scalar-type-predicates
@@ -195,6 +205,11 @@ is_bare_vector <- function(x, n = NULL) {
 #' @rdname bare-type-predicates
 is_bare_double <- function(x, n = NULL) {
   !is.object(x) && is_double(x, n)
+}
+#' @export
+#' @rdname bare-type-predicates
+is_bare_complex <- function(x, n = NULL) {
+  !is.object(x) && is_complex(x, n)
 }
 #' @export
 #' @rdname bare-type-predicates

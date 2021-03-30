@@ -94,6 +94,15 @@ bool r_is_double(sexp* x, r_ssize n, int finite) {
   }
   return true;
 }
+bool r_is_complex(sexp* x, r_ssize n, int finite) {
+  if (r_typeof(x) != R_TYPE_complex || !has_correct_length(x, n)) {
+    return false;
+  }
+  if (finite >= 0 && (bool) finite != r_is_finite(x)) {
+    return false;
+  }
+  return true;
+}
 
 // Allow integers up to 2^52, same as R_XLEN_T_MAX when long vector
 // support is enabled

@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* New `is_complex()` predicates to complete the family (#1127).
+
 * `format_error_bullets()` now adds green tick bullets for elements
   named `"v"` (@rossellhayes).
 

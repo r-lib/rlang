@@ -859,6 +859,11 @@ sexp* rlang_is_double(sexp* x, sexp* n_, sexp* finite_) {
   int finite = validate_finite(finite_);
   return r_shared_lgl(r_is_double(x, n, finite));
 }
+sexp* ffi_is_complex(sexp* x, sexp* n_, sexp* finite_) {
+  r_ssize n = validate_n(n_);
+  int finite = validate_finite(finite_);
+  return r_shared_lgl(r_is_complex(x, n, finite));
+}
 sexp* rlang_is_integerish(sexp* x, sexp* n_, sexp* finite_) {
   r_ssize n = validate_n(n_);
   int finite = validate_finite(finite_);

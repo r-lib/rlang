@@ -10,6 +10,7 @@ bool r_is_logical(sexp* x, r_ssize n);
 bool r_is_integerish(sexp* x, r_ssize n, int finite);
 bool r_is_integer(sexp* x, r_ssize n, int finite);
 bool r_is_double(sexp* x, r_ssize n, int finite);
+bool r_is_complex(sexp* x, r_ssize n, int finite);
 bool r_is_character(sexp* x, r_ssize n);
 bool r_is_raw(sexp* x, r_ssize n);
 

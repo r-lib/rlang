@@ -7,6 +7,7 @@
 \alias{is_vector}
 \alias{is_integer}
 \alias{is_double}
+\alias{is_complex}
 \alias{is_character}
 \alias{is_logical}
 \alias{is_raw}
@@ -23,6 +24,8 @@ is_vector(x, n = NULL)
 is_integer(x, n = NULL)
 
 is_double(x, n = NULL, finite = NULL)
+
+is_complex(x, n = NULL, finite = NULL)
 
 is_character(x, n = NULL)
 

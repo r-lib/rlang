@@ -104,6 +104,7 @@ extern sexp* rlang_is_finite(sexp*);
 extern sexp* rlang_is_logical(sexp*, sexp*);
 extern sexp* rlang_is_integer(sexp*, sexp*);
 extern sexp* rlang_is_double(sexp*, sexp*, sexp*);
+extern sexp* ffi_is_complex(sexp*, sexp*, sexp*);
 extern sexp* rlang_is_integerish(sexp*, sexp*, sexp*);
 extern sexp* rlang_is_character(sexp*, sexp*);
 extern sexp* rlang_is_raw(sexp*, sexp*);
@@ -316,6 +317,7 @@ static const R_CallMethodDef r_callables[] = {
   {"rlang_is_logical",                  (DL_FUNC) &rlang_is_logical, 2},
   {"rlang_is_integer",                  (DL_FUNC) &rlang_is_integer, 2},
   {"rlang_is_double",                   (DL_FUNC) &rlang_is_double, 3},
+  {"ffi_is_complex",                    (DL_FUNC) &ffi_is_complex, 3},
   {"rlang_is_integerish",               (DL_FUNC) &rlang_is_integerish, 3},
   {"rlang_is_character",                (DL_FUNC) &rlang_is_character, 2},
   {"rlang_is_raw",                      (DL_FUNC) &rlang_is_raw, 2},

@@ -6,6 +6,11 @@ test_that("predicates match definitions", {
   expect_true(is_list(mtcars, 11))
   expect_false(is_list(mtcars, 0))
   expect_false(is_double(mtcars, 11))
+
+  expect_true(is_complex(cpl(1, 2), n = 2))
+  expect_false(is_complex(cpl(1, 2), n = 3))
+  expect_false(is_scalar_complex(cpl(1, 2)))
+  expect_false(is_bare_complex(structure(cpl(1, 2), class = "foo")))
 })
 
 test_that("can bypass string serialisation", {
@@ -74,18 +79,23 @@ test_that("is_finite handles numeric types", {
 
 test_that("check finiteness", {
   expect_true(    is_double(dbl(1, 2), finite = TRUE))
+  expect_true(   is_complex(cpl(1, 2), finite = TRUE))
   expect_true(is_integerish(dbl(1, 2), finite = TRUE))
 
   expect_false(    is_double(dbl(1, 2), finite = FALSE))
+  expect_false(   is_complex(cpl(1, 2), finite = FALSE))
   expect_false(is_integerish(dbl(1, 2), finite = FALSE))
 
   expect_false(    is_double(dbl(1, Inf), finite = TRUE))
+  expect_false(   is_complex(cpl(1, Inf), finite = TRUE))
   expect_false(is_integerish(dbl(1, Inf), finite = TRUE))
 
   expect_true(    is_double(dbl(1, Inf), finite = FALSE))
+  expect_true(   is_complex(cpl(1, Inf), finite = FALSE))
   expect_true(is_integerish(dbl(1, Inf), finite = FALSE))
 
   expect_true(    is_double(dbl(-Inf, Inf), finite = FALSE))
+  expect_true(   is_complex(cpl(-Inf, Inf), finite = FALSE))
   expect_true(is_integerish(dbl(-Inf, Inf), finite = FALSE))
 })
 

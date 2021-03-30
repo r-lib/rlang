@@ -6,6 +6,7 @@
 \alias{is_bare_atomic}
 \alias{is_bare_vector}
 \alias{is_bare_double}
+\alias{is_bare_complex}
 \alias{is_bare_integer}
 \alias{is_bare_numeric}
 \alias{is_bare_character}
@@ -22,6 +23,8 @@ is_bare_atomic(x, n = NULL)
 is_bare_vector(x, n = NULL)
 
 is_bare_double(x, n = NULL)
+
+is_bare_complex(x, n = NULL)
 
 is_bare_integer(x, n = NULL)
 
