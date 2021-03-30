@@ -5,15 +5,20 @@
 \alias{expr_deparse}
 \title{Print an expression}
 \usage{
-expr_print(x, width = peek_option("width"))
+expr_print(x, ...)
 
-expr_deparse(x, width = peek_option("width"))
+expr_deparse(x, ..., width = peek_option("width"), max_elements = 5L)
 }
 \arguments{
 \item{x}{An object or expression to print.}
 
+\item{...}{Arguments passed to \code{expr_deparse()}.}
+
 \item{width}{The width of the deparsed or printed expression.
 Defaults to the global option \code{width}.}
+
+\item{max_elements}{Maximum length of a vector or list before truncation
+occurs. Defaults to 5L.}
 }
 \description{
 \code{expr_print()}, powered by \code{expr_deparse()}, is an alternative

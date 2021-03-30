@@ -256,9 +256,25 @@ test_that("literal lists are deparsed", {
   expect_identical(sexp_deparse(list(TRUE, b = 2L, 3, d = "4", as.raw(5))), "<list: TRUE, b = 2L, 3, d = \"4\", <raw: 05>>")
 })
 
-test_that("long vectors are truncated", {
+test_that("long vectors are truncated by default", {
   expect_identical(sexp_deparse(1:10), "<int: 1L, 2L, 3L, 4L, 5L, ...>")
   expect_identical(sexp_deparse(as.list(1:10)), "<list: 1L, 2L, 3L, 4L, 5L, ...>")
+})
+
+test_that("long vectors are truncated when max_elements = 0L", {
+  lines <- new_lines(max_elements = 0L)
+  expect_identical(sexp_deparse(1:10, lines), "<int: ...>")
+
+  lines <- new_lines(max_elements = 0L)
+  expect_identical(sexp_deparse(as.list(1:10), lines), "<list: ...>")
+})
+
+test_that("long vectors are not truncated when max_elements = NULL", {
+  lines <- new_lines(max_elements = NULL)
+  expect_identical(sexp_deparse(1:10, lines), "<int: 1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L, 10L>")
+
+  lines <- new_lines(max_elements = NULL)
+  expect_identical(sexp_deparse(as.list(1:10), lines), "<list: 1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L, 10L>")
 })
 
 test_that("other objects are deparsed with base deparser", {

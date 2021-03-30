@@ -580,7 +580,7 @@ quo_deparse <- function(x, lines = new_quo_deparser()) {
 
   lines$push("^")
   lines$make_next_sticky()
-  sexp_deparse(quo_get_expr(x), lines)
+  sexp_deparse(quo_get_expr(x), lines = lines)
 
   lines$quo_reset_colour()
 
@@ -588,8 +588,13 @@ quo_deparse <- function(x, lines = new_quo_deparser()) {
 }
 
 new_quo_deparser <- function(width = peek_option("width"),
+                             max_elements = 5L,
                              crayon = has_crayon()) {
-  lines <- new_lines(width = width, deparser = quo_deparse)
+  lines <- new_lines(
+    width = width,
+    max_elements = max_elements,
+    deparser = quo_deparse
+  )
 
   child_r6lite(lines,
     has_colour = crayon,

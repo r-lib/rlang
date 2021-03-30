@@ -313,6 +313,9 @@
 
 * Infix operators now stick to their LHS when deparsed by
   `expr_deparse()` (#890).
+  
+* `expr_print()` and `expr_deparse()` accept the optional argument
+  `max_elements` to control truncation of vectors and lists (@ianmcook, #897)
 
 
 # rlang 0.4.2

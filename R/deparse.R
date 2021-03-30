@@ -65,9 +65,13 @@ trim_leading_spaces <- function(line) {
 }
 
 new_lines <- function(width = peek_option("width"),
+                      max_elements = 5L,
                       deparser = sexp_deparse) {
   width <- width %||% 60L
-  stopifnot(is_integerish(width, n = 1))
+  stopifnot(
+    is_integerish(width, n = 1),
+    is_null(max_elements) || is_scalar_integerish(max_elements)
+  )
 
   r6lite(
     deparse = function(self, x) {
@@ -75,6 +79,7 @@ new_lines <- function(width = peek_option("width"),
     },
 
     width = width,
+    max_elements = max_elements,
     boundary = NULL,
     next_sticky = FALSE,
 
@@ -626,9 +631,11 @@ atom_deparse <- function(x, lines = new_lines()) {
     return(NULL)
   }
 
-  truncated <- length(x) > 5L
+  max_elements <- lines$max_elements
+
+  truncated <- !is.null(max_elements) && length(x) > max_elements
   if (truncated) {
-    x <- .subset(x, 1:5)
+    x <- .subset(x, seq_len(max_elements))
   }
 
   lines$push(paste0("<", rlang_type_sum(x), ": "))
@@ -647,13 +654,12 @@ atom_deparse <- function(x, lines = new_lines()) {
 
     lines$push(elts[[i]])
 
-    if (i != n) {
+    if (i < n || truncated) {
       lines$push_sticky(", ")
     }
   }
 
   if (truncated) {
-    lines$push_sticky(", ")
     lines$push("...")
   }
 
@@ -669,12 +675,13 @@ list_deparse <- function(x, lines = new_lines()) {
     return(lines$get_lines())
   }
 
+  max_elements <- lines$max_elements
+
   lines$push(paste0("<list: "))
   lines$increase_indent()
-
-  truncated <- length(x) > 5L
+  truncated <- !is.null(max_elements) && length(x) > max_elements
   if (truncated) {
-    x <- .subset(x, 1:5)
+    x <- .subset(x, seq_len(max_elements))
   }
 
   nms <- names2(x)
@@ -689,13 +696,12 @@ list_deparse <- function(x, lines = new_lines()) {
 
     lines$deparse(x[[i]])
 
-    if (i != n) {
+    if (i < n || truncated) {
       lines$push_sticky(", ")
     }
   }
 
   if (truncated) {
-    lines$push_sticky(", ")
     lines$push("...")
   }
 
