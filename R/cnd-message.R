@@ -110,9 +110,10 @@ cnd_footer.default <- function(cnd, ...) {
 #' the input vector are assembled as a list of bullets, depending on
 #' their names:
 #'
+#' - Unnamed elements are bulleted with a "*" symbol.
 #' - Elements named `"i"` are bulleted with a blue "info" symbol.
 #' - Elements named `"x"` are bulleted with a red "cross" symbol.
-#' - Unnamed elements are bulleted with a "*" symbol.
+#' - Elements named `"v"` are bulleted with a green "tick" symbol.
 #'
 #' This experimental infrastructure is based on the idea that
 #' sentences in error messages are best kept short and simple. From
@@ -124,7 +125,7 @@ cnd_footer.default <- function(cnd, ...) {
 #' [cnd_header()].
 #'
 #' @param x A named character vector of messages. Elements named as
-#'   `x` or `i` are prefixed with the corresponding bullet.
+#'   `x`, `i` or `v` are prefixed with the corresponding bullet.
 #' @export
 format_error_bullets <- function(x) {
   if (!length(x)) {
@@ -132,11 +133,14 @@ format_error_bullets <- function(x) {
   }
 
   nms <- names2(x)
-  stopifnot(nms %in% c("i", "x", ""))
+  stopifnot(nms %in% c("i", "x", "v", ""))
 
-  bullets <- ifelse(nms == "i", info(), ifelse(nms == "x", cross(), "*"))
-  bullets <- paste(bullets, x, collapse = "\n")
-  bullets
+  bullets <-
+    ifelse(nms == "i", info(),
+    ifelse(nms == "x", cross(),
+    ifelse(nms == "v", tick(), "*")))
+
+  paste(bullets, x, sep = " ", collapse = "\n")
 }
 
 collapse_cnd_message <- function(x) {

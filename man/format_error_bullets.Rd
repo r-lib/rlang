@@ -8,7 +8,7 @@ format_error_bullets(x)
 }
 \arguments{
 \item{x}{A named character vector of messages. Elements named as
-\code{x} or \code{i} are prefixed with the corresponding bullet.}
+\code{x}, \code{i} or \code{v} are prefixed with the corresponding bullet.}
 }
 \description{
 \code{format_error_bullets()} takes a character vector and returns a single
@@ -16,9 +16,10 @@ string (or an empty vector if the input is empty). The elements of
 the input vector are assembled as a list of bullets, depending on
 their names:
 \itemize{
+\item Unnamed elements are bulleted with a "*" symbol.
 \item Elements named \code{"i"} are bulleted with a blue "info" symbol.
 \item Elements named \code{"x"} are bulleted with a red "cross" symbol.
-\item Unnamed elements are bulleted with a "*" symbol.
+\item Elements named \code{"v"} are bulleted with a green "tick" symbol.
 }
 
 This experimental infrastructure is based on the idea that

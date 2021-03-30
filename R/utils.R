@@ -226,6 +226,10 @@ cross <- function() {
   x <- if (is_installed("cli")) cli::symbol$cross else "x"
   red(x)
 }
+tick <- function() {
+  x <- if (is_installed("cli")) cli::symbol$tick else "v"
+  green(x)
+}
 
 strip_trailing_newline <- function(x) {
   n <- nchar(x)
