@@ -36,7 +36,7 @@ sexp* rlang_names2(sexp* x, sexp* env) {
   if (nms == r_null) {
     r_ssize n = r_length(x);
     nms = KEEP(r_alloc_character(n));
-    r_chr_fill(nms, r_globals.empty_str);
+    r_chr_fill(nms, r_globals.empty_str, n);
   } else {
     nms = KEEP(rlang_replace_na(nms, r_chrs.empty_string));
   }

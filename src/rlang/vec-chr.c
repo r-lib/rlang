@@ -36,8 +36,7 @@ bool r_chr_has_any(sexp* chr, const char** c_strings) {
   return false;
 }
 
-void r_chr_fill(sexp* chr, sexp* value) {
-  r_ssize n = r_length(chr);
+void r_chr_fill(sexp* chr, sexp* value, r_ssize n) {
   for (r_ssize i = 0; i < n; ++i) {
     r_chr_poke(chr, i, value);
   }
