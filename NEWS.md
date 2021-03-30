@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* `expr_print()` and `expr_deparse()` accept the optional argument
+  `max_elements` to control truncation of vectors and lists (@ianmcook, #897)
+
 * New `is_complex()` predicates to complete the family (#1127).
 
 * `format_error_bullets()` now adds green tick bullets for elements
@@ -316,9 +319,6 @@
 * Infix operators now stick to their LHS when deparsed by
   `expr_deparse()` (#890).
   
-* `expr_print()` and `expr_deparse()` accept the optional argument
-  `max_elements` to control truncation of vectors and lists (@ianmcook, #897)
-
 
 # rlang 0.4.2
 
