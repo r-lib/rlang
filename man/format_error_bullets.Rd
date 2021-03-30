@@ -8,7 +8,9 @@ format_error_bullets(x)
 }
 \arguments{
 \item{x}{A named character vector of messages. Elements named as
-\code{x}, \code{i} or \code{v} are prefixed with the corresponding bullet.}
+\code{"x"}, \code{"i"}, or \code{"v"} are prefixed with the corresponding bullet.
+Elements named with a single space \code{" "} trigger a line break
+from the previous bullet.}
 }
 \description{
 \code{format_error_bullets()} takes a character vector and returns a single
@@ -20,6 +22,7 @@ their names:
 \item Elements named \code{"i"} are bulleted with a blue "info" symbol.
 \item Elements named \code{"x"} are bulleted with a red "cross" symbol.
 \item Elements named \code{"v"} are bulleted with a green "tick" symbol.
+\item Elements named \code{" "} start with a line break.
 }
 
 This experimental infrastructure is based on the idea that
@@ -30,4 +33,17 @@ simple sentences containing a single clause. The info and cross
 symbols of the bullets provide hints on how to interpret the bullet
 relative to the general error issue, which should be supplied as
 \code{\link[=cnd_header]{cnd_header()}}.
+}
+\examples{
+writeLines(format_error_bullets(c("foo", "bar")))
+
+# Supply named elements to format info, cross, and tick bullets
+writeLines(format_error_bullets(c(i = "foo", x = "bar", v = "baz")))
+
+# An element named with an empty space breaks the line
+writeLines(format_error_bullets(c(i = "foo", " " = "bar")))
+
+# A line break is indented. Insert a newline character if your line
+# shouldn't be indented.
+writeLines(format_error_bullets(c(i = "foo\nbar")))
 }

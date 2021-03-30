@@ -23,7 +23,7 @@
 * New `is_complex()` predicates to complete the family (#1127).
 
 * `format_error_bullets()` now adds green tick bullets for elements
-  named `"v"` (@rossellhayes).
+  named `"v"` (@rossellhayes) and line breaks for elements named `" "` (#1130).
 
 * `.data` now fails early when it is subsetted outside of a data mask
   context. This provides a more informative error message (#804, #1133).

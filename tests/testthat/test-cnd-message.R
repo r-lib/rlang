@@ -74,3 +74,14 @@ test_that("`body` must be a string or a function", {
     "must be a string or a function"
   )
 })
+
+test_that("can request a line break in error bullets (#1130)", {
+  expect_snapshot({
+    writeLines(format_error_bullets(c(
+      "Title",
+      "foo bar",
+      " " = "baz",
+      "quux"
+    )))
+  })
+})
