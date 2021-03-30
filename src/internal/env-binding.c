@@ -266,7 +266,7 @@ void env_poke_or_zap(sexp* env, sexp* sym, sexp* value) {
 static
 void env_poke_lazy(sexp* env, sexp* sym, sexp* expr, sexp* eval_env) {
   if (rlang_is_quosure(expr)) {
-    expr = KEEP(r_as_function(expr, eval_env));
+    expr = KEEP(rlang_as_function(expr, eval_env));
     expr = r_new_call(expr, r_null);
     FREE(1);
   }
@@ -278,7 +278,7 @@ void env_poke_lazy(sexp* env, sexp* sym, sexp* expr, sexp* eval_env) {
 static
 void env_poke_active(sexp* env, sexp* sym, sexp* fn, sexp* eval_env) {
   if (!r_is_function(fn)) {
-    fn = r_as_function(fn, eval_env);
+    fn = rlang_as_function(fn, eval_env);
   }
   KEEP(fn);
 

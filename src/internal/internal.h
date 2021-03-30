@@ -40,5 +40,7 @@ static inline sexp* rlang_dots(sexp* env) {
 
 sexp* rlang_replace_na(sexp* x, sexp* replacement);
 
+sexp* rlang_as_function(sexp* x, sexp* env);
+
 
 #endif

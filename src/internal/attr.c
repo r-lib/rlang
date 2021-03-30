@@ -95,7 +95,7 @@ sexp* rlang_set_names(sexp* x, sexp* mold, sexp* nm, sexp* env) {
       mold = KEEP_N(rlang_names2(mold, env), &n_kept);
     }
 
-    nm = KEEP_N(r_as_function(nm, env), &n_kept);
+    nm = KEEP_N(rlang_as_function(nm, env), &n_kept);
     nm = KEEP_N(eval_fn_dots(nm, mold, dots, env), &n_kept);
   } else {
     if (r_length(dots) > 0) {
