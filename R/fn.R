@@ -70,7 +70,7 @@ prim_name <- function(prim) {
 #' Unlike `formals()`, these helpers throw an error with primitive
 #' functions instead of returning `NULL`.
 #'
-#' @param fn A function. It is lookep up in the calling frame if not
+#' @param fn A function. It is looked up in the calling frame if not
 #'   supplied.
 #' @seealso [call_args()] and [call_args_names()]
 #' @export

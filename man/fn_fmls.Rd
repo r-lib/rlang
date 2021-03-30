@@ -19,7 +19,7 @@ fn_fmls(fn) <- value
 fn_fmls_names(fn) <- value
 }
 \arguments{
-\item{fn}{A function. It is lookep up in the calling frame if not
+\item{fn}{A function. It is looked up in the calling frame if not
 supplied.}
 
 \item{value}{New formals or formals names for \code{fn}.}
