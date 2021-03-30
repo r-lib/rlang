@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* `format_error_bullets()` now adds green tick bullets for elements
+  named `"v"` (@rossellhayes).
+
 * `.data` now fails early when it is subsetted outside of a data mask
   context. This provides a more informative error message (#804, #1133).
 
