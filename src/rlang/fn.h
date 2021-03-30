@@ -20,7 +20,15 @@ void r_fn_poke_env(sexp* fn, sexp* env) {
   SET_CLOENV(fn, env);
 }
 
-sexp* r_new_function(sexp* formals, sexp* body, sexp* env);
+static inline
+sexp* r_new_function(sexp* formals, sexp* body, sexp* env) {
+  SEXP fn = Rf_allocSExp(R_TYPE_closure);
+  SET_FORMALS(fn, formals);
+  SET_BODY(fn, body);
+  SET_CLOENV(fn, env);
+  return fn;
+}
+
 sexp* r_as_function(sexp* x, const char* arg);
 
 static inline
