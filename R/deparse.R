@@ -65,9 +65,13 @@ trim_leading_spaces <- function(line) {
 }
 
 new_lines <- function(width = peek_option("width"),
+                      max_elements = 5L,
                       deparser = sexp_deparse) {
   width <- width %||% 60L
-  stopifnot(is_integerish(width, n = 1))
+  stopifnot(
+    is_integerish(width, n = 1),
+    is_null(max_elements) || is_scalar_integerish(max_elements)
+  )
 
   r6lite(
     deparse = function(self, x) {
@@ -75,6 +79,7 @@ new_lines <- function(width = peek_option("width"),
     },
 
     width = width,
+    max_elements = max_elements,
     boundary = NULL,
     next_sticky = FALSE,
 
@@ -620,11 +625,13 @@ is_scalar_deparsable <- function(x) {
   typeof(x) != "raw" && length(x) == 1 && !is_named(x)
 }
 
-atom_deparse <- function(x, lines = new_lines(),  max_elements = 5L) {
+atom_deparse <- function(x, lines = new_lines()) {
   if (is_scalar_deparsable(x)) {
     lines$push(deparse(x))
     return(NULL)
   }
+
+  max_elements <- lines$max_elements
 
   truncated <- !is.null(max_elements) && length(x) > max_elements
   if (truncated) {
@@ -662,15 +669,16 @@ atom_deparse <- function(x, lines = new_lines(),  max_elements = 5L) {
   lines$get_lines()
 }
 
-list_deparse <- function(x, lines = new_lines(), max_elements = 5L) {
+list_deparse <- function(x, lines = new_lines()) {
   if (!length(x) && !is_null(names(x))) {
     lines$push("<named list>")
     return(lines$get_lines())
   }
 
+  max_elements <- lines$max_elements
+
   lines$push(paste0("<list: "))
   lines$increase_indent()
-
   truncated <- !is.null(max_elements) && length(x) > max_elements
   if (truncated) {
     x <- .subset(x, seq_len(max_elements))
@@ -718,12 +726,9 @@ default_deparse <- function(x, lines = new_lines()) {
   lines$get_lines()
 }
 
-sexp_deparse <- function(x, lines = new_lines(), max_elements = 5L) {
+sexp_deparse <- function(x, lines = new_lines()) {
   if (is.object(x)) {
     return(s3_deparse(x, lines))
-  }
-  if (!is_null(max_elements)) {
-    stopifnot(is_scalar_integerish(max_elements))
   }
 
   deparser <- switch (typeof(x),
@@ -741,8 +746,8 @@ sexp_deparse <- function(x, lines = new_lines(), max_elements = 5L) {
     double = ,
     complex = ,
     character = ,
-    raw = function(x, lines) atom_deparse(x, lines, max_elements),
-    list = function(x, lines) list_deparse(x, lines, max_elements),
+    raw = atom_deparse,
+    list = list_deparse,
     default_deparse
   )
   deparser(x, lines)

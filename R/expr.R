@@ -390,11 +390,14 @@ expr_print <- function(x, ...) {
 }
 #' @rdname expr_print
 #' @export
-  deparser <- new_quo_deparser(width = width)
-  quo_deparse(x, deparser, max_elements)
 expr_deparse <- function(x,
                          ...,
                          width = peek_option("width"),
                          max_elements = 5L) {
   check_dots_empty(...)
+  deparser <- new_quo_deparser(
+    width = width,
+    max_elements = max_elements
+  )
+  quo_deparse(x, deparser)
 }
