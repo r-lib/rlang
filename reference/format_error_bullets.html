@@ -44,9 +44,10 @@
 string (or an empty vector if the input is empty). The elements of
 the input vector are assembled as a list of bullets, depending on
 their names:
+Unnamed elements are bulleted with a &quot;*&quot; symbol.
 Elements named &quot;i&quot; are bulleted with a blue &quot;info&quot; symbol.
 Elements named &quot;x&quot; are bulleted with a red &quot;cross&quot; symbol.
-Unnamed elements are bulleted with a &quot;*&quot; symbol.
+Elements named &quot;v&quot; are bulleted with a green &quot;tick&quot; symbol.
 
 
 This experimental infrastructure is based on the idea that
@@ -176,9 +177,10 @@ cnd_header()." />
 string (or an empty vector if the input is empty). The elements of
 the input vector are assembled as a list of bullets, depending on
 their names:</p><ul>
+<li><p>Unnamed elements are bulleted with a "*" symbol.</p></li>
 <li><p>Elements named <code>"i"</code> are bulleted with a blue "info" symbol.</p></li>
 <li><p>Elements named <code>"x"</code> are bulleted with a red "cross" symbol.</p></li>
-<li><p>Unnamed elements are bulleted with a "*" symbol.</p></li>
+<li><p>Elements named <code>"v"</code> are bulleted with a green "tick" symbol.</p></li>
 </ul>
 
 <p>This experimental infrastructure is based on the idea that
@@ -199,7 +201,7 @@ relative to the general error issue, which should be supplied as
     <tr>
       <th>x</th>
       <td><p>A named character vector of messages. Elements named as
-<code>x</code> or <code>i</code> are prefixed with the corresponding bullet.</p></td>
+<code>x</code>, <code>i</code> or <code>v</code> are prefixed with the corresponding bullet.</p></td>
     </tr>
     </table>
 

@@ -286,6 +286,9 @@
     <loc>https://rlang.r-lib.org/reference/is_copyable.html</loc>
   </url>
   <url>
+    <loc>https://rlang.r-lib.org/reference/is_dictionaryish.html</loc>
+  </url>
+  <url>
     <loc>https://rlang.r-lib.org/reference/is_empty.html</loc>
   </url>
   <url>
