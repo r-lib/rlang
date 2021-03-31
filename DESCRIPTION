@@ -42,6 +42,8 @@ Suggests:
     withr
 Enhances: 
     winch
+SystemRequirements:
+    C++11
 Encoding: UTF-8
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
