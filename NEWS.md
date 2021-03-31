@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* Fixed `!!` issue involving binary operators (#1125).
+
 * `expr_print()` and `expr_deparse()` accept the optional argument
   `max_elements` to control truncation of vectors and lists (@ianmcook, #897)
 

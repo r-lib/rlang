@@ -257,6 +257,7 @@ bool is_unary_plusminus(sexp* x) {
  */
 struct ast_rotation_info {
   enum r_operator upper_pivot_op;
+  enum r_operator lower_pivot_op;
   sexp* upper_pivot;
   sexp* lower_pivot;
   sexp* upper_root;
@@ -458,19 +459,16 @@ static void find_lower_pivot(sexp* x, sexp* parent_node, sexp* env,
   sexp* lhs = r_node_car(lhs_node);
   enum r_operator lhs_op = r_which_operator(lhs);
   if (!op_needs_fixup(lhs_op)) {
-    if (!info->lower_pivot) {
-      info->lower_pivot = x;
-    }
-
     sexp* target = r_eval(lhs, env);
     r_node_poke_cadr(x, target);
 
-    // Stop recursion as we found both target and lower pivot
+    // Stop recursion once we found target
     return;
   }
 
-  if (!r_lhs_op_has_precedence(info->upper_pivot_op, lhs_op)) {
-    info->lower_pivot = x;
+  if (r_lhs_op_has_precedence(info->lower_pivot_op, lhs_op)) {
+    info->lower_pivot = lhs;
+    info->lower_pivot_op = lhs_op;
   }
 
   // Recurse
@@ -550,6 +548,9 @@ static void node_list_interp_fixup_rhs(sexp* rhs, sexp* rhs_node, sexp* parent,
     // There might be a lower pivot, so we need to find it. Also find
     // the target of unquoting (leftmost leaf whose predecence is
     // greater than prec(`!!`)) and unquote it.
+    info->lower_pivot = info->upper_pivot;
+    info->lower_pivot_op = info->upper_pivot_op;
+
     find_lower_pivot(info->upper_pivot, NULL, env, info);
 
     if (info->upper_pivot) {
