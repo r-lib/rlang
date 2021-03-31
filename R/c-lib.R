@@ -63,12 +63,14 @@ use_rlang_c_library <- function() {
     usethis::ui_done("Installed rlang library to `src/rlang`.")
   }
 
-  makevars_path <- fs::path(src_path, "Makevars")
-  if (!has_include_directive(makevars_path)) {
-    usethis::ui_todo("Add to `src/Makvars:`")
+  if (!has_include_directive(src_path)) {
+    usethis::ui_todo("Add to `src/Makvars`:")
     usethis::ui_code_block("PKG_CPPFLAGS = -I./rlang")
   }
-
+  if (!has_cpp11_sysreq(src_path)) {
+    usethis::ui_todo("Add to `DESCRIPTION`:")
+    usethis::ui_code_block("SystemRequirements: C++11")
+  }
   if (!detect_rlang_lib_usage(src_path)) {
     usethis::ui_todo("Include the library with `#include <rlang.h>`.")
     usethis::ui_todo("Call `r_init_library()` from your `.onLoad()` hook.")
@@ -111,13 +113,20 @@ is_rlang_dir <- function(path) {
   TRUE
 }
 
-has_include_directive <- function(makevars_path) {
+has_include_directive <- function(src_path) {
+  makevars_path <- fs::path(src_path, "Makevars")
+
   if (!fs::file_exists(makevars_path)) {
     return(FALSE)
   }
 
   makevars_lines <- readLines(makevars_path)
   any(grepl("PKG_CPPFLAGS.*-I.*rlang", makevars_lines))
+}
+
+has_cpp11_sysreq <- function(src_path) {
+  desc_lines <- readLines(fs::path(src_path, "DESCRIPTION"))
+  any(grepl("C++11", desc_lines))
 }
 
 detect_rlang_lib_usage <- function(src_path) {
