@@ -95,15 +95,6 @@ test_that("corner cases are handled when interpolating dot names", {
     expect_error(quos(!!var := NULL), "must be a string or a symbol")
 })
 
-test_that("definitions are interpolated", {
-  var1 <- "foo"
-  var2 <- "bar"
-  dots <- dots_definitions(def = foo(!!var1) := bar(!!var2))
-
-  pat <- list(lhs = quo(foo("foo")), rhs = quo(bar("bar")))
-  expect_identical(dots$defs$def, pat)
-})
-
 test_that("dots are forwarded to named arguments", {
   outer <- function(...) inner(...)
   inner <- function(...) fn(...)
@@ -412,20 +403,6 @@ test_that("enquo() works with lexically scoped arguments", {
     eval_bare(quote(enquo(arg)), child_env(env()))
   }
   expect_identical(capture(foo), quo(foo))
-})
-
-test_that("dots_definitions() uses tidy eval", {
-  var1 <- "foo"
-  var2 <- "bar"
-  dots <- dots_definitions(pat = foo(!!var1) := bar(!!var2))
-  pat <- list(lhs = quo(foo("foo")), rhs = quo(bar("bar")))
-  expect_identical(dots$defs$pat, pat)
-})
-
-test_that("dots_definitions() accepts other types of arguments", {
-  dots <- dots_definitions(A = a := b, B = c)
-  expect_identical(dots$defs$A, list(lhs = quo(a), rhs = quo(b)))
-  expect_identical(dots$dots$B, quo(c))
 })
 
 test_that("closures are captured with their calling environment", {

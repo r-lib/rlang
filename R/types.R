@@ -340,7 +340,7 @@ is_scalar_integerish <- function(x, finite = NULL) {
 
 type_of_ <- function(x) {
   type <- typeof(x)
-  if (is_formulaish(x)) {
+  if (is_formula(x)) {
     if (identical(node_car(x), colon_equals_sym)) {
       "definition"
     } else {

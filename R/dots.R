@@ -413,48 +413,6 @@ formals(dots_values) <- pairlist(
   .check_assign = FALSE
 )
 
-#' Capture definition objects
-#'
-#' @section Life cycle:
-#'
-#' `dots_definitions()` is experimental. Expect API changes.
-#'
-#' @inheritParams nse-defuse
-#'
-#' @keywords internal
-#' @export
-dots_definitions <- function(...,
-                             .named = FALSE,
-                             .ignore_empty = c("trailing", "none", "all")) {
-  dots <- .Call(rlang_quos_interp,
-    frame_env = environment(),
-    named = .named,
-    ignore_empty = .ignore_empty,
-    unquote_names = FALSE,
-    homonyms = "keep",
-    check_assign = FALSE
-  )
-
-  is_def <- map_lgl(dots, function(dot) is_definition(quo_get_expr(dot)))
-  defs <- map(dots[is_def], as_definition)
-
-  list(dots = dots[!is_def], defs = defs)
-}
-as_definition <- function(def) {
-  # The definition comes wrapped in a quosure
-  env <- quo_get_env(def)
-  def <- quo_get_expr(def)
-
-  list(
-    lhs = new_quosure(f_lhs(def), env),
-    rhs = new_quosure(f_rhs(def), env)
-  )
-}
-
-dots_node <- function(...) {
-  node_cdr(sys.call())
-}
-
 #' How many arguments are currently forwarded in dots?
 #'
 #' This returns the number of arguments currently forwarded in `...`

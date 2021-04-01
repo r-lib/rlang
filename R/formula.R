@@ -30,8 +30,7 @@ new_formula <- function(lhs, rhs, env = caller_env()) {
 #'   that is, has a valid environment attribute. If `NULL`, the scope
 #'   is not inspected.
 #' @param lhs A boolean indicating whether the [formula][is_formula]
-#'   or [definition][is_definition] has a left-hand side. If `NULL`,
-#'   the LHS is not inspected.
+#'   has a left-hand side. If `NULL`, the LHS is not inspected.
 #' @export
 #' @examples
 #' x <- disp ~ am
@@ -63,6 +62,12 @@ is_bare_formula <- function(x, scoped = NULL, lhs = NULL) {
   }
   class <- class(x)
   is_null(class) || identical(class, "formula")
+}
+
+#' @rdname is_formula
+#' @export
+is_formulaish <- function(x, scoped = NULL, lhs = NULL) {
+  .Call(rlang_is_formulaish, x, scoped, lhs)
 }
 
 #' Get or set formula components
