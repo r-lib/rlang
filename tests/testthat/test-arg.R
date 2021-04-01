@@ -101,3 +101,13 @@ test_that("maybe_missing() forwards missing value", {
   expect_true(is_missing(maybe_missing(x)))
   expect_false(is_missing(maybe_missing(1L)))
 })
+
+test_that("is_missing() works with default arguments", {
+  expect_true((function(x = 1) is_missing(x))())
+  expect_false((function(x = 1) is_missing(x))(1))
+})
+
+test_that("is_missing() works with dots", {
+  expect_true((function(...) is_missing(..1))())
+  expect_false((function(...) is_missing(..1))(1))
+})

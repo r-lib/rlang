@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* `is_missing()` now handles arguments with a default consistently
+  with `base::missing()` (#1106).
+
 * `is_bare_formula()` now handles the `scoped` argument
   consistently. The default has been changed to `TRUE` for
   compatibility with the historical default behaviour (#1115).

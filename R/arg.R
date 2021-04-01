@@ -241,7 +241,14 @@ missing_arg <- function() {
 #' @rdname missing_arg
 #' @export
 is_missing <- function(x) {
-  missing(x) || is_reference(x, quote(expr = ))
+  if (is_missing0(substitute(x), caller_env())) {
+    TRUE
+  } else {
+    is_reference(x, quote(expr = ))
+  }
+}
+is_missing0 <- function(arg, env) {
+  is_symbol(arg) && inject(base::missing(!!arg), env)
 }
 
 #' @rdname missing_arg
