@@ -115,9 +115,6 @@
     <loc>https://rlang.r-lib.org/reference/done.html</loc>
   </url>
   <url>
-    <loc>https://rlang.r-lib.org/reference/dots_definitions.html</loc>
-  </url>
-  <url>
     <loc>https://rlang.r-lib.org/reference/dots_n.html</loc>
   </url>
   <url>
@@ -416,9 +413,6 @@
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/nse-force.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/op-definition.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/op-get-attr.html</loc>
