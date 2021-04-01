@@ -76,7 +76,9 @@ arg_match0 <- function(arg, values, arg_nm = as_label(substitute(arg))) {
 
 stop_arg_match <- function(arg, values, arg_nm) {
   msg <- arg_match_invalid_msg(arg_nm, values)
+  msg <- c(msg, x = sprintf('Input is "%s".', arg))
 
+  candidate <- NULL
   i_partial <- pmatch(arg, values)
   if (!is_na(i_partial)) {
     candidate <- values[[i_partial]]
@@ -87,9 +89,9 @@ stop_arg_match <- function(arg, values, arg_nm) {
     candidate <- values[[which.min(i_close)]]
   }
 
-  if (exists("candidate")) {
+  if (!is_null(candidate)) {
     candidate <- chr_quoted(candidate, "\"")
-    msg <- paste0(msg, "\n", "Did you mean ", candidate, "?")
+    msg <- c(msg, i = paste0("Did you mean ", candidate, "?"))
   }
 
   abort(msg)
