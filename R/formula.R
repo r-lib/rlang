@@ -52,7 +52,7 @@ new_formula <- function(lhs, rhs, env = caller_env()) {
 #' is_bare_formula(f, scoped = TRUE)
 #' is_bare_formula(eval(f), scoped = TRUE)
 is_formula <- function(x, scoped = NULL, lhs = NULL) {
-  .Call(rlang_is_formula, x, scoped, lhs)
+  .Call(ffi_is_formula, x, scoped, lhs)
 }
 #' @rdname is_formula
 #' @export
@@ -62,12 +62,6 @@ is_bare_formula <- function(x, scoped = NULL, lhs = NULL) {
   }
   class <- class(x)
   is_null(class) || identical(class, "formula")
-}
-
-#' @rdname is_formula
-#' @export
-is_formulaish <- function(x, scoped = NULL, lhs = NULL) {
-  .Call(rlang_is_formulaish, x, scoped, lhs)
 }
 
 #' Get or set formula components

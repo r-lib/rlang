@@ -41,8 +41,7 @@ extern sexp* rlang_is_closure(sexp*);
 extern sexp* rlang_is_primitive(sexp*);
 extern sexp* rlang_is_primitive_eager(sexp*);
 extern sexp* rlang_is_primitive_lazy(sexp*);
-extern sexp* rlang_is_formula(sexp*, sexp*, sexp*);
-extern sexp* rlang_is_formulaish(sexp*, sexp*, sexp*);
+extern sexp* ffi_is_formula(sexp*, sexp*, sexp*);
 extern sexp* rlang_is_reference(sexp*, sexp*);
 extern sexp* rlang_sexp_address(sexp*);
 extern sexp* rlang_length(sexp*);
@@ -211,8 +210,7 @@ static const R_CallMethodDef r_callables[] = {
   {"rlang_is_primitive",                (DL_FUNC) &rlang_is_primitive, 1},
   {"rlang_is_primitive_eager",          (DL_FUNC) &rlang_is_primitive_eager, 1},
   {"rlang_is_primitive_lazy",           (DL_FUNC) &rlang_is_primitive_lazy, 1},
-  {"rlang_is_formula",                  (DL_FUNC) &rlang_is_formula, 3},
-  {"rlang_is_formulaish",               (DL_FUNC) &rlang_is_formulaish, 3},
+  {"ffi_is_formula",                    (DL_FUNC) &ffi_is_formula, 3},
   {"rlang_is_reference",                (DL_FUNC) &rlang_is_reference, 2},
   {"rlang_length",                      (DL_FUNC) &rlang_length, 1},
   {"rlang_true_length",                 (DL_FUNC) &rlang_true_length, 1},

@@ -31,22 +31,19 @@ bool r_f_has_env(sexp* f) {
   return r_is_environment(r_f_env(f));
 }
 
-// FIXME: Should remove `:=` support and fold this in `r_is_formla()`
-bool is_formulaish(sexp* x, int scoped, int lhs) {
-  static const char* formulaish_names[2] = { "~", ":=" };
-
-  if (r_typeof(x) != LANGSXP) {
+bool r_is_formula(sexp* x, int scoped, int lhs) {
+  if (r_typeof(x) != R_TYPE_call) {
     return false;
   }
 
-  sexp* head = r_node_car(x);
-  if (!r_is_symbol_any(head, formulaish_names, 2)) {
+  if (r_node_car(x) != r_syms.tilde) {
     return false;
   }
 
   if (scoped >= 0) {
-    int has_env = r_typeof(r_f_env(x)) == ENVSXP;
-    if (scoped != has_env) {
+    bool has_env = r_typeof(r_f_env(x)) == R_TYPE_environment;
+    bool has_class = r_inherits(x, "formula");
+    if (scoped != (has_env && has_class)) {
       return false;
     }
   }
@@ -59,14 +56,6 @@ bool is_formulaish(sexp* x, int scoped, int lhs) {
   }
 
   return true;
-}
-
-bool r_is_formula(sexp* x, int scoped, int lhs) {
-  if (is_formulaish(x, scoped, lhs)) {
-    return r_node_car(x) == r_syms.tilde;
-  } else {
-    return false;
-  }
 }
 
 sexp* new_raw_formula(sexp* lhs, sexp* rhs, sexp* env) {

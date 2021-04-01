@@ -3,14 +3,11 @@
 \name{is_formula}
 \alias{is_formula}
 \alias{is_bare_formula}
-\alias{is_formulaish}
 \title{Is object a formula?}
 \usage{
 is_formula(x, scoped = NULL, lhs = NULL)
 
 is_bare_formula(x, scoped = NULL, lhs = NULL)
-
-is_formulaish(x, scoped = NULL, lhs = NULL)
 }
 \arguments{
 \item{x}{An object to test.}
