@@ -1,5 +1,9 @@
 # rlang (development version)
 
+* `is_bare_formula()` now handles the `scoped` argument
+  consistently. The default has been changed to `TRUE` for
+  compatibility with the historical default behaviour (#1115).
+
 * The "definition" API (`dots_definitions()` etc.) has been archived.
 
 * Fixed `!!` issue involving binary operators (#1125).

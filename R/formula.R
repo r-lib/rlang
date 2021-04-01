@@ -14,54 +14,88 @@ new_formula <- function(lhs, rhs, env = caller_env()) {
 
 #' Is object a formula?
 #'
-#' `is_formula()` tests if `x` is a call to `~`. `is_bare_formula()`
+#' @description
+#' `is_formula()` tests whether `x` is a call to `~`. `is_bare_formula()`
 #' tests in addition that `x` does not inherit from anything else than
 #' `"formula"`.
 #'
-#' The `scoped` argument patterns-match on whether the scoped bundled
-#' with the quosure is valid or not. Invalid scopes may happen in
-#' nested quotations like `~~expr`, where the outer quosure is validly
-#' scoped but not the inner one. This is because `~` saves the
-#' environment when it is evaluated, and quoted formulas are by
-#' definition not evaluated.
+#' __Note__: When we first implemented `is_formula()`, we thought it
+#' best to treat unevaluated formulas as formulas by default (see
+#' section below). Now we think this default introduces too many edge
+#' cases in normal code. We recommend always supplying `scoped =
+#' TRUE`. Unevaluated formulas can be handled via a `is_call(x, "~")`
+#' branch.
 #'
 #' @param x An object to test.
 #' @param scoped A boolean indicating whether the quosure is scoped,
-#'   that is, has a valid environment attribute. If `NULL`, the scope
-#'   is not inspected.
-#' @param lhs A boolean indicating whether the [formula][is_formula]
-#'   has a left-hand side. If `NULL`, the LHS is not inspected.
-#' @export
-#' @examples
-#' x <- disp ~ am
-#' is_formula(x)
+#'   that is, has a valid environment attribute and inherits from
+#'   `"formula"`. If `NULL`, the scope is not inspected.
+#' @param lhs A boolean indicating whether the formula has a left-hand
+#'   side. If `NULL`, the LHS is not inspected and `is_formula()`
+#'   returns `TRUE` for both one- and two-sided formulas.
 #'
+#' @section Dealing with unevaluated formulas:
+#' At parse time, a formula is a simple call to `~` and it does not
+#' have a class or an environment. Once evaluated, the `~` call
+#' becomes a properly structured formula. Unevaluated formulas arise
+#' by quotation, e.g. `~~foo`, `quote(~foo)`, or `substitute(arg)`
+#' with `arg` being supplied a formula. Use the `scoped` argument to
+#' check whether the formula carries an environment.
+#'
+#' @examples
 #' is_formula(~10)
 #' is_formula(10)
 #'
-#' is_formula(quo(foo))
-#' is_bare_formula(quo(foo))
+#' # If you don't supply `lhs`, both one-sided and two-sided formulas
+#' # will return `TRUE`
+#' is_formula(disp ~ am)
+#' is_formula(~am)
 #'
-#' # Note that unevaluated formulas are treated as bare formulas even
-#' # though they don't inherit from "formula":
+#' # You can also specify whether you expect a LHS:
+#' is_formula(disp ~ am, lhs = TRUE)
+#' is_formula(disp ~ am, lhs = FALSE)
+#' is_formula(~am, lhs = TRUE)
+#' is_formula(~am, lhs = FALSE)
+#'
+#' # Handling of unevaluated formulas is a bit tricky. These formulas
+#' # are special because they don't inherit from `"formula"` and they
+#' # don't carry an environment (they are not scoped):
 #' f <- quote(~foo)
+#' f_env(f)
+#'
+#' # By default unevaluated formulas are treated as formulas
+#' is_formula(f)
+#'
+#' # Supply `scoped = TRUE` to ensure you have an evaluated formula
+#' is_formula(f, scoped = TRUE)
+#'
+#' # By default unevaluated formulas not treated as bare formulas
 #' is_bare_formula(f)
 #'
-#' # However you can specify `scoped` if you need the predicate to
-#' # return FALSE for these unevaluated formulas:
+#' # If you supply `scoped = TRUE`, they will be considered bare
+#' # formulas even though they don't inherit from `"formula"`
 #' is_bare_formula(f, scoped = TRUE)
-#' is_bare_formula(eval(f), scoped = TRUE)
+#' @export
 is_formula <- function(x, scoped = NULL, lhs = NULL) {
   .Call(ffi_is_formula, x, scoped, lhs)
 }
 #' @rdname is_formula
 #' @export
-is_bare_formula <- function(x, scoped = NULL, lhs = NULL) {
+is_bare_formula <- function(x, scoped = TRUE, lhs = NULL) {
   if (!is_formula(x, scoped = scoped, lhs = lhs)) {
     return(FALSE)
   }
-  class <- class(x)
-  is_null(class) || identical(class, "formula")
+
+  if (is_null(scoped)) {
+    exp_class <- c("call", "formula")
+  } else if (is_true(scoped)) {
+    exp_class <- "formula"
+  } else if (is_false(scoped)) {
+    exp_class <- "call"
+  } else {
+    abort("`scoped` must be `NULL` or a logical value.")
+  }
+  is_string(class(x), exp_class)
 }
 
 #' Get or set formula components

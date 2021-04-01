@@ -60,7 +60,7 @@ test_that("can modify environment", {
 })
 
 test_that("setting RHS preserves attributes", {
-  attrs <- list(foo = "bar", class = "baz")
+  attrs <- list(foo = "bar", class = "formula")
 
   f <- structure2(~foo, !!!attrs)
   f_rhs(f) <- quote(bar)
@@ -69,7 +69,7 @@ test_that("setting RHS preserves attributes", {
 })
 
 test_that("setting LHS preserves attributes", {
-  attrs <- list(foo = "bar", class = "baz")
+  attrs <- list(foo = "bar", class = "formula")
 
   f <- structure2(~foo, !!!attrs)
   f_lhs(f) <- quote(bar)
@@ -81,12 +81,25 @@ test_that("setting LHS preserves attributes", {
 })
 
 test_that("setting environment preserves attributes", {
-  attrs <- list(foo = "bar", class = "baz")
+  attrs <- list(foo = "bar", class = "formula")
   env <- env()
 
   f <- structure2(~foo, !!!attrs)
   f_env(f) <- env
   expect_identical(f, structure2(~foo, !!!attrs, .Environment = env))
+})
+
+test_that("unevaluated tilde calls are formulas", {
+  f <- quote(~foo)
+  expect_true(is_formula(f))
+  expect_false(is_formula(f, scoped = TRUE))
+  expect_true(is_formula(f, scoped = FALSE))
+  expect_true(is_formula(f, scoped = NULL))
+
+  expect_false(is_bare_formula(f))
+  expect_false(is_bare_formula(f, scoped = TRUE))
+  expect_true(is_bare_formula(f, scoped = FALSE))
+  expect_true(is_bare_formula(f, scoped = NULL))
 })
 
 

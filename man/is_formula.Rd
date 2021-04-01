@@ -7,48 +7,71 @@
 \usage{
 is_formula(x, scoped = NULL, lhs = NULL)
 
-is_bare_formula(x, scoped = NULL, lhs = NULL)
+is_bare_formula(x, scoped = TRUE, lhs = NULL)
 }
 \arguments{
 \item{x}{An object to test.}
 
 \item{scoped}{A boolean indicating whether the quosure is scoped,
-that is, has a valid environment attribute. If \code{NULL}, the scope
-is not inspected.}
+that is, has a valid environment attribute and inherits from
+\code{"formula"}. If \code{NULL}, the scope is not inspected.}
 
-\item{lhs}{A boolean indicating whether the \link[=is_formula]{formula}
-has a left-hand side. If \code{NULL}, the LHS is not inspected.}
+\item{lhs}{A boolean indicating whether the formula has a left-hand
+side. If \code{NULL}, the LHS is not inspected and \code{is_formula()}
+returns \code{TRUE} for both one- and two-sided formulas.}
 }
 \description{
-\code{is_formula()} tests if \code{x} is a call to \code{~}. \code{is_bare_formula()}
+\code{is_formula()} tests whether \code{x} is a call to \code{~}. \code{is_bare_formula()}
 tests in addition that \code{x} does not inherit from anything else than
 \code{"formula"}.
-}
-\details{
-The \code{scoped} argument patterns-match on whether the scoped bundled
-with the quosure is valid or not. Invalid scopes may happen in
-nested quotations like \code{~~expr}, where the outer quosure is validly
-scoped but not the inner one. This is because \code{~} saves the
-environment when it is evaluated, and quoted formulas are by
-definition not evaluated.
-}
-\examples{
-x <- disp ~ am
-is_formula(x)
 
+\strong{Note}: When we first implemented \code{is_formula()}, we thought it
+best to treat unevaluated formulas as formulas by default (see
+section below). Now we think this default introduces too many edge
+cases in normal code. We recommend always supplying \code{scoped = TRUE}. Unevaluated formulas can be handled via a \code{is_call(x, "~")}
+branch.
+}
+\section{Dealing with unevaluated formulas}{
+
+At parse time, a formula is a simple call to \code{~} and it does not
+have a class or an environment. Once evaluated, the \code{~} call
+becomes a properly structured formula. Unevaluated formulas arise
+by quotation, e.g. \code{~~foo}, \code{quote(~foo)}, or \code{substitute(arg)}
+with \code{arg} being supplied a formula. Use the \code{scoped} argument to
+check whether the formula carries an environment.
+}
+
+\examples{
 is_formula(~10)
 is_formula(10)
 
-is_formula(quo(foo))
-is_bare_formula(quo(foo))
+# If you don't supply `lhs`, both one-sided and two-sided formulas
+# will return `TRUE`
+is_formula(disp ~ am)
+is_formula(~am)
 
-# Note that unevaluated formulas are treated as bare formulas even
-# though they don't inherit from "formula":
+# You can also specify whether you expect a LHS:
+is_formula(disp ~ am, lhs = TRUE)
+is_formula(disp ~ am, lhs = FALSE)
+is_formula(~am, lhs = TRUE)
+is_formula(~am, lhs = FALSE)
+
+# Handling of unevaluated formulas is a bit tricky. These formulas
+# are special because they don't inherit from `"formula"` and they
+# don't carry an environment (they are not scoped):
 f <- quote(~foo)
+f_env(f)
+
+# By default unevaluated formulas are treated as formulas
+is_formula(f)
+
+# Supply `scoped = TRUE` to ensure you have an evaluated formula
+is_formula(f, scoped = TRUE)
+
+# By default unevaluated formulas not treated as bare formulas
 is_bare_formula(f)
 
-# However you can specify `scoped` if you need the predicate to
-# return FALSE for these unevaluated formulas:
+# If you supply `scoped = TRUE`, they will be considered bare
+# formulas even though they don't inherit from `"formula"`
 is_bare_formula(f, scoped = TRUE)
-is_bare_formula(eval(f), scoped = TRUE)
 }
