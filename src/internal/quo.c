@@ -46,13 +46,10 @@ sexp* rlang_quo_set_env(sexp* quo, sexp* env) {
   return r_attrib_set(quo, r_syms.dot_environment, env);
 }
 
-// FIXME: From rlang/formula.c
-bool is_formulaish(sexp* x, int scoped, int lhs);
-
 sexp* rlang_get_expression(sexp* x, sexp* alternate) {
   switch (r_typeof(x)) {
   case LANGSXP:
-    if (is_formulaish(x, -1, 0)) {
+    if (r_is_formula(x, -1, 0)) {
       return r_f_rhs(x);
     }
     break;

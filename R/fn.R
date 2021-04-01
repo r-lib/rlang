@@ -437,15 +437,12 @@ as_function <- function(x, env = caller_env()) {
 
   if (is_formula(x)) {
     if (length(x) > 2) {
-      abort("Can't convert a two-sided formula to a function")
+      abort("Can't convert a two-sided formula to a function.")
     }
 
     env <- f_env(x)
     if (!is_environment(env)) {
-      abort(c(
-        "Can't transform defused formula to a function.",
-        i = "A defused formula doesn't carry an environment."
-      ))
+      abort("Formula must carry an environment.")
     }
 
     args <- list(... = missing_arg(), .x = quote(..1), .y = quote(..2), . = quote(..1))

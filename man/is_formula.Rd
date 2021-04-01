@@ -17,8 +17,7 @@ that is, has a valid environment attribute. If \code{NULL}, the scope
 is not inspected.}
 
 \item{lhs}{A boolean indicating whether the \link[=is_formula]{formula}
-or \link[=is_definition]{definition} has a left-hand side. If \code{NULL},
-the LHS is not inspected.}
+has a left-hand side. If \code{NULL}, the LHS is not inspected.}
 }
 \description{
 \code{is_formula()} tests if \code{x} is a call to \code{~}. \code{is_bare_formula()}

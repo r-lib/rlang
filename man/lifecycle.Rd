@@ -46,8 +46,6 @@ changes.
 \item \code{\link[=with_env]{with_env()}}, \code{\link[=locally]{locally()}}, \code{\link[=env_poke]{env_poke()}}
 \item \code{\link[=pkg_env]{pkg_env()}}, \code{\link[=pkg_env_name]{pkg_env_name()}}, \code{\link[=ns_env]{ns_env()}}, \code{\link[=ns_imports_env]{ns_imports_env()}}, \code{\link[=ns_env_name]{ns_env_name()}}
 \item \code{\link[=is_pairlist]{is_pairlist()}}, \code{\link[=as_pairlist]{as_pairlist()}}, \code{\link[=is_node]{is_node()}}, \code{\link[=is_node_list]{is_node_list()}}
-\item \code{\link[=is_definition]{is_definition()}}, \code{\link[=new_definition]{new_definition()}}, \code{\link[=is_formulaish]{is_formulaish()}},
-\code{\link[=dots_definitions]{dots_definitions()}}
 \item \code{\link[=local_options]{local_options()}}, \code{\link[=with_options]{with_options()}}, \code{\link[=push_options]{push_options()}},
 \code{\link[=peek_options]{peek_options()}}, \code{\link[=peek_option]{peek_option()}}
 \item \code{\link[=as_bytes]{as_bytes()}}, \code{\link[=chr_unserialise_unicode]{chr_unserialise_unicode()}}

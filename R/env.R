@@ -500,7 +500,7 @@ get_env_retired <- function(x, fn) {
 set_env <- function(env, new_env = caller_env()) {
   new_env <- get_env_retired(new_env, "set_env()")
 
-  if (is_formulaish(env) || is_closure(env)) {
+  if (is_formula(env) || is_closure(env)) {
     environment(env) <- new_env
     return(env)
   }

@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* The "definition" API (`dots_definitions()` etc.) has been archived.
+
 * Fixed `!!` issue involving binary operators (#1125).
 
 * `expr_print()` and `expr_deparse()` accept the optional argument

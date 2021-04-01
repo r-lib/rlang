@@ -468,22 +468,11 @@ int as_optional_bool(sexp* lgl) {
     return r_lgl_get(lgl, 0);
   }
 }
-
-sexp* rlang_is_formula(sexp* x, sexp* scoped, sexp* lhs) {
+// [[ register() ]]
+sexp* ffi_is_formula(sexp* x, sexp* scoped, sexp* lhs) {
   int scoped_int = as_optional_bool(scoped);
   int lhs_int = as_optional_bool(lhs);
-
-  bool out = r_is_formula(x, scoped_int, lhs_int);
-  return r_lgl(out);
-}
-
-bool is_formulaish(sexp* x, int scoped, int lhs);
-sexp* rlang_is_formulaish(sexp* x, sexp* scoped, sexp* lhs) {
-  int scoped_int = as_optional_bool(scoped);
-  int lhs_int = as_optional_bool(lhs);
-
-  bool out = is_formulaish(x, scoped_int, lhs_int);
-  return r_lgl(out);
+  return r_lgl(r_is_formula(x, scoped_int, lhs_int));
 }
 
 
