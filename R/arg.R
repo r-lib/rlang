@@ -15,6 +15,7 @@
 #' @param arg A symbol referring to an argument accepting strings.
 #' @return The string supplied to `arg`.
 #' @importFrom utils adist
+#' @seealso [arg_require()]
 #' @export
 #' @examples
 #' fn <- function(x = c("foo", "bar")) arg_match(x)
@@ -107,6 +108,43 @@ arg_match_invalid_msg <- function(arg, values, arg_nm) {
   }
 
   msg
+}
+
+#' Check that argument is supplied
+#' Throws an informative error if `arg` is missing.
+#' @param arg A function argument. Must be a symbol.
+#' @seealso [arg_match()]
+#' @examples
+#' f <- function(x)  {
+#'   arg_require(x)
+#' }
+#'
+#' # Fails because `x` is not supplied
+#' try(f())
+#'
+#' # Succeeds
+#' f(NULL)
+#' @export
+arg_require <- function(arg) {
+  if (!missing(arg)) {
+    invisible(return(TRUE))
+  }
+
+  arg_expr <- substitute(arg)
+  if (!is_symbol(arg_expr)) {
+    abort("Internal error: `arg_require()` expects a symbol.")
+  }
+  arg <- as_string(arg_expr)
+
+  call <- sys.calls()[[sys.parent()]]
+  if (is_call(call) && is_symbol(call[[1]])) {
+    fn <- as_string(call[[1]])
+    msg <- sprintf("`%s()` requires the argument `%s` to be supplied.", fn, arg)
+  } else {
+    msg <- sprintf("The argument `%s` must be supplied.", arg)
+  }
+
+  abort(msg)
 }
 
 chr_quoted <- function(chr, type = "`") {

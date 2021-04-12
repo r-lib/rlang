@@ -111,3 +111,16 @@ test_that("is_missing() works with dots", {
   expect_true((function(...) is_missing(..1))())
   expect_false((function(...) is_missing(..1))(1))
 })
+
+test_that("arg_require() checks argument is supplied (#1118)", {
+  f <- function(x) arg_require(x)
+  g <- function(y) f(y)
+
+  expect_error(f(NULL), NA)
+  expect_error(g(NULL), NA)
+
+  expect_snapshot({
+    (expect_error(f()))
+    (expect_error(g()))
+  })
+})
