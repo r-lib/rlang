@@ -40,9 +40,14 @@
 
 
 <meta property="og:title" content="Is object a formula? — is_formula" />
-<meta property="og:description" content="is_formula() tests if x is a call to ~. is_bare_formula()
+<meta property="og:description" content="is_formula() tests whether x is a call to ~. is_bare_formula()
 tests in addition that x does not inherit from anything else than
-&quot;formula&quot;." />
+&quot;formula&quot;.
+Note: When we first implemented is_formula(), we thought it
+best to treat unevaluated formulas as formulas by default (see
+section below). Now we think this default introduces too many edge
+cases in normal code. We recommend always supplying scoped = TRUE. Unevaluated formulas can be handled via a is_call(x, &quot;~&quot;)
+branch." />
 
 
 
@@ -158,14 +163,19 @@ tests in addition that x does not inherit from anything else than
     </div>
 
     <div class="ref-description">
-    <p><code>is_formula()</code> tests if <code>x</code> is a call to <code><a href='https://rdrr.io/r/base/tilde.html'>~</a></code>. <code>is_bare_formula()</code>
+    <p><code>is_formula()</code> tests whether <code>x</code> is a call to <code><a href='https://rdrr.io/r/base/tilde.html'>~</a></code>. <code>is_bare_formula()</code>
 tests in addition that <code>x</code> does not inherit from anything else than
 <code>"formula"</code>.</p>
+<p><strong>Note</strong>: When we first implemented <code>is_formula()</code>, we thought it
+best to treat unevaluated formulas as formulas by default (see
+section below). Now we think this default introduces too many edge
+cases in normal code. We recommend always supplying <code>scoped = TRUE</code>. Unevaluated formulas can be handled via a <code><a href='is_call.html'>is_call(x, "~")</a></code>
+branch.</p>
     </div>
 
     <pre class="usage"><span class='fu'>is_formula</span><span class='op'>(</span><span class='va'>x</span>, scoped <span class='op'>=</span> <span class='cn'>NULL</span>, lhs <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
-<span class='fu'>is_bare_formula</span><span class='op'>(</span><span class='va'>x</span>, scoped <span class='op'>=</span> <span class='cn'>NULL</span>, lhs <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+<span class='fu'>is_bare_formula</span><span class='op'>(</span><span class='va'>x</span>, scoped <span class='op'>=</span> <span class='cn'>TRUE</span>, lhs <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -177,45 +187,62 @@ tests in addition that <code>x</code> does not inherit from anything else than
     <tr>
       <th>scoped</th>
       <td><p>A boolean indicating whether the quosure is scoped,
-that is, has a valid environment attribute. If <code>NULL</code>, the scope
-is not inspected.</p></td>
+that is, has a valid environment attribute and inherits from
+<code>"formula"</code>. If <code>NULL</code>, the scope is not inspected.</p></td>
     </tr>
     <tr>
       <th>lhs</th>
-      <td><p>A boolean indicating whether the formula
-has a left-hand side. If <code>NULL</code>, the LHS is not inspected.</p></td>
+      <td><p>A boolean indicating whether the formula has a left-hand
+side. If <code>NULL</code>, the LHS is not inspected and <code>is_formula()</code>
+returns <code>TRUE</code> for both one- and two-sided formulas.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <h2 class="hasAnchor" id="dealing-with-unevaluated-formulas"><a class="anchor" href="#dealing-with-unevaluated-formulas"></a>Dealing with unevaluated formulas</h2>
 
-    <p>The <code>scoped</code> argument patterns-match on whether the scoped bundled
-with the quosure is valid or not. Invalid scopes may happen in
-nested quotations like <code>~~expr</code>, where the outer quosure is validly
-scoped but not the inner one. This is because <code><a href='https://rdrr.io/r/base/tilde.html'>~</a></code> saves the
-environment when it is evaluated, and quoted formulas are by
-definition not evaluated.</p>
+    
+
+<p>At parse time, a formula is a simple call to <code><a href='https://rdrr.io/r/base/tilde.html'>~</a></code> and it does not
+have a class or an environment. Once evaluated, the <code><a href='https://rdrr.io/r/base/tilde.html'>~</a></code> call
+becomes a properly structured formula. Unevaluated formulas arise
+by quotation, e.g. <code>~~foo</code>, <code><a href='https://rdrr.io/r/base/substitute.html'>quote(~foo)</a></code>, or <code><a href='https://rdrr.io/r/base/substitute.html'>substitute(arg)</a></code>
+with <code>arg</code> being supplied a formula. Use the <code>scoped</code> argument to
+check whether the formula carries an environment.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='va'>disp</span> <span class='op'>~</span> <span class='va'>am</span>
-<span class='fu'>is_formula</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='fu'>is_formula</span><span class='op'>(</span><span class='op'>~</span><span class='fl'>10</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='fu'>is_formula</span><span class='op'>(</span><span class='op'>~</span><span class='fl'>10</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_formula</span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
-<span class='fu'>is_formula</span><span class='op'>(</span><span class='fu'><a href='nse-defuse.html'>quo</a></span><span class='op'>(</span><span class='va'>foo</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_bare_formula</span><span class='op'>(</span><span class='fu'><a href='nse-defuse.html'>quo</a></span><span class='op'>(</span><span class='va'>foo</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
-<span class='co'># Note that unevaluated formulas are treated as bare formulas even</span>
-<span class='co'># though they don't inherit from "formula":</span>
+<span class='co'># If you don't supply `lhs`, both one-sided and two-sided formulas</span>
+<span class='co'># will return `TRUE`</span>
+<span class='fu'>is_formula</span><span class='op'>(</span><span class='va'>disp</span> <span class='op'>~</span> <span class='va'>am</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_formula</span><span class='op'>(</span><span class='op'>~</span><span class='va'>am</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='co'># You can also specify whether you expect a LHS:</span>
+<span class='fu'>is_formula</span><span class='op'>(</span><span class='va'>disp</span> <span class='op'>~</span> <span class='va'>am</span>, lhs <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_formula</span><span class='op'>(</span><span class='va'>disp</span> <span class='op'>~</span> <span class='va'>am</span>, lhs <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>is_formula</span><span class='op'>(</span><span class='op'>~</span><span class='va'>am</span>, lhs <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>is_formula</span><span class='op'>(</span><span class='op'>~</span><span class='va'>am</span>, lhs <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='co'># Handling of unevaluated formulas is a bit tricky. These formulas</span>
+<span class='co'># are special because they don't inherit from `"formula"` and they</span>
+<span class='co'># don't carry an environment (they are not scoped):</span>
 <span class='va'>f</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='op'>~</span><span class='va'>foo</span><span class='op'>)</span>
+<span class='fu'><a href='f_rhs.html'>f_env</a></span><span class='op'>(</span><span class='va'>f</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; NULL</div><div class='input'>
+<span class='co'># By default unevaluated formulas are treated as formulas</span>
+<span class='fu'>is_formula</span><span class='op'>(</span><span class='va'>f</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='co'># Supply `scoped = TRUE` to ensure you have an evaluated formula</span>
+<span class='fu'>is_formula</span><span class='op'>(</span><span class='va'>f</span>, scoped <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
+<span class='co'># By default unevaluated formulas not treated as bare formulas</span>
 <span class='fu'>is_bare_formula</span><span class='op'>(</span><span class='va'>f</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
-<span class='co'># However you can specify `scoped` if you need the predicate to</span>
-<span class='co'># return FALSE for these unevaluated formulas:</span>
+<span class='co'># If you supply `scoped = TRUE`, they will be considered bare</span>
+<span class='co'># formulas even though they don't inherit from `"formula"`</span>
 <span class='fu'>is_bare_formula</span><span class='op'>(</span><span class='va'>f</span>, scoped <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>is_bare_formula</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span><span class='op'>(</span><span class='va'>f</span><span class='op'>)</span>, scoped <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+</div><div class='output co'>#&gt; [1] FALSE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

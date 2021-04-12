@@ -158,6 +158,9 @@
 <a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li><p><code><a href="../reference/arg_match.html">arg_match()</a></code> now mentions the supplied argument (<a href='https://github.com/r-lib/rlang/issues/1113'>#1113</a>).</p></li>
+<li><p><code><a href="../reference/missing_arg.html">is_missing()</a></code> now handles arguments with a default consistently with <code><a href="https://rdrr.io/r/base/missing.html">base::missing()</a></code> (<a href='https://github.com/r-lib/rlang/issues/1106'>#1106</a>).</p></li>
+<li><p><code><a href="../reference/is_formula.html">is_bare_formula()</a></code> now handles the <code>scoped</code> argument consistently. The default has been changed to <code>TRUE</code> for compatibility with the historical default behaviour (<a href='https://github.com/r-lib/rlang/issues/1115'>#1115</a>).</p></li>
 <li><p>The “definition” API (<code>dots_definitions()</code> etc.) has been archived.</p></li>
 <li><p>Fixed <code>!!</code> issue involving binary operators (<a href='https://github.com/r-lib/rlang/issues/1125'>#1125</a>).</p></li>
 <li><p><code><a href="../reference/expr_print.html">expr_print()</a></code> and <code><a href="../reference/expr_print.html">expr_deparse()</a></code> accept the optional argument <code>max_elements</code> to control truncation of vectors and lists (<a href='https://github.com/ianmcook'>@ianmcook</a>, <a href='https://github.com/r-lib/rlang/issues/897'>#897</a>)</p></li>
