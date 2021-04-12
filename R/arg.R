@@ -40,7 +40,7 @@ arg_match <- function(arg, values = NULL) {
     abort(paste0(chr_quoted(arg_nm), " must be a character vector."))
   }
   if (length(arg) > 1 && !setequal(arg, values)) {
-    abort(arg_match_invalid_msg(arg_nm, values))
+    abort(arg_match_invalid_msg(arg, values, arg_nm))
   }
 
   arg <- arg[[1]]
@@ -75,8 +75,7 @@ arg_match0 <- function(arg, values, arg_nm = as_label(substitute(arg))) {
 }
 
 stop_arg_match <- function(arg, values, arg_nm) {
-  msg <- arg_match_invalid_msg(arg_nm, values)
-  msg <- c(msg, x = sprintf('Input is "%s".', arg))
+  msg <- arg_match_invalid_msg(arg, values, arg_nm)
 
   candidate <- NULL
   i_partial <- pmatch(arg, values)
@@ -97,9 +96,16 @@ stop_arg_match <- function(arg, values, arg_nm) {
   abort(msg)
 }
 
-arg_match_invalid_msg <- function(arg_nm, values) {
+arg_match_invalid_msg <- function(arg, values, arg_nm) {
   msg <- paste0(chr_quoted(arg_nm), " must be one of ")
-  msg <- paste0(msg, chr_enumerate(chr_quoted(values, "\"")), ".")
+  msg <- paste0(msg, chr_enumerate(chr_quoted(values, "\"")))
+
+  if (is_null(arg)) {
+    msg <- paste0(msg, ".")
+  } else {
+    msg <- paste0(msg, sprintf(', not "%s\".', arg))
+  }
+
   msg
 }
 
