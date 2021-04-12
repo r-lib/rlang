@@ -14,9 +14,6 @@
 \alias{:=}
 \alias{qq_show}
 \title{Inject objects inside expressions}
-\usage{
-qq_show(expr)
-}
 \arguments{
 \item{expr}{An expression to be quasiquoted.}
 }
