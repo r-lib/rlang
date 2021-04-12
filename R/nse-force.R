@@ -176,8 +176,8 @@
 #'   operation. The operator form makes it clearer that unquoting is
 #'   special.
 #'
-#' @name nse-inject
-#' @aliases quasiquotation UQ UQS {{}} \{\{ nse-force
+#' @name bang-bang
+#' @aliases quasiquotation UQ UQS {{}} \{\{ nse-force nse-inject
 #' @examples
 #' # Interpolation with {{  }} is the easiest way to forward
 #' # arguments to tidy eval functions:
@@ -273,38 +273,38 @@
 #' quo3
 NULL
 
-#' @rdname nse-inject
+#' @rdname bang-bang
 #' @usage NULL
 #' @export
 UQ <- function(x) {
   abort("`UQ()` can only be used within a quasiquoted argument")
 }
-#' @rdname nse-inject
+#' @rdname bang-bang
 #' @usage NULL
 #' @export
 UQS <- function(x) {
   abort("`UQS()` can only be used within a quasiquoted argument")
 }
-#' @rdname nse-inject
+#' @rdname bang-bang
 #' @usage NULL
 #' @export
 `!!` <- function(x) {
   abort("`!!` can only be used within a quasiquoted argument")
 }
-#' @rdname nse-inject
+#' @rdname bang-bang
 #' @usage NULL
 #' @export
 `!!!` <- function(x) {
   abort("`!!!` can only be used within a quasiquoted argument")
 }
-#' @rdname nse-inject
+#' @rdname bang-bang
 #' @usage NULL
 #' @export
 `:=` <- function(x, y) {
   abort("`:=` can only be used within a quasiquoted argument")
 }
 
-#' @rdname nse-inject
+#' @rdname bang-bang
 #' @param expr An expression to be quasiquoted.
 #' @export
 qq_show <- function(expr) {
