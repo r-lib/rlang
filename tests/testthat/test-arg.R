@@ -52,11 +52,11 @@ test_that("informative error message on partial match", {
 
 test_that("`arg_match()` has informative error messages", {
   expect_snapshot({
-    (expect_error(arg_match0("continuuos", c("discrete", "continuous"))))
-    (expect_error(arg_match0("fou", c("bar", "foo"))))
-    (expect_error(arg_match0("fu", c("ba", "fo"))))
-    (expect_error(arg_match0("baq", c("foo", "baz", "bas"), arg_nm = "arg")))
-    (expect_error(arg_match0("", character())))
+    (expect_error(arg_match0("continuuos", c("discrete", "continuous"), "my_arg")))
+    (expect_error(arg_match0("fou", c("bar", "foo"), "my_arg")))
+    (expect_error(arg_match0("fu", c("ba", "fo"), "my_arg")))
+    (expect_error(arg_match0("baq", c("foo", "baz", "bas"))))
+    (expect_error(arg_match0("", character(), "my_arg")))
   })
 })
 

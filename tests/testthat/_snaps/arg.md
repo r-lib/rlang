@@ -1,35 +1,35 @@
 # `arg_match()` has informative error messages
 
     Code
-      (expect_error(arg_match0("continuuos", c("discrete", "continuous"))))
+      (expect_error(arg_match0("continuuos", c("discrete", "continuous"), "my_arg")))
     Output
       <error/rlang_error>
-      `"continuuos"` must be one of "discrete" or "continuous".
+      `my_arg` must be one of "discrete" or "continuous".
       x Input is "continuuos".
       i Did you mean "continuous"?
     Code
-      (expect_error(arg_match0("fou", c("bar", "foo"))))
+      (expect_error(arg_match0("fou", c("bar", "foo"), "my_arg")))
     Output
       <error/rlang_error>
-      `"fou"` must be one of "bar" or "foo".
+      `my_arg` must be one of "bar" or "foo".
       x Input is "fou".
       i Did you mean "foo"?
     Code
-      (expect_error(arg_match0("fu", c("ba", "fo"))))
+      (expect_error(arg_match0("fu", c("ba", "fo"), "my_arg")))
     Output
       <error/rlang_error>
-      `"fu"` must be one of "ba" or "fo".
+      `my_arg` must be one of "ba" or "fo".
       x Input is "fu".
       i Did you mean "fo"?
     Code
-      (expect_error(arg_match0("baq", c("foo", "baz", "bas"), arg_nm = "arg")))
+      (expect_error(arg_match0("baq", c("foo", "baz", "bas"))))
     Output
       <error/rlang_error>
-      `arg` must be one of "foo", "baz", or "bas".
+      `"baq"` must be one of "foo", "baz", or "bas".
       x Input is "baq".
       i Did you mean "baz"?
     Code
-      (expect_error(arg_match0("", character())))
+      (expect_error(arg_match0("", character(), "my_arg")))
     Output
       <error/rlang_error>
       `values` must have at least one element.
