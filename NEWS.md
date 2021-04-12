@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* `arg_match()` now mentions the supplied argument (#1113).
+
 * `is_missing()` now handles arguments with a default consistently
   with `base::missing()` (#1106).
 

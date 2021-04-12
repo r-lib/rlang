@@ -1,31 +1,31 @@
 # `arg_match()` has informative error messages
 
     Code
-      (expect_error(arg_match0("continuuos", c("discrete", "continuous"))))
+      (expect_error(arg_match0("continuuos", c("discrete", "continuous"), "my_arg")))
     Output
       <error/rlang_error>
-      `"continuuos"` must be one of "discrete" or "continuous".
-      Did you mean "continuous"?
+      `my_arg` must be one of "discrete" or "continuous", not "continuuos".
+      i Did you mean "continuous"?
     Code
-      (expect_error(arg_match0("fou", c("bar", "foo"))))
+      (expect_error(arg_match0("fou", c("bar", "foo"), "my_arg")))
     Output
       <error/rlang_error>
-      `"fou"` must be one of "bar" or "foo".
-      Did you mean "foo"?
+      `my_arg` must be one of "bar" or "foo", not "fou".
+      i Did you mean "foo"?
     Code
-      (expect_error(arg_match0("fu", c("ba", "fo"))))
+      (expect_error(arg_match0("fu", c("ba", "fo"), "my_arg")))
     Output
       <error/rlang_error>
-      `"fu"` must be one of "ba" or "fo".
-      Did you mean "fo"?
+      `my_arg` must be one of "ba" or "fo", not "fu".
+      i Did you mean "fo"?
     Code
-      (expect_error(arg_match0("baq", c("foo", "baz", "bas"), arg_nm = "arg")))
+      (expect_error(arg_match0("baq", c("foo", "baz", "bas"))))
     Output
       <error/rlang_error>
-      `arg` must be one of "foo", "baz", or "bas".
-      Did you mean "baz"?
+      `"baq"` must be one of "foo", "baz", or "bas", not "baq".
+      i Did you mean "baz"?
     Code
-      (expect_error(arg_match0("", character())))
+      (expect_error(arg_match0("", character(), "my_arg")))
     Output
       <error/rlang_error>
       `values` must have at least one element.
@@ -36,10 +36,10 @@
       (expect_error(arg_match0("foobaz", c("fooquxs", "discrete"))))
     Output
       <error/rlang_error>
-      `"foobaz"` must be one of "fooquxs" or "discrete".
+      `"foobaz"` must be one of "fooquxs" or "discrete", not "foobaz".
     Code
       (expect_error(arg_match0("a", c("b", "c"))))
     Output
       <error/rlang_error>
-      `"a"` must be one of "b" or "c".
+      `"a"` must be one of "b" or "c", not "a".
 
