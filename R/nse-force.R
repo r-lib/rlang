@@ -1,49 +1,49 @@
-#' Force parts of an expression
+#' Inject objects inside expressions
 #'
 #' @description
 #'
-#' It is sometimes useful to force early evaluation of part of an
-#' expression before it gets fully evaluated. The tidy eval framework
-#' provides several forcing operators for different use cases.
+#' It is sometimes useful to inject language objects or other kinds of
+#' objects inside an expression before it gets fully evaluated. The
+#' tidy eval framework provides several injection operators for
+#' different use cases.
 #'
-#' - The bang-bang operator `!!` forces a _single_ object. One
-#'   common case for `!!` is to substitute an environment-variable
-#'   (created with `<-`) with a data-variable (inside a data frame).
+#' - The injection operator `!!` (pronounced "bang-bang") injects a
+#'   _single_ object. One common case for `!!` is to substitute an
+#'   environment-variable (created with `<-`) with a data-variable
+#'   (inside a data frame).
 #'
 #'   ```
 #'   library(dplyr)
 #'
-#'   # The environment variable `var` refers to the data-variable
-#'   # `height`
+#'   # The env-variable `var` contains a symbol object, in this
+#'   # case a reference to the data-variable `height`
 #'   var <- sym("height")
 #'
-#'   # We force `var`, which substitutes it with `height`
+#'   # We inject the data-variable contained in `var` inside `summarise()` 
 #'   starwars %>%
 #'     summarise(avg = mean(!!var, na.rm = TRUE))
 #'   ```
 #'
-#' - The big-bang operator `!!!` forces-splice a _list_ of objects.
-#'   The elements of the list are spliced in place, meaning that they
-#'   each become one single argument.
+#' - The big-bang operator `!!!` injects a _list_ of objects. Whereas
+#'   `!!` would inject the list itself, `!!!` injects each element of
+#'   the list in turn. This is also called "splicing".
 #'
 #'   ```
 #'   vars <- syms(c("height", "mass"))
 #'
-#'   # Force-splicing is equivalent to supplying the elements separately
+#'   # Injecting with `!!!` is equivalent to supplying the elements separately
 #'   starwars %>% select(!!!vars)
 #'   starwars %>% select(height, mass)
 #'   ```
 #'
-#' - The curly-curly operator `{{ }}` for function arguments is a bit
-#'   special because it forces the function argument and immediately
-#'   defuses it. The defused expression is substituted in place, ready
-#'   to be evaluated in another context, such as the data frame.
-#'
-#'   In practice, this is useful when you have a data-variable in an
-#'   env-variable (such as a function argument).
+#' - The injection operator `{{ }}` (pronounced "curly-curly") is made
+#'   specially for function arguments. It [defuses][nse-defuse] the
+#'   argument and immediately injects it in place. The injected
+#'   argument can then be evaluated in another context like a data
+#'   frame.
 #'
 #'   ```
-#'   # Force-defuse all function arguments that might contain
+#'   # Inject function arguments that might contain
 #'   # data-variables by embracing them with {{ }}
 #'   mean_by <- function(data, by, var) {
 #'     data %>%
@@ -51,16 +51,15 @@
 #'       summarise(avg = mean({{ var }}, na.rm = TRUE))
 #'   }
 #'
-#'   # The env-variables `by` and `var` are forced but defused.
-#'   # The data-variables they contain are evaluated by dplyr later on
-#'   # in data context.
+#'   # The data-variables `Species` and `Sepal.Width` inside the
+#'   # env-variables `by` and `var` are injected inside `group_by()`
+#'   # and `summarise()`
 #'   iris %>% mean_by(by = Species, var = Sepal.Width)
 #'   ```
 #'
 #' Use `qq_show()` to experiment with forcing operators. `qq_show()`
-#' defuses its input, processes all forcing operators, and prints the
-#' result with [expr_print()] to reveal objects inlined in the
-#' expression by the forcing operators.
+#' defuses its input, processes all injection operators, and prints
+#' the result with [expr_print()] to reveal the injected objects.
 #'
 #'
 #' @section Forcing names:
@@ -77,7 +76,7 @@
 #' supported on the LHS of `=`. This is why rlang interprets the
 #' walrus operator `:=` as an alias of `=`. You can use it to supply
 #' names, e.g. `a := b` is equivalent to `a = b`. Since its syntax is
-#' more flexible you can also force names on its LHS:
+#' more flexible you can also inject names on its LHS:
 #'
 #' ```
 #' name <- "Jane"
@@ -177,8 +176,8 @@
 #'   operation. The operator form makes it clearer that unquoting is
 #'   special.
 #'
-#' @name nse-force
-#' @aliases quasiquotation UQ UQS {{}} \{\{
+#' @name nse-inject
+#' @aliases quasiquotation UQ UQS {{}} \{\{ nse-force
 #' @examples
 #' # Interpolation with {{  }} is the easiest way to forward
 #' # arguments to tidy eval functions:
@@ -274,38 +273,38 @@
 #' quo3
 NULL
 
-#' @rdname nse-force
+#' @rdname nse-inject
 #' @usage NULL
 #' @export
 UQ <- function(x) {
   abort("`UQ()` can only be used within a quasiquoted argument")
 }
-#' @rdname nse-force
+#' @rdname nse-inject
 #' @usage NULL
 #' @export
 UQS <- function(x) {
   abort("`UQS()` can only be used within a quasiquoted argument")
 }
-#' @rdname nse-force
+#' @rdname nse-inject
 #' @usage NULL
 #' @export
 `!!` <- function(x) {
   abort("`!!` can only be used within a quasiquoted argument")
 }
-#' @rdname nse-force
+#' @rdname nse-inject
 #' @usage NULL
 #' @export
 `!!!` <- function(x) {
   abort("`!!!` can only be used within a quasiquoted argument")
 }
-#' @rdname nse-force
+#' @rdname nse-inject
 #' @usage NULL
 #' @export
 `:=` <- function(x, y) {
   abort("`:=` can only be used within a quasiquoted argument")
 }
 
-#' @rdname nse-force
+#' @rdname nse-inject
 #' @param expr An expression to be quasiquoted.
 #' @export
 qq_show <- function(expr) {

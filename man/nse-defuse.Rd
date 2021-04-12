@@ -128,7 +128,7 @@ context of a data frame so that you can write \code{var} instead of
 on, in a context where the data-variables have been defined.
 
 Defusing prevents the evaluation of R code, but you can still force
-evaluation inside a defused expression with the \link[=nse-force]{forcing operators} \verb{!!} and \verb{!!!}.
+evaluation inside a defused expression with the \link[=nse-inject]{forcing operators} \verb{!!} and \verb{!!!}.
 }
 \section{Types of defused expressions}{
 

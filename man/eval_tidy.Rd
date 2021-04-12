@@ -170,6 +170,6 @@ with_data(data, .env$apple)
 }
 }
 \seealso{
-\link{nse-force} for the second leg of the tidy evaluation
+\link{nse-inject} for the second leg of the tidy evaluation
 framework.
 }

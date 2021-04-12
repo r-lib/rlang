@@ -53,7 +53,7 @@ reference:
       - exprs
       - enexpr
       - enexprs
-      - nse-force
+      - nse-inject
       - nse-defuse
       - as_label
       - as_name

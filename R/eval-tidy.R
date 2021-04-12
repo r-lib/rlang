@@ -32,7 +32,7 @@
 #' @param env The environment in which to evaluate `expr`. This
 #'   environment is not applicable for quosures because they have
 #'   their own environments.
-#' @seealso [nse-force] for the second leg of the tidy evaluation
+#' @seealso [nse-inject] for the second leg of the tidy evaluation
 #'   framework.
 #'
 #'

@@ -9,7 +9,7 @@ with_restarts(.expr, ...)
 \arguments{
 \item{.expr}{An expression to execute with new restarts established
 on the stack. This argument is passed by expression and supports
-\link[=nse-force]{unquoting}. It is evaluated in a context where
+\link[=nse-inject]{unquoting}. It is evaluated in a context where
 restarts are established.}
 
 \item{...}{<\link[=dyn-dots]{dynamic}> Named restart functions. The
