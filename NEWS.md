@@ -1,5 +1,9 @@
 # rlang (development version)
 
+* New function `arg_require()` to check that an argument is
+  supplied. It produces a more friendly error message than `force()`
+  (#1118).
+
 * `arg_match()` now mentions the supplied argument (#1113).
 
 * `is_missing()` now handles arguments with a default consistently

@@ -43,3 +43,16 @@
       <error/rlang_error>
       `"a"` must be one of "b" or "c", not "a".
 
+# arg_require() checks argument is supplied (#1118)
+
+    Code
+      (expect_error(f()))
+    Output
+      <error/rlang_error>
+      `f()` requires the argument `x` to be supplied.
+    Code
+      (expect_error(g()))
+    Output
+      <error/rlang_error>
+      `f()` requires the argument `x` to be supplied.
+

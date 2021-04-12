@@ -55,3 +55,6 @@ fn1()
 fn2("bar")
 try(fn3("zoo"))
 }
+\seealso{
+\code{\link[=arg_require]{arg_require()}}
+}
