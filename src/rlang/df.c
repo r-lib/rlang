@@ -53,7 +53,7 @@ r_obj* new_compact_rownames(r_ssize n_rows) {
   }
 
   r_obj* out = r_alloc_integer(2);
-  int* p_out = r_int_deref(out);
+  int* p_out = r_int_begin(out);
   p_out[0] = r_globals.na_int;
   p_out[1] = -n_rows;
 

@@ -535,11 +535,11 @@ static bool should_auto_name(r_obj* named) {
     return r_lgl_get(named, 0);
   case R_TYPE_integer:
     warn_deprecated_width();
-    return r_int_deref(named)[0];
+    return r_int_begin(named)[0];
   case R_TYPE_double:
     if (r_is_integerish(named, -1, true)) {
       warn_deprecated_width();
-      return r_dbl_deref(named)[0];
+      return r_dbl_begin(named)[0];
     }
     // else fallthrough
   default:
@@ -695,8 +695,8 @@ static r_obj* dots_keep(r_obj* dots, r_obj* nms, bool first) {
   r_obj* out_nms = KEEP(r_alloc_character(out_n));
   r_attrib_push(out, r_syms.names, out_nms);
 
-  r_obj* const * p_nms = r_chr_deref_const(nms);
-  const int* p_dups = r_lgl_deref_const(dups);
+  r_obj* const * p_nms = r_chr_cbegin(nms);
+  const int* p_dups = r_lgl_cbegin(dups);
 
   for (r_ssize i = 0, out_i = 0; i < n; ++i) {
     if (!p_dups[i]) {

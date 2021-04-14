@@ -5,52 +5,52 @@
 
 
 static inline
-int* r_lgl_deref(r_obj* x) {
+int* r_lgl_begin(r_obj* x) {
   return LOGICAL(x);
 }
 static inline
-int* r_int_deref(r_obj* x) {
+int* r_int_begin(r_obj* x) {
   return INTEGER(x);
 }
 static inline
-double* r_dbl_deref(r_obj* x) {
+double* r_dbl_begin(r_obj* x) {
   return REAL(x);
 }
 static inline
-r_complex_t* r_cpl_deref(r_obj* x) {
+r_complex_t* r_cpl_begin(r_obj* x) {
   return COMPLEX(x);
 }
 static inline
-void* r_raw_deref(r_obj* x) {
+void* r_raw_begin(r_obj* x) {
   return RAW(x);
 }
 
 static inline
-const int* r_int_deref_const(r_obj* x) {
+const int* r_int_cbegin(r_obj* x) {
   return (const int*) INTEGER(x);
 }
 static inline
-const int* r_lgl_deref_const(r_obj* x) {
+const int* r_lgl_cbegin(r_obj* x) {
   return (const int*) LOGICAL(x);
 }
 static inline
-const double* r_dbl_deref_const(r_obj* x) {
+const double* r_dbl_cbegin(r_obj* x) {
   return (const double*) REAL(x);
 }
 static inline
-const r_complex_t* r_cpl_deref_const(r_obj* x) {
+const r_complex_t* r_cpl_cbegin(r_obj* x) {
   return (const r_complex_t*) COMPLEX(x);
 }
 static inline
-const void* r_raw_deref_const(r_obj* x) {
+const void* r_raw_cbegin(r_obj* x) {
   return (const void*) RAW(x);
 }
 static inline
-r_obj* const * r_chr_deref_const(r_obj* x) {
+r_obj* const * r_chr_cbegin(r_obj* x) {
   return (r_obj* const *) STRING_PTR(x);
 }
 static inline
-r_obj* const * r_list_deref_const(r_obj* x) {
+r_obj* const * r_list_cbegin(r_obj* x) {
 #if (R_VERSION < R_Version(3, 5, 0))
   return ((r_obj* const *) STRING_PTR(x));
 #else
@@ -59,37 +59,37 @@ r_obj* const * r_list_deref_const(r_obj* x) {
 }
 
 static inline
-void* r_vec_deref0(enum r_type type, r_obj* x) {
+void* r_vec_begin0(enum r_type type, r_obj* x) {
   switch (type) {
-  case R_TYPE_logical: return r_lgl_deref(x);
-  case R_TYPE_integer: return r_int_deref(x);
-  case R_TYPE_double: return r_dbl_deref(x);
-  case R_TYPE_complex: return r_cpl_deref(x);
-  case R_TYPE_raw: return r_raw_deref(x);
-  default: r_stop_unimplemented_type("r_vec_deref", type);
+  case R_TYPE_logical: return r_lgl_begin(x);
+  case R_TYPE_integer: return r_int_begin(x);
+  case R_TYPE_double: return r_dbl_begin(x);
+  case R_TYPE_complex: return r_cpl_begin(x);
+  case R_TYPE_raw: return r_raw_begin(x);
+  default: r_stop_unimplemented_type("r_vec_begin", type);
   }
 }
 static inline
-void* r_vec_deref(r_obj* x) {
-  return r_vec_deref0(r_typeof(x), x);
+void* r_vec_begin(r_obj* x) {
+  return r_vec_begin0(r_typeof(x), x);
 }
 
 static inline
-const void* r_vec_deref_const0(enum r_type type, r_obj* x) {
+const void* r_vec_cbegin0(enum r_type type, r_obj* x) {
   switch (type) {
-  case R_TYPE_logical: return r_lgl_deref_const(x);
-  case R_TYPE_integer: return r_int_deref_const(x);
-  case R_TYPE_double: return r_dbl_deref_const(x);
-  case R_TYPE_complex: return r_cpl_deref_const(x);
-  case R_TYPE_raw: return r_raw_deref_const(x);
-  case R_TYPE_character: return r_chr_deref_const(x);
-  case R_TYPE_list: return r_list_deref_const(x);
-  default: r_stop_unimplemented_type("r_vec_deref_const", type);
+  case R_TYPE_logical: return r_lgl_cbegin(x);
+  case R_TYPE_integer: return r_int_cbegin(x);
+  case R_TYPE_double: return r_dbl_cbegin(x);
+  case R_TYPE_complex: return r_cpl_cbegin(x);
+  case R_TYPE_raw: return r_raw_cbegin(x);
+  case R_TYPE_character: return r_chr_cbegin(x);
+  case R_TYPE_list: return r_list_cbegin(x);
+  default: r_stop_unimplemented_type("r_vec_cbegin", type);
   }
 }
 static inline
-const void* r_vec_deref_const(r_obj* x) {
-  return r_vec_deref_const0(r_typeof(x), x);
+const void* r_vec_cbegin(r_obj* x) {
+  return r_vec_cbegin0(r_typeof(x), x);
 }
 
 static inline
@@ -202,7 +202,7 @@ static inline
 r_obj* r_alloc_raw0(r_ssize n) {
   r_obj* out = r_alloc_raw(n);
 
-  unsigned char* p_out = (unsigned char*) r_raw_deref(out);
+  unsigned char* p_out = (unsigned char*) r_raw_begin(out);
   memset(p_out, 0, n);
 
   return out;
@@ -337,7 +337,7 @@ r_obj* r_vec_n(enum r_type type, void* v_src, r_ssize n) {
   case R_TYPE_complex:
   case R_TYPE_raw: {
     r_obj* out = r_alloc_vector(type, n);
-    memcpy(r_vec_deref(out), v_src, n * r_vec_elt_sizeof0(type));
+    memcpy(r_vec_begin(out), v_src, n * r_vec_elt_sizeof0(type));
     return out;
   }
   case R_TYPE_character:
@@ -373,7 +373,7 @@ r_obj* r_raw_n(int* v_src, r_ssize n) {
 static inline
 r_obj* r_copy_in_raw(const void* src, size_t size) {
   r_obj* out = r_alloc_raw(size);
-  memcpy(r_raw_deref(out), src, size);
+  memcpy(r_raw_begin(out), src, size);
   return out;
 }
 
@@ -385,7 +385,7 @@ void r_int_fill_iota0(int* p_x, int start, r_ssize n) {
 }
 static inline
 void r_int_fill_iota(r_obj* x) {
-  r_int_fill_iota0(r_int_deref(x), 0, r_length(x));
+  r_int_fill_iota0(r_int_begin(x), 0, r_length(x));
 }
 
 
@@ -402,7 +402,7 @@ int* r_int_unique0(int* v_data, r_ssize size);
 
 static inline
 int* r_int_unique(r_obj* x) {
-  return r_int_unique0(r_int_deref(x), r_length(x));
+  return r_int_unique0(r_int_begin(x), r_length(x));
 }
 
 

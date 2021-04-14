@@ -8,7 +8,7 @@ r_ssize r_lgl_sum(r_obj* x, bool na_true) {
   r_ssize n = r_length(x);
 
   r_ssize sum = 0;
-  const int* p_x = r_lgl_deref_const(x);
+  const int* p_x = r_lgl_cbegin(x);
 
   for (r_ssize i = 0; i < n; ++i) {
     // This can't overflow since `sum` is necessarily smaller or equal
@@ -31,7 +31,7 @@ r_obj* r_lgl_which(r_obj* x, bool na_propagate) {
   }
 
   r_ssize n = r_length(x);
-  const int* p_x = r_lgl_deref_const(x);
+  const int* p_x = r_lgl_cbegin(x);
 
   r_ssize which_n = r_lgl_sum(x, na_propagate);
 
@@ -40,7 +40,7 @@ r_obj* r_lgl_which(r_obj* x, bool na_propagate) {
   }
 
   r_obj* which = KEEP(r_alloc_integer(which_n));
-  int* p_which = r_int_deref(which);
+  int* p_which = r_int_begin(which);
 
   for (int i = 0; i < n; ++i) {
     int elt = p_x[i];

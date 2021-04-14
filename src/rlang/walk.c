@@ -73,7 +73,7 @@ struct r_sexp_iterator* r_new_sexp_iterator(r_obj* root) {
 
   r_obj* it = r_alloc_raw(sizeof(struct r_sexp_iterator));
   r_list_poke(shelter, 0, it);
-  struct r_sexp_iterator* p_it = r_raw_deref(it);
+  struct r_sexp_iterator* p_it = r_raw_begin(it);
 
   struct r_dyn_array* p_stack = r_new_dyn_array(sizeof(struct sexp_stack_info), SEXP_STACK_INIT_SIZE);
   r_list_poke(shelter, 1, p_stack->shelter);
@@ -268,7 +268,7 @@ void init_incoming_stack_info(struct sexp_stack_info* p_info,
     p_info->p_state = pointer_states + !has_attrib;
     break;
   case SEXP_ITERATOR_TYPE_vector:
-    p_info->v_arr = r_vec_deref_const(p_info->x);
+    p_info->v_arr = r_vec_cbegin(p_info->x);
     p_info->v_arr_end = p_info->v_arr + r_length(p_info->x);
     p_info->p_state = vector_states + !has_attrib;
     break;

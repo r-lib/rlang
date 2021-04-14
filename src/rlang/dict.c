@@ -8,7 +8,7 @@ static size_t size_round_power_2(size_t size);
 
 #include "decl/dict-decl.h"
 
-#define DICT_DEREF(D) r_list_deref_const(D)
+#define DICT_DEREF(D) r_list_cbegin(D)
 
 #define DICT_KEY(V) r_list_get(V, 0)
 #define DICT_VALUE(V) r_list_get(V, 1)
@@ -40,14 +40,14 @@ struct r_dict* r_new_dict(r_ssize size) {
 
   r_obj* dict_raw = r_alloc_raw0(sizeof(struct r_dict));
   r_list_poke(shelter, 0, dict_raw);
-  struct r_dict* p_dict = r_raw_deref(dict_raw);
+  struct r_dict* p_dict = r_raw_begin(dict_raw);
 
   p_dict->shelter = shelter;
 
   p_dict->buckets = r_alloc_list(size);
   r_list_poke(shelter, 1, p_dict->buckets);
 
-  p_dict->p_buckets = r_list_deref_const(p_dict->buckets);
+  p_dict->p_buckets = r_list_cbegin(p_dict->buckets);
   p_dict->n_buckets = size;
 
   r_attrib_poke(shelter, r_syms.class, r_chr("rlang_dict"));
@@ -228,7 +228,7 @@ r_obj* dict_find_node_info(struct r_dict* p_dict,
 
 struct r_dict_iterator* r_new_dict_iterator(struct r_dict* p_dict) {
   r_obj* shelter = r_alloc_raw(sizeof(struct r_dict_iterator));
-  struct r_dict_iterator* p_it = r_raw_deref(shelter);
+  struct r_dict_iterator* p_it = r_raw_begin(shelter);
 
   p_it->shelter = shelter;
   p_it->key = r_null;

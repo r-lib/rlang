@@ -5,7 +5,7 @@ r_obj* rlang_raw_deparse_str(r_obj* x, r_obj* prefix, r_obj* suffix) {
   if (r_typeof(x) != R_TYPE_raw) {
     r_abort("`x` must be a raw vector.");
   }
-  const unsigned char* p_x = r_raw_deref(x);
+  const unsigned char* p_x = r_raw_begin(x);
   r_ssize len_data = r_length(x);
 
   const char* s_prefix = "";
@@ -31,7 +31,7 @@ r_obj* rlang_raw_deparse_str(r_obj* x, r_obj* prefix, r_obj* suffix) {
   r_ssize len = len_prefix + (2 * len_data) + len_suffix;
 
   r_obj* buf = KEEP(r_alloc_raw(len));
-  char* p_buf = (char*) r_raw_deref(buf);
+  char* p_buf = (char*) r_raw_begin(buf);
 
   memcpy(p_buf, s_prefix, len_prefix);
   p_buf += len_prefix;
@@ -47,9 +47,9 @@ r_obj* rlang_raw_deparse_str(r_obj* x, r_obj* prefix, r_obj* suffix) {
   memcpy(p_buf, s_suffix, len_suffix);
   p_buf += len_suffix;
 
-  // Invariant: p_buf == r_raw_deref(buf) + len
+  // Invariant: p_buf == r_raw_begin(buf) + len
 
-  r_obj* chr_out = KEEP(Rf_mkCharLenCE((char*) r_raw_deref(buf), len, CE_UTF8));
+  r_obj* chr_out = KEEP(Rf_mkCharLenCE((char*) r_raw_begin(buf), len, CE_UTF8));
   r_obj* out = KEEP(r_str_as_character(chr_out));
 
   FREE(3);

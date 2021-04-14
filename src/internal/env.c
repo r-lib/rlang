@@ -24,7 +24,7 @@ void r_env_unbind_anywhere(r_obj* env, r_obj* sym) {
 
 static
 void env_unbind_names(r_obj* env, r_obj* names, bool inherit) {
-  r_obj* const * p_names = r_chr_deref_const(names);
+  r_obj* const * p_names = r_chr_cbegin(names);
   r_ssize n = r_length(names);
 
   if (inherit) {

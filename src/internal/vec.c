@@ -44,7 +44,7 @@ bool r_is_finite(r_obj* x) {
 
   switch(r_typeof(x)) {
   case R_TYPE_integer: {
-    const int* p_x = r_int_deref_const(x);
+    const int* p_x = r_int_cbegin(x);
     for (r_ssize i = 0; i < n; ++i) {
       if (p_x[i] == r_globals.na_int) {
         return false;
@@ -53,7 +53,7 @@ bool r_is_finite(r_obj* x) {
     break;
   }
   case R_TYPE_double: {
-    const double* p_x = r_dbl_deref_const(x);
+    const double* p_x = r_dbl_cbegin(x);
     for (r_ssize i = 0; i < n; ++i) {
       if (!isfinite(p_x[i])) {
         return false;
@@ -62,7 +62,7 @@ bool r_is_finite(r_obj* x) {
     break;
   }
   case R_TYPE_complex: {
-    const r_complex_t* p_x = r_cpl_deref_const(x);
+    const r_complex_t* p_x = r_cpl_cbegin(x);
     for (r_ssize i = 0; i < n; ++i) {
       if (!isfinite(p_x[i].r) || !isfinite(p_x[i].i)) {
         return false;
@@ -117,7 +117,7 @@ bool r_is_integerish(r_obj* x, r_ssize n, int finite) {
   }
 
   r_ssize actual_n = r_length(x);
-  const double* p_x = r_dbl_deref_const(x);
+  const double* p_x = r_dbl_cbegin(x);
   bool actual_finite = true;
 
   for (r_ssize i = 0; i < actual_n; ++i) {

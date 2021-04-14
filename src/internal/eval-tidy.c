@@ -312,8 +312,8 @@ r_obj* rlang_as_data_mask(r_obj* data) {
     if (names != r_null) {
       r_ssize n = r_length(data);
 
-      r_obj* const * p_names = r_chr_deref_const(names);
-      r_obj* const * p_data = r_list_deref_const(data);
+      r_obj* const * p_names = r_chr_cbegin(names);
+      r_obj* const * p_data = r_list_cbegin(data);
 
       for (r_ssize i = 0; i < n; ++i) {
         // Ignore empty or missing names

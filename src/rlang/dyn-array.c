@@ -19,7 +19,7 @@ struct r_dyn_array* r_new_dyn_vector(enum r_type type,
   r_obj* vec_data = r_alloc_vector(type, capacity);
   r_list_poke(shelter, 1, vec_data);
 
-  struct r_dyn_array* p_vec = r_raw_deref(vec_raw);
+  struct r_dyn_array* p_vec = r_raw_begin(vec_raw);
   p_vec->shelter = shelter;
   p_vec->count = 0;
   p_vec->capacity = capacity;
@@ -39,10 +39,10 @@ struct r_dyn_array* r_new_dyn_vector(enum r_type type,
     break;
   default:
     p_vec->barrier_set = NULL;
-    p_vec->v_data = r_vec_deref0(type, vec_data);
+    p_vec->v_data = r_vec_begin0(type, vec_data);
     break;
   }
-  p_vec->v_data_const = r_vec_deref_const0(type, vec_data);
+  p_vec->v_data_const = r_vec_cbegin0(type, vec_data);
 
   FREE(1);
   return p_vec;
@@ -108,10 +108,10 @@ void r_arr_resize(struct r_dyn_array* p_arr,
   case R_TYPE_list:
     break;
   default:
-    p_arr->v_data = r_vec_deref0(type, data);
+    p_arr->v_data = r_vec_begin0(type, data);
     break;
   }
-  p_arr->v_data_const = r_vec_deref_const0(type, data);
+  p_arr->v_data_const = r_vec_cbegin0(type, data);
 }
 
 

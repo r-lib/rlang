@@ -117,8 +117,8 @@ r_obj* rlang_ext_arg_match0(r_obj* args) {
     r_stop_unreached("rlang_ext2_arg_match0");
   }
 
-  r_obj* const* p_arg = r_chr_deref_const(arg);
-  r_obj* const* p_values = r_chr_deref_const(values);
+  r_obj* const* p_arg = r_chr_cbegin(arg);
+  r_obj* const* p_values = r_chr_cbegin(values);
 
   // Same-length vector: must be identical, we allow changed order.
   r_ssize i = 0;
@@ -134,7 +134,7 @@ r_obj* rlang_ext_arg_match0(r_obj* args) {
   }
 
   r_obj* my_values = KEEP(r_clone(values));
-  r_obj* const * p_my_values = r_chr_deref_const(my_values);
+  r_obj* const * p_my_values = r_chr_cbegin(my_values);
 
   // Invariant: my_values[i:(len-1)] contains the values we haven't matched yet
   for (; i < arg_len; ++i) {
