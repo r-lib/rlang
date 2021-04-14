@@ -158,6 +158,18 @@
 <a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li><p><code><a href="../reference/format_error_bullets.html">format_error_bullets()</a></code> has been renamed to <code><a href="../reference/format_bullets.html">format_bullets()</a></code>.</p></li>
+<li>
+<p><code><a href="../reference/format_bullets.html">format_bullets()</a></code> now treats:</p>
+<ul>
+<li>Unnamed elements as unindented line breaks (<a href='https://github.com/r-lib/rlang/issues/1130'>#1130</a>)</li>
+<li>Elements named <code>"v"</code> as green ticks (<a href='https://github.com/rossellhayes'>@rossellhayes</a>)</li>
+<li>Elements named <code>" "</code> as indented line breaks</li>
+<li>Elements named <code>"*"</code> as normal bullets</li>
+<li>Elements named <code>"!"</code> as warning bullets</li>
+</ul>
+<p>For convenience, a fully unnamed vector is interpreted as a vector of <code>"*"</code> bullets.</p>
+</li>
 <li><p>New function <code><a href="../reference/arg_require.html">arg_require()</a></code> to check that an argument is supplied. It produces a more friendly error message than <code><a href="https://rdrr.io/r/base/force.html">force()</a></code> (<a href='https://github.com/r-lib/rlang/issues/1118'>#1118</a>).</p></li>
 <li><p><code><a href="../reference/arg_match.html">arg_match()</a></code> now mentions the supplied argument (<a href='https://github.com/r-lib/rlang/issues/1113'>#1113</a>).</p></li>
 <li><p><code><a href="../reference/missing_arg.html">is_missing()</a></code> now handles arguments with a default consistently with <code><a href="https://rdrr.io/r/base/missing.html">base::missing()</a></code> (<a href='https://github.com/r-lib/rlang/issues/1106'>#1106</a>).</p></li>
@@ -166,7 +178,6 @@
 <li><p>Fixed <code>!!</code> issue involving binary operators (<a href='https://github.com/r-lib/rlang/issues/1125'>#1125</a>).</p></li>
 <li><p><code><a href="../reference/expr_print.html">expr_print()</a></code> and <code><a href="../reference/expr_print.html">expr_deparse()</a></code> accept the optional argument <code>max_elements</code> to control truncation of vectors and lists (<a href='https://github.com/ianmcook'>@ianmcook</a>, <a href='https://github.com/r-lib/rlang/issues/897'>#897</a>)</p></li>
 <li><p>New <code><a href="../reference/type-predicates.html">is_complex()</a></code> predicates to complete the family (<a href='https://github.com/r-lib/rlang/issues/1127'>#1127</a>).</p></li>
-<li><p><code><a href="../reference/format_error_bullets.html">format_error_bullets()</a></code> now adds green tick bullets for elements named <code>"v"</code> (<a href='https://github.com/rossellhayes'>@rossellhayes</a>).</p></li>
 <li><p><code>.data</code> now fails early when it is subsetted outside of a data mask context. This provides a more informative error message (<a href='https://github.com/r-lib/rlang/issues/804'>#804</a>, <a href='https://github.com/r-lib/rlang/issues/1133'>#1133</a>).</p></li>
 <li><p>The C function <code>r_obj_address()</code> now properly prefixes addresses with the hexadecimal prefix <code>0x</code> on Windows (<a href='https://github.com/r-lib/rlang/issues/1135'>#1135</a>).</p></li>
 <li><p>Fixed performance issue when splicing classes that explicitly inherit from list with <code>!!!</code> (<a href='https://github.com/r-lib/rlang/issues/1140'>#1140</a>, r-lib/vctrs<a href='https://github.com/r-lib/rlang/issues/1170'>#1170</a>).</p></li>
@@ -208,7 +219,7 @@
 <ul>
 <li><p><code><a href="../reference/inject.html">inject()</a></code> evaluates its argument with <code>!!</code>, <code>!!!</code>, and <code>{{</code> support.</p></li>
 <li><p>New <code><a href="../reference/enquo0.html">enquo0()</a></code> and <code><a href="../reference/enquo0.html">enquos0()</a></code> operators for defusing function arguments without automatic injection (unquotation).</p></li>
-<li><p><code><a href="../reference/format_error_bullets.html">format_error_bullets()</a></code> is no longer experimental. The <code>message</code> arguments of <code><a href="../reference/abort.html">abort()</a></code>, <code><a href="../reference/abort.html">warn()</a></code>, and <code><a href="../reference/abort.html">inform()</a></code> are automatically passed to that function to make it easy to create messages with regular, info, and error bullets. See <code><a href="../reference/format_error_bullets.html">?format_error_bullets</a></code> for more information.</p></li>
+<li><p><code><a href="../reference/format_error_bullets.html">format_error_bullets()</a></code> is no longer experimental. The <code>message</code> arguments of <code><a href="../reference/abort.html">abort()</a></code>, <code><a href="../reference/abort.html">warn()</a></code>, and <code><a href="../reference/abort.html">inform()</a></code> are automatically passed to that function to make it easy to create messages with regular, info, and error bullets. See <code><a href="../reference/format_bullets.html">?format_bullets</a></code> for more information.</p></li>
 <li><p>New <code><a href="../reference/zap_srcref.html">zap_srcref()</a></code> function to recursively remove source references from functions and calls.</p></li>
 <li><p>A new compat file for the zeallot operator <code>%&lt;-%</code> is now available in the rlang repository.</p></li>
 <li><p>New <code><a href="../reference/env_bind.html">%&lt;~%</a></code> operator to define a variable lazily.</p></li>
