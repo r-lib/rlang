@@ -125,3 +125,10 @@ test_that("empty names in partially named bullet vectors are treated as line bre
     "i bar\nbaz"
   )
 })
+
+test_that("! symbol creates warning bullet", {
+  expect_equal(
+    format_error_bullets(c("Header", "!" = "Attention")),
+    "Header\n! Attention"
+  )
+})

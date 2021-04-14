@@ -4,7 +4,8 @@
 
   - Unnamed elements as unindented line breaks
   - Elements named `" "` as indented line breaks
-  - Elements named `"*"` as bullets
+  - Elements named `"*"` as normal bullets
+  - Elements named `"!"` as warning bullets
   
   For convenience, a fully unnamed vector is interpreted as a vector
   of `"*"` bullets.
