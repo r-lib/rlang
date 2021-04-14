@@ -1,8 +1,11 @@
 # rlang (development version)
 
-* `format_error_bullets()` now treats:
+* `format_error_bullets()` has been renamed to `format_bullets()`.
 
-  - Unnamed elements as unindented line breaks
+* `format_bullets()` now treats:
+
+  - Unnamed elements as unindented line breaks (#1130)
+  - Elements named `"v"` as green ticks (@rossellhayes)
   - Elements named `" "` as indented line breaks
   - Elements named `"*"` as normal bullets
   - Elements named `"!"` as warning bullets
@@ -31,9 +34,6 @@
   `max_elements` to control truncation of vectors and lists (@ianmcook, #897)
 
 * New `is_complex()` predicates to complete the family (#1127).
-
-* `format_error_bullets()` now adds green tick bullets for elements
-  named `"v"` (@rossellhayes) and line breaks for elements named `" "` (#1130).
 
 * `.data` now fails early when it is subsetted outside of a data mask
   context. This provides a more informative error message (#804, #1133).
@@ -104,7 +104,7 @@
 * `format_error_bullets()` is no longer experimental. The `message`
   arguments of `abort()`, `warn()`, and `inform()` are automatically
   passed to that function to make it easy to create messages with
-  regular, info, and error bullets. See `?format_error_bullets` for
+  regular, info, and error bullets. See `?format_bullets` for
   more information.
 
 * New `zap_srcref()` function to recursively remove source references

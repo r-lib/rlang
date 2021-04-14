@@ -42,7 +42,7 @@ interrupt()
 }
 \arguments{
 \item{message}{The message to display. Character vectors are
-formatted with \code{\link[=format_error_bullets]{format_error_bullets()}}. The first element
+formatted with \code{\link[=format_bullets]{format_bullets()}}. The first element
 defines a message header and the rest of the vector defines
 bullets. Bullets named \code{i} and \code{x} define info and error bullets
 respectively, with special Unicode and colour formatting applied

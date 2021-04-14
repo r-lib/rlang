@@ -104,8 +104,7 @@ cnd_footer.default <- function(cnd, ...) {
 #' Format bullets for error messages
 #'
 #' @description
-#'
-#' `format_error_bullets()` takes a character vector and returns a single
+#' `format_bullets()` takes a character vector and returns a single
 #' string (or an empty vector if the input is empty). The elements of
 #' the input vector are assembled as a list of bullets, depending on
 #' their names:
@@ -135,18 +134,18 @@ cnd_footer.default <- function(cnd, ...) {
 #'   trigger a line break from the previous bullet.
 #' @examples
 #' # All bullets
-#' writeLines(format_error_bullets(c("foo", "bar")))
+#' writeLines(format_bullets(c("foo", "bar")))
 #'
 #' # Supply named elements to format info, cross, and tick bullets
-#' writeLines(format_error_bullets(c(i = "foo", x = "bar", v = "baz", "*" = "quux")))
+#' writeLines(format_bullets(c(i = "foo", x = "bar", v = "baz", "*" = "quux")))
 #'
 #' # An unnamed element breaks the line
-#' writeLines(format_error_bullets(c(i = "foo\nbar")))
+#' writeLines(format_bullets(c(i = "foo\nbar")))
 #'
 #' # A " " element breaks the line within a bullet (with indentation)
-#' writeLines(format_error_bullets(c(i = "foo", " " = "bar")))
+#' writeLines(format_bullets(c(i = "foo", " " = "bar")))
 #' @export
-format_error_bullets <- function(x) {
+format_bullets <- function(x) {
   if (!length(x)) {
     return(x)
   }
@@ -183,7 +182,7 @@ collapse_cnd_message <- function(x) {
   if (length(x) > 1L) {
     paste(
       x[[1]],
-      format_error_bullets(x[-1]),
+      format_bullets(x[-1]),
       sep = "\n"
     )
   } else {

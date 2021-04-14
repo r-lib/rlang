@@ -73,7 +73,7 @@ reference:
       - inform
       - signal
       - cnd_message
-      - format_error_bullets
+      - format_bullets
       - trace_back
       - with_abort
       - entrace

@@ -1,8 +1,8 @@
-test_that("format_error_bullets() formats bullets depending on names", {
-  expect_identical(format_error_bullets(c("foo", "bar")), "* foo\n* bar")
-  expect_identical(format_error_bullets(c(i = "foo", "*" = "baz", x = "bar", v = "bam")), "i foo\n* baz\nx bar\nv bam")
-  expect_error(format_error_bullets(c(i = "foo", u = "bar")))
-  expect_identical(format_error_bullets(chr()), chr())
+test_that("format_bullets() formats bullets depending on names", {
+  expect_identical(format_bullets(c("foo", "bar")), "* foo\n* bar")
+  expect_identical(format_bullets(c(i = "foo", "*" = "baz", x = "bar", v = "bam")), "i foo\n* baz\nx bar\nv bam")
+  expect_error(format_bullets(c(i = "foo", u = "bar")))
+  expect_identical(format_bullets(chr()), chr())
 })
 
 test_that("default conditionMessage() method for rlang errors calls cnd_message()", {
@@ -57,7 +57,7 @@ test_that("can override body method with `body` fields", {
   )
 
   expect_error(
-    stop(error_cnd("rlang_foobar", message = "header", body = ~ format_error_bullets("body"))),
+    stop(error_cnd("rlang_foobar", message = "header", body = ~ format_bullets("body"))),
     "header\n* body",
     fixed = TRUE,
     class = "rlang_foobar"
@@ -100,35 +100,35 @@ test_that("can request a line break in error bullets (#1130)", {
 
 test_that("fully unnamed bullet vectors are treated as bullets", {
   expect_equal(
-    format_error_bullets("foo"),
+    format_bullets("foo"),
     "* foo"
   )
   expect_equal(
-    format_error_bullets(c("foo", "bar")),
+    format_bullets(c("foo", "bar")),
     "* foo\n* bar"
   )
 
   bullets <- set_names(c("foo", "bar"), c("", ""))
   expect_equal(
-    format_error_bullets(bullets),
+    format_bullets(bullets),
     "* foo\n* bar"
   )
 })
 
 test_that("empty names in partially named bullet vectors are treated as line breaks", {
   expect_equal(
-    format_error_bullets(c("foo", i = "bar", "baz")),
+    format_bullets(c("foo", i = "bar", "baz")),
     "foo\ni bar\nbaz"
   )
   expect_equal(
-    format_error_bullets(c(i = "bar", "baz")),
+    format_bullets(c(i = "bar", "baz")),
     "i bar\nbaz"
   )
 })
 
 test_that("! symbol creates warning bullet", {
   expect_equal(
-    format_error_bullets(c("Header", "!" = "Attention")),
+    format_bullets(c("Header", "!" = "Attention")),
     "Header\n! Attention"
   )
 })
