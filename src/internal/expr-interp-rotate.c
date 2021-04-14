@@ -227,7 +227,7 @@ bool op_is_unary(enum r_operator op) {
   }
   return r_ops_precedence[op].unary;
 }
-bool is_unary(sexp* x) {
+bool is_unary(r_obj* x) {
   return op_is_unary(r_which_operator(x));
 }
 
@@ -240,7 +240,7 @@ bool op_is_unary_plusminus(enum r_operator op) {
     return false;
   }
 }
-bool is_unary_plusminus(sexp* x) {
+bool is_unary_plusminus(r_obj* x) {
   return op_is_unary_plusminus(r_which_operator(x));
 }
 
@@ -258,11 +258,11 @@ bool is_unary_plusminus(sexp* x) {
 struct ast_rotation_info {
   enum r_operator upper_pivot_op;
   enum r_operator lower_pivot_op;
-  sexp* upper_pivot;
-  sexp* lower_pivot;
-  sexp* upper_root;
-  sexp* lower_root;
-  sexp* root_parent;
+  r_obj* upper_pivot;
+  r_obj* lower_pivot;
+  r_obj* upper_root;
+  r_obj* lower_root;
+  r_obj* root_parent;
 };
 
 static void initialise_rotation_info(struct ast_rotation_info* info) {
@@ -275,9 +275,9 @@ static void initialise_rotation_info(struct ast_rotation_info* info) {
 }
 
 // Defined below
-static sexp* node_list_interp_fixup(sexp* x, sexp* parent, sexp* env,
-                                    struct ast_rotation_info* rotation_info,
-                                    bool expand_lhs);
+static r_obj* node_list_interp_fixup(r_obj* x, r_obj* parent, r_obj* env,
+                                     struct ast_rotation_info* rotation_info,
+                                     bool expand_lhs);
 
 /**
  * maybe_rotate() - Rotate if we found a pivot
@@ -292,7 +292,7 @@ static sexp* node_list_interp_fixup(sexp* x, sexp* parent, sexp* env,
  * of `!` on the AST corresponds to the implicit grouping (e.g. with
  * `1 + !!2 * 3`).
  */
-static sexp* maybe_rotate(sexp* op, sexp* env, struct ast_rotation_info* info) {
+static r_obj* maybe_rotate(r_obj* op, r_obj* env, struct ast_rotation_info* info) {
   if (info->upper_pivot_op == R_OP_NONE) {
     return op;
   }
@@ -332,7 +332,7 @@ static sexp* maybe_rotate(sexp* op, sexp* env, struct ast_rotation_info* info) {
  * the AST if we find a `!!` call down the line. From this point on
  * there is a &struct ast_rotation_info on the stack.
  */
-sexp* fixup_interp(sexp* x, sexp* env) {
+r_obj* fixup_interp(r_obj* x, r_obj* env) {
   // Happens with constructed calls without arguments such as `/`()
   if (r_node_cdr(x) == r_null) {
     return x;
@@ -358,12 +358,12 @@ sexp* fixup_interp(sexp* x, sexp* env) {
  * However the resulting root might be involved in a rotation for a
  * subsequent `!!` call.
  */
-sexp* fixup_interp_first(sexp* x, sexp* env) {
-  sexp* parent = NULL; // `parent` will always be initialised in the loop
-  sexp* target = x;
+r_obj* fixup_interp_first(r_obj* x, r_obj* env) {
+  r_obj* parent = NULL; // `parent` will always be initialised in the loop
+  r_obj* target = x;
   while (is_problematic_op((parent = target, target = r_node_cadr(target)))
          && !is_unary(target)) {
-    sexp* rhs = r_node_cddr(target);
+    r_obj* rhs = r_node_cddr(target);
     r_node_poke_car(rhs, call_interp(r_node_car(rhs), env));
   };
 
@@ -388,7 +388,7 @@ sexp* fixup_interp_first(sexp* x, sexp* env) {
  * in &ast_rotation_info->upper_pivot_op and
  * &ast_rotation_info->upper_pivot within @info.
  */
-static void find_upper_pivot(sexp* x, struct ast_rotation_info* info) {
+static void find_upper_pivot(r_obj* x, struct ast_rotation_info* info) {
   if (!r_is_call(x, "!")) {
     return;
   }
@@ -429,14 +429,14 @@ static void find_upper_pivot(sexp* x, struct ast_rotation_info* info) {
  *
  * Fill in &ast_rotation_info->lower_pivot within @info.
  */
-static void find_lower_pivot(sexp* x, sexp* parent_node, sexp* env,
+static void find_lower_pivot(r_obj* x, r_obj* parent_node, r_obj* env,
                              struct ast_rotation_info* info) {
-  sexp* lhs_node = r_node_cdr(x);
-  sexp* rhs_node = r_node_cdr(lhs_node);
+  r_obj* lhs_node = r_node_cdr(x);
+  r_obj* rhs_node = r_node_cdr(lhs_node);
 
   // We found an unary `+` or `-` on the way
   if (rhs_node == r_null) {
-    sexp* target = r_eval(x, env);
+    r_obj* target = r_eval(x, env);
 
     if (parent_node) {
       r_node_poke_car(parent_node, target);
@@ -456,10 +456,10 @@ static void find_lower_pivot(sexp* x, sexp* parent_node, sexp* env,
     r_node_poke_car(rhs_node, call_interp(r_node_car(rhs_node), env));
   }
 
-  sexp* lhs = r_node_car(lhs_node);
+  r_obj* lhs = r_node_car(lhs_node);
   enum r_operator lhs_op = r_which_operator(lhs);
   if (!op_needs_fixup(lhs_op)) {
-    sexp* target = r_eval(lhs, env);
+    r_obj* target = r_eval(lhs, env);
     r_node_poke_cadr(x, target);
 
     // Stop recursion once we found target
@@ -477,8 +477,8 @@ static void find_lower_pivot(sexp* x, sexp* parent_node, sexp* env,
 
 
 // Defined below
-static void node_list_interp_fixup_rhs(sexp* rhs, sexp* rhs_node, sexp* parent,
-                                       sexp* env, struct ast_rotation_info* info);
+static void node_list_interp_fixup_rhs(r_obj* rhs, r_obj* rhs_node, r_obj* parent,
+                                       r_obj* env, struct ast_rotation_info* info);
 
 /**
  * node_list_interp_fixup() - Expansion for binary operators that might need fixup
@@ -495,11 +495,11 @@ static void node_list_interp_fixup_rhs(sexp* rhs, sexp* rhs_node, sexp* parent,
  *   rotation) it is not necessary to expand the LHS as it was already
  *   visited.
  */
-static sexp* node_list_interp_fixup(sexp* x, sexp* parent, sexp* env,
-                                    struct ast_rotation_info* info,
-                                    bool expand_lhs) {
-  sexp* lhs_node = r_node_cdr(x);
-  sexp* lhs = r_node_car(lhs_node);
+static r_obj* node_list_interp_fixup(r_obj* x, r_obj* parent, r_obj* env,
+                                     struct ast_rotation_info* info,
+                                     bool expand_lhs) {
+  r_obj* lhs_node = r_node_cdr(x);
+  r_obj* lhs = r_node_car(lhs_node);
 
   // If there's a unary `+` or `-` on the way recurse on its RHS
   if (is_unary_plusminus(x)) {
@@ -508,8 +508,8 @@ static sexp* node_list_interp_fixup(sexp* x, sexp* parent, sexp* env,
   }
 
 
-  sexp* rhs_node = r_node_cddr(x);
-  sexp* rhs = r_node_car(rhs_node);
+  r_obj* rhs_node = r_node_cddr(x);
+  r_obj* rhs = r_node_car(rhs_node);
 
   if (expand_lhs) {
     // Expand the LHS normally, it never needs changes in the AST
@@ -531,8 +531,8 @@ static sexp* node_list_interp_fixup(sexp* x, sexp* parent, sexp* env,
  * @env: The unquoting environment.
  * @info: See &struct ast_rotation_info.
  */
-static void node_list_interp_fixup_rhs(sexp* rhs, sexp* rhs_node, sexp* parent,
-                                       sexp* env, struct ast_rotation_info* info) {
+static void node_list_interp_fixup_rhs(r_obj* rhs, r_obj* rhs_node, r_obj* parent,
+                                       r_obj* env, struct ast_rotation_info* info) {
   // Happens with constructed calls like `/`(1)
   if (rhs_node == r_null) {
     return;

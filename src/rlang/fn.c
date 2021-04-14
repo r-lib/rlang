@@ -1,9 +1,9 @@
 #include "rlang.h"
 
 
-sexp* rlang_formula_formals = NULL;
+r_obj* rlang_formula_formals = NULL;
 
-sexp* r_as_function(sexp* x, const char* arg) {
+r_obj* r_as_function(r_obj* x, const char* arg) {
   switch (r_typeof(x)) {
   case R_TYPE_closure:
   case R_TYPE_builtin:
@@ -12,7 +12,7 @@ sexp* r_as_function(sexp* x, const char* arg) {
 
   case R_TYPE_call:
     if (r_node_car(x) == r_syms.tilde && r_node_cddr(x) == r_null) {
-      sexp* env = r_attrib_get(x, r_syms.dot_environment);
+      r_obj* env = r_attrib_get(x, r_syms.dot_environment);
       if (env == r_null) {
         r_abort("Can't transform formula to function because it doesn't have an environment.");
       }

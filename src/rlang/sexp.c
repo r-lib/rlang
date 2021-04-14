@@ -8,10 +8,10 @@ struct r_dict* p_precious_dict = NULL;
 #include "decl/sexp-decl.h"
 
 
-void r_preserve(sexp* x) {
+void r_preserve(r_obj* x) {
   KEEP(x);
 
-  sexp* stack = r_dict_get0(p_precious_dict, x);
+  r_obj* stack = r_dict_get0(p_precious_dict, x);
   if (!stack) {
     stack = KEEP(new_precious_stack(x));
     r_dict_put(p_precious_dict, x, stack);
@@ -22,8 +22,8 @@ void r_preserve(sexp* x) {
   FREE(1);
 }
 
-void r_unpreserve(sexp* x) {
-  sexp* stack = r_dict_get0(p_precious_dict, x);
+void r_unpreserve(r_obj* x) {
+  r_obj* stack = r_dict_get0(p_precious_dict, x);
   if (!stack) {
     r_abort("Can't unpreserve `x` because it was not being preserved.");
   }
@@ -40,8 +40,8 @@ void r_unpreserve(sexp* x) {
 
 
 static
-sexp* new_precious_stack(sexp* x) {
-  sexp* stack = KEEP(r_alloc_list(2));
+r_obj* new_precious_stack(r_obj* x) {
+  r_obj* stack = KEEP(r_alloc_list(2));
 
   // Store (0) protection count and (1) element to protect
   r_list_poke(stack, 0, r_int(0));
@@ -52,15 +52,15 @@ sexp* new_precious_stack(sexp* x) {
 }
 
 static
-int push_precious(sexp* stack) {
-  sexp* n = r_list_get(stack, 0);
+int push_precious(r_obj* stack) {
+  r_obj* n = r_list_get(stack, 0);
   int* p_n = r_int_deref(n);
   return ++(*p_n);
 }
 
 static
-int pop_precious(sexp* stack) {
-  sexp* n = r_list_get(stack, 0);
+int pop_precious(r_obj* stack) {
+  r_obj* n = r_list_get(stack, 0);
   int* p_n = r_int_deref(n);
   return --(*p_n);
 }
@@ -71,7 +71,7 @@ struct r_dict* rlang__precious_dict() {
 }
 
 
-enum r_type r_chr_as_r_type(sexp* type) {
+enum r_type r_chr_as_r_type(r_obj* type) {
   if (!r_is_string(type)) {
     r_abort("`type` must be a character string.");
   }
@@ -80,13 +80,13 @@ enum r_type r_chr_as_r_type(sexp* type) {
 
 const char* sexp_address_formatter = "%p";
 
-sexp* r_sexp_address(sexp* x) {
+r_obj* r_sexp_address(r_obj* x) {
   static char buf[1000];
   snprintf(buf, 1000, sexp_address_formatter, (void*) x);
   return Rf_mkChar(buf);
 }
 
-void r_init_library_sexp(sexp* ns) {
+void r_init_library_sexp(r_obj* ns) {
   p_precious_dict = r_new_dict(PRECIOUS_DICT_INIT_SIZE);
   KEEP(p_precious_dict->shelter);
   r_env_poke(ns,

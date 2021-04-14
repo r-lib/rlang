@@ -7,8 +7,8 @@ struct r_globals_chrs r_chrs;
 struct r_globals_classes r_classes;
 struct r_globals_syms r_syms;
 
-sexp* r_true = NULL;
-sexp* r_false = NULL;
+r_obj* r_true = NULL;
+r_obj* r_false = NULL;
 
 
 void r_init_library_globals() {

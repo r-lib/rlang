@@ -2,17 +2,17 @@
 #include "internal.h"
 #include "vec.h"
 
-static sexp* c_fn = NULL;
-static sexp* as_character_call = NULL;
-static sexp* names_call = NULL;
-static sexp* set_names_call = NULL;
-static sexp* length_call = NULL;
+static r_obj* c_fn = NULL;
+static r_obj* as_character_call = NULL;
+static r_obj* names_call = NULL;
+static r_obj* set_names_call = NULL;
+static r_obj* length_call = NULL;
 
 
-static sexp* node_names(sexp* x);
-static sexp* names_dispatch(sexp* x, sexp* env);
+static r_obj* node_names(r_obj* x);
+static r_obj* names_dispatch(r_obj* x, r_obj* env);
 
-sexp* rlang_names2(sexp* x, sexp* env) {
+r_obj* rlang_names2(r_obj* x, r_obj* env) {
   const enum r_type type = r_typeof(x);
 
   if (type == R_TYPE_environment) {
@@ -26,7 +26,7 @@ sexp* rlang_names2(sexp* x, sexp* env) {
     return node_names(x);
   }
 
-  sexp* nms;
+  r_obj* nms;
   if (r_is_object(x)) {
     nms = KEEP(names_dispatch(x, env));
   } else {
@@ -46,15 +46,15 @@ sexp* rlang_names2(sexp* x, sexp* env) {
 }
 
 static
-sexp* node_names(sexp* x) {
+r_obj* node_names(r_obj* x) {
   r_ssize n = r_length(x);
 
-  sexp* out = KEEP(r_alloc_character(n));
+  r_obj* out = KEEP(r_alloc_character(n));
 
   int i = 0;
 
   for(; x != r_null; x = r_node_cdr(x), ++i) {
-    sexp* tag = r_node_tag(x);
+    r_obj* tag = r_node_tag(x);
 
     if (tag == r_null) {
       r_chr_poke(out, i, r_globals.empty_str);
@@ -67,15 +67,15 @@ sexp* node_names(sexp* x) {
   return out;
 }
 
-static inline sexp* eval_fn_dots(sexp* fn, sexp* x, sexp* dots, sexp* env);
-static inline sexp* eval_as_character(sexp* x, sexp* env);
-static inline sexp* set_names_dispatch(sexp* x, sexp* nm, sexp* env);
-static inline r_ssize length_dispatch(sexp* x, sexp* env);
+static inline r_obj* eval_fn_dots(r_obj* fn, r_obj* x, r_obj* dots, r_obj* env);
+static inline r_obj* eval_as_character(r_obj* x, r_obj* env);
+static inline r_obj* set_names_dispatch(r_obj* x, r_obj* nm, r_obj* env);
+static inline r_ssize length_dispatch(r_obj* x, r_obj* env);
 
-sexp* rlang_set_names(sexp* x, sexp* mold, sexp* nm, sexp* env) {
+r_obj* rlang_set_names(r_obj* x, r_obj* mold, r_obj* nm, r_obj* env) {
   int n_kept = 0;
 
-  sexp* dots = KEEP_N(rlang_dots(env), &n_kept);
+  r_obj* dots = KEEP_N(rlang_dots(env), &n_kept);
 
   if (!r_is_vector(x, -1)) {
     r_abort("`x` must be a vector");
@@ -123,9 +123,9 @@ sexp* rlang_set_names(sexp* x, sexp* mold, sexp* nm, sexp* env) {
 }
 
 static
-sexp* eval_fn_dots(sexp* fn, sexp* x, sexp* dots, sexp* env) {
-  sexp* args = KEEP(r_new_node(r_syms.dot_x, dots));
-  sexp* call = KEEP(r_new_call(r_syms.dot_fn, args));
+r_obj* eval_fn_dots(r_obj* fn, r_obj* x, r_obj* dots, r_obj* env) {
+  r_obj* args = KEEP(r_new_node(r_syms.dot_x, dots));
+  r_obj* call = KEEP(r_new_call(r_syms.dot_fn, args));
 
   // This evaluates `.fn(.x, ...)`
   // `.x` is the first input, x
@@ -134,20 +134,20 @@ sexp* eval_fn_dots(sexp* fn, sexp* x, sexp* dots, sexp* env) {
   r_env_poke(env, r_syms.dot_x, x);
   r_env_poke(env, r_syms.dot_fn, fn);
 
-  sexp* out = r_eval(call, env);
+  r_obj* out = r_eval(call, env);
 
   FREE(2);
   return out;
 }
 
 static inline
-sexp* eval_as_character(sexp* x, sexp* env) {
+r_obj* eval_as_character(r_obj* x, r_obj* env) {
   r_env_poke(env, r_syms.dot_x, x);
   return r_eval(as_character_call, env);
 }
 
 static inline
-sexp* names_dispatch(sexp* x, sexp* env) {
+r_obj* names_dispatch(r_obj* x, r_obj* env) {
   r_env_poke(env, r_syms.dot_x, x);
   return r_eval(names_call, env);
 }
@@ -156,16 +156,16 @@ sexp* names_dispatch(sexp* x, sexp* env) {
 // for genericity and for speed. `names<-()` can shallow duplicate `x`'s
 // attributes using ALTREP wrappers, which is not in R's public API.
 static inline
-sexp* set_names_dispatch(sexp* x, sexp* nm, sexp* env) {
+r_obj* set_names_dispatch(r_obj* x, r_obj* nm, r_obj* env) {
   r_env_poke(env, r_syms.dot_x, x);
   r_env_poke(env, r_syms.dot_y, nm);
   return r_eval(set_names_call, env);
 }
 
 static inline
-r_ssize length_dispatch(sexp* x, sexp* env) {
+r_ssize length_dispatch(r_obj* x, r_obj* env) {
   r_env_poke(env, r_syms.dot_x, x);
-  sexp* n = KEEP(r_eval(length_call, env));
+  r_obj* n = KEEP(r_eval(length_call, env));
 
   if (r_length(n) != 1) {
     r_abort("Object length must have size 1, not %i", r_length(n));
@@ -189,7 +189,7 @@ r_ssize length_dispatch(sexp* x, sexp* env) {
 }
 
 
-void rlang_init_attr(sexp* ns) {
+void rlang_init_attr(r_obj* ns) {
   c_fn = r_eval(r_sym("c"), r_base_env);
 
   as_character_call = r_parse("as.character(.x)");

@@ -1,44 +1,44 @@
 #include "rlang.h"
 
 
-sexp* r_eval_with_x(sexp* call, sexp* x, sexp* parent) {
-  sexp* env = KEEP(r_alloc_environment(1, parent));
+r_obj* r_eval_with_x(r_obj* call, r_obj* x, r_obj* parent) {
+  r_obj* env = KEEP(r_alloc_environment(1, parent));
   r_env_poke(env, r_syms.x, x);
 
-  sexp* out = r_eval(call, env);
+  r_obj* out = r_eval(call, env);
 
   FREE(1);
   return out;
 }
-sexp* r_eval_with_xy(sexp* call, sexp* x, sexp* y, sexp* parent) {
-  sexp* env = KEEP(r_alloc_environment(1, parent));
+r_obj* r_eval_with_xy(r_obj* call, r_obj* x, r_obj* y, r_obj* parent) {
+  r_obj* env = KEEP(r_alloc_environment(1, parent));
   r_env_poke(env, r_syms.x, x);
   r_env_poke(env, r_syms.y, y);
 
-  sexp* out = r_eval(call, env);
+  r_obj* out = r_eval(call, env);
 
   FREE(1);
   return out;
 }
-sexp* r_eval_with_xyz(sexp* call, sexp* x, sexp* y, sexp* z, sexp* parent) {
-  sexp* env = KEEP(r_alloc_environment(1, parent));
+r_obj* r_eval_with_xyz(r_obj* call, r_obj* x, r_obj* y, r_obj* z, r_obj* parent) {
+  r_obj* env = KEEP(r_alloc_environment(1, parent));
   r_env_poke(env, r_syms.x, x);
   r_env_poke(env, r_syms.y, y);
   r_env_poke(env, r_syms.z, z);
 
-  sexp* out = r_eval(call, env);
+  r_obj* out = r_eval(call, env);
 
   FREE(1);
   return out;
 }
-sexp* r_eval_with_wxyz(sexp* call, sexp* w, sexp* x, sexp* y, sexp* z, sexp* parent) {
-  sexp* env = KEEP(r_alloc_environment(1, parent));
+r_obj* r_eval_with_wxyz(r_obj* call, r_obj* w, r_obj* x, r_obj* y, r_obj* z, r_obj* parent) {
+  r_obj* env = KEEP(r_alloc_environment(1, parent));
   r_env_poke(env, r_syms.w, w);
   r_env_poke(env, r_syms.x, x);
   r_env_poke(env, r_syms.y, y);
   r_env_poke(env, r_syms.z, z);
 
-  sexp* out = r_eval(call, env);
+  r_obj* out = r_eval(call, env);
 
   FREE(1);
   return out;
@@ -53,14 +53,14 @@ sexp* r_eval_with_wxyz(sexp* call, sexp* w, sexp* x, sexp* y, sexp* z, sexp* par
 // evaluate pure R calls or functions from other packages, such as the
 // base package.
 
-static sexp* shared_x_env;
-static sexp* shared_xy_env;
-static sexp* shared_xyz_env;
+static r_obj* shared_x_env;
+static r_obj* shared_xy_env;
+static r_obj* shared_xyz_env;
 
-sexp* eval_with_x(sexp* call, sexp* x) {
+r_obj* eval_with_x(r_obj* call, r_obj* x) {
   r_env_poke(shared_x_env, r_syms.x, x);
 
-  sexp* out = KEEP(r_eval(call, shared_x_env));
+  r_obj* out = KEEP(r_eval(call, shared_x_env));
 
   // Release for gc
   r_env_poke(shared_x_env, r_syms.x, r_null);
@@ -69,11 +69,11 @@ sexp* eval_with_x(sexp* call, sexp* x) {
   return out;
 }
 
-sexp* eval_with_xy(sexp* call, sexp* x, sexp* y) {
+r_obj* eval_with_xy(r_obj* call, r_obj* x, r_obj* y) {
   r_env_poke(shared_xy_env, r_syms.x, x);
   r_env_poke(shared_xy_env, r_syms.y, y);
 
-  sexp* out = KEEP(r_eval(call, shared_xy_env));
+  r_obj* out = KEEP(r_eval(call, shared_xy_env));
 
   // Release for gc
   r_env_poke(shared_xy_env, r_syms.x, r_null);
@@ -83,12 +83,12 @@ sexp* eval_with_xy(sexp* call, sexp* x, sexp* y) {
   return out;
 }
 
-sexp* eval_with_xyz(sexp* call, sexp* x, sexp* y, sexp* z) {
+r_obj* eval_with_xyz(r_obj* call, r_obj* x, r_obj* y, r_obj* z) {
   r_env_poke(shared_xyz_env, r_syms.x, x);
   r_env_poke(shared_xyz_env, r_syms.y, y);
   r_env_poke(shared_xyz_env, r_syms.z, z);
 
-  sexp* out = KEEP(r_eval(call, shared_xyz_env));
+  r_obj* out = KEEP(r_eval(call, shared_xyz_env));
 
   // Release for gc
   r_env_poke(shared_xyz_env, r_syms.x, r_null);
@@ -100,15 +100,15 @@ sexp* eval_with_xyz(sexp* call, sexp* x, sexp* y, sexp* z) {
 }
 
 
-sexp* r_exec_mask_n(sexp* fn_sym,
-                    sexp* fn,
-                    const struct r_pair* args,
-                    int n,
-                    sexp* parent) {
-  sexp* mask = KEEP(r_alloc_environment(n + 1, parent));
-  sexp* call = KEEP(r_exec_mask_n_call_poke(fn_sym, fn, args, n, mask));
+r_obj* r_exec_mask_n(r_obj* fn_sym,
+                     r_obj* fn,
+                     const struct r_pair* args,
+                     int n,
+                     r_obj* parent) {
+  r_obj* mask = KEEP(r_alloc_environment(n + 1, parent));
+  r_obj* call = KEEP(r_exec_mask_n_call_poke(fn_sym, fn, args, n, mask));
 
-  sexp* out = r_eval(call, mask);
+  r_obj* out = r_eval(call, mask);
 
   FREE(2);
   return out;
@@ -116,37 +116,37 @@ sexp* r_exec_mask_n(sexp* fn_sym,
 
 // Create a call from arguments and poke elements with a non-NULL
 // symbol in `env`
-sexp* r_exec_mask_n_call_poke(sexp* fn_sym,
-                              sexp* fn,
-                              const struct r_pair* args,
-                              int n,
-                              sexp* env) {
+r_obj* r_exec_mask_n_call_poke(r_obj* fn_sym,
+                               r_obj* fn,
+                               const struct r_pair* args,
+                               int n,
+                               r_obj* env) {
   if (fn_sym != r_null) {
     r_env_poke(env, fn_sym, fn);
     fn = fn_sym;
   }
 
-  sexp* shelter = KEEP(r_new_node(R_NilValue, R_NilValue));
-  sexp* node = shelter;
+  r_obj* shelter = KEEP(r_new_node(R_NilValue, R_NilValue));
+  r_obj* node = shelter;
 
   for (int i = 0; i < n; ++i) {
     struct r_pair arg = args[i];
-    sexp* tag = arg.x;
-    sexp* car = arg.y;
+    r_obj* tag = arg.x;
+    r_obj* car = arg.y;
 
     if (tag != r_null) {
       r_env_poke(env, tag, car);
       car = tag;
     }
 
-    sexp* cdr = r_new_node(car, r_null);
+    r_obj* cdr = r_new_node(car, r_null);
     r_node_poke_tag(cdr, tag);
 
     r_node_poke_cdr(node, cdr);
     node = cdr;
   }
 
-  sexp* call = r_new_call(fn, r_node_cdr(shelter));
+  r_obj* call = r_new_call(fn, r_node_cdr(shelter));
 
   FREE(1);
   return call;

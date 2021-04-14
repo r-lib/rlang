@@ -1,10 +1,10 @@
 #include <rlang.h>
 #include "vec.h"
 
-static sexp* replace_na_(sexp* x, sexp* replacement, int start);
-static sexp* replace_na_vec_(sexp* x, sexp* replacement, int start);
+static r_obj* replace_na_(r_obj* x, r_obj* replacement, int start);
+static r_obj* replace_na_vec_(r_obj* x, r_obj* replacement, int start);
 
-sexp* rlang_replace_na(sexp* x, sexp* replacement) {
+r_obj* rlang_replace_na(r_obj* x, r_obj* replacement) {
   const enum r_type x_type = r_typeof(x);
   const enum r_type replacement_type = r_typeof(replacement);
 
@@ -94,7 +94,7 @@ sexp* rlang_replace_na(sexp* x, sexp* replacement) {
   }
 }
 
-static sexp* replace_na_(sexp* x, sexp* replacement, int i) {
+static r_obj* replace_na_(r_obj* x, r_obj* replacement, int i) {
   KEEP(x = r_copy(x));
   int n = r_length(x);
 
@@ -133,7 +133,7 @@ static sexp* replace_na_(sexp* x, sexp* replacement, int i) {
   }
 
   case R_TYPE_character: {
-    sexp* new_value = r_chr_get(replacement, 0);
+    r_obj* new_value = r_chr_get(replacement, 0);
     for (; i < n; ++i) {
       if (r_chr_get(x, i) == r_globals.na_str) {
         r_chr_poke(x, i, new_value);
@@ -164,7 +164,7 @@ static sexp* replace_na_(sexp* x, sexp* replacement, int i) {
 }
 
 
-static sexp* replace_na_vec_(sexp* x, sexp* replacement, int i) {
+static r_obj* replace_na_vec_(r_obj* x, r_obj* replacement, int i) {
   KEEP(x = r_copy(x));
   int n = r_length(x);
 

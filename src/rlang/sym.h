@@ -2,30 +2,30 @@
 #define RLANG_SYM_H
 
 
-sexp* r_new_symbol(sexp* x, int* err);
+r_obj* r_new_symbol(r_obj* x, int* err);
 
 static inline
-sexp* r_sym(const char* c_string) {
+r_obj* r_sym(const char* c_string) {
   return Rf_install(c_string);
 }
 
 static inline
-sexp* r_sym_string(sexp* sym) {
+r_obj* r_sym_string(r_obj* sym) {
   return PRINTNAME(sym);
 }
 static inline
-const char* r_sym_c_string(sexp* sym) {
+const char* r_sym_c_string(r_obj* sym) {
   return CHAR(PRINTNAME(sym));
 }
 
 static inline
-sexp* r_sym_as_character(sexp* x) {
+r_obj* r_sym_as_character(r_obj* x) {
   return Rf_ScalarString(PRINTNAME(x));
 }
 
 
-bool r_is_symbol(sexp* sym, const char* string);
-bool r_is_symbol_any(sexp* x, const char** strings, int n);
+bool r_is_symbol(r_obj* sym, const char* string);
+bool r_is_symbol_any(r_obj* x, const char** strings, int n);
 
 
 #endif

@@ -3,15 +3,15 @@
 #include "../internal/vec.h"
 
 // From rlang/vec.c
-void r_vec_poke_n(sexp* x, r_ssize offset,
-                  sexp* y, r_ssize from, r_ssize n);
-void r_vec_poke_range(sexp* x, r_ssize offset,
-                      sexp* y, r_ssize from, r_ssize to);
+void r_vec_poke_n(r_obj* x, r_ssize offset,
+                  r_obj* y, r_ssize from, r_ssize n);
+void r_vec_poke_range(r_obj* x, r_ssize offset,
+                      r_obj* y, r_ssize from, r_ssize to);
 
 
 // attrs.c
 
-sexp* rlang_poke_attrib(sexp* x, sexp* attrs) {
+r_obj* rlang_poke_attrib(r_obj* x, r_obj* attrs) {
   SET_ATTRIB(x, attrs);
   return x;
 }
@@ -19,12 +19,12 @@ sexp* rlang_poke_attrib(sexp* x, sexp* attrs) {
 
 // cnd.c
 
-sexp* rlang_cnd_signal(sexp* cnd) {
+r_obj* rlang_cnd_signal(r_obj* cnd) {
   r_cnd_signal(cnd);
   return r_null;
 }
 
-sexp* rlang_cnd_type(sexp* cnd) {
+r_obj* rlang_cnd_type(r_obj* cnd) {
   enum r_condition_type type = r_cnd_type(cnd);
   switch (type) {
   case r_cnd_type_condition: return r_chr("condition");
@@ -36,7 +36,7 @@ sexp* rlang_cnd_type(sexp* cnd) {
   }
 }
 
-sexp* rlang_interrupt() {
+r_obj* rlang_interrupt() {
   r_interrupt();
   return r_null;
 }
@@ -44,7 +44,7 @@ sexp* rlang_interrupt() {
 
 // df.c
 
-sexp* rlang_alloc_data_frame(sexp* n_rows, sexp* names, sexp* types) {
+r_obj* rlang_alloc_data_frame(r_obj* n_rows, r_obj* names, r_obj* types) {
   if (!r_is_int(n_rows)) {
     r_abort("`n_rows` must be an integer value.");
   }
@@ -56,10 +56,10 @@ sexp* rlang_alloc_data_frame(sexp* n_rows, sexp* names, sexp* types) {
   }
 
   r_ssize n_rows_val = r_int_get(n_rows, 0);
-  sexp* df = KEEP(r_alloc_df_list(n_rows_val,
-                                  names,
-                                  (enum r_type*) r_int_deref(types),
-                                  r_length(names)));
+  r_obj* df = KEEP(r_alloc_df_list(n_rows_val,
+                                   names,
+                                   (enum r_type*) r_int_deref(types),
+                                   r_length(names)));
   r_init_data_frame(df, n_rows_val);
 
   FREE(1);
@@ -70,11 +70,11 @@ sexp* rlang_alloc_data_frame(sexp* n_rows, sexp* names, sexp* types) {
 // dict.c
 
 static
-sexp* wrap_dict(struct r_dict* p_dict) {
+r_obj* wrap_dict(struct r_dict* p_dict) {
   return p_dict->shelter;
 }
 
-sexp* rlang_new_dict(sexp* size, sexp* prevent_resize) {
+r_obj* rlang_new_dict(r_obj* size, r_obj* prevent_resize) {
   if (!r_is_int(size)) {
     r_abort("`size` must be an integer.");
   }
@@ -88,27 +88,27 @@ sexp* rlang_new_dict(sexp* size, sexp* prevent_resize) {
   return dict->shelter;
 }
 
-sexp* rlang_dict_put(sexp* dict, sexp* key, sexp* value) {
+r_obj* rlang_dict_put(r_obj* dict, r_obj* key, r_obj* value) {
   struct r_dict* p_dict = r_shelter_deref(dict);
   return r_lgl(r_dict_put(p_dict, key, value));
 }
 
-sexp* rlang_dict_del(sexp* dict, sexp* key) {
+r_obj* rlang_dict_del(r_obj* dict, r_obj* key) {
   struct r_dict* p_dict = r_shelter_deref(dict);
   return r_lgl(r_dict_del(p_dict, key));
 }
 
-sexp* rlang_dict_has(sexp* dict, sexp* key) {
+r_obj* rlang_dict_has(r_obj* dict, r_obj* key) {
   struct r_dict* p_dict = r_shelter_deref(dict);
   return r_lgl(r_dict_has(p_dict, key));
 }
 
-sexp* rlang_dict_get(sexp* dict, sexp* key) {
+r_obj* rlang_dict_get(r_obj* dict, r_obj* key) {
   struct r_dict* p_dict = r_shelter_deref(dict);
   return r_dict_get(p_dict, key);
 }
 
-sexp* rlang_dict_resize(sexp* dict, sexp* size) {
+r_obj* rlang_dict_resize(r_obj* dict, r_obj* size) {
   if (!r_is_int(size)) {
     r_abort("`size` must be an integer.");
   }
@@ -118,18 +118,18 @@ sexp* rlang_dict_resize(sexp* dict, sexp* size) {
   return r_null;
 }
 
-sexp* rlang_dict_as_df_list(sexp* dict) {
+r_obj* rlang_dict_as_df_list(r_obj* dict) {
   return r_dict_as_df_list(r_shelter_deref(dict));
 }
-sexp* rlang_dict_as_list(sexp* dict) {
+r_obj* rlang_dict_as_list(r_obj* dict) {
   return r_dict_as_list(r_shelter_deref(dict));
 }
 
-sexp* rlang_new_dict_iterator(sexp* dict) {
+r_obj* rlang_new_dict_iterator(r_obj* dict) {
   struct r_dict* p_dict = r_shelter_deref(dict);
   return r_new_dict_iterator(p_dict)->shelter;
 }
-sexp* rlang_dict_it_info(sexp* dict_it) {
+r_obj* rlang_dict_it_info(r_obj* dict_it) {
   struct r_dict_iterator* p_it = r_shelter_deref(dict_it);
 
   const char* v_nms[] = {
@@ -140,7 +140,7 @@ sexp* rlang_dict_it_info(sexp* dict_it) {
   };
   int n = R_ARR_SIZEOF(v_nms);
 
-  sexp* info = KEEP(r_alloc_list(n));
+  r_obj* info = KEEP(r_alloc_list(n));
   r_attrib_poke_names(info, r_chr_n(v_nms, n));
   r_list_poke(info, 0, p_it->key);
   r_list_poke(info, 1, p_it->value);
@@ -150,7 +150,7 @@ sexp* rlang_dict_it_info(sexp* dict_it) {
   FREE(1);
   return info;
 }
-sexp* rlang_dict_it_next(sexp* dict_it) {
+r_obj* rlang_dict_it_next(r_obj* dict_it) {
   struct r_dict_iterator* p_dict_it = r_shelter_deref(dict_it);
   return r_lgl(r_dict_next(p_dict_it));
 }
@@ -159,28 +159,28 @@ sexp* rlang_dict_it_next(sexp* dict_it) {
 // dyn-array.c
 
 // [[ register() ]]
-sexp* rlang_new_dyn_vector(sexp* type,
-                           sexp* capacity) {
+r_obj* rlang_new_dyn_vector(r_obj* type,
+                            r_obj* capacity) {
   struct r_dyn_array* arr = r_new_dyn_vector(r_chr_as_r_type(type),
                                              r_as_ssize(capacity));
   return arr->shelter;
 }
 
 // [[ register() ]]
-sexp* rlang_new_dyn_array(sexp* elt_byte_size,
-                          sexp* capacity) {
+r_obj* rlang_new_dyn_array(r_obj* elt_byte_size,
+                           r_obj* capacity) {
   struct r_dyn_array* arr = r_new_dyn_array(r_as_ssize(elt_byte_size),
                                             r_as_ssize(capacity));
   return arr->shelter;
 }
 
 // [[ register() ]]
-sexp* rlang_arr_unwrap(sexp* arr) {
+r_obj* rlang_arr_unwrap(r_obj* arr) {
   return r_arr_unwrap(r_shelter_deref(arr));
 }
 
 // [[ register() ]]
-sexp* rlang_arr_info(sexp* arr_sexp) {
+r_obj* rlang_arr_info(r_obj* arr_sexp) {
   struct r_dyn_array* arr = r_shelter_deref(arr_sexp);
 
   const char* names_c_strs[] = {
@@ -192,9 +192,9 @@ sexp* rlang_arr_info(sexp* arr_sexp) {
   };
   int info_n = R_ARR_SIZEOF(names_c_strs);
 
-  sexp* info = KEEP(r_alloc_list(info_n));
+  r_obj* info = KEEP(r_alloc_list(info_n));
 
-  sexp* nms = r_chr_n(names_c_strs, info_n);
+  r_obj* nms = r_chr_n(names_c_strs, info_n);
   r_attrib_poke_names(info, nms);
 
   r_list_poke(info, 0, r_dbl(arr->count));
@@ -208,7 +208,7 @@ sexp* rlang_arr_info(sexp* arr_sexp) {
 }
 
 // [[ register() ]]
-sexp* rlang_arr_push_back(sexp* arr_sexp, sexp* x) {
+r_obj* rlang_arr_push_back(r_obj* arr_sexp, r_obj* x) {
   struct r_dyn_array* p_arr = r_shelter_deref(arr_sexp);
 
   if (!p_arr->barrier_set && r_vec_elt_sizeof(x) != p_arr->elt_byte_size) {
@@ -229,20 +229,20 @@ sexp* rlang_arr_push_back(sexp* arr_sexp, sexp* x) {
   }
 }
 // [[ register() ]]
-sexp* rlang_arr_push_back_bool(sexp* arr_sexp, sexp* x_sexp) {
+r_obj* rlang_arr_push_back_bool(r_obj* arr_sexp, r_obj* x_sexp) {
   struct r_dyn_array* arr = r_shelter_deref(arr_sexp);
   bool x = r_as_bool(x_sexp);
   r_arr_push_back(arr, &x);
   return r_null;
 }
 // [[ register() ]]
-sexp* rlang_arr_pop_back(sexp* arr_sexp) {
+r_obj* rlang_arr_pop_back(r_obj* arr_sexp) {
   struct r_dyn_array* arr = r_shelter_deref(arr_sexp);
   r_arr_pop_back(arr);
   return r_null;
 }
 // [[ register() ]]
-sexp* rlang_arr_resize(sexp* arr_sexp, sexp* capacity_sexp) {
+r_obj* rlang_arr_resize(r_obj* arr_sexp, r_obj* capacity_sexp) {
   struct r_dyn_array* arr = r_shelter_deref(arr_sexp);
   r_arr_resize(arr, r_as_ssize(capacity_sexp));
   return r_null;
@@ -252,7 +252,7 @@ sexp* rlang_arr_resize(sexp* arr_sexp, sexp* capacity_sexp) {
 // dyn-list-of.c
 
 // [[ register() ]]
-sexp* ffi_new_dyn_list_of(sexp* type, sexp* capacity, sexp* width) {
+r_obj* ffi_new_dyn_list_of(r_obj* type, r_obj* capacity, r_obj* width) {
   struct r_dyn_list_of* lof = r_new_dyn_list_of(r_chr_as_r_type(type),
                                                 r_as_ssize(capacity),
                                                 r_as_ssize(width));
@@ -285,12 +285,12 @@ const char* info_lof_c_strs[INFO_LOF_SIZE] = {
 };
 
 // [[ register() ]]
-sexp* ffi_lof_info(sexp* lof) {
+r_obj* ffi_lof_info(r_obj* lof) {
   struct r_dyn_list_of* p_lof = r_shelter_deref(lof);
 
-  sexp* info = KEEP(r_alloc_list(INFO_LOF_SIZE));
+  r_obj* info = KEEP(r_alloc_list(INFO_LOF_SIZE));
 
-  sexp* nms = r_chr_n(info_lof_c_strs, INFO_LOF_SIZE);
+  r_obj* nms = r_chr_n(info_lof_c_strs, INFO_LOF_SIZE);
   r_attrib_poke_names(info, nms);
 
   r_list_poke(info, INFO_LOF_count, r_dbl(p_lof->count));
@@ -308,17 +308,17 @@ sexp* ffi_lof_info(sexp* lof) {
 }
 
 // [[ register() ]]
-sexp* ffi_lof_unwrap(sexp* lof) {
+r_obj* ffi_lof_unwrap(r_obj* lof) {
   return r_lof_unwrap(r_shelter_deref(lof));
 }
 
 // [[ register() ]]
-sexp* ffi_lof_push_back(sexp* lof) {
+r_obj* ffi_lof_push_back(r_obj* lof) {
   r_lof_push_back(r_shelter_deref(lof));
   return r_null;
 }
 // [[ register() ]]
-sexp* ffi_lof_arr_push_back(sexp* lof, sexp* i, sexp* value) {
+r_obj* ffi_lof_arr_push_back(r_obj* lof, r_obj* i, r_obj* value) {
   struct r_dyn_list_of* p_lof = r_shelter_deref(lof);
   if (r_typeof(value) != p_lof->type) {
     r_abort("Can't push value of type %s in dyn-list-of %s",
@@ -334,7 +334,7 @@ sexp* ffi_lof_arr_push_back(sexp* lof, sexp* i, sexp* value) {
 
 // env.c
 
-sexp* rlang_env_poke_parent(sexp* env, sexp* new_parent) {
+r_obj* rlang_env_poke_parent(r_obj* env, r_obj* new_parent) {
   if (R_IsNamespaceEnv(env)) {
     r_abort("Can't change the parent of a namespace environment");
   }
@@ -358,18 +358,18 @@ sexp* rlang_env_poke_parent(sexp* env, sexp* new_parent) {
   return env;
 }
 
-sexp* rlang_env_frame(sexp* env) {
+r_obj* rlang_env_frame(r_obj* env) {
   return FRAME(env);
 }
-sexp* rlang_env_hash_table(sexp* env) {
+r_obj* rlang_env_hash_table(r_obj* env) {
   return HASHTAB(env);
 }
 
-sexp* rlang_env_inherits(sexp* env, sexp* ancestor) {
+r_obj* rlang_env_inherits(r_obj* env, r_obj* ancestor) {
   return r_lgl(r_env_inherits(env, ancestor, r_empty_env));
 }
 
-sexp* rlang_env_bind_list(sexp* env, sexp* names, sexp* data) {
+r_obj* rlang_env_bind_list(r_obj* env, r_obj* names, r_obj* data) {
   if (r_typeof(env) != R_TYPE_environment) {
     r_abort("Internal error: `env` must be an environment.");
   }
@@ -385,7 +385,7 @@ sexp* rlang_env_bind_list(sexp* env, sexp* names, sexp* data) {
     r_abort("Internal error: `data` and `names` must have the same length.");
   }
 
-  sexp* const * p_names = r_chr_deref_const(names);
+  r_obj* const * p_names = r_chr_deref_const(names);
 
   for (r_ssize i = 0; i < n; ++i) {
     Rf_defineVar(r_str_as_symbol(p_names[i]), r_list_get(data, i), env);
@@ -394,7 +394,7 @@ sexp* rlang_env_bind_list(sexp* env, sexp* names, sexp* data) {
   return r_null;
 }
 
-sexp* rlang_env_browse(sexp* env, sexp* value) {
+r_obj* rlang_env_browse(r_obj* env, r_obj* value) {
   if (r_typeof(env) != R_TYPE_environment) {
     r_abort("`env` must be an environment.");
   }
@@ -402,33 +402,33 @@ sexp* rlang_env_browse(sexp* env, sexp* value) {
     r_abort("`value` must be a single logical value.");
   }
 
-  sexp* old = r_lgl(RDEBUG(env));
+  r_obj* old = r_lgl(RDEBUG(env));
   SET_RDEBUG(env, r_lgl_get(value, 0));
   return old;
 }
 
-sexp* rlang_env_is_browsed(sexp* env) {
+r_obj* rlang_env_is_browsed(r_obj* env) {
   if (r_typeof(env) != R_TYPE_environment) {
     r_abort("`env` must be an environment.");
   }
   return r_lgl(RDEBUG(env));
 }
 
-sexp* rlang_ns_registry_env() {
+r_obj* rlang_ns_registry_env() {
   return R_NamespaceRegistry;
 }
 
 
 // eval.c
 
-sexp* rlang_ext2_eval(sexp* call, sexp* op, sexp* args, sexp* env) {
+r_obj* rlang_ext2_eval(r_obj* call, r_obj* op, r_obj* args, r_obj* env) {
   args = r_node_cdr(args);
   return Rf_eval(r_node_car(args), r_node_cadr(args));
 }
 
-sexp* rlang_eval_top(sexp* expr, sexp* env) {
+r_obj* rlang_eval_top(r_obj* expr, r_obj* env) {
   int jumped = 0;
-  sexp* out = R_tryEval(expr, env, &jumped);
+  r_obj* out = R_tryEval(expr, env, &jumped);
 
   if (jumped) {
     r_abort("Top level jump");
@@ -439,21 +439,21 @@ sexp* rlang_eval_top(sexp* expr, sexp* env) {
 
 // fn.c
 
-sexp* rlang_is_function(sexp* x) {
+r_obj* rlang_is_function(r_obj* x) {
   return r_shared_lgl(r_is_function(x));
 }
 
-sexp* rlang_is_closure(sexp* x) {
+r_obj* rlang_is_closure(r_obj* x) {
   return r_shared_lgl(r_typeof(x) == R_TYPE_closure);
 }
 
-sexp* rlang_is_primitive(sexp* x) {
+r_obj* rlang_is_primitive(r_obj* x) {
   return r_shared_lgl(r_is_primitive(x));
 }
-sexp* rlang_is_primitive_lazy(sexp* x) {
+r_obj* rlang_is_primitive_lazy(r_obj* x) {
   return r_shared_lgl(r_typeof(x) == R_TYPE_special);
 }
-sexp* rlang_is_primitive_eager(sexp* x) {
+r_obj* rlang_is_primitive_eager(r_obj* x) {
   return r_shared_lgl(r_typeof(x) == R_TYPE_builtin);
 }
 
@@ -461,7 +461,7 @@ sexp* rlang_is_primitive_eager(sexp* x) {
 // formula.c
 
 static
-int as_optional_bool(sexp* lgl) {
+int as_optional_bool(r_obj* lgl) {
   if (lgl == r_null) {
     return -1;
   } else {
@@ -469,7 +469,7 @@ int as_optional_bool(sexp* lgl) {
   }
 }
 // [[ register() ]]
-sexp* ffi_is_formula(sexp* x, sexp* scoped, sexp* lhs) {
+r_obj* ffi_is_formula(r_obj* x, r_obj* scoped, r_obj* lhs) {
   int scoped_int = as_optional_bool(scoped);
   int lhs_int = as_optional_bool(lhs);
   return r_lgl(r_is_formula(x, scoped_int, lhs_int));
@@ -480,7 +480,7 @@ sexp* ffi_is_formula(sexp* x, sexp* scoped, sexp* lhs) {
 
 #include "../internal/parse.h"
 
-sexp* rlang_call_has_precedence(sexp* x, sexp* y, sexp* side) {
+r_obj* rlang_call_has_precedence(r_obj* x, r_obj* y, r_obj* side) {
   int c_side = r_int_get(side, 0);
 
   bool has_predence;
@@ -500,7 +500,7 @@ sexp* rlang_call_has_precedence(sexp* x, sexp* y, sexp* side) {
   return r_lgl(has_predence);
 }
 
-sexp* rlang_which_operator(sexp* call) {
+r_obj* rlang_which_operator(r_obj* call) {
   const char* op = r_op_as_c_string(r_which_operator(call));
   return r_chr(op);
 }
@@ -508,64 +508,64 @@ sexp* rlang_which_operator(sexp* call) {
 
 // node.c
 
-sexp* rlang_node_car(sexp* x) {
+r_obj* rlang_node_car(r_obj* x) {
   return CAR(x);
 }
-sexp* rlang_node_cdr(sexp* x) {
+r_obj* rlang_node_cdr(r_obj* x) {
   return CDR(x);
 }
-sexp* rlang_node_caar(sexp* x) {
+r_obj* rlang_node_caar(r_obj* x) {
   return CAAR(x);
 }
-sexp* rlang_node_cadr(sexp* x) {
+r_obj* rlang_node_cadr(r_obj* x) {
   return CADR(x);
 }
-sexp* rlang_node_cdar(sexp* x) {
+r_obj* rlang_node_cdar(r_obj* x) {
   return CDAR(x);
 }
-sexp* rlang_node_cddr(sexp* x) {
+r_obj* rlang_node_cddr(r_obj* x) {
   return CDDR(x);
 }
-sexp* rlang_node_tail(sexp* x) {
+r_obj* rlang_node_tail(r_obj* x) {
   while (CDR(x) != r_null)
     x = CDR(x);
   return x;
 }
 
-sexp* rlang_node_poke_car(sexp* x, sexp* newcar) {
+r_obj* rlang_node_poke_car(r_obj* x, r_obj* newcar) {
   SETCAR(x, newcar);
   return x;
 }
-sexp* rlang_node_poke_cdr(sexp* x, sexp* newcdr) {
+r_obj* rlang_node_poke_cdr(r_obj* x, r_obj* newcdr) {
   SETCDR(x, newcdr);
   return x;
 }
-sexp* rlang_node_poke_caar(sexp* x, sexp* newcaar) {
+r_obj* rlang_node_poke_caar(r_obj* x, r_obj* newcaar) {
   SETCAR(CAR(x), newcaar);
   return x;
 }
-sexp* rlang_node_poke_cadr(sexp* x, sexp* newcar) {
+r_obj* rlang_node_poke_cadr(r_obj* x, r_obj* newcar) {
   SETCADR(x, newcar);
   return x;
 }
-sexp* rlang_node_poke_cdar(sexp* x, sexp* newcdar) {
+r_obj* rlang_node_poke_cdar(r_obj* x, r_obj* newcdar) {
   SETCDR(CAR(x), newcdar);
   return x;
 }
-sexp* rlang_node_poke_cddr(sexp* x, sexp* newcdr) {
+r_obj* rlang_node_poke_cddr(r_obj* x, r_obj* newcdr) {
   SETCDR(CDR(x), newcdr);
   return x;
 }
 
-sexp* rlang_node_tag(sexp* x) {
+r_obj* rlang_node_tag(r_obj* x) {
   return TAG(x);
 }
-sexp* rlang_node_poke_tag(sexp* x, sexp* tag) {
+r_obj* rlang_node_poke_tag(r_obj* x, r_obj* tag) {
   SET_TAG(x, tag);
   return x;
 }
 
-sexp* rlang_on_exit(sexp* expr, sexp* frame) {
+r_obj* rlang_on_exit(r_obj* expr, r_obj* frame) {
   r_on_exit(expr, frame);
   return r_null;
 }
@@ -573,7 +573,7 @@ sexp* rlang_on_exit(sexp* expr, sexp* frame) {
 
 // lang.h
 
-sexp* rlang_new_call_node(sexp* car, sexp* cdr) {
+r_obj* rlang_new_call_node(r_obj* car, r_obj* cdr) {
   return Rf_lcons(car, cdr);
 }
 
@@ -582,23 +582,23 @@ sexp* rlang_new_call_node(sexp* car, sexp* cdr) {
 
 #include "../internal/quo.h"
 
-sexp* rlang_quo_is_missing(sexp* quo) {
+r_obj* rlang_quo_is_missing(r_obj* quo) {
   check_quosure(quo);
   return r_lgl(quo_is_missing(quo));
 }
-sexp* rlang_quo_is_symbol(sexp* quo) {
+r_obj* rlang_quo_is_symbol(r_obj* quo) {
   check_quosure(quo);
   return r_lgl(quo_is_symbol(quo));
 }
-sexp* rlang_quo_is_call(sexp* quo) {
+r_obj* rlang_quo_is_call(r_obj* quo) {
   check_quosure(quo);
   return r_lgl(quo_is_call(quo));
 }
-sexp* rlang_quo_is_symbolic(sexp* quo) {
+r_obj* rlang_quo_is_symbolic(r_obj* quo) {
   check_quosure(quo);
   return r_lgl(quo_is_symbolic(quo));
 }
-sexp* rlang_quo_is_null(sexp* quo) {
+r_obj* rlang_quo_is_null(r_obj* quo) {
   check_quosure(quo);
   return r_lgl(quo_is_null(quo));
 }
@@ -606,22 +606,22 @@ sexp* rlang_quo_is_null(sexp* quo) {
 
 // sexp.h
 
-sexp* rlang_length(sexp* x) {
+r_obj* rlang_length(r_obj* x) {
   return r_int(r_length(x));
 }
-sexp* rlang_true_length(sexp* x) {
+r_obj* rlang_true_length(r_obj* x) {
   return r_int(XTRUELENGTH(x));
 }
 
-sexp* rlang_is_reference(sexp* x, sexp* y) {
+r_obj* rlang_is_reference(r_obj* x, r_obj* y) {
   return r_lgl(x == y);
 }
 
-sexp* rlang_missing_arg() {
+r_obj* rlang_missing_arg() {
   return R_MissingArg;
 }
 
-sexp* rlang_duplicate(sexp* x, sexp* shallow) {
+r_obj* rlang_duplicate(r_obj* x, r_obj* shallow) {
   if (r_lgl_get(shallow, 0)) {
     return r_clone(x);
   } else {
@@ -629,25 +629,25 @@ sexp* rlang_duplicate(sexp* x, sexp* shallow) {
   }
 }
 
-sexp* rlang_sexp_address(sexp* x) {
+r_obj* rlang_sexp_address(r_obj* x) {
   return r_str_as_character(r_sexp_address(x));
 }
 
-sexp* rlang_poke_type(sexp* x, sexp* type) {
+r_obj* rlang_poke_type(r_obj* x, r_obj* type) {
   SET_TYPEOF(x, Rf_str2type(r_chr_get_c_string(type, 0)));
   return x;
 }
 
-sexp* rlang_mark_object(sexp* x) {
+r_obj* rlang_mark_object(r_obj* x) {
   SET_OBJECT(x, 1);
   return x;
 }
-sexp* rlang_unmark_object(sexp* x) {
+r_obj* rlang_unmark_object(r_obj* x) {
   SET_OBJECT(x, 0);
   return x;
 }
 
-sexp* rlang_get_promise(sexp* x, sexp* env) {
+r_obj* rlang_get_promise(r_obj* x, r_obj* env) {
   switch (r_typeof(x)) {
   case R_TYPE_promise:
     return x;
@@ -659,29 +659,29 @@ sexp* rlang_get_promise(sexp* x, sexp* env) {
     }
     // fallthrough
   case R_TYPE_symbol: {
-      sexp* prom = r_env_find_anywhere(env, x);
-      if (r_typeof(prom) == R_TYPE_promise) {
-        return prom;
-      }
-      // fallthrough
+    r_obj* prom = r_env_find_anywhere(env, x);
+    if (r_typeof(prom) == R_TYPE_promise) {
+      return prom;
     }
+    // fallthrough
+  }
   error:
   default:
     r_abort("`x` must be or refer to a local promise");
   }
 }
 
-sexp* rlang_promise_expr(sexp* x, sexp* env) {
-  sexp* prom = rlang_get_promise(x, env);
+r_obj* rlang_promise_expr(r_obj* x, r_obj* env) {
+  r_obj* prom = rlang_get_promise(x, env);
   return PREXPR(prom);
 }
-sexp* rlang_promise_env(sexp* x, sexp* env) {
-  sexp* prom = rlang_get_promise(x, env);
+r_obj* rlang_promise_env(r_obj* x, r_obj* env) {
+  r_obj* prom = rlang_get_promise(x, env);
   return PRENV(prom);
 }
-sexp* rlang_promise_value(sexp* x, sexp* env) {
-  sexp* prom = rlang_get_promise(x, env);
-  sexp* value = PRVALUE(prom);
+r_obj* rlang_promise_value(r_obj* x, r_obj* env) {
+  r_obj* prom = rlang_get_promise(x, env);
+  r_obj* value = PRVALUE(prom);
   if (value == r_syms.unbound) {
     return r_sym("R_UnboundValue");
   } else {
@@ -689,13 +689,13 @@ sexp* rlang_promise_value(sexp* x, sexp* env) {
   }
 }
 
-sexp* rlang_attrib(sexp* x) {
+r_obj* rlang_attrib(r_obj* x) {
   return ATTRIB(x);
 }
 
 // Picks up symbols from parent environment to avoid bumping namedness
 // during promise resolution
-sexp* rlang_named(sexp* x, sexp* env) {
+r_obj* rlang_named(r_obj* x, r_obj* env) {
   int n_kept = 0;
 
   x = PROTECT(Rf_findVarInFrame3(env, x, FALSE));
@@ -710,11 +710,11 @@ sexp* rlang_named(sexp* x, sexp* env) {
   return Rf_ScalarInteger(NAMED(x));
 }
 
-sexp* rlang_find_var(sexp* env, sexp* sym) {
+r_obj* rlang_find_var(r_obj* env, r_obj* sym) {
   return Rf_findVar(sym, env);
 }
 
-sexp* rlang_chr_get(sexp* x, sexp* i) {
+r_obj* rlang_chr_get(r_obj* x, r_obj* i) {
   if (r_typeof(i) != R_TYPE_integer || r_length(i) != 1) {
     r_abort("`i` must be an integer value.");
   }
@@ -728,18 +728,18 @@ sexp* rlang_chr_get(sexp* x, sexp* i) {
 }
 
 // Returns a copy
-sexp* rlang_precious_dict() {
+r_obj* rlang_precious_dict() {
   // From rlang/sexp.c
   struct r_dict* rlang__precious_dict();
 
   struct r_dict* p_dict = rlang__precious_dict();
   return wrap_dict(p_dict);
 }
-sexp* rlang_preserve(sexp* x) {
+r_obj* rlang_preserve(r_obj* x) {
   r_preserve(x);
   return r_null;
 }
-sexp* rlang_unpreserve(sexp* x) {
+r_obj* rlang_unpreserve(r_obj* x) {
   r_unpreserve(x);
   return r_null;
 }
@@ -747,15 +747,15 @@ sexp* rlang_unpreserve(sexp* x) {
 
 // vec.h
 
-sexp* rlang_vec_alloc(sexp* type, sexp* n) {
+r_obj* rlang_vec_alloc(r_obj* type, r_obj* n) {
   return Rf_allocVector(Rf_str2type(r_chr_get_c_string(type, 0)), r_int_get(n, 0));
 }
-sexp* rlang_vec_coerce(sexp* x, sexp* type) {
+r_obj* rlang_vec_coerce(r_obj* x, r_obj* type) {
   return Rf_coerceVector(x, Rf_str2type(r_chr_get_c_string(type, 0)));
 }
 
-sexp* rlang_vec_poke_n(sexp* x, sexp* offset,
-                       sexp* y, sexp* from, sexp* n) {
+r_obj* rlang_vec_poke_n(r_obj* x, r_obj* offset,
+                        r_obj* y, r_obj* from, r_obj* n) {
   r_ssize offset_size = r_as_ssize(offset) - 1;
   r_ssize from_size = r_as_ssize(from) - 1;
   r_ssize n_size = r_as_ssize(n);
@@ -764,8 +764,8 @@ sexp* rlang_vec_poke_n(sexp* x, sexp* offset,
   return x;
 }
 
-sexp* rlang_vec_poke_range(sexp* x, sexp* offset,
-                           sexp* y, sexp* from, sexp* to) {
+r_obj* rlang_vec_poke_range(r_obj* x, r_obj* offset,
+                            r_obj* y, r_obj* from, r_obj* to) {
   r_ssize offset_size = r_as_ssize(offset) - 1;
   r_ssize from_size = r_as_ssize(from) - 1;
   r_ssize to_size = r_as_ssize(to) - 1;
@@ -774,7 +774,7 @@ sexp* rlang_vec_poke_range(sexp* x, sexp* offset,
   return x;
 }
 
-static r_ssize validate_n(sexp* n) {
+static r_ssize validate_n(r_obj* n) {
   if (n == r_null) {
     return -1;
   }
@@ -793,7 +793,7 @@ static r_ssize validate_n(sexp* n) {
   return r_as_ssize(n);
 }
 
-static int validate_finite(sexp* finite) {
+static int validate_finite(r_obj* finite) {
   switch (r_typeof(finite)) {
   case R_TYPE_null:
     return -1;
@@ -811,11 +811,11 @@ static int validate_finite(sexp* finite) {
   }
 }
 
-sexp* rlang_is_finite(sexp* x) {
+r_obj* rlang_is_finite(r_obj* x) {
   return r_shared_lgl(r_is_finite(x));
 }
 
-sexp* rlang_is_list(sexp* x, sexp* n_) {
+r_obj* rlang_is_list(r_obj* x, r_obj* n_) {
   r_ssize n = validate_n(n_);
   if (r_typeof(x) != R_TYPE_list) {
     return r_false;
@@ -826,54 +826,54 @@ sexp* rlang_is_list(sexp* x, sexp* n_) {
   return r_shared_lgl(r_length(x) == n);
 }
 
-sexp* rlang_is_atomic(sexp* x, sexp* n_) {
+r_obj* rlang_is_atomic(r_obj* x, r_obj* n_) {
   r_ssize n = validate_n(n_);
   return r_shared_lgl(r_is_atomic(x, n));
 }
-sexp* rlang_is_vector(sexp* x, sexp* n_) {
+r_obj* rlang_is_vector(r_obj* x, r_obj* n_) {
   r_ssize n = validate_n(n_);
   return r_shared_lgl(r_is_vector(x, n));
 }
 
-sexp* rlang_is_logical(sexp* x, sexp* n_) {
+r_obj* rlang_is_logical(r_obj* x, r_obj* n_) {
   r_ssize n = validate_n(n_);
   return r_shared_lgl(r_is_logical(x, n));
 }
-sexp* rlang_is_integer(sexp* x, sexp* n_) {
+r_obj* rlang_is_integer(r_obj* x, r_obj* n_) {
   r_ssize n = validate_n(n_);
   return r_shared_lgl(r_is_integer(x, n, -1));
 }
-sexp* rlang_is_double(sexp* x, sexp* n_, sexp* finite_) {
+r_obj* rlang_is_double(r_obj* x, r_obj* n_, r_obj* finite_) {
   r_ssize n = validate_n(n_);
   int finite = validate_finite(finite_);
   return r_shared_lgl(r_is_double(x, n, finite));
 }
-sexp* ffi_is_complex(sexp* x, sexp* n_, sexp* finite_) {
+r_obj* ffi_is_complex(r_obj* x, r_obj* n_, r_obj* finite_) {
   r_ssize n = validate_n(n_);
   int finite = validate_finite(finite_);
   return r_shared_lgl(r_is_complex(x, n, finite));
 }
-sexp* rlang_is_integerish(sexp* x, sexp* n_, sexp* finite_) {
+r_obj* rlang_is_integerish(r_obj* x, r_obj* n_, r_obj* finite_) {
   r_ssize n = validate_n(n_);
   int finite = validate_finite(finite_);
   return r_shared_lgl(r_is_integerish(x, n, finite));
 }
 
-sexp* rlang_is_character(sexp* x, sexp* n_) {
+r_obj* rlang_is_character(r_obj* x, r_obj* n_) {
   r_ssize n = validate_n(n_);
   return r_shared_lgl(r_is_character(x, n));
 }
-sexp* rlang_is_raw(sexp* x, sexp* n_) {
+r_obj* rlang_is_raw(r_obj* x, r_obj* n_) {
   r_ssize n = validate_n(n_);
   return r_shared_lgl(r_is_raw(x, n));
 }
 
-sexp* rlang_is_string(sexp* x, sexp* string) {
+r_obj* rlang_is_string(r_obj* x, r_obj* string) {
   if (r_typeof(x) != R_TYPE_character || r_length(x) != 1) {
     return r_false;
   }
 
-  sexp* value = r_chr_get(x, 0);
+  r_obj* value = r_chr_get(x, 0);
 
   if (value == r_globals.na_str) {
     return r_false;
@@ -889,7 +889,7 @@ sexp* rlang_is_string(sexp* x, sexp* string) {
 
   bool out = false;
   r_ssize n = r_length(string);
-  sexp* const * p_string = r_chr_deref_const(string);
+  r_obj* const * p_string = r_chr_deref_const(string);
 
   for (r_ssize i = 0; i < n; ++i) {
     if (p_string[i] == value) {
@@ -901,7 +901,7 @@ sexp* rlang_is_string(sexp* x, sexp* string) {
   return r_shared_lgl(out);
 }
 
-sexp* rlang_vec_resize(sexp* x, sexp* n) {
+r_obj* rlang_vec_resize(r_obj* x, r_obj* n) {
   r_ssize n_ssize = r_as_ssize(n);
 
   switch (r_typeof(x)) {
@@ -916,7 +916,7 @@ sexp* rlang_vec_resize(sexp* x, sexp* n) {
   }
 }
 
-sexp* rlang_list_poke(sexp* x, sexp* i, sexp* value) {
+r_obj* rlang_list_poke(r_obj* x, r_obj* i, r_obj* value) {
   r_list_poke(x, r_as_ssize(i), value);
   return r_null;
 }
@@ -925,7 +925,7 @@ sexp* rlang_list_poke(sexp* x, sexp* i, sexp* value) {
 // walk.c
 
 static inline
-sexp* protect_missing(sexp* x) {
+r_obj* protect_missing(r_obj* x) {
   // FIXME: Include in `exec_` functions?
   if (x == r_missing_arg ||
       x == r_syms.unbound ||
@@ -937,7 +937,7 @@ sexp* protect_missing(sexp* x) {
 }
 
 // [[ register() ]]
-sexp* ffi_sexp_iterate(sexp* x, sexp* fn) {
+r_obj* ffi_sexp_iterate(r_obj* x, r_obj* fn) {
   struct r_dyn_array* p_out = r_new_dyn_vector(R_TYPE_list, 256);
   KEEP(p_out->shelter);
 
@@ -957,10 +957,10 @@ sexp* ffi_sexp_iterate(sexp* x, sexp* fn) {
       continue;
     }
 
-    sexp* x = p_it->x;
+    r_obj* x = p_it->x;
     enum r_type type = p_it->type;
     int depth = p_it->depth;
-    sexp* parent = p_it->parent;
+    r_obj* parent = p_it->parent;
     enum r_sexp_it_relation rel = p_it->rel;
     r_ssize i = p_it->i;
     enum r_sexp_it_direction dir = p_it->dir;
@@ -982,10 +982,10 @@ sexp* ffi_sexp_iterate(sexp* x, sexp* fn) {
       { r_sym("i"), KEEP(r_int(i + 1)) },
       { r_sym("dir"), KEEP(r_chr(r_sexp_it_direction_as_c_string(dir))) }
     };
-    sexp* out = KEEP(r_exec_mask_n(r_sym("fn"), fn,
-                                   args,
-                                   R_ARR_SIZEOF(args),
-                                   r_base_env));
+    r_obj* out = KEEP(r_exec_mask_n(r_sym("fn"), fn,
+                                    args,
+                                    R_ARR_SIZEOF(args),
+                                    r_base_env));
 
     r_list_push_back(p_out, out);
     FREE(9);

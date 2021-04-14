@@ -3,31 +3,31 @@
 #include <string.h>
 #include <stdlib.h>
 
-sexp* str_unserialise_unicode(sexp* r_string);
+r_obj* str_unserialise_unicode(r_obj* r_string);
 
 
 // Interface functions ---------------------------------------------------------
 
-void copy_character(sexp* tgt, sexp* src, R_xlen_t len);
-R_xlen_t unescape_character_in_copy(sexp* tgt, sexp* src, R_xlen_t i);
+void copy_character(r_obj* tgt, r_obj* src, R_xlen_t len);
+R_xlen_t unescape_character_in_copy(r_obj* tgt, r_obj* src, R_xlen_t i);
 
-sexp* rlang_symbol(sexp* chr) {
+r_obj* rlang_symbol(r_obj* chr) {
   return r_str_as_symbol(r_chr_get(chr, 0));
 }
 
-sexp* rlang_sym_as_character(sexp* sym) {
-  sexp* str = KEEP(str_unserialise_unicode(PRINTNAME(sym)));
-  sexp* out = r_str_as_character(str);
+r_obj* rlang_sym_as_character(r_obj* sym) {
+  r_obj* str = KEEP(str_unserialise_unicode(PRINTNAME(sym)));
+  r_obj* out = r_str_as_character(str);
   FREE(1);
   return out;
 }
 
-sexp* rlang_unescape_character(sexp* chr) {
+r_obj* rlang_unescape_character(r_obj* chr) {
   R_xlen_t len = Rf_xlength(chr);
   R_xlen_t i = unescape_character_in_copy(r_null, chr, 0);
   if (i == len) return chr;
 
-  sexp* ret = KEEP(r_alloc_character(len));
+  r_obj* ret = KEEP(r_alloc_character(len));
   copy_character(ret, chr, i);
   unescape_character_in_copy(ret, chr, i);
   FREE(1);
@@ -36,7 +36,7 @@ sexp* rlang_unescape_character(sexp* chr) {
 
 // Private functions -----------------------------------------------------------
 
-static sexp* unescape_char_to_sexp(char* tmp);
+static r_obj* unescape_char_to_sexp(char* tmp);
 static bool has_unicode_escape(const char* chr);
 static int unescape_char(char* chr);
 static int unescape_char_found(char* chr);
@@ -44,19 +44,19 @@ static int process_byte(char* tgt, char* const src, int* len_processed);
 static bool has_codepoint(const char* src);
 static bool is_hex(const char chr);
 
-void copy_character(sexp* tgt, sexp* src, R_xlen_t len) {
+void copy_character(r_obj* tgt, r_obj* src, R_xlen_t len) {
   for (int i = 0; i < len; ++i) {
     r_chr_poke(tgt, i, r_chr_get(src, i));
   }
 }
 
-R_xlen_t unescape_character_in_copy(sexp* tgt, sexp* src, R_xlen_t i) {
+R_xlen_t unescape_character_in_copy(r_obj* tgt, r_obj* src, R_xlen_t i) {
   R_xlen_t len = r_length(src);
   int dry_run = Rf_isNull(tgt);
 
   for (; i < len; ++i) {
-    sexp* old_elt = r_chr_get(src, i);
-    sexp* new_elt = str_unserialise_unicode(old_elt);
+    r_obj* old_elt = r_chr_get(src, i);
+    r_obj* new_elt = str_unserialise_unicode(old_elt);
     if (dry_run) {
       if (old_elt != new_elt) return i;
     } else {
@@ -67,7 +67,7 @@ R_xlen_t unescape_character_in_copy(sexp* tgt, sexp* src, R_xlen_t i) {
   return i;
 }
 
-sexp* str_unserialise_unicode(sexp* r_string) {
+r_obj* str_unserialise_unicode(r_obj* r_string) {
   int ce = Rf_getCharCE(r_string);
   const char* src = CHAR(r_string);
 
@@ -92,7 +92,7 @@ sexp* str_unserialise_unicode(sexp* r_string) {
 }
 
 static
-sexp* unescape_char_to_sexp(char* tmp) {
+r_obj* unescape_char_to_sexp(char* tmp) {
   int len = unescape_char(tmp);
   return Rf_mkCharLenCE(tmp, len, CE_UTF8);
 }

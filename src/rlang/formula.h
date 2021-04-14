@@ -2,12 +2,12 @@
 #define RLANG_FORMULA_H
 
 
-bool r_is_formula(sexp* x, int scoped, int lhs);
+bool r_is_formula(r_obj* x, int scoped, int lhs);
 
-sexp* r_f_rhs(sexp* f);
-sexp* r_f_lhs(sexp* f);
-sexp* r_f_env(sexp* f);
-bool r_f_has_env(sexp* f);
+r_obj* r_f_rhs(r_obj* f);
+r_obj* r_f_lhs(r_obj* f);
+r_obj* r_f_env(r_obj* f);
+bool r_f_has_env(r_obj* f);
 
 
 #endif

@@ -2,16 +2,16 @@
 #include "env.h"
 
 
-bool r_env_binding_is_promise(sexp* env, sexp* sym) {
-  sexp* obj = r_env_find(env, sym);
+bool r_env_binding_is_promise(r_obj* env, r_obj* sym) {
+  r_obj* obj = r_env_find(env, sym);
   return r_typeof(obj) == R_TYPE_promise && PRVALUE(obj) == r_syms.unbound;
 }
-bool r_env_binding_is_active(sexp* env, sexp* sym) {
+bool r_env_binding_is_active(r_obj* env, r_obj* sym) {
   return R_BindingIsActive(sym, env);
 }
 
-static sexp* new_binding_types(r_ssize n) {
-  sexp* types = r_alloc_integer(n);
+static r_obj* new_binding_types(r_ssize n) {
+  r_obj* types = r_alloc_integer(n);
 
   int* types_ptr = r_int_deref(types);
   memset(types_ptr, 0, n * sizeof *types_ptr);
@@ -19,7 +19,7 @@ static sexp* new_binding_types(r_ssize n) {
   return types;
 }
 
-static enum r_env_binding_type which_env_binding(sexp* env, sexp* sym) {
+static enum r_env_binding_type which_env_binding(r_obj* env, r_obj* sym) {
   if (r_env_binding_is_promise(env, sym)) {
     return R_ENV_BINDING_PROMISE;
   }
@@ -31,9 +31,9 @@ static enum r_env_binding_type which_env_binding(sexp* env, sexp* sym) {
   return R_ENV_BINDING_VALUE;
 }
 
-static inline sexp* binding_as_sym(bool list, sexp* bindings, r_ssize i) {
+static inline r_obj* binding_as_sym(bool list, r_obj* bindings, r_ssize i) {
   if (list) {
-    sexp* out = r_list_get(bindings, i);
+    r_obj* out = r_list_get(bindings, i);
 
     if (r_typeof(out) != R_TYPE_symbol) {
       r_abort("Binding must be a symbol.");
@@ -45,13 +45,13 @@ static inline sexp* binding_as_sym(bool list, sexp* bindings, r_ssize i) {
   }
 }
 
-static r_ssize detect_special_binding(sexp* env,
-                                      sexp* bindings,
+static r_ssize detect_special_binding(r_obj* env,
+                                      r_obj* bindings,
                                       bool symbols) {
   r_ssize n = r_length(bindings);
 
   for (r_ssize i = 0; i < n; ++i) {
-    sexp* sym = binding_as_sym(symbols, bindings, i);
+    r_obj* sym = binding_as_sym(symbols, bindings, i);
     if (which_env_binding(env, sym)) {
       return i;
     }
@@ -61,7 +61,7 @@ static r_ssize detect_special_binding(sexp* env,
 }
 
 // Returns NULL if all values to spare an alloc
-sexp* r_env_binding_types(sexp* env, sexp* bindings) {
+r_obj* r_env_binding_types(r_obj* env, r_obj* bindings) {
   if (r_typeof(env) != R_TYPE_environment) {
     r_abort("Expected environment in promise binding predicate.");
   }
@@ -79,11 +79,11 @@ sexp* r_env_binding_types(sexp* env, sexp* bindings) {
   }
 
   r_ssize n = r_length(bindings);
-  sexp* types = KEEP(new_binding_types(n));
+  r_obj* types = KEEP(new_binding_types(n));
   int* types_ptr = r_int_deref(types) + i;
 
   while (i < n) {
-    sexp* sym = binding_as_sym(symbols, bindings, i);
+    r_obj* sym = binding_as_sym(symbols, bindings, i);
     *types_ptr = which_env_binding(env, sym);
 
     ++i;

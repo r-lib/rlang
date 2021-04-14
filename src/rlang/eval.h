@@ -3,31 +3,31 @@
 
 
 static inline
-sexp* r_eval(sexp* expr, sexp* env) {
+r_obj* r_eval(r_obj* expr, r_obj* env) {
   return Rf_eval(expr, env);
 }
 
-sexp* r_eval_with_x(sexp* call, sexp* x, sexp* parent);
-sexp* r_eval_with_xy(sexp* call, sexp* x, sexp* y, sexp* parent);
-sexp* r_eval_with_xyz(sexp* call, sexp* x, sexp* y, sexp* z, sexp* parent);
-sexp* r_eval_with_wxyz(sexp* call, sexp* w, sexp* x, sexp* y, sexp* z, sexp* parent);
+r_obj* r_eval_with_x(r_obj* call, r_obj* x, r_obj* parent);
+r_obj* r_eval_with_xy(r_obj* call, r_obj* x, r_obj* y, r_obj* parent);
+r_obj* r_eval_with_xyz(r_obj* call, r_obj* x, r_obj* y, r_obj* z, r_obj* parent);
+r_obj* r_eval_with_wxyz(r_obj* call, r_obj* w, r_obj* x, r_obj* y, r_obj* z, r_obj* parent);
 
-sexp* r_exec_mask_n(sexp* fn_sym,
-                    sexp* fn,
-                    const struct r_pair* args,
-                    int n,
-                    sexp* parent);
+r_obj* r_exec_mask_n(r_obj* fn_sym,
+                     r_obj* fn,
+                     const struct r_pair* args,
+                     int n,
+                     r_obj* parent);
 
-sexp* r_exec_mask_n_call_poke(sexp* fn_sym,
-                              sexp* fn,
-                              const struct r_pair* args,
-                              int n,
-                              sexp* env);
+r_obj* r_exec_mask_n_call_poke(r_obj* fn_sym,
+                               r_obj* fn,
+                               const struct r_pair* args,
+                               int n,
+                               r_obj* env);
 
 static inline
-sexp* r_exec_mask1(sexp* fn_sym, sexp* fn,
-                   sexp* x_sym, sexp* x,
-                   sexp* env) {
+r_obj* r_exec_mask1(r_obj* fn_sym, r_obj* fn,
+                    r_obj* x_sym, r_obj* x,
+                    r_obj* env) {
   struct r_pair args[] = {
     { x_sym, x }
   };
@@ -35,10 +35,10 @@ sexp* r_exec_mask1(sexp* fn_sym, sexp* fn,
 }
 
 static inline
-sexp* r_exec_mask2(sexp* fn_sym, sexp* fn,
-                   sexp* x1_sym, sexp* x1,
-                   sexp* x2_sym, sexp* x2,
-                   sexp* env) {
+r_obj* r_exec_mask2(r_obj* fn_sym, r_obj* fn,
+                    r_obj* x1_sym, r_obj* x1,
+                    r_obj* x2_sym, r_obj* x2,
+                    r_obj* env) {
   struct r_pair args[] = {
     { x1_sym, x1 },
     { x2_sym, x2 }
@@ -47,11 +47,11 @@ sexp* r_exec_mask2(sexp* fn_sym, sexp* fn,
 }
 
 static inline
-sexp* r_exec_mask3(sexp* fn_sym, sexp* fn,
-                   sexp* x1_sym, sexp* x1,
-                   sexp* x2_sym, sexp* x2,
-                   sexp* x3_sym, sexp* x3,
-                   sexp* env) {
+r_obj* r_exec_mask3(r_obj* fn_sym, r_obj* fn,
+                    r_obj* x1_sym, r_obj* x1,
+                    r_obj* x2_sym, r_obj* x2,
+                    r_obj* x3_sym, r_obj* x3,
+                    r_obj* env) {
   struct r_pair args[] = {
     { x1_sym, x1 },
     { x2_sym, x2 },
@@ -61,12 +61,12 @@ sexp* r_exec_mask3(sexp* fn_sym, sexp* fn,
 }
 
 static inline
-sexp* r_exec_mask4(sexp* fn_sym, sexp* fn,
-                   sexp* x1_sym, sexp* x1,
-                   sexp* x2_sym, sexp* x2,
-                   sexp* x3_sym, sexp* x3,
-                   sexp* x4_sym, sexp* x4,
-                   sexp* env) {
+r_obj* r_exec_mask4(r_obj* fn_sym, r_obj* fn,
+                    r_obj* x1_sym, r_obj* x1,
+                    r_obj* x2_sym, r_obj* x2,
+                    r_obj* x3_sym, r_obj* x3,
+                    r_obj* x4_sym, r_obj* x4,
+                    r_obj* env) {
   struct r_pair args[] = {
     { x1_sym, x1 },
     { x2_sym, x2 },
@@ -77,13 +77,13 @@ sexp* r_exec_mask4(sexp* fn_sym, sexp* fn,
 }
 
 static inline
-sexp* r_exec_mask5(sexp* fn_sym, sexp* fn,
-                   sexp* x1_sym, sexp* x1,
-                   sexp* x2_sym, sexp* x2,
-                   sexp* x3_sym, sexp* x3,
-                   sexp* x4_sym, sexp* x4,
-                   sexp* x5_sym, sexp* x5,
-                   sexp* env) {
+r_obj* r_exec_mask5(r_obj* fn_sym, r_obj* fn,
+                    r_obj* x1_sym, r_obj* x1,
+                    r_obj* x2_sym, r_obj* x2,
+                    r_obj* x3_sym, r_obj* x3,
+                    r_obj* x4_sym, r_obj* x4,
+                    r_obj* x5_sym, r_obj* x5,
+                    r_obj* env) {
   struct r_pair args[] = {
     { x1_sym, x1 },
     { x2_sym, x2 },
@@ -95,14 +95,14 @@ sexp* r_exec_mask5(sexp* fn_sym, sexp* fn,
 }
 
 static inline
-sexp* r_exec_mask6(sexp* fn_sym, sexp* fn,
-                   sexp* x1_sym, sexp* x1,
-                   sexp* x2_sym, sexp* x2,
-                   sexp* x3_sym, sexp* x3,
-                   sexp* x4_sym, sexp* x4,
-                   sexp* x5_sym, sexp* x5,
-                   sexp* x6_sym, sexp* x6,
-                   sexp* env) {
+r_obj* r_exec_mask6(r_obj* fn_sym, r_obj* fn,
+                    r_obj* x1_sym, r_obj* x1,
+                    r_obj* x2_sym, r_obj* x2,
+                    r_obj* x3_sym, r_obj* x3,
+                    r_obj* x4_sym, r_obj* x4,
+                    r_obj* x5_sym, r_obj* x5,
+                    r_obj* x6_sym, r_obj* x6,
+                    r_obj* env) {
   struct r_pair args[] = {
     { x1_sym, x1 },
     { x2_sym, x2 },
@@ -115,15 +115,15 @@ sexp* r_exec_mask6(sexp* fn_sym, sexp* fn,
 }
 
 static inline
-sexp* r_exec_mask7(sexp* fn_sym, sexp* fn,
-                   sexp* x1_sym, sexp* x1,
-                   sexp* x2_sym, sexp* x2,
-                   sexp* x3_sym, sexp* x3,
-                   sexp* x4_sym, sexp* x4,
-                   sexp* x5_sym, sexp* x5,
-                   sexp* x6_sym, sexp* x6,
-                   sexp* x7_sym, sexp* x7,
-                   sexp* env) {
+r_obj* r_exec_mask7(r_obj* fn_sym, r_obj* fn,
+                    r_obj* x1_sym, r_obj* x1,
+                    r_obj* x2_sym, r_obj* x2,
+                    r_obj* x3_sym, r_obj* x3,
+                    r_obj* x4_sym, r_obj* x4,
+                    r_obj* x5_sym, r_obj* x5,
+                    r_obj* x6_sym, r_obj* x6,
+                    r_obj* x7_sym, r_obj* x7,
+                    r_obj* env) {
   struct r_pair args[] = {
     { x1_sym, x1 },
     { x2_sym, x2 },

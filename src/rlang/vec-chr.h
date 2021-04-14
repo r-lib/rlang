@@ -5,19 +5,19 @@
 
 
 static inline
-const char* r_str_c_string(sexp* str) {
+const char* r_str_c_string(r_obj* str) {
   return CHAR(str);
 }
 
-bool r_chr_has(sexp* chr, const char* c_string);
-bool r_chr_has_any(sexp* chr, const char** c_strings);
-r_ssize r_chr_detect_index(sexp* chr, const char* c_string);
+bool r_chr_has(r_obj* chr, const char* c_string);
+bool r_chr_has_any(r_obj* chr, const char** c_strings);
+r_ssize r_chr_detect_index(r_obj* chr, const char* c_string);
 
-void r_chr_fill(sexp* chr, sexp* value, r_ssize n);
+void r_chr_fill(r_obj* chr, r_obj* value, r_ssize n);
 
 
 static inline
-sexp* r_str_as_character(sexp* x) {
+r_obj* r_str_as_character(r_obj* x) {
   return Rf_ScalarString(x);
 }
 
@@ -40,7 +40,7 @@ sexp* r_str_as_character(sexp* x) {
  * with `install()` without encoding.
  */
 static inline
-sexp* r_str_as_symbol(sexp* str) {
+r_obj* r_str_as_symbol(r_obj* str) {
   const char* str_native = Rf_translateChar(str);
 
   if (str_native == CHAR(str)) {
@@ -51,7 +51,7 @@ sexp* r_str_as_symbol(sexp* str) {
 }
 
 static inline
-bool r_str_is_name(sexp* str) {
+bool r_str_is_name(r_obj* str) {
   if (str == r_globals.na_str) {
     return false;
   }

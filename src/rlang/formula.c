@@ -1,7 +1,7 @@
 #include "rlang.h"
 
 
-sexp* r_f_rhs(sexp* f) {
+r_obj* r_f_rhs(r_obj* f) {
   if (r_typeof(f) != LANGSXP) {
     r_abort("`x` must be a formula");
   }
@@ -12,7 +12,7 @@ sexp* r_f_rhs(sexp* f) {
   default: r_abort("Invalid formula");
   }
 }
-sexp* r_f_lhs(sexp* f) {
+r_obj* r_f_lhs(r_obj* f) {
   if (r_typeof(f) != LANGSXP) {
     r_abort("`x` must be a formula");
   }
@@ -23,15 +23,15 @@ sexp* r_f_lhs(sexp* f) {
   default: r_abort("Invalid formula");
   }
 }
-sexp* r_f_env(sexp* f) {
+r_obj* r_f_env(r_obj* f) {
   return r_attrib_get(f, r_sym(".Environment"));
 }
 
-bool r_f_has_env(sexp* f) {
+bool r_f_has_env(r_obj* f) {
   return r_is_environment(r_f_env(f));
 }
 
-bool r_is_formula(sexp* x, int scoped, int lhs) {
+bool r_is_formula(r_obj* x, int scoped, int lhs) {
   if (r_typeof(x) != R_TYPE_call) {
     return false;
   }
@@ -58,8 +58,8 @@ bool r_is_formula(sexp* x, int scoped, int lhs) {
   return true;
 }
 
-sexp* new_raw_formula(sexp* lhs, sexp* rhs, sexp* env) {
-  static sexp* tilde_sym = NULL;
+r_obj* new_raw_formula(r_obj* lhs, r_obj* rhs, r_obj* env) {
+  static r_obj* tilde_sym = NULL;
   if (!tilde_sym) {
     tilde_sym = r_sym("~");
   }
@@ -67,8 +67,8 @@ sexp* new_raw_formula(sexp* lhs, sexp* rhs, sexp* env) {
     r_abort("`env` must be an environment");
   }
 
-  sexp* f;
-  sexp* args;
+  r_obj* f;
+  r_obj* args;
   if (lhs == r_null) {
     args = KEEP(r_pairlist(rhs));
   } else {
@@ -76,15 +76,15 @@ sexp* new_raw_formula(sexp* lhs, sexp* rhs, sexp* env) {
   }
   f = KEEP(r_new_call(tilde_sym, args));
 
-  sexp* attrs = KEEP(r_new_node(env, r_null));
+  r_obj* attrs = KEEP(r_new_node(env, r_null));
   r_node_poke_tag(attrs, r_sym(".Environment"));
   r_poke_attrib(f, attrs);
 
   FREE(3);
   return f;
 }
-sexp* r_new_formula(sexp* lhs, sexp* rhs, sexp* env) {
-  sexp* f = KEEP(new_raw_formula(lhs, rhs, env));
+r_obj* r_new_formula(r_obj* lhs, r_obj* rhs, r_obj* env) {
+  r_obj* f = KEEP(new_raw_formula(lhs, rhs, env));
   r_attrib_push_class(f, "formula");
 
   FREE(1);

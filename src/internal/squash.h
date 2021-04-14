@@ -2,7 +2,7 @@
 #define RLANG_INTERNAL_SQUASH_H
 
 
-sexp* r_squash_if(sexp* dots, enum r_type kind, bool (*is_spliceable)(sexp*), int depth);
+r_obj* r_squash_if(r_obj* dots, enum r_type kind, bool (*is_spliceable)(r_obj*), int depth);
 
 
 #endif

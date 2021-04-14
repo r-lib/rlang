@@ -3,19 +3,19 @@
 
 
 struct r_dyn_array {
-  sexp* shelter;
+  r_obj* shelter;
   r_ssize count;
   r_ssize capacity;
   int growth_factor;
 
-  sexp* data;
+  r_obj* data;
   void* v_data;
   const void* v_data_const;
 
   // private:
   enum r_type type;
   r_ssize elt_byte_size;
-  void (*barrier_set)(sexp* x, r_ssize i, sexp* value);
+  void (*barrier_set)(r_obj* x, r_ssize i, r_obj* value);
 };
 
 struct r_dyn_array* r_new_dyn_vector(enum r_type type,
@@ -30,7 +30,7 @@ void r_arr_resize(struct r_dyn_array* p_arr,
 void r_arr_push_back(struct r_dyn_array* p_arr,
                      const void* p_elt);
 
-sexp* r_arr_unwrap(struct r_dyn_array* p_arr);
+r_obj* r_arr_unwrap(struct r_dyn_array* p_arr);
 
 static inline
 void* r_arr_ptr(struct r_dyn_array* p_arr, r_ssize i) {
@@ -95,7 +95,7 @@ void r_cpl_push_back(struct r_dyn_array* p_vec, r_complex_t elt) {
   r_arr_push_back(p_vec, &elt);
 }
 static inline
-void r_list_push_back(struct r_dyn_array* p_vec, sexp* elt) {
+void r_list_push_back(struct r_dyn_array* p_vec, r_obj* elt) {
   KEEP(elt);
   r_arr_push_back(p_vec, &elt);
   FREE(1);

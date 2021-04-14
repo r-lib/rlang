@@ -2,11 +2,11 @@
 
 
 static
-bool has_correct_length(sexp* x, r_ssize n) {
+bool has_correct_length(r_obj* x, r_ssize n) {
   return n < 0 || r_length(x) == n;
 }
 
-bool r_is_atomic(sexp* x, r_ssize n) {
+bool r_is_atomic(r_obj* x, r_ssize n) {
   switch(r_typeof(x)) {
   case R_TYPE_logical:
   case R_TYPE_integer:
@@ -20,7 +20,7 @@ bool r_is_atomic(sexp* x, r_ssize n) {
   }
 }
 
-bool r_is_vector(sexp* x, r_ssize n) {
+bool r_is_vector(r_obj* x, r_ssize n) {
   switch(r_typeof(x)) {
   case R_TYPE_logical:
   case R_TYPE_integer:
@@ -35,11 +35,11 @@ bool r_is_vector(sexp* x, r_ssize n) {
   }
 }
 
-bool r_is_logical(sexp* x, r_ssize n) {
+bool r_is_logical(r_obj* x, r_ssize n) {
   return r_typeof(x) == R_TYPE_logical && has_correct_length(x, n);
 }
 
-bool r_is_finite(sexp* x) {
+bool r_is_finite(r_obj* x) {
   r_ssize n = r_length(x);
 
   switch(r_typeof(x)) {
@@ -76,7 +76,7 @@ bool r_is_finite(sexp* x) {
 
   return true;
 }
-bool r_is_integer(sexp* x, r_ssize n, int finite) {
+bool r_is_integer(r_obj* x, r_ssize n, int finite) {
   if (r_typeof(x) != R_TYPE_integer || !has_correct_length(x, n)) {
     return false;
   }
@@ -85,7 +85,7 @@ bool r_is_integer(sexp* x, r_ssize n, int finite) {
   }
   return true;
 }
-bool r_is_double(sexp* x, r_ssize n, int finite) {
+bool r_is_double(r_obj* x, r_ssize n, int finite) {
   if (r_typeof(x) != R_TYPE_double || !has_correct_length(x, n)) {
     return false;
   }
@@ -94,7 +94,7 @@ bool r_is_double(sexp* x, r_ssize n, int finite) {
   }
   return true;
 }
-bool r_is_complex(sexp* x, r_ssize n, int finite) {
+bool r_is_complex(r_obj* x, r_ssize n, int finite) {
   if (r_typeof(x) != R_TYPE_complex || !has_correct_length(x, n)) {
     return false;
   }
@@ -108,7 +108,7 @@ bool r_is_complex(sexp* x, r_ssize n, int finite) {
 // support is enabled
 #define RLANG_MAX_DOUBLE_INT 4503599627370496
 
-bool r_is_integerish(sexp* x, r_ssize n, int finite) {
+bool r_is_integerish(r_obj* x, r_ssize n, int finite) {
   if (r_typeof(x) == R_TYPE_integer) {
     return r_is_integer(x, n, finite);
   }
@@ -148,17 +148,17 @@ bool r_is_integerish(sexp* x, r_ssize n, int finite) {
 
 #undef RLANG_MAX_DOUBLE_INT
 
-bool r_is_character(sexp* x, r_ssize n) {
+bool r_is_character(r_obj* x, r_ssize n) {
   return r_typeof(x) == R_TYPE_character && has_correct_length(x, n);
 }
-bool r_is_raw(sexp* x, r_ssize n) {
+bool r_is_raw(r_obj* x, r_ssize n) {
   return r_typeof(x) == R_TYPE_raw && has_correct_length(x, n);
 }
 
 
 // Coercion ----------------------------------------------------------
 
-sexp* rlang_vec_coercer(sexp* dest) {
+r_obj* rlang_vec_coercer(r_obj* dest) {
   switch(r_typeof(dest)) {
   case R_TYPE_logical: return rlang_ns_get("as_logical");
   case R_TYPE_integer: return rlang_ns_get("as_integer");
@@ -170,8 +170,8 @@ sexp* rlang_vec_coercer(sexp* dest) {
   }
 }
 
-void r_vec_poke_coerce_n(sexp* x, r_ssize offset,
-                         sexp* y, r_ssize from, r_ssize n) {
+void r_vec_poke_coerce_n(r_obj* x, r_ssize offset,
+                         r_obj* y, r_ssize from, r_ssize n) {
   if (r_typeof(y) == r_typeof(x)) {
     r_vec_poke_n(x, offset, y, from, n);
     return ;
@@ -181,15 +181,15 @@ void r_vec_poke_coerce_n(sexp* x, r_ssize offset,
   }
 
   // FIXME: This callbacks to rlang R coercers with an extra copy.
-  sexp* coercer = rlang_vec_coercer(x);
-  sexp* call = KEEP(Rf_lang2(coercer, y));
-  sexp* coerced = KEEP(r_eval(call, R_BaseEnv));
+  r_obj* coercer = rlang_vec_coercer(x);
+  r_obj* call = KEEP(Rf_lang2(coercer, y));
+  r_obj* coerced = KEEP(r_eval(call, R_BaseEnv));
 
   r_vec_poke_n(x, offset, coerced, from, n);
   FREE(2);
 }
 
-void r_vec_poke_coerce_range(sexp* x, r_ssize offset,
-                             sexp* y, r_ssize from, r_ssize to) {
+void r_vec_poke_coerce_range(r_obj* x, r_ssize offset,
+                             r_obj* y, r_ssize from, r_ssize to) {
   r_vec_poke_coerce_n(x, offset, y, from, to - from + 1);
 }

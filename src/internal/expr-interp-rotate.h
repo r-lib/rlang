@@ -27,12 +27,12 @@ static inline bool op_needs_fixup(enum r_operator op) {
   }
 }
 
-static inline bool is_problematic_op(sexp* x) {
+static inline bool is_problematic_op(r_obj* x) {
   return op_needs_fixup(r_which_operator(x));
 }
 
-sexp* fixup_interp(sexp* x, sexp* env);
-sexp* fixup_interp_first(sexp* x, sexp* env);
+r_obj* fixup_interp(r_obj* x, r_obj* env);
+r_obj* fixup_interp_first(r_obj* x, r_obj* env);
 
 
 #endif

@@ -3,7 +3,7 @@
 
 
 struct r_dyn_list_of {
-  sexp* shelter;
+  r_obj* shelter;
   r_ssize count;
   r_ssize capacity;
   int growth_factor;
@@ -18,13 +18,13 @@ struct r_dyn_list_of {
   enum r_type type;
   r_ssize elt_byte_size;
 
-  sexp* reserve;
+  r_obj* reserve;
   void* v_reserve;
 
   struct r_dyn_array* p_moved_arr;
   struct r_dyn_array* p_moved_shelter_arr;
 
-  sexp* arr_locs;
+  r_obj* arr_locs;
   r_ssize* v_arr_locs;
 
   struct r_dyn_array* p_arrays;
@@ -34,7 +34,7 @@ struct r_dyn_list_of* r_new_dyn_list_of(enum r_type type,
                                         r_ssize capacity,
                                         r_ssize width);
 
-sexp* r_lof_unwrap(struct r_dyn_list_of* p_lof);
+r_obj* r_lof_unwrap(struct r_dyn_list_of* p_lof);
 
 void r_lof_push_back(struct r_dyn_list_of* p_lof);
 

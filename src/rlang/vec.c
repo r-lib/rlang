@@ -3,8 +3,8 @@
 #include <stdint.h>
 
 
-sexp* r_chr_n(const char* const * strings, r_ssize n) {
-  sexp* out = KEEP(r_alloc_character(n));
+r_obj* r_chr_n(const char* const * strings, r_ssize n) {
+  r_obj* out = KEEP(r_alloc_character(n));
 
   for (r_ssize i = 0; i < n; ++i) {
     r_chr_poke(out, i, r_str(strings[i]));
@@ -34,7 +34,7 @@ sexp* r_chr_n(const char* const * strings, r_ssize n) {
     }                                                           \
                                                                 \
     const C_TYPE* p_x = CONST_DEREF(x);                         \
-    sexp* out = KEEP(r_alloc_vector(R_TYPE, size));               \
+    r_obj* out = KEEP(r_alloc_vector(R_TYPE, size));            \
     C_TYPE* p_out = DEREF(out);                                 \
                                                                 \
     r_ssize cpy_size = (size > x_size) ? x_size : size;         \
@@ -57,8 +57,8 @@ sexp* r_chr_n(const char* const * strings, r_ssize n) {
       return x;                                                 \
     }                                                           \
                                                                 \
-    sexp* const * p_x = CONST_DEREF(x);                         \
-    sexp* out = KEEP(r_alloc_vector(R_TYPE, size));               \
+    r_obj* const * p_x = CONST_DEREF(x);                        \
+    r_obj* out = KEEP(r_alloc_vector(R_TYPE, size));            \
                                                                 \
     r_ssize cpy_size = (size > x_size) ? x_size : size;         \
     for (r_ssize i = 0; i < cpy_size; ++i) {                    \
@@ -71,25 +71,25 @@ sexp* r_chr_n(const char* const * strings, r_ssize n) {
 
 // Compared to `Rf_xlengthgets()` this does not initialise the new
 // extended locations with `NA`
-sexp* r_lgl_resize(sexp* x, r_ssize size) {
+r_obj* r_lgl_resize(r_obj* x, r_ssize size) {
   RESIZE(R_TYPE_logical, int, r_lgl_deref_const, r_lgl_deref);
 }
-sexp* r_int_resize(sexp* x, r_ssize size) {
+r_obj* r_int_resize(r_obj* x, r_ssize size) {
   RESIZE(R_TYPE_integer, int, r_int_deref_const, r_int_deref);
 }
-sexp* r_dbl_resize(sexp* x, r_ssize size) {
+r_obj* r_dbl_resize(r_obj* x, r_ssize size) {
   RESIZE(R_TYPE_double, double, r_dbl_deref_const, r_dbl_deref);
 }
-sexp* r_cpl_resize(sexp* x, r_ssize size) {
+r_obj* r_cpl_resize(r_obj* x, r_ssize size) {
   RESIZE(R_TYPE_complex, r_complex_t, r_cpl_deref_const, r_cpl_deref);
 }
-sexp* r_raw_resize(sexp* x, r_ssize size) {
+r_obj* r_raw_resize(r_obj* x, r_ssize size) {
   RESIZE(R_TYPE_raw, unsigned char, r_raw_deref_const, r_raw_deref);
 }
-sexp* r_chr_resize(sexp* x, r_ssize size) {
+r_obj* r_chr_resize(r_obj* x, r_ssize size) {
   RESIZE_BARRIER(R_TYPE_character, r_chr_deref_const, r_chr_poke);
 }
-sexp* r_list_resize(sexp* x, r_ssize size) {
+r_obj* r_list_resize(r_obj* x, r_ssize size) {
   RESIZE_BARRIER(R_TYPE_list, r_list_deref_const, r_list_poke);
 }
 
@@ -97,12 +97,12 @@ sexp* r_list_resize(sexp* x, r_ssize size) {
 #undef RESIZE_BARRIER
 
 
-sexp* r_list_compact(sexp* x) {
+r_obj* r_list_compact(r_obj* x) {
   r_ssize n = r_length(x);
-  sexp* inc = KEEP(r_alloc_logical(n));
+  r_obj* inc = KEEP(r_alloc_logical(n));
 
   int* v_inc = r_int_deref(inc);
-  sexp* const * v_x = r_list_deref_const(x);
+  r_obj* const * v_x = r_list_deref_const(x);
 
   r_ssize new_n = 0;
   for (r_ssize i = 0; i < n; ++i) {
@@ -110,7 +110,7 @@ sexp* r_list_compact(sexp* x) {
     new_n += v_inc[i];
   }
 
-  sexp* out = KEEP(r_alloc_list(new_n));
+  r_obj* out = KEEP(r_alloc_list(new_n));
   for (r_ssize i = 0, count = 0; i < n; ++i) {
     if (v_inc[i]) {
       r_list_poke(out, count, v_x[i]);
@@ -122,21 +122,21 @@ sexp* r_list_compact(sexp* x) {
   return out;
 }
 
-sexp* r_list_of_as_ptr_ssize(sexp* xs,
-                             enum r_type type,
-                             struct r_pair_ptr_ssize** p_v_out) {
+r_obj* r_list_of_as_ptr_ssize(r_obj* xs,
+                              enum r_type type,
+                              struct r_pair_ptr_ssize** p_v_out) {
   if (r_typeof(xs) != R_TYPE_list) {
     r_abort("`xs` must be a list.");
   }
   r_ssize n = r_length(xs);
 
-  sexp* shelter = KEEP(r_alloc_raw(sizeof(struct r_pair_ptr_ssize) * n));
+  r_obj* shelter = KEEP(r_alloc_raw(sizeof(struct r_pair_ptr_ssize) * n));
   struct r_pair_ptr_ssize* v_out = r_raw_deref(shelter);
 
-  sexp* const * v_xs = r_list_deref_const(xs);
+  r_obj* const * v_xs = r_list_deref_const(xs);
 
   for (r_ssize i = 0; i < n; ++i) {
-    sexp* x = v_xs[i];
+    r_obj* x = v_xs[i];
     if (r_typeof(x) != type) {
       r_abort("`xs` must be a list of vectors of type `%s`.",
               r_type_as_c_string(type));
@@ -155,8 +155,8 @@ sexp* r_list_of_as_ptr_ssize(sexp* xs,
 
 
 // FIXME: Does this have a place in the library?
-void r_vec_poke_n(sexp* x, r_ssize offset,
-                  sexp* y, r_ssize from, r_ssize n) {
+void r_vec_poke_n(r_obj* x, r_ssize offset,
+                  r_obj* y, r_ssize from, r_ssize n) {
 
   if ((r_length(x) - offset) < n) {
     r_abort("Can't copy data to `x` because it is too small");
@@ -202,7 +202,7 @@ void r_vec_poke_n(sexp* x, r_ssize offset,
     break;
   }
   case R_TYPE_character: {
-    sexp* elt;
+    r_obj* elt;
     for (r_ssize i = 0; i != n; ++i) {
       elt = r_chr_get(y, i + from);
       r_chr_poke(x, i + offset, elt);
@@ -210,7 +210,7 @@ void r_vec_poke_n(sexp* x, r_ssize offset,
     break;
   }
   case R_TYPE_list: {
-    sexp* elt;
+    r_obj* elt;
     for (r_ssize i = 0; i != n; ++i) {
       elt = r_list_get(y, i + from);
       r_list_poke(x, i + offset, elt);
@@ -222,7 +222,7 @@ void r_vec_poke_n(sexp* x, r_ssize offset,
   }
 }
 
-void r_vec_poke_range(sexp* x, r_ssize offset,
-                      sexp* y, r_ssize from, r_ssize to) {
+void r_vec_poke_range(r_obj* x, r_ssize offset,
+                      r_obj* y, r_ssize from, r_ssize to) {
   r_vec_poke_n(x, offset, y, from, to - from + 1);
 }

@@ -1,8 +1,8 @@
 static
-sexp* new_precious_stack(sexp* x);
+r_obj* new_precious_stack(r_obj* x);
 
 static
-int push_precious(sexp* stack);
+int push_precious(r_obj* stack);
 
 static
-int pop_precious(sexp* stack);
+int pop_precious(r_obj* stack);

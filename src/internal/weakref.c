@@ -1,27 +1,27 @@
 #include <R.h>
 #include <Rdefines.h>
 
-sexp* rlang_new_weakref(sexp* key, sexp* value, sexp* finalizer, sexp* on_quit) {
+r_obj* rlang_new_weakref(r_obj* key, r_obj* value, r_obj* finalizer, r_obj* on_quit) {
   if (r_typeof(key) != ENVSXP && r_typeof(key) != EXTPTRSXP) {
     r_abort("`key` must be an environment or external pointer");
   }
   return R_MakeWeakRef(key, value, finalizer, r_lgl_deref(on_quit)[0]);
 }
 
-sexp* rlang_wref_key(sexp* x) {
+r_obj* rlang_wref_key(r_obj* x) {
   if (r_typeof(x) != WEAKREFSXP) {
     r_abort("`x` must be a weak reference object");
   }
   return R_WeakRefKey(x);
 }
 
-sexp* rlang_wref_value(sexp* x) {
+r_obj* rlang_wref_value(r_obj* x) {
   if (r_typeof(x) != WEAKREFSXP) {
     r_abort("`x` must be a weak reference object");
   }
   return R_WeakRefValue(x);
 }
 
-sexp* rlang_is_weakref(sexp* x) {
+r_obj* rlang_is_weakref(r_obj* x) {
   return Rf_ScalarLogical(r_typeof(x) == WEAKREFSXP);
 }

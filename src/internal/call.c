@@ -2,7 +2,7 @@
 #include "internal.h"
 
 
-static bool is_callable(sexp* x) {
+static bool is_callable(r_obj* x) {
   switch (r_typeof(x)) {
   case R_TYPE_symbol:
   case R_TYPE_call:
@@ -15,7 +15,7 @@ static bool is_callable(sexp* x) {
   }
 }
 
-sexp* rlang_call2(sexp* fn, sexp* args, sexp* ns) {
+r_obj* rlang_call2(r_obj* fn, r_obj* args, r_obj* ns) {
   if (r_typeof(fn) == R_TYPE_character) {
     if (r_length(fn) != 1) {
       r_abort("`.fn` must be a string, a symbol, a call, or a function");
@@ -38,20 +38,20 @@ sexp* rlang_call2(sexp* fn, sexp* args, sexp* ns) {
     fn = KEEP_N(r_call3(r_syms.colon2, ns, fn), &n_kept);
   }
 
-  sexp* out = r_new_call(fn, args);
+  r_obj* out = r_new_call(fn, args);
 
   FREE(n_kept);
   return out;
 }
 
-sexp* rlang_ext2_call2(sexp* call, sexp* op, sexp* args, sexp* env) {
+r_obj* rlang_ext2_call2(r_obj* call, r_obj* op, r_obj* args, r_obj* env) {
   args = r_node_cdr(args);
 
-  sexp* fn = KEEP(r_eval(r_sym(".fn"), env));
-  sexp* ns = KEEP(r_eval(r_sym(".ns"), env));
-  sexp* dots = KEEP(rlang_dots(env));
+  r_obj* fn = KEEP(r_eval(r_sym(".fn"), env));
+  r_obj* ns = KEEP(r_eval(r_sym(".ns"), env));
+  r_obj* dots = KEEP(rlang_dots(env));
 
-  sexp* out = rlang_call2(fn, dots, ns);
+  r_obj* out = rlang_call2(fn, dots, ns);
 
   FREE(3);
   return out;
