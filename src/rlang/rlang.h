@@ -15,7 +15,9 @@
  * `__USE_MINGW_ANSI_STDIO` macro for us.
  * https://osdn.net/projects/mingw/lists/archive/users/2019-January/000199.html
  */
+#ifndef _ISOC99_SOURCE
 #define _ISOC99_SOURCE
+#endif
 #include <stdio.h>
 
 #define R_NO_REMAP
