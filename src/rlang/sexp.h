@@ -1,5 +1,5 @@
-#ifndef RLANG_SEXP_H
-#define RLANG_SEXP_H
+#ifndef RLANG_OBJ_H
+#define RLANG_OBJ_H
 
 #define r_missing_arg R_MissingArg
 
@@ -95,7 +95,7 @@ bool r_is_symbolic(r_obj* x) {
 }
 
 static inline
-void r_sexp_print(r_obj* x) {
+void r_obj_print(r_obj* x) {
   Rf_PrintValue(x);
 }
 
@@ -106,6 +106,6 @@ bool r_is_identical(r_obj* x, r_obj* y) {
   return R_compute_identical(x, y, 16);
 }
 
-r_obj* r_sexp_address(r_obj* x);
+r_obj* r_obj_address(r_obj* x);
 
 #endif

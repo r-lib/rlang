@@ -630,7 +630,7 @@ r_obj* rlang_duplicate(r_obj* x, r_obj* shallow) {
 }
 
 r_obj* rlang_sexp_address(r_obj* x) {
-  return r_str_as_character(r_sexp_address(x));
+  return r_str_as_character(r_obj_address(x));
 }
 
 r_obj* rlang_poke_type(r_obj* x, r_obj* type) {
@@ -974,7 +974,7 @@ r_obj* ffi_sexp_iterate(r_obj* x, r_obj* fn) {
 
     struct r_pair args[] = {
       { r_sym("x"), KEEP(protect_missing(x)) },
-      { r_sym("addr"), KEEP(r_str_as_character(r_sexp_address(x))) },
+      { r_sym("addr"), KEEP(r_str_as_character(r_obj_address(x))) },
       { r_sym("type"), KEEP(protect_missing(parent)) },
       { r_sym("depth"), KEEP(r_type_as_character(type)) },
       { r_sym("parent"), KEEP(r_int(depth)) },

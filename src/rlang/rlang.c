@@ -67,7 +67,7 @@ void r_init_library_fn();
 void r_init_library_globals();
 void r_init_library_globals_syms();
 void r_init_library_session();
-void r_init_library_sexp(r_obj*);
+void r_init_library_obj(r_obj*);
 void r_init_library_stack();
 void r_init_library_vendor();
 
@@ -88,7 +88,7 @@ r_obj* r_init_library(r_obj* ns) {
   // Need to be first
   r_init_library_vendor(); // Needed for xxh used in `r_preserve()`
   r_init_library_globals_syms();
-  r_init_library_sexp(ns);
+  r_init_library_obj(ns);
   r_init_library_globals();
 
   r_init_rlang_ns_env();

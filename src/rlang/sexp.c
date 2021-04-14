@@ -78,15 +78,15 @@ enum r_type r_chr_as_r_type(r_obj* type) {
   return r_c_str_as_r_type(r_chr_get_c_string(type, 0));
 }
 
-const char* sexp_address_formatter = "%p";
+const char* obj_address_formatter = "%p";
 
-r_obj* r_sexp_address(r_obj* x) {
+r_obj* r_obj_address(r_obj* x) {
   static char buf[1000];
-  snprintf(buf, 1000, sexp_address_formatter, (void*) x);
+  snprintf(buf, 1000, obj_address_formatter, (void*) x);
   return Rf_mkChar(buf);
 }
 
-void r_init_library_sexp(r_obj* ns) {
+void r_init_library_obj(r_obj* ns) {
   p_precious_dict = r_new_dict(PRECIOUS_DICT_INIT_SIZE);
   KEEP(p_precious_dict->shelter);
   r_env_poke(ns,
@@ -94,8 +94,8 @@ void r_init_library_sexp(r_obj* ns) {
              p_precious_dict->shelter);
   FREE(1);
 
-  const char* null_addr = r_str_c_string(r_sexp_address(r_null));
+  const char* null_addr = r_str_c_string(r_obj_address(r_null));
   if (null_addr[0] != '0' || null_addr[1] != 'x') {
-    sexp_address_formatter = "0x%p";
+    obj_address_formatter = "0x%p";
   }
 }

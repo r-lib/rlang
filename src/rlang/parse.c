@@ -4,7 +4,7 @@
 
 static void abort_parse(r_obj* code, const char* why) {
   if (r_peek_option("rlang__verbose_errors") != r_null) {
-    r_sexp_print(code);
+    r_obj_print(code);
   }
   r_abort("Internal error: %s", why);
 }

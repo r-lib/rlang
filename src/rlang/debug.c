@@ -11,7 +11,7 @@ void r_browse(r_obj* x) {
   r_env_poke(r_global_env, r_sym(".debug"), x);
 
   r_printf("Object saved in `.debug`:\n");
-  r_sexp_print(x);
+  r_obj_print(x);
 
   r_obj* frame = KEEP(r_peek_frame());
   r_browse_at(frame);
