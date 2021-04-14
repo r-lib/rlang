@@ -11,10 +11,10 @@
 #define r_call4 Rf_lang4
 #define r_call5 Rf_lang5
 
-bool r_is_call(sexp* x, const char* name);
-bool r_is_call_any(sexp* x, const char** names, int n);
+bool r_is_call(r_obj* x, const char* name);
+bool r_is_call_any(r_obj* x, const char** names, int n);
 
-sexp* r_expr_protect(sexp* x);
+r_obj* r_expr_protect(r_obj* x);
 
 
 #endif

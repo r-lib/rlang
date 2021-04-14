@@ -1,7 +1,7 @@
 #include <string.h>
 #include "rlang.h"
 
-sexp* rlang_raw_deparse_str(sexp* x, sexp* prefix, sexp* suffix) {
+r_obj* rlang_raw_deparse_str(r_obj* x, r_obj* prefix, r_obj* suffix) {
   if (r_typeof(x) != R_TYPE_raw) {
     r_abort("`x` must be a raw vector.");
   }
@@ -30,7 +30,7 @@ sexp* rlang_raw_deparse_str(sexp* x, sexp* prefix, sexp* suffix) {
 
   r_ssize len = len_prefix + (2 * len_data) + len_suffix;
 
-  sexp* buf = KEEP(r_alloc_raw(len));
+  r_obj* buf = KEEP(r_alloc_raw(len));
   char* p_buf = (char*) r_raw_deref(buf);
 
   memcpy(p_buf, s_prefix, len_prefix);
@@ -49,8 +49,8 @@ sexp* rlang_raw_deparse_str(sexp* x, sexp* prefix, sexp* suffix) {
 
   // Invariant: p_buf == r_raw_deref(buf) + len
 
-  sexp* chr_out = KEEP(Rf_mkCharLenCE((char*) r_raw_deref(buf), len, CE_UTF8));
-  sexp* out = KEEP(r_str_as_character(chr_out));
+  r_obj* chr_out = KEEP(Rf_mkCharLenCE((char*) r_raw_deref(buf), len, CE_UTF8));
+  r_obj* out = KEEP(r_str_as_character(chr_out));
 
   FREE(3);
   return(out);

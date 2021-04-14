@@ -1,7 +1,7 @@
 #include "rlang.h"
 
-sexp* r_attrib_push(sexp* x, sexp* tag, sexp* value) {
-  sexp* attrs = r_new_node(value, r_attrib(x));
+r_obj* r_attrib_push(r_obj* x, r_obj* tag, r_obj* value) {
+  r_obj* attrs = r_new_node(value, r_attrib(x));
   r_node_poke_tag(attrs, tag);
   r_poke_attrib(x, attrs);
   return attrs;
@@ -14,9 +14,9 @@ sexp* r_attrib_push(sexp* x, sexp* tag, sexp* value) {
  * - If `sentinel` is `r_null`, this is like a full shallow duplication
  *   but returns tail node
  */
-sexp* r_pairlist_clone_until(sexp* node, sexp* sentinel, sexp** parent_out) {
-  sexp* parent = r_null;
-  sexp* cur = node;
+r_obj* r_pairlist_clone_until(r_obj* node, r_obj* sentinel, r_obj** parent_out) {
+  r_obj* parent = r_null;
+  r_obj* cur = node;
   int n_kept = 0;
 
   while (true) {
@@ -32,7 +32,7 @@ sexp* r_pairlist_clone_until(sexp* node, sexp* sentinel, sexp** parent_out) {
       return r_null;
     }
 
-    sexp* tag = r_node_tag(cur);
+    r_obj* tag = r_node_tag(cur);
     cur = r_new_node(r_node_car(cur), r_node_cdr(cur));
     r_node_poke_tag(cur, tag);
 
@@ -51,9 +51,9 @@ sexp* r_pairlist_clone_until(sexp* node, sexp* sentinel, sexp** parent_out) {
 }
 
 
-sexp* r_attrs_set_at(sexp* attrs, sexp* node, sexp* value) {
-  sexp* sentinel = r_node_cdr(node);
-  sexp* new_node = r_null;
+r_obj* r_attrs_set_at(r_obj* attrs, r_obj* node, r_obj* value) {
+  r_obj* sentinel = r_node_cdr(node);
+  r_obj* new_node = r_null;
 
   attrs = KEEP(r_pairlist_clone_until(attrs, sentinel, &new_node));
   r_node_poke_car(new_node, value);
@@ -61,9 +61,9 @@ sexp* r_attrs_set_at(sexp* attrs, sexp* node, sexp* value) {
   FREE(1);
   return attrs;
 }
-sexp* r_attrs_zap_at(sexp* attrs, sexp* node, sexp* value) {
-  sexp* sentinel = node;
-  sexp* new_node = r_null;
+r_obj* r_attrs_zap_at(r_obj* attrs, r_obj* node, r_obj* value) {
+  r_obj* sentinel = node;
+  r_obj* new_node = r_null;
 
   attrs = KEEP(r_pairlist_clone_until(attrs, sentinel, &new_node));
 
@@ -77,23 +77,23 @@ sexp* r_attrs_zap_at(sexp* attrs, sexp* node, sexp* value) {
   FREE(1);
   return attrs;
 }
-sexp* r_clone2(sexp* x) {
-  sexp* attrs = r_attrib(x);
+r_obj* r_clone2(r_obj* x) {
+  r_obj* attrs = r_attrib(x);
 
   // Prevent attributes from being cloned
   r_poke_attrib(x, r_null);
-  sexp* out = r_clone(x);
+  r_obj* out = r_clone(x);
   r_poke_attrib(x, attrs);
   r_poke_attrib(out, attrs);
 
   return out;
 }
 
-sexp* r_attrib_set(sexp* x, sexp* tag, sexp* value) {
-  sexp* attrs = r_attrib(x);
-  sexp* out = KEEP(r_clone2(x));
+r_obj* r_attrib_set(r_obj* x, r_obj* tag, r_obj* value) {
+  r_obj* attrs = r_attrib(x);
+  r_obj* out = KEEP(r_clone2(x));
 
-  sexp* node = attrs;
+  r_obj* node = attrs;
   while (node != r_null) {
     if (r_node_tag(node) == tag) {
       if (value == r_null) {
@@ -131,29 +131,29 @@ sexp* r_attrib_set(sexp* x, sexp* tag, sexp* value) {
 
 // Caller must poke the object bit
 static
-sexp* node_push_classes(sexp* node, const char** tags, r_ssize n) {
-  sexp* tags_chr = KEEP(r_chr_n(tags, n));
-  sexp* attrs = r_new_node(tags_chr, node);
+r_obj* node_push_classes(r_obj* node, const char** tags, r_ssize n) {
+  r_obj* tags_chr = KEEP(r_chr_n(tags, n));
+  r_obj* attrs = r_new_node(tags_chr, node);
   r_node_poke_tag(attrs, r_syms.class);
 
   FREE(1);
   return attrs;
 }
 
-void r_attrib_push_classes(sexp* x, const char** tags, r_ssize n) {
-  sexp* attrs = r_attrib(x);
+void r_attrib_push_classes(r_obj* x, const char** tags, r_ssize n) {
+  r_obj* attrs = r_attrib(x);
   attrs = node_push_classes(attrs, tags, n);
   SET_ATTRIB(x, attrs);
   SET_OBJECT(x, 1);
 }
-void r_attrib_push_class(sexp* x, const char* tag) {
+void r_attrib_push_class(r_obj* x, const char* tag) {
   static const char* tags[1] = { "" };
   tags[0] = tag;
   r_attrib_push_classes(x, tags, 1);
 }
 
-bool r_is_named(sexp* x) {
-  sexp* nms = r_names(x);
+bool r_is_named(r_obj* x) {
+  r_obj* nms = r_names(x);
 
   if (r_typeof(nms) != R_TYPE_character) {
     return false;

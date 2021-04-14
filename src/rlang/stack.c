@@ -1,36 +1,36 @@
 #include "rlang.h"
 
-sexp* rlang_ns_get(const char* name);
+r_obj* rlang_ns_get(const char* name);
 
 
-void r_on_exit(sexp* expr, sexp* frame) {
-  static sexp* on_exit_prim = NULL;
+void r_on_exit(r_obj* expr, r_obj* frame) {
+  static r_obj* on_exit_prim = NULL;
   if (!on_exit_prim) {
     on_exit_prim = r_base_ns_get("on.exit");
   }
 
-  sexp* args = r_pairlist2(expr, r_lgl(1));
-  sexp* lang = KEEP(r_new_call(on_exit_prim, args));
+  r_obj* args = r_pairlist2(expr, r_lgl(1));
+  r_obj* lang = KEEP(r_new_call(on_exit_prim, args));
 
   r_eval(lang, frame);
   FREE(1);
 }
 
 
-static sexp* current_frame_call = NULL;
+static r_obj* current_frame_call = NULL;
 
-sexp* r_peek_frame() {
+r_obj* r_peek_frame() {
   return r_eval(current_frame_call, r_empty_env);
 }
 
 
-static sexp* sys_frame_call = NULL;
-static sexp* sys_call_call = NULL;
+static r_obj* sys_frame_call = NULL;
+static r_obj* sys_call_call = NULL;
 
 static int* sys_frame_n_addr = NULL;
 static int* sys_call_n_addr = NULL;
 
-sexp* r_sys_frame(int n, sexp* frame) {
+r_obj* r_sys_frame(int n, r_obj* frame) {
   int n_kept = 0;
   if (!frame) {
     frame = r_peek_frame();
@@ -43,7 +43,7 @@ sexp* r_sys_frame(int n, sexp* frame) {
   FREE(n_kept);
   return value;
 }
-sexp* r_sys_call(int n, sexp* frame) {
+r_obj* r_sys_call(int n, r_obj* frame) {
   int n_kept = 0;
   if (!frame) {
     frame = r_peek_frame();
@@ -58,12 +58,12 @@ sexp* r_sys_call(int n, sexp* frame) {
 }
 
 
-static sexp* generate_sys_call(const char* name, int** n_addr) {
-  sexp* sys_n = KEEP(r_int(0));
+static r_obj* generate_sys_call(const char* name, int** n_addr) {
+  r_obj* sys_n = KEEP(r_int(0));
   *n_addr = r_int_deref(sys_n);
 
-  sexp* sys_args = KEEP(r_new_node(sys_n, r_null));
-  sexp* sys_call = KEEP(r_new_call(r_base_ns_get(name), sys_args));
+  r_obj* sys_args = KEEP(r_new_node(sys_n, r_null));
+  r_obj* sys_call = KEEP(r_new_call(r_base_ns_get(name), sys_args));
   r_preserve(sys_call);
 
   FREE(3);
@@ -71,8 +71,8 @@ static sexp* generate_sys_call(const char* name, int** n_addr) {
 }
 
 void r_init_library_stack() {
-  sexp* current_frame_body = KEEP(r_parse_eval("as.call(list(sys.frame, -1))", r_base_env));
-  sexp* current_frame_fn = KEEP(r_new_function(r_null, current_frame_body, r_empty_env));
+  r_obj* current_frame_body = KEEP(r_parse_eval("as.call(list(sys.frame, -1))", r_base_env));
+  r_obj* current_frame_fn = KEEP(r_new_function(r_null, current_frame_body, r_empty_env));
   current_frame_call = r_new_call(current_frame_fn, r_null);
   r_preserve(current_frame_call);
   FREE(2);

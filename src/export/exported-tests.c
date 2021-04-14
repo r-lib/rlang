@@ -1,18 +1,18 @@
 #include <rlang.h>
 
-sexp* rlang_r_string(sexp* str) {
+r_obj* rlang_r_string(r_obj* str) {
   return r_chr_get(str, 0);
 }
 
 
 // attrib.c
 
-sexp* r_pairlist_clone_until(sexp* node, sexp* sentinel, sexp** parent_out);
-sexp* rlang_test_node_list_clone_until(sexp* node, sexp* sentinel) {
-  sexp* sentinel_out;
+r_obj* r_pairlist_clone_until(r_obj* node, r_obj* sentinel, r_obj** parent_out);
+r_obj* rlang_test_node_list_clone_until(r_obj* node, r_obj* sentinel) {
+  r_obj* sentinel_out;
   node = KEEP(r_pairlist_clone_until(node, sentinel, &sentinel_out));
 
-  sexp* out = r_alloc_list(2);
+  r_obj* out = r_alloc_list(2);
   r_list_poke(out, 0, node);
   r_list_poke(out, 1, sentinel_out);
 
@@ -23,16 +23,16 @@ sexp* rlang_test_node_list_clone_until(sexp* node, sexp* sentinel) {
 
 // cnd.c
 
-sexp* rlang_test_r_warn(sexp* x) {
+r_obj* rlang_test_r_warn(r_obj* x) {
   r_warn(r_chr_get_c_string(x, 0));
   return r_null;
 }
 
-sexp* rlang_test_Rf_warningcall(sexp* call, sexp* msg) {
+r_obj* rlang_test_Rf_warningcall(r_obj* call, r_obj* msg) {
   Rf_warningcall(call, r_chr_get_c_string(msg, 0));
   return r_null;
 }
-sexp* rlang_test_Rf_errorcall(sexp* call, sexp* msg) {
+r_obj* rlang_test_Rf_errorcall(r_obj* call, r_obj* msg) {
   Rf_errorcall(call, r_chr_get_c_string(msg, 0));
   return r_null;
 }
@@ -40,52 +40,52 @@ sexp* rlang_test_Rf_errorcall(sexp* call, sexp* msg) {
 
 // env.c
 
-sexp* rlang_test_base_ns_get(sexp* name) {
+r_obj* rlang_test_base_ns_get(r_obj* name) {
   return r_base_ns_get(r_chr_get_c_string(name, 0));
 }
 
 
 // vec-lgl.c
 
-sexp* rlang_test_lgl_sum(sexp* x, sexp* na_true) {
+r_obj* rlang_test_lgl_sum(r_obj* x, r_obj* na_true) {
   return r_int(r_lgl_sum(x, r_lgl_get(na_true, 0)));
 }
-sexp* rlang_test_lgl_which(sexp* x, sexp* na_true) {
+r_obj* rlang_test_lgl_which(r_obj* x, r_obj* na_true) {
   return r_lgl_which(x, r_lgl_get(na_true, 0));
 }
 
 
 // parse.c
 
-sexp* rlang_test_parse(sexp* str) {
+r_obj* rlang_test_parse(r_obj* str) {
   return r_parse(r_chr_get_c_string(str, 0));
 }
-sexp* rlang_test_parse_eval(sexp* str, sexp* env) {
+r_obj* rlang_test_parse_eval(r_obj* str, r_obj* env) {
   return r_parse_eval(r_chr_get_c_string(str, 0), env);
 }
 
 
 // squash.c
 
-bool rlang_is_clevel_spliceable(sexp* x) {
+bool rlang_is_clevel_spliceable(r_obj* x) {
   return Rf_inherits(x, "foo");
 }
 
 
 // stack.c
 
-sexp* rlang_test_sys_call(sexp* n) {
+r_obj* rlang_test_sys_call(r_obj* n) {
   return r_sys_call(r_int_get(n, 0), NULL);
 }
-sexp* rlang_test_sys_frame(sexp* n) {
+r_obj* rlang_test_sys_frame(r_obj* n) {
   return r_sys_frame(r_int_get(n, 0), NULL);
 }
 
 
 // internals/utils.c
 
-sexp* nms_are_duplicated(sexp* nms, bool from_last);
+r_obj* nms_are_duplicated(r_obj* nms, bool from_last);
 
-sexp* rlang_test_nms_are_duplicated(sexp* nms, sexp* from_last) {
+r_obj* rlang_test_nms_are_duplicated(r_obj* nms, r_obj* from_last) {
   return nms_are_duplicated(nms, r_lgl_get(from_last, 0));
 }

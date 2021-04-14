@@ -4,14 +4,14 @@
 #include "utils.h"
 
 
-struct expansion_info which_bang_op(sexp* second, struct expansion_info info);
-struct expansion_info which_curly_op(sexp* second, struct expansion_info info);
+struct expansion_info which_bang_op(r_obj* second, struct expansion_info info);
+struct expansion_info which_curly_op(r_obj* second, struct expansion_info info);
 
-struct expansion_info which_uq_op(sexp* first) {
+struct expansion_info which_uq_op(r_obj* first) {
   struct expansion_info info = init_expansion_info();
 
   if (r_is_call(first, "(")) {
-    sexp* paren = r_node_cadr(first);
+    r_obj* paren = r_node_cadr(first);
     if (r_is_call(paren, "(")) {
       return info;
     }
@@ -32,7 +32,7 @@ struct expansion_info which_uq_op(sexp* first) {
     return info;
   }
 
-  sexp* head = r_node_car(first);
+  r_obj* head = r_node_car(first);
 
   if (r_typeof(head) != R_TYPE_symbol) {
     return info;
@@ -49,12 +49,12 @@ struct expansion_info which_uq_op(sexp* first) {
   }
 }
 
-struct expansion_info which_bang_op(sexp* second, struct expansion_info info) {
+struct expansion_info which_bang_op(r_obj* second, struct expansion_info info) {
   if (!r_is_call(second, "!")) {
     return info;
   }
 
-  sexp* third = r_node_cadr(second);
+  r_obj* third = r_node_cadr(second);
 
   // Need to fill in `info` for `!!` because parse tree might need changes
   if (!r_is_call(third, "!")) {
@@ -73,7 +73,7 @@ struct expansion_info which_bang_op(sexp* second, struct expansion_info info) {
   info.operand = r_node_cadr(third);
   return info;
 }
-struct expansion_info which_curly_op(sexp* second, struct expansion_info info) {
+struct expansion_info which_curly_op(r_obj* second, struct expansion_info info) {
   if (!r_is_call(second, "{")) {
     return info;
   }
@@ -134,7 +134,7 @@ void signal_namespaced_uqs_deprecation() {
   );
 }
 
-void maybe_poke_big_bang_op(sexp* x, struct expansion_info* info) {
+void maybe_poke_big_bang_op(r_obj* x, struct expansion_info* info) {
   if (r_is_call(x, "!!!")) {
     if (r_node_cddr(x) != r_null) {
       r_abort("Can't supply multiple arguments to `!!!`");
@@ -162,9 +162,9 @@ void maybe_poke_big_bang_op(sexp* x, struct expansion_info* info) {
   }
 }
 
-static sexp* dot_data_sym = NULL;
+static r_obj* dot_data_sym = NULL;
 
-struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
+struct expansion_info which_expansion_op(r_obj* x, bool unquote_names) {
   struct expansion_info info = which_uq_op(x);
 
   if (r_typeof(x) != R_TYPE_call) {
@@ -250,7 +250,7 @@ struct expansion_info which_expansion_op(sexp* x, bool unquote_names) {
   return info;
 }
 
-struct expansion_info is_big_bang_op(sexp* x) {
+struct expansion_info is_big_bang_op(r_obj* x) {
   struct expansion_info info = which_uq_op(x);
 
   if (info.op != OP_EXPAND_UQS) {
@@ -261,7 +261,7 @@ struct expansion_info is_big_bang_op(sexp* x) {
 }
 
 
-static sexp* bang_bang_teardown(sexp* value, struct expansion_info info) {
+static r_obj* bang_bang_teardown(r_obj* value, struct expansion_info info) {
   r_mark_shared(value);
 
   if (info.parent != r_null) {
@@ -274,16 +274,16 @@ static sexp* bang_bang_teardown(sexp* value, struct expansion_info info) {
     return info.root;
   }
 }
-static sexp* bang_bang(struct expansion_info info, sexp* env) {
-  sexp* value = r_eval(info.operand, env);
+static r_obj* bang_bang(struct expansion_info info, r_obj* env) {
+  r_obj* value = r_eval(info.operand, env);
   return bang_bang_teardown(value, info);
 }
 
 // From dots.c
-sexp* big_bang_coerce_pairlist(sexp* x, bool deep);
+r_obj* big_bang_coerce_pairlist(r_obj* x, bool deep);
 
-sexp* big_bang(sexp* operand, sexp* env, sexp* prev, sexp* node) {
-  sexp* value = KEEP(r_eval(operand, env));
+r_obj* big_bang(r_obj* operand, r_obj* env, r_obj* prev, r_obj* node) {
+  r_obj* value = KEEP(r_eval(operand, env));
   value = big_bang_coerce_pairlist(value, true);
 
   if (value == r_null) {
@@ -292,7 +292,7 @@ sexp* big_bang(sexp* operand, sexp* env, sexp* prev, sexp* node) {
     node = prev;
   } else {
     // Insert coerced value into existing pairlist of args
-    sexp* tail = r_pairlist_tail(value);
+    r_obj* tail = r_pairlist_tail(value);
     r_node_poke_cdr(tail, r_node_cdr(node));
     r_node_poke_cdr(prev, value);
     node = tail;
@@ -302,23 +302,23 @@ sexp* big_bang(sexp* operand, sexp* env, sexp* prev, sexp* node) {
   return node;
 }
 
-static sexp* curly_curly(struct expansion_info info, sexp* env) {
-  sexp* value = rlang_enquo(info.operand, env);
+static r_obj* curly_curly(struct expansion_info info, r_obj* env) {
+  r_obj* value = rlang_enquo(info.operand, env);
   return bang_bang_teardown(value, info);
 }
 
 
 // Defined below
-static sexp* call_list_interp(sexp* x, sexp* env);
-static sexp* node_list_interp(sexp* x, sexp* env);
-static void call_maybe_poke_string_head(sexp* call);
+static r_obj* call_list_interp(r_obj* x, r_obj* env);
+static r_obj* node_list_interp(r_obj* x, r_obj* env);
+static void call_maybe_poke_string_head(r_obj* call);
 
-sexp* call_interp(sexp* x, sexp* env)  {
+r_obj* call_interp(r_obj* x, r_obj* env)  {
   struct expansion_info info = which_expansion_op(x, false);
   return call_interp_impl(x, env, info);
 }
 
-sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
+r_obj* call_interp_impl(r_obj* x, r_obj* env, struct expansion_info info) {
   if (info.op && info.op != OP_EXPAND_FIXUP && r_node_cdr(x) == r_null) {
     r_abort("`UQ()` and `UQS()` must be called with an argument");
   }
@@ -328,7 +328,7 @@ sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
     if (r_typeof(x) != R_TYPE_call) {
       return x;
     } else {
-      sexp* out = call_list_interp(x, env);
+      r_obj* out = call_list_interp(x, env);
       call_maybe_poke_string_head(out);
       return out;
     }
@@ -337,11 +337,11 @@ sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
   case OP_EXPAND_CURLY:
     return curly_curly(info, env);
   case OP_EXPAND_DOT_DATA: {
-    sexp* out = KEEP(bang_bang(info, env));
+    r_obj* out = KEEP(bang_bang(info, env));
 
     // Replace symbols by strings
-    sexp* subscript_node = r_node_cddr(out);
-    sexp* subscript = r_node_car(subscript_node);
+    r_obj* subscript_node = r_node_cddr(out);
+    r_obj* subscript = r_node_car(subscript_node);
 
     if (rlang_is_quosure(subscript)) {
       subscript = r_node_cadr(subscript);
@@ -371,8 +371,8 @@ sexp* call_interp_impl(sexp* x, sexp* env, struct expansion_info info) {
 }
 
 // Make (!!"foo")() and "foo"() equivalent
-static void call_maybe_poke_string_head(sexp* call) {
-  sexp* head = r_node_car(call);
+static void call_maybe_poke_string_head(r_obj* call) {
+  r_obj* head = r_node_car(call);
   if (r_typeof(head) != R_TYPE_character) {
     return ;
   }
@@ -384,17 +384,17 @@ static void call_maybe_poke_string_head(sexp* call) {
   r_node_poke_car(call, r_sym(r_chr_get_c_string(head, 0)));
 }
 
-static sexp* call_list_interp(sexp* x, sexp* env) {
+static r_obj* call_list_interp(r_obj* x, r_obj* env) {
   r_node_poke_car(x, call_interp(r_node_car(x), env));
   r_node_poke_cdr(x, node_list_interp(r_node_cdr(x), env));
   return x;
 }
-static sexp* node_list_interp(sexp* node, sexp* env) {
-  sexp* prev = KEEP(r_new_node(r_null, node));
-  sexp* out = prev;
+static r_obj* node_list_interp(r_obj* node, r_obj* env) {
+  r_obj* prev = KEEP(r_new_node(r_null, node));
+  r_obj* out = prev;
 
   while (node != r_null) {
-    sexp* arg = r_node_car(node);
+    r_obj* arg = r_node_car(node);
     struct expansion_info info = which_expansion_op(arg, false);
 
     if (info.op == OP_EXPAND_UQS) {
@@ -411,7 +411,7 @@ static sexp* node_list_interp(sexp* node, sexp* env) {
   return r_node_cdr(out);
 }
 
-sexp* rlang_interp(sexp* x, sexp* env) {
+r_obj* rlang_interp(r_obj* x, r_obj* env) {
   if (!r_is_environment(env)) {
     r_abort("`env` must be an environment");
   }

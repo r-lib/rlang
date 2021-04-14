@@ -1,9 +1,9 @@
 #include "rlang.h"
 
-static sexp* quote_prim = NULL;
+static r_obj* quote_prim = NULL;
 
 
-bool r_is_call(sexp* x, const char* name) {
+bool r_is_call(r_obj* x, const char* name) {
   if (r_typeof(x) != LANGSXP) {
     return false;
   } else {
@@ -11,7 +11,7 @@ bool r_is_call(sexp* x, const char* name) {
   }
 }
 
-bool r_is_call_any(sexp* x, const char** names, int n) {
+bool r_is_call_any(r_obj* x, const char** names, int n) {
   if (r_typeof(x) != LANGSXP) {
     return false;
   } else {
@@ -19,7 +19,7 @@ bool r_is_call_any(sexp* x, const char** names, int n) {
   }
 }
 
-sexp* r_expr_protect(sexp* x) {
+r_obj* r_expr_protect(r_obj* x) {
   switch (r_typeof(x)) {
   case R_TYPE_symbol:
   case R_TYPE_call:

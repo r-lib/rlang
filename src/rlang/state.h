@@ -3,7 +3,7 @@
 
 
 static inline
-sexp* r_peek_option(const char* name) {
+r_obj* r_peek_option(const char* name) {
   return Rf_GetOption1(Rf_install(name));
 }
 

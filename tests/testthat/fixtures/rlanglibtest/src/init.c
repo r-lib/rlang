@@ -1,13 +1,13 @@
 #include "lib/rlang.h"
 
 
-extern sexp* rlanglibtest_r_quo_get_expr(sexp*);
-extern sexp* rlanglibtest_r_quo_set_expr(sexp*, sexp*);
-extern sexp* rlanglibtest_r_quo_get_env(sexp*);
-extern sexp* rlanglibtest_r_quo_set_env(sexp*, sexp*);
+extern r_obj* rlanglibtest_r_quo_get_expr(r_obj*);
+extern r_obj* rlanglibtest_r_quo_set_expr(r_obj*, r_obj*);
+extern r_obj* rlanglibtest_r_quo_get_env(r_obj*);
+extern r_obj* rlanglibtest_r_quo_set_env(r_obj*, r_obj*);
 
 
-sexp* rlanglibtest_library_load() {
+r_obj* rlanglibtest_library_load() {
   r_init_library();
   return r_null;
 }

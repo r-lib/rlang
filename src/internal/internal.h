@@ -4,30 +4,30 @@
 #include "quo.h"
 
 
-extern sexp* rlang_zap;
+extern r_obj* rlang_zap;
 
-extern sexp* rlang_as_list_call;
+extern r_obj* rlang_as_list_call;
 
-extern sexp* rlang_objs_keep;
-extern sexp* rlang_objs_trailing;
+extern r_obj* rlang_objs_keep;
+extern r_obj* rlang_objs_trailing;
 
-extern sexp* fns_function;
-extern sexp* fns_quote;
+extern r_obj* fns_function;
+extern r_obj* fns_quote;
 
-void rlang_init_internal(sexp* ns);
-sexp* rlang_ns_get(const char* name);
+void rlang_init_internal(r_obj* ns);
+r_obj* rlang_ns_get(const char* name);
 
 // From dots.c
-sexp* dots_values_node_impl(sexp* frame_env,
-                            sexp* named,
-                            sexp* ignore_empty,
-                            sexp* preserve_empty,
-                            sexp* unquote_names,
-                            sexp* homonyms,
-                            sexp* check_assign,
-                            bool splice);
+r_obj* dots_values_node_impl(r_obj* frame_env,
+                             r_obj* named,
+                             r_obj* ignore_empty,
+                             r_obj* preserve_empty,
+                             r_obj* unquote_names,
+                             r_obj* homonyms,
+                             r_obj* check_assign,
+                             bool splice);
 
-static inline sexp* rlang_dots(sexp* env) {
+static inline r_obj* rlang_dots(r_obj* env) {
   return dots_values_node_impl(env,
                                r_false,
                                rlang_objs_trailing,
@@ -38,9 +38,9 @@ static inline sexp* rlang_dots(sexp* env) {
                                true);
 }
 
-sexp* rlang_replace_na(sexp* x, sexp* replacement);
+r_obj* rlang_replace_na(r_obj* x, r_obj* replacement);
 
-sexp* rlang_as_function(sexp* x, sexp* env);
+r_obj* rlang_as_function(r_obj* x, r_obj* env);
 
 
 #endif

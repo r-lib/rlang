@@ -2,10 +2,10 @@
 #define RLANG_QUO_H
 
 
-extern sexp* (*r_quo_get_expr)(sexp* quo);
-extern sexp* (*r_quo_set_expr)(sexp* quo, sexp* expr);
-extern sexp* (*r_quo_get_env)(sexp* quo);
-extern sexp* (*r_quo_set_env)(sexp* quo, sexp* env);
+extern r_obj* (*r_quo_get_expr)(r_obj* quo);
+extern r_obj* (*r_quo_set_expr)(r_obj* quo, r_obj* expr);
+extern r_obj* (*r_quo_get_env)(r_obj* quo);
+extern r_obj* (*r_quo_set_env)(r_obj* quo, r_obj* env);
 
 
 #endif

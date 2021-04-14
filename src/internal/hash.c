@@ -59,14 +59,14 @@
 // -----------------------------------------------------------------------------
 
 struct exec_data {
-  sexp* x;
+  r_obj* x;
   XXH3_state_t* p_xx_state;
 };
 
-static sexp* hash_impl(void* p_data);
+static r_obj* hash_impl(void* p_data);
 static void hash_cleanup(void* p_data);
 
-sexp* rlang_hash(sexp* x) {
+r_obj* rlang_hash(r_obj* x) {
   XXH3_state_t* p_xx_state = XXH3_createState();
 
   struct exec_data data = {
@@ -92,9 +92,9 @@ static inline void hash_bytes(R_outpstream_t stream, void* p_input, int n);
 static inline void hash_char(R_outpstream_t stream, int input);
 
 static
-sexp* hash_impl(void* p_data) {
+r_obj* hash_impl(void* p_data) {
   struct exec_data* p_exec_data = (struct exec_data*) p_data;
-  sexp* x = p_exec_data->x;
+  r_obj* x = p_exec_data->x;
   XXH3_state_t* p_xx_state = p_exec_data->p_xx_state;
 
   XXH_errorcode err = XXH3_128bits_reset(p_xx_state);
@@ -107,8 +107,8 @@ sexp* hash_impl(void* p_data) {
   int version = hash_version();
 
   // Unused
-  sexp* (*hook)(sexp*, sexp*) = NULL;
-  sexp* hook_data = r_null;
+  r_obj* (*hook)(r_obj*, r_obj*) = NULL;
+  r_obj* hook_data = r_null;
 
   // We use the unstructured binary format, rather than XDR, as that is faster.
   // In theory it may result in different hashes on different platforms, but

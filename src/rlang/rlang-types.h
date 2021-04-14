@@ -12,7 +12,7 @@
 // symbol clashes.
 #define r_visible attribute_visible extern
 
-typedef struct SEXPREC sexp;
+typedef struct SEXPREC r_obj;
 typedef Rcomplex r_complex_t;
 
 typedef R_xlen_t r_ssize;
@@ -55,14 +55,14 @@ enum r_type {
 
 
 struct r_pair {
-  sexp* x;
-  sexp* y;
+  r_obj* x;
+  r_obj* y;
 };
 
 struct r_triple {
-  sexp* x;
-  sexp* y;
-  sexp* z;
+  r_obj* x;
+  r_obj* y;
+  r_obj* z;
 };
 
 struct r_pair_ptr_ssize {

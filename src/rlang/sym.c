@@ -5,7 +5,7 @@
 
 // In old R versions `as.name()` does not translate to native which
 // loses the encoding. This symbol constructor always translates.
-sexp* r_new_symbol(sexp* x, int* err) {
+r_obj* r_new_symbol(r_obj* x, int* err) {
   switch (r_typeof(x)) {
   case SYMSXP:
     return x;
@@ -25,7 +25,7 @@ sexp* r_new_symbol(sexp* x, int* err) {
   }}
 }
 
-bool r_is_symbol(sexp* x, const char* string) {
+bool r_is_symbol(r_obj* x, const char* string) {
   if (r_typeof(x) != SYMSXP) {
     return false;
   } else {
@@ -33,7 +33,7 @@ bool r_is_symbol(sexp* x, const char* string) {
   }
 }
 
-bool r_is_symbol_any(sexp* x, const char** strings, int n) {
+bool r_is_symbol_any(r_obj* x, const char** strings, int n) {
   if (r_typeof(x) != SYMSXP) {
     return false;
   }

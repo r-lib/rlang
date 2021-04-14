@@ -2,17 +2,17 @@
 #define RLANG_DICT_H
 
 /**
- * This is a simple hash table of `sexp*`. It is structured like R
+ * This is a simple hash table of `r_obj*`. It is structured like R
  * environments and uses xxhash for hashing.
  */
 
 
 struct r_dict {
-  sexp* shelter;
+  r_obj* shelter;
 
   /* private: */
-  sexp* buckets;
-  sexp* const * p_buckets;
+  r_obj* buckets;
+  r_obj* const * p_buckets;
 
   r_ssize n_buckets;
   r_ssize n_entries;
@@ -23,29 +23,29 @@ struct r_dict {
 
 struct r_dict* r_new_dict(r_ssize size);
 
-bool r_dict_put(struct r_dict* p_dict, sexp* key, sexp* value);
-bool r_dict_del(struct r_dict* p_dict, sexp* key);
-bool r_dict_has(struct r_dict* p_dict, sexp* key);
-sexp* r_dict_get(struct r_dict* p_dict, sexp* key);
-sexp* r_dict_get0(struct r_dict* p_dict, sexp* key);
+bool r_dict_put(struct r_dict* p_dict, r_obj* key, r_obj* value);
+bool r_dict_del(struct r_dict* p_dict, r_obj* key);
+bool r_dict_has(struct r_dict* p_dict, r_obj* key);
+r_obj* r_dict_get(struct r_dict* p_dict, r_obj* key);
+r_obj* r_dict_get0(struct r_dict* p_dict, r_obj* key);
 
 // Pass a negative size to resize by the default growth factor
 void r_dict_resize(struct r_dict* p_dict, r_ssize size);
 
-sexp* r_dict_as_df_list(struct r_dict* p_dict);
-sexp* r_dict_as_list(struct r_dict* p_dict);
+r_obj* r_dict_as_df_list(struct r_dict* p_dict);
+r_obj* r_dict_as_list(struct r_dict* p_dict);
 
 
 struct r_dict_iterator {
-  sexp* shelter;
-  sexp* key;
-  sexp* value;
+  r_obj* shelter;
+  r_obj* key;
+  r_obj* value;
 
   /* private: */
   r_ssize i;
   r_ssize n;
-  sexp* const * v_buckets;
-  sexp* node;
+  r_obj* const * v_buckets;
+  r_obj* node;
 };
 
 struct r_dict_iterator* r_new_dict_iterator(struct r_dict* p_dict);

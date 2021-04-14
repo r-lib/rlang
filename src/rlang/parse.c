@@ -2,18 +2,18 @@
 #include <R_ext/Parse.h>
 
 
-static void abort_parse(sexp* code, const char* why) {
+static void abort_parse(r_obj* code, const char* why) {
   if (r_peek_option("rlang__verbose_errors") != r_null) {
-    r_sexp_print(code);
+    r_obj_print(code);
   }
   r_abort("Internal error: %s", why);
 }
 
-sexp* r_parse(const char* str) {
-  sexp* str_ = KEEP(r_chr(str));
+r_obj* r_parse(const char* str) {
+  r_obj* str_ = KEEP(r_chr(str));
 
   ParseStatus status;
-  sexp* out = KEEP(R_ParseVector(str_, -1, &status, r_null));
+  r_obj* out = KEEP(R_ParseVector(str_, -1, &status, r_null));
   if (status != PARSE_OK) {
     abort_parse(str_, "Parsing failed");
   }
@@ -26,8 +26,8 @@ sexp* r_parse(const char* str) {
   FREE(2);
   return out;
 }
-sexp* r_parse_eval(const char* str, sexp* env) {
-  sexp* out = r_eval(KEEP(r_parse(str)), env);
+r_obj* r_parse_eval(const char* str, r_obj* env) {
+  r_obj* out = r_eval(KEEP(r_parse(str)), env);
   FREE(1);
   return out;
 }

@@ -2,7 +2,7 @@
 #include "rlang.h"
 
 
-r_ssize r_chr_detect_index(sexp* chr, const char* c_string) {
+r_ssize r_chr_detect_index(r_obj* chr, const char* c_string) {
   r_ssize n = r_length(chr);
 
   for (r_ssize i = 0; i != n; ++i) {
@@ -14,12 +14,12 @@ r_ssize r_chr_detect_index(sexp* chr, const char* c_string) {
 
   return -1;
 }
-bool r_chr_has(sexp* chr, const char* c_string) {
+bool r_chr_has(r_obj* chr, const char* c_string) {
   r_ssize idx = r_chr_detect_index(chr, c_string);
   return idx >= 0;
 }
 
-bool r_chr_has_any(sexp* chr, const char** c_strings) {
+bool r_chr_has_any(r_obj* chr, const char** c_strings) {
   r_ssize n = r_length(chr);
 
   for (r_ssize i = 0; i != n; ++i) {
@@ -36,13 +36,13 @@ bool r_chr_has_any(sexp* chr, const char** c_strings) {
   return false;
 }
 
-void r_chr_fill(sexp* chr, sexp* value, r_ssize n) {
+void r_chr_fill(r_obj* chr, r_obj* value, r_ssize n) {
   for (r_ssize i = 0; i < n; ++i) {
     r_chr_poke(chr, i, value);
   }
 }
 
-static void validate_chr_setter(sexp* chr, sexp* r_string) {
+static void validate_chr_setter(r_obj* chr, r_obj* r_string) {
   if (r_typeof(chr) != R_TYPE_character) {
     r_abort("`chr` must be a character vector");
   }
@@ -52,10 +52,10 @@ static void validate_chr_setter(sexp* chr, sexp* r_string) {
 }
 
 // From rlang/vec.c
-void r_vec_poke_n(sexp* x, r_ssize offset,
-                  sexp* y, r_ssize from, r_ssize n);
+void r_vec_poke_n(r_obj* x, r_ssize offset,
+                  r_obj* y, r_ssize from, r_ssize n);
 
-sexp* chr_prepend(sexp* chr, sexp* r_string) {
+r_obj* chr_prepend(r_obj* chr, r_obj* r_string) {
   if (chr == r_null) {
     return r_str_as_character(r_string);
   } else {
@@ -63,7 +63,7 @@ sexp* chr_prepend(sexp* chr, sexp* r_string) {
   }
 
   int n = r_length(chr);
-  sexp* out = KEEP(r_alloc_character(n + 1));
+  r_obj* out = KEEP(r_alloc_character(n + 1));
 
   r_vec_poke_n(out, 1, chr, 0, n);
   r_chr_poke(out, 0, r_string);
@@ -71,14 +71,14 @@ sexp* chr_prepend(sexp* chr, sexp* r_string) {
   FREE(1);
   return out;
 }
-sexp* chr_append(sexp* chr, sexp* r_str) {
+r_obj* chr_append(r_obj* chr, r_obj* r_str) {
   if (chr == r_null) {
     return r_str_as_character(r_str);
   }
   validate_chr_setter(chr, r_str);
 
   int n = r_length(chr);
-  sexp* out = KEEP(r_alloc_character(n + 1));
+  r_obj* out = KEEP(r_alloc_character(n + 1));
 
   r_vec_poke_n(out, 0, chr, 0, n);
   r_chr_poke(out, n, r_str);

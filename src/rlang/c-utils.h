@@ -18,7 +18,7 @@
   } while(0)
 
 
-void* r_shelter_deref(sexp* x);
+void* r_shelter_deref(r_obj* x);
 
 
 // Adapted from CERT C coding standards

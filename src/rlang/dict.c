@@ -23,8 +23,8 @@ static size_t size_round_power_2(size_t size);
 #define V_DICT_CDR(V) (V)[2]
 
 static
-sexp* new_bucket(sexp* key, sexp* value) {
-  sexp* bucket = r_alloc_list(3);
+r_obj* new_bucket(r_obj* key, r_obj* value) {
+  r_obj* bucket = r_alloc_list(3);
   DICT_POKE_KEY(bucket, key);
   DICT_POKE_VALUE(bucket, value);
   return bucket;
@@ -36,9 +36,9 @@ struct r_dict* r_new_dict(r_ssize size) {
   }
   size = size_round_power_2(size);
 
-  sexp* shelter = KEEP(r_alloc_list(2));
+  r_obj* shelter = KEEP(r_alloc_list(2));
 
-  sexp* dict_raw = r_alloc_raw0(sizeof(struct r_dict));
+  r_obj* dict_raw = r_alloc_raw0(sizeof(struct r_dict));
   r_list_poke(shelter, 0, dict_raw);
   struct r_dict* p_dict = r_raw_deref(dict_raw);
 
@@ -64,16 +64,16 @@ void r_dict_resize(struct r_dict* p_dict, r_ssize size) {
   KEEP(p_new_dict->shelter);
 
   r_ssize n = r_length(p_dict->buckets);
-  sexp* const * p_buckets = p_dict->p_buckets;
+  r_obj* const * p_buckets = p_dict->p_buckets;
 
   for (r_ssize i = 0; i < n; ++i) {
-    sexp* bucket = p_buckets[i];
+    r_obj* bucket = p_buckets[i];
 
     while (bucket != r_null) {
-      sexp* const * v_bucket = DICT_DEREF(bucket);
+      r_obj* const * v_bucket = DICT_DEREF(bucket);
 
-      sexp* key = V_DICT_KEY(v_bucket);
-      sexp* value = V_DICT_VALUE(v_bucket);
+      r_obj* key = V_DICT_KEY(v_bucket);
+      r_obj* value = V_DICT_VALUE(v_bucket);
       r_dict_put(p_new_dict, key, value);
 
       bucket = V_DICT_CDR(v_bucket);
@@ -82,7 +82,7 @@ void r_dict_resize(struct r_dict* p_dict, r_ssize size) {
 
   // Update all data in place except the shelter and the raw sexp
   // which must stay validly protected by the callers
-  sexp* old_shelter = p_dict->shelter;
+  r_obj* old_shelter = p_dict->shelter;
   r_list_poke(old_shelter, 1, r_list_get(p_new_dict->shelter, 1));
 
   memcpy(p_dict, p_new_dict, sizeof(*p_dict));
@@ -101,17 +101,17 @@ size_t size_round_power_2(size_t size) {
 }
 
 static
-r_ssize dict_hash(const struct r_dict* p_dict, sexp* key) {
-  uint64_t hash = r_xxh3_64bits(&key, sizeof(sexp*));
+r_ssize dict_hash(const struct r_dict* p_dict, r_obj* key) {
+  uint64_t hash = r_xxh3_64bits(&key, sizeof(r_obj*));
   return hash % p_dict->n_buckets;
 }
 
 // Returns `false` if `key` already exists in the dictionary, `true`
 // otherwise
-bool r_dict_put(struct r_dict* p_dict, sexp* key, sexp* value) {
+bool r_dict_put(struct r_dict* p_dict, r_obj* key, r_obj* value) {
   r_ssize hash;
-  sexp* parent;
-  sexp* node = dict_find_node_info(p_dict, key, &hash, &parent);
+  r_obj* parent;
+  r_obj* node = dict_find_node_info(p_dict, key, &hash, &parent);
 
   if (node != r_null) {
     return false;
@@ -140,10 +140,10 @@ bool r_dict_put(struct r_dict* p_dict, sexp* key, sexp* value) {
 
 // Returns `true` if key existed and was deleted. Returns `false` if
 // the key could not be deleted because it did not exist in the dict.
-bool r_dict_del(struct r_dict* p_dict, sexp* key) {
+bool r_dict_del(struct r_dict* p_dict, r_obj* key) {
   r_ssize hash;
-  sexp* parent;
-  sexp* node = dict_find_node_info(p_dict, key, &hash, &parent);
+  r_obj* parent;
+  r_obj* node = dict_find_node_info(p_dict, key, &hash, &parent);
 
   if (node == r_null) {
     return false;
@@ -158,12 +158,12 @@ bool r_dict_del(struct r_dict* p_dict, sexp* key) {
   return true;
 }
 
-bool r_dict_has(struct r_dict* p_dict, sexp* key) {
+bool r_dict_has(struct r_dict* p_dict, r_obj* key) {
   return dict_find_node(p_dict, key) != r_null;
 }
 
-sexp* r_dict_get(struct r_dict* p_dict, sexp* key) {
-  sexp* out = r_dict_get0(p_dict, key);
+r_obj* r_dict_get(struct r_dict* p_dict, r_obj* key) {
+  r_obj* out = r_dict_get0(p_dict, key);
 
   if (!out) {
     r_abort("Can't find key in dictionary.");
@@ -174,8 +174,8 @@ sexp* r_dict_get(struct r_dict* p_dict, sexp* key) {
 
 /* The 0-suffixed variant returns a C `NULL` if the object doesn't
    exist. The regular variant throws an error in that case. */
-sexp* r_dict_get0(struct r_dict* p_dict, sexp* key) {
-  sexp* node = dict_find_node(p_dict, key);
+r_obj* r_dict_get0(struct r_dict* p_dict, r_obj* key) {
+  r_obj* node = dict_find_node(p_dict, key);
 
   if (node == r_null) {
     return NULL;
@@ -185,12 +185,12 @@ sexp* r_dict_get0(struct r_dict* p_dict, sexp* key) {
 }
 
 static
-sexp* dict_find_node(struct r_dict* p_dict, sexp* key) {
+r_obj* dict_find_node(struct r_dict* p_dict, r_obj* key) {
   r_ssize i = dict_hash(p_dict, key);
-  sexp* bucket = p_dict->p_buckets[i];
+  r_obj* bucket = p_dict->p_buckets[i];
 
   while (bucket != r_null) {
-    sexp* const * v_bucket = DICT_DEREF(bucket);
+    r_obj* const * v_bucket = DICT_DEREF(bucket);
     if (V_DICT_KEY(v_bucket) == key) {
       return bucket;
     }
@@ -202,18 +202,18 @@ sexp* dict_find_node(struct r_dict* p_dict, sexp* key) {
 
 // Also returns hash and parent node if any
 static
-sexp* dict_find_node_info(struct r_dict* p_dict,
-                          sexp* key,
-                          r_ssize* hash,
-                          sexp** parent) {
+r_obj* dict_find_node_info(struct r_dict* p_dict,
+                           r_obj* key,
+                           r_ssize* hash,
+                           r_obj** parent) {
   r_ssize i = dict_hash(p_dict, key);
   *hash = i;
 
-  sexp* bucket = p_dict->p_buckets[i];
+  r_obj* bucket = p_dict->p_buckets[i];
   *parent = r_null;
 
   while (bucket != r_null) {
-    sexp* const * v_bucket = DICT_DEREF(bucket);
+    r_obj* const * v_bucket = DICT_DEREF(bucket);
 
     if (V_DICT_KEY(v_bucket) == key) {
       return bucket;
@@ -227,7 +227,7 @@ sexp* dict_find_node_info(struct r_dict* p_dict,
 
 
 struct r_dict_iterator* r_new_dict_iterator(struct r_dict* p_dict) {
-  sexp* shelter = r_alloc_raw(sizeof(struct r_dict_iterator));
+  r_obj* shelter = r_alloc_raw(sizeof(struct r_dict_iterator));
   struct r_dict_iterator* p_it = r_raw_deref(shelter);
 
   p_it->shelter = shelter;
@@ -250,7 +250,7 @@ bool r_dict_next(struct r_dict_iterator* p_it) {
     return false;
   }
 
-  sexp* node = p_it->node;
+  r_obj* node = p_it->node;
   while (node == r_null) {
     r_ssize i = ++p_it->i;
 
@@ -263,7 +263,7 @@ bool r_dict_next(struct r_dict_iterator* p_it) {
     p_it->node = node;
   }
 
-  sexp* const * v_node = DICT_DEREF(node);
+  r_obj* const * v_node = DICT_DEREF(node);
   p_it->key = V_DICT_KEY(v_node);
   p_it->value = V_DICT_VALUE(v_node);
   p_it->node = V_DICT_CDR(v_node);
@@ -286,17 +286,17 @@ enum dict_it_df_locs {
 };
 #define DICT_IT_DF_SIZE R_ARR_SIZEOF(v_dict_it_df_types)
 
-sexp* r_dict_as_df_list(struct r_dict* p_dict) {
-  sexp* nms = KEEP(r_chr_n(v_dict_it_df_names_c_strings,
-                           DICT_IT_DF_SIZE));
+r_obj* r_dict_as_df_list(struct r_dict* p_dict) {
+  r_obj* nms = KEEP(r_chr_n(v_dict_it_df_names_c_strings,
+                            DICT_IT_DF_SIZE));
 
-  sexp* out = KEEP(r_alloc_df_list(p_dict->n_entries,
-                                   nms,
-                                   v_dict_it_df_types,
-                                   DICT_IT_DF_SIZE));
+  r_obj* out = KEEP(r_alloc_df_list(p_dict->n_entries,
+                                    nms,
+                                    v_dict_it_df_types,
+                                    DICT_IT_DF_SIZE));
 
-  sexp* key = r_list_get(out, DICT_IT_DF_LOCS_key);
-  sexp* value = r_list_get(out, DICT_IT_DF_LOCS_value);
+  r_obj* key = r_list_get(out, DICT_IT_DF_LOCS_key);
+  r_obj* value = r_list_get(out, DICT_IT_DF_LOCS_value);
 
   struct r_dict_iterator* p_it = r_new_dict_iterator(p_dict);
   KEEP(p_it->shelter);
@@ -309,8 +309,8 @@ sexp* r_dict_as_df_list(struct r_dict* p_dict) {
   FREE(3);
   return out;
 }
-sexp* r_dict_as_list(struct r_dict* p_dict) {
-  sexp* out = KEEP(r_alloc_list(p_dict->n_entries));
+r_obj* r_dict_as_list(struct r_dict* p_dict) {
+  r_obj* out = KEEP(r_alloc_list(p_dict->n_entries));
 
   struct r_dict_iterator* p_it = r_new_dict_iterator(p_dict);
   KEEP(p_it->shelter);

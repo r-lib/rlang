@@ -6,11 +6,11 @@
 
 
 static inline
-sexp* r_attrib(sexp* x) {
+r_obj* r_attrib(r_obj* x) {
   return ATTRIB(x);
 }
 static inline
-sexp* r_poke_attrib(sexp* x, sexp* attrs) {
+r_obj* r_poke_attrib(r_obj* x, r_obj* attrs) {
   SET_ATTRIB(x, attrs);
   return x;
 }
@@ -18,39 +18,39 @@ sexp* r_poke_attrib(sexp* x, sexp* attrs) {
 // Unlike Rf_getAttrib(), this never allocates. This also doesn't bump
 // refcounts or namedness.
 static inline
-sexp* r_attrib_get(sexp* x, sexp* tag) {
+r_obj* r_attrib_get(r_obj* x, r_obj* tag) {
   return r_pairlist_get(r_attrib(x), tag);
 }
 static inline
-void r_attrib_poke(sexp* x, sexp* sym, sexp* value) {
+void r_attrib_poke(r_obj* x, r_obj* sym, r_obj* value) {
   Rf_setAttrib(x, sym, value);
 }
 
-sexp* r_attrib_push(sexp* x, sexp* tag, sexp* value);
-sexp* r_attrib_set(sexp* x, sexp* tag, sexp* value);
+r_obj* r_attrib_push(r_obj* x, r_obj* tag, r_obj* value);
+r_obj* r_attrib_set(r_obj* x, r_obj* tag, r_obj* value);
 
 static inline
-sexp* r_class(sexp* x) {
+r_obj* r_class(r_obj* x) {
   return r_attrib_get(x, r_syms.class);
 }
 static inline
-void r_attrib_poke_class(sexp* x, sexp* classes) {
+void r_attrib_poke_class(r_obj* x, r_obj* classes) {
   r_attrib_poke(x, r_syms.class, classes);
 }
 
-void r_attrib_push_class(sexp* x, const char* tag);
-void r_attrib_push_classes(sexp* x, const char** tags, r_ssize n);
+void r_attrib_push_class(r_obj* x, const char* tag);
+void r_attrib_push_classes(r_obj* x, const char** tags, r_ssize n);
 
 static inline
-sexp* r_names(sexp* x) {
+r_obj* r_names(r_obj* x) {
   return r_attrib_get(x, r_syms.names);
 }
 static inline
-void r_attrib_poke_names(sexp* x, sexp* nms) {
+void r_attrib_poke_names(r_obj* x, r_obj* nms) {
   r_attrib_poke(x, r_syms.names, nms);
 }
 
-bool r_is_named(sexp* x);
+bool r_is_named(r_obj* x);
 
 
 #endif

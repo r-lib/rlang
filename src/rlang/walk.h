@@ -69,13 +69,13 @@ enum r_sexp_it_raw_relation {
 
 
 struct r_sexp_iterator {
-  sexp* shelter;
+  r_obj* shelter;
   bool skip_incoming;
 
-  sexp* x;
+  r_obj* x;
   enum r_type type;
   int depth;
-  sexp* parent;
+  r_obj* parent;
   enum r_sexp_it_relation rel;
   r_ssize i;
   enum r_sexp_it_direction dir;
@@ -84,7 +84,7 @@ struct r_sexp_iterator {
   struct r_dyn_array* p_stack;
 };
 
-struct r_sexp_iterator* r_new_sexp_iterator(sexp* root);
+struct r_sexp_iterator* r_new_sexp_iterator(r_obj* root);
 
 bool r_sexp_next(struct r_sexp_iterator* p_it);
 bool r_sexp_skip(struct r_sexp_iterator* p_it);

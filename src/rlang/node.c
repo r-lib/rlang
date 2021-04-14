@@ -2,16 +2,16 @@
 
 
 // Shallow copy of a node tree
-sexp* r_node_tree_clone(sexp* x) {
+r_obj* r_node_tree_clone(r_obj* x) {
   if (r_typeof(x) != R_TYPE_pairlist) {
     r_abort("Internal error: Expected node tree for shallow copy");
   }
 
   x = KEEP(r_clone(x));
 
-  sexp* rest = x;
+  r_obj* rest = x;
   while (rest != r_null) {
-    sexp* head = r_node_car(rest);
+    r_obj* head = r_node_car(rest);
     if (r_typeof(head) == R_TYPE_pairlist) {
       r_node_poke_car(rest, r_node_tree_clone(head));
     }
@@ -22,7 +22,7 @@ sexp* r_node_tree_clone(sexp* x) {
   return x;
 }
 
-sexp* r_pairlist_find(sexp* node, sexp* tag) {
+r_obj* r_pairlist_find(r_obj* node, r_obj* tag) {
   while (node != r_null) {
     if (r_node_tag(node) == tag) {
       return node;
@@ -33,14 +33,14 @@ sexp* r_pairlist_find(sexp* node, sexp* tag) {
   return r_null;
 }
 
-sexp* r_pairlist_rev(sexp* node) {
+r_obj* r_pairlist_rev(r_obj* node) {
   if (node == r_null) {
     return node;
   }
 
-  sexp* prev = r_null;
-  sexp* tail = node;
-  sexp* next;
+  r_obj* prev = r_null;
+  r_obj* tail = node;
+  r_obj* next;
   while (tail != r_null) {
     next = r_node_cdr(tail);
     r_node_poke_cdr(tail, prev);

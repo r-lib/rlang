@@ -26,12 +26,12 @@
 #include "rlang-types.h"
 
 
-sexp* r_init_library(sexp* ns);
+r_obj* r_init_library(r_obj* ns);
 
-r_ssize r_as_ssize(sexp* n);
+r_ssize r_as_ssize(r_obj* n);
 
 
-#include "sexp.h"
+#include "obj.h"
 #include "globals.h"
 
 #include "altrep.h"

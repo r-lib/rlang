@@ -2,24 +2,24 @@
 #define RLANG_INTERNAL_QUO_H
 
 
-sexp* rlang_new_quosure(sexp* expr, sexp* env);
-bool rlang_is_quosure(sexp* x);
+r_obj* rlang_new_quosure(r_obj* expr, r_obj* env);
+bool rlang_is_quosure(r_obj* x);
 
-sexp* rlang_get_expression(sexp* x, sexp* alternate);
+r_obj* rlang_get_expression(r_obj* x, r_obj* alternate);
 
-sexp* rlang_quo_get_env(sexp* quo);
-sexp* rlang_quo_get_expr(sexp* quo);
+r_obj* rlang_quo_get_env(r_obj* quo);
+r_obj* rlang_quo_get_expr(r_obj* quo);
 
-static inline sexp* rlang_quo_get_expr_(sexp* quo) {
+static inline r_obj* rlang_quo_get_expr_(r_obj* quo) {
   return r_node_cadr(quo);
 }
 
-void check_quosure(sexp* x);
-bool quo_is_missing(sexp* quo);
-bool quo_is_symbol(sexp* quo);
-bool quo_is_call(sexp* quo);
-bool quo_is_symbolic(sexp* quo);
-bool quo_is_null(sexp* quo);
+void check_quosure(r_obj* x);
+bool quo_is_missing(r_obj* quo);
+bool quo_is_symbol(r_obj* quo);
+bool quo_is_call(r_obj* quo);
+bool quo_is_symbolic(r_obj* quo);
+bool quo_is_null(r_obj* quo);
 
 
 #endif

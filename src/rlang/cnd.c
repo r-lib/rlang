@@ -1,8 +1,8 @@
 #include "rlang.h"
 
 // From rlang/vec.c
-void r_vec_poke_n(sexp* x, r_ssize offset,
-                  sexp* y, r_ssize from, r_ssize n);
+void r_vec_poke_n(r_obj* x, r_ssize offset,
+                  r_obj* y, r_ssize from, r_ssize n);
 
 
 #define BUFSIZE 8192
@@ -27,7 +27,7 @@ void r_stop_internal(const char* fn, const char* fmt, ...) {
   r_abort("Internal error in `%s()`: %s", fn, msg);
 }
 
-static sexp* msg_call = NULL;
+static r_obj* msg_call = NULL;
 void r_inform(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
@@ -37,7 +37,7 @@ void r_inform(const char* fmt, ...) {
   FREE(1);
 }
 
-static sexp* wng_call = NULL;
+static r_obj* wng_call = NULL;
 void r_warn(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
@@ -47,7 +47,7 @@ void r_warn(const char* fmt, ...) {
   FREE(1);
 }
 
-static sexp* err_call = NULL;
+static r_obj* err_call = NULL;
 void r_abort(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
@@ -58,27 +58,27 @@ void r_abort(const char* fmt, ...) {
 }
 
 // From vec-chr.c
-sexp* chr_append(sexp* chr, sexp* r_string);
+r_obj* chr_append(r_obj* chr, r_obj* r_string);
 
-static sexp* new_condition_names(sexp* data) {
+static r_obj* new_condition_names(r_obj* data) {
   if (!r_is_named(data)) {
     r_abort("Conditions must have named data fields");
   }
 
-  sexp* data_nms = r_names(data);
+  r_obj* data_nms = r_names(data);
 
   if (r_chr_has_any(data_nms, (const char* []) { "message", NULL })) {
     r_abort("Conditions can't have a `message` data field");
   }
 
-  sexp* nms = KEEP(r_alloc_character(r_length(data) + 1));
+  r_obj* nms = KEEP(r_alloc_character(r_length(data) + 1));
   r_chr_poke(nms, 0, r_str("message"));
   r_vec_poke_n(nms, 1, data_nms, 0, r_length(nms) - 1);
 
   FREE(1);
   return nms;
 }
-sexp* r_new_condition(sexp* subclass, sexp* msg, sexp* data) {
+r_obj* r_new_condition(r_obj* subclass, r_obj* msg, r_obj* data) {
   if (msg == r_null) {
     msg = r_chrs.empty_string;
   } else if (!r_is_string(msg)) {
@@ -86,7 +86,7 @@ sexp* r_new_condition(sexp* subclass, sexp* msg, sexp* data) {
   }
 
   r_ssize n_data = r_length(data);
-  sexp* cnd = KEEP(r_alloc_list(n_data + 1));
+  r_obj* cnd = KEEP(r_alloc_list(n_data + 1));
 
   r_list_poke(cnd, 0, msg);
   r_vec_poke_n(cnd, 1, data, 0, r_length(cnd) - 1);
@@ -99,12 +99,12 @@ sexp* r_new_condition(sexp* subclass, sexp* msg, sexp* data) {
 }
 
 
-static sexp* cnd_signal_call = NULL;
-static sexp* wng_signal_call = NULL;
-static sexp* err_signal_call = NULL;
+static r_obj* cnd_signal_call = NULL;
+static r_obj* wng_signal_call = NULL;
+static r_obj* err_signal_call = NULL;
 
-void r_cnd_signal(sexp* cnd) {
-  sexp* call = r_null;
+void r_cnd_signal(r_obj* cnd) {
+  r_obj* call = r_null;
 
   switch (r_cnd_type(cnd)) {
   case r_cnd_type_message:
@@ -143,8 +143,8 @@ void r_interrupt() {
 }
 #endif
 
-enum r_condition_type r_cnd_type(sexp* cnd) {
-  sexp* classes = r_class(cnd);
+enum r_condition_type r_cnd_type(r_obj* cnd) {
+  r_obj* classes = r_class(cnd);
   if (r_typeof(cnd) != R_TYPE_list ||
       r_typeof(classes) != R_TYPE_character) {
     goto error;
@@ -194,7 +194,7 @@ enum r_condition_type r_cnd_type(sexp* cnd) {
   r_abort("`cnd` is not a condition object");
 }
 
-sexp* rlang_ns_get(const char* name);
+r_obj* rlang_ns_get(const char* name);
 
 void r_init_library_cnd() {
   msg_call = r_parse("message(x)");

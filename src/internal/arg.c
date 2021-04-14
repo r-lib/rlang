@@ -4,12 +4,12 @@
 
 // Capture
 
-sexp* rlang_ns_get(const char* name);
+r_obj* rlang_ns_get(const char* name);
 
-sexp* capture(sexp* sym, sexp* frame, sexp** arg_env) {
-  static sexp* capture_call = NULL;
+r_obj* capture(r_obj* sym, r_obj* frame, r_obj** arg_env) {
+  static r_obj* capture_call = NULL;
   if (!capture_call) {
-    sexp* args = KEEP(r_new_node(r_null, r_null));
+    r_obj* args = KEEP(r_new_node(r_null, r_null));
     capture_call = r_new_call(rlang_ns_get("captureArgInfo"), args);
     r_preserve(capture_call);
     r_mark_shared(capture_call);
@@ -21,9 +21,9 @@ sexp* capture(sexp* sym, sexp* frame, sexp** arg_env) {
   }
 
   r_node_poke_cadr(capture_call, sym);
-  sexp* arg_info = KEEP(r_eval(capture_call, frame));
-  sexp* expr = r_list_get(arg_info, 0);
-  sexp* env = r_list_get(arg_info, 1);
+  r_obj* arg_info = KEEP(r_eval(capture_call, frame));
+  r_obj* expr = r_list_get(arg_info, 0);
+  r_obj* env = r_list_get(arg_info, 1);
 
   // Unquoting rearranges the expression
   // FIXME: Only duplicate the call tree, not the leaves
@@ -38,11 +38,11 @@ sexp* capture(sexp* sym, sexp* frame, sexp** arg_env) {
   return expr;
 }
 
-sexp* rlang_enexpr(sexp* sym, sexp* frame) {
+r_obj* rlang_enexpr(r_obj* sym, r_obj* frame) {
   return capture(sym, frame, NULL);
 }
-sexp* rlang_ensym(sexp* sym, sexp* frame) {
-  sexp* expr = capture(sym, frame, NULL);
+r_obj* rlang_ensym(r_obj* sym, r_obj* frame) {
+  r_obj* expr = capture(sym, frame, NULL);
 
   if (rlang_is_quosure(expr)) {
     expr = rlang_quo_get_expr(expr);
@@ -67,24 +67,24 @@ sexp* rlang_ensym(sexp* sym, sexp* frame) {
 }
 
 
-sexp* rlang_enquo(sexp* sym, sexp* frame) {
-  sexp* env;
-  sexp* expr = KEEP(capture(sym, frame, &env));
-  sexp* quo = forward_quosure(expr, env);
+r_obj* rlang_enquo(r_obj* sym, r_obj* frame) {
+  r_obj* env;
+  r_obj* expr = KEEP(capture(sym, frame, &env));
+  r_obj* quo = forward_quosure(expr, env);
   FREE(1);
   return quo;
 }
 
-static sexp* stop_arg_match_call = NULL;
-static sexp* arg_nm_sym = NULL;
-void arg_match0_abort(const char* msg, sexp* env);
+static r_obj* stop_arg_match_call = NULL;
+static r_obj* arg_nm_sym = NULL;
+void arg_match0_abort(const char* msg, r_obj* env);
 
-sexp* rlang_ext_arg_match0(sexp* args) {
+r_obj* rlang_ext_arg_match0(r_obj* args) {
   args = r_node_cdr(args);
 
-  sexp* arg = r_node_car(args); args = r_node_cdr(args);
-  sexp* values = r_node_car(args); args = r_node_cdr(args);
-  sexp* env = r_node_car(args);
+  r_obj* arg = r_node_car(args); args = r_node_cdr(args);
+  r_obj* values = r_node_car(args); args = r_node_cdr(args);
+  r_obj* env = r_node_car(args);
 
   if (r_typeof(arg) != R_TYPE_character) {
     arg_match0_abort("`%s` must be a character vector.", env);
@@ -104,21 +104,21 @@ sexp* rlang_ext_arg_match0(sexp* args) {
 
   // Simple case: one argument, we check if it's one of the values.
   if (arg_len == 1) {
-    sexp* arg_char = r_chr_get(arg, 0);
+    r_obj* arg_char = r_chr_get(arg, 0);
     for (r_ssize i = 0; i < values_len; ++i) {
       if (arg_char == r_chr_get(values, i)) {
         return(arg);
       }
     }
 
-    sexp* arg_nm = KEEP(r_eval(arg_nm_sym, env));
+    r_obj* arg_nm = KEEP(r_eval(arg_nm_sym, env));
     r_eval_with_xyz(stop_arg_match_call, arg, values, arg_nm, rlang_ns_env);
 
     r_stop_unreached("rlang_ext2_arg_match0");
   }
 
-  sexp* const* p_arg = r_chr_deref_const(arg);
-  sexp* const* p_values = r_chr_deref_const(values);
+  r_obj* const* p_arg = r_chr_deref_const(arg);
+  r_obj* const* p_values = r_chr_deref_const(values);
 
   // Same-length vector: must be identical, we allow changed order.
   r_ssize i = 0;
@@ -133,12 +133,12 @@ sexp* rlang_ext_arg_match0(sexp* args) {
     return(r_str_as_character(p_arg[0]));
   }
 
-  sexp* my_values = KEEP(r_clone(values));
-  sexp* const * p_my_values = r_chr_deref_const(my_values);
+  r_obj* my_values = KEEP(r_clone(values));
+  r_obj* const * p_my_values = r_chr_deref_const(my_values);
 
   // Invariant: my_values[i:(len-1)] contains the values we haven't matched yet
   for (; i < arg_len; ++i) {
-    sexp* current_arg = p_arg[i];
+    r_obj* current_arg = p_arg[i];
     if (current_arg == p_my_values[i]) {
       continue;
     }
@@ -156,7 +156,7 @@ sexp* rlang_ext_arg_match0(sexp* args) {
 
     if (!matched) {
       arg = KEEP(r_str_as_character(r_chr_get(arg, 0)));
-      sexp* arg_nm = KEEP(r_eval(arg_nm_sym, env));
+      r_obj* arg_nm = KEEP(r_eval(arg_nm_sym, env));
       r_eval_with_xyz(stop_arg_match_call, arg, values, arg_nm, rlang_ns_env);
 
       r_stop_unreached("rlang_ext2_arg_match0");
@@ -167,8 +167,8 @@ sexp* rlang_ext_arg_match0(sexp* args) {
   return(r_str_as_character(r_chr_get(arg, 0)));
 }
 
-void arg_match0_abort(const char* msg, sexp* env) {
-  sexp* arg_nm = KEEP(r_eval(arg_nm_sym, env));
+void arg_match0_abort(const char* msg, r_obj* env) {
+  r_obj* arg_nm = KEEP(r_eval(arg_nm_sym, env));
 
   if (r_typeof(arg_nm) != R_TYPE_character || r_length(arg_nm) != 1) {
     r_abort(msg, "<arg_nm>");
@@ -178,7 +178,7 @@ void arg_match0_abort(const char* msg, sexp* env) {
   r_abort(msg, arg_nm_chr);
 }
 
-void rlang_init_arg(sexp* ns) {
+void rlang_init_arg(r_obj* ns) {
   stop_arg_match_call = r_parse("stop_arg_match(x, y, z)");
   r_preserve(stop_arg_match_call);
 

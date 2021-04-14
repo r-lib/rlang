@@ -2,8 +2,8 @@
 #define RLANG_VECTOR_LGL_H
 
 
-r_ssize r_lgl_sum(sexp* x, bool na_true);
-sexp* r_lgl_which(sexp* x, bool na_propagate);
+r_ssize r_lgl_sum(r_obj* x, bool na_true);
+r_obj* r_lgl_which(r_obj* x, bool na_propagate);
 
 
 #endif

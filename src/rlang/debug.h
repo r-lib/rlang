@@ -3,10 +3,10 @@
 
 
 #define r_printf Rprintf
-void r_sexp_inspect(sexp* x);
-void r_browse(sexp* x);
-void r_browse_at(sexp* env);
-void r_dbg_str(sexp* x);
+void r_sexp_inspect(r_obj* x);
+void r_browse(r_obj* x);
+void r_browse_at(r_obj* env);
+void r_dbg_str(r_obj* x);
 
 
 #endif

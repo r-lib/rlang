@@ -28,9 +28,9 @@ struct r_dyn_list_of* r_new_dyn_list_of(enum r_type type,
     break;
   }
 
-  sexp* shelter = KEEP(r_alloc_list(SHELTER_DYN_LOF_SIZE));
+  r_obj* shelter = KEEP(r_alloc_list(SHELTER_DYN_LOF_SIZE));
 
-  sexp* lof_raw = r_alloc_raw(sizeof(struct r_dyn_list_of));
+  r_obj* lof_raw = r_alloc_raw(sizeof(struct r_dyn_list_of));
   r_list_poke(shelter, SHELTER_DYN_LOF_raw, lof_raw);
 
   struct r_dyn_array* p_moved_arr = r_new_dyn_array(sizeof(struct r_dyn_array*), R_DYN_LOF_INIT_SIZE);
@@ -39,11 +39,11 @@ struct r_dyn_list_of* r_new_dyn_list_of(enum r_type type,
   struct r_dyn_array* p_moved_shelter_arr = r_new_dyn_vector(R_TYPE_list, R_DYN_LOF_INIT_SIZE);
   r_list_poke(shelter, SHELTER_DYN_LOF_moved_shelter_arr, p_moved_shelter_arr->shelter);
 
-  sexp* reserve = r_alloc_vector(type, r_ssize_mult(capacity, width));
+  r_obj* reserve = r_alloc_vector(type, r_ssize_mult(capacity, width));
   r_list_poke(shelter, SHELTER_DYN_LOF_reserve, reserve);
   void* v_reserve = r_vec_deref(reserve);
 
-  sexp* arr_locs = r_alloc_raw(sizeof(r_ssize) * capacity);
+  r_obj* arr_locs = r_alloc_raw(sizeof(r_ssize) * capacity);
   r_list_poke(shelter, SHELTER_DYN_LOF_arr_locs, arr_locs);
   r_ssize* v_arr_locs = r_raw_deref(arr_locs);
   R_MEM_SET(r_ssize, v_arr_locs, -1, capacity);
@@ -81,8 +81,8 @@ struct r_dyn_list_of* r_new_dyn_list_of(enum r_type type,
   return p_lof;
 }
 
-sexp* r_lof_unwrap(struct r_dyn_list_of* p_lof) {
-  sexp* out = KEEP(r_alloc_list(p_lof->count));
+r_obj* r_lof_unwrap(struct r_dyn_list_of* p_lof) {
+  r_obj* out = KEEP(r_alloc_list(p_lof->count));
 
   enum r_type type = p_lof->type;
   r_ssize n = p_lof->count;
@@ -102,9 +102,9 @@ void r_lof_resize(struct r_dyn_list_of* p_lof, r_ssize capacity) {
   r_ssize count = p_lof->count;
 
   // Resize reserve
-  sexp* reserve = r_vec_resize0(p_lof->type,
-                                p_lof->reserve,
-                                r_ssize_mult(capacity, p_lof->width));
+  r_obj* reserve = r_vec_resize0(p_lof->type,
+                                 p_lof->reserve,
+                                 r_ssize_mult(capacity, p_lof->width));
   r_list_poke(p_lof->shelter, SHELTER_DYN_LOF_reserve, reserve);
 
   p_lof->reserve = reserve;
@@ -112,8 +112,8 @@ void r_lof_resize(struct r_dyn_list_of* p_lof, r_ssize capacity) {
   p_lof->capacity = capacity;
 
   // Resize array indirections
-  sexp* arr_locs = r_raw_resize(p_lof->arr_locs,
-                                r_ssize_mult(sizeof(r_ssize), capacity));
+  r_obj* arr_locs = r_raw_resize(p_lof->arr_locs,
+                                 r_ssize_mult(sizeof(r_ssize), capacity));
   r_list_poke(p_lof->shelter, SHELTER_DYN_LOF_arr_locs, arr_locs);
 
   r_ssize* v_arr_locs = r_raw_deref(arr_locs);

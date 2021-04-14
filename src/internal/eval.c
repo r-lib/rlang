@@ -2,21 +2,21 @@
 #include "internal.h"
 
 // From call.c
-sexp* rlang_call2(sexp* fn, sexp* args, sexp* ns);
+r_obj* rlang_call2(r_obj* fn, r_obj* args, r_obj* ns);
 
 
-sexp* rlang_ext2_exec(sexp* call, sexp* op, sexp* args, sexp* rho) {
+r_obj* rlang_ext2_exec(r_obj* call, r_obj* op, r_obj* args, r_obj* rho) {
   args = r_node_cdr(args);
 
-  sexp* fn = KEEP(r_eval(r_sym(".fn"), rho));
-  sexp* env = KEEP(r_eval(r_sym(".env"), rho));
-  sexp* dots = KEEP(rlang_dots(rho));
+  r_obj* fn = KEEP(r_eval(r_sym(".fn"), rho));
+  r_obj* env = KEEP(r_eval(r_sym(".env"), rho));
+  r_obj* dots = KEEP(rlang_dots(rho));
 
-  sexp* exec_call = KEEP(rlang_call2(fn, dots, r_null));
+  r_obj* exec_call = KEEP(rlang_call2(fn, dots, r_null));
 
-  sexp* node = r_node_cdr(exec_call);
+  r_obj* node = r_node_cdr(exec_call);
   while (node != r_null) {
-    sexp* arg = r_node_car(node);
+    r_obj* arg = r_node_car(node);
 
     // Protect all symbolic arguments from being evaluated
     if (r_is_symbolic(arg)) {
@@ -26,7 +26,7 @@ sexp* rlang_ext2_exec(sexp* call, sexp* op, sexp* args, sexp* rho) {
     node = r_node_cdr(node);
   }
 
-  sexp* out = r_eval(exec_call, env);
+  r_obj* out = r_eval(exec_call, env);
 
   FREE(4);
   return out;
