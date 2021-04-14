@@ -5,7 +5,7 @@
 static
 struct r_dict* p_precious_dict = NULL;
 
-#include "decl/sexp-decl.h"
+#include "decl/obj-decl.h"
 
 
 void r_preserve(r_obj* x) {

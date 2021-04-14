@@ -23,7 +23,7 @@ lib-files = \
         rlang/parse.c \
         rlang/quo.c \
         rlang/rlang.c \
-        rlang/sexp.c \
+        rlang/obj.c \
         rlang/stack.c \
         rlang/sym.c \
         rlang/vec.c \
