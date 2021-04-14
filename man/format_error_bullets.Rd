@@ -16,3 +16,4 @@ trigger a line break from the previous bullet.}
 \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 \code{format_error_bullets()} has been renamed to \code{\link[=format_bullets]{format_bullets()}}.
 }
+\keyword{internal}

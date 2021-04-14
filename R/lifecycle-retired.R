@@ -2065,6 +2065,7 @@ env_bury <- function(.env, ...) {
 #' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
 #' `format_error_bullets()` has been renamed to [format_bullets()].
 #' @inheritParams format_bullets
+#' @keywords internal
 #' @export
 format_error_bullets <- function(x) {
   format_bullets(x)
