@@ -54,14 +54,14 @@ r_obj* new_precious_stack(r_obj* x) {
 static
 int push_precious(r_obj* stack) {
   r_obj* n = r_list_get(stack, 0);
-  int* p_n = r_int_deref(n);
+  int* p_n = r_int_begin(n);
   return ++(*p_n);
 }
 
 static
 int pop_precious(r_obj* stack) {
   r_obj* n = r_list_get(stack, 0);
-  int* p_n = r_int_deref(n);
+  int* p_n = r_int_begin(n);
   return --(*p_n);
 }
 

@@ -92,8 +92,8 @@ r_obj* r_env_as_list_compat(r_obj* env, r_obj* out) {
   }
 
   r_ssize n = r_length(nms);
-  r_obj* const * p_nms = r_chr_deref_const(nms);
-  const int* p_types = r_int_deref_const(types);
+  r_obj* const * p_nms = r_chr_cbegin(nms);
+  const int* p_types = r_int_cbegin(types);
 
   for (r_ssize i = 0; i < n; ++i) {
     enum r_env_binding_type type = p_types[i];

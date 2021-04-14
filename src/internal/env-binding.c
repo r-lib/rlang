@@ -60,7 +60,7 @@ r_obj* rlang_env_get_list(r_obj* env, r_obj* nms, r_obj* inherit, r_obj* closure
   r_obj* out = KEEP(r_alloc_list(n));
   r_attrib_poke_names(out, nms);
 
-  r_obj* const * p_nms = r_chr_deref_const(nms);
+  r_obj* const * p_nms = r_chr_cbegin(nms);
 
   for (r_ssize i = 0; i <n; ++i) {
     r_obj* sym = r_str_as_symbol(p_nms[i]);
@@ -86,8 +86,8 @@ r_obj* rlang_env_has(r_obj* env, r_obj* nms, r_obj* inherit) {
   r_ssize n = r_length(nms);
   r_obj* out = KEEP(r_alloc_logical(n));
 
-  int* p_out = r_lgl_deref(out);
-  r_obj* const * p_nms = r_chr_deref_const(nms);
+  int* p_out = r_lgl_begin(out);
+  r_obj* const * p_nms = r_chr_cbegin(nms);
 
   if (r_lgl_get(inherit, 0)) {
     for (r_ssize i = 0; i < n; ++i) {
@@ -201,7 +201,7 @@ r_obj* rlang_env_bind(r_obj* env,
   if (n && names == r_null) {
     r_abort("Can't bind data because some elements are not named.");
   }
-  r_obj* const * p_names = r_chr_deref_const(names);
+  r_obj* const * p_names = r_chr_cbegin(names);
 
   r_obj* old = r_null;
   if (c_needs_old) {
@@ -245,7 +245,7 @@ r_obj* rlang_env_unbind(r_obj* env, r_obj* names, r_obj* inherits) {
     r_abort("`inherits` must be a logical value.");
   }
 
-  if (*r_lgl_deref(inherits)) {
+  if (*r_lgl_begin(inherits)) {
     r_env_unbind_anywhere_names(env, names);
   } else {
     r_env_unbind_names(env, names);

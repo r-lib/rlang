@@ -25,5 +25,5 @@ void* r_shelter_deref(r_obj* x) {
     r_stop_unexpected_type("r_shelter_deref", type);
   }
 
-  return r_raw_deref(x);
+  return r_raw_begin(x);
 }

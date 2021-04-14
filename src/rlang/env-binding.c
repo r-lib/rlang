@@ -13,7 +13,7 @@ bool r_env_binding_is_active(r_obj* env, r_obj* sym) {
 static r_obj* new_binding_types(r_ssize n) {
   r_obj* types = r_alloc_integer(n);
 
-  int* types_ptr = r_int_deref(types);
+  int* types_ptr = r_int_begin(types);
   memset(types_ptr, 0, n * sizeof *types_ptr);
 
   return types;
@@ -80,7 +80,7 @@ r_obj* r_env_binding_types(r_obj* env, r_obj* bindings) {
 
   r_ssize n = r_length(bindings);
   r_obj* types = KEEP(new_binding_types(n));
-  int* types_ptr = r_int_deref(types) + i;
+  int* types_ptr = r_int_begin(types) + i;
 
   while (i < n) {
     r_obj* sym = binding_as_sym(symbols, bindings, i);

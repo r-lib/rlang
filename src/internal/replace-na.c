@@ -31,7 +31,7 @@ r_obj* rlang_replace_na(r_obj* x, r_obj* replacement) {
 
   switch(x_type) {
   case R_TYPE_logical: {
-    int* arr = r_lgl_deref(x);
+    int* arr = r_lgl_begin(x);
     for (; i < n; ++i) {
       if (arr[i] == r_globals.na_lgl) {
         break;
@@ -41,7 +41,7 @@ r_obj* rlang_replace_na(r_obj* x, r_obj* replacement) {
   }
 
   case R_TYPE_integer: {
-    int* arr = r_int_deref(x);
+    int* arr = r_int_begin(x);
     for (; i < n; ++i) {
       if (arr[i] == r_globals.na_int) {
         break;
@@ -51,7 +51,7 @@ r_obj* rlang_replace_na(r_obj* x, r_obj* replacement) {
   }
 
   case R_TYPE_double: {
-    double* arr = r_dbl_deref(x);
+    double* arr = r_dbl_begin(x);
     for (; i < n; ++i) {
       if (ISNA(arr[i])) {
         break;
@@ -70,7 +70,7 @@ r_obj* rlang_replace_na(r_obj* x, r_obj* replacement) {
   }
 
   case R_TYPE_complex: {
-    r_complex_t* arr = r_cpl_deref(x);
+    r_complex_t* arr = r_cpl_begin(x);
 
     for (; i < n; ++i) {
       if (ISNA(arr[i].r)) {
@@ -100,8 +100,8 @@ static r_obj* replace_na_(r_obj* x, r_obj* replacement, int i) {
 
   switch(r_typeof(x)) {
   case R_TYPE_logical: {
-    int* arr = r_lgl_deref(x);
-    int new_value = r_lgl_deref(replacement)[0];
+    int* arr = r_lgl_begin(x);
+    int new_value = r_lgl_begin(replacement)[0];
     for (; i < n; ++i) {
       if (arr[i] == r_globals.na_lgl) {
         arr[i] = new_value;
@@ -111,8 +111,8 @@ static r_obj* replace_na_(r_obj* x, r_obj* replacement, int i) {
   }
 
   case R_TYPE_integer: {
-    int* arr = r_int_deref(x);
-    int new_value = r_int_deref(replacement)[0];
+    int* arr = r_int_begin(x);
+    int new_value = r_int_begin(replacement)[0];
     for (; i < n; ++i) {
       if (arr[i] == r_globals.na_int) {
         arr[i] = new_value;
@@ -122,8 +122,8 @@ static r_obj* replace_na_(r_obj* x, r_obj* replacement, int i) {
   }
 
   case R_TYPE_double: {
-    double* arr = r_dbl_deref(x);
-    double new_value = r_dbl_deref(replacement)[0];
+    double* arr = r_dbl_begin(x);
+    double new_value = r_dbl_begin(replacement)[0];
     for (; i < n; ++i) {
       if (ISNA(arr[i])) {
         arr[i] = new_value;
@@ -143,7 +143,7 @@ static r_obj* replace_na_(r_obj* x, r_obj* replacement, int i) {
   }
 
   case R_TYPE_complex: {
-    r_complex_t* arr = r_cpl_deref(x);
+    r_complex_t* arr = r_cpl_begin(x);
     r_complex_t new_value = r_cpl_get(replacement, 0);
 
     for (; i < n; ++i) {
@@ -170,7 +170,7 @@ static r_obj* replace_na_vec_(r_obj* x, r_obj* replacement, int i) {
 
   switch(r_typeof(x)) {
   case R_TYPE_logical: {
-    int* arr = r_lgl_deref(x);
+    int* arr = r_lgl_begin(x);
     for (; i < n; ++i) {
       if (arr[i] == r_globals.na_lgl) {
         arr[i] = r_lgl_get(replacement, i);
@@ -180,7 +180,7 @@ static r_obj* replace_na_vec_(r_obj* x, r_obj* replacement, int i) {
   }
 
   case R_TYPE_integer: {
-    int* arr = r_int_deref(x);
+    int* arr = r_int_begin(x);
     for (; i < n; ++i) {
       if (arr[i] == r_globals.na_int) {
         arr[i] = r_int_get(replacement, i);
@@ -190,7 +190,7 @@ static r_obj* replace_na_vec_(r_obj* x, r_obj* replacement, int i) {
   }
 
   case R_TYPE_double: {
-    double* arr = r_dbl_deref(x);
+    double* arr = r_dbl_begin(x);
     for (; i < n; ++i) {
       if (ISNA(arr[i])) {
         arr[i] = r_dbl_get(replacement, i);
@@ -209,7 +209,7 @@ static r_obj* replace_na_vec_(r_obj* x, r_obj* replacement, int i) {
   }
 
   case R_TYPE_complex: {
-    r_complex_t* arr = r_cpl_deref(x);
+    r_complex_t* arr = r_cpl_begin(x);
     for (; i < n; ++i) {
       if (ISNA(arr[i].r)) {
         arr[i] = r_cpl_get(replacement, i);

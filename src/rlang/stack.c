@@ -60,7 +60,7 @@ r_obj* r_sys_call(int n, r_obj* frame) {
 
 static r_obj* generate_sys_call(const char* name, int** n_addr) {
   r_obj* sys_n = KEEP(r_int(0));
-  *n_addr = r_int_deref(sys_n);
+  *n_addr = r_int_begin(sys_n);
 
   r_obj* sys_args = KEEP(r_new_node(sys_n, r_null));
   r_obj* sys_call = KEEP(r_new_call(r_base_ns_get(name), sys_args));

@@ -58,7 +58,7 @@ r_obj* rlang_alloc_data_frame(r_obj* n_rows, r_obj* names, r_obj* types) {
   r_ssize n_rows_val = r_int_get(n_rows, 0);
   r_obj* df = KEEP(r_alloc_df_list(n_rows_val,
                                    names,
-                                   (enum r_type*) r_int_deref(types),
+                                   (enum r_type*) r_int_begin(types),
                                    r_length(names)));
   r_init_data_frame(df, n_rows_val);
 
@@ -224,7 +224,7 @@ r_obj* rlang_arr_push_back(r_obj* arr_sexp, r_obj* x) {
     r_arr_push_back(p_arr, &x);
     return r_null;
   default:
-    r_arr_push_back(p_arr, r_vec_deref_const(x));
+    r_arr_push_back(p_arr, r_vec_cbegin(x));
     return r_null;
   }
 }
@@ -327,7 +327,7 @@ r_obj* ffi_lof_arr_push_back(r_obj* lof, r_obj* i, r_obj* value) {
   }
   r_lof_arr_push_back(p_lof,
                       r_as_ssize(i),
-                      r_vec_deref(value));
+                      r_vec_begin(value));
   return r_null;
 }
 
@@ -385,7 +385,7 @@ r_obj* rlang_env_bind_list(r_obj* env, r_obj* names, r_obj* data) {
     r_abort("Internal error: `data` and `names` must have the same length.");
   }
 
-  r_obj* const * p_names = r_chr_deref_const(names);
+  r_obj* const * p_names = r_chr_cbegin(names);
 
   for (r_ssize i = 0; i < n; ++i) {
     Rf_defineVar(r_str_as_symbol(p_names[i]), r_list_get(data, i), env);
@@ -889,7 +889,7 @@ r_obj* rlang_is_string(r_obj* x, r_obj* string) {
 
   bool out = false;
   r_ssize n = r_length(string);
-  r_obj* const * p_string = r_chr_deref_const(string);
+  r_obj* const * p_string = r_chr_cbegin(string);
 
   for (r_ssize i = 0; i < n; ++i) {
     if (p_string[i] == value) {

@@ -175,10 +175,10 @@ r_ssize length_dispatch(r_obj* x, r_obj* env) {
 
   switch (r_typeof(n)) {
   case R_TYPE_integer:
-    out = (r_ssize) r_int_deref(n)[0];
+    out = (r_ssize) r_int_begin(n)[0];
     break;
   case R_TYPE_double:
-    out = r_dbl_deref(n)[0];
+    out = r_dbl_begin(n)[0];
     break;
   default:
     r_abort("Object length has unknown type %s", r_type_as_c_string(r_typeof(n)));

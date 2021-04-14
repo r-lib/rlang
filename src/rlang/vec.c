@@ -72,25 +72,25 @@ r_obj* r_chr_n(const char* const * strings, r_ssize n) {
 // Compared to `Rf_xlengthgets()` this does not initialise the new
 // extended locations with `NA`
 r_obj* r_lgl_resize(r_obj* x, r_ssize size) {
-  RESIZE(R_TYPE_logical, int, r_lgl_deref_const, r_lgl_deref);
+  RESIZE(R_TYPE_logical, int, r_lgl_cbegin, r_lgl_begin);
 }
 r_obj* r_int_resize(r_obj* x, r_ssize size) {
-  RESIZE(R_TYPE_integer, int, r_int_deref_const, r_int_deref);
+  RESIZE(R_TYPE_integer, int, r_int_cbegin, r_int_begin);
 }
 r_obj* r_dbl_resize(r_obj* x, r_ssize size) {
-  RESIZE(R_TYPE_double, double, r_dbl_deref_const, r_dbl_deref);
+  RESIZE(R_TYPE_double, double, r_dbl_cbegin, r_dbl_begin);
 }
 r_obj* r_cpl_resize(r_obj* x, r_ssize size) {
-  RESIZE(R_TYPE_complex, r_complex_t, r_cpl_deref_const, r_cpl_deref);
+  RESIZE(R_TYPE_complex, r_complex_t, r_cpl_cbegin, r_cpl_begin);
 }
 r_obj* r_raw_resize(r_obj* x, r_ssize size) {
-  RESIZE(R_TYPE_raw, unsigned char, r_raw_deref_const, r_raw_deref);
+  RESIZE(R_TYPE_raw, unsigned char, r_raw_cbegin, r_raw_begin);
 }
 r_obj* r_chr_resize(r_obj* x, r_ssize size) {
-  RESIZE_BARRIER(R_TYPE_character, r_chr_deref_const, r_chr_poke);
+  RESIZE_BARRIER(R_TYPE_character, r_chr_cbegin, r_chr_poke);
 }
 r_obj* r_list_resize(r_obj* x, r_ssize size) {
-  RESIZE_BARRIER(R_TYPE_list, r_list_deref_const, r_list_poke);
+  RESIZE_BARRIER(R_TYPE_list, r_list_cbegin, r_list_poke);
 }
 
 #undef RESIZE
@@ -101,8 +101,8 @@ r_obj* r_list_compact(r_obj* x) {
   r_ssize n = r_length(x);
   r_obj* inc = KEEP(r_alloc_logical(n));
 
-  int* v_inc = r_int_deref(inc);
-  r_obj* const * v_x = r_list_deref_const(x);
+  int* v_inc = r_int_begin(inc);
+  r_obj* const * v_x = r_list_cbegin(x);
 
   r_ssize new_n = 0;
   for (r_ssize i = 0; i < n; ++i) {
@@ -131,9 +131,9 @@ r_obj* r_list_of_as_ptr_ssize(r_obj* xs,
   r_ssize n = r_length(xs);
 
   r_obj* shelter = KEEP(r_alloc_raw(sizeof(struct r_pair_ptr_ssize) * n));
-  struct r_pair_ptr_ssize* v_out = r_raw_deref(shelter);
+  struct r_pair_ptr_ssize* v_out = r_raw_begin(shelter);
 
-  r_obj* const * v_xs = r_list_deref_const(xs);
+  r_obj* const * v_xs = r_list_cbegin(xs);
 
   for (r_ssize i = 0; i < n; ++i) {
     r_obj* x = v_xs[i];
@@ -143,7 +143,7 @@ r_obj* r_list_of_as_ptr_ssize(r_obj* xs,
     }
 
     v_out[i] = (struct r_pair_ptr_ssize) {
-      .ptr = r_int_deref(x),
+      .ptr = r_int_begin(x),
       .size = r_length(x)
     };
   }
@@ -167,29 +167,29 @@ void r_vec_poke_n(r_obj* x, r_ssize offset,
 
   switch (r_typeof(x)) {
   case R_TYPE_logical: {
-    int* src_data = r_lgl_deref(y);
-    int* dest_data = r_lgl_deref(x);
+    int* src_data = r_lgl_begin(y);
+    int* dest_data = r_lgl_begin(x);
     for (r_ssize i = 0; i != n; ++i)
       dest_data[i + offset] = src_data[i + from];
     break;
   }
   case R_TYPE_integer: {
-    int* src_data = r_int_deref(y);
-    int* dest_data = r_int_deref(x);
+    int* src_data = r_int_begin(y);
+    int* dest_data = r_int_begin(x);
     for (r_ssize i = 0; i != n; ++i)
       dest_data[i + offset] = src_data[i + from];
     break;
   }
   case R_TYPE_double: {
-    double* src_data = r_dbl_deref(y);
-    double* dest_data = r_dbl_deref(x);
+    double* src_data = r_dbl_begin(y);
+    double* dest_data = r_dbl_begin(x);
     for (r_ssize i = 0; i != n; ++i)
       dest_data[i + offset] = src_data[i + from];
     break;
   }
   case R_TYPE_complex: {
-    r_complex_t* src_data = r_cpl_deref(y);
-    r_complex_t* dest_data = r_cpl_deref(x);
+    r_complex_t* src_data = r_cpl_begin(y);
+    r_complex_t* dest_data = r_cpl_begin(x);
     for (r_ssize i = 0; i != n; ++i)
       dest_data[i + offset] = src_data[i + from];
     break;
