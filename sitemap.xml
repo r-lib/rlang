@@ -13,6 +13,9 @@
     <loc>https://rlang.r-lib.org/reference/arg_match.html</loc>
   </url>
   <url>
+    <loc>https://rlang.r-lib.org/reference/arg_require.html</loc>
+  </url>
+  <url>
     <loc>https://rlang.r-lib.org/reference/as_box.html</loc>
   </url>
   <url>
@@ -50,6 +53,9 @@
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/as_utf8_character.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/bang-bang.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/bare-type-predicates.html</loc>
@@ -410,9 +416,6 @@
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/nse-defuse.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/nse-force.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/op-get-attr.html</loc>
