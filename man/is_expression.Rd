@@ -16,21 +16,24 @@ is_symbolic(x)
 \item{x}{An object to test.}
 }
 \description{
-\code{is_expression()} tests for expressions, the set of objects that can be
-obtained from parsing R code. An expression can be one of two
-things: either a symbolic object (for which \code{is_symbolic()} returns
-\code{TRUE}), or a syntactic literal (testable with
-\code{is_syntactic_literal()}). Technically, calls can contain any R
-object, not necessarily symbolic objects or syntactic
-literals. However, this only happens in artificial
-situations. Expressions as we define them only contain numbers,
-strings, \code{NULL}, symbols, and calls: this is the complete set of R
-objects that can be created when R parses source code (e.g. from
-using \code{\link[=parse_expr]{parse_expr()}}).
+In rlang, an \emph{expression} is the return type of \code{\link[=parse_expr]{parse_expr()}}, the
+set of objects that can be obtained from parsing R code. Under this
+definition expressions include numbers, strings, \code{NULL}, symbols,
+and function calls. These objects can be classified as:
+\itemize{
+\item Symbolic objects, i.e. symbols and function calls (for which
+\code{is_symbolic()} returns \code{TRUE})
+\item Syntactic literals, i.e. scalar atomic objects and \code{NULL}
+(testable with \code{is_syntactic_literal()})
+}
 
-Note that we are using the term expression in its colloquial sense
-and not to refer to \code{\link[=expression]{expression()}} vectors, a data type that wraps
-expressions in a vector and which isn't used much in modern R code.
+\code{is_expression()} returns \code{TRUE} if the input is either a symbolic
+object or a syntactic literal.
+
+Note that in base R, there exists \code{\link[=expression]{expression()}} vectors, a data
+type similar to a list that supports special attributes created by
+the parser called source references. This data type is not
+supported in rlang.
 }
 \details{
 \code{is_symbolic()} returns \code{TRUE} for symbols and calls (objects with
@@ -50,16 +53,10 @@ environment. For instance, \code{quote(c(1, 2))} is not a literal, it is
 a call. However, the result of evaluating it in \code{\link[=base_env]{base_env()}} is a
 literal(in this case an atomic vector).
 
-Pairlists are also a kind of language objects. However, since they
-are mostly an internal data structure, \code{is_expression()} returns \code{FALSE}
-for pairlists. You can use \code{is_pairlist()} to explicitly check for
-them. Pairlists are the data structure for function arguments. They
-usually do not arise from R code because subsetting a call is a
-type-preserving operation. However, you can obtain the pairlist of
-arguments by taking the CDR of the call object from C code. The
-rlang function \code{\link[=node_cdr]{node_cdr()}} will do it from R. Another way in
-which pairlist of arguments arise is by extracting the argument
-list of a closure with \code{\link[base:formals]{base::formals()}} or \code{\link[=fn_fmls]{fn_fmls()}}.
+As the data structure for function arguments, pairlists are also a
+kind of language objects. However, since they are mostly an
+internal data structure and can't be returned as is by the parser,
+\code{is_expression()} returns \code{FALSE} for pairlists.
 }
 \examples{
 q1 <- quote(1)

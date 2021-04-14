@@ -1,25 +1,25 @@
 #' Is an object an expression?
 #'
 #' @description
+#' In rlang, an _expression_ is the return type of [parse_expr()], the
+#' set of objects that can be obtained from parsing R code. Under this
+#' definition expressions include numbers, strings, `NULL`, symbols,
+#' and function calls. These objects can be classified as:
 #'
-#' `is_expression()` tests for expressions, the set of objects that can be
-#' obtained from parsing R code. An expression can be one of two
-#' things: either a symbolic object (for which `is_symbolic()` returns
-#' `TRUE`), or a syntactic literal (testable with
-#' `is_syntactic_literal()`). Technically, calls can contain any R
-#' object, not necessarily symbolic objects or syntactic
-#' literals. However, this only happens in artificial
-#' situations. Expressions as we define them only contain numbers,
-#' strings, `NULL`, symbols, and calls: this is the complete set of R
-#' objects that can be created when R parses source code (e.g. from
-#' using [parse_expr()]).
+#' * Symbolic objects, i.e. symbols and function calls (for which
+#'   `is_symbolic()` returns `TRUE`)
+#' * Syntactic literals, i.e. scalar atomic objects and `NULL`
+#'   (testable with `is_syntactic_literal()`)
 #'
-#' Note that we are using the term expression in its colloquial sense
-#' and not to refer to [expression()] vectors, a data type that wraps
-#' expressions in a vector and which isn't used much in modern R code.
+#' `is_expression()` returns `TRUE` if the input is either a symbolic
+#' object or a syntactic literal.
+#'
+#' Note that in base R, there exists [expression()] vectors, a data
+#' type similar to a list that supports special attributes created by
+#' the parser called source references. This data type is not
+#' supported in rlang.
 #'
 #' @details
-#'
 #' `is_symbolic()` returns `TRUE` for symbols and calls (objects with
 #' type `language`). Symbolic objects are replaced by their value
 #' during evaluation. Literals are the complement of symbolic
@@ -37,16 +37,10 @@
 #' a call. However, the result of evaluating it in [base_env()] is a
 #' literal(in this case an atomic vector).
 #'
-#' Pairlists are also a kind of language objects. However, since they
-#' are mostly an internal data structure, `is_expression()` returns `FALSE`
-#' for pairlists. You can use `is_pairlist()` to explicitly check for
-#' them. Pairlists are the data structure for function arguments. They
-#' usually do not arise from R code because subsetting a call is a
-#' type-preserving operation. However, you can obtain the pairlist of
-#' arguments by taking the CDR of the call object from C code. The
-#' rlang function [node_cdr()] will do it from R. Another way in
-#' which pairlist of arguments arise is by extracting the argument
-#' list of a closure with [base::formals()] or [fn_fmls()].
+#' As the data structure for function arguments, pairlists are also a
+#' kind of language objects. However, since they are mostly an
+#' internal data structure and can't be returned as is by the parser,
+#' `is_expression()` returns `FALSE` for pairlists.
 #'
 #' @param x An object to test.
 #' @seealso [is_call()] for a call predicate.
