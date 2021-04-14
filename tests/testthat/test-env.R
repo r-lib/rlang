@@ -367,7 +367,7 @@ test_that("env_poke_parent() fails with namespaces, package envs, and locked env
 
   expect_error(env_poke_parent(global_env(), env()), "global")
   expect_error(env_poke_parent(empty_env(), env()), "empty")
-  expect_error(env_poke_parent(base_env(), env()), "base")
+  expect_error(env_poke_parent(base_env(), env()))
 
   env <- env()
   env_lock(env)
