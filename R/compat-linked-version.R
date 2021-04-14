@@ -54,7 +54,7 @@ check_linked_version <- local({
     msg <- c(msg, howto_reinstall_msg(pkg))
 
     if (with_rlang) {
-      msg <- paste(header, rlang::format_error_bullets(msg), sep = "\n")
+      msg <- paste(header, rlang::format_bullets(msg), sep = "\n")
       rlang::abort(msg)
     } else {
       msg <- paste(c(header, msg), collapse = "\n")

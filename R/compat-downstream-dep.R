@@ -44,7 +44,7 @@ check_downstream_deps <- local({
     )
 
     if (with_rlang) {
-      body <- rlang::format_error_bullets(body)
+      body <- rlang::format_bullets(body)
       msg <- paste(c(header, body), collapse = "\n")
       rlang::warn(msg)
     } else {

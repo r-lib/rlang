@@ -1,12 +1,8 @@
-test_that("format_error_bullets() formats bullets depending on names", {
-  local_options(
-    crayon.enabled = FALSE,
-    cli.unicode = FALSE
-  )
-  expect_identical(format_error_bullets(c("foo", "bar")), "* foo\n* bar")
-  expect_identical(format_error_bullets(c(i = "foo", "baz", x = "bar", v = "bam")), "i foo\n* baz\nx bar\nv bam")
-  expect_error(format_error_bullets(c(i = "foo", u = "bar")))
-  expect_identical(format_error_bullets(chr()), chr())
+test_that("format_bullets() formats bullets depending on names", {
+  expect_identical(format_bullets(c("foo", "bar")), "* foo\n* bar")
+  expect_identical(format_bullets(c(i = "foo", "*" = "baz", x = "bar", v = "bam")), "i foo\n* baz\nx bar\nv bam")
+  expect_error(format_bullets(c(i = "foo", u = "bar")))
+  expect_identical(format_bullets(chr()), chr())
 })
 
 test_that("default conditionMessage() method for rlang errors calls cnd_message()", {
@@ -61,7 +57,7 @@ test_that("can override body method with `body` fields", {
   )
 
   expect_error(
-    stop(error_cnd("rlang_foobar", message = "header", body = ~ format_error_bullets("body"))),
+    stop(error_cnd("rlang_foobar", message = "header", body = ~ format_bullets("body"))),
     "header\n* body",
     fixed = TRUE,
     class = "rlang_foobar"
@@ -72,5 +68,67 @@ test_that("`body` must be a string or a function", {
   expect_error(
     stop(error_cnd("foo", body = letters)),
     "must be a string or a function"
+  )
+})
+
+test_that("can request a line break in error bullets (#1130)", {
+  expect_snapshot({
+    (expect_error(abort(c(
+      "Main header.",
+      "Header 1",
+      x = "Bullet 1",
+      x = "Bullet 2",
+      "Header 2",
+      x = "Bullet 3",
+      x = "Bullet 4"
+    ))))
+
+    (expect_error(abort(c(
+      "Main header.",
+      "Header 1",
+      "x" = "Bullet 1",
+      " " = "Break line",
+      "x" = "Bullet 2",
+      "",
+      "Header 2",
+      "x" = "Bullet 3",
+      " " = "Break line",
+      "x" = "Bullet 4"
+    ))))
+  })
+})
+
+test_that("fully unnamed bullet vectors are treated as bullets", {
+  expect_equal(
+    format_bullets("foo"),
+    "* foo"
+  )
+  expect_equal(
+    format_bullets(c("foo", "bar")),
+    "* foo\n* bar"
+  )
+
+  bullets <- set_names(c("foo", "bar"), c("", ""))
+  expect_equal(
+    format_bullets(bullets),
+    "* foo\n* bar"
+  )
+})
+
+test_that("empty names in partially named bullet vectors are treated as line breaks", {
+  expect_equal(
+    format_bullets(c("foo", i = "bar", "baz")),
+    "foo\ni bar\nbaz"
+  )
+  expect_equal(
+    format_bullets(c(i = "bar", "baz")),
+    "i bar\nbaz"
+  )
+})
+
+test_that("! symbol creates warning bullet", {
+  expect_equal(
+    format_bullets(c("Header", "!" = "Attention")),
+    "Header\n! Attention"
   )
 })

@@ -114,10 +114,6 @@ open_yellow_italic   <- function() if (has_crayon()) "\u001b[33m\u001b[3m"
 open_blurred_italic  <- function() if (has_crayon()) "\u001b[2m\u001b[3m"
 close_blurred_italic <- function() if (has_crayon()) "\u001b[23m\u001b[22m"
 
-bullet <- function(x) {
-  paste0(bold(silver("* ")), x)
-}
-
 
 open_style <- function(style) {
   paste0("\u001b[", codes[[style]][[1]], "m")
@@ -218,17 +214,36 @@ pad_spaces <- function(x, left = TRUE) {
   }
 }
 
+# Import symbols from cli if available
+has_cli <- FALSE
+has_cli_bullet <- FALSE
+on_load({
+  has_cli <- is_installed("cli")
+  # TODO: detect new-style cli bullet
+})
+
 info <- function() {
-  i <- if (is_installed("cli")) cli::symbol$info else "i"
+  i <- if (has_cli) cli::symbol$info else "i"
   blue(i)
 }
 cross <- function() {
-  x <- if (is_installed("cli")) cli::symbol$cross else "x"
+  x <- if (has_cli) cli::symbol$cross else "x"
   red(x)
 }
 tick <- function() {
-  x <- if (is_installed("cli")) cli::symbol$tick else "v"
+  x <- if (has_cli) cli::symbol$tick else "v"
   green(x)
+}
+bullet <- function() {
+  x <- if (has_cli) cli::symbol$bullet else "*"
+
+  # Use small bullet if cli is too old.
+  # See https://github.com/r-lib/cli/issues/241
+  if (!has_cli_bullet && !is_string(x, "*")) {
+    x <- "\u2022"
+  }
+
+  cyan(x)
 }
 
 strip_trailing_newline <- function(x) {

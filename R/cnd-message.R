@@ -104,50 +104,85 @@ cnd_footer.default <- function(cnd, ...) {
 #' Format bullets for error messages
 #'
 #' @description
-#'
-#' `format_error_bullets()` takes a character vector and returns a single
+#' `format_bullets()` takes a character vector and returns a single
 #' string (or an empty vector if the input is empty). The elements of
 #' the input vector are assembled as a list of bullets, depending on
 #' their names:
 #'
-#' - Unnamed elements are bulleted with a "*" symbol.
+#' - Unnamed elements are unindented. They act as titles or subtitles.
+#' - Elements named `"*"` are bulleted with a cyan "bullet" symbol.
 #' - Elements named `"i"` are bulleted with a blue "info" symbol.
 #' - Elements named `"x"` are bulleted with a red "cross" symbol.
 #' - Elements named `"v"` are bulleted with a green "tick" symbol.
+#' - Elements named `"!"` are bulleted with a yellow "warning" symbol.
+#' - Elements named `" "` start with an indented line break.
 #'
-#' This experimental infrastructure is based on the idea that
-#' sentences in error messages are best kept short and simple. From
-#' this point of view, the best way to present the information is in
-#' the [cnd_body()] method of an error conditon, as a bullet list of
-#' simple sentences containing a single clause. The info and cross
-#' symbols of the bullets provide hints on how to interpret the bullet
-#' relative to the general error issue, which should be supplied as
-#' [cnd_header()].
+#' For convenience, if the vector is fully unnamed, the elements are
+#' formatted as "*" bullets.
+#'
+#' The bullet formatting for errors follows the idea that sentences in
+#' error messages are best kept short and simple. The best way to
+#' present the information is in the [cnd_body()] method of an error
+#' conditon as a bullet list of simple sentences containing a single
+#' clause. The info and cross symbols of the bullets provide hints on
+#' how to interpret the bullet relative to the general error issue,
+#' which should be supplied as [cnd_header()].
 #'
 #' @param x A named character vector of messages. Elements named as
-#'   `x`, `i` or `v` are prefixed with the corresponding bullet.
+#'   `"*"`, `"x"`, `"i"`, `"v"`, or `"!"` are prefixed with the
+#'   corresponding bullet. Elements named with a single space `" "`
+#'   trigger a line break from the previous bullet.
+#' @examples
+#' # All bullets
+#' writeLines(format_bullets(c("foo", "bar")))
+#'
+#' # Supply named elements to format info, cross, and tick bullets
+#' writeLines(format_bullets(c(i = "foo", x = "bar", v = "baz", "*" = "quux")))
+#'
+#' # An unnamed element breaks the line
+#' writeLines(format_bullets(c(i = "foo\nbar")))
+#'
+#' # A " " element breaks the line within a bullet (with indentation)
+#' writeLines(format_bullets(c(i = "foo", " " = "bar")))
 #' @export
-format_error_bullets <- function(x) {
+format_bullets <- function(x) {
   if (!length(x)) {
     return(x)
   }
 
-  nms <- names2(x)
-  stopifnot(nms %in% c("i", "x", "v", ""))
+  nms <- names(x)
+
+  # Treat unnamed vectors as all bullets
+  if (is_null(nms) || all(nms == "")) {
+    bullets <- rep_along(x, bullet())
+    return(paste(bullets, x, sep = " ", collapse = "\n"))
+  }
+
+  if (!all(nms %in% c("i", "x", "v", "*", "!", " ", ""))) {
+    abort('Bullet names must be one of "i", "x", "v", "*", "!", or " ".')
+  }
 
   bullets <-
     ifelse(nms == "i", info(),
     ifelse(nms == "x", cross(),
-    ifelse(nms == "v", tick(), "*")))
+    ifelse(nms == "v", tick(),
+    ifelse(nms == "*", bullet(),
+    ifelse(nms == "!", yellow("!"),
+    ifelse(nms == "", "",
+    ifelse(nms == " ", " ",
+      "*")))))))
 
-  paste(bullets, x, sep = " ", collapse = "\n")
+  bullets <-
+    ifelse(bullets == "", "", paste0(bullets, " "))
+
+  paste0(bullets, x, collapse = "\n")
 }
 
 collapse_cnd_message <- function(x) {
   if (length(x) > 1L) {
     paste(
       x[[1]],
-      format_error_bullets(x[-1]),
+      format_bullets(x[-1]),
       sep = "\n"
     )
   } else {

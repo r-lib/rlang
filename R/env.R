@@ -690,7 +690,7 @@ env_print <- function(env = caller_env()) {
     escaped_nms <- map_chr(syms(nms), deparse, backtick = TRUE)
 
     types <- env_binding_type_sum(env, nms)
-    types <- paste0(" ", bullet(paste0(escaped_nms, ": <", types, ">")))
+    types <- paste0(bullet(), " ", paste0(escaped_nms, ": <", types, ">"))
 
     locked <- env_binding_are_locked(env, nms)
     locked <- ifelse(locked, " [L]", "")
