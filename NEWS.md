@@ -1,5 +1,14 @@
 # rlang (development version)
 
+* `format_error_bullets()` now treats:
+
+  - Unnamed elements as unindented line breaks
+  - Elements named `" "` as indented line breaks
+  - Elements named `"*"` as bullets
+  
+  For convenience, a fully unnamed vector is interpreted as a vector
+  of `"*"` bullets.
+
 * New function `arg_require()` to check that an argument is
   supplied. It produces a more friendly error message than `force()`
   (#1118).
