@@ -58,7 +58,7 @@ struct r_dyn_list_of* r_new_dyn_list_of(enum r_type type,
     .capacity = capacity,
     .growth_factor = R_DYN_LOF_GROWTH_FACTOR,
 
-    .v_data = r_arr_ptr_front(p_arrays),
+    .v_data = r_arr_begin(p_arrays),
 
     // private:
     .width = width,
@@ -86,7 +86,7 @@ r_obj* r_lof_unwrap(struct r_dyn_list_of* p_lof) {
 
   enum r_type type = p_lof->type;
   r_ssize n = p_lof->count;
-  struct r_pair_ptr_ssize* v_arrays = r_arr_ptr_front(p_lof->p_arrays);
+  struct r_pair_ptr_ssize* v_arrays = r_arr_begin(p_lof->p_arrays);
 
   for (r_ssize i = 0; i < n; ++i) {
     struct r_pair_ptr_ssize array = v_arrays[i];
@@ -126,7 +126,7 @@ void r_lof_resize(struct r_dyn_list_of* p_lof, r_ssize capacity) {
   // Resize addresses and update them to point to the new memory
   r_arr_resize(p_lof->p_arrays, capacity);
 
-  struct r_pair_ptr_ssize* v_data = r_arr_ptr_front(p_lof->p_arrays);
+  struct r_pair_ptr_ssize* v_data = r_arr_begin(p_lof->p_arrays);
   p_lof->v_data = v_data;
 
   unsigned char* v_reserve_u = (unsigned char*) p_lof->v_reserve;
@@ -187,7 +187,7 @@ void r_lof_arr_push_back(struct r_dyn_list_of* p_lof,
 
   // Also update pointer in case of resize
   R_ARR_POKE(struct r_pair_ptr_ssize, p_lof->p_arrays, i, ((struct r_pair_ptr_ssize) {
-    .ptr = r_arr_ptr_front(p_inner_arr),
+    .ptr = r_arr_begin(p_inner_arr),
     .size = p_inner_arr->count
   }));
 }
@@ -198,7 +198,7 @@ bool reserve_push_back(struct r_dyn_list_of* p_lof, r_ssize i, void* p_elt) {
     return false;
   }
 
-  struct r_pair_ptr_ssize* p_arr_info = r_arr_ptr(p_lof->p_arrays, i);
+  struct r_pair_ptr_ssize* p_arr_info = r_arr_pointer(p_lof->p_arrays, i);
   if (p_arr_info->size >= p_lof->width) {
     // Inner array is getting too big for the reserve. Move it to a
     // dynamic array.
@@ -229,7 +229,7 @@ void reserve_move(struct r_dyn_list_of* p_lof, r_ssize i, void* p_elt) {
   r_list_push_back(p_lof->p_moved_shelter_arr, p_new->shelter);
   r_arr_push_back(p_moved_arr, &p_new);
 
-  void* v_new = r_arr_ptr_front(p_new);
+  void* v_new = r_arr_begin(p_new);
   void* v_old = R_ARR_GET(struct r_pair_ptr_ssize, p_lof->p_arrays, i).ptr;
   memcpy(v_new, v_old, r_ssize_mult(n, p_lof->elt_byte_size));
 

@@ -121,7 +121,7 @@ bool r_sexp_next(struct r_sexp_iterator* p_it) {
     return false;
   }
 
-  struct sexp_stack_info* p_info = (struct sexp_stack_info*) r_arr_ptr_back(p_stack);
+  struct sexp_stack_info* p_info = (struct sexp_stack_info*) r_arr_last(p_stack);
 
   if (p_it->skip_incoming) {
     p_it->skip_incoming = false;

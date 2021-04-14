@@ -84,9 +84,9 @@ void r_arr_push_back(struct r_dyn_array* p_arr,
   }
 
   if (p_elt) {
-    memcpy(r_arr_ptr_back(p_arr), p_elt, p_arr->elt_byte_size);
+    memcpy(r_arr_last(p_arr), p_elt, p_arr->elt_byte_size);
   } else {
-    memset(r_arr_ptr_back(p_arr), 0, p_arr->elt_byte_size);
+    memset(r_arr_last(p_arr), 0, p_arr->elt_byte_size);
   }
 }
 
