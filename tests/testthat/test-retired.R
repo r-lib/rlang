@@ -361,11 +361,11 @@ test_that("call_stack() trail ignores irrelevant frames", {
   f3 <- function(x) call_stack()
 
   stack1 <- f1()
-  trail1 <- pluck_int(stack1, "pos")
+  trail1 <- map_int(stack1, "[[", "pos")
   expect_equal(fixup_call_trail(trail1), c(3, 2, 1))
 
   stack2 <- identity(identity(f1()))
-  trail2 <- pluck_int(stack2, "pos")
+  trail2 <- map_int(stack2, "[[", "pos")
   expect_equal(fixup_call_trail(trail2), c(5, 4, 3))
 })
 
@@ -373,7 +373,7 @@ test_that("ctxt_stack() exprs is in opposite order to sys calls", {
   syscalls <- sys.calls()
   stack <- ctxt_stack()
   stack <- drop_last(stack) # global frame
-  exprs <- pluck(stack, "expr")
+  exprs <- map(stack, "[[", "expr")
   expect_equal(exprs[[length(exprs)]], syscalls[[1]])
   expect_equal(exprs[[1]], syscalls[[length(syscalls)]])
 })

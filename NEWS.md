@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* `compat-purrr.R` now longer includes `pluck*` helpers; these used a defintion
+  of pluck that predated purrr (#1159).
+
 * New `call_match()` function. It is like `match.call()` but also
   supports matching missing arguments to their defaults in the function
   definition (#875).

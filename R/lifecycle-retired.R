@@ -976,7 +976,7 @@ frame_position_global <- function(frame, stack = NULL) {
 
   frame <- get_env(frame)
   stack <- stack %||% stack_trim(ctxt_stack(), n = 2)
-  envs <- pluck(stack, "env")
+  envs <- map(stack, "[[", "env")
 
   i <- 1
   for (env in envs) {

@@ -35,25 +35,6 @@ walk <- function(.x, .f, ...) {
   invisible(.x)
 }
 
-pluck <- function(.x, .f) {
-  map(.x, `[[`, .f)
-}
-pluck_lgl <- function(.x, .f) {
-  map_lgl(.x, `[[`, .f)
-}
-pluck_int <- function(.x, .f) {
-  map_int(.x, `[[`, .f)
-}
-pluck_dbl <- function(.x, .f) {
-  map_dbl(.x, `[[`, .f)
-}
-pluck_chr <- function(.x, .f) {
-  map_chr(.x, `[[`, .f)
-}
-pluck_cpl <- function(.x, .f) {
-  map_cpl(.x, `[[`, .f)
-}
-
 map2 <- function(.x, .y, .f, ...) {
   out <- mapply(.f, .x, .y, MoreArgs = list(...), SIMPLIFY = FALSE)
   if (length(out) == length(.x)) {
