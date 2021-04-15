@@ -21,12 +21,6 @@ walk <- function(.x, .f, ...) {
   invisible(.x)
 }
 
-.map_mold <- function(.x, .f, .mold, ...) {
-  .f <- as_function(.f)
-  out <- vapply(.x, .f, .mold, ..., USE.NAMES = FALSE)
-  names(out) <- names(.x)
-  out
-}
 map_lgl <- function(.x, .f, ...) {
   .map_mold(.x, .f, logical(1), ...)
 }
@@ -38,6 +32,12 @@ map_dbl <- function(.x, .f, ...) {
 }
 map_chr <- function(.x, .f, ...) {
   .map_mold(.x, .f, character(1), ...)
+}
+.map_mold <- function(.x, .f, .mold, ...) {
+  .f <- as_function(.f)
+  out <- vapply(.x, .f, .mold, ..., USE.NAMES = FALSE)
+  names(out) <- names(.x)
+  out
 }
 
 map2 <- function(.x, .y, .f, ...) {
@@ -62,16 +62,6 @@ map2_chr <- function(.x, .y, .f, ...) {
   as.vector(map2(.x, .y, .f, ...), "character")
 }
 
-.args_recycle <- function(args) {
-  lengths <- map_int(args, length)
-  n <- max(lengths)
-
-  stopifnot(all(lengths == 1L | lengths == n))
-  to_recycle <- lengths == 1L
-  args[to_recycle] <- map(args[to_recycle], function(x) rep.int(x, n))
-
-  args
-}
 pmap <- function(.l, .f, ...) {
   .f <- as.function(.f)
   args <- .args_recycle(.l)
@@ -81,15 +71,15 @@ pmap <- function(.l, .f, ...) {
     SIMPLIFY = FALSE, USE.NAMES = FALSE
   ))
 }
+.args_recycle <- function(args) {
+  lengths <- map_int(args, length)
+  n <- max(lengths)
 
-.probe <- function(.x, .p, ...) {
-  if (is_logical(.p)) {
-    stopifnot(length(.p) == length(.x))
-    .p
-  } else {
-    .p <- as_function(.p)
-    map_lgl(.x, .p, ...)
-  }
+  stopifnot(all(lengths == 1L | lengths == n))
+  to_recycle <- lengths == 1L
+  args[to_recycle] <- map(args[to_recycle], function(x) rep.int(x, n))
+
+  args
 }
 
 keep <- function(.x, .f, ...) {
@@ -103,6 +93,15 @@ map_if <- function(.x, .p, .f, ...) {
   matches <- .probe(.x, .p)
   .x[matches] <- map(.x[matches], .f, ...)
   .x
+}
+.probe <- function(.x, .p, ...) {
+  if (is_logical(.p)) {
+    stopifnot(length(.p) == length(.x))
+    .p
+  } else {
+    .p <- as_function(.p)
+    map_lgl(.x, .p, ...)
+  }
 }
 
 compact <- function(.x) {
@@ -191,9 +190,9 @@ detect_index <- function(.x, .f, ..., .right = FALSE, .p = is_true) {
 }
 
 imap <- function(.x, .f, ...) {
-  map2(.x, vec_index(.x), .f, ...)
+  map2(.x, .vec_index(.x), .f, ...)
 }
-vec_index <- function(x) {
+.vec_index <- function(x) {
   names(x) %||% seq_along(x)
 }
 
