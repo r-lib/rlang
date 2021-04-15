@@ -26,9 +26,6 @@ map_dbl <- function(.x, .f, ...) {
 map_chr <- function(.x, .f, ...) {
   map_mold(.x, .f, character(1), ...)
 }
-map_cpl <- function(.x, .f, ...) {
-  map_mold(.x, .f, complex(1), ...)
-}
 
 walk <- function(.x, .f, ...) {
   map(.x, .f, ...)
@@ -54,9 +51,6 @@ map2_dbl <- function(.x, .y, .f, ...) {
 }
 map2_chr <- function(.x, .y, .f, ...) {
   as.vector(map2(.x, .y, .f, ...), "character")
-}
-map2_cpl <- function(.x, .y, .f, ...) {
-  as.vector(map2(.x, .y, .f, ...), "complex")
 }
 
 args_recycle <- function(args) {
