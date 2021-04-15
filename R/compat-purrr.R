@@ -10,6 +10,11 @@ map <- function(.x, .f, ...) {
   .f <- as_function(.f)
   lapply(.x, .f, ...)
 }
+walk <- function(.x, .f, ...) {
+  map(.x, .f, ...)
+  invisible(.x)
+}
+
 map_mold <- function(.x, .f, .mold, ...) {
   .f <- as_function(.f)
   out <- vapply(.x, .f, .mold, ..., USE.NAMES = FALSE)
@@ -27,11 +32,6 @@ map_dbl <- function(.x, .f, ...) {
 }
 map_chr <- function(.x, .f, ...) {
   map_mold(.x, .f, character(1), ...)
-}
-
-walk <- function(.x, .f, ...) {
-  map(.x, .f, ...)
-  invisible(.x)
 }
 
 map2 <- function(.x, .y, .f, ...) {
