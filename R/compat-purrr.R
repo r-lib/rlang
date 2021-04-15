@@ -15,23 +15,23 @@ walk <- function(.x, .f, ...) {
   invisible(.x)
 }
 
-map_mold <- function(.x, .f, .mold, ...) {
+.map_mold <- function(.x, .f, .mold, ...) {
   .f <- as_function(.f)
   out <- vapply(.x, .f, .mold, ..., USE.NAMES = FALSE)
   names(out) <- names(.x)
   out
 }
 map_lgl <- function(.x, .f, ...) {
-  map_mold(.x, .f, logical(1), ...)
+  .map_mold(.x, .f, logical(1), ...)
 }
 map_int <- function(.x, .f, ...) {
-  map_mold(.x, .f, integer(1), ...)
+  .map_mold(.x, .f, integer(1), ...)
 }
 map_dbl <- function(.x, .f, ...) {
-  map_mold(.x, .f, double(1), ...)
+  .map_mold(.x, .f, double(1), ...)
 }
 map_chr <- function(.x, .f, ...) {
-  map_mold(.x, .f, character(1), ...)
+  .map_mold(.x, .f, character(1), ...)
 }
 
 map2 <- function(.x, .y, .f, ...) {
@@ -56,7 +56,7 @@ map2_chr <- function(.x, .y, .f, ...) {
   as.vector(map2(.x, .y, .f, ...), "character")
 }
 
-args_recycle <- function(args) {
+.args_recycle <- function(args) {
   lengths <- map_int(args, length)
   n <- max(lengths)
 
@@ -68,7 +68,7 @@ args_recycle <- function(args) {
 }
 pmap <- function(.l, .f, ...) {
   .f <- as.function(.f)
-  args <- args_recycle(.l)
+  args <- .args_recycle(.l)
   do.call("mapply", c(
     FUN = list(quote(.f)),
     args, MoreArgs = quote(list(...)),
@@ -76,7 +76,7 @@ pmap <- function(.l, .f, ...) {
   ))
 }
 
-probe <- function(.x, .p, ...) {
+.probe <- function(.x, .p, ...) {
   if (is_logical(.p)) {
     stopifnot(length(.p) == length(.x))
     .p
@@ -87,14 +87,14 @@ probe <- function(.x, .p, ...) {
 }
 
 keep <- function(.x, .f, ...) {
-  .x[probe(.x, .f, ...)]
+  .x[.probe(.x, .f, ...)]
 }
 discard <- function(.x, .p, ...) {
-  sel <- probe(.x, .p, ...)
+  sel <- .probe(.x, .p, ...)
   .x[is.na(sel) | !sel]
 }
 map_if <- function(.x, .p, .f, ...) {
-  matches <- probe(.x, .p)
+  matches <- .probe(.x, .p)
   .x[matches] <- map(.x[matches], .f, ...)
   .x
 }
@@ -117,18 +117,23 @@ transpose <- function(.l) {
 }
 
 every <- function(.x, .p, ...) {
+  .p <- as_function(.p)
+
   for (i in seq_along(.x)) {
     if (!rlang::is_true(.p(.x[[i]], ...))) return(FALSE)
   }
   TRUE
 }
 some <- function(.x, .p, ...) {
+  .p <- as_function(.p)
+
   for (i in seq_along(.x)) {
     if (rlang::is_true(.p(.x[[i]], ...))) return(TRUE)
   }
   FALSE
 }
 negate <- function(.p) {
+  .p <- as_function(.p)
   function(...) !.p(...)
 }
 
@@ -150,7 +155,10 @@ accumulate_right <- function(.x, .f, ..., .init) {
 }
 
 detect <- function(.x, .f, ..., .right = FALSE, .p = is_true) {
-  for (i in index(.x, .right)) {
+  .p <- as_function(.p)
+  .f <- as_function(.f)
+
+  for (i in .index(.x, .right)) {
     if (.p(.f(.x[[i]], ...))) {
       return(.x[[i]])
     }
@@ -158,14 +166,17 @@ detect <- function(.x, .f, ..., .right = FALSE, .p = is_true) {
   NULL
 }
 detect_index <- function(.x, .f, ..., .right = FALSE, .p = is_true) {
-  for (i in index(.x, .right)) {
+  .p <- as_function(.p)
+  .f <- as_function(.f)
+
+  for (i in .index(.x, .right)) {
     if (.p(.f(.x[[i]], ...))) {
       return(i)
     }
   }
   0L
 }
-index <- function(x, right = FALSE) {
+.index <- function(x, right = FALSE) {
   idx <- seq_along(x)
   if (right) {
     idx <- rev(idx)
