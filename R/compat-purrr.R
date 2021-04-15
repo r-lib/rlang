@@ -7,9 +7,11 @@
 # repository.
 
 map <- function(.x, .f, ...) {
+  .f <- as_function(.f)
   lapply(.x, .f, ...)
 }
 map_mold <- function(.x, .f, .mold, ...) {
+  .f <- as_function(.f)
   out <- vapply(.x, .f, .mold, ..., USE.NAMES = FALSE)
   names(out) <- names(.x)
   out
@@ -33,6 +35,7 @@ walk <- function(.x, .f, ...) {
 }
 
 map2 <- function(.x, .y, .f, ...) {
+  .f <- as_function(.f)
   out <- mapply(.f, .x, .y, MoreArgs = list(...), SIMPLIFY = FALSE)
   if (length(out) == length(.x)) {
     set_names(out, names(.x))
@@ -64,6 +67,7 @@ args_recycle <- function(args) {
   args
 }
 pmap <- function(.l, .f, ...) {
+  .f <- as.function(.f)
   args <- args_recycle(.l)
   do.call("mapply", c(
     FUN = list(quote(.f)),
@@ -77,6 +81,7 @@ probe <- function(.x, .p, ...) {
     stopifnot(length(.p) == length(.x))
     .p
   } else {
+    .p <- as_function(.p)
     map_lgl(.x, .p, ...)
   }
 }
