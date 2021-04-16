@@ -8,7 +8,7 @@ call_match(
   call = NULL,
   fn = NULL,
   ...,
-  defaults = TRUE,
+  defaults = FALSE,
   dots_env = NULL,
   dots_expand = TRUE
 )
@@ -40,10 +40,14 @@ does not support passing dots through a named argument, even if
 named \code{"..."}.}
 }
 \description{
-\code{call_match()} is like \code{\link[=match.call]{match.call()}} but also matches missing
-argument to their defaults in the function definition. It requires
-you to be a little more specific in some cases (see the Inference
-section).
+\code{call_match()} is like \code{\link[=match.call]{match.call()}} with these differences:
+\itemize{
+\item It supports matching missing argument to their defaults in the
+function definition.
+\item It requires you to be a little more specific in some cases.
+Either all arguments are inferred from the call stack or none of
+them are (see the Inference section).
+}
 }
 \section{Inference from the call stack}{
 
@@ -62,9 +66,9 @@ when not inferred.
 }
 
 \examples{
-# Unlike `match.call()`, `call_match()` matches missing arguments
-# to their defaults
+# `call_match()` supports matching missing arguments to their
+# defaults
 fn <- function(x = "default") fn
-match.call(fn, quote(fn()))
 call_match(quote(fn()), fn)
+call_match(quote(fn()), fn, defaults = TRUE)
 }

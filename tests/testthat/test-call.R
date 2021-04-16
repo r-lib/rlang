@@ -61,7 +61,7 @@ test_that("if `call` is supplied to `call_match()`, `fn` must be supplied", {
 })
 
 test_that("call_match() infers call and definition", {
-  fn <- function(foo) call_match()
+  fn <- function(foo) call_match(defaults = TRUE)
   expect_equal(fn(), quote(fn(foo = )))
   expect_equal(fn(TRUE), quote(fn(foo = TRUE)))
 
@@ -82,7 +82,7 @@ test_that("call_match() matches defaults", {
   fn <- function(a, b = TRUE, ..., c = FALSE, d) NULL
 
   expect_equal(
-    call_match(quote(fn()), fn),
+    call_match(quote(fn()), fn, defaults = TRUE),
     quote(fn(a = , b = TRUE, c = FALSE, d = ))
   )
   expect_equal(
@@ -91,7 +91,7 @@ test_that("call_match() matches defaults", {
   )
 
   expect_equal(
-    call_match(quote(fn(NULL)), fn),
+    call_match(quote(fn(NULL)), fn, defaults = TRUE),
     quote(fn(a = NULL, b = TRUE, c = FALSE, d = ))
   )
   expect_equal(
@@ -100,7 +100,7 @@ test_that("call_match() matches defaults", {
   )
 
   expect_equal(
-    call_match(quote(fn(NULL, foo = TRUE)), fn),
+    call_match(quote(fn(NULL, foo = TRUE)), fn, defaults = TRUE),
     quote(fn(a = NULL, b = TRUE, foo = TRUE, c = FALSE, d = ))
   )
   expect_equal(
@@ -109,7 +109,7 @@ test_that("call_match() matches defaults", {
   )
 
   expect_equal(
-    call_match(quote(fn(NULL, foo = TRUE)), fn, dots_expand = FALSE),
+    call_match(quote(fn(NULL, foo = TRUE)), fn, dots_expand = FALSE, defaults = TRUE),
     expr(fn(a = NULL, b = TRUE, ... = !!pairlist(foo = TRUE), c = FALSE, d = ))
   )
 

@@ -672,10 +672,15 @@ call_standardise <- function(call,
 
 #' Match supplied arguments to function definition
 #'
-#' `call_match()` is like [match.call()] but also matches missing
-#' argument to their defaults in the function definition. It requires
-#' you to be a little more specific in some cases (see the Inference
-#' section).
+#' @description
+#' `call_match()` is like [match.call()] with these differences:
+#'
+#' - It supports matching missing argument to their defaults in the
+#'   function definition.
+#'
+#' - It requires you to be a little more specific in some cases.
+#'   Either all arguments are inferred from the call stack or none of
+#'   them are (see the Inference section).
 #'
 #' @param call A call. The arguments will be matched to `fn`.
 #' @param fn A function definition to match arguments to.
@@ -712,16 +717,16 @@ call_standardise <- function(call,
 #' when not inferred.
 #'
 #' @examples
-#' # Unlike `match.call()`, `call_match()` matches missing arguments
-#' # to their defaults
+#' # `call_match()` supports matching missing arguments to their
+#' # defaults
 #' fn <- function(x = "default") fn
-#' match.call(fn, quote(fn()))
 #' call_match(quote(fn()), fn)
+#' call_match(quote(fn()), fn, defaults = TRUE)
 #' @export
 call_match <- function(call = NULL,
                        fn = NULL,
                        ...,
-                       defaults = TRUE,
+                       defaults = FALSE,
                        dots_env = NULL,
                        dots_expand = TRUE) {
   check_dots_empty(...)
