@@ -45,7 +45,7 @@ internal-files = \
         internal/env-binding.c \
         internal/eval.c \
         internal/eval-tidy.c \
-        internal/expr-interp.c \
+        internal/nse-inject.c \
         internal/ast-rotate.c \
         internal/fn.c \
         internal/hash.c \

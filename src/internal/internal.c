@@ -10,7 +10,7 @@
 #include "env-binding.c"
 #include "eval.c"
 #include "eval-tidy.c"
-#include "expr-interp.c"
+#include "nse-inject.c"
 #include "ast-rotate.c"
 #include "fn.c"
 #include "hash.c"

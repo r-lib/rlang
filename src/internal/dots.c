@@ -1,6 +1,6 @@
 #include <rlang.h>
 #include "dots.h"
-#include "expr-interp.h"
+#include "nse-inject.h"
 #include "internal.h"
 #include "squash.h"
 #include "utils.h"
@@ -238,7 +238,7 @@ static r_obj* dots_big_bang_coerce(r_obj* x) {
   }
 }
 
-// Also used in expr-interp.c
+// Also used in nse-inject.c
 r_obj* big_bang_coerce_pairlist(r_obj* x, bool deep) {
   int n_kept = 0;
 

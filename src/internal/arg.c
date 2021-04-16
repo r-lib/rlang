@@ -1,5 +1,5 @@
 #include <rlang.h>
-#include "expr-interp.h"
+#include "nse-inject.h"
 #include "utils.h"
 
 // Capture

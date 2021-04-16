@@ -1,6 +1,6 @@
 #include <rlang.h>
 #include "parse.h"
-#include "expr-interp.h"
+#include "nse-inject.h"
 #include "ast-rotate.h"
 
 
