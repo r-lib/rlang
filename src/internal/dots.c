@@ -393,7 +393,7 @@ static r_obj* dots_unquote(r_obj* dots, struct dots_capture_info* capture_info) 
     }
 
     struct expansion_info info = which_expansion_op(expr, unquote_names);
-    enum dots_expansion_op dots_op = info.op + (EXPANSION_OP_MAX * capture_info->type);
+    enum dots_op dots_op = info.op + (EXPANSION_OP_MAX * capture_info->type);
 
     r_obj* name = r_node_tag(node);
 
@@ -408,35 +408,35 @@ static r_obj* dots_unquote(r_obj* dots, struct dots_capture_info* capture_info) 
     }
 
     switch (dots_op) {
-    case OP_EXPR_NONE:
-    case OP_EXPR_UQ:
-    case OP_EXPR_FIXUP:
-    case OP_EXPR_DOT_DATA:
-    case OP_EXPR_CURLY:
+    case DOTS_OP_expr_none:
+    case DOTS_OP_expr_uq:
+    case DOTS_OP_expr_fixup:
+    case DOTS_OP_expr_dot_data:
+    case DOTS_OP_expr_curly:
       expr = call_interp_impl(expr, env, info);
       capture_info->count += 1;
       break;
-    case OP_EXPR_UQS:
+    case DOTS_OP_expr_uqs:
       expr = dots_big_bang(capture_info, info.operand, env, false);
       break;
-    case OP_QUO_NONE:
-    case OP_QUO_UQ:
-    case OP_QUO_FIXUP:
-    case OP_QUO_DOT_DATA:
-    case OP_QUO_CURLY: {
+    case DOTS_OP_quo_none:
+    case DOTS_OP_quo_uq:
+    case DOTS_OP_quo_fixup:
+    case DOTS_OP_quo_dot_data:
+    case DOTS_OP_quo_curly: {
       expr = KEEP(call_interp_impl(expr, env, info));
       expr = forward_quosure(expr, env);
       FREE(1);
       capture_info->count += 1;
       break;
     }
-    case OP_QUO_UQS: {
+    case DOTS_OP_quo_uqs: {
       expr = dots_big_bang(capture_info, info.operand, env, true);
       break;
     }
-    case OP_VALUE_NONE:
-    case OP_VALUE_FIXUP:
-    case OP_VALUE_DOT_DATA: {
+    case DOTS_OP_value_none:
+    case DOTS_OP_value_fixup:
+    case DOTS_OP_value_dot_data: {
       r_obj* orig = expr;
 
       if (expr == r_syms.missing) {
@@ -470,20 +470,20 @@ static r_obj* dots_unquote(r_obj* dots, struct dots_capture_info* capture_info) 
       FREE(1);
       break;
     }
-    case OP_VALUE_UQ:
+    case DOTS_OP_value_uq:
       r_abort("Can't use `!!` in a non-quoting function");
-    case OP_VALUE_UQS: {
+    case DOTS_OP_value_uqs: {
       expr = dots_big_bang(capture_info, info.operand, env, false);
       break;
     }
-    case OP_VALUE_CURLY:
+    case DOTS_OP_value_curly:
       r_abort("Can't use `{{` in a non-quoting function");
-    case OP_EXPR_UQN:
-    case OP_QUO_UQN:
-    case OP_VALUE_UQN:
+    case DOTS_OP_expr_uqn:
+    case DOTS_OP_quo_uqn:
+    case DOTS_OP_value_uqn:
       r_abort("`:=` can't be chained");
-    case OP_DOTS_MAX:
-      r_abort("Internal error: `OP_DOTS_MAX`");
+    case DOTS_OP_MAX:
+      r_abort("Internal error: `DOTS_OP_MAX`");
     }
 
     r_node_poke_car(node, expr);
