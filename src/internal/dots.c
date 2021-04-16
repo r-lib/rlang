@@ -15,14 +15,6 @@ enum dots_homonyms {
 
 #include "decl/dots-decl.h"
 
-// Initialised at load time
-static r_obj* as_label_call = NULL;
-static r_obj* empty_spliced_arg = NULL;
-static r_obj* splice_box_attrib = NULL;
-static r_obj* quosures_attrib = NULL;
-static r_obj* auto_name_call = NULL;
-static r_obj* glue_unquote_fn = NULL;
-
 
 static inline
 r_obj* r_as_label(r_obj* x) {
@@ -1072,3 +1064,10 @@ void rlang_init_dots(r_obj* ns) {
   as_label_call = r_parse("as_label(x)");
   r_preserve(as_label_call);
 }
+
+static r_obj* as_label_call = NULL;
+static r_obj* empty_spliced_arg = NULL;
+static r_obj* splice_box_attrib = NULL;
+static r_obj* quosures_attrib = NULL;
+static r_obj* auto_name_call = NULL;
+static r_obj* glue_unquote_fn = NULL;
