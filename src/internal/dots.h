@@ -3,10 +3,10 @@
 
 
 #define DOTS_CAPTURE_TYPE_MAX 3
-enum dots_capture_type {
-  DOTS_EXPR,
-  DOTS_QUO,
-  DOTS_VALUE
+enum dots_collect {
+  DOTS_COLLECT_expr,
+  DOTS_COLLECT_quo,
+  DOTS_COLLECT_value
 };
 
 enum dots_expansion_op {

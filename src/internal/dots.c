@@ -51,7 +51,7 @@ enum dots_homonyms {
 };
 
 struct dots_capture_info {
-  enum dots_capture_type type;
+  enum dots_collect type;
   r_ssize count;
   r_obj* named;
   bool needs_expansion;
@@ -67,7 +67,7 @@ struct dots_capture_info {
 static int arg_match_ignore_empty(r_obj* ignore_empty);
 static enum dots_homonyms arg_match_homonyms(r_obj* homonyms);
 
-struct dots_capture_info init_capture_info(enum dots_capture_type type,
+struct dots_capture_info init_capture_info(enum dots_collect type,
                                            r_obj* named,
                                            r_obj* ignore_empty,
                                            r_obj* preserve_empty,
@@ -351,7 +351,7 @@ static r_obj* dots_unquote(r_obj* dots, struct dots_capture_info* capture_info) 
   // In the case of `dots_list()` we auto-name inputs eagerly while we
   // still have access to the defused expression
   bool needs_autoname =
-    capture_info->type == DOTS_VALUE &&
+    capture_info->type == DOTS_COLLECT_value &&
     should_auto_name(capture_info->named);
 
   r_obj* node = dots;
@@ -596,7 +596,7 @@ r_obj* dots_as_list(r_obj* dots, struct dots_capture_info* capture_info) {
 
   // Add default empty names unless dots are captured by values
   r_obj* out_names = r_null;
-  if (capture_info->type != DOTS_VALUE || any_name(dots, capture_info->splice)) {
+  if (capture_info->type != DOTS_COLLECT_value || any_name(dots, capture_info->splice)) {
     out_names = KEEP_N(r_alloc_character(capture_info->count), &n_kept);
     r_attrib_push(out, r_syms.names, out_names);
   }
@@ -738,7 +738,7 @@ r_obj* rlang_unescape_character(r_obj*);
 static r_obj* dots_finalise(struct dots_capture_info* capture_info, r_obj* dots) {
   r_obj* nms = r_names(dots);
 
-  if (capture_info->type == DOTS_VALUE && should_auto_name(capture_info->named)) {
+  if (capture_info->type == DOTS_COLLECT_value && should_auto_name(capture_info->named)) {
     if (nms == r_null) {
       nms = r_alloc_character(r_length(dots));
     }
@@ -775,7 +775,7 @@ r_obj* rlang_exprs_interp(r_obj* frame_env,
                           r_obj* homonyms,
                           r_obj* check_assign) {
   struct dots_capture_info capture_info;
-  capture_info = init_capture_info(DOTS_EXPR,
+  capture_info = init_capture_info(DOTS_COLLECT_expr,
                                    named,
                                    ignore_empty,
                                    r_true,
@@ -800,7 +800,7 @@ r_obj* rlang_quos_interp(r_obj* frame_env,
                          r_obj* homonyms,
                          r_obj* check_assign) {
   struct dots_capture_info capture_info;
-  capture_info = init_capture_info(DOTS_QUO,
+  capture_info = init_capture_info(DOTS_COLLECT_quo,
                                    named,
                                    ignore_empty,
                                    r_true,
@@ -846,7 +846,7 @@ static r_obj* dots_values_impl(r_obj* frame_env,
                                r_obj* check_assign,
                                bool splice) {
   struct dots_capture_info capture_info;
-  capture_info = init_capture_info(DOTS_VALUE,
+  capture_info = init_capture_info(DOTS_COLLECT_value,
                                    named,
                                    ignore_empty,
                                    preserve_empty,
@@ -938,7 +938,7 @@ r_obj* rlang_dots_flat_list(r_obj* frame_env,
                             r_obj* check_assign) {
 
   struct dots_capture_info capture_info;
-  capture_info = init_capture_info(DOTS_VALUE,
+  capture_info = init_capture_info(DOTS_COLLECT_value,
                                    named,
                                    ignore_empty,
                                    preserve_empty,
@@ -968,7 +968,7 @@ r_obj* dots_values_node_impl(r_obj* frame_env,
                              r_obj* check_assign,
                              bool splice) {
   struct dots_capture_info capture_info;
-  capture_info = init_capture_info(DOTS_VALUE,
+  capture_info = init_capture_info(DOTS_COLLECT_value,
                                    named,
                                    ignore_empty,
                                    preserve_empty,
