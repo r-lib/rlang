@@ -634,13 +634,23 @@ abort_call_input_type <- function(arg) {
 #' @param env The environment where to find the definition of the
 #'   function quoted in `call` in case `call` is not wrapped in a
 #'   quosure.
+#' @inheritParams call_match
 #'
 #' @return A quosure if `call` is a quosure, a raw call otherwise.
 #' @export
-call_standardise <- function(call, env = caller_env()) {
+call_standardise <- function(call,
+                             env = caller_env(),
+                             ...,
+                             defaults = FALSE,
+                             dots_env = empty_env()) {
+  check_dots_empty(...)
+
   expr <- get_expr(call)
   if (!is_call(expr)) {
     abort_call_input_type("call")
+  }
+  if (is_bare_formula(call)) {
+    return(call)
   }
 
   if (is_frame(call)) {
@@ -651,12 +661,124 @@ call_standardise <- function(call, env = caller_env()) {
     fn <- eval_bare(node_car(expr), env)
   }
 
-  if (is_primitive(fn)) {
-    call
+  matched <- call_match(
+    expr,
+    fn,
+    defaults = defaults,
+    dots_env = dots_env
+  )
+  set_expr(call, matched)
+}
+
+#' Match supplied arguments to function definition
+#'
+#' `call_match()` is like [match.call()] but also matches missing
+#' argument to their defaults in the function definition. It requires
+#' you to be a little more specific in some cases (see the Inference
+#' section).
+#'
+#' @param call A call. The arguments will be matched to `fn`.
+#' @param fn A function definition to match arguments to.
+#' @param ... These dots must be empty.
+#' @param defaults Whether to match missing arguments to their
+#'   defaults.
+#' @param dots_env An execution environment where to find dots. If
+#'   supplied and dots exist in this environment, and if `call`
+#'   includes `...`, the forwarded dots are matched to numbered dots
+#'   (e.g. `..1`, `..2`, etc). By default this is set to the empty
+#'   environment which means that `...` expands to nothing.
+#' @param dots_expand If `FALSE`, arguments passed through `...` will
+#'   not be spliced into `call`. Instead, they are gathered in a
+#'   pairlist and assigned to an argument named `...`. Gathering dots
+#'   arguments is useful if you need to separate them from the other
+#'   named arguments.
+#'
+#'   Note that the resulting call is not meant to be evaluated since R
+#'   does not support passing dots through a named argument, even if
+#'   named `"..."`.
+#'
+#' @section Inference from the call stack:
+#' When `call` is not supplied, it is inferred from the call stack
+#' along with `fn` and `dots_env`.
+#'
+#' - `call` and `fn` are inferred from the calling environment:
+#'   `sys.call(sys.parent())` and `sys.function(sys.parent())`.
+#'
+#' - `dots_env` is inferred from the caller of the calling
+#'   environment: `caller_env(2)`.
+#'
+#' If `call` is supplied, then you must supply `fn` as well. Also
+#' consider supplying `dots_env` as it is set to the empty environment
+#' when not inferred.
+#'
+#' @examples
+#' # Unlike `match.call()`, `call_match()` matches missing arguments
+#' # to their defaults
+#' fn <- function(x = "default") fn
+#' match.call(fn, quote(fn()))
+#' call_match(quote(fn()), fn)
+#' @export
+call_match <- function(call = NULL,
+                       fn = NULL,
+                       ...,
+                       defaults = TRUE,
+                       dots_env = NULL,
+                       dots_expand = TRUE) {
+  check_dots_empty(...)
+
+  if (is_null(call)) {
+    call <- sys.call(sys.parent())
+    fn <- fn %||% sys.function(sys.parent())
+    dots_env <- dots_env %||% caller_env(2)
   } else {
-    matched <- match.call(fn, expr)
-    set_expr(call, matched)
+    dots_env <- dots_env %||% empty_env()
   }
+
+  if (is_null(fn)) {
+    abort("`fn` must be supplied.")
+  }
+  if (!is_environment(dots_env)) {
+    abort("`dots_env` must be an environment.")
+  }
+
+  if (is_primitive(fn)) {
+    return(call)
+  }
+
+  # Don't expand dots before matching defaults to make it easier to
+  # sort the arguments by formals
+  call <- match.call(fn, call, expand.dots = FALSE, envir = dots_env)
+
+  if (defaults) {
+    fmls <- fn_fmls(fn)
+    names <- names(fmls)
+    missing <- !names %in% names(call)
+
+    args <- c(as.list(call[-1]), fmls[missing])
+    args <- args[names]
+    call <- call2(call[[1]], !!!args)
+  }
+
+  if (is_missing(call$...)) {
+    call$... <- NULL
+    return(call)
+  }
+
+  if (!dots_expand) {
+    return(call)
+  }
+
+  i <- match("...", names(call))
+  if (is_na(i)) {
+    return(call)
+  }
+
+  call <- as.list(call)
+  as.call(c(
+    call[seq2(1, i - 1)],
+    call$...,
+    call[seq2(i + 1, length(call))]
+  ))
 }
 
 #' Extract function from a call

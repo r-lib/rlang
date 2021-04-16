@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* `call_standardise()` gains `defaults` and `dots_env` arguments.
+
 * New `call_match()` function. It is like `match.call()` but also
   supports matching missing arguments to their defaults in the function
   definition (#875).
