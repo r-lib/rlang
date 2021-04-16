@@ -37,15 +37,15 @@ enum injection_op {
 };
 #define INJECTION_OP_MAX 7
 
-struct expansion_info {
+struct injection_info {
   enum injection_op op;
   r_obj* operand;  // Expression being unquoted
   r_obj* parent;   // Node pointing to the future unquoted value
   r_obj* root;     // Expression wrapping the unquoted value (optional)
 };
 
-static inline struct expansion_info init_expansion_info() {
-  struct expansion_info info;
+static inline struct injection_info init_expansion_info() {
+  struct injection_info info;
 
   info.op = INJECTION_OP_none;
   info.operand = r_null;
@@ -55,15 +55,15 @@ static inline struct expansion_info init_expansion_info() {
   return info;
 }
 
-struct expansion_info which_uq_op(r_obj* x);
-struct expansion_info which_expansion_op(r_obj* x, bool unquote_names);
-struct expansion_info is_big_bang_op(r_obj* x);
+struct injection_info which_uq_op(r_obj* x);
+struct injection_info which_expansion_op(r_obj* x, bool unquote_names);
+struct injection_info is_big_bang_op(r_obj* x);
 
 r_obj* big_bang_coerce(r_obj* expr);
 
 r_obj* rlang_interp(r_obj* x, r_obj* env);
 r_obj* call_interp(r_obj* x, r_obj* env);
-r_obj* call_interp_impl(r_obj* x, r_obj* env, struct expansion_info info);
+r_obj* call_interp_impl(r_obj* x, r_obj* env, struct injection_info info);
 
 
 static inline r_obj* forward_quosure(r_obj* x, r_obj* env) {

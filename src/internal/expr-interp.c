@@ -4,11 +4,11 @@
 #include "utils.h"
 
 
-struct expansion_info which_bang_op(r_obj* second, struct expansion_info info);
-struct expansion_info which_curly_op(r_obj* second, struct expansion_info info);
+struct injection_info which_bang_op(r_obj* second, struct injection_info info);
+struct injection_info which_curly_op(r_obj* second, struct injection_info info);
 
-struct expansion_info which_uq_op(r_obj* first) {
-  struct expansion_info info = init_expansion_info();
+struct injection_info which_uq_op(r_obj* first) {
+  struct injection_info info = init_expansion_info();
 
   if (r_is_call(first, "(")) {
     r_obj* paren = r_node_cadr(first);
@@ -16,7 +16,7 @@ struct expansion_info which_uq_op(r_obj* first) {
       return info;
     }
 
-    struct expansion_info inner_info = which_uq_op(paren);
+    struct injection_info inner_info = which_uq_op(paren);
 
     // Check that `root` is NULL so we don't remove parentheses when
     // there's an operation tail (i.e. when the parse tree was fixed
@@ -49,7 +49,7 @@ struct expansion_info which_uq_op(r_obj* first) {
   }
 }
 
-struct expansion_info which_bang_op(r_obj* second, struct expansion_info info) {
+struct injection_info which_bang_op(r_obj* second, struct injection_info info) {
   if (!r_is_call(second, "!")) {
     return info;
   }
@@ -73,7 +73,7 @@ struct expansion_info which_bang_op(r_obj* second, struct expansion_info info) {
   info.operand = r_node_cadr(third);
   return info;
 }
-struct expansion_info which_curly_op(r_obj* second, struct expansion_info info) {
+struct injection_info which_curly_op(r_obj* second, struct injection_info info) {
   if (!r_is_call(second, "{")) {
     return info;
   }
@@ -134,7 +134,7 @@ void signal_namespaced_uqs_deprecation() {
   );
 }
 
-void maybe_poke_big_bang_op(r_obj* x, struct expansion_info* info) {
+void maybe_poke_big_bang_op(r_obj* x, struct injection_info* info) {
   if (r_is_call(x, "!!!")) {
     if (r_node_cddr(x) != r_null) {
       r_abort("Can't supply multiple arguments to `!!!`");
@@ -164,8 +164,8 @@ void maybe_poke_big_bang_op(r_obj* x, struct expansion_info* info) {
 
 static r_obj* dot_data_sym = NULL;
 
-struct expansion_info which_expansion_op(r_obj* x, bool unquote_names) {
-  struct expansion_info info = which_uq_op(x);
+struct injection_info which_expansion_op(r_obj* x, bool unquote_names) {
+  struct injection_info info = which_uq_op(x);
 
   if (r_typeof(x) != R_TYPE_call) {
     return info;
@@ -237,7 +237,7 @@ struct expansion_info which_expansion_op(r_obj* x, bool unquote_names) {
     info.operand = r_node_car(info.parent);
 
     // User had to unquote operand manually before .data[[ was unquote syntax
-    struct expansion_info nested = which_expansion_op(info.operand, false);
+    struct injection_info nested = which_expansion_op(info.operand, false);
     if (nested.op == INJECTION_OP_uq) {
       const char* msg = "It is no longer necessary to unquote within the `.data` pronoun";
       signal_soft_deprecated(msg, msg, r_empty_env);
@@ -250,8 +250,8 @@ struct expansion_info which_expansion_op(r_obj* x, bool unquote_names) {
   return info;
 }
 
-struct expansion_info is_big_bang_op(r_obj* x) {
-  struct expansion_info info = which_uq_op(x);
+struct injection_info is_big_bang_op(r_obj* x) {
+  struct injection_info info = which_uq_op(x);
 
   if (info.op != INJECTION_OP_uqs) {
     maybe_poke_big_bang_op(x, &info);
@@ -261,7 +261,7 @@ struct expansion_info is_big_bang_op(r_obj* x) {
 }
 
 
-static r_obj* bang_bang_teardown(r_obj* value, struct expansion_info info) {
+static r_obj* bang_bang_teardown(r_obj* value, struct injection_info info) {
   r_mark_shared(value);
 
   if (info.parent != r_null) {
@@ -274,7 +274,7 @@ static r_obj* bang_bang_teardown(r_obj* value, struct expansion_info info) {
     return info.root;
   }
 }
-static r_obj* bang_bang(struct expansion_info info, r_obj* env) {
+static r_obj* bang_bang(struct injection_info info, r_obj* env) {
   r_obj* value = r_eval(info.operand, env);
   return bang_bang_teardown(value, info);
 }
@@ -302,7 +302,7 @@ r_obj* big_bang(r_obj* operand, r_obj* env, r_obj* prev, r_obj* node) {
   return node;
 }
 
-static r_obj* curly_curly(struct expansion_info info, r_obj* env) {
+static r_obj* curly_curly(struct injection_info info, r_obj* env) {
   r_obj* value = rlang_enquo(info.operand, env);
   return bang_bang_teardown(value, info);
 }
@@ -314,11 +314,11 @@ static r_obj* node_list_interp(r_obj* x, r_obj* env);
 static void call_maybe_poke_string_head(r_obj* call);
 
 r_obj* call_interp(r_obj* x, r_obj* env)  {
-  struct expansion_info info = which_expansion_op(x, false);
+  struct injection_info info = which_expansion_op(x, false);
   return call_interp_impl(x, env, info);
 }
 
-r_obj* call_interp_impl(r_obj* x, r_obj* env, struct expansion_info info) {
+r_obj* call_interp_impl(r_obj* x, r_obj* env, struct injection_info info) {
   if (info.op && info.op != INJECTION_OP_fixup && r_node_cdr(x) == r_null) {
     r_abort("`UQ()` and `UQS()` must be called with an argument");
   }
@@ -395,7 +395,7 @@ static r_obj* node_list_interp(r_obj* node, r_obj* env) {
 
   while (node != r_null) {
     r_obj* arg = r_node_car(node);
-    struct expansion_info info = which_expansion_op(arg, false);
+    struct injection_info info = which_expansion_op(arg, false);
 
     if (info.op == INJECTION_OP_uqs) {
       node = big_bang(info.operand, env, prev, node);

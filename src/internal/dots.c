@@ -147,7 +147,7 @@ static r_obj* def_unquote_name(r_obj* expr, r_obj* env) {
   int n_kept = 0;
   r_obj* lhs = r_node_cadr(expr);
 
-  struct expansion_info info = which_expansion_op(lhs, true);
+  struct injection_info info = which_expansion_op(lhs, true);
 
   switch (info.op) {
   case INJECTION_OP_none:
@@ -392,7 +392,7 @@ static r_obj* dots_unquote(r_obj* dots, struct dots_capture_info* capture_info) 
       );
     }
 
-    struct expansion_info info = which_expansion_op(expr, unquote_names);
+    struct injection_info info = which_expansion_op(expr, unquote_names);
     enum dots_op dots_op = info.op + (INJECTION_OP_MAX * capture_info->type);
 
     r_obj* name = r_node_tag(node);
