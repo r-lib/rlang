@@ -61,5 +61,5 @@ void rlang_init_internal(r_obj* ns) {
   fns_quote = r_eval(r_sym("quote"), r_base_env);
 
   /* dots.c - enum dots_op */
-  RLANG_ASSERT(DOTS_OP_MAX == DOTS_COLLECT_MAX * EXPANSION_OP_MAX);
+  RLANG_ASSERT(DOTS_OP_MAX == DOTS_COLLECT_MAX * INJECTION_OP_MAX);
 }

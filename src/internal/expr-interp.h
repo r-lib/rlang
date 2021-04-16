@@ -26,19 +26,19 @@ static inline bool is_splice_call(r_obj* node) {
 }
 
 
-#define EXPANSION_OP_MAX 7
-enum expansion_op {
-  OP_EXPAND_NONE,
-  OP_EXPAND_UQ,
-  OP_EXPAND_UQS,
-  OP_EXPAND_UQN,
-  OP_EXPAND_FIXUP,
-  OP_EXPAND_DOT_DATA,
-  OP_EXPAND_CURLY
+enum injection_op {
+  INJECTION_OP_none,
+  INJECTION_OP_uq,
+  INJECTION_OP_uqs,
+  INJECTION_OP_uqn,
+  INJECTION_OP_fixup,
+  INJECTION_OP_dot_data,
+  INJECTION_OP_curly
 };
+#define INJECTION_OP_MAX 7
 
 struct expansion_info {
-  enum expansion_op op;
+  enum injection_op op;
   r_obj* operand;  // Expression being unquoted
   r_obj* parent;   // Node pointing to the future unquoted value
   r_obj* root;     // Expression wrapping the unquoted value (optional)
@@ -47,7 +47,7 @@ struct expansion_info {
 static inline struct expansion_info init_expansion_info() {
   struct expansion_info info;
 
-  info.op = OP_EXPAND_NONE;
+  info.op = INJECTION_OP_none;
   info.operand = r_null;
   info.parent = r_null;
   info.root = r_null;

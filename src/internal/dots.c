@@ -150,22 +150,22 @@ static r_obj* def_unquote_name(r_obj* expr, r_obj* env) {
   struct expansion_info info = which_expansion_op(lhs, true);
 
   switch (info.op) {
-  case OP_EXPAND_NONE:
+  case INJECTION_OP_none:
     lhs = KEEP_N(glue_unquote(lhs, env), &n_kept);
     break;
-  case OP_EXPAND_UQ:
+  case INJECTION_OP_uq:
     lhs = KEEP_N(r_eval(info.operand, env), &n_kept);
     break;
-  case OP_EXPAND_CURLY:
+  case INJECTION_OP_curly:
     lhs = KEEP_N(rlang_enquo(info.operand, env), &n_kept);
     break;
-  case OP_EXPAND_UQS:
+  case INJECTION_OP_uqs:
     r_abort("The LHS of `:=` can't be spliced with `!!!`");
-  case OP_EXPAND_UQN:
+  case INJECTION_OP_uqn:
     r_abort("Internal error: Chained `:=` should have been detected earlier");
-  case OP_EXPAND_FIXUP:
+  case INJECTION_OP_fixup:
     r_abort("The LHS of `:=` must be a string or a symbol");
-  case OP_EXPAND_DOT_DATA:
+  case INJECTION_OP_dot_data:
     r_abort("Can't use the `.data` pronoun on the LHS of `:=`");
   }
 
@@ -393,7 +393,7 @@ static r_obj* dots_unquote(r_obj* dots, struct dots_capture_info* capture_info) 
     }
 
     struct expansion_info info = which_expansion_op(expr, unquote_names);
-    enum dots_op dots_op = info.op + (EXPANSION_OP_MAX * capture_info->type);
+    enum dots_op dots_op = info.op + (INJECTION_OP_MAX * capture_info->type);
 
     r_obj* name = r_node_tag(node);
 
