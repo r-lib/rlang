@@ -44,10 +44,10 @@ r_obj* rlang_unbox(r_obj* x) {
 
 
 enum dots_homonyms {
-  DOTS_HOMONYMS_KEEP = 0,
-  DOTS_HOMONYMS_FIRST,
-  DOTS_HOMONYMS_LAST,
-  DOTS_HOMONYMS_ERROR
+  DOTS_HOMONYMS_keep = 0,
+  DOTS_HOMONYMS_first,
+  DOTS_HOMONYMS_last,
+  DOTS_HOMONYMS_error
 };
 
 struct dots_capture_info {
@@ -513,10 +513,10 @@ static enum dots_homonyms arg_match_homonyms(r_obj* homonyms) {
   }
   const char* arg = r_chr_get_c_string(homonyms, 0);
   switch(arg[0]) {
-  case 'k': if (!strcmp(arg, "keep")) return DOTS_HOMONYMS_KEEP; else break;
-  case 'f': if (!strcmp(arg, "first")) return DOTS_HOMONYMS_FIRST; else break;
-  case 'l': if (!strcmp(arg, "last")) return DOTS_HOMONYMS_LAST; else break;
-  case 'e': if (!strcmp(arg, "error")) return DOTS_HOMONYMS_ERROR; else break;
+  case 'k': if (!strcmp(arg, "keep")) return DOTS_HOMONYMS_keep; else break;
+  case 'f': if (!strcmp(arg, "first")) return DOTS_HOMONYMS_first; else break;
+  case 'l': if (!strcmp(arg, "last")) return DOTS_HOMONYMS_last; else break;
+  case 'e': if (!strcmp(arg, "error")) return DOTS_HOMONYMS_error; else break;
   }
   r_abort("`.homonyms` must be one of: \"keep\", \"first\", \"last\", or \"error\"");
 }
@@ -754,10 +754,10 @@ static r_obj* dots_finalise(struct dots_capture_info* capture_info, r_obj* dots)
     dots = KEEP(maybe_auto_name(dots, capture_info->named));
 
     switch (capture_info->homonyms) {
-    case DOTS_HOMONYMS_KEEP: break;
-    case DOTS_HOMONYMS_FIRST: dots = dots_keep(dots, nms, true); break;
-    case DOTS_HOMONYMS_LAST: dots = dots_keep(dots, nms, false); break;
-    case DOTS_HOMONYMS_ERROR: dots_check_homonyms(dots, nms); break;
+    case DOTS_HOMONYMS_keep: break;
+    case DOTS_HOMONYMS_first: dots = dots_keep(dots, nms, true); break;
+    case DOTS_HOMONYMS_last: dots = dots_keep(dots, nms, false); break;
+    case DOTS_HOMONYMS_error: dots_check_homonyms(dots, nms); break;
     }
 
     FREE(2);
