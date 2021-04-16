@@ -11,7 +11,7 @@
 #include "eval.c"
 #include "eval-tidy.c"
 #include "expr-interp.c"
-#include "expr-interp-rotate.c"
+#include "ast-rotate.c"
 #include "fn.c"
 #include "hash.c"
 #include "nse-defuse.c"

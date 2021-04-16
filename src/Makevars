@@ -46,7 +46,7 @@ internal-files = \
         internal/eval.c \
         internal/eval-tidy.c \
         internal/expr-interp.c \
-        internal/expr-interp-rotate.c \
+        internal/ast-rotate.c \
         internal/fn.c \
         internal/hash.c \
         internal/internal.c \

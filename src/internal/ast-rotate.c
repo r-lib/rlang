@@ -1,7 +1,7 @@
 #include <rlang.h>
 #include "parse.h"
 #include "expr-interp.h"
-#include "expr-interp-rotate.h"
+#include "ast-rotate.h"
 
 
 /**
