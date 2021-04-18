@@ -78,6 +78,7 @@ arg_match0 <- function(arg, values, arg_nm = as_label(substitute(arg))) {
 stop_arg_match <- function(arg, values, arg_nm) {
   msg <- arg_match_invalid_msg(arg, values, arg_nm)
 
+  # Try suggest the most probable and helpful candidate value
   candidate <- NULL
   i_partial <- pmatch(arg, values)
   if (!is_na(i_partial)) {
@@ -87,6 +88,16 @@ stop_arg_match <- function(arg, values, arg_nm) {
   i_close <- adist(arg, values) / nchar(values)
   if (any(i_close <= 0.5)) {
     candidate <- values[[which.min(i_close)]]
+  }
+
+  if (is_null(candidate)) {
+    # Make case-insensitive match only after failed case-sensitive one to be
+    # more helpful in certain edge cases. For example,
+    # `arg_match0("aa", c("AA", "aA"))`: here "aA" is the closest candidate.
+    i_close_nocase <- adist(arg, values, ignore.case = TRUE) / nchar(values)
+    if (any(i_close_nocase <= 0.5)) {
+      candidate <- values[[which.min(i_close_nocase)]]
+    }
   }
 
   if (!is_null(candidate)) {

@@ -74,6 +74,15 @@ test_that("`arg_match()` finds a match even with small possible typos", {
   )
 })
 
+test_that("`arg_match()` makes case-insensitive match", {
+  expect_snapshot({
+    (expect_error(arg_match0("a", c("A", "B")), "Did you mean \"A\"?"))
+
+    # Case-insensitive match is done after case-sensitive
+    (expect_error(arg_match0("aa", c("AA", "aA")), "Did you mean \"aA\"?"))
+  })
+})
+
 test_that("gets choices from function", {
   fn <- function(myarg = c("bar", "foo")) {
     arg_match(myarg)
