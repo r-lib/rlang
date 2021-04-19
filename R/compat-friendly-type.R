@@ -28,7 +28,6 @@ as_friendly_type <- function(type) {
     complex = "a complex vector",
     character = "a character vector",
     raw = "a raw vector",
-    string = "a string",
     list = "a list",
 
     NULL = "NULL",
@@ -42,8 +41,6 @@ as_friendly_type <- function(type) {
     language = "a call",
     pairlist = "a pairlist node",
     expression = "an expression vector",
-    quosure = "a quosure",
-    formula = "a formula",
 
     char = "an internal string",
     promise = "an internal promise",
