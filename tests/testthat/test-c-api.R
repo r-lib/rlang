@@ -1034,7 +1034,7 @@ test_that("sexp iterator visits in full order", {
 
 test_that("addresses have hexadecimal prefix `0x` (#1135)", {
   expect_equal(
-    substring(sexp_address(NULL), 1, 2),
+    substring(obj_address(NULL), 1, 2),
     "0x"
   )
 })

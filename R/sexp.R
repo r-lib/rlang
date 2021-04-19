@@ -30,8 +30,8 @@ duplicate <- function(x, shallow = FALSE) {
 #' @return Its address in memory in a string.
 #' @keywords internal
 #' @export
-sexp_address <- function(x) {
-  .Call(rlang_sexp_address, x)
+obj_address <- function(x) {
+  .Call(ffi_obj_address, x)
 }
 
 # nocov start - These functions are mostly for interactive experimentation
@@ -79,7 +79,7 @@ errorcall <- function(call, msg) {
   .Call(rlang_test_Rf_errorcall, call, msg)
 }
 
-sexp_attrib <- function(x) {
+obj_attrib <- function(x) {
   .Call(rlang_attrib, x)
 }
 

@@ -50,7 +50,7 @@
 * `enquo()`, `enquos()` and variants now support numbered dots like
   `..1` (#1137).
 
-* `sexp_address()` is now exported.
+* `obj_address()` is now exported.
 
 * `%<~%` now actually works.
 

@@ -45,24 +45,24 @@ test_that("node_tree_clone() clones all nodes", {
   clone <- node_tree_clone(x)
 
   # Outer vector
-  expect_false(sexp_address(x) == sexp_address(clone))
+  expect_false(obj_address(x) == obj_address(clone))
 
   # Outer node list
-  expect_true(sexp_address(node_car(x)) == sexp_address(node_car(clone)))
+  expect_true(obj_address(node_car(x)) == obj_address(node_car(clone)))
 
   cdr <- node_cdr(x)
   clone_cdr <- node_cdr(clone)
-  expect_false(sexp_address(cdr) == sexp_address(clone_cdr))
+  expect_false(obj_address(cdr) == obj_address(clone_cdr))
 
   # Inner node list
   cadr <- node_car(cdr)
   clone_cadr <- node_car(clone_cdr)
-  expect_false(sexp_address(cadr) == sexp_address(clone_cadr))
+  expect_false(obj_address(cadr) == obj_address(clone_cadr))
 
   # Inner vector
   caadr <- node_car(cadr)
   clone_caadr <- node_car(clone_cadr)
-  expect_true(sexp_address(caadr) == sexp_address(clone_caadr))
+  expect_true(obj_address(caadr) == obj_address(clone_caadr))
 })
 
 test_that("as_pairlist() converts to pairlist", {

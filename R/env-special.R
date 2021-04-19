@@ -386,7 +386,7 @@ env_format <- function(env) {
   type <- env_type(env)
 
   if (type %in% c("frame", "local")) {
-    addr <- sexp_address(get_env(env))
+    addr <- obj_address(get_env(env))
     type <- paste(type, addr)
   }
 
@@ -462,7 +462,7 @@ env_label <- function(env) {
   if (nzchar(nm)) {
     nm
   } else {
-    sexp_address(env)
+    obj_address(env)
   }
 }
 

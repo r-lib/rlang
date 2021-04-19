@@ -629,7 +629,7 @@ r_obj* rlang_duplicate(r_obj* x, r_obj* shallow) {
   }
 }
 
-r_obj* rlang_sexp_address(r_obj* x) {
+r_obj* ffi_obj_address(r_obj* x) {
   return r_str_as_character(r_obj_address(x));
 }
 

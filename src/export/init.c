@@ -43,7 +43,7 @@ extern r_obj* rlang_is_primitive_eager(r_obj*);
 extern r_obj* rlang_is_primitive_lazy(r_obj*);
 extern r_obj* ffi_is_formula(r_obj*, r_obj*, r_obj*);
 extern r_obj* rlang_is_reference(r_obj*, r_obj*);
-extern r_obj* rlang_sexp_address(r_obj*);
+extern r_obj* ffi_obj_address(r_obj*);
 extern r_obj* rlang_length(r_obj*);
 extern r_obj* rlang_true_length(r_obj* x);
 extern r_obj* rlang_squash(r_obj*, r_obj*, r_obj*, r_obj*);
@@ -245,7 +245,7 @@ static const R_CallMethodDef r_callables[] = {
   {"rlang_node_tag",                    (DL_FUNC) &rlang_node_tag, 1},
   {"rlang_node_poke_tag",               (DL_FUNC) &rlang_node_poke_tag, 2},
   {"rlang_squash",                      (DL_FUNC) &rlang_squash, 4},
-  {"rlang_sexp_address",                (DL_FUNC) &rlang_sexp_address, 1},
+  {"ffi_obj_address",                   (DL_FUNC) &ffi_obj_address, 1},
   {"rlang_symbol",                      (DL_FUNC) &rlang_symbol, 1},
   {"rlang_sym_as_character",            (DL_FUNC) &rlang_sym_as_character, 1},
   // No longer necessary but keep this around for a while in case

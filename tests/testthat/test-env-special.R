@@ -32,7 +32,7 @@ test_that("env_name() returns proper environment name", {
 
 test_that("env_label() returns memory address for anonymous envs", {
   env <- env()
-  expect_identical(env_label(env), sexp_address(env))
+  expect_identical(env_label(env), obj_address(env))
 })
 
 test_that("is_attached() detects environments on the search path", {

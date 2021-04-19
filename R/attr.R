@@ -262,7 +262,7 @@ zap_srcref <- function(x) {
 
   x <- duplicate(x, shallow = TRUE)
 
-  if (!is_null(sexp_attrib(x))) {
+  if (!is_null(obj_attrib(x))) {
     attr(x, "srcref") <- NULL
     attr(x, "wholeSrcref") <- NULL
     attr(x, "srcfile") <- NULL

@@ -195,7 +195,7 @@ dict_as_list <- function(dict) {
 
 #' @export
 print.rlang_dict <- function(x, ...) {
-  writeLines(sprintf("<rlang/dict: %s>", sexp_address(x)))
+  writeLines(sprintf("<rlang/dict: %s>", obj_address(x)))
   writeLines(paste0("size: ", dict_size(x)))
 }
 
@@ -241,7 +241,7 @@ arr_resize <- function(arr, capacity) {
 
 #' @export
 print.rlang_dyn_array <- function(x, ...) {
-  writeLines(sprintf("<rlang/dyn_array: %s>", sexp_address(x)))
+  writeLines(sprintf("<rlang/dyn_array: %s>", obj_address(x)))
 
   info <- arr_info(x)
   writeLines(paste0("count: ", info$count))
