@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* `friendly_type_of()` (from `compat-friendly-type.R`) now supports
+  matrices and arrays (#141).
+
 * `friendly_type()` is deprecated and `as_pairlist()` is defunct.
 
 * Updated `env_print()` to use `format_bullets()` and consistent

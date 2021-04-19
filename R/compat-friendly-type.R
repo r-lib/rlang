@@ -1,4 +1,11 @@
-# nocov start --- r-lib/rlang compat-friendly-type --- 2021-03-25 Thu 09:25
+# nocov start --- r-lib/rlang compat-friendly-type
+
+# Changelog
+# =========
+#
+# 2021-04-19:
+# - Added support for matrices and arrays (#141).
+# - Added changelog.
 
 friendly_type_of <- function(x, length = FALSE) {
   if (is.object(x)) {
@@ -10,24 +17,57 @@ friendly_type_of <- function(x, length = FALSE) {
     return(sprintf("a <%s> object", type))
   }
 
-  friendly <- as_friendly_type(typeof(x))
-
-  if (length && rlang::is_vector(x)) {
-    friendly <- paste0(friendly, sprintf(" of length %s", length(x)))
+  if (!rlang::is_vector(x)) {
+    return(.rlang_as_friendly_type(typeof(x)))
   }
 
-  friendly
+  n_dim <- length(dim(x))
+  type <- .rlang_as_friendly_vector_type(typeof(x), n_dim)
+
+  if (length && !n_dim) {
+    type <- paste0(type, sprintf(" of length %s", length(x)))
+  }
+
+  type
 }
 
-as_friendly_type <- function(type) {
-  switch(type,
-    logical = "a logical vector",
-    integer = "an integer vector",
+.rlang_as_friendly_vector_type <- function(type, n_dim) {
+  if (type == "list") {
+    if (n_dim < 2) {
+      return("a list")
+    } else if (n_dim == 2) {
+      return("a list matrix")
+    } else {
+      return("a list array")
+    }
+  }
+
+  type <- switch(
+    type,
+    logical = "a logical %s",
+    integer = "an integer %s",
     numeric = ,
-    double = "a double vector",
-    complex = "a complex vector",
-    character = "a character vector",
-    raw = "a raw vector",
+    double = "a double %s",
+    complex = "a complex %s",
+    character = "a character %s",
+    raw = "a raw %s",
+    type = paste0("a ", type, " %s")
+  )
+
+  if (n_dim < 2) {
+    kind <- "vector"
+  } else if (n_dim == 2) {
+    kind <- "matrix"
+  } else {
+    kind <- "array"
+  }
+  sprintf(type, kind)
+}
+
+.rlang_as_friendly_type <- function(type) {
+  switch(
+    type,
+
     list = "a list",
 
     NULL = "NULL",
