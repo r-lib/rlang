@@ -174,14 +174,16 @@ stricter argument checking.</p>
     </tr>
     <tr>
       <th>nm, ...</th>
-      <td><p>Vector of names, the same length as <code>x</code>.</p>
+      <td><p>Vector of names, the same length as <code>x</code>. If length 1,
+<code>nm</code> is recycled to the length of <code>x</code> following the recycling
+rules of the tidyverse..</p>
 <p>You can specify names in the following ways:</p><ul>
-<li><p>If you do nothing, <code>x</code> will be named with itself.</p></li>
+<li><p>If not supplied, <code>x</code> will be named to <code><a href='https://rdrr.io/r/base/character.html'>as.character(x)</a></code>.</p></li>
 <li><p>If <code>x</code> already has names, you can provide a function or formula
 to transform the existing names. In that case, <code>...</code> is passed
 to the function.</p></li>
+<li><p>Otherwise if <code>...</code> is supplied, <code>x</code> is named to <code><a href='https://rdrr.io/r/base/c.html'>c(nm, ...)</a></code>.</p></li>
 <li><p>If <code>nm</code> is <code>NULL</code>, the names are removed (if present).</p></li>
-<li><p>In all other cases, <code>nm</code> and <code>...</code> are coerced to character.</p></li>
 </ul></td>
     </tr>
     </table>
@@ -238,7 +240,12 @@ to the function.</p></li>
 #&gt; Datsun 710             1      1        4        1
 #&gt; Hornet 4 Drive         1      0        3        1
 #&gt; Hornet Sportabout      0      0        3        2
-#&gt; Valiant                1      0        3        1</div></pre>
+#&gt; Valiant                1      0        3        1</div><div class='input'>
+<span class='co'># If length 1, the second argument is recycled to the length of the first:</span>
+<span class='fu'>set_names</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, <span class='st'>"foo"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; foo foo foo 
+#&gt;   1   2   3 </div><div class='input'><span class='fu'>set_names</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>""</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; named list()</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

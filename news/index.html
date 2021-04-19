@@ -158,6 +158,8 @@
 <a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li><p>Updated <code><a href="../reference/env_print.html">env_print()</a></code> to use <code><a href="../reference/format_bullets.html">format_bullets()</a></code> and consistent tidyverse style (<a href='https://github.com/r-lib/rlang/issues/1154'>#1154</a>).</p></li>
+<li><p><code><a href="../reference/set_names.html">set_names()</a></code> now recycles names of size 1 to the size of the input, following the tidyverse recycling rules.</p></li>
 <li><p><code><a href="../reference/format_error_bullets.html">format_error_bullets()</a></code> has been renamed to <code><a href="../reference/format_bullets.html">format_bullets()</a></code>.</p></li>
 <li>
 <p><code><a href="../reference/format_bullets.html">format_bullets()</a></code> now treats:</p>
@@ -183,7 +185,7 @@
 <li><p>Fixed performance issue when splicing classes that explicitly inherit from list with <code>!!!</code> (<a href='https://github.com/r-lib/rlang/issues/1140'>#1140</a>, r-lib/vctrs<a href='https://github.com/r-lib/rlang/issues/1170'>#1170</a>).</p></li>
 <li><p>Attributes of quosure lists are no longer modified by side effect (<a href='https://github.com/r-lib/rlang/issues/1142'>#1142</a>).</p></li>
 <li><p><code><a href="../reference/nse-defuse.html">enquo()</a></code>, <code><a href="../reference/nse-defuse.html">enquos()</a></code> and variants now support numbered dots like <code>..1</code> (<a href='https://github.com/r-lib/rlang/issues/1137'>#1137</a>).</p></li>
-<li><p><code><a href="../reference/sexp_address.html">sexp_address()</a></code> is now exported.</p></li>
+<li><p><code><a href="../reference/obj_address.html">obj_address()</a></code> is now exported.</p></li>
 <li><p><code><a href="../reference/env_bind.html">%&lt;~%</a></code> now actually works.</p></li>
 <li><p>Fixed a bug in the AST rotation algorithm that caused the <code>!!</code> operator to unexpectedly mutate injected objects (<a href='https://github.com/r-lib/rlang/issues/1103'>#1103</a>).</p></li>
 <li><p>Fixed a gcc11 warning related to <code><a href="../reference/hash.html">hash()</a></code> (<a href='https://github.com/r-lib/rlang/issues/1088'>#1088</a>).</p></li>

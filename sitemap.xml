@@ -421,6 +421,9 @@
     <loc>https://rlang.r-lib.org/reference/nse-defuse.html</loc>
   </url>
   <url>
+    <loc>https://rlang.r-lib.org/reference/obj_address.html</loc>
+  </url>
+  <url>
     <loc>https://rlang.r-lib.org/reference/op-get-attr.html</loc>
   </url>
   <url>
@@ -503,9 +506,6 @@
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/set_names.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/sexp_address.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/splice.html</loc>
