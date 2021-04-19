@@ -35,6 +35,7 @@ obj_address <- function(x) {
 }
 
 # Imported from lifecycle
+#' @export
 sexp_address <- obj_address
 
 # nocov start - These functions are mostly for interactive experimentation
