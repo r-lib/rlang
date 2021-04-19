@@ -1,12 +1,20 @@
 # nocov start --- r-lib/rlang compat-friendly-type
-
+#
 # Changelog
 # =========
 #
 # 2021-04-19:
 # - Added support for matrices and arrays (#141).
+# - Added documentation.
 # - Added changelog.
 
+
+#' Return English-friendly type
+#' @param x Any R object.
+#' @param length Whether to mention the length of vectors and lists.
+#' @return A string describing the type. Starts with an indefinite
+#'   article, e.g. "an integer vector".
+#' @noRd
 friendly_type_of <- function(x, length = FALSE) {
   if (is.object(x)) {
     if (inherits(x, "quosure")) {
