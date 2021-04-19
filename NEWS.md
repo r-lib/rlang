@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* `set_names()` now recycles names of size 1 to the size of the input,
+  following the tidyverse recycling rules.
+
 * `format_error_bullets()` has been renamed to `format_bullets()`.
 
 * `format_bullets()` now treats:

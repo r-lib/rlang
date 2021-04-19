@@ -9,16 +9,18 @@ set_names(x, nm = x, ...)
 \arguments{
 \item{x}{Vector to name.}
 
-\item{nm, ...}{Vector of names, the same length as \code{x}.
+\item{nm, ...}{Vector of names, the same length as \code{x}. If length 1,
+\code{nm} is recycled to the length of \code{x} following the recycling
+rules of the tidyverse..
 
 You can specify names in the following ways:
 \itemize{
-\item If you do nothing, \code{x} will be named with itself.
+\item If not supplied, \code{x} will be named to \code{as.character(x)}.
 \item If \code{x} already has names, you can provide a function or formula
 to transform the existing names. In that case, \code{...} is passed
 to the function.
+\item Otherwise if \code{...} is supplied, \code{x} is named to \code{c(nm, ...)}.
 \item If \code{nm} is \code{NULL}, the names are removed (if present).
-\item In all other cases, \code{nm} and \code{...} are coerced to character.
 }}
 }
 \description{
@@ -51,4 +53,8 @@ set_names(letters, toupper)
 
 # `...` is passed to the function:
 set_names(head(mtcars), paste0, "_foo")
+
+# If length 1, the second argument is recycled to the length of the first:
+set_names(1:3, "foo")
+set_names(list(), "")
 }

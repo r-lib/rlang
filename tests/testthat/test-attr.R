@@ -8,8 +8,10 @@ test_that("names2() fails for environments", {
 })
 
 test_that("inputs must be valid", {
-  expect_error(set_names(environment()), "must be a vector")
-  expect_error(set_names(1:10, letters[1:4]), "same length")
+  expect_snapshot({
+    (expect_error(set_names(environment())))
+    (expect_error(set_names(1:10, letters[1:4])))
+  })
 })
 
 test_that("can supply vector or ...", {
@@ -41,7 +43,7 @@ test_that("set_names() checks length generically", {
   names(expect) <- "a"
 
   expect_identical(set_names(x, "a"), expect)
-  expect_error(set_names(x, c("a", "b")), "the same length")
+  expect_error(set_names(x, c("a", "b")), "must be compatible")
 })
 
 test_that("has_name() works with pairlists", {
@@ -111,4 +113,19 @@ test_that("can zap_srcref() on functions with `[[` methods", {
   )
   fn <- structure(quote(function() NULL), class = "rlang:::not_subsettable")
   expect_error(zap_srcref(fn), NA)
+})
+
+test_that("set_names() recycles names of size 1", {
+  expect_named(
+    set_names(1:3, ""),
+    rep("", 3)
+  )
+  expect_named(
+    set_names(1:3, ~ ""),
+    rep("", 3)
+  )
+  expect_equal(
+    set_names(list(), ""),
+    named(list())
+  )
 })

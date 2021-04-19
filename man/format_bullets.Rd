@@ -42,6 +42,9 @@ which should be supplied as \code{\link[=cnd_header]{cnd_header()}}.
 # All bullets
 writeLines(format_bullets(c("foo", "bar")))
 
+# This is equivalent to
+writeLines(format_bullets(set_names(c("foo", "bar"), "*")))
+
 # Supply named elements to format info, cross, and tick bullets
 writeLines(format_bullets(c(i = "foo", x = "bar", v = "baz", "*" = "quux")))
 

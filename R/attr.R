@@ -120,20 +120,21 @@ has_name <- function(x, name) {
 #' `set_names()` is stable and exported in purrr.
 #'
 #' @param x Vector to name.
-#' @param nm,... Vector of names, the same length as `x`.
+#' @param nm,... Vector of names, the same length as `x`. If length 1,
+#'   `nm` is recycled to the length of `x` following the recycling
+#'   rules of the tidyverse..
 #'
 #'   You can specify names in the following ways:
 #'
-#'   * If you do nothing, `x` will be named with itself.
+#'   * If not supplied, `x` will be named to `as.character(x)`.
 #'
 #'   * If `x` already has names, you can provide a function or formula
 #'     to transform the existing names. In that case, `...` is passed
 #'     to the function.
 #'
+#'   * Otherwise if `...` is supplied, `x` is named to `c(nm, ...)`.
+#'
 #'   * If `nm` is `NULL`, the names are removed (if present).
-#'
-#'   * In all other cases, `nm` and `...` are coerced to character.
-#'
 #' @export
 #' @examples
 #' set_names(1:4, c("a", "b", "c", "d"))
@@ -153,6 +154,10 @@ has_name <- function(x, name) {
 #'
 #' # `...` is passed to the function:
 #' set_names(head(mtcars), paste0, "_foo")
+#'
+#' # If length 1, the second argument is recycled to the length of the first:
+#' set_names(1:3, "foo")
+#' set_names(list(), "")
 set_names <- function(x, nm = x, ...) {
   mold <- x
   .Call(rlang_set_names, x, mold, nm, environment())

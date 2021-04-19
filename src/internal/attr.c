@@ -112,6 +112,24 @@ r_obj* rlang_set_names(r_obj* x, r_obj* mold, r_obj* nm, r_obj* env) {
     n = r_length(x);
   }
 
+  if (r_typeof(nm) != R_TYPE_character) {
+    r_abort("`nm` must be `NULL` or a character vector.");
+  }
+
+  r_ssize nm_n = r_length(nm);
+  if (nm_n != n) {
+    if (nm_n != 1) {
+      r_abort("The size of `nm` (%d) must be compatible with the size of `x` (%d).",
+              nm_n, n);
+    }
+
+    // Recycle names vector of size 1.
+    // TODO: ALTREP repetitions?
+    r_obj* val = r_chr_get(nm, 0);
+    nm = KEEP_N(r_alloc_character(n), &n_kept);
+    r_chr_fill(nm, val, n);
+  }
+
   if (!r_is_character(nm, n)) {
     r_abort("`nm` must be `NULL` or a character vector the same length as `x`");
   }
