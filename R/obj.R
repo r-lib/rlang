@@ -34,6 +34,9 @@ obj_address <- function(x) {
   .Call(ffi_obj_address, x)
 }
 
+# Imported from lifecycle
+sexp_address <- obj_address
+
 # nocov start - These functions are mostly for interactive experimentation
 
 poke_type <- function(x, type) {
