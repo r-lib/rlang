@@ -1,3 +1,4 @@
+deprecated <- function() missing_arg()
 
 substitute_ <- function(x, env) {
   if (identical(env, globalenv())) {
