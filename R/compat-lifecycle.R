@@ -22,6 +22,8 @@
 #   to add lifecycle to Imports just to use badges. See also
 #   `?usethis::use_lifecycle()` for importing or updating the badge
 #   images in your package.
+#
+# - Soft-namespaced private objects.
 
 
 #' Signal deprecation
@@ -75,7 +77,7 @@
 NULL
 
 signal_soft_deprecated <- function(msg, id = msg, env = rlang::caller_env(2)) {
-  msg <- lifecycle_validate_message(msg)
+  msg <- .rlang_lifecycle_validate_message(msg)
   stopifnot(
     rlang::is_string(id),
     rlang::is_environment(env)
@@ -117,7 +119,7 @@ signal_soft_deprecated <- function(msg, id = msg, env = rlang::caller_env(2)) {
 }
 
 warn_deprecated <- function(msg, id = msg) {
-  msg <- lifecycle_validate_message(msg)
+  msg <- .rlang_lifecycle_validate_message(msg)
   stopifnot(rlang::is_string(id))
 
   if (rlang::is_true(rlang::peek_option("lifecycle_disable_warnings"))) {
@@ -125,11 +127,11 @@ warn_deprecated <- function(msg, id = msg) {
   }
 
   if (!rlang::is_true(rlang::peek_option("lifecycle_repeat_warnings")) &&
-        rlang::env_has(deprecation_env, id)) {
+        rlang::env_has(.rlang_lifecycle_deprecation_env, id)) {
     return(invisible(NULL))
   }
 
-  rlang::env_poke(deprecation_env, id, TRUE);
+  rlang::env_poke(.rlang_lifecycle_deprecation_env, id, TRUE);
 
   has_colour <- function() rlang::is_installed("crayon") && crayon::has_color()
   silver <- function(x) if (has_colour()) crayon::silver(x) else x
@@ -146,10 +148,10 @@ warn_deprecated <- function(msg, id = msg) {
 
   .Signal(msg = msg)
 }
-deprecation_env <- new.env(parent = emptyenv())
+.rlang_lifecycle_deprecation_env <- new.env(parent = emptyenv())
 
 stop_defunct <- function(msg) {
-  msg <- lifecycle_validate_message(msg)
+  msg <- .rlang_lifecycle_validate_message(msg)
   err <- rlang::cnd(
     c("defunctError", "error", "condition"),
     old = NULL,
@@ -193,7 +195,7 @@ with_lifecycle_errors <- function(expr) {
   expr
 }
 
-lifecycle_validate_message <- function(msg) {
+.rlang_lifecycle_validate_message <- function(msg) {
   stopifnot(rlang::is_character(msg))
   paste0(msg, collapse = "\n")
 }
