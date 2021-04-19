@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* Updated `env_print()` to use `format_bullets()` and consistent
+  tidyverse style (#1154).
+
 * `set_names()` now recycles names of size 1 to the size of the input,
   following the tidyverse recycling rules.
 

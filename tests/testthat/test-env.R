@@ -283,7 +283,7 @@ test_that("special names are backticked", {
 })
 
 test_that("empty environment is pretty printed", {
-  expect_output(env_print(empty_env()), "<environment: empty>\nparent: NULL$")
+  expect_output(env_print(empty_env()), "<environment: empty>\nParent: NULL$")
 })
 
 test_that("envs printer: padding is added to right-align indices", {
@@ -330,7 +330,7 @@ test_that("can print environment containing missing argument", {
 
 test_that("parent environment is printed with full header", {
   env <- env(global_env())
-  expect_output(env_print(env), "parent: <environment: global>")
+  expect_output(env_print(env), "Parent: <environment: global>")
 })
 
 test_that("environment is printed with class if any", {
@@ -339,10 +339,10 @@ test_that("environment is printed with class if any", {
   expect_false(any(grepl("class", out)))
 
   env <- structure(env(), class = "foo")
-  expect_output(env_print(env), "class: foo")
+  expect_output(env_print(env), "Class: foo")
 
   env <- structure(env(), class = c("foo", "bar"))
-  expect_output(env_print(env), "class: foo, bar")
+  expect_output(env_print(env), "Class: foo, bar")
 })
 
 test_that("env_clone() invokes active bindings in all R versions", {
