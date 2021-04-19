@@ -455,7 +455,7 @@ as_function <- function(x, env = caller_env()) {
     return(get(x, envir = env, mode = "function"))
   }
 
-  abort_coercion(x, friendly_type("function"))
+  abort_coercion(x, "a function")
 }
 #' @export
 print.rlang_lambda_function <- function(x, ...) {

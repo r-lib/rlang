@@ -1,5 +1,10 @@
 deprecated <- function() missing_arg()
 
+abort_coercion <- function(x, to_type) {
+  x_type <- friendly_type_of(x)
+  abort(paste0("Can't convert ", x_type, " to ", to_type, "."))
+}
+
 substitute_ <- function(x, env) {
   if (identical(env, globalenv())) {
     env <- as.list(env)

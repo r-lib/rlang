@@ -21,12 +21,6 @@ test_that("can bypass string serialisation", {
   expect_identical(Encoding(bar[[2]]), "latin1")
 })
 
-test_that("types are friendly", {
-  expect_identical(friendly_type("character"), "a character vector")
-  expect_identical(friendly_type("integer"), "an integer vector")
-  expect_identical(friendly_type("language"), "a call")
-})
-
 test_that("friendly_type_of() supports objects", {
   expect_identical(friendly_type_of(mtcars), "a <data.frame> object")
   expect_identical(friendly_type_of(quo(1)), "a <quosure> object")

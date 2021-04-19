@@ -355,26 +355,6 @@ type_of_ <- function(x) {
   }
 }
 
-#' Format a type for error messages
-#'
-#' @section Life cycle:
-#'
-#' * `friendly_type()` is experimental.
-#'
-#' @param type A type as returned by [typeof()].
-#' @return A string of the prettified type, qualified with an
-#'   indefinite article.
-#' @export
-#' @keywords internal
-#' @examples
-#' friendly_type("logical")
-#' friendly_type("integer")
-#' friendly_type("string")
-#' @export
-friendly_type <- function(type) {
-  as_friendly_type(type) %||% type
-}
-
 #' Is an object copyable?
 #'
 #' When an object is modified, R generally copies it (sometimes

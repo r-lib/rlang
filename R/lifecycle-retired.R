@@ -157,6 +157,24 @@ coerce_class <- function(.x, .to, ...) {
   switch(class(.x), ..., abort_coercion(.x, .to))
 }
 
+#' Format a type for error messages
+#'
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' `friendly_type()` is deprecated. Please use the
+#' `compat-friendly-type.R` file instead.
+#'
+#' @param type A type as returned by [typeof()].
+#' @return A string of the prettified type, qualified with an
+#'   indefinite article.
+#' @export
+#' @keywords internal
+friendly_type <- function(type) {
+  signal_soft_deprecated("`friendly_type()` is deprecated as of rlang 0.4.11.")
+  type
+}
+
 
 ##  Casting
 
@@ -279,27 +297,27 @@ signal_deprecated_cast <- function(fn, env = caller_env(2)) {
 #' @export
 as_logical <- function(x) {
   signal_deprecated_cast("as_logical")
-  coerce_type_vec(x, friendly_type("logical"),
+  coerce_type_vec(x, friendly_type_of(lgl()),
     logical = { attributes(x) <- NULL; x },
     integer = as_base_type(x, as.logical),
-    double = as_integerish_type(x, as.logical, "logical")
+    double = as_integerish_type(x, as.logical, lgl())
   )
 }
 #' @rdname vector-coercion
 #' @export
 as_integer <- function(x) {
   signal_deprecated_cast("as_integer")
-  coerce_type_vec(x, friendly_type("integer"),
+  coerce_type_vec(x, friendly_type_of(int()),
     logical = as_base_type(x, as.integer),
     integer = { attributes(x) <- NULL; x },
-    double = as_integerish_type(x, as.integer, "integer")
+    double = as_integerish_type(x, as.integer, int())
   )
 }
 #' @rdname vector-coercion
 #' @export
 as_double <- function(x) {
   signal_deprecated_cast("as_double")
-  coerce_type_vec(x, friendly_type("double"),
+  coerce_type_vec(x, friendly_type_of(dbl()),
     logical = ,
     integer = as_base_type(x, as.double),
     double = { attributes(x) <- NULL; x }
@@ -309,7 +327,7 @@ as_double <- function(x) {
 #' @export
 as_complex <- function(x) {
   signal_deprecated_cast("as_complex")
-  coerce_type_vec(x, friendly_type("complex"),
+  coerce_type_vec(x, friendly_type_of(cpl()),
     logical = ,
     integer = ,
     double = as_base_type(x, as.complex),
@@ -323,7 +341,7 @@ as_character <- function(x, encoding = NULL) {
   if (is_unspecified(x)) {
     return(rep_along(x, na_chr))
   }
-  coerce_type_vec(x, friendly_type("character"),
+  coerce_type_vec(x, friendly_type_of(chr()),
     string = ,
     character = {
       attributes(x) <- NULL
@@ -349,7 +367,7 @@ env_as_list <- function(x) {
   set_names(x, .Call(rlang_unescape_character, names_x))
 }
 vec_as_list <- function(x) {
-  coerce_type_vec(x, friendly_type("list"),
+  coerce_type_vec(x, friendly_type_of(list()),
     logical = ,
     integer = ,
     double = ,
@@ -385,7 +403,7 @@ as_integerish_type <- function(x, as_type, to) {
     as_base_type(x, as_type)
   } else {
     abort(paste0(
-      "Can't convert a fractional double vector to ", friendly_type(to), ""
+      "Can't convert a fractional double vector to ", friendly_type_of(to), ""
     ))
   }
 }

@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* `friendly_type()` is deprecated and `as_pairlist()` is defunct.
+
 * Updated `env_print()` to use `format_bullets()` and consistent
   tidyverse style (#1154).
 
