@@ -225,7 +225,7 @@ r_obj* dots_big_bang_coerce(r_obj* x) {
 
   default:
     r_abort(
-      "Can't splice an object of type `%s` because it is not a vector",
+      "Can't splice an object of type <%s> because it is not a vector.",
       r_type_as_c_string(r_typeof(x))
     );
   }
