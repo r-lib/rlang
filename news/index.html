@@ -158,6 +158,8 @@
 <a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li><p><code>friendly_type_of()</code> (from <code>compat-friendly-type.R</code>) now supports matrices and arrays (<a href='https://github.com/r-lib/rlang/issues/141'>#141</a>).</p></li>
+<li><p><code><a href="../reference/friendly_type.html">friendly_type()</a></code> is deprecated and <code>as_pairlist()</code> is defunct.</p></li>
 <li><p>Updated <code><a href="../reference/env_print.html">env_print()</a></code> to use <code><a href="../reference/format_bullets.html">format_bullets()</a></code> and consistent tidyverse style (<a href='https://github.com/r-lib/rlang/issues/1154'>#1154</a>).</p></li>
 <li><p><code><a href="../reference/set_names.html">set_names()</a></code> now recycles names of size 1 to the size of the input, following the tidyverse recycling rules.</p></li>
 <li><p><code><a href="../reference/format_error_bullets.html">format_error_bullets()</a></code> has been renamed to <code><a href="../reference/format_bullets.html">format_bullets()</a></code>.</p></li>
@@ -961,7 +963,7 @@ quo(call(`!!!`(var)))</a></code></pre>
 <a href="#bugfixes" class="anchor"></a>Bugfixes</h2>
 <ul>
 <li><p>When nested quosures are evaluated with <code><a href="../reference/eval_tidy.html">eval_tidy()</a></code>, the <code>.env</code> pronoun now correctly refers to the current quosure under evaluation (<a href='https://github.com/r-lib/rlang/issues/174'>#174</a>). Previously it would always refer to the environment of the outermost quosure.</p></li>
-<li><p><code><a href="../reference/as_pairlist.html">as_pairlist()</a></code> (part of the experimental API) now supports <code>NULL</code> and objects of type pairlist (<a href='https://github.com/r-lib/rlang/issues/397'>#397</a>).</p></li>
+<li><p><code>as_pairlist()</code> (part of the experimental API) now supports <code>NULL</code> and objects of type pairlist (<a href='https://github.com/r-lib/rlang/issues/397'>#397</a>).</p></li>
 <li><p>Fixed a performance bug in <code><a href="../reference/set_names.html">set_names()</a></code> that caused a full copy of the vector names (<a href='https://github.com/jimhester'>@jimhester</a>, <a href='https://github.com/r-lib/rlang/issues/366'>#366</a>).</p></li>
 </ul>
 </div>
