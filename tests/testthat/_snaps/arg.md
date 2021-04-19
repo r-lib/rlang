@@ -43,6 +43,21 @@
       <error/rlang_error>
       `"a"` must be one of "b" or "c", not "a".
 
+# `arg_match()` makes case-insensitive match
+
+    Code
+      (expect_error(arg_match0("a", c("A", "B")), "Did you mean \"A\"?"))
+    Output
+      <error/rlang_error>
+      `"a"` must be one of "A" or "B", not "a".
+      i Did you mean "A"?
+    Code
+      (expect_error(arg_match0("aa", c("AA", "aA")), "Did you mean \"aA\"?"))
+    Output
+      <error/rlang_error>
+      `"aa"` must be one of "AA" or "aA", not "aa".
+      i Did you mean "aA"?
+
 # arg_require() checks argument is supplied (#1118)
 
     Code
