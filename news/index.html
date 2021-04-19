@@ -876,7 +876,7 @@ rlang::expr(mean(!!var * 100))</a></code></pre>
 <li><p><code><a href="../reference/nse-defuse.html">enquos()</a></code> is a variant of <code><a href="../reference/nse-defuse.html">quos()</a></code> that has a more natural interface for capturing multiple arguments and <code>...</code>.</p></li>
 </ul>
 <p>See the first section below for a complete list of changes to the tidy evaluation framework.</p>
-<p>This release also polishes the rlang API. Many functions have been renamed as we get a better feel for the consistency and clarity of the API. Note that rlang as a whole is still maturing and some functions are even experimental. In order to make things clearer for users of rlang, we have started to develop a set of conventions to document the current stability of each function. You will now find “lifecycle” sections in documentation topics. In addition we have gathered all lifecycle information in the <code><a href="../reference/lifecycle.html">?rlang::lifecycle</a></code> help page. Please only use functions marked as stable in your projects unless you are prepared to deal with occasional backward incompatible updates.</p>
+<p>This release also polishes the rlang API. Many functions have been renamed as we get a better feel for the consistency and clarity of the API. Note that rlang as a whole is still maturing and some functions are even experimental. In order to make things clearer for users of rlang, we have started to develop a set of conventions to document the current stability of each function. You will now find “lifecycle” sections in documentation topics. In addition we have gathered all lifecycle information in the <code>?rlang::lifecycle</code> help page. Please only use functions marked as stable in your projects unless you are prepared to deal with occasional backward incompatible updates.</p>
 <div id="tidy-evaluation-1" class="section level2">
 <h2 class="hasAnchor">
 <a href="#tidy-evaluation-1" class="anchor"></a>Tidy evaluation</h2>
@@ -968,7 +968,7 @@ quo(call(`!!!`(var)))</a></code></pre>
 <div id="api-changes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#api-changes" class="anchor"></a>API changes</h2>
-<p>The rlang API is maturing and still in flux. However we have made an effort to better communicate what parts are stable. We will not introduce breaking changes for stable functions unless the payoff for the change is worth the trouble. See <code><a href="../reference/lifecycle.html">?rlang::lifecycle</a></code> for the lifecycle status of exported functions.</p>
+<p>The rlang API is maturing and still in flux. However we have made an effort to better communicate what parts are stable. We will not introduce breaking changes for stable functions unless the payoff for the change is worth the trouble. See <code>?rlang::lifecycle</code> for the lifecycle status of exported functions.</p>
 <ul>
 <li>
 <p>The particle “lang” has been renamed to “call”:</p>

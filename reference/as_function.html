@@ -165,7 +165,7 @@ can't be coerced to a closure.
     </div>
 
     <div class="ref-description">
-    <p><a href='https://www.tidyverse.org/lifecycle/#stable'><img src='figures/lifecycle-stable.svg' alt='Stable lifecycle'></a></p><ul>
+    <p><a href='https://lifecycle.r-lib.org/articles/stages.html#stable'><img src='figures/lifecycle-stable.svg' alt='[Stable]' /></a></p><ul>
 <li><p><code>as_function()</code> transforms a one-sided formula into a function.
 This powers the lambda syntax in packages like purrr.</p></li>
 <li><p><code>as_closure()</code> first passes its argument to <code>as_function()</code>. If
@@ -251,7 +251,7 @@ is a string.</p></td>
 #&gt;         .x
 #&gt;     else .x + .y
 #&gt; }
-#&gt; &lt;environment: 0x7fef54767e60&gt;</div><div class='input'><span class='fu'>as_closure</span><span class='op'>(</span><span class='va'>`~`</span><span class='op'>)</span>
+#&gt; &lt;environment: 0x7fa331fe2120&gt;</div><div class='input'><span class='fu'>as_closure</span><span class='op'>(</span><span class='va'>`~`</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; function (.x, .y) 
 #&gt; {
 #&gt;     if (is_missing(substitute(.y))) {
@@ -261,8 +261,8 @@ is a string.</p></td>
 #&gt;         new_formula(substitute(.x), substitute(.y), caller_env())
 #&gt;     }
 #&gt; }
-#&gt; &lt;bytecode: 0x7fef5436fef8&gt;
-#&gt; &lt;environment: 0x7fef5584faf8&gt;</div><div class='input'>
+#&gt; &lt;bytecode: 0x7fa3352a3da8&gt;
+#&gt; &lt;environment: 0x7fa331f65780&gt;</div><div class='input'>
 <span class='co'># Use a regular function for tidy evaluation, also when calling functions</span>
 <span class='co'># that use tidy evaluation:</span>
 <span class='co'>## Bad:</span>
