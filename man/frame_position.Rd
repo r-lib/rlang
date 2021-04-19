@@ -18,7 +18,7 @@ bottom of the evaluation stack), or from the current frame (the
 top of the evaluation stack).}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
 The frame position on the stack can be computed by counting frames
 from the global frame (the bottom of the stack, the default) or

@@ -21,7 +21,7 @@ evaluate the R code in an isolated context (perhaps a child of
 the global environment or of the \link[=base_env]{base environment}).}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
 These functions were deprecated and renamed to \code{\link[=parse_quo]{parse_quo()}}
 and \code{\link[=parse_quos]{parse_quos()}} in rlang 0.2.0. This is for consistency with the

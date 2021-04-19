@@ -24,7 +24,7 @@ long as \code{nms} and named after it. \code{env_binding_lock()} and
 \code{env_binding_are_unlocked()} invisibly.
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Locked environment bindings trigger an error when an attempt is
 made to redefine the binding.

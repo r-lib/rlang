@@ -18,6 +18,6 @@ env_binding_are_lazy(env, nms = NULL)
 A logical vector as long as \code{nms} and named after it.
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \keyword{internal}

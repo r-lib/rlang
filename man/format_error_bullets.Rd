@@ -13,7 +13,7 @@ corresponding bullet. Elements named with a single space \code{" "}
 trigger a line break from the previous bullet.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 \code{format_error_bullets()} has been renamed to \code{\link[=format_bullets]{format_bullets()}}.
 }
 \keyword{internal}

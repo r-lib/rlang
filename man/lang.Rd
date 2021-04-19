@@ -20,7 +20,7 @@ call. Empty arguments are preserved.}
 or symbol.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
 These functions are deprecated, please use \code{\link[=call2]{call2()}} and
 \code{\link[=new_call]{new_call()}} instead.

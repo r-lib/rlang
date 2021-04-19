@@ -18,7 +18,7 @@ A copy of \code{.env} enclosing the new environment containing
 bindings to \code{...} arguments.
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("superseded")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#superseded}{\figure{lifecycle-superseded.svg}{options: alt='[Superseded]'}}}{\strong{[Superseded]}}
 
 This function is superseded. Please use \code{\link[=env]{env()}} (and possibly
 \code{\link[=set_env]{set_env()}} if you're masking the bindings for another object like

@@ -2,7 +2,7 @@
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#' `r lifecycle::badge("questioning")`
 #'
 #' `flatten()` removes one level hierarchy from a list, while
 #' `squash()` removes all levels. These functions are similar to

@@ -259,7 +259,7 @@ dots_split <- function(...,
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#' `r lifecycle::badge("questioning")`
 #'
 #' - `splice` marks an object to be spliced. It is equivalent to using
 #'   `!!!` in a function taking [dynamic dots][dyn-dots].

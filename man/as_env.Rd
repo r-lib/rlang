@@ -7,7 +7,7 @@
 as_env(x, parent = NULL)
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
 This function is deprecated as it was renamed to \code{\link[=as_environment]{as_environment()}}
 in rlang 0.2.0.

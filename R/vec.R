@@ -54,7 +54,7 @@ validate_index <- function(i, n) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+#' `r lifecycle::badge("experimental")`
 #'
 #' These tools are for R experts only. They copy elements from `y`
 #' into `x` by mutation. You should only do this if you own `x`,

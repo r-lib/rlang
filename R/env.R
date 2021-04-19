@@ -559,7 +559,7 @@ env_inherits <- function(env, ancestor) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+#' `r lifecycle::badge("experimental")`
 #'
 #' Locked environments cannot be modified. An important example is
 #' namespace environments which are locked by R when loaded in a

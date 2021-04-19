@@ -1,7 +1,7 @@
 #' Serialize a raw vector to a string
 #'
 #' @description
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+#' `r lifecycle::badge("experimental")`
 #'
 #' This function converts a raw vector to a hexadecimal string,
 #' optionally adding a prefix and a suffix.

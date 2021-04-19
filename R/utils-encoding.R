@@ -2,7 +2,7 @@
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+#' `r lifecycle::badge("experimental")`
 #'
 #' Unlike specifying the `encoding` argument in `as_string()` and
 #' `as_character()`, which is only declarative, these functions
@@ -48,7 +48,7 @@ as_utf8_character <- function(x) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+#' `r lifecycle::badge("experimental")`
 #'
 #' For historical reasons, R translates strings to the native encoding
 #' when they are converted to symbols. This string-to-symbol
@@ -87,7 +87,7 @@ chr_unserialise_unicode <- function(chr) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+#' `r lifecycle::badge("experimental")`
 #'
 #' These base-type constructors allow more control over the creation
 #' of strings in R. They take character vectors or string-like objects
@@ -137,7 +137,7 @@ string <- function(x, encoding = NULL) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+#' `r lifecycle::badge("experimental")`
 #'
 #' This currently only works with strings, and returns its hexadecimal
 #' representation.

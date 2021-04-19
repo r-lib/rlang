@@ -44,7 +44,7 @@ while overriding the header and footer.
 \section{Overriding \code{cnd_body()}}{
 
 
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Sometimes the contents of an error message depends on the state of
 your checking routine. In that case, it can be tricky to lazily

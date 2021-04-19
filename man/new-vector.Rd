@@ -31,7 +31,7 @@ new_list(n, names = NULL)
 \item{names}{Names for the new vector.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#questioning}{\figure{lifecycle-questioning.svg}{options: alt='[Questioning]'}}}{\strong{[Questioning]}}
 
 These functions construct vectors of a given length, with attributes
 specified via dots. Except for \code{new_list()} and \code{new_raw()}, the

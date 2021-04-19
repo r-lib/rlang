@@ -33,7 +33,7 @@ call \code{\link[=call_standardise]{call_standardise()}} manually.}
 functions.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
 These functions are deprecated, please use \code{\link[=call_modify]{call_modify()}},
 \code{\link[=call_standardise]{call_standardise()}}, or \code{\link[=call_fn]{call_fn()}} instead.

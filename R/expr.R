@@ -129,7 +129,7 @@ is_symbolic <- function(x) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#' `r lifecycle::badge("questioning")`
 #'
 #' `expr_text()` turns the expression into a single string, which
 #' might be multi-line. `expr_name()` is suitable for formatting

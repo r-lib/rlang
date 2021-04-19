@@ -7,8 +7,8 @@
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+#' `r lifecycle::badge("soft-deprecated")`
+#' `r lifecycle::badge("experimental")`
 #'
 #' This is equivalent to [base::typeof()] with a few differences that
 #' make dispatching easier:
@@ -63,8 +63,8 @@ type_of <- function(x) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+#' `r lifecycle::badge("soft-deprecated")`
+#' `r lifecycle::badge("experimental")`
 #'
 #' `switch_type()` is equivalent to
 #' \code{\link[base]{switch}(\link{type_of}(x, ...))}, while
@@ -164,7 +164,7 @@ coerce_class <- function(.x, .to, ...) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#' `r lifecycle::badge("soft-deprecated")`
 #'
 #' These are equivalent to the base functions (e.g. [as.logical()],
 #' [as.list()], etc), but perform coercion rather than conversion.
@@ -413,7 +413,7 @@ vec_coerce <- function(x, type) {
 
 #' Get caller frame
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+#' `r lifecycle::badge("deprecated")`
 #'
 #' @param n Number of frames to go back.
 #' @keywords internal
@@ -427,7 +427,7 @@ caller_frame <- function(n = 1) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+#' `r lifecycle::badge("deprecated")`
 #'
 #' The `eval_` and `call_` families of functions provide a replacement
 #' for the base R functions prefixed with `sys.` (which are all about
@@ -566,7 +566,7 @@ print.frame <- function(x, ...) {
 }
 #' Is object a frame?
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+#' `r lifecycle::badge("deprecated")`
 #'
 #' @param x Object to test
 #' @keywords internal
@@ -847,7 +847,7 @@ frame_clean_eval <- function(frame) {
 
 #' Is object a stack?
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#' `r lifecycle::badge("soft-deprecated")`
 #'
 #' @param x An object to test
 #' @keywords internal
@@ -889,7 +889,7 @@ sys_frame <- function(n) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+#' `r lifecycle::badge("deprecated")`
 #'
 #' The frame position on the stack can be computed by counting frames
 #' from the global frame (the bottom of the stack, the default) or
@@ -988,7 +988,7 @@ frame_position_current <- function(frame, stack = NULL,
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+#' `r lifecycle::badge("deprecated")`
 #'
 #' [ctxt_stack()] can be tricky to use in real code because all
 #' intervening frames are returned with the stack, including those at
@@ -1057,7 +1057,7 @@ stack_trim <- function(stack, n = 1) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+#' `r lifecycle::badge("deprecated")`
 #'
 #' These functions were deprecated and renamed to [parse_quo()]
 #' and [parse_quos()] in rlang 0.2.0. This is for consistency with the
@@ -1088,7 +1088,7 @@ parse_quosures <- function(x, env = caller_env()) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+#' `r lifecycle::badge("deprecated")`
 #'
 #' This function is deprecated, please use [quo_squash()] instead.
 #'
@@ -1107,7 +1107,7 @@ quo_expr <- function(quo, warn = FALSE) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+#' `r lifecycle::badge("deprecated")`
 #'
 #' These functions have been deprecated in rlang 0.2.0. Please use
 #' [as_data_mask()] and [new_data_mask()] instead. We no longer
@@ -1148,7 +1148,7 @@ overscope_clean <- function(overscope) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+#' `r lifecycle::badge("deprecated")`
 #'
 #' `overscope_eval_next()` is deprecated as of rlang 0.2.0. Please use
 #' `eval_tidy()` to which you can now supply an overscope.
@@ -1178,7 +1178,7 @@ overscope_eval_next <- function(overscope, quo, env = base_env()) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+#' `r lifecycle::badge("deprecated")`
 #'
 #' These functions are deprecated, please use [call2()] and
 #' [new_call()] instead.
@@ -1208,7 +1208,7 @@ new_language <- function(head, tail = NULL) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+#' `r lifecycle::badge("deprecated")`
 #'
 #' These functions are deprecated, please use [is_call()] and its `n`
 #' argument instead.
@@ -1256,7 +1256,7 @@ quo_is_lang <- function(quo) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+#' `r lifecycle::badge("deprecated")`
 #'
 #' These functions are deprecated, please use [call_modify()],
 #' [call_standardise()], or [call_fn()] instead.
@@ -1327,7 +1327,7 @@ lang_args_names <- function(lang) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+#' `r lifecycle::badge("deprecated")`
 #'
 #' As of rlang 0.2.0 these functions are retired (deprecated for now)
 #' because they are low level accessors that are rarely needed for end
@@ -1355,7 +1355,7 @@ lang_tail <- function(lang) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+#' `r lifecycle::badge("deprecated")`
 #'
 #' This function was deprecated and renamed to [is_expression()] in
 #' rlang 0.2.0. This is for consistency with other type predicates
@@ -1379,7 +1379,7 @@ is_expr <- function(x) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+#' `r lifecycle::badge("deprecated")`
 #'
 #' These functions were deprecated and renamed with `node_poke_`
 #' prefix in rlang 0.2.0. This change follows a new naming convention
@@ -1447,7 +1447,7 @@ node <- function(car, cdr = NULL) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+#' `r lifecycle::badge("deprecated")`
 #'
 #' This function is deprecated as it was renamed to [as_environment()]
 #' in rlang 0.2.0.
@@ -1463,7 +1463,7 @@ as_env <- function(x, parent = NULL) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+#' `r lifecycle::badge("deprecated")`
 #'
 #' These functions were deprecated and renamed to [is_environment()]
 #' and [is_bare_environment()] in rlang 0.2.0. This is for consistency
@@ -1493,7 +1493,7 @@ is_bare_env <- function(x) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+#' `r lifecycle::badge("deprecated")`
 #'
 #' As of rlang 0.3.0, `env_bind_exprs()` and `env_bind_fns()` have
 #' been renamed to [env_bind_lazy()] and [env_bind_active()] for
@@ -1524,7 +1524,7 @@ env_bind_fns <- function(.env, ...) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+#' `r lifecycle::badge("deprecated")`
 #'
 #' These functions are deprecated as of rlang 0.3.0. They are replaced
 #' by [is_attached()], ...
@@ -1592,7 +1592,7 @@ scoped_names <- function() {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+#' `r lifecycle::badge("deprecated")`
 #'
 #' These functions were deprecated and renamed with `new_` prefix in
 #' rlang 0.2.0. This is for consistency with other non-variadic object
@@ -1803,7 +1803,7 @@ set_names_impl <- function(x, mold, nm, ...) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+#' `r lifecycle::badge("deprecated")`
 #'
 #' Vector functions are now out of scope for rlang. They might be
 #' revived in the vctrs or funs packages.
@@ -1868,8 +1868,8 @@ warn_deprecated_vector <- function(fn) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+#' `r lifecycle::badge("experimental")`
+#' `r lifecycle::badge("deprecated")`
 #'
 #' `set_attrs()` adds, changes, or zaps attributes of objects. Pass a
 #' single unnamed `NULL` argument to zap all attributes. For
@@ -1949,7 +1949,7 @@ names(set_attrs_null) <- ""
 #' Is a vector uniquely named?
 #'
 #' @description
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+#' `r lifecycle::badge("deprecated")`
 #' Like [is_named()] but also checks that names are unique.
 #' @param x A vector.
 #' @keywords internal
@@ -1969,7 +1969,7 @@ is_dictionaryish <- function(x) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#' `r lifecycle::badge("soft-deprecated")`
 #'
 #' `exiting()` is no longer necessary as handlers are exiting by default.
 #'
@@ -1991,7 +1991,7 @@ exiting <- function(handler) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#' `r lifecycle::badge("questioning")`
 #'
 #' These functions have been renamed to use the conventional `local_`
 #' prefix. They will be deprecated in the next minor version of rlang.
@@ -2021,7 +2021,7 @@ scoped_bindings <- function(..., .env = .frame, .frame = caller_env()) {
 #' Mask bindings by defining symbols deeper in a scope
 #'
 #' @description
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("superseded")}
+#' `r lifecycle::badge("superseded")`
 #'
 #' This function is superseded. Please use [env()] (and possibly
 #' [set_env()] if you're masking the bindings for another object like
@@ -2062,7 +2062,7 @@ env_bury <- function(.env, ...) {
 
 #' Format error bullets
 #' @description
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+#' `r lifecycle::badge("deprecated")`
 #' `format_error_bullets()` has been renamed to [format_bullets()].
 #' @inheritParams format_bullets
 #' @keywords internal

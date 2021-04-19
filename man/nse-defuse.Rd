@@ -105,7 +105,7 @@ function parameter, or wrap the \verb{<-} call in braces otherwise.
 This ensures assignments are explicit.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 The defusing operators \code{expr()} and \code{enquo()} prevent the
 evaluation of R code. Defusing is also known as \emph{quoting}, and is

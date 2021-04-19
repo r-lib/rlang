@@ -23,7 +23,7 @@ vec_poke_range(x, start, y, from = 1L, to = length(y) - from + 1L)
 \item{to}{The index indicating the end of the range to copy from \code{y}.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 These tools are for R experts only. They copy elements from \code{y}
 into \code{x} by mutation. You should only do this if you own \code{x},

@@ -14,7 +14,7 @@ the top of the stack. In other words, the number of layers of
 intervening frames to trim.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
 \code{\link[=ctxt_stack]{ctxt_stack()}} can be tricky to use in real code because all
 intervening frames are returned with the stack, including those at

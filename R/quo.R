@@ -397,7 +397,7 @@ quo_squash <- function(quo, warn = FALSE) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#' `r lifecycle::badge("questioning")`
 #'
 #' **Note:** You should now use [as_label()] or [as_name()] instead
 #' of `quo_name()`. See life cycle section below.

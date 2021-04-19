@@ -16,7 +16,7 @@ env_is_locked(env)
 The old value of \code{env_is_locked()} invisibly.
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Locked environments cannot be modified. An important example is
 namespace environments which are locked by R when loaded in a

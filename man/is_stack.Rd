@@ -16,6 +16,6 @@ is_call_stack(x)
 \item{x}{An object to test}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#soft-deprecated}{\figure{lifecycle-soft-deprecated.svg}{options: alt='[Soft-deprecated]'}}}{\strong{[Soft-deprecated]}}
 }
 \keyword{internal}

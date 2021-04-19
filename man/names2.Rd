@@ -10,7 +10,7 @@ names2(x)
 \item{x}{A vector.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 This names getter always returns a character vector, even when an
 object does not have a \code{names} attribute. In this case, it returns

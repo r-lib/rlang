@@ -17,7 +17,7 @@ name is taken as the restart name and the function is executed
 after the jump.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#questioning}{\figure{lifecycle-questioning.svg}{options: alt='[Questioning]'}}}{\strong{[Questioning]}}
 
 Restart points are named functions that are established with
 \code{with_restarts()}. Once established, you can interrupt the normal

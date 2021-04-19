@@ -22,7 +22,7 @@ prefix for the argument names. Set \code{.bury} to \code{NULL} if you
 prefer to inline the function and its arguments in the call.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#soft-deprecated}{\figure{lifecycle-soft-deprecated.svg}{options: alt='[Soft-deprecated]'}}}{\strong{[Soft-deprecated]}}
 
 Normally, you invoke a R function by typing arguments manually. A
 powerful alternative is to call a function with a list of arguments

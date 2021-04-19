@@ -18,7 +18,7 @@ scoped quosure. This is the \link[=base_env]{base environment} by
 default.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
 \code{overscope_eval_next()} is deprecated as of rlang 0.2.0. Please use
 \code{eval_tidy()} to which you can now supply an overscope.

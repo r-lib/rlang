@@ -14,7 +14,7 @@ objects.}
 declarative, no encoding conversion is performed.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 These base-type constructors allow more control over the creation
 of strings in R. They take character vectors or string-like objects

@@ -13,7 +13,7 @@ as_bytes(x)
 A raw vector of bytes.
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 This currently only works with strings, and returns its hexadecimal
 representation.

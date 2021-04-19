@@ -2,7 +2,7 @@
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
+#' `r lifecycle::badge("stable")`
 #'
 #' `eval_bare()` is a lower-level version of function [base::eval()].
 #' Technically, it is a simple wrapper around the C function
@@ -166,7 +166,7 @@ locally <- function(expr) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
+#' `r lifecycle::badge("soft-deprecated")`
 #'
 #' Normally, you invoke a R function by typing arguments manually. A
 #' powerful alternative is to call a function with a list of arguments

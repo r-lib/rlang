@@ -12,7 +12,7 @@ eval_bare(expr, env = parent.frame())
 \item{env}{The environment in which to evaluate the expression.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 \code{eval_bare()} is a lower-level version of function \code{\link[base:eval]{base::eval()}}.
 Technically, it is a simple wrapper around the C function

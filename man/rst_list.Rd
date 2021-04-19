@@ -22,7 +22,7 @@ rst_maybe_jump(.restart, ...)
 restart function.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#questioning}{\figure{lifecycle-questioning.svg}{options: alt='[Questioning]'}}}{\strong{[Questioning]}}
 
 Restarts are named jumping points established by \code{\link[=with_restarts]{with_restarts()}}.
 \code{rst_list()} returns the names of all restarts currently

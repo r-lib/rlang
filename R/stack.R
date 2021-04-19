@@ -2,7 +2,7 @@
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+#' `r lifecycle::badge("experimental")`
 #'
 #' * The current frame is the execution context of the function that
 #'   is currently being evaluated.
@@ -39,7 +39,7 @@ current_fn <- function() {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#' `r lifecycle::badge("questioning")`
 #'
 #' While [base::return()] can only return from the current local
 #' frame, these two functions will return from any frame on the

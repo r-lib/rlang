@@ -28,8 +28,8 @@ stating the conversion failure. This type is prettified unless
 \code{.to} inherits from the S3 class \code{"AsIs"} (see \code{\link[base:AsIs]{base::I()}}).}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("soft-deprecated")}
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#soft-deprecated}{\figure{lifecycle-soft-deprecated.svg}{options: alt='[Soft-deprecated]'}}}{\strong{[Soft-deprecated]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 \code{switch_type()} is equivalent to
 \code{\link[base]{switch}(\link{type_of}(x, ...))}, while

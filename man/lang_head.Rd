@@ -13,7 +13,7 @@ lang_tail(lang)
 \item{lang}{A call.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
 As of rlang 0.2.0 these functions are retired (deprecated for now)
 because they are low level accessors that are rarely needed for end

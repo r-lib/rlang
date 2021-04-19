@@ -31,7 +31,7 @@ the options are reset to their original values.}
 \item{.env}{An environment.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#questioning}{\figure{lifecycle-questioning.svg}{options: alt='[Questioning]'}}}{\strong{[Questioning]}}
 
 These functions have been renamed to use the conventional \code{local_}
 prefix. They will be deprecated in the next minor version of rlang.

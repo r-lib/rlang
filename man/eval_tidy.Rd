@@ -19,7 +19,7 @@ environment is not applicable for quosures because they have
 their own environments.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 \code{eval_tidy()} is a variant of \code{\link[base:eval]{base::eval()}} that powers the tidy
 evaluation framework. Like \code{eval()} it accepts user data as

@@ -496,7 +496,7 @@ env_length <- function(env) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+#' `r lifecycle::badge("experimental")`
 #'
 #' Locked environment bindings trigger an error when an attempt is
 #' made to redefine the binding.
@@ -558,7 +558,7 @@ env_binding_are_locked <- function(env, nms = NULL) {
 
 #' What kind of environment binding?
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+#' `r lifecycle::badge("experimental")`
 #'
 #' @inheritParams env_binding_lock
 #'

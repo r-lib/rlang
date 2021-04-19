@@ -67,7 +67,7 @@ double vector, and \code{flatten_chr()} a character vector. Similarly
 for \code{squash()} and the typed variants (\code{squash_lgl()} etc).
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#questioning}{\figure{lifecycle-questioning.svg}{options: alt='[Questioning]'}}}{\strong{[Questioning]}}
 
 \code{flatten()} removes one level hierarchy from a list, while
 \code{squash()} removes all levels. These functions are similar to

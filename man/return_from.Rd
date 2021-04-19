@@ -17,7 +17,7 @@ environment currently on the stack.}
 \item{value}{The return value.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#questioning}{\figure{lifecycle-questioning.svg}{options: alt='[Questioning]'}}}{\strong{[Questioning]}}
 
 While \code{\link[base:function]{base::return()}} can only return from the current local
 frame, these two functions will return from any frame on the

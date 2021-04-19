@@ -24,7 +24,7 @@ replacements. Elements that have new or no names are inserted at
 the end.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
 Vector functions are now out of scope for rlang. They might be
 revived in the vctrs or funs packages.

@@ -2,7 +2,7 @@
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#' `r lifecycle::badge("questioning")`
 #'
 #' The atomic vector constructors are equivalent to [c()] but:
 #'
@@ -103,7 +103,7 @@ bytes <- function(...) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#' `r lifecycle::badge("questioning")`
 #'
 #' These functions construct vectors of a given length, with attributes
 #' specified via dots. Except for `new_list()` and `new_raw()`, the

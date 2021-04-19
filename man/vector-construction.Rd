@@ -27,7 +27,7 @@ bytes(...)
 spliced lists are spliced.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#questioning}{\figure{lifecycle-questioning.svg}{options: alt='[Questioning]'}}}{\strong{[Questioning]}}
 
 The atomic vector constructors are equivalent to \code{\link[=c]{c()}} but:
 \itemize{

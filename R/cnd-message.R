@@ -24,7 +24,7 @@
 #'
 #' @section Overriding `cnd_body()`:
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("experimental")}
+#' `r lifecycle::badge("experimental")`
 #'
 #' Sometimes the contents of an error message depends on the state of
 #' your checking routine. In that case, it can be tricky to lazily

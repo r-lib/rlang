@@ -40,7 +40,7 @@ has to match at least one of them, otherwise \code{is_call()} returns
 \item{quo}{A quosure to test.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
 These functions are deprecated, please use \code{\link[=is_call]{is_call()}} and its \code{n}
 argument instead.

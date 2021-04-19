@@ -2,7 +2,7 @@
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
+#' `r lifecycle::badge("stable")`
 #'
 #' This constructs a new function given its three components:
 #' list of arguments, body code and parent environment.
@@ -365,7 +365,7 @@ fn_env <- function(fn) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
+#' `r lifecycle::badge("stable")`
 #'
 #' * `as_function()` transforms a one-sided formula into a function.
 #'   This powers the lambda syntax in packages like purrr.

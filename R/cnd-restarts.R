@@ -2,7 +2,7 @@
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#' `r lifecycle::badge("questioning")`
 #'
 #' Restart points are named functions that are established with
 #' `with_restarts()`. Once established, you can interrupt the normal
@@ -129,7 +129,7 @@ with_restarts <- function(.expr, ...) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#' `r lifecycle::badge("questioning")`
 #'
 #' Restarts are named jumping points established by [with_restarts()].
 #' `rst_list()` returns the names of all restarts currently
@@ -179,7 +179,7 @@ rst_maybe_jump <- function(.restart, ...) {
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+#' `r lifecycle::badge("questioning")`
 #'
 #' The abort restart is the only restart that is established at top
 #' level. It is used by R as a top-level target, most notably when an

@@ -49,7 +49,7 @@ function parameter, or wrap the \verb{<-} call in braces otherwise.
 This ensures assignments are explicit.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#questioning}{\figure{lifecycle-questioning.svg}{options: alt='[Questioning]'}}}{\strong{[Questioning]}}
 \itemize{
 \item \code{splice} marks an object to be spliced. It is equivalent to using
 \verb{!!!} in a function taking \link[=dyn-dots]{dynamic dots}.

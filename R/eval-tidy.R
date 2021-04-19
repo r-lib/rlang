@@ -2,7 +2,7 @@
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
+#' `r lifecycle::badge("stable")`
 #'
 #' `eval_tidy()` is a variant of [base::eval()] that powers the tidy
 #' evaluation framework. Like `eval()` it accepts user data as
@@ -242,7 +242,7 @@ print.rlang_fake_data_pronoun <- function(...) cat_line("<pronoun>")
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
+#' `r lifecycle::badge("stable")`
 #'
 #' A data mask is an environment (or possibly multiple environments
 #' forming an ancestry) containing user-supplied objects. Objects in

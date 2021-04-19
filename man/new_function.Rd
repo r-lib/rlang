@@ -20,7 +20,7 @@ function. Usually this will be most easily generated with
 calling environment of \code{new_function()}}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 This constructs a new function given its three components:
 list of arguments, body code and parent environment.

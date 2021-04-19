@@ -17,7 +17,7 @@ is likely to cause subtle bugs and it is good practice to warn
 the user about it.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
 This function is deprecated, please use \code{\link[=quo_squash]{quo_squash()}} instead.
 }

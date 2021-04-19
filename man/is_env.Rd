@@ -13,7 +13,7 @@ is_bare_env(x)
 \item{x}{object to test}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("deprecated")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
 These functions were deprecated and renamed to \code{\link[=is_environment]{is_environment()}}
 and \code{\link[=is_bare_environment]{is_bare_environment()}} in rlang 0.2.0. This is for consistency

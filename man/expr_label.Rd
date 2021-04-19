@@ -20,7 +20,7 @@ expr_text(expr, width = 60L, nlines = Inf)
 \item{nlines}{Maximum number of lines to extract.}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#questioning}{\figure{lifecycle-questioning.svg}{options: alt='[Questioning]'}}}{\strong{[Questioning]}}
 
 \code{expr_text()} turns the expression into a single string, which
 might be multi-line. \code{expr_name()} is suitable for formatting

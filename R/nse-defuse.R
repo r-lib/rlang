@@ -2,7 +2,7 @@
 #'
 #' @description
 #'
-#' \Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
+#' `r lifecycle::badge("stable")`
 #'
 #' The defusing operators `expr()` and `enquo()` prevent the
 #' evaluation of R code. Defusing is also known as _quoting_, and is

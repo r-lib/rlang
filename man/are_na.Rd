@@ -28,7 +28,7 @@ is_cpl_na(x)
 \item{x}{An object to test}
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#questioning}{\figure{lifecycle-questioning.svg}{options: alt='[Questioning]'}}}{\strong{[Questioning]}}
 
 \code{are_na()} checks for missing values in a vector and is equivalent
 to \code{\link[base:NA]{base::is.na()}}. It is a vectorised predicate, meaning that its

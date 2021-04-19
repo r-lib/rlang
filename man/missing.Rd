@@ -32,7 +32,7 @@ na_chr
 na_cpl
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("questioning")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#questioning}{\figure{lifecycle-questioning.svg}{options: alt='[Questioning]'}}}{\strong{[Questioning]}}
 
 Missing values are represented in R with the general symbol
 \code{NA}. They can be inserted in almost all data containers: all

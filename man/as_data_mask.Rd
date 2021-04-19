@@ -35,7 +35,7 @@ assumption about the parent of \code{top}.}
 A data mask that you can supply to \code{\link[=eval_tidy]{eval_tidy()}}.
 }
 \description{
-\Sexpr[results=rd, stage=render]{rlang:::lifecycle("stable")}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 A data mask is an environment (or possibly multiple environments
 forming an ancestry) containing user-supplied objects. Objects in
