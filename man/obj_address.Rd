@@ -2,9 +2,12 @@
 % Please edit documentation in R/obj.R
 \name{obj_address}
 \alias{obj_address}
+\alias{sexp_address}
 \title{Address of an R object}
 \usage{
 obj_address(x)
+
+sexp_address(x)
 }
 \arguments{
 \item{x}{Any R object.}

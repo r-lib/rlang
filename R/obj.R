@@ -35,6 +35,7 @@ obj_address <- function(x) {
 }
 
 # Imported from lifecycle
+#' @rdname obj_address
 #' @export
 sexp_address <- obj_address
 
