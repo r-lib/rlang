@@ -5,12 +5,17 @@
 \alias{check_installed}
 \title{Are packages installed in any of the libraries?}
 \usage{
-is_installed(pkg)
+is_installed(pkg, ..., version = NULL)
 
 check_installed(pkg, reason = NULL)
 }
 \arguments{
 \item{pkg}{The package names.}
+
+\item{...}{These dots must be empty.}
+
+\item{version}{Minimum versions for \code{pkg}. If supplied, must be the
+same length as \code{pkg}. \code{NA} elements stand for any versions.}
 
 \item{reason}{Optional string indicating why is \code{pkg} needed.
 Appears in error messages (if non-interactive) and user prompts
@@ -41,4 +46,5 @@ the current evaluation is aborted.
 \examples{
 is_installed("utils")
 is_installed(c("base", "ggplot5"))
+is_installed(c("base", "ggplot5"), version = c(NA, "5.1.0"))
 }

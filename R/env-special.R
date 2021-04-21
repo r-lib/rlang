@@ -294,6 +294,9 @@ is_namespace <- function(x) {
 #' @param reason Optional string indicating why is `pkg` needed.
 #'   Appears in error messages (if non-interactive) and user prompts
 #'   (if interactive).
+#' @param ... These dots must be empty.
+#' @param version Minimum versions for `pkg`. If supplied, must be the
+#'   same length as `pkg`. `NA` elements stand for any versions.
 #' @return `is_installed()` returns `TRUE` if _all_ package names
 #'   provided in `pkg` are installed, `FALSE`
 #'   otherwise. `check_installed()` either doesn't return or returns
@@ -302,8 +305,24 @@ is_namespace <- function(x) {
 #' @examples
 #' is_installed("utils")
 #' is_installed(c("base", "ggplot5"))
-is_installed <- function(pkg) {
-  all(map_lgl(pkg, function(x) is_true(requireNamespace(x, quietly = TRUE))))
+#' is_installed(c("base", "ggplot5"), version = c(NA, "5.1.0"))
+is_installed <- function(pkg, ..., version = NULL) {
+  check_dots_empty(...)
+
+  if (!all(map_lgl(pkg, function(x) is_true(requireNamespace(x, quietly = TRUE))))) {
+    return(FALSE)
+  }
+  if (is_null(version)) {
+    return(TRUE)
+  }
+
+  if (!is_character(version, n = length(pkg))) {
+    abort("`version` must be a character vector the same length as `pkg`.")
+  }
+
+  all(map2_lgl(pkg, version, function(p, v) {
+    is_na(v) || utils::packageVersion(p) >= v
+  }))
 }
 #' @rdname is_installed
 #' @export

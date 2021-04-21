@@ -94,3 +94,17 @@ test_that("check_installed() fails if packages are not installed", {
     (expect_error(check_installed(c("_foo", "_bar"), "to proceed.")))
   })
 })
+
+test_that("is_installed() checks minimal versions", {
+  expect_error(
+    is_installed(c("rlang", "testthat"), version = "0.1"),
+    "the same length"
+  )
+  expect_true(is_installed(c("rlang", "testthat"), version = c("0.1", "0.1")))
+  expect_false(is_installed(c("rlang", "testthat"), version = c("100.1", "0.1")))
+  expect_false(is_installed(c("rlang", "testthat"), version = c("0.1", "100.1")))
+  expect_false(is_installed(c("rlang", "testthis"), version = c("0.1", "0.1")))
+
+  expect_true(is_installed(c("rlang", "testthat"), version = chr(NA, NA)))
+  expect_false(is_installed(c("rlang", "testthat"), version = c(NA, "100")))
+})
