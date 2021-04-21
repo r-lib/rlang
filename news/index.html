@@ -158,6 +158,7 @@
 <a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li><p><code><a href="../reference/expr_print.html">expr_deparse()</a></code> now properly escapes <code>\</code> characters in symbols, argument names, and vector names (<a href='https://github.com/r-lib/rlang/issues/1160'>#1160</a>).</p></li>
 <li><p><code>friendly_type_of()</code> (from <code>compat-friendly-type.R</code>) now supports matrices and arrays (<a href='https://github.com/r-lib/rlang/issues/141'>#141</a>).</p></li>
 <li><p><code><a href="../reference/friendly_type.html">friendly_type()</a></code> is deprecated and <code>as_pairlist()</code> is defunct.</p></li>
 <li><p>Updated <code><a href="../reference/env_print.html">env_print()</a></code> to use <code><a href="../reference/format_bullets.html">format_bullets()</a></code> and consistent tidyverse style (<a href='https://github.com/r-lib/rlang/issues/1154'>#1154</a>).</p></li>
