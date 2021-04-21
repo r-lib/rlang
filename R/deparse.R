@@ -376,6 +376,17 @@ unary_op_deparse <- function(x, lines = new_lines()) {
   lines$deparse(node_cadr(x))
   lines$get_lines()
 }
+unary_f_deparse <- function(x, lines = new_lines()) {
+  lines$push("~")
+
+  rhs <- node_cadr(x)
+  if (!is_symbol(rhs) && !is_syntactic_literal(rhs)) {
+    lines$push(" ")
+  }
+  lines$deparse(rhs)
+
+  lines$get_lines()
+}
 
 brackets_deparse <- function(x, lines = new_lines()) {
   x <- node_cdr(x)
@@ -580,8 +591,8 @@ op_deparse <- function(op, x, lines) {
     `@` = unspaced_op_deparse,
     `::` = ,
     `:::` = tight_op_deparse,
+    `~unary` = unary_f_deparse,
     `?unary` = ,
-    `~unary` = ,
     `!` = ,
     `!!!` = ,
     `!!` = ,

@@ -565,3 +565,27 @@ test_that("backslashes in strings are properly escaped (#1160)", {
     "<list: a\\\\b = \"c\\\\d\">"
   )
 })
+
+test_that("formulas are deparsed (#1169)", {
+  # Evaluated formulas are treated as objects
+  expect_equal(
+    expr_deparse(~foo),
+    "<formula>"
+  )
+
+  # Unevaluated formulas with a symbol have no space
+  expect_equal(
+    expr_deparse(quote(~foo)),
+    "~foo"
+  )
+
+  # Unevaluated formulas with expressions have a space
+  expect_equal(
+    expr_deparse(quote(~+foo)),
+    "~ +foo"
+  )
+  expect_equal(
+    expr_deparse(quote(~foo())),
+    "~ foo()"
+  )
+})
