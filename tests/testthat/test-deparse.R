@@ -536,3 +536,32 @@ test_that("triple colon is never wrapped (#1072)", {
     "id_fun <- base:::identity"
   )
 })
+
+test_that("backslashes in strings are properly escaped (#1160)", {
+  expect_equal(
+    expr_deparse(sym("a\\b")),
+    "`a\\\\b`"
+  )
+
+  # Escaping ensures this roundtrip
+  expect_equal(
+    parse_expr(expr_deparse(sym("a\\b"))),
+    sym("a\\b")
+  )
+  
+  # Argument names
+  expect_equal(
+    expr_deparse(quote(c("a\\b" = "c\\d"))),
+    "c(`a\\\\b` = \"c\\\\d\")"
+  )
+
+  # Vector names
+  expect_equal(
+    expr_deparse(c("a\\b" = "c\\d")),
+    "<chr: a\\\\b = \"c\\\\d\">"
+  )
+  expect_equal(
+    expr_deparse(list("a\\b" = "c\\d")),
+    "<list: a\\\\b = \"c\\\\d\">"
+  )
+})

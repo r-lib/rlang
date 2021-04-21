@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* `expr_deparse()` now properly escapes `\` characters in symbols,
+  argument names, and vector names (#1160).
+
 * `friendly_type_of()` (from `compat-friendly-type.R`) now supports
   matrices and arrays (#141).
 

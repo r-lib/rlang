@@ -1,4 +1,3 @@
-
 line_push <- function(line, text,
                       sticky = FALSE,
                       boundary = NULL,
@@ -428,7 +427,7 @@ braces_deparse <- function(x, lines = new_lines()) {
 }
 
 sym_deparse <- function(x, lines = new_lines()) {
-  str <- as_string(x)
+  str <- encodeString(as_string(x))
 
   if (needs_backticks(str)) {
     str <- sprintf("`%s`", str)
@@ -642,7 +641,7 @@ atom_deparse <- function(x, lines = new_lines()) {
   lines$increase_indent()
 
   elts <- atom_elements(x)
-  nms <- names2(x)
+  nms <- deparsed_names(x)
 
   n <- length(elts)
   for (i in seq_len(n)) {
@@ -684,7 +683,7 @@ list_deparse <- function(x, lines = new_lines()) {
     x <- .subset(x, seq_len(max_elements))
   }
 
-  nms <- names2(x)
+  nms <- deparsed_names(x)
   n <- length(x)
 
   for (i in seq_len(n)) {
@@ -810,6 +809,10 @@ reserved_words <- c(
   "next",
   "break"
 )
+
+deparsed_names <- function(x) {
+  encodeString(names2(x))
+}
 
 #' Create a default name for an R object
 #'
