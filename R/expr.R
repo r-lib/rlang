@@ -349,8 +349,6 @@ switch_expr <- function(.x, ...) {
 #' @param width The width of the deparsed or printed expression.
 #'   Defaults to the global option `width`.
 #' @param ... Arguments passed to `expr_deparse()`.
-#' @param max_elements Maximum length of a vector or list before truncation
-#'   occurs. Defaults to 5L.
 #'
 #' @export
 #' @examples
@@ -386,12 +384,8 @@ expr_print <- function(x, ...) {
 #' @export
 expr_deparse <- function(x,
                          ...,
-                         width = peek_option("width"),
-                         max_elements = 5L) {
+                         width = peek_option("width")) {
   check_dots_empty(...)
-  deparser <- new_quo_deparser(
-    width = width,
-    max_elements = max_elements
-  )
+  deparser <- new_quo_deparser(width = width)
   quo_deparse(x, deparser)
 }
