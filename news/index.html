@@ -81,7 +81,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.10.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.10.9002</span>
       </span>
     </div>
 
@@ -181,7 +181,6 @@
 <li><p><code><a href="../reference/is_formula.html">is_bare_formula()</a></code> now handles the <code>scoped</code> argument consistently. The default has been changed to <code>TRUE</code> for compatibility with the historical default behaviour (<a href='https://github.com/r-lib/rlang/issues/1115'>#1115</a>).</p></li>
 <li><p>The “definition” API (<code>dots_definitions()</code> etc.) has been archived.</p></li>
 <li><p>Fixed <code>!!</code> issue involving binary operators (<a href='https://github.com/r-lib/rlang/issues/1125'>#1125</a>).</p></li>
-<li><p><code><a href="../reference/expr_print.html">expr_print()</a></code> and <code><a href="../reference/expr_print.html">expr_deparse()</a></code> accept the optional argument <code>max_elements</code> to control truncation of vectors and lists (<a href='https://github.com/ianmcook'>@ianmcook</a>, <a href='https://github.com/r-lib/rlang/issues/897'>#897</a>)</p></li>
 <li><p>New <code><a href="../reference/type-predicates.html">is_complex()</a></code> predicates to complete the family (<a href='https://github.com/r-lib/rlang/issues/1127'>#1127</a>).</p></li>
 <li><p><code>.data</code> now fails early when it is subsetted outside of a data mask context. This provides a more informative error message (<a href='https://github.com/r-lib/rlang/issues/804'>#804</a>, <a href='https://github.com/r-lib/rlang/issues/1133'>#1133</a>).</p></li>
 <li><p>The C function <code>r_obj_address()</code> now properly prefixes addresses with the hexadecimal prefix <code>0x</code> on Windows (<a href='https://github.com/r-lib/rlang/issues/1135'>#1135</a>).</p></li>
