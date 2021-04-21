@@ -7,7 +7,7 @@
 \usage{
 is_installed(pkg, ..., version = NULL)
 
-check_installed(pkg, reason = NULL)
+check_installed(pkg, reason = NULL, ..., version = NULL)
 }
 \arguments{
 \item{pkg}{The package names.}

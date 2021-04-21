@@ -108,3 +108,14 @@ test_that("is_installed() checks minimal versions", {
   expect_true(is_installed(c("rlang", "testthat"), version = chr(NA, NA)))
   expect_false(is_installed(c("rlang", "testthat"), version = c(NA, "100")))
 })
+
+test_that("check_installed() checks minimal versions", {
+  local_options(rlang_interactive = FALSE)
+
+  expect_snapshot({
+    (expect_error(check_installed("_foo", version = "1.0")))
+    (expect_error(check_installed(c("_foo", "_bar"), version = c("1.0", NA))))
+    (expect_error(check_installed(c("_foo", "_bar"), version = c(NA, "2.0"))))
+    (expect_error(check_installed(c("_foo", "_bar"), "to proceed.", version = c("1.0", "2.0"))))
+  })
+})

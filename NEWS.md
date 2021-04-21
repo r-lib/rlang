@@ -1,6 +1,6 @@
 # rlang (development version)
 
-* `is_installed()` gains a `version` argument (#1165).
+* `is_installed()` and `check_installed()` gain a `version` argument (#1165).
 
 * `expr_deparse()` now properly escapes `\` characters in symbols,
   argument names, and vector names (#1160).
