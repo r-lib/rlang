@@ -166,8 +166,6 @@ abort <- function(message = NULL,
   }
 
   message <- validate_signal_message(message, class)
-  message <- collapse_cnd_message(message)
-
   cnd <- error_cnd(class,
     ...,
     message = message,

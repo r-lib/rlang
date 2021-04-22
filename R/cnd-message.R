@@ -59,7 +59,7 @@ cnd_header <- function(cnd, ...) {
 }
 #' @export
 cnd_header.default <- function(cnd, ...) {
-  cnd$message
+  collapse_cnd_message(cnd$message)
 }
 
 #' @rdname cnd_message
