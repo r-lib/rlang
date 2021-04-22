@@ -26,8 +26,8 @@ lang_args_names(lang)
 (constants, names or calls) used to modify the call. Use \code{\link[=zap]{zap()}}
 to remove arguments. Empty arguments are preserved.}
 
-\item{.standardise}{Soft-deprecated as of rlang 0.3.0. Please
-call \code{\link[=call_standardise]{call_standardise()}} manually.}
+\item{.standardise}{Deprecated as of rlang 0.3.0. Please
+call \code{\link[=call_match]{call_match()}} manually.}
 
 \item{lang, .lang}{The \code{call} or \code{.call} argument of the renamed
 functions.}

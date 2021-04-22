@@ -53,6 +53,81 @@ test_that("can standardise primitive functions (#473)", {
   expect_identical(call_standardise(quote(1 + 2)), quote(1 + 2))
 })
 
+test_that("if `call` is supplied to `call_match()`, `fn` must be supplied", {
+  expect_error(
+    call_match(quote(list())),
+    "`fn` must be supplied."
+  )
+})
+
+test_that("call_match() infers call and definition", {
+  fn <- function(foo) call_match(defaults = TRUE)
+  expect_equal(fn(), quote(fn(foo = )))
+  expect_equal(fn(TRUE), quote(fn(foo = TRUE)))
+
+  # Finds dots
+  dots <- function(...) fn(...)
+  expect_equal(dots(), quote(fn(foo = )))
+  expect_equal(dots(bar), quote(fn(foo = ..1)))
+})
+
+test_that("call_match() returns early with primitive functions", {
+  expect_equal(
+    call_match(quote(x[[1]]), `[[`),
+    quote(x[[1]])
+  )
+})
+
+test_that("call_match() matches defaults", {
+  fn <- function(a, b = TRUE, ..., c = FALSE, d) NULL
+
+  expect_equal(
+    call_match(quote(fn()), fn, defaults = TRUE),
+    quote(fn(a = , b = TRUE, c = FALSE, d = ))
+  )
+  expect_equal(
+    call_match(quote(fn()), fn, defaults = FALSE),
+    quote(fn())
+  )
+
+  expect_equal(
+    call_match(quote(fn(NULL)), fn, defaults = TRUE),
+    quote(fn(a = NULL, b = TRUE, c = FALSE, d = ))
+  )
+  expect_equal(
+    call_match(quote(fn(NULL)), fn, defaults = FALSE),
+    quote(fn(a = NULL))
+  )
+
+  expect_equal(
+    call_match(quote(fn(NULL, foo = TRUE)), fn, defaults = TRUE),
+    quote(fn(a = NULL, b = TRUE, foo = TRUE, c = FALSE, d = ))
+  )
+  expect_equal(
+    call_match(quote(fn(NULL, foo = TRUE)), fn, defaults = FALSE),
+    quote(fn(a = NULL, foo = TRUE))
+  )
+
+  expect_equal(
+    call_match(quote(fn(NULL, foo = TRUE)), fn, dots_expand = FALSE, defaults = TRUE),
+    expr(fn(a = NULL, b = TRUE, ... = !!pairlist(foo = TRUE), c = FALSE, d = ))
+  )
+
+  expect_equal(
+    call_match(quote(fn(NULL, foo = TRUE)), fn, dots_expand = FALSE, defaults = FALSE),
+    quote(fn(a = NULL, ... = !!pairlist(foo = TRUE)))
+  )
+})
+
+test_that("`call_match(dots_expand = TRUE)` handles `...` positional edge cases", {
+  m <- function(fn) call_match(quote(fn(foo = TRUE)), fn, defaults = FALSE)
+
+  expect_equal(m(function(...) NULL), quote(fn(foo = TRUE)))
+  expect_equal(m(function(foo, ...) NULL), quote(fn(foo = TRUE)))
+  expect_equal(m(function(..., foo) NULL), quote(fn(foo = TRUE)))
+  expect_equal(m(function(foo, ..., bar) NULL), quote(fn(foo = TRUE)))
+})
+
 
 # Modification ------------------------------------------------------------
 

@@ -27,27 +27,17 @@ default, \code{"keep"}, preserves these arguments. Set \code{.homonyms} to
 the last occurrences, and to \code{"error"} to raise an informative
 error and indicate what arguments have duplicated names.}
 
-\item{.standardise, .env}{Soft-deprecated as of rlang 0.3.0. Please
-call \code{\link[=call_standardise]{call_standardise()}} manually.}
+\item{.standardise, .env}{Deprecated as of rlang 0.3.0. Please
+call \code{\link[=call_match]{call_match()}} manually.}
 }
 \value{
 A quosure if \code{.call} is a quosure, a call otherwise.
 }
 \description{
 If you are working with a user-supplied call, make sure the
-arguments are standardised with \code{\link[=call_standardise]{call_standardise()}} before
+arguments are standardised with \code{\link[=call_match]{call_match()}} before
 modifying the call.
 }
-\section{Life cycle}{
-
-\itemize{
-\item The \code{.standardise} argument is deprecated as of rlang 0.3.0.
-\item In rlang 0.2.0, \code{lang_modify()} was deprecated and renamed to
-\code{call_modify()}. See lifecycle section in \code{\link[=call2]{call2()}} for more about
-this change.
-}
-}
-
 \examples{
 call <- quote(mean(x, na.rm = TRUE))
 
@@ -84,19 +74,15 @@ call
 
 
 # When you're working with a user-supplied call, standardise it
-# beforehand because it might contain unmatched arguments:
+# beforehand in case it includes unmatched arguments:
 user_call <- quote(matrix(x, nc = 3))
 call_modify(user_call, ncol = 1)
 
-# Standardising applies the usual argument matching rules:
-user_call <- call_standardise(user_call)
+# `call_match()` applies R's argument matching rules. Matching
+# ensures you're modifying the intended argument.
+user_call <- call_match(user_call, matrix)
 user_call
 call_modify(user_call, ncol = 1)
-
-
-# You can also modify quosures inplace:
-f <- quo(matrix(bar))
-call_modify(f, quote(foo))
 
 
 # By default, arguments with the same name are kept. This has

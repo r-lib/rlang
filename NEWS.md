@@ -1,5 +1,11 @@
 # rlang (development version)
 
+* New `call_match()` function. It is like `match.call()` but also
+  supports matching missing arguments to their defaults in the function
+  definition (#875).
+  
+  `call_standardise()` is deprecated in favour of `call_match()`.
+
 * `is_installed()` and `check_installed()` gain a `version` argument (#1165).
 
 * `expr_deparse()` now properly escapes `\` characters in symbols,

@@ -18,14 +18,6 @@ If a frame or formula, the function will be retrieved from the
 associated environment. Otherwise, it is looked up in the calling
 frame.
 }
-\section{Life cycle}{
-
-
-In rlang 0.2.0, \code{lang_fn()} was deprecated and renamed to
-\code{call_fn()}. See lifecycle section in \code{\link[=call2]{call2()}} for more about this
-change.
-}
-
 \examples{
 # Extract from a quoted call:
 call_fn(quote(matrix()))

@@ -434,7 +434,7 @@ call_print_fine_type <- function(call) {
 #' Modify the arguments of a call
 #'
 #' If you are working with a user-supplied call, make sure the
-#' arguments are standardised with [call_standardise()] before
+#' arguments are standardised with [call_match()] before
 #' modifying the call.
 #'
 #' @inheritParams dots_list
@@ -444,16 +444,8 @@ call_print_fine_type <- function(call) {
 #' @param ... <[dynamic][dyn-dots]> Named or unnamed expressions
 #'   (constants, names or calls) used to modify the call. Use [zap()]
 #'   to remove arguments. Empty arguments are preserved.
-#' @param .standardise,.env Soft-deprecated as of rlang 0.3.0. Please
-#'   call [call_standardise()] manually.
-#'
-#' @section Life cycle:
-#'
-#' * The `.standardise` argument is deprecated as of rlang 0.3.0.
-#'
-#' * In rlang 0.2.0, `lang_modify()` was deprecated and renamed to
-#'   `call_modify()`. See lifecycle section in [call2()] for more about
-#'   this change.
+#' @param .standardise,.env Deprecated as of rlang 0.3.0. Please
+#'   call [call_match()] manually.
 #'
 #' @return A quosure if `.call` is a quosure, a call otherwise.
 #' @export
@@ -493,19 +485,15 @@ call_print_fine_type <- function(call) {
 #'
 #'
 #' # When you're working with a user-supplied call, standardise it
-#' # beforehand because it might contain unmatched arguments:
+#' # beforehand in case it includes unmatched arguments:
 #' user_call <- quote(matrix(x, nc = 3))
 #' call_modify(user_call, ncol = 1)
 #'
-#' # Standardising applies the usual argument matching rules:
-#' user_call <- call_standardise(user_call)
+#' # `call_match()` applies R's argument matching rules. Matching
+#' # ensures you're modifying the intended argument.
+#' user_call <- call_match(user_call, matrix)
 #' user_call
 #' call_modify(user_call, ncol = 1)
-#'
-#'
-#' # You can also modify quosures inplace:
-#' f <- quo(matrix(bar))
-#' call_modify(f, quote(foo))
 #'
 #'
 #' # By default, arguments with the same name are kept. This has
@@ -618,45 +606,120 @@ abort_call_input_type <- function(arg) {
   abort(sprintf("`%s` must be a quoted call", arg))
 }
 
-#' Standardise a call
+#' Match supplied arguments to function definition
 #'
-#' This is essentially equivalent to [base::match.call()], but with
-#' experimental handling of primitive functions.
+#' @description
+#' `call_match()` is like [match.call()] with these differences:
 #'
+#' - It supports matching missing argument to their defaults in the
+#'   function definition.
 #'
-#' @section Life cycle:
+#' - It requires you to be a little more specific in some cases.
+#'   Either all arguments are inferred from the call stack or none of
+#'   them are (see the Inference section).
 #'
-#' In rlang 0.2.0, `lang_standardise()` was deprecated and renamed to
-#' `call_standardise()`. See lifecycle section in [call2()] for more
-#' about this change.
+#' @param call A call. The arguments will be matched to `fn`.
+#' @param fn A function definition to match arguments to.
+#' @param ... These dots must be empty.
+#' @param defaults Whether to match missing arguments to their
+#'   defaults.
+#' @param dots_env An execution environment where to find dots. If
+#'   supplied and dots exist in this environment, and if `call`
+#'   includes `...`, the forwarded dots are matched to numbered dots
+#'   (e.g. `..1`, `..2`, etc). By default this is set to the empty
+#'   environment which means that `...` expands to nothing.
+#' @param dots_expand If `FALSE`, arguments passed through `...` will
+#'   not be spliced into `call`. Instead, they are gathered in a
+#'   pairlist and assigned to an argument named `...`. Gathering dots
+#'   arguments is useful if you need to separate them from the other
+#'   named arguments.
 #'
-#' @param call Can be a call or a quosure that wraps a call.
-#' @param env The environment where to find the definition of the
-#'   function quoted in `call` in case `call` is not wrapped in a
-#'   quosure.
+#'   Note that the resulting call is not meant to be evaluated since R
+#'   does not support passing dots through a named argument, even if
+#'   named `"..."`.
 #'
-#' @return A quosure if `call` is a quosure, a raw call otherwise.
+#' @section Inference from the call stack:
+#' When `call` is not supplied, it is inferred from the call stack
+#' along with `fn` and `dots_env`.
+#'
+#' - `call` and `fn` are inferred from the calling environment:
+#'   `sys.call(sys.parent())` and `sys.function(sys.parent())`.
+#'
+#' - `dots_env` is inferred from the caller of the calling
+#'   environment: `caller_env(2)`.
+#'
+#' If `call` is supplied, then you must supply `fn` as well. Also
+#' consider supplying `dots_env` as it is set to the empty environment
+#' when not inferred.
+#'
+#' @examples
+#' # `call_match()` supports matching missing arguments to their
+#' # defaults
+#' fn <- function(x = "default") fn
+#' call_match(quote(fn()), fn)
+#' call_match(quote(fn()), fn, defaults = TRUE)
 #' @export
-call_standardise <- function(call, env = caller_env()) {
-  expr <- get_expr(call)
-  if (!is_call(expr)) {
-    abort_call_input_type("call")
+call_match <- function(call = NULL,
+                       fn = NULL,
+                       ...,
+                       defaults = FALSE,
+                       dots_env = NULL,
+                       dots_expand = TRUE) {
+  check_dots_empty(...)
+
+  if (is_null(call)) {
+    call <- sys.call(sys.parent())
+    fn <- fn %||% sys.function(sys.parent())
+    dots_env <- dots_env %||% caller_env(2)
+  } else {
+    dots_env <- dots_env %||% empty_env()
   }
 
-  if (is_frame(call)) {
-    fn <- call$fn
-  } else {
-    # The call name might be a literal, not necessarily a symbol
-    env <- get_env(call, env)
-    fn <- eval_bare(node_car(expr), env)
+  if (is_null(fn)) {
+    abort("`fn` must be supplied.")
+  }
+  if (!is_environment(dots_env)) {
+    abort("`dots_env` must be an environment.")
   }
 
   if (is_primitive(fn)) {
-    call
-  } else {
-    matched <- match.call(fn, expr)
-    set_expr(call, matched)
+    return(call)
   }
+
+  # Don't expand dots before matching defaults to make it easier to
+  # sort the arguments by formals
+  call <- match.call(fn, call, expand.dots = FALSE, envir = dots_env)
+
+  if (defaults) {
+    fmls <- fn_fmls(fn)
+    names <- names(fmls)
+    missing <- !names %in% names(call)
+
+    args <- c(as.list(call[-1]), fmls[missing])
+    args <- args[names]
+    call <- call2(call[[1]], !!!args)
+  }
+
+  if (is_missing(call$...)) {
+    call$... <- NULL
+    return(call)
+  }
+
+  if (!dots_expand) {
+    return(call)
+  }
+
+  i <- match("...", names(call))
+  if (is_na(i)) {
+    return(call)
+  }
+
+  call <- as.list(call)
+  as.call(c(
+    call[seq2(1, i - 1)],
+    call$...,
+    call[seq2(i + 1, length(call))]
+  ))
 }
 
 #' Extract function from a call
@@ -665,14 +728,10 @@ call_standardise <- function(call, env = caller_env()) {
 #' associated environment. Otherwise, it is looked up in the calling
 #' frame.
 #'
-#'
-#' @section Life cycle:
-#'
-#' In rlang 0.2.0, `lang_fn()` was deprecated and renamed to
-#' `call_fn()`. See lifecycle section in [call2()] for more about this
-#' change.
-#'
-#' @inheritParams call_standardise
+#' @param call Can be a call or a quosure that wraps a call.
+#' @param env The environment where to find the definition of the
+#'   function quoted in `call` in case `call` is not wrapped in a
+#'   quosure.
 #' @export
 #' @seealso [call_name()]
 #' @examples
@@ -712,7 +771,7 @@ call_fn <- function(call, env = caller_env()) {
 #' `call_name()`. See lifecycle section in [call2()] for more about
 #' this change.
 #'
-#' @inheritParams call_standardise
+#' @inheritParams call_fn
 #' @return A string with the function name, or `NULL` if the function
 #'   is anonymous.
 #' @seealso [call_fn()]
@@ -780,7 +839,7 @@ call_ns <- function(call) {
 #' deprecated and renamed to `call_args()` and `call_args_names()`.
 #' See lifecycle section in [call2()] for more about this change.
 #'
-#' @inheritParams call_standardise
+#' @inheritParams call_fn
 #' @return A named list of arguments.
 #' @seealso [fn_fmls()] and [fn_fmls_names()]
 #' @export

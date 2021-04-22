@@ -1391,6 +1391,62 @@ is_expr <- function(x) {
 }
 
 
+#' Standardise a call
+#'
+#' @description
+#'
+#' `r lifecycle::badge("deprecated")`
+#'
+#' Deprecated in rlang 0.4.11 in favour of [call_match()].
+#' `call_standardise()` was designed for call wrappers that include an
+#' environment like formulas or quosures. The function definition was
+#' plucked from that environment. However in practice it is rare to
+#' use it with wrapped calls, and then it's easy to forget to supply
+#' the environment. For these reasons, we have designed [call_match()]
+#' as a simpler wrapper around [match.call()].
+#'
+#' This is essentially equivalent to [base::match.call()], but with
+#' experimental handling of primitive functions.
+#'
+#' @inheritParams call_fn
+#' @inheritParams call_match
+#'
+#' @return A quosure if `call` is a quosure, a raw call otherwise.
+#' @export
+call_standardise <- function(call,
+                             env = caller_env(),
+                             ...,
+                             defaults = FALSE,
+                             dots_env = empty_env()) {
+  check_dots_empty(...)
+
+  expr <- get_expr(call)
+  if (!is_call(expr)) {
+    abort_call_input_type("call")
+  }
+  if (is_bare_formula(call)) {
+    return(call)
+  }
+
+  if (is_frame(call)) {
+    fn <- call$fn
+  } else {
+    # The call name might be a literal, not necessarily a symbol
+    env <- get_env(call, env)
+    fn <- eval_bare(node_car(expr), env)
+  }
+
+  matched <- call_match(
+    expr,
+    fn,
+    defaults = defaults,
+    dots_env = dots_env
+  )
+  set_expr(call, matched)
+}
+
+
+
 #  Nodes  ------------------------------------------------------------
 
 #' Mutate node components
