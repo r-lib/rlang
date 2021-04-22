@@ -500,7 +500,11 @@ r_obj* dots_unquote(r_obj* dots, struct dots_capture_info* capture_info) {
       break;
     }
     case DOTS_OP_value_curly:
-      r_abort("Can't use `{{` in a non-quoting function");
+      if (has_cli) {
+        r_abort("Can't use `{{{{` in a non-quoting function");
+      } else {
+        r_abort("Can't use `{{` in a non-quoting function");
+      }
     case DOTS_OP_expr_uqn:
     case DOTS_OP_quo_uqn:
     case DOTS_OP_value_uqn:

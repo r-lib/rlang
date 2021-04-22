@@ -1,6 +1,12 @@
 #include <rlang.h>
 #include "internal.h"
 
+bool has_cli = false;
+
+r_obj* ffi_cli_is_there() {
+  has_cli = true;
+  return r_null;
+}
 
 #include "arg.c"
 #include "attr.c"

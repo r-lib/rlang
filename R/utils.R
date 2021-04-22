@@ -228,6 +228,10 @@ on_load({
   has_cli <- is_installed("cli")
   has_cli_bullets <- is_installed("cli", version = "2.4.0.9000")
   # TODO: detect new-style cli bullet
+
+  if (has_cli_bullets) {
+    .Call(ffi_cli_is_there)
+  }
 })
 
 info <- function() {
