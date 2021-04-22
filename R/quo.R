@@ -259,7 +259,7 @@ pillar_shaft.quosures <- function(x, ...) {
   labels <- map_chr(unname(x), as_label)
   structure(labels, width = 10L)
 }
-type_sum.quosures <- function(x) {
+type_sum.quosures <- function(x, ...) {
   "quos"
 }
 
