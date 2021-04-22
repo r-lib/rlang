@@ -393,7 +393,7 @@ dots_values <- function(...,
                         .preserve_empty = FALSE,
                         .homonyms = c("keep", "first", "last", "error"),
                         .check_assign = FALSE) {
-  .External(rlang_ext_dots_values,
+  .External(ffi_dots_values,
     env = environment(),
     named = FALSE,
     ignore_empty = .ignore_empty,

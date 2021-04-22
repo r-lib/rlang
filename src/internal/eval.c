@@ -5,7 +5,7 @@
 r_obj* rlang_call2(r_obj* fn, r_obj* args, r_obj* ns);
 
 
-r_obj* rlang_ext2_exec(r_obj* call, r_obj* op, r_obj* args, r_obj* rho) {
+r_obj* ffi_exec(r_obj* call, r_obj* op, r_obj* args, r_obj* rho) {
   args = r_node_cdr(args);
 
   r_obj* fn = KEEP(r_eval(r_sym(".fn"), rho));

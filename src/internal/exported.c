@@ -421,7 +421,7 @@ r_obj* rlang_ns_registry_env() {
 
 // eval.c
 
-r_obj* rlang_ext2_eval(r_obj* call, r_obj* op, r_obj* args, r_obj* env) {
+r_obj* ffi_eval(r_obj* call, r_obj* op, r_obj* args, r_obj* env) {
   args = r_node_cdr(args);
   return Rf_eval(r_node_car(args), r_node_cadr(args));
 }

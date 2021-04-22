@@ -883,7 +883,7 @@ r_obj* dots_values_impl(r_obj* frame_env,
   return dots;
 }
 
-r_obj* rlang_ext_dots_values(r_obj* args) {
+r_obj* ffi_dots_values(r_obj* args) {
   args = r_node_cdr(args);
 
   r_obj* env =            r_node_car(args); args = r_node_cdr(args);

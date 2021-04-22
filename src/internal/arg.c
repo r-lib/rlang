@@ -79,7 +79,7 @@ r_obj* rlang_enquo(r_obj* sym, r_obj* frame) {
 
 // Match ------------------------------------------------------------------
 
-r_obj* rlang_ext_arg_match0(r_obj* args) {
+r_obj* ffi_arg_match0(r_obj* args) {
   args = r_node_cdr(args);
 
   r_obj* arg = r_node_car(args); args = r_node_cdr(args);

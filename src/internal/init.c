@@ -200,15 +200,14 @@ static const R_CallMethodDef r_callables[] = {
 };
 
 static const R_ExternalMethodDef externals[] = {
-  {"rlang_ext_arg_match0",              (DL_FUNC) &rlang_ext_arg_match0, 3},
-  {"rlang_ext_capturearginfo",          (DL_FUNC) &rlang_ext_capturearginfo, 2},
-  {"rlang_ext_capturedots",             (DL_FUNC) &rlang_ext_capturedots, 1},
-  {"rlang_ext_dots_values",             (DL_FUNC) &rlang_ext_dots_values, 7},
-
-  {"rlang_ext2_call2",                  (DL_FUNC) &rlang_ext2_call2, 2},
-  {"rlang_ext2_exec",                   (DL_FUNC) &rlang_ext2_exec, 2},
-  {"rlang_ext2_eval",                   (DL_FUNC) &rlang_ext2_eval, 2},
+  {"ffi_arg_match0",                    (DL_FUNC) &ffi_arg_match0, 3},
+  {"ffi_call2",                         (DL_FUNC) &ffi_call2, 2},
+  {"ffi_capturearginfo",                (DL_FUNC) &ffi_capturearginfo, 2},
+  {"ffi_capturedots",                   (DL_FUNC) &ffi_capturedots, 1},
+  {"ffi_dots_values",                   (DL_FUNC) &ffi_dots_values, 7},
+  {"ffi_eval",                          (DL_FUNC) &ffi_eval, 2},
   {"ffi_eval_tidy",                     (DL_FUNC) &ffi_eval_tidy, 3},
+  {"ffi_exec",                          (DL_FUNC) &ffi_exec, 2},
   {"ffi_tilde_eval",                    (DL_FUNC) &ffi_tilde_eval, 3},
   {NULL, NULL, 0}
 };

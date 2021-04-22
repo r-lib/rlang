@@ -44,7 +44,7 @@ r_obj* rlang_call2(r_obj* fn, r_obj* args, r_obj* ns) {
   return out;
 }
 
-r_obj* rlang_ext2_call2(r_obj* call, r_obj* op, r_obj* args, r_obj* env) {
+r_obj* ffi_call2(r_obj* call, r_obj* op, r_obj* args, r_obj* env) {
   args = r_node_cdr(args);
 
   r_obj* fn = KEEP(r_eval(r_sym(".fn"), env));

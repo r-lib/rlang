@@ -95,7 +95,7 @@
 #' call2("[", quote(x), , drop = )
 #' @export
 call2 <- function(.fn, ..., .ns = NULL) {
-  .External2(rlang_ext2_call2, .fn, .ns)
+  .External2(ffi_call2, .fn, .ns)
 }
 #' Create pairlists with splicing support
 #'

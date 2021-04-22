@@ -440,10 +440,10 @@ quos_auto_name <- function(quos, width = NULL) {
 
 
 captureArgInfo <- function(arg) {
-  .External(rlang_ext_capturearginfo, environment(), parent.frame())
+  .External(ffi_capturearginfo, environment(), parent.frame())
 }
 captureDots <- function() {
-  .External(rlang_ext_capturedots, parent.frame())
+  .External(ffi_capturedots, parent.frame())
 }
 
 
@@ -473,12 +473,12 @@ captureDots <- function() {
 #' no_injection(foo(!!!1:3))
 #' @export
 enquo0 <- function(arg) {
-  info <- .External(rlang_ext_capturearginfo, environment(), parent.frame())
+  info <- .External(ffi_capturearginfo, environment(), parent.frame())
   as_quosure(info$expr, info$env)
 }
 #' @rdname enquo0
 #' @export
 enquos0 <- function(...) {
-  dots <- .External(rlang_ext_capturedots, environment())
+  dots <- .External(ffi_capturedots, environment())
   lapply(dots, function(dot) as_quosure(dot$expr, dot$env))
 }

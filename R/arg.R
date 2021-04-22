@@ -72,7 +72,7 @@ arg_match <- function(arg, values = NULL) {
 #' fn2("bar")
 #' try(fn3("zoo"))
 arg_match0 <- function(arg, values, arg_nm = as_label(substitute(arg))) {
-  .External(rlang_ext_arg_match0, arg, values, environment())
+  .External(ffi_arg_match0, arg, values, environment())
 }
 
 stop_arg_match <- function(arg, values, arg_nm) {
