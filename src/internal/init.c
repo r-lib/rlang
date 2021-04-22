@@ -3,8 +3,8 @@
 #include <rlang.h>
 
 // Library initialisation defined below
-r_obj* ffi_library_load(r_obj*);
-r_obj* ffi_library_unload();
+static r_obj* ffi_library_load(r_obj*);
+static r_obj* ffi_library_unload();
 
 // From version.c
 extern r_obj* rlang_linked_version();
@@ -255,11 +255,13 @@ void R_init_rlang(DllInfo* dll) {
 // From "../internal/internal.h"
 void rlang_init_internal(r_obj* ns);
 
+static
 r_obj* ffi_library_load(r_obj* ns) {
   rlang_init_internal(ns);
   return r_null;
 }
 
+static
 r_obj* ffi_library_unload() {
   return r_null;
 }
