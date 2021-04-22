@@ -22,18 +22,18 @@ walk <- function(.x, .f, ...) {
 }
 
 map_lgl <- function(.x, .f, ...) {
-  .map_mold(.x, .f, logical(1), ...)
+  .rlang_purrr_map_mold(.x, .f, logical(1), ...)
 }
 map_int <- function(.x, .f, ...) {
-  .map_mold(.x, .f, integer(1), ...)
+  .rlang_purrr_map_mold(.x, .f, integer(1), ...)
 }
 map_dbl <- function(.x, .f, ...) {
-  .map_mold(.x, .f, double(1), ...)
+  .rlang_purrr_map_mold(.x, .f, double(1), ...)
 }
 map_chr <- function(.x, .f, ...) {
-  .map_mold(.x, .f, character(1), ...)
+  .rlang_purrr_map_mold(.x, .f, character(1), ...)
 }
-.map_mold <- function(.x, .f, .mold, ...) {
+.rlang_purrr_map_mold <- function(.x, .f, .mold, ...) {
   .f <- as_function(.f)
   out <- vapply(.x, .f, .mold, ..., USE.NAMES = FALSE)
   names(out) <- names(.x)
@@ -67,14 +67,14 @@ imap <- function(.x, .f, ...) {
 
 pmap <- function(.l, .f, ...) {
   .f <- as.function(.f)
-  args <- .args_recycle(.l)
+  args <- .rlang_purrr_args_recycle(.l)
   do.call("mapply", c(
     FUN = list(quote(.f)),
     args, MoreArgs = quote(list(...)),
     SIMPLIFY = FALSE, USE.NAMES = FALSE
   ))
 }
-.args_recycle <- function(args) {
+.rlang_purrr_args_recycle <- function(args) {
   lengths <- map_int(args, length)
   n <- max(lengths)
 
@@ -86,18 +86,18 @@ pmap <- function(.l, .f, ...) {
 }
 
 keep <- function(.x, .f, ...) {
-  .x[.probe(.x, .f, ...)]
+  .x[.rlang_purrr_probe(.x, .f, ...)]
 }
 discard <- function(.x, .p, ...) {
-  sel <- .probe(.x, .p, ...)
+  sel <- .rlang_purrr_probe(.x, .p, ...)
   .x[is.na(sel) | !sel]
 }
 map_if <- function(.x, .p, .f, ...) {
-  matches <- .probe(.x, .p)
+  matches <- .rlang_purrr_probe(.x, .p)
   .x[matches] <- map(.x[matches], .f, ...)
   .x
 }
-.probe <- function(.x, .p, ...) {
+.rlang_purrr_probe <- function(.x, .p, ...) {
   if (is_logical(.p)) {
     stopifnot(length(.p) == length(.x))
     .p
@@ -166,7 +166,7 @@ detect <- function(.x, .f, ..., .right = FALSE, .p = is_true) {
   .p <- as_function(.p)
   .f <- as_function(.f)
 
-  for (i in .index(.x, .right)) {
+  for (i in .rlang_purrr_index(.x, .right)) {
     if (.p(.f(.x[[i]], ...))) {
       return(.x[[i]])
     }
@@ -177,14 +177,14 @@ detect_index <- function(.x, .f, ..., .right = FALSE, .p = is_true) {
   .p <- as_function(.p)
   .f <- as_function(.f)
 
-  for (i in .index(.x, .right)) {
+  for (i in .rlang_purrr_index(.x, .right)) {
     if (.p(.f(.x[[i]], ...))) {
       return(i)
     }
   }
   0L
 }
-.index <- function(x, right = FALSE) {
+.rlang_purrr_index <- function(x, right = FALSE) {
   idx <- seq_along(x)
   if (right) {
     idx <- rev(idx)
