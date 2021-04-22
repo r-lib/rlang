@@ -2,195 +2,12 @@
 #include <R_ext/Rdynload.h>
 #include <rlang.h>
 
-// Callable from other packages
-extern r_obj* r_squash_if(r_obj*, enum r_type, bool (*is_spliceable)(r_obj*), int);
-extern bool rlang_is_clevel_spliceable(r_obj*);
-extern bool rlang_is_quosure(r_obj*);
-
-// Callable from this package
-extern r_obj* r_f_lhs(r_obj*);
-extern r_obj* r_f_rhs(r_obj*);
-extern r_obj* r_new_condition(r_obj*, r_obj*, r_obj*);
-extern r_obj* r_env_clone(r_obj*, r_obj*);
-extern r_obj* rlang_env_unbind(r_obj*, r_obj*, r_obj*);
-extern r_obj* rlang_env_poke_parent(r_obj*, r_obj*);
-extern r_obj* rlang_env_frame(r_obj* env);
-extern r_obj* rlang_env_hash_table(r_obj* env);
-extern r_obj* rlang_poke_type(r_obj*, r_obj*);
-extern r_obj* rlang_replace_na(r_obj*, r_obj*);
-extern r_obj* rlang_node_car(r_obj*);
-extern r_obj* rlang_node_cdr(r_obj*);
-extern r_obj* rlang_node_caar(r_obj*);
-extern r_obj* rlang_node_cadr(r_obj*);
-extern r_obj* rlang_node_cdar(r_obj*);
-extern r_obj* rlang_node_cddr(r_obj*);
-extern r_obj* rlang_missing_arg();
-extern r_obj* rlang_node_poke_car(r_obj*, r_obj*);
-extern r_obj* rlang_node_poke_cdr(r_obj*, r_obj*);
-extern r_obj* rlang_node_poke_caar(r_obj*, r_obj*);
-extern r_obj* rlang_node_poke_cadr(r_obj*, r_obj*);
-extern r_obj* rlang_node_poke_cdar(r_obj*, r_obj*);
-extern r_obj* rlang_node_poke_cddr(r_obj*, r_obj*);
-extern r_obj* rlang_duplicate(r_obj*, r_obj*);
-extern r_obj* r_node_tree_clone(r_obj*);
-extern r_obj* rlang_node_tag(r_obj*);
-extern r_obj* rlang_node_poke_tag(r_obj*, r_obj*);
-extern r_obj* rlang_interp(r_obj*, r_obj*);
-extern r_obj* rlang_is_function(r_obj*);
-extern r_obj* rlang_is_closure(r_obj*);
-extern r_obj* rlang_is_primitive(r_obj*);
-extern r_obj* rlang_is_primitive_eager(r_obj*);
-extern r_obj* rlang_is_primitive_lazy(r_obj*);
-extern r_obj* ffi_is_formula(r_obj*, r_obj*, r_obj*);
-extern r_obj* rlang_is_reference(r_obj*, r_obj*);
-extern r_obj* ffi_obj_address(r_obj*);
-extern r_obj* rlang_length(r_obj*);
-extern r_obj* rlang_true_length(r_obj* x);
-extern r_obj* rlang_squash(r_obj*, r_obj*, r_obj*, r_obj*);
-extern r_obj* rlang_symbol(r_obj*);
-extern r_obj* rlang_sym_as_character(r_obj*);
-extern r_obj* rlang_tilde_eval(r_obj*, r_obj*, r_obj*);
-extern r_obj* rlang_unescape_character(r_obj*);
-extern r_obj* rlang_capturearginfo(r_obj*, r_obj*, r_obj*, r_obj*);
-extern r_obj* rlang_capturedots(r_obj*, r_obj*, r_obj*, r_obj*);
-extern r_obj* rlang_new_call_node(r_obj*, r_obj*);
-extern r_obj* rlang_cnd_signal(r_obj*);
-extern r_obj* rlang_r_string(r_obj*);
-extern r_obj* rlang_exprs_interp(r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*);
-extern r_obj* rlang_quos_interp(r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*);
-extern r_obj* rlang_dots_list(r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*);
-extern r_obj* rlang_dots_flat_list(r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*);
-extern r_obj* rlang_dots_pairlist(r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*);
-extern r_obj* r_new_formula(r_obj*, r_obj*, r_obj*);
-extern r_obj* rlang_new_quosure(r_obj*, r_obj*);
-extern r_obj* rlang_enexpr(r_obj*, r_obj*);
-extern r_obj* rlang_ensym(r_obj*, r_obj*);
-extern r_obj* rlang_enquo(r_obj*, r_obj*);
-extern r_obj* rlang_get_expression(r_obj*, r_obj*);
-extern r_obj* rlang_vec_alloc(r_obj*, r_obj*);
-extern r_obj* rlang_vec_coerce(r_obj*, r_obj*);
-extern r_obj* rlang_mark_object(r_obj*);
-extern r_obj* rlang_promise_expr(r_obj*, r_obj*);
-extern r_obj* rlang_promise_env(r_obj*, r_obj*);
-extern r_obj* rlang_promise_value(r_obj*, r_obj*);
-extern r_obj* rlang_unmark_object(r_obj*);
-extern r_obj* rlang_quo_is_missing(r_obj*);
-extern r_obj* rlang_quo_is_symbol(r_obj*);
-extern r_obj* rlang_quo_is_call(r_obj*);
-extern r_obj* rlang_quo_is_symbolic(r_obj*);
-extern r_obj* rlang_quo_is_null(r_obj*);
-extern r_obj* rlang_vec_poke_n(r_obj*, r_obj*, r_obj*, r_obj*, r_obj*);
-extern r_obj* rlang_vec_poke_range(r_obj*, r_obj*, r_obj*, r_obj*, r_obj*);
-extern r_obj* rlang_quo_get_expr(r_obj*);
-extern r_obj* rlang_quo_set_expr(r_obj*, r_obj*);
-extern r_obj* rlang_quo_get_env(r_obj*);
-extern r_obj* rlang_quo_set_env(r_obj*, r_obj*);
-extern r_obj* rlang_which_operator(r_obj*);
-extern r_obj* rlang_new_data_mask(r_obj*, r_obj*);
-extern r_obj* rlang_new_data_mask_compat(r_obj*, r_obj*, r_obj*);
-extern r_obj* rlang_as_data_mask(r_obj*);
-extern r_obj* rlang_as_data_mask_compat(r_obj*, r_obj*);
-extern r_obj* rlang_data_mask_clean(r_obj*);
-extern r_obj* rlang_as_data_pronoun(r_obj*);
-extern r_obj* rlang_env_get(r_obj*, r_obj*, r_obj*, r_obj*);
-extern r_obj* rlang_env_get_list(r_obj*, r_obj*, r_obj*, r_obj*);
-extern r_obj* rlang_env_unlock(r_obj*);
-extern r_obj* rlang_interrupt();
-extern r_obj* rlang_is_list(r_obj*, r_obj*);
-extern r_obj* rlang_is_atomic(r_obj*, r_obj*);
-extern r_obj* rlang_is_vector(r_obj*, r_obj*);
-extern r_obj* rlang_is_finite(r_obj*);
-extern r_obj* rlang_is_logical(r_obj*, r_obj*);
-extern r_obj* rlang_is_integer(r_obj*, r_obj*);
-extern r_obj* rlang_is_double(r_obj*, r_obj*, r_obj*);
-extern r_obj* ffi_is_complex(r_obj*, r_obj*, r_obj*);
-extern r_obj* rlang_is_integerish(r_obj*, r_obj*, r_obj*);
-extern r_obj* rlang_is_character(r_obj*, r_obj*);
-extern r_obj* rlang_is_raw(r_obj*, r_obj*);
-extern r_obj* rlang_is_data_mask(r_obj*);
-extern r_obj* rlang_data_pronoun_get(r_obj*, r_obj*);
-extern r_obj* rlang_cnd_type(r_obj*);
-extern r_obj* rlang_env_inherits(r_obj*, r_obj*);
-extern r_obj* rlang_eval_top(r_obj*, r_obj*);
-extern r_obj* rlang_attrib(r_obj*);
-extern r_obj* rlang_named(r_obj*, r_obj*);
-extern r_obj* r_pairlist_rev(r_obj*);
-extern r_obj* rlang_new_splice_box(r_obj*);
-extern r_obj* rlang_is_splice_box(r_obj*);
-extern r_obj* rlang_unbox(r_obj*);
-extern r_obj* rlang_new_function(r_obj*, r_obj*, r_obj*);
-extern r_obj* rlang_is_string(r_obj*, r_obj*);
-extern r_obj* rlang_new_weakref(r_obj*, r_obj*, r_obj*, r_obj*);
-extern r_obj* rlang_wref_key(r_obj*);
-extern r_obj* rlang_wref_value(r_obj*);
-extern r_obj* rlang_is_weakref(r_obj*);
-extern r_obj* rlang_find_var(r_obj*, r_obj*);
-extern r_obj* rlang_env_bind_list(r_obj*, r_obj*, r_obj*);
-extern r_obj* rlang_glue_is_there();
-extern r_obj* rlang_linked_version();
-extern r_obj* rlang_names2(r_obj*, r_obj*);
-extern r_obj* rlang_set_names(r_obj*, r_obj*, r_obj*, r_obj*);
-extern r_obj* rlang_chr_get(r_obj* x, r_obj* i);
-extern r_obj* rlang_env_has(r_obj*, r_obj*, r_obj*);
-extern r_obj* rlang_env_poke(r_obj*, r_obj*, r_obj*, r_obj*, r_obj*);
-extern r_obj* rlang_env_bind(r_obj*, r_obj*, r_obj*, r_obj*, r_obj*);
-extern r_obj* rlang_raw_deparse_str(r_obj*, r_obj*, r_obj*);
-extern r_obj* rlang_env_browse(r_obj*, r_obj*);
-extern r_obj* rlang_env_is_browsed(r_obj*);
-extern r_obj* rlang_ns_registry_env();
-extern r_obj* rlang_hash(r_obj*);
-extern r_obj* rlang_list_poke(r_obj*, r_obj*, r_obj*);
-
 // Library initialisation defined below
 r_obj* rlang_library_load(r_obj*);
 r_obj* rlang_library_unload();
 
-// For unit tests
-extern r_obj* chr_prepend(r_obj*, r_obj*);
-extern r_obj* chr_append(r_obj*, r_obj*);
-extern r_obj* rlang_test_r_warn(r_obj*);
-extern r_obj* rlang_on_exit(r_obj*, r_obj*);
-extern r_obj* rlang_test_base_ns_get(r_obj*);
-extern r_obj* rlang_test_parse(r_obj*);
-extern r_obj* rlang_test_parse_eval(r_obj*, r_obj*);
-extern r_obj* r_peek_frame();
-extern r_obj* rlang_test_node_list_clone_until(r_obj*, r_obj*);
-extern r_obj* rlang_test_sys_frame(r_obj*);
-extern r_obj* rlang_test_sys_call(r_obj*);
-extern r_obj* rlang_test_nms_are_duplicated(r_obj*, r_obj*);
-extern r_obj* rlang_test_Rf_warningcall(r_obj*, r_obj*);
-extern r_obj* rlang_test_Rf_errorcall(r_obj*, r_obj*);
-extern r_obj* rlang_test_lgl_sum(r_obj*, r_obj*);
-extern r_obj* rlang_test_lgl_which(r_obj*, r_obj*);
-extern r_obj* rlang_new_dict(r_obj*, r_obj*);
-extern r_obj* rlang_dict_put(r_obj*, r_obj*, r_obj*);
-extern r_obj* rlang_dict_del(r_obj*, r_obj*);
-extern r_obj* rlang_dict_has(r_obj*, r_obj*);
-extern r_obj* rlang_dict_get(r_obj*, r_obj*);
-extern r_obj* rlang_dict_resize(r_obj*, r_obj*);
-extern r_obj* rlang_precious_dict();
-extern r_obj* rlang_preserve(r_obj*);
-extern r_obj* rlang_unpreserve(r_obj*);
-extern r_obj* rlang_alloc_data_frame(r_obj*, r_obj*, r_obj*);
-extern r_obj* rlang_vec_resize(r_obj*, r_obj*);
-extern r_obj* rlang_new_dyn_vector(r_obj*, r_obj*);
-extern r_obj* rlang_new_dyn_array(r_obj*, r_obj*);
-extern r_obj* rlang_arr_info(r_obj*);
-extern r_obj* rlang_arr_push_back(r_obj*, r_obj*);
-extern r_obj* rlang_arr_push_back_bool(r_obj*, r_obj*);
-extern r_obj* rlang_arr_pop_back(r_obj*);
-extern r_obj* rlang_arr_resize(r_obj*, r_obj*);
-extern r_obj* rlang_new_dict_iterator(r_obj*);
-extern r_obj* rlang_dict_it_info(r_obj*);
-extern r_obj* rlang_dict_it_next(r_obj*);
-extern r_obj* rlang_dict_as_df_list(r_obj*);
-extern r_obj* rlang_dict_as_list(r_obj*);
-extern r_obj* rlang_ptr_new_dyn_list_of(r_obj*, r_obj*, r_obj*);
-extern r_obj* rlang_ptr_lof_info(r_obj*);
-extern r_obj* rlang_ptr_lof_push_back(r_obj*);
-extern r_obj* rlang_ptr_lof_arr_push_back(r_obj*, r_obj*, r_obj*);
-extern r_obj* rlang_ptr_lof_unwrap(r_obj*);
-extern r_obj* ffi_sexp_iterate(r_obj*, r_obj*);
+// From version.c
+extern r_obj* rlang_linked_version();
 
 static const R_CallMethodDef r_callables[] = {
   {"r_init_library",                    (DL_FUNC) &r_init_library, 1},
@@ -382,18 +199,6 @@ static const R_CallMethodDef r_callables[] = {
   {NULL, NULL, 0}
 };
 
-extern r_obj* rlang_ext_arg_match0(r_obj*);
-extern r_obj* rlang_ext_capturearginfo(r_obj*);
-extern r_obj* rlang_ext_capturedots(r_obj*);
-extern r_obj* rlang_ext_dots_values(r_obj*);
-
-extern r_obj* rlang_ext2_call2(r_obj*, r_obj*, r_obj*, r_obj*);
-extern r_obj* rlang_ext2_exec(r_obj*, r_obj*, r_obj*, r_obj*);
-extern r_obj* rlang_ext2_eval(r_obj*, r_obj*, r_obj*, r_obj*);
-extern r_obj* ffi_eval_tidy(r_obj*, r_obj*, r_obj*, r_obj*);
-extern r_obj* ffi_tilde_eval(r_obj*, r_obj*, r_obj*, r_obj*);
-
-
 static const R_ExternalMethodDef externals[] = {
   {"rlang_ext_arg_match0",              (DL_FUNC) &rlang_ext_arg_match0, 3},
   {"rlang_ext_capturearginfo",          (DL_FUNC) &rlang_ext_capturearginfo, 2},
@@ -407,13 +212,6 @@ static const R_ExternalMethodDef externals[] = {
   {"ffi_tilde_eval",                    (DL_FUNC) &ffi_tilde_eval, 3},
   {NULL, NULL, 0}
 };
-
-
-extern bool is_splice_box(r_obj*);
-extern r_obj* rlang_env_dots_values(r_obj*);
-extern r_obj* rlang_env_dots_list(r_obj*);
-extern r_obj* rlang_eval_tidy(r_obj*, r_obj*, r_obj*);
-extern void rlang_print_backtrace(bool full);
 
 // From xxhash.h
 extern uint64_t XXH3_64bits(const void*, size_t);
