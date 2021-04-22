@@ -12,7 +12,7 @@ const char* rlang_version = "0.4.10.9002";
  * package was properly installed:
  *
  * - Register the function below as a C callable under the name
- *   "rlang_linked_version".
+ *   "ffi_linked_version".
  *
  * - Call `rlang::check_linked_version(pkg_name)` from your
  *   `.onLoad()` hook. If you don't depend on rlang copy the

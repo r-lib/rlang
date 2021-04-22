@@ -205,7 +205,7 @@ expr <- function(expr) {
 #' @rdname nse-defuse
 #' @export
 enexpr <- function(arg) {
-  .Call(rlang_enexpr, substitute(arg), parent.frame())
+  .Call(ffi_enexpr, substitute(arg), parent.frame())
 }
 
 #' @rdname nse-defuse
@@ -214,7 +214,7 @@ exprs <- function(...,
                   .named = FALSE,
                   .ignore_empty = c("trailing", "none", "all"),
                   .unquote_names = TRUE) {
-  .Call(rlang_exprs_interp,
+  .Call(ffi_exprs_interp,
     frame_env = environment(),
     named = .named,
     ignore_empty = .ignore_empty,
@@ -234,8 +234,8 @@ enexprs <- function(...,
   endots(
     call = sys.call(),
     frame_env = parent.frame(),
-    capture_arg = rlang_enexpr,
-    capture_dots = rlang_exprs_interp,
+    capture_arg = ffi_enexpr,
+    capture_dots = ffi_exprs_interp,
     named = .named,
     ignore_empty = .ignore_empty,
     unquote_names = .unquote_names,
@@ -247,7 +247,7 @@ enexprs <- function(...,
 #' @rdname nse-defuse
 #' @export
 ensym <- function(arg) {
-  .Call(rlang_ensym, substitute(arg), parent.frame())
+  .Call(ffi_ensym, substitute(arg), parent.frame())
 }
 #' @rdname nse-defuse
 #' @export
@@ -260,8 +260,8 @@ ensyms <- function(...,
   exprs <- endots(
     call = sys.call(),
     frame_env = parent.frame(),
-    capture_arg = rlang_enexpr,
-    capture_dots = rlang_exprs_interp,
+    capture_arg = ffi_enexpr,
+    capture_dots = ffi_exprs_interp,
     named = .named,
     ignore_empty = .ignore_empty,
     unquote_names = .unquote_names,
@@ -285,7 +285,7 @@ quo <- function(expr) {
 #' @rdname nse-defuse
 #' @export
 enquo <- function(arg) {
-  .Call(rlang_enquo, substitute(arg), parent.frame())
+  .Call(ffi_enquo, substitute(arg), parent.frame())
 }
 
 #' @rdname nse-defuse
@@ -294,7 +294,7 @@ quos <- function(...,
                  .named = FALSE,
                  .ignore_empty = c("trailing", "none", "all"),
                  .unquote_names = TRUE) {
-  .Call(rlang_quos_interp,
+  .Call(ffi_quos_interp,
     frame_env = environment(),
     named = .named,
     ignore_empty = .ignore_empty,
@@ -314,8 +314,8 @@ enquos <- function(...,
   quos <- endots(
     call = sys.call(),
     frame_env = parent.frame(),
-    capture_arg = rlang_enquo,
-    capture_dots = rlang_quos_interp,
+    capture_arg = ffi_enquo,
+    capture_dots = ffi_quos_interp,
     named = .named,
     ignore_empty = .ignore_empty,
     unquote_names = .unquote_names,
@@ -379,7 +379,7 @@ endots <- function(call,
   }
 
   if (ignore_empty == "all") {
-    if (identical(capture_arg, rlang_enquo)) {
+    if (identical(capture_arg, ffi_enquo)) {
       dot_is_missing <- quo_is_missing
     } else {
       dot_is_missing <- is_missing

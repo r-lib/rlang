@@ -303,7 +303,7 @@ r_obj* big_bang(r_obj* operand, r_obj* env, r_obj* prev, r_obj* node) {
 }
 
 static r_obj* curly_curly(struct injection_info info, r_obj* env) {
-  r_obj* value = rlang_enquo(info.operand, env);
+  r_obj* value = ffi_enquo(info.operand, env);
   return bang_bang_teardown(value, info);
 }
 
@@ -343,7 +343,7 @@ r_obj* call_interp_impl(r_obj* x, r_obj* env, struct injection_info info) {
     r_obj* subscript_node = r_node_cddr(out);
     r_obj* subscript = r_node_car(subscript_node);
 
-    if (rlang_is_quosure(subscript)) {
+    if (is_quosure(subscript)) {
       subscript = r_node_cadr(subscript);
     }
     if (r_typeof(subscript) == R_TYPE_symbol) {
@@ -411,7 +411,7 @@ static r_obj* node_list_interp(r_obj* node, r_obj* env) {
   return r_node_cdr(out);
 }
 
-r_obj* rlang_interp(r_obj* x, r_obj* env) {
+r_obj* ffi_interp(r_obj* x, r_obj* env) {
   if (!r_is_environment(env)) {
     r_abort("`env` must be an environment");
   }

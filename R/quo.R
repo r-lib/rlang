@@ -106,7 +106,7 @@ is_quosure <- function(x) {
 #' @param quo A quosure to test.
 #' @export
 quo_is_missing <- function(quo) {
-  .Call(rlang_quo_is_missing, quo)
+  .Call(ffi_quo_is_missing, quo)
 }
 #' @rdname quosure
 #' @param name The name of the symbol or function call. If `NULL` the
@@ -124,37 +124,37 @@ quo_is_call <- function(quo, name = NULL, n = NULL, ns = NULL) {
 #' @rdname quosure
 #' @export
 quo_is_symbolic <- function(quo) {
-  .Call(rlang_quo_is_symbolic, quo)
+  .Call(ffi_quo_is_symbolic, quo)
 }
 #' @rdname quosure
 #' @export
 quo_is_null <- function(quo) {
-  .Call(rlang_quo_is_null, quo)
+  .Call(ffi_quo_is_null, quo)
 }
 
 
 #' @rdname quosure
 #' @export
 quo_get_expr <- function(quo) {
-  .Call(rlang_quo_get_expr, quo)
+  .Call(ffi_quo_get_expr, quo)
 }
 #' @rdname quosure
 #' @export
 quo_get_env <- function(quo) {
-  .Call(rlang_quo_get_env, quo)
+  .Call(ffi_quo_get_env, quo)
 }
 
 #' @rdname quosure
 #' @param expr A new expression for the quosure.
 #' @export
 quo_set_expr <- function(quo, expr) {
-  .Call(rlang_quo_set_expr, quo, expr)
+  .Call(ffi_quo_set_expr, quo, expr)
 }
 #' @rdname quosure
 #' @param env A new environment for the quosure.
 #' @export
 quo_set_env <- function(quo, env) {
-  .Call(rlang_quo_set_env, quo, env)
+  .Call(ffi_quo_set_env, quo, env)
 }
 
 
@@ -336,7 +336,7 @@ as_quosure <- function(x, env = NULL) {
 #' @param expr The expression wrapped by the quosure.
 #' @export
 new_quosure <- function(expr, env = caller_env()) {
-  .Call(rlang_new_quosure, expr, env)
+  .Call(ffi_new_quosure, expr, env)
 }
 
 

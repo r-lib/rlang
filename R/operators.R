@@ -36,7 +36,7 @@
 #' c("a", "b", NA, "c") %|% "default"
 #' c(1L, NA, 3L, NA, NA) %|% (6L:10L)
 `%|%` <- function(x, y) {
-  .Call(rlang_replace_na, x, y)
+  .Call(ffi_replace_na, x, y)
 }
 
 #' Infix attribute accessor and setter

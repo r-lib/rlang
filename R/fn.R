@@ -37,7 +37,7 @@
 #' new_function(pairlist2(x = , y = 5 + 5), quote(x + y))
 #' new_function(exprs(x = , y = 5 + 5), quote(x + y))
 new_function <- function(args, body, env = caller_env()) {
-  .Call(rlang_new_function, args, body, env)
+  .Call(ffi_new_function, args, body, env)
 }
 
 prim_eval <- eval(quote(sys.function(0)))
@@ -278,19 +278,19 @@ fn_body_node <- function(fn) {
 #' # While closures do:
 #' identity(identity(ctxt_stack()))
 is_function <- function(x) {
-  .Call(rlang_is_function, x)
+  .Call(ffi_is_function, x)
 }
 
 #' @export
 #' @rdname is_function
 is_closure <- function(x) {
-  .Call(rlang_is_closure, x)
+  .Call(ffi_is_closure, x)
 }
 
 #' @export
 #' @rdname is_function
 is_primitive <- function(x) {
-  .Call(rlang_is_primitive, x)
+  .Call(ffi_is_primitive, x)
 }
 #' @export
 #' @rdname is_function
@@ -301,7 +301,7 @@ is_primitive <- function(x) {
 #' is_primitive_eager(base::list)
 #' is_primitive_eager(base::`+`)
 is_primitive_eager <- function(x) {
-  .Call(rlang_is_primitive_eager, x)
+  .Call(ffi_is_primitive_eager, x)
 }
 #' @export
 #' @rdname is_function
@@ -312,7 +312,7 @@ is_primitive_eager <- function(x) {
 #' is_primitive_lazy(base::quote)
 #' is_primitive_lazy(base::substitute)
 is_primitive_lazy <- function(x) {
-  .Call(rlang_is_primitive_lazy, x)
+  .Call(ffi_is_primitive_lazy, x)
 }
 
 

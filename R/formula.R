@@ -9,7 +9,7 @@
 #' new_formula(quote(a), quote(b))
 #' new_formula(NULL, quote(b))
 new_formula <- function(lhs, rhs, env = caller_env()) {
-  .Call(rlang_new_formula, lhs, rhs, env)
+  .Call(ffi_new_formula, lhs, rhs, env)
 }
 
 #' Is object a formula?
@@ -125,7 +125,7 @@ f_rhs <- function(f) {
     signal_formula_access()
     return(quo_get_expr(f))
   }
-  .Call(r_f_rhs, f)
+  .Call(ffi_f_rhs, f)
 }
 
 #' @export
@@ -149,7 +149,7 @@ f_lhs <- function(f) {
     signal_formula_access()
     abort("Can't retrieve the LHS of a quosure")
   }
-  .Call(r_f_lhs, f)
+  .Call(ffi_f_lhs, f)
 }
 
 #' @export

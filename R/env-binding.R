@@ -113,7 +113,7 @@
 env_bind <- function(.env, ...) {
   .env <- get_env_retired(.env, "env_bind()")
   invisible(.Call(
-    rlang_env_bind,
+    ffi_env_bind,
     env = .env,
     values = list3(...),
     needs_old = TRUE,
@@ -125,7 +125,7 @@ env_bind <- function(.env, ...) {
 # Doesn't return list of old bindings for efficiency
 env_bind0 <- function(.env, values) {
   invisible(.Call(
-    rlang_env_bind,
+    ffi_env_bind,
     env = .env,
     values = values,
     needs_old = FALSE,
@@ -179,7 +179,7 @@ env_bind0 <- function(.env, values) {
 env_bind_lazy <- function(.env, ..., .eval_env = caller_env()) {
   .env <- get_env_retired(.env, "env_bind_lazy()")
   invisible(.Call(
-    rlang_env_bind,
+    ffi_env_bind,
     env = .env,
     values = exprs(...),
     needs_old = TRUE,
@@ -215,7 +215,7 @@ env_bind_lazy <- function(.env, ..., .eval_env = caller_env()) {
 env_bind_active <- function(.env, ...) {
   .env <- get_env_retired(.env, "env_bind_active()")
   invisible(.Call(
-    rlang_env_bind,
+    ffi_env_bind,
     env = .env,
     values = list3(...),
     needs_old = TRUE,
@@ -316,7 +316,7 @@ with_bindings <- function(.expr, ..., .env = caller_env()) {
 #' env_has(env, c("foo", "bar"))
 #' env_has(env, c("foo", "bar"), inherit = TRUE)
 env_unbind <- function(env = caller_env(), nms, inherit = FALSE) {
-  .Call(rlang_env_unbind, env, nms, inherit)
+  .Call(ffi_env_unbind, env, nms, inherit)
   invisible(env)
 }
 
@@ -341,7 +341,7 @@ env_unbind <- function(env = caller_env(), nms, inherit = FALSE) {
 #' env_has(env, "foo", inherit = TRUE)
 env_has <- function(env = caller_env(), nms, inherit = FALSE) {
   env <- get_env_retired(env, "env_has()")
-  .Call(rlang_env_has, env, nms, inherit)
+  .Call(ffi_env_has, env, nms, inherit)
 }
 
 #' Get an object in an environment
@@ -373,7 +373,7 @@ env_has <- function(env = caller_env(), nms, inherit = FALSE) {
 env_get <- function(env = caller_env(), nm, default, inherit = FALSE) {
   env <- get_env_retired(env, "env_get()")
   .Call(
-    rlang_env_get,
+    ffi_env_get,
     env = env,
     nm = nm,
     inherit = inherit,
@@ -385,7 +385,7 @@ env_get <- function(env = caller_env(), nm, default, inherit = FALSE) {
 env_get_list <- function(env = caller_env(), nms, default, inherit = FALSE) {
   env <- get_env_retired(env, "env_get_list()")
   .Call(
-    rlang_env_get_list,
+    ffi_env_get_list,
     env = env,
     nms = nms,
     inherit = inherit,
@@ -432,7 +432,7 @@ env_poke <- function(env = caller_env(),
                      create = !inherit) {
   env <- get_env_retired(env, "env_poke()")
   invisible(.Call(
-    rlang_env_poke,
+    ffi_env_poke,
     env = env,
     nm = nm,
     values = value,
@@ -480,7 +480,7 @@ env_poke <- function(env = caller_env(),
 env_names <- function(env) {
   env <- get_env_retired(env, "env_names()")
   nms <- names(env)
-  .Call(rlang_unescape_character, nms)
+  .Call(ffi_unescape_character, nms)
 }
 
 #' @rdname env_names
@@ -599,7 +599,7 @@ env_binding_validate_names <- function(env, nms) {
   nms
 }
 env_binding_types <- function(env, nms = env_names(env)) {
-  .Call(rlang_env_binding_types, env, nms)
+  .Call(ffi_env_binding_types, env, nms)
 }
 
 env_binding_type_sum <- function(env, nms = NULL) {

@@ -14,7 +14,7 @@ error_cnd <- function(class = NULL,
   }
   fields <- error_cnd_fields(trace = trace, parent = parent, ...)
 
-  .Call(rlang_new_condition, c(class, "rlang_error", "error"), message, fields)
+  .Call(ffi_new_condition, c(class, "rlang_error", "error"), message, fields)
 }
 error_cnd_fields <- function(trace, parent, ..., .subclass = NULL, env = caller_env()) {
   if (!is_null(.subclass)) {

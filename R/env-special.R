@@ -514,5 +514,5 @@ env_label <- function(env) {
 # This does not behave like a normal environment because the parent is
 # NULL instead of the empty env
 ns_registry_env <- function() {
-  .Call(rlang_ns_registry_env)
+  .Call(ffi_ns_registry_env)
 }

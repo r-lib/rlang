@@ -364,7 +364,7 @@ as_list <- function(x) {
 env_as_list <- function(x) {
   names_x <- names(x)
   x <- as_base_type(x, as.list)
-  set_names(x, .Call(rlang_unescape_character, names_x))
+  set_names(x, .Call(ffi_unescape_character, names_x))
 }
 vec_as_list <- function(x) {
   coerce_type_vec(x, friendly_type_of(list()),
@@ -388,13 +388,13 @@ as_base_type <- function(x, as_type) {
   # method dispatch, but we also want to avoid an extra copy of atomic
   # vectors: the first when unclassing, the second when coercing. This
   # is also useful for uncopyable types like environments.
-  attrs <- .Call(rlang_attrib, x)
-  .Call(rlang_poke_attrib, x, NULL)
+  attrs <- .Call(ffi_attrib, x)
+  .Call(ffi_poke_attrib, x, NULL)
 
   # This function assumes that the target type is different than the
   # input type, otherwise no duplication is done and the output will
   # be modified by side effect when we restore the input attributes.
-  on.exit(.Call(rlang_poke_attrib, x, attrs))
+  on.exit(.Call(ffi_poke_attrib, x, attrs))
 
   as_type(x)
 }
@@ -417,13 +417,13 @@ coerce_type_vec <- function(.x, .to, ...) {
     # Avoid a copy of `out` when we restore the names, since it could be
     # a heavy atomic vector. We own `out`, so it is ok to change its
     # attributes inplace.
-    .Call(rlang_poke_attrib, out, pairlist(names = names(.x)))
+    .Call(ffi_poke_attrib, out, pairlist(names = names(.x)))
   }
 
   out
 }
 vec_coerce <- function(x, type) {
-  .Call(rlang_vec_coerce, x, type)
+  .Call(ffi_vec_coerce, x, type)
 }
 
 
@@ -1159,7 +1159,7 @@ new_overscope <- function(bottom, top = NULL, enclosure = NULL) {
 #' @export
 overscope_clean <- function(overscope) {
   warn_deprecated("`overscope_clean()` is deprecated as of rlang 0.2.0.")
-  invisible(.Call(rlang_data_mask_clean, overscope))
+  invisible(.Call(ffi_data_mask_clean, overscope))
 }
 
 #' Evaluate next quosure in a data mask
@@ -1267,7 +1267,7 @@ quo_is_lang <- function(quo) {
     "`quo_is_lang()` is deprecated as of rlang 0.2.0.",
     "Please use `quo_is_call()` instead."
   ))
-  .Call(rlang_quo_is_call, quo)
+  .Call(ffi_quo_is_call, quo)
 }
 
 #' Manipulate or access a call
@@ -1465,43 +1465,43 @@ call_standardise <- function(call,
 #' @export
 mut_node_car <- function(x, newcar) {
   warn_deprecated("`mut_node_car()` is deprecated as of rlang 0.2.0.")
-  invisible(.Call(rlang_node_poke_car, x, newcar))
+  invisible(.Call(ffi_node_poke_car, x, newcar))
 }
 #' @rdname mut_node_car
 #' @export
 mut_node_cdr <- function(x, newcdr) {
   warn_deprecated("`mut_node_cdr()` is deprecated as of rlang 0.2.0.")
-  invisible(.Call(rlang_node_poke_cdr, x, newcdr))
+  invisible(.Call(ffi_node_poke_cdr, x, newcdr))
 }
 #' @rdname mut_node_car
 #' @export
 mut_node_caar <- function(x, newcar) {
   warn_deprecated("`mut_node_caar()` is deprecated as of rlang 0.2.0.")
-  invisible(.Call(rlang_node_poke_caar, x, newcar))
+  invisible(.Call(ffi_node_poke_caar, x, newcar))
 }
 #' @rdname mut_node_car
 #' @export
 mut_node_cadr <- function(x, newcar) {
   warn_deprecated("`mut_node_cadr()` is deprecated as of rlang 0.2.0.")
-  invisible(.Call(rlang_node_poke_cadr, x, newcar))
+  invisible(.Call(ffi_node_poke_cadr, x, newcar))
 }
 #' @rdname mut_node_car
 #' @export
 mut_node_cdar <- function(x, newcdr) {
   warn_deprecated("`mut_node_cdar()` is deprecated as of rlang 0.2.0.")
-  invisible(.Call(rlang_node_poke_cdar, x, newcdr))
+  invisible(.Call(ffi_node_poke_cdar, x, newcdr))
 }
 #' @rdname mut_node_car
 #' @export
 mut_node_cddr <- function(x, newcdr) {
   warn_deprecated("`mut_node_cddr()` is deprecated as of rlang 0.2.0.")
-  invisible(.Call(rlang_node_poke_cddr, x, newcdr))
+  invisible(.Call(ffi_node_poke_cddr, x, newcdr))
 }
 #' @rdname mut_node_car
 #' @export
 mut_node_tag <- function(x, newtag) {
   warn_deprecated("`mut_node_tag()` is deprecated as of rlang 0.2.0.")
-  invisible(.Call(rlang_node_poke_tag, x, newtag))
+  invisible(.Call(ffi_node_poke_tag, x, newtag))
 }
 
 #' @rdname vector-old-ctors
@@ -1870,7 +1870,7 @@ warn_deprecated_along <- function(type, na) {
 }
 # FIXME: This can be simplified once the `_along` ctors are defunct
 set_names_impl <- function(x, mold, nm, ...) {
-  .Call(rlang_set_names, x, mold, nm, environment())
+  .Call(ffi_set_names, x, mold, nm, environment())
 }
 
 #' Prepend a vector

@@ -4,7 +4,7 @@
 
 r_obj* new_preserved_empty_list();
 r_obj* rlang_ns_get(const char* name);
-r_obj* rlang_enquo(r_obj* sym, r_obj* frame);
+r_obj* ffi_enquo(r_obj* sym, r_obj* frame);
 
 extern r_obj* rlang_ns_env;
 

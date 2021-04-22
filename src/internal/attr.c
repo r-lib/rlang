@@ -12,7 +12,7 @@ static r_obj* length_call = NULL;
 static r_obj* node_names(r_obj* x);
 static r_obj* names_dispatch(r_obj* x, r_obj* env);
 
-r_obj* rlang_names2(r_obj* x, r_obj* env) {
+r_obj* ffi_names2(r_obj* x, r_obj* env) {
   const enum r_type type = r_typeof(x);
 
   if (type == R_TYPE_environment) {
@@ -38,7 +38,7 @@ r_obj* rlang_names2(r_obj* x, r_obj* env) {
     nms = KEEP(r_alloc_character(n));
     r_chr_fill(nms, r_globals.empty_str, n);
   } else {
-    nms = KEEP(rlang_replace_na(nms, r_chrs.empty_string));
+    nms = KEEP(ffi_replace_na(nms, r_chrs.empty_string));
   }
 
   FREE(2);
@@ -72,7 +72,7 @@ static inline r_obj* eval_as_character(r_obj* x, r_obj* env);
 static inline r_obj* set_names_dispatch(r_obj* x, r_obj* nm, r_obj* env);
 static inline r_ssize length_dispatch(r_obj* x, r_obj* env);
 
-r_obj* rlang_set_names(r_obj* x, r_obj* mold, r_obj* nm, r_obj* env) {
+r_obj* ffi_set_names(r_obj* x, r_obj* mold, r_obj* nm, r_obj* env) {
   int n_kept = 0;
 
   r_obj* dots = KEEP_N(rlang_dots(env), &n_kept);
@@ -92,7 +92,7 @@ r_obj* rlang_set_names(r_obj* x, r_obj* mold, r_obj* nm, r_obj* env) {
     if (r_names(mold) == r_null) {
       mold = KEEP_N(eval_as_character(mold, env), &n_kept);
     } else {
-      mold = KEEP_N(rlang_names2(mold, env), &n_kept);
+      mold = KEEP_N(ffi_names2(mold, env), &n_kept);
     }
 
     nm = KEEP_N(rlang_as_function(nm, env), &n_kept);

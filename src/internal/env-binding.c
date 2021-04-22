@@ -4,7 +4,7 @@
 
 static r_obj* rlang_env_get_sym(r_obj* env, r_obj* nm, bool inherit, r_obj* closure_env);
 
-r_obj* rlang_env_get(r_obj* env, r_obj* nm, r_obj* inherit, r_obj* closure_env) {
+r_obj* ffi_env_get(r_obj* env, r_obj* nm, r_obj* inherit, r_obj* closure_env) {
   if (r_typeof(env) != R_TYPE_environment) {
     r_abort("`env` must be an environment.");
   }
@@ -43,7 +43,7 @@ r_obj* rlang_env_get_sym(r_obj* env, r_obj* sym, bool inherit, r_obj* closure_en
   return out;
 }
 
-r_obj* rlang_env_get_list(r_obj* env, r_obj* nms, r_obj* inherit, r_obj* closure_env) {
+r_obj* ffi_env_get_list(r_obj* env, r_obj* nms, r_obj* inherit, r_obj* closure_env) {
   if (r_typeof(env) != R_TYPE_environment) {
     r_abort("`env` must be an environment.");
   }
@@ -72,7 +72,7 @@ r_obj* rlang_env_get_list(r_obj* env, r_obj* nms, r_obj* inherit, r_obj* closure
   return out;
 }
 
-r_obj* rlang_env_has(r_obj* env, r_obj* nms, r_obj* inherit) {
+r_obj* ffi_env_has(r_obj* env, r_obj* nms, r_obj* inherit) {
   if (r_typeof(env) != R_TYPE_environment) {
     r_abort("`env` must be an environment.");
   }
@@ -111,7 +111,7 @@ static void env_poke_lazy(r_obj* env, r_obj* sym, r_obj* value, r_obj* eval_env)
 static void env_poke_active(r_obj* env, r_obj* sym, r_obj* fn, r_obj* eval_env);
 static r_obj* env_get(r_obj* env, r_obj* sym);
 
-r_obj* rlang_env_poke(r_obj* env, r_obj* nm, r_obj* value, r_obj* inherit, r_obj* create) {
+r_obj* ffi_env_poke(r_obj* env, r_obj* nm, r_obj* value, r_obj* inherit, r_obj* create) {
   if (r_typeof(env) != R_TYPE_environment) {
     r_abort("`env` must be an environment.");
   }
@@ -176,7 +176,7 @@ enum bind_type parse_bind_type(r_obj* bind_type) {
   }
 }
 
-r_obj* rlang_env_bind(r_obj* env,
+r_obj* ffi_env_bind(r_obj* env,
                       r_obj* values,
                       r_obj* needs_old,
                       r_obj* bind_type,
@@ -189,7 +189,7 @@ r_obj* rlang_env_bind(r_obj* env,
   enum bind_type c_bind_type = parse_bind_type(bind_type);
 
   if (r_typeof(values) != R_TYPE_list) {
-    r_stop_internal("rlang_env_bind", "`values` must be a list.");
+    r_stop_internal("ffi_env_bind", "`values` must be a list.");
   }
 
   r_ssize n = r_length(values);
@@ -234,7 +234,7 @@ r_obj* rlang_env_bind(r_obj* env,
   return old;
 }
 
-r_obj* rlang_env_unbind(r_obj* env, r_obj* names, r_obj* inherits) {
+r_obj* ffi_env_unbind(r_obj* env, r_obj* names, r_obj* inherits) {
   if (r_typeof(env) != R_TYPE_environment) {
     r_abort("`env` must be an environment.");
   }
@@ -265,7 +265,7 @@ void env_poke_or_zap(r_obj* env, r_obj* sym, r_obj* value) {
 }
 static
 void env_poke_lazy(r_obj* env, r_obj* sym, r_obj* expr, r_obj* eval_env) {
-  if (rlang_is_quosure(expr)) {
+  if (is_quosure(expr)) {
     expr = KEEP(rlang_as_function(expr, eval_env));
     expr = r_new_call(expr, r_null);
     FREE(1);

@@ -74,7 +74,7 @@ NULL
 #'
 #' @export
 list2 <- function(...) {
-  .Call(rlang_dots_list,
+  .Call(ffi_dots_list,
     frame_env = environment(),
     named = FALSE,
     ignore_empty = "trailing",
@@ -91,7 +91,7 @@ ll <- list2
 
 # Preserves empty arguments
 list3 <- function(...) {
-  .Call(rlang_dots_list,
+  .Call(ffi_dots_list,
     frame_env = environment(),
     named = FALSE,
     ignore_empty = "trailing",
@@ -200,7 +200,7 @@ dots_list <- function(...,
                       .preserve_empty = FALSE,
                       .homonyms = c("keep", "first", "last", "error"),
                       .check_assign = FALSE) {
-  dots <- .Call(rlang_dots_list,
+  dots <- .Call(ffi_dots_list,
     frame_env = environment(),
     named = .named,
     ignore_empty = .ignore_empty,
@@ -219,7 +219,7 @@ dots_split <- function(...,
                        .preserve_empty = FALSE,
                        .homonyms = c("keep", "first", "last", "error"),
                        .check_assign = FALSE) {
-  dots <- .Call(rlang_dots_list,
+  dots <- .Call(ffi_dots_list,
     frame_env = environment(),
     named = FALSE,
     ignore_empty = .ignore_empty,
@@ -328,12 +328,12 @@ dots_split <- function(...,
 #' @keywords internal
 #' @export
 splice <- function(x) {
-  .Call(rlang_new_splice_box, x)
+  .Call(ffi_new_splice_box, x)
 }
 #' @rdname splice
 #' @export
 is_spliced <- function(x) {
-  .Call(rlang_is_splice_box, x)
+  .Call(ffi_is_splice_box, x)
 }
 #' @rdname splice
 #' @export
@@ -354,7 +354,7 @@ dots_splice <- function(...,
                         .preserve_empty = FALSE,
                         .homonyms = c("keep", "first", "last", "error"),
                         .check_assign = FALSE) {
-  dots <- .Call(rlang_dots_flat_list,
+  dots <- .Call(ffi_dots_flat_list,
     frame_env = environment(),
     named = FALSE,
     ignore_empty = .ignore_empty,

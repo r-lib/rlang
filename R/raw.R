@@ -27,5 +27,5 @@ raw_deparse_str <- function(x, prefix = NULL, suffix = NULL) {
     suffix <- enc2utf8(suffix)
   }
 
-  .Call("rlang_raw_deparse_str", x, prefix, suffix)
+  .Call("ffi_raw_deparse_str", x, prefix, suffix)
 }

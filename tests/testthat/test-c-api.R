@@ -1,15 +1,15 @@
 r_string <- function(str) {
   stopifnot(is_string(str))
-  .Call(rlang_r_string, str)
+  .Call(ffi_r_string, str)
 }
 
 test_that("chr_prepend() prepends", {
-  out <- .Call(rlang_test_chr_prepend, c("foo", "bar"), r_string("baz"))
+  out <- .Call(ffi_test_chr_prepend, c("foo", "bar"), r_string("baz"))
   expect_identical(out, c("baz", "foo", "bar"))
 })
 
 test_that("chr_append() appends", {
-  out <- .Call(rlang_test_chr_append, c("foo", "bar"), r_string("baz"))
+  out <- .Call(ffi_test_chr_append, c("foo", "bar"), r_string("baz"))
   expect_identical(out, c("foo", "bar", "baz"))
 })
 
@@ -18,14 +18,14 @@ test_that("r_warn() signals", {
 
   expect_warning(regexp = "foo",
     with_handlers(warning = calling(handler),
-      .Call(rlang_test_r_warn, "foo")
+      .Call(ffi_test_r_warn, "foo")
     ))
 })
 
 test_that("r_on_exit() adds deferred expr", {
   var <- chr()
   fn <- function() {
-    .Call(rlang_test_r_on_exit, quote(var <<- c(var, "foo")), current_env())
+    .Call(ffi_test_r_on_exit, quote(var <<- c(var, "foo")), current_env())
     var <<- c(var, "bar")
   }
   fn()
@@ -33,12 +33,12 @@ test_that("r_on_exit() adds deferred expr", {
 })
 
 test_that("r_base_ns_get() fail if object does not exist", {
-  expect_error(.Call(rlang_test_base_ns_get, "foobar"))
+  expect_error(.Call(ffi_test_base_ns_get, "foobar"))
 })
 
 test_that("r_peek_frame() returns current frame", {
   current_frame <- function() {
-    list(.Call(rlang_test_current_frame), environment())
+    list(.Call(ffi_test_current_frame), environment())
   }
   out <- current_frame()
   expect_identical(out[[1]], out[[2]])
@@ -46,7 +46,7 @@ test_that("r_peek_frame() returns current frame", {
 
 test_that("r_sys_frame() returns current frame environment", {
   sys_frame <- function(..., .n = 0L) {
-    list(.Call(rlang_test_sys_frame, .n), sys.frame(.n))
+    list(.Call(ffi_test_sys_frame, .n), sys.frame(.n))
   }
   out <- sys_frame(foo(), bar)
   expect_identical(out[[1]], out[[2]])
@@ -60,7 +60,7 @@ test_that("r_sys_frame() returns current frame environment", {
 
 test_that("r_sys_call() returns current frame call", {
   sys_call <- function(..., .n = 0L) {
-    list(.Call(rlang_test_sys_call, .n), sys.call(.n))
+    list(.Call(ffi_test_sys_call, .n), sys.call(.n))
   }
   out <- sys_call(foo(), bar)
   expect_identical(out[[1]], out[[2]])
@@ -231,7 +231,7 @@ test_that("client library passes tests", {
 })
 
 node_list_clone_until <- function(node, sentinel) {
-  .Call(rlang_test_node_list_clone_until, node, sentinel)
+  .Call(ffi_test_node_list_clone_until, node, sentinel)
 }
 
 test_that("can clone-until with NULL list", {
@@ -283,10 +283,10 @@ test_that("can clone until sentinel", {
 })
 
 get_attributes <- function(x) {
-  .Call(rlang_attrib, x)
+  .Call(ffi_attrib, x)
 }
 c_set_attribute <- function(x, name, value) {
-  .Call(rlang_test_attrib_set, x, sym(name), value)
+  .Call(ffi_test_attrib_set, x, sym(name), value)
 }
 
 test_that("r_attrib_set() sets elements", {
@@ -356,9 +356,9 @@ test_that("can zap non-existing attributes", {
 })
 
 test_that("r_parse()", {
-  expect_equal(.Call(rlang_test_parse, "{ foo; bar }"), quote({ foo; bar }))
-  expect_error(.Call(rlang_test_parse, "foo; bar"), "single expression")
-  expect_error(.Call(rlang_test_parse, "foo\n bar"), "single expression")
+  expect_equal(.Call(ffi_test_parse, "{ foo; bar }"), quote({ foo; bar }))
+  expect_error(.Call(ffi_test_parse, "foo; bar"), "single expression")
+  expect_error(.Call(ffi_test_parse, "foo\n bar"), "single expression")
 })
 
 test_that("r_parse_eval()", {
@@ -371,7 +371,7 @@ test_that("failed parses are printed if `rlang__verbose_errors` is non-NULL", {
   err <- catch_cnd(expect_output(
       regexp =  "foo; bar",
       with_options(rlang__verbose_errors = TRUE,
-        .Call(rlang_test_parse, "foo; bar")
+        .Call(ffi_test_parse, "foo; bar")
       )
     ))
   expect_error(cnd_signal(err), regexp = "single expression")

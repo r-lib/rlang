@@ -158,7 +158,8 @@ bool r_is_raw(r_obj* x, r_ssize n) {
 
 // Coercion ----------------------------------------------------------
 
-r_obj* rlang_vec_coercer(r_obj* dest) {
+static
+r_obj* vec_coercer(r_obj* dest) {
   switch(r_typeof(dest)) {
   case R_TYPE_logical: return rlang_ns_get("as_logical");
   case R_TYPE_integer: return rlang_ns_get("as_integer");
@@ -181,7 +182,7 @@ void r_vec_poke_coerce_n(r_obj* x, r_ssize offset,
   }
 
   // FIXME: This callbacks to rlang R coercers with an extra copy.
-  r_obj* coercer = rlang_vec_coercer(x);
+  r_obj* coercer = vec_coercer(x);
   r_obj* call = KEEP(Rf_lang2(coercer, y));
   r_obj* coerced = KEEP(r_eval(call, R_BaseEnv));
 

@@ -402,12 +402,12 @@ print.rlang_fake_data_pronoun <- function(...) cat_line("<pronoun>")
 #' # Now we can reference the values with the pronouns:
 #' eval_tidy(quote(c(.data$a, .data$b, .data$c)), data = mask)
 as_data_mask <- function(data) {
-  .Call(rlang_as_data_mask, data)
+  .Call(ffi_as_data_mask, data)
 }
 #' @rdname as_data_mask
 #' @export
 as_data_pronoun <- function(data) {
-  .Call(rlang_as_data_pronoun, data)
+  .Call(ffi_as_data_pronoun, data)
 }
 
 #' @rdname as_data_mask
@@ -427,7 +427,7 @@ as_data_pronoun <- function(data) {
 #'   assumption about the parent of `top`.
 #' @export
 new_data_mask <- function(bottom, top = bottom) {
-  .Call(rlang_new_data_mask, bottom, top)
+  .Call(ffi_new_data_mask, bottom, top)
 }
 
 #' @export
@@ -443,7 +443,7 @@ data_pronoun_get <- function(x, nm) {
     abort("Must subset the data pronoun with a string.")
   }
   mask <- .subset2(x, 1)
-  .Call(rlang_data_pronoun_get, mask, sym(nm))
+  .Call(ffi_data_pronoun_get, mask, sym(nm))
 }
 abort_data_pronoun <- function(nm) {
   msg <- sprintf("Column `%s` not found in `.data`", as_string(nm))

@@ -66,7 +66,7 @@ struct exec_data {
 static r_obj* hash_impl(void* p_data);
 static void hash_cleanup(void* p_data);
 
-r_obj* rlang_hash(r_obj* x) {
+r_obj* ffi_hash(r_obj* x) {
   XXH3_state_t* p_xx_state = XXH3_createState();
 
   struct exec_data data = {

@@ -21,7 +21,7 @@ r_obj* r_as_label(r_obj* x) {
   return r_eval_with_x(as_label_call, x, rlang_ns_env);
 }
 
-r_obj* rlang_new_splice_box(r_obj* x) {
+r_obj* new_splice_box(r_obj* x) {
   r_obj* out = KEEP(r_alloc_list(1));
   r_list_poke(out, 0, x);
   r_poke_attrib(out, splice_box_attrib);
@@ -32,7 +32,7 @@ r_obj* rlang_new_splice_box(r_obj* x) {
 bool is_splice_box(r_obj* x) {
   return r_attrib(x) == splice_box_attrib;
 }
-r_obj* rlang_is_splice_box(r_obj* x) {
+r_obj* ffi_is_splice_box(r_obj* x) {
   return r_lgl(is_splice_box(x));
 }
 r_obj* rlang_unbox(r_obj* x) {
@@ -86,7 +86,7 @@ struct dots_capture_info init_capture_info(enum dots_collect type,
 
 static
 bool has_glue = false;
-r_obj* rlang_glue_is_there() {
+r_obj* ffi_glue_is_there() {
   has_glue = true;
   return r_null;
 }
@@ -149,7 +149,7 @@ r_obj* def_unquote_name(r_obj* expr, r_obj* env) {
     lhs = KEEP_N(r_eval(info.operand, env), &n_kept);
     break;
   case INJECTION_OP_curly:
-    lhs = KEEP_N(rlang_enquo(info.operand, env), &n_kept);
+    lhs = KEEP_N(ffi_enquo(info.operand, env), &n_kept);
     break;
   case INJECTION_OP_uqs:
     r_abort("The LHS of `:=` can't be spliced with `!!!`");
@@ -162,8 +162,8 @@ r_obj* def_unquote_name(r_obj* expr, r_obj* env) {
   }
 
   // Unwrap quosures for convenience
-  if (rlang_is_quosure(lhs)) {
-    lhs = rlang_quo_get_expr_(lhs);
+  if (is_quosure(lhs)) {
+    lhs = quo_get_expr(lhs);
   }
 
   int err = 0;
@@ -315,7 +315,7 @@ r_obj* dots_big_bang_value(struct dots_capture_info* capture_info,
     capture_info->count += n;
   }
 
-  value = rlang_new_splice_box(value);
+  value = new_splice_box(value);
 
   FREE(1);
   return value;
@@ -743,7 +743,7 @@ r_obj* dots_capture(struct dots_capture_info* capture_info, r_obj* frame_env) {
   return dots;
 }
 
-r_obj* rlang_unescape_character(r_obj*);
+r_obj* ffi_unescape_character(r_obj*);
 
 static
 r_obj* dots_finalise(struct dots_capture_info* capture_info, r_obj* dots) {
@@ -759,7 +759,7 @@ r_obj* dots_finalise(struct dots_capture_info* capture_info, r_obj* dots) {
   if (nms != r_null) {
     // Serialised unicode points might arise when unquoting lists
     // because of the conversion to pairlist
-    nms = KEEP(rlang_unescape_character(nms));
+    nms = KEEP(ffi_unescape_character(nms));
     r_attrib_poke_names(dots, nms);
 
     dots = KEEP(maybe_auto_name(dots, capture_info->named));
@@ -779,12 +779,12 @@ r_obj* dots_finalise(struct dots_capture_info* capture_info, r_obj* dots) {
 }
 
 
-r_obj* rlang_exprs_interp(r_obj* frame_env,
-                          r_obj* named,
-                          r_obj* ignore_empty,
-                          r_obj* unquote_names,
-                          r_obj* homonyms,
-                          r_obj* check_assign) {
+r_obj* ffi_exprs_interp(r_obj* frame_env,
+                        r_obj* named,
+                        r_obj* ignore_empty,
+                        r_obj* unquote_names,
+                        r_obj* homonyms,
+                        r_obj* check_assign) {
   struct dots_capture_info capture_info;
   capture_info = init_capture_info(DOTS_COLLECT_expr,
                                    named,
@@ -804,12 +804,12 @@ r_obj* rlang_exprs_interp(r_obj* frame_env,
   FREE(2);
   return dots;
 }
-r_obj* rlang_quos_interp(r_obj* frame_env,
-                         r_obj* named,
-                         r_obj* ignore_empty,
-                         r_obj* unquote_names,
-                         r_obj* homonyms,
-                         r_obj* check_assign) {
+r_obj* ffi_quos_interp(r_obj* frame_env,
+                       r_obj* named,
+                       r_obj* ignore_empty,
+                       r_obj* unquote_names,
+                       r_obj* homonyms,
+                       r_obj* check_assign) {
   struct dots_capture_info capture_info;
   capture_info = init_capture_info(DOTS_COLLECT_quo,
                                    named,
@@ -905,7 +905,7 @@ r_obj* ffi_dots_values(r_obj* args) {
 
   return out;
 }
-r_obj* rlang_env_dots_values(r_obj* env) {
+r_obj* ffi_env_dots_values(r_obj* env) {
   return dots_values_impl(env,
                           r_false,
                           rlang_objs_trailing,
@@ -915,7 +915,7 @@ r_obj* rlang_env_dots_values(r_obj* env) {
                           r_false,
                           false);
 }
-r_obj* rlang_env_dots_list(r_obj* env) {
+r_obj* ffi_env_dots_list(r_obj* env) {
   return dots_values_impl(env,
                           r_false,
                           rlang_objs_trailing,
@@ -926,13 +926,13 @@ r_obj* rlang_env_dots_list(r_obj* env) {
                           true);
 }
 
-r_obj* rlang_dots_list(r_obj* frame_env,
-                       r_obj* named,
-                       r_obj* ignore_empty,
-                       r_obj* preserve_empty,
-                       r_obj* unquote_names,
-                       r_obj* homonyms,
-                       r_obj* check_assign) {
+r_obj* ffi_dots_list(r_obj* frame_env,
+                     r_obj* named,
+                     r_obj* ignore_empty,
+                     r_obj* preserve_empty,
+                     r_obj* unquote_names,
+                     r_obj* homonyms,
+                     r_obj* check_assign) {
   return dots_values_impl(frame_env,
                           named,
                           ignore_empty,
@@ -942,13 +942,13 @@ r_obj* rlang_dots_list(r_obj* frame_env,
                           check_assign,
                           true);
 }
-r_obj* rlang_dots_flat_list(r_obj* frame_env,
-                            r_obj* named,
-                            r_obj* ignore_empty,
-                            r_obj* preserve_empty,
-                            r_obj* unquote_names,
-                            r_obj* homonyms,
-                            r_obj* check_assign) {
+r_obj* ffi_dots_flat_list(r_obj* frame_env,
+                          r_obj* named,
+                          r_obj* ignore_empty,
+                          r_obj* preserve_empty,
+                          r_obj* unquote_names,
+                          r_obj* homonyms,
+                          r_obj* check_assign) {
 
   struct dots_capture_info capture_info;
   capture_info = init_capture_info(DOTS_COLLECT_value,
@@ -1001,13 +1001,13 @@ r_obj* dots_values_node_impl(r_obj* frame_env,
   FREE(2);
   return dots;
 }
-r_obj* rlang_dots_pairlist(r_obj* frame_env,
-                           r_obj* named,
-                           r_obj* ignore_empty,
-                           r_obj* preserve_empty,
-                           r_obj* unquote_names,
-                           r_obj* homonyms,
-                           r_obj* check_assign) {
+r_obj* ffi_dots_pairlist(r_obj* frame_env,
+                         r_obj* named,
+                         r_obj* ignore_empty,
+                         r_obj* preserve_empty,
+                         r_obj* unquote_names,
+                         r_obj* homonyms,
+                         r_obj* check_assign) {
   return dots_values_node_impl(frame_env,
                                named,
                                ignore_empty,
@@ -1042,7 +1042,7 @@ void rlang_init_dots(r_obj* ns) {
 
   {
     r_obj* list = KEEP(r_alloc_list(0));
-    empty_spliced_arg = rlang_new_splice_box(list);
+    empty_spliced_arg = new_splice_box(list);
     r_preserve(empty_spliced_arg);
     r_mark_shared(empty_spliced_arg);
     FREE(1);

@@ -79,7 +79,7 @@ vec_poke_n <- function(x, start, y,
     is_integerish(from),
     is_integerish(n)
   )
-  .Call(rlang_vec_poke_n, x, start, y, from, n)
+  .Call(ffi_vec_poke_n, x, start, y, from, n)
 }
 #' @rdname vec_poke_n
 #' @export
@@ -91,5 +91,5 @@ vec_poke_range <- function(x, start, y,
     is_integerish(from),
     is_integerish(to)
   )
-  .Call(rlang_vec_poke_range, x, start, y, from, to)
+  .Call(ffi_vec_poke_range, x, start, y, from, to)
 }

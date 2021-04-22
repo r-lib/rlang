@@ -517,11 +517,11 @@ set_env <- function(env, new_env = caller_env()) {
 env_poke_parent <- function(env, new_env) {
   env <- get_env_retired(env, "env_poke_parent()")
   new_env <- get_env_retired(new_env, "env_poke_parent()")
-  .Call(rlang_env_poke_parent, env, new_env)
+  .Call(ffi_env_poke_parent, env, new_env)
 }
 `env_parent<-` <- function(x, value) {
   env <- get_env_retired(x, "env_poke_parent<-")
-  .Call(rlang_env_poke_parent, env, value)
+  .Call(ffi_env_poke_parent, env, value)
 }
 
 
@@ -540,7 +540,7 @@ env_poke_parent <- function(env, new_env) {
 #' identical(env$cyl, clone$cyl)
 env_clone <- function(env, parent = env_parent(env)) {
   env <- get_env_retired(env, "env_clone()")
-  .Call(rlang_env_clone, env, parent)
+  .Call(ffi_env_clone, env, parent)
 }
 
 #' Does environment inherit from another environment?
@@ -552,7 +552,7 @@ env_clone <- function(env, parent = env_parent(env)) {
 #' @export
 env_inherits <- function(env, ancestor) {
   env <- get_env_retired(env, "env_inherits()")
-  .Call(rlang_env_inherits, env, ancestor)
+  .Call(ffi_env_inherits, env, ancestor)
 }
 
 #' Lock an environment
@@ -616,7 +616,7 @@ env_is_locked <- function(env) {
 #' @keywords internal
 #' @export
 env_unlock <- function(env) {
-  invisible(.Call(rlang_env_unlock, env))
+  invisible(.Call(ffi_env_unlock, env))
 }
 
 
@@ -800,10 +800,10 @@ str.rlang_envs <- function(object, ...) {
 #'   `env_is_browsed()` (a logical), invisibly.
 #' @export
 env_browse <- function(env, value = TRUE) {
-  invisible(.Call(rlang_env_browse, env, value))
+  invisible(.Call(ffi_env_browse, env, value))
 }
 #' @rdname env_browse
 #' @export
 env_is_browsed <- function(env) {
-  .Call(rlang_env_is_browsed, env)
+  .Call(ffi_env_is_browsed, env)
 }

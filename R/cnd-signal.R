@@ -49,7 +49,7 @@ cnd_signal <- function(cnd, ...) {
     cnd$trace <- trace_trim_context(trace, trace_length(trace))
     signal_abort(cnd)
   } else {
-    invisible(.Call(rlang_cnd_signal, cnd))
+    invisible(.Call(ffi_cnd_signal, cnd))
   }
 }
 validate_cnd_signal_args <- function(cnd,
@@ -192,7 +192,7 @@ deprecate_subclass <- function(subclass, env = caller_env()) {
 #' @rdname abort
 #' @export
 interrupt <- function() {
-  .Call(rlang_interrupt)
+  .Call(ffi_interrupt)
 }
 
 validate_signal_message <- function(msg, class) {

@@ -65,7 +65,7 @@
 #' identical(wref_key(w), NULL)
 #' identical(wref_value(w), NULL)
 new_weakref <- function(key, value = NULL, finalizer = NULL, on_quit = FALSE) {
-  .Call(rlang_new_weakref, key, value, finalizer, on_quit)
+  .Call(ffi_new_weakref, key, value, finalizer, on_quit)
 }
 
 #' Get key/value from a weak reference object
@@ -76,18 +76,18 @@ new_weakref <- function(key, value = NULL, finalizer = NULL, on_quit = FALSE) {
 #'
 #' @export
 wref_key <- function(x) {
-  .Call(rlang_wref_key, x)
+  .Call(ffi_wref_key, x)
 }
 
 #' @rdname wref_key
 #' @export
 wref_value <- function(x) {
-  .Call(rlang_wref_value, x)
+  .Call(ffi_wref_value, x)
 }
 
 #' Is object a weak reference?
 #' @param x An object to test.
 #' @export
 is_weakref <- function(x) {
-  .Call(rlang_is_weakref, x)
+  .Call(ffi_is_weakref, x)
 }

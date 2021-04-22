@@ -22,5 +22,5 @@
 #' hash(c(1, 2, 3))
 #' hash(mtcars)
 hash <- function(x) {
-  .Call(rlang_hash, x)
+  .Call(ffi_hash, x)
 }

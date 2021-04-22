@@ -297,7 +297,7 @@ r_obj* r_squash_if(r_obj* dots, enum r_type kind, bool (*is_spliceable)(r_obj*),
     return r_null;
   }
 }
-r_obj* rlang_squash_closure(r_obj* dots, enum r_type kind, r_obj* pred, int depth) {
+r_obj* ffi_squash_closure(r_obj* dots, enum r_type kind, r_obj* pred, int depth) {
   r_obj* prev_pred = clo_spliceable;
   clo_spliceable = KEEP(Rf_lang2(pred, Rf_list2(r_null, r_null)));
 
@@ -308,7 +308,7 @@ r_obj* rlang_squash_closure(r_obj* dots, enum r_type kind, r_obj* pred, int dept
 
   return out;
 }
-r_obj* rlang_squash(r_obj* dots, r_obj* type, r_obj* pred, r_obj* depth_) {
+r_obj* ffi_squash(r_obj* dots, r_obj* type, r_obj* pred, r_obj* depth_) {
   enum r_type kind = Rf_str2type(CHAR(r_chr_get(type, 0)));
   int depth = Rf_asInteger(depth_);
 
@@ -322,7 +322,7 @@ r_obj* rlang_squash(r_obj* dots, r_obj* type, r_obj* pred, r_obj* depth_) {
     } // else fallthrough
   case R_TYPE_builtin:
   case R_TYPE_special:
-    return rlang_squash_closure(dots, kind, pred, depth);
+    return ffi_squash_closure(dots, kind, pred, depth);
   default:
     is_spliceable = predicate_pointer(pred);
     return r_squash_if(dots, kind, is_spliceable, depth);

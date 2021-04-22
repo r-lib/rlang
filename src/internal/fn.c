@@ -3,7 +3,7 @@
 #include "internal.h"
 
 
-r_obj* rlang_new_function(r_obj* args, r_obj* body, r_obj* env) {
+r_obj* ffi_new_function(r_obj* args, r_obj* body, r_obj* env) {
   if (r_typeof(env) != R_TYPE_environment) {
     r_abort("`env` must be an environment");
   }

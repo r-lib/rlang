@@ -38,7 +38,7 @@ static inline r_obj* rlang_dots(r_obj* env) {
                                true);
 }
 
-r_obj* rlang_replace_na(r_obj* x, r_obj* replacement);
+r_obj* ffi_replace_na(r_obj* x, r_obj* replacement);
 
 r_obj* rlang_as_function(r_obj* x, r_obj* env);
 

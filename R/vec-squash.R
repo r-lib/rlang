@@ -65,73 +65,73 @@
 #' str(squash(deep_foo))
 #' str(squash_if(deep_foo, is_foo))
 flatten <- function(x) {
-  .Call(rlang_squash, x, "list", is_spliced_bare, 1L)
+  .Call(ffi_squash, x, "list", is_spliced_bare, 1L)
 }
 #' @rdname flatten
 #' @export
 flatten_lgl <- function(x) {
-  .Call(rlang_squash, x, "logical", is_spliced_bare, 1L)
+  .Call(ffi_squash, x, "logical", is_spliced_bare, 1L)
 }
 #' @rdname flatten
 #' @export
 flatten_int <- function(x) {
-  .Call(rlang_squash, x, "integer", is_spliced_bare, 1L)
+  .Call(ffi_squash, x, "integer", is_spliced_bare, 1L)
 }
 #' @rdname flatten
 #' @export
 flatten_dbl <- function(x) {
-  .Call(rlang_squash, x, "double", is_spliced_bare, 1L)
+  .Call(ffi_squash, x, "double", is_spliced_bare, 1L)
 }
 #' @rdname flatten
 #' @export
 flatten_cpl <- function(x) {
-  .Call(rlang_squash, x, "complex", is_spliced_bare, 1L)
+  .Call(ffi_squash, x, "complex", is_spliced_bare, 1L)
 }
 #' @rdname flatten
 #' @export
 flatten_chr <- function(x) {
-  .Call(rlang_squash, x, "character", is_spliced_bare, 1L)
+  .Call(ffi_squash, x, "character", is_spliced_bare, 1L)
 }
 #' @rdname flatten
 #' @export
 flatten_raw <- function(x) {
-  .Call(rlang_squash, x, "raw", is_spliced_bare, 1L)
+  .Call(ffi_squash, x, "raw", is_spliced_bare, 1L)
 }
 
 #' @rdname flatten
 #' @export
 squash <- function(x) {
-  .Call(rlang_squash, x, "list", is_spliced_bare, -1L)
+  .Call(ffi_squash, x, "list", is_spliced_bare, -1L)
 }
 #' @rdname flatten
 #' @export
 squash_lgl <- function(x) {
-  .Call(rlang_squash, x, "logical", is_spliced_bare, -1L)
+  .Call(ffi_squash, x, "logical", is_spliced_bare, -1L)
 }
 #' @rdname flatten
 #' @export
 squash_int <- function(x) {
-  .Call(rlang_squash, x, "integer", is_spliced_bare, -1L)
+  .Call(ffi_squash, x, "integer", is_spliced_bare, -1L)
 }
 #' @rdname flatten
 #' @export
 squash_dbl <- function(x) {
-  .Call(rlang_squash, x, "double", is_spliced_bare, -1L)
+  .Call(ffi_squash, x, "double", is_spliced_bare, -1L)
 }
 #' @rdname flatten
 #' @export
 squash_cpl <- function(x) {
-  .Call(rlang_squash, x, "complex", is_spliced_bare, -1L)
+  .Call(ffi_squash, x, "complex", is_spliced_bare, -1L)
 }
 #' @rdname flatten
 #' @export
 squash_chr <- function(x) {
-  .Call(rlang_squash, x, "character", is_spliced_bare, -1L)
+  .Call(ffi_squash, x, "character", is_spliced_bare, -1L)
 }
 #' @rdname flatten
 #' @export
 squash_raw <- function(x) {
-  .Call(rlang_squash, x, "raw", is_spliced_bare, -1L)
+  .Call(ffi_squash, x, "raw", is_spliced_bare, -1L)
 }
 
 #' @rdname flatten
@@ -139,10 +139,10 @@ squash_raw <- function(x) {
 #'   should be spliced.
 #' @export
 flatten_if <- function(x, predicate = is_spliced) {
-  .Call(rlang_squash, x, "list", predicate, 1L)
+  .Call(ffi_squash, x, "list", predicate, 1L)
 }
 #' @rdname flatten
 #' @export
 squash_if <- function(x, predicate = is_spliced) {
-  .Call(rlang_squash, x, "list", predicate, -1L)
+  .Call(ffi_squash, x, "list", predicate, -1L)
 }

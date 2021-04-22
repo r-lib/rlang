@@ -39,14 +39,14 @@ r_obj* capture(r_obj* sym, r_obj* frame, r_obj** arg_env) {
   return expr;
 }
 
-r_obj* rlang_enexpr(r_obj* sym, r_obj* frame) {
+r_obj* ffi_enexpr(r_obj* sym, r_obj* frame) {
   return capture(sym, frame, NULL);
 }
-r_obj* rlang_ensym(r_obj* sym, r_obj* frame) {
+r_obj* ffi_ensym(r_obj* sym, r_obj* frame) {
   r_obj* expr = capture(sym, frame, NULL);
 
-  if (rlang_is_quosure(expr)) {
-    expr = rlang_quo_get_expr(expr);
+  if (is_quosure(expr)) {
+    expr = quo_get_expr(expr);
   }
 
   switch (r_typeof(expr)) {
@@ -68,7 +68,7 @@ r_obj* rlang_ensym(r_obj* sym, r_obj* frame) {
 }
 
 
-r_obj* rlang_enquo(r_obj* sym, r_obj* frame) {
+r_obj* ffi_enquo(r_obj* sym, r_obj* frame) {
   r_obj* env;
   r_obj* expr = KEEP(capture(sym, frame, &env));
   r_obj* quo = forward_quosure(expr, env);

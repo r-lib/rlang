@@ -61,7 +61,7 @@ struct injection_info is_big_bang_op(r_obj* x);
 
 r_obj* big_bang_coerce(r_obj* expr);
 
-r_obj* rlang_interp(r_obj* x, r_obj* env);
+r_obj* ffi_interp(r_obj* x, r_obj* env);
 r_obj* call_interp(r_obj* x, r_obj* env);
 r_obj* call_interp_impl(r_obj* x, r_obj* env, struct injection_info info);
 
@@ -69,15 +69,15 @@ r_obj* call_interp_impl(r_obj* x, r_obj* env, struct injection_info info);
 static inline r_obj* forward_quosure(r_obj* x, r_obj* env) {
   switch (r_typeof(x)) {
   case R_TYPE_call:
-    if (rlang_is_quosure(x)) {
+    if (is_quosure(x)) {
       return x;
     }
     // else fallthrough
   case R_TYPE_symbol:
   case R_TYPE_closure:
-    return rlang_new_quosure(x, env);
+    return ffi_new_quosure(x, env);
   default:
-    return rlang_new_quosure(x, r_empty_env);
+    return ffi_new_quosure(x, r_empty_env);
   }
 }
 

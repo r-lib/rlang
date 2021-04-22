@@ -357,11 +357,11 @@ qq_show <- function(expr) {
 #' fn("foo")
 expr_interp <- function(x, env = NULL) {
   if (is_formula(x)) {
-    f_rhs(x) <- .Call(rlang_interp, f_rhs(x), env %||% f_env(x))
+    f_rhs(x) <- .Call(ffi_interp, f_rhs(x), env %||% f_env(x))
   } else if (is_closure(x)) {
-    body(x) <- .Call(rlang_interp, body(x), env %||% fn_env(x))
+    body(x) <- .Call(ffi_interp, body(x), env %||% fn_env(x))
   } else {
-    x <- .Call(rlang_interp, x, env %||% parent.frame())
+    x <- .Call(ffi_interp, x, env %||% parent.frame())
   }
   x
 }

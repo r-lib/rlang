@@ -5,7 +5,7 @@
 #define UNLOCK_FRAME(e) SET_ENVFLAGS(e, ENVFLAGS(e) & (~FRAME_LOCK_MASK))
 
 // Should only be used in development tools
-r_obj* rlang_env_unlock(r_obj* env) {
+r_obj* ffi_env_unlock(r_obj* env) {
   UNLOCK_FRAME(env);
   return FRAME_IS_LOCKED(env) == 0 ? r_true : r_false;
 }

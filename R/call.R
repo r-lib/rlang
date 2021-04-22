@@ -116,7 +116,7 @@ call2 <- function(.fn, ..., .ns = NULL) {
 #' # parameters without defaults:
 #' new_function(pairlist2(x = , y = 3 * 6), quote(x * y))
 pairlist2 <- function(...) {
-  .Call(rlang_dots_pairlist,
+  .Call(ffi_dots_pairlist,
     frame_env = environment(),
     named = FALSE,
     ignore_empty = "trailing",
@@ -975,7 +975,7 @@ is_namespaced_symbol <- function(x, ns = NULL, private = NULL) {
 #' @keywords internal
 #' @export
 call_parse_type <- function(call) {
-  .Call(rlang_which_operator, call)
+  .Call(ffi_which_operator, call)
 }
 call_has_precedence <- function(call, parent_call, side = NULL) {
   side <- switch(
@@ -985,7 +985,7 @@ call_has_precedence <- function(call, parent_call, side = NULL) {
     rhs = 1L,
     abort("Unexpected `side` value in `call_has_precendence()`.")
   )
-  .Call(rlang_call_has_precedence, call, parent_call, side)
+  .Call(ffi_call_has_precedence, call, parent_call, side)
 }
 
 call_type <- function(x) {

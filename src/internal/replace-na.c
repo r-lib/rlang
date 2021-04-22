@@ -4,7 +4,7 @@
 static r_obj* replace_na_(r_obj* x, r_obj* replacement, int start);
 static r_obj* replace_na_vec_(r_obj* x, r_obj* replacement, int start);
 
-r_obj* rlang_replace_na(r_obj* x, r_obj* replacement) {
+r_obj* ffi_replace_na(r_obj* x, r_obj* replacement) {
   const enum r_type x_type = r_typeof(x);
   const enum r_type replacement_type = r_typeof(replacement);
 

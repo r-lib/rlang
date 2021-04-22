@@ -86,7 +86,7 @@ static void check_unique_names(r_obj* x) {
     r_abort("`data` must be uniquely named but has duplicate columns");
   }
 }
-r_obj* rlang_as_data_pronoun(r_obj* x) {
+r_obj* ffi_as_data_pronoun(r_obj* x) {
   int n_kept = 0;
 
   switch (r_typeof(x)) {
@@ -156,7 +156,7 @@ static void on_exit_restore_lexical_env(r_obj* mask, r_obj* old, r_obj* frame) {
   FREE(3);
 }
 
-r_obj* rlang_new_data_mask(r_obj* bottom, r_obj* top) {
+r_obj* ffi_new_data_mask(r_obj* bottom, r_obj* top) {
   r_obj* data_mask;
 
   if (bottom == r_null) {
@@ -191,7 +191,7 @@ r_obj* rlang_new_data_mask(r_obj* bottom, r_obj* top) {
 }
 
 
-r_obj* rlang_is_data_mask(r_obj* env) {
+r_obj* ffi_is_data_mask(r_obj* env) {
   return r_lgl(mask_info(env).type == RLANG_MASK_DATA);
 }
 
@@ -236,7 +236,7 @@ static r_obj* mask_find(r_obj* env, r_obj* sym) {
   FREE(n_kept);
   return r_syms.unbound;
 }
-r_obj* rlang_data_pronoun_get(r_obj* pronoun, r_obj* sym) {
+r_obj* ffi_data_pronoun_get(r_obj* pronoun, r_obj* sym) {
   if (r_typeof(pronoun) != R_TYPE_environment) {
     r_abort("Internal error: Data pronoun must wrap an environment");
   }
@@ -273,12 +273,12 @@ static void warn_env_as_mask_once() {
 static r_obj* data_pronoun_sym = NULL;
 static r_ssize mask_length(r_ssize n);
 
-r_obj* rlang_as_data_mask(r_obj* data) {
+r_obj* ffi_as_data_mask(r_obj* data) {
   if (mask_info(data).type == RLANG_MASK_DATA) {
     return data;
   }
   if (data == r_null) {
-    return rlang_new_data_mask(r_null, r_null);
+    return ffi_new_data_mask(r_null, r_null);
   }
 
   int n_kept = 0;
@@ -331,9 +331,9 @@ r_obj* rlang_as_data_mask(r_obj* data) {
     r_abort("`data` must be a vector, list, data frame, or environment");
   }
 
-  r_obj* data_mask = KEEP_N(rlang_new_data_mask(bottom, bottom), &n_kept);
+  r_obj* data_mask = KEEP_N(ffi_new_data_mask(bottom, bottom), &n_kept);
 
-  r_obj* data_pronoun = KEEP_N(rlang_as_data_pronoun(data_mask), &n_kept);
+  r_obj* data_pronoun = KEEP_N(ffi_as_data_pronoun(data_mask), &n_kept);
   r_env_poke(bottom, data_pronoun_sym, data_pronoun);
 
   FREE(n_kept);
@@ -348,11 +348,11 @@ r_ssize mask_length(r_ssize n) {
 
 // For compatibility of the exported C callable
 // TODO: warn
-r_obj* rlang_new_data_mask_compat(r_obj* bottom, r_obj* top, r_obj* parent) {
-  return rlang_new_data_mask(bottom, top);
+r_obj* ffi_new_data_mask_compat(r_obj* bottom, r_obj* top, r_obj* parent) {
+  return ffi_new_data_mask(bottom, top);
 }
-r_obj* rlang_as_data_mask_compat(r_obj* data, r_obj* parent) {
-  return rlang_as_data_mask(data);
+r_obj* ffi_as_data_mask_compat(r_obj* data, r_obj* parent) {
+  return ffi_as_data_mask(data);
 }
 
 
@@ -392,23 +392,23 @@ r_obj* env_get_top_binding(r_obj* mask) {
 static r_obj* env_poke_parent_fn = NULL;
 static r_obj* env_poke_fn = NULL;
 
-r_obj* rlang_tilde_eval(r_obj* tilde, r_obj* current_frame, r_obj* caller_frame) {
+r_obj* tilde_eval(r_obj* tilde, r_obj* current_frame, r_obj* caller_frame) {
   // Remove srcrefs from system call
   r_attrib_poke(tilde, r_syms.srcref, r_null);
 
-  if (!rlang_is_quosure(tilde)) {
+  if (!is_quosure(tilde)) {
     return base_tilde_eval(tilde, caller_frame);
   }
   if (quo_is_missing(tilde)) {
     return(r_missing_arg);
   }
 
-  r_obj* expr = rlang_quo_get_expr(tilde);
+  r_obj* expr = quo_get_expr(tilde);
   if (!r_is_symbolic(expr)) {
     return expr;
   }
 
-  r_obj* quo_env = rlang_quo_get_env(tilde);
+  r_obj* quo_env = ffi_quo_get_env(tilde);
   if (r_typeof(quo_env) != R_TYPE_environment) {
     r_abort("Internal error: Quosure environment is corrupt");
   }
@@ -448,7 +448,7 @@ r_obj* ffi_tilde_eval(r_obj* call, r_obj* op, r_obj* args, r_obj* rho) {
   r_obj* tilde = r_node_car(args); args = r_node_cdr(args);
   r_obj* current_frame = r_node_car(args); args = r_node_cdr(args);
   r_obj* caller_frame = r_node_car(args);
-  return rlang_tilde_eval(tilde, current_frame, caller_frame);
+  return tilde_eval(tilde, current_frame, caller_frame);
 }
 
 static const char* data_mask_objects_names[4] = {
@@ -456,7 +456,7 @@ static const char* data_mask_objects_names[4] = {
 };
 
 // Soft-deprecated in rlang 0.2.0
-r_obj* rlang_data_mask_clean(r_obj* mask) {
+r_obj* ffi_data_mask_clean(r_obj* mask) {
   r_obj* bottom = r_env_parent(mask);
   r_obj* top = r_eval(data_mask_top_env_sym, mask);
 
@@ -497,7 +497,7 @@ static r_obj* new_quosure_mask(r_obj* env) {
 r_obj* rlang_eval_tidy(r_obj* expr, r_obj* data, r_obj* env) {
   int n_kept = 0;
 
-  if (rlang_is_quosure(expr)) {
+  if (is_quosure(expr)) {
     env = r_quo_get_env(expr);
     expr = r_quo_get_expr(expr);
   }
@@ -512,7 +512,7 @@ r_obj* rlang_eval_tidy(r_obj* expr, r_obj* data, r_obj* env) {
     return out;
   }
 
-  r_obj* mask = KEEP_N(rlang_as_data_mask(data), &n_kept);
+  r_obj* mask = KEEP_N(ffi_as_data_mask(data), &n_kept);
   r_obj* top = KEEP_N(env_get_top_binding(mask), &n_kept);
 
   // Rechain the mask on the new lexical env but don't restore it on

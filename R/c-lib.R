@@ -158,39 +158,39 @@ detect_rlang_lib_usage <- function(src_path) {
 # df.c
 
 alloc_data_frame <- function(n_rows, names, types) {
-  .Call(c_ptr_alloc_data_frame, n_rows, names, types)
+  .Call(ffi_alloc_data_frame, n_rows, names, types)
 }
 
 
 # dict.c
 
 new_dict <- function(size, prevent_resize = FALSE) {
-  .Call(rlang_new_dict, size, prevent_resize)
+  .Call(ffi_new_dict, size, prevent_resize)
 }
 dict_size <- function(dict) {
   length(dict[[2]])
 }
 dict_resize <- function(dict, size) {
-  .Call(rlang_dict_resize, dict, size)
+  .Call(ffi_dict_resize, dict, size)
 }
 dict_put <- function(dict, key, value) {
-  .Call(rlang_dict_put, dict, key, value)
+  .Call(ffi_dict_put, dict, key, value)
 }
 dict_del <- function(dict, key) {
-  .Call(rlang_dict_del, dict, key)
+  .Call(ffi_dict_del, dict, key)
 }
 dict_has <- function(dict, key) {
-  .Call(rlang_dict_has, dict, key)
+  .Call(ffi_dict_has, dict, key)
 }
 dict_get <- function(dict, key) {
-  .Call(rlang_dict_get, dict, key)
+  .Call(ffi_dict_get, dict, key)
 }
 
 dict_as_df_list <- function(dict) {
-  .Call(c_ptr_dict_as_df_list, dict)
+  .Call(ffi_dict_as_df_list, dict)
 }
 dict_as_list <- function(dict) {
-  .Call(c_ptr_dict_as_list, dict)
+  .Call(ffi_dict_as_list, dict)
 }
 
 #' @export
@@ -200,43 +200,43 @@ print.rlang_dict <- function(x, ...) {
 }
 
 new_dict_iterator <- function(dict) {
-  .Call(c_ptr_new_dict_iterator, dict)
+  .Call(ffi_new_dict_iterator, dict)
 }
 dict_it_info <- function(it) {
-  .Call(c_ptr_dict_it_info, it)
+  .Call(ffi_dict_it_info, it)
 }
 dict_it_next <- function(it) {
-  .Call(c_ptr_dict_next, it)
+  .Call(ffi_dict_next, it)
 }
 
 
 # dyn-array.c
 
 new_dyn_vector <- function(type, capacity) {
-  .Call(c_ptr_new_dyn_vector, type, capacity)
+  .Call(ffi_new_dyn_vector, type, capacity)
 }
 new_dyn_array <- function(elt_size, capacity) {
-  .Call(c_ptr_new_dyn_array, elt_size, capacity)
+  .Call(ffi_new_dyn_array, elt_size, capacity)
 }
 arr_unwrap <- function(arr) {
-  .Call(c_ptr_arr_unwrap, arr)
+  .Call(ffi_arr_unwrap, arr)
 }
 
 arr_info <- function(arr) {
-  .Call(c_ptr_arr_info, arr)
+  .Call(ffi_arr_info, arr)
 }
 
 arr_push_back <- function(arr, x) {
-  .Call(c_ptr_arr_push_back, arr, x)
+  .Call(ffi_arr_push_back, arr, x)
 }
 arr_push_back_bool <- function(arr, x) {
-  .Call(c_ptr_arr_push_back_bool, arr, x)
+  .Call(ffi_arr_push_back_bool, arr, x)
 }
 arr_pop_back <- function(arr) {
-  .Call(c_ptr_arr_pop_back, arr)
+  .Call(ffi_arr_pop_back, arr)
 }
 arr_resize <- function(arr, capacity) {
-  .Call(c_ptr_arr_resize, arr, capacity)
+  .Call(ffi_arr_resize, arr, capacity)
 }
 
 #' @export
@@ -275,24 +275,24 @@ lof_arr_push_back <- function(lof, i, value) {
 # sexp.c
 
 rlang_precious_dict <- function() {
-  .Call(c_ptr_precious_dict)
+  .Call(ffi_precious_dict)
 }
 rlang_preserve <- function(x) {
-  .Call(c_ptr_preserve, x)
+  .Call(ffi_preserve, x)
 }
 rlang_unpreserve <- function(x) {
-  .Call(c_ptr_unpreserve, x)
+  .Call(ffi_unpreserve, x)
 }
 
 
 # vec.c
 
 list_compact <- function(x) {
-  .Call(c_ptr_list_compact, x)
+  .Call(ffi_list_compact, x)
 }
 
 vec_resize <- function(x, n) {
-  .Call(c_ptr_vec_resize, x, n) 
+  .Call(ffi_vec_resize, x, n) 
 }
 
 

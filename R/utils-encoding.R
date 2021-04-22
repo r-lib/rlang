@@ -38,7 +38,7 @@
 #' Encoding(utf8)
 #' as_bytes(utf8)
 as_utf8_character <- function(x) {
-  .Call(rlang_unescape_character, as.character(x))
+  .Call(ffi_unescape_character, as.character(x))
 }
 
 # `as_utf8_character()` is currently used in dplyr and tidyr as an
@@ -80,7 +80,7 @@ as_utf8_character <- function(x) {
 #' identical(chr_unserialise_unicode(ascii), "\u5e78")
 chr_unserialise_unicode <- function(chr) {
   stopifnot(is_character(chr))
-  .Call(rlang_unescape_character, chr)
+  .Call(ffi_unescape_character, chr)
 }
 
 #' Create a string

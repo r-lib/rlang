@@ -58,28 +58,28 @@ NULL
 #' @rdname vector-construction
 #' @export
 lgl <- function(...) {
-  .Call(rlang_squash, dots_values(...), "logical", is_spliced_bare, 1L)
+  .Call(ffi_squash, dots_values(...), "logical", is_spliced_bare, 1L)
 }
 #' @rdname vector-construction
 #' @export
 int <- function(...) {
-  .Call(rlang_squash, dots_values(...), "integer", is_spliced_bare, 1L)
+  .Call(ffi_squash, dots_values(...), "integer", is_spliced_bare, 1L)
 }
 #' @rdname vector-construction
 #' @export
 dbl <- function(...) {
-  .Call(rlang_squash, dots_values(...), "double", is_spliced_bare, 1L)
+  .Call(ffi_squash, dots_values(...), "double", is_spliced_bare, 1L)
 }
 #' @rdname vector-construction
 #' @export
 cpl <- function(...) {
-  .Call(rlang_squash, dots_values(...), "complex", is_spliced_bare, 1L)
+  .Call(ffi_squash, dots_values(...), "complex", is_spliced_bare, 1L)
 }
 #' @rdname vector-construction
 #' @export
 #' @export
 chr <- function(...) {
-  .Call(rlang_squash, dots_values(...), "character", is_spliced_bare, 1L)
+  .Call(ffi_squash, dots_values(...), "character", is_spliced_bare, 1L)
 }
 #' @rdname vector-construction
 #' @export
@@ -96,7 +96,7 @@ bytes <- function(...) {
       new_bytes(dot)
     }
   })
-  .Call(rlang_squash, dots, "raw", is_spliced_bare, 1L)
+  .Call(ffi_squash, dots, "raw", is_spliced_bare, 1L)
 }
 
 #' Create vectors matching a given length

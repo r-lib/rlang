@@ -22,7 +22,7 @@ sym <- function(x) {
   if (!is_string(x)) {
     abort("Only strings can be converted to symbols")
   }
-  .Call(rlang_symbol, x)
+  .Call(ffi_symbol, x)
 }
 #' @rdname sym
 #' @export
@@ -102,7 +102,7 @@ as_string <- function(x) {
   }
 
   if (is_symbol(x)) {
-    return(.Call(rlang_sym_as_character, x))
+    return(.Call(ffi_sym_as_character, x))
   }
 
   abort_coercion(x, "a string")

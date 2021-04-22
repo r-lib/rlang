@@ -160,7 +160,7 @@ has_name <- function(x, name) {
 #' set_names(list(), "")
 set_names <- function(x, nm = x, ...) {
   mold <- x
-  .Call(rlang_set_names, x, mold, nm, environment())
+  .Call(ffi_set_names, x, mold, nm, environment())
 }
 
 #' Get names of a vector
@@ -188,7 +188,7 @@ set_names <- function(x, nm = x, ...) {
 #' x <- set_names(1:3, c("a", NA, "b"))
 #' names2(x)
 names2 <- function(x) {
-  .Call(rlang_names2, x, environment())
+  .Call(ffi_names2, x, environment())
 }
 
 # Avoids `NA` names on subset-assign with unnamed vectors
@@ -201,7 +201,7 @@ names2 <- function(x) {
 }
 
 length_ <- function(x) {
-  .Call(rlang_length, x)
+  .Call(ffi_length, x)
 }
 
 #' How long is an object?
@@ -224,7 +224,7 @@ length_ <- function(x) {
 #' has_length(letters, 20)
 #' has_length(letters, 26)
 has_length <- function(x, n = NULL) {
-  len <- .Call(rlang_length, x)
+  len <- .Call(ffi_length, x)
 
   if (is_null(n)) {
     as.logical(len)
@@ -234,7 +234,7 @@ has_length <- function(x, n = NULL) {
 }
 
 poke_attributes <- function(x, attrs) {
-  .Call(rlang_poke_attrib, x, attrs)
+  .Call(ffi_poke_attrib, x, attrs)
 }
 
 #' Zap source references

@@ -41,17 +41,17 @@ cnd <- function(class, ..., message = "") {
   if (missing(class)) {
     abort("Bare conditions must be subclassed")
   }
-  .Call(rlang_new_condition, class, message, cnd_fields(...))
+  .Call(ffi_new_condition, class, message, cnd_fields(...))
 }
 #' @rdname cnd
 #' @export
 warning_cnd <- function(class = NULL, ..., message = "") {
-  .Call(rlang_new_condition, c(class, "warning"), message, cnd_fields(...))
+  .Call(ffi_new_condition, c(class, "warning"), message, cnd_fields(...))
 }
 #' @rdname cnd
 #' @export
 message_cnd <- function(class = NULL, ..., message = "") {
-  .Call(rlang_new_condition, c(class, "message"), message, cnd_fields(...))
+  .Call(ffi_new_condition, c(class, "message"), message, cnd_fields(...))
 }
 
 cnd_fields <- function(..., .subclass = NULL, env = caller_env()) {
@@ -83,5 +83,5 @@ is_condition <- function(x) {
 #' cnd_type(catch_cnd(abort("Abort!")))
 #' cnd_type(catch_cnd(interrupt()))
 cnd_type <- function(cnd) {
-  .Call(rlang_cnd_type, cnd)
+  .Call(ffi_cnd_type, cnd)
 }

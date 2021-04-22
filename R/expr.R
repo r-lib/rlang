@@ -303,7 +303,7 @@ set_expr <- function(x, value) {
 #' @rdname set_expr
 #' @export
 get_expr <- function(x, default = x) {
-  .Call(rlang_get_expression, x, default)
+  .Call(ffi_get_expression, x, default)
 }
 
 expr_type_of <- function(x) {

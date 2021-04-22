@@ -1,6 +1,6 @@
 #include <rlang.h>
 
-r_obj* rlang_r_string(r_obj* str) {
+r_obj* ffi_r_string(r_obj* str) {
   return r_chr_get(str, 0);
 }
 
@@ -8,7 +8,7 @@ r_obj* rlang_r_string(r_obj* str) {
 // attrib.c
 
 r_obj* r_pairlist_clone_until(r_obj* node, r_obj* sentinel, r_obj** parent_out);
-r_obj* rlang_test_node_list_clone_until(r_obj* node, r_obj* sentinel) {
+r_obj* ffi_test_node_list_clone_until(r_obj* node, r_obj* sentinel) {
   r_obj* sentinel_out;
   node = KEEP(r_pairlist_clone_until(node, sentinel, &sentinel_out));
 
@@ -23,16 +23,16 @@ r_obj* rlang_test_node_list_clone_until(r_obj* node, r_obj* sentinel) {
 
 // cnd.c
 
-r_obj* rlang_test_r_warn(r_obj* x) {
+r_obj* ffi_test_r_warn(r_obj* x) {
   r_warn(r_chr_get_c_string(x, 0));
   return r_null;
 }
 
-r_obj* rlang_test_Rf_warningcall(r_obj* call, r_obj* msg) {
+r_obj* ffi_test_Rf_warningcall(r_obj* call, r_obj* msg) {
   Rf_warningcall(call, r_chr_get_c_string(msg, 0));
   return r_null;
 }
-r_obj* rlang_test_Rf_errorcall(r_obj* call, r_obj* msg) {
+r_obj* ffi_test_Rf_errorcall(r_obj* call, r_obj* msg) {
   Rf_errorcall(call, r_chr_get_c_string(msg, 0));
   return r_null;
 }
@@ -40,7 +40,7 @@ r_obj* rlang_test_Rf_errorcall(r_obj* call, r_obj* msg) {
 
 // env.c
 
-r_obj* rlang_test_base_ns_get(r_obj* name) {
+r_obj* ffi_test_base_ns_get(r_obj* name) {
   return r_base_ns_get(r_chr_get_c_string(name, 0));
 }
 
@@ -52,10 +52,10 @@ extern r_obj* r_new_formula(r_obj*, r_obj*, r_obj*);
 
 // parse.c
 
-r_obj* rlang_test_parse(r_obj* str) {
+r_obj* ffi_test_parse(r_obj* str) {
   return r_parse(r_chr_get_c_string(str, 0));
 }
-r_obj* rlang_test_parse_eval(r_obj* str, r_obj* env) {
+r_obj* ffi_test_parse_eval(r_obj* str, r_obj* env) {
   return r_parse_eval(r_chr_get_c_string(str, 0), env);
 }
 
@@ -69,20 +69,20 @@ bool rlang_is_clevel_spliceable(r_obj* x) {
 
 // stack.c
 
-r_obj* rlang_test_sys_call(r_obj* n) {
+r_obj* ffi_test_sys_call(r_obj* n) {
   return r_sys_call(r_int_get(n, 0), NULL);
 }
-r_obj* rlang_test_sys_frame(r_obj* n) {
+r_obj* ffi_test_sys_frame(r_obj* n) {
   return r_sys_frame(r_int_get(n, 0), NULL);
 }
 
 
 // vec-lgl.c
 
-r_obj* rlang_test_lgl_sum(r_obj* x, r_obj* na_true) {
+r_obj* ffi_test_lgl_sum(r_obj* x, r_obj* na_true) {
   return r_int(r_lgl_sum(x, r_lgl_get(na_true, 0)));
 }
-r_obj* rlang_test_lgl_which(r_obj* x, r_obj* na_true) {
+r_obj* ffi_test_lgl_which(r_obj* x, r_obj* na_true) {
   return r_lgl_which(x, r_lgl_get(na_true, 0));
 }
 
@@ -97,6 +97,6 @@ extern r_obj* chr_append(r_obj*, r_obj*);
 
 r_obj* nms_are_duplicated(r_obj* nms, bool from_last);
 
-r_obj* rlang_test_nms_are_duplicated(r_obj* nms, r_obj* from_last) {
+r_obj* ffi_test_nms_are_duplicated(r_obj* nms, r_obj* from_last) {
   return nms_are_duplicated(nms, r_lgl_get(from_last, 0));
 }

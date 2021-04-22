@@ -292,7 +292,7 @@ chr_enumerate <- function(chr, sep = ", ", final = "or") {
 #' is_missing(missing_arg())
 #' is_missing(l[[1]])
 missing_arg <- function() {
-  .Call(rlang_missing_arg)
+  .Call(ffi_missing_arg)
 }
 
 #' @rdname missing_arg

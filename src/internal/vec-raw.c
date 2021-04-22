@@ -1,7 +1,7 @@
 #include <string.h>
 #include "rlang.h"
 
-r_obj* rlang_raw_deparse_str(r_obj* x, r_obj* prefix, r_obj* suffix) {
+r_obj* ffi_raw_deparse_str(r_obj* x, r_obj* prefix, r_obj* suffix) {
   if (r_typeof(x) != R_TYPE_raw) {
     r_abort("`x` must be a raw vector.");
   }

@@ -272,7 +272,7 @@ value <- function(expr) {
 }
 
 eval_top <- function(expr, env = caller_env()) {
-  .Call(rlang_eval_top, expr, env)
+  .Call(ffi_eval_top, expr, env)
 }
 
 
