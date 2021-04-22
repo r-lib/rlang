@@ -156,7 +156,7 @@ format_bullets <- function(x) {
   nms <- names(x)
 
   # Treat unnamed vectors as all bullets
-  if (is_null(nms) || all(nms == "")) {
+  if (is_null(nms)) {
     bullets <- rep_along(x, bullet())
     return(paste(bullets, x, sep = " ", collapse = "\n"))
   }
@@ -183,10 +183,16 @@ format_bullets <- function(x) {
 }
 
 collapse_cnd_message <- function(x, glue_env = NULL) {
-  if (is_null(names(x)) && length(x) > 1) {
-    x <- set_names(x, "*")
-    names(x)[[1]] <- ""
-  }
+  if (is_null(names(x))) {
+    if (length(x) > 1) {
+      x <- set_names(x, "*")
+      names(x)[[1]] <- ""
+    } else {
+      # Prevent `format_bullets()` from interpreting string as a
+      # single bullet
+      x <- set_names(x, names2(x))
+    }
+  } 
 
   if (has_cli_bullets && !is_null(glue_env)) {
     cli_format_bullets(x, glue_env)
