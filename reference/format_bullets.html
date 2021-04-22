@@ -50,6 +50,7 @@ Elements named &quot;i&quot; are bulleted with a blue &quot;info&quot; symbol.
 Elements named &quot;x&quot; are bulleted with a red &quot;cross&quot; symbol.
 Elements named &quot;v&quot; are bulleted with a green &quot;tick&quot; symbol.
 Elements named &quot;!&quot; are bulleted with a yellow &quot;warning&quot; symbol.
+Elements named &quot;&amp;gt;&quot; are bulleted with an &quot;arrow&quot; symbol.
 Elements named &quot; &quot; start with an indented line break.
 
 
@@ -187,6 +188,7 @@ their names:</p><ul>
 <li><p>Elements named <code>"x"</code> are bulleted with a red "cross" symbol.</p></li>
 <li><p>Elements named <code>"v"</code> are bulleted with a green "tick" symbol.</p></li>
 <li><p>Elements named <code>"!"</code> are bulleted with a yellow "warning" symbol.</p></li>
+<li><p>Elements named <code>"&gt;"</code> are bulleted with an "arrow" symbol.</p></li>
 <li><p>Elements named <code>" "</code> start with an indented line break.</p></li>
 </ul>
 
@@ -208,10 +210,9 @@ which should be supplied as <code><a href='cnd_message.html'>cnd_header()</a></c
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>A named character vector of messages. Elements named as
-<code>"*"</code>, <code>"x"</code>, <code>"i"</code>, <code>"v"</code>, or <code>"!"</code> are prefixed with the
-corresponding bullet. Elements named with a single space <code>" "</code>
-trigger a line break from the previous bullet.</p></td>
+      <td><p>A named character vector of messages. Named elements are
+prefixed with the corresponding bullet. Elements named with a
+single space <code>" "</code> trigger a line break from the previous bullet.</p></td>
     </tr>
     </table>
 
