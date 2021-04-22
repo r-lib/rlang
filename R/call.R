@@ -434,7 +434,7 @@ call_print_fine_type <- function(call) {
 #' Modify the arguments of a call
 #'
 #' If you are working with a user-supplied call, make sure the
-#' arguments are standardised with [call_standardise()] before
+#' arguments are standardised with [call_match()] before
 #' modifying the call.
 #'
 #' @inheritParams dots_list
@@ -444,16 +444,8 @@ call_print_fine_type <- function(call) {
 #' @param ... <[dynamic][dyn-dots]> Named or unnamed expressions
 #'   (constants, names or calls) used to modify the call. Use [zap()]
 #'   to remove arguments. Empty arguments are preserved.
-#' @param .standardise,.env Soft-deprecated as of rlang 0.3.0. Please
-#'   call [call_standardise()] manually.
-#'
-#' @section Life cycle:
-#'
-#' * The `.standardise` argument is deprecated as of rlang 0.3.0.
-#'
-#' * In rlang 0.2.0, `lang_modify()` was deprecated and renamed to
-#'   `call_modify()`. See lifecycle section in [call2()] for more about
-#'   this change.
+#' @param .standardise,.env Deprecated as of rlang 0.3.0. Please
+#'   call [call_match()] manually.
 #'
 #' @return A quosure if `.call` is a quosure, a call otherwise.
 #' @export
@@ -493,19 +485,15 @@ call_print_fine_type <- function(call) {
 #'
 #'
 #' # When you're working with a user-supplied call, standardise it
-#' # beforehand because it might contain unmatched arguments:
+#' # beforehand in case it includes unmatched arguments:
 #' user_call <- quote(matrix(x, nc = 3))
 #' call_modify(user_call, ncol = 1)
 #'
-#' # Standardising applies the usual argument matching rules:
-#' user_call <- call_standardise(user_call)
+#' # `call_match()` applies R's argument matching rules. Matching
+#' # ensures you're modifying the intended argument.
+#' user_call <- call_match(user_call, matrix)
 #' user_call
 #' call_modify(user_call, ncol = 1)
-#'
-#'
-#' # You can also modify quosures inplace:
-#' f <- quo(matrix(bar))
-#' call_modify(f, quote(foo))
 #'
 #'
 #' # By default, arguments with the same name are kept. This has
@@ -616,58 +604,6 @@ call_modify <- function(.call,
 
 abort_call_input_type <- function(arg) {
   abort(sprintf("`%s` must be a quoted call", arg))
-}
-
-#' Standardise a call
-#'
-#' This is essentially equivalent to [base::match.call()], but with
-#' experimental handling of primitive functions.
-#'
-#'
-#' @section Life cycle:
-#'
-#' In rlang 0.2.0, `lang_standardise()` was deprecated and renamed to
-#' `call_standardise()`. See lifecycle section in [call2()] for more
-#' about this change.
-#'
-#' @param call Can be a call or a quosure that wraps a call.
-#' @param env The environment where to find the definition of the
-#'   function quoted in `call` in case `call` is not wrapped in a
-#'   quosure.
-#' @inheritParams call_match
-#'
-#' @return A quosure if `call` is a quosure, a raw call otherwise.
-#' @export
-call_standardise <- function(call,
-                             env = caller_env(),
-                             ...,
-                             defaults = FALSE,
-                             dots_env = empty_env()) {
-  check_dots_empty(...)
-
-  expr <- get_expr(call)
-  if (!is_call(expr)) {
-    abort_call_input_type("call")
-  }
-  if (is_bare_formula(call)) {
-    return(call)
-  }
-
-  if (is_frame(call)) {
-    fn <- call$fn
-  } else {
-    # The call name might be a literal, not necessarily a symbol
-    env <- get_env(call, env)
-    fn <- eval_bare(node_car(expr), env)
-  }
-
-  matched <- call_match(
-    expr,
-    fn,
-    defaults = defaults,
-    dots_env = dots_env
-  )
-  set_expr(call, matched)
 }
 
 #' Match supplied arguments to function definition
@@ -792,14 +728,10 @@ call_match <- function(call = NULL,
 #' associated environment. Otherwise, it is looked up in the calling
 #' frame.
 #'
-#'
-#' @section Life cycle:
-#'
-#' In rlang 0.2.0, `lang_fn()` was deprecated and renamed to
-#' `call_fn()`. See lifecycle section in [call2()] for more about this
-#' change.
-#'
-#' @inheritParams call_standardise
+#' @param call Can be a call or a quosure that wraps a call.
+#' @param env The environment where to find the definition of the
+#'   function quoted in `call` in case `call` is not wrapped in a
+#'   quosure.
 #' @export
 #' @seealso [call_name()]
 #' @examples
@@ -839,7 +771,7 @@ call_fn <- function(call, env = caller_env()) {
 #' `call_name()`. See lifecycle section in [call2()] for more about
 #' this change.
 #'
-#' @inheritParams call_standardise
+#' @inheritParams call_fn
 #' @return A string with the function name, or `NULL` if the function
 #'   is anonymous.
 #' @seealso [call_fn()]
@@ -907,7 +839,7 @@ call_ns <- function(call) {
 #' deprecated and renamed to `call_args()` and `call_args_names()`.
 #' See lifecycle section in [call2()] for more about this change.
 #'
-#' @inheritParams call_standardise
+#' @inheritParams call_fn
 #' @return A named list of arguments.
 #' @seealso [fn_fmls()] and [fn_fmls_names()]
 #' @export
