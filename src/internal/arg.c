@@ -7,6 +7,7 @@
 
 // Capture ----------------------------------------------------------------
 
+static
 r_obj* capture(r_obj* sym, r_obj* frame, r_obj** arg_env) {
   static r_obj* capture_call = NULL;
   if (!capture_call) {
