@@ -183,13 +183,14 @@ format_bullets <- function(x) {
 }
 
 collapse_cnd_message <- function(x) {
-  if (length(x) > 1L) {
-    paste(
-      x[[1]],
-      format_bullets(x[-1]),
-      sep = "\n"
-    )
-  } else {
-    x
+  if (length(x) == 1L) {
+    return(x)
   }
+
+  if (is_null(names(x))) {
+    x <- set_names(x, "*")
+    names(x)[[1]] <- ""
+  }
+
+  format_bullets(x)
 }
