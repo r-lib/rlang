@@ -223,8 +223,10 @@ pad_spaces <- function(x, left = TRUE) {
 # Import symbols from cli if available
 has_cli <- FALSE
 has_cli_bullet <- FALSE
+has_cli_bullets <- FALSE
 on_load({
   has_cli <- is_installed("cli")
+  has_cli_bullets <- is_installed("cli", version = "2.4.0.9000")
   # TODO: detect new-style cli bullet
 })
 

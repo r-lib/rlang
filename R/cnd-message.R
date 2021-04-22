@@ -59,7 +59,7 @@ cnd_header <- function(cnd, ...) {
 }
 #' @export
 cnd_header.default <- function(cnd, ...) {
-  collapse_cnd_message(cnd$message)
+  collapse_cnd_message(cnd$message, cnd$glue_env)
 }
 
 #' @rdname cnd_message
@@ -182,15 +182,22 @@ format_bullets <- function(x) {
   paste0(bullets, x, collapse = "\n")
 }
 
-collapse_cnd_message <- function(x) {
-  if (length(x) == 1L) {
-    return(x)
-  }
-
-  if (is_null(names(x))) {
+collapse_cnd_message <- function(x, glue_env = NULL) {
+  if (is_null(names(x)) && length(x) > 1) {
     x <- set_names(x, "*")
     names(x)[[1]] <- ""
   }
 
-  format_bullets(x)
+  if (has_cli_bullets && !is_null(glue_env)) {
+    cli_format_bullets(x, glue_env)
+  } else {
+    format_bullets(x)
+  }
+}
+
+# FIXME: Should be exported from cli
+cli_format_bullets <- function(x, env) {
+  fmt <- env_get(ns_env("cli"), "fmt")
+  msg <- fmt(cli::cli_bullets(x, .envir = env), collapse = TRUE)
+  substr(msg, 1, nchar(msg) - 1)
 }

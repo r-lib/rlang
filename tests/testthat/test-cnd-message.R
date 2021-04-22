@@ -108,10 +108,10 @@ test_that("fully unnamed bullet vectors are treated as bullets", {
     "* foo\n* bar"
   )
 
-  bullets <- set_names(c("foo", "bar"), c("", ""))
+  non_bullets <- set_names(c("foo", "bar"), c("", ""))
   expect_equal(
-    format_bullets(bullets),
-    "* foo\n* bar"
+    format_bullets(non_bullets),
+    "foo\nbar"
   )
 })
 

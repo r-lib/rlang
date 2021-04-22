@@ -74,6 +74,12 @@
 #' @param class Subclass of the condition. This allows your users
 #'   to selectively handle the conditions signalled by your functions.
 #' @param ... Additional data to be stored in the condition object.
+#' @param glue_env The environment in which to evaluate objects with
+#'   `glue::glue()`. If you use glue and other interpolation features,
+#'   make sure the [cli](https://github.com/r-lib/cli/) package is
+#'   installed by adding it to your Imports. This argument is saved in
+#'   the condition in a field of the same name, this way you can
+#'   interpolate lazily at print time rather than throw time.
 #' @param .subclass This argument was renamed to `class` in rlang
 #'   0.4.2.  It will be deprecated in the next major version. This is
 #'   for consistency with our conventions for class constructors
@@ -142,6 +148,7 @@ abort <- function(message = NULL,
                   ...,
                   trace = NULL,
                   parent = NULL,
+                  glue_env = caller_env(),
                   .subclass = deprecated()) {
   validate_signal_args(.subclass)
 
@@ -170,7 +177,8 @@ abort <- function(message = NULL,
     ...,
     message = message,
     parent = parent,
-    trace = trace
+    trace = trace,
+    glue_env = glue_env
   )
   signal_abort(cnd)
 }

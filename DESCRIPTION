@@ -41,6 +41,8 @@ Suggests:
     withr
 Enhances: 
     winch
+Remotes:
+    r-lib/cli
 SystemRequirements:
     C++11
 Encoding: UTF-8

@@ -101,13 +101,16 @@ validate_cnd_signal_args <- function(cnd,
 warn <- function(message = NULL,
                  class = NULL,
                  ...,
+                 glue_env = caller_env(),
                  .frequency = c("always", "regularly", "once"),
                  .frequency_id = NULL,
                  .subclass = deprecated()) {
   validate_signal_args(.subclass)
 
   message <- validate_signal_message(message, class)
-  message <- collapse_cnd_message(message)
+
+  # FIXME: Do this lazily
+  message <- collapse_cnd_message(message, glue_env)
 
   .frequency <- arg_match0(.frequency, c("always", "regularly", "once"))
 
@@ -135,6 +138,7 @@ warn <- function(message = NULL,
 inform <- function(message = NULL,
                    class = NULL,
                    ...,
+                   glue_env = caller_env(),
                    .file = NULL,
                    .frequency = c("always", "regularly", "once"),
                    .frequency_id = NULL,
@@ -147,7 +151,10 @@ inform <- function(message = NULL,
   }
 
   message <- message %||% ""
-  message <- collapse_cnd_message(message)
+
+  # FIXME: Should be lazy
+  message <- collapse_cnd_message(message, glue_env)
+
   message <- add_message_freq(message, .frequency, "message")
   message <- paste0(message, "\n")
 
@@ -162,9 +169,13 @@ inform <- function(message = NULL,
 }
 #' @rdname abort
 #' @export
-signal <- function(message, class, ..., .subclass = deprecated()) {
+signal <- function(message,
+                   class,
+                   ...,
+                   glue_env = caller_env(),
+                   .subclass = deprecated()) {
   validate_signal_args(.subclass)
-  message <- collapse_cnd_message(message)
+  message <- collapse_cnd_message(message, glue_env)
   cnd <- cnd(class, ..., message = message)
   cnd_signal(cnd)
 }

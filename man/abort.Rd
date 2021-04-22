@@ -14,6 +14,7 @@ abort(
   ...,
   trace = NULL,
   parent = NULL,
+  glue_env = caller_env(),
   .subclass = deprecated()
 )
 
@@ -21,6 +22,7 @@ warn(
   message = NULL,
   class = NULL,
   ...,
+  glue_env = caller_env(),
   .frequency = c("always", "regularly", "once"),
   .frequency_id = NULL,
   .subclass = deprecated()
@@ -30,13 +32,14 @@ inform(
   message = NULL,
   class = NULL,
   ...,
+  glue_env = caller_env(),
   .file = NULL,
   .frequency = c("always", "regularly", "once"),
   .frequency_id = NULL,
   .subclass = deprecated()
 )
 
-signal(message, class, ..., .subclass = deprecated())
+signal(message, class, ..., glue_env = caller_env(), .subclass = deprecated())
 
 interrupt()
 }
@@ -62,6 +65,13 @@ to selectively handle the conditions signalled by your functions.}
 \item{trace}{A \code{trace} object created by \code{\link[=trace_back]{trace_back()}}.}
 
 \item{parent}{A parent condition object created by \code{\link[=abort]{abort()}}.}
+
+\item{glue_env}{The environment in which to evaluate objects with
+\code{glue::glue()}. If you use glue and other interpolation features,
+make sure the \href{https://github.com/r-lib/cli/}{cli} package is
+installed by adding it to your Imports. This argument is saved in
+the condition in a field of the same name, this way you can
+interpolate lazily at print time rather than throw time.}
 
 \item{.subclass}{This argument was renamed to \code{class} in rlang
 0.4.2.  It will be deprecated in the next major version. This is
