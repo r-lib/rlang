@@ -7,10 +7,10 @@
 #
 # Changelog:
 # 2020-04-14:
-# * removed pluck*() functions
-# * removed *_cpl() functions
-# * used as_function() to allow use of ~
-# * used . prefix for helpers
+# * Removed `pluck*()` functions
+# * Removed `*_cpl()` functions
+# * Used `as_function()` to allow use of `~`
+# * Used `.` prefix for helpers
 
 map <- function(.x, .f, ...) {
   .f <- as_function(.f)
