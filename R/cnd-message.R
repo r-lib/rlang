@@ -115,6 +115,7 @@ cnd_footer.default <- function(cnd, ...) {
 #' - Elements named `"x"` are bulleted with a red "cross" symbol.
 #' - Elements named `"v"` are bulleted with a green "tick" symbol.
 #' - Elements named `"!"` are bulleted with a yellow "warning" symbol.
+#' - Elements named `">"` are bulleted with an "arrow" symbol.
 #' - Elements named `" "` start with an indented line break.
 #'
 #' For convenience, if the vector is fully unnamed, the elements are
@@ -128,10 +129,9 @@ cnd_footer.default <- function(cnd, ...) {
 #' how to interpret the bullet relative to the general error issue,
 #' which should be supplied as [cnd_header()].
 #'
-#' @param x A named character vector of messages. Elements named as
-#'   `"*"`, `"x"`, `"i"`, `"v"`, or `"!"` are prefixed with the
-#'   corresponding bullet. Elements named with a single space `" "`
-#'   trigger a line break from the previous bullet.
+#' @param x A named character vector of messages. Named elements are
+#'   prefixed with the corresponding bullet. Elements named with a
+#'   single space `" "` trigger a line break from the previous bullet.
 #' @examples
 #' # All bullets
 #' writeLines(format_bullets(c("foo", "bar")))
@@ -161,8 +161,8 @@ format_bullets <- function(x) {
     return(paste(bullets, x, sep = " ", collapse = "\n"))
   }
 
-  if (!all(nms %in% c("i", "x", "v", "*", "!", " ", ""))) {
-    abort('Bullet names must be one of "i", "x", "v", "*", "!", or " ".')
+  if (!all(nms %in% c("i", "x", "v", "*", "!", ">", " ", ""))) {
+    abort('Bullet names must be one of "i", "x", "v", "*", "!", ">", or " ".')
   }
 
   bullets <-
@@ -171,9 +171,10 @@ format_bullets <- function(x) {
     ifelse(nms == "v", tick(),
     ifelse(nms == "*", bullet(),
     ifelse(nms == "!", yellow("!"),
+    ifelse(nms == ">", arrow_right(),
     ifelse(nms == "", "",
     ifelse(nms == " ", " ",
-      "*")))))))
+      "*"))))))))
 
   bullets <-
     ifelse(bullets == "", "", paste0(bullets, " "))

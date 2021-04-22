@@ -7,10 +7,9 @@
 format_error_bullets(x)
 }
 \arguments{
-\item{x}{A named character vector of messages. Elements named as
-\code{"*"}, \code{"x"}, \code{"i"}, \code{"v"}, or \code{"!"} are prefixed with the
-corresponding bullet. Elements named with a single space \code{" "}
-trigger a line break from the previous bullet.}
+\item{x}{A named character vector of messages. Named elements are
+prefixed with the corresponding bullet. Elements named with a
+single space \code{" "} trigger a line break from the previous bullet.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}

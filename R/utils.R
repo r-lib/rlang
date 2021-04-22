@@ -251,6 +251,9 @@ bullet <- function() {
 
   cyan(x)
 }
+arrow_right <- function() {
+  if (has_cli) cli::symbol$arrow_right else ">"
+}
 
 strip_trailing_newline <- function(x) {
   n <- nchar(x)

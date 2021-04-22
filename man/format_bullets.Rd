@@ -7,10 +7,9 @@
 format_bullets(x)
 }
 \arguments{
-\item{x}{A named character vector of messages. Elements named as
-\code{"*"}, \code{"x"}, \code{"i"}, \code{"v"}, or \code{"!"} are prefixed with the
-corresponding bullet. Elements named with a single space \code{" "}
-trigger a line break from the previous bullet.}
+\item{x}{A named character vector of messages. Named elements are
+prefixed with the corresponding bullet. Elements named with a
+single space \code{" "} trigger a line break from the previous bullet.}
 }
 \description{
 \code{format_bullets()} takes a character vector and returns a single
@@ -24,6 +23,7 @@ their names:
 \item Elements named \code{"x"} are bulleted with a red "cross" symbol.
 \item Elements named \code{"v"} are bulleted with a green "tick" symbol.
 \item Elements named \code{"!"} are bulleted with a yellow "warning" symbol.
+\item Elements named \code{">"} are bulleted with an "arrow" symbol.
 \item Elements named \code{" "} start with an indented line break.
 }
 
