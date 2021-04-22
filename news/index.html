@@ -158,6 +158,7 @@
 <a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li><p><code>compat-purrr.R</code> now longer includes <code>pluck*</code> helpers; these used a defintion of pluck that predated purrr (<a href='https://github.com/r-lib/rlang/issues/1159'>#1159</a>). <code>*_cpl()</code> has also been removed. The <code>map*</code> wrappers now call <code><a href="../reference/as_function.html">as_function()</a></code> so that you can pass short anonymous functions that use <code><a href="https://rdrr.io/r/base/tilde.html">~</a></code> (<a href='https://github.com/r-lib/rlang/issues/1157'>#1157</a>).</p></li>
 <li>
 <p>New <code><a href="../reference/call_match.html">call_match()</a></code> function. It is like <code><a href="https://rdrr.io/r/base/match.call.html">match.call()</a></code> but also supports matching missing arguments to their defaults in the function definition (<a href='https://github.com/r-lib/rlang/issues/875'>#875</a>).</p>
 <p><code><a href="../reference/call_standardise.html">call_standardise()</a></code> is deprecated in favour of <code><a href="../reference/call_match.html">call_match()</a></code>.</p>
