@@ -13,7 +13,7 @@
 # * Used `.` prefix for helpers
 
 map <- function(.x, .f, ...) {
-  .f <- as_function(.f)
+  .f <- as_function(.f, env = global_env())
   lapply(.x, .f, ...)
 }
 walk <- function(.x, .f, ...) {
@@ -34,14 +34,14 @@ map_chr <- function(.x, .f, ...) {
   .rlang_purrr_map_mold(.x, .f, character(1), ...)
 }
 .rlang_purrr_map_mold <- function(.x, .f, .mold, ...) {
-  .f <- as_function(.f)
+  .f <- as_function(.f, env = global_env())
   out <- vapply(.x, .f, .mold, ..., USE.NAMES = FALSE)
   names(out) <- names(.x)
   out
 }
 
 map2 <- function(.x, .y, .f, ...) {
-  .f <- as_function(.f)
+  .f <- as_function(.f, env = global_env())
   out <- mapply(.f, .x, .y, MoreArgs = list(...), SIMPLIFY = FALSE)
   if (length(out) == length(.x)) {
     set_names(out, names(.x))
@@ -102,7 +102,7 @@ map_if <- function(.x, .p, .f, ...) {
     stopifnot(length(.p) == length(.x))
     .p
   } else {
-    .p <- as_function(.p)
+    .p <- as_function(.p, env = global_env())
     map_lgl(.x, .p, ...)
   }
 }
@@ -125,7 +125,7 @@ transpose <- function(.l) {
 }
 
 every <- function(.x, .p, ...) {
-  .p <- as_function(.p)
+  .p <- as_function(.p, env = global_env())
 
   for (i in seq_along(.x)) {
     if (!rlang::is_true(.p(.x[[i]], ...))) return(FALSE)
@@ -133,7 +133,7 @@ every <- function(.x, .p, ...) {
   TRUE
 }
 some <- function(.x, .p, ...) {
-  .p <- as_function(.p)
+  .p <- as_function(.p, env = global_env())
 
   for (i in seq_along(.x)) {
     if (rlang::is_true(.p(.x[[i]], ...))) return(TRUE)
@@ -141,7 +141,7 @@ some <- function(.x, .p, ...) {
   FALSE
 }
 negate <- function(.p) {
-  .p <- as_function(.p)
+  .p <- as_function(.p, env = global_env())
   function(...) !.p(...)
 }
 
@@ -163,8 +163,8 @@ accumulate_right <- function(.x, .f, ..., .init) {
 }
 
 detect <- function(.x, .f, ..., .right = FALSE, .p = is_true) {
-  .p <- as_function(.p)
-  .f <- as_function(.f)
+  .p <- as_function(.p, env = global_env())
+  .f <- as_function(.f, env = global_env())
 
   for (i in .rlang_purrr_index(.x, .right)) {
     if (.p(.f(.x[[i]], ...))) {
@@ -174,8 +174,8 @@ detect <- function(.x, .f, ..., .right = FALSE, .p = is_true) {
   NULL
 }
 detect_index <- function(.x, .f, ..., .right = FALSE, .p = is_true) {
-  .p <- as_function(.p)
-  .f <- as_function(.f)
+  .p <- as_function(.p, env = global_env())
+  .f <- as_function(.f, env = global_env())
 
   for (i in .rlang_purrr_index(.x, .right)) {
     if (.p(.f(.x[[i]], ...))) {
