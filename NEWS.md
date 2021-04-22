@@ -1,5 +1,10 @@
 # rlang (development version)
 
+* `compat-purrr.R` now longer includes `pluck*` helpers; these used a defintion
+  of pluck that predated purrr (#1159). `*_cpl()` has also been removed.
+  The `map*` wrappers now call `as_function()` so that you can pass short
+  anonymous functions that use `~` (#1157).
+
 * New `call_match()` function. It is like `match.call()` but also
   supports matching missing arguments to their defaults in the function
   definition (#875).
