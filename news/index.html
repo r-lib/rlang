@@ -158,6 +158,10 @@
 <a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li>
+<p>New <code><a href="../reference/call_match.html">call_match()</a></code> function. It is like <code><a href="https://rdrr.io/r/base/match.call.html">match.call()</a></code> but also supports matching missing arguments to their defaults in the function definition (<a href='https://github.com/r-lib/rlang/issues/875'>#875</a>).</p>
+<p><code><a href="../reference/call_standardise.html">call_standardise()</a></code> is deprecated in favour of <code><a href="../reference/call_match.html">call_match()</a></code>.</p>
+</li>
 <li><p><code><a href="../reference/is_installed.html">is_installed()</a></code> and <code><a href="../reference/is_installed.html">check_installed()</a></code> gain a <code>version</code> argument (<a href='https://github.com/r-lib/rlang/issues/1165'>#1165</a>).</p></li>
 <li><p><code><a href="../reference/expr_print.html">expr_deparse()</a></code> now properly escapes <code>\</code> characters in symbols, argument names, and vector names (<a href='https://github.com/r-lib/rlang/issues/1160'>#1160</a>).</p></li>
 <li><p><code>friendly_type_of()</code> (from <code>compat-friendly-type.R</code>) now supports matrices and arrays (<a href='https://github.com/r-lib/rlang/issues/141'>#141</a>).</p></li>

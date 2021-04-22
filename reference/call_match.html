@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create pairlists with splicing support — pairlist2 • rlang</title>
+<title>Match supplied arguments to function definition — call_match • rlang</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,15 @@
 
 
 
-<meta property="og:title" content="Create pairlists with splicing support — pairlist2" />
-<meta property="og:description" content="This pairlist constructor uses dynamic dots. Use
-it to manually create argument lists for calls or parameter lists
-for functions." />
+<meta property="og:title" content="Match supplied arguments to function definition — call_match" />
+<meta property="og:description" content="call_match() is like match.call() with these differences:
+It supports matching missing argument to their defaults in the
+function definition.
+It requires you to be a little more specific in some cases.
+Either all arguments are inferred from the call stack or none of
+them are (see the Inference section).
+
+" />
 
 
 
@@ -152,45 +157,95 @@ for functions." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create pairlists with splicing support</h1>
+    <h1>Match supplied arguments to function definition</h1>
     <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/call.R'><code>R/call.R</code></a></small>
-    <div class="hidden name"><code>pairlist2.Rd</code></div>
+    <div class="hidden name"><code>call_match.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This pairlist constructor uses <a href='dyn-dots.html'>dynamic dots</a>. Use
-it to manually create argument lists for calls or parameter lists
-for functions.</p>
+    <p><code>call_match()</code> is like <code><a href='https://rdrr.io/r/base/match.call.html'>match.call()</a></code> with these differences:</p><ul>
+<li><p>It supports matching missing argument to their defaults in the
+function definition.</p></li>
+<li><p>It requires you to be a little more specific in some cases.
+Either all arguments are inferred from the call stack or none of
+them are (see the Inference section).</p></li>
+</ul>
+
     </div>
 
-    <pre class="usage"><span class='fu'>pairlist2</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>call_match</span><span class='op'>(</span>
+  call <span class='op'>=</span> <span class='cn'>NULL</span>,
+  fn <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>,
+  defaults <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  dots_env <span class='op'>=</span> <span class='cn'>NULL</span>,
+  dots_expand <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>call</th>
+      <td><p>A call. The arguments will be matched to <code>fn</code>.</p></td>
+    </tr>
+    <tr>
+      <th>fn</th>
+      <td><p>A function definition to match arguments to.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
-      <td><p>&lt;<a href='dyn-dots.html'>dynamic</a>&gt; Arguments stored in the
-pairlist. Empty arguments are preserved.</p></td>
+      <td><p>These dots must be empty.</p></td>
+    </tr>
+    <tr>
+      <th>defaults</th>
+      <td><p>Whether to match missing arguments to their
+defaults.</p></td>
+    </tr>
+    <tr>
+      <th>dots_env</th>
+      <td><p>An execution environment where to find dots. If
+supplied and dots exist in this environment, and if <code>call</code>
+includes <code>...</code>, the forwarded dots are matched to numbered dots
+(e.g. <code>..1</code>, <code>..2</code>, etc). By default this is set to the empty
+environment which means that <code>...</code> expands to nothing.</p></td>
+    </tr>
+    <tr>
+      <th>dots_expand</th>
+      <td><p>If <code>FALSE</code>, arguments passed through <code>...</code> will
+not be spliced into <code>call</code>. Instead, they are gathered in a
+pairlist and assigned to an argument named <code>...</code>. Gathering dots
+arguments is useful if you need to separate them from the other
+named arguments.</p>
+<p>Note that the resulting call is not meant to be evaluated since R
+does not support passing dots through a named argument, even if
+named <code>"..."</code>.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="inference-from-the-call-stack"><a class="anchor" href="#inference-from-the-call-stack"></a>Inference from the call stack</h2>
+
+    
+
+<p>When <code>call</code> is not supplied, it is inferred from the call stack
+along with <code>fn</code> and <code>dots_env</code>.</p><ul>
+<li><p><code>call</code> and <code>fn</code> are inferred from the calling environment:
+<code><a href='https://rdrr.io/r/base/sys.parent.html'>sys.call(sys.parent())</a></code> and <code><a href='https://rdrr.io/r/base/sys.parent.html'>sys.function(sys.parent())</a></code>.</p></li>
+<li><p><code>dots_env</code> is inferred from the caller of the calling
+environment: <code><a href='caller_env.html'>caller_env(2)</a></code>.</p></li>
+</ul>
+
+<p>If <code>call</code> is supplied, then you must supply <code>fn</code> as well. Also
+consider supplying <code>dots_env</code> as it is set to the empty environment
+when not inferred.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Unlike `exprs()`, `pairlist2()` evaluates its arguments.</span>
-<span class='fu'><a href='new_function.html'>new_function</a></span><span class='op'>(</span><span class='fu'>pairlist2</span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>1</span>, y <span class='op'>=</span> <span class='fl'>3</span> <span class='op'>*</span> <span class='fl'>6</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>x</span> <span class='op'>*</span> <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; function (x = 1, y = 18) 
-#&gt; x * y
-#&gt; &lt;environment: 0x7fabcae22260&gt;</div><div class='input'><span class='fu'><a href='new_function.html'>new_function</a></span><span class='op'>(</span><span class='fu'><a href='nse-defuse.html'>exprs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>1</span>, y <span class='op'>=</span> <span class='fl'>3</span> <span class='op'>*</span> <span class='fl'>6</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>x</span> <span class='op'>*</span> <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; function (x = 1, y = 3 * 6) 
-#&gt; x * y
-#&gt; &lt;environment: 0x7fabcae22260&gt;</div><div class='input'>
-<span class='co'># It preserves missing arguments, which is useful for creating</span>
-<span class='co'># parameters without defaults:</span>
-<span class='fu'><a href='new_function.html'>new_function</a></span><span class='op'>(</span><span class='fu'>pairlist2</span><span class='op'>(</span>x <span class='op'>=</span> , y <span class='op'>=</span> <span class='fl'>3</span> <span class='op'>*</span> <span class='fl'>6</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>x</span> <span class='op'>*</span> <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; function (x, y = 18) 
-#&gt; x * y
-#&gt; &lt;environment: 0x7fabcae22260&gt;</div></pre>
+    <pre class="examples"><div class='input'><span class='co'># `call_match()` supports matching missing arguments to their</span>
+<span class='co'># defaults</span>
+<span class='va'>fn</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span> <span class='op'>=</span> <span class='st'>"default"</span><span class='op'>)</span> <span class='va'>fn</span>
+<span class='fu'>call_match</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='fu'>fn</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>, <span class='va'>fn</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; fn()</div><div class='input'><span class='fu'>call_match</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='fu'>fn</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>, <span class='va'>fn</span>, defaults <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; fn(x = "default")</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
