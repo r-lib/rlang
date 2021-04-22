@@ -450,27 +450,13 @@ abort_dots_homonyms <- function(dots, dups) {
     abort("Internal error: Expected dots duplicates")
   }
 
-  if (dups_n == 1L) {
-    nm <- dups_nms
-    enum <- homonym_enum(nm, dups_all, nms)
-    pos_msg <- sprintf(
-      "We found multiple arguments named `%s` at positions %s",
-      nm,
-      enum
-    )
-    abort(paste_line(
-      "Arguments can't have the same name.",
-      pos_msg
-    ))
-  }
-
   enums <- map(dups_nms, homonym_enum, dups_all, nms)
-  line <- "* Multiple arguments named `%s` at positions %s"
-  enums_lines <- map2(dups_nms, enums, sprintf, fmt = line)
+  line <- "Multiple arguments named `%s` at positions %s."
+  enums_lines <- map2_chr(dups_nms, enums, sprintf, fmt = line)
 
-  abort(paste_line(
-    "Arguments can't have the same name. We found these problems:",
-    !!!enums_lines
+  abort(c(
+    "Arguments can't have the same name.",
+    set_names(enums_lines, "x")
   ))
 }
 
