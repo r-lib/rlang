@@ -38,6 +38,7 @@ lib-cpp-files = \
 
 internal-files = \
         internal/arg.c \
+        internal/ast-rotate.c \
         internal/attr.c \
         internal/call.c \
         internal/dots.c \
@@ -45,12 +46,14 @@ internal-files = \
         internal/env-binding.c \
         internal/eval.c \
         internal/eval-tidy.c \
-        internal/nse-inject.c \
-        internal/ast-rotate.c \
+        internal/exported.c \
+        internal/exported-tests.c \
         internal/fn.c \
         internal/hash.c \
+        internal/init.c \
         internal/internal.c \
         internal/nse-defuse.c \
+        internal/nse-inject.c \
         internal/parse.c \
         internal/quo.c \
         internal/replace-na.c \
@@ -61,15 +64,10 @@ internal-files = \
         internal/vec-raw.c \
         internal/weakref.c
 
-export-files = \
-        export/exported.c \
-        export/exported-tests.c \
-        export/init.c
-
 
 all: $(SHLIB)
 
-$(SHLIB): rlang.o internal.o export.o
+$(SHLIB): rlang.o internal.o
 
 rlang.c: $(lib-files)
 	touch rlang.c

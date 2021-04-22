@@ -10,6 +10,8 @@
 #include "env-binding.c"
 #include "eval.c"
 #include "eval-tidy.c"
+#include "exported.c"
+#include "exported-tests.c"
 #include "nse-inject.c"
 #include "ast-rotate.c"
 #include "fn.c"
@@ -24,6 +26,7 @@
 #include "vec.c"
 #include "vec-raw.c"
 #include "weakref.c"
+#include "init.c"
 
 
 r_obj* rlang_zap = NULL;
