@@ -2,9 +2,10 @@
 #include "nse-inject.h"
 #include "utils.h"
 
-// Capture
+#include "decl/arg-decl.h"
 
-r_obj* rlang_ns_get(const char* name);
+
+// Capture ----------------------------------------------------------------
 
 r_obj* capture(r_obj* sym, r_obj* frame, r_obj** arg_env) {
   static r_obj* capture_call = NULL;
@@ -75,9 +76,8 @@ r_obj* rlang_enquo(r_obj* sym, r_obj* frame) {
   return quo;
 }
 
-static r_obj* stop_arg_match_call = NULL;
-static r_obj* arg_nm_sym = NULL;
-void arg_match0_abort(const char* msg, r_obj* env);
+
+// Match ------------------------------------------------------------------
 
 r_obj* rlang_ext_arg_match0(r_obj* args) {
   args = r_node_cdr(args);
@@ -178,9 +178,13 @@ void arg_match0_abort(const char* msg, r_obj* env) {
   r_abort(msg, arg_nm_chr);
 }
 
+
 void rlang_init_arg(r_obj* ns) {
   stop_arg_match_call = r_parse("stop_arg_match(x, y, z)");
   r_preserve(stop_arg_match_call);
 
   arg_nm_sym = r_sym("arg_nm");
 }
+
+static r_obj* stop_arg_match_call = NULL;
+static r_obj* arg_nm_sym = NULL;
