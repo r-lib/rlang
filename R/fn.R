@@ -361,20 +361,13 @@ fn_env <- function(fn) {
 }
 
 
-#' Convert to function or closure
+#' Convert to function
 #'
 #' @description
-#'
 #' `r lifecycle::badge("stable")`
 #'
-#' * `as_function()` transforms a one-sided formula into a function.
-#'   This powers the lambda syntax in packages like purrr.
-#'
-#' * `as_closure()` first passes its argument to `as_function()`. If
-#'   the result is a primitive function, it regularises it to a proper
-#'   [closure] (see [is_function()] about primitive functions). Some
-#'   special control flow primitives like `if`, `for`, or `break`
-#'   can't be coerced to a closure.
+#' `as_function()` transforms a one-sided formula into a function.
+#' This powers the lambda syntax in packages like purrr.
 #'
 #' @param x A function or formula.
 #'
@@ -387,8 +380,10 @@ fn_env <- function(fn) {
 #'   to two inputs. Functions created from formulas have a special
 #'   class. Use `is_lambda()` to test for it.
 #'
-#'   Lambdas currently do not support [nse-inject],
-#'   due to the way the arguments are handled internally.
+#'   If a **string**, the function is looked up in `env`. Note that
+#'   this interface is strictly for user convenience because of the
+#'   scoping issues involved. Package developers should avoid
+#'   supplying functions by name and instead supply them by value.
 #'
 #' @param env Environment in which to fetch the function in case `x`
 #'   is a string.
@@ -406,24 +401,6 @@ fn_env <- function(fn) {
 #' # Functions created from a formula have a special class:
 #' is_lambda(f)
 #' is_lambda(as_function(function() "foo"))
-#'
-#' # Primitive functions are regularised as closures
-#' as_closure(list)
-#' as_closure("list")
-#'
-#' # Operators have `.x` and `.y` as arguments, just like lambda
-#' # functions created with the formula syntax:
-#' as_closure(`+`)
-#' as_closure(`~`)
-#'
-#' # Use a regular function for tidy evaluation, also when calling functions
-#' # that use tidy evaluation:
-#' ## Bad:
-#' e <- as_function(~ as_label(ensym(.x)))
-#' ## Good:
-#' e <- as_function(function(x) as_label(ensym(x)))
-#'
-#' e(y)
 as_function <- function(x, env = caller_env()) {
   if (is_function(x)) {
     return(x)
@@ -468,7 +445,26 @@ is_lambda <- function(x) {
   inherits(x, "rlang_lambda_function")
 }
 
-#' @rdname as_function
+#' Transform to a closure
+#'
+#' `as_closure()` is like [as_function()] but also wraps primitive
+#' functions inside closures. Some special control flow primitives
+#' like `if`, `for`, or `break` can't be wrapped and will cause an
+#' error.
+#'
+#' @inheritParams as_function
+#'
+#' @examples
+#' # Primitive functions are regularised as closures
+#' as_closure(list)
+#' as_closure("list")
+#'
+#' # Operators have `.x` and `.y` as arguments, just like lambda
+#' # functions created with the formula syntax:
+#' as_closure(`+`)
+#' as_closure(`~`)
+#'
+#' @keywords internal
 #' @export
 as_closure <- function(x, env = caller_env()) {
   x <- as_function(x, env = env)
