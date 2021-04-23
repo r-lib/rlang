@@ -1,5 +1,9 @@
 # rlang (development version)
 
+* `env_get()` and `env_get_list()` gain a `last` argument. Lookup
+  stops in that environment. This can be useful in conjunction with
+  `base::topenv()`.
+
 * `compat-purrr.R` now longer includes `pluck*` helpers; these used a defintion
   of pluck that predated purrr (#1159). `*_cpl()` has also been removed.
   The `map*` wrappers now call `as_function()` so that you can pass short

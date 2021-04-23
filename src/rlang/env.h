@@ -47,6 +47,7 @@ static inline
 r_obj* r_env_find_anywhere(r_obj* env, r_obj* sym) {
   return Rf_findVar(sym, env);
 }
+r_obj* r_env_find_until(r_obj* env, r_obj* sym, r_obj* last);
 
 static inline
 bool r_env_has(r_obj* env, r_obj* sym) {

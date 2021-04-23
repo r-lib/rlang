@@ -187,6 +187,22 @@ bool r_env_inherits(r_obj* env, r_obj* ancestor, r_obj* top) {
   return env == ancestor;
 }
 
+r_obj* r_env_find_until(r_obj* env, r_obj* sym, r_obj* last) {
+  r_obj* stop = r_envs.empty;
+  if (last != r_envs.empty) {
+    stop = r_env_parent(last);
+  }
+
+  r_obj* out = r_syms.unbound;
+  while (out == r_syms.unbound && env != stop) {
+    out = r_env_find(env, sym);
+    env = r_env_parent(env);
+  }
+
+  return out;
+}
+
+
 void r_init_rlang_ns_env() {
   rlang_ns_env = r_ns_env("rlang");
 }

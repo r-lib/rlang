@@ -1,10 +1,14 @@
 #include <rlang.h>
 #include "internal.h"
 
+#include "decl/env-decl.h"
 
-static r_obj* rlang_env_get_sym(r_obj* env, r_obj* nm, bool inherit, r_obj* closure_env);
 
-r_obj* ffi_env_get(r_obj* env, r_obj* nm, r_obj* inherit, r_obj* closure_env) {
+r_obj* ffi_env_get(r_obj* env,
+                   r_obj* nm,
+                   r_obj* inherit,
+                   r_obj* last,
+                   r_obj* closure_env) {
   if (r_typeof(env) != R_TYPE_environment) {
     r_abort("`env` must be an environment.");
   }
@@ -18,14 +22,26 @@ r_obj* ffi_env_get(r_obj* env, r_obj* nm, r_obj* inherit, r_obj* closure_env) {
   bool c_inherit = r_lgl_get(inherit, 0);
 
   r_obj* sym = r_str_as_symbol(r_chr_get(nm, 0));
-  return rlang_env_get_sym(env, sym, c_inherit, closure_env);
+  return env_get_sym(env, sym, c_inherit, last, closure_env);
 }
 
 static
-r_obj* rlang_env_get_sym(r_obj* env, r_obj* sym, bool inherit, r_obj* closure_env) {
+r_obj* env_get_sym(r_obj* env,
+                   r_obj* sym,
+                   bool inherit,
+                   r_obj* last,
+                   r_obj* closure_env) {
+  if (r_typeof(last) != R_TYPE_environment) {
+    r_abort("`last` must be an environment.");
+  }
+
   r_obj* out;
   if (inherit) {
-    out = r_env_find_anywhere(env, sym);
+    if (last) {
+      out = r_env_find_until(env, sym, last);
+    } else {
+      out = r_env_find_anywhere(env, sym);
+    }
   } else {
     out = r_env_find(env, sym);
   }
@@ -43,7 +59,11 @@ r_obj* rlang_env_get_sym(r_obj* env, r_obj* sym, bool inherit, r_obj* closure_en
   return out;
 }
 
-r_obj* ffi_env_get_list(r_obj* env, r_obj* nms, r_obj* inherit, r_obj* closure_env) {
+r_obj* ffi_env_get_list(r_obj* env,
+                        r_obj* nms,
+                        r_obj* inherit,
+                        r_obj* last,
+                        r_obj* closure_env) {
   if (r_typeof(env) != R_TYPE_environment) {
     r_abort("`env` must be an environment.");
   }
@@ -64,7 +84,7 @@ r_obj* ffi_env_get_list(r_obj* env, r_obj* nms, r_obj* inherit, r_obj* closure_e
 
   for (r_ssize i = 0; i <n; ++i) {
     r_obj* sym = r_str_as_symbol(p_nms[i]);
-    r_obj* elt = rlang_env_get_sym(env, sym, c_inherit, closure_env);
+    r_obj* elt = env_get_sym(env, sym, c_inherit, last, closure_env);
     r_list_poke(out, i, elt);
   }
 

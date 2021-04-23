@@ -407,6 +407,39 @@ test_that("`%<~%` assigns lazily", {
   expect_error(x, "bar")
 })
 
+test_that("env_get() and env_get_list() handle `last` argument", {
+  top <- env(foo = "foo")
+  mid <- env(top)
+  low <- env(mid)
+
+  expect_equal(
+    env_get(low, "foo", inherit = TRUE, default = "null"),
+    "foo"
+  )
+  expect_equal(
+    env_get(low, "foo", inherit = TRUE, last = mid, default = "null"),
+    "null"
+  )
+  expect_equal(
+    env_get(low, "foo", inherit = TRUE, last = low, default = "null"),
+    "null"
+  )
+
+  expect_equal(
+    env_get_list(low, "foo", inherit = TRUE, default = "null"),
+    list(foo = "foo")
+  )
+  expect_equal(
+    env_get_list(low, "foo", inherit = TRUE, last = mid, default = "null"),
+    list(foo = "null")
+  )
+  expect_equal(
+    env_get_list(low, "foo", inherit = TRUE, last = low, default = "null"),
+    list(foo = "null")
+  )
+})
+
+
 
 # Lifecycle ----------------------------------------------------------
 

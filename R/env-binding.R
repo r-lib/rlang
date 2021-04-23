@@ -356,6 +356,8 @@ env_has <- function(env = caller_env(), nms, inherit = FALSE) {
 #' @param nm,nms Names of bindings. `nm` must be a single string.
 #' @param default A default value in case there is no binding for `nm`
 #'   in `env`.
+#' @param last Last environment inspected when `inherit` is `TRUE`.
+#'   Can be useful in conjunction with [base::topenv()].
 #' @return An object if it exists. Otherwise, throws an error.
 #' @export
 #' @examples
@@ -370,25 +372,35 @@ env_has <- function(env = caller_env(), nms, inherit = FALSE) {
 #'
 #' # You can also avoid an error by supplying a default value:
 #' env_get(env, "foo", default = "FOO")
-env_get <- function(env = caller_env(), nm, default, inherit = FALSE) {
+env_get <- function(env = caller_env(),
+                    nm,
+                    default,
+                    inherit = FALSE,
+                    last = empty_env()) {
   env <- get_env_retired(env, "env_get()")
   .Call(
     ffi_env_get,
     env = env,
     nm = nm,
     inherit = inherit,
+    last = last,
     closure_env = environment()
   )
 }
 #' @rdname env_get
 #' @export
-env_get_list <- function(env = caller_env(), nms, default, inherit = FALSE) {
+env_get_list <- function(env = caller_env(),
+                         nms,
+                         default,
+                         inherit = FALSE,
+                         last = empty_env()) {
   env <- get_env_retired(env, "env_get_list()")
   .Call(
     ffi_env_get_list,
     env = env,
     nms = nms,
     inherit = inherit,
+    last = last,
     closure_env = environment()
   )
 }
