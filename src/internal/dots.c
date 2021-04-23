@@ -443,7 +443,7 @@ r_obj* dots_unquote(r_obj* dots, struct dots_capture_info* capture_info) {
         if (!capture_info->preserve_empty) {
           r_abort("Argument %d is empty", i + 1);
         }
-      } else if (env != r_empty_env) {
+      } else if (env != r_envs.empty) {
         // Don't evaluate when `env` is the empty environment. This
         // happens when the argument was forced (and thus already
         // evaluated), for instance by lapply() or map().
@@ -559,7 +559,7 @@ r_obj* maybe_auto_name(r_obj* x, r_obj* named) {
   r_obj* names = r_names(x);
 
   if (should_auto_name(named) && (names == r_null || r_chr_has(names, ""))) {
-    x = r_eval_with_x(auto_name_call, x, r_base_env);
+    x = r_eval_with_x(auto_name_call, x, r_envs.base);
   }
 
   return x;
@@ -724,7 +724,7 @@ void dots_check_homonyms(r_obj* dots, r_obj* nms) {
   r_obj* dups = KEEP(nms_are_duplicated(nms, false));
 
   if (r_lgl_sum(dups, false)) {
-    r_eval_with_xy(abort_dots_homonyms_call, dots, dups, r_base_env);
+    r_eval_with_xy(abort_dots_homonyms_call, dots, dups, r_envs.base);
     r_abort("Internal error: `dots_check_homonyms()` should have failed earlier");
   }
 

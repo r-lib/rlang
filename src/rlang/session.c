@@ -21,7 +21,7 @@ bool r_has_colour() {
     return false;
   }
 
-  return *r_lgl_begin(r_eval(has_colour_call, r_base_env));
+  return *r_lgl_begin(r_eval(has_colour_call, r_envs.base));
 }
 
 

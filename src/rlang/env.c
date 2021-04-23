@@ -20,7 +20,7 @@ r_obj* ns_env_get(r_obj* env, const char* name) {
 
   // Can be a promise to a lazyLoadDBfetch() call
   if (r_typeof(obj) == PROMSXP) {
-    obj = r_eval(obj, r_empty_env);
+    obj = r_eval(obj, r_envs.empty);
   }
   if (obj != r_syms.unbound) {
     FREE(1);
@@ -32,7 +32,7 @@ r_obj* ns_env_get(r_obj* env, const char* name) {
   r_stop_unreached("ns_env_get");
 }
 r_obj* r_base_ns_get(const char* name) {
-  return ns_env_get(r_base_env, name);
+  return ns_env_get(r_envs.base, name);
 }
 
 
@@ -48,13 +48,13 @@ static r_obj* new_env__parent_node = NULL;
 static r_obj* new_env__size_node = NULL;
 
 r_obj* r_alloc_environment(r_ssize size, r_obj* parent) {
-  parent = parent ? parent : r_empty_env;
+  parent = parent ? parent : r_envs.empty;
   r_node_poke_car(new_env__parent_node, parent);
 
   size = size ? size : 29;
   r_node_poke_car(new_env__size_node, r_int(size));
 
-  r_obj* env = r_eval(new_env_call, r_base_env);
+  r_obj* env = r_eval(new_env_call, r_envs.base);
 
   // Free for gc
   r_node_poke_car(new_env__parent_node, r_null);
@@ -104,7 +104,7 @@ r_obj* r_env_as_list_compat(r_obj* env, r_obj* out) {
       }
 
       r_obj* fn = r_list_get(out, fn_idx);
-      r_obj* value = r_eval(KEEP(r_call(fn)), r_empty_env);
+      r_obj* value = r_eval(KEEP(r_call(fn)), r_envs.empty);
       r_list_poke(out, fn_idx, value);
       FREE(1);
     }
@@ -115,7 +115,7 @@ r_obj* r_env_as_list_compat(r_obj* env, r_obj* out) {
 }
 
 r_obj* r_list_as_environment(r_obj* x, r_obj* parent) {
-  parent = parent ? parent : r_empty_env;
+  parent = parent ? parent : r_envs.empty;
   return eval_with_xy(list2env_call, x, parent);
 }
 
@@ -161,7 +161,7 @@ void r__env_unbind(r_obj* env, r_obj* sym) {
 
 
 bool r_env_inherits(r_obj* env, r_obj* ancestor, r_obj* top) {
-  top = top ? top : r_empty_env;
+  top = top ? top : r_envs.empty;
 
   if (r_typeof(env) != R_TYPE_environment) {
     r_abort("`env` must be an environment");
@@ -173,11 +173,11 @@ bool r_env_inherits(r_obj* env, r_obj* ancestor, r_obj* top) {
     r_abort("`top` must be an environment");
   }
 
-  if (env == r_empty_env) {
+  if (env == r_envs.empty) {
     return false;
   }
 
-  while (env != top && env != r_empty_env) {
+  while (env != top && env != r_envs.empty) {
     if (env == ancestor) {
       return true;
     }
@@ -194,7 +194,7 @@ void r_init_rlang_ns_env() {
 r_obj* r_methods_ns_env = NULL;
 
 void r_init_library_env() {
-  new_env_call = r_parse_eval("as.call(list(new.env, TRUE, NULL, NULL))", r_base_env);
+  new_env_call = r_parse_eval("as.call(list(new.env, TRUE, NULL, NULL))", r_envs.base);
   r_preserve(new_env_call);
 
   new_env__parent_node = r_node_cddr(new_env_call);
@@ -214,5 +214,5 @@ void r_init_library_env() {
   remove_call = r_parse("remove(list = y, envir = x, inherits = z)");
   r_preserve(remove_call);
 
-  r_methods_ns_env = r_parse_eval("asNamespace('methods')", r_base_env);
+  r_methods_ns_env = r_parse_eval("asNamespace('methods')", r_envs.base);
 }

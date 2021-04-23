@@ -60,8 +60,8 @@ void rlang_init_internal(r_obj* ns) {
   r_preserve(rlang_objs_trailing);
 
 
-  fns_function = r_eval(r_sym("function"), r_base_env);
-  fns_quote = r_eval(r_sym("quote"), r_base_env);
+  fns_function = r_eval(r_sym("function"), r_envs.base);
+  fns_quote = r_eval(r_sym("quote"), r_envs.base);
 
   /* dots.c - enum dots_op */
   RLANG_ASSERT(DOTS_OP_MAX == DOTS_COLLECT_MAX * INJECTION_OP_MAX);

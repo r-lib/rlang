@@ -3,12 +3,12 @@
 
 void r_sexp_inspect(r_obj* x) {
   r_obj* call = KEEP(r_parse(".Internal(inspect(x))"));
-  r_eval_with_x(call, x, r_base_env);
+  r_eval_with_x(call, x, r_envs.base);
   FREE(1);
 }
 
 void r_browse(r_obj* x) {
-  r_env_poke(r_global_env, r_sym(".debug"), x);
+  r_env_poke(r_envs.global, r_sym(".debug"), x);
 
   r_printf("Object saved in `.debug`:\n");
   r_obj_print(x);

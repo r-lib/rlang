@@ -32,7 +32,7 @@ r_obj* rlang_env_get_sym(r_obj* env, r_obj* sym, bool inherit, r_obj* closure_en
 
   if (r_typeof(out) == R_TYPE_promise) {
     KEEP(out);
-    out = r_eval(out, r_empty_env);
+    out = r_eval(out, r_envs.empty);
     FREE(1);
   }
 
@@ -147,7 +147,7 @@ r_obj* ffi_env_poke(r_obj* env, r_obj* nm, r_obj* value, r_obj* inherit, r_obj* 
   KEEP(old);
 
   if (c_inherit && !absent) {
-    while (env != r_empty_env) {
+    while (env != r_envs.empty) {
       if (r_env_has(env, sym)) {
         break;
       }
@@ -296,7 +296,7 @@ r_obj* env_get(r_obj* env, r_obj* sym) {
 
   if (r_typeof(out) == R_TYPE_promise) {
     KEEP(out);
-    out = r_eval(out, r_base_env);
+    out = r_eval(out, r_envs.base);
     FREE(1);
   }
 

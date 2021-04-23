@@ -77,7 +77,7 @@ static inline r_obj* forward_quosure(r_obj* x, r_obj* env) {
   case R_TYPE_closure:
     return ffi_new_quosure(x, env);
   default:
-    return ffi_new_quosure(x, r_empty_env);
+    return ffi_new_quosure(x, r_envs.empty);
   }
 }
 

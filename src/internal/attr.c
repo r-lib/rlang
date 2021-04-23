@@ -208,7 +208,7 @@ r_ssize length_dispatch(r_obj* x, r_obj* env) {
 
 
 void rlang_init_attr(r_obj* ns) {
-  c_fn = r_eval(r_sym("c"), r_base_env);
+  c_fn = r_eval(r_sym("c"), r_envs.base);
 
   as_character_call = r_parse("as.character(.x)");
   r_preserve(as_character_call);

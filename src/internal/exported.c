@@ -336,13 +336,13 @@ r_obj* ffi_env_poke_parent(r_obj* env, r_obj* new_parent) {
   if (R_EnvironmentIsLocked(env)) {
     r_abort("Can't change the parent of a locked environment");
   }
-  if (env == r_global_env) {
+  if (env == r_envs.global) {
     r_abort("Can't change the parent of the global environment");
   }
-  if (env == r_base_env) {
+  if (env == r_envs.base) {
     r_abort("Can't change the parent of the base environment");
   }
-  if (env == r_empty_env) {
+  if (env == r_envs.empty) {
     r_abort("Can't change the parent of the empty environment");
   }
 
@@ -358,7 +358,7 @@ r_obj* ffi_env_hash_table(r_obj* env) {
 }
 
 r_obj* ffi_env_inherits(r_obj* env, r_obj* ancestor) {
-  return r_lgl(r_env_inherits(env, ancestor, r_empty_env));
+  return r_lgl(r_env_inherits(env, ancestor, r_envs.empty));
 }
 
 r_obj* ffi_env_bind_list(r_obj* env, r_obj* names, r_obj* data) {
@@ -940,7 +940,7 @@ r_obj* ffi_sexp_iterate(r_obj* x, r_obj* fn) {
       r_yield_interrupt();
     }
 
-    if (p_it->x == r_global_env) {
+    if (p_it->x == r_envs.global) {
       p_it->skip_incoming = true;
       continue;
     }
@@ -973,7 +973,7 @@ r_obj* ffi_sexp_iterate(r_obj* x, r_obj* fn) {
     r_obj* out = KEEP(r_exec_mask_n(r_sym("fn"), fn,
                                     args,
                                     R_ARR_SIZEOF(args),
-                                    r_base_env));
+                                    r_envs.base));
 
     r_list_push_back(p_out, out);
     FREE(9);

@@ -49,10 +49,17 @@ struct r_globals_syms {
   r_obj* z;
 };
 
+struct r_globals_envs {
+  r_obj* empty;
+  r_obj* base;
+  r_obj* global;
+};
+
 extern struct r_globals r_globals;
 extern struct r_globals_chrs r_chrs;
 extern struct r_globals_classes r_classes;
 extern struct r_globals_syms r_syms;
+extern struct r_globals_envs r_envs;
 
 extern r_obj* r_true;
 extern r_obj* r_false;

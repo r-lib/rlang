@@ -6,6 +6,7 @@ struct r_globals r_globals;
 struct r_globals_chrs r_chrs;
 struct r_globals_classes r_classes;
 struct r_globals_syms r_syms;
+struct r_globals_envs r_envs;
 
 r_obj* r_true = NULL;
 r_obj* r_false = NULL;
@@ -36,6 +37,10 @@ void r_init_library_globals() {
 
   r_false = r_preserve_global(r_lgl(0));
   r_true = r_preserve_global(r_lgl(1));
+
+  r_envs.empty = R_EmptyEnv;
+  r_envs.base = R_BaseEnv;
+  r_envs.global = R_GlobalEnv;
 }
 
 void r_init_library_globals_syms() {

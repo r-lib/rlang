@@ -100,13 +100,13 @@ r_obj* r_init_library(r_obj* ns) {
   r_init_library_session();
   r_init_library_stack();
 
-  shared_x_env = r_parse_eval("new.env(hash = FALSE, parent = baseenv(), size = 1L)", r_base_env);
+  shared_x_env = r_parse_eval("new.env(hash = FALSE, parent = baseenv(), size = 1L)", r_envs.base);
   r_preserve(shared_x_env);
 
-  shared_xy_env = r_parse_eval("new.env(hash = FALSE, parent = baseenv(), size = 1L)", r_base_env);
+  shared_xy_env = r_parse_eval("new.env(hash = FALSE, parent = baseenv(), size = 1L)", r_envs.base);
   r_preserve(shared_xy_env);
 
-  shared_xyz_env = r_parse_eval("new.env(hash = FALSE, parent = baseenv(), size = 1L)", r_base_env);
+  shared_xyz_env = r_parse_eval("new.env(hash = FALSE, parent = baseenv(), size = 1L)", r_envs.base);
   r_preserve(shared_xyz_env);
 
   r_quo_get_expr = (r_obj* (*)(r_obj*)) r_peek_c_callable("rlang", "rlang_quo_get_expr");

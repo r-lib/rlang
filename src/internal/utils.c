@@ -34,7 +34,7 @@ void rlang_print_backtrace(bool full) {
     "print(x, simplify = 'branch')";
   r_obj* call = KEEP(r_parse(source));
 
-  r_eval_with_x(call, trace, r_base_env);
+  r_eval_with_x(call, trace, r_envs.base);
 
   FREE(3);
   return;
@@ -46,7 +46,7 @@ void signal_soft_deprecated(const char* msg,
                             const char* id,
                             r_obj* env) {
   id = id ? id : msg;
-  env = env ? env : r_empty_env;
+  env = env ? env : r_envs.empty;
   if (!msg) {
     r_abort("Internal error: NULL `msg` in r_signal_soft_deprecated()");
   }
@@ -54,7 +54,7 @@ void signal_soft_deprecated(const char* msg,
   r_obj* msg_ = KEEP(r_chr(msg));
   r_obj* id_ = KEEP(r_chr(id));
 
-  r_eval_with_xyz(signal_soft_deprecated_call, msg_, id_, env, r_base_env);
+  r_eval_with_xyz(signal_soft_deprecated_call, msg_, id_, env, r_envs.base);
 
   FREE(2);
 }
@@ -81,7 +81,7 @@ void warn_deprecated(const char* id, const char* fmt, ...) {
   id = id ? id : buf;
   r_obj* id_ = KEEP(r_chr(id));
 
-  r_eval_with_xy(warn_deprecated_call, msg_, id_, r_base_env);
+  r_eval_with_xy(warn_deprecated_call, msg_, id_, r_envs.base);
   FREE(2);
 }
 

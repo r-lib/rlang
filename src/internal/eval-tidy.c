@@ -100,7 +100,7 @@ r_obj* ffi_as_data_pronoun(r_obj* x) {
     // fallthrough
   case R_TYPE_list:
     check_unique_names(x);
-    x = KEEP_N(r_list_as_environment(x, r_empty_env), &n_kept);
+    x = KEEP_N(r_list_as_environment(x, r_envs.empty), &n_kept);
     break;
   case R_TYPE_environment:
     break;
@@ -125,7 +125,7 @@ static void check_data_mask_input(r_obj* env, const char* arg) {
 static void check_data_mask_top(r_obj* bottom, r_obj* top) {
   r_obj* cur = bottom;
 
-  while (cur != r_empty_env) {
+  while (cur != r_envs.empty) {
     if (cur == top) {
       return ;
     }
@@ -145,7 +145,7 @@ static r_obj* restore_mask_fn = NULL;
 static void on_exit_restore_lexical_env(r_obj* mask, r_obj* old, r_obj* frame) {
   r_obj* fn = KEEP(r_clone(restore_mask_fn));
 
-  r_obj* env = KEEP(r_alloc_environment(2, r_base_env));
+  r_obj* env = KEEP(r_alloc_environment(2, r_envs.base));
   r_env_poke(env, mask_sym, mask);
   r_env_poke(env, old_sym, old);
   r_fn_poke_env(fn, env);
@@ -160,7 +160,7 @@ r_obj* ffi_new_data_mask(r_obj* bottom, r_obj* top) {
   r_obj* data_mask;
 
   if (bottom == r_null) {
-    bottom = KEEP(r_alloc_environment(100, r_empty_env));
+    bottom = KEEP(r_alloc_environment(100, r_envs.empty));
     data_mask = bottom;
   } else {
     check_data_mask_input(bottom, "bottom");
@@ -217,7 +217,7 @@ static r_obj* mask_find(r_obj* env, r_obj* sym) {
     r_obj* obj = r_env_find(cur, sym);
     if (r_typeof(obj) == R_TYPE_promise) {
       KEEP(obj);
-      obj = r_eval(obj, r_empty_env);
+      obj = r_eval(obj, r_envs.empty);
       FREE(1);
     }
 
@@ -231,7 +231,7 @@ static r_obj* mask_find(r_obj* env, r_obj* sym) {
     } else {
       cur = r_env_parent(cur);
     }
-  } while (cur != r_empty_env);
+  } while (cur != r_envs.empty);
 
   FREE(n_kept);
   return r_syms.unbound;
@@ -245,7 +245,7 @@ r_obj* ffi_data_pronoun_get(r_obj* pronoun, r_obj* sym) {
 
   if (obj == r_syms.unbound) {
     r_obj* call = KEEP(r_parse("rlang:::abort_data_pronoun(x)"));
-    r_eval_with_x(call, sym, r_base_env);
+    r_eval_with_x(call, sym, r_envs.base);
     r_abort("Internal error: .data subsetting should have failed earlier");
   }
 
@@ -307,7 +307,7 @@ r_obj* ffi_as_data_mask(r_obj* data) {
     r_obj* names = r_names(data);
 
     r_ssize n_mask = mask_length(r_length(data));
-    bottom = KEEP_N(r_alloc_environment(n_mask, r_empty_env), &n_kept);
+    bottom = KEEP_N(r_alloc_environment(n_mask, r_envs.empty), &n_kept);
 
     if (names != r_null) {
       r_ssize n = r_length(data);
@@ -593,7 +593,7 @@ void rlang_init_eval_tidy() {
     "                                      \n"
     "  parent.env(top) <- `old`            \n"
     "}                                     \n",
-    r_base_env
+    r_envs.base
   );
   r_preserve(restore_mask_fn);
 

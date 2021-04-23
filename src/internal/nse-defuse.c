@@ -13,5 +13,5 @@ r_obj* ffi_capturearginfo(r_obj* args) {
 
 r_obj* ffi_capturedots(r_obj* args) {
   args = r_node_cdr(args);
-  return rlang_capturedots(r_null, r_null, args, r_base_env);
+  return rlang_capturedots(r_null, r_null, args, r_envs.base);
 }

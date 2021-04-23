@@ -12,7 +12,7 @@ r_obj* ffi_env_unlock(r_obj* env) {
 
 
 void r_env_unbind_anywhere(r_obj* env, r_obj* sym) {
-  while (env != r_empty_env) {
+  while (env != r_envs.empty) {
     if (r_env_has(env, sym)) {
       r_env_unbind(env, sym);
       return;
