@@ -216,10 +216,35 @@ format_message <- function(x, env = caller_env()) {
     out <- format_bullets(x)
   }
 
-  # Update original string to preserve class and presence of names
-  orig <- orig[1]
-  orig[[1]] <- out
-  orig
+  str_restore(out, orig)
+}
+
+# This variant is necessary to take into account the "Error: " part in
+# cli's message wrapping
+format_error_message <- function(x, env = caller_env()) {
+  if (!has_cli_format) {
+    return(format_message(x, env))
+  }
+
+  orig <- x
+
+  # Add "Error: " for the wrapping, because R adds it unconditionally
+  # TODO: I apparently can't translate this with
+  # gettext("Error: ", domain = "R")
+  x[[1]] <- paste0("Error: ", x[[1]]) 
+
+  out <- format_message(x, env)
+
+  # Remove "Error: " that was only needed for the wrapping
+  out <- cli::ansi_substr(out, 8, nchar(out))
+
+  str_restore(out, orig)
+}
+
+str_restore <- function(x, to) {
+  to <- to[1]
+  to[[1]] <- x
+  to
 }
 
 use_cli_format <- function(env) {
@@ -247,8 +272,8 @@ use_cli_format <- function(env) {
   )
 }
 
-# FIXME: These utils should be exported from cli
 
+# FIXME: This should be exported from cli
 cli_format_message <- function(x, env) {
   fmt <- env_get(ns_env("cli"), "fmt")
   msg <- fmt(cli::cli_bullets(x, .envir = env), collapse = TRUE)
