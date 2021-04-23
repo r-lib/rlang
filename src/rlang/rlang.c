@@ -77,7 +77,7 @@ r_obj* r_init_library(r_obj* ns) {
   r_init_library_vendor(); // Needed for xxh used in `r_preserve()`
   r_init_library_globals_syms();
   r_init_library_obj(ns);
-  r_init_library_globals();
+  r_init_library_globals(ns);
 
   r_init_rlang_ns_env();
   r_init_library_arg();

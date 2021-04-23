@@ -13,7 +13,7 @@ r_obj* r_true = NULL;
 r_obj* r_false = NULL;
 
 
-void r_init_library_globals() {
+void r_init_library_globals(r_obj* ns) {
   r_classes.data_frame = r_preserve_global(r_chr("data.frame"));
 
   const char* v_tibble_class[] = { "tbl_df", "tbl", "data.frame" };
@@ -46,6 +46,7 @@ void r_init_library_globals() {
   r_envs.empty = R_EmptyEnv;
   r_envs.base = R_BaseEnv;
   r_envs.global = R_GlobalEnv;
+  r_envs.ns = ns;
 }
 
 void r_init_library_globals_syms() {
