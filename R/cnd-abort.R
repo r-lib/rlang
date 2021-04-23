@@ -18,6 +18,21 @@
 #' to create custom interrupt condition objects.
 #'
 #'
+#' @section Formatting messages with the cli package:
+#'
+#' `r lifecycle::badge("experimental")`
+#'
+#' You can use [cli](https://cli.r-lib.org/) and
+#' [glue](https://glue.tidyverse.org/) formatting syntax by adding
+#' this flag to your namespace:
+#'
+#' ```
+#' .rlang_use_cli_format <- TRUE
+#' ```
+#'
+#' Make sure that cli is installed by adding it to your Imports.
+#'
+#'
 #' @section Backtrace:
 #'
 #' Unlike `stop()` and `warning()`, these functions don't include call
@@ -75,10 +90,8 @@
 #'   to selectively handle the conditions signalled by your functions.
 #' @param ... Additional data to be stored in the condition object.
 #' @param glue_env The environment in which to evaluate objects with
-#'   `glue::glue()`. If you use glue and other interpolation features,
-#'   make sure the [cli](https://github.com/r-lib/cli/) package is
-#'   installed by adding it to your Imports. This argument is saved in
-#'   the condition in a field of the same name, this way you can
+#'   `glue::glue()`. See section on cli formatting. This argument is
+#'   saved in a condition field of the same name, this way you can
 #'   interpolate lazily at print time rather than throw time.
 #' @param .subclass This argument was renamed to `class` in rlang
 #'   0.4.2.  It will be deprecated in the next major version. This is
