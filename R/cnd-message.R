@@ -59,7 +59,7 @@ cnd_header <- function(cnd, ...) {
 }
 #' @export
 cnd_header.default <- function(cnd, ...) {
-  collapse_cnd_message(cnd$message, cnd$glue_env)
+  cnd$message
 }
 
 #' @rdname cnd_message
@@ -182,28 +182,43 @@ format_bullets <- function(x) {
   paste0(bullets, x, collapse = "\n")
 }
 
-collapse_cnd_message <- function(x, glue_env = NULL) {
+format_message <- function(x, env = caller_env()) {
+  # No-op for the empty string, e.g. for `abort("", class = "foo")`
+  # and a `conditionMessage.foo()` method
+  if (is_string(x, "")) {
+    return("")
+  }
+
+  orig <- x
+
+  # Interpret unnamed vectors as bullets
   if (is_null(names(x))) {
     if (length(x) > 1) {
       x <- set_names(x, "*")
       names(x)[[1]] <- ""
     } else {
-      # Prevent `format_bullets()` from interpreting string as a
-      # single bullet
       x <- set_names(x, names2(x))
     }
   } 
 
-  if (has_cli_bullets && !is_null(glue_env)) {
-    cli_format_bullets(x, glue_env)
+  if (has_cli_bullets) {
+    out <- cli_format_message(x, env)
   } else {
-    format_bullets(x)
+    out <- format_bullets(x)
   }
+
+  # Update original string to preserve class and presence of names
+  orig <- orig[1]
+  orig[[1]] <- out
+  orig
 }
 
-# FIXME: Should be exported from cli
-cli_format_bullets <- function(x, env) {
+# FIXME: These utils should be exported from cli
+
+cli_format_message <- function(x, env) {
   fmt <- env_get(ns_env("cli"), "fmt")
   msg <- fmt(cli::cli_bullets(x, .envir = env), collapse = TRUE)
+
+  # Remove trailing newline created by `fmt()`
   substr(msg, 1, nchar(msg) - 1)
 }

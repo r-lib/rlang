@@ -222,6 +222,7 @@ test_that("deprecated arguments of cnd_signal() still work", {
 
   observed <- catch_cnd(cnd_signal("foo"))
   expected <- catch_cnd(signal("", "foo"))
+  expected$glue_env <- NULL
   expect_identical(observed, expected)
 
   with_handlers(cnd_signal(cnd("foo"), .mufflable = TRUE),

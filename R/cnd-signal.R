@@ -108,9 +108,7 @@ warn <- function(message = NULL,
   validate_signal_args(.subclass)
 
   message <- validate_signal_message(message, class)
-
-  # FIXME: Do this lazily
-  message <- collapse_cnd_message(message, glue_env)
+  message <- format_message(message, glue_env)
 
   .frequency <- arg_match0(.frequency, c("always", "regularly", "once"))
 
@@ -120,7 +118,7 @@ warn <- function(message = NULL,
     return(invisible(NULL))
   }
 
-  cnd <- warning_cnd(class, ..., message = message)
+  cnd <- warning_cnd(class, ..., message = message, glue_env = glue_env)
   warning(cnd)
 }
 #' @rdname abort
@@ -152,13 +150,11 @@ inform <- function(message = NULL,
 
   message <- message %||% ""
 
-  # FIXME: Should be lazy
-  message <- collapse_cnd_message(message, glue_env)
-
+  message <- format_message(message, glue_env)
   message <- add_message_freq(message, .frequency, "message")
   message <- paste0(message, "\n")
 
-  cnd <- message_cnd(class, ..., message = message)
+  cnd <- message_cnd(class, ..., message = message, glue_env = glue_env)
 
   withRestarts(muffleMessage = function() NULL, {
     signalCondition(cnd)
@@ -175,8 +171,8 @@ signal <- function(message,
                    glue_env = caller_env(),
                    .subclass = deprecated()) {
   validate_signal_args(.subclass)
-  message <- collapse_cnd_message(message, glue_env)
-  cnd <- cnd(class, ..., message = message)
+  message <- format_message(message, glue_env)
+  cnd <- cnd(class, ..., message = message, glue_env = glue_env)
   cnd_signal(cnd)
 }
 

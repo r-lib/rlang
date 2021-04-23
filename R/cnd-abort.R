@@ -173,6 +173,8 @@ abort <- function(message = NULL,
   }
 
   message <- validate_signal_message(message, class)
+  message <- format_message(message, glue_env)
+
   cnd <- error_cnd(class,
     ...,
     message = message,
