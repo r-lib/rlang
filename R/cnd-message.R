@@ -209,6 +209,32 @@ format_bullets <- function(x) {
 #' @name cli-format
 NULL
 
+#' Format message
+#'
+#' @description
+#'
+#' TODO:
+#' - Flesh out documentation.
+#' - Replace [format_bullets()] by `format_message()`.
+#'
+#' These utils take a character vector and return a single string
+#' formatted according to [format_bullets()] (TODO: unexport this and
+#' merge documentation).  If you generate condition messages lazily
+#' from a [conditionMessage()] or [cnd_message()] method, call one of
+#' these to format the message for display.
+#'
+#' If cli is available and if `env` has the cli formatting flag (see
+#' [cli-format]), cli formatting is applied to `x`.
+#'
+#' `format_message()` powers [warn()] and [inform()].
+#' `format_error_message()` powers [abort()]. The latter is needed to
+#' get correct formatting in case cli is used.
+#'
+#' @param x A character vector to format into a message ready for
+#'   display.
+#' @param env The interpolation environment to use in case cli
+#'   formatting is enabled.
+#' @export
 format_message <- function(x, env = caller_env()) {
   # No-op for the empty string, e.g. for `abort("", class = "foo")`
   # and a `conditionMessage.foo()` method
@@ -246,8 +272,8 @@ format_message <- function(x, env = caller_env()) {
   str_restore(out, orig)
 }
 
-# This variant is necessary to take into account the "Error: " part in
-# cli's message wrapping
+#' @rdname format_message
+#' @export
 format_error_message <- function(x, env = caller_env()) {
   if (!has_cli_format) {
     return(format_message(x, env))
