@@ -182,6 +182,33 @@ format_bullets <- function(x) {
   paste0(bullets, x, collapse = "\n")
 }
 
+#' Formatting messages with the cli package:
+#'
+#' `r lifecycle::badge("experimental")`
+#'
+#' You can use [cli](https://cli.r-lib.org/) and
+#' [glue](https://glue.tidyverse.org/) formatting syntax by adding
+#' this flag to your namespace:
+#'
+#' ```
+#' .rlang_use_cli_format <- "always"
+#' ```
+#'
+#' This flag can be one of `"always"`, `"never"` (the default), or
+#' `"try"`.
+#'
+#' - If `"always"`, an internal error is thrown if cli is not
+#'   installed. Make sure it is installed by adding it to your
+#'   Imports.
+#'
+#' - If `"try"`, cli is used if it is installed, otherwise the
+#'   fallback formatting is used.
+#'
+#' - If `"never"`, the fallback formatting is always used.
+#'
+#' @name cli-format
+NULL
+
 format_message <- function(x, env = caller_env()) {
   # No-op for the empty string, e.g. for `abort("", class = "foo")`
   # and a `conditionMessage.foo()` method

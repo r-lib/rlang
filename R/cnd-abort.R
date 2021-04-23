@@ -17,32 +17,6 @@
 #' kind that is signalled with `Ctrl-C`. It is currently not possible
 #' to create custom interrupt condition objects.
 #'
-#'
-#' @section Formatting messages with the cli package:
-#'
-#' `r lifecycle::badge("experimental")`
-#'
-#' You can use [cli](https://cli.r-lib.org/) and
-#' [glue](https://glue.tidyverse.org/) formatting syntax by adding
-#' this flag to your namespace:
-#'
-#' ```
-#' .rlang_use_cli_format <- "always"
-#' ```
-#'
-#' This flag can be one of `"always"`, `"never"` (the default), or
-#' `"try"`.
-#'
-#' - If `"always"`, an internal error is thrown if cli is not
-#'   installed. Make sure it is installed by adding it to your
-#'   Imports.
-#'
-#' - If `"try"`, cli is used if it is installed, otherwise the
-#'   fallback formatting is used.
-#'
-#' - If `"never"`, the fallback formatting is always used.
-#'
-#'
 #' @section Backtrace:
 #'
 #' Unlike `stop()` and `warning()`, these functions don't include call
@@ -100,9 +74,9 @@
 #'   to selectively handle the conditions signalled by your functions.
 #' @param ... Additional data to be stored in the condition object.
 #' @param glue_env The environment in which to evaluate objects with
-#'   `glue::glue()`. See section on cli formatting. This argument is
-#'   saved in a condition field of the same name, this way you can
-#'   interpolate lazily at print time rather than throw time.
+#'   `glue::glue()`. See [cli-format]. This argument is saved in a
+#'   condition field of the same name, this way you can interpolate
+#'   lazily at print time rather than throw time.
 #' @param .subclass This argument was renamed to `class` in rlang
 #'   0.4.2.  It will be deprecated in the next major version. This is
 #'   for consistency with our conventions for class constructors

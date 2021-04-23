@@ -67,9 +67,9 @@ to selectively handle the conditions signalled by your functions.}
 \item{parent}{A parent condition object created by \code{\link[=abort]{abort()}}.}
 
 \item{glue_env}{The environment in which to evaluate objects with
-\code{glue::glue()}. See section on cli formatting. This argument is
-saved in a condition field of the same name, this way you can
-interpolate lazily at print time rather than throw time.}
+\code{glue::glue()}. See \link{cli-format}. This argument is saved in a
+condition field of the same name, this way you can interpolate
+lazily at print time rather than throw time.}
 
 \item{.subclass}{This argument was renamed to \code{class} in rlang
 0.4.2.  It will be deprecated in the next major version. This is
@@ -113,28 +113,6 @@ stored in the condition object and can be examined by handlers.
 kind that is signalled with \code{Ctrl-C}. It is currently not possible
 to create custom interrupt condition objects.
 }
-\section{Formatting messages with the cli package}{
-
-
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-
-You can use \href{https://cli.r-lib.org/}{cli} and
-\href{https://glue.tidyverse.org/}{glue} formatting syntax by adding
-this flag to your namespace:\preformatted{.rlang_use_cli_format <- "always"
-}
-
-This flag can be one of \code{"always"}, \code{"never"} (the default), or
-\code{"try"}.
-\itemize{
-\item If \code{"always"}, an internal error is thrown if cli is not
-installed. Make sure it is installed by adding it to your
-Imports.
-\item If \code{"try"}, cli is used if it is installed, otherwise the
-fallback formatting is used.
-\item If \code{"never"}, the fallback formatting is always used.
-}
-}
-
 \section{Backtrace}{
 
 
