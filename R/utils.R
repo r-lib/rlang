@@ -297,3 +297,7 @@ with_srcref <- function(src, env = caller_env(), file = NULL) {
   writeLines(src, file)
   source(file, local = env, keep.source = TRUE)
 }
+
+chr_has_curly <- function(x) {
+  .Call(ffi_chr_has_curly, x)
+}

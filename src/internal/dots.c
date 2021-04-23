@@ -101,6 +101,23 @@ bool has_curly(const char* str) {
   return false;
 }
 
+r_obj* ffi_chr_has_curly(r_obj* x) {
+  if (r_typeof(x) != R_TYPE_character) {
+    r_stop_internal("ffi_chr_has_curly", "Expected a character vector.");
+  }
+
+  r_ssize n = r_length(x);
+  r_obj* const * v_data = r_chr_cbegin(x);
+
+  for (r_ssize i = 0; i < n; ++i) {
+    if (has_curly(r_str_c_string(v_data[i]))) {
+      return r_true;
+    }
+  }
+
+  return r_false;
+}
+
 static
 void require_glue() {
   r_obj* call = KEEP(r_parse("is_installed('glue')"));
