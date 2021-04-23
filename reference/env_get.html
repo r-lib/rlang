@@ -165,9 +165,15 @@ default, it does not look in the parent environments.
 a named list.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>env_get</span><span class='op'>(</span>env <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>nm</span>, <span class='va'>default</span>, inherit <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>env_get</span><span class='op'>(</span>env <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>nm</span>, <span class='va'>default</span>, inherit <span class='op'>=</span> <span class='cn'>FALSE</span>, last <span class='op'>=</span> <span class='fu'><a href='empty_env.html'>empty_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>env_get_list</span><span class='op'>(</span>env <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>nms</span>, <span class='va'>default</span>, inherit <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+<span class='fu'>env_get_list</span><span class='op'>(</span>
+  env <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span>,
+  <span class='va'>nms</span>,
+  <span class='va'>default</span>,
+  inherit <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  last <span class='op'>=</span> <span class='fu'><a href='empty_env.html'>empty_env</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -189,6 +195,11 @@ in <code>env</code>.</p></td>
       <th>inherit</th>
       <td><p>Whether to look for bindings in the parent
 environments.</p></td>
+    </tr>
+    <tr>
+      <th>last</th>
+      <td><p>Last environment inspected when <code>inherit</code> is <code>TRUE</code>.
+Can be useful in conjunction with <code><a href='https://rdrr.io/r/base/ns-topenv.html'>base::topenv()</a></code>.</p></td>
     </tr>
     </table>
 
