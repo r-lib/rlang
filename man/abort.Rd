@@ -14,7 +14,7 @@ abort(
   ...,
   trace = NULL,
   parent = NULL,
-  glue_env = caller_env(),
+  .glue_env = caller_env(),
   .subclass = deprecated()
 )
 
@@ -22,9 +22,9 @@ warn(
   message = NULL,
   class = NULL,
   ...,
-  glue_env = caller_env(),
   .frequency = c("always", "regularly", "once"),
   .frequency_id = NULL,
+  .glue_env = caller_env(),
   .subclass = deprecated()
 )
 
@@ -32,14 +32,14 @@ inform(
   message = NULL,
   class = NULL,
   ...,
-  glue_env = caller_env(),
   .file = NULL,
   .frequency = c("always", "regularly", "once"),
   .frequency_id = NULL,
+  .glue_env = caller_env(),
   .subclass = deprecated()
 )
 
-signal(message, class, ..., glue_env = caller_env(), .subclass = deprecated())
+signal(message, class, ..., .glue_env = caller_env(), .subclass = deprecated())
 
 interrupt()
 }
@@ -66,10 +66,8 @@ to selectively handle the conditions signalled by your functions.}
 
 \item{parent}{A parent condition object created by \code{\link[=abort]{abort()}}.}
 
-\item{glue_env}{The environment in which to evaluate objects with
-\code{glue::glue()}. See \link{cli-format}. This argument is saved in a
-condition field of the same name, this way you can interpolate
-lazily at print time rather than throw time.}
+\item{.glue_env}{The environment in which to evaluate objects with
+glue syntax. See \link{cli-format} to enable cli formatting.}
 
 \item{.subclass}{This argument was renamed to \code{class} in rlang
 0.4.2.  It will be deprecated in the next major version. This is

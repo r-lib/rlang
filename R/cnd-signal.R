@@ -101,14 +101,14 @@ validate_cnd_signal_args <- function(cnd,
 warn <- function(message = NULL,
                  class = NULL,
                  ...,
-                 glue_env = caller_env(),
                  .frequency = c("always", "regularly", "once"),
                  .frequency_id = NULL,
+                 .glue_env = caller_env(),
                  .subclass = deprecated()) {
   validate_signal_args(.subclass)
 
   message <- validate_signal_message(message, class)
-  message <- format_message(message, glue_env)
+  message <- format_message(message, .glue_env)
 
   .frequency <- arg_match0(.frequency, c("always", "regularly", "once"))
 
@@ -118,7 +118,7 @@ warn <- function(message = NULL,
     return(invisible(NULL))
   }
 
-  cnd <- warning_cnd(class, ..., message = message, glue_env = glue_env)
+  cnd <- warning_cnd(class, ..., message = message)
   warning(cnd)
 }
 #' @rdname abort
@@ -136,10 +136,10 @@ warn <- function(message = NULL,
 inform <- function(message = NULL,
                    class = NULL,
                    ...,
-                   glue_env = caller_env(),
                    .file = NULL,
                    .frequency = c("always", "regularly", "once"),
                    .frequency_id = NULL,
+                   .glue_env = caller_env(),
                    .subclass = deprecated()) {
   validate_signal_args(.subclass)
 
@@ -150,11 +150,11 @@ inform <- function(message = NULL,
 
   message <- message %||% ""
 
-  message <- format_message(message, glue_env)
+  message <- format_message(message, .glue_env)
   message <- add_message_freq(message, .frequency, "message")
   message <- paste0(message, "\n")
 
-  cnd <- message_cnd(class, ..., message = message, glue_env = glue_env)
+  cnd <- message_cnd(class, ..., message = message)
 
   withRestarts(muffleMessage = function() NULL, {
     signalCondition(cnd)
@@ -168,11 +168,11 @@ inform <- function(message = NULL,
 signal <- function(message,
                    class,
                    ...,
-                   glue_env = caller_env(),
+                   .glue_env = caller_env(),
                    .subclass = deprecated()) {
   validate_signal_args(.subclass)
-  message <- format_message(message, glue_env)
-  cnd <- cnd(class, ..., message = message, glue_env = glue_env)
+  message <- format_message(message, .glue_env)
+  cnd <- cnd(class, ..., message = message)
   cnd_signal(cnd)
 }
 
