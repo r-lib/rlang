@@ -8,4 +8,4 @@ on_load({
   )
 })
 
-.rlang_use_cli_format <- TRUE
+.rlang_use_cli_format <- "try"

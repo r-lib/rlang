@@ -27,10 +27,20 @@
 #' this flag to your namespace:
 #'
 #' ```
-#' .rlang_use_cli_format <- TRUE
+#' .rlang_use_cli_format <- "always"
 #' ```
 #'
-#' Make sure that cli is installed by adding it to your Imports.
+#' This flag can be one of `"always"`, `"never"` (the default), or
+#' `"try"`.
+#'
+#' - If `"always"`, an internal error is thrown if cli is not
+#'   installed. Make sure it is installed by adding it to your
+#'   Imports.
+#'
+#' - If `"try"`, cli is used if it is installed, otherwise the
+#'   fallback formatting is used.
+#'
+#' - If `"never"`, the fallback formatting is always used.
 #'
 #'
 #' @section Backtrace:

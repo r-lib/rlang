@@ -201,18 +201,12 @@ format_message <- function(x, env = caller_env()) {
     }
   } 
 
-  # Internal option to disable cli in case of recursive errors
-  use_cli <- !is_true(peek_option("rlang:::disable_cli"))
-
-  # Formatting with cli is opt-in for now
-  has_flag <- env_has_cli_format_flag(env)
-
-  if (use_cli && has_flag) {
+  if (use_cli_format(env)) {
     if (!has_cli_bullets) {
       with_options(
         "rlang:::disable_cli" = TRUE,
         abort((c(
-          "`.rlang_use_cli_format` is `TRUE` but cli is not installed.",
+          "`.rlang_use_cli_format` is set to `\"always\"` but cli is not installed.",
           "i" = "The package author should add `cli` to their `Imports`."
         )))
       )
@@ -228,20 +222,29 @@ format_message <- function(x, env = caller_env()) {
   orig
 }
 
-env_has_cli_format_flag <- function(env) {
+use_cli_format <- function(env) {
+  # Internal option to disable cli in case of recursive errors
+  if (is_true(peek_option("rlang:::disable_cli"))) {
+    return(FALSE)
+  }
+
+  # Formatting with cli is opt-in for now
+  default <- "never"
+
   out <- env_get(
     env,
     ".rlang_use_cli_format",
-    default = FALSE,
+    default = default,
     inherit = TRUE,
     last = topenv(env)
   )
 
-  if (!is_bool(out)) {
-    abort("`.rlang_use_cli_bullets` must be a logical value.")
-  }
-
-  out
+  switch(
+    arg_match0(out, c("always", "try", "never")),
+    "always" = TRUE,
+    "try" = has_cli_bullets,
+    "never" = FALSE
+  )
 }
 
 # FIXME: These utils should be exported from cli
