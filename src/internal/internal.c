@@ -1,10 +1,10 @@
 #include <rlang.h>
 #include "internal.h"
 
-bool has_cli = false;
+bool has_cli_format = false;
 
-r_obj* ffi_cli_is_there() {
-  has_cli = true;
+r_obj* ffi_cli_format_is_here() {
+  has_cli_format = true;
   return r_null;
 }
 

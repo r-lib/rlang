@@ -202,7 +202,7 @@ format_message <- function(x, env = caller_env()) {
   } 
 
   if (use_cli_format(env)) {
-    if (!has_cli_bullets) {
+    if (!has_cli_format) {
       with_options(
         "rlang:::disable_cli" = TRUE,
         abort((c(
@@ -242,7 +242,7 @@ use_cli_format <- function(env) {
   switch(
     arg_match0(out, c("always", "try", "never")),
     "always" = TRUE,
-    "try" = has_cli_bullets,
+    "try" = has_cli_format,
     "never" = FALSE
   )
 }
