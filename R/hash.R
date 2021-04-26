@@ -24,3 +24,9 @@
 hash <- function(x) {
   .Call(ffi_hash, x)
 }
+
+# Keep this alias for a while
+# https://github.com/r-lib/rlang/issues/1177
+on_load(
+  rlang_hash <- ffi_hash
+)
