@@ -9,6 +9,10 @@ test_that("hash_file() errors if the file doesn't exist", {
   expect_error(hash_file("foo.ext"))
 })
 
+test_that("hash_file() works for 0 length input", {
+  expect_identical(hash_file(character()), character())
+})
+
 test_that("hash_file() has known fixed value for empty files", {
   skip_if_big_endian()
 
@@ -29,4 +33,19 @@ test_that("hash_file() results change as more data is written to the file", {
   saveRDS(1, path)
 
   expect_true(hash_file(path) != initial)
+})
+
+test_that("hash_file()'s internal state is reset between files", {
+  path1 <- withr::local_tempfile()
+  file.create(path1)
+  saveRDS(1, path1)
+
+  path2 <- withr::local_tempfile()
+  file.create(path2)
+  saveRDS(2, path2)
+
+  hashes <- hash_file(c(path1, path2))
+
+  expect_identical(hashes[[1]], hash_file(path1))
+  expect_identical(hashes[[2]], hash_file(path2))
 })

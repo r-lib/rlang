@@ -12,7 +12,13 @@ hash_file(path)
 \arguments{
 \item{x}{An object.}
 
-\item{path}{A character string of the path to the file to be hashed.}
+\item{path}{A character vector of paths to the files to be hashed.}
+}
+\value{
+\itemize{
+\item For \code{hash()}, a single character string containing the hash.
+\item For \code{hash_file()}, a character vector containing one hash per file.
+}
 }
 \description{
 \itemize{
@@ -36,6 +42,7 @@ used. See \code{\link[=serialize]{serialize()}} for more information about the s
 hash(c(1, 2, 3))
 hash(mtcars)
 
-authors_file <- file.path(R.home("doc"), "AUTHORS")
-hash_file(authors_file)
+authors <- file.path(R.home("doc"), "AUTHORS")
+copying <- file.path(R.home("doc"), "COPYING")
+hash_file(c(authors, copying))
 }

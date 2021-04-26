@@ -19,15 +19,21 @@
 #'
 #' @param x An object.
 #'
-#' @param path A character string of the path to the file to be hashed.
+#' @param path A character vector of paths to the files to be hashed.
+#'
+#' @return
+#' - For `hash()`, a single character string containing the hash.
+#'
+#' - For `hash_file()`, a character vector containing one hash per file.
 #'
 #' @export
 #' @examples
 #' hash(c(1, 2, 3))
 #' hash(mtcars)
 #'
-#' authors_file <- file.path(R.home("doc"), "AUTHORS")
-#' hash_file(authors_file)
+#' authors <- file.path(R.home("doc"), "AUTHORS")
+#' copying <- file.path(R.home("doc"), "COPYING")
+#' hash_file(c(authors, copying))
 hash <- function(x) {
   .Call(ffi_hash, x)
 }

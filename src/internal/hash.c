@@ -134,7 +134,11 @@ r_obj* hash_impl(void* p_data) {
 
   R_Serialize(x, &stream);
 
-  return hash_value(p_xx_state);
+  r_obj* value = KEEP(hash_value(p_xx_state));
+  r_obj* out = r_str_as_character(value);
+
+  FREE(1);
+  return out;
 }
 
 static
@@ -178,7 +182,7 @@ r_obj* hash_value(XXH3_state_t* p_xx_state) {
 
   sprintf(out, "%016" PRIx64 "%016" PRIx64, high, low);
 
-  return r_chr(out);
+  return r_str(out);
 }
 
 static inline void hash_skip(struct hash_state_t* p_state, void* p_input, int n);
@@ -277,38 +281,49 @@ r_obj* hash_file_impl(void* p_data) {
   r_obj* path = p_exec_data->x;
   XXH3_state_t* p_xx_state = p_exec_data->p_xx_state;
 
-  XXH_errorcode err = XXH3_128bits_reset(p_xx_state);
-  if (err == XXH_ERROR) {
-    r_abort("Can't initialize hash state.");
+  if (!r_is_character(path, -1)) {
+    r_abort("`path` must be a character vector.");
   }
 
-  if (!r_is_string(path)) {
-    r_abort("`path` must be a string.");
-  }
-  r_obj* path_char = r_chr_get(path, 0);
+  r_ssize n_path = r_length(path);
+  r_obj* const* v_path = r_chr_cbegin(path);
+
+  r_obj* out = KEEP(r_alloc_character(n_path));
 
   // Allocate before opening file to avoid handle leak on allocation failure
   void* buf = (void*)R_alloc(CHUNK_SIZE, sizeof(char));
 
-  FILE* fp = r_fopen(path_char, "rb");
-  if (fp == NULL) {
-    r_abort("Can't open file: %s.", Rf_translateChar(path_char));
-  }
-
-  size_t n_read;
-
-  while ((n_read = fread(buf, 1, CHUNK_SIZE, fp)) > 0) {
-    XXH_errorcode err = XXH3_128bits_update(p_xx_state, buf, n_read);
-
+  for (r_ssize i = 0; i < n_path; ++i) {
+    XXH_errorcode err = XXH3_128bits_reset(p_xx_state);
     if (err == XXH_ERROR) {
-      fclose(fp);
-      r_abort("Can't update hash state.");
+      r_abort("Can't initialize hash state.");
     }
+
+    r_obj* elt = v_path[i];
+
+    FILE* fp = r_fopen(elt, "rb");
+    if (fp == NULL) {
+      r_abort("Can't open file: %s.", Rf_translateChar(elt));
+    }
+
+    size_t n_read;
+
+    while ((n_read = fread(buf, 1, CHUNK_SIZE, fp)) > 0) {
+      XXH_errorcode err = XXH3_128bits_update(p_xx_state, buf, n_read);
+
+      if (err == XXH_ERROR) {
+        fclose(fp);
+        r_abort("Can't update hash state.");
+      }
+    }
+
+    fclose(fp);
+
+    r_chr_poke(out, i, hash_value(p_xx_state));
   }
 
-  fclose(fp);
-
-  return hash_value(p_xx_state);
+  FREE(1);
+  return out;
 }
 
 #undef CHUNK_SIZE
