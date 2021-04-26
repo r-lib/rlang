@@ -68,6 +68,7 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_get_expression",               (DL_FUNC) &ffi_get_expression, 2},
   {"ffi_glue_is_there",                (DL_FUNC) &ffi_glue_is_there, 0},
   {"ffi_hash",                         (DL_FUNC) &ffi_hash, 1},
+  {"ffi_hash_file",                    (DL_FUNC) &ffi_hash_file, 1},
   {"ffi_init_library",                 (DL_FUNC) &r_init_library, 1},
   {"ffi_interp",                       (DL_FUNC) &ffi_interp, 2},
   {"ffi_interrupt",                    (DL_FUNC) &ffi_interrupt, 0},

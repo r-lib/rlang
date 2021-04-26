@@ -30,3 +30,10 @@ hash <- function(x) {
 on_load(
   rlang_hash <- ffi_hash
 )
+
+# ------------------------------------------------------------------------------
+
+hash_file <- function(path) {
+  path <- normalizePath(path, mustWork = TRUE)
+  .Call(ffi_hash_file, path)
+}

@@ -1,4 +1,5 @@
 #include <rlang.h>
+#include "file.h"
 
 /*
  * Using the standard xxhash defines, as seen in:
@@ -88,6 +89,7 @@ struct hash_state_t {
 
 static inline struct hash_state_t new_hash_state(XXH3_state_t* p_xx_state);
 static inline int hash_version();
+static inline r_obj* hash_value(XXH3_state_t* p_xx_state);
 static inline void hash_bytes(R_outpstream_t stream, void* p_input, int n);
 static inline void hash_char(R_outpstream_t stream, int input);
 
@@ -130,18 +132,7 @@ r_obj* hash_impl(void* p_data) {
 
   R_Serialize(x, &stream);
 
-  XXH128_hash_t hash = XXH3_128bits_digest(p_xx_state);
-
-  // R assumes C99, so these are always defined as `uint64_t` in xxhash.h
-  XXH64_hash_t high = hash.high64;
-  XXH64_hash_t low = hash.low64;
-
-  // 32 for hash, 1 for terminating null added by `sprintf()`
-  char out[32 + 1];
-
-  sprintf(out, "%016" PRIx64 "%016" PRIx64, high, low);
-
-  return r_chr(out);
+  return hash_value(p_xx_state);
 }
 
 static
@@ -170,6 +161,22 @@ int hash_version() {
 #else
   return 2;
 #endif
+}
+
+static inline
+r_obj* hash_value(XXH3_state_t* p_xx_state) {
+  XXH128_hash_t hash = XXH3_128bits_digest(p_xx_state);
+
+  // R assumes C99, so these are always defined as `uint64_t` in xxhash.h
+  XXH64_hash_t high = hash.high64;
+  XXH64_hash_t low = hash.low64;
+
+  // 32 for hash, 1 for terminating null added by `sprintf()`
+  char out[32 + 1];
+
+  sprintf(out, "%016" PRIx64 "%016" PRIx64, high, low);
+
+  return r_chr(out);
 }
 
 static inline void hash_skip(struct hash_state_t* p_state, void* p_input, int n);
@@ -246,3 +253,47 @@ void hash_skip(struct hash_state_t* p_state, void* p_input, int n) {
 #endif // USE_VERSION_3
 
 #undef USE_VERSION_3
+
+// -----------------------------------------------------------------------------
+
+#define CHUNK_SIZE 512 * 1024
+
+r_obj* ffi_hash_file(r_obj* path) {
+  if (!r_is_string(path)) {
+    r_abort("`path` must be a string.");
+  }
+  r_obj* path_char = r_chr_get(path, 0);
+
+  XXH3_state_t* p_xx_state = XXH3_createState();
+
+  XXH_errorcode err = XXH3_128bits_reset(p_xx_state);
+  if (err == XXH_ERROR) {
+    r_abort("Can't initialize hash state.");
+  }
+
+  // Allocate before opening file to avoid handle leak on allocation failure
+  void* buf = (void*)R_alloc(CHUNK_SIZE, sizeof(char));
+
+  FILE* fp = r_fopen(path_char, "rb");
+  if (fp == NULL) {
+    r_abort("Can't open file: %s.", Rf_translateChar(path_char));
+  }
+
+  size_t n_read;
+
+  while ((n_read = fread(buf, 1, CHUNK_SIZE, fp)) > 0) {
+    XXH_errorcode err = XXH3_128bits_update(p_xx_state, buf, n_read);
+
+    if (err == XXH_ERROR) {
+      fclose(fp);
+      r_abort("Can't update hash state.");
+    }
+  }
+
+  fclose(fp);
+
+  return hash_value(p_xx_state);
+}
+
+#undef CHUNK_SIZE
+
