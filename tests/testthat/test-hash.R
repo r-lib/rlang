@@ -23,8 +23,6 @@ test_that("hash_file() has known fixed value for empty files", {
 })
 
 test_that("hash_file() results change as more data is written to the file", {
-  skip_if_big_endian()
-
   path <- withr::local_tempfile()
   file.create(path)
 
