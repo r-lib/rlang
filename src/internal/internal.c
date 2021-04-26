@@ -13,6 +13,7 @@
 #include "exported.c"
 #include "nse-inject.c"
 #include "ast-rotate.c"
+#include "file.c"
 #include "fn.c"
 #include "hash.c"
 #include "nse-defuse.c"
