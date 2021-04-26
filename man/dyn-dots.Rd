@@ -50,7 +50,7 @@ f(!!!x)
 # Unquote a name, showing both the `!!` bang bang and `{}` glue style
 nm <- "key"
 f(!!nm := "value")
-if (requireNamespace("glue")) {
+if (is_installed("glue")) {
   f("{nm}" := "value")
   f("prefix_{nm}" := "value")
 }
