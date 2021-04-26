@@ -297,3 +297,80 @@ r_obj* ffi_hash_file(r_obj* path) {
 
 #undef CHUNK_SIZE
 
+// -----------------------------------------------------------------------------
+
+static inline
+void hasher_finalizer(r_obj* x) {
+  void* p_x = R_ExternalPtrAddr(x);
+
+  if (!p_x) {
+    // Defensively exit if the external pointer resolves to `NULL`
+    return;
+  }
+
+  XXH3_state_t* p_xx_state = (XXH3_state_t*) p_x;
+  XXH3_freeState(p_xx_state);
+
+  R_ClearExternalPtr(x);
+}
+
+r_obj* ffi_hasher_init() {
+  XXH3_state_t* p_xx_state = XXH3_createState();
+
+  XXH_errorcode err = XXH3_128bits_reset(p_xx_state);
+  if (err == XXH_ERROR) {
+    r_abort("Can't initialize hash state.");
+  }
+
+  SEXP out = KEEP(R_MakeExternalPtr(p_xx_state, r_null, r_null));
+
+  R_RegisterCFinalizerEx(out, hasher_finalizer, TRUE);
+
+  FREE(1);
+  return(out);
+}
+
+r_obj* ffi_hasher_update(r_obj* x, r_obj* data) {
+  if (r_typeof(x) != R_TYPE_pointer) {
+    r_abort("`x` must be a hasher.");
+  }
+
+  if (r_typeof(data) != R_TYPE_raw) {
+    r_abort("`data` must be a raw vector.");
+  }
+
+  void* p_x = R_ExternalPtrAddr(x);
+
+  if (!p_x) {
+    r_abort("`x` must be a hasher.");
+  }
+
+  XXH3_state_t* p_xx_state = (XXH3_state_t*) p_x;
+
+  void* v_data = (void*) r_raw_begin(data);
+  int size = r_ssize_as_integer(r_length(data));
+
+  XXH_errorcode err = XXH3_128bits_update(p_xx_state, v_data, size);
+
+  if (err == XXH_ERROR) {
+    r_abort("Can't update hash state.");
+  }
+
+  return r_true;
+}
+
+r_obj* ffi_hasher_value(r_obj* x) {
+  if (r_typeof(x) != R_TYPE_pointer) {
+    r_abort("`x` must be a hasher.");
+  }
+
+  void* p_x = R_ExternalPtrAddr(x);
+
+  if (!p_x) {
+    r_abort("`x` must be a hasher.");
+  }
+
+  XXH3_state_t* p_xx_state = (XXH3_state_t*) p_x;
+
+  return hash_value(p_xx_state);
+}

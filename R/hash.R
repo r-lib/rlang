@@ -44,3 +44,17 @@ hash_file <- function(path) {
   path <- normalizePath(path, mustWork = TRUE)
   .Call(ffi_hash_file, path)
 }
+
+# ------------------------------------------------------------------------------
+
+hasher_init <- function() {
+  .Call(ffi_hasher_init)
+}
+
+hasher_update <- function(x, data) {
+  .Call(ffi_hasher_update, x, data)
+}
+
+hasher_value <- function(x) {
+  .Call(ffi_hasher_value, x)
+}
