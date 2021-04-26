@@ -13,6 +13,8 @@
 #include <stdio.h> // sprintf()
 #include <inttypes.h> // PRIx64
 
+#include "decl/hash-decl.h"
+
 /*
  * Construct a define specifying whether version 2 or 3 of
  * `R_Serialize()` should be used. Version 3 is used with R >= 3.5.0, and
@@ -256,20 +258,34 @@ void hash_skip(struct hash_state_t* p_state, void* p_input, int n) {
 
 // -----------------------------------------------------------------------------
 
+r_obj* ffi_hash_file(r_obj* path) {
+  XXH3_state_t* p_xx_state = XXH3_createState();
+
+  struct exec_data data = {
+    .x = path,
+    .p_xx_state = p_xx_state
+  };
+
+  return R_ExecWithCleanup(hash_file_impl, &data, hash_cleanup, &data);
+}
+
 #define CHUNK_SIZE 512 * 1024
 
-r_obj* ffi_hash_file(r_obj* path) {
-  if (!r_is_string(path)) {
-    r_abort("`path` must be a string.");
-  }
-  r_obj* path_char = r_chr_get(path, 0);
-
-  XXH3_state_t* p_xx_state = XXH3_createState();
+static
+r_obj* hash_file_impl(void* p_data) {
+  struct exec_data* p_exec_data = (struct exec_data*) p_data;
+  r_obj* path = p_exec_data->x;
+  XXH3_state_t* p_xx_state = p_exec_data->p_xx_state;
 
   XXH_errorcode err = XXH3_128bits_reset(p_xx_state);
   if (err == XXH_ERROR) {
     r_abort("Can't initialize hash state.");
   }
+
+  if (!r_is_string(path)) {
+    r_abort("`path` must be a string.");
+  }
+  r_obj* path_char = r_chr_get(path, 0);
 
   // Allocate before opening file to avoid handle leak on allocation failure
   void* buf = (void*)R_alloc(CHUNK_SIZE, sizeof(char));
