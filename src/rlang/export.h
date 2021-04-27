@@ -19,8 +19,8 @@ r_void_fn r_peek_c_callable(const char* pkg, const char* callable) {
 }
 
 static inline
-r_obj* r_new_fn_ptr(r_obj* (*p)()) {
-  return R_MakeExternalPtrFn((r_void_fn) p, r_null, r_null);
+r_obj* r_new_fn_ptr(r_void_fn p) {
+  return R_MakeExternalPtrFn(p, r_null, r_null);
 }
 
 static inline

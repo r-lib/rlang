@@ -5,13 +5,13 @@
 
 struct r_test {
   const char* desc;
-  r_obj* (*fn_ptr)();
+  bool (*fn_ptr)();
 };
 
-r_obj* test_that_true_is_true() {
+bool test_that_true_is_true() {
   if (true) return r_true; else return r_false;
 }
-r_obj* test_that_false_is_false() {
+bool test_that_false_is_false() {
   if (false) return r_false; else return r_true;
 }
 
@@ -53,7 +53,7 @@ r_obj* ffi_c_tests() {
     struct r_test test = tests[i];
 
     r_chr_poke(desc_col, i, r_str(test.desc));
-    r_list_poke(fn_ptr_col, i, r_new_fn_ptr(test.fn_ptr));
+    r_list_poke(fn_ptr_col, i, r_new_fn_ptr((r_void_fn) test.fn_ptr));
   }
 
   FREE(1);
@@ -65,8 +65,8 @@ r_obj* ffi_run_c_test(r_obj* fn_ptr) {
     r_stop_unexpected_type("ffi_run_c_test", r_typeof(fn_ptr));
   }
 
-  r_obj* (*p)() = (r_obj* (*)()) r_fn_ptr_addr(fn_ptr);
-  return p();
+  bool (*p)() = (bool (*)()) r_fn_ptr_addr(fn_ptr);
+  return r_lgl(p());
 }
 
 
