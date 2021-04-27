@@ -1038,3 +1038,15 @@ test_that("addresses have hexadecimal prefix `0x` (#1135)", {
     "0x"
   )
 })
+
+local({
+  df <- c_tests()
+  for (i in seq_len(nrow(df))) {
+    desc <- df[[1]][[i]]
+    ptr <- df[[2]][[i]]
+
+    test_that(desc, {
+      expect_true(run_c_test(ptr))
+    })
+  }
+})

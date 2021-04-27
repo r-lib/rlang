@@ -1,5 +1,77 @@
 #include <rlang.h>
 
+#include "decl/tests-decl.h"
+
+
+struct r_test {
+  const char* desc;
+  r_obj* (*fn_ptr)();
+};
+
+r_obj* test_that_true_is_true() {
+  if (true) return r_true; else return r_false;
+}
+r_obj* test_that_false_is_false() {
+  if (false) return r_false; else return r_true;
+}
+
+enum tests_df_locs {
+  TESTS_DF_LOCS_desc = 0,
+  TESTS_DF_LOCS_fn_ptr,
+  TESTS_DF_SIZE
+};
+static
+const char* tests_df_names_c_strings[TESTS_DF_SIZE] = {
+  "desc",
+  "fn_ptr"
+};
+static
+const enum r_type tests_df_types[TESTS_DF_SIZE] = {
+  R_TYPE_character,
+  R_TYPE_list
+};
+
+
+extern const struct r_test tests[];
+
+r_obj* ffi_c_tests() {
+  int n_rows = 0;
+  while (tests[n_rows].desc) {
+    ++n_rows;
+  }
+
+  r_obj* df = KEEP(r_alloc_df_list(n_rows,
+                                   tests_df_names,
+                                   tests_df_types,
+                                   TESTS_DF_SIZE));
+  r_init_tibble(df, n_rows);
+
+  r_obj* desc_col = r_list_get(df, TESTS_DF_LOCS_desc);
+  r_obj* fn_ptr_col = r_list_get(df, TESTS_DF_LOCS_fn_ptr);
+
+  for (int i = 0; i < n_rows; ++i) {
+    struct r_test test = tests[i];
+
+    r_chr_poke(desc_col, i, r_str(test.desc));
+    r_list_poke(fn_ptr_col, i, r_new_fn_ptr(test.fn_ptr));
+  }
+
+  FREE(1);
+  return df;
+}
+
+r_obj* ffi_run_c_test(r_obj* fn_ptr) {
+  if (r_typeof(fn_ptr) != R_TYPE_pointer) {
+    r_stop_unexpected_type("ffi_run_c_test", r_typeof(fn_ptr));
+  }
+
+  r_obj* (*p)() = (r_obj* (*)()) r_fn_ptr_addr(fn_ptr);
+  return p();
+}
+
+
+// ------------------------------------------------------------------------
+
 r_obj* ffi_r_string(r_obj* str) {
   return r_chr_get(str, 0);
 }
@@ -100,3 +172,12 @@ r_obj* nms_are_duplicated(r_obj* nms, bool from_last);
 r_obj* ffi_test_nms_are_duplicated(r_obj* nms, r_obj* from_last) {
   return nms_are_duplicated(nms, r_lgl_get(from_last, 0));
 }
+
+
+void rlang_init_tests() {
+  tests_df_names = r_chr_n(tests_df_names_c_strings, TESTS_DF_SIZE);
+  r_preserve_global(tests_df_names);
+}
+
+static
+r_obj* tests_df_names = NULL;

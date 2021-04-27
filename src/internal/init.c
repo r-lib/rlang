@@ -25,6 +25,7 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_chr_has_curly",                (DL_FUNC) &ffi_chr_has_curly, 1},
   {"ffi_cnd_signal",                   (DL_FUNC) &ffi_cnd_signal, 1},
   {"ffi_cnd_type",                     (DL_FUNC) &ffi_cnd_type, 1},
+  {"ffi_c_tests",                      (DL_FUNC) &ffi_c_tests, 0},
   {"ffi_data_mask_clean",              (DL_FUNC) &ffi_data_mask_clean, 1},
   {"ffi_data_pronoun_get",             (DL_FUNC) &ffi_data_pronoun_get, 2},
   {"ffi_dict_as_df_list",              (DL_FUNC) &ffi_dict_as_df_list, 1},
@@ -158,6 +159,7 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_r_string",                     (DL_FUNC) &ffi_r_string, 1},
   {"ffi_raw_deparse_str",              (DL_FUNC) &ffi_raw_deparse_str, 3},
   {"ffi_replace_na",                   (DL_FUNC) &ffi_replace_na, 2},
+  {"ffi_run_c_test",                   (DL_FUNC) &ffi_run_c_test, 1},
   {"ffi_set_names",                    (DL_FUNC) &ffi_set_names, 4},
   {"ffi_sexp_iterate",                 (DL_FUNC) &ffi_sexp_iterate, 2},
   {"ffi_squash",                       (DL_FUNC) &ffi_squash, 4},
@@ -208,6 +210,14 @@ static const R_ExternalMethodDef externals[] = {
   {"ffi_tilde_eval",                    (DL_FUNC) &ffi_tilde_eval, 3},
   {NULL, NULL, 0}
 };
+
+
+const struct r_test tests[] = {
+  { "TRUE is TRUE",             &test_that_true_is_true },
+  { "FALSE is FALSE",           &test_that_false_is_false },
+  { NULL, NULL }
+};
+
 
 // From xxhash.h
 extern uint64_t XXH3_64bits(const void*, size_t);

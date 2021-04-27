@@ -285,6 +285,16 @@ rlang_unpreserve <- function(x) {
 }
 
 
+# tests.c
+
+c_tests <- function() {
+  .Call(ffi_c_tests)
+}
+run_c_test <- function(ptr) {
+  .Call(ffi_run_c_test, ptr)
+}
+
+
 # vec.c
 
 list_compact <- function(x) {

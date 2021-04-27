@@ -46,6 +46,7 @@ void rlang_init_internal(r_obj* ns) {
   rlang_init_expr_interp();
   rlang_init_eval_tidy();
   rlang_init_fn();
+  rlang_init_tests();
 
   rlang_zap = rlang_ns_get("zap!");
 
