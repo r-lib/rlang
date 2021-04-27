@@ -47,7 +47,6 @@ internal-files = \
         internal/eval.c \
         internal/eval-tidy.c \
         internal/exported.c \
-        internal/exported-tests.c \
         internal/fn.c \
         internal/hash.c \
         internal/init.c \
@@ -59,6 +58,7 @@ internal-files = \
         internal/replace-na.c \
         internal/squash.c \
         internal/sym-unescape.c \
+        internal/tests.c \
         internal/utils.c \
         internal/vec.c \
         internal/vec-raw.c \
