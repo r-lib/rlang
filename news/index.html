@@ -158,6 +158,10 @@
 <a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li>
+<p><code><a href="../reference/check_dots_empty.html">check_dots_empty()</a></code>, <code>check_dots_unused()</code>, and <code><a href="../reference/check_dots_unnamed.html">check_dots_unnamed()</a></code> have been moved from ellipsis to rlang. The ellipsis package is deprecated and will eventually be archived.</p>
+<p>We have added <code><a href="../reference/check_dots_empty0.html">check_dots_empty0()</a></code>. It has a different UI but is almost as efficient as checking for <code><a href="../reference/missing.html">missing(...)</a></code>. Use this in very low level functions where a couple microseconds make a difference.</p>
+</li>
 <li><p><code><a href="../reference/s3_register.html">s3_register()</a></code> no longer fails when generic does not exist. This prevents failures when users don’t have all the last versions of packages (<a href='https://github.com/r-lib/rlang/issues/1112'>#1112</a>).</p></li>
 <li><p>Formulas are now deparsed according to the tidyverse style guide (<code>~symbol</code> without space and <code>~ expression()</code> with a space).</p></li>
 <li><p>New <code><a href="../reference/hash.html">hash_file()</a></code>, complementing <code><a href="../reference/hash.html">hash()</a></code>, to generate 128-bit hashes for the data within a file without loading it into R (<a href='https://github.com/r-lib/rlang/issues/1134'>#1134</a>).</p></li>
