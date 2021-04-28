@@ -58,7 +58,7 @@ check_dots <- function(env = caller_env(), action) {
   unused <- names(proms)[!used]
   action_dots(
     action = action,
-    message = paste0(length(unused), " components of `...` were not used."),
+    message = paste0(length(unused), " arguments in `...` were not used."),
     dot_names = unused,
     class = "rlib_error_dots_unused",
   )
@@ -100,7 +100,7 @@ check_dots_unnamed <- function(env = caller_env(), action = abort) {
   named <- names(proms)[!unnamed]
   action_dots(
     action = action,
-    message = paste0(length(named), " components of `...` had unexpected names."),
+    message = paste0(length(named), " arguments in `...` had unexpected names."),
     dot_names = named,
     class = "rlib_error_dots_named",
   )

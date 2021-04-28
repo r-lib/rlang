@@ -9,7 +9,7 @@
       (expect_error(f(1, 2, 3, xy = 4, x = 5), class = "rlib_error_dots_named"))
     Output
       <error/rlib_error_dots_named>
-      2 components of `...` had unexpected names.
+      2 arguments in `...` had unexpected names.
       x We detected these problematic arguments:
       * `xy`
       * `x`
