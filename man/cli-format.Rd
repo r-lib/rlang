@@ -9,17 +9,12 @@
 \details{
 You can use \href{https://cli.r-lib.org/}{cli} and
 \href{https://glue.tidyverse.org/}{glue} formatting syntax by adding
-this flag to your namespace:\preformatted{.rlang_use_cli_format <- "always"
+this flag to your namespace:\preformatted{.rlang_use_cli_format <- TRUE
 }
-
-This flag can be one of \code{"always"}, \code{"never"} (the default), or
-\code{"try"}.
 \itemize{
-\item If \code{"always"}, an internal error is thrown if cli is not
+\item If \code{TRUE}, an internal error is thrown if cli is not
 installed. Make sure it is installed by adding it to your
 Imports.
-\item If \code{"try"}, cli is used if it is installed, otherwise the
-fallback formatting is used.
-\item If \code{"never"}, the fallback formatting is always used.
+\item If \code{FALSE}, the fallback formatting is used.
 }
 }

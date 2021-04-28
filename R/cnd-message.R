@@ -191,20 +191,14 @@ format_bullets <- function(x) {
 #' this flag to your namespace:
 #'
 #' ```
-#' .rlang_use_cli_format <- "always"
+#' .rlang_use_cli_format <- TRUE
 #' ```
 #'
-#' This flag can be one of `"always"`, `"never"` (the default), or
-#' `"try"`.
-#'
-#' - If `"always"`, an internal error is thrown if cli is not
+#' - If `TRUE`, an internal error is thrown if cli is not
 #'   installed. Make sure it is installed by adding it to your
 #'   Imports.
 #'
-#' - If `"try"`, cli is used if it is installed, otherwise the
-#'   fallback formatting is used.
-#'
-#' - If `"never"`, the fallback formatting is always used.
+#' - If `FALSE`, the fallback formatting is used.
 #'
 #' @name cli-format
 NULL
@@ -258,10 +252,10 @@ format_message <- function(x, env = caller_env()) {
     if (!has_cli_format) {
       with_options(
         "rlang:::disable_cli" = TRUE,
-        abort((c(
-          "`.rlang_use_cli_format` is set to `\"always\"` but cli is not installed.",
+        abort(c(
+          "`.rlang_use_cli_format` is set to `TRUE` but cli is not installed.",
           "i" = "The package author should add `cli` to their `Imports`."
-        )))
+        ))
       )
     }
     out <- cli_format_message(x, env)
@@ -307,9 +301,9 @@ use_cli_format <- function(env) {
   }
 
   # Formatting with cli is opt-in for now
-  default <- "never"
+  default <- FALSE
 
-  out <- env_get(
+  flag <- env_get(
     env,
     ".rlang_use_cli_format",
     default = default,
@@ -317,12 +311,15 @@ use_cli_format <- function(env) {
     last = topenv(env)
   )
 
-  switch(
-    arg_match0(out, c("always", "try", "never")),
-    "always" = TRUE,
-    "try" = has_cli_format,
-    "never" = FALSE
-  )
+  if (is_string(flag, "try")) {
+    return(has_cli_format)
+  }
+
+  if (!is_bool(flag)) {
+    abort("`.rlang_use_cli_format` must be a logical value.")
+  }
+
+  flag
 }
 
 
