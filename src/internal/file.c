@@ -9,6 +9,7 @@
 // `path` is a CHARSXP containing the file path.
 FILE* r_fopen(r_obj* path, const char* mode) {
   FILE* out;
+  const void* vmax = vmaxget();
 
 #ifdef _WIN32
   const char* path_c = Rf_translateCharUTF8(path);
@@ -35,5 +36,6 @@ FILE* r_fopen(r_obj* path, const char* mode) {
   out = fopen(Rf_translateChar(path), mode);
 #endif
 
+  vmaxset(vmax);
   return out;
 }
