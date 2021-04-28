@@ -26,4 +26,13 @@
       x We detected these problematic arguments:
       * `xy`
       i Did you misspecify an argument?
+    Code
+      (expect_error(f0(xy = 4), class = "rlib_error_dots_nonempty"))
+    Output
+      <error/rlib_error_dots_nonempty>
+      `...` is not empty.
+      i These dots only exist to allow future extensions and should be empty.
+      x We detected these problematic arguments:
+      * `xy`
+      i Did you misspecify an argument?
 

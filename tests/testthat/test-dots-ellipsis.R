@@ -43,11 +43,16 @@ test_that("error if if dots not empty", {
   f <- function(..., xyz = 1) {
     check_dots_empty()
   }
+  f0 <- function(..., xyz = 1) {
+    check_dots_empty0(...)
+  }
 
   expect_error(f(xyz = 1), NA)
+  expect_error(f0(xyz = 1), NA)
 
   expect_snapshot({
     (expect_error(f(xy = 4), class = "rlib_error_dots_nonempty"))
+    (expect_error(f0(xy = 4), class = "rlib_error_dots_nonempty"))
   })
 })
 

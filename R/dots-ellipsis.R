@@ -155,7 +155,9 @@ check_dots_empty <- function(env = caller_env(), action = abort) {
 #' @keywords internal
 #' @export
 check_dots_empty0 <- function(...) {
-  nargs()
+  if (nargs()) {
+    check_dots_empty()
+  }
 }
 
 action_dots <- function(action, message, dot_names, note = NULL, class = NULL, ...) {
