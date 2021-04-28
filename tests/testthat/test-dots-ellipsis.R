@@ -18,7 +18,10 @@ test_that("error if dots not used by another function", {
   }
 
   expect_error(f(x = 10, a = 1), NA)
-  expect_error(f(x = 10, c = 3), class = "rlib_error_dots_unused")
+
+  expect_snapshot({
+    expect_error(f(x = 10, c = 3), class = "rlib_error_dots_unused")
+  })
 })
 
 test_that("error if dots named", {
@@ -30,6 +33,10 @@ test_that("error if dots named", {
   expect_error(f(1, 2, 3), NA)
   expect_error(f(1, 2, 3, xyz = 4), NA)
   expect_error(f(1, 2, 3, xy = 4), class = "rlib_error_dots_named")
+
+  expect_snapshot({
+    (expect_error(f(1, 2, 3, xy = 4, x = 5), class = "rlib_error_dots_named"))
+  })
 })
 
 test_that("error if if dots not empty", {
@@ -38,7 +45,10 @@ test_that("error if if dots not empty", {
   }
 
   expect_error(f(xyz = 1), NA)
-  expect_error(f(xy = 4), class = "rlib_error_dots_nonempty")
+
+  expect_snapshot({
+    (expect_error(f(xy = 4), class = "rlib_error_dots_nonempty"))
+  })
 })
 
 test_that("can control the action", {

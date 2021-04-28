@@ -152,15 +152,15 @@ check_dots_empty0 <- function(...) {
 }
 
 action_dots <- function(action, message, dot_names, note = NULL, class = NULL, ...) {
-  message <- paste_line(
+  message <- format_bullets(c(
     message,
     "",
     "We detected these problematic arguments:",
-    paste0("* `", dot_names, "`"),
+    set_names(chr_quoted(dot_names), "*"),
     "",
     note,
     "Did you misspecify an argument?"
-  )
+  ))
   action(message, class = c(class, "rlib_error_dots"), ...)
 }
 
