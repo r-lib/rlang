@@ -136,6 +136,20 @@ check_dots_empty <- function(env = caller_env(), action = abort) {
     .subclass = "rlib_error_dots_nonempty"
   )
 }
+#' Check that dots are empty (low level variant)
+#'
+#' `check_dots_empty0()` is a more efficient version of
+#' [check_dots_empty()] with a slightly different interface. Instead
+#' of inspecting the current environment for dots, it directly takes
+#' `...`.  dots. It is only meant for very low level functions where a
+#' couple microseconds make a difference.
+#'
+#' @param ... Dots which should be empty.
+#' @keywords internal
+#' @export
+check_dots_empty0 <- function(...) {
+  nargs()
+}
 
 action_dots <- function(action, message, dot_names, note = NULL, .subclass = NULL, ...) {
   message <- paste_line(
