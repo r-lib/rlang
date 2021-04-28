@@ -72,7 +72,7 @@ exit_handler <- function(action) {
 
 #' Check that all dots are unnamed
 #'
-#' In functions like `paste()`, named arguments in ... are often a
+#' In functions like `paste()`, named arguments in `...` are often a
 #' sign of misspelled argument names.
 #'
 #' @inheritParams check_dots_used
@@ -148,7 +148,7 @@ check_dots_empty <- function(env = caller_env(), action = abort) {
 #' `check_dots_empty0()` is a more efficient version of
 #' [check_dots_empty()] with a slightly different interface. Instead
 #' of inspecting the current environment for dots, it directly takes
-#' `...`.  dots. It is only meant for very low level functions where a
+#' `...`. It is only meant for very low level functions where a
 #' couple microseconds make a difference.
 #'
 #' @param ... Dots which should be empty.

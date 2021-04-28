@@ -13,7 +13,7 @@ check_dots_empty0(...)
 \code{check_dots_empty0()} is a more efficient version of
 \code{\link[=check_dots_empty]{check_dots_empty()}} with a slightly different interface. Instead
 of inspecting the current environment for dots, it directly takes
-\code{...}.  dots. It is only meant for very low level functions where a
+\code{...}. It is only meant for very low level functions where a
 couple microseconds make a difference.
 }
 \keyword{internal}

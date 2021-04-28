@@ -13,7 +13,7 @@ check_dots_unnamed(env = caller_env(), action = abort)
 \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, \code{\link[=inform]{inform()}} or \code{\link[=signal]{signal()}}.}
 }
 \description{
-In functions like \code{paste()}, named arguments in ... are often a
+In functions like \code{paste()}, named arguments in \code{...} are often a
 sign of misspelled argument names.
 }
 \examples{
