@@ -222,11 +222,14 @@ r_obj* r_dbl(double x) {
 }
 static inline
 r_obj* r_str(const char* c_string) {
-  return Rf_mkChar(c_string);
+  return Rf_mkCharCE(c_string, CE_UTF8);
 }
 static inline
 r_obj* r_chr(const char* c_string) {
-  return Rf_mkString(c_string);
+  r_obj* out = KEEP(r_alloc_character(1));
+  r_chr_poke(out, 0, r_str(c_string));
+  FREE(1);
+  return out;
 }
 static inline
 r_obj* r_list(r_obj* x) {
