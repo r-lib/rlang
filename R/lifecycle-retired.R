@@ -1418,7 +1418,7 @@ call_standardise <- function(call,
                              ...,
                              defaults = FALSE,
                              dots_env = empty_env()) {
-  check_dots_empty(...)
+  check_dots_empty()
 
   expr <- get_expr(call)
   if (!is_call(expr)) {

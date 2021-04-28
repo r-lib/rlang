@@ -909,7 +909,7 @@ trace_root <- function() {
 #' @author Iñaki Ucar (ORCID: 0000-0001-6403-5550)
 #' @noRd
 trace_pkgs <- function(pkgs, max_level = Inf, ..., regexp = NULL) {
-  check_dots_empty(...)
+  check_dots_empty()
 
   # Avoids namespace loading issues
   lapply(pkgs, requireNamespace, quietly = TRUE)

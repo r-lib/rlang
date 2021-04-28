@@ -1,5 +1,9 @@
 # rlang (development version)
 
+* `check_dots_empty()`, `check_dots_unused()`, and
+  `check_dots_unnamed()` have been moved from ellipsis to rlang. The
+  ellipsis package is deprecated and will eventually be archived.
+
 * `s3_register()` no longer fails when generic does not exist. This
   prevents failures when users don't have all the last versions of
   packages (#1112).

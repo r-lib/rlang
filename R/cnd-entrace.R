@@ -35,7 +35,9 @@
 #' }
 #' @export
 entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
-  check_dots_empty(...)
+  if (!missing(...)) {
+    check_dots_empty()
+  }
 
   if (!missing(cnd) && is_trace(cnd$trace)) {
     return()
@@ -58,7 +60,9 @@ entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
 #' @rdname entrace
 #' @export
 cnd_entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
-  check_dots_empty(...)
+  if (!missing(...)) {
+    check_dots_empty()
+  }
 
   if (!is_null(cnd$trace)) {
     return(cnd)

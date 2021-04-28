@@ -385,7 +385,9 @@ expr_print <- function(x, ...) {
 expr_deparse <- function(x,
                          ...,
                          width = peek_option("width")) {
-  check_dots_empty(...)
+  if (!missing(...)) {
+    check_dots_empty()
+  }
   deparser <- new_quo_deparser(width = width)
   quo_deparse(x, deparser)
 }

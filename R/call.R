@@ -665,7 +665,9 @@ call_match <- function(call = NULL,
                        defaults = FALSE,
                        dots_env = NULL,
                        dots_expand = TRUE) {
-  check_dots_empty(...)
+  if (!missing(...)) {
+    check_dots_empty()
+  }
 
   if (is_null(call)) {
     call <- sys.call(sys.parent())

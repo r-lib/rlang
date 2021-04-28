@@ -66,6 +66,11 @@ reference:
       - list2
       - dots_list
       - pairlist2
+      - dots-empty
+      - dots-used
+      - check_dots_used
+      - check_dots_unnamed
+      - check_dots_empty
   - title: Errors, conditions, and backtraces
     contents:
       - abort
