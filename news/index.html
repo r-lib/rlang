@@ -158,6 +158,7 @@
 <a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li><p>New <code><a href="../reference/env_cache.html">env_cache()</a></code> function to retrieve a value or create it with a default if it doesn’t exist yet (<a href='https://github.com/r-lib/rlang/issues/1081'>#1081</a>).</p></li>
 <li><p><code><a href="../reference/env_get.html">env_get()</a></code> and <code><a href="../reference/env_get.html">env_get_list()</a></code> gain a <code>last</code> argument. Lookup stops in that environment. This can be useful in conjunction with <code><a href="https://rdrr.io/r/base/ns-topenv.html">base::topenv()</a></code>.</p></li>
 <li><p><code>compat-purrr.R</code> now longer includes <code>pluck*</code> helpers; these used a defintion of pluck that predated purrr (<a href='https://github.com/r-lib/rlang/issues/1159'>#1159</a>). <code>*_cpl()</code> has also been removed. The <code>map*</code> wrappers now call <code><a href="../reference/as_function.html">as_function()</a></code> so that you can pass short anonymous functions that use <code><a href="https://rdrr.io/r/base/tilde.html">~</a></code> (<a href='https://github.com/r-lib/rlang/issues/1157'>#1157</a>).</p></li>
 <li>

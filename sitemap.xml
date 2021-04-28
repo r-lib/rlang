@@ -166,6 +166,9 @@
     <loc>https://rlang.r-lib.org/reference/env_bury.html</loc>
   </url>
   <url>
+    <loc>https://rlang.r-lib.org/reference/env_cache.html</loc>
+  </url>
+  <url>
     <loc>https://rlang.r-lib.org/reference/env_clone.html</loc>
   </url>
   <url>
