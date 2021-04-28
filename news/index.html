@@ -158,6 +158,7 @@
 <a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li><p>Formulas are now deparsed according to the tidyverse style guide (<code>~symbol</code> without space and <code>~ expression()</code> with a space).</p></li>
 <li><p>New <code><a href="../reference/hash.html">hash_file()</a></code>, complementing <code><a href="../reference/hash.html">hash()</a></code>, to generate 128-bit hashes for the data within a file without loading it into R (<a href='https://github.com/r-lib/rlang/issues/1134'>#1134</a>).</p></li>
 <li><p>New <code><a href="../reference/env_cache.html">env_cache()</a></code> function to retrieve a value or create it with a default if it doesn’t exist yet (<a href='https://github.com/r-lib/rlang/issues/1081'>#1081</a>).</p></li>
 <li><p><code><a href="../reference/env_get.html">env_get()</a></code> and <code><a href="../reference/env_get.html">env_get_list()</a></code> gain a <code>last</code> argument. Lookup stops in that environment. This can be useful in conjunction with <code><a href="https://rdrr.io/r/base/ns-topenv.html">base::topenv()</a></code>.</p></li>
