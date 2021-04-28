@@ -359,6 +359,9 @@ env_has <- function(env = caller_env(), nms, inherit = FALSE) {
 #' @param last Last environment inspected when `inherit` is `TRUE`.
 #'   Can be useful in conjunction with [base::topenv()].
 #' @return An object if it exists. Otherwise, throws an error.
+#'
+#' @seealso [env_cache()] for a variant of `env_get()` designed to
+#'   cache a value in an environment.
 #' @export
 #' @examples
 #' parent <- child_env(NULL, foo = "foo")
@@ -435,7 +438,8 @@ env_get_list <- function(env = caller_env(),
 #' @return The old value of `nm` or a [zap sentinel][zap] if the
 #'   binding did not exist yet.
 #'
-#' @seealso [env_bind()] for binding multiple elements.
+#' @seealso [env_bind()] for binding multiple elements. [env_cache()]
+#'   for a variant of `env_poke()` designed to cache values.
 #' @export
 env_poke <- function(env = caller_env(),
                      nm,
@@ -451,6 +455,48 @@ env_poke <- function(env = caller_env(),
     inherit = inherit,
     create = create
   ))
+}
+
+#' Cache a value in an environment
+#'
+#' @description
+#' `env_cache()` is a wrapper around [env_get()] and [env_poke()]
+#' designed to retrieve a cached value from `env`.
+#'
+#' - If the `nm` binding exists, it returns its value.
+#' - Otherwise, it stores the default value in `env` and returns that.
+#'
+#' @inheritParams env_get
+#' @param default The default value to store in `env` if `nm` does not
+#'   exist yet.
+#' @return Either the value of `nm` or `default` if it did not exist
+#'   yet.
+#'
+#' @examples
+#' e <- env(a = "foo")
+#'
+#' # Returns existing binding
+#' env_cache(e, "a", "default")
+#'
+#' # Creates a `b` binding and returns its default value
+#' env_cache(e, "b", "default")
+#'
+#' # Now `b` is defined
+#' e$b
+#' @export
+env_cache <- function(env, nm, default) {
+  arg_require(default)
+
+  if (!is_string(nm)) {
+    abort("`nm` must be a string.")
+  }
+
+  if (env_has(env, nm)) {
+    env_get(env, nm)
+  } else {
+    env_poke(env, nm, default)
+    default
+  }
 }
 
 #' Names and numbers of symbols bound in an environment

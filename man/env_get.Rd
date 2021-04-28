@@ -51,3 +51,7 @@ env_get(env, "foo", inherit = TRUE)
 # You can also avoid an error by supplying a default value:
 env_get(env, "foo", default = "FOO")
 }
+\seealso{
+\code{\link[=env_cache]{env_cache()}} for a variant of \code{env_get()} designed to
+cache a value in an environment.
+}

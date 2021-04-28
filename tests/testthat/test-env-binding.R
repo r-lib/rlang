@@ -439,6 +439,25 @@ test_that("env_get() and env_get_list() handle `last` argument", {
   )
 })
 
+test_that("env_cache() works (#1081)", {
+ e <- env(a = "foo")
+
+ # Returns existing binding
+ expect_equal(
+   env_cache(e, "a", "default"),
+   "foo"
+ )
+
+ # Creates a `b` binding and returns its default value
+ expect_equal(
+   env_cache(e, "b", "default"),
+   "default"
+ )
+
+ # Now `b` is defined
+ expect_equal(e$b, "default")
+ expect_equal(e$a, "foo")
+})
 
 
 # Lifecycle ----------------------------------------------------------

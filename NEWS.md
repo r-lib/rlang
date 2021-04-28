@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* New `env_cache()` function to retrieve a value or create it with a
+  default if it doesn't exist yet (#1081).
+
 * `env_get()` and `env_get_list()` gain a `last` argument. Lookup
   stops in that environment. This can be useful in conjunction with
   `base::topenv()`.
