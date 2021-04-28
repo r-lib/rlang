@@ -88,6 +88,12 @@ s3_register <- function(generic, class, method = NULL) {
     # Only register if generic can be accessed
     if (exists(generic, envir)) {
       registerS3method(generic, class, method_fn, envir = envir)
+    } else if (identical(Sys.getenv("NOT_CRAN"), "true")) {
+      warning(sprintf(
+        "Can't find generic `%s` in package %s to register S3 method.",
+        generic,
+        package
+      ))
     }
   }
 
