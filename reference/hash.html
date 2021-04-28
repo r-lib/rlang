@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Hash an object — hash • rlang</title>
+<title>Hashing — hash • rlang</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,13 @@
 
 
 
-<meta property="og:title" content="Hash an object — hash" />
-<meta property="og:description" content="hash() hashes an arbitrary R object.
+<meta property="og:title" content="Hashing — hash" />
+<meta property="og:description" content="
+
+hash() hashes an arbitrary R object.
+hash_file() hashes the data contained in a file.
+
+
 The generated hash is guaranteed to be reproducible across platforms that
 have the same endianness and are using the same R version." />
 
@@ -152,18 +157,25 @@ have the same endianness and are using the same R version." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Hash an object</h1>
+    <h1>Hashing</h1>
     <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/hash.R'><code>R/hash.R</code></a></small>
     <div class="hidden name"><code>hash.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>hash()</code> hashes an arbitrary R object.</p>
+    
+<ul>
+<li><p><code>hash()</code> hashes an arbitrary R object.</p></li>
+<li><p><code>hash_file()</code> hashes the data contained in a file.</p></li>
+</ul>
+
 <p>The generated hash is guaranteed to be reproducible across platforms that
 have the same endianness and are using the same R version.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>hash</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>hash</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='fu'>hash_file</span><span class='op'>(</span><span class='va'>path</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -172,21 +184,42 @@ have the same endianness and are using the same R version.</p>
       <th>x</th>
       <td><p>An object.</p></td>
     </tr>
+    <tr>
+      <th>path</th>
+      <td><p>A character vector of paths to the files to be hashed.</p></td>
+    </tr>
     </table>
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    
+<ul>
+<li><p>For <code>hash()</code>, a single character string containing the hash.</p></li>
+<li><p>For <code>hash_file()</code>, a character vector containing one hash per file.</p></li>
+</ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>hash()</code> uses the XXH128 hash algorithm of the xxHash library, which
-generates a 128-bit hash. It is implemented as a streaming hash, which
-generates the hash with minimal extra memory usage.</p>
-<p>Objects are converted to binary using R's native serialization tools.
-On R &gt;= 3.5.0, serialization version 3 is used, otherwise version 2 is used.
-See <code><a href='https://rdrr.io/r/base/serialize.html'>serialize()</a></code> for more information about the serialization version.</p>
+    <p>These hashers use the XXH128 hash algorithm of the xxHash library, which
+generates a 128-bit hash. Both are implemented as streaming hashes, which
+generate the hash with minimal extra memory usage.</p>
+<p>For <code>hash()</code>, objects are converted to binary using R's native serialization
+tools. On R &gt;= 3.5.0, serialization version 3 is used, otherwise version 2 is
+used. See <code><a href='https://rdrr.io/r/base/serialize.html'>serialize()</a></code> for more information about the serialization version.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>hash</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "702f7dd6e81ea41d26ea3b248627ece4"</div><div class='input'><span class='fu'>hash</span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "d0487363db4e6cc64fdb740cb6617fc0"</div></pre>
+</div><div class='output co'>#&gt; [1] "d0487363db4e6cc64fdb740cb6617fc0"</div><div class='input'>
+<span class='va'>authors</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Rhome.html'>R.home</a></span><span class='op'>(</span><span class='st'>"doc"</span><span class='op'>)</span>, <span class='st'>"AUTHORS"</span><span class='op'>)</span>
+<span class='va'>copying</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Rhome.html'>R.home</a></span><span class='op'>(</span><span class='st'>"doc"</span><span class='op'>)</span>, <span class='st'>"COPYING"</span><span class='op'>)</span>
+<span class='va'>hashes</span> <span class='op'>&lt;-</span> <span class='fu'>hash_file</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>authors</span>, <span class='va'>copying</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>hashes</span>
+</div><div class='output co'>#&gt; [1] "a85e2cd38c4905ac01031f270e459931" "cdb3a24318136e74f38209c219ca104b"</div><div class='input'>
+<span class='co'># If you need a single hash for multiple files,</span>
+<span class='co'># hash the result of `hash_file()`</span>
+<span class='fu'>hash</span><span class='op'>(</span><span class='va'>hashes</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "54aa72d7c1e1a6ac63c2e828a13aecca"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
