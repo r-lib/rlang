@@ -1,6 +1,8 @@
 # This source code file is licensed under the unlicense license
 # https://unlicense.org
 
+# nocov start
+
 #' Register a method for a suggested dependency
 #'
 #' Generally, the recommended way to register an S3 method is to use the
@@ -47,7 +49,6 @@
 #'   s3_register("tibble::type_sum", "vctrs_vctr")
 #' }
 #' @keywords internal
-# nocov start
 s3_register <- function(generic, class, method = NULL) {
   stopifnot(is.character(generic), length(generic) == 1)
   stopifnot(is.character(class), length(class) == 1)
@@ -105,3 +106,5 @@ s3_register <- function(generic, class, method = NULL) {
 
   invisible()
 }
+
+# nocov end
