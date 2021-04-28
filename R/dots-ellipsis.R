@@ -60,7 +60,7 @@ check_dots <- function(env = caller_env(), action) {
     action = action,
     message = paste0(length(unused), " components of `...` were not used."),
     dot_names = unused,
-    .subclass = "rlib_error_dots_unused",
+    class = "rlib_error_dots_unused",
   )
 }
 
@@ -101,7 +101,7 @@ check_dots_unnamed <- function(env = caller_env(), action = abort) {
     action = action,
     message = paste0(length(named), " components of `...` had unexpected names."),
     dot_names = named,
-    .subclass = "rlib_error_dots_named",
+    class = "rlib_error_dots_named",
   )
 }
 
@@ -133,7 +133,7 @@ check_dots_empty <- function(env = caller_env(), action = abort) {
     message = "`...` is not empty.",
     dot_names = names(dots),
     note = "These dots only exist to allow future extensions and should be empty.",
-    .subclass = "rlib_error_dots_nonempty"
+    class = "rlib_error_dots_nonempty"
   )
 }
 #' Check that dots are empty (low level variant)
@@ -151,7 +151,7 @@ check_dots_empty0 <- function(...) {
   nargs()
 }
 
-action_dots <- function(action, message, dot_names, note = NULL, .subclass = NULL, ...) {
+action_dots <- function(action, message, dot_names, note = NULL, class = NULL, ...) {
   message <- paste_line(
     message,
     "",
@@ -161,7 +161,7 @@ action_dots <- function(action, message, dot_names, note = NULL, .subclass = NUL
     note,
     "Did you misspecify an argument?"
   )
-  action(message, .subclass = c(.subclass, "rlib_error_dots"), ...)
+  action(message, class = c(class, "rlib_error_dots"), ...)
 }
 
 promise_forced <- function(x) {
