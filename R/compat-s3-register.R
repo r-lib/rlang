@@ -76,32 +76,33 @@ s3_register <- function(generic, class, method = NULL) {
     }
   }
 
-  method_fn <- get_method(method)
-  stopifnot(is.function(method_fn))
+  register <- function(...) {
+    envir <- asNamespace(package)
 
-  # Always register hook in case package is later unloaded & reloaded
-  setHook(
-    packageEvent(package, "onLoad"),
-    function(...) {
-      ns <- asNamespace(package)
+    # Refresh the method each time, it might have been updated by
+    # `devtools::load_all()`
+    method_fn <- get_method(method)
+    stopifnot(is.function(method_fn))
 
-      # Refresh the method, it might have been updated by `devtools::load_all()`
-      method_fn <- get_method(method)
 
-      registerS3method(generic, class, method_fn, envir = ns)
+    # Only register if generic can be accessed
+    if (exists(generic, envir)) {
+      registerS3method(generic, class, method_fn, envir = envir)
+    } else if (identical(Sys.getenv("NOT_CRAN"), "true")) {
+      warning(sprintf(
+        "Can't find generic `%s` in package %s to register S3 method.",
+        generic,
+        package
+      ))
     }
-  )
-
-  # Avoid registration failures during loading (pkgload or regular)
-  if (!isNamespaceLoaded(package)) {
-    return(invisible())
   }
 
-  envir <- asNamespace(package)
+  # Always register hook in case package is later unloaded & reloaded
+  setHook(packageEvent(package, "onLoad"), register)
 
-  # Only register if generic can be accessed
-  if (exists(generic, envir)) {
-    registerS3method(generic, class, method_fn, envir = envir)
+  # Avoid registration failures during loading (pkgload or regular)
+  if (isNamespaceLoaded(package)) {
+    register()
   }
 
   invisible()

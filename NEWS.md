@@ -1,5 +1,9 @@
 # rlang (development version)
 
+* `s3_register()` no longer fails when generic does not exist. This
+  prevents failures when users don't have all the last versions of
+  packages (#1112).
+
 * Formulas are now deparsed according to the tidyverse style guide
   (`~symbol` without space and `~ expression()` with a space).
 
