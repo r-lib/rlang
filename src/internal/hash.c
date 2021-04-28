@@ -281,7 +281,7 @@ r_obj* hash_file_impl(void* p_data) {
   r_obj* path = p_exec_data->x;
   XXH3_state_t* p_xx_state = p_exec_data->p_xx_state;
 
-  if (!r_is_character(path, -1)) {
+  if (r_typeof(path) != R_TYPE_character) {
     r_abort("`path` must be a character vector.");
   }
 
