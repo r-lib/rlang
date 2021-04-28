@@ -109,7 +109,7 @@ warn <- function(message = NULL,
   message <- validate_signal_message(message, class)
   message <- collapse_cnd_message(message)
 
-  .frequency <- arg_match(.frequency, c("always", "regularly", "once"))
+  .frequency <- arg_match0(.frequency, c("always", "regularly", "once"))
 
   if (needs_signal(.frequency, .frequency_id, warning_freq_env)) {
     message <- add_message_freq(message, .frequency, "warning")
@@ -141,7 +141,7 @@ inform <- function(message = NULL,
                    .subclass = deprecated()) {
   validate_signal_args(.subclass)
 
-  .frequency <- arg_match(.frequency, c("always", "regularly", "once"))
+  .frequency <- arg_match0(.frequency, c("always", "regularly", "once"))
   if (!needs_signal(.frequency, .frequency_id, message_freq_env)) {
     return(invisible(NULL))
   }
