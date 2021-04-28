@@ -24,7 +24,7 @@
 #'
 #' @param cnd A condition object (see [cnd()]). If `NULL`,
 #'   `cnd_signal()` returns without signalling a condition.
-#' @param ... These dots are for extensions and must be empty.
+#' @inheritParams dots-empty
 #' @seealso [abort()], [warn()] and [inform()] for creating and
 #'   signalling structured R conditions. See [with_handlers()] for
 #'   establishing condition handlers.

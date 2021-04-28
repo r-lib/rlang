@@ -307,7 +307,7 @@ is_namespace <- function(x) {
 #' is_installed(c("base", "ggplot5"))
 #' is_installed(c("base", "ggplot5"), version = c(NA, "5.1.0"))
 is_installed <- function(pkg, ..., version = NULL) {
-  check_dots_empty(...)
+  check_dots_empty0(...)
 
   if (!all(map_lgl(pkg, function(x) is_true(requireNamespace(x, quietly = TRUE))))) {
     return(FALSE)
@@ -330,7 +330,7 @@ check_installed <- function(pkg,
                             reason = NULL,
                             ...,
                             version = NULL) {
-  check_dots_empty(...)
+  check_dots_empty0(...)
 
   if (!is_character(pkg)) {
     abort("`pkg` must be a package name or a vector of package names.")

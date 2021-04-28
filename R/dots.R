@@ -472,12 +472,6 @@ homonym_enum <- function(nm, dups, nms) {
   chr_enumerate(as.character(which(dups)), final = "and")
 }
 
-check_dots_empty <- function(...) {
-  if (nargs()) {
-    abort("These `...` must be empty")
-  }
-}
-
 
 # This helper is used when splicing S3 or S4 objects found
 # in `!!!`. It is similar to `as.list()`, but the names of

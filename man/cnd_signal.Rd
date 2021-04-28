@@ -10,7 +10,7 @@ cnd_signal(cnd, ...)
 \item{cnd}{A condition object (see \code{\link[=cnd]{cnd()}}). If \code{NULL},
 \code{cnd_signal()} returns without signalling a condition.}
 
-\item{...}{These dots are for extensions and must be empty.}
+\item{...}{These dots are for future extensions and must be empty.}
 }
 \description{
 The type of signal depends on the class of the condition:

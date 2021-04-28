@@ -57,6 +57,15 @@ reference:
       - nse-defuse
       - as_label
       - as_name
+  - title: Dots
+    desc: >
+      Utils to work with `...`.
+    contents:
+      - dots-empty
+      - dots-used
+      - check_dots_used
+      - check_dots_unnamed
+      - check_dots_empty
   - title: Tidy dots
     desc: >
       Collect arguments contained in `...` with `!!!` and
