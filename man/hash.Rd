@@ -2,29 +2,52 @@
 % Please edit documentation in R/hash.R
 \name{hash}
 \alias{hash}
-\title{Hash an object}
+\alias{hash_file}
+\title{Hashing}
 \usage{
 hash(x)
+
+hash_file(path)
 }
 \arguments{
 \item{x}{An object.}
+
+\item{path}{A character vector of paths to the files to be hashed.}
+}
+\value{
+\itemize{
+\item For \code{hash()}, a single character string containing the hash.
+\item For \code{hash_file()}, a character vector containing one hash per file.
+}
 }
 \description{
-\code{hash()} hashes an arbitrary R object.
+\itemize{
+\item \code{hash()} hashes an arbitrary R object.
+\item \code{hash_file()} hashes the data contained in a file.
+}
 
 The generated hash is guaranteed to be reproducible across platforms that
 have the same endianness and are using the same R version.
 }
 \details{
-\code{hash()} uses the XXH128 hash algorithm of the xxHash library, which
-generates a 128-bit hash. It is implemented as a streaming hash, which
-generates the hash with minimal extra memory usage.
+These hashers use the XXH128 hash algorithm of the xxHash library, which
+generates a 128-bit hash. Both are implemented as streaming hashes, which
+generate the hash with minimal extra memory usage.
 
-Objects are converted to binary using R's native serialization tools.
-On R >= 3.5.0, serialization version 3 is used, otherwise version 2 is used.
-See \code{\link[=serialize]{serialize()}} for more information about the serialization version.
+For \code{hash()}, objects are converted to binary using R's native serialization
+tools. On R >= 3.5.0, serialization version 3 is used, otherwise version 2 is
+used. See \code{\link[=serialize]{serialize()}} for more information about the serialization version.
 }
 \examples{
 hash(c(1, 2, 3))
 hash(mtcars)
+
+authors <- file.path(R.home("doc"), "AUTHORS")
+copying <- file.path(R.home("doc"), "COPYING")
+hashes <- hash_file(c(authors, copying))
+hashes
+
+# If you need a single hash for multiple files,
+# hash the result of `hash_file()`
+hash(hashes)
 }

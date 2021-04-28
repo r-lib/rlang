@@ -47,6 +47,7 @@ internal-files = \
         internal/eval.c \
         internal/eval-tidy.c \
         internal/exported.c \
+        internal/file.c \
         internal/fn.c \
         internal/hash.c \
         internal/init.c \

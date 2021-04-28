@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* New `hash_file()`, complementing `hash()`, to generate 128-bit hashes for
+  the data within a file without loading it into R (#1134).
+  
 * New `env_cache()` function to retrieve a value or create it with a
   default if it doesn't exist yet (#1081).
 
