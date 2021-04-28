@@ -72,7 +72,8 @@ exit_handler <- function(action) {
 
 #' Check that all dots are unnamed
 #'
-#' Named arguments in ... are often a sign of misspelled argument names.
+#' In functions like `paste()`, named arguments in ... are often a
+#' sign of misspelled argument names.
 #'
 #' @inheritParams check_dots_used
 #' @param env Environment in which to look for `...`.
@@ -109,7 +110,7 @@ check_dots_unnamed <- function(env = caller_env(), action = abort) {
 #' Check that dots are empty
 #'
 #' Sometimes you just want to use `...` to force your users to fully name
-#' the details arguments. This function warns if `...` is not empty.
+#' the details arguments. This function fails if `...` is not empty.
 #'
 #' @inheritParams check_dots_used
 #' @param env Environment in which to look for `...`.
@@ -120,7 +121,13 @@ check_dots_unnamed <- function(env = caller_env(), action = abort) {
 #'   x + foofy
 #' }
 #'
+#' # This fails because `foofy` can't be matched positionally
+#' try(f(1, 4))
+#'
+#' # This fails because `foofy` can't be matched partially by name
 #' try(f(1, foof = 4))
+#'
+#' # Thanks to `...`, it must be matched exactly
 #' f(1, foofy = 4)
 check_dots_empty <- function(env = caller_env(), action = abort) {
   dots <- ellipsis_dots(env)

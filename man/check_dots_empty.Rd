@@ -14,7 +14,7 @@ check_dots_empty(env = caller_env(), action = abort)
 }
 \description{
 Sometimes you just want to use \code{...} to force your users to fully name
-the details arguments. This function warns if \code{...} is not empty.
+the details arguments. This function fails if \code{...} is not empty.
 }
 \examples{
 f <- function(x, ..., foofy = 8) {
@@ -22,6 +22,12 @@ f <- function(x, ..., foofy = 8) {
   x + foofy
 }
 
+# This fails because `foofy` can't be matched positionally
+try(f(1, 4))
+
+# This fails because `foofy` can't be matched partially by name
 try(f(1, foof = 4))
+
+# Thanks to `...`, it must be matched exactly
 f(1, foofy = 4)
 }
