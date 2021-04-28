@@ -33,7 +33,12 @@
 #'
 #' authors <- file.path(R.home("doc"), "AUTHORS")
 #' copying <- file.path(R.home("doc"), "COPYING")
-#' hash_file(c(authors, copying))
+#' hashes <- hash_file(c(authors, copying))
+#' hashes
+#'
+#' # If you need a single hash for multiple files,
+#' # hash the result of `hash_file()`
+#' hash(hashes)
 hash <- function(x) {
   .Call(ffi_hash, x)
 }
