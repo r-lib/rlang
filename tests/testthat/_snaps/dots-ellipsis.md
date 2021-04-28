@@ -10,12 +10,10 @@
     Output
       <error/rlib_error_dots_named>
       2 components of `...` had unexpected names.
-      
-      We detected these problematic arguments:
+      x We detected these problematic arguments:
       * `xy`
       * `x`
-      
-      Did you misspecify an argument?
+      i Did you misspecify an argument?
 
 # error if if dots not empty
 
@@ -24,10 +22,8 @@
     Output
       <error/rlib_error_dots_nonempty>
       `...` is not empty.
-      
-      We detected these problematic arguments:
+      i These dots only exist to allow future extensions and should be empty.
+      x We detected these problematic arguments:
       * `xy`
-      
-      These dots only exist to allow future extensions and should be empty.
-      Did you misspecify an argument?
+      i Did you misspecify an argument?
 
