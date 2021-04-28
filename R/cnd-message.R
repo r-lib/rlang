@@ -200,6 +200,12 @@ format_bullets <- function(x) {
 #'
 #' - If `FALSE`, the fallback formatting is used.
 #'
+#' You can opt out of cli formatting by supplying an escaped input:
+#'
+#' ```
+#' abort(I("Not interpolated"))
+#' ```
+#'
 #' @name cli-format
 NULL
 
@@ -248,7 +254,7 @@ format_message <- function(x, env = caller_env()) {
     }
   } 
 
-  if (use_cli_format(env)) {
+  if (!inherits(x, "AsIs") && use_cli_format(env)) {
     if (!has_cli_format) {
       with_options(
         "rlang:::disable_cli" = TRUE,

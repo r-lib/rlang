@@ -132,3 +132,18 @@ test_that("! and > symbols create warning and alert bullets", {
     "Header\n! Attention\n> Alert"
   )
 })
+
+test_that("cli is not used when message is escaped with `I()`", {
+  .rlang_use_cli_format <- TRUE
+  x <- "foo"
+
+  expect_equal(
+    conditionMessage(catch_cnd(abort("{x}"))),
+    "foo"
+  )
+
+  expect_equal(
+    conditionMessage(catch_cnd(abort(I("{x}")))),
+    "{x}"
+  )
+})

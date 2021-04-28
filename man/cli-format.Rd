@@ -17,4 +17,7 @@ installed. Make sure it is installed by adding it to your
 Imports.
 \item If \code{FALSE}, the fallback formatting is used.
 }
+
+You can opt out of cli formatting by supplying an escaped input:\preformatted{abort(I("Not interpolated"))
+}
 }
