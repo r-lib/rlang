@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* Formulas are now deparsed according to the tidyverse style guide
+  (`~symbol` without space and `~ expression()` with a space).
+
 * New `hash_file()`, complementing `hash()`, to generate 128-bit hashes for
   the data within a file without loading it into R (#1134).
   
