@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* Fix for CRAN checks.
+
 * Fixed a gcc11 warning related to `hash()` (#1088).
 
 
