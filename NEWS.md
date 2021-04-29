@@ -1,4 +1,4 @@
-# rlang (development version)
+# rlang 0.4.11
 
 * Fix for CRAN checks.
 
