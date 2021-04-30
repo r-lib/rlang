@@ -113,11 +113,11 @@ test_that("`!!` binds tightly", {
 })
 
 test_that("lower pivot is correctly found (#1125)", {
-  expect_equal(expr(1 + !!2 + 3 + 4), expr(1 + 2 + 3 + 4))
-  expect_equal(expr(1 + 2 + !!3 + 4 + 5 + 6), expr(1 + 2 + 3 + 4 + 5 + 6))
-  expect_equal(expr(1 * 2 + !!3 * 4 * 5 + 6), expr(1 * 2 + 3 * 4 * 5 + 6))
-  expect_equal(expr(1 + 2 + !!3 * 4 * 5 + 6), expr(1 + 2 + 3 * 4 * 5 + 6))
-  expect_equal(expr(1 + !!2 * 3 * 4 + 5), expr(1 + 2 * 3 * 4 + 5))
+  expect_equal_(expr(1 + !!2 + 3 + 4), expr(1 + 2 + 3 + 4))
+  expect_equal_(expr(1 + 2 + !!3 + 4 + 5 + 6), expr(1 + 2 + 3 + 4 + 5 + 6))
+  expect_equal_(expr(1 * 2 + !!3 * 4 * 5 + 6), expr(1 * 2 + 3 * 4 * 5 + 6))
+  expect_equal_(expr(1 + 2 + !!3 * 4 * 5 + 6), expr(1 + 2 + 3 * 4 * 5 + 6))
+  expect_equal_(expr(1 + !!2 * 3 * 4 + 5), expr(1 + 2 * 3 * 4 + 5))
 })
 
 test_that("`!!` handles binary and unary `-` and `+`", {
