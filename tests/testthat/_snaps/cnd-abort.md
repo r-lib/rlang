@@ -144,10 +144,10 @@
       <error/rlang_error>
       foo
       Backtrace:
-        1. rlang::catch_cnd(f())
-        8. rlang:::f()
-        9. rlang:::g()
-       10. rlang:::h()
+        1. rlang:::catch_error(f())
+        9. rlang:::f()
+       10. rlang:::g()
+       11. rlang:::h()
     Code
       # From `last_error()`
       print(last_error())
@@ -155,10 +155,10 @@
       <error/rlang_error>
       foo
       Backtrace:
-        1. rlang::catch_cnd(f())
-        8. rlang:::f()
-        9. rlang:::g()
-       10. rlang:::h()
+        1. rlang:::catch_error(f())
+        9. rlang:::f()
+       10. rlang:::g()
+       11. rlang:::h()
       Run `rlang::last_trace()` to see the full context.
     Code
       # Saved from `last_error()`
@@ -170,10 +170,10 @@
       <error/rlang_error>
       foo
       Backtrace:
-        1. rlang::catch_cnd(f())
-        8. rlang:::f()
-        9. rlang:::g()
-       10. rlang:::h()
+        1. rlang:::catch_error(f())
+        9. rlang:::f()
+       10. rlang:::g()
+       11. rlang:::h()
       Run `rlang::last_trace()` to see the full context.
     Code
       # Saved from `last_error()`, but no longer last
@@ -185,10 +185,10 @@
       <error/rlang_error>
       foo
       Backtrace:
-        1. rlang::catch_cnd(f())
-        8. rlang:::f()
-        9. rlang:::g()
-       10. rlang:::h()
+        1. rlang:::catch_error(f())
+        9. rlang:::f()
+       10. rlang:::g()
+       11. rlang:::h()
       Run `rlang::last_trace()` to see the full context.
 
 # capture context doesn't leak into low-level backtraces
@@ -198,47 +198,47 @@
       {
         parent <- TRUE
         wrapper <- FALSE
-        err <- catch_cnd(f())
+        err <- catch_error(f())
         print(err)
       }
     Output
       <error/rlang_error>
       no wrapper
       Backtrace:
-        1. rlang::catch_cnd(f())
-        8. rlang:::f()
-        9. rlang:::g()
-       10. rlang:::h()
+        1. rlang:::catch_error(f())
+        9. rlang:::f()
+       10. rlang:::g()
+       11. rlang:::h()
     Code
       # Wrapped case
       {
         wrapper <- TRUE
-        err <- catch_cnd(f())
+        err <- catch_error(f())
         print(err)
       }
     Output
       <error/rlang_error>
       wrapper
       Backtrace:
-        1. rlang::catch_cnd(f())
-        8. rlang:::f()
-        9. rlang:::g()
-       10. rlang:::h()
+        1. rlang:::catch_error(f())
+        9. rlang:::f()
+       10. rlang:::g()
+       11. rlang:::h()
     Code
       # FIXME?
       {
         parent <- FALSE
-        err <- catch_cnd(f())
+        err <- catch_error(f())
         print(err)
       }
     Output
       <error/rlang_error>
       wrapper
       Backtrace:
-        1. rlang::catch_cnd(f())
-        8. rlang:::f()
-        9. rlang:::g()
-       10. rlang:::h()
+        1. rlang:::catch_error(f())
+        9. rlang:::f()
+       10. rlang:::g()
+       11. rlang:::h()
     Code
       # withCallingHandlers()
       print(err_wch)
@@ -249,8 +249,8 @@
       \-<error/rlang_error>
         foo
       Backtrace:
-        1. rlang::catch_cnd(...)
-        9. rlang:::foo()
-       10. rlang:::bar(cnd)
-       11. rlang:::baz(cnd)
+        1. rlang:::catch_error(...)
+       10. rlang:::foo()
+       11. rlang:::bar(cnd)
+       12. rlang:::baz(cnd)
 

@@ -1,12 +1,12 @@
 test_that("errors are signalled with backtrace", {
   fn <- function() abort("")
-  err <- catch_cnd(fn())
+  err <- expect_error(fn())
   expect_s3_class(err$trace, "rlang_trace")
 })
 
 test_that("can pass classed strings as error message", {
   message <- structure("foo", class = c("glue", "character"))
-  err <- catch_cnd(abort(message))
+  err <- expect_error(abort(message))
   expect_identical(err$message, message)
 })
 
@@ -146,7 +146,7 @@ test_that("backtrace reminder is displayed when called from `last_error()`", {
   f <- function() g()
   g <- function() h()
   h <- function() abort("foo")
-  err <- catch_cnd(f())
+  err <- catch_error(f())
 
   last_error_env$cnd <- err
 
@@ -200,7 +200,7 @@ test_that("capture context doesn't leak into low-level backtraces", {
   foo <- function(cnd) bar(cnd)
   bar <- function(cnd) baz(cnd)
   baz <- function(cnd) abort("foo")
-  err_wch <- catch_cnd(
+  err_wch <- catch_error(
     withCallingHandlers(
       foo(),
       error = function(cnd) abort("bar", parent = cnd)
@@ -212,21 +212,21 @@ test_that("capture context doesn't leak into low-level backtraces", {
     {
       parent <- TRUE
       wrapper <- FALSE
-      err <- catch_cnd(f())
+      err <- catch_error(f())
       print(err)
     }
 
     "Wrapped case"
     {
       wrapper <- TRUE
-      err <- catch_cnd(f())
+      err <- catch_error(f())
       print(err)
     }
 
     "FIXME?"
     {
       parent <- FALSE
-      err <- catch_cnd(f())
+      err <- catch_error(f())
       print(err)
     }
 
@@ -236,5 +236,5 @@ test_that("capture context doesn't leak into low-level backtraces", {
 })
 
 test_that("`.subclass` argument of `abort()` still works", {
-  expect_true(inherits(catch_cnd(abort("foo", .subclass = "bar")), "bar"))
+  expect_error(abort("foo", .subclass = "bar"), class = "bar")
 })

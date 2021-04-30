@@ -18,7 +18,7 @@ test_that("with_abort() promotes base errors to rlang errors", {
     rlang_trace_format_srcrefs = FALSE,
     rlang_trace_top_env = current_env()
   )
-  err <- identity(catch_cnd(a()))
+  err <- identity(catch_error(a()))
 
   expect_snapshot({
     print(err)
@@ -28,19 +28,20 @@ test_that("with_abort() promotes base errors to rlang errors", {
 })
 
 test_that("with_abort() entraces conditions properly", {
-  catch_abort <- function(signaller, arg, classes = "error") {
+  expect_abort <- function(signaller, catcher, arg, classes = "error") {
     f <- function() g()
     g <- function() h()
     h <- function() signaller(arg)
 
-    catch_cnd(with_abort(f(), classes = classes))
+    catcher(with_abort(f(), classes = classes))
   }
 
   expect_abort_trace <- function(signaller,
+                                 catcher,
                                  arg,
                                  native = NULL,
                                  classes = "error") {
-    err <- catch_abort(signaller, arg, classes = classes)
+    err <- expect_abort(signaller, catcher, arg, classes = classes)
     expect_s3_class(err, "rlang_error")
 
     trace <- err$trace
@@ -69,27 +70,24 @@ test_that("with_abort() entraces conditions properly", {
     rlang_trace_top_env = current_env()
   )
 
-  msg <- catch_abort(base::message, "")
-  expect_true(inherits_all(msg, c("message", "condition")))
+  expect_abort(base::message, catch_message, "")
+  expect_abort(base::message, catch_error, "", classes = "message")
 
-  err <- catch_abort(base::message, "", classes = "message")
-  expect_s3_class(err, "rlang_error")
+  expect_abort_trace(base::stop, catch_error, "")
+  expect_abort_trace(base::stop, catch_error, cnd("error"))
+  expect_abort_trace(function(msg) errorcall(NULL, msg), catch_error, "", "errorcall")
+  expect_abort_trace(abort, catch_error, "")
 
-  expect_abort_trace(base::stop, "")
-  expect_abort_trace(base::stop, cnd("error"))
-  expect_abort_trace(function(msg) errorcall(NULL, msg), "", "errorcall")
-  expect_abort_trace(abort, "")
+  expect_abort_trace(base::warning, catch_error, "", classes = "warning")
+  expect_abort_trace(base::warning, catch_error, cnd("warning"), classes = "warning")
+  expect_abort_trace(function(msg) warningcall(NULL, msg), catch_error, "", "warningcall", classes = "warning")
+  expect_abort_trace(warn, catch_error, "", classes = "warning")
 
-  expect_abort_trace(base::warning, "", classes = "warning")
-  expect_abort_trace(base::warning, cnd("warning"), classes = "warning")
-  expect_abort_trace(function(msg) warningcall(NULL, msg), "", "warningcall", classes = "warning")
-  expect_abort_trace(warn, "", classes = "warning")
+  expect_abort_trace(base::message, catch_error, "", classes = "message")
+  expect_abort_trace(base::message, catch_error, cnd("message"), classes = "message")
+  expect_abort_trace(inform, catch_error, "", classes = "message")
 
-  expect_abort_trace(base::message, "", classes = "message")
-  expect_abort_trace(base::message, cnd("message"), classes = "message")
-  expect_abort_trace(inform, "", classes = "message")
-
-  expect_abort_trace(base::signalCondition, cnd("foo"), classes = "condition")
+  expect_abort_trace(base::signalCondition, catch_error, cnd("foo"), classes = "condition")
 })
 
 test_that("signal context is detected", {

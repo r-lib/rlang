@@ -85,3 +85,16 @@ expect_data_pronoun_error <- function(object, regexp = NULL, ...) {
 expect_defunct <- function(object, ...) {
   expect_error(object, class = "defunctError")
 }
+
+catch_error <- function(expr) {
+  catch_cnd(expr, "error")
+}
+catch_warning <- function(expr) {
+  catch_cnd(expr, "warning")
+}
+catch_message <- function(expr) {
+  catch_cnd(expr, "message")
+}
+
+# https://github.com/r-lib/testthat/issues/1371
+expect_warning2 <- catch_warning

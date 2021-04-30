@@ -368,13 +368,15 @@ test_that("r_parse_eval()", {
 })
 
 test_that("failed parses are printed if `rlang__verbose_errors` is non-NULL", {
-  err <- catch_cnd(expect_output(
+  expect_error(
+    expect_output(
       regexp =  "foo; bar",
       with_options(rlang__verbose_errors = TRUE,
         .Call(ffi_test_parse, "foo; bar")
       )
-    ))
-  expect_error(cnd_signal(err), regexp = "single expression")
+    ),
+    "single expression"
+  )
 })
 
 test_that("r_warn_deprecated() warns once", {

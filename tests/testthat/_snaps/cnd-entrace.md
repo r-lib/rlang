@@ -9,13 +9,13 @@
       \-<error/rlang_error>
         Low-level message
       Backtrace:
-        1. base::identity(catch_cnd(a()))
-        9. rlang:::a()
-       10. rlang:::b()
-       11. rlang:::c()
-       18. rlang:::f()
-       19. rlang:::g()
-       20. rlang:::h()
+        1. base::identity(catch_error(a()))
+       10. rlang:::a()
+       11. rlang:::b()
+       12. rlang:::c()
+       19. rlang:::f()
+       20. rlang:::g()
+       21. rlang:::h()
     Code
       summary(err)
     Output
@@ -26,26 +26,27 @@
         Low-level message
       Backtrace:
            x
-        1. +-base::identity(catch_cnd(a()))
-        2. +-rlang::catch_cnd(a())
-        3. | +-rlang::eval_bare(...)
-        4. | +-base::tryCatch(...)
-        5. | | \-base:::tryCatchList(expr, classes, parentenv, handlers)
-        6. | |   \-base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-        7. | |     \-base:::doTryCatch(return(expr), name, parentenv, handler)
-        8. | \-base::force(expr)
-        9. \-rlang:::a()
-       10.   \-rlang:::b()
-       11.     \-rlang:::c()
-       12.       +-base::tryCatch(...)
-       13.       | \-base:::tryCatchList(expr, classes, parentenv, handlers)
-       14.       |   \-base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-       15.       |     \-base:::doTryCatch(return(expr), name, parentenv, handler)
-       16.       +-rlang::with_abort(f())
-       17.       | \-base::withCallingHandlers(...)
-       18.       \-rlang:::f()
-       19.         \-rlang:::g()
-       20.           \-rlang:::h()
+        1. +-base::identity(catch_error(a()))
+        2. +-rlang:::catch_error(a())
+        3. | \-rlang::catch_cnd(expr, "error")
+        4. |   +-rlang::eval_bare(...)
+        5. |   +-base::tryCatch(...)
+        6. |   | \-base:::tryCatchList(expr, classes, parentenv, handlers)
+        7. |   |   \-base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+        8. |   |     \-base:::doTryCatch(return(expr), name, parentenv, handler)
+        9. |   \-base::force(expr)
+       10. \-rlang:::a()
+       11.   \-rlang:::b()
+       12.     \-rlang:::c()
+       13.       +-base::tryCatch(...)
+       14.       | \-base:::tryCatchList(expr, classes, parentenv, handlers)
+       15.       |   \-base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+       16.       |     \-base:::doTryCatch(return(expr), name, parentenv, handler)
+       17.       +-rlang::with_abort(f())
+       18.       | \-base::withCallingHandlers(...)
+       19.       \-rlang:::f()
+       20.         \-rlang:::g()
+       21.           \-rlang:::h()
 
 # rlang and base errors are properly entraced
 

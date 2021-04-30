@@ -26,13 +26,13 @@ test_that("signal() accepts character vectors of classes (#195)", {
 })
 
 test_that("can pass condition metadata", {
-  msg <- catch_cnd(inform("type", foo = "bar"))
+  msg <- expect_message(inform("type", foo = "bar"))
   expect_identical(msg$foo, "bar")
 
-  wng <- catch_cnd(warn("type", foo = "bar"))
+  wng <- expect_warning2(warn("type", foo = "bar"))
   expect_identical(wng$foo, "bar")
 
-  err <- catch_cnd(abort("type", foo = "bar"))
+  err <- expect_error(abort("type", foo = "bar"))
   expect_identical(err$foo, "bar")
 })
 
@@ -48,10 +48,10 @@ test_that("can signal interrupts with cnd_signal()", {
 })
 
 test_that("conditions have correct subclasses", {
-  expect_true(inherits_all(catch_cnd(signal("", "foo")), c("foo", "condition", "condition")))
-  expect_true(inherits_all(catch_cnd(inform("", "foo")), c("foo", "message", "condition")))
-  expect_true(inherits_all(catch_cnd(warn("", "foo")), c("foo", "warning", "condition")))
-  expect_true(inherits_all(catch_cnd(abort("", "foo")), c("foo", "rlang_error", "error", "condition")))
+  expect_true(inherits_all(expect_condition(signal("", "foo")), c("foo", "condition", "condition")))
+  expect_true(inherits_all(expect_message(inform("", "foo")), c("foo", "message", "condition")))
+  expect_true(inherits_all(expect_warning2(warn("", "foo")), c("foo", "warning", "condition")))
+  expect_true(inherits_all(expect_error(abort("", "foo")), c("foo", "rlang_error", "error", "condition")))
 })
 
 test_that("cnd_signal() creates a backtrace if needed", {
@@ -71,7 +71,7 @@ test_that("cnd_signal() creates a backtrace if needed", {
 
 test_that("`inform()` appends newline to message", {
   expect_identical(
-    catch_cnd(inform("foo"))$message,
+    expect_message(inform("foo"))$message,
     "foo\n"
   )
 })

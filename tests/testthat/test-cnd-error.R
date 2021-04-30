@@ -37,7 +37,7 @@ test_that("rlang_error.print() calls conditionMessage() method", {
   h <- function() abort("", "foobar", foobar_msg = "Low-level message")
 
   # Handled error
-  err <- catch_cnd(f())
+  err <- catch_error(f())
   expect_snapshot(print(err))
 })
 
@@ -68,10 +68,10 @@ test_that("error is printed with parent backtrace", {
     rlang_backtrace_on_error = "none"
   )
 
-  err <- catch_cnd(a())
+  err <- catch_error(a())
 
   err_force <- with_options(
-    catch_cnd(a()),
+    catch_error(a()),
     `rlang:::force_unhandled_error` = TRUE,
     `rlang:::error_pipe` = tempfile()
   )
@@ -104,12 +104,12 @@ test_that("summary.rlang_error() prints full backtrace", {
   b <- function() c()
   c <- function() tryCatch(f(), error = handler)
 
-  err <- catch_cnd(a())
+  err <- catch_error(a())
   expect_snapshot(summary(err))
 })
 
 test_that("can take the str() of an rlang error (#615)", {
-  err <- catch_cnd(abort("foo"))
+  err <- catch_error(abort("foo"))
   expect_output(expect_no_error(str(err)))
 })
 
