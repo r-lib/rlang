@@ -97,31 +97,34 @@ test_that("signal context is detected", {
     info <- list(out[[1]], sys.call(out[[2]]))
     invokeRestart("out", info)
   }
-  signal_info <- function(signaller, arg) {
+  signal_info <- function(class, signaller, arg) {
     f <- function() signaller(arg)
-    withRestarts(
-      out = identity,
-      withCallingHandlers(condition = get_signal_info, f())
+    hnd <- set_names(list(get_signal_info), class)
+    inject(
+      withRestarts(
+        out = identity,
+        withCallingHandlers(!!!hnd, f())
+      )
     )
   }
 
-  expect_equal(signal_info(base::stop, ""), list("stop_message", quote(f())))
-  expect_equal(signal_info(base::stop, cnd("error")), list("stop_condition", quote(f())))
-  expect_equal(signal_info(function(msg) errorcall(NULL, msg), ""), list("stop_native", quote(errorcall(NULL, msg))))
+  expect_equal(signal_info("error", base::stop, ""), list("stop_message", quote(f())))
+  expect_equal(signal_info("error", base::stop, cnd("error")), list("stop_condition", quote(f())))
+  expect_equal(signal_info("error", function(msg) errorcall(NULL, msg), ""), list("stop_native", quote(errorcall(NULL, msg))))
 
   # No longer works since we switched to signalCondition approach
   # expect_equal(signal_info(abort, "")[[1]], "stop_rlang")
 
-  expect_equal(signal_info(base::warning, ""), list("warning_message", quote(f())))
-  expect_equal(signal_info(base::warning, cnd("warning")), list("warning_condition", quote(f())))
-  expect_equal(signal_info(function(msg) warningcall(NULL, msg), ""), list("warning_native", quote(warningcall(NULL, msg))))
-  expect_equal(signal_info(warn, "")[[1]], "warning_rlang")
+  expect_equal(signal_info("warning", base::warning, ""), list("warning_message", quote(f())))
+  expect_equal(signal_info("warning", base::warning, cnd("warning")), list("warning_condition", quote(f())))
+  expect_equal(signal_info("warning", function(msg) warningcall(NULL, msg), ""), list("warning_native", quote(warningcall(NULL, msg))))
+  expect_equal(signal_info("warning", warn, "")[[1]], "warning_rlang")
 
-  expect_equal(signal_info(base::message, ""), list("message", quote(f())))
-  expect_equal(signal_info(base::message, cnd("message")), list("message", quote(f())))
-  expect_equal(signal_info(inform, "")[[1]], "message_rlang")
+  expect_equal(signal_info("message", base::message, ""), list("message", quote(f())))
+  expect_equal(signal_info("message", base::message, cnd("message")), list("message", quote(f())))
+  expect_equal(signal_info("message", inform, "")[[1]], "message_rlang")
 
-  expect_equal(signal_info(base::signalCondition, cnd("foo")), list("condition", quote(f())))
+  expect_equal(signal_info("condition", base::signalCondition, cnd("foo")), list("condition", quote(f())))
 
   # Warnings won't be promoted if `condition` is handled. We need to
   # handle `error` instead.
