@@ -7,10 +7,10 @@ test_that("cnd_signal() creates muffle restarts", {
 })
 
 test_that("signallers support character vectors as `message` parameter", {
-  expect_message(inform(c("foo", "bar")), "foo\n* bar", fixed = TRUE)
-  expect_warning(warn(c("foo", "bar")), "foo\n* bar", fixed = TRUE)
-  expect_error(abort(c("foo", "bar")), "foo\n* bar", fixed = TRUE)
-  expect_condition(signal(c("foo", "bar"), "quux"), "quux", regex = "foo\n\\* bar")
+  expect_message(inform(c("foo", "*" = "bar")), "foo\n* bar", fixed = TRUE)
+  expect_warning(warn(c("foo", "*" = "bar")), "foo\n* bar", fixed = TRUE)
+  expect_error(abort(c("foo", "*" = "bar")), "foo\n* bar", fixed = TRUE)
+  expect_condition(signal(c("foo", "*" = "bar"), "quux"), "quux", regex = "foo\n\\* bar")
 })
 
 test_that("cnd_signal() and signal() returns NULL invisibly", {

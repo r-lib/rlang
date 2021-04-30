@@ -108,7 +108,7 @@ warn <- function(message = NULL,
   validate_signal_args(.subclass)
 
   message <- validate_signal_message(message, class)
-  message <- format_message(message, .glue_env)
+  message <- format_warning_message(message, .glue_env)
 
   .frequency <- arg_match0(.frequency, c("always", "regularly", "once"))
 

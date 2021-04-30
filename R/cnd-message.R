@@ -241,6 +241,9 @@ format_message <- function(x, env = caller_env()) {
   if (is_string(x, "")) {
     return("")
   }
+  if (inherits(x, "AsIs")) {
+    return(x)
+  }
 
   orig <- x
 
@@ -254,17 +257,8 @@ format_message <- function(x, env = caller_env()) {
     }
   } 
 
-  if (!inherits(x, "AsIs") && use_cli_format(env)) {
-    if (!has_cli_format) {
-      with_options(
-        "rlang:::disable_cli" = TRUE,
-        abort(c(
-          "`.rlang_use_cli_format` is set to `TRUE` but cli is not installed.",
-          "i" = "The package author should add `cli` to their `Imports`."
-        ))
-      )
-    }
-    out <- cli_format_message(x, env)
+  if (use_cli_format(env)) {
+    out <- cli::format_message(x, env)
   } else {
     out <- format_bullets(x)
   }
@@ -275,23 +269,26 @@ format_message <- function(x, env = caller_env()) {
 #' @rdname format_message
 #' @export
 format_error_message <- function(x, env = caller_env()) {
-  if (!has_cli_format) {
-    return(format_message(x, env))
+  if (inherits(x, "AsIs")) {
+    return(x)
   }
-
-  orig <- x
-
-  # Add "Error: " for the wrapping, because R adds it unconditionally
-  # TODO: I apparently can't translate this with
-  # gettext("Error: ", domain = "R")
-  x[[1]] <- paste0("Error: ", x[[1]]) 
-
-  out <- format_message(x, env)
-
-  # Remove "Error: " that was only needed for the wrapping
-  out <- cli::ansi_substr(out, 8, nchar(out))
-
-  str_restore(out, orig)
+  if (use_cli_format(env)) {
+    str_restore(cli::format_error(x, env), x)
+  } else {
+    format_message(x, env)
+  }
+}
+#' @rdname format_message
+#' @export
+format_warning_message <- function(x, env = caller_env()) {
+  if (inherits(x, "AsIs")) {
+    return(x)
+  }
+  if (use_cli_format(env)) {
+    str_restore(cli::format_warning(x, env), x)
+  } else {
+    format_message(x, env)
+  }
 }
 
 str_restore <- function(x, to) {
@@ -332,15 +329,15 @@ use_cli_format <- function(env) {
     abort("`.rlang_use_cli_format` must be a logical value.")
   }
 
+  if (flag && !has_cli_format) {
+    with_options(
+      "rlang:::disable_cli" = TRUE,
+      abort(c(
+        "`.rlang_use_cli_format` is set to `TRUE` but cli is not installed.",
+        "i" = "The package author should add `cli` to their `Imports`."
+      ))
+    )
+  }
+
   flag
-}
-
-
-# FIXME: This should be exported from cli
-cli_format_message <- function(x, env) {
-  fmt <- env_get(ns_env("cli"), "fmt")
-  msg <- fmt(cli::cli_bullets(x, .envir = env), collapse = TRUE)
-
-  # Remove trailing newline created by `fmt()`
-  substr(msg, 1, nchar(msg) - 1)
 }

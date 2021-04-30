@@ -3,11 +3,14 @@
 \name{format_message}
 \alias{format_message}
 \alias{format_error_message}
+\alias{format_warning_message}
 \title{Format message}
 \usage{
 format_message(x, env = caller_env())
 
 format_error_message(x, env = caller_env())
+
+format_warning_message(x, env = caller_env())
 }
 \arguments{
 \item{x}{A character vector to format into a message ready for

@@ -138,12 +138,12 @@ test_that("cli is not used when message is escaped with `I()`", {
   x <- "foo"
 
   expect_equal(
-    conditionMessage(catch_cnd(abort("{x}"))),
+    conditionMessage(expect_error(abort("{x}"))),
     "foo"
   )
 
   expect_equal(
-    conditionMessage(catch_cnd(abort(I("{x}")))),
+    conditionMessage(expect_error(abort(I("{x}")))),
     "{x}"
   )
 })
