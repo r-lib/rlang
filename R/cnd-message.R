@@ -309,12 +309,19 @@ use_cli_format <- function(env) {
   # Formatting with cli is opt-in for now
   default <- FALSE
 
+  last <- topenv(env)
+
+  # Search across load-all'd environments
+  if (identical(last, global_env()) && "devtools_shims" %in% search()) {
+    last <- empty_env()
+  }
+
   flag <- env_get(
     env,
     ".rlang_use_cli_format",
     default = default,
     inherit = TRUE,
-    last = topenv(env)
+    last = last
   )
 
   if (is_string(flag, "try")) {
