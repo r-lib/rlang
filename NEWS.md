@@ -106,10 +106,15 @@
 * Fixed a bug in the AST rotation algorithm that caused the `!!`
   operator to unexpectedly mutate injected objects (#1103).
 
-* Fixed a gcc11 warning related to `hash()` (#1088).
-
 * `XXH3_64bits()` from the XXHash library is now exposed as C callable
   under the name `rlang_xxh3_64bits()`.
+
+
+# rlang 0.4.11
+
+* Fix for CRAN checks.
+
+* Fixed a gcc11 warning related to `hash()` (#1088).
 
 
 # rlang 0.4.10
