@@ -27,6 +27,10 @@ struct r_globals_classes {
   r_obj* tibble;
 };
 
+struct r_globals_strs {
+  r_obj* dots;
+};
+
 struct r_globals_syms {
   r_obj* class;
   r_obj* dots;
@@ -58,6 +62,7 @@ struct r_globals_envs {
 extern struct r_globals r_globals;
 extern struct r_globals_chrs r_chrs;
 extern struct r_globals_classes r_classes;
+extern struct r_globals_strs r_strs;
 extern struct r_globals_syms r_syms;
 extern struct r_globals_envs r_envs;
 

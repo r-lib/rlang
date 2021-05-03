@@ -5,6 +5,7 @@
 struct r_globals r_globals;
 struct r_globals_chrs r_chrs;
 struct r_globals_classes r_classes;
+struct r_globals_strs r_strs;
 struct r_globals_syms r_syms;
 struct r_globals_envs r_envs;
 
@@ -34,6 +35,8 @@ void r_init_library_globals() {
 
   r_classes.tibble = r_chr_n(v_tibble_class, R_ARR_SIZEOF(v_tibble_class));
   r_preserve_global(r_classes.tibble);
+
+  r_strs.dots = r_sym_string(r_syms.dots);
 
   r_false = r_preserve_global(r_lgl(0));
   r_true = r_preserve_global(r_lgl(1));
