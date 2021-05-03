@@ -2,15 +2,6 @@
 #define RLANG_GLOBALS_H
 
 
-struct r_globals_classes {
-  r_obj* data_frame;
-  r_obj* tibble;
-};
-
-struct r_globals_chrs {
-  r_obj* empty_string;
-};
-
 struct r_globals {
   r_obj* empty_lgl;
   r_obj* empty_int;
@@ -25,6 +16,15 @@ struct r_globals {
   int na_int;
   double na_dbl;
   r_obj* na_str;
+};
+
+struct r_globals_chrs {
+  r_obj* empty_string;
+};
+
+struct r_globals_classes {
+  r_obj* data_frame;
+  r_obj* tibble;
 };
 
 struct r_globals_syms {

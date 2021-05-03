@@ -16,12 +16,6 @@ void r_init_library_globals() {
   r_classes.data_frame = r_preserve_global(r_chr("data.frame"));
 
   const char* v_tibble_class[] = { "tbl_df", "tbl", "data.frame" };
-  r_classes.tibble = r_chr_n(v_tibble_class, R_ARR_SIZEOF(v_tibble_class));
-  r_preserve_global(r_classes.tibble);
-
-  r_chrs.empty_string = r_preserve_global(r_chr(""));
-  r_globals.empty_str = r_chr_get(r_chrs.empty_string, 0);
-
   r_globals.empty_lgl = r_preserve_global(r_alloc_logical(0));
   r_globals.empty_int = r_preserve_global(r_alloc_integer(0));
   r_globals.empty_dbl = r_preserve_global(r_alloc_double(0));
@@ -34,6 +28,12 @@ void r_init_library_globals() {
   r_globals.na_int = NA_INTEGER;
   r_globals.na_dbl = NA_REAL;
   r_globals.na_str = NA_STRING;
+
+  r_chrs.empty_string = r_preserve_global(r_chr(""));
+  r_globals.empty_str = r_chr_get(r_chrs.empty_string, 0);
+
+  r_classes.tibble = r_chr_n(v_tibble_class, R_ARR_SIZEOF(v_tibble_class));
+  r_preserve_global(r_classes.tibble);
 
   r_false = r_preserve_global(r_lgl(0));
   r_true = r_preserve_global(r_lgl(1));
