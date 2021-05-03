@@ -22,6 +22,7 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_attrib",                       (DL_FUNC) &r_attrib, 1},
   {"ffi_c_tests",                      (DL_FUNC) &ffi_c_tests, 0},
   {"ffi_call_has_precedence",          (DL_FUNC) &ffi_call_has_precedence, 3},
+  {"ffi_chr_as_unique_names",          (DL_FUNC) &ffi_chr_as_unique_names, 2},
   {"ffi_chr_get",                      (DL_FUNC) &ffi_chr_get, 2},
   {"ffi_chr_has_curly",                (DL_FUNC) &ffi_chr_has_curly, 1},
   {"ffi_cnd_signal",                   (DL_FUNC) &ffi_cnd_signal, 1},

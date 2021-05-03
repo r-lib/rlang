@@ -18,6 +18,7 @@
 #include "file.c"
 #include "fn.c"
 #include "hash.c"
+#include "names.c"
 #include "nse-defuse.c"
 #include "parse.c"
 #include "quo.c"
