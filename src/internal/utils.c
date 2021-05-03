@@ -176,7 +176,7 @@ r_obj* nms_are_duplicated(r_obj* nms, bool from_last) {
   r_obj* const * p_nms = r_chr_cbegin(nms);
 
   for (r_ssize i = 0; i < n; ++i) {
-    if (p_nms[i] == r_globals.empty_str || p_nms[i] == r_globals.na_str) {
+    if (p_nms[i] == r_strs.empty || p_nms[i] == r_globals.na_str) {
       p_dups[i] = false;
     }
   }

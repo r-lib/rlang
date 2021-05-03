@@ -55,7 +55,7 @@ bool r_str_is_name(r_obj* str) {
   if (str == r_globals.na_str) {
     return false;
   }
-  if (str == r_globals.empty_str) {
+  if (str == r_strs.empty) {
     return false;
   }
   return true;

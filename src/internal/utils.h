@@ -19,7 +19,7 @@ bool r_is_namespaced_call_any(r_obj* x, const char* ns, const char** names, int 
 static inline
 r_obj* r_nms_get(r_obj* nms, r_ssize i) {
   if (nms == r_null) {
-    return r_globals.empty_str;
+    return r_strs.empty;
   } else {
     return r_chr_get(nms, i);
   }

@@ -36,7 +36,7 @@ r_obj* ffi_names2(r_obj* x, r_obj* env) {
   if (nms == r_null) {
     r_ssize n = r_length(x);
     nms = KEEP(r_alloc_character(n));
-    r_chr_fill(nms, r_globals.empty_str, n);
+    r_chr_fill(nms, r_strs.empty, n);
   } else {
     nms = KEEP(ffi_replace_na(nms, r_chrs.empty_string));
   }
@@ -57,7 +57,7 @@ r_obj* node_names(r_obj* x) {
     r_obj* tag = r_node_tag(x);
 
     if (tag == r_null) {
-      r_chr_poke(out, i, r_globals.empty_str);
+      r_chr_poke(out, i, r_strs.empty);
     } else {
       r_chr_poke(out, i, PRINTNAME(tag));
     }

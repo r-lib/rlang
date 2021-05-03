@@ -8,7 +8,6 @@ struct r_globals {
   r_obj* empty_dbl;
   r_obj* empty_cpl;
   r_obj* empty_raw;
-  r_obj* empty_str;
   r_obj* empty_chr;
   r_obj* empty_list;
 
@@ -29,6 +28,7 @@ struct r_globals_classes {
 
 struct r_globals_strs {
   r_obj* dots;
+  r_obj* empty;
 };
 
 struct r_globals_syms {
