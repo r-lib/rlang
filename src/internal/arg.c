@@ -171,12 +171,11 @@ r_obj* ffi_arg_match0(r_obj* args) {
 void arg_match0_abort(const char* msg, r_obj* env) {
   r_obj* arg_nm = KEEP(r_eval(arg_nm_sym, env));
 
-  if (r_typeof(arg_nm) != R_TYPE_character || r_length(arg_nm) != 1) {
+  if (r_is_string(arg_nm)) {
+    r_abort(msg, r_chr_get_c_string(arg_nm, 0));
+  } else {
     r_abort(msg, "<arg_nm>");
   }
-
-  const char* arg_nm_chr = r_chr_get_c_string(arg_nm, 0);
-  r_abort(msg, arg_nm_chr);
 }
 
 
