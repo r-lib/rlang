@@ -182,6 +182,7 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_test_lgl_sum",                 (DL_FUNC) &ffi_test_lgl_sum, 2},
   {"ffi_test_lgl_which",               (DL_FUNC) &ffi_test_lgl_which, 2},
   {"ffi_test_node_list_clone_until",   (DL_FUNC) &ffi_test_node_list_clone_until, 2},
+  {"ffi_test_normalise_encoding",      (DL_FUNC) &r_normalise_encoding, 1},
   {"ffi_test_parse",                   (DL_FUNC) &ffi_test_parse, 1},
   {"ffi_test_parse_eval",              (DL_FUNC) &ffi_test_parse_eval, 2},
   {"ffi_test_r_on_exit",               (DL_FUNC) &r_on_exit, 2},

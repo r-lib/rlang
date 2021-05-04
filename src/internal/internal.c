@@ -7,6 +7,7 @@
 #include "call.c"
 #include "dots.c"
 #include "dots-ellipsis.c"
+#include "encoding.c"
 #include "env.c"
 #include "env-binding.c"
 #include "eval.c"
