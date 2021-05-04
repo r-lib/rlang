@@ -98,11 +98,13 @@ r_obj* arg_match(r_obj* arg, r_obj* values, r_obj* arg_nm) {
     r_abort("`%s` must be a string or have the same length as `values`.", unwrap_c_str(arg_nm));
   }
 
+  r_obj* const* p_values = r_chr_cbegin(values);
+
   // Simple case: one argument, we check if it's one of the values.
   if (arg_len == 1) {
     r_obj* arg_char = r_chr_get(arg, 0);
     for (r_ssize i = 0; i < values_len; ++i) {
-      if (arg_char == r_chr_get(values, i)) {
+      if (arg_char == p_values[i]) {
         return(arg);
       }
     }
@@ -112,7 +114,6 @@ r_obj* arg_match(r_obj* arg, r_obj* values, r_obj* arg_nm) {
   }
 
   r_obj* const* p_arg = r_chr_cbegin(arg);
-  r_obj* const* p_values = r_chr_cbegin(values);
 
   // Same-length vector: must be identical, we allow changed order.
   r_ssize i = 0;
