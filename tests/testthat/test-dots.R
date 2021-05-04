@@ -302,8 +302,8 @@ test_that("dots_list() optionally auto-names arguments (#957)", {
 })
 
 test_that("`.ignore_empty` is matched", {
-  # Tests the `r_arg_match()` library function`
+  # Tests the `r_arg_match()` library function
   expect_snapshot({
-    expect_error(dots_list(.ignore_empty = "t"))
+    (expect_error(dots_list(.ignore_empty = "t")))
   })
 })
