@@ -1109,7 +1109,7 @@ test_that("normalisation treats data frames elements of lists as lists (r-lib/vc
   encs <- test_encodings()
   a <- c(encs$utf8, encs$latin1)
 
-  df <- data.frame(a = a, b = 1:2)
+  df <- data.frame(a = a, b = 1:2, stringsAsFactors = FALSE)
   x <- list(df)
 
   result <- r_normalise_encoding(x)
