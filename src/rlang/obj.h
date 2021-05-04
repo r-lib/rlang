@@ -59,6 +59,10 @@ static inline
 r_obj* r_clone(r_obj* x) {
   return Rf_shallow_duplicate(x);
 }
+static inline
+r_obj* r_clone_shared(r_obj* x) {
+  return r_is_shared(x) ? r_clone(x) : x;
+}
 
 static inline
 r_obj* r_poke_type(r_obj* x, enum r_type type) {
