@@ -15,20 +15,20 @@ bool test_that_false_is_false() {
   if (false) return r_false; else return r_true;
 }
 
-enum tests_df_locs {
-  TESTS_DF_LOCS_desc = 0,
-  TESTS_DF_LOCS_fn_ptr,
+enum tests_df {
+  TESTS_DF_desc = 0,
+  TESTS_DF_fn_ptr,
   TESTS_DF_SIZE
 };
 static
 const char* tests_df_names_c_strings[TESTS_DF_SIZE] = {
-  "desc",
-  "fn_ptr"
+  [TESTS_DF_desc] = "desc",
+  [TESTS_DF_fn_ptr] = "fn_ptr"
 };
 static
 const enum r_type tests_df_types[TESTS_DF_SIZE] = {
-  R_TYPE_character,
-  R_TYPE_list
+  [TESTS_DF_desc] = R_TYPE_character,
+  [TESTS_DF_fn_ptr] = R_TYPE_list
 };
 
 
@@ -46,8 +46,8 @@ r_obj* ffi_c_tests() {
                                    TESTS_DF_SIZE));
   r_init_tibble(df, n_rows);
 
-  r_obj* desc_col = r_list_get(df, TESTS_DF_LOCS_desc);
-  r_obj* fn_ptr_col = r_list_get(df, TESTS_DF_LOCS_fn_ptr);
+  r_obj* desc_col = r_list_get(df, TESTS_DF_desc);
+  r_obj* fn_ptr_col = r_list_get(df, TESTS_DF_fn_ptr);
 
   for (int i = 0; i < n_rows; ++i) {
     struct r_test test = tests[i];
