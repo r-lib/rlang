@@ -129,16 +129,25 @@ backtrace.
 }
 }
 
-\section{Mufflable conditions}{
+\section{Muffling and silencing conditions}{
 
 
 Signalling a condition with \code{inform()} or \code{warn()} causes a message
 to be displayed in the console. These messages can be muffled with
 \code{\link[base:message]{base::suppressMessages()}} or \code{\link[base:warning]{base::suppressWarnings()}}.
 
-On recent R versions (>= R 3.5.0), interrupts are typically
-signalled with a \code{"resume"} restart. This is however not
-guaranteed.
+\code{inform()} and \code{warn()} messages can also be silenced with the
+global options \code{rlib_message_verbosity} and
+\code{rlib_warning_verbosity}. These options take the values:
+\itemize{
+\item \code{"default"}: Verbose unless the \code{.frequency} argument is
+supplied.
+\item \code{"verbose"}: Always verbose.
+\item \code{"quiet"}: Always quiet.
+}
+
+When set to quiet, the message is not displayed and the condition
+is not signalled.
 }
 
 \examples{

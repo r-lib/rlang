@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* `inform()` and `warn()` messages can now be silenced with the global
+  options `rlib_message_verbosity` and `rlib_warning_verbosity`.
+
 * `check_dots_empty()`, `check_dots_unused()`, and
   `check_dots_unnamed()` have been moved from ellipsis to rlang. The
   ellipsis package is deprecated and will eventually be archived. 

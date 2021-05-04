@@ -39,15 +39,24 @@
 #' * `"full"`: Display a full backtrace tree.
 #' * `"none"`: Display nothing.
 #'
-#' @section Mufflable conditions:
+#' @section Muffling and silencing conditions:
 #'
 #' Signalling a condition with `inform()` or `warn()` causes a message
 #' to be displayed in the console. These messages can be muffled with
 #' [base::suppressMessages()] or [base::suppressWarnings()].
 #'
-#' On recent R versions (>= R 3.5.0), interrupts are typically
-#' signalled with a `"resume"` restart. This is however not
-#' guaranteed.
+#' `inform()` and `warn()` messages can also be silenced with the
+#' global options `rlib_message_verbosity` and
+#' `rlib_warning_verbosity`. These options take the values:
+#'
+#' - `"default"`: Verbose unless the `.frequency` argument is
+#'   supplied.
+#' - `"verbose"`: Always verbose.
+#' - `"quiet"`: Always quiet.
+#'
+#' When set to quiet, the message is not displayed and the condition
+#' is not signalled.
+#'
 #'
 #' @inheritParams cnd
 #' @param message The message to display. Character vectors are
