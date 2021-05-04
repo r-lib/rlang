@@ -1,0 +1,7 @@
+#include "rlang.h"
+
+r_obj* (*r_arg_match)(r_obj* arg, r_obj* values, r_obj* arg_nm);
+
+void r_init_library_arg() {
+  r_arg_match = (r_obj* (*)(r_obj*, r_obj*, r_obj*)) r_peek_c_callable("rlang", "rlang_arg_match");
+}

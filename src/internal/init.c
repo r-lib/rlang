@@ -241,6 +241,7 @@ void R_init_rlang(DllInfo* dll) {
   R_RegisterCCallable("rlang", "rlang_quo_get_expr",        (DL_FUNC) &ffi_quo_get_expr);
   R_RegisterCCallable("rlang", "rlang_quo_set_env",         (DL_FUNC) &ffi_quo_set_env);
   R_RegisterCCallable("rlang", "rlang_quo_set_expr",        (DL_FUNC) &ffi_quo_set_expr);
+  R_RegisterCCallable("rlang", "rlang_arg_match",           (DL_FUNC) &arg_match);
 
   r_obj* r_as_function(r_obj* x, const char* arg);
   R_RegisterCCallable("rlang", "rlang_as_function",         (DL_FUNC) &r_as_function);

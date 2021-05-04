@@ -37,6 +37,7 @@ r_ssize r_as_ssize(r_obj* n);
 #include "globals.h"
 
 #include "altrep.h"
+#include "arg.h"
 #include "attrib.h"
 #include "debug.h"
 #include "c-utils.h"

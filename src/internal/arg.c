@@ -80,6 +80,7 @@ r_obj* ffi_enquo(r_obj* sym, r_obj* frame) {
 
 // Match ------------------------------------------------------------------
 
+// [[ register("c") ]]
 r_obj* arg_match(r_obj* arg, r_obj* values, r_obj* arg_nm) {
   if (r_typeof(arg) != R_TYPE_character) {
     r_abort("`%s` must be a character vector.", unwrap_c_str(arg_nm));
