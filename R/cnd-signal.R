@@ -111,7 +111,7 @@ warn <- function(message = NULL,
 
   .frequency <- arg_match0(.frequency, c("always", "regularly", "once"))
 
-  if (needs_signal(.frequency, .frequency_id, warning_freq_env)) {
+  if (needs_signal(.frequency, .frequency_id, warning_freq_env, "rlib_warning_verbosity")) {
     message <- add_message_freq(message, .frequency, "warning")
   } else {
     return(invisible(NULL))
@@ -142,7 +142,7 @@ inform <- function(message = NULL,
   validate_signal_args(.subclass)
 
   .frequency <- arg_match0(.frequency, c("always", "regularly", "once"))
-  if (!needs_signal(.frequency, .frequency_id, message_freq_env)) {
+  if (!needs_signal(.frequency, .frequency_id, message_freq_env, "rlib_message_verbosity")) {
     return(invisible(NULL))
   }
 
@@ -210,11 +210,21 @@ validate_signal_message <- function(msg, class) {
 warning_freq_env <- new.env(parent = emptyenv())
 message_freq_env <- new.env(parent = emptyenv())
 
-needs_signal <- function(frequency, id, env) {
+peek_verbosity <- function(opt) {
+  out <- peek_option(opt) %||% "default"
+  out <- arg_match0(out, c("default", "verbose", "quiet"), opt)
+  out
+}
+
+needs_signal <- function(frequency, id, env, opt) {
+  switch(
+    peek_verbosity(opt),
+    verbose = return(TRUE),
+    quiet = return(FALSE),
+    default = NULL
+  )
+
   if (is_string(frequency, "always")) {
-    return(TRUE)
-  }
-  if (is_true(peek_option("rlang:::message_always"))) {
     return(TRUE)
   }
 

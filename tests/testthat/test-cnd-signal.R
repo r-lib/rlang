@@ -89,7 +89,7 @@ test_that("`inform()` returns invisibly", {
 })
 
 test_that("warn() respects frequency", {
-  local_options(`rlang:::message_always` = FALSE)
+  local_options(rlib_warning_verbosity = "default")
 
   expect_warning(
     warn("foo", .frequency = "always", .frequency_id = "warn_always"),
@@ -118,7 +118,7 @@ test_that("warn() respects frequency", {
 })
 
 test_that("inform() respects frequency", {
-  local_options(`rlang:::message_always` = FALSE)
+  local_options(rlib_message_verbosity = "default")
 
   expect_message(
     inform("foo", .frequency = "always", .frequency_id = "inform_always"),
@@ -147,7 +147,10 @@ test_that("inform() respects frequency", {
 })
 
 test_that("warn() and inform() use different periodicity environments", {
-  local_options(`rlang:::message_always` = FALSE)
+  local_options(
+    rlib_message_verbosity = "default",
+    rlib_warning_verbosity = "default"
+  )
 
   expect_message(
     inform("foo", .frequency = "once", .frequency_id = "warn_inform_different_envs"),
@@ -160,7 +163,7 @@ test_that("warn() and inform() use different periodicity environments", {
 })
 
 test_that("periodic messages can be forced", {
-  local_options(`rlang:::message_always` = TRUE)
+  local_options(rlib_warning_verbosity = "verbose")
   expect_warning(
     warn("foo", .frequency = "once", .frequency_id = "warn_forced"),
     "foo"
@@ -169,6 +172,15 @@ test_that("periodic messages can be forced", {
     warn("foo", .frequency = "once", .frequency_id = "warn_forced"),
     "foo"
   )
+})
+
+test_that("messages can be silenced", {
+  local_options(
+    rlib_message_verbosity = "quiet",
+    rlib_warning_verbosity = "quiet"
+  )
+  expect_message(inform("foo"), NA)
+  expect_warning(warn("foo"), NA)
 })
 
 test_that("`.frequency_id` is mandatory", {
