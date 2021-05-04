@@ -80,8 +80,8 @@ r_obj* ffi_enquo(r_obj* sym, r_obj* frame) {
 
 // Match ------------------------------------------------------------------
 
-// [[ register("c") ]]
-r_obj* arg_match(r_obj* arg, r_obj* values, r_obj* arg_nm) {
+// [[ export() ]]
+int arg_match(r_obj* arg, r_obj* values, r_obj* arg_nm) {
   if (r_typeof(arg) != R_TYPE_character) {
     r_abort("`%s` must be a character vector.", unwrap_c_str(arg_nm));
   }
@@ -89,8 +89,8 @@ r_obj* arg_match(r_obj* arg, r_obj* values, r_obj* arg_nm) {
     r_abort("`values` must be a character vector.");
   }
 
-  r_ssize arg_len = r_length(arg);
-  r_ssize values_len = r_length(values);
+  int arg_len = r_length(arg);
+  int values_len = r_length(values);
   if (values_len == 0) {
     r_abort("`values` must have at least one element.", unwrap_c_str(arg_nm));
   }
@@ -103,9 +103,9 @@ r_obj* arg_match(r_obj* arg, r_obj* values, r_obj* arg_nm) {
   // Simple case: one argument, we check if it's one of the values.
   if (arg_len == 1) {
     r_obj* arg_char = r_chr_get(arg, 0);
-    for (r_ssize i = 0; i < values_len; ++i) {
+    for (int i = 0; i < values_len; ++i) {
       if (arg_char == p_values[i]) {
-        return(arg);
+        return i;
       }
     }
 
@@ -116,7 +116,7 @@ r_obj* arg_match(r_obj* arg, r_obj* values, r_obj* arg_nm) {
   r_obj* const* p_arg = r_chr_cbegin(arg);
 
   // Same-length vector: must be identical, we allow changed order.
-  r_ssize i = 0;
+  int i = 0;
   for (; i < arg_len; ++i) {
     if (p_arg[i] != p_values[i]) {
       break;
@@ -125,7 +125,7 @@ r_obj* arg_match(r_obj* arg, r_obj* values, r_obj* arg_nm) {
 
   // Elements are identical, return first
   if (i == arg_len) {
-    return(r_str_as_character(p_arg[0]));
+    return 0;
   }
 
   r_obj* my_values = KEEP(r_clone(values));
@@ -139,7 +139,7 @@ r_obj* arg_match(r_obj* arg, r_obj* values, r_obj* arg_nm) {
     }
 
     bool matched = false;
-    for (r_ssize j = i + 1; j < arg_len; ++j) {
+    for (int j = i + 1; j < arg_len; ++j) {
       if (current_arg == p_my_values[j]) {
         matched = true;
 
@@ -157,8 +157,15 @@ r_obj* arg_match(r_obj* arg, r_obj* values, r_obj* arg_nm) {
     }
   }
 
-  FREE(1);
-  return(r_str_as_character(r_chr_get(arg, 0)));
+  r_obj* first_elt = r_chr_get(arg, 0);
+  for (i = 0; i < values_len; ++i) {
+    if (first_elt == p_values[i]) {
+      FREE(1);
+      return i;
+    }
+  }
+
+  r_stop_unreached("arg_match");
 }
 
 r_obj* ffi_arg_match0(r_obj* args) {
@@ -168,7 +175,8 @@ r_obj* ffi_arg_match0(r_obj* args) {
   r_obj* values = r_node_car(args); args = r_node_cdr(args);
   r_obj* arg_nm = r_node_car(args);
 
-  return arg_match(arg, values, arg_nm);
+  int i = arg_match(arg, values, arg_nm);
+  return r_str_as_character(r_chr_get(values, i));
 }
 
 static

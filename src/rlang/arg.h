@@ -2,7 +2,7 @@
 #define RLANG_ARG_H
 
 
-extern r_obj* (*r_arg_match)(r_obj* arg, r_obj* values, r_obj* arg_nm);
+extern int (*r_arg_match)(r_obj* arg, r_obj* values, r_obj* arg_nm);
 
 
 #endif
