@@ -80,15 +80,9 @@ r_obj* ffi_enquo(r_obj* sym, r_obj* frame) {
 
 // Match ------------------------------------------------------------------
 
-r_obj* ffi_arg_match0(r_obj* args) {
-  args = r_node_cdr(args);
-
-  r_obj* arg = r_node_car(args); args = r_node_cdr(args);
-  r_obj* values = r_node_car(args); args = r_node_cdr(args);
-  r_obj* env = r_node_car(args);
-
+r_obj* arg_match(r_obj* arg, r_obj* values, r_obj* arg_nm) {
   if (r_typeof(arg) != R_TYPE_character) {
-    arg_match0_abort("`%s` must be a character vector.", env);
+    r_abort("`%s` must be a character vector.", unwrap_c_str(arg_nm));
   }
   if (r_typeof(values) != R_TYPE_character) {
     r_abort("`values` must be a character vector.");
@@ -97,10 +91,10 @@ r_obj* ffi_arg_match0(r_obj* args) {
   r_ssize arg_len = r_length(arg);
   r_ssize values_len = r_length(values);
   if (values_len == 0) {
-    arg_match0_abort("`values` must have at least one element.", env);
+    r_abort("`values` must have at least one element.", unwrap_c_str(arg_nm));
   }
   if (arg_len != 1 && arg_len != values_len) {
-    arg_match0_abort("`%s` must be a string or have the same length as `values`.", env);
+    r_abort("`%s` must be a string or have the same length as `values`.", unwrap_c_str(arg_nm));
   }
 
   // Simple case: one argument, we check if it's one of the values.
@@ -112,10 +106,8 @@ r_obj* ffi_arg_match0(r_obj* args) {
       }
     }
 
-    r_obj* arg_nm = KEEP(r_eval(arg_nm_sym, env));
-    r_eval_with_xyz(stop_arg_match_call, arg, values, arg_nm, rlang_ns_env);
-
-    r_stop_unreached("ffi_arg_match0");
+    r_eval_with_xyz(stop_arg_match_call, arg, values, KEEP(wrap_chr(arg_nm)), rlang_ns_env);
+    r_stop_unreached("arg_match");
   }
 
   r_obj* const* p_arg = r_chr_cbegin(arg);
@@ -157,10 +149,9 @@ r_obj* ffi_arg_match0(r_obj* args) {
 
     if (!matched) {
       arg = KEEP(r_str_as_character(r_chr_get(arg, 0)));
-      r_obj* arg_nm = KEEP(r_eval(arg_nm_sym, env));
+      arg_nm = KEEP(wrap_chr(arg_nm));
       r_eval_with_xyz(stop_arg_match_call, arg, values, arg_nm, rlang_ns_env);
-
-      r_stop_unreached("ffi_arg_match0");
+      r_stop_unreached("arg_match");
     }
   }
 
@@ -168,13 +159,57 @@ r_obj* ffi_arg_match0(r_obj* args) {
   return(r_str_as_character(r_chr_get(arg, 0)));
 }
 
-void arg_match0_abort(const char* msg, r_obj* env) {
-  r_obj* arg_nm = KEEP(r_eval(arg_nm_sym, env));
+r_obj* ffi_arg_match0(r_obj* args) {
+  args = r_node_cdr(args);
 
-  if (r_is_string(arg_nm)) {
-    r_abort(msg, r_chr_get_c_string(arg_nm, 0));
-  } else {
-    r_abort(msg, "<arg_nm>");
+  r_obj* arg = r_node_car(args); args = r_node_cdr(args);
+  r_obj* values = r_node_car(args); args = r_node_cdr(args);
+  r_obj* arg_nm = r_node_car(args);
+
+  return arg_match(arg, values, arg_nm);
+}
+
+static
+r_obj* wrap_chr(r_obj* arg) {
+  switch (arg_match_arg_nm_type(arg)) {
+  case R_TYPE_symbol:
+    return r_sym_as_character(arg);
+  case R_TYPE_character:
+    return arg;
+  default:
+    r_stop_unreached("wrap_chr");
+  }
+}
+
+static
+r_obj* unwrap_str(r_obj* arg) {
+  switch (arg_match_arg_nm_type(arg)) {
+  case R_TYPE_symbol:
+    return r_sym_string(arg);
+  case R_TYPE_character:
+    return r_chr_get(arg, 0);
+  default:
+    r_stop_unreached("unwrap_str");
+  }
+}
+
+static
+const char* unwrap_c_str(r_obj* arg) {
+  return r_str_c_string(unwrap_str(arg));
+}
+
+static
+enum r_type arg_match_arg_nm_type(r_obj* arg_nm) {
+  switch (r_typeof(arg_nm)) {
+  case R_TYPE_symbol:
+    return R_TYPE_symbol;
+  case R_TYPE_character:
+    if (r_is_string(arg_nm)) {
+      return R_TYPE_character;
+    }
+    // else fallthrough;
+  default:
+      r_abort("`arg_nm` must be a string or symbol.");
   }
 }
 
@@ -182,9 +217,6 @@ void arg_match0_abort(const char* msg, r_obj* env) {
 void rlang_init_arg(r_obj* ns) {
   stop_arg_match_call = r_parse("stop_arg_match(x, y, z)");
   r_preserve(stop_arg_match_call);
-
-  arg_nm_sym = r_sym("arg_nm");
 }
 
 static r_obj* stop_arg_match_call = NULL;
-static r_obj* arg_nm_sym = NULL;

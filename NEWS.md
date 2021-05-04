@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* The `arg_nm` argument of `arg_match0()` must now be a string or
+  symbol.
+
 * `inform()` and `warn()` messages can now be silenced with the global
   options `rlib_message_verbosity` and `rlib_warning_verbosity`.
 

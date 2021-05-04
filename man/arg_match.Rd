@@ -7,14 +7,15 @@
 \usage{
 arg_match(arg, values = NULL)
 
-arg_match0(arg, values, arg_nm = as_label(substitute(arg)))
+arg_match0(arg, values, arg_nm = substitute(arg))
 }
 \arguments{
 \item{arg}{A symbol referring to an argument accepting strings.}
 
 \item{values}{The possible values that \code{arg} can take.}
 
-\item{arg_nm}{The label to be used for \code{arg} in error messages.}
+\item{arg_nm}{Argument name of \code{arg} to use in error messages. Can
+be a string or symbol.}
 }
 \value{
 The string supplied to \code{arg}.

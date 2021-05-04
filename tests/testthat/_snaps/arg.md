@@ -19,43 +19,49 @@
       `my_arg` must be one of "ba" or "fo", not "fu".
       i Did you mean "fo"?
     Code
-      (expect_error(arg_match0("baq", c("foo", "baz", "bas"))))
+      (expect_error(arg_match0("baq", c("foo", "baz", "bas"), "my_arg")))
     Output
       <error/rlang_error>
-      `"baq"` must be one of "foo", "baz", or "bas", not "baq".
+      `my_arg` must be one of "foo", "baz", or "bas", not "baq".
       i Did you mean "baz"?
     Code
       (expect_error(arg_match0("", character(), "my_arg")))
     Output
       <error/rlang_error>
       `values` must have at least one element.
+    Code
+      (expect_error(arg_match0("fo", "foo", quote(f()))))
+    Output
+      <error/rlang_error>
+      `arg_nm` must be a string or symbol.
 
 # `arg_match()` provides no suggestion when the edit distance is too large
 
     Code
-      (expect_error(arg_match0("foobaz", c("fooquxs", "discrete"))))
+      (expect_error(arg_match0("foobaz", c("fooquxs", "discrete"), "my_arg")))
     Output
       <error/rlang_error>
-      `"foobaz"` must be one of "fooquxs" or "discrete", not "foobaz".
+      `my_arg` must be one of "fooquxs" or "discrete", not "foobaz".
     Code
-      (expect_error(arg_match0("a", c("b", "c"))))
+      (expect_error(arg_match0("a", c("b", "c"), "my_arg")))
     Output
       <error/rlang_error>
-      `"a"` must be one of "b" or "c", not "a".
+      `my_arg` must be one of "b" or "c", not "a".
 
 # `arg_match()` makes case-insensitive match
 
     Code
-      (expect_error(arg_match0("a", c("A", "B")), "Did you mean \"A\"?"))
+      (expect_error(arg_match0("a", c("A", "B"), "my_arg"), "Did you mean \"A\"?"))
     Output
       <error/rlang_error>
-      `"a"` must be one of "A" or "B", not "a".
+      `my_arg` must be one of "A" or "B", not "a".
       i Did you mean "A"?
     Code
-      (expect_error(arg_match0("aa", c("AA", "aA")), "Did you mean \"aA\"?"))
+      (expect_error(arg_match0("aa", c("AA", "aA"), "my_arg"), "Did you mean \"aA\"?")
+      )
     Output
       <error/rlang_error>
-      `"aa"` must be one of "AA" or "aA", not "aa".
+      `my_arg` must be one of "AA" or "aA", not "aa".
       i Did you mean "aA"?
 
 # arg_require() checks argument is supplied (#1118)
