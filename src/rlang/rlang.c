@@ -58,19 +58,6 @@ r_ssize r_as_ssize(r_obj* n) {
   }
 }
 
-void r_init_rlang_ns_env();
-void r_init_library_call();
-void r_init_library_cnd();
-void r_init_library_dyn_array();
-void r_init_library_env();
-void r_init_library_fn();
-void r_init_library_globals();
-void r_init_library_globals_syms();
-void r_init_library_session();
-void r_init_library_obj(r_obj*);
-void r_init_library_stack();
-void r_init_library_vendor();
-
 static r_obj* shared_x_env;
 static r_obj* shared_xy_env;
 static r_obj* shared_xyz_env;
@@ -97,6 +84,7 @@ r_obj* r_init_library(r_obj* ns) {
   r_init_library_dyn_array();
   r_init_library_env();
   r_init_library_fn();
+  r_init_library_quo();
   r_init_library_session();
   r_init_library_stack();
 
@@ -108,11 +96,6 @@ r_obj* r_init_library(r_obj* ns) {
 
   shared_xyz_env = r_parse_eval("new.env(hash = FALSE, parent = baseenv(), size = 1L)", r_envs.base);
   r_preserve(shared_xyz_env);
-
-  r_quo_get_expr = (r_obj* (*)(r_obj*)) r_peek_c_callable("rlang", "rlang_quo_get_expr");
-  r_quo_set_expr = (r_obj* (*)(r_obj*, r_obj*)) r_peek_c_callable("rlang", "rlang_quo_set_expr");
-  r_quo_get_env = (r_obj* (*)(r_obj*)) r_peek_c_callable("rlang", "rlang_quo_get_env");
-  r_quo_set_env = (r_obj* (*)(r_obj*, r_obj*)) r_peek_c_callable("rlang", "rlang_quo_set_env");
 
   // Return a SEXP so the init function can be called from R
   return r_null;
