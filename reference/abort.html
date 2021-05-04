@@ -306,7 +306,7 @@ backtrace.</p></li>
 <li><p><code>"none"</code>: Display nothing.</p></li>
 </ul>
 
-    <h2 class="hasAnchor" id="mufflable-conditions"><a class="anchor" href="#mufflable-conditions"></a>Mufflable conditions</h2>
+    <h2 class="hasAnchor" id="muffling-and-silencing-conditions"><a class="anchor" href="#muffling-and-silencing-conditions"></a>Muffling and silencing conditions</h2>
 
     
 
@@ -314,9 +314,17 @@ backtrace.</p></li>
 <p>Signalling a condition with <code>inform()</code> or <code>warn()</code> causes a message
 to be displayed in the console. These messages can be muffled with
 <code><a href='https://rdrr.io/r/base/message.html'>base::suppressMessages()</a></code> or <code><a href='https://rdrr.io/r/base/warning.html'>base::suppressWarnings()</a></code>.</p>
-<p>On recent R versions (&gt;= R 3.5.0), interrupts are typically
-signalled with a <code>"resume"</code> restart. This is however not
-guaranteed.</p>
+<p><code>inform()</code> and <code>warn()</code> messages can also be silenced with the
+global options <code>rlib_message_verbosity</code> and
+<code>rlib_warning_verbosity</code>. These options take the values:</p><ul>
+<li><p><code>"default"</code>: Verbose unless the <code>.frequency</code> argument is
+supplied.</p></li>
+<li><p><code>"verbose"</code>: Always verbose.</p></li>
+<li><p><code>"quiet"</code>: Always quiet.</p></li>
+</ul>
+
+<p>When set to quiet, the message is not displayed and the condition
+is not signalled.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='with_abort.html'>with_abort()</a></code> to convert all errors to rlang errors.</p></div>

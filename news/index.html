@@ -158,6 +158,7 @@
 <a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li><p><code><a href="../reference/abort.html">inform()</a></code> and <code><a href="../reference/abort.html">warn()</a></code> messages can now be silenced with the global options <code>rlib_message_verbosity</code> and <code>rlib_warning_verbosity</code>.</p></li>
 <li>
 <p><code><a href="../reference/check_dots_empty.html">check_dots_empty()</a></code>, <code>check_dots_unused()</code>, and <code><a href="../reference/check_dots_unnamed.html">check_dots_unnamed()</a></code> have been moved from ellipsis to rlang. The ellipsis package is deprecated and will eventually be archived.</p>
 <p>We have added <code><a href="../reference/check_dots_empty0.html">check_dots_empty0()</a></code>. It has a different UI but is almost as efficient as checking for <code><a href="../reference/missing.html">missing(...)</a></code>. Use this in very low level functions where a couple microseconds make a difference.</p>
