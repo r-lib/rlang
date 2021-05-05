@@ -13,7 +13,7 @@ static
 bool needs_suffix(r_obj* str);
 
 static
-void names_describe_repair(r_obj* old_names, r_obj* new_names);
+void names_inform_repair(r_obj* old_names, r_obj* new_names);
 
 static
 void stop_large_name();

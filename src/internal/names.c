@@ -76,7 +76,7 @@ r_obj* names_as_unique(r_obj* names, bool quiet) {
   }
 
   if (!quiet) {
-    names_describe_repair(names, new_names);
+    names_inform_repair(names, new_names);
   }
 
   FREE(2);
@@ -213,8 +213,8 @@ bool is_dotdotint(const char* name) {
 }
 
 static
-void names_describe_repair(r_obj* old_names, r_obj* new_names) {
-  r_obj* call = KEEP(r_call3(r_sym("names_describe_repair"), old_names, new_names));
+void names_inform_repair(r_obj* old_names, r_obj* new_names) {
+  r_obj* call = KEEP(r_call3(r_sym("names_inform_repair"), old_names, new_names));
   r_eval(call, rlang_ns_env);
   FREE(1);
 }

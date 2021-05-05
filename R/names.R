@@ -3,20 +3,28 @@ names_as_unique <- function(names, ..., quiet = FALSE) {
   .Call(ffi_names_as_unique, names, quiet)
 }
 
-names_describe_repair <- function(orig_name, name) {
-  if (is_null(orig_name)) {
-    return()
+#' Inform about names repair
+#' @param old Original names vector.
+#' @param new Repaired names vector.
+#' @keywords internal
+#' @export
+names_inform_repair <- function(old, new) {
+  if (is_null(old)) {
+    old <- rep_along(new, "")
   }
+  stopifnot(
+    is_character(old),
+    is_character(new),
+    length(old) == length(new)
+  )
 
-  stopifnot(length(orig_name) == length(name))
-
-  orig_name <- orig_name %|% ""
-  new_names <- name != orig_name
+  old <- old %|% ""
+  new_names <- new != old
   if (any(new_names)) {
     bullets <- paste0(
-      tick_if_needed(orig_name[new_names]),
+      tick_if_needed(old[new_names]),
       " -> ",
-      tick_if_needed(name[new_names]),
+      tick_if_needed(new[new_names]),
       .problem = ""
     )
     inform(c(
