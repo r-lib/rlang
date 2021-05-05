@@ -35,6 +35,7 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_dict_has",                     (DL_FUNC) &ffi_dict_has, 2},
   {"ffi_dict_it_info",                 (DL_FUNC) &ffi_dict_it_info, 1},
   {"ffi_dict_next",                    (DL_FUNC) &ffi_dict_it_next, 1},
+  {"ffi_dict_poke",                    (DL_FUNC) &ffi_dict_poke, 3},
   {"ffi_dict_put",                     (DL_FUNC) &ffi_dict_put, 3},
   {"ffi_dict_resize",                  (DL_FUNC) &ffi_dict_resize, 2},
   {"ffi_dots_flat_list",               (DL_FUNC) &ffi_dots_flat_list, 7},

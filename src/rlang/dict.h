@@ -23,6 +23,7 @@ struct r_dict {
 
 struct r_dict* r_new_dict(r_ssize size);
 
+r_obj* r_dict_poke(struct r_dict* p_dict, r_obj* key, r_obj* value);
 bool r_dict_put(struct r_dict* p_dict, r_obj* key, r_obj* value);
 bool r_dict_del(struct r_dict* p_dict, r_obj* key);
 bool r_dict_has(struct r_dict* p_dict, r_obj* key);

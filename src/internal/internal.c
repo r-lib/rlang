@@ -33,6 +33,8 @@
 #include "init.c"
 
 
+struct rlang_globals_syms rlang_syms;
+
 r_obj* rlang_zap = NULL;
 r_obj* rlang_as_list_call = NULL;
 r_obj* rlang_objs_keep = NULL;
@@ -51,6 +53,8 @@ void rlang_init_internal(r_obj* ns) {
   rlang_init_eval_tidy();
   rlang_init_fn();
   rlang_init_tests();
+
+  rlang_syms.c_null = r_sym(".__C_NULL__.");
 
   rlang_zap = rlang_ns_get("zap!");
 

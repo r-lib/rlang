@@ -3,6 +3,10 @@
 
 #include "quo.h"
 
+struct rlang_globals_syms {
+  r_obj* c_null;
+};
+
 
 extern r_obj* rlang_zap;
 
@@ -41,6 +45,8 @@ static inline r_obj* rlang_dots(r_obj* env) {
 r_obj* ffi_replace_na(r_obj* x, r_obj* replacement);
 
 r_obj* rlang_as_function(r_obj* x, r_obj* env);
+
+extern struct rlang_globals_syms rlang_syms;
 
 
 #endif

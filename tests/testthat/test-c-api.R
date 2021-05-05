@@ -576,6 +576,27 @@ test_that("can put again after del", {
   expect_equal(dict_get(dict, chr_get("1")), "1")
 })
 
+test_that("can poke dict value", {
+  dict <- new_dict(3L)
+
+  expect_equal(
+    dict_poke(dict, quote(foo), 1),
+    sym(".__C_NULL__.")
+  )
+  expect_equal(
+    dict_get(dict, quote(foo)),
+    1
+  )
+  expect_equal(
+    dict_poke(dict, quote(foo), 2),
+    1
+  )
+  expect_equal(
+    dict_get(dict, quote(foo)),
+    2
+  )
+})
+
 test_that("can iterate over dict", {
   dict <- new_dict(10L)
 

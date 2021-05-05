@@ -227,9 +227,7 @@ r_obj* chr_detect_dups(r_obj* x) {
     if (val == NULL) {
       r_dict_put(p_dict, key, r_null);
     } else if (val == r_null) {
-      // TODO: r_dict_poke(p_dict, key, dup_flag);
-      r_dict_del(p_dict, key);
-      r_dict_put(p_dict, key, dup_flag);
+      r_dict_poke(p_dict, key, dup_flag);
     }
   }
 
