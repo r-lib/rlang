@@ -203,6 +203,45 @@ bool vec_find_first_duplicate(r_obj* x, r_obj* except, r_ssize* index) {
   }
 }
 
+// Can use simple pointer hashing thanks to the string pool
+r_obj* chr_detect_dups(r_obj* x) {
+  if (r_typeof(x) != R_TYPE_character) {
+    r_stop_internal("chr_detect_dups", "`x` must be a character vector.");
+  }
+
+  // Sentinel for duplicates
+  r_obj* dup_flag = r_strs.empty;
+
+  r_ssize n = r_length(x);
+  r_obj* const * v_data = r_chr_cbegin(x);
+
+  struct r_dict* p_dict = r_new_dict(n);
+  KEEP(p_dict->shelter);
+
+  for (r_ssize i = 0; i < n; ++i) {
+    r_obj* key = v_data[i];
+
+    r_obj* val = r_dict_get0(p_dict, key);
+    if (val == NULL) {
+      r_dict_put(p_dict, key, r_null);
+    } else if (val == r_null) {
+      // TODO: r_dict_poke(p_dict, key, dup_flag);
+      r_dict_del(p_dict, key);
+      r_dict_put(p_dict, key, dup_flag);
+    }
+  }
+
+  r_obj* out = KEEP(r_alloc_logical(n));
+  int* v_out = r_lgl_begin(out);
+
+  for (r_ssize i = 0; i < n; ++i) {
+    v_out[i] = r_dict_get(p_dict, v_data[i]) == dup_flag;
+  }
+
+  FREE(2);
+  return out;
+}
+
 
 void rlang_init_utils() {
   warn_deprecated_call = r_parse("rlang:::warn_deprecated(x, id = y)");

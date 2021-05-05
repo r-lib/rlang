@@ -34,5 +34,7 @@ r_obj* r_vec_coerce(r_obj* x, enum r_type to) {
   return Rf_coerceVector(x, to);
 }
 
+r_obj* chr_detect_dups(r_obj* x);
+
 
 #endif

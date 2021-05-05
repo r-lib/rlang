@@ -107,7 +107,7 @@ SEXP as_unique_names_impl(SEXP names, bool quiet) {
 
   // Append all duplicates with a suffix
 
-  SEXP dups = PROTECT(Rf_duplicated(new_names, FALSE));
+  SEXP dups = PROTECT(chr_detect_dups(new_names));
   const int* dups_ptr = LOGICAL_RO(dups);
 
   for (R_len_t i = 0; i < n; ++i) {
