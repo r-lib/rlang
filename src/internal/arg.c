@@ -182,6 +182,8 @@ r_obj* ffi_arg_match0(r_obj* args) {
 static
 r_obj* wrap_chr(r_obj* arg) {
   switch (arg_match_arg_nm_type(arg)) {
+  case R_TYPE_string:
+    return r_str_as_character(arg);
   case R_TYPE_symbol:
     return r_sym_as_character(arg);
   case R_TYPE_character:
@@ -194,6 +196,8 @@ r_obj* wrap_chr(r_obj* arg) {
 static
 r_obj* unwrap_str(r_obj* arg) {
   switch (arg_match_arg_nm_type(arg)) {
+  case R_TYPE_string:
+    return arg;
   case R_TYPE_symbol:
     return r_sym_string(arg);
   case R_TYPE_character:
