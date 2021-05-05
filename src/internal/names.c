@@ -12,6 +12,7 @@ r_obj* ffi_names_as_unique(r_obj* names, r_obj* quiet) {
   return names_as_unique(names, r_lgl_get(quiet, 0));
 }
 
+// [[ export() ]]
 r_obj* names_as_unique(r_obj* names, bool quiet) {
   if (is_unique_names(names) && !any_has_suffix(names)) {
     return names;
