@@ -97,6 +97,8 @@ void r_init_library_obj(r_obj* ns) {
              p_precious_dict->shelter);
   FREE(1);
 
+  // The Microsoft C library doesn't implement the hexadecimal
+  // formatter correctly
   const char* null_addr = r_str_c_string(r_obj_address(r_null));
   if (null_addr[0] != '0' || null_addr[1] != 'x') {
     obj_address_formatter = "0x%p";
