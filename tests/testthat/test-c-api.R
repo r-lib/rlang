@@ -1041,83 +1041,83 @@ test_that("addresses have hexadecimal prefix `0x` (#1135)", {
   )
 })
 
-test_that("can normalise a character vector of various encodings (r-lib/vctrs#553)", {
+test_that("can re-encode a character vector of various encodings (r-lib/vctrs#553)", {
   x <- unlist(test_encodings(), use.names = FALSE)
-  results <- r_normalise_encoding(x)
+  results <- r_obj_encode_utf8(x)
   expect_utf8_encoded(results)
 })
 
-test_that("normalises all encodings to UTF-8", {
+test_that("re-encodes all encodings to UTF-8", {
   for (enc in test_encodings()) {
-    expect_utf8_encoded(r_normalise_encoding(enc))
+    expect_utf8_encoded(r_obj_encode_utf8(enc))
   }
 })
 
-test_that("can normalise a list containing character vectors with different encodings", {
-  results <- r_normalise_encoding(test_encodings())
+test_that("can re-encode a list containing character vectors with different encodings", {
+  results <- r_obj_encode_utf8(test_encodings())
   results <- unlist(results)
   expect_utf8_encoded(results)
 })
 
-test_that("normalisation fails purposefully with any bytes", {
+test_that("re-encoding fails purposefully with any bytes", {
   bytes <- rawToChar(as.raw(0xdc))
   Encoding(bytes) <- "bytes"
 
   expect_snapshot(
-    (expect_error(r_normalise_encoding(bytes)))
+    (expect_error(r_obj_encode_utf8(bytes)))
   )
 
   for (enc in test_encodings()) {
     expect_snapshot(
-      (expect_error(r_normalise_encoding(c(enc, bytes))))
+      (expect_error(r_obj_encode_utf8(c(enc, bytes))))
     )
   }
 })
 
-test_that("attributes are kept on normalisation (r-lib/vctrs#599)", {
+test_that("attributes are kept when re-encoding (r-lib/vctrs#599)", {
   encs <- test_encodings()
 
   x <- c(encs$utf8, encs$latin1)
   x <- structure(x, names = c("a", "b"), extra = 1)
 
-  expect_identical(attributes(r_normalise_encoding(x)), attributes(x))
+  expect_identical(attributes(r_obj_encode_utf8(x)), attributes(x))
 })
 
-test_that("normalisation is robust against scalar types contained in lists (r-lib/vctrs#633)", {
+test_that("re-encoding is robust against scalar types contained in lists (r-lib/vctrs#633)", {
   x <- list(a = z ~ y, b = z ~ z)
-  expect_identical(r_normalise_encoding(x), x)
+  expect_identical(r_obj_encode_utf8(x), x)
 })
 
-test_that("normalisation can still occur even if a scalar type is in a list", {
+test_that("re-encoding can still occur even if a scalar type is in a list", {
   x <- list(a = z ~ y, b = test_encodings()$latin1)
-  expect_utf8_encoded(r_normalise_encoding(x)$b)
+  expect_utf8_encoded(r_obj_encode_utf8(x)$b)
 })
 
-test_that("normalisation occurs inside scalars contained in a list", {
+test_that("re-encoding occurs inside scalars contained in a list", {
   encs <- test_encodings()
 
   x <- list(
     structure(list(x = encs$latin1), class = "scalar_list")
   )
 
-  result <- r_normalise_encoding(x)
+  result <- r_obj_encode_utf8(x)
 
   expect_utf8_encoded(result[[1]]$x)
 })
 
-test_that("normalisation treats data frames elements of lists as lists (r-lib/vctrs#1233)", {
+test_that("re-encoding treats data frames elements of lists as lists (r-lib/vctrs#1233)", {
   encs <- test_encodings()
   a <- c(encs$utf8, encs$latin1)
 
   df <- data.frame(a = a, b = 1:2, stringsAsFactors = FALSE)
   x <- list(df)
 
-  result <- r_normalise_encoding(x)
+  result <- r_obj_encode_utf8(x)
 
   expect_utf8_encoded(result[[1]]$a)
 })
 
-test_that("attributes are normalised", {
+test_that("attributes are re-encoded", {
   utf8 <- test_encodings()$utf8
   latin1 <- test_encodings()$latin1
 
@@ -1126,7 +1126,7 @@ test_that("attributes are normalised", {
   c <- structure(1, enc1 = utf8, enc2 = list(latin1), enc3 = latin1)
   x <- list(a, b, c)
 
-  result <- r_normalise_encoding(x)
+  result <- r_obj_encode_utf8(x)
 
   a_enc <- attr(result[[1]], "enc")
   b_enc <- attr(result[[2]], "enc")
@@ -1141,14 +1141,14 @@ test_that("attributes are normalised", {
   expect_utf8_encoded(c_enc3)
 })
 
-test_that("attributes are normalised recursively", {
+test_that("attributes are re-encoded recursively", {
   utf8 <- test_encodings()$utf8
   latin1 <- test_encodings()$latin1
 
   nested <- structure(1, latin1 = latin1)
   x <- structure(2, nested = nested, foo = 1, latin1 = latin1)
 
-  result <- r_normalise_encoding(x)
+  result <- r_obj_encode_utf8(x)
   attrib <- attributes(result)
   attrib_nested <- attributes(attrib$nested)
 
@@ -1156,12 +1156,12 @@ test_that("attributes are normalised recursively", {
   expect_utf8_encoded(attrib_nested$latin1)
 })
 
-test_that("NAs aren't normalised to 'NA' (r-lib/vctrs#1291)", {
+test_that("NAs aren't re-encoded to 'NA' (r-lib/vctrs#1291)", {
   utf8 <- c(NA, test_encodings()$utf8)
   latin1 <- c(NA, test_encodings()$latin1)
 
-  result1 <- r_normalise_encoding(utf8)
-  result2 <- r_normalise_encoding(latin1)
+  result1 <- r_obj_encode_utf8(utf8)
+  result2 <- r_obj_encode_utf8(latin1)
 
   expect_identical(result1[[1]], NA_character_)
   expect_identical(result2[[1]], NA_character_)

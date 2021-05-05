@@ -113,7 +113,7 @@ bool r_is_identical(r_obj* x, r_obj* y) {
 r_obj* r_obj_address(r_obj* x);
 
 
-extern r_obj* (*r_obj_fix_encoding)(r_obj* x);
+extern r_obj* (*r_obj_encode_utf8)(r_obj* x);
 
 
 #endif

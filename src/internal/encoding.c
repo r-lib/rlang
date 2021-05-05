@@ -1,11 +1,34 @@
 #include <rlang.h>
-#include "encoding.h"
 #include "decl/encoding-decl.h"
 
-r_obj* r_normalise_encoding(r_obj* x) {
+/*
+ * Recursively encode character vectors as UTF-8
+ *
+ * A CHARSXP is left untouched if:
+ * - It is the NA_STRING
+ * - It is ASCII, which means the encoding will be "unknown", but is valid UTF-8
+ * - It is marked as UTF-8
+ *
+ * Attributes are re-encoded as well.
+ *
+ * ASCII strings will never get marked with an encoding when they go
+ * through `Rf_mkCharLenCE()`, but they will get marked as ASCII. Since
+ * UTF-8 is fully compatible with ASCII, they are treated like UTF-8.
+ *
+ * This converts vectors that are completely marked as Latin-1 to UTF-8, rather
+ * than leaving them as Latin-1. This ensures that two vectors can be compared
+ * consistently if they have both been re-encoded.
+ *
+ * Bytes-encoded vectors are not supported, as they cannot be
+ * converted to UTF-8 by `Rf_translateCharUTF8()`.
+ *
+ * If `x` is not shared (i.e. `r_is_shared(x) == false`), this function will
+ * modify `x` in place. Otherwise, a copy is made.
+ */
+r_obj* obj_encode_utf8(r_obj* x) {
   switch (r_typeof(x)) {
-  case R_TYPE_character: x = chr_normalise_encoding(x); break;
-  case R_TYPE_list: x = list_normalise_encoding(x); break;
+  case R_TYPE_character: x = chr_encode_utf8(x); break;
+  case R_TYPE_list: x = list_encode_utf8(x); break;
   default: break;
   }
 
@@ -13,7 +36,7 @@ r_obj* r_normalise_encoding(r_obj* x) {
   r_obj* attrib = r_attrib(x);
   if (attrib != r_null) {
     KEEP(x);
-    x = r_attrib_normalise_encoding(x, attrib);
+    x = obj_attrib_encode_utf8(x, attrib);
     FREE(1);
   }
 
@@ -23,9 +46,9 @@ r_obj* r_normalise_encoding(r_obj* x) {
 // -----------------------------------------------------------------------------
 
 static
-r_obj* chr_normalise_encoding(r_obj* x) {
+r_obj* chr_encode_utf8(r_obj* x) {
   r_ssize size = r_length(x);
-  r_ssize start = chr_find_normalise_start(x, size);
+  r_ssize start = chr_find_encoding_start(x, size);
 
   if (size == start) {
     return x;
@@ -39,11 +62,9 @@ r_obj* chr_normalise_encoding(r_obj* x) {
   for (r_ssize i = start; i < size; ++i) {
     r_obj* const elt = p_x[i];
 
-    if (str_is_normalised(elt)) {
-      continue;
+    if (str_needs_encoding(elt)) {
+      r_chr_poke(x, i, str_encode_utf8(elt));
     }
-
-    r_chr_poke(x, i, str_normalise(elt));
   }
 
   vmaxset(vmax);
@@ -52,17 +73,15 @@ r_obj* chr_normalise_encoding(r_obj* x) {
 }
 
 static inline
-r_ssize chr_find_normalise_start(r_obj* x, r_ssize size) {
+r_ssize chr_find_encoding_start(r_obj* x, r_ssize size) {
   r_obj* const* p_x = r_chr_cbegin(x);
 
   for (r_ssize i = 0; i < size; ++i) {
     r_obj* const elt = p_x[i];
 
-    if (str_is_normalised(elt)) {
-      continue;
+    if (str_needs_encoding(elt)) {
+      return i;
     }
-
-    return i;
   }
 
   return size;
@@ -71,7 +90,7 @@ r_ssize chr_find_normalise_start(r_obj* x, r_ssize size) {
 // -----------------------------------------------------------------------------
 
 static
-r_obj* list_normalise_encoding(r_obj* x) {
+r_obj* list_encode_utf8(r_obj* x) {
   r_keep_t pi;
   KEEP_HERE(x, &pi);
 
@@ -81,7 +100,7 @@ r_obj* list_normalise_encoding(r_obj* x) {
   for (r_ssize i = 0; i < size; ++i) {
     r_obj* const elt_old = p_x[i];
 
-    r_obj* const elt_new = r_normalise_encoding(elt_old);
+    r_obj* const elt_new = obj_encode_utf8(elt_old);
     if (elt_old == elt_new) {
       continue;
     }
@@ -105,8 +124,8 @@ r_obj* list_normalise_encoding(r_obj* x) {
 // -----------------------------------------------------------------------------
 
 static
-r_obj* r_attrib_normalise_encoding(r_obj* x, r_obj* attrib) {
-  r_obj* attrib_new = attrib_normalise_encoding(attrib);
+r_obj* obj_attrib_encode_utf8(r_obj* x, r_obj* attrib) {
+  r_obj* attrib_new = attrib_encode_utf8(attrib);
   if (attrib_new == attrib) {
     return x;
   }
@@ -120,7 +139,7 @@ r_obj* r_attrib_normalise_encoding(r_obj* x, r_obj* attrib) {
 }
 
 static
-r_obj* attrib_normalise_encoding(r_obj* x) {
+r_obj* attrib_encode_utf8(r_obj* x) {
   r_ssize loc = 0;
   bool owned = false;
 
@@ -130,7 +149,7 @@ r_obj* attrib_normalise_encoding(r_obj* x) {
   for (r_obj* node = x; node != r_null; node = r_node_cdr(node), ++loc) {
     r_obj* elt_old = r_node_car(node);
 
-    r_obj* elt_new = r_normalise_encoding(elt_old);
+    r_obj* elt_new = obj_encode_utf8(elt_old);
     if (elt_old == elt_new) {
       continue;
     }
@@ -162,13 +181,13 @@ r_obj* attrib_normalise_encoding(r_obj* x) {
 // -----------------------------------------------------------------------------
 
 static inline
-r_obj* str_normalise(r_obj* x) {
+r_obj* str_encode_utf8(r_obj* x) {
   return r_str(Rf_translateCharUTF8(x));
 }
 
 static inline
-bool str_is_normalised(r_obj* x) {
-  return str_is_ascii_or_utf8(x) || (x == NA_STRING);
+bool str_needs_encoding(r_obj* x) {
+  return (!str_is_ascii_or_utf8(x)) && (x != NA_STRING);
 }
 
 #define MASK_ASCII 8

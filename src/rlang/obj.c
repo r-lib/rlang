@@ -86,7 +86,7 @@ r_obj* r_obj_address(r_obj* x) {
   return Rf_mkChar(buf);
 }
 
-r_obj* (*r_obj_fix_encoding)(r_obj* x) = NULL;
+r_obj* (*r_obj_encode_utf8)(r_obj* x) = NULL;
 
 
 void r_init_library_obj(r_obj* ns) {
@@ -104,5 +104,5 @@ void r_init_library_obj(r_obj* ns) {
     obj_address_formatter = "0x%p";
   }
 
-  r_obj_fix_encoding = (r_obj* (*)(r_obj*)) r_peek_c_callable("rlang", "rlang_normalise_encoding");
+  r_obj_encode_utf8 = (r_obj* (*)(r_obj*)) r_peek_c_callable("rlang", "rlang_obj_encode_utf8");
 }

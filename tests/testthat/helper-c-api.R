@@ -17,8 +17,8 @@ r_lgl_which <- function(x, na_propagate) {
   .Call(ffi_test_lgl_which, x, na_propagate)
 }
 
-r_normalise_encoding <- function(x) {
-  .Call(ffi_test_normalise_encoding, x)
+r_obj_encode_utf8 <- function(x) {
+  .Call(ffi_test_obj_encode_utf8, x)
 }
 test_encodings <- function() {
   string <- "\u00B0C"
