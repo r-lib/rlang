@@ -12,8 +12,14 @@ test_that("names_as_unique() is a no-op when no repairs are needed", {
 })
 
 test_that("names_as_unique() eliminates emptiness and duplication", {
-  x <- c("", "x", "y", "x")
-  expect_equal(names_as_unique(x), c("...1", "x...2", "y", "x...4"))
+  expect_equal(
+    names_as_unique(c("", "x", "y", "x")),
+    c("...1", "x...2", "y", "x...4")
+  )
+  expect_equal(
+    names_as_unique(c("1", "foo", "1")),
+    c("1...1", "foo", "1...3")
+  )
 })
 
 test_that("names_as_unique(): solo empty or NA gets suffix", {

@@ -547,6 +547,35 @@ test_that("can delete elements from dict", {
   expect_false(dict_del(dict, quote(foo)))
 })
 
+test_that("can put again after del", {
+  dict <- new_dict(3L)
+
+  dict_put(dict, quote(foo), 1)
+  dict_del(dict, quote(foo))
+
+  expect_true(dict_put(dict, quote(foo), 2))
+  expect_equal(dict_get(dict, quote(foo)), 2)
+
+
+  # Used to fail because we deleted whole bucket instead of just a
+  # node when this node appeared first in the bucket
+  
+  dict <- new_dict(3L)
+  dict_put(dict, chr_get("1"), NULL)
+  dict_put(dict, chr_get("foo"), NULL)
+  unclass(dict)[[2]]
+
+  dict_del(dict, chr_get("1"))
+  unclass(dict)[[2]]
+
+  dict_put(dict, chr_get("1"), "1")
+
+  unclass(dict)
+
+  expect_null(dict_get(dict, chr_get("foo")))
+  expect_equal(dict_get(dict, chr_get("1")), "1")
+})
+
 test_that("can iterate over dict", {
   dict <- new_dict(10L)
 

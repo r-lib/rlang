@@ -149,10 +149,12 @@ bool r_dict_del(struct r_dict* p_dict, r_obj* key) {
     return false;
   }
 
+  r_obj* node_cdr = DICT_CDR(node);
+
   if (parent == r_null) {
-    r_list_poke(p_dict->buckets, hash, r_null);
-  }  else {
-    DICT_POKE_CDR(parent, DICT_CDR(node));
+    r_list_poke(p_dict->buckets, hash, node_cdr);
+  } else {
+    DICT_POKE_CDR(parent, node_cdr);
   }
 
   return true;
