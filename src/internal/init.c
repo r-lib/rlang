@@ -20,12 +20,12 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_as_data_mask",                 (DL_FUNC) &ffi_as_data_mask, 1},
   {"ffi_as_data_pronoun",              (DL_FUNC) &ffi_as_data_pronoun, 1},
   {"ffi_attrib",                       (DL_FUNC) &r_attrib, 1},
+  {"ffi_c_tests",                      (DL_FUNC) &ffi_c_tests, 0},
   {"ffi_call_has_precedence",          (DL_FUNC) &ffi_call_has_precedence, 3},
   {"ffi_chr_get",                      (DL_FUNC) &ffi_chr_get, 2},
   {"ffi_chr_has_curly",                (DL_FUNC) &ffi_chr_has_curly, 1},
   {"ffi_cnd_signal",                   (DL_FUNC) &ffi_cnd_signal, 1},
   {"ffi_cnd_type",                     (DL_FUNC) &ffi_cnd_type, 1},
-  {"ffi_c_tests",                      (DL_FUNC) &ffi_c_tests, 0},
   {"ffi_data_mask_clean",              (DL_FUNC) &ffi_data_mask_clean, 1},
   {"ffi_data_pronoun_get",             (DL_FUNC) &ffi_data_pronoun_get, 2},
   {"ffi_dict_as_df_list",              (DL_FUNC) &ffi_dict_as_df_list, 1},
@@ -232,6 +232,7 @@ extern uint64_t XXH3_64bits(const void*, size_t);
 
 r_visible
 void R_init_rlang(DllInfo* dll) {
+  R_RegisterCCallable("rlang", "rlang_arg_match",           (DL_FUNC) &arg_match);
   R_RegisterCCallable("rlang", "rlang_as_data_mask_3.0.0",  (DL_FUNC) &ffi_as_data_mask);
   R_RegisterCCallable("rlang", "rlang_as_data_pronoun",     (DL_FUNC) &ffi_as_data_pronoun);
   R_RegisterCCallable("rlang", "rlang_eval_tidy",           (DL_FUNC) &rlang_eval_tidy);
@@ -242,7 +243,6 @@ void R_init_rlang(DllInfo* dll) {
   R_RegisterCCallable("rlang", "rlang_quo_get_expr",        (DL_FUNC) &ffi_quo_get_expr);
   R_RegisterCCallable("rlang", "rlang_quo_set_env",         (DL_FUNC) &ffi_quo_set_env);
   R_RegisterCCallable("rlang", "rlang_quo_set_expr",        (DL_FUNC) &ffi_quo_set_expr);
-  R_RegisterCCallable("rlang", "rlang_arg_match",           (DL_FUNC) &arg_match);
 
   r_obj* r_as_function(r_obj* x, const char* arg);
   R_RegisterCCallable("rlang", "rlang_as_function",         (DL_FUNC) &r_as_function);
