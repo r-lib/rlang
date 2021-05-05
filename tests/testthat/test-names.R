@@ -86,3 +86,10 @@ test_that("chr_as_unique_names() are verbose or silent", {
 test_that("names with only duplicates are repaired", {
   expect_equal(chr_as_unique_names(c("x", "x")), c("x...1", "x...2"))
 })
+
+test_that("chr_as_unique_names() handles encodings", {
+  x <- unname(unlist(encodings()[c("utf8", "latin1")]))
+  out <- chr_as_unique_names(x)
+  expect_equal(out, paste0(rep(x[[1]], 2), "...", 1:2))
+  expect_equal(Encoding(out), c("UTF-8", "UTF-8"))
+})
