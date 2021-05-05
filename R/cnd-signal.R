@@ -227,6 +227,10 @@ needs_signal <- function(frequency, id, env, opt) {
   if (is_string(frequency, "always")) {
     return(TRUE)
   }
+  # Safe to remove in 2022
+  if (is_true(peek_option("rlang:::message_always"))) {
+    return(TRUE)
+  }
 
   if (is_null(id)) {
     abort("`.frequency_id` should be supplied with `.frequency`.")
