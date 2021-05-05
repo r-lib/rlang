@@ -16,3 +16,19 @@ r_lgl_which <- function(x, na_propagate) {
   stopifnot(is_logical(x), is_bool(na_propagate))
   .Call(ffi_test_lgl_which, x, na_propagate)
 }
+
+r_normalise_encoding <- function(x) {
+  .Call(ffi_test_normalise_encoding, x)
+}
+test_encodings <- function() {
+  string <- "\u00B0C"
+
+  utf8 <- iconv(string, from = Encoding(string), to = "UTF-8")
+  unknown <- iconv(string, from = Encoding(string), to = "", mark = FALSE)
+  latin1 <- iconv(string, from = Encoding(string), to = "latin1")
+
+  list(utf8 = utf8, unknown = unknown, latin1 = latin1)
+}
+expect_utf8_encoded <- function(object) {
+  expect_identical(Encoding(object), rep("UTF-8", length(object)))
+}

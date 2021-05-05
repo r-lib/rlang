@@ -59,6 +59,10 @@ static inline
 r_obj* r_clone(r_obj* x) {
   return Rf_shallow_duplicate(x);
 }
+static inline
+r_obj* r_clone_shared(r_obj* x) {
+  return r_is_shared(x) ? r_clone(x) : x;
+}
 
 static inline
 r_obj* r_poke_type(r_obj* x, enum r_type type) {
@@ -107,5 +111,9 @@ bool r_is_identical(r_obj* x, r_obj* y) {
 }
 
 r_obj* r_obj_address(r_obj* x);
+
+
+extern r_obj* (*r_obj_fix_encoding)(r_obj* x);
+
 
 #endif

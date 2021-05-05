@@ -1041,6 +1041,135 @@ test_that("addresses have hexadecimal prefix `0x` (#1135)", {
   )
 })
 
+test_that("can normalise a character vector of various encodings (r-lib/vctrs#553)", {
+  x <- unlist(test_encodings(), use.names = FALSE)
+  results <- r_normalise_encoding(x)
+  expect_utf8_encoded(results)
+})
+
+test_that("normalises all encodings to UTF-8", {
+  for (enc in test_encodings()) {
+    expect_utf8_encoded(r_normalise_encoding(enc))
+  }
+})
+
+test_that("can normalise a list containing character vectors with different encodings", {
+  results <- r_normalise_encoding(test_encodings())
+  results <- unlist(results)
+  expect_utf8_encoded(results)
+})
+
+test_that("normalisation fails purposefully with any bytes", {
+  bytes <- rawToChar(as.raw(0xdc))
+  Encoding(bytes) <- "bytes"
+
+  expect_snapshot(
+    (expect_error(r_normalise_encoding(bytes)))
+  )
+
+  for (enc in test_encodings()) {
+    expect_snapshot(
+      (expect_error(r_normalise_encoding(c(enc, bytes))))
+    )
+  }
+})
+
+test_that("attributes are kept on normalisation (r-lib/vctrs#599)", {
+  encs <- test_encodings()
+
+  x <- c(encs$utf8, encs$latin1)
+  x <- structure(x, names = c("a", "b"), extra = 1)
+
+  expect_identical(attributes(r_normalise_encoding(x)), attributes(x))
+})
+
+test_that("normalisation is robust against scalar types contained in lists (r-lib/vctrs#633)", {
+  x <- list(a = z ~ y, b = z ~ z)
+  expect_identical(r_normalise_encoding(x), x)
+})
+
+test_that("normalisation can still occur even if a scalar type is in a list", {
+  x <- list(a = z ~ y, b = test_encodings()$latin1)
+  expect_utf8_encoded(r_normalise_encoding(x)$b)
+})
+
+test_that("normalisation occurs inside scalars contained in a list", {
+  encs <- test_encodings()
+
+  x <- list(
+    structure(list(x = encs$latin1), class = "scalar_list")
+  )
+
+  result <- r_normalise_encoding(x)
+
+  expect_utf8_encoded(result[[1]]$x)
+})
+
+test_that("normalisation treats data frames elements of lists as lists (r-lib/vctrs#1233)", {
+  encs <- test_encodings()
+  a <- c(encs$utf8, encs$latin1)
+
+  df <- data.frame(a = a, b = 1:2, stringsAsFactors = FALSE)
+  x <- list(df)
+
+  result <- r_normalise_encoding(x)
+
+  expect_utf8_encoded(result[[1]]$a)
+})
+
+test_that("attributes are normalised", {
+  utf8 <- test_encodings()$utf8
+  latin1 <- test_encodings()$latin1
+
+  a <- structure(1, enc = utf8)
+  b <- structure(1, enc = latin1)
+  c <- structure(1, enc1 = utf8, enc2 = list(latin1), enc3 = latin1)
+  x <- list(a, b, c)
+
+  result <- r_normalise_encoding(x)
+
+  a_enc <- attr(result[[1]], "enc")
+  b_enc <- attr(result[[2]], "enc")
+  c_enc1 <- attr(result[[3]], "enc1")
+  c_enc2 <- attr(result[[3]], "enc2")[[1]]
+  c_enc3 <- attr(result[[3]], "enc3")
+
+  expect_utf8_encoded(a_enc)
+  expect_utf8_encoded(b_enc)
+  expect_utf8_encoded(c_enc1)
+  expect_utf8_encoded(c_enc2)
+  expect_utf8_encoded(c_enc3)
+})
+
+test_that("attributes are normalised recursively", {
+  utf8 <- test_encodings()$utf8
+  latin1 <- test_encodings()$latin1
+
+  nested <- structure(1, latin1 = latin1)
+  x <- structure(2, nested = nested, foo = 1, latin1 = latin1)
+
+  result <- r_normalise_encoding(x)
+  attrib <- attributes(result)
+  attrib_nested <- attributes(attrib$nested)
+
+  expect_utf8_encoded(attrib$latin1)
+  expect_utf8_encoded(attrib_nested$latin1)
+})
+
+test_that("NAs aren't normalised to 'NA' (r-lib/vctrs#1291)", {
+  utf8 <- c(NA, test_encodings()$utf8)
+  latin1 <- c(NA, test_encodings()$latin1)
+
+  result1 <- r_normalise_encoding(utf8)
+  result2 <- r_normalise_encoding(latin1)
+
+  expect_identical(result1[[1]], NA_character_)
+  expect_identical(result2[[1]], NA_character_)
+
+  expect_utf8_encoded(result1[[2]])
+  expect_utf8_encoded(result2[[2]])
+})
+
 local({
   df <- c_tests()
   for (i in seq_len(nrow(df))) {

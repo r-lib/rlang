@@ -86,6 +86,9 @@ r_obj* r_obj_address(r_obj* x) {
   return Rf_mkChar(buf);
 }
 
+r_obj* (*r_obj_fix_encoding)(r_obj* x) = NULL;
+
+
 void r_init_library_obj(r_obj* ns) {
   p_precious_dict = r_new_dict(PRECIOUS_DICT_INIT_SIZE);
   KEEP(p_precious_dict->shelter);
@@ -98,4 +101,6 @@ void r_init_library_obj(r_obj* ns) {
   if (null_addr[0] != '0' || null_addr[1] != 'x') {
     obj_address_formatter = "0x%p";
   }
+
+  r_obj_fix_encoding = (r_obj* (*)(r_obj*)) r_peek_c_callable("rlang", "rlang_normalise_encoding");
 }
