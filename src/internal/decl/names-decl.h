@@ -1,4 +1,4 @@
-r_obj* vec_as_unique_names(r_obj* names, bool quiet);
+r_obj* names_as_unique(r_obj* names, bool quiet);
 
 static
 bool any_has_suffix(r_obj* names);
@@ -13,7 +13,7 @@ static
 bool needs_suffix(r_obj* str);
 
 static
-void describe_repair(r_obj* old_names, r_obj* new_names);
+void names_describe_repair(r_obj* old_names, r_obj* new_names);
 
 static
 void stop_large_name();

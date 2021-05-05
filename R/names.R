@@ -1,8 +1,9 @@
-chr_as_unique_names <- function(names, quiet = FALSE) {
-  .Call(ffi_chr_as_unique_names, names, quiet)
+names_as_unique <- function(names, ..., quiet = FALSE) {
+  check_dots_empty0(...)
+  .Call(ffi_names_as_unique, names, quiet)
 }
 
-describe_repair <- function(orig_name, name) {
+names_describe_repair <- function(orig_name, name) {
   if (is_null(orig_name)) {
     return()
   }

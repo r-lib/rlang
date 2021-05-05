@@ -8,11 +8,11 @@
 #define MAX_IOTA_SIZE 28
 
 
-r_obj* ffi_chr_as_unique_names(r_obj* names, r_obj* quiet) {
-  return vec_as_unique_names(names, r_lgl_get(quiet, 0));
+r_obj* ffi_names_as_unique(r_obj* names, r_obj* quiet) {
+  return names_as_unique(names, r_lgl_get(quiet, 0));
 }
 
-r_obj* vec_as_unique_names(r_obj* names, bool quiet) {
+r_obj* names_as_unique(r_obj* names, bool quiet) {
   if (is_unique_names(names) && !any_has_suffix(names)) {
     return names;
   }
@@ -75,7 +75,7 @@ r_obj* vec_as_unique_names(r_obj* names, bool quiet) {
   }
 
   if (!quiet) {
-    describe_repair(names, new_names);
+    names_describe_repair(names, new_names);
   }
 
   FREE(2);
@@ -211,11 +211,9 @@ bool is_dotdotint(const char* name) {
   return (bool) strtol(name, NULL, 10);
 }
 
-
-// TODO: Export as well?
 static
-void describe_repair(r_obj* old_names, r_obj* new_names) {
-  r_obj* call = KEEP(r_call3(r_sym("describe_repair"), old_names, new_names));
+void names_describe_repair(r_obj* old_names, r_obj* new_names) {
+  r_obj* call = KEEP(r_call3(r_sym("names_describe_repair"), old_names, new_names));
   r_eval(call, rlang_ns_env);
   FREE(1);
 }
