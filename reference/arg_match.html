@@ -185,7 +185,7 @@ In this case, the first element of <code>arg</code> is used.</p>
 
     <pre class="usage"><span class='fu'>arg_match</span><span class='op'>(</span><span class='va'>arg</span>, values <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
-<span class='fu'>arg_match0</span><span class='op'>(</span><span class='va'>arg</span>, <span class='va'>values</span>, arg_nm <span class='op'>=</span> <span class='fu'><a href='as_label.html'>as_label</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>substitute</a></span><span class='op'>(</span><span class='va'>arg</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></pre>
+<span class='fu'>arg_match0</span><span class='op'>(</span><span class='va'>arg</span>, <span class='va'>values</span>, arg_nm <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>substitute</a></span><span class='op'>(</span><span class='va'>arg</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -200,7 +200,8 @@ In this case, the first element of <code>arg</code> is used.</p>
     </tr>
     <tr>
       <th>arg_nm</th>
-      <td><p>The label to be used for <code>arg</code> in error messages.</p></td>
+      <td><p>Argument name of <code>arg</code> to use in error messages. Can
+be a string or symbol.</p></td>
     </tr>
     </table>
 
