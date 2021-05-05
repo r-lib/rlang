@@ -82,37 +82,37 @@ r_obj* ffi_enquo(r_obj* sym, r_obj* frame) {
 
 // [[ export() ]]
 int arg_match(r_obj* arg, r_obj* values, r_obj* arg_nm) {
-  if (r_typeof(arg) != R_TYPE_character) {
-    r_abort("`%s` must be a character vector.", unwrap_c_str(arg_nm));
-  }
   if (r_typeof(values) != R_TYPE_character) {
     r_abort("`values` must be a character vector.");
   }
 
-  int arg_len = r_length(arg);
   int values_len = r_length(values);
   if (values_len == 0) {
     r_abort("`values` must have at least one element.", unwrap_c_str(arg_nm));
   }
-  if (arg_len != 1 && arg_len != values_len) {
+
+  switch (r_typeof(arg)) {
+  case R_TYPE_character:
+    break;
+  case R_TYPE_string:
+    return arg_match1(arg, values, arg_nm);
+  case R_TYPE_symbol:
+    return arg_match1(r_sym_string(arg), values, arg_nm);
+  default:
+    r_abort("`%s` must be a string or character vector.", unwrap_c_str(arg_nm));
+  }
+
+  int arg_len = r_length(arg);
+
+  if (arg_len == 1) {
+    return arg_match1(r_chr_get(arg, 0), values, arg_nm);
+  }
+
+  if (arg_len != values_len) {
     r_abort("`%s` must be a string or have the same length as `values`.", unwrap_c_str(arg_nm));
   }
 
   r_obj* const* v_values = r_chr_cbegin(values);
-
-  // Simple case: one argument, we check if it's one of the values.
-  if (arg_len == 1) {
-    r_obj* arg_char = r_chr_get(arg, 0);
-    for (int i = 0; i < values_len; ++i) {
-      if (arg_char == v_values[i]) {
-        return i;
-      }
-    }
-
-    r_eval_with_xyz(stop_arg_match_call, arg, values, KEEP(wrap_chr(arg_nm)), rlang_ns_env);
-    r_stop_unreached("arg_match");
-  }
-
   r_obj* const* v_arg = r_chr_cbegin(arg);
 
   // Same-length vector: must be identical, we allow changed order.
@@ -168,6 +168,29 @@ int arg_match(r_obj* arg, r_obj* values, r_obj* arg_nm) {
   r_stop_unreached("arg_match");
 }
 
+static
+int arg_match1(r_obj* arg,
+               r_obj* values,
+               r_obj* arg_nm) {
+  // Simple case: one argument, we check if it's one of the values
+  r_obj* const* v_values = r_chr_cbegin(values);
+  int n_values = r_length(values);
+
+  for (int i = 0; i < n_values; ++i) {
+    if (arg == v_values[i]) {
+      return i;
+    }
+  }
+
+  r_eval_with_xyz(stop_arg_match_call,
+                  KEEP(wrap_chr(arg)),
+                  values,
+                  KEEP(wrap_chr(arg_nm)),
+                  rlang_ns_env);
+  r_stop_unreached("arg_match");
+}
+
+
 r_obj* ffi_arg_match0(r_obj* args) {
   args = r_node_cdr(args);
 
@@ -215,8 +238,8 @@ const char* unwrap_c_str(r_obj* arg) {
 static
 enum r_type arg_match_arg_nm_type(r_obj* arg_nm) {
   switch (r_typeof(arg_nm)) {
-  case R_TYPE_symbol:
-    return R_TYPE_symbol;
+  case R_TYPE_string: return R_TYPE_string;
+  case R_TYPE_symbol: return R_TYPE_symbol;
   case R_TYPE_character:
     if (r_is_string(arg_nm)) {
       return R_TYPE_character;

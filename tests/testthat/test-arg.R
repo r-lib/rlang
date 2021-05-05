@@ -134,3 +134,18 @@ test_that("arg_require() checks argument is supplied (#1118)", {
     (expect_error(g()))
   })
 })
+
+test_that("arg_match() supports symbols and scalar strings", {
+  expect_equal(
+    arg_match0(chr_get("foo", 0L), c("bar", "foo"), "my_arg"),
+    "foo"
+  )
+  expect_equal(
+    arg_match0(sym("foo"), c("bar", "foo"), "my_arg"),
+    "foo"
+  )
+
+  expect_snapshot({
+    (expect_error(arg_match0(chr_get("fo", 0L), c("bar", "foo"), "my_arg")))
+  })
+})

@@ -77,3 +77,12 @@
       <error/rlang_error>
       `f()` requires the argument `x` to be supplied.
 
+# arg_match() supports scalar strings
+
+    Code
+      (expect_error(arg_match0(chr_get("fo", 0L), c("bar", "foo"), "my_arg")))
+    Output
+      <error/rlang_error>
+      `my_arg` must be one of "bar" or "foo", not "fo".
+      i Did you mean "foo"?
+
