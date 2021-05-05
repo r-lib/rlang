@@ -10,7 +10,8 @@ enum dots_homonyms {
   DOTS_HOMONYMS_keep = 0,
   DOTS_HOMONYMS_first,
   DOTS_HOMONYMS_last,
-  DOTS_HOMONYMS_error
+  DOTS_HOMONYMS_error,
+  DOTS_HOMONYMS_SIZE
 };
 
 #include "decl/dots-decl.h"
@@ -510,34 +511,40 @@ r_obj* dots_unquote(r_obj* dots, struct dots_capture_info* capture_info) {
   return dots;
 }
 
+enum dots_ignore_empty {
+  DOTS_IGNORE_EMPTY_trailing = 0,
+  DOTS_IGNORE_EMPTY_none,
+  DOTS_IGNORE_EMPTY_all,
+  DOTS_IGNORE_EMPTY_SIZE,
+};
+static
+const char* dots_ignore_empty_c_values[DOTS_IGNORE_EMPTY_SIZE] = {
+  [DOTS_IGNORE_EMPTY_trailing] = "trailing",
+  [DOTS_IGNORE_EMPTY_none] = "none",
+  [DOTS_IGNORE_EMPTY_all] = "all"
+};
 
 static
 int arg_match_ignore_empty(r_obj* ignore_empty) {
-  if (r_typeof(ignore_empty) != R_TYPE_character || r_length(ignore_empty) == 0) {
-    r_abort("`.ignore_empty` must be a character vector");
+  switch ((enum dots_ignore_empty) r_arg_match(ignore_empty, dots_ignore_empty_values, dots_ignore_empty_arg)) {
+  case DOTS_IGNORE_EMPTY_trailing: return -1;
+  case DOTS_IGNORE_EMPTY_none: return 0;
+  case DOTS_IGNORE_EMPTY_all: return 1;
+  default: r_stop_unreached("arg_match_ignore_empty");
   }
-  const char* arg = r_chr_get_c_string(ignore_empty, 0);
-  switch(arg[0]) {
-  case 't': if (!strcmp(arg, "trailing")) return -1; else break;
-  case 'n': if (!strcmp(arg, "none")) return 0; else break;
-  case 'a': if (!strcmp(arg, "all")) return 1; else break;
-  }
-  r_abort("`.ignore_empty` must be one of: \"trailing\", \"none\", or \"all\"");
 }
 
 static
+const char* dots_homonyms_c_values[DOTS_HOMONYMS_SIZE] = {
+  [DOTS_HOMONYMS_keep] = "keep",
+  [DOTS_HOMONYMS_first] = "first",
+  [DOTS_HOMONYMS_last] = "last",
+  [DOTS_HOMONYMS_error] = "error"
+};
+
+static
 enum dots_homonyms arg_match_homonyms(r_obj* homonyms) {
-  if (r_typeof(homonyms) != R_TYPE_character || r_length(homonyms) == 0) {
-    r_abort("`.homonyms` must be a character vector");
-  }
-  const char* arg = r_chr_get_c_string(homonyms, 0);
-  switch(arg[0]) {
-  case 'k': if (!strcmp(arg, "keep")) return DOTS_HOMONYMS_keep; else break;
-  case 'f': if (!strcmp(arg, "first")) return DOTS_HOMONYMS_first; else break;
-  case 'l': if (!strcmp(arg, "last")) return DOTS_HOMONYMS_last; else break;
-  case 'e': if (!strcmp(arg, "error")) return DOTS_HOMONYMS_error; else break;
-  }
-  r_abort("`.homonyms` must be one of: \"keep\", \"first\", \"last\", or \"error\"");
+  return r_arg_match(homonyms, dots_homonyms_values, dots_homonyms_arg);
 }
 
 static
@@ -786,6 +793,7 @@ r_obj* dots_finalise(struct dots_capture_info* capture_info, r_obj* dots) {
     case DOTS_HOMONYMS_first: dots = dots_keep(dots, nms, true); break;
     case DOTS_HOMONYMS_last: dots = dots_keep(dots, nms, false); break;
     case DOTS_HOMONYMS_error: dots_check_homonyms(dots, nms); break;
+    default: r_stop_unreached("dots_finalise");
     }
 
     FREE(2);
@@ -1080,11 +1088,25 @@ void rlang_init_dots(r_obj* ns) {
 
   as_label_call = r_parse("as_label(x)");
   r_preserve(as_label_call);
+
+
+  dots_ignore_empty_values = r_chr_n(dots_ignore_empty_c_values, DOTS_IGNORE_EMPTY_SIZE);
+  r_preserve_global(dots_ignore_empty_values);
+
+  dots_homonyms_values = r_chr_n(dots_homonyms_c_values, DOTS_HOMONYMS_SIZE);
+  r_preserve_global(dots_homonyms_values);
+
+  dots_ignore_empty_arg = r_sym(".ignore_empty");
+  dots_homonyms_arg = r_sym(".homonyms");
 }
 
 static r_obj* as_label_call = NULL;
-static r_obj* empty_spliced_arg = NULL;
-static r_obj* splice_box_attrib = NULL;
-static r_obj* quosures_attrib = NULL;
 static r_obj* auto_name_call = NULL;
+static r_obj* empty_spliced_arg = NULL;
 static r_obj* glue_unquote_fn = NULL;
+static r_obj* dots_homonyms_arg = NULL;
+static r_obj* dots_homonyms_values = NULL;
+static r_obj* dots_ignore_empty_arg = NULL;
+static r_obj* dots_ignore_empty_values = NULL;
+static r_obj* quosures_attrib = NULL;
+static r_obj* splice_box_attrib = NULL;

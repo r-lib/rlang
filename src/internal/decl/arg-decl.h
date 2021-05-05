@@ -1,4 +1,18 @@
 static r_obj* stop_arg_match_call;
-static r_obj* arg_nm_sym;
 
-void arg_match0_abort(const char* msg, r_obj* env);
+static
+enum r_type arg_match_arg_nm_type(r_obj* arg_nm);
+
+static
+r_obj* wrap_chr(r_obj* arg);
+
+static
+r_obj* unwrap_str(r_obj* arg);
+
+static
+const char* unwrap_c_str(r_obj* arg);
+
+static
+int arg_match1(r_obj* arg,
+               r_obj* values,
+               r_obj* arg_nm);

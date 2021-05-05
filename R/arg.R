@@ -56,7 +56,8 @@ arg_match <- function(arg, values = NULL) {
 #' In this case, the first element of `arg` is used.
 #'
 #' @param values The possible values that `arg` can take.
-#' @param arg_nm The label to be used for `arg` in error messages.
+#' @param arg_nm Argument name of `arg` to use in error messages. Can
+#'   be a string or symbol.
 #' @rdname arg_match
 #' @export
 #' @examples
@@ -71,8 +72,8 @@ arg_match <- function(arg, values = NULL) {
 #' fn1()
 #' fn2("bar")
 #' try(fn3("zoo"))
-arg_match0 <- function(arg, values, arg_nm = as_label(substitute(arg))) {
-  .External(ffi_arg_match0, arg, values, environment())
+arg_match0 <- function(arg, values, arg_nm = substitute(arg)) {
+  .External(ffi_arg_match0, arg, values, arg_nm)
 }
 
 stop_arg_match <- function(arg, values, arg_nm) {

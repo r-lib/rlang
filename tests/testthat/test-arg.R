@@ -22,7 +22,7 @@ test_that("gives error with different than rearranged arg vs value", {
   expect_error(f(), "`myarg` must be a string or have the same length as `values`.")
 
   expect_error(
-    arg_match0(c("foo", "foo"), c("foo", "bar")),
+    arg_match0(c("foo", "foo"), c("foo", "bar"), arg_nm = "x"),
     regexp = "must be one of \"foo\" or \"bar\""
   )
 })
@@ -55,15 +55,16 @@ test_that("`arg_match()` has informative error messages", {
     (expect_error(arg_match0("continuuos", c("discrete", "continuous"), "my_arg")))
     (expect_error(arg_match0("fou", c("bar", "foo"), "my_arg")))
     (expect_error(arg_match0("fu", c("ba", "fo"), "my_arg")))
-    (expect_error(arg_match0("baq", c("foo", "baz", "bas"))))
+    (expect_error(arg_match0("baq", c("foo", "baz", "bas"), "my_arg")))
     (expect_error(arg_match0("", character(), "my_arg")))
+    (expect_error(arg_match0("fo", "foo", quote(f()))))
   })
 })
 
 test_that("`arg_match()` provides no suggestion when the edit distance is too large", {
   expect_snapshot({
-    (expect_error(arg_match0("foobaz", c("fooquxs", "discrete"))))
-    (expect_error(arg_match0("a", c("b", "c"))))
+    (expect_error(arg_match0("foobaz", c("fooquxs", "discrete"), "my_arg")))
+    (expect_error(arg_match0("a", c("b", "c"), "my_arg")))
   })
 })
 
@@ -76,10 +77,10 @@ test_that("`arg_match()` finds a match even with small possible typos", {
 
 test_that("`arg_match()` makes case-insensitive match", {
   expect_snapshot({
-    (expect_error(arg_match0("a", c("A", "B")), "Did you mean \"A\"?"))
+    (expect_error(arg_match0("a", c("A", "B"), "my_arg"), "Did you mean \"A\"?"))
 
     # Case-insensitive match is done after case-sensitive
-    (expect_error(arg_match0("aa", c("AA", "aA")), "Did you mean \"aA\"?"))
+    (expect_error(arg_match0("aa", c("AA", "aA"), "my_arg"), "Did you mean \"aA\"?"))
   })
 })
 
@@ -131,5 +132,20 @@ test_that("arg_require() checks argument is supplied (#1118)", {
   expect_snapshot({
     (expect_error(f()))
     (expect_error(g()))
+  })
+})
+
+test_that("arg_match() supports symbols and scalar strings", {
+  expect_equal(
+    arg_match0(chr_get("foo", 0L), c("bar", "foo"), "my_arg"),
+    "foo"
+  )
+  expect_equal(
+    arg_match0(sym("foo"), c("bar", "foo"), "my_arg"),
+    "foo"
+  )
+
+  expect_snapshot({
+    (expect_error(arg_match0(chr_get("fo", 0L), c("bar", "foo"), "my_arg")))
   })
 })

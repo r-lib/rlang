@@ -1,5 +1,6 @@
 #include <rlang.h>
 
+#include "arg.c"
 #include "attrib.c"
 #include "call.c"
 #include "cnd.c"
@@ -79,6 +80,7 @@ r_obj* r_init_library(r_obj* ns) {
   r_init_library_globals();
 
   r_init_rlang_ns_env();
+  r_init_library_arg();
   r_init_library_call();
   r_init_library_cnd();
   r_init_library_dyn_array();
