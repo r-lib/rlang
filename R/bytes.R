@@ -234,7 +234,17 @@ as.character.rlib_bytes <- format.rlib_bytes
 #' @export
 print.rlib_bytes <- function(x, ...) {
   check_dots_used()
-  print(format(x, ...), quote = FALSE)
+
+  # Disambiguate edge cases
+  if (!length(x) || all(is.na(x))) {
+    writeLines("<rlib:bytes>")
+  }
+
+  if (length(x)) {
+    print(format(x, ...), quote = FALSE)
+  } else {
+    writeLines("[1] (empty)")
+  }
 }
 
 

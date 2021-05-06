@@ -120,3 +120,8 @@ test_that("Ops.rlib_bytes() errors for other binary operators", {
   expect_error(x & TRUE, "`&` not defined for <rlib_bytes> objects")
   expect_error(x | TRUE, "`|` not defined for <rlib_bytes> objects")
 })
+
+test_that("print method disambiguates edge cases", {
+  expect_snapshot(print(bytes2()))
+  expect_snapshot(print(bytes2(NA, NA)))
+})
