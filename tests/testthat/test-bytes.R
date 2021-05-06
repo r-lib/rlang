@@ -9,6 +9,10 @@ test_that("can create empty and unspecified bytes() vector", {
   expect_equal(bytes2(NA, NA), new_bytes(c(na_dbl, na_dbl)))
 })
 
+test_that("bytes() only accepts bare vectors", {
+  expect_error(bytes2(factor("1Mb")), "Can't coerce")
+})
+
 test_that("as_bytes() accepts numeric input unchanged", {
   expect_equal(unclass(as_bytes(123L)), 123L)
   expect_equal(unclass(as_bytes(123)), 123)

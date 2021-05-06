@@ -48,13 +48,15 @@ new_bytes <- function(x) {
 }
 
 bytes_cast <- function(x) {
-  switch(
-    typeof(x),
-    logical = if (is_unspecified(x)) return(new_bytes(as.double(x))),
-    integer = ,
-    double = return(new_bytes(x)),
-    character = return(parse_bytes(x))
-  )
+  if (!is.object(x)) {
+    switch(
+      typeof(x),
+      logical = if (is_unspecified(x)) return(new_bytes(as.double(x))),
+      integer = ,
+      double = return(new_bytes(x)),
+      character = return(parse_bytes(x))
+    )
+  }
   abort(sprintf(
     "Can't coerce %s to <rlib_bytes>.",
     friendly_type_of(x)
