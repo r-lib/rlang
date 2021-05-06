@@ -220,7 +220,7 @@ non-UTF-8 native encoding.</p>
 <span class='co'># Unicode escaping in the string):</span>
 <span class='va'>utf8</span> <span class='op'>&lt;-</span> <span class='st'>"caf\uE9"</span>
 <span class='fu'><a href='https://rdrr.io/r/base/Encoding.html'>Encoding</a></span><span class='op'>(</span><span class='va'>utf8</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "UTF-8"</div><div class='input'><span class='fu'><a href='as_bytes.html'>as_bytes</a></span><span class='op'>(</span><span class='va'>utf8</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "UTF-8"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/rawConversion.html'>charToRaw</a></span><span class='op'>(</span><span class='va'>utf8</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] 63 61 66 c3 a9</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
