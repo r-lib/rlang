@@ -42,13 +42,15 @@ bytes2 <- function(...) {
 # Constructors and core methods -------------------------------------------
 
 new_bytes <- function(x) {
+  x <- x %||% dbl()
+  stopifnot(is.numeric(x))
   structure(x, class = c("rlib_bytes", "numeric"))
 }
 
 bytes_cast <- function(x) {
   switch(
     typeof(x),
-    logical = if (is_unspecified(x)) return(new_bytes(x)),
+    logical = if (is_unspecified(x)) return(new_bytes(as.double(x))),
     integer = ,
     double = return(new_bytes(x)),
     character = return(parse_bytes(x))
