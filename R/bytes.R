@@ -66,9 +66,14 @@ byte_units <- c(
 
 # Adapted from https://github.com/gaborcsardi/prettyunits
 #' @export
-format.rlib_bytes <- function(x, scientific = FALSE, digits = 3, drop0trailing = TRUE, ...) {
-  nms <- names(x)
+format.rlib_bytes <- function(x,
+                              ...,
+                              scientific = FALSE,
+                              digits = 3,
+                              drop0trailing = TRUE) {
+  check_dots_used()
 
+  nms <- names(x)
   bytes <- unclass(x)
 
   unit <- vcapply(x, find_unit, byte_units)
@@ -97,7 +102,8 @@ as.character.rlib_bytes <- format.rlib_bytes
 
 #' @export
 print.rlib_bytes <- function(x, ...) {
-  print(format.rlib_bytes(x, ...), quote = FALSE)
+  check_dots_used()
+  print(format(x, ...), quote = FALSE)
 }
 
 #' @export
