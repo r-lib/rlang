@@ -754,7 +754,7 @@ names_tags <- function(nms) {
     return("")
   }
 
-  invalid <- nms_are_invalid(nms)
+  invalid <- detect_void_name(nms)
   if (all(invalid)) {
     return("")
   }

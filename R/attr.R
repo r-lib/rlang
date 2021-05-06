@@ -62,7 +62,7 @@ is_named <- function(x) {
     return(FALSE)
   }
 
-  if (any(nms_are_invalid(nms))) {
+  if (any(detect_void_name(nms))) {
     return(FALSE)
   }
 
@@ -76,11 +76,11 @@ have_name <- function(x) {
   if (is.null(nms)) {
     rep(FALSE, length(x))
   } else {
-    !nms_are_invalid(nms)
+    !detect_void_name(nms)
   }
 }
 
-nms_are_invalid <- function(x) {
+detect_void_name <- function(x) {
   x == "" | is.na(x)
 }
 
