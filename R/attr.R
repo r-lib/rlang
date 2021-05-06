@@ -76,6 +76,7 @@ have_name <- function(x) {
     !detect_void_name(nms)
   }
 }
+detect_named <- have_name
 
 detect_void_name <- function(x) {
   x == "" | is.na(x)

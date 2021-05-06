@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* `exprs_auto_name()` gains a `repair_auto` argument to make automatic
+  names unique (#1116).
+
 * The `.named` argument of `dots_list()` can now be set to `NULL` to
   give the result default names. With this option, fully unnamed
   inputs produce a fully unnamed result with `NULL` names instead of a
