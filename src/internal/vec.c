@@ -166,7 +166,7 @@ r_obj* vec_coercer(r_obj* dest) {
   case R_TYPE_double: return rlang_ns_get("as_double");
   case R_TYPE_complex: return rlang_ns_get("as_complex");
   case R_TYPE_character: return rlang_ns_get("as_character");
-  case RAWSXP: return rlang_ns_get("as_bytes");
+  case RAWSXP: return rlang_ns_get("legacy_as_raw");
   default: r_abort("No coercion implemented for `%s`", Rf_type2str(r_typeof(dest)));
   }
 }

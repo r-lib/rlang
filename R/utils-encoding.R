@@ -36,7 +36,7 @@
 #' # Unicode escaping in the string):
 #' utf8 <- "caf\uE9"
 #' Encoding(utf8)
-#' as_bytes(utf8)
+#' charToRaw(utf8)
 as_utf8_character <- function(x) {
   .Call(ffi_unescape_character, as.character(x))
 }
@@ -107,7 +107,7 @@ chr_unserialise_unicode <- function(chr) {
 #' # automatically:
 #' cafe <- string("caf\uE9")
 #' Encoding(cafe)
-#' as_bytes(cafe)
+#' charToRaw(cafe)
 #'
 #' # In addition, string() provides useful conversions to let
 #' # programmers control how the string is represented in memory. For
@@ -116,7 +116,7 @@ chr_unserialise_unicode <- function(chr) {
 #' # string explicitly:
 #' cafe_latin1 <- string(c(0x63, 0x61, 0x66, 0xE9), "latin1")
 #' Encoding(cafe_latin1)
-#' as_bytes(cafe_latin1)
+#' charToRaw(cafe_latin1)
 string <- function(x, encoding = NULL) {
   if (is_integerish(x)) {
     x <- rawToChar(as.raw(x))
@@ -133,31 +133,6 @@ string <- function(x, encoding = NULL) {
   x
 }
 
-#' Coerce to a raw vector
-#'
-#' @description
-#'
-#' `r lifecycle::badge("experimental")`
-#'
-#' This currently only works with strings, and returns its hexadecimal
-#' representation.
-#'
-#'
-#' @section Life cycle:
-#'
-#' Raw vector functions are experimental.
-#'
-#' @param x A string.
-#' @return A raw vector of bytes.
-#' @keywords internal
-#' @export
-as_bytes <- function(x) {
-  switch(typeof(x),
-    raw = return(x),
-    character = if (is_string(x)) return(charToRaw(x))
-  )
-  abort("`x` must be a string or raw vector")
-}
 cast_raw <- function(x) {
   if (is_integerish(x)) {
     as.raw(x)
@@ -166,4 +141,13 @@ cast_raw <- function(x) {
   } else {
     abort("input should be integerish")
   }
+}
+
+# Used in internal/vec.c
+legacy_as_raw <- function(x) {
+  switch(typeof(x),
+    raw = return(x),
+    character = if (is_string(x)) return(charToRaw(x))
+  )
+  abort("`x` must be a string or raw vector")
 }

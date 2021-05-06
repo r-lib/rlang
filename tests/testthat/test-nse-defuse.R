@@ -227,7 +227,7 @@ test_that("serialised unicode in `:=` LHS is unserialised", {
     exprs <- exprs("\u5e78" := 10)
     names(exprs)
   })
-  expect_identical(as_bytes(nms), as_bytes("\u5e78"))
+  expect_identical(charToRaw(nms), charToRaw("\u5e78"))
 })
 
 test_that("exprs() supports auto-naming", {

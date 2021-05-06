@@ -41,6 +41,6 @@ non-UTF-8 native encoding.
 # Unicode escaping in the string):
 utf8 <- "caf\uE9"
 Encoding(utf8)
-as_bytes(utf8)
+charToRaw(utf8)
 }
 \keyword{internal}

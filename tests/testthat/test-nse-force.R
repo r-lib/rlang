@@ -215,7 +215,7 @@ test_that("serialised unicode in argument names is unserialised on splice", {
     quos <- quos(!!! exprs)
     names(quos)
   })
-  expect_identical(as_bytes(nms), as_bytes("\u5e78"))
+  expect_identical(charToRaw(nms), charToRaw("\u5e78"))
   expect_true(all(chr_encoding(nms) == "UTF-8"))
 })
 }
