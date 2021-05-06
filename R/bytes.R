@@ -34,7 +34,8 @@ NULL
 # To be renamed to `bytes()` once next version of vctrs is on CRAN
 # https://github.com/r-lib/vctrs/commit/04f1857e
 bytes2 <- function(...) {
-  inject(c.rlib_bytes(!!!list2(...)))
+  dots <- map(list(...), ~ unclass(bytes_cast(.x)))
+  new_bytes(inject(c(!!!dots)))
 }
 
 
@@ -66,11 +67,6 @@ bytes_cast <- function(x) {
 `[[.rlib_bytes` <- function(x, i) {
   new_bytes(NextMethod("[["))
 }
-#' @export
-c.rlib_bytes <- function(...) {
-  dots <- map(list(...), ~ unclass(bytes_cast(.x)))
-  new_bytes(inject(c(!!!dots)))
-}
 
 
 # Generic conversion ------------------------------------------------------
@@ -83,6 +79,10 @@ as_bytes <- function(x) {
 #' @export
 as_bytes.rlib_bytes <- function(x) {
   x
+}
+#' @export
+as_bytes.character <- function(x) {
+  parse_bytes(x)
 }
 #' @export
 as_bytes.numeric <- function(x) {

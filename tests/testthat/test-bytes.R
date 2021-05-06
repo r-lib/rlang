@@ -94,6 +94,7 @@ test_that("Ops.rlib_bytes() works with boolean comparison operators", {
   expect_equal(x >= 100, c(TRUE, TRUE, TRUE))
   expect_equal(x < 200, c(TRUE, FALSE, FALSE))
   expect_equal(x <= 200, c(TRUE, TRUE, FALSE))
+  expect_true(bytes2("1Mb") > "1Kb")
 })
 
 test_that("Ops.rlib_bytes() works with arithmetic operators", {
@@ -103,6 +104,7 @@ test_that("Ops.rlib_bytes() works with arithmetic operators", {
   expect_equal(x * 100, bytes2(c(10000, 20000, 30000)))
   expect_equal(x / 2, bytes2(c(50, 100, 150)))
   expect_equal(x ^ 2, bytes2(c(10000, 40000, 90000)))
+  expect_equal(bytes2("1Mb") + "1024Kb", bytes2("2Mb"))
 })
 
 test_that("Ops.rlib_bytes() errors for other binary operators", {
