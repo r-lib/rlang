@@ -45,8 +45,15 @@ setOldClass(c("as_bytes", "numeric"), numeric())
 #' @export
 parse_bytes <- function(x) {
   stopifnot(is_character(x))
-  m <- captures(x, regexpr("^(?<size>[[:digit:].]+)\\s*(?<unit>[KMGTPEZY]?)i?[Bb]?$", x, perl = TRUE))
+
+  pos <- regexpr(
+    "^(?<size>[[:digit:].]+)\\s*(?<unit>[KMGTPEZY]?)i?[Bb]?$",
+    x,
+    perl = TRUE
+  )
+  m <- captures(x, pos)
   m$unit[m$unit == ""] <- "B"
+
   new_bytes(unname(as.numeric(m$size) * byte_units[m$unit]))
 }
 
@@ -62,6 +69,54 @@ byte_units <- c(
   'Y' = 1024 ^ 8
 )
 
+captures <- function(x, m) {
+  if (!is_character(x)) {
+    abort("`x` must be a character.")
+  }
+  if (!is_reg_match(m)) {
+    abort("`m` must be a match object from `regexpr()`.")
+  }
+
+  starts <- attr(m, "capture.start")
+  strings <- substring(
+    x,
+    starts,
+    starts + attr(m, "capture.length") - 1L
+  )
+
+  out <- data.frame(
+    matrix(strings, ncol = NCOL(starts)),
+    stringsAsFactors = FALSE
+  )
+  colnames(out) <- auto_name_seq(attr(m, "capture.names"))
+  out[is.na(m) | m == -1, ] <- NA_character_
+
+  out
+}
+
+is_reg_match <- function(x) {
+  if (!inherits(x, "integer")) {
+    return(FALSE)
+  }
+
+  nms <- c(
+    "match.length",
+    "capture.start",
+    "capture.length",
+    "capture.names"
+  )
+  all(nms %in% names(attributes(x)))
+}
+
+auto_name_seq <- function(names) {
+  void <- detect_void_name(names)
+  if (!any(void)) {
+    return(names)
+  }
+  names[void] <- seq_along(names)[void]
+  names
+}
+
 
 # Core methods and utils --------------------------------------------------
 
@@ -73,7 +128,6 @@ new_bytes <- function(x) {
 `[.rlib_bytes` <- function(x, i) {
   new_bytes(NextMethod("["))
 }
-
 #' @export
 `[[.rlib_bytes` <- function(x, i) {
   new_bytes(NextMethod("[["))
@@ -87,15 +141,15 @@ new_bytes <- function(x) {
 #' @export
 format.rlib_bytes <- function(x,
                               ...,
-                              scientific = FALSE,
                               digits = 3,
+                              scientific = FALSE,
                               drop0trailing = TRUE) {
   check_dots_used()
 
   nms <- names(x)
   bytes <- unclass(x)
 
-  unit <- vcapply(x, find_unit, byte_units)
+  unit <- map_chr(x, find_unit, byte_units)
   res <- round(bytes / byte_units[unit], digits = digits)
 
   ## Zero bytes
@@ -111,9 +165,28 @@ format.rlib_bytes <- function(x,
   large_units <- unit %in% names(byte_units)[-1]
   unit[large_units] <- paste0(unit[large_units], "B")
 
-  res <- format(res, scientific = scientific, digits = digits, drop0trailing = drop0trailing, ...)
+  res <- format(
+    res,
+    scientific = scientific,
+    digits = digits,
+    drop0trailing = drop0trailing,
+    ...
+  )
 
   stats::setNames(paste0(res, unit), nms)
+}
+
+tolerance <- sqrt(.Machine$double.eps)
+
+find_unit <- function(x, units) {
+  if (is.na(x) || is.nan(x) || x <= 0 || is.infinite(x)) {
+    return(NA_character_)
+  }
+  epsilon <- 1 - (x * (1 / units))
+
+  out <- which(epsilon < tolerance)
+  out <- out[length(out)]
+  names(out)
 }
 
 #' @export
@@ -147,11 +220,11 @@ max.rlib_bytes <- function(x, ...) {
 # Adapted from Ops.numeric_version
 Ops.rlib_bytes <- function (e1, e2) {
   if (nargs() == 1L) {
-    stop(sprintf("unary '%s' not defined for \"rlib_bytes\" objects", .Generic),
-      call. = FALSE)
+    abort(sprintf("unary `%s` not defined for <rlib_bytes> objects", .Generic))
   }
 
-  boolean <- switch(.Generic,
+  boolean <- switch(
+    .Generic,
     `+` = TRUE,
     `-` = TRUE,
     `*` = TRUE,
@@ -163,11 +236,12 @@ Ops.rlib_bytes <- function (e1, e2) {
     `!=` = TRUE,
     `<=` = TRUE,
     `>=` = TRUE,
-  FALSE)
+    FALSE
+  )
   if (!boolean) {
-    stop(sprintf("'%s' not defined for \"rlib_bytes\" objects", .Generic),
-      call. = FALSE)
+    abort(sprintf("`%s` not defined for <rlib_bytes> objects", .Generic))
   }
+
   e1 <- as_bytes(e1)
   e2 <- as_bytes(e2)
   NextMethod(.Generic)
