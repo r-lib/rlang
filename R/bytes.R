@@ -21,6 +21,50 @@
 #' @name bytes-class
 NULL
 
+# To be renamed to `bytes()` once next version of vctrs is on CRAN
+# https://github.com/r-lib/vctrs/commit/04f1857e
+bytes2 <- function(...) {
+  inject(c.rlib_bytes(!!!list2(...)))
+}
+
+
+# Constructors and core methods -------------------------------------------
+
+new_bytes <- function(x) {
+  structure(x, class = c("rlib_bytes", "numeric"))
+}
+
+bytes_cast <- function(x) {
+  switch(
+    typeof(x),
+    logical = if (is_unspecified(x)) return(new_bytes(x)),
+    integer = ,
+    double = return(new_bytes(x)),
+    character = return(parse_bytes(x))
+  )
+  abort(sprintf(
+    "Can't coerce %s to <rlib_bytes>.",
+    friendly_type_of(x)
+  ))
+}
+
+#' @export
+`[.rlib_bytes` <- function(x, i) {
+  new_bytes(NextMethod("["))
+}
+#' @export
+`[[.rlib_bytes` <- function(x, i) {
+  new_bytes(NextMethod("[["))
+}
+#' @export
+c.rlib_bytes <- function(...) {
+  dots <- map(list(...), ~ unclass(bytes_cast(.x)))
+  new_bytes(inject(c(!!!dots)))
+}
+
+
+# Generic conversion ------------------------------------------------------
+
 #' @rdname bytes-class
 #' @export
 as_bytes <- function(x) {
@@ -116,23 +160,6 @@ auto_name_seq <- function(names) {
   names[void] <- seq_along(names)[void]
   names
 }
-
-
-# Core methods and utils --------------------------------------------------
-
-new_bytes <- function(x) {
-  structure(x, class = c("rlib_bytes", "numeric"))
-}
-
-#' @export
-`[.rlib_bytes` <- function(x, i) {
-  new_bytes(NextMethod("["))
-}
-#' @export
-`[[.rlib_bytes` <- function(x, i) {
-  new_bytes(NextMethod("[["))
-}
-
 
 
 # Printing ----------------------------------------------------------------
