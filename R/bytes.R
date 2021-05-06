@@ -1,8 +1,3 @@
-# This is mostly a copy of https://github.com/r-lib/fs/blob/0f5b6191935fe4c862d2e5003655e6c1669f4afd/R/fs_bytes.R
-# If I end up needing this in a third package it should probably live in a package somewhere, maybe prettyunits?
-
-byte_units <- c('B' = 1, 'K' = 1024, 'M' = 1024 ^ 2, 'G' = 1024 ^ 3, 'T' = 1024 ^ 4, 'P' = 1024 ^ 5, 'E' = 1024 ^ 6, 'Z' = 1024 ^ 7, 'Y' = 1024 ^ 8)
-
 #' Human readable memory sizes
 #'
 #' Construct, manipulate and display vectors of byte sizes. These are numeric
@@ -23,15 +18,18 @@ byte_units <- c('B' = 1, 'K' = 1024, 'M' = 1024 ^ 2, 'G' = 1024 ^ 3, 'T' = 1024 
 #' bench_bytes("1KB") < "1MB"
 #'
 #' sum(bench_bytes(c("1MB", "5MB", "500KB")))
-#' @name bench_bytes
+#' @name bytes-class
+NULL
+
+#' @rdname bytes-class
 #' @export
-as_bench_bytes <- function(x) {
-  UseMethod("as_bench_bytes")
+as_bytes <- function(x) {
+  UseMethod("as_bytes")
 }
 
 #' @export
 #' @rdname bench_bytes
-bench_bytes <- as_bench_bytes
+bench_bytes <- as_bytes
 
 new_bench_bytes <- function(x) {
   structure(x, class = c("bench_bytes", "numeric"))
@@ -41,7 +39,7 @@ new_bench_bytes <- function(x) {
 setOldClass(c("bench_bytes", "numeric"), numeric())
 
 #' @export
-as_bench_bytes.default <- function(x) {
+as_bytes.default <- function(x) {
   x <- as.character(x)
   m <- captures(x, regexpr("^(?<size>[[:digit:].]+)\\s*(?<unit>[KMGTPEZY]?)i?[Bb]?$", x, perl = TRUE))
   m$unit[m$unit == ""] <- "B"
@@ -49,14 +47,25 @@ as_bench_bytes.default <- function(x) {
 }
 
 #' @export
-as_bench_bytes.bench_bytes <- function(x) {
-  return(x)
+as_bytes.rlib_bytes <- function(x) {
+  x
 }
-
 #' @export
-as_bench_bytes.numeric <- function(x) {
+as_bytes.numeric <- function(x) {
   new_bench_bytes(x)
 }
+
+byte_units <- c(
+  'B' = 1,
+  'K' = 1024,
+  'M' = 1024 ^ 2,
+  'G' = 1024 ^ 3,
+  'T' = 1024 ^ 4,
+  'P' = 1024 ^ 5,
+  'E' = 1024 ^ 6,
+  'Z' = 1024 ^ 7,
+  'Y' = 1024 ^ 8
+)
 
 # Adapted from https://github.com/gaborcsardi/prettyunits
 #' @export
@@ -144,15 +153,17 @@ Ops.bench_bytes <- function (e1, e2) {
     stop(sprintf("'%s' not defined for \"bench_bytes\" objects", .Generic),
       call. = FALSE)
   }
-  e1 <- as_bench_bytes(e1)
-  e2 <- as_bench_bytes(e2)
+  e1 <- as_bytes(e1)
+  e2 <- as_bytes(e2)
   NextMethod(.Generic)
 }
 
+# Lazily exported
 pillar_shaft.bench_bytes <- function(x, ...) {
   pillar::new_pillar_shaft_simple(format.bench_bytes(x), align = "right", ...)
 }
 
+# Lazily exported
 type_sum.bench_bytes <- function(x) {
   "bch:byt"
 }
