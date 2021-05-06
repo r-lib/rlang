@@ -209,7 +209,7 @@ r_obj* chr_detect_dups(r_obj* x) {
     r_stop_internal("chr_detect_dups", "`x` must be a character vector.");
   }
 
-  x = KEEP(r_obj_fix_encoding(x));
+  x = KEEP(r_obj_encode_utf8(x));
 
   // Sentinel for duplicates
   r_obj* dup_flag = r_strs.empty;
