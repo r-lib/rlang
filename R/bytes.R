@@ -1,9 +1,19 @@
 #' Human readable memory sizes
 #'
+#' @description
 #' Construct, manipulate and display vectors of byte sizes. These are numeric
 #' vectors, so you can compare them numerically, but they can also be compared
 #' to human readable values such as '10MB'.
 #'
+#' - `parse_bytes()` takes a character vector of human-readable bytes
+#'   and returns a structured bytes vector.
+#'
+#' - `as_bytes()` is a generic conversion function for objects
+#'   representing bytes.
+#'
+#' Note: A `bytes()` constructor will be exported soon.
+#'
+#' @details
 #' These memory sizes are always assumed to be base 1024, rather than 1000.
 #'
 #' @param x A numeric or character vector. Character representations can use
