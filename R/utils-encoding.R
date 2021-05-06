@@ -158,7 +158,7 @@ as_bytes <- function(x) {
   )
   abort("`x` must be a string or raw vector")
 }
-new_bytes <- function(x) {
+cast_raw <- function(x) {
   if (is_integerish(x)) {
     as.raw(x)
   } else if (is_raw(x)) {

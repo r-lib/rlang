@@ -91,9 +91,9 @@ chr <- function(...) {
 bytes <- function(...) {
   dots <- map(dots_values(...), function(dot) {
     if (is_bare_list(dot) || is_spliced(dot)) {
-      map(dot, new_bytes)
+      map(dot, cast_raw)
     } else {
-      new_bytes(dot)
+      cast_raw(dot)
     }
   })
   .Call(ffi_squash, dots, "raw", is_spliced_bare, 1L)
