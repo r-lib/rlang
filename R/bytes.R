@@ -9,15 +9,15 @@
 #' @param x A numeric or character vector. Character representations can use
 #'   shorthand sizes (see examples).
 #' @examples
-#' bench_bytes("1")
-#' bench_bytes("1K")
-#' bench_bytes("1Kb")
-#' bench_bytes("1KiB")
-#' bench_bytes("1MB")
+#' parse_bytes("1")
+#' parse_bytes("1K")
+#' parse_bytes("1Kb")
+#' parse_bytes("1KiB")
+#' parse_bytes("1MB")
 #'
-#' bench_bytes("1KB") < "1MB"
+#' parse_bytes("1KB") < "1MB"
 #'
-#' sum(bench_bytes(c("1MB", "5MB", "500KB")))
+#' sum(parse_bytes(c("1MB", "5MB", "500KB")))
 #' @name bytes-class
 NULL
 
@@ -26,26 +26,6 @@ NULL
 as_bytes <- function(x) {
   UseMethod("as_bytes")
 }
-
-#' @export
-#' @rdname bench_bytes
-bench_bytes <- as_bytes
-
-new_bench_bytes <- function(x) {
-  structure(x, class = c("bench_bytes", "numeric"))
-}
-
-#' @importFrom methods setOldClass
-setOldClass(c("bench_bytes", "numeric"), numeric())
-
-#' @export
-as_bytes.default <- function(x) {
-  x <- as.character(x)
-  m <- captures(x, regexpr("^(?<size>[[:digit:].]+)\\s*(?<unit>[KMGTPEZY]?)i?[Bb]?$", x, perl = TRUE))
-  m$unit[m$unit == ""] <- "B"
-  new_bench_bytes(unname(as.numeric(m$size) * byte_units[m$unit]))
-}
-
 #' @export
 as_bytes.rlib_bytes <- function(x) {
   x
@@ -54,6 +34,19 @@ as_bytes.rlib_bytes <- function(x) {
 as_bytes.numeric <- function(x) {
   new_bench_bytes(x)
 }
+
+#' @importFrom methods setOldClass
+setOldClass(c("as_bytes", "numeric"), numeric())
+
+#' @rdname bytes-class
+#' @export
+parse_bytes <- function(x) {
+  stopifnot(is_character(x))
+  m <- captures(x, regexpr("^(?<size>[[:digit:].]+)\\s*(?<unit>[KMGTPEZY]?)i?[Bb]?$", x, perl = TRUE))
+  m$unit[m$unit == ""] <- "B"
+  new_bench_bytes(unname(as.numeric(m$size) * byte_units[m$unit]))
+}
+
 
 byte_units <- c(
   'B' = 1,
@@ -66,6 +59,10 @@ byte_units <- c(
   'Z' = 1024 ^ 7,
   'Y' = 1024 ^ 8
 )
+
+new_bench_bytes <- function(x) {
+  structure(x, class = c("bench_bytes", "numeric"))
+}
 
 # Adapted from https://github.com/gaborcsardi/prettyunits
 #' @export
