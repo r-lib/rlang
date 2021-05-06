@@ -177,11 +177,19 @@ Ops.rlib_bytes <- function (e1, e2) {
 # Integration -------------------------------------------------------------
 
 # Lazily exported
+
 pillar_shaft.rlib_bytes <- function(x, ...) {
   pillar::new_pillar_shaft_simple(format.rlib_bytes(x), align = "right", ...)
 }
-
-# Lazily exported
 type_sum.rlib_bytes <- function(x) {
   "byt"
 }
+scale_type.rlib_bytes <- function(x) {
+  "rlib_bytes"
+}
+
+on_load({
+  s3_register("pillar::pillar_shaft", "rlib_bytes")
+  s3_register("pillar::type_sum", "rlib_bytes")
+  s3_register("ggplot2::scale_type", "rlib_bytes")
+})
