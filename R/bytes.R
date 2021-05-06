@@ -38,6 +38,9 @@ as_bytes.numeric <- function(x) {
 #' @importFrom methods setOldClass
 setOldClass(c("as_bytes", "numeric"), numeric())
 
+
+# Parsing -----------------------------------------------------------------
+
 #' @rdname bytes-class
 #' @export
 parse_bytes <- function(x) {
@@ -45,11 +48,6 @@ parse_bytes <- function(x) {
   m <- captures(x, regexpr("^(?<size>[[:digit:].]+)\\s*(?<unit>[KMGTPEZY]?)i?[Bb]?$", x, perl = TRUE))
   m$unit[m$unit == ""] <- "B"
   new_bytes(unname(as.numeric(m$size) * byte_units[m$unit]))
-}
-
-
-new_bytes <- function(x) {
-  structure(x, class = c("rlib_bytes", "numeric"))
 }
 
 byte_units <- c(
@@ -63,6 +61,27 @@ byte_units <- c(
   'Z' = 1024 ^ 7,
   'Y' = 1024 ^ 8
 )
+
+
+# Core methods and utils --------------------------------------------------
+
+new_bytes <- function(x) {
+  structure(x, class = c("rlib_bytes", "numeric"))
+}
+
+#' @export
+`[.rlib_bytes` <- function(x, i) {
+  new_bytes(NextMethod("["))
+}
+
+#' @export
+`[[.rlib_bytes` <- function(x, i) {
+  new_bytes(NextMethod("[["))
+}
+
+
+
+# Printing ----------------------------------------------------------------
 
 # Adapted from https://github.com/gaborcsardi/prettyunits
 #' @export
@@ -106,6 +125,9 @@ print.rlib_bytes <- function(x, ...) {
   print(format(x, ...), quote = FALSE)
 }
 
+
+# Arithmetic --------------------------------------------------------------
+
 #' @export
 sum.rlib_bytes <- function(x, ...) {
   new_bytes(NextMethod())
@@ -119,16 +141,6 @@ min.rlib_bytes <- function(x, ...) {
 #' @export
 max.rlib_bytes <- function(x, ...) {
   new_bytes(NextMethod())
-}
-
-#' @export
-`[.rlib_bytes` <- function(x, i) {
-  new_bytes(NextMethod("["))
-}
-
-#' @export
-`[[.rlib_bytes` <- function(x, i) {
-  new_bytes(NextMethod("[["))
 }
 
 #' @export
@@ -160,6 +172,9 @@ Ops.rlib_bytes <- function (e1, e2) {
   e2 <- as_bytes(e2)
   NextMethod(.Generic)
 }
+
+
+# Integration -------------------------------------------------------------
 
 # Lazily exported
 pillar_shaft.rlib_bytes <- function(x, ...) {
