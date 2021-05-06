@@ -32,7 +32,7 @@ as_bytes.rlib_bytes <- function(x) {
 }
 #' @export
 as_bytes.numeric <- function(x) {
-  new_bench_bytes(x)
+  new_bytes(x)
 }
 
 #' @importFrom methods setOldClass
@@ -44,9 +44,13 @@ parse_bytes <- function(x) {
   stopifnot(is_character(x))
   m <- captures(x, regexpr("^(?<size>[[:digit:].]+)\\s*(?<unit>[KMGTPEZY]?)i?[Bb]?$", x, perl = TRUE))
   m$unit[m$unit == ""] <- "B"
-  new_bench_bytes(unname(as.numeric(m$size) * byte_units[m$unit]))
+  new_bytes(unname(as.numeric(m$size) * byte_units[m$unit]))
 }
 
+
+new_bytes <- function(x) {
+  structure(x, class = c("rlib_bytes", "numeric"))
+}
 
 byte_units <- c(
   'B' = 1,
@@ -60,13 +64,9 @@ byte_units <- c(
   'Y' = 1024 ^ 8
 )
 
-new_bench_bytes <- function(x) {
-  structure(x, class = c("bench_bytes", "numeric"))
-}
-
 # Adapted from https://github.com/gaborcsardi/prettyunits
 #' @export
-format.bench_bytes <- function(x, scientific = FALSE, digits = 3, drop0trailing = TRUE, ...) {
+format.rlib_bytes <- function(x, scientific = FALSE, digits = 3, drop0trailing = TRUE, ...) {
   nms <- names(x)
 
   bytes <- unclass(x)
@@ -93,43 +93,43 @@ format.bench_bytes <- function(x, scientific = FALSE, digits = 3, drop0trailing 
 }
 
 #' @export
-as.character.bench_bytes <- format.bench_bytes
+as.character.rlib_bytes <- format.rlib_bytes
 
 #' @export
-print.bench_bytes <- function(x, ...) {
-  print(format.bench_bytes(x, ...), quote = FALSE)
+print.rlib_bytes <- function(x, ...) {
+  print(format.rlib_bytes(x, ...), quote = FALSE)
 }
 
 #' @export
-sum.bench_bytes <- function(x, ...) {
-  new_bench_bytes(NextMethod())
+sum.rlib_bytes <- function(x, ...) {
+  new_bytes(NextMethod())
 }
 
 #' @export
-min.bench_bytes <- function(x, ...) {
-  new_bench_bytes(NextMethod())
+min.rlib_bytes <- function(x, ...) {
+  new_bytes(NextMethod())
 }
 
 #' @export
-max.bench_bytes <- function(x, ...) {
-  new_bench_bytes(NextMethod())
+max.rlib_bytes <- function(x, ...) {
+  new_bytes(NextMethod())
 }
 
 #' @export
-`[.bench_bytes` <- function(x, i) {
-  new_bench_bytes(NextMethod("["))
+`[.rlib_bytes` <- function(x, i) {
+  new_bytes(NextMethod("["))
 }
 
 #' @export
-`[[.bench_bytes` <- function(x, i) {
-  new_bench_bytes(NextMethod("[["))
+`[[.rlib_bytes` <- function(x, i) {
+  new_bytes(NextMethod("[["))
 }
 
 #' @export
 # Adapted from Ops.numeric_version
-Ops.bench_bytes <- function (e1, e2) {
+Ops.rlib_bytes <- function (e1, e2) {
   if (nargs() == 1L) {
-    stop(sprintf("unary '%s' not defined for \"bench_bytes\" objects", .Generic),
+    stop(sprintf("unary '%s' not defined for \"rlib_bytes\" objects", .Generic),
       call. = FALSE)
   }
 
@@ -147,7 +147,7 @@ Ops.bench_bytes <- function (e1, e2) {
     `>=` = TRUE,
   FALSE)
   if (!boolean) {
-    stop(sprintf("'%s' not defined for \"bench_bytes\" objects", .Generic),
+    stop(sprintf("'%s' not defined for \"rlib_bytes\" objects", .Generic),
       call. = FALSE)
   }
   e1 <- as_bytes(e1)
@@ -156,11 +156,11 @@ Ops.bench_bytes <- function (e1, e2) {
 }
 
 # Lazily exported
-pillar_shaft.bench_bytes <- function(x, ...) {
-  pillar::new_pillar_shaft_simple(format.bench_bytes(x), align = "right", ...)
+pillar_shaft.rlib_bytes <- function(x, ...) {
+  pillar::new_pillar_shaft_simple(format.rlib_bytes(x), align = "right", ...)
 }
 
 # Lazily exported
-type_sum.bench_bytes <- function(x) {
-  "bch:byt"
+type_sum.rlib_bytes <- function(x) {
+  "byt"
 }
