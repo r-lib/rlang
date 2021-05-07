@@ -5,7 +5,7 @@
 \alias{is_lambda}
 \title{Convert to function}
 \usage{
-as_function(x, env = caller_env())
+as_function(x, env = global_env())
 
 is_lambda(x)
 }

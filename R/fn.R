@@ -401,7 +401,7 @@ fn_env <- function(fn) {
 #' # Functions created from a formula have a special class:
 #' is_lambda(f)
 #' is_lambda(as_function(function() "foo"))
-as_function <- function(x, env = caller_env()) {
+as_function <- function(x, env = global_env()) {
   if (is_function(x)) {
     return(x)
   }

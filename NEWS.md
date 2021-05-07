@@ -1,5 +1,12 @@
 # rlang (development version)
 
+* The `env` argument of `as_function()` now defaults to the global
+  environment. Its previous default was the caller of `as_function()`,
+  which was rarely the correct environment to look in. Since it's hard
+  to remember to pass the user environment and it's sometimes tricky
+  to keep track of it, it's best to consider string lookup as a
+  convenience for end users, not for developers (#1170).
+
 * The `arg_nm` argument of `arg_match0()` must now be a string or
   symbol.
 

@@ -316,3 +316,12 @@ test_that("as_function() with a quosure can be serialised", {
     ignore_function_env = TRUE
   )
 })
+
+test_that("as_function() fetches from the global env", {
+  foo <- function() NULL
+  local_bindings(
+    .env = global_env(),
+    foo = function() "foo"
+  )
+  expect_equal(as_function("foo")(), "foo")
+})
