@@ -35,18 +35,16 @@ check_downstream_deps <- local({
       return()
     }
 
-    rlang_ver <- utils::packageVersion("rlang")
+    pkg_ver <- utils::packageVersion(pkg)
 
-    header <- sprintf("As of rlang %s, %s must be at least version %s.", from, dep_pkg, min)
+    header <- sprintf("As of %s %s, %s must be at least version %s.", pkg, from, dep_pkg, min)
     body <- c(
-      x = sprintf("%s %s is too old for rlang %s.", dep_pkg, ver, rlang_ver),
+      x = sprintf("%s %s is too old for %s %s.", dep_pkg, ver, pkg, pkg_ver),
       howto_reinstall_msg(dep_pkg)
     )
 
     if (with_rlang) {
-      body <- rlang::format_bullets(body)
-      msg <- paste(c(header, body), collapse = "\n")
-      rlang::warn(msg)
+      rlang::warn(c(header, body))
     } else {
       body <- paste0("* ", body)
       msg <- paste(c(header, body), collapse = "\n")
