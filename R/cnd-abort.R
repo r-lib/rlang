@@ -113,11 +113,11 @@
 #'
 #' # If you call low-level APIs it is good practice to handle
 #' # technical errors and rethrow them with a more meaningful
-#' # message. Always prefer doing this from `withCallinghandlers()`
+#' # message. Always prefer doing this from `withCallingHandlers()`
 #' # rather than `tryCatch()` because the former preserves the stack
 #' # on error and makes it possible for users to use `recover()`.
 #' file <- "http://foo.bar/baz"
-#' try(withCallinghandlers(
+#' try(withCallingHandlers(
 #'   download(file),
 #'   error = function(err) {
 #'     msg <- sprintf("Can't download `%s`", file)
