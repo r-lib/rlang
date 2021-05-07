@@ -5,9 +5,6 @@ NULL
 is_same_body <- NULL
 
 
-base_ns_env <- NULL
-base_pkg_env <- NULL
-
 .onLoad <- function(lib, pkg) {
   if (getRversion() < "3.5") {
     is_same_body <<- function(x, y) identical(x, y)
@@ -30,10 +27,8 @@ base_pkg_env <- NULL
   .Call(ffi_init_rlang, rlang_ns)
 
   run_on_load()
-
-  base_ns_env <<- ns_env("base")
-  base_pkg_env <<- baseenv()
 }
+
 .onUnload <- function(lib) {
   .Call(ffi_fini_rlang)
 }

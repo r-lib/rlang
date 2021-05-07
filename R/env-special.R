@@ -516,3 +516,8 @@ env_label <- function(env) {
 ns_registry_env <- function() {
   .Call(ffi_ns_registry_env)
 }
+
+on_load({
+  base_ns_env <- ns_env("base")
+  base_pkg_env <- baseenv()
+})
