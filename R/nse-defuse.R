@@ -482,3 +482,8 @@ enquos0 <- function(...) {
   dots <- .External(ffi_capturedots, environment())
   lapply(dots, function(dot) as_quosure(dot$expr, dot$env))
 }
+
+# Enable glue syntax in name-unquoting when glue is loaded
+on_load(
+  on_package_load("glue", .Call(ffi_glue_is_here))
+)

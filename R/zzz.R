@@ -20,8 +20,6 @@ is_same_body <- NULL
     with_rlang = FALSE
   )
 
-  on_package_load("glue", .Call(ffi_glue_is_here))
-
   rlang_ns <- topenv(environment())
   .Call(ffi_init_r_library, rlang_ns)
   .Call(ffi_init_rlang, rlang_ns)
