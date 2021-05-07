@@ -69,7 +69,7 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_f_rhs",                        (DL_FUNC) &r_f_rhs, 1},
   {"ffi_find_var",                     (DL_FUNC) &ffi_find_var, 2},
   {"ffi_get_expression",               (DL_FUNC) &ffi_get_expression, 2},
-  {"ffi_glue_is_there",                (DL_FUNC) &ffi_glue_is_there, 0},
+  {"ffi_glue_is_here",                 (DL_FUNC) &ffi_glue_is_here, 0},
   {"ffi_hash",                         (DL_FUNC) &ffi_hash, 1},
   {"ffi_hash_file",                    (DL_FUNC) &ffi_hash_file, 1},
   {"ffi_hasher_init",                  (DL_FUNC) &ffi_hasher_init, 0},

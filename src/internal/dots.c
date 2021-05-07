@@ -87,7 +87,7 @@ struct dots_capture_info init_capture_info(enum dots_collect type,
 
 static
 bool has_glue = false;
-r_obj* ffi_glue_is_there() {
+r_obj* ffi_glue_is_here() {
   has_glue = true;
   return r_null;
 }

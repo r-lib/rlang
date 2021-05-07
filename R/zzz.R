@@ -23,7 +23,7 @@ base_pkg_env <- NULL
     with_rlang = FALSE
   )
 
-  on_package_load("glue", .Call(ffi_glue_is_there))
+  on_package_load("glue", .Call(ffi_glue_is_here))
 
   rlang_ns <- topenv(environment())
   .Call(ffi_init_library, rlang_ns)
