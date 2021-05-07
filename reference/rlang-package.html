@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create a formula — new_formula • rlang</title>
+<title>rlang: Functions for Base Types and Core R and 'Tidyverse' Features — rlang-package • rlang</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,10 @@
 
 
 
-<meta property="og:title" content="Create a formula — new_formula" />
-<meta property="og:description" content="Create a formula" />
+<meta property="og:title" content="rlang: Functions for Base Types and Core R and 'Tidyverse' Features — rlang-package" />
+<meta property="og:description" content="A toolbox for working with base types, core R features
+  like the condition system, and core 'Tidyverse' features like tidy
+  evaluation." />
 
 
 
@@ -150,43 +152,43 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create a formula</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/formula.R'><code>R/formula.R</code></a></small>
-    <div class="hidden name"><code>new_formula.Rd</code></div>
+    <h1>rlang: Functions for Base Types and Core R and 'Tidyverse' Features</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/rlang.R'><code>R/rlang.R</code></a></small>
+    <div class="hidden name"><code>rlang-package.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Create a formula</p>
+    <p>A toolbox for working with base types, core R features
+  like the condition system, and core 'Tidyverse' features like tidy
+  evaluation.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>new_formula</span><span class='op'>(</span><span class='va'>lhs</span>, <span class='va'>rhs</span>, env <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>lhs, rhs</th>
-      <td><p>A call, name, or atomic vector.</p></td>
-    </tr>
-    <tr>
-      <th>env</th>
-      <td><p>An environment.</p></td>
-    </tr>
-    </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A formula object.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='as_quosure.html'>new_quosure()</a></code></p></div>
+    <div class='dont-index'><p>Useful links:</p><ul>
+<li><p><a href='https://rlang.r-lib.org'>https://rlang.r-lib.org</a></p></li>
+<li><p><a href='https://github.com/r-lib/rlang'>https://github.com/r-lib/rlang</a></p></li>
+<li><p>Report bugs at <a href='https://github.com/r-lib/rlang/issues'>https://github.com/r-lib/rlang/issues</a></p></li>
+</ul>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>new_formula</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>a</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>b</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; a ~ b
-#&gt; &lt;environment: 0x7fcc12593ad8&gt;</div><div class='input'><span class='fu'>new_formula</span><span class='op'>(</span><span class='cn'>NULL</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>b</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; ~b
-#&gt; &lt;environment: 0x7fcc12593ad8&gt;</div></pre>
+</div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p><strong>Maintainer</strong>: Lionel Henry <a href='mailto:lionel@rstudio.com'>lionel@rstudio.com</a></p>
+<p>Authors:</p><ul>
+<li><p>Hadley Wickham <a href='mailto:hadley@rstudio.com'>hadley@rstudio.com</a></p></li>
+</ul>
+
+<p>Other contributors:</p><ul>
+<li><p>mikefc <a href='mailto:mikefc@coolbutuseless.com'>mikefc@coolbutuseless.com</a> (Hash implementation based on Mike's xxhashlite) [copyright holder]</p></li>
+<li><p>Yann Collet (Author of the embedded xxHash library) [copyright holder]</p></li>
+<li><p>RStudio [copyright holder]</p></li>
+</ul>
+
+
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
