@@ -21,11 +21,10 @@ NULL
   .Call(ffi_fini_rlang)
 }
 
-on_package_load <- function(pkg, expr) {
-  if (isNamespaceLoaded(pkg)) {
-    expr
-  } else {
-    thunk <- function(...) expr
-    setHook(packageEvent(pkg, "onLoad"), thunk)
-  }
-}
+on_load({
+  check_downstream_deps(
+    pkg,
+    dplyr = c(min = "0.8.0", from = "0.4.0"),
+    with_rlang = FALSE
+  )
+})

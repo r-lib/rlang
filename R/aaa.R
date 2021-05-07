@@ -1,5 +1,7 @@
 # Changelog:
 #
+# - 2021-05-07: Added `on_package_load()`.
+#
 # - 2021-04-29: `expr` is now evaluated in caller environment rather
 #   than the top environment.
 
@@ -21,4 +23,13 @@ run_on_load <- function(env = parent.frame()) {
   }
 
   ns$.__rlang_hook__. <- NULL
+}
+
+on_package_load <- function(pkg, expr) {
+  if (isNamespaceLoaded(pkg)) {
+    expr
+  } else {
+    thunk <- function(...) expr
+    setHook(packageEvent(pkg, "onLoad"), thunk)
+  }
 }
