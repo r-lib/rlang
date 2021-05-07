@@ -23,7 +23,6 @@ Biarch: true
 Depends:
     R (>= 3.3.0)
 Imports:
-    methods,
     utils
 Suggests:
     cli,
@@ -32,6 +31,7 @@ Suggests:
     fs,
     glue,
     magrittr,
+    methods,
     pak,
     pillar,
     rmarkdown,

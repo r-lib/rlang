@@ -93,8 +93,9 @@ as_bytes.numeric <- function(x) {
   new_bytes(x)
 }
 
-#' @importFrom methods setOldClass
-setOldClass(c("as_bytes", "numeric"), numeric())
+on_package_load("methods", {
+  methods::setOldClass(c("as_bytes", "numeric"), numeric())
+})
 
 
 # Parsing -----------------------------------------------------------------
