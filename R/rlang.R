@@ -4,7 +4,6 @@
 on_load({
   check_downstream(
     "0.4.0",
-    "dplyr (>= 0.8.0)",
-    with_rlang = FALSE
+    "dplyr (>= 0.8.0)"
   )
 })

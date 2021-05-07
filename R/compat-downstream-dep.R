@@ -88,7 +88,10 @@ check_downstream <- function(ver, ..., with_rlang = requireNamespace("rlang")) {
   )
 
   if (with_rlang) {
-    rlang::warn(c(header, body))
+    # Don't use `::` because this is also called from rlang's onLoad
+    # hook and exports are not initialised at this point
+    warn <- get("warn", envir = asNamespace("rlang"))
+    warn(c(header, body))
   } else {
     body <- paste0("* ", body)
     msg <- paste(c(header, body), collapse = "\n")
