@@ -160,6 +160,14 @@ sys_body <- function(n) {
   body(sys.function(n))
 }
 
+on_load({
+  if (getRversion() < "3.5") {
+    is_same_body <- function(x, y) identical(x, y)
+  } else {
+    is_same_body <- is_reference
+  }
+})
+
 entrace_handle_top <- function(trace) {
   # Happens with ctrl-c at top-level
   if (!trace_length(trace)) {

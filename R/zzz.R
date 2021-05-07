@@ -1,17 +1,7 @@
 #' @useDynLib rlang, .registration = TRUE
 NULL
 
-# For cnd.R
-is_same_body <- NULL
-
-
 .onLoad <- function(lib, pkg) {
-  if (getRversion() < "3.5") {
-    is_same_body <<- function(x, y) identical(x, y)
-  } else {
-    is_same_body <<- is_reference
-  }
-
   check_linked_version(pkg, with_rlang = FALSE)
 
   check_downstream_deps(
