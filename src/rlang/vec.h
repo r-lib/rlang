@@ -221,6 +221,10 @@ r_obj* r_dbl(double x) {
   return Rf_ScalarReal(x);
 }
 static inline
+r_obj* r_cpl(r_complex_t x) {
+  return Rf_ScalarComplex(x);
+}
+static inline
 r_obj* r_str(const char* c_string) {
   return Rf_mkCharCE(c_string, CE_UTF8);
 }
