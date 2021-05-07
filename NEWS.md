@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* New `rlib_bytes` class imported from the bench package (#1117).
+  It prints and parses human-friendly sizes.
+
 * The `env` argument of `as_function()` now defaults to the global
   environment. Its previous default was the caller of `as_function()`,
   which was rarely the correct environment to look in. Since it's hard
