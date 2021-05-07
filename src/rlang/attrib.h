@@ -42,6 +42,24 @@ void r_attrib_push_class(r_obj* x, const char* tag);
 void r_attrib_push_classes(r_obj* x, const char** tags, r_ssize n);
 
 static inline
+r_obj* r_dim(r_obj* x) {
+  return r_attrib_get(x, r_syms.dim);
+}
+static inline
+void r_attrib_poke_dim(r_obj* x, r_obj* dim) {
+  r_attrib_poke(x, r_syms.dim, dim);
+}
+
+static inline
+r_obj* r_dim_names(r_obj* x) {
+  return r_attrib_get(x, r_syms.dim_names);
+}
+static inline
+void r_attrib_poke_dim_names(r_obj* x, r_obj* dim_names) {
+  r_attrib_poke(x, r_syms.dim_names, dim_names);
+}
+
+static inline
 r_obj* r_names(r_obj* x) {
   return r_attrib_get(x, r_syms.names);
 }
