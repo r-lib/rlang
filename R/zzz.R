@@ -26,8 +26,8 @@ base_pkg_env <- NULL
   on_package_load("glue", .Call(ffi_glue_is_here))
 
   rlang_ns <- topenv(environment())
-  .Call(ffi_init_library, rlang_ns)
-  .Call(ffi_library_load, rlang_ns)
+  .Call(ffi_init_r_library, rlang_ns)
+  .Call(ffi_init_rlang, rlang_ns)
 
   run_on_load()
 
@@ -38,7 +38,7 @@ base_pkg_env <- NULL
   base_pkg_env <<- baseenv()
 }
 .onUnload <- function(lib) {
-  .Call(ffi_library_unload)
+  .Call(ffi_fini_rlang)
 }
 
 on_package_load <- function(pkg, expr) {

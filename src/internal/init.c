@@ -3,8 +3,8 @@
 #include <rlang.h>
 
 // Library initialisation defined below
-static r_obj* ffi_library_load(r_obj*);
-static r_obj* ffi_library_unload();
+static r_obj* ffi_init_rlang(r_obj*);
+static r_obj* ffi_fini_rlang();
 
 // From version.c
 extern r_obj* rlang_linked_version();
@@ -68,6 +68,7 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_f_lhs",                        (DL_FUNC) &r_f_lhs, 1},
   {"ffi_f_rhs",                        (DL_FUNC) &r_f_rhs, 1},
   {"ffi_find_var",                     (DL_FUNC) &ffi_find_var, 2},
+  {"ffi_fini_rlang",                   (DL_FUNC) &ffi_fini_rlang, 0},
   {"ffi_get_expression",               (DL_FUNC) &ffi_get_expression, 2},
   {"ffi_glue_is_here",                 (DL_FUNC) &ffi_glue_is_here, 0},
   {"ffi_hash",                         (DL_FUNC) &ffi_hash, 1},
@@ -75,7 +76,8 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_hasher_init",                  (DL_FUNC) &ffi_hasher_init, 0},
   {"ffi_hasher_update",                (DL_FUNC) &ffi_hasher_update, 2},
   {"ffi_hasher_value",                 (DL_FUNC) &ffi_hasher_value, 1},
-  {"ffi_init_library",                 (DL_FUNC) &r_init_library, 1},
+  {"ffi_init_r_library",               (DL_FUNC) &r_init_library, 1},
+  {"ffi_init_rlang",                   (DL_FUNC) &ffi_init_rlang, 1},
   {"ffi_interp",                       (DL_FUNC) &ffi_interp, 2},
   {"ffi_interrupt",                    (DL_FUNC) &ffi_interrupt, 0},
   {"ffi_is_atomic",                    (DL_FUNC) &ffi_is_atomic, 2},
@@ -101,8 +103,6 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_is_vector",                    (DL_FUNC) &ffi_is_vector, 2},
   {"ffi_is_weakref",                   (DL_FUNC) &ffi_is_weakref, 1},
   {"ffi_length",                       (DL_FUNC) &ffi_length, 1},
-  {"ffi_library_load",                 (DL_FUNC) &ffi_library_load, 1},
-  {"ffi_library_unload",               (DL_FUNC) &ffi_library_unload, 0},
   {"ffi_list_compact",                 (DL_FUNC) &r_list_compact, 1},
   {"ffi_list_poke",                    (DL_FUNC) &ffi_list_poke, 3},
   {"ffi_lof_arr_push_back",            (DL_FUNC) &ffi_lof_arr_push_back, 3},
@@ -277,12 +277,12 @@ void R_init_rlang(DllInfo* dll) {
 void rlang_init_internal(r_obj* ns);
 
 static
-r_obj* ffi_library_load(r_obj* ns) {
+r_obj* ffi_init_rlang(r_obj* ns) {
   rlang_init_internal(ns);
   return r_null;
 }
 
 static
-r_obj* ffi_library_unload() {
+r_obj* ffi_fini_rlang() {
   return r_null;
 }
