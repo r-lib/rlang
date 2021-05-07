@@ -14,6 +14,7 @@ struct r_globals {
   int na_lgl;
   int na_int;
   double na_dbl;
+  r_complex_t na_cpl;
   r_obj* na_str;
 };
 
