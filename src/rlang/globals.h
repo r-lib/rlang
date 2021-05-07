@@ -44,6 +44,8 @@ struct r_globals_syms {
   r_obj* colon2;
   r_obj* colon3;
   r_obj* srcref;
+  r_obj* dim;
+  r_obj* dim_names;
   r_obj* row_names;
   r_obj* tilde;
   r_obj* unbound;
