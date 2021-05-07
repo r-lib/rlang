@@ -254,7 +254,6 @@ signal_quosure_assign <- function(x) {
   ))
 }
 
-# Dynamically registered
 pillar_shaft.quosures <- function(x, ...) {
   labels <- map_chr(unname(x), as_label)
   structure(labels, width = 10L)
@@ -262,6 +261,10 @@ pillar_shaft.quosures <- function(x, ...) {
 type_sum.quosures <- function(x, ...) {
   "quos"
 }
+on_load({
+  s3_register("pillar::pillar_shaft", "quosures", pillar_shaft.quosures)
+  s3_register("pillar::type_sum", "quosures", type_sum.quosures)
+})
 
 #' Coerce object to quosure
 #'

@@ -31,9 +31,6 @@ base_pkg_env <- NULL
 
   run_on_load()
 
-  s3_register("pillar::pillar_shaft", "quosures", pillar_shaft.quosures)
-  s3_register("pillar::type_sum", "quosures", type_sum.quosures)
-
   base_ns_env <<- ns_env("base")
   base_pkg_env <<- baseenv()
 }
