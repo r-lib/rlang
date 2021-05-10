@@ -565,3 +565,12 @@ test_that("enquos() defuses numbered dots (#1137)", {
     "fewer than 4 elements"
   )
 })
+
+test_that("`defer()` does not crash with environments containing quosures (#1085)", {
+  f <- function() {
+    withr::defer(2)
+    dots <- quos(integer(1))
+    quo(c(!!!dots))
+  }
+  expect_no_error(f()) # No crash
+})
