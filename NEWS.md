@@ -1,8 +1,15 @@
 # rlang (development version)
 
-* `check_installed()` now throws errors of class
-  `rlib_error_package_not_found`. These can be constructed with
-  `new_error_package_not_found()`.
+* `check_installed()` now consults the
+  `rlib_restart_package_not_found` global option to determine whether
+  to prompt users to install packages. This also disables the restart
+  mechanism (see below).
+
+* `check_installed()` now signals errors of class
+  `rlib_error_package_not_found` with a
+  `rlib_restart_package_not_found` restart. This allows calling
+  handlers to install the required packages and restart the check
+  (#1150).
 
 * New `rlib_bytes` class imported from the bench package (#1117).
   It prints and parses human-friendly sizes.

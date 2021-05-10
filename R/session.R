@@ -16,6 +16,10 @@
 #'  interactive or if the user chooses not to install the packages,
 #'  the current evaluation is aborted.
 #'
+#'  You can disable the prompt by setting the
+#'  `rlib_restart_package_not_found` global option to `FALSE`. In that
+#'  case, missing packages always cause an error.
+#'
 #' @param pkg The package names.
 #' @param reason Optional string indicating why is `pkg` needed.
 #'   Appears in error messages (if non-interactive) and user prompts
@@ -27,6 +31,24 @@
 #'   provided in `pkg` are installed, `FALSE`
 #'   otherwise. `check_installed()` either doesn't return or returns
 #'   `NULL`.
+#'
+#' @section Handling package not found errors:
+#' `check_installed()` signals error conditions of class
+#' `rlib_error_package_not_found`. The error includes `pkg` and
+#' `version` fields. They are vectorised and may include several
+#' packages.
+#'
+#' The error is signalled with a `rlib_restart_package_not_found`
+#' restart on the stack to allow handlers to install the required
+#' packages. To do so, add a [calling handler][withCallingHandlers]
+#' for `rlib_error_package_not_found`, install the required packages,
+#' and invoke the restart without arguments. This restarts the check
+#' from scratch.
+#'
+#' The condition is not signalled in non-interactive sessions, in the
+#' restarting case, or if the `rlib_restart_package_not_found` user
+#' option is set to `FALSE`.
+#'
 #' @export
 #' @examples
 #' is_installed("utils")
@@ -34,6 +56,12 @@
 #' is_installed(c("base", "ggplot5"), version = c(NA, "5.1.0"))
 is_installed <- function(pkg, ..., version = NULL) {
   check_dots_empty0(...)
+
+  # Internal mechanism for unit tests
+  hook <- peek_option("rlang:::is_installed_hook")
+  if (is_function(hook)) {
+    return(all(hook(pkg, version)))
+  }
 
   if (!all(map_lgl(pkg, function(x) is_true(requireNamespace(x, quietly = TRUE))))) {
     return(FALSE)
@@ -84,8 +112,22 @@ check_installed <- function(pkg,
     reason = reason
   )
 
-  if (!is_interactive()) {
-    cnd_signal(cnd)
+  restart <- peek_option("rlib_restart_package_not_found") %||% TRUE
+  if (!is_bool(restart)) {
+    abort("`rlib_restart_package_not_found` must be a logical value.")
+  }
+
+  if (!is_interactive() || !restart) {
+    abort(cnd_header(cnd))
+  }
+
+  if (signal_package_not_found(cnd)) {
+    # A calling handler asked for a restart. Disable restarts and try
+    # again.
+    return(with_options(
+      "rlib_restart_package_not_found" = FALSE,
+      check_installed(pkg, reason, version = version)
+    ))
   }
 
   header <- cnd_header(cnd)
@@ -113,19 +155,6 @@ check_installed <- function(pkg,
   }
 }
 
-#' Signal that required packages were not found
-#'
-#' @description
-#'
-#' - `new_error_package_not_found()` constructs a condition of class
-#'   `rlib_error_package_not_found`. This condition includes the
-#'   character vectors `pkg` and `version`. They may contain more than
-#'   one package. `version` can be `NULL` and must be otherwise the
-#'   same length as `pkg`.
-#'
-#' @inheritParams is_installed
-#' @param class,... Subclass and additional condition fields.
-#' @export
 new_error_package_not_found <- function(pkg,
                                         version = NULL,
                                         ...,
@@ -182,4 +211,14 @@ cnd_header.rlib_error_package_not_found <- function(cnd, ...) {
   } else {
     paste(info, reason)
   }
+}
+
+signal_package_not_found <- function(cnd) {
+  withRestarts({
+    signalCondition(cnd)
+    FALSE
+  },
+  rlib_restart_package_not_found = function() {
+    TRUE
+  })
 }
