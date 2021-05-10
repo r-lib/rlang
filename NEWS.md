@@ -1,5 +1,10 @@
 # rlang (development version)
 
+* The `.named` argument of `dots_list()` can now be set to `NULL` to
+  give the result default names. With this option, fully unnamed
+  inputs produce a fully unnamed result with `NULL` names instead of a
+  character vector of minimal `""` names (#390).
+
 * `is_named()` always returns `TRUE` for empty vectors (#191). That's
   because it tests for the property that each element of a vector is
   named rather than the presence of a `names` attribute.

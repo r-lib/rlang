@@ -76,9 +76,10 @@ NULL
 #'
 #' @export
 list2 <- function(...) {
-  .Call(ffi_dots_list,
+  .Call(
+    ffi_dots_list,
     frame_env = environment(),
-    named = FALSE,
+    named = NULL,
     ignore_empty = "trailing",
     preserve_empty = FALSE,
     unquote_names = TRUE,
@@ -93,9 +94,10 @@ ll <- list2
 
 # Preserves empty arguments
 list3 <- function(...) {
-  .Call(ffi_dots_list,
+  .Call(
+    ffi_dots_list,
     frame_env = environment(),
-    named = FALSE,
+    named = NULL,
     ignore_empty = "trailing",
     preserve_empty = TRUE,
     unquote_names = TRUE,
@@ -106,9 +108,12 @@ list3 <- function(...) {
 
 
 #' @rdname list2
-#' @param .named Whether to ensure all dots are named. Unnamed
-#'   elements are processed with [as_label()] to build a default
-#'   name.
+#' @param .named If `TRUE`, unnamed inputs are automatically named
+#'   with [as_label()]. This is equivalent to applying
+#'   [exprs_auto_name()] on the result. If `FALSE`, unnamed elements
+#'   are left as is and, if fully unnamed, the list is given minimal
+#'   names (a vector of `""`). If `NULL`, fully unnamed results are
+#'   left with `NULL` names.
 #' @param .ignore_empty Whether to ignore empty arguments. Can be one
 #'   of `"trailing"`, `"none"`, `"all"`. If `"trailing"`, only the
 #'   last argument is ignored if it is empty.
@@ -202,7 +207,8 @@ dots_list <- function(...,
                       .preserve_empty = FALSE,
                       .homonyms = c("keep", "first", "last", "error"),
                       .check_assign = FALSE) {
-  dots <- .Call(ffi_dots_list,
+  .Call(
+    ffi_dots_list,
     frame_env = environment(),
     named = .named,
     ignore_empty = .ignore_empty,
@@ -211,8 +217,6 @@ dots_list <- function(...,
     homonyms = .homonyms,
     check_assign = .check_assign
   )
-  names(dots) <- names2(dots)
-  dots
 }
 
 dots_split <- function(...,
@@ -221,9 +225,10 @@ dots_split <- function(...,
                        .preserve_empty = FALSE,
                        .homonyms = c("keep", "first", "last", "error"),
                        .check_assign = FALSE) {
-  dots <- .Call(ffi_dots_list,
+  dots <- .Call(
+    ffi_dots_list,
     frame_env = environment(),
-    named = FALSE,
+    named = NULL,
     ignore_empty = .ignore_empty,
     preserve_empty = .preserve_empty,
     unquote_names = TRUE,
@@ -356,9 +361,10 @@ dots_splice <- function(...,
                         .preserve_empty = FALSE,
                         .homonyms = c("keep", "first", "last", "error"),
                         .check_assign = FALSE) {
-  dots <- .Call(ffi_dots_flat_list,
+  dots <- .Call(
+    ffi_dots_flat_list,
     frame_env = environment(),
-    named = FALSE,
+    named = NULL,
     ignore_empty = .ignore_empty,
     preserve_empty = .preserve_empty,
     unquote_names = TRUE,
@@ -395,9 +401,10 @@ dots_values <- function(...,
                         .preserve_empty = FALSE,
                         .homonyms = c("keep", "first", "last", "error"),
                         .check_assign = FALSE) {
-  .External(ffi_dots_values,
+  .External(
+    ffi_dots_values,
     env = environment(),
-    named = FALSE,
+    named = NULL,
     ignore_empty = .ignore_empty,
     preserve_empty = .preserve_empty,
     unquote_names = TRUE,

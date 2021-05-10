@@ -15,7 +15,8 @@ enum dots_homonyms {
 };
 
 enum arg_named {
-  ARG_NAMED_default = 0,
+  ARG_NAMED_none = 0,
+  ARG_NAMED_minimal,
   ARG_NAMED_auto
 };
 
@@ -553,10 +554,13 @@ enum dots_homonyms arg_match_homonyms(r_obj* homonyms) {
 
 static
 enum arg_named arg_match_named(r_obj* named) {
+  if (named == r_null) {
+    return ARG_NAMED_none;
+  }
   if (!r_is_bool(named)) {
     r_abort("`.named` must be a logical value.");
   }
-  return r_lgl_get(named, 0) ? ARG_NAMED_auto : ARG_NAMED_default;
+  return r_lgl_get(named, 0) ? ARG_NAMED_auto : ARG_NAMED_minimal;
 }
 
 static
@@ -604,9 +608,8 @@ r_obj* dots_as_list(r_obj* dots, struct dots_capture_info* capture_info) {
 
   r_obj* out = KEEP_N(r_alloc_list(capture_info->count), &n_kept);
 
-  // Add default empty names unless dots are captured by values
   r_obj* out_names = r_null;
-  if (capture_info->type != DOTS_COLLECT_value || any_name(dots, capture_info->splice)) {
+  if (capture_info->named != ARG_NAMED_none || any_name(dots, capture_info->splice)) {
     out_names = KEEP_N(r_alloc_character(capture_info->count), &n_kept);
     r_attrib_push(out, r_syms.names, out_names);
   }
@@ -754,11 +757,16 @@ static
 r_obj* dots_finalise(struct dots_capture_info* capture_info, r_obj* dots) {
   r_obj* nms = r_names(dots);
 
-  if (capture_info->type == DOTS_COLLECT_value &&
-      capture_info->named == ARG_NAMED_auto) {
+  // Here handle minimal vs none
+  switch (capture_info->named) {
+  case ARG_NAMED_auto:
+  case ARG_NAMED_minimal:
     if (nms == r_null) {
       nms = r_alloc_character(r_length(dots));
     }
+    break;
+  case ARG_NAMED_none:
+    break;
   }
   KEEP(nms);
 
