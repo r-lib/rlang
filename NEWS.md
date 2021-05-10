@@ -1,5 +1,9 @@
 # rlang (development version)
 
+* `is_named()` always returns `TRUE` for empty vectors (#191). That's
+  because it tests for the property that each element of a vector is
+  named rather than the presence of a `names` attribute.
+
 * `check_installed()` now consults the
   `rlib_restart_package_not_found` global option to determine whether
   to prompt users to install packages. This also disables the restart

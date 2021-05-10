@@ -9,15 +9,20 @@ set_class <- function(x, class) {
 
 #' Is object named?
 #'
-#' `is_named()` checks that `x` has vector names, and that none of the
-#' names are missing or empty (`NA` or `""`). `have_name()` is a
-#' vectorised version of `is_named()`.
+#' `is_named()` checks that none of the names are missing or empty
+#' (`NA` or `""`). `have_name()` is a vectorised version of
+#' `is_named()`.
 #'
 #' @param x A vector to test.
 #' @return `is_named()` is a scalar predicate that returns `TRUE` or
 #'   `FALSE`. `have_name()` is vectorised and returns a logical vector
 #'   as long as the input.
-#' @export
+#'
+#' @details
+#' `is_named()` always returns `TRUE` for empty vectors, even if the
+#'  That's because it tests for the property that each element of a
+#'  vector is named rather than the presence of a `names` attribute.
+#'
 #' @examples
 #' # is_named() is a scalar predicate about the whole vector of names:
 #' is_named(c(a = 1, b = 2))
@@ -35,16 +40,6 @@ set_class <- function(x, class) {
 #' is_named(invalid)
 #' have_name(invalid)
 #'
-#' # is_named() only returns TRUE if there is a names attribute (a
-#' # zero-length character vector in this case):
-#' x <- set_names(list(), character(0))
-#' is_named(x)
-#'
-#' # have_name() will work even with vectors that don't have a names
-#' # attribute:
-#' have_name(letters)
-#'
-#'
 #' # A data frame normally has valid, unique names
 #' is_named(mtcars)
 #' have_name(mtcars)
@@ -55,11 +50,13 @@ set_class <- function(x, class) {
 #' colnames(mat) <- c("a", "b")
 #' is_named(mat)
 #' names(mat)
+#' @export
 is_named <- function(x) {
   nms <- names(x)
 
   if (is_null(nms)) {
-    return(FALSE)
+    # Empty vectors are always named
+    return(!length(x))
   }
 
   if (any(detect_void_name(nms))) {

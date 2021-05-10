@@ -18,9 +18,14 @@ have_name(x)
 as long as the input.
 }
 \description{
-\code{is_named()} checks that \code{x} has vector names, and that none of the
-names are missing or empty (\code{NA} or \code{""}). \code{have_name()} is a
-vectorised version of \code{is_named()}.
+\code{is_named()} checks that none of the names are missing or empty
+(\code{NA} or \code{""}). \code{have_name()} is a vectorised version of
+\code{is_named()}.
+}
+\details{
+\code{is_named()} always returns \code{TRUE} for empty vectors, even if the
+That's because it tests for the property that each element of a
+vector is named rather than the presence of a \code{names} attribute.
 }
 \examples{
 # is_named() is a scalar predicate about the whole vector of names:
@@ -38,16 +43,6 @@ names(invalid)[3] <- NA
 
 is_named(invalid)
 have_name(invalid)
-
-# is_named() only returns TRUE if there is a names attribute (a
-# zero-length character vector in this case):
-x <- set_names(list(), character(0))
-is_named(x)
-
-# have_name() will work even with vectors that don't have a names
-# attribute:
-have_name(letters)
-
 
 # A data frame normally has valid, unique names
 is_named(mtcars)

@@ -129,3 +129,8 @@ test_that("set_names() recycles names of size 1", {
     named(list())
   )
 })
+
+test_that("is_named() always returns `TRUE` for empty vectors (#191)", {
+  expect_true(is_named(chr()))
+  expect_false(is_named("a"))
+})
