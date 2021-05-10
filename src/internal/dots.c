@@ -14,6 +14,11 @@ enum dots_homonyms {
   DOTS_HOMONYMS_SIZE
 };
 
+enum arg_named {
+  ARG_NAMED_default = 0,
+  ARG_NAMED_auto
+};
+
 #include "decl/dots-decl.h"
 
 
@@ -43,11 +48,10 @@ r_obj* rlang_unbox(r_obj* x) {
   return r_list_get(x, 0);
 }
 
-
 struct dots_capture_info {
   enum dots_collect type;
   r_ssize count;
-  r_obj* named;
+  enum arg_named named;
   bool needs_expansion;
   int ignore_empty;
   bool preserve_empty;
@@ -72,7 +76,7 @@ struct dots_capture_info init_capture_info(enum dots_collect type,
   info.type = type;
   info.count = 0;
   info.needs_expansion = false;
-  info.named = named;
+  info.named = arg_match_named(named);
   info.ignore_empty = arg_match_ignore_empty(ignore_empty);
   info.preserve_empty = r_lgl_get(preserve_empty, 0);
   info.unquote_names = r_lgl_get(unquote_names, 0);
@@ -370,7 +374,7 @@ r_obj* dots_unquote(r_obj* dots, struct dots_capture_info* capture_info) {
   // still have access to the defused expression
   bool needs_autoname =
     capture_info->type == DOTS_COLLECT_value &&
-    should_auto_name(capture_info->named);
+    capture_info->named == ARG_NAMED_auto;
 
   r_obj* node = dots;
   for (r_ssize i = 0; node != r_null; ++i, node = r_node_cdr(node)) {
@@ -548,41 +552,18 @@ enum dots_homonyms arg_match_homonyms(r_obj* homonyms) {
 }
 
 static
-void warn_deprecated_width() {
-  const char* msg = "`.named` can no longer be a width";
-  warn_deprecated(msg, msg);
-}
-static
-bool should_auto_name(r_obj* named) {
-  if (r_length(named) != 1) {
-    goto error;
+enum arg_named arg_match_named(r_obj* named) {
+  if (!r_is_bool(named)) {
+    r_abort("`.named` must be a logical value.");
   }
-
-  switch (r_typeof(named)) {
-  case R_TYPE_logical:
-    return r_lgl_get(named, 0);
-  case R_TYPE_integer:
-    warn_deprecated_width();
-    return r_int_begin(named)[0];
-  case R_TYPE_double:
-    if (r_is_integerish(named, -1, true)) {
-      warn_deprecated_width();
-      return r_dbl_begin(named)[0];
-    }
-    // else fallthrough
-  default:
-    break;
-  }
-
- error:
-  r_abort("`.named` must be a scalar logical");
+  return r_lgl_get(named, 0) ? ARG_NAMED_auto : ARG_NAMED_default;
 }
 
 static
-r_obj* maybe_auto_name(r_obj* x, r_obj* named) {
+r_obj* maybe_auto_name(r_obj* x, enum arg_named named) {
   r_obj* names = r_names(x);
 
-  if (should_auto_name(named) && (names == r_null || r_chr_has(names, ""))) {
+  if (named == ARG_NAMED_auto && (names == r_null || r_chr_has(names, ""))) {
     x = r_eval_with_x(auto_name_call, x, r_envs.base);
   }
 
@@ -773,7 +754,8 @@ static
 r_obj* dots_finalise(struct dots_capture_info* capture_info, r_obj* dots) {
   r_obj* nms = r_names(dots);
 
-  if (capture_info->type == DOTS_COLLECT_value && should_auto_name(capture_info->named)) {
+  if (capture_info->type == DOTS_COLLECT_value &&
+      capture_info->named == ARG_NAMED_auto) {
     if (nms == r_null) {
       nms = r_alloc_character(r_length(dots));
     }
