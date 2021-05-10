@@ -1,5 +1,9 @@
 # rlang (development version)
 
+* `check_installed()` now throws errors of class
+  `rlib_error_package_not_found`. These can be constructed with
+  `new_error_package_not_found()`.
+
 * New `rlib_bytes` class imported from the bench package (#1117).
   It prints and parses human-friendly sizes.
 

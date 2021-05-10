@@ -71,50 +71,34 @@ check_installed <- function(pkg,
     needs_install <- !map2_lgl(pkg, version, function(p, v) is_installed(p, version = v))
   }
 
-  if (!any(needs_install)) {
+  missing_pkgs <- pkg[needs_install]
+  missing_vers <- version[needs_install]
+
+  if (!length(missing_pkgs)) {
     return(invisible(NULL))
   }
 
-  missing_pkgs <- pkg[needs_install]
-  missing_pkgs <- chr_quoted(missing_pkgs)
+  cnd <- new_error_package_not_found(
+    missing_pkgs,
+    missing_vers,
+    reason = reason
+  )
 
-  if (!is_null(version)) {
-    missing_vers <- version[needs_install]
-    missing_pkgs <- map2_chr(missing_pkgs, missing_vers, function(p, v) {
-      if (is_na(v)) {
-        p
-      } else {
-        paste0(p, " (>= ", v, ")")
-      }
-    })
+  if (!is_interactive()) {
+    cnd_signal(cnd)
   }
 
-  missing_pkgs_enum <- chr_enumerate(missing_pkgs, final = "and")
+  header <- cnd_header(cnd)
 
   n <- length(missing_pkgs)
-  info <- pluralise(
-    n,
-    paste0("The package ", missing_pkgs_enum, " is required"),
-    paste0("The packages ", missing_pkgs_enum, " are required")
-  )
-  if (is_null(reason)) {
-    info <- paste0(info, ".")
-  } else {
-    info <- paste(info, reason)
-  }
-
   question <- pluralise(
     n,
     "Would you like to install it?",
     "Would you like to install them?"
   )
 
-  if (!is_interactive()) {
-    abort(info)
-  }
-
   cat(paste_line(
-    paste0(info(), " ", info),
+    paste0(info(), " ", header),
     paste0(cross(), " ", question),
     .trailing = TRUE
   ))
@@ -126,5 +110,76 @@ check_installed <- function(pkg,
     pak::pkg_install(missing_pkgs, ask = FALSE)
   } else {
     utils::install.packages(missing_pkgs)
+  }
+}
+
+#' Signal that required packages were not found
+#'
+#' @description
+#'
+#' - `new_error_package_not_found()` constructs a condition of class
+#'   `rlib_error_package_not_found`. This condition includes the
+#'   character vectors `pkg` and `version`. They may contain more than
+#'   one package. `version` can be `NULL` and must be otherwise the
+#'   same length as `pkg`.
+#'
+#' @inheritParams is_installed
+#' @param class,... Subclass and additional condition fields.
+#' @export
+new_error_package_not_found <- function(pkg,
+                                        version = NULL,
+                                        ...,
+                                        reason = NULL,
+                                        class = NULL) {
+  if (!is_character(pkg)) {
+    abort("`pkg` must be character vector.")
+  }
+  if (!length(pkg)) {
+    abort("`pkg` must contain at least one package.")
+  }
+  if (!is_null(version) && !is_character(version, n = length(pkg))) {
+    abort("`version` must be a character vector as long as `pkg`.")
+  }
+
+  error_cnd(
+    class = c(class, "rlib_error_package_not_found"),
+    pkg = pkg,
+    version = version,
+    reason = reason,
+    ...
+  )
+}
+
+#' @export
+cnd_header.rlib_error_package_not_found <- function(cnd, ...) {
+  pkg <- cnd$pkg
+  version <- cnd$version
+  reason <- cnd$reason
+  n <- length(pkg)
+
+  pkg_enum <- chr_quoted(cnd$pkg)
+
+  if (!is_null(version)) {
+    pkg_enum <- map2_chr(pkg_enum, version, function(p, v) {
+      if (is_na(v)) {
+        p
+      } else {
+        paste0(p, " (>= ", v, ")")
+      }
+    })
+  }
+
+  pkg_enum <- chr_enumerate(pkg_enum, final = "and")
+
+  info <- pluralise(
+    n,
+    paste0("The package ", pkg_enum, " is required"),
+    paste0("The packages ", pkg_enum, " are required")
+  )
+
+  if (is_null(reason)) {
+    paste0(info, ".")
+  } else {
+    paste(info, reason)
   }
 }
