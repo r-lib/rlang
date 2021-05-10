@@ -158,6 +158,7 @@
 <a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li><p>The <code>.named</code> argument of <code><a href="../reference/list2.html">dots_list()</a></code> can now be set to <code>NULL</code> to give the result default names. With this option, fully unnamed inputs produce a fully unnamed result with <code>NULL</code> names instead of a character vector of minimal <code>""</code> names (<a href='https://github.com/r-lib/rlang/issues/390'>#390</a>).</p></li>
 <li><p><code><a href="../reference/is_named.html">is_named()</a></code> always returns <code>TRUE</code> for empty vectors (<a href='https://github.com/r-lib/rlang/issues/191'>#191</a>). That’s because it tests for the property that each element of a vector is named rather than the presence of a <code>names</code> attribute.</p></li>
 <li><p><code><a href="../reference/is_installed.html">check_installed()</a></code> now consults the <code>rlib_restart_package_not_found</code> global option to determine whether to prompt users to install packages. This also disables the restart mechanism (see below).</p></li>
 <li><p><code><a href="../reference/is_installed.html">check_installed()</a></code> now signals errors of class <code>rlib_error_package_not_found</code> with a <code>rlib_restart_package_not_found</code> restart. This allows calling handlers to install the required packages and restart the check (<a href='https://github.com/r-lib/rlang/issues/1150'>#1150</a>).</p></li>

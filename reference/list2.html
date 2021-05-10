@@ -186,9 +186,12 @@ version that offers more control.</p>
     </tr>
     <tr>
       <th>.named</th>
-      <td><p>Whether to ensure all dots are named. Unnamed
-elements are processed with <code><a href='as_label.html'>as_label()</a></code> to build a default
-name.</p></td>
+      <td><p>If <code>TRUE</code>, unnamed inputs are automatically named
+with <code><a href='as_label.html'>as_label()</a></code>. This is equivalent to applying
+<code><a href='exprs_auto_name.html'>exprs_auto_name()</a></code> on the result. If <code>FALSE</code>, unnamed elements
+are left as is and, if fully unnamed, the list is given minimal
+names (a vector of <code>""</code>). If <code>NULL</code>, fully unnamed results are
+left with <code>NULL</code> names.</p></td>
     </tr>
     <tr>
       <th>.ignore_empty</th>
