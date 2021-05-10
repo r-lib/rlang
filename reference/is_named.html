@@ -40,9 +40,9 @@
 
 
 <meta property="og:title" content="Is object named? — is_named" />
-<meta property="og:description" content="is_named() checks that x has vector names, and that none of the
-names are missing or empty (NA or &quot;&quot;). have_name() is a
-vectorised version of is_named()." />
+<meta property="og:description" content="is_named() checks that none of the names are missing or empty
+(NA or &quot;&quot;). have_name() is a vectorised version of
+is_named()." />
 
 
 
@@ -158,9 +158,9 @@ vectorised version of is_named()." />
     </div>
 
     <div class="ref-description">
-    <p><code>is_named()</code> checks that <code>x</code> has vector names, and that none of the
-names are missing or empty (<code>NA</code> or <code>""</code>). <code>have_name()</code> is a
-vectorised version of <code>is_named()</code>.</p>
+    <p><code>is_named()</code> checks that none of the names are missing or empty
+(<code>NA</code> or <code>""</code>). <code>have_name()</code> is a vectorised version of
+<code>is_named()</code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>is_named</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
@@ -181,6 +181,11 @@ vectorised version of <code>is_named()</code>.</p>
     <p><code>is_named()</code> is a scalar predicate that returns <code>TRUE</code> or
 <code>FALSE</code>. <code>have_name()</code> is vectorised and returns a logical vector
 as long as the input.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p><code>is_named()</code> always returns <code>TRUE</code> for empty vectors, even if the
+That's because it tests for the property that each element of a
+vector is named rather than the presence of a <code>names</code> attribute.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># is_named() is a scalar predicate about the whole vector of names:</span>
@@ -199,18 +204,6 @@ as long as the input.</p>
 <span class='fu'>is_named</span><span class='op'>(</span><span class='va'>invalid</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>have_name</span><span class='op'>(</span><span class='va'>invalid</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] FALSE  TRUE FALSE  TRUE  TRUE</div><div class='input'>
-<span class='co'># is_named() only returns TRUE if there is a names attribute (a</span>
-<span class='co'># zero-length character vector in this case):</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='set_names.html'>set_names</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>is_named</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='co'># have_name() will work even with vectors that don't have a names</span>
-<span class='co'># attribute:</span>
-<span class='fu'>have_name</span><span class='op'>(</span><span class='va'>letters</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-#&gt; [13] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-#&gt; [25] FALSE FALSE</div><div class='input'>
-
 <span class='co'># A data frame normally has valid, unique names</span>
 <span class='fu'>is_named</span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>have_name</span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span>
