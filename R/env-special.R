@@ -345,62 +345,62 @@ check_installed <- function(pkg,
     needs_install <- !map2_lgl(pkg, version, function(p, v) is_installed(p, version = v))
   }
 
-  if (any(needs_install)) {
-    missing_pkgs <- pkg[needs_install]
-    missing_pkgs <- chr_quoted(missing_pkgs)
-
-    if (!is_null(version)) {
-      missing_vers <- version[needs_install]
-      missing_pkgs <- map2_chr(missing_pkgs, missing_vers, function(p, v) {
-        if (is_na(v)) {
-          p
-        } else {
-          paste0(p, " (>= ", v, ")")
-        }
-      })
-    }
-
-    missing_pkgs_enum <- chr_enumerate(missing_pkgs, final = "and")
-
-    n <- length(missing_pkgs)
-    info <- pluralise(
-      n,
-      paste0("The package ", missing_pkgs_enum, " is required"),
-      paste0("The packages ", missing_pkgs_enum, " are required")
-    )
-    if (is_null(reason)) {
-      info <- paste0(info, ".")
-    } else {
-      info <- paste(info, reason)
-    }
-
-    question <- pluralise(
-      n,
-      "Would you like to install it?",
-      "Would you like to install them?"
-    )
-
-    if (!is_interactive()) {
-      abort(info)
-    }
-
-    cat(paste_line(
-      paste0(info(), " ", info),
-      paste0(cross(), " ", question),
-      .trailing = TRUE
-    ))
-
-    if (utils::menu(c("Yes", "No")) != 1) {
-      invokeRestart("abort")
-    }
-    if (is_installed("pak")) {
-      pak::pkg_install(missing_pkgs, ask = FALSE)
-    } else {
-      utils::install.packages(missing_pkgs)
-    }
+  if (!any(needs_install)) {
+    return(invisible(NULL))
   }
 
-  invisible(NULL)
+  missing_pkgs <- pkg[needs_install]
+  missing_pkgs <- chr_quoted(missing_pkgs)
+
+  if (!is_null(version)) {
+    missing_vers <- version[needs_install]
+    missing_pkgs <- map2_chr(missing_pkgs, missing_vers, function(p, v) {
+      if (is_na(v)) {
+        p
+      } else {
+        paste0(p, " (>= ", v, ")")
+      }
+    })
+  }
+
+  missing_pkgs_enum <- chr_enumerate(missing_pkgs, final = "and")
+
+  n <- length(missing_pkgs)
+  info <- pluralise(
+    n,
+    paste0("The package ", missing_pkgs_enum, " is required"),
+    paste0("The packages ", missing_pkgs_enum, " are required")
+  )
+  if (is_null(reason)) {
+    info <- paste0(info, ".")
+  } else {
+    info <- paste(info, reason)
+  }
+
+  question <- pluralise(
+    n,
+    "Would you like to install it?",
+    "Would you like to install them?"
+  )
+
+  if (!is_interactive()) {
+    abort(info)
+  }
+
+  cat(paste_line(
+    paste0(info(), " ", info),
+    paste0(cross(), " ", question),
+    .trailing = TRUE
+  ))
+
+  if (utils::menu(c("Yes", "No")) != 1) {
+    invokeRestart("abort")
+  }
+  if (is_installed("pak")) {
+    pak::pkg_install(missing_pkgs, ask = FALSE)
+  } else {
+    utils::install.packages(missing_pkgs)
+  }
 }
 
 env_type <- function(env) {
