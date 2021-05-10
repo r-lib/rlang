@@ -434,10 +434,6 @@ test_that("missing names are forwarded", {
   expect_identical_(names(exprs(!!!x)), chr(na_chr, na_chr))
 })
 
-test_that("`.named` must be integerish", {
-  expect_error(exprs(foo, .named = 100.5), "must be a scalar logical")
-})
-
 test_that("auto-naming uses type_sum() (#573)", {
   expect_named(quos(foo, !!(1:3), .named = TRUE), c("foo", "<int>"))
 

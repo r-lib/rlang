@@ -307,3 +307,24 @@ test_that("`.ignore_empty` is matched", {
     (expect_error(dots_list(.ignore_empty = "t")))
   })
 })
+
+# Suboptimal but not worth fixing the UI
+test_that("`.named` can be `NULL` (default names) or `FALSE` (minimal names)", {
+  expect_equal(
+    dots_list(.named = FALSE),
+    set_names(list(), "")
+  )
+  expect_equal(
+    exprs(.named = FALSE),
+    set_names(list(), "")
+  )
+
+  expect_equal(
+    dots_list(.named = NULL),
+    list()
+  )
+  expect_equal(
+    exprs(.named = NULL),
+    list()
+  )
+})

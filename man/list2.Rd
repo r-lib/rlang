@@ -21,9 +21,12 @@ dots_list(
 \item{...}{Arguments to collect in a list. These dots are
 \link[=dyn-dots]{dynamic}.}
 
-\item{.named}{Whether to ensure all dots are named. Unnamed
-elements are processed with \code{\link[=as_label]{as_label()}} to build a default
-name.}
+\item{.named}{If \code{TRUE}, unnamed inputs are automatically named
+with \code{\link[=as_label]{as_label()}}. This is equivalent to applying
+\code{\link[=exprs_auto_name]{exprs_auto_name()}} on the result. If \code{FALSE}, unnamed elements
+are left as is and, if fully unnamed, the list is given minimal
+names (a vector of \code{""}). If \code{NULL}, fully unnamed results are
+left with \code{NULL} names.}
 
 \item{.ignore_empty}{Whether to ignore empty arguments. Can be one
 of \code{"trailing"}, \code{"none"}, \code{"all"}. If \code{"trailing"}, only the
