@@ -23,9 +23,9 @@ as long as the input.
 \code{is_named()}.
 }
 \details{
-\code{is_named()} always returns \code{TRUE} for empty vectors, even if the
-That's because it tests for the property that each element of a
-vector is named rather than the presence of a \code{names} attribute.
+\code{is_named()} always returns \code{TRUE} for empty vectors because it
+tests for the property that each element of a vector is named
+rather than the presence of a \code{names} attribute.
 }
 \examples{
 # is_named() is a scalar predicate about the whole vector of names:

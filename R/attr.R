@@ -19,9 +19,9 @@ set_class <- function(x, class) {
 #'   as long as the input.
 #'
 #' @details
-#' `is_named()` always returns `TRUE` for empty vectors, even if the
-#'  That's because it tests for the property that each element of a
-#'  vector is named rather than the presence of a `names` attribute.
+#' `is_named()` always returns `TRUE` for empty vectors because it
+#'  tests for the property that each element of a vector is named
+#'  rather than the presence of a `names` attribute.
 #'
 #' @examples
 #' # is_named() is a scalar predicate about the whole vector of names:
