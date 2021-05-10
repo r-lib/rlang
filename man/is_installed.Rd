@@ -42,7 +42,30 @@ packages are installed with \code{pak::pkg_install()} if available, or
 interactive or if the user chooses not to install the packages,
 the current evaluation is aborted.
 }
+
+You can disable the prompt by setting the
+\code{rlib_restart_package_not_found} global option to \code{FALSE}. In that
+case, missing packages always cause an error.
 }
+\section{Handling package not found errors}{
+
+\code{check_installed()} signals error conditions of class
+\code{rlib_error_package_not_found}. The error includes \code{pkg} and
+\code{version} fields. They are vectorised and may include several
+packages.
+
+The error is signalled with a \code{rlib_restart_package_not_found}
+restart on the stack to allow handlers to install the required
+packages. To do so, add a \link[=withCallingHandlers]{calling handler}
+for \code{rlib_error_package_not_found}, install the required packages,
+and invoke the restart without arguments. This restarts the check
+from scratch.
+
+The condition is not signalled in non-interactive sessions, in the
+restarting case, or if the \code{rlib_restart_package_not_found} user
+option is set to \code{FALSE}.
+}
+
 \examples{
 is_installed("utils")
 is_installed(c("base", "ggplot5"))

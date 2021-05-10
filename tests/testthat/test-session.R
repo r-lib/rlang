@@ -36,3 +36,71 @@ test_that("check_installed() checks minimal versions", {
     (expect_error(check_installed(c("_foo", "_bar"), "to proceed.", version = c("1.0", "2.0"))))
   })
 })
+
+test_that("pnf error is validated", {
+  expect_pnf <- function(out, pkg, ver) {
+    expect_s3_class(out, "rlib_error_package_not_found")
+    expect_equal(out$pkg, pkg)
+    expect_equal(out$version, ver)
+  }
+  expect_pnf(new_error_package_not_found("foo"), "foo", NULL)
+  expect_pnf(new_error_package_not_found("foo", "1.0"), "foo", "1.0")
+  expect_pnf(new_error_package_not_found(c("foo", "bar"), c("1.0", "1.0")), c("foo", "bar"), c("1.0", "1.0"))
+
+  expect_error(
+    new_error_package_not_found(chr()),
+    "at least one package"
+  )
+  expect_error(
+    new_error_package_not_found(c("foo", "bar"), "1.0"),
+    "as long as `pkg`"
+  )
+})
+
+test_that("can handle check-installed", {
+  local_interactive()
+
+  # Override `is_installed()` results
+  override <- NULL
+  is_installed_hook <- function(pkg, ver) {
+    if (is_bool(override)) {
+      rep_along(pkg, override)
+    } else {
+      with_options(
+        "rlang:::is_installed_hook" = NULL,
+        is_installed(pkg, version = ver)
+      )
+    }
+  }
+  local_options("rlang:::is_installed_hook" = is_installed_hook)
+
+  test_env <- current_env()
+  handle <- function(value, frame, expr) {
+    withCallingHandlers(
+      rlib_error_package_not_found = function(cnd) {
+        override <<- value
+        invokeRestart("rlib_restart_package_not_found")
+      },
+      expr
+    )
+  }
+
+  override <- NULL
+  expect_no_error(
+    handle(
+      TRUE,
+      test_env,
+      check_installed(c("foo", "bar"), version = c("1.0", "2.0"))
+    )
+  )
+
+  override <- NULL
+  expect_error(
+    handle(
+      FALSE,
+      test_env,
+      check_installed(c("foo", "bar"), version = c("1.0", "2.0"))
+    ),
+    "are required"
+  )
+})
