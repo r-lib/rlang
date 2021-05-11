@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* Added `compat-cli.R` file to format message elements consistently
+  with cli in zero-deps packages.
+
 * `exprs_auto_name()` gains a `repair_auto` argument to make automatic
   names unique (#1116).
 
