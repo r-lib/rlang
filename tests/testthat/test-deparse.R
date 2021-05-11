@@ -589,3 +589,17 @@ test_that("formulas are deparsed (#1169)", {
     "~ foo()"
   )
 })
+
+test_that("matrices and arrays are formatted (#383)", {
+  mat <- matrix(1:3)
+  expect_equal(as_label(mat), "<int[,1]>")
+  expect_equal(expr_deparse(mat), "<int[,1]: 1L, 2L, 3L>")
+  
+  mat2 <- matrix(1:4, 2)
+  expect_equal(as_label(mat2), "<int[,2]>")
+  expect_equal(expr_deparse(mat2), "<int[,2]: 1L, 2L, 3L, 4L>")
+
+  arr <- array(1:3, c(1, 1, 3))
+  expect_equal(as_label(arr), "<int[,1,3]>")
+  expect_equal(expr_deparse(arr), "<int[,1,3]: 1L, 2L, 3L>")
+})
