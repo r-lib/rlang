@@ -22,3 +22,7 @@ cli::test_that_cli(configs = c("plain", "ansi"), "can style strings with cli", {
     style_cls(c("foo", "bar"))
   })
 })
+
+cli::test_that_cli(configs = "plain", "styled strings may contain `{` syntax", {
+  expect_equal(style_emph("{foo {}"), "_{foo {}_")
+})
