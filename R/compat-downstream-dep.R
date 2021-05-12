@@ -49,6 +49,7 @@ check_downstream <- function(ver, ..., with_rlang = requireNamespace("rlang")) {
   # Must be `lapply()` instead of a `for` loop so that each `dep` is
   # bound to its own closure env
   lapply(deps, function(dep) {
+    force(dep)
     on_package_load(
       dep[["pkg"]],
       .rlang_downstream_check(pkg, ver, dep, with_rlang = with_rlang)
