@@ -59,7 +59,7 @@
 #'
 #' @inheritParams cnd
 #' @param message The message to display. Character vectors are
-#'   formatted with [format_bullets()]. The first element
+#'   formatted with [format_error_bullets()]. The first element
 #'   defines a message header and the rest of the vector defines
 #'   bullets. Bullets named `i` and `x` define info and error bullets
 #'   respectively, with special Unicode and colour formatting applied

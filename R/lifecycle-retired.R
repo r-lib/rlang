@@ -2133,14 +2133,3 @@ env_bury <- function(.env, ...) {
   env_ <- child_env(env_, ...)
   set_env(.env, env_)
 }
-
-#' Format error bullets
-#' @description
-#' `r lifecycle::badge("deprecated")`
-#' `format_error_bullets()` has been renamed to [format_bullets()].
-#' @inheritParams format_bullets
-#' @keywords internal
-#' @export
-format_error_bullets <- function(x) {
-  format_bullets(x)
-}

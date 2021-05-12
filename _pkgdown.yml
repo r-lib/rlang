@@ -82,7 +82,7 @@ reference:
       - inform
       - signal
       - cnd_message
-      - format_bullets
+      - format_error_bullets
       - trace_back
       - with_abort
       - entrace
