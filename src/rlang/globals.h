@@ -30,6 +30,7 @@ struct r_globals_classes {
 struct r_globals_strs {
   r_obj* dots;
   r_obj* empty;
+  r_obj* na;
 };
 
 struct r_globals_syms {

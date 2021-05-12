@@ -35,6 +35,7 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_dict_has",                     (DL_FUNC) &ffi_dict_has, 2},
   {"ffi_dict_it_info",                 (DL_FUNC) &ffi_dict_it_info, 1},
   {"ffi_dict_next",                    (DL_FUNC) &ffi_dict_it_next, 1},
+  {"ffi_dict_poke",                    (DL_FUNC) &ffi_dict_poke, 3},
   {"ffi_dict_put",                     (DL_FUNC) &ffi_dict_put, 3},
   {"ffi_dict_resize",                  (DL_FUNC) &ffi_dict_resize, 2},
   {"ffi_dots_flat_list",               (DL_FUNC) &ffi_dots_flat_list, 7},
@@ -113,6 +114,7 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_missing_arg",                  (DL_FUNC) &ffi_missing_arg, 0},
   {"ffi_named",                        (DL_FUNC) &ffi_named, 2},
   {"ffi_names2",                       (DL_FUNC) &ffi_names2, 2},
+  {"ffi_names_as_unique",              (DL_FUNC) &ffi_names_as_unique, 2},
   {"ffi_new_call",                     (DL_FUNC) &ffi_new_call_node, 2},
   {"ffi_new_condition",                (DL_FUNC) &r_new_condition, 3},
   {"ffi_new_data_mask",                (DL_FUNC) &ffi_new_data_mask, 2},
@@ -237,6 +239,7 @@ void R_init_rlang(DllInfo* dll) {
   R_RegisterCCallable("rlang", "rlang_as_data_pronoun",     (DL_FUNC) &ffi_as_data_pronoun);
   R_RegisterCCallable("rlang", "rlang_eval_tidy",           (DL_FUNC) &rlang_eval_tidy);
   R_RegisterCCallable("rlang", "rlang_is_quosure",          (DL_FUNC) &is_quosure);
+  R_RegisterCCallable("rlang", "rlang_names_as_unique",     (DL_FUNC) &names_as_unique);
   R_RegisterCCallable("rlang", "rlang_new_data_mask_3.0.0", (DL_FUNC) &ffi_new_data_mask);
   R_RegisterCCallable("rlang", "rlang_new_quosure",         (DL_FUNC) &ffi_new_quosure);
   R_RegisterCCallable("rlang", "rlang_quo_get_env",         (DL_FUNC) &ffi_quo_get_env);

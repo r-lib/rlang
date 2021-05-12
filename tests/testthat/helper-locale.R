@@ -94,3 +94,20 @@ poke_ctype_locale <- function(x) {
   Sys.setlocale("LC_CTYPE", locale = x)
   invisible(old)
 }
+
+encodings <- function(bytes = FALSE) {
+  string <- "\u00B0C"
+
+  utf8 <- iconv(string, from = Encoding(string), to = "UTF-8")
+  unknown <- iconv(string, from = Encoding(string), to = "", mark = FALSE)
+  latin1 <- iconv(string, from = Encoding(string), to = "latin1")
+
+  out <- list(utf8 = utf8, unknown = unknown, latin1 = latin1)
+
+  if (bytes) {
+    out <- list2(!!! out, bytes = encoding_bytes())
+  }
+
+  out
+}
+

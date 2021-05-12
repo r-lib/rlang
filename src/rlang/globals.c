@@ -38,6 +38,7 @@ void r_init_library_globals() {
 
   r_strs.dots = r_sym_string(r_syms.dots);
   r_strs.empty = r_chr_get(r_chrs.empty_string, 0);
+  r_strs.na = r_globals.na_str;
 
   r_false = r_preserve_global(r_lgl(0));
   r_true = r_preserve_global(r_lgl(1));

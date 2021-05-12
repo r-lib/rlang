@@ -80,6 +80,12 @@ r_obj* ffi_new_dict(r_obj* size, r_obj* prevent_resize) {
   return dict->shelter;
 }
 
+r_obj* ffi_dict_poke(r_obj* dict, r_obj* key, r_obj* value) {
+  struct r_dict* p_dict = r_shelter_deref(dict);
+  r_obj* out = r_dict_poke(p_dict, key, value);
+  return out ? out : rlang_syms.c_null;
+}
+
 r_obj* ffi_dict_put(r_obj* dict, r_obj* key, r_obj* value) {
   struct r_dict* p_dict = r_shelter_deref(dict);
   return r_lgl(r_dict_put(p_dict, key, value));

@@ -173,6 +173,9 @@ dict_size <- function(dict) {
 dict_resize <- function(dict, size) {
   .Call(ffi_dict_resize, dict, size)
 }
+dict_poke <- function(dict, key, value) {
+  .Call(ffi_dict_poke, dict, key, value)
+}
 dict_put <- function(dict, key, value) {
   .Call(ffi_dict_put, dict, key, value)
 }

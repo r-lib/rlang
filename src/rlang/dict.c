@@ -23,7 +23,7 @@ static size_t size_round_power_2(size_t size);
 #define V_DICT_CDR(V) (V)[2]
 
 static
-r_obj* new_bucket(r_obj* key, r_obj* value) {
+r_obj* new_dict_node(r_obj* key, r_obj* value) {
   r_obj* bucket = r_alloc_list(3);
   DICT_POKE_KEY(bucket, key);
   DICT_POKE_VALUE(bucket, value);
@@ -106,6 +106,24 @@ r_ssize dict_hash(const struct r_dict* p_dict, r_obj* key) {
   return hash % p_dict->n_buckets;
 }
 
+// Returns previous value of `key` if it existed or a C `NULL`
+r_obj* r_dict_poke(struct r_dict* p_dict,
+                   r_obj* key,
+                   r_obj* value) {
+  r_ssize hash;
+  r_obj* parent;
+  r_obj* node = dict_find_node_info(p_dict, key, &hash, &parent);
+
+  if (node != r_null) {
+    r_obj* old = DICT_VALUE(node);
+    DICT_POKE_VALUE(node, value);
+    return old;
+  } else {
+    dict_push(p_dict, hash, parent, key, value);
+    return NULL;
+  }
+}
+
 // Returns `false` if `key` already exists in the dictionary, `true`
 // otherwise
 bool r_dict_put(struct r_dict* p_dict, r_obj* key, r_obj* value) {
@@ -115,10 +133,19 @@ bool r_dict_put(struct r_dict* p_dict, r_obj* key, r_obj* value) {
 
   if (node != r_null) {
     return false;
+  } else {
+    dict_push(p_dict, hash, parent, key, value);
+    return true;
   }
+}
 
-  // Can't find `key` in the bucket. Create a new node.
-  node = KEEP(new_bucket(key, value));
+static
+void dict_push(struct r_dict* p_dict,
+               r_ssize hash,
+               r_obj* parent,
+               r_obj* key,
+               r_obj* value) {
+  r_obj* node = KEEP(new_dict_node(key, value));
 
   if (parent == r_null) {
     // Empty bucket
@@ -135,7 +162,6 @@ bool r_dict_put(struct r_dict* p_dict, r_obj* key, r_obj* value) {
   }
 
   FREE(1);
-  return true;
 }
 
 // Returns `true` if key existed and was deleted. Returns `false` if
@@ -149,10 +175,12 @@ bool r_dict_del(struct r_dict* p_dict, r_obj* key) {
     return false;
   }
 
+  r_obj* node_cdr = DICT_CDR(node);
+
   if (parent == r_null) {
-    r_list_poke(p_dict->buckets, hash, r_null);
-  }  else {
-    DICT_POKE_CDR(parent, DICT_CDR(node));
+    r_list_poke(p_dict->buckets, hash, node_cdr);
+  } else {
+    DICT_POKE_CDR(parent, node_cdr);
   }
 
   return true;
