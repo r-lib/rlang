@@ -107,7 +107,7 @@ warn <- function(message = NULL,
   validate_signal_args(.subclass)
 
   message <- validate_signal_message(message, class)
-  message <- format_warning_message(message, caller_env())
+  message <- cli_format_warning(message, caller_env())
 
   .frequency <- arg_match0(.frequency, c("always", "regularly", "once"))
 
@@ -148,7 +148,7 @@ inform <- function(message = NULL,
 
   message <- message %||% ""
 
-  message <- format_message(message, caller_env())
+  message <- cli_format_message(message, caller_env())
   message <- add_message_freq(message, .frequency, "message")
   message <- paste0(message, "\n")
 
@@ -168,7 +168,7 @@ signal <- function(message,
                    ...,
                    .subclass = deprecated()) {
   validate_signal_args(.subclass)
-  message <- format_message(message, caller_env())
+  message <- cli_format_message(message, caller_env())
   cnd <- cnd(class, ..., message = message)
   cnd_signal(cnd)
 }
