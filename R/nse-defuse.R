@@ -404,31 +404,59 @@ endots <- function(call,
 #' [quo_name()].
 #'
 #' @param exprs A list of expressions.
-#' @param width Deprecated. Maximum width of names.
-#' @param printer Deprecated. A function that takes an expression
-#'   and converts it to a string. This function must take an
-#'   expression as the first argument and `width` as the second
-#'   argument.
+#' @inheritParams dots-empty
+#' @param repair_auto Whether to repair the automatic names. By
+#'   default, minimal names are returned. See `?vctrs::vec_as_names`
+#'   for information about name repairing.
+#' @param repair_quiet Whether to inform user about repaired names.
+#' @param width `r lifecycle::badge("deprecated")` Maximum width of
+#'   names.
+#' @param printer `r lifecycle::badge("deprecated")` A function that
+#'   takes an expression and converts it to a string. This function
+#'   must take an expression as the first argument and `width` as the
+#'   second argument.
 #' @export
-exprs_auto_name <- function(exprs, width = NULL, printer = NULL) {
-  if (!is_null(width)) {
+exprs_auto_name <- function(exprs,
+                            ...,
+                            repair_auto = c("minimal", "unique"),
+                            repair_quiet = FALSE,
+                            width = deprecated(),
+                            printer = deprecated()) {
+  check_dots_empty0(...)
+  repair_auto <- arg_match0(repair_auto, c("minimal", "unique"))
+
+  if (!is_missing(width) && !is_null(width)) {
     warn_deprecated(paste_line(
       "The `width` argument is deprecated as of rlang 0.3.0."
     ))
   }
-
-  if (!is_null(printer)) {
+  if (!is_missing(printer) && !is_null(width)) {
     warn_deprecated(paste_line(
       "The `printer` argument is deprecated as of rlang 0.3.0."
     ))
   }
 
-  have_name <- have_name(exprs)
-  if (any(!have_name)) {
-    nms <- map_chr(exprs[!have_name], as_label)
-    names(exprs)[!have_name] <- nms
+  named <- detect_named(exprs)
+  if (all(named)) {
+    return(exprs)
   }
 
+  names <- names(exprs)
+
+  auto_names <- map_chr(exprs[!named], as_label)
+  names[!named] <- auto_names
+
+  if (repair_auto == "unique" && anyDuplicated(auto_names)) {
+    orig <- names
+    unique_names <- names_as_unique(names, quiet = TRUE)
+    names[!named] <- unique_names[!named]
+
+    if (!repair_quiet) {
+      names_inform_repair(orig, names)
+    }
+  }
+
+  names(exprs) <- names
   exprs
 }
 #' @rdname exprs_auto_name

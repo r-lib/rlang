@@ -570,3 +570,23 @@ test_that("`defer()` does not crash with environments containing quosures (#1085
   }
   expect_no_error(f()) # No crash
 })
+
+test_that("auto-named expressions can be unique-repaired", {
+  dots_names <- function(...) {
+    dots <- enquos(...)
+    dots <- exprs_auto_name(dots, repair_auto = "unique")
+    names(dots)
+  }
+
+  expect_snapshot({
+    expect_equal(
+      dots_names(1, foo = 1, 1, foo = 2),
+      c("1...1", "foo", "1...3", "foo")
+    )
+
+    expect_equal(
+      dots_names(bar, foo = 1, bar, foo = 2),
+      c("bar...1", "foo", "bar...3", "foo")
+    )
+  })
+})
