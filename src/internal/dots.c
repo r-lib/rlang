@@ -920,9 +920,11 @@ r_obj* ffi_dots_values(r_obj* args) {
 
   return out;
 }
-r_obj* ffi_env_dots_values(r_obj* env) {
+
+// [[ export() ]]
+r_obj* rlang_env_dots_values(r_obj* env) {
   return dots_values_impl(env,
-                          r_false,
+                          r_null,
                           rlang_objs_trailing,
                           r_false,
                           r_true,
@@ -930,9 +932,10 @@ r_obj* ffi_env_dots_values(r_obj* env) {
                           r_false,
                           false);
 }
-r_obj* ffi_env_dots_list(r_obj* env) {
+// [[ export() ]]
+r_obj* rlang_env_dots_list(r_obj* env) {
   return dots_values_impl(env,
-                          r_false,
+                          r_null,
                           rlang_objs_trailing,
                           r_false,
                           r_true,

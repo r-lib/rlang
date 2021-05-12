@@ -253,8 +253,8 @@ void R_init_rlang(DllInfo* dll) {
   R_RegisterCCallable("rlang", "rlang_xxh3_64bits",         (DL_FUNC) &XXH3_64bits);
 
   // Maturing
-  R_RegisterCCallable("rlang", "rlang_env_dots_list",       (DL_FUNC) &ffi_env_dots_list);
-  R_RegisterCCallable("rlang", "rlang_env_dots_values",     (DL_FUNC) &ffi_env_dots_values);
+  R_RegisterCCallable("rlang", "rlang_env_dots_list",       (DL_FUNC) &rlang_env_dots_list);
+  R_RegisterCCallable("rlang", "rlang_env_dots_values",     (DL_FUNC) &rlang_env_dots_values);
   R_RegisterCCallable("rlang", "rlang_is_splice_box",       (DL_FUNC) &is_splice_box);
   R_RegisterCCallable("rlang", "rlang_obj_encode_utf8",     (DL_FUNC) &obj_encode_utf8);
   R_RegisterCCallable("rlang", "rlang_str_as_symbol",       (DL_FUNC) &r_str_as_symbol);
