@@ -25,7 +25,7 @@ Depends:
 Imports:
     utils
 Suggests:
-    cli,
+    cli (>= 2.5.0),
     covr,
     crayon,
     fs,
@@ -41,8 +41,6 @@ Suggests:
     withr
 Enhances: 
     winch
-Remotes:
-    r-lib/cli
 SystemRequirements:
     C++11
 Encoding: UTF-8
