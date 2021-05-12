@@ -25,7 +25,7 @@ Depends:
 Imports:
     utils
 Suggests:
-    cli,
+    cli (>= 2.5.0),
     covr,
     crayon,
     fs,

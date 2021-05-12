@@ -17,7 +17,6 @@
 #' kind that is signalled with `Ctrl-C`. It is currently not possible
 #' to create custom interrupt condition objects.
 #'
-#'
 #' @section Backtrace:
 #'
 #' Unlike `stop()` and `warning()`, these functions don't include call
@@ -60,7 +59,7 @@
 #'
 #' @inheritParams cnd
 #' @param message The message to display. Character vectors are
-#'   formatted with [format_bullets()]. The first element
+#'   formatted with [format_error_bullets()]. The first element
 #'   defines a message header and the rest of the vector defines
 #'   bullets. Bullets named `i` and `x` define info and error bullets
 #'   respectively, with special Unicode and colour formatting applied
@@ -166,7 +165,7 @@ abort <- function(message = NULL,
   }
 
   message <- validate_signal_message(message, class)
-  message <- collapse_cnd_message(message)
+  message <- cli_format_error(message, caller_env())
 
   cnd <- error_cnd(class,
     ...,

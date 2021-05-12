@@ -7,7 +7,6 @@ struct rlang_globals_syms {
   r_obj* c_null;
 };
 
-
 extern r_obj* rlang_zap;
 
 extern r_obj* rlang_as_list_call;

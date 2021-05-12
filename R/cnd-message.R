@@ -104,7 +104,7 @@ cnd_footer.default <- function(cnd, ...) {
 #' Format bullets for error messages
 #'
 #' @description
-#' `format_bullets()` takes a character vector and returns a single
+#' `format_error_bullets()` takes a character vector and returns a single
 #' string (or an empty vector if the input is empty). The elements of
 #' the input vector are assembled as a list of bullets, depending on
 #' their names:
@@ -134,21 +134,21 @@ cnd_footer.default <- function(cnd, ...) {
 #'   single space `" "` trigger a line break from the previous bullet.
 #' @examples
 #' # All bullets
-#' writeLines(format_bullets(c("foo", "bar")))
+#' writeLines(format_error_bullets(c("foo", "bar")))
 #'
 #' # This is equivalent to
-#' writeLines(format_bullets(set_names(c("foo", "bar"), "*")))
+#' writeLines(format_error_bullets(set_names(c("foo", "bar"), "*")))
 #'
 #' # Supply named elements to format info, cross, and tick bullets
-#' writeLines(format_bullets(c(i = "foo", x = "bar", v = "baz", "*" = "quux")))
+#' writeLines(format_error_bullets(c(i = "foo", x = "bar", v = "baz", "*" = "quux")))
 #'
 #' # An unnamed element breaks the line
-#' writeLines(format_bullets(c(i = "foo\nbar")))
+#' writeLines(format_error_bullets(c(i = "foo\nbar")))
 #'
 #' # A " " element breaks the line within a bullet (with indentation)
-#' writeLines(format_bullets(c(i = "foo", " " = "bar")))
+#' writeLines(format_error_bullets(c(i = "foo", " " = "bar")))
 #' @export
-format_bullets <- function(x) {
+format_error_bullets <- function(x) {
   if (!length(x)) {
     return(x)
   }
@@ -156,7 +156,7 @@ format_bullets <- function(x) {
   nms <- names(x)
 
   # Treat unnamed vectors as all bullets
-  if (is_null(nms) || all(nms == "")) {
+  if (is_null(nms)) {
     bullets <- rep_along(x, bullet())
     return(paste(bullets, x, sep = " ", collapse = "\n"))
   }
@@ -182,14 +182,117 @@ format_bullets <- function(x) {
   paste0(bullets, x, collapse = "\n")
 }
 
-collapse_cnd_message <- function(x) {
-  if (length(x) > 1L) {
-    paste(
-      x[[1]],
-      format_bullets(x[-1]),
-      sep = "\n"
+cli_format_message <- function(x, env = caller_env()) {
+  # No-op for the empty string, e.g. for `abort("", class = "foo")`
+  # and a `conditionMessage.foo()` method
+  if (is_string(x, "") || inherits(x, "AsIs")) {
+    return(x)
+  }
+
+  orig <- x
+
+  # Interpret unnamed vectors as bullets
+  if (is_null(names(x))) {
+    if (length(x) > 1) {
+      x <- set_names(x, "*")
+      names(x)[[1]] <- ""
+    } else {
+      x <- set_names(x, names2(x))
+    }
+  } 
+
+  out <- switch(
+    use_cli_format(env),
+    partial = cli::format_message(cli_escape(x)),
+    full = cli::format_message(x, env),
+    format_error_bullets(x)
+  )
+
+  str_restore(out, orig)
+}
+
+cli_format_error <- function(x, env = caller_env()) {
+  if (is_string(x, "") || inherits(x, "AsIs")) {
+    return(x)
+  }
+  switch(
+    use_cli_format(env),
+    partial = str_restore(cli::format_error(cli_escape(x)), x),
+    full = str_restore(cli::format_error(x, env), x),
+    cli_format_message(x, env)
+  )
+}
+
+cli_format_warning <- function(x, env = caller_env()) {
+  if (is_string(x, "") || inherits(x, "AsIs")) {
+    return(x)
+  }
+  switch(
+    use_cli_format(env),
+    partial = str_restore(cli::format_warning(cli_escape(x)), x),
+    full = str_restore(cli::format_warning(x, env), x),
+    cli_format_message(x, env)
+  )
+}
+
+str_restore <- function(x, to) {
+  to <- to[1]
+  to[[1]] <- x
+  to
+}
+cli_escape <- function(x) {
+  gsub("\\}", "}}", gsub("\\{", "{{", x))
+}
+
+use_cli_format <- function(env) {
+  # Internal option to disable cli in case of recursive errors
+  if (is_true(peek_option("rlang:::disable_cli"))) {
+    return(FALSE)
+  }
+
+  # Formatting with cli is opt-in for now
+  default <- FALSE
+
+  last <- topenv(env)
+
+  # Search across load-all'd environments
+  if (identical(last, global_env()) && "devtools_shims" %in% search()) {
+    last <- empty_env()
+  }
+
+  flag <- env_get(
+    env,
+    ".rlang_use_cli_format",
+    default = default,
+    inherit = TRUE,
+    last = last
+  )
+
+  if (is_string(flag, "try")) {
+    if (has_cli_format) {
+      return("partial")
+    } else {
+      return("fallback")
+    }
+  }
+
+  if (!is_bool(flag)) {
+    abort("`.rlang_use_cli_format` must be a logical value.")
+  }
+
+  if (flag && !has_cli_format) {
+    with_options(
+      "rlang:::disable_cli" = TRUE,
+      abort(c(
+        "`.rlang_use_cli_format` is set to `TRUE` but cli is not installed.",
+        "i" = "The package author should add `cli` to their `Imports`."
+      ))
     )
+  }
+
+  if (flag) {
+    "full"
   } else {
-    x
+    "fallback"
   }
 }

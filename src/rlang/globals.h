@@ -61,6 +61,7 @@ struct r_globals_envs {
   r_obj* empty;
   r_obj* base;
   r_obj* global;
+  r_obj* ns;      // The namespace of the embedding package
 };
 
 extern struct r_globals r_globals;

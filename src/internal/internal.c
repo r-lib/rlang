@@ -1,7 +1,6 @@
 #include <rlang.h>
 #include "internal.h"
 
-
 #include "arg.c"
 #include "attr.c"
 #include "call.c"

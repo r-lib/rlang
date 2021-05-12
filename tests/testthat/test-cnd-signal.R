@@ -7,10 +7,10 @@ test_that("cnd_signal() creates muffle restarts", {
 })
 
 test_that("signallers support character vectors as `message` parameter", {
-  expect_message(inform(c("foo", "bar")), "foo\n* bar", fixed = TRUE)
-  expect_warning(warn(c("foo", "bar")), "foo\n* bar", fixed = TRUE)
-  expect_error(abort(c("foo", "bar")), "foo\n* bar", fixed = TRUE)
-  expect_condition(signal(c("foo", "bar"), "quux"), "quux", regex = "foo\n\\* bar")
+  expect_message(inform(c("foo", "*" = "bar")), "foo\n* bar", fixed = TRUE)
+  expect_warning(warn(c("foo", "*" = "bar")), "foo\n* bar", fixed = TRUE)
+  expect_error(abort(c("foo", "*" = "bar")), "foo\n* bar", fixed = TRUE)
+  expect_condition(signal(c("foo", "*" = "bar"), "quux"), "quux", regex = "foo\n\\* bar")
 })
 
 test_that("cnd_signal() and signal() returns NULL invisibly", {
@@ -222,6 +222,7 @@ test_that("deprecated arguments of cnd_signal() still work", {
 
   observed <- catch_cnd(cnd_signal("foo"))
   expected <- catch_cnd(signal("", "foo"))
+  expected$glue_env <- NULL
   expect_identical(observed, expected)
 
   with_handlers(cnd_signal(cnd("foo"), .mufflable = TRUE),

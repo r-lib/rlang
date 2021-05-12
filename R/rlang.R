@@ -7,3 +7,5 @@ on_load({
     "dplyr (>= 0.8.0)"
   )
 })
+
+.rlang_use_cli_format <- "try"

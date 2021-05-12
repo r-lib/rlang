@@ -703,7 +703,7 @@ env_print <- function(env = caller_env()) {
       types <- c(types, sprintf("... with %s more bindings", n_other))
     }
 
-    writeLines(format_bullets(types))
+    writeLines(format_error_bullets(types))
   }
 
   invisible(env)
