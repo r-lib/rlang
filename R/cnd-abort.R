@@ -73,8 +73,6 @@
 #' @param class Subclass of the condition. This allows your users
 #'   to selectively handle the conditions signalled by your functions.
 #' @param ... Additional data to be stored in the condition object.
-#' @param .glue_env The environment in which to evaluate objects with
-#'   glue syntax. See [cli-format] to enable cli formatting.
 #' @param .subclass This argument was renamed to `class` in rlang
 #'   0.4.2.  It will be deprecated in the next major version. This is
 #'   for consistency with our conventions for class constructors
@@ -143,7 +141,6 @@ abort <- function(message = NULL,
                   ...,
                   trace = NULL,
                   parent = NULL,
-                  .glue_env = caller_env(),
                   .subclass = deprecated()) {
   validate_signal_args(.subclass)
 
@@ -168,7 +165,7 @@ abort <- function(message = NULL,
   }
 
   message <- validate_signal_message(message, class)
-  message <- format_error_message(message, .glue_env)
+  message <- format_error_message(message, caller_env())
 
   cnd <- error_cnd(class,
     ...,
