@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Format error bullets — format_error_bullets • rlang</title>
+<title>Format bullets for error messages — format_error_bullets • rlang</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,30 @@
 
 
 
-<meta property="og:title" content="Format error bullets — format_error_bullets" />
-<meta property="og:description" content="
-format_error_bullets() has been renamed to format_bullets()." />
+<meta property="og:title" content="Format bullets for error messages — format_error_bullets" />
+<meta property="og:description" content="format_error_bullets() takes a character vector and returns a single
+string (or an empty vector if the input is empty). The elements of
+the input vector are assembled as a list of bullets, depending on
+their names:
+Unnamed elements are unindented. They act as titles or subtitles.
+Elements named &quot;*&quot; are bulleted with a cyan &quot;bullet&quot; symbol.
+Elements named &quot;i&quot; are bulleted with a blue &quot;info&quot; symbol.
+Elements named &quot;x&quot; are bulleted with a red &quot;cross&quot; symbol.
+Elements named &quot;v&quot; are bulleted with a green &quot;tick&quot; symbol.
+Elements named &quot;!&quot; are bulleted with a yellow &quot;warning&quot; symbol.
+Elements named &quot;&amp;gt;&quot; are bulleted with an &quot;arrow&quot; symbol.
+Elements named &quot; &quot; start with an indented line break.
+
+
+For convenience, if the vector is fully unnamed, the elements are
+formatted as &quot;*&quot; bullets.
+The bullet formatting for errors follows the idea that sentences in
+error messages are best kept short and simple. The best way to
+present the information is in the cnd_body() method of an error
+conditon as a bullet list of simple sentences containing a single
+clause. The info and cross symbols of the bullets provide hints on
+how to interpret the bullet relative to the general error issue,
+which should be supplied as cnd_header()." />
 
 
 
@@ -151,14 +172,35 @@ format_error_bullets() has been renamed to format_bullets()." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Format error bullets</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/lifecycle-retired.R'><code>R/lifecycle-retired.R</code></a></small>
+    <h1>Format bullets for error messages</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/cnd-message.R'><code>R/cnd-message.R</code></a></small>
     <div class="hidden name"><code>format_error_bullets.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><a href='https://lifecycle.r-lib.org/articles/stages.html#deprecated'><img src='figures/lifecycle-deprecated.svg' alt='[Deprecated]' /></a>
-<code>format_error_bullets()</code> has been renamed to <code><a href='format_bullets.html'>format_bullets()</a></code>.</p>
+    <p><code>format_error_bullets()</code> takes a character vector and returns a single
+string (or an empty vector if the input is empty). The elements of
+the input vector are assembled as a list of bullets, depending on
+their names:</p><ul>
+<li><p>Unnamed elements are unindented. They act as titles or subtitles.</p></li>
+<li><p>Elements named <code>"*"</code> are bulleted with a cyan "bullet" symbol.</p></li>
+<li><p>Elements named <code>"i"</code> are bulleted with a blue "info" symbol.</p></li>
+<li><p>Elements named <code>"x"</code> are bulleted with a red "cross" symbol.</p></li>
+<li><p>Elements named <code>"v"</code> are bulleted with a green "tick" symbol.</p></li>
+<li><p>Elements named <code>"!"</code> are bulleted with a yellow "warning" symbol.</p></li>
+<li><p>Elements named <code>"&gt;"</code> are bulleted with an "arrow" symbol.</p></li>
+<li><p>Elements named <code>" "</code> start with an indented line break.</p></li>
+</ul>
+
+<p>For convenience, if the vector is fully unnamed, the elements are
+formatted as "*" bullets.</p>
+<p>The bullet formatting for errors follows the idea that sentences in
+error messages are best kept short and simple. The best way to
+present the information is in the <code><a href='cnd_message.html'>cnd_body()</a></code> method of an error
+conditon as a bullet list of simple sentences containing a single
+clause. The info and cross symbols of the bullets provide hints on
+how to interpret the bullet relative to the general error issue,
+which should be supplied as <code><a href='cnd_message.html'>cnd_header()</a></code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>format_error_bullets</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
@@ -175,6 +217,29 @@ single space <code>" "</code> trigger a line break from the previous bullet.</p>
     </table>
 
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># All bullets</span>
+<span class='fu'><a href='https://rdrr.io/r/base/writeLines.html'>writeLines</a></span><span class='op'>(</span><span class='fu'>format_error_bullets</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"foo"</span>, <span class='st'>"bar"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #00BBBB;'>•</span><span> foo
+#&gt; </span><span style='color: #00BBBB;'>•</span><span> bar</div><div class='input'>
+<span class='co'># This is equivalent to</span>
+<span class='fu'><a href='https://rdrr.io/r/base/writeLines.html'>writeLines</a></span><span class='op'>(</span><span class='fu'>format_error_bullets</span><span class='op'>(</span><span class='fu'><a href='set_names.html'>set_names</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"foo"</span>, <span class='st'>"bar"</span><span class='op'>)</span>, <span class='st'>"*"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #00BBBB;'>•</span><span> foo
+#&gt; </span><span style='color: #00BBBB;'>•</span><span> bar</div><div class='input'>
+<span class='co'># Supply named elements to format info, cross, and tick bullets</span>
+<span class='fu'><a href='https://rdrr.io/r/base/writeLines.html'>writeLines</a></span><span class='op'>(</span><span class='fu'>format_error_bullets</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>i <span class='op'>=</span> <span class='st'>"foo"</span>, x <span class='op'>=</span> <span class='st'>"bar"</span>, v <span class='op'>=</span> <span class='st'>"baz"</span>, <span class='st'>"*"</span> <span class='op'>=</span> <span class='st'>"quux"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>ℹ</span><span> foo
+#&gt; </span><span style='color: #BB0000;'>✖</span><span> bar
+#&gt; </span><span style='color: #00BB00;'>✔</span><span> baz
+#&gt; </span><span style='color: #00BBBB;'>•</span><span> quux</div><div class='input'>
+<span class='co'># An unnamed element breaks the line</span>
+<span class='fu'><a href='https://rdrr.io/r/base/writeLines.html'>writeLines</a></span><span class='op'>(</span><span class='fu'>format_error_bullets</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>i <span class='op'>=</span> <span class='st'>"foo\nbar"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>ℹ</span><span> foo
+#&gt; bar</div><div class='input'>
+<span class='co'># A " " element breaks the line within a bullet (with indentation)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/writeLines.html'>writeLines</a></span><span class='op'>(</span><span class='fu'>format_error_bullets</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>i <span class='op'>=</span> <span class='st'>"foo"</span>, <span class='st'>" "</span> <span class='op'>=</span> <span class='st'>"bar"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>ℹ</span><span> foo
+#&gt;   bar</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
