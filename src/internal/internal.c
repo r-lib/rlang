@@ -1,13 +1,6 @@
 #include <rlang.h>
 #include "internal.h"
 
-bool has_cli_format = false;
-
-r_obj* ffi_cli_format_is_here() {
-  has_cli_format = true;
-  return r_null;
-}
-
 #include "arg.c"
 #include "attr.c"
 #include "call.c"

@@ -24,7 +24,6 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_call_has_precedence",          (DL_FUNC) &ffi_call_has_precedence, 3},
   {"ffi_chr_get",                      (DL_FUNC) &ffi_chr_get, 2},
   {"ffi_chr_has_curly",                (DL_FUNC) &ffi_chr_has_curly, 1},
-  {"ffi_cli_format_is_here",           (DL_FUNC) &ffi_cli_format_is_here, 0},
   {"ffi_cnd_signal",                   (DL_FUNC) &ffi_cnd_signal, 1},
   {"ffi_cnd_type",                     (DL_FUNC) &ffi_cnd_type, 1},
   {"ffi_data_mask_clean",              (DL_FUNC) &ffi_data_mask_clean, 1},

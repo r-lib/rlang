@@ -222,16 +222,10 @@ pad_spaces <- function(x, left = TRUE) {
 
 # Import symbols from cli if available
 has_cli <- FALSE
-has_cli_bullet <- FALSE
 has_cli_format <- FALSE
 on_load({
   has_cli <- is_installed("cli")
-  has_cli_format <- is_installed("cli", version = "2.4.0.9000")
-  # TODO: detect new-style cli bullet
-
-  if (has_cli_format) {
-    .Call(ffi_cli_format_is_here)
-  }
+  has_cli_format <- is_installed("cli", version = "2.5.0")
 })
 
 info <- function() {
@@ -251,7 +245,7 @@ bullet <- function() {
 
   # Use small bullet if cli is too old.
   # See https://github.com/r-lib/cli/issues/241
-  if (!has_cli_bullet && !is_string(x, "*")) {
+  if (!has_cli_format && !is_string(x, "*")) {
     x <- "\u2022"
   }
 

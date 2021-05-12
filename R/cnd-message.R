@@ -257,11 +257,12 @@ format_message <- function(x, env = caller_env()) {
     }
   } 
 
-  if (use_cli_format(env)) {
-    out <- cli::format_message(x, env)
-  } else {
-    out <- format_bullets(x)
-  }
+  out <- switch(
+    use_cli_format(env),
+    partial = cli::format_message(cli_escape(x)),
+    full = cli::format_message(x, env),
+    format_bullets(x)
+  )
 
   str_restore(out, orig)
 }
@@ -272,11 +273,12 @@ format_error_message <- function(x, env = caller_env()) {
   if (inherits(x, "AsIs")) {
     return(x)
   }
-  if (use_cli_format(env)) {
-    str_restore(cli::format_error(x, env), x)
-  } else {
+  switch(
+    use_cli_format(env),
+    partial = str_restore(cli::format_error(cli_escape(x)), x),
+    full = str_restore(cli::format_error(x, env), x),
     format_message(x, env)
-  }
+  )
 }
 #' @rdname format_message
 #' @export
@@ -284,17 +286,21 @@ format_warning_message <- function(x, env = caller_env()) {
   if (inherits(x, "AsIs")) {
     return(x)
   }
-  if (use_cli_format(env)) {
-    str_restore(cli::format_warning(x, env), x)
-  } else {
+  switch(
+    use_cli_format(env),
+    partial = str_restore(cli::format_warning(cli_escape(x)), x),
+    full = str_restore(cli::format_warning(x, env), x),
     format_message(x, env)
-  }
+  )
 }
 
 str_restore <- function(x, to) {
   to <- to[1]
   to[[1]] <- x
   to
+}
+cli_escape <- function(x) {
+  gsub("\\}", "}}", gsub("\\{", "{{", x))
 }
 
 use_cli_format <- function(env) {
@@ -322,7 +328,11 @@ use_cli_format <- function(env) {
   )
 
   if (is_string(flag, "try")) {
-    return(has_cli_format)
+    if (has_cli_format) {
+      return("partial")
+    } else {
+      return("fallback")
+    }
   }
 
   if (!is_bool(flag)) {
@@ -339,5 +349,9 @@ use_cli_format <- function(env) {
     )
   }
 
-  flag
+  if (flag) {
+    "full"
+  } else {
+    "fallback"
+  }
 }
