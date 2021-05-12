@@ -10,6 +10,13 @@
 
 # Changelog:
 #
+# 2020-05-12:
+#
+# * All packages are now updated at once. The user is not prompted
+#   again after accepting or declining to update the packages, even
+#   when one of the packages is loaded later on.
+#
+#
 # 2020-05-07:
 #
 # * In interactive sessions, user is now prompted to update outdated
@@ -46,15 +53,13 @@ check_downstream <- function(ver, ..., with_rlang = requireNamespace("rlang")) {
     }
   }
 
-  # Must be `lapply()` instead of a `for` loop so that each `dep` is
-  # bound to its own closure env
-  lapply(deps, function(dep) {
-    force(dep)
+  checked <- FALSE
+  for (dep in deps) {
     on_package_load(
       dep[["pkg"]],
-      .rlang_downstream_check(pkg, ver, dep, with_rlang = with_rlang)
+      .rlang_downstream_check(pkg, ver, deps, with_rlang = with_rlang)
     )
-  })
+  }
 }
 
 .rlang_downstream_parse_deps <- function(deps) {
@@ -87,24 +92,46 @@ check_downstream <- function(ver, ..., with_rlang = requireNamespace("rlang")) {
   c(pkg = dep[[1]], min = ver)
 }
 
-.rlang_downstream_check <- function(pkg, pkg_ver, dep, with_rlang) {
+.rlang_downstream_check <- function(pkg,
+                                    pkg_ver,
+                                    deps,
+                                    with_rlang,
+                                    env = parent.frame()) {
   if (isFALSE(getOption("rlib_downstream_check"))) {
     return()
   }
 
-  dep_pkg <- dep[["pkg"]]
-  dep_min <- dep[["min"]]
-
-  curr_ver <- utils::packageVersion(dep_pkg)
-  if (curr_ver >= dep_min) {
+  if (isTRUE(env$checked)) {
     return()
   }
 
-  pkg_ver <- utils::packageVersion(pkg)
+  # Don't ask again
+  on.exit(env$checked <- TRUE)
 
-  header <- sprintf("As of %s %s, %s must be at least version %s.", pkg, pkg_ver, dep_pkg, dep_min)
-  info_pkg <- c(x = sprintf("%s %s is too old for %s %s.", dep_pkg, curr_ver, pkg, pkg_ver))
-  info_install <- .rlang_downstream_howto_reinstall_msg(dep_pkg)
+  pkgs <- vapply(deps, `[[`, "", "pkg")
+  mins <- vapply(deps, `[[`, "", "min")
+  vers <- lapply(pkgs, utils::packageVersion)
+
+  ok <- as.logical(Map(`>=`, vers, mins))
+
+  if (all(ok)) {
+    return()
+  }
+
+  pkgs <- pkgs[!ok]
+  mins <- mins[!ok]
+
+  pkgs_quoted <- paste0("`", pkgs, "` (>= ", mins, ")")
+  pkgs_enum <- .rlang_downstream_collapse(pkgs_quoted, final = "and")
+
+  n <- length(pkgs)
+  if (n == 1) {
+    info <- paste0("The package ", pkgs_enum, " is required")
+  } else {
+    info <- paste0("The packages ", pkgs_enum, " are required")
+  }
+
+  header <- sprintf("%s as of %s %s.", info, pkg, pkg_ver)
 
   if (with_rlang) {
     # Don't use `::` because this is also called from rlang's onLoad
@@ -120,15 +147,20 @@ check_downstream <- function(ver, ..., with_rlang = requireNamespace("rlang")) {
   }
 
   if (!is_interactive()) {
-    warn(c(header, info_pkg, info_install))
+    warn(header)
     return()
   }
 
+  if (n == 1) {
+    question <- "Would you like to update it now?"
+  } else {
+    question <- "Would you like to update them now?"
+  }
   prompt <- c(
-    "!" = sprintf("Would you like to update the package %s now?", dep_pkg),
+    "!" = question,
     " " = "You will likely need to reload R if you update now."
   )
-  inform(c(header, info_pkg, prompt))
+  inform(c(header, prompt))
 
   if (utils::menu(c("Yes", "No")) != 1) {
     inform("Set `options(rlib_downstream_check = FALSE)` to disable this prompt.")
@@ -136,10 +168,12 @@ check_downstream <- function(ver, ..., with_rlang = requireNamespace("rlang")) {
   }
 
   if (is_installed("pak")) {
-    pak::pkg_install(dep_pkg, ask = FALSE)
+    pak::pkg_install(pkgs, ask = FALSE)
   } else {
-    utils::install.packages(dep_pkg)
+    utils::install.packages(pkgs)
   }
+
+  NULL
 }
 
 # Keep in sync with compat-linked-version.R
@@ -156,6 +190,27 @@ check_downstream <- function(ver, ..., with_rlang = requireNamespace("rlang")) {
     c(
       i = sprintf("Please update %s with `install.packages(\"%s\")` and restart R.", pkg, pkg)
     )
+  }
+}
+
+.rlang_downstream_collapse <- function(x, sep = ", ", final = "or") {
+  n <- length(x)
+
+  if (n < 2) {
+    return(x)
+  }
+
+  n <- length(x)
+  head <- x[seq_len(n - 1)]
+  last <- x[length(x)]
+
+  head <- paste(head, collapse = sep)
+
+  # Write a or b. But a, b, or c.
+  if (n > 2) {
+    paste0(head, sep, final, " ", last)
+  } else {
+    paste0(head, " ", final, " ", last)
   }
 }
 
