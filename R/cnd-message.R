@@ -185,10 +185,7 @@ format_bullets <- function(x) {
 format_message <- function(x, env = caller_env()) {
   # No-op for the empty string, e.g. for `abort("", class = "foo")`
   # and a `conditionMessage.foo()` method
-  if (is_string(x, "")) {
-    return("")
-  }
-  if (inherits(x, "AsIs")) {
+  if (is_string(x, "") || inherits(x, "AsIs")) {
     return(x)
   }
 
@@ -215,7 +212,7 @@ format_message <- function(x, env = caller_env()) {
 }
 
 format_error_message <- function(x, env = caller_env()) {
-  if (inherits(x, "AsIs")) {
+  if (is_string(x, "") || inherits(x, "AsIs")) {
     return(x)
   }
   switch(
@@ -227,7 +224,7 @@ format_error_message <- function(x, env = caller_env()) {
 }
 
 format_warning_message <- function(x, env = caller_env()) {
-  if (inherits(x, "AsIs")) {
+  if (is_string(x, "") || inherits(x, "AsIs")) {
     return(x)
   }
   switch(
