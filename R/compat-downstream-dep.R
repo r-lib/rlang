@@ -124,7 +124,10 @@ check_downstream <- function(ver, ..., with_rlang = requireNamespace("rlang")) {
     return()
   }
 
-  prompt <- c("!" = sprintf("Would you like to update the package %s now?", dep_pkg))
+  prompt <- c(
+    "!" = sprintf("Would you like to update the package %s now?", dep_pkg),
+    " " = "You will likely need to reload R if you update now."
+  )
   inform(c(header, info_pkg, prompt))
 
   if (utils::menu(c("Yes", "No")) != 1) {
