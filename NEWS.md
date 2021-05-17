@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* Internal errors now include a winch backtrace if installed. The user
+  is invited to install it if not installed.
+
 * The root symbol in backtraces is now slightly different so that it
   can't be confused with a prompt character (#1207).
 

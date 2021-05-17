@@ -37,10 +37,6 @@ void rlang_stop_internal(const char* fn, const char* fmt, ...) {
     .msg = msg
   };
 
-  if (!r_is_installed("winch")) {
-    stop_internal_cb(&stop_internal_data);
-  }
-
   struct r_pair_callback with_winch_data = {
     .fn = &stop_internal_cb,
     .data = &stop_internal_data
@@ -60,7 +56,12 @@ static
 __attribute__((noreturn))
 r_obj* stop_internal_cb(void* payload) {
   struct stop_internal_data* data = (struct stop_internal_data*) payload;
-  r_abort("Internal error in `%s()`: %s", data->fn, data->msg);
+  r_obj* call = KEEP(r_parse("stop_internal_c_lib(x, y)"));
+  r_eval_with_xy(call,
+                 KEEP(r_chr(data->fn)),
+                 KEEP(r_chr(data->msg)),
+                 rlang_ns_env);
+  r_abort("Unreached.");
 }
 
 
