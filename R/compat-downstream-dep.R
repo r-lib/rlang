@@ -10,6 +10,12 @@
 
 # Changelog:
 #
+# 2020-05-17:
+#
+# * Added an `info` argument intended to inform users about the
+#   consequences of not updating right away.
+#
+#
 # 2020-05-12:
 #
 # * All packages are now updated at once. The user is not prompted
@@ -31,7 +37,10 @@
 #   DESCRIPTION fields.
 
 
-check_downstream <- function(ver, ..., with_rlang = requireNamespace("rlang")) {
+check_downstream <- function(ver,
+                             ...,
+                             info = NULL,
+                             with_rlang = requireNamespace("rlang")) {
   env <- topenv(parent.frame())
   if (!isNamespace(env)) {
     stop("`check_downstream()` must be called from a namespace.", call. = FALSE)
@@ -57,7 +66,13 @@ check_downstream <- function(ver, ..., with_rlang = requireNamespace("rlang")) {
   for (dep in deps) {
     on_package_load(
       dep[["pkg"]],
-      .rlang_downstream_check(pkg, ver, deps, with_rlang = with_rlang)
+      .rlang_downstream_check(
+        pkg,
+        ver,
+        deps,
+        info = info,
+        with_rlang = with_rlang
+      )
     )
   }
 }
@@ -95,6 +110,7 @@ check_downstream <- function(ver, ..., with_rlang = requireNamespace("rlang")) {
 .rlang_downstream_check <- function(pkg,
                                     pkg_ver,
                                     deps,
+                                    info,
                                     with_rlang,
                                     env = parent.frame()) {
   if (isFALSE(getOption("rlib_downstream_check"))) {
@@ -126,12 +142,12 @@ check_downstream <- function(ver, ..., with_rlang = requireNamespace("rlang")) {
 
   n <- length(pkgs)
   if (n == 1) {
-    info <- paste0("The package ", pkgs_enum, " is required")
+    header <- paste0("The package ", pkgs_enum, " is required")
   } else {
-    info <- paste0("The packages ", pkgs_enum, " are required")
+    header <- paste0("The packages ", pkgs_enum, " are required")
   }
 
-  header <- sprintf("%s as of %s %s.", info, pkg, pkg_ver)
+  header <- sprintf("%s as of %s %s.", header, pkg, pkg_ver)
 
   if (with_rlang) {
     # Don't use `::` because this is also called from rlang's onLoad
@@ -156,9 +172,16 @@ check_downstream <- function(ver, ..., with_rlang = requireNamespace("rlang")) {
   } else {
     question <- "Would you like to update them now?"
   }
+
+  # Use "i" bullets by default
+  if (!is.null(info) && is.null(names(info))) {
+    names(info) <- rep("i", length(info))
+  }
+
   prompt <- c(
     "!" = question,
-    " " = "You will likely need to restart R if you update now."
+    " " = "You will likely need to restart R if you update now.",
+    info
   )
   inform(c(header, prompt))
 
