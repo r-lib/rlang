@@ -158,7 +158,7 @@ check_downstream <- function(ver, ..., with_rlang = requireNamespace("rlang")) {
   }
   prompt <- c(
     "!" = question,
-    " " = "You will likely need to reload R if you update now."
+    " " = "You will likely need to restart R if you update now."
   )
   inform(c(header, prompt))
 
