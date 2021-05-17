@@ -891,7 +891,7 @@ relish <- function(x, dir = getwd()) {
 
 trace_root <- function() {
   if (cli_is_utf8_output()) {
-    "\u2588"
+    "\u2586"
   } else {
     "x"
   }

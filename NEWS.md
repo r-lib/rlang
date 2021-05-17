@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* The root symbol in backtraces is now slightly different so that it
+  can't be confused with a prompt character (#1207).
+
 * Errors, warnings, and messages generated from rlang are now
   formatted with cli. This means in practice that long lines are
   width-wrapped to the terminal size and user themes are applied.
