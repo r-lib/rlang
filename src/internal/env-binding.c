@@ -37,10 +37,10 @@ r_obj* env_get_sym(r_obj* env,
 
   r_obj* out;
   if (inherit) {
-    if (last) {
-      out = r_env_find_until(env, sym, last);
-    } else {
+    if (last == r_null) {
       out = r_env_find_anywhere(env, sym);
+    } else {
+      out = r_env_find_until(env, sym, last);
     }
   } else {
     out = r_env_find(env, sym);
