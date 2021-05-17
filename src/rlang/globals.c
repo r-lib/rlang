@@ -32,6 +32,7 @@ void r_init_library_globals(r_obj* ns) {
   r_globals.na_str = NA_STRING;
 
   r_chrs.empty_string = r_preserve_global(r_chr(""));
+  r_chrs.full = r_preserve_global(r_chr("full"));
 
   r_classes.tibble = r_chr_n(v_tibble_class, R_ARR_SIZEOF(v_tibble_class));
   r_preserve_global(r_classes.tibble);

@@ -20,6 +20,7 @@ struct r_globals {
 
 struct r_globals_chrs {
   r_obj* empty_string;
+  r_obj* full;
 };
 
 struct r_globals_classes {
