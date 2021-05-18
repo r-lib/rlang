@@ -23,8 +23,34 @@ cli::test_that_cli(configs = c("plain", "ansi"), "can style strings with cli", {
   })
 })
 
-cli::test_that_cli(configs = "plain", "styled strings may contain `{` syntax", {
-  expect_equal(style_emph("{foo {}"), "_{foo {}_")
+cli::test_that_cli(configs = c("plain", "ansi"), "can format strings with cli", {
+  expect_snapshot({
+    format_emph("foo")
+    format_strong("foo")
+    format_code("foo")
+    format_q("foo")
+    format_pkg("foo")
+    format_fn("foo")
+    format_arg("foo")
+    format_kbd("foo")
+    format_key("foo")
+    format_file("foo")
+    format_path("foo")
+    format_email("foo")
+    format_url("foo")
+    format_var("foo")
+    format_envvar("foo")
+    format_field("foo")
+    format_cls("foo")
+    format_cls(c("foo", "bar"))
+  })
+})
+
+cli::test_that_cli(configs = c("plain", "ansi"), "styled strings may contain `{` syntax", {
+  expect_snapshot({
+    style_emph("{foo {}")
+    format_message(style_emph("{foo {}"))
+  })
 })
 
 cli::test_that_cli(configs = c("plain", "ansi"), "can apply ANSI styles with cli", {
