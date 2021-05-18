@@ -104,3 +104,9 @@ cli::test_that_cli("formatters restore strings", {
   expect_true(is_bare_character(format_warning("foo")))
   expect_true(is_bare_character(format_message("foo")))
 })
+
+cli::test_that_cli(configs = c("plain", "ansi"), "cli_escape() conditionally escapes `{`", {
+  expect_snapshot({
+    format_error(cli_escape("{"))
+  })
+})

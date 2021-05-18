@@ -197,12 +197,14 @@ format_message <- function(x) {
 .rlang_cli_format <- function(x, cli_format) {
   if (.rlang_cli_has_ansi()) {
     out <- cli_format(x, .envir = emptyenv())
-    out <- .rlang_cli_str_restore(out, x)
-    return(out)
+    .rlang_cli_str_restore(out, x)
+  } else {
+    .rlang_cli_format_fallback(x)
   }
-
+}
+.rlang_cli_format_fallback <- function(x) {
   if (!length(x)) {
-    return(x)
+    return(unname(x))
   }
 
   nms <- names(x)
@@ -234,10 +236,12 @@ format_message <- function(x) {
   bullets <-
     ifelse(bullets == "", "", paste0(bullets, " "))
 
-  paste0(bullets, x, collapse = "\n")
+  out <- paste0(bullets, x, collapse = "\n")
+  .rlang_cli_str_restore(out, x)
 }
 
 .rlang_cli_str_restore <- function(x, to) {
+  names(to) <- NULL
   to <- to[1]
   to[[1]] <- x
   to
@@ -256,7 +260,11 @@ format_message <- function(x) {
 #'
 #' @noRd
 cli_escape <- function(x) {
-  gsub("\\}", "}}", gsub("\\{", "{{", x))
+  if (.rlang_cli_has_ansi()) {
+    gsub("\\}", "}}", gsub("\\{", "{{", x))
+  } else {
+    x
+  }
 }
 
 

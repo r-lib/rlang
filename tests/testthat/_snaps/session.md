@@ -38,6 +38,5 @@
         "1.0", "2.0"))))
     Output
       <error/rlang_error>
-      The packages `_foo` (>= 1.0) and `_bar` (>= 2.0) are required to
-      proceed.
+      The packages `_foo` (>= 1.0) and `_bar` (>= 2.0) are required to proceed.
 

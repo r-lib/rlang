@@ -149,8 +149,6 @@ cnd_footer.default <- function(cnd, ...) {
 #' writeLines(format_error_bullets(c(i = "foo", " " = "bar")))
 #' @export
 format_error_bullets <- function(x) {
-  nms <- names(x)
-
   # Treat unnamed vectors as all bullets
   if (is_null(names(x))) {
     x <- set_names(x, "*")
@@ -159,56 +157,24 @@ format_error_bullets <- function(x) {
   format_error(cli_escape(x))
 }
 
-rlang_format_message <- function(x, env = caller_env()) {
-  # No-op for the empty string, e.g. for `abort("", class = "foo")`
-  # and a `conditionMessage.foo()` method
-  if (is_string(x, "") || inherits(x, "AsIs")) {
-    return(x)
-  }
-
-  orig <- x
-
-  # Interpret unnamed vectors as bullets
-  if (is_null(names(x))) {
-    if (length(x) > 1) {
-      x <- set_names(x, "*")
-      names(x)[[1]] <- ""
-    } else {
-      x <- set_names(x, names2(x))
-    }
-  } 
-
-  out <- switch(
-    use_cli_format(env),
-    partial = cli::format_message(cli_escape(x)),
-    full = cli::format_message(x, env),
-    format_error_bullets(x)
-  )
-
-  str_restore(out, orig)
-}
-
 rlang_format_error <- function(x, env = caller_env()) {
-  if (is_string(x, "") || inherits(x, "AsIs")) {
-    return(x)
-  }
-  switch(
-    use_cli_format(env),
-    partial = str_restore(cli::format_error(cli_escape(x)), x),
-    full = str_restore(cli::format_error(x, env), x),
-    rlang_format_message(x, env)
-  )
+  rlang_format(x, env, format_error, cli::format_error)
 }
-
 rlang_format_warning <- function(x, env = caller_env()) {
-  if (is_string(x, "") || inherits(x, "AsIs")) {
+  rlang_format(x, env, format_warning, cli::format_warning)
+}
+rlang_format_message <- function(x, env = caller_env()) {
+  rlang_format(x, env, format_message, cli::format_message)
+}
+rlang_format <- function(x, env, partial_format, cli_format) {
+  if (!can_format(x)) {
     return(x)
   }
   switch(
     use_cli_format(env),
-    partial = str_restore(cli::format_warning(cli_escape(x)), x),
-    full = str_restore(cli::format_warning(x, env), x),
-    rlang_format_message(x, env)
+    partial = partial_format(cli_escape(x)),
+    full = .rlang_cli_str_restore(cli_format(x, env), x),
+    .rlang_cli_format_fallback(x)
   )
 }
 
@@ -236,6 +202,14 @@ str_restore <- function(x, to) {
   out
 }
 
+# No-op for the empty string, e.g. for `abort("", class = "foo")` and
+# a `conditionMessage.foo()` method. Don't format inputs escaped with
+# `I()`. Finally, don't format inputs containing newlines so that
+# formatting functions are idempotent.
+can_format <- function(x) {
+  !is_string(x, "") && !inherits(x, "AsIs") && !any(grepl("\n", x))
+}
+
 use_cli_format <- function(env) {
   # Internal option to disable cli in case of recursive errors
   if (is_true(peek_option("rlang:::disable_cli"))) {
@@ -261,7 +235,7 @@ use_cli_format <- function(env) {
   )
 
   if (is_string(flag, "try")) {
-    if (has_cli_format) {
+    if (has_cli_format && .rlang_cli_has_ansi()) {
       return("partial")
     } else {
       return("fallback")
