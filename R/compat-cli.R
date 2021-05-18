@@ -9,12 +9,38 @@
 #
 # 2021-05-18:
 #
+# * Added `symbol_` and corresponding `ansi_` functions to create
+#   unicode symbols if possible. The `ansi_` variants apply default
+#   colours to these symbols if possible.
+#
 # * Added `ansi_` functions to apply ANSI styling (colours, slant, weight).
 #
 #
 # 2021-05-11:
 #
 # * Initial version.
+
+
+#' Create unicode symbols
+#'
+#' The `symbol_` functions generate Unicode symbols if cli is
+#' installed and Unicode is enabled. The corresponding `ansi_`
+#' functions apply default ANSI colours to these symbols if possible.
+#'
+#' @noRd
+symbol_info   <- function() if (requireNamespace("cli")) cli::symbol$info else "i"
+symbol_cross  <- function() if (requireNamespace("cli")) cli::symbol$cross else "x"
+symbol_tick   <- function() if (requireNamespace("cli")) cli::symbol$tick else "v"
+symbol_bullet <- function() if (requireNamespace("cli")) cli::symbol$bullet else "*"
+symbol_arrow  <- function() if (requireNamespace("cli")) cli::symbol$arrow_right else ">"
+symbol_alert  <- function() "!"
+
+ansi_info   <- function() ansi_blue(symbol_info())
+ansi_cross  <- function() ansi_red(symbol_cross())
+ansi_tick   <- function() ansi_green(symbol_tick())
+ansi_bullet <- function() ansi_cyan(symbol_bullet())
+ansi_arrow  <- function() symbol_arrow()
+ansi_alert  <- function() ansi_yellow(symbol_alert())
 
 
 #' Apply ANSI styling

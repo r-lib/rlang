@@ -253,3 +253,229 @@
       <ansi_string>
       [1] [4mfoo[24m
 
+# can create symbols with cli [plain]
+
+    Code
+      symbol_info()
+    Output
+      [1] "i"
+    Code
+      symbol_cross()
+    Output
+      [1] "x"
+    Code
+      symbol_tick()
+    Output
+      [1] "v"
+    Code
+      symbol_bullet()
+    Output
+      [1] "*"
+    Code
+      symbol_arrow()
+    Output
+      [1] ">"
+    Code
+      symbol_alert()
+    Output
+      [1] "!"
+
+# can create symbols with cli [ansi]
+
+    Code
+      symbol_info()
+    Output
+      [1] "i"
+    Code
+      symbol_cross()
+    Output
+      [1] "x"
+    Code
+      symbol_tick()
+    Output
+      [1] "v"
+    Code
+      symbol_bullet()
+    Output
+      [1] "*"
+    Code
+      symbol_arrow()
+    Output
+      [1] ">"
+    Code
+      symbol_alert()
+    Output
+      [1] "!"
+
+# can create symbols with cli [unicode]
+
+    Code
+      symbol_info()
+    Output
+      [1] "ℹ"
+    Code
+      symbol_cross()
+    Output
+      [1] "✖"
+    Code
+      symbol_tick()
+    Output
+      [1] "✔"
+    Code
+      symbol_bullet()
+    Output
+      [1] "•"
+    Code
+      symbol_arrow()
+    Output
+      [1] "→"
+    Code
+      symbol_alert()
+    Output
+      [1] "!"
+
+# can create symbols with cli [fancy]
+
+    Code
+      symbol_info()
+    Output
+      [1] "ℹ"
+    Code
+      symbol_cross()
+    Output
+      [1] "✖"
+    Code
+      symbol_tick()
+    Output
+      [1] "✔"
+    Code
+      symbol_bullet()
+    Output
+      [1] "•"
+    Code
+      symbol_arrow()
+    Output
+      [1] "→"
+    Code
+      symbol_alert()
+    Output
+      [1] "!"
+
+# can create ANSI symbols with cli [plain]
+
+    Code
+      ansi_info()
+    Output
+      [1] "i"
+    Code
+      ansi_cross()
+    Output
+      [1] "x"
+    Code
+      ansi_tick()
+    Output
+      [1] "v"
+    Code
+      ansi_bullet()
+    Output
+      [1] "*"
+    Code
+      ansi_arrow()
+    Output
+      [1] ">"
+    Code
+      ansi_alert()
+    Output
+      [1] "!"
+
+# can create ANSI symbols with cli [ansi]
+
+    Code
+      ansi_info()
+    Output
+      <ansi_string>
+      [1] [34mi[39m
+    Code
+      ansi_cross()
+    Output
+      <ansi_string>
+      [1] [31mx[39m
+    Code
+      ansi_tick()
+    Output
+      <ansi_string>
+      [1] [32mv[39m
+    Code
+      ansi_bullet()
+    Output
+      <ansi_string>
+      [1] [36m*[39m
+    Code
+      ansi_arrow()
+    Output
+      [1] ">"
+    Code
+      ansi_alert()
+    Output
+      <ansi_string>
+      [1] [33m![39m
+
+# can create ANSI symbols with cli [unicode]
+
+    Code
+      ansi_info()
+    Output
+      [1] "ℹ"
+    Code
+      ansi_cross()
+    Output
+      [1] "✖"
+    Code
+      ansi_tick()
+    Output
+      [1] "✔"
+    Code
+      ansi_bullet()
+    Output
+      [1] "•"
+    Code
+      ansi_arrow()
+    Output
+      [1] "→"
+    Code
+      ansi_alert()
+    Output
+      [1] "!"
+
+# can create ANSI symbols with cli [fancy]
+
+    Code
+      ansi_info()
+    Output
+      <ansi_string>
+      [1] [34mℹ[39m
+    Code
+      ansi_cross()
+    Output
+      <ansi_string>
+      [1] [31m✖[39m
+    Code
+      ansi_tick()
+    Output
+      <ansi_string>
+      [1] [32m✔[39m
+    Code
+      ansi_bullet()
+    Output
+      <ansi_string>
+      [1] [36m•[39m
+    Code
+      ansi_arrow()
+    Output
+      [1] "→"
+    Code
+      ansi_alert()
+    Output
+      <ansi_string>
+      [1] [33m![39m
+
