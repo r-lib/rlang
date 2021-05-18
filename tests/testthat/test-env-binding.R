@@ -459,6 +459,17 @@ test_that("env_cache() works (#1081)", {
  expect_equal(e$a, "foo")
 })
 
+test_that("env_get(last = ) checks for empty env when last is disconnected (#1208)", {
+  out <- env_get(
+    emptyenv(),
+    "_foobar",
+    default = "_fallback",
+    inherit = TRUE,
+    last = globalenv()
+  )
+  expect_equal(out, "_fallback")
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

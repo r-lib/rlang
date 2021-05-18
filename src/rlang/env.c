@@ -194,7 +194,7 @@ r_obj* r_env_find_until(r_obj* env, r_obj* sym, r_obj* last) {
   }
 
   r_obj* out = r_syms.unbound;
-  while (out == r_syms.unbound && env != stop) {
+  while (out == r_syms.unbound && env != r_envs.empty && env != stop) {
     out = r_env_find(env, sym);
     env = r_env_parent(env);
   }
