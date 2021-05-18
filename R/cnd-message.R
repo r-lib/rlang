@@ -182,7 +182,7 @@ format_error_bullets <- function(x) {
   paste0(bullets, x, collapse = "\n")
 }
 
-cli_format_message <- function(x, env = caller_env()) {
+rlang_format_message <- function(x, env = caller_env()) {
   # No-op for the empty string, e.g. for `abort("", class = "foo")`
   # and a `conditionMessage.foo()` method
   if (is_string(x, "") || inherits(x, "AsIs")) {
@@ -211,7 +211,7 @@ cli_format_message <- function(x, env = caller_env()) {
   str_restore(out, orig)
 }
 
-cli_format_error <- function(x, env = caller_env()) {
+rlang_format_error <- function(x, env = caller_env()) {
   if (is_string(x, "") || inherits(x, "AsIs")) {
     return(x)
   }
@@ -219,11 +219,11 @@ cli_format_error <- function(x, env = caller_env()) {
     use_cli_format(env),
     partial = str_restore(cli::format_error(cli_escape(x)), x),
     full = str_restore(cli::format_error(x, env), x),
-    cli_format_message(x, env)
+    rlang_format_message(x, env)
   )
 }
 
-cli_format_warning <- function(x, env = caller_env()) {
+rlang_format_warning <- function(x, env = caller_env()) {
   if (is_string(x, "") || inherits(x, "AsIs")) {
     return(x)
   }
@@ -231,7 +231,7 @@ cli_format_warning <- function(x, env = caller_env()) {
     use_cli_format(env),
     partial = str_restore(cli::format_warning(cli_escape(x)), x),
     full = str_restore(cli::format_warning(x, env), x),
-    cli_format_message(x, env)
+    rlang_format_message(x, env)
   )
 }
 

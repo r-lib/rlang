@@ -172,7 +172,7 @@ abort <- function(message = NULL,
   }
 
   message <- validate_signal_message(message, class)
-  message <- cli_format_error(message, caller_env())
+  message <- rlang_format_error(message, caller_env())
 
   cnd <- error_cnd(class,
     ...,

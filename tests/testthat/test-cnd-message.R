@@ -151,7 +151,7 @@ test_that("cli is not used when message is escaped with `I()`", {
 test_that("cli syntax is escaped in 'try' mode", {
   .rlang_use_cli_format <- "try"
   x <- "{foo {{}}"
-  expect_equal(cli_format_message(x), x)
+  expect_equal(rlang_format_message(x), x)
 })
 
 test_that("str_restore() deals with attributes", {
