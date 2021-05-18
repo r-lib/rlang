@@ -6,8 +6,36 @@
 # used to format the elements. Otherwise a fallback format is used.
 #
 # Changelog:
+#
+# 2021-05-18:
+#
+# * Added `ansi_` functions to apply ANSI styling (colours, slant, weight).
+#
+#
 # 2021-05-11:
+#
 # * Initial version.
+
+
+#' Apply ANSI styling
+#'
+#' The `ansi_` functions style their inputs using the relevant ANSI
+#' escapes if cli is installed and ANSI colours are enabled.
+#'
+#' @param x A string.
+#'
+#' @noRd
+ansi_red       <- function(x) if (.rlang_cli_has_cli()) cli::col_red(x) else x
+ansi_blue      <- function(x) if (.rlang_cli_has_cli()) cli::col_blue(x) else x
+ansi_green     <- function(x) if (.rlang_cli_has_cli()) cli::col_green(x) else x
+ansi_yellow    <- function(x) if (.rlang_cli_has_cli()) cli::col_yellow(x) else x
+ansi_magenta   <- function(x) if (.rlang_cli_has_cli()) cli::col_magenta(x) else x
+ansi_cyan      <- function(x) if (.rlang_cli_has_cli()) cli::col_cyan(x) else x
+ansi_silver    <- function(x) if (.rlang_cli_has_cli()) cli::col_silver(x) else x
+ansi_blurred   <- function(x) if (.rlang_cli_has_cli()) cli::style_blurred(x) else x
+ansi_bold      <- function(x) if (.rlang_cli_has_cli()) cli::style_bold(x) else x
+ansi_italic    <- function(x) if (.rlang_cli_has_cli()) cli::style_italic(x) else x
+ansi_underline <- function(x) if (.rlang_cli_has_cli()) cli::style_underline(x) else x
 
 style_emph   <- function(x) .rlang_cli_style(x, "emph", "_%s_")
 style_strong <- function(x) .rlang_cli_style(x, "strong", "*%s*")
@@ -41,6 +69,10 @@ style_cls <- function(x) {
   } else {
     sprintf(fallback, x)
   }
+}
+
+.rlang_cli_has_cli <- function() {
+  requireNamespace("cli") && cli::num_ansi_colors() > 1
 }
 
 # nocov end
