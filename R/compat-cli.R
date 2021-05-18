@@ -25,17 +25,17 @@
 #' @param x A string.
 #'
 #' @noRd
-ansi_red       <- function(x) if (.rlang_cli_has_cli()) cli::col_red(x) else x
-ansi_blue      <- function(x) if (.rlang_cli_has_cli()) cli::col_blue(x) else x
-ansi_green     <- function(x) if (.rlang_cli_has_cli()) cli::col_green(x) else x
-ansi_yellow    <- function(x) if (.rlang_cli_has_cli()) cli::col_yellow(x) else x
-ansi_magenta   <- function(x) if (.rlang_cli_has_cli()) cli::col_magenta(x) else x
-ansi_cyan      <- function(x) if (.rlang_cli_has_cli()) cli::col_cyan(x) else x
-ansi_silver    <- function(x) if (.rlang_cli_has_cli()) cli::col_silver(x) else x
-ansi_blurred   <- function(x) if (.rlang_cli_has_cli()) cli::style_blurred(x) else x
-ansi_bold      <- function(x) if (.rlang_cli_has_cli()) cli::style_bold(x) else x
-ansi_italic    <- function(x) if (.rlang_cli_has_cli()) cli::style_italic(x) else x
-ansi_underline <- function(x) if (.rlang_cli_has_cli()) cli::style_underline(x) else x
+ansi_red       <- function(x) if (.rlang_cli_has_ansi()) cli::col_red(x) else x
+ansi_blue      <- function(x) if (.rlang_cli_has_ansi()) cli::col_blue(x) else x
+ansi_green     <- function(x) if (.rlang_cli_has_ansi()) cli::col_green(x) else x
+ansi_yellow    <- function(x) if (.rlang_cli_has_ansi()) cli::col_yellow(x) else x
+ansi_magenta   <- function(x) if (.rlang_cli_has_ansi()) cli::col_magenta(x) else x
+ansi_cyan      <- function(x) if (.rlang_cli_has_ansi()) cli::col_cyan(x) else x
+ansi_silver    <- function(x) if (.rlang_cli_has_ansi()) cli::col_silver(x) else x
+ansi_blurred   <- function(x) if (.rlang_cli_has_ansi()) cli::style_blurred(x) else x
+ansi_bold      <- function(x) if (.rlang_cli_has_ansi()) cli::style_bold(x) else x
+ansi_italic    <- function(x) if (.rlang_cli_has_ansi()) cli::style_italic(x) else x
+ansi_underline <- function(x) if (.rlang_cli_has_ansi()) cli::style_underline(x) else x
 
 style_emph   <- function(x) .rlang_cli_style(x, "emph", "_%s_")
 style_strong <- function(x) .rlang_cli_style(x, "strong", "*%s*")
@@ -71,7 +71,7 @@ style_cls <- function(x) {
   }
 }
 
-.rlang_cli_has_cli <- function() {
+.rlang_cli_has_ansi <- function() {
   requireNamespace("cli") && cli::num_ansi_colors() > 1
 }
 
