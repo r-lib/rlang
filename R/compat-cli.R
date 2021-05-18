@@ -18,6 +18,8 @@
 # * Added `format_error()` and variants to format messages with
 #   cli (including bullets).
 #
+# * Added `cli_escape()` to escape glue and cli syntax.
+#
 #
 # 2021-05-11:
 #
@@ -189,5 +191,18 @@ style_cls <- function(x) {
 .rlang_cli_has_ansi <- function() {
   requireNamespace("cli") && cli::num_ansi_colors() > 1
 }
+
+#' Escape cli and glue syntax
+#'
+#' This doubles all `{` and `}` characters to prevent them from being
+#' interpreted as syntax for glue interpolation or cli styling.
+#'
+#' @param x A character vector.
+#'
+#' @noRd
+cli_escape <- function(x) {
+  gsub("\\}", "}}", gsub("\\{", "{{", x))
+}
+
 
 # nocov end
