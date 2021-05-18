@@ -159,15 +159,15 @@ bool r_is_raw(r_obj* x, r_ssize n) {
 // Coercion ----------------------------------------------------------
 
 static
-r_obj* vec_coercer(r_obj* dest) {
-  switch(r_typeof(dest)) {
-  case R_TYPE_logical: return rlang_ns_get("as_logical");
-  case R_TYPE_integer: return rlang_ns_get("as_integer");
-  case R_TYPE_double: return rlang_ns_get("as_double");
-  case R_TYPE_complex: return rlang_ns_get("as_complex");
-  case R_TYPE_character: return rlang_ns_get("as_character");
+r_obj* vec_coercer(r_obj* to) {
+  switch (r_typeof(to)) {
+  case R_TYPE_logical: return rlang_ns_get("legacy_as_logical");
+  case R_TYPE_integer: return rlang_ns_get("legacy_as_integer");
+  case R_TYPE_double: return rlang_ns_get("legacy_as_double");
+  case R_TYPE_complex: return rlang_ns_get("legacy_as_complex");
+  case R_TYPE_character: return rlang_ns_get("legacy_as_character");
   case RAWSXP: return rlang_ns_get("legacy_as_raw");
-  default: r_abort("No coercion implemented for `%s`", Rf_type2str(r_typeof(dest)));
+  default: r_abort("No coercion implemented for `%s`", Rf_type2str(r_typeof(to)));
   }
 }
 

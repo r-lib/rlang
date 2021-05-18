@@ -82,3 +82,14 @@ test_that("are_na() requires vector input but not is_na()", {
 test_that("are_na() fails with lists (#558)", {
   expect_error(are_na(mtcars), "must be an atomic vector")
 })
+
+test_that("variadic ctors still work without warnings (#1210)", {
+  expect_no_warning({
+    local_options(lifecycle_verbose_soft_deprecation = TRUE)
+    expect_identical(lgl(1), TRUE)
+    expect_identical(int(1), 1L)
+    expect_identical(dbl(1), 1.0)
+    expect_identical(cpl(1), 1+0i)
+    expect_identical(chr(""), "")
+  })
+})

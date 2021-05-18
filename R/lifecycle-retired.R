@@ -297,60 +297,31 @@ signal_deprecated_cast <- function(fn, env = caller_env(2)) {
 #' @export
 as_logical <- function(x) {
   signal_deprecated_cast("as_logical")
-  coerce_type_vec(x, friendly_type_of(lgl()),
-    logical = { attributes(x) <- NULL; x },
-    integer = as_base_type(x, as.logical),
-    double = as_integerish_type(x, as.logical, lgl())
-  )
+  legacy_as_logical(x)
 }
 #' @rdname vector-coercion
 #' @export
 as_integer <- function(x) {
   signal_deprecated_cast("as_integer")
-  coerce_type_vec(x, friendly_type_of(int()),
-    logical = as_base_type(x, as.integer),
-    integer = { attributes(x) <- NULL; x },
-    double = as_integerish_type(x, as.integer, int())
-  )
+  legacy_as_integer(x)
 }
 #' @rdname vector-coercion
 #' @export
 as_double <- function(x) {
   signal_deprecated_cast("as_double")
-  coerce_type_vec(x, friendly_type_of(dbl()),
-    logical = ,
-    integer = as_base_type(x, as.double),
-    double = { attributes(x) <- NULL; x }
-  )
+  legacy_as_double(x)
 }
 #' @rdname vector-coercion
 #' @export
 as_complex <- function(x) {
   signal_deprecated_cast("as_complex")
-  coerce_type_vec(x, friendly_type_of(cpl()),
-    logical = ,
-    integer = ,
-    double = as_base_type(x, as.complex),
-    complex = { attributes(x) <- NULL; x }
-  )
+  legacy_as_complex(x)
 }
 #' @rdname vector-coercion
 #' @export
 as_character <- function(x, encoding = NULL) {
   signal_deprecated_cast("as_character")
-  if (is_unspecified(x)) {
-    return(rep_along(x, na_chr))
-  }
-  coerce_type_vec(x, friendly_type_of(chr()),
-    string = ,
-    character = {
-      attributes(x) <- NULL
-      if (!is_null(encoding)) {
-        Encoding(x) <- encoding
-      }
-      x
-    }
-  )
+  legacy_as_character(x, encoding = encoding)
 }
 #' @rdname vector-coercion
 #' @export
@@ -376,6 +347,51 @@ vec_as_list <- function(x) {
     complex = ,
     raw = as_base_type(x, as.list),
     list = { attributes(x) <- NULL; x }
+  )
+}
+
+legacy_as_logical <- function(x) {
+  coerce_type_vec(x, friendly_type_of(lgl()),
+    logical = { attributes(x) <- NULL; x },
+    integer = as_base_type(x, as.logical),
+    double = as_integerish_type(x, as.logical, lgl())
+  )
+}
+legacy_as_integer <- function(x) {
+  coerce_type_vec(x, friendly_type_of(int()),
+    logical = as_base_type(x, as.integer),
+    integer = { attributes(x) <- NULL; x },
+    double = as_integerish_type(x, as.integer, int())
+  )
+}
+legacy_as_double <- function(x) {
+  coerce_type_vec(x, friendly_type_of(dbl()),
+    logical = ,
+    integer = as_base_type(x, as.double),
+    double = { attributes(x) <- NULL; x }
+  )
+}
+legacy_as_complex <- function(x) {
+  coerce_type_vec(x, friendly_type_of(cpl()),
+    logical = ,
+    integer = ,
+    double = as_base_type(x, as.complex),
+    complex = { attributes(x) <- NULL; x }
+  )
+}
+legacy_as_character <- function(x, encoding = NULL) {
+  if (is_unspecified(x)) {
+    return(rep_along(x, na_chr))
+  }
+  coerce_type_vec(x, friendly_type_of(chr()),
+    string = ,
+    character = {
+      attributes(x) <- NULL
+      if (!is_null(encoding)) {
+        Encoding(x) <- encoding
+      }
+      x
+    }
   )
 }
 
