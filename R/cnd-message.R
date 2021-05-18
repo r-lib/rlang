@@ -149,37 +149,14 @@ cnd_footer.default <- function(cnd, ...) {
 #' writeLines(format_error_bullets(c(i = "foo", " " = "bar")))
 #' @export
 format_error_bullets <- function(x) {
-  if (!length(x)) {
-    return(x)
-  }
-
   nms <- names(x)
 
   # Treat unnamed vectors as all bullets
-  if (is_null(nms)) {
-    bullets <- rep_along(x, bullet())
-    return(paste(bullets, x, sep = " ", collapse = "\n"))
+  if (is_null(names(x))) {
+    x <- set_names(x, "*")
   }
 
-  if (!all(nms %in% c("i", "x", "v", "*", "!", ">", " ", ""))) {
-    abort('Bullet names must be one of "i", "x", "v", "*", "!", ">", or " ".')
-  }
-
-  bullets <-
-    ifelse(nms == "i", info(),
-    ifelse(nms == "x", cross(),
-    ifelse(nms == "v", tick(),
-    ifelse(nms == "*", bullet(),
-    ifelse(nms == "!", yellow("!"),
-    ifelse(nms == ">", arrow_right(),
-    ifelse(nms == "", "",
-    ifelse(nms == " ", " ",
-      "*"))))))))
-
-  bullets <-
-    ifelse(bullets == "", "", paste0(bullets, " "))
-
-  paste0(bullets, x, collapse = "\n")
+  format_error(cli_escape(x))
 }
 
 rlang_format_message <- function(x, env = caller_env()) {

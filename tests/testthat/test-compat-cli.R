@@ -64,3 +64,17 @@ cli::test_that_cli("can create ANSI symbols with cli", {
     ansi_alert()
   })
 })
+
+cli::test_that_cli("can format messages", {
+  expect_snapshot({
+    format_error(c("Header", "i" = "Bullet."))
+    format_warning(c("Header", "i" = "Bullet."))
+    format_message(c("Header", "i" = "Bullet."))
+  })
+})
+
+cli::test_that_cli("formatters restore strings", {
+  expect_true(is_bare_character(format_error("foo")))
+  expect_true(is_bare_character(format_warning("foo")))
+  expect_true(is_bare_character(format_message("foo")))
+})

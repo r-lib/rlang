@@ -15,6 +15,9 @@
 #
 # * Added `ansi_` functions to apply ANSI styling (colours, slant, weight).
 #
+# * Added `format_error()` and variants to format messages with
+#   cli (including bullets).
+#
 #
 # 2021-05-11:
 #
@@ -79,6 +82,92 @@ style_url    <- function(x) .rlang_cli_style(x, "url", "<%s>")
 style_var    <- function(x) .rlang_cli_style(x, "var", "`%s`")
 style_envvar <- function(x) .rlang_cli_style(x, "envvar", "`%s`")
 style_field  <- function(x) .rlang_cli_style(x, "field", NULL)
+
+#' Format messages
+#'
+#' @description
+#'
+#' These format functions use cli if available to format condition
+#' messages. This includes structural formatting:
+#'
+#' - Styling as a function of the message type (error, warning,
+#'   message).
+#' - Bullets formatting (info, alert, ...).
+#' - Indented width wrapping.
+#'
+#' This also applies inline formatting in combination with the
+#' `style_` prefixed functions.
+#'
+#' The input should not contain any `"{foo}"` glue syntax. If you are
+#' assembling a message from multiple pieces, use `cli_escape()` on
+#' user or external inputs that might contain curly braces.
+#'
+#' @param x A character vector of lines. Names define bullet types.
+#'
+#' @noRd
+format_error <- function(x) {
+  .rlang_cli_format(x, cli::format_error)
+}
+#' @rdname format_error
+#' @noRd
+format_warning <- function(x) {
+  .rlang_cli_format(x, cli::format_warning)
+}
+#' @rdname format_error
+#' @noRd
+format_message <- function(x) {
+  .rlang_cli_format(x, cli::format_message)
+}
+
+.rlang_cli_format <- function(x, cli_format) {
+  if (.rlang_cli_has_ansi()) {
+    out <- cli_format(x, .envir = emptyenv())
+    out <- .rlang_cli_str_restore(out, x)
+    return(out)
+  }
+
+  if (!length(x)) {
+    return(x)
+  }
+
+  nms <- names(x)
+
+  if (is_null(nms)) {
+    nms <- rep_len("", length(x))
+  }
+
+  if (requireNamespace("rlang")) {
+    abort <- rlang::abort
+  } else {
+    abort <- function(message) stop(message, call. = FALSE)
+  }
+  if (!all(nms %in% c("i", "x", "v", "*", "!", ">", " ", ""))) {
+    abort('Bullet names must be one of "i", "x", "v", "*", "!", ">", or " ".')
+  }
+
+  bullets <-
+    ifelse(nms == "i", ansi_info(),
+    ifelse(nms == "x", ansi_cross(),
+    ifelse(nms == "v", ansi_tick(),
+    ifelse(nms == "*", ansi_bullet(),
+    ifelse(nms == "!", ansi_alert(),
+    ifelse(nms == ">", ansi_arrow(),
+    ifelse(nms == "", "",
+    ifelse(nms == " ", " ",
+      "*"))))))))
+
+  bullets <-
+    ifelse(bullets == "", "", paste0(bullets, " "))
+
+  paste0(bullets, x, collapse = "\n")
+}
+
+.rlang_cli_str_restore <- function(x, to) {
+  to <- to[1]
+  to[[1]] <- x
+  to
+}
+
 
 style_cls <- function(x) {
   fallback <- function(x) sprintf("<%s>", paste0(x, collapse = "/"))

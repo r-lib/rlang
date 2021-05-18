@@ -479,3 +479,69 @@
       <ansi_string>
       [1] [33m![39m
 
+# can format messages [plain]
+
+    Code
+      format_error(c("Header", i = "Bullet."))
+    Output
+      [1] "Header\ni Bullet."
+    Code
+      format_warning(c("Header", i = "Bullet."))
+    Output
+      [1] "Header\ni Bullet."
+    Code
+      format_message(c("Header", i = "Bullet."))
+    Output
+      [1] "Header\ni Bullet."
+
+# can format messages [ansi]
+
+    Code
+      format_error(c("Header", i = "Bullet."))
+    Output
+                                                                                      
+      "\033[1m\033[22m\033[1m\033[1mHeader\033[1m\033[22m\n\033[36mi\033[39m Bullet." 
+    Code
+      format_warning(c("Header", i = "Bullet."))
+    Output
+                                                                                      
+      "\033[1m\033[22m\033[1m\033[1mHeader\033[1m\033[22m\n\033[36mi\033[39m Bullet." 
+    Code
+      format_message(c("Header", i = "Bullet."))
+    Output
+                                                         
+      "\033[1m\033[22mHeader\n\033[36mi\033[39m Bullet." 
+
+# can format messages [unicode]
+
+    Code
+      format_error(c("Header", i = "Bullet."))
+    Output
+      [1] "Header\nℹ Bullet."
+    Code
+      format_warning(c("Header", i = "Bullet."))
+    Output
+      [1] "Header\nℹ Bullet."
+    Code
+      format_message(c("Header", i = "Bullet."))
+    Output
+      [1] "Header\nℹ Bullet."
+
+# can format messages [fancy]
+
+    Code
+      format_error(c("Header", i = "Bullet."))
+    Output
+                                                                                      
+      "\033[1m\033[22m\033[1m\033[1mHeader\033[1m\033[22m\n\033[36mℹ\033[39m Bullet." 
+    Code
+      format_warning(c("Header", i = "Bullet."))
+    Output
+                                                                                      
+      "\033[1m\033[22m\033[1m\033[1mHeader\033[1m\033[22m\n\033[36mℹ\033[39m Bullet." 
+    Code
+      format_message(c("Header", i = "Bullet."))
+    Output
+                                                         
+      "\033[1m\033[22mHeader\n\033[36mℹ\033[39m Bullet." 
+
