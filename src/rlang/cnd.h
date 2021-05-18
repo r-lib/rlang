@@ -10,8 +10,9 @@ void r_warn(const char* fmt, ...);
 void r_abort(const char* fmt, ...) __attribute__((noreturn));
 void r_interrupt();
 
+extern
 __attribute__((noreturn))
-void r_stop_internal(const char* fn, const char* fmt, ...);
+void (*r_stop_internal)(const char* fn, const char* fmt, ...);
 
 static inline
 __attribute__((noreturn))

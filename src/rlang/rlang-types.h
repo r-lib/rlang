@@ -70,6 +70,11 @@ struct r_pair_ptr_ssize {
   r_ssize size;
 };
 
+struct r_pair_callback {
+  r_obj* (*fn)(void* data);
+  void* data;
+};
+
 
 #define KEEP PROTECT
 #define FREE UNPROTECT

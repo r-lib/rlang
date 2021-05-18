@@ -17,15 +17,9 @@ void r_vec_poke_n(r_obj* x, r_ssize offset,
     BUF[BUFSIZE - 1] = '\0';                    \
   }
 
+
 __attribute__((noreturn))
-void r_stop_internal(const char* fn, const char* fmt, ...) {
-  R_CheckStack2(BUFSIZE);
-
-  char msg[BUFSIZE];
-  INTERP(msg, fmt, ...);
-
-  r_abort("Internal error in `%s()`: %s", fn, msg);
-}
+void (*r_stop_internal)(const char* fn, const char* fmt, ...) = NULL;
 
 static r_obj* msg_call = NULL;
 void r_inform(const char* fmt, ...) {
@@ -216,4 +210,6 @@ void r_init_library_cnd() {
     "withRestarts(rlang_muffle = function() NULL, signalCondition(x))";
   cnd_signal_call = r_parse(cnd_signal_source);
   r_preserve(cnd_signal_call);
+
+  r_stop_internal = (__attribute__((noreturn)) void (*)(const char*, const char*, ...)) R_GetCCallable("rlang", "rlang_stop_internal");
 }

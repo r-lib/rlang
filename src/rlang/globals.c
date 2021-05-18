@@ -32,6 +32,7 @@ void r_init_library_globals(r_obj* ns) {
   r_globals.na_str = NA_STRING;
 
   r_chrs.empty_string = r_preserve_global(r_chr(""));
+  r_chrs.full = r_preserve_global(r_chr("full"));
 
   r_classes.tibble = r_chr_n(v_tibble_class, R_ARR_SIZEOF(v_tibble_class));
   r_preserve_global(r_classes.tibble);
@@ -56,6 +57,7 @@ void r_init_library_globals_syms() {
   r_syms.dots = R_DotsSymbol;
   r_syms.missing = R_MissingArg;
   r_syms.names = R_NamesSymbol;
+  r_syms.options = r_sym("options");
   r_syms.dim = R_DimSymbol;
   r_syms.dim_names = R_DimNamesSymbol;
   r_syms.row_names = R_RowNamesSymbol;

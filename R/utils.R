@@ -287,7 +287,26 @@ split_lines <- function(x) {
 }
 
 stop_internal <- function(fn, msg) {
-  abort(sprintf("Internal error in `%s()`: %s"), fn, msg)
+  abort(sprintf("Internal error in `%s()`: %s", fn, msg))
+}
+
+stop_internal_c_lib <- function(fn, msg) {
+  msg <- c(
+    sprintf("Internal error in `%s()`: %s", fn, msg),
+    "!" = "This error should be reported to the package authors."
+  )
+
+  if (!is_installed("winch")) {
+    msg <- c(
+      msg,
+      "i" = sprintf(
+        "Install the %s package to get additional debugging info the next time you get this error.",
+        style_pkg("winch")
+      )
+    )
+  }
+
+  abort(msg)
 }
 
 with_srcref <- function(src, env = caller_env(), file = NULL) {

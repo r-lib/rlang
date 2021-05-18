@@ -20,6 +20,7 @@ struct r_globals {
 
 struct r_globals_chrs {
   r_obj* empty_string;
+  r_obj* full;
 };
 
 struct r_globals_classes {
@@ -43,6 +44,7 @@ struct r_globals_syms {
   r_obj* function;
   r_obj* missing;
   r_obj* names;
+  r_obj* options;
   r_obj* colon2;
   r_obj* colon3;
   r_obj* srcref;

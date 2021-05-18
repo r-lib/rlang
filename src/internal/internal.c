@@ -4,6 +4,7 @@
 #include "arg.c"
 #include "attr.c"
 #include "call.c"
+#include "cnd.c"
 #include "dots.c"
 #include "dots-ellipsis.c"
 #include "encoding.c"
