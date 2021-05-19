@@ -184,3 +184,11 @@ test_that("str_restore() deals with attributes", {
     list(attr = TRUE)
   )
 })
+
+skip_if_not_installed("cli")
+
+cli::test_that_cli("format_error_bullets() generates bullets", {
+  expect_snapshot({
+    format_error_bullets(c("Header.", i = "Bullet."))
+  })
+})

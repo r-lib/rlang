@@ -154,7 +154,8 @@ format_error_bullets <- function(x) {
     x <- set_names(x, "*")
   }
 
-  format_error(cli_escape(x))
+  # Always use fallback for now
+  .rlang_cli_format_fallback(x)
 }
 
 rlang_format_error <- function(x, env = caller_env()) {

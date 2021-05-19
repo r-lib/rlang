@@ -29,3 +29,31 @@
         Break line
       x Bullet 4
 
+# format_error_bullets() generates bullets [plain]
+
+    Code
+      format_error_bullets(c("Header.", i = "Bullet."))
+    Output
+      [1] "Header.\ni Bullet."
+
+# format_error_bullets() generates bullets [ansi]
+
+    Code
+      format_error_bullets(c("Header.", i = "Bullet."))
+    Output
+      [1] "Header.\n\033[34mi\033[39m Bullet."
+
+# format_error_bullets() generates bullets [unicode]
+
+    Code
+      format_error_bullets(c("Header.", i = "Bullet."))
+    Output
+      [1] "Header.\nℹ Bullet."
+
+# format_error_bullets() generates bullets [fancy]
+
+    Code
+      format_error_bullets(c("Header.", i = "Bullet."))
+    Output
+      [1] "Header.\n\033[34mℹ\033[39m Bullet."
+
