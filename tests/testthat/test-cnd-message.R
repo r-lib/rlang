@@ -185,10 +185,30 @@ test_that("str_restore() deals with attributes", {
   )
 })
 
-skip_if_not_installed("cli")
+skip_if_not_installed("cli", "2.5.0")
+skip_if_not_installed("glue")
 
 cli::test_that_cli("format_error_bullets() generates bullets", {
   expect_snapshot({
     format_error_bullets(c("Header.", i = "Bullet."))
   })
+})
+
+cli::test_that_cli(configs = c("plain", "fancy"), "can use cli syntax in `cnd_message()` methods", {
+  local_methods(
+    cnd_header.rlang_foobar = function(cnd, ...) {
+      cli::format_error("Header: {.emph {cnd$field}}")
+    },
+    cnd_body.rlang_foobar = function(cnd, ...) {
+      cli::format_error(c(
+        "",
+        c("i" = "Bullet: {.emph {cnd$field}}")
+      ))
+    }
+  )
+  cnd <- error_cnd(
+    "rlang_foobar",
+    field = "User { {field}."
+  )
+  expect_snapshot(cnd_message(cnd))
 })
