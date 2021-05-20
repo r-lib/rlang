@@ -937,3 +937,16 @@
           x
        1. \-rlang:::f(3) test-trace.R:488:2
 
+# caught error does not display backtrace in knitted files
+
+    Code
+      local_options(rlang_backtrace_on_error = NULL)
+      cat_line(render_md("test-trace.Rmd"))
+    Output
+          f <- function() g()
+          g <- function() h()
+          h <- function() rlang::abort("foo")
+          f()
+      
+          ## Error: foo
+
