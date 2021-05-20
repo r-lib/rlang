@@ -23,3 +23,43 @@ test_that("can parse versions", {
     "Can only check `>=` requirements"
   )
 })
+
+test_that("can check downstream versions", {
+  local_interactive(FALSE)
+
+  ok_deps <- .rlang_downstream_parse_deps(c(
+    "base (>= 1.0)",
+    "utils (>= 1.1)"
+  ))
+  expect_no_warning(
+    expect_true(
+      .rlang_downstream_check(
+        pkg = "rlang",
+        pkg_ver = "0.5.0",
+        deps = ok_deps,
+        info = "Consequences.",
+        env = env(checked = FALSE)
+      )
+    )
+  )
+
+  bad_deps <- .rlang_downstream_parse_deps(c(
+    "base (>= 1.0)",
+    "utils (>= 100.10)"
+  ))
+
+  expect_snapshot({
+    (expect_warning({
+      expect_false(
+        .rlang_downstream_check(
+          pkg = "rlang",
+          pkg_ver = "0.5.0",
+          deps = bad_deps,
+          info = "Consequences.",
+          env = env(checked = FALSE)
+        )
+      )
+      NULL
+    }))
+  })
+})

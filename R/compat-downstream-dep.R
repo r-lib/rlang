@@ -114,14 +114,14 @@ check_downstream <- function(ver,
                                     pkg_ver,
                                     deps,
                                     info,
-                                    with_rlang,
+                                    with_rlang = requireNamespace("rlang"),
                                     env = parent.frame()) {
   if (isFALSE(getOption("rlib_downstream_check"))) {
     return()
   }
 
   if (isTRUE(env$checked)) {
-    return()
+    return(TRUE)
   }
 
   # Don't ask again
@@ -134,7 +134,7 @@ check_downstream <- function(ver,
   ok <- as.logical(Map(`>=`, vers, mins))
 
   if (all(ok)) {
-    return()
+    return(TRUE)
   }
 
   pkgs <- pkgs[!ok]
@@ -167,7 +167,7 @@ check_downstream <- function(ver,
 
   if (!is_interactive()) {
     warn(header)
-    return()
+    return(FALSE)
   }
 
   if (n == 1) {
@@ -190,7 +190,7 @@ check_downstream <- function(ver,
 
   if (utils::menu(c("Yes", "No")) != 1) {
     inform("Set `options(rlib_downstream_check = FALSE)` to disable this prompt.")
-    return()
+    return(FALSE)
   }
 
   if (is_installed("pak")) {
@@ -199,7 +199,7 @@ check_downstream <- function(ver,
     utils::install.packages(pkgs)
   }
 
-  NULL
+  TRUE
 }
 
 # Keep in sync with compat-linked-version.R
