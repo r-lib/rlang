@@ -215,6 +215,22 @@ test_that("`inform()` and `warn()` with recurrent footer handle newlines correct
   })
 })
 
+test_that("`warning.length` is increased (#1211)", {
+  code <- 'rlang::with_interactive(rlang::abort(paste0(strrep("_", 1000), "foo")))'
+  out <- Rscript(shQuote(c("--vanilla", "-e", code)))
+  expect_true(any(grepl("foo", out$out)))
+
+  code <- 'rlang::with_interactive(rlang::warn(paste0(strrep("_", 1000), "foo")))'
+  out <- Rscript(shQuote(c("--vanilla", "-e", code)))
+  expect_true(any(grepl("foo", out$out)))
+
+  # Messages are not controlled by `warning.length`
+  code <- 'rlang::inform(paste0(strrep("_", 1000), "foo"))'
+  out <- Rscript(shQuote(c("--vanilla", "-e", code)))
+  expect_true(any(grepl("foo", out$out)))
+})
+
+
 # Lifecycle ----------------------------------------------------------
 
 test_that("deprecated arguments of cnd_signal() still work", {

@@ -118,6 +118,8 @@ warn <- function(message = NULL,
   }
 
   cnd <- warning_cnd(class, ..., message = message)
+
+  local_long_messages()
   warning(cnd)
 }
 #' @rdname abort
@@ -171,6 +173,15 @@ signal <- function(message,
   message <- cli_format_message(message, caller_env())
   cnd <- cnd(class, ..., message = message)
   cnd_signal(cnd)
+}
+
+# Increase message length temporarily if it set to the default
+# value. The limit can quickly be hit if the message includes a lot of
+# ANSI escapes.
+local_long_messages <- function(..., frame = caller_env()) {
+  if (peek_option("warning.length") == 1000) {
+    local_options(warning.length = 8170, .frame = frame)
+  }
 }
 
 default_message_file <- function() {

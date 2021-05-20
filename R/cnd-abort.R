@@ -77,6 +77,12 @@
 #'     )
 #'     ```
 #'
+#' - `abort()` and `warn()` temporarily set the `warning.length`
+#'   global option to the maximum value (8170), unless that option has
+#'   been changed from the default value. The default limit (1000
+#'   characters) is especially easy to hit when the message contains a
+#'   lot of ANSI escapes, as created by the crayon or cli packages
+#'
 #' @inheritParams cnd
 #' @param message The message to display. Character vectors are
 #'   formatted with [format_error_bullets()]. The first element
@@ -234,6 +240,7 @@ signal_abort <- function(cnd) {
     local_options(show.error.messages = FALSE)
   }
 
+  local_long_messages()
   stop(fallback)
 }
 cnd_unhandled_message <- function(cnd) {
