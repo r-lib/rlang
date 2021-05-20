@@ -1,6 +1,11 @@
-```{r, error = TRUE}
+```{r}
+options(rlang_trace_top_env = environment())
+
 f <- function() g()
 g <- function() h()
 h <- function() rlang::abort("foo")
+```
+
+```{r, error = TRUE}
 f()
 ```

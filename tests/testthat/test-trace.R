@@ -596,11 +596,17 @@ test_that("caught error does not display backtrace in knitted files", {
   skip_if_not_installed("rmarkdown")
   skip_if(!rmarkdown::pandoc_available())
 
-  local_options(rlang_interactive = FALSE)
+  local_options(
+    rlang_backtrace_on_error = NULL,
+    rlang_interactive = FALSE
+  )
+
+  lines <- render_md("test-trace.Rmd")
+  error_line <- lines[[length(lines)]]
+  expect_match(error_line, "foo$")
   
   expect_snapshot({
-    local_options(rlang_backtrace_on_error = NULL)
-    cat_line(render_md("test-trace.Rmd"))
+    cat_line(render_md("test-trace-full.Rmd"))
   })
 })
 

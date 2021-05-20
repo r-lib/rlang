@@ -1,5 +1,23 @@
 # rlang (development version)
 
+* A `knitr::sew()` method is registered for `rlang_error`. This makes
+  it possible to consult `last_error()` (the call must occur in a
+  different chunk than the error) and to set
+  `rlang_backtrace_on_error` global options in knitr to display a
+  backtrace on error.
+  
+  If you show rlang backtraces in a knitted document, also set this in
+  a hidden chunk to trim the knitr context from the backtraces:
+  
+  ```
+  options(
+    rlang_trace_top_env = environment()
+  )
+  ```
+  
+  This change replaces an ad hoc mechanism that caused bugs in corner
+  cases (#1205).
+
 * Internal errors now include a winch backtrace if installed. The user
   is invited to install it if not installed.
 
