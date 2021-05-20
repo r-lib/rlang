@@ -95,6 +95,9 @@ check_downstream <- function(ver,
   }
 
   parts <- strsplit(dep[[2]], " +")[[1]]
+  if (length(parts) != 2) {
+    stop("Parsing error during downstream check.", call. = FALSE)
+  }
 
   op <- parts[[1]]
   ver <- parts[[2]]
