@@ -72,7 +72,7 @@ test_that("error is printed with parent backtrace", {
 
   err_force <- with_options(
     catch_error(a()),
-    `rlang:::force_unhandled_error` = TRUE,
+    `rlang::::force_unhandled_error` = TRUE,
     `rlang:::error_pipe` = tempfile()
   )
 

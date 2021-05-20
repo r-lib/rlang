@@ -177,7 +177,7 @@ abort <- function(message = NULL,
 }
 
 signal_abort <- function(cnd) {
-  if (is_true(peek_option("rlang:::force_unhandled_error"))) {
+  if (is_true(peek_option("rlang::::force_unhandled_error"))) {
     # Fall back with the full rlang error
     fallback <- cnd
   } else {
