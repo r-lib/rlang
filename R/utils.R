@@ -287,9 +287,11 @@ split_lines <- function(x) {
 }
 
 stop_internal <- function(fn, msg) {
-  abort(sprintf("Internal error in `%s()`: %s", fn, msg))
+  abort(c(
+    sprintf("Internal error in `%s()`: %s", fn, msg),
+    "!" = "This error should be reported to the package authors."
+  ))
 }
-
 stop_internal_c_lib <- function(fn, msg) {
   msg <- c(
     sprintf("Internal error in `%s()`: %s", fn, msg),
