@@ -47,7 +47,6 @@ test_that("can check downstream versions", {
     "base (>= 1.0)",
     "utils (>= 100.10)"
   ))
-
   expect_snapshot({
     (expect_warning({
       expect_false(
@@ -61,6 +60,23 @@ test_that("can check downstream versions", {
       )
       NULL
     }))
+  })
+
+  missing_deps <- .rlang_downstream_parse_deps(c(
+    "base (>= 1.0)",
+    "foobar (>= 100.10)"
+  ))
+  expect_no_warning({
+    expect_true(
+      .rlang_downstream_check(
+        pkg = "rlang",
+        pkg_ver = "0.5.0",
+        deps = missing_deps,
+        info = "Consequences.",
+        env = env(checked = FALSE)
+      )
+    )
+    NULL
   })
 })
 

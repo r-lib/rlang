@@ -10,6 +10,11 @@
 
 # Changelog:
 #
+# 2020-05-20:
+#
+# * Fixed issue when downstream package is not installed.
+#
+#
 # 2020-05-17:
 #
 # * Added an `info` argument intended to inform users about the
@@ -128,13 +133,21 @@ check_downstream <- function(ver,
     return(NULL)
   }
 
-  # Don't ask again
-  on.exit(env$checked <- TRUE)
+  # Don't ask again. Flip now instead of on exit to defensively
+  # prevent recursion.
+  env$checked <- TRUE
 
   pkgs <- vapply(deps, `[[`, "", "pkg")
   mins <- vapply(deps, `[[`, "", "min")
-  vers <- lapply(pkgs, utils::packageVersion)
 
+  # Don't use `requireNamespace()` to avoid loading packages
+  is_on_disk <- function(pkg) nzchar(system.file(package = pkg))
+  on_disk <- vapply(pkgs, is_on_disk, NA)
+
+  pkgs <- pkgs[on_disk]
+  mins <- mins[on_disk]
+
+  vers <- lapply(pkgs, utils::packageVersion)
   ok <- as.logical(Map(`>=`, vers, mins))
 
   if (all(ok)) {
