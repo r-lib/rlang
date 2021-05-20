@@ -63,3 +63,23 @@ test_that("can check downstream versions", {
     }))
   })
 })
+
+test_that("setting `rlib_downstream_check` disables the check", {
+  local_options(rlib_downstream_check = FALSE)
+
+  bad_deps <- .rlang_downstream_parse_deps(c(
+    "base (>= 1.0)",
+    "utils (>= 100.10)"
+  ))
+  expect_no_warning(
+    expect_null(
+      .rlang_downstream_check(
+        pkg = "rlang",
+        pkg_ver = "0.5.0",
+        deps = bad_deps,
+        info = "Consequences.",
+        env = env(checked = FALSE)
+      )
+    )
+  )
+})

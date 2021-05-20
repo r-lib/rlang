@@ -116,12 +116,16 @@ check_downstream <- function(ver,
                                     info,
                                     with_rlang = requireNamespace("rlang"),
                                     env = parent.frame()) {
+  isFALSE <- function(x) {
+    is.logical(x) && length(x) == 1L && !is.na(x) && !x
+  }
+
   if (isFALSE(getOption("rlib_downstream_check"))) {
-    return()
+    return(NULL)
   }
 
   if (isTRUE(env$checked)) {
-    return(TRUE)
+    return(NULL)
   }
 
   # Don't ask again
