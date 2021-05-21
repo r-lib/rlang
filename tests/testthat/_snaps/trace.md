@@ -942,7 +942,7 @@
     Code
       cat_line(render_md("test-trace-full.Rmd"))
     Output
-          options(rlang_trace_top_env = environment())
+          library(rlang)
       
           f <- function() g()
           g <- function() h()

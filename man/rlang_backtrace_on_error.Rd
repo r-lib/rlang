@@ -31,6 +31,27 @@ call \code{\link[=last_error]{last_error()}} to print the backtrace or inspect i
 }
 }
 
+\section{Backtraces in knitr}{
+
+
+An \code{rlang_error} method for the \code{knitr::sew()} generic is
+registered to make it possible to display backtraces with captured
+errors (\code{error = TRUE} chunks).
+
+In \code{error = TRUE} chunks, the default value for
+\code{rlang_backtrace_on_error} is \code{"none"}. You can override it by
+setting this option in your document, e.g. to \code{"reminder"} or
+\code{"full"}.
+
+When knitr is running (as determined by the \code{knitr.in.progress}
+global option), the default top environment for backtraces is set
+to the chunk environment \code{knitr::knit_global()}. This ensures that
+the part of the call stack belonging to knitr does not end up in
+backtraces. You can override this by setting the
+\code{rlang_trace_top_env} global option or by supplying the \code{top}
+argument to \code{\link[=trace_back]{trace_back()}}.
+}
+
 \examples{
 # Display a simplified backtrace on error for both base and rlang
 # errors:

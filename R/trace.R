@@ -15,6 +15,13 @@
 #'   indirectly or from a larger context, for example in tests or
 #'   inside an RMarkdown document where you don't want all of the
 #'   knitr evaluation mechanisms to appear in the backtrace.
+#'
+#'   If not supplied, the `rlang_trace_top_env` global option is
+#'   consulted. This makes it possible to trim the embedding context
+#'   for all backtraces created while the option is set. If knitr is
+#'   in progress, the default value for this option is
+#'   `knitr::knit_global()` so that the knitr context is trimmed out
+#'   of backtraces.
 #' @param bottom The last frame environment to be included in the
 #'   backtrace. This becomes the rightmost leaf of the backtrace tree
 #'   and represents the youngest call in the backtrace.
@@ -531,6 +538,11 @@ parents_indices <- function(i, parents) {
 
 trace_trim_env <- function(x, frames, to) {
   to <- to %||% peek_option("rlang_trace_top_env")
+
+  # Trim knitr context if available
+  if (is_null(to) && is_true(peek_option('knitr.in.progress'))) {
+    to <- knitr::knit_global()
+  }
 
   if (is.null(to)) {
     return(x)

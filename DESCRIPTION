@@ -30,6 +30,7 @@ Suggests:
     crayon,
     fs,
     glue,
+    knitr,
     magrittr,
     methods,
     pak,

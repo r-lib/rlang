@@ -107,21 +107,6 @@ to create custom interrupt condition objects.
 }
 \details{
 \itemize{
-\item An \code{rlang_error} method for the \code{knitr::sew()} generic is
-registered to make it possible to display backtraces with
-captured errors (\code{error = TRUE} chunks).
-
-In \code{error = TRUE} chunks, the default value for
-\code{rlang_backtrace_on_error} is \code{"none"}. You can override it by
-setting this option in your document, e.g. to \code{"reminder"} or
-\code{"full"}.
-
-If you display rlang backtraces in a knitted document, you will
-probably want to trim the knitr context from the backtrace by
-setting this option in a hidden chunk:\preformatted{options(
-  rlang_trace_top_env = environment()
-)
-}
 \item \code{abort()} and \code{warn()} temporarily set the \code{warning.length}
 global option to the maximum value (8170), unless that option has
 been changed from the default value. The default limit (1000

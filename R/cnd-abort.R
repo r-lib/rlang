@@ -58,25 +58,6 @@
 #'
 #' @details
 #'
-#' - An `rlang_error` method for the `knitr::sew()` generic is
-#'   registered to make it possible to display backtraces with
-#'   captured errors (`error = TRUE` chunks).
-#'
-#'   In `error = TRUE` chunks, the default value for
-#'   `rlang_backtrace_on_error` is `"none"`. You can override it by
-#'   setting this option in your document, e.g. to `"reminder"` or
-#'   `"full"`.
-#'
-#'   If you display rlang backtraces in a knitted document, you will
-#'   probably want to trim the knitr context from the backtrace by
-#'   setting this option in a hidden chunk:
-#'
-#'     ```
-#'     options(
-#'       rlang_trace_top_env = environment()
-#'     )
-#'     ```
-#'
 #' - `abort()` and `warn()` temporarily set the `warning.length`
 #'   global option to the maximum value (8170), unless that option has
 #'   been changed from the default value. The default limit (1000
@@ -348,6 +329,26 @@ trace_capture_depth <- function(trace) {
 #'
 #' * It prints the backtrace for the current error according to the
 #'   `rlang_backtrace_on_error` option.
+#'
+#'
+#' @section Backtraces in knitr:
+#'
+#' An `rlang_error` method for the `knitr::sew()` generic is
+#' registered to make it possible to display backtraces with captured
+#' errors (`error = TRUE` chunks).
+#'
+#' In `error = TRUE` chunks, the default value for
+#' `rlang_backtrace_on_error` is `"none"`. You can override it by
+#' setting this option in your document, e.g. to `"reminder"` or
+#' `"full"`.
+#'
+#' When knitr is running (as determined by the `knitr.in.progress`
+#' global option), the default top environment for backtraces is set
+#' to the chunk environment `knitr::knit_global()`. This ensures that
+#' the part of the call stack belonging to knitr does not end up in
+#' backtraces. You can override this by setting the
+#' `rlang_trace_top_env` global option or by supplying the `top`
+#' argument to [trace_back()].
 #'
 #' @name rlang_backtrace_on_error
 #' @aliases add_backtrace

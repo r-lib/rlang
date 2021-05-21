@@ -1,5 +1,5 @@
 ```{r}
-options(rlang_trace_top_env = environment())
+library(rlang)
 
 f <- function() g()
 g <- function() h()

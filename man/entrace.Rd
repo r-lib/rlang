@@ -22,7 +22,14 @@ represents the oldest call in the backtrace.
 This is needed in particular when you call \code{trace_back()}
 indirectly or from a larger context, for example in tests or
 inside an RMarkdown document where you don't want all of the
-knitr evaluation mechanisms to appear in the backtrace.}
+knitr evaluation mechanisms to appear in the backtrace.
+
+If not supplied, the \code{rlang_trace_top_env} global option is
+consulted. This makes it possible to trim the embedding context
+for all backtraces created while the option is set. If knitr is
+in progress, the default value for this option is
+\code{knitr::knit_global()} so that the knitr context is trimmed out
+of backtraces.}
 
 \item{bottom}{The last frame environment to be included in the
 backtrace. This becomes the rightmost leaf of the backtrace tree

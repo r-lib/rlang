@@ -5,6 +5,13 @@
   characters) is especially easy to hit when the message contains a
   lot of ANSI escapes, as created by the crayon or cli packages (#1211).
 
+* The `rlang_trace_top_env` global option for `trace_back()` now
+  detects when backtraces are created within knitr. If the option is
+  not set, its default value becomes `knitr::knit_global()` when knitr
+  is in progress (as determined from `knitr.in.progress` global
+  option). This prevents the knitr evaluation context from appearing
+  in the backtraces (#932).
+
 * A `knitr::sew()` method is registered for `rlang_error`. This makes
   it possible to consult `last_error()` (the call must occur in a
   different chunk than the error) and to set
