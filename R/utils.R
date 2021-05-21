@@ -27,16 +27,6 @@ set_names2 <- function(x, nms = names2(x)) {
   x
 }
 
-imap <- function(.x, .f, ...) {
-  idx <- names(.x) %||% seq_along(.x)
-  out <- Map(.f, idx, .x, ...)
-  names(out) <- names(.x)
-  out
-}
-imap_chr <- function(.x, .f, ...) {
-  as.vector(imap(.x, .f, ...), "character")
-}
-
 map_around <- function(.x, .neighbour = c("right", "left"), .f, ...) {
   where <- arg_match(.neighbour)
   n <- length(.x)

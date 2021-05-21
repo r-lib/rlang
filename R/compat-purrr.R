@@ -11,6 +11,9 @@
 # * Removed `*_cpl()` functions
 # * Used `as_function()` to allow use of `~`
 # * Used `.` prefix for helpers
+#
+# 2021-05-21:
+# * Fixed "object `x` not found" error in `imap()` (@mgirlich)
 
 map <- function(.x, .f, ...) {
   .f <- as_function(.f, env = global_env())
@@ -62,7 +65,7 @@ map2_chr <- function(.x, .y, .f, ...) {
   as.vector(map2(.x, .y, .f, ...), "character")
 }
 imap <- function(.x, .f, ...) {
-  map2(.x, names(x) %||% seq_along(x), .f, ...)
+  map2(.x, names(.x) %||% seq_along(.x), .f, ...)
 }
 
 pmap <- function(.l, .f, ...) {

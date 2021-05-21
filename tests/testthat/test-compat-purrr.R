@@ -17,6 +17,12 @@ test_that("map2 functions work", {
   expect_equal(map2_chr(1, 1:2, paste0), c("11", "12"))
 })
 
+test_that("imap works", {
+  expect_equal(imap(c("a", "b"), list), list(list("a", 1L), list("b", 2L)))
+  expect_equal(imap(c(x = "a", y = "b"), list), list(x = list("a", "x"), y = list("b", "y")))
+  expect_equal(imap(c(x = "a", "b"), list), list(x = list("a", "x"), list("b", "")))
+})
+
 test_that("pmap works", {
   expect_equal(pmap(list(1, 1:2), paste0), list("11", "12"))
 })
