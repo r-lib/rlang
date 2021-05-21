@@ -62,7 +62,7 @@ map2_chr <- function(.x, .y, .f, ...) {
   as.vector(map2(.x, .y, .f, ...), "character")
 }
 imap <- function(.x, .f, ...) {
-  map2(.x, names(x) %||% seq_along(x), .f, ...)
+  map2(.x, names(.x) %||% seq_along(.x), .f, ...)
 }
 
 pmap <- function(.l, .f, ...) {
