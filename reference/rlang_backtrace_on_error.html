@@ -196,6 +196,25 @@ call <code><a href='last_error.html'>last_error()</a></code> to print the backtr
 <code>rlang_backtrace_on_error</code> option.</p></li>
 </ul>
 
+    <h2 class="hasAnchor" id="backtraces-in-knitr"><a class="anchor" href="#backtraces-in-knitr"></a>Backtraces in knitr</h2>
+
+    
+
+
+<p>An <code>rlang_error</code> method for the <code><a href='https://rdrr.io/pkg/knitr/man/sew.html'>knitr::sew()</a></code> generic is
+registered to make it possible to display backtraces with captured
+errors (<code>error = TRUE</code> chunks).</p>
+<p>In <code>error = TRUE</code> chunks, the default value for
+<code>rlang_backtrace_on_error</code> is <code>"none"</code>. You can override it by
+setting this option in your document, e.g. to <code>"reminder"</code> or
+<code>"full"</code>.</p>
+<p>When knitr is running (as determined by the <code>knitr.in.progress</code>
+global option), the default top environment for backtraces is set
+to the chunk environment <code><a href='https://rdrr.io/pkg/knitr/man/knit_global.html'>knitr::knit_global()</a></code>. This ensures that
+the part of the call stack belonging to knitr does not end up in
+backtraces. You can override this by setting the
+<code>rlang_trace_top_env</code> global option or by supplying the <code>top</code>
+argument to <code><a href='trace_back.html'>trace_back()</a></code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Display a simplified backtrace on error for both base and rlang</span>

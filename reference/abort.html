@@ -288,19 +288,6 @@ interactive and non-interactive sessions.</p></td>
 
     
 <ul>
-<li><p>An <code>rlang_error</code> method for the <code><a href='https://rdrr.io/pkg/knitr/man/sew.html'>knitr::sew()</a></code> generic is
-registered to make it possible to display backtraces with
-captured errors (<code>error = TRUE</code> chunks).</p>
-<p>In <code>error = TRUE</code> chunks, the default value for
-<code>rlang_backtrace_on_error</code> is <code>"none"</code>. You can override it by
-setting this option in your document, e.g. to <code>"reminder"</code> or
-<code>"full"</code>.</p>
-<p>If you display rlang backtraces in a knitted document, you will
-probably want to trim the knitr context from the backtrace by
-setting this option in a hidden chunk:</p><pre><span class='fu'><a href='https://rdrr.io/r/base/options.html'>options</a></span><span class='op'>(</span>
-  rlang_trace_top_env <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/environment.html'>environment</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='op'>)</span>
-</pre></li>
 <li><p><code>abort()</code> and <code>warn()</code> temporarily set the <code>warning.length</code>
 global option to the maximum value (8170), unless that option has
 been changed from the default value. The default limit (1000
