@@ -196,20 +196,17 @@ signal_abort <- function(cnd) {
     # If we're still here, the error is unhandled. Fall back with a
     # bare condition to avoid calling handlers logging the same error
     # twice
-    fallback <- cnd("rlang_error")
+    fallback <- cnd_as_unhandled_error(cnd)
+    fallback$rlang_entraced <- TRUE
   }
 
   # Save the unhandled error for `rlang::last_error()`.
   last_error_env$cnd <- cnd
 
-  if (is_interactive()) {
-    # Generate the error message, possibly with a backtrace or reminder
-    fallback$message <- cnd_unhandled_message(cnd)
-    fallback$rlang_entraced <- TRUE
-  } else {
+  if (!is_interactive()) {
     file <- peek_option("rlang:::error_pipe") %||% stderr()
-    fallback$message <- conditionMessage(cnd)
 
+    fallback$message <- conditionMessage(cnd)
     msg <- cnd_unhandled_message(cnd)
 
     # Print the backtrace eagerly in non-interactive sessions because
@@ -223,6 +220,35 @@ signal_abort <- function(cnd) {
 
   local_long_messages()
   stop(fallback)
+}
+
+#' Create unhandled condition
+#'
+#' @description
+#' Transform a classed condition into a simple condition inheriting
+#' from `"error"`.
+#'
+#' - The `conditionMessage()` method is run and the result is stored
+#'   in the `message` field so that it becomes a constant.
+#'
+#' - The `backtrace_on_error` global option is consulted to include a
+#'   backtrace or a `last_error()` reminder along with the message.
+#'
+#' The resulting condition can be rethrown with [stop()] or
+#' [cnd_signal()].
+#'
+#' Note that this function is for internal purposes. The caller is
+#' responsible for making sure that there is no error catching
+#' handlers on the stack.
+#'
+#' @param cnd A condition object.
+#' @return A condition of class `"error"` with an embedded message.
+#'
+#' @keywords internal
+#' @export
+cnd_as_unhandled_error <- function(cnd) {
+  # Generate the error message, possibly with a backtrace or reminder
+  cnd("error", message = cnd_unhandled_message(cnd))
 }
 cnd_unhandled_message <- function(cnd) {
   paste_line(
