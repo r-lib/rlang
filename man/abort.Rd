@@ -122,6 +122,11 @@ setting this option in a hidden chunk:\preformatted{options(
   rlang_trace_top_env = environment()
 )
 }
+\item \code{abort()} and \code{warn()} temporarily set the \code{warning.length}
+global option to the maximum value (8170), unless that option has
+been changed from the default value. The default limit (1000
+characters) is especially easy to hit when the message contains a
+lot of ANSI escapes, as created by the crayon or cli packages
 }
 }
 \section{Backtrace}{

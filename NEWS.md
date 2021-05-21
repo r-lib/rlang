@@ -1,5 +1,10 @@
 # rlang (development version)
 
+* `abort()` and `warn()` now temporarily set the `warning.length`
+  global option to the maximum value (8170). The default limit (1000
+  characters) is especially easy to hit when the message contains a
+  lot of ANSI escapes, as created by the crayon or cli packages (#1211).
+
 * A `knitr::sew()` method is registered for `rlang_error`. This makes
   it possible to consult `last_error()` (the call must occur in a
   different chunk than the error) and to set
