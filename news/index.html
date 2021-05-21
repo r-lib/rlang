@@ -158,6 +158,14 @@
 <a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li>
+<p>A <code><a href="https://rdrr.io/pkg/knitr/man/sew.html">knitr::sew()</a></code> method is registered for <code>rlang_error</code>. This makes it possible to consult <code><a href="../reference/last_error.html">last_error()</a></code> (the call must occur in a different chunk than the error) and to set <code>rlang_backtrace_on_error</code> global options in knitr to display a backtrace on error.</p>
+<p>If you show rlang backtraces in a knitted document, also set this in a hidden chunk to trim the knitr context from the backtraces:</p>
+<pre><code><a href="https://rdrr.io/r/base/options.html">options(
+  rlang_trace_top_env = environment()
+)</a></code></pre>
+<p>This change replaces an ad hoc mechanism that caused bugs in corner cases (<a href='https://github.com/r-lib/rlang/issues/1205'>#1205</a>).</p>
+</li>
 <li><p>Internal errors now include a winch backtrace if installed. The user is invited to install it if not installed.</p></li>
 <li><p>The root symbol in backtraces is now slightly different so that it can’t be confused with a prompt character (<a href='https://github.com/r-lib/rlang/issues/1207'>#1207</a>).</p></li>
 <li><p>Errors, warnings, and messages generated from rlang are now formatted with cli. This means in practice that long lines are width-wrapped to the terminal size and user themes are applied. This is currently only the case for rlang messages. No formatting is applied when <code><a href="../reference/abort.html">abort()</a></code>, <code><a href="../reference/abort.html">warn()</a></code>, and <code><a href="../reference/abort.html">inform()</a></code> are called from another namespace.</p></li>
@@ -361,7 +369,7 @@
 <li>
 <p>You can now use glue syntax to unquote on the LHS of <code>:=</code>. This syntax is automatically available in all functions taking dots with <code><a href="../reference/list2.html">list2()</a></code> and <code><a href="../reference/nse-defuse.html">enquos()</a></code>, and thus most of the tidyverse. Note that if you use the glue syntax in an R package, you need to import glue.</p>
 <p>A single pair of braces triggers normal glue interpolation:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>
 
@@ -372,7 +380,7 @@
 <span class="co">#&gt; 2 2       4</span>
 <span class="co">#&gt; 3 3       6</span></code></pre></div>
 <p>Using a pair of double braces is for labelling a function argument. Technically, this is shortcut for <code>"{as_label(enquo(arg))}"</code>. The syntax is similar to the curly-curly syntax for interpolating function arguments:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">my_wrapper</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span>, <span class="va">suffix</span> <span class="op">=</span> <span class="st">"foo"</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">mutate</span><span class="op">(</span><span class="st">"{{ var }}_{suffix}"</span> <span class="op">:=</span> <span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span> <span class="op">*</span> <span class="fl">2</span><span class="op">)</span>
@@ -563,20 +571,20 @@ letters %&gt;% set_names(toupper)</code></pre>
 <ul>
 <li>
 <p>New <code><a href="../reference/entrace.html">entrace()</a></code> condition handler. Add this to your RProfile to enable rlang backtraces for all errors, including warnings promoted to errors:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"rlang"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>error <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="va"><a href="../reference/entrace.html">entrace</a></span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
 <p>This handler also works as a calling handler:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="fu"><a href="../reference/with_handlers.html">with_handlers</a></span><span class="op">(</span>
   error <span class="op">=</span> <span class="fu"><a href="../reference/with_handlers.html">calling</a></span><span class="op">(</span><span class="va">entrace</span><span class="op">)</span>,
   <span class="fu">foo</span><span class="op">(</span><span class="va">bar</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
 <p>However it’s often more practical to use <code><a href="../reference/with_abort.html">with_abort()</a></code> in that case:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="fu"><a href="../reference/with_abort.html">with_abort</a></span><span class="op">(</span><span class="fu">foo</span><span class="op">(</span><span class="va">bar</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </li>
@@ -646,7 +654,7 @@ letters %&gt;% set_names(toupper)</code></pre>
 <li><p><code><a href="../reference/nse-defuse.html">exprs()</a></code> no longer flattens quosures. <code><a href="../reference/nse-defuse.html">exprs(!!!quos(x, y))</a></code> is now equivalent to <code><a href="../reference/nse-defuse.html">quos(x, y)</a></code>.</p></li>
 <li>
 <p>The sentinel for removing arguments in <code><a href="../reference/call_modify.html">call_modify()</a></code> has been changed from <code>NULL</code> to <code><a href="../reference/zap.html">zap()</a></code>. This breaking change is motivated by the ambiguity of <code>NULL</code> with valid argument values.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="fu"><a href="../reference/call_modify.html">call_modify</a></span><span class="op">(</span><span class="va">call</span>, arg <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>  <span class="co"># Add `arg = NULL` to the call</span>
 <span class="fu"><a href="../reference/call_modify.html">call_modify</a></span><span class="op">(</span><span class="va">call</span>, arg <span class="op">=</span> <span class="fu"><a href="../reference/zap.html">zap</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="co"># Remove the `arg` argument from the call</span></code></pre></div>
