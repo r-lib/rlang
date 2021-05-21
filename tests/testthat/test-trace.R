@@ -600,9 +600,14 @@ test_that("caught error does not display backtrace in knitted files", {
     rlang_backtrace_on_error = NULL,
     rlang_interactive = FALSE
   )
+
   lines <- render_md("test-trace.Rmd")
   error_line <- lines[[length(lines)]]
   expect_match(error_line, "foo$")
+  
+  expect_snapshot({
+    cat_line(render_md("test-trace-full.Rmd"))
+  })
 })
 
 test_that("empty backtraces are dealt with", {

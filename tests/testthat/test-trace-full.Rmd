@@ -1,0 +1,28 @@
+```{r}
+options(rlang_trace_top_env = environment())
+
+f <- function() g()
+g <- function() h()
+h <- function() rlang::abort("foo")
+```
+
+```{r, error = TRUE}
+f()
+```
+
+Currently needs to be in a different chunk:
+
+```{r}
+last_error()
+last_trace()
+```
+
+```{r, error = TRUE}
+options(rlang_backtrace_on_error = "reminder")
+f()
+```
+
+```{r, error = TRUE}
+options(rlang_backtrace_on_error = "full")
+f()
+```

@@ -20,7 +20,7 @@ test_that("errors are saved", {
   # Verbose try() triggers conditionMessage() and thus saves the error.
   # This simulates an unhandled error.
   local_options(
-    `rlang:::force_unhandled_error` = TRUE,
+    `rlang::::force_unhandled_error` = TRUE,
     `rlang:::error_pipe` = tempfile()
   )
 
@@ -42,7 +42,7 @@ test_that("No backtrace is displayed with top-level active bindings", {
 
 test_that("Invalid on_error option resets itself", {
   with_options(
-    `rlang:::force_unhandled_error` = TRUE,
+    `rlang::::force_unhandled_error` = TRUE,
     `rlang:::error_pipe` = tempfile(),
     rlang_backtrace_on_error = NA,
     {

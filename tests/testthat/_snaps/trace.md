@@ -937,3 +937,56 @@
           x
        1. \-rlang:::f(3) test-trace.R:488:2
 
+# caught error does not display backtrace in knitted files
+
+    Code
+      cat_line(render_md("test-trace-full.Rmd"))
+    Output
+          options(rlang_trace_top_env = environment())
+      
+          f <- function() g()
+          g <- function() h()
+          h <- function() rlang::abort("foo")
+      
+          f()
+      
+          ## Error: foo
+      
+      Currently needs to be in a different chunk:
+      
+          last_error()
+      
+          ## <error/rlang_error>
+          ## foo
+          ## Backtrace:
+          ##  1. global::f()
+          ##  2. global::g()
+          ##  3. global::h()
+          ## Run `rlang::last_trace()` to see the full context.
+      
+          last_trace()
+      
+          ## <error/rlang_error>
+          ## foo
+          ## Backtrace:
+          ##     x
+          ##  1. \-global::f()
+          ##  2.   \-global::g()
+          ##  3.     \-global::h()
+      
+          options(rlang_backtrace_on_error = "reminder")
+          f()
+      
+          ## Error: foo
+          ## Run `rlang::last_error()` to see where the error occurred.
+      
+          options(rlang_backtrace_on_error = "full")
+          f()
+      
+          ## Error: foo
+          ## Backtrace:
+          ##     x
+          ##  1. \-global::f()
+          ##  2.   \-global::g()
+          ##  3.     \-global::h()
+

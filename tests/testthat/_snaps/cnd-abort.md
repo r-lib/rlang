@@ -22,7 +22,6 @@
       cat_line(reminder)
     Output
       Error: Error message
-      
       Execution halted
     Code
       cat_line(branch)
@@ -85,13 +84,11 @@
       cat_line(branch_depth_0)
     Output
       Error: foo
-      
       Execution halted
     Code
       cat_line(full_depth_0)
     Output
       Error: foo
-      
       Execution halted
     Code
       cat_line(branch_depth_1)

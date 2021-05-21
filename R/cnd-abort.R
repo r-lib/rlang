@@ -56,6 +56,26 @@
 #' When set to quiet, the message is not displayed and the condition
 #' is not signalled.
 #'
+#' @details
+#'
+#' - An `rlang_error` method for the `knitr::sew()` generic is
+#'   registered to make it possible to display backtraces with
+#'   captured errors (`error = TRUE` chunks).
+#'
+#'   In `error = TRUE` chunks, the default value for
+#'   `rlang_backtrace_on_error` is `"none"`. You can override it by
+#'   setting this option in your document, e.g. to `"reminder"` or
+#'   `"full"`.
+#'
+#'   If you display rlang backtraces in a knitted document, you will
+#'   probably want to trim the knitr context from the backtrace by
+#'   setting this option in a hidden chunk:
+#'
+#'     ```
+#'     options(
+#'       rlang_trace_top_env = environment()
+#'     )
+#'     ```
 #'
 #' @inheritParams cnd
 #' @param message The message to display. Character vectors are
@@ -177,7 +197,7 @@ abort <- function(message = NULL,
 }
 
 signal_abort <- function(cnd) {
-  if (is_true(peek_option("rlang:::force_unhandled_error"))) {
+  if (is_true(peek_option("rlang::::force_unhandled_error"))) {
     # Fall back with the full rlang error
     fallback <- cnd
   } else {
@@ -197,21 +217,17 @@ signal_abort <- function(cnd) {
 
   if (is_interactive()) {
     # Generate the error message, possibly with a backtrace or reminder
-    fallback$message <- paste_line(
-      conditionMessage(cnd),
-      format_onerror_backtrace(cnd)
-    )
+    fallback$message <- cnd_unhandled_message(cnd)
     fallback$rlang_entraced <- TRUE
   } else {
     file <- peek_option("rlang:::error_pipe") %||% stderr()
-    msg <- conditionMessage(cnd)
-    fallback$message <- msg
+    fallback$message <- conditionMessage(cnd)
 
-    cat("Error: ", msg, "\n", sep = "", file = file)
+    msg <- cnd_unhandled_message(cnd)
 
     # Print the backtrace eagerly in non-interactive sessions because
     # the length of error messages is limited (#856)
-    cat(format_onerror_backtrace(cnd), "\n", sep = "", file = file)
+    cat("Error: ", msg, "\n", sep = "", file = file)
 
     # Turn off the regular error printing to avoid printing the error
     # twice
@@ -220,6 +236,36 @@ signal_abort <- function(cnd) {
 
   stop(fallback)
 }
+cnd_unhandled_message <- function(cnd) {
+  paste_line(
+    conditionMessage(cnd),
+    format_onerror_backtrace(cnd)
+  )
+}
+
+on_load({
+  s3_register("knitr::sew", "rlang_error", function(x, options, ...) {
+    # Simulate interactive session to prevent full backtrace from
+    # being included in error message
+    local_interactive()
+
+    # Save the unhandled error for `rlang::last_error()`.
+    last_error_env$cnd <- x
+
+    # By default, we display no reminder or backtrace for errors
+    # captured by knitr. This default can be overridden.
+    opt <- peek_option("rlang_backtrace_on_error") %||% "none"
+    local_options(rlang_backtrace_on_error = opt)
+
+    msg <- cnd_unhandled_message(x)
+
+    # Create bare error and sew it to delegate finalisation to parent
+    # method since there is no simple way to generically modify the
+    # condition and then call `NextMethod()` (a `conditionMessage()`
+    # method might conflict, etc).
+    knitr::sew(simpleError(msg), options, ...)
+  })
+})
 
 trace_trim_context <- function(trace, idx) {
   if (!is_scalar_integerish(idx)) {
@@ -410,7 +456,8 @@ show_trace_p <- function() {
 #' @export
 last_error <- function() {
   if (is_null(last_error_env$cnd)) {
-    abort("Can't show last error because no error was recorded yet")
+    local_options(rlang_backtrace_on_error = "none")
+    stop("Can't show last error because no error was recorded yet", call. = FALSE)
   }
 
   cnd <- last_error_env$cnd
