@@ -55,7 +55,6 @@ test_that("can print tree with collapsed branches", {
   trace <- eval(quote(f()))
 
   expect_snapshot_trace(trace,
-    file = test_path("test-trace-collapsed1.txt"),
     dir = dir,
     srcrefs = TRUE
   )
@@ -67,7 +66,6 @@ test_that("can print tree with collapsed branches", {
   trace <- eval(quote(f()))
 
   expect_snapshot_trace(trace,
-    file = test_path("test-trace-collapsed2.txt"),
     dir = dir,
     srcrefs = TRUE
   )
@@ -155,7 +153,7 @@ test_that("recursive frames are rewired to the global env", {
   g <- function() trace_back(e)
   trace <- eval_tidy(quo(f()))
 
-  expect_snapshot_trace(trace, file = "test-trace-recursive.txt")
+  expect_snapshot_trace(trace)
 })
 
 test_that("long backtrace branches are truncated", {
@@ -192,13 +190,13 @@ test_that("eval() frames are collapsed", {
   g <- function() eval(quote(trace_back(e, bottom = 0)))
   trace <- f()
 
-  expect_snapshot_trace(trace, file = "test-trace-collapse-eval.txt")
+  expect_snapshot_trace(trace)
 
   f <- function() base::evalq(g())
   g <- function() evalq(trace_back(e, bottom = 0))
   trace <- f()
 
-  expect_snapshot_trace(trace, file = "test-trace-collapse-evalq.txt")
+  expect_snapshot_trace(trace)
 })
 
 test_that("%>% frames are collapsed", {
@@ -216,13 +214,13 @@ test_that("%>% frames are collapsed", {
   h <- function(x, ...) trace_back(e)
 
   trace <- NULL %>% f() %>% g(1, 2) %>% h(3, ., 4)
-  expect_snapshot_trace(trace, "test-trace-collapse-magrittr.txt")
+  expect_snapshot_trace(trace)
 
   trace <- f(NULL) %>% g(list(.)) %>% h(3, ., list(.))
-  expect_snapshot_trace(trace, "test-trace-collapse-magrittr2.txt")
+  expect_snapshot_trace(trace)
 
   trace <- f(g(NULL %>% f()) %>% h())
-  expect_snapshot_trace(trace, "test-trace-collapse-magrittr3.txt")
+  expect_snapshot_trace(trace)
 })
 
 test_that("children of collapsed %>% frames have correct parent", {
@@ -242,7 +240,7 @@ test_that("children of collapsed %>% frames have correct parent", {
   h <- function() trace_back(e)
 
   trace <- NA %>% F() %>% G() %>% H()
-  expect_snapshot_trace(trace, "test-trace-collapse-magrittr-children.txt")
+  expect_snapshot_trace(trace)
 })
 
 test_that("children of collapsed frames are rechained to correct parent", {
@@ -298,25 +296,25 @@ test_that("combinations of incomplete and leading pipes collapse properly", {
   T <- function(x) trace_back(e)
 
   trace <- NA %>% F() %>% T() %>% F() %>% F()
-  expect_snapshot_trace(trace, "test-trace-collapse-magrittr-incomplete.txt")
+  expect_snapshot_trace(trace)
 
   trace <- T(NA) %>% F()
-  expect_snapshot_trace(trace, "test-trace-collapse-magrittr-incomplete-leading1.txt")
+  expect_snapshot_trace(trace)
 
   trace <- F(NA) %>% F() %>% T() %>% F() %>% F()
-  expect_snapshot_trace(trace, "test-trace-collapse-magrittr-incomplete-leading2.txt")
+  expect_snapshot_trace(trace)
 
   trace <- NA %>% T()
-  expect_snapshot_trace(trace, "test-trace-collapse-magrittr-complete1.txt")
+  expect_snapshot_trace(trace)
 
   trace <- NA %>% F() %>% T()
-  expect_snapshot_trace(trace, "test-trace-collapse-magrittr-complete2.txt")
+  expect_snapshot_trace(trace)
 
   trace <- F(NA) %>% T()
-  expect_snapshot_trace(trace, "test-trace-collapse-magrittr-complete-leading1.txt")
+  expect_snapshot_trace(trace)
 
   trace <- F(NA) %>% F() %>%  T()
-  expect_snapshot_trace(trace, "test-trace-collapse-magrittr-complete-leading2.txt")
+  expect_snapshot_trace(trace)
 })
 
 test_that("calls before and after pipe are preserved", {
@@ -335,13 +333,13 @@ test_that("calls before and after pipe are preserved", {
   f <- function() trace_back(e)
 
   trace <- F(NA %>% T())
-  expect_snapshot_trace(trace, "test-trace-collapse-magrittr-before-after1.txt")
+  expect_snapshot_trace(trace)
 
   trace <- NA %>% C()
-  expect_snapshot_trace(trace, "test-trace-collapse-magrittr-before-after2.txt")
+  expect_snapshot_trace(trace)
 
   trace <- F(NA %>% C())
-  expect_snapshot_trace(trace, "test-trace-collapse-magrittr-before-after3.txt")
+  expect_snapshot_trace(trace)
 })
 
 test_that("always keep very first frame as part of backtrace branch", {
@@ -354,7 +352,7 @@ test_that("always keep very first frame as part of backtrace branch", {
   gen.default <- function(x) trace_back(e)
 
   trace <- gen()
-  expect_snapshot_trace(trace, "test-trace-backtrace-branch-first-frame.txt")
+  expect_snapshot_trace(trace)
 })
 
 test_that("can take the str() of a trace (#615)", {
@@ -372,7 +370,7 @@ test_that("anonymous calls are stripped from backtraces", {
   })()
 
   expect_identical(format(trace, simplify = "branch"), chr())
-  expect_snapshot_trace(trace, "test-trace-backtrace-anonymous.txt")
+  expect_snapshot_trace(trace)
 })
 
 test_that("collapsing of eval() frames detects when error occurs within eval()", {
@@ -392,22 +390,22 @@ test_that("collapsing of eval() frames detects when error occurs within eval()",
     error = calling(function(err) trace <<- trace_back(e))
   ))
 
-  expect_snapshot_trace(trace, "test-trace-non-collapsed-eval")
+  expect_snapshot_trace(trace)
 })
 
 test_that("can print degenerate backtraces", {
   trace_sym <- new_trace(list(quote(foo)), int(0))
-  expect_snapshot_trace(trace_sym, file = "test-trace-degenerate-sym.txt")
+  expect_snapshot_trace(trace_sym)
 
   trace_null <- new_trace(list(NULL), int(0))
-  expect_snapshot_trace(trace_null, file = "test-trace-degenerate-null.txt")
+  expect_snapshot_trace(trace_null)
 
   trace_scalar <- new_trace(list(1L), int(0))
-  expect_snapshot_trace(trace_scalar, file = "test-trace-degenerate-scalar.txt")
+  expect_snapshot_trace(trace_scalar)
 })
 
 test_that("check for dangling promise in call CAR (#492)", {
-  expect_snapshot_trace(file = "test-trace-call-car-promise.txt", local({
+  expect_snapshot_trace(local({
     e <- current_env()
 
     print.foo <- function(x) {
@@ -431,7 +429,6 @@ test_that("dangling srcrefs are not printed", {
 
   expect_snapshot_trace(
     local(f(current_env())),
-    file ="test-trace-dangling-srcref.txt",
     srcrefs = TRUE
   )
 })
@@ -457,7 +454,7 @@ test_that("unexported functions have `:::` prefix", {
   f <- function() test_trace_unexported_child(e)
   trace <- f()
 
-  expect_snapshot_trace(trace, file = "test-trace-unexported-prefix.txt")
+  expect_snapshot_trace(trace)
 })
 
 test_that("global functions have `global::` prefix", {
@@ -465,7 +462,7 @@ test_that("global functions have `global::` prefix", {
   g <- function(e) f(e)
   trace <- g(current_env())
 
-  expect_snapshot_trace(trace, file = "test-trace-global-prefix.txt")
+  expect_snapshot_trace(trace)
 })
 
 test_that("local functions inheriting from global do not have `global::` prefix", {
@@ -473,7 +470,7 @@ test_that("local functions inheriting from global do not have `global::` prefix"
   g <- function(e) f(e)
   trace <- g(current_env())
 
-  expect_snapshot_trace(trace, file = "test-trace-local-prefix.txt")
+  expect_snapshot_trace(trace)
 })
 
 test_that("can trim layers of backtraces", {

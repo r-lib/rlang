@@ -1,6 +1,4 @@
-
 expect_snapshot_trace <- function(trace,
-                                  file,
                                   dir = normalizePath(test_path("..")),
                                   srcrefs = FALSE) {
   expect_snapshot({
