@@ -301,6 +301,11 @@ setting this option in a hidden chunk:</p><pre><span class='fu'><a href='https:/
   rlang_trace_top_env <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/environment.html'>environment</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='op'>)</span>
 </pre></li>
+<li><p><code>abort()</code> and <code>warn()</code> temporarily set the <code>warning.length</code>
+global option to the maximum value (8170), unless that option has
+been changed from the default value. The default limit (1000
+characters) is especially easy to hit when the message contains a
+lot of ANSI escapes, as created by the crayon or cli packages</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="backtrace"><a class="anchor" href="#backtrace"></a>Backtrace</h2>
