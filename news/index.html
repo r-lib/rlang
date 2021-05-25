@@ -158,6 +158,7 @@
 <a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li><p>The <code><a href="../reference/last_error.html">last_error()</a></code> reminder is no longer displayed in RStudio notebooks.</p></li>
 <li><p><code><a href="../reference/abort.html">abort()</a></code> and <code><a href="../reference/abort.html">warn()</a></code> now temporarily set the <code>warning.length</code> global option to the maximum value (8170). The default limit (1000 characters) is especially easy to hit when the message contains a lot of ANSI escapes, as created by the crayon or cli packages (<a href='https://github.com/r-lib/rlang/issues/1211'>#1211</a>).</p></li>
 <li><p>The <code>rlang_trace_top_env</code> global option for <code><a href="../reference/trace_back.html">trace_back()</a></code> now detects when backtraces are created within knitr. If the option is not set, its default value becomes <code><a href="https://rdrr.io/pkg/knitr/man/knit_global.html">knitr::knit_global()</a></code> when knitr is in progress (as determined from <code>knitr.in.progress</code> global option). This prevents the knitr evaluation context from appearing in the backtraces (<a href='https://github.com/r-lib/rlang/issues/932'>#932</a>).</p></li>
 <li>
