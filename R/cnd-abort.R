@@ -412,7 +412,7 @@ format_onerror_backtrace <- function(cnd) {
     return(NULL)
   }
 
-  show_trace <- show_trace_p()
+  show_trace <- peek_backtrace_on_error()
 
   opts <- c("none", "reminder", "branch", "collapse", "full")
   if (!is_string(show_trace) || !show_trace %in% opts) {
@@ -451,7 +451,7 @@ format_onerror_backtrace <- function(cnd) {
   )
 }
 
-show_trace_p <- function() {
+peek_backtrace_on_error <- function() {
   opt <- peek_option("rlang_backtrace_on_error")
   if (!is_null(opt)) {
     return(opt)
