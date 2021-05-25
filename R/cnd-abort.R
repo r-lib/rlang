@@ -347,6 +347,13 @@ trace_capture_depth <- function(trace) {
 #' * `"collapse"`: Display a collapsed backtrace tree.
 #' * `"full"`: Display the full backtrace tree.
 #'
+#' If this option is not set, the default depends on whether the
+#' session is interactive as determined by [rlang::is_interactive()].
+#' In interactive sessions, the default is `"reminder"` so that the
+#' interested user is prompted to run `last_error()` to get more
+#' information. In non-interactive sessions, the default is `"full"`
+#' to provide users with as much debugging info as available.
+#'
 #'
 #' @section Promote base errors to rlang errors:
 #'

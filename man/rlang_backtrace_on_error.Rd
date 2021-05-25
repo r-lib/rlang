@@ -17,6 +17,13 @@ inspected by calling \code{\link[=last_error]{last_error()}}.
 \item \code{"collapse"}: Display a collapsed backtrace tree.
 \item \code{"full"}: Display the full backtrace tree.
 }
+
+If this option is not set, the default depends on whether the
+session is interactive as determined by \code{\link[=is_interactive]{is_interactive()}}.
+In interactive sessions, the default is \code{"reminder"} so that the
+interested user is prompted to run \code{last_error()} to get more
+information. In non-interactive sessions, the default is \code{"full"}
+to provide users with as much debugging info as available.
 }
 \section{Promote base errors to rlang errors}{
 
