@@ -225,8 +225,7 @@ signal_abort <- function(cnd) {
 #' Create unhandled condition
 #'
 #' @description
-#' Transform a classed condition into a simple condition inheriting
-#' from `"error"`.
+#' Transform a classed condition into a simple condition.
 #'
 #' - The `conditionMessage()` method is run and the result is stored
 #'   in the `message` field so that it becomes a constant.
@@ -241,14 +240,18 @@ signal_abort <- function(cnd) {
 #' responsible for making sure that there is no error catching
 #' handlers on the stack.
 #'
+#' The condition _currently_ inherits from `"rlang_error"` (but not
+#' `"error"`) to prevent [entrace()] from repeatedly embedding a
+#' backtrace.
+#'
 #' @param cnd A condition object.
-#' @return A condition of class `"error"` with an embedded message.
+#' @return A condition with an embedded message.
 #'
 #' @keywords internal
 #' @export
 cnd_as_unhandled_error <- function(cnd) {
   # Generate the error message, possibly with a backtrace or reminder
-  cnd("error", message = cnd_unhandled_message(cnd))
+  cnd("rlang_error", message = cnd_unhandled_message(cnd))
 }
 cnd_unhandled_message <- function(cnd) {
   paste_line(

@@ -10,11 +10,10 @@ cnd_as_unhandled_error(cnd)
 \item{cnd}{A condition object.}
 }
 \value{
-A condition of class \code{"error"} with an embedded message.
+A condition with an embedded message.
 }
 \description{
-Transform a classed condition into a simple condition inheriting
-from \code{"error"}.
+Transform a classed condition into a simple condition.
 \itemize{
 \item The \code{conditionMessage()} method is run and the result is stored
 in the \code{message} field so that it becomes a constant.
@@ -28,5 +27,9 @@ The resulting condition can be rethrown with \code{\link[=stop]{stop()}} or
 Note that this function is for internal purposes. The caller is
 responsible for making sure that there is no error catching
 handlers on the stack.
+
+The condition \emph{currently} inherits from \code{"rlang_error"} (but not
+\code{"error"}) to prevent \code{\link[=entrace]{entrace()}} from repeatedly embedding a
+backtrace.
 }
 \keyword{internal}

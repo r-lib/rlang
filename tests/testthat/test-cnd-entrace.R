@@ -194,3 +194,12 @@ test_that("entrace() preserves exit status in non-interactive sessions (#1052, r
   out <- Rscript(shQuote(c("--vanilla", "-e", code)))
   expect_false(out$status == 0L)
 })
+
+test_that("entrace() doesn't embed backtraces twice", {
+  skip_if_stale_backtrace()
+
+  code <- "withCallingHandlers(error = rlang::entrace, rlang::abort('foo'))"
+  out <- Rscript(shQuote(c("--vanilla", "-e", code)))$out
+
+  expect_equal(sum(grepl("^Backtrace", out)), 1)
+})

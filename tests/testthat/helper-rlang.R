@@ -34,7 +34,7 @@ with_methods <- function(.expr, ...) {
 # Some backtrace tests use Rscript, which requires the last version of
 # the backtrace code to be installed locally
 skip_if_stale_backtrace <- local({
-  current_backtrace_ver <- "1.0.0"
+  current_backtrace_ver <- "1.0.1"
 
   ver <- system.file("backtrace-ver", package = "rlang")
   has_stale_backtrace <- ver == "" || !identical(readLines(ver), current_backtrace_ver)
