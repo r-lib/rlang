@@ -220,7 +220,7 @@ or complex expressions.</p>
 <span class='fu'>invoke</span><span class='op'>(</span><span class='va'>paste</span>, <span class='va'>letters</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='warning'>Warning: `invoke()` is deprecated as of rlang 0.4.0.</span>
 #&gt; <span class='warning'>Please use `exec()` or `eval(expr())`instead.</span>
-#&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once per session.</span><span></span></div><div class='output co'>#&gt; [1] "a b c d e f g h i j k l m n o p q r s t u v w x y z"</div><div class='input'>
+#&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once per session.</span></span></div><div class='output co'>#&gt; [1] "a b c d e f g h i j k l m n o p q r s t u v w x y z"</div><div class='input'>
 <span class='co'># But it creates much cleaner calls:</span>
 <span class='fu'>invoke</span><span class='op'>(</span><span class='va'>call_inspect</span>, <span class='va'>mtcars</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; .fn(mpg = `1`, cyl = `2`, disp = `3`, hp = `4`, drat = `5`, wt = `6`, 
@@ -540,7 +540,7 @@ or complex expressions.</p>
 <span class='fu'>invoke</span><span class='op'>(</span><span class='va'>call_inspect</span>, <span class='va'>mtcars</span>, .bury <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"inspect!"</span>, <span class='st'>"col"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; `inspect!`(mpg = col1, cyl = col2, disp = col3, hp = col4, drat = col5, 
 #&gt;     wt = col6, qsec = col7, vs = col8, am = col9, gear = col10, 
-#&gt;     carb = col11)</div></span></pre>
+#&gt;     carb = col11)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

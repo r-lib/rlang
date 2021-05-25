@@ -286,7 +286,7 @@ of performing a non-local jump to an arbitrary call frame.</p></div>
 <span class='fu'>fn</span><span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='warning'>Warning: Creating a condition with `cnd_signal()` is deprecated as of rlang 0.3.0.</span>
 #&gt; <span class='warning'>Please use `signal()` instead.</span>
-#&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once per session.</span><span></span></div><div class='output co'>#&gt; [1] ""</div><div class='input'>
+#&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once per session.</span></span></div><div class='output co'>#&gt; [1] ""</div><div class='input'>
 <span class='co'># Change the default value if you need an empty character vector by</span>
 <span class='co'># defining a calling handler that jumps to the restart. It has to</span>
 <span class='co'># be calling because exiting handlers jump to the place where they</span>
@@ -297,7 +297,7 @@ of performing a non-local jump to an arbitrary call frame.</p></div>
 </div><div class='output co'>#&gt; character(0)</div><div class='input'>
 <span class='co'># You can use restarting() to create restarting handlers easily:</span>
 <span class='fu'><a href='with_handlers.html'>with_handlers</a></span><span class='op'>(</span><span class='fu'>fn</span><span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span>, default_empty_string <span class='op'>=</span> <span class='fu'><a href='restarting.html'>restarting</a></span><span class='op'>(</span><span class='st'>"rst_null"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; NULL</div></span></pre>
+</div><div class='output co'>#&gt; NULL</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

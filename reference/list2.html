@@ -338,9 +338,9 @@ This ensures assignments are explicit.</p></td>
 #&gt; </div><div class='input'>
 <span class='co'># Or raise an informative error:</span>
 <span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'>dots_list</span><span class='op'>(</span>a <span class='op'>=</span> <span class='fl'>1</span>, a <span class='op'>=</span> <span class='fl'>2</span>, b <span class='op'>=</span> <span class='fl'>3</span>, b <span class='op'>=</span> <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>, .homonyms <span class='op'>=</span> <span class='st'>"error"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Error : <span style='font-weight: bold;'>Arguments can't have the same name.</span><span>
-#&gt; </span><span style='color: #BB0000;'>✖</span><span> Multiple arguments named `a` at positions 1 and 2.
-#&gt; </span><span style='color: #BB0000;'>✖</span><span> Multiple arguments named `b` at positions 3 and 4.</div><div class='input'>
+</div><div class='output co'>#&gt; Error : <span style='font-weight: bold;'>Arguments can't have the same name.</span>
+#&gt; <span style='color: #BB0000;'>✖</span> Multiple arguments named `a` at positions 1 and 2.
+#&gt; <span style='color: #BB0000;'>✖</span> Multiple arguments named `b` at positions 3 and 4.</div><div class='input'>
 
 <span class='co'># dots_list() can be configured to warn when a `&lt;-` call is</span>
 <span class='co'># detected:</span>
@@ -364,7 +364,7 @@ This ensures assignments are explicit.</p></td>
 <span class='fu'>my_list</span><span class='op'>(</span><span class='op'>{</span> <span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fl'>1</span> <span class='op'>}</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [[1]]
 #&gt; [1] 1
-#&gt; </div></span></pre>
+#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

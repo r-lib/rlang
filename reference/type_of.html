@@ -197,7 +197,7 @@ make dispatching easier:</p><ul>
     <pre class="examples"><div class='input'><span class='fu'>type_of</span><span class='op'>(</span><span class='fl'>10L</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='warning'>Warning: `type_of()` is deprecated as of rlang 0.4.0.</span>
 #&gt; <span class='warning'>Please use `typeof()` or your own version instead.</span>
-#&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once per session.</span><span></span></div><div class='output co'>#&gt; [1] "integer"</div><div class='input'>
+#&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once per session.</span></span></div><div class='output co'>#&gt; [1] "integer"</div><div class='input'>
 <span class='co'># Quosures are treated as a new base type but not formulas:</span>
 <span class='fu'>type_of</span><span class='op'>(</span><span class='fu'><a href='nse-defuse.html'>quo</a></span><span class='op'>(</span><span class='fl'>10L</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "formula"</div><div class='input'><span class='fu'>type_of</span><span class='op'>(</span><span class='op'>~</span><span class='fl'>10L</span><span class='op'>)</span>
@@ -222,7 +222,7 @@ make dispatching easier:</p><ul>
 </div><div class='output co'>#&gt; [1] "builtin"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span><span class='op'>(</span><span class='va'>`$`</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "special"</div><div class='input'><span class='fu'>type_of</span><span class='op'>(</span><span class='va'>list</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "primitive"</div><div class='input'><span class='fu'>type_of</span><span class='op'>(</span><span class='va'>`$`</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "primitive"</div></span></pre>
+</div><div class='output co'>#&gt; [1] "primitive"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

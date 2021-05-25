@@ -227,16 +227,16 @@ Defaults to the global option <code>width</code>.</p></td>
 
 <span class='co'># Quosures from the global environment are printed normally:</span>
 <span class='fu'>expr_print</span><span class='op'>(</span><span class='fu'><a href='nse-defuse.html'>quo</a></span><span class='op'>(</span><span class='va'>foo</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #0000BB;'>^foo</span><span></div><div class='input'><span class='fu'>expr_print</span><span class='op'>(</span><span class='fu'><a href='nse-defuse.html'>quo</a></span><span class='op'>(</span><span class='fu'>foo</span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='fu'><a href='nse-defuse.html'>quo</a></span><span class='op'>(</span><span class='va'>bar</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>^foo(^bar)</span><span></div><div class='input'>
+</div><div class='output co'>#&gt; <span style='color: #0000BB;'>^foo</span></div><div class='input'><span class='fu'>expr_print</span><span class='op'>(</span><span class='fu'><a href='nse-defuse.html'>quo</a></span><span class='op'>(</span><span class='fu'>foo</span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='fu'><a href='nse-defuse.html'>quo</a></span><span class='op'>(</span><span class='va'>bar</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #0000BB;'>^foo(^bar)</span></div><div class='input'>
 <span class='co'># Quosures from local environments are colourised according to</span>
 <span class='co'># their environments (if you have crayon installed):</span>
 <span class='va'>local_quo</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/eval.html'>local</a></span><span class='op'>(</span><span class='fu'><a href='nse-defuse.html'>quo</a></span><span class='op'>(</span><span class='va'>foo</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'>expr_print</span><span class='op'>(</span><span class='va'>local_quo</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>^foo</span><span></div><div class='input'>
+</div><div class='output co'>#&gt; <span style='color: #0000BB;'>^foo</span></div><div class='input'>
 <span class='va'>wrapper_quo</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/eval.html'>local</a></span><span class='op'>(</span><span class='fu'><a href='nse-defuse.html'>quo</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/grDevices/plotmath.html'>bar</a></span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='va'>local_quo</span>, <span class='va'>baz</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'>expr_print</span><span class='op'>(</span><span class='va'>wrapper_quo</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>^bar(</span><span style='color: #00BB00;'>^foo</span><span style='color: #0000BB;'>, baz)</span><span></div></span></pre>
+</div><div class='output co'>#&gt; <span style='color: #0000BB;'>^bar(</span><span style='color: #00BB00;'>^foo</span><span style='color: #0000BB;'>, baz)</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
