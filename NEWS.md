@@ -1,5 +1,11 @@
 # rlang (development version)
 
+* Display of rlang backtraces in dynamic reports (knitted documents
+  and RStudio notebooks) is now controlled by the
+  `rlang_backtrace_on_error_report` option. By default, nothing is
+  displayed in interactive sessions. In non-interactive sessions, a
+  simplified backtrace is displayed instead of a full backtrace
+
 * The `last_error()` reminder is no longer displayed in RStudio
   notebooks.
 

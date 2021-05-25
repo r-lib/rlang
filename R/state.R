@@ -145,3 +145,15 @@ with_interactive <- function(expr, value = TRUE) {
   local_interactive(value)
   expr
 }
+
+report_in_progress <- function() {
+  if (is_true(peek_option("knitr.in.progress"))) {
+    return(TRUE)
+  }
+
+  if (is_true(peek_option("rstudio.notebook.executing"))) {
+    return(TRUE)
+  }
+
+  FALSE
+}

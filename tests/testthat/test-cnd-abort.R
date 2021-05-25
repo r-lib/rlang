@@ -238,3 +238,33 @@ test_that("capture context doesn't leak into low-level backtraces", {
 test_that("`.subclass` argument of `abort()` still works", {
   expect_error(abort("foo", .subclass = "bar"), class = "bar")
 })
+
+test_that("report-specific backtrace-on-error option has precedence", {
+  local_options(rlang_backtrace_on_error = "full")
+
+  local_interactive()
+  with_options(
+    rstudio.notebook.executing = TRUE,
+    expect_equal(peek_backtrace_on_error(), "none")
+  )
+  with_options(
+    knitr.in.progress = TRUE,
+    expect_equal(peek_backtrace_on_error(), "none")
+  )
+
+  local_interactive(FALSE)
+  with_options(
+    rstudio.notebook.executing = TRUE,
+    expect_equal(peek_backtrace_on_error(), "branch")
+  )
+  with_options(
+    knitr.in.progress = TRUE,
+    expect_equal(peek_backtrace_on_error(), "branch")
+  )
+
+  local_options(rlang_backtrace_on_error_report = "full")
+  with_options(
+    rstudio.notebook.executing = TRUE,
+    expect_equal(peek_backtrace_on_error(), "full")
+  )
+})

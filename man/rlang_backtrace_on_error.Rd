@@ -38,7 +38,16 @@ call \code{\link[=last_error]{last_error()}} to print the backtrace or inspect i
 }
 }
 
-\section{Backtraces in knitr}{
+\section{Unexpected errors in dynamic reports}{
+
+
+In dynamic reports (knitted Rmarkdown or RStudio notebooks), the
+relevant option is \code{rlang_backtrace_on_error_report}. The default
+is \code{"none"} in interactive sessions and \code{"branch"} in
+non-interactive sessions.
+}
+
+\section{Expected errors in Rmarkdown documents}{
 
 
 An \code{rlang_error} method for the \code{knitr::sew()} generic is

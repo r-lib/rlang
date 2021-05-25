@@ -974,13 +974,13 @@
           ##  2.   \-global::g()
           ##  3.     \-global::h()
       
-          options(rlang_backtrace_on_error = "reminder")
+          options(rlang_backtrace_on_error_report = "reminder")
           f()
       
           ## Error: foo
           ## Run `rlang::last_error()` to see where the error occurred.
       
-          options(rlang_backtrace_on_error = "full")
+          options(rlang_backtrace_on_error_report = "full")
           f()
       
           ## Error: foo

@@ -367,7 +367,15 @@ trace_capture_depth <- function(trace) {
 #'   `rlang_backtrace_on_error` option.
 #'
 #'
-#' @section Backtraces in knitr:
+#' @section Unexpected errors in dynamic reports:
+#'
+#' In dynamic reports (knitted Rmarkdown or RStudio notebooks), the
+#' relevant option is `rlang_backtrace_on_error_report`. The default
+#' is `"none"` in interactive sessions and `"branch"` in
+#' non-interactive sessions.
+#'
+#'
+#' @section Expected errors in Rmarkdown documents:
 #'
 #' An `rlang_error` method for the `knitr::sew()` generic is
 #' registered to make it possible to display backtraces with captured
@@ -459,22 +467,25 @@ format_onerror_backtrace <- function(cnd) {
 }
 
 peek_backtrace_on_error <- function() {
+  if (report_in_progress()) {
+    opt <- peek_option("rlang_backtrace_on_error_report")
+    if (!is_null(opt)) {
+      return(opt)
+    }
+
+    if (is_interactive()) {
+      return("none")
+    } else {
+      return("branch")
+    }
+  }
+
   opt <- peek_option("rlang_backtrace_on_error")
   if (!is_null(opt)) {
     return(opt)
   }
 
-  if (is_true(peek_option("rstudio.notebook.executing"))) {
-    return("none")
-  }
-
-  # FIXME: parameterise `is_interactive()`?
-  interactive <- with_options(
-    knitr.in.progress = NULL,
-    is_interactive()
-  )
-
-  if (interactive) {
+  if (is_interactive()) {
     "reminder"
   } else {
     "full"

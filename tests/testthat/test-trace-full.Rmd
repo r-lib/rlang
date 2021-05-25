@@ -18,11 +18,11 @@ last_trace()
 ```
 
 ```{r, error = TRUE}
-options(rlang_backtrace_on_error = "reminder")
+options(rlang_backtrace_on_error_report = "reminder")
 f()
 ```
 
 ```{r, error = TRUE}
-options(rlang_backtrace_on_error = "full")
+options(rlang_backtrace_on_error_report = "full")
 f()
 ```

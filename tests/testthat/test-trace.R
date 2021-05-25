@@ -595,6 +595,7 @@ test_that("caught error does not display backtrace in knitted files", {
 
   local_options(
     rlang_backtrace_on_error = NULL,
+    rlang_backtrace_on_error_report = NULL,
     rlang_interactive = FALSE
   )
 
