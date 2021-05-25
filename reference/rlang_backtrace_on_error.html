@@ -208,7 +208,16 @@ call <code><a href='last_error.html'>last_error()</a></code> to print the backtr
 <code>rlang_backtrace_on_error</code> option.</p></li>
 </ul>
 
-    <h2 class="hasAnchor" id="backtraces-in-knitr"><a class="anchor" href="#backtraces-in-knitr"></a>Backtraces in knitr</h2>
+    <h2 class="hasAnchor" id="unexpected-errors-in-dynamic-reports"><a class="anchor" href="#unexpected-errors-in-dynamic-reports"></a>Unexpected errors in dynamic reports</h2>
+
+    
+
+
+<p>In dynamic reports (knitted Rmarkdown or RStudio notebooks), the
+relevant option is <code>rlang_backtrace_on_error_report</code>. The default
+is <code>"none"</code> in interactive sessions and <code>"branch"</code> in
+non-interactive sessions.</p>
+    <h2 class="hasAnchor" id="expected-errors-in-rmarkdown-documents"><a class="anchor" href="#expected-errors-in-rmarkdown-documents"></a>Expected errors in Rmarkdown documents</h2>
 
     
 
