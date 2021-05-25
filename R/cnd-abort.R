@@ -452,15 +452,6 @@ format_onerror_backtrace <- function(cnd) {
 }
 
 show_trace_p <- function() {
-  old_opt <- peek_option("rlang__backtrace_on_error")
-  if (!is_null(old_opt)) {
-    warn_deprecated(paste_line(
-      "`rlang__backtrace_on_error` is no longer experimental.",
-      "It has been renamed to `rlang_backtrace_on_error`. Please update your RProfile."
-    ))
-    return(old_opt)
-  }
-
   opt <- peek_option("rlang_backtrace_on_error")
   if (!is_null(opt)) {
     return(opt)
