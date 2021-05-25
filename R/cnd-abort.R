@@ -466,10 +466,13 @@ show_trace_p <- function() {
     return(opt)
   }
 
+  if (is_true(peek_option("rstudio.notebook.executing"))) {
+    return("none")
+  }
+
   # FIXME: parameterise `is_interactive()`?
   interactive <- with_options(
     knitr.in.progress = NULL,
-    rstudio.notebook.executing = NULL,
     is_interactive()
   )
 

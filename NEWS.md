@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* The `last_error()` reminder is no longer displayed in RStudio
+  notebooks.
+
 * `abort()` and `warn()` now temporarily set the `warning.length`
   global option to the maximum value (8170). The default limit (1000
   characters) is especially easy to hit when the message contains a
