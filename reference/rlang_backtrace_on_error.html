@@ -51,7 +51,13 @@ inspected by calling last_error().
 &quot;collapse&quot;: Display a collapsed backtrace tree.
 &quot;full&quot;: Display the full backtrace tree.
 
-" />
+
+If this option is not set, the default depends on whether the
+session is interactive as determined by is_interactive().
+In interactive sessions, the default is &quot;reminder&quot; so that the
+interested user is prompted to run last_error() to get more
+information. In non-interactive sessions, the default is &quot;full&quot;
+to provide users with as much debugging info as available." />
 
 
 
@@ -179,6 +185,12 @@ inspected by calling <code><a href='last_error.html'>last_error()</a></code>.</p
 <li><p><code>"full"</code>: Display the full backtrace tree.</p></li>
 </ul>
 
+<p>If this option is not set, the default depends on whether the
+session is interactive as determined by <code><a href='is_interactive.html'>is_interactive()</a></code>.
+In interactive sessions, the default is <code>"reminder"</code> so that the
+interested user is prompted to run <code><a href='last_error.html'>last_error()</a></code> to get more
+information. In non-interactive sessions, the default is <code>"full"</code>
+to provide users with as much debugging info as available.</p>
     </div>
 
 
