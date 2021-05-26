@@ -32,7 +32,7 @@ style_cls <- function(x) {
 }
 
 .rlang_cli_style <- function(x, span, fallback = "`%s`") {
-  if (requireNamespace("cli") && cli::num_ansi_colors() > 1) {
+  if (requireNamespace("cli", quietly = TRUE) && cli::num_ansi_colors() > 1) {
     cli::format_message(paste0("{.", span, " {x}}"))
   } else if (is.null(fallback)) {
     x

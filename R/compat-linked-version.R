@@ -20,7 +20,7 @@ check_linked_version <- local({
     }
   }
 
-  function(pkg, with_rlang = requireNamespace("rlang")) {
+  function(pkg, with_rlang = requireNamespace("rlang", quietly = TRUE)) {
     ver <- utils::packageVersion(pkg)
 
     ns <- asNamespace(pkg)

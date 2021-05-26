@@ -45,7 +45,7 @@
 check_downstream <- function(ver,
                              ...,
                              info = NULL,
-                             with_rlang = requireNamespace("rlang")) {
+                             with_rlang = requireNamespace("rlang", quietly = TRUE)) {
   env <- topenv(parent.frame())
   if (!isNamespace(env)) {
     stop("`check_downstream()` must be called from a namespace.", call. = FALSE)
@@ -119,7 +119,7 @@ check_downstream <- function(ver,
                                     pkg_ver,
                                     deps,
                                     info,
-                                    with_rlang = requireNamespace("rlang"),
+                                    with_rlang = requireNamespace("rlang", quietly = TRUE),
                                     env = parent.frame()) {
   isFALSE <- function(x) {
     is.logical(x) && length(x) == 1L && !is.na(x) && !x
