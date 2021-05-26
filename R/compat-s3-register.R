@@ -89,10 +89,16 @@ s3_register <- function(generic, class, method = NULL) {
     if (exists(generic, envir)) {
       registerS3method(generic, class, method_fn, envir = envir)
     } else if (identical(Sys.getenv("NOT_CRAN"), "true")) {
-      warning(sprintf(
-        "Can't find generic `%s` in package %s to register S3 method.",
-        generic,
-        package
+      warn <- .rlang_s3_register_compat("warn")
+
+      warn(c(
+        sprintf(
+          "Can't find generic `%s` in package %s to register S3 method.",
+          generic,
+          package
+        ),
+        "i" = "This message is only shown to developers using devtools.",
+        "i" = sprintf("Do you need to update %s to the latest version?", package)
       ))
     }
   }
@@ -106,6 +112,47 @@ s3_register <- function(generic, class, method = NULL) {
   }
 
   invisible()
+}
+
+.rlang_s3_register_compat <- function(fn, try_rlang = TRUE) {
+  # Compats that behave the same independently of rlang's presence
+  out <- switch(
+    fn,
+    is_installed = return(function(pkg) requireNamespace(pkg, quietly = TRUE))
+  )
+
+  if (try_rlang && requireNamespace("rlang", quietly = TRUE)) {
+    # Don't use `::` because this is also called from rlang's onLoad
+    # hook and exports are not initialised at this point
+    ns <- asNamespace("rlang")
+
+    switch(
+      fn,
+      is_interactive = return(get("is_interactive", envir = ns))
+    )
+
+    # Make sure rlang knows about "x" and "i" bullets
+    if (utils::packageVersion("rlang") >= "0.4.2") {
+      switch(
+        fn,
+        abort = return(get("abort", envir = ns)),
+        warn = return(get("warn", envir = ns)),
+        inform = return(get("inform", envir = ns))
+      )
+    }
+  }
+
+  # Fall back to base compats
+  format_msg <- function(x) paste(x, collapse = "\n")
+  switch(
+    fn,
+    is_interactive = return(function() interactive() && !isFALSE(getOption("rlang_interactive"))),
+    abort = return(function(msg) stop(format_msg(msg), call. = FALSE)),
+    warn = return(function(msg) warning(format_msg(msg), call. = FALSE)),
+    inform = return(function(msg) message(format_msg(msg)))
+  )
+
+  stop(sprintf("Internal error in rlang shims: Unknown function `%s()`.", fn))
 }
 
 # nocov end
