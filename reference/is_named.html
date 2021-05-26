@@ -40,9 +40,19 @@
 
 
 <meta property="og:title" content="Is object named? — is_named" />
-<meta property="og:description" content="is_named() checks that none of the names are missing or empty
-(NA or &quot;&quot;). have_name() is a vectorised version of
-is_named()." />
+<meta property="og:description" content="
+
+is_named() is a scalar predicate that checks that x has a
+names attribute and that none of the names are missing or empty
+(NA or &quot;&quot;).
+is_named2() is like is_named() but always returns TRUE for
+empty vectors, even those that don't have a names attribute.
+In other words, it tests for the property that each element of a
+vector is named. is_named2() composes well with names2()
+whereas is_named() composes with names().
+have_name() is a vectorised variant.
+
+" />
 
 
 
@@ -158,12 +168,24 @@ is_named()." />
     </div>
 
     <div class="ref-description">
-    <p><code>is_named()</code> checks that none of the names are missing or empty
-(<code>NA</code> or <code>""</code>). <code>have_name()</code> is a vectorised version of
-<code>is_named()</code>.</p>
+    
+<ul>
+<li><p><code>is_named()</code> is a scalar predicate that checks that <code>x</code> has a
+<code>names</code> attribute and that none of the names are missing or empty
+(<code>NA</code> or <code>""</code>).</p></li>
+<li><p><code>is_named2()</code> is like <code>is_named()</code> but always returns <code>TRUE</code> for
+empty vectors, even those that don't have a <code>names</code> attribute.
+In other words, it tests for the property that each element of a
+vector is named. <code>is_named2()</code> composes well with <code><a href='names2.html'>names2()</a></code>
+whereas <code>is_named()</code> composes with <code><a href='https://rdrr.io/r/base/names.html'>names()</a></code>.</p></li>
+<li><p><code>have_name()</code> is a vectorised variant.</p></li>
+</ul>
+
     </div>
 
     <pre class="usage"><span class='fu'>is_named</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='fu'>is_named2</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 
 <span class='fu'>have_name</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
@@ -178,20 +200,23 @@ is_named()." />
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>is_named()</code> is a scalar predicate that returns <code>TRUE</code> or
-<code>FALSE</code>. <code>have_name()</code> is vectorised and returns a logical vector
-as long as the input.</p>
+    <p><code>is_named()</code> and <code>is_named2()</code> are scalar predicates that
+return <code>TRUE</code> or <code>FALSE</code>. <code>have_name()</code> is vectorised and returns
+a logical vector as long as the input.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>is_named()</code> always returns <code>TRUE</code> for empty vectors because it
-tests for the property that each element of a vector is named
-rather than the presence of a <code>names</code> attribute.</p>
+    <p><code>is_named()</code> always returns <code>TRUE</code> for empty vectors because</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># is_named() is a scalar predicate about the whole vector of names:</span>
 <span class='fu'>is_named</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>a <span class='op'>=</span> <span class='fl'>1</span>, b <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_named</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>a <span class='op'>=</span> <span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
+<span class='co'># Unlike is_named2(), is_named() returns `FALSE` for empty vectors</span>
+<span class='co'># that don't have a `names` attribute.</span>
+<span class='fu'>is_named</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>is_named2</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># have_name() is a vectorised predicate</span>
 <span class='fu'>have_name</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>a <span class='op'>=</span> <span class='fl'>1</span>, b <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] TRUE TRUE</div><div class='input'><span class='fu'>have_name</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>a <span class='op'>=</span> <span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
