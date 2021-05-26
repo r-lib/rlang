@@ -9,24 +9,37 @@ set_class <- function(x, class) {
 
 #' Is object named?
 #'
-#' `is_named()` checks that none of the names are missing or empty
-#' (`NA` or `""`). `have_name()` is a vectorised version of
-#' `is_named()`.
+#' @description
+#'
+#' * `is_named()` is a scalar predicate that checks that `x` has a
+#'   `names` attribute and that none of the names are missing or empty
+#'   (`NA` or `""`).
+#'
+#' * `is_named2()` is like `is_named()` but always returns `TRUE` for
+#'   empty vectors, even those that don't have a `names` attribute.
+#'   In other words, it tests for the property that each element of a
+#'   vector is named. `is_named2()` composes well with [names2()]
+#'   whereas `is_named()` composes with `names()`.
+#'
+#' * `have_name()` is a vectorised variant.
 #'
 #' @param x A vector to test.
-#' @return `is_named()` is a scalar predicate that returns `TRUE` or
-#'   `FALSE`. `have_name()` is vectorised and returns a logical vector
-#'   as long as the input.
+#' @return `is_named()` and `is_named2()` are scalar predicates that
+#'   return `TRUE` or `FALSE`. `have_name()` is vectorised and returns
+#'   a logical vector as long as the input.
 #'
 #' @details
-#' `is_named()` always returns `TRUE` for empty vectors because it
-#'  tests for the property that each element of a vector is named
-#'  rather than the presence of a `names` attribute.
+#' `is_named()` always returns `TRUE` for empty vectors because 
 #'
 #' @examples
 #' # is_named() is a scalar predicate about the whole vector of names:
 #' is_named(c(a = 1, b = 2))
 #' is_named(c(a = 1, 2))
+#'
+#' # Unlike is_named2(), is_named() returns `FALSE` for empty vectors
+#' # that don't have a `names` attribute.
+#' is_named(list())
+#' is_named2(list())
 #'
 #' # have_name() is a vectorised predicate
 #' have_name(c(a = 1, b = 2))
@@ -52,6 +65,21 @@ set_class <- function(x, class) {
 #' names(mat)
 #' @export
 is_named <- function(x) {
+  nms <- names(x)
+
+  if (is_null(nms)) {
+    return(FALSE)
+  }
+
+  if (any(detect_void_name(nms))) {
+    return(FALSE)
+  }
+
+  TRUE
+}
+#' @rdname is_named
+#' @export
+is_named2 <- function(x) {
   nms <- names(x)
 
   if (is_null(nms)) {

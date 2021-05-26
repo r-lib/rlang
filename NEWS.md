@@ -63,9 +63,10 @@
   inputs produce a fully unnamed result with `NULL` names instead of a
   character vector of minimal `""` names (#390).
 
-* `is_named()` always returns `TRUE` for empty vectors (#191). That's
-  because it tests for the property that each element of a vector is
-  named rather than the presence of a `names` attribute.
+* `is_named2()` is a variant of `is_named()` that always returns
+  `TRUE` for empty vectors (#191). It tests for the property that each
+  element of a vector is named rather than the presence of a `names`
+  attribute.
 
 * `check_installed()` now consults the
   `rlib_restart_package_not_found` global option to determine whether

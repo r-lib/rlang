@@ -2,10 +2,13 @@
 % Please edit documentation in R/attr.R
 \name{is_named}
 \alias{is_named}
+\alias{is_named2}
 \alias{have_name}
 \title{Is object named?}
 \usage{
 is_named(x)
+
+is_named2(x)
 
 have_name(x)
 }
@@ -13,24 +16,35 @@ have_name(x)
 \item{x}{A vector to test.}
 }
 \value{
-\code{is_named()} is a scalar predicate that returns \code{TRUE} or
-\code{FALSE}. \code{have_name()} is vectorised and returns a logical vector
-as long as the input.
+\code{is_named()} and \code{is_named2()} are scalar predicates that
+return \code{TRUE} or \code{FALSE}. \code{have_name()} is vectorised and returns
+a logical vector as long as the input.
 }
 \description{
-\code{is_named()} checks that none of the names are missing or empty
-(\code{NA} or \code{""}). \code{have_name()} is a vectorised version of
-\code{is_named()}.
+\itemize{
+\item \code{is_named()} is a scalar predicate that checks that \code{x} has a
+\code{names} attribute and that none of the names are missing or empty
+(\code{NA} or \code{""}).
+\item \code{is_named2()} is like \code{is_named()} but always returns \code{TRUE} for
+empty vectors, even those that don't have a \code{names} attribute.
+In other words, it tests for the property that each element of a
+vector is named. \code{is_named2()} composes well with \code{\link[=names2]{names2()}}
+whereas \code{is_named()} composes with \code{names()}.
+\item \code{have_name()} is a vectorised variant.
+}
 }
 \details{
-\code{is_named()} always returns \code{TRUE} for empty vectors because it
-tests for the property that each element of a vector is named
-rather than the presence of a \code{names} attribute.
+\code{is_named()} always returns \code{TRUE} for empty vectors because
 }
 \examples{
 # is_named() is a scalar predicate about the whole vector of names:
 is_named(c(a = 1, b = 2))
 is_named(c(a = 1, 2))
+
+# Unlike is_named2(), is_named() returns `FALSE` for empty vectors
+# that don't have a `names` attribute.
+is_named(list())
+is_named2(list())
 
 # have_name() is a vectorised predicate
 have_name(c(a = 1, b = 2))
