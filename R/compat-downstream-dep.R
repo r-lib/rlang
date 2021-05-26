@@ -44,8 +44,7 @@
 
 check_downstream <- function(ver,
                              ...,
-                             info = NULL,
-                             with_rlang = requireNamespace("rlang", quietly = TRUE)) {
+                             info = NULL) {
   env <- topenv(parent.frame())
   if (!isNamespace(env)) {
     stop("`check_downstream()` must be called from a namespace.", call. = FALSE)
@@ -71,13 +70,7 @@ check_downstream <- function(ver,
   for (dep in deps) {
     on_package_load(
       dep[["pkg"]],
-      .rlang_downstream_check(
-        pkg,
-        ver,
-        deps,
-        info = info,
-        with_rlang = with_rlang
-      )
+      .rlang_downstream_check(pkg, ver, deps, info = info)
     )
   }
 }
@@ -119,7 +112,6 @@ check_downstream <- function(ver,
                                     pkg_ver,
                                     deps,
                                     info,
-                                    with_rlang = requireNamespace("rlang", quietly = TRUE),
                                     env = parent.frame()) {
   isFALSE <- function(x) {
     is.logical(x) && length(x) == 1L && !is.na(x) && !x
@@ -169,18 +161,9 @@ check_downstream <- function(ver,
 
   header <- sprintf("%s as of %s %s.", header, pkg, pkg_ver)
 
-  if (with_rlang) {
-    # Don't use `::` because this is also called from rlang's onLoad
-    # hook and exports are not initialised at this point
-    warn <- get("warn", envir = asNamespace("rlang"))
-    inform <- get("inform", envir = asNamespace("rlang"))
-    is_interactive <- get("is_interactive", envir = asNamespace("rlang"))
-  } else {
-    format_msg <- function(x) paste(x, collapse = "\n")
-    warn <- function(msg) warning(format_msg(msg), call. = FALSE)
-    inform <- function(msg) message(format_msg(msg))
-    is_interactive <- function() interactive() && !isFALSE(getOption("rlang_interactive"))
-  }
+  warn <- .rlang_downstream_compat("warn")
+  inform <- .rlang_downstream_compat("inform")
+  is_interactive <- .rlang_downstream_compat("is_interactive")
 
   if (!is_interactive()) {
     warn(header)
@@ -256,5 +239,47 @@ check_downstream <- function(ver,
     paste0(head, " ", final, " ", last)
   }
 }
+
+.rlang_downstream_compat <- function(fn, try_rlang = TRUE) {
+  # Compats that behave the same independently of rlang's presence
+  out <- switch(
+    fn,
+    is_installed = return(function(pkg) requireNamespace(pkg, quietly = TRUE))
+  )
+
+  if (try_rlang && requireNamespace("rlang", quietly = TRUE)) {
+    # Don't use `::` because this is also called from rlang's onLoad
+    # hook and exports are not initialised at this point
+    ns <- asNamespace("rlang")
+
+    switch(
+      fn,
+      is_interactive = return(get("is_interactive", envir = ns))
+    )
+
+    # Make sure rlang knows about "x" and "i" bullets
+    if (utils::packageVersion("rlang") >= "0.4.2") {
+      switch(
+        fn,
+        abort = return(get("abort", envir = ns)),
+        warn = return(get("warn", envir = ns)),
+        inform = return(get("inform", envir = ns))
+      )
+    }
+  }
+
+  # Fall back to base compats
+  format_msg <- function(x) paste(x, collapse = "\n")
+  switch(
+    fn,
+    is_interactive = return(function() interactive() && !isFALSE(getOption("rlang_interactive"))),
+    abort = return(function(msg) stop(format_msg(msg), call. = FALSE)),
+    warn = return(function(msg) warning(format_msg(msg), call. = FALSE)),
+    inform = return(function(msg) message(format_msg(msg)))
+  )
+
+  stop(sprintf("Internal error in rlang shims: Unknown function `%s()`.", fn))
+}
+
 
 #nocov end

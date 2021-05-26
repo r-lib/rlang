@@ -69,3 +69,10 @@ Rscript <- function(args, ...) {
 expect_reference <- function(object, expected) {
   expect_true(is_reference(object, expected))
 }
+
+rlang_compats <- function(fn) {
+  list(
+    .rlang_compat(fn),
+    .rlang_compat(fn, try_rlang = FALSE)
+  )
+}
