@@ -42,10 +42,20 @@
   }
 
   # Fall back to base compats
+
+  is_interactive_compat <- function() {
+    opt <- getOption("rlang_interactive")
+    if (!is.null(opt)) {
+      opt
+    } else {
+      interactive()
+    }
+  }
+
   format_msg <- function(x) paste(x, collapse = "\n")
   switch(
     fn,
-    is_interactive = return(function() interactive() && !isFALSE(getOption("rlang_interactive"))),
+    is_interactive = return(is_interactive_compat),
     abort = return(function(msg) stop(format_msg(msg), call. = FALSE)),
     warn = return(function(msg) warning(format_msg(msg), call. = FALSE)),
     inform = return(function(msg) message(format_msg(msg)))
