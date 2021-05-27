@@ -125,6 +125,31 @@ vec_dims <- function(x) {
   }
 }
 
+vec_ptype_common <- function(xs, ptype = NULL) {
+  if (!is.null(ptype)) {
+    return(vec_ptype(ptype))
+  }
+
+  xs <- Filter(function(x) !is.null(x), xs)
+
+  if (length(xs) == 0) {
+    NULL
+  } else if (length(xs) == 1) {
+    vec_ptype(xs[[1]])
+  } else {
+    xs <- map(xs, vec_ptype)
+    Reduce(vec_ptype2, xs)
+  }
+}
+
+vec_ptype <- function(x) {
+  if (vec_is_unspecified(x)) {
+    return(.rlang_vctrs_unspecified())
+  }
+
+  vec_slice(x, 0)
+}
+
 vec_ptype2 <- function(x, y) {
   stop_incompatible_type <- function(x, y) {
     abort(sprintf("Can't combine types <%s> and <%s>.",

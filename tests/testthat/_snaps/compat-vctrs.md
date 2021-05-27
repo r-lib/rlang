@@ -12,3 +12,10 @@
     Error <rlang_error>
       Unimplemented class <factor>.
 
+# vec_ptype_common() works
+
+    Code
+      vec_ptype_common(list(lgl(), dbl(), ""))
+    Error <rlang_error>
+      Can't combine types <double> and <character>.
+

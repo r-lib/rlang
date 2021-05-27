@@ -135,3 +135,15 @@ test_that("vec_is_unspecified() knows about empty logicals", {
   expect_true(vec_is_unspecified(NA))
   expect_false(vec_is_unspecified(lgl()))
 })
+
+test_that("vec_ptype_common() works", {
+  expect_equal(
+    vec_ptype_common(list(lgl(), dbl(), NA)),
+    dbl()
+  )
+
+  expect_snapshot(
+    error = TRUE,
+    vec_ptype_common(list(lgl(), dbl(), ""))
+  )
+})
