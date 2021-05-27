@@ -48,9 +48,9 @@ vec_rep <- function(x, times) {
 }
 
 vec_recycle_common <- function(xs, size = NULL) {
-  lengths <- vapply(xs, length, integer(1))
+  sizes <- vapply(xs, vec_size, integer(1))
 
-  n <- unique(lengths)
+  n <- unique(sizes)
 
   if (length(n) == 1 && is.null(size)) {
     return(xs)
@@ -73,7 +73,7 @@ vec_recycle_common <- function(xs, size = NULL) {
     abort("Inputs can't be recycled to a common size.")
   }
 
-  to_recycle <- lengths == 1L
+  to_recycle <- sizes == 1L
   xs[to_recycle] <- lapply(xs[to_recycle], vec_rep, size)
 
   xs

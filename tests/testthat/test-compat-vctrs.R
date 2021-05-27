@@ -8,6 +8,15 @@ test_that("data_frame() recycles", {
   expect_equal(out$x, list(1, 1))
 })
 
+test_that("data_frame() nests", {
+  df <- data_frame(a = 3:4)
+  out <- data_frame(x = 1:2, y = df)
+  expect_equal(out$y, df)
+
+  out <- data_frame(x = 1:2, y = data_frame(a = 1))
+  expect_equal(out$y, data_frame(a = c(1, 1)))
+})
+
 test_that("new_data_frame handles zero-length inputs", {
   # Zero-length input creates zero-length data frame
   d <- data_frame(x = numeric(0), y = numeric(0))
