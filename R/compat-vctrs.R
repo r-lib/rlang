@@ -124,3 +124,98 @@ vec_dims <- function(x) {
     length(d)
   }
 }
+
+vec_ptype2 <- function(x, y) {
+  stop_incompatible_type <- function(x, y) {
+    abort(sprintf("Can't combine types <%s> and <%s>.",
+      .rlang_vctrs_typeof(x),
+      .rlang_vctrs_typeof(y)
+    ))
+  }
+
+  x_type <- .rlang_vctrs_typeof(x)
+  y_type <- .rlang_vctrs_typeof(y)
+
+  if (x_type == "unspecified") {
+    return(y)
+  }
+  if (y_type == "unspecified") {
+    return(x)
+  }
+
+  ptype <- switch(
+    x_type,
+
+    logical = switch(
+      y_type,
+      logical = x,
+      integer = y,
+      double = y,
+      stop_incompatible_type(x, y)
+    ),
+
+    integer = switch(
+      .rlang_vctrs_typeof(y),
+      logical = x,
+      integer = x,
+      double = y,
+      stop_incompatible_type(x, y)
+    ),
+
+    double = switch(
+      .rlang_vctrs_typeof(y),
+      logical = x,
+      integer = x,
+      double = x,
+      stop_incompatible_type(x, y)
+    ),
+
+    character = switch(
+      .rlang_vctrs_typeof(y),
+      character = x,
+      stop_incompatible_type(x, y)
+    ),
+
+    list = switch(
+      .rlang_vctrs_typeof(y),
+      list = x,
+      stop_incompatible_type(x, y)
+    ),
+
+    stop_incompatible_type(x, y)
+  )
+
+  vec_slice(ptype, 0)
+}
+
+.rlang_vctrs_typeof <- function(x) {
+  if (is.object(x)) {
+    class <- class(x)
+    if (identical(class, "rlang_unspecified")) {
+      return("unspecified")
+    }
+
+    class <- paste0(class, collapse = "/")
+    abort(sprintf("Unimplemented class <%s>.", class))
+  }
+
+  type <- typeof(x)
+  switch(
+    type,
+    logical = ,
+    integer = ,
+    double = ,
+    character = ,
+    raw = ,
+    list = return(type)
+  )
+
+  abort(sprintf("Unimplemented type <%s>.", type))
+}
+
+.rlang_vctrs_unspecified <- function(x) {
+  structure(
+    logical(length(x)),
+    class = "rlang_unspecified"
+  )
+}

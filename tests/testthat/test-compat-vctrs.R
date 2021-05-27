@@ -76,3 +76,43 @@ test_that("vec_slice() is generic", {
   tib <- tibble::tibble(x = 1:2, y = data_frame(a = 3:4))
   expect_equal(vec_slice(tib, 1), tib[1, ])
 })
+
+test_that("vec_ptype2() works", {
+  expect_equal(vec_ptype2(lgl(), lgl()), lgl())
+  expect_equal(vec_ptype2(lgl(), int()), int())
+  expect_equal(vec_ptype2(lgl(), dbl()), dbl())
+  expect_error(vec_ptype2(lgl(), chr()))
+  expect_error(vec_ptype2(lgl(), list()))
+  expect_error(vec_ptype2(lgl(), raw()))
+
+  expect_equal(vec_ptype2(int(), lgl()), int())
+  expect_equal(vec_ptype2(int(), int()), int())
+  expect_equal(vec_ptype2(int(), dbl()), int())
+  expect_error(vec_ptype2(int(), chr()))
+  expect_error(vec_ptype2(int(), list()))
+  expect_error(vec_ptype2(int(), raw()))
+
+  expect_equal(vec_ptype2(dbl(), lgl()), dbl())
+  expect_equal(vec_ptype2(dbl(), int()), dbl())
+  expect_equal(vec_ptype2(dbl(), dbl()), dbl())
+  expect_error(vec_ptype2(dbl(), chr()))
+  expect_error(vec_ptype2(dbl(), list()))
+  expect_error(vec_ptype2(dbl(), raw()))
+
+  expect_equal(vec_ptype2(chr(), chr()), chr())
+  expect_error(vec_ptype2(chr(), lgl()))
+  expect_error(vec_ptype2(chr(), int()))
+  expect_error(vec_ptype2(chr(), dbl()))
+  expect_error(vec_ptype2(chr(), list()))
+  expect_error(vec_ptype2(chr(), raw()))
+
+  expect_equal(vec_ptype2(list(), list()), list())
+  expect_error(vec_ptype2(list(), lgl()))
+  expect_error(vec_ptype2(list(), int()))
+  expect_error(vec_ptype2(list(), dbl()))
+  expect_error(vec_ptype2(list(), chr()))
+  expect_error(vec_ptype2(list(), raw()))
+
+  expect_snapshot(vec_ptype2(lgl(), chr()), error = TRUE)
+  expect_snapshot(vec_ptype2(factor("a"), lgl()), error = TRUE)
+})
