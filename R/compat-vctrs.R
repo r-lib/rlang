@@ -125,6 +125,10 @@ vec_dims <- function(x) {
   }
 }
 
+vec_init <- function(x, n = 1L) {
+  vec_slice(x, rep_len(NA_integer_, n))
+}
+
 vec_ptype_common <- function(xs, ptype = NULL) {
   if (!is.null(ptype)) {
     return(vec_ptype(ptype))

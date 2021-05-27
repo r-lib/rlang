@@ -52,7 +52,14 @@ test_that("new_data_frame handles zero-length inputs", {
 test_that("can slice vectors and data frames", {
   fct <- factor(c("a", "b", "a"))
   fct_exp <- factor(c("a", "a"), levels = c("a", "b"))
-  expect_equal(vec_slice(fct, c(1, 3)), fct_exp)
+  expect_equal(
+    vec_slice(fct, c(1, 3)),
+    fct_exp
+  )
+  expect_equal(
+    vec_init(fct, 2),
+    factor(c(NA, NA), c("a", "b"))
+  )
 
   df <- data_frame(
     x = fct,
@@ -62,7 +69,17 @@ test_that("can slice vectors and data frames", {
     x = fct_exp,
     y = data_frame(a = list(1, 3))
   )
-  expect_equal(vec_slice(df, c(1, 3)), df_exp)
+  expect_equal(
+    vec_slice(df, c(1, 3)),
+    df_exp
+  )
+  expect_equal(
+    vec_init(df, 2),
+    data_frame(
+      x = vec_init(fct, 2),
+      y = data_frame(a = list(NULL, NULL))
+    )
+  )
 
   rep_exp <- data_frame(
     x = rep(fct, 2),
