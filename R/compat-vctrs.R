@@ -40,11 +40,8 @@ vec_size <- function(x) {
 }
 
 vec_rep <- function(x, times) {
-  if (is.data.frame(x)) {
-    abort("TODO")
-  } else {
-    rep.int(x, times)
-  }
+  i <- rep.int(seq_len(vec_size(x)), times)
+  vec_slice(x, i)
 }
 
 vec_recycle_common <- function(xs, size = NULL) {
@@ -77,4 +74,53 @@ vec_recycle_common <- function(xs, size = NULL) {
   xs[to_recycle] <- lapply(xs[to_recycle], vec_rep, size)
 
   xs
+}
+
+vec_slice <- function(x, i) {
+  if (is.logical(i)) {
+    i <- which(i)
+  }
+  stopifnot(is.numeric(i) || is.character(i))
+
+  if (is.null(x)) {
+    return(NULL)
+  }
+
+  if (is.data.frame(x)) {
+    # We need to be a bit careful to be generic. First empty all
+    # columns and expand the df to final size.
+    out <- x[i, 0, drop = FALSE]
+
+    # Then fill in with sliced columns
+    out[seq_along(x)] <- lapply(x, vec_slice, i)
+
+    # Reset automatic row names to work around `[` weirdness
+    if (is.numeric(attr(x, "row.names"))) {
+      attr(out, "row.names") <- .set_row_names(nrow(out))
+    }
+
+    return(out)
+  }
+
+  d <- vec_dims(x)
+  if (d == 1) {
+    if (is.object(x)) {
+      x[i]
+    } else {
+      x[i, drop = FALSE]
+    }
+  } else if (d == 2) {
+    x[i, , drop = FALSE]
+  } else {
+    j <- rep(list(quote(expr = )), d - 1)
+    eval(as.call(list(quote(`[`), quote(x), quote(i), j, drop = FALSE)))
+  }
+}
+vec_dims <- function(x) {
+  d <- dim(x)
+  if (is.null(d)) {
+    1L
+  } else {
+    length(d)
+  }
 }

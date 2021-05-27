@@ -48,3 +48,31 @@ test_that("new_data_frame handles zero-length inputs", {
   d <- new_data_frame(.size = 3)
   expect_equal(dim(d), c(3, 0))
 })
+
+test_that("can slice vectors and data frames", {
+  fct <- factor(c("a", "b", "a"))
+  fct_exp <- factor(c("a", "a"), levels = c("a", "b"))
+  expect_equal(vec_slice(fct, c(1, 3)), fct_exp)
+
+  df <- data_frame(
+    x = fct,
+    y = data_frame(a = list(1, 2, 3))
+  )
+  df_exp <- data_frame(
+    x = fct_exp,
+    y = data_frame(a = list(1, 3))
+  )
+  expect_equal(vec_slice(df, c(1, 3)), df_exp)
+
+  rep_exp <- data_frame(
+    x = rep(fct, 2),
+    y = data_frame(a = rep(list(1, 2, 3), 2))
+  )
+  expect_equal(vec_rep(df, 2), rep_exp)
+})
+
+test_that("vec_slice() is generic", {
+  skip_if_not_installed("tibble")
+  tib <- tibble::tibble(x = 1:2, y = data_frame(a = 3:4))
+  expect_equal(vec_slice(tib, 1), tib[1, ])
+})
