@@ -1,4 +1,4 @@
-# vec_ptype2() works
+# vec_ptype2() implements base coercions
 
     Code
       vec_ptype2(lgl(), chr())

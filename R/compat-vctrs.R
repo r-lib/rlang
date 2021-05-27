@@ -136,6 +136,9 @@ vec_ptype2 <- function(x, y) {
   x_type <- .rlang_vctrs_typeof(x)
   y_type <- .rlang_vctrs_typeof(y)
 
+  if (x_type == "unspecified" && y_type == "unspecified") {
+    return(.rlang_vctrs_unspecified())
+  }
   if (x_type == "unspecified") {
     return(y)
   }
@@ -202,20 +205,33 @@ vec_ptype2 <- function(x, y) {
   type <- typeof(x)
   switch(
     type,
-    logical = ,
+    logical =
+      if (vec_is_unspecified(x)) {
+        return("unspecified")
+      } else {
+        return(type)
+      },
     integer = ,
     double = ,
     character = ,
     raw = ,
-    list = return(type)
+    list =
+      return(type)
   )
 
   abort(sprintf("Unimplemented type <%s>.", type))
 }
 
-.rlang_vctrs_unspecified <- function(x) {
+vec_is_unspecified <- function(x) {
+  !is.object(x) &&
+    typeof(x) == "logical" &&
+    length(x) &&
+    all(vapply(x, identical, logical(1), NA))
+}
+
+.rlang_vctrs_unspecified <- function(x = NULL) {
   structure(
-    logical(length(x)),
+    rep(NA, length(x)),
     class = "rlang_unspecified"
   )
 }

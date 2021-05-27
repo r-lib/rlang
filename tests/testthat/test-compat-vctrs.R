@@ -77,7 +77,7 @@ test_that("vec_slice() is generic", {
   expect_equal(vec_slice(tib, 1), tib[1, ])
 })
 
-test_that("vec_ptype2() works", {
+test_that("vec_ptype2() implements base coercions", {
   expect_equal(vec_ptype2(lgl(), lgl()), lgl())
   expect_equal(vec_ptype2(lgl(), int()), int())
   expect_equal(vec_ptype2(lgl(), dbl()), dbl())
@@ -115,4 +115,23 @@ test_that("vec_ptype2() works", {
 
   expect_snapshot(vec_ptype2(lgl(), chr()), error = TRUE)
   expect_snapshot(vec_ptype2(factor("a"), lgl()), error = TRUE)
+})
+
+test_that("vec_ptype2() deals with unspecified vectors", {
+  expect_equal(vec_ptype2(NA, NA), .rlang_vctrs_unspecified())
+  expect_equal(vec_ptype2(NA, lgl()), lgl())
+  expect_equal(vec_ptype2(NA, int()), int())
+  expect_equal(vec_ptype2(NA, dbl()), dbl())
+  expect_equal(vec_ptype2(NA, chr()), chr())
+  expect_equal(vec_ptype2(NA, list()), list())
+  expect_equal(vec_ptype2(lgl(), NA), lgl())
+  expect_equal(vec_ptype2(int(), NA), int())
+  expect_equal(vec_ptype2(dbl(), NA), dbl())
+  expect_equal(vec_ptype2(chr(), NA), chr())
+  expect_equal(vec_ptype2(list(), NA), list())
+})
+
+test_that("vec_is_unspecified() knows about empty logicals", {
+  expect_true(vec_is_unspecified(NA))
+  expect_false(vec_is_unspecified(lgl()))
 })
