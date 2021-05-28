@@ -28,7 +28,7 @@ new_data_frame <- function(.x = list(),
                            .class = NULL) {
   n_cols <- length(.x)
   if (n_cols != 0 && is.null(names(.x))) {
-    abort("Columns must be named.")
+    stop("Columns must be named.", call. = FALSE)
   }
 
   if (is.null(.size)) {
@@ -106,10 +106,10 @@ vec_recycle_common <- function(xs, size = NULL) {
     if (is.null(size)) {
       size <- n
     } else if (ns != size) {
-      abort("Inputs can't be recycled to `size`.")
+      stop("Inputs can't be recycled to `size`.", call. = FALSE)
     }
   } else {
-    abort("Inputs can't be recycled to a common size.")
+    stop("Inputs can't be recycled to a common size.", call. = FALSE)
   }
 
   to_recycle <- sizes == 1L
@@ -193,7 +193,7 @@ vec_assign <- function(x, i, value) {
   } else if (d == 2) {
     x[i, ] <- value
   } else {
-    abort("Can't slice-assign arrays.")
+    stop("Can't slice-assign arrays.", call. = FALSE)
   }
 
   x
@@ -238,10 +238,13 @@ vec_cast <- function(x, to) {
   }
 
   stop_incompatible_cast <- function(x, to) {
-    abort(sprintf("Can't convert <%s> to <%s>.",
-      .rlang_vctrs_typeof(x),
-      .rlang_vctrs_typeof(to)
-    ))
+    stop(
+      sprintf("Can't convert <%s> to <%s>.",
+        .rlang_vctrs_typeof(x),
+        .rlang_vctrs_typeof(to)
+      ),
+      call. = FALSE
+    )
   }
 
   lgl_cast <- function(x, to) {
@@ -320,7 +323,7 @@ vec_cast <- function(x, to) {
 
     # Check for extra columns
     if (length(setdiff(names(x), names(to))) > 0 ) {
-      abort("Can't convert data frame because of missing columns.")
+      stop("Can't convert data frame because of missing columns.", call. = FALSE)
     }
 
     new_data_frame(out)
@@ -384,10 +387,12 @@ vec_ptype <- function(x) {
 
 vec_ptype2 <- function(x, y) {
   stop_incompatible_type <- function(x, y) {
-    abort(sprintf("Can't combine types <%s> and <%s>.",
-      .rlang_vctrs_typeof(x),
-      .rlang_vctrs_typeof(y)
-    ))
+    stop(
+      sprintf("Can't combine types <%s> and <%s>.",
+        .rlang_vctrs_typeof(x),
+        .rlang_vctrs_typeof(y)),
+      call. = FALSE
+    )
   }
 
   x_type <- .rlang_vctrs_typeof(x)
@@ -532,7 +537,7 @@ vec_ptype2 <- function(x, y) {
     }
 
     class <- paste0(class, collapse = "/")
-    abort(sprintf("Unimplemented class <%s>.", class))
+    stop(sprintf("Unimplemented class <%s>.", class), call. = FALSE)
   }
 
   type <- typeof(x)
@@ -551,7 +556,7 @@ vec_ptype2 <- function(x, y) {
     list = return(type)
   )
 
-  abort(sprintf("Unimplemented type <%s>.", type))
+  stop(sprintf("Unimplemented type <%s>.", type), call. = FALSE)
 }
 
 vec_is_unspecified <- function(x) {

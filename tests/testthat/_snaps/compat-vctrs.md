@@ -2,27 +2,27 @@
 
     Code
       vec_ptype2(lgl(), chr())
-    Error <rlang_error>
+    Error <simpleError>
       Can't combine types <logical> and <character>.
 
 ---
 
     Code
       vec_ptype2(factor("a"), lgl())
-    Error <rlang_error>
+    Error <simpleError>
       Unimplemented class <factor>.
 
 # vec_ptype_common() works
 
     Code
       vec_ptype_common(list(lgl(), dbl(), ""))
-    Error <rlang_error>
+    Error <simpleError>
       Can't combine types <double> and <character>.
 
 # lossy casts throw
 
     Code
       vec_cast(1.5, 2L)
-    Error <rlang_error>
+    Error <simpleError>
       Can't convert <double> to <integer>.
 
