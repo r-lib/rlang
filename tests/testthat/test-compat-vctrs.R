@@ -181,6 +181,8 @@ test_that("safe casts work", {
   expect_equal(vec_cast(1.5, double()), 1.5)
   expect_equal(vec_cast(1.5, double()), 1.5)
 
+  expect_equal(vec_cast("", chr()), "")
+
   expect_equal(vec_cast(NULL, character()), NULL)
   expect_equal(vec_cast(NA, character()), NA_character_)
 

@@ -207,6 +207,14 @@ vec_cast <- function(x, to) {
     )
   }
 
+  chr_cast <- function(x, to) {
+    switch(
+      .rlang_vctrs_typeof(x),
+      character = x,
+      stop_incompatible_cast(x, to)
+    )
+  }
+
   list_cast <- function(x, to) {
     switch(
       .rlang_vctrs_typeof(x),
@@ -220,6 +228,7 @@ vec_cast <- function(x, to) {
     logical = lgl_cast(x, to),
     integer = int_cast(x, to),
     double = dbl_cast(x, to),
+    character = chr_cast(x, to),
     list = list_cast(x, to),
     stop_incompatible_cast(x, to)
   )
