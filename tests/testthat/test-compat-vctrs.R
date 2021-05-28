@@ -329,18 +329,28 @@ test_that("can bind data frames", {
   )
 
   expect_equal(
-    vec_rbind(
-      data_frame(x = data_frame(a = TRUE)),
-      data_frame(y = list(""))
-    ),
-    data_frame(x = data_frame(a = c(TRUE, NA)), y = list(NULL, ""))
-  )
-
-  expect_equal(
     vec_cbind(
       data_frame(x = data_frame(a = TRUE)),
       data_frame(y = list(""))
     ),
     data_frame(x = data_frame(a = TRUE), y = list(""))
+  )
+
+  expect_equal(
+    vec_rbind(
+      data_frame(x = TRUE),
+      data_frame(y = list(""))
+    ),
+    data_frame(x = c(TRUE, NA), y = list(NULL, ""))
+  )
+
+  # `rbind()` has trouble binding df-cols on old R versions
+  skip_if(getRversion() < "3.6.0")
+  expect_equal(
+    vec_rbind(
+      data_frame(x = data_frame(a = TRUE)),
+      data_frame(y = list(""))
+    ),
+    data_frame(x = data_frame(a = c(TRUE, NA)), y = list(NULL, ""))
   )
 })
