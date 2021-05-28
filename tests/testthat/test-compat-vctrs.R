@@ -165,6 +165,13 @@ test_that("vec_ptype_common() works", {
   )
 })
 
+test_that("vec_ptype_common() finalises unspecified type", {
+  expect_equal(
+    vec_ptype_common(list(NA, NA)),
+    logical()
+  )
+})
+
 test_that("safe casts work", {
   expect_equal(vec_cast(NULL, logical()), NULL)
   expect_equal(vec_cast(TRUE, logical()), TRUE)

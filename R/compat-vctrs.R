@@ -293,12 +293,20 @@ vec_ptype_common <- function(xs, ptype = NULL) {
   xs <- Filter(function(x) !is.null(x), xs)
 
   if (length(xs) == 0) {
-    NULL
-  } else if (length(xs) == 1) {
-    vec_ptype(xs[[1]])
+    return(NULL)
+  }
+
+  if (length(xs) == 1) {
+    out <- vec_ptype(xs[[1]])
   } else {
     xs <- map(xs, vec_ptype)
-    Reduce(vec_ptype2, xs)
+    out <- Reduce(vec_ptype2, xs)
+  }
+
+  if (inherits(out, "rlang_unspecified")) {
+    logical()
+  } else {
+    out
   }
 }
 
