@@ -273,3 +273,21 @@ test_that("data frame combines variables", {
     vec_ptype_common(list(data.frame(x = double(), y = double())))
   )
 })
+
+test_that("can cast data frames", {
+  expect_equal(
+    vec_cast(data.frame(y = ""), data.frame(x = 1, y = "")),
+    data.frame(y = "", x = na_dbl)
+  )
+
+  expect_equal(
+    vec_cast(data.frame(y = ""), data_frame(x = 1, y = "")),
+    data_frame(y = "", x = na_dbl)
+  )
+
+  skip_if_not_installed("tibble")
+  expect_equal(
+    vec_cast(data.frame(y = ""), tibble::tibble(x = 1, y = "")),
+    tibble::tibble(y = "", x = na_dbl)
+  )
+})

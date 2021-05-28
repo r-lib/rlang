@@ -223,6 +223,33 @@ vec_cast <- function(x, to) {
     )
   }
 
+  df_cast <- function(x, y) {
+    # Avoid expensive [.data.frame method
+    out <- as.list(x)
+
+    # Coerce common columns
+    common <- intersect(names(x), names(to))
+    out[common] <- Map(vec_cast, out[common], to[common])
+
+    # Add new columns
+    from_type <- setdiff(names(to), names(x))
+    out[from_type] <- lapply(to[from_type], vec_init, n = vec_size(x))
+
+    # Check for extra columns
+    if (length(setdiff(names(x), names(to))) > 0 ) {
+      abort("Can't convert data frame because of missing columns.")
+    }
+
+    new_data_frame(out)
+  }
+
+  rlib_df_cast <- function(x, y) {
+    new_data_frame(df_cast(x, y), .class = "tbl")
+  }
+  tib_cast <- function(x, y) {
+    new_data_frame(df_cast(x, y), .class = c("tbl_df", "tbl"))
+  }
+
   switch(
     .rlang_vctrs_typeof(to),
     logical = lgl_cast(x, to),
@@ -230,6 +257,11 @@ vec_cast <- function(x, to) {
     double = dbl_cast(x, to),
     character = chr_cast(x, to),
     list = list_cast(x, to),
+
+    base_data_frame = df_cast(x, to),
+    rlib_data_frame = rlib_df_cast(x, to),
+    tibble = tib_cast(x, to),
+
     stop_incompatible_cast(x, to)
   )
 }
