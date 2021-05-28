@@ -1,5 +1,23 @@
+# nocov start - compat-vctrs.R
+# Latest version: https://github.com/r-lib/rlang/blob/master/R/compat-vctrs.R
+
+# This file provides a minimal shim to provide a vctrs-like API on top of
+# base R functions. They are not drop-in replacements but allow a similar style
+# of programming.
+#
+# The main goal of these functions is robust-by-default manipulation
+# of data frames without having to depend on tibble or vctrs. The
+# embedded type system is minimal and not extensible.
+
+# 2021-05-28:
+# * Initial revision
+
+
 # Construction ------------------------------------------------------------
 
+# Constructs data frames inheriting from `"tbl"`. This allows the
+# pillar package to take over printing as soon as it is loaded.
+# The data frame otherwise behaves like a base data frame.
 data_frame <- function(...) {
   new_data_frame(df_list(...), .class = "tbl")
 }
@@ -549,3 +567,6 @@ vec_is_unspecified <- function(x) {
     class = "rlang_unspecified"
   )
 }
+
+
+# nocov end

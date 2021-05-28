@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* Added `compat-vctrs.R` file for robust manipulation of data frames in zero-deps packages.
+
 * Display of rlang backtraces in dynamic reports (knitted documents
   and RStudio notebooks) is now controlled by the
   `rlang_backtrace_on_error_report` option. By default, nothing is
