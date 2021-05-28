@@ -271,6 +271,42 @@ vec_ptype2 <- function(x, y) {
     return(x)
   }
 
+  df_ptype2 <- function(x, y) {
+    set_partition <- function(x, y) {
+      list(
+        both = intersect(x, y),
+        only_x = setdiff(x, y),
+        only_y = setdiff(y, x)
+      )
+    }
+
+    # Avoid expensive [.data.frame
+    x <- as.list(vec_slice(x, 0))
+    y <- as.list(vec_slice(y, 0))
+
+    # Find column types
+    names <- set_partition(names(x), names(y))
+    if (length(names$both) > 0) {
+      common_types <- Map(vec_ptype2, x[names$both], y[names$both])
+    } else {
+      common_types <- list()
+    }
+    only_x_types <- x[names$only_x]
+    only_y_types <- y[names$only_y]
+
+    # Combine and construct
+    out <- c(common_types, only_x_types, only_y_types)
+    out <- out[c(names(x), names$only_y)]
+    new_data_frame(out)
+  }
+
+  rlib_df_ptype2 <- function(x, y) {
+    new_data_frame(df_ptype2(x, y), .class = "tbl")
+  }
+  tib_ptype2 <- function(x, y) {
+    new_data_frame(df_ptype2(x, y), .class = c("tbl_df", "tbl"))
+  }
+
   ptype <- switch(
     x_type,
 
@@ -310,6 +346,33 @@ vec_ptype2 <- function(x, y) {
       stop_incompatible_type(x, y)
     ),
 
+    base_data_frame = switch(
+      .rlang_vctrs_typeof(y),
+      base_data_frame = ,
+      s3_data_frame = df_ptype2(x, y),
+      rlib_data_frame = rlib_df_ptype2(x, y),
+      tibble = tib_ptype2(x, y),
+      stop_incompatible_type(x, y)
+    ),
+
+    rlib_data_frame = switch(
+      .rlang_vctrs_typeof(y),
+      base_data_frame = ,
+      rlib_data_frame = ,
+      s3_data_frame = rlib_df_ptype2(x, y),
+      tibble = tib_ptype2(x, y),
+      stop_incompatible_type(x, y)
+    ),
+
+    tibble = switch(
+      .rlang_vctrs_typeof(y),
+      base_data_frame = ,
+      rlib_data_frame = ,
+      tibble = ,
+      s3_data_frame = tib_ptype2(x, y),
+      stop_incompatible_type(x, y)
+    ),
+
     stop_incompatible_type(x, y)
   )
 
@@ -319,8 +382,21 @@ vec_ptype2 <- function(x, y) {
 .rlang_vctrs_typeof <- function(x) {
   if (is.object(x)) {
     class <- class(x)
+
     if (identical(class, "rlang_unspecified")) {
       return("unspecified")
+    }
+    if (identical(class, "data.frame")) {
+      return("base_data_frame")
+    }
+    if (identical(class, c("tbl", "data.frame"))) {
+      return("rlib_data_frame")
+    }
+    if (identical(class, c("tbl_df", "tbl", "data.frame"))) {
+      return("tibble")
+    }
+    if (inherits(x, "data.frame")) {
+      return("s3_data_frame")
     }
 
     class <- paste0(class, collapse = "/")

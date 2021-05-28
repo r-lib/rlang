@@ -217,3 +217,57 @@ test_that("vec_cast_common(): empty input returns list()", {
   expect_equal(vec_cast_common(list()), list())
   expect_equal(vec_cast_common(list(NULL, NULL)), list(NULL, NULL))
 })
+
+test_that("data frames have a common type", {
+  exp <- data.frame(x = dbl(), y = chr())
+  exp_rlib_df <- new_data_frame(exp, .class = "tbl")
+  exp_tibble <- new_data_frame(exp, .class = c("tbl_df", "tbl"))
+
+  expect_equal(
+    vec_ptype2(data.frame(x = 1, y = ""), data.frame(y = "")),
+    exp
+  )
+  expect_equal(
+    vec_ptype2(data_frame(x = 1, y = ""), data_frame(y = "")),
+    exp_rlib_df
+  )
+  expect_equal(
+    vec_ptype2(data_frame(x = 1, y = ""), data.frame(y = "")),
+    exp_rlib_df
+  )
+
+  expect_error(
+    vec_ptype2(data.frame(x = 1, y = ""), data.frame(y = 1)),
+    "combine"
+  )
+
+  skip_if_not_installed("tibble")
+  expect_equal(
+    vec_ptype2(data_frame(x = 1, y = ""), tibble::tibble(y = "")),
+    exp_tibble
+  )
+  expect_equal(
+    vec_ptype2(tibble::tibble(x = 1, y = ""), data.frame(y = "")),
+    exp_tibble
+  )
+})
+
+test_that("data frame takes max of individual variables", {
+  dt1 <- data.frame(x = FALSE, y = 1L)
+  dt2 <- data.frame(x = 1.5, y = 1.5)
+
+  expect_equal(
+    vec_ptype_common(list(dt1, dt2)),
+    vec_ptype_common(list(dt2))
+  )
+})
+
+test_that("data frame combines variables", {
+  dt1 <- data.frame(x = 1)
+  dt2 <- data.frame(y = 1)
+
+  expect_equal(
+    vec_ptype_common(list(dt1, dt2)),
+    vec_ptype_common(list(data.frame(x = double(), y = double())))
+  )
+})
