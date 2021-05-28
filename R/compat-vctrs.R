@@ -1,3 +1,5 @@
+# Construction ------------------------------------------------------------
+
 data_frame <- function(...) {
   new_data_frame(df_list(...))
 }
@@ -30,6 +32,9 @@ new_data_frame <- function(.x = list(),
 df_list <- function(..., .size = NULL) {
   vec_recycle_common(list(...), size = .size)
 }
+
+
+# Slicing -----------------------------------------------------------------
 
 vec_size <- function(x) {
   if (is.data.frame(x)) {
@@ -128,6 +133,9 @@ vec_dims <- function(x) {
 vec_init <- function(x, n = 1L) {
   vec_slice(x, rep_len(NA_integer_, n))
 }
+
+
+# Coercion ----------------------------------------------------------------
 
 vec_ptype_common <- function(xs, ptype = NULL) {
   if (!is.null(ptype)) {
