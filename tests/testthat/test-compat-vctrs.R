@@ -1,7 +1,7 @@
 test_that("data_frame() recycles", {
   expect_equal(
     data_frame(x = 1, y = 1:2),
-    data.frame(x = c(1, 1), y = 1:2)
+    data_frame(x = c(1, 1), y = 1:2)
   )
 
   out <- data_frame(x = list(1), y = 1:2)

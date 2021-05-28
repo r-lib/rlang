@@ -1,7 +1,7 @@
 # Construction ------------------------------------------------------------
 
 data_frame <- function(...) {
-  new_data_frame(df_list(...))
+  new_data_frame(df_list(...), .class = "tbl")
 }
 
 new_data_frame <- function(.x = list(),
