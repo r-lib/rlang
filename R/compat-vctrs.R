@@ -247,7 +247,7 @@ vec_cast <- function(x, to) {
     int_cast_from_dbl <- function(x) {
       out <- suppressWarnings(as.integer(x))
       if (any((out != x) | xor(is.na(x), is.na(out)))) {
-        stop_incompatible_cast(x, double())
+        stop_incompatible_cast(x, to)
       } else {
         out
       }

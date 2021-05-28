@@ -19,3 +19,10 @@
     Error <rlang_error>
       Can't combine types <double> and <character>.
 
+# lossy casts throw
+
+    Code
+      vec_cast(1.5, 2L)
+    Error <rlang_error>
+      Can't convert <double> to <integer>.
+

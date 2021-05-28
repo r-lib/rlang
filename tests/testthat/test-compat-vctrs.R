@@ -221,6 +221,8 @@ test_that("lossy casts throw", {
   expect_error(vec_cast(c(2, 1), logical()), "convert")
 
   expect_error(vec_cast(c(2.5, 2), integer()), "convert")
+
+  expect_snapshot(vec_cast(1.5, 2L), error = TRUE)
 })
 
 test_that("invalid casts throw", {
