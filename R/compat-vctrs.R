@@ -153,6 +153,52 @@ vec_init <- function(x, n = 1L) {
   vec_slice(x, rep_len(NA_integer_, n))
 }
 
+vec_assign <- function(x, i, value) {
+  if (is.null(x)) {
+    return(NULL)
+  }
+
+  if (is.logical(i)) {
+    i <- which(i)
+  }
+  stopifnot(
+    is.numeric(i) || is.character(i)
+  )
+
+  value <- vec_recycle(value, vec_size(i))
+  value <- vec_cast(value, to = x)
+
+  d <- vec_dims(x)
+
+  if (d == 1) {
+    x[i] <- value
+  } else if (d == 2) {
+    x[i, ] <- value
+  } else {
+    abort("Can't slice-assign arrays.")
+  }
+
+  x
+}
+
+vec_recycle <- function(x, size) {
+  if (is.null(x) || is.null(size)) {
+    return(NULL)
+  }
+
+  n_x <- vec_size(x)
+
+  if (n_x == size) {
+    x
+  } else if (size == 0L) {
+    vec_slice(x, 0L)
+  } else if (n_x == 1L) {
+    vec_slice(x, rep(1L, size))
+  } else {
+    stop("Incompatible lengths: ", n_x, ", ", size, call. = FALSE)
+  }
+}
+
 
 # Coercion ----------------------------------------------------------------
 

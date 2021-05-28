@@ -94,6 +94,24 @@ test_that("vec_slice() is generic", {
   expect_equal(vec_slice(tib, 1), tib[1, ])
 })
 
+test_that("vec_assign() works", {
+  expect_identical(
+    vec_assign(1:2, 1, FALSE),
+    c(0L, 2L)
+  )
+  expect_error(
+    vec_assign(1:2, 1, 1.5),
+    "Can't convert"
+  )
+
+  df <- data_frame(x = list(1, 2), y = data_frame(a = c("a", "b")))
+
+  expect_equal(
+    vec_assign(df, 2, data_frame(x = list(10))),
+    data_frame(x = list(1, 10), y = data_frame(a = c("a", NA)))
+  )
+})
+
 test_that("vec_ptype2() implements base coercions", {
   expect_equal(vec_ptype2(lgl(), lgl()), lgl())
   expect_equal(vec_ptype2(lgl(), int()), int())
