@@ -304,18 +304,18 @@ test_that("data frame combines variables", {
 test_that("can cast data frames", {
   expect_equal(
     vec_cast(data.frame(y = ""), data.frame(x = 1, y = "")),
-    data.frame(y = "", x = na_dbl)
+    data.frame(x = na_dbl, y = "")
   )
 
   expect_equal(
     vec_cast(data.frame(y = ""), data_frame(x = 1, y = "")),
-    data_frame(y = "", x = na_dbl)
+    data_frame(x = na_dbl, y = "")
   )
 
   skip_if_not_installed("tibble")
   expect_equal(
     vec_cast(data.frame(y = ""), tibble::tibble(x = 1, y = "")),
-    tibble::tibble(y = "", x = na_dbl)
+    tibble::tibble(x = na_dbl, y = "")
   )
 })
 
@@ -352,5 +352,21 @@ test_that("can bind data frames", {
       data_frame(y = list(""))
     ),
     data_frame(x = data_frame(a = c(TRUE, NA)), y = list(NULL, ""))
+  )
+})
+
+test_that("casting to df type uses same column order", {
+  df1 <- data.frame(x = 1, y = 2)
+  df2 <- data.frame(y = 3, x = 4)
+  expect_equal(
+    vec_cast_common(list(df1, df2)),
+    list(df1, df2[2:1])
+  )
+
+  df1 <- data.frame(y = 2)
+  df2 <- data.frame(y = 3, x = 4)
+  expect_equal(
+    vec_cast_common(list(df1, df2)),
+    list(data.frame(y = 2, x = na_dbl), df2)
   )
 })

@@ -309,7 +309,12 @@ vec_cast <- function(x, to) {
     )
   }
 
-  df_cast <- function(x, y) {
+  df_cast <- function(x, to) {
+    # Check for extra columns
+    if (length(setdiff(names(x), names(to))) > 0 ) {
+      stop("Can't convert data frame because of missing columns.", call. = FALSE)
+    }
+
     # Avoid expensive [.data.frame method
     out <- as.list(x)
 
@@ -321,19 +326,17 @@ vec_cast <- function(x, to) {
     from_type <- setdiff(names(to), names(x))
     out[from_type] <- lapply(to[from_type], vec_init, n = vec_size(x))
 
-    # Check for extra columns
-    if (length(setdiff(names(x), names(to))) > 0 ) {
-      stop("Can't convert data frame because of missing columns.", call. = FALSE)
-    }
+    # Ensure columns are ordered according to `to`
+    out <- out[names(to)]
 
     new_data_frame(out)
   }
 
-  rlib_df_cast <- function(x, y) {
-    new_data_frame(df_cast(x, y), .class = "tbl")
+  rlib_df_cast <- function(x, to) {
+    new_data_frame(df_cast(x, to), .class = "tbl")
   }
-  tib_cast <- function(x, y) {
-    new_data_frame(df_cast(x, y), .class = c("tbl_df", "tbl"))
+  tib_cast <- function(x, to) {
+    new_data_frame(df_cast(x, to), .class = c("tbl_df", "tbl"))
   }
 
   switch(
