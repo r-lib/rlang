@@ -137,6 +137,94 @@ vec_init <- function(x, n = 1L) {
 
 # Coercion ----------------------------------------------------------------
 
+vec_cast_common <- function(xs, to = NULL) {
+  ptype <- vec_ptype_common(xs, ptype = to)
+  lapply(xs, vec_cast, to = ptype)
+}
+
+vec_cast <- function(x, to) {
+  if (is.null(x)) {
+    return(NULL)
+  }
+  if (is.null(to)) {
+    return(x)
+  }
+
+  if (vec_is_unspecified(x)) {
+    return(vec_init(to, vec_size(x)))
+  }
+
+  stop_incompatible_cast <- function(x, to) {
+    abort(sprintf("Can't convert <%s> to <%s>.",
+      .rlang_vctrs_typeof(x),
+      .rlang_vctrs_typeof(to)
+    ))
+  }
+
+  lgl_cast <- function(x, to) {
+    lgl_cast_from_num <- function(x) {
+      if (any(!x %in% c(0L, 1L))) {
+        stop_incompatible_cast(x, to)
+      }
+      as.logical(x)
+    }
+
+    switch(
+      .rlang_vctrs_typeof(x),
+      logical = x,
+      integer = ,
+      double = lgl_cast_from_num(x),
+      stop_incompatible_cast(x, to)
+    )
+  }
+
+  int_cast <- function(x, to) {
+    int_cast_from_dbl <- function(x) {
+      out <- suppressWarnings(as.integer(x))
+      if (any((out != x) | xor(is.na(x), is.na(out)))) {
+        stop_incompatible_cast(x, double())
+      } else {
+        out
+      }
+    }
+
+    switch(
+      .rlang_vctrs_typeof(x),
+      logical = as.integer(x),
+      integer = x,
+      double = int_cast_from_dbl(x),
+      stop_incompatible_cast(x, to)
+    )
+  }
+
+  dbl_cast <- function(x, to) {
+    switch(
+      .rlang_vctrs_typeof(x),
+      logical = ,
+      integer = as.double(x),
+      double = x,
+      stop_incompatible_cast(x, to)
+    )
+  }
+
+  list_cast <- function(x, to) {
+    switch(
+      .rlang_vctrs_typeof(x),
+      list = x,
+      stop_incompatible_cast(x, to)
+    )
+  }
+
+  switch(
+    .rlang_vctrs_typeof(to),
+    logical = lgl_cast(x, to),
+    integer = int_cast(x, to),
+    double = dbl_cast(x, to),
+    list = list_cast(x, to),
+    stop_incompatible_cast(x, to)
+  )
+}
+
 vec_ptype_common <- function(xs, ptype = NULL) {
   if (!is.null(ptype)) {
     return(vec_ptype(ptype))
@@ -242,18 +330,17 @@ vec_ptype2 <- function(x, y) {
   type <- typeof(x)
   switch(
     type,
-    logical =
-      if (vec_is_unspecified(x)) {
-        return("unspecified")
-      } else {
-        return(type)
-      },
+    NULL = return("null"),
+    logical = if (vec_is_unspecified(x)) {
+      return("unspecified")
+    } else {
+      return(type)
+    },
     integer = ,
     double = ,
     character = ,
     raw = ,
-    list =
-      return(type)
+    list = return(type)
   )
 
   abort(sprintf("Unimplemented type <%s>.", type))

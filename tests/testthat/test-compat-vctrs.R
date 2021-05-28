@@ -164,3 +164,56 @@ test_that("vec_ptype_common() works", {
     vec_ptype_common(list(lgl(), dbl(), ""))
   )
 })
+
+test_that("safe casts work", {
+  expect_equal(vec_cast(NULL, logical()), NULL)
+  expect_equal(vec_cast(TRUE, logical()), TRUE)
+  expect_equal(vec_cast(1L, logical()), TRUE)
+  expect_equal(vec_cast(1, logical()), TRUE)
+
+  expect_equal(vec_cast(NULL, integer()), NULL)
+  expect_equal(vec_cast(TRUE, integer()), 1L)
+  expect_equal(vec_cast(1L, integer()), 1L)
+  expect_equal(vec_cast(1, integer()), 1L)
+
+  expect_equal(vec_cast(NULL, double()), NULL)
+  expect_equal(vec_cast(TRUE, double()), 1L)
+  expect_equal(vec_cast(1.5, double()), 1.5)
+  expect_equal(vec_cast(1.5, double()), 1.5)
+
+  expect_equal(vec_cast(NULL, character()), NULL)
+  expect_equal(vec_cast(NA, character()), NA_character_)
+
+  expect_equal(vec_cast(NULL, list()), NULL)
+  expect_equal(vec_cast(NA, list()), list(NULL))
+  expect_equal(vec_cast(list(1L, 2L), list()), list(1L, 2L))
+})
+
+test_that("lossy casts throw", {
+  expect_error(vec_cast(c(2L, 1L), logical()), "convert")
+  expect_error(vec_cast(c(2, 1), logical()), "convert")
+
+  expect_error(vec_cast(c(2.5, 2), integer()), "convert")
+})
+
+test_that("invalid casts throw", {
+  expect_error(vec_cast(c("x", "TRUE"), logical()), "convert")
+  expect_error(vec_cast(list(c(TRUE, FALSE), TRUE), logical()), "convert")
+  expect_error(vec_cast(factor("a"), logical()), "Unimplemented")
+
+  expect_error(vec_cast(factor("a"), integer()), "Unimplemented")
+  expect_error(vec_cast("1", integer()), "convert")
+  expect_error(vec_cast(list(1L), integer()), "convert")
+
+  expect_error(vec_cast("1.5", double()), "convert")
+
+  expect_error(vec_cast(TRUE, character()), "convert")
+  expect_error(vec_cast(list("x"), character()), "convert")
+
+  expect_error(vec_cast(1:2, list()), "convert")
+})
+
+test_that("vec_cast_common(): empty input returns list()", {
+  expect_equal(vec_cast_common(list()), list())
+  expect_equal(vec_cast_common(list(NULL, NULL)), list(NULL, NULL))
+})
