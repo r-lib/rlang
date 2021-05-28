@@ -76,3 +76,8 @@ rlang_compats <- function(fn) {
     .rlang_compat(fn, try_rlang = FALSE)
   )
 }
+
+# Deterministic behaviour on old R versions
+data.frame <- function(..., stringsAsFactors = FALSE) {
+  base::data.frame(..., stringsAsFactors = stringsAsFactors)
+}
