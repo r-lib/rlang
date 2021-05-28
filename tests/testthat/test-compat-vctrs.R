@@ -291,3 +291,29 @@ test_that("can cast data frames", {
     tibble::tibble(y = "", x = na_dbl)
   )
 })
+
+test_that("can bind data frames", {
+  expect_equal(
+    vec_rbind(
+      data.frame(x = 1),
+      data_frame(y = "")
+    ),
+    data_frame(x = c(1, NA), y = c(NA, ""))
+  )
+
+  expect_equal(
+    vec_rbind(
+      data_frame(x = data_frame(a = TRUE)),
+      data_frame(y = list(""))
+    ),
+    data_frame(x = data_frame(a = c(TRUE, NA)), y = list(NULL, ""))
+  )
+
+  expect_equal(
+    vec_cbind(
+      data_frame(x = data_frame(a = TRUE)),
+      data_frame(y = list(""))
+    ),
+    data_frame(x = data_frame(a = TRUE), y = list(""))
+  )
+})
