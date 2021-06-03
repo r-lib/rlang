@@ -345,7 +345,7 @@ test_that("can bind data frames", {
   )
 
   # `rbind()` has trouble binding df-cols on old R versions
-  skip_if(getRversion() < "3.6.0")
+  skip_if(getRversion() < "4.0")
   expect_equal(
     vec_rbind(
       data_frame(x = data_frame(a = TRUE)),
