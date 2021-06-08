@@ -10,6 +10,12 @@
 
 # Changelog:
 #
+# 2020-06-08:
+#
+# * User response is cached in the global env to avoid asking again
+#   when session is reloaded.
+#
+#
 # 2020-05-20:
 #
 # * Fixed issue when downstream package is not installed.
@@ -55,6 +61,8 @@ check_downstream <- function(ver,
   if (!is.character(deps)) {
     stop("`...` must be strings.", call. = FALSE)
   }
+
+  deps_key <- paste0(deps, collapse = " ")
   deps <- .rlang_downstream_parse_deps(deps)
 
   on_package_load <- function(pkg, expr) {
@@ -66,11 +74,20 @@ check_downstream <- function(ver,
     }
   }
 
+  cache <- .rlang_downstream_get_cache()
+  cache[[pkg]][[deps_key]] <- FALSE
+
   checked <- FALSE
   for (dep in deps) {
     on_package_load(
       dep[["pkg"]],
-      .rlang_downstream_check(pkg, ver, deps, info = info)
+      .rlang_downstream_check(
+        pkg,
+        ver,
+        deps,
+        info = info,
+        deps_key = deps_key
+      )
     )
   }
 }
@@ -112,6 +129,7 @@ check_downstream <- function(ver,
                                     pkg_ver,
                                     deps,
                                     info,
+                                    deps_key = as.character(runif(1)),
                                     env = parent.frame()) {
   isFALSE <- function(x) {
     is.logical(x) && length(x) == 1L && !is.na(x) && !x
@@ -121,12 +139,23 @@ check_downstream <- function(ver,
     return(NULL)
   }
 
+  # Check cache in the global environment. This cache gets saved along
+  # with the session. This avoids getting repeated checks when session
+  # is reloaded, e.g. when revisiting RStudio servers.
+  cache <- .rlang_downstream_get_cache()
+  if (isTRUE(cache[[pkg]][[deps_key]])) {
+    return(NULL)
+  }
+
+  # Still check closure env in case the cache in the global
+  # environment has been deleted
   if (isTRUE(env$checked)) {
     return(NULL)
   }
 
   # Don't ask again. Flip now instead of on exit to defensively
   # prevent recursion.
+  cache[[pkg]][[deps_key]] <- TRUE
   env$checked <- TRUE
 
   pkgs <- vapply(deps, `[[`, "", "pkg")
@@ -289,6 +318,18 @@ check_downstream <- function(ver,
   )
 
   stop(sprintf("Internal error in rlang shims: Unknown function `%s()`.", fn))
+}
+
+.rlang_downstream_get_cache <- function() {
+  check_cache_name <- ".__rlang_downstream_check__."
+  cache <- globalenv()[[check_cache_name]]
+
+  if (is.null(cache)) {
+    cache <- new.env(parent = emptyenv())
+    .GlobalEnv[[check_cache_name]] <- cache
+  }
+
+  cache
 }
 
 
