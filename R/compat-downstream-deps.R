@@ -155,7 +155,7 @@ check_downstream <- function(ver,
 
   # Don't ask again. Flip now instead of on exit to defensively
   # prevent recursion.
-  cache[[pkg]][[deps_key]] <- TRUE
+  cache[[pkg]][deps_key] <- list(TRUE)
   env$checked <- TRUE
 
   pkgs <- vapply(deps, `[[`, "", "pkg")
