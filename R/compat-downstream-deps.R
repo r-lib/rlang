@@ -1,4 +1,4 @@
-# nocov start - compat-downstream.R
+# nocov start - compat-downstream-deps.R
 # Latest version: https://github.com/r-lib/rlang/blob/master/R/compat-downstream-deps.R
 
 # No dependencies but uses rlang and pak if available. In interactive
