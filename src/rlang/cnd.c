@@ -129,21 +129,13 @@ void r_cnd_signal(r_obj* cnd) {
 #ifdef _WIN32
 #include <Rembedded.h>
 void r_interrupt() {
-  if (R_interrupts_suspended) {
-    return;
-  }
   UserBreak = 1;
   R_CheckUserInterrupt();
-  r_abort("Internal error: Simulated interrupt not processed");
 }
 #else
 #include <Rinterface.h>
 void r_interrupt() {
-  if (R_interrupts_suspended) {
-    return;
-  }
   Rf_onintr();
-  r_abort("Internal error: Simulated interrupt not processed");
 }
 #endif
 

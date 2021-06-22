@@ -231,10 +231,25 @@ test_that("`warning.length` is increased (#1211)", {
 })
 
 test_that("interrupt() doesn't fail when interrupts are suspended (#1224)", {
-  expect_null(tryCatch(
-    suspendInterrupts(rlang::interrupt()),
-    interrupt = function(x) stop("interrupt!")
-  ))
+  skip_if_not_installed("base", "3.5.0")
+
+  out <- FALSE
+
+  tryCatch(
+    interrupt = identity,
+    {
+      suspendInterrupts({
+        tryCatch(
+          rlang::interrupt(),
+          interrupt = function(x) stop("interrupt!")
+        )
+        out <- TRUE
+      })
+      eval(TRUE)
+    }
+  )
+
+  expect_true(out)
 })
 
 
