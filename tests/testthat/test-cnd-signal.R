@@ -230,6 +230,13 @@ test_that("`warning.length` is increased (#1211)", {
   expect_true(any(grepl("foo", out$out)))
 })
 
+test_that("interrupt() doesn't fail when interrupts are suspended (#1224)", {
+  expect_null(tryCatch(
+    suspendInterrupts(rlang::interrupt()),
+    interrupt = function(x) stop("interrupt!")
+  ))
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

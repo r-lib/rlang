@@ -1,6 +1,9 @@
 # rlang (development version)
 
-* Added `compat-vctrs.R` file for robust manipulation of data frames in zero-deps packages.
+* `interrupt()` no longer fails when interrupts are suspended (#1224).
+
+* Added `compat-vctrs.R` file for robust manipulation of data frames
+  in zero-deps packages.
 
 * Display of rlang backtraces in dynamic reports (knitted documents
   and RStudio notebooks) is now controlled by the
