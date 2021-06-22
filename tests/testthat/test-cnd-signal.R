@@ -240,12 +240,13 @@ test_that("interrupt() doesn't fail when interrupts are suspended (#1224)", {
     {
       suspendInterrupts({
         tryCatch(
-          rlang::interrupt(),
-          interrupt = function(x) stop("interrupt!")
+          interrupt = function(x) stop("interrupt!"),
+          interrupt()
         )
         out <- TRUE
       })
-      eval(TRUE)
+      # Make sure suspended interrupt is processed
+      interrupt()
     }
   )
 
