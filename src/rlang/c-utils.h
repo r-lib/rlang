@@ -34,7 +34,7 @@ intmax_t r__intmax_add(intmax_t x, intmax_t y) {
 static inline
 intmax_t r__intmax_subtract(intmax_t x, intmax_t y) {
   if ((y > 0 && x < (INTMAX_MIN + y)) ||
-      (y < 0 && x < (INTMAX_MAX + y))) {
+      (y < 0 && x > (INTMAX_MAX + y))) {
     r_stop_internal("intmax_subtract", "Subtraction resulted in overflow or underflow.");
   }
 
