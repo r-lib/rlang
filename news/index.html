@@ -158,6 +158,7 @@
 <a href="#rlang-development-version" class="anchor"></a>rlang (development version)<small> Unreleased </small>
 </h1>
 <ul>
+<li><p>Fixed an <code><a href="../reference/s3_register.html">s3_register()</a></code> issue when the registering package is a dependency of the package that exports the generic (<a href='https://github.com/r-lib/rlang/issues/1225'>#1225</a>).</p></li>
 <li><p><code><a href="../reference/abort.html">interrupt()</a></code> no longer fails when interrupts are suspended (<a href='https://github.com/r-lib/rlang/issues/1224'>#1224</a>).</p></li>
 <li><p>Added <code>compat-vctrs.R</code> file for robust manipulation of data frames in zero-deps packages.</p></li>
 <li><p>Display of rlang backtraces in dynamic reports (knitted documents and RStudio notebooks) is now controlled by the <code>rlang_backtrace_on_error_report</code> option. By default, nothing is displayed in interactive sessions. In non-interactive sessions, a simplified backtrace is displayed instead of a full backtrace</p></li>
