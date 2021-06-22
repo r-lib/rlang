@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* Fixed an `s3_register()` issue when the registering package is a
+  dependency of the package that exports the generic (#1225).
+
 * `interrupt()` no longer fails when interrupts are suspended (#1224).
 
 * Added `compat-vctrs.R` file for robust manipulation of data frames

@@ -104,10 +104,16 @@ s3_register <- function(generic, class, method = NULL) {
   }
 
   # Always register hook in case package is later unloaded & reloaded
-  setHook(packageEvent(package, "onLoad"), register)
+  setHook(packageEvent(package, "onLoad"), function(...) {
+    register()
+  })
 
-  # Avoid registration failures during loading (pkgload or regular)
-  if (isNamespaceLoaded(package)) {
+  # Avoid registration failures during loading (pkgload or regular).
+  # Check that environment is locked because the registering package
+  # might be a dependency of the package that exports the generic. In
+  # that case, the exports (and the generic) might not be populated
+  # yet (#1225).
+  if (isNamespaceLoaded(package) && environmentIsLocked(asNamespace(package))) {
     register()
   }
 
