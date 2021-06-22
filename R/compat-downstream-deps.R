@@ -129,7 +129,7 @@ check_downstream <- function(ver,
                                     pkg_ver,
                                     deps,
                                     info,
-                                    deps_key = as.character(runif(1)),
+                                    deps_key = as.character(stats::runif(1)),
                                     env = parent.frame()) {
   isFALSE <- function(x) {
     is.logical(x) && length(x) == 1L && !is.na(x) && !x

@@ -36,6 +36,7 @@ Suggests:
     pak,
     pillar,
     rmarkdown,
+    stats,
     testthat (>= 3.0.0),
     tibble,
     usethis,
