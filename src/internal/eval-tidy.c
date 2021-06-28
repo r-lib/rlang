@@ -433,7 +433,7 @@ r_obj* tilde_eval(r_obj* tilde, r_obj* current_frame, r_obj* caller_frame) {
   // Unless the quosure was created in the mask, swap lexical contexts
   // temporarily by rechaining the top of the mask to the quosure
   // environment
-  if (!r_env_inherits(info.mask, quo_env, top)) {
+  if (!r_env_inherits(quo_env, info.mask, top)) {
     // Unwind-protect the restoration of original parents
     on_exit_restore_lexical_env(info.mask, r_env_parent(top), current_frame);
     r_env_poke_parent(top, quo_env);
@@ -530,7 +530,7 @@ r_obj* rlang_eval_tidy(r_obj* expr, r_obj* data, r_obj* env) {
   // * Look-up in leaked environments would proceed from the data mask
   //   to the appropriate lexical environment (from quosures or from
   //   the `env` argument of eval_tidy()).
-  if (!r_env_inherits(mask, env, top)) {
+  if (!r_env_inherits(env, mask, top)) {
     poke_ctxt_env(mask, env);
     r_env_poke_parent(top, env);
   }

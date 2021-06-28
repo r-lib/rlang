@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* Fixed a hang when a quosure inheriting from a data mask is evaluated
+  in the mask again.
+
 * Added `is_error()`, `is_warning()`, and `is_message()` predicates (#1220).
 
 * Fixed an `s3_register()` issue when the registering package is a

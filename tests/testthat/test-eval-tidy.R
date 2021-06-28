@@ -489,6 +489,18 @@ test_that("eval_tidy() propagates visibility", {
   expect_invisible(eval_tidy(quo(identity(!!local(quo(invisible(list())))))))
 })
 
+test_that("quosures that inherit from the mask are not rechained", {
+  mask <- new_data_mask(env(data = 1))
+
+  q1 <- eval_tidy(quote(quo(letters)), mask)
+  q2 <- eval_tidy(quote(local(quo(letters))), mask)
+
+  expect_equal(eval_tidy(q1, mask), letters)
+
+  # This used to hang (tidyverse/dplyr#5927)
+  expect_equal(eval_tidy(q2, mask), letters)
+})
+
 
 # Lifecycle ----------------------------------------------------------
 
