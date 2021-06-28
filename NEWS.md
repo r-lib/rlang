@@ -1,5 +1,21 @@
 # rlang (development version)
 
+## Breaking changes
+
+* The global `.data` object now always throws an error when
+  subsetted. This causes early informative errors when the `.data`
+  pronoun is used outside of a data mask.
+  
+  We noticed some CRAN failures following this change that revealed
+  issues such as mistakenly using the `by` argument of
+  `dplyr::left_join()` or the `...` of `ggplot2::labs()` as
+  data-masked arguments. Since there is no data mask for these
+  arguments, the global `.data` pronoun (used as a documentation
+  anchor) was subsetted and silently returned `NULL`.
+
+
+## Features and bugfixes
+
 * Fixed a hang when a quosure inheriting from a data mask is evaluated
   in the mask again.
 
