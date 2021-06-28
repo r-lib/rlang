@@ -47,3 +47,10 @@ test_that("bare conditions must be subclassed", {
   expect_error(cnd(), "must be subclassed")
   expect_error(signal(""), "must be subclassed")
 })
+
+test_that("predicates match condition classes", {
+  expect_true(is_error(catch_cnd(stop("foo"))))
+  expect_false(is_error(catch_cnd(warning("foo"))))
+  expect_true(is_warning(catch_cnd(warning("foo"))))
+  expect_true(is_message(catch_cnd(message("foo"))))
+})

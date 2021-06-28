@@ -2,9 +2,18 @@
 % Please edit documentation in R/cnd.R
 \name{is_condition}
 \alias{is_condition}
+\alias{is_error}
+\alias{is_warning}
+\alias{is_message}
 \title{Is object a condition?}
 \usage{
 is_condition(x)
+
+is_error(x)
+
+is_warning(x)
+
+is_message(x)
 }
 \arguments{
 \item{x}{An object to test.}

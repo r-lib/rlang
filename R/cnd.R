@@ -68,6 +68,21 @@ cnd_fields <- function(..., .subclass = NULL, env = caller_env()) {
 is_condition <- function(x) {
   inherits(x, "condition")
 }
+#' @rdname is_condition
+#' @export
+is_error <- function(x) {
+  inherits(x, "error")
+}
+#' @rdname is_condition
+#' @export
+is_warning <- function(x) {
+  inherits(x, "warning")
+}
+#' @rdname is_condition
+#' @export
+is_message <- function(x) {
+  inherits(x, "message")
+}
 
 #' What type is a condition?
 #'

@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* Added `is_error()`, `is_warning()`, and `is_message()` predicates (#1220).
+
 * Fixed an `s3_register()` issue when the registering package is a
   dependency of the package that exports the generic (#1225).
 
