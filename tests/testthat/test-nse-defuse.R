@@ -590,3 +590,11 @@ test_that("auto-named expressions can be unique-repaired", {
     )
   })
 })
+
+test_that("can capture forced numbered dot", {
+  fn <- function(..., x = ..1) {
+    force(x)
+    enquo(x)
+  }
+  expect_equal(fn(1 + 1), quo(2))
+})

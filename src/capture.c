@@ -39,6 +39,9 @@ SEXP attribute_hidden new_captured_promise(SEXP x, SEXP env) {
         expr_env = PRENV(expr);
         expr = PREXPR(expr);
 
+	if (expr_env == R_NilValue)
+	    break;
+
 	if (TYPEOF(expr) == SYMSXP) {
 	    int dd = dotDotVal(expr);
 	    if (dd)
