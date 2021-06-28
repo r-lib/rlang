@@ -4,13 +4,7 @@
 \alias{call_standardise}
 \title{Standardise a call}
 \usage{
-call_standardise(
-  call,
-  env = caller_env(),
-  ...,
-  defaults = FALSE,
-  dots_env = empty_env()
-)
+call_standardise(call, env = caller_env())
 }
 \arguments{
 \item{call}{Can be a call or a quosure that wraps a call.}
@@ -18,17 +12,6 @@ call_standardise(
 \item{env}{The environment where to find the definition of the
 function quoted in \code{call} in case \code{call} is not wrapped in a
 quosure.}
-
-\item{...}{These dots must be empty.}
-
-\item{defaults}{Whether to match missing arguments to their
-defaults.}
-
-\item{dots_env}{An execution environment where to find dots. If
-supplied and dots exist in this environment, and if \code{call}
-includes \code{...}, the forwarded dots are matched to numbered dots
-(e.g. \code{..1}, \code{..2}, etc). By default this is set to the empty
-environment which means that \code{...} expands to nothing.}
 }
 \value{
 A quosure if \code{call} is a quosure, a raw call otherwise.

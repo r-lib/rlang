@@ -1429,19 +1429,10 @@ is_expr <- function(x) {
 #'
 #' @return A quosure if `call` is a quosure, a raw call otherwise.
 #' @export
-call_standardise <- function(call,
-                             env = caller_env(),
-                             ...,
-                             defaults = FALSE,
-                             dots_env = empty_env()) {
-  check_dots_empty()
-
+call_standardise <- function(call, env = caller_env()) {
   expr <- get_expr(call)
   if (!is_call(expr)) {
     abort_call_input_type("call")
-  }
-  if (is_bare_formula(call)) {
-    return(call)
   }
 
   if (is_frame(call)) {
@@ -1452,15 +1443,13 @@ call_standardise <- function(call,
     fn <- eval_bare(node_car(expr), env)
   }
 
-  matched <- call_match(
-    expr,
-    fn,
-    defaults = defaults,
-    dots_env = dots_env
-  )
-  set_expr(call, matched)
+  if (is_primitive(fn)) {
+    call
+  } else {
+    matched <- match.call(fn, expr)
+    set_expr(call, matched)
+  }
 }
-
 
 
 #  Nodes  ------------------------------------------------------------
