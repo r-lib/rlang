@@ -21,14 +21,14 @@ static r_obj* new_binding_types(r_ssize n) {
 
 static enum r_env_binding_type which_env_binding(r_obj* env, r_obj* sym) {
   if (r_env_binding_is_promise(env, sym)) {
-    return R_ENV_BINDING_PROMISE;
+    return R_ENV_BINDING_TYPE_promise;
   }
 
   if (r_env_binding_is_active(env, sym)) {
-    return R_ENV_BINDING_ACTIVE;
+    return R_ENV_BINDING_TYPE_active;
   }
 
-  return R_ENV_BINDING_VALUE;
+  return R_ENV_BINDING_TYPE_value;
 }
 
 static inline r_obj* binding_as_sym(bool list, r_obj* bindings, r_ssize i) {
