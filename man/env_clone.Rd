@@ -13,7 +13,8 @@ env_clone(env, parent = env_parent(env))
 }
 \description{
 This creates a new environment containing exactly the same objects,
-optionally with a new parent.
+optionally with a new parent. Active bindings and promises are
+preserved (the latter only on R >= 4.0.0).
 }
 \examples{
 env <- env(!!! mtcars)

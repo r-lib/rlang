@@ -345,14 +345,29 @@ test_that("environment is printed with class if any", {
   expect_output(env_print(env), "Class: foo, bar")
 })
 
-test_that("env_clone() invokes active bindings in all R versions", {
-  if (getRversion() >= "4.0") {
-    skip("Until the workaround is in place")
-  }
+test_that("env_clone() handles active bindings", {
   e <- env()
-  env_bind_active(e, foo = function() "foo")
+  env_bind_active(e, foo = function() value)
   out <- env_clone(e)
-  expect_identical(out$foo, "foo")
+
+  value <- "foo"
+  expect_equal(out$foo, "foo")
+
+  value <- "bar"
+  expect_equal(out$foo, "bar")
+})
+
+test_that("env_clone() doesn't force promises", {
+  skip_if_not_installed("base", "4.0.0")
+
+  e <- env()
+  env_bind_lazy(e, foo = value)
+
+  value <- "foo"
+  out <- env_clone(e)
+
+  value <- "bar"
+  expect_equal(out$foo, "bar")
 })
 
 test_that("env_poke_parent() pokes parent", {
@@ -405,6 +420,9 @@ test_that("env_clone() duplicates hash table", {
 
 test_that("env_clone() increases refcounts (#621)", {
   e <- env(x = 1:2)
+  env_bind_lazy(e, foo = 1)
+  env_bind_active(e, bar = function() 1)
+
   c <- env_clone(e)
   c$x[1] <- NA
 

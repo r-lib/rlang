@@ -1,5 +1,6 @@
 #include "rlang.h"
-#include <Rversion.h>
+
+#include "decl/env-decl.h"
 
 r_obj* eval_with_x(r_obj* call, r_obj* x);
 r_obj* eval_with_xy(r_obj* call, r_obj* x, r_obj* y);
@@ -114,23 +115,76 @@ r_obj* r_env_as_list_compat(r_obj* env, r_obj* out) {
   return out;
 }
 
-r_obj* r_list_as_environment(r_obj* x, r_obj* parent) {
-  parent = parent ? parent : r_envs.empty;
-  return eval_with_xy(list2env_call, x, parent);
-}
-
 r_obj* r_env_clone(r_obj* env, r_obj* parent) {
   if (parent == NULL) {
     parent = r_env_parent(env);
   }
 
-  r_obj* out = KEEP(r_env_as_list(env));
-  out = r_list_as_environment(out, parent);
+  r_obj* nms = KEEP(r_env_names(env));
+  r_obj* types = KEEP(r_env_binding_types(env, nms));
 
-  FREE(1);
+  if (types == r_null) {
+    FREE(2);
+    return env_clone_roundtrip(env, parent);
+  }
+
+  r_ssize n = r_length(nms);
+
+#if R_VERSION < R_Version(4, 0, 0)
+  // In older R versions there is no way of accessing the function of
+  // an active binding except through env2list. This makes it
+  // impossible to preserve active bindings without forcing promises.
+
+  r_obj* env_list = KEEP(eval_with_x(env2list_call, env));
+  r_obj* out = KEEP(r_list_as_environment(env_list, parent));
+#else
+  r_obj* out = KEEP(r_alloc_environment(n, parent));
+  KEEP(r_null);
+#endif
+
+  r_obj* const * v_nms = r_chr_cbegin(nms);
+  enum r_env_binding_type* v_types = (enum r_env_binding_type*) r_int_begin(types);
+
+  for (r_ssize i = 0; i < n; ++i, ++v_nms, ++v_types) {
+    r_obj* sym = r_str_as_symbol(*v_nms);
+
+    switch (*v_types) {
+    case R_ENV_BINDING_TYPE_value:
+    case R_ENV_BINDING_TYPE_promise:
+      r_env_poke(out, sym, r_env_find(env, sym));
+      break;
+
+    case R_ENV_BINDING_TYPE_active: {
+#if R_VERSION < R_Version(4, 0, 0)
+      r_ssize fn_idx = r_chr_detect_index(nms, r_sym_c_string(sym));
+      if (fn_idx < 0) {
+        r_abort("Internal error: Can't find active binding in temporary list");
+      }
+      r_obj* fn = r_list_get(env_list, fn_idx);
+#else
+      r_obj* fn = R_ActiveBindingFunction(sym, env);
+#endif
+      r_env_poke_active(out, sym, fn);
+      break;
+    }}
+  }
+
+  FREE(4);
   return out;
 }
 
+static
+r_obj* env_clone_roundtrip(r_obj* env, r_obj* parent) {
+  r_obj* out_list = KEEP(r_env_as_list(env));
+  r_obj* out = r_list_as_environment(out_list, parent);
+  FREE(1);
+  return(out);
+}
+
+r_obj* r_list_as_environment(r_obj* x, r_obj* parent) {
+  parent = parent ? parent : r_envs.empty;
+  return eval_with_xy(list2env_call, x, parent);
+}
 
 static r_obj* poke_lazy_call = NULL;
 static r_obj* poke_lazy_value_node = NULL;

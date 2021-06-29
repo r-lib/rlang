@@ -90,9 +90,7 @@ void r_env_poke_lazy(r_obj* env, r_obj* sym, r_obj* expr, r_obj* eval_env);
 
 static inline
 void r_env_poke_active(r_obj* env, r_obj* sym, r_obj* fn) {
-  if (r_env_has(env, sym)) {
-    r_env_unbind(env, sym);
-  }
+  r_env_unbind(env, sym);
   R_MakeActiveBinding(sym, fn, env);
 }
 
