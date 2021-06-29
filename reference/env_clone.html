@@ -41,7 +41,8 @@
 
 <meta property="og:title" content="Clone an environment — env_clone" />
 <meta property="og:description" content="This creates a new environment containing exactly the same objects,
-optionally with a new parent." />
+optionally with a new parent. Active bindings and promises are
+preserved (the latter only on R &amp;gt;= 4.0.0)." />
 
 
 
@@ -158,7 +159,8 @@ optionally with a new parent." />
 
     <div class="ref-description">
     <p>This creates a new environment containing exactly the same objects,
-optionally with a new parent.</p>
+optionally with a new parent. Active bindings and promises are
+preserved (the latter only on R &gt;= 4.0.0).</p>
     </div>
 
     <pre class="usage"><span class='fu'>env_clone</span><span class='op'>(</span><span class='va'>env</span>, parent <span class='op'>=</span> <span class='fu'><a href='env_parent.html'>env_parent</a></span><span class='op'>(</span><span class='va'>env</span><span class='op'>)</span><span class='op'>)</span></pre>
