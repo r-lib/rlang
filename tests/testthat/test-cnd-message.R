@@ -153,3 +153,34 @@ test_that("cli syntax is escaped in 'try' mode", {
   x <- "{foo {{}}"
   expect_equal(cli_format_message(x), x)
 })
+
+test_that("str_restore() deals with attributes", {
+  msg <- structure("foo", attr = TRUE)
+
+  expect_equal(
+    str_restore("bar", msg),
+    structure("bar", attr = TRUE)
+  )
+
+  msg_oo <- structure("foo", attr = TRUE, class = "foo")
+  expect_equal(
+    str_restore("bar", msg_oo),
+    "bar"
+  )
+
+  .rlang_use_cli_format <- TRUE
+  expect_equal(
+    attributes(cli_format_message(msg)),
+    list(attr = TRUE)
+  )
+  .rlang_use_cli_format <- FALSE
+  expect_equal(
+    attributes(cli_format_message(msg)),
+    list(attr = TRUE)
+  )
+  .rlang_use_cli_format <- "try"
+  expect_equal(
+    attributes(cli_format_message(msg)),
+    list(attr = TRUE)
+  )
+})
