@@ -177,13 +177,7 @@ as a simpler wrapper around <code><a href='https://rdrr.io/r/base/match.call.htm
 experimental handling of primitive functions.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>call_standardise</span><span class='op'>(</span>
-  <span class='va'>call</span>,
-  env <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span>,
-  <span class='va'>...</span>,
-  defaults <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  dots_env <span class='op'>=</span> <span class='fu'><a href='empty_env.html'>empty_env</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>call_standardise</span><span class='op'>(</span><span class='va'>call</span>, env <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -197,23 +191,6 @@ experimental handling of primitive functions.</p>
       <td><p>The environment where to find the definition of the
 function quoted in <code>call</code> in case <code>call</code> is not wrapped in a
 quosure.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>These dots must be empty.</p></td>
-    </tr>
-    <tr>
-      <th>defaults</th>
-      <td><p>Whether to match missing arguments to their
-defaults.</p></td>
-    </tr>
-    <tr>
-      <th>dots_env</th>
-      <td><p>An execution environment where to find dots. If
-supplied and dots exist in this environment, and if <code>call</code>
-includes <code>...</code>, the forwarded dots are matched to numbered dots
-(e.g. <code>..1</code>, <code>..2</code>, etc). By default this is set to the empty
-environment which means that <code>...</code> expands to nothing.</p></td>
     </tr>
     </table>
 
