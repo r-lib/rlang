@@ -29,6 +29,9 @@
 
 ## Features and bugfixes
 
+* `env_clone()` now properly clones active bindings and avoids forcing
+  promises (#1228). On R < 4.0, promises are still forced.
+
 * Fixed a hang when a quosure inheriting from a data mask is evaluated
   in the mask again.
 

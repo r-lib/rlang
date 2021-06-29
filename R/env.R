@@ -528,7 +528,8 @@ env_poke_parent <- function(env, new_env) {
 #' Clone an environment
 #'
 #' This creates a new environment containing exactly the same objects,
-#' optionally with a new parent.
+#' optionally with a new parent. Active bindings and promises are
+#' preserved (the latter only on R >= 4.0.0).
 #'
 #' @inheritParams get_env
 #' @param parent The parent of the cloned environment.
