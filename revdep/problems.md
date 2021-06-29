@@ -263,44 +263,6 @@ Run `cloud_details(, "ipmr")` for more info
         libs   2.5Mb
     ```
 
-# pammtools
-
-<details>
-
-* Version: 0.5.7
-* GitHub: https://github.com/adibender/pammtools
-* Source code: https://github.com/cran/pammtools
-* Date/Publication: 2021-06-21 13:00:02 UTC
-* Number of recursive dependencies: 112
-
-Run `cloud_details(, "pammtools")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking tests ... ERROR
-    ```
-      Running ‘testthat.R’
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-       18. │             │     └─rlang:::endots(...)
-       19. │             │       └─rlang:::map(...)
-       20. │             │         └─base::lapply(.x, .f, ...)
-       21. │             │           └─rlang:::FUN(X[[i]], ...)
-       22. │             │             └─rlang::splice(...)
-       23. │             └─(function (arg) ...
-       24. ├─tibble::as_tibble(.)
-       25. └─purrr::reduce(., left_join)
-       26.   └─purrr:::reduce_impl(.x, .f, ..., .init = .init, .dir = .dir)
-       27.     └─purrr:::reduce_init(.x, .init, left = left)
-       28.       └─rlang::is_empty(x)
-      
-      [ FAIL 4 | WARN 0 | SKIP 0 | PASS 344 ]
-      Error: Test failures
-      Execution halted
-    ```
-
 # PVplr
 
 <details>
@@ -431,44 +393,6 @@ Run `cloud_details(, "sketch")` for more info
     Execution halted
     ```
 
-# table.express
-
-<details>
-
-* Version: 0.3.1
-* GitHub: https://github.com/asardaes/table.express
-* Source code: https://github.com/cran/table.express
-* Date/Publication: 2019-09-07 11:10:02 UTC
-* Number of recursive dependencies: 50
-
-Run `cloud_details(, "table.express")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking tests ... ERROR
-    ```
-      Running ‘testthat.R’
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-           ▆
-        1. ├─`%>%`(...)
-        2. ├─table.express::end_expr(.)
-        3. ├─table.express::transmute_sd(., mad(.COL, ...), low = TRUE, .SDcols = sd_cols)
-        4. └─table.express:::transmute_sd.ExprBuilder(...)
-        5.   └─table.express:::standardize_calls(...)
-        6.     └─base::lapply(...)
-        7.       └─table.express:::FUN(X[[i]], ...)
-        8.         └─rlang::call_standardise(.expr, .env)
-        9.           └─rlang::call_match(expr, fn, defaults = defaults, dots_env = dots_env)
-       10.             └─base::match.call(fn, call, expand.dots = FALSE, envir = dots_env)
-      
-      [ FAIL 3 | WARN 0 | SKIP 1 | PASS 588 ]
-      Error: Test failures
-      Execution halted
-    ```
-
 # tidyMicro
 
 <details>
@@ -558,31 +482,6 @@ Run `cloud_details(, "unpivotr")` for more info
 
 ## Newly broken
 
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘unpivotr-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: behead
-    > ### Title: Strip a level of headers from a pivot table
-    > ### Aliases: behead behead_if
-    > 
-    > ### ** Examples
-    > 
-    > # A simple table with a row of headers
-    ...
-    3     3     1 int       <NA>      2
-    4     1     2 chr       b        NA
-    5     2     2 int       <NA>      3
-    6     3     2 int       <NA>      4
-    > 
-    > # Strip the cells in row 1 (the original headers) and use them as data
-    > behead(cells, "N", foo)
-    Error in (function (arg)  : use of NULL environment is defunct
-    Calls: behead ... <Anonymous> -> enexpr -> <Anonymous> -> <Anonymous>
-    Execution halted
-    ```
-
 *   checking tests ... ERROR
     ```
       Running ‘testthat.R’
@@ -600,7 +499,7 @@ Run `cloud_details(, "unpivotr")` for more info
        10.       └─rlang::as_function(corner)
        11.         └─base::get(x, envir = env, mode = "function")
       
-      [ FAIL 23 | WARN 0 | SKIP 0 | PASS 135 ]
+      [ FAIL 3 | WARN 0 | SKIP 0 | PASS 237 ]
       Error: Test failures
       Execution halted
     ```
