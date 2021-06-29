@@ -2,6 +2,19 @@
 
 ## Breaking changes
 
+* If a string is supplied to `as_function()` instead of an object
+  (function or formula), the function is looked up in the global
+  environment instead of the calling environment. In general, passing
+  a function name as a string is brittle. It is easy to forget to pass
+  the user environment to `as_function()` and sometimes there is no
+  obvious user environment. The support for strings should be
+  considered a convenience for end users only, not for programmers.
+
+  Since environment forwarding is easy to mess up, and since the
+  feature is aimed towards end users, `as_function()` now defaults to
+  the global environment. Supply an environment explicitly if that is
+  not correct in your case.
+
 * The global `.data` object now always throws an error when
   subsetted. This causes early informative errors when the `.data`
   pronoun is used outside of a data mask.
