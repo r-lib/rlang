@@ -12,7 +12,7 @@ static r_obj* splice_box_attrib;
 r_obj* rlang_ns_get(const char* name);
 
 static
-int arg_match_ignore_empty(r_obj* ignore_empty);
+enum dots_ignore_empty arg_match_ignore_empty(r_obj* ignore_empty);
 
 static
 enum dots_homonyms arg_match_homonyms(r_obj* homonyms);

@@ -20,6 +20,21 @@ enum arg_named {
   ARG_NAMED_auto
 };
 
+enum dots_ignore_empty {
+  DOTS_IGNORE_EMPTY_trailing = 0,
+  DOTS_IGNORE_EMPTY_none,
+  DOTS_IGNORE_EMPTY_all,
+  DOTS_IGNORE_EMPTY_SIZE,
+};
+
+static
+const char* dots_ignore_empty_c_values[DOTS_IGNORE_EMPTY_SIZE] = {
+  [DOTS_IGNORE_EMPTY_trailing] = "trailing",
+  [DOTS_IGNORE_EMPTY_none] = "none",
+  [DOTS_IGNORE_EMPTY_all] = "all"
+};
+
+
 #include "decl/dots-decl.h"
 
 
@@ -54,7 +69,7 @@ struct dots_capture_info {
   r_ssize count;
   enum arg_named named;
   bool needs_expansion;
-  int ignore_empty;
+  enum dots_ignore_empty ignore_empty;
   bool preserve_empty;
   bool unquote_names;
   enum dots_homonyms homonyms;
@@ -353,8 +368,14 @@ r_obj* dots_big_bang(struct dots_capture_info* capture_info,
 }
 
 static inline
-bool should_ignore(int ignore_empty, r_ssize i, r_ssize n) {
-  return ignore_empty == 1 || (i == n - 1 && ignore_empty == -1);
+bool should_ignore(enum dots_ignore_empty ignore_empty,
+                   r_ssize i,
+                   r_ssize n) {
+  switch (ignore_empty) {
+  case DOTS_IGNORE_EMPTY_all: return true;
+  case DOTS_IGNORE_EMPTY_trailing: return i == n - 1;
+  default: return false;
+  }
 }
 static inline
 r_obj* dot_get_expr(r_obj* dot) {
@@ -516,27 +537,9 @@ r_obj* dots_unquote(r_obj* dots, struct dots_capture_info* capture_info) {
   return dots;
 }
 
-enum dots_ignore_empty {
-  DOTS_IGNORE_EMPTY_trailing = 0,
-  DOTS_IGNORE_EMPTY_none,
-  DOTS_IGNORE_EMPTY_all,
-  DOTS_IGNORE_EMPTY_SIZE,
-};
 static
-const char* dots_ignore_empty_c_values[DOTS_IGNORE_EMPTY_SIZE] = {
-  [DOTS_IGNORE_EMPTY_trailing] = "trailing",
-  [DOTS_IGNORE_EMPTY_none] = "none",
-  [DOTS_IGNORE_EMPTY_all] = "all"
-};
-
-static
-int arg_match_ignore_empty(r_obj* ignore_empty) {
-  switch ((enum dots_ignore_empty) r_arg_match(ignore_empty, dots_ignore_empty_values, dots_ignore_empty_arg)) {
-  case DOTS_IGNORE_EMPTY_trailing: return -1;
-  case DOTS_IGNORE_EMPTY_none: return 0;
-  case DOTS_IGNORE_EMPTY_all: return 1;
-  default: r_stop_unreached("arg_match_ignore_empty");
-  }
+enum dots_ignore_empty arg_match_ignore_empty(r_obj* ignore_empty) {
+  return r_arg_match(ignore_empty, dots_ignore_empty_values, dots_ignore_empty_arg);
 }
 
 static
