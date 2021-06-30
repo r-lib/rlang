@@ -291,7 +291,7 @@ test_that("quosure attributes are cloned (#1142)", {
 
 test_that("as_quosure() still provides default env", {
   local_lifecycle_warnings()
-  quo <- expect_warning(as_quosure(quote(foo)), "explicit environment")
+  expect_warning(quo <- as_quosure(quote(foo)), "explicit environment")
   expect_reference(quo_get_env(quo), current_env())
 })
 
