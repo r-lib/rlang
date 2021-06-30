@@ -490,15 +490,18 @@ test_that("eval_tidy() propagates visibility", {
 })
 
 test_that("quosures that inherit from the mask are not rechained", {
-  mask <- new_data_mask(env(data = 1))
+  local_data <- "bar"
+  mask <- new_data_mask(env(mask_data = "foo"))
 
-  q1 <- eval_tidy(quote(quo(letters)), mask)
-  q2 <- eval_tidy(quote(local(quo(letters))), mask)
+  q1 <- eval_tidy(quote(rlang::quo(letters)), mask, base_env())
 
-  expect_equal(eval_tidy(q1, mask), letters)
+  expr <- quote(paste(letters[[1]], mask_data, local_data))
+  q2 <- eval_tidy(quote(local(rlang::quo(!!expr))), mask)
+
+  expect_equal(eval_tidy(q1, mask, base_env()), letters)
 
   # This used to hang (tidyverse/dplyr#5927)
-  expect_equal(eval_tidy(q2, mask), letters)
+  expect_equal(eval_tidy(q2, mask, base_env()), "a foo bar")
 })
 
 
