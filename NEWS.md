@@ -29,6 +29,8 @@
 
 ## Features and bugfixes
 
+* `friendly_type_of()` now supports missing arguments.
+
 * `env_clone()` now properly clones active bindings and avoids forcing
   promises (#1228). On R < 4.0, promises are still forced.
 

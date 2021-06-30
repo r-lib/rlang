@@ -3,6 +3,9 @@
 # Changelog
 # =========
 #
+# 2021-06-30:
+# - Added support for missing arguments.
+#
 # 2021-04-19:
 # - Added support for matrices and arrays (#141).
 # - Added documentation.
@@ -16,6 +19,10 @@
 #'   article, e.g. "an integer vector".
 #' @noRd
 friendly_type_of <- function(x, length = FALSE) {
+  if (is_missing(x)) {
+    return("absent")
+  }
+
   if (is.object(x)) {
     if (inherits(x, "quosure")) {
       type <- "quosure"

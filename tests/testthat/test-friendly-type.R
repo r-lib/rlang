@@ -16,3 +16,7 @@ test_that("friendly_type_of() supports matrices and arrays (#141)", {
   expect_equal(friendly_type_of(matrix(letters)), "a character matrix")
   expect_equal(friendly_type_of(array(letters[1:3], dim = 1:3)), "a character array")
 })
+
+test_that("friendly_type_of() supports missing arguments", {
+  expect_equal(friendly_type_of(missing_arg()), "absent")
+})
