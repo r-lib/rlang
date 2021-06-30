@@ -387,10 +387,13 @@ endots <- function(call,
     dots <- keep(dots, negate(dot_is_missing))
   }
 
-  if (named) {
+  if (is_true(named)) {
     dots <- quos_auto_name(dots)
+  } else if (is_false(named)) {
+    names(dots) <- names2(dots)
+  } else if (!is_null(named)) {
+    abort("`.named` must be a logical value.")
   }
-  names(dots) <- names2(dots)
 
   dots
 }

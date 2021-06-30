@@ -598,3 +598,15 @@ test_that("can capture forced numbered dot", {
   }
   expect_equal(fn(1 + 1), quo(2))
 })
+
+test_that("`enexprs()` and variants support `.named = NULL` (#1223)", {
+  fn <- function(...) enexprs(..., .named = NULL)
+  expect_equal(fn(), list())
+  expect_equal(fn(1), list(1))
+  expect_equal(fn(x = 1), list(x = 1))
+
+  fn <- function(...) enquos(..., .named = NULL)
+  expect_equal(fn(), unname(quos()))
+  expect_equal(fn(1), unname(quos(1)))
+  expect_equal(fn(x = 1), quos(x = 1))
+})
