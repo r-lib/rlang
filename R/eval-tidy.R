@@ -488,20 +488,20 @@ ctxt_pronoun_get <- function(x, nm) {
 }
 #' @export
 names.rlang_data_pronoun <- function(x) {
-  abort("Can't take the `names()` of the `.data` pronoun")
+  chr()
 }
 #' @export
 length.rlang_data_pronoun <- function(x) {
-  abort("Can't take the `length()` of the `.data` pronoun")
+  0L
 }
 
 #' @export
 names.rlang_ctxt_pronoun <- function(x) {
-  abort("Can't take the `names()` of the context pronoun")
+  chr()
 }
 #' @export
 length.rlang_ctxt_pronoun <- function(x) {
-  abort("Can't take the `length()` of the context pronoun")
+  0L
 }
 
 #' @export

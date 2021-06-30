@@ -429,10 +429,8 @@ test_that("`.env` pronoun is constructed", {
 
 test_that("the `.env` pronoun is not an environment", {
   pronoun <- eval_tidy(quote(.env), mtcars)
-  expect_error(length(pronoun), "Can't take the")
-
-  skip_if(getRversion() < "3.2")
-  expect_error(names(pronoun), "Can't take the")
+  expect_length(pronoun, 0L)
+  expect_named(pronoun, chr())
 })
 
 test_that("subsetting `.env` evaluates", {
@@ -451,8 +449,8 @@ test_that("mask inherits from `env` after evaluation", {
 
 test_that("can't take the names() and length() of the `.data` pronoun", {
   pronoun <- as_data_pronoun(mtcars)
-  expect_error(names(pronoun), "Can't take")
-  expect_error(length(pronoun), "Can't take")
+  expect_length(pronoun, 0L)
+  expect_named(pronoun, chr())
 })
 
 test_that("eval_tidy() does not infloop when the quosure inherits from the mask", {
