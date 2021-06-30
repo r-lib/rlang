@@ -71,6 +71,7 @@ r_obj* r_list_as_environment(r_obj* x, r_obj* parent);
 r_obj* r_env_clone(r_obj* env, r_obj* parent);
 
 
+// Silently ignores bindings that are not defined in `env`.
 static inline
 void r_env_unbind(r_obj* env, r_obj* sym) {
 #if (R_VERSION < R_Version(4, 0, 0))

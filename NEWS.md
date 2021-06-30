@@ -29,6 +29,11 @@
 
 ## Features and bugfixes
 
+* New C callable `rlang_env_unbind()`. This is a wrapper around
+  `R_removeVarFromFrame()` on R >= 4.0.0. On older R this wraps the R
+  function `base::rm()`. Unlike `rm()`, this function does not warn
+  (nor throw) when a binding does not exist.
+
 * `friendly_type_of()` now supports missing arguments.
 
 * `env_clone()` now properly clones active bindings and avoids forcing
