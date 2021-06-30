@@ -175,6 +175,7 @@
 <h2 class="hasAnchor">
 <a href="#features-and-bugfixes" class="anchor"></a>Features and bugfixes</h2>
 <ul>
+<li><p>New C callable <code>rlang_env_unbind()</code>. This is a wrapper around <code>R_removeVarFromFrame()</code> on R &gt;= 4.0.0. On older R this wraps the R function <code><a href="https://rdrr.io/r/base/rm.html">base::rm()</a></code>. Unlike <code><a href="https://rdrr.io/r/base/rm.html">rm()</a></code>, this function does not warn (nor throw) when a binding does not exist.</p></li>
 <li><p><code>friendly_type_of()</code> now supports missing arguments.</p></li>
 <li><p><code><a href="../reference/env_clone.html">env_clone()</a></code> now properly clones active bindings and avoids forcing promises (<a href='https://github.com/r-lib/rlang/issues/1228'>#1228</a>). On R &lt; 4.0, promises are still forced.</p></li>
 <li><p>Fixed a hang when a quosure inheriting from a data mask is evaluated in the mask again.</p></li>
