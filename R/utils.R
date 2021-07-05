@@ -312,3 +312,33 @@ with_srcref <- function(src, env = caller_env(), file = NULL) {
 chr_has_curly <- function(x) {
   .Call(ffi_chr_has_curly, x)
 }
+
+
+new_stack <- function() {
+  stack <- new_dyn_vector("list", 100)
+
+  push <- function(...) {
+    for (obj in list2(...)) {
+      arr_push_back(stack, obj)
+    }
+  }
+
+  # Can be used as a coro generator
+  pop <- function() {
+    if (arr_count(stack)) {
+      arr_pop_back(stack)
+    } else {
+      exhausted()
+    }
+  }
+
+  new_environment(list(
+    push = push,
+    pop = pop
+  ))
+}
+
+# FIXME: Use an unlikely sentinel like `as.symbol(".__exhausted__.")`
+# https://github.com/r-lib/coro/issues/35
+exhausted <- function() as.symbol("exhausted")
+is_exhausted <- function(x) identical(x, exhausted())

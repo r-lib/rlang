@@ -12,7 +12,9 @@
 #'   (testable with `is_syntactic_literal()`)
 #'
 #' `is_expression()` returns `TRUE` if the input is either a symbolic
-#' object or a syntactic literal.
+#' object or a syntactic literal. If a call, the elements of the call
+#' must all be expressions as well. Unparsable calls are not
+#' considered expressions in this narrow definition.
 #'
 #' Note that in base R, there exists [expression()] vectors, a data
 #' type similar to a list that supports special attributes created by
@@ -91,7 +93,20 @@
 #' is_expression(fmls)
 #' is_pairlist(fmls)
 is_expression <- function(x) {
-  is_symbolic(x) || is_syntactic_literal(x)
+  stack <- new_stack()
+  stack$push(x)
+
+  while (!is_exhausted(elt <- stack$pop())) {
+    switch(
+      typeof(elt),
+      language = stack$push(!!!as.list(elt)),
+      if (!is_symbol(elt) && !is_syntactic_literal(elt)) {
+        return(FALSE)
+      }
+    )
+  }
+
+  TRUE
 }
 #' @export
 #' @rdname is_expression
