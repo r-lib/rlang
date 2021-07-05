@@ -38,8 +38,13 @@ void r_init_library_globals(r_obj* ns) {
   r_preserve_global(r_classes.tibble);
 
   r_strs.dots = r_sym_string(r_syms.dots);
+  r_strs.condition = r_sym_string(r_syms.condition);
   r_strs.empty = r_chr_get(r_chrs.empty_string, 0);
+  r_strs.error = r_sym_string(r_syms.error);
+  r_strs.interrupt = r_sym_string(r_syms.interrupt);
   r_strs.na = r_globals.na_str;
+  r_strs.message = r_sym_string(r_syms.message);
+  r_strs.warning = r_sym_string(r_syms.warning);
 
   r_false = r_preserve_global(r_lgl(0));
   r_true = r_preserve_global(r_lgl(1));
@@ -54,14 +59,19 @@ void r_init_library_globals_syms() {
   r_syms.class = R_ClassSymbol;
   r_syms.colon2 = R_DoubleColonSymbol;
   r_syms.colon3 = R_TripleColonSymbol;
+  r_syms.condition = r_sym("condition");
   r_syms.dots = R_DotsSymbol;
+  r_syms.error = r_sym("error");
+  r_syms.interrupt = r_sym("interrupt");
   r_syms.missing = R_MissingArg;
+  r_syms.message = r_sym("message");
   r_syms.names = R_NamesSymbol;
   r_syms.options = r_sym("options");
   r_syms.dim = R_DimSymbol;
   r_syms.dim_names = R_DimNamesSymbol;
   r_syms.row_names = R_RowNamesSymbol;
   r_syms.unbound = R_UnboundValue;
+  r_syms.warning = r_sym("warning");
 
   r_syms.dot_environment = r_sym(".Environment");
   r_syms.dot_fn = r_sym(".fn");

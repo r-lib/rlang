@@ -30,18 +30,27 @@ struct r_globals_classes {
 
 struct r_globals_strs {
   r_obj* dots;
+  r_obj* condition;
   r_obj* empty;
+  r_obj* error;
+  r_obj* interrupt;
+  r_obj* message;
   r_obj* na;
+  r_obj* warning;
 };
 
 struct r_globals_syms {
   r_obj* class;
+  r_obj* condition;
   r_obj* dots;
   r_obj* dot_environment;
   r_obj* dot_fn;
   r_obj* dot_x;
   r_obj* dot_y;
+  r_obj* error;
   r_obj* function;
+  r_obj* interrupt;
+  r_obj* message;
   r_obj* missing;
   r_obj* names;
   r_obj* options;
@@ -54,6 +63,7 @@ struct r_globals_syms {
   r_obj* tilde;
   r_obj* unbound;
   r_obj* w;
+  r_obj* warning;
   r_obj* x;
   r_obj* y;
   r_obj* z;

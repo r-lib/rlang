@@ -146,48 +146,32 @@ enum r_condition_type r_cnd_type(r_obj* cnd) {
     goto error;
   }
 
+  r_obj* const * v_classes = r_chr_cbegin(classes);
   r_ssize n_classes = r_length(classes);
 
-  for (r_ssize i = 0; i < n_classes; ++i) {
-    const char* class_str = r_str_c_string(r_chr_get(classes, i));
-    switch (class_str[0]) {
-    case 'c':
-      if (strcmp(class_str, "condition")) {
-        continue;
-      } else {
-        return r_cnd_type_condition;
-      }
-    case 'm':
-      if (strcmp(class_str, "message")) {
-        continue;
-      } else {
-        return r_cnd_type_message;
-      }
-    case 'w':
-      if (strcmp(class_str, "warning")) {
-        continue;
-      } else {
-        return r_cnd_type_warning;
-      }
-    case 'e':
-      if (strcmp(class_str, "error")) {
-        continue;
-      } else {
-        return r_cnd_type_error;
-      }
-    case 'i':
-      if (strcmp(class_str, "interrupt")) {
-        continue;
-      } else {
-        return r_cnd_type_interrupt;
-      }
-    default:
-      continue;
+  for (r_ssize i = n_classes - 2; i >= 0; --i) {
+    r_obj* class_str = v_classes[i];
+
+    if (class_str == r_strs.error) {
+      return r_cnd_type_error;
+    }
+    if (class_str == r_strs.warning) {
+      return r_cnd_type_warning;
+    }
+    if (class_str == r_strs.message) {
+      return r_cnd_type_message;
+    }
+    if (class_str == r_strs.interrupt) {
+      return r_cnd_type_interrupt;
     }
   }
 
+  if (r_inherits(cnd, "condition")) {
+    return r_cnd_type_condition;
+  }
+
  error:
-  r_abort("`cnd` is not a condition object");
+  r_abort("`cnd` is not a condition object.");
 }
 
 r_obj* rlang_ns_get(const char* name);
