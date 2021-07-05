@@ -44,13 +44,24 @@ cnd_signal <- function(cnd, ...) {
     return(invisible(NULL))
   }
 
-  if (inherits(cnd, "rlang_error") && is_null(cnd$trace)) {
-    trace <- trace_back()
-    cnd$trace <- trace_trim_context(trace, trace_length(trace))
-    signal_abort(cnd)
-  } else {
-    invisible(.Call(ffi_cnd_signal, cnd))
-  }
+  switch(
+    cnd_type(cnd),
+    error = {
+      if (is_null(cnd$trace)) {
+        trace <- trace_back()
+        cnd$trace <- trace_trim_context(trace, trace_length(trace))
+      }
+      signal_abort(cnd)
+    },
+    warning = warning(cnd),
+    message = message(cnd),
+    interrupt = interrupt(),
+    condition = invisible(withRestarts(
+      rlang_muffle = function() NULL,
+      signalCondition(cnd)
+    ))
+  )
+  
 }
 validate_cnd_signal_args <- function(cnd,
                                      ...,

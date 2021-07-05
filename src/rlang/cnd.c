@@ -1,8 +1,5 @@
 #include "rlang.h"
-
-// From rlang/vec.c
-void r_vec_poke_n(r_obj* x, r_ssize offset,
-                  r_obj* y, r_ssize from, r_ssize n);
+#include "decl/cnd-decl.h"
 
 
 #define BUFSIZE 8192
@@ -51,8 +48,10 @@ void r_abort(const char* fmt, ...) {
   while (1); // No return
 }
 
-// From vec-chr.c
-r_obj* chr_append(r_obj* chr, r_obj* r_string);
+void r_cnd_signal(r_obj* cnd) {
+  r_eval_with_x(cnd_signal_call, cnd, r_envs.base);
+}
+
 
 static r_obj* new_condition_names(r_obj* data) {
   if (!r_is_named(data)) {
@@ -91,36 +90,6 @@ r_obj* r_new_condition(r_obj* subclass, r_obj* msg, r_obj* data) {
   FREE(4);
   return cnd;
 }
-
-
-static r_obj* cnd_signal_call = NULL;
-static r_obj* wng_signal_call = NULL;
-static r_obj* err_signal_call = NULL;
-
-void r_cnd_signal(r_obj* cnd) {
-  r_obj* call = r_null;
-
-  switch (r_cnd_type(cnd)) {
-  case R_CND_TYPE_message:
-    call = msg_call;
-    break;
-  case R_CND_TYPE_warning:
-    call = wng_signal_call;
-    break;
-  case R_CND_TYPE_error:
-    call = err_signal_call;
-    break;
-  case R_CND_TYPE_interrupt:
-    r_interrupt();
-    return;
-  default:
-    call = cnd_signal_call;
-    break;
-  }
-
-  r_eval_with_x(call, cnd, r_envs.base);
-}
-
 
 // For `R_interrupts_suspended`
 #include <R_ext/GraphicsEngine.h>
@@ -174,7 +143,6 @@ enum r_cnd_type r_cnd_type(r_obj* cnd) {
   r_abort("`cnd` is not a condition object.");
 }
 
-r_obj* rlang_ns_get(const char* name);
 
 void r_init_library_cnd() {
   msg_call = r_parse("message(x)");
@@ -186,16 +154,11 @@ void r_init_library_cnd() {
   err_call = r_parse("rlang::abort(x)");
   r_preserve(err_call);
 
-  wng_signal_call = r_parse("warning(x)");
-  r_preserve(wng_signal_call);
-
-  err_signal_call = r_parse("rlang:::signal_abort(x)");
-  r_preserve(err_signal_call);
-
-  const char* cnd_signal_source =
-    "withRestarts(rlang_muffle = function() NULL, signalCondition(x))";
-  cnd_signal_call = r_parse(cnd_signal_source);
+  cnd_signal_call = r_parse("rlang::cnd_signal(x)");
   r_preserve(cnd_signal_call);
 
   r_stop_internal = (__attribute__((noreturn)) void (*)(const char*, const char*, ...)) R_GetCCallable("rlang", "rlang_stop_internal");
 }
+
+static
+r_obj* cnd_signal_call = NULL;
