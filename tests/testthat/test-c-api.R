@@ -965,6 +965,10 @@ test_that("can shrink and grow dynamic barrier vectors", {
   )
   expect_identical(arr[[2]][1:4], as.list(dbl(1:4)))
   expect_identical(arr_unwrap(arr), as.list(dbl(1:4)))
+
+  expect_equal(arr_pop_back(arr), 4)
+  expect_equal(arr_pop_back(arr), 3)
+  expect_equal(arr_count(arr), 2)
 })
 
 test_that("can create dynamic list-of", {

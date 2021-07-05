@@ -228,6 +228,9 @@ arr_unwrap <- function(arr) {
 arr_info <- function(arr) {
   .Call(ffi_arr_info, arr)
 }
+arr_count <- function(arr) {
+  arr_info(arr)$count
+}
 
 arr_push_back <- function(arr, x) {
   .Call(ffi_arr_push_back, arr, x)

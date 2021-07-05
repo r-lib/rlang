@@ -56,7 +56,7 @@ void* r_arr_end(struct r_dyn_array* p_arr) {
 static inline
 const void* r_arr_cpointer(struct r_dyn_array* p_arr, r_ssize i) {
   r_ssize offset = i * p_arr->elt_byte_size;
-  return ((const unsigned char*) p_arr->v_data) + offset;
+  return ((const unsigned char*) p_arr->v_data_const) + offset;
 }
 static inline
 const void* r_arr_cbegin(struct r_dyn_array* p_arr) {

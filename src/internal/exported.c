@@ -236,8 +236,13 @@ r_obj* ffi_arr_push_back_bool(r_obj* arr_sexp, r_obj* x_sexp) {
 // [[ register() ]]
 r_obj* ffi_arr_pop_back(r_obj* arr_sexp) {
   struct r_dyn_array* arr = r_shelter_deref(arr_sexp);
-  r_arr_pop_back(arr);
-  return r_null;
+  void* const * out = r_arr_pop_back(arr);
+
+  if (arr->type == R_TYPE_list) {
+    return *((r_obj* const *) out);
+  } else {
+    return r_null;
+  }
 }
 // [[ register() ]]
 r_obj* ffi_arr_resize(r_obj* arr_sexp, r_obj* capacity_sexp) {
