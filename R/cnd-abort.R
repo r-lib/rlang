@@ -203,22 +203,20 @@ signal_abort <- function(cnd) {
   # Save the unhandled error for `rlang::last_error()`.
   last_error_env$cnd <- cnd
 
-  if (!is_interactive()) {
-    file <- peek_option("rlang:::error_pipe") %||% stderr()
+  fallback$message <- conditionMessage(cnd)
+  msg <- cnd_unhandled_message(cnd)
 
-    fallback$message <- conditionMessage(cnd)
-    msg <- cnd_unhandled_message(cnd)
+  # Print the backtrace manually to work around limitations on the
+  # length of error messages (#856)
+  file <- peek_option("rlang:::error_pipe") %||% stderr()
+  cat("Error: ", msg, "\n", sep = "", file = file)
 
-    # Print the backtrace eagerly in non-interactive sessions because
-    # the length of error messages is limited (#856)
-    cat("Error: ", msg, "\n", sep = "", file = file)
-
-    # Turn off the regular error printing to avoid printing the error
-    # twice
-    local_options(show.error.messages = FALSE)
-  }
-
-  local_long_messages()
+  # Use `stop()` to run the `getOption("error")` handler (used by
+  # RStudio to record a backtrace) and cause a long jump. Running the
+  # handler manually wouldn't work because it might (and in RStudio's
+  # case, it does) call `geterrmessage()`. Turn off the regular error
+  # printing to avoid printing the error twice.
+  local_options(show.error.messages = FALSE)
   stop(fallback)
 }
 
