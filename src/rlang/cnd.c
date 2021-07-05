@@ -101,16 +101,16 @@ void r_cnd_signal(r_obj* cnd) {
   r_obj* call = r_null;
 
   switch (r_cnd_type(cnd)) {
-  case r_cnd_type_message:
+  case R_CND_TYPE_message:
     call = msg_call;
     break;
-  case r_cnd_type_warning:
+  case R_CND_TYPE_warning:
     call = wng_signal_call;
     break;
-  case r_cnd_type_error:
+  case R_CND_TYPE_error:
     call = err_signal_call;
     break;
-  case r_cnd_type_interrupt:
+  case R_CND_TYPE_interrupt:
     r_interrupt();
     return;
   default:
@@ -139,7 +139,7 @@ void r_interrupt() {
 }
 #endif
 
-enum r_condition_type r_cnd_type(r_obj* cnd) {
+enum r_cnd_type r_cnd_type(r_obj* cnd) {
   r_obj* classes = r_class(cnd);
   if (r_typeof(cnd) != R_TYPE_list ||
       r_typeof(classes) != R_TYPE_character) {
@@ -153,21 +153,21 @@ enum r_condition_type r_cnd_type(r_obj* cnd) {
     r_obj* class_str = v_classes[i];
 
     if (class_str == r_strs.error) {
-      return r_cnd_type_error;
+      return R_CND_TYPE_error;
     }
     if (class_str == r_strs.warning) {
-      return r_cnd_type_warning;
+      return R_CND_TYPE_warning;
     }
     if (class_str == r_strs.message) {
-      return r_cnd_type_message;
+      return R_CND_TYPE_message;
     }
     if (class_str == r_strs.interrupt) {
-      return r_cnd_type_interrupt;
+      return R_CND_TYPE_interrupt;
     }
   }
 
   if (r_inherits(cnd, "condition")) {
-    return r_cnd_type_condition;
+    return R_CND_TYPE_condition;
   }
 
  error:

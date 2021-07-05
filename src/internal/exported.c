@@ -17,13 +17,13 @@ r_obj* ffi_cnd_signal(r_obj* cnd) {
 }
 
 r_obj* ffi_cnd_type(r_obj* cnd) {
-  enum r_condition_type type = r_cnd_type(cnd);
+  enum r_cnd_type type = r_cnd_type(cnd);
   switch (type) {
-  case r_cnd_type_condition: return r_chr("condition");
-  case r_cnd_type_message: return r_chr("message");
-  case r_cnd_type_warning: return r_chr("warning");
-  case r_cnd_type_error: return r_chr("error");
-  case r_cnd_type_interrupt: return r_chr("interrupt");
+  case R_CND_TYPE_condition: return r_chr("condition");
+  case R_CND_TYPE_message: return r_chr("message");
+  case R_CND_TYPE_warning: return r_chr("warning");
+  case R_CND_TYPE_error: return r_chr("error");
+  case R_CND_TYPE_interrupt: return r_chr("interrupt");
   default: r_abort("Internal error: Unhandled `r_condition_type`");
   }
 }

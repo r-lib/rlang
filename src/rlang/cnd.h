@@ -43,15 +43,15 @@ void r_cnd_inform(r_obj* cnd, bool mufflable);
 void r_cnd_warn(r_obj* cnd, bool mufflable);
 void r_cnd_abort(r_obj* cnd, bool mufflable);
 
-enum r_condition_type {
-  r_cnd_type_condition = 0,
-  r_cnd_type_message = 1,
-  r_cnd_type_warning = 2,
-  r_cnd_type_error = 3,
-  r_cnd_type_interrupt = 4
+enum r_cnd_type {
+  R_CND_TYPE_condition = 0,
+  R_CND_TYPE_message = 1,
+  R_CND_TYPE_warning = 2,
+  R_CND_TYPE_error = 3,
+  R_CND_TYPE_interrupt = 4
 };
 
-enum r_condition_type r_cnd_type(r_obj* cnd);
+enum r_cnd_type r_cnd_type(r_obj* cnd);
 
 
 #endif
