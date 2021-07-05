@@ -28,7 +28,9 @@ and function calls. These objects can be classified as:
 }
 
 \code{is_expression()} returns \code{TRUE} if the input is either a symbolic
-object or a syntactic literal.
+object or a syntactic literal. If a call, the elements of the call
+must all be expressions as well. Unparsable calls are not
+considered expressions in this narrow definition.
 
 Note that in base R, there exists \code{\link[=expression]{expression()}} vectors, a data
 type similar to a list that supports special attributes created by

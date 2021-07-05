@@ -29,6 +29,9 @@
 
 ## Features and bugfixes
 
+* `is_expression()` now returns `FALSE` for manually constructed
+  expressions that cannot be created by the R parser.
+
 * New C callable `rlang_env_unbind()`. This is a wrapper around
   `R_removeVarFromFrame()` on R >= 4.0.0. On older R this wraps the R
   function `base::rm()`. Unlike `rm()`, this function does not warn

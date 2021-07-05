@@ -80,3 +80,9 @@ test_that("imaginary numbers with real part are not syntactic", {
   expect_true(is_syntactic_literal(na_cpl))
   expect_false(is_syntactic_literal(1 + 1i))
 })
+
+test_that("is_expression() detects non-parsable parse trees", {
+  expect_true(is_expression(quote(foo(bar = baz(1, NULL)))))
+  expect_false(is_expression(expr(foo(bar = baz(!!(1:2), NULL)))))
+  expect_false(is_expression(call2(identity)))
+})
