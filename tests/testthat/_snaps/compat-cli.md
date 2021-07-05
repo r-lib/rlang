@@ -90,7 +90,7 @@
     Code
       style_q("foo")
     Output
-      [1] "\033[1m\033[22mfoo"
+      [1] "\033[1m\033[22m\"foo\""
     Code
       style_pkg("foo")
     Output
