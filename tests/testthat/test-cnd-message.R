@@ -151,36 +151,64 @@ test_that("cli is not used when message is escaped with `I()`", {
 test_that("cli syntax is escaped in 'try' mode", {
   .rlang_use_cli_format <- "try"
   x <- "{foo {{}}"
-  expect_equal(cli_format_message(x), x)
+  expect_equal(rlang_format_message(x), x)
 })
 
-test_that("str_restore() deals with attributes", {
+test_that(".rlang_cli_str_restore() deals with attributes", {
   msg <- structure("foo", attr = TRUE)
 
   expect_equal(
-    str_restore("bar", msg),
+    .rlang_cli_str_restore("bar", msg),
     structure("bar", attr = TRUE)
   )
 
   msg_oo <- structure("foo", attr = TRUE, class = "foo")
   expect_equal(
-    str_restore("bar", msg_oo),
+    .rlang_cli_str_restore("bar", msg_oo),
     "bar"
   )
 
   .rlang_use_cli_format <- TRUE
   expect_equal(
-    attributes(cli_format_message(msg)),
+    attributes(rlang_format_message(msg)),
     list(attr = TRUE)
   )
   .rlang_use_cli_format <- FALSE
   expect_equal(
-    attributes(cli_format_message(msg)),
+    attributes(rlang_format_message(msg)),
     list(attr = TRUE)
   )
   .rlang_use_cli_format <- "try"
   expect_equal(
-    attributes(cli_format_message(msg)),
+    attributes(rlang_format_message(msg)),
     list(attr = TRUE)
   )
+})
+
+skip_if_not_installed("cli", "2.5.0")
+skip_if_not_installed("glue")
+
+cli::test_that_cli("format_error_bullets() generates bullets", {
+  expect_snapshot({
+    format_error_bullets(c("Header.", i = "Bullet."))
+  })
+})
+
+cli::test_that_cli(configs = c("plain", "fancy"), "can use cli syntax in `cnd_message()` methods", {
+  local_methods(
+    cnd_header.rlang_foobar = function(cnd, ...) {
+      cli::format_error("Header: {.emph {cnd$field}}")
+    },
+    cnd_body.rlang_foobar = function(cnd, ...) {
+      cli::format_error(c("i" = "Bullet: {.emph {cnd$field}}"))
+    },
+    cnd_footer.rlang_foobar = function(cnd, ...) {
+      cli::format_error(c("_" = "Footer: {.emph {cnd$field}}"))
+    }
+  )
+  cnd <- error_cnd(
+    "rlang_foobar",
+    field = "User { {field}."
+  )
+  expect_snapshot(cnd_message(cnd))
 })

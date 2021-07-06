@@ -38,7 +38,7 @@ arg_match <- function(arg, values = NULL) {
     values <- eval_bare(values, get_env(fn))
   }
   if (!is_character(arg)) {
-    abort(sprintf("%s must be a character vector.", style_arg(arg_nm)))
+    abort(sprintf("%s must be a character vector.", format_arg(arg_nm)))
   }
   if (length(arg) > 1 && !setequal(arg, values)) {
     abort(arg_match_invalid_msg(arg, values, arg_nm))
@@ -110,7 +110,7 @@ stop_arg_match <- function(arg, values, arg_nm) {
 }
 
 arg_match_invalid_msg <- function(arg, values, arg_nm) {
-  msg <- paste0(style_arg(arg_nm), " must be one of ")
+  msg <- paste0(format_arg(arg_nm), " must be one of ")
   msg <- paste0(msg, chr_enumerate(chr_quoted(values, "\"")))
 
   if (is_null(arg)) {
@@ -153,17 +153,17 @@ arg_require <- function(arg) {
     fn <- as_string(call[[1]])
     msg <- sprintf(
       "%s requires the argument %s to be supplied.",
-      style_fn(fn),
-      style_arg(arg)
+      mark_fn(fn),
+      mark_arg(arg)
     )
   } else {
     msg <- sprintf(
       "The argument %s must be supplied.",
-      style_arg(arg)
+      mark_arg(arg)
     )
   }
 
-  abort(msg)
+  abort(format_error(msg))
 }
 
 chr_quoted <- function(chr, type = "`") {

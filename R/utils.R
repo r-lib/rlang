@@ -293,7 +293,7 @@ stop_internal_c_lib <- function(fn, msg) {
       msg,
       "i" = sprintf(
         "Install the %s package to get additional debugging info the next time you get this error.",
-        style_pkg("winch")
+        format_pkg("winch")
       )
     )
   }
