@@ -200,10 +200,10 @@ cli::test_that_cli(configs = c("plain", "fancy"), "can use cli syntax in `cnd_me
       cli::format_error("Header: {.emph {cnd$field}}")
     },
     cnd_body.rlang_foobar = function(cnd, ...) {
-      cli::format_error(c(
-        "",
-        c("i" = "Bullet: {.emph {cnd$field}}")
-      ))
+      cli::format_error(c("i" = "Bullet: {.emph {cnd$field}}"))
+    },
+    cnd_footer.rlang_foobar = function(cnd, ...) {
+      cli::format_error(c("_" = "Footer: {.emph {cnd$field}}"))
     }
   )
   cnd <- error_cnd(

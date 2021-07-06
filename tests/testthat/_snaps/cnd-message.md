@@ -62,12 +62,12 @@
     Code
       cnd_message(cnd)
     Output
-      [1] "Header: User { {field}.\ni Bullet: User { {field}."
+      [1] "Header: User { {field}.\ni Bullet: User { {field}.\nFooter: User { {field}."
 
 # can use cli syntax in `cnd_message()` methods [fancy]
 
     Code
       cnd_message(cnd)
     Output
-      [1] "\033[1m\033[22m\033[1m\033[1mHeader: \033[3m\033[1m\033[3mUser { {field}.\033[3m\033[1m\033[23m\033[1m\033[22m\n\033[1m\033[22m\033[1m\033[1m\033[1m\033[22m\033[36mℹ\033[39m Bullet: \033[3m\033[3mUser { {field}.\033[3m\033[23m"
+      [1] "\033[1m\033[22m\033[1m\033[1mHeader: \033[3m\033[1m\033[3mUser { {field}.\033[3m\033[1m\033[23m\033[1m\033[22m\n\033[1m\033[22m\033[36mℹ\033[39m Bullet: \033[3m\033[3mUser { {field}.\033[3m\033[23m\n\033[1m\033[22mFooter: \033[3m\033[3mUser { {field}.\033[3m\033[23m"
 
