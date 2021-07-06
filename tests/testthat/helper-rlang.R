@@ -81,3 +81,8 @@ rlang_compats <- function(fn) {
 data.frame <- function(..., stringsAsFactors = FALSE) {
   base::data.frame(..., stringsAsFactors = stringsAsFactors)
 }
+
+skip_if_not_windows <- function() {
+  system <- tolower(Sys.info()[["sysname"]])
+  skip_if_not(is_string(system, "windows"), "Not on Windows")
+}
