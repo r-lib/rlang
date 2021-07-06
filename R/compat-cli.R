@@ -20,9 +20,9 @@
 #
 # * Added `cli_escape()` to escape glue and cli syntax.
 #
-# * `style_` functions now produce `{.cli input}` tags to be formatted
+# * `mark_` functions now produce `{.cli input}` tags to be formatted
 #   with one of the message formatter (such as `format_error()`). They
-#   all gain a `format_` variant that formats eagerly. Eager
+#   all have a `format_` variant that formats eagerly. Eager
 #   formatting is easier to work with but might produce incorrect
 #   styling in very specific cases involving sophisticated cli themes.
 #
@@ -46,45 +46,47 @@ symbol_bullet <- function() if (.rlang_cli_is_installed("cli")) cli::symbol$bull
 symbol_arrow  <- function() if (.rlang_cli_is_installed("cli")) cli::symbol$arrow_right else ">"
 symbol_alert  <- function() "!"
 
-ansi_info   <- function() ansi_blue(symbol_info())
-ansi_cross  <- function() ansi_red(symbol_cross())
-ansi_tick   <- function() ansi_green(symbol_tick())
-ansi_bullet <- function() ansi_cyan(symbol_bullet())
+ansi_info   <- function() col_blue(symbol_info())
+ansi_cross  <- function() col_red(symbol_cross())
+ansi_tick   <- function() col_green(symbol_tick())
+ansi_bullet <- function() col_cyan(symbol_bullet())
 ansi_arrow  <- function() symbol_arrow()
-ansi_alert  <- function() ansi_yellow(symbol_alert())
+ansi_alert  <- function() col_yellow(symbol_alert())
 
 
 #' Apply ANSI styling
 #'
-#' The `ansi_` functions style their inputs using the relevant ANSI
-#' escapes if cli is installed and ANSI colours are enabled.
+#' The `col_`, `bg_`, and `style_` functions style their inputs using
+#' the relevant ANSI escapes if cli is installed and ANSI colours are
+#' enabled.
 #'
 #' @param x A string.
 #'
 #' @noRd
-ansi_red       <- function(x) if (.rlang_cli_has_ansi()) cli::col_red(x) else x
-ansi_blue      <- function(x) if (.rlang_cli_has_ansi()) cli::col_blue(x) else x
-ansi_green     <- function(x) if (.rlang_cli_has_ansi()) cli::col_green(x) else x
-ansi_yellow    <- function(x) if (.rlang_cli_has_ansi()) cli::col_yellow(x) else x
-ansi_magenta   <- function(x) if (.rlang_cli_has_ansi()) cli::col_magenta(x) else x
-ansi_cyan      <- function(x) if (.rlang_cli_has_ansi()) cli::col_cyan(x) else x
-ansi_silver    <- function(x) if (.rlang_cli_has_ansi()) cli::col_silver(x) else x
-ansi_blurred   <- function(x) if (.rlang_cli_has_ansi()) cli::style_blurred(x) else x
-ansi_bold      <- function(x) if (.rlang_cli_has_ansi()) cli::style_bold(x) else x
-ansi_italic    <- function(x) if (.rlang_cli_has_ansi()) cli::style_italic(x) else x
-ansi_underline <- function(x) if (.rlang_cli_has_ansi()) cli::style_underline(x) else x
+col_red         <- function(x) if (.rlang_cli_has_ansi()) cli::col_red(x) else x
+col_blue        <- function(x) if (.rlang_cli_has_ansi()) cli::col_blue(x) else x
+col_green       <- function(x) if (.rlang_cli_has_ansi()) cli::col_green(x) else x
+col_yellow      <- function(x) if (.rlang_cli_has_ansi()) cli::col_yellow(x) else x
+col_magenta     <- function(x) if (.rlang_cli_has_ansi()) cli::col_magenta(x) else x
+col_cyan        <- function(x) if (.rlang_cli_has_ansi()) cli::col_cyan(x) else x
+col_silver      <- function(x) if (.rlang_cli_has_ansi()) cli::col_silver(x) else x
+style_blurred   <- function(x) if (.rlang_cli_has_ansi()) cli::style_blurred(x) else x
+style_bold      <- function(x) if (.rlang_cli_has_ansi()) cli::style_bold(x) else x
+style_italic    <- function(x) if (.rlang_cli_has_ansi()) cli::style_italic(x) else x
+style_underline <- function(x) if (.rlang_cli_has_ansi()) cli::style_underline(x) else x
 
 #' Apply inline styling
 #'
 #' @description
-#' This set of `style_` and `format_` functions create consistent
+#' This set of `mark_` and `format_` functions create consistent
 #' inline styling, using cli if available or an ASCII fallback style
 #' otherwise.
 #'
-#' * The `style_` functions create actual `{.span input}` tags when
-#'   cli is available. The resulting strings must then be formatted
-#'   using `format_error()` or a variant. These message formatters
-#'   then process the cli style tags.
+#' * The `mark_` functions wrap the input with mark up tags when cli
+#'   is available. For instance, `"foo"` is transformed to `{.span
+#'   {\"foo\"}}`. These marked up strings must eventually be formatted
+#'   using a formatter such as `format_error()` to be styled
+#'   appropriately.
 #'
 #' * The `format_` functions are easier to work with because they
 #'   format the style eagerly. However they produce slightly incorrect
@@ -95,24 +97,24 @@ ansi_underline <- function(x) if (.rlang_cli_has_ansi()) cli::style_underline(x)
 #' @param x A string.
 #'
 #' @noRd
-style_emph   <- function(x) .rlang_cli_style_inline(x, "emph", "_%s_")
-style_strong <- function(x) .rlang_cli_style_inline(x, "strong", "*%s*")
-style_code   <- function(x) .rlang_cli_style_inline(x, "code", "`%s`")
-style_q      <- function(x) .rlang_cli_style_inline(x, "q", NULL)
-style_pkg    <- function(x) .rlang_cli_style_inline(x, "pkg", NULL)
-style_fn     <- function(x) .rlang_cli_style_inline(x, "fn", "`%s()`")
-style_arg    <- function(x) .rlang_cli_style_inline(x, "arg", "`%s`")
-style_kbd    <- function(x) .rlang_cli_style_inline(x, "kbd", "[%s]")
-style_key    <- function(x) .rlang_cli_style_inline(x, "key", "[%s]")
-style_file   <- function(x) .rlang_cli_style_inline(x, "file", NULL)
-style_path   <- function(x) .rlang_cli_style_inline(x, "path", NULL)
-style_email  <- function(x) .rlang_cli_style_inline(x, "email", NULL)
-style_url    <- function(x) .rlang_cli_style_inline(x, "url", "<%s>")
-style_var    <- function(x) .rlang_cli_style_inline(x, "var", "`%s`")
-style_envvar <- function(x) .rlang_cli_style_inline(x, "envvar", "`%s`")
-style_field  <- function(x) .rlang_cli_style_inline(x, "field", NULL)
+mark_emph   <- function(x) .rlang_cli_style_inline(x, "emph", "_%s_")
+mark_strong <- function(x) .rlang_cli_style_inline(x, "strong", "*%s*")
+mark_code   <- function(x) .rlang_cli_style_inline(x, "code", "`%s`")
+mark_q      <- function(x) .rlang_cli_style_inline(x, "q", NULL)
+mark_pkg    <- function(x) .rlang_cli_style_inline(x, "pkg", NULL)
+mark_fn     <- function(x) .rlang_cli_style_inline(x, "fn", "`%s()`")
+mark_arg    <- function(x) .rlang_cli_style_inline(x, "arg", "`%s`")
+mark_kbd    <- function(x) .rlang_cli_style_inline(x, "kbd", "[%s]")
+mark_key    <- function(x) .rlang_cli_style_inline(x, "key", "[%s]")
+mark_file   <- function(x) .rlang_cli_style_inline(x, "file", NULL)
+mark_path   <- function(x) .rlang_cli_style_inline(x, "path", NULL)
+mark_email  <- function(x) .rlang_cli_style_inline(x, "email", NULL)
+mark_url    <- function(x) .rlang_cli_style_inline(x, "url", "<%s>")
+mark_var    <- function(x) .rlang_cli_style_inline(x, "var", "`%s`")
+mark_envvar <- function(x) .rlang_cli_style_inline(x, "envvar", "`%s`")
+mark_field  <- function(x) .rlang_cli_style_inline(x, "field", NULL)
 
-style_cls <- function(x) {
+mark_cls <- function(x) {
   fallback <- function(x) sprintf("<%s>", paste0(x, collapse = "/"))
   .rlang_cli_style_inline(x, "cls", fallback)
 }

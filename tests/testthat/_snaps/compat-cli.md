@@ -1,150 +1,150 @@
 # can style strings with cli [plain]
 
     Code
-      style_emph("foo")
+      mark_emph("foo")
     Output
       [1] "_foo_"
     Code
-      style_strong("foo")
+      mark_strong("foo")
     Output
       [1] "*foo*"
     Code
-      style_code("foo")
+      mark_code("foo")
     Output
       [1] "`foo`"
     Code
-      style_q("foo")
+      mark_q("foo")
     Output
       [1] "foo"
     Code
-      style_pkg("foo")
+      mark_pkg("foo")
     Output
       [1] "foo"
     Code
-      style_fn("foo")
+      mark_fn("foo")
     Output
       [1] "`foo()`"
     Code
-      style_arg("foo")
+      mark_arg("foo")
     Output
       [1] "`foo`"
     Code
-      style_kbd("foo")
+      mark_kbd("foo")
     Output
       [1] "[foo]"
     Code
-      style_key("foo")
+      mark_key("foo")
     Output
       [1] "[foo]"
     Code
-      style_file("foo")
+      mark_file("foo")
     Output
       [1] "foo"
     Code
-      style_path("foo")
+      mark_path("foo")
     Output
       [1] "foo"
     Code
-      style_email("foo")
+      mark_email("foo")
     Output
       [1] "foo"
     Code
-      style_url("foo")
+      mark_url("foo")
     Output
       [1] "<foo>"
     Code
-      style_var("foo")
+      mark_var("foo")
     Output
       [1] "`foo`"
     Code
-      style_envvar("foo")
+      mark_envvar("foo")
     Output
       [1] "`foo`"
     Code
-      style_field("foo")
+      mark_field("foo")
     Output
       [1] "foo"
     Code
-      style_cls("foo")
+      mark_cls("foo")
     Output
       [1] "<foo>"
     Code
-      style_cls(c("foo", "bar"))
+      mark_cls(c("foo", "bar"))
     Output
       [1] "<foo/bar>"
 
 # can style strings with cli [ansi]
 
     Code
-      style_emph("foo")
+      mark_emph("foo")
     Output
       [1] "{.emph {\"foo\"}}"
     Code
-      style_strong("foo")
+      mark_strong("foo")
     Output
       [1] "{.strong {\"foo\"}}"
     Code
-      style_code("foo")
+      mark_code("foo")
     Output
       [1] "{.code {\"foo\"}}"
     Code
-      style_q("foo")
+      mark_q("foo")
     Output
       [1] "{.q {\"foo\"}}"
     Code
-      style_pkg("foo")
+      mark_pkg("foo")
     Output
       [1] "{.pkg {\"foo\"}}"
     Code
-      style_fn("foo")
+      mark_fn("foo")
     Output
       [1] "{.fn {\"foo\"}}"
     Code
-      style_arg("foo")
+      mark_arg("foo")
     Output
       [1] "{.arg {\"foo\"}}"
     Code
-      style_kbd("foo")
+      mark_kbd("foo")
     Output
       [1] "{.kbd {\"foo\"}}"
     Code
-      style_key("foo")
+      mark_key("foo")
     Output
       [1] "{.key {\"foo\"}}"
     Code
-      style_file("foo")
+      mark_file("foo")
     Output
       [1] "{.file {\"foo\"}}"
     Code
-      style_path("foo")
+      mark_path("foo")
     Output
       [1] "{.path {\"foo\"}}"
     Code
-      style_email("foo")
+      mark_email("foo")
     Output
       [1] "{.email {\"foo\"}}"
     Code
-      style_url("foo")
+      mark_url("foo")
     Output
       [1] "{.url {\"foo\"}}"
     Code
-      style_var("foo")
+      mark_var("foo")
     Output
       [1] "{.var {\"foo\"}}"
     Code
-      style_envvar("foo")
+      mark_envvar("foo")
     Output
       [1] "{.envvar {\"foo\"}}"
     Code
-      style_field("foo")
+      mark_field("foo")
     Output
       [1] "{.field {\"foo\"}}"
     Code
-      style_cls("foo")
+      mark_cls("foo")
     Output
       [1] "{.cls {\"foo\"}}"
     Code
-      style_cls(c("foo", "bar"))
+      mark_cls(c("foo", "bar"))
     Output
       [1] "{.cls {\"foo\"}}" "{.cls {\"bar\"}}"
 
@@ -301,126 +301,126 @@
 # styled strings may contain `{` syntax [plain]
 
     Code
-      style_emph("{foo {}")
+      mark_emph("{foo {}")
     Output
       [1] "_{foo {}_"
     Code
-      format_message(style_emph("{foo {}"))
+      format_message(mark_emph("{foo {}"))
     Output
       [1] "_{foo {}_"
 
 # styled strings may contain `{` syntax [ansi]
 
     Code
-      style_emph("{foo {}")
+      mark_emph("{foo {}")
     Output
       [1] "{.emph {\"{foo {}\"}}"
     Code
-      format_message(style_emph("{foo {}"))
+      format_message(mark_emph("{foo {}"))
     Output
       [1] "\033[1m\033[22m\033[3m\033[3m{foo {}\033[3m\033[23m"
 
 # can apply ANSI styles with cli [plain]
 
     Code
-      ansi_red("foo")
+      col_red("foo")
     Output
       [1] "foo"
     Code
-      ansi_blue("foo")
+      col_blue("foo")
     Output
       [1] "foo"
     Code
-      ansi_green("foo")
+      col_green("foo")
     Output
       [1] "foo"
     Code
-      ansi_yellow("foo")
+      col_yellow("foo")
     Output
       [1] "foo"
     Code
-      ansi_magenta("foo")
+      col_magenta("foo")
     Output
       [1] "foo"
     Code
-      ansi_cyan("foo")
+      col_cyan("foo")
     Output
       [1] "foo"
     Code
-      ansi_silver("foo")
+      col_silver("foo")
     Output
       [1] "foo"
     Code
-      ansi_blurred("foo")
+      style_blurred("foo")
     Output
       [1] "foo"
     Code
-      ansi_bold("foo")
+      style_bold("foo")
     Output
       [1] "foo"
     Code
-      ansi_italic("foo")
+      style_italic("foo")
     Output
       [1] "foo"
     Code
-      ansi_underline("foo")
+      style_underline("foo")
     Output
       [1] "foo"
 
 # can apply ANSI styles with cli [ansi]
 
     Code
-      ansi_red("foo")
+      col_red("foo")
     Output
       <ansi_string>
       [1] [31mfoo[39m
     Code
-      ansi_blue("foo")
+      col_blue("foo")
     Output
       <ansi_string>
       [1] [34mfoo[39m
     Code
-      ansi_green("foo")
+      col_green("foo")
     Output
       <ansi_string>
       [1] [32mfoo[39m
     Code
-      ansi_yellow("foo")
+      col_yellow("foo")
     Output
       <ansi_string>
       [1] [33mfoo[39m
     Code
-      ansi_magenta("foo")
+      col_magenta("foo")
     Output
       <ansi_string>
       [1] [35mfoo[39m
     Code
-      ansi_cyan("foo")
+      col_cyan("foo")
     Output
       <ansi_string>
       [1] [36mfoo[39m
     Code
-      ansi_silver("foo")
+      col_silver("foo")
     Output
       <ansi_string>
       [1] [90mfoo[39m
     Code
-      ansi_blurred("foo")
+      style_blurred("foo")
     Output
       <ansi_string>
       [1] [2mfoo[22m
     Code
-      ansi_bold("foo")
+      style_bold("foo")
     Output
       <ansi_string>
       [1] [1mfoo[22m
     Code
-      ansi_italic("foo")
+      style_italic("foo")
     Output
       <ansi_string>
       [1] [3mfoo[23m
     Code
-      ansi_underline("foo")
+      style_underline("foo")
     Output
       <ansi_string>
       [1] [4mfoo[24m

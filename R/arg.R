@@ -153,13 +153,13 @@ arg_require <- function(arg) {
     fn <- as_string(call[[1]])
     msg <- sprintf(
       "%s requires the argument %s to be supplied.",
-      style_fn(fn),
-      style_arg(arg)
+      mark_fn(fn),
+      mark_arg(arg)
     )
   } else {
     msg <- sprintf(
       "The argument %s must be supplied.",
-      style_arg(arg)
+      mark_arg(arg)
     )
   }
 
