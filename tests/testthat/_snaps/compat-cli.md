@@ -78,75 +78,247 @@
     Code
       style_emph("foo")
     Output
-      [1] "\033[1m\033[22m\033[3m\033[3mfoo\033[3m\033[23m"
+      [1] "{.emph {\"foo\"}}"
     Code
       style_strong("foo")
     Output
-      [1] "\033[1m\033[22m\033[1m\033[1mfoo\033[1m\033[22m"
+      [1] "{.strong {\"foo\"}}"
     Code
       style_code("foo")
     Output
-      [1] "\033[1m\033[22m\033[30m\033[47m\033[30m\033[47m`foo`\033[47m\033[30m\033[49m\033[39m"
+      [1] "{.code {\"foo\"}}"
     Code
       style_q("foo")
     Output
-      [1] "\033[1m\033[22m\"foo\""
+      [1] "{.q {\"foo\"}}"
     Code
       style_pkg("foo")
     Output
-      [1] "\033[1m\033[22m\033[34m\033[34mfoo\033[34m\033[39m"
+      [1] "{.pkg {\"foo\"}}"
     Code
       style_fn("foo")
     Output
-      [1] "\033[1m\033[22m\033[30m\033[47m\033[30m\033[47m`foo()`\033[47m\033[30m\033[49m\033[39m"
+      [1] "{.fn {\"foo\"}}"
     Code
       style_arg("foo")
     Output
-      [1] "\033[1m\033[22m\033[30m\033[47m\033[30m\033[47m`foo`\033[47m\033[30m\033[49m\033[39m"
+      [1] "{.arg {\"foo\"}}"
     Code
       style_kbd("foo")
     Output
-      [1] "\033[1m\033[22m\033[34m\033[34m[foo]\033[34m\033[39m"
+      [1] "{.kbd {\"foo\"}}"
     Code
       style_key("foo")
     Output
-      [1] "\033[1m\033[22m\033[34m\033[34m[foo]\033[34m\033[39m"
+      [1] "{.key {\"foo\"}}"
     Code
       style_file("foo")
     Output
-      [1] "\033[1m\033[22m\033[34m\033[34mfoo\033[34m\033[39m"
+      [1] "{.file {\"foo\"}}"
     Code
       style_path("foo")
     Output
-      [1] "\033[1m\033[22m\033[34m\033[34mfoo\033[34m\033[39m"
+      [1] "{.path {\"foo\"}}"
     Code
       style_email("foo")
     Output
-      [1] "\033[1m\033[22m\033[34m\033[34mfoo\033[34m\033[39m"
+      [1] "{.email {\"foo\"}}"
     Code
       style_url("foo")
     Output
-      [1] "\033[1m\033[22m\033[3m\033[34m\033[3m\033[34m<foo>\033[34m\033[3m\033[39m\033[23m"
+      [1] "{.url {\"foo\"}}"
     Code
       style_var("foo")
     Output
-      [1] "\033[1m\033[22m\033[30m\033[47m\033[30m\033[47m`foo`\033[47m\033[30m\033[49m\033[39m"
+      [1] "{.var {\"foo\"}}"
     Code
       style_envvar("foo")
     Output
-      [1] "\033[1m\033[22m\033[30m\033[47m\033[30m\033[47m`foo`\033[47m\033[30m\033[49m\033[39m"
+      [1] "{.envvar {\"foo\"}}"
     Code
       style_field("foo")
     Output
-      [1] "\033[1m\033[22m\033[32m\033[32mfoo\033[32m\033[39m"
+      [1] "{.field {\"foo\"}}"
     Code
       style_cls("foo")
     Output
-      [1] "\033[1m\033[22m\033[34m\033[34m<foo>\033[34m\033[39m"
+      [1] "{.cls {\"foo\"}}"
     Code
       style_cls(c("foo", "bar"))
     Output
+      [1] "{.cls {\"foo\"}}" "{.cls {\"bar\"}}"
+
+# can format strings with cli [plain]
+
+    Code
+      format_emph("foo")
+    Output
+      [1] "_foo_"
+    Code
+      format_strong("foo")
+    Output
+      [1] "*foo*"
+    Code
+      format_code("foo")
+    Output
+      [1] "`foo`"
+    Code
+      format_q("foo")
+    Output
+      [1] "foo"
+    Code
+      format_pkg("foo")
+    Output
+      [1] "foo"
+    Code
+      format_fn("foo")
+    Output
+      [1] "`foo()`"
+    Code
+      format_arg("foo")
+    Output
+      [1] "`foo`"
+    Code
+      format_kbd("foo")
+    Output
+      [1] "[foo]"
+    Code
+      format_key("foo")
+    Output
+      [1] "[foo]"
+    Code
+      format_file("foo")
+    Output
+      [1] "foo"
+    Code
+      format_path("foo")
+    Output
+      [1] "foo"
+    Code
+      format_email("foo")
+    Output
+      [1] "foo"
+    Code
+      format_url("foo")
+    Output
+      [1] "<foo>"
+    Code
+      format_var("foo")
+    Output
+      [1] "`foo`"
+    Code
+      format_envvar("foo")
+    Output
+      [1] "`foo`"
+    Code
+      format_field("foo")
+    Output
+      [1] "foo"
+    Code
+      format_cls("foo")
+    Output
+      [1] "<foo>"
+    Code
+      format_cls(c("foo", "bar"))
+    Output
+      [1] "<foo/bar>"
+
+# can format strings with cli [ansi]
+
+    Code
+      format_emph("foo")
+    Output
+      [1] "\033[1m\033[22m\033[3m\033[3mfoo\033[3m\033[23m"
+    Code
+      format_strong("foo")
+    Output
+      [1] "\033[1m\033[22m\033[1m\033[1mfoo\033[1m\033[22m"
+    Code
+      format_code("foo")
+    Output
+      [1] "\033[1m\033[22m\033[30m\033[47m\033[30m\033[47m`foo`\033[47m\033[30m\033[49m\033[39m"
+    Code
+      format_q("foo")
+    Output
+      [1] "\033[1m\033[22m\"foo\""
+    Code
+      format_pkg("foo")
+    Output
+      [1] "\033[1m\033[22m\033[34m\033[34mfoo\033[34m\033[39m"
+    Code
+      format_fn("foo")
+    Output
+      [1] "\033[1m\033[22m\033[30m\033[47m\033[30m\033[47m`foo()`\033[47m\033[30m\033[49m\033[39m"
+    Code
+      format_arg("foo")
+    Output
+      [1] "\033[1m\033[22m\033[30m\033[47m\033[30m\033[47m`foo`\033[47m\033[30m\033[49m\033[39m"
+    Code
+      format_kbd("foo")
+    Output
+      [1] "\033[1m\033[22m\033[34m\033[34m[foo]\033[34m\033[39m"
+    Code
+      format_key("foo")
+    Output
+      [1] "\033[1m\033[22m\033[34m\033[34m[foo]\033[34m\033[39m"
+    Code
+      format_file("foo")
+    Output
+      [1] "\033[1m\033[22m\033[34m\033[34mfoo\033[34m\033[39m"
+    Code
+      format_path("foo")
+    Output
+      [1] "\033[1m\033[22m\033[34m\033[34mfoo\033[34m\033[39m"
+    Code
+      format_email("foo")
+    Output
+      [1] "\033[1m\033[22m\033[34m\033[34mfoo\033[34m\033[39m"
+    Code
+      format_url("foo")
+    Output
+      [1] "\033[1m\033[22m\033[3m\033[34m\033[3m\033[34m<foo>\033[34m\033[3m\033[39m\033[23m"
+    Code
+      format_var("foo")
+    Output
+      [1] "\033[1m\033[22m\033[30m\033[47m\033[30m\033[47m`foo`\033[47m\033[30m\033[49m\033[39m"
+    Code
+      format_envvar("foo")
+    Output
+      [1] "\033[1m\033[22m\033[30m\033[47m\033[30m\033[47m`foo`\033[47m\033[30m\033[49m\033[39m"
+    Code
+      format_field("foo")
+    Output
+      [1] "\033[1m\033[22m\033[32m\033[32mfoo\033[32m\033[39m"
+    Code
+      format_cls("foo")
+    Output
+      [1] "\033[1m\033[22m\033[34m\033[34m<foo>\033[34m\033[39m"
+    Code
+      format_cls(c("foo", "bar"))
+    Output
       [1] "\033[1m\033[22m\033[34m\033[34m<foo/bar>\033[34m\033[39m"
+
+# styled strings may contain `{` syntax [plain]
+
+    Code
+      style_emph("{foo {}")
+    Output
+      [1] "_{foo {}_"
+    Code
+      format_message(style_emph("{foo {}"))
+    Output
+      [1] "_{foo {}_"
+
+# styled strings may contain `{` syntax [ansi]
+
+    Code
+      style_emph("{foo {}")
+    Output
+      [1] "{.emph {\"{foo {}\"}}"
+    Code
+      format_message(style_emph("{foo {}"))
+    Output
+      [1] "\033[1m\033[22m\033[3m\033[3m{foo {}\033[3m\033[23m"
 
 # can apply ANSI styles with cli [plain]
 
