@@ -19,6 +19,20 @@ enum sexp_iterator_state {
   SEXP_ITERATOR_STATE_elt
 };
 
+struct sexp_stack_info {
+  r_obj* x;
+  enum r_type type;
+
+  const enum sexp_iterator_state* p_state;
+  r_obj* const * v_arr;
+  r_obj* const * v_arr_end;
+
+  int depth;
+  r_obj* parent;
+  enum r_sexp_it_relation rel;
+  enum r_sexp_it_direction dir;
+};
+
 #include "decl/walk-decl.h"
 
 
@@ -51,20 +65,6 @@ const enum sexp_iterator_state structure_states[] = {
 static
 const enum sexp_iterator_state done_state[] = {
   SEXP_ITERATOR_STATE_done
-};
-
-struct sexp_stack_info {
-  r_obj* x;
-  enum r_type type;
-
-  const enum sexp_iterator_state* p_state;
-  r_obj* const * v_arr;
-  r_obj* const * v_arr_end;
-
-  int depth;
-  r_obj* parent;
-  enum r_sexp_it_relation rel;
-  enum r_sexp_it_direction dir;
 };
 
 
