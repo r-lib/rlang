@@ -39,11 +39,11 @@
 #' functions apply default ANSI colours to these symbols if possible.
 #'
 #' @noRd
-symbol_info   <- function() if (requireNamespace("cli")) cli::symbol$info else "i"
-symbol_cross  <- function() if (requireNamespace("cli")) cli::symbol$cross else "x"
-symbol_tick   <- function() if (requireNamespace("cli")) cli::symbol$tick else "v"
-symbol_bullet <- function() if (requireNamespace("cli")) cli::symbol$bullet else "*"
-symbol_arrow  <- function() if (requireNamespace("cli")) cli::symbol$arrow_right else ">"
+symbol_info   <- function() if (.rlang_cli_is_installed("cli")) cli::symbol$info else "i"
+symbol_cross  <- function() if (.rlang_cli_is_installed("cli")) cli::symbol$cross else "x"
+symbol_tick   <- function() if (.rlang_cli_is_installed("cli")) cli::symbol$tick else "v"
+symbol_bullet <- function() if (.rlang_cli_is_installed("cli")) cli::symbol$bullet else "*"
+symbol_arrow  <- function() if (.rlang_cli_is_installed("cli")) cli::symbol$arrow_right else ">"
 symbol_alert  <- function() "!"
 
 ansi_info   <- function() ansi_blue(symbol_info())
@@ -213,7 +213,7 @@ format_message <- function(x) {
     nms <- rep_len("", length(x))
   }
 
-  if (requireNamespace("rlang")) {
+  if (.rlang_cli_is_installed("rlang")) {
     abort <- rlang::abort
   } else {
     abort <- function(message) stop(message, call. = FALSE)
@@ -248,7 +248,10 @@ format_message <- function(x) {
 }
 
 .rlang_cli_has_ansi <- function() {
-  requireNamespace("cli") && cli::num_ansi_colors() > 1
+  .rlang_cli_is_installed("cli") && cli::num_ansi_colors() > 1
+}
+.rlang_cli_is_installed <- function(pkg) {
+  requireNamespace(pkg, quietly = TRUE)
 }
 
 #' Escape cli and glue syntax
