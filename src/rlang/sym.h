@@ -2,8 +2,10 @@
 #define RLANG_SYM_H
 
 
-extern r_obj* (*r_sym_as_character)(r_obj* x);
-extern r_obj* (*r_sym_as_string)(r_obj* x);
+// The results of `r_sym_as_` functions must be protected
+
+extern r_obj* (*r_sym_as_utf8_character)(r_obj* x);
+extern r_obj* (*r_sym_as_utf8_string)(r_obj* x);
 
 r_obj* r_new_symbol(r_obj* x, int* err);
 

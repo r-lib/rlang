@@ -208,7 +208,7 @@ r_obj* wrap_chr(r_obj* arg) {
   case R_TYPE_string:
     return r_str_as_character(arg);
   case R_TYPE_symbol:
-    return r_sym_as_character(arg);
+    return r_sym_as_utf8_character(arg);
   case R_TYPE_character:
     return arg;
   default:
