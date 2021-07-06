@@ -464,6 +464,10 @@ test_that("`enquos()` does not discard named missing arguments (#1229)", {
     fn(x = ),
     quos(x = )
   )
+  expect_equal(
+    fn(, foo),
+    quos(foo)
+  )
 })
 
 test_that("enexprs() and enquos() support empty dots", {

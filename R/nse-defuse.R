@@ -385,7 +385,7 @@ endots <- function(call,
 
     is_missing <- map_lgl(dots, dot_is_missing)
     is_named <- detect_named(dots)
-    is_dev_supplied <- names(dots) %in% names(syms)
+    is_dev_supplied <- is_named & names2(dots) %in% names(syms)
 
     # Named missing arguments supplied by the developer are considered
     # empty. Named missing arguments supplied by the user through
