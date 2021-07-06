@@ -102,14 +102,23 @@ cnd_footer.default <- function(cnd, ...) {
 }
 
 cnd_prefix <- function(cnd) {
+  ctxt <- cnd_context(cnd)
+  if (is_null(ctxt)) {
+    "Error: "
+  } else {
+    sprintf("Error in %s: ", ctxt)
+  }
+}
+
+cnd_context <- function(cnd) {
   call <- conditionCall(cnd)
 
   if (is_call(call) && is_expression(call)) {
     # Remove distracting arguments from the call
-    fn <- as_label(call[1])
-    sprintf("Error in %s: ", format_code(fn))
+    fn <- call[1]
+    format_code(as_label(fn))
   } else {
-    "Error: "
+    NULL
   }
 }
 

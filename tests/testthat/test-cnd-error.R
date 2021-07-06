@@ -123,3 +123,9 @@ test_that("base parent errors are printed with rlang method", {
   rlang_err <- error_cnd("bar", message = "", parent = base_err)
   expect_snapshot(print(rlang_err))
 })
+
+test_that("errors are printed with call", {
+  err <- catch_cnd(abort("msg", call = quote(foo(bar, baz))), "error")
+  err$trace <- NULL
+  expect_snapshot(print(err))
+})
