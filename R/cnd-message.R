@@ -179,30 +179,6 @@ rlang_format <- function(x, env, partial_format, cli_format) {
   )
 }
 
-str_restore <- function(x, to) {
-  out <- to
-
-  out <- out[1]
-  out[[1]] <- x
-
-  # Restore attributes only if unclassed. It is assumed the `[` and
-  # `[[` methods deal with attributes in case of classed objects.
-  # Preserving attributes matters for the assertthat package for
-  # instance.
-  if (!is.object(to)) {
-    attrib <- attributes(to)
-
-    attrib$names <- NULL
-    attrib$dim <- NULL
-    attrib$dimnames <- NULL
-    attrib <- c(attributes(out), attrib)
-
-    attributes(out) <- attrib
-  }
-
-  out
-}
-
 # No-op for the empty string, e.g. for `abort("", class = "foo")` and
 # a `conditionMessage.foo()` method. Don't format inputs escaped with `I()`.
 can_format <- function(x) {

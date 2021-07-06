@@ -197,7 +197,7 @@ format_message <- function(x) {
 .rlang_cli_format <- function(x, cli_format) {
   if (.rlang_cli_has_ansi()) {
     out <- cli_format(x, .envir = emptyenv())
-    .rlang_cli_str_restore(out, x)
+    .rlang_cli_str_restore(out, unname(x))
   } else {
     .rlang_cli_format_fallback(x)
   }
@@ -237,14 +237,31 @@ format_message <- function(x) {
     ifelse(bullets == "", "", paste0(bullets, " "))
 
   out <- paste0(bullets, x, collapse = "\n")
-  .rlang_cli_str_restore(out, x)
+  .rlang_cli_str_restore(out, unname(x))
 }
 
 .rlang_cli_str_restore <- function(x, to) {
-  names(to) <- NULL
-  to <- to[1]
-  to[[1]] <- x
-  to
+  out <- to
+
+  out <- out[1]
+  out[[1]] <- x
+
+  # Restore attributes only if unclassed. It is assumed the `[` and
+  # `[[` methods deal with attributes in case of classed objects.
+  # Preserving attributes matters for the assertthat package for
+  # instance.
+  if (!is.object(to)) {
+    attrib <- attributes(to)
+
+    attrib$names <- NULL
+    attrib$dim <- NULL
+    attrib$dimnames <- NULL
+    attrib <- c(attributes(out), attrib)
+
+    attributes(out) <- attrib
+  }
+
+  out
 }
 
 .rlang_cli_has_ansi <- function() {
