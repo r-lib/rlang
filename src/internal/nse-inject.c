@@ -347,7 +347,7 @@ r_obj* call_interp_impl(r_obj* x, r_obj* env, struct injection_info info) {
       subscript = r_node_cadr(subscript);
     }
     if (r_typeof(subscript) == R_TYPE_symbol) {
-      subscript = r_sym_as_character(subscript);
+      subscript = r_sym_as_utf8_character(subscript);
       r_node_poke_car(subscript_node, subscript);
     }
 

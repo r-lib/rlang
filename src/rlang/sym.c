@@ -48,3 +48,12 @@ bool r_is_symbol_any(r_obj* x, const char** strings, int n) {
 
   return false;
 }
+
+
+r_obj* (*r_sym_as_utf8_character)(r_obj* x) = NULL;
+r_obj* (*r_sym_as_utf8_string)(r_obj* x) = NULL;
+
+void r_init_library_sym() {
+  r_sym_as_utf8_character = (r_obj* (*)(r_obj*)) r_peek_c_callable("rlang", "rlang_sym_as_character");
+  r_sym_as_utf8_string = (r_obj* (*)(r_obj*)) r_peek_c_callable("rlang", "rlang_sym_as_string");
+}

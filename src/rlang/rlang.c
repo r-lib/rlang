@@ -88,6 +88,7 @@ r_obj* r_init_library(r_obj* ns) {
   r_init_library_fn();
   r_init_library_quo();
   r_init_library_session();
+  r_init_library_sym();
   r_init_library_stack();
 
   shared_x_env = r_parse_eval("new.env(hash = FALSE, parent = baseenv(), size = 1L)", r_envs.base);

@@ -190,7 +190,7 @@ static r_obj* poke_lazy_call = NULL;
 static r_obj* poke_lazy_value_node = NULL;
 
 void r_env_poke_lazy(r_obj* env, r_obj* sym, r_obj* expr, r_obj* eval_env) {
-  r_obj* name = KEEP(r_sym_as_character(sym));
+  r_obj* name = KEEP(r_sym_as_utf8_character(sym));
 
   r_node_poke_car(poke_lazy_value_node, expr);
   r_eval_with_xyz(poke_lazy_call, name, env, eval_env, rlang_ns_env);
@@ -206,7 +206,7 @@ static r_obj* remove_call = NULL;
 void r__env_unbind(r_obj* env, r_obj* sym) {
   // Check if binding exists to avoid `rm()` warning
   if (r_env_has(env, sym)) {
-    r_obj* nm = KEEP(r_sym_as_character(sym));
+    r_obj* nm = KEEP(r_sym_as_utf8_character(sym));
     eval_with_xyz(remove_call, env, nm, r_false);
     FREE(1);
   }

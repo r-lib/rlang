@@ -21,3 +21,16 @@ test_that("Unicode escapes are always converted to UTF8 characters with env_name
     expect_identical(env_names(env), get_alien_lang_string())
   })
 })
+
+test_that("dots names are converted to and from UTF-8 (#1218)", {
+  skip_if_not_windows()
+
+  withr::local_locale(LC_CTYPE = "Chinese (Simplified)_China.936")
+  x <- rawToChar(as.raw(c(0xb2, 0xe2, 0xca, 0xd4)))
+
+  call <- list(quote(quos), 1)
+  names(call)[[2]] <- x
+  out <- eval(as.call(call))
+
+  expect_equal(names(out), x)
+})

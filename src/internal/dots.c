@@ -647,7 +647,7 @@ r_obj* dots_as_list(r_obj* dots, struct dots_capture_info* capture_info) {
 
       r_obj* name = r_node_tag(dots);
       if (name != r_null) {
-        r_chr_poke(out_names, count, r_str(r_sym_c_string(name)));
+        r_chr_poke(out_names, count, r_sym_as_utf8_string(name));
       }
 
       ++count;
