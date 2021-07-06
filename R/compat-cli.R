@@ -7,13 +7,18 @@
 #
 # Changelog:
 #
+# 2021-07-06:
+#
+# * Added missing `col_`, `bg_`, and `style_` functions.
+#
+#
 # 2021-05-18:
 #
 # * Added `symbol_` and corresponding `ansi_` functions to create
 #   unicode symbols if possible. The `ansi_` variants apply default
 #   colours to these symbols if possible.
 #
-# * Added `ansi_` functions to apply ANSI styling (colours, slant, weight).
+# * Added `style_` functions to apply ANSI styling (colours, slant, weight).
 #
 # * Added `format_error()` and variants to format messages with
 #   cli (including bullets).
@@ -63,17 +68,49 @@ ansi_alert  <- function() col_yellow(symbol_alert())
 #' @param x A string.
 #'
 #' @noRd
-col_red         <- function(x) if (.rlang_cli_has_ansi()) cli::col_red(x) else x
-col_blue        <- function(x) if (.rlang_cli_has_ansi()) cli::col_blue(x) else x
-col_green       <- function(x) if (.rlang_cli_has_ansi()) cli::col_green(x) else x
-col_yellow      <- function(x) if (.rlang_cli_has_ansi()) cli::col_yellow(x) else x
-col_magenta     <- function(x) if (.rlang_cli_has_ansi()) cli::col_magenta(x) else x
-col_cyan        <- function(x) if (.rlang_cli_has_ansi()) cli::col_cyan(x) else x
-col_silver      <- function(x) if (.rlang_cli_has_ansi()) cli::col_silver(x) else x
-style_blurred   <- function(x) if (.rlang_cli_has_ansi()) cli::style_blurred(x) else x
-style_bold      <- function(x) if (.rlang_cli_has_ansi()) cli::style_bold(x) else x
-style_italic    <- function(x) if (.rlang_cli_has_ansi()) cli::style_italic(x) else x
-style_underline <- function(x) if (.rlang_cli_has_ansi()) cli::style_underline(x) else x
+col_black              <- function(x) if (.rlang_cli_has_ansi()) cli::col_black(x) else x
+col_blue               <- function(x) if (.rlang_cli_has_ansi()) cli::col_blue(x) else x
+col_cyan               <- function(x) if (.rlang_cli_has_ansi()) cli::col_cyan(x) else x
+col_green              <- function(x) if (.rlang_cli_has_ansi()) cli::col_green(x) else x
+col_magenta            <- function(x) if (.rlang_cli_has_ansi()) cli::col_magenta(x) else x
+col_red                <- function(x) if (.rlang_cli_has_ansi()) cli::col_red(x) else x
+col_white              <- function(x) if (.rlang_cli_has_ansi()) cli::col_white(x) else x
+col_yellow             <- function(x) if (.rlang_cli_has_ansi()) cli::col_yellow(x) else x
+col_grey               <- function(x) if (.rlang_cli_has_ansi()) cli::col_grey(x) else x
+col_silver             <- function(x) if (.rlang_cli_has_ansi()) cli::col_silver(x) else x
+col_none               <- function(x) if (.rlang_cli_has_ansi()) cli::col_none(x) else x
+
+bg_black               <- function(x) if (.rlang_cli_has_ansi()) cli::bg_black(x) else x
+bg_blue                <- function(x) if (.rlang_cli_has_ansi()) cli::bg_blue(x) else x
+bg_cyan                <- function(x) if (.rlang_cli_has_ansi()) cli::bg_cyan(x) else x
+bg_green               <- function(x) if (.rlang_cli_has_ansi()) cli::bg_green(x) else x
+bg_magenta             <- function(x) if (.rlang_cli_has_ansi()) cli::bg_magenta(x) else x
+bg_red                 <- function(x) if (.rlang_cli_has_ansi()) cli::bg_red(x) else x
+bg_white               <- function(x) if (.rlang_cli_has_ansi()) cli::bg_white(x) else x
+bg_yellow              <- function(x) if (.rlang_cli_has_ansi()) cli::bg_yellow(x) else x
+bg_none                <- function(x) if (.rlang_cli_has_ansi()) cli::bg_none(x) else x
+
+style_dim              <- function(x) if (.rlang_cli_has_ansi()) cli::style_dim(x) else x
+style_blurred          <- function(x) if (.rlang_cli_has_ansi()) cli::style_blurred(x) else x
+style_bold             <- function(x) if (.rlang_cli_has_ansi()) cli::style_bold(x) else x
+style_hidden           <- function(x) if (.rlang_cli_has_ansi()) cli::style_hidden(x) else x
+style_inverse          <- function(x) if (.rlang_cli_has_ansi()) cli::style_inverse(x) else x
+style_italic           <- function(x) if (.rlang_cli_has_ansi()) cli::style_italic(x) else x
+style_strikethrough    <- function(x) if (.rlang_cli_has_ansi()) cli::style_strikethrough(x) else x
+style_underline        <- function(x) if (.rlang_cli_has_ansi()) cli::style_underline(x) else x
+
+style_no_dim           <- function(x) if (.rlang_cli_has_ansi()) cli::style_no_dim(x) else x
+style_no_blurred       <- function(x) if (.rlang_cli_has_ansi()) cli::style_no_blurred(x) else x
+style_no_bold          <- function(x) if (.rlang_cli_has_ansi()) cli::style_no_bold(x) else x
+style_no_hidden        <- function(x) if (.rlang_cli_has_ansi()) cli::style_no_hidden(x) else x
+style_no_inverse       <- function(x) if (.rlang_cli_has_ansi()) cli::style_no_inverse(x) else x
+style_no_italic        <- function(x) if (.rlang_cli_has_ansi()) cli::style_no_italic(x) else x
+style_no_strikethrough <- function(x) if (.rlang_cli_has_ansi()) cli::style_no_strikethrough(x) else x
+style_no_underline     <- function(x) if (.rlang_cli_has_ansi()) cli::style_no_underline(x) else x
+
+style_reset            <- function(x) if (.rlang_cli_has_ansi()) cli::style_reset(x) else x
+style_no_colour        <- function(x) if (.rlang_cli_has_ansi()) cli::style_no_color(x) else x
+style_no_bg_colour     <- function(x) if (.rlang_cli_has_ansi()) cli::style_no_bg_color(x) else x
 
 #' Apply inline styling
 #'
