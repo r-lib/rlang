@@ -65,6 +65,10 @@ Rscript <- function(args, ...) {
     status = attr(out, "status")
   )
 }
+run <- function(code) {
+  out <- Rscript(shQuote(c("--vanilla", "-e", code)))
+  cat_line(out$out)
+}
 
 expect_reference <- function(object, expected) {
   expect_true(is_reference(object, expected))

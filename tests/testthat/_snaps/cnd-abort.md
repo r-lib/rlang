@@ -251,3 +251,19 @@
        11. rlang:::bar(cnd)
        12. rlang:::baz(cnd)
 
+# abort() displays call in error prefix
+
+    Code
+      run("rlang::abort('foo', call = quote(bar(baz)))")
+    Output
+      Error in `bar()`: foo
+      Execution halted
+
+---
+
+    Code
+      run("rlang::cnd_signal(errorCondition('foo', call = quote(bar(baz))))")
+    Output
+      Error in `bar()`: foo
+      Execution halted
+

@@ -212,3 +212,14 @@ cli::test_that_cli(configs = c("plain", "fancy"), "can use cli syntax in `cnd_me
   )
   expect_snapshot(cnd_message(cnd))
 })
+
+test_that("prefix takes call into account", {
+  err <- error_cnd(message = "Message.", call = quote(foo(bar = TRUE)))
+  expect_equal(cnd_prefix(err), "Error in `foo()`: ")
+
+  # Inlined objects disable context deparsing
+  err1 <- error_cnd(call = expr(foo(bar = !!(1:3))))
+  err2 <- error_cnd(call = call2(identity))
+  expect_equal(cnd_prefix(err1), "Error: ")
+  expect_equal(cnd_prefix(err2), "Error: ")
+})

@@ -80,6 +80,9 @@
 #' @param class Subclass of the condition. This allows your users
 #'   to selectively handle the conditions signalled by your functions.
 #' @param ... Additional data to be stored in the condition object.
+#' @param call A call representing the context in which the error
+#'   occurred. If present, `abort()` displays the call (stripped from
+#'   its arguments to keep it simple) before `message`.
 #' @param .subclass This argument was renamed to `class` in rlang
 #'   0.4.2.  It will be deprecated in the next major version. This is
 #'   for consistency with our conventions for class constructors
@@ -146,6 +149,7 @@
 abort <- function(message = NULL,
                   class = NULL,
                   ...,
+                  call = NULL,
                   trace = NULL,
                   parent = NULL,
                   .subclass = deprecated()) {
@@ -177,6 +181,7 @@ abort <- function(message = NULL,
   cnd <- error_cnd(class,
     ...,
     message = message,
+    call = call,
     parent = parent,
     trace = trace
   )
@@ -209,7 +214,8 @@ signal_abort <- function(cnd) {
   # Print the backtrace manually to work around limitations on the
   # length of error messages (#856)
   file <- peek_option("rlang:::error_pipe") %||% stderr()
-  cat("Error: ", msg, "\n", sep = "", file = file)
+  prefix <- cnd_prefix(cnd)
+  cat(prefix, msg, "\n", sep = "", file = file)
 
   # Use `stop()` to run the `getOption("error")` handler (used by
   # RStudio to record a backtrace) and cause a long jump. Running the
@@ -249,7 +255,11 @@ signal_abort <- function(cnd) {
 #' @export
 cnd_as_unhandled_error <- function(cnd) {
   # Generate the error message, possibly with a backtrace or reminder
-  cnd("rlang_error", message = cnd_unhandled_message(cnd))
+  cnd(
+    "rlang_error",
+    message = cnd_unhandled_message(cnd),
+    call = cnd$call
+  )
 }
 cnd_unhandled_message <- function(cnd) {
   paste_line(

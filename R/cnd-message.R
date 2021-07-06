@@ -101,6 +101,18 @@ cnd_footer.default <- function(cnd, ...) {
   chr()
 }
 
+cnd_prefix <- function(cnd) {
+  call <- conditionCall(cnd)
+
+  if (is_call(call) && is_expression(call)) {
+    # Remove distracting arguments from the call
+    fn <- as_label(call[1])
+    sprintf("Error in %s: ", format_code(fn))
+  } else {
+    "Error: "
+  }
+}
+
 #' Format bullets for error messages
 #'
 #' @description

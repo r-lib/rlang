@@ -29,6 +29,12 @@
 
 ## Features and bugfixes
 
+* `abort()` now displays `call` field in error messages. The call is
+  only displayed if it is a simple expression (e.g. no inlined
+  function) and the arguments are not displayed to avoid distracting
+  from the error message. The message is formatted with the tidyverse
+  style (`code` formatting by the cli package if available).
+
 * The `.ignore_empty` argument of `enexprs()` and `enquos()` no longer
   treats named arguments supplied through `...` as empty, consistently
   with `exprs()` and `quos()` (#1229).
