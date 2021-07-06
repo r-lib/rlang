@@ -458,6 +458,14 @@ test_that("enexprs() and enquos() support `.ignore_empty = 'all'` (#414)", {
   expect_identical(myquos("all"), quos())
 })
 
+test_that("`enquos()` does not discard named missing arguments (#1229)", {
+  fn <- function(...) enquos(..., .ignore_empty = "all")
+  expect_equal(
+    fn(x = ),
+    quos(x = )
+  )
+})
+
 test_that("enexprs() and enquos() support empty dots", {
   myexprs <- function(what, ...) enexprs(..., .ignore_empty = what)
   expect_identical(myexprs("none"), exprs())

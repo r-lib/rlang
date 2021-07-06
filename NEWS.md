@@ -29,6 +29,10 @@
 
 ## Features and bugfixes
 
+* The `.ignore_empty` argument of `enexprs()` and `enquos()` no longer
+  treats named arguments supplied through `...` as empty, consistently
+  with `exprs()` and `quos()` (#1229).
+
 * `is_expression()` now returns `FALSE` for manually constructed
   expressions that cannot be created by the R parser.
 

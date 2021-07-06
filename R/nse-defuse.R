@@ -112,10 +112,8 @@
 #'   (including expressions contained in `...`).
 #' @param .ignore_empty Whether to ignore empty arguments. Can be one
 #'   of `"trailing"`, `"none"`, `"all"`. If `"trailing"`, only the
-#'   last argument is ignored if it is empty. Note that `"trailing"`
-#'   applies only to arguments passed in `...`, not to named
-#'   arguments. On the other hand, `"all"` also applies to named
-#'   arguments.
+#'   last argument is ignored if it is empty. Named arguments are not
+#'   considered empty.
 #' @param .unquote_names Whether to treat `:=` as `=`. Unlike `=`, the
 #'   `:=` syntax supports `!!` unquoting on the LHS.
 #' @name nse-defuse
@@ -384,7 +382,17 @@ endots <- function(call,
     } else {
       dot_is_missing <- is_missing
     }
-    dots <- keep(dots, negate(dot_is_missing))
+
+    is_missing <- map_lgl(dots, dot_is_missing)
+    is_named <- detect_named(dots)
+    is_dev_supplied <- names(dots) %in% names(syms)
+
+    # Named missing arguments supplied by the developer are considered
+    # empty. Named missing arguments supplied by the user through
+    # `...` are not considered empty, consistently with `quos()`.
+    is_empty <- is_missing & (is_dev_supplied | !is_named)
+
+    dots <- discard(dots, is_empty)
   }
 
   if (is_true(named)) {

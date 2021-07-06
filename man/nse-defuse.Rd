@@ -87,10 +87,8 @@ left with \code{NULL} names.}
 
 \item{.ignore_empty}{Whether to ignore empty arguments. Can be one
 of \code{"trailing"}, \code{"none"}, \code{"all"}. If \code{"trailing"}, only the
-last argument is ignored if it is empty. Note that \code{"trailing"}
-applies only to arguments passed in \code{...}, not to named
-arguments. On the other hand, \code{"all"} also applies to named
-arguments.}
+last argument is ignored if it is empty. Named arguments are not
+considered empty.}
 
 \item{.unquote_names}{Whether to treat \verb{:=} as \code{=}. Unlike \code{=}, the
 \verb{:=} syntax supports \verb{!!} unquoting on the LHS.}
