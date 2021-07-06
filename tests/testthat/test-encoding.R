@@ -22,7 +22,7 @@ test_that("Unicode escapes are always converted to UTF8 characters with env_name
   })
 })
 
-test_that("wip", {
+test_that("dots names are converted to and from UTF-8 (#1218)", {
   skip_if_not_windows()
 
   withr::local_locale(LC_CTYPE = "Chinese (Simplified)_China.936")
