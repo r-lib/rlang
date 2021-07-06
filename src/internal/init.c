@@ -261,6 +261,7 @@ void R_init_rlang(DllInfo* dll) {
   R_RegisterCCallable("rlang", "rlang_obj_encode_utf8",     (DL_FUNC) &obj_encode_utf8);
   R_RegisterCCallable("rlang", "rlang_str_as_symbol",       (DL_FUNC) &r_str_as_symbol);
   R_RegisterCCallable("rlang", "rlang_sym_as_character",    (DL_FUNC) &ffi_sym_as_character);
+  R_RegisterCCallable("rlang", "rlang_sym_as_string",       (DL_FUNC) &ffi_sym_as_string);
   R_RegisterCCallable("rlang", "rlang_unbox",               (DL_FUNC) &rlang_unbox);
 
   // Experimental

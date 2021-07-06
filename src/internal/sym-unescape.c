@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-r_obj* str_unserialise_unicode(r_obj* r_string);
+#include "decl/sym-unescape-decl.h"
 
 
 // Interface functions ---------------------------------------------------------
@@ -15,8 +15,12 @@ r_obj* ffi_symbol(r_obj* chr) {
   return r_str_as_symbol(r_chr_get(chr, 0));
 }
 
+r_obj* ffi_sym_as_string(r_obj* sym) {
+  return str_unserialise_unicode(PRINTNAME(sym));
+}
+
 r_obj* ffi_sym_as_character(r_obj* sym) {
-  r_obj* str = KEEP(str_unserialise_unicode(PRINTNAME(sym)));
+  r_obj* str = KEEP(ffi_sym_as_string(sym));
   r_obj* out = r_str_as_character(str);
   FREE(1);
   return out;
