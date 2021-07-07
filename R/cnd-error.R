@@ -108,6 +108,11 @@ format.rlang_error <- function(x,
     )
   }
 
+  ctxt <- cnd_context(x)
+  if (!is_null(ctxt)) {
+    out <- paste_line(out, paste0(bold("Context: "), ctxt))
+  }
+
   simplify <- arg_match(simplify)
 
   if (backtrace && !is_null(trace) && trace_length(trace)) {

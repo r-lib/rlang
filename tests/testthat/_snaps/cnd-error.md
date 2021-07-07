@@ -208,3 +208,12 @@
     Output
       <error/bar>
 
+# errors are printed with call
+
+    Code
+      print(err)
+    Output
+      <error/rlang_error>
+      msg
+      Context: `foo()`
+
