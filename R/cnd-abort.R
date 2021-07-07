@@ -56,6 +56,24 @@
 #' When set to quiet, the message is not displayed and the condition
 #' is not signalled.
 #'
+#' @section `stdout` and `stderr`:
+#'
+#' By default, `abort()` and `inform()` print to standard output in
+#' interactive sessions. This allows rlang to be in control of the
+#' appearance of messages in IDEs like RStudio.
+#'
+#' There are two situations where messages are streamed to `stderr`:
+#'
+#' - In non-interactive sessions, messages are streamed to standard
+#'   error so that R scripts can easily filter them out from normal
+#'   output by redirecting `stderr`.
+#'
+#' - If a sink is active (either on output or on messages) messages
+#'   are always streamd to `stderr`.
+#'
+#' These exceptions ensure consistency of behaviour in interactive and
+#' non-interactive sessions, and when sinks are active.
+#'
 #' @details
 #'
 #' - `abort()` and `warn()` temporarily set the `warning.length`
@@ -83,6 +101,9 @@
 #' @param call A call representing the context in which the error
 #'   occurred. If present, `abort()` displays the call (stripped from
 #'   its arguments to keep it simple) before `message`.
+#' @param .file A connection or a string specifying where to print the
+#'   message. The default depends on the context, see the `stdout` vs
+#'   `stderr` section.
 #' @param .subclass This argument was renamed to `class` in rlang
 #'   0.4.2.  It will be deprecated in the next major version. This is
 #'   for consistency with our conventions for class constructors
@@ -152,6 +173,7 @@ abort <- function(message = NULL,
                   call = NULL,
                   trace = NULL,
                   parent = NULL,
+                  .file = NULL,
                   .subclass = deprecated()) {
   validate_signal_args(.subclass)
 
@@ -185,10 +207,10 @@ abort <- function(message = NULL,
     parent = parent,
     trace = trace
   )
-  signal_abort(cnd)
+  signal_abort(cnd, .file)
 }
 
-signal_abort <- function(cnd) {
+signal_abort <- function(cnd, file = NULL) {
   if (is_true(peek_option("rlang::::force_unhandled_error"))) {
     # Fall back with the full rlang error
     fallback <- cnd
@@ -208,13 +230,13 @@ signal_abort <- function(cnd) {
   # Save the unhandled error for `rlang::last_error()`.
   last_error_env$cnd <- cnd
 
-  fallback$message <- conditionMessage(cnd)
-  msg <- cnd_unhandled_message(cnd)
-
   # Print the backtrace manually to work around limitations on the
   # length of error messages (#856)
-  file <- peek_option("rlang:::error_pipe") %||% stderr()
+  fallback$message <- conditionMessage(cnd)
+  msg <- cnd_unhandled_message(cnd)
   prefix <- cnd_prefix(cnd)
+
+  file <- file %||% default_message_file()
   cat(prefix, msg, "\n", sep = "", file = file)
 
   # Use `stop()` to run the `getOption("error")` handler (used by

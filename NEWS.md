@@ -29,6 +29,9 @@
 
 ## Features and bugfixes
 
+* `abort()` now outputs error messages to `stdout` in interactive
+  sessions, following the same approach as `inform()`.
+
 * `abort()` now displays `call` field in error messages. The call is
   only displayed if it is a simple expression (e.g. no inlined
   function) and the arguments are not displayed to avoid distracting

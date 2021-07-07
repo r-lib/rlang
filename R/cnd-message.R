@@ -102,11 +102,12 @@ cnd_footer.default <- function(cnd, ...) {
 }
 
 cnd_prefix <- function(cnd) {
+  error <- style_bold("Error")
   ctxt <- cnd_context(cnd)
   if (is_null(ctxt)) {
-    "Error: "
+    sprintf("%s: ", error)
   } else {
-    sprintf("Error in %s: ", ctxt)
+    sprintf("%s in %s: ", error, ctxt)
   }
 }
 

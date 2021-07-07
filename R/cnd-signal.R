@@ -134,16 +134,6 @@ warn <- function(message = NULL,
   warning(cnd)
 }
 #' @rdname abort
-#' @param .file Where the message is printed. This should be a
-#'   connection or character string which will be passed to [cat()].
-#'
-#'   By default, `inform()` prints to standard output in interactive
-#'   sessions and standard error otherwise. This way IDEs can treat
-#'   messages distinctly from warnings and errors, and R scripts can
-#'   still filter out the messages easily by redirecting `stderr`. If
-#'   a sink is active, either on output or on messages, messages are
-#'   printed to `stderr`. This ensures consistency of behaviour in
-#'   interactive and non-interactive sessions.
 #' @export
 inform <- function(message = NULL,
                    class = NULL,
@@ -196,6 +186,11 @@ local_long_messages <- function(..., frame = caller_env()) {
 }
 
 default_message_file <- function() {
+  opt <- peek_option("rlang:::message_file")
+  if (!is_null(opt)) {
+    return(opt)
+  }
+
   if (is_interactive() &&
       sink.number("output") == 0 &&
       sink.number("message") == 2) {

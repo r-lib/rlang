@@ -15,6 +15,7 @@ abort(
   call = NULL,
   trace = NULL,
   parent = NULL,
+  .file = NULL,
   .subclass = deprecated()
 )
 
@@ -68,6 +69,10 @@ its arguments to keep it simple) before \code{message}.}
 
 \item{parent}{A parent condition object created by \code{\link[=abort]{abort()}}.}
 
+\item{.file}{A connection or a string specifying where to print the
+message. The default depends on the context, see the \code{stdout} vs
+\code{stderr} section.}
+
 \item{.subclass}{This argument was renamed to \code{class} in rlang
 0.4.2.  It will be deprecated in the next major version. This is
 for consistency with our conventions for class constructors
@@ -82,17 +87,6 @@ time. If \code{"regularly"}, it is displayed once every 8 hours. If
 message. This is used when \code{.frequency} is supplied to recognise
 recurring conditions. This argument must be supplied if
 \code{.frequency} is not set to \code{"always"}.}
-
-\item{.file}{Where the message is printed. This should be a
-connection or character string which will be passed to \code{\link[=cat]{cat()}}.
-
-By default, \code{inform()} prints to standard output in interactive
-sessions and standard error otherwise. This way IDEs can treat
-messages distinctly from warnings and errors, and R scripts can
-still filter out the messages easily by redirecting \code{stderr}. If
-a sink is active, either on output or on messages, messages are
-printed to \code{stderr}. This ensures consistency of behaviour in
-interactive and non-interactive sessions.}
 }
 \description{
 These functions are equivalent to base functions \code{\link[base:stop]{base::stop()}},
@@ -162,6 +156,26 @@ supplied.
 
 When set to quiet, the message is not displayed and the condition
 is not signalled.
+}
+
+\section{\code{stdout} and \code{stderr}}{
+
+
+By default, \code{abort()} and \code{inform()} print to standard output in
+interactive sessions. This allows rlang to be in control of the
+appearance of messages in IDEs like RStudio.
+
+There are two situations where messages are streamed to \code{stderr}:
+\itemize{
+\item In non-interactive sessions, messages are streamed to standard
+error so that R scripts can easily filter them out from normal
+output by redirecting \code{stderr}.
+\item If a sink is active (either on output or on messages) messages
+are always streamd to \code{stderr}.
+}
+
+These exceptions ensure consistency of behaviour in interactive and
+non-interactive sessions, and when sinks are active.
 }
 
 \examples{

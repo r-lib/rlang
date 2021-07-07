@@ -21,7 +21,7 @@ test_that("errors are saved", {
   # This simulates an unhandled error.
   local_options(
     `rlang::::force_unhandled_error` = TRUE,
-    `rlang:::error_pipe` = tempfile()
+    `rlang:::message_file` = tempfile()
   )
 
   try(abort("foo", "bar"), outFile = file)
@@ -43,7 +43,7 @@ test_that("No backtrace is displayed with top-level active bindings", {
 test_that("Invalid on_error option resets itself", {
   with_options(
     `rlang::::force_unhandled_error` = TRUE,
-    `rlang:::error_pipe` = tempfile(),
+    `rlang:::message_file` = tempfile(),
     rlang_backtrace_on_error = NA,
     {
       expect_warning(tryCatch(abort("foo"), error = identity), "Invalid")
