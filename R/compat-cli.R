@@ -306,9 +306,20 @@ format_message <- function(x) {
 .rlang_cli_has_ansi <- function() {
   .rlang_cli_is_installed("cli") && cli::num_ansi_colors() > 1
 }
-.rlang_cli_is_installed <- function(pkg) {
-  requireNamespace(pkg, quietly = TRUE)
-}
+
+.rlang_cli_is_installed <- local({
+  has_cli <- NULL
+
+  function(pkg) {
+    if (is.null(has_cli)) {
+      has_cli <<- TRUE &&
+        requireNamespace(pkg, quietly = TRUE) &&
+        utils::packageVersion("cli") >= "3.0.0"
+    }
+
+    has_cli
+  }
+})
 
 #' Escape cli and glue syntax
 #'
