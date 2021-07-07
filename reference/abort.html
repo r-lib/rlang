@@ -190,6 +190,7 @@ to create custom interrupt condition objects.</p>
   call <span class='op'>=</span> <span class='cn'>NULL</span>,
   trace <span class='op'>=</span> <span class='cn'>NULL</span>,
   parent <span class='op'>=</span> <span class='cn'>NULL</span>,
+  .file <span class='op'>=</span> <span class='cn'>NULL</span>,
   .subclass <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Deprecated.html'>deprecated</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='op'>)</span>
 
@@ -257,6 +258,12 @@ its arguments to keep it simple) before <code>message</code>.</p></td>
       <td><p>A parent condition object created by <code>abort()</code>.</p></td>
     </tr>
     <tr>
+      <th>.file</th>
+      <td><p>A connection or a string specifying where to print the
+message. The default depends on the context, see the <code>stdout</code> vs
+<code>stderr</code> section.</p></td>
+    </tr>
+    <tr>
       <th>.subclass</th>
       <td><p>This argument was renamed to <code>class</code> in rlang
 0.4.2.  It will be deprecated in the next major version. This is
@@ -276,18 +283,6 @@ time. If <code>"regularly"</code>, it is displayed once every 8 hours. If
 message. This is used when <code>.frequency</code> is supplied to recognise
 recurring conditions. This argument must be supplied if
 <code>.frequency</code> is not set to <code>"always"</code>.</p></td>
-    </tr>
-    <tr>
-      <th>.file</th>
-      <td><p>Where the message is printed. This should be a
-connection or character string which will be passed to <code><a href='https://rdrr.io/r/base/cat.html'>cat()</a></code>.</p>
-<p>By default, <code>inform()</code> prints to standard output in interactive
-sessions and standard error otherwise. This way IDEs can treat
-messages distinctly from warnings and errors, and R scripts can
-still filter out the messages easily by redirecting <code>stderr</code>. If
-a sink is active, either on output or on messages, messages are
-printed to <code>stderr</code>. This ensures consistency of behaviour in
-interactive and non-interactive sessions.</p></td>
     </tr>
     </table>
 
@@ -343,6 +338,24 @@ supplied.</p></li>
 
 <p>When set to quiet, the message is not displayed and the condition
 is not signalled.</p>
+    <h2 class="hasAnchor" id="stdout-and-stderr"><a class="anchor" href="#stdout-and-stderr"></a><code>stdout</code> and <code>stderr</code></h2>
+
+    
+
+
+<p>By default, <code>abort()</code> and <code>inform()</code> print to standard output in
+interactive sessions. This allows rlang to be in control of the
+appearance of messages in IDEs like RStudio.</p>
+<p>There are two situations where messages are streamed to <code>stderr</code>:</p><ul>
+<li><p>In non-interactive sessions, messages are streamed to standard
+error so that R scripts can easily filter them out from normal
+output by redirecting <code>stderr</code>.</p></li>
+<li><p>If a sink is active (either on output or on messages) messages
+are always streamd to <code>stderr</code>.</p></li>
+</ul>
+
+<p>These exceptions ensure consistency of behaviour in interactive and
+non-interactive sessions, and when sinks are active.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='with_abort.html'>with_abort()</a></code> to convert all errors to rlang errors.</p></div>

@@ -175,6 +175,7 @@
 <h2 class="hasAnchor">
 <a href="#features-and-bugfixes" class="anchor"></a>Features and bugfixes</h2>
 <ul>
+<li><p><code><a href="../reference/abort.html">abort()</a></code> now outputs error messages to <code>stdout</code> in interactive sessions, following the same approach as <code><a href="../reference/abort.html">inform()</a></code>.</p></li>
 <li><p><code><a href="../reference/abort.html">abort()</a></code> now displays <code>call</code> field in error messages. The call is only displayed if it is a simple expression (e.g. no inlined function) and the arguments are not displayed to avoid distracting from the error message. The message is formatted with the tidyverse style (<code>code</code> formatting by the cli package if available).</p></li>
 <li><p>The <code>.ignore_empty</code> argument of <code><a href="../reference/nse-defuse.html">enexprs()</a></code> and <code><a href="../reference/nse-defuse.html">enquos()</a></code> no longer treats named arguments supplied through <code>...</code> as empty, consistently with <code><a href="../reference/nse-defuse.html">exprs()</a></code> and <code><a href="../reference/nse-defuse.html">quos()</a></code> (<a href='https://github.com/r-lib/rlang/issues/1229'>#1229</a>).</p></li>
 <li><p><code><a href="../reference/is_expression.html">is_expression()</a></code> now returns <code>FALSE</code> for manually constructed expressions that cannot be created by the R parser.</p></li>
