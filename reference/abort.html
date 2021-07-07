@@ -94,7 +94,7 @@ to create custom interrupt condition objects." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rlang</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.11.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.11.9001</span>
       </span>
     </div>
 
@@ -187,6 +187,7 @@ to create custom interrupt condition objects.</p>
   message <span class='op'>=</span> <span class='cn'>NULL</span>,
   class <span class='op'>=</span> <span class='cn'>NULL</span>,
   <span class='va'>...</span>,
+  call <span class='op'>=</span> <span class='cn'>NULL</span>,
   trace <span class='op'>=</span> <span class='cn'>NULL</span>,
   parent <span class='op'>=</span> <span class='cn'>NULL</span>,
   .subclass <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Deprecated.html'>deprecated</a></span><span class='op'>(</span><span class='op'>)</span>
@@ -240,6 +241,12 @@ to selectively handle the conditions signalled by your functions.</p></td>
     <tr>
       <th>...</th>
       <td><p>Additional data to be stored in the condition object.</p></td>
+    </tr>
+    <tr>
+      <th>call</th>
+      <td><p>A call representing the context in which the error
+occurred. If present, <code>abort()</code> displays the call (stripped from
+its arguments to keep it simple) before <code>message</code>.</p></td>
     </tr>
     <tr>
       <th>trace</th>
