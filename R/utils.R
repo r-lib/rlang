@@ -342,3 +342,14 @@ new_stack <- function() {
 # https://github.com/r-lib/coro/issues/35
 exhausted <- function() as.symbol("exhausted")
 is_exhausted <- function(x) identical(x, exhausted())
+
+path_trim_prefix <- function(path, n) {
+  split <- strsplit(path, "/")[[1]]
+  n_split <- length(split)
+
+  if (n_split <= n) {
+    path
+  } else {
+    paste(split[seq2(n_split - n + 1, n_split)], collapse = "/")
+  }
+}

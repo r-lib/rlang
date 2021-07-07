@@ -29,6 +29,9 @@
 
 ## Features and bugfixes
 
+* Backtraces now print dangling srcrefs (#1206). Paths are shortened
+  to show only three components (two levels of folder and the file).
+
 * `abort()` now outputs error messages to `stdout` in interactive
   sessions, following the same approach as `inform()`.
 

@@ -31,3 +31,20 @@ test_that("source_refs() creates source references", {
   attrib_names <- names(attributes(x))
   expect_true(all(c("srcref", "srcfile", "wholeSrcref") %in% attrib_names))
 })
+
+test_that("path_trim_prefix() trims path", {
+  expect_equal(
+    path_trim_prefix("foo/bar/baz.R", 2),
+    "bar/baz.R"
+  )
+
+  expect_equal(
+    path_trim_prefix("foo/bar/baz.R", 3),
+    "foo/bar/baz.R"
+  )
+
+  expect_equal(
+    path_trim_prefix("foo/bar/baz.R", 1),
+    "baz.R"
+  )
+})

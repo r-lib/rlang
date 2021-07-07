@@ -9,8 +9,7 @@ test_that("tree printing only changes deliberately", {
   skip_if_not_installed("testthat", "2.99.0")
 
   local_options(
-    rlang_trace_format_srcrefs = TRUE,
-    `rlang:::trace_force_dangling_srcrefs` = TRUE
+    rlang_trace_format_srcrefs = TRUE
   )
 
   dir <- normalizePath(test_path(".."))
@@ -41,8 +40,7 @@ test_that("can print tree with collapsed branches", {
   skip_if(getRversion() < "3.4")
 
   local_options(
-    rlang_trace_format_srcrefs = TRUE,
-    `rlang:::trace_force_dangling_srcrefs` = TRUE
+    rlang_trace_format_srcrefs = TRUE
   )
 
   dir <- normalizePath(test_path(".."))
@@ -107,8 +105,6 @@ test_that("cli_branch() handles edge case", {
 })
 
 test_that("trace formatting picks up `rlang_trace_format_srcrefs`", {
-  local_options(`rlang:::trace_force_dangling_srcrefs` = TRUE)
-
   e <- environment()
   f <- function() trace_back(e)
   trace <- f()

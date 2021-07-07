@@ -884,21 +884,15 @@ src_loc <- function(srcref, dir = getwd()) {
   if (identical(file, "") || identical(file, "<text>")) {
     return("")
   }
-  if (!file.exists(file) && is_null(peek_option("rlang:::trace_force_dangling_srcrefs"))) {
-    return("")
+
+  if (is_null(peek_option("rlang:::disable_trim_srcref"))) {
+    file <- path_trim_prefix(file, 3)
   }
 
   line <- srcref[[1]]
   column <- srcref[[5]] - 1L
-  paste0(relish(file, dir = dir), ":", line, ":", column)
-}
 
-relish <- function(x, dir = getwd()) {
-  if (substr(dir, nchar(dir), nchar(dir)) != "/") {
-    dir <- paste0(dir, "/")
-  }
-
-  gsub(dir, "", x, fixed = TRUE)
+  paste0(file, ":", line, ":", column)
 }
 
 trace_root <- function() {
