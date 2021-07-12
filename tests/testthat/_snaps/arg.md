@@ -33,13 +33,11 @@
     Output
       <error/rlang_error>
       `values` must have at least one element.
-      Context: `rlang::abort()`
     Code
       (expect_error(arg_match0("fo", "foo", quote(f()))))
     Output
       <error/rlang_error>
       `arg_nm` must be a string or symbol.
-      Context: `rlang::abort()`
 
 # `arg_match()` provides no suggestion when the edit distance is too large
 

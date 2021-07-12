@@ -151,7 +151,7 @@ void r_init_library_cnd() {
   wng_call = r_parse("warning(x, call. = FALSE)");
   r_preserve(wng_call);
 
-  err_call = r_parse("rlang::abort(x)");
+  err_call = r_parse("rlang::abort(x, call = NULL)");
   r_preserve(err_call);
 
   cnd_signal_call = r_parse("rlang::cnd_signal(x)");

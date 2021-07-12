@@ -276,11 +276,12 @@ split_lines <- function(x) {
   strsplit(x, "\n", fixed = TRUE)[[1]]
 }
 
-stop_internal <- function(fn, msg) {
-  abort(c(
+stop_internal <- function(fn, msg, call = caller_env()) {
+  msg <- c(
     sprintf("Internal error in `%s()`: %s", fn, msg),
     "!" = "This error should be reported to the package authors."
-  ))
+  )
+  abort(msg, call = call)
 }
 stop_internal_c_lib <- function(fn, msg) {
   msg <- c(
@@ -298,7 +299,7 @@ stop_internal_c_lib <- function(fn, msg) {
     )
   }
 
-  abort(msg)
+  abort(msg, call = NULL)
 }
 
 with_srcref <- function(src, env = caller_env(), file = NULL) {
