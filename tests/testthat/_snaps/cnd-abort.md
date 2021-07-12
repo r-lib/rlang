@@ -275,3 +275,12 @@
       Error in `bar()`: foo
       Execution halted
 
+# abort() accepts environment as `call` field.
+
+    Code
+      (expect_error(f()))
+    Output
+      <error/rlang_error>
+      `arg` must be supplied.
+      Context: `h()`
+

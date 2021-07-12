@@ -101,6 +101,8 @@
 #' @param call An expression representing the context in which the
 #'   error occurred. If non-null, `abort()` displays the call
 #'   (stripped from its arguments to keep it simple) before `message`.
+#'   Can also be an execution environment as returned by
+#'   `parent.frame()`. The corresponding call is then retrieved.
 #' @param .file A connection or a string specifying where to print the
 #'   message. The default depends on the context, see the `stdout` vs
 #'   `stderr` section.
@@ -200,7 +202,9 @@ abort <- function(message = NULL,
   message <- validate_signal_message(message, class)
   message <- rlang_format_error(message, caller_env())
 
-  call <- call %||% sys.call(sys.parent())
+  if (is_environment(call)) {
+    call <- caller_call(call)
+  }
 
   cnd <- error_cnd(
     class,
