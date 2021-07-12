@@ -1,3 +1,20 @@
+#' Documentation anchor for `error_call` arguments
+#'
+#' Use `@inheritParams rlang::args_error_call` in your package
+#' to document an `error_call` argument.
+#'
+#' @param error_call An expression representing the context in which
+#'   the error occurred. If non-null, `abort()` displays the call
+#'   (stripped from its arguments to keep it simple) before `message`.
+#'
+#'   If you wrap an input-checking helper in another similar helper,
+#'   you should generally forward `error_call` from the calling frame
+#'   so that the relevant user expression is displayed when an error
+#'   occurs.
+#'
+#' @name args_error_call
+NULL
+
 #' Match an argument to a character vector
 #'
 #' @description
@@ -125,6 +142,8 @@ arg_match_invalid_msg <- function(arg, values, arg_nm) {
 #' Check that argument is supplied
 #' Throws an informative error if `arg` is missing.
 #' @param arg A function argument. Must be a symbol.
+#' @inheritParams args_error_call
+#'
 #' @seealso [arg_match()]
 #' @examples
 #' f <- function(x)  {
@@ -137,7 +156,7 @@ arg_match_invalid_msg <- function(arg, values, arg_nm) {
 #' # Succeeds
 #' f(NULL)
 #' @export
-arg_require <- function(arg) {
+arg_require <- function(arg, error_call = caller_call()) {
   if (!missing(arg)) {
     invisible(return(TRUE))
   }
@@ -146,24 +165,13 @@ arg_require <- function(arg) {
   if (!is_symbol(arg_expr)) {
     abort("Internal error: `arg_require()` expects a symbol.")
   }
-  arg <- as_string(arg_expr)
 
-  call <- sys.calls()[[sys.parent()]]
-  if (is_call(call) && is_symbol(call[[1]])) {
-    fn <- as_string(call[[1]])
-    msg <- sprintf(
-      "%s requires the argument %s to be supplied.",
-      mark_fn(fn),
-      mark_arg(arg)
-    )
-  } else {
-    msg <- sprintf(
-      "The argument %s must be supplied.",
-      mark_arg(arg)
-    )
-  }
+  msg <- format_error(sprintf(
+    "%s must be supplied.",
+    mark_arg(as_string(arg_expr))
+  ))
 
-  abort(format_error(msg))
+  abort(msg, call = error_call)
 }
 
 chr_quoted <- function(chr, type = "`") {

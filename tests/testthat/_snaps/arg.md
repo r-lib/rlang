@@ -80,14 +80,14 @@
       (expect_error(f()))
     Output
       <error/rlang_error>
-      `f()` requires the argument `x` to be supplied.
-      Context: `arg_require()`
+      `x` must be supplied.
+      Context: `f()`
     Code
       (expect_error(g()))
     Output
       <error/rlang_error>
-      `f()` requires the argument `x` to be supplied.
-      Context: `arg_require()`
+      `x` must be supplied.
+      Context: `f()`
 
 # arg_match() supports symbols and scalar strings
 
