@@ -12,7 +12,7 @@ abort(
   message = NULL,
   class = NULL,
   ...,
-  call = NULL,
+  call = caller_call(),
   trace = NULL,
   parent = NULL,
   .file = NULL,
@@ -61,9 +61,9 @@ to selectively handle the conditions signalled by your functions.}
 
 \item{...}{Additional data to be stored in the condition object.}
 
-\item{call}{A call representing the context in which the error
-occurred. If present, \code{abort()} displays the call (stripped from
-its arguments to keep it simple) before \code{message}.}
+\item{call}{An expression representing the context in which the
+error occurred. If non-null, \code{abort()} displays the call
+(stripped from its arguments to keep it simple) before \code{message}.}
 
 \item{trace}{A \code{trace} object created by \code{\link[=trace_back]{trace_back()}}.}
 

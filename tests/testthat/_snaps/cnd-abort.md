@@ -3,13 +3,13 @@
     Code
       cat_line(default_interactive)
     Output
-      Error: Error message
+      Error in `h()`: Error message
       Run `rlang::last_error()` to see where the error occurred.
       Execution halted
     Code
       cat_line(default_non_interactive)
     Output
-      Error: Error message
+      Error in `h()`: Error message
       Backtrace:
           x
        1. \-global::f()
@@ -21,12 +21,12 @@
     Code
       cat_line(reminder)
     Output
-      Error: Error message
+      Error in `h()`: Error message
       Execution halted
     Code
       cat_line(branch)
     Output
-      Error: Error message
+      Error in `h()`: Error message
       Backtrace:
        1. global::f()
        4. global::g()
@@ -35,7 +35,7 @@
     Code
       cat_line(collapse)
     Output
-      Error: Error message
+      Error in `h()`: Error message
       Backtrace:
           x
        1. \-global::f()
@@ -46,7 +46,7 @@
     Code
       cat_line(full)
     Output
-      Error: Error message
+      Error in `h()`: Error message
       Backtrace:
           x
        1. \-global::f()
@@ -58,13 +58,13 @@
     Code
       cat_line(rethrown_interactive)
     Output
-      Error: Error message
+      Error in `h()`: Error message
       Run `rlang::last_error()` to see where the error occurred.
       Execution halted
     Code
       cat_line(rethrown_non_interactive)
     Output
-      Error: Error message
+      Error in `h()`: Error message
       Backtrace:
           x
        1. +-base::tryCatch(f(), error = function(cnd) rlang::cnd_signal(cnd))
@@ -83,24 +83,24 @@
     Code
       cat_line(branch_depth_0)
     Output
-      Error: foo
+      Error in `abort()`: foo
       Execution halted
     Code
       cat_line(full_depth_0)
     Output
-      Error: foo
+      Error in `abort()`: foo
       Execution halted
     Code
       cat_line(branch_depth_1)
     Output
-      Error: foo
+      Error in `f()`: foo
       Backtrace:
        1. global::f()
       Execution halted
     Code
       cat_line(full_depth_1)
     Output
-      Error: foo
+      Error in `f()`: foo
       Backtrace:
           x
        1. \-global::f()
@@ -111,13 +111,13 @@
     Code
       cat_line(interactive)
     Output
-      Error: bar
+      Error in `value[[3L]]()`: bar
       Run `rlang::last_error()` to see where the error occurred.
       Execution halted
     Code
       cat_line(non_interactive)
     Output
-      Error: bar
+      Error in `value[[3L]]()`: bar
       Backtrace:
            x
         1. \-global::a()
@@ -140,6 +140,7 @@
     Output
       <error/rlang_error>
       foo
+      Context: `h()`
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang:::f()
@@ -151,6 +152,7 @@
     Output
       <error/rlang_error>
       foo
+      Context: `h()`
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang:::f()
@@ -166,6 +168,7 @@
     Output
       <error/rlang_error>
       foo
+      Context: `h()`
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang:::f()
@@ -181,6 +184,7 @@
     Output
       <error/rlang_error>
       foo
+      Context: `h()`
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang:::f()
@@ -201,6 +205,7 @@
     Output
       <error/rlang_error>
       no wrapper
+      Context: `value[[3L]]()`
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang:::f()
@@ -216,6 +221,7 @@
     Output
       <error/rlang_error>
       wrapper
+      Context: `stop_wrapper()`
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang:::f()
@@ -231,6 +237,7 @@
     Output
       <error/rlang_error>
       wrapper
+      Context: `stop_wrapper()`
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang:::f()
@@ -245,6 +252,7 @@
       | bar
       \-<error/rlang_error>
         foo
+      Context: `baz()`
       Backtrace:
         1. rlang:::catch_error(...)
        10. rlang:::foo()

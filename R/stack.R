@@ -35,6 +35,10 @@ current_fn <- function() {
   )
 }
 
+caller_call <- function(n = 1L) {
+  sys.call(sys.parent(n = n + 1L))
+}
+
 #' Jump to or from a frame
 #'
 #' @description

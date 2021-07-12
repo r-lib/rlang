@@ -98,9 +98,9 @@
 #' @param class Subclass of the condition. This allows your users
 #'   to selectively handle the conditions signalled by your functions.
 #' @param ... Additional data to be stored in the condition object.
-#' @param call A call representing the context in which the error
-#'   occurred. If present, `abort()` displays the call (stripped from
-#'   its arguments to keep it simple) before `message`.
+#' @param call An expression representing the context in which the
+#'   error occurred. If non-null, `abort()` displays the call
+#'   (stripped from its arguments to keep it simple) before `message`.
 #' @param .file A connection or a string specifying where to print the
 #'   message. The default depends on the context, see the `stdout` vs
 #'   `stderr` section.
@@ -170,7 +170,7 @@
 abort <- function(message = NULL,
                   class = NULL,
                   ...,
-                  call = NULL,
+                  call = caller_call(),
                   trace = NULL,
                   parent = NULL,
                   .file = NULL,
@@ -200,7 +200,10 @@ abort <- function(message = NULL,
   message <- validate_signal_message(message, class)
   message <- rlang_format_error(message, caller_env())
 
-  cnd <- error_cnd(class,
+  call <- call %||% sys.call(sys.parent())
+
+  cnd <- error_cnd(
+    class,
     ...,
     message = message,
     call = call,

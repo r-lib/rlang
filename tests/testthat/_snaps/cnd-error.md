@@ -3,13 +3,13 @@
     Code
       cat_line(interactive)
     Output
-      Error: dispatched!
+      Error in `h()`: dispatched!
       Run `rlang::last_error()` to see where the error occurred.
       Execution halted
     Code
       cat_line(non_interactive)
     Output
-      Error: dispatched!
+      Error in `h()`: dispatched!
       Backtrace:
           x
        1. \-global::f()
@@ -24,6 +24,7 @@
     Output
       <error/foobar>
       Low-level message
+      Context: `h()`
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang:::f()
@@ -39,6 +40,7 @@
       +-<error/rlang_error>
       | High-level message
       \-<error/foobar>
+      Context: `h()`
       Backtrace:
         1. rlang:::catch_error(a())
         9. rlang:::a()
@@ -55,6 +57,7 @@
       | High-level message
       \-<error/foobar>
         Low-level message
+      Context: `h()`
       Backtrace:
         1. rlang::with_options(...)
        10. rlang:::a()
@@ -73,6 +76,7 @@
       +-<error/rlang_error>
       | High-level message
       \-<error/foobar>
+      Context: `h()`
       Backtrace:
            x
         1. +-rlang:::catch_error(a())
@@ -104,6 +108,7 @@
       +-<error/rlang_error>
       | High-level message
       \-<error/foobar>
+      Context: `h()`
       Backtrace:
            x
         1. +-rlang:::catch_error(a())
@@ -132,6 +137,7 @@
       +-<error/rlang_error>
       | High-level message
       \-<error/foobar>
+      Context: `h()`
       Backtrace:
            x
         1. +-[ rlang:::catch_error(...) ] with 7 more calls
@@ -150,6 +156,7 @@
       +-<error/rlang_error>
       | High-level message
       \-<error/foobar>
+      Context: `h()`
       Backtrace:
         1. rlang:::catch_error(a())
         9. rlang:::a()
@@ -182,6 +189,7 @@
       | The high-level error message
       \-<error/rlang_error>
         The low-level error message
+      Context: `h()`
       Backtrace:
            x
         1. +-rlang:::catch_error(a())
