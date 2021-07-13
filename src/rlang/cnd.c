@@ -48,6 +48,12 @@ void r_abort(const char* fmt, ...) {
   while (1); // No return
 }
 
+__attribute__((noreturn))
+void r_abort_n(const struct r_pair* args, int n) {
+  r_exec_mask_n(r_null, r_syms.abort, args, n, r_envs.ns);
+  r_stop_unreached("r_abort_n");
+}
+
 void r_cnd_signal(r_obj* cnd) {
   r_eval_with_x(cnd_signal_call, cnd, r_envs.base);
 }

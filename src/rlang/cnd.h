@@ -2,13 +2,14 @@
 #define RLANG_CND_H
 
 #include <stdbool.h>
-#include "rlang.h"
 
 
 void r_inform(const char* fmt, ...);
 void r_warn(const char* fmt, ...);
-void r_abort(const char* fmt, ...) __attribute__((noreturn));
 void r_interrupt();
+void  __attribute__((noreturn)) r_abort(const char* fmt, ...);
+void  __attribute__((noreturn)) r_abort_n(const struct r_pair* args, int n);
+
 
 extern
 __attribute__((noreturn))
