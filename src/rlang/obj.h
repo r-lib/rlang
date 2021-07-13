@@ -115,5 +115,7 @@ r_obj* r_obj_address(r_obj* x);
 
 extern r_obj* (*r_obj_encode_utf8)(r_obj* x);
 
+r_obj* r_as_label(r_obj* x);
+
 
 #endif

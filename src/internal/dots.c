@@ -38,11 +38,6 @@ const char* dots_ignore_empty_c_values[DOTS_IGNORE_EMPTY_SIZE] = {
 #include "decl/dots-decl.h"
 
 
-static inline
-r_obj* r_as_label(r_obj* x) {
-  return r_eval_with_x(as_label_call, x, rlang_ns_env);
-}
-
 r_obj* new_splice_box(r_obj* x) {
   r_obj* out = KEEP(r_alloc_list(1));
   r_list_poke(out, 0, x);
@@ -1082,10 +1077,6 @@ void rlang_init_dots(r_obj* ns) {
     FREE(1);
   }
 
-  as_label_call = r_parse("as_label(x)");
-  r_preserve(as_label_call);
-
-
   dots_ignore_empty_values = r_chr_n(dots_ignore_empty_c_values, DOTS_IGNORE_EMPTY_SIZE);
   r_preserve_global(dots_ignore_empty_values);
 
@@ -1096,7 +1087,6 @@ void rlang_init_dots(r_obj* ns) {
   dots_homonyms_arg = r_sym(".homonyms");
 }
 
-static r_obj* as_label_call = NULL;
 static r_obj* auto_name_call = NULL;
 static r_obj* empty_spliced_arg = NULL;
 static r_obj* glue_unquote_fn = NULL;

@@ -1,4 +1,3 @@
-static r_obj* as_label_call;
 static r_obj* auto_name_call;
 static r_obj* dots_homonyms_arg;
 static r_obj* dots_homonyms_values;
