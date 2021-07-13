@@ -127,7 +127,8 @@ r_obj* r_exec_n(r_obj* fn_sym,
 }
 
 // Create a call from arguments and poke elements with a non-NULL
-// symbol in `env`
+// symbol in `env`. Symbolic arguments are protected from evaluation
+// with `quote()`.
 r_obj* r_exec_mask_n_call_poke(r_obj* fn_sym,
                                r_obj* fn,
                                const struct r_pair* args,
@@ -146,6 +147,9 @@ r_obj* r_exec_mask_n_call_poke(r_obj* fn_sym,
     r_obj* tag = arg.x;
     r_obj* car = arg.y;
 
+    // Protect symbolic arguments from evaluation
+    car = KEEP(r_expr_protect(car));
+
     if (tag != r_null) {
       r_env_poke(env, tag, car);
       car = tag;
@@ -156,6 +160,8 @@ r_obj* r_exec_mask_n_call_poke(r_obj* fn_sym,
 
     r_node_poke_cdr(node, cdr);
     node = cdr;
+
+    FREE(1);
   }
 
   r_obj* call = r_new_call(fn, r_node_cdr(shelter));
