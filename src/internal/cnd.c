@@ -18,7 +18,6 @@
 
 
 const char* rlang_error_arg(r_obj* arg) {
-  // FIXME: Transform to character ...
   switch (r_typeof(arg)) {
   case R_TYPE_symbol: arg = r_sym_as_utf8_character(arg); break;
   case R_TYPE_string: r_null; break;

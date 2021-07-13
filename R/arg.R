@@ -41,28 +41,42 @@ NULL
 #' # Throws an informative error for mismatches:
 #' try(fn("b"))
 #' try(fn("baz"))
-arg_match <- function(arg, values = NULL) {
+arg_match <- function(arg,
+                      values = NULL,
+                      error_call = caller_call(2),
+                      error_arg = substitute(arg)) {
   arg_expr <- enexpr(arg)
   if (!is_symbol(arg_expr)) {
-    abort("Internal error: `arg_match()` expects a symbol")
+    stop_internal(sprintf("%s must be a symbol.", format_arg("arg")))
   }
 
-  arg_nm <- as_string(arg_expr)
+  error_arg <- as_string(error_arg)
 
   if (is_null(values)) {
     fn <- caller_fn()
-    values <- fn_fmls(fn)[[arg_nm]]
+    values <- fn_fmls(fn)[[error_arg]]
     values <- eval_bare(values, get_env(fn))
   }
   if (!is_character(arg)) {
-    abort(sprintf("%s must be a character vector.", format_arg(arg_nm)))
+    abort(
+      sprintf("%s must be a character vector.", format_arg(error_arg)),
+      call = error_call
+    )
   }
   if (length(arg) > 1 && !setequal(arg, values)) {
-    abort(arg_match_invalid_msg(arg, values, arg_nm))
+    abort(
+      arg_match_invalid_msg(arg, values, error_arg),
+      call = error_call
+    )
   }
 
   arg <- arg[[1]]
-  arg_match0(arg, values, arg_nm)
+  arg_match0(
+    arg,
+    values,
+    error_arg,
+    error_call = error_call
+  )
 }
 
 #' @description
@@ -89,12 +103,15 @@ arg_match <- function(arg, values = NULL) {
 #' fn1()
 #' fn2("bar")
 #' try(fn3("zoo"))
-arg_match0 <- function(arg, values, arg_nm = substitute(arg)) {
-  .External(ffi_arg_match0, arg, values, arg_nm)
+arg_match0 <- function(arg,
+                       values,
+                       arg_nm = substitute(arg),
+                       error_call = caller_env()) {
+  .External(ffi_arg_match0, arg, values, arg_nm, error_call)
 }
 
-stop_arg_match <- function(arg, values, arg_nm) {
-  msg <- arg_match_invalid_msg(arg, values, arg_nm)
+stop_arg_match <- function(arg, values, error_arg, error_call) {
+  msg <- arg_match_invalid_msg(arg, values, error_arg)
 
   # Try suggest the most probable and helpful candidate value
   candidate <- NULL
@@ -123,17 +140,17 @@ stop_arg_match <- function(arg, values, arg_nm) {
     msg <- c(msg, i = paste0("Did you mean ", candidate, "?"))
   }
 
-  abort(msg)
+  abort(msg, call = error_call)
 }
 
-arg_match_invalid_msg <- function(arg, values, arg_nm) {
-  msg <- paste0(format_arg(arg_nm), " must be one of ")
+arg_match_invalid_msg <- function(val, values, error_arg) {
+  msg <- paste0(format_arg(error_arg), " must be one of ")
   msg <- paste0(msg, chr_enumerate(chr_quoted(values, "\"")))
 
-  if (is_null(arg)) {
+  if (is_null(val)) {
     msg <- paste0(msg, ".")
   } else {
-    msg <- paste0(msg, sprintf(', not "%s\".', arg))
+    msg <- paste0(msg, sprintf(', not "%s\".', val[[1]]))
   }
 
   msg

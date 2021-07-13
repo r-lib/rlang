@@ -81,35 +81,38 @@ r_obj* ffi_enquo(r_obj* sym, r_obj* frame) {
 // Match ------------------------------------------------------------------
 
 // [[ export() ]]
-int arg_match(r_obj* arg, r_obj* values, r_obj* arg_nm) {
+int arg_match(r_obj* arg,
+              r_obj* values,
+              r_obj* error_arg,
+              r_obj* error_call) {
   if (r_typeof(values) != R_TYPE_character) {
     r_abort("`values` must be a character vector.");
   }
 
   int values_len = r_length(values);
   if (values_len == 0) {
-    r_abort("`values` must have at least one element.", unwrap_c_str(arg_nm));
+    r_abort("`values` must have at least one element.");
   }
 
   switch (r_typeof(arg)) {
   case R_TYPE_character:
     break;
   case R_TYPE_string:
-    return arg_match1(arg, values, arg_nm);
+    return arg_match1(arg, values, error_arg, error_call);
   case R_TYPE_symbol:
-    return arg_match1(r_sym_string(arg), values, arg_nm);
+    return arg_match1(r_sym_string(arg), values, error_arg, error_call);
   default:
-    r_abort("`%s` must be a string or character vector.", unwrap_c_str(arg_nm));
+    r_abort("%s must be a string or character vector.", r_error_arg(error_arg));
   }
 
   int arg_len = r_length(arg);
 
   if (arg_len == 1) {
-    return arg_match1(r_chr_get(arg, 0), values, arg_nm);
+    return arg_match1(r_chr_get(arg, 0), values, error_arg, error_call);
   }
 
   if (arg_len != values_len) {
-    r_abort("`%s` must be a string or have the same length as `values`.", unwrap_c_str(arg_nm));
+    r_abort("%s must be a string or have the same length as `values`.", r_error_arg(error_arg));
   }
 
   r_obj* const* v_values = r_chr_cbegin(values);
@@ -151,8 +154,8 @@ int arg_match(r_obj* arg, r_obj* values, r_obj* arg_nm) {
 
     if (!matched) {
       arg = KEEP(r_str_as_character(r_chr_get(arg, 0)));
-      arg_nm = KEEP(wrap_chr(arg_nm));
-      r_eval_with_xyz(stop_arg_match_call, arg, values, arg_nm, rlang_ns_env);
+      error_arg = KEEP(wrap_chr(error_arg));
+      r_eval_with_wxyz(stop_arg_match_call, arg, values, error_arg, error_call, rlang_ns_env);
       r_stop_unreached("arg_match");
     }
   }
@@ -171,7 +174,8 @@ int arg_match(r_obj* arg, r_obj* values, r_obj* arg_nm) {
 static
 int arg_match1(r_obj* arg,
                r_obj* values,
-               r_obj* arg_nm) {
+               r_obj* error_arg,
+               r_obj* error_call) {
   // Simple case: one argument, we check if it's one of the values
   r_obj* const* v_values = r_chr_cbegin(values);
   int n_values = r_length(values);
@@ -182,11 +186,12 @@ int arg_match1(r_obj* arg,
     }
   }
 
-  r_eval_with_xyz(stop_arg_match_call,
-                  KEEP(wrap_chr(arg)),
-                  values,
-                  KEEP(wrap_chr(arg_nm)),
-                  rlang_ns_env);
+  r_eval_with_wxyz(stop_arg_match_call,
+                   KEEP(wrap_chr(arg)),
+                   values,
+                   KEEP(wrap_chr(error_arg)),
+                   error_call,
+                   rlang_ns_env);
   r_stop_unreached("arg_match");
 }
 
@@ -196,9 +201,10 @@ r_obj* ffi_arg_match0(r_obj* args) {
 
   r_obj* arg = r_node_car(args); args = r_node_cdr(args);
   r_obj* values = r_node_car(args); args = r_node_cdr(args);
-  r_obj* arg_nm = r_node_car(args);
+  r_obj* error_arg = r_node_car(args); args = r_node_cdr(args);
+  r_obj* error_call = r_node_car(args);
 
-  int i = arg_match(arg, values, arg_nm);
+  int i = arg_match(arg, values, error_arg, error_call);
   return r_str_as_character(r_chr_get(values, i));
 }
 
@@ -214,25 +220,6 @@ r_obj* wrap_chr(r_obj* arg) {
   default:
     r_stop_unreached("wrap_chr");
   }
-}
-
-static
-r_obj* unwrap_str(r_obj* arg) {
-  switch (arg_match_arg_nm_type(arg)) {
-  case R_TYPE_string:
-    return arg;
-  case R_TYPE_symbol:
-    return r_sym_string(arg);
-  case R_TYPE_character:
-    return r_chr_get(arg, 0);
-  default:
-    r_stop_unreached("unwrap_str");
-  }
-}
-
-static
-const char* unwrap_c_str(r_obj* arg) {
-  return r_str_c_string(unwrap_str(arg));
 }
 
 static
@@ -252,7 +239,7 @@ enum r_type arg_match_arg_nm_type(r_obj* arg_nm) {
 
 
 void rlang_init_arg(r_obj* ns) {
-  stop_arg_match_call = r_parse("stop_arg_match(x, y, z)");
+  stop_arg_match_call = r_parse("stop_arg_match(w, x, y, z)");
   r_preserve(stop_arg_match_call);
 }
 

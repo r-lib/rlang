@@ -90,3 +90,10 @@ skip_if_not_windows <- function() {
   system <- tolower(Sys.info()[["sysname"]])
   skip_if_not(is_string(system, "windows"), "Not on Windows")
 }
+
+arg_match_wrapper <- function(arg, ...) {
+  arg_match(arg, ...)
+}
+arg_match0_wrapper <- function(arg, ...) {
+  arg_match0(arg, ...)
+}

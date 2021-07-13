@@ -99,6 +99,11 @@ eval_bare <- function(expr, env = parent.frame()) {
   .External2(ffi_eval, expr, env)
 }
 
+# Prevent `.External2()` call from appearing in backtraces
+on_load(
+  eval_bare <- zap_srcref(eval_bare)
+)
+
 #' Evaluate an expression within a given environment
 #'
 #' These functions evaluate `expr` within a given environment (`env`

@@ -209,7 +209,7 @@ static const R_CallMethodDef r_callables[] = {
 
 
 static const R_ExternalMethodDef externals[] = {
-  {"ffi_arg_match0",                    (DL_FUNC) &ffi_arg_match0, 3},
+  {"ffi_arg_match0",                    (DL_FUNC) &ffi_arg_match0, 4},
   {"ffi_call2",                         (DL_FUNC) &ffi_call2, 2},
   {"ffi_capturearginfo",                (DL_FUNC) &ffi_capturearginfo, 2},
   {"ffi_capturedots",                   (DL_FUNC) &ffi_capturedots, 1},

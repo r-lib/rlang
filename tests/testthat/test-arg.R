@@ -1,86 +1,89 @@
 test_that("matches arg", {
-  myarg <- "foo"
-  expect_identical(arg_match0(myarg, c("bar", "foo")), "foo")
-  expect_error(
-    arg_match0(myarg, c("bar", "baz")),
-    "`myarg` must be one of \"bar\" or \"baz\""
+  expect_equal(
+    arg_match_wrapper("foo", c("bar", "foo")),
+    "foo"
+  )
+  expect_snapshot_error(
+    arg_match_wrapper("foo", c("bar", "baz"))
   )
 })
 
 test_that("gives an error with more than one arg", {
-  myarg <- c("bar", "fun")
-  expect_error(
-    regexp = "`myarg` must be one of \"bar\" or \"baz\".",
-    arg_match0(myarg, c("bar", "baz"))
+  expect_snapshot_error(
+    arg_match0_wrapper(c("bar", "fun"), c("bar", "baz"))
   )
 })
 
 test_that("gives error with different than rearranged arg vs value", {
   f <- function(myarg = c("foo", "bar", "fun")) {
-    arg_match0(myarg, c("fun", "bar"))
+    arg_match(myarg, c("fun", "bar"))
   }
-  expect_error(f(), "`myarg` must be a string or have the same length as `values`.")
-
-  expect_error(
-    arg_match0(c("foo", "foo"), c("foo", "bar"), arg_nm = "x"),
-    regexp = "must be one of \"foo\" or \"bar\""
+  expect_snapshot_error(
+    f()
+  )
+  expect_snapshot_error(
+    arg_match0_wrapper(c("foo", "foo"), c("foo", "bar"), arg_nm = "x")
   )
 })
 
 test_that("gives no error with rearranged arg vs value", {
-  expect_identical(arg_match0(rev(letters), letters), "z")
+  expect_identical(arg_match0_wrapper(rev(letters), letters), "z")
 
   skip_if_not_installed("withr")
 
   withr::with_seed(
     20200624L,
-    expect_identical(arg_match0(letters, sample(letters)), "a")
+    expect_identical(arg_match0_wrapper(letters, sample(letters)), "a")
   )
 })
 
 test_that("uses first value when called with all values", {
   myarg <- c("bar", "baz")
-  expect_identical(arg_match0(myarg, c("bar", "baz")), "bar")
+  expect_identical(arg_match0_wrapper(myarg, c("bar", "baz")), "bar")
 })
 
 test_that("informative error message on partial match", {
   expect_error(
-    arg_match0("f", c("bar", "foo")),
+    arg_match0_wrapper("f", c("bar", "foo")),
     "Did you mean \"foo\"?"
   )
 })
 
 test_that("`arg_match()` has informative error messages", {
+  arg_match_wrapper <- function(...) {
+    arg_match0_wrapper(...)
+  }
+
   expect_snapshot({
-    (expect_error(arg_match0("continuuos", c("discrete", "continuous"), "my_arg")))
-    (expect_error(arg_match0("fou", c("bar", "foo"), "my_arg")))
-    (expect_error(arg_match0("fu", c("ba", "fo"), "my_arg")))
-    (expect_error(arg_match0("baq", c("foo", "baz", "bas"), "my_arg")))
-    (expect_error(arg_match0("", character(), "my_arg")))
-    (expect_error(arg_match0("fo", "foo", quote(f()))))
+    (expect_error(arg_match_wrapper("continuuos", c("discrete", "continuous"), "my_arg")))
+    (expect_error(arg_match_wrapper("fou", c("bar", "foo"), "my_arg")))
+    (expect_error(arg_match_wrapper("fu", c("ba", "fo"), "my_arg")))
+    (expect_error(arg_match_wrapper("baq", c("foo", "baz", "bas"), "my_arg")))
+    (expect_error(arg_match_wrapper("", character(), "my_arg")))
+    (expect_error(arg_match_wrapper("fo", "foo", quote(f()))))
   })
 })
 
 test_that("`arg_match()` provides no suggestion when the edit distance is too large", {
   expect_snapshot({
-    (expect_error(arg_match0("foobaz", c("fooquxs", "discrete"), "my_arg")))
-    (expect_error(arg_match0("a", c("b", "c"), "my_arg")))
+    (expect_error(arg_match0_wrapper("foobaz", c("fooquxs", "discrete"), "my_arg")))
+    (expect_error(arg_match0_wrapper("a", c("b", "c"), "my_arg")))
   })
 })
 
 test_that("`arg_match()` finds a match even with small possible typos", {
   expect_equal(
-    arg_match0("bas", c("foo", "baz", "bas")),
+    arg_match0_wrapper("bas", c("foo", "baz", "bas")),
     "bas"
   )
 })
 
 test_that("`arg_match()` makes case-insensitive match", {
   expect_snapshot({
-    (expect_error(arg_match0("a", c("A", "B"), "my_arg"), "Did you mean \"A\"?"))
+    (expect_error(arg_match0_wrapper("a", c("A", "B"), "my_arg"), "Did you mean \"A\"?"))
 
     # Case-insensitive match is done after case-sensitive
-    (expect_error(arg_match0("aa", c("AA", "aA"), "my_arg"), "Did you mean \"aA\"?"))
+    (expect_error(arg_match0_wrapper("aa", c("AA", "aA"), "my_arg"), "Did you mean \"aA\"?"))
   })
 })
 
@@ -137,15 +140,20 @@ test_that("arg_require() checks argument is supplied (#1118)", {
 
 test_that("arg_match() supports symbols and scalar strings", {
   expect_equal(
-    arg_match0(chr_get("foo", 0L), c("bar", "foo"), "my_arg"),
+    arg_match0_wrapper(chr_get("foo", 0L), c("bar", "foo"), "my_arg"),
     "foo"
   )
   expect_equal(
-    arg_match0(sym("foo"), c("bar", "foo"), "my_arg"),
+    arg_match0_wrapper(sym("foo"), c("bar", "foo"), "my_arg"),
     "foo"
   )
 
   expect_snapshot({
-    (expect_error(arg_match0(chr_get("fo", 0L), c("bar", "foo"), "my_arg")))
+    (expect_error(arg_match0_wrapper(chr_get("fo", 0L), c("bar", "foo"), "my_arg")))
   })
+})
+
+test_that("arg_match() requires an argument symbol", {
+  wrapper <- function() arg_match("foo")
+  expect_snapshot((expect_error(wrapper())))
 })
