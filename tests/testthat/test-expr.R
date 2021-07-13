@@ -86,3 +86,8 @@ test_that("is_expression() detects non-parsable parse trees", {
   expect_false(is_expression(expr(foo(bar = baz(!!(1:2), NULL)))))
   expect_false(is_expression(call2(identity)))
 })
+
+test_that("is_expression() supports missing arguments", {
+  expect_false(is_expression(missing_arg()))
+  expect_false(is_expression(quote(foo(, ))))
+})

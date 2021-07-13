@@ -319,7 +319,7 @@ new_stack <- function() {
 
   push <- function(...) {
     for (obj in list2(...)) {
-      arr_push_back(stack, obj)
+      arr_push_back(stack, maybe_missing(obj))
     }
   }
 

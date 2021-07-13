@@ -97,6 +97,10 @@ is_expression <- function(x) {
   stack$push(x)
 
   while (!is_exhausted(elt <- stack$pop())) {
+    if (is_missing(elt)) {
+      return(FALSE)
+    }
+
     switch(
       typeof(elt),
       language = stack$push(!!!as.list(elt)),
