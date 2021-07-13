@@ -139,7 +139,7 @@ r_obj* r_exec_mask_n_call_poke(r_obj* fn_sym,
     fn = fn_sym;
   }
 
-  r_obj* list = KEEP(r_new_pairlist(args, n));
+  r_obj* list = KEEP(r_new_pairlist(args, n, NULL));
 
   r_obj* node = list;
   while (node != r_null) {

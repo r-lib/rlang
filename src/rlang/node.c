@@ -1,7 +1,9 @@
 #include "rlang.h"
 
 
-r_obj* r_new_pairlist(const struct r_pair* args, int n) {
+r_obj* r_new_pairlist(const struct r_pair* args,
+                      int n,
+                      r_obj** tail) {
   r_obj* shelter = KEEP(r_new_node(R_NilValue, R_NilValue));
   r_obj* node = shelter;
 
@@ -15,6 +17,10 @@ r_obj* r_new_pairlist(const struct r_pair* args, int n) {
 
     r_node_poke_cdr(node, cdr);
     node = cdr;
+  }
+
+  if (n && tail) {
+    *tail = node;
   }
 
   FREE(1);
