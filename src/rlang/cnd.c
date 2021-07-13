@@ -164,7 +164,11 @@ void r_init_library_cnd() {
   r_preserve(cnd_signal_call);
 
   r_stop_internal = (__attribute__((noreturn)) void (*)(const char*, const char*, ...)) R_GetCCallable("rlang", "rlang_stop_internal");
+
+  r_error_arg = (const char* (*)(r_obj*)) r_peek_c_callable("rlang", "rlang_error_arg");
 }
 
 static
 r_obj* cnd_signal_call = NULL;
+
+const char* (*r_error_arg)(r_obj* arg) = NULL;

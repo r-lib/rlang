@@ -8,3 +8,6 @@ static
 __attribute__((noreturn))
 r_obj* stop_internal_cb(void* payload);
 
+
+static
+r_obj* format_arg_call;

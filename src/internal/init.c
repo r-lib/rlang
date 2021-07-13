@@ -238,6 +238,7 @@ void R_init_rlang(DllInfo* dll) {
   R_RegisterCCallable("rlang", "rlang_as_data_mask_3.0.0",  (DL_FUNC) &ffi_as_data_mask);
   R_RegisterCCallable("rlang", "rlang_as_data_pronoun",     (DL_FUNC) &ffi_as_data_pronoun);
   R_RegisterCCallable("rlang", "rlang_env_unbind",          (DL_FUNC) &r_env_unbind);
+  R_RegisterCCallable("rlang", "rlang_error_arg",           (DL_FUNC) &rlang_error_arg);
   R_RegisterCCallable("rlang", "rlang_eval_tidy",           (DL_FUNC) &rlang_eval_tidy);
   R_RegisterCCallable("rlang", "rlang_is_quosure",          (DL_FUNC) &is_quosure);
   R_RegisterCCallable("rlang", "rlang_names_as_unique",     (DL_FUNC) &names_as_unique);

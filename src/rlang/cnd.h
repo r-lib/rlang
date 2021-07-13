@@ -10,6 +10,10 @@ void r_interrupt();
 void  __attribute__((noreturn)) r_abort(const char* fmt, ...);
 void  __attribute__((noreturn)) r_abort_n(const struct r_pair* args, int n);
 
+// Formats input as an argument, using cli if available. Returns a
+// vmax-protected string.
+extern const char* (*r_error_arg)(r_obj* arg);
+
 
 extern
 __attribute__((noreturn))
