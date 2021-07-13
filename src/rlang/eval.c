@@ -139,32 +139,30 @@ r_obj* r_exec_mask_n_call_poke(r_obj* fn_sym,
     fn = fn_sym;
   }
 
-  r_obj* shelter = KEEP(r_new_node(R_NilValue, R_NilValue));
-  r_obj* node = shelter;
+  r_obj* list = KEEP(r_new_pairlist(args, n));
 
-  for (int i = 0; i < n; ++i) {
-    struct r_pair arg = args[i];
-    r_obj* tag = arg.x;
-    r_obj* car = arg.y;
+  r_obj* node = list;
+  while (node != r_null) {
+    r_obj* car = r_node_car(node);
+    r_obj* tag = r_node_tag(node);
 
     // Protect symbolic arguments from evaluation
     car = KEEP(r_expr_protect(car));
 
+    // If symbol is supplied, assign the value in the environment and
+    // use the symbol instead of the value in the list of arguments
     if (tag != r_null) {
       r_env_poke(env, tag, car);
       car = tag;
     }
 
-    r_obj* cdr = r_new_node(car, r_null);
-    r_node_poke_tag(cdr, tag);
-
-    r_node_poke_cdr(node, cdr);
-    node = cdr;
-
+    r_node_poke_car(node, car);
     FREE(1);
+
+    node = r_node_cdr(node);
   }
 
-  r_obj* call = r_new_call(fn, r_node_cdr(shelter));
+  r_obj* call = r_new_call(fn, list);
 
   FREE(1);
   return call;
