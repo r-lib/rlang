@@ -83,12 +83,12 @@
     Code
       cat_line(branch_depth_0)
     Output
-      Error in `abort()`: foo
+      Error: foo
       Execution halted
     Code
       cat_line(full_depth_0)
     Output
-      Error in `abort()`: foo
+      Error: foo
       Execution halted
     Code
       cat_line(branch_depth_1)

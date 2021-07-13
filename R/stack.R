@@ -37,9 +37,14 @@ current_fn <- function() {
 
 caller_call <- function(n = 1L) {
   if (is_environment(n)) {
-    eval_bare(call2(sys.call), n)
+    return(eval_bare(call2(sys.call), n))
+  }
+
+  parent <- sys.parent(n + 1L)
+  if (parent) {
+    sys.call(parent)
   } else {
-    sys.call(sys.parent(n = n + 1L))
+    NULL
   }
 }
 
