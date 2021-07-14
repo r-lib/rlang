@@ -111,13 +111,13 @@
     Code
       cat_line(interactive)
     Output
-      Error in `value[[3L]]()`: bar
+      Error: bar
       Run `rlang::last_error()` to see where the error occurred.
       Execution halted
     Code
       cat_line(non_interactive)
     Output
-      Error in `value[[3L]]()`: bar
+      Error: bar
       Backtrace:
            x
         1. \-global::a()
@@ -205,7 +205,6 @@
     Output
       <error/rlang_error>
       no wrapper
-      Context: `value[[3L]]()`
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang:::f()
@@ -221,7 +220,6 @@
     Output
       <error/rlang_error>
       wrapper
-      Context: `stop_wrapper()`
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang:::f()
@@ -237,7 +235,6 @@
     Output
       <error/rlang_error>
       wrapper
-      Context: `stop_wrapper()`
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang:::f()

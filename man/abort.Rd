@@ -12,7 +12,7 @@ abort(
   message = NULL,
   class = NULL,
   ...,
-  call = caller_env(),
+  call = missing_arg(),
   trace = NULL,
   parent = NULL,
   .file = NULL,

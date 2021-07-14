@@ -168,7 +168,7 @@
 abort <- function(message = NULL,
                   class = NULL,
                   ...,
-                  call = caller_env(),
+                  call = missing_arg(),
                   trace = NULL,
                   parent = NULL,
                   .file = NULL,
@@ -198,11 +198,22 @@ abort <- function(message = NULL,
   message <- validate_signal_message(message, class)
   message <- rlang_format_error(message, caller_env())
 
+  # Don't record call by default when supplied a parent because it
+  # probably means that we are called from a condition handler
+  if (is_missing(call)) {
+    if (is_null(parent)) {
+      call <- caller_env()
+    } else {
+      call <- NULL
+    }
+  }
+  call <- error_call(call)
+
   cnd <- error_cnd(
     class,
     ...,
     message = message,
-    call = error_call(call),
+    call = call,
     parent = parent,
     trace = trace
   )
