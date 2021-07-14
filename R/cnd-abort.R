@@ -325,7 +325,7 @@ error_call <- function(call) {
     }
   }
 
-  if (!is_call(call)) {
+  if (!is_call(call) && !is_expression(call)) {
     return(NULL)
   }
 
