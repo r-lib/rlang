@@ -4,7 +4,7 @@
 \alias{check_dots_empty0}
 \title{Check that dots are empty (low level variant)}
 \usage{
-check_dots_empty0(...)
+check_dots_empty0(..., error_call = caller_env())
 }
 \arguments{
 \item{...}{Dots which should be empty.}

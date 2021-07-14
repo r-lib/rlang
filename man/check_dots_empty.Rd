@@ -4,7 +4,7 @@
 \alias{check_dots_empty}
 \title{Check that dots are empty}
 \usage{
-check_dots_empty(env = caller_env(), action = abort)
+check_dots_empty(env = caller_env(), error_call = caller_env(), action = abort)
 }
 \arguments{
 \item{env}{Environment in which to look for \code{...}.}

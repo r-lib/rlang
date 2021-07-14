@@ -4,10 +4,23 @@
 \alias{check_dots_unnamed}
 \title{Check that all dots are unnamed}
 \usage{
-check_dots_unnamed(env = caller_env(), action = abort)
+check_dots_unnamed(
+  env = caller_env(),
+  error_call = caller_env(),
+  action = abort
+)
 }
 \arguments{
 \item{env}{Environment in which to look for \code{...}.}
+
+\item{error_call}{An expression (as returned by e.g.
+\code{sys.call()}) representing the context in which the error
+occurred. If non-null, the call is stripped from its arguments to
+keep it simple.
+
+Can also be an execution environment of a currently running
+function (as returned by e.g. \code{parent.frame()}). The
+corresponding call is then retrieved.}
 
 \item{action}{The action to take when the dots have not been used. One of
 \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, \code{\link[=inform]{inform()}} or \code{\link[=signal]{signal()}}.}
