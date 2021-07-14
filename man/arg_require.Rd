@@ -5,7 +5,7 @@
 \title{Check that argument is supplied
 Throws an informative error if \code{arg} is missing.}
 \usage{
-arg_require(arg, error_call = caller_call())
+arg_require(arg, error_call = caller_env())
 }
 \arguments{
 \item{arg}{A function argument. Must be a symbol.}

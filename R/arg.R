@@ -49,7 +49,7 @@ arg_match <- function(arg,
                       values = NULL,
                       ...,
                       error_arg = substitute(arg),
-                      error_call = caller_call(2)) {
+                      error_call = caller_env()) {
   check_dots_empty()
 
   arg_expr <- enexpr(arg)
@@ -178,7 +178,7 @@ arg_match_invalid_msg <- function(val, values, error_arg) {
 #' # Succeeds
 #' f(NULL)
 #' @export
-arg_require <- function(arg, error_call = caller_call()) {
+arg_require <- function(arg, error_call = caller_env()) {
   if (!missing(arg)) {
     invisible(return(TRUE))
   }

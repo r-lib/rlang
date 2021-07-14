@@ -10,7 +10,7 @@ arg_match(
   values = NULL,
   ...,
   error_arg = substitute(arg),
-  error_call = caller_call(2)
+  error_call = caller_env()
 )
 
 arg_match0(arg, values, arg_nm = substitute(arg), error_call = caller_env())
