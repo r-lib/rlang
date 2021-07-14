@@ -98,11 +98,7 @@
 #' @param class Subclass of the condition. This allows your users
 #'   to selectively handle the conditions signalled by your functions.
 #' @param ... Additional data to be stored in the condition object.
-#' @param call An expression representing the context in which the
-#'   error occurred. If non-null, `abort()` displays the call
-#'   (stripped from its arguments to keep it simple) before `message`.
-#'   Can also be an execution environment as returned by
-#'   `parent.frame()`. The corresponding call is then retrieved.
+#' @inheritParams error_call
 #' @param .file A connection or a string specifying where to print the
 #'   message. The default depends on the context, see the `stdout` vs
 #'   `stderr` section.
@@ -202,15 +198,11 @@ abort <- function(message = NULL,
   message <- validate_signal_message(message, class)
   message <- rlang_format_error(message, caller_env())
 
-  if (is_environment(call)) {
-    call <- caller_call(call)
-  }
-
   cnd <- error_cnd(
     class,
     ...,
     message = message,
-    call = call,
+    call = error_call(call),
     parent = parent,
     trace = trace
   )
@@ -257,7 +249,7 @@ signal_abort <- function(cnd, file = NULL) {
 
 #' Format argument for input checking errors
 #'
-#' Transform an argument name into a formatted string. The string is
+#' Transforms an argument name into a formatted string. The string is
 #' formatted by the cli package (if available) with the `{.arg }`
 #' format.
 #'
@@ -272,10 +264,40 @@ signal_abort <- function(cnd, file = NULL) {
 #'   argument will be mentioned in error messages as the input that is
 #'   at the origin of a problem.
 #' @return A single string formatted for output.
-#' 
+#'
+#' @seealso [error_call()]
 #' @export
 error_arg <- function(arg) {
   .Call(ffi_error_arg, arg)
+}
+
+#' Validate a function call for use in error messages
+#'
+#' Creates a function call ready to be used as `call` field of error
+#' conditions. This field is displayed by [stop()] and [abort()] to
+#' give context to an error message.
+#'
+#' @param call,error_call An expression (as returned by e.g.
+#'   `sys.call()`) representing the context in which the error
+#'   occurred. If non-null, the call is stripped from its arguments to
+#'   keep it simple.
+#'
+#'   Can also be an execution environment of a currently running
+#'   function (as returned by e.g. `parent.frame()`). The
+#'   corresponding call is then retrieved.
+#'
+#' @seealso [error_arg()]
+#' @export
+error_call <- function(call) {
+  if (is_environment(call)) {
+    call <- caller_call(call)
+  }
+  if (!is_call(call)) {
+    return(NULL)
+  }
+
+  # Remove distracting arguments from the call
+  call[1]
 }
 
 #' Create unhandled condition

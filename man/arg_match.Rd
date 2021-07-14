@@ -5,17 +5,37 @@
 \alias{arg_match0}
 \title{Match an argument to a character vector}
 \usage{
-arg_match(arg, values = NULL)
+arg_match(
+  arg,
+  values = NULL,
+  ...,
+  error_arg = substitute(arg),
+  error_call = caller_call(2)
+)
 
-arg_match0(arg, values, arg_nm = substitute(arg))
+arg_match0(arg, values, arg_nm = substitute(arg), error_call = caller_env())
 }
 \arguments{
 \item{arg}{A symbol referring to an argument accepting strings.}
 
 \item{values}{A character vector of possible values that \code{arg} can take.}
 
-\item{arg_nm}{Argument name of \code{arg} to use in error messages. Can
-be a string or symbol.}
+\item{...}{These dots are for future extensions and must be empty.}
+
+\item{error_arg}{A string or symbol for an argument name. This
+argument will be mentioned in error messages as the input that is
+at the origin of a problem.}
+
+\item{error_call}{An expression (as returned by e.g.
+\code{sys.call()}) representing the context in which the error
+occurred. If non-null, the call is stripped from its arguments to
+keep it simple.
+
+Can also be an execution environment of a currently running
+function (as returned by e.g. \code{parent.frame()}). The
+corresponding call is then retrieved.}
+
+\item{arg_nm}{Same as \code{error_arg}.}
 }
 \value{
 The string supplied to \code{arg}.

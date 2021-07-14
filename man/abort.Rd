@@ -61,11 +61,14 @@ to selectively handle the conditions signalled by your functions.}
 
 \item{...}{Additional data to be stored in the condition object.}
 
-\item{call}{An expression representing the context in which the
-error occurred. If non-null, \code{abort()} displays the call
-(stripped from its arguments to keep it simple) before \code{message}.
-Can also be an execution environment as returned by
-\code{parent.frame()}. The corresponding call is then retrieved.}
+\item{call}{An expression (as returned by e.g.
+\code{sys.call()}) representing the context in which the error
+occurred. If non-null, the call is stripped from its arguments to
+keep it simple.
+
+Can also be an execution environment of a currently running
+function (as returned by e.g. \code{parent.frame()}). The
+corresponding call is then retrieved.}
 
 \item{trace}{A \code{trace} object created by \code{\link[=trace_back]{trace_back()}}.}
 

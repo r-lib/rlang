@@ -30,6 +30,10 @@ NULL
 #' [caller frame][caller_frame].
 #'
 #' @param arg A symbol referring to an argument accepting strings.
+#' @param values A character vector of possible values that `arg` can take.
+#' @param ... These dots are for future extensions and must be empty.
+#' @inheritParams error_arg
+#' @inheritParams error_call
 #' @return The string supplied to `arg`.
 #' @importFrom utils adist
 #' @seealso [arg_require()]
@@ -43,8 +47,11 @@ NULL
 #' try(fn("baz"))
 arg_match <- function(arg,
                       values = NULL,
-                      error_call = caller_call(2),
-                      error_arg = substitute(arg)) {
+                      ...,
+                      error_arg = substitute(arg),
+                      error_call = caller_call(2)) {
+  check_dots_empty()
+
   arg_expr <- enexpr(arg)
   if (!is_symbol(arg_expr)) {
     stop_internal(sprintf("%s must be a symbol.", format_arg("arg")))
@@ -86,10 +93,8 @@ arg_match <- function(arg,
 #' every element of `values`, possibly permuted.
 #' In this case, the first element of `arg` is used.
 #'
-#' @param values A character vector of possible values that `arg` can take.
-#' @param arg_nm Argument name of `arg` to use in error messages. Can
-#'   be a string or symbol.
 #' @rdname arg_match
+#' @param arg_nm Same as `error_arg`.
 #' @export
 #' @examples
 #'

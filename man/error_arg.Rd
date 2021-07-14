@@ -15,7 +15,7 @@ at the origin of a problem.}
 A single string formatted for output.
 }
 \description{
-Transform an argument name into a formatted string. The string is
+Transforms an argument name into a formatted string. The string is
 formatted by the cli package (if available) with the \code{{.arg }}
 format.
 }
@@ -26,4 +26,7 @@ there are no user-relevant argument names, such as in \code{[} methods.
 
 Use \verb{@inheritParams rlang::error_arg} to document \code{error_arg}
 arguments.
+}
+\seealso{
+\code{\link[=error_call]{error_call()}}
 }
