@@ -106,6 +106,8 @@ check_installed <- function(pkg,
     return(invisible(NULL))
   }
 
+  .error_call <- FALSE
+
   cnd <- new_error_package_not_found(
     missing_pkgs,
     missing_vers,

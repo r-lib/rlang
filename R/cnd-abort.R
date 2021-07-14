@@ -311,6 +311,12 @@ error_call <- function(call) {
       call <- eval_bare(call2(caller_env), call)
       next
     }
+    if (is_null(flag)) {
+      return(NULL)
+    }
+    if (is_call(flag)) {
+      return(flag)
+    }
 
     if (is_environment(flag)) {
       call <- flag

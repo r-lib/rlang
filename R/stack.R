@@ -37,7 +37,7 @@ current_fn <- function() {
 
 caller_call <- function(n = 1L) {
   if (is_environment(n)) {
-    parent <- detect_index(sys.frames(), identical, n)
+    parent <- detect_index(sys.frames(), identical, n, .right = TRUE)
   } else {
     parent <- sys.parent(n + 1L)
   }

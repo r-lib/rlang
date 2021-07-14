@@ -5,19 +5,19 @@
     Output
       <error/rlang_error>
       The package `_foo` is required.
-      Context: `check_installed()`
+      Context: `my_wrapper()`
     Code
       (expect_error(check_installed(c("_foo", "_bar"))))
     Output
       <error/rlang_error>
       The packages `_foo` and `_bar` are required.
-      Context: `check_installed()`
+      Context: `my_wrapper()`
     Code
       (expect_error(check_installed(c("_foo", "_bar"), "to proceed.")))
     Output
       <error/rlang_error>
       The packages `_foo` and `_bar` are required to proceed.
-      Context: `check_installed()`
+      Context: `my_wrapper()`
 
 # check_installed() checks minimal versions
 
@@ -26,24 +26,20 @@
     Output
       <error/rlang_error>
       The package `_foo` (>= 1.0) is required.
-      Context: `check_installed()`
     Code
       (expect_error(check_installed(c("_foo", "_bar"), version = c("1.0", NA))))
     Output
       <error/rlang_error>
       The packages `_foo` (>= 1.0) and `_bar` are required.
-      Context: `check_installed()`
     Code
       (expect_error(check_installed(c("_foo", "_bar"), version = c(NA, "2.0"))))
     Output
       <error/rlang_error>
       The packages `_foo` and `_bar` (>= 2.0) are required.
-      Context: `check_installed()`
     Code
       (expect_error(check_installed(c("_foo", "_bar"), "to proceed.", version = c(
         "1.0", "2.0"))))
     Output
       <error/rlang_error>
       The packages `_foo` (>= 1.0) and `_bar` (>= 2.0) are required to proceed.
-      Context: `check_installed()`
 

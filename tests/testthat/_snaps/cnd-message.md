@@ -12,7 +12,6 @@
       Header 2
       x Bullet 3
       x Bullet 4
-      Context: `eval()`
     Code
       (expect_error(abort(c("Main header.", "Header 1", x = "Bullet 1", ` ` = "Break line",
         x = "Bullet 2", "", "Header 2", x = "Bullet 3", ` ` = "Break line", x = "Bullet 4")))
@@ -29,7 +28,6 @@
       x Bullet 3
         Break line
       x Bullet 4
-      Context: `eval()`
 
 # format_error_bullets() generates bullets [plain]
 
