@@ -730,8 +730,16 @@ void dots_check_homonyms(r_obj* dots, r_obj* nms) {
   r_obj* dups = KEEP(nms_are_duplicated(nms, false));
 
   if (r_lgl_sum(dups, false)) {
-    r_eval_with_xy(abort_dots_homonyms_call, dots, dups, r_envs.base);
-    r_abort("Internal error: `dots_check_homonyms()` should have failed earlier");
+    struct r_pair args[] = {
+      { r_sym("dots"), dots },
+      { r_sym("dups"), dups }
+    };
+    r_exec_n(r_null,
+             r_sym("abort_dots_homonyms"),
+             args,
+             R_ARR_SIZEOF(args),
+             r_peek_frame());
+    r_stop_unreached("dots_check_homonyms");
   }
 
   FREE(1);

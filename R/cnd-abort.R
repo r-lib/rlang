@@ -289,9 +289,25 @@ error_arg <- function(arg) {
 #' @seealso [error_arg()]
 #' @export
 error_call <- function(call) {
-  if (is_environment(call)) {
-    call <- caller_call(call)
+  while (is_environment(call)) {
+    if (identical(call, global_env())) {
+      return(NULL)
+    }
+
+    flag <- env_get(call, ".error_call", default = TRUE)
+
+    if (is_false(flag)) {
+      call <- eval_bare(call2(caller_env), call)
+      next
+    }
+
+    if (is_environment(flag)) {
+      call <- flag
+    } else {
+      call <- caller_call(call)
+    }
   }
+
   if (!is_call(call)) {
     return(NULL)
   }

@@ -76,6 +76,7 @@ NULL
 #'
 #' @export
 list2 <- function(...) {
+  .error_call <- FALSE
   .Call(
     ffi_dots_list,
     frame_env = environment(),
@@ -94,6 +95,7 @@ ll <- list2
 
 # Preserves empty arguments
 list3 <- function(...) {
+  .error_call <- FALSE
   .Call(
     ffi_dots_list,
     frame_env = environment(),
@@ -207,6 +209,7 @@ dots_list <- function(...,
                       .preserve_empty = FALSE,
                       .homonyms = c("keep", "first", "last", "error"),
                       .check_assign = FALSE) {
+  .error_call <- FALSE
   .Call(
     ffi_dots_list,
     frame_env = environment(),
@@ -225,6 +228,8 @@ dots_split <- function(...,
                        .preserve_empty = FALSE,
                        .homonyms = c("keep", "first", "last", "error"),
                        .check_assign = FALSE) {
+  .error_call <- FALSE
+
   dots <- .Call(
     ffi_dots_list,
     frame_env = environment(),
@@ -361,6 +366,7 @@ dots_splice <- function(...,
                         .preserve_empty = FALSE,
                         .homonyms = c("keep", "first", "last", "error"),
                         .check_assign = FALSE) {
+  .error_call <- FALSE
   dots <- .Call(
     ffi_dots_flat_list,
     frame_env = environment(),
@@ -401,6 +407,7 @@ dots_values <- function(...,
                         .preserve_empty = FALSE,
                         .homonyms = c("keep", "first", "last", "error"),
                         .check_assign = FALSE) {
+  .error_call <- FALSE
   .External(
     ffi_dots_values,
     env = environment(),
@@ -438,6 +445,8 @@ dots_n <- function(...) {
 }
 
 abort_dots_homonyms <- function(dots, dups) {
+  .error_call <- FALSE
+
   nms <- names(dots)
 
   # This includes the first occurrence as well
