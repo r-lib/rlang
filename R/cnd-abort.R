@@ -255,6 +255,29 @@ signal_abort <- function(cnd, file = NULL) {
   stop(fallback)
 }
 
+#' Format argument for input checking errors
+#'
+#' Transform an argument name into a formatted string. The string is
+#' formatted by the cli package (if available) with the `{.arg }`
+#' format.
+#'
+#' `arg` can also be a defused call passed to [as_label()],
+#' e.g. `quote(1:2)`. This is meant for specific situations where
+#' there are no user-relevant argument names, such as in `[` methods.
+#'
+#' Use `@inheritParams rlang::error_arg` to document `error_arg`
+#' arguments.
+#'
+#' @param arg,error_arg A string or symbol for an argument name. This
+#'   argument will be mentioned in error messages as the input that is
+#'   at the origin of a problem.
+#' @return A single string formatted for output.
+#' 
+#' @export
+error_arg <- function(arg) {
+  .Call(ffi_error_arg, arg)
+}
+
 #' Create unhandled condition
 #'
 #' @description
