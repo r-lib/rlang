@@ -301,15 +301,10 @@ error_arg <- function(arg) {
 #' @export
 error_call <- function(call) {
   while (is_environment(call)) {
-    if (identical(call, global_env())) {
-      return(NULL)
-    }
-
     flag <- env_get(call, ".error_call", default = TRUE)
 
-    if (is_false(flag)) {
-      call <- eval_bare(call2(caller_env), call)
-      next
+    if (identical(call, global_env())) {
+      return(NULL)
     }
     if (is_null(flag)) {
       return(NULL)
@@ -320,9 +315,15 @@ error_call <- function(call) {
 
     if (is_environment(flag)) {
       call <- flag
-    } else {
-      call <- caller_call(call)
+      next
     }
+    if (is_false(flag)) {
+      call <- eval_bare(call2(caller_env), call)
+      next
+    }
+
+    call <- caller_call(call)
+    break
   }
 
   if (!is_call(call) && !is_expression(call)) {
