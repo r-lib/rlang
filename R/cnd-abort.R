@@ -301,7 +301,7 @@ error_arg <- function(arg) {
 #' @export
 error_call <- function(call) {
   while (is_environment(call)) {
-    flag <- env_get(call, ".error_call", default = TRUE)
+    flag <- error_flag(call)
 
     if (identical(call, global_env())) {
       return(NULL)
@@ -320,8 +320,9 @@ error_call <- function(call) {
 
     if (is_false(flag)) {
       caller <- eval_bare(call2(caller_env), call)
+      caller_top <- topenv(caller)
 
-      if (identical(topenv(caller), global_env())) {
+      if (identical(caller_top, global_env()) || is_null(error_flag(caller, caller_top))) {
         call <- caller_call(call)
         break
       } else {
@@ -340,6 +341,16 @@ error_call <- function(call) {
 
   # Remove distracting arguments from the call
   call[1]
+}
+
+error_flag <- function(env, top = topenv(env)) {
+  env_get(
+    env,
+    ".error_call",
+    default = TRUE,
+    inherit = TRUE,
+    last = top
+  )
 }
 
 #' Create unhandled condition
