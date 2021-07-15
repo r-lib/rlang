@@ -317,9 +317,17 @@ error_call <- function(call) {
       call <- flag
       next
     }
+
     if (is_false(flag)) {
-      call <- eval_bare(call2(caller_env), call)
-      next
+      caller <- eval_bare(call2(caller_env), call)
+
+      if (identical(topenv(caller), global_env())) {
+        call <- caller_call(call)
+        break
+      } else {
+        call <- caller
+        next
+      }
     }
 
     call <- caller_call(call)
