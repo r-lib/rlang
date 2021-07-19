@@ -4,16 +4,12 @@
 \alias{check_dots_unnamed}
 \title{Check that all dots are unnamed}
 \usage{
-check_dots_unnamed(
-  env = caller_env(),
-  error_call = caller_env(),
-  action = abort
-)
+check_dots_unnamed(env = caller_env(), call = caller_env(), action = abort)
 }
 \arguments{
 \item{env}{Environment in which to look for \code{...}.}
 
-\item{error_call}{An expression (as returned by e.g.
+\item{call}{An expression (as returned by e.g.
 \code{sys.call()}) representing the context in which the error
 occurred. If non-null, the call is stripped from its arguments to
 keep it simple.
