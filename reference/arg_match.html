@@ -49,7 +49,7 @@ standards.
 arg_match() derives the possible values from the
 caller frame.
 arg_match0() is a bare-bones version if performance is at a premium.
-It requires a string as arg and explicit values.
+It requires a string as arg and explicit character values.
 For convenience, arg may also be a character vector containing
 every element of values, possibly permuted.
 In this case, the first element of arg is used." />
@@ -177,7 +177,7 @@ standards.</p></li>
 <p><code>arg_match()</code> derives the possible values from the
 <a href='caller_frame.html'>caller frame</a>.</p>
 <p><code>arg_match0()</code> is a bare-bones version if performance is at a premium.
-It requires a string as <code>arg</code> and explicit <code>values</code>.
+It requires a string as <code>arg</code> and explicit character <code>values</code>.
 For convenience, <code>arg</code> may also be a character vector containing
 every element of <code>values</code>, possibly permuted.
 In this case, the first element of <code>arg</code> is used.</p>
@@ -196,7 +196,7 @@ In this case, the first element of <code>arg</code> is used.</p>
     </tr>
     <tr>
       <th>values</th>
-      <td><p>The possible values that <code>arg</code> can take.</p></td>
+      <td><p>A character vector of possible values that <code>arg</code> can take.</p></td>
     </tr>
     <tr>
       <th>arg_nm</th>
