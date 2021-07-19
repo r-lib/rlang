@@ -301,15 +301,13 @@ error_arg <- function(arg) {
 #' @export
 error_call <- function(call) {
   while (is_environment(call)) {
+    if (identical(call, global_env()) || is_na(call$.error_call)) {
+      return(NULL)
+    }
+
     flag <- error_flag(call)
 
-    if (identical(call, global_env())) {
-      return(NULL)
-    }
-    if (is_null(flag)) {
-      return(NULL)
-    }
-    if (is_call(flag)) {
+    if (is_null(flag) || is_call(flag)) {
       return(flag)
     }
 
@@ -318,21 +316,20 @@ error_call <- function(call) {
       next
     }
 
-    if (is_false(flag)) {
-      caller <- eval_bare(call2(caller_env), call)
-      caller_top <- topenv(caller)
-
-      if (identical(caller_top, global_env()) || is_na(error_flag(caller, caller_top))) {
-        call <- caller_call(call)
-        break
-      } else {
-        call <- caller
-        next
-      }
+    if (!is_false(flag)) {
+      call <- caller_call(call)
+      break
     }
 
-    call <- caller_call(call)
-    break
+    # Return current call if called from global
+    caller <- eval_bare(call2(caller_env), call)
+    if (identical(caller, global_env()) || is_na(caller$.error_call)) {
+      call <- caller_call(call)
+      break
+    }
+
+    call <- caller
+    next
   }
 
   if (!is_call(call) && !is_expression(call)) {
