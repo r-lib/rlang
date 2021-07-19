@@ -322,7 +322,7 @@ error_call <- function(call) {
       caller <- eval_bare(call2(caller_env), call)
       caller_top <- topenv(caller)
 
-      if (identical(caller_top, global_env()) || is_null(error_flag(caller, caller_top))) {
+      if (identical(caller_top, global_env()) || is_na(error_flag(caller, caller_top))) {
         call <- caller_call(call)
         break
       } else {
