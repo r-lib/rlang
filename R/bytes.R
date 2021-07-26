@@ -307,7 +307,7 @@ Ops.rlib_bytes <- function (e1, e2) {
 pillar_shaft.rlib_bytes <- function(x, ...) {
   pillar::new_pillar_shaft_simple(format.rlib_bytes(x), align = "right", ...)
 }
-type_sum.rlib_bytes <- function(x) {
+type_sum.rlib_bytes <- function(x, ...) {
   "byt"
 }
 scale_type.rlib_bytes <- function(x) {
