@@ -280,11 +280,11 @@ bool r_is_int(r_obj* x) {
 }
 static inline
 bool r_is_true(r_obj* x) {
-  if (r_is_bool(x)) {
-    return r_lgl_get(x, 0);
-  } else {
-    return false;
-  }
+  return r_is_bool(x) && r_lgl_get(x, 0);
+}
+static inline
+bool r_is_false(r_obj* x) {
+  return r_is_bool(x) && !r_lgl_get(x, 0);
 }
 static inline
 bool r_is_string(r_obj* x) {
