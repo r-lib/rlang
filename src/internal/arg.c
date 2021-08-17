@@ -186,6 +186,13 @@ int arg_match1(r_obj* arg,
     }
   }
 
+  if (error_call == r_missing_arg) {
+    // Replace `error_call` by environment on the stack because
+    // `r_eval_with_` evaluates in an out-of-stack mask
+    error_call = r_peek_frame();
+  }
+  KEEP(error_call);
+
   r_eval_with_wxyz(stop_arg_match_call,
                    KEEP(wrap_chr(arg)),
                    values,

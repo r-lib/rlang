@@ -534,7 +534,7 @@ r_obj* dots_unquote(r_obj* dots, struct dots_capture_info* capture_info) {
 
 static
 enum dots_ignore_empty arg_match_ignore_empty(r_obj* ignore_empty) {
-  return r_arg_match(ignore_empty, dots_ignore_empty_values, dots_ignore_empty_arg);
+  return r_arg_match(ignore_empty, dots_ignore_empty_values, dots_ignore_empty_arg, r_missing_arg);
 }
 
 static
@@ -547,7 +547,7 @@ const char* dots_homonyms_c_values[DOTS_HOMONYMS_SIZE] = {
 
 static
 enum dots_homonyms arg_match_homonyms(r_obj* homonyms) {
-  return r_arg_match(homonyms, dots_homonyms_values, dots_homonyms_arg);
+  return r_arg_match(homonyms, dots_homonyms_values, dots_homonyms_arg, r_missing_arg);
 }
 
 static
