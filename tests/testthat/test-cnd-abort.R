@@ -295,14 +295,14 @@ test_that("abort() accepts environment as `call` field.", {
   expect_snapshot((expect_error(f())))
 })
 
-test_that("error_arg() formats argument", {
+test_that("format_error_arg() formats argument", {
   exp <- format_arg("foo")
 
-  expect_equal(error_arg("foo"), exp)
-  expect_equal(error_arg(sym("foo")), exp)
-  expect_equal(error_arg(chr_get("foo", 0L)), exp)
-  expect_equal(error_arg(quote(foo())), format_arg("foo()"))
+  expect_equal(format_error_arg("foo"), exp)
+  expect_equal(format_error_arg(sym("foo")), exp)
+  expect_equal(format_error_arg(chr_get("foo", 0L)), exp)
+  expect_equal(format_error_arg(quote(foo())), format_arg("foo()"))
 
-  expect_error(error_arg(c("foo", "bar")), "must be a string or an expression")
-  expect_error(error_arg(function() NULL), "must be a string or an expression")
+  expect_error(format_error_arg(c("foo", "bar")), "must be a string or an expression")
+  expect_error(format_error_arg(function() NULL), "must be a string or an expression")
 })

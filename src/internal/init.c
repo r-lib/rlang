@@ -64,13 +64,13 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_env_poke_parent",              (DL_FUNC) &ffi_env_poke_parent, 2},
   {"ffi_env_unbind",                   (DL_FUNC) &ffi_env_unbind, 3},
   {"ffi_env_unlock",                   (DL_FUNC) &ffi_env_unlock, 1},
-  {"ffi_error_arg",                    (DL_FUNC) &ffi_error_arg, 1},
   {"ffi_eval_top",                     (DL_FUNC) &ffi_eval_top, 2},
   {"ffi_exprs_interp",                 (DL_FUNC) &ffi_exprs_interp, 6},
   {"ffi_f_lhs",                        (DL_FUNC) &r_f_lhs, 1},
   {"ffi_f_rhs",                        (DL_FUNC) &r_f_rhs, 1},
   {"ffi_find_var",                     (DL_FUNC) &ffi_find_var, 2},
   {"ffi_fini_rlang",                   (DL_FUNC) &ffi_fini_rlang, 0},
+  {"ffi_format_error_arg",             (DL_FUNC) &ffi_format_error_arg, 1},
   {"ffi_get_expression",               (DL_FUNC) &ffi_get_expression, 2},
   {"ffi_glue_is_here",                 (DL_FUNC) &ffi_glue_is_here, 0},
   {"ffi_hash",                         (DL_FUNC) &ffi_hash, 1},
@@ -239,8 +239,8 @@ void R_init_rlang(DllInfo* dll) {
   R_RegisterCCallable("rlang", "rlang_as_data_mask_3.0.0",  (DL_FUNC) &ffi_as_data_mask);
   R_RegisterCCallable("rlang", "rlang_as_data_pronoun",     (DL_FUNC) &ffi_as_data_pronoun);
   R_RegisterCCallable("rlang", "rlang_env_unbind",          (DL_FUNC) &r_env_unbind);
-  R_RegisterCCallable("rlang", "rlang_error_arg",           (DL_FUNC) &rlang_error_arg);
   R_RegisterCCallable("rlang", "rlang_eval_tidy",           (DL_FUNC) &rlang_eval_tidy);
+  R_RegisterCCallable("rlang", "rlang_format_error_arg",    (DL_FUNC) &rlang_format_error_arg);
   R_RegisterCCallable("rlang", "rlang_is_quosure",          (DL_FUNC) &is_quosure);
   R_RegisterCCallable("rlang", "rlang_names_as_unique",     (DL_FUNC) &names_as_unique);
   R_RegisterCCallable("rlang", "rlang_new_data_mask_3.0.0", (DL_FUNC) &ffi_new_data_mask);

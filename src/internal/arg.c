@@ -102,7 +102,7 @@ int arg_match(r_obj* arg,
   case R_TYPE_symbol:
     return arg_match1(r_sym_string(arg), values, error_arg, error_call);
   default:
-    r_abort("%s must be a string or character vector.", r_error_arg(error_arg));
+    r_abort("%s must be a string or character vector.", r_format_error_arg(error_arg));
   }
 
   int arg_len = r_length(arg);
@@ -112,7 +112,7 @@ int arg_match(r_obj* arg,
   }
 
   if (arg_len != values_len) {
-    r_abort("%s must be a string or have the same length as `values`.", r_error_arg(error_arg));
+    r_abort("%s must be a string or have the same length as `values`.", r_format_error_arg(error_arg));
   }
 
   r_obj* const* v_values = r_chr_cbegin(values);

@@ -22,5 +22,5 @@ conditions. This field is displayed by \code{\link[=stop]{stop()}} and \code{\li
 give context to an error message.
 }
 \seealso{
-\code{\link[=error_arg]{error_arg()}}
+\code{\link[=format_error_arg]{format_error_arg()}}
 }

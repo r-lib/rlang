@@ -17,7 +17,7 @@
 #include "decl/cnd-decl.h"
 
 
-r_obj* ffi_error_arg(r_obj* arg) {
+r_obj* ffi_format_error_arg(r_obj* arg) {
   switch (r_typeof(arg)) {
   case R_TYPE_symbol: arg = r_sym_as_utf8_character(arg); break;
   case R_TYPE_string: arg = r_str_as_character(arg); break;
@@ -33,8 +33,8 @@ r_obj* ffi_error_arg(r_obj* arg) {
   return out;
 }
 
-const char* rlang_error_arg(r_obj* arg) {
-  arg = KEEP(ffi_error_arg(arg));
+const char* rlang_format_error_arg(r_obj* arg) {
+  arg = KEEP(ffi_format_error_arg(arg));
 
   const char* arg_str = r_chr_get_c_string(arg, 0);
   int n = strlen(arg_str) + 1;

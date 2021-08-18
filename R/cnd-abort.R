@@ -267,9 +267,11 @@ signal_abort <- function(cnd, file = NULL) {
 #' `arg` can also be a defused call passed to [as_label()],
 #' e.g. `quote(1:2)`. This is meant for specific situations where
 #' there are no user-relevant argument names, such as in `[` methods.
+#' In this case we mention the user-supplied code instead of the
+#' argument name.
 #'
-#' Use `@inheritParams rlang::error_arg` to document `error_arg`
-#' arguments.
+#' Use `@inheritParams rlang::format_error_arg` to document
+#' `error_arg` arguments.
 #'
 #' @param arg,error_arg A string or symbol for an argument name. This
 #'   argument will be mentioned in error messages as the input that is
@@ -278,8 +280,8 @@ signal_abort <- function(cnd, file = NULL) {
 #'
 #' @seealso [error_call()]
 #' @export
-error_arg <- function(arg) {
-  .Call(ffi_error_arg, arg)
+format_error_arg <- function(arg) {
+  .Call(ffi_format_error_arg, arg)
 }
 
 #' Validate a function call for use in error messages
@@ -297,7 +299,7 @@ error_arg <- function(arg) {
 #'   function (as returned by e.g. `parent.frame()`). The
 #'   corresponding call is then retrieved.
 #'
-#' @seealso [error_arg()]
+#' @seealso [format_error_arg()]
 #' @export
 error_call <- function(call) {
   while (is_environment(call)) {

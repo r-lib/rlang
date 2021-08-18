@@ -32,7 +32,7 @@ NULL
 #' @param arg A symbol referring to an argument accepting strings.
 #' @param values A character vector of possible values that `arg` can take.
 #' @param ... These dots are for future extensions and must be empty.
-#' @inheritParams error_arg
+#' @inheritParams format_error_arg
 #' @inheritParams error_call
 #' @return The string supplied to `arg`.
 #' @importFrom utils adist
