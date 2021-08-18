@@ -32,7 +32,7 @@
 
 
 // Allows long vectors to be indexed with doubles
-r_ssize r_as_ssize(r_obj* n) {
+r_ssize r_arg_as_ssize(r_obj* n, const char* arg) {
   switch (r_typeof(n)) {
 
   case R_TYPE_double: {
@@ -41,7 +41,7 @@ r_ssize r_as_ssize(r_obj* n) {
     }
     double out = r_dbl_get(n, 0);
     if (out > R_SSIZE_MAX) {
-      r_abort("`n` is too large a number");
+      r_abort("`%s` is too large a number.", arg);
     }
     return (r_ssize) floor(out);
   }
@@ -55,7 +55,7 @@ r_ssize r_as_ssize(r_obj* n) {
 
   invalid:
   default:
-    r_abort("Expected a scalar integer or double");
+    r_abort("`%s` must be a scalar integer or double.", arg);
   }
 }
 
