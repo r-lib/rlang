@@ -3,9 +3,6 @@
 \name{format_error_arg}
 \alias{format_error_arg}
 \title{Format argument for input checking errors}
-\usage{
-format_error_arg(arg)
-}
 \arguments{
 \item{arg, error_arg}{A string or symbol for an argument name. This
 argument will be mentioned in error messages as the input that is
@@ -27,8 +24,8 @@ In this case we mention the user-supplied code instead of the
 argument name.
 
 Use \verb{@inheritParams rlang::format_error_arg} to document
-\code{error_arg} arguments.
+\code{arg} or \code{error_arg} arguments.
 }
 \seealso{
-\code{\link[=error_call]{error_call()}}
+\code{\link[=format_error_call]{format_error_call()}}
 }

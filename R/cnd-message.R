@@ -115,9 +115,7 @@ cnd_context <- function(cnd) {
   call <- conditionCall(cnd)
 
   if (is_call(call) && is_expression(call)) {
-    # Remove distracting arguments from the call
-    fn <- call[1]
-    format_code(as_label(fn))
+    format_error_call(call)
   } else {
     NULL
   }

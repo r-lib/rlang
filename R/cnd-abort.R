@@ -271,24 +271,35 @@ signal_abort <- function(cnd, file = NULL) {
 #' argument name.
 #'
 #' Use `@inheritParams rlang::format_error_arg` to document
-#' `error_arg` arguments.
+#' `arg` or `error_arg` arguments.
 #'
 #' @param arg,error_arg A string or symbol for an argument name. This
 #'   argument will be mentioned in error messages as the input that is
 #'   at the origin of a problem.
 #' @return A single string formatted for output.
 #'
-#' @seealso [error_call()]
+#' @usage NULL
+#' @seealso [format_error_call()]
 #' @export
 format_error_arg <- function(arg) {
   .Call(ffi_format_error_arg, arg)
 }
 
-#' Validate a function call for use in error messages
+#' Validate and format a function call for use in error messages
 #'
-#' Creates a function call ready to be used as `call` field of error
-#' conditions. This field is displayed by [stop()] and [abort()] to
-#' give context to an error message.
+#' @description
+#'
+#' - `error_call()` creates a function call ready to be used as `call`
+#'   field of error conditions. This field is displayed by [stop()]
+#'   and [abort()] to give context to an error message.
+#'
+#' - `format_error_call()` passes its input to `error_call()` and
+#'   formats the result as code. Use this function if you are
+#'   generating the "in" part of an error message from a stack frame
+#'   call.
+#'
+#' Use `@inheritParams rlang::format_error_call` to document
+#' `call` or `error_call` arguments.
 #'
 #' @param call,error_call An expression (as returned by e.g.
 #'   `sys.call()`) representing the context in which the error
@@ -298,8 +309,20 @@ format_error_arg <- function(arg) {
 #'   Can also be an execution environment of a currently running
 #'   function (as returned by e.g. `parent.frame()`). The
 #'   corresponding call is then retrieved.
+#' @return Either a string formatted as code or `NULL` if `call` or
+#'   the result of `error_call(call)` is `NULL`.
 #'
 #' @seealso [format_error_arg()]
+#' @export
+format_error_call <- function(call) {
+  call <- error_call(call)
+  if (is_null(call)) {
+    return(NULL)
+  }
+
+  format_code(as_label(call))
+}
+#' @rdname format_error_call
 #' @export
 error_call <- function(call) {
   while (is_environment(call)) {
