@@ -76,7 +76,6 @@ NULL
 #'
 #' @export
 list2 <- function(...) {
-  .error_call <- FALSE
   .Call(
     ffi_dots_list,
     frame_env = environment(),
@@ -95,7 +94,6 @@ ll <- list2
 
 # Preserves empty arguments
 list3 <- function(...) {
-  .error_call <- FALSE
   .Call(
     ffi_dots_list,
     frame_env = environment(),
@@ -209,7 +207,6 @@ dots_list <- function(...,
                       .preserve_empty = FALSE,
                       .homonyms = c("keep", "first", "last", "error"),
                       .check_assign = FALSE) {
-  .error_call <- FALSE
   .Call(
     ffi_dots_list,
     frame_env = environment(),
@@ -228,8 +225,6 @@ dots_split <- function(...,
                        .preserve_empty = FALSE,
                        .homonyms = c("keep", "first", "last", "error"),
                        .check_assign = FALSE) {
-  .error_call <- FALSE
-
   dots <- .Call(
     ffi_dots_list,
     frame_env = environment(),
@@ -366,7 +361,6 @@ dots_splice <- function(...,
                         .preserve_empty = FALSE,
                         .homonyms = c("keep", "first", "last", "error"),
                         .check_assign = FALSE) {
-  .error_call <- FALSE
   dots <- .Call(
     ffi_dots_flat_list,
     frame_env = environment(),
@@ -407,7 +401,6 @@ dots_values <- function(...,
                         .preserve_empty = FALSE,
                         .homonyms = c("keep", "first", "last", "error"),
                         .check_assign = FALSE) {
-  .error_call <- FALSE
   .External(
     ffi_dots_values,
     env = environment(),
@@ -526,3 +519,30 @@ rlang_as_list_from_list_impl <- function(x) {
 
   out
 }
+
+
+#' Development notes - `dots.R`
+#'
+#' @section `.error_call` flag in dots collectors:
+#'
+#' Dots collectors like [dots_list()] are a little tricky because they
+#' may error out in different situations. Do we want to forward the
+#' context, i.e. set the call flag to `FALSE`?
+#'
+#' 1. While checking their own parameters, in which case the relevant
+#'    context is the collector itself and we don't forward.
+#'
+#' 2. While collecting the dots, during evaluation of the supplied
+#'    arguments. In this case forwarding or not is irrelevant because
+#'    expressions in `...` are evaluated in their own environment
+#'    which is not connected to the collector's context.
+#'
+#' 3. While collecting the dots, during argument constraints checks
+#'    such as determined by the `.homonyms` argument. In this case we
+#'    want to forward the context because the caller of the dots
+#'    collector is the one who determines the constraints for its
+#'    users.
+#'
+#' @keywords internal
+#' @name dev-notes-dots
+NULL

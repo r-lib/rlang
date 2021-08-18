@@ -33,4 +33,12 @@
       `.ignore_empty` must be one of "trailing", "none", or "all", not "t".
       i Did you mean "trailing"?
       Context: `dots_list()`
+    Code
+      foo <- (function() dots_list(.ignore_empty = "t"))
+      (expect_error(foo()))
+    Output
+      <error/rlang_error>
+      `.ignore_empty` must be one of "trailing", "none", or "all", not "t".
+      i Did you mean "trailing"?
+      Context: `dots_list()`
 

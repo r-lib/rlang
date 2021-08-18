@@ -730,6 +730,11 @@ void dots_check_homonyms(r_obj* dots, r_obj* nms) {
   r_obj* dups = KEEP(nms_are_duplicated(nms, false));
 
   if (r_lgl_sum(dups, false)) {
+    // Forward `error_call` to caller context since this is the one
+    // that determines the homonyms constraints for its users
+    r_obj* env = KEEP(r_peek_frame());
+    env = KEEP(r_caller_env(env));
+
     struct r_pair args[] = {
       { r_sym("dots"), dots },
       { r_sym("dups"), dups }
@@ -738,7 +743,7 @@ void dots_check_homonyms(r_obj* dots, r_obj* nms) {
              r_sym("abort_dots_homonyms"),
              args,
              R_ARR_SIZEOF(args),
-             r_peek_frame());
+             env);
     r_stop_unreached("dots_check_homonyms");
   }
 
