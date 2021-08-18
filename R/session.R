@@ -85,7 +85,7 @@ check_installed <- function(pkg,
                             ...,
                             version = NULL) {
   check_dots_empty0(...)
-  .error_call <- FALSE
+  .error_call <- "caller"
 
   if (!is_character(pkg)) {
     abort("`pkg` must be a package name or a vector of package names.")
@@ -106,8 +106,6 @@ check_installed <- function(pkg,
   if (!length(missing_pkgs)) {
     return(invisible(NULL))
   }
-
-  .error_call <- FALSE
 
   cnd <- new_error_package_not_found(
     missing_pkgs,

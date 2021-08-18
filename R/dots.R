@@ -438,7 +438,7 @@ dots_n <- function(...) {
 }
 
 abort_dots_homonyms <- function(dots, dups) {
-  .error_call <- FALSE
+  .error_call <- "caller"
 
   nms <- names(dots)
 

@@ -326,7 +326,7 @@ format_error_call <- function(call) {
 #' @export
 error_call <- function(call) {
   while (is_environment(call)) {
-    if (identical(call, global_env()) || is_na(call$.error_call)) {
+    if (env_is_error_global(call)) {
       return(NULL)
     }
 
@@ -341,14 +341,14 @@ error_call <- function(call) {
       next
     }
 
-    if (!is_false(flag)) {
+    if (!is_string(flag, "caller")) {
       call <- caller_call(call)
       break
     }
 
     # Return current call if called from global
     caller <- eval_bare(call2(caller_env), call)
-    if (identical(caller, global_env()) || is_na(caller$.error_call)) {
+    if (env_is_error_global(caller)) {
       call <- caller_call(call)
       break
     }
@@ -363,6 +363,14 @@ error_call <- function(call) {
 
   # Remove distracting arguments from the call
   call[1]
+}
+
+# testthat sets a global `.error_call` to simulate the global env
+# behaviour of stopping the search through the call stack. This way,
+# snapshotting the errors of a function that uses a `"caller"` error
+# flag uses that function's call instead of testthat's `eval()` call.
+env_is_error_global <- function(env) {
+  identical(env, global_env()) || is_string(env$.error_call, "global")
 }
 
 error_flag <- function(env, top = topenv(env)) {
