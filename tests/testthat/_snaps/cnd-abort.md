@@ -290,3 +290,30 @@
       tilt
       Context: `expected()`
 
+# can disable error call inference for unexported functions
+
+    Code
+      (expect_error(foo()))
+    Output
+      <error/rlang_error>
+      foo
+      Context: `foo()`
+    Code
+      local({
+        local_options(`rlang:::use_default_error_call` = FALSE)
+        (expect_error(foo()))
+      })
+    Output
+      <error/rlang_error>
+      foo
+    Code
+      local({
+        local_options(`rlang:::use_default_error_call` = FALSE)
+        (expect_error(dots_list(.homonyms = "k")))
+      })
+    Output
+      <error/rlang_error>
+      `.homonyms` must be one of "keep", "first", "last", or "error", not "k".
+      i Did you mean "keep"?
+      Context: `dots_list()`
+

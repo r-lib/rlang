@@ -322,3 +322,21 @@ test_that("local_error_call() works", {
 
   expect_snapshot((expect_error(foo())))
 })
+
+test_that("can disable error call inference for unexported functions", {
+  foo <- function() abort("foo")
+
+  expect_snapshot({
+    (expect_error(foo()))
+
+    local({
+      local_options("rlang:::use_default_error_call" = FALSE)
+      (expect_error(foo()))
+    })
+
+    local({
+      local_options("rlang:::use_default_error_call" = FALSE)
+      (expect_error(dots_list(.homonyms = "k")))
+    })
+  })
+})

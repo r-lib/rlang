@@ -202,12 +202,13 @@ abort <- function(message = NULL,
   # probably means that we are called from a condition handler
   if (is_missing(call)) {
     if (is_null(parent)) {
-      call <- caller_env()
+      call <- default_error_call(caller_env())
     } else {
       call <- NULL
     }
+  } else {
+    call <- error_call(call)
   }
-  call <- error_call(call)
 
   cnd <- error_cnd(
     class,
@@ -218,6 +219,37 @@ abort <- function(message = NULL,
     trace = trace
   )
   signal_abort(cnd, .file)
+}
+
+# Private option to disable default error call except for exported
+# functions
+default_error_call <- function(env) {
+  call <- error_call(env)
+
+  opt <- peek_option("rlang:::use_default_error_call") %||% TRUE
+  if (is_true(opt)) {
+    return(call)
+  }
+
+  if (!is_call(call)) {
+    return(call)
+  }
+
+  fn <- call[[1]]
+  if (!is_symbol(fn)) {
+    return(call)
+  }
+  fn <- as_string(fn)
+
+  top <- topenv(env)
+  if (!is_namespace(top)) {
+    return(NULL)
+  }
+  if (!ns_exports_has(top, fn)) {
+    return(NULL)
+  }
+
+  call
 }
 
 signal_abort <- function(cnd, file = NULL) {
