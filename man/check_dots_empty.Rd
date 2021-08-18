@@ -16,7 +16,9 @@ keep it simple.
 
 Can also be an execution environment of a currently running
 function (as returned by e.g. \code{parent.frame()}). The
-corresponding call is then retrieved.}
+corresponding call is then retrieved.
+
+See also \code{\link[=local_error_call]{local_error_call()}}.}
 
 \item{action}{The action to take when the dots have not been used. One of
 \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, \code{\link[=inform]{inform()}} or \code{\link[=signal]{signal()}}.}

@@ -306,3 +306,19 @@ test_that("format_error_arg() formats argument", {
   expect_error(format_error_arg(c("foo", "bar")), "must be a string or an expression")
   expect_error(format_error_arg(function() NULL), "must be a string or an expression")
 })
+
+test_that("local_error_call() works", {
+  foo <- function() {
+    bar()
+  }
+  bar <- function() {
+    local_error_call(quote(expected()))
+    baz()
+  }
+  baz <- function() {
+    local_error_call("caller")
+    abort("tilt")
+  }
+
+  expect_snapshot((expect_error(foo())))
+})

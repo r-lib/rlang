@@ -281,3 +281,12 @@
       `arg` must be supplied.
       Context: `h()`
 
+# local_error_call() works
+
+    Code
+      (expect_error(foo()))
+    Output
+      <error/rlang_error>
+      tilt
+      Context: `expected()`
+

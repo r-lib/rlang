@@ -33,7 +33,9 @@ keep it simple.
 
 Can also be an execution environment of a currently running
 function (as returned by e.g. \code{parent.frame()}). The
-corresponding call is then retrieved.}
+corresponding call is then retrieved.
+
+See also \code{\link[=local_error_call]{local_error_call()}}.}
 
 \item{arg_nm}{Same as \code{error_arg}.}
 }
