@@ -99,3 +99,21 @@ test_that("names_as_unique() handles encodings", {
   expect_equal(out, paste0(rep(x[[1]], 2), "...", 1:2))
   expect_equal(Encoding(out), c("UTF-8", "UTF-8"))
 })
+
+test_that("names_inform_repair() signals classed messages", {
+  local_options(rlib_message_verbosity = "default")
+  expect_message(names_inform_repair("x", "y"), class = "rlib_message_name_repair")
+})
+
+test_that("names_inform_repair() can be silenced by `rlib_name_repair_verbosity`", {
+  local_options(rlib_message_verbosity = "default", rlib_name_repair_verbosity = "quiet")
+  expect_message(names_inform_repair("x", "y"), NA)
+})
+
+test_that("`rlib_name_repair_verbosity` is validated", {
+  local_options(rlib_name_repair_verbosity = 1)
+  expect_error(peek_name_repair_verbosity())
+
+  local_options(rlib_name_repair_verbosity = "qu")
+  expect_error(peek_name_repair_verbosity())
+})
