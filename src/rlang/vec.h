@@ -295,11 +295,15 @@ bool r_is_string(r_obj* x) {
 }
 
 static inline
-bool r_as_bool(r_obj* x) {
+bool r_arg_as_bool(r_obj* x, const char* arg) {
   if (!r_is_bool(x)) {
-    r_abort("`x` must be a logical value");
+    r_abort("`%s` must be a logical value.", arg);
   }
   return r_lgl_get(x, 0);
+}
+static inline
+bool r_as_bool(r_obj* x) {
+  return r_arg_as_bool(x, "x");
 }
 static inline
 int r_as_int(r_obj* x) {
