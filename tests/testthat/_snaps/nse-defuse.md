@@ -3,14 +3,14 @@
     Code
       expect_equal(dots_names(1, foo = 1, 1, foo = 2), c("1...1", "foo", "1...3",
         "foo"))
-    Message <message>
+    Message <rlib_message_name_repair>
       New names:
       * 1 -> 1...1
       * 1 -> 1...3
     Code
       expect_equal(dots_names(bar, foo = 1, bar, foo = 2), c("bar...1", "foo",
         "bar...3", "foo"))
-    Message <message>
+    Message <rlib_message_name_repair>
       New names:
       * `bar` -> `bar...1`
       * `bar` -> `bar...3`
