@@ -1,20 +1,3 @@
-#' Documentation anchor for `error_call` arguments
-#'
-#' Use `@inheritParams rlang::args_error_call` in your package
-#' to document an `error_call` argument.
-#'
-#' @param error_call An expression representing the context in which
-#'   the error occurred. If non-null, `abort()` displays the call
-#'   (stripped from its arguments to keep it simple) before `message`.
-#'
-#'   If you wrap an input-checking helper in another similar helper,
-#'   you should generally forward `error_call` from the calling frame
-#'   so that the relevant user expression is displayed when an error
-#'   occurs.
-#'
-#' @name args_error_call
-NULL
-
 #' Match an argument to a character vector
 #'
 #' @description
@@ -33,7 +16,7 @@ NULL
 #' @param values A character vector of possible values that `arg` can take.
 #' @param ... These dots are for future extensions and must be empty.
 #' @inheritParams format_error_arg
-#' @inheritParams error_call
+#' @inheritParams format_error_call
 #' @return The string supplied to `arg`.
 #' @importFrom utils adist
 #' @seealso [arg_require()]
@@ -164,7 +147,7 @@ arg_match_invalid_msg <- function(val, values, error_arg) {
 #' Check that argument is supplied
 #' Throws an informative error if `arg` is missing.
 #' @param arg A function argument. Must be a symbol.
-#' @inheritParams args_error_call
+#' @inheritParams format_error_call
 #'
 #' @seealso [arg_match()]
 #' @examples

@@ -10,14 +10,16 @@ arg_require(arg, error_call = caller_env())
 \arguments{
 \item{arg}{A function argument. Must be a symbol.}
 
-\item{error_call}{An expression representing the context in which
-the error occurred. If non-null, \code{abort()} displays the call
-(stripped from its arguments to keep it simple) before \code{message}.
+\item{error_call}{An expression (as returned by e.g.
+\code{sys.call()}) representing the context in which the error
+occurred. If non-null, the call is stripped from its arguments to
+keep it simple.
 
-If you wrap an input-checking helper in another similar helper,
-you should generally forward \code{error_call} from the calling frame
-so that the relevant user expression is displayed when an error
-occurs.}
+Can also be an execution environment of a currently running
+function (as returned by e.g. \code{parent.frame()}). The
+corresponding call is then retrieved.
+
+See also \code{\link[=local_error_call]{local_error_call()}}.}
 }
 \description{
 Check that argument is supplied
