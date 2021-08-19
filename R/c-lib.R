@@ -155,6 +155,13 @@ detect_rlang_lib_usage <- function(src_path) {
 }
 
 
+# cnd.c
+
+format_error_arg <- function(arg) {
+  .Call(ffi_format_error_arg, arg)
+}
+
+
 # df.c
 
 alloc_data_frame <- function(n_rows, names, types) {

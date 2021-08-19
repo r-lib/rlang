@@ -9,9 +9,12 @@
 \description{
 \code{caller_arg()} is a variant of \code{substitute()} or \code{\link[=ensym]{ensym()}} that
 returns an argument name as a string.
-
-Use \verb{@inheritParams rlang::args_error_context} to document an \code{arg}
-or \code{error_arg} argument that takes \code{error_arg()} as default.
+\itemize{
+\item The resulting name should be formatted as argument, e.g. using
+the \code{.arg} in the cli package.
+\item Use \verb{@inheritParams rlang::args_error_context} to document an
+\code{arg} or \code{error_arg} argument that takes \code{error_arg()} as default.
+}
 }
 \examples{
 arg_checker <- function(x, arg = caller_arg(x), call = caller_env()) {

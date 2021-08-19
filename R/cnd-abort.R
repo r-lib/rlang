@@ -98,7 +98,7 @@
 #' @param class Subclass of the condition. This allows your users
 #'   to selectively handle the conditions signalled by your functions.
 #' @param ... Additional data to be stored in the condition object.
-#' @inheritParams error_call
+#' @inheritParams args_error_context
 #' @param .file A connection or a string specifying where to print the
 #'   message. The default depends on the context, see the `stdout` vs
 #'   `stderr` section.
@@ -444,38 +444,21 @@ local_error_call <- function(call, frame = caller_env()) {
   old
 }
 
-#' Format argument for input checking errors
-#'
-#' Transforms an argument name into a formatted string. The string is
-#' formatted by the cli package (if available) with the `{.arg }`
-#' format.
-#'
-#' `arg` can also be a defused call passed to [as_label()],
-#' e.g. `quote(1:2)`. This is meant for specific situations where
-#' there are no user-relevant argument names, such as in `[` methods.
-#' In this case we mention the user-supplied code instead of the
-#' argument name.
-#'
-#' Use `@inheritParams rlang::format_error_arg` to document
-#' `arg` or `error_arg` arguments.
-#'
-#' @param arg,error_arg A string or symbol for an argument name. This
-#'   argument will be mentioned in error messages as the input that is
-#'   at the origin of a problem.
-#' @return A single string formatted for output.
-#'
-#' @usage NULL
-#' @seealso [format_error_call()]
-#' @export
-format_error_arg <- function(arg) {
-  format_arg(as_label(arg))
-}
-
 #' Documentation anchor for error arguments
+#'
+#' @description
 #'
 #' Use `@inheritParams rlang::args_error_context` in your package to
 #' document `arg` and `call` arguments (or equivalently their prefixed
 #' versions `error_arg` and `error_call`).
+#'
+#' - `arg` parameters should be formatted as argument (e.g. using
+#'   cli's `.arg` specifier) and included in error messages. See also
+#'   [caller_arg()].
+#'
+#' - `call` parameters should be included in error conditions in a
+#'   field named `call`. An easy way to do this is by passing a `call`
+#'   argument to [abort()]. See also [local_error_call()].
 #'
 #' @param arg,error_arg An argument name as a string. This argument
 #'   will be mentioned in error messages as the input that is at the
@@ -501,8 +484,11 @@ NULL
 #' `caller_arg()` is a variant of `substitute()` or [ensym()] that
 #' returns an argument name as a string.
 #'
-#' Use `@inheritParams rlang::args_error_context` to document an `arg`
-#' or `error_arg` argument that takes `error_arg()` as default.
+#' - The resulting name should be formatted as argument, e.g. using
+#'   the `.arg` in the cli package.
+#'
+#' - Use `@inheritParams rlang::args_error_context` to document an
+#'   `arg` or `error_arg` argument that takes `error_arg()` as default.
 #'
 #' @param arg An argument name in the current function.
 #' @usage NULL
@@ -551,9 +537,6 @@ caller_arg <- function(arg) {
 #'   generating the "in" part of an error message from a stack frame
 #'   call.
 #'
-#' Use `@inheritParams rlang::format_error_call` to document
-#' `call` or `error_call` arguments.
-#'
 #' @param call,error_call An expression (as returned by e.g.
 #'   `sys.call()`) representing the context in which the error
 #'   occurred. If non-null, the call is stripped from its arguments to
@@ -567,17 +550,7 @@ caller_arg <- function(arg) {
 #' @return Either a string formatted as code or `NULL` if `call` or
 #'   the result of `error_call(call)` is `NULL`.
 #'
-#' @seealso [format_error_arg()]
-#' @export
-format_error_call <- function(call) {
-  call <- error_call(call)
-  if (is_null(call)) {
-    return(NULL)
-  }
-
-  format_code(as_label(call))
-}
-#' @rdname format_error_call
+#' @keywords internal
 #' @export
 error_call <- function(call) {
   while (is_environment(call)) {
@@ -614,6 +587,16 @@ error_call <- function(call) {
   } else {
     NULL
   }
+}
+#' @rdname error_call
+#' @export
+format_error_call <- function(call) {
+  call <- error_call(call)
+  if (is_null(call)) {
+    return(NULL)
+  }
+
+  format_code(as_label(call))
 }
 
 error_flag <- function(env, top = topenv(env)) {

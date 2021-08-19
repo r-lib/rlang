@@ -23,4 +23,12 @@ See also \code{\link[=local_error_call]{local_error_call()}}.}
 Use \verb{@inheritParams rlang::args_error_context} in your package to
 document \code{arg} and \code{call} arguments (or equivalently their prefixed
 versions \code{error_arg} and \code{error_call}).
+\itemize{
+\item \code{arg} parameters should be formatted as argument (e.g. using
+cli's \code{.arg} specifier) and included in error messages. See also
+\code{\link[=caller_arg]{caller_arg()}}.
+\item \code{call} parameters should be included in error conditions in a
+field named \code{call}. An easy way to do this is by passing a \code{call}
+argument to \code{\link[=abort]{abort()}}. See also \code{\link[=local_error_call]{local_error_call()}}.
+}
 }
