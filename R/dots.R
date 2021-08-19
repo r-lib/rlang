@@ -527,7 +527,8 @@ rlang_as_list_from_list_impl <- function(x) {
 #'
 #' Dots collectors like [dots_list()] are a little tricky because they
 #' may error out in different situations. Do we want to forward the
-#' context, i.e. set the call flag to `FALSE`?
+#' context, i.e. set the call flag to the calling environment?
+#' Collectors throw errors in these cases:
 #'
 #' 1. While checking their own parameters, in which case the relevant
 #'    context is the collector itself and we don't forward.

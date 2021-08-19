@@ -11,7 +11,8 @@ Development notes - \code{dots.R}
 
 Dots collectors like \code{\link[=dots_list]{dots_list()}} are a little tricky because they
 may error out in different situations. Do we want to forward the
-context, i.e. set the call flag to \code{FALSE}?
+context, i.e. set the call flag to the calling environment?
+Collectors throw errors in these cases:
 \enumerate{
 \item While checking their own parameters, in which case the relevant
 context is the collector itself and we don't forward.

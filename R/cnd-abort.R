@@ -371,11 +371,11 @@ signal_abort <- function(cnd, file = NULL) {
 #' In more complex cases it's often burdensome to pass the relevant
 #' call around, for instance if your checking and throwing code is
 #' structured into many different functions. In this case, use
-#' `local_error_call("caller")` to set the call locally or instruct
-#' `abort()` to climb the call stack one level to find the relevant
-#' call. In the following example, the complexity is not so important
-#' that sparing the argument passing makes a big difference. However
-#' this illustrates the pattern:
+#' `local_error_call()` to set the call locally or instruct `abort()`
+#' to climb the call stack one level to find the relevant call. In the
+#' following example, the complexity is not so important that sparing
+#' the argument passing makes a big difference. However this
+#' illustrates the pattern:
 #'
 #' ```
 #' arg_check <- function(arg,
@@ -391,7 +391,7 @@ signal_abort <- function(cnd, file = NULL) {
 #'
 #' my_classed_stop <- function(message) {
 #'   # Forward the local error call to the caller's
-#'   local_error_call("caller")
+#'   local_error_call(caller_env())
 #'
 #'   abort(message, class = "my_class")
 #' }
@@ -403,13 +403,11 @@ signal_abort <- function(cnd, file = NULL) {
 #'
 #' @section Error call flags for specific cases:
 #'
-#' The `call` argument can also be:
-#'
-#' - The string `"caller"`. This is equivalent to `caller_env()` or
-#'   `parent.frame()` but has a lower overhead because call stack
-#'   introspection is only performed when an error is triggered. Note
-#'   that eagerly calling `caller_env()` is fast enough in almost all
-#'   cases.
+#' - The `call` argument can also be the string `"caller"`. This is
+#'   equivalent to `caller_env()` or `parent.frame()` but has a lower
+#'   overhead because call stack introspection is only performed when
+#'   an error is triggered. Note that eagerly calling `caller_env()`
+#'   is fast enough in almost all cases.
 #'
 #'   If your function needs to be really fast, assign the error call
 #'   flag directly instead of calling `local_error_flag()`:
@@ -418,10 +416,14 @@ signal_abort <- function(cnd, file = NULL) {
 #'   .error_call <- "caller"
 #'   ```
 #'
-#' - The string `"global"`. This is used to mimic the global
-#'   environment. For advanced use only, e.g. in packages that have
-#'   a specific notion of global context such as testthat.
-#'
+#' - Most functions that set the error call to their caller context
+#'   will not be called directly or interactively. When they are
+#'   called from the global environment, no context is shown in error
+#'   messages. However, when they are called via `eval()`, e.g. in
+#'   testthat snapshots, showing `eval()` as caller can be surprising.
+#'   In that case, set the error flag to `NULL` in the evaluation
+#'   environment to prevent this `eval()` context from being shown in
+#'   error messages.
 #' 
 #' @examples
 #' # Set a context for error messages
@@ -441,9 +443,7 @@ signal_abort <- function(cnd, file = NULL) {
 #' }
 #' @export
 local_error_call <- function(call, frame = caller_env()) {
-  if (is_string(call)) {
-    call <- arg_match0(call, c("caller", "global"))
-  } else if (!typeof(call) %in% c("environment", "NULL", "language")) {
+  if (!is_string(call, "caller") && !typeof(call) %in% c("environment", "NULL", "language")) {
     abort(sprintf("`call` can't be %s.", friendly_type_of(call)))
   }
 
@@ -523,7 +523,7 @@ format_error_call <- function(call) {
 #' @export
 error_call <- function(call) {
   while (is_environment(call)) {
-    if (env_is_error_global(call)) {
+    if (identical(call, global_env())) {
       return(NULL)
     }
 
@@ -538,20 +538,13 @@ error_call <- function(call) {
       next
     }
 
-    if (!is_string(flag, "caller")) {
-      call <- caller_call(call)
-      break
+    if (is_string(flag, "caller")) {
+      call <- eval_bare(call2(caller_env), call)
+      next
     }
 
-    # Return current call if called from global
-    caller <- eval_bare(call2(caller_env), call)
-    if (env_is_error_global(caller)) {
-      call <- caller_call(call)
-      break
-    }
-
-    call <- caller
-    next
+    call <- caller_call(call)
+    break
   }
 
   if (!is_call(call) && !is_expression(call)) {
@@ -562,20 +555,12 @@ error_call <- function(call) {
   call[1]
 }
 
-# testthat sets a global `.error_call` to simulate the global env
-# behaviour of stopping the search through the call stack. This way,
-# snapshotting the errors of a function that uses a `"caller"` error
-# flag uses that function's call instead of testthat's `eval()` call.
-env_is_error_global <- function(env) {
-  identical(env, global_env()) || is_string(env$.error_call, "global")
-}
-
 error_flag <- function(env, top = topenv(env)) {
   env_get(
     env,
     ".error_call",
     default = TRUE,
-    inherit = TRUE,
+    inherit = FALSE,
     last = top
   )
 }

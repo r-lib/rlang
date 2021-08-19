@@ -79,11 +79,11 @@ error messages.
 In more complex cases it's often burdensome to pass the relevant
 call around, for instance if your checking and throwing code is
 structured into many different functions. In this case, use
-\code{local_error_call("caller")} to set the call locally or instruct
-\code{abort()} to climb the call stack one level to find the relevant
-call. In the following example, the complexity is not so important
-that sparing the argument passing makes a big difference. However
-this illustrates the pattern:\preformatted{arg_check <- function(arg,
+\code{local_error_call()} to set the call locally or instruct \code{abort()}
+to climb the call stack one level to find the relevant call. In the
+following example, the complexity is not so important that sparing
+the argument passing makes a big difference. However this
+illustrates the pattern:\preformatted{arg_check <- function(arg,
                       error_arg = as_string(substitute(arg)),
                       error_call = caller_env()) \{
   # Set the local error call
@@ -96,7 +96,7 @@ this illustrates the pattern:\preformatted{arg_check <- function(arg,
 
 my_classed_stop <- function(message) \{
   # Forward the local error call to the caller's
-  local_error_call("caller")
+  local_error_call(caller_env())
 
   abort(message, class = "my_class")
 \}
@@ -109,21 +109,24 @@ foo()
 
 \section{Error call flags for specific cases}{
 
-
-The \code{call} argument can also be:
 \itemize{
-\item The string \code{"caller"}. This is equivalent to \code{caller_env()} or
-\code{parent.frame()} but has a lower overhead because call stack
-introspection is only performed when an error is triggered. Note
-that eagerly calling \code{caller_env()} is fast enough in almost all
-cases.
+\item The \code{call} argument can also be the string \code{"caller"}. This is
+equivalent to \code{caller_env()} or \code{parent.frame()} but has a lower
+overhead because call stack introspection is only performed when
+an error is triggered. Note that eagerly calling \code{caller_env()}
+is fast enough in almost all cases.
 
 If your function needs to be really fast, assign the error call
 flag directly instead of calling \code{local_error_flag()}:\preformatted{.error_call <- "caller"
 }
-\item The string \code{"global"}. This is used to mimic the global
-environment. For advanced use only, e.g. in packages that have
-a specific notion of global context such as testthat.
+\item Most functions that set the error call to their caller context
+will not be called directly or interactively. When they are
+called from the global environment, no context is shown in error
+messages. However, when they are called via \code{eval()}, e.g. in
+testthat snapshots, showing \code{eval()} as caller can be surprising.
+In that case, set the error flag to \code{NULL} in the evaluation
+environment to prevent this \code{eval()} context from being shown in
+error messages.
 }
 }
 
