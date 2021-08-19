@@ -160,15 +160,15 @@ r_obj* ffi_dict_it_next(r_obj* dict_it) {
 r_obj* ffi_new_dyn_vector(r_obj* type,
                           r_obj* capacity) {
   struct r_dyn_array* arr = r_new_dyn_vector(r_chr_as_r_type(type),
-                                             r_as_ssize(capacity));
+                                             r_arg_as_ssize(capacity, "capacity"));
   return arr->shelter;
 }
 
 // [[ register() ]]
 r_obj* ffi_new_dyn_array(r_obj* elt_byte_size,
                          r_obj* capacity) {
-  struct r_dyn_array* arr = r_new_dyn_array(r_as_ssize(elt_byte_size),
-                                            r_as_ssize(capacity));
+  struct r_dyn_array* arr = r_new_dyn_array(r_arg_as_ssize(elt_byte_size, "elt_byte_size"),
+                                            r_arg_as_ssize(capacity, "capacity"));
   return arr->shelter;
 }
 
@@ -247,7 +247,7 @@ r_obj* ffi_arr_pop_back(r_obj* arr_sexp) {
 // [[ register() ]]
 r_obj* ffi_arr_resize(r_obj* arr_sexp, r_obj* capacity_sexp) {
   struct r_dyn_array* arr = r_shelter_deref(arr_sexp);
-  r_arr_resize(arr, r_as_ssize(capacity_sexp));
+  r_arr_resize(arr, r_arg_as_ssize(capacity_sexp, "capacity"));
   return r_null;
 }
 
@@ -257,8 +257,8 @@ r_obj* ffi_arr_resize(r_obj* arr_sexp, r_obj* capacity_sexp) {
 // [[ register() ]]
 r_obj* ffi_new_dyn_list_of(r_obj* type, r_obj* capacity, r_obj* width) {
   struct r_dyn_list_of* lof = r_new_dyn_list_of(r_chr_as_r_type(type),
-                                                r_as_ssize(capacity),
-                                                r_as_ssize(width));
+                                                r_arg_as_ssize(capacity, "capacity"),
+                                                r_arg_as_ssize(width, "width"));
   return lof->shelter;
 }
 
@@ -329,7 +329,7 @@ r_obj* ffi_lof_arr_push_back(r_obj* lof, r_obj* i, r_obj* value) {
             r_type_as_c_string(p_lof->type));
   }
   r_lof_arr_push_back(p_lof,
-                      r_as_ssize(i),
+                      r_arg_as_ssize(i, "i"),
                       r_vec_begin(value));
   return r_null;
 }
@@ -755,9 +755,9 @@ r_obj* ffi_vec_coerce(r_obj* x, r_obj* type) {
 
 r_obj* ffi_vec_poke_n(r_obj* x, r_obj* offset,
                         r_obj* y, r_obj* from, r_obj* n) {
-  r_ssize offset_size = r_as_ssize(offset) - 1;
-  r_ssize from_size = r_as_ssize(from) - 1;
-  r_ssize n_size = r_as_ssize(n);
+  r_ssize offset_size = r_arg_as_ssize(offset, "offset") - 1;
+  r_ssize from_size = r_arg_as_ssize(from, "from") - 1;
+  r_ssize n_size = r_arg_as_ssize(n, "n");
 
   r_vec_poke_n(x, offset_size, y, from_size, n_size);
   return x;
@@ -765,9 +765,9 @@ r_obj* ffi_vec_poke_n(r_obj* x, r_obj* offset,
 
 r_obj* ffi_vec_poke_range(r_obj* x, r_obj* offset,
                             r_obj* y, r_obj* from, r_obj* to) {
-  r_ssize offset_size = r_as_ssize(offset) - 1;
-  r_ssize from_size = r_as_ssize(from) - 1;
-  r_ssize to_size = r_as_ssize(to) - 1;
+  r_ssize offset_size = r_arg_as_ssize(offset, "offset") - 1;
+  r_ssize from_size = r_arg_as_ssize(from, "from") - 1;
+  r_ssize to_size = r_arg_as_ssize(to, "to") - 1;
 
   r_vec_poke_range(x, offset_size, y, from_size, to_size);
   return x;
@@ -789,7 +789,7 @@ static r_ssize validate_n(r_obj* n) {
     r_abort("`n` must be NULL or a scalar integer");
   }
 
-  return r_as_ssize(n);
+  return r_arg_as_ssize(n, "n");
 }
 
 static int validate_finite(r_obj* finite) {
@@ -901,7 +901,7 @@ r_obj* ffi_is_string(r_obj* x, r_obj* string) {
 }
 
 r_obj* ffi_vec_resize(r_obj* x, r_obj* n) {
-  r_ssize n_ssize = r_as_ssize(n);
+  r_ssize n_ssize = r_arg_as_ssize(n, "n");
 
   switch (r_typeof(x)) {
   case R_TYPE_logical: return r_lgl_resize(x, n_ssize);
@@ -916,7 +916,7 @@ r_obj* ffi_vec_resize(r_obj* x, r_obj* n) {
 }
 
 r_obj* ffi_list_poke(r_obj* x, r_obj* i, r_obj* value) {
-  r_list_poke(x, r_as_ssize(i), value);
+  r_list_poke(x, r_arg_as_ssize(i, "i"), value);
   return r_null;
 }
 

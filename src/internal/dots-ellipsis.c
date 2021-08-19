@@ -25,7 +25,7 @@ r_obj* ffi_ellipsis_dots(r_obj* env, r_obj* auto_name) {
 
   KEEP(dots);
 
-  bool c_auto_name = r_as_bool(auto_name);
+  bool c_auto_name = r_arg_as_bool(auto_name, "auto_name");
 
   int n = r_length(dots);
   r_obj* out = KEEP(r_alloc_list(n));

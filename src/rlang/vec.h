@@ -295,18 +295,26 @@ bool r_is_string(r_obj* x) {
 }
 
 static inline
-bool r_as_bool(r_obj* x) {
+bool r_arg_as_bool(r_obj* x, const char* arg) {
   if (!r_is_bool(x)) {
-    r_abort("`x` must be a logical value");
+    r_abort("`%s` must be a logical value.", arg);
   }
   return r_lgl_get(x, 0);
 }
 static inline
-int r_as_int(r_obj* x) {
+bool r_as_bool(r_obj* x) {
+  return r_arg_as_bool(x, "x");
+}
+static inline
+int r_arg_as_int(r_obj* x, const char* arg) {
   if (!r_is_int(x)) {
-    r_abort("`x` must be an integer value");
+    r_abort("`%s` must be an integer value.", arg);
   }
   return r_int_get(x, 0);
+}
+static inline
+int r_as_int(r_obj* x) {
+  return r_arg_as_int(x, "x");
 }
 
 r_obj* r_lgl_resize(r_obj* x, r_ssize size);

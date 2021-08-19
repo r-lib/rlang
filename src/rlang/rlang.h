@@ -30,7 +30,12 @@
 
 r_obj* r_init_library(r_obj* ns);
 
-r_ssize r_as_ssize(r_obj* n);
+r_ssize r_arg_as_ssize(r_obj* n, const char* arg);
+
+static inline
+r_ssize r_as_ssize(r_obj* n) {
+  return r_arg_as_ssize(n, "n");
+}
 
 
 #include "obj.h"
