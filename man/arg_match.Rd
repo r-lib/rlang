@@ -9,11 +9,11 @@ arg_match(
   arg,
   values = NULL,
   ...,
-  error_arg = substitute(arg),
+  error_arg = caller_arg(arg),
   error_call = caller_env()
 )
 
-arg_match0(arg, values, arg_nm = substitute(arg), error_call = caller_env())
+arg_match0(arg, values, arg_nm = arg[[1]], error_call = caller_env())
 }
 \arguments{
 \item{arg}{A symbol referring to an argument accepting strings.}
@@ -22,9 +22,9 @@ arg_match0(arg, values, arg_nm = substitute(arg), error_call = caller_env())
 
 \item{...}{These dots are for future extensions and must be empty.}
 
-\item{error_arg}{A string or symbol for an argument name. This
-argument will be mentioned in error messages as the input that is
-at the origin of a problem.}
+\item{error_arg}{An argument name as a string. This argument
+will be mentioned in error messages as the input that is at the
+origin of a problem.}
 
 \item{error_call}{An expression (as returned by e.g.
 \code{sys.call()}) representing the context in which the error

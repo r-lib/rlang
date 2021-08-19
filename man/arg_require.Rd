@@ -5,10 +5,14 @@
 \title{Check that argument is supplied
 Throws an informative error if \code{arg} is missing.}
 \usage{
-arg_require(arg, error_call = caller_env())
+arg_require(arg, error_arg = caller_arg(arg), error_call = caller_env())
 }
 \arguments{
 \item{arg}{A function argument. Must be a symbol.}
+
+\item{error_arg}{An argument name as a string. This argument
+will be mentioned in error messages as the input that is at the
+origin of a problem.}
 
 \item{error_call}{An expression (as returned by e.g.
 \code{sys.call()}) representing the context in which the error

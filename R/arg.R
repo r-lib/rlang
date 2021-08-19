@@ -15,8 +15,7 @@
 #' @param arg A symbol referring to an argument accepting strings.
 #' @param values A character vector of possible values that `arg` can take.
 #' @param ... These dots are for future extensions and must be empty.
-#' @inheritParams format_error_arg
-#' @inheritParams format_error_call
+#' @inheritParams args_error_context
 #' @return The string supplied to `arg`.
 #' @importFrom utils adist
 #' @seealso [arg_require()]
@@ -31,7 +30,7 @@
 arg_match <- function(arg,
                       values = NULL,
                       ...,
-                      error_arg = substitute(arg),
+                      error_arg = caller_arg(arg),
                       error_call = caller_env()) {
   check_dots_empty()
 
@@ -93,7 +92,7 @@ arg_match <- function(arg,
 #' try(fn3("zoo"))
 arg_match0 <- function(arg,
                        values,
-                       arg_nm = substitute(arg),
+                       arg_nm = arg[[1]],
                        error_call = caller_env()) {
   .External(ffi_arg_match0, arg, values, arg_nm, error_call)
 }
@@ -147,7 +146,7 @@ arg_match_invalid_msg <- function(val, values, error_arg) {
 #' Check that argument is supplied
 #' Throws an informative error if `arg` is missing.
 #' @param arg A function argument. Must be a symbol.
-#' @inheritParams format_error_call
+#' @inheritParams args_error_context
 #'
 #' @seealso [arg_match()]
 #' @examples
@@ -161,21 +160,19 @@ arg_match_invalid_msg <- function(val, values, error_arg) {
 #' # Succeeds
 #' f(NULL)
 #' @export
-arg_require <- function(arg, error_call = caller_env()) {
+arg_require <- function(arg,
+                        error_arg = caller_arg(arg),
+                        error_call = caller_env()) {
   if (!missing(arg)) {
     invisible(return(TRUE))
   }
 
   arg_expr <- substitute(arg)
   if (!is_symbol(arg_expr)) {
-    abort("Internal error: `arg_require()` expects a symbol.")
+    abort(sprintf("%s must be an argument name.", format_arg("arg")))
   }
 
-  msg <- format_error(sprintf(
-    "%s must be supplied.",
-    mark_arg(as_string(arg_expr))
-  ))
-
+  msg <- sprintf("%s must be supplied.", format_arg(error_arg))
   abort(msg, call = error_call)
 }
 

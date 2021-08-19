@@ -468,7 +468,74 @@ local_error_call <- function(call, frame = caller_env()) {
 #' @seealso [format_error_call()]
 #' @export
 format_error_arg <- function(arg) {
-  .Call(ffi_format_error_arg, arg)
+  format_arg(as_label(arg))
+}
+
+#' Documentation anchor for error arguments
+#'
+#' Use `@inheritParams rlang::args_error_context` in your package to
+#' document `arg` and `call` arguments (or equivalently their prefixed
+#' versions `error_arg` and `error_call`).
+#'
+#' @param arg,error_arg An argument name as a string. This argument
+#'   will be mentioned in error messages as the input that is at the
+#'   origin of a problem.
+#' @param call,error_call An expression (as returned by e.g.
+#'   `sys.call()`) representing the context in which the error
+#'   occurred. If non-null, the call is stripped from its arguments to
+#'   keep it simple.
+#'
+#'   Can also be an execution environment of a currently running
+#'   function (as returned by e.g. `parent.frame()`). The
+#'   corresponding call is then retrieved.
+#'
+#'   See also [rlang::local_error_call()].
+#'
+#' @name args_error_context
+NULL
+
+#' Find the caller argument for error messages
+#'
+#' @description
+#'
+#' `caller_arg()` is a variant of `substitute()` or [ensym()] that
+#' returns an argument name as a string.
+#'
+#' Use `@inheritParams rlang::args_error_context` to document an `arg`
+#' or `error_arg` argument that takes `error_arg()` as default.
+#'
+#' @param arg An argument name in the current function.
+#' @usage NULL
+#'
+#' @examples
+#' arg_checker <- function(x, arg = caller_arg(x), call = caller_env()) {
+#'   cli::cli_abort("{.arg arg} must be a thingy.", call = call)
+#' }
+#'
+#' my_function <- function(my_arg) {
+#'   arg_checker(my_arg)
+#' }
+#'
+#' try(my_function(NULL))
+#' @export
+caller_arg <- function(arg) {
+  arg <- substitute(arg)
+  if (!is_symbol(arg)) {
+    abort(sprintf(
+      "%s must be an argument name.",
+      format_arg("arg")
+    ))
+  }
+
+  expr <- do.call(substitute, list(arg), envir = caller_env())
+  if (!is_symbol(expr)) {
+    abort(sprintf(
+      "%s must be an argument name.",
+      format_arg(as_string(arg))
+    ))
+  }
+
+  as_string(expr)
 }
 
 #' Validate and format a function call for use in error messages

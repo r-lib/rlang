@@ -94,6 +94,6 @@ skip_if_not_windows <- function() {
 arg_match_wrapper <- function(arg, ...) {
   arg_match(arg, ...)
 }
-arg_match0_wrapper <- function(arg, ...) {
-  arg_match0(arg, ...)
+arg_match0_wrapper <- function(arg, values, arg_nm = "arg", ...) {
+  arg_match0(arg, values, arg_nm = arg_nm, ...)
 }
