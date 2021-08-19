@@ -438,7 +438,7 @@ dots_n <- function(...) {
 }
 
 abort_dots_homonyms <- function(dots, dups) {
-  .error_call <- "caller"
+  .__error_call__. <- "caller"
 
   nms <- names(dots)
 
@@ -523,7 +523,7 @@ rlang_as_list_from_list_impl <- function(x) {
 
 #' Development notes - `dots.R`
 #'
-#' @section `.error_call` flag in dots collectors:
+#' @section `.__error_call__.` flag in dots collectors:
 #'
 #' Dots collectors like [dots_list()] are a little tricky because they
 #' may error out in different situations. Do we want to forward the

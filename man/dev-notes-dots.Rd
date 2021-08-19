@@ -6,7 +6,7 @@
 \description{
 Development notes - \code{dots.R}
 }
-\section{\code{.error_call} flag in dots collectors}{
+\section{\code{.__error_call__.} flag in dots collectors}{
 
 
 Dots collectors like \code{\link[=dots_list]{dots_list()}} are a little tricky because they

@@ -117,7 +117,7 @@ an error is triggered. Note that eagerly calling \code{caller_env()}
 is fast enough in almost all cases.
 
 If your function needs to be really fast, assign the error call
-flag directly instead of calling \code{local_error_flag()}:\preformatted{.error_call <- "caller"
+flag directly instead of calling \code{local_error_flag()}:\preformatted{.__error_call__. <- "caller"
 }
 \item Most functions that set the error call to their caller context
 will not be called directly or interactively. When they are

@@ -413,7 +413,7 @@ signal_abort <- function(cnd, file = NULL) {
 #'   flag directly instead of calling `local_error_flag()`:
 #'
 #'   ```
-#'   .error_call <- "caller"
+#'   .__error_call__. <- "caller"
 #'   ```
 #'
 #' - Most functions that set the error call to their caller context
@@ -447,8 +447,8 @@ local_error_call <- function(call, frame = caller_env()) {
     abort(sprintf("`call` can't be %s.", friendly_type_of(call)))
   }
 
-  old <- frame$.error_call
-  frame$.error_call <- call
+  old <- frame$.__error_call__.
+  frame$.__error_call__. <- call
 
   old
 }
@@ -558,7 +558,7 @@ error_call <- function(call) {
 error_flag <- function(env, top = topenv(env)) {
   env_get(
     env,
-    ".error_call",
+    ".__error_call__.",
     default = TRUE,
     inherit = FALSE,
     last = top
