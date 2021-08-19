@@ -2,7 +2,7 @@
 % Please edit documentation in R/names.R
 \name{names_inform_repair}
 \alias{names_inform_repair}
-\title{Inform about names repair}
+\title{Inform about name repair}
 \usage{
 names_inform_repair(old, new)
 }
@@ -12,6 +12,25 @@ names_inform_repair(old, new)
 \item{new}{Repaired names vector.}
 }
 \description{
-Inform about names repair
+Inform about name repair
 }
+\section{Muffling and silencing messages}{
+
+
+Name repair messages are signaled with \code{\link[=inform]{inform()}} and are given the class
+\code{"rlib_message_name_repair"}. These messages can be muffled with
+\code{\link[base:message]{base::suppressMessages()}}.
+
+Name repair messages can also be silenced with the global option
+\code{rlib_name_repair_verbosity}. This option takes the values:
+\itemize{
+\item \code{"verbose"}: Always verbose.
+\item \code{"quiet"}: Always quiet.
+}
+
+When set to quiet, the message is not displayed and the condition is not
+signaled. This is particularly useful for silencing messages during testing
+when combined with \code{\link[=local_options]{local_options()}}.
+}
+
 \keyword{internal}
