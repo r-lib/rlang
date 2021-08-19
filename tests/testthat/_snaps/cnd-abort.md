@@ -317,3 +317,24 @@
       i Did you mean "keep"?
       Context: `dots_list()`
 
+# NSE doesn't interfere with error call contexts
+
+    Code
+      (expect_error(local(arg_match0("f", "foo"))))
+    Output
+      <error/rlang_error>
+      `f` must be one of "foo", not "f".
+      i Did you mean "foo"?
+    Code
+      (expect_error(eval_bare(quote(arg_match0("f", "foo")))))
+    Output
+      <error/rlang_error>
+      `f` must be one of "foo", not "f".
+      i Did you mean "foo"?
+    Code
+      (expect_error(eval_bare(quote(arg_match0("f", "foo")), env())))
+    Output
+      <error/rlang_error>
+      `f` must be one of "foo", not "f".
+      i Did you mean "foo"?
+

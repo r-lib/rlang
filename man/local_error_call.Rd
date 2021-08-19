@@ -107,26 +107,17 @@ foo()
 }
 }
 
-\section{Error call flags for specific cases}{
+\section{Error call flags in performance-critical functions}{
 
-\itemize{
-\item The \code{call} argument can also be the string \code{"caller"}. This is
+
+The \code{call} argument can also be the string \code{"caller"}. This is
 equivalent to \code{caller_env()} or \code{parent.frame()} but has a lower
-overhead because call stack introspection is only performed when
-an error is triggered. Note that eagerly calling \code{caller_env()}
-is fast enough in almost all cases.
+overhead because call stack introspection is only performed when an
+error is triggered. Note that eagerly calling \code{caller_env()} is
+fast enough in almost all cases.
 
 If your function needs to be really fast, assign the error call
 flag directly instead of calling \code{local_error_flag()}:\preformatted{.__error_call__. <- "caller"
-}
-\item Most functions that set the error call to their caller context
-will not be called directly or interactively. When they are
-called from the global environment, no context is shown in error
-messages. However, when they are called via \code{eval()}, e.g. in
-testthat snapshots, showing \code{eval()} as caller can be surprising.
-In that case, set the error flag to \code{NULL} in the evaluation
-environment to prevent this \code{eval()} context from being shown in
-error messages.
 }
 }
 

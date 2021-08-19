@@ -44,8 +44,6 @@ Suggests:
     withr
 Enhances: 
     winch
-Remotes:
-    lionel-/testthat@error-call-flag
 SystemRequirements:
     C++11
 Encoding: UTF-8

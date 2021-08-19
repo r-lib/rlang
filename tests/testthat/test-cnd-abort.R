@@ -345,3 +345,12 @@ test_that("error call flag is stripped", {
   e <- env(.__error_call__. = quote(foo(bar)))
   expect_equal(error_call(e), quote(foo()))
 })
+
+test_that("NSE doesn't interfere with error call contexts", {
+  # Snapshots shouldn't show `eval()` as context
+  expect_snapshot({
+    (expect_error(local(arg_match0("f", "foo"))))
+    (expect_error(eval_bare(quote(arg_match0("f", "foo")))))
+    (expect_error(eval_bare(quote(arg_match0("f", "foo")), env())))
+  })
+})

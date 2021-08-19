@@ -401,29 +401,20 @@ signal_abort <- function(cnd, file = NULL) {
 #' #> Error in `foo()`: `x` is failing.
 #' ```
 #'
-#' @section Error call flags for specific cases:
+#' @section Error call flags in performance-critical functions:
 #'
-#' - The `call` argument can also be the string `"caller"`. This is
-#'   equivalent to `caller_env()` or `parent.frame()` but has a lower
-#'   overhead because call stack introspection is only performed when
-#'   an error is triggered. Note that eagerly calling `caller_env()`
-#'   is fast enough in almost all cases.
+#' The `call` argument can also be the string `"caller"`. This is
+#' equivalent to `caller_env()` or `parent.frame()` but has a lower
+#' overhead because call stack introspection is only performed when an
+#' error is triggered. Note that eagerly calling `caller_env()` is
+#' fast enough in almost all cases.
 #'
-#'   If your function needs to be really fast, assign the error call
-#'   flag directly instead of calling `local_error_flag()`:
+#' If your function needs to be really fast, assign the error call
+#' flag directly instead of calling `local_error_flag()`:
 #'
-#'   ```
-#'   .__error_call__. <- "caller"
-#'   ```
-#'
-#' - Most functions that set the error call to their caller context
-#'   will not be called directly or interactively. When they are
-#'   called from the global environment, no context is shown in error
-#'   messages. However, when they are called via `eval()`, e.g. in
-#'   testthat snapshots, showing `eval()` as caller can be surprising.
-#'   In that case, set the error flag to `NULL` in the evaluation
-#'   environment to prevent this `eval()` context from being shown in
-#'   error messages.
+#' ```
+#' .__error_call__. <- "caller"
+#' ```
 #' 
 #' @examples
 #' # Set a context for error messages
@@ -523,11 +514,6 @@ format_error_call <- function(call) {
 #' @export
 error_call <- function(call) {
   while (is_environment(call)) {
-    if (identical(call, global_env())) {
-      call <- NULL
-      break
-    }
-
     flag <- error_flag(call)
 
     if (is_null(flag) || is_call(flag)) {
@@ -547,6 +533,12 @@ error_call <- function(call) {
 
     call <- caller_call(call)
     break
+  }
+
+  # This happens when a function using its caller's call is called in
+  # testthat snapshots or within `local()`.
+  if (is_call(call, c("eval", "evalq"))) {
+    return(NULL)
   }
 
   if (is_call(call) && is_expression(call)) {
@@ -873,3 +865,26 @@ last_trace <- function() {
 # This is where we save errors for `last_error()`
 last_error_env <- new.env(parent = emptyenv())
 last_error_env$cnd <- NULL
+
+
+#' Development notes - `cnd-abort.R`
+#'
+#' @section Interaction between error calls and NSE:
+#'
+#' Functions that forward their error context to their caller
+#' shouldn't generally be called via NSE but there are expections,
+#' such as testthat snapshots.
+#'
+#' - `do.call()` or `eval_bare()` shouldn't generally cause issues. If
+#'   the environment exists on the stack, we find its `sys.call()`. If
+#'   it doesn't exist, taking its `sys.call()` returns `NULL` which
+#'   disables the error context.
+#'
+#' - On the other hand, `eval()` always creates a specific frame for
+#'   all environments and the `sys.call()` for that frame is `eval()`.
+#'   It wouldn't be useful to display this as the context so calls to
+#'   `eval()` and `evalq()` are replaced by `NULL`.
+#'
+#' @keywords internal
+#' @name dev-notes-cnd-abort
+NULL
