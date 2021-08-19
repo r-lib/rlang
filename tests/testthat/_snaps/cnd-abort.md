@@ -300,7 +300,7 @@
       Context: `foo()`
     Code
       local({
-        local_options(`rlang:::use_default_error_call` = FALSE)
+        local_options(`rlang:::restrict_default_error_call` = TRUE)
         (expect_error(foo()))
       })
     Output
@@ -308,7 +308,7 @@
       foo
     Code
       local({
-        local_options(`rlang:::use_default_error_call` = FALSE)
+        local_options(`rlang:::restrict_default_error_call` = TRUE)
         (expect_error(dots_list(.homonyms = "k")))
       })
     Output

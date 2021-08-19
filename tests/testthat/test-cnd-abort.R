@@ -330,12 +330,12 @@ test_that("can disable error call inference for unexported functions", {
     (expect_error(foo()))
 
     local({
-      local_options("rlang:::use_default_error_call" = FALSE)
+      local_options("rlang:::restrict_default_error_call" = TRUE)
       (expect_error(foo()))
     })
 
     local({
-      local_options("rlang:::use_default_error_call" = FALSE)
+      local_options("rlang:::restrict_default_error_call" = TRUE)
       (expect_error(dots_list(.homonyms = "k")))
     })
   })

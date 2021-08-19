@@ -226,8 +226,8 @@ abort <- function(message = NULL,
 default_error_call <- function(env) {
   call <- error_call(env)
 
-  opt <- peek_option("rlang:::use_default_error_call") %||% TRUE
-  if (is_true(opt)) {
+  opt <- peek_option("rlang:::restrict_default_error_call") %||% FALSE
+  if (is_false(opt)) {
     return(call)
   }
 
