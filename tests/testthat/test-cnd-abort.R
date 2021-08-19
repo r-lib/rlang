@@ -340,3 +340,8 @@ test_that("can disable error call inference for unexported functions", {
     })
   })
 })
+
+test_that("error call flag is stripped", {
+  e <- env(.__error_call__. = quote(foo(bar)))
+  expect_equal(error_call(e), quote(foo()))
+})

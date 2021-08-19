@@ -524,13 +524,15 @@ format_error_call <- function(call) {
 error_call <- function(call) {
   while (is_environment(call)) {
     if (identical(call, global_env())) {
-      return(NULL)
+      call <- NULL
+      break
     }
 
     flag <- error_flag(call)
 
     if (is_null(flag) || is_call(flag)) {
-      return(flag)
+      call <- flag
+      break
     }
 
     if (is_environment(flag)) {
@@ -547,12 +549,12 @@ error_call <- function(call) {
     break
   }
 
-  if (!is_call(call) && !is_expression(call)) {
-    return(NULL)
+  if (is_call(call) && is_expression(call)) {
+    # Remove distracting arguments from the call
+    call[1]
+  } else {
+    NULL
   }
-
-  # Remove distracting arguments from the call
-  call[1]
 }
 
 error_flag <- function(env, top = topenv(env)) {
