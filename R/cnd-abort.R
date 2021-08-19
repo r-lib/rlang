@@ -304,17 +304,8 @@ signal_abort <- function(cnd, file = NULL) {
 #'
 #'   - The `NULL` value to show no context.
 #'
-#'   - An execution environment. The `sys.call()` for that environment
-#'     is taken as context.
-#'
-#'   - The string `"caller"`. The `sys.call()` for the calling
-#'     environment is taken as context (unless there is a local error
-#'     call set in that environment as well, in which case the latter
-#'     has precedence).
-#'
-#'   - The string `"global"`. This is used to mimic the global
-#'     environment. For advanced use only, e.g. in packages that have
-#'     a specific notion of global context such as testthat.
+#'   - An execution environment, e.g. as returned by [caller_env()].
+#'     The [sys.call()] for that environment is taken as context.
 #' @param frame The execution environment in which to set the local
 #'   error call.
 #'
@@ -409,6 +400,28 @@ signal_abort <- function(cnd, file = NULL) {
 #' foo()
 #' #> Error in `foo()`: `x` is failing.
 #' ```
+#'
+#' @section Error call flags for specific cases:
+#'
+#' The `call` argument can also be:
+#'
+#' - The string `"caller"`. This is equivalent to `caller_env()` or
+#'   `parent.frame()` but has a lower overhead because call stack
+#'   introspection is only performed when an error is triggered. Note
+#'   that eagerly calling `caller_env()` is fast enough in almost all
+#'   cases.
+#'
+#'   If your function needs to be really fast, assign the error call
+#'   flag directly instead of calling `local_error_flag()`:
+#'
+#'   ```
+#'   .error_call <- "caller"
+#'   ```
+#'
+#' - The string `"global"`. This is used to mimic the global
+#'   environment. For advanced use only, e.g. in packages that have
+#'   a specific notion of global context such as testthat.
+#'
 #' 
 #' @examples
 #' # Set a context for error messages
@@ -422,9 +435,9 @@ signal_abort <- function(cnd, file = NULL) {
 #'   local_error_call(NULL)
 #' }
 #'
-#' # Use the caller's context, if any
+#' # Use the caller's context
 #' function() {
-#'   local_error_call("caller")
+#'   local_error_call(caller_env())
 #' }
 #' @export
 local_error_call <- function(call, frame = caller_env()) {
