@@ -7,8 +7,11 @@
 \item{arg}{An argument name in the current function.}
 }
 \description{
-\code{caller_arg()} is a variant of \code{substitute()} or \code{\link[=ensym]{ensym()}} that
-returns an argument name as a string.
+\code{caller_arg()} is a variant of \code{substitute()} or \code{\link[=ensym]{ensym()}} for
+arguments that reference other arguments. Unlike \code{substitute()}
+which returns any expression, the referenced argument should be a
+symbol. That symbol is then returned as a string ready to be
+included in error messages.
 \itemize{
 \item When included in an error message, the resulting name should
 generally be formatted as argument, for instance using the \code{.arg}
