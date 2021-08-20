@@ -10,7 +10,7 @@ Development notes - \code{cnd-abort.R}
 
 
 Functions that forward their error context to their caller
-shouldn't generally be called via NSE but there are expections,
+shouldn't generally be called via NSE but there are exceptions,
 such as testthat snapshots.
 \itemize{
 \item \code{do.call()} or \code{eval_bare()} shouldn't generally cause issues. If

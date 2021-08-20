@@ -465,7 +465,7 @@ local_error_call <- function(call, frame = caller_env()) {
 #'   origin of a problem.
 #' @param call,error_call An expression (as returned by e.g.
 #'   `sys.call()`) representing the context in which the error
-#'   occurred. If non-null, the call is stripped from its arguments to
+#'   occurred. If non-null, the call is stripped of its arguments to
 #'   keep it simple.
 #'
 #'   Can also be an execution environment of a currently running
@@ -922,7 +922,7 @@ last_error_env$cnd <- NULL
 #' @section Interaction between error calls and NSE:
 #'
 #' Functions that forward their error context to their caller
-#' shouldn't generally be called via NSE but there are expections,
+#' shouldn't generally be called via NSE but there are exceptions,
 #' such as testthat snapshots.
 #'
 #' - `do.call()` or `eval_bare()` shouldn't generally cause issues. If
