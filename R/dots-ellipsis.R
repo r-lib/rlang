@@ -28,7 +28,7 @@ NULL
 #' @param action The action to take when the dots have not been used. One of
 #'   [rlang::abort()], [rlang::warn()], [rlang::inform()] or [rlang::signal()].
 #' @param env Environment in which to look for `...` and to set up handler.
-#' @inheritParams error_call
+#' @inheritParams args_error_context
 #' @export
 #' @examples
 #' f <- function(...) {

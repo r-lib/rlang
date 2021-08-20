@@ -10,9 +10,9 @@ error_call(call)
 format_error_call(call)
 }
 \arguments{
-\item{call, error_call}{An expression (as returned by e.g.
+\item{call}{An expression (as returned by e.g.
 \code{sys.call()}) representing the context in which the error
-occurred. If non-null, the call is stripped from its arguments to
+occurred. If non-null, the call is stripped of its arguments to
 keep it simple.
 
 Can also be an execution environment of a currently running

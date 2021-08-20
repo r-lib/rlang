@@ -541,16 +541,7 @@ caller_arg <- function(arg) {
 #'   generating the "in" part of an error message from a stack frame
 #'   call.
 #'
-#' @param call,error_call An expression (as returned by e.g.
-#'   `sys.call()`) representing the context in which the error
-#'   occurred. If non-null, the call is stripped from its arguments to
-#'   keep it simple.
-#'
-#'   Can also be an execution environment of a currently running
-#'   function (as returned by e.g. `parent.frame()`). The
-#'   corresponding call is then retrieved.
-#'
-#'   See also [rlang::local_error_call()].
+#' @inheritParams args_error_context
 #' @return Either a string formatted as code or `NULL` if `call` or
 #'   the result of `error_call(call)` is `NULL`.
 #'
