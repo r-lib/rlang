@@ -27,13 +27,27 @@ the result of \code{error_call(call)} is \code{NULL}.
 }
 \description{
 \itemize{
-\item \code{error_call()} creates a function call ready to be used as \code{call}
-field of error conditions. This field is displayed by \code{\link[=stop]{stop()}}
-and \code{\link[=abort]{abort()}} to give context to an error message.
 \item \code{format_error_call()} passes its input to \code{error_call()} and
 formats the result as code. Use this function if you are
 generating the "in" part of an error message from a stack frame
 call.
+\item \code{error_call()} creates a function call ready to be used as \code{call}
+field of error conditions. This field is displayed by \code{\link[=stop]{stop()}}
+and \code{\link[=abort]{abort()}} to give context to an error message.
+
+If passed a function call, the arguments are stripped. Complex
+function calls containing inlined objects return \code{NULL}. If
+passed an environment, the corresponding \code{sys.call()} is taken as
+call, unless there is a local flag (see \code{\link[=local_error_call]{local_error_call()}}).
 }
+}
+\examples{
+# Arguments are stripped
+error_call(quote(foo(bar, baz)))
+writeLines(format_error_call(quote(foo(bar, baz))))
+
+# Returns `NULL` with complex calls such as those that contain
+# inlined functions
+error_call(call2(list))
 }
 \keyword{internal}
