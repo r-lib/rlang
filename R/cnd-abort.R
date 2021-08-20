@@ -484,8 +484,9 @@ NULL
 #' `caller_arg()` is a variant of `substitute()` or [ensym()] that
 #' returns an argument name as a string.
 #'
-#' - The resulting name should be formatted as argument, e.g. using
-#'   the `.arg` in the cli package.
+#' - When included in an error message, the resulting name should
+#'   generally be formatted as argument, for instance using the `.arg`
+#'   in the cli package.
 #'
 #' - Use `@inheritParams rlang::args_error_context` to document an
 #'   `arg` or `error_arg` argument that takes `error_arg()` as default.
