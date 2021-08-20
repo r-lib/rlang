@@ -601,7 +601,7 @@ error_call <- function(call) {
     return(NULL)
   }
 
-  if (is_call(call) && is_expression(call)) {
+  if (is_call(call) && is_symbol(call[[1]])) {
     # Remove distracting arguments from the call
     call[1]
   } else {

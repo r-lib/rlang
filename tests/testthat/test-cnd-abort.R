@@ -354,3 +354,9 @@ test_that("NSE doesn't interfere with error call contexts", {
     (expect_error(eval_bare(quote(arg_match0("f", "foo")), env())))
   })
 })
+
+test_that("error_call() requires a symbol in function position", {
+  expect_null(error_call(quote(foo$bar())))
+  expect_null(error_call(quote((function() NULL)())))
+  expect_null(error_call(call2(function() NULL)))
+})

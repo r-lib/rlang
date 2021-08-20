@@ -219,7 +219,9 @@ test_that("prefix takes call into account", {
 
   # Inlined objects disable context deparsing
   err1 <- error_cnd(call = expr(foo(bar = !!(1:3))))
-  err2 <- error_cnd(call = call2(identity))
-  expect_equal(cnd_prefix(err1), "Error: ")
+  err2 <- error_cnd(call = quote(foo$bar()))
+  err3 <- error_cnd(call = call2(identity))
+  expect_equal(cnd_prefix(err1), "Error in `foo()`: ")
   expect_equal(cnd_prefix(err2), "Error: ")
+  expect_equal(cnd_prefix(err3), "Error: ")
 })
