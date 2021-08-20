@@ -579,8 +579,19 @@ error_call <- function(call) {
     break
   }
 
-  # This happens when a function using its caller's call is called in
-  # testthat snapshots or within `local()`.
+  # Functions that forward their error context to their caller
+  # shouldn't generally be called via NSE but there are exceptions,
+  # such as testthat snapshots.
+  #
+  # - `do.call()` or `eval_bare()` shouldn't generally cause issues. If
+  #   the environment exists on the stack, we find its `sys.call()`. If
+  #   it doesn't exist, taking its `sys.call()` returns `NULL` which
+  #   disables the error context.
+  #
+  # - On the other hand, `eval()` always creates a specific frame for
+  #   all environments and the `sys.call()` for that frame is `eval()`.
+  #   It wouldn't be useful to display this as the context so calls to
+  #   `eval()` and `evalq()` are replaced by `NULL`.
   if (is_call(call, c("eval", "evalq"))) {
     return(NULL)
   }
@@ -919,26 +930,3 @@ last_trace <- function() {
 # This is where we save errors for `last_error()`
 last_error_env <- new.env(parent = emptyenv())
 last_error_env$cnd <- NULL
-
-
-#' Development notes - `cnd-abort.R`
-#'
-#' @section Interaction between error calls and NSE:
-#'
-#' Functions that forward their error context to their caller
-#' shouldn't generally be called via NSE but there are exceptions,
-#' such as testthat snapshots.
-#'
-#' - `do.call()` or `eval_bare()` shouldn't generally cause issues. If
-#'   the environment exists on the stack, we find its `sys.call()`. If
-#'   it doesn't exist, taking its `sys.call()` returns `NULL` which
-#'   disables the error context.
-#'
-#' - On the other hand, `eval()` always creates a specific frame for
-#'   all environments and the `sys.call()` for that frame is `eval()`.
-#'   It wouldn't be useful to display this as the context so calls to
-#'   `eval()` and `evalq()` are replaced by `NULL`.
-#'
-#' @keywords internal
-#' @name dev-notes-cnd-abort
-NULL
