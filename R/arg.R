@@ -98,6 +98,19 @@ arg_match0 <- function(arg,
 }
 
 stop_arg_match <- function(arg, values, error_arg, error_call) {
+  if (length(arg) > 1) {
+    sorted_arg <- sort(unique(arg))
+    sorted_values <- sort(unique(values))
+    if (!identical(sorted_arg, sorted_values)) {
+      msg <- sprintf(
+        "%s must be length 1 or a permutation of %s.",
+        format_arg("arg"),
+        format_arg("values")
+      )
+      abort(msg, call = quote(arg_match()))
+    }
+  }
+
   msg <- arg_match_invalid_msg(arg, values, error_arg)
 
   # Try suggest the most probable and helpful candidate value

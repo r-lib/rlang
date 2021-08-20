@@ -4,8 +4,7 @@
 
 # gives an error with more than one arg
 
-    `arg` must be one of "bar" or "baz", not "bar".
-    i Did you mean "bar"?
+    `arg` must be length 1 or a permutation of `values`.
 
 # gives error with different than rearranged arg vs value
 
@@ -13,8 +12,7 @@
 
 ---
 
-    `x` must be one of "foo" or "bar", not "foo".
-    i Did you mean "foo"?
+    `arg` must be length 1 or a permutation of `values`.
 
 # `arg_match()` has informative error messages
 

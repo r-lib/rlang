@@ -153,7 +153,6 @@ int arg_match(r_obj* arg,
     }
 
     if (!matched) {
-      arg = KEEP(r_str_as_character(r_chr_get(arg, 0)));
       error_arg = KEEP(wrap_chr(error_arg));
       r_eval_with_wxyz(stop_arg_match_call, arg, values, error_arg, error_call, rlang_ns_env);
       r_stop_unreached("arg_match");
