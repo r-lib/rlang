@@ -86,6 +86,36 @@ test_that("error is printed with parent backtrace", {
   expect_snapshot_trace(err)
 })
 
+test_that("3-level ancestry works (#1248)", {
+  low <- function() {
+    abort("Low-level", "low")
+  }
+  mid <- function() {
+    tryCatch(
+      low(),
+      error = function(err) {
+        abort("Mid-level", "mid", parent = err)
+      }
+    )
+  }
+  high <- function() {
+    tryCatch(
+      mid(),
+      error = function(err) {
+        abort("High-level", "high", parent = err)
+      }
+    )
+  }
+
+  local_options(
+    rlang_trace_format_srcrefs = FALSE,
+    rlang_trace_top_env = current_env(),
+    rlang_backtrace_on_error = "none"
+  )
+
+  expect_snapshot(catch_error(high()))
+})
+
 test_that("summary.rlang_error() prints full backtrace", {
   local_options(
     rlang_trace_top_env = current_env(),

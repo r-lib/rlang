@@ -94,11 +94,10 @@ format.rlang_error <- function(x,
     message <- message_add_tree_prefix(message, style, parent)
 
     if (is_rlang_error(parent)) {
-      header <- paste0
       message <- with_reduced_width(
         as_rlang_error_message(conditionMessage(x))
       )
-      message <- message_add_tree_prefix(message, style)
+      message <- message_add_tree_prefix(message, style, parent)
     }
 
     out <- paste_line(

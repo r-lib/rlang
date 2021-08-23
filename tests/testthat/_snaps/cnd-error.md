@@ -159,6 +159,19 @@
        17. rlang:::g()
        18. rlang:::h()
 
+# 3-level ancestry works (#1248)
+
+    Code
+      catch_error(high())
+    Output
+      x
+      +-<error/high>
+      | High-level
+      +-<error/mid>
+      | Mid-level
+      \-<error/low>
+        Low-level
+
 # summary.rlang_error() prints full backtrace
 
     Code
