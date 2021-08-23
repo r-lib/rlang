@@ -589,6 +589,10 @@ error_call <- function(call) {
     break
   }
 
+  if (!is_call(call)) {
+    return(NULL)
+  }
+
   # Functions that forward their error context to their caller
   # shouldn't generally be called via NSE but there are exceptions,
   # such as testthat snapshots.
@@ -606,12 +610,18 @@ error_call <- function(call) {
     return(NULL)
   }
 
-  if (is_call(call) && is_symbol(call[[1]])) {
-    # Remove distracting arguments from the call
-    call[1]
-  } else {
-    NULL
+  # Deal with special-syntax calls
+  # https://github.com/r-lib/testthat/issues/1429
+  if (!is_string(call_print_fine_type(call), "call")) {
+    return(NULL)
   }
+
+  if (!is_symbol(call[[1]])) {
+    return(NULL)
+  }
+
+  # Remove distracting arguments from the call
+  call[1]
 }
 #' @rdname error_call
 #' @export

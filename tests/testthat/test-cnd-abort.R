@@ -360,3 +360,7 @@ test_that("error_call() requires a symbol in function position", {
   expect_null(error_call(quote((function() NULL)())))
   expect_null(error_call(call2(function() NULL)))
 })
+
+test_that("error_call() deals with special syntax (r-lib/testthat#1429)", {
+  expect_null(error_call(quote(if (TRUE) NULL)))
+})
