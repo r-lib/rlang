@@ -379,7 +379,7 @@ signal_abort <- function(cnd, file = NULL) {
 #'
 #' ```
 #' arg_check <- function(arg,
-#'                       error_arg = as_string(substitute(arg)),
+#'                       error_arg = caller_arg(arg),
 #'                       error_call = caller_env()) {
 #'   # Set the local error call
 #'   local_error_call(error_call)

@@ -84,7 +84,7 @@ to climb the call stack one level to find the relevant call. In the
 following example, the complexity is not so important that sparing
 the argument passing makes a big difference. However this
 illustrates the pattern:\preformatted{arg_check <- function(arg,
-                      error_arg = as_string(substitute(arg)),
+                      error_arg = caller_arg(arg),
                       error_call = caller_env()) \{
   # Set the local error call
   local_error_call(error_call)
