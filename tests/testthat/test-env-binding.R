@@ -145,7 +145,7 @@ test_that("env_unbind() doesn't warn if binding doesn't exist (#177)", {
 test_that("env_get() and env_get_list() accept default value", {
   env <- env(a = 1)
 
-  expect_error(env_get(env, "b"), "missing")
+  expect_error(env_get(env, "b"), "Can't find")
   expect_error(env_get_list(env, "b"), "missing")
 
   expect_identical(env_get(env, "b", default = "foo"), "foo")
@@ -153,10 +153,10 @@ test_that("env_get() and env_get_list() accept default value", {
 })
 
 test_that("env_get() without default fails", {
-  expect_error(env_get(env(), "_foobar"), "argument .* is missing")
+  expect_snapshot(env_get(env(), "foobar"), error = TRUE)
 
   fn <- function(env, default) env_get(env, "_foobar", default = default)
-  expect_error(fn(env()), "argument .* is missing")
+  expect_error(fn(env()), "Can't find")
 })
 
 test_that("env_get() evaluates `default` lazily", {

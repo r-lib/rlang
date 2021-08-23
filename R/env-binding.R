@@ -381,6 +381,16 @@ env_get <- function(env = caller_env(),
                     inherit = FALSE,
                     last = empty_env()) {
   env <- get_env_retired(env, "env_get()")
+
+  if (missing(default)) {
+    default %<~% {
+      abort(sprintf(
+        "Can't find %s in environment.",
+        format_arg(nm)
+      ))
+    }
+  }
+
   .Call(
     ffi_env_get,
     env = env,
