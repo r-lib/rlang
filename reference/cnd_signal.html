@@ -40,7 +40,9 @@
 
 
 <meta property="og:title" content="Signal a condition object — cnd_signal" />
-<meta property="og:description" content="The type of signal depends on the class of the condition:
+<meta property="og:description" content="cnd_signal() takes a condition as argument and emits the
+corresponding signal. The type of signal depends on the class of
+the condition:
 A message is signalled if the condition inherits from
 &quot;message&quot;. This is equivalent to signalling with inform() or
 base::message().
@@ -54,8 +56,7 @@ An interrupt is signalled if the condition inherits from
 &quot;interrupt&quot;. This is equivalent to signalling with
 interrupt().
 
-
-Use cnd_type() to determine the type of a condition." />
+" />
 
 
 
@@ -171,7 +172,9 @@ Use cnd_type() to determine the type of a condition." />
     </div>
 
     <div class="ref-description">
-    <p>The type of signal depends on the class of the condition:</p><ul>
+    <p><code>cnd_signal()</code> takes a condition as argument and emits the
+corresponding signal. The type of signal depends on the class of
+the condition:</p><ul>
 <li><p>A message is signalled if the condition inherits from
 <code>"message"</code>. This is equivalent to signalling with <code><a href='abort.html'>inform()</a></code> or
 <code><a href='https://rdrr.io/r/base/message.html'>base::message()</a></code>.</p></li>
@@ -186,7 +189,6 @@ Use cnd_type() to determine the type of a condition." />
 <code><a href='abort.html'>interrupt()</a></code>.</p></li>
 </ul>
 
-<p>Use <code><a href='cnd_type.html'>cnd_type()</a></code> to determine the type of a condition.</p>
     </div>
 
     <pre class="usage"><span class='fu'>cnd_signal</span><span class='op'>(</span><span class='va'>cnd</span>, <span class='va'>...</span><span class='op'>)</span></pre>
@@ -207,9 +209,15 @@ Use cnd_type() to determine the type of a condition." />
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='abort.html'>abort()</a></code>, <code><a href='abort.html'>warn()</a></code> and <code><a href='abort.html'>inform()</a></code> for creating and
-signalling structured R conditions. See <code><a href='with_handlers.html'>with_handlers()</a></code> for
-establishing condition handlers.</p></div>
+    <div class='dont-index'>
+<ul>
+<li><p><code><a href='cnd_type.html'>cnd_type()</a></code> to determine the type of a condition.</p></li>
+<li><p><code><a href='abort.html'>abort()</a></code>, <code><a href='abort.html'>warn()</a></code> and <code><a href='abort.html'>inform()</a></code> for creating and signalling
+structured R conditions in one go.</p></li>
+<li><p><code><a href='with_handlers.html'>with_handlers()</a></code> for establishing condition handlers for
+particular condition classes.</p></li>
+</ul>
+</div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># The type of signal depends on the class. If the condition</span>
