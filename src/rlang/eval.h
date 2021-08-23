@@ -18,6 +18,12 @@ r_obj* r_exec_mask_n(r_obj* fn_sym,
                      int n,
                      r_obj* parent);
 
+r_obj* r_exec_n(r_obj* fn_sym,
+                r_obj* fn,
+                const struct r_pair* args,
+                int n,
+                r_obj* env);
+
 r_obj* r_exec_mask_n_call_poke(r_obj* fn_sym,
                                r_obj* fn,
                                const struct r_pair* args,
