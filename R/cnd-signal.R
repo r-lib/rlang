@@ -2,7 +2,9 @@
 #'
 #' @description
 #'
-#' The type of signal depends on the class of the condition:
+#' `cnd_signal()` takes a condition as argument and emits the
+#' corresponding signal. The type of signal depends on the class of
+#' the condition:
 #'
 #' * A message is signalled if the condition inherits from
 #'   `"message"`. This is equivalent to signalling with [inform()] or
@@ -20,14 +22,17 @@
 #'   `"interrupt"`. This is equivalent to signalling with
 #'   [interrupt()].
 #'
-#' Use [cnd_type()] to determine the type of a condition.
-#'
 #' @param cnd A condition object (see [cnd()]). If `NULL`,
 #'   `cnd_signal()` returns without signalling a condition.
 #' @inheritParams dots-empty
-#' @seealso [abort()], [warn()] and [inform()] for creating and
-#'   signalling structured R conditions. See [with_handlers()] for
-#'   establishing condition handlers.
+#' @seealso
+#' * [cnd_type()] to determine the type of a condition.
+#'
+#' * [abort()], [warn()] and [inform()] for creating and signalling
+#'   structured R conditions in one go.
+#'
+#' * [with_handlers()] for establishing condition handlers for
+#'   particular condition classes.
 #' @export
 #' @examples
 #' # The type of signal depends on the class. If the condition

@@ -13,7 +13,9 @@ cnd_signal(cnd, ...)
 \item{...}{These dots are for future extensions and must be empty.}
 }
 \description{
-The type of signal depends on the class of the condition:
+\code{cnd_signal()} takes a condition as argument and emits the
+corresponding signal. The type of signal depends on the class of
+the condition:
 \itemize{
 \item A message is signalled if the condition inherits from
 \code{"message"}. This is equivalent to signalling with \code{\link[=inform]{inform()}} or
@@ -28,8 +30,6 @@ The type of signal depends on the class of the condition:
 \code{"interrupt"}. This is equivalent to signalling with
 \code{\link[=interrupt]{interrupt()}}.
 }
-
-Use \code{\link[=cnd_type]{cnd_type()}} to determine the type of a condition.
 }
 \examples{
 # The type of signal depends on the class. If the condition
@@ -42,7 +42,11 @@ cnd <- error_cnd("my_error_class", message = "This is an error")
 try(cnd_signal(cnd))
 }
 \seealso{
-\code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}} and \code{\link[=inform]{inform()}} for creating and
-signalling structured R conditions. See \code{\link[=with_handlers]{with_handlers()}} for
-establishing condition handlers.
+\itemize{
+\item \code{\link[=cnd_type]{cnd_type()}} to determine the type of a condition.
+\item \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}} and \code{\link[=inform]{inform()}} for creating and signalling
+structured R conditions in one go.
+\item \code{\link[=with_handlers]{with_handlers()}} for establishing condition handlers for
+particular condition classes.
+}
 }
