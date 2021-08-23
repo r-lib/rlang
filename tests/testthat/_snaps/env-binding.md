@@ -5,9 +5,11 @@
     Output
       <error/rlang_error>
       Can't find `foobar` in environment.
+      Context: `env_get()`
     Code
       (expect_error(env_get_list(env(), "foobar")))
     Output
       <error/rlang_error>
       Can't find `foobar` in environment.
+      Context: `env_get_list()`
 

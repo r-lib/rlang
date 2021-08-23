@@ -414,10 +414,8 @@ env_get_list <- function(env = caller_env(),
 }
 
 stop_env_get_missing <- function(nm) {
-  abort(sprintf(
-    "Can't find %s in environment.",
-    format_arg(nm)
-  ))
+  msg <- sprintf("Can't find %s in environment.", format_arg(nm))
+  abort(msg, call = caller_env())
 }
 
 #' Poke an object in an environment

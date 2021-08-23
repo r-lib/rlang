@@ -178,6 +178,7 @@
       | Mid-level
       \-<error/low>
         Low-level
+      Context: `low()`
 
 # summary.rlang_error() prints full backtrace
 
