@@ -66,7 +66,7 @@ test_that("env_get_list() retrieves multiple bindings", {
   expect_identical(env_get_list(env, c("foo", "bar")), list(foo = 1L, bar =2L))
 
   baz <- 0L
-  expect_error(env_get_list(env, "baz"), "missing")
+  expect_error(env_get_list(env, "baz"), "Can't find")
   expect_identical(env_get_list(env, c("foo", "baz"), inherit = TRUE), list(foo = 1L, baz =0L))
 })
 
@@ -146,14 +146,17 @@ test_that("env_get() and env_get_list() accept default value", {
   env <- env(a = 1)
 
   expect_error(env_get(env, "b"), "Can't find")
-  expect_error(env_get_list(env, "b"), "missing")
+  expect_error(env_get_list(env, "b"), "Can't find")
 
   expect_identical(env_get(env, "b", default = "foo"), "foo")
   expect_identical(env_get_list(env, c("a", "b"), default = "foo"), list(a = 1, b = "foo"))
 })
 
 test_that("env_get() without default fails", {
-  expect_snapshot(env_get(env(), "foobar"), error = TRUE)
+  expect_snapshot({
+    (expect_error(env_get(env(), "foobar")))
+    (expect_error(env_get_list(env(), "foobar")))
+  })
 
   fn <- function(env, default) env_get(env, "_foobar", default = default)
   expect_error(fn(env()), "Can't find")
