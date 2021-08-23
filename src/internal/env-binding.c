@@ -53,6 +53,18 @@ r_obj* env_get_sym(r_obj* env,
   }
 
   if (out == r_syms.unbound) {
+    if (r_env_find(closure_env, r_sym("default")) == r_missing_arg) {
+      struct r_pair args[] = {
+        { r_sym("nm"), KEEP(r_str_as_character(r_sym_string(sym))) }
+      };
+      r_exec_n(r_null,
+               r_sym("stop_env_get_missing"),
+               args,
+               R_ARR_SIZEOF(args),
+               closure_env);
+      r_stop_unreached("env_get_sym");
+    }
+
     out = r_eval(r_sym("default"), closure_env);
   }
 

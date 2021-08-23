@@ -381,6 +381,11 @@ env_get <- function(env = caller_env(),
                     inherit = FALSE,
                     last = empty_env()) {
   env <- get_env_retired(env, "env_get()")
+
+  if (missing(default)) {
+    default %<~% stop_env_get_missing(nm)
+  }
+
   .Call(
     ffi_env_get,
     env = env,
@@ -406,6 +411,13 @@ env_get_list <- function(env = caller_env(),
     last = last,
     closure_env = environment()
   )
+}
+
+stop_env_get_missing <- function(nm) {
+  abort(sprintf(
+    "Can't find %s in environment.",
+    format_arg(nm)
+  ))
 }
 
 #' Poke an object in an environment

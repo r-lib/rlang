@@ -114,6 +114,18 @@ r_obj* r_exec_mask_n(r_obj* fn_sym,
   return out;
 }
 
+r_obj* r_exec_n(r_obj* fn_sym,
+                r_obj* fn,
+                const struct r_pair* args,
+                int n,
+                r_obj* env) {
+  r_obj* call = KEEP(r_exec_mask_n_call_poke(fn_sym, fn, args, n, env));
+  r_obj* out = r_eval(call, env);
+
+  FREE(1);
+  return out;
+}
+
 // Create a call from arguments and poke elements with a non-NULL
 // symbol in `env`
 r_obj* r_exec_mask_n_call_poke(r_obj* fn_sym,
