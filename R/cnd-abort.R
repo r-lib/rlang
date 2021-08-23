@@ -168,7 +168,7 @@
 abort <- function(message = NULL,
                   class = NULL,
                   ...,
-                  call = missing_arg(),
+                  call,
                   trace = NULL,
                   parent = NULL,
                   .file = NULL,
