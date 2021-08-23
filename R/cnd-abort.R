@@ -469,6 +469,10 @@ local_error_call <- function(call, frame = caller_env()) {
 #'   `call` field in the error object to provide users with contextual
 #'   information about the error.
 #'
+#'   When you are writing an input checker function and need to pass
+#'   along `call`, you should generally use `caller_env()` as default,
+#'   e.g. `call = caller_env()` or `error_call = caller_env()`.
+#'
 #'   Can also be `NULL` or a function call to respectively disable the
 #'   contextual call or hard-code it.
 #'
