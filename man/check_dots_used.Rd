@@ -9,16 +9,17 @@ check_dots_used(env = caller_env(), call = caller_env(), action = abort)
 \arguments{
 \item{env}{Environment in which to look for \code{...} and to set up handler.}
 
-\item{call}{An expression (as returned by e.g.
-\code{sys.call()}) representing the context in which the error
-occurred. If non-null, the call is stripped of its arguments to
-keep it simple.
+\item{call}{The execution environment of a currently
+running function. When an error occurs, the corresponding
+function call (see \code{\link[=sys.call]{sys.call()}}) is retrieved and stored as
+\code{call} field in the error object to provide users with contextual
+information about the error.
 
-Can also be an execution environment of a currently running
-function (as returned by e.g. \code{parent.frame()}). The
-corresponding call is then retrieved.
+Can also be \code{NULL} or a function call to respectively disable the
+contextual call or hard-code it.
 
-See also \code{\link[=local_error_call]{local_error_call()}}.}
+See also \code{\link[=local_error_call]{local_error_call()}} for an alternative way of
+providing this information.}
 
 \item{action}{The action to take when the dots have not been used. One of
 \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, \code{\link[=inform]{inform()}} or \code{\link[=signal]{signal()}}.}

@@ -463,16 +463,17 @@ local_error_call <- function(call, frame = caller_env()) {
 #' @param arg,error_arg An argument name as a string. This argument
 #'   will be mentioned in error messages as the input that is at the
 #'   origin of a problem.
-#' @param call,error_call An expression (as returned by e.g.
-#'   `sys.call()`) representing the context in which the error
-#'   occurred. If non-null, the call is stripped of its arguments to
-#'   keep it simple.
+#' @param call,error_call The execution environment of a currently
+#'   running function. When an error occurs, the corresponding
+#'   function call (see [sys.call()]) is retrieved and stored as
+#'   `call` field in the error object to provide users with contextual
+#'   information about the error.
 #'
-#'   Can also be an execution environment of a currently running
-#'   function (as returned by e.g. `parent.frame()`). The
-#'   corresponding call is then retrieved.
+#'   Can also be `NULL` or a function call to respectively disable the
+#'   contextual call or hard-code it.
 #'
-#'   See also [rlang::local_error_call()].
+#'   See also [rlang::local_error_call()] for an alternative way of
+#'   providing this information.
 #'
 #' @name args_error_context
 NULL

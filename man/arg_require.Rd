@@ -14,16 +14,17 @@ arg_require(arg, error_arg = caller_arg(arg), error_call = caller_env())
 will be mentioned in error messages as the input that is at the
 origin of a problem.}
 
-\item{error_call}{An expression (as returned by e.g.
-\code{sys.call()}) representing the context in which the error
-occurred. If non-null, the call is stripped of its arguments to
-keep it simple.
+\item{error_call}{The execution environment of a currently
+running function. When an error occurs, the corresponding
+function call (see \code{\link[=sys.call]{sys.call()}}) is retrieved and stored as
+\code{call} field in the error object to provide users with contextual
+information about the error.
 
-Can also be an execution environment of a currently running
-function (as returned by e.g. \code{parent.frame()}). The
-corresponding call is then retrieved.
+Can also be \code{NULL} or a function call to respectively disable the
+contextual call or hard-code it.
 
-See also \code{\link[=local_error_call]{local_error_call()}}.}
+See also \code{\link[=local_error_call]{local_error_call()}} for an alternative way of
+providing this information.}
 }
 \description{
 Check that argument is supplied
