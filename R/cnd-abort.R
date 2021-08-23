@@ -483,9 +483,9 @@ NULL
 #'
 #' `caller_arg()` is a variant of `substitute()` or [ensym()] for
 #' arguments that reference other arguments. Unlike `substitute()`
-#' which returns any expression, the referenced argument should be a
-#' symbol. That symbol is then returned as a string ready to be
-#' included in error messages.
+#' which returns any expression, the referenced argument must be a
+#' symbol, otherwise this is an error. That symbol is then returned as
+#' a string ready to be included in error messages.
 #'
 #' - When included in an error message, the resulting name should
 #'   generally be formatted as argument, for instance using the `.arg`
