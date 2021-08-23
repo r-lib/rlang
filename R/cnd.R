@@ -1,12 +1,17 @@
 #' Create a condition object
 #'
-#' These constructors make it easy to create subclassed conditions.
-#' Conditions are objects that power the error system in R. They can
-#' also be used for passing messages to pre-established handlers.
+#' @description
+#' These constructors create subclassed conditions, the objects that
+#' power the error, warning, and message system in R.
 #'
-#' `cnd()` creates objects inheriting from `condition`. Conditions
-#' created with `error_cnd()`, `warning_cnd()` and `message_cnd()`
-#' inherit from `error`, `warning` or `message`.
+#' * `cnd()` creates bare conditions that only inherit from
+#'   `condition`.
+#'
+#' * Conditions created with `error_cnd()`, `warning_cnd()`, and
+#'   `message_cnd()` inherit from `error`, `warning`, or `message`.
+#'
+#' Use [cnd_signal()] to emit the relevant signal for a particular
+#' condition class.
 #'
 #' @param class The condition subclass.
 #' @param ... <[dynamic][dyn-dots]> Named data fields stored inside
@@ -20,23 +25,17 @@
 #' @keywords internal
 #' @export
 #' @examples
-#' # Create a condition inheriting from the s3 type "foo":
+#' # Create a condition inheriting only from the S3 class "foo":
 #' cnd <- cnd("foo")
 #'
 #' # Signal the condition to potential handlers. Since this is a bare
 #' # condition the signal has no effect if no handlers are set up:
 #' cnd_signal(cnd)
 #'
-#' # When a relevant handler is set up, the signal causes the handler
-#' # to be called:
-#' with_handlers(cnd_signal(cnd), foo = exiting(function(c) "caught!"))
-#'
-#' # Handlers can be thrown or executed inplace. See with_handlers()
-#' # documentation for more on this.
-#'
-#' # Signalling an error condition aborts the current computation:
-#' err <- error_cnd("foo", message = "I am an error")
-#' try(cnd_signal(err))
+#' # When a relevant handler is set up, the signal transfers control
+#' # to the handler
+#' with_handlers(cnd_signal(cnd), foo = function(c) "caught!")
+#' tryCatch(cnd_signal(cnd), foo = function(c) "caught!")
 cnd <- function(class, ..., message = "") {
   if (missing(class)) {
     abort("Bare conditions must be subclassed")

@@ -29,33 +29,30 @@ condition when it is signalled.}
 \item{parent}{A parent condition object created by \code{\link[=abort]{abort()}}.}
 }
 \description{
-These constructors make it easy to create subclassed conditions.
-Conditions are objects that power the error system in R. They can
-also be used for passing messages to pre-established handlers.
+These constructors create subclassed conditions, the objects that
+power the error, warning, and message system in R.
+\itemize{
+\item \code{cnd()} creates bare conditions that only inherit from
+\code{condition}.
+\item Conditions created with \code{error_cnd()}, \code{warning_cnd()}, and
+\code{message_cnd()} inherit from \code{error}, \code{warning}, or \code{message}.
 }
-\details{
-\code{cnd()} creates objects inheriting from \code{condition}. Conditions
-created with \code{error_cnd()}, \code{warning_cnd()} and \code{message_cnd()}
-inherit from \code{error}, \code{warning} or \code{message}.
+
+Use \code{\link[=cnd_signal]{cnd_signal()}} to emit the relevant signal for a particular
+condition class.
 }
 \examples{
-# Create a condition inheriting from the s3 type "foo":
+# Create a condition inheriting only from the S3 class "foo":
 cnd <- cnd("foo")
 
 # Signal the condition to potential handlers. Since this is a bare
 # condition the signal has no effect if no handlers are set up:
 cnd_signal(cnd)
 
-# When a relevant handler is set up, the signal causes the handler
-# to be called:
-with_handlers(cnd_signal(cnd), foo = exiting(function(c) "caught!"))
-
-# Handlers can be thrown or executed inplace. See with_handlers()
-# documentation for more on this.
-
-# Signalling an error condition aborts the current computation:
-err <- error_cnd("foo", message = "I am an error")
-try(cnd_signal(err))
+# When a relevant handler is set up, the signal transfers control
+# to the handler
+with_handlers(cnd_signal(cnd), foo = function(c) "caught!")
+tryCatch(cnd_signal(cnd), foo = function(c) "caught!")
 }
 \seealso{
 \code{\link[=cnd_signal]{cnd_signal()}}, \code{\link[=with_handlers]{with_handlers()}}.
