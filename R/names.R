@@ -47,9 +47,9 @@ names_inform_repair <- function(old, new) {
   }
 
   bullets <- paste0(
-    tick_if_needed(old[new_names]),
+    map_chr(old[new_names], format_var),
     " -> ",
-    tick_if_needed(new[new_names]),
+    map_chr(new[new_names], format_var),
     .problem = ""
   )
 
@@ -66,13 +66,4 @@ peek_name_repair_verbosity <- function() {
   out <- peek_option(opt) %||% "verbose"
   out <- arg_match0(out, c("verbose", "quiet"), opt)
   out
-}
-
-tick_if_needed <- function(x) {
-  needs_ticks <- !map_lgl(x, needs_backticks)
-  x[needs_ticks] <- backtick(x[needs_ticks])
-  x
-}
-backtick <- function(x) {
-  ifelse(is.na(x), "NA", encodeString(x, quote = "`"))
 }
