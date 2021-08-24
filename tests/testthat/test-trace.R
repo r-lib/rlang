@@ -77,16 +77,16 @@ test_that("trace_simplify_branch() extracts last branch", {
   m <- function() trace_back(e)
 
   x1 <- j(1)
-  expect_trace_length(x1, 6)
-  expect_trace_length(trace_simplify_branch(x1), 3)
+  expect_equal(sum(x1$visible), 6)
+  expect_equal(sum(trace_simplify_branch(x1)$visible), 3)
 
   x2 <- j(2)
-  expect_trace_length(x2, 6)
-  expect_trace_length(trace_simplify_branch(x2), 2)
+  expect_equal(sum(x2$visible), 6)
+  expect_equal(sum(trace_simplify_branch(x2)$visible), 2)
 
   x3 <- j(3)
-  expect_trace_length(x2, 6)
-  expect_trace_length(trace_simplify_branch(x3), 1)
+  expect_equal(sum(x3$visible), 1)
+  expect_equal(sum(trace_simplify_branch(x3)$visible), 1)
 })
 
 test_that("integerish indices are allowed", {

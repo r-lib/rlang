@@ -216,21 +216,35 @@ add_winch_trace <- function(trace) {
 
 # Construction ------------------------------------------------------------
 
-new_trace <- function(calls, parents, ..., class = NULL) {
+new_trace <- function(calls,
+                      parents,
+                      ...,
+                      visible = NULL,
+                      class = NULL) {
   new_trace0(
     calls,
     parents,
     ...,
+    visible = visible,
     class = c(class, "rlang_trace", "rlib_trace")
   )
 }
-new_trace0 <- function(calls, parents, ..., class = NULL) {
+new_trace0 <- function(calls,
+                       parents,
+                       ...,
+                       visible = NULL,
+                       class = NULL) {
   stopifnot(
     is_bare_list(calls),
     is_bare_integer(parents)
   )
 
-  df <- df_list(call = calls, parent = parents, ...)
+  df <- df_list(
+    call = calls,
+    parent = parents,
+    visible = visible %||% TRUE,
+    ...
+  )
   new_data_frame(df, .class = c(class, "tbl"))
 }
 
@@ -301,8 +315,10 @@ trace_format_branch <- function(trace, max_frames, dir, srcrefs) {
   trace <- trace_simplify_branch(trace)
   tree <- trace_as_tree(trace, dir = dir, srcrefs = srcrefs)
 
-  branch <- tree[-1, ][["call"]]
-  cli_branch(branch, max = max_frames)
+  # Remove root in the branch view
+  tree <- tree[-1, ]
+
+  cli_branch(tree$call, max = max_frames, indices = tree$id)
 }
 
 format_collapsed <- function(what, n) {
@@ -531,8 +547,11 @@ is_eval_call <- function(call) {
 
 trace_simplify_branch <- function(trace) {
   parents <- trace$parent
-  path <- int()
-  id <- length(parents)
+
+  old_visible <- trace$visible
+  visible <- rep_along(old_visible, FALSE)
+
+  id <- trace_length(trace)
 
   trace$collapsed <- 0L
 
@@ -549,21 +568,23 @@ trace_simplify_branch <- function(trace) {
       id <- next_id
     }
 
-    if (!is_uninformative_call(trace$call[[id]])) {
-      path <- c(path, id)
+    if (old_visible[[id]] && !is_uninformative_call(trace$call[[id]])) {
+      visible[[id]] <- TRUE
     }
 
     id <- parents[id]
   }
 
-  # Always include very first call
-  path <- rev(path)
-  if (length(path) && path[[1]] != 1L) {
-    path <- c(1L, path)
+  # Always include first visible call
+  first <- detect_index(old_visible, is_true)
+  if (first) {
+    visible[[first]] <- TRUE
   }
 
+  trace$visible <- visible
   trace$parent <- parents
-  trace_slice(trace, path)
+
+  trace
 }
 
 # Bypass calls with inlined functions
@@ -612,8 +633,11 @@ is_winch_frame <- function(call) {
 
 trace_simplify_collapse <- function(trace) {
   parents <- trace$parent
-  path <- int()
-  id <- length(parents)
+
+  old_visible <- trace$visible
+  visible <- rep_along(old_visible, FALSE)
+
+  id <- trace_length(trace)
 
   trace$collapsed <- 0L
 
@@ -630,7 +654,7 @@ trace_simplify_collapse <- function(trace) {
       id <- next_id
     }
 
-    path <- c(path, id)
+    visible[[id]] <- TRUE
     parent_id <- parents[[id]]
     id <- dec(id)
 
@@ -641,7 +665,7 @@ trace_simplify_collapse <- function(trace) {
 
       if (sibling_parent_id == parent_id) {
         trace <- set_trace_skipped(trace, id, n_skipped)
-        path <- c(path, id)
+        visible[[id]] <- TRUE
         n_skipped <- 0L
       } else {
         n_skipped <- inc(n_skipped)
@@ -651,8 +675,10 @@ trace_simplify_collapse <- function(trace) {
     }
   }
 
+  trace$visible <- visible
   trace$parent <- parents
-  trace_slice(trace, rev(path))
+
+  trace
 }
 
 
@@ -679,6 +705,10 @@ trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL) {
   tree <- data.frame(id = as.character(id), stringsAsFactors = FALSE)
   tree$children <- map(children, as.character)
   tree$call <- c(trace_root(), call_text)
+
+  # Subset out hidden frames
+  tree <- vec_slice(tree, c(TRUE, trace$visible))
+  tree$children <- map(tree$children, intersect, tree$id)
 
   tree
 }
