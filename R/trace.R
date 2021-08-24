@@ -493,11 +493,11 @@ trace_trim_env <- function(x, frames, to) {
 }
 
 set_trace_skipped <- function(trace, id, n) {
-  attr(trace$call[[id]], "collapsed") <- n
+  trace$collapsed[[id]] <- n
   trace
 }
 set_trace_collapsed <- function(trace, id, n) {
-  attr(trace$call[[id - n]], "collapsed") <- n
+  trace$collapsed[[id - n]] <- n
   trace
 }
 n_collapsed <- function(trace, id) {
@@ -533,6 +533,8 @@ trace_simplify_branch <- function(trace) {
   parents <- trace$parent
   path <- int()
   id <- length(parents)
+
+  trace$collapsed <- 0L
 
   while (id != 0L) {
     n_collapsed <- n_collapsed(trace, id)
@@ -613,6 +615,8 @@ trace_simplify_collapse <- function(trace) {
   path <- int()
   id <- length(parents)
 
+  trace$collapsed <- 0L
+
   while (id > 0L) {
     n_collapsed <- n_collapsed(trace, id)
 
@@ -658,9 +662,8 @@ trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL) {
   id <- c(0, seq_along(trace$call))
   children <- map(id, function(id) seq_along(trace$parent)[trace$parent == id])
 
-  calls <- as.list(trace$call)
-  is_collapsed <- map(calls, attr, "collapsed")
-  call_text <- map2_chr(calls, is_collapsed, trace_call_text)
+  collapsed <- trace$collapsed %||% 0L
+  call_text <- map2_chr(trace$call, collapsed, trace_call_text)
 
   srcrefs <- srcrefs %||% peek_option("rlang_trace_format_srcrefs")
   srcrefs <- srcrefs %||% TRUE
@@ -682,7 +685,7 @@ trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL) {
 
 # FIXME: Add something like call_deparse_line()
 trace_call_text <- function(call, collapse) {
-  if (is_null(collapse)) {
+  if (!collapse) {
     return(as_label(call))
   }
 
@@ -693,11 +696,7 @@ trace_call_text <- function(call, collapse) {
   }
 
   text <- as_label(call)
-  if (collapse > 0L) {
-    n_collapsed_text <- sprintf(" ... +%d", collapse)
-  } else {
-    n_collapsed_text <- ""
-  }
+  n_collapsed_text <- sprintf(" ... +%d", collapse)
 
   format_collapsed(paste0("[ ", text, " ]"), collapse)
 }
