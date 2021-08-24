@@ -91,7 +91,6 @@ trace_back <- function(top = NULL, bottom = NULL) {
   calls <- as.list(sys.calls()[idx])
 
   calls <- map(calls, call_fix_car)
-  calls <- add_pipe_pointer(calls, frames)
   calls <- map2(calls, seq_along(calls), maybe_add_namespace)
 
   parents <- normalise_parents(parents)
@@ -133,60 +132,6 @@ call_fix_car <- function(call) {
     node_poke_car(call, eval_bare(node_car(call)))
   }
   call
-}
-
-# Assumes magrittr 1.5
-add_pipe_pointer <- function(calls, frames) {
-  pipe_begs <- which(map_lgl(calls, is_call2, "%>%"))
-  pipe_kinds <- map_int(pipe_begs, pipe_call_kind, calls)
-
-  pipe_calls <- map2(pipe_begs, pipe_kinds, function(beg, kind) {
-    call <- calls[[beg]]
-
-    if (kind == 0L) {
-      return(call)
-    }
-
-    if (kind == 1L) {
-      v <- "i"
-    } else if (kind == 2L) {
-      v <- "k"
-    }
-
-    frame <- frames[[beg + 5L]]
-    pointer <- frame[[v]]
-
-    fn <- frame[["function_list"]][[1]]
-    info <- pipe_collect_calls(call, fn_env(fn))
-
-    structure(call, pipe_pointer = pointer, pipe_info = info)
-  })
-
-  calls[pipe_begs] <- pipe_calls
-  calls
-}
-
-pipe_call_kind <- function(beg, calls) {
-  end1 <- beg + 6L
-  end2 <- beg + 7L
-
-  if (end2 > length(calls)) {
-    return(0L)
-  }
-
-  # Uncomplete pipe call
-  magrittr_call1 <- quote(function_list[[i]](value))
-
-  # Last call of the pipe
-  magrittr_call2 <- quote(function_list[[k]](value))
-
-  if (identical(calls[[end1]], magrittr_call1)) {
-    return(1L)
-  }
-  if (identical(calls[[end2]], magrittr_call2)) {
-    return(2L)
-  }
-  0L
 }
 
 maybe_add_namespace <- function(call, fn) {
@@ -340,7 +285,6 @@ trace_format_collapse <- function(trace, max_frames, dir, srcrefs) {
 }
 trace_format_branch <- function(trace, max_frames, dir, srcrefs) {
   trace <- trace_simplify_branch(trace)
-  trace <- branch_uncollapse_pipe(trace)
   tree <- trace_as_tree(trace, dir = dir, srcrefs = srcrefs)
 
   branch <- tree[-1, ][["call"]]
@@ -594,107 +538,6 @@ n_collapsed <- function(trace, id) {
 
 is_eval_call <- function(call) {
   is_call2(call, c("eval", "evalq"), ns = c("", "base"))
-}
-
-pipe_collect_calls <- function(pipe, env) {
-  node <- node_cdr(pipe)
-
-  last_call <- pipe_add_dot(node_cadr(node))
-  last_call <- maybe_add_namespace(last_call, env)
-
-  calls <- new_node(last_call, NULL)
-
-  while (is_call2(node_car(node), "%>%")) {
-    node <- node_cdar(node)
-    call <- pipe_add_dot(node_cadr(node))
-    call <- maybe_add_namespace(call, env)
-    calls <- new_node(call, calls)
-  }
-
-  first_call <- node_car(node)
-  if (is_call2(first_call)) {
-    # The first call doesn't need a dot
-    first_call <- maybe_add_namespace(first_call, env)
-    calls <- new_node(first_call, calls)
-    leading <- TRUE
-  } else {
-    leading <- FALSE
-  }
-
-  list(calls = as.list(calls), leading = leading)
-}
-pipe_add_dot <- function(call) {
-  if (!is_call2(call)) {
-    return(call2(call, dot_sym))
-  }
-
-  node <- node_cdr(call)
-  while (!is_null(node)) {
-    if (identical(node_car(node), dot_sym)) {
-      return(call)
-    }
-    node <- node_cdr(node)
-  }
-
-  args <- new_node(dot_sym, node_cdr(call))
-  new_call(node_car(call), args)
-}
-
-has_pipe_pointer <- function(x) {
-  !is_null(attr(x, "pipe_pointer"))
-}
-
-# Assumes a backtrace branch with collapsed pipe
-branch_uncollapse_pipe <- function(trace) {
-  orig <- trace
-
-  while (idx <- detect_index(trace$calls, has_pipe_pointer)) {
-    trace_before <- trace_subset(trace, seq2(1L, idx - 1L))
-    trace_after <- trace_subset(trace, seq2(idx + 2L, trace_length(trace)))
-
-    pipe <- trace$calls[[idx]]
-
-    pointer <- attr(pipe, "pipe_pointer")
-    if (!is_scalar_integer(pointer)) {
-      stop("Internal error: Invalid pipe pointer")
-    }
-
-    pipe_info <- attr(pipe, "pipe_info")
-    pipe_calls <- pipe_info$calls
-
-    if (pipe_info$leading) {
-      pointer <- inc(pointer)
-    }
-
-    incomplete <- seq2(pointer + 1L, length(pipe_calls))
-    if (length(incomplete)) {
-      pipe_calls <- pipe_calls[-incomplete]
-    }
-
-    parent <- trace$parents[[idx]]
-    pipe_parents <- seq(parent, parent + pointer - 1L)
-
-    # This assigns the same frame number to all pipe calls that have
-    # already returned
-    n_collapsed <- attr(pipe, "collapsed") %||% 0L
-    pipe_indices <- rep(idx, length(pipe_calls) - 1L)
-    pipe_indices <- c(pipe_indices, idx + n_collapsed + 1L)
-
-    # Add the number of uncollapsed frames to children's
-    # ancestry. This assumes a backtrace branch.
-    trace_after$parents <- trace_after$parents + pointer
-
-    trace$calls <- c(trace_before$calls, pipe_calls, trace_after$calls)
-    trace$parents <- c(trace_before$parents, pipe_parents, trace_after$parents)
-    trace$indices <- c(trace_before$indices, pipe_indices, trace_after$indices)
-  }
-
-  if (length(unique(lengths(trace))) != 1L) {
-    warn("Internal error: Trace data is not square.")
-    return(orig)
-  }
-
-  trace
 }
 
 trace_simplify_branch <- function(trace) {
