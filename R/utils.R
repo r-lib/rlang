@@ -353,3 +353,18 @@ path_trim_prefix <- function(path, n) {
     paste(split[seq2(n_split - n + 1, n_split)], collapse = "/")
   }
 }
+
+browser <- function(...,
+                    skipCalls = 0,
+                    frame = parent.frame()) {
+  if (!identical(stdout(), getConnection(1))) {
+    sink(getConnection(1))
+    withr::defer(sink(), envir = frame)
+  }
+
+  # Calling `browser()` on exit avoids RStudio displaying the
+  # `browser2()` location. We still need one `n` to get to the
+  # expected place. Ideally `skipCalls` would not skip but exit the
+  # contexts.
+  on.exit(base::browser(..., skipCalls = skipCalls + 1))
+}
