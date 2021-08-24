@@ -539,8 +539,8 @@ test_that("can subset in middle level", {
   trace <- f()
 
   out <- trace_subset_across(trace, 2, 2)
-  expect_equal(out$calls, alist(rlang:::f(), base::identity(g())))
-  expect_identical(out$parents, 0:1)
+  expect_equal(out$call, alist(rlang:::f(), base::identity(g())))
+  expect_identical(out$parent, 0:1)
 
 
   idx <- int(0, 1, 1, 1, 4, 4, 4)
@@ -556,8 +556,8 @@ test_that("can subset in middle level", {
     base::identity(h()),
     rlang:::h()
   )
-  expect_equal(out$calls, exp)
-  expect_identical(out$parents, c(0L, 1L, 2L, 2L, 2L))
+  expect_equal(out$call, exp)
+  expect_identical(out$parent, c(0L, 1L, 2L, 2L, 2L))
 })
 
 test_that("fails when `bottom` is not on the stack", {

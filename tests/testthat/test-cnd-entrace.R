@@ -48,14 +48,14 @@ test_that("with_abort() entraces conditions properly", {
     n <- trace_length(err$trace)
 
     if (is_null(native)) {
-      calls <- trace$calls[seq2(n - 2, n)]
+      calls <- trace$call[seq2(n - 2, n)]
       expect_true(all(
         is_call(calls[[1]], "f"),
         is_call(calls[[2]], "g"),
         is_call(calls[[3]], "h")
       ))
     } else {
-      calls <- trace$calls[seq2(n - 4, n)]
+      calls <- trace$call[seq2(n - 4, n)]
       expect_true(all(
         is_call(calls[[1]], "f"),
         is_call(calls[[2]], "g"),
@@ -156,7 +156,7 @@ test_that("cnd_entrace() skips capture context", {
   local_options(rlang_trace_top_env = current_env())
   err <- capture(foo())
 
-  last <- err$trace$calls[[4]]
+  last <- err$trace$call[[4]]
   expect_match(deparse(last), "bar")
 })
 

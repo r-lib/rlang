@@ -260,11 +260,10 @@ trace_slice <- function(trace, i) {
 c.rlang_trace <- function(...) {
   traces <- list(...)
 
-  calls <- flatten(map(traces, `[[`, "calls"))
-  parents <- flatten_int(map(traces, `[[`, "parents"))
-  indices <- flatten_int(map(traces, `[[`, "indices"))
+  calls <- flatten(map(traces, `[[`, "call"))
+  parents <- flatten_int(map(traces, `[[`, "parent"))
 
-  new_trace(calls, parents, indices)
+  new_trace(calls, parents)
 }
 
 #' @export
@@ -422,12 +421,12 @@ trace_subset_across <- function(trace, i, n = NULL) {
   level_n <- length(level)
   i <- validate_index(i, level_n)
 
-  indices <- unlist(map(level[i], chain_indices, trace$parents))
+  indices <- unlist(map(level[i], chain_indices, trace$parent))
   trace_slice(trace, indices)
 }
 trace_level <- function(trace, n = NULL) {
   n <- n %||% trace_length(trace)
-  parents <- trace$parents
+  parents <- trace$parent
   which(parents == parents[[n]])
 }
 
@@ -492,20 +491,20 @@ trace_trim_env <- function(x, frames, to) {
 }
 
 set_trace_skipped <- function(trace, id, n) {
-  attr(trace$calls[[id]], "collapsed") <- n
+  attr(trace$call[[id]], "collapsed") <- n
   trace
 }
 set_trace_collapsed <- function(trace, id, n) {
-  attr(trace$calls[[id - n]], "collapsed") <- n
+  attr(trace$call[[id - n]], "collapsed") <- n
   trace
 }
 n_collapsed <- function(trace, id) {
-  call <- trace$calls[[id]]
+  call <- trace$call[[id]]
 
   if (is_eval_call(call)) {
     # When error occurs inside eval()'s frame at top level, there
     # might be only one frame and nothing to collapse
-    if (id > 1L && is_eval_call(trace$calls[[id - 1L]])) {
+    if (id > 1L && is_eval_call(trace$call[[id - 1L]])) {
       n <- 1L
     } else {
       n <- 0L
@@ -529,7 +528,7 @@ is_eval_call <- function(call) {
 }
 
 trace_simplify_branch <- function(trace) {
-  parents <- trace$parents
+  parents <- trace$parent
   path <- int()
   id <- length(parents)
 
@@ -546,7 +545,7 @@ trace_simplify_branch <- function(trace) {
       id <- next_id
     }
 
-    if (!is_uninformative_call(trace$calls[[id]])) {
+    if (!is_uninformative_call(trace$call[[id]])) {
       path <- c(path, id)
     }
 
@@ -559,7 +558,7 @@ trace_simplify_branch <- function(trace) {
     path <- c(1L, path)
   }
 
-  trace$parents <- parents
+  trace$parent <- parents
   trace_slice(trace, path)
 }
 
@@ -608,7 +607,7 @@ is_winch_frame <- function(call) {
 }
 
 trace_simplify_collapse <- function(trace) {
-  parents <- trace$parents
+  parents <- trace$parent
   path <- int()
   id <- length(parents)
 
@@ -646,18 +645,18 @@ trace_simplify_collapse <- function(trace) {
     }
   }
 
-  trace$parents <- parents
+  trace$parent <- parents
   trace_slice(trace, rev(path))
 }
 
 
 # Printing ----------------------------------------------------------------
 
-trace_as_tree <- function(x, dir = getwd(), srcrefs = NULL) {
-  nodes <- c(0, seq_along(x$calls))
-  children <- map(nodes, function(id) seq_along(x$parents)[x$parents == id])
+trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL) {
+  id <- c(0, seq_along(trace$call))
+  children <- map(id, function(id) seq_along(trace$parent)[trace$parent == id])
 
-  calls <- as.list(x$calls)
+  calls <- as.list(trace$call)
   is_collapsed <- map(calls, attr, "collapsed")
   call_text <- map2_chr(calls, is_collapsed, trace_call_text)
 
@@ -665,14 +664,14 @@ trace_as_tree <- function(x, dir = getwd(), srcrefs = NULL) {
   srcrefs <- srcrefs %||% TRUE
   stopifnot(is_scalar_logical(srcrefs))
   if (srcrefs) {
-    refs <- map(x$calls, attr, "srcref")
+    refs <- map(trace$call, attr, "srcref")
     src_locs <- map_chr(refs, src_loc, dir = dir)
     have_src_loc <- nzchar(src_locs)
     src_locs <- silver(src_locs[have_src_loc])
     call_text[have_src_loc] <- paste0(call_text[have_src_loc], " ", src_locs)
   }
 
-  tree <- data.frame(id = as.character(nodes), stringsAsFactors = FALSE)
+  tree <- data.frame(id = as.character(id), stringsAsFactors = FALSE)
   tree$children <- map(children, as.character)
   tree$call <- c(trace_root(), call_text)
 
