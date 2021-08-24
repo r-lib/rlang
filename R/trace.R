@@ -91,6 +91,8 @@ trace_back <- function(top = NULL, bottom = NULL) {
   calls <- as.list(sys.calls()[idx])
 
   calls <- map(calls, call_fix_car)
+
+  # FIXME: namespace should be added at print time
   calls <- map2(calls, seq_along(calls), maybe_add_namespace)
 
   parents <- normalise_parents(parents)
@@ -189,33 +191,6 @@ normalise_parents <- function(parents) {
   parents
 }
 
-new_trace <- function(calls, parents, indices = NULL) {
-  indices <- indices %||% seq_along(calls)
-
-  n <- length(calls)
-  stopifnot(
-    is_list(calls),
-    is_integer(parents, n),
-    is_integer(indices, n)
-  )
-
-  structure(
-    list(
-      calls = calls,
-      parents = parents,
-      indices = indices
-    ),
-    class = "rlang_trace",
-    # Increment this number when the internal format for the class changes
-    version = 1L
-  )
-}
-
-trace_reset_indices <- function(trace) {
-  trace$indices <- seq_len(trace_length(trace))
-  trace
-}
-
 # Can't use new_environment() here
 winch_available_env <- new.env(parent = emptyenv())
 
@@ -238,6 +213,28 @@ add_winch_trace <- function(trace) {
   winch::winch_add_trace_back(trace)
 }
 
+
+# Construction ------------------------------------------------------------
+
+new_trace <- function(calls, parents, ..., class = NULL) {
+  new_trace0(
+    calls,
+    parents,
+    ...,
+    class = c(class, "rlang_trace", "rlib_trace")
+  )
+}
+new_trace0 <- function(calls, parents, ..., class = NULL) {
+  stopifnot(
+    is_bare_list(calls),
+    is_bare_integer(parents)
+  )
+
+  df <- df_list(call = calls, parent = parents, ...)
+  new_data_frame(df, .class = c(class, "tbl"))
+}
+
+
 # Methods -----------------------------------------------------------------
 
 # For internal use only
@@ -258,9 +255,8 @@ format.rlang_trace <- function(x,
                                max_frames = NULL,
                                dir = getwd(),
                                srcrefs = NULL) {
-  x <- trace_reset_indices(x)
-
-  switch(arg_match(simplify),
+  switch(
+    arg_match(simplify),
     none = trace_format(x, max_frames, dir, srcrefs),
     collapse = trace_format_collapse(x, max_frames, dir, srcrefs),
     branch = trace_format_branch(x, max_frames, dir, srcrefs)
@@ -279,6 +275,7 @@ trace_format <- function(trace, max_frames, dir, srcrefs) {
   tree <- trace_as_tree(trace, dir = dir, srcrefs = srcrefs)
   cli_tree(tree, indices = trace$indices)
 }
+
 trace_format_collapse <- function(trace, max_frames, dir, srcrefs) {
   trace <- trace_simplify_collapse(trace)
   trace_format(trace, max_frames, dir, srcrefs)
@@ -402,7 +399,7 @@ summary.rlang_trace <- function(object,
 #' @param trace A backtrace created by `trace_back()`.
 #' @export
 trace_length <- function(trace) {
-  length(trace$calls)
+  nrow(trace)
 }
 
 trace_subset <- function(x, i) {
