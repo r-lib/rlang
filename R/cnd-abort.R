@@ -610,8 +610,15 @@ error_call <- function(call) {
     return(NULL)
   }
 
-  # Deal with special-syntax calls
+  # Deal with `if` bombs. Keep the condition as it is informative but
+  # drop the branches to avoid multiline calls. See
   # https://github.com/r-lib/testthat/issues/1429
+  if (is_call(call, "if")) {
+    call[[3]] <- quote(...)
+    return(call[1:3])
+  }
+
+  # Deal with remaining special-syntax calls
   if (!is_string(call_print_fine_type(call), "call")) {
     return(NULL)
   }
