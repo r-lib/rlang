@@ -378,3 +378,9 @@ browser <- function(...,
   # contexts.
   on.exit(base::browser(..., skipCalls = skipCalls + 1))
 }
+
+df_print <- function(x, ...) {
+  class(x) <- c("tbl", "data.frame")
+  print(x, ...)
+  invisible(x)
+}

@@ -13,7 +13,7 @@
     Output
       
     Code
-      print(trace_subset(trace, 0L), dir = dir)
+      print(trace_slice(trace, 0L), dir = dir)
     Output
       x
 

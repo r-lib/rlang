@@ -27,7 +27,7 @@ test_that("tree printing only changes deliberately", {
   expect_snapshot({
     print(trace, dir = dir)
     cat("\n")
-    print(trace_subset(trace, 0L), dir = dir)
+    print(trace_slice(trace, 0L), dir = dir)
   })
 })
 
@@ -91,7 +91,7 @@ test_that("trace_simplify_branch() extracts last branch", {
 
 test_that("integerish indices are allowed", {
   trace <- trace_back()
-  expect_identical(trace_subset(trace, 0), trace_subset(trace, 0L))
+  expect_identical(trace_slice(trace, 0), trace_slice(trace, 0L))
 })
 
 test_that("cli_branch() handles edge case", {
@@ -616,4 +616,18 @@ test_that("can trace back with quosured symbol", {
   # FIXME: Weird trace structure
   trace <- f()
   expect_s3_class(trace, "rlang_trace")
+})
+
+test_that("can slice backtrace", {
+  trace <- new_trace(alist(a(), b(), c()), 0:2)
+
+  expect_identical(
+    trace_slice(trace, 2:3),
+    new_trace(alist(b(), c()), 0:1)
+  )
+
+  expect_identical(
+    trace_slice(trace, c(1, 3)),
+    new_trace(alist(a(), c()), c(0L, 0L))
+  )
 })

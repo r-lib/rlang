@@ -235,6 +235,25 @@ new_trace0 <- function(calls, parents, ..., class = NULL) {
 }
 
 
+# Operations --------------------------------------------------------------
+
+#' @rdname trace_back
+#' @param trace A backtrace created by `trace_back()`.
+#' @export
+trace_length <- function(trace) {
+  nrow(trace)
+}
+
+trace_slice <- function(trace, i) {
+  parent <- match(trace$parent, i, nomatch = 0)
+
+  out <- vec_slice(trace, i)
+  out$parent <- parent[i]
+
+  out
+}
+
+
 # Methods -----------------------------------------------------------------
 
 # For internal use only
@@ -395,34 +414,6 @@ summary.rlang_trace <- function(object,
   invisible(object)
 }
 
-#' @rdname trace_back
-#' @param trace A backtrace created by `trace_back()`.
-#' @export
-trace_length <- function(trace) {
-  nrow(trace)
-}
-
-trace_subset <- function(x, i) {
-  if (!length(i)) {
-    return(new_trace(list(), int()))
-  }
-  stopifnot(is_integerish(i))
-
-  n <- trace_length(x)
-
-  if (all(i < 0L)) {
-    i <- setdiff(seq_len(n), abs(i))
-  }
-
-  parents <- match(as.character(x$parents[i]), as.character(i), nomatch = 0)
-
-  new_trace(
-    calls = x$calls[i],
-    parents = parents,
-    indices = x$indices[i]
-  )
-}
-
 # Subsets sibling nodes, at the level of the rightmost leaf by
 # default. Supports full vector subsetting semantics (negative values,
 # missing index, etc).
@@ -432,7 +423,7 @@ trace_subset_across <- function(trace, i, n = NULL) {
   i <- validate_index(i, level_n)
 
   indices <- unlist(map(level[i], chain_indices, trace$parents))
-  trace_subset(trace, indices)
+  trace_slice(trace, indices)
 }
 trace_level <- function(trace, n = NULL) {
   n <- n %||% trace_length(trace)
@@ -497,7 +488,7 @@ trace_trim_env <- function(x, frames, to) {
   start <- last(which(is_top)) + 1L
   end <- trace_length(x)
 
-  trace_subset(x, seq2(start, end))
+  trace_slice(x, seq2(start, end))
 }
 
 set_trace_skipped <- function(trace, id, n) {
@@ -569,7 +560,7 @@ trace_simplify_branch <- function(trace) {
   }
 
   trace$parents <- parents
-  trace_subset(trace, path)
+  trace_slice(trace, path)
 }
 
 # Bypass calls with inlined functions
@@ -656,7 +647,7 @@ trace_simplify_collapse <- function(trace) {
   }
 
   trace$parents <- parents
-  trace_subset(trace, rev(path))
+  trace_slice(trace, rev(path))
 }
 
 

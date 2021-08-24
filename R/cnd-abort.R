@@ -718,7 +718,7 @@ trace_trim_context <- function(trace, idx) {
 
   to_trim <- seq2(idx, trace_length(trace))
   if (length(to_trim)) {
-    trace <- trace_subset(trace, -to_trim)
+    trace <- trace_slice(trace, -to_trim)
   }
 
   trace
