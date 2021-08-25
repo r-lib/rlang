@@ -123,7 +123,7 @@
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
           x
-       1. +-[ rlang::eval_tidy(...) ]
+       1. +-rlang::eval_tidy(quo(f()))
        2. \-rlang:::f()
        3.   \-rlang:::g()
     Code
@@ -268,7 +268,7 @@
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
           x
-       1. +-[ NULL %>% f() %>% g(1, 2) %>% h(3, ., 4) ]
+       1. +-NULL %>% f() %>% g(1, 2) %>% h(3, ., 4)
        2. \-rlang:::h(3, ., 4)
     Code
       # Branch
@@ -291,7 +291,7 @@
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
           x
-       1. +-[ f(NULL) %>% g(list(.)) %>% h(3, ., list(.)) ]
+       1. +-f(NULL) %>% g(list(.)) %>% h(3, ., list(.))
        2. \-rlang:::h(3, ., list(.))
     Code
       # Branch
@@ -315,8 +315,8 @@
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
           x
-       1. +-[ rlang:::f(...) ]
-       2. +-[ g(NULL %>% f()) %>% h() ]
+       1. +-rlang:::f(g(NULL %>% f()) %>% h())
+       2. +-g(NULL %>% f()) %>% h()
        3. \-rlang:::h(.)
     Code
       # Branch
@@ -341,7 +341,7 @@
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
           x
-       1. +-[ NA %>% F() %>% G() %>% H() ]
+       1. +-NA %>% F() %>% G() %>% H()
        2. \-rlang:::H(.)
        3.   \-rlang:::f()
        4.     \-rlang:::h()
@@ -408,9 +408,9 @@
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
           x
-       1. +-[ NA %>% F() %>% T() %>% F() %>% F() ]
-       2. +-[ rlang:::F(...) ]
-       3. +-[ rlang:::F(...) ]
+       1. +-NA %>% F() %>% T() %>% F() %>% F()
+       2. +-rlang:::F(.)
+       3. +-rlang:::F(.)
        4. \-rlang:::T(.)
     Code
       # Branch
@@ -434,8 +434,8 @@
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
           x
-       1. +-[ T(NA) %>% F() ]
-       2. +-[ rlang:::F(...) ]
+       1. +-T(NA) %>% F()
+       2. +-rlang:::F(.)
        3. \-rlang:::T(NA)
     Code
       # Branch
@@ -460,9 +460,9 @@
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
           x
-       1. +-[ F(NA) %>% F() %>% T() %>% F() %>% F() ]
-       2. +-[ rlang:::F(...) ]
-       3. +-[ rlang:::F(...) ]
+       1. +-F(NA) %>% F() %>% T() %>% F() %>% F()
+       2. +-rlang:::F(.)
+       3. +-rlang:::F(.)
        4. \-rlang:::T(.)
     Code
       # Branch
@@ -485,7 +485,7 @@
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
           x
-       1. +-[ NA %>% T() ]
+       1. +-NA %>% T()
        2. \-rlang:::T(.)
     Code
       # Branch
@@ -508,7 +508,7 @@
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
           x
-       1. +-[ NA %>% F() %>% T() ]
+       1. +-NA %>% F() %>% T()
        2. \-rlang:::T(.)
     Code
       # Branch
@@ -531,7 +531,7 @@
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
           x
-       1. +-[ F(NA) %>% T() ]
+       1. +-F(NA) %>% T()
        2. \-rlang:::T(.)
     Code
       # Branch
@@ -554,7 +554,7 @@
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
           x
-       1. +-[ F(NA) %>% F() %>% T() ]
+       1. +-F(NA) %>% F() %>% T()
        2. \-rlang:::T(.)
     Code
       # Branch
@@ -578,8 +578,8 @@
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
           x
-       1. +-[ rlang:::F(...) ]
-       2. +-[ NA %>% T() ]
+       1. +-rlang:::F(NA %>% T())
+       2. +-NA %>% T()
        3. \-rlang:::T(.)
     Code
       # Branch
@@ -603,7 +603,7 @@
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
           x
-       1. +-[ NA %>% C() ]
+       1. +-NA %>% C()
        2. \-rlang:::C(.)
        3.   \-rlang:::f()
     Code
@@ -630,8 +630,8 @@
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
           x
-       1. +-[ rlang:::F(...) ]
-       2. +-[ NA %>% C() ]
+       1. +-rlang:::F(NA %>% C())
+       2. +-NA %>% C()
        3. \-rlang:::C(.)
        4.   \-rlang:::f()
     Code
@@ -656,7 +656,7 @@
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
           x
-       1. +-[ rlang:::gen() ]
+       1. +-rlang:::gen()
        2. \-rlang:::gen.default()
     Code
       # Branch
@@ -700,7 +700,7 @@
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
           x
-       1. +-[ base::eval() ]
+       1. +-base::eval()
        2. \-base::.handleSimpleError(...)
        3.   \-rlang:::h(simpleError(msg, call))
     Code
@@ -785,7 +785,7 @@
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
           x
-       1. +-[ base::print(...) ]
+       1. +-base::print(foo)
        2. \-rlang:::print.foo(foo)
     Code
       # Branch
