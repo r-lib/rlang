@@ -28,6 +28,7 @@ NULL
 #' @param action The action to take when the dots have not been used. One of
 #'   [rlang::abort()], [rlang::warn()], [rlang::inform()] or [rlang::signal()].
 #' @param env Environment in which to look for `...` and to set up handler.
+#' @inheritParams args_error_context
 #' @export
 #' @examples
 #' f <- function(...) {
@@ -42,12 +43,15 @@ NULL
 #'
 #' try(f(x = 1, y = 2, z = 3))
 #' try(f(x = 1, y = 2, 3, 4, 5))
-check_dots_used <- function(env = caller_env(), action = abort) {
-  eval_bare(exit_handler(action), env)
+check_dots_used <- function(env = caller_env(),
+                            call = caller_env(),
+                            action = abort) {
+  handler <- function() check_dots(env, action, call)
+  inject(base::on.exit(!!call2(handler), add = TRUE), env)
   invisible()
 }
 
-check_dots <- function(env = caller_env(), action) {
+check_dots <- function(env = caller_env(), action, call) {
   if (.Call(ffi_ellipsis_dots_used, env)) {
     return(invisible())
   }
@@ -61,12 +65,7 @@ check_dots <- function(env = caller_env(), action) {
     message = paste0(length(unused), " arguments in `...` were not used."),
     dot_names = unused,
     class = "rlib_error_dots_unused",
-  )
-}
-
-exit_handler <- function(action) {
-  expr(
-    on.exit((!!check_dots)(environment(), !!action), add = TRUE)
+    call = call
   )
 }
 
@@ -86,7 +85,9 @@ exit_handler <- function(action) {
 #'
 #' f(1, 2, 3, foofy = 4)
 #' try(f(1, 2, 3, foof = 4))
-check_dots_unnamed <- function(env = caller_env(), action = abort) {
+check_dots_unnamed <- function(env = caller_env(),
+                               call = caller_env(),
+                               action = abort) {
   proms <- ellipsis_dots(env, auto_name = FALSE)
   if (length(proms) == 0) {
     return()
@@ -103,6 +104,7 @@ check_dots_unnamed <- function(env = caller_env(), action = abort) {
     message = paste0(length(named), " arguments in `...` had unexpected names."),
     dot_names = named,
     class = "rlib_error_dots_named",
+    call = call
   )
 }
 
@@ -129,7 +131,9 @@ check_dots_unnamed <- function(env = caller_env(), action = abort) {
 #'
 #' # Thanks to `...`, it must be matched exactly
 #' f(1, foofy = 4)
-check_dots_empty <- function(env = caller_env(), action = abort) {
+check_dots_empty <- function(env = caller_env(),
+                             call = caller_env(),
+                             action = abort) {
   dots <- ellipsis_dots(env)
   if (length(dots) == 0) {
     return()
@@ -140,7 +144,8 @@ check_dots_empty <- function(env = caller_env(), action = abort) {
     message = "`...` is not empty.",
     dot_names = names(dots),
     note = "These dots only exist to allow future extensions and should be empty.",
-    class = "rlib_error_dots_nonempty"
+    class = "rlib_error_dots_nonempty",
+    call = call
   )
 }
 #' Check that dots are empty (low level variant)
@@ -154,9 +159,9 @@ check_dots_empty <- function(env = caller_env(), action = abort) {
 #' @param ... Dots which should be empty.
 #' @keywords internal
 #' @export
-check_dots_empty0 <- function(...) {
+check_dots_empty0 <- function(..., call = caller_env()) {
   if (nargs()) {
-    check_dots_empty()
+    check_dots_empty(call = call)
   }
 }
 

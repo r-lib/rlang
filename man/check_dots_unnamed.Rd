@@ -4,10 +4,26 @@
 \alias{check_dots_unnamed}
 \title{Check that all dots are unnamed}
 \usage{
-check_dots_unnamed(env = caller_env(), action = abort)
+check_dots_unnamed(env = caller_env(), call = caller_env(), action = abort)
 }
 \arguments{
 \item{env}{Environment in which to look for \code{...}.}
+
+\item{call}{The execution environment of a currently
+running function. When an error occurs, the corresponding
+function call (see \code{\link[=sys.call]{sys.call()}}) is retrieved and stored as
+\code{call} field in the error object to provide users with contextual
+information about the error.
+
+When you are writing an input checker function and need to pass
+along \code{call}, you should generally use \code{caller_env()} as default,
+e.g. \code{call = caller_env()} or \code{error_call = caller_env()}.
+
+Can also be \code{NULL} or a function call to respectively disable the
+contextual call or hard-code it.
+
+See also \code{\link[=local_error_call]{local_error_call()}} for an alternative way of
+providing this information.}
 
 \item{action}{The action to take when the dots have not been used. One of
 \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, \code{\link[=inform]{inform()}} or \code{\link[=signal]{signal()}}.}

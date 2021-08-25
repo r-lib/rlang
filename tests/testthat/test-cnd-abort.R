@@ -283,3 +283,94 @@ test_that("abort() displays call in error prefix", {
     run("rlang::cnd_signal(errorCondition('foo', call = quote(bar(baz))))")
   )
 })
+
+test_that("abort() accepts environment as `call` field.", {
+  arg_require2 <- function(arg, error_call = caller_call()) {
+    arg_require(arg, error_call = error_call)
+  }
+  f <- function(x) g(x)
+  g <- function(x) h(x)
+  h <- function(x) arg_require2(x, error_call = environment())
+
+  expect_snapshot((expect_error(f())))
+})
+
+test_that("format_error_arg() formats argument", {
+  exp <- format_arg("foo")
+
+  expect_equal(format_error_arg("foo"), exp)
+  expect_equal(format_error_arg(sym("foo")), exp)
+  expect_equal(format_error_arg(chr_get("foo", 0L)), exp)
+  expect_equal(format_error_arg(quote(foo())), format_arg("foo()"))
+
+  expect_error(format_error_arg(c("foo", "bar")), "must be a string or an expression")
+  expect_error(format_error_arg(function() NULL), "must be a string or an expression")
+})
+
+test_that("local_error_call() works", {
+  foo <- function() {
+    bar()
+  }
+  bar <- function() {
+    local_error_call(quote(expected()))
+    baz()
+  }
+  baz <- function() {
+    local_error_call("caller")
+    abort("tilt")
+  }
+
+  expect_snapshot((expect_error(foo())))
+})
+
+test_that("can disable error call inference for unexported functions", {
+  foo <- function() abort("foo")
+
+  expect_snapshot({
+    (expect_error(foo()))
+
+    local({
+      local_options("rlang:::restrict_default_error_call" = TRUE)
+      (expect_error(foo()))
+    })
+
+    local({
+      local_options("rlang:::restrict_default_error_call" = TRUE)
+      (expect_error(dots_list(.homonyms = "k")))
+    })
+  })
+})
+
+test_that("error call flag is stripped", {
+  e <- env(.__error_call__. = quote(foo(bar)))
+  expect_equal(error_call(e), quote(foo()))
+})
+
+test_that("NSE doesn't interfere with error call contexts", {
+  # Snapshots shouldn't show `eval()` as context
+  expect_snapshot({
+    (expect_error(local(arg_match0("f", "foo"))))
+    (expect_error(eval_bare(quote(arg_match0("f", "foo")))))
+    (expect_error(eval_bare(quote(arg_match0("f", "foo")), env())))
+  })
+})
+
+test_that("error_call() requires a symbol in function position", {
+  expect_null(error_call(quote(foo$bar())))
+  expect_null(error_call(quote((function() NULL)())))
+  expect_null(error_call(call2(function() NULL)))
+})
+
+test_that("error_call() deals with special syntax (r-lib/testthat#1429)", {
+  call <- quote(if (foobar) TRUE else FALSE)
+
+  expect_equal(
+    error_call(call),
+    quote(if (foobar) ...)
+  )
+
+  expect_equal(
+    format_error_call(call),
+    "`if (foobar) ...`"
+  )
+})

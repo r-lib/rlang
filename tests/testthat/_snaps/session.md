@@ -5,16 +5,19 @@
     Output
       <error/rlang_error>
       The package `_foo` is required.
+      Context: `my_wrapper()`
     Code
       (expect_error(check_installed(c("_foo", "_bar"))))
     Output
       <error/rlang_error>
       The packages `_foo` and `_bar` are required.
+      Context: `my_wrapper()`
     Code
       (expect_error(check_installed(c("_foo", "_bar"), "to proceed.")))
     Output
       <error/rlang_error>
       The packages `_foo` and `_bar` are required to proceed.
+      Context: `my_wrapper()`
 
 # check_installed() checks minimal versions
 

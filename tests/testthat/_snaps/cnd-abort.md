@@ -3,13 +3,13 @@
     Code
       cat_line(default_interactive)
     Output
-      Error: Error message
+      Error in `h()`: Error message
       Run `rlang::last_error()` to see where the error occurred.
       Execution halted
     Code
       cat_line(default_non_interactive)
     Output
-      Error: Error message
+      Error in `h()`: Error message
       Backtrace:
           x
        1. \-global::f()
@@ -21,12 +21,12 @@
     Code
       cat_line(reminder)
     Output
-      Error: Error message
+      Error in `h()`: Error message
       Execution halted
     Code
       cat_line(branch)
     Output
-      Error: Error message
+      Error in `h()`: Error message
       Backtrace:
        1. global::f()
        4. global::g()
@@ -35,7 +35,7 @@
     Code
       cat_line(collapse)
     Output
-      Error: Error message
+      Error in `h()`: Error message
       Backtrace:
           x
        1. \-global::f()
@@ -46,7 +46,7 @@
     Code
       cat_line(full)
     Output
-      Error: Error message
+      Error in `h()`: Error message
       Backtrace:
           x
        1. \-global::f()
@@ -58,13 +58,13 @@
     Code
       cat_line(rethrown_interactive)
     Output
-      Error: Error message
+      Error in `h()`: Error message
       Run `rlang::last_error()` to see where the error occurred.
       Execution halted
     Code
       cat_line(rethrown_non_interactive)
     Output
-      Error: Error message
+      Error in `h()`: Error message
       Backtrace:
           x
        1. +-base::tryCatch(f(), error = function(cnd) rlang::cnd_signal(cnd))
@@ -93,14 +93,14 @@
     Code
       cat_line(branch_depth_1)
     Output
-      Error: foo
+      Error in `f()`: foo
       Backtrace:
        1. global::f()
       Execution halted
     Code
       cat_line(full_depth_1)
     Output
-      Error: foo
+      Error in `f()`: foo
       Backtrace:
           x
        1. \-global::f()
@@ -140,6 +140,7 @@
     Output
       <error/rlang_error>
       foo
+      Context: `h()`
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang:::f()
@@ -151,6 +152,7 @@
     Output
       <error/rlang_error>
       foo
+      Context: `h()`
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang:::f()
@@ -166,6 +168,7 @@
     Output
       <error/rlang_error>
       foo
+      Context: `h()`
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang:::f()
@@ -181,6 +184,7 @@
     Output
       <error/rlang_error>
       foo
+      Context: `h()`
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang:::f()
@@ -245,6 +249,7 @@
       | bar
       \-<error/rlang_error>
         foo
+      Context: `baz()`
       Backtrace:
         1. rlang:::catch_error(...)
        10. rlang:::foo()
@@ -266,4 +271,70 @@
     Output
       Error in `bar()`: foo
       Execution halted
+
+# abort() accepts environment as `call` field.
+
+    Code
+      (expect_error(f()))
+    Output
+      <error/rlang_error>
+      `arg` must be supplied.
+      Context: `h()`
+
+# local_error_call() works
+
+    Code
+      (expect_error(foo()))
+    Output
+      <error/rlang_error>
+      tilt
+      Context: `expected()`
+
+# can disable error call inference for unexported functions
+
+    Code
+      (expect_error(foo()))
+    Output
+      <error/rlang_error>
+      foo
+      Context: `foo()`
+    Code
+      local({
+        local_options(`rlang:::restrict_default_error_call` = TRUE)
+        (expect_error(foo()))
+      })
+    Output
+      <error/rlang_error>
+      foo
+    Code
+      local({
+        local_options(`rlang:::restrict_default_error_call` = TRUE)
+        (expect_error(dots_list(.homonyms = "k")))
+      })
+    Output
+      <error/rlang_error>
+      `.homonyms` must be one of "keep", "first", "last", or "error", not "k".
+      i Did you mean "keep"?
+      Context: `dots_list()`
+
+# NSE doesn't interfere with error call contexts
+
+    Code
+      (expect_error(local(arg_match0("f", "foo"))))
+    Output
+      <error/rlang_error>
+      `f` must be one of "foo", not "f".
+      i Did you mean "foo"?
+    Code
+      (expect_error(eval_bare(quote(arg_match0("f", "foo")))))
+    Output
+      <error/rlang_error>
+      `f` must be one of "foo", not "f".
+      i Did you mean "foo"?
+    Code
+      (expect_error(eval_bare(quote(arg_match0("f", "foo")), env())))
+    Output
+      <error/rlang_error>
+      `f` must be one of "foo", not "f".
+      i Did you mean "foo"?
 

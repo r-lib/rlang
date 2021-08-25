@@ -38,11 +38,6 @@ const char* dots_ignore_empty_c_values[DOTS_IGNORE_EMPTY_SIZE] = {
 #include "decl/dots-decl.h"
 
 
-static inline
-r_obj* r_as_label(r_obj* x) {
-  return r_eval_with_x(as_label_call, x, rlang_ns_env);
-}
-
 r_obj* new_splice_box(r_obj* x) {
   r_obj* out = KEEP(r_alloc_list(1));
   r_list_poke(out, 0, x);
@@ -539,7 +534,7 @@ r_obj* dots_unquote(r_obj* dots, struct dots_capture_info* capture_info) {
 
 static
 enum dots_ignore_empty arg_match_ignore_empty(r_obj* ignore_empty) {
-  return r_arg_match(ignore_empty, dots_ignore_empty_values, dots_ignore_empty_arg);
+  return r_arg_match(ignore_empty, dots_ignore_empty_values, dots_ignore_empty_arg, r_missing_arg);
 }
 
 static
@@ -552,7 +547,7 @@ const char* dots_homonyms_c_values[DOTS_HOMONYMS_SIZE] = {
 
 static
 enum dots_homonyms arg_match_homonyms(r_obj* homonyms) {
-  return r_arg_match(homonyms, dots_homonyms_values, dots_homonyms_arg);
+  return r_arg_match(homonyms, dots_homonyms_values, dots_homonyms_arg, r_missing_arg);
 }
 
 static
@@ -735,8 +730,21 @@ void dots_check_homonyms(r_obj* dots, r_obj* nms) {
   r_obj* dups = KEEP(nms_are_duplicated(nms, false));
 
   if (r_lgl_sum(dups, false)) {
-    r_eval_with_xy(abort_dots_homonyms_call, dots, dups, r_envs.base);
-    r_abort("Internal error: `dots_check_homonyms()` should have failed earlier");
+    // Forward `error_call` to caller context since this is the one
+    // that determines the homonyms constraints for its users
+    r_obj* env = KEEP(r_peek_frame());
+    env = KEEP(r_caller_env(env));
+
+    struct r_pair args[] = {
+      { r_sym("dots"), dots },
+      { r_sym("dups"), dups }
+    };
+    r_exec_n(r_null,
+             r_sym("abort_dots_homonyms"),
+             args,
+             R_ARR_SIZEOF(args),
+             env);
+    r_stop_unreached("dots_check_homonyms");
   }
 
   FREE(1);
@@ -1082,10 +1090,6 @@ void rlang_init_dots(r_obj* ns) {
     FREE(1);
   }
 
-  as_label_call = r_parse("as_label(x)");
-  r_preserve(as_label_call);
-
-
   dots_ignore_empty_values = r_chr_n(dots_ignore_empty_c_values, DOTS_IGNORE_EMPTY_SIZE);
   r_preserve_global(dots_ignore_empty_values);
 
@@ -1096,7 +1100,6 @@ void rlang_init_dots(r_obj* ns) {
   dots_homonyms_arg = r_sym(".homonyms");
 }
 
-static r_obj* as_label_call = NULL;
 static r_obj* auto_name_call = NULL;
 static r_obj* empty_spliced_arg = NULL;
 static r_obj* glue_unquote_fn = NULL;

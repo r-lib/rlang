@@ -85,6 +85,7 @@ check_installed <- function(pkg,
                             ...,
                             version = NULL) {
   check_dots_empty0(...)
+  .__error_call__. <- "caller"
 
   if (!is_character(pkg)) {
     abort("`pkg` must be a package name or a vector of package names.")

@@ -5,6 +5,8 @@ test_that("is_installed() properly checks multiple packages", {
 test_that("check_installed() fails if packages are not installed", {
   local_options(rlang_interactive = FALSE)
 
+  .__error_call__. <- quote(my_wrapper())
+
   expect_snapshot({
     (expect_error(check_installed("_foo")))
     (expect_error(check_installed(c("_foo", "_bar"))))

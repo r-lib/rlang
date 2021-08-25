@@ -48,6 +48,7 @@ void rlang_init_internal(r_obj* ns) {
   rlang_init_utils();
   rlang_init_arg(ns);
   rlang_init_attr(ns);
+  rlang_init_cnd(ns);
   rlang_init_dots(ns);
   rlang_init_expr_interp();
   rlang_init_eval_tidy();

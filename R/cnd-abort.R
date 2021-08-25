@@ -98,9 +98,7 @@
 #' @param class Subclass of the condition. This allows your users
 #'   to selectively handle the conditions signalled by your functions.
 #' @param ... Additional data to be stored in the condition object.
-#' @param call A call representing the context in which the error
-#'   occurred. If present, `abort()` displays the call (stripped from
-#'   its arguments to keep it simple) before `message`.
+#' @inheritParams args_error_context
 #' @param .file A connection or a string specifying where to print the
 #'   message. The default depends on the context, see the `stdout` vs
 #'   `stderr` section.
@@ -170,7 +168,7 @@
 abort <- function(message = NULL,
                   class = NULL,
                   ...,
-                  call = NULL,
+                  call,
                   trace = NULL,
                   parent = NULL,
                   .file = NULL,
@@ -200,7 +198,20 @@ abort <- function(message = NULL,
   message <- validate_signal_message(message, class)
   message <- rlang_format_error(message, caller_env())
 
-  cnd <- error_cnd(class,
+  # Don't record call by default when supplied a parent because it
+  # probably means that we are called from a condition handler
+  if (is_missing(call)) {
+    if (is_null(parent)) {
+      call <- default_error_call(caller_env())
+    } else {
+      call <- NULL
+    }
+  } else {
+    call <- error_call(call)
+  }
+
+  cnd <- error_cnd(
+    class,
     ...,
     message = message,
     call = call,
@@ -208,6 +219,37 @@ abort <- function(message = NULL,
     trace = trace
   )
   signal_abort(cnd, .file)
+}
+
+# Private option to disable default error call except for exported
+# functions
+default_error_call <- function(env) {
+  call <- error_call(env)
+
+  opt <- peek_option("rlang:::restrict_default_error_call") %||% FALSE
+  if (is_false(opt)) {
+    return(call)
+  }
+
+  if (!is_call(call)) {
+    return(call)
+  }
+
+  fn <- call[[1]]
+  if (!is_symbol(fn)) {
+    return(call)
+  }
+  fn <- as_string(fn)
+
+  top <- topenv(env)
+  if (!is_namespace(top)) {
+    return(NULL)
+  }
+  if (!ns_exports_has(top, fn)) {
+    return(NULL)
+  }
+
+  call
 }
 
 signal_abort <- function(cnd, file = NULL) {
@@ -246,6 +288,367 @@ signal_abort <- function(cnd, file = NULL) {
   # printing to avoid printing the error twice.
   local_options(show.error.messages = FALSE)
   stop(fallback)
+}
+
+#' Set local error call in an execution environment
+#'
+#' `local_error_call()` is an alternative to explicitly passing a
+#' `call` argument to [abort()]. It sets the call (or a value that
+#' indicates where to find the call, see below) in a local binding
+#' that is automatically picked up by [abort()].
+#'
+#' @param call This can be:
+#'
+#'   - A call to be used as context for an error thrown in that
+#'     execution environment.
+#'
+#'   - The `NULL` value to show no context.
+#'
+#'   - An execution environment, e.g. as returned by [caller_env()].
+#'     The [sys.call()] for that environment is taken as context.
+#' @param frame The execution environment in which to set the local
+#'   error call.
+#'
+#' @section Motivation for setting local error calls:
+#'
+#' By default [abort()] uses the function call of its caller as
+#' context in error messages:
+#'
+#' ```
+#' foo <- function() abort("Uh oh.")
+#' foo()
+#' #> Error in `foo()`: Uh oh.
+#' ```
+#'
+#' This is not always appropriate. For example a function that checks
+#' an input on the behalf of another function should reference the
+#' latter, not the former:
+#'
+#' ```
+#' arg_check <- function(arg,
+#'                       error_arg = as_string(substitute(arg))) {
+#'   abort(cli::format_error("{.arg {error_arg}} is failing."))
+#' }
+#'
+#' foo <- function(x) arg_check(x)
+#' foo()
+#' #> Error in `arg_check()`: `x` is failing.
+#' ```
+#'
+#' The mismatch is clear in the example above. `arg_check()` does not
+#' have any `x` argument and so it is confusing to present
+#' `arg_check()` as being the relevant context for the failure of the
+#' `x` argument.
+#'
+#' One way around this is to take a `call` or `error_call` argument
+#' and pass it to `abort()`. Here we name this argument `error_call`
+#' for consistency with `error_arg` which is prefixed because there is
+#' an existing `arg` argument. In other situations, taking `arg` and
+#' `call` arguments might be appropriate.
+#'
+#' ```
+#' arg_check <- function(arg,
+#'                       error_arg = as_string(substitute(arg)),
+#'                       error_call = caller_env()) {
+#'   abort(
+#'     cli::format_error("{.arg {error_arg}} is failing."),
+#'     call = error_call
+#'   )
+#' }
+#'
+#' foo <- function(x) arg_check(x)
+#' foo()
+#' #> Error in `foo()`: `x` is failing.
+#' ```
+#'
+#' This is the generally recommended pattern for argument checking
+#' functions. If you mention an argument in an error message, provide
+#' your callers a way to supply a different argument name and a
+#' different error call. `abort()` stores the error call in the `call`
+#' condition field which is then used to generate the "in" part of
+#' error messages.
+#'
+#' In more complex cases it's often burdensome to pass the relevant
+#' call around, for instance if your checking and throwing code is
+#' structured into many different functions. In this case, use
+#' `local_error_call()` to set the call locally or instruct `abort()`
+#' to climb the call stack one level to find the relevant call. In the
+#' following example, the complexity is not so important that sparing
+#' the argument passing makes a big difference. However this
+#' illustrates the pattern:
+#'
+#' ```
+#' arg_check <- function(arg,
+#'                       error_arg = caller_arg(arg),
+#'                       error_call = caller_env()) {
+#'   # Set the local error call
+#'   local_error_call(error_call)
+#'
+#'   my_classed_stop(
+#'     cli::format_error("{.arg {error_arg}} is failing.")
+#'   )
+#' }
+#'
+#' my_classed_stop <- function(message) {
+#'   # Forward the local error call to the caller's
+#'   local_error_call(caller_env())
+#'
+#'   abort(message, class = "my_class")
+#' }
+#'
+#' foo <- function(x) arg_check(x)
+#' foo()
+#' #> Error in `foo()`: `x` is failing.
+#' ```
+#'
+#' @section Error call flags in performance-critical functions:
+#'
+#' The `call` argument can also be the string `"caller"`. This is
+#' equivalent to `caller_env()` or `parent.frame()` but has a lower
+#' overhead because call stack introspection is only performed when an
+#' error is triggered. Note that eagerly calling `caller_env()` is
+#' fast enough in almost all cases.
+#'
+#' If your function needs to be really fast, assign the error call
+#' flag directly instead of calling `local_error_flag()`:
+#'
+#' ```
+#' .__error_call__. <- "caller"
+#' ```
+#' 
+#' @examples
+#' # Set a context for error messages
+#' function() {
+#'   local_error_call(quote(foo()))
+#'   local_error_call(sys.call())
+#' }
+#'
+#' # Disable the context
+#' function() {
+#'   local_error_call(NULL)
+#' }
+#'
+#' # Use the caller's context
+#' function() {
+#'   local_error_call(caller_env())
+#' }
+#' @export
+local_error_call <- function(call, frame = caller_env()) {
+  if (!is_string(call, "caller") && !typeof(call) %in% c("environment", "NULL", "language")) {
+    abort(sprintf("`call` can't be %s.", friendly_type_of(call)))
+  }
+
+  old <- frame$.__error_call__.
+  frame$.__error_call__. <- call
+
+  old
+}
+
+#' Documentation anchor for error arguments
+#'
+#' @description
+#'
+#' Use `@inheritParams rlang::args_error_context` in your package to
+#' document `arg` and `call` arguments (or equivalently their prefixed
+#' versions `error_arg` and `error_call`).
+#'
+#' - `arg` parameters should be formatted as argument (e.g. using
+#'   cli's `.arg` specifier) and included in error messages. See also
+#'   [caller_arg()].
+#'
+#' - `call` parameters should be included in error conditions in a
+#'   field named `call`. An easy way to do this is by passing a `call`
+#'   argument to [abort()]. See also [local_error_call()].
+#'
+#' @param arg,error_arg An argument name as a string. This argument
+#'   will be mentioned in error messages as the input that is at the
+#'   origin of a problem.
+#' @param call,error_call The execution environment of a currently
+#'   running function. When an error occurs, the corresponding
+#'   function call (see [sys.call()]) is retrieved and stored as
+#'   `call` field in the error object to provide users with contextual
+#'   information about the error.
+#'
+#'   When you are writing an input checker function and need to pass
+#'   along `call`, you should generally use `caller_env()` as default,
+#'   e.g. `call = caller_env()` or `error_call = caller_env()`.
+#'
+#'   Can also be `NULL` or a function call to respectively disable the
+#'   contextual call or hard-code it.
+#'
+#'   See also [rlang::local_error_call()] for an alternative way of
+#'   providing this information.
+#'
+#' @name args_error_context
+NULL
+
+#' Find the caller argument for error messages
+#'
+#' @description
+#'
+#' `caller_arg()` is a variant of `substitute()` or [ensym()] for
+#' arguments that reference other arguments. Unlike `substitute()`
+#' which returns any expression, the referenced argument must be a
+#' symbol, otherwise this is an error. That symbol is then returned as
+#' a string ready to be included in error messages.
+#'
+#' - When included in an error message, the resulting name should
+#'   generally be formatted as argument, for instance using the `.arg`
+#'   in the cli package.
+#'
+#' - Use `@inheritParams rlang::args_error_context` to document an
+#'   `arg` or `error_arg` argument that takes `error_arg()` as default.
+#'
+#' @param arg An argument name in the current function.
+#' @usage NULL
+#'
+#' @examples
+#' arg_checker <- function(x, arg = caller_arg(x), call = caller_env()) {
+#'   cli::cli_abort("{.arg arg} must be a thingy.", call = call)
+#' }
+#'
+#' my_function <- function(my_arg) {
+#'   arg_checker(my_arg)
+#' }
+#'
+#' try(my_function(NULL))
+#' @export
+caller_arg <- function(arg) {
+  arg <- substitute(arg)
+  if (!is_symbol(arg)) {
+    abort(sprintf(
+      "%s must be an argument name.",
+      format_arg("arg")
+    ))
+  }
+
+  expr <- do.call(substitute, list(arg), envir = caller_env())
+  if (!is_symbol(expr)) {
+    abort(sprintf(
+      "%s must be an argument name.",
+      format_arg(as_string(arg))
+    ))
+  }
+
+  as_string(expr)
+}
+
+#' Validate and format a function call for use in error messages
+#'
+#' @description
+#'
+#' - `format_error_call()` passes its input to `error_call()` and
+#'   formats the result as code (using cli if available). Use this
+#'   function if you are generating the "in" part of an error message
+#'   from a stack frame call.
+#'
+#' - `error_call()` creates a function call ready to be used as the
+#'   `call` field of error conditions. This field is displayed by
+#'   [stop()] and [abort()] to give context to an error message.
+#'
+#'   If passed a function call, the arguments are stripped. Complex
+#'   function calls containing inlined objects return `NULL`. If
+#'   passed an environment, the corresponding `sys.call()` is taken as
+#'   call, unless there is a local flag (see [local_error_call()]).
+#'
+#' @inheritParams args_error_context
+#' @return Either a string formatted as code or `NULL` if `call` or
+#'   the result of `error_call(call)` is `NULL`.
+#'
+#' @keywords internal
+#'
+#' @examples
+#' # Arguments are stripped
+#' error_call(quote(foo(bar, baz)))
+#' writeLines(format_error_call(quote(foo(bar, baz))))
+#'
+#' # Returns `NULL` with complex calls such as those that contain
+#' # inlined functions
+#' error_call(call2(list))
+#' @export
+error_call <- function(call) {
+  while (is_environment(call)) {
+    flag <- error_flag(call)
+
+    if (is_null(flag) || is_call(flag)) {
+      call <- flag
+      break
+    }
+
+    if (is_environment(flag)) {
+      call <- flag
+      next
+    }
+
+    if (is_string(flag, "caller")) {
+      call <- eval_bare(call2(caller_env), call)
+      next
+    }
+
+    call <- caller_call(call)
+    break
+  }
+
+  if (!is_call(call)) {
+    return(NULL)
+  }
+
+  # Functions that forward their error context to their caller
+  # shouldn't generally be called via NSE but there are exceptions,
+  # such as testthat snapshots.
+  #
+  # - `do.call()` or `eval_bare()` shouldn't generally cause issues. If
+  #   the environment exists on the stack, we find its `sys.call()`. If
+  #   it doesn't exist, taking its `sys.call()` returns `NULL` which
+  #   disables the error context.
+  #
+  # - On the other hand, `eval()` always creates a specific frame for
+  #   all environments and the `sys.call()` for that frame is `eval()`.
+  #   It wouldn't be useful to display this as the context so calls to
+  #   `eval()` and `evalq()` are replaced by `NULL`.
+  if (is_call(call, c("eval", "evalq"))) {
+    return(NULL)
+  }
+
+  # Deal with `if` bombs. Keep the condition as it is informative but
+  # drop the branches to avoid multiline calls. See
+  # https://github.com/r-lib/testthat/issues/1429
+  if (is_call(call, "if")) {
+    call[[3]] <- quote(...)
+    return(call[1:3])
+  }
+
+  # Deal with remaining special-syntax calls
+  if (!is_string(call_print_fine_type(call), "call")) {
+    return(NULL)
+  }
+
+  if (!is_symbol(call[[1]])) {
+    return(NULL)
+  }
+
+  # Remove distracting arguments from the call
+  call[1]
+}
+#' @rdname error_call
+#' @export
+format_error_call <- function(call) {
+  call <- error_call(call)
+  if (is_null(call)) {
+    return(NULL)
+  }
+
+  format_code(as_label(call))
+}
+
+error_flag <- function(env, top = topenv(env)) {
+  env_get(
+    env,
+    ".__error_call__.",
+    default = TRUE,
+    inherit = FALSE,
+    last = top
+  )
 }
 
 #' Create unhandled condition

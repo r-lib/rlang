@@ -40,6 +40,7 @@ struct r_globals_strs {
 };
 
 struct r_globals_syms {
+  r_obj* abort;
   r_obj* class;
   r_obj* condition;
   r_obj* dots;

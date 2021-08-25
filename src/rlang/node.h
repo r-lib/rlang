@@ -29,6 +29,8 @@ r_obj* r_new_node3(r_obj* car, r_obj* cdr, r_obj* tag) {
   return out;
 }
 
+r_obj* r_new_pairlist(const struct r_pair* args, int n, r_obj** tail);
+
 #define r_pairlist Rf_list1
 #define r_pairlist2 Rf_list2
 #define r_pairlist3 Rf_list3

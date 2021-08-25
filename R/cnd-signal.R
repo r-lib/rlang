@@ -66,7 +66,6 @@ cnd_signal <- function(cnd, ...) {
       signalCondition(cnd)
     ))
   )
-  
 }
 validate_cnd_signal_args <- function(cnd,
                                      ...,
@@ -236,15 +235,22 @@ validate_signal_message <- function(msg, class) {
 warning_freq_env <- new.env(parent = emptyenv())
 message_freq_env <- new.env(parent = emptyenv())
 
-peek_verbosity <- function(opt) {
-  out <- peek_option(opt) %||% "default"
-  out <- arg_match0(out, c("default", "verbose", "quiet"), opt)
-  out
+peek_verbosity <- function(opt, error_call) {
+  arg_match0(
+    peek_option(opt) %||% "default",
+    c("default", "verbose", "quiet"),
+    opt,
+    error_call = error_call
+  )
 }
 
-needs_signal <- function(frequency, id, env, opt) {
+needs_signal <- function(frequency,
+                         id,
+                         env,
+                         opt,
+                         error_call = caller_env(2)) {
   switch(
-    peek_verbosity(opt),
+    peek_verbosity(opt, error_call),
     verbose = return(TRUE),
     quiet = return(FALSE),
     default = NULL

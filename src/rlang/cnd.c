@@ -48,6 +48,12 @@ void r_abort(const char* fmt, ...) {
   while (1); // No return
 }
 
+__attribute__((noreturn))
+void r_abort_n(const struct r_pair* args, int n) {
+  r_exec_mask_n(r_null, r_syms.abort, args, n, r_envs.ns);
+  r_stop_unreached("r_abort_n");
+}
+
 void r_cnd_signal(r_obj* cnd) {
   r_eval_with_x(cnd_signal_call, cnd, r_envs.base);
 }
@@ -151,14 +157,18 @@ void r_init_library_cnd() {
   wng_call = r_parse("warning(x, call. = FALSE)");
   r_preserve(wng_call);
 
-  err_call = r_parse("rlang::abort(x)");
+  err_call = r_parse("rlang::abort(x, call = NULL)");
   r_preserve(err_call);
 
   cnd_signal_call = r_parse("rlang::cnd_signal(x)");
   r_preserve(cnd_signal_call);
 
   r_stop_internal = (__attribute__((noreturn)) void (*)(const char*, const char*, ...)) R_GetCCallable("rlang", "rlang_stop_internal");
+
+  r_format_error_arg = (const char* (*)(r_obj*)) r_peek_c_callable("rlang", "rlang_format_error_arg");
 }
 
 static
 r_obj* cnd_signal_call = NULL;
+
+const char* (*r_format_error_arg)(r_obj* arg) = NULL;

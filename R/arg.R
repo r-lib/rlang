@@ -13,6 +13,9 @@
 #' [caller frame][caller_frame].
 #'
 #' @param arg A symbol referring to an argument accepting strings.
+#' @param values A character vector of possible values that `arg` can take.
+#' @param ... These dots are for future extensions and must be empty.
+#' @inheritParams args_error_context
 #' @return The string supplied to `arg`.
 #' @importFrom utils adist
 #' @seealso [arg_require()]
@@ -24,28 +27,45 @@
 #' # Throws an informative error for mismatches:
 #' try(fn("b"))
 #' try(fn("baz"))
-arg_match <- function(arg, values = NULL) {
+arg_match <- function(arg,
+                      values = NULL,
+                      ...,
+                      error_arg = caller_arg(arg),
+                      error_call = caller_env()) {
+  check_dots_empty()
+
   arg_expr <- enexpr(arg)
   if (!is_symbol(arg_expr)) {
-    abort("Internal error: `arg_match()` expects a symbol")
+    stop_internal(sprintf("%s must be a symbol.", format_arg("arg")))
   }
 
-  arg_nm <- as_string(arg_expr)
+  error_arg <- as_string(error_arg)
 
   if (is_null(values)) {
     fn <- caller_fn()
-    values <- fn_fmls(fn)[[arg_nm]]
+    values <- fn_fmls(fn)[[error_arg]]
     values <- eval_bare(values, get_env(fn))
   }
   if (!is_character(arg)) {
-    abort(sprintf("%s must be a character vector.", format_arg(arg_nm)))
+    abort(
+      sprintf("%s must be a character vector.", format_arg(error_arg)),
+      call = error_call
+    )
   }
   if (length(arg) > 1 && !setequal(arg, values)) {
-    abort(arg_match_invalid_msg(arg, values, arg_nm))
+    abort(
+      arg_match_invalid_msg(arg, values, error_arg),
+      call = error_call
+    )
   }
 
   arg <- arg[[1]]
-  arg_match0(arg, values, arg_nm)
+  arg_match0(
+    arg,
+    values,
+    error_arg,
+    error_call = error_call
+  )
 }
 
 #' @description
@@ -55,10 +75,8 @@ arg_match <- function(arg, values = NULL) {
 #' every element of `values`, possibly permuted.
 #' In this case, the first element of `arg` is used.
 #'
-#' @param values A character vector of possible values that `arg` can take.
-#' @param arg_nm Argument name of `arg` to use in error messages. Can
-#'   be a string or symbol.
 #' @rdname arg_match
+#' @param arg_nm Same as `error_arg`.
 #' @export
 #' @examples
 #'
@@ -72,12 +90,28 @@ arg_match <- function(arg, values = NULL) {
 #' fn1()
 #' fn2("bar")
 #' try(fn3("zoo"))
-arg_match0 <- function(arg, values, arg_nm = substitute(arg)) {
-  .External(ffi_arg_match0, arg, values, arg_nm)
+arg_match0 <- function(arg,
+                       values,
+                       arg_nm = arg[[1]],
+                       error_call = caller_env()) {
+  .External(ffi_arg_match0, arg, values, arg_nm, error_call)
 }
 
-stop_arg_match <- function(arg, values, arg_nm) {
-  msg <- arg_match_invalid_msg(arg, values, arg_nm)
+stop_arg_match <- function(arg, values, error_arg, error_call) {
+  if (length(arg) > 1) {
+    sorted_arg <- sort(unique(arg))
+    sorted_values <- sort(unique(values))
+    if (!identical(sorted_arg, sorted_values)) {
+      msg <- sprintf(
+        "%s must be length 1 or a permutation of %s.",
+        format_arg("arg"),
+        format_arg("values")
+      )
+      abort(msg, call = quote(arg_match()))
+    }
+  }
+
+  msg <- arg_match_invalid_msg(arg, values, error_arg)
 
   # Try suggest the most probable and helpful candidate value
   candidate <- NULL
@@ -106,17 +140,17 @@ stop_arg_match <- function(arg, values, arg_nm) {
     msg <- c(msg, i = paste0("Did you mean ", candidate, "?"))
   }
 
-  abort(msg)
+  abort(msg, call = error_call)
 }
 
-arg_match_invalid_msg <- function(arg, values, arg_nm) {
-  msg <- paste0(format_arg(arg_nm), " must be one of ")
+arg_match_invalid_msg <- function(val, values, error_arg) {
+  msg <- paste0(format_arg(error_arg), " must be one of ")
   msg <- paste0(msg, chr_enumerate(chr_quoted(values, "\"")))
 
-  if (is_null(arg)) {
+  if (is_null(val)) {
     msg <- paste0(msg, ".")
   } else {
-    msg <- paste0(msg, sprintf(', not "%s\".', arg))
+    msg <- paste0(msg, sprintf(', not "%s\".', val[[1]]))
   }
 
   msg
@@ -125,6 +159,8 @@ arg_match_invalid_msg <- function(arg, values, arg_nm) {
 #' Check that argument is supplied
 #' Throws an informative error if `arg` is missing.
 #' @param arg A function argument. Must be a symbol.
+#' @inheritParams args_error_context
+#'
 #' @seealso [arg_match()]
 #' @examples
 #' f <- function(x)  {
@@ -137,33 +173,20 @@ arg_match_invalid_msg <- function(arg, values, arg_nm) {
 #' # Succeeds
 #' f(NULL)
 #' @export
-arg_require <- function(arg) {
+arg_require <- function(arg,
+                        error_arg = caller_arg(arg),
+                        error_call = caller_env()) {
   if (!missing(arg)) {
     invisible(return(TRUE))
   }
 
   arg_expr <- substitute(arg)
   if (!is_symbol(arg_expr)) {
-    abort("Internal error: `arg_require()` expects a symbol.")
-  }
-  arg <- as_string(arg_expr)
-
-  call <- sys.calls()[[sys.parent()]]
-  if (is_call(call) && is_symbol(call[[1]])) {
-    fn <- as_string(call[[1]])
-    msg <- sprintf(
-      "%s requires the argument %s to be supplied.",
-      mark_fn(fn),
-      mark_arg(arg)
-    )
-  } else {
-    msg <- sprintf(
-      "The argument %s must be supplied.",
-      mark_arg(arg)
-    )
+    abort(sprintf("%s must be an argument name.", format_arg("arg")))
   }
 
-  abort(format_error(msg))
+  msg <- sprintf("%s must be supplied.", format_arg(error_arg))
+  abort(msg, call = error_call)
 }
 
 chr_quoted <- function(chr, type = "`") {

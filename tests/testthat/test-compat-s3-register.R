@@ -1,7 +1,7 @@
 test_that("can register for generics that don't exist", {
   withr::with_envvar(c(NOT_CRAN = ""), {
     expect_silent(
-      s3_register("base::foobarbaz", "class", method = function(...) NULL)
+      s3_register("testthat::foobarbaz", "class", method = function(...) NULL)
     )
   })
 
@@ -10,7 +10,7 @@ test_that("can register for generics that don't exist", {
 
   withr::with_envvar(c(NOT_CRAN = "true"), {
     expect_snapshot({
-      (expect_warning(s3_register("base::foobarbaz", "class", method = function(...) NULL)))
+      (expect_warning(s3_register("testthat::foobarbaz", "class", method = function(...) NULL)))
     })
   })
 })

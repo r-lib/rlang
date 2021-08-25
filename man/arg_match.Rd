@@ -5,17 +5,44 @@
 \alias{arg_match0}
 \title{Match an argument to a character vector}
 \usage{
-arg_match(arg, values = NULL)
+arg_match(
+  arg,
+  values = NULL,
+  ...,
+  error_arg = caller_arg(arg),
+  error_call = caller_env()
+)
 
-arg_match0(arg, values, arg_nm = substitute(arg))
+arg_match0(arg, values, arg_nm = arg[[1]], error_call = caller_env())
 }
 \arguments{
 \item{arg}{A symbol referring to an argument accepting strings.}
 
 \item{values}{A character vector of possible values that \code{arg} can take.}
 
-\item{arg_nm}{Argument name of \code{arg} to use in error messages. Can
-be a string or symbol.}
+\item{...}{These dots are for future extensions and must be empty.}
+
+\item{error_arg}{An argument name as a string. This argument
+will be mentioned in error messages as the input that is at the
+origin of a problem.}
+
+\item{error_call}{The execution environment of a currently
+running function. When an error occurs, the corresponding
+function call (see \code{\link[=sys.call]{sys.call()}}) is retrieved and stored as
+\code{call} field in the error object to provide users with contextual
+information about the error.
+
+When you are writing an input checker function and need to pass
+along \code{call}, you should generally use \code{caller_env()} as default,
+e.g. \code{call = caller_env()} or \code{error_call = caller_env()}.
+
+Can also be \code{NULL} or a function call to respectively disable the
+contextual call or hard-code it.
+
+See also \code{\link[=local_error_call]{local_error_call()}} for an alternative way of
+providing this information.}
+
+\item{arg_nm}{Same as \code{error_arg}.}
 }
 \value{
 The string supplied to \code{arg}.

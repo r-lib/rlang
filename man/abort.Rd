@@ -12,7 +12,7 @@ abort(
   message = NULL,
   class = NULL,
   ...,
-  call = NULL,
+  call,
   trace = NULL,
   parent = NULL,
   .file = NULL,
@@ -61,9 +61,21 @@ to selectively handle the conditions signalled by your functions.}
 
 \item{...}{Additional data to be stored in the condition object.}
 
-\item{call}{A call representing the context in which the error
-occurred. If present, \code{abort()} displays the call (stripped from
-its arguments to keep it simple) before \code{message}.}
+\item{call}{The execution environment of a currently
+running function. When an error occurs, the corresponding
+function call (see \code{\link[=sys.call]{sys.call()}}) is retrieved and stored as
+\code{call} field in the error object to provide users with contextual
+information about the error.
+
+When you are writing an input checker function and need to pass
+along \code{call}, you should generally use \code{caller_env()} as default,
+e.g. \code{call = caller_env()} or \code{error_call = caller_env()}.
+
+Can also be \code{NULL} or a function call to respectively disable the
+contextual call or hard-code it.
+
+See also \code{\link[=local_error_call]{local_error_call()}} for an alternative way of
+providing this information.}
 
 \item{trace}{A \code{trace} object created by \code{\link[=trace_back]{trace_back()}}.}
 

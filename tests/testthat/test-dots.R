@@ -306,6 +306,9 @@ test_that("`.ignore_empty` is matched", {
   # Tests the `r_arg_match()` library function
   expect_snapshot({
     (expect_error(dots_list(.ignore_empty = "t")))
+
+    foo <- function() dots_list(.ignore_empty = "t")
+    (expect_error(foo()))
   })
 })
 
