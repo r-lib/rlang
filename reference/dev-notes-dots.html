@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create pairlists with splicing support — pairlist2 • rlang</title>
+<title>Development notes - dots.R — dev-notes-dots • rlang</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,8 @@
 
 
 
-<meta property="og:title" content="Create pairlists with splicing support — pairlist2" />
-<meta property="og:description" content="This pairlist constructor uses dynamic dots. Use
-it to manually create argument lists for calls or parameter lists
-for functions." />
+<meta property="og:title" content="Development notes - dots.R — dev-notes-dots" />
+<meta property="og:description" content="Development notes - dots.R" />
 
 
 
@@ -152,45 +150,40 @@ for functions." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create pairlists with splicing support</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/call.R'><code>R/call.R</code></a></small>
-    <div class="hidden name"><code>pairlist2.Rd</code></div>
+    <h1>Development notes - <code>dots.R</code></h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/dots.R'><code>R/dots.R</code></a></small>
+    <div class="hidden name"><code>dev-notes-dots.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This pairlist constructor uses <a href='dyn-dots.html'>dynamic dots</a>. Use
-it to manually create argument lists for calls or parameter lists
-for functions.</p>
+    <p>Development notes - <code>dots.R</code></p>
     </div>
 
-    <pre class="usage"><span class='fu'>pairlist2</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre>
-
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>...</th>
-      <td><p>&lt;<a href='dyn-dots.html'>dynamic</a>&gt; Arguments stored in the
-pairlist. Empty arguments are preserved.</p></td>
-    </tr>
-    </table>
 
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Unlike `exprs()`, `pairlist2()` evaluates its arguments.</span>
-<span class='fu'><a href='new_function.html'>new_function</a></span><span class='op'>(</span><span class='fu'>pairlist2</span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>1</span>, y <span class='op'>=</span> <span class='fl'>3</span> <span class='op'>*</span> <span class='fl'>6</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>x</span> <span class='op'>*</span> <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; function (x = 1, y = 18) 
-#&gt; x * y
-#&gt; &lt;environment: 0x7fc0f6138a78&gt;</div><div class='input'><span class='fu'><a href='new_function.html'>new_function</a></span><span class='op'>(</span><span class='fu'><a href='nse-defuse.html'>exprs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>1</span>, y <span class='op'>=</span> <span class='fl'>3</span> <span class='op'>*</span> <span class='fl'>6</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>x</span> <span class='op'>*</span> <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; function (x = 1, y = 3 * 6) 
-#&gt; x * y
-#&gt; &lt;environment: 0x7fc0f6138a78&gt;</div><div class='input'>
-<span class='co'># It preserves missing arguments, which is useful for creating</span>
-<span class='co'># parameters without defaults:</span>
-<span class='fu'><a href='new_function.html'>new_function</a></span><span class='op'>(</span><span class='fu'>pairlist2</span><span class='op'>(</span>x <span class='op'>=</span> , y <span class='op'>=</span> <span class='fl'>3</span> <span class='op'>*</span> <span class='fl'>6</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>x</span> <span class='op'>*</span> <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; function (x, y = 18) 
-#&gt; x * y
-#&gt; &lt;environment: 0x7fc0f6138a78&gt;</div></pre>
+    <h2 class="hasAnchor" id="-error-call-flag-in-dots-collectors"><a class="anchor" href="#-error-call-flag-in-dots-collectors"></a><code>.__error_call__.</code> flag in dots collectors</h2>
+
+    
+
+
+<p>Dots collectors like <code><a href='list2.html'>dots_list()</a></code> are a little tricky because they
+may error out in different situations. Do we want to forward the
+context, i.e. set the call flag to the calling environment?
+Collectors throw errors in these cases:</p><ol>
+<li><p>While checking their own parameters, in which case the relevant
+context is the collector itself and we don't forward.</p></li>
+<li><p>While collecting the dots, during evaluation of the supplied
+arguments. In this case forwarding or not is irrelevant because
+expressions in <code>...</code> are evaluated in their own environment
+which is not connected to the collector's context.</p></li>
+<li><p>While collecting the dots, during argument constraints checks
+such as determined by the <code>.homonyms</code> argument. In this case we
+want to forward the context because the caller of the dots
+collector is the one who determines the constraints for its
+users.</p></li>
+</ol>
+
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

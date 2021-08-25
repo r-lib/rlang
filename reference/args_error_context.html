@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create pairlists with splicing support — pairlist2 • rlang</title>
+<title>Documentation anchor for error arguments — args_error_context • rlang</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,18 @@
 
 
 
-<meta property="og:title" content="Create pairlists with splicing support — pairlist2" />
-<meta property="og:description" content="This pairlist constructor uses dynamic dots. Use
-it to manually create argument lists for calls or parameter lists
-for functions." />
+<meta property="og:title" content="Documentation anchor for error arguments — args_error_context" />
+<meta property="og:description" content="Use @inheritParams rlang::args_error_context in your package to
+document arg and call arguments (or equivalently their prefixed
+versions error_arg and error_call).
+arg parameters should be formatted as argument (e.g. using
+cli's .arg specifier) and included in error messages. See also
+caller_arg().
+call parameters should be included in error conditions in a
+field named call. An easy way to do this is by passing a call
+argument to abort(). See also local_error_call().
+
+" />
 
 
 
@@ -152,45 +160,53 @@ for functions." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create pairlists with splicing support</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/call.R'><code>R/call.R</code></a></small>
-    <div class="hidden name"><code>pairlist2.Rd</code></div>
+    <h1>Documentation anchor for error arguments</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/cnd-abort.R'><code>R/cnd-abort.R</code></a></small>
+    <div class="hidden name"><code>args_error_context.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This pairlist constructor uses <a href='dyn-dots.html'>dynamic dots</a>. Use
-it to manually create argument lists for calls or parameter lists
-for functions.</p>
+    <p>Use <code>@inheritParams rlang::args_error_context</code> in your package to
+document <code>arg</code> and <code>call</code> arguments (or equivalently their prefixed
+versions <code>error_arg</code> and <code>error_call</code>).</p><ul>
+<li><p><code>arg</code> parameters should be formatted as argument (e.g. using
+cli's <code>.arg</code> specifier) and included in error messages. See also
+<code><a href='caller_arg.html'>caller_arg()</a></code>.</p></li>
+<li><p><code>call</code> parameters should be included in error conditions in a
+field named <code>call</code>. An easy way to do this is by passing a <code>call</code>
+argument to <code><a href='abort.html'>abort()</a></code>. See also <code><a href='local_error_call.html'>local_error_call()</a></code>.</p></li>
+</ul>
+
     </div>
 
-    <pre class="usage"><span class='fu'>pairlist2</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>...</th>
-      <td><p>&lt;<a href='dyn-dots.html'>dynamic</a>&gt; Arguments stored in the
-pairlist. Empty arguments are preserved.</p></td>
+      <th>arg, error_arg</th>
+      <td><p>An argument name as a string. This argument
+will be mentioned in error messages as the input that is at the
+origin of a problem.</p></td>
+    </tr>
+    <tr>
+      <th>call, error_call</th>
+      <td><p>The execution environment of a currently
+running function. When an error occurs, the corresponding
+function call (see <code><a href='https://rdrr.io/r/base/sys.parent.html'>sys.call()</a></code>) is retrieved and stored as
+<code>call</code> field in the error object to provide users with contextual
+information about the error.</p>
+<p>When you are writing an input checker function and need to pass
+along <code>call</code>, you should generally use <code><a href='caller_env.html'>caller_env()</a></code> as default,
+e.g. <code>call = caller_env()</code> or <code>error_call = caller_env()</code>.</p>
+<p>Can also be <code>NULL</code> or a function call to respectively disable the
+contextual call or hard-code it.</p>
+<p>See also <code><a href='local_error_call.html'>local_error_call()</a></code> for an alternative way of
+providing this information.</p></td>
     </tr>
     </table>
 
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Unlike `exprs()`, `pairlist2()` evaluates its arguments.</span>
-<span class='fu'><a href='new_function.html'>new_function</a></span><span class='op'>(</span><span class='fu'>pairlist2</span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>1</span>, y <span class='op'>=</span> <span class='fl'>3</span> <span class='op'>*</span> <span class='fl'>6</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>x</span> <span class='op'>*</span> <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; function (x = 1, y = 18) 
-#&gt; x * y
-#&gt; &lt;environment: 0x7fc0f6138a78&gt;</div><div class='input'><span class='fu'><a href='new_function.html'>new_function</a></span><span class='op'>(</span><span class='fu'><a href='nse-defuse.html'>exprs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>1</span>, y <span class='op'>=</span> <span class='fl'>3</span> <span class='op'>*</span> <span class='fl'>6</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>x</span> <span class='op'>*</span> <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; function (x = 1, y = 3 * 6) 
-#&gt; x * y
-#&gt; &lt;environment: 0x7fc0f6138a78&gt;</div><div class='input'>
-<span class='co'># It preserves missing arguments, which is useful for creating</span>
-<span class='co'># parameters without defaults:</span>
-<span class='fu'><a href='new_function.html'>new_function</a></span><span class='op'>(</span><span class='fu'>pairlist2</span><span class='op'>(</span>x <span class='op'>=</span> , y <span class='op'>=</span> <span class='fl'>3</span> <span class='op'>*</span> <span class='fl'>6</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>x</span> <span class='op'>*</span> <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; function (x, y = 18) 
-#&gt; x * y
-#&gt; &lt;environment: 0x7fc0f6138a78&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

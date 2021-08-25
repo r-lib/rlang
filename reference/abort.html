@@ -187,7 +187,7 @@ to create custom interrupt condition objects.</p>
   message <span class='op'>=</span> <span class='cn'>NULL</span>,
   class <span class='op'>=</span> <span class='cn'>NULL</span>,
   <span class='va'>...</span>,
-  call <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>call</span>,
   trace <span class='op'>=</span> <span class='cn'>NULL</span>,
   parent <span class='op'>=</span> <span class='cn'>NULL</span>,
   .file <span class='op'>=</span> <span class='cn'>NULL</span>,
@@ -245,9 +245,18 @@ to selectively handle the conditions signalled by your functions.</p></td>
     </tr>
     <tr>
       <th>call</th>
-      <td><p>A call representing the context in which the error
-occurred. If present, <code>abort()</code> displays the call (stripped from
-its arguments to keep it simple) before <code>message</code>.</p></td>
+      <td><p>The execution environment of a currently
+running function. When an error occurs, the corresponding
+function call (see <code><a href='https://rdrr.io/r/base/sys.parent.html'>sys.call()</a></code>) is retrieved and stored as
+<code>call</code> field in the error object to provide users with contextual
+information about the error.</p>
+<p>When you are writing an input checker function and need to pass
+along <code>call</code>, you should generally use <code><a href='caller_env.html'>caller_env()</a></code> as default,
+e.g. <code>call = caller_env()</code> or <code>error_call = caller_env()</code>.</p>
+<p>Can also be <code>NULL</code> or a function call to respectively disable the
+contextual call or hard-code it.</p>
+<p>See also <code><a href='local_error_call.html'>local_error_call()</a></code> for an alternative way of
+providing this information.</p></td>
     </tr>
     <tr>
       <th>trace</th>

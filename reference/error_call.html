@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create pairlists with splicing support — pairlist2 • rlang</title>
+<title>Validate and format a function call for use in error messages — error_call • rlang</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,22 @@
 
 
 
-<meta property="og:title" content="Create pairlists with splicing support — pairlist2" />
-<meta property="og:description" content="This pairlist constructor uses dynamic dots. Use
-it to manually create argument lists for calls or parameter lists
-for functions." />
+<meta property="og:title" content="Validate and format a function call for use in error messages — error_call" />
+<meta property="og:description" content="
+
+format_error_call() passes its input to error_call() and
+formats the result as code (using cli if available). Use this
+function if you are generating the &quot;in&quot; part of an error message
+from a stack frame call.
+error_call() creates a function call ready to be used as the
+call field of error conditions. This field is displayed by
+stop() and abort() to give context to an error message.
+If passed a function call, the arguments are stripped. Complex
+function calls containing inlined objects return NULL. If
+passed an environment, the corresponding sys.call() is taken as
+call, unless there is a local flag (see local_error_call()).
+
+" />
 
 
 
@@ -152,45 +164,67 @@ for functions." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create pairlists with splicing support</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/call.R'><code>R/call.R</code></a></small>
-    <div class="hidden name"><code>pairlist2.Rd</code></div>
+    <h1>Validate and format a function call for use in error messages</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/cnd-abort.R'><code>R/cnd-abort.R</code></a></small>
+    <div class="hidden name"><code>error_call.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This pairlist constructor uses <a href='dyn-dots.html'>dynamic dots</a>. Use
-it to manually create argument lists for calls or parameter lists
-for functions.</p>
+    
+<ul>
+<li><p><code>format_error_call()</code> passes its input to <code>error_call()</code> and
+formats the result as code (using cli if available). Use this
+function if you are generating the "in" part of an error message
+from a stack frame call.</p></li>
+<li><p><code>error_call()</code> creates a function call ready to be used as the
+<code>call</code> field of error conditions. This field is displayed by
+<code><a href='https://rdrr.io/r/base/stop.html'>stop()</a></code> and <code><a href='abort.html'>abort()</a></code> to give context to an error message.</p>
+<p>If passed a function call, the arguments are stripped. Complex
+function calls containing inlined objects return <code>NULL</code>. If
+passed an environment, the corresponding <code><a href='https://rdrr.io/r/base/sys.parent.html'>sys.call()</a></code> is taken as
+call, unless there is a local flag (see <code><a href='local_error_call.html'>local_error_call()</a></code>).</p></li>
+</ul>
+
     </div>
 
-    <pre class="usage"><span class='fu'>pairlist2</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>error_call</span><span class='op'>(</span><span class='va'>call</span><span class='op'>)</span>
+
+<span class='fu'>format_error_call</span><span class='op'>(</span><span class='va'>call</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>...</th>
-      <td><p>&lt;<a href='dyn-dots.html'>dynamic</a>&gt; Arguments stored in the
-pairlist. Empty arguments are preserved.</p></td>
+      <th>call</th>
+      <td><p>The execution environment of a currently
+running function. When an error occurs, the corresponding
+function call (see <code><a href='https://rdrr.io/r/base/sys.parent.html'>sys.call()</a></code>) is retrieved and stored as
+<code>call</code> field in the error object to provide users with contextual
+information about the error.</p>
+<p>When you are writing an input checker function and need to pass
+along <code>call</code>, you should generally use <code><a href='caller_env.html'>caller_env()</a></code> as default,
+e.g. <code>call = caller_env()</code> or <code>error_call = caller_env()</code>.</p>
+<p>Can also be <code>NULL</code> or a function call to respectively disable the
+contextual call or hard-code it.</p>
+<p>See also <code><a href='local_error_call.html'>local_error_call()</a></code> for an alternative way of
+providing this information.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Either a string formatted as code or <code>NULL</code> if <code>call</code> or
+the result of <code>error_call(call)</code> is <code>NULL</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Unlike `exprs()`, `pairlist2()` evaluates its arguments.</span>
-<span class='fu'><a href='new_function.html'>new_function</a></span><span class='op'>(</span><span class='fu'>pairlist2</span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>1</span>, y <span class='op'>=</span> <span class='fl'>3</span> <span class='op'>*</span> <span class='fl'>6</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>x</span> <span class='op'>*</span> <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; function (x = 1, y = 18) 
-#&gt; x * y
-#&gt; &lt;environment: 0x7fc0f6138a78&gt;</div><div class='input'><span class='fu'><a href='new_function.html'>new_function</a></span><span class='op'>(</span><span class='fu'><a href='nse-defuse.html'>exprs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>1</span>, y <span class='op'>=</span> <span class='fl'>3</span> <span class='op'>*</span> <span class='fl'>6</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>x</span> <span class='op'>*</span> <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; function (x = 1, y = 3 * 6) 
-#&gt; x * y
-#&gt; &lt;environment: 0x7fc0f6138a78&gt;</div><div class='input'>
-<span class='co'># It preserves missing arguments, which is useful for creating</span>
-<span class='co'># parameters without defaults:</span>
-<span class='fu'><a href='new_function.html'>new_function</a></span><span class='op'>(</span><span class='fu'>pairlist2</span><span class='op'>(</span>x <span class='op'>=</span> , y <span class='op'>=</span> <span class='fl'>3</span> <span class='op'>*</span> <span class='fl'>6</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>x</span> <span class='op'>*</span> <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; function (x, y = 18) 
-#&gt; x * y
-#&gt; &lt;environment: 0x7fc0f6138a78&gt;</div></pre>
+    <pre class="examples"><div class='input'><span class='co'># Arguments are stripped</span>
+<span class='fu'>error_call</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='fu'>foo</span><span class='op'>(</span><span class='va'>bar</span>, <span class='va'>baz</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; foo()</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/writeLines.html'>writeLines</a></span><span class='op'>(</span><span class='fu'>format_error_call</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='fu'>foo</span><span class='op'>(</span><span class='va'>bar</span>, <span class='va'>baz</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #262626; background-color: #DADADA;'>`foo()`</span></div><div class='input'>
+<span class='co'># Returns `NULL` with complex calls such as those that contain</span>
+<span class='co'># inlined functions</span>
+<span class='fu'>error_call</span><span class='op'>(</span><span class='fu'><a href='call2.html'>call2</a></span><span class='op'>(</span><span class='va'>list</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; NULL</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

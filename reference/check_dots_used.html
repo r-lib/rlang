@@ -165,7 +165,7 @@ elsewhere in your function, make sure to use <code>add = TRUE</code> so that you
 don't override the handler set up by <code>check_dots_used()</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>check_dots_used</span><span class='op'>(</span>env <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span>, action <span class='op'>=</span> <span class='va'>abort</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>check_dots_used</span><span class='op'>(</span>env <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span>, call <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span>, action <span class='op'>=</span> <span class='va'>abort</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -173,6 +173,21 @@ don't override the handler set up by <code>check_dots_used()</code>.</p>
     <tr>
       <th>env</th>
       <td><p>Environment in which to look for <code>...</code> and to set up handler.</p></td>
+    </tr>
+    <tr>
+      <th>call</th>
+      <td><p>The execution environment of a currently
+running function. When an error occurs, the corresponding
+function call (see <code><a href='https://rdrr.io/r/base/sys.parent.html'>sys.call()</a></code>) is retrieved and stored as
+<code>call</code> field in the error object to provide users with contextual
+information about the error.</p>
+<p>When you are writing an input checker function and need to pass
+along <code>call</code>, you should generally use <code><a href='caller_env.html'>caller_env()</a></code> as default,
+e.g. <code>call = caller_env()</code> or <code>error_call = caller_env()</code>.</p>
+<p>Can also be <code>NULL</code> or a function call to respectively disable the
+contextual call or hard-code it.</p>
+<p>See also <code><a href='local_error_call.html'>local_error_call()</a></code> for an alternative way of
+providing this information.</p></td>
     </tr>
     <tr>
       <th>action</th>

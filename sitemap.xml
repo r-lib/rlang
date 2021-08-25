@@ -16,6 +16,9 @@
     <loc>https://rlang.r-lib.org/reference/arg_require.html</loc>
   </url>
   <url>
+    <loc>https://rlang.r-lib.org/reference/args_error_context.html</loc>
+  </url>
+  <url>
     <loc>https://rlang.r-lib.org/reference/as_box.html</loc>
   </url>
   <url>
@@ -91,6 +94,9 @@
     <loc>https://rlang.r-lib.org/reference/call_standardise.html</loc>
   </url>
   <url>
+    <loc>https://rlang.r-lib.org/reference/caller_arg.html</loc>
+  </url>
+  <url>
     <loc>https://rlang.r-lib.org/reference/caller_env.html</loc>
   </url>
   <url>
@@ -134,6 +140,9 @@
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/cnd_type.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/dev-notes-dots.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/done.html</loc>
@@ -227,6 +236,9 @@
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/env_unlock.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/error_call.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/eval_bare.html</loc>
@@ -395,6 +407,9 @@
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/local_bindings.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/local_error_call.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/local_options.html</loc>

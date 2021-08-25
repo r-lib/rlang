@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create pairlists with splicing support — pairlist2 • rlang</title>
+<title>Find the caller argument for error messages — caller_arg • rlang</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,19 @@
 
 
 
-<meta property="og:title" content="Create pairlists with splicing support — pairlist2" />
-<meta property="og:description" content="This pairlist constructor uses dynamic dots. Use
-it to manually create argument lists for calls or parameter lists
-for functions." />
+<meta property="og:title" content="Find the caller argument for error messages — caller_arg" />
+<meta property="og:description" content="caller_arg() is a variant of substitute() or ensym() for
+arguments that reference other arguments. Unlike substitute()
+which returns any expression, the referenced argument must be a
+symbol, otherwise this is an error. That symbol is then returned as
+a string ready to be included in error messages.
+When included in an error message, the resulting name should
+generally be formatted as argument, for instance using the .arg
+in the cli package.
+Use @inheritParams rlang::args_error_context to document an
+arg or error_arg argument that takes error_arg() as default.
+
+" />
 
 
 
@@ -152,45 +161,49 @@ for functions." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create pairlists with splicing support</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/call.R'><code>R/call.R</code></a></small>
-    <div class="hidden name"><code>pairlist2.Rd</code></div>
+    <h1>Find the caller argument for error messages</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/cnd-abort.R'><code>R/cnd-abort.R</code></a></small>
+    <div class="hidden name"><code>caller_arg.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This pairlist constructor uses <a href='dyn-dots.html'>dynamic dots</a>. Use
-it to manually create argument lists for calls or parameter lists
-for functions.</p>
+    <p><code>caller_arg()</code> is a variant of <code><a href='https://rdrr.io/r/base/substitute.html'>substitute()</a></code> or <code><a href='nse-defuse.html'>ensym()</a></code> for
+arguments that reference other arguments. Unlike <code><a href='https://rdrr.io/r/base/substitute.html'>substitute()</a></code>
+which returns any expression, the referenced argument must be a
+symbol, otherwise this is an error. That symbol is then returned as
+a string ready to be included in error messages.</p><ul>
+<li><p>When included in an error message, the resulting name should
+generally be formatted as argument, for instance using the <code>.arg</code>
+in the cli package.</p></li>
+<li><p>Use <code>@inheritParams rlang::args_error_context</code> to document an
+<code>arg</code> or <code>error_arg</code> argument that takes <code>error_arg()</code> as default.</p></li>
+</ul>
+
     </div>
 
-    <pre class="usage"><span class='fu'>pairlist2</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>...</th>
-      <td><p>&lt;<a href='dyn-dots.html'>dynamic</a>&gt; Arguments stored in the
-pairlist. Empty arguments are preserved.</p></td>
+      <th>arg</th>
+      <td><p>An argument name in the current function.</p></td>
     </tr>
     </table>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Unlike `exprs()`, `pairlist2()` evaluates its arguments.</span>
-<span class='fu'><a href='new_function.html'>new_function</a></span><span class='op'>(</span><span class='fu'>pairlist2</span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>1</span>, y <span class='op'>=</span> <span class='fl'>3</span> <span class='op'>*</span> <span class='fl'>6</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>x</span> <span class='op'>*</span> <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; function (x = 1, y = 18) 
-#&gt; x * y
-#&gt; &lt;environment: 0x7fc0f6138a78&gt;</div><div class='input'><span class='fu'><a href='new_function.html'>new_function</a></span><span class='op'>(</span><span class='fu'><a href='nse-defuse.html'>exprs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>1</span>, y <span class='op'>=</span> <span class='fl'>3</span> <span class='op'>*</span> <span class='fl'>6</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>x</span> <span class='op'>*</span> <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; function (x = 1, y = 3 * 6) 
-#&gt; x * y
-#&gt; &lt;environment: 0x7fc0f6138a78&gt;</div><div class='input'>
-<span class='co'># It preserves missing arguments, which is useful for creating</span>
-<span class='co'># parameters without defaults:</span>
-<span class='fu'><a href='new_function.html'>new_function</a></span><span class='op'>(</span><span class='fu'>pairlist2</span><span class='op'>(</span>x <span class='op'>=</span> , y <span class='op'>=</span> <span class='fl'>3</span> <span class='op'>*</span> <span class='fl'>6</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>x</span> <span class='op'>*</span> <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; function (x, y = 18) 
-#&gt; x * y
-#&gt; &lt;environment: 0x7fc0f6138a78&gt;</div></pre>
+    <pre class="examples"><div class='input'><span class='va'>arg_checker</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>arg</span> <span class='op'>=</span> <span class='fu'>caller_arg</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>, <span class='va'>call</span> <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='fu'>cli</span><span class='fu'>::</span><span class='fu'><a href='https://cli.r-lib.org/reference/cli_abort.html'>cli_abort</a></span><span class='op'>(</span><span class='st'>"{.arg arg} must be a thingy."</span>, call <span class='op'>=</span> <span class='va'>call</span><span class='op'>)</span>
+<span class='op'>}</span>
+
+<span class='va'>my_function</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>my_arg</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='fu'>arg_checker</span><span class='op'>(</span><span class='va'>my_arg</span><span class='op'>)</span>
+<span class='op'>}</span>
+
+<span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'>my_function</span><span class='op'>(</span><span class='cn'>NULL</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Error in my_function() : 
+#&gt;   <span style='color: #262626; background-color: #DADADA; font-weight: bold;'>`arg`</span><span style='font-weight: bold;'> must be a thingy.</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
