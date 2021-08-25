@@ -626,8 +626,14 @@ test_that("can slice backtrace", {
     new_trace(alist(b(), c()), 0:1)
   )
 
+  exp <- new_trace(alist(a(), c()), c(0L, 0L))
+  
   expect_identical(
     trace_slice(trace, c(1, 3)),
-    new_trace(alist(a(), c()), c(0L, 0L))
+    exp
+  )
+  expect_identical(
+    trace_slice(trace, -2),
+    exp
   )
 })
