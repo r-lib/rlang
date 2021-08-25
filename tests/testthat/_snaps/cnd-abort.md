@@ -140,7 +140,7 @@
     Output
       <error/rlang_error>
       foo
-      Context: `h()`
+      Call: `h()`
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang:::f()
@@ -152,7 +152,7 @@
     Output
       <error/rlang_error>
       foo
-      Context: `h()`
+      Call: `h()`
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang:::f()
@@ -168,7 +168,7 @@
     Output
       <error/rlang_error>
       foo
-      Context: `h()`
+      Call: `h()`
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang:::f()
@@ -184,7 +184,7 @@
     Output
       <error/rlang_error>
       foo
-      Context: `h()`
+      Call: `h()`
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang:::f()
@@ -249,7 +249,7 @@
       | bar
       \-<error/rlang_error>
         foo
-      Context: `baz()`
+      Call: `baz()`
       Backtrace:
         1. rlang:::catch_error(...)
        10. rlang:::foo()
@@ -279,7 +279,7 @@
     Output
       <error/rlang_error>
       `arg` must be supplied.
-      Context: `h()`
+      Call: `h()`
 
 # local_error_call() works
 
@@ -288,7 +288,7 @@
     Output
       <error/rlang_error>
       tilt
-      Context: `expected()`
+      Call: `expected()`
 
 # can disable error call inference for unexported functions
 
@@ -297,7 +297,7 @@
     Output
       <error/rlang_error>
       foo
-      Context: `foo()`
+      Call: `foo()`
     Code
       local({
         local_options(`rlang:::restrict_default_error_call` = TRUE)
@@ -315,7 +315,7 @@
       <error/rlang_error>
       `.homonyms` must be one of "keep", "first", "last", or "error", not "k".
       i Did you mean "keep"?
-      Context: `dots_list()`
+      Call: `dots_list()`
 
 # NSE doesn't interfere with error call contexts
 

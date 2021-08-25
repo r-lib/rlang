@@ -109,7 +109,7 @@ format.rlang_error <- function(x,
 
   ctxt <- format_error_call(x$call)
   if (!is_null(ctxt)) {
-    out <- paste_line(out, paste0(bold("Context: "), ctxt))
+    out <- paste_line(out, paste0(bold("Call: "), ctxt))
   }
 
   simplify <- arg_match(simplify)

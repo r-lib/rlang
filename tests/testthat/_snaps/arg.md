@@ -23,28 +23,28 @@
       <error/rlang_error>
       `my_arg` must be one of "discrete" or "continuous", not "continuuos".
       i Did you mean "continuous"?
-      Context: `arg_match0_wrapper()`
+      Call: `arg_match0_wrapper()`
     Code
       (expect_error(arg_match_wrapper("fou", c("bar", "foo"), "my_arg")))
     Output
       <error/rlang_error>
       `my_arg` must be one of "bar" or "foo", not "fou".
       i Did you mean "foo"?
-      Context: `arg_match0_wrapper()`
+      Call: `arg_match0_wrapper()`
     Code
       (expect_error(arg_match_wrapper("fu", c("ba", "fo"), "my_arg")))
     Output
       <error/rlang_error>
       `my_arg` must be one of "ba" or "fo", not "fu".
       i Did you mean "fo"?
-      Context: `arg_match0_wrapper()`
+      Call: `arg_match0_wrapper()`
     Code
       (expect_error(arg_match_wrapper("baq", c("foo", "baz", "bas"), "my_arg")))
     Output
       <error/rlang_error>
       `my_arg` must be one of "foo", "baz", or "bas", not "baq".
       i Did you mean "baz"?
-      Context: `arg_match0_wrapper()`
+      Call: `arg_match0_wrapper()`
     Code
       (expect_error(arg_match_wrapper("", character(), "my_arg")))
     Output
@@ -63,13 +63,13 @@
     Output
       <error/rlang_error>
       `my_arg` must be one of "fooquxs" or "discrete", not "foobaz".
-      Context: `arg_match0_wrapper()`
+      Call: `arg_match0_wrapper()`
     Code
       (expect_error(arg_match0_wrapper("a", c("b", "c"), "my_arg")))
     Output
       <error/rlang_error>
       `my_arg` must be one of "b" or "c", not "a".
-      Context: `arg_match0_wrapper()`
+      Call: `arg_match0_wrapper()`
 
 # `arg_match()` makes case-insensitive match
 
@@ -80,7 +80,7 @@
       <error/rlang_error>
       `my_arg` must be one of "A" or "B", not "a".
       i Did you mean "A"?
-      Context: `arg_match0_wrapper()`
+      Call: `arg_match0_wrapper()`
     Code
       (expect_error(arg_match0_wrapper("aa", c("AA", "aA"), "my_arg"),
       "Did you mean \"aA\"?"))
@@ -88,7 +88,7 @@
       <error/rlang_error>
       `my_arg` must be one of "AA" or "aA", not "aa".
       i Did you mean "aA"?
-      Context: `arg_match0_wrapper()`
+      Call: `arg_match0_wrapper()`
 
 # arg_require() checks argument is supplied (#1118)
 
@@ -97,13 +97,13 @@
     Output
       <error/rlang_error>
       `x` must be supplied.
-      Context: `f()`
+      Call: `f()`
     Code
       (expect_error(g()))
     Output
       <error/rlang_error>
       `x` must be supplied.
-      Context: `f()`
+      Call: `f()`
 
 # arg_match() supports symbols and scalar strings
 
@@ -113,7 +113,7 @@
       <error/rlang_error>
       `my_arg` must be one of "bar" or "foo", not "fo".
       i Did you mean "foo"?
-      Context: `arg_match0_wrapper()`
+      Call: `arg_match0_wrapper()`
 
 # arg_match() requires an argument symbol
 
@@ -123,5 +123,5 @@
       <error/rlang_error>
       `arg` must be a symbol.
       ! This is an internal error, please report it to the package authors.
-      Context: `wrapper()`
+      Call: `wrapper()`
 

@@ -14,7 +14,7 @@
       * `xy`
       * `x`
       i Did you misspecify an argument?
-      Context: `f()`
+      Call: `f()`
 
 # error if if dots not empty
 
@@ -27,7 +27,7 @@
       x We detected these problematic arguments:
       * `xy`
       i Did you misspecify an argument?
-      Context: `f()`
+      Call: `f()`
     Code
       (expect_error(f0(xy = 4), class = "rlib_error_dots_nonempty"))
     Output
@@ -37,5 +37,5 @@
       x We detected these problematic arguments:
       * `xy`
       i Did you misspecify an argument?
-      Context: `f0()`
+      Call: `f0()`
 

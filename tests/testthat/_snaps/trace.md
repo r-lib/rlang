@@ -958,7 +958,7 @@
       
           ## <error/rlang_error>
           ## foo
-          ## Context: `h()`
+          ## Call: `h()`
           ## Backtrace:
           ##  1. global::f()
           ##  2. global::g()
@@ -969,7 +969,7 @@
       
           ## <error/rlang_error>
           ## foo
-          ## Context: `h()`
+          ## Call: `h()`
           ## Backtrace:
           ##     x
           ##  1. \-global::f()
