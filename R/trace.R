@@ -290,8 +290,7 @@ trace_format <- function(trace, max_frames, dir, srcrefs) {
     return(trace_root())
   }
 
-  tree <- trace_as_tree(trace, dir = dir, srcrefs = srcrefs)
-  cli_tree(tree, indices = trace$indices)
+  cli_tree(trace_as_tree(trace, dir = dir, srcrefs = srcrefs))
 }
 
 trace_format_collapse <- function(trace, max_frames, dir, srcrefs) {
@@ -303,7 +302,7 @@ trace_format_branch <- function(trace, max_frames, dir, srcrefs) {
   tree <- trace_as_tree(trace, dir = dir, srcrefs = srcrefs)
 
   branch <- tree[-1, ][["call"]]
-  cli_branch(branch, max = max_frames, indices = trace$indices)
+  cli_branch(branch, max = max_frames)
 }
 
 format_collapsed <- function(what, n) {
@@ -323,7 +322,10 @@ format_collapsed_branch <- function(what, n, style = NULL) {
   format_collapsed(what, n)
 }
 
-cli_branch <- function(lines, max = NULL, style = NULL, indices = NULL) {
+cli_branch <- function(lines,
+                       max = NULL,
+                       style = NULL,
+                       indices = seq_along(lines)) {
   if (!length(lines)) {
     return(chr())
   }
