@@ -3,7 +3,7 @@
 #' A backtrace captures the sequence of calls that lead to the current
 #' function, sometimes called the call stack. Because of lazy
 #' evaluation, the call stack in R is actually a tree, which the
-#' `summary()` method of this object will reveal.
+#' `print()` method for this object will reveal.
 #'
 #' `trace_length()` returns the number of frames in a backtrace.
 #'
