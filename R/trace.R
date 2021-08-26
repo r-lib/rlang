@@ -92,12 +92,17 @@ trace_back <- function(top = NULL, bottom = NULL) {
 
   calls <- map(calls, call_fix_car)
 
-  # FIXME: namespace should be added at print time
-  calls <- map2(calls, seq_along(calls), maybe_add_namespace)
+  context <- map2(calls, seq_along(calls), call_trace_context)
+  context <- inject(vec_rbind(!!!context))
 
   parents <- normalise_parents(parents)
 
-  trace <- new_trace(calls, parents)
+  trace <- new_trace(
+    calls,
+    parents,
+    namespace = context$namespace,
+    scope = context$scope
+  )
   trace <- add_winch_trace(trace)
   trace <- trace_trim_env(trace, frames, top)
 
@@ -136,22 +141,22 @@ call_fix_car <- function(call) {
   call
 }
 
-maybe_add_namespace <- function(call, fn) {
+call_trace_context <- function(call, fn) {
   if (is_quosure(call)) {
     call <- quo_get_expr(call)
     if (!is_call(call)) {
-      return(call)
+      return(trace_no_context())
     }
   }
 
   if (call_print_fine_type(call) != "call") {
-    return(call)
+    return(trace_no_context())
   }
 
   # Checking for bare symbols covers the `::` and `:::` cases
   sym <- node_car(call)
   if (!is_symbol(sym)) {
-    return(call)
+    return(trace_no_context())
   }
 
   nm <- as_string(sym)
@@ -166,22 +171,31 @@ maybe_add_namespace <- function(call, fn) {
   env <- fn_env(fn)
   top <- topenv(env)
   if (is_reference(env, global_env())) {
-    prefix <- "global"
-    op <- "::"
+    namespace <- ""
+    scope <- "global"
   } else if (is_namespace(top)) {
-    prefix <- ns_env_name(top)
+    namespace <- ns_env_name(top)
     if (ns_exports_has(top, nm)) {
-      op <- "::"
+      scope <- "::"
     } else {
-      op <- ":::"
+      scope <- ":::"
     }
   } else {
-    return(call)
+    namespace <- ""
+    scope <- ""
   }
 
-  namespaced_sym <- call(op, sym(prefix), sym)
-  call[[1]] <- namespaced_sym
-  call
+  data_frame(
+    namespace = namespace,
+    scope = scope
+  )
+}
+
+trace_no_context <- function() {
+  data_frame(
+    namespace = "",
+    scope = ""
+  )
 }
 
 # Remove recursive frames which occur with quosures
@@ -219,20 +233,26 @@ add_winch_trace <- function(trace) {
 new_trace <- function(calls,
                       parents,
                       ...,
-                      visible = NULL,
+                      visible = TRUE,
+                      namespace = "",
+                      scope = "",
                       class = NULL) {
   new_trace0(
     calls,
     parents,
     ...,
     visible = visible,
+    namespace = namespace,
+    scope = scope,
     class = c(class, "rlang_trace", "rlib_trace")
   )
 }
 new_trace0 <- function(calls,
                        parents,
                        ...,
-                       visible = NULL,
+                       visible = TRUE,
+                       namespace = "",
+                       scope = "",
                        class = NULL) {
   stopifnot(
     is_bare_list(calls),
@@ -242,7 +262,9 @@ new_trace0 <- function(calls,
   df <- df_list(
     call = calls,
     parent = parents,
-    visible = visible %||% TRUE,
+    visible = visible,
+    namespace = namespace,
+    scope = scope,
     ...
   )
   new_data_frame(df, .class = c(class, "tbl"))
@@ -318,9 +340,9 @@ trace_format_branch <- function(trace, max_frames, dir, srcrefs) {
   tree <- trace_as_tree(trace, dir = dir, srcrefs = srcrefs)
 
   # Remove root in the branch view
-  tree <- tree[-1, ]
+  tree <- vec_slice(tree, -1)
 
-  cli_branch(tree$call, max = max_frames, indices = tree$id)
+  cli_branch(tree, max = max_frames)
 }
 
 format_collapsed <- function(what, n) {
@@ -340,10 +362,12 @@ format_collapsed_branch <- function(what, n, style = NULL) {
   format_collapsed(what, n)
 }
 
-cli_branch <- function(lines,
+cli_branch <- function(tree,
                        max = NULL,
-                       style = NULL,
-                       indices = seq_along(lines)) {
+                       style = NULL) {
+  lines <- tree$call_text
+  indices = tree$id
+
   if (!length(lines)) {
     return(chr())
   }
@@ -691,11 +715,9 @@ trace_simplify_collapse <- function(trace) {
 # Printing ----------------------------------------------------------------
 
 trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL) {
-  id <- c(0, seq_along(trace$call))
-  children <- map(id, function(id) seq_along(trace$parent)[trace$parent == id])
-
-  collapsed <- trace$collapsed %||% 0L
-  call_text <- map2_chr(trace$call, collapsed, trace_call_text)
+  trace$collapsed <- trace$collapsed %||% 0L
+  call_text_data <- trace[c("call", "collapsed", "namespace", "scope")]
+  call_text <- chr(!!!pmap(call_text_data, trace_call_text))
 
   srcrefs <- srcrefs %||% peek_option("rlang_trace_format_srcrefs")
   srcrefs <- srcrefs %||% TRUE
@@ -708,20 +730,52 @@ trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL) {
     call_text[have_src_loc] <- paste0(call_text[have_src_loc], " ", src_locs)
   }
 
-  tree <- data.frame(id = as.character(id), stringsAsFactors = FALSE)
-  tree$children <- map(children, as.character)
-  tree$call <- c(trace_root(), call_text)
+  id <- c(0, seq_along(trace$call))
+  children <- map(id, function(id) seq_along(trace$parent)[trace$parent == id])
+
+  root <- data_frame(
+    call = list(NULL),
+    parent = 0L,
+    visible = TRUE,
+    namespace = "",
+    scope = ""
+  )
+  trace <- vec_rbind(root, trace)
+
+  tree_data <- data_frame(
+    id = as.character(id),
+    children = children,
+    call_text = c(trace_root(), call_text)
+  )
+  tree <- vec_cbind(tree_data, trace)
 
   # Subset out hidden frames
-  tree <- vec_slice(tree, c(TRUE, trace$visible))
+  tree <- vec_slice(tree, tree$visible)
   tree$children <- map(tree$children, intersect, tree$id)
 
   tree
 }
 
 # FIXME: Add something like call_deparse_line()
-trace_call_text <- function(call, collapse) {
-  if (!collapse) {
+trace_call_text <- function(call, collapsed, namespace, scope) {
+  if (is_call(call) && is_symbol(call[[1]])) {
+    namespace <- namespace %|% ""
+
+    op <- switch(
+      scope,
+      global = "::",
+      local = ":::",
+      scope
+    )
+    if (is_string(scope, "global")) {
+      namespace <- "global"
+    }
+    if (nzchar(namespace)) {
+      call[[1]] <- call(op, sym(namespace), call[[1]])
+    }
+  }
+
+  if (!collapsed) {
     return(as_label(call))
   }
 
@@ -732,9 +786,9 @@ trace_call_text <- function(call, collapse) {
   }
 
   text <- as_label(call)
-  n_collapsed_text <- sprintf(" ... +%d", collapse)
+  n_collapsed_text <- sprintf(" ... +%d", collapsed)
 
-  format_collapsed(paste0("[ ", text, " ]"), collapse)
+  format_collapsed(paste0("[ ", text, " ]"), collapsed)
 }
 
 src_loc <- function(srcref, dir = getwd()) {

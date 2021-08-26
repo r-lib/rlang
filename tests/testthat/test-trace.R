@@ -100,7 +100,7 @@ test_that("cli_branch() handles edge case", {
   trace <- f()
 
   tree <- trace_as_tree(trace, srcrefs = FALSE)
-  expect_snapshot(cli_branch(tree$call[-1]))
+  expect_snapshot(cli_branch(tree[-1, ]))
 })
 
 test_that("trace formatting picks up `rlang_trace_format_srcrefs`", {
@@ -537,7 +537,7 @@ test_that("can subset in middle level", {
   trace <- f()
 
   out <- trace_subset_across(trace, 2, 2)
-  expect_equal(out$call, alist(rlang:::f(), base::identity(g())))
+  expect_equal(out$call, alist(f(), identity(g())))
   expect_identical(out$parent, 0:1)
 
 
@@ -548,11 +548,11 @@ test_that("can subset in middle level", {
 
   out <- trace_subset_across(trace, 3, 2)
   exp <- alist(
-    rlang:::f(),
-    rlang:::g(),
-    base::identity(identity(h())),
-    base::identity(h()),
-    rlang:::h()
+    f(),
+    g(),
+    identity(identity(h())),
+    identity(h()),
+    h()
   )
   expect_equal(out$call, exp)
   expect_identical(out$parent, c(0L, 1L, 2L, 2L, 2L))

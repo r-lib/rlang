@@ -111,7 +111,7 @@
 # cli_branch() handles edge case
 
     Code
-      cli_branch(tree$call[-1])
+      cli_branch(tree[-1, ])
     Output
       [1] " 1. rlang:::f()"
 

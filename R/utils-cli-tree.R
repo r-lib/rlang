@@ -12,7 +12,7 @@ cli_tree <- function(data,
                      style = NULL) {
   style <- style %||% cli_box_chars()
 
-  labels <- data$call
+  labels <- data$call_text
   res <- character()
 
   pt <- function(root, n = integer(), mx = integer()) {
