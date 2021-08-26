@@ -259,8 +259,7 @@ trace_length <- function(trace) {
 }
 
 trace_slice <- function(trace, i) {
-  # FIXME: Needs a compat
-  i <- vctrs::vec_as_location(i, trace_length(trace))
+  i <- vec_as_location(i, trace_length(trace))
 
   parent <- match(trace$parent, i, nomatch = 0)
 

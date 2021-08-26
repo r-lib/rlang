@@ -9,8 +9,11 @@
 # of data frames without having to depend on tibble or vctrs. The
 # embedded type system is minimal and not extensible.
 
+# 2021-08-26:
+# * Added compat for `vec_as_location()`.
+#
 # 2021-05-28:
-# * Initial revision
+# * Initial revision.
 
 
 # Construction ------------------------------------------------------------
@@ -165,6 +168,12 @@ vec_dims <- function(x) {
   } else {
     length(d)
   }
+}
+
+vec_as_location <- function(i, n, names = NULL) {
+  out <- seq_len(n)
+  names(out) <- names
+  unname(out[i])
 }
 
 vec_init <- function(x, n = 1L) {

@@ -370,3 +370,20 @@ test_that("casting to df type uses same column order", {
     list(data.frame(y = 2, x = na_dbl), df2)
   )
 })
+
+test_that("vec_as_location() works", {
+  n <- 4
+  names <- letters[1:4]
+
+  i <- c(2, 3)
+  expect_identical(vec_as_location(i, n, names), 2:3)
+
+  i <- -c(2, 3)
+  expect_identical(vec_as_location(i, n, names), c(1L, 4L))
+
+  i <- c(TRUE, FALSE, TRUE, FALSE)
+  expect_identical(vec_as_location(i, n, names), c(1L, 3L))
+
+  i <- c("a", "d")
+  expect_identical(vec_as_location(i, n, names), c(1L, 4L))
+})
