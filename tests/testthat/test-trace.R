@@ -133,11 +133,10 @@ test_that("collapsed formatting doesn't collapse single frame siblings", {
   g <- function() trace_back(e)
   trace <- f()
 
-  full <- capture.output(print(trace, simplify = "none", srcrefs = FALSE))[[3]]
-  expect_match(full, "rlang::eval_bare(quote(g()))", fixed = TRUE)
-
-  collapsed <- capture.output(print(trace, simplify = "collapse", srcrefs = FALSE))[[3]]
-  expect_match(collapsed, "[ rlang::eval_bare(...) ]", fixed = TRUE)
+  expect_snapshot({
+    print(trace, simplify = "none", srcrefs = FALSE)
+    print(trace, simplify = "collapse", srcrefs = FALSE)
+  })
 })
 
 test_that("recursive frames are rewired to the global env", {
