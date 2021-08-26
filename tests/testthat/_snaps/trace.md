@@ -108,6 +108,13 @@
         6. rlang:::g()
        16. rlang:::h()
 
+# cli_branch() handles edge case
+
+    Code
+      cli_branch(tree$call[-1])
+    Output
+      [1] " 1. rlang:::f()"
+
 # recursive frames are rewired to the global env
 
     Code
@@ -884,14 +891,14 @@
       summary(trace0)
     Output
            x
-        1. \-rlang:::f(0) test-trace.R:458:2
-        2.   +-base::identity(identity(g(n))) test-trace.R:454:7
+        1. \-rlang:::f(0) test-trace.R:457:2
+        2.   +-base::identity(identity(g(n))) test-trace.R:453:7
         3.   +-base::identity(g(n))
         4.   \-rlang:::g(n)
-        5.     +-base::identity(identity(h(n))) test-trace.R:455:7
+        5.     +-base::identity(identity(h(n))) test-trace.R:454:7
         6.     +-base::identity(h(n))
         7.     \-rlang:::h(n)
-        8.       +-base::identity(identity(trace_back(e, bottom = n))) test-trace.R:456:7
+        8.       +-base::identity(identity(trace_back(e, bottom = n))) test-trace.R:455:7
         9.       +-base::identity(trace_back(e, bottom = n))
        10.       \-rlang::trace_back(e, bottom = n)
     Code
@@ -904,11 +911,11 @@
       summary(trace1)
     Output
           x
-       1. \-rlang:::f(1) test-trace.R:459:2
-       2.   +-base::identity(identity(g(n))) test-trace.R:454:7
+       1. \-rlang:::f(1) test-trace.R:458:2
+       2.   +-base::identity(identity(g(n))) test-trace.R:453:7
        3.   +-base::identity(g(n))
        4.   \-rlang:::g(n)
-       5.     +-base::identity(identity(h(n))) test-trace.R:455:7
+       5.     +-base::identity(identity(h(n))) test-trace.R:454:7
        6.     +-base::identity(h(n))
        7.     \-rlang:::h(n)
     Code
@@ -921,8 +928,8 @@
       summary(trace2)
     Output
           x
-       1. \-rlang:::f(2) test-trace.R:460:2
-       2.   +-base::identity(identity(g(n))) test-trace.R:454:7
+       1. \-rlang:::f(2) test-trace.R:459:2
+       2.   +-base::identity(identity(g(n))) test-trace.R:453:7
        3.   +-base::identity(g(n))
        4.   \-rlang:::g(n)
     Code
@@ -935,7 +942,7 @@
       summary(trace3)
     Output
           x
-       1. \-rlang:::f(3) test-trace.R:461:2
+       1. \-rlang:::f(3) test-trace.R:460:2
 
 # caught error does not display backtrace in knitted files
 
