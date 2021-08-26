@@ -571,7 +571,11 @@ trace_simplify_branch <- function(trace) {
       id <- next_id
     }
 
-    if (old_visible[[id]] && !is_uninformative_call(trace$call[[id]])) {
+    # Set `old_visible` to avoid uninformative calls in position 1 to
+    # be included (see below)
+    if (is_uninformative_call(trace$call[[id]])) {
+      old_visible[[id]] <- FALSE
+    } else if (old_visible[[id]]) {
       visible[[id]] <- TRUE
     }
 
