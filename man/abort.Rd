@@ -62,14 +62,13 @@ to selectively handle the conditions signalled by your functions.}
 \item{...}{Additional data to be stored in the condition object.}
 
 \item{call}{The execution environment of a currently
-running function. When an error occurs, the corresponding
-function call (see \code{\link[=sys.call]{sys.call()}}) is retrieved and stored as
-\code{call} field in the error object to provide users with contextual
-information about the error.
+running function, e.g. \code{call = caller_env()}. The function will
+be mentioned in error messages as the source of the error.
 
-When you are writing an input checker function and need to pass
-along \code{call}, you should generally use \code{caller_env()} as default,
-e.g. \code{call = caller_env()} or \code{error_call = caller_env()}.
+When an error occurs, the corresponding function call (see
+\code{\link[=sys.call]{sys.call()}}) is retrieved and stored as \code{call} field in the
+error object to provide users with contextual information about
+the error.
 
 Can also be \code{NULL} or a function call to respectively disable the
 contextual call or hard-code it.

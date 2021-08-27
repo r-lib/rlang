@@ -98,7 +98,20 @@
 #' @param class Subclass of the condition. This allows your users
 #'   to selectively handle the conditions signalled by your functions.
 #' @param ... Additional data to be stored in the condition object.
-#' @inheritParams args_error_context
+#' @param call The execution environment of a currently
+#'   running function, e.g. `call = caller_env()`. The function will
+#'   be mentioned in error messages as the source of the error.
+#'
+#'   When an error occurs, the corresponding function call (see
+#'   [sys.call()]) is retrieved and stored as `call` field in the
+#'   error object to provide users with contextual information about
+#'   the error.
+#'
+#'   Can also be `NULL` or a function call to respectively disable the
+#'   contextual call or hard-code it.
+#'
+#'   See also [rlang::local_error_call()] for an alternative way of
+#'   providing this information.
 #' @param .file A connection or a string specifying where to print the
 #'   message. The default depends on the context, see the `stdout` vs
 #'   `stderr` section.
@@ -464,20 +477,9 @@ local_error_call <- function(call, frame = caller_env()) {
 #'   will be mentioned in error messages as the input that is at the
 #'   origin of a problem.
 #' @param call,error_call The execution environment of a currently
-#'   running function. When an error occurs, the corresponding
-#'   function call (see [sys.call()]) is retrieved and stored as
-#'   `call` field in the error object to provide users with contextual
-#'   information about the error.
-#'
-#'   When you are writing an input checker function and need to pass
-#'   along `call`, you should generally use `caller_env()` as default,
-#'   e.g. `call = caller_env()` or `error_call = caller_env()`.
-#'
-#'   Can also be `NULL` or a function call to respectively disable the
-#'   contextual call or hard-code it.
-#'
-#'   See also [rlang::local_error_call()] for an alternative way of
-#'   providing this information.
+#'   running function, e.g. `caller_env()`. The function will be
+#'   mentioned in error messages as the source of the error. See the
+#'   `call` argument of [rlang::abort()] for more information.
 #'
 #' @name args_error_context
 NULL

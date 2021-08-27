@@ -10,20 +10,9 @@ check_dots_used(env = caller_env(), call = caller_env(), action = abort)
 \item{env}{Environment in which to look for \code{...} and to set up handler.}
 
 \item{call}{The execution environment of a currently
-running function. When an error occurs, the corresponding
-function call (see \code{\link[=sys.call]{sys.call()}}) is retrieved and stored as
-\code{call} field in the error object to provide users with contextual
-information about the error.
-
-When you are writing an input checker function and need to pass
-along \code{call}, you should generally use \code{caller_env()} as default,
-e.g. \code{call = caller_env()} or \code{error_call = caller_env()}.
-
-Can also be \code{NULL} or a function call to respectively disable the
-contextual call or hard-code it.
-
-See also \code{\link[=local_error_call]{local_error_call()}} for an alternative way of
-providing this information.}
+running function, e.g. \code{caller_env()}. The function will be
+mentioned in error messages as the source of the error. See the
+\code{call} argument of \code{\link[=abort]{abort()}} for more information.}
 
 \item{action}{The action to take when the dots have not been used. One of
 \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, \code{\link[=inform]{inform()}} or \code{\link[=signal]{signal()}}.}
