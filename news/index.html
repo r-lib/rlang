@@ -175,6 +175,7 @@
 <h2 class="hasAnchor">
 <a href="#features-and-bugfixes" class="anchor"></a>Features and bugfixes</h2>
 <ul>
+<li><p>The error returned by <code><a href="../reference/last_error.html">last_error()</a></code> is now stored on the search path as the <code>.Last.error</code> binding of the <code>"org:r-lib"</code> environment. This is consistent with how the processx package records error conditions. Printing the <code>.Last.error</code> object is now equivalent to running <code><a href="../reference/last_error.html">last_error()</a></code>.</p></li>
 <li><p>Backtraces now print dangling srcrefs (<a href='https://github.com/r-lib/rlang/issues/1206'>#1206</a>). Paths are shortened to show only three components (two levels of folder and the file).</p></li>
 <li><p><code><a href="../reference/abort.html">abort()</a></code> now outputs error messages to <code>stdout</code> in interactive sessions, following the same approach as <code><a href="../reference/abort.html">inform()</a></code>.</p></li>
 <li><p><code><a href="../reference/abort.html">abort()</a></code> now displays <code>call</code> field in error messages. The call is only displayed if it is a simple expression (e.g. no inlined function) and the arguments are not displayed to avoid distracting from the error message. The message is formatted with the tidyverse style (<code>code</code> formatting by the cli package if available).</p></li>

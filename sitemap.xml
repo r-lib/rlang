@@ -16,6 +16,12 @@
     <loc>https://rlang.r-lib.org/reference/arg_require.html</loc>
   </url>
   <url>
+    <loc>https://rlang.r-lib.org/reference/args_dots_empty.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/args_dots_used.html</loc>
+  </url>
+  <url>
     <loc>https://rlang.r-lib.org/reference/args_error_context.html</loc>
   </url>
   <url>
@@ -146,12 +152,6 @@
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/done.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/dots-empty.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/dots-used.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/dots_n.html</loc>

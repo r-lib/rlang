@@ -182,17 +182,9 @@ origin of a problem.</p></td>
     <tr>
       <th>error_call</th>
       <td><p>The execution environment of a currently
-running function. When an error occurs, the corresponding
-function call (see <code><a href='https://rdrr.io/r/base/sys.parent.html'>sys.call()</a></code>) is retrieved and stored as
-<code>call</code> field in the error object to provide users with contextual
-information about the error.</p>
-<p>When you are writing an input checker function and need to pass
-along <code>call</code>, you should generally use <code><a href='caller_env.html'>caller_env()</a></code> as default,
-e.g. <code>call = caller_env()</code> or <code>error_call = caller_env()</code>.</p>
-<p>Can also be <code>NULL</code> or a function call to respectively disable the
-contextual call or hard-code it.</p>
-<p>See also <code><a href='local_error_call.html'>local_error_call()</a></code> for an alternative way of
-providing this information.</p></td>
+running function, e.g. <code><a href='caller_env.html'>caller_env()</a></code>. The function will be
+mentioned in error messages as the source of the error. See the
+<code>call</code> argument of <code><a href='abort.html'>abort()</a></code> for more information.</p></td>
     </tr>
     </table>
 
