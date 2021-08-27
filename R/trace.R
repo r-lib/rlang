@@ -171,7 +171,7 @@ call_trace_context <- function(call, fn) {
   env <- fn_env(fn)
   top <- topenv(env)
   if (is_reference(env, global_env())) {
-    namespace <- ""
+    namespace <- NA
     scope <- "global"
   } else if (is_namespace(top)) {
     namespace <- ns_env_name(top)
@@ -181,8 +181,8 @@ call_trace_context <- function(call, fn) {
       scope <- ":::"
     }
   } else {
-    namespace <- ""
-    scope <- ""
+    namespace <- NA
+    scope <- NA
   }
 
   data_frame(
@@ -193,8 +193,8 @@ call_trace_context <- function(call, fn) {
 
 trace_no_context <- function() {
   data_frame(
-    namespace = "",
-    scope = ""
+    namespace = NA,
+    scope = NA
   )
 }
 
@@ -234,8 +234,8 @@ new_trace <- function(calls,
                       parents,
                       ...,
                       visible = TRUE,
-                      namespace = "",
-                      scope = "",
+                      namespace = NA,
+                      scope = NA,
                       class = NULL) {
   new_trace0(
     calls,
@@ -251,8 +251,8 @@ new_trace0 <- function(calls,
                        parents,
                        ...,
                        visible = TRUE,
-                       namespace = "",
-                       scope = "",
+                       namespace = NA,
+                       scope = NA,
                        class = NULL) {
   stopifnot(
     is_bare_list(calls),
@@ -741,8 +741,8 @@ trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL) {
     call = list(NULL),
     parent = 0L,
     visible = TRUE,
-    namespace = "",
-    scope = ""
+    namespace = NA,
+    scope = NA
   )
   trace <- vec_rbind(root, trace)
 
@@ -763,8 +763,6 @@ trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL) {
 # FIXME: Add something like call_deparse_line()
 trace_call_text <- function(call, collapsed, namespace, scope) {
   if (is_call(call) && is_symbol(call[[1]])) {
-    namespace <- namespace %|% ""
-
     op <- switch(
       scope,
       global = "::",
@@ -774,7 +772,7 @@ trace_call_text <- function(call, collapsed, namespace, scope) {
     if (is_string(scope, "global")) {
       namespace <- "global"
     }
-    if (nzchar(namespace)) {
+    if (!is_na(namespace)) {
       call[[1]] <- call(op, sym(namespace), call[[1]])
     }
   }
@@ -931,7 +929,7 @@ call_add_namespace <- function(call, fn) {
     return(call)
   }
 
-  namespaced_sym <- call(op, as.symbol(prefix), sym)
+  namespaced_sym <- call(op, sym(prefix), sym)
   call[[1]] <- namespaced_sym
   call
 }
@@ -960,8 +958,8 @@ is_trace <- function(x) {
 #' - `parent`: Integer vector of parent references (see
 #'   [sys.parents()]) as row numbers. 0 is global.
 #'
-#' - `namespace`: Character vector of namespaces, `""` or `NA` for
-#'   global or no namespace
+#' - `namespace`: Character vector of namespaces. `NA` for global or
+#'   no namespace
 #'
 #' - `scope`: Character vector of strings taking values `"::"`,
 #'   `":::"`, `"global"`, or `"local"`.
