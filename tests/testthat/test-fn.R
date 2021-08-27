@@ -325,3 +325,21 @@ test_that("as_function() fetches from the global env", {
   )
   expect_equal(as_function("foo")(), "foo")
 })
+
+test_that("as_function() has nice errors", {
+  my_function <- function(my_arg) {
+    as_function(my_arg)
+  }
+
+  expect_snapshot({
+    (expect_error(as_function(1)))
+
+    (expect_error(as_function(1, arg = "foo")))
+
+    (expect_error(my_function(1 + 2)))
+
+    (expect_error(my_function(1)))
+
+    (expect_error(my_function(a ~ b)))
+  })
+})
