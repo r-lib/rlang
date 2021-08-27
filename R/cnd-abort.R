@@ -490,11 +490,10 @@ NULL
 #'
 #' `caller_arg()` is a variant of `substitute()` or [ensym()] for
 #' arguments that reference other arguments. Unlike `substitute()`
-#' which returns any expression, the referenced argument must be a
-#' symbol, otherwise this is an error. That symbol is then returned as
-#' a string ready to be included in error messages.
+#' which returns an expression, `caller_arg()` formats the expression
+#' as a single line string which can be included in error messages.
 #'
-#' - When included in an error message, the resulting name should
+#' - When included in an error message, the resulting label should
 #'   generally be formatted as argument, for instance using the `.arg`
 #'   in the cli package.
 #'
@@ -525,14 +524,7 @@ caller_arg <- function(arg) {
   }
 
   expr <- do.call(substitute, list(arg), envir = caller_env())
-  if (!is_symbol(expr)) {
-    abort(sprintf(
-      "%s must be an argument name.",
-      format_arg(as_string(arg))
-    ))
-  }
-
-  as_string(expr)
+  as_label(expr)
 }
 
 #' Validate and format a function call for use in error messages
