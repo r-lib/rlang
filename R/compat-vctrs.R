@@ -9,8 +9,15 @@
 # of data frames without having to depend on tibble or vctrs. The
 # embedded type system is minimal and not extensible.
 
+# 2021-08-27:
+# * `vec_slice()` now preserves attributes of data frames and vectors.
+# * `vec_ptype2()` detects unspecified columns of data frames.
+
+# 2021-08-26:
+# * Added compat for `vec_as_location()`.
+#
 # 2021-05-28:
-# * Initial revision
+# * Initial revision.
 
 
 # Construction ------------------------------------------------------------
@@ -138,7 +145,17 @@ vec_slice <- function(x, i) {
 
     # Reset automatic row names to work around `[` weirdness
     if (is.numeric(attr(x, "row.names"))) {
-      attr(out, "row.names") <- .set_row_names(nrow(out))
+      row_names <- .set_row_names(nrow(out))
+    } else {
+      row_names <- attr(out, "row.names")
+    }
+
+    # Restore attributes
+    mtd <- .rlang_vctrs_s3_method("[", class(x))
+    if (is_null(mtd) || identical(environment(mtd), asNamespace("base"))) {
+      attrib <- attributes(x)
+      attrib$row.names <- row_names
+      attributes(out) <- attrib
     }
 
     return(out)
@@ -147,16 +164,27 @@ vec_slice <- function(x, i) {
   d <- vec_dims(x)
   if (d == 1) {
     if (is.object(x)) {
-      x[i]
+      out <- x[i]
     } else {
-      x[i, drop = FALSE]
+      out <- x[i, drop = FALSE]
     }
   } else if (d == 2) {
-    x[i, , drop = FALSE]
+    out <- x[i, , drop = FALSE]
   } else {
     j <- rep(list(quote(expr = )), d - 1)
-    eval(as.call(list(quote(`[`), quote(x), quote(i), j, drop = FALSE)))
+    out <- eval(as.call(list(quote(`[`), quote(x), quote(i), j, drop = FALSE)))
   }
+
+  mtd <- .rlang_vctrs_s3_method("[", class(x))
+  if (is_null(mtd) || identical(environment(mtd), asNamespace("base"))) {
+    attrib <- attributes(x)
+    attrib$names <- attr(out, "names")
+    attrib$dim <- attr(out, "dim")
+    attrib$dim.names <- attr(out, "dim.names")
+    attributes(out) <- attrib
+  }
+
+  out
 }
 vec_dims <- function(x) {
   d <- dim(x)
@@ -165,6 +193,12 @@ vec_dims <- function(x) {
   } else {
     length(d)
   }
+}
+
+vec_as_location <- function(i, n, names = NULL) {
+  out <- seq_len(n)
+  names(out) <- names
+  unname(out[i])
 }
 
 vec_init <- function(x, n = 1L) {
@@ -373,16 +407,35 @@ vec_ptype_common <- function(xs, ptype = NULL) {
     out <- Reduce(vec_ptype2, xs)
   }
 
-  if (inherits(out, "rlang_unspecified")) {
+  vec_ptype_finalise(out)
+}
+
+vec_ptype_finalise <- function(x) {
+  if (is.data.frame(x)) {
+    x[] <- lapply(x, vec_ptype_finalise)
+    return(x)
+  }
+
+  if (inherits(x, "rlang_unspecified")) {
     logical()
   } else {
-    out
+    x
   }
 }
 
 vec_ptype <- function(x) {
   if (vec_is_unspecified(x)) {
     return(.rlang_vctrs_unspecified())
+  }
+
+  if (is.data.frame(x)) {
+    out <- new_data_frame(lapply(x, vec_ptype))
+
+    attrib <- attributes(x)
+    attrib$row.names <- attr(out, "row.names")
+    attributes(out) <- attrib
+
+    return(out)
   }
 
   vec_slice(x, 0)
@@ -574,6 +627,25 @@ vec_is_unspecified <- function(x) {
     rep(NA, length(x)),
     class = "rlang_unspecified"
   )
+}
+
+.rlang_vctrs_s3_method <- function(generic, class, env = parent.frame()) {
+  fn <- get(generic, envir = env)
+
+  ns <- asNamespace(topenv(fn))
+  tbl <- ns$.__S3MethodsTable__.
+
+  for (c in class) {
+    name <- paste0(generic, ".", c)
+    if (exists(name, envir = tbl, inherits = FALSE)) {
+      return(get(name, envir = tbl))
+    }
+    if (exists(name, envir = globalenv(), inherits = FALSE)) {
+      return(get(name, envir = globalenv()))
+    }
+  }
+
+  NULL
 }
 
 

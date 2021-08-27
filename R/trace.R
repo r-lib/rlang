@@ -91,11 +91,18 @@ trace_back <- function(top = NULL, bottom = NULL) {
   calls <- as.list(sys.calls()[idx])
 
   calls <- map(calls, call_fix_car)
-  calls <- map2(calls, seq_along(calls), maybe_add_namespace)
+
+  context <- map2(calls, seq_along(calls), call_trace_context)
+  context <- inject(vec_rbind(!!!context))
 
   parents <- normalise_parents(parents)
 
-  trace <- new_trace(calls, parents)
+  trace <- new_trace(
+    calls,
+    parents,
+    namespace = context$namespace,
+    scope = context$scope
+  )
   trace <- add_winch_trace(trace)
   trace <- trace_trim_env(trace, frames, top)
 
@@ -134,22 +141,22 @@ call_fix_car <- function(call) {
   call
 }
 
-maybe_add_namespace <- function(call, fn) {
+call_trace_context <- function(call, fn) {
   if (is_quosure(call)) {
     call <- quo_get_expr(call)
     if (!is_call(call)) {
-      return(call)
+      return(trace_no_context())
     }
   }
 
   if (call_print_fine_type(call) != "call") {
-    return(call)
+    return(trace_no_context())
   }
 
   # Checking for bare symbols covers the `::` and `:::` cases
   sym <- node_car(call)
   if (!is_symbol(sym)) {
-    return(call)
+    return(trace_no_context())
   }
 
   nm <- as_string(sym)
@@ -164,22 +171,31 @@ maybe_add_namespace <- function(call, fn) {
   env <- fn_env(fn)
   top <- topenv(env)
   if (is_reference(env, global_env())) {
-    prefix <- "global"
-    op <- "::"
+    namespace <- NA
+    scope <- "global"
   } else if (is_namespace(top)) {
-    prefix <- ns_env_name(top)
+    namespace <- ns_env_name(top)
     if (ns_exports_has(top, nm)) {
-      op <- "::"
+      scope <- "::"
     } else {
-      op <- ":::"
+      scope <- ":::"
     }
   } else {
-    return(call)
+    namespace <- NA
+    scope <- NA
   }
 
-  namespaced_sym <- call(op, sym(prefix), sym)
-  call[[1]] <- namespaced_sym
-  call
+  data_frame(
+    namespace = namespace,
+    scope = scope
+  )
+}
+
+trace_no_context <- function() {
+  data_frame(
+    namespace = NA,
+    scope = NA
+  )
 }
 
 # Remove recursive frames which occur with quosures
@@ -187,33 +203,6 @@ normalise_parents <- function(parents) {
   recursive <- parents == seq_along(parents)
   parents[recursive] <- 0L
   parents
-}
-
-new_trace <- function(calls, parents, indices = NULL) {
-  indices <- indices %||% seq_along(calls)
-
-  n <- length(calls)
-  stopifnot(
-    is_list(calls),
-    is_integer(parents, n),
-    is_integer(indices, n)
-  )
-
-  structure(
-    list(
-      calls = calls,
-      parents = parents,
-      indices = indices
-    ),
-    class = "rlang_trace",
-    # Increment this number when the internal format for the class changes
-    version = 1L
-  )
-}
-
-trace_reset_indices <- function(trace) {
-  trace$indices <- seq_len(trace_length(trace))
-  trace
 }
 
 # Can't use new_environment() here
@@ -238,17 +227,85 @@ add_winch_trace <- function(trace) {
   winch::winch_add_trace_back(trace)
 }
 
+
+# Construction ------------------------------------------------------------
+
+new_trace <- function(calls,
+                      parents,
+                      ...,
+                      visible = TRUE,
+                      namespace = NA,
+                      scope = NA,
+                      class = NULL) {
+  new_trace0(
+    calls,
+    parents,
+    ...,
+    visible = visible,
+    namespace = namespace,
+    scope = scope,
+    class = c(class, "rlang_trace", "rlib_trace")
+  )
+}
+new_trace0 <- function(calls,
+                       parents,
+                       ...,
+                       visible = TRUE,
+                       namespace = NA,
+                       scope = NA,
+                       class = NULL) {
+  stopifnot(
+    is_bare_list(calls),
+    is_bare_integer(parents)
+  )
+
+  df <- df_list(
+    call = calls,
+    parent = parents,
+    visible = visible,
+    namespace = namespace,
+    scope = scope,
+    ...
+  )
+  new_data_frame(
+    df,
+    .class = c(class, "tbl"),
+    version = 2L
+  )
+}
+
+
+# Operations --------------------------------------------------------------
+
+#' @rdname trace_back
+#' @param trace A backtrace created by `trace_back()`.
+#' @export
+trace_length <- function(trace) {
+  nrow(trace)
+}
+
+trace_slice <- function(trace, i) {
+  i <- vec_as_location(i, trace_length(trace))
+
+  parent <- match(trace$parent, i, nomatch = 0)
+
+  out <- vec_slice(trace, i)
+  out$parent <- parent[i]
+
+  out
+}
+
+
 # Methods -----------------------------------------------------------------
 
 # For internal use only
 c.rlang_trace <- function(...) {
   traces <- list(...)
 
-  calls <- flatten(map(traces, `[[`, "calls"))
-  parents <- flatten_int(map(traces, `[[`, "parents"))
-  indices <- flatten_int(map(traces, `[[`, "indices"))
+  calls <- flatten(map(traces, `[[`, "call"))
+  parents <- flatten_int(map(traces, `[[`, "parent"))
 
-  new_trace(calls, parents, indices)
+  new_trace(calls, parents)
 }
 
 #' @export
@@ -258,9 +315,8 @@ format.rlang_trace <- function(x,
                                max_frames = NULL,
                                dir = getwd(),
                                srcrefs = NULL) {
-  x <- trace_reset_indices(x)
-
-  switch(arg_match(simplify),
+  switch(
+    arg_match(simplify),
     none = trace_format(x, max_frames, dir, srcrefs),
     collapse = trace_format_collapse(x, max_frames, dir, srcrefs),
     branch = trace_format_branch(x, max_frames, dir, srcrefs)
@@ -276,9 +332,9 @@ trace_format <- function(trace, max_frames, dir, srcrefs) {
     return(trace_root())
   }
 
-  tree <- trace_as_tree(trace, dir = dir, srcrefs = srcrefs)
-  cli_tree(tree, indices = trace$indices)
+  cli_tree(trace_as_tree(trace, dir = dir, srcrefs = srcrefs))
 }
+
 trace_format_collapse <- function(trace, max_frames, dir, srcrefs) {
   trace <- trace_simplify_collapse(trace)
   trace_format(trace, max_frames, dir, srcrefs)
@@ -287,8 +343,10 @@ trace_format_branch <- function(trace, max_frames, dir, srcrefs) {
   trace <- trace_simplify_branch(trace)
   tree <- trace_as_tree(trace, dir = dir, srcrefs = srcrefs)
 
-  branch <- tree[-1, ][["call"]]
-  cli_branch(branch, max = max_frames, indices = trace$indices)
+  # Remove root in the branch view
+  tree <- vec_slice(tree, -1)
+
+  cli_branch(tree, max = max_frames)
 }
 
 format_collapsed <- function(what, n) {
@@ -308,7 +366,12 @@ format_collapsed_branch <- function(what, n, style = NULL) {
   format_collapsed(what, n)
 }
 
-cli_branch <- function(lines, max = NULL, style = NULL, indices = NULL) {
+cli_branch <- function(tree,
+                       max = NULL,
+                       style = NULL) {
+  lines <- tree$call_text
+  indices = tree$id
+
   if (!length(lines)) {
     return(chr())
   }
@@ -398,34 +461,6 @@ summary.rlang_trace <- function(object,
   invisible(object)
 }
 
-#' @rdname trace_back
-#' @param trace A backtrace created by `trace_back()`.
-#' @export
-trace_length <- function(trace) {
-  length(trace$calls)
-}
-
-trace_subset <- function(x, i) {
-  if (!length(i)) {
-    return(new_trace(list(), int()))
-  }
-  stopifnot(is_integerish(i))
-
-  n <- trace_length(x)
-
-  if (all(i < 0L)) {
-    i <- setdiff(seq_len(n), abs(i))
-  }
-
-  parents <- match(as.character(x$parents[i]), as.character(i), nomatch = 0)
-
-  new_trace(
-    calls = x$calls[i],
-    parents = parents,
-    indices = x$indices[i]
-  )
-}
-
 # Subsets sibling nodes, at the level of the rightmost leaf by
 # default. Supports full vector subsetting semantics (negative values,
 # missing index, etc).
@@ -434,12 +469,12 @@ trace_subset_across <- function(trace, i, n = NULL) {
   level_n <- length(level)
   i <- validate_index(i, level_n)
 
-  indices <- unlist(map(level[i], chain_indices, trace$parents))
-  trace_subset(trace, indices)
+  indices <- unlist(map(level[i], chain_indices, trace$parent))
+  trace_slice(trace, indices)
 }
 trace_level <- function(trace, n = NULL) {
   n <- n %||% trace_length(trace)
-  parents <- trace$parents
+  parents <- trace$parent
   which(parents == parents[[n]])
 }
 
@@ -500,24 +535,24 @@ trace_trim_env <- function(x, frames, to) {
   start <- last(which(is_top)) + 1L
   end <- trace_length(x)
 
-  trace_subset(x, seq2(start, end))
+  trace_slice(x, seq2(start, end))
 }
 
 set_trace_skipped <- function(trace, id, n) {
-  attr(trace$calls[[id]], "collapsed") <- n
+  trace$collapsed[[id]] <- n
   trace
 }
 set_trace_collapsed <- function(trace, id, n) {
-  attr(trace$calls[[id - n]], "collapsed") <- n
+  trace$collapsed[[id - n]] <- n
   trace
 }
 n_collapsed <- function(trace, id) {
-  call <- trace$calls[[id]]
+  call <- trace$call[[id]]
 
   if (is_eval_call(call)) {
     # When error occurs inside eval()'s frame at top level, there
     # might be only one frame and nothing to collapse
-    if (id > 1L && is_eval_call(trace$calls[[id - 1L]])) {
+    if (id > 1L && is_eval_call(trace$call[[id - 1L]])) {
       n <- 1L
     } else {
       n <- 0L
@@ -541,9 +576,14 @@ is_eval_call <- function(call) {
 }
 
 trace_simplify_branch <- function(trace) {
-  parents <- trace$parents
-  path <- int()
-  id <- length(parents)
+  parents <- trace$parent
+
+  old_visible <- trace$visible
+  visible <- rep_along(old_visible, FALSE)
+
+  id <- trace_length(trace)
+
+  trace$collapsed <- 0L
 
   while (id != 0L) {
     n_collapsed <- n_collapsed(trace, id)
@@ -558,21 +598,27 @@ trace_simplify_branch <- function(trace) {
       id <- next_id
     }
 
-    if (!is_uninformative_call(trace$calls[[id]])) {
-      path <- c(path, id)
+    # Set `old_visible` to avoid uninformative calls in position 1 to
+    # be included (see below)
+    if (is_uninformative_call(trace$call[[id]])) {
+      old_visible[[id]] <- FALSE
+    } else if (old_visible[[id]]) {
+      visible[[id]] <- TRUE
     }
 
     id <- parents[id]
   }
 
-  # Always include very first call
-  path <- rev(path)
-  if (length(path) && path[[1]] != 1L) {
-    path <- c(1L, path)
+  # Always include first visible call
+  first <- detect_index(old_visible, is_true)
+  if (first) {
+    visible[[first]] <- TRUE
   }
 
-  trace$parents <- parents
-  trace_subset(trace, path)
+  trace$visible <- visible
+  trace$parent <- parents
+
+  trace
 }
 
 # Bypass calls with inlined functions
@@ -620,9 +666,14 @@ is_winch_frame <- function(call) {
 }
 
 trace_simplify_collapse <- function(trace) {
-  parents <- trace$parents
-  path <- int()
-  id <- length(parents)
+  parents <- trace$parent
+
+  old_visible <- trace$visible
+  visible <- rep_along(old_visible, FALSE)
+
+  id <- trace_length(trace)
+
+  trace$collapsed <- 0L
 
   while (id > 0L) {
     n_collapsed <- n_collapsed(trace, id)
@@ -637,7 +688,7 @@ trace_simplify_collapse <- function(trace) {
       id <- next_id
     }
 
-    path <- c(path, id)
+    visible[[id]] <- TRUE
     parent_id <- parents[[id]]
     id <- dec(id)
 
@@ -648,7 +699,7 @@ trace_simplify_collapse <- function(trace) {
 
       if (sibling_parent_id == parent_id) {
         trace <- set_trace_skipped(trace, id, n_skipped)
-        path <- c(path, id)
+        visible[[id]] <- TRUE
         n_skipped <- 0L
       } else {
         n_skipped <- inc(n_skipped)
@@ -658,42 +709,75 @@ trace_simplify_collapse <- function(trace) {
     }
   }
 
-  trace$parents <- parents
-  trace_subset(trace, rev(path))
+  trace$visible <- visible
+  trace$parent <- parents
+
+  trace
 }
 
 
 # Printing ----------------------------------------------------------------
 
-trace_as_tree <- function(x, dir = getwd(), srcrefs = NULL) {
-  nodes <- c(0, seq_along(x$calls))
-  children <- map(nodes, function(id) seq_along(x$parents)[x$parents == id])
-
-  calls <- as.list(x$calls)
-  is_collapsed <- map(calls, attr, "collapsed")
-  call_text <- map2_chr(calls, is_collapsed, trace_call_text)
+trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL) {
+  trace$collapsed <- trace$collapsed %||% 0L
+  call_text_data <- trace[c("call", "collapsed", "namespace", "scope")]
+  call_text <- chr(!!!pmap(call_text_data, trace_call_text))
 
   srcrefs <- srcrefs %||% peek_option("rlang_trace_format_srcrefs")
   srcrefs <- srcrefs %||% TRUE
   stopifnot(is_scalar_logical(srcrefs))
   if (srcrefs) {
-    refs <- map(x$calls, attr, "srcref")
+    refs <- map(trace$call, attr, "srcref")
     src_locs <- map_chr(refs, src_loc, dir = dir)
     have_src_loc <- nzchar(src_locs)
     src_locs <- silver(src_locs[have_src_loc])
     call_text[have_src_loc] <- paste0(call_text[have_src_loc], " ", src_locs)
   }
 
-  tree <- data.frame(id = as.character(nodes), stringsAsFactors = FALSE)
-  tree$children <- map(children, as.character)
-  tree$call <- c(trace_root(), call_text)
+  id <- c(0, seq_along(trace$call))
+  children <- map(id, function(id) seq_along(trace$parent)[trace$parent == id])
+
+  root <- data_frame(
+    call = list(NULL),
+    parent = 0L,
+    visible = TRUE,
+    namespace = NA,
+    scope = NA
+  )
+  trace <- vec_rbind(root, trace)
+
+  tree_data <- data_frame(
+    id = as.character(id),
+    children = children,
+    call_text = c(trace_root(), call_text)
+  )
+  tree <- vec_cbind(tree_data, trace)
+
+  # Subset out hidden frames
+  tree <- vec_slice(tree, tree$visible)
+  tree$children <- map(tree$children, intersect, tree$id)
 
   tree
 }
 
 # FIXME: Add something like call_deparse_line()
-trace_call_text <- function(call, collapse) {
-  if (is_null(collapse)) {
+trace_call_text <- function(call, collapsed, namespace, scope) {
+  if (is_call(call) && is_symbol(call[[1]])) {
+    op <- switch(
+      scope,
+      global = "::",
+      local = ":::",
+      scope
+    )
+    if (is_string(scope, "global")) {
+      namespace <- "global"
+    }
+    if (!is_na(namespace)) {
+      call[[1]] <- call(op, sym(namespace), call[[1]])
+    }
+  }
+
+  if (!collapsed) {
     return(as_label(call))
   }
 
@@ -704,13 +788,9 @@ trace_call_text <- function(call, collapse) {
   }
 
   text <- as_label(call)
-  if (collapse > 0L) {
-    n_collapsed_text <- sprintf(" ... +%d", collapse)
-  } else {
-    n_collapsed_text <- ""
-  }
+  n_collapsed_text <- sprintf(" ... +%d", collapsed)
 
-  format_collapsed(paste0("[ ", text, " ]"), collapse)
+  format_collapsed(paste0("[ ", text, " ]"), collapsed)
 }
 
 src_loc <- function(srcref, dir = getwd()) {
@@ -849,7 +929,7 @@ call_add_namespace <- function(call, fn) {
     return(call)
   }
 
-  namespaced_sym <- call(op, as.symbol(prefix), sym)
+  namespaced_sym <- call(op, sym(prefix), sym)
   call[[1]] <- namespaced_sym
   call
 }
@@ -857,3 +937,54 @@ call_add_namespace <- function(call, fn) {
 is_trace <- function(x) {
   inherits_any(x, c("rlang_trace", "rlib_trace"))
 }
+
+#' Backtrace specification
+#'
+#' @description
+#'
+#' `r lifecycle::badge("experimental")`
+#'
+#'
+#' @section Structure:
+#'
+#' An r-lib backtrace is a data frame that contains the following
+#' columns:
+#'
+#' - `call`: List of calls. These may carry `srcref` objects.
+#'
+#' - `visible`: Logical vector. If `FALSE`, the corresponding call
+#'   will be hidden from simplified backtraces.
+#'
+#' - `parent`: Integer vector of parent references (see
+#'   [sys.parents()]) as row numbers. 0 is global.
+#'
+#' - `namespace`: Character vector of namespaces. `NA` for global or
+#'   no namespace
+#'
+#' - `scope`: Character vector of strings taking values `"::"`,
+#'   `":::"`, `"global"`, or `"local"`.
+#'
+#' A backtrace data frame may contain extra columns. If you add
+#' additional columns, make sure to prefix their names with the name
+#' of your package or organisation to avoid potential conflicts with
+#' future extensions of this spec, e.g. `"mypkg_column"`.
+#'
+#'
+#' @section Operations:
+#'
+#' - **Length**. The length of the backtrace is the number of rows of
+#'   the underlying data.
+#'
+#' - **Concatenation**. Performed by row-binding two backtraces.  The
+#'   `parent` column of the RHS is shifted by `nrow(LHS)` so that the
+#'   last call of the LHS takes place of the global frame of the RHS.
+#'
+#' - **Subsetting**. Performed by slicing the backtrace. After the
+#'   data frame is sliced, the `parent` column is adjusted to the new
+#'   row indices. Any `parent` value that no longer exists in the
+#'   sliced backtrace is set to 0 (the global frame).
+#'
+#'
+#' @name rlib_trace_spec
+#' @keywords internal
+NULL

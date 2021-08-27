@@ -718,7 +718,7 @@ trace_trim_context <- function(trace, idx) {
 
   to_trim <- seq2(idx, trace_length(trace))
   if (length(to_trim)) {
-    trace <- trace_subset(trace, -to_trim)
+    trace <- trace_slice(trace, -to_trim)
   }
 
   trace
@@ -726,7 +726,7 @@ trace_trim_context <- function(trace, idx) {
 
 # Assumes we're called from a calling or exiting handler
 trace_capture_depth <- function(trace) {
-  calls <- trace$calls
+  calls <- trace$call
   default <- length(calls)
 
   if (length(calls) <= 3L) {

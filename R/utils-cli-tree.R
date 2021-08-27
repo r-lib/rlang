@@ -7,15 +7,17 @@
 # * is_utf8_output()
 # * is_latex_output()
 
-cli_tree <- function(data, root = data[[1]][[1]], style = NULL, indices = NULL) {
+cli_tree <- function(data,
+                     root = data$id[[1]],
+                     style = NULL) {
   style <- style %||% cli_box_chars()
 
-  labels <- if (ncol(data) >= 3) data[[3]] else data[[1]]
+  labels <- data$call_text
   res <- character()
 
   pt <- function(root, n = integer(), mx = integer()) {
 
-    num_root <- match(root, data[[1]])
+    num_root <- match(root, data$id)
 
     level <- length(n) - 1
     prefix <- map_chr(seq_along(n), function(i) {
@@ -34,7 +36,7 @@ cli_tree <- function(data, root = data[[1]][[1]], style = NULL, indices = NULL) 
 
     res <<- c(res, paste0(paste(prefix, collapse = ""), labels[[num_root]]))
 
-    children <- data[[2]][[num_root]]
+    children <- data$children[[num_root]]
     for (d in seq_along(children)) {
       pt(children[[d]], c(n, d), c(mx, length(children)))
     }
@@ -44,8 +46,10 @@ cli_tree <- function(data, root = data[[1]][[1]], style = NULL, indices = NULL) 
     pt(root)
   }
 
+  indices <- data$id[-1]
+
   if (length(indices)) {
-    indices <- pad_spaces(as.character(indices))
+    indices <- pad_spaces(indices)
     indices <- paste0(" ", indices, ". ")
 
     # The root isn't numbered

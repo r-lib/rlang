@@ -370,3 +370,80 @@ test_that("casting to df type uses same column order", {
     list(data.frame(y = 2, x = na_dbl), df2)
   )
 })
+
+test_that("vec_as_location() works", {
+  n <- 4
+  names <- letters[1:4]
+
+  i <- c(2, 3)
+  expect_identical(vec_as_location(i, n, names), 2:3)
+
+  i <- -c(2, 3)
+  expect_identical(vec_as_location(i, n, names), c(1L, 4L))
+
+  i <- c(TRUE, FALSE, TRUE, FALSE)
+  expect_identical(vec_as_location(i, n, names), c(1L, 3L))
+
+  i <- c("a", "d")
+  expect_identical(vec_as_location(i, n, names), c(1L, 4L))
+})
+
+test_that("vec_slice() preserves attributes of data frames", {
+  df <- data_frame(x = 1:2)
+  attr(df, "foo") <- TRUE
+
+  out <- vec_slice(df, 1)
+  expect_true(attr(out, "foo"))
+})
+
+test_that("vec_slice() doesn't restore attributes if there is a `[` method", {
+  df <- new_data_frame(
+    df_list(x = 1:2),
+    .class = "rlang_foobar",
+    foo = "bar"
+  )
+  local_methods(`[.rlang_foobar` = function(x, ...) {
+    out <- NextMethod()
+    attr(out, "foo") <- "dispatched"
+    out
+  })
+
+  expect_equal(
+    attr(vec_slice(df, 1), "foo"),
+    "dispatched"
+  )
+})
+
+test_that("vec_slice() preserves attributes of vectors", {
+  x <- set_names(1:2, c("a", "b"))
+  attr(x, "foo") <- TRUE
+
+  out <- vec_slice(x, 1)
+  expect_true(attr(out, "foo"))
+  expect_equal(attr(out, "names"), "a")
+})
+
+test_that("can row-bind unspecified columns", {
+  expect_equal(
+    vec_rbind(
+      data_frame(x = NA),
+      data_frame(x = "")
+    ),
+    data_frame(x = c(NA, ""))
+  )
+})
+
+test_that("unspecified is detected recursively", {
+  ptype <- vec_ptype(data_frame(x = NA))
+  expect_s3_class(ptype$x, "rlang_unspecified")
+})
+
+test_that("ptype is finalised", {
+  x <- data_frame(x = NA)
+
+  out <- vec_cast_common(list(x, x))[[1]]
+  expect_identical(out$x, NA)
+
+  out <- vec_cast_common(list(out, x))[[1]]
+  expect_identical(out$x, NA)
+})

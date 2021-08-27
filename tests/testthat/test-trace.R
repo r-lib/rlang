@@ -27,7 +27,7 @@ test_that("tree printing only changes deliberately", {
   expect_snapshot({
     print(trace, dir = dir)
     cat("\n")
-    print(trace_subset(trace, 0L), dir = dir)
+    print(trace_slice(trace, 0L), dir = dir)
   })
 })
 
@@ -77,21 +77,21 @@ test_that("trace_simplify_branch() extracts last branch", {
   m <- function() trace_back(e)
 
   x1 <- j(1)
-  expect_trace_length(x1, 6)
-  expect_trace_length(trace_simplify_branch(x1), 3)
+  expect_equal(sum(x1$visible), 6)
+  expect_equal(sum(trace_simplify_branch(x1)$visible), 3)
 
   x2 <- j(2)
-  expect_trace_length(x2, 6)
-  expect_trace_length(trace_simplify_branch(x2), 2)
+  expect_equal(sum(x2$visible), 6)
+  expect_equal(sum(trace_simplify_branch(x2)$visible), 2)
 
   x3 <- j(3)
-  expect_trace_length(x2, 6)
-  expect_trace_length(trace_simplify_branch(x3), 1)
+  expect_equal(sum(x3$visible), 1)
+  expect_equal(sum(trace_simplify_branch(x3)$visible), 1)
 })
 
 test_that("integerish indices are allowed", {
   trace <- trace_back()
-  expect_identical(trace_subset(trace, 0), trace_subset(trace, 0L))
+  expect_identical(trace_slice(trace, 0), trace_slice(trace, 0L))
 })
 
 test_that("cli_branch() handles edge case", {
@@ -99,9 +99,8 @@ test_that("cli_branch() handles edge case", {
   f <- function() trace_back(e)
   trace <- f()
 
-  call <- paste0(" ", cli_style$h, "rlang:::f()")
   tree <- trace_as_tree(trace, srcrefs = FALSE)
-  expect_identical(cli_branch(tree$call[-1], trace$indices), call)
+  expect_snapshot(cli_branch(tree[-1, ]))
 })
 
 test_that("trace formatting picks up `rlang_trace_format_srcrefs`", {
@@ -134,11 +133,10 @@ test_that("collapsed formatting doesn't collapse single frame siblings", {
   g <- function() trace_back(e)
   trace <- f()
 
-  full <- capture.output(print(trace, simplify = "none", srcrefs = FALSE))[[3]]
-  expect_match(full, "rlang::eval_bare(quote(g()))", fixed = TRUE)
-
-  collapsed <- capture.output(print(trace, simplify = "collapse", srcrefs = FALSE))[[3]]
-  expect_match(collapsed, "[ rlang::eval_bare(...) ]", fixed = TRUE)
+  expect_snapshot({
+    print(trace, simplify = "none", srcrefs = FALSE)
+    print(trace, simplify = "collapse", srcrefs = FALSE)
+  })
 })
 
 test_that("recursive frames are rewired to the global env", {
@@ -539,8 +537,8 @@ test_that("can subset in middle level", {
   trace <- f()
 
   out <- trace_subset_across(trace, 2, 2)
-  expect_equal(out$calls, alist(rlang:::f(), base::identity(g())))
-  expect_identical(out$parents, 0:1)
+  expect_equal(out$call, alist(f(), identity(g())))
+  expect_identical(out$parent, 0:1)
 
 
   idx <- int(0, 1, 1, 1, 4, 4, 4)
@@ -550,14 +548,14 @@ test_that("can subset in middle level", {
 
   out <- trace_subset_across(trace, 3, 2)
   exp <- alist(
-    rlang:::f(),
-    rlang:::g(),
-    base::identity(identity(h())),
-    base::identity(h()),
-    rlang:::h()
+    f(),
+    g(),
+    identity(identity(h())),
+    identity(h()),
+    h()
   )
-  expect_equal(out$calls, exp)
-  expect_identical(out$parents, c(0L, 1L, 2L, 2L, 2L))
+  expect_equal(out$call, exp)
+  expect_identical(out$parent, c(0L, 1L, 2L, 2L, 2L))
 })
 
 test_that("fails when `bottom` is not on the stack", {
@@ -616,4 +614,28 @@ test_that("can trace back with quosured symbol", {
   # FIXME: Weird trace structure
   trace <- f()
   expect_s3_class(trace, "rlang_trace")
+})
+
+test_that("can slice backtrace", {
+  trace <- new_trace(alist(a(), b(), c()), 0:2)
+
+  expect_identical(
+    trace_slice(trace, 2:3),
+    new_trace(alist(b(), c()), 0:1)
+  )
+
+  exp <- new_trace(alist(a(), c()), c(0L, 0L))
+  
+  expect_identical(
+    trace_slice(trace, c(1, 3)),
+    exp
+  )
+  expect_identical(
+    trace_slice(trace, -2),
+    exp
+  )
+})
+
+test_that("backtraces carry `version` attribute", {
+  expect_identical(attr(trace_back(), "version"), 2L)
 })
