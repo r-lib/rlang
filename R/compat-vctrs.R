@@ -10,7 +10,8 @@
 # embedded type system is minimal and not extensible.
 
 # 2021-08-27:
-# * `vec_slice()` now preserves attributes of data frames.
+# * `vec_slice()` now preserves attributes of data frames and vectors.
+# * `vec_ptype2()` detects unspecified columns of data frames.
 
 # 2021-08-26:
 # * Added compat for `vec_as_location()`.
@@ -163,16 +164,27 @@ vec_slice <- function(x, i) {
   d <- vec_dims(x)
   if (d == 1) {
     if (is.object(x)) {
-      x[i]
+      out <- x[i]
     } else {
-      x[i, drop = FALSE]
+      out <- x[i, drop = FALSE]
     }
   } else if (d == 2) {
-    x[i, , drop = FALSE]
+    out <- x[i, , drop = FALSE]
   } else {
     j <- rep(list(quote(expr = )), d - 1)
-    eval(as.call(list(quote(`[`), quote(x), quote(i), j, drop = FALSE)))
+    out <- eval(as.call(list(quote(`[`), quote(x), quote(i), j, drop = FALSE)))
   }
+
+  mtd <- .rlang_vctrs_s3_method("[", class(x))
+  if (is_null(mtd) || identical(environment(mtd), asNamespace("base"))) {
+    attrib <- attributes(x)
+    attrib$names <- attr(out, "names")
+    attrib$dim <- attr(out, "dim")
+    attrib$dim.names <- attr(out, "dim.names")
+    attributes(out) <- attrib
+  }
+
+  out
 }
 vec_dims <- function(x) {
   d <- dim(x)
@@ -405,6 +417,16 @@ vec_ptype_common <- function(xs, ptype = NULL) {
 vec_ptype <- function(x) {
   if (vec_is_unspecified(x)) {
     return(.rlang_vctrs_unspecified())
+  }
+
+  if (is.data.frame(x)) {
+    out <- new_data_frame(lapply(x, vec_ptype))
+
+    attrib <- attributes(x)
+    attrib$row.names <- attr(out, "row.names")
+    attributes(out) <- attrib
+
+    return(out)
   }
 
   vec_slice(x, 0)

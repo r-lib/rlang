@@ -413,3 +413,27 @@ test_that("vec_slice() doesn't restore attributes if there is a `[` method", {
     "dispatched"
   )
 })
+
+test_that("vec_slice() preserves attributes of vectors", {
+  x <- set_names(1:2, c("a", "b"))
+  attr(x, "foo") <- TRUE
+
+  out <- vec_slice(x, 1)
+  expect_true(attr(out, "foo"))
+  expect_equal(attr(out, "names"), "a")
+})
+
+test_that("can row-bind unspecified columns", {
+  expect_equal(
+    vec_rbind(
+      data_frame(x = NA),
+      data_frame(x = "")
+    ),
+    data_frame(x = c(NA, ""))
+  )
+})
+
+test_that("unspecified is detected recursively", {
+  ptype <- vec_ptype(data_frame(x = NA))
+  expect_s3_class(ptype$x, "rlang_unspecified")
+})
