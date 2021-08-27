@@ -55,9 +55,6 @@ mtcars %&amp;gt;% mutate(disp = .data$disp * .env$disp)
 mtcars %&amp;gt;% mutate(disp = disp * disp)
 
 
-The .data object exported from rlang is also useful to import in
-your package namespace to avoid a R CMD check note when referring
-to objects from the data mask.
 Note that .data is only a pronoun, it is not a real data
 frame. This means that you can't take its names or map a function
 over the contents of .data. Similarly, .env is not an actual R
@@ -193,9 +190,6 @@ kinds of variables. Compare:</p><pre><span class='va'>disp</span> <span class='o
 <span class='va'>mtcars</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>disp <span class='op'>=</span> <span class='va'>disp</span> <span class='op'>*</span> <span class='va'>disp</span><span class='op'>)</span>
 </pre>
 
-<p>The <code>.data</code> object exported from rlang is also useful to import in
-your package namespace to avoid a <code>R CMD check</code> note when referring
-to objects from the data mask.</p>
 <p>Note that <code>.data</code> is only a pronoun, it is not a real data
 frame. This means that you can't take its names or map a function
 over the contents of <code>.data</code>. Similarly, <code>.env</code> is not an actual R
@@ -208,6 +202,25 @@ subsetting operators behave differently.</p>
 <span class='va'>.env</span></pre>
 
 
+    <h2 class="hasAnchor" id="where-does-data-live-"><a class="anchor" href="#where-does-data-live-"></a>Where does <code>.data</code> live?</h2>
+
+    
+
+
+<p>The <code>.data</code> pronoun is automatically created for you by
+data-masking functions using the <a href='eval_tidy.html'>tidy eval framework</a>.
+You don't need to import <code>rlang::.data</code> or use <code><a href='https://rlang.r-lib.org'>library(rlang)</a></code> to
+work with this pronoun.</p>
+<p>However, the <code>.data</code> object exported from rlang is useful to import
+in your package namespace to avoid a <code>R CMD check</code> note when
+referring to objects from the data mask. R does not have any way of
+knowing about the presence or absence of <code>.data</code> in a particular
+scope so you need to import it explicitly or equivalently declare
+it with <code><a href='https://rdrr.io/r/utils/globalVariables.html'>utils::globalVariables(".data")</a></code>.</p>
+<p>Note that <code>rlang::.data</code> is a "fake" pronoun. Do not refer to
+<code>rlang::.data</code> with the <code>rlang::</code> qualifier in data masking
+code. Use the unqualified <code>.data</code> symbol that is automatically put
+in scope by data-masking functions.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
