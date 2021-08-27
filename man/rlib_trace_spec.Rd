@@ -12,7 +12,7 @@
 An r-lib backtrace is a data frame that contains the following
 columns:
 \itemize{
-\item \verb{call``: List of calls. These may carry }srcref` objects.
+\item \code{call}: List of calls. These may carry \code{srcref} objects.
 \item \code{visible}: Logical vector. If \code{FALSE}, the corresponding call
 will be hidden from simplified backtraces.
 \item \code{parent}: Integer vector of parent references (see
@@ -23,9 +23,10 @@ global or no namespace
 \code{":::"}, \code{"global"}, or \code{"local"}.
 }
 
-A backtrace data frame may contain extra columns. It is a good idea
-to prefix their names with a soft namespace to avoid potential
-conflicts with future extensions of this spec.
+A backtrace data frame may contain extra columns. If you add
+additional columns, make sure to prefix their names with the name
+of your package or organisation to avoid potential conflicts with
+future extensions of this spec, e.g. \code{"mypkg_column"}.
 }
 
 \section{Operations}{

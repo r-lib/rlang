@@ -948,7 +948,7 @@ is_trace <- function(x) {
 #' An r-lib backtrace is a data frame that contains the following
 #' columns:
 #'
-#' - `call``: List of calls. These may carry `srcref` objects.
+#' - `call`: List of calls. These may carry `srcref` objects.
 #'
 #' - `visible`: Logical vector. If `FALSE`, the corresponding call
 #'   will be hidden from simplified backtraces.
@@ -962,9 +962,10 @@ is_trace <- function(x) {
 #' - `scope`: Character vector of strings taking values `"::"`,
 #'   `":::"`, `"global"`, or `"local"`.
 #'
-#' A backtrace data frame may contain extra columns. It is a good idea
-#' to prefix their names with a soft namespace to avoid potential
-#' conflicts with future extensions of this spec.
+#' A backtrace data frame may contain extra columns. If you add
+#' additional columns, make sure to prefix their names with the name
+#' of your package or organisation to avoid potential conflicts with
+#' future extensions of this spec, e.g. `"mypkg_column"`.
 #'
 #'
 #' @section Operations:
