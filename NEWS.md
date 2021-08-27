@@ -29,6 +29,12 @@
 
 ## Features and bugfixes
 
+* The error returned by `last_error()` is now stored on the search
+  path as the `.Last.error` binding of the `"org:r-lib"`
+  environment. This is consistent with how the processx package
+  records error conditions. Printing the `.Last.error` object is now
+  equivalent to running `last_error()`.
+
 * Backtraces now print dangling srcrefs (#1206). Paths are shortened
   to show only three components (two levels of folder and the file).
 

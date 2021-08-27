@@ -148,7 +148,7 @@ test_that("backtrace reminder is displayed when called from `last_error()`", {
   h <- function() abort("foo")
   err <- catch_error(f())
 
-  last_error_env$cnd <- err
+  poke_last_error(err)
 
   expect_snapshot({
     "Normal case"
@@ -165,7 +165,7 @@ test_that("backtrace reminder is displayed when called from `last_error()`", {
 
     "Saved from `last_error()`, but no longer last"
     {
-      last_error_env$cnd <- error_cnd("foo")
+      poke_last_error(error_cnd("foo"))
       print(saved)
     }
   })

@@ -283,7 +283,7 @@ signal_abort <- function(cnd, file = NULL) {
   }
 
   # Save the unhandled error for `rlang::last_error()`.
-  last_error_env$cnd <- cnd
+  poke_last_error(cnd)
 
   # Print the backtrace manually to work around limitations on the
   # length of error messages (#856)
@@ -702,7 +702,7 @@ on_load({
     local_interactive()
 
     # Save the unhandled error for `rlang::last_error()`.
-    last_error_env$cnd <- x
+    poke_last_error(x)
 
     # By default, we display no reminder or backtrace for errors
     # captured by knitr. This default can be overridden.
@@ -939,14 +939,15 @@ peek_backtrace_on_error <- function() {
 #'
 #' @export
 last_error <- function() {
-  if (is_null(last_error_env$cnd)) {
+  err <- peek_last_error()
+
+  if (is_null(err)) {
     local_options(rlang_backtrace_on_error = "none")
     stop("Can't show last error because no error was recorded yet", call. = FALSE)
   }
 
-  cnd <- last_error_env$cnd
-  cnd$rlang$internal$from_last_error <- TRUE
-  cnd
+  err$rlang$internal$from_last_error <- TRUE
+  err
 }
 #' @rdname last_error
 #' @export
@@ -956,6 +957,29 @@ last_trace <- function() {
   err
 }
 
-# This is where we save errors for `last_error()`
-last_error_env <- new.env(parent = emptyenv())
-last_error_env$cnd <- NULL
+peek_last_error <- function(cnd) {
+  last_error_env()$.Last.error
+}
+poke_last_error <- function(cnd) {
+  env <- last_error_env()
+
+  env$.Last.error <- cnd
+  env$.Last.error.trace <- cnd$trace
+
+  invisible(cnd)
+}
+last_error_env <- function() {
+  if (!is_attached("org:r-lib")) {
+    exec(
+      attach,
+      list(
+        .Last.error = NULL,
+        .Last.error.trace = NULL
+      ),
+      pos = length(search()),
+      name = "org:r-lib"
+    )
+  }
+
+  search_env("org:r-lib")
+}
