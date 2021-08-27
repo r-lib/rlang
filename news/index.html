@@ -175,6 +175,7 @@
 <h2 class="hasAnchor">
 <a href="#features-and-bugfixes" class="anchor"></a>Features and bugfixes</h2>
 <ul>
+<li><p><code><a href="../reference/as_function.html">as_function()</a></code> gains <code>arg</code> and <code>call</code> arguments to provide contextual information about erroring inputs.</p></li>
 <li><p>The error returned by <code><a href="../reference/last_error.html">last_error()</a></code> is now stored on the search path as the <code>.Last.error</code> binding of the <code>"org:r-lib"</code> environment. This is consistent with how the processx package records error conditions. Printing the <code>.Last.error</code> object is now equivalent to running <code><a href="../reference/last_error.html">last_error()</a></code>.</p></li>
 <li><p>Backtraces now print dangling srcrefs (<a href='https://github.com/r-lib/rlang/issues/1206'>#1206</a>). Paths are shortened to show only three components (two levels of folder and the file).</p></li>
 <li><p><code><a href="../reference/abort.html">abort()</a></code> now outputs error messages to <code>stdout</code> in interactive sessions, following the same approach as <code><a href="../reference/abort.html">inform()</a></code>.</p></li>

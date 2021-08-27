@@ -163,7 +163,13 @@ This powers the lambda syntax in packages like purrr." />
 This powers the lambda syntax in packages like purrr.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>as_function</span><span class='op'>(</span><span class='va'>x</span>, env <span class='op'>=</span> <span class='fu'><a href='search_envs.html'>global_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>as_function</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  env <span class='op'>=</span> <span class='fu'><a href='search_envs.html'>global_env</a></span><span class='op'>(</span><span class='op'>)</span>,
+  <span class='va'>...</span>,
+  arg <span class='op'>=</span> <span class='fu'><a href='caller_arg.html'>caller_arg</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
+  call <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>)</span>
 
 <span class='fu'>is_lambda</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
@@ -189,6 +195,23 @@ supplying functions by name and instead supply them by value.</p></td>
       <th>env</th>
       <td><p>Environment in which to fetch the function in case <code>x</code>
 is a string.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>These dots are for future extensions and must be empty.</p></td>
+    </tr>
+    <tr>
+      <th>arg</th>
+      <td><p>An argument name as a string. This argument
+will be mentioned in error messages as the input that is at the
+origin of a problem.</p></td>
+    </tr>
+    <tr>
+      <th>call</th>
+      <td><p>The execution environment of a currently
+running function, e.g. <code><a href='caller_env.html'>caller_env()</a></code>. The function will be
+mentioned in error messages as the source of the error. See the
+<code>call</code> argument of <code><a href='abort.html'>abort()</a></code> for more information.</p></td>
     </tr>
     </table>
 

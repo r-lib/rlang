@@ -42,10 +42,9 @@
 <meta property="og:title" content="Find the caller argument for error messages — caller_arg" />
 <meta property="og:description" content="caller_arg() is a variant of substitute() or ensym() for
 arguments that reference other arguments. Unlike substitute()
-which returns any expression, the referenced argument must be a
-symbol, otherwise this is an error. That symbol is then returned as
-a string ready to be included in error messages.
-When included in an error message, the resulting name should
+which returns an expression, caller_arg() formats the expression
+as a single line string which can be included in error messages.
+When included in an error message, the resulting label should
 generally be formatted as argument, for instance using the .arg
 in the cli package.
 Use @inheritParams rlang::args_error_context to document an
@@ -169,10 +168,9 @@ arg or error_arg argument that takes error_arg() as default.
     <div class="ref-description">
     <p><code>caller_arg()</code> is a variant of <code><a href='https://rdrr.io/r/base/substitute.html'>substitute()</a></code> or <code><a href='nse-defuse.html'>ensym()</a></code> for
 arguments that reference other arguments. Unlike <code><a href='https://rdrr.io/r/base/substitute.html'>substitute()</a></code>
-which returns any expression, the referenced argument must be a
-symbol, otherwise this is an error. That symbol is then returned as
-a string ready to be included in error messages.</p><ul>
-<li><p>When included in an error message, the resulting name should
+which returns an expression, <code>caller_arg()</code> formats the expression
+as a single line string which can be included in error messages.</p><ul>
+<li><p>When included in an error message, the resulting label should
 generally be formatted as argument, for instance using the <code>.arg</code>
 in the cli package.</p></li>
 <li><p>Use <code>@inheritParams rlang::args_error_context</code> to document an
