@@ -61,8 +61,8 @@ reference:
     desc: >
       Utils to work with `...`.
     contents:
-      - dots-empty
-      - dots-used
+      - args_dots_empty
+      - args_dots_used
       - check_dots_used
       - check_dots_unnamed
       - check_dots_empty

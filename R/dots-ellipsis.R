@@ -1,20 +1,20 @@
 #' Helper for consistent documentation of empty dots
 #'
-#' Use `` @inheritParams rlang::`dots-empty` `` in your package
+#' Use `@inheritParams rlang::args_dots_empty` in your package
 #' to consistently document an unused `...` argument.
 #'
 #' @param ... These dots are for future extensions and must be empty.
-#' @name dots-empty
+#' @name args_dots_empty
 #' @keywords internal
 NULL
 
 #' Helper for consistent documentation of used dots
 #'
-#' Use `` @inheritParams rlang::`dots-used` `` in your package
+#' Use `@inheritParams rlang::args_dots_used` in your package
 #' to consistently document an unused `...` argument.
 #'
 #' @param ... Arguments passed to methods.
-#' @name dots-used
+#' @name args_dots_used
 #' @keywords internal
 NULL
 
