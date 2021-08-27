@@ -520,6 +520,9 @@
     <loc>https://rlang.r-lib.org/reference/rlang_backtrace_on_error.html</loc>
   </url>
   <url>
+    <loc>https://rlang.r-lib.org/reference/rlib_trace_spec.html</loc>
+  </url>
+  <url>
     <loc>https://rlang.r-lib.org/reference/rst_abort.html</loc>
   </url>
   <url>
