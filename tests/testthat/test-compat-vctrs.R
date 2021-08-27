@@ -387,3 +387,29 @@ test_that("vec_as_location() works", {
   i <- c("a", "d")
   expect_identical(vec_as_location(i, n, names), c(1L, 4L))
 })
+
+test_that("vec_slice() preserves attributes of data frames", {
+  df <- data_frame(x = 1:2)
+  attr(df, "foo") <- TRUE
+
+  out <- vec_slice(df, 1)
+  expect_true(attr(out, "foo"))
+})
+
+test_that("vec_slice() doesn't restore attributes if there is a `[` method", {
+  df <- new_data_frame(
+    df_list(x = 1:2),
+    .class = "rlang_foobar",
+    foo = "bar"
+  )
+  local_methods(`[.rlang_foobar` = function(x, ...) {
+    out <- NextMethod()
+    attr(out, "foo") <- "dispatched"
+    out
+  })
+
+  expect_equal(
+    attr(vec_slice(df, 1), "foo"),
+    "dispatched"
+  )
+})

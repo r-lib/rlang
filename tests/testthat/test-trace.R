@@ -635,3 +635,7 @@ test_that("can slice backtrace", {
     exp
   )
 })
+
+test_that("backtraces carry `version` attribute", {
+  expect_identical(attr(trace_back(), "version"), 2L)
+})

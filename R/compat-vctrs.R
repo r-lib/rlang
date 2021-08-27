@@ -9,6 +9,9 @@
 # of data frames without having to depend on tibble or vctrs. The
 # embedded type system is minimal and not extensible.
 
+# 2021-08-27:
+# * `vec_slice()` now preserves attributes of data frames.
+
 # 2021-08-26:
 # * Added compat for `vec_as_location()`.
 #
@@ -141,7 +144,17 @@ vec_slice <- function(x, i) {
 
     # Reset automatic row names to work around `[` weirdness
     if (is.numeric(attr(x, "row.names"))) {
-      attr(out, "row.names") <- .set_row_names(nrow(out))
+      row_names <- .set_row_names(nrow(out))
+    } else {
+      row_names <- attr(out, "row.names")
+    }
+
+    # Restore attributes
+    mtd <- .rlang_vctrs_s3_method("[", class(x))
+    if (identical(environment(mtd), asNamespace("base"))) {
+      attrib <- attributes(x)
+      attrib$row.names <- row_names
+      attributes(out) <- attrib
     }
 
     return(out)
@@ -583,6 +596,25 @@ vec_is_unspecified <- function(x) {
     rep(NA, length(x)),
     class = "rlang_unspecified"
   )
+}
+
+.rlang_vctrs_s3_method <- function(generic, class, env = parent.frame()) {
+  fn <- get(generic, envir = env)
+
+  ns <- asNamespace(topenv(fn))
+  tbl <- ns$.__S3MethodsTable__.
+
+  for (c in class) {
+    name <- paste0(generic, ".", c)
+    if (exists(name, envir = tbl, inherits = FALSE)) {
+      return(get(name, envir = tbl))
+    }
+    if (exists(name, envir = globalenv(), inherits = FALSE)) {
+      return(get(name, envir = globalenv()))
+    }
+  }
+
+  NULL
 }
 
 

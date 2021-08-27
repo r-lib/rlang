@@ -267,7 +267,11 @@ new_trace0 <- function(calls,
     scope = scope,
     ...
   )
-  new_data_frame(df, .class = c(class, "tbl"))
+  new_data_frame(
+    df,
+    .class = c(class, "tbl"),
+    version = 2L
+  )
 }
 
 
