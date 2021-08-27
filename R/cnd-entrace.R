@@ -199,7 +199,7 @@ entrace_handle_top <- function(trace) {
 
   # Save a fake rlang error containing the backtrace
   err <- error_cnd(message = msg, error = cnd, trace = trace, parent = cnd)
-  last_error_env$cnd <- err
+  poke_last_error(err)
 
   # Print backtrace for current error
   backtrace_lines <- format_onerror_backtrace(err)

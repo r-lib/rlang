@@ -178,7 +178,7 @@
     Code
       # Saved from `last_error()`, but no longer last
       {
-        last_error_env$cnd <- error_cnd("foo")
+        poke_last_error(error_cnd("foo"))
         print(saved)
       }
     Output
