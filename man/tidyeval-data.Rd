@@ -27,14 +27,31 @@ mtcars \%>\% mutate(disp = .data$disp * .env$disp)
 mtcars \%>\% mutate(disp = disp * disp)
 }
 
-The \code{.data} object exported from rlang is also useful to import in
-your package namespace to avoid a \verb{R CMD check} note when referring
-to objects from the data mask.
-
 Note that \code{.data} is only a pronoun, it is not a real data
 frame. This means that you can't take its names or map a function
 over the contents of \code{.data}. Similarly, \code{.env} is not an actual R
 environment. For instance, it doesn't have a parent and the
 subsetting operators behave differently.
 }
+\section{Where does \code{.data} live?}{
+
+
+The \code{.data} pronoun is automatically created for you by
+data-masking functions using the \link[=eval_tidy]{tidy eval framework}.
+You don't need to import \code{rlang::.data} or use \code{library(rlang)} to
+work with this pronoun.
+
+However, the \code{.data} object exported from rlang is useful to import
+in your package namespace to avoid a \verb{R CMD check} note when
+referring to objects from the data mask. R does not have any way of
+knowing about the presence or absence of \code{.data} in a particular
+scope so you need to import it explicitly or equivalently declare
+it with \code{utils::globalVariables(".data")}.
+
+Note that \code{rlang::.data} is a "fake" pronoun. Do not refer to
+\code{rlang::.data} with the \verb{rlang::} qualifier in data masking
+code. Use the unqualified \code{.data} symbol that is automatically put
+in scope by data-masking functions.
+}
+
 \keyword{datasets}
