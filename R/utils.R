@@ -1,8 +1,20 @@
 deprecated <- function() missing_arg()
 
-abort_coercion <- function(x, to_type) {
-  x_type <- friendly_type_of(x)
-  abort(paste0("Can't convert ", x_type, " to ", to_type, "."))
+abort_coercion <- function(x,
+                           to_type,
+                           x_type = NULL,
+                           arg = NULL,
+                           call = caller_env()) {
+  x_type <- x_type %||% friendly_type_of(x)
+
+  if (is_null(arg)) {
+    msg <- sprintf("Can't convert %s to %s.", x_type, to_type)
+  } else {
+    arg <- format_arg(arg)
+    msg <- sprintf("Can't convert %s, %s, to %s.", arg, x_type, to_type)
+  }
+
+  abort(msg, call = call)
 }
 
 substitute_ <- function(x, env) {

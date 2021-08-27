@@ -9,11 +9,10 @@
 \description{
 \code{caller_arg()} is a variant of \code{substitute()} or \code{\link[=ensym]{ensym()}} for
 arguments that reference other arguments. Unlike \code{substitute()}
-which returns any expression, the referenced argument must be a
-symbol, otherwise this is an error. That symbol is then returned as
-a string ready to be included in error messages.
+which returns an expression, \code{caller_arg()} formats the expression
+as a single line string which can be included in error messages.
 \itemize{
-\item When included in an error message, the resulting name should
+\item When included in an error message, the resulting label should
 generally be formatted as argument, for instance using the \code{.arg}
 in the cli package.
 \item Use \verb{@inheritParams rlang::args_error_context} to document an

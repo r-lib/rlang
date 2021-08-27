@@ -387,6 +387,8 @@ fn_env <- function(fn) {
 #'
 #' @param env Environment in which to fetch the function in case `x`
 #'   is a string.
+#' @inheritParams args_dots_empty
+#' @inheritParams args_error_context
 #' @export
 #' @examples
 #' f <- as_function(~ .x + 1)
@@ -401,7 +403,14 @@ fn_env <- function(fn) {
 #' # Functions created from a formula have a special class:
 #' is_lambda(f)
 #' is_lambda(as_function(function() "foo"))
-as_function <- function(x, env = global_env()) {
+as_function <- function(x,
+                        env = global_env(),
+                        ...,
+                        arg = caller_arg(x),
+                        call = caller_env()) {
+  check_dots_empty0(...)
+  local_error_call(call)
+
   if (is_function(x)) {
     return(x)
   }
@@ -414,7 +423,12 @@ as_function <- function(x, env = global_env()) {
 
   if (is_formula(x)) {
     if (length(x) > 2) {
-      abort("Can't convert a two-sided formula to a function.")
+      abort_coercion(
+        x,
+        x_type = "a two-sided formula",
+        to_type = "a function",
+        arg = arg
+      )
     }
 
     env <- f_env(x)
@@ -432,7 +446,7 @@ as_function <- function(x, env = global_env()) {
     return(get(x, envir = env, mode = "function"))
   }
 
-  abort_coercion(x, "a function")
+  abort_coercion(x, "a function", arg = arg)
 }
 #' @export
 print.rlang_lambda_function <- function(x, ...) {

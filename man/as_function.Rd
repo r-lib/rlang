@@ -5,7 +5,13 @@
 \alias{is_lambda}
 \title{Convert to function}
 \usage{
-as_function(x, env = global_env())
+as_function(
+  x,
+  env = global_env(),
+  ...,
+  arg = caller_arg(x),
+  call = caller_env()
+)
 
 is_lambda(x)
 }
@@ -28,6 +34,17 @@ supplying functions by name and instead supply them by value.}
 
 \item{env}{Environment in which to fetch the function in case \code{x}
 is a string.}
+
+\item{...}{These dots are for future extensions and must be empty.}
+
+\item{arg}{An argument name as a string. This argument
+will be mentioned in error messages as the input that is at the
+origin of a problem.}
+
+\item{call}{The execution environment of a currently
+running function, e.g. \code{caller_env()}. The function will be
+mentioned in error messages as the source of the error. See the
+\code{call} argument of \code{\link[=abort]{abort()}} for more information.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

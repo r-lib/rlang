@@ -29,6 +29,9 @@
 
 ## Features and bugfixes
 
+* `as_function()` gains `arg` and `call` arguments to provide
+  contextual information about erroring inputs.
+
 * The error returned by `last_error()` is now stored on the search
   path as the `.Last.error` binding of the `"org:r-lib"`
   environment. This is consistent with how the processx package
