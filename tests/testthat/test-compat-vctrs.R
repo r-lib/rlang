@@ -437,3 +437,13 @@ test_that("unspecified is detected recursively", {
   ptype <- vec_ptype(data_frame(x = NA))
   expect_s3_class(ptype$x, "rlang_unspecified")
 })
+
+test_that("ptype is finalised", {
+  x <- data_frame(x = NA)
+
+  out <- vec_cast_common(list(x, x))[[1]]
+  expect_identical(out$x, NA)
+
+  out <- vec_cast_common(list(out, x))[[1]]
+  expect_identical(out$x, NA)
+})

@@ -407,10 +407,19 @@ vec_ptype_common <- function(xs, ptype = NULL) {
     out <- Reduce(vec_ptype2, xs)
   }
 
-  if (inherits(out, "rlang_unspecified")) {
+  vec_ptype_finalise(out)
+}
+
+vec_ptype_finalise <- function(x) {
+  if (is.data.frame(x)) {
+    x[] <- lapply(x, vec_ptype_finalise)
+    return(x)
+  }
+
+  if (inherits(x, "rlang_unspecified")) {
     logical()
   } else {
-    out
+    x
   }
 }
 
