@@ -151,7 +151,7 @@ vec_slice <- function(x, i) {
 
     # Restore attributes
     mtd <- .rlang_vctrs_s3_method("[", class(x))
-    if (identical(environment(mtd), asNamespace("base"))) {
+    if (is_null(mtd) || identical(environment(mtd), asNamespace("base"))) {
       attrib <- attributes(x)
       attrib$row.names <- row_names
       attributes(out) <- attrib
