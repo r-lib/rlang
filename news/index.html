@@ -169,6 +169,7 @@
 <p>The global <code>.data</code> object now always throws an error when subsetted. This causes early informative errors when the <code>.data</code> pronoun is used outside of a data mask.</p>
 <p>We noticed some CRAN failures following this change that revealed issues such as mistakenly using the <code>by</code> argument of <code>dplyr::left_join()</code> or the <code>...</code> of <code>ggplot2::labs()</code> as data-masked arguments. Since there is no data mask for these arguments, the global <code>.data</code> pronoun (used as a documentation anchor) was subsetted and silently returned <code>NULL</code>.</p>
 </li>
+<li><p>For consistency with the cli package, <code><a href="../reference/abort.html">abort(c("Foo", "Bar"))</a></code> no longer interprets <code>"Bar"</code> as a bullet and it gets displayed as an unprefixed line. You need to be explicit by supplying the <code>"*"</code> specifier: <code><a href="../reference/abort.html">abort(c("Foo", "*" = "Bar"))</a></code>.</p></li>
 </ul>
 </div>
 <div id="features-and-bugfixes" class="section level2">
