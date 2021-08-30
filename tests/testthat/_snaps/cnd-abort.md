@@ -4,7 +4,8 @@
       cat_line(default_interactive)
     Output
       Error in `h()`: Error message
-      Run `rlang::last_error()` to see where the error occurred.Execution halted
+      Run `rlang::last_error()` to see where the error occurred.
+      Execution halted
     Code
       cat_line(default_non_interactive)
     Output
@@ -15,11 +16,13 @@
        2.   +-base::tryCatch(g())
        3.   | \-base:::tryCatchList(expr, classes, parentenv, handlers)
        4.   \-global::g()
-       5.     \-global::h()Execution halted
+       5.     \-global::h()
+      Execution halted
     Code
       cat_line(reminder)
     Output
-      Error in `h()`: Error messageExecution halted
+      Error in `h()`: Error message
+      Execution halted
     Code
       cat_line(branch)
     Output
@@ -27,7 +30,8 @@
       Backtrace:
        1. global::f()
        4. global::g()
-       5. global::h()Execution halted
+       5. global::h()
+      Execution halted
     Code
       cat_line(collapse)
     Output
@@ -37,7 +41,8 @@
        1. \-global::f()
        2.   +-[ base::tryCatch(...) ] with 1 more call
        4.   \-global::g()
-       5.     \-global::h()Execution halted
+       5.     \-global::h()
+      Execution halted
     Code
       cat_line(full)
     Output
@@ -48,12 +53,14 @@
        2.   +-base::tryCatch(g())
        3.   | \-base:::tryCatchList(expr, classes, parentenv, handlers)
        4.   \-global::g()
-       5.     \-global::h()Execution halted
+       5.     \-global::h()
+      Execution halted
     Code
       cat_line(rethrown_interactive)
     Output
       Error in `h()`: Error message
-      Run `rlang::last_error()` to see where the error occurred.Execution halted
+      Run `rlang::last_error()` to see where the error occurred.
+      Execution halted
     Code
       cat_line(rethrown_non_interactive)
     Output
@@ -68,31 +75,36 @@
        6.   +-base::tryCatch(g())
        7.   | \-base:::tryCatchList(expr, classes, parentenv, handlers)
        8.   \-global::g()
-       9.     \-global::h()Execution halted
+       9.     \-global::h()
+      Execution halted
 
 # empty backtraces are not printed
 
     Code
       cat_line(branch_depth_0)
     Output
-      Error: fooExecution halted
+      Error: foo
+      Execution halted
     Code
       cat_line(full_depth_0)
     Output
-      Error: fooExecution halted
+      Error: foo
+      Execution halted
     Code
       cat_line(branch_depth_1)
     Output
       Error in `f()`: foo
       Backtrace:
-       1. global::f()Execution halted
+       1. global::f()
+      Execution halted
     Code
       cat_line(full_depth_1)
     Output
       Error in `f()`: foo
       Backtrace:
           x
-       1. \-global::f()Execution halted
+       1. \-global::f()
+      Execution halted
 
 # parent errors are not displayed in error message and backtrace
 
@@ -100,7 +112,8 @@
       cat_line(interactive)
     Output
       Error: bar
-      Run `rlang::last_error()` to see where the error occurred.Execution halted
+      Run `rlang::last_error()` to see where the error occurred.
+      Execution halted
     Code
       cat_line(non_interactive)
     Output
@@ -116,7 +129,8 @@
         7.       |     \-base:::doTryCatch(return(expr), name, parentenv, handler)
         8.       \-global::f()
         9.         \-global::g()
-       10.           \-global::h()Execution halted
+       10.           \-global::h()
+      Execution halted
 
 # backtrace reminder is displayed when called from `last_error()`
 
@@ -226,11 +240,9 @@
       # withCallingHandlers()
       print(err_wch)
     Output
-      x
-      +-<error/rlang_error>
-      | Error: bar
-      \-<error/rlang_error>
-        Error in `baz()`: foo
+      <error/rlang_error>
+      Error: bar
+      Caused by error in `baz()`: foo
       Backtrace:
         1. rlang:::catch_error(...)
        10. rlang:::foo()
@@ -242,14 +254,16 @@
     Code
       run("rlang::abort('foo', call = quote(bar(baz)))")
     Output
-      Error in `bar()`: fooExecution halted
+      Error in `bar()`: foo
+      Execution halted
 
 ---
 
     Code
       run("rlang::cnd_signal(errorCondition('foo', call = quote(bar(baz))))")
     Output
-      Error in `bar()`: fooExecution halted
+      Error in `bar()`: foo
+      Execution halted
 
 # abort() accepts environment as `call` field.
 

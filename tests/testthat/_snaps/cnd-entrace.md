@@ -3,11 +3,9 @@
     Code
       print(err)
     Output
-      x
-      +-<error/rlang_error>
-      | Error: High-level message
-      \-<error/rlang_error>
-        Error in `h()`: Low-level message
+      <error/rlang_error>
+      Error: High-level message
+      Caused by error in `h()`: Low-level message
       Backtrace:
         1. base::identity(catch_error(a()))
        10. rlang:::a()
@@ -19,11 +17,9 @@
     Code
       summary(err)
     Output
-      x
-      +-<error/rlang_error>
-      | Error: High-level message
-      \-<error/rlang_error>
-        Error in `h()`: Low-level message
+      <error/rlang_error>
+      Error: High-level message
+      Caused by error in `h()`: Low-level message
       Backtrace:
            x
         1. +-base::identity(catch_error(a()))
@@ -74,7 +70,8 @@
       cat_line(rlang)
     Output
       Error in `h()`: foo
-      Run `rlang::last_error()` to see where the error occurred.<error/rlang_error>
+      Run `rlang::last_error()` to see where the error occurred.
+      <error/rlang_error>
       Error in `h()`: foo
       Backtrace:
        1. global::f()

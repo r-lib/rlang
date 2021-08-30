@@ -35,10 +35,8 @@
     Code
       print(err)
     Output
-      x
-      +-<error/rlang_error>
-      | Error: High-level message
-      \-<error/foobar>
+      <error/rlang_error>
+      Error: High-level message
       Backtrace:
         1. rlang:::catch_error(a())
         9. rlang:::a()
@@ -50,11 +48,9 @@
     Code
       print(err_force)
     Output
-      x
-      +-<error/rlang_error>
-      | Error: High-level message
-      \-<error/foobar>
-        Error in `h()`: Low-level message
+      <error/rlang_error>
+      Error: High-level message
+      Caused by error in `h()`: Low-level message
       Backtrace:
         1. rlang::with_options(...)
        10. rlang:::a()
@@ -69,10 +65,8 @@
     Code
       print(err, simplify = "none")
     Output
-      x
-      +-<error/rlang_error>
-      | Error: High-level message
-      \-<error/foobar>
+      <error/rlang_error>
+      Error: High-level message
       Backtrace:
            x
         1. +-rlang:::catch_error(a())
@@ -100,10 +94,8 @@
       # Full
       print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
     Output
-      x
-      +-<error/rlang_error>
-      | Error: High-level message
-      \-<error/foobar>
+      <error/rlang_error>
+      Error: High-level message
       Backtrace:
            x
         1. +-rlang:::catch_error(a())
@@ -128,10 +120,8 @@
       # Collapsed
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
-      x
-      +-<error/rlang_error>
-      | Error: High-level message
-      \-<error/foobar>
+      <error/rlang_error>
+      Error: High-level message
       Backtrace:
            x
         1. +-[ rlang:::catch_error(...) ] with 7 more calls
@@ -146,10 +136,8 @@
       # Branch
       print(trace, simplify = "branch", dir = dir, srcrefs = srcrefs)
     Output
-      x
-      +-<error/rlang_error>
-      | Error: High-level message
-      \-<error/foobar>
+      <error/rlang_error>
+      Error: High-level message
       Backtrace:
         1. rlang:::catch_error(a())
         9. rlang:::a()
@@ -164,24 +152,19 @@
     Code
       catch_error(high())
     Output
-      x
-      +-<error/high>
-      | Error: High-level
-      +-<error/mid>
-      | Error: Mid-level
-      \-<error/low>
-        Error in `low()`: Low-level
+      <error/high>
+      Error: High-level
+      Caused by error: Mid-level
+      Caused by error in `low()`: Low-level
 
 # summary.rlang_error() prints full backtrace
 
     Code
       summary(err)
     Output
-      x
-      +-<error/rlang_error>
-      | Error: The high-level error message
-      \-<error/rlang_error>
-        Error in `h()`: The low-level error message
+      <error/rlang_error>
+      Error: The high-level error message
+      Caused by error in `h()`: The low-level error message
       Backtrace:
            x
         1. +-rlang:::catch_error(a())
