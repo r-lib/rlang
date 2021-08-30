@@ -62,12 +62,10 @@ format.rlang_error <- function(x,
     header <- header_add_tree_node(header, style, parent)
     header <-   paste_line(trace_root(), header)
 
-    message <- with_reduced_width(
-      as_rlang_error_message(conditionMessage(x))
-    )
+    message <- with_reduced_width(assemble_error_message(x))
     message <- message_add_tree_prefix(message, style, parent)
   } else {
-    message <- as_rlang_error_message(conditionMessage(x))
+    message <- assemble_error_message(x)
   }
 
   out <- paste_line(
@@ -88,15 +86,11 @@ format.rlang_error <- function(x,
     header <- rlang_error_header(x)
     header <- header_add_tree_node(header, style, parent)
 
-    message <- with_reduced_width(
-      as_rlang_error_message(cnd_header(x))
-    )
+    message <- with_reduced_width(assemble_error_message(x, message = cnd_header(x)))
     message <- message_add_tree_prefix(message, style, parent)
 
     if (is_rlang_error(parent)) {
-      message <- with_reduced_width(
-        as_rlang_error_message(conditionMessage(x))
-      )
+      message <- with_reduced_width(assemble_error_message(x))
       message <- message_add_tree_prefix(message, style, parent)
     }
 
@@ -105,11 +99,6 @@ format.rlang_error <- function(x,
       header,
       message
     )
-  }
-
-  ctxt <- format_error_call(x$call)
-  if (!is_null(ctxt)) {
-    out <- paste_line(out, paste0(bold("Call: "), ctxt))
   }
 
   simplify <- arg_match(simplify)
@@ -142,14 +131,16 @@ with_reduced_width <- function(expr) {
   )
 }
 
-as_rlang_error_message <- function(message) {
+assemble_error_message <- function(cnd,
+                                   message = conditionMessage(cnd),
+                                   prefix = "Error") {
   message <- strip_trailing_newline(message)
 
-  if (nzchar(message)) {
-    message
-  } else {
-    NULL
+  if (!nzchar(message)) {
+    return(NULL)
   }
+
+  cnd_prefix_error_message(cnd, message)
 }
 
 header_add_tree_node <- function(header, style, parent) {

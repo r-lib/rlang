@@ -4,12 +4,10 @@
       (expect_error(env_get(env(), "foobar")))
     Output
       <error/rlang_error>
-      Can't find `foobar` in environment.
-      Call: `env_get()`
+      Error in `env_get()`: Can't find `foobar` in environment.
     Code
       (expect_error(env_get_list(env(), "foobar")))
     Output
       <error/rlang_error>
-      Can't find `foobar` in environment.
-      Call: `env_get_list()`
+      Error in `env_get_list()`: Can't find `foobar` in environment.
 

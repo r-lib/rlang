@@ -21,40 +21,36 @@
       "my_arg")))
     Output
       <error/rlang_error>
-      `my_arg` must be one of "discrete" or "continuous", not "continuuos".
+      Error in `arg_match0_wrapper()`: `my_arg` must be one of "discrete" or "continuous", not "continuuos".
       i Did you mean "continuous"?
-      Call: `arg_match0_wrapper()`
     Code
       (expect_error(arg_match_wrapper("fou", c("bar", "foo"), "my_arg")))
     Output
       <error/rlang_error>
-      `my_arg` must be one of "bar" or "foo", not "fou".
+      Error in `arg_match0_wrapper()`: `my_arg` must be one of "bar" or "foo", not "fou".
       i Did you mean "foo"?
-      Call: `arg_match0_wrapper()`
     Code
       (expect_error(arg_match_wrapper("fu", c("ba", "fo"), "my_arg")))
     Output
       <error/rlang_error>
-      `my_arg` must be one of "ba" or "fo", not "fu".
+      Error in `arg_match0_wrapper()`: `my_arg` must be one of "ba" or "fo", not "fu".
       i Did you mean "fo"?
-      Call: `arg_match0_wrapper()`
     Code
       (expect_error(arg_match_wrapper("baq", c("foo", "baz", "bas"), "my_arg")))
     Output
       <error/rlang_error>
-      `my_arg` must be one of "foo", "baz", or "bas", not "baq".
+      Error in `arg_match0_wrapper()`: `my_arg` must be one of "foo", "baz", or "bas", not "baq".
       i Did you mean "baz"?
-      Call: `arg_match0_wrapper()`
     Code
       (expect_error(arg_match_wrapper("", character(), "my_arg")))
     Output
       <error/rlang_error>
-      `values` must have at least one element.
+      Error: `values` must have at least one element.
     Code
       (expect_error(arg_match_wrapper("fo", "foo", quote(f()))))
     Output
       <error/rlang_error>
-      `arg_nm` must be a string or symbol.
+      Error: `arg_nm` must be a string or symbol.
 
 # `arg_match()` provides no suggestion when the edit distance is too large
 
@@ -62,14 +58,12 @@
       (expect_error(arg_match0_wrapper("foobaz", c("fooquxs", "discrete"), "my_arg")))
     Output
       <error/rlang_error>
-      `my_arg` must be one of "fooquxs" or "discrete", not "foobaz".
-      Call: `arg_match0_wrapper()`
+      Error in `arg_match0_wrapper()`: `my_arg` must be one of "fooquxs" or "discrete", not "foobaz".
     Code
       (expect_error(arg_match0_wrapper("a", c("b", "c"), "my_arg")))
     Output
       <error/rlang_error>
-      `my_arg` must be one of "b" or "c", not "a".
-      Call: `arg_match0_wrapper()`
+      Error in `arg_match0_wrapper()`: `my_arg` must be one of "b" or "c", not "a".
 
 # `arg_match()` makes case-insensitive match
 
@@ -78,17 +72,15 @@
       "Did you mean \"A\"?"))
     Output
       <error/rlang_error>
-      `my_arg` must be one of "A" or "B", not "a".
+      Error in `arg_match0_wrapper()`: `my_arg` must be one of "A" or "B", not "a".
       i Did you mean "A"?
-      Call: `arg_match0_wrapper()`
     Code
       (expect_error(arg_match0_wrapper("aa", c("AA", "aA"), "my_arg"),
       "Did you mean \"aA\"?"))
     Output
       <error/rlang_error>
-      `my_arg` must be one of "AA" or "aA", not "aa".
+      Error in `arg_match0_wrapper()`: `my_arg` must be one of "AA" or "aA", not "aa".
       i Did you mean "aA"?
-      Call: `arg_match0_wrapper()`
 
 # arg_require() checks argument is supplied (#1118)
 
@@ -96,14 +88,12 @@
       (expect_error(f()))
     Output
       <error/rlang_error>
-      `x` must be supplied.
-      Call: `f()`
+      Error in `f()`: `x` must be supplied.
     Code
       (expect_error(g()))
     Output
       <error/rlang_error>
-      `x` must be supplied.
-      Call: `f()`
+      Error in `f()`: `x` must be supplied.
 
 # arg_match() supports symbols and scalar strings
 
@@ -111,9 +101,8 @@
       (expect_error(arg_match0_wrapper(chr_get("fo", 0L), c("bar", "foo"), "my_arg")))
     Output
       <error/rlang_error>
-      `my_arg` must be one of "bar" or "foo", not "fo".
+      Error in `arg_match0_wrapper()`: `my_arg` must be one of "bar" or "foo", not "fo".
       i Did you mean "foo"?
-      Call: `arg_match0_wrapper()`
 
 # arg_match() requires an argument symbol
 
@@ -121,7 +110,6 @@
       (expect_error(wrapper()))
     Output
       <error/rlang_error>
-      `arg` must be a symbol.
+      Error in `wrapper()`: `arg` must be a symbol.
       ! This is an internal error, please report it to the package authors.
-      Call: `wrapper()`
 

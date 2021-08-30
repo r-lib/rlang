@@ -9,12 +9,11 @@
       (expect_error(f(1, 2, 3, xy = 4, x = 5), class = "rlib_error_dots_named"))
     Output
       <error/rlib_error_dots_named>
-      2 arguments in `...` had unexpected names.
+      Error in `f()`: 2 arguments in `...` had unexpected names.
       x We detected these problematic arguments:
       * `xy`
       * `x`
       i Did you misspecify an argument?
-      Call: `f()`
 
 # error if if dots not empty
 
@@ -22,20 +21,18 @@
       (expect_error(f(xy = 4), class = "rlib_error_dots_nonempty"))
     Output
       <error/rlib_error_dots_nonempty>
-      `...` is not empty.
+      Error in `f()`: `...` is not empty.
       i These dots only exist to allow future extensions and should be empty.
       x We detected these problematic arguments:
       * `xy`
       i Did you misspecify an argument?
-      Call: `f()`
     Code
       (expect_error(f0(xy = 4), class = "rlib_error_dots_nonempty"))
     Output
       <error/rlib_error_dots_nonempty>
-      `...` is not empty.
+      Error in `f0()`: `...` is not empty.
       i These dots only exist to allow future extensions and should be empty.
       x We detected these problematic arguments:
       * `xy`
       i Did you misspecify an argument?
-      Call: `f0()`
 
