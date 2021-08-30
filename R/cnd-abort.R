@@ -622,7 +622,7 @@ error_call <- function(call) {
   }
 
   # Remove distracting arguments from the call
-  call[1]
+  call_restore(call[1], call)
 }
 #' @rdname error_call
 #' @export
@@ -633,6 +633,11 @@ format_error_call <- function(call) {
   }
 
   format_code(as_label(call))
+}
+
+call_restore <- function(x, to) {
+  attr(x, "srcref") <- attr(to, "srcref")
+  x
 }
 
 error_flag <- function(env, top = topenv(env)) {
