@@ -26,6 +26,11 @@
   arguments, the global `.data` pronoun (used as a documentation
   anchor) was subsetted and silently returned `NULL`.
 
+* For consistency with the cli package, `abort(c("Foo", "Bar"))` no
+  longer interprets `"Bar"` as a bullet and it gets displayed as an
+  unprefixed line. You need to be explicit by supplying the `"*"`
+  specifier: `abort(c("Foo", "*" = "Bar"))`.
+
 
 ## Features and bugfixes
 
