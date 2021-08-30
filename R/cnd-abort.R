@@ -454,7 +454,7 @@ local_error_call <- function(call, frame = caller_env()) {
   old <- frame$.__error_call__.
   frame$.__error_call__. <- call
 
-  old
+  invisible(old)
 }
 
 #' Documentation anchor for error arguments

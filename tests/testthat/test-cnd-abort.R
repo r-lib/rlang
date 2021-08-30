@@ -374,3 +374,11 @@ test_that("error_call() deals with special syntax (r-lib/testthat#1429)", {
     "`if (foobar) ...`"
   )
 })
+
+test_that("local_error_call() returns old error call", {
+  out <- withVisible(local_error_call(quote(foo())))
+  expect_equal(out, list(value = NULL, visible = FALSE))
+
+  out <- withVisible(local_error_call(quote(bar())))
+  expect_equal(out, list(value = quote(foo()), visible = FALSE))
+})
