@@ -225,3 +225,11 @@ test_that("prefix takes call into account", {
   expect_equal(cnd_prefix_error_message(err2, ""), "Error: ")
   expect_equal(cnd_prefix_error_message(err3, ""), "Error: ")
 })
+
+test_that("long prefixes cause a line break", {
+  very_very_very_very_very_long_function_name <- function() {
+    abort("My somewhat longish and verbose error message.")
+  }
+
+  expect_snapshot((expect_error(very_very_very_very_very_long_function_name())))
+})
