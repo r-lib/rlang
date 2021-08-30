@@ -177,12 +177,13 @@ test_that("capture context doesn't leak into low-level backtraces", {
     rlang_trace_top_env = current_env()
   )
 
+  failing <- function() stop("low-level")
   stop_wrapper <- function(...) abort("wrapper", ...)
   f <- function() g()
   g <- function() h()
   h <- function() {
     tryCatch(
-      stop("low-level"),
+      failing(),
       error = function(err) {
         if (wrapper) {
           stop_wrapper(parent = err)

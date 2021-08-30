@@ -203,6 +203,7 @@
       print(rlang_err)
     Output
       <error/bar>
+      Caused by error: foo
 
 # errors are printed with call
 
@@ -211,4 +212,19 @@
     Output
       <error/rlang_error>
       Error in `foo()`: msg
+
+# calls are consistently displayed on rethrow (#1240)
+
+    Code
+      (expect_error(with_context(base_problem(), "step_dummy")))
+    Output
+      <error/rlang_error>
+      Error in `step_dummy()`: Problem while executing step.
+      Caused by error in `base_problem()`: oh no!
+    Code
+      (expect_error(with_context(rlang_problem(), "step_dummy")))
+    Output
+      <error/rlang_error>
+      Error in `step_dummy()`: Problem while executing step.
+      Caused by error in `rlang_problem()`: oh no!
 

@@ -66,7 +66,7 @@ format.rlang_error <- function(x,
 
   trace <- x$trace
 
-  while (is_rlang_error(parent)) {
+  while (!is_null(parent)) {
     x <- parent
     parent <- parent$parent
 

@@ -201,6 +201,7 @@
     Output
       <error/rlang_error>
       Error: no wrapper
+      Caused by error in `failing()`: low-level
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang:::f()
@@ -216,6 +217,7 @@
     Output
       <error/rlang_error>
       Error: wrapper
+      Caused by error in `failing()`: low-level
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang:::f()
@@ -231,6 +233,7 @@
     Output
       <error/rlang_error>
       Error: wrapper
+      Caused by error in `failing()`: low-level
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang:::f()
