@@ -233,3 +233,17 @@ test_that("long prefixes cause a line break", {
 
   expect_snapshot((expect_error(very_very_very_very_very_long_function_name())))
 })
+
+test_that("prefixes include srcrefs", {
+  local_options("rlang:::is_testing" = FALSE)
+
+  eval_parse("{
+    f <- function() g()
+    g <- function() abort('Foo.')
+  }")
+
+  src_file <- g %@% srcref %@% srcfile
+  src_file$filename <- "/foo/bar/baz/myfile.R"
+
+  expect_snapshot((expect_error(f())))
+})

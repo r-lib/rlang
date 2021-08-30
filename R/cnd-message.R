@@ -101,14 +101,18 @@ cnd_footer.default <- function(cnd, ...) {
   chr()
 }
 
-# TODO: Add srcref info
 cnd_prefix_error_message <- function(cnd, message, prefix = "Error") {
   call <- format_error_call(cnd$call)
 
   if (is_null(call)) {
     prefix <- sprintf("%s: ", prefix)
   } else {
-    prefix <- sprintf("%s in %s: ", prefix, call)
+    src_loc <- src_loc(attr(cnd$call, "srcref"))
+    if (nzchar(src_loc) && !is_testing()) {
+      prefix <- sprintf("%s in %s at %s: ", prefix, call, src_loc)
+    } else {
+      prefix <- sprintf("%s in %s: ", prefix, call)
+    }
   }
   prefix <- style_bold(prefix)
 

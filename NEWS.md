@@ -54,11 +54,23 @@
 * `abort()` now outputs error messages to `stdout` in interactive
   sessions, following the same approach as `inform()`.
 
-* `abort()` now displays `call` field in error messages. The call is
-  only displayed if it is a simple expression (e.g. no inlined
-  function) and the arguments are not displayed to avoid distracting
-  from the error message. The message is formatted with the tidyverse
-  style (`code` formatting by the cli package if available).
+* The "Error:" part of error messages is now printed by rlang instead
+  of R. This introduces several cosmetic and informative changes in
+  errors thrown by `abort()`:
+
+  - The `call` field of error messages is now displayed, as is the
+    default in `base::stop()`. The call is only displayed if it is a
+    simple expression (e.g. no inlined function) and the arguments are
+    not displayed to avoid distracting from the error message. The
+    message is formatted with the tidyverse style (`code` formatting
+    by the cli package if available).
+
+  - The source location is displayed (as in `base::stop()`) if `call`
+    carries a source reference. Source locations are not displayed
+    when testthat is running to avoid brittle snapshots.
+
+  - If the "Error:" prefix (including the call and source location) is
+    too long, the error message is printed on the line below.
 
 * The `.ignore_empty` argument of `enexprs()` and `enquos()` no longer
   treats named arguments supplied through `...` as empty, consistently

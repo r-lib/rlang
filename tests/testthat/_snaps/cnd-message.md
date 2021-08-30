@@ -80,3 +80,11 @@
       Error in `very_very_very_very_very_long_function_name()`: 
       My somewhat longish and verbose error message.
 
+# prefixes include srcrefs
+
+    Code
+      (expect_error(f()))
+    Output
+      <error/rlang_error>
+      Error in `g()` at bar/baz/myfile.R:2:9: Foo.
+
