@@ -62,7 +62,7 @@ format.rlang_error <- function(x,
     header <- header_add_tree_node(header, style, parent)
     header <-   paste_line(trace_root(), header)
 
-    message <- with_reduced_width(assemble_error_message(x))
+    message <- assemble_error_message(x)
     message <- message_add_tree_prefix(message, style, parent)
   } else {
     message <- assemble_error_message(x)
@@ -86,11 +86,11 @@ format.rlang_error <- function(x,
     header <- rlang_error_header(x)
     header <- header_add_tree_node(header, style, parent)
 
-    message <- with_reduced_width(assemble_error_message(x, message = cnd_header(x)))
+    message <- assemble_error_message(x, message = cnd_header(x))
     message <- message_add_tree_prefix(message, style, parent)
 
     if (is_rlang_error(parent)) {
-      message <- with_reduced_width(assemble_error_message(x))
+      message <- assemble_error_message(x)
       message <- message_add_tree_prefix(message, style, parent)
     }
 
@@ -122,13 +122,6 @@ format.rlang_error <- function(x,
   }
 
   out
-}
-
-with_reduced_width <- function(expr) {
-  with_options(
-    width = max(peek_option("width") - 2L, 10L),
-    expr
-  )
 }
 
 assemble_error_message <- function(cnd,
