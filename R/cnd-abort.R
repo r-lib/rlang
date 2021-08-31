@@ -297,7 +297,8 @@ signal_abort <- function(cnd, file = NULL) {
     # If we're still here, the error is unhandled. Fall back with a
     # bare condition to avoid calling handlers logging the same error
     # twice
-    fallback <- cnd_as_unhandled_error(cnd)
+    fallback <- cnd
+    class(fallback) <- "rlang_error"
     fallback$rlang_entraced <- TRUE
   }
 
