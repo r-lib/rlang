@@ -28,7 +28,8 @@
 #'   then formatted using the cli package if available.
 #'
 #' - A line break between the prefix and the message when the former
-#'   is too long.
+#'   is too long. When a source location is included, a line break is
+#'   always inserted.
 #'
 #' If your throwing code is highly structured, you may have to
 #' explicitly inform `abort()` about the relevant user-facing call to

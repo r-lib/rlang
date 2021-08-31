@@ -135,7 +135,8 @@ are a few cosmetic differences:
 \item The call is stripped from its arguments to keep it simple. It is
 then formatted using the cli package if available.
 \item A line break between the prefix and the message when the former
-is too long.
+is too long. When a source location is included, a line break is
+always inserted.
 }
 
 If your throwing code is highly structured, you may have to

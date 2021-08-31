@@ -69,8 +69,10 @@
     carries a source reference. Source locations are not displayed
     when testthat is running to avoid brittle snapshots.
 
-  - If the "Error:" prefix (including the call and source location) is
-    too long, the error message is printed on the line below.
+  - If the "Error:" prefix including the call is too long, a line
+    break is introduced to print the error message on the line below.
+    If a source location is displayed in the prefix, a line break is
+    always included.
 
 * The `.ignore_empty` argument of `enexprs()` and `enquos()` no longer
   treats named arguments supplied through `...` as empty, consistently
