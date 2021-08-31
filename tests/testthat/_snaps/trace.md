@@ -981,8 +981,7 @@
           last_error()
       
           ## <error/rlang_error>
-          ## foo
-          ## Call: `h()`
+          ## Error in `h()`: foo
           ## Backtrace:
           ##  1. global::f()
           ##  2. global::g()
@@ -992,8 +991,7 @@
           last_trace()
       
           ## <error/rlang_error>
-          ## foo
-          ## Call: `h()`
+          ## Error in `h()`: foo
           ## Backtrace:
           ##     x
           ##  1. \-global::f()

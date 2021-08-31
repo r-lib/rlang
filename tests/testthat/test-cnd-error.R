@@ -159,3 +159,26 @@ test_that("errors are printed with call", {
   err$trace <- NULL
   expect_snapshot(print(err))
 })
+
+test_that("calls are consistently displayed on rethrow (#1240)", {
+  base_problem <- function() stop("oh no!")
+  rlang_problem <- function() abort("oh no!")
+
+  with_context <- function(expr, step_name) {
+    withCallingHandlers(
+      expr = force(expr),
+      error = function(cnd) {
+        rlang::abort(
+          message = "Problem while executing step.", 
+          call = call(step_name), 
+          parent = cnd
+        )
+      }
+    )
+  }
+
+  expect_snapshot({
+    (expect_error(with_context(base_problem(), "step_dummy")))
+    (expect_error(with_context(rlang_problem(), "step_dummy")))
+  })
+})

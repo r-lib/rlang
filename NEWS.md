@@ -34,6 +34,11 @@
 
 ## Features and bugfixes
 
+* The `print()` method of rlang errors (commonly invoked with
+  `last_error()`) has been improved:
+    - Display calls if present.
+    - Chained errors are displayed more clearly.
+
 * `as_function()` gains `arg` and `call` arguments to provide
   contextual information about erroring inputs.
 

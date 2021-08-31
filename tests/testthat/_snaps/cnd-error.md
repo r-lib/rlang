@@ -23,8 +23,7 @@
       print(err)
     Output
       <error/foobar>
-      Low-level message
-      Call: `h()`
+      Error in `h()`: Low-level message
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang:::f()
@@ -36,11 +35,8 @@
     Code
       print(err)
     Output
-      x
-      +-<error/rlang_error>
-      | High-level message
-      \-<error/foobar>
-      Call: `h()`
+      <error/rlang_error>
+      Error: High-level message
       Backtrace:
         1. rlang:::catch_error(a())
         9. rlang:::a()
@@ -52,12 +48,9 @@
     Code
       print(err_force)
     Output
-      x
-      +-<error/rlang_error>
-      | High-level message
-      \-<error/foobar>
-        Low-level message
-      Call: `h()`
+      <error/rlang_error>
+      Error: High-level message
+      Caused by error in `h()`: Low-level message
       Backtrace:
         1. rlang::with_options(...)
        10. rlang:::a()
@@ -72,11 +65,8 @@
     Code
       print(err, simplify = "none")
     Output
-      x
-      +-<error/rlang_error>
-      | High-level message
-      \-<error/foobar>
-      Call: `h()`
+      <error/rlang_error>
+      Error: High-level message
       Backtrace:
            x
         1. +-rlang:::catch_error(a())
@@ -104,11 +94,8 @@
       # Full
       print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
     Output
-      x
-      +-<error/rlang_error>
-      | High-level message
-      \-<error/foobar>
-      Call: `h()`
+      <error/rlang_error>
+      Error: High-level message
       Backtrace:
            x
         1. +-rlang:::catch_error(a())
@@ -133,11 +120,8 @@
       # Collapsed
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
-      x
-      +-<error/rlang_error>
-      | High-level message
-      \-<error/foobar>
-      Call: `h()`
+      <error/rlang_error>
+      Error: High-level message
       Backtrace:
            x
         1. +-[ rlang:::catch_error(...) ] with 7 more calls
@@ -152,11 +136,8 @@
       # Branch
       print(trace, simplify = "branch", dir = dir, srcrefs = srcrefs)
     Output
-      x
-      +-<error/rlang_error>
-      | High-level message
-      \-<error/foobar>
-      Call: `h()`
+      <error/rlang_error>
+      Error: High-level message
       Backtrace:
         1. rlang:::catch_error(a())
         9. rlang:::a()
@@ -171,26 +152,19 @@
     Code
       catch_error(high())
     Output
-      x
-      +-<error/high>
-      | High-level
-      +-<error/mid>
-      | Mid-level
-      \-<error/low>
-        Low-level
-      Call: `low()`
+      <error/high>
+      Error: High-level
+      Caused by error: Mid-level
+      Caused by error in `low()`: Low-level
 
 # summary.rlang_error() prints full backtrace
 
     Code
       summary(err)
     Output
-      x
-      +-<error/rlang_error>
-      | The high-level error message
-      \-<error/rlang_error>
-        The low-level error message
-      Call: `h()`
+      <error/rlang_error>
+      Error: The high-level error message
+      Caused by error in `h()`: The low-level error message
       Backtrace:
            x
         1. +-rlang:::catch_error(a())
@@ -229,6 +203,7 @@
       print(rlang_err)
     Output
       <error/bar>
+      Caused by error: foo
 
 # errors are printed with call
 
@@ -236,6 +211,20 @@
       print(err)
     Output
       <error/rlang_error>
-      msg
-      Call: `foo()`
+      Error in `foo()`: msg
+
+# calls are consistently displayed on rethrow (#1240)
+
+    Code
+      (expect_error(with_context(base_problem(), "step_dummy")))
+    Output
+      <error/rlang_error>
+      Error in `step_dummy()`: Problem while executing step.
+      Caused by error in `base_problem()`: oh no!
+    Code
+      (expect_error(with_context(rlang_problem(), "step_dummy")))
+    Output
+      <error/rlang_error>
+      Error in `step_dummy()`: Problem while executing step.
+      Caused by error in `rlang_problem()`: oh no!
 

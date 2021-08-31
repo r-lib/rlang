@@ -57,18 +57,7 @@ format.rlang_error <- function(x,
   style <- cli_box_chars()
 
   header <- rlang_error_header(x)
-
-  if (is_rlang_error(parent)) {
-    header <- header_add_tree_node(header, style, parent)
-    header <-   paste_line(trace_root(), header)
-
-    message <- with_reduced_width(
-      as_rlang_error_message(conditionMessage(x))
-    )
-    message <- message_add_tree_prefix(message, style, parent)
-  } else {
-    message <- as_rlang_error_message(conditionMessage(x))
-  }
+  message <- assemble_error_message(x)
 
   out <- paste_line(
     header,
@@ -77,7 +66,7 @@ format.rlang_error <- function(x,
 
   trace <- x$trace
 
-  while (is_rlang_error(parent)) {
+  while (!is_null(parent)) {
     x <- parent
     parent <- parent$parent
 
@@ -85,31 +74,13 @@ format.rlang_error <- function(x,
       trace <- x$trace
     }
 
-    header <- rlang_error_header(x)
-    header <- header_add_tree_node(header, style, parent)
-
-    message <- with_reduced_width(
-      as_rlang_error_message(cnd_header(x))
+    message <- assemble_error_message(
+      x,
+      message = cnd_header(x),
+      prefix = "Caused by error"
     )
-    message <- message_add_tree_prefix(message, style, parent)
 
-    if (is_rlang_error(parent)) {
-      message <- with_reduced_width(
-        as_rlang_error_message(conditionMessage(x))
-      )
-      message <- message_add_tree_prefix(message, style, parent)
-    }
-
-    out <- paste_line(
-      out,
-      header,
-      message
-    )
-  }
-
-  ctxt <- format_error_call(x$call)
-  if (!is_null(ctxt)) {
-    out <- paste_line(out, paste0(bold("Call: "), ctxt))
+    out <- paste_line(out, message)
   }
 
   simplify <- arg_match(simplify)
@@ -135,21 +106,16 @@ format.rlang_error <- function(x,
   out
 }
 
-with_reduced_width <- function(expr) {
-  with_options(
-    width = max(peek_option("width") - 2L, 10L),
-    expr
-  )
-}
-
-as_rlang_error_message <- function(message) {
+assemble_error_message <- function(cnd,
+                                   message = conditionMessage(cnd),
+                                   prefix = "Error") {
   message <- strip_trailing_newline(message)
 
-  if (nzchar(message)) {
-    message
-  } else {
-    NULL
+  if (!nzchar(message)) {
+    return(NULL)
   }
+
+  cnd_prefix_error_message(cnd, message, prefix = prefix)
 }
 
 header_add_tree_node <- function(header, style, parent) {

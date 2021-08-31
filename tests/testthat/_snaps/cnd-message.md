@@ -5,7 +5,7 @@
         "Header 2", x = "Bullet 3", x = "Bullet 4"))))
     Output
       <error/rlang_error>
-      Main header.
+      Error: Main header.
       Header 1
       x Bullet 1
       x Bullet 2
@@ -18,7 +18,7 @@
       )
     Output
       <error/rlang_error>
-      Main header.
+      Error: Main header.
       Header 1
       x Bullet 1
         Break line

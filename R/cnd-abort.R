@@ -289,10 +289,10 @@ signal_abort <- function(cnd, file = NULL) {
   # length of error messages (#856)
   fallback$message <- conditionMessage(cnd)
   msg <- cnd_unhandled_message(cnd)
-  prefix <- cnd_prefix(cnd)
+  msg <- cnd_prefix_error_message(cnd, msg)
+  msg <- paste0(msg, "\n")
 
-  file <- file %||% default_message_file()
-  cat(prefix, msg, "\n", sep = "", file = file)
+  cat(msg, file = file %||% default_message_file())
 
   # Use `stop()` to run the `getOption("error")` handler (used by
   # RStudio to record a backtrace) and cause a long jump. Running the

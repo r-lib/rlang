@@ -139,8 +139,7 @@
       print(err)
     Output
       <error/rlang_error>
-      foo
-      Call: `h()`
+      Error in `h()`: foo
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang:::f()
@@ -151,8 +150,7 @@
       print(last_error())
     Output
       <error/rlang_error>
-      foo
-      Call: `h()`
+      Error in `h()`: foo
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang:::f()
@@ -167,8 +165,7 @@
       }
     Output
       <error/rlang_error>
-      foo
-      Call: `h()`
+      Error in `h()`: foo
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang:::f()
@@ -183,8 +180,7 @@
       }
     Output
       <error/rlang_error>
-      foo
-      Call: `h()`
+      Error in `h()`: foo
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang:::f()
@@ -204,7 +200,8 @@
       }
     Output
       <error/rlang_error>
-      no wrapper
+      Error: no wrapper
+      Caused by error in `failing()`: low-level
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang:::f()
@@ -219,7 +216,8 @@
       }
     Output
       <error/rlang_error>
-      wrapper
+      Error: wrapper
+      Caused by error in `failing()`: low-level
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang:::f()
@@ -234,7 +232,8 @@
       }
     Output
       <error/rlang_error>
-      wrapper
+      Error: wrapper
+      Caused by error in `failing()`: low-level
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang:::f()
@@ -244,12 +243,9 @@
       # withCallingHandlers()
       print(err_wch)
     Output
-      x
-      +-<error/rlang_error>
-      | bar
-      \-<error/rlang_error>
-        foo
-      Call: `baz()`
+      <error/rlang_error>
+      Error: bar
+      Caused by error in `baz()`: foo
       Backtrace:
         1. rlang:::catch_error(...)
        10. rlang:::foo()
@@ -278,8 +274,7 @@
       (expect_error(f()))
     Output
       <error/rlang_error>
-      `arg` must be supplied.
-      Call: `h()`
+      Error in `h()`: `arg` must be supplied.
 
 # local_error_call() works
 
@@ -287,8 +282,7 @@
       (expect_error(foo()))
     Output
       <error/rlang_error>
-      tilt
-      Call: `expected()`
+      Error in `expected()`: tilt
 
 # can disable error call inference for unexported functions
 
@@ -296,8 +290,7 @@
       (expect_error(foo()))
     Output
       <error/rlang_error>
-      foo
-      Call: `foo()`
+      Error in `foo()`: foo
     Code
       local({
         local_options(`rlang:::restrict_default_error_call` = TRUE)
@@ -305,7 +298,7 @@
       })
     Output
       <error/rlang_error>
-      foo
+      Error: foo
     Code
       local({
         local_options(`rlang:::restrict_default_error_call` = TRUE)
@@ -313,9 +306,8 @@
       })
     Output
       <error/rlang_error>
-      `.homonyms` must be one of "keep", "first", "last", or "error", not "k".
+      Error in `dots_list()`: `.homonyms` must be one of "keep", "first", "last", or "error", not "k".
       i Did you mean "keep"?
-      Call: `dots_list()`
 
 # NSE doesn't interfere with error call contexts
 
@@ -323,18 +315,18 @@
       (expect_error(local(arg_match0("f", "foo"))))
     Output
       <error/rlang_error>
-      `f` must be one of "foo", not "f".
+      Error: `f` must be one of "foo", not "f".
       i Did you mean "foo"?
     Code
       (expect_error(eval_bare(quote(arg_match0("f", "foo")))))
     Output
       <error/rlang_error>
-      `f` must be one of "foo", not "f".
+      Error: `f` must be one of "foo", not "f".
       i Did you mean "foo"?
     Code
       (expect_error(eval_bare(quote(arg_match0("f", "foo")), env())))
     Output
       <error/rlang_error>
-      `f` must be one of "foo", not "f".
+      Error: `f` must be one of "foo", not "f".
       i Did you mean "foo"?
 
