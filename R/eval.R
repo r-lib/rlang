@@ -367,3 +367,18 @@ exec <- function(.fn, ..., .env = caller_env()) {
 inject <- function(expr, env = caller_env()) {
   .External2(ffi_eval, enexpr(expr), env)
 }
+
+eval_parse <- function(code, env = caller_env()) {
+  file <- tempfile("rlang_eval_parsed_", fileext = ".R")
+  on.exit(if (file.exists(file)) file.remove(file))
+
+  writeLines(code, file)
+  exprs <- parse(file, keep.source = TRUE)
+
+  out <- NULL
+  for (expr in exprs) {
+    out <- eval_bare(expr, env)
+  }
+
+  out
+}

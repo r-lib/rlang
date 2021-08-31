@@ -4,10 +4,10 @@
       print(trace, dir = dir)
     Output
           x
-       1. \-rlang:::i() test-trace.R:25:2
-       2.   \-rlang:::j(i) test-trace.R:18:7
-       3.     \-rlang:::k(i) test-trace.R:19:21
-       4.       \-rlang:::l(i) test-trace.R:22:4
+       1. \-rlang:::i() at test-trace.R:25:2
+       2.   \-rlang:::j(i) at test-trace.R:18:7
+       3.     \-rlang:::k(i) at test-trace.R:19:21
+       4.       \-rlang:::l(i) at test-trace.R:22:4
     Code
       cat("\n")
     Output
@@ -25,8 +25,8 @@
     Output
            x
         1. \-rlang:::f()
-        2.   \-rlang:::g() test-trace.R:49:20
-        3.     +-base::tryCatch(h(), foo = identity, bar = identity) test-trace.R:50:20
+        2.   \-rlang:::g() at test-trace.R:49:20
+        3.     +-base::tryCatch(h(), foo = identity, bar = identity) at test-trace.R:50:20
         4.     | \-base:::tryCatchList(expr, classes, parentenv, handlers)
         5.     |   +-base:::tryCatchOne(...)
         6.     |   | \-base:::doTryCatch(return(expr), name, parentenv, handler)
@@ -34,12 +34,12 @@
         8.     |     \-base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
         9.     |       \-base:::doTryCatch(return(expr), name, parentenv, handler)
        10.     \-rlang:::h()
-       11.       +-base::tryCatch(i(), baz = identity) test-trace.R:51:20
+       11.       +-base::tryCatch(i(), baz = identity) at test-trace.R:51:20
        12.       | \-base:::tryCatchList(expr, classes, parentenv, handlers)
        13.       |   \-base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
        14.       |     \-base:::doTryCatch(return(expr), name, parentenv, handler)
        15.       \-rlang:::i()
-       16.         +-base::tryCatch(trace_back(e, bottom = 0)) test-trace.R:52:20
+       16.         +-base::tryCatch(trace_back(e, bottom = 0)) at test-trace.R:52:20
        17.         | \-base:::tryCatchList(expr, classes, parentenv, handlers)
        18.         \-rlang::trace_back(e, bottom = 0)
     Code
@@ -48,19 +48,20 @@
     Output
            x
         1. \-rlang:::f()
-        2.   \-rlang:::g() test-trace.R:49:20
-        3.     +-[ base::tryCatch(...) ] with 6 more calls test-trace.R:50:20
+        2.   \-rlang:::g() at test-trace.R:49:20
+        3.     +-[ base::tryCatch(...) ] with 6 more calls at test-trace.R:50:20
        10.     \-rlang:::h()
-       11.       +-[ base::tryCatch(...) ] with 3 more calls test-trace.R:51:20
+       11.       +-[ base::tryCatch(...) ] with 3 more calls at test-trace.R:51:20
        15.       \-rlang:::i()
-       16.         +-[ base::tryCatch(...) ] with 1 more call test-trace.R:52:20
+       16.         +-[ base::tryCatch(...) ] with 1 more call at test-trace.R:52:20
        18.         \-rlang::trace_back(e, bottom = 0)
     Code
       # Branch
       print(trace, simplify = "branch", dir = dir, srcrefs = srcrefs)
     Output
         1. rlang:::f()
-        2. rlang:::g() test-trace.R:49:20
+        2. rlang:::g()
+           at test-trace.R:49:20
        10. rlang:::h()
        15. rlang:::i()
        18. rlang::trace_back(e, bottom = 0)
@@ -73,12 +74,12 @@
     Output
            x
         1. \-rlang:::f()
-        2.   +-base::eval(quote(eval(quote(g())))) test-trace.R:61:7
+        2.   +-base::eval(quote(eval(quote(g())))) at test-trace.R:61:7
         3.   | \-base::eval(quote(eval(quote(g()))))
         4.   +-base::eval(quote(g()))
         5.   | \-base::eval(quote(g()))
         6.   \-rlang:::g()
-        7.     +-base::tryCatch(eval(quote(h())), foo = identity, bar = identity) test-trace.R:62:7
+        7.     +-base::tryCatch(eval(quote(h())), foo = identity, bar = identity) at test-trace.R:62:7
         8.     | \-base:::tryCatchList(expr, classes, parentenv, handlers)
         9.     |   +-base:::tryCatchOne(...)
        10.     |   | \-base:::doTryCatch(return(expr), name, parentenv, handler)
@@ -94,10 +95,10 @@
     Output
            x
         1. \-rlang:::f()
-        2.   +-[ base::eval(...) ] with 1 more call test-trace.R:61:7
+        2.   +-[ base::eval(...) ] with 1 more call at test-trace.R:61:7
         4.   +-[ base::eval(...) ] with 1 more call
         6.   \-rlang:::g()
-        7.     +-[ base::tryCatch(...) ] with 6 more calls test-trace.R:62:7
+        7.     +-[ base::tryCatch(...) ] with 6 more calls at test-trace.R:62:7
        14.     +-[ base::eval(...) ] with 1 more call
        16.     \-rlang:::h()
     Code
@@ -826,20 +827,21 @@
     Output
           x
        1. \-rlang:::f(current_env())
-       2.   \-rlang:::g(e) fixtures/trace-srcref2.R:2:2
+       2.   \-rlang:::g(e) at fixtures/trace-srcref2.R:2:2
     Code
       # Collapsed
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
           x
        1. \-rlang:::f(current_env())
-       2.   \-rlang:::g(e) fixtures/trace-srcref2.R:2:2
+       2.   \-rlang:::g(e) at fixtures/trace-srcref2.R:2:2
     Code
       # Branch
       print(trace, simplify = "branch", dir = dir, srcrefs = srcrefs)
     Output
        1. rlang:::f(current_env())
-       2. rlang:::g(e) fixtures/trace-srcref2.R:2:2
+       2. rlang:::g(e)
+          at fixtures/trace-srcref2.R:2:2
 
 # summary.rlang_trace() prints the full tree
 
@@ -908,14 +910,14 @@
       summary(trace0)
     Output
            x
-        1. \-rlang:::f(0) test-trace.R:456:2
-        2.   +-base::identity(identity(g(n))) test-trace.R:452:7
+        1. \-rlang:::f(0) at test-trace.R:456:2
+        2.   +-base::identity(identity(g(n))) at test-trace.R:452:7
         3.   +-base::identity(g(n))
         4.   \-rlang:::g(n)
-        5.     +-base::identity(identity(h(n))) test-trace.R:453:7
+        5.     +-base::identity(identity(h(n))) at test-trace.R:453:7
         6.     +-base::identity(h(n))
         7.     \-rlang:::h(n)
-        8.       +-base::identity(identity(trace_back(e, bottom = n))) test-trace.R:454:7
+        8.       +-base::identity(identity(trace_back(e, bottom = n))) at test-trace.R:454:7
         9.       +-base::identity(trace_back(e, bottom = n))
        10.       \-rlang::trace_back(e, bottom = n)
     Code
@@ -928,11 +930,11 @@
       summary(trace1)
     Output
           x
-       1. \-rlang:::f(1) test-trace.R:457:2
-       2.   +-base::identity(identity(g(n))) test-trace.R:452:7
+       1. \-rlang:::f(1) at test-trace.R:457:2
+       2.   +-base::identity(identity(g(n))) at test-trace.R:452:7
        3.   +-base::identity(g(n))
        4.   \-rlang:::g(n)
-       5.     +-base::identity(identity(h(n))) test-trace.R:453:7
+       5.     +-base::identity(identity(h(n))) at test-trace.R:453:7
        6.     +-base::identity(h(n))
        7.     \-rlang:::h(n)
     Code
@@ -945,8 +947,8 @@
       summary(trace2)
     Output
           x
-       1. \-rlang:::f(2) test-trace.R:458:2
-       2.   +-base::identity(identity(g(n))) test-trace.R:452:7
+       1. \-rlang:::f(2) at test-trace.R:458:2
+       2.   +-base::identity(identity(g(n))) at test-trace.R:452:7
        3.   +-base::identity(g(n))
        4.   \-rlang:::g(n)
     Code
@@ -959,7 +961,7 @@
       summary(trace3)
     Output
           x
-       1. \-rlang:::f(3) test-trace.R:459:2
+       1. \-rlang:::f(3) at test-trace.R:459:2
 
 # caught error does not display backtrace in knitted files
 

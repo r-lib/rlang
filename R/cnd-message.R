@@ -103,16 +103,26 @@ cnd_footer.default <- function(cnd, ...) {
 
 cnd_prefix_error_message <- function(cnd, message, prefix = "Error") {
   call <- format_error_call(cnd$call)
+  has_loc <- FALSE
 
   if (is_null(call)) {
     prefix <- sprintf("%s: ", prefix)
   } else {
-    prefix <- sprintf("%s in %s: ", prefix, call)
+    src_loc <- src_loc(attr(cnd$call, "srcref"))
+    if (nzchar(src_loc) && !is_testing()) {
+      prefix <- sprintf("%s in %s at %s: ", prefix, call, src_loc)
+      has_loc <- TRUE
+    } else {
+      prefix <- sprintf("%s in %s: ", prefix, call)
+    }
   }
   prefix <- style_bold(prefix)
 
-  # TODO: srcref, line break
-  paste0(prefix, message)
+  if (has_loc || nchar(strip_style(prefix)) > (peek_option("width") / 2)) {
+    paste0(prefix, "\n", message)
+  } else {
+    paste0(prefix, message)
+  }
 }
 
 #' Format bullets for error messages

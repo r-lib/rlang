@@ -225,3 +225,25 @@ test_that("prefix takes call into account", {
   expect_equal(cnd_prefix_error_message(err2, ""), "Error: ")
   expect_equal(cnd_prefix_error_message(err3, ""), "Error: ")
 })
+
+test_that("long prefixes cause a line break", {
+  very_very_very_very_very_long_function_name <- function() {
+    abort("My somewhat longish and verbose error message.")
+  }
+
+  expect_snapshot((expect_error(very_very_very_very_very_long_function_name())))
+})
+
+test_that("prefixes include srcrefs", {
+  withr::local_envvar("TESTTHAT" = "")
+
+  eval_parse("{
+    f <- function() g()
+    g <- function() abort('Foo.')
+  }")
+
+  src_file <- g %@% srcref %@% srcfile
+  src_file$filename <- "/foo/bar/baz/myfile.R"
+
+  expect_snapshot((expect_error(f())))
+})

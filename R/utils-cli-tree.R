@@ -13,6 +13,9 @@ cli_tree <- function(data,
   style <- style %||% cli_box_chars()
 
   labels <- data$call_text
+  src_locs <- chr(map_if(data$src_loc, nzchar, ~ paste0(" at ", .x)))
+  labels <- paste0(labels, style_locs(src_locs))
+
   res <- character()
 
   pt <- function(root, n = integer(), mx = integer()) {

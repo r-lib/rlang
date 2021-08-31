@@ -384,3 +384,7 @@ df_print <- function(x, ...) {
   print(x, ...)
   invisible(x)
 }
+
+is_testing <- function() {
+  identical(Sys.getenv("TESTTHAT"), "true")
+}

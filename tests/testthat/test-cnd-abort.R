@@ -383,3 +383,14 @@ test_that("local_error_call() returns old error call", {
   out <- withVisible(local_error_call(quote(bar())))
   expect_equal(out, list(value = quote(foo()), visible = FALSE))
 })
+
+test_that("error_call() preserves srcrefs", {
+  eval_parse("{
+    f <- function() g()
+    g <- function() h()
+    h <- function() abort('Foo.')
+  }")
+
+  out <- error_call(catch_error(f())$call)
+  expect_s3_class(attr(out, "srcref"), "srcref")
+})
