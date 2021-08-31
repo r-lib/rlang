@@ -298,7 +298,7 @@ signal_abort <- function(cnd, file = NULL) {
     # bare condition to avoid calling handlers logging the same error
     # twice
     fallback <- cnd
-    class(fallback) <- "rlang_error"
+    class(fallback) <- c("rlang_error", "condition")
     fallback$message <- ""
     fallback$rlang_entraced <- TRUE
   }
