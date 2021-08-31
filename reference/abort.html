@@ -305,6 +305,26 @@ characters) is especially easy to hit when the message contains a
 lot of ANSI escapes, as created by the crayon or cli packages</p></li>
 </ul>
 
+    <h2 class="hasAnchor" id="error-prefix"><a class="anchor" href="#error-prefix"></a>Error prefix</h2>
+
+    
+
+
+<p>As with <code><a href='https://rdrr.io/r/base/stop.html'>base::stop()</a></code>, errors thrown with <code>abort()</code> are prefixed
+with <code>"Error: "</code>. Calls and source references are included in the
+prefix, e.g. <code>"Error in </code>my_function()<code> at myfile.R:1:2:"</code>. There
+are a few cosmetic differences:</p><ul>
+<li><p>The call is stripped from its arguments to keep it simple. It is
+then formatted using the cli package if available.</p></li>
+<li><p>A line break between the prefix and the message when the former
+is too long. When a source location is included, a line break is
+always inserted.</p></li>
+</ul>
+
+<p>If your throwing code is highly structured, you may have to
+explicitly inform <code>abort()</code> about the relevant user-facing call to
+include in the prefix. Internal helpers are rarely relevant to end
+users. See the <code>call</code> argument of <code>abort()</code>.</p>
     <h2 class="hasAnchor" id="backtrace"><a class="anchor" href="#backtrace"></a>Backtrace</h2>
 
     
