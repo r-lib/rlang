@@ -299,6 +299,7 @@ signal_abort <- function(cnd, file = NULL) {
     # twice
     fallback <- cnd
     class(fallback) <- "rlang_error"
+    fallback$message <- ""
     fallback$rlang_entraced <- TRUE
   }
 
@@ -307,7 +308,6 @@ signal_abort <- function(cnd, file = NULL) {
 
   # Print the backtrace manually to work around limitations on the
   # length of error messages (#856)
-  fallback$message <- conditionMessage(cnd)
   msg <- cnd_unhandled_message(cnd)
   msg <- cnd_prefix_error_message(cnd, msg)
   msg <- paste0(msg, "\n")

@@ -45,20 +45,6 @@
        16. rlang:::f()
        17. rlang:::g()
        18. rlang:::h()
-    Code
-      print(err_force)
-    Output
-      <error/rlang_error>
-      Error: High-level message
-      Caused by error in `h()`: Low-level message
-      Backtrace:
-        1. rlang::with_options(...)
-       10. rlang:::a()
-       11. rlang:::b()
-       12. rlang:::c()
-       17. rlang:::f()
-       18. rlang:::g()
-       19. rlang:::h()
 
 ---
 

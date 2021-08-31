@@ -70,15 +70,8 @@ test_that("error is printed with parent backtrace", {
 
   err <- catch_error(a())
 
-  err_force <- with_options(
-    catch_error(a()),
-    `rlang::::force_unhandled_error` = TRUE,
-    `rlang:::message_file` = tempfile()
-  )
-
   expect_snapshot({
     print(err)
-    print(err_force)
   })
   expect_snapshot({
     print(err, simplify = "none")
