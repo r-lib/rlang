@@ -360,11 +360,6 @@ format_collapsed <- function(what, n) {
 
   paste0(what, n_text)
 }
-format_collapsed_branch <- function(what, n, style = NULL) {
-  style <- style %||% cli_box_chars()
-  what <- sprintf(" %s %s", style$h, what)
-  format_collapsed(what, n)
-}
 
 cli_branch <- function(tree,
                        max = NULL,
@@ -376,16 +371,10 @@ cli_branch <- function(tree,
     return(chr())
   }
 
-  numbered <- length(indices)
-  if (numbered) {
-    indices <- pad_spaces(as.character(indices))
-    indices <- paste0(" ", indices, ". ")
-    padding <- nchar(indices[[1]])
-    lines <- paste0(silver(indices), lines)
-  } else {
-    style <- style %||% cli_box_chars()
-    lines <- paste0(" ", style$h, lines)
-  }
+  indices <- pad_spaces(as.character(indices))
+  indices <- paste0(" ", indices, ". ")
+  padding <- nchar(indices[[1]])
+  lines <- paste0(silver(indices), lines)
 
   if (is_null(max)) {
     return(lines)
@@ -404,11 +393,7 @@ cli_branch <- function(tree,
   style <- style %||% cli_box_chars()
   n_collapsed <- n - max
 
-  if (numbered) {
-    collapsed_line <- paste0(spaces(padding), "...")
-  } else {
-    collapsed_line <- format_collapsed_branch("...", n_collapsed, style = style)
-  }
+  collapsed_line <- paste0(spaces(padding), "...")
 
   if (max == 1L) {
     lines <- chr(
