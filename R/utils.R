@@ -386,9 +386,5 @@ df_print <- function(x, ...) {
 }
 
 is_testing <- function() {
-  if (is_bool(opt <- peek_option("rlang:::is_testing"))) {
-    return(opt)
-  }
-
-  is_installed("testthat") && testthat::is_testing()
+  identical(Sys.getenv("TESTTHAT"), "true")
 }

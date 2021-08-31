@@ -235,7 +235,7 @@ test_that("long prefixes cause a line break", {
 })
 
 test_that("prefixes include srcrefs", {
-  local_options("rlang:::is_testing" = FALSE)
+  withr::local_envvar("TESTTHAT" = "")
 
   eval_parse("{
     f <- function() g()
