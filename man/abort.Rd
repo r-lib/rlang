@@ -124,6 +124,26 @@ characters) is especially easy to hit when the message contains a
 lot of ANSI escapes, as created by the crayon or cli packages
 }
 }
+\section{Error prefix}{
+
+
+As with \code{\link[base:stop]{base::stop()}}, errors thrown with \code{abort()} are prefixed
+with \code{"Error: "}. Calls and source references are included in the
+prefix, e.g. \verb{"Error in }my_function()\verb{ at myfile.R:1:2:"}. There
+are a few cosmetic differences:
+\itemize{
+\item The call is stripped from its arguments to keep it simple. It is
+then formatted using the cli package if available.
+\item A line break between the prefix and the message when the former
+is too long.
+}
+
+If your throwing code is highly structured, you may have to
+explicitly inform \code{abort()} about the relevant user-facing call to
+include in the prefix. Internal helpers are rarely relevant to end
+users. See the \code{call} argument of \code{abort()}.
+}
+
 \section{Backtrace}{
 
 

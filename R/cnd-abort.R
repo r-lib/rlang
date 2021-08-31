@@ -17,6 +17,24 @@
 #' kind that is signalled with `Ctrl-C`. It is currently not possible
 #' to create custom interrupt condition objects.
 #'
+#' @section Error prefix:
+#'
+#' As with [base::stop()], errors thrown with `abort()` are prefixed
+#' with `"Error: "`. Calls and source references are included in the
+#' prefix, e.g. `"Error in `my_function()` at myfile.R:1:2:"`. There
+#' are a few cosmetic differences:
+#'
+#' - The call is stripped from its arguments to keep it simple. It is
+#'   then formatted using the cli package if available.
+#'
+#' - A line break between the prefix and the message when the former
+#'   is too long.
+#'
+#' If your throwing code is highly structured, you may have to
+#' explicitly inform `abort()` about the relevant user-facing call to
+#' include in the prefix. Internal helpers are rarely relevant to end
+#' users. See the `call` argument of `abort()`.
+#'
 #' @section Backtrace:
 #'
 #' Unlike `stop()` and `warning()`, these functions don't include call
