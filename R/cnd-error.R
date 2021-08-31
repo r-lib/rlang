@@ -57,7 +57,7 @@ format.rlang_error <- function(x,
   style <- cli_box_chars()
 
   header <- rlang_error_header(x)
-  message <- assemble_error_message(x)
+  message <- cnd_prefix_error_message(x)
 
   out <- paste_line(
     header,
@@ -74,7 +74,7 @@ format.rlang_error <- function(x,
       trace <- x$trace
     }
 
-    message <- assemble_error_message(
+    message <- cnd_prefix_error_message(
       x,
       message = cnd_header(x),
       prefix = "Caused by error"
@@ -104,18 +104,6 @@ format.rlang_error <- function(x,
   }
 
   out
-}
-
-assemble_error_message <- function(cnd,
-                                   message = conditionMessage(cnd),
-                                   prefix = "Error") {
-  message <- strip_trailing_newline(message)
-
-  if (!nzchar(message)) {
-    return(NULL)
-  }
-
-  cnd_prefix_error_message(cnd, message, prefix = prefix)
 }
 
 header_add_tree_node <- function(header, style, parent) {

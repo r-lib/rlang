@@ -101,7 +101,15 @@ cnd_footer.default <- function(cnd, ...) {
   chr()
 }
 
-cnd_prefix_error_message <- function(cnd, message, prefix = "Error") {
+cnd_prefix_error_message <- function(cnd,
+                                     message = conditionMessage(cnd),
+                                     prefix = "Error") {
+  message <- strip_trailing_newline(message)
+
+  if (!nzchar(message)) {
+    return(NULL)
+  }
+
   call <- format_error_call(cnd$call)
   has_loc <- FALSE
 
