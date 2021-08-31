@@ -365,16 +365,23 @@ cli_branch <- function(tree,
                        max = NULL,
                        style = NULL) {
   lines <- tree$call_text
-  indices = tree$id
 
   if (!length(lines)) {
     return(chr())
   }
 
+  indices <- tree$id
   indices <- pad_spaces(as.character(indices))
   indices <- paste0(" ", indices, ". ")
-  padding <- nchar(indices[[1]])
+  padding <- spaces(nchar(indices[[1]]))
+
   lines <- paste0(silver(indices), lines)
+
+  src_locs <- tree$src_loc
+  src_locs <- map_if(src_locs, nzchar, ~ paste0(padding, "at ", .x))
+  src_locs <- style_locs(src_locs)
+
+  lines <- zip_chr(lines, src_locs)
 
   if (is_null(max)) {
     return(lines)
@@ -393,7 +400,7 @@ cli_branch <- function(tree,
   style <- style %||% cli_box_chars()
   n_collapsed <- n - max
 
-  collapsed_line <- paste0(spaces(padding), "...")
+  collapsed_line <- paste0(padding, "...")
 
   if (max == 1L) {
     lines <- chr(
@@ -412,6 +419,19 @@ cli_branch <- function(tree,
     collapsed_line,
     lines[seq(n - n_bottom + 1L, n)]
   )
+}
+
+style_locs <- function(locs) {
+  chr(map_if(locs, nzchar, col_grey))
+}
+zip_chr <- function(xs, ys) {
+  flatten_chr(map2(xs, ys, function(x, y) {
+    if (nzchar(y)) {
+      c(x, y)
+    } else {
+      x
+    }
+  }))
 }
 
 
@@ -708,15 +728,15 @@ trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL) {
   call_text_data <- trace[c("call", "collapsed", "namespace", "scope")]
   call_text <- chr(!!!pmap(call_text_data, trace_call_text))
 
-  srcrefs <- srcrefs %||% peek_option("rlang_trace_format_srcrefs")
-  srcrefs <- srcrefs %||% TRUE
+  srcrefs <- srcrefs %||% peek_option("rlang_trace_format_srcrefs") %||% TRUE
   stopifnot(is_scalar_logical(srcrefs))
+
   if (srcrefs) {
     refs <- map(trace$call, attr, "srcref")
-    src_locs <- map_chr(refs, src_loc, dir = dir)
-    have_src_loc <- nzchar(src_locs)
-    src_locs <- silver(src_locs[have_src_loc])
-    call_text[have_src_loc] <- paste0(call_text[have_src_loc], " ", src_locs)
+    src_locs <- map_chr(refs, src_loc)
+    trace$src_loc <- src_locs
+  } else {
+    trace$src_loc <- ""
   }
 
   id <- c(0, seq_along(trace$call))
@@ -727,7 +747,8 @@ trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL) {
     parent = 0L,
     visible = TRUE,
     namespace = NA,
-    scope = NA
+    scope = NA,
+    src_loc = ""
   )
   trace <- vec_rbind(root, trace)
 
@@ -778,7 +799,7 @@ trace_call_text <- function(call, collapsed, namespace, scope) {
   format_collapsed(paste0("[ ", text, " ]"), collapsed)
 }
 
-src_loc <- function(srcref, dir = getwd()) {
+src_loc <- function(srcref) {
   if (is.null(srcref)) {
     return("")
   }
