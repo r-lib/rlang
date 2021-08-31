@@ -17,8 +17,8 @@ columns:
 will be hidden from simplified backtraces.
 \item \code{parent}: Integer vector of parent references (see
 \code{\link[=sys.parents]{sys.parents()}}) as row numbers. 0 is global.
-\item \code{namespace}: Character vector of namespaces, \code{""} or \code{NA} for
-global or no namespace
+\item \code{namespace}: Character vector of namespaces. \code{NA} for global or
+no namespace
 \item \code{scope}: Character vector of strings taking values \code{"::"},
 \code{":::"}, \code{"global"}, or \code{"local"}.
 }
