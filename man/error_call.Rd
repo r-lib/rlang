@@ -27,14 +27,27 @@ function if you are generating the "in" part of an error message
 from a stack frame call.
 \item \code{error_call()} creates a function call ready to be used as the
 \code{call} field of error conditions. This field is displayed by
-\code{\link[=stop]{stop()}} and \code{\link[=abort]{abort()}} to give context to an error message.
+\code{\link[=stop]{stop()}} and \code{\link[=abort]{abort()}} to give context to an error message.  The
+call is simplified for formatting (see section below). If a
+complex call can't be simplified, \code{error_call()} returns \code{NULL}.
+}
 
-If passed a function call, the arguments are stripped. Complex
-function calls containing inlined objects return \code{NULL}. If
-passed an environment, the corresponding \code{sys.call()} is taken as
-call, unless there is a local flag (see \code{\link[=local_error_call]{local_error_call()}}).
+If passed an environment, the corresponding \code{sys.call()} is taken
+as call, unless there is a local flag (see \code{\link[=local_error_call]{local_error_call()}}).
+}
+\section{Details of formatting}{
+
+\itemize{
+\item The arguments of function calls are stripped.
+\item Complex function calls containing inlined objects return
+\code{NULL}.
+\item Calls to \code{if} preserve the condition since it might be
+informative. Branches are dropped.
+\item Calls to operators and other special syntax are formatted using
+their names rather than the potentially confusing function form.
 }
 }
+
 \examples{
 # Arguments are stripped
 error_call(quote(foo(bar, baz)))
@@ -43,5 +56,10 @@ writeLines(format_error_call(quote(foo(bar, baz))))
 # Returns `NULL` with complex calls such as those that contain
 # inlined functions
 error_call(call2(list))
+
+# Operators are formatted using their names rather than in
+# confusing function call form
+error_call(quote(1 + 2))
+format_error_call(quote(1 + 2))
 }
 \keyword{internal}

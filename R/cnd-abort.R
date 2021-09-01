@@ -558,12 +558,25 @@ caller_arg <- function(arg) {
 #'
 #' - `error_call()` creates a function call ready to be used as the
 #'   `call` field of error conditions. This field is displayed by
-#'   [stop()] and [abort()] to give context to an error message.
+#'   [stop()] and [abort()] to give context to an error message.  The
+#'   call is simplified for formatting (see section below). If a
+#'   complex call can't be simplified, `error_call()` returns `NULL`.
 #'
-#'   If passed a function call, the arguments are stripped. Complex
-#'   function calls containing inlined objects return `NULL`. If
-#'   passed an environment, the corresponding `sys.call()` is taken as
-#'   call, unless there is a local flag (see [local_error_call()]).
+#' If passed an environment, the corresponding `sys.call()` is taken
+#' as call, unless there is a local flag (see [local_error_call()]).
+#'
+#' @section Details of formatting:
+#'
+#' - The arguments of function calls are stripped.
+#'
+#' - Complex function calls containing inlined objects return
+#'   `NULL`.
+#'
+#' - Calls to `if` preserve the condition since it might be
+#'   informative. Branches are dropped.
+#'
+#' - Calls to operators and other special syntax are formatted using
+#'   their names rather than the potentially confusing function form.
 #'
 #' @inheritParams args_error_context
 #' @return Either a string formatted as code or `NULL` if `call` or
@@ -579,6 +592,11 @@ caller_arg <- function(arg) {
 #' # Returns `NULL` with complex calls such as those that contain
 #' # inlined functions
 #' error_call(call2(list))
+#'
+#' # Operators are formatted using their names rather than in
+#' # confusing function call form
+#' error_call(quote(1 + 2))
+#' format_error_call(quote(1 + 2))
 #' @export
 error_call <- function(call) {
   while (is_environment(call)) {
@@ -632,11 +650,6 @@ error_call <- function(call) {
     return(call[1:3])
   }
 
-  # Deal with remaining special-syntax calls
-  if (!is_string(call_print_fine_type(call), "call")) {
-    return(NULL)
-  }
-
   if (!is_symbol(call[[1]])) {
     return(NULL)
   }
@@ -652,7 +665,16 @@ format_error_call <- function(call) {
     return(NULL)
   }
 
-  format_code(as_label(call))
+  # Deal with special-syntax calls. `if` carries useful information in
+  # its call. For other operators we just return their name because
+  # the functional form may be confusing.
+  if (!is_call(call, "if") && !is_string(call_print_fine_type(call), "call")) {
+    out <- as_string(call[[1]])
+  } else {
+    out <- as_label(call)
+  }
+
+  format_code(out)
 }
 
 call_restore <- function(x, to) {

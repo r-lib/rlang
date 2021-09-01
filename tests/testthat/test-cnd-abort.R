@@ -362,7 +362,7 @@ test_that("error_call() requires a symbol in function position", {
   expect_null(error_call(call2(function() NULL)))
 })
 
-test_that("error_call() deals with special syntax (r-lib/testthat#1429)", {
+test_that("error_call() preserves `if` (r-lib/testthat#1429)", {
   call <- quote(if (foobar) TRUE else FALSE)
 
   expect_equal(
@@ -373,6 +373,26 @@ test_that("error_call() deals with special syntax (r-lib/testthat#1429)", {
   expect_equal(
     format_error_call(call),
     "`if (foobar) ...`"
+  )
+})
+
+test_that("error_call() and format_error_call() preserve special syntax ops", {
+  expect_equal(
+    error_call(quote(1 + 2)),
+    quote(`+`())
+  )
+  expect_equal(
+    format_error_call(quote(1 + 2)),
+    "`+`"
+  )
+
+  expect_equal(
+    error_call(quote(for (x in y) NULL)),
+    quote(`for`())
+  )
+  expect_equal(
+    format_error_call(quote(for (x in y) NULL)),
+    "`for`"
   )
 })
 
