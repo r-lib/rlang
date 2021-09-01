@@ -306,13 +306,13 @@ signal_abort <- function(cnd, file = NULL) {
   # Save the unhandled error for `rlang::last_error()`.
   poke_last_error(cnd)
 
-  # Print the backtrace manually to work around limitations on the
-  # length of error messages (#856)
-  msg <- cnd_unhandled_message(cnd)
-  msg <- cnd_prefix_error_message(cnd, msg)
-  msg <- paste0(msg, "\n")
+  # Print the error manually. This allows us to use our own style,
+  # include parent errors, and work around limitations on the length
+  # of error messages (#856).
+  msg <- cnd_build_error_message(cnd)
+  msg <- cnd_unhandled_message(cnd, message = msg)
 
-  cat(msg, file = file %||% default_message_file())
+  cat_line(msg, file = file %||% default_message_file())
 
   # Use `stop()` to run the `getOption("error")` handler (used by
   # RStudio to record a backtrace) and cause a long jump. Running the
@@ -705,11 +705,8 @@ cnd_as_unhandled_error <- function(cnd) {
     call = cnd$call
   )
 }
-cnd_unhandled_message <- function(cnd) {
-  paste_line(
-    conditionMessage(cnd),
-    format_onerror_backtrace(cnd)
-  )
+cnd_unhandled_message <- function(cnd, message = conditionMessage(cnd)) {
+  paste_line(message, format_onerror_backtrace(cnd))
 }
 
 on_load({

@@ -4,8 +4,10 @@
       print(err)
     Output
       <error/rlang_error>
-      Error: High-level message
-      Caused by error in `h()`: Low-level message
+      Error: 
+        High-level message
+      Caused by error in `h()`: 
+        Low-level message
       Backtrace:
         1. base::identity(catch_error(a()))
        10. rlang:::a()
@@ -18,8 +20,10 @@
       summary(err)
     Output
       <error/rlang_error>
-      Error: High-level message
-      Caused by error in `h()`: Low-level message
+      Error: 
+        High-level message
+      Caused by error in `h()`: 
+        Low-level message
       Backtrace:
            x
         1. +-base::identity(catch_error(a()))

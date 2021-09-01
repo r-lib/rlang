@@ -73,6 +73,10 @@
     break is introduced to print the error message on the line below.
     If a source location is displayed in the prefix, a line break is
     always included.
+    
+* The display of chained errors created with the `parent` argument of
+  `abort()` has been improved. Chains of errors are now displayed at
+  throw time with the error prefix "Caused by error:".
 
 * The `.ignore_empty` argument of `enexprs()` and `enquos()` no longer
   treats named arguments supplied through `...` as empty, consistently

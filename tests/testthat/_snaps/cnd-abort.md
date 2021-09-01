@@ -111,13 +111,19 @@
     Code
       cat_line(interactive)
     Output
-      Error: bar
+      Error: 
+        bar
+      Caused by error in `h()`: 
+        foo
       Run `rlang::last_error()` to see where the error occurred.
       Execution halted
     Code
       cat_line(non_interactive)
     Output
-      Error: bar
+      Error: 
+        bar
+      Caused by error in `h()`: 
+        foo
       Backtrace:
            x
         1. \-global::a()
@@ -200,8 +206,10 @@
       }
     Output
       <error/rlang_error>
-      Error: no wrapper
-      Caused by error in `failing()`: low-level
+      Error: 
+        no wrapper
+      Caused by error in `failing()`: 
+        low-level
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang:::f()
@@ -216,8 +224,10 @@
       }
     Output
       <error/rlang_error>
-      Error: wrapper
-      Caused by error in `failing()`: low-level
+      Error: 
+        wrapper
+      Caused by error in `failing()`: 
+        low-level
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang:::f()
@@ -232,8 +242,10 @@
       }
     Output
       <error/rlang_error>
-      Error: wrapper
-      Caused by error in `failing()`: low-level
+      Error: 
+        wrapper
+      Caused by error in `failing()`: 
+        low-level
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang:::f()
@@ -244,8 +256,10 @@
       print(err_wch)
     Output
       <error/rlang_error>
-      Error: bar
-      Caused by error in `baz()`: foo
+      Error: 
+        bar
+      Caused by error in `baz()`: 
+        foo
       Backtrace:
         1. rlang:::catch_error(...)
        10. rlang:::foo()

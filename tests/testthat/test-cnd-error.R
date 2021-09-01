@@ -44,7 +44,7 @@ test_that("rlang_error.print() calls conditionMessage() method", {
 test_that("error is printed with parent backtrace", {
   # Test low-level error can use conditionMessage()
   local_bindings(.env = global_env(),
-    conditionMessage.foobar = function(c) c$foobar_msg
+    cnd_header.foobar = function(c) c$foobar_msg
   )
 
   f <- function() g()
@@ -143,7 +143,7 @@ test_that("don't print message or backtrace fields if empty", {
 
 test_that("base parent errors are printed with rlang method", {
   base_err <- simpleError("foo")
-  rlang_err <- error_cnd("bar", message = "", parent = base_err)
+  rlang_err <- error_cnd("bar", message = "baz", parent = base_err)
   expect_snapshot(print(rlang_err))
 })
 
