@@ -241,7 +241,11 @@ to selectively handle the conditions signalled by your functions.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Additional data to be stored in the condition object.</p></td>
+      <td><p>Additional data to be stored in the condition object.
+If you supply condition fields, you should usually provide a
+<code>class</code> argument. You may consider prefixing condition fields
+with the name of your package or organisation to avoid any
+conflict in case of subclassing.</p></td>
     </tr>
     <tr>
       <th>call</th>
