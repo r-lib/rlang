@@ -214,16 +214,16 @@ cli::test_that_cli(configs = c("plain", "fancy"), "can use cli syntax in `cnd_me
 })
 
 test_that("prefix takes call into account", {
-  err <- error_cnd(message = "Message.", call = quote(foo(bar = TRUE)))
-  expect_equal(cnd_prefix_error_message(err, "msg"), "Error in `foo()`: msg")
+  err <- error_cnd(message = "msg", call = quote(foo(bar = TRUE)))
+  expect_equal(cnd_prefix_error_message(err), "Error in `foo()`: msg")
 
   # Inlined objects disable context deparsing
-  err1 <- error_cnd(call = expr(foo(bar = !!(1:3))))
-  err2 <- error_cnd(call = quote(foo$bar()))
-  err3 <- error_cnd(call = call2(identity))
-  expect_equal(cnd_prefix_error_message(err1, "msg"), "Error in `foo()`: msg")
-  expect_equal(cnd_prefix_error_message(err2, "msg"), "Error: msg")
-  expect_equal(cnd_prefix_error_message(err3, "msg"), "Error: msg")
+  err1 <- error_cnd(message = "msg", call = expr(foo(bar = !!(1:3))))
+  err2 <- error_cnd(message = "msg", call = quote(foo$bar()))
+  err3 <- error_cnd(message = "msg", call = call2(identity))
+  expect_equal(cnd_prefix_error_message(err1), "Error in `foo()`: msg")
+  expect_equal(cnd_prefix_error_message(err2), "Error: msg")
+  expect_equal(cnd_prefix_error_message(err3), "Error: msg")
 })
 
 test_that("long prefixes cause a line break", {

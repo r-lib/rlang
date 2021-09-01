@@ -57,7 +57,7 @@ format.rlang_error <- function(x,
   style <- cli_box_chars()
 
   header <- rlang_error_header(x)
-  message <- cnd_prefix_error_message(x, indent = is_error(parent))
+  message <- cnd_prefix_error_message(x)
 
   out <- paste_line(
     header,
@@ -77,13 +77,7 @@ format.rlang_error <- function(x,
       trace <- chained_trace
     }
 
-    message <- cnd_prefix_error_message(
-      x,
-      message = cnd_header(x),
-      prefix = "Caused by error",
-      indent = TRUE
-    )
-
+    message <- cnd_prefix_error_message(x, parent = TRUE)
     out <- paste_line(out, message)
   }
 

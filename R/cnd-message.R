@@ -102,31 +102,27 @@ cnd_footer.default <- function(cnd, ...) {
 }
 
 cnd_build_error_message <- function(cnd) {
-  msg <- cnd_prefix_error_message(
-    cnd,
-    conditionMessage(cnd),
-    prefix = "Error",
-    indent = is_error(cnd$parent)
-  )
+  msg <- cnd_prefix_error_message(cnd, parent = FALSE)
 
-  parent <- cnd
-  while (is_error(parent <- parent$parent)) {
-    parent_msg <- cnd_prefix_error_message(
-      parent,
-      message = cnd_header(parent),
-      prefix = "Caused by error",
-      indent = TRUE
-    )
+  while (is_error(cnd <- cnd$parent)) {
+    parent_msg <- cnd_prefix_error_message(cnd, parent = TRUE)
     msg <- paste_line(msg, parent_msg)
   }
 
   msg
 }
 
-cnd_prefix_error_message <- function(cnd,
-                                     message = conditionMessage(cnd),
-                                     prefix = "Error",
-                                     indent = FALSE) {
+cnd_prefix_error_message <- function(cnd, parent = FALSE) {
+  if (parent) {
+    message <- cnd_header(cnd)
+    prefix <- "Caused by error"
+    indent <- TRUE
+  } else {
+    message <- conditionMessage(cnd)
+    prefix <- "Error"
+    indent <- is_error(cnd$parent)
+  }
+
   message <- strip_trailing_newline(message)
 
   if (!nzchar(message)) {
