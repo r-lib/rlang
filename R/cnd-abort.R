@@ -117,6 +117,10 @@
 #' @param class Subclass of the condition. This allows your users
 #'   to selectively handle the conditions signalled by your functions.
 #' @param ... Additional data to be stored in the condition object.
+#'   If you supply condition fields, you should usually provide a
+#'   `class` argument. You may consider prefixing condition fields
+#'   with the name of your package or organisation to avoid any
+#'   conflict in case of subclassing.
 #' @param call The execution environment of a currently
 #'   running function, e.g. `call = caller_env()`. The function will
 #'   be mentioned in error messages as the source of the error.
