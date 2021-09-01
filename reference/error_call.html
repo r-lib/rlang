@@ -48,13 +48,13 @@ function if you are generating the &quot;in&quot; part of an error message
 from a stack frame call.
 error_call() creates a function call ready to be used as the
 call field of error conditions. This field is displayed by
-stop() and abort() to give context to an error message.
-If passed a function call, the arguments are stripped. Complex
-function calls containing inlined objects return NULL. If
-passed an environment, the corresponding sys.call() is taken as
-call, unless there is a local flag (see local_error_call()).
+stop() and abort() to give context to an error message.  The
+call is simplified for formatting (see section below). If a
+complex call can't be simplified, error_call() returns NULL.
 
-" />
+
+If passed an environment, the corresponding sys.call() is taken
+as call, unless there is a local flag (see local_error_call())." />
 
 
 
@@ -178,13 +178,13 @@ function if you are generating the "in" part of an error message
 from a stack frame call.</p></li>
 <li><p><code>error_call()</code> creates a function call ready to be used as the
 <code>call</code> field of error conditions. This field is displayed by
-<code><a href='https://rdrr.io/r/base/stop.html'>stop()</a></code> and <code><a href='abort.html'>abort()</a></code> to give context to an error message.</p>
-<p>If passed a function call, the arguments are stripped. Complex
-function calls containing inlined objects return <code>NULL</code>. If
-passed an environment, the corresponding <code><a href='https://rdrr.io/r/base/sys.parent.html'>sys.call()</a></code> is taken as
-call, unless there is a local flag (see <code><a href='local_error_call.html'>local_error_call()</a></code>).</p></li>
+<code><a href='https://rdrr.io/r/base/stop.html'>stop()</a></code> and <code><a href='abort.html'>abort()</a></code> to give context to an error message.  The
+call is simplified for formatting (see section below). If a
+complex call can't be simplified, <code>error_call()</code> returns <code>NULL</code>.</p></li>
 </ul>
 
+<p>If passed an environment, the corresponding <code><a href='https://rdrr.io/r/base/sys.parent.html'>sys.call()</a></code> is taken
+as call, unless there is a local flag (see <code><a href='local_error_call.html'>local_error_call()</a></code>).</p>
     </div>
 
     <pre class="usage"><span class='fu'>error_call</span><span class='op'>(</span><span class='va'>call</span><span class='op'>)</span>
@@ -207,6 +207,20 @@ mentioned in error messages as the source of the error. See the
 
     <p>Either a string formatted as code or <code>NULL</code> if <code>call</code> or
 the result of <code>error_call(call)</code> is <code>NULL</code>.</p>
+    <h2 class="hasAnchor" id="details-of-formatting"><a class="anchor" href="#details-of-formatting"></a>Details of formatting</h2>
+
+    
+
+<ul>
+<li><p>The arguments of function calls are stripped.</p></li>
+<li><p>Complex function calls containing inlined objects return
+<code>NULL</code>.</p></li>
+<li><p>Calls to <code>if</code> preserve the condition since it might be
+informative. Branches are dropped.</p></li>
+<li><p>Calls to operators and other special syntax are formatted using
+their names rather than the potentially confusing function form.</p></li>
+</ul>
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Arguments are stripped</span>
@@ -216,7 +230,12 @@ the result of <code>error_call(call)</code> is <code>NULL</code>.</p>
 <span class='co'># Returns `NULL` with complex calls such as those that contain</span>
 <span class='co'># inlined functions</span>
 <span class='fu'>error_call</span><span class='op'>(</span><span class='fu'><a href='call2.html'>call2</a></span><span class='op'>(</span><span class='va'>list</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; NULL</div></pre>
+</div><div class='output co'>#&gt; NULL</div><div class='input'>
+<span class='co'># Operators are formatted using their names rather than in</span>
+<span class='co'># confusing function call form</span>
+<span class='fu'>error_call</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='fl'>1</span> <span class='op'>+</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; `+`()</div><div class='input'><span class='fu'>format_error_call</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='fl'>1</span> <span class='op'>+</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "+"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
