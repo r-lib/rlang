@@ -1,4 +1,3 @@
-
 #' @rdname cnd
 #' @export
 error_cnd <- function(class = NULL,
