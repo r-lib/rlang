@@ -152,25 +152,10 @@ users. See the \code{call} argument of \code{abort()}.
 \section{Backtrace}{
 
 
-Unlike \code{stop()} and \code{warning()}, these functions don't include call
-information by default. This saves you from typing \code{call. = FALSE}
-and produces cleaner error messages.
-
-A backtrace is always saved into error objects. You can print a
-simplified backtrace of the last error by calling \code{\link[=last_error]{last_error()}}
-and a full backtrace with \code{summary(last_error())}.
-
-You can also display a backtrace with the error message by setting
-the option \code{\link{rlang_backtrace_on_error}}. It supports the following
-values:
-\itemize{
-\item \code{"reminder"}: Invite users to call \code{rlang::last_error()} to see a
-backtrace.
-\item \code{"branch"}: Display a simplified backtrace.
-\item \code{"collapse"}: Display a collapsed backtrace tree.
-\item \code{"full"}: Display a full backtrace tree.
-\item \code{"none"}: Display nothing.
-}
+\code{abort()} always saves a backtrace. You can print a simplified backtrace of
+the last error by calling \code{\link[=last_error]{last_error()}} and a full backtrace with
+\code{summary(last_error())}. Control the default behaviour with
+\code{\link{rlang_backtrace_on_error}}
 }
 
 \section{Muffling and silencing conditions}{

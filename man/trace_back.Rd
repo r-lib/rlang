@@ -42,8 +42,7 @@ A backtrace captures the sequence of calls that lead to the current
 function, sometimes called the call stack. Because of lazy
 evaluation, the call stack in R is actually a tree, which the
 \code{print()} method for this object will reveal.
-}
-\details{
+
 \code{trace_length()} returns the number of frames in a backtrace.
 }
 \examples{
