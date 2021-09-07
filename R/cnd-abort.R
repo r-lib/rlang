@@ -38,24 +38,10 @@
 #'
 #' @section Backtrace:
 #'
-#' Unlike `stop()` and `warning()`, these functions don't include call
-#' information by default. This saves you from typing `call. = FALSE`
-#' and produces cleaner error messages.
-#'
-#' A backtrace is always saved into error objects. You can print a
-#' simplified backtrace of the last error by calling [last_error()]
-#' and a full backtrace with `summary(last_error())`.
-#'
-#' You can also display a backtrace with the error message by setting
-#' the option [`rlang_backtrace_on_error`]. It supports the following
-#' values:
-#'
-#' * `"reminder"`: Invite users to call `rlang::last_error()` to see a
-#'   backtrace.
-#' * `"branch"`: Display a simplified backtrace.
-#' * `"collapse"`: Display a collapsed backtrace tree.
-#' * `"full"`: Display a full backtrace tree.
-#' * `"none"`: Display nothing.
+#' `abort()` always saves a backtrace. You can print a simplified backtrace of
+#' the last error by calling [last_error()] and a full backtrace with
+#' `summary(last_error())`. Control the default behaviour with
+#' [`rlang_backtrace_on_error`]
 #'
 #' @section Muffling and silencing conditions:
 #'
@@ -452,7 +438,7 @@ signal_abort <- function(cnd, file = NULL) {
 #' ```
 #' .__error_call__. <- "caller"
 #' ```
-#' 
+#'
 #' @examples
 #' # Set a context for error messages
 #' function() {
@@ -976,6 +962,8 @@ peek_backtrace_on_error <- function() {
 #'
 #' * `last_trace()` is a shortcut to return the backtrace stored in
 #'   the last error. This backtrace is printed in full form.
+#'
+#' See [`rlang_backtrace_on_error`] to control the default behaviour.
 #'
 #' @export
 last_error <- function() {
