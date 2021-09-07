@@ -7,27 +7,17 @@
 duplicate(x, shallow = FALSE)
 }
 \arguments{
-\item{x}{Any R object. However, uncopyable types like symbols and
+\item{x}{An R object. Uncopyable objects like symbols and
 environments are returned as is (just like with \verb{<-}).}
 
-\item{shallow}{This is relevant for recursive data structures like
-lists, calls and pairlists. A shallow copy only duplicates the
-top-level data structure. The objects contained in the list are
-still the same.}
+\item{shallow}{Recursive data structures like lists, calls and
+pairlists are duplicated in full by default. A shallow copy only
+duplicates the top-level data structure.}
 }
 \description{
-In R semantics, objects are copied by value. This means that
-modifying the copy leaves the original object intact. Since
-copying data in memory is an expensive operation, copies in R are
-as lazy as possible. They only happen when the new object is
-actually modified. However, some operations (like \code{\link[=node_poke_car]{node_poke_car()}}
-or \code{\link[=node_poke_cdr]{node_poke_cdr()}}) do not support copy-on-write. In those cases,
-it is necessary to duplicate the object manually in order to
-preserve copy-by-value semantics.
-}
-\details{
-Some objects are not duplicable, like symbols and environments.
-\code{duplicate()} returns its input for these unique objects.
+\code{duplicate()} is an interface to the C-level \code{duplicate()} and
+\code{shallow_duplicate()} functions. Only R experts should use this
+function. It is mostly meant to prototype C code in R.
 }
 \seealso{
 pairlist
