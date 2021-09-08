@@ -1,5 +1,6 @@
 #' Capture a backtrace
 #'
+#' @description
 #' A backtrace captures the sequence of calls that lead to the current
 #' function, sometimes called the call stack. Because of lazy
 #' evaluation, the call stack in R is actually a tree, which the

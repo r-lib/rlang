@@ -6,66 +6,51 @@
 \title{Display backtrace on error}
 \description{
 Errors thrown with \code{\link[=abort]{abort()}} automatically save a backtrace that
-can be inspected by calling \code{\link[=last_error]{last_error()}}. Optionally, you can
-also display the backtrace alongside the error message by setting
-the option \code{rlang_backtrace_on_error} to one of the following
-values:
+can be inspected by calling \code{\link[=last_error]{last_error()}}. You can control the default
+display of the backtrace by setting the option \code{rlang_backtrace_on_error}
+to one of the following values:
 \itemize{
-\item \code{"reminder"}: Display a reminder that the backtrace can be
-inspected by calling \code{\link[=last_error]{last_error()}}.
-\item \code{"branch"}: Display a simplified backtrace.
-\item \code{"collapse"}: Display a collapsed backtrace tree.
-\item \code{"full"}: Display the full backtrace tree.
+\item \code{"none"} show nothing.
+\item \code{"reminder"}, the default in interactive sessions, displays a reminder that
+you can see the backtrace with \code{\link[=last_error]{last_error()}}.
+\item \code{"branch"} displays a simplified backtrace.
+\item \code{"collapse"} displays a collapsed backtrace tree.
+\item \code{"full"}, the default in non-interactive sessions, displays the full tree.
 }
-
-If this option is not set, the default depends on whether the
-session is interactive as determined by \code{\link[=is_interactive]{is_interactive()}}.
-In interactive sessions, the default is \code{"reminder"} so that the
-interested user is prompted to run \code{last_error()} to get more
-information. In non-interactive sessions, the default is \code{"full"}
-to provide users with as much debugging info as available.
 }
 \section{Promote base errors to rlang errors}{
 
 
-Call \code{options(error = rlang::entrace)} to instrument base
-errors with rlang features. This handler does two things:
+You can use \code{options(error = rlang::entrace)} to promote base errors to
+rlang errors. This does two things:
 \itemize{
-\item It saves the base error as an rlang object. This allows you to
-call \code{\link[=last_error]{last_error()}} to print the backtrace or inspect its data.
+\item It saves the base error as an rlang object so you can call \code{\link[=last_error]{last_error()}}
+to print the backtrace or inspect its data.
 \item It prints the backtrace for the current error according to the
 \code{rlang_backtrace_on_error} option.
 }
 }
 
-\section{Unexpected errors in dynamic reports}{
+\section{Errors in RMarkdown}{
 
 
-In dynamic reports (knitted Rmarkdown or RStudio notebooks), the
-relevant option is \code{rlang_backtrace_on_error_report}. The default
-is \code{"none"} in interactive sessions and \code{"branch"} in
+There are two types of errors in Rmds: expected (i.e. \code{error = TRUE})
+and unexpected.
+\itemize{
+\item The display of unexpected errors is controlled by option
+\code{rlang_backtrace_on_error_report} (note the \verb{_report}). The
+default is \code{"none"} in interactive sessions and \code{"branch"} in
 non-interactive sessions.
+\item The display of expected errors is controlled by option
+\code{rlang_backtrace_on_error}. The default is \code{"none"}.
 }
-
-\section{Expected errors in Rmarkdown documents}{
-
-
-An \code{rlang_error} method for the \code{knitr::sew()} generic is
-registered to make it possible to display backtraces with captured
-errors (\code{error = TRUE} chunks).
-
-In \code{error = TRUE} chunks, the default value for
-\code{rlang_backtrace_on_error} is \code{"none"}. You can override it by
-setting this option in your document, e.g. to \code{"reminder"} or
-\code{"full"}.
 
 When knitr is running (as determined by the \code{knitr.in.progress}
 global option), the default top environment for backtraces is set
 to the chunk environment \code{knitr::knit_global()}. This ensures that
 the part of the call stack belonging to knitr does not end up in
-backtraces. You can override this by setting the
-\code{rlang_trace_top_env} global option or by supplying the \code{top}
-argument to \code{\link[=trace_back]{trace_back()}}.
+backtraces. If needed, you can override this by setting the
+\code{rlang_trace_top_env} global option.
 }
 
 \examples{

@@ -38,24 +38,10 @@
 #'
 #' @section Backtrace:
 #'
-#' Unlike `stop()` and `warning()`, these functions don't include call
-#' information by default. This saves you from typing `call. = FALSE`
-#' and produces cleaner error messages.
-#'
-#' A backtrace is always saved into error objects. You can print a
-#' simplified backtrace of the last error by calling [last_error()]
-#' and a full backtrace with `summary(last_error())`.
-#'
-#' You can also display a backtrace with the error message by setting
-#' the option [`rlang_backtrace_on_error`]. It supports the following
-#' values:
-#'
-#' * `"reminder"`: Invite users to call `rlang::last_error()` to see a
-#'   backtrace.
-#' * `"branch"`: Display a simplified backtrace.
-#' * `"collapse"`: Display a collapsed backtrace tree.
-#' * `"full"`: Display a full backtrace tree.
-#' * `"none"`: Display nothing.
+#' `abort()` always saves a backtrace. You can print a simplified
+#' backtrace of the last error by calling [last_error()] and a full
+#' backtrace with `summary(last_error())`. Learn how to control what is
+#' displayed when an error is thrown with [`rlang_backtrace_on_error`].
 #'
 #' @section Muffling and silencing conditions:
 #'
@@ -452,7 +438,7 @@ signal_abort <- function(cnd, file = NULL) {
 #' ```
 #' .__error_call__. <- "caller"
 #' ```
-#' 
+#'
 #' @examples
 #' # Set a context for error messages
 #' function() {
@@ -811,63 +797,47 @@ trace_capture_depth <- function(trace) {
 #' @description
 #'
 #' Errors thrown with [abort()] automatically save a backtrace that
-#' can be inspected by calling [last_error()]. Optionally, you can
-#' also display the backtrace alongside the error message by setting
-#' the option `rlang_backtrace_on_error` to one of the following
-#' values:
+#' can be inspected by calling [last_error()]. You can control the default
+#' display of the backtrace by setting the option `rlang_backtrace_on_error`
+#' to one of the following values:
 #'
-#' * `"reminder"`: Display a reminder that the backtrace can be
-#'   inspected by calling [rlang::last_error()].
-#' * `"branch"`: Display a simplified backtrace.
-#' * `"collapse"`: Display a collapsed backtrace tree.
-#' * `"full"`: Display the full backtrace tree.
-#'
-#' If this option is not set, the default depends on whether the
-#' session is interactive as determined by [rlang::is_interactive()].
-#' In interactive sessions, the default is `"reminder"` so that the
-#' interested user is prompted to run `last_error()` to get more
-#' information. In non-interactive sessions, the default is `"full"`
-#' to provide users with as much debugging info as available.
-#'
+#' * `"none"` show nothing.
+#' * `"reminder"`, the default in interactive sessions, displays a reminder that
+#'   you can see the backtrace with [rlang::last_error()].
+#' * `"branch"` displays a simplified backtrace.
+#' * `"collapse"` displays a collapsed backtrace tree.
+#' * `"full"`, the default in non-interactive sessions, displays the full tree.
 #'
 #' @section Promote base errors to rlang errors:
 #'
-#' Call `options(error = rlang::entrace)` to instrument base
-#' errors with rlang features. This handler does two things:
+#' You can use `options(error = rlang::entrace)` to promote base errors to
+#' rlang errors. This does two things:
 #'
-#' * It saves the base error as an rlang object. This allows you to
-#'   call [last_error()] to print the backtrace or inspect its data.
+#' * It saves the base error as an rlang object so you can call [last_error()]
+#'   to print the backtrace or inspect its data.
 #'
 #' * It prints the backtrace for the current error according to the
 #'   `rlang_backtrace_on_error` option.
 #'
+#' @section Errors in RMarkdown:
 #'
-#' @section Unexpected errors in dynamic reports:
+#' There are two types of errors in Rmds: expected (i.e. `error = TRUE`)
+#' and unexpected.
 #'
-#' In dynamic reports (knitted Rmarkdown or RStudio notebooks), the
-#' relevant option is `rlang_backtrace_on_error_report`. The default
-#' is `"none"` in interactive sessions and `"branch"` in
-#' non-interactive sessions.
+#' * The display of unexpected errors is controlled by option
+#'   `rlang_backtrace_on_error_report` (note the `_report`). The
+#'   default is `"none"` in interactive sessions and `"branch"` in
+#'   non-interactive sessions.
 #'
-#'
-#' @section Expected errors in Rmarkdown documents:
-#'
-#' An `rlang_error` method for the `knitr::sew()` generic is
-#' registered to make it possible to display backtraces with captured
-#' errors (`error = TRUE` chunks).
-#'
-#' In `error = TRUE` chunks, the default value for
-#' `rlang_backtrace_on_error` is `"none"`. You can override it by
-#' setting this option in your document, e.g. to `"reminder"` or
-#' `"full"`.
+#' * The display of expected errors is controlled by option
+#'   `rlang_backtrace_on_error`. The default is `"none"`.
 #'
 #' When knitr is running (as determined by the `knitr.in.progress`
 #' global option), the default top environment for backtraces is set
 #' to the chunk environment `knitr::knit_global()`. This ensures that
 #' the part of the call stack belonging to knitr does not end up in
-#' backtraces. You can override this by setting the
-#' `rlang_trace_top_env` global option or by supplying the `top`
-#' argument to [trace_back()].
+#' backtraces. If needed, you can override this by setting the
+#' `rlang_trace_top_env` global option.
 #'
 #' @name rlang_backtrace_on_error
 #' @aliases add_backtrace
@@ -976,6 +946,9 @@ peek_backtrace_on_error <- function() {
 #'
 #' * `last_trace()` is a shortcut to return the backtrace stored in
 #'   the last error. This backtrace is printed in full form.
+#'
+#' Learn how to control what is displayed when an error is thrown with
+#' [`rlang_backtrace_on_error`].
 #'
 #' @export
 last_error <- function() {

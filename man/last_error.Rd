@@ -16,4 +16,7 @@ error is printed with a backtrace in simplified form.
 \item \code{last_trace()} is a shortcut to return the backtrace stored in
 the last error. This backtrace is printed in full form.
 }
+
+Learn how to control what is displayed when an error is thrown with
+\code{\link{rlang_backtrace_on_error}}.
 }
