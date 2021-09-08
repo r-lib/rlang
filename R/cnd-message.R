@@ -45,11 +45,28 @@
 #'
 #' @export
 cnd_message <- function(cnd) {
-  paste_line(
+  cnd_format <- cnd_formatter(cnd)
+
+  cnd_format(c(
     cnd_header(cnd),
     cnd_body(cnd),
     cnd_footer(cnd)
+  ))
+}
+
+cnd_formatter <- function(cnd) {
+  if (!is_true(cnd$use_cli_format)) {
+    return(paste_line)
+  }
+
+  cli_format <- switch(
+    cnd_type(cnd),
+    error = cli::format_error,
+    warning = cli::format_warning,
+    cli::format_message
   )
+
+  function(x) cli_format(cli_escape(x), .envir = emptyenv())
 }
 
 #' @rdname cnd_message
@@ -218,9 +235,6 @@ format_error_bullets <- function(x) {
   .rlang_cli_format_fallback(x)
 }
 
-rlang_format_error <- function(x, env = caller_env()) {
-  rlang_format(x, env, format_error, cli::format_error)
-}
 rlang_format_warning <- function(x, env = caller_env()) {
   rlang_format(x, env, format_warning, cli::format_warning)
 }

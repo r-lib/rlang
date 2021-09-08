@@ -143,6 +143,8 @@ test_that("cli is not used when message is escaped with `I()`", {
     "foo"
   )
 
+  return("no longer the case")
+
   expect_equal(
     conditionMessage(expect_error(abort(I("{x}")))),
     "{x}"

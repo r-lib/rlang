@@ -110,7 +110,8 @@ check_installed <- function(pkg,
   cnd <- new_error_package_not_found(
     missing_pkgs,
     missing_vers,
-    reason = reason
+    reason = reason,
+    use_cli_format = TRUE
   )
 
   restart <- peek_option("rlib_restart_package_not_found") %||% TRUE
