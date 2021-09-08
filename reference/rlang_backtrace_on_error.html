@@ -41,23 +41,17 @@
 
 <meta property="og:title" content="Display backtrace on error — rlang_backtrace_on_error" />
 <meta property="og:description" content="Errors thrown with abort() automatically save a backtrace that
-can be inspected by calling last_error(). Optionally, you can
-also display the backtrace alongside the error message by setting
-the option rlang_backtrace_on_error to one of the following
-values:
-&quot;reminder&quot;: Display a reminder that the backtrace can be
-inspected by calling last_error().
-&quot;branch&quot;: Display a simplified backtrace.
-&quot;collapse&quot;: Display a collapsed backtrace tree.
-&quot;full&quot;: Display the full backtrace tree.
+can be inspected by calling last_error(). You can control the default
+display of the backtrace by setting the option rlang_backtrace_on_error
+to one of the following values:
+&quot;none&quot; show nothing.
+&quot;reminder&quot;, the default in interactive sessions, displays a reminder that
+you can see the backtrace with last_error().
+&quot;branch&quot; displays a simplified backtrace.
+&quot;collapse&quot; displays a collapsed backtrace tree.
+&quot;full&quot;, the default in non-interactive sessions, displays the full tree.
 
-
-If this option is not set, the default depends on whether the
-session is interactive as determined by is_interactive().
-In interactive sessions, the default is &quot;reminder&quot; so that the
-interested user is prompted to run last_error() to get more
-information. In non-interactive sessions, the default is &quot;full&quot;
-to provide users with as much debugging info as available." />
+" />
 
 
 
@@ -174,23 +168,17 @@ to provide users with as much debugging info as available." />
 
     <div class="ref-description">
     <p>Errors thrown with <code><a href='abort.html'>abort()</a></code> automatically save a backtrace that
-can be inspected by calling <code><a href='last_error.html'>last_error()</a></code>. Optionally, you can
-also display the backtrace alongside the error message by setting
-the option <code>rlang_backtrace_on_error</code> to one of the following
-values:</p><ul>
-<li><p><code>"reminder"</code>: Display a reminder that the backtrace can be
-inspected by calling <code><a href='last_error.html'>last_error()</a></code>.</p></li>
-<li><p><code>"branch"</code>: Display a simplified backtrace.</p></li>
-<li><p><code>"collapse"</code>: Display a collapsed backtrace tree.</p></li>
-<li><p><code>"full"</code>: Display the full backtrace tree.</p></li>
+can be inspected by calling <code><a href='last_error.html'>last_error()</a></code>. You can control the default
+display of the backtrace by setting the option <code>rlang_backtrace_on_error</code>
+to one of the following values:</p><ul>
+<li><p><code>"none"</code> show nothing.</p></li>
+<li><p><code>"reminder"</code>, the default in interactive sessions, displays a reminder that
+you can see the backtrace with <code><a href='last_error.html'>last_error()</a></code>.</p></li>
+<li><p><code>"branch"</code> displays a simplified backtrace.</p></li>
+<li><p><code>"collapse"</code> displays a collapsed backtrace tree.</p></li>
+<li><p><code>"full"</code>, the default in non-interactive sessions, displays the full tree.</p></li>
 </ul>
 
-<p>If this option is not set, the default depends on whether the
-session is interactive as determined by <code><a href='is_interactive.html'>is_interactive()</a></code>.
-In interactive sessions, the default is <code>"reminder"</code> so that the
-interested user is prompted to run <code><a href='last_error.html'>last_error()</a></code> to get more
-information. In non-interactive sessions, the default is <code>"full"</code>
-to provide users with as much debugging info as available.</p>
     </div>
 
 
@@ -200,42 +188,35 @@ to provide users with as much debugging info as available.</p>
     
 
 
-<p>Call <code><a href='https://rdrr.io/r/base/options.html'>options(error = rlang::entrace)</a></code> to instrument base
-errors with rlang features. This handler does two things:</p><ul>
-<li><p>It saves the base error as an rlang object. This allows you to
-call <code><a href='last_error.html'>last_error()</a></code> to print the backtrace or inspect its data.</p></li>
+<p>You can use <code><a href='https://rdrr.io/r/base/options.html'>options(error = rlang::entrace)</a></code> to promote base errors to
+rlang errors. This does two things:</p><ul>
+<li><p>It saves the base error as an rlang object so you can call <code><a href='last_error.html'>last_error()</a></code>
+to print the backtrace or inspect its data.</p></li>
 <li><p>It prints the backtrace for the current error according to the
 <code>rlang_backtrace_on_error</code> option.</p></li>
 </ul>
 
-    <h2 class="hasAnchor" id="unexpected-errors-in-dynamic-reports"><a class="anchor" href="#unexpected-errors-in-dynamic-reports"></a>Unexpected errors in dynamic reports</h2>
+    <h2 class="hasAnchor" id="errors-in-rmarkdown"><a class="anchor" href="#errors-in-rmarkdown"></a>Errors in RMarkdown</h2>
 
     
 
 
-<p>In dynamic reports (knitted Rmarkdown or RStudio notebooks), the
-relevant option is <code>rlang_backtrace_on_error_report</code>. The default
-is <code>"none"</code> in interactive sessions and <code>"branch"</code> in
-non-interactive sessions.</p>
-    <h2 class="hasAnchor" id="expected-errors-in-rmarkdown-documents"><a class="anchor" href="#expected-errors-in-rmarkdown-documents"></a>Expected errors in Rmarkdown documents</h2>
+<p>There are two types of errors in Rmds: expected (i.e. <code>error = TRUE</code>)
+and unexpected.</p><ul>
+<li><p>The display of unexpected errors is controlled by option
+<code>rlang_backtrace_on_error_report</code> (note the <code>_report</code>). The
+default is <code>"none"</code> in interactive sessions and <code>"branch"</code> in
+non-interactive sessions.</p></li>
+<li><p>The display of expected errors is controlled by option
+<code>rlang_backtrace_on_error</code>. The default is <code>"none"</code>.</p></li>
+</ul>
 
-    
-
-
-<p>An <code>rlang_error</code> method for the <code><a href='https://rdrr.io/pkg/knitr/man/sew.html'>knitr::sew()</a></code> generic is
-registered to make it possible to display backtraces with captured
-errors (<code>error = TRUE</code> chunks).</p>
-<p>In <code>error = TRUE</code> chunks, the default value for
-<code>rlang_backtrace_on_error</code> is <code>"none"</code>. You can override it by
-setting this option in your document, e.g. to <code>"reminder"</code> or
-<code>"full"</code>.</p>
 <p>When knitr is running (as determined by the <code>knitr.in.progress</code>
 global option), the default top environment for backtraces is set
 to the chunk environment <code><a href='https://rdrr.io/pkg/knitr/man/knit_global.html'>knitr::knit_global()</a></code>. This ensures that
 the part of the call stack belonging to knitr does not end up in
-backtraces. You can override this by setting the
-<code>rlang_trace_top_env</code> global option or by supplying the <code>top</code>
-argument to <code><a href='trace_back.html'>trace_back()</a></code>.</p>
+backtraces. If needed, you can override this by setting the
+<code>rlang_trace_top_env</code> global option.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Display a simplified backtrace on error for both base and rlang</span>

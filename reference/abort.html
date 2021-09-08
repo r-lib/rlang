@@ -334,23 +334,10 @@ users. See the <code>call</code> argument of <code>abort()</code>.</p>
     
 
 
-<p>Unlike <code><a href='https://rdrr.io/r/base/stop.html'>stop()</a></code> and <code><a href='https://rdrr.io/r/base/warning.html'>warning()</a></code>, these functions don't include call
-information by default. This saves you from typing <code>call. = FALSE</code>
-and produces cleaner error messages.</p>
-<p>A backtrace is always saved into error objects. You can print a
-simplified backtrace of the last error by calling <code><a href='last_error.html'>last_error()</a></code>
-and a full backtrace with <code><a href='https://rdrr.io/r/base/summary.html'>summary(last_error())</a></code>.</p>
-<p>You can also display a backtrace with the error message by setting
-the option <code><a href='rlang_backtrace_on_error.html'>rlang_backtrace_on_error</a></code>. It supports the following
-values:</p><ul>
-<li><p><code>"reminder"</code>: Invite users to call <code><a href='last_error.html'>rlang::last_error()</a></code> to see a
-backtrace.</p></li>
-<li><p><code>"branch"</code>: Display a simplified backtrace.</p></li>
-<li><p><code>"collapse"</code>: Display a collapsed backtrace tree.</p></li>
-<li><p><code>"full"</code>: Display a full backtrace tree.</p></li>
-<li><p><code>"none"</code>: Display nothing.</p></li>
-</ul>
-
+<p><code>abort()</code> always saves a backtrace. You can print a simplified
+backtrace of the last error by calling <code><a href='last_error.html'>last_error()</a></code> and a full
+backtrace with <code><a href='https://rdrr.io/r/base/summary.html'>summary(last_error())</a></code>. Learn how to control what is
+displayed when an error is thrown with <code><a href='rlang_backtrace_on_error.html'>rlang_backtrace_on_error</a></code>.</p>
     <h2 class="hasAnchor" id="muffling-and-silencing-conditions"><a class="anchor" href="#muffling-and-silencing-conditions"></a>Muffling and silencing conditions</h2>
 
     

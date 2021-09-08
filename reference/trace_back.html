@@ -43,7 +43,8 @@
 <meta property="og:description" content="A backtrace captures the sequence of calls that lead to the current
 function, sometimes called the call stack. Because of lazy
 evaluation, the call stack in R is actually a tree, which the
-print() method for this object will reveal." />
+print() method for this object will reveal.
+trace_length() returns the number of frames in a backtrace." />
 
 
 
@@ -163,6 +164,7 @@ print() method for this object will reveal." />
 function, sometimes called the call stack. Because of lazy
 evaluation, the call stack in R is actually a tree, which the
 <code><a href='https://rdrr.io/r/base/print.html'>print()</a></code> method for this object will reveal.</p>
+<p><code>trace_length()</code> returns the number of frames in a backtrace.</p>
     </div>
 
     <pre class="usage"><span class='fu'>trace_back</span><span class='op'>(</span>top <span class='op'>=</span> <span class='cn'>NULL</span>, bottom <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
@@ -203,9 +205,6 @@ capture context.</p>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p><code>trace_length()</code> returns the number of frames in a backtrace.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Trim backtraces automatically (this improves the generated</span>
