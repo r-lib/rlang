@@ -243,6 +243,59 @@ abort <- function(message = NULL,
   signal_abort(cnd, .file)
 }
 
+use_cli_format <- function(env) {
+  # Internal option to disable cli in case of recursive errors
+  if (is_true(peek_option("rlang:::disable_cli"))) {
+    return(FALSE)
+  }
+
+  # Formatting with cli is opt-in for now
+  default <- FALSE
+
+  last <- topenv(env)
+
+  # Search across load-all'd environments
+  if (identical(last, global_env()) && "devtools_shims" %in% search()) {
+    last <- empty_env()
+  }
+
+  flag <- env_get(
+    env,
+    ".__rlang_use_cli__.",
+    default = default,
+    inherit = TRUE,
+    last = last
+  )
+
+  if (is_string(flag, "try")) {
+    if (has_cli_format && .rlang_cli_has_ansi()) {
+      return("partial")
+    } else {
+      return("fallback")
+    }
+  }
+
+  if (!is_bool(flag)) {
+    abort("`.rlang_use_cli` must be a logical value.")
+  }
+
+  if (flag && !has_cli_format) {
+    with_options(
+      "rlang:::disable_cli" = TRUE,
+      abort(c(
+        "`.rlang_use_cli` is set to `TRUE` but cli is not installed.",
+        "i" = "The package author should add `cli` to their `Imports`."
+      ))
+    )
+  }
+
+  if (flag) {
+    "full"
+  } else {
+    "fallback"
+  }
+}
+
 # Private option to disable default error call except for exported
 # functions
 default_error_call <- function(env) {
