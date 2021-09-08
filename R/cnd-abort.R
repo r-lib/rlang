@@ -38,10 +38,10 @@
 #'
 #' @section Backtrace:
 #'
-#' `abort()` always saves a backtrace. You can print a simplified backtrace of
-#' the last error by calling [last_error()] and a full backtrace with
-#' `summary(last_error())`. Control the default behaviour with
-#' [`rlang_backtrace_on_error`]
+#' `abort()` always saves a backtrace. You can print a simplified
+#' backtrace of the last error by calling [last_error()] and a full
+#' backtrace with `summary(last_error())`. Learn how to control what is
+#' displayed when an error is thrown with [`rlang_backtrace_on_error`].
 #'
 #' @section Muffling and silencing conditions:
 #'
@@ -947,7 +947,8 @@ peek_backtrace_on_error <- function() {
 #' * `last_trace()` is a shortcut to return the backtrace stored in
 #'   the last error. This backtrace is printed in full form.
 #'
-#' See [`rlang_backtrace_on_error`] to control the default behaviour.
+#' Learn how to control what is displayed when an error is thrown with
+#' [`rlang_backtrace_on_error`].
 #'
 #' @export
 last_error <- function() {

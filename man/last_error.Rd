@@ -17,5 +17,6 @@ error is printed with a backtrace in simplified form.
 the last error. This backtrace is printed in full form.
 }
 
-See \code{\link{rlang_backtrace_on_error}} to control the default behaviour.
+Learn how to control what is displayed when an error is thrown with
+\code{\link{rlang_backtrace_on_error}}.
 }

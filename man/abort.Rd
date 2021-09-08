@@ -152,10 +152,10 @@ users. See the \code{call} argument of \code{abort()}.
 \section{Backtrace}{
 
 
-\code{abort()} always saves a backtrace. You can print a simplified backtrace of
-the last error by calling \code{\link[=last_error]{last_error()}} and a full backtrace with
-\code{summary(last_error())}. Control the default behaviour with
-\code{\link{rlang_backtrace_on_error}}
+\code{abort()} always saves a backtrace. You can print a simplified
+backtrace of the last error by calling \code{\link[=last_error]{last_error()}} and a full
+backtrace with \code{summary(last_error())}. Learn how to control what is
+displayed when an error is thrown with \code{\link{rlang_backtrace_on_error}}.
 }
 
 \section{Muffling and silencing conditions}{
