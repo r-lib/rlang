@@ -16,8 +16,9 @@ duplicates the top-level data structure.}
 }
 \description{
 \code{duplicate()} is an interface to the C-level \code{duplicate()} and
-\code{shallow_duplicate()} functions. Only R experts should use this
-function. It is mostly meant to prototype C code in R.
+\code{shallow_duplicate()} functions. It is mostly meant for users of
+the C API of R, e.g. for debugging, experimenting, or prototyping C
+code in R.
 }
 \seealso{
 pairlist

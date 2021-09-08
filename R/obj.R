@@ -1,8 +1,9 @@
 #' Duplicate an R object
 #'
 #' `duplicate()` is an interface to the C-level `duplicate()` and
-#' `shallow_duplicate()` functions. Only R experts should use this
-#' function. It is mostly meant to prototype C code in R.
+#' `shallow_duplicate()` functions. It is mostly meant for users of
+#' the C API of R, e.g. for debugging, experimenting, or prototyping C
+#' code in R.
 #'
 #' @param x An R object. Uncopyable objects like symbols and
 #'   environments are returned as is (just like with `<-`).
