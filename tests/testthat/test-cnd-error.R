@@ -23,9 +23,9 @@ test_that("can use conditionMessage() method in subclasses of rlang errors", {
   })
 })
 
-test_that("rlang_error.print() calls conditionMessage() method", {
+test_that("rlang_error.print() calls cnd_message() methods", {
   local_bindings(.env = global_env(),
-    conditionMessage.foobar = function(c) c$foobar_msg
+    cnd_header.foobar = function(cnd, ...) cnd$foobar_msg
   )
   local_options(
     rlang_trace_format_srcrefs = FALSE,

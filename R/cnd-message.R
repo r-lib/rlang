@@ -46,27 +46,51 @@
 #' @export
 cnd_message <- function(cnd) {
   cnd_format <- cnd_formatter(cnd)
-
-  cnd_format(c(
+  cnd_format(cnd_message_lines(cnd))
+}
+cnd_message_lines <- function(cnd) {
+  c(
     cnd_header(cnd),
     cnd_body(cnd),
     cnd_footer(cnd)
-  ))
+  )
 }
 
 cnd_formatter <- function(cnd) {
   if (!is_true(cnd$use_cli_format)) {
-    return(paste_line)
+    return(function(x, indent = FALSE) {
+      x <- paste_line(x)
+      if (indent) {
+        x <- paste0("  ", x)
+        x <- gsub("\n", "\n  ", x, fixed = TRUE)
+      }
+      x
+    })
   }
 
+  # Use `format_message()` instead of `format_error()` until
+  # https://github.com/r-lib/cli/issues/339 is fixed
   cli_format <- switch(
     cnd_type(cnd),
-    error = cli::format_error,
+    error = cli::format_message,
     warning = cli::format_warning,
     cli::format_message
   )
 
-  function(x) cli_format(cli_escape(x), .envir = emptyenv())
+  function(x, indent = FALSE) {
+    if (indent) {
+      local_cli_indent()
+    }
+    cli_format(cli_escape(x), .envir = emptyenv())
+  }
+}
+
+local_cli_indent <- function(frame = caller_env()) {
+  cli::cli_div(
+    class = "indented",
+    theme = list(div.indented = list("margin-left" = 2)),
+    .envir = frame
+  )
 }
 
 #' @rdname cnd_message
@@ -131,13 +155,28 @@ cnd_build_error_message <- function(cnd) {
 
 cnd_prefix_error_message <- function(cnd, parent = FALSE) {
   if (parent) {
-    message <- cnd_header(cnd)
     prefix <- "Caused by error"
     indent <- TRUE
   } else {
-    message <- conditionMessage(cnd)
     prefix <- "Error"
     indent <- is_error(cnd$parent)
+  }
+
+  if (is_true(cnd$use_cli_format)) {
+    if (parent) {
+      message <- cnd_header(cnd)
+    } else {
+      message <- cnd_message_lines(cnd)
+    }
+
+    cnd_format <- cnd_formatter(cnd)
+    message <- cnd_format(message, indent = indent)
+  } else {
+    message <- conditionMessage(cnd)
+    if (indent) {
+      message <- paste0("  ", message)
+      message <- gsub("\n", "\n  ", message, fixed = TRUE)
+    }
   }
 
   message <- strip_trailing_newline(message)
@@ -168,10 +207,6 @@ cnd_prefix_error_message <- function(cnd, parent = FALSE) {
     nchar(strip_style(prefix)) > (peek_option("width") / 2)
 
   if (break_line) {
-    if (indent) {
-      message <- paste0("  ", message)
-      message <- gsub("\n", "\n  ", message, fixed = TRUE)
-    }
     paste0(prefix, "\n", message)
   } else {
     paste0(prefix, message)

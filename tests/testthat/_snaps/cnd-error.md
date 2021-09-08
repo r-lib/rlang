@@ -17,7 +17,7 @@
        3.     \-global::h()
       Execution halted
 
-# rlang_error.print() calls conditionMessage() method
+# rlang_error.print() calls cnd_message() methods
 
     Code
       print(err)
