@@ -263,14 +263,14 @@ local_use_cli <- function(...,
   invisible(NULL)
 }
 
-use_cli_format <- function(env) {
+use_cli <- function(env) {
   # Internal option to disable cli in case of recursive errors
   if (is_true(peek_option("rlang:::disable_cli"))) {
     return(FALSE)
   }
 
-  # Formatting with cli is opt-in for now
-  default <- FALSE
+  # Formatting with cli is opt-in
+  default <- c(format = FALSE, inline = FALSE)
 
   last <- topenv(env)
 
@@ -287,32 +287,34 @@ use_cli_format <- function(env) {
     last = last
   )
 
-  if (is_string(flag, "try")) {
-    if (has_cli_format && .rlang_cli_has_ansi()) {
-      return("partial")
-    } else {
-      return("fallback")
+  local_error_call("caller")
+  check_use_cli_flag(flag)
+
+  flag
+}
+
+# Makes sure `inline` can't be set without `format`
+check_use_cli_flag <- function(flag) {
+  local_error_call("caller")
+
+  if (!is_logical(flag) || !identical(names(flag), c("format", "inline")) || anyNA(flag)) {
+    abort("`.__rlang_use_cli__.` has unknown format.")
+  }
+
+  if (flag[["inline"]]) {
+    if (!flag[["format"]]) {
+      abort("Can't use cli inline formatting without cli bullets formatting.")
     }
-  }
 
-  if (!is_bool(flag)) {
-    abort("`.__rlang_use_cli__.` must be a logical value.")
-  }
-
-  if (flag && !has_cli_format) {
-    with_options(
-      "rlang:::disable_cli" = TRUE,
-      abort(c(
-        "`.rlang_use_cli` is set to `TRUE` but cli is not installed.",
-        "i" = "The package author should add `cli` to their `Imports`."
-      ))
-    )
-  }
-
-  if (flag) {
-    "full"
-  } else {
-    "fallback"
+    if (!has_cli_format) {
+      with_options(
+        "rlang:::disable_cli" = TRUE,
+        abort(c(
+          "`.__rlang_use_cli__.[[\"inline\"]]` is set to `TRUE` but cli is not installed.",
+          "i" = "The package author should add `cli` to their `Imports`."
+        ))
+      )
+    }
   }
 }
 

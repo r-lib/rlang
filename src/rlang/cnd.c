@@ -80,8 +80,8 @@ static r_obj* new_condition_names(r_obj* data) {
 r_obj* r_new_condition(r_obj* subclass, r_obj* msg, r_obj* data) {
   if (msg == r_null) {
     msg = r_chrs.empty_string;
-  } else if (!r_is_string(msg)) {
-    r_abort("Condition message must be a string");
+  } else if (r_typeof(msg) != R_TYPE_character) {
+    r_abort("Condition message must be a character vector.");
   }
 
   r_ssize n_data = r_length(data);

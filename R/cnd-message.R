@@ -231,12 +231,27 @@ rlang_format <- function(x, env, partial_format, cli_format) {
   if (!can_format(x)) {
     return(x)
   }
-  switch(
-    use_cli_format(env),
-    partial = partial_format(cli_escape(x)),
-    full = .rlang_cli_str_restore(cli_format(x, env), x),
-    .rlang_cli_format_fallback(x)
-  )
+
+  use_cli <- use_cli(env)
+  inline <- use_cli[["inline"]]
+  format <- use_cli[["format"]]
+
+  # Full
+  if (inline && format) {
+    return(.rlang_cli_str_restore(cli_format(x, env), x))
+  }
+
+  # Partial
+  if (format) {
+    if (has_cli_format) {
+      return(partial_format(cli_escape(x)))
+    } else {
+      return(.rlang_cli_format_fallback(x))
+    }
+  }
+
+  # None
+  x
 }
 
 # No-op for the empty string, e.g. for `abort("", class = "foo")` and
