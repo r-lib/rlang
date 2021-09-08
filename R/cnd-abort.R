@@ -217,23 +217,10 @@ abort <- function(message = NULL,
     })
   }
 
-  caller <- caller_env()
-  use_cli <- use_cli(caller)
-  extra_fields <- list()
-
   message <- validate_signal_message(message, class)
-
-  if (use_cli[["inline"]]) {
-    message[] <- map_chr(message, cli::format_inline, .envir = caller)
-  }
-
-  # Formatting with cli is delayed until print time so we can properly
-  # indent and width-wrap depending on the context
-  if (use_cli[["format"]]) {
-    extra_fields$use_cli_format <- TRUE
-  } else {
-    message <- .rlang_cli_format_fallback(message)
-  }
+  message_info <- cnd_message_info(message, caller_env())
+  message <- message_info$message
+  extra_fields <- message_info$extra_fields
 
   # Don't record call by default when supplied a parent because it
   # probably means that we are called from a condition handler

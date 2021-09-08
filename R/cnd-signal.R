@@ -180,6 +180,25 @@ signal <- function(message,
   cnd_signal(cnd)
 }
 
+cnd_message_info <- function(message, env) {
+  use_cli <- use_cli(env)
+  fields <- list()
+
+  if (use_cli[["inline"]]) {
+    message[] <- map_chr(message, cli::format_inline, .envir = env)
+  }
+
+  # Formatting with cli is delayed until print time so we can properly
+  # indent and width-wrap depending on the context
+  if (use_cli[["format"]]) {
+    fields$use_cli_format <- TRUE
+  } else {
+    message <- .rlang_cli_format_fallback(message)
+  }
+
+  list(message = message, extra_fields = fields)
+}
+
 # Increase message length temporarily if it set to the default
 # value. The limit can quickly be hit if the message includes a lot of
 # ANSI escapes.

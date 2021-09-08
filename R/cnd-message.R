@@ -235,6 +235,8 @@ format_error_bullets <- function(x) {
   .rlang_cli_format_fallback(x)
 }
 
+# FIXME: These won't be needed after warnings and messages have been
+# switched to print-time formatting
 rlang_format_warning <- function(x, env = caller_env()) {
   rlang_format(x, env, format_warning, cli::format_warning)
 }
