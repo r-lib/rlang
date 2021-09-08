@@ -11,4 +11,4 @@ on_load({
   )
 })
 
-.__rlang_use_cli__. <- "try"
+local_use_cli()

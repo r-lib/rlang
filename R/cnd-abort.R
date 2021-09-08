@@ -243,6 +243,26 @@ abort <- function(message = NULL,
   signal_abort(cnd, .file)
 }
 
+local_use_cli <- function(...,
+                          format = TRUE,
+                          inline = FALSE,
+                          frame = caller_env()) {
+  check_dots_empty0(...)
+
+  use_cli <- c(format = format, inline = inline)
+
+  if (is_namespace(frame)) {
+    on_load(
+      frame$.__rlang_use_cli__. <- use_cli,
+      ns = frame,
+    )
+  } else {
+    local_bindings(.__rlang_use_cli__. = use_cli, .frame = frame)
+  }
+
+  invisible(NULL)
+}
+
 use_cli_format <- function(env) {
   # Internal option to disable cli in case of recursive errors
   if (is_true(peek_option("rlang:::disable_cli"))) {
@@ -276,7 +296,7 @@ use_cli_format <- function(env) {
   }
 
   if (!is_bool(flag)) {
-    abort("`.rlang_use_cli` must be a logical value.")
+    abort("`.__rlang_use_cli__.` must be a logical value.")
   }
 
   if (flag && !has_cli_format) {
