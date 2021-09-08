@@ -134,7 +134,7 @@ test_that("! and > symbols create warning and alert bullets", {
 })
 
 test_that("cli is not used when message is escaped with `I()`", {
-  .rlang_use_cli_format <- TRUE
+  .__rlang_use_cli__. <- TRUE
   x <- "foo"
 
   expect_equal(
@@ -149,7 +149,7 @@ test_that("cli is not used when message is escaped with `I()`", {
 })
 
 test_that("cli syntax is escaped in 'try' mode", {
-  .rlang_use_cli_format <- "try"
+  .__rlang_use_cli__. <- "try"
   x <- "{foo {{}}"
   expect_equal(rlang_format_message(x), x)
 })
@@ -168,17 +168,17 @@ test_that(".rlang_cli_str_restore() deals with attributes", {
     "bar"
   )
 
-  .rlang_use_cli_format <- TRUE
+  .__rlang_use_cli__. <- TRUE
   expect_equal(
     attributes(rlang_format_message(msg)),
     list(attr = TRUE)
   )
-  .rlang_use_cli_format <- FALSE
+  .__rlang_use_cli__. <- FALSE
   expect_equal(
     attributes(rlang_format_message(msg)),
     list(attr = TRUE)
   )
-  .rlang_use_cli_format <- "try"
+  .__rlang_use_cli__. <- "try"
   expect_equal(
     attributes(rlang_format_message(msg)),
     list(attr = TRUE)

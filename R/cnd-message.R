@@ -263,7 +263,7 @@ use_cli_format <- function(env) {
 
   flag <- env_get(
     env,
-    ".rlang_use_cli_format",
+    ".__rlang_use_cli__.",
     default = default,
     inherit = TRUE,
     last = last
@@ -278,14 +278,14 @@ use_cli_format <- function(env) {
   }
 
   if (!is_bool(flag)) {
-    abort("`.rlang_use_cli_format` must be a logical value.")
+    abort("`.__rlang_use_cli__.` must be a logical value.")
   }
 
   if (flag && !has_cli_format) {
     with_options(
       "rlang:::disable_cli" = TRUE,
       abort(c(
-        "`.rlang_use_cli_format` is set to `TRUE` but cli is not installed.",
+        "`.__rlang_use_cli__.` is set to `TRUE` but cli is not installed.",
         "i" = "The package author should add `cli` to their `Imports`."
       ))
     )

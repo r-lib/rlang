@@ -11,4 +11,4 @@ on_load({
   )
 })
 
-.rlang_use_cli_format <- "try"
+.__rlang_use_cli__. <- "try"
