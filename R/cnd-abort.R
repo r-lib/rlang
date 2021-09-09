@@ -304,7 +304,7 @@ cnd_message_info <- function(message, env) {
 #' 1. Make sure `run_on_load()` is called from your `.onLoad()` hook.
 #'    TODO!: Export the onload-hook functions in aaa.R.
 #'
-#' 2. Call `local_use_cli()` at the top level of your namespace.
+#' 2. Call `on_load(local_use_cli())` at the top level of your namespace.
 #'
 #' It is also possible to call `local_use_cli()` inside a running
 #' function, in which case the flag only applies within that function.
@@ -319,10 +319,7 @@ local_use_cli <- function(...,
   use_cli <- c(format = format, inline = inline)
 
   if (is_namespace(frame)) {
-    on_load(
-      frame$.__rlang_use_cli__. <- use_cli,
-      ns = frame,
-    )
+    frame$.__rlang_use_cli__. <- use_cli
   } else {
     local_bindings(.__rlang_use_cli__. = use_cli, .frame = frame)
   }

@@ -44,7 +44,7 @@ To use cli formatting automatically in your package:
 \enumerate{
 \item Make sure \code{run_on_load()} is called from your \code{.onLoad()} hook.
 TODO!: Export the onload-hook functions in aaa.R.
-\item Call \code{local_use_cli()} at the top level of your namespace.
+\item Call \code{on_load(local_use_cli())} at the top level of your namespace.
 }
 
 It is also possible to call \code{local_use_cli()} inside a running
