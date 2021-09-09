@@ -13,6 +13,9 @@
 #' * Supply metadata with named `...` arguments. This data will be
 #'   stored in the condition object and can be examined by handlers.
 #'
+#' `abort()` throws subclassed errors, see
+#' [`"rlang_error"`][rlang_error].
+#'
 #' `interrupt()` allows R code to simulate a user interrupt of the
 #' kind that is signalled with `Ctrl-C`. It is currently not possible
 #' to create custom interrupt condition objects.

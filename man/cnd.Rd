@@ -35,7 +35,9 @@ power the error, warning, and message system in R.
 \item \code{cnd()} creates bare conditions that only inherit from
 \code{condition}.
 \item Conditions created with \code{error_cnd()}, \code{warning_cnd()}, and
-\code{message_cnd()} inherit from \code{error}, \code{warning}, or \code{message}.
+\code{message_cnd()} inherit from \code{"error"}, \code{"warning"}, or \code{"message"}.
+\item \code{error_cnd()} creates subclassed errors. See
+\code{\link[=rlang_error]{"rlang_error"}}.
 }
 
 Use \code{\link[=cnd_signal]{cnd_signal()}} to emit the relevant signal for a particular
