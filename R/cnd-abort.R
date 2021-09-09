@@ -340,7 +340,10 @@ use_cli <- function(env) {
   flag
 }
 
-# Makes sure `inline` can't be set without `format`
+# Makes sure `inline` can't be set without `format`. Formatting with
+# cli is optional. If cli is not installed or too old, the rlang
+# fallback formatting is used. On the other hand, formatting inline
+# parts with cli requires a recent version of cli to be installed.
 check_use_cli_flag <- function(flag) {
   local_error_call("caller")
 
@@ -349,18 +352,18 @@ check_use_cli_flag <- function(flag) {
   }
 
   if (flag[["inline"]]) {
-    if (!flag[["format"]]) {
-      abort("Can't use cli inline formatting without cli bullets formatting.")
-    }
-
-    if (!has_cli_format) {
+    if (!has_cli_format || !has_cli_inline) {
       with_options(
         "rlang:::disable_cli" = TRUE,
         abort(c(
-          "`.__rlang_use_cli__.[[\"inline\"]]` is set to `TRUE` but cli is not installed.",
-          "i" = "The package author should add `cli` to their `Imports`."
+          "`.__rlang_use_cli__.[[\"inline\"]]` is set to `TRUE` but cli is not installed or is too old.",
+          "i" = "The package author should add a recent version of `cli` to their `Imports`."
         ))
       )
+    }
+
+    if (!flag[["format"]]) {
+      abort("Can't use cli inline formatting without cli bullets formatting.")
     }
   }
 }
