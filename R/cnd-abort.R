@@ -261,6 +261,8 @@ cnd_message_info <- function(message, env) {
   # indent and width-wrap depending on the context
   if (use_cli[["format"]]) {
     fields$use_cli_format <- TRUE
+    fields$body <- message[-1]
+    message <- message[[1]]
   } else {
     message <- .rlang_cli_format_fallback(message)
   }

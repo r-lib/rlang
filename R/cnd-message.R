@@ -125,7 +125,7 @@ override_cnd_body <- function(cnd, ...) {
   } else if (is_bare_formula(body)) {
     body <- as_function(body)
     body(cnd, ...)
-  } else if (is_string(body)) {
+  } else if (is_character(body)) {
     body
   } else {
     abort("`body` must be a string or a function.")

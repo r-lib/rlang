@@ -64,9 +64,9 @@ test_that("can override body method with `body` fields", {
   )
 })
 
-test_that("`body` must be a string or a function", {
+test_that("`body` must be a character vector or a function", {
   expect_error(
-    stop(error_cnd("foo", body = letters)),
+    stop(error_cnd("foo", body = 1:3)),
     "must be a string or a function"
   )
 })
