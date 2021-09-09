@@ -81,7 +81,7 @@ cnd_formatter <- function(cnd) {
     if (indent) {
       local_cli_indent()
     }
-    cli_format(cli_escape(x), .envir = emptyenv())
+    cli_format(glue_escape(x), .envir = emptyenv())
   }
 }
 

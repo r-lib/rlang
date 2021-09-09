@@ -388,3 +388,7 @@ df_print <- function(x, ...) {
 is_testing <- function() {
   identical(Sys.getenv("TESTTHAT"), "true")
 }
+
+glue_escape <- function(x) {
+  gsub("\\}", "}}", gsub("\\{", "{{", x))
+}
