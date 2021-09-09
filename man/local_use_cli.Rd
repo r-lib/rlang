@@ -43,7 +43,7 @@ width-wrapping to produce a polished display of messages.
 To use cli formatting automatically in your package:
 \enumerate{
 \item Make sure \code{run_on_load()} is called from your \code{.onLoad()} hook.
-TODO: Export the onload-hook functions in aaa.R.
+TODO!: Export the onload-hook functions in aaa.R.
 \item Call \code{local_use_cli()} at the top level of your namespace.
 }
 

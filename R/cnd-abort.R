@@ -282,7 +282,7 @@ abort <- function(message = NULL,
 #' To use cli formatting automatically in your package:
 #'
 #' 1. Make sure `run_on_load()` is called from your `.onLoad()` hook.
-#'    TODO: Export the onload-hook functions in aaa.R.
+#'    TODO!: Export the onload-hook functions in aaa.R.
 #'
 #' 2. Call `local_use_cli()` at the top level of your namespace.
 #'

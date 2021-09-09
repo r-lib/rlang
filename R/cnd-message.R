@@ -68,7 +68,7 @@ cnd_formatter <- function(cnd) {
     })
   }
 
-  # Use `format_message()` instead of `format_error()` until
+  # FIXME! Use `format_message()` instead of `format_error()` until
   # https://github.com/r-lib/cli/issues/339 is fixed
   cli_format <- switch(
     cnd_type(cnd),
