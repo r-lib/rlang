@@ -30,7 +30,7 @@
        10. rlang:::g()
        11. rlang:::h()
 
-# error is printed with parent backtrace
+# error is printed with youngest backtrace
 
     Code
       print(err)
@@ -45,9 +45,6 @@
         9. rlang:::a()
        10. rlang:::b()
        11. rlang:::c()
-       16. rlang:::f()
-       17. rlang:::g()
-       18. rlang:::h()
 
 ---
 
@@ -72,13 +69,6 @@
         9. \-rlang:::a()
        10.   \-rlang:::b()
        11.     \-rlang:::c()
-       12.       +-base::tryCatch(...)
-       13.       | \-base:::tryCatchList(expr, classes, parentenv, handlers)
-       14.       |   \-base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-       15.       |     \-base:::doTryCatch(return(expr), name, parentenv, handler)
-       16.       \-rlang:::f()
-       17.         \-rlang:::g()
-       18.           \-rlang:::h()
 
 ---
 
@@ -104,13 +94,6 @@
         9. \-rlang:::a()
        10.   \-rlang:::b()
        11.     \-rlang:::c()
-       12.       +-base::tryCatch(...)
-       13.       | \-base:::tryCatchList(expr, classes, parentenv, handlers)
-       14.       |   \-base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-       15.       |     \-base:::doTryCatch(return(expr), name, parentenv, handler)
-       16.       \-rlang:::f()
-       17.         \-rlang:::g()
-       18.           \-rlang:::h()
     Code
       # Collapsed
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
@@ -126,10 +109,6 @@
         9. \-rlang:::a()
        10.   \-rlang:::b()
        11.     \-rlang:::c()
-       12.       +-[ base::tryCatch(...) ] with 3 more calls
-       16.       \-rlang:::f()
-       17.         \-rlang:::g()
-       18.           \-rlang:::h()
     Code
       # Branch
       print(trace, simplify = "branch", dir = dir, srcrefs = srcrefs)
@@ -144,9 +123,6 @@
         9. rlang:::a()
        10. rlang:::b()
        11. rlang:::c()
-       16. rlang:::f()
-       17. rlang:::g()
-       18. rlang:::h()
 
 # 3-level ancestry works (#1248)
 
@@ -186,15 +162,12 @@
        11.   | \-base:::tryCatchList(expr, classes, parentenv, handlers)
        12.   \-rlang:::b()
        13.     \-rlang:::c()
-       14.       +-base::tryCatch(f(), error = handler)
-       15.       | \-base:::tryCatchList(expr, classes, parentenv, handlers)
-       16.       |   \-base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-       17.       |     \-base:::doTryCatch(return(expr), name, parentenv, handler)
-       18.       \-rlang:::f()
-       19.         +-base::tryCatch(g())
-       20.         | \-base:::tryCatchList(expr, classes, parentenv, handlers)
-       21.         \-rlang:::g()
-       22.           \-rlang:::h()
+       14.       +-base::withCallingHandlers(f(), error = handler)
+       15.       \-rlang:::f()
+       16.         +-base::tryCatch(g())
+       17.         | \-base:::tryCatchList(expr, classes, parentenv, handlers)
+       18.         \-rlang:::g()
+       19.           \-rlang:::h()
 
 # don't print message or backtrace fields if empty
 

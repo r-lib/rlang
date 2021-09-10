@@ -772,6 +772,15 @@ trace_capture_depth <- function(trace) {
   if (is_call(wch_calls[[1]], "signal_abort") &&
       is_call(wch_calls[[2]], "signalCondition") &&
       is_call(wch_calls[[3]]) && is_function(wch_calls[[3]][[1]])) {
+    # Check for with_abort()
+    with_abort_loc <- length(calls) - 4L - 2L
+    if (with_abort_loc > 0L) {
+      with_abort_call <- calls[[with_abort_loc]]
+      if (is_call(with_abort_call, ".handleSimpleError") &&
+            identical(with_abort_call[[2]], entrace)) {
+        return(with_abort_loc - 1L)
+      }
+    }
     return(length(calls) - 4L)
   }
 

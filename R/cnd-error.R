@@ -69,10 +69,6 @@ format.rlang_error <- function(x,
     x <- parent
     parent <- parent$parent
 
-    if (!is_null(x$trace)) {
-      trace <- x$trace
-    }
-
     message <- cnd_prefix_error_message(
       x,
       message = cnd_header(x),

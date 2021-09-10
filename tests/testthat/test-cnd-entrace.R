@@ -6,7 +6,7 @@ test_that("with_abort() promotes base errors to rlang errors", {
   a <- function() b()
   b <- function() c()
   c <- function() {
-    tryCatch(
+    withCallingHandlers(
       with_abort(f()),
       error = function(err) {
         abort("High-level message", parent = err)

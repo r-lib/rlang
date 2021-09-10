@@ -41,7 +41,7 @@ test_that("rlang_error.print() calls conditionMessage() method", {
   expect_snapshot(print(err))
 })
 
-test_that("error is printed with parent backtrace", {
+test_that("error is printed with youngest backtrace", {
   # Test low-level error can use conditionMessage()
   local_bindings(.env = global_env(),
     cnd_header.foobar = function(c) c$foobar_msg
@@ -125,7 +125,7 @@ test_that("summary.rlang_error() prints full backtrace", {
 
   a <- function() tryCatch(b())
   b <- function() c()
-  c <- function() tryCatch(f(), error = handler)
+  c <- function() withCallingHandlers(f(), error = handler)
 
   err <- catch_error(a())
   expect_snapshot(summary(err))
