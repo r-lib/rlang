@@ -50,6 +50,7 @@ format.rlang_error <- function(x,
                                fields = FALSE) {
   # Allow overwriting default display via condition field
   simplify <- x$rlang$internal$print_simplify %||% simplify
+  simplify <- arg_match(simplify)
 
   orig <- x
   parent <- x$parent
@@ -69,6 +70,13 @@ format.rlang_error <- function(x,
     x <- parent
     parent <- parent$parent
 
+    chained_trace <- x$trace
+    if (can_paste_trace(backtrace, chained_trace) &&
+        !identical(trace, chained_trace)) {
+      out <- paste_trace(out, trace, simplify, ...)
+      trace <- chained_trace
+    }
+
     message <- cnd_prefix_error_message(
       x,
       message = cnd_header(x),
@@ -79,12 +87,8 @@ format.rlang_error <- function(x,
     out <- paste_line(out, message)
   }
 
-  simplify <- arg_match(simplify)
-
-  if (backtrace && !is_null(trace) && trace_length(trace)) {
-    out <- paste_line(out, bold("Backtrace:"))
-    trace_lines <- format(trace, ..., simplify = simplify)
-    out <- paste_line(out, trace_lines)
+  if (can_paste_trace(backtrace, trace)) {
+    out <- paste_trace(out, trace, simplify, ...)
   }
 
   if (simplify != "branch" && !is_null(x$parent)) {
@@ -100,6 +104,14 @@ format.rlang_error <- function(x,
   }
 
   out
+}
+
+can_paste_trace <- function(backtrace, trace) {
+  backtrace && is_trace(trace) && trace_length(trace)
+}
+paste_trace <- function(x, trace, simplify, ...) {
+  trace_lines <- format(trace, ..., simplify = simplify)
+  paste_line(x, bold("Backtrace:"), trace_lines)
 }
 
 header_add_tree_node <- function(header, style, parent) {
