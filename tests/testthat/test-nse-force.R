@@ -748,3 +748,10 @@ test_that("Unquoted LHS is not recursed into and mutated (#1103)", {
   expect_equal(out, x_cpy)
   expect_equal(x, x_cpy)
 })
+
+test_that("{{ foo; bar }} is not injected (#1087)", {
+  expect_equal_(
+    expr({{ 1 }; NULL}),
+    quote({{ 1 }; NULL})
+  )
+})

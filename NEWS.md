@@ -34,6 +34,10 @@
 
 ## Features and bugfixes
 
+* The `{{` operator is now detected more strictly (#1087). If
+  additional arguments are supplied through `{`, it is no longer
+  interpreted as an injection operator.
+
 * The `body` field of error conditions can now be a character vector.
 
 * External backtraces in error chains are now separately displayed (#1098).

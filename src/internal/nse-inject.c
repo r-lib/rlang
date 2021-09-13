@@ -43,7 +43,7 @@ struct injection_info which_uq_op(r_obj* first) {
   if (strcmp(nm, "!") == 0) {
     return which_bang_op(r_node_cadr(first), info);
   } else if (strcmp(nm, "{") == 0) {
-    return which_curly_op(r_node_cadr(first), info);
+    return which_curly_op(first, info);
   } else {
     return info;
   }
@@ -73,8 +73,11 @@ struct injection_info which_bang_op(r_obj* second, struct injection_info info) {
   info.operand = r_node_cadr(third);
   return info;
 }
-struct injection_info which_curly_op(r_obj* second, struct injection_info info) {
-  if (!r_is_call(second, "{")) {
+struct injection_info which_curly_op(r_obj* first, struct injection_info info) {
+  r_obj* first_cdr = r_node_cdr(first);
+  r_obj* second = r_node_car(first_cdr);
+
+  if (!r_is_call(second, "{") || r_node_cdr(first_cdr) != r_null) {
     return info;
   }
 
