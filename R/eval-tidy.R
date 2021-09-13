@@ -507,6 +507,10 @@ names.rlang_data_pronoun <- function(x) {
   chr()
 }
 #' @export
+dimnames.rlang_data_pronoun <- function(x) {
+  list(chr(), chr())
+}
+#' @export
 length.rlang_data_pronoun <- function(x) {
   0L
 }

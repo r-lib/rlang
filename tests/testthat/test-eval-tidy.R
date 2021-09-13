@@ -502,6 +502,13 @@ test_that("quosures that inherit from the mask are not rechained", {
   expect_equal(eval_tidy(q2, mask, base_env()), "a foo bar")
 })
 
+test_that("eval_tidy() has dimnames method (#1265)", {
+  expect_equal(
+    eval_tidy(quote(dimnames(.data)), mtcars),
+    list(chr(), chr())
+  )
+})
+
 
 # Lifecycle ----------------------------------------------------------
 
