@@ -387,3 +387,8 @@
        13.         \-rlang:::g()
        14.           \-rlang:::h()
 
+# `abort()` uses older bullets formatting by default
+
+    foo
+    * bar
+

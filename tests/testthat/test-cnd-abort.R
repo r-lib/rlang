@@ -455,3 +455,8 @@ test_that("headers and body are stored in respective fields", {
   expect_equal(cnd$message, "a")
   expect_equal(cnd$body, c("b", i = "c"))
 })
+
+test_that("`abort()` uses older bullets formatting by default", {
+  local_use_cli(format = FALSE)
+  expect_snapshot_error(abort(c("foo", "bar")))
+})

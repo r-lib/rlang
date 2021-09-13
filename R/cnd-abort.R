@@ -264,6 +264,10 @@ cnd_message_info <- function(message, env) {
     fields$body <- message[-1]
     message <- message[[1]]
   } else {
+    # Compatibility with older bullets formatting
+    if (is_null(names(message)) && length(message) > 1) {
+      names(message) <- c("", rep_len("*", length(message) - 1))
+    }
     message <- .rlang_cli_format_fallback(message)
   }
 
