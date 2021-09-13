@@ -13,9 +13,9 @@
        10. rlang:::a()
        11. rlang:::b()
        12. rlang:::c()
-       19. rlang:::f()
-       20. rlang:::g()
-       21. rlang:::h()
+       16. rlang:::f()
+       17. rlang:::g()
+       18. rlang:::h()
     Code
       summary(err)
     Output
@@ -38,15 +38,12 @@
        10. \-rlang:::a()
        11.   \-rlang:::b()
        12.     \-rlang:::c()
-       13.       +-base::tryCatch(...)
-       14.       | \-base:::tryCatchList(expr, classes, parentenv, handlers)
-       15.       |   \-base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-       16.       |     \-base:::doTryCatch(return(expr), name, parentenv, handler)
-       17.       +-rlang::with_abort(f())
-       18.       | \-base::withCallingHandlers(...)
-       19.       \-rlang:::f()
-       20.         \-rlang:::g()
-       21.           \-rlang:::h()
+       13.       +-base::withCallingHandlers(...)
+       14.       +-rlang::with_abort(f())
+       15.       | \-base::withCallingHandlers(...)
+       16.       \-rlang:::f()
+       17.         \-rlang:::g()
+       18.           \-rlang:::h()
 
 # rlang and base errors are properly entraced
 

@@ -767,29 +767,71 @@ trace_capture_depth <- function(trace) {
     return(default)
   }
 
-  # withCallingHandlers()
-  wch_calls <- calls[seq2(length(calls) - 3L, length(calls) - 1L)]
-  if (is_call(wch_calls[[1]], "signal_abort") &&
-      is_call(wch_calls[[2]], "signalCondition") &&
-      is_call(wch_calls[[3]]) && is_function(wch_calls[[3]][[1]])) {
-    return(length(calls) - 4L)
+  depth <- trace_depth_wch(trace)
+  if (!is_null(depth)) {
+    return(depth)
   }
 
+  depth <- trace_depth_trycatch(trace)
+  if (!is_null(depth)) {
+    return(depth)
+  }
+
+  default
+}
+
+trace_depth_wch <- function(trace) {
+  calls <- trace$call
+  parents <- trace$parent
+
+  # GNU R currently structures evaluation of calling handlers as
+  # called from the global env. We find the first call with 0 as
+  # parent to skip all potential wrappers of the rethrowing handler.
+  top <- which(parents == 0)
+  top <- top[length(top)]
+  if (!length(top)) {
+    return(NULL)
+  }
+  if (top <= 2) {
+    return(NULL)
+  }
+
+  # withCallingHandlers()
+  wch_calls <- calls[seq2(top - 2L, top - 0L)]
+  if (!is_call(wch_calls[[1]], "signal_abort") ||
+      !is_call(wch_calls[[2]], "signalCondition") ||
+      !is_call(wch_calls[[3]]) && is_function(wch_calls[[3]][[1]])) {
+    return(NULL)
+  }
+
+  # Check for with_abort()
+  with_abort_loc <- top - 3L - 2L
+  if (with_abort_loc > 0L) {
+    with_abort_call <- calls[[with_abort_loc]]
+    if (is_call(with_abort_call, ".handleSimpleError") &&
+        identical(with_abort_call[[2]], entrace)) {
+      return(with_abort_loc - 1L)
+    }
+  }
+
+  top - 3L
+}
+
+trace_depth_trycatch <- function(trace) {
+  calls <- trace$call
+  
   exiting_call <- quote(value[[3L]](cond))
   exiting_n <- detect_index(calls, identical, exiting_call, .right = TRUE)
 
-  # tryCatch()
   if (exiting_n != 0L) {
     try_catch_calls <- calls[seq_len(exiting_n - 1L)]
     try_catch_n <- detect_index(try_catch_calls, is_call, "tryCatch", .right = TRUE)
     if (try_catch_n != 0L) {
       return(try_catch_n)
-    } else {
-      return(default)
     }
   }
 
-  default
+  NULL
 }
 
 #' Display backtrace on error

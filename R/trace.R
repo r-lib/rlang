@@ -296,6 +296,32 @@ trace_slice <- function(trace, i) {
   out
 }
 
+trace_bind <- function(...) {
+  traces <- compact(list2(...))
+  n <- length(traces)
+
+  if (!every(traces, inherits, "rlang_trace")) {
+    abort("`...` must contain backtraces.")
+  }
+
+  if (n == 0L) {
+    return(new_trace(list(), int()))
+  }
+  if (n == 1L) {
+    return(traces[[1]])
+  }
+
+  out <- reduce(traces, function(x, y) {
+    if (identical(x$call, y$call)) {
+      return(x)
+    }
+    y$parent <- y$parent + nrow(x)
+    vec_rbind(as.data.frame(x), as.data.frame(y))
+  })
+
+  new_data_frame(out, .class = c("rlang_trace", "rlib_trace", "tbl"))
+}
+
 
 # Methods -----------------------------------------------------------------
 

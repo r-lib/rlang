@@ -344,3 +344,46 @@
       Error: `f` must be one of "foo", not "f".
       i Did you mean "foo"?
 
+# withCallingHandlers() wrappers don't throw off trace capture on rethrow
+
+    Code
+      print(err)
+    Output
+      <error/rlang_error>
+      Error: 
+        High-level message
+      Caused by error in `h()`: 
+        Low-level message
+      Backtrace:
+        1. testthat::expect_error(foo())
+        7. rlang:::foo()
+        8. rlang:::bar()
+        9. rlang:::baz()
+       12. rlang:::f()
+       13. rlang:::g()
+       14. rlang:::h()
+    Code
+      summary(err)
+    Output
+      <error/rlang_error>
+      Error: 
+        High-level message
+      Caused by error in `h()`: 
+        Low-level message
+      Backtrace:
+           x
+        1. +-testthat::expect_error(foo())
+        2. | \-testthat:::expect_condition_matching(...)
+        3. |   \-testthat:::quasi_capture(...)
+        4. |     +-testthat:::.capture(...)
+        5. |     | \-base::withCallingHandlers(...)
+        6. |     \-rlang::eval_bare(quo_get_expr(.quo), quo_get_env(.quo))
+        7. \-rlang:::foo()
+        8.   \-rlang:::bar()
+        9.     \-rlang:::baz()
+       10.       +-rlang:::wch(...)
+       11.       | \-base::withCallingHandlers(expr, ...)
+       12.       \-rlang:::f()
+       13.         \-rlang:::g()
+       14.           \-rlang:::h()
+

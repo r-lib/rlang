@@ -41,7 +41,8 @@ test_that("rlang_error.print() calls conditionMessage() method", {
   expect_snapshot(print(err))
 })
 
-test_that("error is printed with parent backtrace", {
+# tryCatch() instead of wCH() causes distinct overlapping traces
+test_that("Overlapping backtraces are printed separately", {
   # Test low-level error can use conditionMessage()
   local_bindings(.env = global_env(),
     cnd_header.foobar = function(c) c$foobar_msg
@@ -125,7 +126,7 @@ test_that("summary.rlang_error() prints full backtrace", {
 
   a <- function() tryCatch(b())
   b <- function() c()
-  c <- function() tryCatch(f(), error = handler)
+  c <- function() withCallingHandlers(f(), error = handler)
 
   err <- catch_error(a())
   expect_snapshot(summary(err))
@@ -174,4 +175,58 @@ test_that("calls are consistently displayed on rethrow (#1240)", {
     (expect_error(with_context(base_problem(), "step_dummy")))
     (expect_error(with_context(rlang_problem(), "step_dummy")))
   })
+})
+
+test_that("external backtraces are displayed (#1098)", {
+  local_options(
+    rlang_trace_top_env = current_env(),
+    rlang_trace_format_srcrefs = FALSE
+  )
+
+  ext_trace <- new_trace(alist(quux(), foofy()), base::c(0L, 1L))
+
+  f <- function() g()
+  g <- function() h()
+  h <- function() abort("Low-level message", trace = ext_trace)
+
+  foo <- function() bar()
+  bar <- function() baz()
+  baz <- function() {
+    withCallingHandlers(
+      f(),
+      error = function(err) {
+        abort("High-level message", parent = err)
+      }
+    )
+  }
+
+  err <- catch_cnd(foo(), "error")
+
+  expect_snapshot({
+    print(err)
+    summary(err)
+  })
+})
+
+test_that("rethrowing from an exiting handler", {
+  local_options(
+    rlang_trace_top_env = current_env(),
+    rlang_trace_format_srcrefs = FALSE
+  )
+
+  f <- function() g()
+  g <- function() h()
+  h <- function() abort("foo")
+
+  foo <- function() bar()
+  bar <- function() baz()
+  baz <- function() {
+    tryCatch(
+      f(),
+      error = function(err) abort("bar", parent = err)
+    )
+  }
+
+  err <- catch_cnd(foo(), "error")
+  expect_snapshot_trace(err)
 })
