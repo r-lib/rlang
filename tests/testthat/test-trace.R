@@ -639,3 +639,23 @@ test_that("can slice backtrace", {
 test_that("backtraces carry `version` attribute", {
   expect_identical(attr(trace_back(), "version"), 2L)
 })
+
+test_that("can bind backtraces", {
+  trace1 <- new_trace(alist(a(), b(), c()), 0:2)
+
+  expect_equal(trace_bind(), new_trace(list(), int()))
+  expect_equal(trace_bind(trace1), trace1)
+  
+  trace2 <- new_trace(alist(foo(), bar(), baz()), c(0L, 1L, 1L))
+  out <- trace_bind(trace1, trace2)
+
+  expect_equal(
+    out$call,
+    alist(a(), b(), c(), foo(), bar(), baz())
+  )
+
+  expect_equal(
+    out$parent,
+    c(0:3, c(4L, 4L))
+  )
+})
