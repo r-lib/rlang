@@ -115,6 +115,9 @@ finer-grained error handling.
 stored in the condition object and can be examined by handlers.
 }
 
+\code{abort()} throws subclassed errors, see
+\code{\link[=rlang_error]{"rlang_error"}}.
+
 \code{interrupt()} allows R code to simulate a user interrupt of the
 kind that is signalled with \code{Ctrl-C}. It is currently not possible
 to create custom interrupt condition objects.

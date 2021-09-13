@@ -8,7 +8,10 @@
 #'   `condition`.
 #'
 #' * Conditions created with `error_cnd()`, `warning_cnd()`, and
-#'   `message_cnd()` inherit from `error`, `warning`, or `message`.
+#'   `message_cnd()` inherit from `"error"`, `"warning"`, or `"message"`.
+#'
+#' * `error_cnd()` creates subclassed errors. See
+#'   [`"rlang_error"`][rlang_error].
 #'
 #' Use [cnd_signal()] to emit the relevant signal for a particular
 #' condition class.

@@ -64,9 +64,9 @@ test_that("can override body method with `body` fields", {
   )
 })
 
-test_that("`body` must be a string or a function", {
+test_that("`body` must be a character vector or a function", {
   expect_error(
-    stop(error_cnd("foo", body = letters)),
+    stop(error_cnd("foo", body = 1:3)),
     "must be a string or a function"
   )
 })
@@ -134,13 +134,16 @@ test_that("! and > symbols create warning and alert bullets", {
 })
 
 test_that("cli is not used when message is escaped with `I()`", {
-  .rlang_use_cli_format <- TRUE
+  local_use_cli(inline = TRUE)
+
   x <- "foo"
 
   expect_equal(
     conditionMessage(expect_error(abort("{x}"))),
     "foo"
   )
+
+  return("no longer the case")
 
   expect_equal(
     conditionMessage(expect_error(abort(I("{x}")))),
@@ -149,7 +152,8 @@ test_that("cli is not used when message is escaped with `I()`", {
 })
 
 test_that("cli syntax is escaped in 'try' mode", {
-  .rlang_use_cli_format <- "try"
+  local_use_cli()
+
   x <- "{foo {{}}"
   expect_equal(rlang_format_message(x), x)
 })
@@ -168,17 +172,19 @@ test_that(".rlang_cli_str_restore() deals with attributes", {
     "bar"
   )
 
-  .rlang_use_cli_format <- TRUE
+  local_use_cli(inline = TRUE, format = TRUE)
   expect_equal(
     attributes(rlang_format_message(msg)),
     list(attr = TRUE)
   )
-  .rlang_use_cli_format <- FALSE
+
+  local_use_cli(inline = FALSE, format = FALSE)
   expect_equal(
     attributes(rlang_format_message(msg)),
     list(attr = TRUE)
   )
-  .rlang_use_cli_format <- "try"
+
+  local_use_cli(inline = FALSE, format = TRUE)
   expect_equal(
     attributes(rlang_format_message(msg)),
     list(attr = TRUE)
@@ -214,16 +220,16 @@ cli::test_that_cli(configs = c("plain", "fancy"), "can use cli syntax in `cnd_me
 })
 
 test_that("prefix takes call into account", {
-  err <- error_cnd(message = "Message.", call = quote(foo(bar = TRUE)))
-  expect_equal(cnd_prefix_error_message(err, "msg"), "Error in `foo()`: msg")
+  err <- error_cnd(message = "msg", call = quote(foo(bar = TRUE)))
+  expect_equal(cnd_prefix_error_message(err), "Error in `foo()`: msg")
 
   # Inlined objects disable context deparsing
-  err1 <- error_cnd(call = expr(foo(bar = !!(1:3))))
-  err2 <- error_cnd(call = quote(foo$bar()))
-  err3 <- error_cnd(call = call2(identity))
-  expect_equal(cnd_prefix_error_message(err1, "msg"), "Error in `foo()`: msg")
-  expect_equal(cnd_prefix_error_message(err2, "msg"), "Error: msg")
-  expect_equal(cnd_prefix_error_message(err3, "msg"), "Error: msg")
+  err1 <- error_cnd(message = "msg", call = expr(foo(bar = !!(1:3))))
+  err2 <- error_cnd(message = "msg", call = quote(foo$bar()))
+  err3 <- error_cnd(message = "msg", call = call2(identity))
+  expect_equal(cnd_prefix_error_message(err1), "Error in `foo()`: msg")
+  expect_equal(cnd_prefix_error_message(err2), "Error: msg")
+  expect_equal(cnd_prefix_error_message(err3), "Error: msg")
 })
 
 test_that("long prefixes cause a line break", {

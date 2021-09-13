@@ -13,6 +13,9 @@
 #' * Supply metadata with named `...` arguments. This data will be
 #'   stored in the condition object and can be examined by handlers.
 #'
+#' `abort()` throws subclassed errors, see
+#' [`"rlang_error"`][rlang_error].
+#'
 #' `interrupt()` allows R code to simulate a user interrupt of the
 #' kind that is signalled with `Ctrl-C`. It is currently not possible
 #' to create custom interrupt condition objects.
@@ -218,7 +221,9 @@ abort <- function(message = NULL,
   }
 
   message <- validate_signal_message(message, class)
-  message <- rlang_format_error(message, caller_env())
+  message_info <- cnd_message_info(message, caller_env())
+  message <- message_info$message
+  extra_fields <- message_info$extra_fields
 
   # Don't record call by default when supplied a parent because it
   # probably means that we are called from a condition handler
@@ -236,11 +241,150 @@ abort <- function(message = NULL,
     class,
     ...,
     message = message,
+    !!!extra_fields,
     call = call,
     parent = parent,
     trace = trace
   )
   signal_abort(cnd, .file)
+}
+
+cnd_message_info <- function(message, env) {
+  use_cli <- use_cli(env)
+  fields <- list()
+
+  if (use_cli[["inline"]]) {
+    message[] <- map_chr(message, cli::format_inline, .envir = env)
+  }
+
+  # Formatting with cli is delayed until print time so we can properly
+  # indent and width-wrap depending on the context
+  if (use_cli[["format"]]) {
+    fields$use_cli_format <- TRUE
+    fields$body <- message[-1]
+    message <- message[[1]]
+  } else {
+    message <- .rlang_cli_format_fallback(message)
+  }
+
+  list(message = message, extra_fields = fields)
+}
+
+
+#' Use cli to format error messages
+#'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
+#' `local_use_cli()` marks a package namespace or the environment of a
+#' running function with a special flag that instructs [abort()] to
+#' use cli to format error messages. This formatting happens lazily,
+#' at print-time, in various places:
+#'
+#' - When an unexpected error is displayed to the user.
+#' - When a captured error is printed in the console, for instance via
+#'   [last_error()].
+#' - When [conditionMessage()] is called.
+#'
+#' cli formats messages and bullets with indentation and
+#' width-wrapping to produce a polished display of messages.
+#'
+#' @inheritParams args_dots_empty
+#' @param format Whether to use cli at print-time to format messages
+#'   and bullets.
+#' @param inline `r lifecycle::badge("experimental")` Whether to use
+#'   cli at throw-time to format the inline parts of a message. This
+#'   makes it possible to use cli interpolation and formatting with
+#'   `abort()`.
+#' @param frame A package namespace or an environment of a running
+#'   function.
+#'
+#' @section Usage:
+#'
+#' To use cli formatting automatically in your package:
+#'
+#' 1. Make sure `run_on_load()` is called from your `.onLoad()` hook.
+#'    TODO!: Export the onload-hook functions in aaa.R.
+#'
+#' 2. Call `on_load(local_use_cli())` at the top level of your namespace.
+#'
+#' It is also possible to call `local_use_cli()` inside a running
+#' function, in which case the flag only applies within that function.
+#' 
+#' @export
+local_use_cli <- function(...,
+                          format = TRUE,
+                          inline = FALSE,
+                          frame = caller_env()) {
+  check_dots_empty0(...)
+
+  use_cli <- c(format = format, inline = inline)
+
+  if (is_namespace(frame)) {
+    frame$.__rlang_use_cli__. <- use_cli
+  } else {
+    local_bindings(.__rlang_use_cli__. = use_cli, .frame = frame)
+  }
+
+  invisible(NULL)
+}
+
+use_cli <- function(env) {
+  # Internal option to disable cli in case of recursive errors
+  if (is_true(peek_option("rlang:::disable_cli"))) {
+    return(FALSE)
+  }
+
+  # Formatting with cli is opt-in
+  default <- c(format = FALSE, inline = FALSE)
+
+  last <- topenv(env)
+
+  # Search across load-all'd environments
+  if (identical(last, global_env()) && "devtools_shims" %in% search()) {
+    last <- empty_env()
+  }
+
+  flag <- env_get(
+    env,
+    ".__rlang_use_cli__.",
+    default = default,
+    inherit = TRUE,
+    last = last
+  )
+
+  local_error_call("caller")
+  check_use_cli_flag(flag)
+
+  flag
+}
+
+# Makes sure `inline` can't be set without `format`. Formatting with
+# cli is optional. If cli is not installed or too old, the rlang
+# fallback formatting is used. On the other hand, formatting inline
+# parts with cli requires a recent version of cli to be installed.
+check_use_cli_flag <- function(flag) {
+  local_error_call("caller")
+
+  if (!is_logical(flag) || !identical(names(flag), c("format", "inline")) || anyNA(flag)) {
+    abort("`.__rlang_use_cli__.` has unknown format.")
+  }
+
+  if (flag[["inline"]]) {
+    if (!has_cli_format || !has_cli_inline) {
+      with_options(
+        "rlang:::disable_cli" = TRUE,
+        abort(c(
+          "`.__rlang_use_cli__.[[\"inline\"]]` is set to `TRUE` but cli is not installed or is too old.",
+          "i" = "The package author should add a recent version of `cli` to their `Imports`."
+        ))
+      )
+    }
+
+    if (!flag[["format"]]) {
+      abort("Can't use cli inline formatting without cli bullets formatting.")
+    }
+  }
 }
 
 # Private option to disable default error call except for exported

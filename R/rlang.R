@@ -9,6 +9,6 @@ on_load({
     "vctrs (>= 0.3.8)",
     info = "Not updating now is completely safe and will only cause import warnings."
   )
-})
 
-.rlang_use_cli_format <- "try"
+  local_use_cli()
+})

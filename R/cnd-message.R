@@ -45,10 +45,51 @@
 #'
 #' @export
 cnd_message <- function(cnd) {
-  paste_line(
+  cnd_format <- cnd_formatter(cnd)
+  cnd_format(cnd_message_lines(cnd))
+}
+cnd_message_lines <- function(cnd) {
+  c(
     cnd_header(cnd),
     cnd_body(cnd),
     cnd_footer(cnd)
+  )
+}
+
+cnd_formatter <- function(cnd) {
+  if (!is_true(cnd$use_cli_format)) {
+    return(function(x, indent = FALSE) {
+      x <- paste_line(x)
+      if (indent) {
+        x <- paste0("  ", x)
+        x <- gsub("\n", "\n  ", x, fixed = TRUE)
+      }
+      x
+    })
+  }
+
+  # FIXME! Use `format_message()` instead of `format_error()` until
+  # https://github.com/r-lib/cli/issues/339 is fixed
+  cli_format <- switch(
+    cnd_type(cnd),
+    error = cli::format_message,
+    warning = cli::format_warning,
+    cli::format_message
+  )
+
+  function(x, indent = FALSE) {
+    if (indent) {
+      local_cli_indent()
+    }
+    cli_format(glue_escape(x), .envir = emptyenv())
+  }
+}
+
+local_cli_indent <- function(frame = caller_env()) {
+  cli::cli_div(
+    class = "indented",
+    theme = list(div.indented = list("margin-left" = 2)),
+    .envir = frame
   )
 }
 
@@ -84,7 +125,7 @@ override_cnd_body <- function(cnd, ...) {
   } else if (is_bare_formula(body)) {
     body <- as_function(body)
     body(cnd, ...)
-  } else if (is_string(body)) {
+  } else if (is_character(body)) {
     body
   } else {
     abort("`body` must be a string or a function.")
@@ -102,31 +143,42 @@ cnd_footer.default <- function(cnd, ...) {
 }
 
 cnd_build_error_message <- function(cnd) {
-  msg <- cnd_prefix_error_message(
-    cnd,
-    conditionMessage(cnd),
-    prefix = "Error",
-    indent = is_error(cnd$parent)
-  )
+  msg <- cnd_prefix_error_message(cnd, parent = FALSE)
 
-  parent <- cnd
-  while (is_error(parent <- parent$parent)) {
-    parent_msg <- cnd_prefix_error_message(
-      parent,
-      message = cnd_header(parent),
-      prefix = "Caused by error",
-      indent = TRUE
-    )
+  while (is_error(cnd <- cnd$parent)) {
+    parent_msg <- cnd_prefix_error_message(cnd, parent = TRUE)
     msg <- paste_line(msg, parent_msg)
   }
 
   msg
 }
 
-cnd_prefix_error_message <- function(cnd,
-                                     message = conditionMessage(cnd),
-                                     prefix = "Error",
-                                     indent = FALSE) {
+cnd_prefix_error_message <- function(cnd, parent = FALSE) {
+  if (parent) {
+    prefix <- "Caused by error"
+    indent <- TRUE
+  } else {
+    prefix <- "Error"
+    indent <- is_error(cnd$parent)
+  }
+
+  if (is_true(cnd$use_cli_format)) {
+    if (parent) {
+      message <- cnd_header(cnd)
+    } else {
+      message <- cnd_message_lines(cnd)
+    }
+
+    cnd_format <- cnd_formatter(cnd)
+    message <- cnd_format(message, indent = indent)
+  } else {
+    message <- conditionMessage(cnd)
+    if (indent) {
+      message <- paste0("  ", message)
+      message <- gsub("\n", "\n  ", message, fixed = TRUE)
+    }
+  }
+
   message <- strip_trailing_newline(message)
 
   if (!nzchar(message)) {
@@ -155,10 +207,6 @@ cnd_prefix_error_message <- function(cnd,
     nchar(strip_style(prefix)) > (peek_option("width") / 2)
 
   if (break_line) {
-    if (indent) {
-      message <- paste0("  ", message)
-      message <- gsub("\n", "\n  ", message, fixed = TRUE)
-    }
     paste0(prefix, "\n", message)
   } else {
     paste0(prefix, message)
@@ -222,9 +270,8 @@ format_error_bullets <- function(x) {
   .rlang_cli_format_fallback(x)
 }
 
-rlang_format_error <- function(x, env = caller_env()) {
-  rlang_format(x, env, format_error, cli::format_error)
-}
+# FIXME: These won't be needed after warnings and messages have been
+# switched to print-time formatting
 rlang_format_warning <- function(x, env = caller_env()) {
   rlang_format(x, env, format_warning, cli::format_warning)
 }
@@ -235,69 +282,31 @@ rlang_format <- function(x, env, partial_format, cli_format) {
   if (!can_format(x)) {
     return(x)
   }
-  switch(
-    use_cli_format(env),
-    partial = partial_format(cli_escape(x)),
-    full = .rlang_cli_str_restore(cli_format(x, env), x),
-    .rlang_cli_format_fallback(x)
-  )
+
+  use_cli <- use_cli(env)
+  inline <- use_cli[["inline"]]
+  format <- use_cli[["format"]]
+
+  # Full
+  if (inline && format) {
+    return(.rlang_cli_str_restore(cli_format(x, env), x))
+  }
+
+  # Partial
+  if (format) {
+    if (has_cli_format) {
+      return(partial_format(cli_escape(x)))
+    } else {
+      return(.rlang_cli_format_fallback(x))
+    }
+  }
+
+  # None
+  x
 }
 
 # No-op for the empty string, e.g. for `abort("", class = "foo")` and
 # a `conditionMessage.foo()` method. Don't format inputs escaped with `I()`.
 can_format <- function(x) {
   !is_string(x, "") && !inherits(x, "AsIs")
-}
-
-use_cli_format <- function(env) {
-  # Internal option to disable cli in case of recursive errors
-  if (is_true(peek_option("rlang:::disable_cli"))) {
-    return(FALSE)
-  }
-
-  # Formatting with cli is opt-in for now
-  default <- FALSE
-
-  last <- topenv(env)
-
-  # Search across load-all'd environments
-  if (identical(last, global_env()) && "devtools_shims" %in% search()) {
-    last <- empty_env()
-  }
-
-  flag <- env_get(
-    env,
-    ".rlang_use_cli_format",
-    default = default,
-    inherit = TRUE,
-    last = last
-  )
-
-  if (is_string(flag, "try")) {
-    if (has_cli_format && .rlang_cli_has_ansi()) {
-      return("partial")
-    } else {
-      return("fallback")
-    }
-  }
-
-  if (!is_bool(flag)) {
-    abort("`.rlang_use_cli_format` must be a logical value.")
-  }
-
-  if (flag && !has_cli_format) {
-    with_options(
-      "rlang:::disable_cli" = TRUE,
-      abort(c(
-        "`.rlang_use_cli_format` is set to `TRUE` but cli is not installed.",
-        "i" = "The package author should add `cli` to their `Imports`."
-      ))
-    )
-  }
-
-  if (flag) {
-    "full"
-  } else {
-    "fallback"
-  }
 }

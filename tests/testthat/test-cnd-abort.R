@@ -447,3 +447,11 @@ test_that("withCallingHandlers() wrappers don't throw off trace capture on rethr
     summary(err)
   })
 })
+
+test_that("headers and body are stored in respective fields", {
+  local_use_cli()  # Just to be explicit
+
+  cnd <- catch_cnd(abort(c("a", "b", i = "c")), "error")
+  expect_equal(cnd$message, "a")
+  expect_equal(cnd$body, c("b", i = "c"))
+})
