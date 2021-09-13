@@ -767,38 +767,58 @@ trace_capture_depth <- function(trace) {
     return(default)
   }
 
-  # withCallingHandlers()
-  wch_calls <- calls[seq2(length(calls) - 3L, length(calls) - 1L)]
-  if (is_call(wch_calls[[1]], "signal_abort") &&
-      is_call(wch_calls[[2]], "signalCondition") &&
-      is_call(wch_calls[[3]]) && is_function(wch_calls[[3]][[1]])) {
-    # Check for with_abort()
-    with_abort_loc <- length(calls) - 4L - 2L
-    if (with_abort_loc > 0L) {
-      with_abort_call <- calls[[with_abort_loc]]
-      if (is_call(with_abort_call, ".handleSimpleError") &&
-            identical(with_abort_call[[2]], entrace)) {
-        return(with_abort_loc - 1L)
-      }
-    }
-    return(length(calls) - 4L)
+  depth <- trace_depth_wch(trace)
+  if (!is_null(depth)) {
+    return(depth)
   }
 
+  depth <- trace_depth_trycatch(trace)
+  if (!is_null(depth)) {
+    return(depth)
+  }
+
+  default
+}
+
+trace_depth_wch <- function(trace) {
+  calls <- trace$call
+
+  # withCallingHandlers()
+  wch_calls <- calls[seq2(length(calls) - 3L, length(calls) - 1L)]
+  if (!is_call(wch_calls[[1]], "signal_abort") ||
+      !is_call(wch_calls[[2]], "signalCondition") ||
+      !is_call(wch_calls[[3]]) && is_function(wch_calls[[3]][[1]])) {
+    return(NULL)
+  }
+
+  # Check for with_abort()
+  with_abort_loc <- length(calls) - 4L - 2L
+  if (with_abort_loc > 0L) {
+    with_abort_call <- calls[[with_abort_loc]]
+    if (is_call(with_abort_call, ".handleSimpleError") &&
+        identical(with_abort_call[[2]], entrace)) {
+      return(with_abort_loc - 1L)
+    }
+  }
+
+  length(calls) - 4L
+}
+
+trace_depth_trycatch <- function(trace) {
+  calls <- trace$call
+  
   exiting_call <- quote(value[[3L]](cond))
   exiting_n <- detect_index(calls, identical, exiting_call, .right = TRUE)
 
-  # tryCatch()
   if (exiting_n != 0L) {
     try_catch_calls <- calls[seq_len(exiting_n - 1L)]
     try_catch_n <- detect_index(try_catch_calls, is_call, "tryCatch", .right = TRUE)
     if (try_catch_n != 0L) {
       return(try_catch_n)
-    } else {
-      return(default)
     }
   }
 
-  default
+  NULL
 }
 
 #' Display backtrace on error
