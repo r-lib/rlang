@@ -207,3 +207,26 @@ test_that("external backtraces are displayed (#1098)", {
     summary(err)
   })
 })
+
+test_that("rethrowing from an exiting handler", {
+  local_options(
+    rlang_trace_top_env = current_env(),
+    rlang_trace_format_srcrefs = FALSE
+  )
+
+  f <- function() g()
+  g <- function() h()
+  h <- function() abort("foo")
+
+  foo <- function() bar()
+  bar <- function() baz()
+  baz <- function() {
+    tryCatch(
+      f(),
+      error = function(err) abort("bar", parent = err)
+    )
+  }
+
+  err <- catch_cnd(foo(), "error")
+  expect_snapshot_trace(err)
+})

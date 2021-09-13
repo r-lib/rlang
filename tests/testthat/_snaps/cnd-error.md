@@ -330,3 +330,93 @@
        1. \-quux()
        2.   \-foofy()
 
+# rethrowing from an exiting handler
+
+    Code
+      # Full
+      print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
+    Output
+      <error/rlang_error>
+      Error: 
+        bar
+      Backtrace:
+           x
+        1. +-rlang::catch_cnd(foo(), "error")
+        2. | +-rlang::eval_bare(...)
+        3. | +-base::tryCatch(...)
+        4. | | \-base:::tryCatchList(expr, classes, parentenv, handlers)
+        5. | |   \-base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+        6. | |     \-base:::doTryCatch(return(expr), name, parentenv, handler)
+        7. | \-base::force(expr)
+        8. \-rlang:::foo()
+        9.   \-rlang:::bar()
+       10.     \-rlang:::baz()
+      Caused by error in `h()`: 
+        foo
+      Backtrace:
+           x
+        1. +-rlang::catch_cnd(foo(), "error")
+        2. | +-rlang::eval_bare(...)
+        3. | +-base::tryCatch(...)
+        4. | | \-base:::tryCatchList(expr, classes, parentenv, handlers)
+        5. | |   \-base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+        6. | |     \-base:::doTryCatch(return(expr), name, parentenv, handler)
+        7. | \-base::force(expr)
+        8. \-rlang:::foo()
+        9.   \-rlang:::bar()
+       10.     \-rlang:::baz()
+       11.       +-base::tryCatch(f(), error = function(err) abort("bar", parent = err))
+       12.       | \-base:::tryCatchList(expr, classes, parentenv, handlers)
+       13.       |   \-base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+       14.       |     \-base:::doTryCatch(return(expr), name, parentenv, handler)
+       15.       \-rlang:::f()
+       16.         \-rlang:::g()
+       17.           \-rlang:::h()
+    Code
+      # Collapsed
+      print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
+    Output
+      <error/rlang_error>
+      Error: 
+        bar
+      Backtrace:
+           x
+        1. +-[ rlang::catch_cnd(...) ] with 6 more calls
+        8. \-rlang:::foo()
+        9.   \-rlang:::bar()
+       10.     \-rlang:::baz()
+      Caused by error in `h()`: 
+        foo
+      Backtrace:
+           x
+        1. +-[ rlang::catch_cnd(...) ] with 6 more calls
+        8. \-rlang:::foo()
+        9.   \-rlang:::bar()
+       10.     \-rlang:::baz()
+       11.       +-[ base::tryCatch(...) ] with 3 more calls
+       15.       \-rlang:::f()
+       16.         \-rlang:::g()
+       17.           \-rlang:::h()
+    Code
+      # Branch
+      print(trace, simplify = "branch", dir = dir, srcrefs = srcrefs)
+    Output
+      <error/rlang_error>
+      Error: 
+        bar
+      Backtrace:
+        1. rlang::catch_cnd(foo(), "error")
+        8. rlang:::foo()
+        9. rlang:::bar()
+       10. rlang:::baz()
+      Caused by error in `h()`: 
+        foo
+      Backtrace:
+        1. rlang::catch_cnd(foo(), "error")
+        8. rlang:::foo()
+        9. rlang:::bar()
+       10. rlang:::baz()
+       15. rlang:::f()
+       16. rlang:::g()
+       17. rlang:::h()
+

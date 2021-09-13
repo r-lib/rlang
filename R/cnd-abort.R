@@ -792,6 +792,9 @@ trace_depth_wch <- function(trace) {
   if (!length(top)) {
     return(NULL)
   }
+  if (top <= 2) {
+    return(NULL)
+  }
 
   # withCallingHandlers()
   wch_calls <- calls[seq2(top - 2L, top - 0L)]
