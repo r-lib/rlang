@@ -414,3 +414,36 @@ test_that("error_call() preserves srcrefs", {
   out <- error_call(catch_error(f())$call)
   expect_s3_class(attr(out, "srcref"), "srcref")
 })
+
+test_that("withCallingHandlers() wrappers don't throw off trace capture on rethrow", {
+  local_options(
+    rlang_trace_top_env = current_env(),
+    rlang_trace_format_srcrefs = FALSE
+  )
+
+  f <- function() g()
+  g <- function() h()
+  h <- function() abort("Low-level message")
+
+  wch <- function(expr, ...) withCallingHandlers(expr, ...)
+  wrapper1 <- function(err) wrapper2(err)
+  wrapper2 <- function(err) abort("High-level message", parent = err)
+
+  foo <- function() bar()
+  bar <- function() baz()
+  baz <- function() {
+    wch(
+      f(),
+      error = function(err) {
+        wrapper1(err)
+      }
+    )
+  }
+
+  err <- expect_error(foo())
+
+  expect_snapshot({
+    print(err)
+    summary(err)
+  })
+})

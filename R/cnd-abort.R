@@ -782,9 +782,19 @@ trace_capture_depth <- function(trace) {
 
 trace_depth_wch <- function(trace) {
   calls <- trace$call
+  parents <- trace$parent
+
+  # GNU R currently structures evaluation of calling handlers as
+  # called from the global env. We find the first call with 0 as
+  # parent to skip all potential wrappers of the rethrowing handler.
+  top <- which(parents == 0)
+  top <- top[length(top)]
+  if (!length(top)) {
+    return(NULL)
+  }
 
   # withCallingHandlers()
-  wch_calls <- calls[seq2(length(calls) - 3L, length(calls) - 1L)]
+  wch_calls <- calls[seq2(top - 2L, top - 0L)]
   if (!is_call(wch_calls[[1]], "signal_abort") ||
       !is_call(wch_calls[[2]], "signalCondition") ||
       !is_call(wch_calls[[3]]) && is_function(wch_calls[[3]][[1]])) {
@@ -792,7 +802,7 @@ trace_depth_wch <- function(trace) {
   }
 
   # Check for with_abort()
-  with_abort_loc <- length(calls) - 4L - 2L
+  with_abort_loc <- top - 3L - 2L
   if (with_abort_loc > 0L) {
     with_abort_call <- calls[[with_abort_loc]]
     if (is_call(with_abort_call, ".handleSimpleError") &&
@@ -801,7 +811,7 @@ trace_depth_wch <- function(trace) {
     }
   }
 
-  length(calls) - 4L
+  top - 3L
 }
 
 trace_depth_trycatch <- function(trace) {

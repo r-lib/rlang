@@ -34,6 +34,9 @@
 
 ## Features and bugfixes
 
+* Trace capture now better handles wrappers of calling handler in case
+  of rethrown chained errors.
+
 * The `print()` method of rlang errors (commonly invoked with
   `last_error()`) has been improved:
     - Display calls if present.
