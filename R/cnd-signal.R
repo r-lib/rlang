@@ -222,12 +222,14 @@ default_message_file <- function() {
 }
 
 validate_signal_args <- function(subclass, env = caller_env()) {
+  local_error_call("caller")
   if (!is_missing(subclass)) {
     deprecate_subclass(subclass, env = env)
   }
 }
-# Allow until next major version
+# TODO! Allow until next major version
 deprecate_subclass <- function(subclass, env = caller_env()) {
+  local_error_call("caller")
   env_bind(env, class = subclass)
 }
 
@@ -238,6 +240,8 @@ interrupt <- function() {
 }
 
 validate_signal_message <- function(msg, class) {
+  local_error_call("caller")
+
   if (is_null(msg)) {
     if (is_null(class)) {
       abort("Either `message` or `class` must be supplied.")
