@@ -252,22 +252,14 @@ validate_signal_message <- function(msg, class) {
 warning_freq_env <- new.env(parent = emptyenv())
 message_freq_env <- new.env(parent = emptyenv())
 
-peek_verbosity <- function(opt, error_call) {
-  arg_match0(
-    peek_option(opt) %||% "default",
-    c("default", "verbose", "quiet"),
-    opt,
-    error_call = error_call
-  )
-}
-
 needs_signal <- function(frequency,
                          id,
                          env,
-                         opt,
-                         error_call = caller_env(2)) {
+                         opt) {
+  local_error_call("caller")
+
   switch(
-    peek_verbosity(opt, error_call),
+    peek_verbosity(opt),
     verbose = return(TRUE),
     quiet = return(FALSE),
     default = NULL
@@ -282,7 +274,17 @@ needs_signal <- function(frequency,
   }
 
   if (is_null(id)) {
-    abort("`.frequency_id` should be supplied with `.frequency`.")
+    abort(sprintf(
+      "%s must be supplied with %s.",
+      format_arg(".frequency_id"),
+      format_arg(".frequency")
+    ))
+  }
+  if (!is_string(id)) {
+    abort(sprintf(
+      "%s must be a string.",
+      format_arg(".frequency")
+    ))
   }
 
   sentinel <- env[[id]]
@@ -301,6 +303,14 @@ needs_signal <- function(frequency,
 
   # Signal every 8 hours
   (Sys.time() - sentinel) > (8 * 60 * 60)
+}
+peek_verbosity <- function(opt, call = caller_env()) {
+  arg_match0(
+    peek_option(opt) %||% "default",
+    c("default", "verbose", "quiet"),
+    opt,
+    error_call = call
+  )
 }
 
 message_freq <- function(message, frequency, type) {

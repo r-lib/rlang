@@ -257,6 +257,13 @@ test_that("interrupt() doesn't fail when interrupts are suspended (#1224)", {
   expect_true(out)
 })
 
+test_that("`frequency` has good error messages", {
+  expect_snapshot({
+    (expect_error(inform("foo", .frequency = "once", .frequency_id = NULL)))
+    (expect_error(warn("foo", .frequency = "once", .frequency_id = 1L)))
+  })
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

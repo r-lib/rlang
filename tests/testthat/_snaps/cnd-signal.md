@@ -33,3 +33,16 @@
       bar
       This warning is displayed once every 8 hours.
 
+# `frequency` has good error messages
+
+    Code
+      (expect_error(inform("foo", .frequency = "once", .frequency_id = NULL)))
+    Output
+      <error/rlang_error>
+      Error in `inform()`: `.frequency_id` must be supplied with `.frequency`.
+    Code
+      (expect_error(warn("foo", .frequency = "once", .frequency_id = 1L)))
+    Output
+      <error/rlang_error>
+      Error in `warn()`: `.frequency` must be a string.
+
