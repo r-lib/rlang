@@ -659,3 +659,15 @@ test_that("can bind backtraces", {
     c(0:3, c(4L, 4L))
   )
 })
+
+test_that("backtraces don't contain inlined objects (#1069, r-lib/testthat#1223)", {
+  local_options(
+    rlang_trace_format_srcrefs = FALSE
+  )
+  e <- environment()
+  f <- function(...) g()
+  g <- function() h()
+  h <- function() trace_back(e)
+  trace <- inject(f(!!list()))
+  expect_snapshot(summary(trace))
+})

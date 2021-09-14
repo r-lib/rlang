@@ -956,7 +956,7 @@ trace_depth_wch <- function(trace) {
   if (with_abort_loc > 0L) {
     with_abort_call <- calls[[with_abort_loc]]
     if (is_call(with_abort_call, ".handleSimpleError") &&
-        identical(with_abort_call[[2]], entrace)) {
+        identical(with_abort_call[[2]], quote(`<fn>`))) {
       return(with_abort_loc - 1L)
     }
   }

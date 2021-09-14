@@ -1016,3 +1016,14 @@
           ##  2.   \-global::g()
           ##  3.     \-global::h()
 
+# backtraces don't contain inlined objects (#1069, r-lib/testthat#1223)
+
+    Code
+      summary(trace)
+    Output
+          x
+       1. +-rlang::inject(f(!!list()))
+       2. \-rlang:::f(`<list>`)
+       3.   \-rlang:::g()
+       4.     \-rlang:::h()
+
