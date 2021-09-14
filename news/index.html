@@ -176,6 +176,8 @@
 <h2 class="hasAnchor">
 <a href="#features-and-bugfixes" class="anchor"></a>Features and bugfixes</h2>
 <ul>
+<li><p><code><a href="../reference/as_label.html">as_label()</a></code> now better handles calls to infix operators (<a href='https://github.com/r-lib/rlang/issues/956'>#956</a>, r-lib/testthat<a href='https://github.com/r-lib/rlang/issues/1432'>#1432</a>). This change improves auto-labelled expressions in data-masking functions like <code>tibble()</code>, <code>mutate()</code>, etc.</p></li>
+<li><p><code><a href="../reference/is_call_infix.html">is_call_infix()</a></code> predicate to detect calls to infix operators.</p></li>
 <li><p><code><a href="../reference/cnd_message.html">cnd_footer()</a></code> now returns the <code>footer</code> field by default, if any.</p></li>
 <li><p><code><a href="../reference/abort.html">warn()</a></code> and <code><a href="../reference/abort.html">inform()</a></code> now signal conditions of classes <code>"rlang_warning"</code> and <code>"rlang_message"</code> respectively.</p></li>
 <li><p>The <code>{{</code> operator is now detected more strictly (<a href='https://github.com/r-lib/rlang/issues/1087'>#1087</a>). If additional arguments are supplied through <code>{</code>, it is no longer interpreted as an injection operator.</p></li>

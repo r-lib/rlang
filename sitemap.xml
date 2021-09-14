@@ -319,6 +319,9 @@
     <loc>https://rlang.r-lib.org/reference/is_call.html</loc>
   </url>
   <url>
+    <loc>https://rlang.r-lib.org/reference/is_call_infix.html</loc>
+  </url>
+  <url>
     <loc>https://rlang.r-lib.org/reference/is_callable.html</loc>
   </url>
   <url>
