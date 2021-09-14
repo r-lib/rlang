@@ -34,6 +34,8 @@
 
 ## Features and bugfixes
 
+* Condition constructors now check for duplicate field names (#1268).
+
 * `as_label()` now better handles calls to infix operators (#956,
   r-lib/testthat#1432). This change improves auto-labelled expressions
   in data-masking functions like `tibble()`, `mutate()`, etc.

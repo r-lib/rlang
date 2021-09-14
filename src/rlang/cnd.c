@@ -93,6 +93,10 @@ r_obj* r_new_condition(r_obj* subclass, r_obj* msg, r_obj* data) {
   r_attrib_poke_names(cnd, KEEP(new_condition_names(data)));
   r_attrib_poke_class(cnd, KEEP(chr_append(subclass, KEEP(r_str("condition")))));
 
+  if (Rf_any_duplicated(r_names(cnd), FALSE)) {
+    r_abort("Condition fields can't have the same name.");
+  }
+
   FREE(4);
   return cnd;
 }

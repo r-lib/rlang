@@ -61,3 +61,8 @@ test_that("warn() and inform() signal subclassed conditions", {
   expect_equal(class(wrn), c("rlang_warning", "warning", "condition"))
   expect_equal(class(msg), c("rlang_message", "message", "condition"))
 })
+
+test_that("check for duplicate condition fields (#1268)", {
+  expect_error(error_cnd("foo", foo = 1, foo = 2), "same name")
+  expect_error(abort("", foo = 1, foo = 2), "same name")
+})
