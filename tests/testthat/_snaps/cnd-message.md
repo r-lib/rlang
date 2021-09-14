@@ -101,8 +101,8 @@
       warn(msg, .frequency = "once", .frequency_id = as.character(runif(1)))
     Warning <rlang_warning>
       foo
-      This warning is displayed once per session.
       i bar
+      This warning is displayed once per session.
 
 ---
 
@@ -116,8 +116,8 @@
       warn(msg, .frequency = "once", .frequency_id = as.character(runif(1)))
     Warning <rlang_warning>
       foo
-      This warning is displayed once per session.
       i bar
+      This warning is displayed once per session.
 
 ---
 
@@ -146,6 +146,6 @@
       inform(msg, .frequency = "once", .frequency_id = as.character(runif(1)))
     Message <rlang_message>
       foo
-      This message is displayed once per session.
       i bar
+      This message is displayed once per session.
 

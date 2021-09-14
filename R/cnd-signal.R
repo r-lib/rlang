@@ -134,14 +134,13 @@ warn <- function(message = NULL,
     return(invisible(NULL))
   }
 
-  message <- add_message_freq(message, .frequency, "warning", use_cli)
-
   cnd <- warning_cnd(
     class,
     message = message,
     !!!extra_fields,
     ...
   )
+  cnd$footer <- c(cnd$footer, message_freq(message, .frequency, "warning"))
 
   local_long_messages()
   warning(cnd)
@@ -170,14 +169,13 @@ inform <- function(message = NULL,
     return(invisible(NULL))
   }
 
-  message <- add_message_freq(message, .frequency, "message", use_cli)
-
   cnd <- message_cnd(
     class,
     message = message,
     !!!extra_fields,
     ...
   )
+  cnd$footer <- c(cnd$footer, message_freq(message, .frequency, "message"))
 
   withRestarts(muffleMessage = function() NULL, {
     signalCondition(cnd)
@@ -305,9 +303,9 @@ needs_signal <- function(frequency,
   (Sys.time() - sentinel) > (8 * 60 * 60)
 }
 
-add_message_freq <- function(message, frequency, type, use_cli) {
+message_freq <- function(message, frequency, type) {
   if (is_string(frequency, "always")) {
-    return(message)
+    return(chr())
   }
 
   if (is_string(frequency, "regularly")) {
@@ -315,11 +313,5 @@ add_message_freq <- function(message, frequency, type, use_cli) {
   } else {
     info <- silver("This %s is displayed once per session.")
   }
-  info <- sprintf(info, type)
-
-  if (use_cli[["format"]]) {
-    c(message, "_" = info)
-  } else {
-    paste_line(message, info)
-  }
+  sprintf(info, type)
 }

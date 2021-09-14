@@ -281,3 +281,14 @@ test_that("inform() and warn() use fallback bullets formatting", {
     inform(msg, .frequency = "once", .frequency_id = as.character(runif(1)))
   })
 })
+
+test_that("cnd_message() uses `body` and `footer` fields by default", {
+  expect_equal(
+    cnd_message(cnd("foo", message = "foo", footer = "baz")),
+    "foo\nbaz"
+  )
+  expect_equal(
+    cnd_message(cnd("foo", message = "foo", body = "bar", footer = "baz")),
+    "foo\nbar\nbaz"
+  )
+})

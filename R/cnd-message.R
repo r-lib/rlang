@@ -8,18 +8,23 @@
 #' - `cnd_body()`
 #' - `cnd_footer()`
 #'
+#' Methods for these generics must return a character vector. The
+#' elements are combined into a single string with a newline
+#' separator. Bullets syntax is supported, either through rlang (see
+#' [format_error_bullets()]), or through cli if the condition has
+#' `use_cli_format` set to `TRUE`.
+#'
 #' The default method for the error header returns the `message` field
 #' of the condition object. The default methods for the body and
-#' footer return empty character vectors. In general, methods for
-#' these generics should return a character vector. The elements are
-#' combined into a single string with a newline separator.
+#' footer return the the `body` and `footer` fields if any, or empty
+#' character vectors otherwise.
 #'
 #' `cnd_message()` is automatically called by the `conditionMessage()`
-#' for rlang errors. Error classes created with [abort()] only need to
-#' implement header, body or footer methods. This provides a lot of
-#' flexibility for hierarchies of error classes, for instance you
-#' could inherit the body of an error message from a parent class
-#' while overriding the header and footer.
+#' for rlang errors, warnings, and messages. Error classes created
+#' with [abort()] only need to implement header, body or footer
+#' methods. This provides a lot of flexibility for hierarchies of
+#' error classes, for instance you could inherit the body of an error
+#' message from a parent class while overriding the header and footer.
 #'
 #'
 #' @section Overriding `cnd_body()`:
@@ -139,7 +144,7 @@ cnd_footer <- function(cnd, ...) {
 }
 #' @export
 cnd_footer.default <- function(cnd, ...) {
-  chr()
+  cnd$footer %||% chr()
 }
 
 cnd_build_error_message <- function(cnd) {
