@@ -54,3 +54,10 @@ test_that("predicates match condition classes", {
   expect_true(is_warning(catch_cnd(warning("foo"))))
   expect_true(is_message(catch_cnd(message("foo"))))
 })
+
+test_that("warn() and inform() signal subclassed conditions", {
+  wrn <- catch_cnd(warn(""), "warning")
+  msg <- catch_cnd(inform(""), "message")
+  expect_equal(class(wrn), c("rlang_warning", "warning", "condition"))
+  expect_equal(class(msg), c("rlang_message", "message", "condition"))
+})

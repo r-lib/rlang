@@ -249,20 +249,19 @@ abort <- function(message = NULL,
   signal_abort(cnd, .file)
 }
 
-cnd_message_info <- function(message, env) {
-  use_cli <- use_cli(env)
+cnd_message_info <- function(message, env, cli_opts = use_cli(env)) {
   fields <- list()
 
-  if (use_cli[["inline"]]) {
+  if (cli_opts[["inline"]]) {
     message[] <- map_chr(message, cli::format_inline, .envir = env)
   }
 
   # Formatting with cli is delayed until print time so we can properly
   # indent and width-wrap depending on the context
-  if (use_cli[["format"]]) {
+  if (cli_opts[["format"]]) {
     fields$use_cli_format <- TRUE
     fields$body <- message[-1]
-    message <- message[[1]]
+    message <- message[1]
   } else {
     # Compatibility with older bullets formatting
     if (is_null(names(message)) && length(message) > 1) {

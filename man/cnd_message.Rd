@@ -28,18 +28,23 @@ cnd_footer(cnd, ...)
 \item \code{cnd_footer()}
 }
 
+Methods for these generics must return a character vector. The
+elements are combined into a single string with a newline
+separator. Bullets syntax is supported, either through rlang (see
+\code{\link[=format_error_bullets]{format_error_bullets()}}), or through cli if the condition has
+\code{use_cli_format} set to \code{TRUE}.
+
 The default method for the error header returns the \code{message} field
 of the condition object. The default methods for the body and
-footer return empty character vectors. In general, methods for
-these generics should return a character vector. The elements are
-combined into a single string with a newline separator.
+footer return the the \code{body} and \code{footer} fields if any, or empty
+character vectors otherwise.
 
 \code{cnd_message()} is automatically called by the \code{conditionMessage()}
-for rlang errors. Error classes created with \code{\link[=abort]{abort()}} only need to
-implement header, body or footer methods. This provides a lot of
-flexibility for hierarchies of error classes, for instance you
-could inherit the body of an error message from a parent class
-while overriding the header and footer.
+for rlang errors, warnings, and messages. Error classes created
+with \code{\link[=abort]{abort()}} only need to implement header, body or footer
+methods. This provides a lot of flexibility for hierarchies of
+error classes, for instance you could inherit the body of an error
+message from a parent class while overriding the header and footer.
 }
 \section{Overriding \code{cnd_body()}}{
 

@@ -253,3 +253,49 @@ test_that("prefixes include srcrefs", {
 
   expect_snapshot((expect_error(f())))
 })
+
+test_that("inform() and warn() use fallback bullets formatting", {
+  msg <- c("foo", i = "bar")
+
+  expect_snapshot({
+    local_use_cli(format = FALSE)
+    warn(msg)
+    warn(msg, .frequency = "once", .frequency_id = as.character(runif(1)))
+  })
+
+  expect_snapshot({
+    local_use_cli(format = TRUE)
+    warn(msg)
+    warn(msg, .frequency = "once", .frequency_id = as.character(runif(1)))
+  })
+
+  expect_snapshot({
+    local_use_cli(format = FALSE)
+    inform(msg)
+    inform(msg, .frequency = "once", .frequency_id = as.character(runif(1)))
+  })
+
+  expect_snapshot({
+    local_use_cli(format = TRUE)
+    inform(msg)
+    inform(msg, .frequency = "once", .frequency_id = as.character(runif(1)))
+  })
+})
+
+test_that("cnd_message() uses `body` and `footer` fields by default", {
+  expect_equal(
+    cnd_message(cnd("foo", message = "foo", footer = "baz")),
+    "foo\nbaz"
+  )
+  expect_equal(
+    cnd_message(cnd("foo", message = "foo", body = "bar", footer = "baz")),
+    "foo\nbar\nbaz"
+  )
+})
+
+test_that("can supply bullet without header", {
+  expect_snapshot({
+    (catch_cnd(inform(c(i = "foo")), "message"))
+    (catch_cnd(warn(c(i = "foo")), "warning"))
+  })
+})

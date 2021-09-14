@@ -34,6 +34,11 @@
 
 ## Features and bugfixes
 
+* `cnd_footer()` now returns the `footer` field by default, if any.
+
+* `warn()` and `inform()` now signal conditions of classes
+  `"rlang_warning"` and `"rlang_message"` respectively.
+
 * The `{{` operator is now detected more strictly (#1087). If
   additional arguments are supplied through `{`, it is no longer
   interpreted as an injection operator.

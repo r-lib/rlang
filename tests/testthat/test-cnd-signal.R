@@ -69,10 +69,14 @@ test_that("cnd_signal() creates a backtrace if needed", {
   expect_snapshot(print(err))
 })
 
-test_that("`inform()` appends newline to message", {
-  expect_identical(
+test_that("`inform()` does not append newlines to message", {
+  expect_equal(
     expect_message(inform("foo"))$message,
-    "foo\n"
+    "foo"
+  )
+  expect_equal(
+    conditionMessage(expect_message(inform("foo"))),
+    "foo"
   )
 })
 
@@ -85,7 +89,7 @@ test_that("condition signallers can be called without arguments", {
 })
 
 test_that("`inform()` returns invisibly", {
-  expect_invisible(inform("foo"))
+  expect_message(expect_invisible(inform("foo")))
 })
 
 test_that("warn() respects frequency", {
@@ -122,16 +126,16 @@ test_that("inform() respects frequency", {
 
   expect_message(
     inform("foo", .frequency = "always", .frequency_id = "inform_always"),
-    "^foo\n$"
+    "^foo$"
   )
   expect_message(
     inform("foo", .frequency = "always", .frequency_id = "inform_always"),
-    "^foo\n$"
+    "^foo$"
   )
 
   expect_message(
     inform("foo", .frequency = "once", .frequency_id = "inform_once"),
-    "^foo\n.*message is displayed once per session"
+    "^foo.*message is displayed once per session"
   )
   expect_no_message(
     inform("foo", .frequency = "once", .frequency_id = "inform_once")
