@@ -292,3 +292,10 @@ test_that("cnd_message() uses `body` and `footer` fields by default", {
     "foo\nbar\nbaz"
   )
 })
+
+test_that("can supply bullet without header", {
+  expect_snapshot({
+    (catch_cnd(inform(c(i = "foo")), "message"))
+    (catch_cnd(warn(c(i = "foo")), "warning"))
+  })
+})

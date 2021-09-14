@@ -149,3 +149,14 @@
       i bar
       This message is displayed once per session.
 
+# can supply bullet without header
+
+    Code
+      (catch_cnd(inform(c(i = "foo")), "message"))
+    Output
+      <rlang_message: i foo>
+    Code
+      (catch_cnd(warn(c(i = "foo")), "warning"))
+    Output
+      <rlang_warning: i foo>
+

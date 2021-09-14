@@ -261,7 +261,7 @@ cnd_message_info <- function(message, env, cli_opts = use_cli(env)) {
   if (cli_opts[["format"]]) {
     fields$use_cli_format <- TRUE
     fields$body <- message[-1]
-    message <- message[[1]]
+    message <- message[1]
   } else {
     # Compatibility with older bullets formatting
     if (is_null(names(message)) && length(message) > 1) {
