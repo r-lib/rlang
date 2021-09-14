@@ -34,6 +34,8 @@
 
 ## Features and bugfixes
 
+* `is_call_infix()` predicate to detect calls to infix operators.
+
 * `cnd_footer()` now returns the `footer` field by default, if any.
 
 * `warn()` and `inform()` now signal conditions of classes

@@ -430,6 +430,51 @@ call_print_fine_type <- function(call) {
   )
 }
 
+#' Is object a call to infix operator?
+#' @param x An object.
+#' @return `FALSE` if not a call or not a call to an infix
+#'   operator. `TRUE` otherwise.
+#' @export
+#' @examples
+#' is_call_infix(quote(-1))
+#' is_call_infix(quote(1 - 2))
+#' is_call_infix(quote(1 %-% 2))
+#' is_call_infix(quote(a@b))
+is_call_infix <- function(x) {
+  switch(
+    call_parse_type(x),
+    `<-` = ,
+    `<<-` = ,
+    `=` = ,
+    `::` = ,
+    `:::` = ,
+    `$` = ,
+    `@` = ,
+    `+` = ,
+    `-` = ,
+    `?` = ,
+    `~` = ,
+    `:=` = ,
+    `|` = ,
+    `||` = ,
+    `&` = ,
+    `&&` = ,
+    `>` = ,
+    `>=` = ,
+    `<` = ,
+    `<=` = ,
+    `==` = ,
+    `!=` = ,
+    `*` = ,
+    `/` = ,
+    `%%` = ,
+    `special` = ,
+    `:` = ,
+    `^` = TRUE,
+    FALSE
+  )
+}
+
 
 #' Modify the arguments of a call
 #'

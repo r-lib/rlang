@@ -544,3 +544,9 @@ test_that("call_ns() retrieves namespaces", {
   expect_identical(call_ns(quote(foo::bar())), "foo")
   expect_identical(call_ns(quote(foo:::bar())), "foo")
 })
+
+test_that("is_call_infix() detects infix operators", {
+  expect_true(is_call_infix(quote(a %>_>% b)))
+  expect_true(is_call_infix(quote(a + b)))
+  expect_false(is_call_infix(quote(+b)))
+})
