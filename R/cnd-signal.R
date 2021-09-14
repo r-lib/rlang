@@ -192,7 +192,7 @@ signal <- function(message,
                    ...,
                    .subclass = deprecated()) {
   validate_signal_args(.subclass)
-  message <- rlang_format_message(message, caller_env())
+  message <- .rlang_cli_format_fallback(message)
   cnd <- cnd(class, ..., message = message)
   cnd_signal(cnd)
 }
