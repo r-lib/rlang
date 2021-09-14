@@ -3,7 +3,7 @@ test_that("weakref with key and no value allows key to be GC'd", {
   # value).
   k <- env()
   w_finalized <- FALSE
-  w <- new_weakref(key = k, finalizer = function(e) { message("w finalized"); w_finalized <<- TRUE })
+  w <- new_weakref(key = k, finalizer = function(e)  w_finalized <<- TRUE)
 
   expect_identical(wref_key(w), k)
   expect_identical(wref_value(w), NULL)
