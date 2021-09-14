@@ -367,17 +367,17 @@ test_that("`env_binding_are_lazy()` type-checks `env` (#923)", {
 })
 
 test_that("env_poke() zaps (#1012)", {
-  env <- env(foo = 1)
-  env_poke(env, "foo", zap())
-  expect_false(env_has(env, "foo"))
+  env <- env(zapzap = 1)
+  env_poke(env, "zapzap", zap())
+  expect_false(env_has(env, "zapzap"))
 
-  env <- env(env(foo = 1))
-  env_poke(env, "foo", zap())
-  expect_false(env_has(env, "foo"))
-  expect_true(env_has(env, "foo", inherit = TRUE))
+  env <- env(env(zapzap = 1))
+  env_poke(env, "zapzap", zap())
+  expect_false(env_has(env, "zapzap"))
+  expect_true(env_has(env, "zapzap", inherit = TRUE))
 
-  env_poke(env, "foo", zap(), inherit = TRUE)
-  expect_false(env_has(env, "foo", inherit = TRUE))
+  env_poke(env, "zapzap", zap(), inherit = TRUE)
+  expect_false(env_has(env, "zapzap", inherit = TRUE))
 })
 
 test_that("env_poke() doesn't warn when unrepresentable characters are serialised", {
