@@ -1050,3 +1050,24 @@ call_type <- function(x) {
     abort("corrupt language object")
   }
 }
+
+call_zap_inline <- function(x) {
+  if (is_call(x)) {
+    if (is_call(x, "function")) {
+      if (!is_null(x[[2]])) {
+        x[[2]] <- as.pairlist(map(x[[2]], call_zap_inline))
+      }
+      x[[3]] <- call_zap_inline(x[[3]])
+    } else {
+      x[] <- map(x, call_zap_inline)
+    }
+    return(x)
+  }
+
+  if (is_symbol(x) || is_syntactic_literal(x)) {
+    x
+  } else {
+    name <- sprintf("<%s>", rlang_type_sum(x))
+    sym(name)
+  }
+}
