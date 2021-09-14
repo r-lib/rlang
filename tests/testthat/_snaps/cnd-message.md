@@ -89,3 +89,63 @@
       Error in `g()` at bar/baz/myfile.R:2:9: 
       Foo.
 
+# inform() and warn() use fallback bullets formatting
+
+    Code
+      local_use_cli(format = FALSE)
+      warn(msg)
+    Warning <rlang_warning>
+      foo
+      i bar
+    Code
+      warn(msg, .frequency = "once", .frequency_id = as.character(runif(1)))
+    Warning <rlang_warning>
+      foo
+      This warning is displayed once per session.
+      i bar
+
+---
+
+    Code
+      local_use_cli(format = TRUE)
+      warn(msg)
+    Warning <rlang_warning>
+      foo
+      i bar
+    Code
+      warn(msg, .frequency = "once", .frequency_id = as.character(runif(1)))
+    Warning <rlang_warning>
+      foo
+      This warning is displayed once per session.
+      i bar
+
+---
+
+    Code
+      local_use_cli(format = FALSE)
+      inform(msg)
+    Message <rlang_message>
+      foo
+      i bar
+    Code
+      inform(msg, .frequency = "once", .frequency_id = as.character(runif(1)))
+    Message <rlang_message>
+      foo
+      i bar
+      This message is displayed once per session.
+
+---
+
+    Code
+      local_use_cli(format = TRUE)
+      inform(msg)
+    Message <rlang_message>
+      foo
+      i bar
+    Code
+      inform(msg, .frequency = "once", .frequency_id = as.character(runif(1)))
+    Message <rlang_message>
+      foo
+      This message is displayed once per session.
+      i bar
+

@@ -2,7 +2,7 @@
 
     Code
       inform(c("Header.", i = "Bullet."))
-    Message <message>
+    Message <rlang_message>
       Header.
       i Bullet.
 
@@ -18,7 +18,7 @@
 
     Code
       warn(c("Header.", i = "Bullet."))
-    Warning <warning>
+    Warning <rlang_warning>
       Header.
       i Bullet.
 

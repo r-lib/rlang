@@ -213,6 +213,20 @@ cnd_prefix_error_message <- function(cnd, parent = FALSE) {
   }
 }
 
+#' @export
+conditionMessage.rlang_message <- function(c) {
+  cnd_message(c)
+}
+#' @export
+conditionMessage.rlang_warning <- function(c) {
+  cnd_message(c)
+}
+#' @export
+conditionMessage.rlang_error <- function(c) {
+  cnd_message(c)
+}
+
+
 #' Format bullets for error messages
 #'
 #' @description

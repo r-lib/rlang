@@ -14,22 +14,22 @@
 
     Code
       inform("foo", .frequency = "regularly", .frequency_id = as.character(runif(1)))
-    Message <message>
+    Message <rlang_message>
       foo
       This message is displayed once every 8 hours.
     Code
       inform("bar", .frequency = "regularly", .frequency_id = as.character(runif(1)))
-    Message <message>
+    Message <rlang_message>
       bar
       This message is displayed once every 8 hours.
     Code
       warn("foo", .frequency = "regularly", .frequency_id = as.character(runif(1)))
-    Warning <warning>
+    Warning <rlang_warning>
       foo
       This warning is displayed once every 8 hours.
     Code
       warn("bar", .frequency = "regularly", .frequency_id = as.character(runif(1)))
-    Warning <warning>
+    Warning <rlang_warning>
       bar
       This warning is displayed once every 8 hours.
 

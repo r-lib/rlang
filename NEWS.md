@@ -34,6 +34,9 @@
 
 ## Features and bugfixes
 
+* `warn()` and `inform()` now signal conditions of classes
+  `"rlang_warning"` and `"rlang_message"` respectively.
+
 * The `{{` operator is now detected more strictly (#1087). If
   additional arguments are supplied through `{`, it is no longer
   interpreted as an injection operator.

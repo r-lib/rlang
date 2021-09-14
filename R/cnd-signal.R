@@ -120,19 +120,28 @@ warn <- function(message = NULL,
                  .frequency_id = NULL,
                  .subclass = deprecated()) {
   validate_signal_args(.subclass)
-
   message <- validate_signal_message(message, class)
-  message <- rlang_format_warning(message, caller_env())
+
+  caller <- caller_env()
+  use_cli <- use_cli(caller)
+
+  message_info <- cnd_message_info(message, caller, use_cli)
+  message <- message_info$message
+  extra_fields <- message_info$extra_fields
 
   .frequency <- arg_match0(.frequency, c("always", "regularly", "once"))
-
-  if (needs_signal(.frequency, .frequency_id, warning_freq_env, "rlib_warning_verbosity")) {
-    message <- add_message_freq(message, .frequency, "warning")
-  } else {
+  if (!needs_signal(.frequency, .frequency_id, warning_freq_env, "rlib_warning_verbosity")) {
     return(invisible(NULL))
   }
 
-  cnd <- warning_cnd(class, ..., message = message)
+  message <- add_message_freq(message, .frequency, "warning", use_cli)
+
+  cnd <- warning_cnd(
+    class,
+    message = message,
+    !!!extra_fields,
+    ...
+  )
 
   local_long_messages()
   warning(cnd)
@@ -147,23 +156,33 @@ inform <- function(message = NULL,
                    .frequency_id = NULL,
                    .subclass = deprecated()) {
   validate_signal_args(.subclass)
+  message <- message %||% ""
+
+  caller <- caller_env()
+  use_cli <- use_cli(caller)
+
+  message_info <- cnd_message_info(message, caller, use_cli)
+  message <- message_info$message
+  extra_fields <- message_info$extra_fields
 
   .frequency <- arg_match0(.frequency, c("always", "regularly", "once"))
   if (!needs_signal(.frequency, .frequency_id, message_freq_env, "rlib_message_verbosity")) {
     return(invisible(NULL))
   }
 
-  message <- message %||% ""
+  message <- add_message_freq(message, .frequency, "message", use_cli)
 
-  message <- rlang_format_message(message, caller_env())
-  message <- add_message_freq(message, .frequency, "message")
-  message <- paste0(message, "\n")
-
-  cnd <- message_cnd(class, ..., message = message)
+  cnd <- message_cnd(
+    class,
+    message = message,
+    !!!extra_fields,
+    ...
+  )
 
   withRestarts(muffleMessage = function() NULL, {
     signalCondition(cnd)
-    cat(message, file = .file %||% default_message_file())
+    msg <- paste0(conditionMessage(cnd), "\n")
+    cat(msg, file = .file %||% default_message_file())
   })
 
   invisible()
@@ -286,7 +305,7 @@ needs_signal <- function(frequency,
   (Sys.time() - sentinel) > (8 * 60 * 60)
 }
 
-add_message_freq <- function(message, frequency, type) {
+add_message_freq <- function(message, frequency, type, use_cli) {
   if (is_string(frequency, "always")) {
     return(message)
   }
@@ -298,5 +317,9 @@ add_message_freq <- function(message, frequency, type) {
   }
   info <- sprintf(info, type)
 
-  paste_line(message, info)
+  if (use_cli[["format"]]) {
+    c(message, "_" = info)
+  } else {
+    paste_line(message, info)
+  }
 }

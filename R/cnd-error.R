@@ -55,11 +55,6 @@ error_cnd_fields <- function(trace, parent, ..., .subclass = NULL, env = caller_
 }
 
 #' @export
-conditionMessage.rlang_error <- function(c) {
-  cnd_message(c)
-}
-
-#' @export
 print.rlang_error <- function(x,
                               ...,
                               simplify = c("branch", "collapse", "none"),

@@ -48,12 +48,12 @@ cnd <- function(class, ..., message = "") {
 #' @rdname cnd
 #' @export
 warning_cnd <- function(class = NULL, ..., message = "") {
-  .Call(ffi_new_condition, c(class, "warning"), message, cnd_fields(...))
+  .Call(ffi_new_condition, c(class, "rlang_warning", "warning"), message, cnd_fields(...))
 }
 #' @rdname cnd
 #' @export
 message_cnd <- function(class = NULL, ..., message = "") {
-  .Call(ffi_new_condition, c(class, "message"), message, cnd_fields(...))
+  .Call(ffi_new_condition, c(class, "rlang_message", "message"), message, cnd_fields(...))
 }
 
 cnd_fields <- function(..., .subclass = NULL, env = caller_env()) {
