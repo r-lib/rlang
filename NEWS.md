@@ -40,8 +40,6 @@
   r-lib/testthat#1432). This change improves auto-labelled expressions
   in data-masking functions like `tibble()`, `mutate()`, etc.
 
-* `is_call_infix()` predicate to detect calls to infix operators.
-
 * `cnd_footer()` now returns the `footer` field by default, if any.
 
 * `warn()` and `inform()` now signal conditions of classes

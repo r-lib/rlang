@@ -434,7 +434,7 @@ call_print_fine_type <- function(call) {
 #' @param x An object.
 #' @return `FALSE` if not a call or not a call to an infix
 #'   operator. `TRUE` otherwise.
-#' @export
+#' @noRd
 #' @examples
 #' is_call_infix(quote(-1))
 #' is_call_infix(quote(1 - 2))
