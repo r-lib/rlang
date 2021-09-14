@@ -46,17 +46,21 @@ cnd_body()
 cnd_footer()
 
 
+Methods for these generics must return a character vector. The
+elements are combined into a single string with a newline
+separator. Bullets syntax is supported, either through rlang (see
+format_error_bullets()), or through cli if the condition has
+use_cli_format set to TRUE.
 The default method for the error header returns the message field
 of the condition object. The default methods for the body and
-footer return empty character vectors. In general, methods for
-these generics should return a character vector. The elements are
-combined into a single string with a newline separator.
+footer return the the body and footer fields if any, or empty
+character vectors otherwise.
 cnd_message() is automatically called by the conditionMessage()
-for rlang errors. Error classes created with abort() only need to
-implement header, body or footer methods. This provides a lot of
-flexibility for hierarchies of error classes, for instance you
-could inherit the body of an error message from a parent class
-while overriding the header and footer." />
+for rlang errors, warnings, and messages. Error classes created
+with abort() only need to implement header, body or footer
+methods. This provides a lot of flexibility for hierarchies of
+error classes, for instance you could inherit the body of an error
+message from a parent class while overriding the header and footer." />
 
 
 
@@ -178,17 +182,21 @@ while overriding the header and footer." />
 <li><p><code>cnd_footer()</code></p></li>
 </ul>
 
+<p>Methods for these generics must return a character vector. The
+elements are combined into a single string with a newline
+separator. Bullets syntax is supported, either through rlang (see
+<code><a href='format_error_bullets.html'>format_error_bullets()</a></code>), or through cli if the condition has
+<code>use_cli_format</code> set to <code>TRUE</code>.</p>
 <p>The default method for the error header returns the <code>message</code> field
 of the condition object. The default methods for the body and
-footer return empty character vectors. In general, methods for
-these generics should return a character vector. The elements are
-combined into a single string with a newline separator.</p>
+footer return the the <code>body</code> and <code>footer</code> fields if any, or empty
+character vectors otherwise.</p>
 <p><code>cnd_message()</code> is automatically called by the <code><a href='https://rdrr.io/r/base/conditions.html'>conditionMessage()</a></code>
-for rlang errors. Error classes created with <code><a href='abort.html'>abort()</a></code> only need to
-implement header, body or footer methods. This provides a lot of
-flexibility for hierarchies of error classes, for instance you
-could inherit the body of an error message from a parent class
-while overriding the header and footer.</p>
+for rlang errors, warnings, and messages. Error classes created
+with <code><a href='abort.html'>abort()</a></code> only need to implement header, body or footer
+methods. This provides a lot of flexibility for hierarchies of
+error classes, for instance you could inherit the body of an error
+message from a parent class while overriding the header and footer.</p>
     </div>
 
     <pre class="usage"><span class='fu'>cnd_message</span><span class='op'>(</span><span class='va'>cnd</span><span class='op'>)</span>

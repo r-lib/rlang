@@ -50,6 +50,8 @@ Supply metadata with named ... arguments. This data will be
 stored in the condition object and can be examined by handlers.
 
 
+abort() throws subclassed errors, see
+&quot;rlang_error&quot;.
 interrupt() allows R code to simulate a user interrupt of the
 kind that is signalled with Ctrl-C. It is currently not possible
 to create custom interrupt condition objects." />
@@ -178,6 +180,8 @@ finer-grained error handling.</p></li>
 stored in the condition object and can be examined by handlers.</p></li>
 </ul>
 
+<p><code>abort()</code> throws subclassed errors, see
+<code><a href='rlang_error.html'>"rlang_error"</a></code>.</p>
 <p><code>interrupt()</code> allows R code to simulate a user interrupt of the
 kind that is signalled with <code>Ctrl-C</code>. It is currently not possible
 to create custom interrupt condition objects.</p>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Label of an environment — env_name • rlang</title>
+<title>Errors of class rlang_error — rlang_error • rlang</title>
 
 
 <!-- jquery -->
@@ -39,22 +39,30 @@
 
 
 
-<meta property="og:title" content="Label of an environment — env_name" />
-<meta property="og:description" content="Special environments like the global environment have their own
-names. env_name() returns:
-&quot;global&quot; for the global environment.
-&quot;empty&quot; for the empty environment.
-&quot;base&quot; for the base package environment (the last environment on
-the search path).
-&quot;namespace:pkg&quot; if env is the namespace of the package &quot;pkg&quot;.
-The name attribute of env if it exists. This is how the
-package environments and the imports environments store their names. The name of package
-environments is typically &quot;package:pkg&quot;.
-The empty string &quot;&quot; otherwise.
+<meta property="og:title" content="Errors of class rlang_error — rlang_error" />
+<meta property="og:description" content="abort() and error_cnd() create errors of class &quot;rlang_error&quot;.
+The differences with base errors are:
+Implementing conditionMessage() methods for subclasses of
+&quot;rlang_error&quot; is undefined behaviour. Instead, implement the
+cnd_header() method (and possibly cnd_body() and
+cnd_footer()). These methods return character vectors which are
+assembled by rlang when needed: when
+conditionMessage.rlang_error() is called
+(e.g. via try()), when the error is displayed through print()
+or format(), and of course when the error is displayed to the
+user by abort().
+ The use_cli_format
+condition field instructs whether to use cli (or rlang's fallback
+method if cli is not installed) to format the error message at
+print time.
+In this case, the message field may be a character vector of
+header and bullets. These are formatted at the last moment to
+take the context into account (starting position on the screen
+and indentation).
+See local_use_cli() for automatically setting this field in
+errors thrown with abort() within your package.
 
-
-env_label() is exactly like env_name() but returns the memory
-address of anonymous environments as fallback." />
+" />
 
 
 
@@ -164,53 +172,40 @@ address of anonymous environments as fallback." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Label of an environment</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/env-special.R'><code>R/env-special.R</code></a></small>
-    <div class="hidden name"><code>env_name.Rd</code></div>
+    <h1>Errors of class <code>rlang_error</code></h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/cnd-error.R'><code>R/cnd-error.R</code></a></small>
+    <div class="hidden name"><code>rlang_error.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Special environments like the global environment have their own
-names. <code>env_name()</code> returns:</p><ul>
-<li><p>"global" for the global environment.</p></li>
-<li><p>"empty" for the empty environment.</p></li>
-<li><p>"base" for the base package environment (the last environment on
-the search path).</p></li>
-<li><p>"namespace:pkg" if <code>env</code> is the namespace of the package "pkg".</p></li>
-<li><p>The <code>name</code> attribute of <code>env</code> if it exists. This is how the
-<a href='search_envs.html'>package environments</a> and the <a href='ns_env.html'>imports environments</a> store their names. The name of package
-environments is typically "package:pkg".</p></li>
-<li><p>The empty string <code>""</code> otherwise.</p></li>
+    <p><code><a href='abort.html'>abort()</a></code> and <code><a href='error_cnd.html'>error_cnd()</a></code> create errors of class <code>"rlang_error"</code>.
+The differences with base errors are:</p><ul>
+<li><p>Implementing <code><a href='https://rdrr.io/r/base/conditions.html'>conditionMessage()</a></code> methods for subclasses of
+<code>"rlang_error"</code> is undefined behaviour. Instead, implement the
+<code><a href='cnd_message.html'>cnd_header()</a></code> method (and possibly <code><a href='cnd_message.html'>cnd_body()</a></code> and
+<code><a href='cnd_message.html'>cnd_footer()</a></code>). These methods return character vectors which are
+assembled by rlang when needed: when
+<code><a href='https://rdrr.io/r/base/conditions.html'>conditionMessage.rlang_error()</a></code> is called
+(e.g. via <code><a href='https://rdrr.io/r/base/try.html'>try()</a></code>), when the error is displayed through <code><a href='https://rdrr.io/r/base/print.html'>print()</a></code>
+or <code><a href='https://rdrr.io/r/base/format.html'>format()</a></code>, and of course when the error is displayed to the
+user by <code><a href='abort.html'>abort()</a></code>.</p></li>
+<li><p><a href='https://lifecycle.r-lib.org/articles/stages.html#experimental'><img src='figures/lifecycle-experimental.svg' alt='[Experimental]' /></a> The <code>use_cli_format</code>
+condition field instructs whether to use cli (or rlang's fallback
+method if cli is not installed) to format the error message at
+print time.</p>
+<p>In this case, the <code>message</code> field may be a character vector of
+header and bullets. These are formatted at the last moment to
+take the context into account (starting position on the screen
+and indentation).</p>
+<p>See <code><a href='local_use_cli.html'>local_use_cli()</a></code> for automatically setting this field in
+errors thrown with <code><a href='abort.html'>abort()</a></code> within your package.</p></li>
 </ul>
 
-<p><code>env_label()</code> is exactly like <code>env_name()</code> but returns the memory
-address of anonymous environments as fallback.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>env_name</span><span class='op'>(</span><span class='va'>env</span><span class='op'>)</span>
-
-<span class='fu'>env_label</span><span class='op'>(</span><span class='va'>env</span><span class='op'>)</span></pre>
-
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>env</th>
-      <td><p>An environment.</p></td>
-    </tr>
-    </table>
 
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Some environments have specific names:</span>
-<span class='fu'>env_name</span><span class='op'>(</span><span class='fu'><a href='search_envs.html'>global_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "global"</div><div class='input'><span class='fu'>env_name</span><span class='op'>(</span><span class='fu'><a href='ns_env.html'>ns_env</a></span><span class='op'>(</span><span class='st'>"rlang"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "namespace:rlang"</div><div class='input'>
-<span class='co'># Anonymous environments don't have names but are labelled by their</span>
-<span class='co'># address in memory:</span>
-<span class='fu'>env_name</span><span class='op'>(</span><span class='fu'><a href='env.html'>env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] ""</div><div class='input'><span class='fu'>env_label</span><span class='op'>(</span><span class='fu'><a href='env.html'>env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "0x7f9dc4946518"</div></pre>
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

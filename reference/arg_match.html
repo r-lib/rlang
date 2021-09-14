@@ -241,10 +241,10 @@ mentioned in error messages as the source of the error. See the
 <span class='co'># Throws an informative error for mismatches:</span>
 <span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'>fn</span><span class='op'>(</span><span class='st'>"b"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Error in fn() : 
-#&gt;   <span style='color: #262626; background-color: #DADADA; font-weight: bold;'>`x`</span><span style='font-weight: bold;'> must be one of "foo" or "bar", not "b".</span>
+#&gt;   <span style='color: #262626; background-color: #DADADA;'>`x`</span> must be one of "foo" or "bar", not "b".
 #&gt; <span style='color: #00BBBB;'>ℹ</span> Did you mean "bar"?</div><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'>fn</span><span class='op'>(</span><span class='st'>"baz"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Error in fn() : 
-#&gt;   <span style='color: #262626; background-color: #DADADA; font-weight: bold;'>`x`</span><span style='font-weight: bold;'> must be one of "foo" or "bar", not "baz".</span>
+#&gt;   <span style='color: #262626; background-color: #DADADA;'>`x`</span> must be one of "foo" or "bar", not "baz".
 #&gt; <span style='color: #00BBBB;'>ℹ</span> Did you mean "bar"?</div><div class='input'>
 <span class='co'># Use the bare-bones version with explicit values for speed:</span>
 <span class='fu'>arg_match0</span><span class='op'>(</span><span class='st'>"bar"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"foo"</span>, <span class='st'>"bar"</span>, <span class='st'>"baz"</span><span class='op'>)</span><span class='op'>)</span>
@@ -257,7 +257,7 @@ mentioned in error messages as the source of the error. See the
 </div><div class='output co'>#&gt; [1] "bar"</div><div class='input'><span class='fu'>fn2</span><span class='op'>(</span><span class='st'>"bar"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "bar"</div><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'>fn3</span><span class='op'>(</span><span class='st'>"zoo"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Error in fn3() : 
-#&gt;   <span style='color: #262626; background-color: #DADADA; font-weight: bold;'>`zoo`</span><span style='font-weight: bold;'> must be one of "foo", "bar", or "baz", not "zoo".</span>
+#&gt;   <span style='color: #262626; background-color: #DADADA;'>`zoo`</span> must be one of "foo", "bar", or "baz", not "zoo".
 #&gt; <span style='color: #00BBBB;'>ℹ</span> Did you mean "foo"?</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

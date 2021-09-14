@@ -415,6 +415,9 @@
     <loc>https://rlang.r-lib.org/reference/local_options.html</loc>
   </url>
   <url>
+    <loc>https://rlang.r-lib.org/reference/local_use_cli.html</loc>
+  </url>
+  <url>
     <loc>https://rlang.r-lib.org/reference/missing.html</loc>
   </url>
   <url>
@@ -518,6 +521,9 @@
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/rlang_backtrace_on_error.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/rlang_error.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/rlib_trace_spec.html</loc>

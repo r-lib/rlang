@@ -45,7 +45,9 @@ power the error, warning, and message system in R.
 cnd() creates bare conditions that only inherit from
 condition.
 Conditions created with error_cnd(), warning_cnd(), and
-message_cnd() inherit from error, warning, or message.
+message_cnd() inherit from &quot;error&quot;, &quot;warning&quot;, or &quot;message&quot;.
+error_cnd() creates subclassed errors. See
+&quot;rlang_error&quot;.
 
 
 Use cnd_signal() to emit the relevant signal for a particular
@@ -170,7 +172,9 @@ power the error, warning, and message system in R.</p><ul>
 <li><p><code>cnd()</code> creates bare conditions that only inherit from
 <code>condition</code>.</p></li>
 <li><p>Conditions created with <code>error_cnd()</code>, <code>warning_cnd()</code>, and
-<code>message_cnd()</code> inherit from <code>error</code>, <code>warning</code>, or <code>message</code>.</p></li>
+<code>message_cnd()</code> inherit from <code>"error"</code>, <code>"warning"</code>, or <code>"message"</code>.</p></li>
+<li><p><code>error_cnd()</code> creates subclassed errors. See
+<code><a href='rlang_error.html'>"rlang_error"</a></code>.</p></li>
 </ul>
 
 <p>Use <code><a href='cnd_signal.html'>cnd_signal()</a></code> to emit the relevant signal for a particular
