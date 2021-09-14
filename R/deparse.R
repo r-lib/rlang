@@ -887,17 +887,27 @@ as_label <- function(x) {
     return("<empty>")
   }
 
-  switch(typeof(x),
+  switch(
+    typeof(x),
     NULL = "NULL",
     symbol = as_string(x),
     language = {
       if (is_data_pronoun(x)) {
-        data_pronoun_name(x) %||% "<unknown>"
-      } else {
-        name <- deparse_one(x)
-        name <- gsub("\n.*$", "...", name)
-        name
+        return(data_pronoun_name(x) %||% "<unknown>")
       }
+      if (call_print_type(x) %in% c("infix", "subset")) {
+        left <- expr_deparse(x[[2]], width = 29)
+        right <- expr_deparse(x[[3]], width = 28)
+        if (length(left) > 1) {
+          x[[2]] <- quote(...)
+        }
+        if (length(right) > 1) {
+          x[[3]] <- quote(...)
+        }
+      }
+      name <- deparse_one(x)
+      name <- gsub("\n.*$", "...", name)
+      name
     },
     if (is_bare_atomic(x, n = 1)) {
       name <- expr_text(x)

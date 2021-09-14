@@ -603,3 +603,32 @@ test_that("matrices and arrays are formatted (#383)", {
   expect_equal(as_label(arr), "<int[,1,3]>")
   expect_equal(expr_deparse(arr), "<int[,1,3]: 1L, 2L, 3L>")
 })
+
+test_that("infix operators are labelled (#956, r-lib/testthat#1432)", {
+  expect_equal(
+    as_label(quote({ 1; 2} + 3)),
+    "... + 3"
+  )
+
+  expect_equal(
+    as_label(quote(`+`(1, 2, 3))),
+    "`+`(1, 2, 3)"
+  )
+
+  expect_equal(
+    as_label(quote(
+      arg + arg + arg + arg + arg + arg + arg + arg + arg + arg + arg + arg
+    )),
+    "... + arg"
+  )
+
+  expect_equal(
+    as_label(quote(X[key1 == "val1" & key2 == "val2"]$key3 & foobarbaz(foobarbaz(foobarbaz(foobarbaz(foobarbaz(foobarbaz(foobarbaz())))))))),
+    "... & ..."
+  )
+
+  expect_equal(
+    as_label(quote(X[key1 == "val1"]$key3 & foobarbaz(foobarbaz()))),
+    "X[key1 == \"val1\"]$key3 & foobarbaz(foobarbaz())"
+  )
+})
