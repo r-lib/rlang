@@ -667,10 +667,13 @@ test_that("backtraces don't contain inlined objects (#1069, r-lib/testthat#1223)
   local_options(
     rlang_trace_format_srcrefs = FALSE
   )
+
   e <- environment()
-  f <- function(...) g()
-  g <- function() h()
+  f <- function(...) do.call("g", list(runif(1e6) + 0))
+  g <- function(...) h()
   h <- function() trace_back(e)
   trace <- inject(f(!!list()))
+
   expect_snapshot(summary(trace))
+  expect_lt(object.size(trace$call), 50000)
 })
