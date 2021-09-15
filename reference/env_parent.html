@@ -219,7 +219,7 @@ of environments for <code>env_parents()</code>.</p>
 #&gt; attr(,"name")
 #&gt; [1] "package:rlang"
 #&gt; attr(,"path")
-#&gt; [1] "/home/runner/work/_temp/Library/rlang"</div><div class='input'>
+#&gt; [1] "/Users/runner/work/_temp/Library/rlang"</div><div class='input'>
 <span class='co'># Or the tail environment with env_tail():</span>
 <span class='fu'>env_tail</span><span class='op'>(</span><span class='fu'><a href='search_envs.html'>global_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;environment: base&gt;</div><div class='input'>
@@ -227,7 +227,7 @@ of environments for <code>env_parents()</code>.</p>
 <span class='co'># current evaluation frame. If called at top-level (the global</span>
 <span class='co'># frame), the following two expressions are equivalent:</span>
 <span class='fu'>env_parent</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;environment: 0x55f70f903030&gt;</div><div class='input'><span class='fu'>env_parent</span><span class='op'>(</span><span class='fu'><a href='search_envs.html'>base_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;environment: 0x7ffbaab2bbe0&gt;</div><div class='input'><span class='fu'>env_parent</span><span class='op'>(</span><span class='fu'><a href='search_envs.html'>base_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;environment: R_EmptyEnv&gt;</div><div class='input'>
 <span class='co'># This default is more handy when called within a function. In this</span>
 <span class='co'># case, the enclosure environment of the function is returned</span>
