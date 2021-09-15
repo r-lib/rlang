@@ -40,7 +40,7 @@
        12.     \-rlang:::c()
        13.       +-base::withCallingHandlers(...)
        14.       +-rlang::with_abort(f())
-       15.       | \-base::withCallingHandlers(...)
+       15.       | \-base::withCallingHandlers(expr, error = `<fn>`)
        16.       \-rlang:::f()
        17.         \-rlang:::g()
        18.           \-rlang:::h()

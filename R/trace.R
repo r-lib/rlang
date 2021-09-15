@@ -92,6 +92,7 @@ trace_back <- function(top = NULL, bottom = NULL) {
   calls <- as.list(sys.calls()[idx])
 
   calls <- map(calls, call_fix_car)
+  calls <- map(calls, call_zap_inline)
 
   context <- map2(calls, seq_along(calls), call_trace_context)
   context <- inject(vec_rbind(!!!context))

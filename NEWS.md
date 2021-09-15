@@ -34,6 +34,9 @@
 
 ## Features and bugfixes
 
+* Backtraces no longer contain inlined objects to avoid performance
+  issues in edge cases (#1069, r-lib/testthat#1223).
+
 * Condition constructors now check for duplicate field names (#1268).
 
 * `as_label()` now better handles calls to infix operators (#956,

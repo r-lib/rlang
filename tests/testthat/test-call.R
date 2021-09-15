@@ -550,3 +550,26 @@ test_that("is_call_infix() detects infix operators", {
   expect_true(is_call_infix(quote(a + b)))
   expect_false(is_call_infix(quote(+b)))
 })
+
+test_that("call_zap_inline() works", {
+  expect_equal(
+    call_zap_inline(quote(foo(1:2))),
+    quote(foo(1:2))
+  )
+  expect_equal(
+    call_zap_inline(expr(foo(!!(1:2)))),
+    quote(foo(`<int>`))
+  )
+
+  expect_equal(
+    call_zap_inline(quote(function() 1)),
+    quote(function() 1)
+  )
+
+  call <- expr(function(x = NULL) foo(!!(1:2)))
+  call[[2]]$x <- 1:2
+  expect_equal(
+    call_zap_inline(call),
+    quote(function(x = `<int>`) foo(`<int>`))
+  )
+})
