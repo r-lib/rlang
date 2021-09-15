@@ -34,6 +34,11 @@
 
 ## Features and bugfixes
 
+* Functions defined in the global environments or in local execution
+  environments are now displayed with a space separator in backtraces
+  instead of `::` and `:::`. This avoids making it seem like these
+  frame calls are valid R code ready to be typed in (#902).
+
 * Backtraces no longer contain inlined objects to avoid performance
   issues in edge cases (#1069, r-lib/testthat#1223).
 

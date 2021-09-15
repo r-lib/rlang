@@ -179,8 +179,10 @@ call_trace_context <- function(call, fn) {
     namespace <- ns_env_name(top)
     if (ns_exports_has(top, nm)) {
       scope <- "::"
-    } else {
+    } else if (env_has(top, nm)) {
       scope <- ":::"
+    } else {
+      scope <- "local"
     }
   } else {
     namespace <- NA
@@ -796,35 +798,32 @@ trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL) {
 
 # FIXME: Add something like call_deparse_line()
 trace_call_text <- function(call, collapsed, namespace, scope) {
-  if (is_call(call) && is_symbol(call[[1]])) {
-    op <- switch(
-      scope,
-      global = "::",
-      local = ":::",
-      scope
-    )
-    if (is_string(scope, "global")) {
-      namespace <- "global"
-    }
-    if (!is_na(namespace)) {
-      call[[1]] <- call(op, sym(namespace), call[[1]])
-    }
-  }
-
-  if (!collapsed) {
-    return(as_label(call))
-  }
-
   if (is_call2(call, "%>%")) {
     call <- call
   } else if (length(call) > 1L) {
     call <- call2(node_car(call), quote(...))
   }
 
-  text <- as_label(call)
-  n_collapsed_text <- sprintf(" ... +%d", collapsed)
+  if (is_call(call) && is_symbol(call[[1]])) {
+    if (scope %in% c("::", ":::") && !is_na(namespace)) {
+      call[[1]] <- call(scope, sym(namespace), call[[1]])
+    }
+  }
 
-  format_collapsed(paste0("[ ", text, " ]"), collapsed)
+  text <- as_label(call)
+
+  if (is_string(scope, "global")) {
+    text <- paste0("global ", text)
+  } else if (is_string(scope, "local") && !is_na(namespace)) {
+    text <- paste0(namespace, " ", text)
+  }
+
+  if (collapsed) {
+    n_collapsed_text <- sprintf(" ... +%d", collapsed)
+    text <- format_collapsed(paste0("[ ", text, " ]"), collapsed)
+  }
+
+  text
 }
 
 src_loc <- function(srcref) {
