@@ -10,22 +10,14 @@ call_args(call)
 call_args_names(call)
 }
 \arguments{
-\item{call}{Can be a call or a quosure that wraps a call.}
+\item{call}{A defused function call.}
 }
 \value{
 A named list of arguments.
 }
 \description{
-Extract arguments from a call
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
-\section{Life cycle}{
-
-
-In rlang 0.2.0, \code{lang_args()} and \code{lang_args_names()} were
-deprecated and renamed to \code{call_args()} and \code{call_args_names()}.
-See lifecycle section in \code{\link[=call2]{call2()}} for more about this change.
-}
-
 \examples{
 call <- quote(f(a, b))
 
@@ -44,3 +36,4 @@ call_args_names(call)
 \seealso{
 \code{\link[=fn_fmls]{fn_fmls()}} and \code{\link[=fn_fmls_names]{fn_fmls_names()}}
 }
+\keyword{internal}

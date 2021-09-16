@@ -7,7 +7,7 @@
 call_standardise(call, env = caller_env())
 }
 \arguments{
-\item{call}{Can be a call or a quosure that wraps a call.}
+\item{call}{A defused function call.}
 
 \item{env}{The environment where to find the definition of the
 function quoted in \code{call} in case \code{call} is not wrapped in a

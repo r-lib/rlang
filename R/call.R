@@ -466,6 +466,71 @@ is_call_infix <- function(x) {
   )
 }
 
+#' What is the parser type of a call?
+#' @return A string, one of:
+#' - `""`
+#' - `"break"`
+#' - `"next"`
+#' - `"while"`
+#' - `"for"`
+#' - `"repeat"`
+#' - `"if"`
+#' - `"function"`
+#' - `"?"`
+#' - `"?unary"`
+#' - `"<-"`
+#' - `"<<-"`
+#' - `"="`
+#' - `":="`
+#' - `"~"`
+#' - `"~unary"`
+#' - `"|"`
+#' - `"||"`
+#' - `"&"`
+#' - `"&&"`
+#' - `"!"`
+#' - `"!!!"`
+#' - `">"`
+#' - `">="`
+#' - `"<"`
+#' - `"<="`
+#' - `"=="`
+#' - `"!="`
+#' - `"+"`
+#' - `"-"`
+#' - `"*"`
+#' - `"/"`
+#' - `"%%"`
+#' - `"special"`
+#' - `":"`
+#' - `"!!"`
+#' - `"+unary"`
+#' - `"-unary"`
+#' - `"^"`
+#' - `"$"`
+#' - `"@"`
+#' - `"::"`
+#' - `":::"`
+#' - `"("`
+#' - `"["`
+#' - `"[["`
+#' - `"{"`
+#' @keywords internal
+#' @noRd
+call_parse_type <- function(call) {
+  .Call(ffi_which_operator, call)
+}
+call_has_precedence <- function(call, parent_call, side = NULL) {
+  side <- switch(
+    side %||% "none",
+    lhs = -1L,
+    none = 0L,
+    rhs = 1L,
+    abort("Unexpected `side` value in `call_has_precendence()`.")
+  )
+  .Call(ffi_call_has_precedence, call, parent_call, side)
+}
+
 
 #' Modify the arguments of a call
 #'
@@ -760,29 +825,24 @@ call_match <- function(call = NULL,
 
 #' Extract function from a call
 #'
-#' If a frame or formula, the function will be retrieved from the
-#' associated environment. Otherwise, it is looked up in the calling
-#' frame.
+#' @description
+#' `r lifecycle::badge("experimental")`
 #'
-#' @param call Can be a call or a quosure that wraps a call.
+#' If `call` is a quosure or formula, the function will be retrieved
+#' from the associated environment. Otherwise, it is looked up in the
+#' calling frame.
+#'
+#' @param call A defused function call.
 #' @param env The environment where to find the definition of the
 #'   function quoted in `call` in case `call` is not wrapped in a
 #'   quosure.
-#' @export
 #' @seealso [call_name()]
 #' @examples
 #' # Extract from a quoted call:
 #' call_fn(quote(matrix()))
-#' call_fn(quo(matrix()))
-#'
-#' # Extract the calling function
-#' test <- function() call_fn(call_frame())
-#' test()
+#' @keywords internal
+#' @export
 call_fn <- function(call, env = caller_env()) {
-  if (is_frame(call)) {
-    return(call$fn)
-  }
-
   expr <- get_expr(call)
   env <- get_env(call, env)
 
@@ -801,18 +861,19 @@ call_fn <- function(call, env = caller_env()) {
 
 #' Extract function name or namespace of a call
 #'
+#' `r lifecycle::badge("experimental")`
+#'
 #' @inheritParams call_fn
 #' @return A string with the function name, or `NULL` if the function
 #'   is anonymous.
 #' @seealso [call_fn()]
-#' @export
 #' @examples
 #' # Extract the function name from quoted calls:
 #' call_name(quote(foo(bar)))
 #' call_name(quo(foo(bar)))
 #'
 #' # Namespaced calls are correctly handled:
-#' call_name(~base::matrix(baz))
+#' call_name(quote(base::matrix(baz)))
 #'
 #' # Anonymous and subsetted functions return NULL:
 #' call_name(quote(foo$bar()))
@@ -824,6 +885,8 @@ call_fn <- function(call, env = caller_env()) {
 #'
 #' # If not namespaced, call_ns() returns NULL:
 #' call_ns(quote(bar()))
+#' @keywords internal
+#' @export
 call_name <- function(call) {
   if (is_quosure(call) || is_formula(call)) {
     call <- get_expr(call)
@@ -863,16 +926,11 @@ call_ns <- function(call) {
 
 #' Extract arguments from a call
 #'
-#' @section Life cycle:
-#'
-#' In rlang 0.2.0, `lang_args()` and `lang_args_names()` were
-#' deprecated and renamed to `call_args()` and `call_args_names()`.
-#' See lifecycle section in [call2()] for more about this change.
+#' `r lifecycle::badge("experimental")`
 #'
 #' @inheritParams call_fn
 #' @return A named list of arguments.
 #' @seealso [fn_fmls()] and [fn_fmls_names()]
-#' @export
 #' @examples
 #' call <- quote(f(a, b))
 #'
@@ -887,6 +945,8 @@ call_ns <- function(call) {
 #' # When the arguments are unnamed, a vector of empty strings is
 #' # supplied (rather than NULL):
 #' call_args_names(call)
+#' @keywords internal
+#' @export
 call_args <- function(call) {
   call <- get_expr(call)
   if (!is_call(call)) {
@@ -951,71 +1011,6 @@ is_namespaced_symbol <- function(x, ns = NULL, private = NULL) {
   } else {
     identical(head, namespace_sym)
   }
-}
-
-#' What is the parser type of a call?
-#' @return A string, one of:
-#' - `""`
-#' - `"break"`
-#' - `"next"`
-#' - `"while"`
-#' - `"for"`
-#' - `"repeat"`
-#' - `"if"`
-#' - `"function"`
-#' - `"?"`
-#' - `"?unary"`
-#' - `"<-"`
-#' - `"<<-"`
-#' - `"="`
-#' - `":="`
-#' - `"~"`
-#' - `"~unary"`
-#' - `"|"`
-#' - `"||"`
-#' - `"&"`
-#' - `"&&"`
-#' - `"!"`
-#' - `"!!!"`
-#' - `">"`
-#' - `">="`
-#' - `"<"`
-#' - `"<="`
-#' - `"=="`
-#' - `"!="`
-#' - `"+"`
-#' - `"-"`
-#' - `"*"`
-#' - `"/"`
-#' - `"%%"`
-#' - `"special"`
-#' - `":"`
-#' - `"!!"`
-#' - `"+unary"`
-#' - `"-unary"`
-#' - `"^"`
-#' - `"$"`
-#' - `"@"`
-#' - `"::"`
-#' - `":::"`
-#' - `"("`
-#' - `"["`
-#' - `"[["`
-#' - `"{"`
-#' @keywords internal
-#' @noRd
-call_parse_type <- function(call) {
-  .Call(ffi_which_operator, call)
-}
-call_has_precedence <- function(call, parent_call, side = NULL) {
-  side <- switch(
-    side %||% "none",
-    lhs = -1L,
-    none = 0L,
-    rhs = 1L,
-    abort("Unexpected `side` value in `call_has_precendence()`.")
-  )
-  .Call(ffi_call_has_precedence, call, parent_call, side)
 }
 
 call_type <- function(x) {
