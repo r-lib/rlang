@@ -244,6 +244,7 @@ test_that("can set `entrace()` as a global handler", {
 
   code <- '
   {
+    suppressMessages(testthat::local_reproducible_output())
     globalCallingHandlers(error = rlang::entrace)
     f <- function() g()
     g <- function() h()
@@ -255,6 +256,7 @@ test_that("can set `entrace()` as a global handler", {
 
   code <- '
   {
+    suppressMessages(testthat::local_reproducible_output())
     globalCallingHandlers(error = function(...) rlang::entrace(..., bottom = environment()))
     f <- function() g()
     g <- function() h()

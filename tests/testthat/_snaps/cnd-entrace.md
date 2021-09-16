@@ -108,10 +108,10 @@
     Output
       Error in `+`: non-numeric argument to binary operator
       Backtrace:
-          ▆
-       1. └─global f()
-       2.   └─global g()
-       3.     └─global h()
+          x
+       1. \-global f()
+       2.   \-global g()
+       3.     \-global h()
       Execution halted
 
 ---
@@ -121,9 +121,9 @@
     Output
       Error in `+`: non-numeric argument to binary operator
       Backtrace:
-          ▆
-       1. └─global f()
-       2.   └─global g()
-       3.     └─global h()
+          x
+       1. \-global f()
+       2.   \-global g()
+       3.     \-global h()
       Execution halted
 
