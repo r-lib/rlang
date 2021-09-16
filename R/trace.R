@@ -793,6 +793,26 @@ trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL) {
   tree <- vec_slice(tree, tree$visible)
   tree$children <- map(tree$children, intersect, tree$id)
 
+  if (has_crayon()) {
+    # Detect runs of namespaces/global
+    ns <- tree$namespace
+    ns <- ifelse(is.na(ns) & tree$scope == "global", "global", ns)
+    ns[[1]] <- "_root"
+    starts <- detect_run_starts(ns)
+
+    # Embolden first occurrences in runs of namespaces/global
+    tree$call_text <- map2_chr(tree$call_text, starts, function(text, start) {
+      if (is_true(start)) {
+        text <- sub(
+          "^([a-zA-Z]+)(::|:::| )",
+          sprintf("%s\\1%s\\2", open_bold(), close_bold()),
+          text
+        )
+      }
+      text
+    })
+  }
+
   tree
 }
 

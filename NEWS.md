@@ -34,6 +34,8 @@
 
 ## Features and bugfixes
 
+* Changes in namespaces are now emboldened in backtraces (#946).
+
 * Functions defined in the global environments or in local execution
   environments are now displayed with a space separator in backtraces
   instead of `::` and `:::`. This avoids making it seem like these

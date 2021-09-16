@@ -677,3 +677,25 @@ test_that("backtraces don't contain inlined objects (#1069, r-lib/testthat#1223)
   expect_snapshot(summary(trace))
   expect_lt(object.size(trace$call), 50000)
 })
+
+test_that("runs of namespaces are embolden (#946)", {
+  local_options(
+    rlang_trace_format_srcrefs = FALSE,
+    rlang_trace_top_env = current_env()
+  )
+  f <- function() g()
+  g <- function() h()
+  h <- function() identity(1 + "")
+  err <- catch_cnd(with_abort(f()), "error")
+
+  expect_snapshot({
+    with_options(
+      crayon.enabled = TRUE,
+      print(err)
+    )
+    with_options(
+      crayon.enabled = TRUE,
+      summary(err)
+    )
+  })
+})
