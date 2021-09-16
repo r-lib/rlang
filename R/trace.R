@@ -115,6 +115,7 @@ trace_find_bottom <- function(bottom, frames) {
   if (is_null(bottom)) {
     return(seq_len(sys.parent(2L)))
   }
+  local_error_call("caller")
 
   if (is_environment(bottom)) {
     top <- detect_index(frames, is_reference, bottom)
@@ -122,17 +123,29 @@ trace_find_bottom <- function(bottom, frames) {
       if (is_reference(bottom, global_env())) {
         return(int())
       }
-      abort("Can't find `bottom` on the call tree")
+      abort(sprintf(
+        "Can't find %s on the call tree.",
+        format_arg("bottom")
+      ))
     }
 
     return(seq_len(top))
   }
 
   if (is_integerish(bottom, n = 1)) {
+    if (bottom < 0) {
+      abort(sprintf(
+        "%s must be a positive integer.",
+        format_arg("bottom")
+      ))
+    }
     return(seq_len(sys.parent(bottom + 1L)))
   }
 
-  abort("`bottom` must be `NULL`, a frame environment, or an integer")
+  abort(sprintf(
+    "%s must be `NULL`, a frame environment, or an integer.",
+    format_arg("bottom")
+  ))
 }
 
 # Work around R bug causing promises to leak in frame calls

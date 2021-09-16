@@ -699,3 +699,7 @@ test_that("runs of namespaces are embolden (#946)", {
     )
   })
 })
+
+test_that("`bottom` must be a positive integer", {
+  expect_snapshot((expect_error(trace_back(bottom = -1))))
+})

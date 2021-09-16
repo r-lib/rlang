@@ -1062,3 +1062,11 @@
       [90m 12. [39m    \-rlang h()
       [90m 13. [39m      \-[1mbase[22m::identity(1 + "")
 
+# `bottom` must be a positive integer
+
+    Code
+      (expect_error(trace_back(bottom = -1)))
+    Output
+      <error/rlang_error>
+      Error in `trace_back()`: `bottom` must be a positive integer.
+
