@@ -25,18 +25,16 @@
 #' @seealso [with_abort()] to promote conditions to rlang errors.
 #'   [cnd_entrace()] to manually add a backtrace to a condition.
 #' @examples
+#' quote({  # Not run
+#'
 #' # Set `entrace()` globally in your RProfile
 #' globalCallingHandlers(error = rlang::entrace)
 #'
-#' if (FALSE) {  # Not run
-#'
 #' # On older R versions which don't feature `globalCallingHandlers`,
 #' # set the error handler like this:
-#' if (requireNamespace("rlang", quietly = TRUE)) {
-#'   options(error = rlang::entrace)
-#' }
+#' options(error = rlang::entrace)
 #'
-#' }
+#' })
 #' @export
 entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
   check_dots_empty0(...)
