@@ -12,11 +12,11 @@
       Error in `h()`: Error message
       Backtrace:
           x
-       1. \-global::f()
-       2.   +-base::tryCatch(g())
-       3.   | \-base:::tryCatchList(expr, classes, parentenv, handlers)
-       4.   \-global::g()
-       5.     \-global::h()
+       1. \-global f()
+       2.   +-base::tryCatch(...)
+       3.   | \-base tryCatchList(...)
+       4.   \-global g()
+       5.     \-global h()
       Execution halted
     Code
       cat_line(reminder)
@@ -28,9 +28,9 @@
     Output
       Error in `h()`: Error message
       Backtrace:
-       1. global::f()
-       4. global::g()
-       5. global::h()
+       1. global f()
+       4. global g()
+       5. global h()
       Execution halted
     Code
       cat_line(collapse)
@@ -38,10 +38,10 @@
       Error in `h()`: Error message
       Backtrace:
           x
-       1. \-global::f()
+       1. \-global f()
        2.   +-[ base::tryCatch(...) ] with 1 more call
-       4.   \-global::g()
-       5.     \-global::h()
+       4.   \-global g()
+       5.     \-global h()
       Execution halted
     Code
       cat_line(full)
@@ -49,11 +49,11 @@
       Error in `h()`: Error message
       Backtrace:
           x
-       1. \-global::f()
-       2.   +-base::tryCatch(g())
-       3.   | \-base:::tryCatchList(expr, classes, parentenv, handlers)
-       4.   \-global::g()
-       5.     \-global::h()
+       1. \-global f()
+       2.   +-base::tryCatch(...)
+       3.   | \-base tryCatchList(...)
+       4.   \-global g()
+       5.     \-global h()
       Execution halted
     Code
       cat_line(rethrown_interactive)
@@ -67,15 +67,15 @@
       Error in `h()`: Error message
       Backtrace:
           x
-       1. +-base::tryCatch(f(), error = function(cnd) rlang::cnd_signal(cnd))
-       2. | \-base:::tryCatchList(expr, classes, parentenv, handlers)
-       3. |   \-base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-       4. |     \-base:::doTryCatch(return(expr), name, parentenv, handler)
-       5. \-global::f()
-       6.   +-base::tryCatch(g())
-       7.   | \-base:::tryCatchList(expr, classes, parentenv, handlers)
-       8.   \-global::g()
-       9.     \-global::h()
+       1. +-base::tryCatch(...)
+       2. | \-base tryCatchList(...)
+       3. |   \-base tryCatchOne(...)
+       4. |     \-base doTryCatch(...)
+       5. \-global f()
+       6.   +-base::tryCatch(...)
+       7.   | \-base tryCatchList(...)
+       8.   \-global g()
+       9.     \-global h()
       Execution halted
 
 # empty backtraces are not printed
@@ -95,7 +95,7 @@
     Output
       Error in `f()`: foo
       Backtrace:
-       1. global::f()
+       1. global f()
       Execution halted
     Code
       cat_line(full_depth_1)
@@ -103,7 +103,7 @@
       Error in `f()`: foo
       Backtrace:
           x
-       1. \-global::f()
+       1. \-global f()
       Execution halted
 
 # parent errors are not displayed in error message and backtrace
@@ -126,16 +126,16 @@
         foo
       Backtrace:
            x
-        1. \-global::a()
-        2.   \-global::b()
-        3.     \-global::c()
+        1. \-global a()
+        2.   \-global b()
+        3.     \-global c()
         4.       +-base::tryCatch(...)
-        5.       | \-base:::tryCatchList(expr, classes, parentenv, handlers)
-        6.       |   \-base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-        7.       |     \-base:::doTryCatch(return(expr), name, parentenv, handler)
-        8.       \-global::f()
-        9.         \-global::g()
-       10.           \-global::h()
+        5.       | \-base tryCatchList(...)
+        6.       |   \-base tryCatchOne(...)
+        7.       |     \-base doTryCatch(...)
+        8.       \-global f()
+        9.         \-global g()
+       10.           \-global h()
       Execution halted
 
 # backtrace reminder is displayed when called from `last_error()`
@@ -147,10 +147,10 @@
       <error/rlang_error>
       Error in `h()`: foo
       Backtrace:
-        1. rlang:::catch_error(f())
-        9. rlang:::f()
-       10. rlang:::g()
-       11. rlang:::h()
+        1. rlang:::catch_error(...)
+        9. rlang f()
+       10. rlang g()
+       11. rlang h()
     Code
       # From `last_error()`
       print(last_error())
@@ -158,10 +158,10 @@
       <error/rlang_error>
       Error in `h()`: foo
       Backtrace:
-        1. rlang:::catch_error(f())
-        9. rlang:::f()
-       10. rlang:::g()
-       11. rlang:::h()
+        1. rlang:::catch_error(...)
+        9. rlang f()
+       10. rlang g()
+       11. rlang h()
       Run `rlang::last_trace()` to see the full context.
     Code
       # Saved from `last_error()`
@@ -173,10 +173,10 @@
       <error/rlang_error>
       Error in `h()`: foo
       Backtrace:
-        1. rlang:::catch_error(f())
-        9. rlang:::f()
-       10. rlang:::g()
-       11. rlang:::h()
+        1. rlang:::catch_error(...)
+        9. rlang f()
+       10. rlang g()
+       11. rlang h()
       Run `rlang::last_trace()` to see the full context.
     Code
       # Saved from `last_error()`, but no longer last
@@ -188,10 +188,10 @@
       <error/rlang_error>
       Error in `h()`: foo
       Backtrace:
-        1. rlang:::catch_error(f())
-        9. rlang:::f()
-       10. rlang:::g()
-       11. rlang:::h()
+        1. rlang:::catch_error(...)
+        9. rlang f()
+       10. rlang g()
+       11. rlang h()
       Run `rlang::last_trace()` to see the full context.
 
 # capture context doesn't leak into low-level backtraces
@@ -211,10 +211,10 @@
       Caused by error in `failing()`: 
         low-level
       Backtrace:
-        1. rlang:::catch_error(f())
-        9. rlang:::f()
-       10. rlang:::g()
-       11. rlang:::h()
+        1. rlang:::catch_error(...)
+        9. rlang f()
+       10. rlang g()
+       11. rlang h()
     Code
       # Wrapped case
       {
@@ -229,10 +229,10 @@
       Caused by error in `failing()`: 
         low-level
       Backtrace:
-        1. rlang:::catch_error(f())
-        9. rlang:::f()
-       10. rlang:::g()
-       11. rlang:::h()
+        1. rlang:::catch_error(...)
+        9. rlang f()
+       10. rlang g()
+       11. rlang h()
     Code
       # FIXME?
       {
@@ -247,10 +247,10 @@
       Caused by error in `failing()`: 
         low-level
       Backtrace:
-        1. rlang:::catch_error(f())
-        9. rlang:::f()
-       10. rlang:::g()
-       11. rlang:::h()
+        1. rlang:::catch_error(...)
+        9. rlang f()
+       10. rlang g()
+       11. rlang h()
     Code
       # withCallingHandlers()
       print(err_wch)
@@ -262,9 +262,9 @@
         foo
       Backtrace:
         1. rlang:::catch_error(...)
-       10. rlang:::foo()
-       11. rlang:::bar(cnd)
-       12. rlang:::baz(cnd)
+       10. rlang foo()
+       11. rlang bar(...)
+       12. rlang baz(...)
 
 # abort() displays call in error prefix
 
@@ -355,13 +355,13 @@
       Caused by error in `h()`: 
         Low-level message
       Backtrace:
-        1. testthat::expect_error(foo())
-        7. rlang:::foo()
-        8. rlang:::bar()
-        9. rlang:::baz()
-       12. rlang:::f()
-       13. rlang:::g()
-       14. rlang:::h()
+        1. testthat::expect_error(...)
+        7. rlang foo()
+        8. rlang bar()
+        9. rlang baz()
+       12. rlang f()
+       13. rlang g()
+       14. rlang h()
     Code
       summary(err)
     Output
@@ -372,20 +372,20 @@
         Low-level message
       Backtrace:
            x
-        1. +-testthat::expect_error(foo())
+        1. +-testthat::expect_error(...)
         2. | \-testthat:::expect_condition_matching(...)
         3. |   \-testthat:::quasi_capture(...)
-        4. |     +-testthat:::.capture(...)
+        4. |     +-testthat .capture(...)
         5. |     | \-base::withCallingHandlers(...)
-        6. |     \-rlang::eval_bare(quo_get_expr(.quo), quo_get_env(.quo))
-        7. \-rlang:::foo()
-        8.   \-rlang:::bar()
-        9.     \-rlang:::baz()
-       10.       +-rlang:::wch(...)
-       11.       | \-base::withCallingHandlers(expr, ...)
-       12.       \-rlang:::f()
-       13.         \-rlang:::g()
-       14.           \-rlang:::h()
+        6. |     \-rlang::eval_bare(...)
+        7. \-rlang foo()
+        8.   \-rlang bar()
+        9.     \-rlang baz()
+       10.       +-rlang wch(...)
+       11.       | \-base::withCallingHandlers(...)
+       12.       \-rlang f()
+       13.         \-rlang g()
+       14.           \-rlang h()
 
 # `abort()` uses older bullets formatting by default
 

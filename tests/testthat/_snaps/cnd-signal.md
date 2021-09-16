@@ -5,10 +5,10 @@
     Output
       <error/rlang_error_foobar>
       Backtrace:
-        1. rlang::catch_cnd(f())
-        8. rlang:::f()
-        9. rlang:::g()
-       10. rlang:::h()
+        1. rlang::catch_cnd(...)
+        8. rlang f()
+        9. rlang g()
+       10. rlang h()
 
 # `inform()` and `warn()` with recurrent footer handle newlines correctly
 

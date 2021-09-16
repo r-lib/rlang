@@ -9,13 +9,13 @@
       Caused by error in `h()`: 
         Low-level message
       Backtrace:
-        1. base::identity(catch_error(a()))
-       10. rlang:::a()
-       11. rlang:::b()
-       12. rlang:::c()
-       16. rlang:::f()
-       17. rlang:::g()
-       18. rlang:::h()
+        1. base::identity(...)
+       10. rlang a()
+       11. rlang b()
+       12. rlang c()
+       16. rlang f()
+       17. rlang g()
+       18. rlang h()
     Code
       summary(err)
     Output
@@ -26,24 +26,24 @@
         Low-level message
       Backtrace:
            x
-        1. +-base::identity(catch_error(a()))
-        2. +-rlang:::catch_error(a())
-        3. | \-rlang::catch_cnd(expr, "error")
+        1. +-base::identity(...)
+        2. +-rlang:::catch_error(...)
+        3. | \-rlang::catch_cnd(...)
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
-        6. |   | \-base:::tryCatchList(expr, classes, parentenv, handlers)
-        7. |   |   \-base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-        8. |   |     \-base:::doTryCatch(return(expr), name, parentenv, handler)
-        9. |   \-base::force(expr)
-       10. \-rlang:::a()
-       11.   \-rlang:::b()
-       12.     \-rlang:::c()
+        6. |   | \-base tryCatchList(...)
+        7. |   |   \-base tryCatchOne(...)
+        8. |   |     \-base doTryCatch(...)
+        9. |   \-base::force(...)
+       10. \-rlang a()
+       11.   \-rlang b()
+       12.     \-rlang c()
        13.       +-base::withCallingHandlers(...)
-       14.       +-rlang::with_abort(f())
-       15.       | \-base::withCallingHandlers(expr, error = `<fn>`)
-       16.       \-rlang:::f()
-       17.         \-rlang:::g()
-       18.           \-rlang:::h()
+       14.       +-rlang::with_abort(...)
+       15.       | \-base::withCallingHandlers(...)
+       16.       \-rlang f()
+       17.         \-rlang g()
+       18.           \-rlang h()
 
 # rlang and base errors are properly entraced
 
@@ -56,17 +56,17 @@
       <error/rlang_error>
       Error: foo
       Backtrace:
-       1. global::f()
-       2. global::g()
-       3. global::h()
+       1. global f()
+       2. global g()
+       3. global h()
       Run `rlang::last_trace()` to see the full context.
       <error/rlang_error>
       Error: foo
       Backtrace:
           x
-       1. \-global::f()
-       2.   \-global::g()
-       3.     \-global::h()
+       1. \-global f()
+       2.   \-global g()
+       3.     \-global h()
     Code
       cat_line(rlang)
     Output
@@ -75,15 +75,15 @@
       <error/rlang_error>
       Error in `h()`: foo
       Backtrace:
-       1. global::f()
-       2. global::g()
-       3. global::h()
+       1. global f()
+       2. global g()
+       3. global h()
       Run `rlang::last_trace()` to see the full context.
       <error/rlang_error>
       Error in `h()`: foo
       Backtrace:
           x
-       1. \-global::f()
-       2.   \-global::g()
-       3.     \-global::h()
+       1. \-global f()
+       2.   \-global g()
+       3.     \-global h()
 
