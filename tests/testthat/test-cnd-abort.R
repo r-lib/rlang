@@ -344,7 +344,8 @@ test_that("can disable error call inference for unexported functions", {
 
 test_that("error call flag is stripped", {
   e <- env(.__error_call__. = quote(foo(bar)))
-  expect_equal(error_call(e), quote(foo()))
+  expect_equal(error_call(e), quote(foo(bar)))
+  expect_equal(format_error_call(e), "`foo()`")
 })
 
 test_that("NSE doesn't interfere with error call contexts", {
@@ -357,9 +358,9 @@ test_that("NSE doesn't interfere with error call contexts", {
 })
 
 test_that("error_call() requires a symbol in function position", {
-  expect_null(error_call(quote(foo$bar())))
-  expect_null(error_call(quote((function() NULL)())))
-  expect_null(error_call(call2(function() NULL)))
+  expect_null(format_error_call(quote(foo$bar())))
+  expect_null(format_error_call(quote((function() NULL)())))
+  expect_null(format_error_call(call2(function() NULL)))
 })
 
 test_that("error_call() preserves `if` (r-lib/testthat#1429)", {
@@ -367,9 +368,8 @@ test_that("error_call() preserves `if` (r-lib/testthat#1429)", {
 
   expect_equal(
     error_call(call),
-    quote(if (foobar) ...)
+    call
   )
-
   expect_equal(
     format_error_call(call),
     "`if (foobar) ...`"
@@ -379,7 +379,7 @@ test_that("error_call() preserves `if` (r-lib/testthat#1429)", {
 test_that("error_call() and format_error_call() preserve special syntax ops", {
   expect_equal(
     error_call(quote(1 + 2)),
-    quote(`+`())
+    quote(1 + 2)
   )
   expect_equal(
     format_error_call(quote(1 + 2)),
@@ -388,7 +388,7 @@ test_that("error_call() and format_error_call() preserve special syntax ops", {
 
   expect_equal(
     error_call(quote(for (x in y) NULL)),
-    quote(`for`())
+    quote(for (x in y) NULL)
   )
   expect_equal(
     format_error_call(quote(for (x in y) NULL)),
@@ -459,4 +459,9 @@ test_that("headers and body are stored in respective fields", {
 test_that("`abort()` uses older bullets formatting by default", {
   local_use_cli(format = FALSE)
   expect_snapshot_error(abort(c("foo", "bar")))
+})
+
+test_that("abort() preserves `call`", {
+  err <- catch_cnd(abort("foo", call = quote(1 + 2)), "error")
+  expect_equal(err$call, quote(1 + 2))
 })

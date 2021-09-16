@@ -762,6 +762,16 @@ error_call <- function(call) {
     return(NULL)
   }
 
+  call
+}
+#' @rdname error_call
+#' @export
+format_error_call <- function(call) {
+  call <- error_call(call)
+  if (is_null(call)) {
+    return(NULL)
+  }
+
   # Functions that forward their error context to their caller
   # shouldn't generally be called via NSE but there are exceptions,
   # such as testthat snapshots.
@@ -779,27 +789,19 @@ error_call <- function(call) {
     return(NULL)
   }
 
-  # Deal with `if` bombs. Keep the condition as it is informative but
-  # drop the branches to avoid multiline calls. See
-  # https://github.com/r-lib/testthat/issues/1429
-  if (is_call(call, "if")) {
-    call[[3]] <- quote(...)
-    return(call[1:3])
-  }
-
   if (!is_symbol(call[[1]])) {
     return(NULL)
   }
 
-  # Remove distracting arguments from the call
-  call_restore(call[1], call)
-}
-#' @rdname error_call
-#' @export
-format_error_call <- function(call) {
-  call <- error_call(call)
-  if (is_null(call)) {
-    return(NULL)
+  if (is_call(call, "if")) {
+    # Deal with `if` bombs. Keep the condition as it is informative but
+    # drop the branches to avoid multiline calls. See
+    # https://github.com/r-lib/testthat/issues/1429
+    call[[3]] <- quote(...)
+    call <- call[1:3]
+  } else {
+    # Remove distracting arguments from the call
+    call <- call[1]
   }
 
   # Deal with special-syntax calls. `if` carries useful information in
