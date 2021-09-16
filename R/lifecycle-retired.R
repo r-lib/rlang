@@ -1,4 +1,3 @@
-
 #  Soft-deprecated in rlang 0.4.0
 
 ##  Types
@@ -15,11 +14,6 @@
 #' * The type of one-sided formulas is "quote".
 #' * The type of character vectors of length 1 is "string".
 #' * The type of special and builtin functions is "primitive".
-#'
-#'
-#' @section Life cycle:
-#'
-#' `type_of()` is an experimental function. Expect API changes.
 #'
 #' @param x An R object.
 #' @export

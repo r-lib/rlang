@@ -19,14 +19,6 @@ is anonymous.
 \description{
 Extract function name or namespace of a call
 }
-\section{Life cycle}{
-
-
-In rlang 0.2.0, \code{lang_name()} was deprecated and renamed to
-\code{call_name()}. See lifecycle section in \code{\link[=call2]{call2()}} for more about
-this change.
-}
-
 \examples{
 # Extract the function name from quoted calls:
 call_name(quote(foo(bar)))

@@ -33,16 +33,6 @@ This function tests if \code{x} is a \link[=call2]{call}. This is a
 pattern-matching predicate that returns \code{FALSE} if \code{name} and \code{n}
 are supplied and the call does not match these properties.
 }
-\section{Life cycle}{
-
-
-\code{is_lang()} has been soft-deprecated and renamed to \code{is_call()} in
-rlang 0.2.0 and similarly for \code{is_unary_lang()} and
-\code{is_binary_lang()}. This renaming follows the general switch from
-"language" to "call" in the rlang type nomenclature. See lifecycle
-section in \code{\link[=call2]{call2()}}.
-}
-
 \examples{
 is_call(quote(foo(bar)))
 

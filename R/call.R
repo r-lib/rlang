@@ -172,15 +172,6 @@ is_callable <- function(x) {
 #' pattern-matching predicate that returns `FALSE` if `name` and `n`
 #' are supplied and the call does not match these properties.
 #'
-#'
-#' @section Life cycle:
-#'
-#' `is_lang()` has been soft-deprecated and renamed to `is_call()` in
-#' rlang 0.2.0 and similarly for `is_unary_lang()` and
-#' `is_binary_lang()`. This renaming follows the general switch from
-#' "language" to "call" in the rlang type nomenclature. See lifecycle
-#' section in [call2()].
-#'
 #' @param x An object to test. If a formula, the right-hand side is
 #'   extracted.
 #' @param name An optional name that the call should match. It is
@@ -809,12 +800,6 @@ call_fn <- function(call, env = caller_env()) {
 }
 
 #' Extract function name or namespace of a call
-#'
-#' @section Life cycle:
-#'
-#' In rlang 0.2.0, `lang_name()` was deprecated and renamed to
-#' `call_name()`. See lifecycle section in [call2()] for more about
-#' this change.
 #'
 #' @inheritParams call_fn
 #' @return A string with the function name, or `NULL` if the function
