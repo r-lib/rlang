@@ -93,7 +93,7 @@
       print(err)
     Output
       <error/rlang_error>
-      Error: non-numeric argument to binary operator
+      Error in `+`: non-numeric argument to binary operator
       Backtrace:
         1. rlang::catch_cnd(...)
         9. rlang f()
@@ -106,7 +106,7 @@
     Code
       cat_line(gch$out)
     Output
-      Error in `h()`: non-numeric argument to binary operator
+      Error in `+`: non-numeric argument to binary operator
       Backtrace:
           ▆
        1. └─global f()
@@ -119,7 +119,7 @@
     Code
       cat_line(gch_wrapped$out)
     Output
-      Error: non-numeric argument to binary operator
+      Error in `+`: non-numeric argument to binary operator
       Backtrace:
           ▆
        1. └─global f()
