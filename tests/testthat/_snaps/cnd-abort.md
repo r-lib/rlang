@@ -147,7 +147,7 @@
       <error/rlang_error>
       Error in `h()`: foo
       Backtrace:
-        1. rlang:::catch_error(...)
+        1. rlang:::catch_error(f())
         9. rlang f()
        10. rlang g()
        11. rlang h()
@@ -158,7 +158,7 @@
       <error/rlang_error>
       Error in `h()`: foo
       Backtrace:
-        1. rlang:::catch_error(...)
+        1. rlang:::catch_error(f())
         9. rlang f()
        10. rlang g()
        11. rlang h()
@@ -173,7 +173,7 @@
       <error/rlang_error>
       Error in `h()`: foo
       Backtrace:
-        1. rlang:::catch_error(...)
+        1. rlang:::catch_error(f())
         9. rlang f()
        10. rlang g()
        11. rlang h()
@@ -188,7 +188,7 @@
       <error/rlang_error>
       Error in `h()`: foo
       Backtrace:
-        1. rlang:::catch_error(...)
+        1. rlang:::catch_error(f())
         9. rlang f()
        10. rlang g()
        11. rlang h()
@@ -211,7 +211,7 @@
       Caused by error in `failing()`: 
         low-level
       Backtrace:
-        1. rlang:::catch_error(...)
+        1. rlang:::catch_error(f())
         9. rlang f()
        10. rlang g()
        11. rlang h()
@@ -229,7 +229,7 @@
       Caused by error in `failing()`: 
         low-level
       Backtrace:
-        1. rlang:::catch_error(...)
+        1. rlang:::catch_error(f())
         9. rlang f()
        10. rlang g()
        11. rlang h()
@@ -247,7 +247,7 @@
       Caused by error in `failing()`: 
         low-level
       Backtrace:
-        1. rlang:::catch_error(...)
+        1. rlang:::catch_error(f())
         9. rlang f()
        10. rlang g()
        11. rlang h()
@@ -263,8 +263,8 @@
       Backtrace:
         1. rlang:::catch_error(...)
        10. rlang foo()
-       11. rlang bar(...)
-       12. rlang baz(...)
+       11. rlang bar(cnd)
+       12. rlang baz(cnd)
 
 # abort() displays call in error prefix
 
@@ -355,7 +355,7 @@
       Caused by error in `h()`: 
         Low-level message
       Backtrace:
-        1. testthat::expect_error(...)
+        1. testthat::expect_error(foo())
         7. rlang foo()
         8. rlang bar()
         9. rlang baz()
@@ -372,17 +372,17 @@
         Low-level message
       Backtrace:
            x
-        1. +-testthat::expect_error(...)
+        1. +-testthat::expect_error(foo())
         2. | \-testthat:::expect_condition_matching(...)
         3. |   \-testthat:::quasi_capture(...)
         4. |     +-testthat .capture(...)
         5. |     | \-base::withCallingHandlers(...)
-        6. |     \-rlang::eval_bare(...)
+        6. |     \-rlang::eval_bare(quo_get_expr(.quo), quo_get_env(.quo))
         7. \-rlang foo()
         8.   \-rlang bar()
         9.     \-rlang baz()
        10.       +-rlang wch(...)
-       11.       | \-base::withCallingHandlers(...)
+       11.       | \-base::withCallingHandlers(expr, ...)
        12.       \-rlang f()
        13.         \-rlang g()
        14.           \-rlang h()

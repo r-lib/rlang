@@ -9,7 +9,7 @@
       Caused by error in `h()`: 
         Low-level message
       Backtrace:
-        1. base::identity(...)
+        1. base::identity(catch_error(a()))
        10. rlang a()
        11. rlang b()
        12. rlang c()
@@ -26,21 +26,21 @@
         Low-level message
       Backtrace:
            x
-        1. +-base::identity(...)
-        2. +-rlang:::catch_error(...)
-        3. | \-rlang::catch_cnd(...)
+        1. +-base::identity(catch_error(a()))
+        2. +-rlang:::catch_error(a())
+        3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
-        6. |   | \-base tryCatchList(...)
-        7. |   |   \-base tryCatchOne(...)
-        8. |   |     \-base doTryCatch(...)
-        9. |   \-base::force(...)
+        6. |   | \-base tryCatchList(expr, classes, parentenv, handlers)
+        7. |   |   \-base tryCatchOne(expr, names, parentenv, handlers[[1L]])
+        8. |   |     \-base doTryCatch(return(expr), name, parentenv, handler)
+        9. |   \-base::force(expr)
        10. \-rlang a()
        11.   \-rlang b()
        12.     \-rlang c()
        13.       +-base::withCallingHandlers(...)
-       14.       +-rlang::with_abort(...)
-       15.       | \-base::withCallingHandlers(...)
+       14.       +-rlang::with_abort(f())
+       15.       | \-base::withCallingHandlers(expr, error = `<fn>`)
        16.       \-rlang f()
        17.         \-rlang g()
        18.           \-rlang h()

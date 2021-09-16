@@ -818,10 +818,8 @@ trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL) {
 
 # FIXME: Add something like call_deparse_line()
 trace_call_text <- function(call, collapsed, namespace, scope) {
-  if (is_call2(call, "%>%")) {
-    call <- call
-  } else if (length(call) > 1L) {
-    call <- call2(node_car(call), quote(...))
+  if (collapsed && length(call) > 1L) {
+    call <- call2(call[[1]], quote(...))
   }
 
   if (is_call(call) && is_symbol(call[[1]])) {
