@@ -205,7 +205,6 @@ test_that("entrace() doesn't embed backtraces twice", {
 })
 
 test_that("`options(error = entrace)` strips error prefix", {
-
   code <- '
   {
     options(error = rlang::entrace)
@@ -218,5 +217,24 @@ test_that("`options(error = entrace)` strips error prefix", {
   out <- Rscript(shQuote(c("--vanilla", "-e", code)))
 
   expect_false(out$status == 0L)
+})
 
+test_that("can supply handler environment as `bottom`", {
+  local_options(
+    rlang_trace_format_srcrefs = FALSE,
+    rlang_trace_top_env = current_env()
+  )
+
+  f <- function() g()
+  g <- function() h()
+  h <- function() identity(1 + "")
+
+  err <- catch_cnd(
+    withCallingHandlers(
+      error = function(...) rlang::entrace(..., bottom = environment()),
+      f()
+    ),
+    "error"
+  )
+  expect_snapshot(print(err))
 })

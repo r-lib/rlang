@@ -87,3 +87,17 @@
        2.   \-global g()
        3.     \-global h()
 
+# can supply handler environment as `bottom`
+
+    Code
+      print(err)
+    Output
+      <error/rlang_error>
+      Error: non-numeric argument to binary operator
+      Backtrace:
+        1. rlang::catch_cnd(...)
+        9. rlang f()
+       10. rlang g()
+       11. rlang h()
+       12. base::identity(1 + "")
+

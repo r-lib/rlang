@@ -41,8 +41,9 @@ entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
     return()
   }
 
-  if (is_null(bottom)) {
-    nframe <- sys.nframe() - 1
+  bottom <- bottom %||% environment()
+  if (is_environment(bottom)) {
+    nframe <- eval_bare(quote(base::sys.nframe()), bottom) - 1
     info <- signal_context_info(nframe)
     bottom <- sys.frame(info[[2]])
   }
