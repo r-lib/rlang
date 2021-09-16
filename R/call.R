@@ -1003,7 +1003,7 @@ is_namespaced_symbol <- function(x, ns = NULL, private = NULL) {
 #' - `"[["`
 #' - `"{"`
 #' @keywords internal
-#' @export
+#' @noRd
 call_parse_type <- function(call) {
   .Call(ffi_which_operator, call)
 }
