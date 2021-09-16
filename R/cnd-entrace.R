@@ -194,7 +194,11 @@ entrace_handle_top <- function(trace) {
       msg <- cnd$message
     }
   } else {
+    # `geterrmessage()` returns the full error message including
+    # prefix and newline, which we strip here
     msg <- geterrmessage()
+    msg <- sub("^.*: ?", "", msg)
+    msg <- sub("\n$", "", msg)
   }
 
   # Save a fake rlang error containing the backtrace

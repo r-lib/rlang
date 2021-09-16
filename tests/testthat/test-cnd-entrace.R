@@ -203,3 +203,20 @@ test_that("entrace() doesn't embed backtraces twice", {
 
   expect_equal(sum(grepl("^Backtrace", out)), 1)
 })
+
+test_that("`options(error = entrace)` strips error prefix", {
+
+  code <- '
+  {
+    options(error = rlang::entrace)
+    f <- function() g()
+    g <- function() h()
+    h <- function() 1 + ""
+    f()
+    last_error()
+  }'
+  out <- Rscript(shQuote(c("--vanilla", "-e", code)))
+
+  expect_false(out$status == 0L)
+
+})
