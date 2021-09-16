@@ -40,9 +40,10 @@
 
 
 <meta property="og:title" content="Extract function from a call — call_fn" />
-<meta property="og:description" content="If a frame or formula, the function will be retrieved from the
-associated environment. Otherwise, it is looked up in the calling
-frame." />
+<meta property="og:description" content="
+If call is a quosure or formula, the function will be retrieved
+from the associated environment. Otherwise, it is looked up in the
+calling frame." />
 
 
 
@@ -158,9 +159,10 @@ frame." />
     </div>
 
     <div class="ref-description">
-    <p>If a frame or formula, the function will be retrieved from the
-associated environment. Otherwise, it is looked up in the calling
-frame.</p>
+    <p><a href='https://lifecycle.r-lib.org/articles/stages.html#experimental'><img src='figures/lifecycle-experimental.svg' alt='[Experimental]' /></a></p>
+<p>If <code>call</code> is a quosure or formula, the function will be retrieved
+from the associated environment. Otherwise, it is looked up in the
+calling frame.</p>
     </div>
 
     <pre class="usage"><span class='fu'>call_fn</span><span class='op'>(</span><span class='va'>call</span>, env <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
@@ -170,7 +172,7 @@ frame.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>call</th>
-      <td><p>Can be a call or a quosure that wraps a call.</p></td>
+      <td><p>A defused function call.</p></td>
     </tr>
     <tr>
       <th>env</th>
@@ -194,22 +196,8 @@ quosure.</p></td>
 #&gt;     .Internal(matrix(data, nrow, ncol, byrow, dimnames, missing(nrow), 
 #&gt;         missing(ncol)))
 #&gt; }
-#&gt; &lt;bytecode: 0x7fef3168caa8&gt;
-#&gt; &lt;environment: namespace:base&gt;</div><div class='input'><span class='fu'>call_fn</span><span class='op'>(</span><span class='fu'><a href='nse-defuse.html'>quo</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; function (data = NA, nrow = 1, ncol = 1, byrow = FALSE, dimnames = NULL) 
-#&gt; {
-#&gt;     if (is.object(data) || !is.atomic(data)) 
-#&gt;         data &lt;- as.vector(data)
-#&gt;     .Internal(matrix(data, nrow, ncol, byrow, dimnames, missing(nrow), 
-#&gt;         missing(ncol)))
-#&gt; }
-#&gt; &lt;bytecode: 0x7fef3168caa8&gt;
-#&gt; &lt;environment: namespace:base&gt;</div><div class='input'>
-<span class='co'># Extract the calling function</span>
-<span class='va'>test</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='fu'>call_fn</span><span class='op'>(</span><span class='fu'><a href='stack.html'>call_frame</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>test</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; function() call_fn(call_frame())
-#&gt; &lt;environment: 0x7fef3447e968&gt;</div></pre>
+#&gt; &lt;bytecode: 0x7fa6d4e31ea8&gt;
+#&gt; &lt;environment: namespace:base&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
