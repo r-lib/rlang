@@ -29,7 +29,7 @@
 #'
 #' @section Difference with base constructors:
 #'
-#' `call2()` is more flexible and convenient than `base::call()`:
+#' `call2()` is more flexible than `base::call()`:
 #'
 #' * The function to call can be a string or a [callable][is_callable]
 #'   object: a symbol, another call (e.g. a `$` or `[[` call), or a
@@ -48,20 +48,22 @@
 #'   ```
 #'   call2("list", 1, 2, .ns = "base")
 #'
-#'   ns_call <- as.call(list(as.name("::"), as.name("list"), as.name("base")))
+#'   # Equivalent to
+#'   ns_call <- call("::", as.symbol("list"), as.symbol("base"))
 #'   as.call(list(ns_call, 1, 2))
 #'   ```
 #'
-#' * `call2()` has [tidy dots][list2] support and you can splice lists
-#'   of arguments with `!!!`. With base R, you need to use `as.call()`
-#'   instead of `call()` if the arguments are in a list.
+#' * `call2()` has [dynamic dots][list2] support. You can splice lists
+#'   of arguments with `!!!` or unquote an argument name with glue
+#'   syntax.
 #'
 #'   ```
 #'   args <- list(na.rm = TRUE, trim = 0)
 #'
 #'   call2("mean", 1:10, !!!args)
 #'
-#'   as.call(c(list(as.name("mean"), 1:10), args))
+#'   # Equivalent to
+#'   as.call(c(list(as.symbol("mean"), 1:10), args))
 #'   ```
 #'
 #'
