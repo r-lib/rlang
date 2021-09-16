@@ -101,3 +101,29 @@
        11. rlang h()
        12. base::identity(1 + "")
 
+# can set `entrace()` as a global handler
+
+    Code
+      cat_line(gch$out)
+    Output
+      Error in `h()`: non-numeric argument to binary operator
+      Backtrace:
+          ▆
+       1. └─global f()
+       2.   └─global g()
+       3.     └─global h()
+      Execution halted
+
+---
+
+    Code
+      cat_line(gch_wrapped$out)
+    Output
+      Error: non-numeric argument to binary operator
+      Backtrace:
+          ▆
+       1. └─global f()
+       2.   └─global g()
+       3.     └─global h()
+      Execution halted
+
