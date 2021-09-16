@@ -56,9 +56,13 @@ is often more practical to use the higher-level function
 \code{\link[=with_abort]{with_abort()}}.
 }
 \examples{
+# Set `entrace()` globally in your RProfile
+globalCallingHandlers(error = rlang::entrace)
+
 if (FALSE) {  # Not run
 
-# Set the error handler in your RProfile like this:
+# On older R versions which don't feature `globalCallingHandlers`,
+# set the error handler like this:
 if (requireNamespace("rlang", quietly = TRUE)) {
   options(error = rlang::entrace)
 }
