@@ -688,16 +688,10 @@ caller_arg <- function(arg) {
 #'
 #' @description
 #'
-#' - `format_error_call()` passes its input to `error_call()` and
-#'   formats the result as code (using cli if available). Use this
-#'   function if you are generating the "in" part of an error message
-#'   from a stack frame call.
-#'
-#' - `error_call()` creates a function call ready to be used as the
-#'   `call` field of error conditions. This field is displayed by
-#'   [stop()] and [abort()] to give context to an error message.  The
-#'   call is simplified for formatting (see section below). If a
-#'   complex call can't be simplified, `error_call()` returns `NULL`.
+#' `format_error_call()` simplifies its input to a simple call (see
+#' section below) and formats the result as code (using cli if
+#' available). Use this function to generate the "in" part
+#' of an error message from a stack frame call.
 #'
 #' If passed an environment, the corresponding `sys.call()` is taken
 #' as call, unless there is a local flag (see [local_error_call()]).
@@ -716,55 +710,22 @@ caller_arg <- function(arg) {
 #'   their names rather than the potentially confusing function form.
 #'
 #' @inheritParams args_error_context
-#' @return Either a string formatted as code or `NULL` if `call` or
-#'   the result of `error_call(call)` is `NULL`.
+#' @return Either a string formatted as code or `NULL` if a simple
+#'   call could not be generated.
 #'
 #' @keywords internal
 #'
 #' @examples
 #' # Arguments are stripped
-#' error_call(quote(foo(bar, baz)))
 #' writeLines(format_error_call(quote(foo(bar, baz))))
 #'
 #' # Returns `NULL` with complex calls such as those that contain
 #' # inlined functions
-#' error_call(call2(list))
+#' format_error_call(call2(list))
 #'
 #' # Operators are formatted using their names rather than in
-#' # confusing function call form
-#' error_call(quote(1 + 2))
-#' format_error_call(quote(1 + 2))
-#' @export
-error_call <- function(call) {
-  while (is_environment(call)) {
-    flag <- error_flag(call)
-
-    if (is_null(flag) || is_call(flag)) {
-      call <- flag
-      break
-    }
-
-    if (is_environment(flag)) {
-      call <- flag
-      next
-    }
-
-    if (is_string(flag, "caller")) {
-      call <- eval_bare(call2(caller_env), call)
-      next
-    }
-
-    call <- caller_call(call)
-    break
-  }
-
-  if (!is_call(call)) {
-    return(NULL)
-  }
-
-  call
-}
-#' @rdname error_call
+#' # function call form
+#' writeLines(format_error_call(quote(1 + 2)))
 #' @export
 format_error_call <- function(call) {
   call <- error_call(call)
@@ -814,6 +775,36 @@ format_error_call <- function(call) {
   }
 
   format_code(out)
+}
+
+error_call <- function(call) {
+  while (is_environment(call)) {
+    flag <- error_flag(call)
+
+    if (is_null(flag) || is_call(flag)) {
+      call <- flag
+      break
+    }
+
+    if (is_environment(flag)) {
+      call <- flag
+      next
+    }
+
+    if (is_string(flag, "caller")) {
+      call <- eval_bare(call2(caller_env), call)
+      next
+    }
+
+    call <- caller_call(call)
+    break
+  }
+
+  if (!is_call(call)) {
+    return(NULL)
+  }
+
+  call
 }
 
 call_restore <- function(x, to) {
