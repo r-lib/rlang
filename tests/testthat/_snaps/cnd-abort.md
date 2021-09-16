@@ -13,8 +13,8 @@
       Backtrace:
           x
        1. \-global f()
-       2.   +-base::tryCatch(...)
-       3.   | \-base tryCatchList(...)
+       2.   +-base::tryCatch(g())
+       3.   | \-base tryCatchList(expr, classes, parentenv, handlers)
        4.   \-global g()
        5.     \-global h()
       Execution halted
@@ -50,8 +50,8 @@
       Backtrace:
           x
        1. \-global f()
-       2.   +-base::tryCatch(...)
-       3.   | \-base tryCatchList(...)
+       2.   +-base::tryCatch(g())
+       3.   | \-base tryCatchList(expr, classes, parentenv, handlers)
        4.   \-global g()
        5.     \-global h()
       Execution halted
@@ -67,13 +67,13 @@
       Error in `h()`: Error message
       Backtrace:
           x
-       1. +-base::tryCatch(...)
-       2. | \-base tryCatchList(...)
-       3. |   \-base tryCatchOne(...)
-       4. |     \-base doTryCatch(...)
+       1. +-base::tryCatch(f(), error = function(cnd) rlang::cnd_signal(cnd))
+       2. | \-base tryCatchList(expr, classes, parentenv, handlers)
+       3. |   \-base tryCatchOne(expr, names, parentenv, handlers[[1L]])
+       4. |     \-base doTryCatch(return(expr), name, parentenv, handler)
        5. \-global f()
-       6.   +-base::tryCatch(...)
-       7.   | \-base tryCatchList(...)
+       6.   +-base::tryCatch(g())
+       7.   | \-base tryCatchList(expr, classes, parentenv, handlers)
        8.   \-global g()
        9.     \-global h()
       Execution halted
@@ -130,9 +130,9 @@
         2.   \-global b()
         3.     \-global c()
         4.       +-base::tryCatch(...)
-        5.       | \-base tryCatchList(...)
-        6.       |   \-base tryCatchOne(...)
-        7.       |     \-base doTryCatch(...)
+        5.       | \-base tryCatchList(expr, classes, parentenv, handlers)
+        6.       |   \-base tryCatchOne(expr, names, parentenv, handlers[[1L]])
+        7.       |     \-base doTryCatch(return(expr), name, parentenv, handler)
         8.       \-global f()
         9.         \-global g()
        10.           \-global h()
