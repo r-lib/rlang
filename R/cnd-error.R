@@ -55,11 +55,8 @@ error_cnd_fields <- function(trace, parent, ..., .subclass = NULL, env = caller_
 }
 
 #' @export
-print.rlang_error <- function(x,
-                              ...,
-                              simplify = c("branch", "collapse", "none")) {
-  simplify <- arg_match(simplify)
-  cat_line(format(x, simplify = simplify, ...))
+print.rlang_error <- function(x, ...) {
+  writeLines(format(x, ...))
   invisible(x)
 }
 
