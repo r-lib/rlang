@@ -1,3 +1,24 @@
+global_entrace <- function(error = TRUE) {
+  has_gch <- getRversion() >= "4.0"
+
+  if (has_gch) {
+    if (error) {
+      globalCallingHandlers(error = entrace)
+    } else {
+      pop_global_handlers(error = entrace)
+    }
+  } else {
+    if (error) {
+      options(error = entrace)
+    } else {
+      opt <- peek_option("error")
+      if (identical(opt, entrace)) {
+        options(error = NULL)
+      }
+    }
+  }
+}
+
 #' Add backtrace from error handler
 #'
 #' @description
