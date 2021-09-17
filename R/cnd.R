@@ -103,6 +103,10 @@ cnd_type <- function(cnd) {
   .Call(ffi_cnd_type, cnd)
 }
 
+cnd_print <- function(x, ...) {
+  writeLines(cnd_format(x, ...))
+  invisible(x)
+}
 cnd_format <- function(x,
                        ...,
                        backtrace = TRUE,
@@ -114,7 +118,7 @@ cnd_format <- function(x,
   style <- cli_box_chars()
 
   header <- cnd_type_header(x)
-  message <- cnd_prefix_error_message(x)
+  message <- cnd_prefixed_message(x)
 
   out <- paste_line(
     header,
@@ -134,7 +138,7 @@ cnd_format <- function(x,
       trace <- chained_trace
     }
 
-    message <- cnd_prefix_error_message(x, parent = TRUE)
+    message <- cnd_prefixed_message(x, parent = TRUE)
     out <- paste_line(out, message)
   }
 

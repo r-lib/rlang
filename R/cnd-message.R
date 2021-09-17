@@ -78,7 +78,7 @@ cnd_formatter <- function(cnd) {
   cli_format <- switch(
     cnd_type(cnd),
     error = cli::format_message,
-    warning = cli::format_warning,
+    warning = cli::format_message,
     cli::format_message
   )
 
@@ -148,23 +148,25 @@ cnd_footer.default <- function(cnd, ...) {
 }
 
 cnd_build_error_message <- function(cnd) {
-  msg <- cnd_prefix_error_message(cnd, parent = FALSE)
+  msg <- cnd_prefixed_message(cnd, parent = FALSE)
 
   while (is_error(cnd <- cnd$parent)) {
-    parent_msg <- cnd_prefix_error_message(cnd, parent = TRUE)
+    parent_msg <- cnd_prefixed_message(cnd, parent = TRUE)
     msg <- paste_line(msg, parent_msg)
   }
 
   msg
 }
 
-cnd_prefix_error_message <- function(cnd, parent = FALSE) {
+cnd_prefixed_message <- function(cnd, parent = FALSE) {
+  type <- cnd_type(cnd)
+
   if (parent) {
-    prefix <- "Caused by error"
+    prefix <- sprintf("Caused by %s", type)
     indent <- TRUE
   } else {
-    prefix <- "Error"
-    indent <- is_error(cnd$parent)
+    prefix <- capitalise(type)
+    indent <- is_condition(cnd$parent)
   }
 
   if (is_true(cnd$use_cli_format)) {

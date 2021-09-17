@@ -75,3 +75,33 @@ test_that("cnd_type_header() formats condition classes", {
     cnd_type_header(error_cnd(class = "foobar"))
   })
 })
+
+test_that("can format warnings and other conditions", {
+  trace <- new_trace(alist(foo(), bar()), 0:1)
+
+  warning <- warning_cnd(
+    message = c("Header.", i = "Bullet."),
+    call = quote(quux()),
+    use_cli_format = TRUE,
+    trace = trace
+  )
+  expect_snapshot_output(cnd_print(warning))
+
+  message <- message_cnd(
+    message = c("Header.", i = "Bullet."),
+    call = quote(quux()),
+    use_cli_format = TRUE,
+    trace = trace,
+    parent = warning
+  )
+  expect_snapshot_output(cnd_print(message))
+
+  condition <- cnd(
+    "foobar",
+    message = c("Header.", i = "Bullet."),
+    call = quote(quux()),
+    use_cli_format = TRUE,
+    trace = trace
+  )
+  expect_snapshot_output(cnd_print(condition))
+})

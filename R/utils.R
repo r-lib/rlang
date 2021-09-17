@@ -402,3 +402,16 @@ detect_run_starts <- function(x) {
   starts[[1]] <- TRUE
   starts
 }
+
+# No ANSI support
+capitalise <- function(x) {
+  stopifnot(length(x) == 1)
+  n <- nchar(x)
+  if (n == 0) {
+    x
+  } else if (n == 1) {
+    toupper(x)
+  } else {
+    paste0(toupper(substring(x, 1, 1)), substring(x, 2))
+  }
+}
