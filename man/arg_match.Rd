@@ -23,7 +23,7 @@ arg_match0(arg, values, arg_nm = arg[[1]], error_call = caller_env())
 
 \item{...}{These dots are for future extensions and must be empty.}
 
-\item{multiple}{Whether \code{arg} may contain zero or multiple \code{values}.}
+\item{multiple}{Whether \code{arg} may contain zero or several values.}
 
 \item{error_arg}{An argument name as a string. This argument
 will be mentioned in error messages as the input that is at the
