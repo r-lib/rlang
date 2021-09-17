@@ -103,27 +103,32 @@
 
 # can set `entrace()` as a global handler
 
-    Code
-      cat_line(gch$out)
-    Output
-      Error in `+`: non-numeric argument to binary operator
-      Backtrace:
-          x
-       1. \-global f()
-       2.   \-global g()
-       3.     \-global h()
-      Execution halted
+    Error in `+`: non-numeric argument to binary operator
+    Backtrace:
+        x
+     1. \-global f()
+     2.   \-global g()
+     3.     \-global h()
+    Execution halted
 
 ---
 
-    Code
-      cat_line(gch_wrapped$out)
-    Output
-      Error in `+`: non-numeric argument to binary operator
-      Backtrace:
-          x
-       1. \-global f()
-       2.   \-global g()
-       3.     \-global h()
-      Execution halted
+    Error in `+`: non-numeric argument to binary operator
+    Backtrace:
+        x
+     1. \-global f()
+     2.   \-global g()
+     3.     \-global h()
+    Execution halted
+
+# can set `entrace()` as a global handler (older R)
+
+    Error in 1 + "" : non-numeric argument to binary operator
+    Calls: f -> g -> h
+    Backtrace:
+        x
+     1. \-global f()
+     2.   \-global g()
+     3.     \-global h()
+    Execution halted
 

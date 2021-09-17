@@ -183,8 +183,7 @@ test_that("entrace() preserves exit status in non-interactive sessions (#1052, r
   out <- Rscript(shQuote(c("--vanilla", "-e", 'options(error = rlang::entrace); stop("An error")')))
   expect_false(out$status == 0L)
 
-  code <- '
-  {
+  code <- '{
     options(error = rlang::entrace)
     f <- function() g()
     g <- function() h()
@@ -242,27 +241,35 @@ test_that("can supply handler environment as `bottom`", {
 test_that("can set `entrace()` as a global handler", {
   skip_if_not_installed("base", "4.0")
 
-  code <- '
-  {
+  expect_snapshot_output(run('{
     suppressMessages(testthat::local_reproducible_output())
-    globalCallingHandlers(error = rlang::entrace)
+    rlang::global_entrace()
     f <- function() g()
     g <- function() h()
     h <- function() 1 + ""
     f()
-  }'
-  gch <- Rscript(shQuote(c("--vanilla", "-e", code)))
-  expect_snapshot(cat_line(gch$out))
+  }'))
 
-  code <- '
-  {
+  # Indirected case for developers of rlang
+  expect_snapshot_output(run('{
     suppressMessages(testthat::local_reproducible_output())
     globalCallingHandlers(error = function(...) rlang::entrace(..., bottom = environment()))
     f <- function() g()
     g <- function() h()
     h <- function() 1 + ""
     f()
-  }'
-  gch_wrapped <- Rscript(shQuote(c("--vanilla", "-e", code)))
-  expect_snapshot(cat_line(gch_wrapped$out))
+  }'))
+})
+
+test_that("can set `entrace()` as a global handler (older R)", {
+  skip_if(getRversion() >= "4.0", )
+
+  expect_snapshot_output(run('{
+    suppressMessages(testthat::local_reproducible_output())
+    rlang::global_entrace()
+    f <- function() g()
+    g <- function() h()
+    h <- function() 1 + ""
+    f()
+  }'))
 })

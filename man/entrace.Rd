@@ -41,15 +41,14 @@ capture context.
 Can also be an integer that will be passed to \code{\link[=caller_env]{caller_env()}}.}
 }
 \description{
+\code{entrace()} is a low level function. See \code{\link[=global_entrace]{global_entrace()}} for a
+user-friendly way of enriching errors and other conditions from
+your RProfile.
+
 \code{entrace()} interrupts an error throw to add an \link[=trace_back]{rlang backtrace} to the error. The error throw is
 immediately resumed. \code{cnd_entrace()} adds a backtrace to a
 condition object, without any other effect. Both functions should
 be called directly from an error handler.
-
-Set the \code{error} global option to \code{rlang::entrace} to
-transform base errors to rlang errors. These enriched errors
-include a backtrace. The RProfile is a good place to set the
-handler. See \code{\link{rlang_backtrace_on_error}} for details.
 
 \code{entrace()} also works as a \link{calling} handler, though it
 is often more practical to use the higher-level function
@@ -68,6 +67,9 @@ options(error = rlang::entrace)
 })
 }
 \seealso{
-\code{\link[=with_abort]{with_abort()}} to promote conditions to rlang errors.
-\code{\link[=cnd_entrace]{cnd_entrace()}} to manually add a backtrace to a condition.
+\code{\link[=global_entrace]{global_entrace()}} for configuring errors with
+\code{entrace()}. \code{\link[=with_abort]{with_abort()}} to promote conditions to rlang
+errors.  \code{\link[=cnd_entrace]{cnd_entrace()}} to manually add a backtrace to a
+condition.
 }
+\keyword{internal}

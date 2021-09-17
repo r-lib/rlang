@@ -1,17 +1,94 @@
+#' Entrace unexpected errors
+#'
+#' @description
+#' `global_entrace()` enriches base errors with rlang features:
+#'
+#' - They are assigned a backtrace. You can configure whether to
+#'   display a backtrace on error with the [rlang_backtrace_on_error]
+#'   global option.
+#'
+#' - They are recorded in [last_error()]. Calling this function is
+#'   another way of inspecting the backtrace.
+#'
+#' When global entracing is enabled, all errors behave as if they had
+#' been thrown with [rlang::abort()], even the ones thrown with
+#' [stop()] or from native code.
+#'
+#' Set global entracing in your RProfile with:
+#'
+#' ```
+#' rlang::global_entrace()
+#' ```
+#'
+#' @param enable Whether to enable or disable entracing.
+#' @param type What kind of conditions should be entraced.
+#'
+#' @section Under the hood:
+#' On R 4.0 and newer, `global_entrace()` installs a global handler
+#' with `globalCallingHandlers()`. On older R versions, `entrace()` is
+#' set as an `option(error = )` handler. The latter method has the
+#' disadvantage that only one handler can be set at a time. This means
+#' that you need to manually switch between `entrace()` and other
+#' handlers like [recover()]. Also this causes a conflict with IDE
+#' handlers (e.g. in RStudio).
+#'
+#' @examples
+#' # Add this to your RProfile
+#' global_entrace()
+#'
+#' # Disable entracing
+#' global_entrace(FALSE)
+#' @export
+global_entrace <- function(enable = TRUE, type = "error") {
+  # TODO: Support "warning" and "message". Use `arg_match(multiple = TRUE)`?
+  if (!is_string(type, "error")) {
+    abort(sprintf("%s must be \"error\"", format_arg("type")))
+  }
+
+  if (getRversion() < "4.0") {
+    return(global_entrace_fallback(enable, type))
+  }
+
+  if (enable) {
+    poke_handlers <- globalCallingHandlers
+  } else {
+    poke_handlers <- drop_global_handlers
+  }
+
+  handlers <- rep_named(type, list(entrace))
+  inject(poke_handlers(!!!handlers))
+
+  invisible(NULL)
+}
+global_entrace_fallback <- function(enable, type) {
+  if (!"error" %in% type) {
+    return(invisible(NULL))
+  }
+
+  if (enable) {
+    options(error = entrace)
+  } else {
+    opt <- peek_option("error")
+    if (identical(opt, entrace)) {
+      options(error = NULL)
+    }
+  }
+
+  invisible(NULL)
+}
+
 #' Add backtrace from error handler
 #'
 #' @description
+#' `entrace()` is a low level function. See [global_entrace()] for a
+#' user-friendly way of enriching errors and other conditions from
+#' your RProfile.
 #'
 #' `entrace()` interrupts an error throw to add an [rlang
 #' backtrace][trace_back()] to the error. The error throw is
 #' immediately resumed. `cnd_entrace()` adds a backtrace to a
 #' condition object, without any other effect. Both functions should
 #' be called directly from an error handler.
-#'
-#' Set the `error` global option to `rlang::entrace` to
-#' transform base errors to rlang errors. These enriched errors
-#' include a backtrace. The RProfile is a good place to set the
-#' handler. See [`rlang_backtrace_on_error`] for details.
 #'
 #' `entrace()` also works as a [calling][calling] handler, though it
 #' is often more practical to use the higher-level function
@@ -22,8 +99,10 @@
 #'   the condition to handle.
 #' @param ... Unused. These dots are for future extensions.
 #'
-#' @seealso [with_abort()] to promote conditions to rlang errors.
-#'   [cnd_entrace()] to manually add a backtrace to a condition.
+#' @seealso [global_entrace()] for configuring errors with
+#'   `entrace()`. [with_abort()] to promote conditions to rlang
+#'   errors.  [cnd_entrace()] to manually add a backtrace to a
+#'   condition.
 #' @examples
 #' quote({  # Not run
 #'
@@ -35,6 +114,7 @@
 #' options(error = rlang::entrace)
 #'
 #' })
+#' @keywords internal
 #' @export
 entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
   check_dots_empty0(...)

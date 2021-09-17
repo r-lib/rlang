@@ -977,11 +977,10 @@ trace_depth_trycatch <- function(trace) {
 #' Display backtrace on error
 #'
 #' @description
-#'
-#' Errors thrown with [abort()] automatically save a backtrace that
-#' can be inspected by calling [last_error()]. You can control the default
-#' display of the backtrace by setting the option `rlang_backtrace_on_error`
-#' to one of the following values:
+#' rlang errors carry a backtrace that can be inspected by calling
+#' [last_error()]. You can also control the default display of the
+#' backtrace by setting the option `rlang_backtrace_on_error` to one
+#' of the following values:
 #'
 #' * `"none"` show nothing.
 #' * `"reminder"`, the default in interactive sessions, displays a reminder that
@@ -989,6 +988,10 @@ trace_depth_trycatch <- function(trace) {
 #' * `"branch"` displays a simplified backtrace.
 #' * `"collapse"` displays a collapsed backtrace tree.
 #' * `"full"`, the default in non-interactive sessions, displays the full tree.
+#'
+#' rlang errors are normally thrown with [abort()]. If you promote
+#' base errors to rlang errors with [global_entrace()],
+#' `rlang_backtrace_on_error` applies to all errors.
 #'
 #' @section Promote base errors to rlang errors:
 #'

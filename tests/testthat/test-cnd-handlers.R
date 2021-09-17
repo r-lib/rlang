@@ -84,3 +84,28 @@ test_that("with_handlers() propagates visibility", {
   expect_visible(with_handlers(list(invisible(1))))
   expect_invisible(with_handlers(invisible(1)))
 })
+
+test_that("drop_global_handlers() works and is idempotent", {
+  skip_if_not_installed("base", "4.0")
+
+  code <- '{
+    library(testthat)
+
+    globalCallingHandlers(NULL)
+
+    handler <- function(...) "foo"
+    globalCallingHandlers(foo = handler)
+
+    rlang:::drop_global_handlers(bar = handler)
+    expect_equal(globalCallingHandlers(), list(foo = handler))
+
+    rlang:::drop_global_handlers(foo = handler, bar = function() "bar")
+    expect_equal(globalCallingHandlers(), list())
+
+    rlang:::drop_global_handlers(foo = handler, bar = function() "bar")
+    expect_equal(globalCallingHandlers(), list())
+  }'
+
+  out <- Rscript(shQuote(c("--vanilla", "-e", code)))
+  expect_equal(out$out, chr())
+})

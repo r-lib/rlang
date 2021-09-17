@@ -294,3 +294,23 @@ cnd_muffle <- function(cnd) {
 
   FALSE
 }
+
+if (getRversion() < "4.0") {
+  utils::globalVariables("globalCallingHandlers")
+}
+
+drop_global_handlers <- function(...) {
+  to_pop <- list(...)
+  handlers <- globalCallingHandlers()
+
+  for (i in seq_along(to_pop)) {
+    if (loc <- detect_index(handlers, identical, to_pop[[i]])) {
+      if (is_string(names(to_pop)[[i]], names(handlers)[[loc]])) {
+        handlers[[loc]] <- NULL
+      }
+    }
+  }
+
+  globalCallingHandlers(NULL)
+  globalCallingHandlers(handlers)
+}

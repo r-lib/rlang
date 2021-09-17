@@ -5,10 +5,10 @@
 \alias{add_backtrace}
 \title{Display backtrace on error}
 \description{
-Errors thrown with \code{\link[=abort]{abort()}} automatically save a backtrace that
-can be inspected by calling \code{\link[=last_error]{last_error()}}. You can control the default
-display of the backtrace by setting the option \code{rlang_backtrace_on_error}
-to one of the following values:
+rlang errors carry a backtrace that can be inspected by calling
+\code{\link[=last_error]{last_error()}}. You can also control the default display of the
+backtrace by setting the option \code{rlang_backtrace_on_error} to one
+of the following values:
 \itemize{
 \item \code{"none"} show nothing.
 \item \code{"reminder"}, the default in interactive sessions, displays a reminder that
@@ -17,6 +17,10 @@ you can see the backtrace with \code{\link[=last_error]{last_error()}}.
 \item \code{"collapse"} displays a collapsed backtrace tree.
 \item \code{"full"}, the default in non-interactive sessions, displays the full tree.
 }
+
+rlang errors are normally thrown with \code{\link[=abort]{abort()}}. If you promote
+base errors to rlang errors with \code{\link[=global_entrace]{global_entrace()}},
+\code{rlang_backtrace_on_error} applies to all errors.
 }
 \section{Promote base errors to rlang errors}{
 
