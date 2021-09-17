@@ -34,6 +34,9 @@
 
 ## Features and bugfixes
 
+* `arg_match()` gains a `multiple` argument for cases where zero or
+  several matches are allowed (#1281).
+
 * Changes in namespaces are now emboldened in backtraces (#946).
 
 * Functions defined in the global environments or in local execution

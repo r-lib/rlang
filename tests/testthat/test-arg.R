@@ -157,3 +157,18 @@ test_that("arg_match() requires an argument symbol", {
   wrapper <- function() arg_match("foo")
   expect_snapshot((expect_error(wrapper())))
 })
+
+test_that("can match multiple arguments", {
+  my_wrapper <- function(my_arg = c("foo", "bar", "baz")) {
+    arg_match(my_arg, multiple = TRUE)
+  }
+
+  expect_equal(my_wrapper("foo"), "foo")
+  expect_equal(my_wrapper(c("foo", "baz")), c("foo", "baz"))
+  expect_equal(my_wrapper(chr()), chr())
+
+  expect_snapshot({
+    (expect_error(my_wrapper("ba")))
+    (expect_error(my_wrapper(c("foo", "ba"))))
+  })
+})
