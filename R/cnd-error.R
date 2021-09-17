@@ -57,10 +57,9 @@ error_cnd_fields <- function(trace, parent, ..., .subclass = NULL, env = caller_
 #' @export
 print.rlang_error <- function(x,
                               ...,
-                              simplify = c("branch", "collapse", "none"),
-                              fields = FALSE) {
+                              simplify = c("branch", "collapse", "none")) {
   simplify <- arg_match(simplify)
-  cat_line(format(x, simplify = simplify, fields = fields, ...))
+  cat_line(format(x, simplify = simplify, ...))
   invisible(x)
 }
 
@@ -73,8 +72,7 @@ format.rlang_error <- function(x,
                                ...,
                                backtrace = TRUE,
                                child = NULL,
-                               simplify = c("branch", "collapse", "none"),
-                               fields = FALSE) {
+                               simplify = c("branch", "collapse", "none")) {
   # Allow overwriting default display via condition field
   simplify <- x$rlang$internal$print_simplify %||% simplify
   simplify <- arg_match(simplify)
@@ -113,7 +111,7 @@ format.rlang_error <- function(x,
   }
 
   if (simplify != "branch" && !is_null(x$parent)) {
-    parent_lines <- format.rlang_error(x$parent, ..., child = x, simplify = simplify, fields = fields)
+    parent_lines <- format.rlang_error(x$parent, ..., child = x, simplify = simplify)
     out <- paste_line(out, parent_lines)
   }
 
@@ -161,7 +159,7 @@ message_add_tree_prefix <- function(message, style, parent) {
 
 #' @export
 summary.rlang_error <- function(object, ...) {
-  print(object, simplify = "none", fields = TRUE)
+  print(object, simplify = "none")
 }
 
 on_load(s3_register("testthat::testthat_print", "rlang_error", function(x) {
