@@ -104,7 +104,8 @@
 # can set `entrace()` as a global handler
 
     Code
-      cat_line(gch$out)
+      run(
+        "{\n    suppressMessages(testthat::local_reproducible_output())\n    rlang::global_entrace()\n    f <- function() g()\n    g <- function() h()\n    h <- function() 1 + \"\"\n    f()\n  }")
     Output
       Error in `+`: non-numeric argument to binary operator
       Backtrace:
@@ -117,9 +118,25 @@
 ---
 
     Code
-      cat_line(gch_wrapped$out)
+      run(
+        "{\n    suppressMessages(testthat::local_reproducible_output())\n    globalCallingHandlers(error = function(...) rlang::entrace(..., bottom = environment()))\n    f <- function() g()\n    g <- function() h()\n    h <- function() 1 + \"\"\n    f()\n  }")
     Output
       Error in `+`: non-numeric argument to binary operator
+      Backtrace:
+          x
+       1. \-global f()
+       2.   \-global g()
+       3.     \-global h()
+      Execution halted
+
+# can set `entrace()` as a global handler (older R)
+
+    Code
+      run(
+        "{\n    suppressMessages(testthat::local_reproducible_output())\n    rlang::global_entrace()\n    f <- function() g()\n    g <- function() h()\n    h <- function() 1 + \"\"\n    f()\n  }")
+    Output
+      Error in 1 + "" : non-numeric argument to binary operator
+      Calls: f -> g -> h
       Backtrace:
           x
        1. \-global f()

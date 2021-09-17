@@ -66,8 +66,13 @@ Rscript <- function(args, ...) {
   )
 }
 run <- function(code) {
-  out <- Rscript(shQuote(c("--vanilla", "-e", code)))
-  cat_line(out$out)
+  cat_line(run0(code)$out)
+}
+run0 <- function(code) {
+  # To avoid "ARGUMENT '~+~~+~~+~~+~foo __ignored__" errors on R <= 3.5
+  code <- gsub("\n", ";", code)
+
+  Rscript(shQuote(c("--vanilla", "-e", code)))
 }
 
 expect_reference <- function(object, expected) {

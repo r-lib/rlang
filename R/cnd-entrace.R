@@ -41,7 +41,7 @@ global_entrace <- function(enable = TRUE, type = "error") {
   }
 
   if (getRversion() < "4.0") {
-    return(global_entrace_fallback())
+    return(global_entrace_fallback(enable, type))
   }
 
   if (enable) {
@@ -55,8 +55,12 @@ global_entrace <- function(enable = TRUE, type = "error") {
 
   invisible(NULL)
 }
-global_entrace_fallback <- function(enable, what) {
-  if ("error" %in% what) {
+global_entrace_fallback <- function(enable, type) {
+  if (!"error" %in% type) {
+    return(invisible(NULL))
+  }
+
+  if (enable) {
     options(error = entrace)
   } else {
     opt <- peek_option("error")
