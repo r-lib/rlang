@@ -106,11 +106,6 @@ format.rlang_error <- function(x,
     out <- paste_trace(out, trace, simplify, ...)
   }
 
-  if (simplify != "branch" && !is_null(x$parent)) {
-    parent_lines <- format.rlang_error(x$parent, ..., simplify = simplify)
-    out <- paste_line(out, parent_lines)
-  }
-
   # Recommend printing the full backtrace if called from `last_error()`
   from_last_error <- is_true(orig$rlang$internal$from_last_error)
   if (from_last_error && simplify == "branch" && !is_null(trace)) {
