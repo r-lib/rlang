@@ -103,6 +103,24 @@ cnd_type <- function(cnd) {
   .Call(ffi_cnd_type, cnd)
 }
 
+#' @export
+print.rlang_warning <- function(x, ...) {
+  writeLines(format(x, ...))
+  invisible(x)
+}
+#' @export
+format.rlang_warning <- function(x,
+                                 ...,
+                                 backtrace = TRUE,
+                                 simplify = c("branch", "collapse", "none")) {
+  cnd_format(x, ..., backtrace = backtrace, simplify = simplify)
+}
+
+#' @export
+print.rlang_message <- print.rlang_warning
+#' @export
+format.rlang_message <- format.rlang_warning
+
 cnd_print <- function(x, ...) {
   writeLines(cnd_format(x, ...))
   invisible(x)

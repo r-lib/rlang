@@ -121,14 +121,56 @@
      3.     \-global h()
     Execution halted
 
-# can set `entrace()` as a global handler (older R)
+---
 
-    Error in 1 + "" : non-numeric argument to binary operator
-    Calls: f -> g -> h
+    FOO
+    Warning in g() : bar
+    baz
+    > rlang::last_warnings()
+    [[1]]
+    <warning/rlang_warning>
+    Warning in `f()`: foo
     Backtrace:
-        x
-     1. \-global f()
-     2.   \-global g()
-     3.     \-global h()
-    Execution halted
+     1. global f()
+    
+    [[2]]
+    <warning/rlang_warning>
+    Warning in `g()`: bar
+    Backtrace:
+     1. global f()
+     2. global g()
+    
+    
+    > rlang::last_warning()
+    <warning/rlang_warning>
+    Warning in `g()`: bar
+    Backtrace:
+     1. global f()
+     2. global g()
+    
+    > rlang::last_messages()
+    [[1]]
+    <message/rlang_message>
+    Message in `message()`: FOO
+    Backtrace:
+     1. global f()
+    
+    [[2]]
+    <message/rlang_message>
+    Message in `message()`: baz
+    Backtrace:
+     1. global f()
+     2. global g()
+     3. global h()
+    
+    
+    > rlang::last_message()
+    <message/rlang_message>
+    Message in `message()`: baz
+    Backtrace:
+     1. global f()
+     2. global g()
+     3. global h()
+    Warning message:
+    In f() : foo
 

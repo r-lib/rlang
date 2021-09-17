@@ -4,12 +4,13 @@
 \alias{global_entrace}
 \title{Entrace unexpected errors}
 \usage{
-global_entrace(enable = TRUE, type = "error")
+global_entrace(enable = TRUE, class = c("error", "warning", "message"))
 }
 \arguments{
 \item{enable}{Whether to enable or disable entracing.}
 
-\item{type}{What kind of conditions should be entraced.}
+\item{class}{A character vector of one or several classes of
+conditions to be entraced.}
 }
 \description{
 \code{global_entrace()} enriches base errors with rlang features:

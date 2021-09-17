@@ -259,6 +259,26 @@ test_that("can set `entrace()` as a global handler", {
     h <- function() 1 + ""
     f()
   }'))
+
+  expect_snapshot_output(run('{
+    suppressMessages(testthat::local_reproducible_output())
+    rlang::global_entrace()
+    f <- function() { warning("foo"); message("FOO"); g() }
+    g <- function() { warning("bar", immediate. = TRUE); h() }
+    h <- function() message("baz")
+    f()
+    writeLines("> rlang::last_warnings()")
+    print(rlang::last_warnings())
+
+    writeLines("\\n> rlang::last_warning()")
+    print(rlang::last_warning())
+
+    writeLines("\\n> rlang::last_messages()")
+    print(rlang::last_messages())
+
+    writeLines("\\n> rlang::last_message()")
+    print(rlang::last_message())
+  }'))
 })
 
 test_that("can set `entrace()` as a global handler (older R)", {

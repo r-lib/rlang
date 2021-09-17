@@ -21,7 +21,8 @@
 #' ```
 #'
 #' @param enable Whether to enable or disable entracing.
-#' @param type What kind of conditions should be entraced.
+#' @param class A character vector of one or several classes of
+#'   conditions to be entraced.
 #'
 #' @section Under the hood:
 #' On R 4.0 and newer, `global_entrace()` installs a global handler
@@ -32,14 +33,17 @@
 #' handlers like [recover()]. Also this causes a conflict with IDE
 #' handlers (e.g. in RStudio).
 #' @export
-global_entrace <- function(enable = TRUE, type = "error") {
-  # TODO: Support "warning" and "message". Use `arg_match(multiple = TRUE)`?
-  if (!is_string(type, "error")) {
-    abort(sprintf("%s must be \"error\"", format_arg("type")))
-  }
-
+global_entrace <- function(enable = TRUE,
+                           class = c("error", "warning", "message")) {
   if (getRversion() < "4.0") {
-    return(global_entrace_fallback(enable, type))
+    return(global_entrace_fallback(enable, class))
+  }
+  if (!is_character(class)) {
+    abort(sprintf(
+      "%s must be a character vector, not %s.",
+      format_arg("class"),
+      friendly_type_of(class)
+    ))
   }
 
   if (enable) {
@@ -48,13 +52,13 @@ global_entrace <- function(enable = TRUE, type = "error") {
     poke_handlers <- drop_global_handlers
   }
 
-  handlers <- rep_named(type, list(entrace))
+  handlers <- rep_named(class, list(entrace))
   inject(poke_handlers(!!!handlers))
 
   invisible(NULL)
 }
-global_entrace_fallback <- function(enable, type) {
-  if (!"error" %in% type) {
+global_entrace_fallback <- function(enable, class) {
+  if (!"error" %in% class) {
     return(invisible(NULL))
   }
 
@@ -124,9 +128,23 @@ entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
   }
   trace <- trace_back(top = top, bottom = bottom)
 
+  # `options(error = )` case
   if (missing(cnd)) {
-    entrace_handle_top(trace)
-  } else {
+    return(entrace_handle_top(trace))
+  }
+
+  # Log warnings and messages
+  if (is_warning(cnd)) {
+    push_warning(as_rlang_warning(cnd, trace))
+    return()
+  }
+  if (is_message(cnd)) {
+    push_message(as_rlang_message(cnd, trace))
+    return()
+  }
+
+  # Rethrow errors
+  if (is_error(cnd)) {
     abort(
       conditionMessage(cnd) %||% "",
       error = cnd,
@@ -134,6 +152,9 @@ entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
       call = conditionCall(cnd)
     )
   }
+
+  # Ignore other condition types
+  NULL
 }
 
 #' @rdname entrace
