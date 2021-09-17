@@ -4,12 +4,12 @@
 \alias{global_entrace}
 \title{Entrace unexpected errors}
 \usage{
-global_entrace(enable = TRUE, what = "error")
+global_entrace(enable = TRUE, type = "error")
 }
 \arguments{
 \item{enable}{Whether to enable or disable entracing.}
 
-\item{what}{What kind of conditions should be entraced.}
+\item{type}{What kind of conditions should be entraced.}
 }
 \description{
 \code{global_entrace()} enriches unexpected errors (technically,

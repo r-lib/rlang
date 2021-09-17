@@ -16,7 +16,7 @@
 #' [stop()] or from native code.
 #'
 #' @param enable Whether to enable or disable entracing.
-#' @param what What kind of conditions should be entraced.
+#' @param type What kind of conditions should be entraced.
 #'
 #' @section Under the hood:
 #' On R 4.0 and newer, `global_entrace()` installs a global handler
@@ -34,7 +34,12 @@
 #' # Disable entracing
 #' global_entrace(FALSE)
 #' @export
-global_entrace <- function(enable = TRUE, what = "error") {
+global_entrace <- function(enable = TRUE, type = "error") {
+  # TODO: Support "warning" and "message". Use `arg_match(multiple = TRUE)`?
+  if (!is_string(type, "error")) {
+    abort(sprintf("%s must be \"error\"", format_arg("type")))
+  }
+
   if (getRversion() < "4.0") {
     return(global_entrace_fallback())
   }
@@ -45,9 +50,8 @@ global_entrace <- function(enable = TRUE, what = "error") {
     poke_handlers <- drop_global_handlers
   }
 
-  if ("error" %in% what) {
-    poke_handlers(error = entrace)
-  }
+  handlers <- rep_named(type, list(entrace))
+  inject(poke_handlers(!!!handlers))
 
   invisible(NULL)
 }
