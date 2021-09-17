@@ -68,7 +68,6 @@ is_rlang_error <- function(x) {
 format.rlang_error <- function(x,
                                ...,
                                backtrace = TRUE,
-                               child = NULL,
                                simplify = c("branch", "collapse", "none")) {
   # Allow overwriting default display via condition field
   simplify <- x$rlang$internal$print_simplify %||% simplify
@@ -108,7 +107,7 @@ format.rlang_error <- function(x,
   }
 
   if (simplify != "branch" && !is_null(x$parent)) {
-    parent_lines <- format.rlang_error(x$parent, ..., child = x, simplify = simplify)
+    parent_lines <- format.rlang_error(x$parent, ..., simplify = simplify)
     out <- paste_line(out, parent_lines)
   }
 
