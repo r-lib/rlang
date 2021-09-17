@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Set and get an expression — set_expr • rlang</title>
+<title>Entrace unexpected errors — global_entrace • rlang</title>
 
 
 <!-- jquery -->
@@ -39,14 +39,21 @@
 
 
 
-<meta property="og:title" content="Set and get an expression — set_expr" />
-<meta property="og:description" content="These helpers are useful to make your function work generically
-with quosures and raw expressions. First call get_expr() to
-extract an expression. Once you're done processing the expression,
-call set_expr() on the original object to update the expression.
-You can return the result of set_expr(), either a formula or an
-expression depending on the input type. Note that set_expr() does
-not change its input, it creates a new object." />
+<meta property="og:title" content="Entrace unexpected errors — global_entrace" />
+<meta property="og:description" content="global_entrace() enriches base errors with rlang features:
+They are assigned a backtrace. You can configure whether to
+display a backtrace on error with the rlang_backtrace_on_error
+global option.
+They are recorded in last_error(). Calling this function is
+another way of inspecting the backtrace.
+
+
+When global entracing is enabled, all errors behave as if they had
+been thrown with abort(), even the ones thrown with
+stop() or from native code.
+Set global entracing in your RProfile with:rlang::global_entrace()
+
+" />
 
 
 
@@ -156,67 +163,55 @@ not change its input, it creates a new object." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Set and get an expression</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/expr.R'><code>R/expr.R</code></a></small>
-    <div class="hidden name"><code>set_expr.Rd</code></div>
+    <h1>Entrace unexpected errors</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/cnd-entrace.R'><code>R/cnd-entrace.R</code></a></small>
+    <div class="hidden name"><code>global_entrace.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>These helpers are useful to make your function work generically
-with quosures and raw expressions. First call <code>get_expr()</code> to
-extract an expression. Once you're done processing the expression,
-call <code>set_expr()</code> on the original object to update the expression.
-You can return the result of <code>set_expr()</code>, either a formula or an
-expression depending on the input type. Note that <code>set_expr()</code> does
-not change its input, it creates a new object.</p>
+    <p><code>global_entrace()</code> enriches base errors with rlang features:</p><ul>
+<li><p>They are assigned a backtrace. You can configure whether to
+display a backtrace on error with the <a href='rlang_backtrace_on_error.html'>rlang_backtrace_on_error</a>
+global option.</p></li>
+<li><p>They are recorded in <code><a href='last_error.html'>last_error()</a></code>. Calling this function is
+another way of inspecting the backtrace.</p></li>
+</ul>
+
+<p>When global entracing is enabled, all errors behave as if they had
+been thrown with <code><a href='abort.html'>abort()</a></code>, even the ones thrown with
+<code><a href='https://rdrr.io/r/base/stop.html'>stop()</a></code> or from native code.</p>
+<p>Set global entracing in your RProfile with:</p><pre><span class='fu'>rlang</span><span class='fu'>::</span><span class='fu'>global_entrace</span><span class='op'>(</span><span class='op'>)</span>
+</pre>
+
     </div>
 
-    <pre class="usage"><span class='fu'>set_expr</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>value</span><span class='op'>)</span>
-
-<span class='fu'>get_expr</span><span class='op'>(</span><span class='va'>x</span>, default <span class='op'>=</span> <span class='va'>x</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>global_entrace</span><span class='op'>(</span>enable <span class='op'>=</span> <span class='cn'>TRUE</span>, type <span class='op'>=</span> <span class='st'>"error"</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>An expression, closure, or one-sided formula. In addition,
-<code>set_expr()</code> accept frames.</p></td>
+      <th>enable</th>
+      <td><p>Whether to enable or disable entracing.</p></td>
     </tr>
     <tr>
-      <th>value</th>
-      <td><p>An updated expression.</p></td>
-    </tr>
-    <tr>
-      <th>default</th>
-      <td><p>A default expression to return when <code>x</code> is not an
-expression wrapper. Defaults to <code>x</code> itself.</p></td>
+      <th>type</th>
+      <td><p>What kind of conditions should be entraced.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="under-the-hood"><a class="anchor" href="#under-the-hood"></a>Under the hood</h2>
 
-    <p>The updated original input for <code>set_expr()</code>. A raw
-expression for <code>get_expr()</code>.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    
 
-    <div class='dont-index'><p><code><a href='quosure.html'>quo_get_expr()</a></code> and <code><a href='quosure.html'>quo_set_expr()</a></code> for versions of
-<code>get_expr()</code> and <code>set_expr()</code> that only work on quosures.</p></div>
+<p>On R 4.0 and newer, <code>global_entrace()</code> installs a global handler
+with <code><a href='https://rdrr.io/r/base/conditions.html'>globalCallingHandlers()</a></code>. On older R versions, <code><a href='entrace.html'>entrace()</a></code> is
+set as an <code><a href='https://rdrr.io/r/base/options.html'>option(error = )</a></code> handler. The latter method has the
+disadvantage that only one handler can be set at a time. This means
+that you need to manually switch between <code><a href='entrace.html'>entrace()</a></code> and other
+handlers like <code><a href='https://rdrr.io/r/utils/recover.html'>recover()</a></code>. Also this causes a conflict with IDE
+handlers (e.g. in RStudio).</p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>f</span> <span class='op'>&lt;-</span> <span class='op'>~</span><span class='fu'>foo</span><span class='op'>(</span><span class='va'>bar</span><span class='op'>)</span>
-<span class='va'>e</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='fu'>foo</span><span class='op'>(</span><span class='va'>bar</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>frame</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span><span class='op'>(</span><span class='fu'><a href='stack.html'>ctxt_frame</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: `ctxt_frame()` is deprecated as of rlang 0.3.0.</span>
-#&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once per session.</span></span></div><div class='input'>
-<span class='fu'>get_expr</span><span class='op'>(</span><span class='va'>f</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; foo(bar)</div><div class='input'><span class='fu'>get_expr</span><span class='op'>(</span><span class='va'>e</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; foo(bar)</div><div class='input'><span class='fu'>get_expr</span><span class='op'>(</span><span class='va'>frame</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; identity(ctxt_frame())</div><div class='input'>
-<span class='fu'>set_expr</span><span class='op'>(</span><span class='va'>f</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>baz</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; ~baz
-#&gt; &lt;environment: 0x7fa9cc5c58f0&gt;</div><div class='input'><span class='fu'>set_expr</span><span class='op'>(</span><span class='va'>e</span>, <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>baz</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; baz</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

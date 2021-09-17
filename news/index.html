@@ -176,6 +176,8 @@
 <h2 class="hasAnchor">
 <a href="#features-and-bugfixes" class="anchor"></a>Features and bugfixes</h2>
 <ul>
+<li><p>Objects headers (as printed by <code><a href="../reference/last_error.html">last_error()</a></code>, <code><a href="../reference/env_print.html">env_print()</a></code>, …) are now formatted using the <code>cls</code> class of the cli package.</p></li>
+<li><p><code><a href="../reference/global_entrace.html">global_entrace()</a></code> is a user-friendly helper for configuring errors in your RProfile. Call it to enrich all base errors with an rlang backtrace with <code><a href="../reference/last_error.html">last_error()</a></code> and <code>backtrace_on_error</code> support.</p></li>
 <li><p><code><a href="../reference/arg_match.html">arg_match()</a></code> gains a <code>multiple</code> argument for cases where zero or several matches are allowed (<a href='https://github.com/r-lib/rlang/issues/1281'>#1281</a>).</p></li>
 <li><p>Changes in namespaces are now emboldened in backtraces (<a href='https://github.com/r-lib/rlang/issues/946'>#946</a>).</p></li>
 <li><p>Functions defined in the global environments or in local execution environments are now displayed with a space separator in backtraces instead of <code><a href="https://rdrr.io/r/base/ns-dblcolon.html">::</a></code> and <code><a href="https://rdrr.io/r/base/ns-dblcolon.html">:::</a></code>. This avoids making it seem like these frame calls are valid R code ready to be typed in (<a href='https://github.com/r-lib/rlang/issues/902'>#902</a>).</p></li>

@@ -40,10 +40,10 @@
 
 
 <meta property="og:title" content="Display backtrace on error — rlang_backtrace_on_error" />
-<meta property="og:description" content="Errors thrown with abort() automatically save a backtrace that
-can be inspected by calling last_error(). You can control the default
-display of the backtrace by setting the option rlang_backtrace_on_error
-to one of the following values:
+<meta property="og:description" content="rlang errors carry a backtrace that can be inspected by calling
+last_error(). You can also control the default display of the
+backtrace by setting the option rlang_backtrace_on_error to one
+of the following values:
 &quot;none&quot; show nothing.
 &quot;reminder&quot;, the default in interactive sessions, displays a reminder that
 you can see the backtrace with last_error().
@@ -51,7 +51,10 @@ you can see the backtrace with last_error().
 &quot;collapse&quot; displays a collapsed backtrace tree.
 &quot;full&quot;, the default in non-interactive sessions, displays the full tree.
 
-" />
+
+rlang errors are normally thrown with abort(). If you promote
+base errors to rlang errors with global_entrace(),
+rlang_backtrace_on_error applies to all errors." />
 
 
 
@@ -167,10 +170,10 @@ you can see the backtrace with last_error().
     </div>
 
     <div class="ref-description">
-    <p>Errors thrown with <code><a href='abort.html'>abort()</a></code> automatically save a backtrace that
-can be inspected by calling <code><a href='last_error.html'>last_error()</a></code>. You can control the default
-display of the backtrace by setting the option <code>rlang_backtrace_on_error</code>
-to one of the following values:</p><ul>
+    <p>rlang errors carry a backtrace that can be inspected by calling
+<code><a href='last_error.html'>last_error()</a></code>. You can also control the default display of the
+backtrace by setting the option <code>rlang_backtrace_on_error</code> to one
+of the following values:</p><ul>
 <li><p><code>"none"</code> show nothing.</p></li>
 <li><p><code>"reminder"</code>, the default in interactive sessions, displays a reminder that
 you can see the backtrace with <code><a href='last_error.html'>last_error()</a></code>.</p></li>
@@ -179,6 +182,9 @@ you can see the backtrace with <code><a href='last_error.html'>last_error()</a><
 <li><p><code>"full"</code>, the default in non-interactive sessions, displays the full tree.</p></li>
 </ul>
 
+<p>rlang errors are normally thrown with <code><a href='abort.html'>abort()</a></code>. If you promote
+base errors to rlang errors with <code><a href='global_entrace.html'>global_entrace()</a></code>,
+<code>rlang_backtrace_on_error</code> applies to all errors.</p>
     </div>
 
 
