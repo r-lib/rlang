@@ -15,6 +15,7 @@
 #' @param arg A symbol referring to an argument accepting strings.
 #' @param values A character vector of possible values that `arg` can take.
 #' @param ... These dots are for future extensions and must be empty.
+#' @param multiple Whether `arg` may contain zero or several values.
 #' @inheritParams args_error_context
 #' @return The string supplied to `arg`.
 #' @importFrom utils adist
@@ -30,9 +31,10 @@
 arg_match <- function(arg,
                       values = NULL,
                       ...,
+                      multiple = FALSE,
                       error_arg = caller_arg(arg),
                       error_call = caller_env()) {
-  check_dots_empty()
+  check_dots_empty0(...)
 
   arg_expr <- enexpr(arg)
   if (!is_symbol(arg_expr)) {
@@ -43,7 +45,7 @@ arg_match <- function(arg,
 
   if (is_null(values)) {
     fn <- caller_fn()
-    values <- fn_fmls(fn)[[error_arg]]
+    values <- formals(fn)[[error_arg]]
     values <- eval_bare(values, get_env(fn))
   }
   if (!is_character(arg)) {
@@ -52,6 +54,11 @@ arg_match <- function(arg,
       call = error_call
     )
   }
+
+  if (multiple) {
+    return(arg_match_multi(arg, values, error_arg, error_call))
+  }
+
   if (length(arg) > 1 && !setequal(arg, values)) {
     abort(
       arg_match_invalid_msg(arg, values, error_arg),
@@ -66,6 +73,10 @@ arg_match <- function(arg,
     error_arg,
     error_call = error_call
   )
+}
+
+arg_match_multi <- function(arg, values, error_arg, error_call) {
+  map_chr(arg, ~ arg_match0(.x, values, error_arg, error_call = error_call))
 }
 
 #' @description

@@ -113,3 +113,18 @@
       Error in `wrapper()`: `arg` must be a symbol.
       ! This is an internal error, please report it to the package authors.
 
+# can match multiple arguments
+
+    Code
+      (expect_error(my_wrapper("ba")))
+    Output
+      <error/rlang_error>
+      Error in `my_wrapper()`: `my_arg` must be one of "foo", "bar", or "baz", not "ba".
+      i Did you mean "bar"?
+    Code
+      (expect_error(my_wrapper(c("foo", "ba"))))
+    Output
+      <error/rlang_error>
+      Error in `my_wrapper()`: `my_arg` must be one of "foo", "bar", or "baz", not "ba".
+      i Did you mean "bar"?
+
