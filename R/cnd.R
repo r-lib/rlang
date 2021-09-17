@@ -103,6 +103,56 @@ cnd_type <- function(cnd) {
   .Call(ffi_cnd_type, cnd)
 }
 
+cnd_format <- function(x,
+                       ...,
+                       backtrace = TRUE,
+                       simplify = c("branch", "collapse", "none")) {
+  simplify <- arg_match(simplify)
+
+  orig <- x
+  parent <- x$parent
+  style <- cli_box_chars()
+
+  header <- cnd_type_header(x)
+  message <- cnd_prefix_error_message(x)
+
+  out <- paste_line(
+    header,
+    message
+  )
+
+  trace <- x$trace
+
+  while (!is_null(parent)) {
+    x <- parent
+    parent <- parent$parent
+
+    chained_trace <- x$trace
+    if (can_paste_trace(backtrace, chained_trace) &&
+        !identical(trace, chained_trace)) {
+      out <- paste_trace(out, trace, simplify, ...)
+      trace <- chained_trace
+    }
+
+    message <- cnd_prefix_error_message(x, parent = TRUE)
+    out <- paste_line(out, message)
+  }
+
+  if (can_paste_trace(backtrace, trace)) {
+    out <- paste_trace(out, trace, simplify, ...)
+  }
+
+  out
+}
+
+can_paste_trace <- function(backtrace, trace) {
+  backtrace && is_trace(trace) && trace_length(trace)
+}
+paste_trace <- function(x, trace, simplify, ...) {
+  trace_lines <- format(trace, ..., simplify = simplify)
+  paste_line(x, bold("Backtrace:"), trace_lines)
+}
+
 cnd_type_header <- function(cnd) {
   type <- cnd_type(cnd)
   class <- class(cnd)[[1]]

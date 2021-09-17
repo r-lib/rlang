@@ -71,57 +71,17 @@ format.rlang_error <- function(x,
                                simplify = c("branch", "collapse", "none")) {
   # Allow overwriting default display via condition field
   simplify <- x$rlang$internal$print_simplify %||% simplify
-  simplify <- arg_match(simplify)
 
-  orig <- x
-  parent <- x$parent
-  style <- cli_box_chars()
-
-  header <- cnd_type_header(x)
-  message <- cnd_prefix_error_message(x)
-
-  out <- paste_line(
-    header,
-    message
-  )
-
-  trace <- x$trace
-
-  while (!is_null(parent)) {
-    x <- parent
-    parent <- parent$parent
-
-    chained_trace <- x$trace
-    if (can_paste_trace(backtrace, chained_trace) &&
-        !identical(trace, chained_trace)) {
-      out <- paste_trace(out, trace, simplify, ...)
-      trace <- chained_trace
-    }
-
-    message <- cnd_prefix_error_message(x, parent = TRUE)
-    out <- paste_line(out, message)
-  }
-
-  if (can_paste_trace(backtrace, trace)) {
-    out <- paste_trace(out, trace, simplify, ...)
-  }
-
+  out <- cnd_format(x, ..., backtrace = backtrace, simplify = simplify)
+  
   # Recommend printing the full backtrace if called from `last_error()`
-  from_last_error <- is_true(orig$rlang$internal$from_last_error)
-  if (from_last_error && simplify == "branch" && !is_null(trace)) {
+  from_last_error <- is_true(x$rlang$internal$from_last_error)
+  if (from_last_error && simplify == "branch" && !is_null(x$trace)) {
     reminder <- silver("Run `rlang::last_trace()` to see the full context.")
     out <- paste_line(out, reminder)
   }
 
   out
-}
-
-can_paste_trace <- function(backtrace, trace) {
-  backtrace && is_trace(trace) && trace_length(trace)
-}
-paste_trace <- function(x, trace, simplify, ...) {
-  trace_lines <- format(trace, ..., simplify = simplify)
-  paste_line(x, bold("Backtrace:"), trace_lines)
 }
 
 header_add_tree_node <- function(header, style, parent) {
