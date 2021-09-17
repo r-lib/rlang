@@ -20,7 +20,7 @@
 #'
 #' @section Under the hood:
 #' On R 4.0 and newer, `global_entrace()` installs a global handler
-#' with [globalCallingHandlers()]. On older R versions, `entrace()` is
+#' with `globalCallingHandlers()`. On older R versions, `entrace()` is
 #' set as an `option(error = )` handler. The latter method has the
 #' disadvantage that only one handler can be set at a time. This means
 #' that you need to manually switch between `entrace()` and other

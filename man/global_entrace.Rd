@@ -28,7 +28,7 @@ been thrown with \code{\link[=abort]{abort()}}, even the ones thrown with
 \section{Under the hood}{
 
 On R 4.0 and newer, \code{global_entrace()} installs a global handler
-with \code{\link[=globalCallingHandlers]{globalCallingHandlers()}}. On older R versions, \code{entrace()} is
+with \code{globalCallingHandlers()}. On older R versions, \code{entrace()} is
 set as an \code{option(error = )} handler. The latter method has the
 disadvantage that only one handler can be set at a time. This means
 that you need to manually switch between \code{entrace()} and other

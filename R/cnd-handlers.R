@@ -295,6 +295,10 @@ cnd_muffle <- function(cnd) {
   FALSE
 }
 
+if (getRversion() < "4.0") {
+  utils::globalVariables("globalCallingHandlers")
+}
+
 drop_global_handlers <- function(...) {
   to_pop <- list(...)
   handlers <- globalCallingHandlers()
