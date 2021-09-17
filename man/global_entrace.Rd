@@ -39,10 +39,3 @@ handlers like \code{\link[=recover]{recover()}}. Also this causes a conflict wit
 handlers (e.g. in RStudio).
 }
 
-\examples{
-# Add this to your RProfile
-global_entrace()
-
-# Disable entracing
-global_entrace(FALSE)
-}

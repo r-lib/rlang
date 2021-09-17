@@ -31,13 +31,6 @@
 #' that you need to manually switch between `entrace()` and other
 #' handlers like [recover()]. Also this causes a conflict with IDE
 #' handlers (e.g. in RStudio).
-#'
-#' @examples
-#' # Add this to your RProfile
-#' global_entrace()
-#'
-#' # Disable entracing
-#' global_entrace(FALSE)
 #' @export
 global_entrace <- function(enable = TRUE, type = "error") {
   # TODO: Support "warning" and "message". Use `arg_match(multiple = TRUE)`?
