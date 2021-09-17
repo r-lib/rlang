@@ -96,6 +96,9 @@ test_that("drop_global_handlers() works and is idempotent", {
     handler <- function(...) "foo"
     globalCallingHandlers(foo = handler)
 
+    rlang:::drop_global_handlers(bar = handler)
+    expect_equal(globalCallingHandlers(), list(foo = handler))
+
     rlang:::drop_global_handlers(foo = handler, bar = function() "bar")
     expect_equal(globalCallingHandlers(), list())
 
