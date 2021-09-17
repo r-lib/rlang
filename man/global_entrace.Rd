@@ -12,18 +12,21 @@ global_entrace(enable = TRUE, type = "error")
 \item{type}{What kind of conditions should be entraced.}
 }
 \description{
-\code{global_entrace()} enriches unexpected errors (technically,
-unhandled errors) with rlang features:
+\code{global_entrace()} enriches base errors with rlang features:
 \itemize{
-\item They are assigned a backtrace.
-\item They are recorded in \code{\link[=last_error]{last_error()}}.
-\item You can configure whether to display a backtrace on error with
-the \link{rlang_backtrace_on_error} global option.
+\item They are assigned a backtrace. You can configure whether to
+display a backtrace on error with the \link{rlang_backtrace_on_error}
+global option.
+\item They are recorded in \code{\link[=last_error]{last_error()}}. Calling this function is
+another way of inspecting the backtrace.
 }
 
 When global entracing is enabled, all errors behave as if they had
 been thrown with \code{\link[=abort]{abort()}}, even the ones thrown with
 \code{\link[=stop]{stop()}} or from native code.
+
+Set global entracing in your RProfile with:\preformatted{rlang::global_entrace()
+}
 }
 \section{Under the hood}{
 

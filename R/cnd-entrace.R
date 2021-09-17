@@ -1,19 +1,24 @@
 #' Entrace unexpected errors
 #'
 #' @description
-#' `global_entrace()` enriches unexpected errors (technically,
-#' unhandled errors) with rlang features:
+#' `global_entrace()` enriches base errors with rlang features:
 #'
-#' - They are assigned a backtrace.
+#' - They are assigned a backtrace. You can configure whether to
+#'   display a backtrace on error with the [rlang_backtrace_on_error]
+#'   global option.
 #'
-#' - They are recorded in [last_error()].
-#'
-#' - You can configure whether to display a backtrace on error with
-#'   the [rlang_backtrace_on_error] global option.
+#' - They are recorded in [last_error()]. Calling this function is
+#'   another way of inspecting the backtrace.
 #'
 #' When global entracing is enabled, all errors behave as if they had
 #' been thrown with [rlang::abort()], even the ones thrown with
 #' [stop()] or from native code.
+#'
+#' Set global entracing in your RProfile with:
+#'
+#' ```
+#' rlang::global_entrace()
+#' ```
 #'
 #' @param enable Whether to enable or disable entracing.
 #' @param type What kind of conditions should be entraced.
