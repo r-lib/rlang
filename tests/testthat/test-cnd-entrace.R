@@ -240,12 +240,10 @@ test_that("can supply handler environment as `bottom`", {
 })
 
 test_that("can set `entrace()` as a global handler", {
-  skip_if_not_installed("base", "4.0")
-
   code <- '
   {
     suppressMessages(testthat::local_reproducible_output())
-    globalCallingHandlers(error = rlang::entrace)
+    rlang::global_entrace()
     f <- function() g()
     g <- function() h()
     h <- function() 1 + ""
@@ -253,6 +251,10 @@ test_that("can set `entrace()` as a global handler", {
   }'
   gch <- Rscript(shQuote(c("--vanilla", "-e", code)))
   expect_snapshot(cat_line(gch$out))
+
+
+  # Indirected case for developers of rlang
+  skip_if_not_installed("base", "4.0")
 
   code <- '
   {

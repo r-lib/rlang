@@ -41,6 +41,10 @@ capture context.
 Can also be an integer that will be passed to \code{\link[=caller_env]{caller_env()}}.}
 }
 \description{
+\code{entrace()} is a low level function. See \code{\link[=global_entrace]{global_entrace()}} for a
+user-friendly way of enriching errors and other conditions from
+your RProfile.
+
 \code{entrace()} interrupts an error throw to add an \link[=trace_back]{rlang backtrace} to the error. The error throw is
 immediately resumed. \code{cnd_entrace()} adds a backtrace to a
 condition object, without any other effect. Both functions should
@@ -68,6 +72,8 @@ options(error = rlang::entrace)
 })
 }
 \seealso{
-\code{\link[=with_abort]{with_abort()}} to promote conditions to rlang errors.
-\code{\link[=cnd_entrace]{cnd_entrace()}} to manually add a backtrace to a condition.
+\code{\link[=global_entrace]{global_entrace()}} for configuring errors with
+\code{entrace()}. \code{\link[=with_abort]{with_abort()}} to promote conditions to rlang
+errors.  \code{\link[=cnd_entrace]{cnd_entrace()}} to manually add a backtrace to a
+condition.
 }

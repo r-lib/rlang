@@ -34,6 +34,10 @@
 
 ## Features and bugfixes
 
+* `global_entrace()` is a user-friendly helper for configuring errors
+  in your RProfile. Call it to enrich all base errors with an rlang
+  backtrace with `last_error()` and `backtrace_on_error` support.
+
 * `arg_match()` gains a `multiple` argument for cases where zero or
   several matches are allowed (#1281).
 
