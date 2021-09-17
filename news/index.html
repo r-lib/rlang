@@ -176,6 +176,7 @@
 <h2 class="hasAnchor">
 <a href="#features-and-bugfixes" class="anchor"></a>Features and bugfixes</h2>
 <ul>
+<li><p><code><a href="../reference/arg_match.html">arg_match()</a></code> gains a <code>multiple</code> argument for cases where zero or several matches are allowed (<a href='https://github.com/r-lib/rlang/issues/1281'>#1281</a>).</p></li>
 <li><p>Changes in namespaces are now emboldened in backtraces (<a href='https://github.com/r-lib/rlang/issues/946'>#946</a>).</p></li>
 <li><p>Functions defined in the global environments or in local execution environments are now displayed with a space separator in backtraces instead of <code><a href="https://rdrr.io/r/base/ns-dblcolon.html">::</a></code> and <code><a href="https://rdrr.io/r/base/ns-dblcolon.html">:::</a></code>. This avoids making it seem like these frame calls are valid R code ready to be typed in (<a href='https://github.com/r-lib/rlang/issues/902'>#902</a>).</p></li>
 <li><p>Backtraces no longer contain inlined objects to avoid performance issues in edge cases (<a href='https://github.com/r-lib/rlang/issues/1069'>#1069</a>, r-lib/testthat<a href='https://github.com/r-lib/rlang/issues/1223'>#1223</a>).</p></li>

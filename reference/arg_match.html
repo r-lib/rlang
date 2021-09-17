@@ -187,6 +187,7 @@ In this case, the first element of <code>arg</code> is used.</p>
   <span class='va'>arg</span>,
   values <span class='op'>=</span> <span class='cn'>NULL</span>,
   <span class='va'>...</span>,
+  multiple <span class='op'>=</span> <span class='cn'>FALSE</span>,
   error_arg <span class='op'>=</span> <span class='fu'><a href='caller_arg.html'>caller_arg</a></span><span class='op'>(</span><span class='va'>arg</span><span class='op'>)</span>,
   error_call <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='op'>)</span>
@@ -207,6 +208,10 @@ In this case, the first element of <code>arg</code> is used.</p>
     <tr>
       <th>...</th>
       <td><p>These dots are for future extensions and must be empty.</p></td>
+    </tr>
+    <tr>
+      <th>multiple</th>
+      <td><p>Whether <code>arg</code> may contain zero or multiple <code>values</code>.</p></td>
     </tr>
     <tr>
       <th>error_arg</th>
