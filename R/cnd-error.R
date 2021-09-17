@@ -71,6 +71,7 @@ format.rlang_error <- function(x,
                                simplify = c("branch", "collapse", "none")) {
   # Allow overwriting default display via condition field
   simplify <- x$rlang$internal$print_simplify %||% simplify
+  simplify <- arg_match(simplify)
 
   out <- cnd_format(x, ..., backtrace = backtrace, simplify = simplify)
   
