@@ -34,6 +34,9 @@
 
 ## Features and bugfixes
 
+* Objects headers (as printed by `last_error()`, `env_print()`, ...)
+  are now formatted using the `cls` class of the cli package.
+
 * `global_entrace()` is a user-friendly helper for configuring errors
   in your RProfile. Call it to enrich all base errors with an rlang
   backtrace with `last_error()` and `backtrace_on_error` support.

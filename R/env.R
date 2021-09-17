@@ -655,7 +655,7 @@ env_print <- function(env = caller_env()) {
   if (is_empty_env(env)) {
     parent <- "NULL"
   } else {
-    parent <- sprintf("<environment: %s>", env_label(env_parent(env)))
+    parent <- format_cls(sprintf("environment: %s", env_label(env_parent(env))))
   }
 
   if (env_is_locked(env)) {
@@ -664,8 +664,9 @@ env_print <- function(env = caller_env()) {
     locked <- ""
   }
 
+  header <- format_cls(sprintf("environment: %s", env_label(env)))
   cat_line(
-    bold(sprintf("<environment: %s>%s", env_label(env), locked)),
+    bold(paste0(header, locked)),
     sprintf("Parent: %s", parent)
   )
 
