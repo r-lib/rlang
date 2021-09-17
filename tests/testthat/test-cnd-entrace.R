@@ -241,7 +241,7 @@ test_that("can supply handler environment as `bottom`", {
 test_that("can set `entrace()` as a global handler", {
   skip_if_not_installed("base", "4.0")
 
-  expect_snapshot(run('{
+  expect_snapshot_output(run('{
     suppressMessages(testthat::local_reproducible_output())
     rlang::global_entrace()
     f <- function() g()
@@ -251,7 +251,7 @@ test_that("can set `entrace()` as a global handler", {
   }'))
 
   # Indirected case for developers of rlang
-  expect_snapshot(run('{
+  expect_snapshot_output(run('{
     suppressMessages(testthat::local_reproducible_output())
     globalCallingHandlers(error = function(...) rlang::entrace(..., bottom = environment()))
     f <- function() g()
@@ -264,7 +264,7 @@ test_that("can set `entrace()` as a global handler", {
 test_that("can set `entrace()` as a global handler (older R)", {
   skip_if(getRversion() >= "4.0", )
 
-  expect_snapshot(run('{
+  expect_snapshot_output(run('{
     suppressMessages(testthat::local_reproducible_output())
     rlang::global_entrace()
     f <- function() g()
