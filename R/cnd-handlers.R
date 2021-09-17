@@ -295,7 +295,7 @@ cnd_muffle <- function(cnd) {
   FALSE
 }
 
-pop_global_handlers <- function(...) {
+drop_global_handlers <- function(...) {
   to_pop <- list(...)
   handlers <- globalCallingHandlers()
 

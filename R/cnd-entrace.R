@@ -5,7 +5,7 @@ global_entrace <- function(error = TRUE) {
     if (error) {
       globalCallingHandlers(error = entrace)
     } else {
-      pop_global_handlers(error = entrace)
+      drop_global_handlers(error = entrace)
     }
   } else {
     if (error) {
