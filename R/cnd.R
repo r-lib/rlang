@@ -102,3 +102,14 @@ is_message <- function(x) {
 cnd_type <- function(cnd) {
   .Call(ffi_cnd_type, cnd)
 }
+
+cnd_type_header <- function(cnd) {
+  type <- cnd_type(cnd)
+  class <- class(cnd)[[1]]
+
+  if (class != type) {
+    class <- c(type, class)
+  }
+
+  bold(format_cls(class))
+}

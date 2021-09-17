@@ -1033,7 +1033,7 @@
     Code
       with_options(crayon.enabled = TRUE, print(err))
     Output
-      [1m<error/rlang_error>[22m
+      [1m[1m[1m[34m[34m<error/rlang_error>[34m[39m[22m
       [1mError in [1m[1m[30m[47m[30m[47m`+`[47m[30m[49m[39m: [22m[1m[22mnon-numeric argument to binary operator
       [1mBacktrace:[22m
       [90m  1. [39m[1mrlang[22m::catch_cnd(with_abort(f()), "error")
@@ -1044,7 +1044,7 @@
     Code
       with_options(crayon.enabled = TRUE, summary(err))
     Output
-      [1m<error/rlang_error>[22m
+      [1m[1m[1m[34m[34m<error/rlang_error>[34m[39m[22m
       [1mError in [1m[1m[30m[47m[30m[47m`+`[47m[30m[49m[39m: [22m[1m[22mnon-numeric argument to binary operator
       [1mBacktrace:[22m
       [90m     [39mx

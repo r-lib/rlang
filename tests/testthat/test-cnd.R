@@ -66,3 +66,12 @@ test_that("check for duplicate condition fields (#1268)", {
   expect_error(error_cnd("foo", foo = 1, foo = 2), "same name")
   expect_error(abort("", foo = 1, foo = 2), "same name")
 })
+
+test_that("cnd_type_header() formats condition classes", {
+  expect_snapshot({
+    cnd_type_header(error_cnd())
+    cnd_type_header(warning_cnd())
+    cnd_type_header(message_cnd())
+    cnd_type_header(error_cnd(class = "foobar"))
+  })
+})

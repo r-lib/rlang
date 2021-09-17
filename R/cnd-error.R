@@ -83,7 +83,7 @@ format.rlang_error <- function(x,
   parent <- x$parent
   style <- cli_box_chars()
 
-  header <- rlang_error_header(x)
+  header <- cnd_type_header(x)
   message <- cnd_prefix_error_message(x)
 
   out <- paste_line(
@@ -162,19 +162,6 @@ message_add_tree_prefix <- function(message, style, parent) {
 #' @export
 summary.rlang_error <- function(object, ...) {
   print(object, simplify = "none", fields = TRUE)
-}
-
-rlang_error_header <- function(cnd, child = NULL) {
-  class <- class(cnd)[[1]]
-  if (class != "error") {
-    class <- paste0("error/", class)
-  }
-
-  if (is_null(child)) {
-    bold(sprintf("<%s>", class))
-  } else {
-    bold(sprintf("<parent: %s>", class))
-  }
 }
 
 on_load(s3_register("testthat::testthat_print", "rlang_error", function(x) {
