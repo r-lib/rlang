@@ -80,7 +80,6 @@ global_entrace_fallback <- function(enable, type) {
 #' Add backtrace from error handler
 #'
 #' @description
-#'
 #' `entrace()` is a low level function. See [global_entrace()] for a
 #' user-friendly way of enriching errors and other conditions from
 #' your RProfile.
@@ -90,11 +89,6 @@ global_entrace_fallback <- function(enable, type) {
 #' immediately resumed. `cnd_entrace()` adds a backtrace to a
 #' condition object, without any other effect. Both functions should
 #' be called directly from an error handler.
-#'
-#' Set the `error` global option to `rlang::entrace` to
-#' transform base errors to rlang errors. These enriched errors
-#' include a backtrace. The RProfile is a good place to set the
-#' handler. See [`rlang_backtrace_on_error`] for details.
 #'
 #' `entrace()` also works as a [calling][calling] handler, though it
 #' is often more practical to use the higher-level function
@@ -120,6 +114,7 @@ global_entrace_fallback <- function(enable, type) {
 #' options(error = rlang::entrace)
 #'
 #' })
+#' @keywords internal
 #' @export
 entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
   check_dots_empty0(...)

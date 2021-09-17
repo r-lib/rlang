@@ -50,11 +50,6 @@ immediately resumed. \code{cnd_entrace()} adds a backtrace to a
 condition object, without any other effect. Both functions should
 be called directly from an error handler.
 
-Set the \code{error} global option to \code{rlang::entrace} to
-transform base errors to rlang errors. These enriched errors
-include a backtrace. The RProfile is a good place to set the
-handler. See \code{\link{rlang_backtrace_on_error}} for details.
-
 \code{entrace()} also works as a \link{calling} handler, though it
 is often more practical to use the higher-level function
 \code{\link[=with_abort]{with_abort()}}.
@@ -77,3 +72,4 @@ options(error = rlang::entrace)
 errors.  \code{\link[=cnd_entrace]{cnd_entrace()}} to manually add a backtrace to a
 condition.
 }
+\keyword{internal}
