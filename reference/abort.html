@@ -194,6 +194,7 @@ to create custom interrupt condition objects.</p>
   <span class='va'>call</span>,
   trace <span class='op'>=</span> <span class='cn'>NULL</span>,
   parent <span class='op'>=</span> <span class='cn'>NULL</span>,
+  use_cli_format <span class='op'>=</span> <span class='cn'>NULL</span>,
   .file <span class='op'>=</span> <span class='cn'>NULL</span>,
   .subclass <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Deprecated.html'>deprecated</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='op'>)</span>
@@ -202,6 +203,7 @@ to create custom interrupt condition objects.</p>
   message <span class='op'>=</span> <span class='cn'>NULL</span>,
   class <span class='op'>=</span> <span class='cn'>NULL</span>,
   <span class='va'>...</span>,
+  use_cli_format <span class='op'>=</span> <span class='cn'>NULL</span>,
   .frequency <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"always"</span>, <span class='st'>"regularly"</span>, <span class='st'>"once"</span><span class='op'>)</span>,
   .frequency_id <span class='op'>=</span> <span class='cn'>NULL</span>,
   .subclass <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Deprecated.html'>deprecated</a></span><span class='op'>(</span><span class='op'>)</span>
@@ -211,6 +213,7 @@ to create custom interrupt condition objects.</p>
   message <span class='op'>=</span> <span class='cn'>NULL</span>,
   class <span class='op'>=</span> <span class='cn'>NULL</span>,
   <span class='va'>...</span>,
+  use_cli_format <span class='op'>=</span> <span class='cn'>NULL</span>,
   .file <span class='op'>=</span> <span class='cn'>NULL</span>,
   .frequency <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"always"</span>, <span class='st'>"regularly"</span>, <span class='st'>"once"</span><span class='op'>)</span>,
   .frequency_id <span class='op'>=</span> <span class='cn'>NULL</span>,
@@ -272,6 +275,17 @@ providing this information.</p></td>
     <tr>
       <th>parent</th>
       <td><p>A parent condition object created by <code>abort()</code>.</p></td>
+    </tr>
+    <tr>
+      <th>use_cli_format</th>
+      <td><p>Whether to format <code>message</code> lazily using cli
+if available. This results in prettier and more accurate
+formatting of messages. See also <code><a href='local_use_cli.html'>local_use_cli()</a></code> to set this
+condition field by default in your namespace.</p>
+<p>The downside is that you can no longer format (assemble multiple
+lines into a single string with lines separated by <code>\\n</code>
+characters) <code>message</code> ahead of time because that would conflict
+with cli formatting.</p></td>
     </tr>
     <tr>
       <th>.file</th>
