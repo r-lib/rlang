@@ -47,7 +47,7 @@ Enhances:
 SystemRequirements:
     C++11
 Encoding: UTF-8
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Roxygen: list(markdown = TRUE)
 URL: https://rlang.r-lib.org, https://github.com/r-lib/rlang
 BugReports: https://github.com/r-lib/rlang/issues

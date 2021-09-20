@@ -15,6 +15,7 @@ abort(
   call,
   trace = NULL,
   parent = NULL,
+  use_cli_format = NULL,
   .file = NULL,
   .subclass = deprecated()
 )
@@ -23,6 +24,7 @@ warn(
   message = NULL,
   class = NULL,
   ...,
+  use_cli_format = NULL,
   .frequency = c("always", "regularly", "once"),
   .frequency_id = NULL,
   .subclass = deprecated()
@@ -32,6 +34,7 @@ inform(
   message = NULL,
   class = NULL,
   ...,
+  use_cli_format = NULL,
   .file = NULL,
   .frequency = c("always", "regularly", "once"),
   .frequency_id = NULL,
@@ -83,6 +86,16 @@ providing this information.}
 \item{trace}{A \code{trace} object created by \code{\link[=trace_back]{trace_back()}}.}
 
 \item{parent}{A parent condition object created by \code{\link[=abort]{abort()}}.}
+
+\item{use_cli_format}{Whether to format \code{message} lazily using cli
+if available. This results in prettier and more accurate
+formatting of messages. See also \code{\link[=local_use_cli]{local_use_cli()}} to set this
+condition field by default in your namespace.
+
+The downside is that you can no longer format (assemble multiple
+lines into a single string with lines separated by \verb{\\\\n}
+characters) \code{message} ahead of time because that would conflict
+with cli formatting.}
 
 \item{.file}{A connection or a string specifying where to print the
 message. The default depends on the context, see the \code{stdout} vs

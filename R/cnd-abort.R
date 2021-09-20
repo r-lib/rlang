@@ -124,6 +124,15 @@
 #'
 #'   See also [rlang::local_error_call()] for an alternative way of
 #'   providing this information.
+#' @param use_cli_format Whether to format `message` lazily using cli
+#'   if available. This results in prettier and more accurate
+#'   formatting of messages. See also [local_use_cli()] to set this
+#'   condition field by default in your namespace.
+#'
+#'   The downside is that you can no longer format (assemble multiple
+#'   lines into a single string with lines separated by `\\n`
+#'   characters) `message` ahead of time because that would conflict
+#'   with cli formatting.
 #' @param .file A connection or a string specifying where to print the
 #'   message. The default depends on the context, see the `stdout` vs
 #'   `stderr` section.
@@ -196,6 +205,7 @@ abort <- function(message = NULL,
                   call,
                   trace = NULL,
                   parent = NULL,
+                  use_cli_format = NULL,
                   .file = NULL,
                   .subclass = deprecated()) {
   validate_signal_args(.subclass)
@@ -221,7 +231,7 @@ abort <- function(message = NULL,
   }
 
   message <- validate_signal_message(message, class)
-  message_info <- cnd_message_info(message, caller_env())
+  message_info <- cnd_message_info(message, caller_env(), use_cli_format = use_cli_format)
   message <- message_info$message
   extra_fields <- message_info$extra_fields
 
@@ -249,7 +259,14 @@ abort <- function(message = NULL,
   signal_abort(cnd, .file)
 }
 
-cnd_message_info <- function(message, env, cli_opts = use_cli(env)) {
+cnd_message_info <- function(message,
+                             env,
+                             cli_opts = use_cli(env),
+                             use_cli_format = NULL) {
+  if (!is_null(use_cli_format)) {
+    cli_opts[["format"]] <- use_cli_format
+  }
+
   fields <- list()
 
   if (cli_opts[["inline"]]) {

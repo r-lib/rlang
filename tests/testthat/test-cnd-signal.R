@@ -264,6 +264,24 @@ test_that("`frequency` has good error messages", {
   })
 })
 
+test_that("can pass `use_cli_format` as condition field", {
+  signal_lazy_bullets <- function(catcher, signaller) {
+    catch_error(abort(
+      c("Header.", i = "Bullet."),
+      use_cli_format = TRUE
+    ))
+  }
+  expect_lazy_bullets <- function(cnd) {
+    expect_equal(cnd$message, set_names("Header.", ""))
+    expect_equal(cnd$body, c(i = "Bullet."))
+    expect_true(cnd$use_cli_format)
+  }
+
+  expect_lazy_bullets(signal_lazy_bullets(catch_error, abort))
+  expect_lazy_bullets(signal_lazy_bullets(catch_warning, warn))
+  expect_lazy_bullets(signal_lazy_bullets(catch_message, inform))
+})
+
 
 # Lifecycle ----------------------------------------------------------
 
