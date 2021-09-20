@@ -623,14 +623,10 @@ signal_abort <- function(cnd, file = NULL) {
 #' }
 #' @export
 local_error_call <- function(call, frame = caller_env()) {
-  if (!is_string(call, "caller") && !typeof(call) %in% c("environment", "NULL", "language")) {
-    abort(sprintf("`call` can't be %s.", friendly_type_of(call)))
-  }
-
-  old <- frame$.__error_call__.
+  # This doesn't implement the semantics of a `local_` function
+  # perfectly in order to be as fast as possible
   frame$.__error_call__. <- call
-
-  invisible(old)
+  invisible(NULL)
 }
 
 #' Documentation anchor for error arguments
