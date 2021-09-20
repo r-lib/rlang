@@ -23,9 +23,23 @@ command.
 \item \code{last_warning()} and \code{last_message()} return the very last ones.
 }
 
-If you call these in the console, these warnings are printed with a
-backtrace. Use \code{print(last_warnings(), simplify = level)} to
-control the verbosity of the backtrace. The \code{simplify} argument
-supports one of \code{"branch"} (the default), \code{"collapse"}, and
-\code{"none"} (in increasing order of verbosity).
+By default the warnings and messages are printed with a simplified
+backtrace, like \code{\link[=last_error]{last_error()}}. Use \code{summary()} to print the
+conditions with a full backtrace.
+}
+\examples{
+if (FALSE) {
+  global_entrace()
+  f <- function() { warning("foo"); g() }
+  g <- function() { warning("bar", immediate. = TRUE); h() }
+  h <- function() warning("baz")
+
+  f()
+
+  # Simplified backtraces
+  last_warnings()
+
+  # Full backtraces
+  summary(last_warnings())
+}
 }

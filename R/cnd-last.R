@@ -8,20 +8,33 @@
 #'
 #' * `last_warning()` and `last_message()` return the very last ones.
 #'
-#' If you call these in the console, these warnings are printed with a
-#' backtrace. Use `print(last_warnings(), simplify = level)` to
-#' control the verbosity of the backtrace. The `simplify` argument
-#' supports one of `"branch"` (the default), `"collapse"`, and
-#' `"none"` (in increasing order of verbosity).
+#' By default the warnings and messages are printed with a simplified
+#' backtrace, like [last_error()]. Use `summary()` to print the
+#' conditions with a full backtrace.
 #'
+#' @examples
+#' if (FALSE) {
+#'   global_entrace()
+#'   f <- function() { warning("foo"); g() }
+#'   g <- function() { warning("bar", immediate. = TRUE); h() }
+#'   h <- function() warning("baz")
+#'
+#'   f()
+#'
+#'   # Simplified backtraces
+#'   last_warnings()
+#'
+#'   # Full backtraces
+#'   summary(last_warnings())
+#' }
 #' @export
 last_warnings <- function() {
-  the$last_warnings
+  new_list_of_conditions(the$last_warnings)
 }
 #' @rdname last_warnings
 #' @export
 last_messages <- function() {
-  the$last_messages
+  new_list_of_conditions(the$last_messages)
 }
 #' @rdname last_warnings
 #' @export
@@ -100,4 +113,22 @@ as_rlang_message <- function(cnd, trace = NULL) {
   }
 
   cnd
+}
+
+new_list_of_conditions <- function(x) {
+  stopifnot(every(x, is_condition))
+  structure(x, class = c("rlang:::list_of_conditions", "list"))
+}
+#' @export
+`[.rlang:::list_of_conditions` <- function(x, i) {
+  new_list_of_conditions(NextMethod())
+}
+
+#' @export
+`print.rlang:::list_of_conditions` <- function(x, ...) {
+  print(unclass(x), ...)
+}
+#' @export
+`summary.rlang:::list_of_conditions` <- function(object, ...) {
+  print(unclass(object), simplify = "none", ...)
 }

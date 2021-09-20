@@ -109,6 +109,10 @@ print.rlang_warning <- function(x, ...) {
   invisible(x)
 }
 #' @export
+summary.rlang_warning <- function(object, ...) {
+  print(object, ..., simplify = "none")
+}
+#' @export
 format.rlang_warning <- function(x,
                                  ...,
                                  backtrace = TRUE,
@@ -118,6 +122,8 @@ format.rlang_warning <- function(x,
 
 #' @export
 print.rlang_message <- print.rlang_warning
+#' @export
+summary.rlang_message <- summary.rlang_warning
 #' @export
 format.rlang_message <- format.rlang_warning
 

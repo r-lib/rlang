@@ -148,29 +148,32 @@
      1. global f()
      2. global g()
     
-    > rlang::last_messages()
+    > summary(rlang::last_messages())
     [[1]]
     <message/rlang_message>
     Message in `message()`: FOO
     Backtrace:
-     1. global f()
+        x
+     1. \-global f()
     
     [[2]]
     <message/rlang_message>
     Message in `message()`: baz
     Backtrace:
-     1. global f()
-     2. global g()
-     3. global h()
+        x
+     1. \-global f()
+     2.   \-global g()
+     3.     \-global h()
     
     
-    > rlang::last_message()
+    > summary(rlang::last_message())
     <message/rlang_message>
     Message in `message()`: baz
     Backtrace:
-     1. global f()
-     2. global g()
-     3. global h()
+        x
+     1. \-global f()
+     2.   \-global g()
+     3.     \-global h()
     Warning message:
     In f() : foo
 
