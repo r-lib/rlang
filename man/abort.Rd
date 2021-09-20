@@ -87,10 +87,11 @@ providing this information.}
 
 \item{parent}{A parent condition object created by \code{\link[=abort]{abort()}}.}
 
-\item{use_cli_format}{Whether to format \code{message} lazily using cli
-if available. This results in prettier and more accurate
-formatting of messages. See also \code{\link[=local_use_cli]{local_use_cli()}} to set this
-condition field by default in your namespace.
+\item{use_cli_format}{Whether to format \code{message} lazily using
+\href{https://cli.r-lib.org/}{cli} if available. This results in
+prettier and more accurate formatting of messages. See also
+\code{\link[=local_use_cli]{local_use_cli()}} to set this condition field by default in your
+namespace.
 
 The downside is that you can no longer format (assemble multiple
 lines into a single string with lines separated by \verb{\\\\n}
@@ -153,7 +154,8 @@ prefix, e.g. \verb{"Error in }my_function()\verb{ at myfile.R:1:2:"}. There
 are a few cosmetic differences:
 \itemize{
 \item The call is stripped from its arguments to keep it simple. It is
-then formatted using the cli package if available.
+then formatted using the \href{https://cli.r-lib.org/}{cli package} if
+available.
 \item A line break between the prefix and the message when the former
 is too long. When a source location is included, a line break is
 always inserted.

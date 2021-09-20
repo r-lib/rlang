@@ -28,7 +28,8 @@
 #' are a few cosmetic differences:
 #'
 #' - The call is stripped from its arguments to keep it simple. It is
-#'   then formatted using the cli package if available.
+#'   then formatted using the [cli package](https://cli.r-lib.org/) if
+#'   available.
 #'
 #' - A line break between the prefix and the message when the former
 #'   is too long. When a source location is included, a line break is
@@ -124,10 +125,11 @@
 #'
 #'   See also [rlang::local_error_call()] for an alternative way of
 #'   providing this information.
-#' @param use_cli_format Whether to format `message` lazily using cli
-#'   if available. This results in prettier and more accurate
-#'   formatting of messages. See also [local_use_cli()] to set this
-#'   condition field by default in your namespace.
+#' @param use_cli_format Whether to format `message` lazily using
+#'   [cli](https://cli.r-lib.org/) if available. This results in
+#'   prettier and more accurate formatting of messages. See also
+#'   [local_use_cli()] to set this condition field by default in your
+#'   namespace.
 #'
 #'   The downside is that you can no longer format (assemble multiple
 #'   lines into a single string with lines separated by `\\n`
