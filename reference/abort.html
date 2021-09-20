@@ -278,10 +278,11 @@ providing this information.</p></td>
     </tr>
     <tr>
       <th>use_cli_format</th>
-      <td><p>Whether to format <code>message</code> lazily using cli
-if available. This results in prettier and more accurate
-formatting of messages. See also <code><a href='local_use_cli.html'>local_use_cli()</a></code> to set this
-condition field by default in your namespace.</p>
+      <td><p>Whether to format <code>message</code> lazily using
+<a href='https://cli.r-lib.org/'>cli</a> if available. This results in
+prettier and more accurate formatting of messages. See also
+<code><a href='local_use_cli.html'>local_use_cli()</a></code> to set this condition field by default in your
+namespace.</p>
 <p>The downside is that you can no longer format (assemble multiple
 lines into a single string with lines separated by <code>\\n</code>
 characters) <code>message</code> ahead of time because that would conflict
@@ -337,7 +338,8 @@ with <code>"Error: "</code>. Calls and source references are included in the
 prefix, e.g. <code>"Error in </code>my_function()<code> at myfile.R:1:2:"</code>. There
 are a few cosmetic differences:</p><ul>
 <li><p>The call is stripped from its arguments to keep it simple. It is
-then formatted using the cli package if available.</p></li>
+then formatted using the <a href='https://cli.r-lib.org/'>cli package</a> if
+available.</p></li>
 <li><p>A line break between the prefix and the message when the former
 is too long. When a source location is included, a line break is
 always inserted.</p></li>
