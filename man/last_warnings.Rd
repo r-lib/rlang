@@ -3,17 +3,14 @@
 \name{last_warnings}
 \alias{last_warnings}
 \alias{last_messages}
-\alias{last_warning}
-\alias{last_message}
 \title{Display last warnings}
 \usage{
-last_warnings()
+last_warnings(n = NULL)
 
-last_messages()
-
-last_warning()
-
-last_message()
+last_messages(n = NULL)
+}
+\arguments{
+\item{n}{How many warnings or messages to display. Defaults to all.}
 }
 \description{
 \itemize{

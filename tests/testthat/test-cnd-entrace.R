@@ -279,14 +279,14 @@ test_that("can set `entrace()` as a global handler", {
     writeLines("> rlang::last_warnings()")
     print(rlang::last_warnings())
 
-    writeLines("\\n> rlang::last_warning()")
-    print(rlang::last_warning())
+    writeLines("\\n> rlang::last_warnings(2)")
+    print(rlang::last_warnings(2))
 
     writeLines("\\n> summary(rlang::last_messages())")
     summary(rlang::last_messages())
 
-    writeLines("\\n> summary(rlang::last_message())")
-    summary(rlang::last_message())
+    writeLines("\\n> summary(rlang::last_messages(1))")
+    summary(rlang::last_messages(1))
   }'))
 })
 

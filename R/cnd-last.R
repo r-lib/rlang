@@ -12,6 +12,8 @@
 #' backtrace, like [last_error()]. Use `summary()` to print the
 #' conditions with a full backtrace.
 #'
+#' @param n How many warnings or messages to display. Defaults to all.
+#'
 #' @examples
 #' if (FALSE) {
 #'   global_entrace()
@@ -28,35 +30,15 @@
 #'   summary(last_warnings())
 #' }
 #' @export
-last_warnings <- function() {
-  new_list_of_conditions(the$last_warnings)
+last_warnings <- function(n = NULL) {
+  out <- new_list_of_conditions(the$last_warnings)
+  tail(out, n = n %||% length(out))
 }
 #' @rdname last_warnings
 #' @export
-last_messages <- function() {
-  new_list_of_conditions(the$last_messages)
-}
-#' @rdname last_warnings
-#' @export
-last_warning <- function() {
-  warnings <- last_warnings()
-  
-  if (n <- length(warnings)) {
-    warnings[[n]]
-  } else {
-    NULL
-  }
-}
-#' @rdname last_warnings
-#' @export
-last_message <- function() {
-  messages <- last_messages()
-  
-  if (n <- length(messages)) {
-    messages[[n]]
-  } else {
-    NULL
-  }
+last_messages <- function(n = NULL) {
+  out <- new_list_of_conditions(the$last_messages)
+  tail(out, n = n %||% length(out))
 }
 
 on_load({
