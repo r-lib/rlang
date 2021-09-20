@@ -154,9 +154,11 @@
     Code
       (catch_cnd(inform(c(i = "foo")), "message"))
     Output
-      <rlang_message: i foo>
+      <message/rlang_message>
+      Message: i foo
     Code
       (catch_cnd(warn(c(i = "foo")), "warning"))
     Output
-      <rlang_warning: i foo>
+      <warning/rlang_warning>
+      Warning: i foo
 

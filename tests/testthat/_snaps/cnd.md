@@ -48,3 +48,36 @@
      1. foo()
      2. bar()
 
+# warnings and messages have `summary()` methods
+
+    Code
+      print(warning)
+    Output
+      <warning/rlang_warning>
+      Backtrace:
+       1. f()
+       2. g()
+    Code
+      print(message)
+    Output
+      <message/rlang_message>
+      Backtrace:
+       1. f()
+       2. g()
+    Code
+      summary(warning)
+    Output
+      <warning/rlang_warning>
+      Backtrace:
+          x
+       1. \-f()
+       2.   \-g()
+    Code
+      summary(message)
+    Output
+      <message/rlang_message>
+      Backtrace:
+          x
+       1. \-f()
+       2.   \-g()
+

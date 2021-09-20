@@ -1,3 +1,6 @@
+# Load downstream deps ahead of time to avoid pkgload issues
+is_installed("tibble")
+is_installed("lifecycle")
 
 zap_attributes <- function(x) {
   attributes(x) <- NULL

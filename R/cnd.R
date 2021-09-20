@@ -103,6 +103,30 @@ cnd_type <- function(cnd) {
   .Call(ffi_cnd_type, cnd)
 }
 
+#' @export
+print.rlang_warning <- function(x, ...) {
+  writeLines(format(x, ...))
+  invisible(x)
+}
+#' @export
+summary.rlang_warning <- function(object, ...) {
+  print(object, ..., simplify = "none")
+}
+#' @export
+format.rlang_warning <- function(x,
+                                 ...,
+                                 backtrace = TRUE,
+                                 simplify = c("branch", "collapse", "none")) {
+  cnd_format(x, ..., backtrace = backtrace, simplify = simplify)
+}
+
+#' @export
+print.rlang_message <- print.rlang_warning
+#' @export
+summary.rlang_message <- summary.rlang_warning
+#' @export
+format.rlang_message <- format.rlang_warning
+
 cnd_print <- function(x, ...) {
   writeLines(cnd_format(x, ...))
   invisible(x)
@@ -167,3 +191,12 @@ cnd_type_header <- function(cnd) {
 
   bold(format_cls(class))
 }
+
+testthat_print_cnd <- function(x, ...) {
+  print(x, backtrace = FALSE)
+}
+on_load({
+  s3_register("testthat::testthat_print", "rlang_error", testthat_print_cnd)
+  s3_register("testthat::testthat_print", "rlang_warning", testthat_print_cnd)
+  s3_register("testthat::testthat_print", "rlang_message", testthat_print_cnd)
+})

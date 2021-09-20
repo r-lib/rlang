@@ -34,6 +34,10 @@
 
 ## Features and bugfixes
 
+* `entrace()` and `global_entrace()` now log warnings and messages
+  with backtraces attached. Run `last_warnings()` or `last_messages()`
+  to inspect the warnings or messages emitted during the last command.
+
 * Objects headers (as printed by `last_error()`, `env_print()`, ...)
   are now formatted using the `cls` class of the cli package.
 

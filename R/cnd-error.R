@@ -113,7 +113,3 @@ message_add_tree_prefix <- function(message, style, parent) {
 summary.rlang_error <- function(object, ...) {
   print(object, simplify = "none")
 }
-
-on_load(s3_register("testthat::testthat_print", "rlang_error", function(x) {
-  print(x, backtrace = FALSE)
-}))

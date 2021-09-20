@@ -105,3 +105,14 @@ test_that("can format warnings and other conditions", {
   )
   expect_snapshot_output(cnd_print(condition))
 })
+
+test_that("warnings and messages have `summary()` methods", {
+  warning <- warning_cnd(trace = new_trace(alist(f(), g()), 0:1))
+  message <- message_cnd(trace = new_trace(alist(f(), g()), 0:1))
+  expect_snapshot({
+    print(warning)
+    print(message)
+    summary(warning)
+    summary(message)
+  })
+})

@@ -1,3 +1,5 @@
+the <- new.env(parent = emptyenv())
+
 # Changelog:
 #
 # - 2021-05-07: Added `on_package_load()`.
