@@ -24,6 +24,8 @@ argument. This is passed to \code{\link[=as_function]{as_function()}} and can th
 formula describing a lambda function.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Condition handlers are functions established on the evaluation
 stack (see \code{\link[=ctxt_stack]{ctxt_stack()}}) that are called by R when a condition is
 signalled (see \code{\link[=cnd_signal]{cnd_signal()}} and \code{\link[=abort]{abort()}} for two common signal
@@ -47,12 +49,6 @@ exiting) are given a chance to handle the condition.
 Handlers are exiting by default, use \code{\link[=calling]{calling()}} to create a
 calling handler.
 }
-\section{Life cycle}{
- \code{exiting()} is soft-deprecated as of rlang
-0.4.0 because \code{\link[=with_handlers]{with_handlers()}} now treats handlers as exiting by
-default.
-}
-
 \examples{
 # Signal a condition with signal():
 fn <- function() {
@@ -93,3 +89,4 @@ fn2 <- function() {
 }
 with_handlers(fn2(), foo = calling(exiting_handler), foo = calling(other_handler))
 }
+\keyword{internal}

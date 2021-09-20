@@ -1,6 +1,7 @@
 #' Establish handlers on the stack
 #'
 #' @description
+#' `r lifecycle::badge("experimental")`
 #'
 #' Condition handlers are functions established on the evaluation
 #' stack (see [ctxt_stack()]) that are called by R when a condition is
@@ -33,10 +34,6 @@
 #'   functions of one argument, or [formula functions][as_function].
 #'   The handlers are considered exiting by default, use [calling()]
 #'   to specify a calling handler.
-#'
-#' @section Life cycle: `exiting()` is soft-deprecated as of rlang
-#'   0.4.0 because [with_handlers()] now treats handlers as exiting by
-#'   default.
 #'
 #' @examples
 #' # Signal a condition with signal():
@@ -77,6 +74,7 @@
 #'   with_restarts(g(), rst_foo = function() "restart value")
 #' }
 #' with_handlers(fn2(), foo = calling(exiting_handler), foo = calling(other_handler))
+#' @keywords internal
 #' @export
 with_handlers <- function(.expr, ...) {
   handlers <- list2(...)
@@ -111,6 +109,9 @@ calling <- function(handler) {
 
 #' Create a restarting handler
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' This constructor automates the common task of creating an
 #' [calling()] handler that invokes a restart.
 #'
@@ -132,9 +133,8 @@ calling <- function(handler) {
 #' @param ... <[dynamic][dyn-dots]> Additional arguments passed on
 #'   the restart function. These arguments are evaluated only once
 #'   and immediately, when creating the restarting handler.
-#' @keywords internal
-#' @export
 #' @seealso [calling()] and [exiting()].
+#'
 #' @examples
 #' # This is a restart that takes a data frame and names as arguments
 #' rst_bar <- function(df, nms) {
@@ -164,6 +164,9 @@ calling <- function(handler) {
 #' # The restarting() constructor is especially nice to use with
 #' # restarts that do not need arguments:
 #' with_handlers(fn(), foo = restarting("rst_baz"))
+#'
+#' @keywords internal
+#' @export
 restarting <- function(.restart, ..., .fields = NULL) {
   stopifnot(is_scalar_character(.restart))
   if (!is_null(.fields)) {
@@ -193,11 +196,11 @@ restarting <- function(.restart, ..., .fields = NULL) {
 #' @param classes A character vector of condition classes to catch. By
 #'   default, catches all conditions.
 #' @return A condition if any was signalled, `NULL` otherwise.
-#' @export
 #' @examples
 #' catch_cnd(10)
 #' catch_cnd(abort("an error"))
 #' catch_cnd(signal("my_condition", message = "a condition"))
+#' @export
 catch_cnd <- function(expr, classes = "condition") {
   stopifnot(is_character(classes))
   handlers <- rep_named(classes, list(identity))
@@ -253,8 +256,6 @@ catch_cnd <- function(expr, classes = "condition") {
 #' @return If `cnd` is mufflable, `cnd_muffle()` jumps to the muffle
 #'   restart and doesn't return. Otherwise, it returns `FALSE`.
 #'
-#' @keywords internal
-#' @export
 #' @examples
 #' fn <- function() {
 #'   inform("Beware!", "my_particular_msg")
@@ -280,6 +281,8 @@ catch_cnd <- function(expr, classes = "condition") {
 #' with_handlers(fn(),
 #'   my_particular_msg = calling(cnd_muffle)
 #' )
+#' @keywords internal
+#' @export
 cnd_muffle <- function(cnd) {
   restart <- switch(cnd_type(cnd),
     message = "muffleMessage",

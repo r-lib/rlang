@@ -20,10 +20,11 @@ argument names for calling the restart function. Otherwise the
 the fields themselves are used as argument names.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This constructor automates the common task of creating an
 \code{\link[=calling]{calling()}} handler that invokes a restart.
-}
-\details{
+
 Jumping to a restart point from a calling handler has two
 effects. First, the control flow jumps to wherever the restart was
 established, and the restart function is called (with \code{...}, or
@@ -62,6 +63,7 @@ with_handlers(fn(), foo = restart_bar)
 # The restarting() constructor is especially nice to use with
 # restarts that do not need arguments:
 with_handlers(fn(), foo = restarting("rst_baz"))
+
 }
 \seealso{
 \code{\link[=calling]{calling()}} and \code{\link[=exiting]{exiting()}}.
