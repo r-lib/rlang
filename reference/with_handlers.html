@@ -40,7 +40,8 @@
 
 
 <meta property="og:title" content="Establish handlers on the stack — with_handlers" />
-<meta property="og:description" content="Condition handlers are functions established on the evaluation
+<meta property="og:description" content="
+Condition handlers are functions established on the evaluation
 stack (see ctxt_stack()) that are called by R when a condition is
 signalled (see cnd_signal() and abort() for two common signal
 functions). They come in two types:
@@ -175,7 +176,8 @@ calling handler." />
     </div>
 
     <div class="ref-description">
-    <p>Condition handlers are functions established on the evaluation
+    <p><a href='https://lifecycle.r-lib.org/articles/stages.html#experimental'><img src='figures/lifecycle-experimental.svg' alt='[Experimental]' /></a></p>
+<p>Condition handlers are functions established on the evaluation
 stack (see <code><a href='stack.html'>ctxt_stack()</a></code>) that are called by R when a condition is
 signalled (see <code><a href='cnd_signal.html'>cnd_signal()</a></code> and <code><a href='abort.html'>abort()</a></code> for two common signal
 functions). They come in two types:</p><ul>
@@ -225,11 +227,6 @@ formula describing a lambda function.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
-
-    <p><code><a href='exiting.html'>exiting()</a></code> is soft-deprecated as of rlang
-0.4.0 because <code>with_handlers()</code> now treats handlers as exiting by
-default.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Signal a condition with signal():</span>

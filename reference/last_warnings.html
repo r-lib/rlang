@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Transform to a closure — as_closure • rlang</title>
+<title>Display last warnings — last_warnings • rlang</title>
 
 
 <!-- jquery -->
@@ -39,11 +39,14 @@
 
 
 
-<meta property="og:title" content="Transform to a closure — as_closure" />
-<meta property="og:description" content="as_closure() is like as_function() but also wraps primitive
-functions inside closures. Some special control flow primitives
-like if, for, or break can't be wrapped and will cause an
-error." />
+<meta property="og:title" content="Display last warnings — last_warnings" />
+<meta property="og:description" content="last_warnings() and last_messages() return a list of all
+warnings and messages that occurred during the last R command.
+global_entrace() must be active in order to log the messages and
+warnings.
+By default the warnings and messages are printed with a simplified
+backtrace, like last_error(). Use summary() to print the
+conditions with a full backtrace." />
 
 
 
@@ -153,89 +156,50 @@ error." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Transform to a closure</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/fn.R'><code>R/fn.R</code></a></small>
-    <div class="hidden name"><code>as_closure.Rd</code></div>
+    <h1>Display last warnings</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/cnd-last.R'><code>R/cnd-last.R</code></a></small>
+    <div class="hidden name"><code>last_warnings.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>as_closure()</code> is like <code><a href='as_function.html'>as_function()</a></code> but also wraps primitive
-functions inside closures. Some special control flow primitives
-like <code>if</code>, <code>for</code>, or <code>break</code> can't be wrapped and will cause an
-error.</p>
+    <p><code>last_warnings()</code> and <code>last_messages()</code> return a list of all
+warnings and messages that occurred during the last R command.</p>
+<p><code><a href='global_entrace.html'>global_entrace()</a></code> must be active in order to log the messages and
+warnings.</p>
+<p>By default the warnings and messages are printed with a simplified
+backtrace, like <code><a href='last_error.html'>last_error()</a></code>. Use <code><a href='https://rdrr.io/r/base/summary.html'>summary()</a></code> to print the
+conditions with a full backtrace.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>as_closure</span><span class='op'>(</span><span class='va'>x</span>, env <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>last_warnings</span><span class='op'>(</span>n <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+
+<span class='fu'>last_messages</span><span class='op'>(</span>n <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>A function or formula.</p>
-<p>If a <strong>function</strong>, it is used as is.</p>
-<p>If a <strong>formula</strong>, e.g. <code>~ .x + 2</code>, it is converted to a function
-with up to two arguments: <code>.x</code> (single argument) or <code>.x</code> and <code>.y</code>
-(two arguments). The <code>.</code> placeholder can be used instead of <code>.x</code>.
-This allows you to create very compact anonymous functions (lambdas) with up
-to two inputs. Functions created from formulas have a special
-class. Use <code><a href='as_function.html'>is_lambda()</a></code> to test for it.</p>
-<p>If a <strong>string</strong>, the function is looked up in <code>env</code>. Note that
-this interface is strictly for user convenience because of the
-scoping issues involved. Package developers should avoid
-supplying functions by name and instead supply them by value.</p></td>
-    </tr>
-    <tr>
-      <th>env</th>
-      <td><p>Environment in which to fetch the function in case <code>x</code>
-is a string.</p></td>
+      <th>n</th>
+      <td><p>How many warnings or messages to display. Defaults to all.</p></td>
     </tr>
     </table>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Primitive functions are regularised as closures</span>
-<span class='fu'>as_closure</span><span class='op'>(</span><span class='va'>list</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; function (...) 
-#&gt; .Primitive("list")(...)</div><div class='input'><span class='fu'>as_closure</span><span class='op'>(</span><span class='st'>"list"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; function (...) 
-#&gt; .Primitive("list")(...)</div><div class='input'>
-<span class='co'># Operators have `.x` and `.y` as arguments, just like lambda</span>
-<span class='co'># functions created with the formula syntax:</span>
-<span class='fu'>as_closure</span><span class='op'>(</span><span class='va'>`+`</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; function (e1, e2, .x = e1, .y = e2) 
-#&gt; {
-#&gt;     if (missing(.x)) {
-#&gt;         if (missing(e1)) {
-#&gt;             abort("Must supply `e1` or `.x` to binary operator")
-#&gt;         }
-#&gt;         .x &lt;- e1
-#&gt;     }
-#&gt;     else if (!missing(e1)) {
-#&gt;         abort("Can't supply both `e1` and `.x` to binary operator")
-#&gt;     }
-#&gt;     if (missing(.y) &amp;&amp; !missing(e2)) {
-#&gt;         .y &lt;- e2
-#&gt;     }
-#&gt;     else if (!missing(e2)) {
-#&gt;         abort("Can't supply both `e2` and `.y` to binary operator")
-#&gt;     }
-#&gt;     if (missing(.y)) 
-#&gt;         .x
-#&gt;     else .x + .y
-#&gt; }
-#&gt; &lt;environment: 0x7fee2481a908&gt;</div><div class='input'><span class='fu'>as_closure</span><span class='op'>(</span><span class='va'>`~`</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; function (.x, .y) 
-#&gt; {
-#&gt;     if (is_missing(substitute(.y))) {
-#&gt;         new_formula(NULL, substitute(.x), caller_env())
-#&gt;     }
-#&gt;     else {
-#&gt;         new_formula(substitute(.x), substitute(.y), caller_env())
-#&gt;     }
-#&gt; }
-#&gt; &lt;bytecode: 0x7fee23b9a7e8&gt;
-#&gt; &lt;environment: 0x7fee248bad68&gt;</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='fu'><a href='global_entrace.html'>global_entrace</a></span><span class='op'>(</span><span class='op'>)</span>
+  <span class='va'>f</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>{</span> <span class='kw'><a href='https://rdrr.io/r/base/warning.html'>warning</a></span><span class='op'>(</span><span class='st'>"foo"</span><span class='op'>)</span>; <span class='fu'>g</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>}</span>
+  <span class='va'>g</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>{</span> <span class='kw'><a href='https://rdrr.io/r/base/warning.html'>warning</a></span><span class='op'>(</span><span class='st'>"bar"</span>, immediate. <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>; <span class='fu'>h</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>}</span>
+  <span class='va'>h</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='kw'><a href='https://rdrr.io/r/base/warning.html'>warning</a></span><span class='op'>(</span><span class='st'>"baz"</span><span class='op'>)</span>
+
+  <span class='fu'>f</span><span class='op'>(</span><span class='op'>)</span>
+
+  <span class='co'># Simplified backtraces</span>
+  <span class='fu'>last_warnings</span><span class='op'>(</span><span class='op'>)</span>
+
+  <span class='co'># Full backtraces</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='fu'>last_warnings</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
