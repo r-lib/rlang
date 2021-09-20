@@ -2,11 +2,11 @@
 #'
 #' @description
 #'
-#' * `last_warnings()` and `last_messages()` return a list of all
-#'   warnings and messages that occurred during the last top-level R
-#'   command.
+#' `last_warnings()` and `last_messages()` return a list of all
+#' warnings and messages that occurred during the last R command.
 #'
-#' * `last_warning()` and `last_message()` return the very last ones.
+#' [global_entrace()] must be active in order to log the messages and
+#' warnings.
 #'
 #' By default the warnings and messages are printed with a simplified
 #' backtrace, like [last_error()]. Use `summary()` to print the

@@ -13,12 +13,11 @@ last_messages(n = NULL)
 \item{n}{How many warnings or messages to display. Defaults to all.}
 }
 \description{
-\itemize{
-\item \code{last_warnings()} and \code{last_messages()} return a list of all
-warnings and messages that occurred during the last top-level R
-command.
-\item \code{last_warning()} and \code{last_message()} return the very last ones.
-}
+\code{last_warnings()} and \code{last_messages()} return a list of all
+warnings and messages that occurred during the last R command.
+
+\code{\link[=global_entrace]{global_entrace()}} must be active in order to log the messages and
+warnings.
 
 By default the warnings and messages are printed with a simplified
 backtrace, like \code{\link[=last_error]{last_error()}}. Use \code{summary()} to print the
