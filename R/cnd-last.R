@@ -47,6 +47,14 @@ on_load({
   the$last_messages <- list()
 })
 
+# We collect warnings/messages in a list as long as the first frame on
+# the call stack has the same address. If there is a new address, it
+# must be that a new top-level R command is running and we start a new
+# list. This heuristic is technically not 100% correct. We might be
+# very unlucky: If (a) a GC occur between two commands (b) the first
+# frame on the stack reuses the same address as the last first frame
+# on the stack, then we'll wrongly keep collecting warnings instead of
+# starting anew.
 push_warning <- function(cnd) {
   top <- obj_address(sys.frame(1))
 
