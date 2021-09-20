@@ -109,6 +109,7 @@ new_list_of_conditions <- function(x) {
 #' @export
 `print.rlang:::list_of_conditions` <- function(x, ...) {
   print(unclass(x), ...)
+  invisible(x)
 }
 #' @export
 `summary.rlang:::list_of_conditions` <- function(object, ...) {
