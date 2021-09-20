@@ -7,5 +7,6 @@
         NULL
       }))
     Output
-      <rlang_warning: The package `utils` (>= 100.10) is required as of rlang 0.5.0.>
+      <warning/rlang_warning>
+      Warning: The package `utils` (>= 100.10) is required as of rlang 0.5.0.
 

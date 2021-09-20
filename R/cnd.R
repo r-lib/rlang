@@ -185,3 +185,12 @@ cnd_type_header <- function(cnd) {
 
   bold(format_cls(class))
 }
+
+testthat_print_cnd <- function(x, ...) {
+  print(x, backtrace = FALSE)
+}
+on_load({
+  s3_register("testthat::testthat_print", "rlang_error", testthat_print_cnd)
+  s3_register("testthat::testthat_print", "rlang_warning", testthat_print_cnd)
+  s3_register("testthat::testthat_print", "rlang_message", testthat_print_cnd)
+})
