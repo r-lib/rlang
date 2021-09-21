@@ -9,8 +9,7 @@
 # can rethrow from `try_catch()`
 
     Code
-      err <- catch_error(try_catch(f(), error = function(cnd, ...) abort("bar",
-        parent = cnd)))
+      err <- catch_error(try_catch(f(), error = function(cnd) abort("bar", parent = cnd)))
       print(err)
     Output
       <error/rlang_error>
@@ -41,7 +40,7 @@
         6. |   |   \-base tryCatchOne(expr, names, parentenv, handlers[[1L]])
         7. |   |     \-base doTryCatch(return(expr), name, parentenv, handler)
         8. |   \-base::force(expr)
-        9. +-rlang::try_catch(...)
+        9. +-rlang::try_catch(f(), error = function(cnd) abort("bar", parent = cnd))
        10. | \-base::withCallingHandlers(...)
        11. \-rlang f()
        12.   \-rlang g()

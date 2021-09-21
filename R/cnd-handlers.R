@@ -5,41 +5,44 @@
 #'
 #' `try_catch()` establishes handlers for conditions of a given class
 #' (`"error"` `"warning"`, `"message"`, ...). Handlers are functions
-#' that take a condition object as first argument and a throw function
-#' as second argument.
-#'
-#' ```{r, error = TRUE}
-#' # A prototype of error handler that does not do anything
-#' try_catch(1 + "", error = function(cnd, throw) { NULL })
-#' ```
+#' that take a condition object as argument and are called when the
+#' corresponding condition class has been signalled.
 #'
 #' A condition handler can:
 #'
-#' - Interrupt the computation of `expr` and return from `try_catch()`
-#'   by calling `throw` (the second argument) with a recovery value.
-#'   This is useful when you don't want errors to abruptly interrupt
-#'   your program but resume at the catching site instead.
+#' - *Recover from conditions** with a value. In this case the computation of
+#'   `expr` is aborted and the recovery value is returned from
+#'   `try_catch()`. Error recovery is useful when you don't want
+#'   errors to abruptly interrupt your program but resume at the
+#'   catching site instead.
 #'
-#' - Rethrow errors using `abort(msg, parent = cnd)`. See the `parent`
-#'   argument of [abort()]. This is typically done to add information
-#'   to low-level errors about the high-level context in which they
-#'   occurred.
+#'   ```{r}
+#'   # Recover with the value 0
+#'   try_catch(1 + "", error = function(cnd) 0)
+#'   ````
 #'
-#' - Inspect the condition object, for instance to log data about
-#'   warnings or errors.
+#' - **Rethrow conditions**, e.g. using `abort(msg, parent = cnd)`.
+#'   See the `parent` argument of [abort()]. This is typically done to
+#'   add information to low-level errors about the high-level context
+#'   in which they occurred.
 #'
-#' ```{r, error = TRUE}
-#' # An error handler that throws a recovery value
-#' try_catch(1 + "", error = function(cnd, throw) throw(0))
+#'   ```{r, error = TRUE}
+#'   try_catch(1 + "", error = function(cnd) abort("Failed.", parent = cnd))
+#'   ````
 #'
-#' # An error handler that rethrows the error with a different message
-#' try_catch(1 + "", error = function(cnd, throw) abort("Failed.", parent = cnd))
-#' ```
+#' - **Inspect conditions**, for instance to log data about warnings
+#'   or errors. In this case, the handler must return the [zap()]
+#'   sentinel to instruct `tryCatch()` to ignore (or zap) that
+#'   particular handler. The next matching handler is called if any,
+#'   and errors bubble up to the user if no handler remains.
 #'
-#' Unlike `tryCatch()` and `try` / `catch` constructs in other
-#' programming languages, `try_catch()` does not catch
-#' conditions. Instead, it catches _recovery values_. See the
-#' comparison sections below.
+#'   ```{r, error = TRUE}
+#'   log <- NULL
+#'   try_catch(1 + "", error = function(cnd) {
+#'     log <<- cnd
+#'     zap()
+#'   })
+#'   ````
 #'
 #' @param expr An R expression.
 #' @param ... <[`dynamic-dots`][rlang::dyn-dots]> Named condition
@@ -49,35 +52,53 @@
 #'   Handler functions must have at least two arguments. By
 #'   convention, the second argument should be named `throw`.
 #'
-#' @section Throwing versus returning:
+#' @section Stack overflows:
 #'
-#' `try_catch()` calls matching condition handlers in a loop and
-#' discards any results. Implicit and explicit `return()` values have
-#' no effect. To return from `try_catch()` with a value, you must
-#' throw it with the function passed as second argument. This causes a
-#' long return that shortcircuits the `expr` computation that is still
-#' running when the handler is run.
+#' A stack overflow occurs when a program keeps adding to itself until
+#' the stack memory (whose size is very limited unlike heap memory) is
+#' exhausted.
+#'
+#' ```
+#' # A function that calls itself indefinitely causes stack overflows
+#' f <- function() f()
+#' f()
+#' #> Error: C stack usage  9525680 is too close to the limit
+#' ```
+#'
+#' Because `try_catch()` preserves as much of the running program as
+#' possible in order to produce informative backtraces on error
+#' rethrows, it is unable to deal with stack overflows. When an
+#' overflow occurs, R needs to unwind as much of the program is
+#' possible and can't afford to run any more R code, such as in an
+#' error handler.
+#'
+#' This usually isn't a problem for error rethrowing or logging but
+#' might make your program more brittle in case of error recovery. In
+#' that case, capture errors with [base::tryCatch()] instead of
+#' `try_catch()`.
 #'
 #' @section Comparison with `tryCatch()`:
 #'
-#' `try_catch()` is similar to [base::tryCatch()] but with important
-#' differences.
+#' `try_catch()` generalises `tryCatch()` and `withCallingHandlers()`
+#' in a single function. It reproduces the behaviour of both calling
+#' and exiting handlers depending the on the return value of the
+#' handler. If the handler returns the [zap()] sentinel, it is taken
+#' as a calling handler that declines to recover from a condition.
+#' Otherwise, it is taken as an exiting handler which returns a value
+#' from the catching site.
 #'
-#' - It doesn't catch condition objects, instead it catches recovery
-#'   values thrown with `throw()`. The main consequence of this is
-#'   that the program is still fully running when an error handler is
-#'   called. This makes it possible to capture a full backtrace for
-#'   the error, e.g. when rethrowing the error with `abort(parent =
-#'   cnd)`. Technically, `try_catch()` is more similar to (and
-#'   implemented on top of) [base::withCallingHandlers()] than
-#'   `tryCatch().`
+#' There is an important difference between `tryCatch()` and
+#' `try_catch()`. The latter doesn't catch condition objects, instead
+#' it catches recovery values returned by the handler. The main
+#' consequence is that the program is still fully running when an
+#' error handler is called. This makes it possible to capture a full
+#' backtrace for the error, e.g. when rethrowing the error with
+#' `abort(parent = cnd)`. Technically, `try_catch()` is more similar
+#' to (and implemented on top of) [base::withCallingHandlers()] than
+#' `tryCatch().`
 #'
-#' - Condition handlers are passed two arguments instead of one. The
-#'   second argument is a throwing function that allows the handler to
-#'   manually stop the current computation and resume with a recovery
-#'   value at the catching site. By comparison, `tryCatch()` handlers
-#'   don't need to explicitly throw a value since `expr` is fully
-#'   stopped by `tryCatch()` before calling the condition handler.
+#' A big downside to keeping the call stack alive when handlers are run
+#' is that stack overflow can't be handled with `try_catch()`.
 #'
 #' @export
 try_catch <- function(expr, ...) {
@@ -95,6 +116,12 @@ try_catch <- function(expr, ...) {
 }
 
 utils::globalVariables("catch")
+
+handler_call <- quote(function(cnd) {
+  out <- handlers[[i]](cnd)
+  if (!inherits(out, "rlang_zap")) throw(out)
+})
+
 
 #' Establish handlers on the stack
 #'

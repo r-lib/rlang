@@ -16,7 +16,8 @@ r_obj* ffi_try_catch(r_obj* try_catch_args) {
   int n = r_length(handlers);
   r_obj* const * v_classes = r_chr_cbegin(classes);
 
-  // Build arguments of the form `function(cnd) handlers[[1]](cnd, throw)`
+  // Build handlers arguments with updated index into the `handlers` list.
+  // See `handler_call` at R level for the template.
   r_obj* args = r_null;
   r_keep_t shelter; KEEP_HERE(args, &shelter);
 
@@ -24,7 +25,7 @@ r_obj* ffi_try_catch(r_obj* try_catch_args) {
     r_obj* cls = v_classes[i];
     r_obj* hnd = KEEP(r_copy(hnd_call));
 
-    r_obj* subscript_node = r_node_cddr(r_node_caar(r_node_cddr(hnd)));
+    r_obj* subscript_node = r_node_cdr(r_node_cdar(r_node_cadr(r_node_cdar(r_node_cdar(r_node_cddr(hnd))))));
     r_node_poke_car(subscript_node, r_int(i + 1));
 
     args = r_new_node3(hnd, args, r_str_as_symbol(cls));
@@ -47,6 +48,6 @@ r_obj* ffi_try_catch(r_obj* try_catch_args) {
 
 
 void rlang_init_cnd_handlers(r_obj* ns) {
-  hnd_call = r_parse("function(cnd) handlers[[i]](cnd, throw)");
+  hnd_call = r_eval(r_sym("handler_call"), ns);
   r_preserve_global(hnd_call);
 }

@@ -21,67 +21,88 @@ convention, the second argument should be named \code{throw}.}
 
 \code{try_catch()} establishes handlers for conditions of a given class
 (\code{"error"} \code{"warning"}, \code{"message"}, ...). Handlers are functions
-that take a condition object as first argument and a throw function
-as second argument.\if{html}{\out{<div class="sourceCode r">}}\preformatted{# A prototype of error handler that does not do anything
-try_catch(1 + "", error = function(cnd, throw) \{ NULL \})
-}\if{html}{\out{</div>}}\preformatted{## Error in 1 + "": non-numeric argument to binary operator
-}
+that take a condition object as argument and are called when the
+corresponding condition class has been signalled.
 
 A condition handler can:
 \itemize{
-\item Interrupt the computation of \code{expr} and return from \code{try_catch()}
-by calling \code{throw} (the second argument) with a recovery value.
-This is useful when you don't want errors to abruptly interrupt
-your program but resume at the catching site instead.
-\item Rethrow errors using \code{abort(msg, parent = cnd)}. See the \code{parent}
-argument of \code{\link[=abort]{abort()}}. This is typically done to add information
-to low-level errors about the high-level context in which they
-occurred.
-\item Inspect the condition object, for instance to log data about
-warnings or errors.
-}\if{html}{\out{<div class="sourceCode r">}}\preformatted{# An error handler that throws a recovery value
-try_catch(1 + "", error = function(cnd, throw) throw(0))
+\item \emph{Recover from conditions}* with a value. In this case the computation of
+\code{expr} is aborted and the recovery value is returned from
+\code{try_catch()}. Error recovery is useful when you don't want
+errors to abruptly interrupt your program but resume at the
+catching site instead.
+}\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Recover with the value 0
+try_catch(1 + "", error = function(cnd) 0)
 }\if{html}{\out{</div>}}\preformatted{## [1] 0
-}\if{html}{\out{<div class="sourceCode r">}}\preformatted{# An error handler that rethrows the error with a different message
-try_catch(1 + "", error = function(cnd, throw) abort("Failed.", parent = cnd))
+}
+\itemize{
+\item \strong{Rethrow conditions}, e.g. using \code{abort(msg, parent = cnd)}.
+See the \code{parent} argument of \code{\link[=abort]{abort()}}. This is typically done to
+add information to low-level errors about the high-level context
+in which they occurred.
+}\if{html}{\out{<div class="sourceCode r">}}\preformatted{try_catch(1 + "", error = function(cnd) abort("Failed.", parent = cnd))
 }\if{html}{\out{</div>}}\preformatted{## Error: Failed.
 }
-
-Unlike \code{tryCatch()} and \code{try} / \code{catch} constructs in other
-programming languages, \code{try_catch()} does not catch
-conditions. Instead, it catches \emph{recovery values}. See the
-comparison sections below.
+\itemize{
+\item \strong{Inspect conditions}, for instance to log data about warnings
+or errors. In this case, the handler must return the \code{\link[=zap]{zap()}}
+sentinel to instruct \code{tryCatch()} to ignore (or zap) that
+particular handler. The next matching handler is called if any,
+and errors bubble up to the user if no handler remains.
+}\if{html}{\out{<div class="sourceCode r">}}\preformatted{log <- NULL
+try_catch(1 + "", error = function(cnd) \{
+  log <<- cnd
+  zap()
+\})
+}\if{html}{\out{</div>}}\preformatted{## Error in 1 + "": non-numeric argument to binary operator
 }
-\section{Throwing versus returning}{
+}
+\section{Stack overflows}{
 
 
-\code{try_catch()} calls matching condition handlers in a loop and
-discards any results. Implicit and explicit \code{return()} values have
-no effect. To return from \code{try_catch()} with a value, you must
-throw it with the function passed as second argument. This causes a
-long return that shortcircuits the \code{expr} computation that is still
-running when the handler is run.
+A stack overflow occurs when a program keeps adding to itself until
+the stack memory (whose size is very limited unlike heap memory) is
+exhausted.\preformatted{# A function that calls itself indefinitely causes stack overflows
+f <- function() f()
+f()
+#> Error: C stack usage  9525680 is too close to the limit
+}
+
+Because \code{try_catch()} preserves as much of the running program as
+possible in order to produce informative backtraces on error
+rethrows, it is unable to deal with stack overflows. When an
+overflow occurs, R needs to unwind as much of the program is
+possible and can't afford to run any more R code, such as in an
+error handler.
+
+This usually isn't a problem for error rethrowing or logging but
+might make your program more brittle in case of error recovery. In
+that case, capture errors with \code{\link[base:conditions]{base::tryCatch()}} instead of
+\code{try_catch()}.
 }
 
 \section{Comparison with \code{tryCatch()}}{
 
 
-\code{try_catch()} is similar to \code{\link[base:conditions]{base::tryCatch()}} but with important
-differences.
-\itemize{
-\item It doesn't catch condition objects, instead it catches recovery
-values thrown with \code{throw()}. The main consequence of this is
-that the program is still fully running when an error handler is
-called. This makes it possible to capture a full backtrace for
-the error, e.g. when rethrowing the error with \code{abort(parent = cnd)}. Technically, \code{try_catch()} is more similar to (and
-implemented on top of) \code{\link[base:conditions]{base::withCallingHandlers()}} than
+\code{try_catch()} generalises \code{tryCatch()} and \code{withCallingHandlers()}
+in a single function. It reproduces the behaviour of both calling
+and exiting handlers depending the on the return value of the
+handler. If the handler returns the \code{\link[=zap]{zap()}} sentinel, it is taken
+as a calling handler that declines to recover from a condition.
+Otherwise, it is taken as an exiting handler which returns a value
+from the catching site.
+
+There is an important difference between \code{tryCatch()} and
+\code{try_catch()}. The latter doesn't catch condition objects, instead
+it catches recovery values returned by the handler. The main
+consequence is that the program is still fully running when an
+error handler is called. This makes it possible to capture a full
+backtrace for the error, e.g. when rethrowing the error with
+\code{abort(parent = cnd)}. Technically, \code{try_catch()} is more similar
+to (and implemented on top of) \code{\link[base:conditions]{base::withCallingHandlers()}} than
 \verb{tryCatch().}
-\item Condition handlers are passed two arguments instead of one. The
-second argument is a throwing function that allows the handler to
-manually stop the current computation and resume with a recovery
-value at the catching site. By comparison, \code{tryCatch()} handlers
-don't need to explicitly throw a value since \code{expr} is fully
-stopped by \code{tryCatch()} before calling the condition handler.
-}
+
+A big downside to keeping the call stack alive when handlers are run
+is that stack overflow can't be handled with \code{try_catch()}.
 }
 

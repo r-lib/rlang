@@ -1,13 +1,13 @@
-test_that("try_catch() catches values", {
+test_that("try_catch() catches or declines values", {
   f <- function() g()
   g <- function() h()
   h <- function() abort("foo")
 
-  expect_error(try_catch(f(), warning = function(cnd, throw) throw(NULL)), "foo")
-  expect_error(try_catch(f(), error = function(cnd, throw) return(NULL)), "foo")
-  expect_null(try_catch(f(), error = function(cnd, throw) throw(NULL)))
+  expect_error(try_catch(f(), warning = function(cnd) NULL), "foo")
+  expect_error(try_catch(f(), error = function(cnd) zap()), "foo")
+  expect_null(try_catch(f(), error = function(cnd) NULL))
 
-  fns <- list(error = function(cnd, throw) throw(NULL))
+  fns <- list(error = function(cnd) NULL)
   expect_null(try_catch(f(), !!!fns))
 })
 
@@ -28,7 +28,7 @@ test_that("can rethrow from `try_catch()`", {
 
   expect_snapshot({
     err <- catch_error(
-      try_catch(f(), error = function(cnd, ...) abort("bar", parent = cnd))
+      try_catch(f(), error = function(cnd) abort("bar", parent = cnd))
     )
 
     print(err)
