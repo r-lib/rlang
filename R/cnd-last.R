@@ -32,13 +32,13 @@
 #' @export
 last_warnings <- function(n = NULL) {
   out <- new_list_of_conditions(the$last_warnings)
-  tail(out, n = n %||% length(out))
+  utils::tail(out, n = n %||% length(out))
 }
 #' @rdname last_warnings
 #' @export
 last_messages <- function(n = NULL) {
   out <- new_list_of_conditions(the$last_messages)
-  tail(out, n = n %||% length(out))
+  utils::tail(out, n = n %||% length(out))
 }
 
 on_load({
