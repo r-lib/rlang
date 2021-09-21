@@ -10,39 +10,39 @@
 #'
 #' A condition handler can:
 #'
-#' - *Recover from conditions** with a value. In this case the computation of
-#'   `expr` is aborted and the recovery value is returned from
-#'   `try_catch()`. Error recovery is useful when you don't want
-#'   errors to abruptly interrupt your program but resume at the
-#'   catching site instead.
+#' -   *Recover from conditions** with a value. In this case the computation of
+#'     `expr` is aborted and the recovery value is returned from
+#'     `try_catch()`. Error recovery is useful when you don't want
+#'     errors to abruptly interrupt your program but resume at the
+#'     catching site instead.
 #'
-#'   ```{r}
-#'   # Recover with the value 0
-#'   try_catch(1 + "", error = function(cnd) 0)
-#'   ````
+#'     ```
+#'     # Recover with the value 0
+#'     try_catch(1 + "", error = function(cnd) 0)
+#'     ```
 #'
-#' - **Rethrow conditions**, e.g. using `abort(msg, parent = cnd)`.
-#'   See the `parent` argument of [abort()]. This is typically done to
-#'   add information to low-level errors about the high-level context
-#'   in which they occurred.
+#' -   **Rethrow conditions**, e.g. using `abort(msg, parent = cnd)`.
+#'     See the `parent` argument of [abort()]. This is typically done to
+#'     add information to low-level errors about the high-level context
+#'     in which they occurred.
 #'
-#'   ```{r, error = TRUE}
-#'   try_catch(1 + "", error = function(cnd) abort("Failed.", parent = cnd))
-#'   ````
+#'     ```
+#'     try_catch(1 + "", error = function(cnd) abort("Failed.", parent = cnd))
+#'     ```
 #'
-#' - **Inspect conditions**, for instance to log data about warnings
-#'   or errors. In this case, the handler must return the [zap()]
-#'   sentinel to instruct `tryCatch()` to ignore (or zap) that
-#'   particular handler. The next matching handler is called if any,
-#'   and errors bubble up to the user if no handler remains.
+#' -   **Inspect conditions**, for instance to log data about warnings
+#'     or errors. In this case, the handler must return the [zap()]
+#'     sentinel to instruct `tryCatch()` to ignore (or zap) that
+#'     particular handler. The next matching handler is called if any,
+#'     and errors bubble up to the user if no handler remains.
 #'
-#'   ```{r, error = TRUE}
-#'   log <- NULL
-#'   try_catch(1 + "", error = function(cnd) {
-#'     log <<- cnd
-#'     zap()
-#'   })
-#'   ````
+#'     ```
+#'     log <- NULL
+#'     try_catch(1 + "", error = function(cnd) {
+#'       log <<- cnd
+#'       zap()
+#'     })
+#'     ```
 #'
 #' @param expr An R expression.
 #' @param ... <[`dynamic-dots`][rlang::dyn-dots]> Named condition

@@ -30,31 +30,24 @@ A condition handler can:
 \code{expr} is aborted and the recovery value is returned from
 \code{try_catch()}. Error recovery is useful when you don't want
 errors to abruptly interrupt your program but resume at the
-catching site instead.
-}\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Recover with the value 0
+catching site instead.\preformatted{# Recover with the value 0
 try_catch(1 + "", error = function(cnd) 0)
-}\if{html}{\out{</div>}}\preformatted{## [1] 0
 }
-\itemize{
 \item \strong{Rethrow conditions}, e.g. using \code{abort(msg, parent = cnd)}.
 See the \code{parent} argument of \code{\link[=abort]{abort()}}. This is typically done to
 add information to low-level errors about the high-level context
-in which they occurred.
-}\if{html}{\out{<div class="sourceCode r">}}\preformatted{try_catch(1 + "", error = function(cnd) abort("Failed.", parent = cnd))
-}\if{html}{\out{</div>}}\preformatted{## Error: Failed.
+in which they occurred.\preformatted{try_catch(1 + "", error = function(cnd) abort("Failed.", parent = cnd))
 }
-\itemize{
 \item \strong{Inspect conditions}, for instance to log data about warnings
 or errors. In this case, the handler must return the \code{\link[=zap]{zap()}}
 sentinel to instruct \code{tryCatch()} to ignore (or zap) that
 particular handler. The next matching handler is called if any,
-and errors bubble up to the user if no handler remains.
-}\if{html}{\out{<div class="sourceCode r">}}\preformatted{log <- NULL
+and errors bubble up to the user if no handler remains.\preformatted{log <- NULL
 try_catch(1 + "", error = function(cnd) \{
   log <<- cnd
   zap()
 \})
-}\if{html}{\out{</div>}}\preformatted{## Error in 1 + "": non-numeric argument to binary operator
+}
 }
 }
 \section{Stack overflows}{
