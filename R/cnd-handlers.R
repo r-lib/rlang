@@ -99,7 +99,10 @@ utils::globalVariables("catch")
 #' Establish handlers on the stack
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
+#' `r lifecycle::badge("deprecated")`
+#'
+#' As of rlang 1.0.0, `with_handlers()` is deprecated. Use the base
+#' functions or the experimental [try_catch()] function instead.
 #'
 #' Condition handlers are functions established on the evaluation
 #' stack (see [ctxt_stack()]) that are called by R when a condition is
@@ -208,7 +211,7 @@ calling <- function(handler) {
 #' Create a restarting handler
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
+#' `r lifecycle::badge("deprecated")`
 #'
 #' This constructor automates the common task of creating an
 #' [calling()] handler that invokes a restart.

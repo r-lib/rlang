@@ -24,7 +24,10 @@ argument. This is passed to \code{\link[=as_function]{as_function()}} and can th
 formula describing a lambda function.}
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+As of rlang 1.0.0, \code{with_handlers()} is deprecated. Use the base
+functions or the experimental \code{\link[=try_catch]{try_catch()}} function instead.
 
 Condition handlers are functions established on the evaluation
 stack (see \code{\link[=ctxt_stack]{ctxt_stack()}}) that are called by R when a condition is

@@ -31,6 +31,8 @@
   unprefixed line. You need to be explicit by supplying the `"*"`
   specifier: `abort(c("Foo", "*" = "Bar"))`.
 
+* `with_handlers()` is deprecated.
+
 
 ## Features and bugfixes
 
