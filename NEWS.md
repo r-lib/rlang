@@ -34,6 +34,10 @@
 
 ## Features and bugfixes
 
+* `try_catch()` is a flexible alternative to both `tryCatch()` and
+  `withCallingHandlers()` (#503). It is also more efficient than
+  `tryCatch()` and creates leaner backtraces.
+
 * `entrace()` and `global_entrace()` now log warnings and messages
   with backtraces attached. Run `last_warnings()` or `last_messages()`
   to inspect the warnings or messages emitted during the last command.

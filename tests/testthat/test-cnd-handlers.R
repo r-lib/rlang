@@ -1,3 +1,41 @@
+test_that("try_catch() catches values", {
+  f <- function() g()
+  g <- function() h()
+  h <- function() abort("foo")
+
+  expect_error(try_catch(f(), warning = function(cnd, throw) throw(NULL)), "foo")
+  expect_error(try_catch(f(), error = function(cnd, throw) return(NULL)), "foo")
+  expect_null(try_catch(f(), error = function(cnd, throw) throw(NULL)))
+
+  fns <- list(error = function(cnd, throw) throw(NULL))
+  expect_null(try_catch(f(), !!!fns))
+})
+
+test_that("try_catch() checks inputs", {
+  expect_snapshot({
+    (expect_error(try_catch(NULL, function(...) NULL)))
+  })
+})
+
+test_that("can rethrow from `try_catch()`", {
+  local_options(
+    rlang_trace_top_env = current_env(),
+    rlang_trace_format_srcrefs = FALSE
+  )
+  f <- function() g()
+  g <- function() h()
+  h <- function() abort("foo")
+
+  expect_snapshot({
+    err <- catch_error(
+      try_catch(f(), error = function(cnd, ...) abort("bar", parent = cnd))
+    )
+
+    print(err)
+    print(err, simplify = "none")
+  })
+})
+
 test_that("with_handlers() establishes inplace and exiting handlers", {
   handlers <- list(
     error = function(c) "caught error",

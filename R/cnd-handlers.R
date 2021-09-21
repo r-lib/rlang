@@ -1,3 +1,107 @@
+#' Try an expression with condition handlers
+#'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
+#' `try_catch()` establishes handlers for conditions of a given class
+#' (`"error"` `"warning"`, `"message"`, ...). Handlers are functions
+#' that take a condition object as first argument and a throw function
+#' as second argument.
+#'
+#' ```{r, error = TRUE}
+#' # A prototype of error handler that does not do anything
+#' try_catch(1 + "", error = function(cnd, throw) { NULL })
+#' ```
+#'
+#' A condition handler can:
+#'
+#' - Interrupt the computation of `expr` and return from `try_catch()`
+#'   by calling `throw` (the second argument) with a recovery value.
+#'   This is useful when you don't want errors to abruptly interrupt
+#'   your program but resume at the catching site instead.
+#'
+#' - Rethrow errors using `abort(msg, parent = cnd)`. See the `parent`
+#'   argument of [abort()]. This is typically done to add information
+#'   to low-level errors about the high-level context in which they
+#'   occurred.
+#'
+#' - Inspect the condition object, for instance to log data about
+#'   warnings or errors.
+#'
+#' ```{r, error = TRUE}
+#' # An error handler that throws a recovery value
+#' try_catch(1 + "", error = function(cnd, throw) throw(0))
+#'
+#' # An error handler that rethrows the error with a different message
+#' try_catch(1 + "", error = function(cnd, throw) abort("Failed.", parent = cnd))
+#' ```
+#'
+#' Unlike `tryCatch()` and `try` / `catch` constructs in other
+#' programming languages, `try_catch()` does not catch
+#' conditions. Instead, it catches _recovery values_. See the
+#' comparison sections below.
+#'
+#' @param expr An R expression.
+#' @param ... <[`dynamic-dots`][rlang::dyn-dots]> Named condition
+#'   handlers. The names specify the condition class for which a
+#'   handler will be called.
+#'
+#'   Handler functions must have at least two arguments. By
+#'   convention, the second argument should be named `throw`.
+#'
+#' @section Throwing versus returning:
+#'
+#' `try_catch()` calls matching condition handlers in a loop and
+#' discards any results. Implicit and explicit `return()` values have
+#' no effect. To return from `try_catch()` with a value, you must
+#' throw it with the function passed as second argument. This causes a
+#' long return that shortcircuits the `expr` computation that is still
+#' running when the handler is run.
+#'
+#' @section Comparison with `tryCatch()`:
+#'
+#' `try_catch()` is similar to [base::tryCatch()] but with important
+#' differences.
+#'
+#' - It doesn't catch condition objects, instead it catches recovery
+#'   values thrown with `throw()`. The main consequence of this is
+#'   that the program is still fully running when an error handler is
+#'   called. This makes it possible to capture a full backtrace for
+#'   the error, e.g. when rethrowing the error with `abort(parent =
+#'   cnd)`. Technically, `try_catch()` is more similar to (and
+#'   implemented on top of) [base::withCallingHandlers()] than
+#'   `tryCatch().`
+#'
+#' - Condition handlers are passed two arguments instead of one. The
+#'   second argument is a throwing function that allows the handler to
+#'   manually stop the current computation and resume with a recovery
+#'   value at the catching site. By comparison, `tryCatch()` handlers
+#'   don't need to explicitly throw a value since `expr` is fully
+#'   stopped by `tryCatch()` before calling the condition handler.
+#'
+#' @export
+try_catch <- function(expr, ...) {
+  value <- NULL
+  delayedAssign("catch", return(value))
+
+  throw <- function(x) {
+    value <<- x
+    catch
+  }
+
+  handlers <- map(list2(...), function(handler) {
+    function(cnd) handler(cnd, throw)
+  })
+
+  # Construct a promise to keep call stack lean
+  inject(
+    delayedAssign("do", withCallingHandlers(expr, !!!handlers))
+  )
+  do
+}
+
+utils::globalVariables("catch")
+
 #' Establish handlers on the stack
 #'
 #' @description
