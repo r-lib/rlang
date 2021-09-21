@@ -5,6 +5,7 @@
 #include "attr.c"
 #include "call.c"
 #include "cnd.c"
+#include "cnd-handlers.c"
 #include "dots.c"
 #include "dots-ellipsis.c"
 #include "encoding.c"
@@ -49,6 +50,7 @@ void rlang_init_internal(r_obj* ns) {
   rlang_init_arg(ns);
   rlang_init_attr(ns);
   rlang_init_cnd(ns);
+  rlang_init_cnd_handlers(ns);
   rlang_init_dots(ns);
   rlang_init_expr_interp();
   rlang_init_eval_tidy();
@@ -56,6 +58,8 @@ void rlang_init_internal(r_obj* ns) {
   rlang_init_tests();
 
   rlang_syms.c_null = r_sym(".__C_NULL__.");
+  rlang_syms.handlers = r_sym("handlers");
+  rlang_syms.withCallingHandlers = r_sym("withCallingHandlers");
 
   rlang_zap = rlang_ns_get("zap!");
 

@@ -81,23 +81,17 @@
 #'
 #' @export
 try_catch <- function(expr, ...) {
+  frame <- environment()
+
   value <- NULL
-  delayedAssign("catch", return(value))
+  delayedAssign("catch", return(value), frame, frame)
 
   throw <- function(x) {
     value <<- x
     catch
   }
 
-  handlers <- map(list2(...), function(handler) {
-    function(cnd) handler(cnd, throw)
-  })
-
-  # Construct a promise to keep call stack lean
-  inject(
-    delayedAssign("do", withCallingHandlers(expr, !!!handlers))
-  )
-  do
+  .External(ffi_try_catch, frame)
 }
 
 utils::globalVariables("catch")
