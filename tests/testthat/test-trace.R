@@ -703,3 +703,8 @@ test_that("runs of namespaces are embolden (#946)", {
 test_that("`bottom` must be a positive integer", {
   expect_snapshot((expect_error(trace_back(bottom = -1))))
 })
+
+test_that("collapsed case in branch formatting", {
+  trace <- new_trace(alist(f(), g(), h(), evalq(), evalq()), 0:4)
+  expect_snapshot_output(print(trace, simplify = "branch"))
+})

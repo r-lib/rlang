@@ -639,10 +639,6 @@ trace_simplify_branch <- function(trace) {
     if (n_collapsed) {
       trace <- set_trace_collapsed(trace, id, n_collapsed)
       next_id <- id - n_collapsed
-
-      # Rechain child of collapsed parent to correct parent
-      parents[[id + 1L]] <- next_id
-
       id <- next_id
     }
 

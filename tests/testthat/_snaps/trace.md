@@ -1070,3 +1070,10 @@
       <error/rlang_error>
       Error in `trace_back()`: `bottom` must be a positive integer.
 
+# collapsed case in branch formatting
+
+     1. f()
+     2. g()
+     3. h()
+     4. [ evalq() ] with 1 more call
+
