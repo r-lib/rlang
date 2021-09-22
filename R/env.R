@@ -655,7 +655,7 @@ env_print <- function(env = caller_env()) {
   if (is_empty_env(env)) {
     parent <- "NULL"
   } else {
-    parent <- format_cls(sprintf("environment: %s", env_label(env_parent(env))))
+    parent <- sprintf("<environment: %s>", env_label(env_parent(env)))
   }
 
   if (env_is_locked(env)) {
