@@ -59,7 +59,7 @@ void r_cnd_signal(r_obj* cnd) {
 }
 
 
-r_obj* r_new_condition(r_obj* subclass, r_obj* msg, r_obj* data) {
+r_obj* r_new_condition(r_obj* class, r_obj* msg, r_obj* data) {
   if (msg == r_null) {
     msg = r_chrs.empty_string;
   } else if (r_typeof(msg) != R_TYPE_character) {
@@ -73,7 +73,7 @@ r_obj* r_new_condition(r_obj* subclass, r_obj* msg, r_obj* data) {
   r_vec_poke_n(cnd, 1, data, 0, r_length(cnd) - 1);
 
   r_attrib_poke_names(cnd, KEEP(new_condition_names(data)));
-  r_attrib_poke_class(cnd, KEEP(chr_append(subclass, KEEP(r_str("condition")))));
+  r_attrib_poke_class(cnd, KEEP(chr_append(class, KEEP(r_str("condition")))));
 
   if (Rf_any_duplicated(r_names(cnd), FALSE)) {
     r_abort("Condition fields can't have the same name.");
