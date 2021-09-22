@@ -448,7 +448,9 @@ test_that("withCallingHandlers() wrappers don't throw off trace capture on rethr
     summary(err)
   })
 
-  h <- function() errorcall(NULL, "foo")
+  # Avoid `:::` vs `::` ambiguity depending on loadall
+  fail <- errorcall
+  h <- function() fail(NULL, "foo")
   err <- expect_error(foo())
   expect_snapshot({
     "C-level error"

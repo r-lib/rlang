@@ -407,7 +407,7 @@
        12. rlang f()
        13. rlang g()
        14. rlang h()
-       15. rlang::errorcall(NULL, "foo")
+       15. rlang fail(NULL, "foo")
     Code
       summary(err)
     Output
@@ -432,7 +432,7 @@
        12.       \-rlang f()
        13.         \-rlang g()
        14.           \-rlang h()
-       15.             \-rlang::errorcall(NULL, "foo")
+       15.             \-rlang fail(NULL, "foo")
 
 # `abort()` uses older bullets formatting by default
 
