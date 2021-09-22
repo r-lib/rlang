@@ -96,7 +96,7 @@
 try_catch <- function(expr, ...) {
   frame <- environment()
 
-  value <- NULL
+  catch <- value <- NULL
   delayedAssign("catch", return(value), frame, frame)
 
   throw <- function(x) {
@@ -106,8 +106,6 @@ try_catch <- function(expr, ...) {
 
   .External(ffi_try_catch, frame)
 }
-
-utils::globalVariables("catch")
 
 handler_call <- quote(function(cnd) {
   out <- handlers[[i]](cnd)
