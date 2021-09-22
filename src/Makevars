@@ -43,6 +43,7 @@ internal-files = \
         internal/attr.c \
         internal/call.c \
         internal/cnd.c \
+        internal/cnd-handlers.c \
         internal/dots.c \
         internal/dots-ellipsis.c \
         internal/encoding.c \

@@ -5,6 +5,8 @@
 
 struct rlang_globals_syms {
   r_obj* c_null;
+  r_obj* handlers;
+  r_obj* withCallingHandlers;
 };
 
 extern r_obj* rlang_zap;

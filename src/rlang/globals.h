@@ -49,6 +49,7 @@ struct r_globals_syms {
   r_obj* dot_x;
   r_obj* dot_y;
   r_obj* error;
+  r_obj* expr;
   r_obj* function;
   r_obj* interrupt;
   r_obj* message;

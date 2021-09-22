@@ -31,8 +31,14 @@
   unprefixed line. You need to be explicit by supplying the `"*"`
   specifier: `abort(c("Foo", "*" = "Bar"))`.
 
+* `with_handlers()` is deprecated.
+
 
 ## Features and bugfixes
+
+* `try_catch()` is a flexible alternative to both `tryCatch()` and
+  `withCallingHandlers()` (#503). It is also more efficient than
+  `tryCatch()` and creates leaner backtraces.
 
 * `entrace()` and `global_entrace()` now log warnings and messages
   with backtraces attached. Run `last_warnings()` or `last_messages()`

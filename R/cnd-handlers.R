@@ -1,7 +1,125 @@
-#' Establish handlers on the stack
+#' Try an expression with condition handlers
 #'
 #' @description
 #' `r lifecycle::badge("experimental")`
+#'
+#' `try_catch()` establishes handlers for conditions of a given class
+#' (`"error"`, `"warning"`, `"message"`, ...). Handlers are functions
+#' that take a condition object as argument and are called when the
+#' corresponding condition class has been signalled.
+#'
+#' A condition handler can:
+#'
+#' -   *Recover from conditions** with a value. In this case the computation of
+#'     `expr` is aborted and the recovery value is returned from
+#'     `try_catch()`. Error recovery is useful when you don't want
+#'     errors to abruptly interrupt your program but resume at the
+#'     catching site instead.
+#'
+#'     ```
+#'     # Recover with the value 0
+#'     try_catch(1 + "", error = function(cnd) 0)
+#'     ```
+#'
+#' -   **Rethrow conditions**, e.g. using `abort(msg, parent = cnd)`.
+#'     See the `parent` argument of [abort()]. This is typically done to
+#'     add information to low-level errors about the high-level context
+#'     in which they occurred.
+#'
+#'     ```
+#'     try_catch(1 + "", error = function(cnd) abort("Failed.", parent = cnd))
+#'     ```
+#'
+#' -   **Inspect conditions**, for instance to log data about warnings
+#'     or errors. In this case, the handler must return the [zap()]
+#'     sentinel to instruct `try_catch()` to ignore (or zap) that
+#'     particular handler. The next matching handler is called if any,
+#'     and errors bubble up to the user if no handler remains.
+#'
+#'     ```
+#'     log <- NULL
+#'     try_catch(1 + "", error = function(cnd) {
+#'       log <<- cnd
+#'       zap()
+#'     })
+#'     ```
+#'
+#' @param expr An R expression.
+#' @param ... <[`dynamic-dots`][rlang::dyn-dots]> Named condition
+#'   handlers. The names specify the condition class for which a
+#'   handler will be called.
+#'
+#' @section Stack overflows:
+#'
+#' A stack overflow occurs when a program keeps adding to itself until
+#' the stack memory (whose size is very limited unlike heap memory) is
+#' exhausted.
+#'
+#' ```
+#' # A function that calls itself indefinitely causes stack overflows
+#' f <- function() f()
+#' f()
+#' #> Error: C stack usage  9525680 is too close to the limit
+#' ```
+#'
+#' Because `try_catch()` preserves as much of the running program as
+#' possible in order to produce informative backtraces on error
+#' rethrows, it is unable to deal with stack overflows. When an
+#' overflow occurs, R needs to unwind as much of the program as is
+#' possible and can't afford to run any more R code, such as in an
+#' error handler.
+#'
+#' This usually isn't a problem for error rethrowing or logging but
+#' might make your program more brittle in case of error recovery. In
+#' that case, capture errors with [base::tryCatch()] instead of
+#' `try_catch()`.
+#'
+#' @section Comparison with `tryCatch()`:
+#'
+#' `try_catch()` generalises `tryCatch()` and `withCallingHandlers()`
+#' in a single function. It reproduces the behaviour of both calling
+#' and exiting handlers depending the on the return value of the
+#' handler. If the handler returns the [zap()] sentinel, it is taken
+#' as a calling handler that declines to recover from a condition.
+#' Otherwise, it is taken as an exiting handler which returns a value
+#' from the catching site.
+#'
+#' The important difference between `tryCatch()` and `try_catch()` is
+#' that the program in `expr` is still fully running when an error
+#' handler is called. Because the call stack is preserved, this makes
+#' it possible to capture a full backtrace from within the handler,
+#' e.g. when rethrowing the error with `abort(parent = cnd)`.
+#' Technically, `try_catch()` is more similar to (and implemented on
+#' top of) [base::withCallingHandlers()] than `tryCatch().`
+#'
+#' @export
+try_catch <- function(expr, ...) {
+  frame <- environment()
+
+  catch <- value <- NULL
+  delayedAssign("catch", return(value), frame, frame)
+
+  throw <- function(x) {
+    value <<- x
+    catch
+  }
+
+  .External(ffi_try_catch, frame)
+}
+
+handler_call <- quote(function(cnd) {
+  out <- handlers[[i]](cnd)
+  if (!inherits(out, "rlang_zap")) throw(out)
+})
+
+
+#' Establish handlers on the stack
+#'
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' As of rlang 1.0.0, `with_handlers()` is deprecated. Use the base
+#' functions or the experimental [try_catch()] function instead.
 #'
 #' Condition handlers are functions established on the evaluation
 #' stack (see [ctxt_stack()]) that are called by R when a condition is
@@ -110,7 +228,7 @@ calling <- function(handler) {
 #' Create a restarting handler
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
+#' `r lifecycle::badge("deprecated")`
 #'
 #' This constructor automates the common task of creating an
 #' [calling()] handler that invokes a restart.
