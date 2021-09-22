@@ -59,24 +59,6 @@ void r_cnd_signal(r_obj* cnd) {
 }
 
 
-static r_obj* new_condition_names(r_obj* data) {
-  if (!r_is_named(data)) {
-    r_abort("Conditions must have named data fields");
-  }
-
-  r_obj* data_nms = r_names(data);
-
-  if (r_chr_has_any(data_nms, (const char* []) { "message", NULL })) {
-    r_abort("Conditions can't have a `message` data field");
-  }
-
-  r_obj* nms = KEEP(r_alloc_character(r_length(data) + 1));
-  r_chr_poke(nms, 0, r_str("message"));
-  r_vec_poke_n(nms, 1, data_nms, 0, r_length(nms) - 1);
-
-  FREE(1);
-  return nms;
-}
 r_obj* r_new_condition(r_obj* subclass, r_obj* msg, r_obj* data) {
   if (msg == r_null) {
     msg = r_chrs.empty_string;
@@ -99,6 +81,25 @@ r_obj* r_new_condition(r_obj* subclass, r_obj* msg, r_obj* data) {
 
   FREE(4);
   return cnd;
+}
+static
+r_obj* new_condition_names(r_obj* data) {
+  if (!r_is_named(data)) {
+    r_abort("Conditions must have named data fields");
+  }
+
+  r_obj* data_nms = r_names(data);
+
+  if (r_chr_has_any(data_nms, (const char* []) { "message", NULL })) {
+    r_abort("Conditions can't have a `message` data field");
+  }
+
+  r_obj* nms = KEEP(r_alloc_character(r_length(data) + 1));
+  r_chr_poke(nms, 0, r_str("message"));
+  r_vec_poke_n(nms, 1, data_nms, 0, r_length(nms) - 1);
+
+  FREE(1);
+  return nms;
 }
 
 // For `R_interrupts_suspended`
