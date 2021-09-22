@@ -52,7 +52,12 @@ global_entrace <- function(enable = TRUE,
     poke_handlers <- drop_global_handlers
   }
 
-  handlers <- rep_named(class, list(entrace))
+  # Keep `rlang::` indirection in case rlang is reloaded. This way the
+  # global handlers can be set once in RProfile and they will always
+  # call into the most recently loaded version.
+  hnd <- function(cnd) rlang::entrace(cnd, bottom = current_env())
+
+  handlers <- rep_named(class, list(hnd))
   inject(poke_handlers(!!!handlers))
 
   invisible(NULL)
