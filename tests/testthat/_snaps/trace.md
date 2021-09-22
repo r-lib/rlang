@@ -61,7 +61,7 @@
     Output
         1. rlang f()
         2. rlang g()
-           at test-trace.R:49:20
+             at test-trace.R:49:20
        10. rlang h()
        15. rlang i()
        18. rlang::trace_back(e, bottom = 0)
@@ -841,7 +841,7 @@
     Output
        1. rlang f(current_env())
        2. rlang g(e)
-          at fixtures/trace-srcref2.R:2:2
+            at fixtures/trace-srcref2.R:2:2
 
 # summary.rlang_trace() prints the full tree
 

@@ -421,7 +421,7 @@ cli_branch <- function(tree,
   lines <- paste0(silver(indices), lines)
 
   src_locs <- tree$src_loc
-  src_locs <- map_if(src_locs, nzchar, ~ paste0(padding, "at ", .x))
+  src_locs <- map_if(src_locs, nzchar, ~ paste0(padding, "  at ", .x))
   src_locs <- style_locs(src_locs)
 
   lines <- zip_chr(lines, src_locs)
