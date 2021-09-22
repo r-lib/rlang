@@ -41,6 +41,8 @@
 
 <meta property="og:title" content="Establish handlers on the stack — with_handlers" />
 <meta property="og:description" content="
+As of rlang 1.0.0, with_handlers() is deprecated. Use the base
+functions or the experimental try_catch() function instead.
 Condition handlers are functions established on the evaluation
 stack (see ctxt_stack()) that are called by R when a condition is
 signalled (see cnd_signal() and abort() for two common signal
@@ -176,7 +178,9 @@ calling handler." />
     </div>
 
     <div class="ref-description">
-    <p><a href='https://lifecycle.r-lib.org/articles/stages.html#experimental'><img src='figures/lifecycle-experimental.svg' alt='[Experimental]' /></a></p>
+    <p><a href='https://lifecycle.r-lib.org/articles/stages.html#deprecated'><img src='figures/lifecycle-deprecated.svg' alt='[Deprecated]' /></a></p>
+<p>As of rlang 1.0.0, <code>with_handlers()</code> is deprecated. Use the base
+functions or the experimental <code><a href='try_catch.html'>try_catch()</a></code> function instead.</p>
 <p>Condition handlers are functions established on the evaluation
 stack (see <code><a href='stack.html'>ctxt_stack()</a></code>) that are called by R when a condition is
 signalled (see <code><a href='cnd_signal.html'>cnd_signal()</a></code> and <code><a href='abort.html'>abort()</a></code> for two common signal
