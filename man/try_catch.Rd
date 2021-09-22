@@ -82,14 +82,12 @@ as a calling handler that declines to recover from a condition.
 Otherwise, it is taken as an exiting handler which returns a value
 from the catching site.
 
-There is an important difference between \code{tryCatch()} and
-\code{try_catch()}. The latter doesn't catch condition objects, instead
-it catches recovery values returned by the handler. The main
-consequence is that the program is still fully running when an
-error handler is called. This makes it possible to capture a full
-backtrace for the error, e.g. when rethrowing the error with
-\code{abort(parent = cnd)}. Technically, \code{try_catch()} is more similar
-to (and implemented on top of) \code{\link[base:conditions]{base::withCallingHandlers()}} than
-\verb{tryCatch().}
+The important difference between \code{tryCatch()} and \code{try_catch()} is
+that the program in \code{expr} is still fully running when an error
+handler is called. Because the call stack is preserved, this makes
+it possible to capture a full backtrace from within the handler,
+e.g. when rethrowing the error with \code{abort(parent = cnd)}.
+Technically, \code{try_catch()} is more similar to (and implemented on
+top of) \code{\link[base:conditions]{base::withCallingHandlers()}} than \verb{tryCatch().}
 }
 
