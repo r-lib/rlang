@@ -143,7 +143,7 @@ fn_fmls_syms <- function(fn = caller_fn()) {
 
 check_closure <- function(x) {
   if (!is_closure(x)) {
-    abort(sprintf("`fn` must be an R function, not %s", friendly_type_of(x)))
+    abort(sprintf("`fn` must be an R function, not %s.", friendly_type_of(x)))
   }
 }
 
@@ -167,7 +167,7 @@ check_closure <- function(x) {
 #' try(fn_body(base::list))
 fn_body <- function(fn = caller_fn()) {
   if(!is_closure(fn)) {
-    abort("`fn` is not a closure")
+    abort("`fn` is not a closure.")
   }
 
   body <- body(fn)
@@ -347,14 +347,14 @@ fn_env <- function(fn) {
     return(environment(fn))
   }
 
-  abort("`fn` is not a function")
+  abort("`fn` is not a function.")
 }
 
 #' @export
 #' @rdname fn_env
 `fn_env<-` <- function(x, value) {
   if(!is_function(x)) {
-    abort("`fn` is not a function")
+    abort("`fn` is not a function.")
   }
   environment(x) <- value
   x
@@ -544,7 +544,7 @@ op_as_closure <- function(prim_nm) {
       args <- exprs(...)
       n <- length(args)
       if (n < 2L) {
-        abort("Must supply operands to `[<-`")
+        abort("Must supply operands to `[<-`.")
       }
       expr <- expr((!!enexpr(.x))[!!!args[-n]] <- !!args[[n]])
       eval_bare(expr, caller_env())
@@ -602,7 +602,7 @@ op_as_closure <- function(prim_nm) {
     `return` = ,
     `while` = {
       nm <- chr_quoted(prim_nm)
-      abort(paste0("Can't coerce the primitive function ", nm, " to a closure"))
+      abort(paste0("Can't coerce the primitive function ", nm, " to a closure."))
     }
   )
 }
@@ -638,21 +638,21 @@ binary_check_nodes <- pairlist(
   quote(
     if (missing(.x)) {
       if (missing(e1)) {
-        abort("Must supply `e1` or `.x` to binary operator")
+        abort("Must supply `e1` or `.x` to binary operator.")
       }
       .x <- e1
     } else if (!missing(e1)) {
-      abort("Can't supply both `e1` and `.x` to binary operator")
+      abort("Can't supply both `e1` and `.x` to binary operator.")
     }
   ),
   quote(
     if (missing(.y)) {
       if (missing(e2)) {
-        abort("Must supply `e2` or `.y` to binary operator")
+        abort("Must supply `e2` or `.y` to binary operator.")
       }
       .y <- e2
     } else if (!missing(e2)) {
-      abort("Can't supply both `e2` and `.y` to binary operator")
+      abort("Can't supply both `e2` and `.y` to binary operator.")
     }
   )
 )
@@ -662,7 +662,7 @@ versatile_check_nodes <- as.pairlist(c(
     if (missing(.y) && !missing(e2)) {
       .y <- e2
     } else if (!missing(e2)) {
-      abort("Can't supply both `e2` and `.y` to binary operator")
+      abort("Can't supply both `e2` and `.y` to binary operator.")
     }
   )
 ))
