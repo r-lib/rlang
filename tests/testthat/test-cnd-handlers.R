@@ -15,6 +15,7 @@ test_that("try_catch() checks inputs", {
   expect_snapshot({
     (expect_error(try_catch(NULL, function(...) NULL)))
   })
+  expect_true(try_catch(TRUE))
 })
 
 test_that("can rethrow from `try_catch()`", {

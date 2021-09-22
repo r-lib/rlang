@@ -8,6 +8,11 @@ r_obj* ffi_try_catch(r_obj* try_catch_args) {
   r_obj* handlers = KEEP(rlang_env_dots_list(env));
   r_env_poke(env, rlang_syms.handlers, handlers);
 
+  if (!r_length(handlers)) {
+    FREE(1);
+    return r_eval(r_syms.expr, env);
+  }
+
   r_obj* classes = r_names(handlers);
   if (classes == r_null) {
     r_abort("`...` must be named with condition classes.");
