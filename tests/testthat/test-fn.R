@@ -186,23 +186,6 @@ test_that("assignment methods preserve attributes", {
   expect_identical(attributes(fn), orig_attrs)
 })
 
-test_that("print method for `fn` discards attributes", {
-  fn <- structure(function() NULL, foo = "foo")
-  fn <- new_fn(fn)
-
-  temp <- file()
-  sink(temp)
-  on.exit({
-    sink()
-    close(temp)
-  })
-
-  print(fn)
-
-  output <- paste0(readLines(temp, warn = FALSE), collapse = "\n")
-  expect_false(grepl("attr", output))
-})
-
 test_that("fn_body() requires a closure to extract body", {
   expect_error(fn_body(c), "`fn` is not a closure")
   expect_equal(fn_body(function() { NULL }), quote({ NULL }))

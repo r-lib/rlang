@@ -672,41 +672,6 @@ shortcircuiting_check_nodes <- as.pairlist(c(
   binary_check_nodes[[2]]
 ))
 
-#' Make an `fn` object
-#'
-#' @noRd
-#' @description
-#'
-#' `new_fn()` takes a function and sets the class to `c("fn",
-#' function)`.
-#'
-#' * Inheriting from `"fn"` enables a print method that strips all
-#'   attributes (except `srcref`) before printing. This is currently
-#'   the only purpose of the `fn` class.
-#'
-#' * Inheriting from `"function"` makes sure your function still
-#'   dispatches on type methods.
-#'
-#' @param fn A closure.
-#' @return An object of class `c("fn", "function")`.
-#' @examples
-#' fn <- structure(function() "foo", attribute = "foobar")
-#' print(fn)
-#'
-#' # The `fn` object doesn't print with attributes:
-#' fn <- new_fn(fn)
-#' print(fn)
-new_fn <- function(fn) {
-  stopifnot(is_closure(fn))
-  structure(fn, class = c("fn", "function"))
-}
-print.fn <- function(x, ...) {
-  srcref <- attr(x, "srcref")
-  attributes(x) <- NULL
-  x <- structure(x, srcref = srcref)
-  print(x)
-}
-
 as_predicate <- function(.fn, ...) {
   .fn <- as_function(.fn)
 
