@@ -1,3 +1,16 @@
+# bare conditions must be subclassed
+
+    Code
+      (expect_error(cnd()))
+    Output
+      <error/rlang_error>
+      Error in `cnd()`: `class` must be supplied.
+    Code
+      (expect_error(signal("")))
+    Output
+      <error/rlang_error>
+      Error in `signal()`: `class` must be supplied.
+
 # cnd_type_header() formats condition classes
 
     Code

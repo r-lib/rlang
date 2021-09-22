@@ -210,8 +210,6 @@ abort <- function(message = NULL,
                   use_cli_format = NULL,
                   .file = NULL,
                   .subclass = deprecated()) {
-  validate_signal_args(.subclass)
-
   if (is_null(trace) && is_null(peek_option("rlang:::disable_trace_capture"))) {
     # Prevents infloops when rlang throws during trace capture
     with_options("rlang:::disable_trace_capture" = TRUE, {
@@ -232,7 +230,7 @@ abort <- function(message = NULL,
     })
   }
 
-  message <- validate_signal_message(message, class)
+  message <- validate_signal_args(message, class, call, .subclass)
   message_info <- cnd_message_info(message, caller_env(), use_cli_format = use_cli_format)
   message <- message_info$message
   extra_fields <- message_info$extra_fields

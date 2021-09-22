@@ -282,6 +282,15 @@ test_that("can pass `use_cli_format` as condition field", {
   expect_lazy_bullets(signal_lazy_bullets(catch_message, inform))
 })
 
+test_that("signal functions check inputs", {
+  expect_snapshot({
+    (expect_error(abort(error_cnd("foo"))))
+    (expect_error(inform(error_cnd("foo"))))
+    (expect_error(warn(class = error_cnd("foo"))))
+    (expect_error(abort("foo", call = base::call)))
+  })
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

@@ -40,9 +40,7 @@
 #' with_handlers(cnd_signal(cnd), foo = function(c) "caught!")
 #' tryCatch(cnd_signal(cnd), foo = function(c) "caught!")
 cnd <- function(class, ..., message = "") {
-  if (missing(class)) {
-    abort("Bare conditions must be subclassed")
-  }
+  arg_require(class)
   .Call(ffi_new_condition, class, message, cnd_fields(...))
 }
 #' @rdname cnd

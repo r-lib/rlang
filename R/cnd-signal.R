@@ -120,8 +120,7 @@ warn <- function(message = NULL,
                  .frequency = c("always", "regularly", "once"),
                  .frequency_id = NULL,
                  .subclass = deprecated()) {
-  validate_signal_args(.subclass)
-  message <- validate_signal_message(message, class)
+  message <- validate_signal_args(message, class, NULL, .subclass)
 
   message_info <- cnd_message_info(message, caller_env(), use_cli_format = use_cli_format)
   message <- message_info$message
@@ -153,8 +152,9 @@ inform <- function(message = NULL,
                    .frequency = c("always", "regularly", "once"),
                    .frequency_id = NULL,
                    .subclass = deprecated()) {
-  validate_signal_args(.subclass)
   message <- message %||% ""
+
+  validate_signal_args(message, class, NULL, .subclass)
 
   message_info <- cnd_message_info(message, caller_env(), use_cli_format = use_cli_format)
   message <- message_info$message
@@ -187,7 +187,9 @@ signal <- function(message,
                    class,
                    ...,
                    .subclass = deprecated()) {
-  validate_signal_args(.subclass)
+  arg_require(class)
+  validate_signal_args(message, class, NULL, .subclass)
+
   message <- .rlang_cli_format_fallback(message)
   cnd <- cnd(class, ..., message = message)
   cnd_signal(cnd)
@@ -217,16 +219,10 @@ default_message_file <- function() {
   }
 }
 
-validate_signal_args <- function(subclass, env = caller_env()) {
-  local_error_call("caller")
-  if (!is_missing(subclass)) {
-    deprecate_subclass(subclass, env = env)
-  }
-}
-# TODO! Allow until next major version
 deprecate_subclass <- function(subclass, env = caller_env()) {
-  local_error_call("caller")
   env_bind(env, class = subclass)
+  local_error_call("caller")
+  # TODO! Allow until next major version
 }
 
 #' @rdname abort
@@ -235,14 +231,36 @@ interrupt <- function() {
   .Call(ffi_interrupt)
 }
 
-validate_signal_message <- function(msg, class) {
+validate_signal_args <- function(msg, class, call, subclass, env = caller_env()) {
   local_error_call("caller")
+
+  if (!is_missing(subclass)) {
+    deprecate_subclass(subclass, env)
+  }
+
+  if (!is_missing(call)) {
+    if (!is_null(call) && !is_environment(call) && !is_call(call)) {
+      abort(sprintf(
+        "%s must be a call or environment.",
+        format_arg("call")
+      ))
+    }
+  }
 
   if (is_null(msg)) {
     if (is_null(class)) {
       abort("Either `message` or `class` must be supplied.")
     }
     msg <- ""
+  }
+
+  if (!is_character(msg)) {
+    msg <- sprintf("%s must be a character vector.", format_arg("message"))
+    abort(msg)
+  }
+  if (!is_character(class) && !is_null(class)) {
+    msg <- sprintf("%s must be a character vector.", format_arg("class"))
+    abort(msg)
   }
 
   msg

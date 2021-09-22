@@ -44,8 +44,10 @@ test_that("cnd_type() detects condition type", {
 })
 
 test_that("bare conditions must be subclassed", {
-  expect_error(cnd(), "must be subclassed")
-  expect_error(signal(""), "must be subclassed")
+  expect_snapshot({
+    (expect_error(cnd()))
+    (expect_error(signal("")))
+  })
 })
 
 test_that("predicates match condition classes", {
