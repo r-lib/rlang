@@ -783,7 +783,7 @@ format_error_call <- function(call) {
   # Deal with special-syntax calls. `if` carries useful information in
   # its call. For other operators we just return their name because
   # the functional form may be confusing.
-  if (!is_call(call, "if") && !is_string(call_print_fine_type(call), "call")) {
+  if (!is_call(call, "if") && !is_string(call_parse_type(call), "")) {
     out <- as_string(call[[1]])
   } else {
     out <- as_label(call)
