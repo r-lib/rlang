@@ -63,6 +63,7 @@ void r_init_library_globals_syms() {
   r_syms.condition = r_sym("condition");
   r_syms.dots = R_DotsSymbol;
   r_syms.error = r_sym("error");
+  r_syms.error_call_flag = r_sym(".__error_call__.");
   r_syms.expr = r_sym("expr");
   r_syms.interrupt = r_sym("interrupt");
   r_syms.missing = R_MissingArg;

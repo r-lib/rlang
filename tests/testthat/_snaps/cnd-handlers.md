@@ -4,7 +4,7 @@
       (expect_error(try_catch(NULL, function(...) NULL)))
     Output
       <error/rlang_error>
-      Error: `...` must be named with condition classes.
+      Error in `try_catch()`: `...` must be named with condition classes.
 
 # can rethrow from `try_catch()`
 

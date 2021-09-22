@@ -45,12 +45,12 @@
       (expect_error(arg_match_wrapper("", character(), "my_arg")))
     Output
       <error/rlang_error>
-      Error: `values` must have at least one element.
+      Error in `arg_match0()`: `values` must have at least one element.
     Code
       (expect_error(arg_match_wrapper("fo", "foo", quote(f()))))
     Output
       <error/rlang_error>
-      Error: `arg_nm` must be a string or symbol.
+      Error in `arg_match0()`: `arg_nm` must be a string or symbol.
 
 # `arg_match()` provides no suggestion when the edit distance is too large
 

@@ -42,8 +42,18 @@ static r_obj* err_call = NULL;
 void r_abort(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
+  r_obj* message = KEEP(r_chr(buf));
 
-  r_eval_with_x(err_call, KEEP(r_chr(buf)), r_envs.ns);
+  // Evaluate in a mask but forward error call to the current frame
+  r_obj* frame = KEEP(r_peek_frame());
+  r_obj* mask = KEEP(r_alloc_environment(2, frame));
+  r_env_poke(mask, r_syms.error_call_flag, frame);
+
+  struct r_pair args[] = {
+    { r_syms.message, message }
+  };
+
+  r_exec_n(r_null, r_syms.abort, args, R_ARR_SIZEOF(args), mask);
 
   while (1); // No return
 }
@@ -118,7 +128,7 @@ void r_init_library_cnd() {
   wng_call = r_parse("warning(x, call. = FALSE)");
   r_preserve(wng_call);
 
-  err_call = r_parse("rlang::abort(x, call = NULL)");
+  err_call = r_parse("rlang::abort(x)");
   r_preserve(err_call);
 
   cnd_signal_call = r_parse("rlang::cnd_signal(x)");
