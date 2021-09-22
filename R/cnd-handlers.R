@@ -4,7 +4,7 @@
 #' `r lifecycle::badge("experimental")`
 #'
 #' `try_catch()` establishes handlers for conditions of a given class
-#' (`"error"` `"warning"`, `"message"`, ...). Handlers are functions
+#' (`"error"`, `"warning"`, `"message"`, ...). Handlers are functions
 #' that take a condition object as argument and are called when the
 #' corresponding condition class has been signalled.
 #'
@@ -32,7 +32,7 @@
 #'
 #' -   **Inspect conditions**, for instance to log data about warnings
 #'     or errors. In this case, the handler must return the [zap()]
-#'     sentinel to instruct `tryCatch()` to ignore (or zap) that
+#'     sentinel to instruct `try_catch()` to ignore (or zap) that
 #'     particular handler. The next matching handler is called if any,
 #'     and errors bubble up to the user if no handler remains.
 #'
@@ -48,9 +48,6 @@
 #' @param ... <[`dynamic-dots`][rlang::dyn-dots]> Named condition
 #'   handlers. The names specify the condition class for which a
 #'   handler will be called.
-#'
-#'   Handler functions must have at least two arguments. By
-#'   convention, the second argument should be named `throw`.
 #'
 #' @section Stack overflows:
 #'
@@ -68,7 +65,7 @@
 #' Because `try_catch()` preserves as much of the running program as
 #' possible in order to produce informative backtraces on error
 #' rethrows, it is unable to deal with stack overflows. When an
-#' overflow occurs, R needs to unwind as much of the program is
+#' overflow occurs, R needs to unwind as much of the program as is
 #' possible and can't afford to run any more R code, such as in an
 #' error handler.
 #'
@@ -96,9 +93,6 @@
 #' `abort(parent = cnd)`. Technically, `try_catch()` is more similar
 #' to (and implemented on top of) [base::withCallingHandlers()] than
 #' `tryCatch().`
-#'
-#' A big downside to keeping the call stack alive when handlers are run
-#' is that stack overflow can't be handled with `try_catch()`.
 #'
 #' @export
 try_catch <- function(expr, ...) {

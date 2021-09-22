@@ -11,16 +11,13 @@ try_catch(expr, ...)
 
 \item{...}{<\code{\link[=dyn-dots]{dynamic-dots}}> Named condition
 handlers. The names specify the condition class for which a
-handler will be called.
-
-Handler functions must have at least two arguments. By
-convention, the second argument should be named \code{throw}.}
+handler will be called.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 \code{try_catch()} establishes handlers for conditions of a given class
-(\code{"error"} \code{"warning"}, \code{"message"}, ...). Handlers are functions
+(\code{"error"}, \code{"warning"}, \code{"message"}, ...). Handlers are functions
 that take a condition object as argument and are called when the
 corresponding condition class has been signalled.
 
@@ -40,7 +37,7 @@ in which they occurred.\preformatted{try_catch(1 + "", error = function(cnd) abo
 }
 \item \strong{Inspect conditions}, for instance to log data about warnings
 or errors. In this case, the handler must return the \code{\link[=zap]{zap()}}
-sentinel to instruct \code{tryCatch()} to ignore (or zap) that
+sentinel to instruct \code{try_catch()} to ignore (or zap) that
 particular handler. The next matching handler is called if any,
 and errors bubble up to the user if no handler remains.\preformatted{log <- NULL
 try_catch(1 + "", error = function(cnd) \{
@@ -64,7 +61,7 @@ f()
 Because \code{try_catch()} preserves as much of the running program as
 possible in order to produce informative backtraces on error
 rethrows, it is unable to deal with stack overflows. When an
-overflow occurs, R needs to unwind as much of the program is
+overflow occurs, R needs to unwind as much of the program as is
 possible and can't afford to run any more R code, such as in an
 error handler.
 
@@ -94,8 +91,5 @@ backtrace for the error, e.g. when rethrowing the error with
 \code{abort(parent = cnd)}. Technically, \code{try_catch()} is more similar
 to (and implemented on top of) \code{\link[base:conditions]{base::withCallingHandlers()}} than
 \verb{tryCatch().}
-
-A big downside to keeping the call stack alive when handlers are run
-is that stack overflow can't be handled with \code{try_catch()}.
 }
 
