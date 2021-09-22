@@ -141,12 +141,6 @@ fn_fmls_syms <- function(fn = caller_fn()) {
   fn
 }
 
-check_closure <- function(x) {
-  if (!is_closure(x)) {
-    abort(sprintf("`fn` must be an R function, not %s.", friendly_type_of(x)))
-  }
-}
-
 #' Get or set function body
 #'
 #' `fn_body()` is a simple wrapper around [base::body()]. It always
@@ -166,9 +160,7 @@ check_closure <- function(x) {
 #' # It also throws an error when used on a primitive function:
 #' try(fn_body(base::list))
 fn_body <- function(fn = caller_fn()) {
-  if(!is_closure(fn)) {
-    abort("`fn` is not a closure.")
-  }
+  check_closure(fn)
 
   body <- body(fn)
 
@@ -347,18 +339,42 @@ fn_env <- function(fn) {
     return(environment(fn))
   }
 
-  abort("`fn` is not a function.")
+  check_function(fn)
 }
 
 #' @export
 #' @rdname fn_env
 `fn_env<-` <- function(x, value) {
-  if(!is_function(x)) {
-    abort("`fn` is not a function.")
-  }
+  check_function(x)
   environment(x) <- value
   x
 }
+
+check_closure <- function(x,
+                          arg = caller_arg(x),
+                          call = caller_env()) {
+  if (!is_closure(x)) {
+    msg <- sprintf(
+      "%s must be an R function, not %s.",
+      format_arg(arg),
+      friendly_type_of(x)
+    )
+    abort(msg, call = call)
+  }
+}
+check_function <- function(x,
+                           arg = caller_arg(x),
+                           call = caller_env()) {
+  if (!is_function(x)) {
+    msg <- sprintf(
+      "%s must be a function, not %s.",
+      format_arg(arg),
+      friendly_type_of(x)
+    )
+    abort(msg, call = call)
+  }
+}
+
 
 
 #' Convert to function

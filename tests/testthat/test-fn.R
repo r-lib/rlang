@@ -187,13 +187,13 @@ test_that("assignment methods preserve attributes", {
 })
 
 test_that("fn_body() requires a closure to extract body", {
-  expect_error(fn_body(c), "`fn` is not a closure")
+  expect_error(fn_body(c), "`fn` must be an R function")
   expect_equal(fn_body(function() { NULL }), quote({ NULL }))
   expect_equal(fn_body(function() NULL), quote({ NULL }))
 })
 
 test_that("fn_env() requires a function to extract env", {
-  expect_error(fn_env(1L), "`fn` is not a function")
+  expect_error(fn_env(1L), "`fn` must be a function")
   expect_identical(fn_env(function() NULL), current_env())
 })
 
@@ -324,5 +324,13 @@ test_that("as_function() has nice errors", {
     (expect_error(my_function(1)))
 
     (expect_error(my_function(a ~ b)))
+  })
+})
+
+test_that("check inputs in function accessors", {
+  expect_snapshot({
+    (expect_error(fn_fmls(1)))
+    (expect_error(fn_body(1)))
+    (expect_error(fn_env(1)))
   })
 })
