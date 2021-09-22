@@ -242,6 +242,14 @@ r_obj* chr_detect_dups(r_obj* x) {
   return out;
 }
 
+r_obj* ffi_peek_srcref() {
+  if (R_Srcref) {
+    return R_Srcref;
+  } else {
+    return rlang_syms.c_null;
+  }
+}
+
 
 void rlang_init_utils() {
   warn_deprecated_call = r_parse("rlang:::warn_deprecated(x, id = y)");

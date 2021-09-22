@@ -157,3 +157,7 @@ report_in_progress <- function() {
 
   FALSE
 }
+
+peek_srcref <- function() {
+  .Call(ffi_peek_srcref)
+}
