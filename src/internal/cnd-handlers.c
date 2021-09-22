@@ -25,6 +25,7 @@ r_obj* ffi_try_catch(r_obj* try_catch_args) {
     r_obj* cls = v_classes[i];
     r_obj* hnd = KEEP(r_copy(hnd_call));
 
+    // Equivalent to hnd[[3]][[2]][[3]][[1]][3]
     r_obj* subscript_node = r_node_cdr(r_node_cdar(r_node_cadr(r_node_cdar(r_node_cdar(r_node_cddr(hnd))))));
     r_node_poke_car(subscript_node, r_int(i + 1));
 
