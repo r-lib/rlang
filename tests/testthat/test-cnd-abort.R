@@ -442,8 +442,16 @@ test_that("withCallingHandlers() wrappers don't throw off trace capture on rethr
   }
 
   err <- expect_error(foo())
-
   expect_snapshot({
+    "`abort()` error"
+    print(err)
+    summary(err)
+  })
+
+  h <- function() errorcall(NULL, "foo")
+  err <- expect_error(foo())
+  expect_snapshot({
+    "C-level error"
     print(err)
     summary(err)
   })

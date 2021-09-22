@@ -951,7 +951,13 @@ trace_depth_wch <- function(trace) {
     return(NULL)
   }
 
-  # withCallingHandlers()
+  # withCallingHandlers() - C level error case
+  if (length(calls) > top + 1 &&
+      identical(calls[[top + 1]], quote(h(simpleError(msg, call))))) {
+    return(top)
+  }
+
+  # withCallingHandlers() - `abort()` case
   wch_calls <- calls[seq2(top - 2L, top - 0L)]
   if (!is_call(wch_calls[[1]], "signal_abort") ||
       !is_call(wch_calls[[2]], "signalCondition") ||
