@@ -114,11 +114,21 @@ void without_winch(void* payload) {
 }
 
 
-r_obj* ffi_new_condition(r_obj* class, r_obj* msg, r_obj* data) {
+// Probably should be implemented at R level
+r_obj* ffi_new_condition(r_obj* class,
+                         r_obj* msg,
+                         r_obj* data,
+                         r_obj* error_call) {
   if (msg == r_null) {
     msg = r_chrs.empty_string;
   } else if (r_typeof(msg) != R_TYPE_character) {
-    r_abort("Condition message must be a character vector.");
+    const char* arg = r_format_error_arg(r_sym("message"));
+    r_abort("%s must be a character vector.", arg);
+  }
+
+  if (r_typeof(class) != R_TYPE_character) {
+    const char* arg = r_format_error_arg(r_sym("class"));
+    r_abort("%s must be a character vector.", arg);
   }
 
   r_ssize n_data = r_length(data);

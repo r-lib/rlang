@@ -15,7 +15,8 @@ r_obj* ffi_try_catch(r_obj* try_catch_args) {
 
   r_obj* classes = r_names(handlers);
   if (classes == r_null) {
-    r_abort("`...` must be named with condition classes.");
+    const char* arg = r_format_error_arg(r_syms.dots);
+    r_abort("%s must be named with condition classes.", arg);
   }
 
   int n = r_length(handlers);
