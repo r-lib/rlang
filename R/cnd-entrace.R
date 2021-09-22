@@ -209,30 +209,30 @@ cnd_entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
 signal_context_info <- function(nframe) {
   first <- sys_body(nframe)
 
-  if (is_same_body(first, body(.handleSimpleError))) {
-    if (is_same_body(sys_body(nframe - 1), body(stop))) {
+  if (identical(first, body(.handleSimpleError))) {
+    if (identical(sys_body(nframe - 1), body(stop))) {
       return(list(type = "stop_message", depth = nframe - 2))
-    } else if (is_same_body(sys_body(nframe - 4), body(.signalSimpleWarning))) {
+    } else if (identical(sys_body(nframe - 4), body(.signalSimpleWarning))) {
       return(list(type = "warning_promoted", depth = nframe - 6))
     } else {
       return(list(type = "stop_native", depth = nframe - 1))
     }
   }
 
-  if (is_same_body(first, body(stop))) {
-    if (is_same_body(sys_body(nframe - 1), body(abort))) {
+  if (identical(first, body(stop))) {
+    if (identical(sys_body(nframe - 1), body(abort))) {
       return(list(type = "stop_rlang", depth = nframe - 2))
     } else {
       return(list(type = "stop_condition", depth = nframe - 1))
     }
   }
 
-  if (is_same_body(first, body(signalCondition))) {
+  if (identical(first, body(signalCondition))) {
     from_restarts <- from_withrestarts(nframe - 1)
     signal_body <- sys_body(nframe - 4)
-    if (from_restarts && is_same_body(signal_body, body(message))) {
+    if (from_restarts && identical(signal_body, body(message))) {
       return(list(type = "message", depth = nframe - 5))
-    } else if (from_restarts && is_same_body(signal_body, body(inform))) {
+    } else if (from_restarts && identical(signal_body, body(inform))) {
       return(list(type = "message_rlang", depth = nframe - 5))
     } else {
       return(list(type = "condition", depth = nframe - 1))
@@ -241,14 +241,14 @@ signal_context_info <- function(nframe) {
 
   if (from_withrestarts(nframe)) {
     withrestarts_caller <- sys_body(nframe - 3)
-    if (is_same_body(withrestarts_caller, body(.signalSimpleWarning))) {
-      if (is_same_body(sys_body(nframe - 4), body(warning))) {
+    if (identical(withrestarts_caller, body(.signalSimpleWarning))) {
+      if (identical(sys_body(nframe - 4), body(warning))) {
         return(list(type = "warning_message", depth = nframe - 5))
       } else {
         return(list(type = "warning_native", depth = nframe - 4))
       }
-    } else if (is_same_body(withrestarts_caller, body(warning))) {
-      if (is_same_body(sys_body(nframe - 4), body(warn))) {
+    } else if (identical(withrestarts_caller, body(warning))) {
+      if (identical(sys_body(nframe - 4), body(warn))) {
         return(list(type = "warning_rlang", depth = nframe - 5))
       } else {
         return(list(type = "warning_condition", depth = nframe - 4))
@@ -261,19 +261,11 @@ signal_context_info <- function(nframe) {
 
 from_withrestarts <- function(nframe) {
   is_call(sys.call(nframe), "doWithOneRestart") &&
-    is_same_body(sys_body(nframe - 2), body(withRestarts))
+    identical(sys_body(nframe - 2), body(withRestarts))
 }
 sys_body <- function(n) {
   body(sys.function(n))
 }
-
-on_load({
-  if (getRversion() < "3.5") {
-    is_same_body <- function(x, y) identical(x, y)
-  } else {
-    is_same_body <- is_reference
-  }
-})
 
 entrace_handle_top <- function(trace) {
   # Happens with ctrl-c at top-level
