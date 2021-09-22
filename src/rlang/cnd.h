@@ -41,7 +41,6 @@ static inline
 bool r_is_condition(r_obj* x) {
   return r_typeof(x) == R_TYPE_list && r_inherits(x, "condition");
 }
-r_obj* r_new_condition(r_obj* type, r_obj* msg, r_obj* data);
 
 void r_cnd_signal(r_obj* cnd);
 void r_cnd_inform(r_obj* cnd, bool mufflable);

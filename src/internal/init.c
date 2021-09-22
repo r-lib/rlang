@@ -117,7 +117,7 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_names2",                       (DL_FUNC) &ffi_names2, 2},
   {"ffi_names_as_unique",              (DL_FUNC) &ffi_names_as_unique, 2},
   {"ffi_new_call",                     (DL_FUNC) &ffi_new_call_node, 2},
-  {"ffi_new_condition",                (DL_FUNC) &r_new_condition, 3},
+  {"ffi_new_condition",                (DL_FUNC) &ffi_new_condition, 3},
   {"ffi_new_data_mask",                (DL_FUNC) &ffi_new_data_mask, 2},
   {"ffi_new_dict",                     (DL_FUNC) &ffi_new_dict, 2},
   {"ffi_new_dict_iterator",            (DL_FUNC) &ffi_new_dict_iterator, 1},
