@@ -279,11 +279,9 @@ test_that("Inlined functions return NULL name", {
   expect_null(call_name(call))
 })
 
-test_that("call_args() and call_args_names()", {
-  expect_identical(call_args(~fn(a, b)), set_names(list(quote(a), quote(b)), c("", "")))
-
-  fn <- function(a, b) call_args_names(call_frame())
-  expect_identical(fn(a = foo, b = bar), c("a", "b"))
+test_that("call_args() and call_args_names() work", {
+  expect_equal(call_args(~fn(a, b)), set_names(list(quote(a), quote(b)), c("", "")))
+  expect_equal(call_args_names(quote(foo(a = , b = ))), c("a", "b"))
 })
 
 test_that("qualified and namespaced symbols are recognised", {
@@ -344,7 +342,6 @@ test_that("call functions type-check their input (#187)", {
   x <- list(a = 1)
   expect_error(call_modify(x, NULL), "must be a quoted call")
   expect_error(call_standardise(x), "must be a quoted call")
-  expect_error(call_fn(x), "must be a quoted call")
   expect_error(call_name(x), "must be a quoted call")
   expect_error(call_args(x), "must be a quoted call")
   expect_error(call_args_names(x), "must be a quoted call")
@@ -352,7 +349,6 @@ test_that("call functions type-check their input (#187)", {
   q <- quo(!!x)
   expect_error(call_modify(q, NULL), "must be a quoted call")
   expect_error(call_standardise(q), "must be a quoted call")
-  expect_error(call_fn(q), "must be a quoted call")
   expect_error(call_name(q), "must be a quoted call")
   expect_error(call_args(q), "must be a quoted call")
   expect_error(call_args_names(q), "must be a quoted call")

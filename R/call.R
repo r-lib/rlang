@@ -937,10 +937,11 @@ is_call_named <- function(x, ns = NULL) {
 #' # When the arguments are unnamed, a vector of empty strings is
 #' # supplied (rather than NULL):
 #' call_args_names(call)
-#' @keywords internal
 #' @export
 call_args <- function(call) {
-  call <- get_expr(call)
+  if (is_quosure(call) || is_formula(call)) {
+    call <- get_expr(call)
+  }
   if (!is_call(call)) {
     abort_call_input_type("call")
   }
@@ -951,7 +952,9 @@ call_args <- function(call) {
 #' @rdname call_args
 #' @export
 call_args_names <- function(call) {
-  call <- get_expr(call)
+  if (is_quosure(call) || is_formula(call)) {
+    call <- get_expr(call)
+  }
   if (!is_call(call)) {
     abort_call_input_type("call")
   }
