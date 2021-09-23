@@ -38,6 +38,9 @@
 
 ## Features and bugfixes
 
+* `arg_exclusive()` checks that that arguments are not supplied
+  together (#1261).
+
 * `call_name()` and `call_ns()` now fail with calls of the form
   `foo::bar` (#670).
 

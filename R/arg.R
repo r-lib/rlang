@@ -224,6 +224,56 @@ chr_enumerate <- function(chr, sep = ", ", final = "or") {
   }
 }
 
+#' Check that arguments are mutually exclusive
+#'
+#' @param ... Function arguments.
+#' @param .require Whether at least one argument must be supplied.
+#' @param .frame Environment where the arguments in `...` are defined.
+#' @inheritParams args_error_context
+#'
+#' @export
+arg_exclusive <- function(...,
+                          .require = TRUE,
+                          .frame = caller_env(),
+                          .error_call = .frame) {
+  args <- enexprs(..., .named = TRUE)
+  if (length(args) < 2) {
+    abort("Must supply at least two arguments.")
+  }
+  if (!every(args, is_symbol)) {
+    abort("`...` must be function arguments.")
+  }
+
+  present <- map_lgl(args, ~ inject(!base::missing(!!.x), .frame))
+  n_present <- sum(present)
+
+  if (n_present == 0) {
+    if (.require) {
+      args <- map(names(args), format_arg)
+      enum <- chr_enumerate(args)
+      msg <- sprintf("One of %s must be supplied.", enum)
+      abort(msg, call = .error_call)
+    } else {
+      return(invisible(0L))
+    }
+  }
+
+  if (n_present == 1) {
+    return(invisible(1L))
+  }
+
+  args <- map_chr(names(args), format_arg)
+  enum <- chr_enumerate(args)
+  msg <- sprintf("Only one of %s can be supplied.", enum)
+
+  if (n_present != length(args)) {
+    enum <- chr_enumerate(args[present], final = "and")
+    msg <- c(msg, x = sprintf("%s were supplied together.", enum))
+  }
+
+  abort(msg, call = .error_call)
+}
+
 #' Generate or handle a missing argument
 #'
 #' @description
