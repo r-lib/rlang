@@ -43,13 +43,18 @@
 <meta property="og:description" content="entrace() is a low level function. See global_entrace() for a
 user-friendly way of enriching errors and other conditions from
 your RProfile.
-entrace() interrupts an error throw to add an rlang backtrace to the error. The error throw is
-immediately resumed. cnd_entrace() adds a backtrace to a
-condition object, without any other effect. Both functions should
-be called directly from an error handler.
-entrace() also works as a calling handler, though it
-is often more practical to use the higher-level function
-with_abort()." />
+entrace() is meant to be used as a global handler. It enriches
+conditions with a backtrace. Errors are rethrown immediately
+whereas messages and warnings are recorded into last_messages()
+and last_warnings().
+cnd_entrace() adds a backtrace to a condition object, without
+any other effect. It should be called from a condition handler.
+
+
+entrace() also works as an option(error = ) handler for
+compatibility with versions of R older than 4.0.
+When used as calling handler, rlang trims the handler invokation
+context from the backtrace." />
 
 
 
@@ -167,14 +172,19 @@ with_abort()." />
     <div class="ref-description">
     <p><code>entrace()</code> is a low level function. See <code><a href='global_entrace.html'>global_entrace()</a></code> for a
 user-friendly way of enriching errors and other conditions from
-your RProfile.</p>
-<p><code>entrace()</code> interrupts an error throw to add an <a href='trace_back.html'>rlang backtrace</a> to the error. The error throw is
-immediately resumed. <code>cnd_entrace()</code> adds a backtrace to a
-condition object, without any other effect. Both functions should
-be called directly from an error handler.</p>
-<p><code>entrace()</code> also works as a <a href='with_handlers.html'>calling</a> handler, though it
-is often more practical to use the higher-level function
-<code><a href='with_abort.html'>with_abort()</a></code>.</p>
+your RProfile.</p><ul>
+<li><p><code>entrace()</code> is meant to be used as a global handler. It enriches
+conditions with a backtrace. Errors are rethrown immediately
+whereas messages and warnings are recorded into <code><a href='last_warnings.html'>last_messages()</a></code>
+and <code><a href='last_warnings.html'>last_warnings()</a></code>.</p></li>
+<li><p><code>cnd_entrace()</code> adds a backtrace to a condition object, without
+any other effect. It should be called from a condition handler.</p></li>
+</ul>
+
+<p><code>entrace()</code> also works as an <code><a href='https://rdrr.io/r/base/options.html'>option(error = )</a></code> handler for
+compatibility with versions of R older than 4.0.</p>
+<p>When used as calling handler, rlang trims the handler invokation
+context from the backtrace.</p>
     </div>
 
     <pre class="usage"><span class='fu'>entrace</span><span class='op'>(</span><span class='va'>cnd</span>, <span class='va'>...</span>, top <span class='op'>=</span> <span class='cn'>NULL</span>, bottom <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
