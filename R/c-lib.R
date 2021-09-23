@@ -67,7 +67,7 @@ use_rlang_c_library <- function() {
     usethis::ui_todo("Add to `src/Makvars`:")
     usethis::ui_code_block("PKG_CPPFLAGS = -I./rlang")
   }
-  if (!has_cpp11_sysreq(src_path)) {
+  if (!has_cpp11_sysreq(proj_path)) {
     usethis::ui_todo("Add to `DESCRIPTION`:")
     usethis::ui_code_block("SystemRequirements: C++11")
   }
@@ -124,9 +124,9 @@ has_include_directive <- function(src_path) {
   any(grepl("PKG_CPPFLAGS.*-I.*rlang", makevars_lines))
 }
 
-has_cpp11_sysreq <- function(src_path) {
-  desc_lines <- readLines(fs::path(src_path, "DESCRIPTION"))
-  any(grepl("C++11", desc_lines))
+has_cpp11_sysreq <- function(proj_path) {
+  desc_lines <- readLines(fs::path(proj_path, "DESCRIPTION"))
+  any(grepl("C++11", desc_lines, fixed = TRUE))
 }
 
 detect_rlang_lib_usage <- function(src_path) {
@@ -315,7 +315,7 @@ list_compact <- function(x) {
 }
 
 vec_resize <- function(x, n) {
-  .Call(ffi_vec_resize, x, n) 
+  .Call(ffi_vec_resize, x, n)
 }
 
 
