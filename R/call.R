@@ -828,42 +828,6 @@ call_match <- function(call = NULL,
   ))
 }
 
-#' Extract function from a call
-#'
-#' @description
-#' `r lifecycle::badge("experimental")`
-#'
-#' If `call` is a quosure or formula, the function will be retrieved
-#' from the associated environment. Otherwise, it is looked up in the
-#' calling frame.
-#'
-#' @param call A defused function call.
-#' @param env The environment where to find the definition of the
-#'   function quoted in `call` in case `call` is not wrapped in a
-#'   quosure.
-#' @seealso [call_name()]
-#' @examples
-#' # Extract from a quoted call:
-#' call_fn(quote(matrix()))
-#' @keywords internal
-#' @export
-call_fn <- function(call, env = caller_env()) {
-  expr <- get_expr(call)
-  env <- get_env(call, env)
-
-  if (!is_call(expr)) {
-    abort_call_input_type("call")
-  }
-
-  switch(call_type(expr),
-    recursive = abort("`call` does not call a named or inlined function"),
-    inlined = node_car(expr),
-    named = ,
-    namespaced = ,
-    eval_bare(node_car(expr), env)
-  )
-}
-
 #' Extract function name or namespace of a call
 #'
 #' @param call A defused call.
@@ -956,9 +920,7 @@ is_call_named <- function(x, ns = NULL) {
 
 #' Extract arguments from a call
 #'
-#' `r lifecycle::badge("experimental")`
-#'
-#' @inheritParams call_fn
+#' @inheritParams call_name
 #' @return A named list of arguments.
 #' @seealso [fn_fmls()] and [fn_fmls_names()]
 #' @examples

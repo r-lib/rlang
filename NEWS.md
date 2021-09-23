@@ -33,6 +33,8 @@
 
 * `with_handlers()` is deprecated.
 
+* `call_fn()` is deprecated.
+
 
 ## Features and bugfixes
 

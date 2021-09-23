@@ -585,3 +585,18 @@ test_that("quo_expr() still works", {
   x <- quo(foo(!!quo(bar), !!local(quo(baz))))
   expect_identical(quo_expr(x), quo_squash(x))
 })
+
+test_that("call_fn() extracts function", {
+  fn <- function() call_fn(call_frame())
+  expect_identical(fn(), fn)
+
+  expect_identical(call_fn(~matrix()), matrix)
+})
+
+test_that("call_fn() looks up function in `env`", {
+  env <- local({
+    fn <- function() "foo"
+    current_env()
+  })
+  expect_identical(call_fn(quote(fn()), env = env), env$fn)
+})

@@ -1445,6 +1445,42 @@ call_standardise <- function(call, env = caller_env()) {
   }
 }
 
+#' Extract function from a call
+#'
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' If `call` is a quosure or formula, the function will be retrieved
+#' from the associated environment. Otherwise, it is looked up in the
+#' calling frame.
+#'
+#' @param call A defused function call.
+#' @param env The environment where to find the definition of the
+#'   function quoted in `call` in case `call` is not wrapped in a
+#'   quosure.
+#' @seealso [call_name()]
+#' @examples
+#' # Extract from a quoted call:
+#' call_fn(quote(matrix()))
+#' @keywords internal
+#' @export
+call_fn <- function(call, env = caller_env()) {
+  expr <- get_expr(call)
+  env <- get_env(call, env)
+
+  if (!is_call(expr)) {
+    abort_call_input_type("call")
+  }
+
+  switch(call_type(expr),
+    recursive = abort("`call` does not call a named or inlined function"),
+    inlined = node_car(expr),
+    named = ,
+    namespaced = ,
+    eval_bare(node_car(expr), env)
+  )
+}
+
 
 #  Nodes  ------------------------------------------------------------
 
