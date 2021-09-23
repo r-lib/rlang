@@ -708,3 +708,20 @@ test_that("collapsed case in branch formatting", {
   trace <- new_trace(alist(f(), g(), h(), evalq(), evalq()), 0:4)
   expect_snapshot_output(print(trace, simplify = "branch"))
 })
+
+test_that("can detect namespace and scope from call", {
+  fn <- set_env(function() NULL, empty_env())
+
+  expect_equal(
+    call_trace_context(quote(bar()), fn),
+    trace_context()
+  )
+  expect_equal(
+    call_trace_context(quote(foo::bar()), fn),
+    trace_context("foo", "::")
+  )
+  expect_equal(
+    call_trace_context(quote(foo:::bar()), fn),
+    trace_context("foo", ":::")
+  )
+})

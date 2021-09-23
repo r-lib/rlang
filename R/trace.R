@@ -160,23 +160,30 @@ call_trace_context <- function(call, fn) {
   if (is_quosure(call)) {
     call <- quo_get_expr(call)
     if (!is_call(call)) {
-      return(trace_no_context())
+      return(trace_context())
     }
   }
 
   if (call_print_fine_type(call) != "call") {
-    return(trace_no_context())
+    return(trace_context())
   }
 
-  # Checking for bare symbols covers the `::` and `:::` cases
-  sym <- node_car(call)
-  if (!is_symbol(sym)) {
-    return(trace_no_context())
+  namespace <- call_ns(call)
+  name <- call_name(call)
+
+  if (is_null(name)) {
+    return(trace_context())
   }
 
-  nm <- as_string(sym)
+  if (!is_null(namespace)) {
+    return(trace_context(
+      namespace = namespace,
+      scope = as_string(call[[1]][[1]])
+    ))
+  }
+
   if (is_environment(fn)) {
-    fn <- get(nm, envir = fn, mode = "function")
+    fn <- get(name, envir = fn, mode = "function")
   } else if (is_function(fn)) {
     fn <- fn
   } else {
@@ -190,9 +197,9 @@ call_trace_context <- function(call, fn) {
     scope <- "global"
   } else if (is_namespace(top)) {
     namespace <- ns_env_name(top)
-    if (ns_exports_has(top, nm)) {
+    if (ns_exports_has(top, name)) {
       scope <- "::"
-    } else if (env_has(top, nm)) {
+    } else if (env_has(top, name)) {
       scope <- ":::"
     } else {
       scope <- "local"
@@ -202,16 +209,16 @@ call_trace_context <- function(call, fn) {
     scope <- NA
   }
 
-  data_frame(
+  trace_context(
     namespace = namespace,
     scope = scope
   )
 }
 
-trace_no_context <- function() {
+trace_context <- function(namespace = NA, scope = NA) {
   data_frame(
-    namespace = NA,
-    scope = NA
+    namespace = namespace,
+    scope = scope
   )
 }
 
