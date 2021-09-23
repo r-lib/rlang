@@ -573,3 +573,18 @@ test_that("call_zap_inline() works", {
     quote(function(x = `<int>`) foo(`<int>`))
   )
 })
+
+test_that("is_call_named() works", {
+  expect_false(is_call_named(quote(foo)))
+  expect_false(is_call_named(quote(foo()())))
+
+  expect_true(is_call_named(quote(foo())))
+  expect_true(is_call_named(quote(bar::foo())))
+
+  expect_true(is_call_named(quote(foo()), ns = FALSE))
+  expect_false(is_call_named(quote(foo()), ns = TRUE))
+  expect_true(is_call_named(quote(bar::foo()), ns = TRUE))
+  expect_false(is_call_named(quote(bar::foo()), ns = FALSE))
+
+  expect_true(is_call_named(~ bar::foo(), ns = TRUE))
+})

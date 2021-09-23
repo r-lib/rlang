@@ -870,6 +870,14 @@ call_fn <- function(call, env = caller_env()) {
 #'   is anonymous.
 #' @seealso [call_fn()]
 #' @examples
+#' # Is the function named?
+#' is_call_named(quote(foo()))
+#' is_call_named(quote(foo[[1]]()))
+#'
+#' # Is the function namespaced?
+#' is_call_named(quote(list()), ns = TRUE)
+#' is_call_named(quote(base::list()), ns = TRUE)
+#'
 #' # Extract the function name from quoted calls:
 #' call_name(quote(foo(bar)))
 #' call_name(quo(foo(bar)))
@@ -908,6 +916,8 @@ call_name <- function(call) {
   )
 }
 #' @rdname call_name
+#' @param x An object to test.
+#' @param ns Whether call is namespaced.
 #' @export
 call_ns <- function(call) {
   if (is_quosure(call) || is_formula(call)) {
@@ -918,12 +928,33 @@ call_ns <- function(call) {
     abort_call_input_type("call")
   }
 
-  head <- node_car(call)
+  head <- call[[1]]
   if (is_call(head, c("::", ":::"))) {
-    as_string(node_cadr(head))
+    as_string(head[[2]])
   } else {
     NULL
   }
+}
+#' @rdname call_name
+#' @export
+is_call_named <- function(x, ns = NULL) {
+  # For compatibility with `call_name()` and `call_ns()`
+  if (is_quosure(x) || is_formula(x)) {
+    x <- get_expr(x)
+  }
+
+  if (!is_call(x)) {
+    return(FALSE)
+  }
+
+  head <- x[[1]]
+  namespaced <- is_call(head, c("::", ":::"))
+
+  if (!is_null(ns) && !identical(namespaced, ns)) {
+    return(FALSE)
+  }
+
+  namespaced || is_symbol(head)
 }
 
 #' Extract arguments from a call

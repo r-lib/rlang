@@ -3,14 +3,21 @@
 \name{call_name}
 \alias{call_name}
 \alias{call_ns}
+\alias{is_call_named}
 \title{Extract function name or namespace of a call}
 \usage{
 call_name(call)
 
 call_ns(call)
+
+is_call_named(x, ns = NULL)
 }
 \arguments{
 \item{call}{A defused function call.}
+
+\item{x}{An object to test.}
+
+\item{ns}{Whether call is namespaced.}
 }
 \value{
 A string with the function name, or \code{NULL} if the function
@@ -20,6 +27,14 @@ is anonymous.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \examples{
+# Is the function named?
+is_call_named(quote(foo()))
+is_call_named(quote(foo[[1]]()))
+
+# Is the function namespaced?
+is_call_named(quote(list()), ns = TRUE)
+is_call_named(quote(base::list()), ns = TRUE)
+
 # Extract the function name from quoted calls:
 call_name(quote(foo(bar)))
 call_name(quo(foo(bar)))
