@@ -192,17 +192,17 @@ default, catches all conditions.</p></td>
 </div><div class='output co'>#&gt; <span style='color: #0000BB; font-weight: bold;'>&lt;error/rlang_error&gt;</span>
 #&gt; <span style='font-weight: bold;'>Error: </span>an error
 #&gt; <span style='font-weight: bold;'>Backtrace:</span>
-#&gt; <span style='color: #555555;'>  1. </span>pkgdown::deploy_to_branch(new_process = FALSE)
+#&gt; <span style='color: #555555;'>  1. </span><span style='font-weight: bold;'>pkgdown</span>::deploy_to_branch(new_process = FALSE)
 #&gt; <span style='color: #555555;'>  2. </span>pkgdown::build_site(...)
 #&gt; <span style='color: #555555;'>  3. </span>pkgdown:::build_site_local(...)
 #&gt; <span style='color: #555555;'>  4. </span>pkgdown::build_reference(...)
-#&gt; <span style='color: #555555;'>  5. </span>purrr::map(...)
-#&gt; <span style='color: #555555;'>  6. </span>pkgdown .f(.x[[i]], ...)
+#&gt; <span style='color: #555555;'>  5. </span><span style='font-weight: bold;'>purrr</span>::map(...)
+#&gt; <span style='color: #555555;'>  6. </span><span style='font-weight: bold;'>pkgdown</span> .f(.x[[i]], ...)
 #&gt; <span style='color: #555555;'>  8. </span>pkgdown:::data_reference_topic(...)
 #&gt; <span style='color: #555555;'>  9. </span>pkgdown:::run_examples(...)
 #&gt; <span style='color: #555555;'> 10. </span>pkgdown:::highlight_examples(code, topic, env = env)
-#&gt; <span style='color: #555555;'> 11. </span>downlit::evaluate_and_highlight(...)
-#&gt; <span style='color: #555555;'> 12. </span>evaluate::evaluate(code, child_env(env), new_device = TRUE)
+#&gt; <span style='color: #555555;'> 11. </span><span style='font-weight: bold;'>downlit</span>::evaluate_and_highlight(...)
+#&gt; <span style='color: #555555;'> 12. </span><span style='font-weight: bold;'>evaluate</span>::evaluate(code, child_env(env), new_device = TRUE)
 #&gt; <span style='color: #555555;'> 13. </span>evaluate:::evaluate_call(...)
 #&gt; <span style='color: #555555;'> 23. </span>[ base::eval(...) ]<span style='color: #555555;'> with 1 more call</span>
 #&gt; <span style='color: #555555;'> 25. </span><span style='font-weight: bold;'>rlang</span>::catch_cnd(abort("an error"))
