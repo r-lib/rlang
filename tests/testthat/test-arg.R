@@ -200,11 +200,11 @@ test_that("arg_exclusive works", {
   expect_snapshot({
     (expect_error(f()))
   })
-  expect_equal(f(.require = FALSE), 0L)
+  expect_equal(f(.require = FALSE), "")
 
   # One argument supplied
-  expect_equal(f(foo), 1L)
-  expect_equal(f(bar), 1L)
+  expect_equal(f(NULL), "foo")
+  expect_equal(f(, NULL), "bar")
 
   # Multiple arguments supplied
   expect_snapshot({

@@ -23,6 +23,42 @@ running function, e.g. \code{caller_env()}. The function will be
 mentioned in error messages as the source of the error. See the
 \code{call} argument of \code{\link[=abort]{abort()}} for more information.}
 }
+\value{
+The supplied argument name as a string. If \code{.require} is
+\code{FALSE} and no argument is supplied, the empty string \code{""} is
+returned.
+}
 \description{
-Check that arguments are mutually exclusive
+\code{arg_exclusive()} checks that only one argument is supplied out of
+a set of mutually exclusive arguments. An informative error is
+thrown if multiple arguments are supplied.
+}
+\examples{
+f <- function(x, y) {
+  switch(
+    arg_exclusive(x, y),
+    x = message("`x` was supplied."),
+    y = message("`y` was supplied.")
+  )
+}
+
+# Supplying zero or multiple arguments is forbidden
+try(f())
+try(f(NULL, NULL))
+
+# The user must supply one of the mutually exclusive arguments
+f(NULL)
+f(y = NULL)
+
+
+# With `.require` you can allow zero arguments
+f <- function(x, y) {
+  switch(
+    arg_exclusive(x, y, .require = FALSE),
+    x = message("`x` was supplied."),
+    y = message("`y` was supplied."),
+    message("No arguments were supplied")
+  )
+}
+f()
 }
