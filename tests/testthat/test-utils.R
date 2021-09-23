@@ -48,3 +48,40 @@ test_that("path_trim_prefix() trims path", {
     "baz.R"
   )
 })
+
+test_that("detect_run_starts() works", {
+  expect_equal(
+    detect_run_starts(chr()),
+    lgl()
+  )
+  expect_equal(
+    detect_run_starts("a"),
+    TRUE
+  )
+  expect_equal(
+    detect_run_starts(NA),
+    NA
+  )
+
+  expect_equal(
+    detect_run_starts(c("a", "a")),
+    c(TRUE, FALSE)
+  )
+  expect_equal(
+    detect_run_starts(c("a", "b")),
+    c(TRUE, TRUE)
+  )
+
+  expect_equal(
+    detect_run_starts(c("a", "b", NA)),
+    c(TRUE, TRUE, NA)
+  )
+  expect_equal(
+    detect_run_starts(c("a", NA, "b")),
+    c(TRUE, NA, TRUE)
+  )
+  expect_equal(
+    detect_run_starts(c(NA, "a", "b")),
+    c(NA, TRUE, TRUE)
+  )
+})

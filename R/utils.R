@@ -398,9 +398,9 @@ detect_run_starts <- function(x) {
   if (!length(x)) {
     return(lgl())
   }
-  starts <- x != c(NA, x[-length(x)])
-  starts[[1]] <- TRUE
-  starts
+
+  lagged <- c(NA, x[-length(x)])
+  x != lagged | (is.na(lagged) & !is.na(x))
 }
 
 # No ANSI support
