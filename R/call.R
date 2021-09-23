@@ -705,8 +705,11 @@ call_modify <- function(.call,
   set_expr(.call, expr)
 }
 
-abort_call_input_type <- function(arg) {
-  abort(sprintf("`%s` must be a quoted call", arg))
+abort_call_input_type <- function(arg, call = caller_env()) {
+  abort(
+    sprintf("%s must be a quoted call.", format_arg(arg)),
+    call = call
+  )
 }
 
 #' Match supplied arguments to function definition
@@ -863,12 +866,10 @@ call_fn <- function(call, env = caller_env()) {
 
 #' Extract function name or namespace of a call
 #'
-#' `r lifecycle::badge("experimental")`
+#' @param call A defused call.
+#' @return The function name or namespace as a string, or `NULL` if
+#'   the call is not named or namespaced.
 #'
-#' @inheritParams call_fn
-#' @return A string with the function name, or `NULL` if the function
-#'   is anonymous.
-#' @seealso [call_fn()]
 #' @examples
 #' # Is the function named?
 #' is_call_named(quote(foo()))
@@ -895,17 +896,13 @@ call_fn <- function(call, env = caller_env()) {
 #'
 #' # If not namespaced, call_ns() returns NULL:
 #' call_ns(quote(bar()))
-#' @keywords internal
 #' @export
 call_name <- function(call) {
   if (is_quosure(call) || is_formula(call)) {
     call <- get_expr(call)
   }
 
-  # FIXME: Disabled for the 0.3.1 release
-  # if (!is_call(call) || is_call(call, c("::", ":::"))) {
-
-  if (!is_call(call)) {
+  if (!is_call(call) || is_call(call, c("::", ":::"))) {
     abort_call_input_type("call")
   }
 
@@ -924,7 +921,7 @@ call_ns <- function(call) {
     call <- get_expr(call)
   }
 
-  if (!is_call(call)) {
+  if (!is_call(call) || is_call(call, c("::", ":::"))) {
     abort_call_input_type("call")
   }
 

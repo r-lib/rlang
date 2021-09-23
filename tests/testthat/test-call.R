@@ -588,3 +588,12 @@ test_that("is_call_named() works", {
 
   expect_true(is_call_named(~ bar::foo(), ns = TRUE))
 })
+
+test_that("call_name() and call_ns() detect `::` calls (#670)", {
+  expect_snapshot({
+    (expect_error(call_name(quote(foo::bar))))
+    (expect_error(call_name(quote(foo:::bar))))
+    (expect_error(call_ns(quote(foo::bar))))
+    (expect_error(call_ns(quote(foo:::bar))))
+  })
+})

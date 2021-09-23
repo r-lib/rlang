@@ -36,6 +36,9 @@
 
 ## Features and bugfixes
 
+* `call_name()` and `call_ns()` now fail with calls of the form
+  `foo::bar` (#670).
+
 * `try_catch()` is a flexible alternative to both `tryCatch()` and
   `withCallingHandlers()` (#503). It is also more efficient than
   `tryCatch()` and creates leaner backtraces.

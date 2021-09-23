@@ -13,18 +13,18 @@ call_ns(call)
 is_call_named(x, ns = NULL)
 }
 \arguments{
-\item{call}{A defused function call.}
+\item{call}{A defused call.}
 
 \item{x}{An object to test.}
 
 \item{ns}{Whether call is namespaced.}
 }
 \value{
-A string with the function name, or \code{NULL} if the function
-is anonymous.
+The function name or namespace as a string, or \code{NULL} if
+the call is not named or namespaced.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+Extract function name or namespace of a call
 }
 \examples{
 # Is the function named?
@@ -53,7 +53,3 @@ call_ns(quote(base::bar()))
 # If not namespaced, call_ns() returns NULL:
 call_ns(quote(bar()))
 }
-\seealso{
-\code{\link[=call_fn]{call_fn()}}
-}
-\keyword{internal}
