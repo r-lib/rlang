@@ -44,15 +44,20 @@ Can also be an integer that will be passed to \code{\link[=caller_env]{caller_en
 \code{entrace()} is a low level function. See \code{\link[=global_entrace]{global_entrace()}} for a
 user-friendly way of enriching errors and other conditions from
 your RProfile.
+\itemize{
+\item \code{entrace()} is meant to be used as a global handler. It enriches
+conditions with a backtrace. Errors are rethrown immediately
+whereas messages and warnings are recorded into \code{\link[=last_messages]{last_messages()}}
+and \code{\link[=last_warnings]{last_warnings()}}.
+\item \code{cnd_entrace()} adds a backtrace to a condition object, without
+any other effect. It should be called from a condition handler.
+}
 
-\code{entrace()} interrupts an error throw to add an \link[=trace_back]{rlang backtrace} to the error. The error throw is
-immediately resumed. \code{cnd_entrace()} adds a backtrace to a
-condition object, without any other effect. Both functions should
-be called directly from an error handler.
+\code{entrace()} also works as an \code{option(error = )} handler for
+compatibility with versions of R older than 4.0.
 
-\code{entrace()} also works as a \link{calling} handler, though it
-is often more practical to use the higher-level function
-\code{\link[=with_abort]{with_abort()}}.
+When used as calling handler, rlang trims the handler invokation
+context from the backtrace.
 }
 \examples{
 quote({  # Not run

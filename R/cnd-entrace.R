@@ -90,15 +90,19 @@ global_entrace_fallback <- function(enable, class) {
 #' user-friendly way of enriching errors and other conditions from
 #' your RProfile.
 #'
-#' `entrace()` interrupts an error throw to add an [rlang
-#' backtrace][trace_back()] to the error. The error throw is
-#' immediately resumed. `cnd_entrace()` adds a backtrace to a
-#' condition object, without any other effect. Both functions should
-#' be called directly from an error handler.
+#' * `entrace()` is meant to be used as a global handler. It enriches
+#'   conditions with a backtrace. Errors are rethrown immediately
+#'   whereas messages and warnings are recorded into [last_messages()]
+#'   and [last_warnings()].
 #'
-#' `entrace()` also works as a [calling][calling] handler, though it
-#' is often more practical to use the higher-level function
-#' [with_abort()].
+#' * `cnd_entrace()` adds a backtrace to a condition object, without
+#'   any other effect. It should be called from a condition handler.
+#'
+#' `entrace()` also works as an `option(error = )` handler for
+#' compatibility with versions of R older than 4.0.
+#'
+#' When used as calling handler, rlang trims the handler invokation
+#' context from the backtrace.
 #'
 #' @inheritParams trace_back
 #' @param cnd When `entrace()` is used as a calling handler, `cnd` is
