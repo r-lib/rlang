@@ -128,3 +128,16 @@
       Error in `my_wrapper()`: `my_arg` must be one of "foo", "bar", or "baz", not "ba".
       i Did you mean "bar"?
 
+# arg_match0() defuses argument
+
+    Code
+      (expect_error(fn("foo")))
+    Output
+      <error/rlang_error>
+      Error in `fn()`: `arg` must be one of "bar" or "baz", not "foo".
+    Code
+      (expect_error(arg_match0("foo", c("bar", "baz"))))
+    Output
+      <error/rlang_error>
+      Error: `"foo"` must be one of "bar" or "baz", not "foo".
+

@@ -329,19 +329,19 @@
       (expect_error(local(arg_match0("f", "foo"))))
     Output
       <error/rlang_error>
-      Error: `f` must be one of "foo", not "f".
+      Error: `"f"` must be one of "foo", not "f".
       i Did you mean "foo"?
     Code
       (expect_error(eval_bare(quote(arg_match0("f", "foo")))))
     Output
       <error/rlang_error>
-      Error: `f` must be one of "foo", not "f".
+      Error: `"f"` must be one of "foo", not "f".
       i Did you mean "foo"?
     Code
       (expect_error(eval_bare(quote(arg_match0("f", "foo")), env())))
     Output
       <error/rlang_error>
-      Error: `f` must be one of "foo", not "f".
+      Error: `"f"` must be one of "foo", not "f".
       i Did you mean "foo"?
 
 # withCallingHandlers() wrappers don't throw off trace capture on rethrow

@@ -14,7 +14,7 @@ arg_match(
   error_call = caller_env()
 )
 
-arg_match0(arg, values, arg_nm = arg[[1]], error_call = caller_env())
+arg_match0(arg, values, arg_nm = caller_arg(arg), error_call = caller_env())
 }
 \arguments{
 \item{arg}{A symbol referring to an argument accepting strings.}

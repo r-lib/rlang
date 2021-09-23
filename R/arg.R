@@ -103,7 +103,7 @@ arg_match_multi <- function(arg, values, error_arg, error_call) {
 #' try(fn3("zoo"))
 arg_match0 <- function(arg,
                        values,
-                       arg_nm = arg[[1]],
+                       arg_nm = caller_arg(arg),
                        error_call = caller_env()) {
   .External(ffi_arg_match0, arg, values, arg_nm, error_call)
 }

@@ -172,3 +172,11 @@ test_that("can match multiple arguments", {
     (expect_error(my_wrapper(c("foo", "ba"))))
   })
 })
+
+test_that("arg_match0() defuses argument", {
+  fn <- function(arg) arg_match0(arg, c("bar", "baz"))
+  expect_snapshot({
+    (expect_error(fn("foo")))
+    (expect_error(arg_match0("foo", c("bar", "baz"))))
+  })
+})
