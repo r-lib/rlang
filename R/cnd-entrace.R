@@ -55,7 +55,11 @@ global_entrace <- function(enable = TRUE,
   # Keep `rlang::` indirection in case rlang is reloaded. This way the
   # global handlers can be set once in RProfile and they will always
   # call into the most recently loaded version.
-  hnd <- function(cnd) rlang::entrace(cnd, bottom = current_env())
+  hnd <- function(cnd) rlang::entrace(cnd, bottom = rlang::current_env())
+
+  # Avoid duplicate handlers. This makes `global_entrace()` idempotent.
+  # Requires https://bugs.r-project.org/show_bug.cgi?id=18197
+  hnd <- set_env(hnd, base_env())
 
   handlers <- rep_named(class, list(hnd))
   inject(poke_handlers(!!!handlers))
