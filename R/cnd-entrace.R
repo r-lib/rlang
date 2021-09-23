@@ -55,7 +55,7 @@ global_entrace <- function(enable = TRUE,
   # Keep `rlang::` indirection in case rlang is reloaded. This way the
   # global handlers can be set once in RProfile and they will always
   # call into the most recently loaded version.
-  hnd <- function(cnd) rlang::entrace(cnd, bottom = rlang::current_env())
+  hnd <- function(cnd) rlang::entrace(cnd)
 
   # Avoid duplicate handlers. This makes `global_entrace()` idempotent.
   # Requires https://bugs.r-project.org/show_bug.cgi?id=18197
@@ -129,12 +129,21 @@ entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
     return()
   }
 
-  bottom <- bottom %||% environment()
+  if (is_null(bottom)) {
+    if (missing(cnd)) {
+      bottom <- current_env()
+    } else {
+      bottom <- caller_env()
+    }
+  }
+
+  # Remove handler invokation context from the trace
   if (is_environment(bottom)) {
     nframe <- eval_bare(quote(base::sys.nframe()), bottom) - 1
     info <- signal_context_info(nframe)
     bottom <- sys.frame(info[[2]])
   }
+
   trace <- trace_back(top = top, bottom = bottom)
 
   # `options(error = )` case
