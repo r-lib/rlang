@@ -830,6 +830,23 @@ call_match <- function(call = NULL,
 
 #' Extract function name or namespace of a call
 #'
+#' @description
+#' `call_name()` and `call_ns()` extract the function name or
+#' namespace of _simple_ calls as a string. They return `NULL` for
+#' complex calls.
+#'
+#' * Simple calls: `foo()`, `bar::foo()`.
+#' * Complex calls: `foo()()`, `foo$bar()`, `(function() NULL)()`.
+#'
+#' The `is_call_simple()` predicate helps you determine whether a call
+#' is simple. There are two invariants you can count on:
+#'
+#' 1. If `is_call_simple(x)` returns `TRUE`, `call_name(x)` returns a
+#'    string. Otherwise it returns `NULL`.
+#'
+#' 2. If `is_call_simple(x, ns = TRUE)` returns `TRUE`, `call_ns()`
+#'    returns a string. Otherwise it returns `NULL`.
+#'
 #' @param call A defused call.
 #' @return The function name or namespace as a string, or `NULL` if
 #'   the call is not named or namespaced.

@@ -24,7 +24,22 @@ The function name or namespace as a string, or \code{NULL} if
 the call is not named or namespaced.
 }
 \description{
-Extract function name or namespace of a call
+\code{call_name()} and \code{call_ns()} extract the function name or
+namespace of \emph{simple} calls as a string. They return \code{NULL} for
+complex calls.
+\itemize{
+\item Simple calls: \code{foo()}, \code{bar::foo()}.
+\item Complex calls: \code{foo()()}, \code{foo$bar()}, \code{(function() NULL)()}.
+}
+
+The \code{is_call_simple()} predicate helps you determine whether a call
+is simple. There are two invariants you can count on:
+\enumerate{
+\item If \code{is_call_simple(x)} returns \code{TRUE}, \code{call_name(x)} returns a
+string. Otherwise it returns \code{NULL}.
+\item If \code{is_call_simple(x, ns = TRUE)} returns \code{TRUE}, \code{call_ns()}
+returns a string. Otherwise it returns \code{NULL}.
+}
 }
 \examples{
 # Is the function named?
