@@ -171,12 +171,21 @@
 </li>
 <li><p>For consistency with the cli package, <code><a href="../reference/abort.html">abort(c("Foo", "Bar"))</a></code> no longer interprets <code>"Bar"</code> as a bullet and it gets displayed as an unprefixed line. You need to be explicit by supplying the <code>"*"</code> specifier: <code><a href="../reference/abort.html">abort(c("Foo", "*" = "Bar"))</a></code>.</p></li>
 <li><p><code><a href="../reference/with_handlers.html">with_handlers()</a></code> is deprecated.</p></li>
+<li><p><code><a href="../reference/call_fn.html">call_fn()</a></code> is deprecated.</p></li>
 </ul>
 </div>
 <div id="features-and-bugfixes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#features-and-bugfixes" class="anchor"></a>Features and bugfixes</h2>
 <ul>
+<li><p><code><a href="../reference/call_name.html">call_name()</a></code> and <code><a href="../reference/call_name.html">call_ns()</a></code> now fail with calls of the form <code>foo::bar</code> (<a href='https://github.com/r-lib/rlang/issues/670'>#670</a>).</p></li>
+<li>
+<p>The new predicate <code><a href="../reference/call_name.html">is_call_simple()</a></code> indicates whether a call has a name and/or a namespace. It provides two invariants:</p>
+<ul>
+<li><p>If <code><a href="../reference/call_name.html">is_call_simple(x)</a></code> is <code>TRUE</code>, <code><a href="../reference/call_name.html">call_name()</a></code> always returns a string.</p></li>
+<li><p>If <code><a href="../reference/call_name.html">is_call_simple(x, ns = TRUE)</a></code> is <code>TRUE</code>, <code><a href="../reference/call_name.html">call_ns()</a></code> always returns a string.</p></li>
+</ul>
+</li>
 <li><p><code><a href="../reference/try_catch.html">try_catch()</a></code> is a flexible alternative to both <code><a href="https://rdrr.io/r/base/conditions.html">tryCatch()</a></code> and <code><a href="https://rdrr.io/r/base/conditions.html">withCallingHandlers()</a></code> (<a href='https://github.com/r-lib/rlang/issues/503'>#503</a>). It is also more efficient than <code><a href="https://rdrr.io/r/base/conditions.html">tryCatch()</a></code> and creates leaner backtraces.</p></li>
 <li><p><code><a href="../reference/entrace.html">entrace()</a></code> and <code><a href="../reference/global_entrace.html">global_entrace()</a></code> now log warnings and messages with backtraces attached. Run <code><a href="../reference/last_warnings.html">last_warnings()</a></code> or <code><a href="../reference/last_warnings.html">last_messages()</a></code> to inspect the warnings or messages emitted during the last command.</p></li>
 <li><p>Objects headers (as printed by <code><a href="../reference/last_error.html">last_error()</a></code>, <code><a href="../reference/env_print.html">env_print()</a></code>, …) are now formatted using the <code>cls</code> class of the cli package.</p></li>

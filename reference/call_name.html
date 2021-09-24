@@ -40,7 +40,21 @@
 
 
 <meta property="og:title" content="Extract function name or namespace of a call — call_name" />
-<meta property="og:description" content="" />
+<meta property="og:description" content="call_name() and call_ns() extract the function name or
+namespace of simple calls as a string. They return NULL for
+complex calls.
+Simple calls: foo(), bar::foo().
+Complex calls: foo()(), foo$bar(), (function() NULL)().
+
+
+The is_call_simple() predicate helps you determine whether a call
+is simple. There are two invariants you can count on:
+If is_call_simple(x) returns TRUE, call_name(x) returns a
+string. Otherwise it returns NULL.
+If is_call_simple(x, ns = TRUE) returns TRUE, call_ns()
+returns a string. Otherwise it returns NULL.
+
+" />
 
 
 
@@ -156,32 +170,64 @@
     </div>
 
     <div class="ref-description">
-    <p><a href='https://lifecycle.r-lib.org/articles/stages.html#experimental'><img src='figures/lifecycle-experimental.svg' alt='[Experimental]' /></a></p>
+    <p><code>call_name()</code> and <code>call_ns()</code> extract the function name or
+namespace of <em>simple</em> calls as a string. They return <code>NULL</code> for
+complex calls.</p><ul>
+<li><p>Simple calls: <code>foo()</code>, <code>bar::foo()</code>.</p></li>
+<li><p>Complex calls: <code>foo()()</code>, <code>foo$bar()</code>, <code>(function() NULL)()</code>.</p></li>
+</ul>
+
+<p>The <code>is_call_simple()</code> predicate helps you determine whether a call
+is simple. There are two invariants you can count on:</p><ol>
+<li><p>If <code>is_call_simple(x)</code> returns <code>TRUE</code>, <code>call_name(x)</code> returns a
+string. Otherwise it returns <code>NULL</code>.</p></li>
+<li><p>If <code>is_call_simple(x, ns = TRUE)</code> returns <code>TRUE</code>, <code>call_ns()</code>
+returns a string. Otherwise it returns <code>NULL</code>.</p></li>
+</ol>
+
     </div>
 
     <pre class="usage"><span class='fu'>call_name</span><span class='op'>(</span><span class='va'>call</span><span class='op'>)</span>
 
-<span class='fu'>call_ns</span><span class='op'>(</span><span class='va'>call</span><span class='op'>)</span></pre>
+<span class='fu'>call_ns</span><span class='op'>(</span><span class='va'>call</span><span class='op'>)</span>
+
+<span class='fu'>is_call_simple</span><span class='op'>(</span><span class='va'>x</span>, ns <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>call</th>
-      <td><p>A defused function call.</p></td>
+      <td><p>A defused call.</p></td>
+    </tr>
+    <tr>
+      <th>x</th>
+      <td><p>An object to test.</p></td>
+    </tr>
+    <tr>
+      <th>ns</th>
+      <td><p>Whether call is namespaced. If <code>NULL</code>, <code>is_call_simple()</code>
+is insensitive to namespaces. If <code>TRUE</code>, <code>is_call_simple()</code>
+detects namespaced calls. If <code>FALSE</code>, it detects unnamespaced
+calls.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A string with the function name, or <code>NULL</code> if the function
-is anonymous.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='call_fn.html'>call_fn()</a></code></p></div>
+    <p>The function name or namespace as a string, or <code>NULL</code> if
+the call is not named or namespaced.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Extract the function name from quoted calls:</span>
+    <pre class="examples"><div class='input'><span class='co'># Is the function named?</span>
+<span class='fu'>is_call_simple</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='fu'>foo</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is_call_simple</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>foo</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
+<span class='co'># Is the function namespaced?</span>
+<span class='fu'>is_call_simple</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>, ns <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>is_call_simple</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='fu'>base</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>, ns <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='co'># Extract the function name from quoted calls:</span>
 <span class='fu'>call_name</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='fu'>foo</span><span class='op'>(</span><span class='va'>bar</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "foo"</div><div class='input'><span class='fu'>call_name</span><span class='op'>(</span><span class='fu'><a href='nse-defuse.html'>quo</a></span><span class='op'>(</span><span class='fu'>foo</span><span class='op'>(</span><span class='va'>bar</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "foo"</div><div class='input'>
