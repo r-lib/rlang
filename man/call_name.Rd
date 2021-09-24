@@ -17,7 +17,10 @@ is_call_simple(x, ns = NULL)
 
 \item{x}{An object to test.}
 
-\item{ns}{Whether call is namespaced.}
+\item{ns}{Whether call is namespaced. If \code{NULL}, \code{is_call_simple()}
+is insensitive to namespaces. If \code{TRUE}, \code{is_call_simple()}
+detects namespaced calls. If \code{FALSE}, it detects unnamespaced
+calls.}
 }
 \value{
 The function name or namespace as a string, or \code{NULL} if

@@ -894,8 +894,6 @@ call_name <- function(call) {
   )
 }
 #' @rdname call_name
-#' @param x An object to test.
-#' @param ns Whether call is namespaced.
 #' @export
 call_ns <- function(call) {
   if (is_quosure(call) || is_formula(call)) {
@@ -914,6 +912,11 @@ call_ns <- function(call) {
   }
 }
 #' @rdname call_name
+#' @param x An object to test.
+#' @param ns Whether call is namespaced. If `NULL`, `is_call_simple()`
+#'   is insensitive to namespaces. If `TRUE`, `is_call_simple()`
+#'   detects namespaced calls. If `FALSE`, it detects unnamespaced
+#'   calls.
 #' @export
 is_call_simple <- function(x, ns = NULL) {
   # For compatibility with `call_name()` and `call_ns()`
