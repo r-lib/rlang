@@ -207,14 +207,21 @@ to print the backtrace or inspect its data.</p></li>
     
 
 
-<p>There are two types of errors in Rmds: expected (i.e. <code>error = TRUE</code>)
-and unexpected.</p><ul>
-<li><p>The display of unexpected errors is controlled by option
-<code>rlang_backtrace_on_error_report</code> (note the <code>_report</code>). The
-default is <code>"none"</code> in interactive sessions and <code>"branch"</code> in
-non-interactive sessions.</p></li>
-<li><p>The display of expected errors is controlled by option
-<code>rlang_backtrace_on_error</code>. The default is <code>"none"</code>.</p></li>
+<p>The display of errors depends on whether they're expected (i.e.
+chunk option <code>error = TRUE</code>) or unexpected:</p><ul>
+<li><p>Expected errors are controlled by the global option
+<code>"rlang_backtrace_on_error_report"</code> (note the <code>_report</code> suffix).
+The default is <code>"none"</code> so that your expected errors don't
+include a reminder to run <code><a href='last_error.html'>rlang::last_error()</a></code>. Customise this
+option if you want to demonstrate what the error backtrace will
+look like.</p>
+<p>You can also use <code><a href='last_error.html'>last_error()</a></code> to display the trace like you
+would in your session, but it currently only works in the next
+chunk.</p></li>
+<li><p>Unexpected errors are controlled by the global option
+<code>"rlang_backtrace_on_error"</code>. The default is <code>"branch"</code> so you'll
+see a simplified backtrace in the knitr output to help you figure
+out what went wrong.</p></li>
 </ul>
 
 <p>When knitr is running (as determined by the <code>knitr.in.progress</code>
