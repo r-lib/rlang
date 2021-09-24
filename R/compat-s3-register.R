@@ -49,6 +49,7 @@
 #'   s3_register("tibble::type_sum", "vctrs_vctr")
 #' }
 #' @keywords internal
+#' @noRd
 s3_register <- function(generic, class, method = NULL) {
   stopifnot(is.character(generic), length(generic) == 1)
   stopifnot(is.character(class), length(class) == 1)
