@@ -141,3 +141,45 @@
       <error/rlang_error>
       Error: `"foo"` must be one of "bar" or "baz", not "foo".
 
+# arg_exclusive works
+
+    Code
+      (expect_error(f()))
+    Output
+      <error/rlang_error>
+      Error in `arg_exclusive()`: Must supply at least two arguments.
+    Code
+      (expect_error(g()))
+    Output
+      <error/rlang_error>
+      Error in `arg_exclusive()`: Must supply at least two arguments.
+    Code
+      (expect_error(h()))
+    Output
+      <error/rlang_error>
+      Error in `arg_exclusive()`: Must supply at least two arguments.
+
+---
+
+    Code
+      (expect_error(f()))
+    Output
+      <error/rlang_error>
+      Error in `f()`: One of `foo` or `bar` must be supplied.
+
+---
+
+    Code
+      # All arguments supplied
+      (expect_error(g(foo, bar, baz)))
+    Output
+      <error/rlang_error>
+      Error in `g()`: Exactly one of `foo`, `bar`, or `baz` must be supplied.
+    Code
+      # Some arguments supplied
+      (expect_error(g(foo, bar)))
+    Output
+      <error/rlang_error>
+      Error in `g()`: Exactly one of `foo`, `bar`, or `baz` must be supplied.
+      x `foo` and `bar` were supplied together.
+

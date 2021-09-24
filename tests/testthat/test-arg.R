@@ -180,3 +180,38 @@ test_that("arg_match0() defuses argument", {
     (expect_error(arg_match0("foo", c("bar", "baz"))))
   })
 })
+
+test_that("arg_exclusive works", {
+  f <- function(foo) arg_exclusive(foo)
+  g <- function() arg_exclusive()
+  h <- function() arg_exclusive(foo())
+
+  # Internal errors
+  expect_snapshot({
+    (expect_error(f()))
+    (expect_error(g()))
+    (expect_error(h()))
+  })
+
+  f <- function(foo, bar = NULL, ...) arg_exclusive(foo, bar, ...)
+  g <- function(foo, bar = NULL, baz, ...) arg_exclusive(foo, bar, baz, ...)
+
+  # Zero arguments supplied
+  expect_snapshot({
+    (expect_error(f()))
+  })
+  expect_equal(f(.require = FALSE), "")
+
+  # One argument supplied
+  expect_equal(f(NULL), "foo")
+  expect_equal(f(, NULL), "bar")
+
+  # Multiple arguments supplied
+  expect_snapshot({
+    "All arguments supplied"
+    (expect_error(g(foo, bar, baz)))
+
+    "Some arguments supplied"
+    (expect_error(g(foo, bar)))
+  })
+})

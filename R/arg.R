@@ -224,6 +224,91 @@ chr_enumerate <- function(chr, sep = ", ", final = "or") {
   }
 }
 
+#' Check that arguments are mutually exclusive
+#'
+#' `arg_exclusive()` checks that only one argument is supplied out of
+#' a set of mutually exclusive arguments. An informative error is
+#' thrown if multiple arguments are supplied.
+#'
+#' @param ... Function arguments.
+#' @param .require Whether at least one argument must be supplied.
+#' @param .frame Environment where the arguments in `...` are defined.
+#' @inheritParams args_error_context
+#' @return The supplied argument name as a string. If `.require` is
+#'   `FALSE` and no argument is supplied, the empty string `""` is
+#'   returned.
+#'
+#' @examples
+#' f <- function(x, y) {
+#'   switch(
+#'     arg_exclusive(x, y),
+#'     x = message("`x` was supplied."),
+#'     y = message("`y` was supplied.")
+#'   )
+#' }
+#'
+#' # Supplying zero or multiple arguments is forbidden
+#' try(f())
+#' try(f(NULL, NULL))
+#'
+#' # The user must supply one of the mutually exclusive arguments
+#' f(NULL)
+#' f(y = NULL)
+#'
+#'
+#' # With `.require` you can allow zero arguments
+#' f <- function(x, y) {
+#'   switch(
+#'     arg_exclusive(x, y, .require = FALSE),
+#'     x = message("`x` was supplied."),
+#'     y = message("`y` was supplied."),
+#'     message("No arguments were supplied")
+#'   )
+#' }
+#' f()
+#' @export
+arg_exclusive <- function(...,
+                          .require = TRUE,
+                          .frame = caller_env(),
+                          .error_call = .frame) {
+  args <- enexprs(..., .named = TRUE)
+  if (length(args) < 2) {
+    abort("Must supply at least two arguments.")
+  }
+  if (!every(args, is_symbol)) {
+    abort("`...` must be function arguments.")
+  }
+
+  present <- map_lgl(args, ~ inject(!base::missing(!!.x), .frame))
+  n_present <- sum(present)
+
+  if (n_present == 0) {
+    if (.require) {
+      args <- map(names(args), format_arg)
+      enum <- chr_enumerate(args)
+      msg <- sprintf("One of %s must be supplied.", enum)
+      abort(msg, call = .error_call)
+    } else {
+      return("")
+    }
+  }
+
+  if (n_present == 1) {
+    return(as_string(args[[which(present)]]))
+  }
+
+  args <- map_chr(names(args), format_arg)
+  enum <- chr_enumerate(args)
+  msg <- sprintf("Exactly one of %s must be supplied.", enum)
+
+  if (n_present != length(args)) {
+    enum <- chr_enumerate(args[present], final = "and")
+    msg <- c(msg, x = sprintf("%s were supplied together.", enum))
+  }
+
+  abort(msg, call = .error_call)
+}
+
 #' Generate or handle a missing argument
 #'
 #' @description
