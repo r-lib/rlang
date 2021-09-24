@@ -38,6 +38,9 @@
 
 ## Features and bugfixes
 
+* `on_load()` and `run_on_load()` lets you run `.onLoad()` expressions
+  from any file of your package.
+
 * `arg_exclusive()` checks that only one argument of a set is supplied (#1261).
 
 * `call_name()` and `call_ns()` now fail with calls of the form
