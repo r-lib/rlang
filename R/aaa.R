@@ -16,15 +16,35 @@ the <- new.env(parent = emptyenv())
 #' Run expressions on load
 #'
 #' @description
-#' `on_load()` registers expressions to be run on the user's machine
-#' each time the package is loaded in memory. This is by contrast to
-#' normal R package code which is run once at build time on the
-#' packager's machine (e.g. CRAN). There are two main use cases for
-#' running expressions on load:
+#' - `on_load()` registers expressions to be run on the user's machine
+#'   each time the package is loaded in memory. This is by contrast to
+#'   normal R package code which is run once at build time on the
+#'   packager's machine (e.g. CRAN).
+#'
+#'   `on_load()` expressions require `run_on_load()` to be called
+#'   inside [.onLoad()].
+#'
+#' - `on_package_load()` registers expressions to be run each time
+#'   another package is loaded.
+#'
+#' `on_load()` is for your own package and runs expressions when the
+#' namespace is not _sealed_ yet. This means you can modify existing
+#' binding or create new ones. This is not the case with
+#' `on_package_load()` which runs expressions after a foreign package
+#' has finished loading, at which point its namespace is sealed.
+#'
+#' @param expr An expression to run on load.
+#' @param env The environment in which to evaluate `expr`. Defaults to
+#'   the current environment, which is your package namespace if you
+#'   run `on_load()` at top level.
+#' @param ns The namespace in which to hook `expr`.
+#'
+#' @section When should I run expressions on load?:
+#' There are two main use cases for running expressions on load:
 #'
 #' 1. When a side effect, such as registering a method with
-#'   `s3_register()`, must occur oi the user session rather than the
-#'   builder session machine.
+#'    `s3_register()`, must occur in the user session rather than the
+#'    package builder session.
 #'
 #' 2. To avoid hard-coding objects from other packages in your
 #'    namespace. If you assign `foo::bar` or the result of
@@ -38,15 +58,6 @@ the <- new.env(parent = emptyenv())
 #'    makes sure that any such changes will be taken into account. In
 #'    technical terms, running an expression on load introduces
 #'    _indirection_.
-#'
-#' `on_load()` expressions require `run_on_load()` to be called inside
-#' [.onLoad()].
-#'
-#' @param expr An expression to run on load.
-#' @param env The environment in which to evaluate `expr`. Defaults to
-#'   the current environment, which is your package namespace if you
-#'   run `on_load()` at top level.
-#' @param ns The namespace in which to hook `expr`.
 #'
 #' @section Comparison with `.onLoad()`:
 #' `on_load()` has the advantage that hooked expressions can appear in
@@ -73,6 +84,12 @@ the <- new.env(parent = emptyenv())
 #' on_load(
 #'   var <- foo()
 #' )
+#'
+#' # To use `on_package_load()` at top level, wrap it in `on_load()`
+#' on_load(on_package_load("foo", message("foo is loaded")))
+#'
+#' # In functions it can be called directly
+#' f <- function() on_package_load("foo", message("foo is loaded"))
 #'
 #' })
 #' @export
@@ -101,6 +118,9 @@ run_on_load <- function(ns = topenv(parent.frame())) {
   }
 }
 
+#' @rdname on_load
+#' @param pkg Package to hook expression into.
+#' @export
 on_package_load <- function(pkg, expr) {
   if (isNamespaceLoaded(pkg)) {
     expr
