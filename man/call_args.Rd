@@ -10,13 +10,13 @@ call_args(call)
 call_args_names(call)
 }
 \arguments{
-\item{call}{A defused function call.}
+\item{call}{A defused call.}
 }
 \value{
 A named list of arguments.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+Extract arguments from a call
 }
 \examples{
 call <- quote(f(a, b))
@@ -36,4 +36,3 @@ call_args_names(call)
 \seealso{
 \code{\link[=fn_fmls]{fn_fmls()}} and \code{\link[=fn_fmls_names]{fn_fmls_names()}}
 }
-\keyword{internal}

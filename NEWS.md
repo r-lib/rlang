@@ -33,8 +33,22 @@
 
 * `with_handlers()` is deprecated.
 
+* `call_fn()` is deprecated.
+
 
 ## Features and bugfixes
+
+* `call_name()` and `call_ns()` now fail with calls of the form
+  `foo::bar` (#670).
+
+* The new predicate `is_call_simple()` indicates whether a call has a
+  name and/or a namespace. It provides two invariants: 
+  
+  - If `is_call_simple(x)` is `TRUE`, `call_name()` always returns a
+    string.
+
+  - If `is_call_simple(x, ns = TRUE)` is `TRUE`, `call_ns()` always
+    returns a string.
 
 * `try_catch()` is a flexible alternative to both `tryCatch()` and
   `withCallingHandlers()` (#503). It is also more efficient than

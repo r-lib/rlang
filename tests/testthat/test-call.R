@@ -273,32 +273,15 @@ test_that("call_name() handles formulas", {
   expect_identical(call_name(~foo(baz)), "foo")
 })
 
-test_that("call_fn() extracts function", {
-  fn <- function() call_fn(call_frame())
-  expect_identical(fn(), fn)
-
-  expect_identical(call_fn(~matrix()), matrix)
-})
-
-test_that("call_fn() looks up function in `env`", {
-  env <- local({
-    fn <- function() "foo"
-    current_env()
-  })
-  expect_identical(call_fn(quote(fn()), env = env), env$fn)
-})
-
 test_that("Inlined functions return NULL name", {
   call <- quote(fn())
   call[[1]] <- function() {}
   expect_null(call_name(call))
 })
 
-test_that("call_args() and call_args_names()", {
-  expect_identical(call_args(~fn(a, b)), set_names(list(quote(a), quote(b)), c("", "")))
-
-  fn <- function(a, b) call_args_names(call_frame())
-  expect_identical(fn(a = foo, b = bar), c("a", "b"))
+test_that("call_args() and call_args_names() work", {
+  expect_equal(call_args(~fn(a, b)), set_names(list(quote(a), quote(b)), c("", "")))
+  expect_equal(call_args_names(quote(foo(a = , b = ))), c("a", "b"))
 })
 
 test_that("qualified and namespaced symbols are recognised", {
@@ -359,7 +342,6 @@ test_that("call functions type-check their input (#187)", {
   x <- list(a = 1)
   expect_error(call_modify(x, NULL), "must be a quoted call")
   expect_error(call_standardise(x), "must be a quoted call")
-  expect_error(call_fn(x), "must be a quoted call")
   expect_error(call_name(x), "must be a quoted call")
   expect_error(call_args(x), "must be a quoted call")
   expect_error(call_args_names(x), "must be a quoted call")
@@ -367,7 +349,6 @@ test_that("call functions type-check their input (#187)", {
   q <- quo(!!x)
   expect_error(call_modify(q, NULL), "must be a quoted call")
   expect_error(call_standardise(q), "must be a quoted call")
-  expect_error(call_fn(q), "must be a quoted call")
   expect_error(call_name(q), "must be a quoted call")
   expect_error(call_args(q), "must be a quoted call")
   expect_error(call_args_names(q), "must be a quoted call")
@@ -572,4 +553,28 @@ test_that("call_zap_inline() works", {
     call_zap_inline(call),
     quote(function(x = `<int>`) foo(`<int>`))
   )
+})
+
+test_that("is_call_simple() works", {
+  expect_false(is_call_simple(quote(foo)))
+  expect_false(is_call_simple(quote(foo()())))
+
+  expect_true(is_call_simple(quote(foo())))
+  expect_true(is_call_simple(quote(bar::foo())))
+
+  expect_true(is_call_simple(quote(foo()), ns = FALSE))
+  expect_false(is_call_simple(quote(foo()), ns = TRUE))
+  expect_true(is_call_simple(quote(bar::foo()), ns = TRUE))
+  expect_false(is_call_simple(quote(bar::foo()), ns = FALSE))
+
+  expect_true(is_call_simple(~ bar::foo(), ns = TRUE))
+})
+
+test_that("call_name() and call_ns() detect `::` calls (#670)", {
+  expect_snapshot({
+    (expect_error(call_name(quote(foo::bar))))
+    (expect_error(call_name(quote(foo:::bar))))
+    (expect_error(call_ns(quote(foo::bar))))
+    (expect_error(call_ns(quote(foo:::bar))))
+  })
 })

@@ -705,8 +705,11 @@ call_modify <- function(.call,
   set_expr(.call, expr)
 }
 
-abort_call_input_type <- function(arg) {
-  abort(sprintf("`%s` must be a quoted call", arg))
+abort_call_input_type <- function(arg, call = caller_env()) {
+  abort(
+    sprintf("%s must be a quoted call.", format_arg(arg)),
+    call = call
+  )
 }
 
 #' Match supplied arguments to function definition
@@ -825,51 +828,38 @@ call_match <- function(call = NULL,
   ))
 }
 
-#' Extract function from a call
-#'
-#' @description
-#' `r lifecycle::badge("experimental")`
-#'
-#' If `call` is a quosure or formula, the function will be retrieved
-#' from the associated environment. Otherwise, it is looked up in the
-#' calling frame.
-#'
-#' @param call A defused function call.
-#' @param env The environment where to find the definition of the
-#'   function quoted in `call` in case `call` is not wrapped in a
-#'   quosure.
-#' @seealso [call_name()]
-#' @examples
-#' # Extract from a quoted call:
-#' call_fn(quote(matrix()))
-#' @keywords internal
-#' @export
-call_fn <- function(call, env = caller_env()) {
-  expr <- get_expr(call)
-  env <- get_env(call, env)
-
-  if (!is_call(expr)) {
-    abort_call_input_type("call")
-  }
-
-  switch(call_type(expr),
-    recursive = abort("`call` does not call a named or inlined function"),
-    inlined = node_car(expr),
-    named = ,
-    namespaced = ,
-    eval_bare(node_car(expr), env)
-  )
-}
-
 #' Extract function name or namespace of a call
 #'
-#' `r lifecycle::badge("experimental")`
+#' @description
+#' `call_name()` and `call_ns()` extract the function name or
+#' namespace of _simple_ calls as a string. They return `NULL` for
+#' complex calls.
 #'
-#' @inheritParams call_fn
-#' @return A string with the function name, or `NULL` if the function
-#'   is anonymous.
-#' @seealso [call_fn()]
+#' * Simple calls: `foo()`, `bar::foo()`.
+#' * Complex calls: `foo()()`, `foo$bar()`, `(function() NULL)()`.
+#'
+#' The `is_call_simple()` predicate helps you determine whether a call
+#' is simple. There are two invariants you can count on:
+#'
+#' 1. If `is_call_simple(x)` returns `TRUE`, `call_name(x)` returns a
+#'    string. Otherwise it returns `NULL`.
+#'
+#' 2. If `is_call_simple(x, ns = TRUE)` returns `TRUE`, `call_ns()`
+#'    returns a string. Otherwise it returns `NULL`.
+#'
+#' @param call A defused call.
+#' @return The function name or namespace as a string, or `NULL` if
+#'   the call is not named or namespaced.
+#'
 #' @examples
+#' # Is the function named?
+#' is_call_simple(quote(foo()))
+#' is_call_simple(quote(foo[[1]]()))
+#'
+#' # Is the function namespaced?
+#' is_call_simple(quote(list()), ns = TRUE)
+#' is_call_simple(quote(base::list()), ns = TRUE)
+#'
 #' # Extract the function name from quoted calls:
 #' call_name(quote(foo(bar)))
 #' call_name(quo(foo(bar)))
@@ -887,17 +877,13 @@ call_fn <- function(call, env = caller_env()) {
 #'
 #' # If not namespaced, call_ns() returns NULL:
 #' call_ns(quote(bar()))
-#' @keywords internal
 #' @export
 call_name <- function(call) {
   if (is_quosure(call) || is_formula(call)) {
     call <- get_expr(call)
   }
 
-  # FIXME: Disabled for the 0.3.1 release
-  # if (!is_call(call) || is_call(call, c("::", ":::"))) {
-
-  if (!is_call(call)) {
+  if (!is_call(call) || is_call(call, c("::", ":::"))) {
     abort_call_input_type("call")
   }
 
@@ -914,23 +900,47 @@ call_ns <- function(call) {
     call <- get_expr(call)
   }
 
-  if (!is_call(call)) {
+  if (!is_call(call) || is_call(call, c("::", ":::"))) {
     abort_call_input_type("call")
   }
 
-  head <- node_car(call)
+  head <- call[[1]]
   if (is_call(head, c("::", ":::"))) {
-    as_string(node_cadr(head))
+    as_string(head[[2]])
   } else {
     NULL
   }
 }
+#' @rdname call_name
+#' @param x An object to test.
+#' @param ns Whether call is namespaced. If `NULL`, `is_call_simple()`
+#'   is insensitive to namespaces. If `TRUE`, `is_call_simple()`
+#'   detects namespaced calls. If `FALSE`, it detects unnamespaced
+#'   calls.
+#' @export
+is_call_simple <- function(x, ns = NULL) {
+  # For compatibility with `call_name()` and `call_ns()`
+  if (is_quosure(x) || is_formula(x)) {
+    x <- get_expr(x)
+  }
+
+  if (!is_call(x)) {
+    return(FALSE)
+  }
+
+  head <- x[[1]]
+  namespaced <- is_call(head, c("::", ":::"))
+
+  if (!is_null(ns) && !identical(namespaced, ns)) {
+    return(FALSE)
+  }
+
+  namespaced || is_symbol(head)
+}
 
 #' Extract arguments from a call
 #'
-#' `r lifecycle::badge("experimental")`
-#'
-#' @inheritParams call_fn
+#' @inheritParams call_name
 #' @return A named list of arguments.
 #' @seealso [fn_fmls()] and [fn_fmls_names()]
 #' @examples
@@ -947,10 +957,11 @@ call_ns <- function(call) {
 #' # When the arguments are unnamed, a vector of empty strings is
 #' # supplied (rather than NULL):
 #' call_args_names(call)
-#' @keywords internal
 #' @export
 call_args <- function(call) {
-  call <- get_expr(call)
+  if (is_quosure(call) || is_formula(call)) {
+    call <- get_expr(call)
+  }
   if (!is_call(call)) {
     abort_call_input_type("call")
   }
@@ -961,7 +972,9 @@ call_args <- function(call) {
 #' @rdname call_args
 #' @export
 call_args_names <- function(call) {
-  call <- get_expr(call)
+  if (is_quosure(call) || is_formula(call)) {
+    call <- get_expr(call)
+  }
   if (!is_call(call)) {
     abort_call_input_type("call")
   }
