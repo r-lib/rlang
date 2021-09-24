@@ -1,12 +1,14 @@
 the <- new.env(parent = emptyenv())
 
 
-# `on_load()` and `run_on_load()` are implemented in base-only compat
-# style.
+# `on_load()`, `run_on_load()`, and `on_package_load()` are
+# implemented in base-only compat style.
 #
 # Changelog:
 #
-# - 2021-09-24: Now base-only compat.
+# - 2021-09-24:
+#   - Now base-only compat.
+#   - `on_package_load()` checks that namespace is sealed.
 #
 # - 2021-05-07: Added `on_package_load()`.
 #
@@ -121,11 +123,25 @@ run_on_load <- function(ns = topenv(parent.frame())) {
 #' @rdname on_load
 #' @param pkg Package to hook expression into.
 #' @export
-on_package_load <- function(pkg, expr) {
-  if (isNamespaceLoaded(pkg)) {
-    expr
-  } else {
-    thunk <- function(...) expr
-    setHook(packageEvent(pkg, "onLoad"), thunk)
+on_package_load <- function(pkg, expr, env = parent.frame()) {
+  expr <- substitute(expr)
+  force(env)
+
+  run <- function(...) {
+    # Evaluate with promise semantics rather than `base::eval()`
+    do <- NULL
+    do.call(delayedAssign, list("do", expr, env))
+    do
+  }
+
+  # Always register hook in case package is later unloaded & reloaded
+  setHook(packageEvent(pkg, "onLoad"), run)
+
+  # Run right away if package is already loaded but only if its
+  # namespace is locked. The registering package might be a dependency
+  # of `package`. In that case, `package` might not be fully populated
+  # yet (#1225).
+  if (isNamespaceLoaded(pkg) && environmentIsLocked(asNamespace(pkg))) {
+    run()
   }
 }
