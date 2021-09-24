@@ -38,15 +38,23 @@ to print the backtrace or inspect its data.
 \section{Errors in RMarkdown}{
 
 
-There are two types of errors in Rmds: expected (i.e. \code{error = TRUE})
-and unexpected.
+The display of errors depends on whether they're expected (i.e.
+chunk option \code{error = TRUE}) or unexpected:
 \itemize{
-\item The display of unexpected errors is controlled by option
-\code{rlang_backtrace_on_error_report} (note the \verb{_report}). The
-default is \code{"none"} in interactive sessions and \code{"branch"} in
-non-interactive sessions.
-\item The display of expected errors is controlled by option
-\code{rlang_backtrace_on_error}. The default is \code{"none"}.
+\item Expected errors are controlled by the global option
+\code{"rlang_backtrace_on_error_report"} (note the \verb{_report} suffix).
+The default is \code{"none"} so that your expected errors don't
+include a reminder to run \code{rlang::last_error()}. Customise this
+option if you want to demonstrate what the error backtrace will
+look like.
+
+You can also use \code{\link[=last_error]{last_error()}} to display the trace like you
+would in your session, but it currently only works in the next
+chunk.
+\item Unexpected errors are controlled by the global option
+\code{"rlang_backtrace_on_error"}. The default is \code{"branch"} so you'll
+see a simplified backtrace in the knitr output to help you figure
+out what went wrong.
 }
 
 When knitr is running (as determined by the \code{knitr.in.progress}

@@ -870,8 +870,10 @@ cnd_as_unhandled_error <- function(cnd) {
     call = cnd$call
   )
 }
-cnd_unhandled_message <- function(cnd, message = conditionMessage(cnd)) {
-  paste_line(message, format_onerror_backtrace(cnd))
+cnd_unhandled_message <- function(cnd,
+                                  message = conditionMessage(cnd),
+                                  report = FALSE) {
+  paste_line(message, format_onerror_backtrace(cnd, report = report))
 }
 
 on_load({
@@ -888,7 +890,7 @@ on_load({
     opt <- peek_option("rlang_backtrace_on_error") %||% "none"
     local_options(rlang_backtrace_on_error = opt)
 
-    msg <- cnd_unhandled_message(x)
+    msg <- cnd_unhandled_message(x, report = TRUE)
 
     # Create bare error and sew it to delegate finalisation to parent
     # method since there is no simple way to generically modify the
@@ -1025,16 +1027,24 @@ trace_depth_trycatch <- function(trace) {
 #'
 #' @section Errors in RMarkdown:
 #'
-#' There are two types of errors in Rmds: expected (i.e. `error = TRUE`)
-#' and unexpected.
+#' The display of errors depends on whether they're expected (i.e.
+#' chunk option `error = TRUE`) or unexpected:
+#' 
+#' * Expected errors are controlled by the global option
+#'   `"rlang_backtrace_on_error_report"` (note the `_report` suffix).
+#'   The default is `"none"` so that your expected errors don't
+#'   include a reminder to run `rlang::last_error()`. Customise this
+#'   option if you want to demonstrate what the error backtrace will
+#'   look like.
+#'   
+#'   You can also use [last_error()] to display the trace like you
+#'   would in your session, but it currently only works in the next
+#'   chunk.
 #'
-#' * The display of unexpected errors is controlled by option
-#'   `rlang_backtrace_on_error_report` (note the `_report`). The
-#'   default is `"none"` in interactive sessions and `"branch"` in
-#'   non-interactive sessions.
-#'
-#' * The display of expected errors is controlled by option
-#'   `rlang_backtrace_on_error`. The default is `"none"`.
+#' * Unexpected errors are controlled by the global option
+#'   `"rlang_backtrace_on_error"`. The default is `"branch"` so you'll
+#'   see a simplified backtrace in the knitr output to help you figure
+#'   out what went wrong.
 #'
 #' When knitr is running (as determined by the `knitr.in.progress`
 #' global option), the default top environment for backtraces is set
@@ -1061,7 +1071,7 @@ NULL
 # `inst/backtrace-ver` and in `tests/testthat/helper-rlang.R` must be
 # bumped. This way `devtools::test()` will skip the tests that require
 # the dev version to be installed locally.
-format_onerror_backtrace <- function(cnd) {
+format_onerror_backtrace <- function(cnd, report = FALSE) {
   trace <- cnd$trace
 
   # Show backtrace of oldest parent
@@ -1076,7 +1086,11 @@ format_onerror_backtrace <- function(cnd) {
     return(NULL)
   }
 
-  show_trace <- peek_backtrace_on_error()
+  if (report) {
+    show_trace <- peek_backtrace_on_error_report()
+  } else {
+    show_trace <- peek_backtrace_on_error()
+  }
 
   opts <- c("none", "reminder", "branch", "collapse", "full")
   if (!is_string(show_trace) || !show_trace %in% opts) {
@@ -1116,29 +1130,21 @@ format_onerror_backtrace <- function(cnd) {
 }
 
 peek_backtrace_on_error <- function() {
-  if (report_in_progress()) {
-    opt <- peek_option("rlang_backtrace_on_error_report")
-    if (!is_null(opt)) {
-      return(opt)
-    }
-
-    if (is_interactive()) {
-      return("none")
-    } else {
-      return("branch")
-    }
-  }
-
   opt <- peek_option("rlang_backtrace_on_error")
   if (!is_null(opt)) {
     return(opt)
   }
 
-  if (is_interactive()) {
+  if (report_in_progress()) {
+    "branch"
+  } else if (is_interactive()) {
     "reminder"
   } else {
     "full"
   }
+}
+peek_backtrace_on_error_report <- function() {
+  peek_option("rlang_backtrace_on_error_report") %||% "none"
 }
 
 #' Last `abort()` error
