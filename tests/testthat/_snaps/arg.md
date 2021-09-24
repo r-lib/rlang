@@ -174,12 +174,12 @@
       (expect_error(g(foo, bar, baz)))
     Output
       <error/rlang_error>
-      Error in `g()`: Only one of `foo`, `bar`, or `baz` can be supplied.
+      Error in `g()`: Exactly one of `foo`, `bar`, or `baz` must be supplied.
     Code
       # Some arguments supplied
       (expect_error(g(foo, bar)))
     Output
       <error/rlang_error>
-      Error in `g()`: Only one of `foo`, `bar`, or `baz` can be supplied.
+      Error in `g()`: Exactly one of `foo`, `bar`, or `baz` must be supplied.
       x `foo` and `bar` were supplied together.
 

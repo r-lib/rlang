@@ -299,7 +299,7 @@ arg_exclusive <- function(...,
 
   args <- map_chr(names(args), format_arg)
   enum <- chr_enumerate(args)
-  msg <- sprintf("Only one of %s can be supplied.", enum)
+  msg <- sprintf("Exactly one of %s must be supplied.", enum)
 
   if (n_present != length(args)) {
     enum <- chr_enumerate(args[present], final = "and")
