@@ -836,12 +836,12 @@ call_match <- function(call = NULL,
 #'
 #' @examples
 #' # Is the function named?
-#' is_call_named(quote(foo()))
-#' is_call_named(quote(foo[[1]]()))
+#' is_call_simple(quote(foo()))
+#' is_call_simple(quote(foo[[1]]()))
 #'
 #' # Is the function namespaced?
-#' is_call_named(quote(list()), ns = TRUE)
-#' is_call_named(quote(base::list()), ns = TRUE)
+#' is_call_simple(quote(list()), ns = TRUE)
+#' is_call_simple(quote(base::list()), ns = TRUE)
 #'
 #' # Extract the function name from quoted calls:
 #' call_name(quote(foo(bar)))
@@ -898,7 +898,7 @@ call_ns <- function(call) {
 }
 #' @rdname call_name
 #' @export
-is_call_named <- function(x, ns = NULL) {
+is_call_simple <- function(x, ns = NULL) {
   # For compatibility with `call_name()` and `call_ns()`
   if (is_quosure(x) || is_formula(x)) {
     x <- get_expr(x)

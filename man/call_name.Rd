@@ -3,14 +3,14 @@
 \name{call_name}
 \alias{call_name}
 \alias{call_ns}
-\alias{is_call_named}
+\alias{is_call_simple}
 \title{Extract function name or namespace of a call}
 \usage{
 call_name(call)
 
 call_ns(call)
 
-is_call_named(x, ns = NULL)
+is_call_simple(x, ns = NULL)
 }
 \arguments{
 \item{call}{A defused call.}
@@ -28,12 +28,12 @@ Extract function name or namespace of a call
 }
 \examples{
 # Is the function named?
-is_call_named(quote(foo()))
-is_call_named(quote(foo[[1]]()))
+is_call_simple(quote(foo()))
+is_call_simple(quote(foo[[1]]()))
 
 # Is the function namespaced?
-is_call_named(quote(list()), ns = TRUE)
-is_call_named(quote(base::list()), ns = TRUE)
+is_call_simple(quote(list()), ns = TRUE)
+is_call_simple(quote(base::list()), ns = TRUE)
 
 # Extract the function name from quoted calls:
 call_name(quote(foo(bar)))
