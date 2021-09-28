@@ -44,11 +44,11 @@
 #' functions apply default ANSI colours to these symbols if possible.
 #'
 #' @noRd
-symbol_info   <- function() if (.rlang_cli_is_installed("cli")) cli::symbol$info else "i"
-symbol_cross  <- function() if (.rlang_cli_is_installed("cli")) cli::symbol$cross else "x"
-symbol_tick   <- function() if (.rlang_cli_is_installed("cli")) cli::symbol$tick else "v"
-symbol_bullet <- function() if (.rlang_cli_is_installed("cli")) cli::symbol$bullet else "*"
-symbol_arrow  <- function() if (.rlang_cli_is_installed("cli")) cli::symbol$arrow_right else ">"
+symbol_info   <- function() if (.rlang_cli_has_cli()) cli::symbol$info else "i"
+symbol_cross  <- function() if (.rlang_cli_has_cli()) cli::symbol$cross else "x"
+symbol_tick   <- function() if (.rlang_cli_has_cli()) cli::symbol$tick else "v"
+symbol_bullet <- function() if (.rlang_cli_has_cli()) cli::symbol$bullet else "*"
+symbol_arrow  <- function() if (.rlang_cli_has_cli()) cli::symbol$arrow_right else ">"
 symbol_alert  <- function() "!"
 
 ansi_info   <- function() col_blue(symbol_info())
@@ -252,11 +252,7 @@ format_message <- function(x) {
     nms <- rep_len("", length(x))
   }
 
-  if (.rlang_cli_is_installed("rlang")) {
-    abort <- rlang::abort
-  } else {
-    abort <- function(message) stop(message, call. = FALSE)
-  }
+  abort <- .rlang_cli_compat("abort")
   if (!all(nms %in% c("i", "x", "v", "*", "!", ">", " ", ""))) {
     abort('Bullet names must be one of "i", "x", "v", "*", "!", ">", or " ".')
   }
@@ -304,16 +300,16 @@ format_message <- function(x) {
 }
 
 .rlang_cli_has_ansi <- function() {
-  .rlang_cli_is_installed("cli") && cli::num_ansi_colors() > 1
+  .rlang_cli_has_cli() && cli::num_ansi_colors() > 1
 }
 
-.rlang_cli_is_installed <- local({
+.rlang_cli_has_cli <- local({
   has_cli <- NULL
 
   function(pkg) {
     if (is.null(has_cli)) {
       has_cli <<- TRUE &&
-        requireNamespace(pkg, quietly = TRUE) &&
+        requireNamespace("cli", quietly = TRUE) &&
         utils::packageVersion("cli") >= "3.0.0"
     }
 
@@ -335,6 +331,58 @@ cli_escape <- function(x) {
   } else {
     x
   }
+}
+
+
+.rlang_cli_compat <- function(fn, try_rlang = TRUE) {
+  # Compats that behave the same independently of rlang's presence
+  out <- switch(
+    fn,
+    is_installed = return(function(pkg) requireNamespace(pkg, quietly = TRUE))
+  )
+
+  if (try_rlang && requireNamespace("rlang", quietly = TRUE)) {
+    # Don't use `::` because this is also called from rlang's onLoad
+    # hook and exports are not initialised at this point
+    ns <- asNamespace("rlang")
+
+    switch(
+      fn,
+      is_interactive = return(get("is_interactive", envir = ns))
+    )
+
+    # Make sure rlang knows about "x" and "i" bullets
+    if (utils::packageVersion("rlang") >= "0.4.2") {
+      switch(
+        fn,
+        abort = return(get("abort", envir = ns)),
+        warn = return(get("warn", envir = ns)),
+        inform = return(get("inform", envir = ns))
+      )
+    }
+  }
+
+  # Fall back to base compats
+
+  is_interactive_compat <- function() {
+    opt <- getOption("rlang_interactive")
+    if (!is.null(opt)) {
+      opt
+    } else {
+      interactive()
+    }
+  }
+
+  format_msg <- function(x) paste(x, collapse = "\n")
+  switch(
+    fn,
+    is_interactive = return(is_interactive_compat),
+    abort = return(function(msg) stop(format_msg(msg), call. = FALSE)),
+    warn = return(function(msg) warning(format_msg(msg), call. = FALSE)),
+    inform = return(function(msg) message(format_msg(msg)))
+  )
+
+  stop(sprintf("Internal error in rlang shims: Unknown function `%s()`.", fn))
 }
 
 
