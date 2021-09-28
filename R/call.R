@@ -928,6 +928,10 @@ is_call_simple <- function(x, ns = NULL) {
     return(FALSE)
   }
 
+  if (is_call(x, c("::", ":::"))) {
+    return(FALSE)
+  }
+
   head <- x[[1]]
   namespaced <- is_call(head, c("::", ":::"))
 

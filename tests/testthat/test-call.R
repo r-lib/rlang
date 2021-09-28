@@ -558,6 +558,7 @@ test_that("call_zap_inline() works", {
 test_that("is_call_simple() works", {
   expect_false(is_call_simple(quote(foo)))
   expect_false(is_call_simple(quote(foo()())))
+  expect_false(is_call_simple(quote(foo::bar)))
 
   expect_true(is_call_simple(quote(foo())))
   expect_true(is_call_simple(quote(bar::foo())))
