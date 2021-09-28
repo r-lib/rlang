@@ -369,6 +369,9 @@ switch_expr <- function(.x, ...) {
 #'   Defaults to the global option `width`.
 #' @param ... Arguments passed to `expr_deparse()`.
 #'
+#' @return `expr_deparse()` returns a character vector of lines.
+#'   `expr_print()` returns its input invisibly.
+#'
 #' @export
 #' @examples
 #' # It supports any object. Non-symbolic objects are always printed
@@ -398,6 +401,7 @@ switch_expr <- function(.x, ...) {
 #' expr_print(wrapper_quo)
 expr_print <- function(x, ...) {
   cat_line(expr_deparse(x, ...))
+  invisible(x)
 }
 #' @rdname expr_print
 #' @export
