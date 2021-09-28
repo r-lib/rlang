@@ -187,7 +187,6 @@ signal <- function(message,
                    class,
                    ...,
                    .subclass = deprecated()) {
-  arg_require(class)
   validate_signal_args(message, class, NULL, .subclass)
 
   message <- .rlang_cli_format_fallback(message)
@@ -237,6 +236,7 @@ validate_signal_args <- function(msg, class, call, subclass, env = caller_env())
   if (!is_missing(subclass)) {
     deprecate_subclass(subclass, env)
   }
+  arg_require(class, error_call = env)
 
   if (!is_missing(call)) {
     if (!is_null(call) && !is_environment(call) && !is_call(call)) {

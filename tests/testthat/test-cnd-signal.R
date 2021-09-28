@@ -305,6 +305,11 @@ test_that("deprecated arguments of cnd_signal() still work", {
   with_handlers(cnd_signal(cnd("foo"), .mufflable = TRUE),
     foo = calling(function(cnd) expect_true(rst_exists("rlang_muffle")))
   )
+
+  expect_condition(
+    signal("", .subclass = "foo"),
+    class = "foo"
+  )
 })
 
 test_that("error_cnd() still accepts `.subclass`", {
