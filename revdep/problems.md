@@ -2,10 +2,10 @@
 
 <details>
 
-* Version: 4.0.1
+* Version: 5.0.0.2
 * GitHub: https://github.com/apache/arrow
 * Source code: https://github.com/cran/arrow
-* Date/Publication: 2021-05-28 09:50:02 UTC
+* Date/Publication: 2021-09-05 04:30:22 UTC
 * Number of recursive dependencies: 61
 
 Run `cloud_details(, "arrow")` for more info
@@ -19,19 +19,19 @@ Run `cloud_details(, "arrow")` for more info
       Running ‘testthat.R’
     Running the tests in ‘tests/testthat.R’ failed.
     Last 13 lines of output:
-        1. ├─arrow:::expect_dplyr_equal(...) test-dplyr.R:96:2
-        2. │ └─rlang::eval_tidy(expr, rlang::new_data_mask(rlang::env(input = record_batch(tbl)))) helper-expectation.R:79:4
-        3. ├─input %>% group_by(chr) %>% select() %>% collect()
-        4. ├─dplyr::collect(.)
-        5. └─arrow:::collect.arrow_dplyr_query(.)
-        6.   └─arrow:::ensure_group_vars(x)
-        7.     ├─arrow:::make_field_refs(gv, dataset = query_on_dataset(.data))
-        8.     └─arrow:::query_on_dataset(.data)
-        9.       ├─x$.data
-       10.       └─rlang:::`$.rlang_fake_data_pronoun`(x, ".data")
-       11.         └─rlang:::stop_fake_data_subset()
+      ── Failure (test-dplyr-filter.R:325:3): Filtering with unsupported functions ───
+      `via_table <- rlang::eval_tidy(expr, rlang::new_data_mask(rlang::env(input = Table$create(tbl))))` produced unexpected warnings.
+      Expected match: \\* In nchar\\(chr, type = "bytes", allowNA = TRUE\\) == 1, allowNA = TRUE not supported by Arrow\n\\* Expression pnorm\\(dbl\\) > 0.99 not supported in Arrow\npulling data into R
+      Actual values:
+      * * In ... == 1, allowNA = TRUE not supported by Arrow
+      * Expression pnorm(dbl) > 0.99 not supported in Arrow
+      pulling data into R
+      Backtrace:
+          ▆
+       1. └─arrow:::expect_dplyr_equal(...) at test-dplyr-filter.R:325:2
+       2.   └─testthat::expect_warning(...) at tests/testthat/helper-expectation.R:114:4
       
-      [ FAIL 2 | WARN 0 | SKIP 60 | PASS 3778 ]
+      [ FAIL 2 | WARN 0 | SKIP 53 | PASS 4807 ]
       Error: Test failures
       Execution halted
     ```
@@ -40,21 +40,152 @@ Run `cloud_details(, "arrow")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 58.8Mb
+      installed size is 66.3Mb
       sub-directories of 1Mb or more:
         R      3.6Mb
-        libs  54.5Mb
+        libs  61.8Mb
+    ```
+
+# assemblerr
+
+<details>
+
+* Version: 0.1.0
+* GitHub: https://github.com/UUPharmacometrics/assemblerr
+* Source code: https://github.com/cran/assemblerr
+* Date/Publication: 2021-07-28 11:40:05 UTC
+* Number of recursive dependencies: 55
+
+Run `cloud_details(, "assemblerr")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Missing or unexported object: ‘rlang::as_pairlist’
+    ```
+
+# autoharp
+
+<details>
+
+* Version: 0.0.8
+* GitHub: NA
+* Source code: https://github.com/cran/autoharp
+* Date/Publication: 2021-05-29 17:50:02 UTC
+* Number of recursive dependencies: 91
+
+Run `cloud_details(, "autoharp")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking tests ... ERROR
+    ```
+      Running ‘testthat.R’
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+        2. ├─autoharp::TreeHarp(knitr_problem, TRUE)
+        3. ├─autoharp::TreeHarp(knitr_problem, TRUE)
+        4. │ └─autoharp::lang_2_tree(lang_obj, 0, env1)
+        5. │   └─autoharp::lang_2_tree(lang_obj[[1]], node_id, ni_env)
+        6. │     └─autoharp::lang_2_tree(call_args1[[ii]], fn_node_id, ni_env)
+        7. │       └─rlang::call_name(lang_obj)
+        8. │         └─rlang:::abort_call_input_type("call")
+        9. │           └─rlang::abort(...)
+       10. │             └─rlang:::signal_abort(cnd, .file)
+       11. │               └─base::signalCondition(cnd)
+       12. └─base `<fn>`(`<rlng_rrr>`)
+      
+      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 76 ]
+      Error: Test failures
+      Execution halted
+    ```
+
+# bignum
+
+<details>
+
+* Version: 0.2.2
+* GitHub: https://github.com/davidchall/bignum
+* Source code: https://github.com/cran/bignum
+* Date/Publication: 2021-09-21 16:00:02 UTC
+* Number of recursive dependencies: 45
+
+Run `cloud_details(, "bignum")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘bignum-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: biginteger
+    > ### Title: Arbitrary-Precision Integer Vectors
+    > ### Aliases: biginteger as_biginteger is_biginteger
+    > 
+    > ### ** Examples
+    > 
+    > # default options limit displayed precision
+    ...
+    > # display full precision
+    > format(biginteger(2)^50L, notation = "dec")
+    [1] "1125899906842624"
+    > 
+    > # lossy casts raise a warning
+    > biginteger(c(2, 2.5, 3))
+    Error in stop_vctrs(message, x = x, y = to, to = to, result = result,  : 
+      could not find function "stop_vctrs"
+    Calls: biginteger ... <Anonymous> -> warning_cnd -> cnd_fields -> dots_list
+    Execution halted
+    ```
+
+*   checking tests ... ERROR
+    ```
+      Running ‘testthat.R’
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+       18. │           └─vctrs:::stop_lossy_cast(...)
+       19. │             └─vctrs:::stop_vctrs(...)
+       20. │               └─rlang::abort(message, class = c(class, "vctrs_error"), ...)
+       21. │                 └─rlang:::signal_abort(cnd, .file)
+       22. │                   └─base::signalCondition(cnd)
+       23. └─bignum `<fn>`(`<vctrs___>`)
+       24.   ├─base::do.call(warn, condition_data)
+       25.   └─rlang `<fn>`(...)
+       26.     └─rlang::warning_cnd(...)
+       27.       └─rlang:::cnd_fields(...)
+       28.         └─rlang::dots_list(...)
+      
+      [ FAIL 6 | WARN 0 | SKIP 22 | PASS 344 ]
+      Error: Test failures
+      Execution halted
+    ```
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is 14.1Mb
+      sub-directories of 1Mb or more:
+        libs  13.8Mb
     ```
 
 # catchr
 
 <details>
 
-* Version: 0.2.3
+* Version: 0.2.31
 * GitHub: NA
 * Source code: https://github.com/cran/catchr
-* Date/Publication: 2020-08-31 04:40:03 UTC
-* Number of recursive dependencies: 59
+* Date/Publication: 2021-09-23 16:40:05 UTC
+* Number of recursive dependencies: 60
 
 Run `cloud_details(, "catchr")` for more info
 
@@ -75,15 +206,15 @@ Run `cloud_details(, "catchr")` for more info
     > 
     > warning_in_middle <- function() {
     ...
-     10. │ └─catchr:::.f(.x[[i]], ...)
-     11. │   └─catchr:::classify_arg(., spec_names)
-     12. │     └─catchr:::approx_arg_name(!!arg)
-     13. │       └─get_expr(enquo(x)) %>% expr_deparse(999) %>% paste(collapse = "")
-     14. ├─base::paste(., collapse = "")
-     15. └─rlang::expr_deparse(., 999)
-     16.   └─rlang::check_dots_empty0(...)
-     17.     └─rlang::check_dots_empty()
-     18.       └─rlang:::action_dots(...)
+     15. │       └─call_args(x) %>% ...
+     16. └─purrr::map(...)
+     17.   └─catchr .f(.x[[i]], ...)
+     18.     └─catchr:::check_nodes(...)
+     19.       ├─base::withRestarts(...)
+     20.       │ └─base withOneRestart(expr, restarts[[1L]])
+     21.       │   └─base doWithOneRestart(return(expr), restart)
+     22.       └─rlang::signal(...)
+     23.         └─rlang::arg_require(class)
     Execution halted
     ```
 
@@ -93,34 +224,73 @@ Run `cloud_details(, "catchr")` for more info
       Running ‘testthat.R’
     Running the tests in ‘tests/testthat.R’ failed.
     Last 13 lines of output:
-        7. │ └─purrr::map2(...)
-        8. ├─purrr::map(., ~classify_arg(., spec_names))
-        9. │ └─catchr:::.f(.x[[i]], ...)
-       10. │   └─catchr:::classify_arg(., spec_names)
-       11. │     └─catchr:::approx_arg_name(!!arg)
-       12. │       └─get_expr(enquo(x)) %>% expr_deparse(999) %>% paste(collapse = "")
-       13. ├─base::paste(., collapse = "")
-       14. └─rlang::expr_deparse(., 999)
-       15.   └─rlang::check_dots_empty0(...)
-       16.     └─rlang::check_dots_empty()
-       17.       └─rlang:::action_dots(...)
+       19. │     ├─base::withCallingHandlers(...)
+       20. │     └─catchr:::check_nodes(...)
+       21. │       └─call_args(x) %>% ...
+       22. └─purrr::map(...)
+       23.   └─catchr .f(.x[[i]], ...)
+       24.     └─catchr:::check_nodes(...)
+       25.       ├─base::withRestarts(...)
+       26.       │ └─base withOneRestart(expr, restarts[[1L]])
+       27.       │   └─base doWithOneRestart(return(expr), restart)
+       28.       └─rlang::signal(...)
+       29.         └─rlang::arg_require(class)
       
-      [ FAIL 18 | WARN 0 | SKIP 0 | PASS 22 ]
+      [ FAIL 11 | WARN 0 | SKIP 0 | PASS 81 ]
       Error: Test failures
       Execution halted
     ```
 
-# ecochange
+# cmstatr
 
 <details>
 
-* Version: 1.3
-* GitHub: NA
-* Source code: https://github.com/cran/ecochange
-* Date/Publication: 2020-10-13 15:00:02 UTC
-* Number of recursive dependencies: 88
+* Version: 0.9.0
+* GitHub: https://github.com/cmstatr/cmstatr
+* Source code: https://github.com/cran/cmstatr
+* Date/Publication: 2021-07-01 05:10:02 UTC
+* Number of recursive dependencies: 85
 
-Run `cloud_details(, "ecochange")` for more info
+Run `cloud_details(, "cmstatr")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking tests ... ERROR
+    ```
+      Running ‘spelling.R’
+      Running ‘testthat.R’
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      Snapshot of code has changed:
+      old[1:6] vs new[1:6]
+        "Code"
+        "  res <- basis_normal(x = x, batch = batch)"
+      - "Warning <warning>"
+      + "Warning <rlang_warning>"
+        "  `outliers_within_batch` failed: Maximum normed residual test detected outliers within one or more batch"
+        "  `between_batch_variability` failed: Anderson-Darling k-Sample test indicates that batches are drawn from different distributions"
+        "  `outliers` failed: Maximum normed residual test detected outliers within data"
+      
+      Run `snapshot_accept('basis')` if this is a deliberate change
+      
+      [ FAIL 1 | WARN 1 | SKIP 30 | PASS 1116 ]
+      Error: Test failures
+      Execution halted
+    ```
+
+# covTestR
+
+<details>
+
+* Version: 0.1.4
+* GitHub: https://github.com/BenBarnard/covTestR
+* Source code: https://github.com/cran/covTestR
+* Date/Publication: 2018-08-17 21:10:03 UTC
+* Number of recursive dependencies: 5
+
+Run `cloud_details(, "covTestR")` for more info
 
 </details>
 
@@ -128,27 +298,205 @@ Run `cloud_details(, "ecochange")` for more info
 
 *   checking examples ... ERROR
     ```
-    Running examples in ‘ecochange-Ex.R’ failed
+    Running examples in ‘covTestR-Ex.R’ failed
     The error most likely occurred in:
     
-    > ### Name: gaugeIndicator
-    > ### Title: Gauge Indicator
-    > ### Aliases: gaugeIndicator
+    > ### Name: homogeneityCovariances
+    > ### Title: Test Wrapper for Homogeneity of Covariance Matrices
+    > ### Aliases: homogeneityCovariances
     > 
     > ### ** Examples
     > 
-    > ## Warnings from GDAL/PROJ are suppressed.
-    ...
-      2. ├─base::plot(defareas)
-      3. └─ecochange::plot.Indicator(defareas)
-      4.   ├─ggplot2::ylab(unique(.data$metric))
-      5.   │ └─ggplot2::labs(y = label)
-      6.   │   └─rlang::dots_list(...)
-      7.   ├─base::unique(.data$metric)
-      8.   ├─<unknown>
-      9.   └─rlang:::`$.rlang_fake_data_pronoun`(.data, "metric")
-     10.     └─rlang:::stop_fake_data_subset()
+    > homogeneityCovariances(iris, group = Species)
+    Error in utils::packageVersion("cli") : there is no package called ‘cli’
+    Calls: homogeneityCovariances ... .rlang_cli_format_fallback -> .rlang_cli_is_installed -> <Anonymous>
     Execution halted
+    ```
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is 11.4Mb
+      sub-directories of 1Mb or more:
+        libs  11.3Mb
+    ```
+
+# dtplyr
+
+<details>
+
+* Version: 1.1.0
+* GitHub: https://github.com/tidyverse/dtplyr
+* Source code: https://github.com/cran/dtplyr
+* Date/Publication: 2021-02-20 01:50:05 UTC
+* Number of recursive dependencies: 61
+
+Run `cloud_details(, "dtplyr")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘dtplyr-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: filter.dtplyr_step
+    > ### Title: Subset rows using column values
+    > ### Aliases: filter.dtplyr_step
+    > 
+    > ### ** Examples
+    > 
+    > library(dplyr, warn.conflicts = FALSE)
+    ...
+    
+    # Use as.data.table()/as.data.frame()/as_tibble() to access results
+    > 
+    > dt %>%
+    +   group_by(cyl) %>%
+    +   filter(mpg > mean(mpg))
+    Error in step_subset(parent, i = i) : 
+      is.null(i) || is_expression(i) || is_step(i) is not TRUE
+    Calls: %>% ... filter.dtplyr_step -> step_subset_i -> step_subset -> stopifnot
+    Execution halted
+    ```
+
+*   checking tests ... ERROR
+    ```
+      Running ‘testthat.R’
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+        1. ├─testthat::expect_equal(...) at test-tidyeval.R:202:2
+        2. │ └─testthat::quasi_label(enquo(object), label, arg = "object")
+        3. │   └─rlang::eval_bare(expr, quo_get_env(quo))
+        4. ├─... %>% pull()
+        5. ├─dplyr::pull(.)
+        6. └─dplyr::summarise_at(., vars(x), add)
+        7.   ├─dplyr::summarise(.tbl, !!!funs)
+        8.   └─dtplyr:::summarise.dtplyr_step(.tbl, !!!funs)
+        9.     └─dtplyr:::step_subset_j(...)
+       10.       └─dtplyr:::step_subset(...)
+       11.         └─base::stopifnot(is.null(j) || is_expression(j))
+      
+      [ FAIL 6 | WARN 0 | SKIP 12 | PASS 335 ]
+      Error: Test failures
+      Execution halted
+    ```
+
+# fabricatr
+
+<details>
+
+* Version: 0.14.0
+* GitHub: https://github.com/DeclareDesign/fabricatr
+* Source code: https://github.com/cran/fabricatr
+* Date/Publication: 2021-02-09 06:10:23 UTC
+* Number of recursive dependencies: 38
+
+Run `cloud_details(, "fabricatr")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking tests ... ERROR
+    ```
+      Running ‘testthat.R’
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      Backtrace:
+          ▆
+       1. └─fabricatr::fabricate(...) at test-fabrication.R:266:2
+       2.   ├─base::which(names(dots) == "" & call_not_level_call(dots))
+       3.   └─fabricatr:::call_not_level_call(dots)
+       4.     └─base::vapply(...)
+       5.       └─fabricatr FUN(X[[i]], ...)
+       6.         ├─fabricatr:::is_level_token(call_name(i))
+       7.         │ └─x %in% ...
+       8.         └─rlang::call_name(i)
+       9.           └─rlang:::abort_call_input_type("call")
+      
+      [ FAIL 2 | WARN 0 | SKIP 1 | PASS 383 ]
+      Error: Test failures
+      Execution halted
+    ```
+
+# gestalt
+
+<details>
+
+* Version: 0.1.8
+* GitHub: https://github.com/egnha/gestalt
+* Source code: https://github.com/cran/gestalt
+* Date/Publication: 2019-06-27 08:20:03 UTC
+* Number of recursive dependencies: 47
+
+Run `cloud_details(, "gestalt")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking tests ... ERROR
+    ```
+      Running ‘testthat.R’
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      ══ Failed tests ════════════════════════════════════════════════════════════════
+      ── Error (test-functions.R:65:3): body can be a closure ────────────────────────
+      Error: Body must be an expression or closure
+      Backtrace:
+          ▆
+       1. ├─testthat::expect_equal(foo, fn(x ~ function(y) x + y)) at test-functions.R:65:2
+       2. │ └─testthat::quasi_label(enquo(expected), expected.label, arg = "expected")
+       3. │   └─rlang::eval_bare(expr, quo_get_env(quo))
+       4. └─gestalt::fn(x ~ function(y) x + y)
+       5.   └─gestalt make_fn(fun$args, fun$body, ..env)
+       6.     └─is_expression(body) %because% "Body must be an expression or closure"
+      
+      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 1040 ]
+      Error: Test failures
+      Execution halted
+    ```
+
+# ggh4x
+
+<details>
+
+* Version: 0.2.0
+* GitHub: https://github.com/teunbrand/ggh4x
+* Source code: https://github.com/cran/ggh4x
+* Date/Publication: 2021-08-21 09:50:02 UTC
+* Number of recursive dependencies: 70
+
+Run `cloud_details(, "ggh4x")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking tests ... ERROR
+    ```
+      Running ‘testthat.R’
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      Expected match: "The `nonsense` package is required"
+      Actual message: "The package `nonsense` is required for `test`."
+      Backtrace:
+          ▆
+       1. ├─testthat::expect_error(try_require("nonsense", "test"), text) at test-utils.R:7:2
+       2. │ └─testthat:::quasi_capture(...)
+       3. │   ├─testthat .capture(...)
+       4. │   │ └─base::withCallingHandlers(...)
+       5. │   └─rlang::eval_bare(quo_get_expr(.quo), quo_get_env(.quo))
+       6. └─ggh4x:::try_require("nonsense", "test")
+       7.   └─rlang::check_installed(package, paste0("for `", fun, "`.\n"))
+      
+      [ FAIL 1 | WARN 1 | SKIP 0 | PASS 743 ]
+      Error: Test failures
+      Execution halted
     ```
 
 # heemod
@@ -159,7 +507,7 @@ Run `cloud_details(, "ecochange")` for more info
 * GitHub: https://github.com/pierucci/heemod
 * Source code: https://github.com/cran/heemod
 * Date/Publication: 2021-01-22 13:00:02 UTC
-* Number of recursive dependencies: 112
+* Number of recursive dependencies: 117
 
 Run `cloud_details(, "heemod")` for more info
 
@@ -214,17 +562,187 @@ Run `cloud_details(, "heemod")` for more info
       Execution halted
     ```
 
-# ipmr
+# icecream
 
 <details>
 
-* Version: 0.0.2
-* GitHub: https://github.com/levisc8/ipmr
-* Source code: https://github.com/cran/ipmr
-* Date/Publication: 2021-05-22 15:40:02 UTC
-* Number of recursive dependencies: 69
+* Version: 0.1.1
+* GitHub: https://github.com/lewinfox/icecream
+* Source code: https://github.com/cran/icecream
+* Date/Publication: 2021-05-31 07:40:02 UTC
+* Number of recursive dependencies: 31
 
-Run `cloud_details(, "ipmr")` for more info
+Run `cloud_details(, "icecream")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking tests ... ERROR
+    ```
+      Running ‘testthat.R’
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      > library(icecream)
+      > 
+      > test_check("icecream")
+      i ic| <env: global>
+      ══ Failed tests ════════════════════════════════════════════════════════════════
+      ── Failure (test-icecream.R:76:3): source file is correctly identified ─────────
+      `f()` did not throw the expected message.
+      Backtrace:
+          ▆
+       1. └─testthat::expect_message(f(), regexp = "my_name_is_inigo_montoya") at test-icecream.R:76:2
+       2.   └─testthat:::expect_condition_matching(...)
+      
+      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 19 ]
+      Error: Test failures
+      Execution halted
+    ```
+
+# lares
+
+<details>
+
+* Version: 5.0.2
+* GitHub: https://github.com/laresbernardo/lares
+* Source code: https://github.com/cran/lares
+* Date/Publication: 2021-09-10 13:40:02 UTC
+* Number of recursive dependencies: 142
+
+Run `cloud_details(, "lares")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘lares-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: distr
+    > ### Title: Compare Variables with their Distributions
+    > ### Aliases: distr
+    > 
+    > ### ** Examples
+    > 
+    > Sys.unsetenv("LARES_FONT") # Temporal
+    ...
+    > dft %>% distr(Survived, Sex)
+    Error in `stop_fake_data_subset()`: Can't subset `.data` outside of a data mask context.
+    Backtrace:
+        ▆
+     1. ├─dft %>% distr(Survived, Sex)
+     2. └─lares::distr(., Survived, Sex)
+     3.   ├─<unknown>
+     4.   └─rlang:::`$.rlang_fake_data_pronoun`(.data, "value")
+     5.     └─rlang:::stop_fake_data_subset()
+    Execution halted
+    ```
+
+# nofrills
+
+<details>
+
+* Version: 0.3.1
+* GitHub: https://github.com/egnha/nofrills
+* Source code: https://github.com/cran/nofrills
+* Date/Publication: 2021-01-08 19:50:05 UTC
+* Number of recursive dependencies: 35
+
+Run `cloud_details(, "nofrills")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘nofrills-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: as_fn
+    > ### Title: Abbreviated functional arguments
+    > ### Aliases: as_fn
+    > 
+    > ### ** Examples
+    > 
+    > call_fn <- function(.f, x) {
+    ...
+    Backtrace:
+        ▆
+     1. ├─global call_fn(.(. ~ (!!f)(.)^2), 1)
+     2. │ └─nofrills::as_fn(.f)
+     3. │   └─nofrills:::interpret_fn(x, match.fun(.f), parent.frame(2))
+     4. │     └─base::eval(x, env)
+     5. │       └─base::eval(x, env)
+     6. └─nofrills `<fn>`(. ~ (!!f)(.)^2)
+     7.   └─nofrills function_(d$args, d$body, ..env)
+    Execution halted
+    ```
+
+*   checking tests ... ERROR
+    ```
+      Running ‘testthat.R’
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      > test_check("nofrills")
+      ══ Failed tests ════════════════════════════════════════════════════════════════
+      ── Error (test-functions.R:48:3): body can be a closure ────────────────────────
+      Error: Body must be an expression or closure.
+      Backtrace:
+          ▆
+       1. ├─testthat::expect_equal(fn(x ~ function(y) x + y), foo) at test-functions.R:48:2
+       2. │ └─testthat::quasi_label(enquo(object), label, arg = "object")
+       3. │   └─rlang::eval_bare(expr, quo_get_env(quo))
+       4. └─nofrills::fn(x ~ function(y) x + y)
+       5.   └─nofrills function_(d$args, d$body, ..env)
+      
+      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 107 ]
+      Error: Test failures
+      Execution halted
+    ```
+
+# nomnoml
+
+<details>
+
+* Version: 0.2.3
+* GitHub: https://github.com/rstudio/nomnoml
+* Source code: https://github.com/cran/nomnoml
+* Date/Publication: 2020-12-15 10:10:02 UTC
+* Number of recursive dependencies: 81
+
+Run `cloud_details(, "nomnoml")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking loading without being on the library search path ... WARNING
+    ```
+    Error: package or namespace load failed for ‘nomnoml’:
+     .onAttach failed in attachNamespace() for 'nomnoml', details:
+      call: utils::packageVersion("cli")
+      error: there is no package called ‘cli’
+    Execution halted
+    
+    It looks like this package has a loading problem when not on .libPaths:
+    see the messages for details.
+    ```
+
+# partition
+
+<details>
+
+* Version: 0.1.3
+* GitHub: https://github.com/USCbiostats/partition
+* Source code: https://github.com/cran/partition
+* Date/Publication: 2021-01-07 22:30:03 UTC
+* Number of recursive dependencies: 84
+
+Run `cloud_details(, "partition")` for more info
 
 </details>
 
@@ -236,19 +754,19 @@ Run `cloud_details(, "ipmr")` for more info
       Running ‘testthat.R’
     Running the tests in ‘tests/testthat.R’ failed.
     Last 13 lines of output:
-      Error: missing value where TRUE/FALSE needed
+      `attr(attr(expected$direct, 'body'), '.Environment')` is <env:0x558d00a55640>
+      
+      `attr(attr(actual$measure, 'body'), '.Environment')` is <env:0x558cfdbf8550>
+      `attr(attr(expected$measure, 'body'), '.Environment')` is <env:0x558d00a55640>
+      
+      `attr(attr(actual$reduce, 'body'), '.Environment')` is <env:0x558cfdbf8550>
+      `attr(attr(expected$reduce, 'body'), '.Environment')` is <env:0x558d00a55640>
       Backtrace:
           ▆
-       1. ├─`%>%`(...)
-       2. ├─ipmr::make_ipm(...)
-       3. └─ipmr:::make_ipm.simple_dd_stoch_param(...)
-       4.   └─ipmr:::.make_sub_kernel_simple_lazy(...)
-       5.     └─ipmr:::.make_sub_kernel_simple_lazy_di(proto, main_env, return_envs)
-       6.       └─ipmr:::.make_sub_kernel_simple(proto, env_list, return_envs = return_envs)
-       7.         └─ipmr:::.extract_kernel_from_eval_env(...)
-       8.           └─ipmr:::.valid_it_mat(out, kernel_id)
+       1. └─partition expect_identical_partition(search_k, above_k) at test-misc-partitioner-arguments.R:43:2
+       2.   └─testthat::expect_equal(.x$partitioner, .y$partitioner, ignore_function_env = TRUE) at test-misc-partitioner-arguments.R:8:4
       
-      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 266 ]
+      [ FAIL 2 | WARN 0 | SKIP 0 | PASS 162 ]
       Error: Test failures
       Execution halted
     ```
@@ -257,10 +775,10 @@ Run `cloud_details(, "ipmr")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.1Mb
+      installed size is 11.0Mb
       sub-directories of 1Mb or more:
-        doc    1.5Mb
-        libs   2.5Mb
+        doc    1.2Mb
+        libs   8.6Mb
     ```
 
 # PVplr
@@ -316,11 +834,11 @@ Run `cloud_details(, "PVplr")` for more info
 
 <details>
 
-* Version: 0.4.0
+* Version: 0.5.0
 * GitHub: https://github.com/eth-mds/ricu
 * Source code: https://github.com/cran/ricu
-* Date/Publication: 2021-05-20 00:30:15 UTC
-* Number of recursive dependencies: 98
+* Date/Publication: 2021-08-18 10:00:02 UTC
+* Number of recursive dependencies: 107
 
 Run `cloud_details(, "ricu")` for more info
 
@@ -333,19 +851,19 @@ Run `cloud_details(, "ricu")` for more info
       Running ‘testthat.R’
     Running the tests in ‘tests/testthat.R’ failed.
     Last 13 lines of output:
-        2. │ └─testthat:::expect_condition_matching(...)
-        3. │   └─testthat:::quasi_capture(...)
-        4. │     ├─testthat:::.capture(...)
-        5. │     │ └─base::withCallingHandlers(...)
-        6. │     └─rlang::eval_bare(quo_get_expr(.quo), quo_get_env(.quo))
-        7. ├─ricu::as_ts_tbl(dat, index_var = "d")
-        8. └─ricu:::as_ts_tbl.default(dat, index_var = "d")
-        9.   ├─ricu::as_ts_tbl(...)
-       10.   └─ricu:::as_ts_tbl.data.table(...)
-       11.     └─ricu:::new_ts_tbl(x, id_vars, index_var, interval, by_ref = by_ref)
-       12.       └─ricu:::assert_that(is.string(index_var), has_time_cols(x, index_var))
+       14.                     └─ricu `<fn>`(...)
+       15.                       ├─ricu::init_itm(res, ...)
+       16.                       └─ricu:::init_itm.hrd_itm(res, ...)
+       17.                         ├─ricu::load_id(...)
+       18.                         │ └─base::lapply(as.list(mcal)[-1L], eval, parent.frame())
+       19.                         │   └─base FUN(X[[i]], ...)
+       20.                         │     └─base FUN(X[[i]], ...)
+       21.                         ├─.data$id %in% .env$ids
+       22.                         ├─id
+       23.                         └─rlang:::`$.rlang_fake_data_pronoun`(.data, id)
+       24.                           └─rlang:::stop_fake_data_subset()
       
-      [ FAIL 2 | WARN 0 | SKIP 6 | PASS 558 ]
+      [ FAIL 1 | WARN 0 | SKIP 8 | PASS 591 ]
       Error: Test failures
       Execution halted
     ```
@@ -401,7 +919,7 @@ Run `cloud_details(, "sketch")` for more info
 * GitHub: https://github.com/CharlieCarpenter/tidyMicro
 * Source code: https://github.com/cran/tidyMicro
 * Date/Publication: 2020-09-13 17:10:03 UTC
-* Number of recursive dependencies: 187
+* Number of recursive dependencies: 178
 
 Run `cloud_details(, "tidyMicro")` for more info
 
@@ -466,17 +984,17 @@ Run `cloud_details(, "tidyMicro")` for more info
       All declared Imports should be used.
     ```
 
-# unpivotr
+# tidyquery
 
 <details>
 
-* Version: 0.6.1
-* GitHub: https://github.com/nacnudus/unpivotr
-* Source code: https://github.com/cran/unpivotr
-* Date/Publication: 2020-08-03 22:50:02 UTC
-* Number of recursive dependencies: 79
+* Version: 0.2.2
+* GitHub: https://github.com/ianmcook/tidyquery
+* Source code: https://github.com/cran/tidyquery
+* Date/Publication: 2021-02-06 07:30:04 UTC
+* Number of recursive dependencies: 64
 
-Run `cloud_details(, "unpivotr")` for more info
+Run `cloud_details(, "tidyquery")` for more info
 
 </details>
 
@@ -487,19 +1005,136 @@ Run `cloud_details(, "unpivotr")` for more info
       Running ‘testthat.R’
     Running the tests in ‘tests/testthat.R’ failed.
     Last 13 lines of output:
-        1. ├─testthat::expect_true(...) test-tibble.R:24:2
-        2. │ └─testthat::quasi_label(enquo(object), label, arg = "object")
-        3. │   └─rlang::eval_bare(expr, quo_get_env(quo))
-        4. ├─tibble::is_tibble(enhead(data_cells, col_headers$`1`, "ABOVE"))
-        5. ├─unpivotr::enhead(data_cells, col_headers$`1`, "ABOVE")
-        6. └─unpivotr:::enhead.data.frame(data_cells, col_headers$`1`, "ABOVE")
-        7.   ├─base::do.call(direction, list(data_cells, header_cells))
-        8.   └─unpivotr:::`up-ish`(...)
-        9.     └─unpivotr:::side_join(data_cells, header_cells, "up-left", drop)
-       10.       └─rlang::as_function(corner)
-       11.         └─base::get(x, envir = env, mode = "function")
+       11. ├─dplyr fun(., ...)
+       12. └─dtplyr:::filter.dtplyr_step(., ...)
+       13.   └─dtplyr:::step_subset_i(.data, i)
+       14.     └─dtplyr:::step_subset(parent, i = i)
+       15.       └─base::stopifnot(is.null(i) || is_expression(i) || is_step(i))
+      ── Failure (test-errors.R:96:3): query() fails on two very long expressions with no aliases ──
+      `query("SELECT 1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1, 1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2 FROM games")` did not throw the expected error.
+      Backtrace:
+          ▆
+       1. └─testthat::expect_error(...) at test-errors.R:96:2
+       2.   └─testthat:::expect_condition_matching(...)
       
-      [ FAIL 3 | WARN 0 | SKIP 0 | PASS 237 ]
+      [ FAIL 2 | WARN 0 | SKIP 1 | PASS 216 ]
+      Error: Test failures
+      Execution halted
+    ```
+
+# tidytext
+
+<details>
+
+* Version: 0.3.1
+* GitHub: https://github.com/juliasilge/tidytext
+* Source code: https://github.com/cran/tidytext
+* Date/Publication: 2021-04-10 18:10:02 UTC
+* Number of recursive dependencies: 123
+
+Run `cloud_details(, "tidytext")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking tests ... ERROR
+    ```
+      Running ‘testthat.R’
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      Actual message: "`class` must be a character vector."
+      Backtrace:
+          ▆
+       1. ├─testthat::expect_error(...) at test-unnest-tokens.R:206:2
+       2. │ └─testthat:::quasi_capture(...)
+       3. │   ├─testthat .capture(...)
+       4. │   │ └─base::withCallingHandlers(...)
+       5. │   └─rlang::eval_bare(quo_get_expr(.quo), quo_get_env(.quo))
+       6. └─tidytext::unnest_tokens(...)
+       7.   └─rlang::abort(...)
+       8.     └─rlang:::validate_signal_args(message, class, call, .subclass)
+      
+      [ FAIL 2 | WARN 0 | SKIP 2 | PASS 311 ]
+      Error: Test failures
+      Execution halted
+    ```
+
+# Tplyr
+
+<details>
+
+* Version: 0.4.1
+* GitHub: https://github.com/atorus-research/Tplyr
+* Source code: https://github.com/cran/Tplyr
+* Date/Publication: 2021-07-13 16:20:02 UTC
+* Number of recursive dependencies: 116
+
+Run `cloud_details(, "Tplyr")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking tests ... ERROR
+    ```
+      Running ‘testthat.R’
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      Expected match: "Argument `group_name` in function `add_total_group` must be character."
+      Actual message: "Argument `group_name` must be character. Instead a class of \"numeric\" was passed."
+      Backtrace:
+          ▆
+       1. ├─testthat::expect_error(add_total_group(t, 1), "Argument `group_name` in function `add_total_group` must be character.") at test-pop_data.R:17:2
+       2. │ └─testthat:::quasi_capture(...)
+       3. │   ├─testthat .capture(...)
+       4. │   │ └─base::withCallingHandlers(...)
+       5. │   └─rlang::eval_bare(quo_get_expr(.quo), quo_get_env(.quo))
+       6. └─Tplyr::add_total_group(t, 1)
+       7.   └─Tplyr:::assert_has_class(group_name, "character")
+      
+      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 685 ]
+      Error: Test failures
+      Execution halted
+    ```
+
+# winch
+
+<details>
+
+* Version: 0.0.6
+* GitHub: https://github.com/r-prof/winch
+* Source code: https://github.com/cran/winch
+* Date/Publication: 2020-11-16 07:30:03 UTC
+* Number of recursive dependencies: 54
+
+Run `cloud_details(, "winch")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking tests ... ERROR
+    ```
+      Running ‘example0.R’
+      Running ‘example1.R’
+      Running ‘example2.R’
+      Running ‘example3.R’
+      Running ‘example4.R’
+      Running ‘example5.R’
+      Running ‘example6.R’
+      Running ‘example7.R’
+      Running ‘example8.R’
+      Running ‘testthat.R’
+    ...
+      ══ Failed tests ════════════════════════════════════════════════════════════════
+      ── Failure (test-add_trace_back.R:27:3): traceback changed if native code ──────
+      any(grepl("/winch", foo_baz$calls)) is not TRUE
+      
+      `actual`:   FALSE
+      `expected`: TRUE 
+      
+      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 6 ]
       Error: Test failures
       Execution halted
     ```

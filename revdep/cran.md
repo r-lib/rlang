@@ -1,9 +1,9 @@
 ## revdepcheck results
 
-We checked 1172 reverse dependencies (1165 from CRAN + 7 from Bioconductor), comparing R CMD check results across CRAN and dev versions of this package.
+We checked 1272 reverse dependencies (1260 from CRAN + 12 from Bioconductor), comparing R CMD check results across CRAN and dev versions of this package.
 
- * We saw 10 new problems
- * We failed to check 7 packages
+ * We saw 25 new problems
+ * We failed to check 9 packages
 
 Issues with CRAN packages are summarised below.
 
@@ -13,18 +13,57 @@ Issues with CRAN packages are summarised below.
 * arrow
   checking tests ... ERROR
 
+* assemblerr
+  checking dependencies in R code ... NOTE
+
+* autoharp
+  checking tests ... ERROR
+
+* bignum
+  checking examples ... ERROR
+  checking tests ... ERROR
+
 * catchr
   checking examples ... ERROR
   checking tests ... ERROR
 
-* ecochange
+* cmstatr
+  checking tests ... ERROR
+
+* covTestR
   checking examples ... ERROR
+
+* dtplyr
+  checking examples ... ERROR
+  checking tests ... ERROR
+
+* fabricatr
+  checking tests ... ERROR
+
+* gestalt
+  checking tests ... ERROR
+
+* ggh4x
+  checking tests ... ERROR
 
 * heemod
   checking examples ... ERROR
   checking tests ... ERROR
 
-* ipmr
+* icecream
+  checking tests ... ERROR
+
+* lares
+  checking examples ... ERROR
+
+* nofrills
+  checking examples ... ERROR
+  checking tests ... ERROR
+
+* nomnoml
+  checking loading without being on the library search path ... WARNING
+
+* partition
   checking tests ... ERROR
 
 * PVplr
@@ -40,15 +79,26 @@ Issues with CRAN packages are summarised below.
   checking examples ... ERROR
   checking tests ... ERROR
 
-* unpivotr
+* tidyquery
+  checking tests ... ERROR
+
+* tidytext
+  checking tests ... ERROR
+
+* Tplyr
+  checking tests ... ERROR
+
+* winch
   checking tests ... ERROR
 
 ### Failed to check
 
-* apisensr  (NA)
-* metagam   (NA)
-* rabhit    (NA)
-* scoper    (NA)
-* SynthETIC (NA)
-* tigger    (NA)
-* trackr    (NA)
+* apisensr   (NA)
+* bayesdfa   (NA)
+* metagam    (NA)
+* OncoBayes2 (NA)
+* rabhit     (NA)
+* scoper     (NA)
+* SynthETIC  (NA)
+* tigger     (NA)
+* trackr     (NA)
