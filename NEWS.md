@@ -35,6 +35,8 @@
 
 * `call_fn()` is deprecated.
 
+* `friendly_type()` is deprecated and `as_pairlist()` is defunct.
+
 
 ## Features and bugfixes
 
@@ -320,8 +322,6 @@
 
 * `friendly_type_of()` (from `compat-friendly-type.R`) now supports
   matrices and arrays (#141).
-
-* `friendly_type()` is deprecated and `as_pairlist()` is defunct.
 
 * Updated `env_print()` to use `format_error_bullets()` and consistent
   tidyverse style (#1154).
