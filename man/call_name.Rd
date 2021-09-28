@@ -50,8 +50,10 @@ prevent this, always check that that an input is a simple call
 before calling them:\preformatted{x <- quote(foo::bar)
 y <- quote(foo::bar())
 
-try(call_name(x))
-#> Error in `call_name(): `call` must be a quoted call.
+call_name(x)
+#> Error in `call_name(): `call` must be a simple call.
+#> ℹ Calls to `::` or `:::` are not simple calls.
+#> ℹ See `?is_call_simple`.
 
 (if (is_call_simple(x)) call_name(x))
 #> NULL

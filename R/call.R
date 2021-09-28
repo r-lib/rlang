@@ -711,6 +711,14 @@ abort_call_input_type <- function(arg, call = caller_env()) {
     call = call
   )
 }
+abort_simple_call_input_type <- function(arg, fn, call = caller_env()) {
+  msg <- c(
+    sprintf("%s must be a simple call.", format_arg(arg)),
+    i = "Calls to `::` or `:::` are not simple calls.",
+    i = sprintf("See %s.", format_code("?is_call_simple"))
+  )
+  abort(msg, call = call)
+}
 
 #' Match supplied arguments to function definition
 #'
@@ -856,8 +864,10 @@ call_match <- function(call = NULL,
 #' x <- quote(foo::bar)
 #' y <- quote(foo::bar())
 #'
-#' try(call_name(x))
-#' #> Error in `call_name(): `call` must be a quoted call.
+#' call_name(x)
+#' #> Error in `call_name(): `call` must be a simple call.
+#' #> ℹ Calls to `::` or `:::` are not simple calls.
+#' #> ℹ See `?is_call_simple`.
 #'
 #' (if (is_call_simple(x)) call_name(x))
 #' #> NULL
@@ -902,8 +912,11 @@ call_name <- function(call) {
     call <- get_expr(call)
   }
 
-  if (!is_call(call) || is_call(call, c("::", ":::"))) {
+  if (!is_call(call)) {
     abort_call_input_type("call")
+  }
+  if (is_call(call, c("::", ":::"))) {
+    abort_simple_call_input_type("call")
   }
 
   switch(call_type(call),
@@ -919,8 +932,11 @@ call_ns <- function(call) {
     call <- get_expr(call)
   }
 
-  if (!is_call(call) || is_call(call, c("::", ":::"))) {
+  if (!is_call(call)) {
     abort_call_input_type("call")
+  }
+  if (is_call(call, c("::", ":::"))) {
+    abort_simple_call_input_type("call")
   }
 
   head <- call[[1]]
