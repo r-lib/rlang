@@ -284,9 +284,15 @@ poke_attributes <- function(x, attrs) {
 #' @export
 zap_srcref <- function(x) {
   if (is_closure(x)) {
+    # `body<-` zaps attributes
+    old <- attributes(x)
+
     body(x) <- zap_srcref(body(x))
+    attributes(x) <- old[names(old) != "srcref"]
+
     return(x)
   }
+
   if (!is_call(x)) {
     return(x)
   }

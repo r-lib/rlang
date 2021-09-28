@@ -38,6 +38,8 @@
 
 ## Features and bugfixes
 
+* `zap_srcref()` now preserves attributes of closures.
+
 * `on_load()` and `run_on_load()` lets you run `.onLoad()` expressions
   from any file of your package. `on_package_load()` runs expressions
   when another package is loaded. (#1284)

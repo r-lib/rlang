@@ -106,6 +106,16 @@ test_that("zap_srcref() works with quosures", {
   expect_null(attributes(quo_get_expr(quo)))
 })
 
+test_that("zap_srcref() preserves attributes", {
+  with_srcref(
+    "fn <- structure(function() NULL, bar = TRUE)"
+  )
+
+  out <- zap_srcref(fn)
+  expect_equal(attributes(out), list(bar = TRUE))
+  expect_null(attributes(body(out)))
+})
+
 test_that("can zap_srcref() on functions with `[[` methods", {
   local_methods(
     `[[.rlang:::not_subsettable` = function(...) stop("Can't subset!"),
