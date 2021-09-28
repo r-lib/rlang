@@ -847,6 +847,25 @@ call_match <- function(call = NULL,
 #' 2. If `is_call_simple(x, ns = TRUE)` returns `TRUE`, `call_ns()`
 #'    returns a string. Otherwise it returns `NULL`.
 #'
+#' Note that `call_name()` and `call_ns()` do not consider
+#' `quote(foo::bar)` to be a function call and will throw an error. To
+#' prevent this, always check that that an input is a simple call
+#' before calling them:
+#'
+#' ```
+#' x <- quote(foo::bar)
+#' y <- quote(foo::bar())
+#'
+#' try(call_name(x))
+#' #> Error in `call_name(): `call` must be a quoted call.
+#'
+#' (if (is_call_simple(x)) call_name(x))
+#' #> NULL
+#'
+#' (if (is_call_simple(y)) call_name(y))
+#' #> [1] "bar"
+#' ```
+#'
 #' @param call A defused call.
 #' @return The function name or namespace as a string, or `NULL` if
 #'   the call is not named or namespaced.
