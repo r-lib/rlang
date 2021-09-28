@@ -1,12 +1,3 @@
-structure2 <- function(.x, ...) {
-  exec("structure", .Data = .x, ...)
-}
-
-set_class <- function(x, class) {
-  attr(x, "class") <- class
-  x
-}
-
 #' Is object named?
 #'
 #' @description

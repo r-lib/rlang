@@ -62,31 +62,31 @@ test_that("can modify environment", {
 test_that("setting RHS preserves attributes", {
   attrs <- list(foo = "bar", class = "formula")
 
-  f <- structure2(~foo, !!!attrs)
+  f <- inject(structure(~foo, !!!attrs))
   f_rhs(f) <- quote(bar)
 
-  expect_identical(f, structure2(~bar, !!!attrs))
+  expect_identical(f, inject(structure(~bar, !!!attrs)))
 })
 
 test_that("setting LHS preserves attributes", {
   attrs <- list(foo = "bar", class = "formula")
 
-  f <- structure2(~foo, !!!attrs)
+  f <- inject(structure(~foo, !!!attrs))
   f_lhs(f) <- quote(bar)
 
-  expect_identical(f, structure2(bar ~ foo, !!!attrs))
+  expect_identical(f, inject(structure(bar ~ foo, !!!attrs)))
 
   f_lhs(f) <- quote(baz)
-  expect_identical(f, structure2(baz ~ foo, !!!attrs))
+  expect_identical(f, inject(structure(baz ~ foo, !!!attrs)))
 })
 
 test_that("setting environment preserves attributes", {
   attrs <- list(foo = "bar", class = "formula")
   env <- env()
 
-  f <- structure2(~foo, !!!attrs)
+  f <- inject(structure(~foo, !!!attrs))
   f_env(f) <- env
-  expect_identical(f, structure2(~foo, !!!attrs, .Environment = env))
+  expect_identical(f, inject(structure(~foo, !!!attrs, .Environment = env)))
 })
 
 test_that("unevaluated tilde calls are formulas", {
