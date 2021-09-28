@@ -172,6 +172,7 @@
 <li><p>For consistency with the cli package, <code><a href="../reference/abort.html">abort(c("Foo", "Bar"))</a></code> no longer interprets <code>"Bar"</code> as a bullet and it gets displayed as an unprefixed line. You need to be explicit by supplying the <code>"*"</code> specifier: <code><a href="../reference/abort.html">abort(c("Foo", "*" = "Bar"))</a></code>.</p></li>
 <li><p><code><a href="../reference/with_handlers.html">with_handlers()</a></code> is deprecated.</p></li>
 <li><p><code><a href="../reference/call_fn.html">call_fn()</a></code> is deprecated.</p></li>
+<li><p><code><a href="../reference/friendly_type.html">friendly_type()</a></code> is deprecated and <code>as_pairlist()</code> is defunct.</p></li>
 </ul>
 </div>
 <div id="features-and-bugfixes" class="section level2">
@@ -277,7 +278,6 @@
 <li><p><code><a href="../reference/is_installed.html">is_installed()</a></code> and <code><a href="../reference/is_installed.html">check_installed()</a></code> gain a <code>version</code> argument (<a href='https://github.com/r-lib/rlang/issues/1165'>#1165</a>).</p></li>
 <li><p><code><a href="../reference/expr_print.html">expr_deparse()</a></code> now properly escapes <code>\</code> characters in symbols, argument names, and vector names (<a href='https://github.com/r-lib/rlang/issues/1160'>#1160</a>).</p></li>
 <li><p><code>friendly_type_of()</code> (from <code>compat-friendly-type.R</code>) now supports matrices and arrays (<a href='https://github.com/r-lib/rlang/issues/141'>#141</a>).</p></li>
-<li><p><code><a href="../reference/friendly_type.html">friendly_type()</a></code> is deprecated and <code>as_pairlist()</code> is defunct.</p></li>
 <li><p>Updated <code><a href="../reference/env_print.html">env_print()</a></code> to use <code><a href="../reference/format_error_bullets.html">format_error_bullets()</a></code> and consistent tidyverse style (<a href='https://github.com/r-lib/rlang/issues/1154'>#1154</a>).</p></li>
 <li><p><code><a href="../reference/set_names.html">set_names()</a></code> now recycles names of size 1 to the size of the input, following the tidyverse recycling rules.</p></li>
 <li>
