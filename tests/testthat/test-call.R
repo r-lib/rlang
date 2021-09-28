@@ -572,10 +572,8 @@ test_that("is_call_simple() works", {
 })
 
 test_that("call_name() and call_ns() detect `::` calls (#670)", {
-  expect_snapshot({
-    (expect_error(call_name(quote(foo::bar))))
-    (expect_error(call_name(quote(foo:::bar))))
-    (expect_error(call_ns(quote(foo::bar))))
-    (expect_error(call_ns(quote(foo:::bar))))
-  })
+  expect_null(call_name(quote(foo::bar)))
+  expect_null(call_name(quote(foo:::bar)))
+  expect_null(call_ns(quote(foo::bar)))
+  expect_null(call_ns(quote(foo:::bar)))
 })

@@ -844,7 +844,7 @@ call_match <- function(call = NULL,
 #' complex calls.
 #'
 #' * Simple calls: `foo()`, `bar::foo()`.
-#' * Complex calls: `foo()()`, `foo$bar()`, `(function() NULL)()`.
+#' * Complex calls: `foo()()`, `bar::foo`, `foo$bar()`, `(function() NULL)()`.
 #'
 #' The `is_call_simple()` predicate helps you determine whether a call
 #' is simple. There are two invariants you can count on:
@@ -854,27 +854,6 @@ call_match <- function(call = NULL,
 #'
 #' 2. If `is_call_simple(x, ns = TRUE)` returns `TRUE`, `call_ns()`
 #'    returns a string. Otherwise it returns `NULL`.
-#'
-#' Note that `call_name()` and `call_ns()` do not consider
-#' `quote(foo::bar)` to be a function call and will throw an error. To
-#' prevent this, always check that that an input is a simple call
-#' before calling them:
-#'
-#' ```
-#' x <- quote(foo::bar)
-#' y <- quote(foo::bar())
-#'
-#' call_name(x)
-#' #> Error in `call_name(): `call` must be a simple call.
-#' #> ℹ Calls to `::` or `:::` are not simple calls.
-#' #> ℹ See `?is_call_simple`.
-#'
-#' (if (is_call_simple(x)) call_name(x))
-#' #> NULL
-#'
-#' (if (is_call_simple(y)) call_name(y))
-#' #> [1] "bar"
-#' ```
 #'
 #' @param call A defused call.
 #' @return The function name or namespace as a string, or `NULL` if
@@ -918,7 +897,7 @@ call_name <- function(call) {
     abort_call_input_type("call")
   }
   if (is_call(call, c("::", ":::"))) {
-    abort_simple_call_input_type("call")
+    return(NULL)
   }
 
   switch(call_type(call),
@@ -938,9 +917,6 @@ call_ns <- function(call) {
 
   if (!is_call(call)) {
     abort_call_input_type("call")
-  }
-  if (is_call(call, c("::", ":::"))) {
-    abort_simple_call_input_type("call")
   }
 
   head <- call[[1]]

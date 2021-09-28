@@ -48,8 +48,8 @@
 
 * `arg_exclusive()` checks that only one argument of a set is supplied (#1261).
 
-* `call_name()` and `call_ns()` now fail with calls of the form
-  `foo::bar` (#670).
+* `call_name()` and `call_ns()` now return `NULL` with calls of the
+  form `foo::bar` (#670).
 
 * The new predicate `is_call_simple()` indicates whether a call has a
   name and/or a namespace. It provides two invariants: 

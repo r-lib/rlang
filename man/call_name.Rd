@@ -32,7 +32,7 @@ namespace of \emph{simple} calls as a string. They return \code{NULL} for
 complex calls.
 \itemize{
 \item Simple calls: \code{foo()}, \code{bar::foo()}.
-\item Complex calls: \code{foo()()}, \code{foo$bar()}, \code{(function() NULL)()}.
+\item Complex calls: \code{foo()()}, \code{bar::foo}, \code{foo$bar()}, \code{(function() NULL)()}.
 }
 
 The \code{is_call_simple()} predicate helps you determine whether a call
@@ -42,24 +42,6 @@ is simple. There are two invariants you can count on:
 string. Otherwise it returns \code{NULL}.
 \item If \code{is_call_simple(x, ns = TRUE)} returns \code{TRUE}, \code{call_ns()}
 returns a string. Otherwise it returns \code{NULL}.
-}
-
-Note that \code{call_name()} and \code{call_ns()} do not consider
-\code{quote(foo::bar)} to be a function call and will throw an error. To
-prevent this, always check that that an input is a simple call
-before calling them:\preformatted{x <- quote(foo::bar)
-y <- quote(foo::bar())
-
-call_name(x)
-#> Error in `call_name(): `call` must be a simple call.
-#> ℹ Calls to `::` or `:::` are not simple calls.
-#> ℹ See `?is_call_simple`.
-
-(if (is_call_simple(x)) call_name(x))
-#> NULL
-
-(if (is_call_simple(y)) call_name(y))
-#> [1] "bar"
 }
 }
 \examples{
