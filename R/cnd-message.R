@@ -165,7 +165,7 @@ cnd_prefixed_message <- function(cnd, parent = FALSE) {
     prefix <- sprintf("Caused by %s", type)
     indent <- TRUE
   } else {
-    prefix <- capitalise(type)
+    prefix <- col_red(capitalise(type))
     indent <- is_condition(cnd$parent)
   }
 
