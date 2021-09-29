@@ -71,4 +71,11 @@ void r_attrib_poke_names(r_obj* x, r_obj* nms) {
 bool r_is_named(r_obj* x);
 
 
+#define r_attrib_poke(X, SYM, VALUE) Rf_setAttrib(X, SYM, VALUE)
+#define r_attrib_poke_class(X, VALUE) Rf_setAttrib(X, r_syms.class, VALUE)
+#define r_attrib_poke_dim(X, VALUE) Rf_setAttrib(X, r_syms.dim, VALUE)
+#define r_attrib_poke_dim_names(X, VALUE) Rf_setAttrib(X, r_syms.dim_names, VALUE)
+#define r_attrib_poke_names(X, VALUE) Rf_setAttrib(X, r_syms.names, VALUE)
+
+
 #endif

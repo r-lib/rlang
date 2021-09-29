@@ -7,10 +7,7 @@ struct r_dict* p_precious_dict = NULL;
 
 #include "decl/obj-decl.h"
 
-
-void r_preserve(r_obj* x) {
-  KEEP(x);
-
+void (r_preserve)(r_obj* x) {
   r_obj* stack = r_dict_get0(p_precious_dict, x);
   if (!stack) {
     stack = KEEP(new_precious_stack(x));
@@ -19,10 +16,9 @@ void r_preserve(r_obj* x) {
   }
 
   push_precious(stack);
-  FREE(1);
 }
 
-void r_unpreserve(r_obj* x) {
+void (r_unpreserve)(r_obj* x) {
   r_obj* stack = r_dict_get0(p_precious_dict, x);
   if (!stack) {
     r_abort("Can't unpreserve `x` because it was not being preserved.");
@@ -37,7 +33,6 @@ void r_unpreserve(r_obj* x) {
     r_dict_del(p_precious_dict, x);
   }
 }
-
 
 static
 r_obj* new_precious_stack(r_obj* x) {

@@ -82,12 +82,11 @@ void r_env_unbind(r_obj* env, r_obj* sym) {
 #endif
 }
 
-static inline
-void r_env_poke(r_obj* env, r_obj* sym, r_obj* value) {
-  KEEP(value);
-  Rf_defineVar(sym, value, env);
-  FREE(1);
-}
+#define r_env_poke(ENV, SYM, VALUE)             \
+  (Rf_defineVar(SYM, KEEP(VALUE), ENV),         \
+   FREE(1),                                     \
+   (void) NULL) 
+
 void r_env_poke_lazy(r_obj* env, r_obj* sym, r_obj* expr, r_obj* eval_env);
 
 static inline

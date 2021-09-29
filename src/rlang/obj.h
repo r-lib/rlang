@@ -17,6 +17,7 @@ enum r_type r_typeof(r_obj* x) {
 void r_preserve(r_obj* x);
 void r_unpreserve(r_obj* x);
 
+
 static inline
 void r_mark_shared(r_obj* x) {
   MARK_NOT_MUTABLE(x);

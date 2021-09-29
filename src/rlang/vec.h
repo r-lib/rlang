@@ -164,6 +164,8 @@ void r_list_poke(r_obj* x, r_ssize i, r_obj* y) {
   SET_VECTOR_ELT(x, i, y);
 }
 
+#define r_chr_poke(X, I, Y) SET_STRING_ELT(X, I, Y)
+#define r_list_poke(X, I, Y) SET_VECTOR_ELT(X, I, Y)
 
 static inline
 r_obj* r_alloc_vector(enum r_type type, r_ssize n) {
