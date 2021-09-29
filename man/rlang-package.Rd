@@ -6,9 +6,7 @@
 \alias{rlang-package}
 \title{rlang: Functions for Base Types and Core R and 'Tidyverse' Features}
 \description{
-A toolbox for working with base types, core R features
-  like the condition system, and core 'Tidyverse' features like tidy
-  evaluation.
+A toolbox for working with base types, core R features like the condition system, and core 'Tidyverse' features like tidy evaluation.
 }
 \seealso{
 Useful links:
