@@ -569,6 +569,8 @@ test_that("is_call_simple() works", {
   expect_false(is_call_simple(quote(bar::foo()), ns = FALSE))
 
   expect_true(is_call_simple(~ bar::foo(), ns = TRUE))
+
+  expect_false(is_call_simple(quo()))
 })
 
 test_that("call_name() and call_ns() detect `::` calls (#670)", {

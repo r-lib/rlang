@@ -941,7 +941,7 @@ is_call_simple <- function(x, ns = NULL) {
     x <- get_expr(x)
   }
 
-  if (!is_call(x)) {
+  if (!is_call(maybe_missing(x))) {
     return(FALSE)
   }
 
