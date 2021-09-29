@@ -44,7 +44,7 @@
 namespace of simple calls as a string. They return NULL for
 complex calls.
 Simple calls: foo(), bar::foo().
-Complex calls: foo()(), foo$bar(), (function() NULL)().
+Complex calls: foo()(), bar::foo, foo$bar(), (function() NULL)().
 
 
 The is_call_simple() predicate helps you determine whether a call
@@ -53,24 +53,6 @@ If is_call_simple(x) returns TRUE, call_name(x) returns a
 string. Otherwise it returns NULL.
 If is_call_simple(x, ns = TRUE) returns TRUE, call_ns()
 returns a string. Otherwise it returns NULL.
-
-
-Note that call_name() and call_ns() do not consider
-quote(foo::bar) to be a function call and will throw an error. To
-prevent this, always check that that an input is a simple call
-before calling them:x &amp;lt;- quote(foo::bar)
-y &amp;lt;- quote(foo::bar())
-
-call_name(x)
-#&amp;gt; Error in `call_name(): `call` must be a simple call.
-#&amp;gt; ℹ Calls to `::` or `:::` are not simple calls.
-#&amp;gt; ℹ See `?is_call_simple`.
-
-(if (is_call_simple(x)) call_name(x))
-#&amp;gt; NULL
-
-(if (is_call_simple(y)) call_name(y))
-#&amp;gt; [1] &quot;bar&quot;
 
 " />
 
@@ -192,7 +174,7 @@ call_name(x)
 namespace of <em>simple</em> calls as a string. They return <code>NULL</code> for
 complex calls.</p><ul>
 <li><p>Simple calls: <code>foo()</code>, <code>bar::foo()</code>.</p></li>
-<li><p>Complex calls: <code>foo()()</code>, <code>foo$bar()</code>, <code>(function() NULL)()</code>.</p></li>
+<li><p>Complex calls: <code>foo()()</code>, <code>bar::foo</code>, <code>foo$bar()</code>, <code>(function() NULL)()</code>.</p></li>
 </ul>
 
 <p>The <code>is_call_simple()</code> predicate helps you determine whether a call
@@ -202,24 +184,6 @@ string. Otherwise it returns <code>NULL</code>.</p></li>
 <li><p>If <code>is_call_simple(x, ns = TRUE)</code> returns <code>TRUE</code>, <code>call_ns()</code>
 returns a string. Otherwise it returns <code>NULL</code>.</p></li>
 </ol>
-
-<p>Note that <code>call_name()</code> and <code>call_ns()</code> do not consider
-<code><a href='https://rdrr.io/r/base/substitute.html'>quote(foo::bar)</a></code> to be a function call and will throw an error. To
-prevent this, always check that that an input is a simple call
-before calling them:</p><pre><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='fu'>foo</span><span class='fu'>::</span><span class='va'>bar</span><span class='op'>)</span>
-<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='fu'>foo</span><span class='fu'>::</span><span class='fu'>bar</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='fu'>call_name</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-<span class='co'>#&gt; Error in `call_name(): `call` must be a simple call.</span>
-<span class='co'>#&gt; ℹ Calls to `::` or `:::` are not simple calls.</span>
-<span class='co'>#&gt; ℹ See `?is_call_simple`.</span>
-
-<span class='op'>(</span><span class='kw'>if</span> <span class='op'>(</span><span class='fu'>is_call_simple</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span> <span class='fu'>call_name</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span>
-<span class='co'>#&gt; NULL</span>
-
-<span class='op'>(</span><span class='kw'>if</span> <span class='op'>(</span><span class='fu'>is_call_simple</span><span class='op'>(</span><span class='va'>y</span><span class='op'>)</span><span class='op'>)</span> <span class='fu'>call_name</span><span class='op'>(</span><span class='va'>y</span><span class='op'>)</span><span class='op'>)</span>
-<span class='co'>#&gt; [1] "bar"</span>
-</pre>
 
     </div>
 
