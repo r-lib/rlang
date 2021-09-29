@@ -18,6 +18,19 @@ void r_preserve(r_obj* x);
 void r_unpreserve(r_obj* x);
 
 
+static
+r_obj* _r_placeholder = NULL;
+
+#define r_preserve(X)                           \
+  (R_PreserveObject(_r_placeholder = X),        \
+   (r_preserve)(_r_placeholder),                \
+   (void) NULL)
+
+#define r_unpreserve(X)                         \
+  (R_ReleaseObject(_r_placeholder = X),         \
+   (r_unpreserve)(_r_placeholder),              \
+   (void) NULL)
+
 static inline
 void r_mark_shared(r_obj* x) {
   MARK_NOT_MUTABLE(x);
@@ -29,10 +42,15 @@ bool r_is_shared(r_obj* x) {
 
 static inline
 r_obj* r_preserve_global(r_obj* x) {
-  r_preserve(x);
+  (r_preserve)(x);
   r_mark_shared(x);
   return x;
 }
+
+#define r_preserve_global(X)                    \
+  (R_PreserveObject(_r_placeholder = X),        \
+   (r_preserve_global)(_r_placeholder),         \
+   _r_placeholder)
 
 static inline
 void r_mark_object(r_obj* x) {
