@@ -42,11 +42,6 @@
   the global environment. Supply an environment explicitly if that is
   not correct in your case.
 
-* For consistency with the cli package, `abort(c("Foo", "Bar"))` no
-  longer interprets `"Bar"` as a bullet and it gets displayed as an
-  unprefixed line. You need to be explicit by supplying the `"*"`
-  specifier: `abort(c("Foo", "*" = "Bar"))`.
-
 * `with_handlers()` is deprecated.
 
 * `call_fn()` is deprecated.
