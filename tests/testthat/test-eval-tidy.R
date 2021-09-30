@@ -533,6 +533,24 @@ test_that("`.data` pronoun fails informatively", {
 
     g <- function(data) h(.data[[2]], data)
     (expect_error(f(mtcars)))
+
+    g <- function(data) h(.data["foo"], data = data)
+    (expect_error(f(mtcars)))
+
+    g <- function(data) h(.data[["foo"]] <- 1, data = data)
+    (expect_error(f(mtcars)))
+
+    g <- function(data) h(.data$foo <- 1, data = data)
+    (expect_error(f(mtcars)))
+
+    g <- function(data) h(.env["foo"], data = data)
+    (expect_error(f(mtcars)))
+
+    g <- function(data) h(.env$foo <- 1, data = data)
+    (expect_error(f(mtcars)))
+    
+    g <- function(data) h(.env[["foo"]] <- 1, data = data)
+    (expect_error(f(mtcars)))
   })
 })
 

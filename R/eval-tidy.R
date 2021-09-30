@@ -489,25 +489,48 @@ ctxt_pronoun_get <- function(x, nm, call) {
 
 #' @export
 `$<-.rlang_data_pronoun` <- function(x, i, value) {
-  abort("Can't modify the data pronoun")
+  abort(
+    "Can't modify the data pronoun.",
+    call = I(expr(.data$`!!`(substitute(i)) <- ...))
+  )
 }
 #' @export
 `[[<-.rlang_data_pronoun` <- function(x, i, value) {
-  abort("Can't modify the data pronoun")
+  abort(
+    "Can't modify the data pronoun.",
+    call = I(expr(.data[[!!substitute(i)]] <- ...))
+  )
 }
 #' @export
 `$<-.rlang_ctxt_pronoun` <- function(x, i, value) {
-  abort("Can't modify the context pronoun")
+  abort(
+    "Can't modify the context pronoun.",
+    call = I(expr(.env$`!!`(substitute(i)) <- ...))
+  )
 }
 #' @export
 `[[<-.rlang_ctxt_pronoun` <- function(x, i, value) {
-  abort("Can't modify the context pronoun")
+  abort(
+    "Can't modify the context pronoun.",
+    call = I(expr(.env[[!!substitute(i)]] <- ...))
+  )
 }
 
 #' @export
 `[.rlang_data_pronoun` <- function(x, i, ...) {
-  abort("`[` is not supported by .data pronoun, use `[[` or $ instead.")
+  abort(
+    "`[` is not supported by the `.data` pronoun, use `[[` or $ instead.",
+    call = I(call2("[", quote(.data), !!!enexprs(i, ...)))
+  )
 }
+#' @export
+`[.rlang_ctxt_pronoun` <- function(x, i, ...) {
+  abort(
+    "`[` is not supported by the `.env` pronoun, use `[[` or $ instead.",
+    call = I(call2("[", quote(.env), !!!enexprs(i, ...)))
+  )
+}
+
 #' @export
 names.rlang_data_pronoun <- function(x) {
   chr()
