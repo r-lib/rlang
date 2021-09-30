@@ -37,6 +37,9 @@ r_ssize r_as_ssize(r_obj* n) {
   return r_arg_as_ssize(n, "n");
 }
 
+extern
+bool _r_use_local_precious_list;
+
 
 #include "obj.h"
 #include "globals.h"

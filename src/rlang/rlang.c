@@ -1,4 +1,5 @@
 #include <rlang.h>
+#include <stdlib.h>
 
 #include "arg.c"
 #include "attrib.c"
@@ -73,6 +74,14 @@ r_obj* r_init_library(r_obj* ns) {
                  "x `ns` must be a namespace environment.");
   }
 
+  // Local precious lists are disabled by default because rchk
+  // requires the base precious list and we don't want to
+  // double-preserve. Still enable it on CI to get that part of the
+  // code tested.
+  _r_use_local_precious_list =
+    getenv("RLIB_USE_LOCAL_PRECIOUS_LIST") ||
+    getenv("CI");
+
   // Need to be first
   r_init_library_vendor(); // Needed for xxh used in `r_preserve()`
   r_init_library_globals_syms();
@@ -103,3 +112,5 @@ r_obj* r_init_library(r_obj* ns) {
   // Return a SEXP so the init function can be called from R
   return r_null;
 }
+
+bool _r_use_local_precious_list = false;
