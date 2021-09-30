@@ -15,6 +15,21 @@
   Another issue is using `.data` inside `ggplot2::labs(...)`. This is
   not allowed since `labs()` isn't data-masked.
 
+* `call_name()` now returns `NULL` instead of `"::"` for calls of the
+  form `foo::bar`.
+
+  We've noticed some packages do not check for `NULL` results from
+  `call_name()`. Note that many complex calls such as `foo()()`,
+  `foo$bar()` don't have a "name" and cause a `NULL` result. This is
+  why you should always check for `NULL` results when using
+  `call_name()`.
+
+  We've added the function `is_call_simple()` to make it easier to
+  work safely with `call_name()`. The invariant is that `call_name()`
+  always returns a string when `is_call_simple()` returns `TRUE`.
+  Conversely it always returns `NULL` when `is_call_simple()` retuns
+  `FALSE`.
+
 * `is_expression()` now returns `FALSE` for manually constructed
   expressions that can't be created by the parser. It used to return
   `TRUE` for any calls, including those that contain injected objects.
