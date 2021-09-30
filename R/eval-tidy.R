@@ -491,28 +491,28 @@ ctxt_pronoun_get <- function(x, nm, call) {
 `$<-.rlang_data_pronoun` <- function(x, i, value) {
   abort(
     "Can't modify the data pronoun.",
-    call = I(expr(.data$`!!`(substitute(i)) <- ...))
+    call = I(call("<-", call("$", quote(.data), substitute(i)), sym("...")))
   )
 }
 #' @export
 `[[<-.rlang_data_pronoun` <- function(x, i, value) {
   abort(
     "Can't modify the data pronoun.",
-    call = I(expr(.data[[!!substitute(i)]] <- ...))
+    call = I(call("<-", call("[[", quote(.data), substitute(i)), sym("...")))
   )
 }
 #' @export
 `$<-.rlang_ctxt_pronoun` <- function(x, i, value) {
   abort(
     "Can't modify the context pronoun.",
-    call = I(expr(.env$`!!`(substitute(i)) <- ...))
+    call = I(call("<-", call("$", quote(.env), substitute(i)), sym("...")))
   )
 }
 #' @export
 `[[<-.rlang_ctxt_pronoun` <- function(x, i, value) {
   abort(
     "Can't modify the context pronoun.",
-    call = I(expr(.env[[!!substitute(i)]] <- ...))
+    call = I(call("<-", call("[[", quote(.env), substitute(i)), sym("...")))
   )
 }
 
