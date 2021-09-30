@@ -190,13 +190,14 @@ static r_obj* poke_lazy_call = NULL;
 static r_obj* poke_lazy_value_node = NULL;
 
 void r_env_poke_lazy(r_obj* env, r_obj* sym, r_obj* expr, r_obj* eval_env) {
+  KEEP(expr);
   r_obj* name = KEEP(r_sym_as_utf8_character(sym));
 
   r_node_poke_car(poke_lazy_value_node, expr);
   r_eval_with_xyz(poke_lazy_call, name, env, eval_env, rlang_ns_env);
   r_node_poke_car(poke_lazy_value_node, r_null);
 
-  FREE(1);
+  FREE(2);
 }
 
 

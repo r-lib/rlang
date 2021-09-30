@@ -93,8 +93,10 @@ void r_env_poke_lazy(r_obj* env, r_obj* sym, r_obj* expr, r_obj* eval_env);
 
 static inline
 void r_env_poke_active(r_obj* env, r_obj* sym, r_obj* fn) {
+  KEEP(fn);
   r_env_unbind(env, sym);
   R_MakeActiveBinding(sym, fn, env);
+  FREE(1);
 }
 
 bool r_env_inherits(r_obj* env, r_obj* ancestor, r_obj* top);
