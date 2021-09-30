@@ -162,6 +162,10 @@
 <a href="#breaking-changes" class="anchor"></a>Breaking changes</h2>
 <ul>
 <li>
+<p>The <code>.data</code> object exported by rlang now fails when subsetted instead of returning <code>NULL</code>. This new error helps you detect when <code>.data</code> is used in the wrong context.</p>
+<p>We’ve noticed several packages failing after this change because they were using <code>.data</code> outside of a data-masking context. For instance the <code>by</code> argument of <code>dplyr::join()</code> is not data-masked. Previously <code>dplyr::join(by = .data$foo)</code> would silently be interpreted as <code>dplyr::join(by = NULL)</code>. This is now an error.</p>
+</li>
+<li>
 <p>If a string is supplied to <code><a href="../reference/as_function.html">as_function()</a></code> instead of an object (function or formula), the function is looked up in the global environment instead of the calling environment. In general, passing a function name as a string is brittle. It is easy to forget to pass the user environment to <code><a href="../reference/as_function.html">as_function()</a></code> and sometimes there is no obvious user environment. The support for strings should be considered a convenience for end users only, not for programmers.</p>
 <p>Since environment forwarding is easy to mess up, and since the feature is aimed towards end users, <code><a href="../reference/as_function.html">as_function()</a></code> now defaults to the global environment. Supply an environment explicitly if that is not correct in your case.</p>
 </li>
