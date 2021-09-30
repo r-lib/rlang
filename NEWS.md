@@ -2,6 +2,16 @@
 
 ## Breaking changes
 
+* The `.data` object exported by rlang now fails when subsetted
+  instead of returning `NULL`. This new error helps you detect when
+  `.data` is used in the wrong context.
+
+  We've noticed several packages failing after this change because
+  they were using `.data` outside of a data-masking context. For
+  instance the `by` argument of `dplyr::join()` is not data-masked.
+  Previously `dplyr::join(by = .data$foo)` would silently be
+  interpreted as `dplyr::join(by = NULL)`. This is now an error.
+
 * If a string is supplied to `as_function()` instead of an object
   (function or formula), the function is looked up in the global
   environment instead of the calling environment. In general, passing
