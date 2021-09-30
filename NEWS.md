@@ -11,6 +11,9 @@
   instance the `by` argument of `dplyr::join()` is not data-masked.
   Previously `dplyr::join(by = .data$foo)` would silently be
   interpreted as `dplyr::join(by = NULL)`. This is now an error.
+  
+  Another issue is using `.data` inside `ggplot2::labs(...)`. This is
+  not allowed since `labs()` isn't data-masked.
 
 * `is_expression()` now returns `FALSE` for manually constructed
   expressions that can't be created by the parser. It used to return
@@ -38,17 +41,6 @@
   feature is aimed towards end users, `as_function()` now defaults to
   the global environment. Supply an environment explicitly if that is
   not correct in your case.
-
-* The global `.data` object now always throws an error when
-  subsetted. This causes early informative errors when the `.data`
-  pronoun is used outside of a data mask.
-  
-  We noticed some CRAN failures following this change that revealed
-  issues such as mistakenly using the `by` argument of
-  `dplyr::left_join()` or the `...` of `ggplot2::labs()` as
-  data-masked arguments. Since there is no data mask for these
-  arguments, the global `.data` pronoun (used as a documentation
-  anchor) was subsetted and silently returned `NULL`.
 
 * For consistency with the cli package, `abort(c("Foo", "Bar"))` no
   longer interprets `"Bar"` as a bullet and it gets displayed as an
