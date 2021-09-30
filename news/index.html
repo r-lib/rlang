@@ -167,6 +167,11 @@
 <p>Another issue is using <code>.data</code> inside <code>ggplot2::labs(...)</code>. This is not allowed since <code>labs()</code> isn’t data-masked.</p>
 </li>
 <li>
+<p><code><a href="../reference/call_name.html">call_name()</a></code> now returns <code>NULL</code> instead of <code>"::"</code> for calls of the form <code>foo::bar</code>.</p>
+<p>We’ve noticed some packages do not check for <code>NULL</code> results from <code><a href="../reference/call_name.html">call_name()</a></code>. Note that many complex calls such as <code>foo()()</code>, <code>foo$bar()</code> don’t have a “name” and cause a <code>NULL</code> result. This is why you should always check for <code>NULL</code> results when using <code><a href="../reference/call_name.html">call_name()</a></code>.</p>
+<p>We’ve added the function <code><a href="../reference/call_name.html">is_call_simple()</a></code> to make it easier to work safely with <code><a href="../reference/call_name.html">call_name()</a></code>. The invariant is that <code><a href="../reference/call_name.html">call_name()</a></code> always returns a string when <code><a href="../reference/call_name.html">is_call_simple()</a></code> returns <code>TRUE</code>. Conversely it always returns <code>NULL</code> when <code><a href="../reference/call_name.html">is_call_simple()</a></code> retuns <code>FALSE</code>.</p>
+</li>
+<li>
 <p><code><a href="../reference/is_expression.html">is_expression()</a></code> now returns <code>FALSE</code> for manually constructed expressions that can’t be created by the parser. It used to return <code>TRUE</code> for any calls, including those that contain injected objects.</p>
 <p>Consider using <code><a href="../reference/is_call.html">is_call()</a></code> or just remove the expression check. In many cases it is fine letting all objects go through when an expression is expected. For instance you can inject objects directly inside dplyr arguments:</p>
 <pre><code>x &lt;- seq_len(nrow(data))
