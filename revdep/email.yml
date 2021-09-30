@@ -1,4 +1,5 @@
-release_version: 0.3.0
-release_date: 2018-10-19
-rel_release_date: 10 days
+release_version: 1.0.0
+release_date: 2021-10-18
+release_details: ""
+rel_release_date: 3 weeks
 my_news_url: https://github.com/r-lib/rlang/blob/master/NEWS.md

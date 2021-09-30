@@ -67,44 +67,6 @@ Run `cloud_details(, "assemblerr")` for more info
     Missing or unexported object: ‘rlang::as_pairlist’
     ```
 
-# autoharp
-
-<details>
-
-* Version: 0.0.8
-* GitHub: NA
-* Source code: https://github.com/cran/autoharp
-* Date/Publication: 2021-05-29 17:50:02 UTC
-* Number of recursive dependencies: 91
-
-Run `cloud_details(, "autoharp")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking tests ... ERROR
-    ```
-      Running ‘testthat.R’
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-        2. ├─autoharp::TreeHarp(knitr_problem, TRUE)
-        3. ├─autoharp::TreeHarp(knitr_problem, TRUE)
-        4. │ └─autoharp::lang_2_tree(lang_obj, 0, env1)
-        5. │   └─autoharp::lang_2_tree(lang_obj[[1]], node_id, ni_env)
-        6. │     └─autoharp::lang_2_tree(call_args1[[ii]], fn_node_id, ni_env)
-        7. │       └─rlang::call_name(lang_obj)
-        8. │         └─rlang:::abort_call_input_type("call")
-        9. │           └─rlang::abort(...)
-       10. │             └─rlang:::signal_abort(cnd, .file)
-       11. │               └─base::signalCondition(cnd)
-       12. └─base `<fn>`(`<rlng_rrr>`)
-      
-      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 76 ]
-      Error: Test failures
-      Execution halted
-    ```
-
 # bignum
 
 <details>
@@ -193,50 +155,25 @@ Run `cloud_details(, "catchr")` for more info
 
 ## Newly broken
 
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘catchr-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: beep_with
-    > ### Title: Play short sounds
-    > ### Aliases: beep_with
-    > 
-    > ### ** Examples
-    > 
-    > warning_in_middle <- function() {
-    ...
-     15. │       └─call_args(x) %>% ...
-     16. └─purrr::map(...)
-     17.   └─catchr .f(.x[[i]], ...)
-     18.     └─catchr:::check_nodes(...)
-     19.       ├─base::withRestarts(...)
-     20.       │ └─base withOneRestart(expr, restarts[[1L]])
-     21.       │   └─base doWithOneRestart(return(expr), restart)
-     22.       └─rlang::signal(...)
-     23.         └─rlang::arg_require(class)
-    Execution halted
-    ```
-
 *   checking tests ... ERROR
     ```
       Running ‘spelling.R’
       Running ‘testthat.R’
     Running the tests in ‘tests/testthat.R’ failed.
     Last 13 lines of output:
-       19. │     ├─base::withCallingHandlers(...)
-       20. │     └─catchr:::check_nodes(...)
-       21. │       └─call_args(x) %>% ...
-       22. └─purrr::map(...)
-       23.   └─catchr .f(.x[[i]], ...)
-       24.     └─catchr:::check_nodes(...)
-       25.       ├─base::withRestarts(...)
-       26.       │ └─base withOneRestart(expr, restarts[[1L]])
-       27.       │   └─base doWithOneRestart(return(expr), restart)
-       28.       └─rlang::signal(...)
-       29.         └─rlang::arg_require(class)
+        9. ├─catchr:::check_and_clean_input(d1 = base::acosh, spec_names = "acosh")
+       10. │ ├─catchr:::warn_of_specials(get_used_specials(akw$kwargs, spec_names))
+       11. │ └─catchr:::get_used_specials(akw$kwargs, spec_names)
+       12. │   └─... %>% unique()
+       13. ├─base::unique(.)
+       14. ├─base::unlist(.)
+       15. └─purrr::map(...)
+       16.   └─catchr .f(.x[[i]], ...)
+       17.     └─catchr:::find_used_symbols(!!get_expr(q), names_to_check, ...)
+       18.       ├─base::withCallingHandlers(...)
+       19.       └─catchr:::check_nodes(...)
       
-      [ FAIL 11 | WARN 0 | SKIP 0 | PASS 81 ]
+      [ FAIL 2 | WARN 0 | SKIP 0 | PASS 147 ]
       Error: Test failures
       Execution halted
     ```
@@ -278,48 +215,6 @@ Run `cloud_details(, "cmstatr")` for more info
       [ FAIL 1 | WARN 1 | SKIP 30 | PASS 1116 ]
       Error: Test failures
       Execution halted
-    ```
-
-# covTestR
-
-<details>
-
-* Version: 0.1.4
-* GitHub: https://github.com/BenBarnard/covTestR
-* Source code: https://github.com/cran/covTestR
-* Date/Publication: 2018-08-17 21:10:03 UTC
-* Number of recursive dependencies: 5
-
-Run `cloud_details(, "covTestR")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘covTestR-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: homogeneityCovariances
-    > ### Title: Test Wrapper for Homogeneity of Covariance Matrices
-    > ### Aliases: homogeneityCovariances
-    > 
-    > ### ** Examples
-    > 
-    > homogeneityCovariances(iris, group = Species)
-    Error in utils::packageVersion("cli") : there is no package called ‘cli’
-    Calls: homogeneityCovariances ... .rlang_cli_format_fallback -> .rlang_cli_is_installed -> <Anonymous>
-    Execution halted
-    ```
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is 11.4Mb
-      sub-directories of 1Mb or more:
-        libs  11.3Mb
     ```
 
 # dtplyr
@@ -406,17 +301,17 @@ Run `cloud_details(, "fabricatr")` for more info
       Running ‘testthat.R’
     Running the tests in ‘tests/testthat.R’ failed.
     Last 13 lines of output:
+       5. └─fabricatr::fabricate(datasets::BOD, dd = demand * 2, ID_label = "Time")
+       6.   └─fabricatr:::check_all_levels(dots)
+       7.     └─base::vapply(options[is_function], call_name, "")
+      ── Error (test-fabrication.R:266:3): nest_level call when there was no data to nest ──
+      Error: values must be length 1,
+       but FUN(X[[1]]) result is length 0
       Backtrace:
           ▆
        1. └─fabricatr::fabricate(...) at test-fabrication.R:266:2
-       2.   ├─base::which(names(dots) == "" & call_not_level_call(dots))
-       3.   └─fabricatr:::call_not_level_call(dots)
-       4.     └─base::vapply(...)
-       5.       └─fabricatr FUN(X[[i]], ...)
-       6.         ├─fabricatr:::is_level_token(call_name(i))
-       7.         │ └─x %in% ...
-       8.         └─rlang::call_name(i)
-       9.           └─rlang:::abort_call_input_type("call")
+       2.   └─fabricatr:::check_all_levels(dots)
+       3.     └─base::vapply(options[is_function], call_name, "")
       
       [ FAIL 2 | WARN 0 | SKIP 1 | PASS 383 ]
       Error: Test failures
@@ -536,7 +431,7 @@ Run `cloud_details(, "heemod")` for more info
      13. │     └─dplyr:::standardise_join_by(by, x_names = x_names, y_names = y_names)
      14. ├─.strategy_names
      15. └─rlang:::`$.rlang_fake_data_pronoun`(.data, .strategy_names)
-     16.   └─rlang:::stop_fake_data_subset()
+     16.   └─rlang:::stop_fake_data_subset(call)
     Execution halted
     ```
 
@@ -555,7 +450,7 @@ Run `cloud_details(, "heemod")` for more info
        15. │     └─dplyr:::standardise_join_by(by, x_names = x_names, y_names = y_names)
        16. ├─.strategy_names
        17. └─rlang:::`$.rlang_fake_data_pronoun`(.data, .strategy_names)
-       18.   └─rlang:::stop_fake_data_subset()
+       18.   └─rlang:::stop_fake_data_subset(call)
       
       [ FAIL 3 | WARN 0 | SKIP 0 | PASS 503 ]
       Error: Test failures
@@ -630,14 +525,14 @@ Run `cloud_details(, "lares")` for more info
     > Sys.unsetenv("LARES_FONT") # Temporal
     ...
     > dft %>% distr(Survived, Sex)
-    Error in `stop_fake_data_subset()`: Can't subset `.data` outside of a data mask context.
+    Error in `distr()`: Can't subset `.data` outside of a data mask context.
     Backtrace:
         ▆
      1. ├─dft %>% distr(Survived, Sex)
      2. └─lares::distr(., Survived, Sex)
      3.   ├─<unknown>
      4.   └─rlang:::`$.rlang_fake_data_pronoun`(.data, "value")
-     5.     └─rlang:::stop_fake_data_subset()
+     5.     └─rlang:::stop_fake_data_subset(call)
     Execution halted
     ```
 
@@ -704,34 +599,98 @@ Run `cloud_details(, "nofrills")` for more info
       Execution halted
     ```
 
-# nomnoml
+# OncoBayes2
 
 <details>
 
-* Version: 0.2.3
-* GitHub: https://github.com/rstudio/nomnoml
-* Source code: https://github.com/cran/nomnoml
-* Date/Publication: 2020-12-15 10:10:02 UTC
-* Number of recursive dependencies: 81
+* Version: 0.8-2
+* GitHub: NA
+* Source code: https://github.com/cran/OncoBayes2
+* Date/Publication: 2021-09-14 10:10:02 UTC
+* Number of recursive dependencies: 91
 
-Run `cloud_details(, "nomnoml")` for more info
+Run `cloud_details(, "OncoBayes2")` for more info
 
 </details>
 
 ## Newly broken
 
-*   checking loading without being on the library search path ... WARNING
+*   checking whether package ‘OncoBayes2’ can be installed ... ERROR
     ```
-    Error: package or namespace load failed for ‘nomnoml’:
-     .onAttach failed in attachNamespace() for 'nomnoml', details:
-      call: utils::packageVersion("cli")
-      error: there is no package called ‘cli’
-    Execution halted
-    
-    It looks like this package has a loading problem when not on .libPaths:
-    see the messages for details.
+    Installation failed.
+    See ‘/tmp/workdir/OncoBayes2/new/OncoBayes2.Rcheck/00install.out’ for details.
     ```
 
+## Newly fixed
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is 60.7Mb
+      sub-directories of 1Mb or more:
+        libs  59.5Mb
+    ```
+
+*   checking for GNU extensions in Makefiles ... NOTE
+    ```
+    GNU make is a SystemRequirements.
+    ```
+
+## Installation
+
+### Devel
+
+```
+* installing *source* package ‘OncoBayes2’ ...
+** package ‘OncoBayes2’ successfully unpacked and MD5 sums checked
+** using staged installation
+DIAGNOSTIC(S) FROM PARSER:
+Info: integer division implicitly rounds to integer. Found int division: current / base
+ Positive values rounded down, negative values rounded up or down in platform-dependent way.
+Info: integer division implicitly rounds to integer. Found int division: left_ind + right_ind / 2
+ Positive values rounded down, negative values rounded up or down in platform-dependent way.
+
+** libs
+...
+/opt/R/4.0.3/lib/R/site-library/RcppEigen/include/Eigen/src/Core/ProductEvaluators.h:35:90:   required from ‘Eigen::internal::evaluator<Eigen::Product<Lhs, Rhs, Option> >::evaluator(const XprType&) [with Lhs = Eigen::Product<Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double, double>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 1, -1> >, const Eigen::Transpose<Eigen::Matrix<double, -1, 1> > >, Eigen::Matrix<double, -1, -1>, 0>; Rhs = Eigen::Matrix<double, -1, 1>; int Options = 0; Eigen::internal::evaluator<Eigen::Product<Lhs, Rhs, Option> >::XprType = Eigen::Product<Eigen::Product<Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double, double>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 1, -1> >, const Eigen::Transpose<Eigen::Matrix<double, -1, 1> > >, Eigen::Matrix<double, -1, -1>, 0>, Eigen::Matrix<double, -1, 1>, 0>]’
+/opt/R/4.0.3/lib/R/site-library/RcppEigen/include/Eigen/src/Core/Product.h:132:22:   required from ‘Eigen::internal::dense_product_base<Lhs, Rhs, Option, 6>::operator const Scalar() const [with Lhs = Eigen::Product<Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double, double>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 1, -1> >, const Eigen::Transpose<Eigen::Matrix<double, -1, 1> > >, Eigen::Matrix<double, -1, -1>, 0>; Rhs = Eigen::Matrix<double, -1, 1>; int Option = 0; Eigen::internal::dense_product_base<Lhs, Rhs, Option, 6>::Scalar = double]’
+/opt/R/4.0.3/lib/R/site-library/StanHeaders/include/src/stan/mcmc/hmc/hamiltonians/dense_e_metric.hpp:23:56:   required from ‘double stan::mcmc::dense_e_metric<Model, BaseRNG>::T(stan::mcmc::dense_e_point&) [with Model = model_blrm_exnex_namespace::model_blrm_exnex; BaseRNG = boost::random::additive_combine_engine<boost::random::linear_congruential_engine<unsigned int, 40014, 0, 2147483563>, boost::random::linear_congruential_engine<unsigned int, 40692, 0, 2147483399> >]’
+/opt/R/4.0.3/lib/R/site-library/StanHeaders/include/src/stan/mcmc/hmc/hamiltonians/dense_e_metric.hpp:22:10:   required from here
+/opt/R/4.0.3/lib/R/site-library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:55:30: warning: ignoring attributes on template argument ‘Eigen::internal::packet_traits<double>::type’ {aka ‘__vector(2) double’} [-Wignored-attributes]
+g++: fatal error: Killed signal terminated program cc1plus
+compilation terminated.
+make: *** [/opt/R/4.0.3/lib/R/etc/Makeconf:179: stanExports_blrm_exnex.o] Error 1
+ERROR: compilation failed for package ‘OncoBayes2’
+* removing ‘/tmp/workdir/OncoBayes2/new/OncoBayes2.Rcheck/OncoBayes2’
+
+
+```
+### CRAN
+
+```
+* installing *source* package ‘OncoBayes2’ ...
+** package ‘OncoBayes2’ successfully unpacked and MD5 sums checked
+** using staged installation
+DIAGNOSTIC(S) FROM PARSER:
+Info: integer division implicitly rounds to integer. Found int division: current / base
+ Positive values rounded down, negative values rounded up or down in platform-dependent way.
+Info: integer division implicitly rounds to integer. Found int division: left_ind + right_ind / 2
+ Positive values rounded down, negative values rounded up or down in platform-dependent way.
+
+** libs
+...
+
+** help
+*** installing help indices
+** building package indices
+** installing vignettes
+** testing if installed package can be loaded from temporary location
+** checking absolute paths in shared objects and dynamic libraries
+** testing if installed package can be loaded from final location
+** testing if installed package keeps a record of temporary installation path
+* DONE (OncoBayes2)
+
+
+```
 # partition
 
 <details>
@@ -754,13 +713,13 @@ Run `cloud_details(, "partition")` for more info
       Running ‘testthat.R’
     Running the tests in ‘tests/testthat.R’ failed.
     Last 13 lines of output:
-      `attr(attr(expected$direct, 'body'), '.Environment')` is <env:0x558d00a55640>
+      `attr(attr(expected$direct, 'body'), '.Environment')` is <env:0x55c3b883a568>
       
-      `attr(attr(actual$measure, 'body'), '.Environment')` is <env:0x558cfdbf8550>
-      `attr(attr(expected$measure, 'body'), '.Environment')` is <env:0x558d00a55640>
+      `attr(attr(actual$measure, 'body'), '.Environment')` is <env:0x55c3b5389c00>
+      `attr(attr(expected$measure, 'body'), '.Environment')` is <env:0x55c3b883a568>
       
-      `attr(attr(actual$reduce, 'body'), '.Environment')` is <env:0x558cfdbf8550>
-      `attr(attr(expected$reduce, 'body'), '.Environment')` is <env:0x558d00a55640>
+      `attr(attr(actual$reduce, 'body'), '.Environment')` is <env:0x55c3b5389c00>
+      `attr(attr(expected$reduce, 'body'), '.Environment')` is <env:0x55c3b883a568>
       Backtrace:
           ▆
        1. └─partition expect_identical_partition(search_k, above_k) at test-misc-partitioner-arguments.R:43:2
@@ -818,7 +777,7 @@ Run `cloud_details(, "PVplr")` for more info
       8.       └─base::eval(extras, data, env)
       9.         ├─wvar
      10.         └─rlang:::`$.rlang_fake_data_pronoun`(.data, wvar)
-     11.           └─rlang:::stop_fake_data_subset()
+     11.           └─rlang:::stop_fake_data_subset(call)
     Execution halted
     ```
 
@@ -861,7 +820,7 @@ Run `cloud_details(, "ricu")` for more info
        21.                         ├─.data$id %in% .env$ids
        22.                         ├─id
        23.                         └─rlang:::`$.rlang_fake_data_pronoun`(.data, id)
-       24.                           └─rlang:::stop_fake_data_subset()
+       24.                           └─rlang:::stop_fake_data_subset(call)
       
       [ FAIL 1 | WARN 0 | SKIP 8 | PASS 591 ]
       Error: Test failures
@@ -948,7 +907,7 @@ Run `cloud_details(, "tidyMicro")` for more info
      30. │                 └─rlang::eval_tidy(expr, context_mask)
      31. ├─rlang::.data$Lib
      32. └─rlang:::`$.rlang_fake_data_pronoun`(rlang::.data, Lib)
-     33.   └─rlang:::stop_fake_data_subset()
+     33.   └─rlang:::stop_fake_data_subset(call)
     Execution halted
     ```
 
@@ -967,7 +926,7 @@ Run `cloud_details(, "tidyMicro")` for more info
        28. │                 └─rlang::eval_tidy(expr, context_mask)
        29. ├─rlang::.data$Lib
        30. └─rlang:::`$.rlang_fake_data_pronoun`(rlang::.data, Lib)
-       31.   └─rlang:::stop_fake_data_subset()
+       31.   └─rlang:::stop_fake_data_subset(call)
       
       [ FAIL 18 | WARN 0 | SKIP 2 | PASS 2 ]
       Error: Test failures

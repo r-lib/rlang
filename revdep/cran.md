@@ -1,9 +1,9 @@
 ## revdepcheck results
 
-We checked 1272 reverse dependencies (1260 from CRAN + 12 from Bioconductor), comparing R CMD check results across CRAN and dev versions of this package.
+We checked 1276 reverse dependencies (1264 from CRAN + 12 from Bioconductor), comparing R CMD check results across CRAN and dev versions of this package.
 
- * We saw 25 new problems
- * We failed to check 9 packages
+ * We saw 22 new problems
+ * We failed to check 87 packages
 
 Issues with CRAN packages are summarised below.
 
@@ -16,22 +16,15 @@ Issues with CRAN packages are summarised below.
 * assemblerr
   checking dependencies in R code ... NOTE
 
-* autoharp
-  checking tests ... ERROR
-
 * bignum
   checking examples ... ERROR
   checking tests ... ERROR
 
 * catchr
-  checking examples ... ERROR
   checking tests ... ERROR
 
 * cmstatr
   checking tests ... ERROR
-
-* covTestR
-  checking examples ... ERROR
 
 * dtplyr
   checking examples ... ERROR
@@ -59,9 +52,6 @@ Issues with CRAN packages are summarised below.
 * nofrills
   checking examples ... ERROR
   checking tests ... ERROR
-
-* nomnoml
-  checking loading without being on the library search path ... WARNING
 
 * partition
   checking tests ... ERROR
@@ -93,12 +83,90 @@ Issues with CRAN packages are summarised below.
 
 ### Failed to check
 
-* apisensr   (NA)
-* bayesdfa   (NA)
-* metagam    (NA)
-* OncoBayes2 (NA)
-* rabhit     (NA)
-* scoper     (NA)
-* SynthETIC  (NA)
-* tigger     (NA)
-* trackr     (NA)
+* admixr             (NA)
+* alakazam           (NA)
+* Andromeda          (NA)
+* apisensr           (NA)
+* applicable         (NA)
+* apyramid           (NA)
+* arena2r            (NA)
+* ARPALData          (NA)
+* auk                (NA)
+* autoharp           (NA)
+* basedosdados       (NA)
+* bayesAB            (NA)
+* bayesdfa           (NA)
+* beadplexr          (NA)
+* binomialMix        (NA)
+* bioOED             (NA)
+* bitmexr            (NA)
+* broomExtra         (NA)
+* bs4cards           (NA)
+* bupaR              (NA)
+* cansim             (NA)
+* card               (NA)
+* cartograflow       (NA)
+* CausalGPS          (NA)
+* chantrics          (NA)
+* cjbart             (NA)
+* clock              (NA)
+* clustermole        (NA)
+* clustringr         (NA)
+* consortr           (NA)
+* ConsReg            (NA)
+* corporaexplorer    (NA)
+* cowplot            (NA)
+* crosstable         (NA)
+* cspp               (NA)
+* cutpointr          (NA)
+* cylcop             (NA)
+* dabestr            (NA)
+* data.validator     (NA)
+* dbflobr            (NA)
+* dbplyr             (NA)
+* dcurves            (NA)
+* describedata       (NA)
+* dexter             (NA)
+* DiagrammeR         (NA)
+* diffEnrich         (NA)
+* dipsaus            (NA)
+* disk.frame         (NA)
+* diversityForest    (NA)
+* DSAIRM             (NA)
+* dynprog            (NA)
+* echor              (NA)
+* egor               (NA)
+* ellipsis           (NA)
+* EpiNow2            (NA)
+* era                (NA)
+* esquisse           (NA)
+* fable              (NA)
+* fabletools         (NA)
+* factory            (NA)
+* farrell            (NA)
+* feasts             (NA)
+* fgeo               (NA)
+* FielDHub           (NA)
+* GillespieSSA2      (NA)
+* LAGOSNE            (NA)
+* loon.ggplot        (NA)
+* madrat             (NA)
+* MazamaSpatialUtils (NA)
+* metagam            (NA)
+* NMproject          (NA)
+* OncoBayes2         (NA)
+* OpenSpecy          (NA)
+* PupillometryR      (NA)
+* rabhit             (NA)
+* RClimacell         (NA)
+* Rcurvep            (NA)
+* REDCapR            (NA)
+* scoper             (NA)
+* SimSurvey          (NA)
+* SUNGEO             (NA)
+* SurviMChd          (NA)
+* SynthETIC          (NA)
+* tigger             (NA)
+* TKCat              (NA)
+* trackr             (NA)
+* XPolaris           (NA)
