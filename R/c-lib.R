@@ -285,6 +285,16 @@ lof_arr_push_back <- function(lof, i, value) {
 }
 
 
+# obj.c
+
+has_local_precious_list <- function() {
+  .Call(ffi_has_local_precious_list)
+}
+use_local_precious_list <- function(x) {
+  .Call(ffi_use_local_precious_list, x)
+}
+
+
 # sexp.c
 
 rlang_precious_dict <- function() {

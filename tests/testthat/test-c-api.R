@@ -704,6 +704,9 @@ test_that("can transform dict to list and df-list", {
 })
 
 test_that("can preserve and unpreserve repeatedly", {
+  old <- use_local_precious_list(TRUE)
+  on.exit(use_local_precious_list(old))
+
   x <- env()
 
   # Need to call rlang_precious_dict() repeatedly because it returns a

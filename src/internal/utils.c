@@ -250,6 +250,15 @@ r_obj* ffi_peek_srcref() {
   }
 }
 
+r_obj* ffi_has_local_precious_list() {
+  return r_lgl(_r_use_local_precious_list);
+}
+r_obj* ffi_use_local_precious_list(r_obj* x) {
+  bool old = _r_use_local_precious_list;
+  _r_use_local_precious_list = r_as_bool(x);
+  return r_lgl(old);
+}
+
 
 void rlang_init_utils() {
   warn_deprecated_call = r_parse("rlang:::warn_deprecated(x, id = y)");
