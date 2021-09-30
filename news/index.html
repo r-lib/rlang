@@ -164,6 +164,7 @@
 <li>
 <p>The <code>.data</code> object exported by rlang now fails when subsetted instead of returning <code>NULL</code>. This new error helps you detect when <code>.data</code> is used in the wrong context.</p>
 <p>We’ve noticed several packages failing after this change because they were using <code>.data</code> outside of a data-masking context. For instance the <code>by</code> argument of <code>dplyr::join()</code> is not data-masked. Previously <code>dplyr::join(by = .data$foo)</code> would silently be interpreted as <code>dplyr::join(by = NULL)</code>. This is now an error.</p>
+<p>Another issue is using <code>.data</code> inside <code>ggplot2::labs(...)</code>. This is not allowed since <code>labs()</code> isn’t data-masked.</p>
 </li>
 <li>
 <p><code><a href="../reference/is_expression.html">is_expression()</a></code> now returns <code>FALSE</code> for manually constructed expressions that can’t be created by the parser. It used to return <code>TRUE</code> for any calls, including those that contain injected objects.</p>
@@ -175,11 +176,6 @@ dplyr::mutate(data, col = !!x)</code></pre>
 <p>If a string is supplied to <code><a href="../reference/as_function.html">as_function()</a></code> instead of an object (function or formula), the function is looked up in the global environment instead of the calling environment. In general, passing a function name as a string is brittle. It is easy to forget to pass the user environment to <code><a href="../reference/as_function.html">as_function()</a></code> and sometimes there is no obvious user environment. The support for strings should be considered a convenience for end users only, not for programmers.</p>
 <p>Since environment forwarding is easy to mess up, and since the feature is aimed towards end users, <code><a href="../reference/as_function.html">as_function()</a></code> now defaults to the global environment. Supply an environment explicitly if that is not correct in your case.</p>
 </li>
-<li>
-<p>The global <code>.data</code> object now always throws an error when subsetted. This causes early informative errors when the <code>.data</code> pronoun is used outside of a data mask.</p>
-<p>We noticed some CRAN failures following this change that revealed issues such as mistakenly using the <code>by</code> argument of <code>dplyr::left_join()</code> or the <code>...</code> of <code>ggplot2::labs()</code> as data-masked arguments. Since there is no data mask for these arguments, the global <code>.data</code> pronoun (used as a documentation anchor) was subsetted and silently returned <code>NULL</code>.</p>
-</li>
-<li><p>For consistency with the cli package, <code><a href="../reference/abort.html">abort(c("Foo", "Bar"))</a></code> no longer interprets <code>"Bar"</code> as a bullet and it gets displayed as an unprefixed line. You need to be explicit by supplying the <code>"*"</code> specifier: <code><a href="../reference/abort.html">abort(c("Foo", "*" = "Bar"))</a></code>.</p></li>
 <li><p><code><a href="../reference/with_handlers.html">with_handlers()</a></code> is deprecated.</p></li>
 <li><p><code><a href="../reference/call_fn.html">call_fn()</a></code> is deprecated.</p></li>
 <li><p><code><a href="../reference/friendly_type.html">friendly_type()</a></code> is deprecated and <code>as_pairlist()</code> is defunct.</p></li>
