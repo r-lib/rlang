@@ -755,6 +755,10 @@ format_error_call <- function(call) {
 }
 
 error_call_as_string <- function(call) {
+  if (!is_call(call)) {
+    return(NULL)
+  }
+
   if (inherits(call, "AsIs")) {
     call <- expr_deparse(unclass(call))
     if (length(call) == 1) {
@@ -799,13 +803,15 @@ error_call_as_string <- function(call) {
   # Deal with special-syntax calls. `if` carries useful information in
   # its call. For other operators we just return their name because
   # the functional form may be confusing.
-  if (!is_call(call, "if") && !is_string(call_parse_type(call), "")) {
-    out <- as_string(call[[1]])
+  if (is_call(call, "if")) {
+    as_label(call)
+  } else if (!is_string(call_parse_type(call), "")) {
+    as_string(call[[1]])
+  } else if (is_symbol(call[[1]]) && needs_backticks(call[[1]])) {
+    as_string(call[[1]])
   } else {
-    out <- as_label(call)
+    as_label(call)
   }
-
-  out
 }
 
 error_call <- function(call) {

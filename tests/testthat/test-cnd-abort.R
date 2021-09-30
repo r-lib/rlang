@@ -453,3 +453,10 @@ test_that("format_error_call() preserves I() inputs", {
     "`.data[[1]]`"
   )
 })
+
+test_that("format_error_call() detects non-syntactic names", {
+  expect_equal(
+    format_error_call(quote(`[[.foo`())),
+    "`[[.foo`"
+  )
+})
