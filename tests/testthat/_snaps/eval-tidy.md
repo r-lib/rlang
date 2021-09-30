@@ -25,7 +25,7 @@
       (expect_error(f(mtcars)))
     Output
       <error/rlang_error_data_pronoun_not_found>
-      Error: Column `foo` not found in `.data`
+      Error in `.data$foo`: Column `foo` not found in `.data`.
     Code
       g <- (function(data) h(.data[[2]], data))
       (expect_error(f(mtcars)))

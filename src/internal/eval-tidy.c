@@ -236,7 +236,7 @@ static r_obj* mask_find(r_obj* env, r_obj* sym) {
   FREE(n_kept);
   return r_syms.unbound;
 }
-r_obj* ffi_data_pronoun_get(r_obj* pronoun, r_obj* sym) {
+r_obj* ffi_data_pronoun_get(r_obj* pronoun, r_obj* sym, r_obj* error_call) {
   if (r_typeof(pronoun) != R_TYPE_environment) {
     r_abort("Internal error: Data pronoun must wrap an environment");
   }
@@ -244,8 +244,8 @@ r_obj* ffi_data_pronoun_get(r_obj* pronoun, r_obj* sym) {
   r_obj* obj = mask_find(pronoun, sym);
 
   if (obj == r_syms.unbound) {
-    r_obj* call = KEEP(r_parse("rlang:::abort_data_pronoun(x)"));
-    r_eval_with_x(call, sym, r_envs.base);
+    r_obj* call = KEEP(r_parse("rlang:::abort_data_pronoun(x, call = y)"));
+    r_eval_with_xy(call, sym, error_call, r_envs.base);
     r_abort("Internal error: .data subsetting should have failed earlier");
   }
 

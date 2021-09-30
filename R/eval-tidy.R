@@ -462,11 +462,11 @@ data_pronoun_get <- function(x, nm, call) {
     )
   }
   mask <- .subset2(x, 1)
-  .Call(ffi_data_pronoun_get, mask, sym(nm))
+  .Call(ffi_data_pronoun_get, mask, sym(nm), call)
 }
-abort_data_pronoun <- function(nm) {
-  msg <- sprintf("Column `%s` not found in `.data`", as_string(nm))
-  abort(msg, "rlang_error_data_pronoun_not_found")
+abort_data_pronoun <- function(nm, call) {
+  msg <- sprintf("Column `%s` not found in `.data`.", as_string(nm))
+  abort(msg, "rlang_error_data_pronoun_not_found", call = call)
 }
 
 #' @export
