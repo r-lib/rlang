@@ -166,6 +166,12 @@
 <p>We’ve noticed several packages failing after this change because they were using <code>.data</code> outside of a data-masking context. For instance the <code>by</code> argument of <code>dplyr::join()</code> is not data-masked. Previously <code>dplyr::join(by = .data$foo)</code> would silently be interpreted as <code>dplyr::join(by = NULL)</code>. This is now an error.</p>
 </li>
 <li>
+<p><code><a href="../reference/is_expression.html">is_expression()</a></code> now returns <code>FALSE</code> for manually constructed expressions that can’t be created by the parser. It used to return <code>TRUE</code> for any calls, including those that contain injected objects.</p>
+<p>Consider using <code><a href="../reference/is_call.html">is_call()</a></code> or just remove the expression check. In many cases it is fine letting all objects go through when an expression is expected. For instance you can inject objects directly inside dplyr arguments:</p>
+<pre><code>x &lt;- seq_len(nrow(data))
+dplyr::mutate(data, col = !!x)</code></pre>
+</li>
+<li>
 <p>If a string is supplied to <code><a href="../reference/as_function.html">as_function()</a></code> instead of an object (function or formula), the function is looked up in the global environment instead of the calling environment. In general, passing a function name as a string is brittle. It is easy to forget to pass the user environment to <code><a href="../reference/as_function.html">as_function()</a></code> and sometimes there is no obvious user environment. The support for strings should be considered a convenience for end users only, not for programmers.</p>
 <p>Since environment forwarding is easy to mess up, and since the feature is aimed towards end users, <code><a href="../reference/as_function.html">as_function()</a></code> now defaults to the global environment. Supply an environment explicitly if that is not correct in your case.</p>
 </li>
@@ -455,7 +461,7 @@
 <li>
 <p>You can now use glue syntax to unquote on the LHS of <code>:=</code>. This syntax is automatically available in all functions taking dots with <code><a href="../reference/list2.html">list2()</a></code> and <code><a href="../reference/nse-defuse.html">enquos()</a></code>, and thus most of the tidyverse. Note that if you use the glue syntax in an R package, you need to import glue.</p>
 <p>A single pair of braces triggers normal glue interpolation:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>
 
@@ -466,7 +472,7 @@
 <span class="co">#&gt; 2 2       4</span>
 <span class="co">#&gt; 3 3       6</span></code></pre></div>
 <p>Using a pair of double braces is for labelling a function argument. Technically, this is shortcut for <code>"{as_label(enquo(arg))}"</code>. The syntax is similar to the curly-curly syntax for interpolating function arguments:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">my_wrapper</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span>, <span class="va">suffix</span> <span class="op">=</span> <span class="st">"foo"</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">mutate</span><span class="op">(</span><span class="st">"{{ var }}_{suffix}"</span> <span class="op">:=</span> <span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span> <span class="op">*</span> <span class="fl">2</span><span class="op">)</span>
@@ -657,20 +663,20 @@ letters %&gt;% set_names(toupper)</code></pre>
 <ul>
 <li>
 <p>New <code><a href="../reference/entrace.html">entrace()</a></code> condition handler. Add this to your RProfile to enable rlang backtraces for all errors, including warnings promoted to errors:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"rlang"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>error <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="va"><a href="../reference/entrace.html">entrace</a></span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
 <p>This handler also works as a calling handler:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="fu"><a href="../reference/with_handlers.html">with_handlers</a></span><span class="op">(</span>
   error <span class="op">=</span> <span class="fu"><a href="../reference/with_handlers.html">calling</a></span><span class="op">(</span><span class="va">entrace</span><span class="op">)</span>,
   <span class="fu">foo</span><span class="op">(</span><span class="va">bar</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
 <p>However it’s often more practical to use <code><a href="../reference/with_abort.html">with_abort()</a></code> in that case:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="fu"><a href="../reference/with_abort.html">with_abort</a></span><span class="op">(</span><span class="fu">foo</span><span class="op">(</span><span class="va">bar</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </li>
@@ -740,7 +746,7 @@ letters %&gt;% set_names(toupper)</code></pre>
 <li><p><code><a href="../reference/nse-defuse.html">exprs()</a></code> no longer flattens quosures. <code><a href="../reference/nse-defuse.html">exprs(!!!quos(x, y))</a></code> is now equivalent to <code><a href="../reference/nse-defuse.html">quos(x, y)</a></code>.</p></li>
 <li>
 <p>The sentinel for removing arguments in <code><a href="../reference/call_modify.html">call_modify()</a></code> has been changed from <code>NULL</code> to <code><a href="../reference/zap.html">zap()</a></code>. This breaking change is motivated by the ambiguity of <code>NULL</code> with valid argument values.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="fu"><a href="../reference/call_modify.html">call_modify</a></span><span class="op">(</span><span class="va">call</span>, arg <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>  <span class="co"># Add `arg = NULL` to the call</span>
 <span class="fu"><a href="../reference/call_modify.html">call_modify</a></span><span class="op">(</span><span class="va">call</span>, arg <span class="op">=</span> <span class="fu"><a href="../reference/zap.html">zap</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="co"># Remove the `arg` argument from the call</span></code></pre></div>
