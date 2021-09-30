@@ -12,6 +12,20 @@
   Previously `dplyr::join(by = .data$foo)` would silently be
   interpreted as `dplyr::join(by = NULL)`. This is now an error.
 
+* `is_expression()` now returns `FALSE` for manually constructed
+  expressions that can't be created by the parser. It used to return
+  `TRUE` for any calls, including those that contain injected objects.
+  
+  Consider using `is_call()` or just remove the expression check. In
+  many cases it is fine letting all objects go through when an
+  expression is expected. For instance you can inject objects directly
+  inside dplyr arguments:
+  
+  ```
+  x <- seq_len(nrow(data))
+  dplyr::mutate(data, col = !!x)
+  ```
+
 * If a string is supplied to `as_function()` instead of an object
   (function or formula), the function is looked up in the global
   environment instead of the calling environment. In general, passing
