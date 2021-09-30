@@ -560,15 +560,18 @@ data_pronoun_name <- function(x) {
 }
 
 #' @export
-`$.rlang_fake_data_pronoun` <- function(x, nm) {
-  stop_fake_data_subset()
+`$.rlang_fake_data_pronoun` <- function(x, nm, call = caller_env()) {
+  stop_fake_data_subset(call)
 }
 #' @export
-`[[.rlang_fake_data_pronoun` <- function(x, i, ...) {
-  stop_fake_data_subset()
+`[[.rlang_fake_data_pronoun` <- function(x, i, ..., call = caller_env()) {
+  stop_fake_data_subset(call)
 }
-stop_fake_data_subset <- function() {
-  abort("Can't subset `.data` outside of a data mask context.")
+stop_fake_data_subset <- function(call) {
+  abort(
+    sprintf("Can't subset %s outside of a data mask context.", format_arg(".data")),
+    call = call
+  )
 }
 
 is_data_mask <- function(x) {
