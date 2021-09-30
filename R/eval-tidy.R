@@ -576,7 +576,7 @@ data_pronoun_name <- function(x) {
 stop_fake_data_subset <- function(call) {
   abort(
     sprintf("Can't subset %s outside of a data mask context.", format_arg(".data")),
-    call = call
+    call = mask_top(call)
   )
 }
 
@@ -584,9 +584,27 @@ is_data_mask <- function(x) {
   is_environment(x) && env_has(x, ".__rlang_data_mask__.")
 }
 
+mask_top <- function(env) {
+  top <- quo_mask_top(env)
+  if (!identical(top, env)) {
+    top
+  } else {
+    data_mask_top(env)
+  }
+}
 data_mask_top <- function(env, recursive = FALSE, inherit = FALSE) {
   while (env_has(env, ".__tidyeval_data_mask__.", inherit = inherit)) {
     env <- env_parent(env_get(env, ".top_env", inherit = inherit))
+    if (!recursive) {
+      return(env)
+    }
+  }
+
+  env
+}
+quo_mask_top <- function(env, recursive = FALSE, inherit = FALSE) {
+  while (env_has(env, ".__tidyeval_quosure_mask__.", inherit = inherit)) {
+    env <- env_parent(env)
     if (!recursive) {
       return(env)
     }

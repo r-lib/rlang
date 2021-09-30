@@ -20,7 +20,7 @@
       (expect_error(f()))
     Output
       <error/rlang_error>
-      Error: Can't subset `.data` outside of a data mask context.
+      Error in `g()`: Can't subset `.data` outside of a data mask context.
     Code
       (expect_error(f(mtcars)))
     Output
