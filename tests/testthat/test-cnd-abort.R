@@ -446,3 +446,10 @@ test_that("abort() preserves `call`", {
   err <- catch_cnd(abort("foo", call = quote(1 + 2)), "error")
   expect_equal(err$call, quote(1 + 2))
 })
+
+test_that("format_error_call() preserves I() inputs", {
+  expect_equal(
+    format_error_call(I(quote(.data[[1]]))),
+    "`.data[[1]]`"
+  )
+})

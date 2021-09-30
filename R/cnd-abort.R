@@ -746,6 +746,24 @@ format_error_call <- function(call) {
     return(NULL)
   }
 
+  label <- error_call_as_string(call)
+  if (is_null(label)) {
+    return(NULL)
+  }
+
+  format_code(label)
+}
+
+error_call_as_string <- function(call) {
+  if (inherits(call, "AsIs")) {
+    call <- expr_deparse(unclass(call))
+    if (length(call) == 1) {
+      return(call)
+    } else {
+      return(NULL)
+    }
+  }
+
   # Functions that forward their error context to their caller
   # shouldn't generally be called via NSE but there are exceptions,
   # such as testthat snapshots.
@@ -787,7 +805,7 @@ format_error_call <- function(call) {
     out <- as_label(call)
   }
 
-  format_code(out)
+  out
 }
 
 error_call <- function(call) {

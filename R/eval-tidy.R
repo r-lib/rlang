@@ -448,15 +448,18 @@ new_data_mask <- function(bottom, top = bottom) {
 
 #' @export
 `$.rlang_data_pronoun` <- function(x, nm) {
-  data_pronoun_get(x, nm)
+  data_pronoun_get(x, nm, call = I(call("$", quote(.data), sym(nm))))
 }
 #' @export
 `[[.rlang_data_pronoun` <- function(x, i, ...) {
-  data_pronoun_get(x, i)
+  data_pronoun_get(x, i, call = I(call("[[", quote(.data), substitute(i))))
 }
-data_pronoun_get <- function(x, nm) {
+data_pronoun_get <- function(x, nm, call) {
   if (!is_string(nm)) {
-    abort("Must subset the data pronoun with a string.")
+    abort(
+      sprintf("Must subset the data pronoun with a string, not %s.", friendly_type_of(nm)),
+      call = call
+    )
   }
   mask <- .subset2(x, 1)
   .Call(ffi_data_pronoun_get, mask, sym(nm))
@@ -474,9 +477,12 @@ abort_data_pronoun <- function(nm) {
 `[[.rlang_ctxt_pronoun` <- function(x, i, ...) {
   ctxt_pronoun_get(x, i)
 }
-ctxt_pronoun_get <- function(x, nm) {
+ctxt_pronoun_get <- function(x, nm, call) {
   if (!is_string(nm)) {
-    abort("Must subset the context pronoun with a string.")
+    abort(
+      sprintf("Must subset the context pronoun with a string, not %s.", friendly_type_of(nm)),
+      call = call
+    )
   }
   eval_bare(sym(nm), x)
 }
@@ -576,4 +582,15 @@ stop_fake_data_subset <- function(call) {
 
 is_data_mask <- function(x) {
   is_environment(x) && env_has(x, ".__rlang_data_mask__.")
+}
+
+data_mask_top <- function(env, recursive = FALSE, inherit = FALSE) {
+  while (env_has(env, ".__tidyeval_data_mask__.", inherit = inherit)) {
+    env <- env_parent(env_get(env, ".top_env", inherit = inherit))
+    if (!recursive) {
+      return(env)
+    }
+  }
+
+  env
 }
