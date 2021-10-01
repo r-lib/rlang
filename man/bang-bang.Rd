@@ -63,11 +63,11 @@ iris \%>\% mean_by(by = Species, var = Sepal.Width)
 }
 }
 
-Use \code{qq_show()} to experiment with forcing operators. \code{qq_show()}
+Use \code{qq_show()} to experiment with injection operators. \code{qq_show()}
 defuses its input, processes all injection operators, and prints
 the result with \code{\link[=expr_print]{expr_print()}} to reveal the injected objects.
 }
-\section{Forcing names}{
+\section{Injecting names}{
 
 
 When a function takes multiple named arguments
@@ -102,12 +102,12 @@ braces \verb{\{\{}, similar to the curly-curly syntax:\preformatted{wrapper <- f
 \}
 }
 
-Currently, forcing names with \verb{:=} only works in top level
+Currently, injecting names with \verb{:=} only works in top level
 expressions. These are all valid:\preformatted{exprs("\{name\}" := x)
 tibble("\{name\}" := x)
 }
 
-But deep-forcing names isn't supported:\preformatted{exprs(this(is(deep("\{name\}" := x))))
+But deep-injection of names isn't supported:\preformatted{exprs(this(is(deep("\{name\}" := x))))
 }
 }
 

@@ -57,12 +57,12 @@
 #'   iris %>% mean_by(by = Species, var = Sepal.Width)
 #'   ```
 #'
-#' Use `qq_show()` to experiment with forcing operators. `qq_show()`
+#' Use `qq_show()` to experiment with injection operators. `qq_show()`
 #' defuses its input, processes all injection operators, and prints
 #' the result with [expr_print()] to reveal the injected objects.
 #'
 #'
-#' @section Forcing names:
+#' @section Injecting names:
 #'
 #' When a function takes multiple named arguments
 #' (e.g. `dplyr::mutate()`), it is difficult to supply a variable as
@@ -105,7 +105,7 @@
 #' }
 #' ```
 #'
-#' Currently, forcing names with `:=` only works in top level
+#' Currently, injecting names with `:=` only works in top level
 #' expressions. These are all valid:
 #'
 #' ```
@@ -113,7 +113,7 @@
 #' tibble("{name}" := x)
 #' ```
 #'
-#' But deep-forcing names isn't supported:
+#' But deep-injection of names isn't supported:
 #'
 #' ```
 #' exprs(this(is(deep("{name}" := x))))
