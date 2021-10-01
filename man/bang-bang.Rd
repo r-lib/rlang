@@ -123,50 +123,6 @@ and
 \href{https://docs.racket-lang.org/reference/quasiquote.html}{Racket}.
 }
 
-\section{Life cycle}{
-
-\itemize{
-\item Calling \code{UQ()} and \code{UQS()} with the rlang namespace qualifier is
-deprecated as of rlang 0.3.0. Just use the unqualified forms
-instead:\preformatted{# Bad
-rlang::expr(mean(rlang::UQ(var) * 100))
-
-# Ok
-rlang::expr(mean(UQ(var) * 100))
-
-# Good
-rlang::expr(mean(!!var * 100))
-}
-
-Supporting namespace qualifiers complicates the implementation of
-unquotation and is misleading as to the nature of unquoting
-operators (which are syntactic operators that operate at
-quotation-time rather than function calls at evaluation-time).
-\item \code{UQ()} and \code{UQS()} were soft-deprecated in rlang 0.2.0 in order
-to make the syntax of quasiquotation more consistent. The prefix
-forms are now \code{`!!`()} and \code{`!!!`()} which is
-consistent with other R operators (e.g. \code{`+`(a, b)} is the
-prefix form of \code{a + b}).
-
-Note that the prefix forms are not as relevant as before because
-\verb{!!} now has the right operator precedence, i.e. the same as
-unary \code{-} or \code{+}. It is thus safe to mingle it with other
-operators, e.g. \code{!!a + !!b} does the right thing. In addition the
-parser now strips one level of parentheses around unquoted
-expressions. This way \code{(!!"foo")(...)} expands to \code{foo(...)}.
-These changes make the prefix forms less useful.
-
-Finally, the named functional forms \code{UQ()} and \code{UQS()} were
-misleading because they suggested that existing knowledge about
-functions is applicable to quasiquotation. This was reinforced by
-the visible definitions of these functions exported by rlang and
-by the tidy eval parser interpreting \code{rlang::UQ()} as \verb{!!}. In
-reality unquoting is \emph{not} a function call, it is a syntactic
-operation. The operator form makes it clearer that unquoting is
-special.
-}
-}
-
 \examples{
 # Interpolation with {{  }} is the easiest way to forward
 # arguments to tidy eval functions:
