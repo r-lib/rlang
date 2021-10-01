@@ -323,8 +323,7 @@ cnd_message_info <- function(message,
 #'
 #' To use cli formatting automatically in your package:
 #'
-#' 1. Make sure `run_on_load()` is called from your `.onLoad()` hook.
-#'    TODO!: Export the onload-hook functions in aaa.R.
+#' 1. Make sure [run_on_load()] is called from your `.onLoad()` hook.
 #'
 #' 2. Call `on_load(local_use_cli())` at the top level of your namespace.
 #'
