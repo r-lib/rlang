@@ -129,7 +129,7 @@ global_entrace_fallback <- function(enable, class) {
 entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
   check_dots_empty0(...)
 
-  if (!missing(cnd) && is_trace(cnd$trace)) {
+  if (!missing(cnd) && inherits(cnd, "rlang_error")) {
     return()
   }
 
