@@ -330,7 +330,8 @@ cnd_message_info <- function(message,
 #'
 #' It is also possible to call `local_use_cli()` inside a running
 #' function, in which case the flag only applies within that function.
-#' 
+#'
+#' @keywords internal
 #' @export
 local_use_cli <- function(...,
                           format = TRUE,

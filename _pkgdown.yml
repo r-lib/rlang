@@ -86,10 +86,18 @@ reference:
       - trace_back
       - with_abort
       - entrace
+      - global_entrace
+      - last_warnings
+      - last_messages
       - cnd_signal
       - last_error
       - rlang_backtrace_on_error
       - catch_cnd
+      - args_error_context
+      - rlang_error
+      - caller_arg
+      - local_error_call
+      - try_catch
   - title: Evaluate expressions
     contents:
       - eval_tidy
@@ -264,6 +272,7 @@ reference:
       - is_string
       - is_bool
       - is_bare_string
+      - raw_deparse_str
   - title: Operators
     contents:
       - "`%||%`"
@@ -272,6 +281,8 @@ reference:
   - title: Function arguments
     contents:
       - arg_match
+      - arg_exclusive
+      - arg_require
       - missing_arg
       - is_missing
       - maybe_missing
@@ -293,6 +304,7 @@ reference:
     contents:
       - matches("interactive")
       - matches("option")
+      - on_load
   - title: Weak references
     contents:
       - matches("weakref")

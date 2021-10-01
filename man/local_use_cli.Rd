@@ -51,3 +51,4 @@ It is also possible to call \code{local_use_cli()} inside a running
 function, in which case the flag only applies within that function.
 }
 
+\keyword{internal}
