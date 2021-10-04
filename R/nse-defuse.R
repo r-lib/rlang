@@ -221,11 +221,104 @@ expr <- function(expr) {
 }
 #' @rdname nse-defuse
 #' @export
+enquo <- function(arg) {
+  .Call(ffi_enquo, substitute(arg), parent.frame())
+}
+#' @rdname nse-defuse
+#' @export
+enquos <- function(...,
+                   .named = FALSE,
+                   .ignore_empty = c("trailing", "none", "all"),
+                   .unquote_names = TRUE,
+                   .homonyms = c("keep", "first", "last", "error"),
+                   .check_assign = FALSE) {
+  quos <- endots(
+    call = sys.call(),
+    frame_env = parent.frame(),
+    capture_arg = ffi_enquo,
+    capture_dots = ffi_quos_interp,
+    named = .named,
+    ignore_empty = .ignore_empty,
+    unquote_names = .unquote_names,
+    homonyms = .homonyms,
+    check_assign = .check_assign
+  )
+  structure(quos, class = c("quosures", "list"))
+}
+
+#' Advanced defusal operators
+#'
+#' @description
+#' [expr()], [enquo()], and [enquos()] are sufficient for most
+#' purposes. rlang provides other operations for completeness which
+#' are summarised here.
+#'
+#' *   `exprs()` is the plural variant of `expr()`. It returns a list of
+#'     expressions. It is like [base::alist()] but with
+#'     [injection][nse-inject] support.
+#'
+#' *   `quo()` and `quos()` are like `expr()` and `exprs()` but return
+#'     quosures instead of naked expressions. When you are defusing
+#'     your own local expressions (by opposition to function arguments
+#'     where non-local expressions are supplied by your users), there
+#'     is generally no need to attach the current environment in a
+#'     quosure. See [When are quosures needed?][faq-quosure].
+#'
+#' *   `enexpr()` and `enexprs()` are like [enquo()] and [enquos()] but
+#'     return naked expressions instead of quosures. These operators
+#'     should very rarely be used because they lose track of the
+#'     environment of defused arguments.
+#'
+#' *   `ensym()` and `ensyms()` are like `enexpr()` and `enexprs()` but
+#'     they throw an error when the defused expressions are not simple
+#'     symbols. They also support strings which are interpreted as
+#'     symbols. These functions are modelled on the behaviour of the
+#'     left-hand side of `=` and `<-` where you can supply symbols and
+#'     strings interchangeably.
+#'
+#'     ```
+#'     "foo" <- NULL
+#'     list("foo" = NULL)
+#'     ```
+#'
+#' @inheritParams nse-defuse
+#'
+#' @examples
+#' # `exprs()` is the plural variant of `expr()`
+#' exprs(foo, bar, bar)
+#'
+#' # `quo()` and `quos()` are the quosure variants of `expr()` and `exprs()`
+#' quo(foo)
+#' quos(foo, bar)
+#'
+#' # `enexpr()` and `enexprs()` are the naked variants of `enquo()` and `enquos()`
+#' my_function1 <- function(arg) enexpr(arg)
+#' my_function2 <- function(arg, ...) enexprs(arg, ...)
+#' my_function1(1 + 1)
+#' my_function2(1 + 1, 10 * 2)
+#'
+#' # `ensym()` and `ensyms()` are symbol variants of `enexpr()` and `enexprs()`
+#' my_function3 <- function(arg) ensym(arg)
+#' my_function4 <- function(arg, ...) ensyms(arg, ...)
+#'
+#' # The user must supply symbols
+#' my_function3(foo)
+#' my_function4(foo, bar)
+#'
+#' # Complex expressions are an error
+#' try(my_function3(1 + 1))
+#' try(my_function4(1 + 1, 10 * 2))
+#'
+#' @name nse-defuse-advanced
+NULL
+
+#' @rdname nse-defuse-advanced
+#' @export
 enexpr <- function(arg) {
   .Call(ffi_enexpr, substitute(arg), parent.frame())
 }
 
-#' @rdname nse-defuse
+#' @rdname nse-defuse-advanced
 #' @export
 exprs <- function(...,
                   .named = FALSE,
@@ -240,7 +333,7 @@ exprs <- function(...,
     check_assign = FALSE
   )
 }
-#' @rdname nse-defuse
+#' @rdname nse-defuse-advanced
 #' @export
 enexprs <- function(...,
                    .named = FALSE,
@@ -261,12 +354,12 @@ enexprs <- function(...,
   )
 }
 
-#' @rdname nse-defuse
+#' @rdname nse-defuse-advanced
 #' @export
 ensym <- function(arg) {
   .Call(ffi_ensym, substitute(arg), parent.frame())
 }
-#' @rdname nse-defuse
+#' @rdname nse-defuse-advanced
 #' @export
 ensyms <- function(...,
                    .named = FALSE,
@@ -294,18 +387,12 @@ ensyms <- function(...,
 }
 
 
-#' @rdname nse-defuse
+#' @rdname nse-defuse-advanced
 #' @export
 quo <- function(expr) {
   enquo(expr)
 }
-#' @rdname nse-defuse
-#' @export
-enquo <- function(arg) {
-  .Call(ffi_enquo, substitute(arg), parent.frame())
-}
-
-#' @rdname nse-defuse
+#' @rdname nse-defuse-advanced
 #' @export
 quos <- function(...,
                  .named = FALSE,
@@ -319,27 +406,6 @@ quos <- function(...,
     homonyms = "keep",
     check_assign = FALSE
   )
-}
-#' @rdname nse-defuse
-#' @export
-enquos <- function(...,
-                   .named = FALSE,
-                   .ignore_empty = c("trailing", "none", "all"),
-                   .unquote_names = TRUE,
-                   .homonyms = c("keep", "first", "last", "error"),
-                   .check_assign = FALSE) {
-  quos <- endots(
-    call = sys.call(),
-    frame_env = parent.frame(),
-    capture_arg = ffi_enquo,
-    capture_dots = ffi_quos_interp,
-    named = .named,
-    ignore_empty = .ignore_empty,
-    unquote_names = .unquote_names,
-    homonyms = .homonyms,
-    check_assign = .check_assign
-  )
-  structure(quos, class = c("quosures", "list"))
 }
 
 

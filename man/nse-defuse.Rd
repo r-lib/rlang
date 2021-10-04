@@ -4,58 +4,13 @@
 \alias{nse-defuse}
 \alias{quotation}
 \alias{expr}
-\alias{enexpr}
-\alias{exprs}
-\alias{enexprs}
-\alias{ensym}
-\alias{ensyms}
-\alias{quo}
 \alias{enquo}
-\alias{quos}
 \alias{enquos}
 \title{Defuse R expressions}
 \usage{
 expr(expr)
 
-enexpr(arg)
-
-exprs(
-  ...,
-  .named = FALSE,
-  .ignore_empty = c("trailing", "none", "all"),
-  .unquote_names = TRUE
-)
-
-enexprs(
-  ...,
-  .named = FALSE,
-  .ignore_empty = c("trailing", "none", "all"),
-  .unquote_names = TRUE,
-  .homonyms = c("keep", "first", "last", "error"),
-  .check_assign = FALSE
-)
-
-ensym(arg)
-
-ensyms(
-  ...,
-  .named = FALSE,
-  .ignore_empty = c("trailing", "none", "all"),
-  .unquote_names = TRUE,
-  .homonyms = c("keep", "first", "last", "error"),
-  .check_assign = FALSE
-)
-
-quo(expr)
-
 enquo(arg)
-
-quos(
-  ...,
-  .named = FALSE,
-  .ignore_empty = c("trailing", "none", "all"),
-  .unquote_names = TRUE
-)
 
 enquos(
   ...,
