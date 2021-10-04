@@ -4,18 +4,25 @@
 \alias{check_dots_unnamed}
 \title{Check that all dots are unnamed}
 \usage{
-check_dots_unnamed(env = caller_env(), call = caller_env(), action = abort)
+check_dots_unnamed(
+  env = caller_env(),
+  error = NULL,
+  call = caller_env(),
+  action = abort
+)
 }
 \arguments{
 \item{env}{Environment in which to look for \code{...}.}
+
+\item{error}{An optional error handler passed to \code{\link[=try_catch]{try_catch()}}. Use
+this e.g. to demote an error into a warning.}
 
 \item{call}{The execution environment of a currently
 running function, e.g. \code{caller_env()}. The function will be
 mentioned in error messages as the source of the error. See the
 \code{call} argument of \code{\link[=abort]{abort()}} for more information.}
 
-\item{action}{The action to take when the dots have not been used. One of
-\code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, \code{\link[=inform]{inform()}} or \code{\link[=signal]{signal()}}.}
+\item{action}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}.}
 }
 \description{
 In functions like \code{paste()}, named arguments in \code{...} are often a
