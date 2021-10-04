@@ -61,6 +61,8 @@ mean_by <- function(data, by, var) \{
 # and `summarise()`
 iris \%>\% mean_by(by = Species, var = Sepal.Width)
 }
+
+Learn more about it in \link[=embracing]{embracing and forwarding}.
 }
 
 Use \code{qq_show()} to experiment with injection operators. \code{qq_show()}

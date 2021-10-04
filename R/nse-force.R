@@ -57,6 +57,8 @@
 #'   iris %>% mean_by(by = Species, var = Sepal.Width)
 #'   ```
 #'
+#'   Learn more about it in [embracing and forwarding][embracing].
+#'
 #' Use `qq_show()` to experiment with injection operators. `qq_show()`
 #' defuses its input, processes all injection operators, and prints
 #' the result with [expr_print()] to reveal the injected objects.
@@ -265,6 +267,14 @@ UQS <- function(x) {
 qq_show <- function(expr) {
   expr_print(enexpr(expr))
 }
+
+#' Embracing and forwarding data-masked arguments
+#'
+#' TODO!
+#'
+#' @name embracing
+#' @aliases curly-curly forwarding
+NULL
 
 
 glue_unquote <- function(text, env = caller_env()) {

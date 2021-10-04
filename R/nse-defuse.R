@@ -2,31 +2,115 @@
 #'
 #' @description
 #'
-#' `r lifecycle::badge("stable")`
+#' _Note regarding tidyverse programming:_ `expr()` and `enquo()` are
+#' advanced tidy eval operators. Most cases can be solved with `{{`
+#' and `...`. You can read about this in [embracing and
+#' forwarding][embracing].
 #'
-#' The defusing operators `expr()` and `enquo()` prevent the
-#' evaluation of R code. Defusing is also known as _quoting_, and is
-#' done in base R by [quote()] and [substitute()]. When a function
-#' argument is defused, R doesn't return its value like it normally
-#' would but it returns the R expression describing how to make the
-#' value. These defused expressions are like blueprints for computing
-#' values.
+#' The defusing operators `expr()` and `enquo()` disable evaluation of
+#' R code. When a piece of R code is defused, R doesn't return its
+#' value like it normally would. Instead it returns the expression in
+#' a special tree-like object that describes how to compute a value.
+#' These defused expressions can be thought of as blueprints or
+#' recipes for computing values.
+#'
+#' ```{r}
+#' # Return the result of `1 + 1`
+#' 1 + 1
+#'
+#' # Return the expression `1 + 1`
+#' expr(1 + 1)
+#'
+#' # Return the expression and evaluate it
+#' e <- expr(1 + 1)
+#' eval(e)
+#' ```
 #'
 #' There are two main ways to defuse expressions, to which correspond
-#' the two functions `expr()` and `enquo()`. Whereas `expr()` defuses
-#' your own expression, `enquo()` defuses expressions supplied as
-#' argument by the user of a function. See section on function
-#' arguments for more on this distinction.
+#' the two functions `expr()` and `enquo()`:
 #'
-#' The main purpose of defusing evaluation of an expression is to
-#' enable data-masking, where an expression is evaluated in the
-#' context of a data frame so that you can write `var` instead of
-#' `data$var`. The expression is defused so it can be resumed later
-#' on, in a context where the data-variables have been defined.
+#' * You can defuse your _own_ R expressions with `expr()`.
 #'
-#' Defusing prevents the evaluation of R code, but you can still force
-#' evaluation inside a defused expression with the [forcing
-#' operators][nse-inject] `!!` and `!!!`.
+#' * You can defuse the expressions supplied by _the user_ of your
+#'   function with the `en`-prefixed operators, such as `enquo()` and
+#'   `enquos()`. These operators defuse function arguments.
+#'
+#' One purpose for defusing evaluation of an expression is to
+#' interface with data-masking functions with the
+#' __defuse-and-inject__ pattern. Function arguments referring to
+#' data-variables are defused and then injected with `!!` or `!!!` in
+#' a data-masking function where the data-variables are defined.
+#'
+#' ```
+#' my_summarise <- function(data, arg) {
+#'   # Defuse the user expression in `arg`
+#'   arg <- enquo(arg)
+#'
+#'   # Inject the expression contained in `arg`
+#'   # inside a `summarise()` argument
+#'   data |> dplyr::summarise(mean = mean(!!arg, na.rm = TRUE))
+#' }
+#' ```
+#'
+#' This pattern of defuse-and-inject can be done in one step with the
+#' embracing operator `{{` described in [embracing and
+#' forwarding][embracing].
+#'
+#' ```
+#' my_summarise <- function(data, arg) {
+#'   # Defuse and inject in a single step with the embracing operator
+#'   data |> dplyr::summarise(mean = mean({{ arg }}, na.rm = TRUE))
+#' }
+#' ```
+#'
+#' Using `enquo()` and `!!` separately is useful for more complex
+#' cases where you need access to the defused expression instead of
+#' just passing it on.
+#'
+#'
+#' @section Defused arguments and quosures:
+#'
+#' If you inspect the return values of `expr()` and `enquo()`, you'll
+#' notice that the latter doesn't return a raw expression like the
+#' former. Instead it returns a [quosure], a wrapper containing an
+#' expression and an environment.
+#'
+#' ```
+#' expr(1 + 1)
+#' #> 1 + 1
+#'
+#' my_function <- function(arg) enquo(arg)
+#' my_function(1 + 1)
+#' #> <quosure>
+#' #> expr: ^1 + 1
+#' #> env:  global
+#' ```
+#'
+#' R needs information about the environment to properly evaluate
+#' argument expressions because they come from a different context
+#' than the current function. For instance when a function in your
+#' package calls `dplyr::mutate()`, the quosure environment indicates
+#' where all the private functions of your package are defined.
+#'
+#'
+#' @section Comparison with base R:
+#'
+#' Defusing is known as _quoting_ in other frameworks.
+#'
+#' - The equivalent of `expr()` is [base::bquote()].
+#'
+#' - The equivalent of `enquo()` is [base::substitute()]. The latter
+#'   returns a naked expression instead of a quosure.
+#'
+#' - There is no equivalent for `enquos(...)` but you can defuse dots
+#'   as a list of naked expressions with `eval(substitute(alist(...)))`.
+#'
+#' What makes tidy eval work consistently and safely is that defused
+#' argument expressions are wrapped in a [quosure]. Unlike a naked
+#' expression, a quosure carries information about the context from
+#' which an expression comes from. A quosure is evaluated in the
+#' original environment of the expression, which allows R to find
+#' local data and local functions.
 #'
 #'
 #' @section Types of defused expressions:
@@ -40,15 +124,26 @@
 #'   the object is a column in a data frame, we call it a
 #'   data-variable.
 #'
+#' * __Constants__, like `1` or `NULL`.
+#'
 #' You can create new call or symbol objects by using the defusing
 #' function `expr()`:
 #'
 #' ```
 #' # Create a symbol representing objects called `foo`
 #' expr(foo)
+#' #> foo
 #'
 #' # Create a call representing the computation of the mean of `foo`
 #' expr(mean(foo, na.rm = TRUE))
+#' #> mean(foo, na.rm = TRUE)
+#'
+#' # Return a constant
+#' expr(1)
+#' #> [1] 1
+#'
+#' expr(NULL)
+#' #> NULL
 #' ```
 #'
 #' Defusing is not the only way to create defused expressions. You can
@@ -59,47 +154,9 @@
 #' var <- "foo"
 #' sym(var)
 #'
-#' # Assemble a call from strings, symbols, and other objects
+#' # Assemble a call from strings, symbols, and constants
 #' call("mean", sym(var), na.rm = TRUE)
 #' ```
-#'
-#'
-#' @section Defusing function arguments:
-#'
-#' There are two points of view when it comes to defusing an
-#' expression:
-#'
-#' * You can defuse expressions that _you_ supply with `expr()`. This
-#'   is one way of creating symbols and calls (see previous section).
-#'
-#' * You can defuse the expressions supplied by _the user_ of your
-#'   function with the operators starting with `en` like `ensym()`,
-#'   `enquo()` and their plural variants. They defuse function
-#'   arguments .
-#'
-#'
-#' @section Defused arguments and quosures:
-#'
-#' If you inspect the return values of `expr()` and `enquo()`, you'll
-#' notice that the latter doesn't return a raw expression like the
-#' former. Instead it returns a __quosure__, a wrapper containing an
-#' expression and an environment. R needs information about the
-#' environment to properly evaluate the argument expression because it
-#' comes from a different context than the current function.
-#'
-#' See the [quosure] help topic about tools to work with quosures.
-#'
-#'
-#' @section Comparison to base R:
-#'
-#' * The defusing operator `expr()` is similar to [quote()]. Like
-#'   [bquote()], it allows [forcing][nse-defuse] evaluation of parts
-#'   of an expression.
-#'
-#' * The plural variant `exprs()` is similar to [alist()].
-#'
-#' * The argument-defusing operator `enquo()` is similar to
-#'   [substitute()].
 #'
 #' @inheritParams dots_list
 #' @param expr An expression.
@@ -120,79 +177,41 @@
 #' @aliases quotation
 #' @seealso [enquo0()] and [enquos0()] for variants that do not
 #'   perform automatic injection/unquotation.
+#'
 #' @examples
-#' # expr() and exprs() capture expressions that you supply:
-#' expr(symbol)
-#' exprs(several, such, symbols)
+#' # `expr()` defuses the expression that you supply
+#' expr(1 + 1)
 #'
-#' # enexpr() and enexprs() capture expressions that your user supplied:
-#' expr_inputs <- function(arg, ...) {
-#'   user_exprs <- enexprs(arg, ...)
-#'   user_exprs
+#' # `enquo()` defuses the expression supplied by your user
+#' my_function <- function(arg) {
+#'   enquo(arg)
 #' }
-#' expr_inputs(hello)
-#' expr_inputs(hello, bonjour, ciao)
+#' my_function(1 + 1)
 #'
-#' # ensym() and ensyms() provide additional type checking to ensure
-#' # the user calling your function has supplied bare object names:
-#' sym_inputs <- function(...) {
-#'   user_symbols <- ensyms(...)
-#'   user_symbols
+#' # `enquos() works with arguments and dots and returns a list of
+#' # expressions`
+#' my_function <- function(...) {
+#'   enquos(...)
 #' }
-#' sym_inputs(hello, "bonjour")
-#' ## sym_inputs(say(hello))  # Error: Must supply symbols or strings
-#' expr_inputs(say(hello))
+#' my_function(1 + 1, 2 * 10)
 #'
 #'
-#' # All these quoting functions have quasiquotation support. This
-#' # means that you can unquote (evaluate and inline) part of the
-#' # captured expression:
-#' what <- sym("bonjour")
-#' expr(say(what))
-#' expr(say(!!what))
+#' # `expr()` and `enquo()` support _injection_, a convenient way of
+#' # modifying part of an expression by injecting other objects.
+#' column <- sym("cyl")
+#' expr(mean(!!column, na.rm = TRUE))
 #'
-#' # This also applies to expressions supplied by the user. This is
-#' # like an escape hatch that allows control over the captured
-#' # expression:
-#' expr_inputs(say(!!what), !!what)
+#' columns <- syms(c("cyl", "am"))
+#' expr(mean(!!columns[[1]] * !!columns[[2]], na.rm = TRUE))
+#' expr(list(!!!columns))
 #'
-#'
-#' # Finally, you can capture expressions as quosures. A quosure is an
-#' # object that contains both the expression and its environment:
-#' quo <- quo(letters)
-#' quo
-#'
-#' get_expr(quo)
-#' get_env(quo)
-#'
-#' # Quosures can be evaluated with eval_tidy():
-#' eval_tidy(quo)
-#'
-#' # They have the nice property that you can pass them around from
-#' # context to context (that is, from function to function) and they
-#' # still evaluate in their original environment:
-#' multiply_expr_by_10 <- function(expr) {
-#'   # We capture the user expression and its environment:
-#'   expr <- enquo(expr)
-#'
-#'   # Then create an object that only exists in this function:
-#'   local_ten <- 10
-#'
-#'   # Now let's create a multiplication expression that (a) inlines
-#'   # the user expression as LHS (still wrapped in its quosure) and
-#'   # (b) refers to the local object in the RHS:
-#'   quo(!!expr * local_ten)
+#' # Using `enquo()` enables `{{ arg }}` embracing in particular
+#' other_function <- function(arg) {
+#'   my_function({{ arg }} * 2)
 #' }
-#' quo <- multiply_expr_by_10(2 + 3)
-#'
-#' # The local parts of the quosure are printed in colour if your
-#' # terminal is capable of displaying colours:
-#' quo
-#'
-#' # All the quosures in the expression evaluate in their original
-#' # context. The local objects are looked up properly and we get the
-#' # expected result:
-#' eval_tidy(quo)
+#' other_function(100)
+#' 
+#' other_function(!!column)
 NULL
 
 #' @rdname nse-defuse
