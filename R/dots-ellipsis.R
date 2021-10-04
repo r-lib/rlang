@@ -25,8 +25,9 @@ NULL
 #' elsewhere in your function, make sure to use `add = TRUE` so that you
 #' don't override the handler set up by `check_dots_used()`.
 #'
-#' @param action The action to take when the dots have not been used. One of
-#'   [rlang::abort()], [rlang::warn()], [rlang::inform()] or [rlang::signal()].
+#' @param error An optional error handler passed to [try_catch()]. Use
+#'   this e.g. to demote an error into a warning.
+#' @param action `r lifecycle::badge("deprecated")`.
 #' @param env Environment in which to look for `...` and to set up handler.
 #' @inheritParams args_error_context
 #' @export
@@ -45,13 +46,14 @@ NULL
 #' try(f(x = 1, y = 2, 3, 4, 5))
 check_dots_used <- function(env = caller_env(),
                             call = caller_env(),
-                            action = abort) {
-  handler <- function() check_dots(env, action, call)
+                            error = NULL,
+                            action = deprecated()) {
+  handler <- function() check_dots(env, error, action, call)
   inject(base::on.exit(!!call2(handler), add = TRUE), env)
   invisible()
 }
 
-check_dots <- function(env = caller_env(), action, call) {
+check_dots <- function(env = caller_env(), error, action, call) {
   if (.Call(ffi_ellipsis_dots_used, env)) {
     return(invisible())
   }
@@ -61,6 +63,7 @@ check_dots <- function(env = caller_env(), action, call) {
 
   unused <- names(proms)[!used]
   action_dots(
+    error = error,
     action = action,
     message = paste0(length(unused), " arguments in `...` were not used."),
     dot_names = unused,
@@ -86,6 +89,7 @@ check_dots <- function(env = caller_env(), action, call) {
 #' f(1, 2, 3, foofy = 4)
 #' try(f(1, 2, 3, foof = 4))
 check_dots_unnamed <- function(env = caller_env(),
+                               error = NULL,
                                call = caller_env(),
                                action = abort) {
   proms <- ellipsis_dots(env, auto_name = FALSE)
@@ -100,6 +104,7 @@ check_dots_unnamed <- function(env = caller_env(),
 
   named <- names(proms)[!unnamed]
   action_dots(
+    error = error,
     action = action,
     message = paste0(length(named), " arguments in `...` had unexpected names."),
     dot_names = named,
@@ -132,6 +137,7 @@ check_dots_unnamed <- function(env = caller_env(),
 #' # Thanks to `...`, it must be matched exactly
 #' f(1, foofy = 4)
 check_dots_empty <- function(env = caller_env(),
+                             error = NULL,
                              call = caller_env(),
                              action = abort) {
   dots <- ellipsis_dots(env)
@@ -140,6 +146,7 @@ check_dots_empty <- function(env = caller_env(),
   }
 
   action_dots(
+    error = error,
     action = action,
     message = "`...` is not empty.",
     dot_names = names(dots),
@@ -165,7 +172,23 @@ check_dots_empty0 <- function(..., call = caller_env()) {
   }
 }
 
-action_dots <- function(action, message, dot_names, note = NULL, class = NULL, ...) {
+action_dots <- function(error, action, message, dot_names, note = NULL, class = NULL, ...) {
+  if (is_missing(action)) {
+    action <- abort
+  } else  {
+    # Silently deprecated for now
+    paste_line(
+      "The `action` argument of ellipsis functions is deprecated as of rlang 1.0.0.",
+      "Please use the `error` argument instead."
+    )
+  }
+
+  if (is_null(error)) {
+    try_dots <- identity
+  } else {
+    try_dots <- function(expr) try_catch(expr, error = error)
+  }
+
   message <- c(
     message,
     i = note,
@@ -173,7 +196,8 @@ action_dots <- function(action, message, dot_names, note = NULL, class = NULL, .
     set_names(chr_quoted(dot_names), "*"),
     i = "Did you misspecify an argument?"
   )
-  action(message, class = c(class, "rlib_error_dots"), ...)
+
+  try_dots(action(message, class = c(class, "rlib_error_dots"), ...))
 }
 
 promise_forced <- function(x) {

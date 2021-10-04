@@ -63,6 +63,10 @@
 
 * `friendly_type()` is deprecated and `as_pairlist()` is defunct.
 
+* The `action` argument of `check_dots_used()`, `check_dots_unnamed()`,
+  and `check_dots_empty()` is deprecated in favour of the new `error`
+  argument which takes an error handler.
+
 
 ## Features and bugfixes
 

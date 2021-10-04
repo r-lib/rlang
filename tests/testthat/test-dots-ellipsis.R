@@ -56,7 +56,7 @@ test_that("error if if dots not empty", {
   })
 })
 
-test_that("can control the action", {
+test_that("can control the action (deprecated)", {
   f <- function(action, check, ..., xyz = 1) {
     check(action = action)
   }
@@ -85,4 +85,21 @@ test_that("warn if unused dots", {
   expect_error(safe_median(1:10), NA)
   expect_error(safe_median(1:10, na.rm = TRUE), NA)
   expect_error(safe_median(1:10, y = 1), class = "rlib_error_dots_unused")
+})
+
+test_that("can supply `error` handler", {
+  hnd <- function(cnd) warning(cnd)
+
+  f <- function(...) check_dots_empty(error = hnd)
+  expect_silent(f())
+  expect_warning(f(foo), class = "rlib_error_dots_nonempty")
+
+  f <- function(...) check_dots_used(error = hnd)
+  expect_silent(f())
+  expect_warning(f(foo), class = "rlib_error_dots_unused")
+
+
+  f <- function(...) check_dots_unnamed(error = hnd)
+  expect_silent(f(foo))
+  expect_warning(f(foo = foo), class = "rlib_error_dots_named")
 })
