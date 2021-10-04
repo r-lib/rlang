@@ -235,6 +235,5 @@ other_function(100)
 other_function(!!column)
 }
 \seealso{
-\code{\link[=enquo0]{enquo0()}} and \code{\link[=enquos0]{enquos0()}} for variants that do not
-perform automatic injection/unquotation.
+\link[=nse-defuse-advanced]{Advanced tidyeval operators}.
 }

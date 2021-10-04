@@ -9,6 +9,8 @@
 \alias{ensyms}
 \alias{quo}
 \alias{quos}
+\alias{enquo0}
+\alias{enquos0}
 \title{Advanced defusal operators}
 \usage{
 enexpr(arg)
@@ -48,6 +50,10 @@ quos(
   .ignore_empty = c("trailing", "none", "all"),
   .unquote_names = TRUE
 )
+
+enquo0(arg)
+
+enquos0(...)
 }
 \arguments{
 \item{arg}{A symbol representing an argument. The expression
@@ -114,6 +120,20 @@ left-hand side of \code{=} and \verb{<-} where you can supply symbols and
 strings interchangeably.\preformatted{"foo" <- NULL
 list("foo" = NULL)
 }
+\item \code{enquo0} and \code{enquos0()} are like \code{enquo()} and \code{enquos()} but
+without injection support. The injection operators \verb{!!}, \verb{!!!},
+and \verb{\{\{} are not processed, instead they are preserved in the
+defused expression. This makes it possible to defuse
+expressions that potentially contain injection operators meant
+for later use.
+
+The flip side is that this makes it harder for users to inject
+expressions in your function. They have to do it explicitly
+with \code{\link[=inject]{inject()}}.
+
+None of the features of \link[=dyn-dots]{dynamic dots} are available
+when defusing with \code{enquos0()}. For instance, trailing empty
+arguments are not automatically trimmed.
 }
 }
 \examples{
@@ -130,6 +150,7 @@ my_function2 <- function(arg, ...) enexprs(arg, ...)
 my_function1(1 + 1)
 my_function2(1 + 1, 10 * 2)
 
+
 # `ensym()` and `ensyms()` are symbol variants of `enexpr()` and `enexprs()`
 my_function3 <- function(arg) ensym(arg)
 my_function4 <- function(arg, ...) ensyms(arg, ...)
@@ -142,4 +163,14 @@ my_function4(foo, bar)
 try(my_function3(1 + 1))
 try(my_function4(1 + 1, 10 * 2))
 
+
+# `enquo0()` and `enquos0()` disable injection operators
+automatic_injection <- function(x) enquo(x)
+no_injection <- function(x) enquo0(x)
+
+automatic_injection(foo(!!!1:3))
+no_injection(foo(!!!1:3))
+
+# Injection can still be done explicitly
+inject(no_injection(foo(!!!1:3)))
 }
