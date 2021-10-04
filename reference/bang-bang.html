@@ -84,7 +84,7 @@ iris %&amp;gt;% mean_by(by = Species, var = Sepal.Width)
 
 
 
-Use qq_show() to experiment with forcing operators. qq_show()
+Use qq_show() to experiment with injection operators. qq_show()
 defuses its input, processes all injection operators, and prints
 the result with expr_print() to reveal the injected objects." />
 
@@ -246,7 +246,7 @@ frame.</p><pre><span class='co'># Inject function arguments that might contain</
 </pre></li>
 </ul>
 
-<p>Use <code>qq_show()</code> to experiment with forcing operators. <code>qq_show()</code>
+<p>Use <code>qq_show()</code> to experiment with injection operators. <code>qq_show()</code>
 defuses its input, processes all injection operators, and prints
 the result with <code><a href='expr_print.html'>expr_print()</a></code> to reveal the injected objects.</p>
     </div>
@@ -261,7 +261,7 @@ the result with <code><a href='expr_print.html'>expr_print()</a></code> to revea
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="forcing-names"><a class="anchor" href="#forcing-names"></a>Forcing names</h2>
+    <h2 class="hasAnchor" id="injecting-names"><a class="anchor" href="#injecting-names"></a>Injecting names</h2>
 
     
 
@@ -296,12 +296,12 @@ braces <code>{{</code>, similar to the curly-curly syntax:</p><pre><span class='
 <span class='op'>}</span>
 </pre>
 
-<p>Currently, forcing names with <code>:=</code> only works in top level
+<p>Currently, injecting names with <code>:=</code> only works in top level
 expressions. These are all valid:</p><pre><span class='fu'><a href='nse-defuse.html'>exprs</a></span><span class='op'>(</span><span class='st'>"{name}"</span> <span class='op'>:=</span> <span class='va'>x</span><span class='op'>)</span>
 <span class='fu'>tibble</span><span class='op'>(</span><span class='st'>"{name}"</span> <span class='op'>:=</span> <span class='va'>x</span><span class='op'>)</span>
 </pre>
 
-<p>But deep-forcing names isn't supported:</p><pre><span class='fu'><a href='nse-defuse.html'>exprs</a></span><span class='op'>(</span><span class='fu'>this</span><span class='op'>(</span><span class='fu'>is</span><span class='op'>(</span><span class='fu'>deep</span><span class='op'>(</span><span class='st'>"{name}"</span> <span class='op'>:=</span> <span class='va'>x</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+<p>But deep-injection of names isn't supported:</p><pre><span class='fu'><a href='nse-defuse.html'>exprs</a></span><span class='op'>(</span><span class='fu'>this</span><span class='op'>(</span><span class='fu'>is</span><span class='op'>(</span><span class='fu'>deep</span><span class='op'>(</span><span class='st'>"{name}"</span> <span class='op'>:=</span> <span class='va'>x</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 </pre>
 
     <h2 class="hasAnchor" id="theory"><a class="anchor" href="#theory"></a>Theory</h2>
@@ -316,49 +316,6 @@ modern languages like
 <a href='https://docs.julialang.org/en/v1/manual/metaprogramming/'>Julia</a>
 and
 <a href='https://docs.racket-lang.org/reference/quasiquote.html'>Racket</a>.</p>
-    <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
-
-    
-
-<ul>
-<li><p>Calling <code>UQ()</code> and <code>UQS()</code> with the rlang namespace qualifier is
-deprecated as of rlang 0.3.0. Just use the unqualified forms
-instead:</p><pre><span class='co'># Bad</span>
-<span class='fu'>rlang</span><span class='fu'>::</span><span class='fu'><a href='nse-defuse.html'>expr</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='fu'>rlang</span><span class='fu'>::</span><span class='fu'>UQ</span><span class='op'>(</span><span class='va'>var</span><span class='op'>)</span> <span class='op'>*</span> <span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='co'># Ok</span>
-<span class='fu'>rlang</span><span class='fu'>::</span><span class='fu'><a href='nse-defuse.html'>expr</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='fu'>UQ</span><span class='op'>(</span><span class='va'>var</span><span class='op'>)</span> <span class='op'>*</span> <span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='co'># Good</span>
-<span class='fu'>rlang</span><span class='fu'>::</span><span class='fu'><a href='nse-defuse.html'>expr</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='va'>var</span> <span class='op'>*</span> <span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
-</pre>
-
-<p>Supporting namespace qualifiers complicates the implementation of
-unquotation and is misleading as to the nature of unquoting
-operators (which are syntactic operators that operate at
-quotation-time rather than function calls at evaluation-time).</p></li>
-<li><p><code>UQ()</code> and <code>UQS()</code> were soft-deprecated in rlang 0.2.0 in order
-to make the syntax of quasiquotation more consistent. The prefix
-forms are now <code>`!!`()</code> and <code>`!!!`()</code> which is
-consistent with other R operators (e.g. <code>`+`(a, b)</code> is the
-prefix form of <code>a + b</code>).</p>
-<p>Note that the prefix forms are not as relevant as before because
-<code>!!</code> now has the right operator precedence, i.e. the same as
-unary <code><a href='https://rdrr.io/r/base/Arithmetic.html'>-</a></code> or <code><a href='https://rdrr.io/r/base/Arithmetic.html'>+</a></code>. It is thus safe to mingle it with other
-operators, e.g. <code>!!a + !!b</code> does the right thing. In addition the
-parser now strips one level of parentheses around unquoted
-expressions. This way <code>(!!"foo")(...)</code> expands to <code>foo(...)</code>.
-These changes make the prefix forms less useful.</p>
-<p>Finally, the named functional forms <code>UQ()</code> and <code>UQS()</code> were
-misleading because they suggested that existing knowledge about
-functions is applicable to quasiquotation. This was reinforced by
-the visible definitions of these functions exported by rlang and
-by the tidy eval parser interpreting <code>rlang::UQ()</code> as <code>!!</code>. In
-reality unquoting is <em>not</em> a function call, it is a syntactic
-operation. The operator form makes it clearer that unquoting is
-special.</p></li>
-</ul>
-
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Interpolation with {{  }} is the easiest way to forward</span>
@@ -390,7 +347,7 @@ special.</p></li>
 </div><div class='output co'>#&gt; how_many(this)</div><div class='input'><span class='fu'><a href='nse-defuse.html'>quo</a></span><span class='op'>(</span><span class='fu'>how_many</span><span class='op'>(</span><span class='va'>this</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span>
 #&gt; expr: <span style='color: #0000BB;'>^how_many(this)</span>
-#&gt; env:  <span style='color: #0000BB;'>0x55da3f49f2b0</span></div><div class='input'>
+#&gt; env:  <span style='color: #0000BB;'>0x561522ee0380</span></div><div class='input'>
 <span class='co'># In addition, they support unquoting. Let's store symbols</span>
 <span class='co'># (i.e. object names) in variables:</span>
 <span class='va'>this</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sym.html'>sym</a></span><span class='op'>(</span><span class='st'>"apples"</span><span class='op'>)</span>
@@ -406,7 +363,7 @@ special.</p></li>
 </div><div class='output co'>#&gt; how_many(3)</div><div class='input'><span class='fu'><a href='nse-defuse.html'>quo</a></span><span class='op'>(</span><span class='fu'>how_many</span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='op'>(</span><span class='fl'>1</span> <span class='op'>+</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span>
 #&gt; expr: <span style='color: #0000BB;'>^how_many(3)</span>
-#&gt; env:  <span style='color: #0000BB;'>0x55da3f49f2b0</span></div><div class='input'>
+#&gt; env:  <span style='color: #0000BB;'>0x561522ee0380</span></div><div class='input'>
 
 <span class='co'># Note that when you unquote complex objects into an expression,</span>
 <span class='co'># the base R printer may be a bit misleading. For instance compare</span>
@@ -416,7 +373,7 @@ special.</p></li>
 </div><div class='output co'>#&gt; how_many(1:10)</div><div class='input'><span class='fu'><a href='nse-defuse.html'>quo</a></span><span class='op'>(</span><span class='fu'>how_many</span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span>
 #&gt; expr: <span style='color: #0000BB;'>^how_many(&lt;int: 1L, 2L, 3L, 4L, 5L, ...&gt;)</span>
-#&gt; env:  <span style='color: #0000BB;'>0x55da3f49f2b0</span></div><div class='input'>
+#&gt; env:  <span style='color: #0000BB;'>0x561522ee0380</span></div><div class='input'>
 <span class='co'># This is why it's often useful to use qq_show() to examine the</span>
 <span class='co'># result of unquotation operators. It uses the same printer as</span>
 <span class='co'># quosures but does not return anything:</span>
@@ -429,14 +386,14 @@ special.</p></li>
 <span class='fu'><a href='nse-defuse.html'>quo</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='va'>args</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span>
 #&gt; expr: <span style='color: #0000BB;'>^mean(&lt;int: 1L, 2L, 3L&gt;, na.rm = TRUE)</span>
-#&gt; env:  <span style='color: #0000BB;'>0x55da3f49f2b0</span></div><div class='input'>
+#&gt; env:  <span style='color: #0000BB;'>0x561522ee0380</span></div><div class='input'>
 <span class='co'># You can combine the two</span>
 <span class='va'>var</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>xyz</span><span class='op'>)</span>
 <span class='va'>extra_args</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>trim <span class='op'>=</span> <span class='fl'>0.9</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='fu'><a href='nse-defuse.html'>quo</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='va'>var</span> , <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='va'>extra_args</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span>
 #&gt; expr: <span style='color: #0000BB;'>^mean(xyz, trim = 0.9, na.rm = TRUE)</span>
-#&gt; env:  <span style='color: #0000BB;'>0x55da3f49f2b0</span></div><div class='input'>
+#&gt; env:  <span style='color: #0000BB;'>0x561522ee0380</span></div><div class='input'>
 
 <span class='co'># The plural versions have support for the `:=` operator.</span>
 <span class='co'># Like `=`, `:=` creates named arguments:</span>
@@ -446,12 +403,12 @@ special.</p></li>
 #&gt; $mouse1
 #&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span>
 #&gt; expr: <span style='color: #0000BB;'>^bernard</span>
-#&gt; env:  <span style='color: #0000BB;'>0x55da3f49f2b0</span>
+#&gt; env:  <span style='color: #0000BB;'>0x561522ee0380</span>
 #&gt; 
 #&gt; $mouse2
 #&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span>
 #&gt; expr: <span style='color: #0000BB;'>^bianca</span>
-#&gt; env:  <span style='color: #0000BB;'>0x55da3f49f2b0</span>
+#&gt; env:  <span style='color: #0000BB;'>0x561522ee0380</span>
 #&gt; </div><div class='input'>
 <span class='co'># The `:=` is mainly useful to unquote names. Unlike `=` it</span>
 <span class='co'># supports `!!` on its LHS:</span>
@@ -462,12 +419,12 @@ special.</p></li>
 #&gt; $`unquote me!`
 #&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span>
 #&gt; expr: <span style='color: #0000BB;'>^bernard</span>
-#&gt; env:  <span style='color: #0000BB;'>0x55da3f49f2b0</span>
+#&gt; env:  <span style='color: #0000BB;'>0x561522ee0380</span>
 #&gt; 
 #&gt; $mouse2
 #&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span>
 #&gt; expr: <span style='color: #0000BB;'>^bianca</span>
-#&gt; env:  <span style='color: #0000BB;'>0x55da3f49f2b0</span>
+#&gt; env:  <span style='color: #0000BB;'>0x561522ee0380</span>
 #&gt; </div><div class='input'>
 
 <span class='co'># All these features apply to dots captured by enquos():</span>
@@ -488,7 +445,7 @@ special.</p></li>
 #&gt; $`unquote me!`
 #&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span>
 #&gt; expr: <span style='color: #0000BB;'>^penny</span>
-#&gt; env:  <span style='color: #0000BB;'>0x55da3f49f2b0</span>
+#&gt; env:  <span style='color: #0000BB;'>0x561522ee0380</span>
 #&gt; </div><div class='input'>
 
 <span class='co'># Unquoting is especially useful for building an expression by</span>
@@ -497,17 +454,17 @@ special.</p></li>
 <span class='va'>quo1</span>
 </div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span>
 #&gt; expr: <span style='color: #0000BB;'>^toupper(foo)</span>
-#&gt; env:  <span style='color: #0000BB;'>0x55da3f49f2b0</span></div><div class='input'>
+#&gt; env:  <span style='color: #0000BB;'>0x561522ee0380</span></div><div class='input'>
 <span class='va'>quo2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='nse-defuse.html'>quo</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='va'>quo1</span>, <span class='va'>bar</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>quo2</span>
 </div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span>
 #&gt; expr: <span style='color: #0000BB;'>^paste(^toupper(foo), bar)</span>
-#&gt; env:  <span style='color: #0000BB;'>0x55da3f49f2b0</span></div><div class='input'>
+#&gt; env:  <span style='color: #0000BB;'>0x561522ee0380</span></div><div class='input'>
 <span class='va'>quo3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='nse-defuse.html'>quo</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='va'>quo2</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='fu'><a href='sym.html'>syms</a></span><span class='op'>(</span><span class='va'>letters</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>quo3</span>
 </div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span>
 #&gt; expr: <span style='color: #0000BB;'>^list(^paste(^toupper(foo), bar), a, b, c, d, e)</span>
-#&gt; env:  <span style='color: #0000BB;'>0x55da3f49f2b0</span></div></pre>
+#&gt; env:  <span style='color: #0000BB;'>0x561522ee0380</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
