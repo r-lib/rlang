@@ -161,7 +161,12 @@ the details arguments. This function fails if ... is not empty." />
 the details arguments. This function fails if <code>...</code> is not empty.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>check_dots_empty</span><span class='op'>(</span>env <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span>, call <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span>, action <span class='op'>=</span> <span class='va'>abort</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>check_dots_empty</span><span class='op'>(</span>
+  env <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span>,
+  error <span class='op'>=</span> <span class='cn'>NULL</span>,
+  call <span class='op'>=</span> <span class='fu'><a href='caller_env.html'>caller_env</a></span><span class='op'>(</span><span class='op'>)</span>,
+  action <span class='op'>=</span> <span class='va'>abort</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -169,6 +174,11 @@ the details arguments. This function fails if <code>...</code> is not empty.</p>
     <tr>
       <th>env</th>
       <td><p>Environment in which to look for <code>...</code>.</p></td>
+    </tr>
+    <tr>
+      <th>error</th>
+      <td><p>An optional error handler passed to <code><a href='try_catch.html'>try_catch()</a></code>. Use
+this e.g. to demote an error into a warning.</p></td>
     </tr>
     <tr>
       <th>call</th>
@@ -179,8 +189,7 @@ mentioned in error messages as the source of the error. See the
     </tr>
     <tr>
       <th>action</th>
-      <td><p>The action to take when the dots have not been used. One of
-<code><a href='abort.html'>abort()</a></code>, <code><a href='abort.html'>warn()</a></code>, <code><a href='abort.html'>inform()</a></code> or <code><a href='abort.html'>signal()</a></code>.</p></td>
+      <td><p><a href='https://lifecycle.r-lib.org/articles/stages.html#deprecated'><img src='figures/lifecycle-deprecated.svg' alt='[Deprecated]' /></a>.</p></td>
     </tr>
     </table>
 
