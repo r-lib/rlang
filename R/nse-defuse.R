@@ -1,4 +1,4 @@
-#' Defuse R expressions
+#' Defusing R expressions with `expr()` and `enquo()`
 #'
 #' @description
 #'
@@ -173,9 +173,8 @@
 #'   considered empty.
 #' @param .unquote_names Whether to treat `:=` as `=`. Unlike `=`, the
 #'   `:=` syntax supports `!!` unquoting on the LHS.
-#' @name nse-defuse
-#' @aliases quotation
-#' @seealso [Advanced tidyeval operators][nse-defuse-advanced].
+#'
+#' @seealso [Advanced tidyeval operators][defusing-advanced].
 #'
 #' @examples
 #' # `expr()` defuses the expression that you supply
@@ -211,19 +210,22 @@
 #' other_function(100)
 #' 
 #' other_function(!!column)
+#'
+#' @name defusing
+#' @aliases quotation nse-defuse
 NULL
 
-#' @rdname nse-defuse
+#' @rdname defusing
 #' @export
 expr <- function(expr) {
   enexpr(expr)
 }
-#' @rdname nse-defuse
+#' @rdname defusing
 #' @export
 enquo <- function(arg) {
   .Call(ffi_enquo, substitute(arg), parent.frame())
 }
-#' @rdname nse-defuse
+#' @rdname defusing
 #' @export
 enquos <- function(...,
                    .named = FALSE,
@@ -295,7 +297,7 @@ enquos <- function(...,
 #'     when defusing with `enquos0()`. For instance, trailing empty
 #'     arguments are not automatically trimmed.
 #'
-#' @inheritParams nse-defuse
+#' @inheritParams defusing
 #'
 #' @examples
 #' # `exprs()` is the plural variant of `expr()`
@@ -334,16 +336,16 @@ enquos <- function(...,
 #'
 #' # Injection can still be done explicitly
 #' inject(no_injection(foo(!!!1:3)))
-#' @name nse-defuse-advanced
+#' @name defusing-advanced
 NULL
 
-#' @rdname nse-defuse-advanced
+#' @rdname defusing-advanced
 #' @export
 enexpr <- function(arg) {
   .Call(ffi_enexpr, substitute(arg), parent.frame())
 }
 
-#' @rdname nse-defuse-advanced
+#' @rdname defusing-advanced
 #' @export
 exprs <- function(...,
                   .named = FALSE,
@@ -358,7 +360,7 @@ exprs <- function(...,
     check_assign = FALSE
   )
 }
-#' @rdname nse-defuse-advanced
+#' @rdname defusing-advanced
 #' @export
 enexprs <- function(...,
                    .named = FALSE,
@@ -379,12 +381,12 @@ enexprs <- function(...,
   )
 }
 
-#' @rdname nse-defuse-advanced
+#' @rdname defusing-advanced
 #' @export
 ensym <- function(arg) {
   .Call(ffi_ensym, substitute(arg), parent.frame())
 }
-#' @rdname nse-defuse-advanced
+#' @rdname defusing-advanced
 #' @export
 ensyms <- function(...,
                    .named = FALSE,
@@ -412,12 +414,12 @@ ensyms <- function(...,
 }
 
 
-#' @rdname nse-defuse-advanced
+#' @rdname defusing-advanced
 #' @export
 quo <- function(expr) {
   enquo(expr)
 }
-#' @rdname nse-defuse-advanced
+#' @rdname defusing-advanced
 #' @export
 quos <- function(...,
                  .named = FALSE,
@@ -433,13 +435,13 @@ quos <- function(...,
   )
 }
 
-#' @rdname nse-defuse-advanced
+#' @rdname defusing-advanced
 #' @export
 enquo0 <- function(arg) {
   info <- .External(ffi_capturearginfo, environment(), parent.frame())
   as_quosure(info$expr, info$env)
 }
-#' @rdname nse-defuse-advanced
+#' @rdname defusing-advanced
 #' @export
 enquos0 <- function(...) {
   dots <- .External(ffi_capturedots, environment())

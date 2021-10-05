@@ -1,4 +1,4 @@
-#' Inject objects inside expressions
+#' Injecting with `!!`, `!!!`, and glue syntax
 #'
 #' @description
 #'
@@ -7,7 +7,7 @@
 #' tidy eval framework provides several injection operators for
 #' different use cases.
 #'
-#' - The injection operator `!!` (pronounced "bang-bang") injects a
+#' - The injection operator `!!` (pronounced "injecting") injects a
 #'   _single_ object. One common case for `!!` is to substitute an
 #'   environment-variable (created with `<-`) with a data-variable
 #'   (inside a data frame).
@@ -132,8 +132,8 @@
 #' and
 #' [Racket](https://docs.racket-lang.org/reference/quasiquote.html).
 #'
-#' @name bang-bang
-#' @aliases quasiquotation UQ UQS {{}} \{\{ nse-force nse-inject
+#' @name injecting
+#' @aliases quasiquotation UQ UQS {{}} \{\{ bang-bang nse-force nse-inject
 #' @examples
 #' # Interpolation with {{  }} is the easiest way to forward
 #' # arguments to tidy eval functions:
@@ -229,39 +229,39 @@
 #' quo3
 NULL
 
-#' @rdname bang-bang
+#' @rdname injecting
 #' @usage NULL
 #' @export
 UQ <- function(x) {
   abort("`UQ()` can only be used within a quasiquoted argument")
 }
-#' @rdname bang-bang
+#' @rdname injecting
 #' @usage NULL
 #' @export
 UQS <- function(x) {
   abort("`UQS()` can only be used within a quasiquoted argument")
 }
-#' @rdname bang-bang
+#' @rdname injecting
 #' @usage NULL
 #' @export
 `!!` <- function(x) {
   abort("`!!` can only be used within a quasiquoted argument")
 }
-#' @rdname bang-bang
+#' @rdname injecting
 #' @usage NULL
 #' @export
 `!!!` <- function(x) {
   abort("`!!!` can only be used within a quasiquoted argument")
 }
-#' @rdname bang-bang
+#' @rdname injecting
 #' @usage NULL
 #' @export
 `:=` <- function(x, y) {
   abort("`:=` can only be used within a quasiquoted argument")
 }
 
-#' @rdname bang-bang
-#' @param expr An expression to be quasiquoted.
+#' @rdname injecting
+#' @param expr An expression involving injection operators.
 #' @usage NULL
 #' @export
 qq_show <- function(expr) {
