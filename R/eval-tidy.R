@@ -22,6 +22,8 @@
 #'   These pronouns lets you be explicit about where to find
 #'   values and throw errors if you try to access non-existent values.
 #'
+#' See also [What is data-masking][faq-data-masking].
+#'
 #'
 #' @param expr An expression or quosure to evaluate.
 #' @param data A data frame, or named list or vector. Alternatively, a

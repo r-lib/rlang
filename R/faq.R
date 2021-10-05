@@ -21,11 +21,3 @@
 #'    for examples.
 #' @name faq-options
 NULL
-
-
-#' When are quosures needed?
-#'
-#' TODO!
-#'
-#' @name faq-quosure
-NULL

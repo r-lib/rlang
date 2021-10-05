@@ -38,6 +38,8 @@ the calling environment and \code{.data} refers to the \code{data} argument.
 These pronouns lets you be explicit about where to find
 values and throw errors if you try to access non-existent values.
 }
+
+See also \link[=faq-data-masking]{What is data-masking}.
 }
 \section{Data masking}{
 
