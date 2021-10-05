@@ -1,3 +1,47 @@
+#' Embracing with `{{` and forwarding `...`
+#'
+#' @description
+#'
+#' ```{r, child = "man/rmd/setup.Rmd", include = FALSE}
+#' ```
+#'
+#' Calling [data-masked][faq-data-mask] functions from another
+#' function is a bit trickier than regular function calls.
+#'
+#' -   Individual arguments must be forwarded with `{{`.
+#'
+#'     ```{r, comment = "#>", collapse = TRUE}
+#'     my_mean <- function(data, var) {
+#'       data %>% dplyr::summarise(mean({{ var }}, na.rm = TRUE))
+#'     }
+#'
+#'     mtcars %>% my_mean(cyl)
+#'     ````
+#'
+#' -   On the other hand multiple arguments can be forwarded the normal
+#'     way with `...`.
+#'
+#'     ```{r, comment = "#>", collapse = TRUE}
+#'     my_mean <- function(.data, ..., .var) {
+#'       .data %>%
+#'         dplyr::group_by(...) %>%
+#'         dplyr::summarise(mean({{ .var }}, na.rm = TRUE))
+#'     }
+#'
+#'     mtcars %>% my_mean(am, vs, .var = cyl)
+#'     ````
+#'
+#' Together, embracing and dots form the main way of writing functions
+#' around tidyverse pipelines and [tidy eval][eval_tidy] functions in
+#' general. In more complex cases, you might need to
+#' [defuse][defusing] variables and dots, and [inject][injecting] them
+#' back with `!!` and `!!!`.
+#'
+#' @name embracing
+#' @aliases curly-curly forwarding
+NULL
+
+
 #' Injecting with `!!`, `!!!`, and glue syntax
 #'
 #' @description
@@ -267,14 +311,6 @@ UQS <- function(x) {
 qq_show <- function(expr) {
   expr_print(enexpr(expr))
 }
-
-#' Embracing and forwarding data-masked arguments
-#'
-#' TODO!
-#'
-#' @name embracing
-#' @aliases curly-curly forwarding
-NULL
 
 
 glue_unquote <- function(text, env = caller_env()) {

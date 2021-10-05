@@ -4,7 +4,45 @@
 \alias{embracing}
 \alias{curly-curly}
 \alias{forwarding}
-\title{Embracing and forwarding data-masked arguments}
+\title{Embracing with \verb{\{\{} and forwarding \code{...}}
 \description{
-TODO!
+Calling \link[=faq-data-mask]{data-masked} functions from another
+function is a bit trickier than regular function calls.
+\itemize{
+\item Individual arguments must be forwarded with \verb{\{\{}.
+}\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
+  data \%>\% dplyr::summarise(mean(\{\{ var \}\}, na.rm = TRUE))
+\}
+
+mtcars \%>\% my_mean(cyl)
+#> # A tibble: 1 x 1
+#>   `mean(cyl, na.rm = TRUE)`
+#>                       <dbl>
+#> 1                      6.19
+}\if{html}{\out{</div>}}
+\itemize{
+\item On the other hand multiple arguments can be forwarded the normal
+way with \code{...}.
+}\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(.data, ..., .var) \{
+  .data \%>\%
+    dplyr::group_by(...) \%>\%
+    dplyr::summarise(mean(\{\{ .var \}\}, na.rm = TRUE))
+\}
+
+mtcars \%>\% my_mean(am, vs, .var = cyl)
+#> # A tibble: 4 x 3
+#> # Groups:   am [2]
+#>      am    vs `mean(cyl, na.rm = TRUE)`
+#>   <dbl> <dbl>                     <dbl>
+#> 1     0     0                      8   
+#> 2     0     1                      5.14
+#> 3     1     0                      6.33
+#> 4     1     1                      4
+}\if{html}{\out{</div>}}
+
+Together, embracing and dots form the main way of writing functions
+around tidyverse pipelines and \link[=eval_tidy]{tidy eval} functions in
+general. In more complex cases, you might need to
+\link[=defusing]{defuse} variables and dots, and \link[=injecting]{inject} them
+back with \verb{!!} and \verb{!!!}.
 }
