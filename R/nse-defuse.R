@@ -92,6 +92,9 @@
 #' package calls `dplyr::mutate()`, the quosure environment indicates
 #' where all the private functions of your package are defined.
 #'
+#' Read more about the role of quosures in [What are
+#' quosures and when are they needed?][faq-quosure].
+#'
 #'
 #' @section Comparison with base R:
 #'

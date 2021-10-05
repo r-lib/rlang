@@ -138,6 +138,8 @@ argument expressions because they come from a different context
 than the current function. For instance when a function in your
 package calls \code{dplyr::mutate()}, the quosure environment indicates
 where all the private functions of your package are defined.
+
+Read more about the role of quosures in \link[=faq-quosure]{What are quosures and when are they needed?}.
 }
 
 \section{Comparison with base R}{

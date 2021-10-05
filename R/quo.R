@@ -2,23 +2,20 @@
 #'
 #' @description
 #'
-#' A quosure is a type of [quoted expression][nse-defuse] that includes
+#' A quosure is a type of [defused expression][defusing] that includes
 #' a reference to the context where it was created. A quosure is thus
 #' guaranteed to evaluate in its original environment and can refer to
-#' local objects.
+#' local objects. Read more about quosures in [What are
+#' quosures?][faq-quosure].
 #'
-#' You can access the quosure components (its expression and its
-#' environment) with:
+#' -  You can access the quosure components with `quo_get_expr()` and
+#'   `quo_get_env()`.
 #'
-#' * [get_expr()] and [get_env()]. These getters also support other
-#'   kinds of objects such as formulas.
+#' - Test if an object is a quosure with `is_quosure()`.
 #'
-#' * `quo_get_expr()` and `quo_get_env()`. These getters only work
-#'   with quosures and throw an error with other types of input.
-#'
-#' Test if an object is a quosure with `is_quosure()`. If you know an
-#' object is a quosure, use the `quo_` prefixed predicates to check
-#' its contents, `quo_is_missing()`, `quo_is_symbol()`, etc.
+#' - If you know an object is a quosure, use the `quo_` prefixed
+#'   predicates to check its contents, `quo_is_missing()`,
+#'   `quo_is_symbol()`, etc.
 #'
 #'
 #' @section Quosured constants:
@@ -52,13 +49,6 @@
 #' [enquo()] or [quos()], they are returned as an empty quosure. These
 #' quosures contain the [missing argument][missing_arg] and typically
 #' have the [empty environment][empty_env] as enclosure.
-#'
-#'
-#' @section Life cycle:
-#'
-#' - `is_quosure()` is stable.
-#'
-#' - `quo_get_expr()` and `quo_get_env()` are stable.
 #'
 #' @name quosure
 #' @seealso [quo()] for creating quosures by quotation; [as_quosure()]
