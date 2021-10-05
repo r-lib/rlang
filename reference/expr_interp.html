@@ -40,12 +40,8 @@
 
 
 <meta property="og:title" content="Process unquote operators in a captured expression — expr_interp" />
-<meta property="og:description" content="While all capturing functions in the tidy evaluation framework
-perform unquote on capture (most notably quo()),
-expr_interp() manually processes unquoting operators in
-expressions that are already captured. expr_interp() should be
-called in all user-facing functions expecting a formula as argument
-to provide the same quasiquotation functionality as NSE functions." />
+<meta property="og:description" content="
+expr_interp() is deprecated, please use inject() instead." />
 
 
 
@@ -156,17 +152,13 @@ to provide the same quasiquotation functionality as NSE functions." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Process unquote operators in a captured expression</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/nse-force.R'><code>R/nse-force.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/rlang/blob/master/R/lifecycle-retired.R'><code>R/lifecycle-retired.R</code></a></small>
     <div class="hidden name"><code>expr_interp.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>While all capturing functions in the tidy evaluation framework
-perform unquote on capture (most notably <code><a href='nse-defuse.html'>quo()</a></code>),
-<code>expr_interp()</code> manually processes unquoting operators in
-expressions that are already captured. <code>expr_interp()</code> should be
-called in all user-facing functions expecting a formula as argument
-to provide the same quasiquotation functionality as NSE functions.</p>
+    <p><a href='https://lifecycle.r-lib.org/articles/stages.html#deprecated'><img src='figures/lifecycle-deprecated.svg' alt='[Deprecated]' /></a></p>
+<p><code>expr_interp()</code> is deprecated, please use <code><a href='inject.html'>inject()</a></code> instead.</p>
     </div>
 
     <pre class="usage"><span class='fu'>expr_interp</span><span class='op'>(</span><span class='va'>x</span>, env <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
@@ -192,21 +184,21 @@ formula or a function, or the current environment otherwise.</p></td>
 <span class='fu'><a href='nse-defuse.html'>quo</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='op'>(</span><span class='fl'>1</span> <span class='op'>+</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span>
 #&gt; expr: <span style='color: #0000BB;'>^list(3)</span>
-#&gt; env:  <span style='color: #0000BB;'>0x55d3293f7df8</span></div><div class='input'>
+#&gt; env:  <span style='color: #0000BB;'>0x5620c8d0b340</span></div><div class='input'>
 <span class='co'># expr_interp() is meant to provide the same functionality when you</span>
 <span class='co'># have a formula or expression that might contain unquoting</span>
 <span class='co'># operators:</span>
 <span class='va'>f</span> <span class='op'>&lt;-</span> <span class='op'>~</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='op'>(</span><span class='fl'>1</span> <span class='op'>+</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'>expr_interp</span><span class='op'>(</span><span class='va'>f</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; ~list(3)
-#&gt; &lt;environment: 0x55d3293f7df8&gt;</div><div class='input'>
+#&gt; &lt;environment: 0x5620c8d0b340&gt;</div><div class='input'>
 <span class='co'># Note that only the outer formula is unquoted (which is a reason</span>
 <span class='co'># to use expr_interp() as early as possible in all user-facing</span>
 <span class='co'># functions):</span>
 <span class='va'>f</span> <span class='op'>&lt;-</span> <span class='op'>~</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>~</span><span class='op'>!</span><span class='op'>!</span><span class='op'>(</span><span class='fl'>1</span> <span class='op'>+</span> <span class='fl'>2</span><span class='op'>)</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>(</span><span class='fl'>1</span> <span class='op'>+</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'>expr_interp</span><span class='op'>(</span><span class='va'>f</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; ~list(~3, 3)
-#&gt; &lt;environment: 0x55d3293f7df8&gt;</div><div class='input'>
+#&gt; &lt;environment: 0x5620c8d0b340&gt;</div><div class='input'>
 
 <span class='co'># Another purpose for expr_interp() is to interpolate a closure's</span>
 <span class='co'># body. This is useful to inline a function within another. The</span>
@@ -234,7 +226,7 @@ formula or a function, or the current environment otherwise.</p></td>
 #&gt;     x &lt;- paste0(x, "_suffix")
 #&gt;     toupper(x)
 #&gt; }
-#&gt; &lt;environment: 0x55d3293f7df8&gt;</div><div class='input'><span class='fu'>fn</span><span class='op'>(</span><span class='st'>"foo"</span><span class='op'>)</span>
+#&gt; &lt;environment: 0x5620c8d0b340&gt;</div><div class='input'><span class='fu'>fn</span><span class='op'>(</span><span class='st'>"foo"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "FOO_SUFFIX"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
