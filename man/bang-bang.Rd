@@ -15,7 +15,7 @@
 \alias{qq_show}
 \title{Inject objects inside expressions}
 \arguments{
-\item{expr}{An expression to be quasiquoted.}
+\item{expr}{An expression involving injection operators.}
 }
 \description{
 It is sometimes useful to inject language objects or other kinds of
