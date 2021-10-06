@@ -582,3 +582,172 @@ NULL
 #'
 #' @name faq-glue-injection
 NULL
+
+
+#' Does `{{` work on regular objects?
+#'
+#' @description
+#'
+#' ```{r, child = "man/rmd/setup.Rmd", include = FALSE}
+#' ```
+#'
+#' The [embracing][defusing] operator `{{` is meant for function
+#' arguments:
+#'
+#' ```r
+#' fn <- function(arg) {
+#'   quo(foo({{ arg }}))
+#' }
+#'
+#' fn(1 + 1)
+#' #> <quosure>
+#' #> expr: ^foo(^1 + 1)
+#' #> env:  0x7ffd89aac518
+#' ```
+#'
+#' However you may have noticed that it also works on regular objects:
+#'
+#' ```r
+#' fn <- function(arg) {
+#'   arg <- force(arg)
+#'   quo(foo({{ arg }}))
+#' }
+#'
+#' fn(1 + 1)
+#' #> <quosure>
+#' #> expr: ^foo(^2)
+#' #> env:  0x7ffd8a633398
+#' ```
+#'
+#' In that case, `{{` captures the _value_ of the expression instead
+#' of a defused expression. That's because only function arguments can
+#' be defused.
+#'
+#'
+#' @section Why is this not an error?:
+#'
+#' Ideally we would have made `{{` on regular objects an error.
+#' However this is not possible because in compiled R code it is not
+#' always possible to distinguish a regular variable from a function
+#' argument. See [Why are strings and other constants enquosed in the
+#' empty environment?][faq-embracing-constants] for more about this.
+#'
+#' @name faq-embracing-non-args
+NULL
+
+#' Why are strings and other constants enquosed in the empty environment?
+#'
+#' @description
+#'
+#' ```{r, child = "man/rmd/setup.Rmd", include = FALSE}
+#' ```
+#'
+#' Function arguments are [defused][defusing] into
+#' [quosures][faq-quosure] that keep track of the environment of the
+#' defused expression.
+#'
+#' ```r
+#' quo(1 + 1)
+#' #> <quosure>
+#' #> expr: ^1 + 1
+#' #> env:  global
+#' ```
+#'
+#' You might have noticed that when constants are supplied, the
+#' quosure tracks the empty environment instead of the current
+#' environmnent.
+#'
+#' ```r
+#' quos("foo", 1, NULL)
+#' #> <list_of<quosure>>
+#' #>
+#' #> [[1]]
+#' #> <quosure>
+#' #> expr: ^"foo"
+#' #> env:  empty
+#' #>
+#' #> [[2]]
+#' #> <quosure>
+#' #> expr: ^1
+#' #> env:  empty
+#' #>
+#' #> [[3]]
+#' #> <quosure>
+#' #> expr: ^NULL
+#' #> env:  empty
+#' ```
+#'
+#' The reason for this has to do with compilation of R code which
+#' makes it impossible to consistently capture environments of
+#' constants from function arguments. Argument defusing relies on the
+#' _promise_ mechanism of R for lazy evaluation of arguments. When
+#' functions are compiled and R notices that an argument is constant,
+#' it avoids creating a promise since they slow down function
+#' evaluation. Instead, the function is directly supplied a naked
+#' constant instead of constant wrapped in a promise.
+#'
+#'
+#' @section Concrete case of promise unwrapping by compilation:
+#'
+#' We can observe this optimisation by calling into the C-level
+#' `findVar()` function to capture promises.
+#'
+#' ```r
+#' # Return the object bound to `arg` without triggering evaluation of
+#' # promises
+#' f <- function(arg) {
+#'   rlang:::find_var(current_env(), sym("arg"))
+#' }
+#'
+#' # Call `f()` with a symbol or with a constant
+#' g <- function(symbolic) {
+#'   if (symbolic) {
+#'     f(letters)
+#'   } else {
+#'     f("foo")
+#'   }
+#' }
+#'
+#' # Make sure these small functions are compiled
+#' f <- compiler::cmpfun(f)
+#' g <- compiler::cmpfun(g)
+#' ```
+#'
+#' When `f()` is called with a symbolic argument, we get the promise
+#' object created by R.
+#'
+#' ```r
+#' g(symbolic = TRUE)
+#' #> <promise: 0x7ffd79bac130>
+#' ```
+#'
+#' However, supplying a constant to `"f"` returns the constant
+#' directly.
+#'
+#' ```r
+#' g(symbolic = FALSE)
+#' #> [1] "foo"
+#' ```
+#'
+#' Without a promise, there is no way to figure out the original
+#' environment of an argument.
+#'
+#'
+#' @section Do we need environments for constants?:
+#'
+#' Data-masking APIs in the tidyverse are intentionally designed so
+#' that they don't need an environment for constants.
+#'
+#' - Data-masking APIs should be able to interpret constants. These
+#'   can arise from normal argument passing as we have seen, or by
+#'   [injection][injecting] with `!!`. There should be no difference
+#'   between `dplyr::mutate(mtcars, var = cyl)` and `dplyr::mutate(mtcars,
+#'   var = !!mtcars$cyl)`.
+#'
+#' - Data-masking is an _evaluation_ idiom, not an _introspective_
+#'   one. The behaviour of data-masking function should not depend on
+#'   the calling environment when a constant (or a symbol evaluating
+#'   to a given value) is supplied.
+#'
+#' @name faq-embracing-constants
+NULL
