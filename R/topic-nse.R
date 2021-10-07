@@ -22,8 +22,9 @@
 #'
 #' While data-masking makes it easy to program interactively with data
 #' frames, it makes it harder to create functions. Passing data-masked
-#' arguments to functions requires injection with `{{` (known as
-#' [embracing][embracing]) or, in more complex cases, `!!`.
+#' arguments to functions requires injection with the [embracing
+#' operator `{{`][embracing-operator] or, in more complex cases, the
+#' [injection operator `!!`][injection-operator].
 #'
 #'
 #' @section Why does data-masking require embracing and injection?:
@@ -366,6 +367,49 @@ NULL
 NULL
 
 
+#' Embracing with `{{` and forwarding `...`
+#'
+#' @description
+#'
+#' ```{r, child = "man/rmd/setup.Rmd", include = FALSE}
+#' ```
+#'
+#' Calling [data-masked][faq-data-mask] functions from another
+#' function is a bit trickier than regular function calls.
+#'
+#' -   Individual arguments must be forwarded with `{{`.
+#'
+#'     ```{r, comment = "#>", collapse = TRUE}
+#'     my_mean <- function(data, var) {
+#'       data %>% dplyr::summarise(mean({{ var }}, na.rm = TRUE))
+#'     }
+#'
+#'     mtcars %>% my_mean(cyl)
+#'     ````
+#'
+#' -   On the other hand multiple arguments can be forwarded the normal
+#'     way with `...`.
+#'
+#'     ```{r, comment = "#>", collapse = TRUE}
+#'     my_mean <- function(.data, ..., .var) {
+#'       .data %>%
+#'         dplyr::group_by(...) %>%
+#'         dplyr::summarise(mean({{ .var }}, na.rm = TRUE))
+#'     }
+#'
+#'     mtcars %>% my_mean(am, vs, .var = cyl)
+#'     ````
+#'
+#' Together, embracing and dots form the main way of writing functions
+#' around tidyverse pipelines and [tidy eval][eval_tidy] functions in
+#' general. In more complex cases, you might need to
+#' [defuse][defusing] variables and dots, and [inject][injecting] them
+#' back with `!!` and `!!!`.
+#'
+#' @name howto-embrace-forward
+NULL
+
+
 #' The double evaluation problem
 #'
 #' @description
@@ -622,6 +666,9 @@ NULL
 #' In that case, `{{` captures the _value_ of the expression instead
 #' of a defused expression. That's because only function arguments can
 #' be defused.
+#'
+#' Note that this issue also applies to [enquo()] (on which `{{` is
+#' based).
 #'
 #'
 #' @section Why is this not an error?:

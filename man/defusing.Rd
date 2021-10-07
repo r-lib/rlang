@@ -64,7 +64,7 @@ This ensures assignments are explicit.}
 \description{
 \emph{Note regarding tidyverse programming:} \code{expr()} and \code{enquo()} are
 advanced tidy eval operators. Most cases can be solved with \verb{\{\{}
-and \code{...}. You can read about this in \link[=embracing]{embracing and forwarding}.
+and \code{...}. You can read about this in \link[=howto-embrace-forward]{embracing and forwarding}.
 
 The defusing operators \code{expr()} and \code{enquo()} disable evaluation of
 R code. When a piece of R code is defused, R doesn't return its
@@ -107,7 +107,7 @@ a data-masking function where the data-variables are defined.\preformatted{my_su
 }
 
 This pattern of defuse-and-inject can be done in one step with the
-embracing operator \verb{\{\{} described in \link[=embracing]{embracing and forwarding}.\preformatted{my_summarise <- function(data, arg) \{
+\link[=embracing-operator]{embracing operator \verb{\{\{}}.\preformatted{my_summarise <- function(data, arg) \{
   # Defuse and inject in a single step with the embracing operator
   data |> dplyr::summarise(mean = mean(\{\{ arg \}\}, na.rm = TRUE))
 \}

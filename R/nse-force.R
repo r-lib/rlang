@@ -36,11 +36,11 @@
 #'   starwars %>% select(height, mass)
 #'   ```
 #'
-#' - The injection operator `{{ }}` (pronounced "curly-curly") is made
-#'   specially for function arguments. It [defuses][nse-defuse] the
-#'   argument and immediately injects it in place. The injected
-#'   argument can then be evaluated in another context like a data
-#'   frame.
+#' - The [injection operator `{{ }}`][embracing-operator] (pronounced
+#'   "curly-curly") is made specially for function arguments. It
+#'   [defuses][nse-defuse] the argument and immediately injects it in
+#'   place. The injected argument can then be evaluated in another
+#'   context like a data frame.
 #'
 #'   ```
 #'   # Inject function arguments that might contain
@@ -57,7 +57,8 @@
 #'   iris %>% mean_by(by = Species, var = Sepal.Width)
 #'   ```
 #'
-#'   Learn more about it in [embracing and forwarding][embracing].
+#'   Learn more about this pattern in [Embracing and
+#'   forwarding][howto-embrace-forward].
 #'
 #' Use `qq_show()` to experiment with injection operators. `qq_show()`
 #' defuses its input, processes all injection operators, and prints

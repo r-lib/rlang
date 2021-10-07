@@ -1,44 +1,9 @@
-#' Embracing with `{{` and forwarding `...`
+#' Embracing operator `{{`
 #'
-#' @description
+#' TODO!
 #'
-#' ```{r, child = "man/rmd/setup.Rmd", include = FALSE}
-#' ```
-#'
-#' Calling [data-masked][faq-data-mask] functions from another
-#' function is a bit trickier than regular function calls.
-#'
-#' -   Individual arguments must be forwarded with `{{`.
-#'
-#'     ```{r, comment = "#>", collapse = TRUE}
-#'     my_mean <- function(data, var) {
-#'       data %>% dplyr::summarise(mean({{ var }}, na.rm = TRUE))
-#'     }
-#'
-#'     mtcars %>% my_mean(cyl)
-#'     ````
-#'
-#' -   On the other hand multiple arguments can be forwarded the normal
-#'     way with `...`.
-#'
-#'     ```{r, comment = "#>", collapse = TRUE}
-#'     my_mean <- function(.data, ..., .var) {
-#'       .data %>%
-#'         dplyr::group_by(...) %>%
-#'         dplyr::summarise(mean({{ .var }}, na.rm = TRUE))
-#'     }
-#'
-#'     mtcars %>% my_mean(am, vs, .var = cyl)
-#'     ````
-#'
-#' Together, embracing and dots form the main way of writing functions
-#' around tidyverse pipelines and [tidy eval][eval_tidy] functions in
-#' general. In more complex cases, you might need to
-#' [defuse][defusing] variables and dots, and [inject][injecting] them
-#' back with `!!` and `!!!`.
-#'
-#' @name embracing
-#' @aliases curly-curly forwarding
+#' @name embracing-operator
+#' @aliases curly-curly
 NULL
 
 #' Defusing R expressions with `expr()` and `enquo()`
@@ -48,7 +13,7 @@ NULL
 #' _Note regarding tidyverse programming:_ `expr()` and `enquo()` are
 #' advanced tidy eval operators. Most cases can be solved with `{{`
 #' and `...`. You can read about this in [embracing and
-#' forwarding][embracing].
+#' forwarding][howto-embrace-forward].
 #'
 #' The defusing operators `expr()` and `enquo()` disable evaluation of
 #' R code. When a piece of R code is defused, R doesn't return its
@@ -96,8 +61,7 @@ NULL
 #' ```
 #'
 #' This pattern of defuse-and-inject can be done in one step with the
-#' embracing operator `{{` described in [embracing and
-#' forwarding][embracing].
+#' [embracing operator `{{`][embracing-operator].
 #'
 #' ```
 #' my_summarise <- function(data, arg) {

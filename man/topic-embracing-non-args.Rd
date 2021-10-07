@@ -29,6 +29,9 @@ fn(1 + 1)
 In that case, \verb{\{\{} captures the \emph{value} of the expression instead
 of a defused expression. That's because only function arguments can
 be defused.
+
+Note that this issue also applies to \code{\link[=enquo]{enquo()}} (on which \verb{\{\{} is
+based).
 }
 \section{Why is this not an error?}{
 

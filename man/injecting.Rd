@@ -45,11 +45,11 @@ the list in turn. This is also called "splicing".\preformatted{vars <- syms(c("h
 starwars \%>\% select(!!!vars)
 starwars \%>\% select(height, mass)
 }
-\item The injection operator \code{{{ }}} (pronounced "curly-curly") is made
-specially for function arguments. It \link[=nse-defuse]{defuses} the
-argument and immediately injects it in place. The injected
-argument can then be evaluated in another context like a data
-frame.\preformatted{# Inject function arguments that might contain
+\item The \link[=embracing-operator]{injection operator \code{{{ }}}} (pronounced
+"curly-curly") is made specially for function arguments. It
+\link[=nse-defuse]{defuses} the argument and immediately injects it in
+place. The injected argument can then be evaluated in another
+context like a data frame.\preformatted{# Inject function arguments that might contain
 # data-variables by embracing them with \{\{ \}\}
 mean_by <- function(data, by, var) \{
   data \%>\%
@@ -63,7 +63,7 @@ mean_by <- function(data, by, var) \{
 iris \%>\% mean_by(by = Species, var = Sepal.Width)
 }
 
-Learn more about it in \link[=embracing]{embracing and forwarding}.
+Learn more about this pattern in \link[=howto-embrace-forward]{Embracing and forwarding}.
 }
 
 Use \code{qq_show()} to experiment with injection operators. \code{qq_show()}
