@@ -581,12 +581,14 @@ test_that("`:=` chaining is detected at dots capture", {
 # --------------------------------------------------------------------
 
 test_that("Unquote operators fail when called outside quasiquoted arguments", {
-  expect_qq_error <- function(object) expect_error(object, regexp = "within a quasiquoted argument")
+  expect_qq_error <- function(object) expect_error(object, regexp = "within a defused argument")
   expect_qq_error(UQ())
   expect_qq_error(UQS())
   expect_qq_error(`!!`())
-  expect_qq_error(`!!!`())
-  expect_qq_error(a := b)
+
+  expect_dyn_error <- function(object) expect_error(object, regexp = "within dynamic dots")
+  expect_dyn_error(`!!!`())
+  expect_dyn_error(a := b)
 })
 
 test_that("`.data[[` unquotes", {

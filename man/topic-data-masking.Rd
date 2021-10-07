@@ -21,8 +21,8 @@ with(mtcars, mean(cyl + am))
 
 While data-masking makes it easy to program interactively with data
 frames, it makes it harder to create functions. Passing data-masked
-arguments to functions requires injection with the \link[=embracing-operator]{embracing operator \verb{\{\{}} or, in more complex cases, the
-\link[=injection-operator]{injection operator \verb{!!}}.
+arguments to functions requires injection with the \link[=embrace-operator]{embracing operator} \verb{\{\{} or, in more complex cases, the
+\link[=injection-operator]{injection operator} \verb{!!}.
 }
 \section{Why does data-masking require embracing and injection?}{
 

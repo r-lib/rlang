@@ -23,8 +23,8 @@
 #' While data-masking makes it easy to program interactively with data
 #' frames, it makes it harder to create functions. Passing data-masked
 #' arguments to functions requires injection with the [embracing
-#' operator `{{`][embracing-operator] or, in more complex cases, the
-#' [injection operator `!!`][injection-operator].
+#' operator][embrace-operator] `{{` or, in more complex cases, the
+#' [injection operator][injection-operator] `!!`.
 #'
 #'
 #' @section Why does data-masking require embracing and injection?:

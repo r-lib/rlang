@@ -3,20 +3,12 @@
 \name{injecting}
 \alias{injecting}
 \alias{quasiquotation}
-\alias{UQ}
-\alias{UQS}
-\alias{{{}}}
-\alias{\{\{}
-\alias{bang-bang}
 \alias{nse-force}
 \alias{nse-inject}
-\alias{!!}
-\alias{!!!}
-\alias{:=}
 \alias{qq_show}
 \title{Injecting with \verb{!!}, \verb{!!!}, and glue syntax}
 \arguments{
-\item{expr}{An expression to be quasiquoted.}
+\item{expr}{An expression involving injection operators.}
 }
 \description{
 It is sometimes useful to inject language objects or other kinds of
@@ -24,10 +16,10 @@ objects inside an expression before it gets fully evaluated. The
 tidy eval framework provides several injection operators for
 different use cases.
 \itemize{
-\item The injection operator \verb{!!} (pronounced "injecting") injects a
-\emph{single} object. One common case for \verb{!!} is to substitute an
-environment-variable (created with \verb{<-}) with a data-variable
-(inside a data frame).\preformatted{library(dplyr)
+\item The \link[=injection-operator]{injection operator} \verb{!!} (pronounced
+"bang-bang") injects a \emph{single} object. One common case for \verb{!!}
+is to substitute an environment-variable (created with \verb{<-}) with
+a data-variable (inside a data frame).\preformatted{library(dplyr)
 
 # The env-variable `var` contains a symbol object, in this
 # case a reference to the data-variable `height`
@@ -37,15 +29,15 @@ var <- sym("height")
 starwars \%>\%
   summarise(avg = mean(!!var, na.rm = TRUE))
 }
-\item The big-bang operator \verb{!!!} injects a \emph{list} of objects. Whereas
-\verb{!!} would inject the list itself, \verb{!!!} injects each element of
-the list in turn. This is also called "splicing".\preformatted{vars <- syms(c("height", "mass"))
+\item The \link[=splice-operator]{splice operator} \verb{!!!} injects a \emph{list} of
+objects. Whereas \verb{!!} would inject the list itself, \verb{!!!} injects
+each element of the list in turn. This is also called "splicing".\preformatted{vars <- syms(c("height", "mass"))
 
 # Injecting with `!!!` is equivalent to supplying the elements separately
 starwars \%>\% select(!!!vars)
 starwars \%>\% select(height, mass)
 }
-\item The \link[=embracing-operator]{injection operator \code{{{ }}}} (pronounced
+\item The \link[=embrace-operator]{embracing operator} \verb{\{\{} (pronounced
 "curly-curly") is made specially for function arguments. It
 \link[=nse-defuse]{defuses} the argument and immediately injects it in
 place. The injected argument can then be evaluated in another
@@ -219,4 +211,5 @@ quo2
 
 quo3 <- quo(list(!!quo2, !!!syms(letters[1:5])))
 quo3
+
 }

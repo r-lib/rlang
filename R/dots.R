@@ -63,6 +63,14 @@
 #' f(this = "that", )
 NULL
 
+#' @rdname dyn-dots
+#' @usage NULL
+#' @export
+`:=` <- function(x, y) {
+  abort("`:=` can only be used within dynamic dots.", call = caller_env())
+}
+
+
 #' Collect dots in a list
 #'
 #' `list2(...)` is equivalent to `list(...)` with a few additional

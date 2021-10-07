@@ -1,3 +1,32 @@
+#' Injection operator `!!`
+#'
+#' TODO!
+#'
+#' @name injection-operator
+#' @aliases bang-bang
+NULL
+
+#' @rdname injection-operator
+#' @usage NULL
+#' @export
+`!!` <- function(x) {
+  abort("`!!` can only be used within a defused argument.", call = caller_env())
+}
+
+#' Splice operator `!!!`
+#'
+#' TODO!
+#'
+#' @name splice-operator
+NULL
+
+#' @rdname splice-operator
+#' @usage NULL
+#' @export
+`!!!` <- function(x) {
+  abort("`!!!` can only be used within dynamic dots.", call = caller_env())
+}
+
 #' Injecting with `!!`, `!!!`, and glue syntax
 #'
 #' @description
@@ -7,10 +36,10 @@
 #' tidy eval framework provides several injection operators for
 #' different use cases.
 #'
-#' - The injection operator `!!` (pronounced "injecting") injects a
-#'   _single_ object. One common case for `!!` is to substitute an
-#'   environment-variable (created with `<-`) with a data-variable
-#'   (inside a data frame).
+#' - The [injection operator][injection-operator] `!!` (pronounced
+#'   "bang-bang") injects a _single_ object. One common case for `!!`
+#'   is to substitute an environment-variable (created with `<-`) with
+#'   a data-variable (inside a data frame).
 #'
 #'   ```
 #'   library(dplyr)
@@ -24,9 +53,9 @@
 #'     summarise(avg = mean(!!var, na.rm = TRUE))
 #'   ```
 #'
-#' - The big-bang operator `!!!` injects a _list_ of objects. Whereas
-#'   `!!` would inject the list itself, `!!!` injects each element of
-#'   the list in turn. This is also called "splicing".
+#' - The [splice operator][splice-operator] `!!!` injects a _list_ of
+#'   objects. Whereas `!!` would inject the list itself, `!!!` injects
+#'   each element of the list in turn. This is also called "splicing".
 #'
 #'   ```
 #'   vars <- syms(c("height", "mass"))
@@ -36,7 +65,7 @@
 #'   starwars %>% select(height, mass)
 #'   ```
 #'
-#' - The [injection operator `{{ }}`][embracing-operator] (pronounced
+#' - The [embracing operator][embrace-operator] `{{` (pronounced
 #'   "curly-curly") is made specially for function arguments. It
 #'   [defuses][nse-defuse] the argument and immediately injects it in
 #'   place. The injected argument can then be evaluated in another
@@ -133,8 +162,6 @@
 #' and
 #' [Racket](https://docs.racket-lang.org/reference/quasiquote.html).
 #'
-#' @name injecting
-#' @aliases quasiquotation UQ UQS {{}} \{\{ bang-bang nse-force nse-inject
 #' @examples
 #' # Interpolation with {{  }} is the easiest way to forward
 #' # arguments to tidy eval functions:
@@ -228,38 +255,11 @@
 #'
 #' quo3 <- quo(list(!!quo2, !!!syms(letters[1:5])))
 #' quo3
+#'
+#' @name injecting
+#' @aliases quasiquotation nse-force nse-inject
+# TODO! Rename to topic-injection
 NULL
-
-#' @rdname injecting
-#' @usage NULL
-#' @export
-UQ <- function(x) {
-  abort("`UQ()` can only be used within a quasiquoted argument")
-}
-#' @rdname injecting
-#' @usage NULL
-#' @export
-UQS <- function(x) {
-  abort("`UQS()` can only be used within a quasiquoted argument")
-}
-#' @rdname injecting
-#' @usage NULL
-#' @export
-`!!` <- function(x) {
-  abort("`!!` can only be used within a quasiquoted argument")
-}
-#' @rdname injecting
-#' @usage NULL
-#' @export
-`!!!` <- function(x) {
-  abort("`!!!` can only be used within a quasiquoted argument")
-}
-#' @rdname injecting
-#' @usage NULL
-#' @export
-`:=` <- function(x, y) {
-  abort("`:=` can only be used within a quasiquoted argument")
-}
 
 #' @rdname injecting
 #' @param expr An expression involving injection operators.

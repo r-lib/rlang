@@ -107,7 +107,7 @@ a data-masking function where the data-variables are defined.\preformatted{my_su
 }
 
 This pattern of defuse-and-inject can be done in one step with the
-\link[=embracing-operator]{embracing operator \verb{\{\{}}.\preformatted{my_summarise <- function(data, arg) \{
+\link[=embrace-operator]{embracing operator} \verb{\{\{}.\preformatted{my_summarise <- function(data, arg) \{
   # Defuse and inject in a single step with the embracing operator
   data |> dplyr::summarise(mean = mean(\{\{ arg \}\}, na.rm = TRUE))
 \}

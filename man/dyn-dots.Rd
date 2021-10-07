@@ -3,6 +3,7 @@
 \name{dyn-dots}
 \alias{dyn-dots}
 \alias{tidy-dots}
+\alias{:=}
 \title{Dynamic dots}
 \description{
 The \code{...} syntax of base R allows you to:

@@ -1252,6 +1252,27 @@ expr_interp <- function(x, env = NULL) {
   x
 }
 
+#' Deprecated `UQ()` and `UQS()` operators
+#'
+#' @description
+#'
+#' `r lifecycle::badge("deprecated")`
+#'
+#' These operators are deprecated in favour of
+#' [`!!`][injection-operator] and [`!!!`][splice-operator].
+#'
+#' @keywords internal
+#' @export
+UQ <- function(x) {
+  abort("`UQ()` can only be used within a defused argument")
+}
+#' @rdname UQ
+#' @export
+UQS <- function(x) {
+  abort("`UQS()` can only be used within a defused argument")
+}
+
+
 
 #  Expressions  ------------------------------------------------------
 

@@ -1,8 +1,8 @@
-#' Embracing operator `{{`
+#' Embrace operator `{{`
 #'
 #' TODO!
 #'
-#' @name embracing-operator
+#' @name embrace-operator
 #' @aliases curly-curly
 NULL
 
@@ -61,7 +61,7 @@ NULL
 #' ```
 #'
 #' This pattern of defuse-and-inject can be done in one step with the
-#' [embracing operator `{{`][embracing-operator].
+#' [embracing operator][embrace-operator] `{{`.
 #'
 #' ```
 #' my_summarise <- function(data, arg) {
