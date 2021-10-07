@@ -136,7 +136,7 @@ NULL
 #' where all the private functions of your package are defined.
 #'
 #' Read more about the role of quosures in [What are
-#' quosures and when are they needed?][faq-quosure].
+#' quosures and when are they needed?][topic-quosure].
 #'
 #'
 #' @section Comparison with base R:
@@ -309,7 +309,7 @@ enquos <- function(...,
 #'     your own local expressions (by opposition to function arguments
 #'     where non-local expressions are supplied by your users), there
 #'     is generally no need to attach the current environment in a
-#'     quosure. See [When are quosures needed?][faq-quosure].
+#'     quosure. See [When are quosures needed?][topic-quosure].
 #'
 #' *   `enexpr()` and `enexprs()` are like [enquo()] and [enquos()] but
 #'     return naked expressions instead of quosures. These operators

@@ -63,7 +63,7 @@ has to match at least one of them, otherwise \code{is_call()} returns
 A quosure is a type of \link[=defusing]{defused expression} that includes
 a reference to the context where it was created. A quosure is thus
 guaranteed to evaluate in its original environment and can refer to
-local objects. Read more about quosures in \link[=faq-quosure]{What are quosures?}.
+local objects. Read more about quosures in \link[=topic-quosure]{What are quosures?}.
 \itemize{
 \item You can access the quosure components with \code{quo_get_expr()} and
 \code{quo_get_env()}.

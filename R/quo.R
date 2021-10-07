@@ -6,7 +6,7 @@
 #' a reference to the context where it was created. A quosure is thus
 #' guaranteed to evaluate in its original environment and can refer to
 #' local objects. Read more about quosures in [What are
-#' quosures?][faq-quosure].
+#' quosures?][topic-quosure].
 #'
 #' -  You can access the quosure components with `quo_get_expr()` and
 #'   `quo_get_env()`.

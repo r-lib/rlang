@@ -205,7 +205,7 @@
 #'
 #' - The rlang package developed tidy eval in 2017 as the data-masking
 #'   framework of the tidyverse. It introduced the notions of
-#'   [quosure][faq-quosure], [implicit injection][injecting] with `!!`
+#'   [quosure][topic-quosure], [implicit injection][injecting] with `!!`
 #'   and `!!!`, and [data pronouns][.data].
 #'
 #' - In 2019, injection with `{{` was introduced in [rlang
@@ -214,7 +214,7 @@
 #'   beginners to transport data-masked arguments across functions
 #'   more intuitively.
 #'
-#' @name faq-data-masking
+#' @name topic-data-masking
 NULL
 
 
@@ -290,7 +290,7 @@ NULL
 #'
 #' Again the package bar uses a custom function, `check_numeric()`, to
 #' validate its input. It also interfaces with data-masking functions
-#' from dplyr (using the [define-a-constant][faq-double-evaluation]
+#' from dplyr (using the [define-a-constant][howto-double-evaluation]
 #' trick to avoid issues of double evaluation).
 #'
 #' There are three data-masking functions simultaneously interfacing
@@ -362,7 +362,7 @@ NULL
 #' evaluated repeatedly, potentially in a different data mask. This
 #' property is useful to implement split-apply-combine evaluations.
 #'
-#' @name faq-quosure
+#' @name topic-quosure
 NULL
 
 
@@ -419,7 +419,7 @@ NULL
 #' that `summarise_stats()` evaluates its input twice. This is because
 #' we've injected a defused expression in two different places. The
 #' data-masked expression created down the line looks like this (with
-#' caret signs representing [quosure][faq-quosure] boundaries):
+#' caret signs representing [quosure][topic-quosure] boundaries):
 #'
 #' ```r
 #' dplyr::summarise(
@@ -458,7 +458,7 @@ NULL
 #'
 #' @section What about glue strings?:
 #'
-#' `{{` [embracing in glue strings][faq-glue-injection] doesn't suffer
+#' `{{` [embracing in glue strings][howto-glue-injection] doesn't suffer
 #' from the double evaluation problem:
 #'
 #' ```{r, comment = "#>", collapse = TRUE}
@@ -481,7 +481,7 @@ NULL
 #' evaluate injected expressions.
 #' 
 #'
-#' @name faq-double-evaluation
+#' @name howto-double-evaluation
 NULL
 
 
@@ -580,7 +580,7 @@ NULL
 #' list2("{var}" := 1)
 #' ```
 #'
-#' @name faq-glue-injection
+#' @name howto-glue-injection
 NULL
 
 
@@ -630,9 +630,9 @@ NULL
 #' However this is not possible because in compiled R code it is not
 #' always possible to distinguish a regular variable from a function
 #' argument. See [Why are strings and other constants enquosed in the
-#' empty environment?][faq-embracing-constants] for more about this.
+#' empty environment?][topic-embracing-constants] for more about this.
 #'
-#' @name faq-embracing-non-args
+#' @name topic-embracing-non-args
 NULL
 
 #' Why are strings and other constants enquosed in the empty environment?
@@ -643,7 +643,7 @@ NULL
 #' ```
 #'
 #' Function arguments are [defused][defusing] into
-#' [quosures][faq-quosure] that keep track of the environment of the
+#' [quosures][topic-quosure] that keep track of the environment of the
 #' defused expression.
 #'
 #' ```r
@@ -749,5 +749,5 @@ NULL
 #'   the calling environment when a constant (or a symbol evaluating
 #'   to a given value) is supplied.
 #'
-#' @name faq-embracing-constants
+#' @name topic-embracing-constants
 NULL

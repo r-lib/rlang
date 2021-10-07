@@ -107,7 +107,7 @@ quosures instead of naked expressions. When you are defusing
 your own local expressions (by opposition to function arguments
 where non-local expressions are supplied by your users), there
 is generally no need to attach the current environment in a
-quosure. See \link[=faq-quosure]{When are quosures needed?}.
+quosure. See \link[=topic-quosure]{When are quosures needed?}.
 \item \code{enexpr()} and \code{enexprs()} are like \code{\link[=enquo]{enquo()}} and \code{\link[=enquos]{enquos()}} but
 return naked expressions instead of quosures. These operators
 should very rarely be used because they lose track of the
