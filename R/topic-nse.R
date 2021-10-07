@@ -229,8 +229,9 @@ NULL
 #' A quosure is a special type of [defused expression][defusing] that
 #' keeps track of the original context the expression was written in.
 #' The tracking capabilities of quosures is important when interfacing
-#' [data-masking functions] together because the functions might come
-#' from two unrelated environments, like two different packages.
+#' [data-masking functions][topic-data-masking] together because the
+#' functions might come from two unrelated environments, like two
+#' different packages.
 #'
 #' Let's take an example where the R user calls the function
 #' `summarise_bmi()` from the foo package to summarise a data frame
@@ -374,7 +375,7 @@ NULL
 #' ```{r, child = "man/rmd/setup.Rmd", include = FALSE}
 #' ```
 #'
-#' Calling [data-masked][faq-data-mask] functions from another
+#' Calling [data-masked][topic-data-masking] functions from another
 #' function is a bit trickier than regular function calls.
 #'
 #' -   Individual arguments must be forwarded with `{{`.
@@ -577,7 +578,7 @@ NULL
 #' ```
 #'
 #' The `{{` syntax is mainly useful for interfacing with
-#' [data-masking][faq-data-mask] functions, to give more informative
+#' [data-masking][topic-data-masking] functions, to give more informative
 #' default names:
 #'
 #' ```{r, comment = "#>", collapse = TRUE}

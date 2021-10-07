@@ -4,7 +4,7 @@
 \alias{howto-embrace-forward}
 \title{Embracing with \verb{\{\{} and forwarding \code{...}}
 \description{
-Calling \link[=faq-data-mask]{data-masked} functions from another
+Calling \link[=topic-data-masking]{data-masked} functions from another
 function is a bit trickier than regular function calls.
 \itemize{
 \item Individual arguments must be forwarded with \verb{\{\{}.

@@ -48,7 +48,7 @@ fn(1 + 1)
 }\if{html}{\out{</div>}}
 
 The \verb{\{\{} syntax is mainly useful for interfacing with
-\link[=faq-data-mask]{data-masking} functions, to give more informative
+\link[=topic-data-masking]{data-masking} functions, to give more informative
 default names:\if{html}{\out{<div class="sourceCode r">}}\preformatted{fn <- function(data, var) \{
   dplyr::summarise(data, "mean_\{\{ var \}\}" := mean(\{\{ var \}\}))
 \}
