@@ -34,7 +34,7 @@ list2("prefix_\{var\}_suffix" := 1)
 
 Whereas the glue \verb{\{} operator interpolates the contents of a
 variable (either local objects or function arguments), the tidy
-eval \verb{\{\{} operator interpolates a \link[=defusing]{defused} function
+eval \verb{\{\{} operator interpolates a \link[=topic-defusing]{defused} function
 argument. You use botth \verb{\{} and \verb{\{\{} in name injection.\if{html}{\out{<div class="sourceCode r">}}\preformatted{fn <- function(arg) \{
   list2("\{\{ arg \}\}" := arg)
 \}

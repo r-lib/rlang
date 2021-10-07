@@ -2,7 +2,7 @@
 #'
 #' @description
 #'
-#' A quosure is a type of [defused expression][defusing] that includes
+#' A quosure is a type of [defused expression][topic-defusing] that includes
 #' a reference to the context where it was created. A quosure is thus
 #' guaranteed to evaluate in its original environment and can refer to
 #' local objects. Read more about quosures in [What are

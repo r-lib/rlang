@@ -56,9 +56,8 @@ enquo0(arg)
 enquos0(...)
 }
 \arguments{
-\item{arg}{A symbol representing an argument. The expression
-supplied to that argument will be captured instead of being
-evaluated.}
+\item{arg}{An unquoted argument name. The expression
+supplied to that argument is defused and returned.}
 
 \item{...}{For \code{enexprs()}, \code{ensyms()} and \code{enquos()}, names of
 arguments to capture without evaluation (including \code{...}). For
@@ -92,12 +91,13 @@ issued to advise users to use \code{=} if they meant to match a
 function parameter, or wrap the \verb{<-} call in braces otherwise.
 This ensures assignments are explicit.}
 
-\item{expr}{An expression.}
+\item{expr}{An expression to defuse.}
 }
 \description{
-\code{\link[=expr]{expr()}}, \code{\link[=enquo]{enquo()}}, and \code{\link[=enquos]{enquos()}} are sufficient for most
-purposes. rlang provides other operations for completeness which
-are summarised here.
+These advanced operators defuse R expressions. \code{\link[=expr]{expr()}}, \code{\link[=enquo]{enquo()}},
+and \code{\link[=enquos]{enquos()}} are sufficient for most purposes but rlang provides
+these other operations, either for completeness or because they are
+useful to experts.
 \itemize{
 \item \code{exprs()} is the plural variant of \code{expr()}. It returns a list of
 expressions. It is like \code{\link[base:list]{base::alist()}} but with
@@ -173,4 +173,6 @@ no_injection(foo(!!!1:3))
 
 # Injection can still be done explicitly
 inject(no_injection(foo(!!!1:3)))
+
 }
+\keyword{internal}

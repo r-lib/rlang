@@ -24,6 +24,7 @@ A symbol for \code{sym()} and a list of symbols for
 \code{.data}.
 }
 \description{
+TODO! Flesh out.
 \itemize{
 \item \code{sym()} and \code{syms()} take strings as input and turn them into
 symbols.

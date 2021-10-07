@@ -41,6 +41,11 @@ mtcars \%>\% my_mean(am, vs, .var = cyl)
 Together, embracing and dots form the main way of writing functions
 around tidyverse pipelines and \link[=eval_tidy]{tidy eval} functions in
 general. In more complex cases, you might need to
-\link[=defusing]{defuse} variables and dots, and \link[=injecting]{inject} them
+\link[=topic-defusing]{defuse} variables and dots, and \link[=injecting]{inject} them
 back with \verb{!!} and \verb{!!!}.
+}
+\seealso{
+\itemize{
+\item \link[=howto-double-evaluation]{The double evaluation problem}
+}
 }

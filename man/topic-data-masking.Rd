@@ -30,7 +30,7 @@ arguments to functions requires injection with the \link[=embrace-operator]{embr
 Injection (also known as quasiquotation) is a metaprogramming
 feature that allows you to modify parts of a program. This is
 needed because under the hood data-masking works by
-\link{defusing} R code to prevent its immediate evaluation.
+\link[=topic-defusing]{defusing} R code to prevent its immediate evaluation.
 The defused code is resumed later on in a context where data frame
 columns are defined.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var1, var2) \{
   dplyr::summarise(data, mean(var1 + var2))
@@ -122,7 +122,7 @@ mtcars \%>\%
 
 Data-masking relies on three language features:
 \itemize{
-\item \link[=defusing]{Argument defusing} (also known as quoting or NSE) with
+\item \link[=topic-defusing]{Argument defusing} (also known as quoting or NSE) with
 \code{\link[=substitute]{substitute()}} (base R) or \code{\link[=enquo]{enquo()}} and \code{\link[=enquos]{enquos()}} (rlang). R
 code needs to be defused so it can be evaluated later on in a
 modified context.

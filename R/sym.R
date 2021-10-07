@@ -1,6 +1,7 @@
 #' Create a symbol or list of symbols
 #'
 #' @description
+#' TODO! Flesh out.
 #'
 #' * `sym()` and `syms()` take strings as input and turn them into
 #'   symbols.

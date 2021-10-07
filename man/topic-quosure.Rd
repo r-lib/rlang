@@ -4,7 +4,7 @@
 \alias{topic-quosure}
 \title{What are quosures and when are they needed?}
 \description{
-A quosure is a special type of \link[=defusing]{defused expression} that
+A quosure is a special type of \link[=topic-defusing]{defused expression} that
 keeps track of the original context the expression was written in.
 The tracking capabilities of quosures is important when interfacing
 \link[=topic-data-masking]{data-masking functions} together because the

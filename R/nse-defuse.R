@@ -1,178 +1,116 @@
 #' Embrace operator `{{`
 #'
-#' TODO!
+#' @description
+#'
+#' The embrace operator `{{` is used to create functions that call
+#' other [data-masked functions][topic-data-masking]. It transports a
+#' data-masked argument (an argument that can refer to columns of a
+#' data frame) from one function to another.
+#'
+#' ```r
+#' my_mean <- function(data, var) {
+#'   dplyr::summarise(data, mean = mean({{ var }}))
+#' }
+#' ```
+#'
+#' @section Under the hood:
+#'
+#' `{{` combines [enquo()] and [`!!`][injection-operator] in one
+#' step. The snippet above is equivalent to:
+#'
+#' ```r
+#' my_mean <- function(data, var) {
+#'   var <- enquo(var)
+#'   dplyr::summarise(data, mean = mean(!!var))
+#' }
+#' ```
 #'
 #' @name embrace-operator
 #' @aliases curly-curly
+#'
+#' @seealso
+#' - [What is data-masking and why do I need embracing?][topic-data-masking]
+#' - [Embracing and forwarding guide][howto-embrace-forward]
+#'
 NULL
 
-#' Defusing R expressions with `expr()` and `enquo()`
+
+#' Defuse an R expression
 #'
 #' @description
 #'
-#' _Note regarding tidyverse programming:_ `expr()` and `enquo()` are
-#' advanced tidy eval operators. Most cases can be solved with `{{`
-#' and `...`. You can read about this in [embracing and
-#' forwarding][howto-embrace-forward].
+#' `expr()` [defuses][topic-defuse] an R expression with
+#' [injection][injection-operator] support.
 #'
-#' The defusing operators `expr()` and `enquo()` disable evaluation of
-#' R code. When a piece of R code is defused, R doesn't return its
-#' value like it normally would. Instead it returns the expression in
-#' a special tree-like object that describes how to compute a value.
-#' These defused expressions can be thought of as blueprints or
-#' recipes for computing values.
+#' It is equivalent to [base::bquote()].
 #'
-#' ```{r}
-#' # Return the result of `1 + 1`
+#' @usage NULL
+#' @param expr An expression to defuse.
+#'
+#' @seealso
+#' - [Defusing R expressions][topic-defuse] for an overview.
+#'
+#' - [enquo()] to defuse non-local expressions from function
+#'   arguments.
+#'
+#' - [Advanced defusal operators][defusing-advanced].
+#'
+#' - [sym()] and [call2()] for building expressions (symbols and calls
+#'   respectively) programmatically.
+#'
+#' - [base::eval()] and [rlang::eval_bare()] for resuming evaluation
+#'   of a defused expression.
+#'
+#' @examples
+#' # R normally returns the result of an expression
 #' 1 + 1
 #'
-#' # Return the expression `1 + 1`
+#' # `expr()` defuses the expression that you have supplied and
+#' # returns it instead of its value
 #' expr(1 + 1)
 #'
-#' # Return the expression and evaluate it
-#' e <- expr(1 + 1)
-#' eval(e)
-#' ```
+#' expr(toupper(letters))
 #'
-#' There are two main ways to defuse expressions, to which correspond
-#' the two functions `expr()` and `enquo()`:
+#' # It supports _injection_ with `!!` and `!!!`. This is a convenient
+#' # way of modifying part of an expression by injecting other
+#' # objects.
+#' var <- "cyl"
+#' expr(with(mtcars, mean(!!sym(var))))
 #'
-#' * You can defuse your _own_ R expressions with `expr()`.
+#' vars <- c("cyl", "am")
+#' expr(with(mtcars, c(!!!syms(vars))))
 #'
-#' * You can defuse the expressions supplied by _the user_ of your
-#'   function with the `en`-prefixed operators, such as `enquo()` and
-#'   `enquos()`. These operators defuse function arguments.
+#' # Compare to the normal way of building expressions
+#' call("with", call("mean", sym(var)))
 #'
-#' One purpose for defusing evaluation of an expression is to
-#' interface with data-masking functions with the
-#' __defuse-and-inject__ pattern. Function arguments referring to
-#' data-variables are defused and then injected with `!!` or `!!!` in
-#' a data-masking function where the data-variables are defined.
+#' call("with", call2("c", !!!syms(vars)))
 #'
-#' ```
-#' my_summarise <- function(data, arg) {
-#'   # Defuse the user expression in `arg`
-#'   arg <- enquo(arg)
+#' @export
+expr <- function(expr) {
+  enexpr(expr)
+}
+
+#' Defuse function arguments
 #'
-#'   # Inject the expression contained in `arg`
-#'   # inside a `summarise()` argument
-#'   data |> dplyr::summarise(mean = mean(!!arg, na.rm = TRUE))
-#' }
-#' ```
+#' @description
 #'
-#' This pattern of defuse-and-inject can be done in one step with the
-#' [embracing operator][embrace-operator] `{{`.
+#' `enquo()` and `enquos()` [defuse][topic-defuse] function arguments.
+#' A defused expression can be examined, modified, and injected into
+#' other expressions.
 #'
-#' ```
-#' my_summarise <- function(data, arg) {
-#'   # Defuse and inject in a single step with the embracing operator
-#'   data |> dplyr::summarise(mean = mean({{ arg }}, na.rm = TRUE))
-#' }
-#' ```
+#' Defusing function arguments is useful for:
 #'
-#' Using `enquo()` and `!!` separately is useful for more complex
-#' cases where you need access to the defused expression instead of
-#' just passing it on.
+#' - Creating data-masking functions.
+#' - Interfacing with another [data-masking][topic-data-masking] function.
+#'   See [How to defuse and inject][howto-defuse-and-inject].
 #'
-#'
-#' @section Defused arguments and quosures:
-#'
-#' If you inspect the return values of `expr()` and `enquo()`, you'll
-#' notice that the latter doesn't return a raw expression like the
-#' former. Instead it returns a [quosure], a wrapper containing an
-#' expression and an environment.
-#'
-#' ```
-#' expr(1 + 1)
-#' #> 1 + 1
-#'
-#' my_function <- function(arg) enquo(arg)
-#' my_function(1 + 1)
-#' #> <quosure>
-#' #> expr: ^1 + 1
-#' #> env:  global
-#' ```
-#'
-#' R needs information about the environment to properly evaluate
-#' argument expressions because they come from a different context
-#' than the current function. For instance when a function in your
-#' package calls `dplyr::mutate()`, the quosure environment indicates
-#' where all the private functions of your package are defined.
-#'
-#' Read more about the role of quosures in [What are
-#' quosures and when are they needed?][topic-quosure].
-#'
-#'
-#' @section Comparison with base R:
-#'
-#' Defusing is known as _quoting_ in other frameworks.
-#'
-#' - The equivalent of `expr()` is [base::bquote()].
-#'
-#' - The equivalent of `enquo()` is [base::substitute()]. The latter
-#'   returns a naked expression instead of a quosure.
-#'
-#' - There is no equivalent for `enquos(...)` but you can defuse dots
-#'   as a list of naked expressions with `eval(substitute(alist(...)))`.
-#'
-#' What makes tidy eval work consistently and safely is that defused
-#' argument expressions are wrapped in a [quosure]. Unlike a naked
-#' expression, a quosure carries information about the context from
-#' which an expression comes from. A quosure is evaluated in the
-#' original environment of the expression, which allows R to find
-#' local data and local functions.
-#'
-#'
-#' @section Types of defused expressions:
-#'
-#' * __Calls__, like `f(1, 2, 3)` or `1 + 1` represent the action of
-#'   calling a function to compute a new value, such as a vector.
-#'
-#' * __Symbols__, like `x` or `df`, represent named objects. When the
-#'   object pointed to by the symbol was defined in a function or in
-#'   the global environment, we call it an environment-variable. When
-#'   the object is a column in a data frame, we call it a
-#'   data-variable.
-#'
-#' * __Constants__, like `1` or `NULL`.
-#'
-#' You can create new call or symbol objects by using the defusing
-#' function `expr()`:
-#'
-#' ```
-#' # Create a symbol representing objects called `foo`
-#' expr(foo)
-#' #> foo
-#'
-#' # Create a call representing the computation of the mean of `foo`
-#' expr(mean(foo, na.rm = TRUE))
-#' #> mean(foo, na.rm = TRUE)
-#'
-#' # Return a constant
-#' expr(1)
-#' #> [1] 1
-#'
-#' expr(NULL)
-#' #> NULL
-#' ```
-#'
-#' Defusing is not the only way to create defused expressions. You can
-#' also assemble them from data:
-#'
-#' ```
-#' # Assemble a symbol from a string
-#' var <- "foo"
-#' sym(var)
-#'
-#' # Assemble a call from strings, symbols, and constants
-#' call("mean", sym(var), na.rm = TRUE)
-#' ```
+#' These are advanced tools. Make sure to read about the [embrace
+#' operator][embrace-operator] `{{` which is sufficient for most
+#' tasks.
 #'
 #' @inheritParams dots_list
-#' @param expr An expression.
-#' @param arg A symbol representing an argument. The expression
-#'   supplied to that argument will be captured instead of being
-#'   evaluated.
+#' @param arg An unquoted argument name. The expression
+#'   supplied to that argument is defused and returned.
 #' @param ... For `enexprs()`, `ensyms()` and `enquos()`, names of
 #'   arguments to capture without evaluation (including `...`). For
 #'   `exprs()` and `quos()`, the expressions to capture unevaluated
@@ -183,13 +121,41 @@ NULL
 #'   considered empty.
 #' @param .unquote_names Whether to treat `:=` as `=`. Unlike `=`, the
 #'   `:=` syntax supports `!!` unquoting on the LHS.
+#' @return `enquo()` returns a [quosure][topic-quosure]. `enquos()`
+#'   returns a list of quosures.
 #'
-#' @seealso [Advanced tidyeval operators][defusing-advanced].
+#' @section Implicit injection:
+#'
+#' Arguments defused with `enquo()` and `enquos()` automatically gain
+#' [injection][topic-injection] support.
+#'
+#' ```r
+#' my_function <- function(data, var) {
+#'   var <- enquo(var)
+#'   dplyr::summarise(data, mean(!!var))
+#' }
+#'
+#' # Your users can now use `!!` and `{{`
+#' my_function(mtcars, !!sym("cyl"))
+#' ```
+#'
+#' See [enquo0()] and [enquos0()] for variants that don't enable
+#' injection.
+#'
+#' @seealso
+#' - [Defusing R expressions][topic-defuse] for an overview.
+#'
+#' - [expr()] to defuse your own local expressions.
+#'
+#' - [Advanced defusal operators][defusing-advanced].
+#'
+#' - [sym()] and [call2()] for building expressions (symbols and calls
+#'   respectively) programmatically.
+#'
+#' - [base::eval()] and [rlang::eval_bare()] for resuming evaluation
+#'   of a defused expression.
 #'
 #' @examples
-#' # `expr()` defuses the expression that you supply
-#' expr(1 + 1)
-#'
 #' # `enquo()` defuses the expression supplied by your user
 #' my_function <- function(arg) {
 #'   enquo(arg)
@@ -204,38 +170,21 @@ NULL
 #' my_function(1 + 1, 2 * 10)
 #'
 #'
-#' # `expr()` and `enquo()` support _injection_, a convenient way of
-#' # modifying part of an expression by injecting other objects.
-#' column <- sym("cyl")
-#' expr(mean(!!column, na.rm = TRUE))
-#'
-#' columns <- syms(c("cyl", "am"))
-#' expr(mean(!!columns[[1]] * !!columns[[2]], na.rm = TRUE))
-#' expr(list(!!!columns))
-#'
-#' # Using `enquo()` enables `{{ arg }}` embracing in particular
+#' # `enquo()` and `enquos()` enable _injection_ and _embracing_ for
+#' # your users
 #' other_function <- function(arg) {
 #'   my_function({{ arg }} * 2)
 #' }
 #' other_function(100)
 #' 
+#' column <- sym("cyl")
 #' other_function(!!column)
 #'
-#' @name defusing
-#' @aliases quotation nse-defuse
-NULL
-
-#' @rdname defusing
-#' @export
-expr <- function(expr) {
-  enexpr(expr)
-}
-#' @rdname defusing
 #' @export
 enquo <- function(arg) {
   .Call(ffi_enquo, substitute(arg), parent.frame())
 }
-#' @rdname defusing
+#' @rdname enquo
 #' @export
 enquos <- function(...,
                    .named = FALSE,
@@ -257,12 +206,15 @@ enquos <- function(...,
   structure(quos, class = c("quosures", "list"))
 }
 
+
 #' Advanced defusal operators
 #'
 #' @description
-#' [expr()], [enquo()], and [enquos()] are sufficient for most
-#' purposes. rlang provides other operations for completeness which
-#' are summarised here.
+#'
+#' These advanced operators defuse R expressions. [expr()], [enquo()],
+#' and [enquos()] are sufficient for most purposes but rlang provides
+#' these other operations, either for completeness or because they are
+#' useful to experts.
 #'
 #' *   `exprs()` is the plural variant of `expr()`. It returns a list of
 #'     expressions. It is like [base::alist()] but with
@@ -307,7 +259,8 @@ enquos <- function(...,
 #'     when defusing with `enquos0()`. For instance, trailing empty
 #'     arguments are not automatically trimmed.
 #'
-#' @inheritParams defusing
+#' @inheritParams expr
+#' @inheritParams enquo
 #'
 #' @examples
 #' # `exprs()` is the plural variant of `expr()`
@@ -346,7 +299,9 @@ enquos <- function(...,
 #'
 #' # Injection can still be done explicitly
 #' inject(no_injection(foo(!!!1:3)))
+#'
 #' @name defusing-advanced
+#' @keywords internal
 NULL
 
 #' @rdname defusing-advanced

@@ -32,7 +32,7 @@
 #' Injection (also known as quasiquotation) is a metaprogramming
 #' feature that allows you to modify parts of a program. This is
 #' needed because under the hood data-masking works by
-#' [defusing][defusing] R code to prevent its immediate evaluation.
+#' [defusing][topic-defusing] R code to prevent its immediate evaluation.
 #' The defused code is resumed later on in a context where data frame
 #' columns are defined.
 #'
@@ -121,7 +121,7 @@
 #'
 #' Data-masking relies on three language features:
 #'
-#' - [Argument defusing][defusing] (also known as quoting or NSE) with
+#' - [Argument defusing][topic-defusing] (also known as quoting or NSE) with
 #'   [substitute()] (base R) or [enquo()] and [enquos()] (rlang). R
 #'   code needs to be defused so it can be evaluated later on in a
 #'   modified context.
@@ -219,6 +219,171 @@
 NULL
 
 
+#' Defusing R expressions
+#'
+#' @description
+#'
+#' ```{r, child = "man/rmd/setup.Rmd", include = FALSE}
+#' ```
+#'
+#' When a piece of R code is defused, R doesn't return its value like
+#' it normally would. Instead it returns the expression in a special
+#' tree-like object that describes how to compute a value. These
+#' defused expressions can be thought of as blueprints or recipes for
+#' computing values.
+#'
+#' ```{r, comment = "#>", collapse = TRUE}
+#' # Return the result of `1 + 1`
+#' 1 + 1
+#'
+#' # Return the expression `1 + 1`
+#' expr(1 + 1)
+#'
+#' # Return the expression and evaluate it
+#' e <- expr(1 + 1)
+#' eval(e)
+#' ```
+#'
+#' There are two main ways to defuse expressions, to which correspond
+#' the two rlang functions [expr()] and [enquo()]:
+#'
+#' * You can defuse your _own_ R expressions with `expr()`.
+#'
+#' * You can defuse the expressions supplied by _the user_ of your
+#'   function with the `en`-prefixed operators, such as `enquo()` and
+#'   `enquos()`. These operators defuse function arguments.
+#'
+#' One purpose for defusing evaluation of an expression is to
+#' interface with [data-masking functions][topic-data-masking] with
+#' the [defuse-and-inject pattern][howto-defuse-and-inject]. Function
+#' arguments referring to data-variables are defused and then injected
+#' with `!!` or `!!!` in a data-masking function where the
+#' data-variables are defined.
+#'
+#' ```r
+#' my_summarise <- function(data, arg) {
+#'   # Defuse the user expression in `arg`
+#'   arg <- enquo(arg)
+#'
+#'   # Inject the expression contained in `arg`
+#'   # inside a `summarise()` argument
+#'   data |> dplyr::summarise(mean = mean(!!arg, na.rm = TRUE))
+#' }
+#' ```
+#'
+#' This defuse-and-inject pattern is usually performed in a single
+#' step with the [embracing operator][embrace-operator] `{{`.
+#'
+#' ```r
+#' my_summarise <- function(data, arg) {
+#'   # Defuse and inject in a single step with the embracing operator
+#'   data |> dplyr::summarise(mean = mean({{ arg }}, na.rm = TRUE))
+#' }
+#' ```
+#'
+#' Using `enquo()` and `!!` separately is useful for more complex
+#' cases where you need access to the defused expression instead of
+#' just passing it on.
+#'
+#'
+#' @section Defused arguments and quosures:
+#'
+#' If you inspect the return values of `expr()` and `enquo()`, you'll
+#' notice that the latter doesn't return a raw expression like the
+#' former. Instead it returns a [quosure], a wrapper containing an
+#' expression and an environment.
+#'
+#' ```r
+#' expr(1 + 1)
+#' #> 1 + 1
+#'
+#' my_function <- function(arg) enquo(arg)
+#' my_function(1 + 1)
+#' #> <quosure>
+#' #> expr: ^1 + 1
+#' #> env:  global
+#' ```
+#'
+#' R needs information about the environment to properly evaluate
+#' argument expressions because they come from a different context
+#' than the current function. For instance when a function in your
+#' package calls `dplyr::mutate()`, the quosure environment indicates
+#' where all the private functions of your package are defined.
+#'
+#' Read more about the role of quosures in [What are
+#' quosures and when are they needed?][topic-quosure].
+#'
+#'
+#' @section Comparison with base R:
+#'
+#' Defusing is known as _quoting_ in other frameworks.
+#'
+#' - The equivalent of `expr()` is [base::bquote()].
+#'
+#' - The equivalent of `enquo()` is [base::substitute()]. The latter
+#'   returns a naked expression instead of a quosure.
+#'
+#' - There is no equivalent for `enquos(...)` but you can defuse dots
+#'   as a list of naked expressions with `eval(substitute(alist(...)))`.
+#'
+#' What makes tidy eval work consistently and safely is that defused
+#' argument expressions are wrapped in a [quosure]. Unlike a naked
+#' expression, a quosure carries information about the context from
+#' which an expression comes from. A quosure is evaluated in the
+#' original environment of the expression, which allows R to find
+#' local data and local functions.
+#'
+#'
+#' @section Types of defused expressions:
+#'
+#' * __Calls__, like `f(1, 2, 3)` or `1 + 1` represent the action of
+#'   calling a function to compute a new value, such as a vector.
+#'
+#' * __Symbols__, like `x` or `df`, represent named objects. When the
+#'   object pointed to by the symbol was defined in a function or in
+#'   the global environment, we call it an environment-variable. When
+#'   the object is a column in a data frame, we call it a
+#'   data-variable.
+#'
+#' * __Constants__, like `1` or `NULL`.
+#'
+#' You can create new call or symbol objects by using the defusing
+#' function `expr()`:
+#'
+#' ```r
+#' # Create a symbol representing objects called `foo`
+#' expr(foo)
+#' #> foo
+#'
+#' # Create a call representing the computation of the mean of `foo`
+#' expr(mean(foo, na.rm = TRUE))
+#' #> mean(foo, na.rm = TRUE)
+#'
+#' # Return a constant
+#' expr(1)
+#' #> [1] 1
+#'
+#' expr(NULL)
+#' #> NULL
+#' ```
+#'
+#' Defusing is not the only way to create defused expressions. You can
+#' also assemble them from data:
+#'
+#' ```r
+#' # Assemble a symbol from a string
+#' var <- "foo"
+#' sym(var)
+#'
+#' # Assemble a call from strings, symbols, and constants
+#' call("mean", sym(var), na.rm = TRUE)
+#' ```
+#'
+#' @name topic-defuse
+#' @aliases quotation nse-defuse
+NULL
+
+
 #' What are quosures and when are they needed?
 #'
 #' @description
@@ -226,7 +391,7 @@ NULL
 #' ```{r, child = "man/rmd/setup.Rmd", include = FALSE}
 #' ```
 #'
-#' A quosure is a special type of [defused expression][defusing] that
+#' A quosure is a special type of [defused expression][topic-defusing] that
 #' keeps track of the original context the expression was written in.
 #' The tracking capabilities of quosures is important when interfacing
 #' [data-masking functions][topic-data-masking] together because the
@@ -386,7 +551,7 @@ NULL
 #'     }
 #'
 #'     mtcars %>% my_mean(cyl)
-#'     ````
+#'     ```
 #'
 #' -   On the other hand multiple arguments can be forwarded the normal
 #'     way with `...`.
@@ -399,15 +564,26 @@ NULL
 #'     }
 #'
 #'     mtcars %>% my_mean(am, vs, .var = cyl)
-#'     ````
+#'     ```
 #'
 #' Together, embracing and dots form the main way of writing functions
 #' around tidyverse pipelines and [tidy eval][eval_tidy] functions in
 #' general. In more complex cases, you might need to
-#' [defuse][defusing] variables and dots, and [inject][injecting] them
+#' [defuse][topic-defusing] variables and dots, and [inject][injecting] them
 #' back with `!!` and `!!!`.
 #'
+#' @seealso
+#' - [The double evaluation problem][howto-double-evaluation]
+#'
 #' @name howto-embrace-forward
+NULL
+
+
+#' Defuse and inject pattern
+#'
+#' TODO!
+#'
+#' @name howto-defuse-and-inject
 NULL
 
 
@@ -565,7 +741,7 @@ NULL
 #'
 #' Whereas the glue `{` operator interpolates the contents of a
 #' variable (either local objects or function arguments), the tidy
-#' eval `{{` operator interpolates a [defused][defusing] function
+#' eval `{{` operator interpolates a [defused][topic-defusing] function
 #' argument. You use botth `{` and `{{` in name injection.
 #'
 #' ```{r, comment = "#>", collapse = TRUE}
@@ -636,8 +812,8 @@ NULL
 #' ```{r, child = "man/rmd/setup.Rmd", include = FALSE}
 #' ```
 #'
-#' The [embracing][defusing] operator `{{` is meant for function
-#' arguments:
+#' The [embrace operator][embrace-operator] `{{` should be used
+#' exclusively with function arguments:
 #'
 #' ```r
 #' fn <- function(arg) {
@@ -678,9 +854,9 @@ NULL
 #' However this is not possible because in compiled R code it is not
 #' always possible to distinguish a regular variable from a function
 #' argument. See [Why are strings and other constants enquosed in the
-#' empty environment?][topic-embracing-constants] for more about this.
+#' empty environment?][topic-embrace-constants] for more about this.
 #'
-#' @name topic-embracing-non-args
+#' @name topic-embrace-non-args
 NULL
 
 #' Why are strings and other constants enquosed in the empty environment?
@@ -690,7 +866,7 @@ NULL
 #' ```{r, child = "man/rmd/setup.Rmd", include = FALSE}
 #' ```
 #'
-#' Function arguments are [defused][defusing] into
+#' Function arguments are [defused][topic-defusing] into
 #' [quosures][topic-quosure] that keep track of the environment of the
 #' defused expression.
 #'
@@ -797,5 +973,5 @@ NULL
 #'   the calling environment when a constant (or a symbol evaluating
 #'   to a given value) is supplied.
 #'
-#' @name topic-embracing-constants
+#' @name topic-embrace-constants
 NULL
