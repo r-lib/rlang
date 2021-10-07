@@ -70,9 +70,6 @@
 
 ## Features and bugfixes
 
-* `qq_show()` now return the result of its input to make it easier to
-  insert it in a piece of code.
-
 * `zap_srcref()` now preserves attributes of closures.
 
 * `on_load()` and `run_on_load()` lets you run `.onLoad()` expressions

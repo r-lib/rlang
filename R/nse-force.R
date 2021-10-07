@@ -259,12 +259,11 @@ UQS <- function(x) {
 }
 
 #' @rdname bang-bang
-#' @param expr An expression involving injection operators.
+#' @param expr An expression to be quasiquoted.
 #' @usage NULL
 #' @export
 qq_show <- function(expr) {
-  expr <- expr_print(enexpr(expr))
-  eval_bare(expr, env = caller_env())
+  expr_print(enexpr(expr))
 }
 
 

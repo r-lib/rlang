@@ -755,8 +755,3 @@ test_that("{{ foo; bar }} is not injected (#1087)", {
     quote({{ 1 }; NULL})
   )
 })
-
-test_that("qq_show() returns its input", {
-  a <- 10
-  expect_equal(qq_show(1 + a), 11)
-})
