@@ -6,5 +6,80 @@
 \alias{!!}
 \title{Injection operator \verb{!!}}
 \description{
-TODO!
+The injection operator \verb{!!} injects a value or expression inside
+another expression. In other words, it modifies a piece of code
+before R evaluates it.
+
+There are two main cases for injection. You can inject constant
+values to work around issues of \link[=howto-data-mask-ambiguity]{scoping ambiguity}, and you can inject \link[=topic-defuse]{defused expressions} like \link[=sym]{symbolised} column names.
+}
+\section{Where does \verb{!!} work?}{
+
+
+\verb{!!} does not work everywhere, you can only use it within certain
+special functions:
+\itemize{
+\item Functions taking \link[=topic-defuse]{defused} and
+\link[=topic-data-masking]{data-masked} arguments.
+\item Inside \code{\link[=inject]{inject()}}.
+}
+
+All data-masked tidyverse verbs support injection operators out of
+the box. With base functions you need to use \code{\link[=inject]{inject()}} to enable
+\verb{!!}. Using \verb{!!} out of context may lead to incorrect results, see
+\link[=topic-injection-out-of-context]{What happens if I use injection operators out of context?}.
+
+The examples below are built around the base function \code{\link[=with]{with()}}.
+Since it's not a tidyverse function we need \code{\link[=inject]{inject()}} to enable
+\verb{!!}.
+}
+
+\section{Injecting values}{
+
+
+Data-masking functions like \code{\link[=with]{with()}} are handy because you can
+refer to column names in your computations. This comes at the
+price of scoping ambiguity: If you have defined an env-variable
+of the same name as a data-variable, the latter has precedence
+(it masks the env-variable):\if{html}{\out{<div class="sourceCode r">}}\preformatted{cyl <- c(100, 110)
+with(mtcars, mean(cyl))
+#> [1] 6.1875
+}\if{html}{\out{</div>}}
+
+To get around this, you can inject the env-variable inside the
+data-masked expression.\if{html}{\out{<div class="sourceCode r">}}\preformatted{inject(
+  with(mtcars, mean(!!cyl))
+)
+#> [1] 105
+}\if{html}{\out{</div>}}
+
+Note that tidyverse verbs (or any data-masking function based
+on \code{\link[=eval_tidy]{eval_tidy()}}) support the \code{\link{.env}} pronoun to
+disambiguate data- and env-variables.
+}
+
+\section{Injecting expressions}{
+
+
+Injection is also useful for modifying parts of a \link[=topic-defuse]{defused expression}. In the following example we use the
+\link[=howto-symbolise-and-inject]{symbolise-and-inject} pattern to
+inject a column name inside a data-masked expression.\if{html}{\out{<div class="sourceCode r">}}\preformatted{var <- sym("cyl")
+inject(
+  with(mtcars, mean(!!var))
+)
+#> [1] 6.1875
+}\if{html}{\out{</div>}}
+
+Since \code{\link[=with]{with()}} is a base function, you can't inject
+\link[=topic-quosure]{quosures}, only naked symbols and calls. This
+isn't a problem here because we're injecting the name of a data
+frame column. If the environment is important, try injecting a
+pre-computed value instead.
+}
+
+\seealso{
+\itemize{
+\item The \link[=splice-operator]{splice operator} \verb{!!!}
+\item The \link[=embrace-operator]{embrace operator} \verb{\{\{}
+}
 }

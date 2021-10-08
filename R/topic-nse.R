@@ -684,6 +684,22 @@ NULL
 NULL
 
 
+#' Symbolise and inject pattern
+#'
+#' TODO!
+#'
+#' @name howto-symbolise-and-inject
+NULL
+
+
+#' The data mask ambiguity
+#'
+#' TODO!
+#'
+#' @name howto-data-mask-ambiguity
+NULL
+
+
 #' The double evaluation problem
 #'
 #' @description
@@ -1071,4 +1087,11 @@ NULL
 #'   to a given value) is supplied.
 #'
 #' @name topic-embrace-constants
+NULL
+
+#' What happens if I use injection operators out of context?
+#' @description TODO!
+#'
+#' - `{{` link to [topic-embrace-non-args].
+#' @name topic-injection-out-of-context
 NULL

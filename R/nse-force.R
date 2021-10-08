@@ -1,6 +1,88 @@
 #' Injection operator `!!`
 #'
-#' TODO!
+#' @description
+#'
+#' The injection operator `!!` injects a value or expression inside
+#' another expression. In other words, it modifies a piece of code
+#' before R evaluates it.
+#'
+#' There are two main cases for injection. You can inject constant
+#' values to work around issues of [scoping
+#' ambiguity][howto-data-mask-ambiguity], and you can inject [defused
+#' expressions][topic-defuse] like [symbolised][sym] column names.
+#'
+#'
+#' @section Where does `!!` work?:
+#'
+#' `!!` does not work everywhere, you can only use it within certain
+#' special functions:
+#'
+#' -   Functions taking [defused][topic-defuse] and
+#'     [data-masked][topic-data-masking] arguments.
+#' -   Inside [inject()].
+#'
+#' All data-masked tidyverse verbs support injection operators out of
+#' the box. With base functions you need to use [inject()] to enable
+#' `!!`. Using `!!` out of context may lead to incorrect results, see
+#' [What happens if I use injection operators out of
+#' context?][topic-injection-out-of-context].
+#'
+#' The examples below are built around the base function [with()].
+#' Since it's not a tidyverse function we need [inject()] to enable
+#' `!!`.
+#'
+#'
+#' @section Injecting values:
+#'
+#' Data-masking functions like [with()] are handy because you can
+#' refer to column names in your computations. This comes at the
+#' price of scoping ambiguity: If you have defined an env-variable
+#' of the same name as a data-variable, the latter has precedence
+#' (it masks the env-variable):
+#'
+#' ```{r, comment = "#>", collapse = TRUE}
+#' cyl <- c(100, 110)
+#' with(mtcars, mean(cyl))
+#' ```
+#'
+#' To get around this, you can inject the env-variable inside the
+#' data-masked expression.
+#'
+#' ```{r, comment = "#>", collapse = TRUE}
+#' inject(
+#'   with(mtcars, mean(!!cyl))
+#' )
+#' ```
+#'
+#' Note that tidyverse verbs (or any data-masking function based
+#' on [eval_tidy()]) support the [`.env`][.env] pronoun to
+#' disambiguate data- and env-variables.
+#'
+#'
+#' @section Injecting expressions:
+#'
+#' Injection is also useful for modifying parts of a [defused
+#' expression][topic-defuse]. In the following example we use the
+#' [symbolise-and-inject][howto-symbolise-and-inject] pattern to
+#' inject a column name inside a data-masked expression.
+#'
+#' ```{r, comment = "#>", collapse = TRUE}
+#' var <- sym("cyl")
+#' inject(
+#'   with(mtcars, mean(!!var))
+#' )
+#' ```
+#'
+#' Since [with()] is a base function, you can't inject
+#' [quosures][topic-quosure], only naked symbols and calls. This
+#' isn't a problem here because we're injecting the name of a data
+#' frame column. If the environment is important, try injecting a
+#' pre-computed value instead.
+#'
+#'
+#' @seealso
+#' - The [splice operator][splice-operator] `!!!`
+#' - The [embrace operator][embrace-operator] `{{`
 #'
 #' @name injection-operator
 #' @aliases bang-bang
