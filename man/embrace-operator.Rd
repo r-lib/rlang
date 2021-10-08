@@ -17,7 +17,7 @@ data frame) from one function to another.\if{html}{\out{<div class="sourceCode r
 
 
 \verb{\{\{} combines \code{\link[=enquo]{enquo()}} and \code{\link[=injection-operator]{!!}} in one
-step. The introductory snippet is equivalent to:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
+step. The snippet above is equivalent to:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
   var <- enquo(var)
   dplyr::summarise(data, mean = mean(!!var))
 \}

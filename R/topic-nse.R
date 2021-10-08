@@ -232,20 +232,162 @@ NULL
 #' defused expressions can be thought of as blueprints or recipes for
 #' computing values.
 #'
+#' We can observe the difference between computing an expression and
+#' defusing it with [expr()]. This function defuses the expression it
+#' is supplied.
+#'
 #' ```{r, comment = "#>", collapse = TRUE}
 #' # Return the result of `1 + 1`
 #' 1 + 1
 #'
 #' # Return the expression `1 + 1`
 #' expr(1 + 1)
+#' ```
 #'
-#' # Return the expression and evaluate it
+#' Evaluation of a defused expression can be resumed at any time with
+#' [eval()] (see also [eval_tidy()]).
+#'
+#' ```{r, comment = "#>", collapse = TRUE}
+#' # Return the expression `1 + 1`
 #' e <- expr(1 + 1)
+#'
+#' # Return the result of `1 + 1`
 #' eval(e)
 #' ```
 #'
+#' The most common use case for defusing expressions is to resume its
+#' evaluation in a [data mask][topic-data-masking]. This makes it
+#' possible for the expression to refer to columns of a data frame as
+#' if they were regular objects.
+#'
+#' ```{r, comment = "#>", collapse = TRUE}
+#' e <- expr(mean(cyl))
+#' eval(e, mtcars)
+#' ```
+#'
+#'
+#' @section Do I need to know about defused expressions?:
+#'
+#' As a tidyverse user you will rarely need to defuse expressions
+#' manually with `expr()`, and even more rarely need to resume
+#' evaluation with [eval()] or [eval_tidy()]. Instead, you call
+#' [data-masking functions][topic-data-masking] which take care of
+#' defusing your arguments and resuming them in the context of a data
+#' mask.
+#'
+#' ```{r, comment = "#>", collapse = TRUE}
+#' mtcars %>% dplyr::summarise(
+#'   mean(cyl)  # This is defused and data-masked
+#' )
+#' ```
+#'
+#' It is important to know that a function defuses its arguments
+#' because it requires slightly different methods when called from a
+#' function. The main thing is that arguments must be transported with
+#' the [embrace operator][embrace-operator] `{{`. It allows the
+#' data-masking function to defuse the correct expression.
+#'
+#' ```{r, comment = "#>", collapse = TRUE}
+#' my_mean <- function(data, var) {
+#'   dplyr::summarise(data, mean = mean({{ var }}))
+#' }
+#' ```
+#'
+#' Read more about this in:
+#'
+#' - [Embrace and forward][howto-embrace-forward]
+#' - [What is data-masking and why do I need to embrace?][topic-data-masking]
+#'
+#'
+#' @section The booby trap analogy:
+#'
+#' The term "defusing" comes from an analogy to the evaluation model
+#' in R. As you may know, R uses lazy evaluation. It means that
+#' arguments are only evaluated when they are needed in an expression.
+#' Let's take two functions, `ignore()` which doesn't do anything with
+#' its argument, and `force()` which returns it:
+#'
+#' ```{r, comment = "#>", collapse = TRUE}
+#' ignore <- function(arg) NULL
+#' force <- function(arg) arg
+#'
+#' ignore(warning("boom"))
+#'
+#' force(warning("boom"))
+#' ```
+#'
+#' The warning is only evaluated by the function that triggers
+#' evaluation of its argument. Evaluation of arguments can be chained
+#' by passing them to other functions. If one of the functions ignores
+#' its argument, it breaks the chain of evaluation.
+#'
+#' ```{r, comment = "#>", collapse = TRUE}
+#' f <- function(x) g(x)
+#' g <- function(y) h(y)
+#' h <- function(z) ignore(z)
+#'
+#' f(warning("boom"))
+#' ```
+#'
+#' In a way, arguments are like _booby traps_ which explode (evaluate)
+#' when touched. Defusing an expression can be seen as defusing the
+#' booby trap.
+#'
+#' ```{r, comment = "#>", collapse = TRUE}
+#' expr(force(warning("boom")))
+#' ```
+#'
+#'
+#' @section Types of defused expressions:
+#'
+#' * __Calls__, like `f(1, 2, 3)` or `1 + 1` represent the action of
+#'   calling a function to compute a new value, such as a vector.
+#'
+#' * __Symbols__, like `x` or `df`, represent named objects. When the
+#'   object pointed to by the symbol was defined in a function or in
+#'   the global environment, we call it an environment-variable. When
+#'   the object is a column in a data frame, we call it a
+#'   data-variable.
+#'
+#' * __Constants__, like `1` or `NULL`.
+#'
+#' You can create new call or symbol objects by using the defusing
+#' function `expr()`:
+#'
+#' ```r
+#' # Create a symbol representing objects called `foo`
+#' expr(foo)
+#' #> foo
+#'
+#' # Create a call representing the computation of the mean of `foo`
+#' expr(mean(foo, na.rm = TRUE))
+#' #> mean(foo, na.rm = TRUE)
+#'
+#' # Return a constant
+#' expr(1)
+#' #> [1] 1
+#'
+#' expr(NULL)
+#' #> NULL
+#' ```
+#'
+#' Defusing is not the only way to create defused expressions. You can
+#' also assemble them from data:
+#'
+#' ```r
+#' # Assemble a symbol from a string
+#' var <- "foo"
+#' sym(var)
+#'
+#' # Assemble a call from strings, symbols, and constants
+#' call("mean", sym(var), na.rm = TRUE)
+#' ```
+#'
+#'
+#' @section Local expressions versus function arguments:
+#'
 #' There are two main ways to defuse expressions, to which correspond
-#' the two rlang functions [expr()] and [enquo()]:
+#' two functions in rlang, [expr()] and [enquo()]:
 #'
 #' * You can defuse your _own_ R expressions with `expr()`.
 #'
@@ -253,12 +395,13 @@ NULL
 #'   function with the `en`-prefixed operators, such as `enquo()` and
 #'   `enquos()`. These operators defuse function arguments.
 #'
+#'
+#' @section Defuse and inject:
+#'
 #' One purpose for defusing evaluation of an expression is to
-#' interface with [data-masking functions][topic-data-masking] with
-#' the [defuse-and-inject pattern][howto-defuse-and-inject]. Function
-#' arguments referring to data-variables are defused and then injected
-#' with `!!` or `!!!` in a data-masking function where the
-#' data-variables are defined.
+#' interface with [data-masking functions][topic-data-masking] by
+#' injecting the expression back into another function with `!!`. This
+#' is the [defuse-and-inject pattern][howto-defuse-and-inject].
 #'
 #' ```r
 #' my_summarise <- function(data, arg) {
@@ -271,8 +414,8 @@ NULL
 #' }
 #' ```
 #'
-#' This defuse-and-inject pattern is usually performed in a single
-#' step with the [embracing operator][embrace-operator] `{{`.
+#' Defuse-and-inject is usually performed in a single step with the
+#' [embracing operator][embrace-operator] `{{`.
 #'
 #' ```r
 #' my_summarise <- function(data, arg) {
@@ -281,7 +424,7 @@ NULL
 #' }
 #' ```
 #'
-#' Using `enquo()` and `!!` separately is useful for more complex
+#' Using `enquo()` and `!!` separately is useful in more complex
 #' cases where you need access to the defused expression instead of
 #' just passing it on.
 #'
@@ -332,52 +475,6 @@ NULL
 #' which an expression comes from. A quosure is evaluated in the
 #' original environment of the expression, which allows R to find
 #' local data and local functions.
-#'
-#'
-#' @section Types of defused expressions:
-#'
-#' * __Calls__, like `f(1, 2, 3)` or `1 + 1` represent the action of
-#'   calling a function to compute a new value, such as a vector.
-#'
-#' * __Symbols__, like `x` or `df`, represent named objects. When the
-#'   object pointed to by the symbol was defined in a function or in
-#'   the global environment, we call it an environment-variable. When
-#'   the object is a column in a data frame, we call it a
-#'   data-variable.
-#'
-#' * __Constants__, like `1` or `NULL`.
-#'
-#' You can create new call or symbol objects by using the defusing
-#' function `expr()`:
-#'
-#' ```r
-#' # Create a symbol representing objects called `foo`
-#' expr(foo)
-#' #> foo
-#'
-#' # Create a call representing the computation of the mean of `foo`
-#' expr(mean(foo, na.rm = TRUE))
-#' #> mean(foo, na.rm = TRUE)
-#'
-#' # Return a constant
-#' expr(1)
-#' #> [1] 1
-#'
-#' expr(NULL)
-#' #> NULL
-#' ```
-#'
-#' Defusing is not the only way to create defused expressions. You can
-#' also assemble them from data:
-#'
-#' ```r
-#' # Assemble a symbol from a string
-#' var <- "foo"
-#' sym(var)
-#'
-#' # Assemble a call from strings, symbols, and constants
-#' call("mean", sym(var), na.rm = TRUE)
-#' ```
 #'
 #' @name topic-defuse
 #' @aliases quotation nse-defuse

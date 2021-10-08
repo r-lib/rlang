@@ -10,35 +10,164 @@ When a piece of R code is defused, R doesn't return its value like
 it normally would. Instead it returns the expression in a special
 tree-like object that describes how to compute a value. These
 defused expressions can be thought of as blueprints or recipes for
-computing values.\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Return the result of `1 + 1`
+computing values.
+
+We can observe the difference between computing an expression and
+defusing it with \code{\link[=expr]{expr()}}. This function defuses the expression it
+is supplied.\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Return the result of `1 + 1`
 1 + 1
 #> [1] 2
 
 # Return the expression `1 + 1`
 expr(1 + 1)
 #> 1 + 1
+}\if{html}{\out{</div>}}
 
-# Return the expression and evaluate it
+Evaluation of a defused expression can be resumed at any time with
+\code{\link[=eval]{eval()}} (see also \code{\link[=eval_tidy]{eval_tidy()}}).\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Return the expression `1 + 1`
 e <- expr(1 + 1)
+
+# Return the result of `1 + 1`
 eval(e)
 #> [1] 2
 }\if{html}{\out{</div>}}
 
+The most common use case for defusing expressions is to resume its
+evaluation in a \link[=topic-data-masking]{data mask}. This makes it
+possible for the expression to refer to columns of a data frame as
+if they were regular objects.\if{html}{\out{<div class="sourceCode r">}}\preformatted{e <- expr(mean(cyl))
+eval(e, mtcars)
+#> [1] 6.1875
+}\if{html}{\out{</div>}}
+}
+\section{Do I need to know about defused expressions?}{
+
+
+As a tidyverse user you will rarely need to defuse expressions
+manually with \code{expr()}, and even more rarely need to resume
+evaluation with \code{\link[=eval]{eval()}} or \code{\link[=eval_tidy]{eval_tidy()}}. Instead, you call
+\link[=topic-data-masking]{data-masking functions} which take care of
+defusing your arguments and resuming them in the context of a data
+mask.\if{html}{\out{<div class="sourceCode r">}}\preformatted{mtcars \%>\% dplyr::summarise(
+  mean(cyl)  # This is defused and data-masked
+)
+#> # A tibble: 1 x 1
+#>   `mean(cyl)`
+#>         <dbl>
+#> 1        6.19
+}\if{html}{\out{</div>}}
+
+It is important to know that a function defuses its arguments
+because it requires slightly different methods when called from a
+function. The main thing is that arguments must be transported with
+the \link[=embrace-operator]{embrace operator} \verb{\{\{}. It allows the
+data-masking function to defuse the correct expression.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
+  dplyr::summarise(data, mean = mean(\{\{ var \}\}))
+\}
+}\if{html}{\out{</div>}}
+
+Read more about this in:
+\itemize{
+\item \link[=howto-embrace-forward]{Embrace and forward}
+\item \link[=topic-data-masking]{What is data-masking and why do I need to embrace?}
+}
+}
+
+\section{The booby trap analogy}{
+
+
+The term "defusing" comes from an analogy to the evaluation model
+in R. As you may know, R uses lazy evaluation. It means that
+arguments are only evaluated when they are needed in an expression.
+Let's take two functions, \code{ignore()} which doesn't do anything with
+its argument, and \code{force()} which returns it:\if{html}{\out{<div class="sourceCode r">}}\preformatted{ignore <- function(arg) NULL
+force <- function(arg) arg
+
+ignore(warning("boom"))
+#> NULL
+
+force(warning("boom"))
+#> Warning in force(warning("boom")): boom
+}\if{html}{\out{</div>}}
+
+The warning is only evaluated by the function that triggers
+evaluation of its argument. Evaluation of arguments can be chained
+by passing them to other functions. If one of the functions ignores
+its argument, it breaks the chain of evaluation.\if{html}{\out{<div class="sourceCode r">}}\preformatted{f <- function(x) g(x)
+g <- function(y) h(y)
+h <- function(z) ignore(z)
+
+f(warning("boom"))
+#> NULL
+}\if{html}{\out{</div>}}
+
+In a way, arguments are like \emph{booby traps} which explode (evaluate)
+when touched. Defusing an expression can be seen as defusing the
+booby trap.\if{html}{\out{<div class="sourceCode r">}}\preformatted{expr(force(warning("boom")))
+#> force(warning("boom"))
+}\if{html}{\out{</div>}}
+}
+
+\section{Types of defused expressions}{
+
+\itemize{
+\item \strong{Calls}, like \code{f(1, 2, 3)} or \code{1 + 1} represent the action of
+calling a function to compute a new value, such as a vector.
+\item \strong{Symbols}, like \code{x} or \code{df}, represent named objects. When the
+object pointed to by the symbol was defined in a function or in
+the global environment, we call it an environment-variable. When
+the object is a column in a data frame, we call it a
+data-variable.
+\item \strong{Constants}, like \code{1} or \code{NULL}.
+}
+
+You can create new call or symbol objects by using the defusing
+function \code{expr()}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Create a symbol representing objects called `foo`
+expr(foo)
+#> foo
+
+# Create a call representing the computation of the mean of `foo`
+expr(mean(foo, na.rm = TRUE))
+#> mean(foo, na.rm = TRUE)
+
+# Return a constant
+expr(1)
+#> [1] 1
+
+expr(NULL)
+#> NULL
+}\if{html}{\out{</div>}}
+
+Defusing is not the only way to create defused expressions. You can
+also assemble them from data:\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Assemble a symbol from a string
+var <- "foo"
+sym(var)
+
+# Assemble a call from strings, symbols, and constants
+call("mean", sym(var), na.rm = TRUE)
+}\if{html}{\out{</div>}}
+}
+
+\section{Local expressions versus function arguments}{
+
+
 There are two main ways to defuse expressions, to which correspond
-the two rlang functions \code{\link[=expr]{expr()}} and \code{\link[=enquo]{enquo()}}:
+two functions in rlang, \code{\link[=expr]{expr()}} and \code{\link[=enquo]{enquo()}}:
 \itemize{
 \item You can defuse your \emph{own} R expressions with \code{expr()}.
 \item You can defuse the expressions supplied by \emph{the user} of your
 function with the \code{en}-prefixed operators, such as \code{enquo()} and
 \code{enquos()}. These operators defuse function arguments.
 }
+}
+
+\section{Defuse and inject}{
+
 
 One purpose for defusing evaluation of an expression is to
-interface with \link[=topic-data-masking]{data-masking functions} with
-the \link[=howto-defuse-and-inject]{defuse-and-inject pattern}. Function
-arguments referring to data-variables are defused and then injected
-with \verb{!!} or \verb{!!!} in a data-masking function where the
-data-variables are defined.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_summarise <- function(data, arg) \{
+interface with \link[=topic-data-masking]{data-masking functions} by
+injecting the expression back into another function with \verb{!!}. This
+is the \link[=howto-defuse-and-inject]{defuse-and-inject pattern}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_summarise <- function(data, arg) \{
   # Defuse the user expression in `arg`
   arg <- enquo(arg)
 
@@ -48,17 +177,18 @@ data-variables are defined.\if{html}{\out{<div class="sourceCode r">}}\preformat
 \}
 }\if{html}{\out{</div>}}
 
-This defuse-and-inject pattern is usually performed in a single
-step with the \link[=embrace-operator]{embracing operator} \verb{\{\{}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_summarise <- function(data, arg) \{
+Defuse-and-inject is usually performed in a single step with the
+\link[=embrace-operator]{embracing operator} \verb{\{\{}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_summarise <- function(data, arg) \{
   # Defuse and inject in a single step with the embracing operator
   data |> dplyr::summarise(mean = mean(\{\{ arg \}\}, na.rm = TRUE))
 \}
 }\if{html}{\out{</div>}}
 
-Using \code{enquo()} and \verb{!!} separately is useful for more complex
+Using \code{enquo()} and \verb{!!} separately is useful in more complex
 cases where you need access to the defused expression instead of
 just passing it on.
 }
+
 \section{Defused arguments and quosures}{
 
 
@@ -102,45 +232,5 @@ expression, a quosure carries information about the context from
 which an expression comes from. A quosure is evaluated in the
 original environment of the expression, which allows R to find
 local data and local functions.
-}
-
-\section{Types of defused expressions}{
-
-\itemize{
-\item \strong{Calls}, like \code{f(1, 2, 3)} or \code{1 + 1} represent the action of
-calling a function to compute a new value, such as a vector.
-\item \strong{Symbols}, like \code{x} or \code{df}, represent named objects. When the
-object pointed to by the symbol was defined in a function or in
-the global environment, we call it an environment-variable. When
-the object is a column in a data frame, we call it a
-data-variable.
-\item \strong{Constants}, like \code{1} or \code{NULL}.
-}
-
-You can create new call or symbol objects by using the defusing
-function \code{expr()}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Create a symbol representing objects called `foo`
-expr(foo)
-#> foo
-
-# Create a call representing the computation of the mean of `foo`
-expr(mean(foo, na.rm = TRUE))
-#> mean(foo, na.rm = TRUE)
-
-# Return a constant
-expr(1)
-#> [1] 1
-
-expr(NULL)
-#> NULL
-}\if{html}{\out{</div>}}
-
-Defusing is not the only way to create defused expressions. You can
-also assemble them from data:\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Assemble a symbol from a string
-var <- "foo"
-sym(var)
-
-# Assemble a call from strings, symbols, and constants
-call("mean", sym(var), na.rm = TRUE)
-}\if{html}{\out{</div>}}
 }
 
