@@ -892,13 +892,15 @@ as_label <- function(x) {
       if (is_data_pronoun(x)) {
         return(data_pronoun_name(x) %||% "<unknown>")
       }
-      if (call_print_type(x) %in% c("infix", "subset")) {
+      if (call_print_type(x) %in% c("infix", "subset") &&
+          length(expr_deparse(x, width = 60)) > 1) {
+        # Shorten the expression if we're too long, starting with the left side
         left <- expr_deparse(x[[2]], width = 29)
-        right <- expr_deparse(x[[3]], width = 28)
         if (length(left) > 1) {
           x[[2]] <- quote(...)
         }
-        if (length(right) > 1) {
+        if (length(expr_deparse(x, width = 60)) > 1) {
+          # If we're still to long, truncate the right too
           x[[3]] <- quote(...)
         }
       }
