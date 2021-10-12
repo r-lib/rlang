@@ -564,12 +564,11 @@ NULL
 #' quo3 <- quo(list(!!quo2, !!!syms(letters[1:5])))
 #' quo3
 #'
-#' @name injecting
+#' @name topic-injection
 #' @aliases quasiquotation nse-force nse-inject
-# TODO! Rename to topic-injection
 NULL
 
-#' @rdname injecting
+#' @rdname topic-injection
 #' @param expr An expression involving injection operators.
 #' @usage NULL
 #' @export

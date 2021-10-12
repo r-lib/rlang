@@ -62,7 +62,8 @@
 #' Technically, `{{` performs two steps: defusal and injection. It
 #' defuses the code supplied to our own function and injects it back
 #' into another function. This defuse-and-inject pattern can also be
-#' performed in distinct steps with [enquo()] and [`!!`][injecting].
+#' performed in distinct steps with [enquo()] and
+#' [`!!`][injection-operator].
 #'
 #'
 #' @section What does "masking" mean?:
@@ -206,7 +207,7 @@
 #'
 #' - The rlang package developed tidy eval in 2017 as the data-masking
 #'   framework of the tidyverse. It introduced the notions of
-#'   [quosure][topic-quosure], [implicit injection][injecting] with `!!`
+#'   [quosure][topic-quosure], [implicit injection][topic-injection] with `!!`
 #'   and `!!!`, and [data pronouns][.data].
 #'
 #' - In 2019, injection with `{{` was introduced in [rlang
@@ -666,8 +667,8 @@ NULL
 #' Together, embracing and dots form the main way of writing functions
 #' around tidyverse pipelines and [tidy eval][eval_tidy] functions in
 #' general. In more complex cases, you might need to
-#' [defuse][topic-defusing] variables and dots, and [inject][injecting] them
-#' back with `!!` and `!!!`.
+#' [defuse][topic-defusing] variables and dots, and
+#' [inject][topic-injection] them back with `!!` and `!!!`.
 #'
 #' @seealso
 #' - [The double evaluation problem][howto-double-evaluation]
@@ -1077,9 +1078,9 @@ NULL
 #'
 #' - Data-masking APIs should be able to interpret constants. These
 #'   can arise from normal argument passing as we have seen, or by
-#'   [injection][injecting] with `!!`. There should be no difference
-#'   between `dplyr::mutate(mtcars, var = cyl)` and `dplyr::mutate(mtcars,
-#'   var = !!mtcars$cyl)`.
+#'   [injection][topic-injection] with `!!`. There should be no
+#'   difference between `dplyr::mutate(mtcars, var = cyl)` and
+#'   `dplyr::mutate(mtcars, var = !!mtcars$cyl)`.
 #'
 #' - Data-masking is an _evaluation_ idiom, not an _introspective_
 #'   one. The behaviour of data-masking function should not depend on

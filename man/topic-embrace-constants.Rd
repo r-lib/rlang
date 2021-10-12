@@ -88,8 +88,9 @@ that they don't need an environment for constants.
 \itemize{
 \item Data-masking APIs should be able to interpret constants. These
 can arise from normal argument passing as we have seen, or by
-\link[=injecting]{injection} with \verb{!!}. There should be no difference
-between \code{dplyr::mutate(mtcars, var = cyl)} and \code{dplyr::mutate(mtcars, var = !!mtcars$cyl)}.
+\link[=topic-injection]{injection} with \verb{!!}. There should be no
+difference between \code{dplyr::mutate(mtcars, var = cyl)} and
+\code{dplyr::mutate(mtcars, var = !!mtcars$cyl)}.
 \item Data-masking is an \emph{evaluation} idiom, not an \emph{introspective}
 one. The behaviour of data-masking function should not depend on
 the calling environment when a constant (or a symbol evaluating

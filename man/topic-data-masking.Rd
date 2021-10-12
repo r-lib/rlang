@@ -61,7 +61,8 @@ my_mean(mtcars, cyl, am)
 Technically, \verb{\{\{} performs two steps: defusal and injection. It
 defuses the code supplied to our own function and injects it back
 into another function. This defuse-and-inject pattern can also be
-performed in distinct steps with \code{\link[=enquo]{enquo()}} and \code{\link[=injecting]{!!}}.
+performed in distinct steps with \code{\link[=enquo]{enquo()}} and
+\code{\link[=injection-operator]{!!}}.
 }
 
 \section{What does "masking" mean?}{
@@ -190,7 +191,7 @@ of the \code{[} method of a data frame.
 in 2014.
 \item The rlang package developed tidy eval in 2017 as the data-masking
 framework of the tidyverse. It introduced the notions of
-\link[=topic-quosure]{quosure}, \link[=injecting]{implicit injection} with \verb{!!}
+\link[=topic-quosure]{quosure}, \link[=topic-injection]{implicit injection} with \verb{!!}
 and \verb{!!!}, and \link[=.data]{data pronouns}.
 \item In 2019, injection with \verb{\{\{} was introduced in \href{https://www.tidyverse.org/blog/2019/06/rlang-0-4-0/}{rlang 0.4.0} to
 simplify the defuse-and-inject pattern. This operator allows
