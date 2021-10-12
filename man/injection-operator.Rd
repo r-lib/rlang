@@ -52,10 +52,6 @@ data-masked expression.\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 )
 #> [1] 105
 }\if{html}{\out{</div>}}
-
-Note that tidyverse verbs (or any data-masking function based
-on \code{\link[=eval_tidy]{eval_tidy()}}) support the \code{\link{.env}} pronoun to
-disambiguate data- and env-variables.
 }
 
 \section{Injecting expressions}{
@@ -75,6 +71,31 @@ Since \code{\link[=with]{with()}} is a base function, you can't inject
 isn't a problem here because we're injecting the name of a data
 frame column. If the environment is important, try injecting a
 pre-computed value instead.
+}
+
+\section{When do I need \verb{!!}?}{
+
+
+With tidyverse APIs, injecting expressions with \verb{!!} is no longer a
+common pattern. First, the \code{\link{.env}} pronoun solves the
+ambiguity problem in a more intuitive way:\if{html}{\out{<div class="sourceCode r">}}\preformatted{cyl <- 100
+mtcars \%>\% dplyr::mutate(cyl = cyl * .env$cyl)
+}\if{html}{\out{</div>}}
+
+Second, the \link[=embrace-operator]{embrace operator} makes the
+\link[=howto-defuse-and-inject]{defuse-and-inject pattern} easier to
+learn and use.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
+  data \%>\% dplyr::summarise(mean(\{\{ var \}\}))
+\}
+
+# Equivalent to
+my_mean <- function(data, var) \{
+  data \%>\% dplyr::summarise(mean(!!enquo(var)))
+\}
+}\if{html}{\out{</div>}}
+
+\verb{!!} is a good tool to learn for advanced applications but our
+hope is that it isn't needed for common data analysis cases.
 }
 
 \seealso{

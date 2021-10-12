@@ -5,5 +5,340 @@
 \alias{!!!}
 \title{Splice operator \verb{!!!}}
 \description{
-TODO!
+The splice operator \verb{!!!} injects a list of arguments into a
+function call. It is the main feature of \link[=dyn-dots]{dynamic dots}.
+It modifies a piece of code before R evaluates it by injecting
+several arguments instead of just one like the
+\code{\link[=injection-operator]{!!}} operator does.
+
+The two main cases for splice injection are:
+\itemize{
+\item Turning a list of inputs into distinct arguments. This is
+especially useful with functions that take data in \code{...}, such as
+\code{\link[base:cbind]{base::rbind()}}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{dfs <- list(mtcars, mtcars)
+inject(rbind(!!!mtcars))
+}\if{html}{\out{</div>}}
+\item Injecting \link[=topic-defuse]{defused expressions} like
+\link[=sym]{symbolised} column names.
+
+For tidyverse APIs, this second case is no longer as useful
+since dplyr 1.0 and the \code{across()} operator.
 }
+}
+\section{Where does \verb{!!!} work?}{
+
+
+\verb{!!!} does not work everywhere, you can only use it within certain
+special functions:
+\itemize{
+\item Functions taking \link[=dyn-dots]{dynamic dots} like \code{\link[=list2]{list2()}}.
+\item Functions taking \link[=topic-defuse]{defused} and
+\link[=topic-data-masking]{data-masked} arguments.
+\item Inside \code{\link[=inject]{inject()}}.
+}
+
+Most tidyverse functions support \verb{!!!} out of the box. With base
+functions you need to use \code{\link[=inject]{inject()}} to enable \verb{!!!}.
+
+Using the operator out of context may lead to incorrect results,
+see \link[=topic-injection-out-of-context]{What happens if I use injection operators out of context?}.
+}
+
+\section{Splicing a list of arguments}{
+
+
+Take a function like \code{\link[base:cbind]{base::rbind()}} that takes data in \code{...}. This
+sort of functions takes a variable number of arguments.\if{html}{\out{<div class="sourceCode r">}}\preformatted{df1 <- data.frame(x = 1)
+df2 <- data.frame(x = 2)
+
+rbind(df1, df2)
+}\if{html}{\out{</div>}}\preformatted{##   x
+## 1 1
+## 2 2
+}
+
+This syntax supposes that you are in control of the individual
+arguments when you are writing the code. When the arguments are in
+a list whose length is variable, we need another syntax like
+splicing with \verb{!!!}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{dfs <- list(df1, df2)
+
+inject(rbind(!!!dfs))
+}\if{html}{\out{</div>}}\preformatted{##   x
+## 1 1
+## 2 2
+}
+
+Because \code{rbind()} is a base function we had to enable \verb{!!!} with
+\code{\link[=inject]{inject()}}. However, many functions implement \link[=list2]{dynamic dots}
+out of the box and have \verb{!!!} automatically enabled.\if{html}{\out{<div class="sourceCode r">}}\preformatted{tidyr::expand_grid(x = 1:2, y = c("a", "b"))
+}\if{html}{\out{</div>}}\preformatted{## Warning: replacing previous import 'rlang::s3_register' by 'vctrs::s3_register'
+## when loading 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::data_frame' by 'vctrs::data_frame'
+## when loading 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::vec_cast_common' by
+## 'vctrs::vec_cast_common' when loading 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::df_list' by 'vctrs::df_list' when
+## loading 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::vec_assign' by 'vctrs::vec_assign'
+## when loading 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::vec_ptype_finalise' by
+## 'vctrs::vec_ptype_finalise' when loading 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::vec_ptype2' by 'vctrs::vec_ptype2'
+## when loading 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::vec_as_location' by
+## 'vctrs::vec_as_location' when loading 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::vec_init' by 'vctrs::vec_init' when
+## loading 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::vec_size' by 'vctrs::vec_size' when
+## loading 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::vec_ptype_common' by
+## 'vctrs::vec_ptype_common' when loading 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::vec_cbind' by 'vctrs::vec_cbind' when
+## loading 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::vec_rep' by 'vctrs::vec_rep' when
+## loading 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::vec_cast' by 'vctrs::vec_cast' when
+## loading 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::vec_slice' by 'vctrs::vec_slice' when
+## loading 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::vec_recycle' by 'vctrs::vec_recycle'
+## when loading 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::vec_rbind' by 'vctrs::vec_rbind' when
+## loading 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::vec_recycle_common' by
+## 'vctrs::vec_recycle_common' when loading 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::vec_ptype' by 'vctrs::vec_ptype' when
+## loading 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::new_data_frame' by
+## 'vctrs::new_data_frame' when loading 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::s3_register' by 'vctrs::s3_register'
+## when loading 'dplyr'
+}\preformatted{## Warning: replacing previous import 'rlang::vec_cast_common' by
+## 'vctrs::vec_cast_common' when loading 'dplyr'
+}\preformatted{## Warning: replacing previous import 'rlang::df_list' by 'vctrs::df_list' when
+## loading 'dplyr'
+}\preformatted{## Warning: replacing previous import 'rlang::vec_assign' by 'vctrs::vec_assign'
+## when loading 'dplyr'
+}\preformatted{## Warning: replacing previous import 'rlang::vec_ptype_finalise' by
+## 'vctrs::vec_ptype_finalise' when loading 'dplyr'
+}\preformatted{## Warning: replacing previous import 'rlang::vec_ptype2' by 'vctrs::vec_ptype2'
+## when loading 'dplyr'
+}\preformatted{## Warning: replacing previous import 'rlang::vec_as_location' by
+## 'vctrs::vec_as_location' when loading 'dplyr'
+}\preformatted{## Warning: replacing previous import 'rlang::vec_init' by 'vctrs::vec_init' when
+## loading 'dplyr'
+}\preformatted{## Warning: replacing previous import 'rlang::vec_size' by 'vctrs::vec_size' when
+## loading 'dplyr'
+}\preformatted{## Warning: replacing previous import 'rlang::vec_ptype_common' by
+## 'vctrs::vec_ptype_common' when loading 'dplyr'
+}\preformatted{## Warning: replacing previous import 'rlang::vec_cbind' by 'vctrs::vec_cbind' when
+## loading 'dplyr'
+}\preformatted{## Warning: replacing previous import 'rlang::vec_rep' by 'vctrs::vec_rep' when
+## loading 'dplyr'
+}\preformatted{## Warning: replacing previous import 'rlang::vec_cast' by 'vctrs::vec_cast' when
+## loading 'dplyr'
+}\preformatted{## Warning: replacing previous import 'rlang::vec_slice' by 'vctrs::vec_slice' when
+## loading 'dplyr'
+}\preformatted{## Warning: replacing previous import 'rlang::vec_recycle' by 'vctrs::vec_recycle'
+## when loading 'dplyr'
+}\preformatted{## Warning: replacing previous import 'rlang::vec_rbind' by 'vctrs::vec_rbind' when
+## loading 'dplyr'
+}\preformatted{## Warning: replacing previous import 'rlang::vec_recycle_common' by
+## 'vctrs::vec_recycle_common' when loading 'dplyr'
+}\preformatted{## Warning: replacing previous import 'rlang::vec_ptype' by 'vctrs::vec_ptype' when
+## loading 'dplyr'
+}\preformatted{## Warning: replacing previous import 'rlang::new_data_frame' by
+## 'vctrs::new_data_frame' when loading 'dplyr'
+}\preformatted{## Warning: replacing previous import 'rlang::deprecated' by
+## 'lifecycle::deprecated' when loading 'dplyr'
+}\preformatted{## Warning: replacing previous import 'rlang::data_frame' by 'tibble::data_frame'
+## when loading 'dplyr'
+}\preformatted{## Warning: replacing previous import 'rlang::compact' by 'purrr::compact' when
+## loading 'tidyselect'
+}\preformatted{## Warning: replacing previous import 'rlang::detect_index' by
+## 'purrr::detect_index' when loading 'tidyselect'
+}\preformatted{## Warning: replacing previous import 'rlang::discard' by 'purrr::discard' when
+## loading 'tidyselect'
+}\preformatted{## Warning: replacing previous import 'rlang::every' by 'purrr::every' when loading
+## 'tidyselect'
+}\preformatted{## Warning: replacing previous import 'rlang::map' by 'purrr::map' when loading
+## 'tidyselect'
+}\preformatted{## Warning: replacing previous import 'rlang::map2' by 'purrr::map2' when loading
+## 'tidyselect'
+}\preformatted{## Warning: replacing previous import 'rlang::map2_chr' by 'purrr::map2_chr' when
+## loading 'tidyselect'
+}\preformatted{## Warning: replacing previous import 'rlang::map_chr' by 'purrr::map_chr' when
+## loading 'tidyselect'
+}\preformatted{## Warning: replacing previous import 'rlang::map_if' by 'purrr::map_if' when
+## loading 'tidyselect'
+}\preformatted{## Warning: replacing previous import 'rlang::map_lgl' by 'purrr::map_lgl' when
+## loading 'tidyselect'
+}\preformatted{## Warning: replacing previous import 'rlang::negate' by 'purrr::negate' when
+## loading 'tidyselect'
+}\preformatted{## Warning: replacing previous import 'rlang::walk' by 'purrr::walk' when loading
+## 'tidyselect'
+}\preformatted{## Warning: replacing previous import 'rlang::deprecated' by
+## 'lifecycle::deprecated' when loading 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::accumulate' by 'purrr::accumulate'
+## when loading 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::discard' by 'purrr::discard' when
+## loading 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::every' by 'purrr::every' when loading
+## 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::keep' by 'purrr::keep' when loading
+## 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::map' by 'purrr::map' when loading
+## 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::map2' by 'purrr::map2' when loading
+## 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::map2_chr' by 'purrr::map2_chr' when
+## loading 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::map2_dbl' by 'purrr::map2_dbl' when
+## loading 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::map2_int' by 'purrr::map2_int' when
+## loading 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::map2_lgl' by 'purrr::map2_lgl' when
+## loading 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::map_chr' by 'purrr::map_chr' when
+## loading 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::map_dbl' by 'purrr::map_dbl' when
+## loading 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::map_if' by 'purrr::map_if' when
+## loading 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::map_int' by 'purrr::map_int' when
+## loading 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::map_lgl' by 'purrr::map_lgl' when
+## loading 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::pmap' by 'purrr::pmap' when loading
+## 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::reduce' by 'purrr::reduce' when
+## loading 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::some' by 'purrr::some' when loading
+## 'tidyr'
+}\preformatted{## Warning: replacing previous import 'rlang::transpose' by 'purrr::transpose' when
+## loading 'tidyr'
+}\preformatted{## # A tibble: 4 × 2
+##       x y    
+##   <int> <chr>
+## 1     1 a    
+## 2     1 b    
+## 3     2 a    
+## 4     2 b
+}\if{html}{\out{<div class="sourceCode r">}}\preformatted{xs <- list(x = 1:2, y = c("a", "b"))
+tidyr::expand_grid(!!!xs)
+}\if{html}{\out{</div>}}\preformatted{## # A tibble: 4 × 2
+##       x y    
+##   <int> <chr>
+## 1     1 a    
+## 2     1 b    
+## 3     2 a    
+## 4     2 b
+}
+
+Note how the expanded grid has the right column names. That's
+because the spliced list is named which causes each name of the
+list to become an argument name.\if{html}{\out{<div class="sourceCode r">}}\preformatted{tidyr::expand_grid(!!!set_names(xs, toupper))
+}\if{html}{\out{</div>}}\preformatted{## # A tibble: 4 × 2
+##       X Y    
+##   <int> <chr>
+## 1     1 a    
+## 2     1 b    
+## 3     2 a    
+## 4     2 b
+}
+
+Splicing lists of arguments with \verb{!!!} is equivalent to
+\code{\link[base:do.call]{base::do.call()}} (see also \code{\link[=exec]{exec()}}).
+}
+
+\section{Splicing a list of expressions}{
+
+
+Another usage for \verb{!!!} is to inject \link[=topic-defuse]{defused expressions} into \link[=topic-data-masking]{data-masked}
+dots. However this usage is no longer a common pattern for
+programming with tidyverse functions and we recommend using other
+patterns if possible.
+
+First, instead of using the \link[=howto-defuse-and-inject]{defuse-and-inject pattern} with \code{...}, you can simply pass
+them on as you normally would. These two expressions are completely
+equivalent:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_group_by <- function(.data, ...) \{
+  .data \%>\% dplyr::group_by(!!!enquos(...))
+\}
+
+# This equivalent syntax is preferred
+my_group_by <- function(.data, ...) \{
+  .data \%>\% dplyr::group_by(...)
+\}
+}\if{html}{\out{</div>}}
+
+Second, more complex cases can be solved with the \code{across()}
+operation introduced in dplyr 1.0. Say you want to take the
+\code{mean()} of all expressions in \code{...}. Without \code{across()}, you could
+defuse the \code{...} expressions, wrap them in a call to \code{mean()}, and
+inject them back in \code{summarise()}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(.data, ...) \{
+  # Defuse dots and auto-name them
+  exprs <- enquos(..., .named = TRUE)
+
+  # Wrap the expressions in a call to `mean()`
+  exprs <- purrr::map(exprs, ~ call("mean", .x, na.rm = TRUE))
+
+  # Inject them
+  .data \%>\% dplyr::summarise(!!!exprs)
+\}
+}\if{html}{\out{</div>}}
+
+It is much easier to use \code{across()} instead:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(.data, ...) \{
+  .data \%>\% dplyr::summarise(across(c(...), ~ mean(.x, na.rm = TRUE)))
+\}
+}\if{html}{\out{</div>}}
+}
+
+\section{Performance of injected dots and dynamic dots}{
+
+
+Take a function taking \link[=dyn-dots]{dynamic dots} via \code{\link[=list2]{list2()}}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function <- function(...) \{
+  xs <- list2(...)
+
+  # Do something useful with `xs`
+  length(xs)
+\}
+}\if{html}{\out{</div>}}
+
+Because it takes dynamic dots you can splice with \verb{!!!} out of the
+box.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function(1, 2)
+}\if{html}{\out{</div>}}\preformatted{## [1] 2
+}\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function(!!!mtcars)
+}\if{html}{\out{</div>}}\preformatted{## [1] 11
+}
+
+Equivalently you could enable \verb{!!!} explicitly with \code{\link[=inject]{inject()}}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{inject(my_function(!!!mtcars))
+}\if{html}{\out{</div>}}\preformatted{## [1] 11
+}
+
+While the result is the same, what is going on under the hood is
+completely different. \code{\link[=list2]{list2()}} is a dots collector that treats
+\verb{!!!} inputs specially whereas \code{\link[=inject]{inject()}} operates on the language.
+Concretely, \code{inject()} creates a function call containing as many
+arguments as there are elements in the spliced list. If you supply
+a list of size 1e6, \code{inject()} is going to create as many arguments
+before evaluation. This can be much slower.\if{html}{\out{<div class="sourceCode r">}}\preformatted{xs <- rep(list(1), 1e6)
+
+system.time(
+  my_function(!!!xs)
+)
+#>    user  system elapsed
+#>   0.009   0.000   0.009
+
+system.time(
+  inject(my_function(!!!xs))
+)
+#>    user  system elapsed
+#>   0.445   0.012   0.457
+}\if{html}{\out{</div>}}
+
+The same issue occurs when functions taking dynamic dots are called
+inside a data-masking function like \code{dplyr::mutate()}. The
+mechanism that enables injection in these arguments is the same as
+in \code{inject()}.
+}
+
