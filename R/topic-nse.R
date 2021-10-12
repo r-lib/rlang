@@ -32,7 +32,7 @@
 #' Injection (also known as quasiquotation) is a metaprogramming
 #' feature that allows you to modify parts of a program. This is
 #' needed because under the hood data-masking works by
-#' [defusing][topic-defusing] R code to prevent its immediate evaluation.
+#' [defusing][topic-defusal] R code to prevent its immediate evaluation.
 #' The defused code is resumed later on in a context where data frame
 #' columns are defined.
 #'
@@ -122,7 +122,7 @@
 #'
 #' Data-masking relies on three language features:
 #'
-#' - [Argument defusing][topic-defusing] (also known as quoting or NSE) with
+#' - [Argument defusing][topic-defusal] (also known as quoting or NSE) with
 #'   [substitute()] (base R) or [enquo()] and [enquos()] (rlang). R
 #'   code needs to be defused so it can be evaluated later on in a
 #'   modified context.
@@ -477,7 +477,7 @@ NULL
 #' original environment of the expression, which allows R to find
 #' local data and local functions.
 #'
-#' @name topic-defuse
+#' @name topic-defusal
 #' @aliases quotation nse-defuse
 NULL
 
@@ -489,12 +489,12 @@ NULL
 #' ```{r, child = "man/rmd/setup.Rmd", include = FALSE}
 #' ```
 #'
-#' A quosure is a special type of [defused expression][topic-defusing] that
-#' keeps track of the original context the expression was written in.
-#' The tracking capabilities of quosures is important when interfacing
-#' [data-masking functions][topic-data-masking] together because the
-#' functions might come from two unrelated environments, like two
-#' different packages.
+#' A quosure is a special type of [defused expression][topic-defusal]
+#' that keeps track of the original context the expression was written
+#' in.  The tracking capabilities of quosures is important when
+#' interfacing [data-masking functions][topic-data-masking] together
+#' because the functions might come from two unrelated environments,
+#' like two different packages.
 #'
 #' Let's take an example where the R user calls the function
 #' `summarise_bmi()` from the foo package to summarise a data frame
@@ -667,7 +667,7 @@ NULL
 #' Together, embracing and dots form the main way of writing functions
 #' around tidyverse pipelines and [tidy eval][eval_tidy] functions in
 #' general. In more complex cases, you might need to
-#' [defuse][topic-defusing] variables and dots, and
+#' [defuse][topic-defusal] variables and dots, and
 #' [inject][topic-injection] them back with `!!` and `!!!`.
 #'
 #' @seealso
@@ -855,7 +855,7 @@ NULL
 #'
 #' Whereas the glue `{` operator interpolates the contents of a
 #' variable (either local objects or function arguments), the tidy
-#' eval `{{` operator interpolates a [defused][topic-defusing] function
+#' eval `{{` operator interpolates a [defused][topic-defusal] function
 #' argument. You use botth `{` and `{{` in name injection.
 #'
 #' ```{r, comment = "#>", collapse = TRUE}
@@ -980,7 +980,7 @@ NULL
 #' ```{r, child = "man/rmd/setup.Rmd", include = FALSE}
 #' ```
 #'
-#' Function arguments are [defused][topic-defusing] into
+#' Function arguments are [defused][topic-defusal] into
 #' [quosures][topic-quosure] that keep track of the environment of the
 #' defused expression.
 #'

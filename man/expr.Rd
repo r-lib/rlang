@@ -7,7 +7,7 @@
 \item{expr}{An expression to defuse.}
 }
 \description{
-\code{expr()} \link[=topic-defuse]{defuses} an R expression with
+\code{expr()} \link[=topic-defusal]{defuses} an R expression with
 \link[=injection-operator]{injection} support.
 
 It is equivalent to \code{\link[base:bquote]{base::bquote()}}.
@@ -39,7 +39,7 @@ call("with", call2("c", !!!syms(vars)))
 }
 \seealso{
 \itemize{
-\item \link[=topic-defuse]{Defusing R expressions} for an overview.
+\item \link[=topic-defusal]{Defusing R expressions} for an overview.
 \item \code{\link[=enquo]{enquo()}} to defuse non-local expressions from function
 arguments.
 \item \link[=defusing-advanced]{Advanced defusal operators}.

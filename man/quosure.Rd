@@ -60,7 +60,7 @@ has to match at least one of them, otherwise \code{is_call()} returns
 \item{env}{A new environment for the quosure.}
 }
 \description{
-A quosure is a type of \link[=topic-defusing]{defused expression} that includes
+A quosure is a type of \link[=topic-defusal]{defused expression} that includes
 a reference to the context where it was created. A quosure is thus
 guaranteed to evaluate in its original environment and can refer to
 local objects. Read more about quosures in \link[=topic-quosure]{What are quosures?}.

@@ -57,7 +57,7 @@ This ensures assignments are explicit.}
 returns a list of quosures.
 }
 \description{
-\code{enquo()} and \code{enquos()} \link[=topic-defuse]{defuse} function arguments.
+\code{enquo()} and \code{enquos()} \link[=topic-defusal]{defuse} function arguments.
 A defused expression can be examined, modified, and injected into
 other expressions.
 
@@ -116,7 +116,7 @@ other_function(!!column)
 }
 \seealso{
 \itemize{
-\item \link[=topic-defuse]{Defusing R expressions} for an overview.
+\item \link[=topic-defusal]{Defusing R expressions} for an overview.
 \item \code{\link[=expr]{expr()}} to defuse your own local expressions.
 \item \link[=defusing-advanced]{Advanced defusal operators}.
 \item \code{\link[=sym]{sym()}} and \code{\link[=call2]{call2()}} for building expressions (symbols and calls

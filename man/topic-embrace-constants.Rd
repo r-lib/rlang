@@ -4,7 +4,7 @@
 \alias{topic-embrace-constants}
 \title{Why are strings and other constants enquosed in the empty environment?}
 \description{
-Function arguments are \link[=topic-defusing]{defused} into
+Function arguments are \link[=topic-defusal]{defused} into
 \link[=topic-quosure]{quosures} that keep track of the environment of the
 defused expression.\if{html}{\out{<div class="sourceCode r">}}\preformatted{quo(1 + 1)
 #> <quosure>

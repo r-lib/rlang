@@ -11,7 +11,7 @@ another expression. In other words, it modifies a piece of code
 before R evaluates it.
 
 There are two main cases for injection. You can inject constant
-values to work around issues of \link[=howto-data-mask-ambiguity]{scoping ambiguity}, and you can inject \link[=topic-defuse]{defused expressions} like \link[=sym]{symbolised} column names.
+values to work around issues of \link[=howto-data-mask-ambiguity]{scoping ambiguity}, and you can inject \link[=topic-defusal]{defused expressions} like \link[=sym]{symbolised} column names.
 }
 \section{Where does \verb{!!} work?}{
 
@@ -19,7 +19,7 @@ values to work around issues of \link[=howto-data-mask-ambiguity]{scoping ambigu
 \verb{!!} does not work everywhere, you can only use it within certain
 special functions:
 \itemize{
-\item Functions taking \link[=topic-defuse]{defused} and
+\item Functions taking \link[=topic-defusal]{defused} and
 \link[=topic-data-masking]{data-masked} arguments.
 \item Inside \code{\link[=inject]{inject()}}.
 }
@@ -57,7 +57,7 @@ data-masked expression.\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 \section{Injecting expressions}{
 
 
-Injection is also useful for modifying parts of a \link[=topic-defuse]{defused expression}. In the following example we use the
+Injection is also useful for modifying parts of a \link[=topic-defusal]{defused expression}. In the following example we use the
 \link[=howto-symbolise-and-inject]{symbolise-and-inject} pattern to
 inject a column name inside a data-masked expression.\if{html}{\out{<div class="sourceCode r">}}\preformatted{var <- sym("cyl")
 inject(

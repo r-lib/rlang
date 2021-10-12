@@ -9,7 +9,7 @@
 #' There are two main cases for injection. You can inject constant
 #' values to work around issues of [scoping
 #' ambiguity][howto-data-mask-ambiguity], and you can inject [defused
-#' expressions][topic-defuse] like [symbolised][sym] column names.
+#' expressions][topic-defusal] like [symbolised][sym] column names.
 #'
 #'
 #' @section Where does `!!` work?:
@@ -17,7 +17,7 @@
 #' `!!` does not work everywhere, you can only use it within certain
 #' special functions:
 #'
-#' -   Functions taking [defused][topic-defuse] and
+#' -   Functions taking [defused][topic-defusal] and
 #'     [data-masked][topic-data-masking] arguments.
 #' -   Inside [inject()].
 #'
@@ -58,7 +58,7 @@
 #' @section Injecting expressions:
 #'
 #' Injection is also useful for modifying parts of a [defused
-#' expression][topic-defuse]. In the following example we use the
+#' expression][topic-defusal]. In the following example we use the
 #' [symbolise-and-inject][howto-symbolise-and-inject] pattern to
 #' inject a column name inside a data-masked expression.
 #'
@@ -143,7 +143,7 @@ NULL
 #'     inject(rbind(!!!mtcars))
 #'     ```
 #'
-#' -   Injecting [defused expressions][topic-defuse] like
+#' -   Injecting [defused expressions][topic-defusal] like
 #'     [symbolised][sym] column names.
 #'
 #'     For tidyverse APIs, this second case is no longer as useful
@@ -156,7 +156,7 @@ NULL
 #' special functions:
 #'
 #' -   Functions taking [dynamic dots][dyn-dots] like [list2()].
-#' -   Functions taking [defused][topic-defuse] and
+#' -   Functions taking [defused][topic-defusal] and
 #'     [data-masked][topic-data-masking] arguments.
 #' -   Inside [inject()].
 #'
@@ -217,7 +217,7 @@ NULL
 #' @section Splicing a list of expressions:
 #'
 #' Another usage for `!!!` is to inject [defused
-#' expressions][topic-defuse] into [data-masked][topic-data-masking]
+#' expressions][topic-defusal] into [data-masked][topic-data-masking]
 #' dots. However this usage is no longer a common pattern for
 #' programming with tidyverse functions and we recommend using other
 #' patterns if possible.

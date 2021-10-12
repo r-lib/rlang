@@ -18,7 +18,7 @@ especially useful with functions that take data in \code{...}, such as
 \code{\link[base:cbind]{base::rbind()}}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{dfs <- list(mtcars, mtcars)
 inject(rbind(!!!mtcars))
 }\if{html}{\out{</div>}}
-\item Injecting \link[=topic-defuse]{defused expressions} like
+\item Injecting \link[=topic-defusal]{defused expressions} like
 \link[=sym]{symbolised} column names.
 
 For tidyverse APIs, this second case is no longer as useful
@@ -32,7 +32,7 @@ since dplyr 1.0 and the \code{across()} operator.
 special functions:
 \itemize{
 \item Functions taking \link[=dyn-dots]{dynamic dots} like \code{\link[=list2]{list2()}}.
-\item Functions taking \link[=topic-defuse]{defused} and
+\item Functions taking \link[=topic-defusal]{defused} and
 \link[=topic-data-masking]{data-masked} arguments.
 \item Inside \code{\link[=inject]{inject()}}.
 }
@@ -254,7 +254,7 @@ Splicing lists of arguments with \verb{!!!} is equivalent to
 \section{Splicing a list of expressions}{
 
 
-Another usage for \verb{!!!} is to inject \link[=topic-defuse]{defused expressions} into \link[=topic-data-masking]{data-masked}
+Another usage for \verb{!!!} is to inject \link[=topic-defusal]{defused expressions} into \link[=topic-data-masking]{data-masked}
 dots. However this usage is no longer a common pattern for
 programming with tidyverse functions and we recommend using other
 patterns if possible.

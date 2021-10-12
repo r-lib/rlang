@@ -39,7 +39,7 @@ NULL
 #'
 #' @description
 #'
-#' `expr()` [defuses][topic-defuse] an R expression with
+#' `expr()` [defuses][topic-defusal] an R expression with
 #' [injection][injection-operator] support.
 #'
 #' It is equivalent to [base::bquote()].
@@ -48,7 +48,7 @@ NULL
 #' @param expr An expression to defuse.
 #'
 #' @seealso
-#' - [Defusing R expressions][topic-defuse] for an overview.
+#' - [Defusing R expressions][topic-defusal] for an overview.
 #'
 #' - [enquo()] to defuse non-local expressions from function
 #'   arguments.
@@ -94,7 +94,7 @@ expr <- function(expr) {
 #'
 #' @description
 #'
-#' `enquo()` and `enquos()` [defuse][topic-defuse] function arguments.
+#' `enquo()` and `enquos()` [defuse][topic-defusal] function arguments.
 #' A defused expression can be examined, modified, and injected into
 #' other expressions.
 #'
@@ -143,7 +143,7 @@ expr <- function(expr) {
 #' injection.
 #'
 #' @seealso
-#' - [Defusing R expressions][topic-defuse] for an overview.
+#' - [Defusing R expressions][topic-defusal] for an overview.
 #'
 #' - [expr()] to defuse your own local expressions.
 #'
