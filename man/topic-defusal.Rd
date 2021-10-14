@@ -68,8 +68,8 @@ data-masking function to defuse the correct expression.\if{html}{\out{<div class
 
 Read more about this in:
 \itemize{
-\item \link[=howto-embrace-forward]{Embrace and forward}
 \item \link[=topic-data-masking]{What is data-masking and why do I need to embrace?}
+\item \link[=topic-data-mask-programming]{Data mask programming patterns}
 }
 }
 
@@ -167,7 +167,7 @@ function with the \code{en}-prefixed operators, such as \code{enquo()} and
 One purpose for defusing evaluation of an expression is to
 interface with \link[=topic-data-masking]{data-masking functions} by
 injecting the expression back into another function with \verb{!!}. This
-is the \link[=howto-defuse-and-inject]{defuse-and-inject pattern}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_summarise <- function(data, arg) \{
+is the \link[=topic-data-mask-programming]{defuse-and-inject pattern}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_summarise <- function(data, arg) \{
   # Defuse the user expression in `arg`
   arg <- enquo(arg)
 

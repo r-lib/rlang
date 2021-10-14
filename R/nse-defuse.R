@@ -30,7 +30,7 @@
 #'
 #' @seealso
 #' - [What is data-masking and why do I need embracing?][topic-data-masking]
-#' - [Embracing and forwarding guide][howto-embrace-forward]
+#' - [Data mask programming patterns][topic-data-mask-programming]
 #'
 NULL
 
@@ -102,7 +102,7 @@ expr <- function(expr) {
 #'
 #' - Creating data-masking functions.
 #' - Interfacing with another [data-masking][topic-data-masking] function.
-#'   See [How to defuse and inject][howto-defuse-and-inject].
+#'   See [the defuse and inject pattern][topic-data-mask-programming].
 #'
 #' These are advanced tools. Make sure to read about the [embrace
 #' operator][embrace-operator] `{{` which is sufficient for most

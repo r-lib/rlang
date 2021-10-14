@@ -259,7 +259,7 @@ dots. However this usage is no longer a common pattern for
 programming with tidyverse functions and we recommend using other
 patterns if possible.
 
-First, instead of using the \link[=howto-defuse-and-inject]{defuse-and-inject pattern} with \code{...}, you can simply pass
+First, instead of using the \link[=topic-data-mask-programming]{defuse-and-inject pattern} with \code{...}, you can simply pass
 them on as you normally would. These two expressions are completely
 equivalent:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_group_by <- function(.data, ...) \{
   .data \%>\% dplyr::group_by(!!!enquos(...))

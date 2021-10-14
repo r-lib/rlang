@@ -39,7 +39,7 @@
 #' ```
 #'
 #' @name dyn-dots
-#' @aliases tidy-dots
+#' @aliases tidy-dots dots_dynamic
 #'
 #' @examples
 #' f <- function(...) {

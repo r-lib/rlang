@@ -27,6 +27,6 @@ step. The snippet above is equivalent to:\if{html}{\out{<div class="sourceCode r
 \seealso{
 \itemize{
 \item \link[=topic-data-masking]{What is data-masking and why do I need embracing?}
-\item \link[=howto-embrace-forward]{Embracing and forwarding guide}
+\item \link[=topic-data-mask-programming]{Data mask programming patterns}
 }
 }

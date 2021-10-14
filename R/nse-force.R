@@ -59,7 +59,7 @@
 #'
 #' Injection is also useful for modifying parts of a [defused
 #' expression][topic-defusal]. In the following example we use the
-#' [symbolise-and-inject][howto-symbolise-and-inject] pattern to
+#' [symbolise-and-inject pattern][topic-data-mask-programming] to
 #' inject a column name inside a data-masked expression.
 #'
 #' ```{r, comment = "#>", collapse = TRUE}
@@ -87,8 +87,8 @@
 #' mtcars %>% dplyr::mutate(cyl = cyl * .env$cyl)
 #' ```
 #'
-#' Second, the [embrace operator][embrace-operator] makes the
-#' [defuse-and-inject pattern][howto-defuse-and-inject] easier to
+#' Second, the embrace operator [`{{`][embrace-operator] makes the
+#' [defuse-and-inject pattern][topic-data-mask-programming] easier to
 #' learn and use.
 #'
 #' ```r
@@ -223,7 +223,7 @@ NULL
 #' patterns if possible.
 #'
 #' First, instead of using the [defuse-and-inject
-#' pattern][howto-defuse-and-inject] with `...`, you can simply pass
+#' pattern][topic-data-mask-programming] with `...`, you can simply pass
 #' them on as you normally would. These two expressions are completely
 #' equivalent:
 #'
@@ -335,6 +335,12 @@ NULL
 }
 
 
+#' Name injection with glue operators
+#' TODO!
+#' @name glue-operator
+NULL
+
+
 #' Injecting with `!!`, `!!!`, and glue syntax
 #'
 #' @description
@@ -394,8 +400,8 @@ NULL
 #'   iris %>% mean_by(by = Species, var = Sepal.Width)
 #'   ```
 #'
-#'   Learn more about this pattern in [Embracing and
-#'   forwarding][howto-embrace-forward].
+#'   Learn more about this pattern in [Data-mask programming
+#'   patterns][topic-data-mask-programming].
 #'
 #' Use `qq_show()` to experiment with injection operators. `qq_show()`
 #' defuses its input, processes all injection operators, and prints

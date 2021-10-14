@@ -3,6 +3,7 @@
 \name{dyn-dots}
 \alias{dyn-dots}
 \alias{tidy-dots}
+\alias{dots_dynamic}
 \alias{:=}
 \title{Dynamic dots}
 \description{

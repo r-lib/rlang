@@ -1,0 +1,463 @@
+```{r, child = "setup.Rmd", include = FALSE}
+```
+
+[Data-masking][topic-data-masking] functions require special programming patterns when used inside other functions. In this topic we'll review and compare the different patterns that can be used to solve specific problems.
+
+If you are a beginner, you might want to start with one of these tutorials:
+
+- [Programming with dplyr](https://dplyr.tidyverse.org/articles/programming.html)
+- [Using ggplot2 in packages](https://ggplot2.tidyverse.org/articles/ggplot2-in-packages.html)
+
+
+# Choosing a pattern
+
+Two main considerations determine which programming pattern you need to wrap a data-masking function:
+
+1. What behaviour does the _wrapped_ function implement?
+2. What behaviour should _your_ function implement?
+
+There are two broad approaches:
+
+- The __forwarding patterns__ with which your function inherits the behaviour of the function it interfaces with.
+
+- The __name patterns__ with which your function takes strings or character vectors of column names.
+
+How you implement forwarding and name patterns depends on the kind of arguments your function takes. Different approaches are needed for single named arguments and multiple arguments in `...`.
+
+
+# Argument behaviours
+
+In a regular function, arguments can be defined in terms of a _type_ of objects that they accept. An argument might accept a character vector, a data frame, a single logical value, etc. Data-masked arguments are more complex. Not only do they generally accept a specific type of objects (for instance `dplyr::mutate()` accepts vectors), they exhibit special computational behaviours.
+
+- Data-masked expressions (base): E.g. [transform()], [with()].  Expressions may refer to the columns of the supplied data frame.
+
+- Data-masked expressions (tidy eval): E.g. [dplyr::mutate()], [ggplot2::aes()]. Same as base data-masking but with tidy eval features enabled. This includes [injection operators][topic-injection] such as [`{{`][embrace-operator] and [`!!`][injection-operator] and the [`.data`] and [`.env`] pronouns.
+
+- Data masked symbols: Same as data-masked arguments but the supplied expressions must be simple column names. This often simplifies things, for instance this is an easy way of avoiding issues of [double evaluation][howto-double-evaluation].
+
+- [Tidy selections][tidyselect::language]: E.g. [dplyr::select()], [tidyr::pivot_longer()]. This is an alternative to data-masking that supports selection helpers like `starts_with()` or `all_of()`, and implements special behaviour for operators like `c()`, `|` and `&`.
+
+  Unlike data-masking, tidy selection is a domain-specific language. There is in fact no masking at all. Expressions are either evaluated in the data frame (e.g. `c(cyl, am)`), or in the user environment (e.g. `all_of()`, `starts_with()`, and any other expressions). This has implications for inheritance of argument behaviour as we will see below.
+
+- [Dynamic dots][dots_dynamic]: These may be data-masked arguments, tidy selections, or just regular arguments. Dynamic dots support injection of multiple arguments with the [`!!!`][splice-operator] operator as well as name injection with [glue][glue-operator] operators.
+
+To let users know about the capabilities of your function arguments, document them with the following tags, depending on which set of semantics they inherit from:
+
+```
+@param foo <[`data-masking`][dplyr::args_data_masking]> What `foo` does.
+
+@param bar <[`tidy-select`][dplyr::args_tidy_select]> What `bar` does.
+
+@param ... <[`dynamic-dots`][rlang::dots_dynamic]> What these dots do.
+```
+
+
+# Forwarding patterns
+
+With the forwarding patterns, the arguments of your function behave the same way as the data-masked arguments they are passed in.
+
+
+## Embrace with `{{`
+
+The embrace operator [`{{`][embrace-operator] is a forwarding syntax for single arguments. You can forward an argument in data-masked context:
+
+```r
+my_summarise <- function(data, var) {
+  data %>% dplyr::summarise({{ var }})
+}
+```
+
+Or in tidyselections:
+
+```r
+my_pivot_longer <- function(data, var) {
+  data %>% tidyr::pivot_longer(cols = {{ var }})
+}
+```
+
+The function automatically inherits the behaviour of the surrounding context. For instance arguments forwarded to a data-masked context may refer to columns or use the [`.data`] pronoun:
+
+```r
+mtcars %>% my_summarise(mean(cyl))
+
+x <- "cyl"
+mtcars %>% my_summarise(mean(.data[[x]]))
+```
+
+And arguments forwarded to a tidy selection may use all tidyselect features:
+
+```r
+mtcars %>% my_pivot_longer(cyl)
+mtcars %>% my_pivot_longer(vs:gear)
+mtcars %>% my_pivot_longer(starts_with("c"))
+
+x <- c("cyl", "am")
+mtcars %>% my_pivot_longer(all_of(x))
+```
+
+
+## Forward `...`
+
+Simple forwarding of `...` arguments does not require any special syntax since dots are already a forwarding syntax. Just pass them to another function like you normally would. This works with data-masked arguments:
+
+```r
+my_group_by <- function(.data, ...) {
+  .data %>% dplyr::group_by(...)
+}
+
+mtcars %>% my_group_by(cyl = cyl * 100, am)
+```
+
+As well as tidy selections:
+
+```r
+my_select <- function(.data, ...) {
+  .data %>% dplyr::select(...)
+}
+
+mtcars %>% my_select(starts_with("c"), vs:carb)
+```
+
+Some functions take a tidy selection in a single named argument. In that case, pass the `...` inside `c()`:
+
+```r
+my_pivot_longer <- function(.data, ...) {
+  .data %>% tidyr::pivot_longer(c(...))
+}
+
+mtcars %>% my_pivot_longer(starts_with("c"), vs:carb)
+```
+
+Inside a tidy selection, `c()` is not a vector concatenator but a selection combinator. This makes it handy to interface between functions that take `...` and functions that take a single argument.
+
+
+## Defuse and inject
+
+[`{{`][embrace-operator] and `...` are sufficient for most purposes. Sometimes however, it is necessary to decompose the forwarding action into its two constitutive steps, [defusing][topic-defusal] and [injecting][topic-injection].
+
+`{{` is the combination of [enquo()] and [`!!`][injection-operator]. These functions are completely equivalent:
+
+```r
+my_summarise <- function(data, var) {
+  data %>% dplyr::summarise({{ var }})
+}
+my_summarise <- function(data, var) {
+  data %>% dplyr::summarise(!!enquo(var))
+}
+```
+
+Passing `...` is equivalent to the combination of [enquos()] and [`!!!`][splice-operator]:
+
+```r
+my_group_by <- function(.data, ...) {
+  .data %>% dplyr::group_by(...)
+}
+my_group_by <- function(.data, ...) {
+  .data %>% dplyr::group_by(!!!enquos(...))
+}
+```
+
+The advantage of decomposing the steps is that you gain access to the [defused expressions][topic-defusal]. Once defused, you can inspect or modify the expressions before injecting them in their target context.
+
+
+### Inspecting input labels
+
+For instance, here is how to create an automatic name for a defused argument using [as_label()]:
+
+```{r, comment = "#>", collapse = TRUE}
+f <- function(var) {
+  var <- enquo(var)
+  as_label(var)
+}
+
+f(cyl)
+
+f(1 + 1)
+```
+
+With multiple arguments, use the plural variant [enquos()]. Set `.named` to `TRUE` to automatically call [as_label()] on the inputs for which the user has not provided a name (the same behaviour as in most dplyr verbs):
+
+```{r, comment = "#>", collapse = TRUE}
+g <- function(...) {
+  vars <- enquos(..., .named = TRUE)
+  names(vars)
+}
+
+g(cyl, 1 + 1)
+```
+
+Just like with `dplyr::mutate()`, the user can override automatic names by supplying an explicit name:
+
+```{r, comment = "#>", collapse = TRUE}
+g(foo = cyl, bar = 1 + 1)
+```
+
+This technique of names inspection is used in the pattern that bridges data-mask behaviour to a tidyselection context (see below). More complicated defuse-and-inject patterns are explored in the Transforming inputs section.
+
+
+# Names patterns
+
+The names patterns provide an escape hatch for [defused arguments][topic-defusal] that makes it easy to program with strings and character vectors containing the names of data-variables.
+
+Whereas the forwarding patterns are exclusively used within a function, the names patterns can be used anywhere. In a script, you can loop over a character vector with `for` or `lapply()` and use the [`.data`] pattern to connect a name to its data-variable, or directly supply the whole vector to `all_of()`. In a function, using the names patterns on function arguments lets users supply regular data-variable names without the complications that come with data-masking.
+
+
+## Subsetting the `.data` pronoun
+
+The [`.data`] pronoun is a tidy eval feature that is enabled in all data-masked arguments, just like [`{{`][embrace-operator]. The pronoun represents the data mask and can be subsetted with `[[` and `$`.
+
+```{r, comment = "#>", collapse = TRUE}
+mtcars %>% dplyr::summarise(mean = mean(cyl))
+
+mtcars %>% dplyr::summarise(mean = mean(.data$cyl))
+
+var <- "cyl"
+mtcars %>% dplyr::summarise(mean = mean(.data[[var]]))
+```
+
+The `.data` pronoun can be subsetted in loops:
+
+```{r, comment = "#>", collapse = TRUE}
+vars <- c("cyl", "am")
+
+for (var in vars) print(dplyr::summarise(mtcars, mean = mean(.data[[var]])))
+
+purrr::map(vars, ~ dplyr::summarise(mtcars, mean =  mean(.data[[.x]])))
+```
+
+And it can be used to connect function arguments to a data-variable:
+
+```{r, comment = "#>", collapse = TRUE}
+my_mean <- function(data, var) {
+  data %>% dplyr::summarise(mean = mean(.data[[var]]))
+}
+
+my_mean(mtcars, "cyl")
+```
+
+With this implementation, `my_mean()` is completely insulated from data-masking behaviour and is called like an ordinary function.
+
+```{r, comment = "#>", collapse = TRUE}
+# No masking
+am <- "cyl"
+my_mean(mtcars, am)
+
+# Programmable
+my_mean(mtcars, tolower("CYL"))
+```
+
+
+## Character vector of names
+
+The `.data` pronoun can only be subsetted with single column names. It doesn't support single-bracket indexing:
+
+```{r, comment = "#>", collapse = TRUE, error = TRUE}
+mtcars %>% dplyr::summarise(.data[c("cyl", "am")])
+```
+
+There is no plural variant of `.data` built in tidy eval. Instead, we'll used the `all_of()` operator available in tidy selections to supply character vectors. This is straightforward in functions that take tidy selections, like `tidyr::pivot_longer()`:
+
+```{r, comment = "#>", collapse = TRUE}
+vars <- c("cyl", "am")
+mtcars %>% tidyr::pivot_longer(all_of(vars))
+```
+
+If the function does not take a tidy selection, it might be possible to use a _bridge pattern_. This option is presented in the bridge section below. If a bridge is impossible or inconvenient, a little metaprogramming with the symbolise-and-inject pattern can help.
+
+
+## Symbolise and inject
+
+The symbolise-and-inject pattern is a fallback names pattern for cases where `across(all_of())` is not supported. It consists in creating [defused expressions][topic-defusal] that refer to the data-variables represented in the names vector. These are then injected in the data mask context.
+
+You can symbolise a character vector with [syms()] or [data_syms()]. Simple symbols returned by `syms()` work in a wider variety of cases (e.g. with base functions) but we'll use `data_syms()` as it is more robust (see Data mask ambiguity section below). It creates calls that subset the [`.data`] pronoun:
+
+```{r, comment = "#>", collapse = TRUE}
+vars <- c("cyl", "am")
+
+syms(vars)
+
+data_syms(vars)
+```
+
+A list of symbols can be injected in data-masked dots with [`!!!`][splice-operator], the splice operator. It injects each element of the list as a separate argument:
+
+```r
+my_group_by <- function(data, vars) {
+  data %>% dplyr::group_by(!!!data_syms(vars))
+}
+
+my_group_by(vars)
+```
+
+In more complex case, you might want to add R code around the symbols. This requires _transformation_ patterns, see the section below.
+
+
+# Bridge patterns
+
+Sometimes the function you would like to wrap does not implement the behaviour you would like to give to an argument. To work around this may require a little thought since there is no systematic way of turning one behaviour into another. The general technique consists in forwarding the arguments inside a context that implements the behaviour that you want. Then, find a way to bridge the result to the target verb or function.
+
+
+## `across()` as a selection to data-mask bridge
+
+dplyr 1.0 added support for tidy selections in all verbs via `across()`. This function is normally used for mapping over columns but can also be used without action to perform a simple selection. For instance, if you'd like to pass an argument to `group_by()` with a tidy-selection interface instead of a data-masked one, use `across()` as a bridge:
+
+```r
+my_group_by <- function(data, var) {
+  data %>% dplyr::group_by(across({{ var }}))
+}
+
+mtcars %>% my_group_by(starts_with("c"))
+```
+
+Since `across()` takes selections in a single argument (unlike `select()` which takes multiple arguments), you can't directly pass `...`. Instead, take them within `c()`, which is the tidyselect way of supplying multiple selections within a single argument:
+
+```r
+my_group_by <- function(.data, ...) {
+  .data %>% dplyr::group_by(across(c(...)}))
+}
+
+mtcars %>% my_group_by(starts_with("c"), vs:gear)
+```
+
+
+## `across(all_of())` as a names to data mask bridge
+
+If instead of forwarding variables in `across()` you pass them to `all_of()`, you create a names to data mask bridge.
+
+```r
+my_group_by <- function(data, vars) {
+  data %>% dplyr::group_by(across(all_of(vars)))
+}
+
+mtcars %>% my_group_by(c("cyl", "am"))
+```
+
+Use this bridge technique to connect vectors of names to a data-masked context.
+
+
+## `mutate()` as a data-mask to selection bridge
+
+Passing data-masked arguments to a tidy selection is a little more tricky and requires a three step process that involves the defuse-and-inject pattern. 
+
+```r
+my_pivot_longer <- function(data, ...) {
+  # Defuse `...` and inspect the supplied names
+  dots <- enquos(..., .named = TRUE)
+  names <- names(dots)
+
+  # Inject in `mutate()` to update the data
+  data <- data %>% dplyr::mutate(!!!dots)
+
+  # Select `...` inputs by name with `all_of()`
+  data %>%
+    tidyr::pivot_longer(cols = all_of(names))
+}
+
+mtcars %>% my_pivot_longer(cyl, am = am * 100)
+```
+
+1. In a first step we defuse the `...` expressions so that we can inspect their names. The `.named` argument of [enquos()] causes the defused `...` expressions to be automatically named, just like they would be if passed directly to `mutate()`.
+
+2. Once we have the names, we inject the arguments into `mutate()` to process the data-masked arguments and update the data frame.
+
+3. Finally, we pass the names to the tidy selection via [`all_of()`](https://tidyselect.r-lib.org/reference/all_of.html).
+
+
+# Transforming inputs
+
+## Named inputs versus `...`
+
+In the case of a named argument, we can transform the embraced input simply by surrounding it in more R code. For instance, the `my_summarise()` function is not exactly useful compared to just calling `summarise()`:
+
+```r
+my_summarise <- function(data, var) {
+  data %>% dplyr::summarise({{ var }})
+}
+```
+
+We can make it more useful by adding code around the variable:
+
+```r
+my_mean <- function(data, var) {
+  data %>% dplyr::summarise(mean = mean({{ var }}, na.rm = TRUE))
+}
+```
+
+For inputs in `...` however, this technique does not work. We would need some kind of templating syntax for dots that lets us specify R code with a placeholder for the dots elements. This isn't built in tidy eval but you can use operators like `dplyr::across()`, `dplyr::if_all()`, or `dplyr::if_any()`. When that isn't possible, you can template the expression manually.
+
+
+## Transforming inputs with `across()`
+
+The `across()` operation in dplyr is a convenient way of mapping an expression across a set of inputs. We will create a variant of `my_mean()` that computes the `mean()` of all arguments supplied in `...`. The easiest way it to forward the dots to `across()` (which causes `...` to inherit its tidy selection behaviour):
+
+```{r, comment = "#>", collapse = TRUE}
+my_mean <- function(data, ...) {
+  data %>% dplyr::summarise(across(c(...), ~ mean(.x, na.rm = TRUE)))
+}
+
+mtcars %>% my_mean(cyl, carb)
+
+mtcars %>% my_mean(foo = cyl, bar = carb)
+
+mtcars %>% my_mean(starts_with("c"), mpg:disp)
+```
+
+
+## Transforming inputs with `if_all()` and `if_any()`
+
+`dplyr::filter()` requires a different operation than `across()` because it needs to combine the logical expressions with `&` or `|`. To solve this problem dplyr introduced the `if_all()` and `if_any()` variants of `across()`.
+
+In the following example, we filter all rows for which a set of variables are not equal to their minimum value:
+
+```r
+filter_non_baseline <- function(.data, ...) {
+  .data %>% dplyr::filter(if_all(c(...), ~ .x != min(.x, na.rm = TRUE)))
+}
+
+mtcars %>% filter_non_baseline(vs, am, gear)
+```
+
+
+## Transforming inputs manually
+
+If `across()` and variants are not available, you will need to transform the inputs yourself using metaprogramming techniques. A good place to start if you're new to programming on the language is the [Metaprogramming chapter](https://adv-r.hadley.nz/metaprogramming.html) of the advanced R book.
+
+To illustrate the technique we'll reimplement `my_mean()` and `filter_non_baseline()` without using `across()` or `if_all()`. The pattern consists in defusing the input expression, building larger calls around them, and finally inject the modified expressions inside the data-masked functions. We'll start with a single named argument for simplicity:
+
+```{r, comment = "#>", collapse = TRUE}
+my_mean <- function(data, var) {
+  # Defuse the expression
+  var <- enquo(var)
+
+  # Wrap it in a call to `mean()`
+  var <- expr(mean(!!var, na.rm = TRUE))
+
+  # Inject the expanded expression
+  data %>% dplyr::summarise(mean = !!var)
+}
+
+mtcars %>% my_mean(cyl)
+```
+
+The `...` technique is similar but a little more involved. We'll use the plural variants `enquos()` and `!!!`. We'll also loop over the variable number of inputs using `purrr::map()`. But the pattern is basically the same:
+
+```{r, comment = "#>", collapse = TRUE}
+my_mean <- function(.data, ...) {
+  # Defuse the dots. Make sure they are automatically named.
+  vars <- enquos(..., .named = TRUE)
+
+  # Map over each defused expression and wrap it in a call to `mean()`
+  vars <- purrr::map(vars, ~ expr(mean(!!.x, na.rm = TRUE)))
+
+  # Inject the expressions
+  .data %>% dplyr::summarise(!!!vars)
+}
+
+mtcars %>% my_mean(cyl)
+```
+
+Note that we are inheriting the data-masked behaviour of `summarise()` because we have effectively forwarded `...` inside that verb. This is different than the previous implementation where we inherited the tidy selection behaviour of `across()`. See how we can create vectors on the fly for instance:
+
+```{r, comment = "#>", collapse = TRUE}
+mtcars %>% my_mean(cyl = cyl * 100)
+```

@@ -296,8 +296,8 @@ NULL
 #'
 #' Read more about this in:
 #'
-#' - [Embrace and forward][howto-embrace-forward]
 #' - [What is data-masking and why do I need to embrace?][topic-data-masking]
+#' - [Data mask programming patterns][topic-data-mask-programming]
 #'
 #'
 #' @section The booby trap analogy:
@@ -402,7 +402,7 @@ NULL
 #' One purpose for defusing evaluation of an expression is to
 #' interface with [data-masking functions][topic-data-masking] by
 #' injecting the expression back into another function with `!!`. This
-#' is the [defuse-and-inject pattern][howto-defuse-and-inject].
+#' is the [defuse-and-inject pattern][topic-data-mask-programming].
 #'
 #' ```r
 #' my_summarise <- function(data, arg) {
@@ -631,71 +631,21 @@ NULL
 NULL
 
 
-#' Embracing with `{{` and forwarding `...`
+#' Programming patterns for data-masked arguments
 #'
-#' @description
+#' @includeRmd man/rmd/topic-data-mask-programming.Rmd description 
 #'
-#' ```{r, child = "man/rmd/setup.Rmd", include = FALSE}
-#' ```
-#'
-#' Calling [data-masked][topic-data-masking] functions from another
-#' function is a bit trickier than regular function calls.
-#'
-#' -   Individual arguments must be forwarded with `{{`.
-#'
-#'     ```{r, comment = "#>", collapse = TRUE}
-#'     my_mean <- function(data, var) {
-#'       data %>% dplyr::summarise(mean({{ var }}, na.rm = TRUE))
-#'     }
-#'
-#'     mtcars %>% my_mean(cyl)
-#'     ```
-#'
-#' -   On the other hand multiple arguments can be forwarded the normal
-#'     way with `...`.
-#'
-#'     ```{r, comment = "#>", collapse = TRUE}
-#'     my_mean <- function(.data, ..., .var) {
-#'       .data %>%
-#'         dplyr::group_by(...) %>%
-#'         dplyr::summarise(mean({{ .var }}, na.rm = TRUE))
-#'     }
-#'
-#'     mtcars %>% my_mean(am, vs, .var = cyl)
-#'     ```
-#'
-#' Together, embracing and dots form the main way of writing functions
-#' around tidyverse pipelines and [tidy eval][eval_tidy] functions in
-#' general. In more complex cases, you might need to
-#' [defuse][topic-defusal] variables and dots, and
-#' [inject][topic-injection] them back with `!!` and `!!!`.
-#'
-#' @seealso
-#' - [The double evaluation problem][howto-double-evaluation]
-#'
-#' @name howto-embrace-forward
-NULL
-
-
-#' Defuse and inject pattern
-#'
-#' TODO!
-#'
-#' @name howto-defuse-and-inject
-NULL
-
-
-#' Symbolise and inject pattern
-#'
-#' TODO!
-#'
-#' @name howto-symbolise-and-inject
+#' @name topic-data-mask-programming
 NULL
 
 
 #' The data mask ambiguity
 #'
-#' TODO!
+#' @description TODO!
+#'
+#' Names patterns.
+#'
+#' [`.env`]
 #'
 #' @name howto-data-mask-ambiguity
 NULL
@@ -1089,6 +1039,7 @@ NULL
 #'
 #' @name topic-embrace-constants
 NULL
+
 
 #' What happens if I use injection operators out of context?
 #' @description TODO!

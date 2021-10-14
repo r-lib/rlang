@@ -55,7 +55,7 @@ mean_by <- function(data, by, var) \{
 iris \%>\% mean_by(by = Species, var = Sepal.Width)
 }
 
-Learn more about this pattern in \link[=howto-embrace-forward]{Embracing and forwarding}.
+Learn more about this pattern in \link[=topic-data-mask-programming]{Data-mask programming patterns}.
 }
 
 Use \code{qq_show()} to experiment with injection operators. \code{qq_show()}

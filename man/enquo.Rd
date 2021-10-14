@@ -65,7 +65,7 @@ Defusing function arguments is useful for:
 \itemize{
 \item Creating data-masking functions.
 \item Interfacing with another \link[=topic-data-masking]{data-masking} function.
-See \link[=howto-defuse-and-inject]{How to defuse and inject}.
+See \link[=topic-data-mask-programming]{the defuse and inject pattern}.
 }
 
 These are advanced tools. Make sure to read about the \link[=embrace-operator]{embrace operator} \verb{\{\{} which is sufficient for most

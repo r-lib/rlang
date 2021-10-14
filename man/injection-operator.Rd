@@ -58,7 +58,7 @@ data-masked expression.\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 
 
 Injection is also useful for modifying parts of a \link[=topic-defusal]{defused expression}. In the following example we use the
-\link[=howto-symbolise-and-inject]{symbolise-and-inject} pattern to
+\link[=topic-data-mask-programming]{symbolise-and-inject pattern} to
 inject a column name inside a data-masked expression.\if{html}{\out{<div class="sourceCode r">}}\preformatted{var <- sym("cyl")
 inject(
   with(mtcars, mean(!!var))
@@ -82,8 +82,8 @@ ambiguity problem in a more intuitive way:\if{html}{\out{<div class="sourceCode 
 mtcars \%>\% dplyr::mutate(cyl = cyl * .env$cyl)
 }\if{html}{\out{</div>}}
 
-Second, the \link[=embrace-operator]{embrace operator} makes the
-\link[=howto-defuse-and-inject]{defuse-and-inject pattern} easier to
+Second, the embrace operator \code{\link[=embrace-operator]{\{\{}} makes the
+\link[=topic-data-mask-programming]{defuse-and-inject pattern} easier to
 learn and use.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
   data \%>\% dplyr::summarise(mean(\{\{ var \}\}))
 \}

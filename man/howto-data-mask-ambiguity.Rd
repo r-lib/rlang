@@ -5,4 +5,8 @@
 \title{The data mask ambiguity}
 \description{
 TODO!
+
+Names patterns.
+
+\code{\link{.env}}
 }
