@@ -1,7 +1,7 @@
 #define R_NO_REMAP
 #include <Rinternals.h>
 
-const char* rlang_version = "0.4.11";
+const char* rlang_version = "0.4.12";
 
 /**
  * This file records the expected package version in the shared

@@ -1,3 +1,8 @@
+# rlang 0.4.12
+
+* Fix for CRAN checks.
+
+
 # rlang 0.4.11
 
 * Fix for CRAN checks.
