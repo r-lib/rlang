@@ -34,3 +34,17 @@ test_that("must supply strings to sym()", {
   expect_error(sym(letters), "strings")
   expect_error(sym(1:2), "strings")
 })
+
+test_that("data_sym() and data_syms() work", {
+  expect_equal(
+    data_sym("foo"),
+    quote(.data$foo)
+  )
+  expect_equal(
+    data_syms(c("foo", "bar")),
+    alist(
+      .data$foo,
+      .data$bar
+    )
+  )
+})

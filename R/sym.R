@@ -1,11 +1,40 @@
 #' Create a symbol or list of symbols
 #'
-#' These functions take strings as input and turn them into symbols.
+#' @description
+#'
+#' * `sym()` and `syms()` take strings as input and turn them into
+#'   symbols.
+#'
+#' * `data_sym()` and `data_syms()` create calls of the form
+#'   `.data$foo` instead of symbols. Subsetting the [`.data`]
+#'   pronoun is more robust when you expect a data-variable. See _data
+#'   mask ambiguity_ TODO! Link to currently off-branch topic.
 #'
 #' @param x A string or list of strings.
-#' @return A symbol for `sym()` and a list of symbols for `syms()`.
+#' @return A symbol for `sym()` and a list of symbols for
+#'   `syms()`. `data_sym()` and `data_syms()` create calls that subset
+#'   `.data`.
 #' @export
 #' @examples
+#' # Create a symbol
+#' sym("cyl")
+#'
+#' # Create a list of symbols
+#' syms(c("cyl", "am"))
+#'
+#' # Symbolised names refer to variables
+#' eval(sym("cyl"), mtcars)
+#'
+#' # Beware of scoping issues
+#' Cyl <- "wrong"
+#' eval(sym("Cyl"), mtcars)
+#'
+#' # Data symbols are explicitly scoped in the data mask
+#' try(eval_tidy(data_sym("Cyl"), mtcars))
+#'
+#' # These can only be used with tidy eval functions
+#' try(eval(data_sym("Cyl"), mtcars))
+#'
 #' # The empty string returns the missing argument:
 #' sym("")
 #'
@@ -28,6 +57,17 @@ sym <- function(x) {
 #' @export
 syms <- function(x) {
   map(x, sym)
+}
+
+#' @rdname sym
+#' @export
+data_sym <- function(x) {
+  call("$", quote(.data), sym(x))
+}
+#' @rdname sym
+#' @export
+data_syms <- function(x) {
+  map(x, data_sym)
 }
 
 #' Is object a symbol?
