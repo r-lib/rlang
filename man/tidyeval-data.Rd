@@ -6,14 +6,10 @@
 \alias{.data}
 \alias{.env}
 \title{Data pronouns for tidy evaluation}
-\usage{
-.data
-
-.env
-}
 \description{
-These pronouns allow you to be explicit about where to find objects
-when programming with data masked functions.\preformatted{m <- 10
+The \code{.data} and \code{.env} pronouns make it explicit where to find
+objects when programming with \link[=topic-data-masking]{data masked}
+functions.\preformatted{m <- 10
 mtcars \%>\% mutate(disp = .data$disp * .env$m)
 }
 \itemize{

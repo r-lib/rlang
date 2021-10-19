@@ -200,8 +200,9 @@ print.rlang_fake_data_pronoun <- function(...) cat_line("<pronoun>")
 #'
 #' @description
 #'
-#' These pronouns allow you to be explicit about where to find objects
-#' when programming with data masked functions.
+#' The `.data` and `.env` pronouns make it explicit where to find
+#' objects when programming with [data masked][topic-data-masking]
+#' functions.
 #'
 #' ```
 #' m <- 10
@@ -248,10 +249,12 @@ print.rlang_fake_data_pronoun <- function(...) cat_line("<pronoun>")
 #'
 #' @name tidyeval-data
 #' @format NULL
+#' @usage NULL
 #' @export
 .data <- structure(list(), class = "rlang_fake_data_pronoun")
 #' @rdname tidyeval-data
 #' @format NULL
+#' @usage NULL
 #' @export
 .env <- .data
 
