@@ -70,6 +70,9 @@
 
 ## Features and bugfixes
 
+* New `data_sym()` and `data_syms()` functions to create calls of the
+  form `.data$foo`.
+
 * `zap_srcref()` now preserves attributes of closures.
 
 * `on_load()` and `run_on_load()` lets you run `.onLoad()` expressions

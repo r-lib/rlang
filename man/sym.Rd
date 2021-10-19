@@ -3,22 +3,56 @@
 \name{sym}
 \alias{sym}
 \alias{syms}
+\alias{data_sym}
+\alias{data_syms}
 \title{Create a symbol or list of symbols}
 \usage{
 sym(x)
 
 syms(x)
+
+data_sym(x)
+
+data_syms(x)
 }
 \arguments{
 \item{x}{A string or list of strings.}
 }
 \value{
-A symbol for \code{sym()} and a list of symbols for \code{syms()}.
+A symbol for \code{sym()} and a list of symbols for
+\code{syms()}. \code{data_sym()} and \code{data_syms()} create calls that subset
+\code{.data}.
 }
 \description{
-These functions take strings as input and turn them into symbols.
+\itemize{
+\item \code{sym()} and \code{syms()} take strings as input and turn them into
+symbols.
+\item \code{data_sym()} and \code{data_syms()} create calls of the form
+\code{.data$foo} instead of symbols. Subsetting the \code{\link{.data}}
+pronoun is more robust when you expect a data-variable. See \emph{data
+mask ambiguity} TODO! Link to currently off-branch topic.
+}
 }
 \examples{
+# Create a symbol
+sym("cyl")
+
+# Create a list of symbols
+syms(c("cyl", "am"))
+
+# Symbolised names refer to variables
+eval(sym("cyl"), mtcars)
+
+# Beware of scoping issues
+Cyl <- "wrong"
+eval(sym("Cyl"), mtcars)
+
+# Data symbols are explicitly scoped in the data mask
+try(eval_tidy(data_sym("Cyl"), mtcars))
+
+# These can only be used with tidy eval functions
+try(eval(data_sym("Cyl"), mtcars))
+
 # The empty string returns the missing argument:
 sym("")
 
