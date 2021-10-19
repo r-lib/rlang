@@ -116,6 +116,8 @@ mtcars \%>\%
 #>               <dbl>            <dbl>
 #> 1              6.19             1000
 }\if{html}{\out{</div>}}
+
+Read more about this in \link[=topic-data-mask-ambiguity]{The data mask ambiguity}.
 }
 
 \section{How does data-masking work?}{

@@ -29,9 +29,8 @@ TODO! Flesh out.
 \item \code{sym()} and \code{syms()} take strings as input and turn them into
 symbols.
 \item \code{data_sym()} and \code{data_syms()} create calls of the form
-\code{.data$foo} instead of symbols. Subsetting the \code{\link{.data}}
-pronoun is more robust when you expect a data-variable. See \emph{data
-mask ambiguity} TODO! Link to currently off-branch topic.
+\code{.data$foo} instead of symbols. Subsetting the \code{\link{.data}} pronoun
+is more robust when you expect a data-variable. See \link[=howto-data-mask-ambiguity]{The data mask ambiguity}.
 }
 }
 \examples{

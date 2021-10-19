@@ -117,6 +117,9 @@
 #'   )
 #' ```
 #'
+#' Read more about this in [The data mask
+#' ambiguity][topic-data-mask-ambiguity].
+#'
 #'
 #' @section How does data-masking work?:
 #'
@@ -641,11 +644,7 @@ NULL
 
 #' The data mask ambiguity
 #'
-#' @description TODO!
-#'
-#' Names patterns.
-#'
-#' [`.env`]
+#' @includeRmd man/rmd/topic-data-mask-ambiguity.Rmd description 
 #'
 #' @name howto-data-mask-ambiguity
 NULL
