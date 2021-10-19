@@ -46,7 +46,7 @@ try_catch() establishes handlers for conditions of a given class
 that take a condition object as argument and are called when the
 corresponding condition class has been signalled.
 A condition handler can:
-Recover from conditions* with a value. In this case the computation of
+Recover from conditions with a value. In this case the computation of
 expr is aborted and the recovery value is returned from
 try_catch(). Error recovery is useful when you don't want
 errors to abruptly interrupt your program but resume at the
@@ -191,7 +191,7 @@ try_catch(1 + &quot;&quot;, error = function(cnd) {
 that take a condition object as argument and are called when the
 corresponding condition class has been signalled.</p>
 <p>A condition handler can:</p><ul>
-<li><p><em>Recover from conditions</em>* with a value. In this case the computation of
+<li><p><strong>Recover from conditions</strong> with a value. In this case the computation of
 <code>expr</code> is aborted and the recovery value is returned from
 <code>try_catch()</code>. Error recovery is useful when you don't want
 errors to abruptly interrupt your program but resume at the
