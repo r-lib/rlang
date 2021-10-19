@@ -23,7 +23,7 @@ corresponding condition class has been signalled.
 
 A condition handler can:
 \itemize{
-\item \emph{Recover from conditions}* with a value. In this case the computation of
+\item \strong{Recover from conditions} with a value. In this case the computation of
 \code{expr} is aborted and the recovery value is returned from
 \code{try_catch()}. Error recovery is useful when you don't want
 errors to abruptly interrupt your program but resume at the
