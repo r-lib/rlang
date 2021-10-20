@@ -196,9 +196,11 @@ names.rlang_fake_data_pronoun <- function(...) NULL
 #' @export
 print.rlang_fake_data_pronoun <- function(...) cat_line("<pronoun>")
 
-#' Data pronouns for tidy evaluation
+#' `.data` and `.env` pronouns
 #'
 #' @description
+#'
+#' TODO! Difference between `.data` and magrittr `.`
 #'
 #' The `.data` and `.env` pronouns make it explicit where to find
 #' objects when programming with [data masked][topic-data-masking]
@@ -247,12 +249,13 @@ print.rlang_fake_data_pronoun <- function(...) cat_line("<pronoun>")
 #' code. Use the unqualified `.data` symbol that is automatically put
 #' in scope by data-masking functions.
 #'
-#' @name tidyeval-data
+#' @name dot-data
+#' @aliases tidyeval-data
 #' @format NULL
 #' @usage NULL
 #' @export
 .data <- structure(list(), class = "rlang_fake_data_pronoun")
-#' @rdname tidyeval-data
+#' @rdname dot-data
 #' @format NULL
 #' @usage NULL
 #' @export
