@@ -13,12 +13,19 @@ home:
 
 navbar:
   structure:
-    left:  [home, reference, lifecycle, news]
-    right: [github]
+    left:  [home, reference, articles]
+    right: [news, github]
   components:
-    lifecycle:
-      text: Life cycle
-      href: reference/lifecycle.html
+    articles:
+      text: Articles
+      menu:
+      - text: Tidy evaluation
+      - text: Programming patterns for defused arguments
+        href: reference/topic-data-mask-programming.html
+      - text: What is data masking and why do I need to embrace?
+        href: reference/topic-data-masking.html
+      - text: What are quosures and when are they needed?
+        href: reference/topic-quosure.html
     news:
       text: News
       menu:
@@ -41,22 +48,51 @@ navbar:
 reference:
   - title: Tidy evaluation
     desc: >
-      Quote arguments and expressions with unquoting support. The
-      quosure variants wrap an environment with the expression.
+      The programmable data-masking framework developped for the
+      tidyverse.
+  - subtitle: Tools
     contents:
-      - quo
-      - quos
-      - enquo
-      - enquo0
-      - enquos
+      - embrace-operator
+      - glue-operator
+      - .data
+  - subtitle: Overviews
+    contents:
+      - topic-data-masking
+      - topic-data-mask-programming
+  - subtitle: Guides
+    contents:
+      - howto-data-mask-ambiguity
+      - howto-double-evaluation
+  - subtitle: Notes
+    contents:
+      - topic-injection-out-of-context
+      - topic-embrace-non-args
+
+  - title: Metaprogramming
+    desc: >
+      A set of techniques and tools to create or modify defused
+      expressions
+  - subtitle: Tools
+    contents:
+      - injection-operator
+      - splice-operator
       - expr
-      - exprs
-      - enexpr
-      - enexprs
-      - nse-inject
-      - nse-defuse
+      - enquo
+      - sym
       - as_label
       - as_name
+  - subtitle: Advanced tools
+    contents:
+      - defusing-advanced
+  - subtitle: Overviews
+    contents:
+      - topic-defusal
+      - topic-injection
+      - topic-quosure
+  - subtitle: Notes
+    contents:
+      - topic-embrace-constants
+
   - title: Dots
     desc: >
       Utils to work with `...`.
