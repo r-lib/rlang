@@ -942,8 +942,8 @@ NULL
 
 
 #' What happens if I use injection operators out of context?
-#' @description TODO!
 #'
-#' - `{{` link to [topic-embrace-non-args].
+#' @includeRmd man/rmd/topic-injection-out-of-context.Rmd description
+#'
 #' @name topic-injection-out-of-context
 NULL

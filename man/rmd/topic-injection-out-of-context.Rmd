@@ -1,0 +1,84 @@
+```{r, child = "setup.Rmd", include = FALSE}
+```
+
+The [injection operators][topic-injection] [`{{`][embrace-operator], [`!!`][injection-operator], and [`!!!`][splice-operator] are an extension of the R syntax developed for tidyverse packages. Because they are not part of base R, they suffer from some limitations. In particular no specific error is thrown when they are used in unexpected places.
+
+
+## Using `{{` out of context
+
+The embrace operator [`{{`][embrace-operator] is a feature available in [data-masked][topic-data-masking] arguments. If you use it elsewhere, it is interpreted as a double `{` wrapping.
+
+In the R language, `{` is like `(` but takes multiple expressions instead of one:
+
+```{r, comment = "#>", collapse = TRUE}
+{
+  1 # Discarded
+  2
+}
+
+list(
+  { message("foo"); 2 }
+)
+```
+
+Just like you can wrap an expression in as many parentheses as you'd like, you can wrap multiple times with braces:
+
+```{r, comment = "#>", collapse = TRUE}
+((1))
+
+{{ 2 }}
+```
+
+So nothing prevents you from embracing a function argument in a context where this operation is not implemented. R will just treat the braces like a set of parentheses and silently return the result:
+
+```{r, comment = "#>", collapse = TRUE}
+f <- function(arg) list({{ arg }})
+f(1)
+```
+
+This sort of no-effect embracing should be avoided in real code because it falsely suggests that the function supports the tidy eval operator and that something special is happening.
+
+However in many cases embracing is done to implement [data-masking.][topic-data-masking] It is likely that the function will be called with data-variables references which R won't be able to resolve properly:
+
+```{r, comment = "#>", collapse = TRUE, error = TRUE}
+my_mean <- function(data, var) {
+  with(data, mean({{ var }}))
+}
+
+my_mean(mtcars, cyl)
+```
+
+Since [with()] is a base data-masking function that doesn't support tidy eval operators, the embrace operator does not work and we get an object not found error.
+
+
+## Using `!!` and `!!!` out of context
+
+The injection operators [`!!`] and [`!!!`] are implemented in [data-masked arguments][topic-data-masking], [dynamic dots][dyn-dots], and within [inject()]. When used in other contexts, they are interpreted by R as double and triple _negations_.
+
+Double negation can be used in ordinary code to convert an input to logical:
+
+```{r, comment = "#>", collapse = TRUE}
+!!10
+
+!!0
+```
+
+Triple negation is essentially the same as simple negation:
+
+```{r, comment = "#>", collapse = TRUE}
+!10
+
+!!!10
+```
+
+This means that when injection operators are used in the wrong place, they will be interpreted as negation. In the best case scenario you will get a type error:
+
+```{r, comment = "#>", collapse = TRUE, error = TRUE}
+!"foo"
+
+!quote(foo)
+
+!quote(foo())
+```
+
+In the worst case, R will silently convert the input to logical. Unfortunately there is no systematic way of checking for these errors.
