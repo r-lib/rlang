@@ -5,17 +5,17 @@
 \title{What are quosures and when are they needed?}
 \description{
 A quosure is a special type of \link[=topic-defusal]{defused expression}
-that keeps track of the original context the expression was written
-in.  The tracking capabilities of quosures is important when
-interfacing \link[=topic-data-masking]{data-masking functions} together
-because the functions might come from two unrelated environments,
-like two different packages.
+that keeps track of the original context the expression was written in.
+The tracking capabilities of quosures is important when interfacing
+\link[=topic-data-masking]{data-masking functions} together because the
+functions might come from two unrelated environments, like two different
+packages.
 
-Let's take an example where the R user calls the function
-\code{summarise_bmi()} from the foo package to summarise a data frame
-with statistics of a BMI value. Because the \code{height} variable of
-their data frame is not in metres, they use a custom function
-\code{div100()} to rescale the column.\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Global environment of user
+Let’s take an example where the R user calls the function
+\code{summarise_bmi()} from the foo package to summarise a data frame with
+statistics of a BMI value. Because the \code{height} variable of their data
+frame is not in metres, they use a custom function \code{div100()} to rescale
+the column.\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Global environment of user
 
 div100 <- function(x) \{
   x / 100
@@ -25,8 +25,8 @@ dplyr::starwars \%>\%
   foo::summarise_bmi(mass, div100(height))
 }\if{html}{\out{</div>}}
 
-The \code{summarise_bmi()} function is a data-masking function defined
-in the namespace of the foo package which looks like this:\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Namespace of package foo
+The \code{summarise_bmi()} function is a data-masking function defined in the
+namespace of the foo package which looks like this:\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Namespace of package foo
 
 bmi <- function(mass, height) \{
   mass / height^2
@@ -60,15 +60,15 @@ summarise_stats <- function(data, var) \{
 }\if{html}{\out{</div>}}
 
 Again the package bar uses a custom function, \code{check_numeric()}, to
-validate its input. It also interfaces with data-masking functions
-from dplyr (using the \link[=howto-double-evaluation]{define-a-constant}
-trick to avoid issues of double evaluation).
+validate its input. It also interfaces with data-masking functions from
+dplyr (using the \link[=howto-double-evaluation]{define-a-constant} trick to
+avoid issues of double evaluation).
 
-There are three data-masking functions simultaneously interfacing
-in this snippet:
+There are three data-masking functions simultaneously interfacing in
+this snippet:
 \itemize{
-\item At the bottom, \code{dplyr::transmute()} takes a data-masked input,
-and creates a data frame of a single column named \code{var}.
+\item At the bottom, \code{dplyr::transmute()} takes a data-masked input, and
+creates a data frame of a single column named \code{var}.
 \item Before this, \code{bar::summarise_stats()} takes a data-masked input
 inside \code{dplyr::transmute()} and checks it is numeric.
 \item And first of all, \code{foo::summarise_bmi()} takes two data-masked
@@ -77,26 +77,24 @@ single BMI value.
 }
 
 There is a fourth context, the global environment where
-\code{summarise_bmi()} is called with two columns defined in a data
-frame, one of which is transformed on the fly with the user
-function \code{div100()}.
+\code{summarise_bmi()} is called with two columns defined in a data frame,
+one of which is transformed on the fly with the user function
+\code{div100()}.
 
-All of these contexts (except to some extent the global
-environment) contain functions that are private and invisible to
-foreign functions. Yet, the final expanded data-masked expression
-that is evaluated down the line looks like this (with caret
-characters indicating the quosure boundaries):\if{html}{\out{<div class="sourceCode r">}}\preformatted{dplyr::transmute(
+All of these contexts (except to some extent the global environment)
+contain functions that are private and invisible to foreign functions.
+Yet, the final expanded data-masked expression that is evaluated down
+the line looks like this (with caret characters indicating the quosure
+boundaries):\if{html}{\out{<div class="sourceCode r">}}\preformatted{dplyr::transmute(
   var = ^check_numeric(^bmi(^mass, ^div100(height)))
 )
 }\if{html}{\out{</div>}}
 
-The role of quosures is to let R know that \code{check_numeric()} should
-be found in the bar package, \code{bmi()} in the foo package, and
-\code{div100()} in the global environment.
+The role of quosures is to let R know that \code{check_numeric()} should be
+found in the bar package, \code{bmi()} in the foo package, and \code{div100()} in
+the global environment.
 }
 \section{Technical description of quosures}{
-
-
 A quosure carries two things:
 \itemize{
 \item An expression.
@@ -107,26 +105,28 @@ And implements these behaviours:
 \itemize{
 \item It is \emph{callable}. Evaluation produces a result.
 
-For historical reasons, \code{\link[base:eval]{base::eval()}} doesn't support quosure
-evaluation. Quosures currently require \code{\link[=eval_tidy]{eval_tidy()}}. We would
-like to fix this limitation in the future.
+For historical reasons, \code{\link[base:eval]{base::eval()}} doesn’t
+support quosure evaluation. Quosures currently require
+\code{\link[=eval_tidy]{eval_tidy()}}. We would like to fix this limitation
+in the future.
 \item It is \emph{hygienic}. It evaluates in the tracked environment.
-\item It is \emph{maskable}. If evaluated in a data mask (currently only
-masks created with \code{\link[=eval_tidy]{eval_tidy()}} or \code{\link[=new_data_mask]{new_data_mask()}}), the mask
-comes first in scope before the quosure environment.
+\item It is \emph{maskable}. If evaluated in a data mask (currently only masks
+created with \code{\link[=eval_tidy]{eval_tidy()}} or
+\code{\link[=new_data_mask]{new_data_mask()}}), the mask comes first in scope
+before the quosure environment.
 
 Conceptually, a quosure inherits from two chains of environments,
-the data mask and the user environment. In practice rlang
-implements this special scoping by rechaining the top of the
-datamask to the quosure environment currently under evaluation.
+the data mask and the user environment. In practice rlang implements
+this special scoping by rechaining the top of the datamask to the
+quosure environment currently under evaluation.
 }
 
-There are similarities between promises (the ones R uses to
-implement lazy evaluation, not the async expressions from the
-promises package) and quosures. One important difference is that
-promises are only evaluated once and cache the result for
-subsequent evaluation. Quosures behave more like calls and can be
-evaluated repeatedly, potentially in a different data mask. This
-property is useful to implement split-apply-combine evaluations.
+There are similarities between promises (the ones R uses to implement
+lazy evaluation, not the async expressions from the promises package)
+and quosures. One important difference is that promises are only
+evaluated once and cache the result for subsequent evaluation. Quosures
+behave more like calls and can be evaluated repeatedly, potentially in a
+different data mask. This property is useful to implement
+split-apply-combine evaluations.
 }
 

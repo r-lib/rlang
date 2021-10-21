@@ -12,9 +12,8 @@ defused expression.\if{html}{\out{<div class="sourceCode r">}}\preformatted{quo(
 #> env:  global
 }\if{html}{\out{</div>}}
 
-You might have noticed that when constants are supplied, the
-quosure tracks the empty environment instead of the current
-environmnent.\if{html}{\out{<div class="sourceCode r">}}\preformatted{quos("foo", 1, NULL)
+You might have noticed that when constants are supplied, the quosure
+tracks the empty environment instead of the current environmnent.\if{html}{\out{<div class="sourceCode r">}}\preformatted{quos("foo", 1, NULL)
 #> <list_of<quosure>>
 #>
 #> [[1]]
@@ -33,20 +32,17 @@ environmnent.\if{html}{\out{<div class="sourceCode r">}}\preformatted{quos("foo"
 #> env:  empty
 }\if{html}{\out{</div>}}
 
-The reason for this has to do with compilation of R code which
-makes it impossible to consistently capture environments of
-constants from function arguments. Argument defusing relies on the
-\emph{promise} mechanism of R for lazy evaluation of arguments. When
-functions are compiled and R notices that an argument is constant,
-it avoids creating a promise since they slow down function
-evaluation. Instead, the function is directly supplied a naked
-constant instead of constant wrapped in a promise.
+The reason for this has to do with compilation of R code which makes it
+impossible to consistently capture environments of constants from
+function arguments. Argument defusing relies on the \emph{promise} mechanism
+of R for lazy evaluation of arguments. When functions are compiled and R
+notices that an argument is constant, it avoids creating a promise since
+they slow down function evaluation. Instead, the function is directly
+supplied a naked constant instead of constant wrapped in a promise.
 }
 \section{Concrete case of promise unwrapping by compilation}{
-
-
-We can observe this optimisation by calling into the C-level
-\code{findVar()} function to capture promises.\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Return the object bound to `arg` without triggering evaluation of
+We can observe this optimisation by calling into the C-level \code{findVar()}
+function to capture promises.\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Return the object bound to `arg` without triggering evaluation of
 # promises
 f <- function(arg) \{
   rlang:::find_var(current_env(), sym("arg"))
@@ -66,13 +62,12 @@ f <- compiler::cmpfun(f)
 g <- compiler::cmpfun(g)
 }\if{html}{\out{</div>}}
 
-When \code{f()} is called with a symbolic argument, we get the promise
-object created by R.\if{html}{\out{<div class="sourceCode r">}}\preformatted{g(symbolic = TRUE)
+When \code{f()} is called with a symbolic argument, we get the promise object
+created by R.\if{html}{\out{<div class="sourceCode r">}}\preformatted{g(symbolic = TRUE)
 #> <promise: 0x7ffd79bac130>
 }\if{html}{\out{</div>}}
 
-However, supplying a constant to \code{"f"} returns the constant
-directly.\if{html}{\out{<div class="sourceCode r">}}\preformatted{g(symbolic = FALSE)
+However, supplying a constant to \code{"f"} returns the constant directly.\if{html}{\out{<div class="sourceCode r">}}\preformatted{g(symbolic = FALSE)
 #> [1] "foo"
 }\if{html}{\out{</div>}}
 
@@ -81,20 +76,18 @@ environment of an argument.
 }
 
 \section{Do we need environments for constants?}{
-
-
-Data-masking APIs in the tidyverse are intentionally designed so
-that they don't need an environment for constants.
+Data-masking APIs in the tidyverse are intentionally designed so that
+they don’t need an environment for constants.
 \itemize{
-\item Data-masking APIs should be able to interpret constants. These
-can arise from normal argument passing as we have seen, or by
+\item Data-masking APIs should be able to interpret constants. These can
+arise from normal argument passing as we have seen, or by
 \link[=topic-injection]{injection} with \verb{!!}. There should be no
 difference between \code{dplyr::mutate(mtcars, var = cyl)} and
 \code{dplyr::mutate(mtcars, var = !!mtcars$cyl)}.
-\item Data-masking is an \emph{evaluation} idiom, not an \emph{introspective}
-one. The behaviour of data-masking function should not depend on
-the calling environment when a constant (or a symbol evaluating
-to a given value) is supplied.
+\item Data-masking is an \emph{evaluation} idiom, not an \emph{introspective} one.
+The behaviour of data-masking function should not depend on the
+calling environment when a constant (or a symbol evaluating to a
+given value) is supplied.
 }
 }
 

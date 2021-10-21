@@ -1,0 +1,98 @@
+```{r, child = "setup.Rmd", include = FALSE}
+```
+
+A quosure is a special type of [defused expression][topic-defusal] that keeps track of the original context the expression was written in.  The tracking capabilities of quosures is important when interfacing [data-masking functions][topic-data-masking] together because the functions might come from two unrelated environments, like two different packages.
+
+Let's take an example where the R user calls the function `summarise_bmi()` from the foo package to summarise a data frame with statistics of a BMI value. Because the `height` variable of their data frame is not in metres, they use a custom function `div100()` to rescale the column.
+
+```r
+# Global environment of user
+
+div100 <- function(x) {
+  x / 100
+}
+
+dplyr::starwars %>%
+  foo::summarise_bmi(mass, div100(height))
+```
+
+The `summarise_bmi()` function is a data-masking function defined in the namespace of the foo package which looks like this:
+
+```r
+# Namespace of package foo
+
+bmi <- function(mass, height) {
+  mass / height^2
+}
+
+summarise_bmi <- function(data, mass, height) {
+  data %>%
+    bar::summarise_stats(bmi({{ mass }}, {{ height }}))
+}
+```
+
+The foo package uses the custom function `bmi()` to perform a computation on two vectors. It interfaces with `summarise_stats()` defined in bar, another package whose namespace looks like this:
+
+```r
+# Namespace of package bar
+
+check_numeric <- function(x) {
+  stopifnot(is.numeric(x))
+  x
+}
+
+summarise_stats <- function(data, var) {
+  data %>%
+    dplyr::transmute(
+      var = check_numeric({{ var }})
+    ) %>%
+    dplyr::summarise(
+      mean = mean(var, na.rm = TRUE),
+      sd = sd(var, na.rm = TRUE)
+    )
+}
+```
+
+Again the package bar uses a custom function, `check_numeric()`, to validate its input. It also interfaces with data-masking functions from dplyr (using the [define-a-constant][howto-double-evaluation] trick to avoid issues of double evaluation).
+
+There are three data-masking functions simultaneously interfacing in this snippet:
+
+- At the bottom, `dplyr::transmute()` takes a data-masked input, and creates a data frame of a single column named `var`.
+
+- Before this, `bar::summarise_stats()` takes a data-masked input inside `dplyr::transmute()` and checks it is numeric.
+
+- And first of all, `foo::summarise_bmi()` takes two data-masked inputs inside `bar::summarise_stats()` and transforms them to a single BMI value.
+
+There is a fourth context, the global environment where `summarise_bmi()` is called with two columns defined in a data frame, one of which is transformed on the fly with the user function `div100()`.
+
+All of these contexts (except to some extent the global environment) contain functions that are private and invisible to foreign functions. Yet, the final expanded data-masked expression that is evaluated down the line looks like this (with caret characters indicating the quosure boundaries):
+
+```r
+dplyr::transmute(
+  var = ^check_numeric(^bmi(^mass, ^div100(height)))
+)
+```
+
+The role of quosures is to let R know that `check_numeric()` should be found in the bar package, `bmi()` in the foo package, and `div100()` in the global environment.
+
+
+# Technical description of quosures
+
+A quosure carries two things:
+
+- An expression.
+- An environment.
+
+And implements these behaviours:
+
+- It is _callable_. Evaluation produces a result.
+
+  For historical reasons, [base::eval()] doesn't support quosure evaluation. Quosures currently require [eval_tidy()]. We would like to fix this limitation in the future.
+
+- It is _hygienic_. It evaluates in the tracked environment.
+
+- It is _maskable_. If evaluated in a data mask (currently only masks created with [eval_tidy()] or [new_data_mask()]), the mask comes first in scope before the quosure environment.
+
+  Conceptually, a quosure inherits from two chains of environments, the data mask and the user environment. In practice rlang implements this special scoping by rechaining the top of the datamask to the quosure environment currently under evaluation.
+
+There are similarities between promises (the ones R uses to implement lazy evaluation, not the async expressions from the promises package) and quosures. One important difference is that promises are only evaluated once and cache the result for subsequent evaluation. Quosures behave more like calls and can be evaluated repeatedly, potentially in a different data mask. This property is useful to implement split-apply-combine evaluations.
