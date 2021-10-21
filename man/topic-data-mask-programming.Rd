@@ -601,3 +601,93 @@ fly for instance:\if{html}{\out{<div class="sourceCode r">}}\preformatted{mtcars
 }
 }
 
+\section{Base patterns}{
+These other patterns are used for programming with base data-masking
+functions. They essentially consists in building and evaluating
+expressions in the data mask.
+\subsection{Data-masked \code{get()}}{
+
+In the simplest version of this pattern, \code{get()} is called with a
+variable name to retrieve objects from the data mask:\if{html}{\out{<div class="sourceCode r">}}\preformatted{var <- "cyl"
+
+with(mtcars, mean(get(var)))
+#> [1] 6.1875
+}\if{html}{\out{</div>}}
+
+This sort of pattern is susceptible to names collisions. For instance,
+the input data frame might contain a variable called \code{var}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{df <- data.frame(var = "wrong")
+
+with(df, mean(get(var)))
+#> Error in get(var): object 'wrong' not found
+}\if{html}{\out{</div>}}
+
+To avoid this you can inject \link[=sym]{symbols}. Enable injection
+operators with \code{\link[=inject]{inject()}}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{inject(
+  with(mtcars, mean(!!sym(var)))
+)
+#> [1] 6.1875
+}\if{html}{\out{</div>}}
+
+See \link[=topic-data-mask-ambiguity]{The data mask ambiguity} for more
+information about this problem.
+}
+
+\subsection{Data-masked \code{parse()} and \code{eval()}}{
+
+A more involved pattern consists in building R code in a string and
+evaluating it in the mask:\if{html}{\out{<div class="sourceCode r">}}\preformatted{var1 <- "am"
+var2 <- "vs"
+
+code <- paste(var1, "==", var2)
+with(mtcars, mean(eval(parse(text = code))))
+#> [1] 0.59375
+}\if{html}{\out{</div>}}
+
+As before, the \code{code} variable is vulnerable to \link[=topic-data-mask-ambiguity]{names collisions}. More importantly, if \code{var1}
+and \code{var2} are user inputs, they could contain \href{https://xkcd.com/327/}{adversarial code}. Evaluating code assembled from strings is
+always a risky business:\if{html}{\out{<div class="sourceCode r">}}\preformatted{var1 <- "(function() \{
+  Sys.sleep(Inf)  # Could be a coin mining routine
+\})()"
+var2 <- "vs"
+
+code <- paste(var1, "==", var2)
+with(mtcars, mean(eval(parse(text = code))))
+}\if{html}{\out{</div>}}
+
+This is not a big deal if your code is only used internally. However,
+this code could be part of a public Shiny app which Internet users could
+exploit. But even internally, parsing is a source of bugs when variable
+names contain syntactic symbols like \code{-} or \code{:}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{var1 <- ":var:"
+var2 <- "vs"
+
+code <- paste(var1, "==", var2)
+with(mtcars, mean(eval(parse(text = code))))
+#> Error in parse(text = code): <text>:1:1: unexpected ':'
+#> 1: :
+#>     ^
+}\if{html}{\out{</div>}}
+
+For these reasons, always prefer to \emph{build} code instead of parsing
+code.\if{html}{\out{<div class="sourceCode r">}}\preformatted{var1 <- "(function() \{
+  Sys.sleep(Inf)  # Could be a coin mining routine
+\})()"
+var2 <- "vs"
+
+code <- call("==", sym(var1), sym(var2))
+with(mtcars, mean(eval(code)))
+#> Error in eval(code): object '(function() \{\n  Sys.sleep(Inf)  # Could be a coin mining routine\n\})()' not found
+}\if{html}{\out{</div>}}
+
+It is also better to inject the code instead of evaluating it. This
+avoids names collisions:\if{html}{\out{<div class="sourceCode r">}}\preformatted{var1 <- "am"
+var2 <- "vs"
+
+code <- call("==", sym(var1), sym(var2))
+inject(
+  with(mtcars, mean(!!code))
+)
+#> [1] 0.59375
+}\if{html}{\out{</div>}}
+}
+}
+

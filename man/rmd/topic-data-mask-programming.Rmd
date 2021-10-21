@@ -461,3 +461,96 @@ Note that we are inheriting the data-masked behaviour of `summarise()` because w
 ```{r, comment = "#>", collapse = TRUE}
 mtcars %>% my_mean(cyl = cyl * 100)
 ```
+
+
+# Base patterns
+
+These other patterns are used for programming with base data-masking functions. They essentially consists in building and evaluating expressions in the data mask.
+
+
+## Data-masked `get()`
+
+In the simplest version of this pattern, `get()` is called with a variable name to retrieve objects from the data mask:
+
+```{r, comment = "#>", collapse = TRUE}
+var <- "cyl"
+
+with(mtcars, mean(get(var)))
+```
+
+This sort of pattern is susceptible to names collisions. For instance, the input data frame might contain a variable called `var`:
+
+```{r, comment = "#>", collapse = TRUE, error = TRUE}
+df <- data.frame(var = "wrong")
+
+with(df, mean(get(var)))
+```
+
+To avoid this you can inject [symbols][sym]. Enable injection operators with [inject()]:
+
+```{r, comment = "#>", collapse = TRUE}
+inject(
+  with(mtcars, mean(!!sym(var)))
+)
+```
+
+See [The data mask ambiguity][topic-data-mask-ambiguity] for more information about this problem.
+
+
+## Data-masked `parse()` and `eval()`
+
+A more involved pattern consists in building R code in a string and evaluating it in the mask:
+
+```{r, comment = "#>", collapse = TRUE}
+var1 <- "am"
+var2 <- "vs"
+
+code <- paste(var1, "==", var2)
+with(mtcars, mean(eval(parse(text = code))))
+```
+
+As before, the `code` variable is vulnerable to [names collisions][topic-data-mask-ambiguity]. More importantly, if `var1` and `var2` are user inputs, they could contain [adversarial code](https://xkcd.com/327/). Evaluating code assembled from strings is always a risky business:
+
+```r
+var1 <- "(function() {
+  Sys.sleep(Inf)  # Could be a coin mining routine
+})()"
+var2 <- "vs"
+
+code <- paste(var1, "==", var2)
+with(mtcars, mean(eval(parse(text = code))))
+```
+
+This is not a big deal if your code is only used internally. However, this code could be part of a public Shiny app which Internet users could exploit. But even internally, parsing is a source of bugs when variable names contain syntactic symbols like `-` or `:`.
+
+```{r, comment = "#>", collapse = TRUE, error = TRUE}
+var1 <- ":var:"
+var2 <- "vs"
+
+code <- paste(var1, "==", var2)
+with(mtcars, mean(eval(parse(text = code))))
+```
+
+For these reasons, always prefer to _build_ code instead of parsing code.
+
+```{r, comment = "#>", collapse = TRUE, error = TRUE}
+var1 <- "(function() {
+  Sys.sleep(Inf)  # Could be a coin mining routine
+})()"
+var2 <- "vs"
+
+code <- call("==", sym(var1), sym(var2))
+with(mtcars, mean(eval(code)))
+```
+
+It is also better to inject the code instead of evaluating it. This avoids names collisions:
+
+```{r, comment = "#>", collapse = TRUE}
+var1 <- "am"
+var2 <- "vs"
+
+code <- call("==", sym(var1), sym(var2))
+inject(
+  with(mtcars, mean(!!code))
+)
+```
