@@ -393,9 +393,41 @@ englue <- function(x) {
 }
 
 
-#' @rdname topic-inject
-#' @param expr An expression involving injection operators.
+#' Show injected expression
+#'
+#' `qq_show()` helps examining [injected expressions][topic-inject]
+#' inside a function. This is useful for learning about injection and
+#' for debugging injection code.
+#'
 #' @usage NULL
+#' @param expr An expression involving [injection
+#'   operators][topic-inject].
+#'
+#' @section Examples:
+#'
+#' ```{r, child = "man/rmd/setup.Rmd", include = FALSE}
+#' ```
+#'
+#' `qq_show()` shows the intermediary expression before it is
+#' evaluated by R:
+#'
+#' ```{r, comment = "#>", collapse = TRUE}
+#' list2(!!!1:3)
+#'
+#' qq_show(list2(!!!1:3))
+#' ```
+#' 
+#' It is especially useful inside functions to reveal what an injected
+#' expression looks like:
+#'
+#' ```{r, comment = "#>", collapse = TRUE}
+#' my_mean <- function(data, var) {
+#'   qq_show(data %>% dplyr::summarise(mean({{ var }})))
+#' }
+#'
+#' mtcars %>% my_mean(cyl)
+#' ```
+#'
 #' @export
 qq_show <- function(expr) {
   expr_print(enexpr(expr))

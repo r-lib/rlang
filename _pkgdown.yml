@@ -76,6 +76,7 @@ reference:
     contents:
       - injection-operator
       - splice-operator
+      - qq_show
       - englue
       - expr
       - enquo
