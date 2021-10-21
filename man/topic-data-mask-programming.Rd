@@ -4,10 +4,10 @@
 \alias{topic-data-mask-programming}
 \title{Programming patterns for data-masked arguments}
 \description{
-\link[=topic-data-masking]{Data-masking} functions require special
-programming patterns when used inside other functions. In this topic
-we’ll review and compare the different patterns that can be used to
-solve specific problems.
+\link[=topic-data-mask]{Data-masking} functions require special programming
+patterns when used inside other functions. In this topic we’ll review
+and compare the different patterns that can be used to solve specific
+problems.
 
 If you are a beginner, you might want to start with one of these
 tutorials:
@@ -51,13 +51,13 @@ supplied data frame.
 \item Data-masked expressions (tidy eval): E.g.
 \code{\link[dplyr:mutate]{dplyr::mutate()}},
 \code{\link[ggplot2:aes]{ggplot2::aes()}}. Same as base data-masking but
-with tidy eval features enabled. This includes \link[=topic-injection]{injection operators} such as \code{\link[=embrace-operator]{\{\{}} and
+with tidy eval features enabled. This includes \link[=topic-inject]{injection operators} such as \code{\link[=embrace-operator]{\{\{}} and
 \code{\link[=injection-operator]{!!}} and the \code{\link{.data}} and
 \code{\link{.env}} pronouns.
 \item Data masked symbols: Same as data-masked arguments but the supplied
 expressions must be simple column names. This often simplifies
 things, for instance this is an easy way of avoiding issues of
-\link[=howto-double-evaluation]{double evaluation}.
+\link[=topic-double-evaluation]{double evaluation}.
 \item \link[tidyselect:language]{Tidy selections}: E.g.
 \code{\link[dplyr:select]{dplyr::select()}},
 \code{\link[tidyr:pivot_longer]{tidyr::pivot_longer()}}. This is an
@@ -158,8 +158,8 @@ that take \code{...} and functions that take a single argument.
 
 \code{\link[=embrace-operator]{\{\{}} and \code{...} are sufficient for most purposes.
 Sometimes however, it is necessary to decompose the forwarding action
-into its two constitutive steps, \link[=topic-defusal]{defusing} and
-\link[=topic-injection]{injecting}.
+into its two constitutive steps, \link[=topic-defuse]{defusing} and
+\link[=topic-inject]{injecting}.
 
 \verb{\{\{} is the combination of \code{\link[=enquo]{enquo()}} and
 \code{\link[=injection-operator]{!!}}. These functions are completely equivalent:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_summarise <- function(data, var) \{
@@ -180,7 +180,7 @@ my_group_by <- function(.data, ...) \{
 }\if{html}{\out{</div>}}
 
 The advantage of decomposing the steps is that you gain access to the
-\link[=topic-defusal]{defused expressions}. Once defused, you can inspect or
+\link[=topic-defuse]{defused expressions}. Once defused, you can inspect or
 modify the expressions before injecting them in their target context.
 \subsection{Inspecting input labels}{
 
@@ -224,7 +224,7 @@ inputs section.
 }
 
 \section{Names patterns}{
-The names patterns provide an escape hatch for \link[=topic-defusal]{defused arguments} that makes it easy to program with strings
+The names patterns provide an escape hatch for \link[=topic-defuse]{defused arguments} that makes it easy to program with strings
 and character vectors containing the names of data-variables.
 
 Whereas the forwarding patterns are exclusively used within a function,
@@ -349,7 +349,7 @@ metaprogramming with the symbolise-and-inject pattern can help.
 
 The symbolise-and-inject pattern is a fallback names pattern for cases
 where \code{across(all_of())} is not supported. It consists in creating
-\link[=topic-defusal]{defused expressions} that refer to the data-variables
+\link[=topic-defuse]{defused expressions} that refer to the data-variables
 represented in the names vector. These are then injected in the data
 mask context.
 

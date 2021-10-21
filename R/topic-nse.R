@@ -4,7 +4,7 @@
 #'
 #' @includeRmd man/rmd/topic-data-mask.Rmd description
 #'
-#' @name topic-data-masking
+#' @name topic-data-mask
 NULL
 
 #' Programming patterns for data-masked arguments
@@ -18,8 +18,8 @@ NULL
 #'
 #' @includeRmd man/rmd/topic-defuse.Rmd description
 #'
-#' @name topic-defusal
 #' @aliases quotation nse-defuse
+#' @name topic-defuse
 NULL
 
 #' Injecting with `!!`, `!!!`, and glue syntax
@@ -27,7 +27,7 @@ NULL
 #' @includeRmd man/rmd/topic-inject.Rmd description
 #'
 #' @aliases quasiquotation nse-force nse-inject
-#' @name topic-injection
+#' @name topic-inject
 NULL
 
 #' What are quosures and when are they needed?
@@ -44,14 +44,14 @@ NULL
 #'
 #' @includeRmd man/rmd/topic-data-mask-ambiguity.Rmd description
 #'
-#' @name howto-data-mask-ambiguity
+#' @name topic-data-mask-ambiguity
 NULL
 
 #' The double evaluation problem
 #'
 #' @includeRmd man/rmd/topic-double-evaluation.Rmd description
 #'
-#' @name howto-double-evaluation
+#' @name topic-double-evaluation
 NULL
 
 
@@ -73,7 +73,7 @@ NULL
 
 #' What happens if I use injection operators out of context?
 #'
-#' @includeRmd man/rmd/topic-injection-out-of-context.Rmd description
+#' @includeRmd man/rmd/topic-inject-out-of-context.Rmd description
 #'
-#' @name topic-injection-out-of-context
+#' @name topic-inject-out-of-context
 NULL

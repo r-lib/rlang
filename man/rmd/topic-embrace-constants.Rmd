@@ -1,7 +1,7 @@
 ```{r, child = "setup.Rmd", include = FALSE}
 ```
 
-Function arguments are [defused][topic-defusal] into [quosures][topic-quosure] that keep track of the environment of the defused expression.
+Function arguments are [defused][topic-defuse] into [quosures][topic-quosure] that keep track of the environment of the defused expression.
 
 ```r
 quo(1 + 1)
@@ -81,6 +81,6 @@ Without a promise, there is no way to figure out the original environment of an 
 
 Data-masking APIs in the tidyverse are intentionally designed so that they don't need an environment for constants.
 
-- Data-masking APIs should be able to interpret constants. These can arise from normal argument passing as we have seen, or by [injection][topic-injection] with `!!`. There should be no difference between `dplyr::mutate(mtcars, var = cyl)` and `dplyr::mutate(mtcars, var = !!mtcars$cyl)`.
+- Data-masking APIs should be able to interpret constants. These can arise from normal argument passing as we have seen, or by [injection][topic-inject] with `!!`. There should be no difference between `dplyr::mutate(mtcars, var = cyl)` and `dplyr::mutate(mtcars, var = !!mtcars$cyl)`.
 
 - Data-masking is an _evaluation_ idiom, not an _introspective_ one. The behaviour of data-masking function should not depend on the calling environment when a constant (or a symbol evaluating to a given value) is supplied.

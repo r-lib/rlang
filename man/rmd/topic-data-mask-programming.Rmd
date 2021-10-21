@@ -1,7 +1,7 @@
 ```{r, child = "setup.Rmd", include = FALSE}
 ```
 
-[Data-masking][topic-data-masking] functions require special programming patterns when used inside other functions. In this topic we'll review and compare the different patterns that can be used to solve specific problems.
+[Data-masking][topic-data-mask] functions require special programming patterns when used inside other functions. In this topic we'll review and compare the different patterns that can be used to solve specific problems.
 
 If you are a beginner, you might want to start with one of these tutorials:
 
@@ -31,9 +31,9 @@ In a regular function, arguments can be defined in terms of a _type_ of objects 
 
 - Data-masked expressions (base): E.g. [transform()], [with()].  Expressions may refer to the columns of the supplied data frame.
 
-- Data-masked expressions (tidy eval): E.g. [dplyr::mutate()], [ggplot2::aes()]. Same as base data-masking but with tidy eval features enabled. This includes [injection operators][topic-injection] such as [`{{`][embrace-operator] and [`!!`][injection-operator] and the [`.data`] and [`.env`] pronouns.
+- Data-masked expressions (tidy eval): E.g. [dplyr::mutate()], [ggplot2::aes()]. Same as base data-masking but with tidy eval features enabled. This includes [injection operators][topic-inject] such as [`{{`][embrace-operator] and [`!!`][injection-operator] and the [`.data`] and [`.env`] pronouns.
 
-- Data masked symbols: Same as data-masked arguments but the supplied expressions must be simple column names. This often simplifies things, for instance this is an easy way of avoiding issues of [double evaluation][howto-double-evaluation].
+- Data masked symbols: Same as data-masked arguments but the supplied expressions must be simple column names. This often simplifies things, for instance this is an easy way of avoiding issues of [double evaluation][topic-double-evaluation].
 
 - [Tidy selections][tidyselect::language]: E.g. [dplyr::select()], [tidyr::pivot_longer()]. This is an alternative to data-masking that supports selection helpers like `starts_with()` or `all_of()`, and implements special behaviour for operators like `c()`, `|` and `&`.
 
@@ -133,7 +133,7 @@ Inside a tidy selection, `c()` is not a vector concatenator but a selection comb
 
 ## Defuse and inject
 
-[`{{`][embrace-operator] and `...` are sufficient for most purposes. Sometimes however, it is necessary to decompose the forwarding action into its two constitutive steps, [defusing][topic-defusal] and [injecting][topic-injection].
+[`{{`][embrace-operator] and `...` are sufficient for most purposes. Sometimes however, it is necessary to decompose the forwarding action into its two constitutive steps, [defusing][topic-defuse] and [injecting][topic-inject].
 
 `{{` is the combination of [enquo()] and [`!!`][injection-operator]. These functions are completely equivalent:
 
@@ -157,7 +157,7 @@ my_group_by <- function(.data, ...) {
 }
 ```
 
-The advantage of decomposing the steps is that you gain access to the [defused expressions][topic-defusal]. Once defused, you can inspect or modify the expressions before injecting them in their target context.
+The advantage of decomposing the steps is that you gain access to the [defused expressions][topic-defuse]. Once defused, you can inspect or modify the expressions before injecting them in their target context.
 
 
 ### Inspecting input labels
@@ -197,7 +197,7 @@ This technique of names inspection is used in the pattern that bridges data-mask
 
 # Names patterns
 
-The names patterns provide an escape hatch for [defused arguments][topic-defusal] that makes it easy to program with strings and character vectors containing the names of data-variables.
+The names patterns provide an escape hatch for [defused arguments][topic-defuse] that makes it easy to program with strings and character vectors containing the names of data-variables.
 
 Whereas the forwarding patterns are exclusively used within a function, the names patterns can be used anywhere. In a script, you can loop over a character vector with `for` or `lapply()` and use the [`.data`] pattern to connect a name to its data-variable, or directly supply the whole vector to `all_of()`. In a function, using the names patterns on function arguments lets users supply regular data-variable names without the complications that come with data-masking.
 
@@ -267,7 +267,7 @@ If the function does not take a tidy selection, it might be possible to use a _b
 
 ## Symbolise and inject
 
-The symbolise-and-inject pattern is a fallback names pattern for cases where `across(all_of())` is not supported. It consists in creating [defused expressions][topic-defusal] that refer to the data-variables represented in the names vector. These are then injected in the data mask context.
+The symbolise-and-inject pattern is a fallback names pattern for cases where `across(all_of())` is not supported. It consists in creating [defused expressions][topic-defuse] that refer to the data-variables represented in the names vector. These are then injected in the data mask context.
 
 You can symbolise a character vector with [syms()] or [data_syms()]. Simple symbols returned by `syms()` work in a wider variety of cases (e.g. with base functions) but we'll use `data_syms()` as it is more robust (see Data mask ambiguity section below). It creates calls that subset the [`.data`] pronoun:
 

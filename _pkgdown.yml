@@ -23,7 +23,7 @@ navbar:
       - text: Programming patterns for defused arguments
         href: reference/topic-data-mask-programming.html
       - text: What is data masking and why do I need to embrace?
-        href: reference/topic-data-masking.html
+        href: reference/topic-data-mask.html
       - text: What are quosures and when are they needed?
         href: reference/topic-quosure.html
     news:
@@ -57,15 +57,15 @@ reference:
       - .data
   - subtitle: Overviews
     contents:
-      - topic-data-masking
+      - topic-data-mask
       - topic-data-mask-programming
   - subtitle: Guides
     contents:
-      - howto-data-mask-ambiguity
-      - howto-double-evaluation
+      - topic-data-mask-ambiguity
+      - topic-double-evaluation
   - subtitle: Notes
     contents:
-      - topic-injection-out-of-context
+      - topic-inject-out-of-context
       - topic-embrace-non-args
 
   - title: Metaprogramming
@@ -87,8 +87,8 @@ reference:
       - defusing-advanced
   - subtitle: Overviews
     contents:
-      - topic-defusal
-      - topic-injection
+      - topic-defuse
+      - topic-inject
       - topic-quosure
   - subtitle: Notes
     contents:

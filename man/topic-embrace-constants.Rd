@@ -4,7 +4,7 @@
 \alias{topic-embrace-constants}
 \title{Why are strings and other constants enquosed in the empty environment?}
 \description{
-Function arguments are \link[=topic-defusal]{defused} into
+Function arguments are \link[=topic-defuse]{defused} into
 \link[=topic-quosure]{quosures} that keep track of the environment of the
 defused expression.\if{html}{\out{<div class="sourceCode r">}}\preformatted{quo(1 + 1)
 #> <quosure>
@@ -81,8 +81,8 @@ they don’t need an environment for constants.
 \itemize{
 \item Data-masking APIs should be able to interpret constants. These can
 arise from normal argument passing as we have seen, or by
-\link[=topic-injection]{injection} with \verb{!!}. There should be no
-difference between \code{dplyr::mutate(mtcars, var = cyl)} and
+\link[=topic-inject]{injection} with \verb{!!}. There should be no difference
+between \code{dplyr::mutate(mtcars, var = cyl)} and
 \code{dplyr::mutate(mtcars, var = !!mtcars$cyl)}.
 \item Data-masking is an \emph{evaluation} idiom, not an \emph{introspective} one.
 The behaviour of data-masking function should not depend on the

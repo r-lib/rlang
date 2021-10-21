@@ -61,9 +61,9 @@ tasks, we are considering enabling glue strings with \code{=} and superseding
 
 While \code{glue::glue()} only supports \verb{\{}, dynamic dots support both \verb{\{}
 and \verb{\{\{}. The double brace variant is similar to the embrace operator
-\code{\link[=embrace-operator]{\{\{}} available in \link[=topic-data-masking]{data-masked arguments}. It \link[=topic-defusal]{defuses} a
-function argument, calls \code{\link[=as_label]{as_label()}} on the expression
-supplied as argument, and inserts the result in the string.
+\code{\link[=embrace-operator]{\{\{}} available in \link[=topic-data-mask]{data-masked arguments}. It \link[=topic-defuse]{defuses} a function
+argument, calls \code{\link[=as_label]{as_label()}} on the expression supplied as
+argument, and inserts the result in the string.
 
 In the following example, the embrace operator is used in a glue string
 to name the result with a default name that represents the expression

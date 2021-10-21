@@ -6,7 +6,7 @@
 \title{Embrace operator \verb{\{\{}}
 \description{
 The embrace operator \verb{\{\{} is used to create functions that call
-other \link[=topic-data-masking]{data-masked functions}. It transports a
+other \link[=topic-data-mask]{data-masked functions}. It transports a
 data-masked argument (an argument that can refer to columns of a
 data frame) from one function to another.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
   dplyr::summarise(data, mean = mean(\{\{ var \}\}))
@@ -26,7 +26,7 @@ step. The snippet above is equivalent to:\if{html}{\out{<div class="sourceCode r
 
 \seealso{
 \itemize{
-\item \link[=topic-data-masking]{What is data-masking and why do I need embracing?}
+\item \link[=topic-data-mask]{What is data-masking and why do I need embracing?}
 \item \link[=topic-data-mask-programming]{Data mask programming patterns}
 }
 }

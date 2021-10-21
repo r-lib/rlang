@@ -47,7 +47,7 @@ As we are now moving away from [`!!`][injection-operator] for common tasks, we a
 
 ## `{{` and `{`
 
-While `glue::glue()` only supports `{`, dynamic dots support both `{` and `{{`. The double brace variant is similar to the embrace operator [`{{`][embrace-operator] available in [data-masked arguments][topic-data-masking]. It [defuses][topic-defusal] a function argument, calls [as_label()] on the expression supplied as argument, and inserts the result in the string.
+While `glue::glue()` only supports `{`, dynamic dots support both `{` and `{{`. The double brace variant is similar to the embrace operator [`{{`][embrace-operator] available in [data-masked arguments][topic-data-mask]. It [defuses][topic-defuse] a function argument, calls [as_label()] on the expression supplied as argument, and inserts the result in the string.
 
 In the following example, the embrace operator is used in a glue string to name the result with a default name that represents the expression supplied as argument:
 

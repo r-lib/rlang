@@ -15,12 +15,12 @@ normally used to inject names within \link[=dyn-dots]{dynamic dots}.
 \code{englue()} makes them available anywhere within a function.
 
 \code{englue()} must be used inside a function. \code{englue("{{ var }}")}
-\link[=topic-defusal]{defuses} the argument \code{var} and transforms it to a
+\link[=topic-defuse]{defuses} the argument \code{var} and transforms it to a
 string using the default name operation.
 }
 \details{
 \code{englue("{{ var }}")} is equivalent to \code{as_label(enquo(var))}. It
-\link[=topic-defusal]{defuses} \code{arg} and transforms the expression to a
+\link[=topic-defuse]{defuses} \code{arg} and transforms the expression to a
 string with \code{\link[=as_label]{as_label()}}.
 
 In dynamic dots, \verb{\{} is allowed. In \code{englue()} you must use \verb{\{\{}.

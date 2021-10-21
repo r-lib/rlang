@@ -3,7 +3,7 @@
 #' @description
 #'
 #' The embrace operator `{{` is used to create functions that call
-#' other [data-masked functions][topic-data-masking]. It transports a
+#' other [data-masked functions][topic-data-mask]. It transports a
 #' data-masked argument (an argument that can refer to columns of a
 #' data frame) from one function to another.
 #'
@@ -29,7 +29,7 @@
 #' @aliases curly-curly
 #'
 #' @seealso
-#' - [What is data-masking and why do I need embracing?][topic-data-masking]
+#' - [What is data-masking and why do I need embracing?][topic-data-mask]
 #' - [Data mask programming patterns][topic-data-mask-programming]
 #'
 NULL
@@ -39,7 +39,7 @@ NULL
 #'
 #' @description
 #'
-#' `expr()` [defuses][topic-defusal] an R expression with
+#' `expr()` [defuses][topic-defuse] an R expression with
 #' [injection][injection-operator] support.
 #'
 #' It is equivalent to [base::bquote()].
@@ -48,7 +48,7 @@ NULL
 #' @param expr An expression to defuse.
 #'
 #' @seealso
-#' - [Defusing R expressions][topic-defusal] for an overview.
+#' - [Defusing R expressions][topic-defuse] for an overview.
 #'
 #' - [enquo()] to defuse non-local expressions from function
 #'   arguments.
@@ -94,14 +94,14 @@ expr <- function(expr) {
 #'
 #' @description
 #'
-#' `enquo()` and `enquos()` [defuse][topic-defusal] function arguments.
+#' `enquo()` and `enquos()` [defuse][topic-defuse] function arguments.
 #' A defused expression can be examined, modified, and injected into
 #' other expressions.
 #'
 #' Defusing function arguments is useful for:
 #'
 #' - Creating data-masking functions.
-#' - Interfacing with another [data-masking][topic-data-masking] function.
+#' - Interfacing with another [data-masking][topic-data-mask] function.
 #'   See [the defuse and inject pattern][topic-data-mask-programming].
 #'
 #' These are advanced tools. Make sure to read about the [embrace
@@ -127,7 +127,7 @@ expr <- function(expr) {
 #' @section Implicit injection:
 #'
 #' Arguments defused with `enquo()` and `enquos()` automatically gain
-#' [injection][topic-injection] support.
+#' [injection][topic-inject] support.
 #'
 #' ```r
 #' my_function <- function(data, var) {
@@ -143,7 +143,7 @@ expr <- function(expr) {
 #' injection.
 #'
 #' @seealso
-#' - [Defusing R expressions][topic-defusal] for an overview.
+#' - [Defusing R expressions][topic-defuse] for an overview.
 #'
 #' - [expr()] to defuse your own local expressions.
 #'

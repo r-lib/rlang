@@ -1,12 +1,12 @@
 ```{r, child = "setup.Rmd", include = FALSE}
 ```
 
-The [injection operators][topic-injection] [`{{`][embrace-operator], [`!!`][injection-operator], and [`!!!`][splice-operator] are an extension of the R syntax developed for tidyverse packages. Because they are not part of base R, they suffer from some limitations. In particular no specific error is thrown when they are used in unexpected places.
+The [injection operators][topic-inject] [`{{`][embrace-operator], [`!!`][injection-operator], and [`!!!`][splice-operator] are an extension of the R syntax developed for tidyverse packages. Because they are not part of base R, they suffer from some limitations. In particular no specific error is thrown when they are used in unexpected places.
 
 
 ## Using `{{` out of context
 
-The embrace operator [`{{`][embrace-operator] is a feature available in [data-masked][topic-data-masking] arguments. If you use it elsewhere, it is interpreted as a double `{` wrapping.
+The embrace operator [`{{`][embrace-operator] is a feature available in [data-masked][topic-data-mask] arguments. If you use it elsewhere, it is interpreted as a double `{` wrapping.
 
 In the R language, `{` is like `(` but takes multiple expressions instead of one:
 
@@ -38,7 +38,7 @@ f(1)
 
 This sort of no-effect embracing should be avoided in real code because it falsely suggests that the function supports the tidy eval operator and that something special is happening.
 
-However in many cases embracing is done to implement [data-masking.][topic-data-masking] It is likely that the function will be called with data-variables references which R won't be able to resolve properly:
+However in many cases embracing is done to implement [data-masking.][topic-data-mask] It is likely that the function will be called with data-variables references which R won't be able to resolve properly:
 
 ```{r, comment = "#>", collapse = TRUE, error = TRUE}
 my_mean <- function(data, var) {
@@ -53,7 +53,7 @@ Since [with()] is a base data-masking function that doesn't support tidy eval op
 
 ## Using `!!` and `!!!` out of context
 
-The injection operators [`!!`] and [`!!!`] are implemented in [data-masked arguments][topic-data-masking], [dynamic dots][dyn-dots], and within [inject()]. When used in other contexts, they are interpreted by R as double and triple _negations_.
+The injection operators [`!!`] and [`!!!`] are implemented in [data-masked arguments][topic-data-mask], [dynamic dots][dyn-dots], and within [inject()]. When used in other contexts, they are interpreted by R as double and triple _negations_.
 
 Double negation can be used in ordinary code to convert an input to logical:
 

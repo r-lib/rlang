@@ -57,14 +57,14 @@ This ensures assignments are explicit.}
 returns a list of quosures.
 }
 \description{
-\code{enquo()} and \code{enquos()} \link[=topic-defusal]{defuse} function arguments.
+\code{enquo()} and \code{enquos()} \link[=topic-defuse]{defuse} function arguments.
 A defused expression can be examined, modified, and injected into
 other expressions.
 
 Defusing function arguments is useful for:
 \itemize{
 \item Creating data-masking functions.
-\item Interfacing with another \link[=topic-data-masking]{data-masking} function.
+\item Interfacing with another \link[=topic-data-mask]{data-masking} function.
 See \link[=topic-data-mask-programming]{the defuse and inject pattern}.
 }
 
@@ -75,7 +75,7 @@ tasks.
 
 
 Arguments defused with \code{enquo()} and \code{enquos()} automatically gain
-\link[=topic-injection]{injection} support.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function <- function(data, var) \{
+\link[=topic-inject]{injection} support.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function <- function(data, var) \{
   var <- enquo(var)
   dplyr::summarise(data, mean(!!var))
 \}
@@ -116,7 +116,7 @@ other_function(!!column)
 }
 \seealso{
 \itemize{
-\item \link[=topic-defusal]{Defusing R expressions} for an overview.
+\item \link[=topic-defuse]{Defusing R expressions} for an overview.
 \item \code{\link[=expr]{expr()}} to defuse your own local expressions.
 \item \link[=defusing-advanced]{Advanced defusal operators}.
 \item \code{\link[=sym]{sym()}} and \code{\link[=call2]{call2()}} for building expressions (symbols and calls

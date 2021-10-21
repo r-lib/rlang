@@ -4,10 +4,10 @@
 \alias{topic-quosure}
 \title{What are quosures and when are they needed?}
 \description{
-A quosure is a special type of \link[=topic-defusal]{defused expression}
-that keeps track of the original context the expression was written in.
-The tracking capabilities of quosures is important when interfacing
-\link[=topic-data-masking]{data-masking functions} together because the
+A quosure is a special type of \link[=topic-defuse]{defused expression} that
+keeps track of the original context the expression was written in. The
+tracking capabilities of quosures is important when interfacing
+\link[=topic-data-mask]{data-masking functions} together because the
 functions might come from two unrelated environments, like two different
 packages.
 
@@ -61,7 +61,7 @@ summarise_stats <- function(data, var) \{
 
 Again the package bar uses a custom function, \code{check_numeric()}, to
 validate its input. It also interfaces with data-masking functions from
-dplyr (using the \link[=howto-double-evaluation]{define-a-constant} trick to
+dplyr (using the \link[=topic-double-evaluation]{define-a-constant} trick to
 avoid issues of double evaluation).
 
 There are three data-masking functions simultaneously interfacing in

@@ -1,7 +1,7 @@
 ```{r, child = "setup.Rmd", include = FALSE}
 ```
 
-[Data masking][topic-data-masking] is an R feature that blends programming variables that live inside environments (env-variables) with statistical variables stored in data frames (data-variables). This mixture makes it easy to refer to data frame columns as well as objects defined in the current environment.
+[Data masking][topic-data-mask] is an R feature that blends programming variables that live inside environments (env-variables) with statistical variables stored in data frames (data-variables). This mixture makes it easy to refer to data frame columns as well as objects defined in the current environment.
 
 ```{r, comment = "#>", collapse = TRUE}
 x <- 100
@@ -108,7 +108,7 @@ The evaluation of `.data[[var]]` is set up in such a way that there is no ambigu
 
 ### Injecting env-variables with `!!`
 
-[Injection operators][topic-injection] such as [`!!`][injection-operator] have interesting properties regarding the ambiguity problem. They modify a piece of code early on by injecting objects or other expressions before any data-masking logic comes into play. If you inject the _value_ of a variable, it becomes inlined in the expression. R no longer needs to look up any variable to find the value.
+[Injection operators][topic-inject] such as [`!!`][injection-operator] have interesting properties regarding the ambiguity problem. They modify a piece of code early on by injecting objects or other expressions before any data-masking logic comes into play. If you inject the _value_ of a variable, it becomes inlined in the expression. R no longer needs to look up any variable to find the value.
 
 Taking the earlier division example, let's use `!!` to inject the value of the env-variable `x` inside the division expression:
 

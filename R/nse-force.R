@@ -8,8 +8,8 @@
 #'
 #' There are two main cases for injection. You can inject constant
 #' values to work around issues of [scoping
-#' ambiguity][howto-data-mask-ambiguity], and you can inject [defused
-#' expressions][topic-defusal] like [symbolised][sym] column names.
+#' ambiguity][topic-data-mask-ambiguity], and you can inject [defused
+#' expressions][topic-defuse] like [symbolised][sym] column names.
 #'
 #'
 #' @section Where does `!!` work?:
@@ -17,15 +17,15 @@
 #' `!!` does not work everywhere, you can only use it within certain
 #' special functions:
 #'
-#' -   Functions taking [defused][topic-defusal] and
-#'     [data-masked][topic-data-masking] arguments.
+#' -   Functions taking [defused][topic-defuse] and
+#'     [data-masked][topic-data-mask] arguments.
 #' -   Inside [inject()].
 #'
 #' All data-masked tidyverse verbs support injection operators out of
 #' the box. With base functions you need to use [inject()] to enable
 #' `!!`. Using `!!` out of context may lead to incorrect results, see
 #' [What happens if I use injection operators out of
-#' context?][topic-injection-out-of-context].
+#' context?][topic-inject-out-of-context].
 #'
 #' The examples below are built around the base function [with()].
 #' Since it's not a tidyverse function we need [inject()] to enable
@@ -58,7 +58,7 @@
 #' @section Injecting expressions:
 #'
 #' Injection is also useful for modifying parts of a [defused
-#' expression][topic-defusal]. In the following example we use the
+#' expression][topic-defuse]. In the following example we use the
 #' [symbolise-and-inject pattern][topic-data-mask-programming] to
 #' inject a column name inside a data-masked expression.
 #'
@@ -143,7 +143,7 @@ NULL
 #'     inject(rbind(!!!mtcars))
 #'     ```
 #'
-#' -   Injecting [defused expressions][topic-defusal] like
+#' -   Injecting [defused expressions][topic-defuse] like
 #'     [symbolised][sym] column names.
 #'
 #'     For tidyverse APIs, this second case is no longer as useful
@@ -156,8 +156,8 @@ NULL
 #' special functions:
 #'
 #' -   Functions taking [dynamic dots][dyn-dots] like [list2()].
-#' -   Functions taking [defused][topic-defusal] and
-#'     [data-masked][topic-data-masking] arguments.
+#' -   Functions taking [defused][topic-defuse] and
+#'     [data-masked][topic-data-mask] arguments.
 #' -   Inside [inject()].
 #'
 #' Most tidyverse functions support `!!!` out of the box. With base
@@ -165,7 +165,7 @@ NULL
 #'
 #' Using the operator out of context may lead to incorrect results,
 #' see [What happens if I use injection operators out of
-#' context?][topic-injection-out-of-context].
+#' context?][topic-inject-out-of-context].
 #'
 #'
 #' @section Splicing a list of arguments:
@@ -217,7 +217,7 @@ NULL
 #' @section Splicing a list of expressions:
 #'
 #' Another usage for `!!!` is to inject [defused
-#' expressions][topic-defusal] into [data-masked][topic-data-masking]
+#' expressions][topic-defuse] into [data-masked][topic-data-mask]
 #' dots. However this usage is no longer a common pattern for
 #' programming with tidyverse functions and we recommend using other
 #' patterns if possible.
@@ -351,14 +351,14 @@ NULL
 #' `englue()` makes them available anywhere within a function.
 #'
 #' `englue()` must be used inside a function. `englue("{{ var }}")`
-#' [defuses][topic-defusal] the argument `var` and transforms it to a
+#' [defuses][topic-defuse] the argument `var` and transforms it to a
 #' string using the default name operation.
 #'
 #' @param x A string to interpolate with glue operators.
 #'
 #' @details
 #' `englue("{{ var }}")` is equivalent to `as_label(enquo(var))`. It
-#' [defuses][topic-defusal] `arg` and transforms the expression to a
+#' [defuses][topic-defuse] `arg` and transforms the expression to a
 #' string with [as_label()].
 #'
 #' In dynamic dots, `{` is allowed. In `englue()` you must use `{{`.
@@ -393,7 +393,7 @@ englue <- function(x) {
 }
 
 
-#' @rdname topic-injection
+#' @rdname topic-inject
 #' @param expr An expression involving injection operators.
 #' @usage NULL
 #' @export

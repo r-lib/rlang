@@ -2,7 +2,7 @@
 % Please edit documentation in R/nse-force.R, R/topic-nse.R
 \name{qq_show}
 \alias{qq_show}
-\alias{topic-injection}
+\alias{topic-inject}
 \alias{quasiquotation}
 \alias{nse-force}
 \alias{nse-inject}
