@@ -76,6 +76,7 @@ reference:
     contents:
       - injection-operator
       - splice-operator
+      - englue
       - expr
       - enquo
       - sym

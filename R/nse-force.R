@@ -335,10 +335,62 @@ NULL
 }
 
 
-#' Name injection with glue operators
-#' TODO!
+#' Name injection with `"{"` and `"{{"`
+#'
+#' @includeRmd man/rmd/glue-operator.Rmd description 
+#'
 #' @name glue-operator
 NULL
+
+#' Defuse function arguments with glue
+#'
+#' @description
+#' `englue()` creates a string with the [glue
+#' operators][glue-operator] `{` and `{{`. These operators are
+#' normally used to inject names within [dynamic dots][dyn-dots].
+#' `englue()` makes them available anywhere within a function.
+#'
+#' `englue()` must be used inside a function. `englue("{{ var }}")`
+#' [defuses][topic-defusal] the argument `var` and transforms it to a
+#' string using the default name operation.
+#'
+#' @param x A string to interpolate with glue operators.
+#'
+#' @details
+#' `englue("{{ var }}")` is equivalent to `as_label(enquo(var))`. It
+#' [defuses][topic-defusal] `arg` and transforms the expression to a
+#' string with [as_label()].
+#'
+#' In dynamic dots, `{` is allowed. In `englue()` you must use `{{`.
+#' Use `glue::glue()` for simple interpolation.
+#'
+#' Before using `englue()` in a package, first ensure that glue is
+#' installed by adding it to your `Imports:` section.
+#'
+#' @examples
+#' g <- function(var) englue("{{ var }}")
+#' g(cyl)
+#' g(1 + 1)
+#' g(!!letters)
+#'
+#' # These are equivalent to
+#' as_label(quote(cyl))
+#' as_label(quote(1 + 1))
+#' as_label(letters)
+#'
+#' @export
+englue <- function(x) {
+  if (!grepl("{{", x, fixed = TRUE)) {
+    abort(c(
+      "Must use `{{`.",
+      i = "Use `glue::glue()` for interpolation with `{`."
+    ))
+  }
+
+  expr <- call(":=", x, NULL)
+  res <- inject(rlang::list2(!!expr), caller_env())
+  names(res)
+}
 
 
 #' Injecting with `!!`, `!!!`, and glue syntax

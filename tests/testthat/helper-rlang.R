@@ -105,3 +105,7 @@ arg_match_wrapper <- function(arg, ...) {
 arg_match0_wrapper <- function(arg, values, arg_nm = "arg", ...) {
   arg_match0(arg, values, arg_nm = arg_nm, ...)
 }
+
+err <- function(...) {
+  (expect_error(...))
+}

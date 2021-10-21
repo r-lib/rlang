@@ -93,7 +93,7 @@ only once:\if{html}{\out{<div class="sourceCode r">}}\preformatted{summarise_sta
 \section{What about glue strings?}{
 
 
-\verb{\{\{} \link[=howto-glue-injection]{embracing in glue strings} doesn't suffer
+\verb{\{\{} \link[=glue-operator]{embracing in glue strings} doesn't suffer
 from the double evaluation problem:\if{html}{\out{<div class="sourceCode r">}}\preformatted{summarise_stats <- function(data, var) \{
   data \%>\%
     dplyr::transmute(

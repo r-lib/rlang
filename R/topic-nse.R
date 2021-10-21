@@ -742,7 +742,7 @@ NULL
 #'
 #' @section What about glue strings?:
 #'
-#' `{{` [embracing in glue strings][howto-glue-injection] doesn't suffer
+#' `{{` [embracing in glue strings][glue-operator] doesn't suffer
 #' from the double evaluation problem:
 #'
 #' ```{r, comment = "#>", collapse = TRUE}
@@ -766,105 +766,6 @@ NULL
 #' 
 #'
 #' @name howto-double-evaluation
-NULL
-
-
-#' Embracing and injecting names with glue
-#'
-#' @description
-#'
-#' ```{r, child = "man/rmd/setup.Rmd", include = FALSE}
-#' ```
-#'
-#' Argument names are normally defused constants, so you can't use
-#' argument syntax to supply a variable name:
-#'
-#' ```{r, comment = "#>", collapse = TRUE}
-#' var <- "foobar"
-#' list(var = 1)
-#'
-#' # Need to assign the name in a separate step
-#' set_names(list(1), var)
-#' ```
-#'
-#' In functions that support [dynamic dots][dyn-dots], you can inject
-#' names with `!!` or with glue syntax. In these examples we use
-#' [list2()], a variant of `list()` that supports glue injection
-#' through dynamic dots. With glue syntax, you can interpolate a
-#' string in a variable within a name.
-#'
-#' ```{r, comment = "#>", collapse = TRUE}
-#' list2("{var}" := 1)
-#'
-#' list2("prefix_{var}_suffix" := 1)
-#' ```
-#'
-#'
-#' @section What is the difference between `{` and `{{`?:
-#'
-#' Whereas the glue `{` operator interpolates the contents of a
-#' variable (either local objects or function arguments), the tidy
-#' eval `{{` operator interpolates a [defused][topic-defusal] function
-#' argument. You use botth `{` and `{{` in name injection.
-#'
-#' ```{r, comment = "#>", collapse = TRUE}
-#' fn <- function(arg) {
-#'   list2("{{ arg }}" := arg)
-#' }
-#'
-#' fn(1)
-#' fn(1 + 1)
-#' ```
-#'
-#' The `{{` syntax is mainly useful for interfacing with
-#' [data-masking][topic-data-masking] functions, to give more informative
-#' default names:
-#'
-#' ```{r, comment = "#>", collapse = TRUE}
-#' fn <- function(data, var) {
-#'   dplyr::summarise(data, "mean_{{ var }}" := mean({{ var }}))
-#' }
-#'
-#' fn(mtcars, cyl)
-#'
-#' fn(mtcars, am)
-#' ```
-#'
-#' You'll likely find yourself to be quickly limited by this sort of
-#' default names for single variables. In the following example the
-#' default name is a bit awkward and there is no way for the user to
-#' override it.
-#'
-#' ```{r, comment = "#>", collapse = TRUE}
-#' fn(mtcars, am + cyl)
-#' ```
-#'
-#' This is functions that take multiple inputs with `...` are often
-#' preferred because the user can override default names. If the dots
-#' are [dynamic][dyn-dots], they can also use glue syntax.
-#'
-#'
-#' @section Usage of `{{` in wrong contexts:
-#'
-#' Nothing prevents `{{` from working on regular objects. Ideally it
-#' would only work with function arguments and this would be an error:
-#'
-#' ```{r, comment = "#>", collapse = TRUE}
-#' var <- "foobar"
-#' list2("{{ var }}" := 1)
-#' ```
-#'
-#' Unfortunately, for technical reasons we can't make it fail at the
-#' moment. Instead the string `"foobar"` is taken as if it were a
-#' defused expression and converted to a string. Notice the extra
-#' quotes. The correct glue syntax for interpolating a variable
-#' containing a string is single curly embracing:
-#' 
-#' ```{r, comment = "#>", collapse = TRUE}
-#' list2("{var}" := 1)
-#' ```
-#'
-#' @name howto-glue-injection
 NULL
 
 
