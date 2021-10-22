@@ -15,6 +15,9 @@ tutorials:
 \item \href{https://dplyr.tidyverse.org/articles/programming.html}{Programming with dplyr}
 \item \href{https://ggplot2.tidyverse.org/articles/ggplot2-in-packages.html}{Using ggplot2 in packages}
 }
+
+If you’d like to go further and learn about defusing and injecting
+expressions, read the \link[=topic-metaprogramming]{metaprogramming patterns topic}.
 }
 \section{Choosing a pattern}{
 Two main considerations determine which programming pattern you need to
@@ -153,74 +156,6 @@ Inside a tidy selection, \code{c()} is not a vector concatenator but a
 selection combinator. This makes it handy to interface between functions
 that take \code{...} and functions that take a single argument.
 }
-
-\subsection{Defuse and inject}{
-
-\code{\link[=embrace-operator]{\{\{}} and \code{...} are sufficient for most purposes.
-Sometimes however, it is necessary to decompose the forwarding action
-into its two constitutive steps, \link[=topic-defuse]{defusing} and
-\link[=topic-inject]{injecting}.
-
-\verb{\{\{} is the combination of \code{\link[=enquo]{enquo()}} and
-\code{\link[=injection-operator]{!!}}. These functions are completely equivalent:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_summarise <- function(data, var) \{
-  data \%>\% dplyr::summarise(\{\{ var \}\})
-\}
-my_summarise <- function(data, var) \{
-  data \%>\% dplyr::summarise(!!enquo(var))
-\}
-}\if{html}{\out{</div>}}
-
-Passing \code{...} is equivalent to the combination of \code{\link[=enquos]{enquos()}}
-and \code{\link[=splice-operator]{!!!}}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_group_by <- function(.data, ...) \{
-  .data \%>\% dplyr::group_by(...)
-\}
-my_group_by <- function(.data, ...) \{
-  .data \%>\% dplyr::group_by(!!!enquos(...))
-\}
-}\if{html}{\out{</div>}}
-
-The advantage of decomposing the steps is that you gain access to the
-\link[=topic-defuse]{defused expressions}. Once defused, you can inspect or
-modify the expressions before injecting them in their target context.
-\subsection{Inspecting input labels}{
-
-For instance, here is how to create an automatic name for a defused
-argument using \code{\link[=as_label]{as_label()}}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{f <- function(var) \{
-  var <- enquo(var)
-  as_label(var)
-\}
-
-f(cyl)
-#> [1] "cyl"
-
-f(1 + 1)
-#> [1] "1 + 1"
-}\if{html}{\out{</div>}}
-
-With multiple arguments, use the plural variant \code{\link[=enquos]{enquos()}}.
-Set \code{.named} to \code{TRUE} to automatically call \code{\link[=as_label]{as_label()}}
-on the inputs for which the user has not provided a name (the same
-behaviour as in most dplyr verbs):\if{html}{\out{<div class="sourceCode r">}}\preformatted{g <- function(...) \{
-  vars <- enquos(..., .named = TRUE)
-  names(vars)
-\}
-
-g(cyl, 1 + 1)
-#> [1] "cyl"   "1 + 1"
-}\if{html}{\out{</div>}}
-
-Just like with \code{dplyr::mutate()}, the user can override automatic names
-by supplying an explicit name:\if{html}{\out{<div class="sourceCode r">}}\preformatted{g(foo = cyl, bar = 1 + 1)
-#> [1] "foo" "bar"
-}\if{html}{\out{</div>}}
-
-This technique of names inspection is used in the pattern that bridges
-data-mask behaviour to a tidyselection context (see below). More
-complicated defuse-and-inject patterns are explored in the Transforming
-inputs section.
-}
-
-}
 }
 
 \section{Names patterns}{
@@ -342,50 +277,8 @@ mtcars \%>\% tidyr::pivot_longer(all_of(vars))
 If the function does not take a tidy selection, it might be possible to
 use a \emph{bridge pattern}. This option is presented in the bridge section
 below. If a bridge is impossible or inconvenient, a little
-metaprogramming with the symbolise-and-inject pattern can help.
-}
-
-\subsection{Symbolise and inject}{
-
-The symbolise-and-inject pattern is a fallback names pattern for cases
-where \code{across(all_of())} is not supported. It consists in creating
-\link[=topic-defuse]{defused expressions} that refer to the data-variables
-represented in the names vector. These are then injected in the data
-mask context.
-
-You can symbolise a character vector with \code{\link[=syms]{syms()}} or
-\code{\link[=data_syms]{data_syms()}}. Simple symbols returned by \code{syms()} work
-in a wider variety of cases (e.g. with base functions) but we’ll use
-\code{data_syms()} as it is more robust (see Data mask ambiguity section
-below). It creates calls that subset the \code{\link{.data}}
-pronoun:\if{html}{\out{<div class="sourceCode r">}}\preformatted{vars <- c("cyl", "am")
-
-syms(vars)
-#> [[1]]
-#> cyl
-#> 
-#> [[2]]
-#> am
-
-data_syms(vars)
-#> [[1]]
-#> .data$cyl
-#> 
-#> [[2]]
-#> .data$am
-}\if{html}{\out{</div>}}
-
-A list of symbols can be injected in data-masked dots with
-\code{\link[=splice-operator]{!!!}}, the splice operator. It injects each element
-of the list as a separate argument:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_group_by <- function(data, vars) \{
-  data \%>\% dplyr::group_by(!!!data_syms(vars))
-\}
-
-my_group_by(vars)
-}\if{html}{\out{</div>}}
-
-In more complex case, you might want to add R code around the symbols.
-This requires \emph{transformation} patterns, see the section below.
+metaprogramming with the \link[=TODO]{symbolise-and-inject pattern} can
+help.
 }
 }
 
@@ -434,39 +327,38 @@ Use this bridge technique to connect vectors of names to a data-masked
 context.
 }
 
-\subsection{\code{mutate()} as a data-mask to selection bridge}{
+\subsection{\code{transmute()} as a data-mask to selection bridge}{
 
 Passing data-masked arguments to a tidy selection is a little more
-tricky and requires a three step process that involves the
-defuse-and-inject pattern.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_pivot_longer <- function(data, ...) \{
-  # Defuse `...` and inspect the supplied names
-  dots <- enquos(..., .named = TRUE)
-  names <- names(dots)
+tricky and requires a three step process.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_pivot_longer <- function(data, ...) \{
+  # Forward `...` in data-mask context with `transmute()`
+  # and save the inputs names
+  inputs <- dplyr::transmute(data, ...)
+  names <- names(inputs)
+  
+  # Update the data with the inputs
+  data <- dplyr::mutate(data, !!!inputs)
 
-  # Inject in `mutate()` to update the data
-  data <- data \%>\% dplyr::mutate(!!!dots)
-
-  # Select `...` inputs by name with `all_of()`
-  data \%>\%
-    tidyr::pivot_longer(cols = all_of(names))
+  # Select the inputs by name with `all_of()`
+  tidyr::pivot_longer(data, cols = all_of(names))
 \}
 
 mtcars \%>\% my_pivot_longer(cyl, am = am * 100)
 }\if{html}{\out{</div>}}
 \enumerate{
-\item In a first step we defuse the \code{...} expressions so that we can
-inspect their names. The \code{.named} argument of \code{\link[=enquos]{enquos()}}
-causes the defused \code{...} expressions to be automatically named, just
-like they would be if passed directly to \code{mutate()}.
+\item In a first step we pass the \code{...} expressions to \code{transmute()}.
+Unlike \code{mutate()}, it creates a new data frame from the user inputs.
+The only goal of this step is to inspect the names in \code{...},
+including the default names created for unnamed arguments.
 \item Once we have the names, we inject the arguments into \code{mutate()} to
-process the data-masked arguments and update the data frame.
+update the data frame.
 \item Finally, we pass the names to the tidy selection via
 \href{https://tidyselect.r-lib.org/reference/all_of.html}{\code{all_of()}}.
 }
 }
 }
 
-\section{Transforming inputs}{
+\section{Transformation patterns}{
 \subsection{Named inputs versus \code{...}}{
 
 In the case of a named argument, we can transform the embraced input
@@ -533,160 +425,6 @@ variables are not equal to their minimum value:\if{html}{\out{<div class="source
 \}
 
 mtcars \%>\% filter_non_baseline(vs, am, gear)
-}\if{html}{\out{</div>}}
-}
-
-\subsection{Transforming inputs manually}{
-
-If \code{across()} and variants are not available, you will need to transform
-the inputs yourself using metaprogramming techniques. A good place to
-start if you’re new to programming on the language is the
-\href{https://adv-r.hadley.nz/metaprogramming.html}{Metaprogramming chapter}
-of the advanced R book.
-
-To illustrate the technique we’ll reimplement \code{my_mean()} and
-\code{filter_non_baseline()} without using \code{across()} or \code{if_all()}. The
-pattern consists in defusing the input expression, building larger calls
-around them, and finally inject the modified expressions inside the
-data-masked functions. We’ll start with a single named argument for
-simplicity:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
-  # Defuse the expression
-  var <- enquo(var)
-
-  # Wrap it in a call to `mean()`
-  var <- expr(mean(!!var, na.rm = TRUE))
-
-  # Inject the expanded expression
-  data \%>\% dplyr::summarise(mean = !!var)
-\}
-
-mtcars \%>\% my_mean(cyl)
-#> # A tibble: 1 x 1
-#>    mean
-#>   <dbl>
-#> 1  6.19
-}\if{html}{\out{</div>}}
-
-The \code{...} technique is similar but a little more involved. We’ll use the
-plural variants \code{enquos()} and \verb{!!!}. We’ll also loop over the variable
-number of inputs using \code{purrr::map()}. But the pattern is basically the
-same:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(.data, ...) \{
-  # Defuse the dots. Make sure they are automatically named.
-  vars <- enquos(..., .named = TRUE)
-
-  # Map over each defused expression and wrap it in a call to `mean()`
-  vars <- purrr::map(vars, ~ expr(mean(!!.x, na.rm = TRUE)))
-
-  # Inject the expressions
-  .data \%>\% dplyr::summarise(!!!vars)
-\}
-
-mtcars \%>\% my_mean(cyl)
-#> # A tibble: 1 x 1
-#>     cyl
-#>   <dbl>
-#> 1  6.19
-}\if{html}{\out{</div>}}
-
-Note that we are inheriting the data-masked behaviour of \code{summarise()}
-because we have effectively forwarded \code{...} inside that verb. This is
-different than the previous implementation where we inherited the tidy
-selection behaviour of \code{across()}. See how we can create vectors on the
-fly for instance:\if{html}{\out{<div class="sourceCode r">}}\preformatted{mtcars \%>\% my_mean(cyl = cyl * 100)
-#> # A tibble: 1 x 1
-#>     cyl
-#>   <dbl>
-#> 1  619.
-}\if{html}{\out{</div>}}
-}
-}
-
-\section{Base patterns}{
-These other patterns are used for programming with base data-masking
-functions. They essentially consists in building and evaluating
-expressions in the data mask.
-\subsection{Data-masked \code{get()}}{
-
-In the simplest version of this pattern, \code{get()} is called with a
-variable name to retrieve objects from the data mask:\if{html}{\out{<div class="sourceCode r">}}\preformatted{var <- "cyl"
-
-with(mtcars, mean(get(var)))
-#> [1] 6.1875
-}\if{html}{\out{</div>}}
-
-This sort of pattern is susceptible to names collisions. For instance,
-the input data frame might contain a variable called \code{var}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{df <- data.frame(var = "wrong")
-
-with(df, mean(get(var)))
-#> Error in get(var): object 'wrong' not found
-}\if{html}{\out{</div>}}
-
-To avoid this you can inject \link[=sym]{symbols}. Enable injection
-operators with \code{\link[=inject]{inject()}}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{inject(
-  with(mtcars, mean(!!sym(var)))
-)
-#> [1] 6.1875
-}\if{html}{\out{</div>}}
-
-See \link[=topic-data-mask-ambiguity]{The data mask ambiguity} for more
-information about this problem.
-}
-
-\subsection{Data-masked \code{parse()} and \code{eval()}}{
-
-A more involved pattern consists in building R code in a string and
-evaluating it in the mask:\if{html}{\out{<div class="sourceCode r">}}\preformatted{var1 <- "am"
-var2 <- "vs"
-
-code <- paste(var1, "==", var2)
-with(mtcars, mean(eval(parse(text = code))))
-#> [1] 0.59375
-}\if{html}{\out{</div>}}
-
-As before, the \code{code} variable is vulnerable to \link[=topic-data-mask-ambiguity]{names collisions}. More importantly, if \code{var1}
-and \code{var2} are user inputs, they could contain \href{https://xkcd.com/327/}{adversarial code}. Evaluating code assembled from strings is
-always a risky business:\if{html}{\out{<div class="sourceCode r">}}\preformatted{var1 <- "(function() \{
-  Sys.sleep(Inf)  # Could be a coin mining routine
-\})()"
-var2 <- "vs"
-
-code <- paste(var1, "==", var2)
-with(mtcars, mean(eval(parse(text = code))))
-}\if{html}{\out{</div>}}
-
-This is not a big deal if your code is only used internally. However,
-this code could be part of a public Shiny app which Internet users could
-exploit. But even internally, parsing is a source of bugs when variable
-names contain syntactic symbols like \code{-} or \code{:}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{var1 <- ":var:"
-var2 <- "vs"
-
-code <- paste(var1, "==", var2)
-with(mtcars, mean(eval(parse(text = code))))
-#> Error in parse(text = code): <text>:1:1: unexpected ':'
-#> 1: :
-#>     ^
-}\if{html}{\out{</div>}}
-
-For these reasons, always prefer to \emph{build} code instead of parsing
-code.\if{html}{\out{<div class="sourceCode r">}}\preformatted{var1 <- "(function() \{
-  Sys.sleep(Inf)  # Could be a coin mining routine
-\})()"
-var2 <- "vs"
-
-code <- call("==", sym(var1), sym(var2))
-with(mtcars, mean(eval(code)))
-#> Error in eval(code): object '(function() \{\n  Sys.sleep(Inf)  # Could be a coin mining routine\n\})()' not found
-}\if{html}{\out{</div>}}
-
-It is also better to inject the code instead of evaluating it. This
-avoids names collisions:\if{html}{\out{<div class="sourceCode r">}}\preformatted{var1 <- "am"
-var2 <- "vs"
-
-code <- call("==", sym(var1), sym(var2))
-inject(
-  with(mtcars, mean(!!code))
-)
-#> [1] 0.59375
 }\if{html}{\out{</div>}}
 }
 }

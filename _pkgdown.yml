@@ -88,6 +88,7 @@ reference:
       - defusing-advanced
   - subtitle: Overviews
     contents:
+      - topic-metaprogramming
       - topic-defuse
       - topic-inject
       - topic-quosure

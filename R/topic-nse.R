@@ -14,6 +14,13 @@ NULL
 #' @name topic-data-mask-programming
 NULL
 
+#' Metaprogramming patterns for data-masked arguments
+#'
+#' @includeRmd man/rmd/topic-metaprogramming.Rmd description
+#'
+#' @name topic-metaprogramming
+NULL
+
 #' Defusing R expressions
 #'
 #' @includeRmd man/rmd/topic-defuse.Rmd description
