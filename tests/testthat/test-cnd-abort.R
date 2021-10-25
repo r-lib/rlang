@@ -460,3 +460,17 @@ test_that("format_error_call() detects non-syntactic names", {
     "`[[.foo`"
   )
 })
+
+test_that("generic call is picked up in methods", {
+  f <- function(x) {
+    UseMethod("GEN")
+  }
+  GEN.default <- function(x) {
+    g()
+  }
+  g <- function(call = caller_env()) {
+    abort("foo", call = call)
+  }
+
+  expect_snapshot(err(f()))
+})

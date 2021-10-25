@@ -439,3 +439,11 @@
     foo
     * bar
 
+# generic call is picked up in methods
+
+    Code
+      err(f())
+    Output
+      <error/rlang_error>
+      Error in `GEN()`: foo
+

@@ -98,3 +98,7 @@ catch_message <- function(expr) {
 
 # https://github.com/r-lib/testthat/issues/1371
 expect_warning2 <- catch_warning
+
+err <- function(...) {
+  (expect_error(...))
+}

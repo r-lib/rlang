@@ -833,7 +833,14 @@ error_call <- function(call) {
       next
     }
 
+    gen <- call$.Generic
     call <- caller_call(call)
+
+    # Replace `f.foo(...)` calls by `f(...)`
+    if (is_string(gen) && is_call(call)) {
+      call[[1]] <- sym(gen)
+    }
+
     break
   }
 
