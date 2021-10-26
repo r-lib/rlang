@@ -496,9 +496,27 @@ test_that("generic call is picked up in methods", {
     g()
   }
 
+  f4 <- function(x) {
+    f4_dispatch(x)
+  }
+  f4_dispatch <- function(x) {
+    local_error_call("caller")
+    UseMethod("f4")
+  }
+  f4.foo <- function(x) {
+    NextMethod()
+  }
+  f4.bar <- function(x) {
+    NextMethod()
+  }
+  f4.default <- function(x) {
+    g()
+  }
+
   expect_snapshot({
     err(f1())
     err(f2())
     err(f3())
+    err(f4(NULL))
   })
 })

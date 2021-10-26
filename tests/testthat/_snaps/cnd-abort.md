@@ -456,4 +456,9 @@
     Output
       <error/rlang_error>
       Error in `f3()`: foo
+    Code
+      err(f4(NULL))
+    Output
+      <error/rlang_error>
+      Error in `f4()`: foo
 

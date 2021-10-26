@@ -852,8 +852,8 @@ error_call <- function(call) {
           next
         }
 
-        call <- prev
-        break
+        # Recurse in case there is an error flag in a dispatch helper
+        return(error_call(prev))
       }
     }
 
