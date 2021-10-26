@@ -7,200 +7,170 @@
 \alias{nse-inject}
 \title{Injecting with \verb{!!}, \verb{!!!}, and glue syntax}
 \description{
-It is sometimes useful to inject language objects or other kinds of
-objects inside an expression before it gets fully evaluated. The tidy
-eval framework provides several injection operators for different use
-cases.
+The injection operators are extensions of R implemented by rlang to
+modify a piece of code before R processes it. There are two main
+families:
 \itemize{
-\item The \link[=injection-operator]{injection operator} \verb{!!} (pronounced
-“bang-bang”) injects a \emph{single} object. One common case for \verb{!!} is
-to substitute an environment-variable (created with \verb{<-}) with a
-data-variable (inside a data frame).\if{html}{\out{<div class="sourceCode r">}}\preformatted{library(dplyr)
+\item The \link[=dyn-dots]{dynamic dots} operators, \code{\link{!!!}} and
+\code{\link[=glue-operator]{"\{"}}.
+\item The \link[=topic-metaprogramming]{metaprogramming operators}
+\code{\link{!!}}, \code{\link[=embrace-operator]{\{\{}}, and
+\code{\link[=glue-operator]{"\{\{"}}. Splicing with \code{\link{!!!}} can
+also be done in metaprogramming context.
+}
+}
+\section{Dots injection}{
+Unlike regular \code{...}, \link[=dyn-dots]{dynamic dots} are programmable with
+injection operators.
+\subsection{Splicing with \verb{!!!}}{
 
-# The env-variable `var` contains a symbol object, in this
-# case a reference to the data-variable `height`
-var <- sym("height")
-
-# We inject the data-variable contained in `var` inside `summarise()` 
-starwars \%>\%
-  summarise(avg = mean(!!var, na.rm = TRUE))
+For instance, consider a function like \code{rbind()} that takes data in
+\code{...}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{rbind(a = 1:2, b = 3:4)
+#>   [,1] [,2]
+#> a    1    2
+#> b    3    4
 }\if{html}{\out{</div>}}
-\item The \link[=splice-operator]{splice operator} \verb{!!!} injects a \emph{list} of
-objects. Whereas \verb{!!} would inject the list itself, \verb{!!!} injects
-each element of the list in turn. This is also called “splicing”.\if{html}{\out{<div class="sourceCode r">}}\preformatted{vars <- syms(c("height", "mass"))
 
-# Injecting with `!!!` is equivalent to supplying the elements separately
-starwars \%>\% select(!!!vars)
-starwars \%>\% select(height, mass)
+How do you bind rows contained in a list? The base R solution is to
+invoke \code{rbind()} with \code{do.call()}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{rows <- list(a = 1:2, b = 3:4)
+
+do.call("rbind", rows)
+#>   [,1] [,2]
+#> a    1    2
+#> b    3    4
 }\if{html}{\out{</div>}}
-\item The \link[=embrace-operator]{embracing operator} \verb{\{\{} (pronounced
-“curly-curly”) is made specially for function arguments. It
-\link[=nse-defuse]{defuses} the argument and immediately injects it in
-place. The injected argument can then be evaluated in another
-context like a data frame.\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Inject function arguments that might contain
+
+In a function that implements dynamic dots there is a built-in way of
+folding a list of arguments in \code{...}. We’ll create a variant of
+\code{rbind()} that takes dynamic dots by collecting \code{...} with
+\code{\link[=list2]{list2()}}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{rbind2 <- function(...) \{
+  do.call("rbind", list2(...))
+\}
+}\if{html}{\out{</div>}}
+
+It can be used just like \code{rbind()}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{rbind2(a = 1:2, b = 3:4)
+#>   [,1] [,2]
+#> a    1    2
+#> b    3    4
+}\if{html}{\out{</div>}}
+
+And a list of arguments can be supplied by \emph{splicing} it with
+\code{\link{!!!}}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{rbind2(!!!rows, c = 5:6)
+#>   [,1] [,2]
+#> a    1    2
+#> b    3    4
+#> c    5    6
+}\if{html}{\out{</div>}}
+}
+
+\subsection{Injecting names with \code{"{"}}{
+
+A related problem comes up when you have an argument name stored in a
+variable. In dynamic dots, you can inject a name using \href{https://glue.tidyverse.org/}{glue syntax} with \code{\link[=glue-operator]{"\{"}}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{name <- "foo"
+
+rbind2("\{name\}" := 1:2, bar = 3:4)
+#>     [,1] [,2]
+#> foo    1    2
+#> bar    3    4
+
+rbind2("prefix_\{name\}" := 1:2, bar = 3:4)
+#>            [,1] [,2]
+#> prefix_foo    1    2
+#> bar           3    4
+}\if{html}{\out{</div>}}
+}
+}
+
+\section{Metaprogramming injection}{
+\link[=topic-data-mask]{Data-masked} arguments support the following
+injection operators. They can also be explicitly enabled with
+\code{\link[=inject]{inject()}}.
+\subsection{Embracing with \verb{\{\{}}{
+
+The embracing operator \code{\link[=embrace-operator]{\{\{}} is made specially for
+function arguments. It \link[=topic-defuse]{defuses} the expression supplied
+as argument and immediately injects it in place. The injected argument
+is then evaluated in another context such as a \link[=topic-data-mask]{data mask}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Inject function arguments that might contain
 # data-variables by embracing them with \{\{ \}\}
 mean_by <- function(data, by, var) \{
   data \%>\%
-    group_by(\{\{ by \}\}) \%>\%
-    summarise(avg = mean(\{\{ var \}\}, na.rm = TRUE))
+    dplyr::group_by(\{\{ by \}\}) \%>\%
+    dplyr::summarise(avg = mean(\{\{ var \}\}, na.rm = TRUE))
 \}
 
-# The data-variables `Species` and `Sepal.Width` inside the
+# The data-variables `cyl` and `disp` inside the
 # env-variables `by` and `var` are injected inside `group_by()`
 # and `summarise()`
-iris \%>\% mean_by(by = Species, var = Sepal.Width)
+mtcars \%>\% mean_by(by = cyl, var = disp)
+#> # A tibble: 3 x 2
+#>     cyl   avg
+#>   <dbl> <dbl>
+#> 1     4  105.
+#> 2     6  183.
+#> 3     8  353.
 }\if{html}{\out{</div>}}
 
 Learn more about this pattern in \link[=topic-data-mask-programming]{Data-mask programming patterns}.
 }
 
-Use \code{qq_show()} to experiment with injection operators. \code{qq_show()}
-defuses its input, processes all injection operators, and prints the
-result with \code{\link[=expr_print]{expr_print()}} to reveal the injected
-objects.
-}
-\section{Injecting names}{
-When a function takes multiple named arguments (e.g. \code{dplyr::mutate()}),
-it is difficult to supply a variable as name. Since the LHS of \code{=} is
-\link[=nse-defuse]{defused}, giving the name of a variable results in the
-argument having the name of the variable rather than the name stored in
-that variable. This problem of forcing evaluation of names is exactly
-what the \verb{!!} operator is for.
+\subsection{Injecting with \verb{!!}}{
 
-Unfortunately R is very strict about the kind of expressions supported
-on the LHS of \code{=}. This is why rlang interprets the walrus operator \verb{:=}
-as an alias of \code{=}. You can use it to supply names, e.g. \code{a := b} is
-equivalent to \code{a = b}. Since its syntax is more flexible you can also
-inject names on its LHS:\if{html}{\out{<div class="sourceCode r">}}\preformatted{name <- "Jane"
+Unlike \code{\link{!!!}} which injects a list of arguments, the
+injection operator \code{\link{!!}} (pronounced “bang-bang”) injects a
+\emph{single} object. One use case for \verb{!!} is to substitute an
+environment-variable (created with \verb{<-}) with a data-variable (inside a
+data frame).\if{html}{\out{<div class="sourceCode r">}}\preformatted{# The env-variable `var` contains a symbol object, in this
+# case a reference to the data-variable `height`
+var <- sym("disp")
 
-list2(!!name := 1 + 2)
-exprs(!!name := 1 + 2)
+# We inject the data-variable contained in `var` inside `summarise()` 
+mtcars \%>\%
+  dplyr::summarise(avg = mean(!!var, na.rm = TRUE))
+#> # A tibble: 1 x 1
+#>     avg
+#>   <dbl>
+#> 1  231.
 }\if{html}{\out{</div>}}
 
-Like \code{=}, the \verb{:=} operator expects strings or symbols on its LHS.
+Another use case is to inject a variable by value to avoid \link[=topic-data-mask-ambiguity]{name collisions}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{df <- data.frame(x = 1)
 
-Since unquoting names is related to interpolating within a string with
-the glue package, we have made the glue syntax available on the LHS of
-\verb{:=}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{list2("\{name\}" := 1)
-tibble("\{name\}" := 1)
+# This name conflicts with a column in `df`
+x <- 100
+
+# Inject the env-variable
+df \%>\%
+  dplyr::mutate(x = x / !!x)
+#>      x
+#> 1 0.01
 }\if{html}{\out{</div>}}
 
-You can also interpolate defused function arguments with double braces
-\verb{\{\{}, similar to the curly-curly syntax:\if{html}{\out{<div class="sourceCode r">}}\preformatted{wrapper <- function(data, var) \{
-  data \%>\% mutate("\{\{ var \}\}_foo" := \{\{ var \}\} * 2)
-\}
-}\if{html}{\out{</div>}}
-
-Currently, injecting names with \verb{:=} only works in top level
-expressions. These are all valid:\if{html}{\out{<div class="sourceCode r">}}\preformatted{exprs("\{name\}" := x)
-tibble("\{name\}" := x)
-}\if{html}{\out{</div>}}
-
-But deep-injection of names isn’t supported:\if{html}{\out{<div class="sourceCode r">}}\preformatted{exprs(this(is(deep("\{name\}" := x))))
-}\if{html}{\out{</div>}}
+Note that in most cases you don’t need injection with \verb{!!}. For
+instance, the \code{\link{.data}} and \code{\link{.env}}
+pronouns provide more intuitive alternatives to injecting a column name
+and injecting a value.
 }
 
-\section{Theory}{
-Formally, \code{quo()} and \code{expr()} are quasiquotation functions, \verb{!!} is the
-unquote operator, and \verb{!!!} is the unquote-splice operator. These terms
-have a rich history in Lisp languages, and live on in modern languages
-like \href{https://docs.julialang.org/en/v1/manual/metaprogramming/}{Julia}
-and \href{https://docs.racket-lang.org/reference/quasiquote.html}{Racket}.
+\subsection{Splicing with \verb{!!!}}{
+
+The splice operator \code{\link{!!!}} of dynamic dots can also be
+used in metaprogramming context (insde \link[=topic-data-mask]{data-masked}
+arguments and inside \code{\link[=inject]{inject()}}). For instance, we could
+reimplement the \code{rbind2()} function presented above using \code{inject()}
+instead of \code{do.call()}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{rbind2 <- function(...) \{
+  inject(rbind(!!!list2(...)))
+\}
+}\if{html}{\out{</div>}}
+
+There are two things going on here. We collect \code{...} with
+\code{\link[=list2]{list2()}} so that the callers of \code{rbind2()} may use \verb{!!!}.
+And we use \code{inject()} so that \code{rbind2()} itself may use \verb{!!!} to splice
+the list of arguments passed to \code{rbind2()}.
+}
 }
 
-\section{Examples}{
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Interpolation with \{\{  \}\} is the easiest way to forward
-# arguments to tidy eval functions:
-if (is_attached("package:dplyr")) \{
-
-# Forward all arguments involving data frame columns by
-# interpolating them within other data masked arguments.
-# Here we interpolate `arg` in a `summarise()` call:
-my_function <- function(data, arg) \{
-  summarise(data, avg = mean(\{\{ arg \}\}, na.rm = TRUE))
-\}
-
-my_function(mtcars, cyl)
-my_function(mtcars, cyl * 10)
-
-# The  operator is just a shortcut for `!!enquo()`:
-my_function <- function(data, arg) \{
-  summarise(data, avg = mean(!!enquo(arg), na.rm = TRUE))
-\}
-
-my_function(mtcars, cyl)
-
-\}
-
-# Quasiquotation functions quote expressions like base::quote()
-quote(how_many(this))
-expr(how_many(this))
-quo(how_many(this))
-
-# In addition, they support unquoting. Let's store symbols
-# (i.e. object names) in variables:
-this <- sym("apples")
-that <- sym("oranges")
-
-# With unquotation you can insert the contents of these variables
-# inside the quoted expression:
-expr(how_many(!!this))
-expr(how_many(!!that))
-
-# You can also insert values:
-expr(how_many(!!(1 + 2)))
-quo(how_many(!!(1 + 2)))
-
-
-# Note that when you unquote complex objects into an expression,
-# the base R printer may be a bit misleading. For instance compare
-# the output of `expr()` and `quo()` (which uses a custom printer)
-# when we unquote an integer vector:
-expr(how_many(!!(1:10)))
-quo(how_many(!!(1:10)))
-
-# This is why it's often useful to use qq_show() to examine the
-# result of unquotation operators. It uses the same printer as
-# quosures but does not return anything:
-qq_show(how_many(!!(1:10)))
-
-
-# Use `!!!` to add multiple arguments to a function. Its argument
-# should evaluate to a list or vector:
-args <- list(1:3, na.rm = TRUE)
-quo(mean(!!!args))
-
-# You can combine the two
-var <- quote(xyz)
-extra_args <- list(trim = 0.9, na.rm = TRUE)
-quo(mean(!!var , !!!extra_args))
-
-
-# The plural versions have support for the `:=` operator.
-# Like `=`, `:=` creates named arguments:
-quos(mouse1 := bernard, mouse2 = bianca)
-
-# The `:=` is mainly useful to unquote names. Unlike `=` it
-# supports `!!` on its LHS:
-var <- "unquote me!"
-quos(!!var := bernard, mouse2 = bianca)
-
-
-# All these features apply to dots captured by enquos():
-fn <- function(...) enquos(...)
-fn(!!!args, !!var := penny)
-
-
-# Unquoting is especially useful for building an expression by
-# expanding around a variable part (the unquoted part):
-quo1 <- quo(toupper(foo))
-quo1
-
-quo2 <- quo(paste(!!quo1, bar))
-quo2
-
-quo3 <- quo(list(!!quo2, !!!syms(letters[1:5])))
-quo3
-}\if{html}{\out{</div>}}
+\section{See also}{
+\itemize{
+\item \link[=topic-inject-out-of-context]{What happens if I use injection operators out of context?}
+}
 }
 
