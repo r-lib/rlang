@@ -1,6 +1,8 @@
 url: https://rlang.r-lib.org
 
 template:
+  bootstrap: 5
+  package: tidytemplate
   params:
     ganalytics: UA-115082821-1
 
