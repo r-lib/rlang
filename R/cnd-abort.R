@@ -833,14 +833,31 @@ error_call <- function(call) {
       next
     }
 
-    gen <- call$.Generic
-    call <- caller_call(call)
-
     # Replace `f.foo(...)` calls by `f(...)`
-    if (is_string(gen) && is_call(call)) {
-      call[[1]] <- sym(gen)
+    if (is_string(gen <- call$.Generic)) {
+      # Climb methods frames to find the generic call. This call
+      # carries the relevant srcref.
+      frames <- sys.frames()
+      i <- detect_index(frames, identical, call, .right = TRUE)
+
+      while (i > 1) {
+        i <- i - 1
+        prev <- frames[[i]]
+
+        if (is_call(caller_call(prev), "NextMethod")) {
+          next
+        }
+
+        if (identical(prev$.Generic, gen)) {
+          next
+        }
+
+        call <- prev
+        break
+      }
     }
 
+    call <- caller_call(call)
     break
   }
 

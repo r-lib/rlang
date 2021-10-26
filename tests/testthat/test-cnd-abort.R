@@ -461,16 +461,44 @@ test_that("format_error_call() detects non-syntactic names", {
   )
 })
 
-test_that("generic call is picked up in methods", {
-  f <- function(x) {
-    UseMethod("GEN")
-  }
-  GEN.default <- function(x) {
-    g()
-  }
+test_that("generic call is picked up in methods", {  
   g <- function(call = caller_env()) {
     abort("foo", call = call)
   }
 
-  expect_snapshot(err(f()))
+  f1 <- function(x) {
+    UseMethod("f1")
+  }
+  f1.default <- function(x) {
+    g()
+  }
+
+  f2 <- function(x) {
+    UseMethod("f2")
+  }
+  f2.NULL <- function(x) {
+    NextMethod()
+  }
+  f2.default <- function(x) {
+    g()
+  }
+
+  f3 <- function(x) {
+    UseMethod("f3")
+  }
+  f3.foo <- function(x) {
+    NextMethod()
+  }
+  f3.bar <- function(x) {
+    NextMethod()
+  }
+  f3.default <- function(x) {
+    g()
+  }
+
+  expect_snapshot({
+    err(f1())
+    err(f2())
+    err(f3())
+  })
 })

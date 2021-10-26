@@ -442,8 +442,18 @@
 # generic call is picked up in methods
 
     Code
-      err(f())
+      err(f1())
     Output
       <error/rlang_error>
-      Error in `GEN()`: foo
+      Error in `f1()`: foo
+    Code
+      err(f2())
+    Output
+      <error/rlang_error>
+      Error in `f2()`: foo
+    Code
+      err(f3())
+    Output
+      <error/rlang_error>
+      Error in `f3()`: foo
 
