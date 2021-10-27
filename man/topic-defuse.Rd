@@ -11,9 +11,8 @@ normally would. Instead it returns the expression in a special tree-like
 object that describes how to compute a value. These defused expressions
 can be thought of as blueprints or recipes for computing values.
 
-We can observe the difference between computing an expression and
-defusing it with \code{\link[=expr]{expr()}}. This function defuses the
-expression it is supplied.\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Return the result of `1 + 1`
+Using \code{\link[=expr]{expr()}} we can observe the difference between computing
+an expression and defusing it:\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Return the result of `1 + 1`
 1 + 1
 #> [1] 2
 
@@ -70,8 +69,8 @@ Read more about this in:
 
 \section{The booby trap analogy}{
 The term “defusing” comes from an analogy to the evaluation model in R.
-As you may know, R uses lazy evaluation. It means that arguments are
-only evaluated when they are needed in an expression. Let’s take two
+As you may know, R uses lazy evaluation, which means that arguments are
+only evaluated when they are needed for a computation. Let’s take two
 functions, \code{ignore()} which doesn’t do anything with its argument, and
 \code{force()} which returns it:\if{html}{\out{<div class="sourceCode r">}}\preformatted{ignore <- function(arg) NULL
 force <- function(arg) arg
@@ -83,10 +82,10 @@ force(warning("boom"))
 #> Warning in force(warning("boom")): boom
 }\if{html}{\out{</div>}}
 
-The warning is only evaluated by the function that triggers evaluation
-of its argument. Evaluation of arguments can be chained by passing them
-to other functions. If one of the functions ignores its argument, it
-breaks the chain of evaluation.\if{html}{\out{<div class="sourceCode r">}}\preformatted{f <- function(x) g(x)
+A warning is only emitted when the function actually \emph{triggers}
+evaluation of its argument. Evaluation of arguments can be chained by
+passing them to other functions. If one of the functions ignores its
+argument, it breaks the chain of evaluation.\if{html}{\out{<div class="sourceCode r">}}\preformatted{f <- function(x) g(x)
 g <- function(y) h(y)
 h <- function(z) ignore(z)
 
@@ -153,7 +152,7 @@ function with the \code{en}-prefixed operators, such as \code{enquo()} and
 One purpose for defusing evaluation of an expression is to interface
 with \link[=topic-data-mask]{data-masking functions} by injecting the
 expression back into another function with \verb{!!}. This is the
-\link[=topic-data-mask-programming]{defuse-and-inject pattern}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_summarise <- function(data, arg) \{
+\link[=topic-metaprogramming]{defuse-and-inject pattern}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_summarise <- function(data, arg) \{
   # Defuse the user expression in `arg`
   arg <- enquo(arg)
 
@@ -163,8 +162,8 @@ expression back into another function with \verb{!!}. This is the
 \}
 }\if{html}{\out{</div>}}
 
-Defuse-and-inject is usually performed in a single step with the
-\link[=embrace-operator]{embracing operator} \verb{\{\{}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_summarise <- function(data, arg) \{
+Defuse-and-inject is usually performed in a single step with the embrace
+operator \code{\link[=embrace-operator]{\{\{}}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_summarise <- function(data, arg) \{
   # Defuse and inject in a single step with the embracing operator
   data |> dplyr::summarise(mean = mean(\{\{ arg \}\}, na.rm = TRUE))
 \}
@@ -208,12 +207,5 @@ naked expression instead of a quosure.
 \item There is no equivalent for \code{enquos(...)} but you can defuse dots as
 a list of naked expressions with \code{eval(substitute(alist(...)))}.
 }
-
-What makes tidy eval work consistently and safely is that defused
-argument expressions are wrapped in a \link{quosure}. Unlike a
-naked expression, a quosure carries information about the context from
-which an expression comes from. A quosure is evaluated in the original
-environment of the expression, which allows R to find local data and
-local functions.
 }
 

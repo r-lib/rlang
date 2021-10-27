@@ -3,7 +3,7 @@
 
 When a piece of R code is defused, R doesn't return its value like it normally would. Instead it returns the expression in a special tree-like object that describes how to compute a value. These defused expressions can be thought of as blueprints or recipes for computing values.
 
-We can observe the difference between computing an expression and defusing it with [expr()]. This function defuses the expression it is supplied.
+Using [expr()] we can observe the difference between computing an expression and defusing it:
 
 ```{r, comment = "#>", collapse = TRUE}
 # Return the result of `1 + 1`
@@ -58,7 +58,7 @@ Read more about this in:
 
 # The booby trap analogy
 
-The term "defusing" comes from an analogy to the evaluation model in R. As you may know, R uses lazy evaluation. It means that arguments are only evaluated when they are needed in an expression.  Let's take two functions, `ignore()` which doesn't do anything with its argument, and `force()` which returns it:
+The term "defusing" comes from an analogy to the evaluation model in R. As you may know, R uses lazy evaluation, which means that arguments are only evaluated when they are needed for a computation. Let's take two functions, `ignore()` which doesn't do anything with its argument, and `force()` which returns it:
 
 ```{r, comment = "#>", collapse = TRUE}
 ignore <- function(arg) NULL
@@ -69,7 +69,7 @@ ignore(warning("boom"))
 force(warning("boom"))
 ```
 
-The warning is only evaluated by the function that triggers evaluation of its argument. Evaluation of arguments can be chained by passing them to other functions. If one of the functions ignores its argument, it breaks the chain of evaluation.
+A warning is only emitted when the function actually _triggers_ evaluation of its argument. Evaluation of arguments can be chained by passing them to other functions. If one of the functions ignores its argument, it breaks the chain of evaluation.
 
 ```{r, comment = "#>", collapse = TRUE}
 f <- function(x) g(x)
@@ -136,7 +136,7 @@ There are two main ways to defuse expressions, to which correspond two functions
 
 # Defuse and inject
 
-One purpose for defusing evaluation of an expression is to interface with [data-masking functions][topic-data-mask] by injecting the expression back into another function with `!!`. This is the [defuse-and-inject pattern][topic-data-mask-programming].
+One purpose for defusing evaluation of an expression is to interface with [data-masking functions][topic-data-mask] by injecting the expression back into another function with `!!`. This is the [defuse-and-inject pattern][topic-metaprogramming].
 
 ```r
 my_summarise <- function(data, arg) {
@@ -149,7 +149,7 @@ my_summarise <- function(data, arg) {
 }
 ```
 
-Defuse-and-inject is usually performed in a single step with the [embracing operator][embrace-operator] `{{`.
+Defuse-and-inject is usually performed in a single step with the embrace operator [`{{`][embrace-operator].
 
 ```r
 my_summarise <- function(data, arg) {
@@ -190,5 +190,3 @@ Defusing is known as _quoting_ in other frameworks.
 - The equivalent of `enquo()` is [base::substitute()]. The latter returns a naked expression instead of a quosure.
 
 - There is no equivalent for `enquos(...)` but you can defuse dots as a list of naked expressions with `eval(substitute(alist(...)))`.
-
-What makes tidy eval work consistently and safely is that defused argument expressions are wrapped in a [quosure]. Unlike a naked expression, a quosure carries information about the context from which an expression comes from. A quosure is evaluated in the original environment of the expression, which allows R to find local data and local functions.
