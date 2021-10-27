@@ -1,7 +1,7 @@
 ```{r, child = "setup.Rmd", include = FALSE}
 ```
 
-[Dynamic dots][dyn-dots] have built-in support for names interpolation with the [glue package](https://glue.tidyverse.org/).
+[Dynamic dots][dyn-dots] (and [data-masked][topic-data-mask] dots which are dynamic by default) have built-in support for names interpolation with the [glue package](https://glue.tidyverse.org/).
 
 ```{r, comment = "#>", collapse = TRUE}
 tibble::tibble(foo = 1)

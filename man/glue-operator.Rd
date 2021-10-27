@@ -4,8 +4,9 @@
 \alias{glue-operator}
 \title{Name injection with \code{"{"} and \code{"{{"}}
 \description{
-\link[=dyn-dots]{Dynamic dots} have built-in support for names interpolation
-with the \href{https://glue.tidyverse.org/}{glue package}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{tibble::tibble(foo = 1)
+\link[=dyn-dots]{Dynamic dots} (and \link[=topic-data-mask]{data-masked} dots
+which are dynamic by default) have built-in support for names
+interpolation with the \href{https://glue.tidyverse.org/}{glue package}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{tibble::tibble(foo = 1)
 #> # A tibble: 1 x 1
 #>     foo
 #>   <dbl>

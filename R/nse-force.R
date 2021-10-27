@@ -361,11 +361,16 @@ NULL
 #' [defuses][topic-defuse] `arg` and transforms the expression to a
 #' string with [as_label()].
 #'
-#' In dynamic dots, `{` is allowed. In `englue()` you must use `{{`.
-#' Use `glue::glue()` for simple interpolation.
+#' In dynamic dots, using only `{` is allowed. In `englue()` you must
+#' use `{{` at least once. Use `glue::glue()` for simple
+#' interpolation.
 #'
 #' Before using `englue()` in a package, first ensure that glue is
 #' installed by adding it to your `Imports:` section.
+#'
+#' ```r
+#' usethis::use_package("glue", "Imports")
+#' ```
 #'
 #' @examples
 #' g <- function(var) englue("{{ var }}")

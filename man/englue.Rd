@@ -23,11 +23,13 @@ string using the default name operation.
 \link[=topic-defuse]{defuses} \code{arg} and transforms the expression to a
 string with \code{\link[=as_label]{as_label()}}.
 
-In dynamic dots, \verb{\{} is allowed. In \code{englue()} you must use \verb{\{\{}.
-Use \code{glue::glue()} for simple interpolation.
+In dynamic dots, using only \verb{\{} is allowed. In \code{englue()} you must
+use \verb{\{\{} at least once. Use \code{glue::glue()} for simple
+interpolation.
 
 Before using \code{englue()} in a package, first ensure that glue is
-installed by adding it to your \verb{Imports:} section.
+installed by adding it to your \verb{Imports:} section.\if{html}{\out{<div class="sourceCode r">}}\preformatted{usethis::use_package("glue", "Imports")
+}\if{html}{\out{</div>}}
 }
 \examples{
 g <- function(var) englue("{{ var }}")
