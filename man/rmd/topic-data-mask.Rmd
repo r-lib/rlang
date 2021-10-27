@@ -14,7 +14,7 @@ mean(cyl + am)
 with(mtcars, mean(cyl + am))
 ```
 
-While data-masking makes it easy to program interactively with data frames, it makes it harder to create functions. Passing data-masked arguments to functions requires injection with the [embracing operator][embrace-operator] `{{` or, in more complex cases, the [injection operator][injection-operator] `!!`.
+While data-masking makes it easy to program interactively with data frames, it makes it harder to create functions. Passing data-masked arguments to functions requires injection with the embracing operator [`{{`][embrace-operator] or, in more complex cases, the injection operator [`!!`].
 
 
 # Why does data-masking require embracing and injection?
