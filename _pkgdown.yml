@@ -94,6 +94,9 @@ reference:
       - topic-defuse
       - topic-inject
       - topic-quosure
+  - subtitle: Guides
+    contents:
+      - topic-multiple-columns
   - subtitle: Notes
     contents:
       - topic-embrace-constants

@@ -61,6 +61,13 @@ NULL
 #' @name topic-double-evaluation
 NULL
 
+#' Taking multiple columns without `...`
+#'
+#' @includeRmd man/rmd/topic-multiple-columns.Rmd description
+#'
+#' @name topic-multiple-columns
+NULL
+
 
 # Notes -------------------------------------------------------------------
 
