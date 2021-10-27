@@ -59,7 +59,7 @@
 #'
 #' Injection is also useful for modifying parts of a [defused
 #' expression][topic-defuse]. In the following example we use the
-#' [symbolise-and-inject pattern][topic-data-mask-programming] to
+#' [symbolise-and-inject pattern][topic-metaprogramming] to
 #' inject a column name inside a data-masked expression.
 #'
 #' ```{r, comment = "#>", collapse = TRUE}
@@ -88,7 +88,7 @@
 #' ```
 #'
 #' Second, the embrace operator [`{{`][embrace-operator] makes the
-#' [defuse-and-inject pattern][topic-data-mask-programming] easier to
+#' [defuse-and-inject pattern][topic-metaprogramming] easier to
 #' learn and use.
 #'
 #' ```r
