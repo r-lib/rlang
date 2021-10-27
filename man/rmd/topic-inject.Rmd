@@ -133,6 +133,13 @@ rbind2 <- function(...) {
 There are two things going on here. We collect `...` with [list2()] so that the callers of `rbind2()` may use `!!!`. And we use `inject()` so that `rbind2()` itself may use `!!!` to splice the list of arguments passed to `rbind2()`.
 
 
+# Injection in other languages
+
+Injection is known as __quasiquotation__ in other programming languages and in computer science. `expr()` is similar to a quasiquotation operator and `!!` is the unquote operator. These terms have a rich history in Lisp languages, and live on in modern languages like [Julia](https://docs.julialang.org/en/v1/manual/metaprogramming/) and [Racket](https://docs.racket-lang.org/reference/quasiquote.html). In base R, quasiquotation is performed with [bquote()].
+
+The main difference between rlang and other languages is that quasiquotation is often implicit instead of explicit. You can use injection operators in any defusing / quoting function (unless that function defuses its argument with a special operator like [enquo0()]). This is not the case in lisp languages for example where injection is explicit. The caller uses the backquote operator to explicitly enable unquote operators.
+
+
 # See also
 
 - [What happens if I use injection operators out of context?][topic-inject-out-of-context]

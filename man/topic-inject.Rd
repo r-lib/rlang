@@ -168,6 +168,24 @@ the list of arguments passed to \code{rbind2()}.
 }
 }
 
+\section{Injection in other languages}{
+Injection is known as \strong{quasiquotation} in other programming languages
+and in computer science. \code{expr()} is similar to a quasiquotation
+operator and \verb{!!} is the unquote operator. These terms have a rich
+history in Lisp languages, and live on in modern languages like
+\href{https://docs.julialang.org/en/v1/manual/metaprogramming/}{Julia} and
+\href{https://docs.racket-lang.org/reference/quasiquote.html}{Racket}. In
+base R, quasiquotation is performed with \code{\link[=bquote]{bquote()}}.
+
+The main difference between rlang and other languages is that
+quasiquotation is often implicit instead of explicit. You can use
+injection operators in any defusing / quoting function (unless that
+function defuses its argument with a special operator like
+\code{\link[=enquo0]{enquo0()}}). This is not the case in lisp languages for
+example where injection is explicit. The caller uses the backquote
+operator to explicitly enable unquote operators.
+}
+
 \section{See also}{
 \itemize{
 \item \link[=topic-inject-out-of-context]{What happens if I use injection operators out of context?}
