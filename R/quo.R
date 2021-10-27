@@ -52,7 +52,8 @@
 #'
 #' @name quosure
 #' @seealso [quo()] for creating quosures by quotation; [as_quosure()]
-#'   and [new_quosure()] for constructing quosures manually.
+#'   and [new_quosure()] for assembling quosures from components.
+#'   [What are quosures][topic-quosure] for an overview.
 #' @examples
 #' quo <- quo(my_quosure)
 #' quo
@@ -259,27 +260,16 @@ on_load({
 #' Coerce object to quosure
 #'
 #' @description
-#'
 #' While `new_quosure()` wraps any R object (including expressions,
 #' formulas, or other quosures) into a quosure, `as_quosure()`
 #' converts formulas and quosures and does not double-wrap.
-#'
-#'
-#' @section Life cycle:
-#'
-#' - `as_quosure()` now requires an explicit default environment for
-#'   creating quosures from symbols and calls.
-#'
-#' - `as_quosureish()` is deprecated as of rlang 0.2.0. This function
-#'   assumes that quosures are formulas which is currently true but
-#'   might not be in the future.
 #'
 #' @param x An object to convert. Either an [expression][is_expression] or a
 #'   formula.
 #' @param env The environment in which the expression should be
 #'   evaluated. Only used for symbols and calls. This should typically
 #'   be the environment in which the expression was created.
-#' @seealso [quo()], [is_quosure()]
+#' @seealso [quo()], [is_quosure()], [new_quosure()]
 #' @export
 #' @examples
 #' # as_quosure() converts expressions or any R object to a validly

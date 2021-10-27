@@ -80,8 +80,8 @@ The role of quosures is to let R know that `check_numeric()` should be found in 
 
 A quosure carries two things:
 
-- An expression.
-- An environment.
+- An expression (get it with [quo_get_expr()]).
+- An environment (get it with [quo_get_env()]).
 
 And implements these behaviours:
 
@@ -93,6 +93,17 @@ And implements these behaviours:
 
 - It is _maskable_. If evaluated in a data mask (currently only masks created with [eval_tidy()] or [new_data_mask()]), the mask comes first in scope before the quosure environment.
 
-  Conceptually, a quosure inherits from two chains of environments, the data mask and the user environment. In practice rlang implements this special scoping by rechaining the top of the datamask to the quosure environment currently under evaluation.
+  Conceptually, a quosure inherits from two chains of environments, the data mask and the user environment. In practice rlang implements this special scoping by rechaining the top of the data mask to the quosure environment currently under evaluation.
 
 There are similarities between promises (the ones R uses to implement lazy evaluation, not the async expressions from the promises package) and quosures. One important difference is that promises are only evaluated once and cache the result for subsequent evaluation. Quosures behave more like calls and can be evaluated repeatedly, potentially in a different data mask. This property is useful to implement split-apply-combine evaluations.
+
+
+# See also
+
+- [enquo()] and [enquos()] to defuse function arguments as quosures. This is the main way quosures are created.
+
+- [quo()] which is like [expr()] but wraps in a quosure. Usually it is not needed to wrap local expressions yourself.
+
+- [quo_get_expr()] and [quo_get_env()] to access quosure components.
+
+- [new_quosure()] and [as_quosure()] to assemble a quosure from components.

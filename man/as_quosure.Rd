@@ -24,17 +24,6 @@ While \code{new_quosure()} wraps any R object (including expressions,
 formulas, or other quosures) into a quosure, \code{as_quosure()}
 converts formulas and quosures and does not double-wrap.
 }
-\section{Life cycle}{
-
-\itemize{
-\item \code{as_quosure()} now requires an explicit default environment for
-creating quosures from symbols and calls.
-\item \code{as_quosureish()} is deprecated as of rlang 0.2.0. This function
-assumes that quosures are formulas which is currently true but
-might not be in the future.
-}
-}
-
 \examples{
 # as_quosure() converts expressions or any R object to a validly
 # scoped quosure:
@@ -50,5 +39,5 @@ as_quosure(~foo)
 try(as_quosure(quote(var)))
 }
 \seealso{
-\code{\link[=quo]{quo()}}, \code{\link[=is_quosure]{is_quosure()}}
+\code{\link[=quo]{quo()}}, \code{\link[=is_quosure]{is_quosure()}}, \code{\link[=new_quosure]{new_quosure()}}
 }

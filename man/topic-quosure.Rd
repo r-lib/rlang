@@ -97,8 +97,8 @@ the global environment.
 \section{Technical description of quosures}{
 A quosure carries two things:
 \itemize{
-\item An expression.
-\item An environment.
+\item An expression (get it with \code{\link[=quo_get_expr]{quo_get_expr()}}).
+\item An environment (get it with \code{\link[=quo_get_env]{quo_get_env()}}).
 }
 
 And implements these behaviours:
@@ -117,7 +117,7 @@ before the quosure environment.
 
 Conceptually, a quosure inherits from two chains of environments,
 the data mask and the user environment. In practice rlang implements
-this special scoping by rechaining the top of the datamask to the
+this special scoping by rechaining the top of the data mask to the
 quosure environment currently under evaluation.
 }
 
@@ -128,5 +128,19 @@ evaluated once and cache the result for subsequent evaluation. Quosures
 behave more like calls and can be evaluated repeatedly, potentially in a
 different data mask. This property is useful to implement
 split-apply-combine evaluations.
+}
+
+\section{See also}{
+\itemize{
+\item \code{\link[=enquo]{enquo()}} and \code{\link[=enquos]{enquos()}} to defuse function
+arguments as quosures. This is the main way quosures are created.
+\item \code{\link[=quo]{quo()}} which is like \code{\link[=expr]{expr()}} but wraps in a
+quosure. Usually it is not needed to wrap local expressions
+yourself.
+\item \code{\link[=quo_get_expr]{quo_get_expr()}} and
+\code{\link[=quo_get_env]{quo_get_env()}} to access quosure components.
+\item \code{\link[=new_quosure]{new_quosure()}} and \code{\link[=as_quosure]{as_quosure()}}
+to assemble a quosure from components.
+}
 }
 

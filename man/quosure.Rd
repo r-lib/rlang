@@ -133,5 +133,6 @@ quo_is_missing(fn())
 }
 \seealso{
 \code{\link[=quo]{quo()}} for creating quosures by quotation; \code{\link[=as_quosure]{as_quosure()}}
-and \code{\link[=new_quosure]{new_quosure()}} for constructing quosures manually.
+and \code{\link[=new_quosure]{new_quosure()}} for assembling quosures from components.
+\link[=topic-quosure]{What are quosures} for an overview.
 }
