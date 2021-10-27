@@ -10,7 +10,8 @@ tracking capabilities of quosures is important when interfacing
 \link[=topic-data-mask]{data-masking functions} together because the
 functions might come from two unrelated environments, like two different
 packages.
-
+}
+\section{Blending environments}{
 Let’s take an example where the R user calls the function
 \code{summarise_bmi()} from the foo package to summarise a data frame with
 statistics of a BMI value. Because the \code{height} variable of their data
@@ -94,6 +95,102 @@ The role of quosures is to let R know that \code{check_numeric()} should be
 found in the bar package, \code{bmi()} in the foo package, and \code{div100()} in
 the global environment.
 }
+
+\section{When should I create quosures?}{
+As a tidyverse user you generally don’t need to worry about quosures
+because \verb{\{\{} and \code{...} will create them for you. Introductory texts like
+\href{https://dplyr.tidyverse.org/articles/programming.html}{Programming with dplyr} or the
+\link[=topic-data-mask-programming]{standard data-mask programming patterns}
+don’t even mention the term. In more complex cases you might need to
+create quosures with \code{\link[=enquo]{enquo()}} or \code{\link[=enquos]{enquos()}}
+(even though you generally don’t need to know or care that these
+functions return quosures). In this section, we explore when quosures
+are necessary in these more advanced applications.
+\subsection{Foreign and local expressions}{
+
+As a rule of thumb, quosures are only needed for arguments defused with
+\code{\link[=enquo]{enquo()}} or \code{\link[=enquos]{enquos()}} (or with
+\code{\link[=embrace-operator]{\{\{}} which calls \code{enquo()} implicitly):\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function(var) \{
+  var <- enquo(var)
+  their_function(!!var)
+\}
+
+# Equivalently
+my_function(var) \{
+  their_function(\{\{ var \}\})
+\}
+}\if{html}{\out{</div>}}
+
+Wrapping defused arguments in quosures is needed because expressions
+supplied as argument comes from a different environment, the environment
+of your user. For local expressions created in your function, you
+generally don’t need to create quosures:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
+  # `expr()` is sufficient, no need for `quo()`
+  expr <- expr(mean(\{\{ var \}\}))
+  dplyr::summarise(data, !!expr)
+\}
+
+my_mean(mtcars, cyl)
+#> # A tibble: 1 x 1
+#>   `mean(cyl)`
+#>         <dbl>
+#> 1        6.19
+}\if{html}{\out{</div>}}
+
+Using \code{\link[=quo]{quo()}} instead of \code{\link[=expr]{expr()}} would have worked
+too but it is superfluous because \code{dplyr::summarise()}, which uses
+\code{\link[=enquos]{enquos()}}, is already in charge of wrapping your expression
+within a quosure scoped in your environment.
+
+The same applies if you evaluate manually. By default,
+\code{\link[=eval]{eval()}} and \code{\link[=eval_tidy]{eval_tidy()}} capture your
+environment:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
+  expr <- expr(mean(\{\{ var \}\}))
+  eval_tidy(expr, data)
+\}
+
+my_mean(mtcars, cyl)
+#> [1] 6.1875
+}\if{html}{\out{</div>}}
+}
+
+\subsection{External defusing}{
+
+An exception to this rule of thumb (wrap foreign expressions in
+quosures, not your own expressions) arises when your function takes
+multiple expressions in a list instead of \code{...}. The preferred approach
+in that case is to take a tidy selection so that users can combine
+multiple columns using \code{c()}. If that is not possible, you can take a
+list of externally defused expressions:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_group_by <- function(data, vars) \{
+  stopifnot(is_quosures(vars))
+  data \%>\% dplyr::group_by(!!!vars)
+\}
+
+mtcars \%>\% my_group_by(dplyr::vars(cyl, am))
+}\if{html}{\out{</div>}}
+
+In this pattern, \code{dplyr::vars()} defuses expressions externally. It
+creates a list of quosures because the expressions are passed around
+from function to function like regular arguments. In fact,
+\code{dplyr::vars()} and \code{ggplot2::vars()} are simple aliases of
+\code{\link[=quos]{quos()}}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{dplyr::vars(cyl, am)
+#> <list_of<quosure>>
+#> 
+#> [[1]]
+#> <quosure>
+#> expr: ^cyl
+#> env:  global
+#> 
+#> [[2]]
+#> <quosure>
+#> expr: ^am
+#> env:  global
+}\if{html}{\out{</div>}}
+
+For more information about external defusing, see \link[=topic-multiple-columns]{Taking multiple columns without …}.
+}
+}
+
 \section{Technical description of quosures}{
 A quosure carries two things:
 \itemize{
