@@ -15,19 +15,51 @@ home:
 
 navbar:
   structure:
-    left:  [home, reference, articles]
+    left:  [home, reference, overviews, guides, notes]
     right: [news, github]
   components:
-    articles:
-      text: Articles
+    overviews:
+      text: Overviews
       menu:
       - text: Tidy evaluation
       - text: Programming patterns for defused arguments
         href: reference/topic-data-mask-programming.html
       - text: What is data masking and why do I need to embrace?
         href: reference/topic-data-mask.html
+      - text: Metaprogramming
+      - text: Metaprogramming patterns for data-masked arguments
+        href: reference/topic-metaprogramming.html
+      - text: Defusing R expressions
+        href: reference/topic-defuse.html
+      - text: Injecting with `!!`, `!!!`, and glue syntax
+        href: reference/topic-inject.html
       - text: What are quosures and when are they needed?
         href: reference/topic-quosure.html
+
+    guides:
+      text: Guides
+      menu:
+      - text: Tidy evaluation
+      - text: The data mask ambiguity
+        href: reference/topic-data-mask-ambiguity.html
+      - text: The double evaluation problem
+        href: reference/topic-double-evaluation.html
+      - text: Metaprogramming
+      - text: Taking multiple columns without `...`
+        href: reference/topic-multiple-columns.html
+    
+    notes:
+      text: Notes
+      menu:
+      - text: Tidy evaluation
+      - text: What happens if I use injection operators out of context?
+        href: reference/topic-inject-out-of-context.html
+      - text: Does `{{` work on regular objects?
+        href: reference/topic-embrace-non-args.html
+      - text: Metaprogramming
+      - text: Why are strings and other constants enquosed in the empty environment?
+        href: reference/topic-embrace-constants.html
+
     news:
       text: News
       menu:
