@@ -2,7 +2,7 @@
 % Please edit documentation in R/topic-nse.R
 \name{topic-data-mask-programming}
 \alias{topic-data-mask-programming}
-\title{Programming patterns for data-masked arguments}
+\title{Data mask programming patterns}
 \description{
 \link[=topic-data-mask]{Data-masking} functions require special programming patterns when used inside other functions. In this topic we'll review and compare the different patterns that can be used to solve specific problems.
 
@@ -21,13 +21,14 @@ Two main considerations determine which programming pattern you need to wrap a d
 \item What behaviour should \emph{your} function implement?
 }
 
-There are two broad approaches:
+Depending on the answers to these questions, you can choose between these approaches:
 \itemize{
 \item The \strong{forwarding patterns} with which your function inherits the behaviour of the function it interfaces with.
 \item The \strong{name patterns} with which your function takes strings or character vectors of column names.
+\item The \strong{bridge patterns} with which you change the behaviour of an argument instead of inheriting it.
 }
 
-How you implement forwarding and name patterns depends on the kind of arguments your function takes. Different approaches are needed for single named arguments and multiple arguments in \code{...}.
+You will also need to use different solutions for single named arguments than for multiple arguments in \code{...}.
 }
 
 \section{Argument behaviours}{
@@ -35,23 +36,23 @@ In a regular function, arguments can be defined in terms of a \emph{type} of obj
 \itemize{
 \item Data-masked expressions (base): E.g. \code{\link[=transform]{transform()}}, \code{\link[=with]{with()}}.  Expressions may refer to the columns of the supplied data frame.
 \item Data-masked expressions (tidy eval): E.g. \code{\link[dplyr:mutate]{dplyr::mutate()}}, \code{\link[ggplot2:aes]{ggplot2::aes()}}. Same as base data-masking but with tidy eval features enabled. This includes \link[=topic-inject]{injection operators} such as \code{\link[=embrace-operator]{\{\{}} and \code{\link[=injection-operator]{!!}} and the \code{\link{.data}} and \code{\link{.env}} pronouns.
-\item Data masked symbols: Same as data-masked arguments but the supplied expressions must be simple column names. This often simplifies things, for instance this is an easy way of avoiding issues of \link[=topic-double-evaluation]{double evaluation}.
-\item \link[tidyselect:language]{Tidy selections}: E.g. \code{\link[dplyr:select]{dplyr::select()}}, \code{\link[tidyr:pivot_longer]{tidyr::pivot_longer()}}. This is an alternative to data-masking that supports selection helpers like \code{starts_with()} or \code{all_of()}, and implements special behaviour for operators like \code{c()}, \code{|} and \code{&}.
+\item Data-masked symbols: Same as data-masked arguments but the supplied expressions must be simple column names. This often simplifies things, for instance this is an easy way of avoiding issues of \link[=topic-double-evaluation]{double evaluation}.
+\item \link[tidyselect:language]{Tidy selections}: E.g. \code{\link[dplyr:select]{dplyr::select()}}, \code{\link[tidyr:pivot_longer]{tidyr::pivot_longer()}}. This is an alternative to data masking that supports selection helpers like \code{starts_with()} or \code{all_of()}, and implements special behaviour for operators like \code{c()}, \code{|} and \code{&}.
 
-Unlike data-masking, tidy selection is a domain-specific language. There is in fact no masking at all. Expressions are either evaluated in the data frame (e.g. \code{c(cyl, am)}), or in the user environment (e.g. \code{all_of()}, \code{starts_with()}, and any other expressions). This has implications for inheritance of argument behaviour as we will see below.
+Unlike data masking, tidy selection is an interpreted dialect. There is in fact no masking at all. Expressions are either interpreted in the context of the data frame (e.g. \code{c(cyl, am)} which stands for the union of the columns \code{cyl} and \code{am}), or evaluated in the user environment (e.g. \code{all_of()}, \code{starts_with()}, and any other expressions). This has implications for inheritance of argument behaviour as we will see below.
 \item \link[=dots_dynamic]{Dynamic dots}: These may be data-masked arguments, tidy selections, or just regular arguments. Dynamic dots support injection of multiple arguments with the \code{\link[=splice-operator]{!!!}} operator as well as name injection with \link[=glue-operator]{glue} operators.
 }
 
-To let users know about the capabilities of your function arguments, document them with the following tags, depending on which set of semantics they inherit from:\preformatted{@param foo <[`data-masking`][dplyr::args_data_masking]> What `foo` does.
+To let users know about the capabilities of your function arguments, document them with the following tags, depending on which set of semantics they inherit from:\preformatted{@param foo <[`data-masked`][dplyr::dplyr_data_masking]> What `foo` does.
 
-@param bar <[`tidy-select`][dplyr::args_tidy_select]> What `bar` does.
+@param bar <[`tidy-select`][dplyr::dplyr_tidy_select]> What `bar` does.
 
-@param ... <[`dynamic-dots`][rlang::dots_dynamic]> What these dots do.
+@param ... <[`dynamic-dots`][rlang::dyn-dots]> What these dots do.
 }
 }
 
 \section{Forwarding patterns}{
-With the forwarding patterns, the arguments of your function behave the same way as the data-masked arguments they are passed in.
+With the forwarding patterns, arguments inherit the behaviour of the data-masked arguments they are passed in.
 \subsection{Embrace with \verb{\{\{}}{
 
 The embrace operator \code{\link[=embrace-operator]{\{\{}} is a forwarding syntax for single arguments. You can forward an argument in data-masked context:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_summarise <- function(data, var) \{
@@ -107,29 +108,19 @@ Inside a tidy selection, \code{c()} is not a vector concatenator but a selection
 }
 
 \section{Names patterns}{
-The names patterns provide an escape hatch for \link[=topic-defuse]{defused arguments} that makes it easy to program with strings and character vectors containing the names of data-variables.
-
-Whereas the forwarding patterns are exclusively used within a function, the names patterns can be used anywhere. In a script, you can loop over a character vector with \code{for} or \code{lapply()} and use the \code{\link{.data}} pattern to connect a name to its data-variable, or directly supply the whole vector to \code{all_of()}. In a function, using the names patterns on function arguments lets users supply regular data-variable names without the complications that come with data-masking.
+With the names patterns you refer to columns by name with strings or character vectors stored in env-variables. Whereas the forwarding patterns are exclusively used within a function to pass \emph{arguments}, the names patterns can be used anywhere.
+\itemize{
+\item In a script, you can loop over a character vector with \code{for} or \code{lapply()} and use the \code{\link{.data}} pattern to connect a name to its data-variable. A vector can also be supplied all at once to the tidy select helper \code{all_of()}.
+\item In a function, using the names patterns on function arguments lets users supply regular data-variable names without any of the complications that come with data-masking.
+}
 \subsection{Subsetting the \code{.data} pronoun}{
 
-The \code{\link{.data}} pronoun is a tidy eval feature that is enabled in all data-masked arguments, just like \code{\link[=embrace-operator]{\{\{}}. The pronoun represents the data mask and can be subsetted with \code{[[} and \code{$}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{mtcars \%>\% dplyr::summarise(mean = mean(cyl))
-#> # A tibble: 1 x 1
-#>    mean
-#>   <dbl>
-#> 1  6.19
+The \code{\link{.data}} pronoun is a tidy eval feature that is enabled in all data-masked arguments, just like \code{\link[=embrace-operator]{\{\{}}. The pronoun represents the data mask and can be subsetted with \code{[[} and \code{$}. These three statements are equivalent:\if{html}{\out{<div class="sourceCode r">}}\preformatted{mtcars \%>\% dplyr::summarise(mean = mean(cyl))
 
 mtcars \%>\% dplyr::summarise(mean = mean(.data$cyl))
-#> # A tibble: 1 x 1
-#>    mean
-#>   <dbl>
-#> 1  6.19
 
 var <- "cyl"
 mtcars \%>\% dplyr::summarise(mean = mean(.data[[var]]))
-#> # A tibble: 1 x 1
-#>    mean
-#>   <dbl>
-#> 1  6.19
 }\if{html}{\out{</div>}}
 
 The \code{.data} pronoun can be subsetted in loops:\if{html}{\out{<div class="sourceCode r">}}\preformatted{vars <- c("cyl", "am")
@@ -206,15 +197,15 @@ mtcars \%>\% tidyr::pivot_longer(all_of(vars))
 #> # ... with 60 more rows
 }\if{html}{\out{</div>}}
 
-If the function does not take a tidy selection, it might be possible to use a \emph{bridge pattern}. This option is presented in the bridge section below. If a bridge is impossible or inconvenient, a little metaprogramming with the \link[=TODO]{symbolise-and-inject pattern} can help.
+If the function does not take a tidy selection, it might be possible to use a \emph{bridge pattern}. This option is presented in the bridge section below. If a bridge is impossible or inconvenient, a little metaprogramming with the \link[=topic-metaprogramming]{symbolise-and-inject pattern} can help.
 }
 }
 
 \section{Bridge patterns}{
-Sometimes the function you would like to wrap does not implement the behaviour you would like to give to an argument. To work around this may require a little thought since there is no systematic way of turning one behaviour into another. The general technique consists in forwarding the arguments inside a context that implements the behaviour that you want. Then, find a way to bridge the result to the target verb or function.
+Sometimes the function you are calling does not implement the behaviour you would like to give to the arguments of your function. To work around this may require a little thought since there is no systematic way of turning one behaviour into another. The general technique consists in forwarding the arguments inside a context that implements the behaviour that you want. Then, find a way to bridge the result to the target verb or function.
 \subsection{\code{across()} as a selection to data-mask bridge}{
 
-dplyr 1.0 added support for tidy selections in all verbs via \code{across()}. This function is normally used for mapping over columns but can also be used without action to perform a simple selection. For instance, if you'd like to pass an argument to \code{group_by()} with a tidy-selection interface instead of a data-masked one, use \code{across()} as a bridge:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_group_by <- function(data, var) \{
+dplyr 1.0 added support for tidy selections in all verbs via \code{across()}. This function is normally used for mapping over columns but can also be used to perform a simple selection. For instance, if you'd like to pass an argument to \code{group_by()} with a tidy-selection interface instead of a data-masked one, use \code{across()} as a bridge:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_group_by <- function(data, var) \{
   data \%>\% dplyr::group_by(across(\{\{ var \}\}))
 \}
 
@@ -269,7 +260,7 @@ mtcars \%>\% my_pivot_longer(cyl, am = am * 100)
 \section{Transformation patterns}{
 \subsection{Named inputs versus \code{...}}{
 
-In the case of a named argument, we can transform the embraced input simply by surrounding it in more R code. For instance, the \code{my_summarise()} function is not exactly useful compared to just calling \code{summarise()}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_summarise <- function(data, var) \{
+In the case of a named argument, transformation is easy. We simply surround the embraced input it in R code. For instance, the \code{my_summarise()} function is not exactly useful compared to just calling \code{summarise()}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_summarise <- function(data, var) \{
   data \%>\% dplyr::summarise(\{\{ var \}\})
 \}
 }\if{html}{\out{</div>}}
