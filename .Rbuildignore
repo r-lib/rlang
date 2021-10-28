@@ -16,3 +16,4 @@
 .*\.dir-locals\.el$
 ^\.github/workflows/R-CMD-check\.yaml$
 ^LICENSE\.md$
+^pkgdown$
