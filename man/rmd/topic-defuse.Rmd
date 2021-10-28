@@ -33,7 +33,7 @@ eval(e, mtcars)
 
 # Do I need to know about defused expressions?
 
-As a tidyverse user you will rarely need to defuse expressions manually with `expr()`, and even more rarely need to resume evaluation with [eval()] or [eval_tidy()]. Instead, you call [data-masking functions][topic-data-mask] which take care of defusing your arguments and resuming them in the context of a data mask.
+As a tidyverse user you will rarely need to defuse expressions manually with `expr()`, and even more rarely need to resume evaluation with [eval()] or [eval_tidy()]. Instead, you call [data-masking][topic-data-mask] functions which take care of defusing your arguments and resuming them in the context of a data mask.
 
 ```{r, comment = "#>", collapse = TRUE}
 mtcars %>% dplyr::summarise(
@@ -51,9 +51,8 @@ my_mean <- function(data, var) {
 
 Read more about this in:
 
-- [What is data-masking and why do I need to embrace?][topic-data-mask]
-
-- [Data mask programming patterns][topic-data-mask-programming]
+- `r links$topic_data_mask`
+- `r links$topic_data_mask_programming`
 
 
 # The booby trap analogy
@@ -136,7 +135,7 @@ There are two main ways to defuse expressions, to which correspond two functions
 
 # Defuse and inject
 
-One purpose for defusing evaluation of an expression is to interface with [data-masking functions][topic-data-mask] by injecting the expression back into another function with `!!`. This is the [defuse-and-inject pattern][topic-metaprogramming].
+One purpose for defusing evaluation of an expression is to interface with [data-masking][topic-data-mask] functions by injecting the expression back into another function with `!!`. This is the [defuse-and-inject pattern][topic-metaprogramming].
 
 ```r
 my_summarise <- function(data, arg) {
@@ -178,7 +177,7 @@ my_function(1 + 1)
 
 R needs information about the environment to properly evaluate argument expressions because they come from a different context than the current function. For instance when a function in your package calls `dplyr::mutate()`, the quosure environment indicates where all the private functions of your package are defined.
 
-Read more about the role of quosures in [What are quosures and when are they needed?][topic-quosure].
+Read more about the role of quosures in `r links$topic_quosure`.
 
 
 # Comparison with base R

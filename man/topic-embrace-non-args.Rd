@@ -4,8 +4,7 @@
 \alias{topic-embrace-non-args}
 \title{Does \verb{\{\{} work on regular objects?}
 \description{
-The \link[=embrace-operator]{embrace operator} \verb{\{\{} should be used
-exclusively with function arguments:\if{html}{\out{<div class="sourceCode r">}}\preformatted{fn <- function(arg) \{
+The \link[=embrace-operator]{embrace operator} \verb{\{\{} should be used exclusively with function arguments:\if{html}{\out{<div class="sourceCode r">}}\preformatted{fn <- function(arg) \{
   quo(foo(\{\{ arg \}\}))
 \}
 
@@ -26,17 +25,11 @@ fn(1 + 1)
 #> env:  0x7ffd8a633398
 }\if{html}{\out{</div>}}
 
-In that case, \verb{\{\{} captures the \emph{value} of the expression instead of a
-defused expression. That’s because only function arguments can be
-defused.
+In that case, \verb{\{\{} captures the \emph{value} of the expression instead of a defused expression. That's because only function arguments can be defused.
 
-Note that this issue also applies to \code{\link[=enquo]{enquo()}} (on which \verb{\{\{}
-is based).
+Note that this issue also applies to \code{\link[=enquo]{enquo()}} (on which \verb{\{\{} is based).
 }
 \section{Why is this not an error?}{
-Ideally we would have made \verb{\{\{} on regular objects an error. However
-this is not possible because in compiled R code it is not always
-possible to distinguish a regular variable from a function argument. See
-\link[=topic-embrace-constants]{Why are strings and other constants enquosed in the empty environment?} for more about this.
+Ideally we would have made \verb{\{\{} on regular objects an error.  However this is not possible because in compiled R code it is not always possible to distinguish a regular variable from a function argument. See \link[=topic-embrace-constants]{Why are strings and other constants enquosed in the empty environment?} for more about this.
 }
 

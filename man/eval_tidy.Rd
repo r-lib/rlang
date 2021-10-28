@@ -39,7 +39,7 @@ These pronouns lets you be explicit about where to find
 values and throw errors if you try to access non-existent values.
 }
 
-See also \link[=topic-data-mask]{What is data-masking}.
+See also \link[=topic-data-mask]{What is data-masking and why do I need to embrace with \{\{?}.
 }
 \section{Data masking}{
 

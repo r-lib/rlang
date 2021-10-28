@@ -30,7 +30,8 @@ TODO! Flesh out.
 symbols.
 \item \code{data_sym()} and \code{data_syms()} create calls of the form
 \code{.data$foo} instead of symbols. Subsetting the \code{\link{.data}} pronoun
-is more robust when you expect a data-variable. See \link[=topic-data-mask-ambiguity]{The data mask ambiguity}.
+is more robust when you expect a data-variable. See
+\link[=topic-data-mask-ambiguity]{The data mask ambiguity}.
 }
 }
 \examples{

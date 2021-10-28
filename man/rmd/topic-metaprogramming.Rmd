@@ -3,7 +3,7 @@
 
 The patterns covered in this article rely on _metaprogramming_ the ability of creating, defusing, and expanding R expressions. A good place to start if you're new to programming on the language is the [Metaprogramming chapter](https://adv-r.hadley.nz/metaprogramming.html) of the advanced R book.
 
-If you haven't already, read the [data mask programming patterns topic][topic-data-mask-programming] which covers simpler patterns that do not require as much theory to get up to speed.
+If you haven't already, read `r links$topic_data_mask_programming`. This article covers simpler patterns that do not require as much theory to get up to speed.
 
 
 # Forwarding patterns
@@ -88,7 +88,7 @@ More complicated defuse-and-inject patterns are explored in the Transformation p
 
 The symbolise-and-inject pattern is a fallback names pattern for cases where `across(all_of())` is not supported. It consists in creating [defused expressions][topic-defuse] that refer to the data-variables represented in the names vector. These are then injected in the data mask context.
 
-You can symbolise a character vector with [syms()] or [data_syms()]. Simple symbols returned by `syms()` work in a wider variety of cases (e.g. with base functions) but we'll use `data_syms()` as it is more robust (see [Data mask ambiguity][topic-data-mask-ambiguity]). It creates calls that subset the [`.data`] pronoun. Compare:
+You can symbolise a character vector with [syms()] or [data_syms()]. Simple symbols returned by `syms()` work in a wider variety of cases (e.g. with base functions) but we'll use `data_syms()` as it is more robust (see `r links$topic_data_mask_ambiguity`). It creates calls that subset the [`.data`] pronoun. Compare:
 
 ```{r, comment = "#>", collapse = TRUE}
 vars <- c("cyl", "am")
@@ -115,7 +115,7 @@ In more complex case, you might want to add R code around the symbols. This requ
 
 ## `mutate()` as a data-mask to selection bridge
 
-This is a variant of the `transmute()` bridge pattern described in [Programming patterns][topic-data-mask-programming] that does not materialise `...` in the intermediate step. Instead, the `...` expressions are defused and inspected. Then the expressions, rather than the columns, are spliced in `mutate()`.
+This is a variant of the `transmute()` bridge pattern described in `r links$topic_data_mask_programming` that does not materialise `...` in the intermediate step. Instead, the `...` expressions are defused and inspected. Then the expressions, rather than the columns, are spliced in `mutate()`.
 
 ```r
 my_pivot_longer <- function(data, ...) {
@@ -219,7 +219,7 @@ inject(
 )
 ```
 
-See [The data mask ambiguity][topic-data-mask-ambiguity] for more information about this problem.
+See `r links$topic_data_mask_ambiguity` for more information about this problem.
 
 
 ## Data-masked `parse()` and `eval()`

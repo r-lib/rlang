@@ -4,19 +4,10 @@
 \alias{topic-quosure}
 \title{What are quosures and when are they needed?}
 \description{
-A quosure is a special type of \link[=topic-defuse]{defused expression} that
-keeps track of the original context the expression was written in. The
-tracking capabilities of quosures is important when interfacing
-\link[=topic-data-mask]{data-masking functions} together because the
-functions might come from two unrelated environments, like two different
-packages.
+A quosure is a special type of \link[=topic-defuse]{defused expression} that keeps track of the original context the expression was written in. The tracking capabilities of quosures is important when interfacing \link[=topic-data-mask]{data-masking} functions together because the functions might come from two unrelated environments, like two different packages.
 }
 \section{Blending environments}{
-Let’s take an example where the R user calls the function
-\code{summarise_bmi()} from the foo package to summarise a data frame with
-statistics of a BMI value. Because the \code{height} variable of their data
-frame is not in metres, they use a custom function \code{div100()} to rescale
-the column.\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Global environment of user
+Let's take an example where the R user calls the function \code{summarise_bmi()} from the foo package to summarise a data frame with statistics of a BMI value. Because the \code{height} variable of their data frame is not in metres, they use a custom function \code{div100()} to rescale the column.\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Global environment of user
 
 div100 <- function(x) \{
   x / 100
@@ -26,8 +17,7 @@ dplyr::starwars \%>\%
   foo::summarise_bmi(mass, div100(height))
 }\if{html}{\out{</div>}}
 
-The \code{summarise_bmi()} function is a data-masking function defined in the
-namespace of the foo package which looks like this:\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Namespace of package foo
+The \code{summarise_bmi()} function is a data-masking function defined in the namespace of the foo package which looks like this:\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Namespace of package foo
 
 bmi <- function(mass, height) \{
   mass / height^2
@@ -39,9 +29,7 @@ summarise_bmi <- function(data, mass, height) \{
 \}
 }\if{html}{\out{</div>}}
 
-The foo package uses the custom function \code{bmi()} to perform a
-computation on two vectors. It interfaces with \code{summarise_stats()}
-defined in bar, another package whose namespace looks like this:\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Namespace of package bar
+The foo package uses the custom function \code{bmi()} to perform a computation on two vectors. It interfaces with \code{summarise_stats()} defined in bar, another package whose namespace looks like this:\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Namespace of package bar
 
 check_numeric <- function(x) \{
   stopifnot(is.numeric(x))
@@ -60,57 +48,30 @@ summarise_stats <- function(data, var) \{
 \}
 }\if{html}{\out{</div>}}
 
-Again the package bar uses a custom function, \code{check_numeric()}, to
-validate its input. It also interfaces with data-masking functions from
-dplyr (using the \link[=topic-double-evaluation]{define-a-constant} trick to
-avoid issues of double evaluation).
+Again the package bar uses a custom function, \code{check_numeric()}, to validate its input. It also interfaces with data-masking functions from dplyr (using the \link[=topic-double-evaluation]{define-a-constant} trick to avoid issues of double evaluation).
 
-There are three data-masking functions simultaneously interfacing in
-this snippet:
+There are three data-masking functions simultaneously interfacing in this snippet:
 \itemize{
-\item At the bottom, \code{dplyr::transmute()} takes a data-masked input, and
-creates a data frame of a single column named \code{var}.
-\item Before this, \code{bar::summarise_stats()} takes a data-masked input
-inside \code{dplyr::transmute()} and checks it is numeric.
-\item And first of all, \code{foo::summarise_bmi()} takes two data-masked
-inputs inside \code{bar::summarise_stats()} and transforms them to a
-single BMI value.
+\item At the bottom, \code{dplyr::transmute()} takes a data-masked input, and creates a data frame of a single column named \code{var}.
+\item Before this, \code{bar::summarise_stats()} takes a data-masked input inside \code{dplyr::transmute()} and checks it is numeric.
+\item And first of all, \code{foo::summarise_bmi()} takes two data-masked inputs inside \code{bar::summarise_stats()} and transforms them to a single BMI value.
 }
 
-There is a fourth context, the global environment where
-\code{summarise_bmi()} is called with two columns defined in a data frame,
-one of which is transformed on the fly with the user function
-\code{div100()}.
+There is a fourth context, the global environment where \code{summarise_bmi()} is called with two columns defined in a data frame, one of which is transformed on the fly with the user function \code{div100()}.
 
-All of these contexts (except to some extent the global environment)
-contain functions that are private and invisible to foreign functions.
-Yet, the final expanded data-masked expression that is evaluated down
-the line looks like this (with caret characters indicating the quosure
-boundaries):\if{html}{\out{<div class="sourceCode r">}}\preformatted{dplyr::transmute(
+All of these contexts (except to some extent the global environment) contain functions that are private and invisible to foreign functions. Yet, the final expanded data-masked expression that is evaluated down the line looks like this (with caret characters indicating the quosure boundaries):\if{html}{\out{<div class="sourceCode r">}}\preformatted{dplyr::transmute(
   var = ^check_numeric(^bmi(^mass, ^div100(height)))
 )
 }\if{html}{\out{</div>}}
 
-The role of quosures is to let R know that \code{check_numeric()} should be
-found in the bar package, \code{bmi()} in the foo package, and \code{div100()} in
-the global environment.
+The role of quosures is to let R know that \code{check_numeric()} should be found in the bar package, \code{bmi()} in the foo package, and \code{div100()} in the global environment.
 }
 
 \section{When should I create quosures?}{
-As a tidyverse user you generally don’t need to worry about quosures
-because \verb{\{\{} and \code{...} will create them for you. Introductory texts like
-\href{https://dplyr.tidyverse.org/articles/programming.html}{Programming with dplyr} or the
-\link[=topic-data-mask-programming]{standard data-mask programming patterns}
-don’t even mention the term. In more complex cases you might need to
-create quosures with \code{\link[=enquo]{enquo()}} or \code{\link[=enquos]{enquos()}}
-(even though you generally don’t need to know or care that these
-functions return quosures). In this section, we explore when quosures
-are necessary in these more advanced applications.
+As a tidyverse user you generally don't need to worry about quosures because \verb{\{\{} and \code{...} will create them for you. Introductory texts like \href{https://dplyr.tidyverse.org/articles/programming.html}{Programming with dplyr} or the \link[=topic-data-mask-programming]{standard data-mask programming patterns} don't even mention the term. In more complex cases you might need to create quosures with \code{\link[=enquo]{enquo()}} or \code{\link[=enquos]{enquos()}} (even though you generally don't need to know or care that these functions return quosures). In this section, we explore when quosures are necessary in these more advanced applications.
 \subsection{Foreign and local expressions}{
 
-As a rule of thumb, quosures are only needed for arguments defused with
-\code{\link[=enquo]{enquo()}} or \code{\link[=enquos]{enquos()}} (or with
-\code{\link[=embrace-operator]{\{\{}} which calls \code{enquo()} implicitly):\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function(var) \{
+As a rule of thumb, quosures are only needed for arguments defused with \code{\link[=enquo]{enquo()}} or \code{\link[=enquos]{enquos()}} (or with \code{\link[=embrace-operator]{\{\{}} which calls \code{enquo()} implicitly):\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function(var) \{
   var <- enquo(var)
   their_function(!!var)
 \}
@@ -121,10 +82,7 @@ my_function(var) \{
 \}
 }\if{html}{\out{</div>}}
 
-Wrapping defused arguments in quosures is needed because expressions
-supplied as argument comes from a different environment, the environment
-of your user. For local expressions created in your function, you
-generally don’t need to create quosures:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
+Wrapping defused arguments in quosures is needed because expressions supplied as argument comes from a different environment, the environment of your user. For local expressions created in your function, you generally don't need to create quosures:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
   # `expr()` is sufficient, no need for `quo()`
   expr <- expr(mean(\{\{ var \}\}))
   dplyr::summarise(data, !!expr)
@@ -137,14 +95,9 @@ my_mean(mtcars, cyl)
 #> 1        6.19
 }\if{html}{\out{</div>}}
 
-Using \code{\link[=quo]{quo()}} instead of \code{\link[=expr]{expr()}} would have worked
-too but it is superfluous because \code{dplyr::summarise()}, which uses
-\code{\link[=enquos]{enquos()}}, is already in charge of wrapping your expression
-within a quosure scoped in your environment.
+Using \code{\link[=quo]{quo()}} instead of \code{\link[=expr]{expr()}} would have worked too but it is superfluous because \code{dplyr::summarise()}, which uses \code{\link[=enquos]{enquos()}}, is already in charge of wrapping your expression within a quosure scoped in your environment.
 
-The same applies if you evaluate manually. By default,
-\code{\link[=eval]{eval()}} and \code{\link[=eval_tidy]{eval_tidy()}} capture your
-environment:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
+The same applies if you evaluate manually. By default, \code{\link[=eval]{eval()}} and \code{\link[=eval_tidy]{eval_tidy()}} capture your environment:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
   expr <- expr(mean(\{\{ var \}\}))
   eval_tidy(expr, data)
 \}
@@ -156,12 +109,7 @@ my_mean(mtcars, cyl)
 
 \subsection{External defusing}{
 
-An exception to this rule of thumb (wrap foreign expressions in
-quosures, not your own expressions) arises when your function takes
-multiple expressions in a list instead of \code{...}. The preferred approach
-in that case is to take a tidy selection so that users can combine
-multiple columns using \code{c()}. If that is not possible, you can take a
-list of externally defused expressions:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_group_by <- function(data, vars) \{
+An exception to this rule of thumb (wrap foreign expressions in quosures, not your own expressions) arises when your function takes multiple expressions in a list instead of \code{...}. The preferred approach in that case is to take a tidy selection so that users can combine multiple columns using \code{c()}. If that is not possible, you can take a list of externally defused expressions:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_group_by <- function(data, vars) \{
   stopifnot(is_quosures(vars))
   data \%>\% dplyr::group_by(!!!vars)
 \}
@@ -169,11 +117,7 @@ list of externally defused expressions:\if{html}{\out{<div class="sourceCode r">
 mtcars \%>\% my_group_by(dplyr::vars(cyl, am))
 }\if{html}{\out{</div>}}
 
-In this pattern, \code{dplyr::vars()} defuses expressions externally. It
-creates a list of quosures because the expressions are passed around
-from function to function like regular arguments. In fact,
-\code{dplyr::vars()} and \code{ggplot2::vars()} are simple aliases of
-\code{\link[=quos]{quos()}}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{dplyr::vars(cyl, am)
+In this pattern, \code{dplyr::vars()} defuses expressions externally. It creates a list of quosures because the expressions are passed around from function to function like regular arguments. In fact, \code{dplyr::vars()} and \code{ggplot2::vars()} are simple aliases of \code{\link[=quos]{quos()}}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{dplyr::vars(cyl, am)
 #> <list_of<quosure>>
 #> 
 #> [[1]]
@@ -187,7 +131,7 @@ from function to function like regular arguments. In fact,
 #> env:  global
 }\if{html}{\out{</div>}}
 
-For more information about external defusing, see \link[=topic-multiple-columns]{Taking multiple columns without …}.
+For more information about external defusing, see \link[=topic-multiple-columns]{Taking multiple columns without ...}.
 }
 }
 
@@ -202,42 +146,22 @@ And implements these behaviours:
 \itemize{
 \item It is \emph{callable}. Evaluation produces a result.
 
-For historical reasons, \code{\link[base:eval]{base::eval()}} doesn’t
-support quosure evaluation. Quosures currently require
-\code{\link[=eval_tidy]{eval_tidy()}}. We would like to fix this limitation
-in the future.
+For historical reasons, \code{\link[base:eval]{base::eval()}} doesn't support quosure evaluation. Quosures currently require \code{\link[=eval_tidy]{eval_tidy()}}. We would like to fix this limitation in the future.
 \item It is \emph{hygienic}. It evaluates in the tracked environment.
-\item It is \emph{maskable}. If evaluated in a data mask (currently only masks
-created with \code{\link[=eval_tidy]{eval_tidy()}} or
-\code{\link[=new_data_mask]{new_data_mask()}}), the mask comes first in scope
-before the quosure environment.
+\item It is \emph{maskable}. If evaluated in a data mask (currently only masks created with \code{\link[=eval_tidy]{eval_tidy()}} or \code{\link[=new_data_mask]{new_data_mask()}}), the mask comes first in scope before the quosure environment.
 
-Conceptually, a quosure inherits from two chains of environments,
-the data mask and the user environment. In practice rlang implements
-this special scoping by rechaining the top of the data mask to the
-quosure environment currently under evaluation.
+Conceptually, a quosure inherits from two chains of environments, the data mask and the user environment. In practice rlang implements this special scoping by rechaining the top of the data mask to the quosure environment currently under evaluation.
 }
 
-There are similarities between promises (the ones R uses to implement
-lazy evaluation, not the async expressions from the promises package)
-and quosures. One important difference is that promises are only
-evaluated once and cache the result for subsequent evaluation. Quosures
-behave more like calls and can be evaluated repeatedly, potentially in a
-different data mask. This property is useful to implement
-split-apply-combine evaluations.
+There are similarities between promises (the ones R uses to implement lazy evaluation, not the async expressions from the promises package) and quosures. One important difference is that promises are only evaluated once and cache the result for subsequent evaluation. Quosures behave more like calls and can be evaluated repeatedly, potentially in a different data mask. This property is useful to implement split-apply-combine evaluations.
 }
 
 \section{See also}{
 \itemize{
-\item \code{\link[=enquo]{enquo()}} and \code{\link[=enquos]{enquos()}} to defuse function
-arguments as quosures. This is the main way quosures are created.
-\item \code{\link[=quo]{quo()}} which is like \code{\link[=expr]{expr()}} but wraps in a
-quosure. Usually it is not needed to wrap local expressions
-yourself.
-\item \code{\link[=quo_get_expr]{quo_get_expr()}} and
-\code{\link[=quo_get_env]{quo_get_env()}} to access quosure components.
-\item \code{\link[=new_quosure]{new_quosure()}} and \code{\link[=as_quosure]{as_quosure()}}
-to assemble a quosure from components.
+\item \code{\link[=enquo]{enquo()}} and \code{\link[=enquos]{enquos()}} to defuse function arguments as quosures. This is the main way quosures are created.
+\item \code{\link[=quo]{quo()}} which is like \code{\link[=expr]{expr()}} but wraps in a quosure. Usually it is not needed to wrap local expressions yourself.
+\item \code{\link[=quo_get_expr]{quo_get_expr()}} and \code{\link[=quo_get_env]{quo_get_env()}} to access quosure components.
+\item \code{\link[=new_quosure]{new_quosure()}} and \code{\link[=as_quosure]{as_quosure()}} to assemble a quosure from components.
 }
 }
 

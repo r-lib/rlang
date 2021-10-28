@@ -11,7 +11,7 @@
 TODO! Difference between \code{.data} and magrittr \code{.}
 
 The \code{.data} and \code{.env} pronouns make it explicit where to find
-objects when programming with \link[=topic-data-mask]{data masked}
+objects when programming with \link[=topic-data-mask]{data-masked}
 functions.\preformatted{m <- 10
 mtcars \%>\% mutate(disp = .data$disp * .env$m)
 }

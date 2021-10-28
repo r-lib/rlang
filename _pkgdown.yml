@@ -24,11 +24,11 @@ navbar:
       - text: Tidy evaluation
       - text: What is data-masking and why do I need to embrace with `{{`?
         href: reference/topic-data-mask.html
-      - text: Programming patterns for data-masked arguments
+      - text: Data mask programming patterns
         href: reference/topic-data-mask-programming.html
 
       - text: Metaprogramming
-      - text: Metaprogramming patterns for data-masked arguments
+      - text: Metaprogramming patterns
         href: reference/topic-metaprogramming.html
       - text: Defusing R expressions
         href: reference/topic-defuse.html

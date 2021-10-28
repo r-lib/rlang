@@ -43,7 +43,7 @@ my_mean <- function(data, var1, var2) {
 my_mean(mtcars, cyl, am)
 ```
 
-See [Data mask programming patterns][topic-data-mask-programming] to learn more about creating functions around data-masking functions.
+See `r links$topic_data_mask_programming` to learn more about creating functions around data-masking functions.
 
 
 # What does "masking" mean?
@@ -83,7 +83,7 @@ mtcars %>%
   )
 ```
 
-Read more about this in [The data mask ambiguity][topic-data-mask-ambiguity].
+Read more about this in `r links$topic_data_mask_ambiguity`.
 
 
 # How does data-masking work?
@@ -148,5 +148,5 @@ The tidyverse embraced the data-masking approach in packages like ggplot2 and dp
 
 # See also
 
-* [Data mask programming patterns][topic-data-mask-programming]
-* [Defusing R expressions][topic-defuse]
+* `r links$topic_data_mask_programming`
+* `r links$topic_defuse`

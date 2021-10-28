@@ -35,4 +35,4 @@ Note that this issue also applies to [enquo()] (on which `{{` is based).
 
 # Why is this not an error?
 
-Ideally we would have made `{{` on regular objects an error.  However this is not possible because in compiled R code it is not always possible to distinguish a regular variable from a function argument. See [Why are strings and other constants enquosed in the empty environment?][topic-embrace-constants] for more about this.
+Ideally we would have made `{{` on regular objects an error.  However this is not possible because in compiled R code it is not always possible to distinguish a regular variable from a function argument. See `r links$topic_embrace_constants` for more about this.

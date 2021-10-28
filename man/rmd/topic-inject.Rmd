@@ -50,7 +50,7 @@ rbind2(!!!rows, c = 5:6)
 ```
 
 
-## Injecting names with `"{"`
+## Injecting names with \code{"\{"}
 
 A related problem comes up when you have an argument name stored in a variable. In dynamic dots, you can inject a name using [glue syntax](https://glue.tidyverse.org/) with [`"{"`][glue-operator]:
 
@@ -87,7 +87,7 @@ mean_by <- function(data, by, var) {
 mtcars %>% mean_by(by = cyl, var = disp)
 ```
 
-Learn more about this pattern in [Data-mask programming patterns][topic-data-mask-programming].
+Learn more about this pattern in `r links$topic_data_mask_programming`.
 
 
 ## Injecting with `!!`
@@ -142,4 +142,4 @@ The main difference between rlang and other languages is that quasiquotation is 
 
 # See also
 
-- [What happens if I use injection operators out of context?][topic-inject-out-of-context]
+- `r links$topic_inject_out_of_context`

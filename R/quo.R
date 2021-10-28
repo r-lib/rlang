@@ -5,8 +5,7 @@
 #' A quosure is a type of [defused expression][topic-defuse] that includes
 #' a reference to the context where it was created. A quosure is thus
 #' guaranteed to evaluate in its original environment and can refer to
-#' local objects. Read more about quosures in [What are
-#' quosures?][topic-quosure].
+#' local objects. Read more about quosures in `r links$topic_quosure`.
 #'
 #' -  You can access the quosure components with `quo_get_expr()` and
 #'   `quo_get_env()`.
@@ -51,9 +50,11 @@
 #' have the [empty environment][empty_env] as enclosure.
 #'
 #' @name quosure
-#' @seealso [quo()] for creating quosures by quotation; [as_quosure()]
-#'   and [new_quosure()] for assembling quosures from components.
-#'   [What are quosures][topic-quosure] for an overview.
+#' @seealso
+#' * [quo()] for creating quosures by quotation
+#' * [as_quosure()] and [new_quosure()] for assembling quosures from
+#'   components
+#' * `r links$topic_quosure` for an overview
 #' @examples
 #' quo <- quo(my_quosure)
 #' quo

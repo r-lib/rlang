@@ -24,8 +24,7 @@
 #' All data-masked tidyverse verbs support injection operators out of
 #' the box. With base functions you need to use [inject()] to enable
 #' `!!`. Using `!!` out of context may lead to incorrect results, see
-#' [What happens if I use injection operators out of
-#' context?][topic-inject-out-of-context].
+#' `r links$topic_inject_out_of_context`.
 #'
 #' The examples below are built around the base function [with()].
 #' Since it's not a tidyverse function we need [inject()] to enable
@@ -164,8 +163,7 @@ NULL
 #' functions you need to use [inject()] to enable `!!!`.
 #'
 #' Using the operator out of context may lead to incorrect results,
-#' see [What happens if I use injection operators out of
-#' context?][topic-inject-out-of-context].
+#' see `r links$topic_inject_out_of_context`.
 #'
 #'
 #' @section Splicing a list of arguments:
@@ -337,7 +335,8 @@ NULL
 
 #' Name injection with `"{"` and `"{{"`
 #'
-#' @includeRmd man/rmd/glue-operator.Rmd description 
+#' ```{r, child = "man/rmd/glue-operator.Rmd"}
+#' ```
 #'
 #' @name glue-operator
 NULL

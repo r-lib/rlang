@@ -3,7 +3,7 @@
 #' @description
 #'
 #' The embrace operator `{{` is used to create functions that call
-#' other [data-masked functions][topic-data-mask]. It transports a
+#' other [data-masking][topic-data-mask] functions. It transports a
 #' data-masked argument (an argument that can refer to columns of a
 #' data frame) from one function to another.
 #'
@@ -29,8 +29,8 @@
 #' @aliases curly-curly
 #'
 #' @seealso
-#' - [What is data-masking and why do I need embracing?][topic-data-mask]
-#' - [Data mask programming patterns][topic-data-mask-programming]
+#' - `r links$topic_data_mask`
+#' - `r links$topic_data_mask_programming`
 #'
 NULL
 
@@ -48,7 +48,7 @@ NULL
 #' @param expr An expression to defuse.
 #'
 #' @seealso
-#' - [Defusing R expressions][topic-defuse] for an overview.
+#' - `r links$topic_defuse` for an overview.
 #'
 #' - [enquo()] to defuse non-local expressions from function
 #'   arguments.
@@ -143,7 +143,7 @@ expr <- function(expr) {
 #' injection.
 #'
 #' @seealso
-#' - [Defusing R expressions][topic-defuse] for an overview.
+#' - `r links$topic_defuse` for an overview.
 #'
 #' - [expr()] to defuse your own local expressions.
 #'
@@ -225,7 +225,7 @@ enquos <- function(...,
 #'     your own local expressions (by opposition to function arguments
 #'     where non-local expressions are supplied by your users), there
 #'     is generally no need to attach the current environment in a
-#'     quosure. See [When are quosures needed?][topic-quosure].
+#'     quosure. See `r links$topic_quosure`.
 #'
 #' *   `enexpr()` and `enexprs()` are like [enquo()] and [enquos()] but
 #'     return naked expressions instead of quosures. These operators

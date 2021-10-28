@@ -1,45 +1,51 @@
 # Overviews ---------------------------------------------------------------
 
-#' What is data-masking and why do I need to embrace with `{{`?
+#' `r titles$topic_data_mask`
 #'
-#' @includeRmd man/rmd/topic-data-mask.Rmd description
+#' ```{r, child = "man/rmd/topic-data-mask.Rmd"}
+#' ```
 #'
 #' @name topic-data-mask
 NULL
 
-#' Programming patterns for data-masked arguments
+#' `r titles$topic_data_mask_programming`
 #'
-#' @includeRmd man/rmd/topic-data-mask-programming.Rmd description
+#' ```{r, child = "man/rmd/topic-data-mask-programming.Rmd"}
+#' ```
 #'
 #' @name topic-data-mask-programming
 NULL
 
-#' Metaprogramming patterns for data-masked arguments
+#' `r titles$topic_metaprogramming`
 #'
-#' @includeRmd man/rmd/topic-metaprogramming.Rmd description
+#' ```{r, child = "man/rmd/topic-metaprogramming.Rmd"}
+#' ```
 #'
 #' @name topic-metaprogramming
 NULL
 
-#' Defusing R expressions
+#' `r titles$topic_defuse`
 #'
-#' @includeRmd man/rmd/topic-defuse.Rmd description
+#' ```{r, child = "man/rmd/topic-defuse.Rmd"}
+#' ```
 #'
 #' @aliases quotation nse-defuse
 #' @name topic-defuse
 NULL
 
-#' Injecting with `!!`, `!!!`, and glue syntax
+#' `r titles$topic_inject`
 #'
-#' @includeRmd man/rmd/topic-inject.Rmd description
+#' ```{r, child = "man/rmd/topic-inject.Rmd"}
+#' ```
 #'
 #' @aliases quasiquotation nse-force nse-inject
 #' @name topic-inject
 NULL
 
-#' What are quosures and when are they needed?
+#' `r titles$topic_quosure`
 #'
-#' @includeRmd man/rmd/topic-quosure.Rmd description
+#' ```{r, child = "man/rmd/topic-quosure.Rmd"}
+#' ```
 #'
 #' @name topic-quosure
 NULL
@@ -47,23 +53,26 @@ NULL
 
 # Guides ------------------------------------------------------------------
 
-#' The data mask ambiguity
+#' `r titles$topic_data_mask_ambiguity`
 #'
-#' @includeRmd man/rmd/topic-data-mask-ambiguity.Rmd description
+#' ```{r, child = "man/rmd/topic-data-mask-ambiguity.Rmd"}
+#' ```
 #'
 #' @name topic-data-mask-ambiguity
 NULL
 
-#' The double evaluation problem
+#' `r titles$topic_double_evaluation`
 #'
-#' @includeRmd man/rmd/topic-double-evaluation.Rmd description
+#' ```{r, child = "man/rmd/topic-double-evaluation.Rmd"}
+#' ```
 #'
 #' @name topic-double-evaluation
 NULL
 
-#' Taking multiple columns without `...`
+#' `r titles$topic_multiple_columns`
 #'
-#' @includeRmd man/rmd/topic-multiple-columns.Rmd description
+#' ```{r, child = "man/rmd/topic-multiple-columns.Rmd"}
+#' ```
 #'
 #' @name topic-multiple-columns
 NULL
@@ -71,23 +80,26 @@ NULL
 
 # Notes -------------------------------------------------------------------
 
-#' Does `{{` work on regular objects?
+#' `r titles$topic_embrace_non_args`
 #'
-#' @includeRmd man/rmd/topic-embrace-non-args.Rmd description
+#' ```{r, child = "man/rmd/topic-embrace-non-args.Rmd"}
+#' ```
 #'
 #' @name topic-embrace-non-args
 NULL
 
-#' Why are strings and other constants enquosed in the empty environment?
+#' `r titles$topic_embrace_constants`
 #'
-#' @includeRmd man/rmd/topic-embrace-constants.Rmd description
+#' ```{r, child = "man/rmd/topic-embrace-constants.Rmd"}
+#' ```
 #'
 #' @name topic-embrace-constants
 NULL
 
-#' What happens if I use injection operators out of context?
+#' `r titles$topic_inject_out_of_context`
 #'
-#' @includeRmd man/rmd/topic-inject-out-of-context.Rmd description
+#' ```{r, child = "man/rmd/topic-inject-out-of-context.Rmd"}
+#' ```
 #'
 #' @name topic-inject-out-of-context
 NULL

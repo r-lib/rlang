@@ -4,9 +4,7 @@
 \alias{glue-operator}
 \title{Name injection with \code{"{"} and \code{"{{"}}
 \description{
-\link[=dyn-dots]{Dynamic dots} (and \link[=topic-data-mask]{data-masked} dots
-which are dynamic by default) have built-in support for names
-interpolation with the \href{https://glue.tidyverse.org/}{glue package}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{tibble::tibble(foo = 1)
+\link[=dyn-dots]{Dynamic dots} (and \link[=topic-data-mask]{data-masked} dots which are dynamic by default) have built-in support for names interpolation with the \href{https://glue.tidyverse.org/}{glue package}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{tibble::tibble(foo = 1)
 #> # A tibble: 1 x 1
 #>     foo
 #>   <dbl>
@@ -20,8 +18,7 @@ tibble::tibble("\{foo\}" := 1)
 #> 1     1
 }\if{html}{\out{</div>}}
 
-Inside functions, embracing an argument with \code{\link[=embrace-operator]{\{\{}}
-inserts the expression supplied as argument in the string.\if{html}{\out{<div class="sourceCode r">}}\preformatted{tib <- function(x) \{
+Inside functions, embracing an argument with \code{\link[=embrace-operator]{\{\{}} inserts the expression supplied as argument in the string.\if{html}{\out{<div class="sourceCode r">}}\preformatted{tib <- function(x) \{
   tibble::tibble("var: \{\{ x \}\}" := x)
 \}
 
@@ -32,43 +29,31 @@ tib(1 + 1)
 #> 1            2
 }\if{html}{\out{</div>}}
 
-See also \code{\link[=englue]{englue()}} to string-embrace outside of dynamic
-dots.\if{html}{\out{<div class="sourceCode r">}}\preformatted{g <- function(x) \{
+See also \code{\link[=englue]{englue()}} to string-embrace outside of dynamic dots.\if{html}{\out{<div class="sourceCode r">}}\preformatted{g <- function(x) \{
   englue("var: \{\{ x \}\}")
 \}
 
 g(1 + 1)
 #> [1] "var: 1 + 1"
 }\if{html}{\out{</div>}}
-\subsection{What’s the deal with \verb{:=}?}{
+\subsection{What's the deal with \verb{:=}?}{
 
-Name injection in dynamic dots was originally implemented with \verb{:=}
-instead of \code{=} to allow complex expressions on the LHS:\if{html}{\out{<div class="sourceCode r">}}\preformatted{x <- "name"
+Name injection in dynamic dots was originally implemented with \verb{:=} instead of \code{=} to allow complex expressions on the LHS:\if{html}{\out{<div class="sourceCode r">}}\preformatted{x <- "name"
 list2(!!x := 1)
 #> $name
 #> [1] 1
 }\if{html}{\out{</div>}}
 
-Name-injection with glue operations was an extension of this existing
-feature and so inherited the same interface. However, there is no
-technical barrier to using glue strings on the LHS of \code{=}.
+Name-injection with glue operations was an extension of this existing feature and so inherited the same interface. However, there is no technical barrier to using glue strings on the LHS of \code{=}.
 
-As we are now moving away from \code{\link[=injection-operator]{!!}} for common
-tasks, we are considering enabling glue strings with \code{=} and superseding
-\verb{:=} usage. Track the progress of this change in \href{https://github.com/r-lib/rlang/issues/1296}{issue 1296}.
+As we are now moving away from \code{\link[=injection-operator]{!!}} for common tasks, we are considering enabling glue strings with \code{=} and superseding \verb{:=} usage. Track the progress of this change in \href{https://github.com/r-lib/rlang/issues/1296}{issue 1296}.
 }
 
 \subsection{\verb{\{\{} and \verb{\{}}{
 
-While \code{glue::glue()} only supports \verb{\{}, dynamic dots support both \verb{\{}
-and \verb{\{\{}. The double brace variant is similar to the embrace operator
-\code{\link[=embrace-operator]{\{\{}} available in \link[=topic-data-mask]{data-masked arguments}. It \link[=topic-defuse]{defuses} a function
-argument, calls \code{\link[=as_label]{as_label()}} on the expression supplied as
-argument, and inserts the result in the string.
+While \code{glue::glue()} only supports \verb{\{}, dynamic dots support both \verb{\{} and \verb{\{\{}. The double brace variant is similar to the embrace operator \code{\link[=embrace-operator]{\{\{}} available in \link[=topic-data-mask]{data-masked} arguments. It \link[=topic-defuse]{defuses} a function argument, calls \code{\link[=as_label]{as_label()}} on the expression supplied as argument, and inserts the result in the string.
 
-In the following example, the embrace operator is used in a glue string
-to name the result with a default name that represents the expression
-supplied as argument:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
+In the following example, the embrace operator is used in a glue string to name the result with a default name that represents the expression supplied as argument:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
   data \%>\% dplyr::summarise("\{\{ var \}\}" := mean(\{\{ var \}\}))
 \}
 
@@ -85,9 +70,7 @@ mtcars \%>\% my_mean(cyl * am)
 #> 1       2.06
 }\if{html}{\out{</div>}}
 
-\verb{\{\{} is only meant for function arguments, and only for inserting the
-expression supplied as argument. If you need to interpolate a string
-stored in a variable, use the regular glue operator \verb{\{} instead:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var, name = "mean") \{
+\verb{\{\{} is only meant for function arguments, and only for inserting the expression supplied as argument. If you need to interpolate a string stored in a variable, use the regular glue operator \verb{\{} instead:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var, name = "mean") \{
   data \%>\% dplyr::summarise("\{name\}" := mean(\{\{ var \}\}))
 \}
 
@@ -115,22 +98,14 @@ list2("\{x\}" := 1)
 #> [1] 1
 }\if{html}{\out{</div>}}
 
-Ideally, using \verb{\{\{} on regular objects would be an error. However for
-technical reasons it is not possible to make a distinction between
-function arguments and ordinary variables. See \link[=topic-embrace-non-args]{Does \{\{ work on regular objects?} for more information about
-this limitation.
+Ideally, using \verb{\{\{} on regular objects would be an error. However for technical reasons it is not possible to make a distinction between function arguments and ordinary variables. See \link[=topic-embrace-non-args]{Does \{\{ work on regular objects?} for more information about this limitation.
 }
 
 \subsection{Allow overriding default names}{
 
-The implementation of \code{my_mean()} in the previous section forces a
-default name onto the result. But what if the caller wants to give it a
-different name? In functions that take dots, it is possible to just
-supply a named expression to override the default. In a function like
-\code{my_mean()} that takes a named argument we need a different approach.
+The implementation of \code{my_mean()} in the previous section forces a default name onto the result. But what if the caller wants to give it a different name? In functions that take dots, it is possible to just supply a named expression to override the default. In a function like \code{my_mean()} that takes a named argument we need a different approach.
 
-This is where \code{\link[=englue]{englue()}} becomes useful. We can pull out the
-default name creation in another user-facing argument like this:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var, name = englue("\{\{ var \}\}")) \{
+This is where \code{\link[=englue]{englue()}} becomes useful. We can pull out the default name creation in another user-facing argument like this:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var, name = englue("\{\{ var \}\}")) \{
   data \%>\% dplyr::summarise("\{name\}" := mean(\{\{ var \}\}))
 \}
 }\if{html}{\out{</div>}}
@@ -151,8 +126,7 @@ mtcars \%>\% my_mean(cyl * am, name = "mean_cyl_am")
 
 \subsection{Using glue syntax in packages}{
 
-Since rlang does not depend directly on glue, you will have to ensure
-that glue is installed by adding it to your \verb{Imports:} section.\if{html}{\out{<div class="sourceCode r">}}\preformatted{usethis::use_package("glue", "Imports")
+Since rlang does not depend directly on glue, you will have to ensure that glue is installed by adding it to your \verb{Imports:} section.\if{html}{\out{<div class="sourceCode r">}}\preformatted{usethis::use_package("glue", "Imports")
 }\if{html}{\out{</div>}}
 }
 }

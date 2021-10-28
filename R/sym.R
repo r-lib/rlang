@@ -8,8 +8,8 @@
 #'
 #' * `data_sym()` and `data_syms()` create calls of the form
 #'   `.data$foo` instead of symbols. Subsetting the [`.data`] pronoun
-#'   is more robust when you expect a data-variable. See [The data
-#'   mask ambiguity][topic-data-mask-ambiguity].
+#'   is more robust when you expect a data-variable. See
+#'   `r links$topic_data_mask_ambiguity`.
 #'
 #' @param x A string or list of strings.
 #' @return A symbol for `sym()` and a list of symbols for

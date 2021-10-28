@@ -1,7 +1,7 @@
 ```{r, child = "setup.Rmd", include = FALSE}
 ```
 
-A quosure is a special type of [defused expression][topic-defuse] that keeps track of the original context the expression was written in. The tracking capabilities of quosures is important when interfacing [data-masking functions][topic-data-mask] together because the functions might come from two unrelated environments, like two different packages.
+A quosure is a special type of [defused expression][topic-defuse] that keeps track of the original context the expression was written in. The tracking capabilities of quosures is important when interfacing [data-masking][topic-data-mask] functions together because the functions might come from two unrelated environments, like two different packages.
 
 
 # Blending environments
@@ -156,7 +156,7 @@ dplyr::vars(cyl, am)
 #> env:  global
 ```
 
-For more information about external defusing, see [Taking multiple columns without ...][topic-multiple-columns].
+For more information about external defusing, see `r links$topic_multiple_columns`.
 
 
 # Technical description of quosures

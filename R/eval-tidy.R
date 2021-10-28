@@ -22,7 +22,7 @@
 #'   These pronouns lets you be explicit about where to find
 #'   values and throw errors if you try to access non-existent values.
 #'
-#' See also [What is data-masking][topic-data-mask].
+#' See also `r links$topic_data_mask`.
 #'
 #'
 #' @param expr An expression or quosure to evaluate.
@@ -203,7 +203,7 @@ print.rlang_fake_data_pronoun <- function(...) cat_line("<pronoun>")
 #' TODO! Difference between `.data` and magrittr `.`
 #'
 #' The `.data` and `.env` pronouns make it explicit where to find
-#' objects when programming with [data masked][topic-data-mask]
+#' objects when programming with [data-masked][topic-data-mask]
 #' functions.
 #'
 #' ```
