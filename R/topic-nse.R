@@ -1,6 +1,6 @@
 # Overviews ---------------------------------------------------------------
 
-#' What is data-masking and why do I need embracing with `{{`?
+#' What is data-masking and why do I need to embrace with `{{`?
 #'
 #' @includeRmd man/rmd/topic-data-mask.Rmd description
 #'

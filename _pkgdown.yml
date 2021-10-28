@@ -22,10 +22,11 @@ navbar:
       text: Overviews
       menu:
       - text: Tidy evaluation
-      - text: Programming patterns for defused arguments
-        href: reference/topic-data-mask-programming.html
-      - text: What is data masking and why do I need to embrace?
+      - text: What is data-masking and why do I need to embrace with `{{`?
         href: reference/topic-data-mask.html
+      - text: Programming patterns for data-masked arguments
+        href: reference/topic-data-mask-programming.html
+
       - text: Metaprogramming
       - text: Metaprogramming patterns for data-masked arguments
         href: reference/topic-metaprogramming.html
@@ -44,6 +45,7 @@ navbar:
         href: reference/topic-data-mask-ambiguity.html
       - text: The double evaluation problem
         href: reference/topic-double-evaluation.html
+
       - text: Metaprogramming
       - text: Taking multiple columns without `...`
         href: reference/topic-multiple-columns.html
@@ -56,6 +58,7 @@ navbar:
         href: reference/topic-inject-out-of-context.html
       - text: Does `{{` work on regular objects?
         href: reference/topic-embrace-non-args.html
+
       - text: Metaprogramming
       - text: Why are strings and other constants enquosed in the empty environment?
         href: reference/topic-embrace-constants.html

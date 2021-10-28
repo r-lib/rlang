@@ -19,7 +19,9 @@ While data-masking makes it easy to program interactively with data frames, it m
 
 # Why does data-masking require embracing and injection?
 
-Injection (also known as quasiquotation) is a metaprogramming feature that allows you to modify parts of a program. This is needed because under the hood data-masking works by [defusing][topic-defuse] R code to prevent its immediate evaluation.  The defused code is resumed later on in a context where data frame columns are defined.
+Injection (also known as quasiquotation) is a metaprogramming feature that allows you to modify parts of a program. This is needed because under the hood data-masking works by [defusing][topic-defuse] R code to prevent its immediate evaluation. The defused code is resumed later on in a context where data frame columns are defined.
+
+Let's see what happens when we pass arguments to a data-masking function like `summarise()` in the normal way:
 
 ```{r, comment = "#>", collapse = TRUE, error = TRUE}
 my_mean <- function(data, var1, var2) {
@@ -29,7 +31,9 @@ my_mean <- function(data, var1, var2) {
 my_mean(mtcars, cyl, am)
 ```
 
-The problem here is that `summarise()` defuses the R code it was supplied, i.e. `mean(var1 + var2)`.  Instead we want it to see `mean(cyl + am)`. This is why we need metaprogramming, we need to modify that piece of code by injecting the code supplied to the function in place of `var1` and `var2`. The easiest way to achieve that is with `{{`.
+The problem here is that `summarise()` defuses the R code it was supplied, i.e. `mean(var1 + var2)`.  Instead we want it to see `mean(cyl + am)`. This is why we need injection, we need to modify that piece of code by injecting the code supplied to the function in place of `var1` and `var2`.
+
+To inject a function argument in data-masked context, just embrace it with `{{`:
 
 ```{r, comment = "#>", collapse = TRUE}
 my_mean <- function(data, var1, var2) {
@@ -39,12 +43,12 @@ my_mean <- function(data, var1, var2) {
 my_mean(mtcars, cyl, am)
 ```
 
-Technically, `{{` performs two steps: defusal and injection. It defuses the code supplied to our own function and injects it back into another function. This defuse-and-inject pattern can also be performed in distinct steps with [enquo()] and [`!!`][injection-operator].
+See [Data mask programming patterns][topic-data-mask-programming] to learn more about creating functions around data-masking functions.
 
 
 # What does "masking" mean?
 
-In normal programming you define objects in the current environment, for instance in the global environment or the environment of the function you are writing.
+In normal R programming objects are defined in the current environment, for instance in the global environment or the environment of a function.
 
 ```{r, comment = "#>", collapse = TRUE}
 factor <- 1000
@@ -53,11 +57,11 @@ factor <- 1000
 mean(mtcars$cyl * factor)
 ```
 
-This environment also contains all functions currently in scope. In a script this includes the functions attached with `library()` calls; in a package, the functions imported from other packages.
+This environment also contains all functions currently in scope. In a script this includes the functions attached with `library()` calls; in a package, the functions imported from other packages. If evaluation was performed only in the data frame, we'd lose track of these objects and functions necessary to perform computations.
 
-If evaluation was performed in a data frame only, we'd lose track of these objects and functions necessary to perform computations.  Hence the data are included in a chain of environments where it comes first and has precedence over the user environment. In other words, it _masks_ the user environment.
+To keep these objects and functions in scope, the data frame is inserted at the bottom of the current chain of environments. It comes first and has precedence over the user environment. In other words, it _masks_ the user environment.
 
-The easiest way to see this is to define an object with the same name as a column. The latter has precedence because data-variables come before env-variables:
+Since masking blends the data and the user environment by giving priority to the former, R can sometimes use a data frame column when you really intended to use a local object.
 
 ```{r, comment = "#>", collapse = TRUE}
 # Defining an env-variable
@@ -67,15 +71,15 @@ cyl <- 1000
 dplyr::summarise(mtcars, mean(cyl))
 ```
 
-Note that the tidy eval framework provides [pronouns][.data] to disambiguate between the mask and user contexts. It is often a good idea to use these pronouns in production code. The `.env` pronoun is particularly useful when working with abritrary data frames to prevent a column from inadvertently masking a user variable.
+The tidy eval framework provides [pronouns][.data] to help disambiguate between the mask and user contexts. It is often a good idea to use these pronouns in production code.
 
 ```{r, comment = "#>", collapse = TRUE}
 cyl <- 1000
 
 mtcars %>%
   dplyr::summarise(
-    mean(.data$cyl),
-    mean(.env$cyl)
+    mean_data = mean(.data$cyl),
+    mean_env = mean(.env$cyl)
   )
 ```
 
@@ -86,7 +90,7 @@ Read more about this in [The data mask ambiguity][topic-data-mask-ambiguity].
 
 Data-masking relies on three language features:
 
-- [Argument defusing][topic-defuse] (also known as quoting or NSE) with [substitute()] (base R) or [enquo()] and [enquos()] (rlang). R code needs to be defused so it can be evaluated later on in a modified context.
+- [Argument defusal][topic-defuse] with [substitute()] (base R) or [enquo()], [enquos()], and [`{{`][embrace-operator] (rlang). R code is defused so it can be evaluated later on in a special environment enriched with data.
 
 - First class environments. Environments are a special type of list-like object in which defused R code can be evaluated.  The named elements in an environment define objects. Lists and data frames can be transformed to environments:
 
@@ -139,4 +143,10 @@ The tidyverse embraced the data-masking approach in packages like ggplot2 and dp
 
 - The rlang package developed tidy eval in 2017 as the data-masking framework of the tidyverse. It introduced the notions of [quosure][topic-quosure], [implicit injection][topic-inject] with `!!`  and `!!!`, and [data pronouns][.data].
 
-- In 2019, injection with `{{` was introduced in [rlang 0.4.0](https://www.tidyverse.org/blog/2019/06/rlang-0-4-0/) to simplify the defuse-and-inject pattern. This operator allows beginners to transport data-masked arguments across functions more intuitively.
+- In 2019, injection with `{{` was introduced in [rlang 0.4.0](https://www.tidyverse.org/blog/2019/06/rlang-0-4-0/) to simplify the defuse-and-inject pattern. This operator allows R programmers to transport data-masked arguments across functions more intuitively and with minimal boilerplate.
+
+
+# See also
+
+* [Data mask programming patterns][topic-data-mask-programming]
+* [Defusing R expressions][topic-defuse]

@@ -2,7 +2,7 @@
 % Please edit documentation in R/topic-nse.R
 \name{topic-data-mask}
 \alias{topic-data-mask}
-\title{What is data-masking and why do I need embracing with \verb{\{\{}?}
+\title{What is data-masking and why do I need to embrace with \verb{\{\{}?}
 \description{
 Data-masking is a distinctive feature of R whereby programming is
 performed directly on a data set, with columns defined as normal
@@ -30,7 +30,10 @@ Injection (also known as quasiquotation) is a metaprogramming feature
 that allows you to modify parts of a program. This is needed because
 under the hood data-masking works by \link[=topic-defuse]{defusing} R code
 to prevent its immediate evaluation. The defused code is resumed later
-on in a context where data frame columns are defined.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var1, var2) \{
+on in a context where data frame columns are defined.
+
+Let’s see what happens when we pass arguments to a data-masking function
+like \code{summarise()} in the normal way:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var1, var2) \{
   dplyr::summarise(data, mean(var1 + var2))
 \}
 
@@ -42,10 +45,12 @@ my_mean(mtcars, cyl, am)
 
 The problem here is that \code{summarise()} defuses the R code it was
 supplied, i.e. \code{mean(var1 + var2)}. Instead we want it to see
-\code{mean(cyl + am)}. This is why we need metaprogramming, we need to modify
-that piece of code by injecting the code supplied to the function in
-place of \code{var1} and \code{var2}. The easiest way to achieve that is with
-\verb{\{\{}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var1, var2) \{
+\code{mean(cyl + am)}. This is why we need injection, we need to modify that
+piece of code by injecting the code supplied to the function in place of
+\code{var1} and \code{var2}.
+
+To inject a function argument in data-masked context, just embrace it
+with \verb{\{\{}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var1, var2) \{
   dplyr::summarise(data, mean(\{\{ var1 \}\} + \{\{ var2 \}\}))
 \}
 
@@ -56,17 +61,13 @@ my_mean(mtcars, cyl, am)
 #> 1             6.59
 }\if{html}{\out{</div>}}
 
-Technically, \verb{\{\{} performs two steps: defusal and injection. It defuses
-the code supplied to our own function and injects it back into another
-function. This defuse-and-inject pattern can also be performed in
-distinct steps with \code{\link[=enquo]{enquo()}} and
-\code{\link[=injection-operator]{!!}}.
+See \link[=topic-data-mask-programming]{Data mask programming patterns} to
+learn more about creating functions around data-masking functions.
 }
 
 \section{What does “masking” mean?}{
-In normal programming you define objects in the current environment, for
-instance in the global environment or the environment of the function
-you are writing.\if{html}{\out{<div class="sourceCode r">}}\preformatted{factor <- 1000
+In normal R programming objects are defined in the current environment,
+for instance in the global environment or the environment of a function.\if{html}{\out{<div class="sourceCode r">}}\preformatted{factor <- 1000
 
 # Can now use `factor` in computations
 mean(mtcars$cyl * factor)
@@ -75,17 +76,18 @@ mean(mtcars$cyl * factor)
 
 This environment also contains all functions currently in scope. In a
 script this includes the functions attached with \code{library()} calls; in a
-package, the functions imported from other packages.
+package, the functions imported from other packages. If evaluation was
+performed only in the data frame, we’d lose track of these objects and
+functions necessary to perform computations.
 
-If evaluation was performed in a data frame only, we’d lose track of
-these objects and functions necessary to perform computations. Hence the
-data are included in a chain of environments where it comes first and
+To keep these objects and functions in scope, the data frame is inserted
+at the bottom of the current chain of environments. It comes first and
 has precedence over the user environment. In other words, it \emph{masks} the
 user environment.
 
-The easiest way to see this is to define an object with the same name as
-a column. The latter has precedence because data-variables come before
-env-variables:\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Defining an env-variable
+Since masking blends the data and the user environment by giving
+priority to the former, R can sometimes use a data frame column when you
+really intended to use a local object.\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Defining an env-variable
 cyl <- 1000
 
 # Referring to a data-variable
@@ -96,21 +98,19 @@ dplyr::summarise(mtcars, mean(cyl))
 #> 1        6.19
 }\if{html}{\out{</div>}}
 
-Note that the tidy eval framework provides \link[=.data]{pronouns} to
+The tidy eval framework provides \link[=.data]{pronouns} to help
 disambiguate between the mask and user contexts. It is often a good idea
-to use these pronouns in production code. The \code{.env} pronoun is
-particularly useful when working with abritrary data frames to prevent a
-column from inadvertently masking a user variable.\if{html}{\out{<div class="sourceCode r">}}\preformatted{cyl <- 1000
+to use these pronouns in production code.\if{html}{\out{<div class="sourceCode r">}}\preformatted{cyl <- 1000
 
 mtcars \%>\%
   dplyr::summarise(
-    mean(.data$cyl),
-    mean(.env$cyl)
+    mean_data = mean(.data$cyl),
+    mean_env = mean(.env$cyl)
   )
 #> # A tibble: 1 x 2
-#>   `mean(.data$cyl)` `mean(.env$cyl)`
-#>               <dbl>            <dbl>
-#> 1              6.19             1000
+#>   mean_data mean_env
+#>       <dbl>    <dbl>
+#> 1      6.19     1000
 }\if{html}{\out{</div>}}
 
 Read more about this in \link[=topic-data-mask-ambiguity]{The data mask ambiguity}.
@@ -119,10 +119,11 @@ Read more about this in \link[=topic-data-mask-ambiguity]{The data mask ambiguit
 \section{How does data-masking work?}{
 Data-masking relies on three language features:
 \itemize{
-\item \link[=topic-defuse]{Argument defusing} (also known as quoting or NSE)
-with \code{\link[=substitute]{substitute()}} (base R) or \code{\link[=enquo]{enquo()}}
-and \code{\link[=enquos]{enquos()}} (rlang). R code needs to be defused so it
-can be evaluated later on in a modified context.
+\item \link[=topic-defuse]{Argument defusal} with
+\code{\link[=substitute]{substitute()}} (base R) or \code{\link[=enquo]{enquo()}},
+\code{\link[=enquos]{enquos()}}, and \code{\link[=embrace-operator]{\{\{}} (rlang). R
+code is defused so it can be evaluated later on in a special
+environment enriched with data.
 \item First class environments. Environments are a special type of
 list-like object in which defused R code can be evaluated. The named
 elements in an environment define objects. Lists and data frames can
@@ -188,9 +189,16 @@ framework of the tidyverse. It introduced the notions of
 \link[=topic-quosure]{quosure}, \link[=topic-inject]{implicit injection}
 with \verb{!!} and \verb{!!!}, and \link[=.data]{data pronouns}.
 \item In 2019, injection with \verb{\{\{} was introduced in \href{https://www.tidyverse.org/blog/2019/06/rlang-0-4-0/}{rlang 0.4.0} to
-simplify the defuse-and-inject pattern. This operator allows
-beginners to transport data-masked arguments across functions more
-intuitively.
+simplify the defuse-and-inject pattern. This operator allows R
+programmers to transport data-masked arguments across functions more
+intuitively and with minimal boilerplate.
+}
+}
+
+\section{See also}{
+\itemize{
+\item \link[=topic-data-mask-programming]{Data mask programming patterns}
+\item \link[=topic-defuse]{Defusing R expressions}
 }
 }
 
