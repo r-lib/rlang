@@ -4,7 +4,7 @@
 \alias{topic-embrace-non-args}
 \title{Does \verb{\{\{} work on regular objects?}
 \description{
-The \link[=embrace-operator]{embrace operator} \verb{\{\{} should be used exclusively with function arguments:\if{html}{\out{<div class="sourceCode r">}}\preformatted{fn <- function(arg) \{
+The embrace operator \code{\link[=embrace-operator]{\{\{}} should be used exclusively with function arguments:\if{html}{\out{<div class="sourceCode r">}}\preformatted{fn <- function(arg) \{
   quo(foo(\{\{ arg \}\}))
 \}
 

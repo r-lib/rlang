@@ -1,7 +1,7 @@
 ```{r, child = "setup.Rmd", include = FALSE}
 ```
 
-One inherent risk to metaprogramming is to evaluate multiple times a piece of code that only appears to be evaluated once. Take this data-masking function which takes a single input and produces two summaries:
+One inherent risk to metaprogramming is to evaluate multiple times a piece of code that appears to be evaluated only once. Take this data-masking function which takes a single input and produces two summaries:
 
 ```{r, comment = "#>", collapse = TRUE}
 summarise_stats <- function(data, var) {

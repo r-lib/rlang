@@ -31,7 +31,7 @@ But what if you want to take multiple columns in a single named argument rather 
 The idiomatic tidyverse way of taking multiple columns in a single argument is to take a \emph{tidy selection} (see the \link[=topic-data-mask-programming]{Argument behaviours} section). In tidy selections, the syntax for passing multiple columns in a single argument is \code{c()}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{mtcars \%>\% tidyr::pivot_longer(c(am, cyl, vs))
 }\if{html}{\out{</div>}}
 
-Since \verb{\{\{} inherits behaviour, the first implementation of \code{my_pivot_longer()} already allows multiple columns passing:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_pivot_longer <- function(data, var) \{
+Since \verb{\{\{} inherits behaviour, this implementation of \code{my_pivot_longer()} automatically allows multiple columns passing:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_pivot_longer <- function(data, var) \{
   data \%>\% tidyr::pivot_longer(\{\{ var \}\})
 \}
 
@@ -51,7 +51,7 @@ When embracing in tidyselect context or using \code{across()} is not possible, y
 \section{Using external defusal}{
 To implement an argument with tidyselect behaviour, it is necessary to \link[=topic-defuse]{defuse} the argument. However defusing an argument which had historically behaved like a regular argument is a rather disruptive breaking change. This is why we could not implement tidy selections in ggplot2 facetting functions like \code{facet_grid()} and \code{facet_wrap()}.
 
-An alternative is to use external defusal of arguments. This is what formula interfaces do. A modelling function takes a formula in a regular argument and the formula defuses the user code:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_lm <- function(data, f, ...) \{
+An alternative is to use external defusal of arguments. This is what formula interfaces do for instance. A modelling function takes a formula in a regular argument and the formula defuses the user code:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_lm <- function(data, f, ...) \{
   lm(f, data, ...)
 \}
 
@@ -79,7 +79,7 @@ mtcars \%>\% my_group_by(dplyr::vars(cyl, am))
 }
 
 \section{A non-approach: Parsing lists}{
-Intuitively, many programmers who want to take a list of expressions in a single argument try to defuse an argument and parse it. If the user has supplied argument within a \code{list()} call, the arguments are taken apart and spliced with \verb{!!!}. Otherwise, the user is assumed to have supplied a single argument which is injected. An implementation along these lines might look like this:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_group_by <- function(data, vars) \{
+Intuitively, many programmers who want to take a list of expressions in a single argument try to defuse an argument and parse it. The user is expected to supply multiple arguments within a \code{list()} expression. When such a call is detected, the arguments are retrieved and spliced with \verb{!!!}. Otherwise, the user is assumed to have supplied a single argument which is injected with \verb{!!}. An implementation along these lines might look like this:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_group_by <- function(data, vars) \{
   vars <- enquo(vars)
 
   if (quo_is_call(vars, "list")) \{

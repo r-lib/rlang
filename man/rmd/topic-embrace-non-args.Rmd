@@ -1,7 +1,7 @@
 ```{r, child = "setup.Rmd", include = FALSE}
 ```
 
-The [embrace operator][embrace-operator] `{{` should be used exclusively with function arguments:
+The embrace operator [`{{`][embrace-operator] should be used exclusively with function arguments:
 
 ```r
 fn <- function(arg) {

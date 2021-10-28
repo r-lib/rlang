@@ -4,7 +4,7 @@
 \alias{topic-double-evaluation}
 \title{The double evaluation problem}
 \description{
-One inherent risk to metaprogramming is to evaluate multiple times a piece of code that only appears to be evaluated once. Take this data-masking function which takes a single input and produces two summaries:\if{html}{\out{<div class="sourceCode r">}}\preformatted{summarise_stats <- function(data, var) \{
+One inherent risk to metaprogramming is to evaluate multiple times a piece of code that appears to be evaluated only once. Take this data-masking function which takes a single input and produces two summaries:\if{html}{\out{<div class="sourceCode r">}}\preformatted{summarise_stats <- function(data, var) \{
   data \%>\%
     dplyr::summarise(
       mean = mean(\{\{ var \}\}),
