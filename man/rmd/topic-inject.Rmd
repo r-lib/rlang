@@ -15,13 +15,13 @@ Unlike regular `...`, [dynamic dots][dyn-dots] are programmable with injection o
 
 ## Splicing with `!!!`
 
-For instance, consider a function like `rbind()` that takes data in `...`:
+For instance, take a function like `rbind()` which takes data in `...`. To bind rows, you supply them as separate arguments:
 
 ```{r, comment = "#>", collapse = TRUE}
 rbind(a = 1:2, b = 3:4)
 ```
 
-How do you bind rows contained in a list? The base R solution is to invoke `rbind()` with `do.call()`:
+But how do you bind a variable number of rows stored in a list? The base R solution is to invoke `rbind()` with `do.call()`:
 
 ```{r, comment = "#>", collapse = TRUE}
 rows <- list(a = 1:2, b = 3:4)
@@ -29,7 +29,7 @@ rows <- list(a = 1:2, b = 3:4)
 do.call("rbind", rows)
 ```
 
-In a function that implements dynamic dots there is a built-in way of folding a list of arguments in `...`. We'll create a variant of `rbind()` that takes dynamic dots by collecting `...` with [list2()]:
+Functions that implement dynamic dots include a built-in way of folding a list of arguments in `...`. To illustrate this, we'll create a variant of `rbind()` that takes dynamic dots by collecting `...` with [list2()]:
 
 ```{r, comment = "#>", collapse = TRUE}
 rbind2 <- function(...) {
@@ -43,7 +43,7 @@ It can be used just like `rbind()`:
 rbind2(a = 1:2, b = 3:4)
 ```
 
-And a list of arguments can be supplied by _splicing_ it with [`!!!`]:
+And a list of arguments can be supplied by _splicing_ the list with [`!!!`]:
 
 ```{r, comment = "#>", collapse = TRUE}
 rbind2(!!!rows, c = 5:6)
@@ -52,7 +52,7 @@ rbind2(!!!rows, c = 5:6)
 
 ## Injecting names with \code{"\{"}
 
-A related problem comes up when you have an argument name stored in a variable. In dynamic dots, you can inject a name using [glue syntax](https://glue.tidyverse.org/) with [`"{"`][glue-operator]:
+A related problem comes up when an argument name is stored in a variable. With dynamic dots, you can inject the name using [glue syntax](https://glue.tidyverse.org/) with [`"{"`][glue-operator]:
 
 ```{r, comment = "#>", collapse = TRUE}
 name <- "foo"
@@ -95,9 +95,9 @@ Learn more about this pattern in `r links$topic_data_mask_programming`.
 Unlike [`!!!`] which injects a list of arguments, the injection operator [`!!`] (pronounced "bang-bang") injects a _single_ object. One use case for `!!`  is to substitute an environment-variable (created with `<-`) with a data-variable (inside a data frame).
 
 ```{r, comment = "#>", collapse = TRUE}
-# The env-variable `var` contains a symbol object, in this
+# The env-variable `var` contains a data-symbol object, in this
 # case a reference to the data-variable `height`
-var <- sym("disp")
+var <- data_sym("disp")
 
 # We inject the data-variable contained in `var` inside `summarise()` 
 mtcars %>%
@@ -122,7 +122,7 @@ Note that in most cases you don't need injection with `!!`. For instance, the [`
 
 ## Splicing with `!!!`
 
-The splice operator [`!!!`] of dynamic dots can also be used in metaprogramming context (insde [data-masked][topic-data-mask] arguments and inside [inject()]). For instance, we could reimplement the `rbind2()` function presented above using `inject()` instead of `do.call()`:
+The splice operator [`!!!`] of dynamic dots can also be used in metaprogramming context (inside [data-masked][topic-data-mask] arguments and inside [inject()]). For instance, we could reimplement the `rbind2()` function presented above using `inject()` instead of `do.call()`:
 
 ```r
 rbind2 <- function(...) {
@@ -137,7 +137,7 @@ There are two things going on here. We collect `...` with [list2()] so that the 
 
 Injection is known as __quasiquotation__ in other programming languages and in computer science. `expr()` is similar to a quasiquotation operator and `!!` is the unquote operator. These terms have a rich history in Lisp languages, and live on in modern languages like [Julia](https://docs.julialang.org/en/v1/manual/metaprogramming/) and [Racket](https://docs.racket-lang.org/reference/quasiquote.html). In base R, quasiquotation is performed with [bquote()].
 
-The main difference between rlang and other languages is that quasiquotation is often implicit instead of explicit. You can use injection operators in any defusing / quoting function (unless that function defuses its argument with a special operator like [enquo0()]). This is not the case in lisp languages for example where injection is explicit. The caller uses the backquote operator to explicitly enable unquote operators.
+The main difference between rlang and other languages is that quasiquotation is often implicit instead of explicit. You can use injection operators in any defusing / quoting function (unless that function defuses its argument with a special operator like [enquo0()]). This is not the case in lisp languages for example where injection / unquoting is explicit and only enabled within a backquote.
 
 
 # See also

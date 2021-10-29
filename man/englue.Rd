@@ -43,3 +43,8 @@ as_label(quote(1 + 1))
 as_label(letters)
 
 }
+\seealso{
+\itemize{
+\item \link[=topic-inject]{Injecting with !!, !!!, and glue syntax}
+}
+}

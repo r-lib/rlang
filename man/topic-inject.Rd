@@ -17,13 +17,13 @@ The injection operators are extensions of R implemented by rlang to modify a pie
 Unlike regular \code{...}, \link[=dyn-dots]{dynamic dots} are programmable with injection operators.
 \subsection{Splicing with \verb{!!!}}{
 
-For instance, consider a function like \code{rbind()} that takes data in \code{...}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{rbind(a = 1:2, b = 3:4)
+For instance, take a function like \code{rbind()} which takes data in \code{...}. To bind rows, you supply them as separate arguments:\if{html}{\out{<div class="sourceCode r">}}\preformatted{rbind(a = 1:2, b = 3:4)
 #>   [,1] [,2]
 #> a    1    2
 #> b    3    4
 }\if{html}{\out{</div>}}
 
-How do you bind rows contained in a list? The base R solution is to invoke \code{rbind()} with \code{do.call()}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{rows <- list(a = 1:2, b = 3:4)
+But how do you bind a variable number of rows stored in a list? The base R solution is to invoke \code{rbind()} with \code{do.call()}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{rows <- list(a = 1:2, b = 3:4)
 
 do.call("rbind", rows)
 #>   [,1] [,2]
@@ -31,7 +31,7 @@ do.call("rbind", rows)
 #> b    3    4
 }\if{html}{\out{</div>}}
 
-In a function that implements dynamic dots there is a built-in way of folding a list of arguments in \code{...}. We'll create a variant of \code{rbind()} that takes dynamic dots by collecting \code{...} with \code{\link[=list2]{list2()}}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{rbind2 <- function(...) \{
+Functions that implement dynamic dots include a built-in way of folding a list of arguments in \code{...}. To illustrate this, we'll create a variant of \code{rbind()} that takes dynamic dots by collecting \code{...} with \code{\link[=list2]{list2()}}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{rbind2 <- function(...) \{
   do.call("rbind", list2(...))
 \}
 }\if{html}{\out{</div>}}
@@ -42,7 +42,7 @@ It can be used just like \code{rbind()}:\if{html}{\out{<div class="sourceCode r"
 #> b    3    4
 }\if{html}{\out{</div>}}
 
-And a list of arguments can be supplied by \emph{splicing} it with \code{\link{!!!}}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{rbind2(!!!rows, c = 5:6)
+And a list of arguments can be supplied by \emph{splicing} the list with \code{\link{!!!}}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{rbind2(!!!rows, c = 5:6)
 #>   [,1] [,2]
 #> a    1    2
 #> b    3    4
@@ -52,7 +52,7 @@ And a list of arguments can be supplied by \emph{splicing} it with \code{\link{!
 
 \subsection{Injecting names with \code{"\{"}}{
 
-A related problem comes up when you have an argument name stored in a variable. In dynamic dots, you can inject a name using \href{https://glue.tidyverse.org/}{glue syntax} with \code{\link[=glue-operator]{"\{"}}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{name <- "foo"
+A related problem comes up when an argument name is stored in a variable. With dynamic dots, you can inject the name using \href{https://glue.tidyverse.org/}{glue syntax} with \code{\link[=glue-operator]{"\{"}}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{name <- "foo"
 
 rbind2("\{name\}" := 1:2, bar = 3:4)
 #>     [,1] [,2]
@@ -96,9 +96,9 @@ Learn more about this pattern in \link[=topic-data-mask-programming]{Data mask p
 
 \subsection{Injecting with \verb{!!}}{
 
-Unlike \code{\link{!!!}} which injects a list of arguments, the injection operator \code{\link{!!}} (pronounced "bang-bang") injects a \emph{single} object. One use case for \verb{!!}  is to substitute an environment-variable (created with \verb{<-}) with a data-variable (inside a data frame).\if{html}{\out{<div class="sourceCode r">}}\preformatted{# The env-variable `var` contains a symbol object, in this
+Unlike \code{\link{!!!}} which injects a list of arguments, the injection operator \code{\link{!!}} (pronounced "bang-bang") injects a \emph{single} object. One use case for \verb{!!}  is to substitute an environment-variable (created with \verb{<-}) with a data-variable (inside a data frame).\if{html}{\out{<div class="sourceCode r">}}\preformatted{# The env-variable `var` contains a data-symbol object, in this
 # case a reference to the data-variable `height`
-var <- sym("disp")
+var <- data_sym("disp")
 
 # We inject the data-variable contained in `var` inside `summarise()` 
 mtcars \%>\%
@@ -126,7 +126,7 @@ Note that in most cases you don't need injection with \verb{!!}. For instance, t
 
 \subsection{Splicing with \verb{!!!}}{
 
-The splice operator \code{\link{!!!}} of dynamic dots can also be used in metaprogramming context (insde \link[=topic-data-mask]{data-masked} arguments and inside \code{\link[=inject]{inject()}}). For instance, we could reimplement the \code{rbind2()} function presented above using \code{inject()} instead of \code{do.call()}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{rbind2 <- function(...) \{
+The splice operator \code{\link{!!!}} of dynamic dots can also be used in metaprogramming context (inside \link[=topic-data-mask]{data-masked} arguments and inside \code{\link[=inject]{inject()}}). For instance, we could reimplement the \code{rbind2()} function presented above using \code{inject()} instead of \code{do.call()}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{rbind2 <- function(...) \{
   inject(rbind(!!!list2(...)))
 \}
 }\if{html}{\out{</div>}}
@@ -138,7 +138,7 @@ There are two things going on here. We collect \code{...} with \code{\link[=list
 \section{Injection in other languages}{
 Injection is known as \strong{quasiquotation} in other programming languages and in computer science. \code{expr()} is similar to a quasiquotation operator and \verb{!!} is the unquote operator. These terms have a rich history in Lisp languages, and live on in modern languages like \href{https://docs.julialang.org/en/v1/manual/metaprogramming/}{Julia} and \href{https://docs.racket-lang.org/reference/quasiquote.html}{Racket}. In base R, quasiquotation is performed with \code{\link[=bquote]{bquote()}}.
 
-The main difference between rlang and other languages is that quasiquotation is often implicit instead of explicit. You can use injection operators in any defusing / quoting function (unless that function defuses its argument with a special operator like \code{\link[=enquo0]{enquo0()}}). This is not the case in lisp languages for example where injection is explicit. The caller uses the backquote operator to explicitly enable unquote operators.
+The main difference between rlang and other languages is that quasiquotation is often implicit instead of explicit. You can use injection operators in any defusing / quoting function (unless that function defuses its argument with a special operator like \code{\link[=enquo0]{enquo0()}}). This is not the case in lisp languages for example where injection / unquoting is explicit and only enabled within a backquote.
 }
 
 \section{See also}{

@@ -2,9 +2,9 @@
 #'
 #' @description
 #'
-#' The injection operator `!!` injects a value or expression inside
-#' another expression. In other words, it modifies a piece of code
-#' before R evaluates it.
+#' The [injection][topic-inject] operator `!!` injects a value or
+#' expression inside another expression. In other words, it modifies a
+#' piece of code before R evaluates it.
 #'
 #' There are two main cases for injection. You can inject constant
 #' values to work around issues of [scoping
@@ -17,41 +17,51 @@
 #' `!!` does not work everywhere, you can only use it within certain
 #' special functions:
 #'
-#' -   Functions taking [defused][topic-defuse] and
-#'     [data-masked][topic-data-mask] arguments.
-#' -   Inside [inject()].
+#' - Functions taking [defused][topic-defuse] and
+#'   [data-masked][topic-data-mask] arguments.
 #'
-#' All data-masked tidyverse verbs support injection operators out of
-#' the box. With base functions you need to use [inject()] to enable
-#' `!!`. Using `!!` out of context may lead to incorrect results, see
-#' `r links$topic_inject_out_of_context`.
+#'   Technically, this means function arguments defused with
+#'   [`{{`][embrace-operator] or `en`-prefixed operators like
+#'   [enquo()], [enexpr()], etc.
+#'
+#' - Inside [inject()].
+#'
+#' All data-masking verbs in the tidyverse support injection operators
+#' out of the box. With base functions, you need to use [inject()] to
+#' enable `!!`. Using `!!` out of context may lead to incorrect
+#' results, see `r links$topic_inject_out_of_context`.
 #'
 #' The examples below are built around the base function [with()].
-#' Since it's not a tidyverse function we need [inject()] to enable
-#' `!!`.
+#' Since it's not a tidyverse function we will use [inject()] to enable
+#' `!!` usage.
 #'
 #'
 #' @section Injecting values:
 #'
 #' Data-masking functions like [with()] are handy because you can
-#' refer to column names in your computations. This comes at the
-#' price of scoping ambiguity: If you have defined an env-variable
-#' of the same name as a data-variable, the latter has precedence
-#' (it masks the env-variable):
+#' refer to column names in your computations. This comes at the price
+#' of data mask ambiguity: if you have defined an env-variable of the
+#' same name as a data-variable, you get a name collisions. This
+#' collision is always resolved by giving precedence to the
+#' data-variable (it masks the env-variable):
 #'
 #' ```{r, comment = "#>", collapse = TRUE}
 #' cyl <- c(100, 110)
 #' with(mtcars, mean(cyl))
 #' ```
 #'
-#' To get around this, you can inject the env-variable inside the
-#' data-masked expression.
+#' The injection operator offers one way of solving this. Use it to
+#' inject the env-variable inside the data-masked expression:
 #'
 #' ```{r, comment = "#>", collapse = TRUE}
 #' inject(
 #'   with(mtcars, mean(!!cyl))
 #' )
 #' ```
+#'
+#' Note that the [`.env`] pronoun is a simpler way of solving the
+#' ambiguity. See `r links$topic_data_mask_ambiguity` for more about
+#' this.
 #'
 #'
 #' @section Injecting expressions:
@@ -106,8 +116,7 @@
 #'
 #'
 #' @seealso
-#' - The [splice operator][splice-operator] `!!!`
-#' - The [embrace operator][embrace-operator] `{{`
+#' - `r links$topic_inject`
 #'
 #' @name injection-operator
 #' @aliases bang-bang
@@ -125,11 +134,10 @@ NULL
 #'
 #' @description
 #'
-#' The splice operator `!!!` injects a list of arguments into a
-#' function call. It is the main feature of [dynamic dots][dyn-dots].
-#' It modifies a piece of code before R evaluates it by injecting
-#' several arguments instead of just one like the
-#' [`!!`][injection-operator] operator does.
+#' The splice operator `!!!` implemented in [dynamic dots][dyn-dots]
+#' injects a list of arguments into a function call. It belongs to the
+#' family of [injection][topic-inject] operators and provides the same
+#' functionality as [do.call()].
 #'
 #' The two main cases for splice injection are:
 #'
@@ -156,7 +164,8 @@ NULL
 #'
 #' -   Functions taking [dynamic dots][dyn-dots] like [list2()].
 #' -   Functions taking [defused][topic-defuse] and
-#'     [data-masked][topic-data-mask] arguments.
+#'     [data-masked][topic-data-mask] arguments, which are dynamic by
+#'     default.
 #' -   Inside [inject()].
 #'
 #' Most tidyverse functions support `!!!` out of the box. With base
@@ -171,29 +180,34 @@ NULL
 #' Take a function like [base::rbind()] that takes data in `...`. This
 #' sort of functions takes a variable number of arguments.
 #'
-#' ```{r}
+#' ```{r, comment = "#>", collapse = TRUE}
 #' df1 <- data.frame(x = 1)
 #' df2 <- data.frame(x = 2)
 #'
 #' rbind(df1, df2)
 #' ```
 #'
-#' This syntax supposes that you are in control of the individual
-#' arguments when you are writing the code. When the arguments are in
-#' a list whose length is variable, we need another syntax like
-#' splicing with `!!!`.
+#' Passing individual arguments is only possible for a fixed amount of
+#' arguments. When the arguments are in a list whose length is
+#' variable (and potentially very large), we need a programmatic
+#' approach like the splicing syntax `!!!`:
 #'
-#' ```{r}
+#' ```{r, comment = "#>", collapse = TRUE}
 #' dfs <- list(df1, df2)
 #'
 #' inject(rbind(!!!dfs))
 #' ```
 #'
-#' Because `rbind()` is a base function we had to enable `!!!` with
-#' [inject()]. However, many functions implement [dynamic dots][list2]
-#' out of the box and have `!!!` automatically enabled.
+#' Because `rbind()` is a base function we used [inject()] to
+#' explicitly enable `!!!`. However, many functions implement [dynamic
+#' dots][list2] with `!!!` implicitly enabled out of the box.
 #'
-#' ```{r}
+#' ```{r, include = FALSE}
+#' # Work around pkgload collision messages
+#' is_installed("tidyr")
+#' ````
+#'
+#' ```{r, comment = "#>", collapse = TRUE}
 #' tidyr::expand_grid(x = 1:2, y = c("a", "b"))
 #'
 #' xs <- list(x = 1:2, y = c("a", "b"))
@@ -201,15 +215,12 @@ NULL
 #' ```
 #'
 #' Note how the expanded grid has the right column names. That's
-#' because the spliced list is named which causes each name of the
+#' because we spliced a _named_ list. Splicing causes each name of the
 #' list to become an argument name.
 #'
-#' ```{r}
+#' ```{r, comment = "#>", collapse = TRUE}
 #' tidyr::expand_grid(!!!set_names(xs, toupper))
 #' ```
-#'
-#' Splicing lists of arguments with `!!!` is equivalent to
-#' [base::do.call()] (see also [exec()]).
 #'
 #'
 #' @section Splicing a list of expressions:
@@ -236,11 +247,12 @@ NULL
 #' }
 #' ```
 #'
-#' Second, more complex cases can be solved with the `across()`
+#' Second, more complex applications such as [transformation
+#' patterns][topic-metaprogramming] can be solved with the `across()`
 #' operation introduced in dplyr 1.0. Say you want to take the
-#' `mean()` of all expressions in `...`. Without `across()`, you could
+#' `mean()` of all expressions in `...`. Before `across()`, you had to
 #' defuse the `...` expressions, wrap them in a call to `mean()`, and
-#' inject them back in `summarise()`.
+#' inject them in `summarise()`.
 #'
 #' ```r
 #' my_mean <- function(.data, ...) {
@@ -266,51 +278,48 @@ NULL
 #'
 #' @section Performance of injected dots and dynamic dots:
 #'
-#' Take a function taking [dynamic dots][dyn-dots] via [list2()]:
+#' Take this [dynamic dots][dyn-dots] function:
 #'
-#' ```{r}
-#' my_function <- function(...) {
-#'   xs <- list2(...)
-#'
-#'   # Do something useful with `xs`
-#'   length(xs)
+#' ```{r, comment = "#>", collapse = TRUE}
+#' n_args <- function(...) {
+#'   length(list2(...))
 #' }
 #' ```
 #'
 #' Because it takes dynamic dots you can splice with `!!!` out of the
 #' box.
 #'
-#' ```{r}
-#' my_function(1, 2)
+#' ```{r, comment = "#>", collapse = TRUE}
+#' n_args(1, 2)
 #'
-#' my_function(!!!mtcars)
+#' n_args(!!!mtcars)
 #' ```
 #'
 #' Equivalently you could enable `!!!` explicitly with [inject()].
 #' 
-#' ```{r}
-#' inject(my_function(!!!mtcars))
+#' ```{r, comment = "#>", collapse = TRUE}
+#' inject(n_args(!!!mtcars))
 #' ```
 #'
 #' While the result is the same, what is going on under the hood is
-#' completely different. [list2()] is a dots collector that treats
-#' `!!!` inputs specially whereas [inject()] operates on the language.
-#' Concretely, `inject()` creates a function call containing as many
-#' arguments as there are elements in the spliced list. If you supply
-#' a list of size 1e6, `inject()` is going to create as many arguments
-#' before evaluation. This can be much slower.
+#' completely different. [list2()] is a dots collector that
+#' special-cases `!!!` arguments. On the other hand, [inject()]
+#' operates on the language and creates a function call containing as
+#' many arguments as there are elements in the spliced list. If you
+#' supply a list of size 1e6, `inject()` is creating one million
+#' arguments before evaluation. This can be much slower.
 #'
 #' ```r
 #' xs <- rep(list(1), 1e6)
 #'
 #' system.time(
-#'   my_function(!!!xs)
+#'   n_args(!!!xs)
 #' )
 #' #>    user  system elapsed
 #' #>   0.009   0.000   0.009
 #'
 #' system.time(
-#'   inject(my_function(!!!xs))
+#'   inject(n_args(!!!xs))
 #' )
 #' #>    user  system elapsed
 #' #>   0.445   0.012   0.457
@@ -318,9 +327,13 @@ NULL
 #'
 #' The same issue occurs when functions taking dynamic dots are called
 #' inside a data-masking function like `dplyr::mutate()`. The
-#' mechanism that enables injection in these arguments is the same as
-#' in `inject()`.
+#' mechanism that enables `!!!` injection in these arguments is the
+#' same as in `inject()`.
 #'
+#' @seealso
+#' - `r links$topic_inject`
+#' - [inject()]
+#' - [exec()]
 #'
 #' @name splice-operator
 NULL
@@ -370,6 +383,9 @@ NULL
 #' ```r
 #' usethis::use_package("glue", "Imports")
 #' ```
+#'
+#' @seealso
+#' - `r links$topic_inject`
 #'
 #' @examples
 #' g <- function(var) englue("{{ var }}")
@@ -431,6 +447,9 @@ englue <- function(x) {
 #'
 #' mtcars %>% my_mean(cyl)
 #' ```
+#'
+#' @seealso
+#' - `r links$topic_inject`
 #'
 #' @export
 qq_show <- function(expr) {

@@ -39,3 +39,8 @@ mtcars \%>\% my_mean(cyl)
 }\if{html}{\out{</div>}}
 }
 
+\seealso{
+\itemize{
+\item \link[=topic-inject]{Injecting with !!, !!!, and glue syntax}
+}
+}
