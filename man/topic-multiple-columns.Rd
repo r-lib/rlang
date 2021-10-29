@@ -93,7 +93,7 @@ Intuitively, many programmers who want to take a list of expressions in a single
 \}
 }\if{html}{\out{</div>}}
 
-This works in simple cases:\if{html}{\out{<div class="sourceCode r">}}\preformatted{mtcars \%>\% my_group_by(cyl) \%>\% dplyr::group_vars()
+This does work in simple cases:\if{html}{\out{<div class="sourceCode r">}}\preformatted{mtcars \%>\% my_group_by(cyl) \%>\% dplyr::group_vars()
 #> [1] "cyl"
 
 mtcars \%>\% my_group_by(list(cyl, am)) \%>\% dplyr::group_vars()

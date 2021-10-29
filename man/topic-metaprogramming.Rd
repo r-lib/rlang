@@ -4,9 +4,9 @@
 \alias{topic-metaprogramming}
 \title{Metaprogramming patterns}
 \description{
-The patterns covered in this article rely on \emph{metaprogramming} the ability of creating, defusing, and expanding R expressions. A good place to start if you're new to programming on the language is the \href{https://adv-r.hadley.nz/metaprogramming.html}{Metaprogramming chapter} of the advanced R book.
+The patterns covered in this article rely on \emph{metaprogramming}, the ability to defuse, create, expand, and inject R expressions. A good place to start if you're new to programming on the language is the \href{https://adv-r.hadley.nz/metaprogramming.html}{Metaprogramming chapter} of the \href{https://adv-r.hadley.nz}{Advanced R} book.
 
-If you haven't already, read \link[=topic-data-mask-programming]{Data mask programming patterns}. This article covers simpler patterns that do not require as much theory to get up to speed.
+If you haven't already, read \link[=topic-data-mask-programming]{Data mask programming patterns} which covers simpler patterns that do not require as much theory to get up to speed. It covers concepts like argument behaviours and the various patterns you can add to your toolbox (forwarding, names, bridge, and transformative patterns).
 }
 \section{Forwarding patterns}{
 \subsection{Defuse and inject}{
@@ -63,20 +63,29 @@ g(cyl, 1 + 1)
 #> [1] "cyl"   "1 + 1"
 }\if{html}{\out{</div>}}
 
-Just like with \code{dplyr::mutate()}, the user can override automatic names by supplying an explicit name:\if{html}{\out{<div class="sourceCode r">}}\preformatted{g(foo = cyl, bar = 1 + 1)
+Just like with \code{dplyr::mutate()}, the user can override automatic names by supplying explicit names:\if{html}{\out{<div class="sourceCode r">}}\preformatted{g(foo = cyl, bar = 1 + 1)
 #> [1] "foo" "bar"
 }\if{html}{\out{</div>}}
 
-More complicated defuse-and-inject patterns are explored in the Transformation patterns section.
+Defuse-and-inject patterns are most useful for transforming inputs. Some applications are explored in the Transformation patterns section.
 }
 }
 
 \section{Names patterns}{
 \subsection{Symbolise and inject}{
 
-The symbolise-and-inject pattern is a fallback names pattern for cases where \code{across(all_of())} is not supported. It consists in creating \link[=topic-defuse]{defused expressions} that refer to the data-variables represented in the names vector. These are then injected in the data mask context.
+The symbolise-and-inject pattern is a \emph{names pattern} that you can use when \code{across(all_of())} is not supported. It consists in creating \link[=topic-defuse]{defused expressions} that refer to the data-variables represented in the names vector. These are then injected in the data mask context.
 
-You can symbolise a character vector with \code{\link[=syms]{syms()}} or \code{\link[=data_syms]{data_syms()}}. Simple symbols returned by \code{syms()} work in a wider variety of cases (e.g. with base functions) but we'll use \code{data_syms()} as it is more robust (see \link[=topic-data-mask-ambiguity]{The data mask ambiguity}). It creates calls that subset the \code{\link{.data}} pronoun. Compare:\if{html}{\out{<div class="sourceCode r">}}\preformatted{vars <- c("cyl", "am")
+Symbolise a single string with \code{\link[=sym]{sym()}} or \code{\link[=data_sym]{data_sym()}}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{var <- "cyl"
+
+sym(var)
+#> cyl
+
+data_sym(var)
+#> .data$cyl
+}\if{html}{\out{</div>}}
+
+Symbolise a character vector with \code{\link[=syms]{syms()}} or \code{\link[=data_syms]{data_syms()}}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{vars <- c("cyl", "am")
 
 syms(vars)
 #> [[1]]
@@ -93,7 +102,11 @@ data_syms(vars)
 #> .data$am
 }\if{html}{\out{</div>}}
 
-A list of symbols can be injected in data-masked dots with the splice operator \code{\link[=splice-operator]{!!!}}, which injects each element of the list as a separate argument:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_group_by <- function(data, vars) \{
+Simple symbols returned by \code{sym()} and \code{syms()} work in a wider variety of cases (with base functions in particular) but we'll use mostly use \code{data_sym()} and \code{data_syms()} because they are more robust (see \link[=topic-data-mask-ambiguity]{The data mask ambiguity}). Note that these do not return \emph{symbols} per se, instead they create \emph{calls} to \code{$} that subset the \code{\link{.data}} pronoun.
+
+Since the \code{.data} pronoun is a tidy eval feature, you can't use it in base functions. As a rule, prefer the \code{data_}-prefixed variants when you're injecting in tidy eval functions and the unprefixed functions for base functions.
+
+A list of symbols can be injected in data-masked dots with the splice operator \code{\link[=splice-operator]{!!!}}, which injects each element of the list as a separate argument. For instance, to implement a \code{group_by()} variant that takes a character vector of column names, you might write:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_group_by <- function(data, vars) \{
   data \%>\% dplyr::group_by(!!!data_syms(vars))
 \}
 
@@ -133,7 +146,7 @@ mtcars \%>\% my_pivot_longer(cyl, am = am * 100)
 \section{Transformation patterns}{
 \subsection{Transforming inputs manually}{
 
-If \code{across()} and variants are not available, you will need to transform the inputs yourself using metaprogramming techniques. To illustrate the technique we'll reimplement \code{my_mean()} and \code{filter_non_baseline()} without using \code{across()} or \code{if_all()}. The pattern consists in defusing the input expression, building larger calls around them, and finally inject the modified expressions inside the data-masked functions.
+If \code{across()} and variants are not available, you will need to transform the inputs yourself using metaprogramming techniques. To illustrate the technique we'll reimplement \code{my_mean()} and without using \code{across()}. The pattern consists in defusing the input expression, building larger calls around them, and finally inject the modified expressions inside the data-masking functions.
 
 We'll start with a single named argument for simplicity:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
   # Defuse the expression
@@ -153,7 +166,7 @@ mtcars \%>\% my_mean(cyl)
 #> 1  6.19
 }\if{html}{\out{</div>}}
 
-The \code{...} technique is similar but a little more involved. We'll use the plural variants \code{enquos()} and \verb{!!!}. We'll also loop over the variable number of inputs using \code{purrr::map()}. But the pattern is basically the same:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(.data, ...) \{
+With \code{...} the technique is similar, though a little more involved. We'll use the plural variants \code{enquos()} and \code{\link{!!!}}. We'll also loop over the variable number of inputs using \code{purrr::map()}. But the pattern is otherwise basically the same:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(.data, ...) \{
   # Defuse the dots. Make sure they are automatically named.
   vars <- enquos(..., .named = TRUE)
 
@@ -171,7 +184,7 @@ mtcars \%>\% my_mean(cyl)
 #> 1  6.19
 }\if{html}{\out{</div>}}
 
-Note that we are inheriting the data-masked behaviour of \code{summarise()} because we have effectively forwarded \code{...} inside that verb. This is different than transformation patterns based on \code{across()} which inherits tidy selection behaviour. For instance, this makes it possible to create new vectors on the fly:\if{html}{\out{<div class="sourceCode r">}}\preformatted{mtcars \%>\% my_mean(cyl = cyl * 100)
+Note that we are inheriting the data-masking behaviour of \code{summarise()} because we have effectively forwarded \code{...} inside that verb. This is different than transformation patterns based on \code{across()} which inherit tidy selection behaviour. In practice, this means the function doesn't support selection helpers and syntax. Instead, it gains the ability to create new vectors on the fly:\if{html}{\out{<div class="sourceCode r">}}\preformatted{mtcars \%>\% my_mean(cyl = cyl * 100)
 #> # A tibble: 1 x 1
 #>     cyl
 #>   <dbl>
@@ -181,7 +194,7 @@ Note that we are inheriting the data-masked behaviour of \code{summarise()} beca
 }
 
 \section{Base patterns}{
-These other patterns are used for programming with base data-masking functions. They essentially consists in building and evaluating expressions in the data mask. In this section, we review and compare these patterns with rlang idioms.
+In this section, we review patterns for programming with \emph{base} data-masking functions. They essentially consist in building and evaluating expressions in the data mask. We review these patterns and compare them to rlang idioms.
 \subsection{Data-masked \code{get()}}{
 
 In the simplest version of this pattern, \code{get()} is called with a variable name to retrieve objects from the data mask:\if{html}{\out{<div class="sourceCode r">}}\preformatted{var <- "cyl"
@@ -190,19 +203,19 @@ with(mtcars, mean(get(var)))
 #> [1] 6.1875
 }\if{html}{\out{</div>}}
 
-This sort of pattern is susceptible to names collisions. For instance, the input data frame might contain a variable called \code{var}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{df <- data.frame(var = "wrong")
+This sort of pattern is susceptible to \link[=topic-data-mask-ambiguity]{names collisions}. For instance, the input data frame might contain a variable called \code{var}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{df <- data.frame(var = "wrong")
 
 with(df, mean(get(var)))
 #> Error in get(var): object 'wrong' not found
 }\if{html}{\out{</div>}}
 
-To avoid this you can inject \link[=sym]{symbols}. Enable injection operators with \code{\link[=inject]{inject()}}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{inject(
+In general, prefer symbol injection over \code{get()} to prevent this sort of collisions. With base functions you will need to enable injection operators explicitly using \code{\link[=inject]{inject()}}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{inject(
   with(mtcars, mean(!!sym(var)))
 )
 #> [1] 6.1875
 }\if{html}{\out{</div>}}
 
-See \link[=topic-data-mask-ambiguity]{The data mask ambiguity} for more information about this problem.
+See \link[=topic-data-mask-ambiguity]{The data mask ambiguity} for more information about names collisions.
 }
 
 \subsection{Data-masked \code{parse()} and \code{eval()}}{
@@ -234,17 +247,23 @@ with(mtcars, mean(eval(parse(text = code))))
 #>     ^
 }\if{html}{\out{</div>}}
 
-For these reasons, always prefer to \emph{build} code instead of parsing code.\if{html}{\out{<div class="sourceCode r">}}\preformatted{var1 <- "(function() \{
+For these reasons, always prefer to \emph{build} code instead of parsing code. Building variable names with \code{\link[=sym]{sym()}} is a way of sanitising inputs.\if{html}{\out{<div class="sourceCode r">}}\preformatted{var1 <- "(function() \{
   Sys.sleep(Inf)  # Could be a coin mining routine
 \})()"
 var2 <- "vs"
 
 code <- call("==", sym(var1), sym(var2))
-with(mtcars, mean(eval(code)))
+
+code
+#> `(function() \{\\n  Sys.sleep(Inf)  # Could be a coin mining routine\\n\})()` == 
+#>     vs
+}\if{html}{\out{</div>}}
+
+The adversarial input now produces an error:\if{html}{\out{<div class="sourceCode r">}}\preformatted{with(mtcars, mean(eval(code)))
 #> Error in eval(code): object '(function() \{\\n  Sys.sleep(Inf)  # Could be a coin mining routine\\n\})()' not found
 }\if{html}{\out{</div>}}
 
-It is also better to inject the code instead of evaluating it. This avoids names collisions:\if{html}{\out{<div class="sourceCode r">}}\preformatted{var1 <- "am"
+Finally, it is recommended to inject the code instead of evaluating it to avoid names collisions:\if{html}{\out{<div class="sourceCode r">}}\preformatted{var1 <- "am"
 var2 <- "vs"
 
 code <- call("==", sym(var1), sym(var2))

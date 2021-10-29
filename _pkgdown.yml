@@ -28,12 +28,12 @@ navbar:
         href: reference/topic-data-mask-programming.html
 
       - text: Metaprogramming
-      - text: Metaprogramming patterns
-        href: reference/topic-metaprogramming.html
       - text: Defusing R expressions
         href: reference/topic-defuse.html
       - text: Injecting with `!!`, `!!!`, and glue syntax
         href: reference/topic-inject.html
+      - text: Metaprogramming patterns
+        href: reference/topic-metaprogramming.html
       - text: What are quosures and when are they needed?
         href: reference/topic-quosure.html
 
@@ -125,9 +125,9 @@ reference:
       - defusing-advanced
   - subtitle: Overviews
     contents:
-      - topic-metaprogramming
       - topic-defuse
       - topic-inject
+      - topic-metaprogramming
       - topic-quosure
   - subtitle: Guides
     contents:
