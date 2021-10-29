@@ -20,10 +20,7 @@ enquos(
 \item{arg}{An unquoted argument name. The expression
 supplied to that argument is defused and returned.}
 
-\item{...}{For \code{enexprs()}, \code{ensyms()} and \code{enquos()}, names of
-arguments to capture without evaluation (including \code{...}). For
-\code{exprs()} and \code{quos()}, the expressions to capture unevaluated
-(including expressions contained in \code{...}).}
+\item{...}{Names of arguments to defuse.}
 
 \item{.named}{If \code{TRUE}, unnamed inputs are automatically named
 with \code{\link[=as_label]{as_label()}}. This is equivalent to applying
@@ -38,7 +35,7 @@ last argument is ignored if it is empty. Named arguments are not
 considered empty.}
 
 \item{.unquote_names}{Whether to treat \verb{:=} as \code{=}. Unlike \code{=}, the
-\verb{:=} syntax supports \verb{!!} unquoting on the LHS.}
+\verb{:=} syntax supports \link[=glue-operator]{names injection}.}
 
 \item{.homonyms}{How to treat arguments with the same name. The
 default, \code{"keep"}, preserves these arguments. Set \code{.homonyms} to
@@ -46,14 +43,13 @@ default, \code{"keep"}, preserves these arguments. Set \code{.homonyms} to
 the last occurrences, and to \code{"error"} to raise an informative
 error and indicate what arguments have duplicated names.}
 
-\item{.check_assign}{Whether to check for \verb{<-} calls passed in
-dots. When \code{TRUE} and a \verb{<-} call is detected, a warning is
-issued to advise users to use \code{=} if they meant to match a
-function parameter, or wrap the \verb{<-} call in braces otherwise.
+\item{.check_assign}{Whether to check for \verb{<-} calls. When \code{TRUE} a
+warning recommends users to use \code{=} if they meant to match a
+function parameter or wrap the \verb{<-} call in curly braces otherwise.
 This ensures assignments are explicit.}
 }
 \value{
-\code{enquo()} returns a \link[=topic-quosure]{quosure}. \code{enquos()}
+\code{enquo()} returns a \link[=topic-quosure]{quosure} and \code{enquos()}
 returns a list of quosures.
 }
 \description{
@@ -64,24 +60,26 @@ other expressions.
 Defusing function arguments is useful for:
 \itemize{
 \item Creating data-masking functions.
-\item Interfacing with another \link[=topic-data-mask]{data-masking} function.
-See \link[=topic-data-mask-programming]{the defuse and inject pattern}.
+\item Interfacing with another \link[=topic-data-mask]{data-masking} function
+using the \link[=topic-metaprogramming]{defuse-and-inject} pattern.
 }
 
-These are advanced tools. Make sure to read about the \link[=embrace-operator]{embrace operator} \verb{\{\{} which is sufficient for most
-tasks.
+These are advanced tools. Make sure to first learn about the embrace
+operator \code{\link[=embrace-operator]{\{\{}} in \link[=topic-data-mask-programming]{Data mask programming patterns}.
+\verb{\{\{} is easier to work with with less theory, and it is sufficient
+in most applications.
 }
 \section{Implicit injection}{
 
 
 Arguments defused with \code{enquo()} and \code{enquos()} automatically gain
-\link[=topic-inject]{injection} support.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function <- function(data, var) \{
+\link[=topic-inject]{injection} support.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
   var <- enquo(var)
   dplyr::summarise(data, mean(!!var))
 \}
 
-# Your users can now use `!!` and `\{\{`
-my_function(mtcars, !!sym("cyl"))
+# Can now use `!!` and `\{\{`
+my_mean(mtcars, !!sym("cyl"))
 }\if{html}{\out{</div>}}
 
 See \code{\link[=enquo0]{enquo0()}} and \code{\link[=enquos0]{enquos0()}} for variants that don't enable
@@ -90,28 +88,30 @@ injection.
 
 \examples{
 # `enquo()` defuses the expression supplied by your user
-my_function <- function(arg) {
+f <- function(arg) {
   enquo(arg)
 }
-my_function(1 + 1)
 
-# `enquos() works with arguments and dots and returns a list of
-# expressions`
-my_function <- function(...) {
+f(1 + 1)
+
+# `enquos()` works with arguments and dots. It returns a list of
+# expressions
+f <- function(...) {
   enquos(...)
 }
-my_function(1 + 1, 2 * 10)
+
+f(1 + 1, 2 * 10)
 
 
 # `enquo()` and `enquos()` enable _injection_ and _embracing_ for
 # your users
-other_function <- function(arg) {
-  my_function({{ arg }} * 2)
+g <- function(arg) {
+  f({{ arg }} * 2)
 }
-other_function(100)
+g(100)
 
 column <- sym("cyl")
-other_function(!!column)
+g(!!column)
 
 }
 \seealso{
@@ -119,8 +119,6 @@ other_function(!!column)
 \item \link[=topic-defuse]{Defusing R expressions} for an overview.
 \item \code{\link[=expr]{expr()}} to defuse your own local expressions.
 \item \link[=defusing-advanced]{Advanced defusal operators}.
-\item \code{\link[=sym]{sym()}} and \code{\link[=call2]{call2()}} for building expressions (symbols and calls
-respectively) programmatically.
 \item \code{\link[base:eval]{base::eval()}} and \code{\link[=eval_bare]{eval_bare()}} for resuming evaluation
 of a defused expression.
 }

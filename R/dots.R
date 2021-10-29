@@ -132,10 +132,9 @@ list3 <- function(...) {
 #'   `"first"` to only keep the first occurrences, to `"last"` to keep
 #'   the last occurrences, and to `"error"` to raise an informative
 #'   error and indicate what arguments have duplicated names.
-#' @param .check_assign Whether to check for `<-` calls passed in
-#'   dots. When `TRUE` and a `<-` call is detected, a warning is
-#'   issued to advise users to use `=` if they meant to match a
-#'   function parameter, or wrap the `<-` call in braces otherwise.
+#' @param .check_assign Whether to check for `<-` calls. When `TRUE` a
+#'   warning recommends users to use `=` if they meant to match a
+#'   function parameter or wrap the `<-` call in curly braces otherwise.
 #'   This ensures assignments are explicit.
 #' @export
 #' @examples

@@ -60,9 +60,8 @@ enquos0(...)
 supplied to that argument is defused and returned.}
 
 \item{...}{For \code{enexprs()}, \code{ensyms()} and \code{enquos()}, names of
-arguments to capture without evaluation (including \code{...}). For
-\code{exprs()} and \code{quos()}, the expressions to capture unevaluated
-(including expressions contained in \code{...}).}
+arguments to defuse. For \code{exprs()} and \code{quos()}, expressions
+to defuse.}
 
 \item{.named}{If \code{TRUE}, unnamed inputs are automatically named
 with \code{\link[=as_label]{as_label()}}. This is equivalent to applying
@@ -77,7 +76,7 @@ last argument is ignored if it is empty. Named arguments are not
 considered empty.}
 
 \item{.unquote_names}{Whether to treat \verb{:=} as \code{=}. Unlike \code{=}, the
-\verb{:=} syntax supports \verb{!!} unquoting on the LHS.}
+\verb{:=} syntax supports \link[=glue-operator]{names injection}.}
 
 \item{.homonyms}{How to treat arguments with the same name. The
 default, \code{"keep"}, preserves these arguments. Set \code{.homonyms} to
@@ -85,19 +84,18 @@ default, \code{"keep"}, preserves these arguments. Set \code{.homonyms} to
 the last occurrences, and to \code{"error"} to raise an informative
 error and indicate what arguments have duplicated names.}
 
-\item{.check_assign}{Whether to check for \verb{<-} calls passed in
-dots. When \code{TRUE} and a \verb{<-} call is detected, a warning is
-issued to advise users to use \code{=} if they meant to match a
-function parameter, or wrap the \verb{<-} call in braces otherwise.
+\item{.check_assign}{Whether to check for \verb{<-} calls. When \code{TRUE} a
+warning recommends users to use \code{=} if they meant to match a
+function parameter or wrap the \verb{<-} call in curly braces otherwise.
 This ensures assignments are explicit.}
 
 \item{expr}{An expression to defuse.}
 }
 \description{
-These advanced operators defuse R expressions. \code{\link[=expr]{expr()}}, \code{\link[=enquo]{enquo()}},
-and \code{\link[=enquos]{enquos()}} are sufficient for most purposes but rlang provides
-these other operations, either for completeness or because they are
-useful to experts.
+These advanced operators \link[=topic-defuse]{defuse} R expressions.
+\code{\link[=expr]{expr()}}, \code{\link[=enquo]{enquo()}}, and \code{\link[=enquos]{enquos()}} are sufficient for most
+purposes but rlang provides these other operations, either for
+completeness or because they are useful to experts.
 \itemize{
 \item \code{exprs()} is the plural variant of \code{expr()}. It returns a list of
 expressions. It is like \code{\link[base:list]{base::alist()}} but with
@@ -125,11 +123,9 @@ without injection support. The injection operators \verb{!!}, \verb{!!!},
 and \verb{\{\{} are not processed, instead they are preserved in the
 defused expression. This makes it possible to defuse
 expressions that potentially contain injection operators meant
-for later use.
-
-The flip side is that this makes it harder for users to inject
-expressions in your function. They have to do it explicitly
-with \code{\link[=inject]{inject()}}.
+for later use. The trade off is that it makes it harder for
+users to inject expressions in your function. They have to
+enable injection explicitly with \code{\link[=inject]{inject()}}.
 
 None of the features of \link[=dyn-dots]{dynamic dots} are available
 when defusing with \code{enquos0()}. For instance, trailing empty
