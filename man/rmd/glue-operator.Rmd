@@ -31,20 +31,6 @@ g(1 + 1)
 ```
 
 
-## What's the deal with `:=`?
-
-Name injection in dynamic dots was originally implemented with `:=` instead of `=` to allow complex expressions on the LHS:
-
-```{r, comment = "#>", collapse = TRUE}
-x <- "name"
-list2(!!x := 1)
-```
-
-Name-injection with glue operations was an extension of this existing feature and so inherited the same interface. However, there is no technical barrier to using glue strings on the LHS of `=`.
-
-As we are now moving away from [`!!`][injection-operator] for common tasks, we are considering enabling glue strings with `=` and superseding `:=` usage. Track the progress of this change in [issue 1296](https://github.com/r-lib/rlang/issues/1296).
-
-
 ## `{{` and `{`
 
 While `glue::glue()` only supports `{`, dynamic dots support both `{` and `{{`. The double brace variant is similar to the embrace operator [`{{`][embrace-operator] available in [data-masked][topic-data-mask] arguments. It [defuses][topic-defuse] a function argument, calls [as_label()] on the expression supplied as argument, and inserts the result in the string.
@@ -105,6 +91,20 @@ mtcars %>% my_mean(cyl * am)
 
 mtcars %>% my_mean(cyl * am, name = "mean_cyl_am")
 ```
+
+
+## What's the deal with `:=`?
+
+Name injection in dynamic dots was originally implemented with `:=` instead of `=` to allow complex expressions on the LHS:
+
+```{r, comment = "#>", collapse = TRUE}
+x <- "name"
+list2(!!x := 1)
+```
+
+Name-injection with glue operations was an extension of this existing feature and so inherited the same interface. However, there is no technical barrier to using glue strings on the LHS of `=`.
+
+As we are now moving away from [`!!`][injection-operator] for common tasks, we are considering enabling glue strings with `=` and superseding `:=` usage. Track the progress of this change in [issue 1296](https://github.com/r-lib/rlang/issues/1296).
 
 
 ## Using glue syntax in packages

@@ -36,19 +36,6 @@ See also \code{\link[=englue]{englue()}} to string-embrace outside of dynamic do
 g(1 + 1)
 #> [1] "var: 1 + 1"
 }\if{html}{\out{</div>}}
-\subsection{What's the deal with \verb{:=}?}{
-
-Name injection in dynamic dots was originally implemented with \verb{:=} instead of \code{=} to allow complex expressions on the LHS:\if{html}{\out{<div class="sourceCode r">}}\preformatted{x <- "name"
-list2(!!x := 1)
-#> $name
-#> [1] 1
-}\if{html}{\out{</div>}}
-
-Name-injection with glue operations was an extension of this existing feature and so inherited the same interface. However, there is no technical barrier to using glue strings on the LHS of \code{=}.
-
-As we are now moving away from \code{\link[=injection-operator]{!!}} for common tasks, we are considering enabling glue strings with \code{=} and superseding \verb{:=} usage. Track the progress of this change in \href{https://github.com/r-lib/rlang/issues/1296}{issue 1296}.
-}
-
 \subsection{\verb{\{\{} and \verb{\{}}{
 
 While \code{glue::glue()} only supports \verb{\{}, dynamic dots support both \verb{\{} and \verb{\{\{}. The double brace variant is similar to the embrace operator \code{\link[=embrace-operator]{\{\{}} available in \link[=topic-data-mask]{data-masked} arguments. It \link[=topic-defuse]{defuses} a function argument, calls \code{\link[=as_label]{as_label()}} on the expression supplied as argument, and inserts the result in the string.
@@ -122,6 +109,19 @@ mtcars \%>\% my_mean(cyl * am, name = "mean_cyl_am")
 #>         <dbl>
 #> 1        2.06
 }\if{html}{\out{</div>}}
+}
+
+\subsection{What's the deal with \verb{:=}?}{
+
+Name injection in dynamic dots was originally implemented with \verb{:=} instead of \code{=} to allow complex expressions on the LHS:\if{html}{\out{<div class="sourceCode r">}}\preformatted{x <- "name"
+list2(!!x := 1)
+#> $name
+#> [1] 1
+}\if{html}{\out{</div>}}
+
+Name-injection with glue operations was an extension of this existing feature and so inherited the same interface. However, there is no technical barrier to using glue strings on the LHS of \code{=}.
+
+As we are now moving away from \code{\link[=injection-operator]{!!}} for common tasks, we are considering enabling glue strings with \code{=} and superseding \verb{:=} usage. Track the progress of this change in \href{https://github.com/r-lib/rlang/issues/1296}{issue 1296}.
 }
 
 \subsection{Using glue syntax in packages}{
