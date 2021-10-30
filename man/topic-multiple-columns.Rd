@@ -6,7 +6,7 @@
 \description{
 In this guide we compare ways of taking multiple columns in a single function argument.
 
-As a refresher (see the \link[=topic-data-mask-programming]{programming patterns} article), there are two common ways of passing arguments to \link[=topic-data-mask]{data-masking} functions. For single arguments, embrace with \code{\link[=embrace-operator]{\{\{}}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_group_by <- function(data, var) \{
+As a refresher (see the \link[=topic-data-mask-programming]{programming patterns} article), there are two common ways of passing arguments to \link[=topic-data-mask]{data-masking} functions. For single arguments, embrace with \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_group_by <- function(data, var) \{
   data \%>\% dplyr::group_by(\{\{ var \}\})
 \}
 

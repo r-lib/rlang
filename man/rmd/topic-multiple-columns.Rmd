@@ -3,7 +3,7 @@
 
 In this guide we compare ways of taking multiple columns in a single function argument.
 
-As a refresher (see the [programming patterns][topic-data-mask-programming] article), there are two common ways of passing arguments to [data-masking][topic-data-mask] functions. For single arguments, embrace with [`{{`][embrace-operator]:
+As a refresher (see the [programming patterns][topic-data-mask-programming] article), there are two common ways of passing arguments to [data-masking][topic-data-mask] functions. For single arguments, embrace with `r link("{{")`:
 
 ```{r, comment = "#>", collapse = TRUE}
 my_group_by <- function(data, var) {

@@ -9,8 +9,8 @@
 \description{
 The injection operators are extensions of R implemented by rlang to modify a piece of code before R processes it. There are two main families:
 \itemize{
-\item The \link[=dyn-dots]{dynamic dots} operators, \code{\link{!!!}} and \code{\link[=glue-operator]{"\{"}}.
-\item The \link[=topic-metaprogramming]{metaprogramming operators} \code{\link{!!}}, \code{\link[=embrace-operator]{\{\{}}, and \code{\link[=glue-operator]{"\{\{"}}. Splicing with \code{\link{!!!}} can also be done in metaprogramming context.
+\item The \link[=dyn-dots]{dynamic dots} operators, \code{\link{!!!}} and \ifelse{html}{\code{\link[=glue-operator]{"\{"}}}{\verb{"\{"}}.
+\item The \link[=topic-metaprogramming]{metaprogramming operators} \code{\link{!!}}, \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}}, and \ifelse{html}{\code{\link[=glue-operator]{"\{\{"}}}{\verb{"\{\{"}}. Splicing with \code{\link{!!!}} can also be done in metaprogramming context.
 }
 }
 \section{Dots injection}{
@@ -50,9 +50,9 @@ And a list of arguments can be supplied by \emph{splicing} the list with \code{\
 }\if{html}{\out{</div>}}
 }
 
-\subsection{Injecting names with \code{"\{"}}{
+\subsection{Injecting names with \verb{"\{"}}{
 
-A related problem comes up when an argument name is stored in a variable. With dynamic dots, you can inject the name using \href{https://glue.tidyverse.org/}{glue syntax} with \code{\link[=glue-operator]{"\{"}}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{name <- "foo"
+A related problem comes up when an argument name is stored in a variable. With dynamic dots, you can inject the name using \href{https://glue.tidyverse.org/}{glue syntax} with \ifelse{html}{\code{\link[=glue-operator]{"\{"}}}{\verb{"\{"}}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{name <- "foo"
 
 rbind2("\{name\}" := 1:2, bar = 3:4)
 #>     [,1] [,2]
@@ -71,7 +71,7 @@ rbind2("prefix_\{name\}" := 1:2, bar = 3:4)
 \link[=topic-data-mask]{Data-masked} arguments support the following injection operators. They can also be explicitly enabled with \code{\link[=inject]{inject()}}.
 \subsection{Embracing with \verb{\{\{}}{
 
-The embracing operator \code{\link[=embrace-operator]{\{\{}} is made specially for function arguments. It \link[=topic-defuse]{defuses} the expression supplied as argument and immediately injects it in place. The injected argument is then evaluated in another context such as a \link[=topic-data-mask]{data mask}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Inject function arguments that might contain
+The embracing operator \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}} is made specially for function arguments. It \link[=topic-defuse]{defuses} the expression supplied as argument and immediately injects it in place. The injected argument is then evaluated in another context such as a \link[=topic-data-mask]{data mask}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Inject function arguments that might contain
 # data-variables by embracing them with \{\{ \}\}
 mean_by <- function(data, by, var) \{
   data \%>\%

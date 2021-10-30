@@ -23,7 +23,7 @@ special functions:
 \link[=topic-data-mask]{data-masked} arguments.
 
 Technically, this means function arguments defused with
-\code{\link[=embrace-operator]{\{\{}} or \code{en}-prefixed operators like
+\ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}} or \code{en}-prefixed operators like
 \code{\link[=enquo]{enquo()}}, \code{\link[=enexpr]{enexpr()}}, etc.
 \item Inside \code{\link[=inject]{inject()}}.
 }
@@ -91,7 +91,7 @@ ambiguity problem in a more intuitive way:\if{html}{\out{<div class="sourceCode 
 mtcars \%>\% dplyr::mutate(cyl = cyl * .env$cyl)
 }\if{html}{\out{</div>}}
 
-Second, the embrace operator \code{\link[=embrace-operator]{\{\{}} makes the
+Second, the embrace operator \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}} makes the
 \link[=topic-metaprogramming]{defuse-and-inject pattern} easier to
 learn and use.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
   data \%>\% dplyr::summarise(mean(\{\{ var \}\}))

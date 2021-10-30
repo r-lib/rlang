@@ -35,7 +35,7 @@ You will also need to use different solutions for single named arguments than fo
 In a regular function, arguments can be defined in terms of a \emph{type} of objects that they accept. An argument might accept a character vector, a data frame, a single logical value, etc. Data-masked arguments are more complex. Not only do they generally accept a specific type of objects (for instance \code{dplyr::mutate()} accepts vectors), they exhibit special computational behaviours.
 \itemize{
 \item Data-masked expressions (base): E.g. \code{\link[=transform]{transform()}}, \code{\link[=with]{with()}}.  Expressions may refer to the columns of the supplied data frame.
-\item Data-masked expressions (tidy eval): E.g. \code{\link[dplyr:mutate]{dplyr::mutate()}}, \code{\link[ggplot2:aes]{ggplot2::aes()}}. Same as base data-masking but with tidy eval features enabled. This includes \link[=topic-inject]{injection operators} such as \code{\link[=embrace-operator]{\{\{}} and \code{\link[=injection-operator]{!!}} and the \code{\link{.data}} and \code{\link{.env}} pronouns.
+\item Data-masked expressions (tidy eval): E.g. \code{\link[dplyr:mutate]{dplyr::mutate()}}, \code{\link[ggplot2:aes]{ggplot2::aes()}}. Same as base data-masking but with tidy eval features enabled. This includes \link[=topic-inject]{injection operators} such as \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}} and \code{\link[=injection-operator]{!!}} and the \code{\link{.data}} and \code{\link{.env}} pronouns.
 \item Data-masked symbols: Same as data-masked arguments but the supplied expressions must be simple column names. This often simplifies things, for instance this is an easy way of avoiding issues of \link[=topic-double-evaluation]{double evaluation}.
 \item \link[tidyselect:language]{Tidy selections}: E.g. \code{\link[dplyr:select]{dplyr::select()}}, \code{\link[tidyr:pivot_longer]{tidyr::pivot_longer()}}. This is an alternative to data masking that supports selection helpers like \code{starts_with()} or \code{all_of()}, and implements special behaviour for operators like \code{c()}, \code{|} and \code{&}.
 
@@ -55,7 +55,7 @@ To let users know about the capabilities of your function arguments, document th
 With the forwarding patterns, arguments inherit the behaviour of the data-masked arguments they are passed in.
 \subsection{Embrace with \verb{\{\{}}{
 
-The embrace operator \code{\link[=embrace-operator]{\{\{}} is a forwarding syntax for single arguments. You can forward an argument in data-masked context:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_summarise <- function(data, var) \{
+The embrace operator \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}} is a forwarding syntax for single arguments. You can forward an argument in data-masked context:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_summarise <- function(data, var) \{
   data \%>\% dplyr::summarise(\{\{ var \}\})
 \}
 }\if{html}{\out{</div>}}
@@ -115,7 +115,7 @@ With the names patterns you refer to columns by name with strings or character v
 }
 \subsection{Subsetting the \code{.data} pronoun}{
 
-The \code{\link{.data}} pronoun is a tidy eval feature that is enabled in all data-masked arguments, just like \code{\link[=embrace-operator]{\{\{}}. The pronoun represents the data mask and can be subsetted with \code{[[} and \code{$}. These three statements are equivalent:\if{html}{\out{<div class="sourceCode r">}}\preformatted{mtcars \%>\% dplyr::summarise(mean = mean(cyl))
+The \code{\link{.data}} pronoun is a tidy eval feature that is enabled in all data-masked arguments, just like \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}}. The pronoun represents the data mask and can be subsetted with \code{[[} and \code{$}. These three statements are equivalent:\if{html}{\out{<div class="sourceCode r">}}\preformatted{mtcars \%>\% dplyr::summarise(mean = mean(cyl))
 
 mtcars \%>\% dplyr::summarise(mean = mean(.data$cyl))
 

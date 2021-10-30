@@ -11,7 +11,7 @@ If you haven't already, read \link[=topic-data-mask-programming]{Data mask progr
 \section{Forwarding patterns}{
 \subsection{Defuse and inject}{
 
-\code{\link[=embrace-operator]{\{\{}} and \code{...} are sufficient for most purposes. Sometimes however, it is necessary to decompose the forwarding action into its two constitutive steps, \link[=topic-defuse]{defusing} and \link[=topic-inject]{injecting}.
+\ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}} and \code{...} are sufficient for most purposes. Sometimes however, it is necessary to decompose the forwarding action into its two constitutive steps, \link[=topic-defuse]{defusing} and \link[=topic-inject]{injecting}.
 
 \verb{\{\{} is the combination of \code{\link[=enquo]{enquo()}} and \code{\link[=injection-operator]{!!}}. These functions are completely equivalent:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_summarise <- function(data, var) \{
   data \%>\% dplyr::summarise(\{\{ var \}\})

@@ -86,7 +86,7 @@ As a tidyverse user you generally don't need to worry about quosures because `{{
 
 ## Foreign and local expressions
 
-As a rule of thumb, quosures are only needed for arguments defused with [enquo()] or [enquos()] (or with [`{{`][embrace-operator] which calls `enquo()` implicitly):
+As a rule of thumb, quosures are only needed for arguments defused with [enquo()] or [enquos()] (or with `r link("{{")` which calls `enquo()` implicitly):
 
 ```r
 my_function(var) {

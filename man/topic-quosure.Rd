@@ -71,7 +71,7 @@ The role of quosures is to let R know that \code{check_numeric()} should be foun
 As a tidyverse user you generally don't need to worry about quosures because \verb{\{\{} and \code{...} will create them for you. Introductory texts like \href{https://dplyr.tidyverse.org/articles/programming.html}{Programming with dplyr} or the \link[=topic-data-mask-programming]{standard data-mask programming patterns} don't even mention the term. In more complex cases you might need to create quosures with \code{\link[=enquo]{enquo()}} or \code{\link[=enquos]{enquos()}} (even though you generally don't need to know or care that these functions return quosures). In this section, we explore when quosures are necessary in these more advanced applications.
 \subsection{Foreign and local expressions}{
 
-As a rule of thumb, quosures are only needed for arguments defused with \code{\link[=enquo]{enquo()}} or \code{\link[=enquos]{enquos()}} (or with \code{\link[=embrace-operator]{\{\{}} which calls \code{enquo()} implicitly):\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function(var) \{
+As a rule of thumb, quosures are only needed for arguments defused with \code{\link[=enquo]{enquo()}} or \code{\link[=enquos]{enquos()}} (or with \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}} which calls \code{enquo()} implicitly):\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function(var) \{
   var <- enquo(var)
   their_function(!!var)
 \}

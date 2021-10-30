@@ -14,7 +14,7 @@ mean(cyl + am)
 with(mtcars, mean(cyl + am))
 ```
 
-While data-masking makes it easy to program interactively with data frames, it makes it harder to create functions. Passing data-masked arguments to functions requires injection with the embracing operator [`{{`][embrace-operator] or, in more complex cases, the injection operator [`!!`].
+While data-masking makes it easy to program interactively with data frames, it makes it harder to create functions. Passing data-masked arguments to functions requires injection with the embracing operator `r link("{{")` or, in more complex cases, the injection operator [`!!`].
 
 
 # Why does data-masking require embracing and injection?
@@ -90,7 +90,7 @@ Read more about this in `r links$topic_data_mask_ambiguity`.
 
 Data-masking relies on three language features:
 
-- [Argument defusal][topic-defuse] with [substitute()] (base R) or [enquo()], [enquos()], and [`{{`][embrace-operator] (rlang). R code is defused so it can be evaluated later on in a special environment enriched with data.
+- [Argument defusal][topic-defuse] with [substitute()] (base R) or [enquo()], [enquos()], and `r link("{{")` (rlang). R code is defused so it can be evaluated later on in a special environment enriched with data.
 
 - First class environments. Environments are a special type of list-like object in which defused R code can be evaluated.  The named elements in an environment define objects. Lists and data frames can be transformed to environments:
 

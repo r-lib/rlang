@@ -18,7 +18,7 @@ tibble::tibble("\{foo\}" := 1)
 #> 1     1
 }\if{html}{\out{</div>}}
 
-Inside functions, embracing an argument with \code{\link[=embrace-operator]{\{\{}} inserts the expression supplied as argument in the string.\if{html}{\out{<div class="sourceCode r">}}\preformatted{tib <- function(x) \{
+Inside functions, embracing an argument with \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}} inserts the expression supplied as argument in the string.\if{html}{\out{<div class="sourceCode r">}}\preformatted{tib <- function(x) \{
   tibble::tibble("var: \{\{ x \}\}" := x)
 \}
 
@@ -38,7 +38,7 @@ g(1 + 1)
 }\if{html}{\out{</div>}}
 \subsection{\verb{\{\{} and \verb{\{}}{
 
-While \code{glue::glue()} only supports \verb{\{}, dynamic dots support both \verb{\{} and \verb{\{\{}. The double brace variant is similar to the embrace operator \code{\link[=embrace-operator]{\{\{}} available in \link[=topic-data-mask]{data-masked} arguments. It \link[=topic-defuse]{defuses} a function argument, calls \code{\link[=as_label]{as_label()}} on the expression supplied as argument, and inserts the result in the string.
+While \code{glue::glue()} only supports \verb{\{}, dynamic dots support both \verb{\{} and \verb{\{\{}. The double brace variant is similar to the embrace operator \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}} available in \link[=topic-data-mask]{data-masked} arguments. It \link[=topic-defuse]{defuses} a function argument, calls \code{\link[=as_label]{as_label()}} on the expression supplied as argument, and inserts the result in the string.
 
 In the following example, the embrace operator is used in a glue string to name the result with a default name that represents the expression supplied as argument:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
   data \%>\% dplyr::summarise("\{\{ var \}\}" := mean(\{\{ var \}\}))

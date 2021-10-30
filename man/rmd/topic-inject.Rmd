@@ -3,9 +3,9 @@
 
 The injection operators are extensions of R implemented by rlang to modify a piece of code before R processes it. There are two main families:
 
-- The [dynamic dots][dyn-dots] operators, [`!!!`] and [`"{"`][glue-operator].
+- The [dynamic dots][dyn-dots] operators, [`!!!`] and `r link("'{'")`.
 
-- The [metaprogramming operators][topic-metaprogramming] [`!!`], [`{{`][embrace-operator], and [`"{{"`][glue-operator]. Splicing with [`!!!`] can also be done in metaprogramming context.
+- The [metaprogramming operators][topic-metaprogramming] [`!!`], `r link("{{")`, and `r link("'{{'")`. Splicing with [`!!!`] can also be done in metaprogramming context.
 
 
 # Dots injection
@@ -50,9 +50,9 @@ rbind2(!!!rows, c = 5:6)
 ```
 
 
-## Injecting names with \code{"\{"}
+## Injecting names with \verb{"\{"}
 
-A related problem comes up when an argument name is stored in a variable. With dynamic dots, you can inject the name using [glue syntax](https://glue.tidyverse.org/) with [`"{"`][glue-operator]:
+A related problem comes up when an argument name is stored in a variable. With dynamic dots, you can inject the name using [glue syntax](https://glue.tidyverse.org/) with `r link("'{'")`:
 
 ```{r, comment = "#>", collapse = TRUE}
 name <- "foo"
@@ -70,7 +70,7 @@ rbind2("prefix_{name}" := 1:2, bar = 3:4)
 
 ## Embracing with `{{`
 
-The embracing operator [`{{`][embrace-operator] is made specially for function arguments. It [defuses][topic-defuse] the expression supplied as argument and immediately injects it in place. The injected argument is then evaluated in another context such as a [data mask][topic-data-mask].
+The embracing operator `r link("{{")` is made specially for function arguments. It [defuses][topic-defuse] the expression supplied as argument and immediately injects it in place. The injected argument is then evaluated in another context such as a [data mask][topic-data-mask].
 
 ```{r, comment = "#>", collapse = TRUE}
 # Inject function arguments that might contain
@@ -142,4 +142,4 @@ The main difference between rlang and other languages is that quasiquotation is 
 
 # See also
 
-- `r links$topic_inject_out_of_context`
+- `r link("topic_inject_out_of_context")`

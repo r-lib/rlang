@@ -105,7 +105,7 @@ expr <- function(expr) {
 #'   using the [defuse-and-inject][topic-metaprogramming] pattern.
 #'
 #' These are advanced tools. Make sure to first learn about the embrace
-#' operator [`{{`][embrace-operator] in `r links$topic_data_mask_programming`.
+#' operator `r link("{{")` in `r links$topic_data_mask_programming`.
 #' `{{` is easier to work with with less theory, and it is sufficient
 #' in most applications.
 #'

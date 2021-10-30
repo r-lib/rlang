@@ -1,12 +1,12 @@
 ```{r, child = "setup.Rmd", include = FALSE}
 ```
 
-The [injection operators][topic-inject] [`{{`][embrace-operator], [`!!`][injection-operator], and [`!!!`][splice-operator] are an extension of the R syntax developed for tidyverse packages. Because they are not part of base R, they suffer from some limitations. In particular no specific error is thrown when they are used in unexpected places.
+The [injection operators][topic-inject] `r link("{{")`, [`!!`][injection-operator], and [`!!!`][splice-operator] are an extension of the R syntax developed for tidyverse packages. Because they are not part of base R, they suffer from some limitations. In particular no specific error is thrown when they are used in unexpected places.
 
 
 ## Using `{{` out of context
 
-The embrace operator [`{{`][embrace-operator] is a feature available in [data-masked][topic-data-mask] arguments. If you use it elsewhere, it is interpreted as a double `{` wrapping.
+The embrace operator `r link("{{")` is a feature available in [data-masked][topic-data-mask] arguments. If you use it elsewhere, it is interpreted as a double `{` wrapping.
 
 In the R language, `{` is like `(` but takes multiple expressions instead of one:
 

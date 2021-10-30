@@ -53,3 +53,26 @@ sprintf_link <- function(id, topic = NULL) {
 
 links <- lapply(names(titles), sprintf_link)
 names(links) <- names(titles)
+
+links[["{{"]] <- "\\ifelse{html}{\\code{\\link[=embrace-operator]{\\{\\{}}}{\\verb{\\{\\{}}"
+links[["'{{'"]] <- "\\ifelse{html}{\\code{\\link[=glue-operator]{\"\\{\\{\"}}}{\\verb{\"\\{\\{\"}}"
+links[["'{'"]] <- "\\ifelse{html}{\\code{\\link[=glue-operator]{\"\\{\"}}}{\\verb{\"\\{\"}}"
+
+title <- function(id) {
+  out <- titles[[id]]
+
+  if (is.null(out)) {
+    stop(sprintf("`id` '%s' doesn't exist.", id))
+  }
+
+  out
+}
+link <- function(id) {
+  out <- links[[id]]
+
+  if (is.null(out)) {
+    stop(sprintf("`id` '%s' doesn't exist.", id))
+  }
+
+  out
+}

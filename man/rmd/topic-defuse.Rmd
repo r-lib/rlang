@@ -148,7 +148,7 @@ my_summarise <- function(data, arg) {
 }
 ```
 
-Defuse-and-inject is usually performed in a single step with the embrace operator [`{{`][embrace-operator].
+Defuse-and-inject is usually performed in a single step with the embrace operator `r link("{{")`.
 
 ```r
 my_summarise <- function(data, arg) {

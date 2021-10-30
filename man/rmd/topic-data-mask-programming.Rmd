@@ -35,7 +35,7 @@ In a regular function, arguments can be defined in terms of a _type_ of objects 
 
 - Data-masked expressions (base): E.g. [transform()], [with()].  Expressions may refer to the columns of the supplied data frame.
 
-- Data-masked expressions (tidy eval): E.g. [dplyr::mutate()], [ggplot2::aes()]. Same as base data-masking but with tidy eval features enabled. This includes [injection operators][topic-inject] such as [`{{`][embrace-operator] and [`!!`][injection-operator] and the [`.data`] and [`.env`] pronouns.
+- Data-masked expressions (tidy eval): E.g. [dplyr::mutate()], [ggplot2::aes()]. Same as base data-masking but with tidy eval features enabled. This includes [injection operators][topic-inject] such as `r link("{{")` and [`!!`][injection-operator] and the [`.data`] and [`.env`] pronouns.
 
 - Data-masked symbols: Same as data-masked arguments but the supplied expressions must be simple column names. This often simplifies things, for instance this is an easy way of avoiding issues of [double evaluation][topic-double-evaluation].
 
@@ -63,7 +63,7 @@ With the forwarding patterns, arguments inherit the behaviour of the data-masked
 
 ## Embrace with `{{`
 
-The embrace operator [`{{`][embrace-operator] is a forwarding syntax for single arguments. You can forward an argument in data-masked context:
+The embrace operator `r link("{{")` is a forwarding syntax for single arguments. You can forward an argument in data-masked context:
 
 ```r
 my_summarise <- function(data, var) {
@@ -146,7 +146,7 @@ With the names patterns you refer to columns by name with strings or character v
 
 ## Subsetting the `.data` pronoun
 
-The [`.data`] pronoun is a tidy eval feature that is enabled in all data-masked arguments, just like [`{{`][embrace-operator]. The pronoun represents the data mask and can be subsetted with `[[` and `$`. These three statements are equivalent:
+The [`.data`] pronoun is a tidy eval feature that is enabled in all data-masked arguments, just like `r link("{{")`. The pronoun represents the data mask and can be subsetted with `[[` and `$`. These three statements are equivalent:
 
 ```r
 mtcars %>% dplyr::summarise(mean = mean(cyl))

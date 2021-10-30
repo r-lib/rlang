@@ -4,10 +4,10 @@
 \alias{topic-inject-out-of-context}
 \title{What happens if I use injection operators out of context?}
 \description{
-The \link[=topic-inject]{injection operators} \code{\link[=embrace-operator]{\{\{}}, \code{\link[=injection-operator]{!!}}, and \code{\link[=splice-operator]{!!!}} are an extension of the R syntax developed for tidyverse packages. Because they are not part of base R, they suffer from some limitations. In particular no specific error is thrown when they are used in unexpected places.
+The \link[=topic-inject]{injection operators} \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}}, \code{\link[=injection-operator]{!!}}, and \code{\link[=splice-operator]{!!!}} are an extension of the R syntax developed for tidyverse packages. Because they are not part of base R, they suffer from some limitations. In particular no specific error is thrown when they are used in unexpected places.
 \subsection{Using \verb{\{\{} out of context}{
 
-The embrace operator \code{\link[=embrace-operator]{\{\{}} is a feature available in \link[=topic-data-mask]{data-masked} arguments. If you use it elsewhere, it is interpreted as a double \verb{\{} wrapping.
+The embrace operator \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}} is a feature available in \link[=topic-data-mask]{data-masked} arguments. If you use it elsewhere, it is interpreted as a double \verb{\{} wrapping.
 
 In the R language, \verb{\{} is like \code{(} but takes multiple expressions instead of one:\if{html}{\out{<div class="sourceCode r">}}\preformatted{\{
   1 # Discarded

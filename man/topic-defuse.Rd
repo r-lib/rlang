@@ -127,7 +127,7 @@ One purpose for defusing evaluation of an expression is to interface with \link[
 \}
 }\if{html}{\out{</div>}}
 
-Defuse-and-inject is usually performed in a single step with the embrace operator \code{\link[=embrace-operator]{\{\{}}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_summarise <- function(data, arg) \{
+Defuse-and-inject is usually performed in a single step with the embrace operator \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_summarise <- function(data, arg) \{
   # Defuse and inject in a single step with the embracing operator
   data |> dplyr::summarise(mean = mean(\{\{ arg \}\}, na.rm = TRUE))
 \}

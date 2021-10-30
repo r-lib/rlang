@@ -21,7 +21,7 @@
 #'   [data-masked][topic-data-mask] arguments.
 #'
 #'   Technically, this means function arguments defused with
-#'   [`{{`][embrace-operator] or `en`-prefixed operators like
+#'   `r link("{{")` or `en`-prefixed operators like
 #'   [enquo()], [enexpr()], etc.
 #'
 #' - Inside [inject()].
@@ -96,7 +96,7 @@
 #' mtcars %>% dplyr::mutate(cyl = cyl * .env$cyl)
 #' ```
 #'
-#' Second, the embrace operator [`{{`][embrace-operator] makes the
+#' Second, the embrace operator `r link("{{")` makes the
 #' [defuse-and-inject pattern][topic-metaprogramming] easier to
 #' learn and use.
 #'

@@ -17,7 +17,7 @@ with(mtcars, mean(cyl + am))
 #> [1] 6.59375
 }\if{html}{\out{</div>}}
 
-While data-masking makes it easy to program interactively with data frames, it makes it harder to create functions. Passing data-masked arguments to functions requires injection with the embracing operator \code{\link[=embrace-operator]{\{\{}} or, in more complex cases, the injection operator \code{\link{!!}}.
+While data-masking makes it easy to program interactively with data frames, it makes it harder to create functions. Passing data-masked arguments to functions requires injection with the embracing operator \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}} or, in more complex cases, the injection operator \code{\link{!!}}.
 }
 \section{Why does data-masking require embracing and injection?}{
 Injection (also known as quasiquotation) is a metaprogramming feature that allows you to modify parts of a program. This is needed because under the hood data-masking works by \link[=topic-defuse]{defusing} R code to prevent its immediate evaluation. The defused code is resumed later on in a context where data frame columns are defined.
@@ -90,7 +90,7 @@ Read more about this in \link[=topic-data-mask-ambiguity]{The data mask ambiguit
 \section{How does data-masking work?}{
 Data-masking relies on three language features:
 \itemize{
-\item \link[=topic-defuse]{Argument defusal} with \code{\link[=substitute]{substitute()}} (base R) or \code{\link[=enquo]{enquo()}}, \code{\link[=enquos]{enquos()}}, and \code{\link[=embrace-operator]{\{\{}} (rlang). R code is defused so it can be evaluated later on in a special environment enriched with data.
+\item \link[=topic-defuse]{Argument defusal} with \code{\link[=substitute]{substitute()}} (base R) or \code{\link[=enquo]{enquo()}}, \code{\link[=enquos]{enquos()}}, and \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}} (rlang). R code is defused so it can be evaluated later on in a special environment enriched with data.
 \item First class environments. Environments are a special type of list-like object in which defused R code can be evaluated.  The named elements in an environment define objects. Lists and data frames can be transformed to environments:\if{html}{\out{<div class="sourceCode r">}}\preformatted{as.environment(mtcars)
 #> <environment: 0x7febb17e3468>
 }\if{html}{\out{</div>}}

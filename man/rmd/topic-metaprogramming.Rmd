@@ -10,7 +10,7 @@ If you haven't already, read `r links$topic_data_mask_programming` which covers 
 
 ## Defuse and inject
 
-[`{{`][embrace-operator] and `...` are sufficient for most purposes. Sometimes however, it is necessary to decompose the forwarding action into its two constitutive steps, [defusing][topic-defuse] and [injecting][topic-inject].
+`r link("{{")` and `...` are sufficient for most purposes. Sometimes however, it is necessary to decompose the forwarding action into its two constitutive steps, [defusing][topic-defuse] and [injecting][topic-inject].
 
 `{{` is the combination of [enquo()] and [`!!`][injection-operator]. These functions are completely equivalent:
 
