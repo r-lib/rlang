@@ -47,7 +47,7 @@ It is important to know that a function defuses its arguments because it require
 
 Read more about this in:
 \itemize{
-\item \link[=topic-data-mask]{What is data-masking and why do I need to embrace with \{\{?}
+\item \link[=topic-data-mask]{What is data-masking and why do I need to embrace?}
 \item \link[=topic-data-mask-programming]{Data mask programming patterns}
 }
 }

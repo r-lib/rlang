@@ -1,7 +1,7 @@
 titles <- list(
   # Overviews
   topic_data_mask =
-    "What is data-masking and why do I need to embrace with `{{`?",
+    "What is data-masking and why do I need `{{`?",
   topic_data_mask_programming =
     "Data mask programming patterns",
   topic_metaprogramming =
@@ -30,9 +30,18 @@ titles <- list(
     "What happens if I use injection operators out of context?"
 )
 
+# Can't use `{{` in links. Causes tex translation to crash.
+link_title <- function(id) {
+  switch(
+    id,
+    topic_data_mask = "What is data-masking and why do I need to embrace?",
+    titles[[id]]
+  )
+}
+
 sprintf_link <- function(id, topic = NULL) {
   # Link texts can't include code
-  title <- gsub("`", "", titles[[id]])
+  title <- gsub("`", "", link_title(id))
   title <- gsub("{", "\\{", title, fixed = TRUE)
 
   if (is.null(topic)) {

@@ -2,7 +2,7 @@
 % Please edit documentation in R/topic-nse.R
 \name{topic-data-mask}
 \alias{topic-data-mask}
-\title{What is data-masking and why do I need to embrace with \verb{\{\{}?}
+\title{What is data-masking and why do I need \verb{\{\{}?}
 \description{
 Data-masking is a distinctive feature of R whereby programming is performed directly on a data set, with columns defined as normal objects.\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Unmasked programming
 mean(mtcars$cyl + mtcars$am)

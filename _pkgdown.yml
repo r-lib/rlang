@@ -22,7 +22,7 @@ navbar:
       text: Overviews
       menu:
       - text: Tidy evaluation
-      - text: What is data-masking and why do I need to embrace with `{{`?
+      - text: What is data-masking and why do I need `{{`?
         href: reference/topic-data-mask.html
       - text: Data mask programming patterns
         href: reference/topic-data-mask-programming.html

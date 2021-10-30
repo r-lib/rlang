@@ -70,7 +70,7 @@ inject(rbind(!!!dfs))
 
 Because \code{rbind()} is a base function we used \code{\link[=inject]{inject()}} to
 explicitly enable \verb{!!!}. However, many functions implement \link[=list2]{dynamic dots} with \verb{!!!} implicitly enabled out of the box.\if{html}{\out{<div class="sourceCode r">}}\preformatted{tidyr::expand_grid(x = 1:2, y = c("a", "b"))
-#> # A tibble: 4 x 2
+#> # A tibble: 4 × 2
 #>       x y    
 #>   <int> <chr>
 #> 1     1 a    
@@ -80,7 +80,7 @@ explicitly enable \verb{!!!}. However, many functions implement \link[=list2]{dy
 
 xs <- list(x = 1:2, y = c("a", "b"))
 tidyr::expand_grid(!!!xs)
-#> # A tibble: 4 x 2
+#> # A tibble: 4 × 2
 #>       x y    
 #>   <int> <chr>
 #> 1     1 a    
@@ -92,7 +92,7 @@ tidyr::expand_grid(!!!xs)
 Note how the expanded grid has the right column names. That's
 because we spliced a \emph{named} list. Splicing causes each name of the
 list to become an argument name.\if{html}{\out{<div class="sourceCode r">}}\preformatted{tidyr::expand_grid(!!!set_names(xs, toupper))
-#> # A tibble: 4 x 2
+#> # A tibble: 4 × 2
 #>       X Y    
 #>   <int> <chr>
 #> 1     1 a    
