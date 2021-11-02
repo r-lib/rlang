@@ -347,8 +347,14 @@
         </dt>
         <dd>Create a data mask</dd>
       </dl></div><div class="section level2">
-      <h2 id="dots">Dots<a class="anchor" aria-label="anchor" href="#dots"></a></h2>
+      <h2 id="function-arguments">Function arguments<a class="anchor" aria-label="anchor" href="#function-arguments"></a></h2>
       
+      
+
+      
+    </div><div class="section level2">
+      
+      <h3 id="dots">Dots<a class="anchor" aria-label="anchor" href="#dots"></a></h3>
       <p class="section-desc"></p><p>Utils to work with <code>...</code>.</p>
 
       
@@ -383,8 +389,8 @@
         </dt>
         <dd>Helper for consistent documentation of used dots</dd>
       </dl></div><div class="section level2">
-      <h2 id="dynamic-dots">Dynamic dots<a class="anchor" aria-label="anchor" href="#dynamic-dots"></a></h2>
       
+      <h3 id="dynamic-dots">Dynamic dots<a class="anchor" aria-label="anchor" href="#dynamic-dots"></a></h3>
       <p class="section-desc"></p><p>Collect arguments contained in <code>...</code> with <code>!!!</code> and name-unquoting support.</p>
 
       
@@ -409,8 +415,46 @@
         </dt>
         <dd>Collect dynamic dots in a pairlist</dd>
       </dl></div><div class="section level2">
-      <h2 id="errors-conditions-and-backtraces">Errors, conditions, and backtraces<a class="anchor" aria-label="anchor" href="#errors-conditions-and-backtraces"></a></h2>
       
+      <h3 id="checking-arguments">Checking arguments<a class="anchor" aria-label="anchor" href="#checking-arguments"></a></h3>
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="arg_match.html">arg_match()</a></code> <code><a href="arg_match.html">arg_match0()</a></code> 
+        </dt>
+        <dd>Match an argument to a character vector</dd>
+      </dl><dl><dt>
+          
+          <code><a href="arg_exclusive.html">arg_exclusive()</a></code> 
+        </dt>
+        <dd>Check that arguments are mutually exclusive</dd>
+      </dl><dl><dt>
+          
+          <code><a href="arg_require.html">arg_require()</a></code> 
+        </dt>
+        <dd>Check that argument is supplied
+Throws an informative error if <code>arg</code> is missing.</dd>
+      </dl><dl><dt>
+          
+          <code><a href="missing_arg.html">missing_arg()</a></code> <code><a href="missing_arg.html">is_missing()</a></code> <code><a href="missing_arg.html">maybe_missing()</a></code> 
+        </dt>
+        <dd>Generate or handle a missing argument</dd>
+      </dl></div><div class="section level2">
+      <h2 id="error-handling">Error handling<a class="anchor" aria-label="anchor" href="#error-handling"></a></h2>
+      
+      
+
+      
+    </div><div class="section level2">
+      
+      <h3 id="signal-errors-and-other-conditions">Signal errors and other conditions<a class="anchor" aria-label="anchor" href="#signal-errors-and-other-conditions"></a></h3>
       
 
       
@@ -426,89 +470,25 @@
         <dd>Signal an error, warning, or message</dd>
       </dl><dl><dt>
           
-          <code><a href="abort.html">abort()</a></code> <code><a href="abort.html">warn()</a></code> <code><a href="abort.html">inform()</a></code> <code><a href="abort.html">signal()</a></code> <code><a href="abort.html">interrupt()</a></code> 
-        </dt>
-        <dd>Signal an error, warning, or message</dd>
-      </dl><dl><dt>
-          
-          <code><a href="abort.html">abort()</a></code> <code><a href="abort.html">warn()</a></code> <code><a href="abort.html">inform()</a></code> <code><a href="abort.html">signal()</a></code> <code><a href="abort.html">interrupt()</a></code> 
-        </dt>
-        <dd>Signal an error, warning, or message</dd>
-      </dl><dl><dt>
-          
-          <code><a href="abort.html">abort()</a></code> <code><a href="abort.html">warn()</a></code> <code><a href="abort.html">inform()</a></code> <code><a href="abort.html">signal()</a></code> <code><a href="abort.html">interrupt()</a></code> 
-        </dt>
-        <dd>Signal an error, warning, or message</dd>
-      </dl><dl><dt>
-          
-          <code><a href="cnd_message.html">cnd_message()</a></code> <code><a href="cnd_message.html">cnd_header()</a></code> <code><a href="cnd_message.html">cnd_body()</a></code> <code><a href="cnd_message.html">cnd_footer()</a></code> 
-        </dt>
-        <dd>Build an error message from parts</dd>
-      </dl><dl><dt>
-          
-          <code><a href="format_error_bullets.html">format_error_bullets()</a></code> 
-        </dt>
-        <dd>Format bullets for error messages</dd>
-      </dl><dl><dt>
-          
-          <code><a href="trace_back.html">trace_back()</a></code> <code><a href="trace_back.html">trace_length()</a></code> 
-        </dt>
-        <dd>Capture a backtrace</dd>
-      </dl><dl><dt>
-          
-          <code><a href="with_abort.html">with_abort()</a></code> 
-        </dt>
-        <dd>Promote all errors to rlang errors</dd>
-      </dl><dl><dt>
-          
-          <code><a href="entrace.html">entrace()</a></code> <code><a href="entrace.html">cnd_entrace()</a></code> 
-        </dt>
-        <dd>Add backtrace from error handler</dd>
-      </dl><dl><dt>
-          
-          <code><a href="global_entrace.html">global_entrace()</a></code> 
-        </dt>
-        <dd>Entrace unexpected errors</dd>
-      </dl><dl><dt>
-          
-          <code><a href="last_warnings.html">last_warnings()</a></code> <code><a href="last_warnings.html">last_messages()</a></code> 
-        </dt>
-        <dd>Display last warnings</dd>
-      </dl><dl><dt>
-          
-          <code><a href="last_warnings.html">last_warnings()</a></code> <code><a href="last_warnings.html">last_messages()</a></code> 
-        </dt>
-        <dd>Display last warnings</dd>
-      </dl><dl><dt>
-          
           <code><a href="cnd_signal.html">cnd_signal()</a></code> 
         </dt>
         <dd>Signal a condition object</dd>
-      </dl><dl><dt>
+      </dl></div><div class="section level2">
+      
+      <h3 id="handle-errors">Handle errors<a class="anchor" aria-label="anchor" href="#handle-errors"></a></h3>
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
           
-          <code><a href="last_error.html">last_error()</a></code> <code><a href="last_error.html">last_trace()</a></code> 
+          <code><a href="try_catch.html">try_catch()</a></code> 
         </dt>
-        <dd>Last <code><a href="../reference/abort.html">abort()</a></code> error</dd>
-      </dl><dl><dt>
-          
-          <code><a href="rlang_backtrace_on_error.html">rlang_backtrace_on_error</a></code> 
-        </dt>
-        <dd>Display backtrace on error</dd>
-      </dl><dl><dt>
-          
-          <code><a href="catch_cnd.html">catch_cnd()</a></code> 
-        </dt>
-        <dd>Catch a condition</dd>
-      </dl><dl><dt>
-          
-          <code><a href="args_error_context.html">args_error_context</a></code> 
-        </dt>
-        <dd>Documentation anchor for error arguments</dd>
-      </dl><dl><dt>
-          
-          <code><a href="rlang_error.html">rlang_error</a></code> 
-        </dt>
-        <dd>Errors of class <code>rlang_error</code></dd>
+        <dd>Try an expression with condition handlers</dd>
       </dl><dl><dt>
           
           <code><a href="caller_arg.html">caller_arg</a></code> 
@@ -521,12 +501,163 @@
         <dd>Set local error call in an execution environment</dd>
       </dl><dl><dt>
           
-          <code><a href="try_catch.html">try_catch()</a></code> 
+          <code><a href="args_error_context.html">args_error_context</a></code> 
         </dt>
-        <dd>Try an expression with condition handlers</dd>
+        <dd>Documentation anchor for error arguments</dd>
+      </dl><dl><dt>
+          
+          <code><a href="catch_cnd.html">catch_cnd()</a></code> 
+        </dt>
+        <dd>Catch a condition</dd>
       </dl></div><div class="section level2">
-      <h2 id="evaluate-expressions">Evaluate expressions<a class="anchor" aria-label="anchor" href="#evaluate-expressions"></a></h2>
       
+      <h3 id="backtraces">Backtraces<a class="anchor" aria-label="anchor" href="#backtraces"></a></h3>
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="last_error.html">last_error()</a></code> <code><a href="last_error.html">last_trace()</a></code> 
+        </dt>
+        <dd>Last <code><a href="../reference/abort.html">abort()</a></code> error</dd>
+      </dl><dl><dt>
+          
+          <code><a href="last_warnings.html">last_warnings()</a></code> <code><a href="last_warnings.html">last_messages()</a></code> 
+        </dt>
+        <dd>Display last warnings</dd>
+      </dl><dl><dt>
+          
+          <code><a href="global_entrace.html">global_entrace()</a></code> 
+        </dt>
+        <dd>Entrace unexpected errors</dd>
+      </dl><dl><dt>
+          
+          <code><a href="rlang_backtrace_on_error.html">rlang_backtrace_on_error</a></code> 
+        </dt>
+        <dd>Display backtrace on error</dd>
+      </dl><dl><dt>
+          
+          <code><a href="trace_back.html">trace_back()</a></code> <code><a href="trace_back.html">trace_length()</a></code> 
+        </dt>
+        <dd>Capture a backtrace</dd>
+      </dl></div><div class="section level2">
+      
+      <h3 id="conditions">Conditions<a class="anchor" aria-label="anchor" href="#conditions"></a></h3>
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="rlang_error.html">rlang_error</a></code> 
+        </dt>
+        <dd>Errors of class <code>rlang_error</code></dd>
+      </dl><dl><dt>
+          
+          <code><a href="cnd_message.html">cnd_message()</a></code> <code><a href="cnd_message.html">cnd_header()</a></code> <code><a href="cnd_message.html">cnd_body()</a></code> <code><a href="cnd_message.html">cnd_footer()</a></code> 
+        </dt>
+        <dd>Build an error message from parts</dd>
+      </dl><dl><dt>
+          
+          <code><a href="format_error_bullets.html">format_error_bullets()</a></code> 
+        </dt>
+        <dd>Format bullets for error messages</dd>
+      </dl></div><div class="section level2">
+      <h2 id="r-session">R session<a class="anchor" aria-label="anchor" href="#r-session"></a></h2>
+      
+      
+
+      
+    </div><div class="section level2">
+      
+      <h3 id="search-path-and-namespaces">Search path and namespaces<a class="anchor" aria-label="anchor" href="#search-path-and-namespaces"></a></h3>
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="search_envs.html">search_envs()</a></code> <code><a href="search_envs.html">search_env()</a></code> <code><a href="search_envs.html">pkg_env()</a></code> <code><a href="search_envs.html">pkg_env_name()</a></code> <code><a href="search_envs.html">is_attached()</a></code> <code><a href="search_envs.html">base_env()</a></code> <code><a href="search_envs.html">global_env()</a></code> 
+        </dt>
+        <dd>Search path environments</dd>
+      </dl><dl><dt>
+          
+          <code><a href="empty_env.html">empty_env()</a></code> 
+        </dt>
+        <dd>Get the empty environment</dd>
+      </dl><dl><dt>
+          
+          <code><a href="is_installed.html">is_installed()</a></code> <code><a href="is_installed.html">check_installed()</a></code> 
+        </dt>
+        <dd>Are packages installed in any of the libraries?</dd>
+      </dl><dl><dt>
+          
+          <code><a href="is_namespace.html">is_namespace()</a></code> 
+        </dt>
+        <dd>Is an object a namespace environment?</dd>
+      </dl><dl><dt>
+          
+          <code><a href="ns_env.html">ns_env()</a></code> <code><a href="ns_env.html">ns_imports_env()</a></code> <code><a href="ns_env.html">ns_env_name()</a></code> 
+        </dt>
+        <dd>Get the namespace of a package</dd>
+      </dl><dl><dt>
+          
+          <code><a href="env_name.html">env_name()</a></code> <code><a href="env_name.html">env_label()</a></code> 
+        </dt>
+        <dd>Label of an environment</dd>
+      </dl></div><div class="section level2">
+      
+      <h3 id="session-state">Session state<a class="anchor" aria-label="anchor" href="#session-state"></a></h3>
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="is_interactive.html">is_interactive()</a></code> <code><a href="is_interactive.html">local_interactive()</a></code> <code><a href="is_interactive.html">with_interactive()</a></code> 
+        </dt>
+        <dd>Is R running interactively?</dd>
+      </dl><dl><dt>
+          
+          <code><a href="local_options.html">local_options()</a></code> <code><a href="local_options.html">with_options()</a></code> <code><a href="local_options.html">push_options()</a></code> <code><a href="local_options.html">peek_options()</a></code> <code><a href="local_options.html">peek_option()</a></code> 
+        </dt>
+        <dd>Change global options</dd>
+      </dl><dl><dt>
+          
+          <code><a href="on_load.html">on_load()</a></code> <code><a href="on_load.html">run_on_load()</a></code> <code><a href="on_load.html">on_package_load()</a></code> 
+        </dt>
+        <dd>Run expressions on load</dd>
+      </dl><dl><dt>
+          
+          <code><a href="faq-options.html">faq-options</a></code> 
+        </dt>
+        <dd>Global options for rlang</dd>
+      </dl></div><div class="section level2">
+      <h2 id="expressions">Expressions<a class="anchor" aria-label="anchor" href="#expressions"></a></h2>
+      
+      
+
+      
+    </div><div class="section level2">
+      
+      <h3 id="evaluation">Evaluation<a class="anchor" aria-label="anchor" href="#evaluation"></a></h3>
       
 
       
@@ -556,8 +687,8 @@
         </dt>
         <dd>Inject objects in an R expression</dd>
       </dl></div><div class="section level2">
-      <h2 id="symbols">Symbols<a class="anchor" aria-label="anchor" href="#symbols"></a></h2>
       
+      <h3 id="symbols">Symbols<a class="anchor" aria-label="anchor" href="#symbols"></a></h3>
       
 
       
@@ -587,8 +718,8 @@
         </dt>
         <dd>Cast symbol to string</dd>
       </dl></div><div class="section level2">
-      <h2 id="calls">Calls<a class="anchor" aria-label="anchor" href="#calls"></a></h2>
       
+      <h3 id="calls">Calls<a class="anchor" aria-label="anchor" href="#calls"></a></h3>
       
 
       
@@ -598,6 +729,16 @@
       
 
       <dl><dt>
+          
+          <code><a href="call2.html">call2()</a></code> 
+        </dt>
+        <dd>Create a call</dd>
+      </dl><dl><dt>
+          
+          <code><a href="is_call.html">is_call()</a></code> 
+        </dt>
+        <dd>Is object a call?</dd>
+      </dl><dl><dt>
           
           <code><a href="call_args.html">call_args()</a></code> <code><a href="call_args.html">call_args_names()</a></code> 
         </dt>
@@ -627,19 +768,9 @@
           <code><a href="call_standardise.html">call_standardise()</a></code> 
         </dt>
         <dd>Standardise a call</dd>
-      </dl><dl><dt>
-          
-          <code><a href="call2.html">call2()</a></code> 
-        </dt>
-        <dd>Create a call</dd>
-      </dl><dl><dt>
-          
-          <code><a href="is_call.html">is_call()</a></code> 
-        </dt>
-        <dd>Is object a call?</dd>
       </dl></div><div class="section level2">
-      <h2 id="expressions">Expressions<a class="anchor" aria-label="anchor" href="#expressions"></a></h2>
       
+      <h3 id="expressions-1">Expressions<a class="anchor" aria-label="anchor" href="#expressions-1"></a></h3>
       
 
       
@@ -650,9 +781,9 @@
 
       <dl><dt>
           
-          <code><a href="expr_label.html">expr_label()</a></code> <code><a href="expr_label.html">expr_name()</a></code> <code><a href="expr_label.html">expr_text()</a></code> 
+          <code><a href="parse_expr.html">parse_expr()</a></code> <code><a href="parse_expr.html">parse_exprs()</a></code> <code><a href="parse_expr.html">parse_quo()</a></code> <code><a href="parse_expr.html">parse_quos()</a></code> 
         </dt>
-        <dd>Turn an expression to a label</dd>
+        <dd>Parse R code</dd>
       </dl><dl><dt>
           
           <code><a href="expr_print.html">expr_print()</a></code> <code><a href="expr_print.html">expr_deparse()</a></code> 
@@ -660,57 +791,17 @@
         <dd>Print an expression</dd>
       </dl><dl><dt>
           
+          <code><a href="is_expression.html">is_expression()</a></code> <code><a href="is_expression.html">is_syntactic_literal()</a></code> <code><a href="is_expression.html">is_symbolic()</a></code> 
+        </dt>
+        <dd>Is an object an expression?</dd>
+      </dl><dl><dt>
+          
           <code><a href="exprs_auto_name.html">exprs_auto_name()</a></code> <code><a href="exprs_auto_name.html">quos_auto_name()</a></code> 
         </dt>
         <dd>Ensure that all elements of a list of expressions are named</dd>
-      </dl><dl><dt>
-          
-          <code><a href="bytes-class.html">as_bytes()</a></code> <code><a href="bytes-class.html">parse_bytes()</a></code> 
-        </dt>
-        <dd>Human readable memory sizes</dd>
-      </dl><dl><dt>
-          
-          <code><a href="parse_expr.html">parse_expr()</a></code> <code><a href="parse_expr.html">parse_exprs()</a></code> <code><a href="parse_expr.html">parse_quo()</a></code> <code><a href="parse_expr.html">parse_quos()</a></code> 
-        </dt>
-        <dd>Parse R code</dd>
-      </dl><dl><dt>
-          
-          <code><a href="is_expression.html">is_expression()</a></code> <code><a href="is_expression.html">is_syntactic_literal()</a></code> <code><a href="is_expression.html">is_symbolic()</a></code> 
-        </dt>
-        <dd>Is an object an expression?</dd>
-      </dl><dl><dt>
-          
-          <code><a href="is_expression.html">is_expression()</a></code> <code><a href="is_expression.html">is_syntactic_literal()</a></code> <code><a href="is_expression.html">is_symbolic()</a></code> 
-        </dt>
-        <dd>Is an object an expression?</dd>
-      </dl><dl><dt>
-          
-          <code><a href="expr_label.html">expr_label()</a></code> <code><a href="expr_label.html">expr_name()</a></code> <code><a href="expr_label.html">expr_text()</a></code> 
-        </dt>
-        <dd>Turn an expression to a label</dd>
-      </dl><dl><dt>
-          
-          <code><a href="expr_label.html">expr_label()</a></code> <code><a href="expr_label.html">expr_name()</a></code> <code><a href="expr_label.html">expr_text()</a></code> 
-        </dt>
-        <dd>Turn an expression to a label</dd>
-      </dl><dl><dt>
-          
-          <code><a href="expr_label.html">expr_label()</a></code> <code><a href="expr_label.html">expr_name()</a></code> <code><a href="expr_label.html">expr_text()</a></code> 
-        </dt>
-        <dd>Turn an expression to a label</dd>
-      </dl><dl><dt>
-          
-          <code><a href="set_expr.html">set_expr()</a></code> <code><a href="set_expr.html">get_expr()</a></code> 
-        </dt>
-        <dd>Set and get an expression</dd>
-      </dl><dl><dt>
-          
-          <code><a href="set_expr.html">set_expr()</a></code> <code><a href="set_expr.html">get_expr()</a></code> 
-        </dt>
-        <dd>Set and get an expression</dd>
       </dl></div><div class="section level2">
-      <h2 id="quosures">Quosures<a class="anchor" aria-label="anchor" href="#quosures"></a></h2>
       
+      <h3 id="quosures">Quosures<a class="anchor" aria-label="anchor" href="#quosures"></a></h3>
       
 
       
@@ -721,21 +812,11 @@
 
       <dl><dt>
           
-          <code><a href="quo_label.html">quo_label()</a></code> <code><a href="quo_label.html">quo_text()</a></code> <code><a href="quo_label.html">quo_name()</a></code> 
-        </dt>
-        <dd>Format quosures for printing or labelling</dd>
-      </dl><dl><dt>
-          
           <code><a href="quo_squash.html">quo_squash()</a></code> 
         </dt>
         <dd>Squash a quosure</dd>
       </dl><dl><dt>
           
-          <code><a href="quosure.html">is_quosure()</a></code> <code><a href="quosure.html">quo_is_missing()</a></code> <code><a href="quosure.html">quo_is_symbol()</a></code> <code><a href="quosure.html">quo_is_call()</a></code> <code><a href="quosure.html">quo_is_symbolic()</a></code> <code><a href="quosure.html">quo_is_null()</a></code> <code><a href="quosure.html">quo_get_expr()</a></code> <code><a href="quosure.html">quo_get_env()</a></code> <code><a href="quosure.html">quo_set_expr()</a></code> <code><a href="quosure.html">quo_set_env()</a></code> 
-        </dt>
-        <dd>Quosure getters, setters and testers</dd>
-      </dl><dl><dt>
-          
           <code><a href="as_quosure.html">as_quosure()</a></code> <code><a href="as_quosure.html">new_quosure()</a></code> 
         </dt>
         <dd>Coerce object to quosure</dd>
@@ -744,24 +825,14 @@
           <code><a href="quosure.html">is_quosure()</a></code> <code><a href="quosure.html">quo_is_missing()</a></code> <code><a href="quosure.html">quo_is_symbol()</a></code> <code><a href="quosure.html">quo_is_call()</a></code> <code><a href="quosure.html">quo_is_symbolic()</a></code> <code><a href="quosure.html">quo_is_null()</a></code> <code><a href="quosure.html">quo_get_expr()</a></code> <code><a href="quosure.html">quo_get_env()</a></code> <code><a href="quosure.html">quo_set_expr()</a></code> <code><a href="quosure.html">quo_set_env()</a></code> 
         </dt>
         <dd>Quosure getters, setters and testers</dd>
-      </dl><dl><dt>
-          
-          <code><a href="as_quosure.html">as_quosure()</a></code> <code><a href="as_quosure.html">new_quosure()</a></code> 
-        </dt>
-        <dd>Coerce object to quosure</dd>
       </dl><dl><dt>
           
           <code><a href="new_quosures.html">new_quosures()</a></code> <code><a href="new_quosures.html">as_quosures()</a></code> <code><a href="new_quosures.html">is_quosures()</a></code> 
         </dt>
         <dd>Create a list of quosures</dd>
-      </dl><dl><dt>
-          
-          <code><a href="exprs_auto_name.html">exprs_auto_name()</a></code> <code><a href="exprs_auto_name.html">quos_auto_name()</a></code> 
-        </dt>
-        <dd>Ensure that all elements of a list of expressions are named</dd>
       </dl></div><div class="section level2">
-      <h2 id="formulas">Formulas<a class="anchor" aria-label="anchor" href="#formulas"></a></h2>
       
+      <h3 id="formulas">Formulas<a class="anchor" aria-label="anchor" href="#formulas"></a></h3>
       
 
       
@@ -796,8 +867,14 @@
         </dt>
         <dd>Is object a formula?</dd>
       </dl></div><div class="section level2">
-      <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
+      <h2 id="r-objects">R objects<a class="anchor" aria-label="anchor" href="#r-objects"></a></h2>
       
+      
+
+      
+    </div><div class="section level2">
+      
+      <h3 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h3>
       
 
       
@@ -807,6 +884,26 @@
       
 
       <dl><dt>
+          
+          <code><a href="new_function.html">new_function()</a></code> 
+        </dt>
+        <dd>Create a function</dd>
+      </dl><dl><dt>
+          
+          <code><a href="as_function.html">as_function()</a></code> <code><a href="as_function.html">is_lambda()</a></code> 
+        </dt>
+        <dd>Convert to function</dd>
+      </dl><dl><dt>
+          
+          <code><a href="is_function.html">is_function()</a></code> <code><a href="is_function.html">is_closure()</a></code> <code><a href="is_function.html">is_primitive()</a></code> <code><a href="is_function.html">is_primitive_eager()</a></code> <code><a href="is_function.html">is_primitive_lazy()</a></code> 
+        </dt>
+        <dd>Is object a function?</dd>
+      </dl><dl><dt>
+          
+          <code><a href="fn_fmls.html">fn_fmls()</a></code> <code><a href="fn_fmls.html">fn_fmls_names()</a></code> <code><a href="fn_fmls.html">fn_fmls_syms()</a></code> <code><a href="fn_fmls.html">`fn_fmls&lt;-`()</a></code> <code><a href="fn_fmls.html">`fn_fmls_names&lt;-`()</a></code> 
+        </dt>
+        <dd>Extract arguments from a function</dd>
+      </dl><dl><dt>
           
           <code><a href="fn_body.html">fn_body()</a></code> <code><a href="fn_body.html">`fn_body&lt;-`()</a></code> 
         </dt>
@@ -818,42 +915,12 @@
         <dd>Return the closure environment of a function</dd>
       </dl><dl><dt>
           
-          <code><a href="fn_fmls.html">fn_fmls()</a></code> <code><a href="fn_fmls.html">fn_fmls_names()</a></code> <code><a href="fn_fmls.html">fn_fmls_syms()</a></code> <code><a href="fn_fmls.html">`fn_fmls&lt;-`()</a></code> <code><a href="fn_fmls.html">`fn_fmls_names&lt;-`()</a></code> 
-        </dt>
-        <dd>Extract arguments from a function</dd>
-      </dl><dl><dt>
-          
-          <code><a href="new_function.html">new_function()</a></code> 
-        </dt>
-        <dd>Create a function</dd>
-      </dl><dl><dt>
-          
-          <code><a href="is_function.html">is_function()</a></code> <code><a href="is_function.html">is_closure()</a></code> <code><a href="is_function.html">is_primitive()</a></code> <code><a href="is_function.html">is_primitive_eager()</a></code> <code><a href="is_function.html">is_primitive_lazy()</a></code> 
-        </dt>
-        <dd>Is object a function?</dd>
-      </dl><dl><dt>
-          
-          <code><a href="is_function.html">is_function()</a></code> <code><a href="is_function.html">is_closure()</a></code> <code><a href="is_function.html">is_primitive()</a></code> <code><a href="is_function.html">is_primitive_eager()</a></code> <code><a href="is_function.html">is_primitive_lazy()</a></code> 
-        </dt>
-        <dd>Is object a function?</dd>
-      </dl><dl><dt>
-          
-          <code><a href="is_function.html">is_function()</a></code> <code><a href="is_function.html">is_closure()</a></code> <code><a href="is_function.html">is_primitive()</a></code> <code><a href="is_function.html">is_primitive_eager()</a></code> <code><a href="is_function.html">is_primitive_lazy()</a></code> 
-        </dt>
-        <dd>Is object a function?</dd>
-      </dl><dl><dt>
-          
-          <code><a href="as_function.html">as_function()</a></code> <code><a href="as_function.html">is_lambda()</a></code> 
-        </dt>
-        <dd>Convert to function</dd>
-      </dl><dl><dt>
-          
           <code><a href="as_closure.html">as_closure()</a></code> 
         </dt>
         <dd>Transform to a closure</dd>
       </dl></div><div class="section level2">
-      <h2 id="environments">Environments<a class="anchor" aria-label="anchor" href="#environments"></a></h2>
       
+      <h3 id="environments">Environments<a class="anchor" aria-label="anchor" href="#environments"></a></h3>
       
 
       
@@ -863,11 +930,6 @@
       
 
       <dl><dt>
-          
-          <code><a href="env.html">env()</a></code> <code><a href="env.html">child_env()</a></code> <code><a href="env.html">new_environment()</a></code> 
-        </dt>
-        <dd>Create a new environment</dd>
-      </dl><dl><dt>
           
           <code><a href="env.html">env()</a></code> <code><a href="env.html">child_env()</a></code> <code><a href="env.html">new_environment()</a></code> 
         </dt>
@@ -884,24 +946,9 @@
         <dd>Get parent environments</dd>
       </dl><dl><dt>
           
-          <code><a href="env_parent.html">env_parent()</a></code> <code><a href="env_parent.html">env_tail()</a></code> <code><a href="env_parent.html">env_parents()</a></code> 
-        </dt>
-        <dd>Get parent environments</dd>
-      </dl><dl><dt>
-          
-          <code><a href="env_parent.html">env_parent()</a></code> <code><a href="env_parent.html">env_tail()</a></code> <code><a href="env_parent.html">env_parents()</a></code> 
-        </dt>
-        <dd>Get parent environments</dd>
-      </dl><dl><dt>
-          
           <code><a href="env_depth.html">env_depth()</a></code> 
         </dt>
         <dd>Depth of an environment chain</dd>
-      </dl><dl><dt>
-          
-          <code><a href="get_env.html">get_env()</a></code> <code><a href="get_env.html">set_env()</a></code> <code><a href="get_env.html">env_poke_parent()</a></code> 
-        </dt>
-        <dd>Get or set the environment of an object</dd>
       </dl><dl><dt>
           
           <code><a href="get_env.html">get_env()</a></code> <code><a href="get_env.html">set_env()</a></code> <code><a href="get_env.html">env_poke_parent()</a></code> 
@@ -924,11 +971,6 @@
         <dd>Is object an environment?</dd>
       </dl><dl><dt>
           
-          <code><a href="is_environment.html">is_environment()</a></code> <code><a href="is_environment.html">is_bare_environment()</a></code> 
-        </dt>
-        <dd>Is object an environment?</dd>
-      </dl><dl><dt>
-          
           <code><a href="as_environment.html">as_environment()</a></code> 
         </dt>
         <dd>Coerce to an environment</dd>
@@ -943,8 +985,8 @@
         </dt>
         <dd>Browse environments</dd>
       </dl></div><div class="section level2">
-      <h2 id="environment-bindings">Environment bindings<a class="anchor" aria-label="anchor" href="#environment-bindings"></a></h2>
       
+      <h3 id="environment-bindings">Environment bindings<a class="anchor" aria-label="anchor" href="#environment-bindings"></a></h3>
       
 
       
@@ -954,16 +996,6 @@
       
 
       <dl><dt>
-          
-          <code><a href="env_bind.html">env_bind()</a></code> <code><a href="env_bind.html">env_bind_lazy()</a></code> <code><a href="env_bind.html">env_bind_active()</a></code> <code><a href="env_bind.html">`%&lt;~%`</a></code> 
-        </dt>
-        <dd>Bind symbols to objects in an environment</dd>
-      </dl><dl><dt>
-          
-          <code><a href="env_bind.html">env_bind()</a></code> <code><a href="env_bind.html">env_bind_lazy()</a></code> <code><a href="env_bind.html">env_bind_active()</a></code> <code><a href="env_bind.html">`%&lt;~%`</a></code> 
-        </dt>
-        <dd>Bind symbols to objects in an environment</dd>
-      </dl><dl><dt>
           
           <code><a href="env_bind.html">env_bind()</a></code> <code><a href="env_bind.html">env_bind_lazy()</a></code> <code><a href="env_bind.html">env_bind_active()</a></code> <code><a href="env_bind.html">`%&lt;~%`</a></code> 
         </dt>
@@ -990,11 +1022,6 @@
         <dd>Temporarily change bindings of an environment</dd>
       </dl><dl><dt>
           
-          <code><a href="scoped_interactive.html">scoped_interactive()</a></code> <code><a href="scoped_interactive.html">scoped_options()</a></code> <code><a href="scoped_interactive.html">scoped_bindings()</a></code> 
-        </dt>
-        <dd>Questioning <code>scoped_</code> functions</dd>
-      </dl><dl><dt>
-          
           <code><a href="env_has.html">env_has()</a></code> 
         </dt>
         <dd>Does an environment have or see bindings?</dd>
@@ -1005,93 +1032,12 @@
         <dd>Get an object in an environment</dd>
       </dl><dl><dt>
           
-          <code><a href="env_get.html">env_get()</a></code> <code><a href="env_get.html">env_get_list()</a></code> 
-        </dt>
-        <dd>Get an object in an environment</dd>
-      </dl><dl><dt>
-          
           <code><a href="env_names.html">env_names()</a></code> <code><a href="env_names.html">env_length()</a></code> 
         </dt>
         <dd>Names and numbers of symbols bound in an environment</dd>
-      </dl><dl><dt>
-          
-          <code><a href="env_names.html">env_names()</a></code> <code><a href="env_names.html">env_length()</a></code> 
-        </dt>
-        <dd>Names and numbers of symbols bound in an environment</dd>
-      </dl><dl><dt>
-          
-          <code><a href="env_poke.html">env_poke()</a></code> 
-        </dt>
-        <dd>Poke an object in an environment</dd>
       </dl></div><div class="section level2">
-      <h2 id="search-path-and-namespaces">Search path and namespaces<a class="anchor" aria-label="anchor" href="#search-path-and-namespaces"></a></h2>
       
-      
-
-      
-    </div><div id="" class="section level2">
-      
-      
-      
-
-      <dl><dt>
-          
-          <code><a href="search_envs.html">search_envs()</a></code> <code><a href="search_envs.html">search_env()</a></code> <code><a href="search_envs.html">pkg_env()</a></code> <code><a href="search_envs.html">pkg_env_name()</a></code> <code><a href="search_envs.html">is_attached()</a></code> <code><a href="search_envs.html">base_env()</a></code> <code><a href="search_envs.html">global_env()</a></code> 
-        </dt>
-        <dd>Search path environments</dd>
-      </dl><dl><dt>
-          
-          <code><a href="search_envs.html">search_envs()</a></code> <code><a href="search_envs.html">search_env()</a></code> <code><a href="search_envs.html">pkg_env()</a></code> <code><a href="search_envs.html">pkg_env_name()</a></code> <code><a href="search_envs.html">is_attached()</a></code> <code><a href="search_envs.html">base_env()</a></code> <code><a href="search_envs.html">global_env()</a></code> 
-        </dt>
-        <dd>Search path environments</dd>
-      </dl><dl><dt>
-          
-          <code><a href="search_envs.html">search_envs()</a></code> <code><a href="search_envs.html">search_env()</a></code> <code><a href="search_envs.html">pkg_env()</a></code> <code><a href="search_envs.html">pkg_env_name()</a></code> <code><a href="search_envs.html">is_attached()</a></code> <code><a href="search_envs.html">base_env()</a></code> <code><a href="search_envs.html">global_env()</a></code> 
-        </dt>
-        <dd>Search path environments</dd>
-      </dl><dl><dt>
-          
-          <code><a href="search_envs.html">search_envs()</a></code> <code><a href="search_envs.html">search_env()</a></code> <code><a href="search_envs.html">pkg_env()</a></code> <code><a href="search_envs.html">pkg_env_name()</a></code> <code><a href="search_envs.html">is_attached()</a></code> <code><a href="search_envs.html">base_env()</a></code> <code><a href="search_envs.html">global_env()</a></code> 
-        </dt>
-        <dd>Search path environments</dd>
-      </dl><dl><dt>
-          
-          <code><a href="empty_env.html">empty_env()</a></code> 
-        </dt>
-        <dd>Get the empty environment</dd>
-      </dl><dl><dt>
-          
-          <code><a href="is_installed.html">is_installed()</a></code> <code><a href="is_installed.html">check_installed()</a></code> 
-        </dt>
-        <dd>Are packages installed in any of the libraries?</dd>
-      </dl><dl><dt>
-          
-          <code><a href="is_namespace.html">is_namespace()</a></code> 
-        </dt>
-        <dd>Is an object a namespace environment?</dd>
-      </dl><dl><dt>
-          
-          <code><a href="ns_env.html">ns_env()</a></code> <code><a href="ns_env.html">ns_imports_env()</a></code> <code><a href="ns_env.html">ns_env_name()</a></code> 
-        </dt>
-        <dd>Get the namespace of a package</dd>
-      </dl><dl><dt>
-          
-          <code><a href="search_envs.html">search_envs()</a></code> <code><a href="search_envs.html">search_env()</a></code> <code><a href="search_envs.html">pkg_env()</a></code> <code><a href="search_envs.html">pkg_env_name()</a></code> <code><a href="search_envs.html">is_attached()</a></code> <code><a href="search_envs.html">base_env()</a></code> <code><a href="search_envs.html">global_env()</a></code> 
-        </dt>
-        <dd>Search path environments</dd>
-      </dl><dl><dt>
-          
-          <code><a href="env_name.html">env_name()</a></code> <code><a href="env_name.html">env_label()</a></code> 
-        </dt>
-        <dd>Label of an environment</dd>
-      </dl><dl><dt>
-          
-          <code><a href="env_name.html">env_name()</a></code> <code><a href="env_name.html">env_label()</a></code> 
-        </dt>
-        <dd>Label of an environment</dd>
-      </dl></div><div class="section level2">
-      <h2 id="s-">S3<a class="anchor" aria-label="anchor" href="#s-"></a></h2>
-      
+      <h3 id="s-">S3<a class="anchor" aria-label="anchor" href="#s-"></a></h3>
       
 
       
@@ -1107,21 +1053,6 @@
         <dd>Does an object inherit from a set of classes?</dd>
       </dl><dl><dt>
           
-          <code><a href="inherits_any.html">inherits_any()</a></code> <code><a href="inherits_any.html">inherits_all()</a></code> <code><a href="inherits_any.html">inherits_only()</a></code> 
-        </dt>
-        <dd>Does an object inherit from a set of classes?</dd>
-      </dl><dl><dt>
-          
-          <code><a href="inherits_any.html">inherits_any()</a></code> <code><a href="inherits_any.html">inherits_all()</a></code> <code><a href="inherits_any.html">inherits_only()</a></code> 
-        </dt>
-        <dd>Does an object inherit from a set of classes?</dd>
-      </dl><dl><dt>
-          
-          <code><a href="box.html">new_box()</a></code> <code><a href="box.html">is_box()</a></code> <code><a href="box.html">unbox()</a></code> 
-        </dt>
-        <dd>Box a value</dd>
-      </dl><dl><dt>
-          
           <code><a href="box.html">new_box()</a></code> <code><a href="box.html">is_box()</a></code> <code><a href="box.html">unbox()</a></code> 
         </dt>
         <dd>Box a value</dd>
@@ -1130,21 +1061,6 @@
           <code><a href="as_box.html">as_box()</a></code> <code><a href="as_box.html">as_box_if()</a></code> 
         </dt>
         <dd>Convert object to a box</dd>
-      </dl><dl><dt>
-          
-          <code><a href="as_box.html">as_box()</a></code> <code><a href="as_box.html">as_box_if()</a></code> 
-        </dt>
-        <dd>Convert object to a box</dd>
-      </dl><dl><dt>
-          
-          <code><a href="box.html">new_box()</a></code> <code><a href="box.html">is_box()</a></code> <code><a href="box.html">unbox()</a></code> 
-        </dt>
-        <dd>Box a value</dd>
-      </dl><dl><dt>
-          
-          <code><a href="zap.html">zap()</a></code> <code><a href="zap.html">is_zap()</a></code> 
-        </dt>
-        <dd>Create zap objects</dd>
       </dl><dl><dt>
           
           <code><a href="zap.html">zap()</a></code> <code><a href="zap.html">is_zap()</a></code> 
@@ -1155,10 +1071,15 @@
           <code><a href="done.html">done()</a></code> <code><a href="done.html">is_done_box()</a></code> 
         </dt>
         <dd>Box a final value for early termination</dd>
+      </dl><dl><dt>
+          
+          <code><a href="bytes-class.html">as_bytes()</a></code> <code><a href="bytes-class.html">parse_bytes()</a></code> 
+        </dt>
+        <dd>Human readable memory sizes</dd>
       </dl></div><div class="section level2">
-      <h2 id="create-vectors">Create vectors<a class="anchor" aria-label="anchor" href="#create-vectors"></a></h2>
       
-      <p class="section-desc"></p><p>Atomic vector constructors have implicit splicing (i.e. splice lists automatically), while the list constructor has explicit splicing.</p>
+      <h3 id="create-vectors">Create vectors<a class="anchor" aria-label="anchor" href="#create-vectors"></a></h3>
+      
 
       
     </div><div id="" class="section level2">
@@ -1167,26 +1088,6 @@
       
 
       <dl><dt>
-          
-          <code><a href="vector-construction.html">lgl()</a></code> <code><a href="vector-construction.html">int()</a></code> <code><a href="vector-construction.html">dbl()</a></code> <code><a href="vector-construction.html">cpl()</a></code> <code><a href="vector-construction.html">chr()</a></code> <code><a href="vector-construction.html">bytes()</a></code> 
-        </dt>
-        <dd>Create vectors</dd>
-      </dl><dl><dt>
-          
-          <code><a href="vector-construction.html">lgl()</a></code> <code><a href="vector-construction.html">int()</a></code> <code><a href="vector-construction.html">dbl()</a></code> <code><a href="vector-construction.html">cpl()</a></code> <code><a href="vector-construction.html">chr()</a></code> <code><a href="vector-construction.html">bytes()</a></code> 
-        </dt>
-        <dd>Create vectors</dd>
-      </dl><dl><dt>
-          
-          <code><a href="vector-construction.html">lgl()</a></code> <code><a href="vector-construction.html">int()</a></code> <code><a href="vector-construction.html">dbl()</a></code> <code><a href="vector-construction.html">cpl()</a></code> <code><a href="vector-construction.html">chr()</a></code> <code><a href="vector-construction.html">bytes()</a></code> 
-        </dt>
-        <dd>Create vectors</dd>
-      </dl><dl><dt>
-          
-          <code><a href="vector-construction.html">lgl()</a></code> <code><a href="vector-construction.html">int()</a></code> <code><a href="vector-construction.html">dbl()</a></code> <code><a href="vector-construction.html">cpl()</a></code> <code><a href="vector-construction.html">chr()</a></code> <code><a href="vector-construction.html">bytes()</a></code> 
-        </dt>
-        <dd>Create vectors</dd>
-      </dl><dl><dt>
           
           <code><a href="vector-construction.html">lgl()</a></code> <code><a href="vector-construction.html">int()</a></code> <code><a href="vector-construction.html">dbl()</a></code> <code><a href="vector-construction.html">cpl()</a></code> <code><a href="vector-construction.html">chr()</a></code> <code><a href="vector-construction.html">bytes()</a></code> 
         </dt>
@@ -1203,22 +1104,12 @@
         <dd>Create vectors matching the length of a given vector</dd>
       </dl><dl><dt>
           
-          <code><a href="rep_along.html">rep_along()</a></code> <code><a href="rep_along.html">rep_named()</a></code> 
-        </dt>
-        <dd>Create vectors matching the length of a given vector</dd>
-      </dl><dl><dt>
-          
-          <code><a href="seq2.html">seq2()</a></code> <code><a href="seq2.html">seq2_along()</a></code> 
-        </dt>
-        <dd>Increasing sequence of integers in an interval</dd>
-      </dl><dl><dt>
-          
           <code><a href="seq2.html">seq2()</a></code> <code><a href="seq2.html">seq2_along()</a></code> 
         </dt>
         <dd>Increasing sequence of integers in an interval</dd>
       </dl></div><div class="section level2">
-      <h2 id="attributes">Attributes<a class="anchor" aria-label="anchor" href="#attributes"></a></h2>
       
+      <h3 id="attributes">Attributes<a class="anchor" aria-label="anchor" href="#attributes"></a></h3>
       
 
       
@@ -1253,8 +1144,8 @@
         </dt>
         <dd>Zap source references</dd>
       </dl></div><div class="section level2">
-      <h2 id="type-predicates">Type predicates<a class="anchor" aria-label="anchor" href="#type-predicates"></a></h2>
       
+      <h3 id="type-predicates">Type predicates<a class="anchor" aria-label="anchor" href="#type-predicates"></a></h3>
       
 
       
@@ -1270,134 +1161,9 @@
         <dd>Type predicates</dd>
       </dl><dl><dt>
           
-          <code><a href="type-predicates.html">is_list()</a></code> <code><a href="type-predicates.html">is_atomic()</a></code> <code><a href="type-predicates.html">is_vector()</a></code> <code><a href="type-predicates.html">is_integer()</a></code> <code><a href="type-predicates.html">is_double()</a></code> <code><a href="type-predicates.html">is_complex()</a></code> <code><a href="type-predicates.html">is_character()</a></code> <code><a href="type-predicates.html">is_logical()</a></code> <code><a href="type-predicates.html">is_raw()</a></code> <code><a href="type-predicates.html">is_bytes()</a></code> <code><a href="type-predicates.html">is_null()</a></code> 
-        </dt>
-        <dd>Type predicates</dd>
-      </dl><dl><dt>
-          
-          <code><a href="type-predicates.html">is_list()</a></code> <code><a href="type-predicates.html">is_atomic()</a></code> <code><a href="type-predicates.html">is_vector()</a></code> <code><a href="type-predicates.html">is_integer()</a></code> <code><a href="type-predicates.html">is_double()</a></code> <code><a href="type-predicates.html">is_complex()</a></code> <code><a href="type-predicates.html">is_character()</a></code> <code><a href="type-predicates.html">is_logical()</a></code> <code><a href="type-predicates.html">is_raw()</a></code> <code><a href="type-predicates.html">is_bytes()</a></code> <code><a href="type-predicates.html">is_null()</a></code> 
-        </dt>
-        <dd>Type predicates</dd>
-      </dl><dl><dt>
-          
-          <code><a href="type-predicates.html">is_list()</a></code> <code><a href="type-predicates.html">is_atomic()</a></code> <code><a href="type-predicates.html">is_vector()</a></code> <code><a href="type-predicates.html">is_integer()</a></code> <code><a href="type-predicates.html">is_double()</a></code> <code><a href="type-predicates.html">is_complex()</a></code> <code><a href="type-predicates.html">is_character()</a></code> <code><a href="type-predicates.html">is_logical()</a></code> <code><a href="type-predicates.html">is_raw()</a></code> <code><a href="type-predicates.html">is_bytes()</a></code> <code><a href="type-predicates.html">is_null()</a></code> 
-        </dt>
-        <dd>Type predicates</dd>
-      </dl><dl><dt>
-          
-          <code><a href="type-predicates.html">is_list()</a></code> <code><a href="type-predicates.html">is_atomic()</a></code> <code><a href="type-predicates.html">is_vector()</a></code> <code><a href="type-predicates.html">is_integer()</a></code> <code><a href="type-predicates.html">is_double()</a></code> <code><a href="type-predicates.html">is_complex()</a></code> <code><a href="type-predicates.html">is_character()</a></code> <code><a href="type-predicates.html">is_logical()</a></code> <code><a href="type-predicates.html">is_raw()</a></code> <code><a href="type-predicates.html">is_bytes()</a></code> <code><a href="type-predicates.html">is_null()</a></code> 
-        </dt>
-        <dd>Type predicates</dd>
-      </dl><dl><dt>
-          
-          <code><a href="type-predicates.html">is_list()</a></code> <code><a href="type-predicates.html">is_atomic()</a></code> <code><a href="type-predicates.html">is_vector()</a></code> <code><a href="type-predicates.html">is_integer()</a></code> <code><a href="type-predicates.html">is_double()</a></code> <code><a href="type-predicates.html">is_complex()</a></code> <code><a href="type-predicates.html">is_character()</a></code> <code><a href="type-predicates.html">is_logical()</a></code> <code><a href="type-predicates.html">is_raw()</a></code> <code><a href="type-predicates.html">is_bytes()</a></code> <code><a href="type-predicates.html">is_null()</a></code> 
-        </dt>
-        <dd>Type predicates</dd>
-      </dl><dl><dt>
-          
-          <code><a href="type-predicates.html">is_list()</a></code> <code><a href="type-predicates.html">is_atomic()</a></code> <code><a href="type-predicates.html">is_vector()</a></code> <code><a href="type-predicates.html">is_integer()</a></code> <code><a href="type-predicates.html">is_double()</a></code> <code><a href="type-predicates.html">is_complex()</a></code> <code><a href="type-predicates.html">is_character()</a></code> <code><a href="type-predicates.html">is_logical()</a></code> <code><a href="type-predicates.html">is_raw()</a></code> <code><a href="type-predicates.html">is_bytes()</a></code> <code><a href="type-predicates.html">is_null()</a></code> 
-        </dt>
-        <dd>Type predicates</dd>
-      </dl><dl><dt>
-          
-          <code><a href="type-predicates.html">is_list()</a></code> <code><a href="type-predicates.html">is_atomic()</a></code> <code><a href="type-predicates.html">is_vector()</a></code> <code><a href="type-predicates.html">is_integer()</a></code> <code><a href="type-predicates.html">is_double()</a></code> <code><a href="type-predicates.html">is_complex()</a></code> <code><a href="type-predicates.html">is_character()</a></code> <code><a href="type-predicates.html">is_logical()</a></code> <code><a href="type-predicates.html">is_raw()</a></code> <code><a href="type-predicates.html">is_bytes()</a></code> <code><a href="type-predicates.html">is_null()</a></code> 
-        </dt>
-        <dd>Type predicates</dd>
-      </dl><dl><dt>
-          
-          <code><a href="type-predicates.html">is_list()</a></code> <code><a href="type-predicates.html">is_atomic()</a></code> <code><a href="type-predicates.html">is_vector()</a></code> <code><a href="type-predicates.html">is_integer()</a></code> <code><a href="type-predicates.html">is_double()</a></code> <code><a href="type-predicates.html">is_complex()</a></code> <code><a href="type-predicates.html">is_character()</a></code> <code><a href="type-predicates.html">is_logical()</a></code> <code><a href="type-predicates.html">is_raw()</a></code> <code><a href="type-predicates.html">is_bytes()</a></code> <code><a href="type-predicates.html">is_null()</a></code> 
-        </dt>
-        <dd>Type predicates</dd>
-      </dl><dl><dt>
-          
           <code><a href="scalar-type-predicates.html">is_scalar_list()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_atomic()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_vector()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_integer()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_double()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_complex()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_character()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_logical()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_raw()</a></code> <code><a href="scalar-type-predicates.html">is_string()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_bytes()</a></code> <code><a href="scalar-type-predicates.html">is_bool()</a></code> 
         </dt>
         <dd>Scalar type predicates</dd>
-      </dl><dl><dt>
-          
-          <code><a href="scalar-type-predicates.html">is_scalar_list()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_atomic()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_vector()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_integer()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_double()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_complex()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_character()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_logical()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_raw()</a></code> <code><a href="scalar-type-predicates.html">is_string()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_bytes()</a></code> <code><a href="scalar-type-predicates.html">is_bool()</a></code> 
-        </dt>
-        <dd>Scalar type predicates</dd>
-      </dl><dl><dt>
-          
-          <code><a href="scalar-type-predicates.html">is_scalar_list()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_atomic()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_vector()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_integer()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_double()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_complex()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_character()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_logical()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_raw()</a></code> <code><a href="scalar-type-predicates.html">is_string()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_bytes()</a></code> <code><a href="scalar-type-predicates.html">is_bool()</a></code> 
-        </dt>
-        <dd>Scalar type predicates</dd>
-      </dl><dl><dt>
-          
-          <code><a href="scalar-type-predicates.html">is_scalar_list()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_atomic()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_vector()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_integer()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_double()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_complex()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_character()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_logical()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_raw()</a></code> <code><a href="scalar-type-predicates.html">is_string()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_bytes()</a></code> <code><a href="scalar-type-predicates.html">is_bool()</a></code> 
-        </dt>
-        <dd>Scalar type predicates</dd>
-      </dl><dl><dt>
-          
-          <code><a href="scalar-type-predicates.html">is_scalar_list()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_atomic()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_vector()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_integer()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_double()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_complex()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_character()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_logical()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_raw()</a></code> <code><a href="scalar-type-predicates.html">is_string()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_bytes()</a></code> <code><a href="scalar-type-predicates.html">is_bool()</a></code> 
-        </dt>
-        <dd>Scalar type predicates</dd>
-      </dl><dl><dt>
-          
-          <code><a href="scalar-type-predicates.html">is_scalar_list()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_atomic()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_vector()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_integer()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_double()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_complex()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_character()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_logical()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_raw()</a></code> <code><a href="scalar-type-predicates.html">is_string()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_bytes()</a></code> <code><a href="scalar-type-predicates.html">is_bool()</a></code> 
-        </dt>
-        <dd>Scalar type predicates</dd>
-      </dl><dl><dt>
-          
-          <code><a href="scalar-type-predicates.html">is_scalar_list()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_atomic()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_vector()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_integer()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_double()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_complex()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_character()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_logical()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_raw()</a></code> <code><a href="scalar-type-predicates.html">is_string()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_bytes()</a></code> <code><a href="scalar-type-predicates.html">is_bool()</a></code> 
-        </dt>
-        <dd>Scalar type predicates</dd>
-      </dl><dl><dt>
-          
-          <code><a href="scalar-type-predicates.html">is_scalar_list()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_atomic()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_vector()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_integer()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_double()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_complex()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_character()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_logical()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_raw()</a></code> <code><a href="scalar-type-predicates.html">is_string()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_bytes()</a></code> <code><a href="scalar-type-predicates.html">is_bool()</a></code> 
-        </dt>
-        <dd>Scalar type predicates</dd>
-      </dl><dl><dt>
-          
-          <code><a href="scalar-type-predicates.html">is_scalar_list()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_atomic()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_vector()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_integer()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_double()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_complex()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_character()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_logical()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_raw()</a></code> <code><a href="scalar-type-predicates.html">is_string()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_bytes()</a></code> <code><a href="scalar-type-predicates.html">is_bool()</a></code> 
-        </dt>
-        <dd>Scalar type predicates</dd>
-      </dl><dl><dt>
-          
-          <code><a href="bare-type-predicates.html">is_bare_list()</a></code> <code><a href="bare-type-predicates.html">is_bare_atomic()</a></code> <code><a href="bare-type-predicates.html">is_bare_vector()</a></code> <code><a href="bare-type-predicates.html">is_bare_double()</a></code> <code><a href="bare-type-predicates.html">is_bare_complex()</a></code> <code><a href="bare-type-predicates.html">is_bare_integer()</a></code> <code><a href="bare-type-predicates.html">is_bare_numeric()</a></code> <code><a href="bare-type-predicates.html">is_bare_character()</a></code> <code><a href="bare-type-predicates.html">is_bare_logical()</a></code> <code><a href="bare-type-predicates.html">is_bare_raw()</a></code> <code><a href="bare-type-predicates.html">is_bare_string()</a></code> <code><a href="bare-type-predicates.html">is_bare_bytes()</a></code> 
-        </dt>
-        <dd>Bare type predicates</dd>
-      </dl><dl><dt>
-          
-          <code><a href="bare-type-predicates.html">is_bare_list()</a></code> <code><a href="bare-type-predicates.html">is_bare_atomic()</a></code> <code><a href="bare-type-predicates.html">is_bare_vector()</a></code> <code><a href="bare-type-predicates.html">is_bare_double()</a></code> <code><a href="bare-type-predicates.html">is_bare_complex()</a></code> <code><a href="bare-type-predicates.html">is_bare_integer()</a></code> <code><a href="bare-type-predicates.html">is_bare_numeric()</a></code> <code><a href="bare-type-predicates.html">is_bare_character()</a></code> <code><a href="bare-type-predicates.html">is_bare_logical()</a></code> <code><a href="bare-type-predicates.html">is_bare_raw()</a></code> <code><a href="bare-type-predicates.html">is_bare_string()</a></code> <code><a href="bare-type-predicates.html">is_bare_bytes()</a></code> 
-        </dt>
-        <dd>Bare type predicates</dd>
-      </dl><dl><dt>
-          
-          <code><a href="bare-type-predicates.html">is_bare_list()</a></code> <code><a href="bare-type-predicates.html">is_bare_atomic()</a></code> <code><a href="bare-type-predicates.html">is_bare_vector()</a></code> <code><a href="bare-type-predicates.html">is_bare_double()</a></code> <code><a href="bare-type-predicates.html">is_bare_complex()</a></code> <code><a href="bare-type-predicates.html">is_bare_integer()</a></code> <code><a href="bare-type-predicates.html">is_bare_numeric()</a></code> <code><a href="bare-type-predicates.html">is_bare_character()</a></code> <code><a href="bare-type-predicates.html">is_bare_logical()</a></code> <code><a href="bare-type-predicates.html">is_bare_raw()</a></code> <code><a href="bare-type-predicates.html">is_bare_string()</a></code> <code><a href="bare-type-predicates.html">is_bare_bytes()</a></code> 
-        </dt>
-        <dd>Bare type predicates</dd>
-      </dl><dl><dt>
-          
-          <code><a href="bare-type-predicates.html">is_bare_list()</a></code> <code><a href="bare-type-predicates.html">is_bare_atomic()</a></code> <code><a href="bare-type-predicates.html">is_bare_vector()</a></code> <code><a href="bare-type-predicates.html">is_bare_double()</a></code> <code><a href="bare-type-predicates.html">is_bare_complex()</a></code> <code><a href="bare-type-predicates.html">is_bare_integer()</a></code> <code><a href="bare-type-predicates.html">is_bare_numeric()</a></code> <code><a href="bare-type-predicates.html">is_bare_character()</a></code> <code><a href="bare-type-predicates.html">is_bare_logical()</a></code> <code><a href="bare-type-predicates.html">is_bare_raw()</a></code> <code><a href="bare-type-predicates.html">is_bare_string()</a></code> <code><a href="bare-type-predicates.html">is_bare_bytes()</a></code> 
-        </dt>
-        <dd>Bare type predicates</dd>
-      </dl><dl><dt>
-          
-          <code><a href="bare-type-predicates.html">is_bare_list()</a></code> <code><a href="bare-type-predicates.html">is_bare_atomic()</a></code> <code><a href="bare-type-predicates.html">is_bare_vector()</a></code> <code><a href="bare-type-predicates.html">is_bare_double()</a></code> <code><a href="bare-type-predicates.html">is_bare_complex()</a></code> <code><a href="bare-type-predicates.html">is_bare_integer()</a></code> <code><a href="bare-type-predicates.html">is_bare_numeric()</a></code> <code><a href="bare-type-predicates.html">is_bare_character()</a></code> <code><a href="bare-type-predicates.html">is_bare_logical()</a></code> <code><a href="bare-type-predicates.html">is_bare_raw()</a></code> <code><a href="bare-type-predicates.html">is_bare_string()</a></code> <code><a href="bare-type-predicates.html">is_bare_bytes()</a></code> 
-        </dt>
-        <dd>Bare type predicates</dd>
-      </dl><dl><dt>
-          
-          <code><a href="bare-type-predicates.html">is_bare_list()</a></code> <code><a href="bare-type-predicates.html">is_bare_atomic()</a></code> <code><a href="bare-type-predicates.html">is_bare_vector()</a></code> <code><a href="bare-type-predicates.html">is_bare_double()</a></code> <code><a href="bare-type-predicates.html">is_bare_complex()</a></code> <code><a href="bare-type-predicates.html">is_bare_integer()</a></code> <code><a href="bare-type-predicates.html">is_bare_numeric()</a></code> <code><a href="bare-type-predicates.html">is_bare_character()</a></code> <code><a href="bare-type-predicates.html">is_bare_logical()</a></code> <code><a href="bare-type-predicates.html">is_bare_raw()</a></code> <code><a href="bare-type-predicates.html">is_bare_string()</a></code> <code><a href="bare-type-predicates.html">is_bare_bytes()</a></code> 
-        </dt>
-        <dd>Bare type predicates</dd>
-      </dl><dl><dt>
-          
-          <code><a href="bare-type-predicates.html">is_bare_list()</a></code> <code><a href="bare-type-predicates.html">is_bare_atomic()</a></code> <code><a href="bare-type-predicates.html">is_bare_vector()</a></code> <code><a href="bare-type-predicates.html">is_bare_double()</a></code> <code><a href="bare-type-predicates.html">is_bare_complex()</a></code> <code><a href="bare-type-predicates.html">is_bare_integer()</a></code> <code><a href="bare-type-predicates.html">is_bare_numeric()</a></code> <code><a href="bare-type-predicates.html">is_bare_character()</a></code> <code><a href="bare-type-predicates.html">is_bare_logical()</a></code> <code><a href="bare-type-predicates.html">is_bare_raw()</a></code> <code><a href="bare-type-predicates.html">is_bare_string()</a></code> <code><a href="bare-type-predicates.html">is_bare_bytes()</a></code> 
-        </dt>
-        <dd>Bare type predicates</dd>
-      </dl><dl><dt>
-          
-          <code><a href="bare-type-predicates.html">is_bare_list()</a></code> <code><a href="bare-type-predicates.html">is_bare_atomic()</a></code> <code><a href="bare-type-predicates.html">is_bare_vector()</a></code> <code><a href="bare-type-predicates.html">is_bare_double()</a></code> <code><a href="bare-type-predicates.html">is_bare_complex()</a></code> <code><a href="bare-type-predicates.html">is_bare_integer()</a></code> <code><a href="bare-type-predicates.html">is_bare_numeric()</a></code> <code><a href="bare-type-predicates.html">is_bare_character()</a></code> <code><a href="bare-type-predicates.html">is_bare_logical()</a></code> <code><a href="bare-type-predicates.html">is_bare_raw()</a></code> <code><a href="bare-type-predicates.html">is_bare_string()</a></code> <code><a href="bare-type-predicates.html">is_bare_bytes()</a></code> 
-        </dt>
-        <dd>Bare type predicates</dd>
-      </dl><dl><dt>
-          
-          <code><a href="bare-type-predicates.html">is_bare_list()</a></code> <code><a href="bare-type-predicates.html">is_bare_atomic()</a></code> <code><a href="bare-type-predicates.html">is_bare_vector()</a></code> <code><a href="bare-type-predicates.html">is_bare_double()</a></code> <code><a href="bare-type-predicates.html">is_bare_complex()</a></code> <code><a href="bare-type-predicates.html">is_bare_integer()</a></code> <code><a href="bare-type-predicates.html">is_bare_numeric()</a></code> <code><a href="bare-type-predicates.html">is_bare_character()</a></code> <code><a href="bare-type-predicates.html">is_bare_logical()</a></code> <code><a href="bare-type-predicates.html">is_bare_raw()</a></code> <code><a href="bare-type-predicates.html">is_bare_string()</a></code> <code><a href="bare-type-predicates.html">is_bare_bytes()</a></code> 
-        </dt>
-        <dd>Bare type predicates</dd>
       </dl><dl><dt>
           
           <code><a href="bare-type-predicates.html">is_bare_list()</a></code> <code><a href="bare-type-predicates.html">is_bare_atomic()</a></code> <code><a href="bare-type-predicates.html">is_bare_vector()</a></code> <code><a href="bare-type-predicates.html">is_bare_double()</a></code> <code><a href="bare-type-predicates.html">is_bare_complex()</a></code> <code><a href="bare-type-predicates.html">is_bare_integer()</a></code> <code><a href="bare-type-predicates.html">is_bare_numeric()</a></code> <code><a href="bare-type-predicates.html">is_bare_character()</a></code> <code><a href="bare-type-predicates.html">is_bare_logical()</a></code> <code><a href="bare-type-predicates.html">is_bare_raw()</a></code> <code><a href="bare-type-predicates.html">is_bare_string()</a></code> <code><a href="bare-type-predicates.html">is_bare_bytes()</a></code> 
@@ -1415,182 +1181,12 @@
         <dd>Is a vector integer-like?</dd>
       </dl><dl><dt>
           
-          <code><a href="is_integerish.html">is_integerish()</a></code> <code><a href="is_integerish.html">is_bare_integerish()</a></code> <code><a href="is_integerish.html">is_scalar_integerish()</a></code> 
-        </dt>
-        <dd>Is a vector integer-like?</dd>
-      </dl><dl><dt>
-          
-          <code><a href="is_integerish.html">is_integerish()</a></code> <code><a href="is_integerish.html">is_bare_integerish()</a></code> <code><a href="is_integerish.html">is_scalar_integerish()</a></code> 
-        </dt>
-        <dd>Is a vector integer-like?</dd>
-      </dl><dl><dt>
-          
-          <code><a href="type-predicates.html">is_list()</a></code> <code><a href="type-predicates.html">is_atomic()</a></code> <code><a href="type-predicates.html">is_vector()</a></code> <code><a href="type-predicates.html">is_integer()</a></code> <code><a href="type-predicates.html">is_double()</a></code> <code><a href="type-predicates.html">is_complex()</a></code> <code><a href="type-predicates.html">is_character()</a></code> <code><a href="type-predicates.html">is_logical()</a></code> <code><a href="type-predicates.html">is_raw()</a></code> <code><a href="type-predicates.html">is_bytes()</a></code> <code><a href="type-predicates.html">is_null()</a></code> 
-        </dt>
-        <dd>Type predicates</dd>
-      </dl><dl><dt>
-          
           <code><a href="is_true.html">is_true()</a></code> <code><a href="is_true.html">is_false()</a></code> 
         </dt>
         <dd>Is object identical to TRUE or FALSE?</dd>
-      </dl><dl><dt>
-          
-          <code><a href="is_true.html">is_true()</a></code> <code><a href="is_true.html">is_false()</a></code> 
-        </dt>
-        <dd>Is object identical to TRUE or FALSE?</dd>
-      </dl><dl><dt>
-          
-          <code><a href="scalar-type-predicates.html">is_scalar_list()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_atomic()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_vector()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_integer()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_double()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_complex()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_character()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_logical()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_raw()</a></code> <code><a href="scalar-type-predicates.html">is_string()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_bytes()</a></code> <code><a href="scalar-type-predicates.html">is_bool()</a></code> 
-        </dt>
-        <dd>Scalar type predicates</dd>
-      </dl><dl><dt>
-          
-          <code><a href="scalar-type-predicates.html">is_scalar_list()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_atomic()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_vector()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_integer()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_double()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_complex()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_character()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_logical()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_raw()</a></code> <code><a href="scalar-type-predicates.html">is_string()</a></code> <code><a href="scalar-type-predicates.html">is_scalar_bytes()</a></code> <code><a href="scalar-type-predicates.html">is_bool()</a></code> 
-        </dt>
-        <dd>Scalar type predicates</dd>
-      </dl><dl><dt>
-          
-          <code><a href="bare-type-predicates.html">is_bare_list()</a></code> <code><a href="bare-type-predicates.html">is_bare_atomic()</a></code> <code><a href="bare-type-predicates.html">is_bare_vector()</a></code> <code><a href="bare-type-predicates.html">is_bare_double()</a></code> <code><a href="bare-type-predicates.html">is_bare_complex()</a></code> <code><a href="bare-type-predicates.html">is_bare_integer()</a></code> <code><a href="bare-type-predicates.html">is_bare_numeric()</a></code> <code><a href="bare-type-predicates.html">is_bare_character()</a></code> <code><a href="bare-type-predicates.html">is_bare_logical()</a></code> <code><a href="bare-type-predicates.html">is_bare_raw()</a></code> <code><a href="bare-type-predicates.html">is_bare_string()</a></code> <code><a href="bare-type-predicates.html">is_bare_bytes()</a></code> 
-        </dt>
-        <dd>Bare type predicates</dd>
-      </dl><dl><dt>
-          
-          <code><a href="raw_deparse_str.html">raw_deparse_str()</a></code> 
-        </dt>
-        <dd>Serialize a raw vector to a string</dd>
       </dl></div><div class="section level2">
-      <h2 id="operators">Operators<a class="anchor" aria-label="anchor" href="#operators"></a></h2>
       
-      
-
-      
-    </div><div id="" class="section level2">
-      
-      
-      
-
-      <dl><dt>
-          
-          <code><a href="op-null-default.html">`%||%`</a></code> 
-        </dt>
-        <dd>Default value for <code>NULL</code></dd>
-      </dl><dl><dt>
-          
-          <code><a href="op-na-default.html">`%|%`</a></code> 
-        </dt>
-        <dd>Replace missing values</dd>
-      </dl><dl><dt>
-          
-          <code><a href="op-get-attr.html">`%@%`</a></code> <code><a href="op-get-attr.html">`%@%&lt;-`()</a></code> 
-        </dt>
-        <dd>Infix attribute accessor and setter</dd>
-      </dl></div><div class="section level2">
-      <h2 id="function-arguments">Function arguments<a class="anchor" aria-label="anchor" href="#function-arguments"></a></h2>
-      
-      
-
-      
-    </div><div id="" class="section level2">
-      
-      
-      
-
-      <dl><dt>
-          
-          <code><a href="arg_match.html">arg_match()</a></code> <code><a href="arg_match.html">arg_match0()</a></code> 
-        </dt>
-        <dd>Match an argument to a character vector</dd>
-      </dl><dl><dt>
-          
-          <code><a href="arg_exclusive.html">arg_exclusive()</a></code> 
-        </dt>
-        <dd>Check that arguments are mutually exclusive</dd>
-      </dl><dl><dt>
-          
-          <code><a href="arg_require.html">arg_require()</a></code> 
-        </dt>
-        <dd>Check that argument is supplied
-Throws an informative error if <code>arg</code> is missing.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="missing_arg.html">missing_arg()</a></code> <code><a href="missing_arg.html">is_missing()</a></code> <code><a href="missing_arg.html">maybe_missing()</a></code> 
-        </dt>
-        <dd>Generate or handle a missing argument</dd>
-      </dl><dl><dt>
-          
-          <code><a href="missing_arg.html">missing_arg()</a></code> <code><a href="missing_arg.html">is_missing()</a></code> <code><a href="missing_arg.html">maybe_missing()</a></code> 
-        </dt>
-        <dd>Generate or handle a missing argument</dd>
-      </dl><dl><dt>
-          
-          <code><a href="missing_arg.html">missing_arg()</a></code> <code><a href="missing_arg.html">is_missing()</a></code> <code><a href="missing_arg.html">maybe_missing()</a></code> 
-        </dt>
-        <dd>Generate or handle a missing argument</dd>
-      </dl></div><div class="section level2">
-      <h2 id="condition-handlers">Condition handlers<a class="anchor" aria-label="anchor" href="#condition-handlers"></a></h2>
-      
-      
-
-      
-    </div><div id="" class="section level2">
-      
-      
-      
-
-      <dl><dt>
-          
-          <code><a href="with_handlers.html">with_handlers()</a></code> <code><a href="with_handlers.html">calling()</a></code> 
-        </dt>
-        <dd>Establish handlers on the stack</dd>
-      </dl><dl><dt>
-          
-          <code><a href="with_handlers.html">with_handlers()</a></code> <code><a href="with_handlers.html">calling()</a></code> 
-        </dt>
-        <dd>Establish handlers on the stack</dd>
-      </dl></div><div class="section level2">
-      <h2 id="session-state">Session state<a class="anchor" aria-label="anchor" href="#session-state"></a></h2>
-      
-      
-
-      
-    </div><div id="" class="section level2">
-      
-      
-      
-
-      <dl><dt>
-          
-          <code><a href="is_interactive.html">is_interactive()</a></code> <code><a href="is_interactive.html">local_interactive()</a></code> <code><a href="is_interactive.html">with_interactive()</a></code> 
-        </dt>
-        <dd>Is R running interactively?</dd>
-      </dl><dl><dt>
-          
-          <code><a href="scoped_interactive.html">scoped_interactive()</a></code> <code><a href="scoped_interactive.html">scoped_options()</a></code> <code><a href="scoped_interactive.html">scoped_bindings()</a></code> 
-        </dt>
-        <dd>Questioning <code>scoped_</code> functions</dd>
-      </dl><dl><dt>
-          
-          <code><a href="faq-options.html">faq-options</a></code> 
-        </dt>
-        <dd>Global options for rlang</dd>
-      </dl><dl><dt>
-          
-          <code><a href="local_options.html">local_options()</a></code> <code><a href="local_options.html">with_options()</a></code> <code><a href="local_options.html">push_options()</a></code> <code><a href="local_options.html">peek_options()</a></code> <code><a href="local_options.html">peek_option()</a></code> 
-        </dt>
-        <dd>Change global options</dd>
-      </dl><dl><dt>
-          
-          <code><a href="scoped_interactive.html">scoped_interactive()</a></code> <code><a href="scoped_interactive.html">scoped_options()</a></code> <code><a href="scoped_interactive.html">scoped_bindings()</a></code> 
-        </dt>
-        <dd>Questioning <code>scoped_</code> functions</dd>
-      </dl><dl><dt>
-          
-          <code><a href="on_load.html">on_load()</a></code> <code><a href="on_load.html">run_on_load()</a></code> <code><a href="on_load.html">on_package_load()</a></code> 
-        </dt>
-        <dd>Run expressions on load</dd>
-      </dl></div><div class="section level2">
-      <h2 id="weak-references">Weak references<a class="anchor" aria-label="anchor" href="#weak-references"></a></h2>
-      
+      <h3 id="weak-references">Weak references<a class="anchor" aria-label="anchor" href="#weak-references"></a></h3>
       
 
       
@@ -1615,8 +1211,8 @@ Throws an informative error if <code>arg</code> is missing.</dd>
         </dt>
         <dd>Get key/value from a weak reference object</dd>
       </dl></div><div class="section level2">
-      <h2 id="r-objects">R objects<a class="anchor" aria-label="anchor" href="#r-objects"></a></h2>
       
+      <h3 id="r-objects-1">R objects<a class="anchor" aria-label="anchor" href="#r-objects-1"></a></h3>
       
 
       
@@ -1631,8 +1227,8 @@ Throws an informative error if <code>arg</code> is missing.</dd>
         </dt>
         <dd>Hashing</dd>
       </dl></div><div class="section level2">
-      <h2 id="faq">FAQ<a class="anchor" aria-label="anchor" href="#faq"></a></h2>
       
+      <h3 id="operators">Operators<a class="anchor" aria-label="anchor" href="#operators"></a></h3>
       
 
       
@@ -1643,9 +1239,19 @@ Throws an informative error if <code>arg</code> is missing.</dd>
 
       <dl><dt>
           
-          <code><a href="faq-options.html">faq-options</a></code> 
+          <code><a href="op-null-default.html">`%||%`</a></code> 
         </dt>
-        <dd>Global options for rlang</dd>
+        <dd>Default value for <code>NULL</code></dd>
+      </dl><dl><dt>
+          
+          <code><a href="op-na-default.html">`%|%`</a></code> 
+        </dt>
+        <dd>Replace missing values</dd>
+      </dl><dl><dt>
+          
+          <code><a href="op-get-attr.html">`%@%`</a></code> <code><a href="op-get-attr.html">`%@%&lt;-`()</a></code> 
+        </dt>
+        <dd>Infix attribute accessor and setter</dd>
       </dl></div>
   </div>
 

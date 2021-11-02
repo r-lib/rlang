@@ -118,6 +118,7 @@
 <li><p><code><a href="../reference/call_fn.html">call_fn()</a></code> is deprecated.</p></li>
 <li><p><code><a href="../reference/friendly_type.html">friendly_type()</a></code> is deprecated and <code>as_pairlist()</code> is defunct.</p></li>
 <li><p>The <code>action</code> argument of <code><a href="../reference/check_dots_used.html">check_dots_used()</a></code>, <code><a href="../reference/check_dots_unnamed.html">check_dots_unnamed()</a></code>, and <code><a href="../reference/check_dots_empty.html">check_dots_empty()</a></code> is deprecated in favour of the new <code>error</code> argument which takes an error handler.</p></li>
+<li><p><code>with_abort()</code> has been removed from the package.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="features-and-bugfixes-development-version">Features and bugfixes<a class="anchor" aria-label="anchor" href="#features-and-bugfixes-development-version"></a></h3>
@@ -524,12 +525,12 @@
   error <span class="op">=</span> <span class="fu"><a href="../reference/with_handlers.html">calling</a></span><span class="op">(</span><span class="va">entrace</span><span class="op">)</span>,
   <span class="fu">foo</span><span class="op">(</span><span class="va">bar</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
-<p>However it’s often more practical to use <code><a href="../reference/with_abort.html">with_abort()</a></code> in that case:</p>
+<p>However it’s often more practical to use <code>with_abort()</code> in that case:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
-<span class="fu"><a href="../reference/with_abort.html">with_abort</a></span><span class="op">(</span><span class="fu">foo</span><span class="op">(</span><span class="va">bar</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="fu">with_abort</span><span class="op">(</span><span class="fu">foo</span><span class="op">(</span><span class="va">bar</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </li>
-<li><p><code><a href="../reference/with_abort.html">with_abort()</a></code> gains a <code>classes</code> argument to promote any kind of condition to an rlang error.</p></li>
+<li><p><code>with_abort()</code> gains a <code>classes</code> argument to promote any kind of condition to an rlang error.</p></li>
 <li><p>New <code><a href="../reference/last_error.html">last_trace()</a></code> shortcut to print the backtrace stored in the <code><a href="../reference/last_error.html">last_error()</a></code>.</p></li>
 <li><p>Backtrace objects now print in full by default.</p></li>
 <li><p>Calls in backtraces are now numbered according to their position in the call tree. The numbering is non-contiguous for simplified backtraces because of omitted call frames.</p></li>
@@ -599,7 +600,7 @@
 <ul><li>
 <p><code><a href="../reference/abort.html">abort()</a></code> now records backtraces automatically in the error object. Errors thrown with <code><a href="../reference/abort.html">abort()</a></code> invite users to call <code><a href="../reference/last_error.html">rlang::last_error()</a></code> to see a backtrace and help identifying where and why the error occurred. The backtraces created by rlang (you can create one manually with <code><a href="../reference/trace_back.html">trace_back()</a></code>) are printed in a simplified form by default that removes implementation details from the backtrace. To see the full backtrace, call <code>summary(rlang::last_error())</code>.</p>
 <p><code><a href="../reference/abort.html">abort()</a></code> also gains a <code>parent</code> argument. This is meant for situations where you’re calling a low level API (to download a file, parse a JSON file, etc) and would like to intercept errors with <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">base::tryCatch()</a></code> or <code><a href="../reference/with_handlers.html">rlang::with_handlers()</a></code> and rethrow them with a high-level message. Call <code><a href="../reference/abort.html">abort()</a></code> with the intercepted error as the <code>parent</code> argument. When the user prints <code><a href="../reference/last_error.html">rlang::last_error()</a></code>, the backtrace will be shown in two sections corresponding to the high-level and low-level contexts.</p>
-<p>In order to get segmented backtraces, the low-level error has to be thrown with <code><a href="../reference/abort.html">abort()</a></code>. When that’s not the case, you can call the low-level function within <code><a href="../reference/with_abort.html">with_abort()</a></code> to automatically promote all errors to rlang errors.</p>
+<p>In order to get segmented backtraces, the low-level error has to be thrown with <code><a href="../reference/abort.html">abort()</a></code>. When that’s not the case, you can call the low-level function within <code>with_abort()</code> to automatically promote all errors to rlang errors.</p>
 </li>
 <li><p>The tidy eval changes are mostly for developers of data masking APIs. The main user-facing change is that <code>.data[[</code> is now an unquote operator so that <code>var</code> in <code>.data[[var]]</code> is never masked by data frame columns and always picked from the environment. This makes the pronoun safe for programming in functions.</p></li>
 <li><p>The <code>!!!</code> operator now supports all classed objects like factors. It calls <code><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list()</a></code> on S3 objects and <code>as(x, "list")</code> on S4 objects.</p></li>
@@ -610,7 +611,7 @@
 <ul><li><p>New <code><a href="../reference/trace_back.html">trace_back()</a></code> captures a backtrace. Compared to the base R traceback, it contains additional structure about the relationship between frames. It comes with tools for automatically restricting to frames after a certain environment on the stack, and to simplify when printing. These backtraces are now recorded in errors thrown by <code><a href="../reference/abort.html">abort()</a></code> (see below).</p></li>
 <li><p><code><a href="../reference/abort.html">abort()</a></code> gains a <code>parent</code> argument to specify a parent error. This is meant for situations where a low-level error is expected (e.g. download or parsing failed) and you’d like to throw an error with higher level information. Specifying the low-level error as parent makes it possible to partition the backtraces based on ancestry.</p></li>
 <li><p>Errors thrown with <code><a href="../reference/abort.html">abort()</a></code> now embed a backtrace in the condition object. It is no longer necessary to record a trace with a calling handler for such errors.</p></li>
-<li><p><code><a href="../reference/with_abort.html">with_abort()</a></code> runs expressions in a context where all errors are promoted to rlang errors and gain a backtrace.</p></li>
+<li><p><code>with_abort()</code> runs expressions in a context where all errors are promoted to rlang errors and gain a backtrace.</p></li>
 <li><p>Unhandled errors thrown by <code><a href="../reference/abort.html">abort()</a></code> are now automatically saved and can be retrieved with <code><a href="../reference/last_error.html">rlang::last_error()</a></code>. The error prints with a simplified backtrace. Call <code>summary(last_error())</code> to see the full backtrace.</p></li>
 <li><p>New experimental option <code>rlang__backtrace_on_error</code> to display backtraces alongside error messages. See <code><a href="../reference/abort.html">?rlang::abort</a></code> for supported options.</p></li>
 <li><p>The new <code><a href="../reference/abort.html">signal()</a></code> function completes the <code><a href="../reference/abort.html">abort()</a></code>, <code><a href="../reference/abort.html">warn()</a></code> and <code><a href="../reference/abort.html">inform()</a></code> family. It creates and signals a bare condition.</p></li>
