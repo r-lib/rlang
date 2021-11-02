@@ -3,7 +3,7 @@
 
 The patterns covered in this article rely on _metaprogramming_, the ability to defuse, create, expand, and inject R expressions. A good place to start if you're new to programming on the language is the [Metaprogramming chapter](https://adv-r.hadley.nz/metaprogramming.html) of the [Advanced R](https://adv-r.hadley.nz) book.
 
-If you haven't already, read `r links$topic_data_mask_programming` which covers simpler patterns that do not require as much theory to get up to speed. It covers concepts like argument behaviours and the various patterns you can add to your toolbox (forwarding, names, bridge, and transformative patterns).
+If you haven't already, read `r link("topic_data_mask_programming")` which covers simpler patterns that do not require as much theory to get up to speed. It covers concepts like argument behaviours and the various patterns you can add to your toolbox (forwarding, names, bridge, and transformative patterns).
 
 
 # Forwarding patterns
@@ -108,7 +108,7 @@ syms(vars)
 data_syms(vars)
 ```
 
-Simple symbols returned by `sym()` and `syms()` work in a wider variety of cases (with base functions in particular) but we'll use mostly use `data_sym()` and `data_syms()` because they are more robust (see `r links$topic_data_mask_ambiguity`). Note that these do not return _symbols_ per se, instead they create _calls_ to `$` that subset the [`.data`] pronoun.
+Simple symbols returned by `sym()` and `syms()` work in a wider variety of cases (with base functions in particular) but we'll use mostly use `data_sym()` and `data_syms()` because they are more robust (see `r link("topic_data_mask_ambiguity")`). Note that these do not return _symbols_ per se, instead they create _calls_ to `$` that subset the [`.data`] pronoun.
 
 Since the `.data` pronoun is a tidy eval feature, you can't use it in base functions. As a rule, prefer the `data_`-prefixed variants when you're injecting in tidy eval functions and the unprefixed functions for base functions.
 
@@ -129,7 +129,7 @@ In more complex case, you might want to add R code around the symbols. This requ
 
 ## `mutate()` as a data-mask to selection bridge
 
-This is a variant of the `transmute()` bridge pattern described in `r links$topic_data_mask_programming` that does not materialise `...` in the intermediate step. Instead, the `...` expressions are defused and inspected. Then the expressions, rather than the columns, are spliced in `mutate()`.
+This is a variant of the `transmute()` bridge pattern described in `r link("topic_data_mask_programming")` that does not materialise `...` in the intermediate step. Instead, the `...` expressions are defused and inspected. Then the expressions, rather than the columns, are spliced in `mutate()`.
 
 ```r
 my_pivot_longer <- function(data, ...) {
@@ -233,7 +233,7 @@ inject(
 )
 ```
 
-See `r links$topic_data_mask_ambiguity` for more information about names collisions.
+See `r link("topic_data_mask_ambiguity")` for more information about names collisions.
 
 
 ## Data-masked `parse()` and `eval()`

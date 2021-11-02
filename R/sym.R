@@ -11,7 +11,7 @@
 #' * `data_sym()` and `data_syms()` create calls of the form
 #'   `.data$foo` instead of symbols. Subsetting the [`.data`] pronoun
 #'   is more robust when you expect a data-variable. See
-#'   `r links$topic_data_mask_ambiguity`.
+#'   `r link("topic_data_mask_ambiguity")`.
 #'
 #' Only tidy eval APIs support the [`.data`] pronoun. With base R
 #' functions, use simple symbols created with `sym()` or `syms()`.
@@ -22,8 +22,8 @@
 #'   `data_sym()` and `data_syms()`, calls of the form `.data$foo`.
 #'
 #' @seealso
-#' - `r links$topic_defuse`
-#' - `r links$topic_metaprogramming`
+#' - `r link("topic_defuse")`
+#' - `r link("topic_metaprogramming")`
 #'
 #' @examples
 #' # Create a symbol

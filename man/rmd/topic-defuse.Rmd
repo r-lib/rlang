@@ -51,8 +51,8 @@ my_mean <- function(data, var) {
 
 Read more about this in:
 
-- `r links$topic_data_mask`
-- `r links$topic_data_mask_programming`
+- `r link("topic_data_mask")`
+- `r link("topic_data_mask_programming")`
 
 
 # The booby trap analogy
@@ -177,7 +177,7 @@ my_function(1 + 1)
 
 R needs information about the environment to properly evaluate argument expressions because they come from a different context than the current function. For instance when a function in your package calls `dplyr::mutate()`, the quosure environment indicates where all the private functions of your package are defined.
 
-Read more about the role of quosures in `r links$topic_quosure`.
+Read more about the role of quosures in `r link("topic_quosure")`.
 
 
 # Comparison with base R

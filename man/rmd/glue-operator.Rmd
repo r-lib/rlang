@@ -69,7 +69,7 @@ list2("{{ x }}" := 1)
 list2("{x}" := 1)
 ```
 
-Ideally, using `{{` on regular objects would be an error. However for technical reasons it is not possible to make a distinction between function arguments and ordinary variables. See `r links$topic_embrace_non_args` for more information about this limitation.
+Ideally, using `{{` on regular objects would be an error. However for technical reasons it is not possible to make a distinction between function arguments and ordinary variables. See `r link("topic_embrace_non_args")` for more information about this limitation.
 
 
 ## Allow overriding default names

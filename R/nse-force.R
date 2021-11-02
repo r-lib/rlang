@@ -29,7 +29,7 @@
 #' All data-masking verbs in the tidyverse support injection operators
 #' out of the box. With base functions, you need to use [inject()] to
 #' enable `!!`. Using `!!` out of context may lead to incorrect
-#' results, see `r links$topic_inject_out_of_context`.
+#' results, see `r link("topic_inject_out_of_context")`.
 #'
 #' The examples below are built around the base function [with()].
 #' Since it's not a tidyverse function we will use [inject()] to enable
@@ -60,7 +60,7 @@
 #' ```
 #'
 #' Note that the [`.env`] pronoun is a simpler way of solving the
-#' ambiguity. See `r links$topic_data_mask_ambiguity` for more about
+#' ambiguity. See `r link("topic_data_mask_ambiguity")` for more about
 #' this.
 #'
 #'
@@ -116,7 +116,7 @@
 #'
 #'
 #' @seealso
-#' - `r links$topic_inject`
+#' - `r link("topic_inject")`
 #'
 #' @name injection-operator
 #' @aliases bang-bang
@@ -172,7 +172,7 @@ NULL
 #' functions you need to use [inject()] to enable `!!!`.
 #'
 #' Using the operator out of context may lead to incorrect results,
-#' see `r links$topic_inject_out_of_context`.
+#' see `r link("topic_inject_out_of_context")`.
 #'
 #'
 #' @section Splicing a list of arguments:
@@ -331,7 +331,7 @@ NULL
 #' same as in `inject()`.
 #'
 #' @seealso
-#' - `r links$topic_inject`
+#' - `r link("topic_inject")`
 #' - [inject()]
 #' - [exec()]
 #'
@@ -385,7 +385,7 @@ NULL
 #' ```
 #'
 #' @seealso
-#' - `r links$topic_inject`
+#' - `r link("topic_inject")`
 #'
 #' @examples
 #' g <- function(var) englue("{{ var }}")
@@ -449,7 +449,7 @@ englue <- function(x) {
 #' ```
 #'
 #' @seealso
-#' - `r links$topic_inject`
+#' - `r link("topic_inject")`
 #'
 #' @export
 qq_show <- function(expr) {

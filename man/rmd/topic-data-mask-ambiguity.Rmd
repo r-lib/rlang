@@ -85,7 +85,7 @@ data.frame(factor = 0, value = 1) %>% my_rescale(value)
 
 ### Subsetting `.data` with env-variables
 
-The [`.data`] pronoun may be used as a name-to-data-mask pattern (see `r links$topic_data_mask_programming`):
+The [`.data`] pronoun may be used as a name-to-data-mask pattern (see `r link("topic_data_mask_programming")`):
 
 ```{r, comment = "#>", collapse = TRUE}
 var <- "cyl"

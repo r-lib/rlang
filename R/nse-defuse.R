@@ -29,8 +29,8 @@
 #' @aliases curly-curly
 #'
 #' @seealso
-#' - `r links$topic_data_mask`
-#' - `r links$topic_data_mask_programming`
+#' - `r link("topic_data_mask")`
+#' - `r link("topic_data_mask_programming")`
 #'
 NULL
 
@@ -48,7 +48,7 @@ NULL
 #' @param expr An expression to defuse.
 #'
 #' @seealso
-#' - `r links$topic_defuse` for an overview.
+#' - `r link("topic_defuse")` for an overview.
 #'
 #' - [enquo()] to defuse non-local expressions from function
 #'   arguments.
@@ -105,7 +105,7 @@ expr <- function(expr) {
 #'   using the [defuse-and-inject][topic-metaprogramming] pattern.
 #'
 #' These are advanced tools. Make sure to first learn about the embrace
-#' operator `r link("{{")` in `r links$topic_data_mask_programming`.
+#' operator `r link("{{")` in `r link("topic_data_mask_programming")`.
 #' `{{` is easier to work with with less theory, and it is sufficient
 #' in most applications.
 #'
@@ -141,7 +141,7 @@ expr <- function(expr) {
 #' injection.
 #'
 #' @seealso
-#' - `r links$topic_defuse` for an overview.
+#' - `r link("topic_defuse")` for an overview.
 #'
 #' - [expr()] to defuse your own local expressions.
 #'
@@ -222,7 +222,7 @@ enquos <- function(...,
 #'     your own local expressions (by opposition to function arguments
 #'     where non-local expressions are supplied by your users), there
 #'     is generally no need to attach the current environment in a
-#'     quosure. See `r links$topic_quosure`.
+#'     quosure. See `r link("topic_quosure")`.
 #'
 #' *   `enexpr()` and `enexprs()` are like [enquo()] and [enquos()] but
 #'     return naked expressions instead of quosures. These operators

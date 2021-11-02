@@ -87,7 +87,7 @@ mean_by <- function(data, by, var) {
 mtcars %>% mean_by(by = cyl, var = disp)
 ```
 
-Learn more about this pattern in `r links$topic_data_mask_programming`.
+Learn more about this pattern in `r link("topic_data_mask_programming")`.
 
 
 ## Injecting with `!!`

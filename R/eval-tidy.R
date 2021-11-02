@@ -22,7 +22,7 @@
 #'   These pronouns lets you be explicit about where to find
 #'   values and throw errors if you try to access non-existent values.
 #'
-#' See also `r links$topic_data_mask`.
+#' See also `r link("topic_data_mask")`.
 #'
 #'
 #' @param expr An expression or quosure to evaluate.

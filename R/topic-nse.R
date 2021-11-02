@@ -1,6 +1,6 @@
 # Overviews ---------------------------------------------------------------
 
-#' `r titles$topic_data_mask`
+#' `r title("topic_data_mask")`
 #'
 #' ```{r, child = "man/rmd/topic-data-mask.Rmd"}
 #' ```
@@ -8,7 +8,7 @@
 #' @name topic-data-mask
 NULL
 
-#' `r titles$topic_data_mask_programming`
+#' `r title("topic_data_mask_programming")`
 #'
 #' ```{r, child = "man/rmd/topic-data-mask-programming.Rmd"}
 #' ```
@@ -16,7 +16,7 @@ NULL
 #' @name topic-data-mask-programming
 NULL
 
-#' `r titles$topic_metaprogramming`
+#' `r title("topic_metaprogramming")`
 #'
 #' ```{r, child = "man/rmd/topic-metaprogramming.Rmd"}
 #' ```
@@ -24,7 +24,7 @@ NULL
 #' @name topic-metaprogramming
 NULL
 
-#' `r titles$topic_defuse`
+#' `r title("topic_defuse")`
 #'
 #' ```{r, child = "man/rmd/topic-defuse.Rmd"}
 #' ```
@@ -33,7 +33,7 @@ NULL
 #' @name topic-defuse
 NULL
 
-#' `r titles$topic_inject`
+#' `r title("topic_inject")`
 #'
 #' ```{r, child = "man/rmd/topic-inject.Rmd"}
 #' ```
@@ -42,7 +42,7 @@ NULL
 #' @name topic-inject
 NULL
 
-#' `r titles$topic_quosure`
+#' `r title("topic_quosure")`
 #'
 #' ```{r, child = "man/rmd/topic-quosure.Rmd"}
 #' ```
@@ -53,7 +53,7 @@ NULL
 
 # Guides ------------------------------------------------------------------
 
-#' `r titles$topic_data_mask_ambiguity`
+#' `r title("topic_data_mask_ambiguity")`
 #'
 #' ```{r, child = "man/rmd/topic-data-mask-ambiguity.Rmd"}
 #' ```
@@ -61,7 +61,7 @@ NULL
 #' @name topic-data-mask-ambiguity
 NULL
 
-#' `r titles$topic_double_evaluation`
+#' `r title("topic_double_evaluation")`
 #'
 #' ```{r, child = "man/rmd/topic-double-evaluation.Rmd"}
 #' ```
@@ -69,7 +69,7 @@ NULL
 #' @name topic-double-evaluation
 NULL
 
-#' `r titles$topic_multiple_columns`
+#' `r title("topic_multiple_columns")`
 #'
 #' ```{r, child = "man/rmd/topic-multiple-columns.Rmd"}
 #' ```
@@ -80,7 +80,7 @@ NULL
 
 # Notes -------------------------------------------------------------------
 
-#' `r titles$topic_embrace_non_args`
+#' `r title("topic_embrace_non_args")`
 #'
 #' ```{r, child = "man/rmd/topic-embrace-non-args.Rmd"}
 #' ```
@@ -88,7 +88,7 @@ NULL
 #' @name topic-embrace-non-args
 NULL
 
-#' `r titles$topic_embrace_constants`
+#' `r title("topic_embrace_constants")`
 #'
 #' ```{r, child = "man/rmd/topic-embrace-constants.Rmd"}
 #' ```
@@ -96,7 +96,7 @@ NULL
 #' @name topic-embrace-constants
 NULL
 
-#' `r titles$topic_inject_out_of_context`
+#' `r title("topic_inject_out_of_context")`
 #'
 #' ```{r, child = "man/rmd/topic-inject-out-of-context.Rmd"}
 #' ```

@@ -156,7 +156,7 @@ dplyr::vars(cyl, am)
 #> env:  global
 ```
 
-For more information about external defusing, see `r links$topic_multiple_columns`.
+For more information about external defusing, see `r link("topic_multiple_columns")`.
 
 
 # Technical description of quosures
