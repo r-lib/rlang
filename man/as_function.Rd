@@ -47,8 +47,6 @@ mentioned in error messages as the source of the error. See the
 \code{call} argument of \code{\link[=abort]{abort()}} for more information.}
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 \code{as_function()} transforms a one-sided formula into a function.
 This powers the lambda syntax in packages like purrr.
 }

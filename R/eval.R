@@ -1,9 +1,6 @@
 #' Evaluate an expression in an environment
 #'
 #' @description
-#'
-#' `r lifecycle::badge("stable")`
-#'
 #' `eval_bare()` is a lower-level version of function [base::eval()].
 #' Technically, it is a simple wrapper around the C function
 #' `Rf_eval()`. You generally don't need to use `eval_bare()` instead

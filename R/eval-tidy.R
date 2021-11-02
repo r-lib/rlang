@@ -219,8 +219,6 @@ print.rlang_fake_data_pronoun <- function(...) cat_line("<pronoun>")
 #'
 #' @description
 #'
-#' `r lifecycle::badge("stable")`
-#'
 #' A [data mask][topic-data-mask] is an environment (or possibly
 #' multiple environments forming an ancestry) containing user-supplied
 #' objects. Objects in the mask have precedence over objects in the

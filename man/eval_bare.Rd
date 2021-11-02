@@ -12,8 +12,6 @@ eval_bare(expr, env = parent.frame())
 \item{env}{The environment in which to evaluate the expression.}
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 \code{eval_bare()} is a lower-level version of function \code{\link[base:eval]{base::eval()}}.
 Technically, it is a simple wrapper around the C function
 \code{Rf_eval()}. You generally don't need to use \code{eval_bare()} instead

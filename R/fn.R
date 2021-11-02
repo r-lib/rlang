@@ -2,8 +2,6 @@
 #'
 #' @description
 #'
-#' `r lifecycle::badge("stable")`
-#'
 #' This constructs a new function given its three components:
 #' list of arguments, body code and parent environment.
 #'
@@ -380,8 +378,6 @@ check_function <- function(x,
 #' Convert to function
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' `as_function()` transforms a one-sided formula into a function.
 #' This powers the lambda syntax in packages like purrr.
 #'
