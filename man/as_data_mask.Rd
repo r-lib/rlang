@@ -37,12 +37,12 @@ A data mask that you can supply to \code{\link[=eval_tidy]{eval_tidy()}}.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-A data mask is an environment (or possibly multiple environments
-forming an ancestry) containing user-supplied objects. Objects in
-the mask have precedence over objects in the environment (i.e. they
-mask those objects). Many R functions evaluate quoted expressions
-in a data mask so these expressions can refer to objects within the
-user data.
+A \link[=topic-data-mask]{data mask} is an environment (or possibly
+multiple environments forming an ancestry) containing user-supplied
+objects. Objects in the mask have precedence over objects in the
+environment (i.e. they mask those objects). Many R functions
+evaluate quoted expressions in a data mask so these expressions can
+refer to objects within the user data.
 
 These functions let you construct a tidy eval data mask manually.
 They are meant for developers of tidy eval interfaces rather than
@@ -191,6 +191,6 @@ mask$.fns <- as_data_pronoun(top)
 mask$.data <- as_data_pronoun(mask)
 mask$.data$c
 
-# Now we can reference the values with the pronouns:
+# Now we can reference values with the pronouns:
 eval_tidy(quote(c(.data$a, .data$b, .data$c)), data = mask)
 }

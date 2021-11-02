@@ -83,6 +83,8 @@ navbar:
 
 
 reference:
+  # NSE
+
   - title: Tidy evaluation
     desc: >
       The programmable data-masking framework developped for the
@@ -135,6 +137,14 @@ reference:
   - subtitle: Notes
     contents:
       - topic-embrace-constants
+
+  - title: Create tidy evaluation APIs
+    desc: >
+      Create data masking APIs as in dplyr or tidyr.
+      These functions are meant for developers rather than users.
+    contents:
+      - eval_tidy
+      - new_data_mask
 
   - title: Dots
     desc: >
@@ -365,16 +375,6 @@ reference:
       - missing_arg
       - is_missing
       - maybe_missing
-  - title: Create tidy evaluation APIs
-    desc: >
-      Create data masking APIs à-la dplyr or tidyr.
-      These functions are meant for developers rather than users.
-    contents:
-      - "`tidyeval-data`"
-      - eval_tidy
-      - as_data_mask
-      - new_data_mask
-      - as_data_pronoun
   - title: Condition handlers
     contents:
       - with_handlers

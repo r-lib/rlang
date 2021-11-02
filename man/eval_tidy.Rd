@@ -7,7 +7,8 @@
 eval_tidy(expr, data = NULL, env = caller_env())
 }
 \arguments{
-\item{expr}{An expression or quosure to evaluate.}
+\item{expr}{An \link[=topic-defuse]{expression} or
+\link[=topic-quosure]{quosure} to evaluate.}
 
 \item{data}{A data frame, or named list or vector. Alternatively, a
 data mask created with \code{\link[=as_data_mask]{as_data_mask()}} or
@@ -19,51 +20,22 @@ environment is not applicable for quosures because they have
 their own environments.}
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 \code{eval_tidy()} is a variant of \code{\link[base:eval]{base::eval()}} that powers the tidy
 evaluation framework. Like \code{eval()} it accepts user data as
 argument. Whereas \code{eval()} simply transforms the data to an
-environment, \code{eval_tidy()} transforms it to a \strong{data mask} with
-\code{\link[=as_data_mask]{as_data_mask()}}. Evaluating in a data mask enables the following
-features:
+environment, \code{eval_tidy()} transforms it to a \link[=topic-data-mask]{data mask} with \code{\link[=as_data_mask]{as_data_mask()}}. Evaluating in a data
+mask enables the following features:
 \itemize{
-\item \link[=nse-defuse]{Quosures}. Quosures are expressions bundled with an
-environment. If \code{data} is supplied, objects in the data mask
+\item \link[=topic-quosure]{Quosures}. Quosures are expressions bundled with
+an environment. If \code{data} is supplied, objects in the data mask
 always have precedence over the quosure environment, i.e. the
 data masks the environment.
 \item \link[=.data]{Pronouns}. If \code{data} is supplied, the \code{.env} and \code{.data}
 pronouns are installed in the data mask. \code{.env} is a reference to
-the calling environment and \code{.data} refers to the \code{data} argument.
-These pronouns lets you be explicit about where to find
-values and throw errors if you try to access non-existent values.
+the calling environment and \code{.data} refers to the \code{data}
+argument. These pronouns are an escape hatch for the \link[=topic-data-mask-ambiguity]{data mask ambiguity} problem.
 }
-
-See also \ifelse{html}{\link[=topic-data-mask]{What is data-masking and why do I need \{\{?}}{\link[=topic-data-mask]{What is data-masking and why do I need curly-curly?}}.
 }
-\section{Data masking}{
-
-
-Data masking refers to how columns or objects inside \code{data} have
-priority over objects defined in \code{env} (or in the quosure
-environment, if applicable). If there is a column \code{var} in \code{data}
-and an object \code{var} in \code{env}, and \code{expr} refers to \code{var}, the
-column has priority:\preformatted{var <- "this one?"
-data <- data.frame(var = rep("Or that one?", 3))
-
-within <- function(data, expr) \{
-  eval_tidy(enquo(expr), data)
-\}
-
-within(data, toupper(var))
-#> [1] "OR THAT ONE?" "OR THAT ONE?" "OR THAT ONE?"
-}
-
-Because the columns or objects in \code{data} are always found first,
-before objects from \code{env}, we say that the data "masks" the
-environment.
-}
-
 \section{When should eval_tidy() be used instead of eval()?}{
 
 
@@ -71,14 +43,15 @@ environment.
 \code{eval_tidy()} when you'd like to support expressions referring to
 the \code{.data} pronoun, or when you need to support quosures.
 
-If you're evaluating an expression captured with quasiquotation
-support, it is recommended to use \code{eval_tidy()} because users will
-likely unquote quosures.
+If you're evaluating an expression captured with
+\link[=topic-inject]{injection} support, it is recommended to use
+\code{eval_tidy()} because users may inject quosures.
 
 Note that unwrapping a quosure with \code{\link[=quo_get_expr]{quo_get_expr()}} does not
 guarantee that there is no quosures inside the expression. Quosures
-might be unquoted anywhere. For instance, the following does not
-work reliably in the presence of nested quosures:\preformatted{my_quoting_fn <- function(x) \{
+might be unquoted anywhere in the expression tree. For instance,
+the following does not work reliably in the presence of nested
+quosures:\preformatted{my_quoting_fn <- function(x) \{
   x <- enquo(x)
   expr <- quo_get_expr(x)
   env <- quo_get_env(x)
@@ -113,65 +86,41 @@ representation of backtraces (which you can visualise in a
 See also \code{\link[=eval_bare]{eval_bare()}} for more information about these differences.
 }
 
-\section{Life cycle}{
-
-
-\strong{rlang 0.3.0}
-
-Passing an environment to \code{data} is deprecated. Please construct an
-rlang data mask with \code{\link[=new_data_mask]{new_data_mask()}}.
-}
-
 \examples{
 
-# With simple quoted expressions eval_tidy() works the same way as
+# With simple defused expressions eval_tidy() works the same way as
 # eval():
-apple <- "apple"
-kiwi <- "kiwi"
-expr <- quote(paste(apple, kiwi))
+fruit <- "apple"
+vegetable <- "potato"
+expr <- quote(paste(fruit, vegetable, sep = " or "))
 expr
 
 eval(expr)
 eval_tidy(expr)
 
 # Both accept a data mask as argument:
-data <- list(apple = "CARROT", kiwi = "TOMATO")
+data <- list(fruit = "banana", vegetable = "carrot")
 eval(expr, data)
 eval_tidy(expr, data)
 
-
-# In addition eval_tidy() has support for quosures:
+# The main difference is that eval_tidy() supports quosures:
 with_data <- function(data, expr) {
   quo <- enquo(expr)
   eval_tidy(quo, data)
 }
-with_data(NULL, apple)
-with_data(data, apple)
-with_data(data, list(apple, kiwi))
+with_data(NULL, fruit)
+with_data(data, fruit)
 
-# Secondly eval_tidy() installs handy pronouns that allow users to
-# be explicit about where to find symbols:
-with_data(data, .data$apple)
-with_data(data, .env$apple)
-
-
-# Note that instead of using `.env` it is often equivalent and may
-# be preferred to unquote a value. There are two differences. First
-# unquoting happens earlier, when the quosure is created. Secondly,
-# subsetting `.env` with the `$` operator may be brittle because
-# `$` does not look through the parents of the environment.
-#
-# For instance using `.env$name` in a magrittr pipeline is an
-# instance where this poses problem, because the magrittr pipe
-# currently (as of v1.5.0) evaluates its operands in a *child* of
-# the current environment (this child environment is where it
-# defines the pronoun `.`).
-\dontrun{
-  data \%>\% with_data(!!kiwi)     # "kiwi"
-  data \%>\% with_data(.env$kiwi)  # NULL
-}
+# eval_tidy() installs the `.data` and `.env` pronouns to allow
+# users to be explicit about variable references:
+with_data(data, .data$fruit)
+with_data(data, .env$fruit)
 }
 \seealso{
-\link{nse-inject} for the second leg of the tidy evaluation
-framework.
+\itemize{
+\item \ifelse{html}{\link[=topic-data-mask]{What is data-masking and why do I need \{\{?}}{\link[=topic-data-mask]{What is data-masking and why do I need curly-curly?}}.
+\item \ifelse{html}{\link[=topic-quosure]{What are quosures and when are they needed?}}{\link[=topic-quosure]{What are quosures and when are they needed?}}.
+\item \ifelse{html}{\link[=topic-defuse]{Defusing R expressions}}{\link[=topic-defuse]{Defusing R expressions}}.
+\item \code{\link[=new_data_mask]{new_data_mask()}} and \code{\link[=as_data_mask]{as_data_mask()}} for manually creating data masks.
+}
 }
