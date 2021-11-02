@@ -228,15 +228,15 @@
     Code
       format_emph("foo")
     Output
-      [1] "\033[1m\033[22m\033[3m\033[3mfoo\033[3m\033[23m"
+      [1] "\033[1m\033[22m\033[3mfoo\033[23m"
     Code
       format_strong("foo")
     Output
-      [1] "\033[1m\033[22m\033[1m\033[1mfoo\033[1m\033[22m"
+      [1] "\033[1m\033[22m\033[1mfoo\033[22m"
     Code
       format_code("foo")
     Output
-      [1] "\033[1m\033[22m\033[30m\033[47m\033[30m\033[47m`foo`\033[47m\033[30m\033[49m\033[39m"
+      [1] "\033[1m\033[22m\033[30m\033[47m`foo`\033[49m\033[39m"
     Code
       format_q("foo")
     Output
@@ -244,59 +244,59 @@
     Code
       format_pkg("foo")
     Output
-      [1] "\033[1m\033[22m\033[34m\033[34mfoo\033[34m\033[39m"
+      [1] "\033[1m\033[22m\033[34mfoo\033[39m"
     Code
       format_fn("foo")
     Output
-      [1] "\033[1m\033[22m\033[30m\033[47m\033[30m\033[47m`foo()`\033[47m\033[30m\033[49m\033[39m"
+      [1] "\033[1m\033[22m\033[30m\033[47m`foo()`\033[49m\033[39m"
     Code
       format_arg("foo")
     Output
-      [1] "\033[1m\033[22m\033[30m\033[47m\033[30m\033[47m`foo`\033[47m\033[30m\033[49m\033[39m"
+      [1] "\033[1m\033[22m\033[30m\033[47m`foo`\033[49m\033[39m"
     Code
       format_kbd("foo")
     Output
-      [1] "\033[1m\033[22m\033[34m\033[34m[foo]\033[34m\033[39m"
+      [1] "\033[1m\033[22m\033[34m[foo]\033[39m"
     Code
       format_key("foo")
     Output
-      [1] "\033[1m\033[22m\033[34m\033[34m[foo]\033[34m\033[39m"
+      [1] "\033[1m\033[22m\033[34m[foo]\033[39m"
     Code
       format_file("foo")
     Output
-      [1] "\033[1m\033[22m\033[34m\033[34mfoo\033[34m\033[39m"
+      [1] "\033[1m\033[22m\033[34mfoo\033[39m"
     Code
       format_path("foo")
     Output
-      [1] "\033[1m\033[22m\033[34m\033[34mfoo\033[34m\033[39m"
+      [1] "\033[1m\033[22m\033[34mfoo\033[39m"
     Code
       format_email("foo")
     Output
-      [1] "\033[1m\033[22m\033[34m\033[34mfoo\033[34m\033[39m"
+      [1] "\033[1m\033[22m\033[34mfoo\033[39m"
     Code
       format_url("foo")
     Output
-      [1] "\033[1m\033[22m\033[3m\033[34m\033[3m\033[34m<foo>\033[34m\033[3m\033[39m\033[23m"
+      [1] "\033[1m\033[22m\033[3m\033[34m<foo>\033[39m\033[23m"
     Code
       format_var("foo")
     Output
-      [1] "\033[1m\033[22m\033[30m\033[47m\033[30m\033[47m`foo`\033[47m\033[30m\033[49m\033[39m"
+      [1] "\033[1m\033[22m\033[30m\033[47m`foo`\033[49m\033[39m"
     Code
       format_envvar("foo")
     Output
-      [1] "\033[1m\033[22m\033[30m\033[47m\033[30m\033[47m`foo`\033[47m\033[30m\033[49m\033[39m"
+      [1] "\033[1m\033[22m\033[30m\033[47m`foo`\033[49m\033[39m"
     Code
       format_field("foo")
     Output
-      [1] "\033[1m\033[22m\033[32m\033[32mfoo\033[32m\033[39m"
+      [1] "\033[1m\033[22m\033[32mfoo\033[39m"
     Code
       format_cls("foo")
     Output
-      [1] "\033[1m\033[22m\033[34m\033[34m<foo>\033[34m\033[39m"
+      [1] "\033[1m\033[22m\033[34m<foo>\033[39m"
     Code
       format_cls(c("foo", "bar"))
     Output
-      [1] "\033[1m\033[22m\033[34m\033[34m<foo/bar>\033[34m\033[39m"
+      [1] "\033[1m\033[22m\033[34m<foo/bar>\033[39m"
 
 # styled strings may contain `{` syntax [plain]
 
@@ -318,7 +318,7 @@
     Code
       format_message(mark_emph("{foo {}"))
     Output
-      [1] "\033[1m\033[22m\033[3m\033[3m{foo {}\033[3m\033[23m"
+      [1] "\033[1m\033[22m\033[3m{foo {}\033[23m"
 
 # can apply ANSI styles with cli [plain]
 
@@ -923,11 +923,11 @@
     Code
       format_error(c("Header", i = "Bullet."))
     Output
-      [1] "\033[1m\033[22m\033[1m\033[1mHeader\033[1m\033[22m\n\033[36mi\033[39m Bullet."
+      [1] "\033[1m\033[22mHeader\n\033[36mi\033[39m Bullet."
     Code
       format_warning(c("Header", i = "Bullet."))
     Output
-      [1] "\033[1m\033[22m\033[1m\033[1mHeader\033[1m\033[22m\n\033[36mi\033[39m Bullet."
+      [1] "\033[1m\033[22mHeader\n\033[36mi\033[39m Bullet."
     Code
       format_message(c("Header", i = "Bullet."))
     Output
@@ -953,11 +953,11 @@
     Code
       format_error(c("Header", i = "Bullet."))
     Output
-      [1] "\033[1m\033[22m\033[1m\033[1mHeader\033[1m\033[22m\n\033[36mℹ\033[39m Bullet."
+      [1] "\033[1m\033[22mHeader\n\033[36mℹ\033[39m Bullet."
     Code
       format_warning(c("Header", i = "Bullet."))
     Output
-      [1] "\033[1m\033[22m\033[1m\033[1mHeader\033[1m\033[22m\n\033[36mℹ\033[39m Bullet."
+      [1] "\033[1m\033[22mHeader\n\033[36mℹ\033[39m Bullet."
     Code
       format_message(c("Header", i = "Bullet."))
     Output
@@ -975,5 +975,5 @@
     Code
       format_error(cli_escape("{"))
     Output
-      [1] "\033[1m\033[22m\033[1m\033[1m{\033[1m\033[22m"
+      [1] "\033[1m\033[22m{"
 
