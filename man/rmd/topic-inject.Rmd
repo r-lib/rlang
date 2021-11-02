@@ -1,0 +1,145 @@
+```{r, child = "setup.Rmd", include = FALSE}
+```
+
+The injection operators are extensions of R implemented by rlang to modify a piece of code before R processes it. There are two main families:
+
+- The [dynamic dots][dyn-dots] operators, [`!!!`] and `r link("'{'")`.
+
+- The [metaprogramming operators][topic-metaprogramming] [`!!`], `r link("{{")`, and `r link("'{{'")`. Splicing with [`!!!`] can also be done in metaprogramming context.
+
+
+# Dots injection
+
+Unlike regular `...`, [dynamic dots][dyn-dots] are programmable with injection operators.
+
+
+## Splicing with `!!!`
+
+For instance, take a function like `rbind()` which takes data in `...`. To bind rows, you supply them as separate arguments:
+
+```{r, comment = "#>", collapse = TRUE}
+rbind(a = 1:2, b = 3:4)
+```
+
+But how do you bind a variable number of rows stored in a list? The base R solution is to invoke `rbind()` with `do.call()`:
+
+```{r, comment = "#>", collapse = TRUE}
+rows <- list(a = 1:2, b = 3:4)
+
+do.call("rbind", rows)
+```
+
+Functions that implement dynamic dots include a built-in way of folding a list of arguments in `...`. To illustrate this, we'll create a variant of `rbind()` that takes dynamic dots by collecting `...` with [list2()]:
+
+```{r, comment = "#>", collapse = TRUE}
+rbind2 <- function(...) {
+  do.call("rbind", list2(...))
+}
+```
+
+It can be used just like `rbind()`:
+
+```{r, comment = "#>", collapse = TRUE}
+rbind2(a = 1:2, b = 3:4)
+```
+
+And a list of arguments can be supplied by _splicing_ the list with [`!!!`]:
+
+```{r, comment = "#>", collapse = TRUE}
+rbind2(!!!rows, c = 5:6)
+```
+
+
+## Injecting names with \verb{"\{"}
+
+A related problem comes up when an argument name is stored in a variable. With dynamic dots, you can inject the name using [glue syntax](https://glue.tidyverse.org/) with `r link("'{'")`:
+
+```{r, comment = "#>", collapse = TRUE}
+name <- "foo"
+
+rbind2("{name}" := 1:2, bar = 3:4)
+
+rbind2("prefix_{name}" := 1:2, bar = 3:4)
+```
+
+
+# Metaprogramming injection
+
+[Data-masked][topic-data-mask] arguments support the following injection operators. They can also be explicitly enabled with [inject()].
+
+
+## Embracing with `{{`
+
+The embracing operator `r link("{{")` is made specially for function arguments. It [defuses][topic-defuse] the expression supplied as argument and immediately injects it in place. The injected argument is then evaluated in another context such as a [data mask][topic-data-mask].
+
+```{r, comment = "#>", collapse = TRUE}
+# Inject function arguments that might contain
+# data-variables by embracing them with {{ }}
+mean_by <- function(data, by, var) {
+  data %>%
+    dplyr::group_by({{ by }}) %>%
+    dplyr::summarise(avg = mean({{ var }}, na.rm = TRUE))
+}
+
+# The data-variables `cyl` and `disp` inside the
+# env-variables `by` and `var` are injected inside `group_by()`
+# and `summarise()`
+mtcars %>% mean_by(by = cyl, var = disp)
+```
+
+Learn more about this pattern in `r link("topic_data_mask_programming")`.
+
+
+## Injecting with `!!`
+
+Unlike [`!!!`] which injects a list of arguments, the injection operator [`!!`] (pronounced "bang-bang") injects a _single_ object. One use case for `!!`  is to substitute an environment-variable (created with `<-`) with a data-variable (inside a data frame).
+
+```{r, comment = "#>", collapse = TRUE}
+# The env-variable `var` contains a data-symbol object, in this
+# case a reference to the data-variable `height`
+var <- data_sym("disp")
+
+# We inject the data-variable contained in `var` inside `summarise()` 
+mtcars %>%
+  dplyr::summarise(avg = mean(!!var, na.rm = TRUE))
+```
+
+Another use case is to inject a variable by value to avoid [name collisions][topic-data-mask-ambiguity].
+
+```{r, comment = "#>", collapse = TRUE}
+df <- data.frame(x = 1)
+
+# This name conflicts with a column in `df`
+x <- 100
+
+# Inject the env-variable
+df %>%
+  dplyr::mutate(x = x / !!x)
+```
+
+Note that in most cases you don't need injection with `!!`. For instance, the [`.data`] and [`.env`] pronouns provide more intuitive alternatives to injecting a column name and injecting a value.
+
+
+## Splicing with `!!!`
+
+The splice operator [`!!!`] of dynamic dots can also be used in metaprogramming context (inside [data-masked][topic-data-mask] arguments and inside [inject()]). For instance, we could reimplement the `rbind2()` function presented above using `inject()` instead of `do.call()`:
+
+```r
+rbind2 <- function(...) {
+  inject(rbind(!!!list2(...)))
+}
+```
+
+There are two things going on here. We collect `...` with [list2()] so that the callers of `rbind2()` may use `!!!`. And we use `inject()` so that `rbind2()` itself may use `!!!` to splice the list of arguments passed to `rbind2()`.
+
+
+# Injection in other languages
+
+Injection is known as __quasiquotation__ in other programming languages and in computer science. `expr()` is similar to a quasiquotation operator and `!!` is the unquote operator. These terms have a rich history in Lisp languages, and live on in modern languages like [Julia](https://docs.julialang.org/en/v1/manual/metaprogramming/) and [Racket](https://docs.racket-lang.org/reference/quasiquote.html). In base R, quasiquotation is performed with [bquote()].
+
+The main difference between rlang and other languages is that quasiquotation is often implicit instead of explicit. You can use injection operators in any defusing / quoting function (unless that function defuses its argument with a special operator like [enquo0()]). This is not the case in lisp languages for example where injection / unquoting is explicit and only enabled within a backquote.
+
+
+# See also
+
+- `r link("topic_inject_out_of_context")`

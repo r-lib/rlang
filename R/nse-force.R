@@ -1,266 +1,456 @@
-#' Inject objects inside expressions
+#' Injection operator `!!`
 #'
 #' @description
 #'
-#' It is sometimes useful to inject language objects or other kinds of
-#' objects inside an expression before it gets fully evaluated. The
-#' tidy eval framework provides several injection operators for
-#' different use cases.
+#' The [injection][topic-inject] operator `!!` injects a value or
+#' expression inside another expression. In other words, it modifies a
+#' piece of code before R evaluates it.
 #'
-#' - The injection operator `!!` (pronounced "bang-bang") injects a
-#'   _single_ object. One common case for `!!` is to substitute an
-#'   environment-variable (created with `<-`) with a data-variable
-#'   (inside a data frame).
-#'
-#'   ```
-#'   library(dplyr)
-#'
-#'   # The env-variable `var` contains a symbol object, in this
-#'   # case a reference to the data-variable `height`
-#'   var <- sym("height")
-#'
-#'   # We inject the data-variable contained in `var` inside `summarise()` 
-#'   starwars %>%
-#'     summarise(avg = mean(!!var, na.rm = TRUE))
-#'   ```
-#'
-#' - The big-bang operator `!!!` injects a _list_ of objects. Whereas
-#'   `!!` would inject the list itself, `!!!` injects each element of
-#'   the list in turn. This is also called "splicing".
-#'
-#'   ```
-#'   vars <- syms(c("height", "mass"))
-#'
-#'   # Injecting with `!!!` is equivalent to supplying the elements separately
-#'   starwars %>% select(!!!vars)
-#'   starwars %>% select(height, mass)
-#'   ```
-#'
-#' - The injection operator `{{ }}` (pronounced "curly-curly") is made
-#'   specially for function arguments. It [defuses][nse-defuse] the
-#'   argument and immediately injects it in place. The injected
-#'   argument can then be evaluated in another context like a data
-#'   frame.
-#'
-#'   ```
-#'   # Inject function arguments that might contain
-#'   # data-variables by embracing them with {{ }}
-#'   mean_by <- function(data, by, var) {
-#'     data %>%
-#'       group_by({{ by }}) %>%
-#'       summarise(avg = mean({{ var }}, na.rm = TRUE))
-#'   }
-#'
-#'   # The data-variables `Species` and `Sepal.Width` inside the
-#'   # env-variables `by` and `var` are injected inside `group_by()`
-#'   # and `summarise()`
-#'   iris %>% mean_by(by = Species, var = Sepal.Width)
-#'   ```
-#'
-#' Use `qq_show()` to experiment with injection operators. `qq_show()`
-#' defuses its input, processes all injection operators, and prints
-#' the result with [expr_print()] to reveal the injected objects.
+#' There are two main cases for injection. You can inject constant
+#' values to work around issues of [scoping
+#' ambiguity][topic-data-mask-ambiguity], and you can inject [defused
+#' expressions][topic-defuse] like [symbolised][sym] column names.
 #'
 #'
-#' @section Injecting names:
+#' @section Where does `!!` work?:
 #'
-#' When a function takes multiple named arguments
-#' (e.g. `dplyr::mutate()`), it is difficult to supply a variable as
-#' name. Since the LHS of `=` is [defused][nse-defuse], giving the name
-#' of a variable results in the argument having the name of the
-#' variable rather than the name stored in that variable. This problem
-#' of forcing evaluation of names is exactly what the `!!` operator is
-#' for.
+#' `!!` does not work everywhere, you can only use it within certain
+#' special functions:
 #'
-#' Unfortunately R is very strict about the kind of expressions
-#' supported on the LHS of `=`. This is why rlang interprets the
-#' walrus operator `:=` as an alias of `=`. You can use it to supply
-#' names, e.g. `a := b` is equivalent to `a = b`. Since its syntax is
-#' more flexible you can also inject names on its LHS:
+#' - Functions taking [defused][topic-defuse] and
+#'   [data-masked][topic-data-mask] arguments.
 #'
-#' ```
-#' name <- "Jane"
+#'   Technically, this means function arguments defused with
+#'   `r link("{{")` or `en`-prefixed operators like
+#'   [enquo()], [enexpr()], etc.
 #'
-#' list2(!!name := 1 + 2)
-#' exprs(!!name := 1 + 2)
+#' - Inside [inject()].
+#'
+#' All data-masking verbs in the tidyverse support injection operators
+#' out of the box. With base functions, you need to use [inject()] to
+#' enable `!!`. Using `!!` out of context may lead to incorrect
+#' results, see `r link("topic_inject_out_of_context")`.
+#'
+#' The examples below are built around the base function [with()].
+#' Since it's not a tidyverse function we will use [inject()] to enable
+#' `!!` usage.
+#'
+#'
+#' @section Injecting values:
+#'
+#' Data-masking functions like [with()] are handy because you can
+#' refer to column names in your computations. This comes at the price
+#' of data mask ambiguity: if you have defined an env-variable of the
+#' same name as a data-variable, you get a name collisions. This
+#' collision is always resolved by giving precedence to the
+#' data-variable (it masks the env-variable):
+#'
+#' ```{r, comment = "#>", collapse = TRUE}
+#' cyl <- c(100, 110)
+#' with(mtcars, mean(cyl))
 #' ```
 #'
-#' Like `=`, the `:=` operator expects strings or symbols on its LHS.
+#' The injection operator offers one way of solving this. Use it to
+#' inject the env-variable inside the data-masked expression:
 #'
-#' Since unquoting names is related to interpolating within a string
-#' with the glue package, we have made the glue syntax available on
-#' the LHS of `:=`:
-#'
-#' ```
-#' list2("{name}" := 1)
-#' tibble("{name}" := 1)
+#' ```{r, comment = "#>", collapse = TRUE}
+#' inject(
+#'   with(mtcars, mean(!!cyl))
+#' )
 #' ```
 #'
-#' You can also interpolate defused function arguments with double
-#' braces `{{`, similar to the curly-curly syntax:
+#' Note that the [`.env`] pronoun is a simpler way of solving the
+#' ambiguity. See `r link("topic_data_mask_ambiguity")` for more about
+#' this.
 #'
+#'
+#' @section Injecting expressions:
+#'
+#' Injection is also useful for modifying parts of a [defused
+#' expression][topic-defuse]. In the following example we use the
+#' [symbolise-and-inject pattern][topic-metaprogramming] to
+#' inject a column name inside a data-masked expression.
+#'
+#' ```{r, comment = "#>", collapse = TRUE}
+#' var <- sym("cyl")
+#' inject(
+#'   with(mtcars, mean(!!var))
+#' )
 #' ```
-#' wrapper <- function(data, var) {
-#'   data %>% mutate("{{ var }}_foo" := {{ var }} * 2)
+#'
+#' Since [with()] is a base function, you can't inject
+#' [quosures][topic-quosure], only naked symbols and calls. This
+#' isn't a problem here because we're injecting the name of a data
+#' frame column. If the environment is important, try injecting a
+#' pre-computed value instead.
+#'
+#'
+#' @section When do I need `!!`?:
+#'
+#' With tidyverse APIs, injecting expressions with `!!` is no longer a
+#' common pattern. First, the [`.env`][.env] pronoun solves the
+#' ambiguity problem in a more intuitive way:
+#'
+#' ```r
+#' cyl <- 100
+#' mtcars %>% dplyr::mutate(cyl = cyl * .env$cyl)
+#' ```
+#'
+#' Second, the embrace operator `r link("{{")` makes the
+#' [defuse-and-inject pattern][topic-metaprogramming] easier to
+#' learn and use.
+#'
+#' ```r
+#' my_mean <- function(data, var) {
+#'   data %>% dplyr::summarise(mean({{ var }}))
+#' }
+#'
+#' # Equivalent to
+#' my_mean <- function(data, var) {
+#'   data %>% dplyr::summarise(mean(!!enquo(var)))
 #' }
 #' ```
 #'
-#' Currently, injecting names with `:=` only works in top level
-#' expressions. These are all valid:
-#'
-#' ```
-#' exprs("{name}" := x)
-#' tibble("{name}" := x)
-#' ```
-#'
-#' But deep-injection of names isn't supported:
-#'
-#' ```
-#' exprs(this(is(deep("{name}" := x))))
-#' ```
+#' `!!` is a good tool to learn for advanced applications but our
+#' hope is that it isn't needed for common data analysis cases.
 #'
 #'
-#' @section Theory:
+#' @seealso
+#' - `r link("topic_inject")`
 #'
-#' Formally, `quo()` and `expr()` are quasiquotation functions, `!!`
-#' is the unquote operator, and `!!!` is the unquote-splice operator.
-#' These terms have a rich history in Lisp languages, and live on in
-#' modern languages like
-#' [Julia](https://docs.julialang.org/en/v1/manual/metaprogramming/)
-#' and
-#' [Racket](https://docs.racket-lang.org/reference/quasiquote.html).
-#'
-#' @name bang-bang
-#' @aliases quasiquotation UQ UQS {{}} \{\{ nse-force nse-inject
-#' @examples
-#' # Interpolation with {{  }} is the easiest way to forward
-#' # arguments to tidy eval functions:
-#' if (is_attached("package:dplyr")) {
-#'
-#' # Forward all arguments involving data frame columns by
-#' # interpolating them within other data masked arguments.
-#' # Here we interpolate `arg` in a `summarise()` call:
-#' my_function <- function(data, arg) {
-#'   summarise(data, avg = mean({{ arg }}, na.rm = TRUE))
-#' }
-#'
-#' my_function(mtcars, cyl)
-#' my_function(mtcars, cyl * 10)
-#'
-#' # The  operator is just a shortcut for `!!enquo()`:
-#' my_function <- function(data, arg) {
-#'   summarise(data, avg = mean(!!enquo(arg), na.rm = TRUE))
-#' }
-#'
-#' my_function(mtcars, cyl)
-#'
-#' }
-#'
-#' # Quasiquotation functions quote expressions like base::quote()
-#' quote(how_many(this))
-#' expr(how_many(this))
-#' quo(how_many(this))
-#'
-#' # In addition, they support unquoting. Let's store symbols
-#' # (i.e. object names) in variables:
-#' this <- sym("apples")
-#' that <- sym("oranges")
-#'
-#' # With unquotation you can insert the contents of these variables
-#' # inside the quoted expression:
-#' expr(how_many(!!this))
-#' expr(how_many(!!that))
-#'
-#' # You can also insert values:
-#' expr(how_many(!!(1 + 2)))
-#' quo(how_many(!!(1 + 2)))
-#'
-#'
-#' # Note that when you unquote complex objects into an expression,
-#' # the base R printer may be a bit misleading. For instance compare
-#' # the output of `expr()` and `quo()` (which uses a custom printer)
-#' # when we unquote an integer vector:
-#' expr(how_many(!!(1:10)))
-#' quo(how_many(!!(1:10)))
-#'
-#' # This is why it's often useful to use qq_show() to examine the
-#' # result of unquotation operators. It uses the same printer as
-#' # quosures but does not return anything:
-#' qq_show(how_many(!!(1:10)))
-#'
-#'
-#' # Use `!!!` to add multiple arguments to a function. Its argument
-#' # should evaluate to a list or vector:
-#' args <- list(1:3, na.rm = TRUE)
-#' quo(mean(!!!args))
-#'
-#' # You can combine the two
-#' var <- quote(xyz)
-#' extra_args <- list(trim = 0.9, na.rm = TRUE)
-#' quo(mean(!!var , !!!extra_args))
-#'
-#'
-#' # The plural versions have support for the `:=` operator.
-#' # Like `=`, `:=` creates named arguments:
-#' quos(mouse1 := bernard, mouse2 = bianca)
-#'
-#' # The `:=` is mainly useful to unquote names. Unlike `=` it
-#' # supports `!!` on its LHS:
-#' var <- "unquote me!"
-#' quos(!!var := bernard, mouse2 = bianca)
-#'
-#'
-#' # All these features apply to dots captured by enquos():
-#' fn <- function(...) enquos(...)
-#' fn(!!!args, !!var := penny)
-#'
-#'
-#' # Unquoting is especially useful for building an expression by
-#' # expanding around a variable part (the unquoted part):
-#' quo1 <- quo(toupper(foo))
-#' quo1
-#'
-#' quo2 <- quo(paste(!!quo1, bar))
-#' quo2
-#'
-#' quo3 <- quo(list(!!quo2, !!!syms(letters[1:5])))
-#' quo3
+#' @name injection-operator
+#' @aliases bang-bang
 NULL
 
-#' @rdname bang-bang
-#' @usage NULL
-#' @export
-UQ <- function(x) {
-  abort("`UQ()` can only be used within a quasiquoted argument")
-}
-#' @rdname bang-bang
-#' @usage NULL
-#' @export
-UQS <- function(x) {
-  abort("`UQS()` can only be used within a quasiquoted argument")
-}
-#' @rdname bang-bang
+#' @rdname injection-operator
 #' @usage NULL
 #' @export
 `!!` <- function(x) {
-  abort("`!!` can only be used within a quasiquoted argument")
+  abort("`!!` can only be used within a defused argument.", call = caller_env())
 }
-#' @rdname bang-bang
+
+
+#' Splice operator `!!!`
+#'
+#' @description
+#'
+#' The splice operator `!!!` implemented in [dynamic dots][dyn-dots]
+#' injects a list of arguments into a function call. It belongs to the
+#' family of [injection][topic-inject] operators and provides the same
+#' functionality as [do.call()].
+#'
+#' The two main cases for splice injection are:
+#'
+#' -   Turning a list of inputs into distinct arguments. This is
+#'     especially useful with functions that take data in `...`, such as
+#'     [base::rbind()].
+#'
+#'     ```r
+#'     dfs <- list(mtcars, mtcars)
+#'     inject(rbind(!!!mtcars))
+#'     ```
+#'
+#' -   Injecting [defused expressions][topic-defuse] like
+#'     [symbolised][sym] column names.
+#'
+#'     For tidyverse APIs, this second case is no longer as useful
+#'     since dplyr 1.0 and the `across()` operator.
+#'
+#'
+#' @section Where does `!!!` work?:
+#'
+#' `!!!` does not work everywhere, you can only use it within certain
+#' special functions:
+#'
+#' -   Functions taking [dynamic dots][dyn-dots] like [list2()].
+#' -   Functions taking [defused][topic-defuse] and
+#'     [data-masked][topic-data-mask] arguments, which are dynamic by
+#'     default.
+#' -   Inside [inject()].
+#'
+#' Most tidyverse functions support `!!!` out of the box. With base
+#' functions you need to use [inject()] to enable `!!!`.
+#'
+#' Using the operator out of context may lead to incorrect results,
+#' see `r link("topic_inject_out_of_context")`.
+#'
+#'
+#' @section Splicing a list of arguments:
+#'
+#' Take a function like [base::rbind()] that takes data in `...`. This
+#' sort of functions takes a variable number of arguments.
+#'
+#' ```{r, comment = "#>", collapse = TRUE}
+#' df1 <- data.frame(x = 1)
+#' df2 <- data.frame(x = 2)
+#'
+#' rbind(df1, df2)
+#' ```
+#'
+#' Passing individual arguments is only possible for a fixed amount of
+#' arguments. When the arguments are in a list whose length is
+#' variable (and potentially very large), we need a programmatic
+#' approach like the splicing syntax `!!!`:
+#'
+#' ```{r, comment = "#>", collapse = TRUE}
+#' dfs <- list(df1, df2)
+#'
+#' inject(rbind(!!!dfs))
+#' ```
+#'
+#' Because `rbind()` is a base function we used [inject()] to
+#' explicitly enable `!!!`. However, many functions implement [dynamic
+#' dots][list2] with `!!!` implicitly enabled out of the box.
+#'
+#' ```{r, include = FALSE}
+#' # Work around pkgload collision messages
+#' is_installed("tidyr")
+#' ````
+#'
+#' ```{r, comment = "#>", collapse = TRUE}
+#' tidyr::expand_grid(x = 1:2, y = c("a", "b"))
+#'
+#' xs <- list(x = 1:2, y = c("a", "b"))
+#' tidyr::expand_grid(!!!xs)
+#' ```
+#'
+#' Note how the expanded grid has the right column names. That's
+#' because we spliced a _named_ list. Splicing causes each name of the
+#' list to become an argument name.
+#'
+#' ```{r, comment = "#>", collapse = TRUE}
+#' tidyr::expand_grid(!!!set_names(xs, toupper))
+#' ```
+#'
+#'
+#' @section Splicing a list of expressions:
+#'
+#' Another usage for `!!!` is to inject [defused
+#' expressions][topic-defuse] into [data-masked][topic-data-mask]
+#' dots. However this usage is no longer a common pattern for
+#' programming with tidyverse functions and we recommend using other
+#' patterns if possible.
+#'
+#' First, instead of using the [defuse-and-inject
+#' pattern][topic-data-mask-programming] with `...`, you can simply pass
+#' them on as you normally would. These two expressions are completely
+#' equivalent:
+#'
+#' ```r
+#' my_group_by <- function(.data, ...) {
+#'   .data %>% dplyr::group_by(!!!enquos(...))
+#' }
+#'
+#' # This equivalent syntax is preferred
+#' my_group_by <- function(.data, ...) {
+#'   .data %>% dplyr::group_by(...)
+#' }
+#' ```
+#'
+#' Second, more complex applications such as [transformation
+#' patterns][topic-metaprogramming] can be solved with the `across()`
+#' operation introduced in dplyr 1.0. Say you want to take the
+#' `mean()` of all expressions in `...`. Before `across()`, you had to
+#' defuse the `...` expressions, wrap them in a call to `mean()`, and
+#' inject them in `summarise()`.
+#'
+#' ```r
+#' my_mean <- function(.data, ...) {
+#'   # Defuse dots and auto-name them
+#'   exprs <- enquos(..., .named = TRUE)
+#'
+#'   # Wrap the expressions in a call to `mean()`
+#'   exprs <- purrr::map(exprs, ~ call("mean", .x, na.rm = TRUE))
+#'
+#'   # Inject them
+#'   .data %>% dplyr::summarise(!!!exprs)
+#' }
+#' ```
+#'
+#' It is much easier to use `across()` instead:
+#'
+#' ```r
+#' my_mean <- function(.data, ...) {
+#'   .data %>% dplyr::summarise(across(c(...), ~ mean(.x, na.rm = TRUE)))
+#' }
+#' ```
+#'
+#'
+#' @section Performance of injected dots and dynamic dots:
+#'
+#' Take this [dynamic dots][dyn-dots] function:
+#'
+#' ```{r, comment = "#>", collapse = TRUE}
+#' n_args <- function(...) {
+#'   length(list2(...))
+#' }
+#' ```
+#'
+#' Because it takes dynamic dots you can splice with `!!!` out of the
+#' box.
+#'
+#' ```{r, comment = "#>", collapse = TRUE}
+#' n_args(1, 2)
+#'
+#' n_args(!!!mtcars)
+#' ```
+#'
+#' Equivalently you could enable `!!!` explicitly with [inject()].
+#' 
+#' ```{r, comment = "#>", collapse = TRUE}
+#' inject(n_args(!!!mtcars))
+#' ```
+#'
+#' While the result is the same, what is going on under the hood is
+#' completely different. [list2()] is a dots collector that
+#' special-cases `!!!` arguments. On the other hand, [inject()]
+#' operates on the language and creates a function call containing as
+#' many arguments as there are elements in the spliced list. If you
+#' supply a list of size 1e6, `inject()` is creating one million
+#' arguments before evaluation. This can be much slower.
+#'
+#' ```r
+#' xs <- rep(list(1), 1e6)
+#'
+#' system.time(
+#'   n_args(!!!xs)
+#' )
+#' #>    user  system elapsed
+#' #>   0.009   0.000   0.009
+#'
+#' system.time(
+#'   inject(n_args(!!!xs))
+#' )
+#' #>    user  system elapsed
+#' #>   0.445   0.012   0.457
+#' ```
+#'
+#' The same issue occurs when functions taking dynamic dots are called
+#' inside a data-masking function like `dplyr::mutate()`. The
+#' mechanism that enables `!!!` injection in these arguments is the
+#' same as in `inject()`.
+#'
+#' @seealso
+#' - `r link("topic_inject")`
+#' - [inject()]
+#' - [exec()]
+#'
+#' @name splice-operator
+NULL
+
+#' @rdname splice-operator
 #' @usage NULL
 #' @export
 `!!!` <- function(x) {
-  abort("`!!!` can only be used within a quasiquoted argument")
-}
-#' @rdname bang-bang
-#' @usage NULL
-#' @export
-`:=` <- function(x, y) {
-  abort("`:=` can only be used within a quasiquoted argument")
+  abort("`!!!` can only be used within dynamic dots.", call = caller_env())
 }
 
-#' @rdname bang-bang
-#' @param expr An expression to be quasiquoted.
+
+#' Name injection with `"{"` and `"{{"`
+#'
+#' ```{r, child = "man/rmd/glue-operators.Rmd"}
+#' ```
+#'
+#' @name glue-operators
+NULL
+
+#' Defuse function arguments with glue
+#'
+#' @description
+#' `englue()` creates a string with the [glue
+#' operators][glue-operators] `{` and `{{`. These operators are
+#' normally used to inject names within [dynamic dots][dyn-dots].
+#' `englue()` makes them available anywhere within a function.
+#'
+#' `englue()` must be used inside a function. `englue("{{ var }}")`
+#' [defuses][topic-defuse] the argument `var` and transforms it to a
+#' string using the default name operation.
+#'
+#' @param x A string to interpolate with glue operators.
+#'
+#' @details
+#' `englue("{{ var }}")` is equivalent to `as_label(enquo(var))`. It
+#' [defuses][topic-defuse] `arg` and transforms the expression to a
+#' string with [as_label()].
+#'
+#' In dynamic dots, using only `{` is allowed. In `englue()` you must
+#' use `{{` at least once. Use `glue::glue()` for simple
+#' interpolation.
+#'
+#' Before using `englue()` in a package, first ensure that glue is
+#' installed by adding it to your `Imports:` section.
+#'
+#' ```r
+#' usethis::use_package("glue", "Imports")
+#' ```
+#'
+#' @seealso
+#' - `r link("topic_inject")`
+#'
+#' @examples
+#' g <- function(var) englue("{{ var }}")
+#' g(cyl)
+#' g(1 + 1)
+#' g(!!letters)
+#'
+#' # These are equivalent to
+#' as_label(quote(cyl))
+#' as_label(quote(1 + 1))
+#' as_label(letters)
+#'
+#' @export
+englue <- function(x) {
+  if (!grepl("{{", x, fixed = TRUE)) {
+    abort(c(
+      "Must use `{{`.",
+      i = "Use `glue::glue()` for interpolation with `{`."
+    ))
+  }
+
+  expr <- call(":=", x, NULL)
+  res <- inject(rlang::list2(!!expr), caller_env())
+  names(res)
+}
+
+
+#' Show injected expression
+#'
+#' `qq_show()` helps examining [injected expressions][topic-inject]
+#' inside a function. This is useful for learning about injection and
+#' for debugging injection code.
+#'
 #' @usage NULL
+#' @param expr An expression involving [injection
+#'   operators][topic-inject].
+#'
+#' @section Examples:
+#'
+#' ```{r, child = "man/rmd/setup.Rmd", include = FALSE}
+#' ```
+#'
+#' `qq_show()` shows the intermediary expression before it is
+#' evaluated by R:
+#'
+#' ```{r, comment = "#>", collapse = TRUE}
+#' list2(!!!1:3)
+#'
+#' qq_show(list2(!!!1:3))
+#' ```
+#' 
+#' It is especially useful inside functions to reveal what an injected
+#' expression looks like:
+#'
+#' ```{r, comment = "#>", collapse = TRUE}
+#' my_mean <- function(data, var) {
+#'   qq_show(data %>% dplyr::summarise(mean({{ var }})))
+#' }
+#'
+#' mtcars %>% my_mean(cyl)
+#' ```
+#'
+#' @seealso
+#' - `r link("topic_inject")`
+#'
 #' @export
 qq_show <- function(expr) {
   expr_print(enexpr(expr))

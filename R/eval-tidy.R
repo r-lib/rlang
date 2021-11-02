@@ -1,65 +1,33 @@
 #' Evaluate an expression with quosures and pronoun support
 #'
 #' @description
-#'
-#' `r lifecycle::badge("stable")`
-#'
 #' `eval_tidy()` is a variant of [base::eval()] that powers the tidy
 #' evaluation framework. Like `eval()` it accepts user data as
 #' argument. Whereas `eval()` simply transforms the data to an
-#' environment, `eval_tidy()` transforms it to a **data mask** with
-#' [as_data_mask()]. Evaluating in a data mask enables the following
-#' features:
+#' environment, `eval_tidy()` transforms it to a [data
+#' mask][topic-data-mask] with [as_data_mask()]. Evaluating in a data
+#' mask enables the following features:
 #'
-#' - [Quosures][nse-defuse]. Quosures are expressions bundled with an
-#'   environment. If `data` is supplied, objects in the data mask
+#' - [Quosures][topic-quosure]. Quosures are expressions bundled with
+#'   an environment. If `data` is supplied, objects in the data mask
 #'   always have precedence over the quosure environment, i.e. the
 #'   data masks the environment.
 #'
 #' - [Pronouns][.data]. If `data` is supplied, the `.env` and `.data`
 #'   pronouns are installed in the data mask. `.env` is a reference to
-#'   the calling environment and `.data` refers to the `data` argument.
-#'   These pronouns lets you be explicit about where to find
-#'   values and throw errors if you try to access non-existent values.
+#'   the calling environment and `.data` refers to the `data`
+#'   argument. These pronouns are an escape hatch for the [data mask
+#'   ambiguity][topic-data-mask-ambiguity] problem.
 #'
-#'
-#' @param expr An expression or quosure to evaluate.
+#' @param expr An [expression][topic-defuse] or
+#'   [quosure][topic-quosure] to evaluate.
 #' @param data A data frame, or named list or vector. Alternatively, a
 #'   data mask created with [as_data_mask()] or
 #'   [new_data_mask()]. Objects in `data` have priority over those in
 #'   `env`. See the section about data masking.
-#'
 #' @param env The environment in which to evaluate `expr`. This
 #'   environment is not applicable for quosures because they have
 #'   their own environments.
-#' @seealso [nse-inject] for the second leg of the tidy evaluation
-#'   framework.
-#'
-#'
-#' @section Data masking:
-#'
-#' Data masking refers to how columns or objects inside `data` have
-#' priority over objects defined in `env` (or in the quosure
-#' environment, if applicable). If there is a column `var` in `data`
-#' and an object `var` in `env`, and `expr` refers to `var`, the
-#' column has priority:
-#'
-#' ```
-#' var <- "this one?"
-#' data <- data.frame(var = rep("Or that one?", 3))
-#'
-#' within <- function(data, expr) {
-#'   eval_tidy(enquo(expr), data)
-#' }
-#'
-#' within(data, toupper(var))
-#' #> [1] "OR THAT ONE?" "OR THAT ONE?" "OR THAT ONE?"
-#' ```
-#'
-#' Because the columns or objects in `data` are always found first,
-#' before objects from `env`, we say that the data "masks" the
-#' environment.
-#'
 #'
 #' @section When should eval_tidy() be used instead of eval()?:
 #'
@@ -67,14 +35,15 @@
 #' `eval_tidy()` when you'd like to support expressions referring to
 #' the `.data` pronoun, or when you need to support quosures.
 #'
-#' If you're evaluating an expression captured with quasiquotation
-#' support, it is recommended to use `eval_tidy()` because users will
-#' likely unquote quosures.
+#' If you're evaluating an expression captured with
+#' [injection][topic-inject] support, it is recommended to use
+#' `eval_tidy()` because users may inject quosures.
 #'
 #' Note that unwrapping a quosure with [quo_get_expr()] does not
 #' guarantee that there is no quosures inside the expression. Quosures
-#' might be unquoted anywhere. For instance, the following does not
-#' work reliably in the presence of nested quosures:
+#' might be unquoted anywhere in the expression tree. For instance,
+#' the following does not work reliably in the presence of nested
+#' quosures:
 #'
 #' ```
 #' my_quoting_fn <- function(x) {
@@ -112,62 +81,41 @@
 #' See also [eval_bare()] for more information about these differences.
 #'
 #'
-#' @section Life cycle:
-#'
-#' **rlang 0.3.0**
-#'
-#' Passing an environment to `data` is deprecated. Please construct an
-#' rlang data mask with [new_data_mask()].
-#'
+#' @seealso
+#' - `r link("topic_data_mask")`.
+#' - `r link("topic_quosure")`.
+#' - `r link("topic_defuse")`.
+#' - [new_data_mask()] and [as_data_mask()] for manually creating data masks.
 #'
 #' @examples
 #'
-#' # With simple quoted expressions eval_tidy() works the same way as
+#' # With simple defused expressions eval_tidy() works the same way as
 #' # eval():
-#' apple <- "apple"
-#' kiwi <- "kiwi"
-#' expr <- quote(paste(apple, kiwi))
+#' fruit <- "apple"
+#' vegetable <- "potato"
+#' expr <- quote(paste(fruit, vegetable, sep = " or "))
 #' expr
 #'
 #' eval(expr)
 #' eval_tidy(expr)
 #'
 #' # Both accept a data mask as argument:
-#' data <- list(apple = "CARROT", kiwi = "TOMATO")
+#' data <- list(fruit = "banana", vegetable = "carrot")
 #' eval(expr, data)
 #' eval_tidy(expr, data)
 #'
-#'
-#' # In addition eval_tidy() has support for quosures:
+#' # The main difference is that eval_tidy() supports quosures:
 #' with_data <- function(data, expr) {
 #'   quo <- enquo(expr)
 #'   eval_tidy(quo, data)
 #' }
-#' with_data(NULL, apple)
-#' with_data(data, apple)
-#' with_data(data, list(apple, kiwi))
+#' with_data(NULL, fruit)
+#' with_data(data, fruit)
 #'
-#' # Secondly eval_tidy() installs handy pronouns that allow users to
-#' # be explicit about where to find symbols:
-#' with_data(data, .data$apple)
-#' with_data(data, .env$apple)
-#'
-#'
-#' # Note that instead of using `.env` it is often equivalent and may
-#' # be preferred to unquote a value. There are two differences. First
-#' # unquoting happens earlier, when the quosure is created. Secondly,
-#' # subsetting `.env` with the `$` operator may be brittle because
-#' # `$` does not look through the parents of the environment.
-#' #
-#' # For instance using `.env$name` in a magrittr pipeline is an
-#' # instance where this poses problem, because the magrittr pipe
-#' # currently (as of v1.5.0) evaluates its operands in a *child* of
-#' # the current environment (this child environment is where it
-#' # defines the pronoun `.`).
-#' \dontrun{
-#'   data %>% with_data(!!kiwi)     # "kiwi"
-#'   data %>% with_data(.env$kiwi)  # NULL
-#' }
+#' # eval_tidy() installs the `.data` and `.env` pronouns to allow
+#' # users to be explicit about variable references:
+#' with_data(data, .data$fruit)
+#' with_data(data, .env$fruit)
 #' @export
 eval_tidy <- function(expr, data = NULL, env = caller_env()) {
   .External2(ffi_eval_tidy, expr, data, env)
@@ -194,12 +142,13 @@ names.rlang_fake_data_pronoun <- function(...) NULL
 #' @export
 print.rlang_fake_data_pronoun <- function(...) cat_line("<pronoun>")
 
-#' Data pronouns for tidy evaluation
+#' `.data` and `.env` pronouns
 #'
 #' @description
 #'
-#' These pronouns allow you to be explicit about where to find objects
-#' when programming with data masked functions.
+#' The `.data` and `.env` pronouns make it explicit where to find
+#' objects when programming with [data-masked][topic-data-mask]
+#' functions.
 #'
 #' ```
 #' m <- 10
@@ -225,6 +174,15 @@ print.rlang_fake_data_pronoun <- function(...) cat_line("<pronoun>")
 #' subsetting operators behave differently.
 #'
 #'
+#' @section `.data` versus the magrittr pronoun `.`:
+#'
+#' In a [magrittr pipeline](https://magrittr.tidyverse.org/), `.data`
+#' is not necessarily interchangeable with the magrittr pronoun `.`.
+#' With grouped data frames in particular, `.data` represents the
+#' current group slice whereas the pronoun `.` represents the whole
+#' data frame. Always prefer using `.data` in data-masked context.
+#'
+#'
 #' @section Where does `.data` live?:
 #'
 #' The `.data` pronoun is automatically created for you by
@@ -244,12 +202,15 @@ print.rlang_fake_data_pronoun <- function(...) cat_line("<pronoun>")
 #' code. Use the unqualified `.data` symbol that is automatically put
 #' in scope by data-masking functions.
 #'
-#' @name tidyeval-data
+#' @name dot-data
+#' @aliases tidyeval-data
 #' @format NULL
+#' @usage NULL
 #' @export
 .data <- structure(list(), class = "rlang_fake_data_pronoun")
-#' @rdname tidyeval-data
+#' @rdname dot-data
 #' @format NULL
+#' @usage NULL
 #' @export
 .env <- .data
 
@@ -260,12 +221,12 @@ print.rlang_fake_data_pronoun <- function(...) cat_line("<pronoun>")
 #'
 #' `r lifecycle::badge("stable")`
 #'
-#' A data mask is an environment (or possibly multiple environments
-#' forming an ancestry) containing user-supplied objects. Objects in
-#' the mask have precedence over objects in the environment (i.e. they
-#' mask those objects). Many R functions evaluate quoted expressions
-#' in a data mask so these expressions can refer to objects within the
-#' user data.
+#' A [data mask][topic-data-mask] is an environment (or possibly
+#' multiple environments forming an ancestry) containing user-supplied
+#' objects. Objects in the mask have precedence over objects in the
+#' environment (i.e. they mask those objects). Many R functions
+#' evaluate quoted expressions in a data mask so these expressions can
+#' refer to objects within the user data.
 #'
 #' These functions let you construct a tidy eval data mask manually.
 #' They are meant for developers of tidy eval interfaces rather than
@@ -415,7 +376,7 @@ print.rlang_fake_data_pronoun <- function(...) cat_line("<pronoun>")
 #' mask$.data <- as_data_pronoun(mask)
 #' mask$.data$c
 #'
-#' # Now we can reference the values with the pronouns:
+#' # Now we can reference values with the pronouns:
 #' eval_tidy(quote(c(.data$a, .data$b, .data$c)), data = mask)
 as_data_mask <- function(data) {
   .Call(ffi_as_data_mask, data)

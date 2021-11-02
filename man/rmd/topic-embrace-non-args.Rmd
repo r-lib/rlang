@@ -1,0 +1,38 @@
+```{r, child = "setup.Rmd", include = FALSE}
+```
+
+The embrace operator `r link("{{")` should be used exclusively with function arguments:
+
+```r
+fn <- function(arg) {
+  quo(foo({{ arg }}))
+}
+
+fn(1 + 1)
+#> <quosure>
+#> expr: ^foo(^1 + 1)
+#> env:  0x7ffd89aac518
+```
+
+However you may have noticed that it also works on regular objects:
+
+```r
+fn <- function(arg) {
+  arg <- force(arg)
+  quo(foo({{ arg }}))
+}
+
+fn(1 + 1)
+#> <quosure>
+#> expr: ^foo(^2)
+#> env:  0x7ffd8a633398
+```
+
+In that case, `{{` captures the _value_ of the expression instead of a defused expression. That's because only function arguments can be defused.
+
+Note that this issue also applies to [enquo()] (on which `{{` is based).
+
+
+# Why is this not an error?
+
+Ideally we would have made `{{` on regular objects an error.  However this is not possible because in compiled R code it is not always possible to distinguish a regular variable from a function argument. See `r link("topic_embrace_constants")` for more about this.

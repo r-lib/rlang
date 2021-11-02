@@ -15,8 +15,7 @@ A character vector of length 1.
 }
 \description{
 \code{as_name()} converts \link[=sym]{symbols} to character strings. The
-conversion is deterministic. That is, the roundtrip symbol -> name
--> symbol always gets the same result.
+conversion is deterministic. That is, the roundtrip \code{symbol -> name -> symbol} always gives the same result.
 \itemize{
 \item Use \code{as_name()} when you need to transform a symbol to a string
 to \emph{refer} to an object by its name.
@@ -27,11 +26,12 @@ a string to \emph{represent} that object with a short description.
 Expect \code{as_name()} to gain
 \href{https://principles.tidyverse.org/names-attribute.html#minimal-unique-universal}{name-repairing}
 features in the future.
-
-Note that \code{rlang::as_name()} is the \emph{opposite} of
-\code{\link[base:name]{base::as.name()}}. If you're writing base R code, we recommend
-using \code{\link[base:name]{base::as.symbol()}} which is an alias of \code{as.name()} that
-follows a more modern terminology (R types instead of S modes).
+}
+\details{
+\code{rlang::as_name()} is the \emph{opposite} of \code{\link[base:name]{base::as.name()}}. If
+you're writing base R code, we recommend using \code{\link[base:name]{base::as.symbol()}}
+which is an alias of \code{as.name()} that follows a more modern
+terminology (R types instead of S modes).
 }
 \examples{
 # Let's create some symbols:

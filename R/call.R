@@ -99,7 +99,7 @@
 call2 <- function(.fn, ..., .ns = NULL) {
   .External2(ffi_call2, .fn, .ns)
 }
-#' Create pairlists with splicing support
+#' Collect dynamic dots in a pairlist
 #'
 #' This pairlist constructor uses [dynamic dots][dyn-dots]. Use
 #' it to manually create argument lists for calls or parameter lists

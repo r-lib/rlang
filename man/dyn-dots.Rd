@@ -3,22 +3,24 @@
 \name{dyn-dots}
 \alias{dyn-dots}
 \alias{tidy-dots}
+\alias{dots_dynamic}
+\alias{:=}
 \title{Dynamic dots}
 \description{
-The \code{...} syntax of base R allows you to:
+The base \code{...} syntax supports:
 \itemize{
-\item \strong{Forward} arguments from function to function, matching them
-along the way to function parameters.
-\item \strong{Collect} arguments inside data structures, e.g. with \code{\link[=c]{c()}} or
+\item \strong{Forwarding} arguments from function to function, matching them
+along the way to arguments.
+\item \strong{Collecting} arguments inside data structures, e.g. with \code{\link[=c]{c()}} or
 \code{\link[=list]{list()}}.
 }
 
 Dynamic dots offer a few additional features:
 \enumerate{
-\item You can \strong{splice} arguments saved in a list with the \link[=quasiquotation]{big bang} operator \verb{!!!}.
-\item You can \strong{unquote} names by using the \link[glue:glue]{glue} syntax
-or the \link[=quasiquotation]{bang bang} operator \verb{!!} on the
-left-hand side of \verb{:=}.
+\item You can \strong{splice} arguments saved in a list with the splice
+operator \code{\link[=splice-operator]{!!!}}.
+\item You can \strong{inject} names with \link[=glue-operators]{glue syntax} on
+the left-hand side of \verb{:=}.
 \item Trailing commas are ignored, making it easier to copy and paste
 lines of arguments.
 }
@@ -28,10 +30,10 @@ lines of arguments.
 
 If your function takes dots, adding support for dynamic features is
 as easy as collecting the dots with \code{\link[=list2]{list2()}} instead of \code{\link[=list]{list()}}.
+See also \code{\link[=dots_list]{dots_list()}}, which offers more control over the collection.
 
-Other dynamic dots collectors are \code{\link[=dots_list]{dots_list()}}, which is more
-configurable than \code{\link[=list2]{list2()}}, \code{vars()} which doesn't force its
-arguments, and \code{\link[=call2]{call2()}} for creating calls.
+In general, passing \code{...} to a function that supports dynamic dots
+causes your function to inherit the dynamic behaviour.
 
 Document dynamic docs using this standard tag:\preformatted{ @param ... <[`dynamic-dots`][rlang::dyn-dots]> What these dots do.
 }
@@ -43,18 +45,17 @@ f <- function(...) {
   rev(out)
 }
 
-# Splice
+# Trailing commas are ignored
+f(this = "that", )
+
+# Splice lists of arguments with `!!!`
 x <- list(alpha = "first", omega = "last")
 f(!!!x)
 
-# Unquote a name, showing both the `!!` bang bang and `{}` glue style
-nm <- "key"
-f(!!nm := "value")
+# Inject a name using glue syntax
 if (is_installed("glue")) {
+  nm <- "key"
   f("{nm}" := "value")
   f("prefix_{nm}" := "value")
 }
-
-# Tolerate a trailing comma
-f(this = "that", )
 }

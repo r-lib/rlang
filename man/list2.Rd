@@ -4,7 +4,7 @@
 \alias{list2}
 \alias{ll}
 \alias{dots_list}
-\title{Collect dots in a list}
+\title{Collect dynamic dots in a list}
 \usage{
 list2(...)
 
@@ -43,10 +43,9 @@ default, \code{"keep"}, preserves these arguments. Set \code{.homonyms} to
 the last occurrences, and to \code{"error"} to raise an informative
 error and indicate what arguments have duplicated names.}
 
-\item{.check_assign}{Whether to check for \verb{<-} calls passed in
-dots. When \code{TRUE} and a \verb{<-} call is detected, a warning is
-issued to advise users to use \code{=} if they meant to match a
-function parameter, or wrap the \verb{<-} call in braces otherwise.
+\item{.check_assign}{Whether to check for \verb{<-} calls. When \code{TRUE} a
+warning recommends users to use \code{=} if they meant to match a
+function parameter or wrap the \verb{<-} call in curly braces otherwise.
 This ensures assignments are explicit.}
 }
 \value{

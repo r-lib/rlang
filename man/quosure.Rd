@@ -60,23 +60,18 @@ has to match at least one of them, otherwise \code{is_call()} returns
 \item{env}{A new environment for the quosure.}
 }
 \description{
-A quosure is a type of \link[=nse-defuse]{quoted expression} that includes
+A quosure is a type of \link[=topic-defuse]{defused expression} that includes
 a reference to the context where it was created. A quosure is thus
 guaranteed to evaluate in its original environment and can refer to
-local objects.
-
-You can access the quosure components (its expression and its
-environment) with:
+local objects. Read more about quosures in \ifelse{html}{\link[=topic-quosure]{What are quosures and when are they needed?}}{\link[=topic-quosure]{What are quosures and when are they needed?}}.
 \itemize{
-\item \code{\link[=get_expr]{get_expr()}} and \code{\link[=get_env]{get_env()}}. These getters also support other
-kinds of objects such as formulas.
-\item \code{quo_get_expr()} and \code{quo_get_env()}. These getters only work
-with quosures and throw an error with other types of input.
+\item You can access the quosure components with \code{quo_get_expr()} and
+\code{quo_get_env()}.
+\item Test if an object is a quosure with \code{is_quosure()}.
+\item If you know an object is a quosure, use the \code{quo_} prefixed
+predicates to check its contents, \code{quo_is_missing()},
+\code{quo_is_symbol()}, etc.
 }
-
-Test if an object is a quosure with \code{is_quosure()}. If you know an
-object is a quosure, use the \code{quo_} prefixed predicates to check
-its contents, \code{quo_is_missing()}, \code{quo_is_symbol()}, etc.
 }
 \section{Quosured constants}{
 
@@ -103,14 +98,6 @@ When missing arguments are captured as quosures, either through
 \code{\link[=enquo]{enquo()}} or \code{\link[=quos]{quos()}}, they are returned as an empty quosure. These
 quosures contain the \link[=missing_arg]{missing argument} and typically
 have the \link[=empty_env]{empty environment} as enclosure.
-}
-
-\section{Life cycle}{
-
-\itemize{
-\item \code{is_quosure()} is stable.
-\item \code{quo_get_expr()} and \code{quo_get_env()} are stable.
-}
 }
 
 \examples{
@@ -145,6 +132,10 @@ fn()
 quo_is_missing(fn())
 }
 \seealso{
-\code{\link[=quo]{quo()}} for creating quosures by quotation; \code{\link[=as_quosure]{as_quosure()}}
-and \code{\link[=new_quosure]{new_quosure()}} for constructing quosures manually.
+\itemize{
+\item \code{\link[=quo]{quo()}} for creating quosures by quotation
+\item \code{\link[=as_quosure]{as_quosure()}} and \code{\link[=new_quosure]{new_quosure()}} for assembling quosures from
+components
+\item \ifelse{html}{\link[=topic-quosure]{What are quosures and when are they needed?}}{\link[=topic-quosure]{What are quosures and when are they needed?}} for an overview
+}
 }

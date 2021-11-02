@@ -20,7 +20,7 @@ labelling is the first step before name repair.
 }
 
 See also \code{\link[=as_name]{as_name()}} for transforming symbols back to a
-string. Unlike \code{as_label()}, \code{as_string()} is a well defined
+string. Unlike \code{as_label()}, \code{as_name()} is a well defined
 operation that guarantees the roundtrip symbol -> string ->
 symbol.
 
@@ -28,8 +28,8 @@ In general, if you don't know for sure what kind of object you're
 dealing with (a call, a symbol, an unquoted constant), use
 \code{as_label()} and make no assumption about the resulting string. If
 you know you have a symbol and need the name of the object it
-refers to, use \code{\link[=as_string]{as_string()}}. For instance, use \code{as_label()} with
-objects captured with \code{enquo()} and \code{as_string()} with symbols
+refers to, use \code{\link[=as_name]{as_name()}}. For instance, use \code{as_label()} with
+objects captured with \code{enquo()} and \code{as_name()} with symbols
 captured with \code{ensym()}.
 }
 \section{Transformation to string}{
@@ -42,22 +42,18 @@ captured with \code{ensym()}.
 \item Other constants are represented by their type, such as \verb{<dbl>}
 or \verb{<data.frame>}.
 }
-
-Note that simple symbols should generally be transformed to strings
-with \code{\link[=as_name]{as_name()}}. Labelling is not a well defined operation and
-no assumption should be made about how the label is created. On the
-other hand, \code{as_name()} only works with symbols and is a well
-defined, deterministic operation.
 }
 
 \examples{
 # as_label() is useful with quoted expressions:
 as_label(expr(foo(bar)))
+
 as_label(expr(foobar))
 
 # It works with any R object. This is also useful for quoted
 # arguments because the user might unquote constant objects:
 as_label(1:3)
+
 as_label(base::list)
 }
 \seealso{

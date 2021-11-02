@@ -2,22 +2,21 @@
 #'
 #' @description
 #'
-#' The `...` syntax of base R allows you to:
+#' The base `...` syntax supports:
 #'
-#' - __Forward__ arguments from function to function, matching them
-#'   along the way to function parameters.
+#' - __Forwarding__ arguments from function to function, matching them
+#'   along the way to arguments.
 #'
-#' - __Collect__ arguments inside data structures, e.g. with [c()] or
+#' - __Collecting__ arguments inside data structures, e.g. with [c()] or
 #'   [list()].
 #'
 #' Dynamic dots offer a few additional features:
 #'
-#' 1. You can __splice__ arguments saved in a list with the [big
-#'    bang][quasiquotation] operator `!!!`.
+#' 1. You can __splice__ arguments saved in a list with the splice
+#'    operator [`!!!`][splice-operator].
 #'
-#' 2. You can __unquote__ names by using the [glue][glue::glue] syntax
-#'    or the [bang bang][quasiquotation] operator `!!` on the
-#'    left-hand side of `:=`.
+#' 2. You can __inject__ names with [glue syntax][glue-operators] on
+#'    the left-hand side of `:=`.
 #'
 #' 3. Trailing commas are ignored, making it easier to copy and paste
 #'    lines of arguments.
@@ -27,10 +26,10 @@
 #'
 #' If your function takes dots, adding support for dynamic features is
 #' as easy as collecting the dots with [list2()] instead of [list()].
+#' See also [dots_list()], which offers more control over the collection.
 #'
-#' Other dynamic dots collectors are [dots_list()], which is more
-#' configurable than [list2()], `vars()` which doesn't force its
-#' arguments, and [call2()] for creating calls.
+#' In general, passing `...` to a function that supports dynamic dots
+#' causes your function to inherit the dynamic behaviour.
 #'
 #' Document dynamic docs using this standard tag:
 #'
@@ -39,7 +38,7 @@
 #' ```
 #'
 #' @name dyn-dots
-#' @aliases tidy-dots
+#' @aliases tidy-dots dots_dynamic
 #'
 #' @examples
 #' f <- function(...) {
@@ -47,23 +46,30 @@
 #'   rev(out)
 #' }
 #'
-#' # Splice
+#' # Trailing commas are ignored
+#' f(this = "that", )
+#'
+#' # Splice lists of arguments with `!!!`
 #' x <- list(alpha = "first", omega = "last")
 #' f(!!!x)
 #'
-#' # Unquote a name, showing both the `!!` bang bang and `{}` glue style
-#' nm <- "key"
-#' f(!!nm := "value")
+#' # Inject a name using glue syntax
 #' if (is_installed("glue")) {
+#'   nm <- "key"
 #'   f("{nm}" := "value")
 #'   f("prefix_{nm}" := "value")
 #' }
-#'
-#' # Tolerate a trailing comma
-#' f(this = "that", )
 NULL
 
-#' Collect dots in a list
+#' @rdname dyn-dots
+#' @usage NULL
+#' @export
+`:=` <- function(x, y) {
+  abort("`:=` can only be used within dynamic dots.", call = caller_env())
+}
+
+
+#' Collect dynamic dots in a list
 #'
 #' `list2(...)` is equivalent to `list(...)` with a few additional
 #' features, collectively called [dynamic dots][dyn-dots]. While
@@ -126,10 +132,9 @@ list3 <- function(...) {
 #'   `"first"` to only keep the first occurrences, to `"last"` to keep
 #'   the last occurrences, and to `"error"` to raise an informative
 #'   error and indicate what arguments have duplicated names.
-#' @param .check_assign Whether to check for `<-` calls passed in
-#'   dots. When `TRUE` and a `<-` call is detected, a warning is
-#'   issued to advise users to use `=` if they meant to match a
-#'   function parameter, or wrap the `<-` call in braces otherwise.
+#' @param .check_assign Whether to check for `<-` calls. When `TRUE` a
+#'   warning recommends users to use `=` if they meant to match a
+#'   function parameter or wrap the `<-` call in curly braces otherwise.
 #'   This ensures assignments are explicit.
 #' @export
 #' @examples

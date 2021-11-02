@@ -70,6 +70,9 @@
 
 ## Features and bugfixes
 
+* New `englue()` operator to allow string-embracing outside of dynamic
+  dots (#1172).
+
 * New `data_sym()` and `data_syms()` functions to create calls of the
   form `.data$foo`.
 

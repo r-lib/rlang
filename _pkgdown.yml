@@ -1,6 +1,8 @@
 url: https://rlang.r-lib.org
 
 template:
+  bootstrap: 5
+  package: tidytemplate
   params:
     ganalytics: UA-115082821-1
 
@@ -13,12 +15,54 @@ home:
 
 navbar:
   structure:
-    left:  [home, reference, lifecycle, news]
-    right: [github]
+    left:  [home, reference, overviews, guides, notes]
+    right: [news, github]
   components:
-    lifecycle:
-      text: Life cycle
-      href: reference/lifecycle.html
+    overviews:
+      text: Overviews
+      menu:
+      - text: Tidy evaluation
+      - text: What is data-masking and why do I need `{{`?
+        href: reference/topic-data-mask.html
+      - text: Data mask programming patterns
+        href: reference/topic-data-mask-programming.html
+
+      - text: Metaprogramming
+      - text: Defusing R expressions
+        href: reference/topic-defuse.html
+      - text: Injecting with `!!`, `!!!`, and glue syntax
+        href: reference/topic-inject.html
+      - text: Metaprogramming patterns
+        href: reference/topic-metaprogramming.html
+      - text: What are quosures and when are they needed?
+        href: reference/topic-quosure.html
+
+    guides:
+      text: Guides
+      menu:
+      - text: Tidy evaluation
+      - text: The data mask ambiguity
+        href: reference/topic-data-mask-ambiguity.html
+      - text: The double evaluation problem
+        href: reference/topic-double-evaluation.html
+
+      - text: Metaprogramming
+      - text: Taking multiple columns without `...`
+        href: reference/topic-multiple-columns.html
+    
+    notes:
+      text: Notes
+      menu:
+      - text: Tidy evaluation
+      - text: What happens if I use injection operators out of context?
+        href: reference/topic-inject-out-of-context.html
+      - text: Does `{{` work on regular objects?
+        href: reference/topic-embrace-non-args.html
+
+      - text: Metaprogramming
+      - text: Why are strings and other constants enquosed in the empty environment?
+        href: reference/topic-embrace-constants.html
+
     news:
       text: News
       menu:
@@ -39,42 +83,87 @@ navbar:
 
 
 reference:
+  # NSE
+
   - title: Tidy evaluation
     desc: >
-      Quote arguments and expressions with unquoting support. The
-      quosure variants wrap an environment with the expression.
+      The programmable data-masking framework developped for the
+      tidyverse.
+  - subtitle: Tools
     contents:
-      - quo
-      - quos
-      - enquo
-      - enquo0
-      - enquos
+      - embrace-operator
+      - glue-operators
+      - .data
+  - subtitle: Overviews
+    contents:
+      - topic-data-mask
+      - topic-data-mask-programming
+  - subtitle: Guides
+    contents:
+      - topic-data-mask-ambiguity
+      - topic-double-evaluation
+  - subtitle: Notes
+    contents:
+      - topic-inject-out-of-context
+      - topic-embrace-non-args
+
+  - title: Metaprogramming
+    desc: >
+      A set of techniques and tools to create or modify defused
+      expressions
+  - subtitle: Tools
+    contents:
+      - injection-operator
+      - splice-operator
+      - qq_show
+      - englue
       - expr
-      - exprs
-      - enexpr
-      - enexprs
-      - nse-inject
-      - nse-defuse
+      - enquo
+      - sym
       - as_label
       - as_name
+  - subtitle: Advanced tools
+    contents:
+      - defusing-advanced
+  - subtitle: Overviews
+    contents:
+      - topic-defuse
+      - topic-inject
+      - topic-metaprogramming
+      - topic-quosure
+  - subtitle: Guides
+    contents:
+      - topic-multiple-columns
+  - subtitle: Notes
+    contents:
+      - topic-embrace-constants
+
+  - title: Create tidy evaluation APIs
+    desc: >
+      Create data masking APIs as in dplyr or tidyr.
+      These functions are meant for developers rather than users.
+    contents:
+      - eval_tidy
+      - new_data_mask
+
   - title: Dots
     desc: >
       Utils to work with `...`.
     contents:
-      - args_dots_empty
-      - args_dots_used
       - check_dots_used
       - check_dots_unnamed
       - check_dots_empty
-  - title: Tidy dots
+      - args_dots_empty
+      - args_dots_used
+  - title: Dynamic dots
     desc: >
       Collect arguments contained in `...` with `!!!` and
       name-unquoting support.
     contents:
       - dyn-dots
       - list2
-      - dots_list
       - pairlist2
+
   - title: Errors, conditions, and backtraces
     contents:
       - abort
@@ -286,16 +375,6 @@ reference:
       - missing_arg
       - is_missing
       - maybe_missing
-  - title: Create tidy evaluation APIs
-    desc: >
-      Create data masking APIs à-la dplyr or tidyr.
-      These functions are meant for developers rather than users.
-    contents:
-      - "`tidyeval-data`"
-      - eval_tidy
-      - as_data_mask
-      - new_data_mask
-      - as_data_pronoun
   - title: Condition handlers
     contents:
       - with_handlers

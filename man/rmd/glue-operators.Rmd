@@ -1,0 +1,118 @@
+```{r, child = "setup.Rmd", include = FALSE}
+```
+
+[Dynamic dots][dyn-dots] (and [data-masked][topic-data-mask] dots which are dynamic by default) have built-in support for names interpolation with the [glue package](https://glue.tidyverse.org/).
+
+```{r, comment = "#>", collapse = TRUE}
+tibble::tibble(foo = 1)
+
+foo <- "name"
+tibble::tibble("{foo}" := 1)
+```
+
+Inside functions, embracing an argument with `r link("{{")` inserts the expression supplied as argument in the string. This gives an indication on the variable or computation supplied as argument:
+
+```{r, comment = "#>", collapse = TRUE}
+tib <- function(x) {
+  tibble::tibble("var: {{ x }}" := x)
+}
+
+tib(1 + 1)
+```
+
+See also [englue()] to string-embrace outside of dynamic dots.
+
+```{r, comment = "#>", collapse = TRUE}
+g <- function(x) {
+  englue("var: {{ x }}")
+}
+
+g(1 + 1)
+```
+
+Technically, `r text("'{{'")` [defuses][topic-defuse] a function argument, calls [as_label()] on the expression supplied as argument, and inserts the result in the string.
+
+
+## `r text("'{'")` and `r text("'{{'")`
+
+While `glue::glue()` only supports `r text("'{'")`, dynamic dots support both `r text("'{'")` and `r text("'{{'")`. The double brace variant is similar to the embrace operator `r link("{{")` available in [data-masked][topic-data-mask] arguments.
+
+In the following example, the embrace operator is used in a glue string to name the result with a default name that represents the expression supplied as argument:
+
+```{r, comment = "#>", collapse = TRUE}
+my_mean <- function(data, var) {
+  data %>% dplyr::summarise("{{ var }}" := mean({{ var }}))
+}
+
+mtcars %>% my_mean(cyl)
+
+mtcars %>% my_mean(cyl * am)
+```
+
+`r text("'{{'")` is only meant for inserting an expression supplied as argument to a function. The result of the expression is not inspected or used. To interpolate a string stored in a variable, use the regular glue operator `r text("'{'")` instead:
+
+```{r, comment = "#>", collapse = TRUE}
+my_mean <- function(data, var, name = "mean") {
+  data %>% dplyr::summarise("{name}" := mean({{ var }}))
+}
+
+mtcars %>% my_mean(cyl)
+
+mtcars %>% my_mean(cyl, name = "cyl")
+```
+
+Using the wrong operator causes unexpected results:
+
+```{r, comment = "#>", collapse = TRUE}
+x <- "name"
+
+list2("{{ x }}" := 1)
+
+list2("{x}" := 1)
+```
+
+Ideally, using `{{` on regular objects would be an error. However for technical reasons it is not possible to make a distinction between function arguments and ordinary variables. See `r link("topic_embrace_non_args")` for more information about this limitation.
+
+
+## Allow overriding default names
+
+The implementation of `my_mean()` in the previous section forces a default name onto the result. But what if the caller wants to give it a different name? In functions that take dots, it is possible to just supply a named expression to override the default. In a function like `my_mean()` that takes a named argument we need a different approach.
+
+This is where [englue()] becomes useful. We can pull out the default name creation in another user-facing argument like this:
+
+```{r, comment = "#>", collapse = TRUE}
+my_mean <- function(data, var, name = englue("{{ var }}")) {
+  data %>% dplyr::summarise("{name}" := mean({{ var }}))
+}
+```
+
+Now the user may supply their own name if needed:
+
+```{r, comment = "#>", collapse = TRUE}
+mtcars %>% my_mean(cyl * am)
+
+mtcars %>% my_mean(cyl * am, name = "mean_cyl_am")
+```
+
+
+## What's the deal with `:=`?
+
+Name injection in dynamic dots was originally implemented with `:=` instead of `=` to allow complex expressions on the LHS:
+
+```{r, comment = "#>", collapse = TRUE}
+x <- "name"
+list2(!!x := 1)
+```
+
+Name-injection with glue operations was an extension of this existing feature and so inherited the same interface. However, there is no technical barrier to using glue strings on the LHS of `=`.
+
+As we are now moving away from [`!!`][injection-operator] for common tasks, we are considering enabling glue strings with `=` and superseding `:=` usage. Track the progress of this change in [issue 1296](https://github.com/r-lib/rlang/issues/1296).
+
+
+## Using glue syntax in packages
+
+Since rlang does not depend directly on glue, you will have to ensure that glue is installed by adding it to your `Imports:` section.
+
+```r
+usethis::use_package("glue", "Imports")
+```

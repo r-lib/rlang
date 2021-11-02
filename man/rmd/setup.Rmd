@@ -1,0 +1,23 @@
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+library(rlang)
+`%>%` <- magrittr::`%>%`
+is_installed("dplyr")
+
+# Better printing
+mtcars <- tibble::as_tibble(mtcars)
+iris <- tibble::as_tibble(iris)
+options(
+  tibble.print_min = 4,
+  tibble.print_max = 4
+)
+
+# Fix Latex error
+options(
+  cli.unicode = FALSE
+)
+```

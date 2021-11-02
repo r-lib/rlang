@@ -1,4 +1,4 @@
-rlang <img src="man/figures/rlang.png" align="right" />
+rlang <img src="man/figures/logo.png" align="right" />
 =======================================================
 
 <!-- badges: start -->

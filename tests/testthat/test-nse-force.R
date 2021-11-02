@@ -581,12 +581,14 @@ test_that("`:=` chaining is detected at dots capture", {
 # --------------------------------------------------------------------
 
 test_that("Unquote operators fail when called outside quasiquoted arguments", {
-  expect_qq_error <- function(object) expect_error(object, regexp = "within a quasiquoted argument")
+  expect_qq_error <- function(object) expect_error(object, regexp = "within a defused argument")
   expect_qq_error(UQ())
   expect_qq_error(UQS())
   expect_qq_error(`!!`())
-  expect_qq_error(`!!!`())
-  expect_qq_error(a := b)
+
+  expect_dyn_error <- function(object) expect_error(object, regexp = "within dynamic dots")
+  expect_dyn_error(`!!!`())
+  expect_dyn_error(a := b)
 })
 
 test_that("`.data[[` unquotes", {
@@ -754,4 +756,15 @@ test_that("{{ foo; bar }} is not injected (#1087)", {
     expr({{ 1 }; NULL}),
     quote({{ 1 }; NULL})
   )
+})
+
+test_that("englue() works", {
+  g <- function(var) englue("{{ var }}")
+  expect_equal(g(cyl), as_label(quote(cyl)))
+  expect_equal(g(1 + 1), as_label(quote(1 + 1)))
+
+  g <- function(var) englue("prefix_{{ var }}_suffix")
+  expect_equal(g(cyl), "prefix_cyl_suffix")
+
+  expect_snapshot(err(englue("{'foo'}"), "Must use"))
 })

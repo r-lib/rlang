@@ -2,19 +2,29 @@
 #'
 #' @description
 #'
+#' Symbols are a kind of [defused expression][topic-defuse] that
+#' represent objects in environments.
+#'
 #' * `sym()` and `syms()` take strings as input and turn them into
 #'   symbols.
 #'
 #' * `data_sym()` and `data_syms()` create calls of the form
-#'   `.data$foo` instead of symbols. Subsetting the [`.data`]
-#'   pronoun is more robust when you expect a data-variable. See _data
-#'   mask ambiguity_ TODO! Link to currently off-branch topic.
+#'   `.data$foo` instead of symbols. Subsetting the [`.data`] pronoun
+#'   is more robust when you expect a data-variable. See
+#'   `r link("topic_data_mask_ambiguity")`.
 #'
-#' @param x A string or list of strings.
-#' @return A symbol for `sym()` and a list of symbols for
-#'   `syms()`. `data_sym()` and `data_syms()` create calls that subset
-#'   `.data`.
-#' @export
+#' Only tidy eval APIs support the [`.data`] pronoun. With base R
+#' functions, use simple symbols created with `sym()` or `syms()`.
+#'
+#' @param x For `sym()` and `data_sym()`, a string. For `syms()` and
+#'   `data_syms()`, a list of strings.
+#' @return For `sym()` and `syms()`, a symbol or list of symbols. For
+#'   `data_sym()` and `data_syms()`, calls of the form `.data$foo`.
+#'
+#' @seealso
+#' - `r link("topic_defuse")`
+#' - `r link("topic_metaprogramming")`
+#'
 #' @examples
 #' # Create a symbol
 #' sym("cyl")
@@ -41,6 +51,8 @@
 #' # This way sym() and as_string() are inverse of each other:
 #' as_string(missing_arg())
 #' sym(as_string(missing_arg()))
+#'
+#' @export
 sym <- function(x) {
   if (is_symbol(x)) {
     return(x)
