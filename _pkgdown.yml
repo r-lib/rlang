@@ -49,7 +49,7 @@ navbar:
       - text: Metaprogramming
       - text: Taking multiple columns without `...`
         href: reference/topic-multiple-columns.html
-    
+
     notes:
       text: Notes
       menu:
@@ -87,7 +87,7 @@ reference:
 
   - title: Tidy evaluation
     desc: >
-      The programmable data-masking framework developped for the
+      The programmable data-masking framework developed for the
       tidyverse.
   - subtitle: Tools
     contents:
