@@ -36,3 +36,4 @@ the options are reset to their original values.}
 These functions have been renamed to use the conventional \code{local_}
 prefix. They will be deprecated in the next minor version of rlang.
 }
+\keyword{internal}

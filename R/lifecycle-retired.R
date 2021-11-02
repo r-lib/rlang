@@ -2183,6 +2183,8 @@ exiting <- function(handler) {
 #' @inheritParams local_options
 #' @inheritParams local_bindings
 #'
+#' @keywords internal
+#'
 #' @export
 scoped_interactive <- function(value = TRUE, frame = caller_env()) {
   local_interactive(value = value, frame = frame)

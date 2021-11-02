@@ -73,8 +73,7 @@ options(error = rlang::entrace)
 }
 \seealso{
 \code{\link[=global_entrace]{global_entrace()}} for configuring errors with
-\code{entrace()}. \code{\link[=with_abort]{with_abort()}} to promote conditions to rlang
-errors.  \code{\link[=cnd_entrace]{cnd_entrace()}} to manually add a backtrace to a
+\code{entrace()}. \code{\link[=cnd_entrace]{cnd_entrace()}} to manually add a backtrace to a
 condition.
 }
 \keyword{internal}

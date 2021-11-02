@@ -85,6 +85,7 @@ global_entrace_fallback <- function(enable, class) {
 
 #' Add backtrace from error handler
 #'
+#' @keywords internal
 #' @description
 #' `entrace()` is a low level function. See [global_entrace()] for a
 #' user-friendly way of enriching errors and other conditions from

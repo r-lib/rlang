@@ -1,5 +1,6 @@
 #' Serialize a raw vector to a string
 #'
+#' @keywords internal
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'

@@ -379,6 +379,7 @@ quo_squash <- function(quo, warn = FALSE) {
 
 #' Format quosures for printing or labelling
 #'
+#' @keywords internal
 #' @description
 #'
 #' `r lifecycle::badge("questioning")`

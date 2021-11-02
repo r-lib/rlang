@@ -47,3 +47,4 @@ set_expr(e, quote(baz))
 \code{\link[=quo_get_expr]{quo_get_expr()}} and \code{\link[=quo_set_expr]{quo_set_expr()}} for versions of
 \code{\link[=get_expr]{get_expr()}} and \code{\link[=set_expr]{set_expr()}} that only work on quosures.
 }
+\keyword{internal}

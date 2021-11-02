@@ -146,6 +146,7 @@ is_symbolic <- function(x) {
 
 #' Turn an expression to a label
 #'
+#' @keywords internal
 #' @description
 #'
 #' `r lifecycle::badge("questioning")`
@@ -157,11 +158,6 @@ is_symbolic <- function(x) {
 #' in messages.
 #'
 #' @param expr An expression to labellise.
-#'
-#' @section Life cycle:
-#'
-#' These functions are in the questioning stage because they are
-#' redundant with the `quo_` variants and do not handle quosures.
 #'
 #' @examples
 #' # To labellise a function argument, first capture it with
@@ -276,6 +272,9 @@ deparse_one <- function(expr) {
 }
 
 #' Set and get an expression
+#'
+#' @keywords internal
+#' @description
 #'
 #' These helpers are useful to make your function work generically
 #' with quosures and raw expressions. First call `get_expr()` to

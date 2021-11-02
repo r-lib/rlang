@@ -28,13 +28,6 @@ names. It works best with symbols and scalar types, but also
 accepts calls. \code{expr_label()} formats the expression nicely for use
 in messages.
 }
-\section{Life cycle}{
-
-
-These functions are in the questioning stage because they are
-redundant with the \code{quo_} variants and do not handle quosures.
-}
-
 \examples{
 # To labellise a function argument, first capture it with
 # substitute():
@@ -54,3 +47,4 @@ expr_label(quote(foo({
   print(x)
 })))
 }
+\keyword{internal}
