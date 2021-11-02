@@ -264,6 +264,7 @@ reference:
       - env_bind_active
       - env_unbind
       - env_poke
+      - env_cache
       - with_bindings
       - scoped_bindings
       - env_has

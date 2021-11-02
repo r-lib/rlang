@@ -1,4 +1,5 @@
 #' @useDynLib rlang, .registration = TRUE
+#' @keywords internal
 "_PACKAGE"
 
 on_load({
