@@ -91,7 +91,7 @@ mtcars \%>\% mean_by(by = cyl, var = disp)
 #> 3     8  353.
 }\if{html}{\out{</div>}}
 
-Learn more about this pattern in \link[=topic-data-mask-programming]{Data mask programming patterns}.
+Learn more about this pattern in \ifelse{html}{\link[=topic-data-mask-programming]{Data mask programming patterns}}{\link[=topic-data-mask-programming]{Data mask programming patterns}}.
 }
 
 \subsection{Injecting with \verb{!!}}{
@@ -143,7 +143,7 @@ The main difference between rlang and other languages is that quasiquotation is 
 
 \section{See also}{
 \itemize{
-\item \link[=topic-inject-out-of-context]{What happens if I use injection operators out of context?}
+\item \ifelse{html}{\link[=topic-inject-out-of-context]{What happens if I use injection operators out of context?}}{\link[=topic-inject-out-of-context]{What happens if I use injection operators out of context?}}
 }
 }
 

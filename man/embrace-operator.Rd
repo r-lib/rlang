@@ -26,7 +26,7 @@ step. The snippet above is equivalent to:\if{html}{\out{<div class="sourceCode r
 
 \seealso{
 \itemize{
-\item \link[=topic-data-mask]{What is data-masking and why do I need to embrace?}
-\item \link[=topic-data-mask-programming]{Data mask programming patterns}
+\item \ifelse{html}{\link[=topic-data-mask]{What is data-masking and why do I need \{\{?}}{\link[=topic-data-mask]{What is data-masking and why do I need curly-curly?}}
+\item \ifelse{html}{\link[=topic-data-mask-programming]{Data mask programming patterns}}{\link[=topic-data-mask-programming]{Data mask programming patterns}}
 }
 }

@@ -6,7 +6,7 @@
 \description{
 The patterns covered in this article rely on \emph{metaprogramming}, the ability to defuse, create, expand, and inject R expressions. A good place to start if you're new to programming on the language is the \href{https://adv-r.hadley.nz/metaprogramming.html}{Metaprogramming chapter} of the \href{https://adv-r.hadley.nz}{Advanced R} book.
 
-If you haven't already, read \link[=topic-data-mask-programming]{Data mask programming patterns} which covers simpler patterns that do not require as much theory to get up to speed. It covers concepts like argument behaviours and the various patterns you can add to your toolbox (forwarding, names, bridge, and transformative patterns).
+If you haven't already, read \ifelse{html}{\link[=topic-data-mask-programming]{Data mask programming patterns}}{\link[=topic-data-mask-programming]{Data mask programming patterns}} which covers simpler patterns that do not require as much theory to get up to speed. It covers concepts like argument behaviours and the various patterns you can add to your toolbox (forwarding, names, bridge, and transformative patterns).
 }
 \section{Forwarding patterns}{
 \subsection{Defuse and inject}{
@@ -102,7 +102,7 @@ data_syms(vars)
 #> .data$am
 }\if{html}{\out{</div>}}
 
-Simple symbols returned by \code{sym()} and \code{syms()} work in a wider variety of cases (with base functions in particular) but we'll use mostly use \code{data_sym()} and \code{data_syms()} because they are more robust (see \link[=topic-data-mask-ambiguity]{The data mask ambiguity}). Note that these do not return \emph{symbols} per se, instead they create \emph{calls} to \code{$} that subset the \code{\link{.data}} pronoun.
+Simple symbols returned by \code{sym()} and \code{syms()} work in a wider variety of cases (with base functions in particular) but we'll use mostly use \code{data_sym()} and \code{data_syms()} because they are more robust (see \ifelse{html}{\link[=topic-data-mask-ambiguity]{The data mask ambiguity}}{\link[=topic-data-mask-ambiguity]{The data mask ambiguity}}). Note that these do not return \emph{symbols} per se, instead they create \emph{calls} to \code{$} that subset the \code{\link{.data}} pronoun.
 
 Since the \code{.data} pronoun is a tidy eval feature, you can't use it in base functions. As a rule, prefer the \code{data_}-prefixed variants when you're injecting in tidy eval functions and the unprefixed functions for base functions.
 
@@ -120,7 +120,7 @@ In more complex case, you might want to add R code around the symbols. This requ
 \section{Bridge patterns}{
 \subsection{\code{mutate()} as a data-mask to selection bridge}{
 
-This is a variant of the \code{transmute()} bridge pattern described in \link[=topic-data-mask-programming]{Data mask programming patterns} that does not materialise \code{...} in the intermediate step. Instead, the \code{...} expressions are defused and inspected. Then the expressions, rather than the columns, are spliced in \code{mutate()}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_pivot_longer <- function(data, ...) \{
+This is a variant of the \code{transmute()} bridge pattern described in \ifelse{html}{\link[=topic-data-mask-programming]{Data mask programming patterns}}{\link[=topic-data-mask-programming]{Data mask programming patterns}} that does not materialise \code{...} in the intermediate step. Instead, the \code{...} expressions are defused and inspected. Then the expressions, rather than the columns, are spliced in \code{mutate()}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_pivot_longer <- function(data, ...) \{
   # Forward `...` in data-mask context with `transmute()`
   # and save the inputs names
   inputs <- dplyr::transmute(data, ...)
@@ -215,7 +215,7 @@ In general, prefer symbol injection over \code{get()} to prevent this sort of co
 #> [1] 6.1875
 }\if{html}{\out{</div>}}
 
-See \link[=topic-data-mask-ambiguity]{The data mask ambiguity} for more information about names collisions.
+See \ifelse{html}{\link[=topic-data-mask-ambiguity]{The data mask ambiguity}}{\link[=topic-data-mask-ambiguity]{The data mask ambiguity}} for more information about names collisions.
 }
 
 \subsection{Data-masked \code{parse()} and \code{eval()}}{

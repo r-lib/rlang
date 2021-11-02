@@ -47,8 +47,8 @@ It is important to know that a function defuses its arguments because it require
 
 Read more about this in:
 \itemize{
-\item \link[=topic-data-mask]{What is data-masking and why do I need to embrace?}
-\item \link[=topic-data-mask-programming]{Data mask programming patterns}
+\item \ifelse{html}{\link[=topic-data-mask]{What is data-masking and why do I need \{\{?}}{\link[=topic-data-mask]{What is data-masking and why do I need curly-curly?}}
+\item \ifelse{html}{\link[=topic-data-mask-programming]{Data mask programming patterns}}{\link[=topic-data-mask-programming]{Data mask programming patterns}}
 }
 }
 
@@ -149,7 +149,7 @@ my_function(1 + 1)
 
 R needs information about the environment to properly evaluate argument expressions because they come from a different context than the current function. For instance when a function in your package calls \code{dplyr::mutate()}, the quosure environment indicates where all the private functions of your package are defined.
 
-Read more about the role of quosures in \link[=topic-quosure]{What are quosures and when are they needed?}.
+Read more about the role of quosures in \ifelse{html}{\link[=topic-quosure]{What are quosures and when are they needed?}}{\link[=topic-quosure]{What are quosures and when are they needed?}}.
 }
 
 \section{Comparison with base R}{

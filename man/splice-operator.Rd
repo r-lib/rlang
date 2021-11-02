@@ -41,7 +41,7 @@ Most tidyverse functions support \verb{!!!} out of the box. With base
 functions you need to use \code{\link[=inject]{inject()}} to enable \verb{!!!}.
 
 Using the operator out of context may lead to incorrect results,
-see \link[=topic-inject-out-of-context]{What happens if I use injection operators out of context?}.
+see \ifelse{html}{\link[=topic-inject-out-of-context]{What happens if I use injection operators out of context?}}{\link[=topic-inject-out-of-context]{What happens if I use injection operators out of context?}}.
 }
 
 \section{Splicing a list of arguments}{
@@ -193,7 +193,7 @@ same as in \code{inject()}.
 
 \seealso{
 \itemize{
-\item \link[=topic-inject]{Injecting with !!, !!!, and glue syntax}
+\item \ifelse{html}{\link[=topic-inject]{Injecting with !!, !!!, and glue syntax}}{\link[=topic-inject]{Injecting with !!, !!!, and glue syntax}}
 \item \code{\link[=inject]{inject()}}
 \item \code{\link[=exec]{exec()}}
 }

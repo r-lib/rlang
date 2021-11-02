@@ -31,7 +31,7 @@ Technically, this means function arguments defused with
 All data-masking verbs in the tidyverse support injection operators
 out of the box. With base functions, you need to use \code{\link[=inject]{inject()}} to
 enable \verb{!!}. Using \verb{!!} out of context may lead to incorrect
-results, see \link[=topic-inject-out-of-context]{What happens if I use injection operators out of context?}.
+results, see \ifelse{html}{\link[=topic-inject-out-of-context]{What happens if I use injection operators out of context?}}{\link[=topic-inject-out-of-context]{What happens if I use injection operators out of context?}}.
 
 The examples below are built around the base function \code{\link[=with]{with()}}.
 Since it's not a tidyverse function we will use \code{\link[=inject]{inject()}} to enable
@@ -59,7 +59,7 @@ inject the env-variable inside the data-masked expression:\if{html}{\out{<div cl
 }\if{html}{\out{</div>}}
 
 Note that the \code{\link{.env}} pronoun is a simpler way of solving the
-ambiguity. See \link[=topic-data-mask-ambiguity]{The data mask ambiguity} for more about
+ambiguity. See \ifelse{html}{\link[=topic-data-mask-ambiguity]{The data mask ambiguity}}{\link[=topic-data-mask-ambiguity]{The data mask ambiguity}} for more about
 this.
 }
 
@@ -109,6 +109,6 @@ hope is that it isn't needed for common data analysis cases.
 
 \seealso{
 \itemize{
-\item \link[=topic-inject]{Injecting with !!, !!!, and glue syntax}
+\item \ifelse{html}{\link[=topic-inject]{Injecting with !!, !!!, and glue syntax}}{\link[=topic-inject]{Injecting with !!, !!!, and glue syntax}}
 }
 }

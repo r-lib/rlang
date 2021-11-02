@@ -45,7 +45,7 @@ my_mean(mtcars, cyl, am)
 #> 1             6.59
 }\if{html}{\out{</div>}}
 
-See \link[=topic-data-mask-programming]{Data mask programming patterns} to learn more about creating functions around data-masking functions.
+See \ifelse{html}{\link[=topic-data-mask-programming]{Data mask programming patterns}}{\link[=topic-data-mask-programming]{Data mask programming patterns}} to learn more about creating functions around data-masking functions.
 }
 
 \section{What does "masking" mean?}{
@@ -84,7 +84,7 @@ mtcars \%>\%
 #> 1      6.19     1000
 }\if{html}{\out{</div>}}
 
-Read more about this in \link[=topic-data-mask-ambiguity]{The data mask ambiguity}.
+Read more about this in \ifelse{html}{\link[=topic-data-mask-ambiguity]{The data mask ambiguity}}{\link[=topic-data-mask-ambiguity]{The data mask ambiguity}}.
 }
 
 \section{How does data-masking work?}{
@@ -131,8 +131,8 @@ The tidyverse embraced the data-masking approach in packages like ggplot2 and dp
 
 \section{See also}{
 \itemize{
-\item \link[=topic-data-mask-programming]{Data mask programming patterns}
-\item \link[=topic-defuse]{Defusing R expressions}
+\item \ifelse{html}{\link[=topic-data-mask-programming]{Data mask programming patterns}}{\link[=topic-data-mask-programming]{Data mask programming patterns}}
+\item \ifelse{html}{\link[=topic-defuse]{Defusing R expressions}}{\link[=topic-defuse]{Defusing R expressions}}
 }
 }
 

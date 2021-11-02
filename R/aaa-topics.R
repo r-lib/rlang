@@ -30,28 +30,29 @@ titles <- list(
     "What happens if I use injection operators out of context?"
 )
 
-# Can't use `{{` in links. Causes tex translation to crash.
-link_title <- function(id) {
-  switch(
-    id,
-    topic_data_mask = "What is data-masking and why do I need to embrace?",
-    titles[[id]]
-  )
-}
-
-sprintf_link <- function(id, topic = NULL) {
-  # Link texts can't include code
-  title <- gsub("`", "", link_title(id))
-  title <- gsub("{", "\\{", title, fixed = TRUE)
-
+sprintf_topic_link <- function(id, topic = NULL) {
   if (is.null(topic)) {
     topic <- gsub("_", "-", id)
   }
 
-  sprintf("\\link[=%s]{%s}", topic, title)
+  title <- titles[[id]]
+
+  # Link texts can't include code
+  html_title <- gsub("`", "", title)
+  html_title <- gsub("{", "\\{", html_title, fixed = TRUE)
+  html <- sprintf("\\link[=%s]{%s}", topic, html_title)
+
+  # Link texts can't include curly symbols because the escpaing
+  # routine of the Rd-to-TeX translators is broken
+  text_title <- gsub("`", "", title)
+  text_title <- gsub("{{", "curly-curly", text_title, fixed = TRUE)
+  text_title <- gsub("{", "curly", text_title, fixed = TRUE)
+  text <- sprintf("\\link[=%s]{%s}", topic, text_title)
+
+  sprintf("\\ifelse{html}{%s}{%s}", html, text)
 }
 
-links <- lapply(names(titles), sprintf_link)
+links <- lapply(names(titles), sprintf_topic_link)
 names(links) <- names(titles)
 
 links[["{{"]] <- "\\ifelse{html}{\\code{\\link[=embrace-operator]{\\{\\{}}}{\\verb{\\{\\{}}"

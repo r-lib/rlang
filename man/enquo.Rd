@@ -65,7 +65,7 @@ using the \link[=topic-metaprogramming]{defuse-and-inject} pattern.
 }
 
 These are advanced tools. Make sure to first learn about the embrace
-operator \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}} in \link[=topic-data-mask-programming]{Data mask programming patterns}.
+operator \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}} in \ifelse{html}{\link[=topic-data-mask-programming]{Data mask programming patterns}}{\link[=topic-data-mask-programming]{Data mask programming patterns}}.
 \verb{\{\{} is easier to work with with less theory, and it is sufficient
 in most applications.
 }
@@ -116,7 +116,7 @@ g(!!column)
 }
 \seealso{
 \itemize{
-\item \link[=topic-defuse]{Defusing R expressions} for an overview.
+\item \ifelse{html}{\link[=topic-defuse]{Defusing R expressions}}{\link[=topic-defuse]{Defusing R expressions}} for an overview.
 \item \code{\link[=expr]{expr()}} to defuse your own local expressions.
 \item \link[=defusing-advanced]{Advanced defusal operators}.
 \item \code{\link[base:eval]{base::eval()}} and \code{\link[=eval_bare]{eval_bare()}} for resuming evaluation

@@ -131,7 +131,7 @@ In this pattern, \code{dplyr::vars()} defuses expressions externally. It creates
 #> env:  global
 }\if{html}{\out{</div>}}
 
-For more information about external defusing, see \link[=topic-multiple-columns]{Taking multiple columns without ...}.
+For more information about external defusing, see \ifelse{html}{\link[=topic-multiple-columns]{Taking multiple columns without ...}}{\link[=topic-multiple-columns]{Taking multiple columns without ...}}.
 }
 }
 

@@ -41,6 +41,6 @@ mtcars \%>\% my_mean(cyl)
 
 \seealso{
 \itemize{
-\item \link[=topic-inject]{Injecting with !!, !!!, and glue syntax}
+\item \ifelse{html}{\link[=topic-inject]{Injecting with !!, !!!, and glue syntax}}{\link[=topic-inject]{Injecting with !!, !!!, and glue syntax}}
 }
 }

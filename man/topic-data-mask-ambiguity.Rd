@@ -82,7 +82,7 @@ data.frame(factor = 0, value = 1) \%>\% my_rescale(value)
 
 \subsection{Subsetting \code{.data} with env-variables}{
 
-The \code{\link{.data}} pronoun may be used as a name-to-data-mask pattern (see \link[=topic-data-mask-programming]{Data mask programming patterns}):\if{html}{\out{<div class="sourceCode r">}}\preformatted{var <- "cyl"
+The \code{\link{.data}} pronoun may be used as a name-to-data-mask pattern (see \ifelse{html}{\link[=topic-data-mask-programming]{Data mask programming patterns}}{\link[=topic-data-mask-programming]{Data mask programming patterns}}):\if{html}{\out{<div class="sourceCode r">}}\preformatted{var <- "cyl"
 mtcars \%>\% dplyr::summarise(mean = mean(.data[[var]]))
 #> # A tibble: 1 x 1
 #>    mean

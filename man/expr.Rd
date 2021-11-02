@@ -39,7 +39,7 @@ call("with", call2("c", !!!syms(vars)))
 }
 \seealso{
 \itemize{
-\item \link[=topic-defuse]{Defusing R expressions} for an overview.
+\item \ifelse{html}{\link[=topic-defuse]{Defusing R expressions}}{\link[=topic-defuse]{Defusing R expressions}} for an overview.
 \item \code{\link[=enquo]{enquo()}} to defuse non-local expressions from function
 arguments.
 \item \link[=defusing-advanced]{Advanced defusal operators}.

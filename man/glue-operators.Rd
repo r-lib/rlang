@@ -87,7 +87,7 @@ list2("\{x\}" := 1)
 #> [1] 1
 }\if{html}{\out{</div>}}
 
-Ideally, using \verb{\{\{} on regular objects would be an error. However for technical reasons it is not possible to make a distinction between function arguments and ordinary variables. See \link[=topic-embrace-non-args]{Does \{\{ work on regular objects?} for more information about this limitation.
+Ideally, using \verb{\{\{} on regular objects would be an error. However for technical reasons it is not possible to make a distinction between function arguments and ordinary variables. See \ifelse{html}{\link[=topic-embrace-non-args]{Does \{\{ work on regular objects?}}{\link[=topic-embrace-non-args]{Does curly-curly work on regular objects?}} for more information about this limitation.
 }
 
 \subsection{Allow overriding default names}{

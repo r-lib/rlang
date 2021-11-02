@@ -32,7 +32,7 @@ symbols.
 \item \code{data_sym()} and \code{data_syms()} create calls of the form
 \code{.data$foo} instead of symbols. Subsetting the \code{\link{.data}} pronoun
 is more robust when you expect a data-variable. See
-\link[=topic-data-mask-ambiguity]{The data mask ambiguity}.
+\ifelse{html}{\link[=topic-data-mask-ambiguity]{The data mask ambiguity}}{\link[=topic-data-mask-ambiguity]{The data mask ambiguity}}.
 }
 
 Only tidy eval APIs support the \code{\link{.data}} pronoun. With base R
@@ -68,7 +68,7 @@ sym(as_string(missing_arg()))
 }
 \seealso{
 \itemize{
-\item \link[=topic-defuse]{Defusing R expressions}
-\item \link[=topic-metaprogramming]{Metaprogramming patterns}
+\item \ifelse{html}{\link[=topic-defuse]{Defusing R expressions}}{\link[=topic-defuse]{Defusing R expressions}}
+\item \ifelse{html}{\link[=topic-metaprogramming]{Metaprogramming patterns}}{\link[=topic-metaprogramming]{Metaprogramming patterns}}
 }
 }

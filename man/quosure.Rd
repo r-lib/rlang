@@ -63,7 +63,7 @@ has to match at least one of them, otherwise \code{is_call()} returns
 A quosure is a type of \link[=topic-defuse]{defused expression} that includes
 a reference to the context where it was created. A quosure is thus
 guaranteed to evaluate in its original environment and can refer to
-local objects. Read more about quosures in \link[=topic-quosure]{What are quosures and when are they needed?}.
+local objects. Read more about quosures in \ifelse{html}{\link[=topic-quosure]{What are quosures and when are they needed?}}{\link[=topic-quosure]{What are quosures and when are they needed?}}.
 \itemize{
 \item You can access the quosure components with \code{quo_get_expr()} and
 \code{quo_get_env()}.
@@ -136,6 +136,6 @@ quo_is_missing(fn())
 \item \code{\link[=quo]{quo()}} for creating quosures by quotation
 \item \code{\link[=as_quosure]{as_quosure()}} and \code{\link[=new_quosure]{new_quosure()}} for assembling quosures from
 components
-\item \link[=topic-quosure]{What are quosures and when are they needed?} for an overview
+\item \ifelse{html}{\link[=topic-quosure]{What are quosures and when are they needed?}}{\link[=topic-quosure]{What are quosures and when are they needed?}} for an overview
 }
 }
