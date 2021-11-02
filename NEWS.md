@@ -67,6 +67,8 @@
   and `check_dots_empty()` is deprecated in favour of the new `error`
   argument which takes an error handler.
 
+* `with_abort()` has been removed from the package.
+
 
 ## Features and bugfixes
 

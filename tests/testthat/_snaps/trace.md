@@ -1036,11 +1036,11 @@
       [1m[1m[1m[34m<error/rlang_error>[39m[22m
       [1m[33mError[39m in [1m[1m[30m[47m`+`[49m[39m: [22m[1m[22mnon-numeric argument to binary operator
       [1mBacktrace:[22m
-      [90m  1. [39m[1mrlang[22m::catch_cnd(with_abort(f()), "error")
-      [90m 10. [39mrlang f()
-      [90m 11. [39mrlang g()
-      [90m 12. [39mrlang h()
-      [90m 13. [39m[1mbase[22m::identity(1 + "")
+      [90m  1. [39m[1mrlang[22m::catch_cnd(withCallingHandlers(f(), error = entrace), "error")
+      [90m  9. [39mrlang f()
+      [90m 10. [39mrlang g()
+      [90m 11. [39mrlang h()
+      [90m 12. [39m[1mbase[22m::identity(1 + "")
     Code
       with_options(crayon.enabled = TRUE, summary(err))
     Output
@@ -1048,19 +1048,18 @@
       [1m[33mError[39m in [1m[1m[30m[47m`+`[49m[39m: [22m[1m[22mnon-numeric argument to binary operator
       [1mBacktrace:[22m
       [90m     [39mx
-      [90m  1. [39m+-[1mrlang[22m::catch_cnd(with_abort(f()), "error")
+      [90m  1. [39m+-[1mrlang[22m::catch_cnd(withCallingHandlers(f(), error = entrace), "error")
       [90m  2. [39m| +-rlang::eval_bare(...)
       [90m  3. [39m| +-[1mbase[22m::tryCatch(...)
       [90m  4. [39m| | \-base tryCatchList(expr, classes, parentenv, handlers)
       [90m  5. [39m| |   \-base tryCatchOne(expr, names, parentenv, handlers[[1L]])
       [90m  6. [39m| |     \-base doTryCatch(return(expr), name, parentenv, handler)
       [90m  7. [39m| \-base::force(expr)
-      [90m  8. [39m+-[1mrlang[22m::with_abort(f())
-      [90m  9. [39m| \-[1mbase[22m::withCallingHandlers(expr, error = `<fn>`)
-      [90m 10. [39m\-[1mrlang[22m f()
-      [90m 11. [39m  \-rlang g()
-      [90m 12. [39m    \-rlang h()
-      [90m 13. [39m      \-[1mbase[22m::identity(1 + "")
+      [90m  8. [39m+-base::withCallingHandlers(f(), error = entrace)
+      [90m  9. [39m\-[1mrlang[22m f()
+      [90m 10. [39m  \-rlang g()
+      [90m 11. [39m    \-rlang h()
+      [90m 12. [39m      \-[1mbase[22m::identity(1 + "")
 
 # `bottom` must be a positive integer
 

@@ -18,7 +18,7 @@ of R and the tidyverse:
     quoted arguments (`enquo()`). See <https://tidyeval.tidyverse.org>.
 
 *   User-friendly __error reporting__ with backtraces and chained errors
-    (`abort()`, `trace_back()`, `with_abort()`).
+    (`abort()`, `trace_back()`).
 
 *   A consistent API for working with __base types__. Note that overall
     this is a work in progress that is still in flux:

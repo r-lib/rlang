@@ -143,7 +143,6 @@
 #'   for consistency with our conventions for class constructors
 #'   documented in <https://adv-r.hadley.nz/s3.html#s3-subclassing>.
 #'
-#' @seealso [with_abort()] to convert all errors to rlang errors.
 #' @examples
 #' # These examples are guarded to avoid throwing errors
 #' if (FALSE) {
@@ -1011,16 +1010,6 @@ trace_depth_wch <- function(trace) {
       !is_call(wch_calls[[2]], "signalCondition") ||
       !is_call(wch_calls[[3]]) && is_function(wch_calls[[3]][[1]])) {
     return(NULL)
-  }
-
-  # Check for with_abort()
-  with_abort_loc <- top - 3L - 2L
-  if (with_abort_loc > 0L) {
-    with_abort_call <- calls[[with_abort_loc]]
-    if (is_call(with_abort_call, ".handleSimpleError") &&
-        identical(with_abort_call[[2]], quote(`<fn>`))) {
-      return(with_abort_loc - 1L)
-    }
   }
 
   top - 3L

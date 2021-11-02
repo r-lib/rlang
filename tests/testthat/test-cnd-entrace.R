@@ -1,32 +1,3 @@
-test_that("with_abort() promotes base errors to rlang errors", {
-  f <- function() g()
-  g <- function() h()
-  h <- function() stop("Low-level message")
-
-  a <- function() b()
-  b <- function() c()
-  c <- function() {
-    withCallingHandlers(
-      with_abort(f()),
-      error = function(err) {
-        abort("High-level message", parent = err)
-      }
-    )
-  }
-
-  local_options(
-    rlang_trace_format_srcrefs = FALSE,
-    rlang_trace_top_env = current_env()
-  )
-  err <- identity(catch_error(a()))
-
-  expect_snapshot({
-    print(err)
-
-    summary(err)
-  })
-})
-
 test_that("cnd_entrace() entraces conditions properly", {
   with_cnd_entrace <- function(signaller, catcher, arg, classes = "error") {
     f <- function() g()

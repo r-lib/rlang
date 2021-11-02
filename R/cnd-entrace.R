@@ -110,8 +110,7 @@ global_entrace_fallback <- function(enable, class) {
 #' @param ... Unused. These dots are for future extensions.
 #'
 #' @seealso [global_entrace()] for configuring errors with
-#'   `entrace()`. [with_abort()] to promote conditions to rlang
-#'   errors.  [cnd_entrace()] to manually add a backtrace to a
+#'   `entrace()`. [cnd_entrace()] to manually add a backtrace to a
 #'   condition.
 #' @examples
 #' quote({  # Not run
@@ -345,47 +344,4 @@ add_backtrace <- function() {
   msg <- "Warning: `add_backtrace()` is now exported as `entrace()` as of rlang 0.3.1"
   cat_line(msg, file = stderr())
   entrace(bottom = sys.frame(-1))
-}
-
-#' Promote all errors to rlang errors
-#'
-#' @description
-#'
-#' `with_abort()` promotes conditions as if they were thrown with
-#' [abort()]. These errors embed a [backtrace][trace_back]. They are
-#' particularly suitable to be set as *parent errors* (see `parent`
-#' argument of [abort()]).
-#'
-#' @param expr An expression run in a context where errors are
-#'   promoted to rlang errors.
-#' @param classes Character vector of condition classes that should be
-#'   promoted to rlang errors.
-#'
-#' @details
-#'
-#' `with_abort()` installs a [calling handler][calling] for errors and
-#' rethrows non-rlang errors with [abort()]. However, error handlers
-#' installed *within* `with_abort()` have priority. For this reason,
-#' you should use [tryCatch()] and [exiting] handlers outside
-#' `with_abort()` rather than inside.
-#'
-#' @examples
-#' # with_abort() automatically casts simple errors thrown by stop()
-#' # to rlang errors. It is is handy for rethrowing low level
-#' # errors. The backtraces are then segmented between the low level
-#' # and high level contexts.
-#' f <- function() g()
-#' g <- function() stop("Low level error")
-#'
-#' high_level <- function() {
-#'   with_handlers(
-#'     with_abort(f()),
-#'     error = ~ abort("High level error", parent = .)
-#'   )
-#' }
-#' @export
-with_abort <- function(expr, classes = "error") {
-  handlers <- rep_named(classes, list(entrace))
-  handle_call <- rlang::expr(withCallingHandlers(expr, !!!handlers))
-  .External2(ffi_eval, handle_call, current_env())
 }

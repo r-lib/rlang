@@ -686,7 +686,7 @@ test_that("runs of namespaces are embolden (#946)", {
   f <- function() g()
   g <- function() h()
   h <- function() identity(1 + "")
-  err <- catch_cnd(with_abort(f()), "error")
+  err <- catch_cnd(withCallingHandlers(f(), error = entrace), "error")
 
   expect_snapshot({
     with_options(
