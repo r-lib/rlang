@@ -151,7 +151,8 @@ check_installed <- function(pkg,
     invokeRestart("abort")
   }
   if (is_installed("pak")) {
-    pak::pkg_install(missing_pkgs, ask = FALSE)
+    pkg_install <- env_get(ns_env("pak"), "pkg_install")
+    pkg_install(missing_pkgs, ask = FALSE)
   } else {
     utils::install.packages(missing_pkgs)
   }

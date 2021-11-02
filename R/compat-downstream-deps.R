@@ -223,7 +223,8 @@ check_downstream <- function(ver,
   }
 
   if (is_installed("pak")) {
-    pak::pkg_install(pkgs, ask = FALSE)
+    pkg_install <- get(envir = asNamespace("pak"), "pkg_install")
+    pkg_install(pkgs, ask = FALSE)
   } else {
     utils::install.packages(pkgs)
   }
