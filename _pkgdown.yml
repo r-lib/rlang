@@ -137,11 +137,7 @@ reference:
   - subtitle: Notes
     contents:
       - topic-embrace-constants
-
-  - title: Create tidy evaluation APIs
-    desc: >
-      Create data masking APIs as in dplyr or tidyr.
-      These functions are meant for developers rather than users.
+  - subtitle: Create tidy evaluation APIs
     contents:
       - eval_tidy
       - new_data_mask
