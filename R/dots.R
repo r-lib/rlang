@@ -69,7 +69,7 @@ NULL
 }
 
 
-#' Collect dots in a list
+#' Collect dynamic dots in a list
 #'
 #' `list2(...)` is equivalent to `list(...)` with a few additional
 #' features, collectively called [dynamic dots][dyn-dots]. While

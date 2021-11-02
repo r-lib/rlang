@@ -4,7 +4,7 @@
 \alias{list2}
 \alias{ll}
 \alias{dots_list}
-\title{Collect dots in a list}
+\title{Collect dynamic dots in a list}
 \usage{
 list2(...)
 

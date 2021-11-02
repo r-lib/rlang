@@ -150,20 +150,20 @@ reference:
     desc: >
       Utils to work with `...`.
     contents:
-      - args_dots_empty
-      - args_dots_used
       - check_dots_used
       - check_dots_unnamed
       - check_dots_empty
-  - title: Tidy dots
+      - args_dots_empty
+      - args_dots_used
+  - title: Dynamic dots
     desc: >
       Collect arguments contained in `...` with `!!!` and
       name-unquoting support.
     contents:
       - dyn-dots
       - list2
-      - dots_list
       - pairlist2
+
   - title: Errors, conditions, and backtraces
     contents:
       - abort

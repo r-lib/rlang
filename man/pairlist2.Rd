@@ -2,7 +2,7 @@
 % Please edit documentation in R/call.R
 \name{pairlist2}
 \alias{pairlist2}
-\title{Create pairlists with splicing support}
+\title{Collect dynamic dots in a pairlist}
 \usage{
 pairlist2(...)
 }
