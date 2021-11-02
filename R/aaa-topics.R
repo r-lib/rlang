@@ -76,3 +76,11 @@ link <- function(id) {
 
   out
 }
+text <- function(id) {
+  switch(
+    id,
+    "'{'" = "\\verb{\"\\{\"}",
+    "'{{'" = "\\verb{\"\\{\\{\"}",
+    stop(sprintf("`id` '%s' doesn't exist.", id))
+  )
+}

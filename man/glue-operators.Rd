@@ -18,7 +18,7 @@ tibble::tibble("\{foo\}" := 1)
 #> 1     1
 }\if{html}{\out{</div>}}
 
-Inside functions, embracing an argument with \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}} inserts the expression supplied as argument in the string.\if{html}{\out{<div class="sourceCode r">}}\preformatted{tib <- function(x) \{
+Inside functions, embracing an argument with \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}} inserts the expression supplied as argument in the string. This gives an indication on the variable or computation supplied as argument:\if{html}{\out{<div class="sourceCode r">}}\preformatted{tib <- function(x) \{
   tibble::tibble("var: \{\{ x \}\}" := x)
 \}
 
@@ -36,9 +36,11 @@ See also \code{\link[=englue]{englue()}} to string-embrace outside of dynamic do
 g(1 + 1)
 #> [1] "var: 1 + 1"
 }\if{html}{\out{</div>}}
-\subsection{\verb{\{\{} and \verb{\{}}{
 
-While \code{glue::glue()} only supports \verb{\{}, dynamic dots support both \verb{\{} and \verb{\{\{}. The double brace variant is similar to the embrace operator \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}} available in \link[=topic-data-mask]{data-masked} arguments. It \link[=topic-defuse]{defuses} a function argument, calls \code{\link[=as_label]{as_label()}} on the expression supplied as argument, and inserts the result in the string.
+Technically, \verb{"\{\{"} \link[=topic-defuse]{defuses} a function argument, calls \code{\link[=as_label]{as_label()}} on the expression supplied as argument, and inserts the result in the string.
+\subsection{\verb{"\{"} and \verb{"\{\{"}}{
+
+While \code{glue::glue()} only supports \verb{"\{"}, dynamic dots support both \verb{"\{"} and \verb{"\{\{"}. The double brace variant is similar to the embrace operator \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}} available in \link[=topic-data-mask]{data-masked} arguments.
 
 In the following example, the embrace operator is used in a glue string to name the result with a default name that represents the expression supplied as argument:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
   data \%>\% dplyr::summarise("\{\{ var \}\}" := mean(\{\{ var \}\}))
@@ -57,7 +59,7 @@ mtcars \%>\% my_mean(cyl * am)
 #> 1       2.06
 }\if{html}{\out{</div>}}
 
-\verb{\{\{} is only meant for function arguments, and only for inserting the expression supplied as argument. If you need to interpolate a string stored in a variable, use the regular glue operator \verb{\{} instead:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var, name = "mean") \{
+\verb{"\{\{"} is only meant for inserting an expression supplied as argument to a function. The result of the expression is not inspected or used. To interpolate a string stored in a variable, use the regular glue operator \verb{"\{"} instead:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var, name = "mean") \{
   data \%>\% dplyr::summarise("\{name\}" := mean(\{\{ var \}\}))
 \}
 

@@ -10,7 +10,7 @@ foo <- "name"
 tibble::tibble("{foo}" := 1)
 ```
 
-Inside functions, embracing an argument with `r link("{{")` inserts the expression supplied as argument in the string.
+Inside functions, embracing an argument with `r link("{{")` inserts the expression supplied as argument in the string. This gives an indication on the variable or computation supplied as argument:
 
 ```{r, comment = "#>", collapse = TRUE}
 tib <- function(x) {
@@ -30,10 +30,12 @@ g <- function(x) {
 g(1 + 1)
 ```
 
+Technically, `r text("'{{'")` [defuses][topic-defuse] a function argument, calls [as_label()] on the expression supplied as argument, and inserts the result in the string.
 
-## `{{` and `{`
 
-While `glue::glue()` only supports `{`, dynamic dots support both `{` and `{{`. The double brace variant is similar to the embrace operator `r link("{{")` available in [data-masked][topic-data-mask] arguments. It [defuses][topic-defuse] a function argument, calls [as_label()] on the expression supplied as argument, and inserts the result in the string.
+## `r text("'{'")` and `r text("'{{'")`
+
+While `glue::glue()` only supports `r text("'{'")`, dynamic dots support both `r text("'{'")` and `r text("'{{'")`. The double brace variant is similar to the embrace operator `r link("{{")` available in [data-masked][topic-data-mask] arguments.
 
 In the following example, the embrace operator is used in a glue string to name the result with a default name that represents the expression supplied as argument:
 
@@ -47,7 +49,7 @@ mtcars %>% my_mean(cyl)
 mtcars %>% my_mean(cyl * am)
 ```
 
-`{{` is only meant for function arguments, and only for inserting the expression supplied as argument. If you need to interpolate a string stored in a variable, use the regular glue operator `{` instead:
+`r text("'{{'")` is only meant for inserting an expression supplied as argument to a function. The result of the expression is not inspected or used. To interpolate a string stored in a variable, use the regular glue operator `r text("'{'")` instead:
 
 ```{r, comment = "#>", collapse = TRUE}
 my_mean <- function(data, var, name = "mean") {
