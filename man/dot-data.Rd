@@ -8,8 +8,6 @@
 \alias{.env}
 \title{\code{.data} and \code{.env} pronouns}
 \description{
-TODO! Difference between \code{.data} and magrittr \code{.}
-
 The \code{.data} and \code{.env} pronouns make it explicit where to find
 objects when programming with \link[=topic-data-mask]{data-masked}
 functions.\preformatted{m <- 10
@@ -32,6 +30,16 @@ over the contents of \code{.data}. Similarly, \code{.env} is not an actual R
 environment. For instance, it doesn't have a parent and the
 subsetting operators behave differently.
 }
+\section{\code{.data} versus the magrittr pronoun \code{.}}{
+
+
+In a \href{https://magrittr.tidyverse.org/}{magrittr pipeline}, \code{.data}
+is not necessarily interchangeable with the magrittr pronoun \code{.}.
+With grouped data frames in particular, \code{.data} represents the
+current group slice whereas the pronoun \code{.} represents the whole
+data frame. Always prefer using \code{.data} in data-masked context.
+}
+
 \section{Where does \code{.data} live?}{
 
 

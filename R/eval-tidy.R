@@ -146,8 +146,6 @@ print.rlang_fake_data_pronoun <- function(...) cat_line("<pronoun>")
 #'
 #' @description
 #'
-#' TODO! Difference between `.data` and magrittr `.`
-#'
 #' The `.data` and `.env` pronouns make it explicit where to find
 #' objects when programming with [data-masked][topic-data-mask]
 #' functions.
@@ -174,6 +172,15 @@ print.rlang_fake_data_pronoun <- function(...) cat_line("<pronoun>")
 #' over the contents of `.data`. Similarly, `.env` is not an actual R
 #' environment. For instance, it doesn't have a parent and the
 #' subsetting operators behave differently.
+#'
+#'
+#' @section `.data` versus the magrittr pronoun `.`:
+#'
+#' In a [magrittr pipeline](https://magrittr.tidyverse.org/), `.data`
+#' is not necessarily interchangeable with the magrittr pronoun `.`.
+#' With grouped data frames in particular, `.data` represents the
+#' current group slice whereas the pronoun `.` represents the whole
+#' data frame. Always prefer using `.data` in data-masked context.
 #'
 #'
 #' @section Where does `.data` live?:
