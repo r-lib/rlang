@@ -46,12 +46,13 @@ Enhances:
     winch
 SystemRequirements:
     C++11
-Remotes:
-    r-lib/pkgdown,
-    tidyverse/tidytemplate
 Encoding: UTF-8
 RoxygenNote: 7.1.2.9000
 Roxygen: list(markdown = TRUE)
 URL: https://rlang.r-lib.org, https://github.com/r-lib/rlang
 BugReports: https://github.com/r-lib/rlang/issues
 Config/testthat/edition: 3
+Config/Needs/website:
+    dplyr,
+    r-lib/pkgdown,
+    tidyverse/tidytemplate
