@@ -19,7 +19,7 @@ Dynamic dots offer a few additional features:
 \enumerate{
 \item You can \strong{splice} arguments saved in a list with the splice
 operator \code{\link[=splice-operator]{!!!}}.
-\item You can \strong{inject} names with \link[=glue-operator]{glue syntax} on
+\item You can \strong{inject} names with \link[=glue-operators]{glue syntax} on
 the left-hand side of \verb{:=}.
 \item Trailing commas are ignored, making it easier to copy and paste
 lines of arguments.

@@ -10,7 +10,7 @@ englue(x)
 \item{x}{A string to interpolate with glue operators.}
 }
 \description{
-\code{englue()} creates a string with the \link[=glue-operator]{glue operators} \verb{\{} and \verb{\{\{}. These operators are
+\code{englue()} creates a string with the \link[=glue-operators]{glue operators} \verb{\{} and \verb{\{\{}. These operators are
 normally used to inject names within \link[=dyn-dots]{dynamic dots}.
 \code{englue()} makes them available anywhere within a function.
 

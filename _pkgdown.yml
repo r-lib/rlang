@@ -90,7 +90,7 @@ reference:
   - subtitle: Tools
     contents:
       - embrace-operator
-      - glue-operator
+      - glue-operators
       - .data
   - subtitle: Overviews
     contents:

@@ -76,7 +76,7 @@ The defused input is now evaluated only once because it is injected only once:\i
 }\if{html}{\out{</div>}}
 }
 \section{What about glue strings?}{
-\verb{\{\{} \link[=glue-operator]{embracing in glue strings} doesn't suffer from the double evaluation problem:\if{html}{\out{<div class="sourceCode r">}}\preformatted{summarise_stats <- function(data, var) \{
+\verb{\{\{} \link[=glue-operators]{embracing in glue strings} doesn't suffer from the double evaluation problem:\if{html}{\out{<div class="sourceCode r">}}\preformatted{summarise_stats <- function(data, var) \{
   data \%>\%
     dplyr::transmute(
       var = \{\{ var \}\},

@@ -76,7 +76,7 @@ last argument is ignored if it is empty. Named arguments are not
 considered empty.}
 
 \item{.unquote_names}{Whether to treat \verb{:=} as \code{=}. Unlike \code{=}, the
-\verb{:=} syntax supports \link[=glue-operator]{names injection}.}
+\verb{:=} syntax supports \link[=glue-operators]{names injection}.}
 
 \item{.homonyms}{How to treat arguments with the same name. The
 default, \code{"keep"}, preserves these arguments. Set \code{.homonyms} to

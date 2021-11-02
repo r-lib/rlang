@@ -118,7 +118,7 @@ expr <- function(expr) {
 #'   last argument is ignored if it is empty. Named arguments are not
 #'   considered empty.
 #' @param .unquote_names Whether to treat `:=` as `=`. Unlike `=`, the
-#'   `:=` syntax supports [names injection][glue-operator].
+#'   `:=` syntax supports [names injection][glue-operators].
 #' @return `enquo()` returns a [quosure][topic-quosure] and `enquos()`
 #'   returns a list of quosures.
 #'

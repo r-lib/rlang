@@ -55,8 +55,8 @@ links <- lapply(names(titles), sprintf_link)
 names(links) <- names(titles)
 
 links[["{{"]] <- "\\ifelse{html}{\\code{\\link[=embrace-operator]{\\{\\{}}}{\\verb{\\{\\{}}"
-links[["'{{'"]] <- "\\ifelse{html}{\\code{\\link[=glue-operator]{\"\\{\\{\"}}}{\\verb{\"\\{\\{\"}}"
-links[["'{'"]] <- "\\ifelse{html}{\\code{\\link[=glue-operator]{\"\\{\"}}}{\\verb{\"\\{\"}}"
+links[["'{{'"]] <- "\\ifelse{html}{\\code{\\link[=glue-operators]{\"\\{\\{\"}}}{\\verb{\"\\{\\{\"}}"
+links[["'{'"]] <- "\\ifelse{html}{\\code{\\link[=glue-operators]{\"\\{\"}}}{\\verb{\"\\{\"}}"
 
 title <- function(id) {
   out <- titles[[id]]

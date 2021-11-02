@@ -15,7 +15,7 @@
 #' 1. You can __splice__ arguments saved in a list with the splice
 #'    operator [`!!!`][splice-operator].
 #'
-#' 2. You can __inject__ names with [glue syntax][glue-operator] on
+#' 2. You can __inject__ names with [glue syntax][glue-operators] on
 #'    the left-hand side of `:=`.
 #'
 #' 3. Trailing commas are ignored, making it easier to copy and paste

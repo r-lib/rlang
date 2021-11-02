@@ -43,7 +43,7 @@ In a regular function, arguments can be defined in terms of a _type_ of objects 
 
   Unlike data masking, tidy selection is an interpreted dialect. There is in fact no masking at all. Expressions are either interpreted in the context of the data frame (e.g. `c(cyl, am)` which stands for the union of the columns `cyl` and `am`), or evaluated in the user environment (e.g. `all_of()`, `starts_with()`, and any other expressions). This has implications for inheritance of argument behaviour as we will see below.
 
-- [Dynamic dots][dots_dynamic]: These may be data-masked arguments, tidy selections, or just regular arguments. Dynamic dots support injection of multiple arguments with the [`!!!`][splice-operator] operator as well as name injection with [glue][glue-operator] operators.
+- [Dynamic dots][dots_dynamic]: These may be data-masked arguments, tidy selections, or just regular arguments. Dynamic dots support injection of multiple arguments with the [`!!!`][splice-operator] operator as well as name injection with [glue][glue-operators] operators.
 
 To let users know about the capabilities of your function arguments, document them with the following tags, depending on which set of semantics they inherit from:
 

@@ -9,8 +9,8 @@
 \description{
 The injection operators are extensions of R implemented by rlang to modify a piece of code before R processes it. There are two main families:
 \itemize{
-\item The \link[=dyn-dots]{dynamic dots} operators, \code{\link{!!!}} and \ifelse{html}{\code{\link[=glue-operator]{"\{"}}}{\verb{"\{"}}.
-\item The \link[=topic-metaprogramming]{metaprogramming operators} \code{\link{!!}}, \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}}, and \ifelse{html}{\code{\link[=glue-operator]{"\{\{"}}}{\verb{"\{\{"}}. Splicing with \code{\link{!!!}} can also be done in metaprogramming context.
+\item The \link[=dyn-dots]{dynamic dots} operators, \code{\link{!!!}} and \ifelse{html}{\code{\link[=glue-operators]{"\{"}}}{\verb{"\{"}}.
+\item The \link[=topic-metaprogramming]{metaprogramming operators} \code{\link{!!}}, \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}}, and \ifelse{html}{\code{\link[=glue-operators]{"\{\{"}}}{\verb{"\{\{"}}. Splicing with \code{\link{!!!}} can also be done in metaprogramming context.
 }
 }
 \section{Dots injection}{
@@ -52,7 +52,7 @@ And a list of arguments can be supplied by \emph{splicing} the list with \code{\
 
 \subsection{Injecting names with \verb{"\{"}}{
 
-A related problem comes up when an argument name is stored in a variable. With dynamic dots, you can inject the name using \href{https://glue.tidyverse.org/}{glue syntax} with \ifelse{html}{\code{\link[=glue-operator]{"\{"}}}{\verb{"\{"}}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{name <- "foo"
+A related problem comes up when an argument name is stored in a variable. With dynamic dots, you can inject the name using \href{https://glue.tidyverse.org/}{glue syntax} with \ifelse{html}{\code{\link[=glue-operators]{"\{"}}}{\verb{"\{"}}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{name <- "foo"
 
 rbind2("\{name\}" := 1:2, bar = 3:4)
 #>     [,1] [,2]

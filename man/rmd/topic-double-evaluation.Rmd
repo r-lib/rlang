@@ -71,7 +71,7 @@ summarise_stats(mtcars, times100(cyl))
 
 # What about glue strings?
 
-`{{` [embracing in glue strings][glue-operator] doesn't suffer from the double evaluation problem:
+`{{` [embracing in glue strings][glue-operators] doesn't suffer from the double evaluation problem:
 
 ```{r, comment = "#>", collapse = TRUE}
 summarise_stats <- function(data, var) {

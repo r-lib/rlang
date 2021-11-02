@@ -348,17 +348,17 @@ NULL
 
 #' Name injection with `"{"` and `"{{"`
 #'
-#' ```{r, child = "man/rmd/glue-operator.Rmd"}
+#' ```{r, child = "man/rmd/glue-operators.Rmd"}
 #' ```
 #'
-#' @name glue-operator
+#' @name glue-operators
 NULL
 
 #' Defuse function arguments with glue
 #'
 #' @description
 #' `englue()` creates a string with the [glue
-#' operators][glue-operator] `{` and `{{`. These operators are
+#' operators][glue-operators] `{` and `{{`. These operators are
 #' normally used to inject names within [dynamic dots][dyn-dots].
 #' `englue()` makes them available anywhere within a function.
 #'
