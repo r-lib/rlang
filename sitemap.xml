@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://rlang.r-lib.org/404.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/LICENSE.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/authors.html</loc>
+  </url>
+  <url>
     <loc>https://rlang.r-lib.org/index.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/news/index.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/UQ.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/abort.html</loc>
@@ -62,9 +80,6 @@
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/as_utf8_character.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/bang-bang.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/bare-type-predicates.html</loc>
@@ -148,10 +163,16 @@
     <loc>https://rlang.r-lib.org/reference/cnd_type.html</loc>
   </url>
   <url>
+    <loc>https://rlang.r-lib.org/reference/defusing-advanced.html</loc>
+  </url>
+  <url>
     <loc>https://rlang.r-lib.org/reference/dev-notes-dots.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/done.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/dot-data.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/dots_n.html</loc>
@@ -166,10 +187,16 @@
     <loc>https://rlang.r-lib.org/reference/dyn-dots.html</loc>
   </url>
   <url>
+    <loc>https://rlang.r-lib.org/reference/embrace-operator.html</loc>
+  </url>
+  <url>
     <loc>https://rlang.r-lib.org/reference/empty_env.html</loc>
   </url>
   <url>
-    <loc>https://rlang.r-lib.org/reference/enquo0.html</loc>
+    <loc>https://rlang.r-lib.org/reference/englue.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/enquo.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/entrace.html</loc>
@@ -250,6 +277,9 @@
     <loc>https://rlang.r-lib.org/reference/exiting.html</loc>
   </url>
   <url>
+    <loc>https://rlang.r-lib.org/reference/expr.html</loc>
+  </url>
+  <url>
     <loc>https://rlang.r-lib.org/reference/expr_interp.html</loc>
   </url>
   <url>
@@ -301,6 +331,9 @@
     <loc>https://rlang.r-lib.org/reference/global_entrace.html</loc>
   </url>
   <url>
+    <loc>https://rlang.r-lib.org/reference/glue-operators.html</loc>
+  </url>
+  <url>
     <loc>https://rlang.r-lib.org/reference/has_length.html</loc>
   </url>
   <url>
@@ -310,10 +343,16 @@
     <loc>https://rlang.r-lib.org/reference/hash.html</loc>
   </url>
   <url>
+    <loc>https://rlang.r-lib.org/reference/index.html</loc>
+  </url>
+  <url>
     <loc>https://rlang.r-lib.org/reference/inherits_any.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/inject.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/injection-operator.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/invoke.html</loc>
@@ -466,9 +505,6 @@
     <loc>https://rlang.r-lib.org/reference/ns_env.html</loc>
   </url>
   <url>
-    <loc>https://rlang.r-lib.org/reference/nse-defuse.html</loc>
-  </url>
-  <url>
     <loc>https://rlang.r-lib.org/reference/obj_address.html</loc>
   </url>
   <url>
@@ -500,6 +536,9 @@
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/prim_name.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/qq_show.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/quo_expr.html</loc>
@@ -568,6 +607,9 @@
     <loc>https://rlang.r-lib.org/reference/set_names.html</loc>
   </url>
   <url>
+    <loc>https://rlang.r-lib.org/reference/splice-operator.html</loc>
+  </url>
+  <url>
     <loc>https://rlang.r-lib.org/reference/splice.html</loc>
   </url>
   <url>
@@ -586,7 +628,40 @@
     <loc>https://rlang.r-lib.org/reference/sym.html</loc>
   </url>
   <url>
-    <loc>https://rlang.r-lib.org/reference/tidyeval-data.html</loc>
+    <loc>https://rlang.r-lib.org/reference/topic-data-mask-ambiguity.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/topic-data-mask-programming.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/topic-data-mask.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/topic-defuse.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/topic-double-evaluation.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/topic-embrace-constants.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/topic-embrace-non-args.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/topic-inject-out-of-context.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/topic-inject.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/topic-metaprogramming.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/topic-multiple-columns.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/topic-quosure.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/trace_back.html</loc>
