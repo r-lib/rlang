@@ -191,15 +191,17 @@ environments.</p></td>
     <p>A named logical vector as long as <code>nms</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>parent</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>child_env</a></span><span class='op'>(</span><span class='cn'>NULL</span>, foo <span class='op'>=</span> <span class='st'>"foo"</span><span class='op'>)</span>
-<span class='va'>env</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>child_env</a></span><span class='op'>(</span><span class='va'>parent</span>, bar <span class='op'>=</span> <span class='st'>"bar"</span><span class='op'>)</span>
-
-<span class='co'># env does not own `foo` but sees it in its parent environment:</span>
-<span class='fu'>env_has</span><span class='op'>(</span><span class='va'>env</span>, <span class='st'>"foo"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;   foo 
-#&gt; FALSE </div><div class='input'><span class='fu'>env_has</span><span class='op'>(</span><span class='va'>env</span>, <span class='st'>"foo"</span>, inherit <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;  foo 
-#&gt; TRUE </div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>parent</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>child_env</a></span><span class='op'>(</span><span class='cn'>NULL</span>, foo <span class='op'>=</span> <span class='st'>"foo"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>env</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>child_env</a></span><span class='op'>(</span><span class='va'>parent</span>, bar <span class='op'>=</span> <span class='st'>"bar"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># env does not own `foo` but sees it in its parent environment:</span></span>
+<span class='r-in'><span class='fu'>env_has</span><span class='op'>(</span><span class='va'>env</span>, <span class='st'>"foo"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   foo </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> FALSE </span>
+<span class='r-in'><span class='fu'>env_has</span><span class='op'>(</span><span class='va'>env</span>, <span class='st'>"foo"</span>, inherit <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  foo </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> TRUE </span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

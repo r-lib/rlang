@@ -191,26 +191,26 @@ function that called the current function.</p></li>
     <div class='dont-index'><p><code><a href='caller_frame.html'>caller_frame()</a></code> and <code><a href='stack.html'>current_frame()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-
-<span class='co'># Let's create a function that returns its current environment and</span>
-<span class='co'># its caller environment:</span>
-<span class='va'>fn</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>current <span class='op'>=</span> <span class='fu'>current_env</span><span class='op'>(</span><span class='op'>)</span>, caller <span class='op'>=</span> <span class='fu'>caller_env</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='co'># The current environment is an unique execution environment</span>
-<span class='co'># created when `fn()` was called. The caller environment is the</span>
-<span class='co'># global env because that's where we called `fn()`.</span>
-<span class='fu'>fn</span><span class='op'>(</span><span class='op'>)</span>
-
-<span class='co'># Let's call `fn()` again but this time within a function:</span>
-<span class='va'>g</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='fu'>fn</span><span class='op'>(</span><span class='op'>)</span>
-
-<span class='co'># Now the caller environment is also a unique execution environment.</span>
-<span class='co'># This is the exec env created by R for our call to g():</span>
-<span class='fu'>g</span><span class='op'>(</span><span class='op'>)</span>
-
-<span class='op'>}</span>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Let's create a function that returns its current environment and</span></span>
+<span class='r-in'><span class='co'># its caller environment:</span></span>
+<span class='r-in'><span class='va'>fn</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>current <span class='op'>=</span> <span class='fu'>current_env</span><span class='op'>(</span><span class='op'>)</span>, caller <span class='op'>=</span> <span class='fu'>caller_env</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># The current environment is an unique execution environment</span></span>
+<span class='r-in'><span class='co'># created when `fn()` was called. The caller environment is the</span></span>
+<span class='r-in'><span class='co'># global env because that's where we called `fn()`.</span></span>
+<span class='r-in'><span class='fu'>fn</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Let's call `fn()` again but this time within a function:</span></span>
+<span class='r-in'><span class='va'>g</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='fu'>fn</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Now the caller environment is also a unique execution environment.</span></span>
+<span class='r-in'><span class='co'># This is the exec env created by R for our call to g():</span></span>
+<span class='r-in'><span class='fu'>g</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='op'>}</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

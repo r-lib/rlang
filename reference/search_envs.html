@@ -251,51 +251,60 @@ to the search path with <code><a href='https://rdrr.io/r/base/attach.html'>base:
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># List the search names of environments attached to the search path:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/search.html'>search</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;  [1] ".GlobalEnv"        "package:rlang"     "package:stats"    
-#&gt;  [4] "package:graphics"  "package:grDevices" "package:utils"    
-#&gt;  [7] "package:datasets"  "package:methods"   "Autoloads"        
-#&gt; [10] "package:base"     </div><div class='input'>
-<span class='co'># Get the corresponding environments:</span>
-<span class='fu'>search_envs</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;  [[1]] $ &lt;env: global&gt;
-#&gt;  [[2]] $ &lt;env: package:rlang&gt;
-#&gt;  [[3]] $ &lt;env: package:stats&gt;
-#&gt;  [[4]] $ &lt;env: package:graphics&gt;
-#&gt;  [[5]] $ &lt;env: package:grDevices&gt;
-#&gt;  [[6]] $ &lt;env: package:utils&gt;
-#&gt;  [[7]] $ &lt;env: package:datasets&gt;
-#&gt;  [[8]] $ &lt;env: package:methods&gt;
-#&gt;  [[9]] $ &lt;env: Autoloads&gt;
-#&gt; [[10]] $ &lt;env: package:base&gt;</div><div class='input'>
-<span class='co'># The global environment and the base package are always first and</span>
-<span class='co'># last in the chain, respectively:</span>
-<span class='va'>envs</span> <span class='op'>&lt;-</span> <span class='fu'>search_envs</span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>envs</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; &lt;environment: R_GlobalEnv&gt;</div><div class='input'><span class='va'>envs</span><span class='op'>[[</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>envs</span><span class='op'>)</span><span class='op'>]</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; &lt;environment: base&gt;</div><div class='input'>
-<span class='co'># These two environments have their own shortcuts:</span>
-<span class='fu'>global_env</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;environment: R_GlobalEnv&gt;</div><div class='input'><span class='fu'>base_env</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;environment: base&gt;</div><div class='input'>
-<span class='co'># Packages appear in the search path with a special name. Use</span>
-<span class='co'># pkg_env_name() to create that name:</span>
-<span class='fu'>pkg_env_name</span><span class='op'>(</span><span class='st'>"rlang"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "package:rlang"</div><div class='input'><span class='fu'>search_env</span><span class='op'>(</span><span class='fu'>pkg_env_name</span><span class='op'>(</span><span class='st'>"rlang"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;environment: package:rlang&gt;
-#&gt; attr(,"name")
-#&gt; [1] "package:rlang"
-#&gt; attr(,"path")
-#&gt; [1] "/home/runner/work/_temp/Library/rlang"</div><div class='input'>
-<span class='co'># Alternatively, get the scoped environment of a package with</span>
-<span class='co'># pkg_env():</span>
-<span class='fu'>pkg_env</span><span class='op'>(</span><span class='st'>"utils"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;environment: package:utils&gt;
-#&gt; attr(,"name")
-#&gt; [1] "package:utils"
-#&gt; attr(,"path")
-#&gt; [1] "/opt/R/4.1.1/lib/R/library/utils"</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># List the search names of environments attached to the search path:</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/search.html'>search</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] ".GlobalEnv"        "package:rlang"     "package:stats"    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [4] "package:graphics"  "package:grDevices" "package:utils"    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [7] "package:datasets"  "package:methods"   "Autoloads"        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [10] "package:base"     </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Get the corresponding environments:</span></span>
+<span class='r-in'><span class='fu'>search_envs</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [[1]] $ &lt;env: global&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [[2]] $ &lt;env: package:rlang&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [[3]] $ &lt;env: package:stats&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [[4]] $ &lt;env: package:graphics&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [[5]] $ &lt;env: package:grDevices&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [[6]] $ &lt;env: package:utils&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [[7]] $ &lt;env: package:datasets&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [[8]] $ &lt;env: package:methods&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [[9]] $ &lt;env: Autoloads&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[10]] $ &lt;env: package:base&gt;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># The global environment and the base package are always first and</span></span>
+<span class='r-in'><span class='co'># last in the chain, respectively:</span></span>
+<span class='r-in'><span class='va'>envs</span> <span class='op'>&lt;-</span> <span class='fu'>search_envs</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>envs</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;environment: R_GlobalEnv&gt;</span>
+<span class='r-in'><span class='va'>envs</span><span class='op'>[[</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>envs</span><span class='op'>)</span><span class='op'>]</span><span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;environment: base&gt;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># These two environments have their own shortcuts:</span></span>
+<span class='r-in'><span class='fu'>global_env</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;environment: R_GlobalEnv&gt;</span>
+<span class='r-in'><span class='fu'>base_env</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;environment: base&gt;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Packages appear in the search path with a special name. Use</span></span>
+<span class='r-in'><span class='co'># pkg_env_name() to create that name:</span></span>
+<span class='r-in'><span class='fu'>pkg_env_name</span><span class='op'>(</span><span class='st'>"rlang"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "package:rlang"</span>
+<span class='r-in'><span class='fu'>search_env</span><span class='op'>(</span><span class='fu'>pkg_env_name</span><span class='op'>(</span><span class='st'>"rlang"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;environment: package:rlang&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"name")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "package:rlang"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"path")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "/home/runner/work/_temp/Library/rlang"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Alternatively, get the scoped environment of a package with</span></span>
+<span class='r-in'><span class='co'># pkg_env():</span></span>
+<span class='r-in'><span class='fu'>pkg_env</span><span class='op'>(</span><span class='st'>"utils"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;environment: package:utils&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"name")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "package:utils"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"path")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "/opt/R/4.1.2/lib/R/library/utils"</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

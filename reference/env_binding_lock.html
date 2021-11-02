@@ -193,31 +193,35 @@ long as <code>nms</code> and named after it. <code>env_binding_lock()</code> and
     <div class='dont-index'><p><code><a href='env_lock.html'>env_lock()</a></code> for locking an environment.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Bindings are unlocked by default:</span>
-<span class='va'>env</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span><span class='op'>(</span>a <span class='op'>=</span> <span class='st'>"A"</span>, b <span class='op'>=</span> <span class='st'>"B"</span><span class='op'>)</span>
-<span class='fu'>env_binding_are_locked</span><span class='op'>(</span><span class='va'>env</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;     a     b 
-#&gt; FALSE FALSE </div><div class='input'>
-<span class='co'># But can optionally be locked:</span>
-<span class='fu'>env_binding_lock</span><span class='op'>(</span><span class='va'>env</span>, <span class='st'>"a"</span><span class='op'>)</span>
-<span class='fu'>env_binding_are_locked</span><span class='op'>(</span><span class='va'>env</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;     a     b 
-#&gt;  TRUE FALSE </div><div class='input'>
-<span class='co'># If run, the following would now return an error because `a` is locked:</span>
-<span class='co'># env_bind(env, a = "foo")</span>
-<span class='co'># with_env(env, a &lt;- "bar")</span>
-
-<span class='co'># Let's unlock it. Note that the return value indicate which</span>
-<span class='co'># bindings were locked:</span>
-<span class='va'>were_locked</span> <span class='op'>&lt;-</span> <span class='fu'>env_binding_unlock</span><span class='op'>(</span><span class='va'>env</span><span class='op'>)</span>
-<span class='va'>were_locked</span>
-</div><div class='output co'>#&gt;     a     b 
-#&gt;  TRUE FALSE </div><div class='input'>
-<span class='co'># Now that it is unlocked we can modify it again:</span>
-<span class='fu'><a href='env_bind.html'>env_bind</a></span><span class='op'>(</span><span class='va'>env</span>, a <span class='op'>=</span> <span class='st'>"foo"</span><span class='op'>)</span>
-<span class='fu'><a href='with_env.html'>with_env</a></span><span class='op'>(</span><span class='va'>env</span>, <span class='va'>a</span> <span class='op'>&lt;-</span> <span class='st'>"bar"</span><span class='op'>)</span>
-<span class='va'>env</span><span class='op'>$</span><span class='va'>a</span>
-</div><div class='output co'>#&gt; [1] "bar"</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># Bindings are unlocked by default:</span></span>
+<span class='r-in'><span class='va'>env</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span><span class='op'>(</span>a <span class='op'>=</span> <span class='st'>"A"</span>, b <span class='op'>=</span> <span class='st'>"B"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>env_binding_are_locked</span><span class='op'>(</span><span class='va'>env</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     a     b </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> FALSE FALSE </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># But can optionally be locked:</span></span>
+<span class='r-in'><span class='fu'>env_binding_lock</span><span class='op'>(</span><span class='va'>env</span>, <span class='st'>"a"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>env_binding_are_locked</span><span class='op'>(</span><span class='va'>env</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     a     b </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  TRUE FALSE </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># If run, the following would now return an error because `a` is locked:</span></span>
+<span class='r-in'><span class='co'># env_bind(env, a = "foo")</span></span>
+<span class='r-in'><span class='co'># with_env(env, a &lt;- "bar")</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Let's unlock it. Note that the return value indicate which</span></span>
+<span class='r-in'><span class='co'># bindings were locked:</span></span>
+<span class='r-in'><span class='va'>were_locked</span> <span class='op'>&lt;-</span> <span class='fu'>env_binding_unlock</span><span class='op'>(</span><span class='va'>env</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>were_locked</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     a     b </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  TRUE FALSE </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Now that it is unlocked we can modify it again:</span></span>
+<span class='r-in'><span class='fu'><a href='env_bind.html'>env_bind</a></span><span class='op'>(</span><span class='va'>env</span>, a <span class='op'>=</span> <span class='st'>"foo"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='with_env.html'>with_env</a></span><span class='op'>(</span><span class='va'>env</span>, <span class='va'>a</span> <span class='op'>&lt;-</span> <span class='st'>"bar"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>env</span><span class='op'>$</span><span class='va'>a</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "bar"</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

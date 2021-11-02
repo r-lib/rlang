@@ -199,10 +199,10 @@ missing values are <code>NA_integer_</code>, <code>NA_real_</code>, <code>NA_cha
 default <code>NA</code>. The aliases provided in rlang are consistently named
 and thus simpler to remember. Also, <code>na_lgl</code> is provided as an
 alias to <code>NA</code> that makes intent clearer.</p>
-<p>Since <code>na_lgl</code> is the default <code>NA</code>, expressions such as <code><a href='https://rdrr.io/r/base/c.html'>c(NA, NA)</a></code>
+<p>Since <code>na_lgl</code> is the default <code>NA</code>, expressions such as <code>c(NA, NA)</code>
 yield logical vectors as no data is available to give a clue of the
 target type. In the same way, since lists and environments can
-contain any types, expressions like <code><a href='https://rdrr.io/r/base/list.html'>list(NA)</a></code> store a logical
+contain any types, expressions like <code>list(NA)</code> store a logical
 <code>NA</code>.</p>
     <h2 class="hasAnchor" id="life-cycle"><a class="anchor" href="#life-cycle"></a>Life cycle</h2>
 
@@ -213,15 +213,19 @@ contain any types, expressions like <code><a href='https://rdrr.io/r/base/list.h
 point. This is why they are marked as questioning.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span><span class='op'>(</span><span class='cn'>NA</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "logical"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span><span class='op'>(</span><span class='va'>na_lgl</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "logical"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span><span class='op'>(</span><span class='va'>na_int</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "integer"</div><div class='input'>
-<span class='co'># Note that while the base R missing symbols cannot be overwritten,</span>
-<span class='co'># that's not the case for rlang's aliases:</span>
-<span class='va'>na_dbl</span> <span class='op'>&lt;-</span> <span class='cn'>NA</span>
-<span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span><span class='op'>(</span><span class='va'>na_dbl</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "logical"</div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span><span class='op'>(</span><span class='cn'>NA</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "logical"</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span><span class='op'>(</span><span class='va'>na_lgl</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "logical"</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span><span class='op'>(</span><span class='va'>na_int</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "integer"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Note that while the base R missing symbols cannot be overwritten,</span></span>
+<span class='r-in'><span class='co'># that's not the case for rlang's aliases:</span></span>
+<span class='r-in'><span class='va'>na_dbl</span> <span class='op'>&lt;-</span> <span class='cn'>NA</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/typeof.html'>typeof</a></span><span class='op'>(</span><span class='va'>na_dbl</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "logical"</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

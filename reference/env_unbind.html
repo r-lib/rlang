@@ -189,26 +189,30 @@ environments.</p></td>
 modified in place, invisibly.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>env</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span><span class='op'>(</span>foo <span class='op'>=</span> <span class='fl'>1</span>, bar <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-<span class='fu'><a href='env_has.html'>env_has</a></span><span class='op'>(</span><span class='va'>env</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"foo"</span>, <span class='st'>"bar"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;  foo  bar 
-#&gt; TRUE TRUE </div><div class='input'>
-<span class='co'># Remove bindings with `env_unbind()`</span>
-<span class='fu'>env_unbind</span><span class='op'>(</span><span class='va'>env</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"foo"</span>, <span class='st'>"bar"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='env_has.html'>env_has</a></span><span class='op'>(</span><span class='va'>env</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"foo"</span>, <span class='st'>"bar"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;   foo   bar 
-#&gt; FALSE FALSE </div><div class='input'>
-<span class='co'># With inherit = TRUE, it removes bindings in parent environments</span>
-<span class='co'># as well:</span>
-<span class='va'>parent</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span><span class='op'>(</span><span class='fu'><a href='empty_env.html'>empty_env</a></span><span class='op'>(</span><span class='op'>)</span>, foo <span class='op'>=</span> <span class='fl'>1</span>, bar <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-<span class='va'>env</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span><span class='op'>(</span><span class='va'>parent</span>, foo <span class='op'>=</span> <span class='st'>"b"</span><span class='op'>)</span>
-
-<span class='fu'>env_unbind</span><span class='op'>(</span><span class='va'>env</span>, <span class='st'>"foo"</span>, inherit <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='fu'><a href='env_has.html'>env_has</a></span><span class='op'>(</span><span class='va'>env</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"foo"</span>, <span class='st'>"bar"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;   foo   bar 
-#&gt; FALSE FALSE </div><div class='input'><span class='fu'><a href='env_has.html'>env_has</a></span><span class='op'>(</span><span class='va'>env</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"foo"</span>, <span class='st'>"bar"</span><span class='op'>)</span>, inherit <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;  foo  bar 
-#&gt; TRUE TRUE </div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>env</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span><span class='op'>(</span>foo <span class='op'>=</span> <span class='fl'>1</span>, bar <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='env_has.html'>env_has</a></span><span class='op'>(</span><span class='va'>env</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"foo"</span>, <span class='st'>"bar"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  foo  bar </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> TRUE TRUE </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Remove bindings with `env_unbind()`</span></span>
+<span class='r-in'><span class='fu'>env_unbind</span><span class='op'>(</span><span class='va'>env</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"foo"</span>, <span class='st'>"bar"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='env_has.html'>env_has</a></span><span class='op'>(</span><span class='va'>env</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"foo"</span>, <span class='st'>"bar"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   foo   bar </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> FALSE FALSE </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># With inherit = TRUE, it removes bindings in parent environments</span></span>
+<span class='r-in'><span class='co'># as well:</span></span>
+<span class='r-in'><span class='va'>parent</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span><span class='op'>(</span><span class='fu'><a href='empty_env.html'>empty_env</a></span><span class='op'>(</span><span class='op'>)</span>, foo <span class='op'>=</span> <span class='fl'>1</span>, bar <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>env</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span><span class='op'>(</span><span class='va'>parent</span>, foo <span class='op'>=</span> <span class='st'>"b"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>env_unbind</span><span class='op'>(</span><span class='va'>env</span>, <span class='st'>"foo"</span>, inherit <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='env_has.html'>env_has</a></span><span class='op'>(</span><span class='va'>env</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"foo"</span>, <span class='st'>"bar"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   foo   bar </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> FALSE FALSE </span>
+<span class='r-in'><span class='fu'><a href='env_has.html'>env_has</a></span><span class='op'>(</span><span class='va'>env</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"foo"</span>, <span class='st'>"bar"</span><span class='op'>)</span>, inherit <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  foo  bar </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> TRUE TRUE </span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

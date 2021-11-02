@@ -159,7 +159,7 @@ works." />
 
     <div class="ref-description">
     <p>This infix function makes it easy to replace <code>NULL</code>s with a default
-value. It's inspired by the way that Ruby's or operation (<code><a href='https://rdrr.io/r/base/Logic.html'>||</a></code>)
+value. It's inspired by the way that Ruby's or operation (<code>||</code>)
 works.</p>
     </div>
 
@@ -176,9 +176,11 @@ works.</p>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fl'>1</span> <span class='op'>%||%</span> <span class='fl'>2</span>
-</div><div class='output co'>#&gt; [1] 1</div><div class='input'><span class='cn'>NULL</span> <span class='op'>%||%</span> <span class='fl'>2</span>
-</div><div class='output co'>#&gt; [1] 2</div></pre>
+    <pre class="examples"><span class='r-in'><span class='fl'>1</span> <span class='op'>%||%</span> <span class='fl'>2</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-in'><span class='cn'>NULL</span> <span class='op'>%||%</span> <span class='fl'>2</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 2</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

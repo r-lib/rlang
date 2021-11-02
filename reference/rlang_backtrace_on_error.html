@@ -194,7 +194,7 @@ base errors to rlang errors with <code><a href='global_entrace.html'>global_entr
     
 
 
-<p>You can use <code><a href='https://rdrr.io/r/base/options.html'>options(error = rlang::entrace)</a></code> to promote base errors to
+<p>You can use <code>options(error = rlang::entrace)</code> to promote base errors to
 rlang errors. This does two things:</p><ul>
 <li><p>It saves the base error as an rlang object so you can call <code><a href='last_error.html'>last_error()</a></code>
 to print the backtrace or inspect its data.</p></li>
@@ -232,15 +232,16 @@ backtraces. If needed, you can override this by setting the
 <code>rlang_trace_top_env</code> global option.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Display a simplified backtrace on error for both base and rlang</span>
-<span class='co'># errors:</span>
-
-<span class='co'># options(</span>
-<span class='co'>#   rlang_backtrace_on_error = "branch",</span>
-<span class='co'>#   error = rlang::entrace</span>
-<span class='co'># )</span>
-<span class='co'># stop("foo")</span>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># Display a simplified backtrace on error for both base and rlang</span></span>
+<span class='r-in'><span class='co'># errors:</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># options(</span></span>
+<span class='r-in'><span class='co'>#   rlang_backtrace_on_error = "branch",</span></span>
+<span class='r-in'><span class='co'>#   error = rlang::entrace</span></span>
+<span class='r-in'><span class='co'># )</span></span>
+<span class='r-in'><span class='co'># stop("foo")</span></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

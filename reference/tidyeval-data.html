@@ -216,7 +216,7 @@ in your package namespace to avoid a <code>R CMD check</code> note when
 referring to objects from the data mask. R does not have any way of
 knowing about the presence or absence of <code>.data</code> in a particular
 scope so you need to import it explicitly or equivalently declare
-it with <code><a href='https://rdrr.io/r/utils/globalVariables.html'>utils::globalVariables(".data")</a></code>.</p>
+it with <code>utils::globalVariables(".data")</code>.</p>
 <p>Note that <code>rlang::.data</code> is a "fake" pronoun. Do not refer to
 <code>rlang::.data</code> with the <code>rlang::</code> qualifier in data masking
 code. Use the unqualified <code>.data</code> symbol that is automatically put

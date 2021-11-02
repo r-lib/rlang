@@ -161,7 +161,7 @@ error." />
     <div class="ref-description">
     <p><code>as_closure()</code> is like <code><a href='as_function.html'>as_function()</a></code> but also wraps primitive
 functions inside closures. Some special control flow primitives
-like <code>if</code>, <code>for</code>, or <code>break</code> can't be wrapped and will cause an
+like <code>if</code>, <code>for</code>, or <code><a href='https://rdrr.io/r/base/Control.html'>break</a></code> can't be wrapped and will cause an
 error.</p>
     </div>
 
@@ -194,49 +194,53 @@ is a string.</p></td>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Primitive functions are regularised as closures</span>
-<span class='fu'>as_closure</span><span class='op'>(</span><span class='va'>list</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; function (...) 
-#&gt; .Primitive("list")(...)</div><div class='input'><span class='fu'>as_closure</span><span class='op'>(</span><span class='st'>"list"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; function (...) 
-#&gt; .Primitive("list")(...)</div><div class='input'>
-<span class='co'># Operators have `.x` and `.y` as arguments, just like lambda</span>
-<span class='co'># functions created with the formula syntax:</span>
-<span class='fu'>as_closure</span><span class='op'>(</span><span class='va'>`+`</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; function (e1, e2, .x = e1, .y = e2) 
-#&gt; {
-#&gt;     if (missing(.x)) {
-#&gt;         if (missing(e1)) {
-#&gt;             abort("Must supply `e1` or `.x` to binary operator.")
-#&gt;         }
-#&gt;         .x &lt;- e1
-#&gt;     }
-#&gt;     else if (!missing(e1)) {
-#&gt;         abort("Can't supply both `e1` and `.x` to binary operator.")
-#&gt;     }
-#&gt;     if (missing(.y) &amp;&amp; !missing(e2)) {
-#&gt;         .y &lt;- e2
-#&gt;     }
-#&gt;     else if (!missing(e2)) {
-#&gt;         abort("Can't supply both `e2` and `.y` to binary operator.")
-#&gt;     }
-#&gt;     if (missing(.y)) 
-#&gt;         .x
-#&gt;     else .x + .y
-#&gt; }
-#&gt; &lt;environment: 0x5555be5993d0&gt;</div><div class='input'><span class='fu'>as_closure</span><span class='op'>(</span><span class='va'>`~`</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; function (.x, .y) 
-#&gt; {
-#&gt;     if (is_missing(substitute(.y))) {
-#&gt;         new_formula(NULL, substitute(.x), caller_env())
-#&gt;     }
-#&gt;     else {
-#&gt;         new_formula(substitute(.x), substitute(.y), caller_env())
-#&gt;     }
-#&gt; }
-#&gt; &lt;bytecode: 0x5555bf5375e0&gt;
-#&gt; &lt;environment: 0x5555be61eda0&gt;</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># Primitive functions are regularised as closures</span></span>
+<span class='r-in'><span class='fu'>as_closure</span><span class='op'>(</span><span class='va'>list</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> function (...) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .Primitive("list")(...)</span>
+<span class='r-in'><span class='fu'>as_closure</span><span class='op'>(</span><span class='st'>"list"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> function (...) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .Primitive("list")(...)</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Operators have `.x` and `.y` as arguments, just like lambda</span></span>
+<span class='r-in'><span class='co'># functions created with the formula syntax:</span></span>
+<span class='r-in'><span class='fu'>as_closure</span><span class='op'>(</span><span class='va'>`+`</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> function (e1, e2, .x = e1, .y = e2) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     if (missing(.x)) {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         if (missing(e1)) {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             abort("Must supply `e1` or `.x` to binary operator.")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         .x &lt;- e1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     else if (!missing(e1)) {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         abort("Can't supply both `e1` and `.x` to binary operator.")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     if (missing(.y) &amp;&amp; !missing(e2)) {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         .y &lt;- e2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     else if (!missing(e2)) {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         abort("Can't supply both `e2` and `.y` to binary operator.")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     if (missing(.y)) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         .x</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     else .x + .y</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;environment: 0x557272fa7d20&gt;</span>
+<span class='r-in'><span class='fu'>as_closure</span><span class='op'>(</span><span class='va'>`~`</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> function (.x, .y) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     if (is_missing(substitute(.y))) {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         new_formula(NULL, substitute(.x), caller_env())</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     else {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         new_formula(substitute(.x), substitute(.y), caller_env())</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;bytecode: 0x557274d2b8a8&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;environment: 0x557272f1c390&gt;</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

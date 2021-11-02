@@ -198,24 +198,28 @@ rlang 0.2.0. This is for consistency as type predicates should not
 be abbreviated.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Coerce a named vector to an environment:</span>
-<span class='va'>env</span> <span class='op'>&lt;-</span> <span class='fu'>as_environment</span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span>
-
-<span class='co'># By default it gets the empty environment as parent:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span><span class='op'>(</span><span class='fu'><a href='env_parent.html'>env_parent</a></span><span class='op'>(</span><span class='va'>env</span><span class='op'>)</span>, <span class='fu'><a href='empty_env.html'>empty_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-
-<span class='co'># With strings it is a handy shortcut for pkg_env():</span>
-<span class='fu'>as_environment</span><span class='op'>(</span><span class='st'>"base"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;environment: base&gt;</div><div class='input'><span class='fu'>as_environment</span><span class='op'>(</span><span class='st'>"rlang"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;environment: package:rlang&gt;
-#&gt; attr(,"name")
-#&gt; [1] "package:rlang"
-#&gt; attr(,"path")
-#&gt; [1] "/home/runner/work/_temp/Library/rlang"</div><div class='input'>
-<span class='co'># With NULL it returns the empty environment:</span>
-<span class='fu'>as_environment</span><span class='op'>(</span><span class='cn'>NULL</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;environment: R_EmptyEnv&gt;</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># Coerce a named vector to an environment:</span></span>
+<span class='r-in'><span class='va'>env</span> <span class='op'>&lt;-</span> <span class='fu'>as_environment</span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># By default it gets the empty environment as parent:</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span><span class='op'>(</span><span class='fu'><a href='env_parent.html'>env_parent</a></span><span class='op'>(</span><span class='va'>env</span><span class='op'>)</span>, <span class='fu'><a href='empty_env.html'>empty_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># With strings it is a handy shortcut for pkg_env():</span></span>
+<span class='r-in'><span class='fu'>as_environment</span><span class='op'>(</span><span class='st'>"base"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;environment: base&gt;</span>
+<span class='r-in'><span class='fu'>as_environment</span><span class='op'>(</span><span class='st'>"rlang"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;environment: package:rlang&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"name")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "package:rlang"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"path")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "/home/runner/work/_temp/Library/rlang"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># With NULL it returns the empty environment:</span></span>
+<span class='r-in'><span class='fu'>as_environment</span><span class='op'>(</span><span class='cn'>NULL</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;environment: R_EmptyEnv&gt;</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -208,18 +208,22 @@ tools. On R &gt;= 3.5.0, serialization version 3 is used, otherwise version 2 is
 used. See <code><a href='https://rdrr.io/r/base/serialize.html'>serialize()</a></code> for more information about the serialization version.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>hash</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "702f7dd6e81ea41d26ea3b248627ece4"</div><div class='input'><span class='fu'>hash</span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "d0487363db4e6cc64fdb740cb6617fc0"</div><div class='input'>
-<span class='va'>authors</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Rhome.html'>R.home</a></span><span class='op'>(</span><span class='st'>"doc"</span><span class='op'>)</span>, <span class='st'>"AUTHORS"</span><span class='op'>)</span>
-<span class='va'>copying</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Rhome.html'>R.home</a></span><span class='op'>(</span><span class='st'>"doc"</span><span class='op'>)</span>, <span class='st'>"COPYING"</span><span class='op'>)</span>
-<span class='va'>hashes</span> <span class='op'>&lt;-</span> <span class='fu'>hash_file</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>authors</span>, <span class='va'>copying</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>hashes</span>
-</div><div class='output co'>#&gt; [1] "f3b28e876c66fd190ce66d9be3a2c3a3" "cdb3a24318136e74f38209c219ca104b"</div><div class='input'>
-<span class='co'># If you need a single hash for multiple files,</span>
-<span class='co'># hash the result of `hash_file()`</span>
-<span class='fu'>hash</span><span class='op'>(</span><span class='va'>hashes</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "96c3494aef2ae9d012e2b7428b6259b9"</div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'>hash</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "702f7dd6e81ea41d26ea3b248627ece4"</span>
+<span class='r-in'><span class='fu'>hash</span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "d0487363db4e6cc64fdb740cb6617fc0"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>authors</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Rhome.html'>R.home</a></span><span class='op'>(</span><span class='st'>"doc"</span><span class='op'>)</span>, <span class='st'>"AUTHORS"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>copying</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Rhome.html'>R.home</a></span><span class='op'>(</span><span class='st'>"doc"</span><span class='op'>)</span>, <span class='st'>"COPYING"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>hashes</span> <span class='op'>&lt;-</span> <span class='fu'>hash_file</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>authors</span>, <span class='va'>copying</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>hashes</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "d6c89b9f87c5db591875d539d3d6ab44" "cdb3a24318136e74f38209c219ca104b"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># If you need a single hash for multiple files,</span></span>
+<span class='r-in'><span class='co'># hash the result of `hash_file()`</span></span>
+<span class='r-in'><span class='fu'>hash</span><span class='op'>(</span><span class='va'>hashes</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "82ee213b8ad1d973ef570b417cfdfa10"</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

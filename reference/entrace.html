@@ -181,7 +181,7 @@ and <code><a href='last_warnings.html'>last_warnings()</a></code>.</p></li>
 any other effect. It should be called from a condition handler.</p></li>
 </ul>
 
-<p><code>entrace()</code> also works as an <code><a href='https://rdrr.io/r/base/options.html'>option(error = )</a></code> handler for
+<p><code>entrace()</code> also works as an <code>option(error = )</code> handler for
 compatibility with versions of R older than 4.0.</p>
 <p>When used as calling handler, rlang trims the handler invokation
 context from the backtrace.</p>
@@ -238,20 +238,21 @@ errors.  <code>cnd_entrace()</code> to manually add a backtrace to a
 condition.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='op'>{</span>  <span class='co'># Not run</span>
-
-<span class='co'># Set `entrace()` globally in your RProfile</span>
-<span class='fu'><a href='https://rdrr.io/r/base/conditions.html'>globalCallingHandlers</a></span><span class='op'>(</span>error <span class='op'>=</span> <span class='fu'>rlang</span><span class='fu'>::</span><span class='va'>entrace</span><span class='op'>)</span>
-
-<span class='co'># On older R versions which don't feature `globalCallingHandlers`,</span>
-<span class='co'># set the error handler like this:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/options.html'>options</a></span><span class='op'>(</span>error <span class='op'>=</span> <span class='fu'>rlang</span><span class='fu'>::</span><span class='va'>entrace</span><span class='op'>)</span>
-
-<span class='op'>}</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; {
-#&gt;     globalCallingHandlers(error = rlang::entrace)
-#&gt;     options(error = rlang::entrace)
-#&gt; }</div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='op'>{</span>  <span class='co'># Not run</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Set `entrace()` globally in your RProfile</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/conditions.html'>globalCallingHandlers</a></span><span class='op'>(</span>error <span class='op'>=</span> <span class='fu'>rlang</span><span class='fu'>::</span><span class='va'>entrace</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># On older R versions which don't feature `globalCallingHandlers`,</span></span>
+<span class='r-in'><span class='co'># set the error handler like this:</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/options.html'>options</a></span><span class='op'>(</span>error <span class='op'>=</span> <span class='fu'>rlang</span><span class='fu'>::</span><span class='va'>entrace</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='op'>}</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     globalCallingHandlers(error = rlang::entrace)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     options(error = rlang::entrace)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

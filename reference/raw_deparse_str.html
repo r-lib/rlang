@@ -165,7 +165,7 @@ and much faster." />
 <p>This function converts a raw vector to a hexadecimal string,
 optionally adding a prefix and a suffix.
 It is roughly equivalent to
-<code><a href='https://rdrr.io/r/base/paste.html'>paste0(prefix, paste(format(x), collapse = ""), suffix)</a></code>
+<code>paste0(prefix, paste(format(x), collapse = ""), suffix)</code>
 and much faster.</p>
     </div>
 
@@ -189,10 +189,13 @@ and much faster.</p>
     <p>A string.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>raw_deparse_str</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/raw.html'>raw</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] ""</div><div class='input'><span class='fu'>raw_deparse_str</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rawConversion.html'>charToRaw</a></span><span class='op'>(</span><span class='st'>"string"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "737472696e67"</div><div class='input'><span class='fu'>raw_deparse_str</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/raw.html'>raw</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span>, prefix <span class='op'>=</span> <span class='st'>"'0x"</span>, suffix <span class='op'>=</span> <span class='st'>"'"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "'0x00000000000000000000'"</div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'>raw_deparse_str</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/raw.html'>raw</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] ""</span>
+<span class='r-in'><span class='fu'>raw_deparse_str</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rawConversion.html'>charToRaw</a></span><span class='op'>(</span><span class='st'>"string"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "737472696e67"</span>
+<span class='r-in'><span class='fu'>raw_deparse_str</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/raw.html'>raw</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span>, prefix <span class='op'>=</span> <span class='st'>"'0x"</span>, suffix <span class='op'>=</span> <span class='st'>"'"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "'0x00000000000000000000'"</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

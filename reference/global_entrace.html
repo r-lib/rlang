@@ -207,7 +207,7 @@ conditions to be entraced.</p></td>
 
 <p>On R 4.0 and newer, <code>global_entrace()</code> installs a global handler
 with <code><a href='https://rdrr.io/r/base/conditions.html'>globalCallingHandlers()</a></code>. On older R versions, <code><a href='entrace.html'>entrace()</a></code> is
-set as an <code><a href='https://rdrr.io/r/base/options.html'>option(error = )</a></code> handler. The latter method has the
+set as an <code>option(error = )</code> handler. The latter method has the
 disadvantage that only one handler can be set at a time. This means
 that you need to manually switch between <code><a href='entrace.html'>entrace()</a></code> and other
 handlers like <code><a href='https://rdrr.io/r/utils/recover.html'>recover()</a></code>. Also this causes a conflict with IDE

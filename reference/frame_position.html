@@ -199,29 +199,37 @@ as those will be discarded.</p>
 <p>These functions are deprecated and replaced by <code><a href='trace_back.html'>trace_back()</a></code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>fn</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='fu'>g</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/environment.html'>environment</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>g</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>env</span><span class='op'>)</span> <span class='fu'>frame_position</span><span class='op'>(</span><span class='va'>env</span><span class='op'>)</span>
-
-<span class='co'># frame_position() returns the position of the frame on the evaluation stack:</span>
-<span class='fu'>fn</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: `frame_position()` is deprecated as of rlang 0.3.0.</span>
-#&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once per session.</span></span></div><div class='output co'>#&gt; <span class='warning'>Warning: `stack_trim()` is deprecated as of rlang 0.3.0.</span>
-#&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once per session.</span></span></div><div class='output co'>#&gt; <span class='warning'>Warning: `ctxt_stack()` is deprecated as of rlang 0.3.0.</span>
-#&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once per session.</span></span></div><div class='output co'>#&gt; <span class='warning'>Warning: `global_frame()` is deprecated as of rlang 0.3.0.</span>
-#&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once per session.</span></span></div><div class='output co'>#&gt; [1] 25</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span><span class='op'>(</span><span class='fu'>fn</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 27</div><div class='input'>
-<span class='co'># Note that it trims off intervening calls before counting so you</span>
-<span class='co'># can safely nest it within other calls:</span>
-<span class='va'>g</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>env</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span><span class='op'>(</span><span class='fu'>frame_position</span><span class='op'>(</span><span class='va'>env</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>fn</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 25</div><div class='input'>
-<span class='co'># You can also ask for the position from the current frame rather</span>
-<span class='co'># than the global frame:</span>
-<span class='va'>fn</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='fu'>g</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/environment.html'>environment</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>g</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>env</span><span class='op'>)</span> <span class='fu'>h</span><span class='op'>(</span><span class='va'>env</span><span class='op'>)</span>
-<span class='va'>h</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>env</span><span class='op'>)</span> <span class='fu'>frame_position</span><span class='op'>(</span><span class='va'>env</span>, from <span class='op'>=</span> <span class='st'>"current"</span><span class='op'>)</span>
-<span class='fu'>fn</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 3</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>fn</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='fu'>g</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/environment.html'>environment</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>g</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>env</span><span class='op'>)</span> <span class='fu'>frame_position</span><span class='op'>(</span><span class='va'>env</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># frame_position() returns the position of the frame on the evaluation stack:</span></span>
+<span class='r-in'><span class='fu'>fn</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>`frame_position()` is deprecated as of rlang 0.3.0.</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span style='color: #555555;'>This warning is displayed once per session.</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>`stack_trim()` is deprecated as of rlang 0.3.0.</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span style='color: #555555;'>This warning is displayed once per session.</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>`ctxt_stack()` is deprecated as of rlang 0.3.0.</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span style='color: #555555;'>This warning is displayed once per session.</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>`global_frame()` is deprecated as of rlang 0.3.0.</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span style='color: #555555;'>This warning is displayed once per session.</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 25</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span><span class='op'>(</span><span class='fu'>fn</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 27</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Note that it trims off intervening calls before counting so you</span></span>
+<span class='r-in'><span class='co'># can safely nest it within other calls:</span></span>
+<span class='r-in'><span class='va'>g</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>env</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/identity.html'>identity</a></span><span class='op'>(</span><span class='fu'>frame_position</span><span class='op'>(</span><span class='va'>env</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>fn</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 25</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># You can also ask for the position from the current frame rather</span></span>
+<span class='r-in'><span class='co'># than the global frame:</span></span>
+<span class='r-in'><span class='va'>fn</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='fu'>g</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/environment.html'>environment</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>g</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>env</span><span class='op'>)</span> <span class='fu'>h</span><span class='op'>(</span><span class='va'>env</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>h</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>env</span><span class='op'>)</span> <span class='fu'>frame_position</span><span class='op'>(</span><span class='va'>env</span>, from <span class='op'>=</span> <span class='st'>"current"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>fn</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

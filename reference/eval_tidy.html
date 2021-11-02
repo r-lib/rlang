@@ -301,59 +301,69 @@ rlang data mask with <code><a href='as_data_mask.html'>new_data_mask()</a></code
 framework.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'># With simple quoted expressions eval_tidy() works the same way as</span>
-<span class='co'># eval():</span>
-<span class='va'>apple</span> <span class='op'>&lt;-</span> <span class='st'>"apple"</span>
-<span class='va'>kiwi</span> <span class='op'>&lt;-</span> <span class='st'>"kiwi"</span>
-<span class='va'>expr</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='va'>apple</span>, <span class='va'>kiwi</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>expr</span>
-</div><div class='output co'>#&gt; paste(apple, kiwi)</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span><span class='op'>(</span><span class='va'>expr</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "apple kiwi"</div><div class='input'><span class='fu'>eval_tidy</span><span class='op'>(</span><span class='va'>expr</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "apple kiwi"</div><div class='input'>
-<span class='co'># Both accept a data mask as argument:</span>
-<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>apple <span class='op'>=</span> <span class='st'>"CARROT"</span>, kiwi <span class='op'>=</span> <span class='st'>"TOMATO"</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span><span class='op'>(</span><span class='va'>expr</span>, <span class='va'>data</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "CARROT TOMATO"</div><div class='input'><span class='fu'>eval_tidy</span><span class='op'>(</span><span class='va'>expr</span>, <span class='va'>data</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "CARROT TOMATO"</div><div class='input'>
-
-<span class='co'># In addition eval_tidy() has support for quosures:</span>
-<span class='va'>with_data</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>expr</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='va'>quo</span> <span class='op'>&lt;-</span> <span class='fu'><a href='nse-defuse.html'>enquo</a></span><span class='op'>(</span><span class='va'>expr</span><span class='op'>)</span>
-  <span class='fu'>eval_tidy</span><span class='op'>(</span><span class='va'>quo</span>, <span class='va'>data</span><span class='op'>)</span>
-<span class='op'>}</span>
-<span class='fu'>with_data</span><span class='op'>(</span><span class='cn'>NULL</span>, <span class='va'>apple</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "apple"</div><div class='input'><span class='fu'>with_data</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>apple</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "CARROT"</div><div class='input'><span class='fu'>with_data</span><span class='op'>(</span><span class='va'>data</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>apple</span>, <span class='va'>kiwi</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [[1]]
-#&gt; [1] "CARROT"
-#&gt; 
-#&gt; [[2]]
-#&gt; [1] "TOMATO"
-#&gt; </div><div class='input'>
-<span class='co'># Secondly eval_tidy() installs handy pronouns that allow users to</span>
-<span class='co'># be explicit about where to find symbols:</span>
-<span class='fu'>with_data</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>.data</span><span class='op'>$</span><span class='va'>apple</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "CARROT"</div><div class='input'><span class='fu'>with_data</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>.env</span><span class='op'>$</span><span class='va'>apple</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "apple"</div><div class='input'>
-
-<span class='co'># Note that instead of using `.env` it is often equivalent and may</span>
-<span class='co'># be preferred to unquote a value. There are two differences. First</span>
-<span class='co'># unquoting happens earlier, when the quosure is created. Secondly,</span>
-<span class='co'># subsetting `.env` with the `$` operator may be brittle because</span>
-<span class='co'># `$` does not look through the parents of the environment.</span>
-<span class='co'>#</span>
-<span class='co'># For instance using `.env$name` in a magrittr pipeline is an</span>
-<span class='co'># instance where this poses problem, because the magrittr pipe</span>
-<span class='co'># currently (as of v1.5.0) evaluates its operands in a *child* of</span>
-<span class='co'># the current environment (this child environment is where it</span>
-<span class='co'># defines the pronoun `.`).</span>
-<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='va'>data</span> <span class='op'>%&gt;%</span> <span class='fu'>with_data</span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='va'>kiwi</span><span class='op'>)</span>     <span class='co'># "kiwi"</span>
-  <span class='va'>data</span> <span class='op'>%&gt;%</span> <span class='fu'>with_data</span><span class='op'>(</span><span class='va'>.env</span><span class='op'>$</span><span class='va'>kiwi</span><span class='op'>)</span>  <span class='co'># NULL</span>
-<span class='op'>}</span>
-</div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='co'># With simple quoted expressions eval_tidy() works the same way as</span></span>
+<span class='r-in'><span class='co'># eval():</span></span>
+<span class='r-in'><span class='va'>apple</span> <span class='op'>&lt;-</span> <span class='st'>"apple"</span></span>
+<span class='r-in'><span class='va'>kiwi</span> <span class='op'>&lt;-</span> <span class='st'>"kiwi"</span></span>
+<span class='r-in'><span class='va'>expr</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='va'>apple</span>, <span class='va'>kiwi</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>expr</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> paste(apple, kiwi)</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span><span class='op'>(</span><span class='va'>expr</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "apple kiwi"</span>
+<span class='r-in'><span class='fu'>eval_tidy</span><span class='op'>(</span><span class='va'>expr</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "apple kiwi"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Both accept a data mask as argument:</span></span>
+<span class='r-in'><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>apple <span class='op'>=</span> <span class='st'>"CARROT"</span>, kiwi <span class='op'>=</span> <span class='st'>"TOMATO"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span><span class='op'>(</span><span class='va'>expr</span>, <span class='va'>data</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "CARROT TOMATO"</span>
+<span class='r-in'><span class='fu'>eval_tidy</span><span class='op'>(</span><span class='va'>expr</span>, <span class='va'>data</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "CARROT TOMATO"</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># In addition eval_tidy() has support for quosures:</span></span>
+<span class='r-in'><span class='va'>with_data</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>expr</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'>  <span class='va'>quo</span> <span class='op'>&lt;-</span> <span class='fu'><a href='nse-defuse.html'>enquo</a></span><span class='op'>(</span><span class='va'>expr</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='fu'>eval_tidy</span><span class='op'>(</span><span class='va'>quo</span>, <span class='va'>data</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-in'><span class='fu'>with_data</span><span class='op'>(</span><span class='cn'>NULL</span>, <span class='va'>apple</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "apple"</span>
+<span class='r-in'><span class='fu'>with_data</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>apple</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "CARROT"</span>
+<span class='r-in'><span class='fu'>with_data</span><span class='op'>(</span><span class='va'>data</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>apple</span>, <span class='va'>kiwi</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "CARROT"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "TOMATO"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Secondly eval_tidy() installs handy pronouns that allow users to</span></span>
+<span class='r-in'><span class='co'># be explicit about where to find symbols:</span></span>
+<span class='r-in'><span class='fu'>with_data</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>.data</span><span class='op'>$</span><span class='va'>apple</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "CARROT"</span>
+<span class='r-in'><span class='fu'>with_data</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>.env</span><span class='op'>$</span><span class='va'>apple</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "apple"</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Note that instead of using `.env` it is often equivalent and may</span></span>
+<span class='r-in'><span class='co'># be preferred to unquote a value. There are two differences. First</span></span>
+<span class='r-in'><span class='co'># unquoting happens earlier, when the quosure is created. Secondly,</span></span>
+<span class='r-in'><span class='co'># subsetting `.env` with the `$` operator may be brittle because</span></span>
+<span class='r-in'><span class='co'># `$` does not look through the parents of the environment.</span></span>
+<span class='r-in'><span class='co'>#</span></span>
+<span class='r-in'><span class='co'># For instance using `.env$name` in a magrittr pipeline is an</span></span>
+<span class='r-in'><span class='co'># instance where this poses problem, because the magrittr pipe</span></span>
+<span class='r-in'><span class='co'># currently (as of v1.5.0) evaluates its operands in a *child* of</span></span>
+<span class='r-in'><span class='co'># the current environment (this child environment is where it</span></span>
+<span class='r-in'><span class='co'># defines the pronoun `.`).</span></span>
+<span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'>  <span class='va'>data</span> <span class='op'>%&gt;%</span> <span class='fu'>with_data</span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='va'>kiwi</span><span class='op'>)</span>     <span class='co'># "kiwi"</span></span>
+<span class='r-in'>  <span class='va'>data</span> <span class='op'>%&gt;%</span> <span class='fu'>with_data</span><span class='op'>(</span><span class='va'>.env</span><span class='op'>$</span><span class='va'>kiwi</span><span class='op'>)</span>  <span class='co'># NULL</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

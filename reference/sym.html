@@ -201,38 +201,47 @@ mask ambiguity</em> TODO! Link to currently off-branch topic.</p></li>
 <code>.data</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Create a symbol</span>
-<span class='fu'>sym</span><span class='op'>(</span><span class='st'>"cyl"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; cyl</div><div class='input'>
-<span class='co'># Create a list of symbols</span>
-<span class='fu'>syms</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"cyl"</span>, <span class='st'>"am"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [[1]]
-#&gt; cyl
-#&gt; 
-#&gt; [[2]]
-#&gt; am
-#&gt; </div><div class='input'>
-<span class='co'># Symbolised names refer to variables</span>
-<span class='fu'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span><span class='op'>(</span><span class='fu'>sym</span><span class='op'>(</span><span class='st'>"cyl"</span><span class='op'>)</span>, <span class='va'>mtcars</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;  [1] 6 6 4 6 8 6 8 4 4 6 6 8 8 8 8 8 8 4 4 4 4 8 8 8 8 4 4 4 8 6 8 4</div><div class='input'>
-<span class='co'># Beware of scoping issues</span>
-<span class='va'>Cyl</span> <span class='op'>&lt;-</span> <span class='st'>"wrong"</span>
-<span class='fu'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span><span class='op'>(</span><span class='fu'>sym</span><span class='op'>(</span><span class='st'>"Cyl"</span><span class='op'>)</span>, <span class='va'>mtcars</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "wrong"</div><div class='input'>
-<span class='co'># Data symbols are explicitly scoped in the data mask</span>
-<span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span><span class='op'>(</span><span class='fu'>data_sym</span><span class='op'>(</span><span class='st'>"Cyl"</span><span class='op'>)</span>, <span class='va'>mtcars</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Error in .data$Cyl : Column `Cyl` not found in `.data`.</div><div class='input'>
-<span class='co'># These can only be used with tidy eval functions</span>
-<span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span><span class='op'>(</span><span class='fu'>data_sym</span><span class='op'>(</span><span class='st'>"Cyl"</span><span class='op'>)</span>, <span class='va'>mtcars</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Error in eval(data_sym("Cyl"), mtcars) : 
-#&gt;   Can't subset <span style='color: #262626; background-color: #DADADA;'>`.data`</span> outside of a data mask context.</div><div class='input'>
-<span class='co'># The empty string returns the missing argument:</span>
-<span class='fu'>sym</span><span class='op'>(</span><span class='st'>""</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </div><div class='input'>
-<span class='co'># This way sym() and as_string() are inverse of each other:</span>
-<span class='fu'><a href='as_string.html'>as_string</a></span><span class='op'>(</span><span class='fu'><a href='missing_arg.html'>missing_arg</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] ""</div><div class='input'><span class='fu'>sym</span><span class='op'>(</span><span class='fu'><a href='as_string.html'>as_string</a></span><span class='op'>(</span><span class='fu'><a href='missing_arg.html'>missing_arg</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># Create a symbol</span></span>
+<span class='r-in'><span class='fu'>sym</span><span class='op'>(</span><span class='st'>"cyl"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> cyl</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Create a list of symbols</span></span>
+<span class='r-in'><span class='fu'>syms</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"cyl"</span>, <span class='st'>"am"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> cyl</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> am</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Symbolised names refer to variables</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span><span class='op'>(</span><span class='fu'>sym</span><span class='op'>(</span><span class='st'>"cyl"</span><span class='op'>)</span>, <span class='va'>mtcars</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] 6 6 4 6 8 6 8 4 4 6 6 8 8 8 8 8 8 4 4 4 4 8 8 8 8 4 4 4 8 6 8 4</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Beware of scoping issues</span></span>
+<span class='r-in'><span class='va'>Cyl</span> <span class='op'>&lt;-</span> <span class='st'>"wrong"</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span><span class='op'>(</span><span class='fu'>sym</span><span class='op'>(</span><span class='st'>"Cyl"</span><span class='op'>)</span>, <span class='va'>mtcars</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "wrong"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Data symbols are explicitly scoped in the data mask</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'><a href='eval_tidy.html'>eval_tidy</a></span><span class='op'>(</span><span class='fu'>data_sym</span><span class='op'>(</span><span class='st'>"Cyl"</span><span class='op'>)</span>, <span class='va'>mtcars</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Error in .data$Cyl : Column `Cyl` not found in `.data`.</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># These can only be used with tidy eval functions</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span><span class='op'>(</span><span class='fu'>data_sym</span><span class='op'>(</span><span class='st'>"Cyl"</span><span class='op'>)</span>, <span class='va'>mtcars</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Error in eval(data_sym("Cyl"), mtcars) : </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Can't subset <span style='color: #262626; background-color: #DADADA;'>`.data`</span> outside of a data mask context.</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># The empty string returns the missing argument:</span></span>
+<span class='r-in'><span class='fu'>sym</span><span class='op'>(</span><span class='st'>""</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># This way sym() and as_string() are inverse of each other:</span></span>
+<span class='r-in'><span class='fu'><a href='as_string.html'>as_string</a></span><span class='op'>(</span><span class='fu'><a href='missing_arg.html'>missing_arg</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] ""</span>
+<span class='r-in'><span class='fu'>sym</span><span class='op'>(</span><span class='fu'><a href='as_string.html'>as_string</a></span><span class='op'>(</span><span class='fu'><a href='missing_arg.html'>missing_arg</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

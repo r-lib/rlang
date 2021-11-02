@@ -206,15 +206,17 @@ was a mere expression acccessor for quosures whereas it was really
 a lossy operation that squashed all nested quosures.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Quosures can contain nested quosures:</span>
-<span class='va'>quo</span> <span class='op'>&lt;-</span> <span class='fu'><a href='nse-defuse.html'>quo</a></span><span class='op'>(</span><span class='fu'>wrapper</span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='fu'><a href='nse-defuse.html'>quo</a></span><span class='op'>(</span><span class='va'>wrappee</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>quo</span>
-</div><div class='output co'>#&gt; <span style='font-weight: bold;'>&lt;quosure&gt;</span>
-#&gt; expr: <span style='color: #0000BB;'>^wrapper(^wrappee)</span>
-#&gt; env:  <span style='color: #0000BB;'>0x5555be59d280</span></div><div class='input'>
-<span class='co'># quo_squash() flattens all the quosures and returns a simple expression:</span>
-<span class='fu'>quo_squash</span><span class='op'>(</span><span class='va'>quo</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; wrapper(wrappee)</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># Quosures can contain nested quosures:</span></span>
+<span class='r-in'><span class='va'>quo</span> <span class='op'>&lt;-</span> <span class='fu'><a href='nse-defuse.html'>quo</a></span><span class='op'>(</span><span class='fu'>wrapper</span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='fu'><a href='nse-defuse.html'>quo</a></span><span class='op'>(</span><span class='va'>wrappee</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>quo</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='font-weight: bold;'>&lt;quosure&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> expr: <span style='color: #0000BB;'>^wrapper(^wrappee)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> env:  <span style='color: #0000BB;'>0x557273c43d90</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># quo_squash() flattens all the quosures and returns a simple expression:</span></span>
+<span class='r-in'><span class='fu'>quo_squash</span><span class='op'>(</span><span class='va'>quo</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> wrapper(wrappee)</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -197,97 +197,104 @@ most useful if <code>f</code> is a string, or the function has side-effects.</p>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>args</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='fl'>100</span>, <span class='cn'>NA</span><span class='op'>)</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='fu'>exec</span><span class='op'>(</span><span class='st'>"mean"</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='va'>args</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 14.09091</div><div class='input'><span class='fu'>exec</span><span class='op'>(</span><span class='st'>"mean"</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='va'>args</span>, trim <span class='op'>=</span> <span class='fl'>0.2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 6</div><div class='input'>
-<span class='va'>fs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>a <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='st'>"a"</span>, b <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='st'>"b"</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span><span class='op'>(</span><span class='va'>fs</span>, <span class='va'>exec</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $a
-#&gt; [1] "a"
-#&gt; 
-#&gt; $b
-#&gt; [1] "b"
-#&gt; </div><div class='input'>
-<span class='co'># Compare to do.call it will not automatically inline expressions</span>
-<span class='co'># into the evaluated call.</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fl'>10</span>
-<span class='va'>args</span> <span class='op'>&lt;-</span> <span class='fu'><a href='nse-defuse.html'>exprs</a></span><span class='op'>(</span>x1 <span class='op'>=</span> <span class='va'>x</span> <span class='op'>+</span> <span class='fl'>1</span>, x2 <span class='op'>=</span> <span class='va'>x</span> <span class='op'>*</span> <span class='fl'>2</span><span class='op'>)</span>
-<span class='fu'>exec</span><span class='op'>(</span><span class='va'>list</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='va'>args</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $x1
-#&gt; x + 1
-#&gt; 
-#&gt; $x2
-#&gt; x * 2
-#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/do.call.html'>do.call</a></span><span class='op'>(</span><span class='va'>list</span>, <span class='va'>args</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $x1
-#&gt; [1] 11
-#&gt; 
-#&gt; $x2
-#&gt; [1] 20
-#&gt; </div><div class='input'>
-<span class='co'># exec() is not designed to generate pretty function calls. This is</span>
-<span class='co'># most easily seen if you call a function that captures the call:</span>
-<span class='va'>f</span> <span class='op'>&lt;-</span> <span class='va'>disp</span> <span class='op'>~</span> <span class='va'>cyl</span>
-<span class='fu'>exec</span><span class='op'>(</span><span class='st'>"lm"</span>, <span class='va'>f</span>, data <span class='op'>=</span> <span class='va'>mtcars</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt; Call:
-#&gt; lm(formula = .Primitive("quote")(disp ~ cyl), data = structure(list(
-#&gt;     mpg = c(21, 21, 22.8, 21.4, 18.7, 18.1, 14.3, 24.4, 22.8, 
-#&gt;     19.2, 17.8, 16.4, 17.3, 15.2, 10.4, 10.4, 14.7, 32.4, 30.4, 
-#&gt;     33.9, 21.5, 15.5, 15.2, 13.3, 19.2, 27.3, 26, 30.4, 15.8, 
-#&gt;     19.7, 15, 21.4), cyl = c(6, 6, 4, 6, 8, 6, 8, 4, 4, 6, 6, 
-#&gt;     8, 8, 8, 8, 8, 8, 4, 4, 4, 4, 8, 8, 8, 8, 4, 4, 4, 8, 6, 
-#&gt;     8, 4), disp = c(160, 160, 108, 258, 360, 225, 360, 146.7, 
-#&gt;     140.8, 167.6, 167.6, 275.8, 275.8, 275.8, 472, 460, 440, 
-#&gt;     78.7, 75.7, 71.1, 120.1, 318, 304, 350, 400, 79, 120.3, 95.1, 
-#&gt;     351, 145, 301, 121), hp = c(110, 110, 93, 110, 175, 105, 
-#&gt;     245, 62, 95, 123, 123, 180, 180, 180, 205, 215, 230, 66, 
-#&gt;     52, 65, 97, 150, 150, 245, 175, 66, 91, 113, 264, 175, 335, 
-#&gt;     109), drat = c(3.9, 3.9, 3.85, 3.08, 3.15, 2.76, 3.21, 3.69, 
-#&gt;     3.92, 3.92, 3.92, 3.07, 3.07, 3.07, 2.93, 3, 3.23, 4.08, 
-#&gt;     4.93, 4.22, 3.7, 2.76, 3.15, 3.73, 3.08, 4.08, 4.43, 3.77, 
-#&gt;     4.22, 3.62, 3.54, 4.11), wt = c(2.62, 2.875, 2.32, 3.215, 
-#&gt;     3.44, 3.46, 3.57, 3.19, 3.15, 3.44, 3.44, 4.07, 3.73, 3.78, 
-#&gt;     5.25, 5.424, 5.345, 2.2, 1.615, 1.835, 2.465, 3.52, 3.435, 
-#&gt;     3.84, 3.845, 1.935, 2.14, 1.513, 3.17, 2.77, 3.57, 2.78), 
-#&gt;     qsec = c(16.46, 17.02, 18.61, 19.44, 17.02, 20.22, 15.84, 
-#&gt;     20, 22.9, 18.3, 18.9, 17.4, 17.6, 18, 17.98, 17.82, 17.42, 
-#&gt;     19.47, 18.52, 19.9, 20.01, 16.87, 17.3, 15.41, 17.05, 18.9, 
-#&gt;     16.7, 16.9, 14.5, 15.5, 14.6, 18.6), vs = c(0, 0, 1, 1, 0, 
-#&gt;     1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 
-#&gt;     0, 1, 0, 1, 0, 0, 0, 1), am = c(1, 1, 1, 0, 0, 0, 0, 0, 0, 
-#&gt;     0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 
-#&gt;     1, 1, 1, 1), gear = c(4, 4, 4, 3, 3, 3, 3, 4, 4, 4, 4, 3, 
-#&gt;     3, 3, 3, 3, 3, 4, 4, 4, 3, 3, 3, 3, 3, 4, 5, 5, 5, 5, 5, 
-#&gt;     4), carb = c(4, 4, 1, 1, 2, 1, 4, 2, 2, 4, 4, 3, 3, 3, 4, 
-#&gt;     4, 4, 1, 2, 1, 1, 2, 2, 4, 2, 1, 2, 2, 4, 6, 8, 2)), row.names = c("Mazda RX4", 
-#&gt; "Mazda RX4 Wag", "Datsun 710", "Hornet 4 Drive", "Hornet Sportabout", 
-#&gt; "Valiant", "Duster 360", "Merc 240D", "Merc 230", "Merc 280", 
-#&gt; "Merc 280C", "Merc 450SE", "Merc 450SL", "Merc 450SLC", "Cadillac Fleetwood", 
-#&gt; "Lincoln Continental", "Chrysler Imperial", "Fiat 128", "Honda Civic", 
-#&gt; "Toyota Corolla", "Toyota Corona", "Dodge Challenger", "AMC Javelin", 
-#&gt; "Camaro Z28", "Pontiac Firebird", "Fiat X1-9", "Porsche 914-2", 
-#&gt; "Lotus Europa", "Ford Pantera L", "Ferrari Dino", "Maserati Bora", 
-#&gt; "Volvo 142E"), class = "data.frame"))
-#&gt; 
-#&gt; Coefficients:
-#&gt; (Intercept)          cyl  
-#&gt;      -156.6         62.6  
-#&gt; </div><div class='input'>
-<span class='co'># If you need finer control over the generated call, you'll need to</span>
-<span class='co'># construct it yourself. This may require creating a new environment</span>
-<span class='co'># with carefully constructed bindings</span>
-<span class='va'>data_env</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>mtcars</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span><span class='op'>(</span><span class='fu'><a href='nse-defuse.html'>expr</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='va'>f</span>, <span class='va'>data</span><span class='op'>)</span><span class='op'>)</span>, <span class='va'>data_env</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt; Call:
-#&gt; lm(formula = disp ~ cyl, data = data)
-#&gt; 
-#&gt; Coefficients:
-#&gt; (Intercept)          cyl  
-#&gt;      -156.6         62.6  
-#&gt; </div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>args</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='fl'>100</span>, <span class='cn'>NA</span><span class='op'>)</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>exec</span><span class='op'>(</span><span class='st'>"mean"</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='va'>args</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 14.09091</span>
+<span class='r-in'><span class='fu'>exec</span><span class='op'>(</span><span class='st'>"mean"</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='va'>args</span>, trim <span class='op'>=</span> <span class='fl'>0.2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 6</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>fs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>a <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='st'>"a"</span>, b <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='st'>"b"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span><span class='op'>(</span><span class='va'>fs</span>, <span class='va'>exec</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "a"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "b"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Compare to do.call it will not automatically inline expressions</span></span>
+<span class='r-in'><span class='co'># into the evaluated call.</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fl'>10</span></span>
+<span class='r-in'><span class='va'>args</span> <span class='op'>&lt;-</span> <span class='fu'><a href='nse-defuse.html'>exprs</a></span><span class='op'>(</span>x1 <span class='op'>=</span> <span class='va'>x</span> <span class='op'>+</span> <span class='fl'>1</span>, x2 <span class='op'>=</span> <span class='va'>x</span> <span class='op'>*</span> <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>exec</span><span class='op'>(</span><span class='va'>list</span>, <span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='va'>args</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $x1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> x + 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $x2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> x * 2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/do.call.html'>do.call</a></span><span class='op'>(</span><span class='va'>list</span>, <span class='va'>args</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $x1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 11</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $x2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 20</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># exec() is not designed to generate pretty function calls. This is</span></span>
+<span class='r-in'><span class='co'># most easily seen if you call a function that captures the call:</span></span>
+<span class='r-in'><span class='va'>f</span> <span class='op'>&lt;-</span> <span class='va'>disp</span> <span class='op'>~</span> <span class='va'>cyl</span></span>
+<span class='r-in'><span class='fu'>exec</span><span class='op'>(</span><span class='st'>"lm"</span>, <span class='va'>f</span>, data <span class='op'>=</span> <span class='va'>mtcars</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Call:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> lm(formula = .Primitive("quote")(disp ~ cyl), data = structure(list(</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     mpg = c(21, 21, 22.8, 21.4, 18.7, 18.1, 14.3, 24.4, 22.8, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     19.2, 17.8, 16.4, 17.3, 15.2, 10.4, 10.4, 14.7, 32.4, 30.4, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     33.9, 21.5, 15.5, 15.2, 13.3, 19.2, 27.3, 26, 30.4, 15.8, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     19.7, 15, 21.4), cyl = c(6, 6, 4, 6, 8, 6, 8, 4, 4, 6, 6, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     8, 8, 8, 8, 8, 8, 4, 4, 4, 4, 8, 8, 8, 8, 4, 4, 4, 8, 6, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     8, 4), disp = c(160, 160, 108, 258, 360, 225, 360, 146.7, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     140.8, 167.6, 167.6, 275.8, 275.8, 275.8, 472, 460, 440, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     78.7, 75.7, 71.1, 120.1, 318, 304, 350, 400, 79, 120.3, 95.1, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     351, 145, 301, 121), hp = c(110, 110, 93, 110, 175, 105, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     245, 62, 95, 123, 123, 180, 180, 180, 205, 215, 230, 66, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     52, 65, 97, 150, 150, 245, 175, 66, 91, 113, 264, 175, 335, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     109), drat = c(3.9, 3.9, 3.85, 3.08, 3.15, 2.76, 3.21, 3.69, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     3.92, 3.92, 3.92, 3.07, 3.07, 3.07, 2.93, 3, 3.23, 4.08, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     4.93, 4.22, 3.7, 2.76, 3.15, 3.73, 3.08, 4.08, 4.43, 3.77, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     4.22, 3.62, 3.54, 4.11), wt = c(2.62, 2.875, 2.32, 3.215, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     3.44, 3.46, 3.57, 3.19, 3.15, 3.44, 3.44, 4.07, 3.73, 3.78, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     5.25, 5.424, 5.345, 2.2, 1.615, 1.835, 2.465, 3.52, 3.435, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     3.84, 3.845, 1.935, 2.14, 1.513, 3.17, 2.77, 3.57, 2.78), </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     qsec = c(16.46, 17.02, 18.61, 19.44, 17.02, 20.22, 15.84, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     20, 22.9, 18.3, 18.9, 17.4, 17.6, 18, 17.98, 17.82, 17.42, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     19.47, 18.52, 19.9, 20.01, 16.87, 17.3, 15.41, 17.05, 18.9, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     16.7, 16.9, 14.5, 15.5, 14.6, 18.6), vs = c(0, 0, 1, 1, 0, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     0, 1, 0, 1, 0, 0, 0, 1), am = c(1, 1, 1, 0, 0, 0, 0, 0, 0, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     1, 1, 1, 1), gear = c(4, 4, 4, 3, 3, 3, 3, 4, 4, 4, 4, 3, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     3, 3, 3, 3, 3, 4, 4, 4, 3, 3, 3, 3, 3, 4, 5, 5, 5, 5, 5, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     4), carb = c(4, 4, 1, 1, 2, 1, 4, 2, 2, 4, 4, 3, 3, 3, 4, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     4, 4, 1, 2, 1, 1, 2, 2, 4, 2, 1, 2, 2, 4, 6, 8, 2)), row.names = c("Mazda RX4", </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "Mazda RX4 Wag", "Datsun 710", "Hornet 4 Drive", "Hornet Sportabout", </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "Valiant", "Duster 360", "Merc 240D", "Merc 230", "Merc 280", </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "Merc 280C", "Merc 450SE", "Merc 450SL", "Merc 450SLC", "Cadillac Fleetwood", </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "Lincoln Continental", "Chrysler Imperial", "Fiat 128", "Honda Civic", </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "Toyota Corolla", "Toyota Corona", "Dodge Challenger", "AMC Javelin", </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "Camaro Z28", "Pontiac Firebird", "Fiat X1-9", "Porsche 914-2", </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "Lotus Europa", "Ford Pantera L", "Ferrari Dino", "Maserati Bora", </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "Volvo 142E"), class = "data.frame"))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Coefficients:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> (Intercept)          cyl  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      -156.6         62.6  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># If you need finer control over the generated call, you'll need to</span></span>
+<span class='r-in'><span class='co'># construct it yourself. This may require creating a new environment</span></span>
+<span class='r-in'><span class='co'># with carefully constructed bindings</span></span>
+<span class='r-in'><span class='va'>data_env</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>mtcars</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/eval.html'>eval</a></span><span class='op'>(</span><span class='fu'><a href='nse-defuse.html'>expr</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='va'>f</span>, <span class='va'>data</span><span class='op'>)</span><span class='op'>)</span>, <span class='va'>data_env</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Call:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> lm(formula = disp ~ cyl, data = data)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Coefficients:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> (Intercept)          cyl  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      -156.6         62.6  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

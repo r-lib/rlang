@@ -216,331 +216,339 @@ an environment and call yourself, manually burying large objects
 or complex expressions.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># invoke() has the same purpose as do.call():</span>
-<span class='fu'>invoke</span><span class='op'>(</span><span class='va'>paste</span>, <span class='va'>letters</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: `invoke()` is deprecated as of rlang 0.4.0.</span>
-#&gt; <span class='warning'>Please use `exec()` or `eval(expr())`instead.</span>
-#&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once per session.</span></span></div><div class='output co'>#&gt; [1] "a b c d e f g h i j k l m n o p q r s t u v w x y z"</div><div class='input'>
-<span class='co'># But it creates much cleaner calls:</span>
-<span class='fu'>invoke</span><span class='op'>(</span><span class='va'>call_inspect</span>, <span class='va'>mtcars</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; .fn(mpg = `1`, cyl = `2`, disp = `3`, hp = `4`, drat = `5`, wt = `6`, 
-#&gt;     qsec = `7`, vs = `8`, am = `9`, gear = `10`, carb = `11`)</div><div class='input'>
-<span class='co'># and stacktraces:</span>
-<span class='va'>fn</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>sys.calls</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='fu'>invoke</span><span class='op'>(</span><span class='va'>fn</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [[1]]
-#&gt; pkgdown::deploy_to_branch(new_process = FALSE)
-#&gt; 
-#&gt; [[2]]
-#&gt; build_site(pkg, devel = FALSE, preview = FALSE, install = FALSE, 
-#&gt;     ...)
-#&gt; 
-#&gt; [[3]]
-#&gt; build_site_local(pkg = pkg, examples = examples, run_dont_run = run_dont_run, 
-#&gt;     seed = seed, lazy = lazy, override = override, preview = preview, 
-#&gt;     devel = devel)
-#&gt; 
-#&gt; [[4]]
-#&gt; build_reference(pkg, lazy = lazy, examples = examples, run_dont_run = run_dont_run, 
-#&gt;     seed = seed, override = override, preview = FALSE, devel = devel)
-#&gt; 
-#&gt; [[5]]
-#&gt; purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy, 
-#&gt;     examples = examples, run_dont_run = run_dont_run)
-#&gt; 
-#&gt; [[6]]
-#&gt; .f(.x[[i]], ...)
-#&gt; 
-#&gt; [[7]]
-#&gt; withCallingHandlers(data_reference_topic(topic, pkg, examples = examples, 
-#&gt;     run_dont_run = run_dont_run), error = function(err) {
-#&gt;     msg &lt;- c(paste0("Failed to parse Rd in ", topic$file_in), 
-#&gt;         i = err$message)
-#&gt;     abort(msg, parent = err)
-#&gt; })
-#&gt; 
-#&gt; [[8]]
-#&gt; data_reference_topic(topic, pkg, examples = examples, run_dont_run = run_dont_run)
-#&gt; 
-#&gt; [[9]]
-#&gt; run_examples(tags$tag_examples[[1]], env = new.env(parent = globalenv()), 
-#&gt;     topic = tools::file_path_sans_ext(topic$file_in), run_examples = examples, 
-#&gt;     run_dont_run = run_dont_run)
-#&gt; 
-#&gt; [[10]]
-#&gt; highlight_examples(code, topic, env = env)
-#&gt; 
-#&gt; [[11]]
-#&gt; downlit::evaluate_and_highlight(code, fig_save = fig_save_topic, 
-#&gt;     env = child_env(env))
-#&gt; 
-#&gt; [[12]]
-#&gt; evaluate::evaluate(code, child_env(env), new_device = TRUE)
-#&gt; 
-#&gt; [[13]]
-#&gt; evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos, 
-#&gt;     debug = debug, last = i == length(out), use_try = stop_on_error != 
-#&gt;         2L, keep_warning = keep_warning, keep_message = keep_message, 
-#&gt;     output_handler = output_handler, include_timing = include_timing)
-#&gt; 
-#&gt; [[14]]
-#&gt; timing_fn(handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, 
-#&gt;     envir, enclos)), warning = wHandler, error = eHandler, message = mHandler)))
-#&gt; 
-#&gt; [[15]]
-#&gt; handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, envir, 
-#&gt;     enclos)), warning = wHandler, error = eHandler, message = mHandler))
-#&gt; 
-#&gt; [[16]]
-#&gt; try(f, silent = TRUE)
-#&gt; 
-#&gt; [[17]]
-#&gt; tryCatch(expr, error = function(e) {
-#&gt;     call &lt;- conditionCall(e)
-#&gt;     if (!is.null(call)) {
-#&gt;         if (identical(call[[1L]], quote(doTryCatch))) 
-#&gt;             call &lt;- sys.call(-4L)
-#&gt;         dcall &lt;- deparse(call)[1L]
-#&gt;         prefix &lt;- paste("Error in", dcall, ": ")
-#&gt;         LONG &lt;- 75L
-#&gt;         sm &lt;- strsplit(conditionMessage(e), "\n")[[1L]]
-#&gt;         w &lt;- 14L + nchar(dcall, type = "w") + nchar(sm[1L], type = "w")
-#&gt;         if (is.na(w)) 
-#&gt;             w &lt;- 14L + nchar(dcall, type = "b") + nchar(sm[1L], 
-#&gt;                 type = "b")
-#&gt;         if (w &gt; LONG) 
-#&gt;             prefix &lt;- paste0(prefix, "\n  ")
-#&gt;     }
-#&gt;     else prefix &lt;- "Error : "
-#&gt;     msg &lt;- paste0(prefix, conditionMessage(e), "\n")
-#&gt;     .Internal(seterrmessage(msg[1L]))
-#&gt;     if (!silent &amp;&amp; isTRUE(getOption("show.error.messages"))) {
-#&gt;         cat(msg, file = outFile)
-#&gt;         .Internal(printDeferredWarnings())
-#&gt;     }
-#&gt;     invisible(structure(msg, class = "try-error", condition = e))
-#&gt; })
-#&gt; 
-#&gt; [[18]]
-#&gt; tryCatchList(expr, classes, parentenv, handlers)
-#&gt; 
-#&gt; [[19]]
-#&gt; tryCatchOne(expr, names, parentenv, handlers[[1L]])
-#&gt; 
-#&gt; [[20]]
-#&gt; doTryCatch(return(expr), name, parentenv, handler)
-#&gt; 
-#&gt; [[21]]
-#&gt; withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler, 
-#&gt;     error = eHandler, message = mHandler)
-#&gt; 
-#&gt; [[22]]
-#&gt; withVisible(eval(expr, envir, enclos))
-#&gt; 
-#&gt; [[23]]
-#&gt; eval(expr, envir, enclos)
-#&gt; 
-#&gt; [[24]]
-#&gt; eval(expr, envir, enclos)
-#&gt; 
-#&gt; [[25]]
-#&gt; invoke(fn, list(mtcars))
-#&gt; 
-#&gt; [[26]]
-#&gt; .fn(`1`)
-#&gt; </div><div class='input'>
-<span class='co'># Compare to do.call():</span>
-<span class='fu'><a href='https://rdrr.io/r/base/do.call.html'>do.call</a></span><span class='op'>(</span><span class='va'>call_inspect</span>, <span class='va'>mtcars</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; (function (...) 
-#&gt; match.call())(mpg = c(21, 21, 22.8, 21.4, 18.7, 18.1, 14.3, 24.4, 
-#&gt; 22.8, 19.2, 17.8, 16.4, 17.3, 15.2, 10.4, 10.4, 14.7, 32.4, 30.4, 
-#&gt; 33.9, 21.5, 15.5, 15.2, 13.3, 19.2, 27.3, 26, 30.4, 15.8, 19.7, 
-#&gt; 15, 21.4), cyl = c(6, 6, 4, 6, 8, 6, 8, 4, 4, 6, 6, 8, 8, 8, 
-#&gt; 8, 8, 8, 4, 4, 4, 4, 8, 8, 8, 8, 4, 4, 4, 8, 6, 8, 4), disp = c(160, 
-#&gt; 160, 108, 258, 360, 225, 360, 146.7, 140.8, 167.6, 167.6, 275.8, 
-#&gt; 275.8, 275.8, 472, 460, 440, 78.7, 75.7, 71.1, 120.1, 318, 304, 
-#&gt; 350, 400, 79, 120.3, 95.1, 351, 145, 301, 121), hp = c(110, 110, 
-#&gt; 93, 110, 175, 105, 245, 62, 95, 123, 123, 180, 180, 180, 205, 
-#&gt; 215, 230, 66, 52, 65, 97, 150, 150, 245, 175, 66, 91, 113, 264, 
-#&gt; 175, 335, 109), drat = c(3.9, 3.9, 3.85, 3.08, 3.15, 2.76, 3.21, 
-#&gt; 3.69, 3.92, 3.92, 3.92, 3.07, 3.07, 3.07, 2.93, 3, 3.23, 4.08, 
-#&gt; 4.93, 4.22, 3.7, 2.76, 3.15, 3.73, 3.08, 4.08, 4.43, 3.77, 4.22, 
-#&gt; 3.62, 3.54, 4.11), wt = c(2.62, 2.875, 2.32, 3.215, 3.44, 3.46, 
-#&gt; 3.57, 3.19, 3.15, 3.44, 3.44, 4.07, 3.73, 3.78, 5.25, 5.424, 
-#&gt; 5.345, 2.2, 1.615, 1.835, 2.465, 3.52, 3.435, 3.84, 3.845, 1.935, 
-#&gt; 2.14, 1.513, 3.17, 2.77, 3.57, 2.78), qsec = c(16.46, 17.02, 
-#&gt; 18.61, 19.44, 17.02, 20.22, 15.84, 20, 22.9, 18.3, 18.9, 17.4, 
-#&gt; 17.6, 18, 17.98, 17.82, 17.42, 19.47, 18.52, 19.9, 20.01, 16.87, 
-#&gt; 17.3, 15.41, 17.05, 18.9, 16.7, 16.9, 14.5, 15.5, 14.6, 18.6), 
-#&gt;     vs = c(0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 
-#&gt;     1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1), am = c(1, 1, 
-#&gt;     1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 
-#&gt;     0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1), gear = c(4, 4, 4, 3, 3, 
-#&gt;     3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 4, 4, 3, 3, 3, 3, 
-#&gt;     3, 4, 5, 5, 5, 5, 5, 4), carb = c(4, 4, 1, 1, 2, 1, 4, 2, 
-#&gt;     2, 4, 4, 3, 3, 3, 4, 4, 4, 1, 2, 1, 1, 2, 2, 4, 2, 1, 2, 
-#&gt;     2, 4, 6, 8, 2))</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/do.call.html'>do.call</a></span><span class='op'>(</span><span class='va'>fn</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [[1]]
-#&gt; pkgdown::deploy_to_branch(new_process = FALSE)
-#&gt; 
-#&gt; [[2]]
-#&gt; build_site(pkg, devel = FALSE, preview = FALSE, install = FALSE, 
-#&gt;     ...)
-#&gt; 
-#&gt; [[3]]
-#&gt; build_site_local(pkg = pkg, examples = examples, run_dont_run = run_dont_run, 
-#&gt;     seed = seed, lazy = lazy, override = override, preview = preview, 
-#&gt;     devel = devel)
-#&gt; 
-#&gt; [[4]]
-#&gt; build_reference(pkg, lazy = lazy, examples = examples, run_dont_run = run_dont_run, 
-#&gt;     seed = seed, override = override, preview = FALSE, devel = devel)
-#&gt; 
-#&gt; [[5]]
-#&gt; purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy, 
-#&gt;     examples = examples, run_dont_run = run_dont_run)
-#&gt; 
-#&gt; [[6]]
-#&gt; .f(.x[[i]], ...)
-#&gt; 
-#&gt; [[7]]
-#&gt; withCallingHandlers(data_reference_topic(topic, pkg, examples = examples, 
-#&gt;     run_dont_run = run_dont_run), error = function(err) {
-#&gt;     msg &lt;- c(paste0("Failed to parse Rd in ", topic$file_in), 
-#&gt;         i = err$message)
-#&gt;     abort(msg, parent = err)
-#&gt; })
-#&gt; 
-#&gt; [[8]]
-#&gt; data_reference_topic(topic, pkg, examples = examples, run_dont_run = run_dont_run)
-#&gt; 
-#&gt; [[9]]
-#&gt; run_examples(tags$tag_examples[[1]], env = new.env(parent = globalenv()), 
-#&gt;     topic = tools::file_path_sans_ext(topic$file_in), run_examples = examples, 
-#&gt;     run_dont_run = run_dont_run)
-#&gt; 
-#&gt; [[10]]
-#&gt; highlight_examples(code, topic, env = env)
-#&gt; 
-#&gt; [[11]]
-#&gt; downlit::evaluate_and_highlight(code, fig_save = fig_save_topic, 
-#&gt;     env = child_env(env))
-#&gt; 
-#&gt; [[12]]
-#&gt; evaluate::evaluate(code, child_env(env), new_device = TRUE)
-#&gt; 
-#&gt; [[13]]
-#&gt; evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos, 
-#&gt;     debug = debug, last = i == length(out), use_try = stop_on_error != 
-#&gt;         2L, keep_warning = keep_warning, keep_message = keep_message, 
-#&gt;     output_handler = output_handler, include_timing = include_timing)
-#&gt; 
-#&gt; [[14]]
-#&gt; timing_fn(handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, 
-#&gt;     envir, enclos)), warning = wHandler, error = eHandler, message = mHandler)))
-#&gt; 
-#&gt; [[15]]
-#&gt; handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, envir, 
-#&gt;     enclos)), warning = wHandler, error = eHandler, message = mHandler))
-#&gt; 
-#&gt; [[16]]
-#&gt; try(f, silent = TRUE)
-#&gt; 
-#&gt; [[17]]
-#&gt; tryCatch(expr, error = function(e) {
-#&gt;     call &lt;- conditionCall(e)
-#&gt;     if (!is.null(call)) {
-#&gt;         if (identical(call[[1L]], quote(doTryCatch))) 
-#&gt;             call &lt;- sys.call(-4L)
-#&gt;         dcall &lt;- deparse(call)[1L]
-#&gt;         prefix &lt;- paste("Error in", dcall, ": ")
-#&gt;         LONG &lt;- 75L
-#&gt;         sm &lt;- strsplit(conditionMessage(e), "\n")[[1L]]
-#&gt;         w &lt;- 14L + nchar(dcall, type = "w") + nchar(sm[1L], type = "w")
-#&gt;         if (is.na(w)) 
-#&gt;             w &lt;- 14L + nchar(dcall, type = "b") + nchar(sm[1L], 
-#&gt;                 type = "b")
-#&gt;         if (w &gt; LONG) 
-#&gt;             prefix &lt;- paste0(prefix, "\n  ")
-#&gt;     }
-#&gt;     else prefix &lt;- "Error : "
-#&gt;     msg &lt;- paste0(prefix, conditionMessage(e), "\n")
-#&gt;     .Internal(seterrmessage(msg[1L]))
-#&gt;     if (!silent &amp;&amp; isTRUE(getOption("show.error.messages"))) {
-#&gt;         cat(msg, file = outFile)
-#&gt;         .Internal(printDeferredWarnings())
-#&gt;     }
-#&gt;     invisible(structure(msg, class = "try-error", condition = e))
-#&gt; })
-#&gt; 
-#&gt; [[18]]
-#&gt; tryCatchList(expr, classes, parentenv, handlers)
-#&gt; 
-#&gt; [[19]]
-#&gt; tryCatchOne(expr, names, parentenv, handlers[[1L]])
-#&gt; 
-#&gt; [[20]]
-#&gt; doTryCatch(return(expr), name, parentenv, handler)
-#&gt; 
-#&gt; [[21]]
-#&gt; withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler, 
-#&gt;     error = eHandler, message = mHandler)
-#&gt; 
-#&gt; [[22]]
-#&gt; withVisible(eval(expr, envir, enclos))
-#&gt; 
-#&gt; [[23]]
-#&gt; eval(expr, envir, enclos)
-#&gt; 
-#&gt; [[24]]
-#&gt; eval(expr, envir, enclos)
-#&gt; 
-#&gt; [[25]]
-#&gt; do.call(fn, list(mtcars))
-#&gt; 
-#&gt; [[26]]
-#&gt; (function(...) sys.calls())(list(mpg = c(21, 21, 22.8, 21.4, 
-#&gt; 18.7, 18.1, 14.3, 24.4, 22.8, 19.2, 17.8, 16.4, 17.3, 15.2, 10.4, 
-#&gt; 10.4, 14.7, 32.4, 30.4, 33.9, 21.5, 15.5, 15.2, 13.3, 19.2, 27.3, 
-#&gt; 26, 30.4, 15.8, 19.7, 15, 21.4), cyl = c(6, 6, 4, 6, 8, 6, 8, 
-#&gt; 4, 4, 6, 6, 8, 8, 8, 8, 8, 8, 4, 4, 4, 4, 8, 8, 8, 8, 4, 4, 4, 
-#&gt; 8, 6, 8, 4), disp = c(160, 160, 108, 258, 360, 225, 360, 146.7, 
-#&gt; 140.8, 167.6, 167.6, 275.8, 275.8, 275.8, 472, 460, 440, 78.7, 
-#&gt; 75.7, 71.1, 120.1, 318, 304, 350, 400, 79, 120.3, 95.1, 351, 
-#&gt; 145, 301, 121), hp = c(110, 110, 93, 110, 175, 105, 245, 62, 
-#&gt; 95, 123, 123, 180, 180, 180, 205, 215, 230, 66, 52, 65, 97, 150, 
-#&gt; 150, 245, 175, 66, 91, 113, 264, 175, 335, 109), drat = c(3.9, 
-#&gt; 3.9, 3.85, 3.08, 3.15, 2.76, 3.21, 3.69, 3.92, 3.92, 3.92, 3.07, 
-#&gt; 3.07, 3.07, 2.93, 3, 3.23, 4.08, 4.93, 4.22, 3.7, 2.76, 3.15, 
-#&gt; 3.73, 3.08, 4.08, 4.43, 3.77, 4.22, 3.62, 3.54, 4.11), wt = c(2.62, 
-#&gt; 2.875, 2.32, 3.215, 3.44, 3.46, 3.57, 3.19, 3.15, 3.44, 3.44, 
-#&gt; 4.07, 3.73, 3.78, 5.25, 5.424, 5.345, 2.2, 1.615, 1.835, 2.465, 
-#&gt; 3.52, 3.435, 3.84, 3.845, 1.935, 2.14, 1.513, 3.17, 2.77, 3.57, 
-#&gt; 2.78), qsec = c(16.46, 17.02, 18.61, 19.44, 17.02, 20.22, 15.84, 
-#&gt; 20, 22.9, 18.3, 18.9, 17.4, 17.6, 18, 17.98, 17.82, 17.42, 19.47, 
-#&gt; 18.52, 19.9, 20.01, 16.87, 17.3, 15.41, 17.05, 18.9, 16.7, 16.9, 
-#&gt; 14.5, 15.5, 14.6, 18.6), vs = c(0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 
-#&gt; 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 
-#&gt; 1), am = c(1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-#&gt; 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1), gear = c(4, 4, 
-#&gt; 4, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 4, 4, 3, 3, 3, 
-#&gt; 3, 3, 4, 5, 5, 5, 5, 5, 4), carb = c(4, 4, 1, 1, 2, 1, 4, 2, 
-#&gt; 2, 4, 4, 3, 3, 3, 4, 4, 4, 1, 2, 1, 1, 2, 2, 4, 2, 1, 2, 2, 4, 
-#&gt; 6, 8, 2)))
-#&gt; </div><div class='input'>
-
-<span class='co'># Specify the function name either by supplying a string</span>
-<span class='co'># identifying the function (it should be visible in .env):</span>
-<span class='fu'>invoke</span><span class='op'>(</span><span class='st'>"call_inspect"</span>, <span class='va'>letters</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; call_inspect(`1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, 
-#&gt;     `11`, `12`, `13`, `14`, `15`, `16`, `17`, `18`, `19`, `20`, 
-#&gt;     `21`, `22`, `23`, `24`, `25`, `26`)</div><div class='input'>
-<span class='co'># Or by changing the .bury argument, with which you can also change</span>
-<span class='co'># the argument prefix:</span>
-<span class='fu'>invoke</span><span class='op'>(</span><span class='va'>call_inspect</span>, <span class='va'>mtcars</span>, .bury <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"inspect!"</span>, <span class='st'>"col"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; `inspect!`(mpg = col1, cyl = col2, disp = col3, hp = col4, drat = col5, 
-#&gt;     wt = col6, qsec = col7, vs = col8, am = col9, gear = col10, 
-#&gt;     carb = col11)</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># invoke() has the same purpose as do.call():</span></span>
+<span class='r-in'><span class='fu'>invoke</span><span class='op'>(</span><span class='va'>paste</span>, <span class='va'>letters</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>`invoke()` is deprecated as of rlang 0.4.0.</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> Please use `exec()` or `eval(expr())`instead.</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span style='color: #555555;'>This warning is displayed once per session.</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "a b c d e f g h i j k l m n o p q r s t u v w x y z"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># But it creates much cleaner calls:</span></span>
+<span class='r-in'><span class='fu'>invoke</span><span class='op'>(</span><span class='va'>call_inspect</span>, <span class='va'>mtcars</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .fn(mpg = `1`, cyl = `2`, disp = `3`, hp = `4`, drat = `5`, wt = `6`, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     qsec = `7`, vs = `8`, am = `9`, gear = `10`, carb = `11`)</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># and stacktraces:</span></span>
+<span class='r-in'><span class='va'>fn</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>sys.calls</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>invoke</span><span class='op'>(</span><span class='va'>fn</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> pkgdown::deploy_to_branch(new_process = FALSE)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> build_site(pkg, devel = FALSE, preview = FALSE, install = FALSE, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     ...)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[3]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> build_site_local(pkg = pkg, examples = examples, run_dont_run = run_dont_run, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     seed = seed, lazy = lazy, override = override, preview = preview, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     devel = devel)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[4]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> build_reference(pkg, lazy = lazy, examples = examples, run_dont_run = run_dont_run, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     seed = seed, override = override, preview = FALSE, devel = devel)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[5]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     examples = examples, run_dont_run = run_dont_run)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[6]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .f(.x[[i]], ...)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[7]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> withCallingHandlers(data_reference_topic(topic, pkg, examples = examples, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     run_dont_run = run_dont_run), error = function(err) {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     msg &lt;- c(paste0("Failed to parse Rd in ", topic$file_in), </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         i = err$message)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     abort(msg, parent = err)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> })</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[8]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data_reference_topic(topic, pkg, examples = examples, run_dont_run = run_dont_run)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[9]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> run_examples(tags$tag_examples[[1]], env = new.env(parent = globalenv()), </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     topic = tools::file_path_sans_ext(topic$file_in), run_examples = examples, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     run_dont_run = run_dont_run)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[10]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> highlight_examples(code, topic, env = env)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[11]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> downlit::evaluate_and_highlight(code, fig_save = fig_save_topic, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     env = child_env(env))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[12]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> evaluate::evaluate(code, child_env(env), new_device = TRUE, output_handler = output_handler)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[13]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     debug = debug, last = i == length(out), use_try = stop_on_error != </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         2L, keep_warning = keep_warning, keep_message = keep_message, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     output_handler = output_handler, include_timing = include_timing)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[14]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> timing_fn(handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     envir, enclos)), warning = wHandler, error = eHandler, message = mHandler)))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[15]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, envir, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     enclos)), warning = wHandler, error = eHandler, message = mHandler))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[16]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> try(f, silent = TRUE)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[17]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tryCatch(expr, error = function(e) {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     call &lt;- conditionCall(e)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     if (!is.null(call)) {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         if (identical(call[[1L]], quote(doTryCatch))) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             call &lt;- sys.call(-4L)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         dcall &lt;- deparse(call, nlines = 1L)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         prefix &lt;- paste("Error in", dcall, ": ")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         LONG &lt;- 75L</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         sm &lt;- strsplit(conditionMessage(e), "\n")[[1L]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         w &lt;- 14L + nchar(dcall, type = "w") + nchar(sm[1L], type = "w")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         if (is.na(w)) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             w &lt;- 14L + nchar(dcall, type = "b") + nchar(sm[1L], </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                 type = "b")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         if (w &gt; LONG) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             prefix &lt;- paste0(prefix, "\n  ")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     else prefix &lt;- "Error : "</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     msg &lt;- paste0(prefix, conditionMessage(e), "\n")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     .Internal(seterrmessage(msg[1L]))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     if (!silent &amp;&amp; isTRUE(getOption("show.error.messages"))) {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         cat(msg, file = outFile)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         .Internal(printDeferredWarnings())</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     invisible(structure(msg, class = "try-error", condition = e))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> })</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[18]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tryCatchList(expr, classes, parentenv, handlers)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[19]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tryCatchOne(expr, names, parentenv, handlers[[1L]])</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[20]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> doTryCatch(return(expr), name, parentenv, handler)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[21]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     error = eHandler, message = mHandler)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[22]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> withVisible(eval(expr, envir, enclos))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[23]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> eval(expr, envir, enclos)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[24]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> eval(expr, envir, enclos)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[25]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> invoke(fn, list(mtcars))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[26]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .fn(`1`)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Compare to do.call():</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/do.call.html'>do.call</a></span><span class='op'>(</span><span class='va'>call_inspect</span>, <span class='va'>mtcars</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> (function (...) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> match.call())(mpg = c(21, 21, 22.8, 21.4, 18.7, 18.1, 14.3, 24.4, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 22.8, 19.2, 17.8, 16.4, 17.3, 15.2, 10.4, 10.4, 14.7, 32.4, 30.4, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 33.9, 21.5, 15.5, 15.2, 13.3, 19.2, 27.3, 26, 30.4, 15.8, 19.7, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 15, 21.4), cyl = c(6, 6, 4, 6, 8, 6, 8, 4, 4, 6, 6, 8, 8, 8, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8, 8, 8, 4, 4, 4, 4, 8, 8, 8, 8, 4, 4, 4, 8, 6, 8, 4), disp = c(160, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 160, 108, 258, 360, 225, 360, 146.7, 140.8, 167.6, 167.6, 275.8, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 275.8, 275.8, 472, 460, 440, 78.7, 75.7, 71.1, 120.1, 318, 304, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 350, 400, 79, 120.3, 95.1, 351, 145, 301, 121), hp = c(110, 110, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 93, 110, 175, 105, 245, 62, 95, 123, 123, 180, 180, 180, 205, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 215, 230, 66, 52, 65, 97, 150, 150, 245, 175, 66, 91, 113, 264, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 175, 335, 109), drat = c(3.9, 3.9, 3.85, 3.08, 3.15, 2.76, 3.21, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3.69, 3.92, 3.92, 3.92, 3.07, 3.07, 3.07, 2.93, 3, 3.23, 4.08, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4.93, 4.22, 3.7, 2.76, 3.15, 3.73, 3.08, 4.08, 4.43, 3.77, 4.22, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3.62, 3.54, 4.11), wt = c(2.62, 2.875, 2.32, 3.215, 3.44, 3.46, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3.57, 3.19, 3.15, 3.44, 3.44, 4.07, 3.73, 3.78, 5.25, 5.424, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5.345, 2.2, 1.615, 1.835, 2.465, 3.52, 3.435, 3.84, 3.845, 1.935, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2.14, 1.513, 3.17, 2.77, 3.57, 2.78), qsec = c(16.46, 17.02, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 18.61, 19.44, 17.02, 20.22, 15.84, 20, 22.9, 18.3, 18.9, 17.4, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 17.6, 18, 17.98, 17.82, 17.42, 19.47, 18.52, 19.9, 20.01, 16.87, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 17.3, 15.41, 17.05, 18.9, 16.7, 16.9, 14.5, 15.5, 14.6, 18.6), </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     vs = c(0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1), am = c(1, 1, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1), gear = c(4, 4, 4, 3, 3, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 4, 4, 3, 3, 3, 3, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     3, 4, 5, 5, 5, 5, 5, 4), carb = c(4, 4, 1, 1, 2, 1, 4, 2, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     2, 4, 4, 3, 3, 3, 4, 4, 4, 1, 2, 1, 1, 2, 2, 4, 2, 1, 2, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     2, 4, 6, 8, 2))</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/do.call.html'>do.call</a></span><span class='op'>(</span><span class='va'>fn</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> pkgdown::deploy_to_branch(new_process = FALSE)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> build_site(pkg, devel = FALSE, preview = FALSE, install = FALSE, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     ...)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[3]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> build_site_local(pkg = pkg, examples = examples, run_dont_run = run_dont_run, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     seed = seed, lazy = lazy, override = override, preview = preview, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     devel = devel)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[4]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> build_reference(pkg, lazy = lazy, examples = examples, run_dont_run = run_dont_run, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     seed = seed, override = override, preview = FALSE, devel = devel)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[5]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     examples = examples, run_dont_run = run_dont_run)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[6]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> .f(.x[[i]], ...)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[7]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> withCallingHandlers(data_reference_topic(topic, pkg, examples = examples, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     run_dont_run = run_dont_run), error = function(err) {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     msg &lt;- c(paste0("Failed to parse Rd in ", topic$file_in), </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         i = err$message)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     abort(msg, parent = err)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> })</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[8]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data_reference_topic(topic, pkg, examples = examples, run_dont_run = run_dont_run)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[9]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> run_examples(tags$tag_examples[[1]], env = new.env(parent = globalenv()), </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     topic = tools::file_path_sans_ext(topic$file_in), run_examples = examples, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     run_dont_run = run_dont_run)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[10]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> highlight_examples(code, topic, env = env)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[11]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> downlit::evaluate_and_highlight(code, fig_save = fig_save_topic, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     env = child_env(env))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[12]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> evaluate::evaluate(code, child_env(env), new_device = TRUE, output_handler = output_handler)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[13]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     debug = debug, last = i == length(out), use_try = stop_on_error != </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         2L, keep_warning = keep_warning, keep_message = keep_message, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     output_handler = output_handler, include_timing = include_timing)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[14]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> timing_fn(handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     envir, enclos)), warning = wHandler, error = eHandler, message = mHandler)))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[15]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, envir, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     enclos)), warning = wHandler, error = eHandler, message = mHandler))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[16]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> try(f, silent = TRUE)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[17]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tryCatch(expr, error = function(e) {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     call &lt;- conditionCall(e)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     if (!is.null(call)) {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         if (identical(call[[1L]], quote(doTryCatch))) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             call &lt;- sys.call(-4L)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         dcall &lt;- deparse(call, nlines = 1L)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         prefix &lt;- paste("Error in", dcall, ": ")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         LONG &lt;- 75L</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         sm &lt;- strsplit(conditionMessage(e), "\n")[[1L]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         w &lt;- 14L + nchar(dcall, type = "w") + nchar(sm[1L], type = "w")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         if (is.na(w)) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             w &lt;- 14L + nchar(dcall, type = "b") + nchar(sm[1L], </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                 type = "b")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         if (w &gt; LONG) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             prefix &lt;- paste0(prefix, "\n  ")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     else prefix &lt;- "Error : "</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     msg &lt;- paste0(prefix, conditionMessage(e), "\n")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     .Internal(seterrmessage(msg[1L]))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     if (!silent &amp;&amp; isTRUE(getOption("show.error.messages"))) {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         cat(msg, file = outFile)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         .Internal(printDeferredWarnings())</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     invisible(structure(msg, class = "try-error", condition = e))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> })</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[18]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tryCatchList(expr, classes, parentenv, handlers)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[19]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> tryCatchOne(expr, names, parentenv, handlers[[1L]])</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[20]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> doTryCatch(return(expr), name, parentenv, handler)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[21]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     error = eHandler, message = mHandler)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[22]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> withVisible(eval(expr, envir, enclos))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[23]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> eval(expr, envir, enclos)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[24]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> eval(expr, envir, enclos)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[25]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> do.call(fn, list(mtcars))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [[26]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> (function(...) sys.calls())(list(mpg = c(21, 21, 22.8, 21.4, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 18.7, 18.1, 14.3, 24.4, 22.8, 19.2, 17.8, 16.4, 17.3, 15.2, 10.4, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10.4, 14.7, 32.4, 30.4, 33.9, 21.5, 15.5, 15.2, 13.3, 19.2, 27.3, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 26, 30.4, 15.8, 19.7, 15, 21.4), cyl = c(6, 6, 4, 6, 8, 6, 8, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4, 4, 6, 6, 8, 8, 8, 8, 8, 8, 4, 4, 4, 4, 8, 8, 8, 8, 4, 4, 4, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8, 6, 8, 4), disp = c(160, 160, 108, 258, 360, 225, 360, 146.7, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 140.8, 167.6, 167.6, 275.8, 275.8, 275.8, 472, 460, 440, 78.7, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 75.7, 71.1, 120.1, 318, 304, 350, 400, 79, 120.3, 95.1, 351, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 145, 301, 121), hp = c(110, 110, 93, 110, 175, 105, 245, 62, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 95, 123, 123, 180, 180, 180, 205, 215, 230, 66, 52, 65, 97, 150, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 150, 245, 175, 66, 91, 113, 264, 175, 335, 109), drat = c(3.9, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3.9, 3.85, 3.08, 3.15, 2.76, 3.21, 3.69, 3.92, 3.92, 3.92, 3.07, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3.07, 3.07, 2.93, 3, 3.23, 4.08, 4.93, 4.22, 3.7, 2.76, 3.15, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3.73, 3.08, 4.08, 4.43, 3.77, 4.22, 3.62, 3.54, 4.11), wt = c(2.62, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2.875, 2.32, 3.215, 3.44, 3.46, 3.57, 3.19, 3.15, 3.44, 3.44, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4.07, 3.73, 3.78, 5.25, 5.424, 5.345, 2.2, 1.615, 1.835, 2.465, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3.52, 3.435, 3.84, 3.845, 1.935, 2.14, 1.513, 3.17, 2.77, 3.57, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2.78), qsec = c(16.46, 17.02, 18.61, 19.44, 17.02, 20.22, 15.84, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 20, 22.9, 18.3, 18.9, 17.4, 17.6, 18, 17.98, 17.82, 17.42, 19.47, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 18.52, 19.9, 20.01, 16.87, 17.3, 15.41, 17.05, 18.9, 16.7, 16.9, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 14.5, 15.5, 14.6, 18.6), vs = c(0, 0, 1, 1, 0, 1, 0, 1, 1, 1, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1), am = c(1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1), gear = c(4, 4, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 4, 4, 3, 3, 3, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3, 3, 4, 5, 5, 5, 5, 5, 4), carb = c(4, 4, 1, 1, 2, 1, 4, 2, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2, 4, 4, 3, 3, 3, 4, 4, 4, 1, 2, 1, 1, 2, 2, 4, 2, 1, 2, 2, 4, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6, 8, 2)))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Specify the function name either by supplying a string</span></span>
+<span class='r-in'><span class='co'># identifying the function (it should be visible in .env):</span></span>
+<span class='r-in'><span class='fu'>invoke</span><span class='op'>(</span><span class='st'>"call_inspect"</span>, <span class='va'>letters</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> call_inspect(`1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     `11`, `12`, `13`, `14`, `15`, `16`, `17`, `18`, `19`, `20`, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     `21`, `22`, `23`, `24`, `25`, `26`)</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Or by changing the .bury argument, with which you can also change</span></span>
+<span class='r-in'><span class='co'># the argument prefix:</span></span>
+<span class='r-in'><span class='fu'>invoke</span><span class='op'>(</span><span class='va'>call_inspect</span>, <span class='va'>mtcars</span>, .bury <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"inspect!"</span>, <span class='st'>"col"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> `inspect!`(mpg = col1, cyl = col2, disp = col3, hp = col4, drat = col5, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     wt = col6, qsec = col7, vs = col8, am = col9, gear = col10, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     carb = col11)</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -356,7 +356,7 @@ users. See the <code>call</code> argument of <code>abort()</code>.</p>
 
 <p><code>abort()</code> always saves a backtrace. You can print a simplified
 backtrace of the last error by calling <code><a href='last_error.html'>last_error()</a></code> and a full
-backtrace with <code><a href='https://rdrr.io/r/base/summary.html'>summary(last_error())</a></code>. Learn how to control what is
+backtrace with <code>summary(last_error())</code>. Learn how to control what is
 displayed when an error is thrown with <code><a href='rlang_backtrace_on_error.html'>rlang_backtrace_on_error</a></code>.</p>
     <h2 class="hasAnchor" id="muffling-and-silencing-conditions"><a class="anchor" href="#muffling-and-silencing-conditions"></a>Muffling and silencing conditions</h2>
 
@@ -400,62 +400,62 @@ non-interactive sessions, and when sinks are active.</p>
     <div class='dont-index'><p><code><a href='with_abort.html'>with_abort()</a></code> to convert all errors to rlang errors.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># These examples are guarded to avoid throwing errors</span>
-<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-
-<span class='co'># Signal an error with a message just like stop():</span>
-<span class='fu'>abort</span><span class='op'>(</span><span class='st'>"Something bad happened"</span><span class='op'>)</span>
-
-<span class='co'># Give a class to the error:</span>
-<span class='fu'>abort</span><span class='op'>(</span><span class='st'>"Something bad happened"</span>, <span class='st'>"somepkg_bad_error"</span><span class='op'>)</span>
-
-<span class='co'># This will allow your users to handle the error selectively</span>
-<span class='kw'><a href='https://rdrr.io/r/base/conditions.html'>tryCatch</a></span><span class='op'>(</span>
-  <span class='fu'>somepkg_function</span><span class='op'>(</span><span class='op'>)</span>,
-  somepkg_bad_error <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>err</span><span class='op'>)</span> <span class='op'>{</span>
-    <span class='fu'>warn</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/conditions.html'>conditionMessage</a></span><span class='op'>(</span><span class='va'>err</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># Demote the error to a warning</span>
-    <span class='cn'>NA</span>                          <span class='co'># Return an alternative value</span>
-  <span class='op'>}</span>
-<span class='op'>)</span>
-
-<span class='co'># You can also specify metadata that will be stored in the condition:</span>
-<span class='fu'>abort</span><span class='op'>(</span><span class='st'>"Something bad happened"</span>, <span class='st'>"somepkg_bad_error"</span>, data <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span>
-
-<span class='co'># This data can then be consulted by user handlers:</span>
-<span class='kw'><a href='https://rdrr.io/r/base/conditions.html'>tryCatch</a></span><span class='op'>(</span>
-  <span class='fu'>somepkg_function</span><span class='op'>(</span><span class='op'>)</span>,
-  somepkg_bad_error <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>err</span><span class='op'>)</span> <span class='op'>{</span>
-    <span class='co'># Compute an alternative return value with the data:</span>
-    <span class='fu'>recover_error</span><span class='op'>(</span><span class='va'>err</span><span class='op'>$</span><span class='va'>data</span><span class='op'>)</span>
-  <span class='op'>}</span>
-<span class='op'>)</span>
-
-<span class='co'># If you call low-level APIs it is good practice to handle</span>
-<span class='co'># technical errors and rethrow them with a more meaningful</span>
-<span class='co'># message. Always prefer doing this from `withCallingHandlers()`</span>
-<span class='co'># rather than `tryCatch()` because the former preserves the stack</span>
-<span class='co'># on error and makes it possible for users to use `recover()`.</span>
-<span class='va'>file</span> <span class='op'>&lt;-</span> <span class='st'>"http://foo.bar/baz"</span>
-<span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/conditions.html'>withCallingHandlers</a></span><span class='op'>(</span>
-  <span class='fu'>download</span><span class='op'>(</span><span class='va'>file</span><span class='op'>)</span>,
-  error <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>err</span><span class='op'>)</span> <span class='op'>{</span>
-    <span class='va'>msg</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span><span class='op'>(</span><span class='st'>"Can't download `%s`"</span>, <span class='va'>file</span><span class='op'>)</span>
-    <span class='fu'>abort</span><span class='op'>(</span><span class='va'>msg</span>, parent <span class='op'>=</span> <span class='va'>err</span><span class='op'>)</span>
-<span class='op'>}</span><span class='op'>)</span><span class='op'>)</span>
-<span class='co'># Note how we supplied the parent error to `abort()` as `parent` to</span>
-<span class='co'># get a decomposition of error messages across error contexts.</span>
-
-<span class='co'># Unhandled errors are saved automatically by `abort()` and can be</span>
-<span class='co'># retrieved with `last_error()`. The error prints with a simplified</span>
-<span class='co'># backtrace:</span>
-<span class='fu'>abort</span><span class='op'>(</span><span class='st'>"Saved error?"</span><span class='op'>)</span>
-<span class='fu'><a href='last_error.html'>last_error</a></span><span class='op'>(</span><span class='op'>)</span>
-
-<span class='co'># Use `summary()` to print the full backtrace and the condition fields:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='fu'><a href='last_error.html'>last_error</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='op'>}</span>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># These examples are guarded to avoid throwing errors</span></span>
+<span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Signal an error with a message just like stop():</span></span>
+<span class='r-in'><span class='fu'>abort</span><span class='op'>(</span><span class='st'>"Something bad happened"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Give a class to the error:</span></span>
+<span class='r-in'><span class='fu'>abort</span><span class='op'>(</span><span class='st'>"Something bad happened"</span>, <span class='st'>"somepkg_bad_error"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># This will allow your users to handle the error selectively</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/conditions.html'>tryCatch</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='fu'>somepkg_function</span><span class='op'>(</span><span class='op'>)</span>,</span>
+<span class='r-in'>  somepkg_bad_error <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>err</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'>    <span class='fu'>warn</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/conditions.html'>conditionMessage</a></span><span class='op'>(</span><span class='va'>err</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># Demote the error to a warning</span></span>
+<span class='r-in'>    <span class='cn'>NA</span>                          <span class='co'># Return an alternative value</span></span>
+<span class='r-in'>  <span class='op'>}</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># You can also specify metadata that will be stored in the condition:</span></span>
+<span class='r-in'><span class='fu'>abort</span><span class='op'>(</span><span class='st'>"Something bad happened"</span>, <span class='st'>"somepkg_bad_error"</span>, data <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># This data can then be consulted by user handlers:</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/conditions.html'>tryCatch</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='fu'>somepkg_function</span><span class='op'>(</span><span class='op'>)</span>,</span>
+<span class='r-in'>  somepkg_bad_error <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>err</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'>    <span class='co'># Compute an alternative return value with the data:</span></span>
+<span class='r-in'>    <span class='fu'>recover_error</span><span class='op'>(</span><span class='va'>err</span><span class='op'>$</span><span class='va'>data</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>}</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># If you call low-level APIs it is good practice to handle</span></span>
+<span class='r-in'><span class='co'># technical errors and rethrow them with a more meaningful</span></span>
+<span class='r-in'><span class='co'># message. Always prefer doing this from `withCallingHandlers()`</span></span>
+<span class='r-in'><span class='co'># rather than `tryCatch()` because the former preserves the stack</span></span>
+<span class='r-in'><span class='co'># on error and makes it possible for users to use `recover()`.</span></span>
+<span class='r-in'><span class='va'>file</span> <span class='op'>&lt;-</span> <span class='st'>"http://foo.bar/baz"</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/conditions.html'>withCallingHandlers</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='fu'>download</span><span class='op'>(</span><span class='va'>file</span><span class='op'>)</span>,</span>
+<span class='r-in'>  error <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>err</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'>    <span class='va'>msg</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span><span class='op'>(</span><span class='st'>"Can't download `%s`"</span>, <span class='va'>file</span><span class='op'>)</span></span>
+<span class='r-in'>    <span class='fu'>abort</span><span class='op'>(</span><span class='va'>msg</span>, parent <span class='op'>=</span> <span class='va'>err</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'># Note how we supplied the parent error to `abort()` as `parent` to</span></span>
+<span class='r-in'><span class='co'># get a decomposition of error messages across error contexts.</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Unhandled errors are saved automatically by `abort()` and can be</span></span>
+<span class='r-in'><span class='co'># retrieved with `last_error()`. The error prints with a simplified</span></span>
+<span class='r-in'><span class='co'># backtrace:</span></span>
+<span class='r-in'><span class='fu'>abort</span><span class='op'>(</span><span class='st'>"Saved error?"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='last_error.html'>last_error</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Use `summary()` to print the full backtrace and the condition fields:</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='fu'><a href='last_error.html'>last_error</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='op'>}</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

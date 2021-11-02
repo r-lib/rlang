@@ -222,7 +222,7 @@ error and indicate what arguments have duplicated names.</p></td>
       <th>.check_assign</th>
       <td><p>Whether to check for <code>&lt;-</code> calls passed in
 dots. When <code>TRUE</code> and a <code>&lt;-</code> call is detected, a warning is
-issued to advise users to use <code><a href='https://rdrr.io/r/base/assignOps.html'>=</a></code> if they meant to match a
+issued to advise users to use <code>=</code> if they meant to match a
 function parameter, or wrap the <code>&lt;-</code> call in braces otherwise.
 This ensures assignments are explicit.</p></td>
     </tr>
@@ -238,8 +238,8 @@ dots with <code><a href='list2.html'>dots_list()</a></code> than in <em>quoting<
 with <code><a href='nse-defuse.html'>enexprs()</a></code> or <code><a href='nse-defuse.html'>enquos()</a></code>.</p><ul>
 <li><p>In quoting functions <code>!!!</code> disaggregates its argument (let's call
 it <code>x</code>) into as many objects as there are elements in
-<code>x</code>. E.g. <code><a href='nse-defuse.html'>quo(foo(!!! c(1, 2)))</a></code> is completely equivalent to
-<code><a href='nse-defuse.html'>quo(foo(1, 2))</a></code>. The creation of those separate objects has an
+<code>x</code>. E.g. <code>quo(foo(!!! c(1, 2)))</code> is completely equivalent to
+<code>quo(foo(1, 2))</code>. The creation of those separate objects has an
 overhead but is typically not important when manipulating calls
 because function calls typically take a small number of
 arguments.</p></li>
@@ -248,7 +248,7 @@ would have a negative performance impact in cases where
 <code><a href='list2.html'>dots_list()</a></code> is used to build up data structures from user
 inputs. To avoid this spliced inputs are marked with <code>splice()</code>
 and the final list is built with (the equivalent of)
-<code><a href='flatten.html'>flatten_if(dots, is_spliced)</a></code>.</p></li>
+<code>flatten_if(dots, is_spliced)</code>.</p></li>
 </ul>
 
 <p>Most of the time you should not care about the difference. However

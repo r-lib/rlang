@@ -191,7 +191,7 @@ future extensions of this spec, e.g. <code>"mypkg_column"</code>.</p>
 <li><p><strong>Length</strong>. The length of the backtrace is the number of rows of
 the underlying data.</p></li>
 <li><p><strong>Concatenation</strong>. Performed by row-binding two backtraces.  The
-<code>parent</code> column of the RHS is shifted by <code><a href='https://rdrr.io/r/base/nrow.html'>nrow(LHS)</a></code> so that the
+<code>parent</code> column of the RHS is shifted by <code>nrow(LHS)</code> so that the
 last call of the LHS takes place of the global frame of the RHS.</p></li>
 <li><p><strong>Subsetting</strong>. Performed by slicing the backtrace. After the
 data frame is sliced, the <code>parent</code> column is adjusted to the new

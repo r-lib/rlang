@@ -213,29 +213,34 @@ and <code>env_parents()</code> returns the list of environments up to <code>last
 of environments for <code>env_parents()</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Get the parent environment with env_parent():</span>
-<span class='fu'>env_parent</span><span class='op'>(</span><span class='fu'><a href='search_envs.html'>global_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;environment: package:rlang&gt;
-#&gt; attr(,"name")
-#&gt; [1] "package:rlang"
-#&gt; attr(,"path")
-#&gt; [1] "/home/runner/work/_temp/Library/rlang"</div><div class='input'>
-<span class='co'># Or the tail environment with env_tail():</span>
-<span class='fu'>env_tail</span><span class='op'>(</span><span class='fu'><a href='search_envs.html'>global_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;environment: base&gt;</div><div class='input'>
-<span class='co'># By default, env_parent() returns the parent environment of the</span>
-<span class='co'># current evaluation frame. If called at top-level (the global</span>
-<span class='co'># frame), the following two expressions are equivalent:</span>
-<span class='fu'>env_parent</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;environment: 0x5555c2780600&gt;</div><div class='input'><span class='fu'>env_parent</span><span class='op'>(</span><span class='fu'><a href='search_envs.html'>base_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;environment: R_EmptyEnv&gt;</div><div class='input'>
-<span class='co'># This default is more handy when called within a function. In this</span>
-<span class='co'># case, the enclosure environment of the function is returned</span>
-<span class='co'># (since it is the parent of the evaluation frame):</span>
-<span class='va'>enclos_env</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>fn</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_env.html'>set_env</a></span><span class='op'>(</span><span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='fu'>env_parent</span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>enclos_env</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span><span class='op'>(</span><span class='va'>enclos_env</span>, <span class='fu'>fn</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># Get the parent environment with env_parent():</span></span>
+<span class='r-in'><span class='fu'>env_parent</span><span class='op'>(</span><span class='fu'><a href='search_envs.html'>global_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;environment: package:rlang&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"name")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "package:rlang"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"path")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "/home/runner/work/_temp/Library/rlang"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Or the tail environment with env_tail():</span></span>
+<span class='r-in'><span class='fu'>env_tail</span><span class='op'>(</span><span class='fu'><a href='search_envs.html'>global_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;environment: base&gt;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># By default, env_parent() returns the parent environment of the</span></span>
+<span class='r-in'><span class='co'># current evaluation frame. If called at top-level (the global</span></span>
+<span class='r-in'><span class='co'># frame), the following two expressions are equivalent:</span></span>
+<span class='r-in'><span class='fu'>env_parent</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;environment: 0x557274f10880&gt;</span>
+<span class='r-in'><span class='fu'>env_parent</span><span class='op'>(</span><span class='fu'><a href='search_envs.html'>base_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;environment: R_EmptyEnv&gt;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># This default is more handy when called within a function. In this</span></span>
+<span class='r-in'><span class='co'># case, the enclosure environment of the function is returned</span></span>
+<span class='r-in'><span class='co'># (since it is the parent of the evaluation frame):</span></span>
+<span class='r-in'><span class='va'>enclos_env</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>fn</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_env.html'>set_env</a></span><span class='op'>(</span><span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='fu'>env_parent</span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>enclos_env</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span><span class='op'>(</span><span class='va'>enclos_env</span>, <span class='fu'>fn</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

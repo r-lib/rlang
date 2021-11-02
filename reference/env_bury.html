@@ -201,20 +201,23 @@ bindings to <code>...</code> arguments.</p>
     <div class='dont-index'><p><code><a href='env_bind.html'>env_bind()</a></code>, <code><a href='env_unbind.html'>env_unbind()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>orig_env</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span><span class='op'>(</span>a <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
-<span class='va'>fn</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_env.html'>set_env</a></span><span class='op'>(</span><span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='va'>a</span>, <span class='va'>orig_env</span><span class='op'>)</span>
-
-<span class='co'># fn() currently sees `a` as the value `10`:</span>
-<span class='fu'>fn</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 10</div><div class='input'>
-<span class='co'># env_bury() will bury the current scope of fn() behind a new</span>
-<span class='co'># environment:</span>
-<span class='va'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>env_bury</span><span class='op'>(</span><span class='va'>fn</span>, a <span class='op'>=</span> <span class='fl'>1000</span><span class='op'>)</span>
-<span class='fu'>fn</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 1000</div><div class='input'>
-<span class='co'># Even though the symbol `a` is still defined deeper in the scope:</span>
-<span class='va'>orig_env</span><span class='op'>$</span><span class='va'>a</span>
-</div><div class='output co'>#&gt; [1] 10</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>orig_env</span> <span class='op'>&lt;-</span> <span class='fu'><a href='env.html'>env</a></span><span class='op'>(</span>a <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>fn</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_env.html'>set_env</a></span><span class='op'>(</span><span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='va'>a</span>, <span class='va'>orig_env</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># fn() currently sees `a` as the value `10`:</span></span>
+<span class='r-in'><span class='fu'>fn</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 10</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># env_bury() will bury the current scope of fn() behind a new</span></span>
+<span class='r-in'><span class='co'># environment:</span></span>
+<span class='r-in'><span class='va'>fn</span> <span class='op'>&lt;-</span> <span class='fu'>env_bury</span><span class='op'>(</span><span class='va'>fn</span>, a <span class='op'>=</span> <span class='fl'>1000</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>fn</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1000</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Even though the symbol `a` is still defined deeper in the scope:</span></span>
+<span class='r-in'><span class='va'>orig_env</span><span class='op'>$</span><span class='va'>a</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 10</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

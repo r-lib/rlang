@@ -201,36 +201,41 @@ mentioned in error messages as the source of the error. See the
 returned.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>f</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='kw'><a href='https://rdrr.io/r/base/switch.html'>switch</a></span><span class='op'>(</span>
-    <span class='fu'>arg_exclusive</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span>,
-    x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/message.html'>message</a></span><span class='op'>(</span><span class='st'>"`x` was supplied."</span><span class='op'>)</span>,
-    y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/message.html'>message</a></span><span class='op'>(</span><span class='st'>"`y` was supplied."</span><span class='op'>)</span>
-  <span class='op'>)</span>
-<span class='op'>}</span>
-
-<span class='co'># Supplying zero or multiple arguments is forbidden</span>
-<span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'>f</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Error in f() : 
-#&gt;   One of <span style='color: #262626; background-color: #DADADA;'>`x`</span> or <span style='color: #262626; background-color: #DADADA;'>`y`</span> must be supplied.</div><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'>f</span><span class='op'>(</span><span class='cn'>NULL</span>, <span class='cn'>NULL</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Error in f(NULL, NULL) : 
-#&gt;   Exactly one of <span style='color: #262626; background-color: #DADADA;'>`x`</span> or <span style='color: #262626; background-color: #DADADA;'>`y`</span> must be supplied.</div><div class='input'>
-<span class='co'># The user must supply one of the mutually exclusive arguments</span>
-<span class='fu'>f</span><span class='op'>(</span><span class='cn'>NULL</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>`x` was supplied.</span></div><div class='input'><span class='fu'>f</span><span class='op'>(</span>y <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>`y` was supplied.</span></div><div class='input'>
-
-<span class='co'># With `.require` you can allow zero arguments</span>
-<span class='va'>f</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='kw'><a href='https://rdrr.io/r/base/switch.html'>switch</a></span><span class='op'>(</span>
-    <span class='fu'>arg_exclusive</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, .require <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>,
-    x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/message.html'>message</a></span><span class='op'>(</span><span class='st'>"`x` was supplied."</span><span class='op'>)</span>,
-    y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/message.html'>message</a></span><span class='op'>(</span><span class='st'>"`y` was supplied."</span><span class='op'>)</span>,
-    <span class='fu'><a href='https://rdrr.io/r/base/message.html'>message</a></span><span class='op'>(</span><span class='st'>"No arguments were supplied"</span><span class='op'>)</span>
-  <span class='op'>)</span>
-<span class='op'>}</span>
-<span class='fu'>f</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>No arguments were supplied</span></div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>f</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'>  <span class='kw'><a href='https://rdrr.io/r/base/switch.html'>switch</a></span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='fu'>arg_exclusive</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span>,</span>
+<span class='r-in'>    x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/message.html'>message</a></span><span class='op'>(</span><span class='st'>"`x` was supplied."</span><span class='op'>)</span>,</span>
+<span class='r-in'>    y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/message.html'>message</a></span><span class='op'>(</span><span class='st'>"`y` was supplied."</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Supplying zero or multiple arguments is forbidden</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'>f</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Error in f() : </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   One of <span style='color: #262626; background-color: #DADADA;'>`x`</span> or <span style='color: #262626; background-color: #DADADA;'>`y`</span> must be supplied.</span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'>f</span><span class='op'>(</span><span class='cn'>NULL</span>, <span class='cn'>NULL</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Error in f(NULL, NULL) : </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Exactly one of <span style='color: #262626; background-color: #DADADA;'>`x`</span> or <span style='color: #262626; background-color: #DADADA;'>`y`</span> must be supplied.</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># The user must supply one of the mutually exclusive arguments</span></span>
+<span class='r-in'><span class='fu'>f</span><span class='op'>(</span><span class='cn'>NULL</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> `x` was supplied.</span>
+<span class='r-in'><span class='fu'>f</span><span class='op'>(</span>y <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> `y` was supplied.</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># With `.require` you can allow zero arguments</span></span>
+<span class='r-in'><span class='va'>f</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'>  <span class='kw'><a href='https://rdrr.io/r/base/switch.html'>switch</a></span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='fu'>arg_exclusive</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, .require <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>,</span>
+<span class='r-in'>    x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/message.html'>message</a></span><span class='op'>(</span><span class='st'>"`x` was supplied."</span><span class='op'>)</span>,</span>
+<span class='r-in'>    y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/message.html'>message</a></span><span class='op'>(</span><span class='st'>"`y` was supplied."</span><span class='op'>)</span>,</span>
+<span class='r-in'>    <span class='fu'><a href='https://rdrr.io/r/base/message.html'>message</a></span><span class='op'>(</span><span class='st'>"No arguments were supplied"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-in'><span class='fu'>f</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> No arguments were supplied</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

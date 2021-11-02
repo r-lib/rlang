@@ -202,15 +202,19 @@ address of anonymous environments as fallback.</p>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Some environments have specific names:</span>
-<span class='fu'>env_name</span><span class='op'>(</span><span class='fu'><a href='search_envs.html'>global_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "global"</div><div class='input'><span class='fu'>env_name</span><span class='op'>(</span><span class='fu'><a href='ns_env.html'>ns_env</a></span><span class='op'>(</span><span class='st'>"rlang"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "namespace:rlang"</div><div class='input'>
-<span class='co'># Anonymous environments don't have names but are labelled by their</span>
-<span class='co'># address in memory:</span>
-<span class='fu'>env_name</span><span class='op'>(</span><span class='fu'><a href='env.html'>env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] ""</div><div class='input'><span class='fu'>env_label</span><span class='op'>(</span><span class='fu'><a href='env.html'>env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "0x5555c2838828"</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># Some environments have specific names:</span></span>
+<span class='r-in'><span class='fu'>env_name</span><span class='op'>(</span><span class='fu'><a href='search_envs.html'>global_env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "global"</span>
+<span class='r-in'><span class='fu'>env_name</span><span class='op'>(</span><span class='fu'><a href='ns_env.html'>ns_env</a></span><span class='op'>(</span><span class='st'>"rlang"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "namespace:rlang"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Anonymous environments don't have names but are labelled by their</span></span>
+<span class='r-in'><span class='co'># address in memory:</span></span>
+<span class='r-in'><span class='fu'>env_name</span><span class='op'>(</span><span class='fu'><a href='env.html'>env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] ""</span>
+<span class='r-in'><span class='fu'>env_label</span><span class='op'>(</span><span class='fu'><a href='env.html'>env</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "0x557275b5f388"</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
