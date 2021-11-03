@@ -63,36 +63,35 @@ eval(e, mtcars)
       <ul class="navbar-nav me-auto"><li class="nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
-<li class="active nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-overviews">Overviews</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-overviews">
-    <h6 class="dropdown-header" data-toc-skip>Tidy evaluation</h6>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-tidy-evaluation">Tidy evaluation</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-tidy-evaluation">
+    <h6 class="dropdown-header" data-toc-skip>Overviews</h6>
     <a class="dropdown-item" href="../reference/topic-data-mask.html">What is data-masking and why do I need `{{`?</a>
     <a class="dropdown-item" href="../reference/topic-data-mask-programming.html">Data mask programming patterns</a>
-    <h6 class="dropdown-header" data-toc-skip>Metaprogramming</h6>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Guides</h6>
+    <a class="dropdown-item" href="../reference/topic-data-mask-ambiguity.html">The data mask ambiguity</a>
+    <a class="dropdown-item" href="../reference/topic-double-evaluation.html">The double evaluation problem</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Notes</h6>
+    <a class="dropdown-item" href="../reference/topic-inject-out-of-context.html">What happens if I use injection operators out of context?</a>
+    <a class="dropdown-item" href="../reference/topic-embrace-non-args.html">Does `{{` work on regular objects?</a>
+  </div>
+</li>
+<li class="active nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-metaprogramming">Metaprogramming</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-metaprogramming">
+    <h6 class="dropdown-header" data-toc-skip>Overviews</h6>
     <a class="dropdown-item" href="../reference/topic-defuse.html">Defusing R expressions</a>
     <a class="dropdown-item" href="../reference/topic-inject.html">Injecting with `!!`, `!!!`, and glue syntax</a>
     <a class="dropdown-item" href="../reference/topic-metaprogramming.html">Metaprogramming patterns</a>
     <a class="dropdown-item" href="../reference/topic-quosure.html">What are quosures and when are they needed?</a>
-  </div>
-</li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-guides">Guides</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-guides">
-    <h6 class="dropdown-header" data-toc-skip>Tidy evaluation</h6>
-    <a class="dropdown-item" href="../reference/topic-data-mask-ambiguity.html">The data mask ambiguity</a>
-    <a class="dropdown-item" href="../reference/topic-double-evaluation.html">The double evaluation problem</a>
-    <h6 class="dropdown-header" data-toc-skip>Metaprogramming</h6>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Guides</h6>
     <a class="dropdown-item" href="../reference/topic-multiple-columns.html">Taking multiple columns without `...`</a>
-  </div>
-</li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-notes">Notes</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-notes">
-    <h6 class="dropdown-header" data-toc-skip>Tidy evaluation</h6>
-    <a class="dropdown-item" href="../reference/topic-inject-out-of-context.html">What happens if I use injection operators out of context?</a>
-    <a class="dropdown-item" href="../reference/topic-embrace-non-args.html">Does `{{` work on regular objects?</a>
-    <h6 class="dropdown-header" data-toc-skip>Metaprogramming</h6>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Notes</h6>
     <a class="dropdown-item" href="../reference/topic-embrace-constants.html">Why are strings and other constants enquosed in the empty environment?</a>
   </div>
 </li>
@@ -131,25 +130,22 @@ eval(e, mtcars)
 
     <div class="ref-description section level2">
     <p>When a piece of R code is defused, R doesn't return its value like it normally would. Instead it returns the expression in a special tree-like object that describes how to compute a value. These defused expressions can be thought of as blueprints or recipes for computing values.</p>
-<p>Using <code><a href="expr.html">expr()</a></code> we can observe the difference between computing an expression and defusing it:</p><div class="sourceCode r"><pre><code># Return the result of `1 + 1`
-1 + 1
-#&gt; [1] 2
+<p>Using <code><a href="expr.html">expr()</a></code> we can observe the difference between computing an expression and defusing it:</p><div class="sourceCode r"><pre><code><span class="co"># Return the result of `1 + 1`</span>
+<span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span>
+<span class="co">#&gt; [1] 2</span>
 
-# Return the expression `1 + 1`
-expr(1 + 1)
-#&gt; 1 + 1
-</code></pre><p></p></div>
-<p>Evaluation of a defused expression can be resumed at any time with <code><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval()</a></code> (see also <code><a href="eval_tidy.html">eval_tidy()</a></code>).</p><div class="sourceCode r"><pre><code># Return the expression `1 + 1`
-e &lt;- expr(1 + 1)
+<span class="co"># Return the expression `1 + 1`</span>
+<span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>
+<span class="co">#&gt; 1 + 1</span></code></pre><p></p></div>
+<p>Evaluation of a defused expression can be resumed at any time with <code><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval()</a></code> (see also <code><a href="eval_tidy.html">eval_tidy()</a></code>).</p><div class="sourceCode r"><pre><code><span class="co"># Return the expression `1 + 1`</span>
+<span class="va">e</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>
 
-# Return the result of `1 + 1`
-eval(e)
-#&gt; [1] 2
-</code></pre><p></p></div>
-<p>The most common use case for defusing expressions is to resume its evaluation in a <a href="topic-data-mask.html">data mask</a>. This makes it possible for the expression to refer to columns of a data frame as if they were regular objects.</p><div class="sourceCode r"><pre><code>e &lt;- expr(mean(cyl))
-eval(e, mtcars)
-#&gt; [1] 6.1875
-</code></pre><p></p></div>
+<span class="co"># Return the result of `1 + 1`</span>
+<span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval</a></span><span class="op">(</span><span class="va">e</span><span class="op">)</span>
+<span class="co">#&gt; [1] 2</span></code></pre><p></p></div>
+<p>The most common use case for defusing expressions is to resume its evaluation in a <a href="topic-data-mask.html">data mask</a>. This makes it possible for the expression to refer to columns of a data frame as if they were regular objects.</p><div class="sourceCode r"><pre><code><span class="va">e</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval</a></span><span class="op">(</span><span class="va">e</span>, <span class="va">mtcars</span><span class="op">)</span>
+<span class="co">#&gt; [1] 6.1875</span></code></pre><p></p></div>
     </div>
 
 
@@ -185,7 +181,7 @@ eval(e, mtcars)
 
 <span class="fu">f</span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning</a></span><span class="op">(</span><span class="st">"boom"</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; NULL</span></code></pre><p></p></div>
-<p>In a way, arguments are like <em>booby traps</em> which explode (evaluate) when touched. Defusing an expression can be seen as defusing the booby trap.</p><div class="sourceCode r"><pre><code><span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/force.html" class="external-link">force</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning</a></span><span class="op">(</span><span class="st">"boom"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<p>In a way, arguments are like <em>booby traps</em> which explode (evaluate) when touched. Defusing an argument can be seen as defusing the booby trap.</p><div class="sourceCode r"><pre><code><span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/force.html" class="external-link">force</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning</a></span><span class="op">(</span><span class="st">"boom"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; force(warning("boom"))</span></code></pre><p></p></div>
     </div>
     <div class="section level2">
@@ -238,7 +234,7 @@ eval(e, mtcars)
     </div>
     <div class="section level2">
     <h2 id="defused-arguments-and-quosures">Defused arguments and quosures<a class="anchor" aria-label="anchor" href="#defused-arguments-and-quosures"></a></h2>
-    <p>If you inspect the return values of <code><a href="expr.html">expr()</a></code> and <code><a href="enquo.html">enquo()</a></code>, you'll notice that the latter doesn't return a raw expression like the former. Instead it returns a <a href="quosure.html">quosure</a>, a wrapper containing an expression and an environment.</p><div class="sourceCode r"><pre><code><span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>
+    <p>If you inspect the return values of <code><a href="expr.html">expr()</a></code> and <code><a href="enquo.html">enquo()</a></code>, you'll notice that the latter doesn't return a raw expression like the former. Instead it returns a <a href="quosure-tools.html">quosure</a>, a wrapper containing an expression and an environment.</p><div class="sourceCode r"><pre><code><span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>
 <span class="co">#&gt; 1 + 1</span>
 
 <span class="va">my_function</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span> <span class="fu"><a href="../reference/enquo.html">enquo</a></span><span class="op">(</span><span class="va">arg</span><span class="op">)</span>

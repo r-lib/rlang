@@ -161,36 +161,35 @@ In the worst case, R will silently convert the input to logical. Unfortunately t
       <ul class="navbar-nav me-auto"><li class="nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-overviews">Overviews</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-overviews">
-    <h6 class="dropdown-header" data-toc-skip>Tidy evaluation</h6>
+<li class="active nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-tidy-evaluation">Tidy evaluation</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-tidy-evaluation">
+    <h6 class="dropdown-header" data-toc-skip>Overviews</h6>
     <a class="dropdown-item" href="../reference/topic-data-mask.html">What is data-masking and why do I need `{{`?</a>
     <a class="dropdown-item" href="../reference/topic-data-mask-programming.html">Data mask programming patterns</a>
-    <h6 class="dropdown-header" data-toc-skip>Metaprogramming</h6>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Guides</h6>
+    <a class="dropdown-item" href="../reference/topic-data-mask-ambiguity.html">The data mask ambiguity</a>
+    <a class="dropdown-item" href="../reference/topic-double-evaluation.html">The double evaluation problem</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Notes</h6>
+    <a class="dropdown-item" href="../reference/topic-inject-out-of-context.html">What happens if I use injection operators out of context?</a>
+    <a class="dropdown-item" href="../reference/topic-embrace-non-args.html">Does `{{` work on regular objects?</a>
+  </div>
+</li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-metaprogramming">Metaprogramming</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-metaprogramming">
+    <h6 class="dropdown-header" data-toc-skip>Overviews</h6>
     <a class="dropdown-item" href="../reference/topic-defuse.html">Defusing R expressions</a>
     <a class="dropdown-item" href="../reference/topic-inject.html">Injecting with `!!`, `!!!`, and glue syntax</a>
     <a class="dropdown-item" href="../reference/topic-metaprogramming.html">Metaprogramming patterns</a>
     <a class="dropdown-item" href="../reference/topic-quosure.html">What are quosures and when are they needed?</a>
-  </div>
-</li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-guides">Guides</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-guides">
-    <h6 class="dropdown-header" data-toc-skip>Tidy evaluation</h6>
-    <a class="dropdown-item" href="../reference/topic-data-mask-ambiguity.html">The data mask ambiguity</a>
-    <a class="dropdown-item" href="../reference/topic-double-evaluation.html">The double evaluation problem</a>
-    <h6 class="dropdown-header" data-toc-skip>Metaprogramming</h6>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Guides</h6>
     <a class="dropdown-item" href="../reference/topic-multiple-columns.html">Taking multiple columns without `...`</a>
-  </div>
-</li>
-<li class="active nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-notes">Notes</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-notes">
-    <h6 class="dropdown-header" data-toc-skip>Tidy evaluation</h6>
-    <a class="dropdown-item" href="../reference/topic-inject-out-of-context.html">What happens if I use injection operators out of context?</a>
-    <a class="dropdown-item" href="../reference/topic-embrace-non-args.html">Does `{{` work on regular objects?</a>
-    <h6 class="dropdown-header" data-toc-skip>Metaprogramming</h6>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Notes</h6>
     <a class="dropdown-item" href="../reference/topic-embrace-constants.html">Why are strings and other constants enquosed in the empty environment?</a>
   </div>
 </li>
@@ -233,38 +232,34 @@ In the worst case, R will silently convert the input to logical. Unfortunately t
 
 
 <p>The embrace operator <code><a href="embrace-operator.html">{{</a></code> is a feature available in <a href="topic-data-mask.html">data-masked</a> arguments. If you use it elsewhere, it is interpreted as a double <code>{</code> wrapping.</p>
-<p>In the R language, <code>{</code> is like <code>(</code> but takes multiple expressions instead of one:</p><div class="sourceCode r"><pre><code>{
-  1 # Discarded
-  2
-}
-#&gt; [1] 2
+<p>In the R language, <code>{</code> is like <code>(</code> but takes multiple expressions instead of one:</p><div class="sourceCode r"><pre><code><span class="op">{</span>
+  <span class="fl">1</span> <span class="co"># Discarded</span>
+  <span class="fl">2</span>
+<span class="op">}</span>
+<span class="co">#&gt; [1] 2</span>
 
-list(
-  { message("foo"); 2 }
-)
-#&gt; foo
-#&gt; [[1]]
-#&gt; [1] 2
-</code></pre><p></p></div>
-<p>Just like you can wrap an expression in as many parentheses as you'd like, you can wrap multiple times with braces:</p><div class="sourceCode r"><pre><code>((1))
-#&gt; [1] 1
+<span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
+  <span class="op">{</span> <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"foo"</span><span class="op">)</span>; <span class="fl">2</span> <span class="op">}</span>
+<span class="op">)</span>
+<span class="co">#&gt; foo</span>
+<span class="co">#&gt; [[1]]</span>
+<span class="co">#&gt; [1] 2</span></code></pre><p></p></div>
+<p>Just like you can wrap an expression in as many parentheses as you'd like, you can wrap multiple times with braces:</p><div class="sourceCode r"><pre><code><span class="op">(</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; [1] 1</span>
 
-{{ 2 }}
-#&gt; [1] 2
-</code></pre><p></p></div>
-<p>So nothing prevents you from embracing a function argument in a context where this operation is not implemented. R will just treat the braces like a set of parentheses and silently return the result:</p><div class="sourceCode r"><pre><code>f &lt;- function(arg) list({{ arg }})
-f(1)
-#&gt; [[1]]
-#&gt; [1] 1
-</code></pre><p></p></div>
+<span class="op">{</span><span class="op">{</span> <span class="fl">2</span> <span class="op">}</span><span class="op">}</span>
+<span class="co">#&gt; [1] 2</span></code></pre><p></p></div>
+<p>So nothing prevents you from embracing a function argument in a context where this operation is not implemented. R will just treat the braces like a set of parentheses and silently return the result:</p><div class="sourceCode r"><pre><code><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">arg</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span>
+<span class="fu">f</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
+<span class="co">#&gt; [[1]]</span>
+<span class="co">#&gt; [1] 1</span></code></pre><p></p></div>
 <p>This sort of no-effect embracing should be avoided in real code because it falsely suggests that the function supports the tidy eval operator and that something special is happening.</p>
-<p>However in many cases embracing is done to implement <a href="topic-data-mask.html">data masking</a>. It is likely that the function will be called with data-variables references which R won't be able to resolve properly:</p><div class="sourceCode r"><pre><code>my_mean &lt;- function(data, var) {
-  with(data, mean({{ var }}))
-}
+<p>However in many cases embracing is done to implement <a href="topic-data-mask.html">data masking</a>. It is likely that the function will be called with data-variables references which R won't be able to resolve properly:</p><div class="sourceCode r"><pre><code><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span><span class="op">)</span>
+<span class="op">}</span>
 
-my_mean(mtcars, cyl)
-#&gt; Error in mean({: object 'cyl' not found
-</code></pre><p></p></div>
+<span class="fu">my_mean</span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">cyl</span><span class="op">)</span>
+<span class="co">#&gt; Error in mean({: object 'cyl' not found</span></code></pre><p></p></div>
 <p>Since <code><a href="https://rdrr.io/r/base/with.html" class="external-link">with()</a></code> is a base data-masking function that doesn't support tidy eval operators, the embrace operator does not work and we get an object not found error.</p>
 </div>
 
@@ -273,27 +268,24 @@ my_mean(mtcars, cyl)
 
 
 <p>The injection operators <code><a href="injection-operator.html">!!</a></code> and <code><a href="splice-operator.html">!!!</a></code> are implemented in <a href="topic-data-mask.html">data-masked</a> arguments, <a href="dyn-dots.html">dynamic dots</a>, and within <code><a href="inject.html">inject()</a></code>. When used in other contexts, they are interpreted by R as double and triple <em>negations</em>.</p>
-<p>Double negation can be used in ordinary code to convert an input to logical:</p><div class="sourceCode r"><pre><code>!!10
-#&gt; [1] TRUE
+<p>Double negation can be used in ordinary code to convert an input to logical:</p><div class="sourceCode r"><pre><code><span class="op">!</span><span class="op">!</span><span class="fl">10</span>
+<span class="co">#&gt; [1] TRUE</span>
 
-!!0
-#&gt; [1] FALSE
-</code></pre><p></p></div>
-<p>Triple negation is essentially the same as simple negation:</p><div class="sourceCode r"><pre><code>!10
-#&gt; [1] FALSE
+<span class="op">!</span><span class="op">!</span><span class="fl">0</span>
+<span class="co">#&gt; [1] FALSE</span></code></pre><p></p></div>
+<p>Triple negation is essentially the same as simple negation:</p><div class="sourceCode r"><pre><code><span class="op">!</span><span class="fl">10</span>
+<span class="co">#&gt; [1] FALSE</span>
 
-!!!10
-#&gt; [1] FALSE
-</code></pre><p></p></div>
-<p>This means that when injection operators are used in the wrong place, they will be interpreted as negation. In the best case scenario you will get a type error:</p><div class="sourceCode r"><pre><code>!"foo"
-#&gt; Error in !"foo": invalid argument type
+<span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fl">10</span>
+<span class="co">#&gt; [1] FALSE</span></code></pre><p></p></div>
+<p>This means that when injection operators are used in the wrong place, they will be interpreted as negation. In the best case scenario you will get a type error:</p><div class="sourceCode r"><pre><code><span class="op">!</span><span class="st">"foo"</span>
+<span class="co">#&gt; Error in !"foo": invalid argument type</span>
 
-!quote(foo)
-#&gt; Error in !quote(foo): invalid argument type
+<span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">foo</span><span class="op">)</span>
+<span class="co">#&gt; Error in !quote(foo): invalid argument type</span>
 
-!quote(foo())
-#&gt; Error in !quote(foo()): invalid argument type
-</code></pre><p></p></div>
+<span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="fu">foo</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Error in !quote(foo()): invalid argument type</span></code></pre><p></p></div>
 <p>In the worst case, R will silently convert the input to logical. Unfortunately there is no systematic way of checking for these errors.</p>
 </div>
 

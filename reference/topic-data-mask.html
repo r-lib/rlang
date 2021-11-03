@@ -50,35 +50,34 @@ While data-masking makes it easy to program interactively with data frames, it m
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
 <li class="active nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-overviews">Overviews</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-overviews">
-    <h6 class="dropdown-header" data-toc-skip>Tidy evaluation</h6>
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-tidy-evaluation">Tidy evaluation</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-tidy-evaluation">
+    <h6 class="dropdown-header" data-toc-skip>Overviews</h6>
     <a class="dropdown-item" href="../reference/topic-data-mask.html">What is data-masking and why do I need `{{`?</a>
     <a class="dropdown-item" href="../reference/topic-data-mask-programming.html">Data mask programming patterns</a>
-    <h6 class="dropdown-header" data-toc-skip>Metaprogramming</h6>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Guides</h6>
+    <a class="dropdown-item" href="../reference/topic-data-mask-ambiguity.html">The data mask ambiguity</a>
+    <a class="dropdown-item" href="../reference/topic-double-evaluation.html">The double evaluation problem</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Notes</h6>
+    <a class="dropdown-item" href="../reference/topic-inject-out-of-context.html">What happens if I use injection operators out of context?</a>
+    <a class="dropdown-item" href="../reference/topic-embrace-non-args.html">Does `{{` work on regular objects?</a>
+  </div>
+</li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-metaprogramming">Metaprogramming</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-metaprogramming">
+    <h6 class="dropdown-header" data-toc-skip>Overviews</h6>
     <a class="dropdown-item" href="../reference/topic-defuse.html">Defusing R expressions</a>
     <a class="dropdown-item" href="../reference/topic-inject.html">Injecting with `!!`, `!!!`, and glue syntax</a>
     <a class="dropdown-item" href="../reference/topic-metaprogramming.html">Metaprogramming patterns</a>
     <a class="dropdown-item" href="../reference/topic-quosure.html">What are quosures and when are they needed?</a>
-  </div>
-</li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-guides">Guides</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-guides">
-    <h6 class="dropdown-header" data-toc-skip>Tidy evaluation</h6>
-    <a class="dropdown-item" href="../reference/topic-data-mask-ambiguity.html">The data mask ambiguity</a>
-    <a class="dropdown-item" href="../reference/topic-double-evaluation.html">The double evaluation problem</a>
-    <h6 class="dropdown-header" data-toc-skip>Metaprogramming</h6>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Guides</h6>
     <a class="dropdown-item" href="../reference/topic-multiple-columns.html">Taking multiple columns without `...`</a>
-  </div>
-</li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-notes">Notes</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-notes">
-    <h6 class="dropdown-header" data-toc-skip>Tidy evaluation</h6>
-    <a class="dropdown-item" href="../reference/topic-inject-out-of-context.html">What happens if I use injection operators out of context?</a>
-    <a class="dropdown-item" href="../reference/topic-embrace-non-args.html">Does `{{` work on regular objects?</a>
-    <h6 class="dropdown-header" data-toc-skip>Metaprogramming</h6>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Notes</h6>
     <a class="dropdown-item" href="../reference/topic-embrace-constants.html">Why are strings and other constants enquosed in the empty environment?</a>
   </div>
 </li>
@@ -116,18 +115,17 @@ While data-masking makes it easy to program interactively with data frames, it m
     </div>
 
     <div class="ref-description section level2">
-    <p>Data-masking is a distinctive feature of R whereby programming is performed directly on a data set, with columns defined as normal objects.</p><div class="sourceCode r"><pre><code># Unmasked programming
-mean(mtcars$cyl + mtcars$am)
-#&gt; [1] 6.59375
+    <p>Data-masking is a distinctive feature of R whereby programming is performed directly on a data set, with columns defined as normal objects.</p><div class="sourceCode r"><pre><code><span class="co"># Unmasked programming</span>
+<span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">cyl</span> <span class="op">+</span> <span class="va">mtcars</span><span class="op">$</span><span class="va">am</span><span class="op">)</span>
+<span class="co">#&gt; [1] 6.59375</span>
 
-# Referring to columns is an error - Where is the data?
-mean(cyl + am)
-#&gt; Error in mean(cyl + am): object 'cyl' not found
+<span class="co"># Referring to columns is an error - Where is the data?</span>
+<span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">cyl</span> <span class="op">+</span> <span class="va">am</span><span class="op">)</span>
+<span class="co">#&gt; Error in mean(cyl + am): object 'cyl' not found</span>
 
-# Data-masking
-with(mtcars, mean(cyl + am))
-#&gt; [1] 6.59375
-</code></pre><p></p></div>
+<span class="co"># Data-masking</span>
+<span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">cyl</span> <span class="op">+</span> <span class="va">am</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; [1] 6.59375</span></code></pre><p></p></div>
 <p>While data-masking makes it easy to program interactively with data frames, it makes it harder to create functions. Passing data-masked arguments to functions requires injection with the embracing operator <code><a href="embrace-operator.html">{{</a></code> or, in more complex cases, the injection operator <code><a href="injection-operator.html">!!</a></code>.</p>
     </div>
 

@@ -62,35 +62,34 @@ But what if you want to take multiple columns in a single named argument rather 
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
 <li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-overviews">Overviews</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-overviews">
-    <h6 class="dropdown-header" data-toc-skip>Tidy evaluation</h6>
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-tidy-evaluation">Tidy evaluation</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-tidy-evaluation">
+    <h6 class="dropdown-header" data-toc-skip>Overviews</h6>
     <a class="dropdown-item" href="../reference/topic-data-mask.html">What is data-masking and why do I need `{{`?</a>
     <a class="dropdown-item" href="../reference/topic-data-mask-programming.html">Data mask programming patterns</a>
-    <h6 class="dropdown-header" data-toc-skip>Metaprogramming</h6>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Guides</h6>
+    <a class="dropdown-item" href="../reference/topic-data-mask-ambiguity.html">The data mask ambiguity</a>
+    <a class="dropdown-item" href="../reference/topic-double-evaluation.html">The double evaluation problem</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Notes</h6>
+    <a class="dropdown-item" href="../reference/topic-inject-out-of-context.html">What happens if I use injection operators out of context?</a>
+    <a class="dropdown-item" href="../reference/topic-embrace-non-args.html">Does `{{` work on regular objects?</a>
+  </div>
+</li>
+<li class="active nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-metaprogramming">Metaprogramming</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-metaprogramming">
+    <h6 class="dropdown-header" data-toc-skip>Overviews</h6>
     <a class="dropdown-item" href="../reference/topic-defuse.html">Defusing R expressions</a>
     <a class="dropdown-item" href="../reference/topic-inject.html">Injecting with `!!`, `!!!`, and glue syntax</a>
     <a class="dropdown-item" href="../reference/topic-metaprogramming.html">Metaprogramming patterns</a>
     <a class="dropdown-item" href="../reference/topic-quosure.html">What are quosures and when are they needed?</a>
-  </div>
-</li>
-<li class="active nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-guides">Guides</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-guides">
-    <h6 class="dropdown-header" data-toc-skip>Tidy evaluation</h6>
-    <a class="dropdown-item" href="../reference/topic-data-mask-ambiguity.html">The data mask ambiguity</a>
-    <a class="dropdown-item" href="../reference/topic-double-evaluation.html">The double evaluation problem</a>
-    <h6 class="dropdown-header" data-toc-skip>Metaprogramming</h6>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Guides</h6>
     <a class="dropdown-item" href="../reference/topic-multiple-columns.html">Taking multiple columns without `...`</a>
-  </div>
-</li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-notes">Notes</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-notes">
-    <h6 class="dropdown-header" data-toc-skip>Tidy evaluation</h6>
-    <a class="dropdown-item" href="../reference/topic-inject-out-of-context.html">What happens if I use injection operators out of context?</a>
-    <a class="dropdown-item" href="../reference/topic-embrace-non-args.html">Does `{{` work on regular objects?</a>
-    <h6 class="dropdown-header" data-toc-skip>Metaprogramming</h6>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Notes</h6>
     <a class="dropdown-item" href="../reference/topic-embrace-constants.html">Why are strings and other constants enquosed in the empty environment?</a>
   </div>
 </li>
@@ -129,23 +128,21 @@ But what if you want to take multiple columns in a single named argument rather 
 
     <div class="ref-description section level2">
     <p>In this guide we compare ways of taking multiple columns in a single function argument.</p>
-<p>As a refresher (see the <a href="topic-data-mask-programming.html">programming patterns</a> article), there are two common ways of passing arguments to <a href="topic-data-mask.html">data-masking</a> functions. For single arguments, embrace with <code><a href="embrace-operator.html">{{</a></code>:</p><div class="sourceCode r"><pre><code>my_group_by &lt;- function(data, var) {
-  data %&gt;% dplyr::group_by({{ var }})
-}
+<p>As a refresher (see the <a href="topic-data-mask-programming.html">programming patterns</a> article), there are two common ways of passing arguments to <a href="topic-data-mask.html">data-masking</a> functions. For single arguments, embrace with <code><a href="embrace-operator.html">{{</a></code>:</p><div class="sourceCode r"><pre><code><span class="va">my_group_by</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span>
+<span class="op">}</span>
 
-my_pivot_longer &lt;- function(data, var) {
-  data %&gt;% tidyr::pivot_longer({{ var }})
-}
-</code></pre><p></p></div>
-<p>For multiple arguments in <code>...</code>, pass them on to functions that also take <code>...</code> like <code>group_by()</code>, or pass them within <code><a href="https://rdrr.io/r/base/c.html" class="external-link">c()</a></code> for functions taking tidy selection in a single argument like <code>pivot_longer()</code>:</p><div class="sourceCode r"><pre><code># Pass dots through
-my_group_by &lt;- function(.data, ...) {
-  .data %&gt;% dplyr::group_by(...)
-}
+<span class="va">my_pivot_longer</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu">pivot_longer</span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span>
+<span class="op">}</span></code></pre><p></p></div>
+<p>For multiple arguments in <code>...</code>, pass them on to functions that also take <code>...</code> like <code>group_by()</code>, or pass them within <code><a href="https://rdrr.io/r/base/c.html" class="external-link">c()</a></code> for functions taking tidy selection in a single argument like <code>pivot_longer()</code>:</p><div class="sourceCode r"><pre><code><span class="co"># Pass dots through</span>
+<span class="va">my_group_by</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">.data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span>
+<span class="op">}</span>
 
-my_pivot_longer &lt;- function(.data, ...) {
-  .data %&gt;% tidyr::pivot_longer(c(...))
-}
-</code></pre><p></p></div>
+<span class="va">my_pivot_longer</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">.data</span> <span class="op">%&gt;%</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu">pivot_longer</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span><span class="op">)</span>
+<span class="op">}</span></code></pre><p></p></div>
 <p>But what if you want to take multiple columns in a single named argument rather than in <code>...</code>?</p>
     </div>
 
@@ -193,9 +190,9 @@ my_pivot_longer &lt;- function(.data, ...) {
     <p>Intuitively, many programmers who want to take a list of expressions in a single argument try to defuse an argument and parse it. The user is expected to supply multiple arguments within a <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code> expression. When such a call is detected, the arguments are retrieved and spliced with <code>!!!</code>. Otherwise, the user is assumed to have supplied a single argument which is injected with <code>!!</code>. An implementation along these lines might look like this:</p><div class="sourceCode r"><pre><code><span class="va">my_group_by</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">vars</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/enquo.html">enquo</a></span><span class="op">(</span><span class="va">vars</span><span class="op">)</span>
 
-  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="../reference/quosure.html">quo_is_call</a></span><span class="op">(</span><span class="va">vars</span>, <span class="st">"list"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">expr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/quosure.html">quo_get_expr</a></span><span class="op">(</span><span class="va">vars</span><span class="op">)</span>
-    <span class="va">env</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/quosure.html">quo_get_env</a></span><span class="op">(</span><span class="va">vars</span><span class="op">)</span>
+  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="../reference/quosure-tools.html">quo_is_call</a></span><span class="op">(</span><span class="va">vars</span>, <span class="st">"list"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+    <span class="va">expr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/quosure-tools.html">quo_get_expr</a></span><span class="op">(</span><span class="va">vars</span><span class="op">)</span>
+    <span class="va">env</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/quosure-tools.html">quo_get_env</a></span><span class="op">(</span><span class="va">vars</span><span class="op">)</span>
     <span class="va">args</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/new_quosures.html">as_quosures</a></span><span class="op">(</span><span class="fu"><a href="../reference/call_args.html">call_args</a></span><span class="op">(</span><span class="va">expr</span><span class="op">)</span>, env <span class="op">=</span> <span class="va">env</span><span class="op">)</span>
     <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">args</span><span class="op">)</span>
   <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>

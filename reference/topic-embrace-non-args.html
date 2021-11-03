@@ -65,36 +65,35 @@ Note that this issue also applies to enquo() (on which {{ is based)."><meta prop
       <ul class="navbar-nav me-auto"><li class="nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-overviews">Overviews</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-overviews">
-    <h6 class="dropdown-header" data-toc-skip>Tidy evaluation</h6>
+<li class="active nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-tidy-evaluation">Tidy evaluation</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-tidy-evaluation">
+    <h6 class="dropdown-header" data-toc-skip>Overviews</h6>
     <a class="dropdown-item" href="../reference/topic-data-mask.html">What is data-masking and why do I need `{{`?</a>
     <a class="dropdown-item" href="../reference/topic-data-mask-programming.html">Data mask programming patterns</a>
-    <h6 class="dropdown-header" data-toc-skip>Metaprogramming</h6>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Guides</h6>
+    <a class="dropdown-item" href="../reference/topic-data-mask-ambiguity.html">The data mask ambiguity</a>
+    <a class="dropdown-item" href="../reference/topic-double-evaluation.html">The double evaluation problem</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Notes</h6>
+    <a class="dropdown-item" href="../reference/topic-inject-out-of-context.html">What happens if I use injection operators out of context?</a>
+    <a class="dropdown-item" href="../reference/topic-embrace-non-args.html">Does `{{` work on regular objects?</a>
+  </div>
+</li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-metaprogramming">Metaprogramming</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-metaprogramming">
+    <h6 class="dropdown-header" data-toc-skip>Overviews</h6>
     <a class="dropdown-item" href="../reference/topic-defuse.html">Defusing R expressions</a>
     <a class="dropdown-item" href="../reference/topic-inject.html">Injecting with `!!`, `!!!`, and glue syntax</a>
     <a class="dropdown-item" href="../reference/topic-metaprogramming.html">Metaprogramming patterns</a>
     <a class="dropdown-item" href="../reference/topic-quosure.html">What are quosures and when are they needed?</a>
-  </div>
-</li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-guides">Guides</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-guides">
-    <h6 class="dropdown-header" data-toc-skip>Tidy evaluation</h6>
-    <a class="dropdown-item" href="../reference/topic-data-mask-ambiguity.html">The data mask ambiguity</a>
-    <a class="dropdown-item" href="../reference/topic-double-evaluation.html">The double evaluation problem</a>
-    <h6 class="dropdown-header" data-toc-skip>Metaprogramming</h6>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Guides</h6>
     <a class="dropdown-item" href="../reference/topic-multiple-columns.html">Taking multiple columns without `...`</a>
-  </div>
-</li>
-<li class="active nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-notes">Notes</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-notes">
-    <h6 class="dropdown-header" data-toc-skip>Tidy evaluation</h6>
-    <a class="dropdown-item" href="../reference/topic-inject-out-of-context.html">What happens if I use injection operators out of context?</a>
-    <a class="dropdown-item" href="../reference/topic-embrace-non-args.html">Does `{{` work on regular objects?</a>
-    <h6 class="dropdown-header" data-toc-skip>Metaprogramming</h6>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Notes</h6>
     <a class="dropdown-item" href="../reference/topic-embrace-constants.html">Why are strings and other constants enquosed in the empty environment?</a>
   </div>
 </li>
@@ -132,25 +131,23 @@ Note that this issue also applies to enquo() (on which {{ is based)."><meta prop
     </div>
 
     <div class="ref-description section level2">
-    <p>The embrace operator <code><a href="embrace-operator.html">{{</a></code> should be used exclusively with function arguments:</p><div class="sourceCode r"><pre><code>fn &lt;- function(arg) {
-  quo(foo({{ arg }}))
-}
+    <p>The embrace operator <code><a href="embrace-operator.html">{{</a></code> should be used exclusively with function arguments:</p><div class="sourceCode r"><pre><code><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="../reference/defusing-advanced.html">quo</a></span><span class="op">(</span><span class="fu">foo</span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">arg</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span><span class="op">)</span>
+<span class="op">}</span>
 
-fn(1 + 1)
-#&gt; &lt;quosure&gt;
-#&gt; expr: ^foo(^1 + 1)
-#&gt; env:  0x7ffd89aac518
-</code></pre><p></p></div>
-<p>However you may have noticed that it also works on regular objects:</p><div class="sourceCode r"><pre><code>fn &lt;- function(arg) {
-  arg &lt;- force(arg)
-  quo(foo({{ arg }}))
-}
+<span class="fu">fn</span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>
+<span class="co">#&gt; &lt;quosure&gt;</span>
+<span class="co">#&gt; expr: ^foo(^1 + 1)</span>
+<span class="co">#&gt; env:  0x7ffd89aac518</span></code></pre><p></p></div>
+<p>However you may have noticed that it also works on regular objects:</p><div class="sourceCode r"><pre><code><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">arg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/force.html" class="external-link">force</a></span><span class="op">(</span><span class="va">arg</span><span class="op">)</span>
+  <span class="fu"><a href="../reference/defusing-advanced.html">quo</a></span><span class="op">(</span><span class="fu">foo</span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">arg</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span><span class="op">)</span>
+<span class="op">}</span>
 
-fn(1 + 1)
-#&gt; &lt;quosure&gt;
-#&gt; expr: ^foo(^2)
-#&gt; env:  0x7ffd8a633398
-</code></pre><p></p></div>
+<span class="fu">fn</span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>
+<span class="co">#&gt; &lt;quosure&gt;</span>
+<span class="co">#&gt; expr: ^foo(^2)</span>
+<span class="co">#&gt; env:  0x7ffd8a633398</span></code></pre><p></p></div>
 <p>In that case, <code>{{</code> captures the <em>value</em> of the expression instead of a defused expression. That's because only function arguments can be defused.</p>
 <p>Note that this issue also applies to <code><a href="enquo.html">enquo()</a></code> (on which <code>{{</code> is based).</p>
     </div>

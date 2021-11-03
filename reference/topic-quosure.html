@@ -25,36 +25,35 @@
       <ul class="navbar-nav me-auto"><li class="nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
-<li class="active nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-overviews">Overviews</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-overviews">
-    <h6 class="dropdown-header" data-toc-skip>Tidy evaluation</h6>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-tidy-evaluation">Tidy evaluation</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-tidy-evaluation">
+    <h6 class="dropdown-header" data-toc-skip>Overviews</h6>
     <a class="dropdown-item" href="../reference/topic-data-mask.html">What is data-masking and why do I need `{{`?</a>
     <a class="dropdown-item" href="../reference/topic-data-mask-programming.html">Data mask programming patterns</a>
-    <h6 class="dropdown-header" data-toc-skip>Metaprogramming</h6>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Guides</h6>
+    <a class="dropdown-item" href="../reference/topic-data-mask-ambiguity.html">The data mask ambiguity</a>
+    <a class="dropdown-item" href="../reference/topic-double-evaluation.html">The double evaluation problem</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Notes</h6>
+    <a class="dropdown-item" href="../reference/topic-inject-out-of-context.html">What happens if I use injection operators out of context?</a>
+    <a class="dropdown-item" href="../reference/topic-embrace-non-args.html">Does `{{` work on regular objects?</a>
+  </div>
+</li>
+<li class="active nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-metaprogramming">Metaprogramming</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-metaprogramming">
+    <h6 class="dropdown-header" data-toc-skip>Overviews</h6>
     <a class="dropdown-item" href="../reference/topic-defuse.html">Defusing R expressions</a>
     <a class="dropdown-item" href="../reference/topic-inject.html">Injecting with `!!`, `!!!`, and glue syntax</a>
     <a class="dropdown-item" href="../reference/topic-metaprogramming.html">Metaprogramming patterns</a>
     <a class="dropdown-item" href="../reference/topic-quosure.html">What are quosures and when are they needed?</a>
-  </div>
-</li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-guides">Guides</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-guides">
-    <h6 class="dropdown-header" data-toc-skip>Tidy evaluation</h6>
-    <a class="dropdown-item" href="../reference/topic-data-mask-ambiguity.html">The data mask ambiguity</a>
-    <a class="dropdown-item" href="../reference/topic-double-evaluation.html">The double evaluation problem</a>
-    <h6 class="dropdown-header" data-toc-skip>Metaprogramming</h6>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Guides</h6>
     <a class="dropdown-item" href="../reference/topic-multiple-columns.html">Taking multiple columns without `...`</a>
-  </div>
-</li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-notes">Notes</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-notes">
-    <h6 class="dropdown-header" data-toc-skip>Tidy evaluation</h6>
-    <a class="dropdown-item" href="../reference/topic-inject-out-of-context.html">What happens if I use injection operators out of context?</a>
-    <a class="dropdown-item" href="../reference/topic-embrace-non-args.html">Does `{{` work on regular objects?</a>
-    <h6 class="dropdown-header" data-toc-skip>Metaprogramming</h6>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Notes</h6>
     <a class="dropdown-item" href="../reference/topic-embrace-constants.html">Why are strings and other constants enquosed in the empty environment?</a>
   </div>
 </li>
@@ -210,8 +209,8 @@ my_function(var) {
     </div>
     <div class="section level2">
     <h2 id="technical-description-of-quosures">Technical description of quosures<a class="anchor" aria-label="anchor" href="#technical-description-of-quosures"></a></h2>
-    <p>A quosure carries two things:</p><ul><li><p>An expression (get it with <code><a href="quosure.html">quo_get_expr()</a></code>).</p></li>
-<li><p>An environment (get it with <code><a href="quosure.html">quo_get_env()</a></code>).</p></li>
+    <p>A quosure carries two things:</p><ul><li><p>An expression (get it with <code><a href="quosure-tools.html">quo_get_expr()</a></code>).</p></li>
+<li><p>An environment (get it with <code><a href="quosure-tools.html">quo_get_env()</a></code>).</p></li>
 </ul><p>And implements these behaviours:</p><ul><li><p>It is <em>callable</em>. Evaluation produces a result.</p>
 <p>For historical reasons, <code><a href="https://rdrr.io/r/base/eval.html" class="external-link">base::eval()</a></code> doesn't support quosure evaluation. Quosures currently require <code><a href="eval_tidy.html">eval_tidy()</a></code>. We would like to fix this limitation in the future.</p></li>
 <li><p>It is <em>hygienic</em>. It evaluates in the tracked environment.</p></li>
@@ -224,8 +223,8 @@ my_function(var) {
     
 <ul><li><p><code><a href="enquo.html">enquo()</a></code> and <code><a href="enquo.html">enquos()</a></code> to defuse function arguments as quosures. This is the main way quosures are created.</p></li>
 <li><p><code><a href="defusing-advanced.html">quo()</a></code> which is like <code><a href="expr.html">expr()</a></code> but wraps in a quosure. Usually it is not needed to wrap local expressions yourself.</p></li>
-<li><p><code><a href="quosure.html">quo_get_expr()</a></code> and <code><a href="quosure.html">quo_get_env()</a></code> to access quosure components.</p></li>
-<li><p><code><a href="as_quosure.html">new_quosure()</a></code> and <code><a href="as_quosure.html">as_quosure()</a></code> to assemble a quosure from components.</p></li>
+<li><p><code><a href="quosure-tools.html">quo_get_expr()</a></code> and <code><a href="quosure-tools.html">quo_get_env()</a></code> to access quosure components.</p></li>
+<li><p><code><a href="new_quosure.html">new_quosure()</a></code> and <code><a href="new_quosure.html">as_quosure()</a></code> to assemble a quosure from components.</p></li>
 </ul></div>
     </div>
 

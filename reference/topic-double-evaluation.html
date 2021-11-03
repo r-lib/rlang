@@ -151,36 +151,35 @@ The defused input is now evaluated only once because it is injected only once:su
       <ul class="navbar-nav me-auto"><li class="nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-overviews">Overviews</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-overviews">
-    <h6 class="dropdown-header" data-toc-skip>Tidy evaluation</h6>
+<li class="active nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-tidy-evaluation">Tidy evaluation</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-tidy-evaluation">
+    <h6 class="dropdown-header" data-toc-skip>Overviews</h6>
     <a class="dropdown-item" href="../reference/topic-data-mask.html">What is data-masking and why do I need `{{`?</a>
     <a class="dropdown-item" href="../reference/topic-data-mask-programming.html">Data mask programming patterns</a>
-    <h6 class="dropdown-header" data-toc-skip>Metaprogramming</h6>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Guides</h6>
+    <a class="dropdown-item" href="../reference/topic-data-mask-ambiguity.html">The data mask ambiguity</a>
+    <a class="dropdown-item" href="../reference/topic-double-evaluation.html">The double evaluation problem</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Notes</h6>
+    <a class="dropdown-item" href="../reference/topic-inject-out-of-context.html">What happens if I use injection operators out of context?</a>
+    <a class="dropdown-item" href="../reference/topic-embrace-non-args.html">Does `{{` work on regular objects?</a>
+  </div>
+</li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-metaprogramming">Metaprogramming</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-metaprogramming">
+    <h6 class="dropdown-header" data-toc-skip>Overviews</h6>
     <a class="dropdown-item" href="../reference/topic-defuse.html">Defusing R expressions</a>
     <a class="dropdown-item" href="../reference/topic-inject.html">Injecting with `!!`, `!!!`, and glue syntax</a>
     <a class="dropdown-item" href="../reference/topic-metaprogramming.html">Metaprogramming patterns</a>
     <a class="dropdown-item" href="../reference/topic-quosure.html">What are quosures and when are they needed?</a>
-  </div>
-</li>
-<li class="active nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-guides">Guides</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-guides">
-    <h6 class="dropdown-header" data-toc-skip>Tidy evaluation</h6>
-    <a class="dropdown-item" href="../reference/topic-data-mask-ambiguity.html">The data mask ambiguity</a>
-    <a class="dropdown-item" href="../reference/topic-double-evaluation.html">The double evaluation problem</a>
-    <h6 class="dropdown-header" data-toc-skip>Metaprogramming</h6>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Guides</h6>
     <a class="dropdown-item" href="../reference/topic-multiple-columns.html">Taking multiple columns without `...`</a>
-  </div>
-</li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-notes">Notes</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-notes">
-    <h6 class="dropdown-header" data-toc-skip>Tidy evaluation</h6>
-    <a class="dropdown-item" href="../reference/topic-inject-out-of-context.html">What happens if I use injection operators out of context?</a>
-    <a class="dropdown-item" href="../reference/topic-embrace-non-args.html">Does `{{` work on regular objects?</a>
-    <h6 class="dropdown-header" data-toc-skip>Metaprogramming</h6>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Notes</h6>
     <a class="dropdown-item" href="../reference/topic-embrace-constants.html">Why are strings and other constants enquosed in the empty environment?</a>
   </div>
 </li>
@@ -218,70 +217,65 @@ The defused input is now evaluated only once because it is injected only once:su
     </div>
 
     <div class="ref-description section level2">
-    <p>One inherent risk to metaprogramming is to evaluate multiple times a piece of code that appears to be evaluated only once. Take this data-masking function which takes a single input and produces two summaries:</p><div class="sourceCode r"><pre><code>summarise_stats &lt;- function(data, var) {
-  data %&gt;%
-    dplyr::summarise(
-      mean = mean({{ var }}),
-      sd = sd({{ var }})
-    )
-}
+    <p>One inherent risk to metaprogramming is to evaluate multiple times a piece of code that appears to be evaluated only once. Take this data-masking function which takes a single input and produces two summaries:</p><div class="sourceCode r"><pre><code><span class="va">summarise_stats</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">data</span> <span class="op">%&gt;%</span>
+    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>
+      mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span>,
+      sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span>
+    <span class="op">)</span>
+<span class="op">}</span>
 
-summarise_stats(mtcars, cyl)
-#&gt; # A tibble: 1 x 2
-#&gt;    mean    sd
-#&gt;   &lt;dbl&gt; &lt;dbl&gt;
-#&gt; 1  6.19  1.79
-</code></pre><p></p></div>
-<p>This function is perfectly fine if the user supplies simple column names. However, data-masked arguments may also include <em>computations</em>.</p><div class="sourceCode r"><pre><code>summarise_stats(mtcars, cyl * 100)
-#&gt; # A tibble: 1 x 2
-#&gt;    mean    sd
-#&gt;   &lt;dbl&gt; &lt;dbl&gt;
-#&gt; 1  619.  179.
-</code></pre><p></p></div>
+<span class="fu">summarise_stats</span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">cyl</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 1 x 2</span>
+<span class="co">#&gt;    mean    sd</span>
+<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;</span>
+<span class="co">#&gt; 1  6.19  1.79</span></code></pre><p></p></div>
+<p>This function is perfectly fine if the user supplies simple column names. However, data-masked arguments may also include <em>computations</em>.</p><div class="sourceCode r"><pre><code><span class="fu">summarise_stats</span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">cyl</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 1 x 2</span>
+<span class="co">#&gt;    mean    sd</span>
+<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;</span>
+<span class="co">#&gt; 1  619.  179.</span></code></pre><p></p></div>
 <p>Computations may be slow and may produce side effects. For these
-reasons, they should only be performed as many times as they appear in the code (unless explicitly documented, e.g. once per group with grouped data frames). Let's try again with a more complex computation:</p><div class="sourceCode r"><pre><code>times100 &lt;- function(x) {
-  message("Takes a long time...")
-  Sys.sleep(0.1)
+reasons, they should only be performed as many times as they appear in the code (unless explicitly documented, e.g. once per group with grouped data frames). Let's try again with a more complex computation:</p><div class="sourceCode r"><pre><code><span class="va">times100</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"Takes a long time..."</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>
 
-  message("And causes side effects such as messages!")
-  x * 100
-}
+  <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"And causes side effects such as messages!"</span><span class="op">)</span>
+  <span class="va">x</span> <span class="op">*</span> <span class="fl">100</span>
+<span class="op">}</span>
 
-summarise_stats(mtcars, times100(cyl))
-#&gt; Takes a long time...
-#&gt; And causes side effects such as messages!
-#&gt; Takes a long time...
-#&gt; And causes side effects such as messages!
-#&gt; # A tibble: 1 x 2
-#&gt;    mean    sd
-#&gt;   &lt;dbl&gt; &lt;dbl&gt;
-#&gt; 1  619.  179.
-</code></pre><p></p></div>
+<span class="fu">summarise_stats</span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu">times100</span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Takes a long time...</span>
+<span class="co">#&gt; And causes side effects such as messages!</span>
+<span class="co">#&gt; Takes a long time...</span>
+<span class="co">#&gt; And causes side effects such as messages!</span>
+<span class="co">#&gt; # A tibble: 1 x 2</span>
+<span class="co">#&gt;    mean    sd</span>
+<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;</span>
+<span class="co">#&gt; 1  619.  179.</span></code></pre><p></p></div>
 <p>Because of the side effects and the long running time, it is clear that <code>summarise_stats()</code> evaluates its input twice. This is because we've injected a defused expression in two different places. The data-masked expression created down the line looks like this (with caret signs representing <a href="topic-quosure.html">quosure</a> boundaries):</p><div class="sourceCode r"><pre><code>dplyr::summarise(
   mean = ^mean(^times100(cyl)),
   sd = ^sd(^times100(cyl))
 )
 </code></pre><p></p></div>
 <p>The <code>times100(cyl)</code> expression is evaluated twice, even though it only appears once in the code. We have a double evaluation bug.</p>
-<p>One simple way to fix it is to assign the defused input to a constant. You can then refer to that constant in the remaining of the code.</p><div class="sourceCode r"><pre><code>summarise_stats &lt;- function(data, var) {
-  data %&gt;%
-    dplyr::transmute(
-      var = {{ var }},
-    ) %&gt;%
-    dplyr::summarise(
-      mean = mean(var),
-      sd = sd(var)
-    )
-}
-</code></pre><p></p></div>
-<p>The defused input is now evaluated only once because it is injected only once:</p><div class="sourceCode r"><pre><code>summarise_stats(mtcars, times100(cyl))
-#&gt; Takes a long time...
-#&gt; And causes side effects such as messages!
-#&gt; # A tibble: 1 x 2
-#&gt;    mean    sd
-#&gt;   &lt;dbl&gt; &lt;dbl&gt;
-#&gt; 1  619.  179.
-</code></pre><p></p></div>
+<p>One simple way to fix it is to assign the defused input to a constant. You can then refer to that constant in the remaining of the code.</p><div class="sourceCode r"><pre><code><span class="va">summarise_stats</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">data</span> <span class="op">%&gt;%</span>
+    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">transmute</a></span><span class="op">(</span>
+      var <span class="op">=</span> <span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span>,
+    <span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>
+      mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span>,
+      sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span>
+    <span class="op">)</span>
+<span class="op">}</span></code></pre><p></p></div>
+<p>The defused input is now evaluated only once because it is injected only once:</p><div class="sourceCode r"><pre><code><span class="fu">summarise_stats</span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu">times100</span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Takes a long time...</span>
+<span class="co">#&gt; And causes side effects such as messages!</span>
+<span class="co">#&gt; # A tibble: 1 x 2</span>
+<span class="co">#&gt;    mean    sd</span>
+<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;</span>
+<span class="co">#&gt; 1  619.  179.</span></code></pre><p></p></div>
     </div>
 
 
