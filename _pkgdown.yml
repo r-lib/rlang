@@ -139,6 +139,7 @@ reference:
     contents:
       - abort
       - cnd_signal
+      - local_use_cli
 
   - subtitle: Handle errors
     contents:

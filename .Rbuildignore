@@ -17,3 +17,4 @@
 ^\.github/workflows/R-CMD-check\.yaml$
 ^LICENSE\.md$
 ^pkgdown$
+^CODE_OF_CONDUCT\.md$
