@@ -99,3 +99,4 @@ summarise_stats(mtcars, times100(cyl))
 Since a glue string doesn't need the result of an expression, only the original code converted (deparsed) to a string, it doesn't evaluate injected expressions.
 }
 
+\keyword{internal}

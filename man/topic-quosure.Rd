@@ -165,3 +165,4 @@ There are similarities between promises (the ones R uses to implement lazy evalu
 }
 }
 
+\keyword{internal}

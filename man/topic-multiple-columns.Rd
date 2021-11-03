@@ -109,3 +109,4 @@ However this parsing approach quickly shows limits:\if{html}{\out{<div class="so
 Also, it would be better for overall consistency of interfaces to use the tidyselect syntax \code{c()} for passing multiple columns. In general, we recommend to use either the tidyselect or the external defusal approaches.
 }
 
+\keyword{internal}

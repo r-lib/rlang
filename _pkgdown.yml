@@ -6,28 +6,38 @@ template:
   params:
     ganalytics: UA-115082821-1
 
-home:
-  links:
-  - text: Programming with dplyr
-    href: https://dplyr.tidyverse.org/articles/programming.html
-  - text: Using ggplot2 in packages
-    href: https://ggplot2.tidyverse.org/articles/ggplot2-in-packages.html
-
 navbar:
   structure:
-    left:  [home, reference, overviews, guides, notes]
+    left:  [home, reference, tidyeval, metaprog]
     right: [news, github]
   components:
-    overviews:
-      text: Overviews
+    tidyeval:
+      text: Tidy evaluation
       menu:
-      - text: Tidy evaluation
+      - text: Overviews
       - text: What is data-masking and why do I need `{{`?
         href: reference/topic-data-mask.html
       - text: Data mask programming patterns
         href: reference/topic-data-mask-programming.html
+      - text: ---
 
-      - text: Metaprogramming
+      - text: Guides
+      - text: The data mask ambiguity
+        href: reference/topic-data-mask-ambiguity.html
+      - text: The double evaluation problem
+        href: reference/topic-double-evaluation.html
+      - text: ---
+
+      - text: Notes
+      - text: What happens if I use injection operators out of context?
+        href: reference/topic-inject-out-of-context.html
+      - text: Does `{{` work on regular objects?
+        href: reference/topic-embrace-non-args.html
+
+    metaprog:
+      text: Metaprogramming
+      menu:
+      - text: Overviews
       - text: Defusing R expressions
         href: reference/topic-defuse.html
       - text: Injecting with `!!`, `!!!`, and glue syntax
@@ -36,30 +46,14 @@ navbar:
         href: reference/topic-metaprogramming.html
       - text: What are quosures and when are they needed?
         href: reference/topic-quosure.html
+      - text: ---
 
-    guides:
-      text: Guides
-      menu:
-      - text: Tidy evaluation
-      - text: The data mask ambiguity
-        href: reference/topic-data-mask-ambiguity.html
-      - text: The double evaluation problem
-        href: reference/topic-double-evaluation.html
-
-      - text: Metaprogramming
+      - text: Guides
       - text: Taking multiple columns without `...`
         href: reference/topic-multiple-columns.html
+      - text: ---
 
-    notes:
-      text: Notes
-      menu:
-      - text: Tidy evaluation
-      - text: What happens if I use injection operators out of context?
-        href: reference/topic-inject-out-of-context.html
-      - text: Does `{{` work on regular objects?
-        href: reference/topic-embrace-non-args.html
-
-      - text: Metaprogramming
+      - text: Notes
       - text: Why are strings and other constants enquosed in the empty environment?
         href: reference/topic-embrace-constants.html
 
@@ -94,24 +88,8 @@ reference:
       - embrace-operator
       - glue-operators
       - .data
-  - subtitle: Overviews
-    contents:
-      - topic-data-mask
-      - topic-data-mask-programming
-  - subtitle: Guides
-    contents:
-      - topic-data-mask-ambiguity
-      - topic-double-evaluation
-  - subtitle: Notes
-    contents:
-      - topic-inject-out-of-context
-      - topic-embrace-non-args
 
-  - title: Metaprogramming
-    desc: >
-      A set of techniques and tools to create or modify defused
-      expressions
-  - subtitle: Tools
+  - subtitle: Metaprogramming tools
     contents:
       - injection-operator
       - splice-operator
@@ -122,23 +100,10 @@ reference:
       - sym
       - as_label
       - as_name
+
   - subtitle: Advanced tools
     contents:
       - defusing-advanced
-  - subtitle: Overviews
-    contents:
-      - topic-defuse
-      - topic-inject
-      - topic-metaprogramming
-      - topic-quosure
-  - subtitle: Guides
-    contents:
-      - topic-multiple-columns
-  - subtitle: Notes
-    contents:
-      - topic-embrace-constants
-  - subtitle: Create tidy evaluation APIs
-    contents:
       - eval_tidy
       - new_data_mask
 
@@ -202,7 +167,7 @@ reference:
       - format_error_bullets
 
 
-  - title: R session
+  - title: Session
 
   - subtitle: Search path and namespaces
     contents:
@@ -221,7 +186,6 @@ reference:
       - faq-options
 
 
-  # Work with expressions
   - title: Expressions
 
   - subtitle: Evaluation
@@ -266,7 +230,7 @@ reference:
       - is_bare_formula
 
 
-  - title: R objects
+  - title: Objects
 
   - subtitle: Functions
     contents:

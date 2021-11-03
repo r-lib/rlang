@@ -80,3 +80,4 @@ This means that when injection operators are used in the wrong place, they will 
 In the worst case, R will silently convert the input to logical. Unfortunately there is no systematic way of checking for these errors.
 }
 }
+\keyword{internal}
