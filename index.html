@@ -125,24 +125,56 @@
 </div>
 <!-- badges: start -->
 
+<p>rlang is a collection of frameworks and APIs for programming with R.</p>
 <div class="section level2">
-<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+<h2 id="frameworks">Frameworks<a class="anchor" aria-label="anchor" href="#frameworks"></a>
 </h2>
-<p>The rlang package provides tools to work with core language features of R and the tidyverse:</p>
+<p>rlang features two comprehensive frameworks.</p>
 <ul>
-<li><p>The <strong>tidy eval</strong> framework, which is a well-founded system for non-standard evaluation built on quasiquotation (<code>!!</code>) and quoted arguments (<code><a href="reference/enquo.html">enquo()</a></code>). See <a href="https://tidyeval.tidyverse.org" class="external-link uri">https://tidyeval.tidyverse.org</a>.</p></li>
-<li><p>User-friendly <strong>error reporting</strong> with backtraces and chained errors (<code><a href="reference/abort.html">abort()</a></code>, <code><a href="reference/trace_back.html">trace_back()</a></code>).</p></li>
+<li><p><strong>tidy eval</strong>, a programmable <a href="https://rlang.r-lib.org/reference/topic-data-mask.html">data-masking</a> framework used in tidyverse packages like dplyr and ggplot2. As a user, you will encounter the embracing operator <a href="https://rlang.r-lib.org/reference/embrace-operator.html"><code>{{</code></a> and name-injection with the <a href="https://glue.tidyverse.org/" class="external-link">glue</a> operators <a href="https://rlang.r-lib.org/reference/glue-operators.html"><code>"{"</code></a> and <a href="https://rlang.r-lib.org/reference/glue-operators.html"><code>"{{"</code></a>.</p></li>
 <li>
-<p>A consistent API for working with <strong>base types</strong>. Note that overall this is a work in progress that is still in flux:</p>
-<ul>
-<li><p>Environments, e.g. <code><a href="reference/env.html">env()</a></code>, <code><a href="reference/env_has.html">env_has()</a></code>, <code><a href="reference/env_get.html">env_get()</a></code>, <code><a href="reference/env_bind.html">env_bind()</a></code>, <code><a href="reference/env_unbind.html">env_unbind()</a></code>, <code><a href="reference/env_print.html">env_print()</a></code>.</p></li>
-<li><p>Calls and symbols, e.g. <code><a href="reference/call2.html">call2()</a></code>, <code><a href="reference/is_call.html">is_call()</a></code>, <code><a href="reference/sym.html">sym()</a></code>, <code><a href="reference/sym.html">syms()</a></code>.</p></li>
-<li><p>Functions, e.g. <code><a href="reference/new_function.html">new_function()</a></code>, <code><a href="reference/as_function.html">as_function()</a></code>. The latter supports the purrr-style formula notation for lambda functions.</p></li>
-<li><p>Vectors, including construction (<code><a href="reference/vector-construction.html">lgl()</a></code>, <code><a href="reference/vector-construction.html">int()</a></code>, …) and predicates (<code><a href="reference/type-predicates.html">is_logical()</a></code>, <code><a href="reference/type-predicates.html">is_character()</a></code>).</p></li>
-<li><p>Attributes, e.g. <code><a href="reference/set_names.html">set_names()</a></code>.</p></li>
-</ul>
+<p><strong>rlang errors</strong>, a set of tools to signal and display errors. This includes backtrace capture with <code><a href="reference/global_entrace.html">global_entrace()</a></code> and backtrace display with <code><a href="reference/last_error.html">last_error()</a></code> and <code><a href="reference/last_warnings.html">last_warnings()</a></code>. Use <code><a href="reference/abort.html">abort()</a></code> to create errors with bullet lists, structured metadata, and error chaining support.</p>
+<p>The display of error messages is optimised for bullet lists and chained errors and optionally integrates with the cli package (see <code><a href="reference/local_use_cli.html">local_use_cli()</a></code>).</p>
 </li>
 </ul>
+</div>
+<div class="section level2">
+<h2 id="argument-intake">Argument intake<a class="anchor" aria-label="anchor" href="#argument-intake"></a>
+</h2>
+<p>rlang provides a set of tools to check, validate, and preprocess arguments.</p>
+<ul>
+<li><p>Checking function arguments, e.g. <code><a href="reference/arg_match.html">arg_match()</a></code>, <code><a href="reference/arg_require.html">arg_require()</a></code>, and <code><a href="reference/arg_exclusive.html">arg_exclusive()</a></code>.</p></li>
+<li><p>Checking dots, e.g. <code><a href="reference/check_dots_used.html">check_dots_used()</a></code> and <code><a href="reference/check_dots_empty.html">check_dots_empty()</a></code>.</p></li>
+<li><p>Collecting <a href="https://rlang.r-lib.org/reference/dyn-dots.html">dynamic dots</a>, e.g. <code><a href="reference/list2.html">list2()</a></code>. These dots support splicing with <a href="https://rlang.r-lib.org/reference/splice-operator.html"><code>!!!</code></a> and <a href="https://rlang.r-lib.org/reference/glue-operators.html">name injection</a>.</p></li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="programming-interfaces">Programming interfaces<a class="anchor" aria-label="anchor" href="#programming-interfaces"></a>
+</h2>
+<p>rlang provides various interfaces for working with R and R objects.</p>
+<ul>
+<li><p>The R session, e.g. <code><a href="reference/is_installed.html">check_installed()</a></code>, <code><a href="reference/on_load.html">on_load()</a></code>, and <code><a href="reference/on_load.html">on_package_load()</a></code>.</p></li>
+<li><p>Environments, e.g. <code><a href="reference/env.html">env()</a></code>, <code><a href="reference/env_has.html">env_has()</a></code>, <code><a href="reference/env_get.html">env_get()</a></code>, <code><a href="reference/env_bind.html">env_bind()</a></code>, <code><a href="reference/env_unbind.html">env_unbind()</a></code>, <code><a href="reference/env_print.html">env_print()</a></code>, and <code><a href="reference/local_bindings.html">local_bindings()</a></code>.</p></li>
+<li><p>Evaluation, e.g. <code><a href="reference/inject.html">inject()</a></code> and <code><a href="reference/eval_bare.html">eval_bare()</a></code>.</p></li>
+<li><p>Calls and symbols, e.g. <code><a href="reference/call2.html">call2()</a></code>, <code><a href="reference/is_call.html">is_call()</a></code>, <code><a href="reference/call_name.html">is_call_simple()</a></code>, <code><a href="reference/sym.html">data_sym()</a></code>, and <code><a href="reference/sym.html">data_syms()</a></code>.</p></li>
+<li><p>Functions, e.g. <code><a href="reference/new_function.html">new_function()</a></code> and <code><a href="reference/as_function.html">as_function()</a></code>. The latter supports the purrr-style formula notation for lambda functions.</p></li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>Install the released version of rlang from CRAN:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"rlang"</span><span class="op">)</span></code></pre></div>
+<p>Or install the development version from GitHub with:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># install.packages("pak")</span>
+<span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="http://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"r-lib/rlang"</span><span class="op">)</span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="code-of-conduct">Code of Conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
+</h2>
+<p>Please note that the rlang project is released with a <a href="https://rlang.r-lib.org/CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
 </div>
 </div>
   </div>
@@ -165,6 +197,12 @@
 </ul>
 </div>
 
+<div class="community">
+<h2 data-toc-skip>Community</h2>
+<ul class="list-unstyled">
+<li><a href="CODE_OF_CONDUCT.html">Code of conduct</a></li>
+</ul>
+</div>
 
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
