@@ -165,26 +165,31 @@ reference:
 
   - title: Session
 
-  - subtitle: Search path and namespaces
+  - subtitle: State
     contents:
-      - search_envs
-      - empty_env
       - is_installed
-      - is_namespace
-      - ns_env
-      - env_name
-
-  - subtitle: Session state
-    contents:
       - is_interactive
       - local_options
       - on_load
       - faq-options
 
+  - subtitle: Search path and namespaces
+    contents:
+      - search_envs
+      - empty_env
+      - is_namespace
+      - ns_env
+      - env_name
 
-  - title: Expressions
 
-  - subtitle: Evaluation
+  - title: Defused expressions
+    contents:
+      - parse_expr
+      - expr_print
+      - is_expression
+      - exprs_auto_name
+
+  - subtitle: Evaluate
     contents:
       - eval_tidy
       - eval_bare
@@ -204,13 +209,6 @@ reference:
       - is_call
       - starts_with("call_")
 
-  - subtitle: Expressions
-    contents:
-      - parse_expr
-      - expr_print
-      - is_expression
-      - exprs_auto_name
-
   - subtitle: Quosures
     contents:
       - new_quosure
@@ -227,16 +225,8 @@ reference:
 
 
   - title: Objects
-
-  - subtitle: Functions
     contents:
-      - new_function
-      - as_function
-      - is_function
-      - fn_fmls
-      - fn_body
-      - fn_env
-      - as_closure
+      - hash
 
   - subtitle: Environments
     contents:
@@ -263,21 +253,24 @@ reference:
       - env_get
       - env_names
 
+  - subtitle: Functions
+    contents:
+      - new_function
+      - as_function
+      - is_function
+      - fn_fmls
+      - fn_body
+      - fn_env
+      - as_closure
+
   - subtitle: S3
     contents:
       - inherits_any
+      - zap
+      - as_bytes
       - new_box
       - as_box
-      - zap
       - done
-      - as_bytes
-
-  - subtitle: Create vectors
-    contents:
-      - lgl
-      - list2
-      - rep_along
-      - seq2
 
   - subtitle: Attributes
     contents:
@@ -286,6 +279,13 @@ reference:
       - has_name
       - is_named
       - zap_srcref
+
+  - subtitle: Vectors
+    contents:
+      - lgl
+      - list2
+      - rep_along
+      - seq2
 
   - subtitle: Type predicates
     contents:
@@ -300,10 +300,6 @@ reference:
     contents:
       - matches("weakref")
       - matches("wref")
-
-  - subtitle: R objects
-    contents:
-      - hash
 
   - subtitle: Operators
     contents:
