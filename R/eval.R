@@ -323,8 +323,10 @@ exec <- function(.fn, ..., .env = caller_env()) {
 
 #' Inject objects in an R expression
 #'
+#' @description
+#'
 #' `inject()` evaluates an expression with [injection][quasiquotation]
-#' (unquotation) support. There are three main usages:
+#' support. There are three main usages:
 #'
 #' - [Splicing][!!!] lists of arguments in a function call.
 #'

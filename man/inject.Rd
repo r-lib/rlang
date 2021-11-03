@@ -16,9 +16,7 @@ the current environment. For expert use only.}
 }
 \description{
 \code{inject()} evaluates an expression with \link[=quasiquotation]{injection}
-(unquotation) support. There are three main usages:
-}
-\details{
+support. There are three main usages:
 \itemize{
 \item \link[=!!!]{Splicing} lists of arguments in a function call.
 \item Inline objects or other expressions in an expression with \verb{!!}
