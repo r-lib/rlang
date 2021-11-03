@@ -217,10 +217,10 @@ reference:
 
   - subtitle: Quosures
     contents:
-      - quo_squash
       - new_quosure
-      - is_quosure
       - new_quosures
+      - quosure-tools
+      - quo_squash
 
   - subtitle: Formulas
     contents:

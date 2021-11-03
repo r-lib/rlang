@@ -1,60 +1,39 @@
-#' Quosure getters, setters and testers
+#' Quosure getters, setters and predicates
 #'
 #' @description
-#'
-#' A quosure is a type of [defused expression][topic-defuse] that includes
-#' a reference to the context where it was created. A quosure is thus
-#' guaranteed to evaluate in its original environment and can refer to
-#' local objects. Read more about quosures in `r link("topic_quosure")`.
+#' These tools inspect and modify [quosures][topic-quosure], a type of
+#' [defused expression][topic-defuse] that includes a reference to the
+#' context where it was created. A quosure is guaranteed to evaluate
+#' in its original environment and can refer to local objects safely.
 #'
 #' -  You can access the quosure components with `quo_get_expr()` and
 #'   `quo_get_env()`.
 #'
-#' - Test if an object is a quosure with `is_quosure()`.
+#' - The `quo_` prefixed predicates test the expression of a quosure,
+#'   `quo_is_missing()`, `quo_is_symbol()`, etc.
 #'
-#' - If you know an object is a quosure, use the `quo_` prefixed
-#'   predicates to check its contents, `quo_is_missing()`,
-#'   `quo_is_symbol()`, etc.
+#' All `quo_` prefixed functions expect a quosure and will fail if
+#' supplied another type of object. Make sure the input is a quosure
+#' with [is_quosure()].
 #'
-#'
-#' @section Quosured constants:
-#'
-#' A quosure usually does not carry environments for [constant
-#' objects][is_syntactic_literal] like strings or numbers. [quo()] and
-#' [enquo()] only capture an environment for [symbolic
-#' expressions][is_symbolic]. For instance, all of these return the
-#' [empty environment][empty_env]:
-#'
-#' ```
-#' quo_get_env(quo("constant"))
-#' quo_get_env(quo(100))
-#' quo_get_env(quo(NA))
-#' ```
-#'
-#' On the other hand, quosures capture the environment of symbolic
-#' expressions, i.e. expressions whose meaning depends on the
-#' environment in which they are evaluated and what objects are
-#' defined there:
-#'
-#' ```
-#' quo_get_env(quo(some_object))
-#' quo_get_env(quo(some_function()))
-#' ```
-#'
-#'
-#' @section Empty quosures:
-#'
+#' @section Empty quosures and missing arguments:
 #' When missing arguments are captured as quosures, either through
 #' [enquo()] or [quos()], they are returned as an empty quosure. These
 #' quosures contain the [missing argument][missing_arg] and typically
 #' have the [empty environment][empty_env] as enclosure.
 #'
-#' @name quosure
+#' Use `quo_is_missing()` to test for a missing argument defused with
+#' [enquo()].
+#'
 #' @seealso
-#' * [quo()] for creating quosures by quotation
-#' * [as_quosure()] and [new_quosure()] for assembling quosures from
-#'   components
-#' * `r link("topic_quosure")` for an overview
+#' * [quo()] for creating quosures by [argument defusal][topic-defuse].
+#' * [new_quosure()] and [as_quosure()] for assembling quosures from
+#'   components.
+#' * `r link("topic_quosure")` for an overview.
+#'
+#' @name quosure-tools
+#' @aliases quosure
+#'
 #' @examples
 #' quo <- quo(my_quosure)
 #' quo
@@ -87,66 +66,156 @@
 #' quo_is_missing(fn())
 NULL
 
-#' @rdname quosure
-#' @param x An object to test.
-#' @export
-is_quosure <- function(x) {
-  inherits(x, "quosure")
-}
-
-#' @rdname quosure
+#' @rdname quosure-tools
 #' @param quo A quosure to test.
 #' @export
 quo_is_missing <- function(quo) {
   .Call(ffi_quo_is_missing, quo)
 }
-#' @rdname quosure
+#' @rdname quosure-tools
 #' @param name The name of the symbol or function call. If `NULL` the
 #'   name is not tested.
 #' @export
 quo_is_symbol <- function(quo, name = NULL) {
   is_symbol(quo_get_expr(quo), name = name)
 }
-#' @rdname quosure
+#' @rdname quosure-tools
 #' @inheritParams is_call
 #' @export
 quo_is_call <- function(quo, name = NULL, n = NULL, ns = NULL) {
   is_call(quo_get_expr(quo), name = name, n = n, ns = ns)
 }
-#' @rdname quosure
+#' @rdname quosure-tools
 #' @export
 quo_is_symbolic <- function(quo) {
   .Call(ffi_quo_is_symbolic, quo)
 }
-#' @rdname quosure
+#' @rdname quosure-tools
 #' @export
 quo_is_null <- function(quo) {
   .Call(ffi_quo_is_null, quo)
 }
 
-
-#' @rdname quosure
+#' @rdname quosure-tools
 #' @export
 quo_get_expr <- function(quo) {
   .Call(ffi_quo_get_expr, quo)
 }
-#' @rdname quosure
+#' @rdname quosure-tools
 #' @export
 quo_get_env <- function(quo) {
   .Call(ffi_quo_get_env, quo)
 }
 
-#' @rdname quosure
+#' @rdname quosure-tools
 #' @param expr A new expression for the quosure.
 #' @export
 quo_set_expr <- function(quo, expr) {
   .Call(ffi_quo_set_expr, quo, expr)
 }
-#' @rdname quosure
+#' @rdname quosure-tools
 #' @param env A new environment for the quosure.
 #' @export
 quo_set_env <- function(quo, env) {
   .Call(ffi_quo_set_env, quo, env)
+}
+
+
+#' Create a quosure from components
+#'
+#' @description
+#' * `new_quosure()` wraps any R object (including expressions,
+#'   formulas, or other quosures) into a [quosure][topic-quosure].
+#'
+#' * `as_quosure()` is similar but it does not rewrap formulas and
+#'   quosures.
+#'
+#' @param x For `is_quosure()`, an object to test. For `as_quosure()`,
+#'   an object to convert.
+#' @param expr An expression to wrap in a quosure.
+#' @param env The environment in which the expression should be
+#'   evaluated. Only used for symbols and calls. This should normally
+#'   be the environment in which the expression was created.
+#'
+#' @seealso
+#' * [enquo()] and [quo()] for creating a quosure by [argument
+#'   defusal][topic-defuse].
+#'
+#' * `r link("topic_quosure")`
+#' @examples
+#' # `new_quosure()` creates a quosure from its components. These are
+#' # equivalent:
+#' new_quosure(quote(foo), current_env())
+#'
+#' quo(foo)
+#'
+#' # `new_quosure()` always rewraps its input into a new quosure, even
+#' # if the input is itself a quosure:
+#' new_quosure(quo(foo))
+#'
+#' # This is unlike `as_quosure()` which preserves its input if it's
+#' # already a quosure:
+#' as_quosure(quo(foo))
+#'
+#'
+#' # `as_quosure()` uses the supplied environment with naked expressions:
+#' env <- env(var = "thing")
+#' as_quosure(quote(var), env)
+#'
+#' # If the expression already carries an environment, this
+#' # environment is preserved. This is the case for formulas and
+#' # quosures:
+#' as_quosure(~foo, env)
+#'
+#' as_quosure(~foo)
+#'
+#' # An environment must be supplied when the input is a naked
+#' # expression:
+#' try(
+#'   as_quosure(quote(var))
+#' )
+#' @export
+new_quosure <- function(expr, env = caller_env()) {
+  .Call(ffi_new_quosure, expr, env)
+}
+#' @rdname new_quosure
+#' @export
+as_quosure <- function(x, env = NULL) {
+  if (is_quosure(x)) {
+    return(x)
+  }
+
+  if (is_bare_formula(x)) {
+    env <- f_env(x)
+    if (is_null(env)) {
+      abort(paste_line(
+        "The formula does not have an environment.",
+        "This is a quoted formula that was never evaluated."
+      ))
+    }
+
+    return(new_quosure(f_rhs(x), env))
+  }
+
+  if (is_symbolic(x)) {
+    if (is_null(env)) {
+      warn_deprecated(paste_line(
+        "`as_quosure()` requires an explicit environment as of rlang 0.3.0.",
+        "Please supply `env`."
+      ))
+      env <- caller_env()
+    }
+
+    return(new_quosure(x, env))
+  }
+
+  new_quosure(x, empty_env())
+}
+#' @rdname new_quosure
+#' @param x An object to test.
+#' @export
+is_quosure <- function(x) {
+  inherits(x, "quosure")
 }
 
 
@@ -258,71 +327,6 @@ on_load({
   s3_register("pillar::type_sum", "quosures", type_sum.quosures)
 })
 
-#' Coerce object to quosure
-#'
-#' @description
-#' While `new_quosure()` wraps any R object (including expressions,
-#' formulas, or other quosures) into a quosure, `as_quosure()`
-#' converts formulas and quosures and does not double-wrap.
-#'
-#' @param x An object to convert. Either an [expression][is_expression] or a
-#'   formula.
-#' @param env The environment in which the expression should be
-#'   evaluated. Only used for symbols and calls. This should typically
-#'   be the environment in which the expression was created.
-#' @seealso [quo()], [is_quosure()], [new_quosure()]
-#' @export
-#' @examples
-#' # as_quosure() converts expressions or any R object to a validly
-#' # scoped quosure:
-#' env <- env(var = "thing")
-#' as_quosure(quote(var), env)
-#'
-#'
-#' # The environment is ignored for formulas:
-#' as_quosure(~foo, env)
-#' as_quosure(~foo)
-#'
-#' # However you must supply it for symbols and calls:
-#' try(as_quosure(quote(var)))
-as_quosure <- function(x, env = NULL) {
-  if (is_quosure(x)) {
-    return(x)
-  }
-
-  if (is_bare_formula(x)) {
-    env <- f_env(x)
-    if (is_null(env)) {
-      abort(paste_line(
-        "The formula does not have an environment.",
-        "This is a quoted formula that was never evaluated."
-      ))
-    }
-
-    return(new_quosure(f_rhs(x), env))
-  }
-
-  if (is_symbolic(x)) {
-    if (is_null(env)) {
-      warn_deprecated(paste_line(
-        "`as_quosure()` requires an explicit environment as of rlang 0.3.0.",
-        "Please supply `env`."
-      ))
-      env <- caller_env()
-    }
-
-    return(new_quosure(x, env))
-  }
-
-  new_quosure(x, empty_env())
-}
-#' @rdname as_quosure
-#' @param expr The expression wrapped by the quosure.
-#' @export
-new_quosure <- function(expr, env = caller_env()) {
-  .Call(ffi_new_quosure, expr, env)
-}
-
 
 #' Squash a quosure
 #'
@@ -333,20 +337,12 @@ new_quosure <- function(expr, env = caller_env()) {
 #' expression `foo(bar(), baz)`.
 #'
 #' This operation is safe if the squashed quosure is used for
-#' labelling or printing (see [quo_label()] or [quo_name()]). However
-#' if the squashed quosure is evaluated, all expressions of the
-#' flattened quosures are resolved in a single environment. This is a
-#' source of bugs so it is good practice to set `warn` to `TRUE` to
-#' let the user know about the lossy squashing.
-#'
-#'
-#' @section Life cycle:
-#'
-#' This function replaces `quo_expr()` which was deprecated in
-#' rlang 0.2.0. `quo_expr()` was a misnomer because it implied that it
-#' was a mere expression acccessor for quosures whereas it was really
-#' a lossy operation that squashed all nested quosures.
-#'
+#' labelling or printing (see [as_label()], but note that `as_label()`
+#' squashes quosures automatically). However if the squashed quosure
+#' is evaluated, all expressions of the flattened quosures are
+#' resolved in a single environment. This is a source of bugs so it is
+#' good practice to set `warn` to `TRUE` to let the user know about
+#' the lossy squashing.
 #'
 #' @param quo A quosure or expression.
 #' @param warn Whether to warn if the quosure contains other quosures

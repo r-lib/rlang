@@ -22,21 +22,13 @@ For example it transforms \verb{^foo(^bar(), ^baz)} to the bare
 expression \code{foo(bar(), baz)}.
 
 This operation is safe if the squashed quosure is used for
-labelling or printing (see \code{\link[=quo_label]{quo_label()}} or \code{\link[=quo_name]{quo_name()}}). However
-if the squashed quosure is evaluated, all expressions of the
-flattened quosures are resolved in a single environment. This is a
-source of bugs so it is good practice to set \code{warn} to \code{TRUE} to
-let the user know about the lossy squashing.
+labelling or printing (see \code{\link[=as_label]{as_label()}}, but note that \code{as_label()}
+squashes quosures automatically). However if the squashed quosure
+is evaluated, all expressions of the flattened quosures are
+resolved in a single environment. This is a source of bugs so it is
+good practice to set \code{warn} to \code{TRUE} to let the user know about
+the lossy squashing.
 }
-\section{Life cycle}{
-
-
-This function replaces \code{quo_expr()} which was deprecated in
-rlang 0.2.0. \code{quo_expr()} was a misnomer because it implied that it
-was a mere expression acccessor for quosures whereas it was really
-a lossy operation that squashed all nested quosures.
-}
-
 \examples{
 # Quosures can contain nested quosures:
 quo <- quo(wrapper(!!quo(wrappee)))
