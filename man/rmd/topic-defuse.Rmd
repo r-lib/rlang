@@ -78,7 +78,7 @@ h <- function(z) ignore(z)
 f(warning("boom"))
 ```
 
-In a way, arguments are like _booby traps_ which explode (evaluate) when touched. Defusing an expression can be seen as defusing the booby trap.
+In a way, arguments are like _booby traps_ which explode (evaluate) when touched. Defusing an argument can be seen as defusing the booby trap.
 
 ```{r, comment = "#>", collapse = TRUE}
 expr(force(warning("boom")))

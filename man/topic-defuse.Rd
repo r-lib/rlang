@@ -71,7 +71,7 @@ f(warning("boom"))
 #> NULL
 }\if{html}{\out{</div>}}
 
-In a way, arguments are like \emph{booby traps} which explode (evaluate) when touched. Defusing an expression can be seen as defusing the booby trap.\if{html}{\out{<div class="sourceCode r">}}\preformatted{expr(force(warning("boom")))
+In a way, arguments are like \emph{booby traps} which explode (evaluate) when touched. Defusing an argument can be seen as defusing the booby trap.\if{html}{\out{<div class="sourceCode r">}}\preformatted{expr(force(warning("boom")))
 #> force(warning("boom"))
 }\if{html}{\out{</div>}}
 }
