@@ -1,4 +1,4 @@
-#' Dynamic dots
+#' Dynamic dots features
 #'
 #' @description
 #'
@@ -10,7 +10,8 @@
 #' - __Collecting__ arguments inside data structures, e.g. with [c()] or
 #'   [list()].
 #'
-#' Dynamic dots offer a few additional features:
+#' Dynamic dots offer a few additional features,
+#' [injection][topic-inject] in particular:
 #'
 #' 1. You can __splice__ arguments saved in a list with the splice
 #'    operator [`!!!`][splice-operator].
@@ -31,14 +32,14 @@
 #' In general, passing `...` to a function that supports dynamic dots
 #' causes your function to inherit the dynamic behaviour.
 #'
-#' Document dynamic docs using this standard tag:
+#' In packages, document dynamic dots with this standard tag:
 #'
 #' ```
 #'  @@param ... <[`dynamic-dots`][rlang::dyn-dots]> What these dots do.
 #' ```
 #'
 #' @name dyn-dots
-#' @aliases tidy-dots dots_dynamic
+#' @aliases tidy-dots doc_dots_dynamic
 #'
 #' @examples
 #' f <- function(...) {

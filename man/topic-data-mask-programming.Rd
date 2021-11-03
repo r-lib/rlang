@@ -40,7 +40,7 @@ In a regular function, arguments can be defined in terms of a \emph{type} of obj
 \item \link[tidyselect:language]{Tidy selections}: E.g. \code{\link[dplyr:select]{dplyr::select()}}, \code{\link[tidyr:pivot_longer]{tidyr::pivot_longer()}}. This is an alternative to data masking that supports selection helpers like \code{starts_with()} or \code{all_of()}, and implements special behaviour for operators like \code{c()}, \code{|} and \code{&}.
 
 Unlike data masking, tidy selection is an interpreted dialect. There is in fact no masking at all. Expressions are either interpreted in the context of the data frame (e.g. \code{c(cyl, am)} which stands for the union of the columns \code{cyl} and \code{am}), or evaluated in the user environment (e.g. \code{all_of()}, \code{starts_with()}, and any other expressions). This has implications for inheritance of argument behaviour as we will see below.
-\item \link[=dots_dynamic]{Dynamic dots}: These may be data-masked arguments, tidy selections, or just regular arguments. Dynamic dots support injection of multiple arguments with the \code{\link[=splice-operator]{!!!}} operator as well as name injection with \link[=glue-operators]{glue} operators.
+\item \link[=doc_dots_dynamic]{Dynamic dots}: These may be data-masked arguments, tidy selections, or just regular arguments. Dynamic dots support injection of multiple arguments with the \code{\link[=splice-operator]{!!!}} operator as well as name injection with \link[=glue-operators]{glue} operators.
 }
 
 To let users know about the capabilities of your function arguments, document them with the following tags, depending on which set of semantics they inherit from:\preformatted{@param foo <[`data-masked`][dplyr::dplyr_data_masking]> What `foo` does.

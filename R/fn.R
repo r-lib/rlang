@@ -399,7 +399,7 @@ check_function <- function(x,
 #'
 #' @param env Environment in which to fetch the function in case `x`
 #'   is a string.
-#' @inheritParams args_dots_empty
+#' @inheritParams dots-empty
 #' @inheritParams args_error_context
 #' @export
 #' @examples

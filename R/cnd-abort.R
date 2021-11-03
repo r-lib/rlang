@@ -308,7 +308,7 @@ cnd_message_info <- function(message,
 #' cli formats messages and bullets with indentation and
 #' width-wrapping to produce a polished display of messages.
 #'
-#' @inheritParams args_dots_empty
+#' @inheritParams dots-empty
 #' @param format Whether to use cli at print-time to format messages
 #'   and bullets.
 #' @param inline `r lifecycle::badge("experimental")` Whether to use

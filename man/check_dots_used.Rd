@@ -22,13 +22,22 @@ mentioned in error messages as the source of the error. See the
 \item{error}{An optional error handler passed to \code{\link[=try_catch]{try_catch()}}. Use
 this e.g. to demote an error into a warning.}
 
-\item{action}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}.}
+\item{action}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}}
 }
 \description{
-Automatically sets exit handler to run when function terminates, checking
-that all elements of \code{...} have been evaluated. If you use \code{\link[=on.exit]{on.exit()}}
-elsewhere in your function, make sure to use \code{add = TRUE} so that you
-don't override the handler set up by \code{check_dots_used()}.
+When \code{...} arguments are passed to methods, it is assumed there
+method will match and use these arguments. If this isn't the case,
+this often indicates a programming error. Call \code{check_dots_used()}
+to fail with an error when unused arguments are detected.
+}
+\details{
+In packages, document \code{...} with this standard tag:\preformatted{ @inheritParams rlang::dots-used
+}
+
+\code{check_dots_used()} implicitly calls \code{\link[=on.exit]{on.exit()}} to check that all
+elements of \code{...} have been used when the function exits. If you
+use \code{\link[=on.exit]{on.exit()}} elsewhere in your function, make sure to use \code{add = TRUE} so that you don't override the handler set up by
+\code{check_dots_used()}.
 }
 \examples{
 f <- function(...) {
@@ -42,5 +51,7 @@ g <- function(x, y, ...) {
 f(x = 1, y = 2)
 
 try(f(x = 1, y = 2, z = 3))
+
 try(f(x = 1, y = 2, 3, 4, 5))
+
 }

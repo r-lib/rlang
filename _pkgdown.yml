@@ -110,31 +110,27 @@ reference:
 
   - title: Function arguments
 
-  - subtitle: Dots
-    desc: >
-      Utils to work with `...`.
-    contents:
-      - check_dots_used
-      - check_dots_unnamed
-      - check_dots_empty
-      - args_dots_empty
-      - args_dots_used
-
-  - subtitle: Dynamic dots
-    desc: >
-      Collect arguments contained in `...` with `!!!` and
-      name-unquoting support.
-    contents:
-      - dyn-dots
-      - list2
-      - pairlist2
-
-  - subtitle: Checking arguments
+  - subtitle: Check arguments
     contents:
       - arg_match
       - arg_exclusive
       - arg_require
       - missing_arg
+
+  - subtitle: Check dots
+    contents:
+      - check_dots_empty
+      - check_dots_used
+      - check_dots_unnamed
+
+  - subtitle: Collect dynamic dots
+    desc: >
+      Collect arguments contained in `...` with `!!!` and
+      name-injection support.
+    contents:
+      - dyn-dots
+      - list2
+      - pairlist2
 
 
   - title: Error handling

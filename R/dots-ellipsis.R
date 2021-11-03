@@ -1,36 +1,29 @@
-#' Helper for consistent documentation of empty dots
-#'
-#' Use `@inheritParams rlang::args_dots_empty` in your package
-#' to consistently document an unused `...` argument.
-#'
-#' @param ... These dots are for future extensions and must be empty.
-#' @name args_dots_empty
-#' @keywords internal
-NULL
-
-#' Helper for consistent documentation of used dots
-#'
-#' Use `@inheritParams rlang::args_dots_used` in your package
-#' to consistently document an unused `...` argument.
-#'
-#' @param ... Arguments passed to methods.
-#' @name args_dots_used
-#' @keywords internal
-NULL
-
 #' Check that all dots have been used
 #'
-#' Automatically sets exit handler to run when function terminates, checking
-#' that all elements of `...` have been evaluated. If you use [on.exit()]
-#' elsewhere in your function, make sure to use `add = TRUE` so that you
-#' don't override the handler set up by `check_dots_used()`.
+#' When `...` arguments are passed to methods, it is assumed there
+#' method will match and use these arguments. If this isn't the case,
+#' this often indicates a programming error. Call `check_dots_used()`
+#' to fail with an error when unused arguments are detected.
 #'
 #' @param error An optional error handler passed to [try_catch()]. Use
 #'   this e.g. to demote an error into a warning.
-#' @param action `r lifecycle::badge("deprecated")`.
+#' @param action `r lifecycle::badge("deprecated")`
 #' @param env Environment in which to look for `...` and to set up handler.
 #' @inheritParams args_error_context
-#' @export
+#'
+#' @details
+#' In packages, document `...` with this standard tag:
+#'
+#' ```
+#'  @@inheritParams rlang::dots-used
+#' ```
+#'
+#' `check_dots_used()` implicitly calls [on.exit()] to check that all
+#' elements of `...` have been used when the function exits. If you
+#' use [on.exit()] elsewhere in your function, make sure to use `add =
+#' TRUE` so that you don't override the handler set up by
+#' `check_dots_used()`.
+#'
 #' @examples
 #' f <- function(...) {
 #'   check_dots_used()
@@ -43,7 +36,10 @@ NULL
 #' f(x = 1, y = 2)
 #'
 #' try(f(x = 1, y = 2, z = 3))
+#'
 #' try(f(x = 1, y = 2, 3, 4, 5))
+#'
+#' @export
 check_dots_used <- function(env = caller_env(),
                             call = caller_env(),
                             error = NULL,
@@ -75,7 +71,8 @@ check_dots <- function(env = caller_env(), error, action, call) {
 #' Check that all dots are unnamed
 #'
 #' In functions like `paste()`, named arguments in `...` are often a
-#' sign of misspelled argument names.
+#' sign of misspelled argument names. Call `check_dots_unnamed()` to
+#' fail with an error when named arguments are detected.
 #'
 #' @inheritParams check_dots_used
 #' @param env Environment in which to look for `...`.
@@ -87,6 +84,7 @@ check_dots <- function(env = caller_env(), error, action, call) {
 #' }
 #'
 #' f(1, 2, 3, foofy = 4)
+#'
 #' try(f(1, 2, 3, foof = 4))
 check_dots_unnamed <- function(env = caller_env(),
                                error = NULL,
@@ -113,15 +111,23 @@ check_dots_unnamed <- function(env = caller_env(),
   )
 }
 
-
 #' Check that dots are empty
 #'
-#' Sometimes you just want to use `...` to force your users to fully name
-#' the details arguments. This function fails if `...` is not empty.
+#' `...` can be inserted in a function signature to force users to
+#' fully name the details arguments. In this case, supplying data in
+#' `...` is almost always a programming error. This function checks
+#' that `...` is empty and fails otherwise.
 #'
 #' @inheritParams check_dots_used
 #' @param env Environment in which to look for `...`.
-#' @export
+#'
+#' @details
+#' In packages, document `...` with this standard tag:
+#'
+#' ```
+#'  @@inheritParams rlang::dots-empty
+#' ```
+#'
 #' @examples
 #' f <- function(x, ..., foofy = 8) {
 #'   check_dots_empty()
@@ -136,6 +142,8 @@ check_dots_unnamed <- function(env = caller_env(),
 #'
 #' # Thanks to `...`, it must be matched exactly
 #' f(1, foofy = 4)
+#'
+#' @export
 check_dots_empty <- function(env = caller_env(),
                              error = NULL,
                              call = caller_env(),
@@ -206,3 +214,23 @@ promise_forced <- function(x) {
 ellipsis_dots <- function(env = caller_env(), auto_name = TRUE) {
   .Call(ffi_ellipsis_dots, env, auto_name)
 }
+
+#' Helper for consistent documentation of empty dots
+#'
+#' Use `@inheritParams rlang::dots-empty` in your package
+#' to consistently document `...` that must be empty.
+#'
+#' @param ... These dots are for future extensions and must be empty.
+#' @name dots-empty
+#' @keywords internal
+NULL
+
+#' Helper for consistent documentation of used dots
+#'
+#' Use `@inheritParams rlang::dots-used` in your package
+#' to consistently document `...` that must be used.
+#'
+#' @param ... Arguments passed to methods.
+#' @name dots-used
+#' @keywords internal
+NULL

@@ -24,7 +24,7 @@
 #'
 #' @param cnd A condition object (see [cnd()]). If `NULL`,
 #'   `cnd_signal()` returns without signalling a condition.
-#' @inheritParams args_dots_empty
+#' @inheritParams dots-empty
 #' @seealso
 #' * [cnd_type()] to determine the type of a condition.
 #'

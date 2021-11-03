@@ -3,9 +3,9 @@
 \name{dyn-dots}
 \alias{dyn-dots}
 \alias{tidy-dots}
-\alias{dots_dynamic}
+\alias{doc_dots_dynamic}
 \alias{:=}
-\title{Dynamic dots}
+\title{Dynamic dots features}
 \description{
 The base \code{...} syntax supports:
 \itemize{
@@ -15,7 +15,8 @@ along the way to arguments.
 \code{\link[=list]{list()}}.
 }
 
-Dynamic dots offer a few additional features:
+Dynamic dots offer a few additional features,
+\link[=topic-inject]{injection} in particular:
 \enumerate{
 \item You can \strong{splice} arguments saved in a list with the splice
 operator \code{\link[=splice-operator]{!!!}}.
@@ -35,7 +36,7 @@ See also \code{\link[=dots_list]{dots_list()}}, which offers more control over t
 In general, passing \code{...} to a function that supports dynamic dots
 causes your function to inherit the dynamic behaviour.
 
-Document dynamic docs using this standard tag:\preformatted{ @param ... <[`dynamic-dots`][rlang::dyn-dots]> What these dots do.
+In packages, document dynamic dots with this standard tag:\preformatted{ @param ... <[`dynamic-dots`][rlang::dyn-dots]> What these dots do.
 }
 }
 

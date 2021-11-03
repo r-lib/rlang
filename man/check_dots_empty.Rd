@@ -22,11 +22,17 @@ running function, e.g. \code{caller_env()}. The function will be
 mentioned in error messages as the source of the error. See the
 \code{call} argument of \code{\link[=abort]{abort()}} for more information.}
 
-\item{action}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}.}
+\item{action}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}}
 }
 \description{
-Sometimes you just want to use \code{...} to force your users to fully name
-the details arguments. This function fails if \code{...} is not empty.
+\code{...} can be inserted in a function signature to force users to
+fully name the details arguments. In this case, supplying data in
+\code{...} is almost always a programming error. This function checks
+that \code{...} is empty and fails otherwise.
+}
+\details{
+In packages, document \code{...} with this standard tag:\preformatted{ @inheritParams rlang::dots-empty
+}
 }
 \examples{
 f <- function(x, ..., foofy = 8) {
@@ -42,4 +48,5 @@ try(f(1, foof = 4))
 
 # Thanks to `...`, it must be matched exactly
 f(1, foofy = 4)
+
 }

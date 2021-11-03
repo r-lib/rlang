@@ -22,11 +22,12 @@ running function, e.g. \code{caller_env()}. The function will be
 mentioned in error messages as the source of the error. See the
 \code{call} argument of \code{\link[=abort]{abort()}} for more information.}
 
-\item{action}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}.}
+\item{action}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}}
 }
 \description{
 In functions like \code{paste()}, named arguments in \code{...} are often a
-sign of misspelled argument names.
+sign of misspelled argument names. Call \code{check_dots_unnamed()} to
+fail with an error when named arguments are detected.
 }
 \examples{
 f <- function(..., foofy = 8) {
@@ -35,5 +36,6 @@ f <- function(..., foofy = 8) {
 }
 
 f(1, 2, 3, foofy = 4)
+
 try(f(1, 2, 3, foof = 4))
 }
