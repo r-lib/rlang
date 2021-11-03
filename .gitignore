@@ -8,4 +8,3 @@ revdep/library
 revdep/cloud.noindex
 src/config.h
 docs/
-pkgdown
