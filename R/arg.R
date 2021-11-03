@@ -168,6 +168,7 @@ arg_match_invalid_msg <- function(val, values, error_arg) {
 }
 
 #' Check that argument is supplied
+#'
 #' Throws an informative error if `arg` is missing.
 #' @param arg A function argument. Must be a symbol.
 #' @inheritParams args_error_context

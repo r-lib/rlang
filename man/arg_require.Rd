@@ -2,8 +2,7 @@
 % Please edit documentation in R/arg.R
 \name{arg_require}
 \alias{arg_require}
-\title{Check that argument is supplied
-Throws an informative error if \code{arg} is missing.}
+\title{Check that argument is supplied}
 \usage{
 arg_require(arg, error_arg = caller_arg(arg), error_call = caller_env())
 }
@@ -20,7 +19,6 @@ mentioned in error messages as the source of the error. See the
 \code{call} argument of \code{\link[=abort]{abort()}} for more information.}
 }
 \description{
-Check that argument is supplied
 Throws an informative error if \code{arg} is missing.
 }
 \examples{
