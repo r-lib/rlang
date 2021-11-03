@@ -39,9 +39,15 @@ Can also be an integer that will be passed to \code{\link[=caller_env]{caller_en
 }
 \description{
 A backtrace captures the sequence of calls that lead to the current
-function, sometimes called the call stack. Because of lazy
+function (sometimes called the call stack). Because of lazy
 evaluation, the call stack in R is actually a tree, which the
 \code{print()} method for this object will reveal.
+
+Users rarely need to call \code{trace_back()} manually. Instead,
+signalling an error with \code{\link[=abort]{abort()}} or setting up \code{\link[=global_entrace]{global_entrace()}}
+is the most common way to create backtraces when an error is
+thrown. Inspect the backtrace created for the most recent error
+with \code{\link[=last_error]{last_error()}}.
 
 \code{trace_length()} returns the number of frames in a backtrace.
 }

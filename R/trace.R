@@ -2,9 +2,15 @@
 #'
 #' @description
 #' A backtrace captures the sequence of calls that lead to the current
-#' function, sometimes called the call stack. Because of lazy
+#' function (sometimes called the call stack). Because of lazy
 #' evaluation, the call stack in R is actually a tree, which the
 #' `print()` method for this object will reveal.
+#'
+#' Users rarely need to call `trace_back()` manually. Instead,
+#' signalling an error with [abort()] or setting up [global_entrace()]
+#' is the most common way to create backtraces when an error is
+#' thrown. Inspect the backtrace created for the most recent error
+#' with [last_error()].
 #'
 #' `trace_length()` returns the number of frames in a backtrace.
 #'
