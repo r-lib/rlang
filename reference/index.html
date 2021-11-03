@@ -424,6 +424,42 @@
       
     </div><div class="section level2">
       
+      <h3 id="state">State<a class="anchor" aria-label="anchor" href="#state"></a></h3>
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="is_installed.html">is_installed()</a></code> <code><a href="is_installed.html">check_installed()</a></code> 
+        </dt>
+        <dd>Are packages installed in any of the libraries?</dd>
+      </dl><dl><dt>
+          
+          <code><a href="is_interactive.html">is_interactive()</a></code> <code><a href="is_interactive.html">local_interactive()</a></code> <code><a href="is_interactive.html">with_interactive()</a></code> 
+        </dt>
+        <dd>Is R running interactively?</dd>
+      </dl><dl><dt>
+          
+          <code><a href="local_options.html">local_options()</a></code> <code><a href="local_options.html">with_options()</a></code> <code><a href="local_options.html">push_options()</a></code> <code><a href="local_options.html">peek_options()</a></code> <code><a href="local_options.html">peek_option()</a></code> 
+        </dt>
+        <dd>Change global options</dd>
+      </dl><dl><dt>
+          
+          <code><a href="on_load.html">on_load()</a></code> <code><a href="on_load.html">run_on_load()</a></code> <code><a href="on_load.html">on_package_load()</a></code> 
+        </dt>
+        <dd>Run expressions on load</dd>
+      </dl><dl><dt>
+          
+          <code><a href="faq-options.html">faq-options</a></code> 
+        </dt>
+        <dd>Global options for rlang</dd>
+      </dl></div><div class="section level2">
+      
       <h3 id="search-path-and-namespaces">Search path and namespaces<a class="anchor" aria-label="anchor" href="#search-path-and-namespaces"></a></h3>
       
 
@@ -445,11 +481,6 @@
         <dd>Get the empty environment</dd>
       </dl><dl><dt>
           
-          <code><a href="is_installed.html">is_installed()</a></code> <code><a href="is_installed.html">check_installed()</a></code> 
-        </dt>
-        <dd>Are packages installed in any of the libraries?</dd>
-      </dl><dl><dt>
-          
           <code><a href="is_namespace.html">is_namespace()</a></code> 
         </dt>
         <dd>Is an object a namespace environment?</dd>
@@ -464,8 +495,8 @@
         </dt>
         <dd>Label of an environment</dd>
       </dl></div><div class="section level2">
+      <h2 id="defused-expressions">Defused expressions<a class="anchor" aria-label="anchor" href="#defused-expressions"></a></h2>
       
-      <h3 id="session-state">Session state<a class="anchor" aria-label="anchor" href="#session-state"></a></h3>
       
 
       
@@ -476,33 +507,27 @@
 
       <dl><dt>
           
-          <code><a href="is_interactive.html">is_interactive()</a></code> <code><a href="is_interactive.html">local_interactive()</a></code> <code><a href="is_interactive.html">with_interactive()</a></code> 
+          <code><a href="parse_expr.html">parse_expr()</a></code> <code><a href="parse_expr.html">parse_exprs()</a></code> <code><a href="parse_expr.html">parse_quo()</a></code> <code><a href="parse_expr.html">parse_quos()</a></code> 
         </dt>
-        <dd>Is R running interactively?</dd>
+        <dd>Parse R code</dd>
       </dl><dl><dt>
           
-          <code><a href="local_options.html">local_options()</a></code> <code><a href="local_options.html">with_options()</a></code> <code><a href="local_options.html">push_options()</a></code> <code><a href="local_options.html">peek_options()</a></code> <code><a href="local_options.html">peek_option()</a></code> 
+          <code><a href="expr_print.html">expr_print()</a></code> <code><a href="expr_print.html">expr_deparse()</a></code> 
         </dt>
-        <dd>Change global options</dd>
+        <dd>Print an expression</dd>
       </dl><dl><dt>
           
-          <code><a href="on_load.html">on_load()</a></code> <code><a href="on_load.html">run_on_load()</a></code> <code><a href="on_load.html">on_package_load()</a></code> 
+          <code><a href="is_expression.html">is_expression()</a></code> <code><a href="is_expression.html">is_syntactic_literal()</a></code> <code><a href="is_expression.html">is_symbolic()</a></code> 
         </dt>
-        <dd>Run expressions on load</dd>
+        <dd>Is an object an expression?</dd>
       </dl><dl><dt>
           
-          <code><a href="faq-options.html">faq-options</a></code> 
+          <code><a href="exprs_auto_name.html">exprs_auto_name()</a></code> <code><a href="exprs_auto_name.html">quos_auto_name()</a></code> 
         </dt>
-        <dd>Global options for rlang</dd>
+        <dd>Ensure that all elements of a list of expressions are named</dd>
       </dl></div><div class="section level2">
-      <h2 id="expressions">Expressions<a class="anchor" aria-label="anchor" href="#expressions"></a></h2>
       
-      
-
-      
-    </div><div class="section level2">
-      
-      <h3 id="evaluation">Evaluation<a class="anchor" aria-label="anchor" href="#evaluation"></a></h3>
+      <h3 id="evaluate">Evaluate<a class="anchor" aria-label="anchor" href="#evaluate"></a></h3>
       
 
       
@@ -615,37 +640,6 @@
         <dd>Standardise a call</dd>
       </dl></div><div class="section level2">
       
-      <h3 id="expressions-1">Expressions<a class="anchor" aria-label="anchor" href="#expressions-1"></a></h3>
-      
-
-      
-    </div><div id="" class="section level2">
-      
-      
-      
-
-      <dl><dt>
-          
-          <code><a href="parse_expr.html">parse_expr()</a></code> <code><a href="parse_expr.html">parse_exprs()</a></code> <code><a href="parse_expr.html">parse_quo()</a></code> <code><a href="parse_expr.html">parse_quos()</a></code> 
-        </dt>
-        <dd>Parse R code</dd>
-      </dl><dl><dt>
-          
-          <code><a href="expr_print.html">expr_print()</a></code> <code><a href="expr_print.html">expr_deparse()</a></code> 
-        </dt>
-        <dd>Print an expression</dd>
-      </dl><dl><dt>
-          
-          <code><a href="is_expression.html">is_expression()</a></code> <code><a href="is_expression.html">is_syntactic_literal()</a></code> <code><a href="is_expression.html">is_symbolic()</a></code> 
-        </dt>
-        <dd>Is an object an expression?</dd>
-      </dl><dl><dt>
-          
-          <code><a href="exprs_auto_name.html">exprs_auto_name()</a></code> <code><a href="exprs_auto_name.html">quos_auto_name()</a></code> 
-        </dt>
-        <dd>Ensure that all elements of a list of expressions are named</dd>
-      </dl></div><div class="section level2">
-      
       <h3 id="quosures">Quosures<a class="anchor" aria-label="anchor" href="#quosures"></a></h3>
       
 
@@ -717,12 +711,6 @@
       
 
       
-    </div><div class="section level2">
-      
-      <h3 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h3>
-      
-
-      
     </div><div id="" class="section level2">
       
       
@@ -730,39 +718,9 @@
 
       <dl><dt>
           
-          <code><a href="new_function.html">new_function()</a></code> 
+          <code><a href="hash.html">hash()</a></code> <code><a href="hash.html">hash_file()</a></code> 
         </dt>
-        <dd>Create a function</dd>
-      </dl><dl><dt>
-          
-          <code><a href="as_function.html">as_function()</a></code> <code><a href="as_function.html">is_lambda()</a></code> 
-        </dt>
-        <dd>Convert to function</dd>
-      </dl><dl><dt>
-          
-          <code><a href="is_function.html">is_function()</a></code> <code><a href="is_function.html">is_closure()</a></code> <code><a href="is_function.html">is_primitive()</a></code> <code><a href="is_function.html">is_primitive_eager()</a></code> <code><a href="is_function.html">is_primitive_lazy()</a></code> 
-        </dt>
-        <dd>Is object a function?</dd>
-      </dl><dl><dt>
-          
-          <code><a href="fn_fmls.html">fn_fmls()</a></code> <code><a href="fn_fmls.html">fn_fmls_names()</a></code> <code><a href="fn_fmls.html">fn_fmls_syms()</a></code> <code><a href="fn_fmls.html">`fn_fmls&lt;-`()</a></code> <code><a href="fn_fmls.html">`fn_fmls_names&lt;-`()</a></code> 
-        </dt>
-        <dd>Extract arguments from a function</dd>
-      </dl><dl><dt>
-          
-          <code><a href="fn_body.html">fn_body()</a></code> <code><a href="fn_body.html">`fn_body&lt;-`()</a></code> 
-        </dt>
-        <dd>Get or set function body</dd>
-      </dl><dl><dt>
-          
-          <code><a href="fn_env.html">fn_env()</a></code> <code><a href="fn_env.html">`fn_env&lt;-`()</a></code> 
-        </dt>
-        <dd>Return the closure environment of a function</dd>
-      </dl><dl><dt>
-          
-          <code><a href="as_closure.html">as_closure()</a></code> 
-        </dt>
-        <dd>Transform to a closure</dd>
+        <dd>Hashing</dd>
       </dl></div><div class="section level2">
       
       <h3 id="environments">Environments<a class="anchor" aria-label="anchor" href="#environments"></a></h3>
@@ -882,6 +840,52 @@
         <dd>Names and numbers of symbols bound in an environment</dd>
       </dl></div><div class="section level2">
       
+      <h3 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h3>
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="new_function.html">new_function()</a></code> 
+        </dt>
+        <dd>Create a function</dd>
+      </dl><dl><dt>
+          
+          <code><a href="as_function.html">as_function()</a></code> <code><a href="as_function.html">is_lambda()</a></code> 
+        </dt>
+        <dd>Convert to function</dd>
+      </dl><dl><dt>
+          
+          <code><a href="is_function.html">is_function()</a></code> <code><a href="is_function.html">is_closure()</a></code> <code><a href="is_function.html">is_primitive()</a></code> <code><a href="is_function.html">is_primitive_eager()</a></code> <code><a href="is_function.html">is_primitive_lazy()</a></code> 
+        </dt>
+        <dd>Is object a function?</dd>
+      </dl><dl><dt>
+          
+          <code><a href="fn_fmls.html">fn_fmls()</a></code> <code><a href="fn_fmls.html">fn_fmls_names()</a></code> <code><a href="fn_fmls.html">fn_fmls_syms()</a></code> <code><a href="fn_fmls.html">`fn_fmls&lt;-`()</a></code> <code><a href="fn_fmls.html">`fn_fmls_names&lt;-`()</a></code> 
+        </dt>
+        <dd>Extract arguments from a function</dd>
+      </dl><dl><dt>
+          
+          <code><a href="fn_body.html">fn_body()</a></code> <code><a href="fn_body.html">`fn_body&lt;-`()</a></code> 
+        </dt>
+        <dd>Get or set function body</dd>
+      </dl><dl><dt>
+          
+          <code><a href="fn_env.html">fn_env()</a></code> <code><a href="fn_env.html">`fn_env&lt;-`()</a></code> 
+        </dt>
+        <dd>Return the closure environment of a function</dd>
+      </dl><dl><dt>
+          
+          <code><a href="as_closure.html">as_closure()</a></code> 
+        </dt>
+        <dd>Transform to a closure</dd>
+      </dl></div><div class="section level2">
+      
       <h3 id="s-">S3<a class="anchor" aria-label="anchor" href="#s-"></a></h3>
       
 
@@ -898,6 +902,16 @@
         <dd>Does an object inherit from a set of classes?</dd>
       </dl><dl><dt>
           
+          <code><a href="zap.html">zap()</a></code> <code><a href="zap.html">is_zap()</a></code> 
+        </dt>
+        <dd>Create zap objects</dd>
+      </dl><dl><dt>
+          
+          <code><a href="bytes-class.html">as_bytes()</a></code> <code><a href="bytes-class.html">parse_bytes()</a></code> 
+        </dt>
+        <dd>Human readable memory sizes</dd>
+      </dl><dl><dt>
+          
           <code><a href="box.html">new_box()</a></code> <code><a href="box.html">is_box()</a></code> <code><a href="box.html">unbox()</a></code> 
         </dt>
         <dd>Box a value</dd>
@@ -908,50 +922,9 @@
         <dd>Convert object to a box</dd>
       </dl><dl><dt>
           
-          <code><a href="zap.html">zap()</a></code> <code><a href="zap.html">is_zap()</a></code> 
-        </dt>
-        <dd>Create zap objects</dd>
-      </dl><dl><dt>
-          
           <code><a href="done.html">done()</a></code> <code><a href="done.html">is_done_box()</a></code> 
         </dt>
         <dd>Box a final value for early termination</dd>
-      </dl><dl><dt>
-          
-          <code><a href="bytes-class.html">as_bytes()</a></code> <code><a href="bytes-class.html">parse_bytes()</a></code> 
-        </dt>
-        <dd>Human readable memory sizes</dd>
-      </dl></div><div class="section level2">
-      
-      <h3 id="create-vectors">Create vectors<a class="anchor" aria-label="anchor" href="#create-vectors"></a></h3>
-      
-
-      
-    </div><div id="" class="section level2">
-      
-      
-      
-
-      <dl><dt>
-          
-          <code><a href="vector-construction.html">lgl()</a></code> <code><a href="vector-construction.html">int()</a></code> <code><a href="vector-construction.html">dbl()</a></code> <code><a href="vector-construction.html">cpl()</a></code> <code><a href="vector-construction.html">chr()</a></code> <code><a href="vector-construction.html">bytes()</a></code> 
-        </dt>
-        <dd>Create vectors</dd>
-      </dl><dl><dt>
-          
-          <code><a href="list2.html">list2()</a></code> <code><a href="list2.html">dots_list()</a></code> 
-        </dt>
-        <dd>Collect dynamic dots in a list</dd>
-      </dl><dl><dt>
-          
-          <code><a href="rep_along.html">rep_along()</a></code> <code><a href="rep_along.html">rep_named()</a></code> 
-        </dt>
-        <dd>Create vectors matching the length of a given vector</dd>
-      </dl><dl><dt>
-          
-          <code><a href="seq2.html">seq2()</a></code> <code><a href="seq2.html">seq2_along()</a></code> 
-        </dt>
-        <dd>Increasing sequence of integers in an interval</dd>
       </dl></div><div class="section level2">
       
       <h3 id="attributes">Attributes<a class="anchor" aria-label="anchor" href="#attributes"></a></h3>
@@ -988,6 +961,37 @@
           <code><a href="zap_srcref.html">zap_srcref()</a></code> 
         </dt>
         <dd>Zap source references</dd>
+      </dl></div><div class="section level2">
+      
+      <h3 id="vectors">Vectors<a class="anchor" aria-label="anchor" href="#vectors"></a></h3>
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="vector-construction.html">lgl()</a></code> <code><a href="vector-construction.html">int()</a></code> <code><a href="vector-construction.html">dbl()</a></code> <code><a href="vector-construction.html">cpl()</a></code> <code><a href="vector-construction.html">chr()</a></code> <code><a href="vector-construction.html">bytes()</a></code> 
+        </dt>
+        <dd>Create vectors</dd>
+      </dl><dl><dt>
+          
+          <code><a href="list2.html">list2()</a></code> <code><a href="list2.html">dots_list()</a></code> 
+        </dt>
+        <dd>Collect dynamic dots in a list</dd>
+      </dl><dl><dt>
+          
+          <code><a href="rep_along.html">rep_along()</a></code> <code><a href="rep_along.html">rep_named()</a></code> 
+        </dt>
+        <dd>Create vectors matching the length of a given vector</dd>
+      </dl><dl><dt>
+          
+          <code><a href="seq2.html">seq2()</a></code> <code><a href="seq2.html">seq2_along()</a></code> 
+        </dt>
+        <dd>Increasing sequence of integers in an interval</dd>
       </dl></div><div class="section level2">
       
       <h3 id="type-predicates">Type predicates<a class="anchor" aria-label="anchor" href="#type-predicates"></a></h3>
@@ -1055,22 +1059,6 @@
           <code><a href="wref_key.html">wref_key()</a></code> <code><a href="wref_key.html">wref_value()</a></code> 
         </dt>
         <dd>Get key/value from a weak reference object</dd>
-      </dl></div><div class="section level2">
-      
-      <h3 id="r-objects">R objects<a class="anchor" aria-label="anchor" href="#r-objects"></a></h3>
-      
-
-      
-    </div><div id="" class="section level2">
-      
-      
-      
-
-      <dl><dt>
-          
-          <code><a href="hash.html">hash()</a></code> <code><a href="hash.html">hash_file()</a></code> 
-        </dt>
-        <dd>Hashing</dd>
       </dl></div><div class="section level2">
       
       <h3 id="operators">Operators<a class="anchor" aria-label="anchor" href="#operators"></a></h3>
