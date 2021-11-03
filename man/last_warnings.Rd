@@ -23,19 +23,76 @@ By default the warnings and messages are printed with a simplified
 backtrace, like \code{\link[=last_error]{last_error()}}. Use \code{summary()} to print the
 conditions with a full backtrace.
 }
-\examples{
-if (FALSE) {
-  global_entrace()
-  f <- function() { warning("foo"); g() }
-  g <- function() { warning("bar", immediate. = TRUE); h() }
-  h <- function() warning("baz")
+\section{Examples}{
 
-  f()
 
-  # Simplified backtraces
-  last_warnings()
+Enable backtrace capture with \code{global_entrace()}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{global_entrace()
+}\if{html}{\out{</div>}}
 
-  # Full backtraces
-  summary(last_warnings())
+Signal some warnings in nested functions. The warnings inform about
+which function emitted a warning but they don't provide information
+about the call stack:\if{html}{\out{<div class="sourceCode r">}}\preformatted{f <- function() \{ warning("foo"); g() \}
+g <- function() \{ warning("bar", immediate. = TRUE); h() \}
+h <- function() warning("baz")
+
+f()
+#> Warning in g() : bar
+#> Warning messages:
+#> 1: In f() : foo
+#> 2: In h() : baz
+}\if{html}{\out{</div>}}
+
+Call \code{last_warnings()} to see backtraces for each of these warnings:\if{html}{\out{<div class="sourceCode r">}}\preformatted{last_warnings()
+#> [[1]]
+#> <warning/rlang_warning>
+#> Warning in `f()`: foo
+#> Backtrace:
+#>  1. global f()
+#>
+#> [[2]]
+#> <warning/rlang_warning>
+#> Warning in `g()`: bar
+#> Backtrace:
+#>  1. global f()
+#>  2. global g()
+#>
+#> [[3]]
+#> <warning/rlang_warning>
+#> Warning in `h()`: baz
+#> Backtrace:
+#>  1. global f()
+#>  2. global g()
+#>  3. global h()
+}\if{html}{\out{</div>}}
+
+To get a full backtrace, use \code{\link[=summary]{summary()}}. In this case the full
+backtraces do not include more information:\if{html}{\out{<div class="sourceCode r">}}\preformatted{summary(last_warnings())
+#> [[1]]
+#> <warning/rlang_warning>
+#> Warning in `f()`: foo
+#> Backtrace:
+#>     ▆
+#>  1. └─global f()
+#>
+#> [[2]]
+#> <warning/rlang_warning>
+#> Warning in `g()`: bar
+#> Backtrace:
+#>     ▆
+#>  1. └─global f()
+#>  2.   └─global g()
+#>
+#> [[3]]
+#> <warning/rlang_warning>
+#> Warning in `h()`: baz
+#> Backtrace:
+#>     ▆
+#>  1. └─global f()
+#>  2.   └─global g()
+#>  3.     └─global h()
+}\if{html}{\out{</div>}}
 }
+
+\seealso{
+\code{\link[=last_error]{last_error()}}
 }
