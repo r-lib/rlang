@@ -23,7 +23,7 @@
 #'   condition when it is signalled.
 #' @param trace A `trace` object created by [trace_back()].
 #' @param parent A parent condition object created by [abort()].
-#' @seealso [cnd_signal()], [with_handlers()].
+#' @seealso [cnd_signal()], [try_catch()].
 #'
 #' @keywords internal
 #' @export

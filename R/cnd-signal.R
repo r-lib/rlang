@@ -31,7 +31,7 @@
 #' * [abort()], [warn()] and [inform()] for creating and signalling
 #'   structured R conditions in one go.
 #'
-#' * [with_handlers()] for establishing condition handlers for
+#' * [try_catch()] for establishing condition handlers for
 #'   particular condition classes.
 #' @export
 #' @examples

@@ -46,7 +46,7 @@ try(cnd_signal(cnd))
 \item \code{\link[=cnd_type]{cnd_type()}} to determine the type of a condition.
 \item \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}} and \code{\link[=inform]{inform()}} for creating and signalling
 structured R conditions in one go.
-\item \code{\link[=with_handlers]{with_handlers()}} for establishing condition handlers for
+\item \code{\link[=try_catch]{try_catch()}} for establishing condition handlers for
 particular condition classes.
 }
 }
