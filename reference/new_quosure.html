@@ -149,26 +149,26 @@ be the environment in which the expression was created.</p></dd>
 <span class="r-in"><span class="fu">new_quosure</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">foo</span><span class="op">)</span>, <span class="fu"><a href="caller_env.html">current_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^foo</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x558d15e45820</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x558a84bd5c58</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="defusing-advanced.html">quo</a></span><span class="op">(</span><span class="va">foo</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^foo</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x558d15e45820</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x558a84bd5c58</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># `new_quosure()` always rewraps its input into a new quosure, even</span></span>
 <span class="r-in"><span class="co"># if the input is itself a quosure:</span></span>
 <span class="r-in"><span class="fu">new_quosure</span><span class="op">(</span><span class="fu"><a href="defusing-advanced.html">quo</a></span><span class="op">(</span><span class="va">foo</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^&lt;quosure&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x558d15e45820</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x558a84bd5c58</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># This is unlike `as_quosure()` which preserves its input if it's</span></span>
 <span class="r-in"><span class="co"># already a quosure:</span></span>
 <span class="r-in"><span class="fu">as_quosure</span><span class="op">(</span><span class="fu"><a href="defusing-advanced.html">quo</a></span><span class="op">(</span><span class="va">foo</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^foo</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x558d15e45820</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x558a84bd5c58</span></span>
 <span class="r-in"></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># `as_quosure()` uses the supplied environment with naked expressions:</span></span>
@@ -176,7 +176,7 @@ be the environment in which the expression was created.</p></dd>
 <span class="r-in"><span class="fu">as_quosure</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span>, <span class="va">env</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^var</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x558d17a22c08</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x558a83d45a30</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># If the expression already carries an environment, this</span></span>
 <span class="r-in"><span class="co"># environment is preserved. This is the case for formulas and</span></span>
@@ -184,12 +184,12 @@ be the environment in which the expression was created.</p></dd>
 <span class="r-in"><span class="fu">as_quosure</span><span class="op">(</span><span class="op">~</span><span class="va">foo</span>, <span class="va">env</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^foo</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x558d15e45820</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x558a84bd5c58</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu">as_quosure</span><span class="op">(</span><span class="op">~</span><span class="va">foo</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^foo</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x558d15e45820</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x558a84bd5c58</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># An environment must be supplied when the input is a naked</span></span>
 <span class="r-in"><span class="co"># expression:</span></span>
@@ -201,7 +201,7 @@ be the environment in which the expression was created.</p></dd>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">This warning is displayed once per session.</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^var</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x558d15e45820</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x558a84bd5c58</span></span>
 </code></pre></div>
     </div>
   </div>
