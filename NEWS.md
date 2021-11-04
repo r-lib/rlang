@@ -72,6 +72,9 @@
 
 ## Features and bugfixes
 
+* New `names2<-` replacement function that never adds missing values
+  when names don't have names (#1301).
+
 * New `cnd_inherits()` function to detect a class in the error
   ancestry (#1293).
 

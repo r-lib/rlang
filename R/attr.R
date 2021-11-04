@@ -181,30 +181,40 @@ set_names <- function(x, nm = x, ...) {
 #' Get names of a vector
 #'
 #' @description
-#'
-#' This names getter always returns a character vector, even when an
+#' `names2()` always returns a character vector, even when an
 #' object does not have a `names` attribute. In this case, it returns
 #' a vector of empty names `""`. It also standardises missing names to
 #' `""`.
 #'
-#'
-#' @section Life cycle:
-#'
-#' `names2()` is stable.
+#' The replacement variant `names2<-` never adds `NA` names and
+#' instead fills unnamed vectors with `""`.
 #'
 #' @param x A vector.
-#' @export
+#'
 #' @examples
 #' names2(letters)
 #'
 #' # It also takes care of standardising missing names:
 #' x <- set_names(1:3, c("a", NA, "b"))
 #' names2(x)
+#'
+#' # Replacing names with the base `names<-` function may introduce
+#' # `NA` values when the vector is unnamed:
+#' x <- 1:3
+#' names(x)[1:2] <- "foo"
+#' names(x)
+#'
+#' # Use the `names2<-` variant to avoid this
+#' x <- 1:3
+#' names2(x)[1:2] <- "foo"
+#' names(x)
+#'
+#' @export
 names2 <- function(x) {
   .Call(ffi_names2, x, environment())
 }
-
-# Avoids `NA` names on subset-assign with unnamed vectors
+#' @rdname names2
+#' @export
 `names2<-` <- function(x, value) {
   if (is_null(names(x))) {
     names(x) <- names2(x)

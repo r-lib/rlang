@@ -2,29 +2,41 @@
 % Please edit documentation in R/attr.R
 \name{names2}
 \alias{names2}
+\alias{names2<-}
 \title{Get names of a vector}
 \usage{
 names2(x)
+
+names2(x) <- value
 }
 \arguments{
 \item{x}{A vector.}
 }
 \description{
-This names getter always returns a character vector, even when an
+\code{names2()} always returns a character vector, even when an
 object does not have a \code{names} attribute. In this case, it returns
 a vector of empty names \code{""}. It also standardises missing names to
 \code{""}.
+
+The replacement variant \verb{names2<-} never adds \code{NA} names and
+instead fills unnamed vectors with \code{""}.
 }
-\section{Life cycle}{
-
-
-\code{names2()} is stable.
-}
-
 \examples{
 names2(letters)
 
 # It also takes care of standardising missing names:
 x <- set_names(1:3, c("a", NA, "b"))
 names2(x)
+
+# Replacing names with the base `names<-` function may introduce
+# `NA` values when the vector is unnamed:
+x <- 1:3
+names(x)[1:2] <- "foo"
+names(x)
+
+# Use the `names2<-` variant to avoid this
+x <- 1:3
+names2(x)[1:2] <- "foo"
+names(x)
+
 }
