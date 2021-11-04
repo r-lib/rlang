@@ -150,16 +150,15 @@
 <h3 id="foreign-and-local-expressions">Foreign and local expressions<a class="anchor" aria-label="anchor" href="#foreign-and-local-expressions"></a></h3>
 
 
-<p>As a rule of thumb, quosures are only needed for arguments defused with <code><a href="enquo.html">enquo()</a></code> or <code><a href="enquo.html">enquos()</a></code> (or with <code><a href="embrace-operator.html">{{</a></code> which calls <code><a href="enquo.html">enquo()</a></code> implicitly):</p><div class="sourceCode r"><pre><code>my_function(var) {
-  var &lt;- enquo(var)
-  their_function(!!var)
-}
+<p>As a rule of thumb, quosures are only needed for arguments defused with <code><a href="enquo.html">enquo()</a></code> or <code><a href="enquo.html">enquos()</a></code> (or with <code><a href="embrace-operator.html">{{</a></code> which calls <code><a href="enquo.html">enquo()</a></code> implicitly):</p><div class="sourceCode r"><pre><code><span class="va">my_function</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">var</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">var</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/enquo.html">enquo</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span>
+  <span class="fu">their_function</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">var</span><span class="op">)</span>
+<span class="op">}</span>
 
-# Equivalently
-my_function(var) {
-  their_function({{ var }})
-}
-</code></pre><p></p></div>
+<span class="co"># Equivalently</span>
+<span class="va">my_function</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">var</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu">their_function</span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span>
+<span class="op">}</span></code></pre><p></p></div>
 <p>Wrapping defused arguments in quosures is needed because expressions supplied as argument comes from a different environment, the environment of your user. For local expressions created in your function, you generally don't need to create quosures:</p><div class="sourceCode r"><pre><code><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span>
   <span class="co"># `expr()` is sufficient, no need for `quo()`</span>
   <span class="va">expr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span><span class="op">)</span>
