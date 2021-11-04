@@ -96,69 +96,6 @@ eval_bare <- function(expr, env = parent.frame()) {
   .External2(ffi_eval, expr, env)
 }
 
-#' Evaluate an expression within a given environment
-#'
-#' These functions evaluate `expr` within a given environment (`env`
-#' for `with_env()`, or the child of the current environment for
-#' `locally`). They rely on [eval_bare()] which features a lighter
-#' evaluation mechanism than base R [base::eval()], and which also has
-#' some subtle implications when evaluting stack sensitive functions
-#' (see help for [eval_bare()]).
-#'
-#' `locally()` is equivalent to the base function
-#' [base::local()] but it produces a much cleaner
-#' evaluation stack, and has stack-consistent semantics. It is thus
-#' more suited for experimenting with the R language.
-#'
-#'
-#' @section Life cycle:
-#'
-#' These functions are experimental. Expect API changes.
-#'
-#'
-#' @inheritParams eval_bare
-#' @param env An environment within which to evaluate `expr`. Can be
-#'   an object with a [get_env()] method.
-#' @keywords internal
-#' @export
-#' @examples
-#' # with_env() is handy to create formulas with a given environment:
-#' env <- child_env("rlang")
-#' f <- with_env(env, ~new_formula())
-#' identical(f_env(f), env)
-#'
-#' # Or functions with a given enclosure:
-#' fn <- with_env(env, function() NULL)
-#' identical(get_env(fn), env)
-#'
-#'
-#' # Unlike eval() it doesn't create duplicates on the evaluation
-#' # stack. You can thus use it e.g. to create non-local returns:
-#' fn <- function() {
-#'   g(current_env())
-#'   "normal return"
-#' }
-#' g <- function(env) {
-#'   with_env(env, return("early return"))
-#' }
-#' fn()
-#'
-#'
-#' # Since env is passed to as_environment(), it can be any object with an
-#' # as_environment() method. For strings, the pkg_env() is returned:
-#' with_env("base", ~mtcars)
-#'
-#' # This can be handy to put dictionaries in scope:
-#' with_env(mtcars, cyl)
-with_env <- function(env, expr) {
-  .External2(ffi_eval, substitute(expr), as_environment(env, caller_env()))
-}
-#' @rdname with_env
-#' @export
-locally <- function(expr) {
-  .External2(ffi_eval, substitute(expr), child_env(caller_env()))
-}
-
 #' Invoke a function with a list of arguments
 #'
 #' @description
