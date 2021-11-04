@@ -72,6 +72,9 @@
 
 ## Features and bugfixes
 
+* `env_has()` and the corresponding C-level function no longer forces
+  active bindings (#1292).
+
 * New `names2<-` replacement function that never adds missing values
   when names don't have names (#1301).
 

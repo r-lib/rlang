@@ -31,7 +31,7 @@ test_that("env_tail() climbs env chain", {
 test_that("env_tail() stops at the global env", {
   tail <- env(global_env())
   env <- env(tail)
-  expect_reference(env_tail(env), tail)
+  expect_identical(env_tail(env), tail)
 })
 
 test_that("with_env() evaluates within correct environment", {
@@ -484,6 +484,16 @@ test_that("can browse environments", {
   old <- env_browse(env, FALSE)
   expect_true(old)
   expect_false(env_is_browsed(env))
+})
+
+test_that("env_has() doesn't force active bindings (#1292)", {
+  e <- env()
+  env_bind_active(e, active = function() abort("forced"))
+
+  expect_true(env_has(e, "active"))
+
+  e2 <- env(e)
+  expect_true(env_has(e2, "active", inherit = TRUE))
 })
 
 

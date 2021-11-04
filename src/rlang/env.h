@@ -52,13 +52,28 @@ r_obj* r_env_find_anywhere(r_obj* env, r_obj* sym) {
 }
 r_obj* r_env_find_until(r_obj* env, r_obj* sym, r_obj* last);
 
+
+// TODO: Enable `R_existsVarInFrame()` when R 4.2 is out
+#define RLANG_USE_R_EXISTS (1 || R_VERSION < R_Version(4, 2, 0))
+
 static inline
 bool r_env_has(r_obj* env, r_obj* sym) {
-  return r_env_find(env, sym) != r_syms.unbound;
+#if RLANG_USE_R_EXISTS
+  bool r__env_has(r_obj*, r_obj*);
+  return r__env_has(env, sym);
+#else
+  return R_existsVarInFrame(env, sym);
+#endif
 }
+
 static inline
 bool r_env_has_anywhere(r_obj* env, r_obj* sym) {
-  return r_env_find_anywhere(env, sym) != r_syms.unbound;
+#if RLANG_USE_R_EXISTS
+  bool r__env_has_anywhere(r_obj*, r_obj*);
+  return r__env_has_anywhere(env, sym);
+#else
+  return TODO();
+#endif
 }
 
 r_obj* r_ns_env(const char* pkg);

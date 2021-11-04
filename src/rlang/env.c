@@ -201,7 +201,21 @@ void r_env_poke_lazy(r_obj* env, r_obj* sym, r_obj* expr, r_obj* eval_env) {
 }
 
 
-static r_obj* remove_call = NULL;
+#if RLANG_USE_R_EXISTS
+bool r__env_has(r_obj* env, r_obj* sym) {
+  r_obj* nm = KEEP(r_sym_as_utf8_character(sym));
+  r_obj* out = eval_with_xyz(exists_call, env, nm, r_false);
+  FREE(1);
+  return r_as_bool(out);
+}
+
+bool r__env_has_anywhere(r_obj* env, r_obj* sym) {
+  r_obj* nm = KEEP(r_sym_as_utf8_character(sym));
+  r_obj* out = eval_with_xyz(exists_call, env, nm, r_true);
+  FREE(1);
+  return r_as_bool(out);
+}
+#endif
 
 #if (R_VERSION < R_Version(4, 0, 0))
 void r__env_unbind(r_obj* env, r_obj* sym) {
@@ -282,8 +296,18 @@ void r_init_library_env() {
 
   poke_lazy_value_node = r_node_cddr(poke_lazy_call);
 
+  exists_call = r_parse("exists(y, envir = x, inherits = z)");
+  r_preserve(exists_call);
+
   remove_call = r_parse("remove(list = y, envir = x, inherits = z)");
   r_preserve(remove_call);
 
   r_methods_ns_env = r_parse_eval("asNamespace('methods')", r_envs.base);
 }
+
+
+static
+r_obj* exists_call = NULL;
+
+static
+r_obj* remove_call = NULL;
