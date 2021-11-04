@@ -548,7 +548,7 @@ test_that("backslashes in strings are properly escaped (#1160)", {
     parse_expr(expr_deparse(sym("a\\b"))),
     sym("a\\b")
   )
-  
+
   # Argument names
   expect_equal(
     expr_deparse(quote(c("a\\b" = "c\\d"))),
@@ -594,7 +594,7 @@ test_that("matrices and arrays are formatted (#383)", {
   mat <- matrix(1:3)
   expect_equal(as_label(mat), "<int[,1]>")
   expect_equal(expr_deparse(mat), "<int[,1]: 1L, 2L, 3L>")
-  
+
   mat2 <- matrix(1:4, 2)
   expect_equal(as_label(mat2), "<int[,2]>")
   expect_equal(expr_deparse(mat2), "<int[,2]: 1L, 2L, 3L, 4L>")
@@ -624,11 +624,56 @@ test_that("infix operators are labelled (#956, r-lib/testthat#1432)", {
 
   expect_equal(
     as_label(quote(X[key1 == "val1" & key2 == "val2"]$key3 & foobarbaz(foobarbaz(foobarbaz(foobarbaz(foobarbaz(foobarbaz(foobarbaz())))))))),
-    "... & ..."
+    "X[key1 == \"val1\" & key2 == \"val2\"]$key3 & ..."
   )
 
   expect_equal(
     as_label(quote(X[key1 == "val1"]$key3 & foobarbaz(foobarbaz()))),
     "X[key1 == \"val1\"]$key3 & foobarbaz(foobarbaz())"
+  )
+
+  # This fits in 60 characters so we don't need to truncate it
+  expect_equal(
+    as_label(quote(nchar(chr, type = "bytes", allowNA = TRUE) == 1)),
+    "nchar(chr, type = \"bytes\", allowNA = TRUE) == 1"
+  )
+
+  # This fits into 60 characters if we truncate just the left side,
+  # so we don't need to shorten the right
+  expect_equal(
+    as_label(quote(very_long_expression[with(subsetting), -1] -
+                     another_very_long_expression[with(subsetting), -1]
+    )),
+    "very_long_expression[with(subsetting), -1] - ..."
+  )
+
+  lhs_perfect_fit <- sym(paste(rep("a", 56), collapse = ""))
+  lhs_no_fit <- sym(paste(rep("a", 57), collapse = ""))
+
+  expect_equal(
+    as_label(expr(!!lhs_perfect_fit + 1)),
+    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa + 1"
+  )
+  expect_equal(
+    as_label(expr(!!lhs_perfect_fit + 10)),
+    "... + 10"
+  )
+
+  expect_equal(
+    as_label(expr(1 + !!lhs_perfect_fit)),
+    "1 + aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  )
+  expect_equal(
+    as_label(expr(10 + !!lhs_perfect_fit)),
+    "10 + ..."
+  )
+
+  expect_equal(
+    as_label(expr(!!lhs_no_fit + 1)),
+    "... + 1"
+  )
+  expect_equal(
+    as_label(expr(!!lhs_no_fit + !!lhs_no_fit)),
+    "... + ..."
   )
 })

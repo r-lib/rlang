@@ -892,16 +892,10 @@ as_label <- function(x) {
       if (is_data_pronoun(x)) {
         return(data_pronoun_name(x) %||% "<unknown>")
       }
-      if (call_print_type(x) %in% c("infix", "subset")) {
-        left <- expr_deparse(x[[2]], width = 29)
-        right <- expr_deparse(x[[3]], width = 28)
-        if (length(left) > 1) {
-          x[[2]] <- quote(...)
-        }
-        if (length(right) > 1) {
-          x[[3]] <- quote(...)
-        }
+      if (infix_overflows(x)) {
+        return(as_label_infix(x))
       }
+
       name <- deparse_one(x)
       name <- gsub("\n.*$", "...", name)
       name
@@ -914,6 +908,51 @@ as_label <- function(x) {
       paste0("<", rlang_type_sum(x), ">")
     }
   )
+}
+
+infix_overflows <- function(x) {
+  call_print_type(x) %in% c("infix", "subset") &&
+    length(expr_deparse(x, width = 60)) > 1
+}
+as_label_infix <- function(x) {
+  # Shorten the expression if we're too long. Preserve the left side
+  # if possible.
+  infix_n <- nchar_infix(x)
+  dots_n <- 3
+
+  left_width <- 60 - infix_n - dots_n
+  left <- expr_deparse(x[[2]], width = left_width)
+  if (length(left) > 1 || nchar(left) > left_width) {
+    x[[2]] <- quote(...)
+    left_n <- dots_n
+  } else {
+    left_n <- nchar(left)
+  }
+
+  right_width <- 60 - left_n - infix_n
+  right <- expr_deparse(x[[3]], width = right_width)
+  if (length(right) > 1 || nchar(right) > right_width) {
+    x[[3]] <- quote(...)
+  }
+
+  out <- expr_deparse(x, width = 60)
+
+  # In case something went wrong
+  if (length(out) > 1) {
+    if (testing()) {
+      abort(c(
+        "Deparsed `out` can't be multiline.",
+        i = "This is a bug in rlang, please file an issue."
+      ))
+    }
+    paste(out[[1]], "...")
+  } else {
+    out
+  }
+}
+nchar_infix <- function(x) {
+  x[c(2, 3)] <- 1
+  nchar(expr_deparse(x)) - 2
 }
 
 #' Extract names from symbols
