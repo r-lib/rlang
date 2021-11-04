@@ -126,3 +126,15 @@ test_that("cnd ctors check arguments", {
     (expect_error(message_cnd(message = 1)))
   })
 })
+
+test_that("cnd_inherits() detects parent classes (#1293)", {
+  expect_false(cnd_inherits(mtcars, "data.frame"))
+
+  expect_true(cnd_inherits(cnd("foo"), "foo"))
+  expect_false(cnd_inherits(cnd("foo"), "bar"))
+
+  cnd <- cnd("foo", parent = cnd("bar"))
+  expect_true(cnd_inherits(cnd, "foo"))
+  expect_true(cnd_inherits(cnd, "bar"))
+  expect_false(cnd_inherits(cnd, "baz"))
+})

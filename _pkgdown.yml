@@ -162,6 +162,7 @@ reference:
       - rlang_error
       - cnd_message
       - format_error_bullets
+      - cnd_inherits
 
 
   - title: Session

@@ -101,6 +101,98 @@ cnd_type <- function(cnd) {
   .Call(ffi_cnd_type, cnd)
 }
 
+#' Does a condition or its ancestors inherit from a class?
+#'
+#' @description
+#' Like any R objects, errors captured with catchers like
+#' [tryCatch()] have a [class()] which you can test with [inherits()].
+#' However, with [chained errors][topic-error-chaining], the class of
+#' a captured error might be different than the error that was
+#' originally signalled. Use `cnd_inherits()` to detect whether an
+#' error or any of its _parent_ inherits from a class.
+#'
+#' Whereas `inherits()` tells you whether an object is a particular
+#' kind of error, `cnd_inherits()` answers the question whether an
+#' object is a particular kind of error or has been caused by such an
+#' error.
+#'
+#'
+#' # Capture an error with `cnd_inherits()`
+#'
+#' Error catchers like [tryCatch()] and [try_catch()] can only match
+#' the class of a condition, not the class of its parents. To match a
+#' class across the ancestry of an error, you'll need a bit of
+#' craftiness.
+#'
+#' Ancestry matching can't be done with `tryCatch()` at all so you'll
+#' need to switch to [withCallingHandlers()]. Alternatively, you can
+#' use the experimental rlang function [try_catch()] which is able to
+#' perform the roles of both `tryCatch()` and `withCallingHandlers()`.
+#'
+#'
+#' ## `withCallingHandlers()`
+#'
+#' Unlike `tryCatch()`, `withCallingHandlers()` does not capture an
+#' error. If you don't explicitly jump with an _error_ or a _value_
+#' throw, nothing happens.
+#'
+#' Since we don't want to throw an error, we'll throw a value using
+#' [callCC()]:
+#'
+#' ```{r, comment = "#>", collapse = TRUE}
+#' f <- function() {
+#'   parent <- error_cnd("bar", message = "Bar")
+#'   abort("Foo", parent = parent)
+#' }
+#'
+#' cnd <- callCC(function(throw) {
+#'   withCallingHandlers(
+#'     f(),
+#'     error = function(x) if (cnd_inherits(x, "bar")) throw(x)
+#'   )
+#' })
+#'
+#' class(cnd)
+#' class(cnd$parent)
+#' ```
+#'
+#'
+#' ## `try_catch()`
+#'
+#' This pattern is easier with [try_catch()]. Like
+#' `withCallingHandlers()`, it doesn't capture a matching error right
+#' away. Instead, it captures it only if the handler doesn't return a
+#' [zap()] value.
+#'
+#' ```{r, comment = "#>", collapse = TRUE}
+#' cnd <- try_catch(
+#'   f(),
+#'   error = function(x) if (cnd_inherits(x, "bar")) x else zap()
+#' )
+#'
+#' class(cnd)
+#' class(cnd$parent)
+#' ```
+#'
+#' @param cnd A condition to test.
+#' @param class A class passed to [inherits()].
+#'
+#' @seealso
+#' * `r link("topic_error_chaining")`
+#'
+#' @export
+cnd_inherits <- function(cnd, class) {
+  while (is_condition(cnd)) {
+    if (inherits(cnd, class)) {
+      return(TRUE)
+    }
+
+    cnd <- cnd$parent
+  }
+
+  FALSE
+}
+
 #' @export
 print.rlang_warning <- function(x, ...) {
   writeLines(format(x, ...))

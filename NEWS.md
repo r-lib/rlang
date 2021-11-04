@@ -72,6 +72,9 @@
 
 ## Features and bugfixes
 
+* New `cnd_inherits()` function to detect a class in the error
+  ancestry (#1293).
+
 * New `englue()` operator to allow string-embracing outside of dynamic
   dots (#1172).
 
