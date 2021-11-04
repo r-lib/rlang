@@ -638,8 +638,8 @@ test_that("infix operators are labelled (#956, r-lib/testthat#1432)", {
     "nchar(chr, type = \"bytes\", allowNA = TRUE) == 1"
   )
 
-  # This fits into 60 characters if we truncate just the left side,
-  # so we don't need to shorten the right
+  # This fits into 60 characters if we truncate either side,
+  # so we don't need to shorten both of them
   expect_equal(
     as_label(quote(very_long_expression[with(subsetting), -1] -
                      another_very_long_expression[with(subsetting), -1]
