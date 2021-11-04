@@ -117,6 +117,7 @@
 #'
 #' @seealso
 #' - `r link("topic_inject")`
+#' - `r link("topic_metaprogramming")`
 #'
 #' @name injection-operator
 #' @aliases bang-bang

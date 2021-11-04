@@ -110,5 +110,6 @@ hope is that it isn't needed for common data analysis cases.
 \seealso{
 \itemize{
 \item \ifelse{html}{\link[=topic-inject]{Injecting with !!, !!!, and glue syntax}}{\link[=topic-inject]{Injecting with !!, !!!, and glue syntax}}
+\item \ifelse{html}{\link[=topic-metaprogramming]{Metaprogramming patterns}}{\link[=topic-metaprogramming]{Metaprogramming patterns}}
 }
 }
