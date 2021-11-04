@@ -11,7 +11,7 @@
   instance the `by` argument of `dplyr::join()` is not data-masked.
   Previously `dplyr::join(by = .data$foo)` would silently be
   interpreted as `dplyr::join(by = NULL)`. This is now an error.
-  
+
   Another issue is using `.data` inside `ggplot2::labs(...)`. This is
   not allowed since `labs()` isn't data-masked.
 
@@ -33,12 +33,12 @@
 * `is_expression()` now returns `FALSE` for manually constructed
   expressions that can't be created by the parser. It used to return
   `TRUE` for any calls, including those that contain injected objects.
-  
+
   Consider using `is_call()` or just remove the expression check. In
   many cases it is fine letting all objects go through when an
   expression is expected. For instance you can inject objects directly
   inside dplyr arguments:
-  
+
   ```
   x <- seq_len(nrow(data))
   dplyr::mutate(data, col = !!x)
@@ -72,7 +72,7 @@
 
 ## Features and bugfixes
 
-* `env_has()` and the corresponding C-level function no longer forces
+* `env_has()` and the corresponding C-level function no longer force
   active bindings (#1292).
 
 * New `names2<-` replacement function that never adds missing values
@@ -99,8 +99,8 @@
   form `foo::bar` (#670).
 
 * The new predicate `is_call_simple()` indicates whether a call has a
-  name and/or a namespace. It provides two invariants: 
-  
+  name and/or a namespace. It provides two invariants:
+
   - If `is_call_simple(x)` is `TRUE`, `call_name()` always returns a
     string.
 
@@ -196,7 +196,7 @@
     break is introduced to print the error message on the line below.
     If a source location is displayed in the prefix, a line break is
     always included.
-    
+
 * The display of chained errors created with the `parent` argument of
   `abort()` has been improved. Chains of errors are now displayed at
   throw time with the error prefix "Caused by error:".
@@ -257,16 +257,16 @@
   different chunk than the error) and to set
   `rlang_backtrace_on_error` global options in knitr to display a
   backtrace on error.
-  
+
   If you show rlang backtraces in a knitted document, also set this in
   a hidden chunk to trim the knitr context from the backtraces:
-  
+
   ```
   options(
     rlang_trace_top_env = environment()
   )
   ```
-  
+
   This change replaces an ad hoc mechanism that caused bugs in corner
   cases (#1205).
 
@@ -328,7 +328,7 @@
 
 * `check_dots_empty()`, `check_dots_unused()`, and
   `check_dots_unnamed()` have been moved from ellipsis to rlang. The
-  ellipsis package is deprecated and will eventually be archived. 
+  ellipsis package is deprecated and will eventually be archived.
 
   We have added `check_dots_empty0()`. It has a different UI but is
   almost as efficient as checking for `missing(...)`. Use this in very
@@ -343,7 +343,7 @@
 
 * New `hash_file()`, complementing `hash()`, to generate 128-bit hashes for
   the data within a file without loading it into R (#1134).
-  
+
 * New `env_cache()` function to retrieve a value or create it with a
   default if it doesn't exist yet (#1081).
 
@@ -359,7 +359,7 @@
 * New `call_match()` function. It is like `match.call()` but also
   supports matching missing arguments to their defaults in the function
   definition (#875).
-  
+
   `call_standardise()` is deprecated in favour of `call_match()`.
 
 * `is_installed()` and `check_installed()` gain a `version` argument (#1165).
@@ -383,7 +383,7 @@
   - Elements named `" "` as indented line breaks
   - Elements named `"*"` as normal bullets
   - Elements named `"!"` as warning bullets
-  
+
   For convenience, a fully unnamed vector is interpreted as a vector
   of `"*"` bullets.
 
