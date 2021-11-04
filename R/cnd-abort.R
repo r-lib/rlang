@@ -596,7 +596,7 @@ signal_abort <- function(cnd, file = NULL) {
 #' fast enough in almost all cases.
 #'
 #' If your function needs to be really fast, assign the error call
-#' flag directly instead of calling `local_error_flag()`:
+#' flag directly instead of calling `local_error_call()`:
 #'
 #' ```
 #' .__error_call__. <- "caller"
@@ -1017,7 +1017,7 @@ trace_depth_wch <- function(trace) {
 
 trace_depth_trycatch <- function(trace) {
   calls <- trace$call
-  
+
   exiting_call <- quote(value[[3L]](cond))
   exiting_n <- detect_index(calls, identical, exiting_call, .right = TRUE)
 
@@ -1066,14 +1066,14 @@ trace_depth_trycatch <- function(trace) {
 #'
 #' The display of errors depends on whether they're expected (i.e.
 #' chunk option `error = TRUE`) or unexpected:
-#' 
+#'
 #' * Expected errors are controlled by the global option
 #'   `"rlang_backtrace_on_error_report"` (note the `_report` suffix).
 #'   The default is `"none"` so that your expected errors don't
 #'   include a reminder to run `rlang::last_error()`. Customise this
 #'   option if you want to demonstrate what the error backtrace will
 #'   look like.
-#'   
+#'
 #'   You can also use [last_error()] to display the trace like you
 #'   would in your session, but it currently only works in the next
 #'   chunk.

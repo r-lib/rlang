@@ -117,7 +117,7 @@ error is triggered. Note that eagerly calling \code{caller_env()} is
 fast enough in almost all cases.
 
 If your function needs to be really fast, assign the error call
-flag directly instead of calling \code{local_error_flag()}:\preformatted{.__error_call__. <- "caller"
+flag directly instead of calling \code{local_error_call()}:\preformatted{.__error_call__. <- "caller"
 }
 }
 
