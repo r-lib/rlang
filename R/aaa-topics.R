@@ -1,5 +1,7 @@
 titles <- list(
-  # Overviews
+  # NSE
+
+  ## Overviews
   topic_data_mask =
     "What is data-masking and why do I need `{{`?",
   topic_data_mask_programming =
@@ -13,7 +15,7 @@ titles <- list(
   topic_quosure =
     "What are quosures and when are they needed?",
 
-  # Guides
+  ## Guides
   topic_data_mask_ambiguity =
     "The data mask ambiguity",
   topic_double_evaluation =
@@ -21,13 +23,27 @@ titles <- list(
   topic_multiple_columns =
     "Taking multiple columns without `...`",
 
-  # Notes
+  ## Notes
   topic_embrace_non_args =
     "Does `{{` work on regular objects?",
   topic_embrace_constants =
     "Why are strings and other constants enquosed in the empty environment?",
   topic_inject_out_of_context =
-    "What happens if I use injection operators out of context?"
+    "What happens if I use injection operators out of context?",
+
+  # Errors
+
+  ## Overviews
+  topic_error_rlang =
+    "Working with rlang errors",
+  topic_error_chaining =
+    "Chaining errors",
+
+  ## Guides
+  topic_error_formatting =
+    "Formatting error messages",
+  topic_error_laziness =
+    "Lazy creation of error messages"
 )
 
 sprintf_topic_link <- function(id, topic = NULL) {
