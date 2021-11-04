@@ -145,6 +145,9 @@
     <loc>https://rlang.r-lib.org/reference/cnd_as_unhandled_error.html</loc>
   </url>
   <url>
+    <loc>https://rlang.r-lib.org/reference/cnd_inherits.html</loc>
+  </url>
+  <url>
     <loc>https://rlang.r-lib.org/reference/cnd_message.html</loc>
   </url>
   <url>
@@ -650,6 +653,18 @@
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/topic-embrace-non-args.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/topic-error-chaining.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/topic-error-formatting.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/topic-error-laziness.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/topic-error-rlang.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/topic-inject-out-of-context.html</loc>
