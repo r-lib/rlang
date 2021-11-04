@@ -624,7 +624,7 @@ test_that("infix operators are labelled (#956, r-lib/testthat#1432)", {
 
   expect_equal(
     as_label(quote(X[key1 == "val1" & key2 == "val2"]$key3 & foobarbaz(foobarbaz(foobarbaz(foobarbaz(foobarbaz(foobarbaz(foobarbaz())))))))),
-    "... & ..."
+    "X[key1 == \"val1\" & key2 == \"val2\"]$key3 & ..."
   )
 
   expect_equal(
@@ -642,8 +642,38 @@ test_that("infix operators are labelled (#956, r-lib/testthat#1432)", {
   # so we don't need to shorten the right
   expect_equal(
     as_label(quote(very_long_expression[with(subsetting), -1] -
-      another_very_long_expression[with(subsetting), -1]
+                     another_very_long_expression[with(subsetting), -1]
     )),
-    "... - another_very_long_expression[with(subsetting), -1]"
+    "very_long_expression[with(subsetting), -1] - ..."
+  )
+
+  lhs_perfect_fit <- sym(paste(rep("a", 56), collapse = ""))
+  lhs_no_fit <- sym(paste(rep("a", 57), collapse = ""))
+
+  expect_equal(
+    as_label(expr(!!lhs_perfect_fit + 1)),
+    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa + 1"
+  )
+  expect_equal(
+    as_label(expr(!!lhs_perfect_fit + 10)),
+    "... + 10"
+  )
+
+  expect_equal(
+    as_label(expr(1 + !!lhs_perfect_fit)),
+    "1 + aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  )
+  expect_equal(
+    as_label(expr(10 + !!lhs_perfect_fit)),
+    "10 + ..."
+  )
+
+  expect_equal(
+    as_label(expr(!!lhs_no_fit + 1)),
+    "... + 1"
+  )
+  expect_equal(
+    as_label(expr(!!lhs_no_fit + !!lhs_no_fit)),
+    "... + ..."
   )
 })
