@@ -89,13 +89,13 @@ As a tidyverse user you generally don't need to worry about quosures because `{{
 As a rule of thumb, quosures are only needed for arguments defused with [enquo()] or [enquos()] (or with `r link("{{")` which calls `enquo()` implicitly):
 
 ```r
-my_function(var) {
+my_function <- function(var) {
   var <- enquo(var)
   their_function(!!var)
 }
 
 # Equivalently
-my_function(var) {
+my_function <- function(var) {
   their_function({{ var }})
 }
 ```
