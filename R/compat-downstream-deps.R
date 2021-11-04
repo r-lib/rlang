@@ -322,12 +322,24 @@ check_downstream <- function(ver,
 }
 
 .rlang_downstream_get_cache <- function() {
-  check_cache_name <- ".__rlang_downstream_check__."
-  cache <- globalenv()[[check_cache_name]]
+  if (!"org:r-lib" %in% search()) {
+    do.call(
+      attach,
+      list(
+        list(),
+        pos = length(search()),
+        name = "org:r-lib"
+      )
+    )
+  }
+
+  cache_env <- as.environment("org:r-lib")
+  check_cache_name <- "rlang_downstream_check"
+  cache <- cache_env[[check_cache_name]]
 
   if (is.null(cache)) {
     cache <- new.env(parent = emptyenv())
-    .GlobalEnv[[check_cache_name]] <- cache
+    cache_env[[check_cache_name]] <- cache
   }
 
   cache
