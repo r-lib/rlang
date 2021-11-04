@@ -6,7 +6,7 @@ The [injection operators][topic-inject] `r link("{{")`, [`!!`][injection-operato
 
 ## Using `{{` out of context
 
-The embrace operator `r link("{{")` is a feature available in [data-masked][topic-data-mask] arguments. If you use it elsewhere, it is interpreted as a double `{` wrapping.
+The embrace operator `r link("{{")` is a feature available in [data-masked][topic-data-mask] arguments powered by tidy eval. If you use it elsewhere, it is interpreted as a double `{` wrapping.
 
 In the R language, `{` is like `(` but takes multiple expressions instead of one:
 
