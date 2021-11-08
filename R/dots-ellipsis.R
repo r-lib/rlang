@@ -15,7 +15,7 @@
 #' In packages, document `...` with this standard tag:
 #'
 #' ```
-#'  @@inheritParams rlang::dots-used
+#'  @@inheritParams rlang::args_dots_used
 #' ```
 #'
 #' `check_dots_used()` implicitly calls [on.exit()] to check that all
@@ -125,7 +125,7 @@ check_dots_unnamed <- function(env = caller_env(),
 #' In packages, document `...` with this standard tag:
 #'
 #' ```
-#'  @@inheritParams rlang::dots-empty
+#'  @@inheritParams rlang::args_dots_empty
 #' ```
 #'
 #' @examples
@@ -217,20 +217,20 @@ ellipsis_dots <- function(env = caller_env(), auto_name = TRUE) {
 
 #' Helper for consistent documentation of empty dots
 #'
-#' Use `@inheritParams rlang::dots-empty` in your package
+#' Use `@inheritParams rlang::args_dots_empty` in your package
 #' to consistently document `...` that must be empty.
 #'
 #' @param ... These dots are for future extensions and must be empty.
-#' @name dots-empty
+#' @name args_dots_empty
 #' @keywords internal
 NULL
 
 #' Helper for consistent documentation of used dots
 #'
-#' Use `@inheritParams rlang::dots-used` in your package
+#' Use `@inheritParams rlang::args_dots_used` in your package
 #' to consistently document `...` that must be used.
 #'
 #' @param ... Arguments passed to methods.
-#' @name dots-used
+#' @name args_dots_used
 #' @keywords internal
 NULL

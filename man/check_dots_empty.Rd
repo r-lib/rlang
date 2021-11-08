@@ -31,7 +31,7 @@ fully name the details arguments. In this case, supplying data in
 that \code{...} is empty and fails otherwise.
 }
 \details{
-In packages, document \code{...} with this standard tag:\preformatted{ @inheritParams rlang::dots-empty
+In packages, document \code{...} with this standard tag:\preformatted{ @inheritParams rlang::args_dots_empty
 }
 }
 \examples{

@@ -503,7 +503,7 @@ endots <- function(call,
 #' [quo_name()].
 #'
 #' @param exprs A list of expressions.
-#' @inheritParams dots-empty
+#' @inheritParams args_dots_empty
 #' @param repair_auto Whether to repair the automatic names. By
 #'   default, minimal names are returned. See `?vctrs::vec_as_names`
 #'   for information about name repairing.

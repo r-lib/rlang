@@ -31,7 +31,7 @@ this often indicates a programming error. Call \code{check_dots_used()}
 to fail with an error when unused arguments are detected.
 }
 \details{
-In packages, document \code{...} with this standard tag:\preformatted{ @inheritParams rlang::dots-used
+In packages, document \code{...} with this standard tag:\preformatted{ @inheritParams rlang::args_dots_used
 }
 
 \code{check_dots_used()} implicitly calls \code{\link[=on.exit]{on.exit()}} to check that all
