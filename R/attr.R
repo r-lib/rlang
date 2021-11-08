@@ -214,6 +214,7 @@ names2 <- function(x) {
   .Call(ffi_names2, x, environment())
 }
 #' @rdname names2
+#' @param value New names.
 #' @export
 `names2<-` <- function(x, value) {
   if (is_null(names(x))) {

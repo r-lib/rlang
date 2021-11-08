@@ -11,6 +11,8 @@ names2(x) <- value
 }
 \arguments{
 \item{x}{A vector.}
+
+\item{value}{New names.}
 }
 \description{
 \code{names2()} always returns a character vector, even when an
