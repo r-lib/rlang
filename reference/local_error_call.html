@@ -227,7 +227,7 @@ flag directly instead of calling <code>local_error_call()</code>:</p><pre><code>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   local_error_call(quote(foo()))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   local_error_call(sys.call())</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55e8493aaff8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55d0b8c8d1f0&gt;</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Disable the context</span></span>
 <span class="r-in"><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
@@ -236,7 +236,7 @@ flag directly instead of calling <code>local_error_call()</code>:</p><pre><code>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function() {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   local_error_call(NULL)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55e8493aaff8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55d0b8c8d1f0&gt;</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Use the caller's context</span></span>
 <span class="r-in"><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
@@ -245,7 +245,7 @@ flag directly instead of calling <code>local_error_call()</code>:</p><pre><code>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function() {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   local_error_call(caller_env())</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55e8493aaff8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55d0b8c8d1f0&gt;</span>
 </code></pre></div>
     </div>
   </div>
