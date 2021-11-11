@@ -5,7 +5,7 @@
 #' Technically, it is a simple wrapper around the C function
 #' `Rf_eval()`. You generally don't need to use `eval_bare()` instead
 #' of `eval()`. Its main advantage is that it handles stack-sensitive
-#' (calls such as `return()`, `on.exit()` or `parent.frame()`) more
+#' calls (such as `return()`, `on.exit()` or `parent.frame()`) more
 #' consistently when you pass an enviroment of a frame on the call
 #' stack.
 #'
