@@ -60,7 +60,7 @@ Or install the development version from GitHub with:
 
 ```r
 # install.packages("pak")
-pak::pak("r-lib/rlang")
+pak::pkg_install("r-lib/rlang")
 ```
 
 
