@@ -82,7 +82,7 @@ environments)."><meta property="og:image" content="https://rlang.r-lib.org/logo.
     <a class="external-link dropdown-item" href="https://www.tidyverse.org/articles/2018/10/rlang-0-3-0/">Version 0.3.0</a>
     <a class="external-link dropdown-item" href="https://www.tidyverse.org/articles/2018/03/rlang-0.2.0/">Version 0.2.0</a>
     <div class="dropdown-divider"></div>
-    <a class="dropdown-item" href="../news/index.html">Change log</a>
+    <a class="dropdown-item" href="../news/index.html">Changelog</a>
   </div>
 </li>
 <li class="nav-item">
@@ -167,13 +167,13 @@ these functions.</p></li>
     <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Environment of closure functions:</span></span>
 <span class="r-in"><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="st">"foo"</span></span>
 <span class="r-in"><span class="fu">get_env</span><span class="op">(</span><span class="va">fn</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55b590e3d600&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55939571d4f0&gt;</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Or of quosures or formulas:</span></span>
 <span class="r-in"><span class="fu">get_env</span><span class="op">(</span><span class="op">~</span><span class="va">foo</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55b590e3d600&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55939571d4f0&gt;</span>
 <span class="r-in"><span class="fu">get_env</span><span class="op">(</span><span class="fu"><a href="defusing-advanced.html">quo</a></span><span class="op">(</span><span class="va">foo</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55b590e3d600&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55939571d4f0&gt;</span>
 <span class="r-in"></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Provide a default in case the object doesn't bundle an environment.</span></span>
@@ -207,7 +207,7 @@ these functions.</p></li>
 <span class="r-in"><span class="va">other_env</span> <span class="op">&lt;-</span> <span class="fu"><a href="env.html">child_env</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">set_env</span><span class="op">(</span><span class="va">fn</span>, <span class="va">other_env</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function() NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55b58f6a6830&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5593951b6ef8&gt;</span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu">get_env</span><span class="op">(</span><span class="va">fn</span><span class="op">)</span>, <span class="va">other_env</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
 <span class="r-in"></span>
