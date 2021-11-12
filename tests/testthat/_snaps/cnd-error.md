@@ -36,14 +36,14 @@
       print(err)
     Output
       <error/rlang_error>
-      Error: 
+      Error:
         High-level message
       Backtrace:
         1. rlang:::catch_error(a())
         9. rlang a()
        10. rlang b()
        11. rlang c()
-      Caused by error in `h()`: 
+      Caused by error in `h()`:
         Low-level message
       Backtrace:
         1. rlang:::catch_error(a())
@@ -60,7 +60,7 @@
       print(err, simplify = "none")
     Output
       <error/rlang_error>
-      Error: 
+      Error:
         High-level message
       Backtrace:
            x
@@ -75,7 +75,7 @@
         9. \-rlang a()
        10.   \-rlang b()
        11.     \-rlang c()
-      Caused by error in `h()`: 
+      Caused by error in `h()`:
         Low-level message
       Backtrace:
            x
@@ -105,7 +105,7 @@
       print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
     Output
       <error/rlang_error>
-      Error: 
+      Error:
         High-level message
       Backtrace:
            x
@@ -120,7 +120,7 @@
         9. \-rlang a()
        10.   \-rlang b()
        11.     \-rlang c()
-      Caused by error in `h()`: 
+      Caused by error in `h()`:
         Low-level message
       Backtrace:
            x
@@ -147,7 +147,7 @@
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
       <error/rlang_error>
-      Error: 
+      Error:
         High-level message
       Backtrace:
            x
@@ -155,7 +155,7 @@
         9. \-rlang a()
        10.   \-rlang b()
        11.     \-rlang c()
-      Caused by error in `h()`: 
+      Caused by error in `h()`:
         Low-level message
       Backtrace:
            x
@@ -172,14 +172,14 @@
       print(trace, simplify = "branch", dir = dir, srcrefs = srcrefs)
     Output
       <error/rlang_error>
-      Error: 
+      Error:
         High-level message
       Backtrace:
         1. rlang:::catch_error(a())
         9. rlang a()
        10. rlang b()
        11. rlang c()
-      Caused by error in `h()`: 
+      Caused by error in `h()`:
         Low-level message
       Backtrace:
         1. rlang:::catch_error(a())
@@ -196,11 +196,11 @@
       catch_error(high())
     Output
       <error/high>
-      Error: 
+      Error:
         High-level
-      Caused by error: 
+      Caused by error:
         Mid-level
-      Caused by error in `low()`: 
+      Caused by error in `low()`:
         Low-level
 
 # summary.rlang_error() prints full backtrace
@@ -209,9 +209,9 @@
       summary(err)
     Output
       <error/rlang_error>
-      Error: 
+      Error:
         The high-level error message
-      Caused by error in `h()`: 
+      Caused by error in `h()`:
         The low-level error message
       Backtrace:
            x
@@ -248,9 +248,9 @@
       print(rlang_err)
     Output
       <error/bar>
-      Error: 
+      Error:
         baz
-      Caused by error: 
+      Caused by error:
         foo
 
 # errors are printed with call
@@ -267,17 +267,17 @@
       (expect_error(with_context(base_problem(), "step_dummy")))
     Output
       <error/rlang_error>
-      Error in `step_dummy()`: 
+      Error in `step_dummy()`:
         Problem while executing step.
-      Caused by error in `base_problem()`: 
+      Caused by error in `base_problem()`:
         oh no!
     Code
       (expect_error(with_context(rlang_problem(), "step_dummy")))
     Output
       <error/rlang_error>
-      Error in `step_dummy()`: 
+      Error in `step_dummy()`:
         Problem while executing step.
-      Caused by error in `rlang_problem()`: 
+      Caused by error in `rlang_problem()`:
         oh no!
 
 # external backtraces are displayed (#1098)
@@ -286,7 +286,7 @@
       print(err)
     Output
       <error/rlang_error>
-      Error: 
+      Error:
         High-level message
       Backtrace:
         1. rlang::catch_cnd(foo(), "error")
@@ -296,7 +296,7 @@
        12. rlang f()
        13. rlang g()
        14. rlang h()
-      Caused by error in `h()`: 
+      Caused by error in `h()`:
         Low-level message
       Backtrace:
        1. quux()
@@ -305,7 +305,7 @@
       summary(err)
     Output
       <error/rlang_error>
-      Error: 
+      Error:
         High-level message
       Backtrace:
            x
@@ -323,7 +323,7 @@
        12.       \-rlang f()
        13.         \-rlang g()
        14.           \-rlang h()
-      Caused by error in `h()`: 
+      Caused by error in `h()`:
         Low-level message
       Backtrace:
           x
@@ -337,7 +337,7 @@
       print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
     Output
       <error/rlang_error>
-      Error: 
+      Error:
         bar
       Backtrace:
            x
@@ -351,7 +351,7 @@
         8. \-rlang foo()
         9.   \-rlang bar()
        10.     \-rlang baz()
-      Caused by error in `h()`: 
+      Caused by error in `h()`:
         foo
       Backtrace:
            x
@@ -377,7 +377,7 @@
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
       <error/rlang_error>
-      Error: 
+      Error:
         bar
       Backtrace:
            x
@@ -385,7 +385,7 @@
         8. \-rlang foo()
         9.   \-rlang bar()
        10.     \-rlang baz()
-      Caused by error in `h()`: 
+      Caused by error in `h()`:
         foo
       Backtrace:
            x
@@ -402,14 +402,14 @@
       print(trace, simplify = "branch", dir = dir, srcrefs = srcrefs)
     Output
       <error/rlang_error>
-      Error: 
+      Error:
         bar
       Backtrace:
         1. rlang::catch_cnd(foo(), "error")
         8. rlang foo()
         9. rlang bar()
        10. rlang baz()
-      Caused by error in `h()`: 
+      Caused by error in `h()`:
         foo
       Backtrace:
         1. rlang::catch_cnd(foo(), "error")

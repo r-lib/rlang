@@ -111,18 +111,18 @@
     Code
       cat_line(interactive)
     Output
-      Error: 
+      Error:
         bar
-      Caused by error in `h()`: 
+      Caused by error in `h()`:
         foo
       Run `rlang::last_error()` to see where the error occurred.
       Execution halted
     Code
       cat_line(non_interactive)
     Output
-      Error: 
+      Error:
         bar
-      Caused by error in `h()`: 
+      Caused by error in `h()`:
         foo
       Backtrace:
            x
@@ -206,9 +206,9 @@
       }
     Output
       <error/rlang_error>
-      Error: 
+      Error:
         no wrapper
-      Caused by error in `failing()`: 
+      Caused by error in `failing()`:
         low-level
       Backtrace:
         1. rlang:::catch_error(f())
@@ -224,9 +224,9 @@
       }
     Output
       <error/rlang_error>
-      Error: 
+      Error:
         wrapper
-      Caused by error in `failing()`: 
+      Caused by error in `failing()`:
         low-level
       Backtrace:
         1. rlang:::catch_error(f())
@@ -242,9 +242,9 @@
       }
     Output
       <error/rlang_error>
-      Error: 
+      Error:
         wrapper
-      Caused by error in `failing()`: 
+      Caused by error in `failing()`:
         low-level
       Backtrace:
         1. rlang:::catch_error(f())
@@ -256,9 +256,9 @@
       print(err_wch)
     Output
       <error/rlang_error>
-      Error: 
+      Error:
         bar
-      Caused by error in `baz()`: 
+      Caused by error in `baz()`:
         foo
       Backtrace:
         1. rlang:::catch_error(...)
@@ -351,9 +351,9 @@
       print(err)
     Output
       <error/rlang_error>
-      Error: 
+      Error:
         High-level message
-      Caused by error in `h()`: 
+      Caused by error in `h()`:
         Low-level message
       Backtrace:
         1. testthat::expect_error(foo())
@@ -367,9 +367,9 @@
       summary(err)
     Output
       <error/rlang_error>
-      Error: 
+      Error:
         High-level message
-      Caused by error in `h()`: 
+      Caused by error in `h()`:
         Low-level message
       Backtrace:
            x
@@ -395,9 +395,9 @@
       print(err)
     Output
       <error/rlang_error>
-      Error: 
+      Error:
         High-level message
-      Caused by error: 
+      Caused by error:
         foo
       Backtrace:
         1. testthat::expect_error(foo())
@@ -412,9 +412,9 @@
       summary(err)
     Output
       <error/rlang_error>
-      Error: 
+      Error:
         High-level message
-      Caused by error: 
+      Caused by error:
         foo
       Backtrace:
            x

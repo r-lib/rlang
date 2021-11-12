@@ -77,7 +77,7 @@
       (expect_error(very_very_very_very_very_long_function_name()))
     Output
       <error/rlang_error>
-      Error in `very_very_very_very_very_long_function_name()`: 
+      Error in `very_very_very_very_very_long_function_name()`:
       My somewhat longish and verbose error message.
 
 # prefixes include srcrefs
@@ -86,7 +86,7 @@
       (expect_error(f()))
     Output
       <error/rlang_error>
-      Error in `g()` at bar/baz/myfile.R:2:9: 
+      Error in `g()` at bar/baz/myfile.R:2:9:
       Foo.
 
 # inform() and warn() use fallback bullets formatting
@@ -168,18 +168,18 @@
       (expect_error(f(TRUE)))
     Output
       <error/rlang_error>
-      Error: 
+      Error:
         Wrapper
-      Caused by error in `f()`: 
+      Caused by error in `f()`:
         Header
         i Bullet
     Code
       (expect_error(f(FALSE)))
     Output
       <error/rlang_error>
-      Error: 
+      Error:
         Wrapper
-      Caused by error in `f()`: 
+      Caused by error in `f()`:
         Header
         i Bullet
 

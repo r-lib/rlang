@@ -42,10 +42,10 @@
 ---
 
     <message/rlang_message>
-    Message in `quux()`: 
+    Message in `quux()`:
       Header.
       i Bullet.
-    Caused by warning in `quux()`: 
+    Caused by warning in `quux()`:
       Header.
       i Bullet.
     Backtrace:

@@ -13,9 +13,9 @@
       print(err)
     Output
       <error/rlang_error>
-      Error: 
+      Error:
         bar
-      Caused by error in `h()`: 
+      Caused by error in `h()`:
         foo
       Backtrace:
         1. rlang:::catch_error(...)
@@ -26,9 +26,9 @@
       print(err, simplify = "none")
     Output
       <error/rlang_error>
-      Error: 
+      Error:
         bar
-      Caused by error in `h()`: 
+      Caused by error in `h()`:
         foo
       Backtrace:
            x

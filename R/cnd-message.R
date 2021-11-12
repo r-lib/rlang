@@ -192,14 +192,14 @@ cnd_prefixed_message <- function(cnd, parent = FALSE) {
   has_loc <- FALSE
 
   if (is_null(call)) {
-    prefix <- sprintf("%s: ", prefix)
+    prefix <- sprintf("%s:", prefix)
   } else {
     src_loc <- src_loc(attr(cnd$call, "srcref"))
     if (nzchar(src_loc) && !is_testing()) {
-      prefix <- sprintf("%s in %s at %s: ", prefix, call, src_loc)
+      prefix <- sprintf("%s in %s at %s:", prefix, call, src_loc)
       has_loc <- TRUE
     } else {
-      prefix <- sprintf("%s in %s: ", prefix, call)
+      prefix <- sprintf("%s in %s:", prefix, call)
     }
   }
   prefix <- style_bold(prefix)
@@ -212,7 +212,7 @@ cnd_prefixed_message <- function(cnd, parent = FALSE) {
   if (break_line) {
     paste0(prefix, "\n", message)
   } else {
-    paste0(prefix, message)
+    paste0(prefix, " ", message)
   }
 }
 
