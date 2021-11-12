@@ -299,3 +299,24 @@ test_that("can supply bullet without header", {
     (catch_cnd(warn(c(i = "foo")), "warning"))
   })
 })
+
+test_that("parent errors prints with bullets in all cases", {
+  f <- function(use_cli = TRUE) {
+    local_use_cli(format = use_cli)
+
+    try_catch(
+      abort(c(
+        "Header",
+        i = "Bullet"
+      )),
+      error = function(cnd) {
+        abort("Wrapper", parent = cnd)
+      }
+    )
+  }
+
+  expect_snapshot({
+    (expect_error(f(TRUE)))
+    (expect_error(f(FALSE)))
+  })
+})

@@ -170,11 +170,7 @@ cnd_prefixed_message <- function(cnd, parent = FALSE) {
   }
 
   if (is_true(cnd$use_cli_format)) {
-    if (parent) {
-      message <- cnd_header(cnd)
-    } else {
-      message <- cnd_message_lines(cnd)
-    }
+    message <- cnd_message_lines(cnd)
 
     cnd_format <- cnd_formatter(cnd)
     message <- cnd_format(message, indent = indent)

@@ -162,3 +162,24 @@
       <warning/rlang_warning>
       Warning: i foo
 
+# parent errors prints with bullets in all cases
+
+    Code
+      (expect_error(f(TRUE)))
+    Output
+      <error/rlang_error>
+      Error: 
+        Wrapper
+      Caused by error in `f()`: 
+        Header
+        i Bullet
+    Code
+      (expect_error(f(FALSE)))
+    Output
+      <error/rlang_error>
+      Error: 
+        Wrapper
+      Caused by error in `f()`: 
+        Header
+        i Bullet
+
