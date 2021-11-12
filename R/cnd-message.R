@@ -47,17 +47,27 @@
 #'
 #' @param cnd A condition object.
 #' @param ... Arguments passed to methods.
+#' @param prefix Whether to print the full message, including the
+#'   condition prefix (`Error:`, `Warning:`, `Message:`, or
+#'   `Condition:`). The prefix mentions the `call` field if present,
+#'   and the `srcref` info if present. If `cnd` has a `parent` field
+#'   (i.e. the condition is chained), the parent messages are included
+#'   in the message with a `Caused by` prefix.
 #'
 #' @export
-cnd_message <- function(cnd) {
-  cnd_format <- cnd_formatter(cnd)
-  cnd_format(cnd_message_lines(cnd))
+cnd_message <- function(cnd, ..., prefix = FALSE) {
+  if (prefix) {
+    cnd_build_error_message(cnd, ...)
+  } else {
+    cnd_format <- cnd_formatter(cnd)
+    cnd_format(cnd_message_lines(cnd, ...))
+  }
 }
-cnd_message_lines <- function(cnd) {
+cnd_message_lines <- function(cnd, ...) {
   c(
-    cnd_header(cnd),
-    cnd_body(cnd),
-    cnd_footer(cnd)
+    cnd_header(cnd, ...),
+    cnd_body(cnd, ...),
+    cnd_footer(cnd, ...)
   )
 }
 
@@ -147,8 +157,8 @@ cnd_footer.default <- function(cnd, ...) {
   cnd$footer %||% chr()
 }
 
-cnd_build_error_message <- function(cnd) {
-  msg <- cnd_prefixed_message(cnd, parent = FALSE)
+cnd_build_error_message <- function(cnd, ...) {
+  msg <- cnd_prefixed_message(cnd, ..., parent = FALSE)
 
   while (is_error(cnd <- cnd$parent)) {
     parent_msg <- cnd_prefixed_message(cnd, parent = TRUE)
@@ -158,7 +168,7 @@ cnd_build_error_message <- function(cnd) {
   msg
 }
 
-cnd_prefixed_message <- function(cnd, parent = FALSE) {
+cnd_prefixed_message <- function(cnd, ..., parent = FALSE) {
   type <- cnd_type(cnd)
 
   if (parent) {
@@ -170,7 +180,7 @@ cnd_prefixed_message <- function(cnd, parent = FALSE) {
   }
 
   if (is_true(cnd$use_cli_format)) {
-    message <- cnd_message_lines(cnd)
+    message <- cnd_message_lines(cnd, ...)
 
     cnd_format <- cnd_formatter(cnd)
     message <- cnd_format(message, indent = indent)

@@ -7,7 +7,7 @@
 \alias{cnd_footer}
 \title{Build an error message from parts}
 \usage{
-cnd_message(cnd)
+cnd_message(cnd, ..., prefix = FALSE)
 
 cnd_header(cnd, ...)
 
@@ -19,6 +19,13 @@ cnd_footer(cnd, ...)
 \item{cnd}{A condition object.}
 
 \item{...}{Arguments passed to methods.}
+
+\item{prefix}{Whether to print the full message, including the
+condition prefix (\verb{Error:}, \verb{Warning:}, \verb{Message:}, or
+\verb{Condition:}). The prefix mentions the \code{call} field if present,
+and the \code{srcref} info if present. If \code{cnd} has a \code{parent} field
+(i.e. the condition is chained), the parent messages are included
+in the message with a \verb{Caused by} prefix.}
 }
 \description{
 \code{cnd_message()} assembles an error message from three generics:
