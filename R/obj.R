@@ -67,6 +67,12 @@ promise_value <- function(name, env = caller_env()) {
   .Call(ffi_promise_value, name, env)
 }
 
+c_warning <- function(msg) {
+  .Call(ffi_test_Rf_warning, msg)
+}
+c_error <- function(msg) {
+  .Call(ffi_test_Rf_error, msg)
+}
 warningcall <- function(call, msg) {
   .Call(ffi_test_Rf_warningcall, call, msg)
 }
