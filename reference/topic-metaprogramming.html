@@ -204,21 +204,21 @@ If you haven't already, read Data mask programming patterns which covers simpler
 
 
 <p>This is a variant of the <code>transmute()</code> bridge pattern described in <a href="topic-data-mask-programming.html">Data mask programming patterns</a> that does not materialise <code>...</code> in the intermediate step. Instead, the <code>...</code> expressions are defused and inspected. Then the expressions, rather than the columns, are spliced in <code>mutate()</code>.</p><div class="sourceCode r"><pre><code><span class="va">my_pivot_longer</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
-  <span class="co"># Forward `...` in data-mask context with `transmute()`</span>
-  <span class="co"># and save the inputs names</span>
-  <span class="va">inputs</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">transmute</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span><span class="op">)</span>
-  <span class="va">names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">inputs</span><span class="op">)</span>
-  
-  <span class="co"># Update the data with the inputs</span>
-  <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">data</span>, <span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">inputs</span><span class="op">)</span>
+  <span class="co"># Defuse the dots and inspect the names</span>
+  <span class="va">dots</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/enquo.html">enquos</a></span><span class="op">(</span><span class="va">...</span>, .named <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+  <span class="va">names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">dots</span><span class="op">)</span>
 
-  <span class="co"># Select the inputs by name with `all_of()`</span>
-  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu">pivot_longer</span><span class="op">(</span><span class="va">data</span>, cols <span class="op">=</span> <span class="fu">all_of</span><span class="op">(</span><span class="va">names</span><span class="op">)</span><span class="op">)</span>
+  <span class="co"># Pass the inputs to `mutate()`</span>
+  <span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">dots</span><span class="op">)</span>
+
+  <span class="co"># Select `...` inputs by name with `all_of()`</span>
+  <span class="va">data</span> <span class="op">%&gt;%</span>
+    <span class="fu">tidyr</span><span class="fu">::</span><span class="fu">pivot_longer</span><span class="op">(</span>cols <span class="op">=</span> <span class="fu">all_of</span><span class="op">(</span><span class="va">names</span><span class="op">)</span><span class="op">)</span>
 <span class="op">}</span>
 
-<span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_pivot_longer</span><span class="op">(</span><span class="va">cyl</span>, am <span class="op">=</span> <span class="va">am</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span></code></pre><p></p></div><ol><li><p>In a first step we pass the <code>...</code> expressions to <code>transmute()</code>. Unlike <code>mutate()</code>, it creates a new data frame from the user inputs. The only goal of this step is to inspect the names in <code>...</code>, including the default names created for unnamed arguments.</p></li>
-<li><p>Once we have the names, we inject the argument expressions into <code>mutate()</code> to update the data frame.</p></li>
-<li><p>Finally, we pass the names to the tidy selection via <a href="https://tidyselect.r-lib.org/reference/all_of.html" class="external-link"><code>all_of()</code></a>.</p></li>
+<span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_pivot_longer</span><span class="op">(</span><span class="va">cyl</span>, am <span class="op">=</span> <span class="va">am</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span></code></pre><p></p></div><ol><li><p>Defuse the <code>...</code> expressions. The <code>.named</code> argument ensures unnamed inputs get a default name, just like they would if passed to <code>mutate()</code>. Take the names of the list of inputs.</p></li>
+<li><p>Once we have the names, inject the argument expressions into <code>mutate()</code> to update the data frame.</p></li>
+<li><p>Finally, pass the names to the tidy selection via <a href="https://tidyselect.r-lib.org/reference/all_of.html" class="external-link"><code>all_of()</code></a>.</p></li>
 </ol></div>
 
     </div>
