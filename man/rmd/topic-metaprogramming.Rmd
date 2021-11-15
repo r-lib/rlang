@@ -133,26 +133,26 @@ This is a variant of the `transmute()` bridge pattern described in `r link("topi
 
 ```r
 my_pivot_longer <- function(data, ...) {
-  # Forward `...` in data-mask context with `transmute()`
-  # and save the inputs names
-  inputs <- dplyr::transmute(data, ...)
-  names <- names(inputs)
-  
-  # Update the data with the inputs
-  data <- dplyr::mutate(data, !!!inputs)
+  # Defuse the dots and inspect the names
+  dots <- enquos(..., .named = TRUE)
+  names <- names(dots)
 
-  # Select the inputs by name with `all_of()`
-  tidyr::pivot_longer(data, cols = all_of(names))
+  # Pass the inputs to `mutate()`
+  data <- data %>% dplyr::mutate(!!!dots)
+
+  # Select `...` inputs by name with `all_of()`
+  data %>%
+    tidyr::pivot_longer(cols = all_of(names))
 }
 
 mtcars %>% my_pivot_longer(cyl, am = am * 100)
 ```
 
-1. In a first step we pass the `...` expressions to `transmute()`. Unlike `mutate()`, it creates a new data frame from the user inputs. The only goal of this step is to inspect the names in `...`, including the default names created for unnamed arguments.
+1. Defuse the `...` expressions. The `.named` argument ensures unnamed inputs get a default name, just like they would if passed to `mutate()`. Take the names of the list of inputs.
 
-2. Once we have the names, we inject the argument expressions into `mutate()` to update the data frame.
+2. Once we have the names, inject the argument expressions into `mutate()` to update the data frame.
 
-3. Finally, we pass the names to the tidy selection via [`all_of()`](https://tidyselect.r-lib.org/reference/all_of.html).
+3. Finally, pass the names to the tidy selection via [`all_of()`](https://tidyselect.r-lib.org/reference/all_of.html).
 
 
 # Transformation patterns

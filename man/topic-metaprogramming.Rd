@@ -121,24 +121,24 @@ In more complex case, you might want to add R code around the symbols. This requ
 \subsection{\code{mutate()} as a data-mask to selection bridge}{
 
 This is a variant of the \code{transmute()} bridge pattern described in \ifelse{html}{\link[=topic-data-mask-programming]{Data mask programming patterns}}{\link[=topic-data-mask-programming]{Data mask programming patterns}} that does not materialise \code{...} in the intermediate step. Instead, the \code{...} expressions are defused and inspected. Then the expressions, rather than the columns, are spliced in \code{mutate()}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_pivot_longer <- function(data, ...) \{
-  # Forward `...` in data-mask context with `transmute()`
-  # and save the inputs names
-  inputs <- dplyr::transmute(data, ...)
-  names <- names(inputs)
-  
-  # Update the data with the inputs
-  data <- dplyr::mutate(data, !!!inputs)
+  # Defuse the dots and inspect the names
+  dots <- enquos(..., .named = TRUE)
+  names <- names(dots)
 
-  # Select the inputs by name with `all_of()`
-  tidyr::pivot_longer(data, cols = all_of(names))
+  # Pass the inputs to `mutate()`
+  data <- data \%>\% dplyr::mutate(!!!dots)
+
+  # Select `...` inputs by name with `all_of()`
+  data \%>\%
+    tidyr::pivot_longer(cols = all_of(names))
 \}
 
 mtcars \%>\% my_pivot_longer(cyl, am = am * 100)
 }\if{html}{\out{</div>}}
 \enumerate{
-\item In a first step we pass the \code{...} expressions to \code{transmute()}. Unlike \code{mutate()}, it creates a new data frame from the user inputs. The only goal of this step is to inspect the names in \code{...}, including the default names created for unnamed arguments.
-\item Once we have the names, we inject the argument expressions into \code{mutate()} to update the data frame.
-\item Finally, we pass the names to the tidy selection via \href{https://tidyselect.r-lib.org/reference/all_of.html}{\code{all_of()}}.
+\item Defuse the \code{...} expressions. The \code{.named} argument ensures unnamed inputs get a default name, just like they would if passed to \code{mutate()}. Take the names of the list of inputs.
+\item Once we have the names, inject the argument expressions into \code{mutate()} to update the data frame.
+\item Finally, pass the names to the tidy selection via \href{https://tidyselect.r-lib.org/reference/all_of.html}{\code{all_of()}}.
 }
 }
 }
