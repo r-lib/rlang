@@ -320,3 +320,15 @@ test_that("parent errors prints with bullets in all cases", {
     (expect_error(f(FALSE)))
   })
 })
+
+test_that("qualified calls are included in error prefix (#1315)", {
+  expect_equal(
+    error_call_as_string(quote(foo::bar())),
+    "foo::bar()"
+  )
+})
+
+test_that("special syntax calls handle edge cases", {
+  expect_equal(error_call_as_string(quote(`+`())), "+")
+  expect_equal(error_call_as_string(quote(base::`+`(1, 2))), "+")
+})

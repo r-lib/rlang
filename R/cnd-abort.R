@@ -784,33 +784,35 @@ error_call_as_string <- function(call) {
     return(NULL)
   }
 
-  if (!is_symbol(call[[1]])) {
+  if (!is_call_simple(call)) {
     return(NULL)
   }
 
-  if (is_call(call, "if")) {
-    # Deal with `if` bombs. Keep the condition as it is informative but
-    # drop the branches to avoid multiline calls. See
-    # https://github.com/r-lib/testthat/issues/1429
-    call[[3]] <- quote(...)
-    call <- call[1:3]
-  } else {
-    # Remove distracting arguments from the call
-    call <- call[1]
-  }
+  # Remove namespace for now to simplify conversion
+  old <- call[[1]]
+  call[[1]] <- sym(call_name(call))
 
   # Deal with special-syntax calls. `if` carries useful information in
   # its call. For other operators we just return their name because
   # the functional form may be confusing.
   if (is_call(call, "if")) {
-    as_label(call)
-  } else if (!is_string(call_parse_type(call), "")) {
-    as_string(call[[1]])
-  } else if (is_symbol(call[[1]]) && needs_backticks(call[[1]])) {
-    as_string(call[[1]])
-  } else {
-    as_label(call)
+    # Deal with `if` bombs. Keep the condition as it is informative but
+    # drop the branches to avoid multiline calls. See
+    # https://github.com/r-lib/testthat/issues/1429
+    call[[3]] <- quote(...)
+    return(as_label(call[1:3]))
   }
+  if (!is_string(call_parse_type(call), "")) {
+    return(as_string(call[[1]]))
+  }
+
+  if (is_symbol(call[[1]]) && needs_backticks(call[[1]])) {
+    return(as_string(call[[1]]))
+  }
+
+  # Remove distracting arguments from the call and restore namespace
+  call[[1]] <- old
+  as_label(call[1])
 }
 
 error_call <- function(call) {
