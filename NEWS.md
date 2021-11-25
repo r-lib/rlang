@@ -72,6 +72,10 @@
 
 ## Features and bugfixes
 
+* `cnd_message()` gains a `prefix` argument to print the message with
+  a full prefix, including `call` field if present and parent messages
+  if the condition is chained.
+
 * `env_has()` and the corresponding C-level function no longer force
   active bindings (#1292).
 

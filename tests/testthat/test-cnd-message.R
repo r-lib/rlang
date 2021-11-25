@@ -332,3 +332,12 @@ test_that("special syntax calls handle edge cases", {
   expect_equal(error_call_as_string(quote(`+`())), "+")
   expect_equal(error_call_as_string(quote(base::`+`(1, 2))), "+")
 })
+
+test_that("can print message with prefix", {
+  foo <- error_cnd("foo", message = "Foo")
+  bar <- error_cnd("bar", message = "Bar", parent = foo)
+  expect_snapshot({
+    writeLines(cnd_message(foo, prefix = TRUE))
+    writeLines(cnd_message(bar, prefix = TRUE))
+  })
+})

@@ -183,3 +183,17 @@
         Header
         i Bullet
 
+# can print message with prefix
+
+    Code
+      writeLines(cnd_message(foo, prefix = TRUE))
+    Output
+      Error: Foo
+    Code
+      writeLines(cnd_message(bar, prefix = TRUE))
+    Output
+      Error:
+        Bar
+      Caused by error:
+        Foo
+
