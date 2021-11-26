@@ -462,7 +462,7 @@ signal_abort <- function(cnd, file = NULL) {
   # Print the error manually. This allows us to use our own style,
   # include parent errors, and work around limitations on the length
   # of error messages (#856).
-  msg <- cnd_build_error_message(cnd)
+  msg <- cnd_message_reduce(cnd)
   msg <- cnd_unhandled_message(cnd, message = msg)
 
   cat_line(msg, file = file %||% default_message_file())

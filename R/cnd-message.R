@@ -57,7 +57,7 @@
 #' @export
 cnd_message <- function(cnd, ..., prefix = FALSE) {
   if (prefix) {
-    cnd_build_error_message(cnd, ...)
+    cnd_message_reduce(cnd, ...)
   } else {
     cnd_format <- cnd_formatter(cnd)
     cnd_format(cnd_message_lines(cnd, ...))
@@ -157,7 +157,7 @@ cnd_footer.default <- function(cnd, ...) {
   cnd$footer %||% chr()
 }
 
-cnd_build_error_message <- function(cnd, ...) {
+cnd_message_reduce <- function(cnd, ...) {
   msg <- cnd_prefixed_message(cnd, ..., parent = FALSE)
 
   while (is_error(cnd <- cnd$parent)) {
