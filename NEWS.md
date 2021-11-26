@@ -76,6 +76,9 @@
   a full prefix, including `call` field if present and parent messages
   if the condition is chained.
 
+* `cnd_message()` gains an `inherit` argument to control whether to
+  print the messages of parent errors.
+
 * `env_has()` and the corresponding C-level function no longer force
   active bindings (#1292).
 

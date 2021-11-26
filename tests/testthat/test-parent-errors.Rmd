@@ -1,0 +1,14 @@
+```{r}
+foo <- error_cnd(
+  "foo",
+  message = "Parent message.",
+  body = c("*" = "Bullet 1.", "*" = "Bullet 2."),
+  use_cli_format = TRUE
+)
+
+f <- function() abort(c("Message.", "x" = "Bullet A", "i" = "Bullet B."), parent = foo)
+```
+
+```{r, error = TRUE}
+f()
+```

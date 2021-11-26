@@ -183,17 +183,74 @@
         Header
         i Bullet
 
-# can print message with prefix
+# can print message with and without prefix
 
     Code
+      foo <- error_cnd("foo", message = "Parent message.", body = c(`*` = "Bullet 1.",
+        `*` = "Bullet 2."), use_cli_format = TRUE)
+      bar <- error_cnd("bar", message = "Message.", body = c(`*` = "Bullet A.", `*` = "Bullet B."),
+      parent = foo, use_cli_format = TRUE)
       writeLines(cnd_message(foo, prefix = TRUE))
     Output
-      Error: Foo
+      Error: Parent message.
+      * Bullet 1.
+      * Bullet 2.
     Code
       writeLines(cnd_message(bar, prefix = TRUE))
     Output
       Error:
-        Bar
+        Message.
+        * Bullet A.
+        * Bullet B.
       Caused by error:
-        Foo
+        Parent message.
+        * Bullet 1.
+        * Bullet 2.
+    Code
+      writeLines(cnd_message(foo, prefix = FALSE))
+    Output
+      Parent message.
+      * Bullet 1.
+      * Bullet 2.
+    Code
+      writeLines(cnd_message(bar, prefix = FALSE))
+    Output
+      Message.
+      * Bullet A.
+      * Bullet B.
+      Caused by error:
+        Parent message.
+        * Bullet 1.
+        * Bullet 2.
+
+# can print message without inheritance
+
+    Code
+      foo <- error_cnd("foo", message = "Parent message.", body = c(`*` = "Bullet 1.",
+        `*` = "Bullet 2."), use_cli_format = TRUE)
+      bar <- error_cnd("bar", message = "Message.", body = c(`*` = "Bullet A.", `*` = "Bullet B."),
+      parent = foo, use_cli_format = TRUE)
+      writeLines(cnd_message(foo, inherit = FALSE, prefix = TRUE))
+    Output
+      Error: Parent message.
+      * Bullet 1.
+      * Bullet 2.
+    Code
+      writeLines(cnd_message(bar, inherit = FALSE, prefix = TRUE))
+    Output
+      Error: Message.
+      * Bullet A.
+      * Bullet B.
+    Code
+      writeLines(cnd_message(foo, inherit = FALSE, prefix = FALSE))
+    Output
+      Parent message.
+      * Bullet 1.
+      * Bullet 2.
+    Code
+      writeLines(cnd_message(bar, inherit = FALSE, prefix = FALSE))
+    Output
+      Message.
+      * Bullet A.
+      * Bullet B.
 

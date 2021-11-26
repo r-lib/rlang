@@ -47,6 +47,9 @@
 #'
 #' @param cnd A condition object.
 #' @param ... Arguments passed to methods.
+#' @param inherit Wether to include parent messages. Parent messages
+#'   are printed with a "Caused by error:" prefix, even if `prefix` is
+#'   `FALSE`.
 #' @param prefix Whether to print the full message, including the
 #'   condition prefix (`Error:`, `Warning:`, `Message:`, or
 #'   `Condition:`). The prefix mentions the `call` field if present,
@@ -55,12 +58,25 @@
 #'   in the message with a `Caused by` prefix.
 #'
 #' @export
-cnd_message <- function(cnd, ..., prefix = FALSE) {
-  if (prefix) {
-    cnd_message_reduce(cnd, ...)
-  } else {
-    cnd_message_format(cnd, ...)
+cnd_message <- function(cnd, ..., inherit = TRUE, prefix = FALSE) {
+  # Easier to zap the parent than thread `inherit` across functions
+  if (!inherit) {
+    cnd$parent <- NULL
   }
+
+  if (prefix) {
+    msg <- cnd_message_format_prefixed(cnd, ..., parent = FALSE)
+  } else {
+    msg <- cnd_message_format(cnd, ...)
+  }
+
+  # Parent messages are always prefixed
+  while (is_error(cnd <- cnd$parent)) {
+    parent_msg <- cnd_message_format_prefixed(cnd, parent = TRUE)
+    msg <- paste_line(msg, parent_msg)
+  }
+
+  msg
 }
 cnd_message_lines <- function(cnd, ...) {
   c(
@@ -155,14 +171,6 @@ cnd_footer.default <- function(cnd, ...) {
 }
 
 cnd_message_reduce <- function(cnd, ...) {
-  msg <- cnd_message_format_prefixed(cnd, ..., parent = FALSE)
-
-  while (is_error(cnd <- cnd$parent)) {
-    parent_msg <- cnd_message_format_prefixed(cnd, parent = TRUE)
-    msg <- paste_line(msg, parent_msg)
-  }
-
-  msg
 }
 
 cnd_message_format_prefixed <- function(cnd, ..., parent = FALSE) {
@@ -176,16 +184,7 @@ cnd_message_format_prefixed <- function(cnd, ..., parent = FALSE) {
     indent <- is_condition(cnd$parent)
   }
 
-  if (is_true(cnd$use_cli_format)) {
-    message <- cnd_message_format(cnd, ..., indent = indent)
-  } else {
-    message <- conditionMessage(cnd)
-    if (indent) {
-      message <- paste0("  ", message)
-      message <- gsub("\n", "\n  ", message, fixed = TRUE)
-    }
-  }
-
+  message <- cnd_message_format(cnd, ..., indent = indent)
   message <- strip_trailing_newline(message)
 
   if (!nzchar(message)) {

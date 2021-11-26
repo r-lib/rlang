@@ -7,7 +7,7 @@
 \alias{cnd_footer}
 \title{Build an error message from parts}
 \usage{
-cnd_message(cnd, ..., prefix = FALSE)
+cnd_message(cnd, ..., inherit = TRUE, prefix = FALSE)
 
 cnd_header(cnd, ...)
 
@@ -19,6 +19,10 @@ cnd_footer(cnd, ...)
 \item{cnd}{A condition object.}
 
 \item{...}{Arguments passed to methods.}
+
+\item{inherit}{Wether to include parent messages. Parent messages
+are printed with a "Caused by error:" prefix, even if \code{prefix} is
+\code{FALSE}.}
 
 \item{prefix}{Whether to print the full message, including the
 condition prefix (\verb{Error:}, \verb{Warning:}, \verb{Message:}, or

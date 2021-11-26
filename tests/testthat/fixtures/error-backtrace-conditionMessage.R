@@ -9,7 +9,7 @@ if (nzchar(Sys.getenv("rlang_interactive"))) {
 }
 options(rlang_trace_format_srcrefs = FALSE)
 
-conditionMessage.foobar_error <- function(c) {
+cnd_header.foobar_error <- function(c) {
   "dispatched!"
 }
 
