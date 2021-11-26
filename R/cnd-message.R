@@ -155,17 +155,17 @@ cnd_footer.default <- function(cnd, ...) {
 }
 
 cnd_message_reduce <- function(cnd, ...) {
-  msg <- cnd_prefixed_message(cnd, ..., parent = FALSE)
+  msg <- cnd_message_format_prefixed(cnd, ..., parent = FALSE)
 
   while (is_error(cnd <- cnd$parent)) {
-    parent_msg <- cnd_prefixed_message(cnd, parent = TRUE)
+    parent_msg <- cnd_message_format_prefixed(cnd, parent = TRUE)
     msg <- paste_line(msg, parent_msg)
   }
 
   msg
 }
 
-cnd_prefixed_message <- function(cnd, ..., parent = FALSE) {
+cnd_message_format_prefixed <- function(cnd, ..., parent = FALSE) {
   type <- cnd_type(cnd)
 
   if (parent) {

@@ -232,7 +232,7 @@ cnd_format <- function(x,
   style <- cli_box_chars()
 
   header <- cnd_type_header(x)
-  message <- cnd_prefixed_message(x)
+  message <- cnd_message_format_prefixed(x)
 
   out <- paste_line(
     header,
@@ -252,7 +252,7 @@ cnd_format <- function(x,
       trace <- chained_trace
     }
 
-    message <- cnd_prefixed_message(x, parent = TRUE)
+    message <- cnd_message_format_prefixed(x, parent = TRUE)
     out <- paste_line(out, message)
   }
 
