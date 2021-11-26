@@ -216,8 +216,8 @@
       writeLines(cnd_message(bar, prefix = FALSE))
     Output
       Message.
-      * Bullet A.
-      * Bullet B.
+        * Bullet A.
+        * Bullet B.
       Caused by error:
         Parent message.
         * Bullet 1.

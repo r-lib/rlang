@@ -67,7 +67,15 @@ cnd_message <- function(cnd, ..., inherit = TRUE, prefix = FALSE) {
   if (prefix) {
     msg <- cnd_message_format_prefixed(cnd, ..., parent = FALSE)
   } else {
-    msg <- cnd_message_format(cnd, ...)
+    indent <- is_condition(cnd$parent)
+    msg <- cnd_message_format(cnd, ..., indent = indent)
+
+    # Remove leading indent but leave bullets indent if we are not in
+    # charge of formatting the error prefix. This makes the output of
+    # `conditionMessage()` as consistent as possible.
+    if (indent && !prefix) {
+      msg <- substr(msg, 3, nchar(msg))
+    }
   }
 
   # Parent messages are always prefixed

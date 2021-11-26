@@ -479,8 +479,8 @@
           f()
       
           ## Error: Message.
-          ## x Bullet A
-          ## i Bullet B.
+          ##   x Bullet A
+          ##   i Bullet B.
           ## Caused by error:
           ##   Parent message.
           ##   * Bullet 1.
