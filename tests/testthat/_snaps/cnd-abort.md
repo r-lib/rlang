@@ -462,3 +462,27 @@
       <error/rlang_error>
       Error in `f4()`: foo
 
+# errors are displayed with parent messages in knitted files
+
+    Code
+      writeLines(render_md("test-parent-errors.Rmd"))
+    Output
+          foo <- error_cnd(
+            "foo",
+            message = "Parent message.",
+            body = c("*" = "Bullet 1.", "*" = "Bullet 2."),
+            use_cli_format = TRUE
+          )
+      
+          f <- function() abort(c("Message.", "x" = "Bullet A", "i" = "Bullet B."), parent = foo)
+      
+          f()
+      
+          ## Error: Message.
+          ##   x Bullet A
+          ##   i Bullet B.
+          ## Caused by error:
+          ##   Parent message.
+          ##   * Bullet 1.
+          ##   * Bullet 2.
+

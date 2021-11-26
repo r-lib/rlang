@@ -221,15 +221,15 @@ cli::test_that_cli(configs = c("plain", "fancy"), "can use cli syntax in `cnd_me
 
 test_that("prefix takes call into account", {
   err <- error_cnd(message = "msg", call = quote(foo(bar = TRUE)))
-  expect_equal(cnd_prefixed_message(err), "Error in `foo()`: msg")
+  expect_equal(cnd_message_format_prefixed(err), "Error in `foo()`: msg")
 
   # Inlined objects disable context deparsing
   err1 <- error_cnd(message = "msg", call = expr(foo(bar = !!(1:3))))
   err2 <- error_cnd(message = "msg", call = quote(foo$bar()))
   err3 <- error_cnd(message = "msg", call = call2(identity))
-  expect_equal(cnd_prefixed_message(err1), "Error in `foo()`: msg")
-  expect_equal(cnd_prefixed_message(err2), "Error: msg")
-  expect_equal(cnd_prefixed_message(err3), "Error: msg")
+  expect_equal(cnd_message_format_prefixed(err1), "Error in `foo()`: msg")
+  expect_equal(cnd_message_format_prefixed(err2), "Error: msg")
+  expect_equal(cnd_message_format_prefixed(err3), "Error: msg")
 })
 
 test_that("long prefixes cause a line break", {
@@ -333,11 +333,50 @@ test_that("special syntax calls handle edge cases", {
   expect_equal(error_call_as_string(quote(base::`+`(1, 2))), "+")
 })
 
-test_that("can print message with prefix", {
-  foo <- error_cnd("foo", message = "Foo")
-  bar <- error_cnd("bar", message = "Bar", parent = foo)
-  expect_snapshot({
+test_that("can print message with and without prefix", {
+  expect_snapshot(cran = TRUE, {
+    foo <- error_cnd(
+      "foo",
+      message = "Parent message.",
+      body = c("*" = "Bullet 1.", "*" = "Bullet 2."),
+      use_cli_format = TRUE
+    )
+    bar <- error_cnd(
+      "bar",
+      message = "Message.",
+      body = c("*" = "Bullet A.", "*" = "Bullet B."),
+      parent = foo,
+      use_cli_format = TRUE
+    )
+
     writeLines(cnd_message(foo, prefix = TRUE))
     writeLines(cnd_message(bar, prefix = TRUE))
+
+    writeLines(cnd_message(foo, prefix = FALSE))
+    writeLines(cnd_message(bar, prefix = FALSE))
+  })
+})
+
+test_that("can print message without inheritance", {
+  expect_snapshot(cran = TRUE, {
+    foo <- error_cnd(
+      "foo",
+      message = "Parent message.",
+      body = c("*" = "Bullet 1.", "*" = "Bullet 2."),
+      use_cli_format = TRUE
+    )
+    bar <- error_cnd(
+      "bar",
+      message = "Message.",
+      body = c("*" = "Bullet A.", "*" = "Bullet B."),
+      parent = foo,
+      use_cli_format = TRUE
+    )
+
+    writeLines(cnd_message(foo, inherit = FALSE, prefix = TRUE))
+    writeLines(cnd_message(bar, inherit = FALSE, prefix = TRUE))
+
+    writeLines(cnd_message(foo, inherit = FALSE, prefix = FALSE))
+    writeLines(cnd_message(bar, inherit = FALSE, prefix = FALSE))
   })
 })

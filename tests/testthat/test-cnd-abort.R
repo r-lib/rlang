@@ -520,3 +520,13 @@ test_that("generic call is picked up in methods", {
     err(f4(NULL))
   })
 })
+
+test_that("errors are displayed with parent messages in knitted files", {
+  skip_if_not_installed("knitr")
+  skip_if_not_installed("rmarkdown")
+  skip_if(!rmarkdown::pandoc_available())
+
+  expect_snapshot({
+    writeLines(render_md("test-parent-errors.Rmd"))
+  })
+})
