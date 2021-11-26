@@ -122,6 +122,7 @@
 <div class="section level3">
 <h3 id="features-and-bugfixes-development-version">Features and bugfixes<a class="anchor" aria-label="anchor" href="#features-and-bugfixes-development-version"></a></h3>
 <ul><li><p><code><a href="../reference/cnd_message.html">cnd_message()</a></code> gains a <code>prefix</code> argument to print the message with a full prefix, including <code>call</code> field if present and parent messages if the condition is chained.</p></li>
+<li><p><code><a href="../reference/cnd_message.html">cnd_message()</a></code> gains an <code>inherit</code> argument to control whether to print the messages of parent errors.</p></li>
 <li><p><code><a href="../reference/env_has.html">env_has()</a></code> and the corresponding C-level function no longer force active bindings (<a href="https://github.com/r-lib/rlang/issues/1292" class="external-link">#1292</a>).</p></li>
 <li><p>New <code>names2&lt;-</code> replacement function that never adds missing values when names don’t have names (<a href="https://github.com/r-lib/rlang/issues/1301" class="external-link">#1301</a>).</p></li>
 <li><p>New <code><a href="../reference/cnd_inherits.html">cnd_inherits()</a></code> function to detect a class in the error ancestry (<a href="https://github.com/r-lib/rlang/issues/1293" class="external-link">#1293</a>).</p></li>
