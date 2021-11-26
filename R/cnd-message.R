@@ -59,8 +59,7 @@ cnd_message <- function(cnd, ..., prefix = FALSE) {
   if (prefix) {
     cnd_message_reduce(cnd, ...)
   } else {
-    cnd_format <- cnd_formatter(cnd)
-    cnd_format(cnd_message_lines(cnd, ...))
+    cnd_message_format(cnd, ...)
   }
 }
 cnd_message_lines <- function(cnd, ...) {
@@ -71,16 +70,16 @@ cnd_message_lines <- function(cnd, ...) {
   )
 }
 
-cnd_formatter <- function(cnd) {
+cnd_message_format <- function(cnd, ..., indent = FALSE) {
+  lines <- cnd_message_lines(cnd, ...)
+
   if (!is_true(cnd$use_cli_format)) {
-    return(function(x, indent = FALSE) {
-      x <- paste_line(x)
-      if (indent) {
-        x <- paste0("  ", x)
-        x <- gsub("\n", "\n  ", x, fixed = TRUE)
-      }
-      x
-    })
+    out <- paste_line(lines)
+    if (indent) {
+      out <- paste0("  ", out)
+      out <- gsub("\n", "\n  ", out, fixed = TRUE)
+    }
+    return(out)
   }
 
   # FIXME! Use `format_message()` instead of `format_error()` until
@@ -92,12 +91,10 @@ cnd_formatter <- function(cnd) {
     cli::format_message
   )
 
-  function(x, indent = FALSE) {
-    if (indent) {
-      local_cli_indent()
-    }
-    cli_format(glue_escape(x), .envir = emptyenv())
+  if (indent) {
+    local_cli_indent()
   }
+  cli_format(glue_escape(lines), .envir = emptyenv())
 }
 
 local_cli_indent <- function(frame = caller_env()) {
@@ -180,10 +177,7 @@ cnd_prefixed_message <- function(cnd, ..., parent = FALSE) {
   }
 
   if (is_true(cnd$use_cli_format)) {
-    message <- cnd_message_lines(cnd, ...)
-
-    cnd_format <- cnd_formatter(cnd)
-    message <- cnd_format(message, indent = indent)
+    message <- cnd_message_format(cnd, ..., indent = indent)
   } else {
     message <- conditionMessage(cnd)
     if (indent) {
