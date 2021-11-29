@@ -103,8 +103,7 @@ more suited for experimenting with the R language."><meta property="og:image" co
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Evaluate an expression within a given environment</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/lifecycle-retired.R" class="external-link"><code>R/lifecycle-retired.R</code></a></small>
       <div class="d-none name"><code>with_env.Rd</code></div>
@@ -124,14 +123,13 @@ evaluation stack, and has stack-consistent semantics. It is thus
 more suited for experimenting with the R language.</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">with_env</span><span class="op">(</span><span class="va">env</span>, <span class="va">expr</span><span class="op">)</span>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">with_env</span><span class="op">(</span><span class="va">env</span>, <span class="va">expr</span><span class="op">)</span>
 
-<span class="fu">locally</span><span class="op">(</span><span class="va">expr</span><span class="op">)</span></code></pre>
+<span class="fu">locally</span><span class="op">(</span><span class="va">expr</span><span class="op">)</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>env</dt>
@@ -140,11 +138,10 @@ an object with a <code><a href="get_env.html">get_env()</a></code> method.</p></
 <dt>expr</dt>
 <dd><p>An expression to evaluate.</p></dd>
 </dl></div>
-    </div>
 
-    <div id="examples">
-    <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># with_env() is handy to create formulas with a given environment:</span></span>
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># with_env() is handy to create formulas with a given environment:</span></span>
 <span class="r-in"><span class="va">env</span> <span class="op">&lt;-</span> <span class="fu"><a href="env.html">child_env</a></span><span class="op">(</span><span class="st">"rlang"</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu">with_env</span><span class="op">(</span><span class="va">env</span>, <span class="op">~</span><span class="fu"><a href="new_formula.html">new_formula</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="f_rhs.html">f_env</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span>, <span class="va">env</span><span class="op">)</span></span>
@@ -180,11 +177,8 @@ an object with a <code><a href="get_env.html">get_env()</a></code> method.</p></
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 6 6 4 6 8 6 8 4 4 6 6 8 8 8 8 8 8 4 4 4 4 8 8 8 8 4 4 4 8 6 8 4</span>
 </code></pre></div>
     </div>
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

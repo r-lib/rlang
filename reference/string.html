@@ -91,8 +91,7 @@ string version checks that the input contains a scalar string."><meta property="
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Create a string</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/utils-encoding.R" class="external-link"><code>R/utils-encoding.R</code></a></small>
       <div class="d-none name"><code>string.Rd</code></div>
@@ -106,12 +105,11 @@ of strings in R. They take character vectors or string-like objects
 string version checks that the input contains a scalar string.</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">string</span><span class="op">(</span><span class="va">x</span>, encoding <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">string</span><span class="op">(</span><span class="va">x</span>, encoding <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
@@ -121,11 +119,10 @@ objects.</p></dd>
 <dd><p>If non-null, set an encoding mark. This is only
 declarative, no encoding conversion is performed.</p></dd>
 </dl></div>
-    </div>
 
-    <div id="examples">
-    <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># As everywhere in R, you can specify a string with Unicode</span></span>
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># As everywhere in R, you can specify a string with Unicode</span></span>
 <span class="r-in"><span class="co"># escapes. The characters corresponding to Unicode codepoints will</span></span>
 <span class="r-in"><span class="co"># be encoded in UTF-8, and the string will be marked as UTF-8</span></span>
 <span class="r-in"><span class="co"># automatically:</span></span>
@@ -147,11 +144,8 @@ declarative, no encoding conversion is performed.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 63 61 66 e9</span>
 </code></pre></div>
     </div>
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

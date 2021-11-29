@@ -119,8 +119,7 @@ But what if you want to take multiple columns in a single named argument rather 
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Taking multiple columns without <code>...</code></h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/topic-nse.R" class="external-link"><code>R/topic-nse.R</code></a></small>
       <div class="d-none name"><code>topic-multiple-columns.Rd</code></div>
@@ -146,11 +145,10 @@ But what if you want to take multiple columns in a single named argument rather 
 <p>But what if you want to take multiple columns in a single named argument rather than in <code>...</code>?</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="using-tidy-selections">Using tidy selections<a class="anchor" aria-label="anchor" href="#using-tidy-selections"></a></h2>
     <p>The idiomatic tidyverse way of taking multiple columns in a single argument is to take a <em>tidy selection</em> (see the <a href="topic-data-mask-programming.html">Argument behaviours</a> section). In tidy selections, the syntax for passing multiple columns in a single argument is <code><a href="https://rdrr.io/r/base/c.html" class="external-link">c()</a></code>:</p><div class="sourceCode r"><pre><code><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu">pivot_longer</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">am</span>, <span class="va">cyl</span>, <span class="va">vs</span><span class="op">)</span><span class="op">)</span></code></pre><p></p></div>
@@ -213,13 +211,9 @@ But what if you want to take multiple columns in a single named argument rather 
 <span class="co">#&gt; ℹ `..1` must be size 32 or 1, not 2.</span></code></pre><p></p></div>
 <p>Also, it would be better for overall consistency of interfaces to use the tidyselect syntax <code><a href="https://rdrr.io/r/base/c.html" class="external-link">c()</a></code> for passing multiple columns. In general, we recommend to use either the tidyselect or the external defusal approaches.</p>
     </div>
-    </div>
 
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

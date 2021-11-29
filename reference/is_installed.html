@@ -115,8 +115,7 @@ case, missing packages always cause an error."><meta property="og:image" content
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Are packages installed in any of the libraries?</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/session.R" class="external-link"><code>R/session.R</code></a></small>
       <div class="d-none name"><code>is_installed.Rd</code></div>
@@ -139,14 +138,13 @@ the current evaluation is aborted.</p></li>
 case, missing packages always cause an error.</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">is_installed</span><span class="op">(</span><span class="va">pkg</span>, <span class="va">...</span>, version <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">is_installed</span><span class="op">(</span><span class="va">pkg</span>, <span class="va">...</span>, version <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
 
-<span class="fu">check_installed</span><span class="op">(</span><span class="va">pkg</span>, reason <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span>, version <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre>
+<span class="fu">check_installed</span><span class="op">(</span><span class="va">pkg</span>, reason <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span>, version <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>pkg</dt>
@@ -185,11 +183,10 @@ from scratch.</p>
 restarting case, or if the <code>rlib_restart_package_not_found</code> user
 option is set to <code>FALSE</code>.</p>
     </div>
-    </div>
 
-    <div id="examples">
-    <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">is_installed</span><span class="op">(</span><span class="st">"utils"</span><span class="op">)</span></span>
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">is_installed</span><span class="op">(</span><span class="st">"utils"</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 <span class="r-in"><span class="fu">is_installed</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"base"</span>, <span class="st">"ggplot5"</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
@@ -197,11 +194,8 @@ option is set to <code>FALSE</code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
 </code></pre></div>
     </div>
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

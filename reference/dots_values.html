@@ -93,8 +93,7 @@ flatten_if())."><meta property="og:image" content="https://rlang.r-lib.org/logo.
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Evaluate dots with preliminary splicing</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/dots.R" class="external-link"><code>R/dots.R</code></a></small>
       <div class="d-none name"><code>dots_values.Rd</code></div>
@@ -109,18 +108,17 @@ spliced objects manually, perhaps with a custom predicate (see
 <code><a href="flatten.html">flatten_if()</a></code>).</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">dots_values</span><span class="op">(</span>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">dots_values</span><span class="op">(</span>
   <span class="va">...</span>,
   .ignore_empty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"trailing"</span>, <span class="st">"none"</span>, <span class="st">"all"</span><span class="op">)</span>,
   .preserve_empty <span class="op">=</span> <span class="cn">FALSE</span>,
   .homonyms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"keep"</span>, <span class="st">"first"</span>, <span class="st">"last"</span>, <span class="st">"error"</span><span class="op">)</span>,
   .check_assign <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre>
+<span class="op">)</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>...</dt>
@@ -146,11 +144,10 @@ warning recommends users to use <code>=</code> if they meant to match a
 function parameter or wrap the <code>&lt;-</code> call in curly braces otherwise.
 This ensures assignments are explicit.</p></dd>
 </dl></div>
-    </div>
 
-    <div id="examples">
-    <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">dots</span> <span class="op">&lt;-</span> <span class="fu">dots_values</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span></span>
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">dots</span> <span class="op">&lt;-</span> <span class="fu">dots_values</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">dots</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;spliced&gt;</span>
@@ -178,11 +175,8 @@ This ensures assignments are explicit.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

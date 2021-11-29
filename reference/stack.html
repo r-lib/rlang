@@ -99,8 +99,7 @@ history, on the other hand, is homogenous."><meta property="og:image" content="h
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Call stack information</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/lifecycle-retired.R" class="external-link"><code>R/lifecycle-retired.R</code></a></small>
       <div class="d-none name"><code>stack.Rd</code></div>
@@ -118,9 +117,9 @@ potentially nonlinear in terms of call history. The call stack
 history, on the other hand, is homogenous.</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">global_frame</span><span class="op">(</span><span class="op">)</span>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">global_frame</span><span class="op">(</span><span class="op">)</span>
 
 <span class="fu">current_frame</span><span class="op">(</span><span class="op">)</span>
 
@@ -134,10 +133,9 @@ history, on the other hand, is homogenous.</p>
 
 <span class="fu">ctxt_stack</span><span class="op">(</span>n <span class="op">=</span> <span class="cn">NULL</span>, trim <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
 
-<span class="fu">call_stack</span><span class="op">(</span>n <span class="op">=</span> <span class="cn">NULL</span>, clean <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre>
+<span class="fu">call_stack</span><span class="op">(</span>n <span class="op">=</span> <span class="cn">NULL</span>, clean <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>n</dt>
@@ -187,11 +185,10 @@ frame as well. This way, <code>call_stack(call_depth())</code> is the same as
 
 <p>These functions are soft-deprecated and replaced by <code><a href="trace_back.html">trace_back()</a></code>.</p>
     </div>
-    </div>
 
-    <div id="examples">
-    <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Expressions within arguments count as contexts</span></span>
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Expressions within arguments count as contexts</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/identity.html" class="external-link">identity</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/identity.html" class="external-link">identity</a></span><span class="op">(</span><span class="fu">ctxt_depth</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="co"># returns 2</span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`ctxt_depth()` is deprecated as of rlang 0.3.0.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">This warning is displayed once per session.</span></span>
@@ -212,147 +209,147 @@ frame as well. This way, <code>call_stack(call_depth())</code> is the same as
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 29&gt; (28)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: identity(x)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f700b72ba8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5657778]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 28&gt; (25)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: f(ctxt_stack())</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f700b72cc0]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5657890]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 27&gt; (26)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: identity(x)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f700b72dd8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f56579a8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[4]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 26&gt; (25)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: f(f(ctxt_stack()))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f700b72ef0]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5657ac0]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[5]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 25&gt; (24)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: eval(expr, envir, enclos)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f7025f5198]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5ffd678]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[6]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 24&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: eval(expr, envir, enclos)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f700b6fbb0]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5657c80]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[7]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 23&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: withVisible(eval(expr, envir, enclos))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f700b6fe88]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5657eb0]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[8]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 22&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f700b70438]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5658460]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[9]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 21&gt; (20)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: doTryCatch(return(expr), name, parentenv, handler)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f700b70a90]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f56589d8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[10]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 20&gt; (19)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: tryCatchOne(expr, names, parentenv, handlers[[1L]])</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f700b70dd8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5658d20]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[11]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 19&gt; (18)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: tryCatchList(expr, classes, parentenv, handlers)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f700b71318]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f4fe6598]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[12]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 18&gt; (17)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: tryCatch(expr, error = function(e) { &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f700fc5b60]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f4fe6c60]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[13]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 17&gt; (16)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: try(f, silent = TRUE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f700fc5d90]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f4fe6e90]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[14]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 16&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, envir,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f700fc5f18]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f4fe7018]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[15]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 15&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: timing_fn(handle(ev &lt;- withCallingHandlers(withVisible(eval(expr,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f700fc5ff8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f4fe70f8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[16]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 14&gt; (13)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f700cfac30]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f5bdc238]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[17]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 13&gt; (12)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: evaluate::evaluate(code, child_env(env), new_device = TRUE, output_handler = output_handler)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f700e17090]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f51b58d8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[18]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 12&gt; (11)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: downlit::evaluate_and_highlight(code, fig_save = fig_save_topic,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f700e14680]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f51b6cf8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[19]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 11&gt; (10)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: highlight_examples(code, topic, env = env)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7013b2520]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f478c770]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[20]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 10&gt; (9)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: run_examples(tags$tag_examples[[1]], env = if (is.null(examples_env)) NULL else new.env(parent = examples_env),  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f702dd3f00]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6cdf3e8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[21]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 9&gt; (7)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: data_reference_topic(topic, pkg, examples_env = examples_env,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7017a5b10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6ab9b40]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[22]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 8&gt; (7)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: withCallingHandlers(data_reference_topic(topic, pkg, examples_env = examples_env,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7017a6248]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6aba240]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[23]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 7&gt; (6)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: .f(.x[[i]], ...)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7013c36b8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f5b4d520]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[24]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 6&gt; (5)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fe071868]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647ef34f538]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[25]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 5&gt; (4)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_reference(pkg, lazy = lazy, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fea849f8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f0f02518]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[26]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 4&gt; (3)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site_local(pkg = pkg, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fde95030]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f1042150]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[27]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 3&gt; (2)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site(pkg, preview = FALSE, install = install, new_process = new_process,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fde94d10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f1039f90]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[28]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 2&gt; (1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site_github_pages(pkg, dest_dir = dest_dir, ..., clean = clean)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fc35d518]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647ef520758]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[29]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 1&gt; (0)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: pkgdown::deploy_to_branch(new_process = FALSE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fada1e10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647edf3eda0]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[30]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 0&gt; [global]</span>
@@ -367,72 +364,72 @@ frame as well. This way, <code>call_stack(call_depth())</code> is the same as
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 24&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: eval(expr, envir, enclos)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f7025f5198]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5ffd678]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 14&gt; (13)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7021bab78]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f4bfdd40]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 13&gt; (12)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: evaluate::evaluate(code, child_env(env), new_device = TRUE, output_handler = output_handler)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f700e17090]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f51b58d8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[4]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 12&gt; (11)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: downlit::evaluate_and_highlight(code, fig_save = fig_save_topic,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f700e14680]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f51b6cf8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[5]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 11&gt; (10)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: highlight_examples(code, topic, env = env)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7013b2520]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f478c770]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[6]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 10&gt; (9)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: run_examples(tags$tag_examples[[1]], env = if (is.null(examples_env)) NULL else new.env(parent = examples_env),  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f702dd3f00]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6cdf3e8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[7]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 9&gt; (7)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: data_reference_topic(topic, pkg, examples_env = examples_env,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7017a5b10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6ab9b40]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[8]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 7&gt; (6)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: .f(.x[[i]], ...)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7013c36b8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f5b4d520]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[9]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 6&gt; (5)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fe071868]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647ef34f538]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[10]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 5&gt; (4)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_reference(pkg, lazy = lazy, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fea849f8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f0f02518]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[11]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 4&gt; (3)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site_local(pkg = pkg, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fde95030]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f1042150]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[12]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 3&gt; (2)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site(pkg, preview = FALSE, install = install, new_process = new_process,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fde94d10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f1039f90]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[13]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 2&gt; (1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site_github_pages(pkg, dest_dir = dest_dir, ..., clean = clean)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fc35d518]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647ef520758]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[14]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 1&gt; (0)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: pkgdown::deploy_to_branch(new_process = FALSE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fada1e10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647edf3eda0]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[15]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 0&gt; [global]</span>
@@ -447,142 +444,142 @@ frame as well. This way, <code>call_stack(call_depth())</code> is the same as
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 28&gt; (25)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: g(ctxt_stack)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6ff5ba958]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5d4eb10]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 27&gt; (26)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: identity(x)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6ff5ba840]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5d4ec28]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 26&gt; (25)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: f(g(ctxt_stack))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6ff5ba728]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5d4ed40]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[4]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 25&gt; (24)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: eval(expr, envir, enclos)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f7025f5198]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5ffd678]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[5]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 24&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: eval(expr, envir, enclos)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6ff5ba568]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5d4ef00]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[6]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 23&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: withVisible(eval(expr, envir, enclos))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6ff5ba300]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5d4f130]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[7]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 22&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6ff5b9d50]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5d4b8b0]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[8]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 21&gt; (20)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: doTryCatch(return(expr), name, parentenv, handler)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6ff5b97d8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5d4be28]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[9]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 20&gt; (19)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: tryCatchOne(expr, names, parentenv, handlers[[1L]])</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6ff5b9490]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5d4c170]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[10]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 19&gt; (18)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: tryCatchList(expr, classes, parentenv, handlers)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6ff5b9110]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5d4c4b8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[11]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 18&gt; (17)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: tryCatch(expr, error = function(e) { &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6ff5bc878]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5d4cbb8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[12]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 17&gt; (16)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: try(f, silent = TRUE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6ff5bc648]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5d4cde8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[13]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 16&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, envir,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6ff5bc4c0]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5d4cf70]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[14]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 15&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: timing_fn(handle(ev &lt;- withCallingHandlers(withVisible(eval(expr,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6ff5bc3e0]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5d4d050]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[15]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 14&gt; (13)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6ff5cd848]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f4188890]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[16]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 13&gt; (12)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: evaluate::evaluate(code, child_env(env), new_device = TRUE, output_handler = output_handler)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f700e17090]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f51b58d8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[17]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 12&gt; (11)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: downlit::evaluate_and_highlight(code, fig_save = fig_save_topic,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f700e14680]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f51b6cf8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[18]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 11&gt; (10)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: highlight_examples(code, topic, env = env)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7013b2520]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f478c770]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[19]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 10&gt; (9)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: run_examples(tags$tag_examples[[1]], env = if (is.null(examples_env)) NULL else new.env(parent = examples_env),  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f702dd3f00]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6cdf3e8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[20]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 9&gt; (7)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: data_reference_topic(topic, pkg, examples_env = examples_env,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7017a5b10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6ab9b40]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[21]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 8&gt; (7)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: withCallingHandlers(data_reference_topic(topic, pkg, examples_env = examples_env,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7017a6248]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6aba240]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[22]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 7&gt; (6)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: .f(.x[[i]], ...)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7013c36b8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f5b4d520]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[23]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 6&gt; (5)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fe071868]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647ef34f538]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[24]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 5&gt; (4)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_reference(pkg, lazy = lazy, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fea849f8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f0f02518]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[25]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 4&gt; (3)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site_local(pkg = pkg, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fde95030]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f1042150]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[26]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 3&gt; (2)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site(pkg, preview = FALSE, install = install, new_process = new_process,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fde94d10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f1039f90]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[27]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 2&gt; (1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site_github_pages(pkg, dest_dir = dest_dir, ..., clean = clean)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fc35d518]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647ef520758]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[28]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 1&gt; (0)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: pkgdown::deploy_to_branch(new_process = FALSE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fada1e10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647edf3eda0]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[29]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 0&gt; [global]</span>
@@ -595,77 +592,77 @@ frame as well. This way, <code>call_stack(call_depth())</code> is the same as
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 28&gt; (24)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: g(call_stack)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6ff28b638]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f3e67918]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 24&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: eval(expr, envir, enclos)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f7025f5198]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5ffd678]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 14&gt; (13)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6ff2a5e60]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f3e6f410]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[4]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 13&gt; (12)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: evaluate::evaluate(code, child_env(env), new_device = TRUE, output_handler = output_handler)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f700e17090]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f51b58d8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[5]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 12&gt; (11)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: downlit::evaluate_and_highlight(code, fig_save = fig_save_topic,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f700e14680]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f51b6cf8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[6]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 11&gt; (10)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: highlight_examples(code, topic, env = env)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7013b2520]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f478c770]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[7]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 10&gt; (9)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: run_examples(tags$tag_examples[[1]], env = if (is.null(examples_env)) NULL else new.env(parent = examples_env),  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f702dd3f00]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6cdf3e8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[8]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 9&gt; (7)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: data_reference_topic(topic, pkg, examples_env = examples_env,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7017a5b10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6ab9b40]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[9]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 7&gt; (6)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: .f(.x[[i]], ...)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7013c36b8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f5b4d520]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[10]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 6&gt; (5)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fe071868]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647ef34f538]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[11]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 5&gt; (4)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_reference(pkg, lazy = lazy, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fea849f8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f0f02518]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[12]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 4&gt; (3)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site_local(pkg = pkg, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fde95030]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f1042150]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[13]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 3&gt; (2)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site(pkg, preview = FALSE, install = install, new_process = new_process,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fde94d10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f1039f90]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[14]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 2&gt; (1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site_github_pages(pkg, dest_dir = dest_dir, ..., clean = clean)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fc35d518]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647ef520758]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[15]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 1&gt; (0)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: pkgdown::deploy_to_branch(new_process = FALSE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fada1e10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647edf3eda0]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[16]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 0&gt; [global]</span>
@@ -691,12 +688,12 @@ frame as well. This way, <code>call_stack(call_depth())</code> is the same as
 <span class="r-out co"><span class="r-pr">#&gt;</span> $current</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 26&gt; (25)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: fn()</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fefc1d20]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5c51058]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $first</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 26&gt; (25)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: fn()</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fefc1d20]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5c51058]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># While current_frame() is the top of the stack, global_frame() is</span></span>
@@ -715,137 +712,137 @@ frame as well. This way, <code>call_stack(call_depth())</code> is the same as
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 27&gt; (25)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: identity(ctxt_stack())</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fed29ea0]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f3d6f850]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 26&gt; (25)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: identity(identity(ctxt_stack()))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fed29d18]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f3d6f968]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 25&gt; (24)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: eval(expr, envir, enclos)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f7025f5198]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5ffd678]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[4]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 24&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: eval(expr, envir, enclos)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fed29ae8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f3d6fb28]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[5]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 23&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: withVisible(eval(expr, envir, enclos))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fed298b8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f3d6fd58]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[6]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 22&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fed291f0]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f3d70308]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[7]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 21&gt; (20)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: doTryCatch(return(expr), name, parentenv, handler)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fed28c78]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f3d6cac0]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[8]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 20&gt; (19)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: tryCatchOne(expr, names, parentenv, handlers[[1L]])</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fed28888]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f3d6ce08]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[9]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 19&gt; (18)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: tryCatchList(expr, classes, parentenv, handlers)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fed284d0]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f3d6d150]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[10]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 18&gt; (17)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: tryCatch(expr, error = function(e) { &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fed2bb20]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f3d6d850]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[11]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 17&gt; (16)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: try(f, silent = TRUE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fed2b880]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f3d6da80]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[12]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 16&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, envir,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fed2b6f8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f3d6dc08]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[13]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 15&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: timing_fn(handle(ev &lt;- withCallingHandlers(withVisible(eval(expr,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fed2b180]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f3d6dd20]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[14]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 14&gt; (13)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fed41e78]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f5589710]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[15]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 13&gt; (12)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: evaluate::evaluate(code, child_env(env), new_device = TRUE, output_handler = output_handler)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f700e17090]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f51b58d8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[16]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 12&gt; (11)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: downlit::evaluate_and_highlight(code, fig_save = fig_save_topic,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f700e14680]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f51b6cf8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[17]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 11&gt; (10)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: highlight_examples(code, topic, env = env)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7013b2520]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f478c770]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[18]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 10&gt; (9)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: run_examples(tags$tag_examples[[1]], env = if (is.null(examples_env)) NULL else new.env(parent = examples_env),  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f702dd3f00]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6cdf3e8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[19]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 9&gt; (7)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: data_reference_topic(topic, pkg, examples_env = examples_env,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7017a5b10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6ab9b40]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[20]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 8&gt; (7)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: withCallingHandlers(data_reference_topic(topic, pkg, examples_env = examples_env,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7017a6248]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6aba240]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[21]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 7&gt; (6)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: .f(.x[[i]], ...)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7013c36b8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f5b4d520]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[22]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 6&gt; (5)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fe071868]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647ef34f538]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[23]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 5&gt; (4)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_reference(pkg, lazy = lazy, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fea849f8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f0f02518]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[24]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 4&gt; (3)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site_local(pkg = pkg, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fde95030]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f1042150]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[25]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 3&gt; (2)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site(pkg, preview = FALSE, install = install, new_process = new_process,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fde94d10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f1039f90]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[26]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 2&gt; (1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site_github_pages(pkg, dest_dir = dest_dir, ..., clean = clean)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fc35d518]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647ef520758]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[27]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 1&gt; (0)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: pkgdown::deploy_to_branch(new_process = FALSE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fada1e10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647edf3eda0]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[28]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 0&gt; [global]</span>
@@ -858,127 +855,127 @@ frame as well. This way, <code>call_stack(call_depth())</code> is the same as
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 25&gt; (24)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: eval(expr, envir, enclos)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f7025f5198]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5ffd678]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 24&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: eval(expr, envir, enclos)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fe6a2030]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f43da0f0]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 23&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: withVisible(eval(expr, envir, enclos))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fe6a1cb0]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f43da320]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[4]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 22&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fe6a4ff0]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f43da908]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[5]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 21&gt; (20)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: doTryCatch(return(expr), name, parentenv, handler)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fe6a4730]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f43dae80]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[6]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 20&gt; (19)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: tryCatchOne(expr, names, parentenv, handlers[[1L]])</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fe6a4260]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f43db1c8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[7]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 19&gt; (18)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: tryCatchList(expr, classes, parentenv, handlers)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fe6a3ea8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f43db510]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[8]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 18&gt; (17)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: tryCatch(expr, error = function(e) { &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fe6a5930]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f43d7da8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[9]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 17&gt; (16)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: try(f, silent = TRUE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fe6a9300]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f43d7fd8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[10]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 16&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, envir,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fe6a9140]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f43d8160]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[11]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 15&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: timing_fn(handle(ev &lt;- withCallingHandlers(withVisible(eval(expr,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fe6a9028]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f43d8240]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[12]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 14&gt; (13)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fe6e8ee8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f4099fa0]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[13]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 13&gt; (12)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: evaluate::evaluate(code, child_env(env), new_device = TRUE, output_handler = output_handler)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f700e17090]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f51b58d8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[14]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 12&gt; (11)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: downlit::evaluate_and_highlight(code, fig_save = fig_save_topic,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f700e14680]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f51b6cf8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[15]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 11&gt; (10)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: highlight_examples(code, topic, env = env)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7013b2520]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f478c770]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[16]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 10&gt; (9)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: run_examples(tags$tag_examples[[1]], env = if (is.null(examples_env)) NULL else new.env(parent = examples_env),  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f702dd3f00]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6cdf3e8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[17]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 9&gt; (7)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: data_reference_topic(topic, pkg, examples_env = examples_env,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7017a5b10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6ab9b40]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[18]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 8&gt; (7)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: withCallingHandlers(data_reference_topic(topic, pkg, examples_env = examples_env,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7017a6248]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6aba240]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[19]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 7&gt; (6)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: .f(.x[[i]], ...)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7013c36b8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f5b4d520]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[20]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 6&gt; (5)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fe071868]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647ef34f538]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[21]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 5&gt; (4)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_reference(pkg, lazy = lazy, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fea849f8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f0f02518]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[22]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 4&gt; (3)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site_local(pkg = pkg, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fde95030]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f1042150]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[23]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 3&gt; (2)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site(pkg, preview = FALSE, install = install, new_process = new_process,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fde94d10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f1039f90]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[24]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 2&gt; (1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site_github_pages(pkg, dest_dir = dest_dir, ..., clean = clean)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fc35d518]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647ef520758]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[25]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 1&gt; (0)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: pkgdown::deploy_to_branch(new_process = FALSE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fada1e10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647edf3eda0]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[26]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 0&gt; [global]</span>
@@ -994,142 +991,142 @@ frame as well. This way, <code>call_stack(call_depth())</code> is the same as
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 28&gt; (26)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: identity(ctxt_stack(trim = trim))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fdfcdb88]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f44913b8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 27&gt; (26)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: identity(identity(ctxt_stack(trim = trim)))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fdfcda00]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f44914d0]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 26&gt; (25)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: fn(0)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fdfccca8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f44915e8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[4]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 25&gt; (24)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: eval(expr, envir, enclos)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f7025f5198]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5ffd678]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[5]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 24&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: eval(expr, envir, enclos)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fdfccae8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f44917a8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[6]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 23&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: withVisible(eval(expr, envir, enclos))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fdfcc880]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f44919d8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[7]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 22&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fdfcc2d0]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f4491f88]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[8]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 21&gt; (20)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: doTryCatch(return(expr), name, parentenv, handler)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fdfcfaa8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f4492500]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[9]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 20&gt; (19)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: tryCatchOne(expr, names, parentenv, handlers[[1L]])</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fdfcf6f0]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f4492848]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[10]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 19&gt; (18)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: tryCatchList(expr, classes, parentenv, handlers)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fdfcec70]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f448ed98]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[11]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 18&gt; (17)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: tryCatch(expr, error = function(e) { &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fdfd3bf8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f448f460]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[12]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 17&gt; (16)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: try(f, silent = TRUE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fdfd3920]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f448f690]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[13]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 16&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, envir,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fdfd3760]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f448f818]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[14]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 15&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: timing_fn(handle(ev &lt;- withCallingHandlers(withVisible(eval(expr,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fdfd3680]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f448f8f8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[15]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 14&gt; (13)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fe010b80]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f497ea78]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[16]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 13&gt; (12)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: evaluate::evaluate(code, child_env(env), new_device = TRUE, output_handler = output_handler)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f700e17090]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f51b58d8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[17]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 12&gt; (11)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: downlit::evaluate_and_highlight(code, fig_save = fig_save_topic,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f700e14680]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f51b6cf8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[18]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 11&gt; (10)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: highlight_examples(code, topic, env = env)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7013b2520]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f478c770]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[19]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 10&gt; (9)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: run_examples(tags$tag_examples[[1]], env = if (is.null(examples_env)) NULL else new.env(parent = examples_env),  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f702dd3f00]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6cdf3e8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[20]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 9&gt; (7)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: data_reference_topic(topic, pkg, examples_env = examples_env,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7017a5b10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6ab9b40]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[21]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 8&gt; (7)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: withCallingHandlers(data_reference_topic(topic, pkg, examples_env = examples_env,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7017a6248]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6aba240]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[22]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 7&gt; (6)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: .f(.x[[i]], ...)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7013c36b8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f5b4d520]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[23]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 6&gt; (5)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fe071868]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647ef34f538]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[24]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 5&gt; (4)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_reference(pkg, lazy = lazy, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fea849f8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f0f02518]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[25]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 4&gt; (3)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site_local(pkg = pkg, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fde95030]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f1042150]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[26]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 3&gt; (2)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site(pkg, preview = FALSE, install = install, new_process = new_process,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fde94d10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f1039f90]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[27]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 2&gt; (1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site_github_pages(pkg, dest_dir = dest_dir, ..., clean = clean)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fc35d518]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647ef520758]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[28]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 1&gt; (0)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: pkgdown::deploy_to_branch(new_process = FALSE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fada1e10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647edf3eda0]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[29]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 0&gt; [global]</span>
@@ -1144,132 +1141,132 @@ frame as well. This way, <code>call_stack(call_depth())</code> is the same as
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 26&gt; (25)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: fn(1)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fdac1728]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f50aebe8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 25&gt; (24)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: eval(expr, envir, enclos)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f7025f5198]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5ffd678]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 24&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: eval(expr, envir, enclos)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fdac1568]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f50aeda8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[4]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 23&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: withVisible(eval(expr, envir, enclos))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fdac12c8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f50aefd8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[5]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 22&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fdac0c38]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f50af5f8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[6]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 21&gt; (20)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: doTryCatch(return(expr), name, parentenv, handler)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fdac06c0]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f50afba8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[7]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 20&gt; (19)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: tryCatchOne(expr, names, parentenv, handlers[[1L]])</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fdac4138]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f50aff60]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[8]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 19&gt; (18)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: tryCatchList(expr, classes, parentenv, handlers)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fdac3d80]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f50b02a8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[9]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 18&gt; (17)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: tryCatch(expr, error = function(e) { &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fdac35d8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f50acbb0]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[10]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 17&gt; (16)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: try(f, silent = TRUE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fdac3370]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f50ace50]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[11]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 16&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, envir,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fdac31b0]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f50acfd8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[12]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 15&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: timing_fn(handle(ev &lt;- withCallingHandlers(withVisible(eval(expr,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fdac3060]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f50ad0b8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[13]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 14&gt; (13)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fdadeea0]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f61b2d68]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[14]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 13&gt; (12)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: evaluate::evaluate(code, child_env(env), new_device = TRUE, output_handler = output_handler)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f700e17090]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f51b58d8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[15]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 12&gt; (11)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: downlit::evaluate_and_highlight(code, fig_save = fig_save_topic,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f700e14680]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f51b6cf8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[16]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 11&gt; (10)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: highlight_examples(code, topic, env = env)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7013b2520]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f478c770]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[17]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 10&gt; (9)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: run_examples(tags$tag_examples[[1]], env = if (is.null(examples_env)) NULL else new.env(parent = examples_env),  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f702dd3f00]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6cdf3e8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[18]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 9&gt; (7)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: data_reference_topic(topic, pkg, examples_env = examples_env,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7017a5b10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6ab9b40]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[19]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 8&gt; (7)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: withCallingHandlers(data_reference_topic(topic, pkg, examples_env = examples_env,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7017a6248]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6aba240]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[20]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 7&gt; (6)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: .f(.x[[i]], ...)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7013c36b8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f5b4d520]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[21]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 6&gt; (5)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fe071868]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647ef34f538]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[22]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 5&gt; (4)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_reference(pkg, lazy = lazy, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fea849f8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f0f02518]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[23]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 4&gt; (3)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site_local(pkg = pkg, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fde95030]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f1042150]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[24]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 3&gt; (2)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site(pkg, preview = FALSE, install = install, new_process = new_process,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fde94d10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f1039f90]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[25]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 2&gt; (1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site_github_pages(pkg, dest_dir = dest_dir, ..., clean = clean)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fc35d518]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647ef520758]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[26]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 1&gt; (0)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: pkgdown::deploy_to_branch(new_process = FALSE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fada1e10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647edf3eda0]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[27]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 0&gt; [global]</span>
@@ -1285,142 +1282,142 @@ frame as well. This way, <code>call_stack(call_depth())</code> is the same as
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 28&gt; (25)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: fn(1)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fd59c0e0]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f65b8008]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 27&gt; (25)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: identity(fn(1))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fd59bd98]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f14bf930]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 26&gt; (25)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: identity(identity(fn(1)))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fd59bc80]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5cdf3f8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[4]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 25&gt; (24)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: eval(expr, envir, enclos)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f7025f5198]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5ffd678]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[5]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 24&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: eval(expr, envir, enclos)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fd59ba50]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5b5d8e8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[6]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 23&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: withVisible(eval(expr, envir, enclos))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fd59b740]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5b5d370]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[7]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 22&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fd59d350]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f4660458]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[8]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 21&gt; (20)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: doTryCatch(return(expr), name, parentenv, handler)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fd5a0b98]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5d5d610]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[9]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 20&gt; (19)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: tryCatchOne(expr, names, parentenv, handlers[[1L]])</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fd5a07e0]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f465ced8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[10]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 19&gt; (18)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: tryCatchList(expr, classes, parentenv, handlers)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fd5a0460]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f49dad68]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[11]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 18&gt; (17)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: tryCatch(expr, error = function(e) { &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fd5a1580]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f3c1eb70]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[12]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 17&gt; (16)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: try(f, silent = TRUE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fd5a1318]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f4eed660]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[13]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 16&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, envir,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fd5a1158]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f465a538]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[14]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 15&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: timing_fn(handle(ev &lt;- withCallingHandlers(withVisible(eval(expr,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fd5a1040]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f465cc38]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[15]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 14&gt; (13)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fd69bf78]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f467be70]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[16]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 13&gt; (12)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: evaluate::evaluate(code, child_env(env), new_device = TRUE, output_handler = output_handler)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f700e17090]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f51b58d8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[17]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 12&gt; (11)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: downlit::evaluate_and_highlight(code, fig_save = fig_save_topic,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f700e14680]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f51b6cf8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[18]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 11&gt; (10)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: highlight_examples(code, topic, env = env)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7013b2520]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f478c770]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[19]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 10&gt; (9)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: run_examples(tags$tag_examples[[1]], env = if (is.null(examples_env)) NULL else new.env(parent = examples_env),  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f702dd3f00]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6cdf3e8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[20]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 9&gt; (7)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: data_reference_topic(topic, pkg, examples_env = examples_env,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7017a5b10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6ab9b40]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[21]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 8&gt; (7)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: withCallingHandlers(data_reference_topic(topic, pkg, examples_env = examples_env,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7017a6248]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6aba240]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[22]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 7&gt; (6)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: .f(.x[[i]], ...)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7013c36b8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f5b4d520]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[23]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 6&gt; (5)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fe071868]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647ef34f538]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[24]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 5&gt; (4)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_reference(pkg, lazy = lazy, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fea849f8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f0f02518]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[25]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 4&gt; (3)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site_local(pkg = pkg, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fde95030]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f1042150]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[26]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 3&gt; (2)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site(pkg, preview = FALSE, install = install, new_process = new_process,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fde94d10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f1039f90]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[27]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 2&gt; (1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site_github_pages(pkg, dest_dir = dest_dir, ..., clean = clean)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fc35d518]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647ef520758]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[28]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 1&gt; (0)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: pkgdown::deploy_to_branch(new_process = FALSE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fada1e10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647edf3eda0]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[29]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 0&gt; [global]</span>
@@ -1433,127 +1430,127 @@ frame as well. This way, <code>call_stack(call_depth())</code> is the same as
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 25&gt; (24)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: eval(expr, envir, enclos)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f7025f5198]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5ffd678]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 24&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: eval(expr, envir, enclos)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fc564c60]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f3ff6490]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 23&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: withVisible(eval(expr, envir, enclos))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fc5649f8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f3ff61f0]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[4]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 22&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fc5681d0]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f3ff5c40]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[5]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 21&gt; (20)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: doTryCatch(return(expr), name, parentenv, handler)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fc567a98]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f3ff56c8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[6]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 20&gt; (19)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: tryCatchOne(expr, names, parentenv, handlers[[1L]])</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fc567718]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f44d2890]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[7]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 19&gt; (18)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: tryCatchList(expr, classes, parentenv, handlers)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fc5673d0]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f44d2510]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[8]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 18&gt; (17)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: tryCatch(expr, error = function(e) { &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fc566ad8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f44d1e48]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[9]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 17&gt; (16)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: try(f, silent = TRUE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fc5668a8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f44d1ba8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[10]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 16&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, envir,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fc56a518]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f44d1a20]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[11]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 15&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: timing_fn(handle(ev &lt;- withCallingHandlers(withVisible(eval(expr,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fc56a400]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f44d1940]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[12]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 14&gt; (13)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fc5ac420]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f54c63b0]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[13]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 13&gt; (12)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: evaluate::evaluate(code, child_env(env), new_device = TRUE, output_handler = output_handler)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f700e17090]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f51b58d8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[14]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 12&gt; (11)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: downlit::evaluate_and_highlight(code, fig_save = fig_save_topic,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f700e14680]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f51b6cf8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[15]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 11&gt; (10)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: highlight_examples(code, topic, env = env)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7013b2520]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f478c770]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[16]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 10&gt; (9)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: run_examples(tags$tag_examples[[1]], env = if (is.null(examples_env)) NULL else new.env(parent = examples_env),  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f702dd3f00]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6cdf3e8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[17]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 9&gt; (7)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: data_reference_topic(topic, pkg, examples_env = examples_env,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7017a5b10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6ab9b40]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[18]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 8&gt; (7)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: withCallingHandlers(data_reference_topic(topic, pkg, examples_env = examples_env,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7017a6248]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6aba240]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[19]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 7&gt; (6)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: .f(.x[[i]], ...)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7013c36b8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f5b4d520]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[20]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 6&gt; (5)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fe071868]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647ef34f538]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[21]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 5&gt; (4)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_reference(pkg, lazy = lazy, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fea849f8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f0f02518]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[22]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 4&gt; (3)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site_local(pkg = pkg, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fde95030]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f1042150]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[23]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 3&gt; (2)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site(pkg, preview = FALSE, install = install, new_process = new_process,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fde94d10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f1039f90]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[24]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 2&gt; (1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site_github_pages(pkg, dest_dir = dest_dir, ..., clean = clean)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fc35d518]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647ef520758]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[25]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 1&gt; (0)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: pkgdown::deploy_to_branch(new_process = FALSE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fada1e10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647edf3eda0]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[26]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 0&gt; [global]</span>
@@ -1568,132 +1565,132 @@ frame as well. This way, <code>call_stack(call_depth())</code> is the same as
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 26&gt; (25)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: g(2)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fb5b5f38]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f2560360]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 25&gt; (24)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: eval(expr, envir, enclos)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f7025f5198]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5ffd678]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 24&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: eval(expr, envir, enclos)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fb5b5d40]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f2560168]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[4]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 23&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: withVisible(eval(expr, envir, enclos))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fb5b5b10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f255ff00]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[5]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 22&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fb5b5368]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f255f950]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[6]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 21&gt; (20)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: doTryCatch(return(expr), name, parentenv, handler)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fb5b4bf8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f255f3a0]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[7]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 20&gt; (19)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: tryCatchOne(expr, names, parentenv, handlers[[1L]])</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fb5b4808]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f255f058]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[8]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 19&gt; (18)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: tryCatchList(expr, classes, parentenv, handlers)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fb5b82b8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f255ed10]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[9]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 18&gt; (17)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: tryCatch(expr, error = function(e) { &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fb5b7ad8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f2564360]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[10]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 17&gt; (16)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: try(f, silent = TRUE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fb5b7800]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f2564130]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[11]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 16&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, envir,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fb5b7678]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f2563fa8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[12]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 15&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: timing_fn(handle(ev &lt;- withCallingHandlers(withVisible(eval(expr,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f6fb5b7598]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f2563ec8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[13]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 14&gt; (13)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fb5cdfb8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f25858b8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[14]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 13&gt; (12)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: evaluate::evaluate(code, child_env(env), new_device = TRUE, output_handler = output_handler)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f700e17090]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f51b58d8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[15]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 12&gt; (11)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: downlit::evaluate_and_highlight(code, fig_save = fig_save_topic,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f700e14680]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f51b6cf8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[16]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 11&gt; (10)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: highlight_examples(code, topic, env = env)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7013b2520]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f478c770]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[17]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 10&gt; (9)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: run_examples(tags$tag_examples[[1]], env = if (is.null(examples_env)) NULL else new.env(parent = examples_env),  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f702dd3f00]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6cdf3e8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[18]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 9&gt; (7)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: data_reference_topic(topic, pkg, examples_env = examples_env,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7017a5b10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6ab9b40]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[19]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 8&gt; (7)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: withCallingHandlers(data_reference_topic(topic, pkg, examples_env = examples_env,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7017a6248]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6aba240]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[20]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 7&gt; (6)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: .f(.x[[i]], ...)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7013c36b8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f5b4d520]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[21]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 6&gt; (5)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fe071868]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647ef34f538]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[22]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 5&gt; (4)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_reference(pkg, lazy = lazy, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fea849f8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f0f02518]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[23]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 4&gt; (3)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site_local(pkg = pkg, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fde95030]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f1042150]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[24]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 3&gt; (2)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site(pkg, preview = FALSE, install = install, new_process = new_process,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fde94d10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f1039f90]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[25]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 2&gt; (1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site_github_pages(pkg, dest_dir = dest_dir, ..., clean = clean)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fc35d518]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647ef520758]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[26]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 1&gt; (0)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: pkgdown::deploy_to_branch(new_process = FALSE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fada1e10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647edf3eda0]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[27]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 0&gt; [global]</span>
@@ -1706,127 +1703,127 @@ frame as well. This way, <code>call_stack(call_depth())</code> is the same as
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 25&gt; (24)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: eval(expr, envir, enclos)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f7025f5198]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f5ffd678]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 24&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: eval(expr, envir, enclos)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f701e5ddb8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f2220c38]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 23&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: withVisible(eval(expr, envir, enclos))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f701e5dfe8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f2220a08]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[4]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 22&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f702e54238]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f22203b0]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[5]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 21&gt; (20)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: doTryCatch(return(expr), name, parentenv, handler)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f702e547b0]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f221fd90]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[6]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 20&gt; (19)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: tryCatchOne(expr, names, parentenv, handlers[[1L]])</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f702e54af8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f221fa48]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[7]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 19&gt; (18)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: tryCatchList(expr, classes, parentenv, handlers)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f702e54e40]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f22234c0]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[8]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 18&gt; (17)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: tryCatch(expr, error = function(e) { &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f702e55540]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f2222dc0]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[9]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 17&gt; (16)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: try(f, silent = TRUE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f702e55770]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f2222b90]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[10]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 16&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: handle(ev &lt;- withCallingHandlers(withVisible(eval(expr, envir,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f702e558f8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f2222998]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[11]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 15&gt; (14)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: timing_fn(handle(ev &lt;- withCallingHandlers(withVisible(eval(expr,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x55f702e559d8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [local 0x5647f22228b8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[12]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 14&gt; (13)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f703162fd8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f223f770]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[13]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 13&gt; (12)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: evaluate::evaluate(code, child_env(env), new_device = TRUE, output_handler = output_handler)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f700e17090]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f51b58d8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[14]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 12&gt; (11)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: downlit::evaluate_and_highlight(code, fig_save = fig_save_topic,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f700e14680]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f51b6cf8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[15]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 11&gt; (10)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: highlight_examples(code, topic, env = env)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7013b2520]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f478c770]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[16]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 10&gt; (9)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: run_examples(tags$tag_examples[[1]], env = if (is.null(examples_env)) NULL else new.env(parent = examples_env),  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f702dd3f00]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6cdf3e8]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[17]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 9&gt; (7)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: data_reference_topic(topic, pkg, examples_env = examples_env,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7017a5b10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6ab9b40]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[18]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 8&gt; (7)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: withCallingHandlers(data_reference_topic(topic, pkg, examples_env = examples_env,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7017a6248]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f6aba240]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[19]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 7&gt; (6)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: .f(.x[[i]], ...)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f7013c36b8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f5b4d520]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[20]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 6&gt; (5)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: purrr::map(topics, build_reference_topic, pkg = pkg, lazy = lazy,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fe071868]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647ef34f538]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[21]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 5&gt; (4)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_reference(pkg, lazy = lazy, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fea849f8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f0f02518]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[22]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 4&gt; (3)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site_local(pkg = pkg, examples = examples, run_dont_run = run_dont_run,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fde95030]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f1042150]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[23]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 3&gt; (2)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site(pkg, preview = FALSE, install = install, new_process = new_process,  &lt;...&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fde94d10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647f1039f90]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[24]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 2&gt; (1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: build_site_github_pages(pkg, dest_dir = dest_dir, ..., clean = clean)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fc35d518]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647ef520758]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[25]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 1&gt; (0)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: pkgdown::deploy_to_branch(new_process = FALSE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x55f6fada1e10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  [frame 0x5647edf3eda0]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[26]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;frame 0&gt; [global]</span>
@@ -1837,11 +1834,8 @@ frame as well. This way, <code>call_stack(call_depth())</code> is the same as
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "ctxt_stack" "stack"     </span>
 </code></pre></div>
     </div>
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

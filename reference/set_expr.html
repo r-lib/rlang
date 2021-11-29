@@ -95,8 +95,7 @@ not change its input, it creates a new object."><meta property="og:image" conten
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Set and get an expression</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/expr.R" class="external-link"><code>R/expr.R</code></a></small>
       <div class="d-none name"><code>set_expr.Rd</code></div>
@@ -112,14 +111,13 @@ expression depending on the input type. Note that <code>set_expr()</code> does
 not change its input, it creates a new object.</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">set_expr</span><span class="op">(</span><span class="va">x</span>, <span class="va">value</span><span class="op">)</span>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">set_expr</span><span class="op">(</span><span class="va">x</span>, <span class="va">value</span><span class="op">)</span>
 
-<span class="fu">get_expr</span><span class="op">(</span><span class="va">x</span>, default <span class="op">=</span> <span class="va">x</span><span class="op">)</span></code></pre>
+<span class="fu">get_expr</span><span class="op">(</span><span class="va">x</span>, default <span class="op">=</span> <span class="va">x</span><span class="op">)</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
@@ -141,11 +139,10 @@ expression for <code>get_expr()</code>.</p>
     <div class="dont-index"><p><code><a href="quosure-tools.html">quo_get_expr()</a></code> and <code><a href="quosure-tools.html">quo_set_expr()</a></code> for versions of
 <code>get_expr()</code> and <code>set_expr()</code> that only work on quosures.</p></div>
     </div>
-    </div>
 
-    <div id="examples">
-    <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">f</span> <span class="op">&lt;-</span> <span class="op">~</span><span class="fu">foo</span><span class="op">(</span><span class="va">bar</span><span class="op">)</span></span>
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">f</span> <span class="op">&lt;-</span> <span class="op">~</span><span class="fu">foo</span><span class="op">(</span><span class="va">bar</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">e</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="fu">foo</span><span class="op">(</span><span class="va">bar</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">frame</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/identity.html" class="external-link">identity</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/identity.html" class="external-link">identity</a></span><span class="op">(</span><span class="fu"><a href="stack.html">ctxt_frame</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`ctxt_frame()` is deprecated as of rlang 0.3.0.</span>
@@ -160,16 +157,13 @@ expression for <code>get_expr()</code>.</p>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu">set_expr</span><span class="op">(</span><span class="va">f</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">baz</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ~baz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55f702e7afc0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5647f498b930&gt;</span>
 <span class="r-in"><span class="fu">set_expr</span><span class="op">(</span><span class="va">e</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">baz</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> baz</span>
 </code></pre></div>
     </div>
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

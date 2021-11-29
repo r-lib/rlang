@@ -83,8 +83,7 @@
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>What are quosures and when are they needed?</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/topic-nse.R" class="external-link"><code>R/topic-nse.R</code></a></small>
       <div class="d-none name"><code>topic-quosure.Rd</code></div>
@@ -94,11 +93,10 @@
     <p>A quosure is a special type of <a href="topic-defuse.html">defused expression</a> that keeps track of the original context the expression was written in. The tracking capabilities of quosures is important when interfacing <a href="topic-data-mask.html">data-masking</a> functions together because the functions might come from two unrelated environments, like two different packages.</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="blending-environments">Blending environments<a class="anchor" aria-label="anchor" href="#blending-environments"></a></h2>
     <p>Let's take an example where the R user calls the function <code>summarise_bmi()</code> from the foo package to summarise a data frame with statistics of a BMI value. Because the <code>height</code> variable of their data frame is not in metres, they use a custom function <code>div100()</code> to rescale the column.</p><div class="sourceCode r"><pre><code><span class="co"># Global environment of user</span>
@@ -228,13 +226,9 @@
 <li><p><code><a href="quosure-tools.html">quo_get_expr()</a></code> and <code><a href="quosure-tools.html">quo_get_env()</a></code> to access quosure components.</p></li>
 <li><p><code><a href="new_quosure.html">new_quosure()</a></code> and <code><a href="new_quosure.html">as_quosure()</a></code> to assemble a quosure from components.</p></li>
 </ul></div>
-    </div>
 
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

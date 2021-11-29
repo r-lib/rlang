@@ -111,8 +111,7 @@ address of anonymous environments as fallback.'><meta property="og:image" conten
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Label of an environment</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/env-special.R" class="external-link"><code>R/env-special.R</code></a></small>
       <div class="d-none name"><code>env_name.Rd</code></div>
@@ -133,24 +132,22 @@ environments is typically "package:pkg".</p></li>
 address of anonymous environments as fallback.</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">env_name</span><span class="op">(</span><span class="va">env</span><span class="op">)</span>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">env_name</span><span class="op">(</span><span class="va">env</span><span class="op">)</span>
 
-<span class="fu">env_label</span><span class="op">(</span><span class="va">env</span><span class="op">)</span></code></pre>
+<span class="fu">env_label</span><span class="op">(</span><span class="va">env</span><span class="op">)</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>env</dt>
 <dd><p>An environment.</p></dd>
 </dl></div>
-    </div>
 
-    <div id="examples">
-    <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Some environments have specific names:</span></span>
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Some environments have specific names:</span></span>
 <span class="r-in"><span class="fu">env_name</span><span class="op">(</span><span class="fu"><a href="search_envs.html">global_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "global"</span>
 <span class="r-in"><span class="fu">env_name</span><span class="op">(</span><span class="fu"><a href="ns_env.html">ns_env</a></span><span class="op">(</span><span class="st">"rlang"</span><span class="op">)</span><span class="op">)</span></span>
@@ -161,14 +158,11 @@ address of anonymous environments as fallback.</p>
 <span class="r-in"><span class="fu">env_name</span><span class="op">(</span><span class="fu"><a href="env.html">env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] ""</span>
 <span class="r-in"><span class="fu">env_label</span><span class="op">(</span><span class="fu"><a href="env.html">env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0x55f6fe753d40"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0x5647f3edb9a8"</span>
 </code></pre></div>
     </div>
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

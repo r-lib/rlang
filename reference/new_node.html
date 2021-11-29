@@ -93,8 +93,7 @@ of an integer vector --- save any important objects beforehand!)."><meta propert
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Helpers for pairlist and language nodes</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/node.R" class="external-link"><code>R/node.R</code></a></small>
       <div class="d-none name"><code>new_node.Rd</code></div>
@@ -109,9 +108,9 @@ any type checking and can crash R very easily (try to take the CAR
 of an integer vector --- save any important objects beforehand!).</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">new_node</span><span class="op">(</span><span class="va">car</span>, cdr <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">new_node</span><span class="op">(</span><span class="va">car</span>, cdr <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
 
 <span class="fu">node_car</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 
@@ -139,10 +138,9 @@ of an integer vector --- save any important objects beforehand!).</p>
 
 <span class="fu">node_tag</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 
-<span class="fu">node_poke_tag</span><span class="op">(</span><span class="va">x</span>, <span class="va">newtag</span><span class="op">)</span></code></pre>
+<span class="fu">node_poke_tag</span><span class="op">(</span><span class="va">x</span>, <span class="va">newtag</span><span class="op">)</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>car, newcar, cdr, newcdr</dt>
@@ -165,13 +163,9 @@ in place. Getters return the requested node component.</p>
 <code><a href="https://rdrr.io/r/base/list.html" class="external-link">base::pairlist()</a></code> for an easier way of creating a linked list of
 nodes.</p></div>
     </div>
-    </div>
 
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

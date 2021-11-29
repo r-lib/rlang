@@ -85,8 +85,7 @@ This powers the lambda syntax in packages like purrr."><meta property="og:image"
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Convert to function</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/fn.R" class="external-link"><code>R/fn.R</code></a></small>
       <div class="d-none name"><code>as_function.Rd</code></div>
@@ -97,9 +96,9 @@ This powers the lambda syntax in packages like purrr."><meta property="og:image"
 This powers the lambda syntax in packages like purrr.</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">as_function</span><span class="op">(</span>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">as_function</span><span class="op">(</span>
   <span class="va">x</span>,
   env <span class="op">=</span> <span class="fu"><a href="search_envs.html">global_env</a></span><span class="op">(</span><span class="op">)</span>,
   <span class="va">...</span>,
@@ -107,10 +106,9 @@ This powers the lambda syntax in packages like purrr.</p>
   call <span class="op">=</span> <span class="fu"><a href="caller_env.html">caller_env</a></span><span class="op">(</span><span class="op">)</span>
 <span class="op">)</span>
 
-<span class="fu">is_lambda</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre>
+<span class="fu">is_lambda</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
@@ -141,11 +139,10 @@ running function, e.g. <code><a href="caller_env.html">caller_env()</a></code>. 
 mentioned in error messages as the source of the error. See the
 <code>call</code> argument of <code><a href="abort.html">abort()</a></code> for more information.</p></dd>
 </dl></div>
-    </div>
 
-    <div id="examples">
-    <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu">as_function</span><span class="op">(</span><span class="op">~</span> <span class="va">.x</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span>
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu">as_function</span><span class="op">(</span><span class="op">~</span> <span class="va">.x</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">f</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 11</span>
 <span class="r-in"></span>
@@ -164,11 +161,8 @@ mentioned in error messages as the source of the error. See the
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
 </code></pre></div>
     </div>
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

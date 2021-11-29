@@ -107,8 +107,7 @@ width-wrapping to produce a polished display of messages."><meta property="og:im
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Use cli to format error messages</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/cnd-abort.R" class="external-link"><code>R/cnd-abort.R</code></a></small>
       <div class="d-none name"><code>local_use_cli.Rd</code></div>
@@ -127,12 +126,11 @@ at print-time, in various places:</p><ul><li><p>When an unexpected error is disp
 width-wrapping to produce a polished display of messages.</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">local_use_cli</span><span class="op">(</span><span class="va">...</span>, format <span class="op">=</span> <span class="cn">TRUE</span>, inline <span class="op">=</span> <span class="cn">FALSE</span>, frame <span class="op">=</span> <span class="fu"><a href="caller_env.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">local_use_cli</span><span class="op">(</span><span class="va">...</span>, format <span class="op">=</span> <span class="cn">TRUE</span>, inline <span class="op">=</span> <span class="cn">FALSE</span>, frame <span class="op">=</span> <span class="fu"><a href="caller_env.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>...</dt>
@@ -159,13 +157,9 @@ function.</p></dd>
 </ol><p>It is also possible to call <code>local_use_cli()</code> inside a running
 function, in which case the flag only applies within that function.</p>
     </div>
-    </div>
 
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

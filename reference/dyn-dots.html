@@ -115,8 +115,7 @@ lines of arguments.
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Dynamic dots features</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/dots.R" class="external-link"><code>R/dots.R</code></a></small>
       <div class="d-none name"><code>dyn-dots.Rd</code></div>
@@ -136,11 +135,10 @@ the left-hand side of <code>:=</code>.</p></li>
 lines of arguments.</p></li>
 </ol></div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="add-dynamic-dots-support-in-your-functions">Add dynamic dots support in your functions<a class="anchor" aria-label="anchor" href="#add-dynamic-dots-support-in-your-functions"></a></h2>
     
@@ -151,15 +149,14 @@ as easy as collecting the dots with <code><a href="list2.html">list2()</a></code
 See also <code><a href="list2.html">dots_list()</a></code>, which offers more control over the collection.</p>
 <p>In general, passing <code>...</code> to a function that supports dynamic dots
 causes your function to inherit the dynamic behaviour.</p>
-<p>In packages, document dynamic dots with this standard tag:</p><pre><code> @param ... &lt;[`dynamic-dots`][rlang::dyn-dots]&gt; What these dots do.
-</code></pre>
+<p>In packages, document dynamic dots with this standard tag:</p><div class="sourceCode"><pre><code> @param ... &lt;[`dynamic-dots`][rlang::dyn-dots]&gt; What these dots do.
+</code></pre></div>
 
     </div>
-    </div>
 
-    <div id="examples">
-    <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
 <span class="r-in">  <span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="list2.html">list2</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
 <span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/rev.html" class="external-link">rev</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">}</span></span>
@@ -191,11 +188,8 @@ causes your function to inherit the dynamic behaviour.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

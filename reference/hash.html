@@ -97,8 +97,7 @@ have the same endianness and are using the same R version."><meta property="og:i
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Hashing</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/hash.R" class="external-link"><code>R/hash.R</code></a></small>
       <div class="d-none name"><code>hash.Rd</code></div>
@@ -112,14 +111,13 @@ have the same endianness and are using the same R version."><meta property="og:i
 have the same endianness and are using the same R version.</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">hash</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">hash</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 
-<span class="fu">hash_file</span><span class="op">(</span><span class="va">path</span><span class="op">)</span></code></pre>
+<span class="fu">hash_file</span><span class="op">(</span><span class="va">path</span><span class="op">)</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
@@ -141,11 +139,10 @@ generate the hash with minimal extra memory usage.</p>
 tools. On R &gt;= 3.5.0, serialization version 3 is used, otherwise version 2 is
 used. See <code><a href="https://rdrr.io/r/base/serialize.html" class="external-link">serialize()</a></code> for more information about the serialization version.</p>
     </div>
-    </div>
 
-    <div id="examples">
-    <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">hash</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">hash</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "702f7dd6e81ea41d26ea3b248627ece4"</span>
 <span class="r-in"><span class="fu">hash</span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "d0487363db4e6cc64fdb740cb6617fc0"</span>
@@ -162,11 +159,8 @@ used. See <code><a href="https://rdrr.io/r/base/serialize.html" class="external-
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "82ee213b8ad1d973ef570b417cfdfa10"</span>
 </code></pre></div>
     </div>
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

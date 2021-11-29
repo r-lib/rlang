@@ -91,8 +91,7 @@ have a replacement."><meta property="og:image" content="https://rlang.r-lib.org/
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Create an overscope</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/lifecycle-retired.R" class="external-link"><code>R/lifecycle-retired.R</code></a></small>
       <div class="d-none name"><code>as_overscope.Rd</code></div>
@@ -106,16 +105,15 @@ require the mask to be cleaned up so <code>overscope_clean()</code> does not
 have a replacement.</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">as_overscope</span><span class="op">(</span><span class="va">quo</span>, data <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">as_overscope</span><span class="op">(</span><span class="va">quo</span>, data <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
 
 <span class="fu">new_overscope</span><span class="op">(</span><span class="va">bottom</span>, top <span class="op">=</span> <span class="cn">NULL</span>, enclosure <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
 
-<span class="fu">overscope_clean</span><span class="op">(</span><span class="va">overscope</span><span class="op">)</span></code></pre>
+<span class="fu">overscope_clean</span><span class="op">(</span><span class="va">overscope</span><span class="op">)</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>quo</dt>
@@ -141,13 +139,9 @@ assumption about the parent of <code>top</code>.</p></dd>
 <dt>overscope</dt>
 <dd><p>A data mask.</p></dd>
 </dl></div>
-    </div>
 
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

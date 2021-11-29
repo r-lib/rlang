@@ -209,8 +209,7 @@ The defused input is now evaluated only once because it is injected only once:su
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>The double evaluation problem</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/topic-nse.R" class="external-link"><code>R/topic-nse.R</code></a></small>
       <div class="d-none name"><code>topic-double-evaluation.Rd</code></div>
@@ -278,11 +277,10 @@ reasons, they should only be performed as many times as they appear in the code 
 <span class="co">#&gt; 1  619.  179.</span></code></pre><p></p></div>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="what-about-glue-strings-">What about glue strings?<a class="anchor" aria-label="anchor" href="#what-about-glue-strings-"></a></h2>
     <p><code>{{</code> <a href="glue-operators.html">embracing in glue strings</a> doesn't suffer from the double evaluation problem:</p><div class="sourceCode r"><pre><code><span class="va">summarise_stats</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span>
@@ -305,13 +303,9 @@ reasons, they should only be performed as many times as they appear in the code 
 <span class="co">#&gt; 1                 619.               179.</span></code></pre><p></p></div>
 <p>Since a glue string doesn't need the result of an expression, only the original code converted (deparsed) to a string, it doesn't evaluate injected expressions.</p>
     </div>
-    </div>
 
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

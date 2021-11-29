@@ -123,8 +123,7 @@ and env.
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Parse R code</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/parse.R" class="external-link"><code>R/parse.R</code></a></small>
       <div class="d-none name"><code>parse_expr.Rd</code></div>
@@ -151,18 +150,17 @@ the latter is more convenient as you don't need to extract <code>expr</code>
 and <code>env</code>.</p></li>
 </ul></div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">parse_expr</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">parse_expr</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 
 <span class="fu">parse_exprs</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 
 <span class="fu">parse_quo</span><span class="op">(</span><span class="va">x</span>, env <span class="op">=</span> <span class="fu"><a href="search_envs.html">global_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 
-<span class="fu">parse_quos</span><span class="op">(</span><span class="va">x</span>, env <span class="op">=</span> <span class="fu"><a href="search_envs.html">global_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre>
+<span class="fu">parse_quos</span><span class="op">(</span><span class="va">x</span>, env <span class="op">=</span> <span class="fu"><a href="search_envs.html">global_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
@@ -190,11 +188,10 @@ The <code>_quo</code> suffixed variants return quosures.</p>
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="https://rdrr.io/r/base/parse.html" class="external-link">base::parse()</a></code></p></div>
     </div>
-    </div>
 
-    <div id="examples">
-    <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># parse_expr() can parse any R expression:</span></span>
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># parse_expr() can parse any R expression:</span></span>
 <span class="r-in"><span class="fu">parse_expr</span><span class="op">(</span><span class="st">"mtcars %&gt;% dplyr::mutate(cyl_prime = cyl / sd(cyl))"</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mtcars %&gt;% dplyr::mutate(cyl_prime = cyl/sd(cyl))</span>
 <span class="r-in"></span>
@@ -240,11 +237,8 @@ The <code>_quo</code> suffixed variants return quosures.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

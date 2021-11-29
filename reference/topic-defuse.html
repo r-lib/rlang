@@ -121,8 +121,7 @@ eval(e, mtcars)
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Defusing R expressions</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/topic-nse.R" class="external-link"><code>R/topic-nse.R</code></a></small>
       <div class="d-none name"><code>topic-defuse.Rd</code></div>
@@ -148,11 +147,10 @@ eval(e, mtcars)
 <span class="co">#&gt; [1] 6.1875</span></code></pre><p></p></div>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="do-i-need-to-know-about-defused-expressions-">Do I need to know about defused expressions?<a class="anchor" aria-label="anchor" href="#do-i-need-to-know-about-defused-expressions-"></a></h2>
     <p>As a tidyverse user you will rarely need to defuse expressions manually with <code><a href="expr.html">expr()</a></code>, and even more rarely need to resume evaluation with <code><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval()</a></code> or <code><a href="eval_tidy.html">eval_tidy()</a></code>. Instead, you call <a href="topic-data-mask.html">data-masking</a> functions which take care of defusing your arguments and resuming them in the context of a data mask.</p><div class="sourceCode r"><pre><code><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>
@@ -254,13 +252,9 @@ eval(e, mtcars)
 <li><p>The equivalent of <code><a href="enquo.html">enquo()</a></code> is <code><a href="https://rdrr.io/r/base/substitute.html" class="external-link">base::substitute()</a></code>. The latter returns a naked expression instead of a quosure.</p></li>
 <li><p>There is no equivalent for <code>enquos(...)</code> but you can defuse dots as a list of naked expressions with <code>eval(substitute(alist(...)))</code>.</p></li>
 </ul></div>
-    </div>
 
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

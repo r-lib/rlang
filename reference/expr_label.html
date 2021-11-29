@@ -93,8 +93,7 @@ in messages."><meta property="og:image" content="https://rlang.r-lib.org/logo.pn
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Turn an expression to a label</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/expr.R" class="external-link"><code>R/expr.R</code></a></small>
       <div class="d-none name"><code>expr_label.Rd</code></div>
@@ -109,16 +108,15 @@ accepts calls. <code>expr_label()</code> formats the expression nicely for use
 in messages.</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">expr_label</span><span class="op">(</span><span class="va">expr</span><span class="op">)</span>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">expr_label</span><span class="op">(</span><span class="va">expr</span><span class="op">)</span>
 
 <span class="fu">expr_name</span><span class="op">(</span><span class="va">expr</span><span class="op">)</span>
 
-<span class="fu">expr_text</span><span class="op">(</span><span class="va">expr</span>, width <span class="op">=</span> <span class="fl">60L</span>, nlines <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></code></pre>
+<span class="fu">expr_text</span><span class="op">(</span><span class="va">expr</span>, width <span class="op">=</span> <span class="fl">60L</span>, nlines <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>expr</dt>
@@ -128,11 +126,10 @@ in messages.</p>
 <dt>nlines</dt>
 <dd><p>Maximum number of lines to extract.</p></dd>
 </dl></div>
-    </div>
 
-    <div id="examples">
-    <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># To labellise a function argument, first capture it with</span></span>
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># To labellise a function argument, first capture it with</span></span>
 <span class="r-in"><span class="co"># substitute():</span></span>
 <span class="r-in"><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu">expr_label</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">substitute</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">fn</span><span class="op">(</span><span class="va">x</span><span class="op">:</span><span class="va">y</span><span class="op">)</span></span>
@@ -156,11 +153,8 @@ in messages.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "`foo(...)`"</span>
 </code></pre></div>
     </div>
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

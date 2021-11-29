@@ -91,8 +91,7 @@ its parents available to code executed within the function."><meta property="og:
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Return the closure environment of a function</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/fn.R" class="external-link"><code>R/fn.R</code></a></small>
       <div class="d-none name"><code>fn_env.Rd</code></div>
@@ -106,14 +105,13 @@ This makes all objects defined in the closure environment and all
 its parents available to code executed within the function.</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">fn_env</span><span class="op">(</span><span class="va">fn</span><span class="op">)</span>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">fn_env</span><span class="op">(</span><span class="va">fn</span><span class="op">)</span>
 
-<span class="fu">fn_env</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></code></pre>
+<span class="fu">fn_env</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>fn, x</dt>
@@ -126,11 +124,10 @@ its parents available to code executed within the function.</p>
     <p><code>fn_env()</code> returns the closure environment of <code>fn</code>. There is also
 an assignment method to set a new closure environment.</p>
     </div>
-    </div>
 
-    <div id="examples">
-    <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">env</span> <span class="op">&lt;-</span> <span class="fu"><a href="env.html">child_env</a></span><span class="op">(</span><span class="st">"base"</span><span class="op">)</span></span>
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">env</span> <span class="op">&lt;-</span> <span class="fu"><a href="env.html">child_env</a></span><span class="op">(</span><span class="st">"base"</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">fn</span> <span class="op">&lt;-</span> <span class="fu"><a href="with_env.html">with_env</a></span><span class="op">(</span><span class="va">env</span>, <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu">fn_env</span><span class="op">(</span><span class="va">fn</span><span class="op">)</span>, <span class="va">env</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
@@ -141,11 +138,8 @@ an assignment method to set a new closure environment.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 </code></pre></div>
     </div>
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

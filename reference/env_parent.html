@@ -103,8 +103,7 @@ See the section on inheritance in env()'s documentation."><meta property="og:ima
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Get parent environments</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/env.R" class="external-link"><code>R/env.R</code></a></small>
       <div class="d-none name"><code>env_parent.Rd</code></div>
@@ -121,16 +120,15 @@ empty environment. This list is named using <code><a href="env_name.html">env_na
 </ul><p>See the section on <em>inheritance</em> in <code><a href="env.html">env()</a></code>'s documentation.</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">env_parent</span><span class="op">(</span>env <span class="op">=</span> <span class="fu"><a href="caller_env.html">caller_env</a></span><span class="op">(</span><span class="op">)</span>, n <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">env_parent</span><span class="op">(</span>env <span class="op">=</span> <span class="fu"><a href="caller_env.html">caller_env</a></span><span class="op">(</span><span class="op">)</span>, n <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
 
 <span class="fu">env_tail</span><span class="op">(</span>env <span class="op">=</span> <span class="fu"><a href="caller_env.html">caller_env</a></span><span class="op">(</span><span class="op">)</span>, last <span class="op">=</span> <span class="fu"><a href="search_envs.html">global_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 
-<span class="fu">env_parents</span><span class="op">(</span>env <span class="op">=</span> <span class="fu"><a href="caller_env.html">caller_env</a></span><span class="op">(</span><span class="op">)</span>, last <span class="op">=</span> <span class="fu"><a href="search_envs.html">global_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre>
+<span class="fu">env_parents</span><span class="op">(</span>env <span class="op">=</span> <span class="fu"><a href="caller_env.html">caller_env</a></span><span class="op">(</span><span class="op">)</span>, last <span class="op">=</span> <span class="fu"><a href="search_envs.html">global_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>env</dt>
@@ -150,11 +148,10 @@ and <code>env_parents()</code> returns the list of environments up to <code>last
     <p>An environment for <code>env_parent()</code> and <code>env_tail()</code>, a list
 of environments for <code>env_parents()</code>.</p>
     </div>
-    </div>
 
-    <div id="examples">
-    <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Get the parent environment with env_parent():</span></span>
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Get the parent environment with env_parent():</span></span>
 <span class="r-in"><span class="fu">env_parent</span><span class="op">(</span><span class="fu"><a href="search_envs.html">global_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: package:rlang&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"name")</span>
@@ -170,7 +167,7 @@ of environments for <code>env_parents()</code>.</p>
 <span class="r-in"><span class="co"># current evaluation frame. If called at top-level (the global</span></span>
 <span class="r-in"><span class="co"># frame), the following two expressions are equivalent:</span></span>
 <span class="r-in"><span class="fu">env_parent</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55f70172bfc0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5647f139f778&gt;</span>
 <span class="r-in"><span class="fu">env_parent</span><span class="op">(</span><span class="fu"><a href="search_envs.html">base_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: R_EmptyEnv&gt;</span>
 <span class="r-in"></span>
@@ -183,11 +180,8 @@ of environments for <code>env_parents()</code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 </code></pre></div>
     </div>
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

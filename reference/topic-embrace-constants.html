@@ -129,8 +129,7 @@ The reason for this has to do with compilation of R code which makes it impossib
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Why are strings and other constants enquosed in the empty environment?</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/topic-nse.R" class="external-link"><code>R/topic-nse.R</code></a></small>
       <div class="d-none name"><code>topic-embrace-constants.Rd</code></div>
@@ -161,11 +160,10 @@ The reason for this has to do with compilation of R code which makes it impossib
 <p>The reason for this has to do with compilation of R code which makes it impossible to consistently capture environments of constants from function arguments. Argument defusing relies on the <em>promise</em> mechanism of R for lazy evaluation of arguments. When functions are compiled and R notices that an argument is constant, it avoids creating a promise since they slow down function evaluation. Instead, the function is directly supplied a naked constant instead of constant wrapped in a promise.</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="concrete-case-of-promise-unwrapping-by-compilation">Concrete case of promise unwrapping by compilation<a class="anchor" aria-label="anchor" href="#concrete-case-of-promise-unwrapping-by-compilation"></a></h2>
     <p>We can observe this optimisation by calling into the C-level <code>findVar()</code> function to capture promises.</p><div class="sourceCode r"><pre><code><span class="co"># Return the object bound to `arg` without triggering evaluation of</span>
@@ -197,13 +195,9 @@ The reason for this has to do with compilation of R code which makes it impossib
     <p>Data-masking APIs in the tidyverse are intentionally designed so that they don't need an environment for constants.</p><ul><li><p>Data-masking APIs should be able to interpret constants. These can arise from normal argument passing as we have seen, or by <a href="topic-inject.html">injection</a> with <code>!!</code>. There should be no difference between <code>dplyr::mutate(mtcars, var = cyl)</code> and <code>dplyr::mutate(mtcars, var = !!mtcars$cyl)</code>.</p></li>
 <li><p>Data-masking is an <em>evaluation</em> idiom, not an <em>introspective</em> one. The behaviour of data-masking function should not depend on the calling environment when a constant (or a symbol evaluating to a given value) is supplied.</p></li>
 </ul></div>
-    </div>
 
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

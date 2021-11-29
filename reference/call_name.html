@@ -111,8 +111,7 @@ returns a string. Otherwise it returns NULL.
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Extract function name or namespace of a call</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/call.R" class="external-link"><code>R/call.R</code></a></small>
       <div class="d-none name"><code>call_name.Rd</code></div>
@@ -130,16 +129,15 @@ string. Otherwise it returns <code>NULL</code>.</p></li>
 returns a string. Otherwise it returns <code>NULL</code>.</p></li>
 </ol></div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">call_name</span><span class="op">(</span><span class="va">call</span><span class="op">)</span>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">call_name</span><span class="op">(</span><span class="va">call</span><span class="op">)</span>
 
 <span class="fu">call_ns</span><span class="op">(</span><span class="va">call</span><span class="op">)</span>
 
-<span class="fu">is_call_simple</span><span class="op">(</span><span class="va">x</span>, ns <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre>
+<span class="fu">is_call_simple</span><span class="op">(</span><span class="va">x</span>, ns <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>call</dt>
@@ -157,11 +155,10 @@ calls.</p></dd>
     <p>The function name or namespace as a string, or <code>NULL</code> if
 the call is not named or namespaced.</p>
     </div>
-    </div>
 
-    <div id="examples">
-    <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Is the function named?</span></span>
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Is the function named?</span></span>
 <span class="r-in"><span class="fu">is_call_simple</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="fu">foo</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 <span class="r-in"><span class="fu">is_call_simple</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">foo</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
@@ -200,11 +197,8 @@ the call is not named or namespaced.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 </code></pre></div>
     </div>
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

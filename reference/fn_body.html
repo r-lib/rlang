@@ -89,8 +89,7 @@ version preserves attributes, unlike body&amp;lt;-."><meta property="og:image" c
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Get or set function body</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/fn.R" class="external-link"><code>R/fn.R</code></a></small>
       <div class="d-none name"><code>fn_body.Rd</code></div>
@@ -103,14 +102,13 @@ primitive function (whereas <code><a href="https://rdrr.io/r/base/body.html" cla
 version preserves attributes, unlike <code>body&lt;-</code>.</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">fn_body</span><span class="op">(</span>fn <span class="op">=</span> <span class="fu"><a href="caller_fn.html">caller_fn</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">fn_body</span><span class="op">(</span>fn <span class="op">=</span> <span class="fu"><a href="caller_fn.html">caller_fn</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 
-<span class="fu">fn_body</span><span class="op">(</span><span class="va">fn</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></code></pre>
+<span class="fu">fn_body</span><span class="op">(</span><span class="va">fn</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>fn</dt>
@@ -119,11 +117,10 @@ supplied.</p></dd>
 <dt>value</dt>
 <dd><p>New formals or formals names for <code>fn</code>.</p></dd>
 </dl></div>
-    </div>
 
-    <div id="examples">
-    <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># fn_body() is like body() but always returns a block:</span></span>
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># fn_body() is like body() but always returns a block:</span></span>
 <span class="r-in"><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">do</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/body.html" class="external-link">body</a></span><span class="op">(</span><span class="va">fn</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> do()</span>
@@ -138,11 +135,8 @@ supplied.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #262626; background-color: #DADADA;">`fn`</span> must be an R function, not a primitive function.</span>
 </code></pre></div>
     </div>
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

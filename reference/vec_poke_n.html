@@ -93,8 +93,7 @@ side effects that have undefined consequences."><meta property="og:image" conten
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Poke values into a vector</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/vec.R" class="external-link"><code>R/vec.R</code></a></small>
       <div class="d-none name"><code>vec_poke_n.Rd</code></div>
@@ -109,14 +108,13 @@ exist in any other context. Otherwise you might create unintended
 side effects that have undefined consequences.</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">vec_poke_n</span><span class="op">(</span><span class="va">x</span>, <span class="va">start</span>, <span class="va">y</span>, from <span class="op">=</span> <span class="fl">1L</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">vec_poke_n</span><span class="op">(</span><span class="va">x</span>, <span class="va">start</span>, <span class="va">y</span>, from <span class="op">=</span> <span class="fl">1L</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span>
 
-<span class="fu">vec_poke_range</span><span class="op">(</span><span class="va">x</span>, <span class="va">start</span>, <span class="va">y</span>, from <span class="op">=</span> <span class="fl">1L</span>, to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="op">-</span> <span class="va">from</span> <span class="op">+</span> <span class="fl">1L</span><span class="op">)</span></code></pre>
+<span class="fu">vec_poke_range</span><span class="op">(</span><span class="va">x</span>, <span class="va">start</span>, <span class="va">y</span>, from <span class="op">=</span> <span class="fl">1L</span>, to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="op">-</span> <span class="va">from</span> <span class="op">+</span> <span class="fl">1L</span><span class="op">)</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
@@ -132,13 +130,9 @@ side effects that have undefined consequences.</p>
 <dt>to</dt>
 <dd><p>The index indicating the end of the range to copy from <code>y</code>.</p></dd>
 </dl></div>
-    </div>
 
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

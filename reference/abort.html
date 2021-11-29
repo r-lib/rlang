@@ -111,8 +111,7 @@ to create custom interrupt condition objects.'><meta property="og:image" content
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Signal an error, warning, or message</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/cnd-abort.R" class="external-link"><code>R/cnd-abort.R</code></a>, <a href="https://github.com/r-lib/rlang/blob/HEAD/R/cnd-signal.R" class="external-link"><code>R/cnd-signal.R</code></a></small>
       <div class="d-none name"><code>abort.Rd</code></div>
@@ -133,9 +132,9 @@ kind that is signalled with <code>Ctrl-C</code>. It is currently not possible
 to create custom interrupt condition objects.</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">abort</span><span class="op">(</span>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">abort</span><span class="op">(</span>
   message <span class="op">=</span> <span class="cn">NULL</span>,
   class <span class="op">=</span> <span class="cn">NULL</span>,
   <span class="va">...</span>,
@@ -170,10 +169,9 @@ to create custom interrupt condition objects.</p>
 
 <span class="fu">signal</span><span class="op">(</span><span class="va">message</span>, <span class="va">class</span>, <span class="va">...</span>, .subclass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 
-<span class="fu">interrupt</span><span class="op">(</span><span class="op">)</span></code></pre>
+<span class="fu">interrupt</span><span class="op">(</span><span class="op">)</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>message</dt>
@@ -314,11 +312,10 @@ are always streamd to <code>stderr</code>.</p></li>
 </ul><p>These exceptions ensure consistency of behaviour in interactive and
 non-interactive sessions, and when sinks are active.</p>
     </div>
-    </div>
 
-    <div id="examples">
-    <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># These examples are guarded to avoid throwing errors</span></span>
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># These examples are guarded to avoid throwing errors</span></span>
 <span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Signal an error with a message just like stop():</span></span>
@@ -375,11 +372,8 @@ non-interactive sessions, and when sinks are active.</p>
 <span class="r-in"><span class="op">}</span></span>
 </code></pre></div>
     </div>
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

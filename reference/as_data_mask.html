@@ -99,8 +99,7 @@ for end users."><meta property="og:image" content="https://rlang.r-lib.org/logo.
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Create a data mask</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/eval-tidy.R" class="external-link"><code>R/eval-tidy.R</code></a></small>
       <div class="d-none name"><code>as_data_mask.Rd</code></div>
@@ -118,16 +117,15 @@ They are meant for developers of tidy eval interfaces rather than
 for end users.</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">as_data_mask</span><span class="op">(</span><span class="va">data</span><span class="op">)</span>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">as_data_mask</span><span class="op">(</span><span class="va">data</span><span class="op">)</span>
 
 <span class="fu">as_data_pronoun</span><span class="op">(</span><span class="va">data</span><span class="op">)</span>
 
-<span class="fu">new_data_mask</span><span class="op">(</span><span class="va">bottom</span>, top <span class="op">=</span> <span class="va">bottom</span><span class="op">)</span></code></pre>
+<span class="fu">new_data_mask</span><span class="op">(</span><span class="va">bottom</span>, top <span class="op">=</span> <span class="va">bottom</span><span class="op">)</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>data</dt>
@@ -219,11 +217,10 @@ to one of the following environments:</p><ul><li><p>The default environment pass
 </ul><p>Consequently, all masking data should be contained between the
 bottom and top environment of the data mask.</p>
     </div>
-    </div>
 
-    <div id="examples">
-    <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Evaluating in a tidy evaluation environment enables all tidy</span></span>
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Evaluating in a tidy evaluation environment enables all tidy</span></span>
 <span class="r-in"><span class="co"># features:</span></span>
 <span class="r-in"><span class="va">mask</span> <span class="op">&lt;-</span> <span class="fu">as_data_mask</span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="eval_tidy.html">eval_tidy</a></span><span class="op">(</span><span class="fu"><a href="defusing-advanced.html">quo</a></span><span class="op">(</span><span class="va">letters</span><span class="op">)</span>, <span class="va">mask</span><span class="op">)</span></span>
@@ -298,11 +295,8 @@ bottom and top environment of the data mask.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "a b c"</span>
 </code></pre></div>
     </div>
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

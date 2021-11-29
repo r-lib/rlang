@@ -107,8 +107,7 @@ list.
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Change global options</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/state.R" class="external-link"><code>R/state.R</code></a></small>
       <div class="d-none name"><code>local_options.Rd</code></div>
@@ -127,9 +126,9 @@ former returns the option directly while the latter returns a
 list.</p></li>
 </ul></div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">local_options</span><span class="op">(</span><span class="va">...</span>, .frame <span class="op">=</span> <span class="fu"><a href="caller_env.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">local_options</span><span class="op">(</span><span class="va">...</span>, .frame <span class="op">=</span> <span class="fu"><a href="caller_env.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 
 <span class="fu">with_options</span><span class="op">(</span><span class="va">.expr</span>, <span class="va">...</span><span class="op">)</span>
 
@@ -137,10 +136,9 @@ list.</p></li>
 
 <span class="fu">peek_options</span><span class="op">(</span><span class="va">...</span><span class="op">)</span>
 
-<span class="fu">peek_option</span><span class="op">(</span><span class="va">name</span><span class="op">)</span></code></pre>
+<span class="fu">peek_option</span><span class="op">(</span><span class="va">name</span><span class="op">)</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>...</dt>
@@ -170,11 +168,10 @@ option values.</p>
 
 <p>These functions are experimental.</p>
     </div>
-    </div>
 
-    <div id="examples">
-    <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Store and retrieve a global option:</span></span>
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Store and retrieve a global option:</span></span>
 <span class="r-in"><span class="fu">push_options</span><span class="op">(</span>my_option <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">peek_option</span><span class="op">(</span><span class="st">"my_option"</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10</span>
@@ -209,11 +206,8 @@ option values.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

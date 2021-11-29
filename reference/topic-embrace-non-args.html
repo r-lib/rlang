@@ -123,8 +123,7 @@ Note that this issue also applies to enquo() (on which {{ is based)."><meta prop
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Does <code>{{</code> work on regular objects?</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/topic-nse.R" class="external-link"><code>R/topic-nse.R</code></a></small>
       <div class="d-none name"><code>topic-embrace-non-args.Rd</code></div>
@@ -152,22 +151,17 @@ Note that this issue also applies to enquo() (on which {{ is based)."><meta prop
 <p>Note that this issue also applies to <code><a href="enquo.html">enquo()</a></code> (on which <code>{{</code> is based).</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="why-is-this-not-an-error-">Why is this not an error?<a class="anchor" aria-label="anchor" href="#why-is-this-not-an-error-"></a></h2>
     <p>Ideally we would have made <code>{{</code> on regular objects an error.  However this is not possible because in compiled R code it is not always possible to distinguish a regular variable from a function argument. See <a href="topic-embrace-constants.html">Why are strings and other constants enquosed in the empty environment?</a> for more about this.</p>
     </div>
-    </div>
 
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

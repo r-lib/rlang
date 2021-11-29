@@ -99,8 +99,7 @@ env_binding_lock() for locking individual bindings."><meta property="og:image" c
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Lock an environment</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/env.R" class="external-link"><code>R/env.R</code></a></small>
       <div class="d-none name"><code>env_lock.Rd</code></div>
@@ -118,14 +117,13 @@ still modify the values of existing bindings. See
 <code><a href="env_binding_lock.html">env_binding_lock()</a></code> for locking individual bindings.</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">env_lock</span><span class="op">(</span><span class="va">env</span><span class="op">)</span>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">env_lock</span><span class="op">(</span><span class="va">env</span><span class="op">)</span>
 
-<span class="fu">env_is_locked</span><span class="op">(</span><span class="va">env</span><span class="op">)</span></code></pre>
+<span class="fu">env_is_locked</span><span class="op">(</span><span class="va">env</span><span class="op">)</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>env</dt>
@@ -139,11 +137,10 @@ still modify the values of existing bindings. See
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="env_binding_lock.html">env_binding_lock()</a></code></p></div>
     </div>
-    </div>
 
-    <div id="examples">
-    <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># New environments are unlocked by default:</span></span>
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># New environments are unlocked by default:</span></span>
 <span class="r-in"><span class="va">env</span> <span class="op">&lt;-</span> <span class="fu"><a href="env.html">env</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">env_is_locked</span><span class="op">(</span><span class="va">env</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
@@ -163,11 +160,8 @@ still modify the values of existing bindings. See
 <span class="r-in"><span class="va">env</span><span class="op">$</span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">10</span></span>
 </code></pre></div>
     </div>
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

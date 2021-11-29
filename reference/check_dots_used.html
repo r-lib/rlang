@@ -89,8 +89,7 @@ to fail with an error when unused arguments are detected."><meta property="og:im
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Check that all dots have been used</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/dots-ellipsis.R" class="external-link"><code>R/dots-ellipsis.R</code></a></small>
       <div class="d-none name"><code>check_dots_used.Rd</code></div>
@@ -103,17 +102,16 @@ this often indicates a programming error. Call <code>check_dots_used()</code>
 to fail with an error when unused arguments are detected.</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">check_dots_used</span><span class="op">(</span>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">check_dots_used</span><span class="op">(</span>
   env <span class="op">=</span> <span class="fu"><a href="caller_env.html">caller_env</a></span><span class="op">(</span><span class="op">)</span>,
   call <span class="op">=</span> <span class="fu"><a href="caller_env.html">caller_env</a></span><span class="op">(</span><span class="op">)</span>,
   error <span class="op">=</span> <span class="cn">NULL</span>,
   action <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span></code></pre>
+<span class="op">)</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>env</dt>
@@ -131,19 +129,18 @@ this e.g. to demote an error into a warning.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>In packages, document <code>...</code> with this standard tag:</p><pre><code> @inheritParams rlang::args_dots_used
-</code></pre>
+    <p>In packages, document <code>...</code> with this standard tag:</p><div class="sourceCode"><pre><code> @inheritParams rlang::args_dots_used
+</code></pre></div>
 
 <p><code>check_dots_used()</code> implicitly calls <code><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit()</a></code> to check that all
 elements of <code>...</code> have been used when the function exits. If you
 use <code><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit()</a></code> elsewhere in your function, make sure to use <code>add = TRUE</code> so that you don't override the handler set up by
 <code>check_dots_used()</code>.</p>
     </div>
-    </div>
 
-    <div id="examples">
-    <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
 <span class="r-in">  <span class="fu">check_dots_used</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-in">  <span class="fu">g</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">}</span></span>
@@ -170,11 +167,8 @@ use <code><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on
 <span class="r-in"></span>
 </code></pre></div>
     </div>
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

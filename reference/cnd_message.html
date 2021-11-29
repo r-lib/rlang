@@ -123,8 +123,7 @@ message from a parent class while overriding the header and footer."><meta prope
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Build an error message from parts</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/cnd-message.R" class="external-link"><code>R/cnd-message.R</code></a></small>
       <div class="d-none name"><code>cnd_message.Rd</code></div>
@@ -151,18 +150,17 @@ error classes, for instance you could inherit the body of an error
 message from a parent class while overriding the header and footer.</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">cnd_message</span><span class="op">(</span><span class="va">cnd</span>, <span class="va">...</span>, inherit <span class="op">=</span> <span class="cn">TRUE</span>, prefix <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">cnd_message</span><span class="op">(</span><span class="va">cnd</span>, <span class="va">...</span>, inherit <span class="op">=</span> <span class="cn">TRUE</span>, prefix <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
 <span class="fu">cnd_header</span><span class="op">(</span><span class="va">cnd</span>, <span class="va">...</span><span class="op">)</span>
 
 <span class="fu">cnd_body</span><span class="op">(</span><span class="va">cnd</span>, <span class="va">...</span><span class="op">)</span>
 
-<span class="fu">cnd_footer</span><span class="op">(</span><span class="va">cnd</span>, <span class="va">...</span><span class="op">)</span></code></pre>
+<span class="fu">cnd_footer</span><span class="op">(</span><span class="va">cnd</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>cnd</dt>
@@ -182,31 +180,28 @@ and the <code>srcref</code> info if present. If <code>cnd</code> has a <code>par
 in the message with a <code>Caused by</code> prefix.</p></dd>
 </dl></div>
     <div class="section level2">
-    <h2 id="overriding-cnd-body-">Overriding <code>cnd_body()</code><a class="anchor" aria-label="anchor" href="#overriding-cnd-body-"></a></h2>
+    <h2 id="overriding-header-body-and-footer-methods">Overriding header, body, and footer methods<a class="anchor" aria-label="anchor" href="#overriding-header-body-and-footer-methods"></a></h2>
     
 
 
-<p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a></p>
 <p>Sometimes the contents of an error message depends on the state of
 your checking routine. In that case, it can be tricky to lazily
-generate error messages with <code>cnd_body()</code>: you have the choice
-between overspecifying your error class hierarchies with one class
-per state, or replicating the type-checking control flow within the
-<code>cnd_body()</code> method. None of these options are ideal.</p>
-<p>A better option is to define a <code>body</code> field in your error object
-containing a static string, a <a href="as_function.html">lambda-formula</a>, or a
-function with the same signature as <code>cnd_body()</code>. This field
-overrides the <code>cnd_body()</code> generic and makes it easy to generate an
-error message tailored to the state in which the error was
+generate error messages with <code>cnd_header()</code>, <code>cnd_body()</code>, and
+<code>cnd_footer()</code>: you have the choice between overspecifying your
+error class hierarchies with one class per state, or replicating
+the type-checking control flow within the <code>cnd_body()</code> method. None
+of these options are ideal.</p>
+<p>A better option is to define <code>header</code>, <code>body</code>, or <code>footer</code> fields
+in your condition object. These can be a static string, a
+<a href="as_function.html">lambda-formula</a>, or a function with the same
+signature as <code>cnd_header()</code>, <code>cnd_body()</code>, or <code>cnd_footer()</code>. These
+fields override the message generics and make it easy to generate
+an error message tailored to the state in which the error was
 constructed.</p>
     </div>
-    </div>
 
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

@@ -101,8 +101,7 @@ the lossy squashing."><meta property="og:image" content="https://rlang.r-lib.org
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Squash a quosure</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/quo.R" class="external-link"><code>R/quo.R</code></a></small>
       <div class="d-none name"><code>quo_squash.Rd</code></div>
@@ -121,12 +120,11 @@ good practice to set <code>warn</code> to <code>TRUE</code> to let the user know
 the lossy squashing.</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">quo_squash</span><span class="op">(</span><span class="va">quo</span>, warn <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">quo_squash</span><span class="op">(</span><span class="va">quo</span>, warn <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>quo</dt>
@@ -139,27 +137,23 @@ with quosures. In that case, getting rid of the nested quosures
 is likely to cause subtle bugs and it is good practice to warn
 the user about it.</p></dd>
 </dl></div>
-    </div>
 
-    <div id="examples">
-    <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Quosures can contain nested quosures:</span></span>
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Quosures can contain nested quosures:</span></span>
 <span class="r-in"><span class="va">quo</span> <span class="op">&lt;-</span> <span class="fu"><a href="defusing-advanced.html">quo</a></span><span class="op">(</span><span class="fu">wrapper</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="defusing-advanced.html">quo</a></span><span class="op">(</span><span class="va">wrappee</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">quo</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^wrapper(^wrappee)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x55f6fa9f7790</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x5647f6576cd0</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># quo_squash() flattens all the quosures and returns a simple expression:</span></span>
 <span class="r-in"><span class="fu">quo_squash</span><span class="op">(</span><span class="va">quo</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> wrapper(wrappee)</span>
 </code></pre></div>
     </div>
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

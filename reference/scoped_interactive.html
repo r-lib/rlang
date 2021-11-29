@@ -87,8 +87,7 @@ prefix. They will be deprecated in the next minor version of rlang."><meta prope
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Questioning <code>scoped_</code> functions</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/lifecycle-retired.R" class="external-link"><code>R/lifecycle-retired.R</code></a></small>
       <div class="d-none name"><code>scoped_interactive.Rd</code></div>
@@ -100,16 +99,15 @@ prefix. They will be deprecated in the next minor version of rlang."><meta prope
 prefix. They will be deprecated in the next minor version of rlang.</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">scoped_interactive</span><span class="op">(</span>value <span class="op">=</span> <span class="cn">TRUE</span>, frame <span class="op">=</span> <span class="fu"><a href="caller_env.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">scoped_interactive</span><span class="op">(</span>value <span class="op">=</span> <span class="cn">TRUE</span>, frame <span class="op">=</span> <span class="fu"><a href="caller_env.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 
 <span class="fu">scoped_options</span><span class="op">(</span><span class="va">...</span>, .frame <span class="op">=</span> <span class="fu"><a href="caller_env.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 
-<span class="fu">scoped_bindings</span><span class="op">(</span><span class="va">...</span>, .env <span class="op">=</span> <span class="va">.frame</span>, .frame <span class="op">=</span> <span class="fu"><a href="caller_env.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre>
+<span class="fu">scoped_bindings</span><span class="op">(</span><span class="va">...</span>, .env <span class="op">=</span> <span class="va">.frame</span>, .frame <span class="op">=</span> <span class="fu"><a href="caller_env.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>value</dt>
@@ -130,13 +128,9 @@ the options are reset to their original values.</p></dd>
 <dt>.env</dt>
 <dd><p>An environment.</p></dd>
 </dl></div>
-    </div>
 
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

@@ -111,8 +111,7 @@ argument. These pronouns are an escape hatch for the data mask ambiguity problem
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Evaluate an expression with quosures and pronoun support</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/eval-tidy.R" class="external-link"><code>R/eval-tidy.R</code></a></small>
       <div class="d-none name"><code>eval_tidy.Rd</code></div>
@@ -133,12 +132,11 @@ the calling environment and <code>.data</code> refers to the <code>data</code>
 argument. These pronouns are an escape hatch for the <a href="topic-data-mask-ambiguity.html">data mask ambiguity</a> problem.</p></li>
 </ul></div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">eval_tidy</span><span class="op">(</span><span class="va">expr</span>, data <span class="op">=</span> <span class="cn">NULL</span>, env <span class="op">=</span> <span class="fu"><a href="caller_env.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">eval_tidy</span><span class="op">(</span><span class="va">expr</span>, data <span class="op">=</span> <span class="cn">NULL</span>, env <span class="op">=</span> <span class="fu"><a href="caller_env.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>expr</dt>
@@ -169,7 +167,7 @@ the <code>.data</code> pronoun, or when you need to support quosures.</p>
 guarantee that there is no quosures inside the expression. Quosures
 might be unquoted anywhere in the expression tree. For instance,
 the following does not work reliably in the presence of nested
-quosures:</p><pre><code><span class="va">my_quoting_fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
+quosures:</p><div class="sourceCode"><pre><code><span class="va">my_quoting_fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/enquo.html">enquo</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
   <span class="va">expr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/quosure-tools.html">quo_get_expr</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
   <span class="va">env</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/quosure-tools.html">quo_get_env</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
@@ -180,7 +178,7 @@ quosures:</p><pre><code><span class="va">my_quoting_fn</span> <span class="op">&
 <span class="fu">my_quoting_fn</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">toupper</a></span><span class="op">(</span><span class="va">letters</span><span class="op">)</span><span class="op">)</span>
 
 <span class="co"># Fails because of a nested quosure:</span>
-<span class="fu">my_quoting_fn</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">toupper</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="../reference/defusing-advanced.html">quo</a></span><span class="op">(</span><span class="va">letters</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre>
+<span class="fu">my_quoting_fn</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">toupper</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="../reference/defusing-advanced.html">quo</a></span><span class="op">(</span><span class="va">letters</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 
     </div>
     <div class="section level2">
@@ -209,11 +207,10 @@ representation of backtraces (which you can visualise in a
 <li><p><code><a href="as_data_mask.html">new_data_mask()</a></code> and <code><a href="as_data_mask.html">as_data_mask()</a></code> for manually creating data masks.</p></li>
 </ul></div>
     </div>
-    </div>
 
-    <div id="examples">
-    <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
 <span class="r-in"><span class="co"># With simple defused expressions eval_tidy() works the same way as</span></span>
 <span class="r-in"><span class="co"># eval():</span></span>
 <span class="r-in"><span class="va">fruit</span> <span class="op">&lt;-</span> <span class="st">"apple"</span></span>
@@ -252,11 +249,8 @@ representation of backtraces (which you can visualise in a
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "apple"</span>
 </code></pre></div>
     </div>
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

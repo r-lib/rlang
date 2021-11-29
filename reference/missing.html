@@ -95,8 +95,7 @@ provided here are aliases for those typed NA objects."><meta property="og:image"
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Missing values</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/vec-na.R" class="external-link"><code>R/vec-na.R</code></a></small>
       <div class="d-none name"><code>missing.Rd</code></div>
@@ -112,9 +111,9 @@ typed missing value appropriate for the target vector. The objects
 provided here are aliases for those typed <code>NA</code> objects.</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="va">na_lgl</span>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="va">na_lgl</span>
 
 <span class="va">na_int</span>
 
@@ -122,10 +121,9 @@ provided here are aliases for those typed <code>NA</code> objects.</p>
 
 <span class="va">na_chr</span>
 
-<span class="va">na_cpl</span></code></pre>
+<span class="va">na_cpl</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
     <p>An object of class <code>logical</code> of length 1.</p>
@@ -158,11 +156,10 @@ contain any types, expressions like <code>list(NA)</code> store a logical
 <p>These shortcuts might be moved to the vctrs package at some
 point. This is why they are marked as questioning.</p>
     </div>
-    </div>
 
-    <div id="examples">
-    <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/typeof.html" class="external-link">typeof</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span></span>
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/typeof.html" class="external-link">typeof</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "logical"</span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/typeof.html" class="external-link">typeof</a></span><span class="op">(</span><span class="va">na_lgl</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "logical"</span>
@@ -176,11 +173,8 @@ point. This is why they are marked as questioning.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "logical"</span>
 </code></pre></div>
     </div>
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

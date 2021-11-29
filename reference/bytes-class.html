@@ -101,8 +101,7 @@ Note: A bytes() constructor will be exported soon."><meta property="og:image" co
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Human readable memory sizes</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/bytes.R" class="external-link"><code>R/bytes.R</code></a></small>
       <div class="d-none name"><code>bytes-class.Rd</code></div>
@@ -118,14 +117,13 @@ representing bytes.</p></li>
 </ul><p>Note: A <code><a href="vector-construction.html">bytes()</a></code> constructor will be exported soon.</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">as_bytes</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">as_bytes</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 
-<span class="fu">parse_bytes</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre>
+<span class="fu">parse_bytes</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
@@ -136,11 +134,10 @@ shorthand sizes (see examples).</p></dd>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>These memory sizes are always assumed to be base 1024, rather than 1000.</p>
     </div>
-    </div>
 
-    <div id="examples">
-    <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">parse_bytes</span><span class="op">(</span><span class="st">"1"</span><span class="op">)</span></span>
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">parse_bytes</span><span class="op">(</span><span class="st">"1"</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1B</span>
 <span class="r-in"><span class="fu">parse_bytes</span><span class="op">(</span><span class="st">"1K"</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1KB</span>
@@ -158,11 +155,8 @@ shorthand sizes (see examples).</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6.49MB</span>
 </code></pre></div>
     </div>
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

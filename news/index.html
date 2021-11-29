@@ -83,8 +83,7 @@
   </div>
 </nav><div class="container template-news" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Changelog</h1>
       <small>Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
@@ -121,7 +120,8 @@
 </ul></div>
 <div class="section level3">
 <h3 id="features-and-bugfixes-development-version">Features and bugfixes<a class="anchor" aria-label="anchor" href="#features-and-bugfixes-development-version"></a></h3>
-<ul><li><p><code><a href="../reference/cnd_message.html">cnd_message()</a></code> gains a <code>prefix</code> argument to print the message with a full prefix, including <code>call</code> field if present and parent messages if the condition is chained.</p></li>
+<ul><li><p><code>header</code> and <code>footer</code> methods can now be stored as closures in condition fields of the same name.</p></li>
+<li><p><code><a href="../reference/cnd_message.html">cnd_message()</a></code> gains a <code>prefix</code> argument to print the message with a full prefix, including <code>call</code> field if present and parent messages if the condition is chained.</p></li>
 <li><p><code><a href="../reference/cnd_message.html">cnd_message()</a></code> gains an <code>inherit</code> argument to control whether to print the messages of parent errors.</p></li>
 <li><p><code><a href="../reference/env_has.html">env_has()</a></code> and the corresponding C-level function no longer force active bindings (<a href="https://github.com/r-lib/rlang/issues/1292" class="external-link">#1292</a>).</p></li>
 <li><p>New <code>names2&lt;-</code> replacement function that never adds missing values when names don’t have names (<a href="https://github.com/r-lib/rlang/issues/1301" class="external-link">#1301</a>).</p></li>
@@ -967,13 +967,8 @@
 <h2 class="pkg-version" data-toc-text="0.1.0" id="rlang-010">rlang 0.1.0<a class="anchor" aria-label="anchor" href="#rlang-010"></a></h2>
 <p>Initial release.</p>
 </div>
-  </div>
-
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

@@ -89,8 +89,7 @@ is especially useful for forwarding arguments in constructed calls."><meta prope
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Extract arguments from a function</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/fn.R" class="external-link"><code>R/fn.R</code></a></small>
       <div class="d-none name"><code>fn_fmls.Rd</code></div>
@@ -103,9 +102,9 @@ is especially useful for forwarding arguments in constructed calls."><meta prope
 is especially useful for forwarding arguments in <a href="lang.html">constructed calls</a>.</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">fn_fmls</span><span class="op">(</span>fn <span class="op">=</span> <span class="fu"><a href="caller_fn.html">caller_fn</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">fn_fmls</span><span class="op">(</span>fn <span class="op">=</span> <span class="fu"><a href="caller_fn.html">caller_fn</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 
 <span class="fu">fn_fmls_names</span><span class="op">(</span>fn <span class="op">=</span> <span class="fu"><a href="caller_fn.html">caller_fn</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 
@@ -113,10 +112,9 @@ is especially useful for forwarding arguments in <a href="lang.html">constructed
 
 <span class="fu">fn_fmls</span><span class="op">(</span><span class="va">fn</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
 
-<span class="fu">fn_fmls_names</span><span class="op">(</span><span class="va">fn</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></code></pre>
+<span class="fu">fn_fmls_names</span><span class="op">(</span><span class="va">fn</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>fn</dt>
@@ -134,11 +132,10 @@ functions instead of returning <code>NULL</code>.</p>
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="call_args.html">call_args()</a></code> and <code><a href="call_args.html">call_args_names()</a></code></p></div>
     </div>
-    </div>
 
-    <div id="examples">
-    <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Extract from current call:</span></span>
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Extract from current call:</span></span>
 <span class="r-in"><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">a</span> <span class="op">=</span> <span class="fl">1</span>, <span class="va">b</span> <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="fu">fn_fmls</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">fn</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $a</span>
@@ -172,11 +169,8 @@ functions instead of returning <code>NULL</code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

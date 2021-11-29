@@ -97,8 +97,7 @@ branch.'><meta property="og:image" content="https://rlang.r-lib.org/logo.png"><!
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Is object a formula?</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/formula.R" class="external-link"><code>R/formula.R</code></a></small>
       <div class="d-none name"><code>is_formula.Rd</code></div>
@@ -115,14 +114,13 @@ cases in normal code. We recommend always supplying <code>scoped = TRUE</code>. 
 branch.</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">is_formula</span><span class="op">(</span><span class="va">x</span>, scoped <span class="op">=</span> <span class="cn">NULL</span>, lhs <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">is_formula</span><span class="op">(</span><span class="va">x</span>, scoped <span class="op">=</span> <span class="cn">NULL</span>, lhs <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
 
-<span class="fu">is_bare_formula</span><span class="op">(</span><span class="va">x</span>, scoped <span class="op">=</span> <span class="cn">TRUE</span>, lhs <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre>
+<span class="fu">is_bare_formula</span><span class="op">(</span><span class="va">x</span>, scoped <span class="op">=</span> <span class="cn">TRUE</span>, lhs <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
@@ -147,11 +145,10 @@ by quotation, e.g. <code>~~foo</code>, <code>quote(~foo)</code>, or <code>substi
 with <code>arg</code> being supplied a formula. Use the <code>scoped</code> argument to
 check whether the formula carries an environment.</p>
     </div>
-    </div>
 
-    <div id="examples">
-    <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">is_formula</span><span class="op">(</span><span class="op">~</span><span class="fl">10</span><span class="op">)</span></span>
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">is_formula</span><span class="op">(</span><span class="op">~</span><span class="fl">10</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 <span class="r-in"><span class="fu">is_formula</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
@@ -198,11 +195,8 @@ check whether the formula carries an environment.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
 </code></pre></div>
     </div>
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

@@ -87,8 +87,7 @@ error if f is not a formula."><meta property="og:image" content="https://rlang.r
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Get or set formula components</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/formula.R" class="external-link"><code>R/formula.R</code></a></small>
       <div class="d-none name"><code>f_rhs.Rd</code></div>
@@ -100,9 +99,9 @@ side, and <code>f_env</code> extracts the environment. All functions throw an
 error if <code>f</code> is not a formula.</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">f_rhs</span><span class="op">(</span><span class="va">f</span><span class="op">)</span>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">f_rhs</span><span class="op">(</span><span class="va">f</span><span class="op">)</span>
 
 <span class="fu">f_rhs</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
 
@@ -112,10 +111,9 @@ error if <code>f</code> is not a formula.</p>
 
 <span class="fu">f_env</span><span class="op">(</span><span class="va">f</span><span class="op">)</span>
 
-<span class="fu">f_env</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></code></pre>
+<span class="fu">f_env</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>f, x</dt>
@@ -129,11 +127,10 @@ error if <code>f</code> is not a formula.</p>
 vectors of length 1, a name, or a call). <code>f_env</code> returns an
 environment.</p>
     </div>
-    </div>
 
-    <div id="examples">
-    <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">f_rhs</span><span class="op">(</span><span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="fl">2</span> <span class="op">+</span> <span class="fl">3</span><span class="op">)</span></span>
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">f_rhs</span><span class="op">(</span><span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="fl">2</span> <span class="op">+</span> <span class="fl">3</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 + 2 + 3</span>
 <span class="r-in"><span class="fu">f_rhs</span><span class="op">(</span><span class="op">~</span> <span class="va">x</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
@@ -148,14 +145,11 @@ environment.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu">f_env</span><span class="op">(</span><span class="op">~</span> <span class="va">x</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55f7020c49e8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5647f1f7ee88&gt;</span>
 </code></pre></div>
     </div>
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

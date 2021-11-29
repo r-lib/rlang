@@ -93,8 +93,7 @@ as call, unless there is a local flag (see local_error_call()).'><meta property=
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Validate and format a function call for use in error messages</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/cnd-abort.R" class="external-link"><code>R/cnd-abort.R</code></a></small>
       <div class="d-none name"><code>format_error_call.Rd</code></div>
@@ -109,12 +108,11 @@ of an error message from a stack frame call.</p>
 as call, unless there is a local flag (see <code><a href="local_error_call.html">local_error_call()</a></code>).</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">format_error_call</span><span class="op">(</span><span class="va">call</span><span class="op">)</span></code></pre>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">format_error_call</span><span class="op">(</span><span class="va">call</span><span class="op">)</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>call</dt>
@@ -140,11 +138,10 @@ informative. Branches are dropped.</p></li>
 <li><p>Calls to operators and other special syntax are formatted using
 their names rather than the potentially confusing function form.</p></li>
 </ul></div>
-    </div>
 
-    <div id="examples">
-    <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Arguments are stripped</span></span>
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Arguments are stripped</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/writeLines.html" class="external-link">writeLines</a></span><span class="op">(</span><span class="fu">format_error_call</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="fu">foo</span><span class="op">(</span><span class="va">bar</span>, <span class="va">baz</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #262626; background-color: #DADADA;">`foo()`</span></span>
 <span class="r-in"></span>
@@ -159,11 +156,8 @@ their names rather than the potentially confusing function form.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #262626; background-color: #DADADA;">`+`</span></span>
 </code></pre></div>
     </div>
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

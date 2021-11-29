@@ -89,8 +89,7 @@ error."><meta property="og:image" content="https://rlang.r-lib.org/logo.png"><!-
   </div>
 </nav><div class="container template-reference-topic" id="container">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Transform to a closure</h1>
       <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/R/fn.R" class="external-link"><code>R/fn.R</code></a></small>
       <div class="d-none name"><code>as_closure.Rd</code></div>
@@ -103,12 +102,11 @@ like <code>if</code>, <code>for</code>, or <code><a href="https://rdrr.io/r/base
 error.</p>
     </div>
 
-    <div class="ref-usage section level2 sourceCode">
-    <h2>Usage</h2>
-    <pre class="sourceCode r"><code><span class="fu">as_closure</span><span class="op">(</span><span class="va">x</span>, env <span class="op">=</span> <span class="fu"><a href="caller_env.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre>
+    <div class="section level2">
+    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">as_closure</span><span class="op">(</span><span class="va">x</span>, env <span class="op">=</span> <span class="fu"><a href="caller_env.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
     </div>
 
-    <div id="ref-sections">
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
@@ -128,11 +126,10 @@ supplying functions by name and instead supply them by value.</p></dd>
 <dd><p>Environment in which to fetch the function in case <code>x</code>
 is a string.</p></dd>
 </dl></div>
-    </div>
 
-    <div id="examples">
-    <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Primitive functions are regularised as closures</span></span>
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Primitive functions are regularised as closures</span></span>
 <span class="r-in"><span class="fu">as_closure</span><span class="op">(</span><span class="va">list</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (...) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> .Primitive("list")(...)</span>
@@ -164,7 +161,7 @@ is a string.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         .x</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     else .x + .y</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55f701d7f688&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5647f3d8e660&gt;</span>
 <span class="r-in"><span class="fu">as_closure</span><span class="op">(</span><span class="va">`~`</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (.x, .y) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
@@ -175,16 +172,13 @@ is a string.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         new_formula(substitute(.x), substitute(.y), caller_env())</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55f6fdfff590&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55f701ddc5f8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5647f11ac758&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5647f4b35ea8&gt;</span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
-  </div>
-  <div class="col-md-3" id="pkgdown-sidebar">
-    <nav id="toc"><h2>On this page</h2>
-    </nav></div>
-</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>
