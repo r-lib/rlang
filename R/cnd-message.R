@@ -27,22 +27,22 @@
 #' message from a parent class while overriding the header and footer.
 #'
 #'
-#' @section Overriding `cnd_body()`:
-#'
-#' `r lifecycle::badge("experimental")`
+#' @section Overriding header, body, and footer methods:
 #'
 #' Sometimes the contents of an error message depends on the state of
 #' your checking routine. In that case, it can be tricky to lazily
-#' generate error messages with `cnd_body()`: you have the choice
-#' between overspecifying your error class hierarchies with one class
-#' per state, or replicating the type-checking control flow within the
-#' `cnd_body()` method. None of these options are ideal.
+#' generate error messages with `cnd_header()`, `cnd_body()`, and
+#' `cnd_footer()`: you have the choice between overspecifying your
+#' error class hierarchies with one class per state, or replicating
+#' the type-checking control flow within the `cnd_body()` method. None
+#' of these options are ideal.
 #'
-#' A better option is to define a `body` field in your error object
-#' containing a static string, a [lambda-formula][as_function], or a
-#' function with the same signature as `cnd_body()`. This field
-#' overrides the `cnd_body()` generic and makes it easy to generate an
-#' error message tailored to the state in which the error was
+#' A better option is to define `header`, `body`, or `footer` fields
+#' in your condition object. These can be a static string, a
+#' [lambda-formula][as_function], or a function with the same
+#' signature as `cnd_header()`, `cnd_body()`, or `cnd_footer()`. These
+#' fields override the message generics and make it easy to generate
+#' an error message tailored to the state in which the error was
 #' constructed.
 #'
 #' @param cnd A condition object.
@@ -132,7 +132,11 @@ local_cli_indent <- function(frame = caller_env()) {
 #' @rdname cnd_message
 #' @export
 cnd_header <- function(cnd, ...) {
-  UseMethod("cnd_header")
+  if (is_null(cnd$header)) {
+    UseMethod("cnd_header")
+  } else {
+    exec_cnd_method("header", cnd)
+  }
 }
 #' @export
 cnd_header.default <- function(cnd, ...) {
@@ -145,7 +149,7 @@ cnd_body <- function(cnd, ...) {
   if (is_null(cnd$body)) {
     UseMethod("cnd_body")
   } else {
-    override_cnd_body(cnd, ...)
+    exec_cnd_method("body", cnd)
   }
 }
 #' @export
@@ -153,33 +157,39 @@ cnd_body.default <- function(cnd, ...) {
   chr()
 }
 
-override_cnd_body <- function(cnd, ...) {
-  body <- cnd$body
-
-  if (is_function(body)) {
-    body(cnd, ...)
-  } else if (is_bare_formula(body)) {
-    body <- as_function(body)
-    body(cnd, ...)
-  } else if (is_character(body)) {
-    body
-  } else {
-    abort("`body` must be a string or a function.")
-  }
-}
-
 #' @rdname cnd_message
 #' @export
 cnd_footer <- function(cnd, ...) {
-  UseMethod("cnd_footer")
+  if (is_null(cnd$footer)) {
+    UseMethod("cnd_footer")
+  } else {
+    exec_cnd_method("footer", cnd)
+  }
 }
 #' @export
 cnd_footer.default <- function(cnd, ...) {
-  cnd$footer %||% chr()
+  chr()
 }
 
-cnd_message_reduce <- function(cnd, ...) {
+exec_cnd_method <- function(name, cnd) {
+  method <- cnd[[name]]
+
+  if (is_function(method)) {
+    method(cnd)
+  } else if (is_bare_formula(method)) {
+    method <- as_function(method)
+    method(cnd)
+  } else if (is_character(method)) {
+    method
+  } else {
+    msg <- sprintf(
+      "%s field must be a character vector or a function.",
+      format_code(name)
+    )
+    abort(msg, call = caller_env())
+  }
 }
+
 
 cnd_message_format_prefixed <- function(cnd, ..., parent = FALSE) {
   type <- cnd_type(cnd)

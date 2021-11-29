@@ -37,22 +37,48 @@ test_that("default conditionMessage() method for rlang errors calls cnd_message(
   expect_identical(out, exp)
 })
 
-test_that("can override body method with `body` fields", {
+test_that("can override header, body, and footer methods with fields", {
   local_methods(cnd_body.rlang_foobar = function(...) "wrong")
 
   expect_error(
-    stop(error_cnd("rlang_foobar", message = "header", body = "body")),
+    stop(error_cnd(
+      "rlang_foobar",
+      message = "header",
+      body = "body"
+    )),
     "header\nbody",
     class = "rlang_foobar"
   )
   expect_error(
-    stop(error_cnd("rlang_foobar", message = "header", body = ~ "body")),
-    "header\nbody",
+    stop(error_cnd(
+      "rlang_foobar",
+      header = "header",
+      body = "body",
+      footer = "footer"
+    )),
+    "header\nbody\nfooter",
     class = "rlang_foobar"
   )
-  expect_error(
-    stop(error_cnd("rlang_foobar", message = "header", body = function(...) "body")),
-    "header\nbody",
+
+  # Also messages and warnings
+  expect_message(
+    message(message_cnd(
+      "rlang_foobar",
+      header = ~ "header",
+      body = ~ "body",
+      footer = ~ "footer"
+    )),
+    "header\nbody\nfooter",
+    class = "rlang_foobar"
+  )
+  expect_warning(
+    warning(warning_cnd(
+      "rlang_foobar",
+      header = function(...) "header",
+      body = function(...) "body",
+      footer = function(...) "footer"
+    )),
+    "header\nbody\nfooter",
     class = "rlang_foobar"
   )
 
@@ -65,10 +91,12 @@ test_that("can override body method with `body` fields", {
 })
 
 test_that("`body` must be a character vector or a function", {
-  expect_error(
-    stop(error_cnd("foo", body = 1:3)),
-    "must be a string or a function"
-  )
+  expect_snapshot({
+    (expect_error(
+      stop(error_cnd("foo", body = 1:3)),
+      "must be"
+    ))
+  })
 })
 
 test_that("can request a line break in error bullets (#1130)", {

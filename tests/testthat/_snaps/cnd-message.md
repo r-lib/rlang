@@ -1,3 +1,11 @@
+# `body` must be a character vector or a function
+
+    Code
+      (expect_error(stop(error_cnd("foo", body = 1:3)), "must be"))
+    Output
+      <error/rlang_error>
+      Error in `cnd_body()`: `body` field must be a character vector or a function.
+
 # can request a line break in error bullets (#1130)
 
     Code

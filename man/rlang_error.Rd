@@ -16,6 +16,11 @@ assembled by rlang when needed: when
 (e.g. via \code{\link[=try]{try()}}), when the error is displayed through \code{\link[=print]{print()}}
 or \code{\link[=format]{format()}}, and of course when the error is displayed to the
 user by \code{\link[=abort]{abort()}}.
+\item \code{\link[=cnd_header]{cnd_header()}}, \code{\link[=cnd_body]{cnd_body()}}, and \code{\link[=cnd_footer]{cnd_footer()}} methods can be
+overridden by storing closures in the \code{header}, \code{body}, and
+\code{footer} fields of the condition. This is useful to lazily
+generate messages based on state captured in the closure
+environment.
 \item \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} The \code{use_cli_format}
 condition field instructs whether to use cli (or rlang's fallback
 method if cli is not installed) to format the error message at

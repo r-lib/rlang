@@ -57,23 +57,23 @@ methods. This provides a lot of flexibility for hierarchies of
 error classes, for instance you could inherit the body of an error
 message from a parent class while overriding the header and footer.
 }
-\section{Overriding \code{cnd_body()}}{
+\section{Overriding header, body, and footer methods}{
 
-
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Sometimes the contents of an error message depends on the state of
 your checking routine. In that case, it can be tricky to lazily
-generate error messages with \code{cnd_body()}: you have the choice
-between overspecifying your error class hierarchies with one class
-per state, or replicating the type-checking control flow within the
-\code{cnd_body()} method. None of these options are ideal.
+generate error messages with \code{cnd_header()}, \code{cnd_body()}, and
+\code{cnd_footer()}: you have the choice between overspecifying your
+error class hierarchies with one class per state, or replicating
+the type-checking control flow within the \code{cnd_body()} method. None
+of these options are ideal.
 
-A better option is to define a \code{body} field in your error object
-containing a static string, a \link[=as_function]{lambda-formula}, or a
-function with the same signature as \code{cnd_body()}. This field
-overrides the \code{cnd_body()} generic and makes it easy to generate an
-error message tailored to the state in which the error was
+A better option is to define \code{header}, \code{body}, or \code{footer} fields
+in your condition object. These can be a static string, a
+\link[=as_function]{lambda-formula}, or a function with the same
+signature as \code{cnd_header()}, \code{cnd_body()}, or \code{cnd_footer()}. These
+fields override the message generics and make it easy to generate
+an error message tailored to the state in which the error was
 constructed.
 }
 

@@ -14,6 +14,12 @@
 #'   or [format()], and of course when the error is displayed to the
 #'   user by [abort()].
 #'
+#' - [cnd_header()], [cnd_body()], and [cnd_footer()] methods can be
+#'   overridden by storing closures in the `header`, `body`, and
+#'   `footer` fields of the condition. This is useful to lazily
+#'   generate messages based on state captured in the closure
+#'   environment.
+#'
 #' - `r lifecycle::badge("experimental")` The `use_cli_format`
 #'   condition field instructs whether to use cli (or rlang's fallback
 #'   method if cli is not installed) to format the error message at

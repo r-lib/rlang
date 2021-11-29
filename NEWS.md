@@ -72,6 +72,9 @@
 
 ## Features and bugfixes
 
+* `header` and `footer` methods can now be stored as closures in
+  condition fields of the same name.
+
 * `cnd_message()` gains a `prefix` argument to print the message with
   a full prefix, including `call` field if present and parent messages
   if the condition is chained.
