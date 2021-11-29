@@ -74,7 +74,7 @@ format.rlang_error <- function(x,
   simplify <- arg_match(simplify)
 
   out <- cnd_format(x, ..., backtrace = backtrace, simplify = simplify)
-  
+
   # Recommend printing the full backtrace if called from `last_error()`
   from_last_error <- is_true(x$rlang$internal$from_last_error)
   if (from_last_error && simplify == "branch" && !is_null(x$trace)) {
@@ -84,30 +84,6 @@ format.rlang_error <- function(x,
 
   out
 }
-
-header_add_tree_node <- function(header, style, parent) {
-  if (is_rlang_error(parent)) {
-    s <- style$j
-  } else {
-    s <- style$l
-  }
-  paste0(s, style$h, header)
-}
-message_add_tree_prefix <- function(message, style, parent) {
-  if (is_null(message)) {
-    return(NULL)
-  }
-
-  if (is_rlang_error(parent)) {
-    s <- style$v
-  } else {
-    s <- " "
-  }
-  message <- split_lines(message)
-  message <- paste0(s, " ", message)
-  paste_line(message)
-}
-
 
 #' @export
 summary.rlang_error <- function(object, ...) {
