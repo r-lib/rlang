@@ -74,7 +74,9 @@ cnd_message <- function(cnd, ..., inherit = TRUE, prefix = FALSE) {
     # charge of formatting the error prefix. This makes the output of
     # `conditionMessage()` as consistent as possible.
     if (indent && !prefix) {
-      msg <- substr(msg, 3, nchar(msg))
+      # Don't anchor the pattern to start of line because there might
+      # be ANSI escapes
+      msg <- sub("  ", "", msg)
     }
   }
 

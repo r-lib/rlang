@@ -408,3 +408,33 @@ test_that("can print message without inheritance", {
     writeLines(cnd_message(bar, inherit = FALSE, prefix = FALSE))
   })
 })
+
+test_that("ANSI escapes are supported in `conditionMessage()`", {
+  skip_if_not_installed("cli")
+
+  foo <- error_cnd(
+    "foo",
+    message = "Parent message.",
+    use_cli_format = TRUE
+  )
+  bar <- error_cnd(
+    "bar",
+    message = "Message.",
+    parent = foo,
+    use_cli_format = TRUE
+  )
+
+  testthat::local_reproducible_output(
+    unicode = FALSE,
+    crayon = FALSE
+  )
+  out_bare <- conditionMessage(bar)
+
+  testthat::local_reproducible_output(
+    unicode = TRUE,
+    crayon = TRUE
+  )
+  out_ansi <- conditionMessage(bar)
+
+  expect_equal(out_bare, cli::ansi_strip(out_ansi))
+})
