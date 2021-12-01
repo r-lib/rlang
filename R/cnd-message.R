@@ -252,6 +252,19 @@ conditionMessage.rlang_error <- function(c) {
   cnd_message(c)
 }
 
+#' @export
+as.character.rlang_message <- function(x, ...) {
+  paste0(cnd_message(x, prefix = FALSE), "\n")
+}
+#' @export
+as.character.rlang_warning <- function(x, ...) {
+  paste0(cnd_message(x, prefix = TRUE), "\n")
+}
+#' @export
+as.character.rlang_error <- function(x, ...) {
+  paste0(cnd_message(x, prefix = TRUE), "\n")
+}
+
 
 #' Format bullets for error messages
 #'
