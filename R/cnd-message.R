@@ -59,6 +59,8 @@
 #'
 #' @export
 cnd_message <- function(cnd, ..., inherit = TRUE, prefix = FALSE) {
+  orig <- cnd
+
   # Easier to zap the parent than thread `inherit` across functions
   if (!inherit) {
     cnd$parent <- NULL
@@ -86,7 +88,10 @@ cnd_message <- function(cnd, ..., inherit = TRUE, prefix = FALSE) {
     msg <- paste_line(msg, parent_msg)
   }
 
-  msg
+  backtrace_on_error <- cnd_backtrace_on_error(orig) %||% "none"
+  trace_footer <- format_onerror_backtrace(orig, opt = backtrace_on_error)
+
+  c(msg, trace_footer)
 }
 cnd_message_lines <- function(cnd, ...) {
   c(
@@ -94,6 +99,17 @@ cnd_message_lines <- function(cnd, ...) {
     cnd_body(cnd, ...),
     cnd_footer(cnd, ...)
   )
+}
+
+# Set an internal field that is processed by `cnd_message()`.
+# `cnd_message()` is called by `conditionMessage()` and
+# `as.character()` methods. The latter is called from `knitr::sew()`.
+cnd_set_backtrace_on_error <- function(cnd, opt) {
+  cnd$rlang$internal$backtrace_on_error <- opt
+  cnd
+}
+cnd_backtrace_on_error <- function(cnd) {
+  cnd[["rlang"]]$internal$backtrace_on_error
 }
 
 cnd_message_format <- function(cnd, ..., indent = FALSE) {

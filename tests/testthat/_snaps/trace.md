@@ -976,7 +976,7 @@
       
           f()
       
-          ## Error: foo
+          ## Error in `h()`: foo
       
       Currently needs to be in a different chunk:
       
@@ -1003,13 +1003,15 @@
           options(rlang_backtrace_on_error_report = "reminder")
           f()
       
-          ## Error: foo
+          ## Error in `h()`: foo
+      
           ## Run `rlang::last_error()` to see where the error occurred.
       
           options(rlang_backtrace_on_error_report = "full")
           f()
       
-          ## Error: foo
+          ## Error in `h()`: foo
+      
           ## Backtrace:
           ##     x
           ##  1. \-global f()

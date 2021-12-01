@@ -453,17 +453,19 @@ signal_abort <- function(cnd, file = NULL) {
     fallback <- cnd
     class(fallback) <- c("rlang_error", "condition")
     fallback$message <- ""
-    fallback$rlang_entraced <- TRUE
+    fallback$rlang$internal$entraced <- TRUE
   }
 
   # Save the unhandled error for `rlang::last_error()`.
   poke_last_error(cnd)
 
+  # Include backtrace footer option in the condition
+  cnd <- cnd_set_backtrace_on_error(cnd, peek_backtrace_on_error())
+
   # Print the error manually. This allows us to use our own style,
   # include parent errors, and work around limitations on the length
   # of error messages (#856).
   msg <- cnd_message(cnd, inherit = TRUE, prefix = TRUE)
-  msg <- cnd_unhandled_message(cnd, message = msg)
 
   cat_line(msg, file = file %||% default_message_file())
 
@@ -884,70 +886,22 @@ error_flag <- function(env, top = topenv(env)) {
   )
 }
 
-#' Create unhandled condition
-#'
-#' @description
-#' Transform a classed condition into a simple condition.
-#'
-#' - The `conditionMessage()` method is run and the result is stored
-#'   in the `message` field so that it becomes a constant.
-#'
-#' - The `backtrace_on_error` global option is consulted to include a
-#'   backtrace or a `last_error()` reminder along with the message.
-#'
-#' The resulting condition can be rethrown with [stop()] or
-#' [cnd_signal()].
-#'
-#' Note that this function is for internal purposes. The caller is
-#' responsible for making sure that there is no error catching
-#' handlers on the stack.
-#'
-#' The condition _currently_ inherits from `"rlang_error"` (but not
-#' `"error"`) to prevent [entrace()] from repeatedly embedding a
-#' backtrace.
-#'
-#' @param cnd A condition object.
-#' @return A condition with an embedded message.
-#'
-#' @keywords internal
-#' @export
-cnd_as_unhandled_error <- function(cnd) {
-  # Generate the error message, possibly with a backtrace or reminder
-  cnd(
-    "rlang_error",
-    message = cnd_unhandled_message(cnd),
-    call = cnd$call
-  )
-}
-cnd_unhandled_message <- function(cnd,
-                                  message = conditionMessage(cnd),
-                                  report = FALSE) {
-  paste_line(message, format_onerror_backtrace(cnd, report = report))
-}
+on_load(s3_register("knitr::sew", "rlang_error", function(x, options, ...) {
+  # Simulate interactive session to prevent full backtrace from
+  # being included in error message
+  local_interactive()
 
-on_load({
-  s3_register("knitr::sew", "rlang_error", function(x, options, ...) {
-    # Simulate interactive session to prevent full backtrace from
-    # being included in error message
-    local_interactive()
+  # Save the unhandled error for `rlang::last_error()`.
+  poke_last_error(x)
 
-    # Save the unhandled error for `rlang::last_error()`.
-    poke_last_error(x)
+  # Include backtrace footer option in the condition. Processed by
+  # `cnd_message()`.
+  x <- cnd_set_backtrace_on_error(x, peek_backtrace_on_error_report())
 
-    # By default, we display no reminder or backtrace for errors
-    # captured by knitr. This default can be overridden.
-    opt <- peek_option("rlang_backtrace_on_error") %||% "none"
-    local_options(rlang_backtrace_on_error = opt)
-
-    msg <- cnd_unhandled_message(x, report = TRUE)
-
-    # Create bare error and sew it to delegate finalisation to parent
-    # method since there is no simple way to generically modify the
-    # condition and then call `NextMethod()` (a `conditionMessage()`
-    # method might conflict, etc).
-    knitr::sew(simpleError(msg), options, ...)
-  })
-})
+  # The `sew.error()` method calls `as.character()`, which dispatches
+  # to `cnd_message()`
+  NextMethod()
+}))
 
 trace_trim_context <- function(trace, idx) {
   if (!is_scalar_integerish(idx)) {
@@ -1106,11 +1060,19 @@ trace_depth_trycatch <- function(trace) {
 #' # stop("foo")
 NULL
 
+backtrace_on_error_opts <- c("none", "reminder", "branch", "collapse", "full")
+
 # Whenever the backtrace-on-error format is changed, the version in
 # `inst/backtrace-ver` and in `tests/testthat/helper-rlang.R` must be
 # bumped. This way `devtools::test()` will skip the tests that require
 # the dev version to be installed locally.
-format_onerror_backtrace <- function(cnd, report = FALSE) {
+format_onerror_backtrace <- function(cnd, opt = peek_backtrace_on_error()) {
+  opt <- arg_match0(opt, backtrace_on_error_opts, "backtrace_on_error")
+
+  if (opt == "none") {
+    return(NULL)
+  }
+
   trace <- cnd$trace
 
   # Show backtrace of oldest parent
@@ -1125,23 +1087,9 @@ format_onerror_backtrace <- function(cnd, report = FALSE) {
     return(NULL)
   }
 
-  if (report) {
-    show_trace <- peek_backtrace_on_error_report()
-  } else {
-    show_trace <- peek_backtrace_on_error()
-  }
-
-  opts <- c("none", "reminder", "branch", "collapse", "full")
-  if (!is_string(show_trace) || !show_trace %in% opts) {
-    options(rlang_backtrace_on_error = NULL)
-    warn("Invalid `rlang_backtrace_on_error` option (resetting to `NULL`)")
-    return(NULL)
-  }
-
-  if (show_trace == "none") {
-    return(NULL)
-  }
-  if (show_trace == "reminder") {
+  # Should come after trace length check so that we don't display a
+  # reminder when there is no trace to display
+  if (opt == "reminder") {
     if (is_interactive()) {
       reminder <- silver("Run `rlang::last_error()` to see where the error occurred.")
     } else {
@@ -1150,16 +1098,17 @@ format_onerror_backtrace <- function(cnd, report = FALSE) {
     return(reminder)
   }
 
-  if (show_trace == "branch") {
+  if (opt == "branch") {
     max_frames <- 10L
   } else {
     max_frames <- NULL
   }
 
-  simplify <- switch(show_trace,
+  simplify <- switch(
+    opt,
     full = "none",
     reminder = "branch", # Check size of backtrace branch
-    show_trace
+    opt
   )
 
   paste_line(
@@ -1169,7 +1118,7 @@ format_onerror_backtrace <- function(cnd, report = FALSE) {
 }
 
 peek_backtrace_on_error <- function() {
-  opt <- peek_option("rlang_backtrace_on_error")
+  opt <- peek_backtrace_on_error_opt("rlang_backtrace_on_error")
   if (!is_null(opt)) {
     return(opt)
   }
@@ -1182,6 +1131,24 @@ peek_backtrace_on_error <- function() {
     "full"
   }
 }
+
+# By default, we display no reminder or backtrace for errors captured
+# by knitr
 peek_backtrace_on_error_report <- function() {
-  peek_option("rlang_backtrace_on_error_report") %||% "none"
+  peek_backtrace_on_error_opt("rlang_backtrace_on_error_report") %||% "none"
+}
+
+peek_backtrace_on_error_opt <- function(name) {
+  opt <- peek_option(name)
+
+  if (!is_null(opt) && !is_string(opt, backtrace_on_error_opts)) {
+    options(list2("{name}" := NULL))
+    warn(c(
+      sprintf("Invalid %s option.", format_arg(name)),
+      i = "The option was just reset to `NULL`."
+    ))
+    return(NULL)
+  }
+
+  opt
 }

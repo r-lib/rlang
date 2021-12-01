@@ -27,7 +27,8 @@ Let's see what happens when we pass arguments to a data-masking function like \c
 \}
 
 my_mean(mtcars, cyl, am)
-#> Error: Problem while computing `..1 = mean(var1 + var2)`.
+#> Error in `dplyr::summarise()`:
+#>   Problem while computing `..1 = mean(var1 + var2)`.
 #> Caused by error in `mean()`:
 #>   object 'cyl' not found
 }\if{html}{\out{</div>}}

@@ -1,3 +1,12 @@
+# Invalid on_error option resets itself
+
+    Code
+      (expect_warning(tryCatch(abort("foo"), error = identity)))
+    Output
+      <warning/rlang_warning>
+      Warning: Invalid `rlang_backtrace_on_error` option.
+      i The option was just reset to `NULL`.
+
 # error is printed with backtrace
 
     Code
@@ -462,7 +471,7 @@
       <error/rlang_error>
       Error in `f4()`: foo
 
-# errors are displayed with parent messages in knitted files
+# errors are fully displayed (parents, calls) in knitted files
 
     Code
       writeLines(render_md("test-parent-errors.Rmd"))
@@ -471,17 +480,55 @@
             "foo",
             message = "Parent message.",
             body = c("*" = "Bullet 1.", "*" = "Bullet 2."),
+            call = call("foo"),
             use_cli_format = TRUE
           )
       
-          f <- function() abort(c("Message.", "x" = "Bullet A", "i" = "Bullet B."), parent = foo)
+      Error.
       
-          f()
+          abort(
+            c("Message.", "x" = "Bullet A", "i" = "Bullet B."),
+            parent = foo,
+            call = call("f")
+          )
       
-          ## Error: Message.
+          ## Error in `f()`:
+          ##   Message.
           ##   x Bullet A
           ##   i Bullet B.
-          ## Caused by error:
+          ## Caused by error in `foo()`:
+          ##   Parent message.
+          ##   * Bullet 1.
+          ##   * Bullet 2.
+      
+      Warning.
+      
+          warn(
+            c("Message.", "x" = "Bullet A", "i" = "Bullet B."),
+            parent = foo,
+            call = call("f")
+          )
+      
+          ## Warning in f(): Message.
+          ##   x Bullet A
+          ##   i Bullet B.
+          ## Caused by error in `foo()`:
+          ##   Parent message.
+          ##   * Bullet 1.
+          ##   * Bullet 2.
+      
+      Message.
+      
+          inform(
+            c("Message.", "x" = "Bullet A", "i" = "Bullet B."),
+            parent = foo,
+            call = call("f")
+          )
+      
+          ## Message.
+          ##   x Bullet A
+          ##   i Bullet B.
+          ## Caused by error in `foo()`:
           ##   Parent message.
           ##   * Bullet 1.
           ##   * Bullet 2.

@@ -298,7 +298,7 @@ entrace_handle_top <- function(trace) {
   from_stop <- is_call(stop_call, "stop", ns = c("", "base"))
 
   # No need to do anything for rlang errors
-  if (from_stop && (is_trace(cnd$trace) || is_true(cnd$rlang_entraced))) {
+  if (from_stop && (is_trace(cnd$trace) || is_true(cnd$rlang$internal$entraced))) {
     return(entrace_exit())
   }
 
