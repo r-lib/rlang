@@ -144,7 +144,8 @@ While data-masking makes it easy to program interactively with data frames, it m
 <span class="op">}</span>
 
 <span class="fu">my_mean</span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">cyl</span>, <span class="va">am</span><span class="op">)</span>
-<span class="co">#&gt; Error: Problem while computing `..1 = mean(var1 + var2)`.</span>
+<span class="co">#&gt; Error in `dplyr::summarise()`:</span>
+<span class="co">#&gt;   Problem while computing `..1 = mean(var1 + var2)`.</span>
 <span class="co">#&gt; Caused by error in `mean()`:</span>
 <span class="co">#&gt;   object 'cyl' not found</span></code></pre><p></p></div>
 <p>The problem here is that <code>summarise()</code> defuses the R code it was supplied, i.e. <code>mean(var1 + var2)</code>.  Instead we want it to see <code>mean(cyl + am)</code>. This is why we need injection, we need to modify that piece of code by injecting the code supplied to the function in place of <code>var1</code> and <code>var2</code>.</p>
@@ -237,7 +238,7 @@ While data-masking makes it easy to program interactively with data frames, it m
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.0.9000.</p>
 </div>
 
   </div></footer></body></html>
