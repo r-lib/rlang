@@ -17,8 +17,6 @@ test_that("errors are saved", {
   file <- tempfile()
   on.exit(unlink(file))
 
-  # Verbose try() triggers conditionMessage() and thus saves the error.
-  # This simulates an unhandled error.
   local_options(
     `rlang::::force_unhandled_error` = TRUE,
     `rlang:::message_file` = tempfile()
@@ -41,15 +39,15 @@ test_that("No backtrace is displayed with top-level active bindings", {
 })
 
 test_that("Invalid on_error option resets itself", {
-  with_options(
+  local_options(
     `rlang::::force_unhandled_error` = TRUE,
     `rlang:::message_file` = tempfile(),
-    rlang_backtrace_on_error = NA,
-    {
-      expect_warning(tryCatch(abort("foo"), error = identity), "Invalid")
-      expect_null(peek_option("rlang_backtrace_on_error"))
-    }
+    rlang_backtrace_on_error = NA
   )
+  expect_snapshot({
+    (expect_warning(tryCatch(abort("foo"), error = identity)))
+  })
+  expect_null(peek_option("rlang_backtrace_on_error"))
 })
 
 test_that("format_onerror_backtrace handles empty and size 1 traces", {
@@ -461,7 +459,7 @@ test_that("format_error_call() detects non-syntactic names", {
   )
 })
 
-test_that("generic call is picked up in methods", {  
+test_that("generic call is picked up in methods", {
   g <- function(call = caller_env()) {
     abort("foo", call = call)
   }
@@ -521,7 +519,7 @@ test_that("generic call is picked up in methods", {
   })
 })
 
-test_that("errors are displayed with parent messages in knitted files", {
+test_that("errors are fully displayed (parents, calls) in knitted files", {
   skip_if_not_installed("knitr")
   skip_if_not_installed("rmarkdown")
   skip_if(!rmarkdown::pandoc_available())

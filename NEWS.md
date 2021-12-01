@@ -72,6 +72,11 @@
 
 ## Features and bugfixes
 
+* rlang conditions now have `as.character()` methods. Use this generic
+  on conditions to generate a whole error message, including the
+  `Error:` prefix. These methods are implemented as wrappers around
+  `cnd_message()`.
+
 * `header` and `footer` methods can now be stored as closures in
   condition fields of the same name.
 
