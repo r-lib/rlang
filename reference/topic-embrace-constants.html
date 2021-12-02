@@ -164,9 +164,6 @@ The reason for this has to do with compilation of R code which makes it impossib
 <p>The reason for this has to do with compilation of R code which makes it impossible to consistently capture environments of constants from function arguments. Argument defusing relies on the <em>promise</em> mechanism of R for lazy evaluation of arguments. When functions are compiled and R notices that an argument is constant, it avoids creating a promise since they slow down function evaluation. Instead, the function is directly supplied a naked constant instead of constant wrapped in a promise.</p>
     </div>
 
-    <div class="section level2">
-    <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    </div>
 
     <div class="section level2">
     <h2 id="concrete-case-of-promise-unwrapping-by-compilation">Concrete case of promise unwrapping by compilation<a class="anchor" aria-label="anchor" href="#concrete-case-of-promise-unwrapping-by-compilation"></a></h2>

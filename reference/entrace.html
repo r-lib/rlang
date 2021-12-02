@@ -3,9 +3,9 @@
 user-friendly way of enriching errors and other conditions from
 your RProfile.
 entrace() is meant to be used as a global handler. It enriches
-conditions with a backtrace. Errors are rethrown immediately
-whereas messages and warnings are recorded into last_messages()
-and last_warnings().
+conditions with a backtrace. Errors are saved to last_error()
+and rethrown immediately. Messages and warnings are recorded into
+last_messages() and last_warnings() and let through.
 cnd_entrace() adds a backtrace to a condition object, without
 any other effect. It should be called from a condition handler.
 
@@ -17,9 +17,9 @@ context from the backtrace."><title>Add backtrace from error handler — entrace
 user-friendly way of enriching errors and other conditions from
 your RProfile.
 entrace() is meant to be used as a global handler. It enriches
-conditions with a backtrace. Errors are rethrown immediately
-whereas messages and warnings are recorded into last_messages()
-and last_warnings().
+conditions with a backtrace. Errors are saved to last_error()
+and rethrown immediately. Messages and warnings are recorded into
+last_messages() and last_warnings() and let through.
 cnd_entrace() adds a backtrace to a condition object, without
 any other effect. It should be called from a condition handler.
 
@@ -125,9 +125,9 @@ context from the backtrace."><meta property="og:image" content="https://rlang.r-
     <p><code>entrace()</code> is a low level function. See <code><a href="global_entrace.html">global_entrace()</a></code> for a
 user-friendly way of enriching errors and other conditions from
 your RProfile.</p><ul><li><p><code>entrace()</code> is meant to be used as a global handler. It enriches
-conditions with a backtrace. Errors are rethrown immediately
-whereas messages and warnings are recorded into <code><a href="last_warnings.html">last_messages()</a></code>
-and <code><a href="last_warnings.html">last_warnings()</a></code>.</p></li>
+conditions with a backtrace. Errors are saved to <code><a href="last_error.html">last_error()</a></code>
+and rethrown immediately. Messages and warnings are recorded into
+<code><a href="last_warnings.html">last_messages()</a></code> and <code><a href="last_warnings.html">last_warnings()</a></code> and let through.</p></li>
 <li><p><code>cnd_entrace()</code> adds a backtrace to a condition object, without
 any other effect. It should be called from a condition handler.</p></li>
 </ul><p><code>entrace()</code> also works as an <code>option(error = )</code> handler for
