@@ -92,9 +92,9 @@ global_entrace_fallback <- function(enable, class) {
 #' your RProfile.
 #'
 #' * `entrace()` is meant to be used as a global handler. It enriches
-#'   conditions with a backtrace. Errors are rethrown immediately
-#'   whereas messages and warnings are recorded into [last_messages()]
-#'   and [last_warnings()].
+#'   conditions with a backtrace. Errors are saved to [last_error()]
+#'   and rethrown immediately. Messages and warnings are recorded into
+#'   [last_messages()] and [last_warnings()] and let through.
 #'
 #' * `cnd_entrace()` adds a backtrace to a condition object, without
 #'   any other effect. It should be called from a condition handler.
@@ -130,6 +130,7 @@ entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
   check_dots_empty0(...)
 
   if (!missing(cnd) && inherits(cnd, "rlang_error")) {
+    poke_last_error(cnd)
     return()
   }
 
@@ -167,12 +168,15 @@ entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
 
   # Rethrow errors
   if (is_error(cnd)) {
-    abort(
-      conditionMessage(cnd) %||% "",
+    entraced <- error_cnd(
+      message = conditionMessage(cnd) %||% "",
+      call = conditionCall(cnd),
       error = cnd,
       trace = trace,
-      call = conditionCall(cnd)
+      use_cli_format = FALSE
     )
+    poke_last_error(entraced)
+    cnd_signal(entraced)
   }
 
   # Ignore other condition types

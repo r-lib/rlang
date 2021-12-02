@@ -273,3 +273,19 @@ test_that("can set `entrace()` as a global handler (older R)", {
     f()
   }'))
 })
+
+test_that("errors are saved by `entrace()`", {
+  out <- tryCatch(
+    withCallingHandlers(
+      abort("foo"),
+      error = entrace
+    ),
+    error = identity
+  )
+
+  # Remove internal data stored by `last_error()`
+  err <- last_error()
+  err$rlang <- NULL
+
+  expect_equal(err, out)
+})

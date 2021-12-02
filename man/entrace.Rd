@@ -46,9 +46,9 @@ user-friendly way of enriching errors and other conditions from
 your RProfile.
 \itemize{
 \item \code{entrace()} is meant to be used as a global handler. It enriches
-conditions with a backtrace. Errors are rethrown immediately
-whereas messages and warnings are recorded into \code{\link[=last_messages]{last_messages()}}
-and \code{\link[=last_warnings]{last_warnings()}}.
+conditions with a backtrace. Errors are saved to \code{\link[=last_error]{last_error()}}
+and rethrown immediately. Messages and warnings are recorded into
+\code{\link[=last_messages]{last_messages()}} and \code{\link[=last_warnings]{last_warnings()}} and let through.
 \item \code{cnd_entrace()} adds a backtrace to a condition object, without
 any other effect. It should be called from a condition handler.
 }
