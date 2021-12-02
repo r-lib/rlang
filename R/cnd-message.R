@@ -298,6 +298,16 @@ on_load({
     # to `cnd_message()`
     NextMethod()
   })
+
+  s3_register("knitr::knit_cnd_format", "rlang_message", function(cnd) {
+    cnd_message(cnd, prefix = FALSE)
+  })
+  s3_register("knitr::knit_cnd_format", "rlang_warning", function(cnd) {
+    cnd_message(cnd, prefix = TRUE)
+  })
+  s3_register("knitr::knit_cnd_format", "rlang_error", function(cnd) {
+    cnd_message(cnd, prefix = TRUE)
+  })
 })
 
 #' Format bullets for error messages

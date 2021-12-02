@@ -509,7 +509,8 @@
             call = call("f")
           )
       
-          ## Warning in f(): Message.
+          ## Warning in `f()`:
+          ##   Message.
           ##   x Bullet A
           ##   i Bullet B.
           ## Caused by error in `foo()`:
