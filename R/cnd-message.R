@@ -281,6 +281,24 @@ as.character.rlang_error <- function(x, ...) {
   paste0(cnd_message(x, prefix = TRUE), "\n")
 }
 
+on_load({
+  s3_register("knitr::sew", "rlang_error", function(x, options, ...) {
+    # Simulate interactive session to prevent full backtrace from
+    # being included in error message
+    local_interactive()
+
+    # Save the unhandled error for `rlang::last_error()`.
+    poke_last_error(x)
+
+    # Include backtrace footer option in the condition. Processed by
+    # `cnd_message()`.
+    x <- cnd_set_backtrace_on_error(x, peek_backtrace_on_error_report())
+
+    # The `sew.error()` method calls `as.character()`, which dispatches
+    # to `cnd_message()`
+    NextMethod()
+  })
+})
 
 #' Format bullets for error messages
 #'
