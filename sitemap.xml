@@ -31,13 +31,7 @@
     <loc>https://rlang.r-lib.org/reference/are_na.html</loc>
   </url>
   <url>
-    <loc>https://rlang.r-lib.org/reference/arg_exclusive.html</loc>
-  </url>
-  <url>
     <loc>https://rlang.r-lib.org/reference/arg_match.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/arg_require.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/args_dots_empty.html</loc>
@@ -140,6 +134,12 @@
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/check_dots_used.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/check_exclusive.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/check_required.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/chr_unserialise_unicode.html</loc>
