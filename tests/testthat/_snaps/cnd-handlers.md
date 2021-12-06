@@ -4,7 +4,8 @@
       (expect_error(try_call(NULL, function(...) NULL)))
     Output
       <error/rlang_error>
-      Error in `try_call()`: `...` must be named with condition classes.
+      Error in `try_call()`:
+      `...` must be named with condition classes.
 
 # can rethrow from `try_call()`
 

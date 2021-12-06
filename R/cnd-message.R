@@ -233,6 +233,7 @@ cnd_message_format_prefixed <- function(cnd, ..., parent = FALSE) {
   if (is_null(call)) {
     prefix <- sprintf("%s:", prefix)
   } else {
+    indent <- TRUE
     src_loc <- src_loc(attr(cnd$call, "srcref"))
     if (nzchar(src_loc) && !is_testing()) {
       prefix <- sprintf("%s in %s at %s:", prefix, call, src_loc)

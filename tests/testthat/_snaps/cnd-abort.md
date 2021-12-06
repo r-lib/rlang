@@ -12,13 +12,15 @@
     Code
       cat_line(default_interactive)
     Output
-      Error in `h()`: Error message
+      Error in `h()`:
+      Error message
       Run `rlang::last_error()` to see where the error occurred.
       Execution halted
     Code
       cat_line(default_non_interactive)
     Output
-      Error in `h()`: Error message
+      Error in `h()`:
+      Error message
       Backtrace:
           x
        1. \-global f()
@@ -30,12 +32,14 @@
     Code
       cat_line(reminder)
     Output
-      Error in `h()`: Error message
+      Error in `h()`:
+      Error message
       Execution halted
     Code
       cat_line(branch)
     Output
-      Error in `h()`: Error message
+      Error in `h()`:
+      Error message
       Backtrace:
        1. global f()
        4. global g()
@@ -44,7 +48,8 @@
     Code
       cat_line(collapse)
     Output
-      Error in `h()`: Error message
+      Error in `h()`:
+      Error message
       Backtrace:
           x
        1. \-global f()
@@ -55,7 +60,8 @@
     Code
       cat_line(full)
     Output
-      Error in `h()`: Error message
+      Error in `h()`:
+      Error message
       Backtrace:
           x
        1. \-global f()
@@ -67,13 +73,15 @@
     Code
       cat_line(rethrown_interactive)
     Output
-      Error in `h()`: Error message
+      Error in `h()`:
+      Error message
       Run `rlang::last_error()` to see where the error occurred.
       Execution halted
     Code
       cat_line(rethrown_non_interactive)
     Output
-      Error in `h()`: Error message
+      Error in `h()`:
+      Error message
       Backtrace:
           x
        1. +-base::tryCatch(f(), error = function(cnd) rlang::cnd_signal(cnd))
@@ -102,14 +110,16 @@
     Code
       cat_line(branch_depth_1)
     Output
-      Error in `f()`: foo
+      Error in `f()`:
+      foo
       Backtrace:
        1. global f()
       Execution halted
     Code
       cat_line(full_depth_1)
     Output
-      Error in `f()`: foo
+      Error in `f()`:
+      foo
       Backtrace:
           x
        1. \-global f()
@@ -154,7 +164,8 @@
       print(err)
     Output
       <error/rlang_error>
-      Error in `h()`: foo
+      Error in `h()`:
+      foo
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang f()
@@ -165,7 +176,8 @@
       print(last_error())
     Output
       <error/rlang_error>
-      Error in `h()`: foo
+      Error in `h()`:
+      foo
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang f()
@@ -180,7 +192,8 @@
       }
     Output
       <error/rlang_error>
-      Error in `h()`: foo
+      Error in `h()`:
+      foo
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang f()
@@ -195,7 +208,8 @@
       }
     Output
       <error/rlang_error>
-      Error in `h()`: foo
+      Error in `h()`:
+      foo
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang f()
@@ -280,7 +294,8 @@
     Code
       run("rlang::abort('foo', call = quote(bar(baz)))")
     Output
-      Error in `bar()`: foo
+      Error in `bar()`:
+      foo
       Execution halted
 
 ---
@@ -288,7 +303,8 @@
     Code
       run("rlang::cnd_signal(errorCondition('foo', call = quote(bar(baz))))")
     Output
-      Error in `bar()`: foo
+      Error in `bar()`:
+      foo
       Execution halted
 
 # abort() accepts environment as `call` field.
@@ -297,7 +313,8 @@
       (expect_error(f()))
     Output
       <error/rlang_error>
-      Error in `h()`: `arg` must be supplied.
+      Error in `h()`:
+      `arg` must be supplied.
 
 # local_error_call() works
 
@@ -305,7 +322,8 @@
       (expect_error(foo()))
     Output
       <error/rlang_error>
-      Error in `expected()`: tilt
+      Error in `expected()`:
+      tilt
 
 # can disable error call inference for unexported functions
 
@@ -313,7 +331,8 @@
       (expect_error(foo()))
     Output
       <error/rlang_error>
-      Error in `foo()`: foo
+      Error in `foo()`:
+      foo
     Code
       local({
         local_options(`rlang:::restrict_default_error_call` = TRUE)
@@ -329,7 +348,8 @@
       })
     Output
       <error/rlang_error>
-      Error in `dots_list()`: `.homonyms` must be one of "keep", "first", "last", or "error", not "k".
+      Error in `dots_list()`:
+      `.homonyms` must be one of "keep", "first", "last", or "error", not "k".
       i Did you mean "keep"?
 
 # NSE doesn't interfere with error call contexts
@@ -454,22 +474,26 @@
       err(f1())
     Output
       <error/rlang_error>
-      Error in `f1()`: foo
+      Error in `f1()`:
+      foo
     Code
       err(f2())
     Output
       <error/rlang_error>
-      Error in `f2()`: foo
+      Error in `f2()`:
+      foo
     Code
       err(f3())
     Output
       <error/rlang_error>
-      Error in `f3()`: foo
+      Error in `f3()`:
+      foo
     Code
       err(f4(NULL))
     Output
       <error/rlang_error>
-      Error in `f4()`: foo
+      Error in `f4()`:
+      foo
 
 # errors are fully displayed (parents, calls) in knitted files
 

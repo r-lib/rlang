@@ -21,36 +21,42 @@
       "my_arg")))
     Output
       <error/rlang_error>
-      Error in `arg_match0_wrapper()`: `my_arg` must be one of "discrete" or "continuous", not "continuuos".
+      Error in `arg_match0_wrapper()`:
+      `my_arg` must be one of "discrete" or "continuous", not "continuuos".
       i Did you mean "continuous"?
     Code
       (expect_error(arg_match_wrapper("fou", c("bar", "foo"), "my_arg")))
     Output
       <error/rlang_error>
-      Error in `arg_match0_wrapper()`: `my_arg` must be one of "bar" or "foo", not "fou".
+      Error in `arg_match0_wrapper()`:
+      `my_arg` must be one of "bar" or "foo", not "fou".
       i Did you mean "foo"?
     Code
       (expect_error(arg_match_wrapper("fu", c("ba", "fo"), "my_arg")))
     Output
       <error/rlang_error>
-      Error in `arg_match0_wrapper()`: `my_arg` must be one of "ba" or "fo", not "fu".
+      Error in `arg_match0_wrapper()`:
+      `my_arg` must be one of "ba" or "fo", not "fu".
       i Did you mean "fo"?
     Code
       (expect_error(arg_match_wrapper("baq", c("foo", "baz", "bas"), "my_arg")))
     Output
       <error/rlang_error>
-      Error in `arg_match0_wrapper()`: `my_arg` must be one of "foo", "baz", or "bas", not "baq".
+      Error in `arg_match0_wrapper()`:
+      `my_arg` must be one of "foo", "baz", or "bas", not "baq".
       i Did you mean "baz"?
     Code
       (expect_error(arg_match_wrapper("", character(), "my_arg")))
     Output
       <error/rlang_error>
-      Error in `arg_match0()`: `values` must have at least one element.
+      Error in `arg_match0()`:
+      `values` must have at least one element.
     Code
       (expect_error(arg_match_wrapper("fo", "foo", quote(f()))))
     Output
       <error/rlang_error>
-      Error in `arg_match0()`: `arg_nm` must be a string or symbol.
+      Error in `arg_match0()`:
+      `arg_nm` must be a string or symbol.
 
 # `arg_match()` provides no suggestion when the edit distance is too large
 
@@ -58,12 +64,14 @@
       (expect_error(arg_match0_wrapper("foobaz", c("fooquxs", "discrete"), "my_arg")))
     Output
       <error/rlang_error>
-      Error in `arg_match0_wrapper()`: `my_arg` must be one of "fooquxs" or "discrete", not "foobaz".
+      Error in `arg_match0_wrapper()`:
+      `my_arg` must be one of "fooquxs" or "discrete", not "foobaz".
     Code
       (expect_error(arg_match0_wrapper("a", c("b", "c"), "my_arg")))
     Output
       <error/rlang_error>
-      Error in `arg_match0_wrapper()`: `my_arg` must be one of "b" or "c", not "a".
+      Error in `arg_match0_wrapper()`:
+      `my_arg` must be one of "b" or "c", not "a".
 
 # `arg_match()` makes case-insensitive match
 
@@ -72,14 +80,16 @@
       "Did you mean \"A\"?"))
     Output
       <error/rlang_error>
-      Error in `arg_match0_wrapper()`: `my_arg` must be one of "A" or "B", not "a".
+      Error in `arg_match0_wrapper()`:
+      `my_arg` must be one of "A" or "B", not "a".
       i Did you mean "A"?
     Code
       (expect_error(arg_match0_wrapper("aa", c("AA", "aA"), "my_arg"),
       "Did you mean \"aA\"?"))
     Output
       <error/rlang_error>
-      Error in `arg_match0_wrapper()`: `my_arg` must be one of "AA" or "aA", not "aa".
+      Error in `arg_match0_wrapper()`:
+      `my_arg` must be one of "AA" or "aA", not "aa".
       i Did you mean "aA"?
 
 # check_required() checks argument is supplied (#1118)
@@ -88,12 +98,14 @@
       (expect_error(f()))
     Output
       <error/rlang_error>
-      Error in `f()`: `x` must be supplied.
+      Error in `f()`:
+      `x` must be supplied.
     Code
       (expect_error(g()))
     Output
       <error/rlang_error>
-      Error in `f()`: `x` must be supplied.
+      Error in `f()`:
+      `x` must be supplied.
 
 # arg_match() supports symbols and scalar strings
 
@@ -101,7 +113,8 @@
       (expect_error(arg_match0_wrapper(chr_get("fo", 0L), c("bar", "foo"), "my_arg")))
     Output
       <error/rlang_error>
-      Error in `arg_match0_wrapper()`: `my_arg` must be one of "bar" or "foo", not "fo".
+      Error in `arg_match0_wrapper()`:
+      `my_arg` must be one of "bar" or "foo", not "fo".
       i Did you mean "foo"?
 
 # arg_match() requires an argument symbol
@@ -110,7 +123,8 @@
       (expect_error(wrapper()))
     Output
       <error/rlang_error>
-      Error in `wrapper()`: `arg` must be a symbol.
+      Error in `wrapper()`:
+      `arg` must be a symbol.
       ! This is an internal error, please report it to the package authors.
 
 # can match multiple arguments
@@ -119,13 +133,15 @@
       (expect_error(my_wrapper("ba")))
     Output
       <error/rlang_error>
-      Error in `my_wrapper()`: `my_arg` must be one of "foo", "bar", or "baz", not "ba".
+      Error in `my_wrapper()`:
+      `my_arg` must be one of "foo", "bar", or "baz", not "ba".
       i Did you mean "bar"?
     Code
       (expect_error(my_wrapper(c("foo", "ba"))))
     Output
       <error/rlang_error>
-      Error in `my_wrapper()`: `my_arg` must be one of "foo", "bar", or "baz", not "ba".
+      Error in `my_wrapper()`:
+      `my_arg` must be one of "foo", "bar", or "baz", not "ba".
       i Did you mean "bar"?
 
 # arg_match0() defuses argument
@@ -134,7 +150,8 @@
       (expect_error(fn("foo")))
     Output
       <error/rlang_error>
-      Error in `fn()`: `arg` must be one of "bar" or "baz", not "foo".
+      Error in `fn()`:
+      `arg` must be one of "bar" or "baz", not "foo".
     Code
       (expect_error(arg_match0("foo", c("bar", "baz"))))
     Output
@@ -147,17 +164,20 @@
       (expect_error(f()))
     Output
       <error/rlang_error>
-      Error in `check_exclusive()`: Must supply at least two arguments.
+      Error in `check_exclusive()`:
+      Must supply at least two arguments.
     Code
       (expect_error(g()))
     Output
       <error/rlang_error>
-      Error in `check_exclusive()`: Must supply at least two arguments.
+      Error in `check_exclusive()`:
+      Must supply at least two arguments.
     Code
       (expect_error(h()))
     Output
       <error/rlang_error>
-      Error in `check_exclusive()`: Must supply at least two arguments.
+      Error in `check_exclusive()`:
+      Must supply at least two arguments.
 
 ---
 
@@ -165,7 +185,8 @@
       (expect_error(f()))
     Output
       <error/rlang_error>
-      Error in `f()`: One of `foo` or `bar` must be supplied.
+      Error in `f()`:
+      One of `foo` or `bar` must be supplied.
 
 ---
 
@@ -174,12 +195,14 @@
       (expect_error(g(foo, bar, baz)))
     Output
       <error/rlang_error>
-      Error in `g()`: Exactly one of `foo`, `bar`, or `baz` must be supplied.
+      Error in `g()`:
+      Exactly one of `foo`, `bar`, or `baz` must be supplied.
     Code
       # Some arguments supplied
       (expect_error(g(foo, bar)))
     Output
       <error/rlang_error>
-      Error in `g()`: Exactly one of `foo`, `bar`, or `baz` must be supplied.
+      Error in `g()`:
+      Exactly one of `foo`, `bar`, or `baz` must be supplied.
       x `foo` and `bar` were supplied together.
 

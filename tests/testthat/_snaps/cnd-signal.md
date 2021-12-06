@@ -39,12 +39,14 @@
       (expect_error(inform("foo", .frequency = "once", .frequency_id = NULL)))
     Output
       <error/rlang_error>
-      Error in `inform()`: `.frequency_id` must be supplied with `.frequency`.
+      Error in `inform()`:
+      `.frequency_id` must be supplied with `.frequency`.
     Code
       (expect_error(warn("foo", .frequency = "once", .frequency_id = 1L)))
     Output
       <error/rlang_error>
-      Error in `warn()`: `.frequency` must be a string.
+      Error in `warn()`:
+      `.frequency` must be a string.
 
 # signal functions check inputs
 
@@ -52,20 +54,24 @@
       (expect_error(abort(error_cnd("foo"))))
     Output
       <error/rlang_error>
-      Error in `abort()`: `message` must be a character vector.
+      Error in `abort()`:
+      `message` must be a character vector.
     Code
       (expect_error(inform(error_cnd("foo"))))
     Output
       <error/rlang_error>
-      Error in `inform()`: `message` must be a character vector.
+      Error in `inform()`:
+      `message` must be a character vector.
     Code
       (expect_error(warn(class = error_cnd("foo"))))
     Output
       <error/rlang_error>
-      Error in `warn()`: `class` must be a character vector.
+      Error in `warn()`:
+      `class` must be a character vector.
     Code
       (expect_error(abort("foo", call = base::call)))
     Output
       <error/rlang_error>
-      Error in `abort()`: `call` must be a call or environment.
+      Error in `abort()`:
+      `call` must be a call or environment.
 
