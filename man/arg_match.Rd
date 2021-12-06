@@ -76,5 +76,5 @@ fn2("bar")
 try(fn3("zoo"))
 }
 \seealso{
-\code{\link[=arg_require]{arg_require()}}
+\code{\link[=check_required]{check_required()}}
 }

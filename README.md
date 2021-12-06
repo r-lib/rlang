@@ -26,7 +26,7 @@ Two comprehensive frameworks are implemented in rlang.
 
 A set of tools help you check, validate, and preprocess arguments.
 
-*   Checking function arguments, e.g. `arg_match()`, `arg_require()`, and `arg_exclusive()`.
+*   Checking function arguments, e.g. `arg_match()`, `check_required()`, and `check_exclusive()`.
 
 *   Checking dots, e.g. `check_dots_used()` and `check_dots_empty()`.
 

@@ -40,7 +40,7 @@
 #' with_handlers(cnd_signal(cnd), foo = function(c) "caught!")
 #' tryCatch(cnd_signal(cnd), foo = function(c) "caught!")
 cnd <- function(class, ..., message = "") {
-  arg_require(class)
+  check_required(class)
   .Call(ffi_new_condition, class, message, cnd_fields(...))
 }
 #' @rdname cnd

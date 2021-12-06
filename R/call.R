@@ -887,7 +887,7 @@ call_match <- function(call = NULL,
 #' call_ns(quote(bar()))
 #' @export
 call_name <- function(call) {
-  arg_require(call)
+  check_required(call)
 
   if (is_quosure(call) || is_formula(call)) {
     call <- get_expr(call)
@@ -909,7 +909,7 @@ call_name <- function(call) {
 #' @rdname call_name
 #' @export
 call_ns <- function(call) {
-  arg_require(call)
+  check_required(call)
 
   if (is_quosure(call) || is_formula(call)) {
     call <- get_expr(call)
@@ -934,7 +934,7 @@ call_ns <- function(call) {
 #'   calls.
 #' @export
 is_call_simple <- function(x, ns = NULL) {
-  arg_require(x)
+  check_required(x)
 
   # For compatibility with `call_name()` and `call_ns()`
   if (is_quosure(x) || is_formula(x)) {
@@ -980,7 +980,7 @@ is_call_simple <- function(x, ns = NULL) {
 #' call_args_names(call)
 #' @export
 call_args <- function(call) {
-  arg_require(call)
+  check_required(call)
 
   if (is_quosure(call) || is_formula(call)) {
     call <- get_expr(call)
@@ -995,7 +995,7 @@ call_args <- function(call) {
 #' @rdname call_args
 #' @export
 call_args_names <- function(call) {
-  arg_require(call)
+  check_required(call)
 
   if (is_quosure(call) || is_formula(call)) {
     call <- get_expr(call)

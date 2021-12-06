@@ -108,7 +108,7 @@
   from any file of your package. `on_package_load()` runs expressions
   when another package is loaded. (#1284)
 
-* `arg_exclusive()` checks that only one argument of a set is supplied (#1261).
+* `check_exclusive()` checks that only one argument of a set is supplied (#1261).
 
 * `call_name()` and `call_ns()` now return `NULL` with calls of the
   form `foo::bar` (#670).
@@ -402,7 +402,7 @@
   For convenience, a fully unnamed vector is interpreted as a vector
   of `"*"` bullets.
 
-* New function `arg_require()` to check that an argument is
+* New function `check_required()` to check that an argument is
   supplied. It produces a more friendly error message than `force()`
   (#1118).
 

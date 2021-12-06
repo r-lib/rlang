@@ -19,7 +19,7 @@
 #' @inheritParams args_error_context
 #' @return The string supplied to `arg`.
 #' @importFrom utils adist
-#' @seealso [arg_require()]
+#' @seealso [check_required()]
 #' @export
 #' @examples
 #' fn <- function(x = c("foo", "bar")) arg_match(x)
@@ -176,7 +176,7 @@ arg_match_invalid_msg <- function(val, values, error_arg) {
 #' @seealso [arg_match()]
 #' @examples
 #' f <- function(x)  {
-#'   arg_require(x)
+#'   check_required(x)
 #' }
 #'
 #' # Fails because `x` is not supplied
@@ -185,9 +185,9 @@ arg_match_invalid_msg <- function(val, values, error_arg) {
 #' # Succeeds
 #' f(NULL)
 #' @export
-arg_require <- function(arg,
-                        error_arg = caller_arg(arg),
-                        error_call = caller_env()) {
+check_required <- function(arg,
+                           error_arg = caller_arg(arg),
+                           error_call = caller_env()) {
   if (!missing(arg)) {
     invisible(return(TRUE))
   }
@@ -227,7 +227,7 @@ chr_enumerate <- function(chr, sep = ", ", final = "or") {
 
 #' Check that arguments are mutually exclusive
 #'
-#' `arg_exclusive()` checks that only one argument is supplied out of
+#' `check_exclusive()` checks that only one argument is supplied out of
 #' a set of mutually exclusive arguments. An informative error is
 #' thrown if multiple arguments are supplied.
 #'
@@ -242,7 +242,7 @@ chr_enumerate <- function(chr, sep = ", ", final = "or") {
 #' @examples
 #' f <- function(x, y) {
 #'   switch(
-#'     arg_exclusive(x, y),
+#'     check_exclusive(x, y),
 #'     x = message("`x` was supplied."),
 #'     y = message("`y` was supplied.")
 #'   )
@@ -260,7 +260,7 @@ chr_enumerate <- function(chr, sep = ", ", final = "or") {
 #' # With `.require` you can allow zero arguments
 #' f <- function(x, y) {
 #'   switch(
-#'     arg_exclusive(x, y, .require = FALSE),
+#'     check_exclusive(x, y, .require = FALSE),
 #'     x = message("`x` was supplied."),
 #'     y = message("`y` was supplied."),
 #'     message("No arguments were supplied")
@@ -268,10 +268,10 @@ chr_enumerate <- function(chr, sep = ", ", final = "or") {
 #' }
 #' f()
 #' @export
-arg_exclusive <- function(...,
-                          .require = TRUE,
-                          .frame = caller_env(),
-                          .error_call = .frame) {
+check_exclusive <- function(...,
+                            .require = TRUE,
+                            .frame = caller_env(),
+                            .error_call = .frame) {
   args <- enexprs(..., .named = TRUE)
   if (length(args) < 2) {
     abort("Must supply at least two arguments.")

@@ -495,7 +495,7 @@ env_poke <- function(env = caller_env(),
 #' e$b
 #' @export
 env_cache <- function(env, nm, default) {
-  arg_require(default)
+  check_required(default)
 
   if (!is_string(nm)) {
     abort("`nm` must be a string.")

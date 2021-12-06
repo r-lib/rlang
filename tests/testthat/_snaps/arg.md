@@ -82,7 +82,7 @@
       Error in `arg_match0_wrapper()`: `my_arg` must be one of "AA" or "aA", not "aa".
       i Did you mean "aA"?
 
-# arg_require() checks argument is supplied (#1118)
+# check_required() checks argument is supplied (#1118)
 
     Code
       (expect_error(f()))
@@ -141,23 +141,23 @@
       <error/rlang_error>
       Error: `"foo"` must be one of "bar" or "baz", not "foo".
 
-# arg_exclusive works
+# check_exclusive works
 
     Code
       (expect_error(f()))
     Output
       <error/rlang_error>
-      Error in `arg_exclusive()`: Must supply at least two arguments.
+      Error in `check_exclusive()`: Must supply at least two arguments.
     Code
       (expect_error(g()))
     Output
       <error/rlang_error>
-      Error in `arg_exclusive()`: Must supply at least two arguments.
+      Error in `check_exclusive()`: Must supply at least two arguments.
     Code
       (expect_error(h()))
     Output
       <error/rlang_error>
-      Error in `arg_exclusive()`: Must supply at least two arguments.
+      Error in `check_exclusive()`: Must supply at least two arguments.
 
 ---
 

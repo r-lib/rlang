@@ -236,7 +236,7 @@ validate_signal_args <- function(msg, class, call, subclass, env = caller_env())
   if (!is_missing(subclass)) {
     deprecate_subclass(subclass, env)
   }
-  arg_require(class, error_call = env)
+  check_required(class, error_call = env)
 
   if (!is_missing(call)) {
     if (!is_null(call) && !is_environment(call) && !is_call(call)) {

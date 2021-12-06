@@ -125,8 +125,8 @@ test_that("is_missing() works with dots", {
   expect_false((function(...) is_missing(..1))(1))
 })
 
-test_that("arg_require() checks argument is supplied (#1118)", {
-  f <- function(x) arg_require(x)
+test_that("check_required() checks argument is supplied (#1118)", {
+  f <- function(x) check_required(x)
   g <- function(y) f(y)
 
   expect_error(f(NULL), NA)
@@ -181,10 +181,10 @@ test_that("arg_match0() defuses argument", {
   })
 })
 
-test_that("arg_exclusive works", {
-  f <- function(foo) arg_exclusive(foo)
-  g <- function() arg_exclusive()
-  h <- function() arg_exclusive(foo())
+test_that("check_exclusive works", {
+  f <- function(foo) check_exclusive(foo)
+  g <- function() check_exclusive()
+  h <- function() check_exclusive(foo())
 
   # Internal errors
   expect_snapshot({
@@ -193,8 +193,8 @@ test_that("arg_exclusive works", {
     (expect_error(h()))
   })
 
-  f <- function(foo, bar = NULL, ...) arg_exclusive(foo, bar, ...)
-  g <- function(foo, bar = NULL, baz, ...) arg_exclusive(foo, bar, baz, ...)
+  f <- function(foo, bar = NULL, ...) check_exclusive(foo, bar, ...)
+  g <- function(foo, bar = NULL, baz, ...) check_exclusive(foo, bar, baz, ...)
 
   # Zero arguments supplied
   expect_snapshot({

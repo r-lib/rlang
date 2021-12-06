@@ -113,8 +113,8 @@ reference:
   - subtitle: Check arguments
     contents:
       - arg_match
-      - arg_exclusive
-      - arg_require
+      - check_exclusive
+      - check_required
       - missing_arg
 
   - subtitle: Check dots
