@@ -16,8 +16,8 @@ is_binary_lang(x, name = NULL, ns = NULL)
 quo_is_lang(quo)
 }
 \arguments{
-\item{x}{An object to test. If a formula, the right-hand side is
-extracted.}
+\item{x}{An object to test. Formulas and quosures are treated
+literally.}
 
 \item{name}{An optional name that the call should match. It is
 passed to \code{\link[=sym]{sym()}} before matching. This argument is vectorised

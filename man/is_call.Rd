@@ -7,8 +7,8 @@
 is_call(x, name = NULL, n = NULL, ns = NULL)
 }
 \arguments{
-\item{x}{An object to test. If a formula, the right-hand side is
-extracted.}
+\item{x}{An object to test. Formulas and quosures are treated
+literally.}
 
 \item{name}{An optional name that the call should match. It is
 passed to \code{\link[=sym]{sym()}} before matching. This argument is vectorised

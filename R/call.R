@@ -174,8 +174,8 @@ is_callable <- function(x) {
 #' pattern-matching predicate that returns `FALSE` if `name` and `n`
 #' are supplied and the call does not match these properties.
 #'
-#' @param x An object to test. If a formula, the right-hand side is
-#'   extracted.
+#' @param x An object to test. Formulas and quosures are treated
+#'   literally.
 #' @param name An optional name that the call should match. It is
 #'   passed to [sym()] before matching. This argument is vectorised
 #'   and you can supply a vector of names to match. In this case,
