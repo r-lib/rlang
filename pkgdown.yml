@@ -1,8 +1,8 @@
 pandoc: 2.7.3
-pkgdown: 2.0.0.9000
-pkgdown_sha: 3e17275dfe27b1176d9cb596f679c23808d7b3d7
+pkgdown: 2.0.1.9000
+pkgdown_sha: 953a87771f74e405f2e648750b1b74db1806770a
 articles: {}
-last_built: 2021-12-02T16:52Z
+last_built: 2021-12-06T07:18Z
 urls:
   reference: https://rlang.r-lib.org/reference
   article: https://rlang.r-lib.org/articles
