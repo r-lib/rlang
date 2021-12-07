@@ -818,7 +818,7 @@ error_call_as_string <- function(call) {
 
   # Preserve operator calls, even if multiline
   if (!is_string(call_parse_type(call), "")) {
-    return(paste(expr_deparse(call), collapse = "\n"))
+    return(paste(error_call_deparse(call), collapse = "\n"))
   }
 
   # FIXME! Deparse with arguments?
@@ -829,6 +829,15 @@ error_call_as_string <- function(call) {
   # Remove distracting arguments from the call and restore namespace
   call[[1]] <- old
   as_label(call[1])
+}
+
+# Add indent to ulterior lines
+error_call_deparse <- function(call) {
+  out <- expr_deparse(call)
+  if (length(out) > 1) {
+    out[-1] <- paste0("  ", out[-1])
+  }
+  out
 }
 
 error_call <- function(call) {

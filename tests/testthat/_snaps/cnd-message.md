@@ -358,27 +358,27 @@
 
     <error/rlang_error>
     Error in `1 + ("veeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeery_long" +
-      "veeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeery_long")`:
+        "veeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeery_long")`:
     This is the error message.
 
 ---
 
     <error/rlang_error>
     Error in `{
-      1
-      2
-    } + {
-      2
-      3
-    }`:
+        1
+        2
+      } + {
+        2
+        3
+      }`:
     This is the error message.
 
 ---
 
     <error/rlang_error>
     Error in `x[{
-      1
-      2
-    }]`:
+        1
+        2
+      }]`:
     This is the error message.
 
