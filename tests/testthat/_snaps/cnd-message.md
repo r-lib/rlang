@@ -217,6 +217,17 @@
         Header
         i Bullet
 
+# special syntax calls handle edge cases
+
+    Code
+      error_call_as_string(quote(+NULL))
+    Output
+      [1] "+NULL"
+    Code
+      error_call_as_string(quote(base::`+`(1, 2)))
+    Output
+      [1] "1 + 2"
+
 # can print message with and without prefix
 
     Code
@@ -342,4 +353,32 @@
         Parent message.
         * Bullet 1.
         * Bullet 2.
+
+# multiline operator calls are preserved
+
+    <error/rlang_error>
+    Error in `1 + ("veeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeery_long" +
+      "veeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeery_long")`:
+    This is the error message.
+
+---
+
+    <error/rlang_error>
+    Error in `{
+      1
+      2
+    } + {
+      2
+      3
+    }`:
+    This is the error message.
+
+---
+
+    <error/rlang_error>
+    Error in `x[{
+      1
+      2
+    }]`:
+    This is the error message.
 

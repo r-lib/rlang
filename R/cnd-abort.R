@@ -762,7 +762,11 @@ format_error_call <- function(call) {
     return(NULL)
   }
 
-  format_code(label)
+  if (grepl("\n", label)) {
+    cli_with_whiteline_escapes(label, format_code)
+  } else {
+    format_code(label)
+  }
 }
 
 error_call_as_string <- function(call) {
@@ -804,20 +808,20 @@ error_call_as_string <- function(call) {
   old <- call[[1]]
   call[[1]] <- sym(call_name(call))
 
-  # Deal with special-syntax calls. `if` carries useful information in
-  # its call. For other operators we just return their name because
-  # the functional form may be confusing.
+  # Deal with `if` bombs. Keep the condition as it is informative but
+  # drop the uninformative branches to avoid multiline calls. See
+  # https://github.com/r-lib/testthat/issues/1429
   if (is_call(call, "if")) {
-    # Deal with `if` bombs. Keep the condition as it is informative but
-    # drop the branches to avoid multiline calls. See
-    # https://github.com/r-lib/testthat/issues/1429
     call[[3]] <- quote(...)
     return(as_label(call[1:3]))
   }
+
+  # Preserve operator calls, even if multiline
   if (!is_string(call_parse_type(call), "")) {
-    return(as_string(call[[1]]))
+    return(paste(expr_deparse(call), collapse = "\n"))
   }
 
+  # FIXME! Deparse with arguments?
   if (is_symbol(call[[1]]) && needs_backticks(call[[1]])) {
     return(as_string(call[[1]]))
   }
