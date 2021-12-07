@@ -677,3 +677,18 @@ test_that("infix operators are labelled (#956, r-lib/testthat#1432)", {
     "... + ..."
   )
 })
+
+test_that("binary op without arguments", {
+  expect_equal(
+    expr_deparse(quote(`+`())),
+    "`+`()"
+  )
+  expect_equal(
+    expr_deparse(quote(`$`())),
+    "`$`()"
+  )
+  expect_equal(
+    expr_deparse(quote(`~`())),
+    "`~`()"
+  )
+})

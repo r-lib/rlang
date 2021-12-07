@@ -371,12 +371,22 @@ tight_op_deparse <- function(x, lines = new_lines()) {
 }
 
 unary_op_deparse <- function(x, lines = new_lines()) {
+  # Constructed call without argument
+  if (is_null(node_cdr(x))) {
+    return(call_deparse(x, lines))
+  }
+
   op <- as_string(node_car(x))
   lines$push(op)
   lines$deparse(node_cadr(x))
   lines$get_lines()
 }
 unary_f_deparse <- function(x, lines = new_lines()) {
+  # Constructed call without argument
+  if (is_null(node_cdr(x))) {
+    return(call_deparse(x, lines))
+  }
+
   lines$push("~")
 
   rhs <- node_cadr(x)

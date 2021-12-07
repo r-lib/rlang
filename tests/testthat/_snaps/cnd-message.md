@@ -220,9 +220,9 @@
 # special syntax calls handle edge cases
 
     Code
-      error_call_as_string(quote(+NULL))
+      error_call_as_string(quote(`+`()))
     Output
-      [1] "+NULL"
+      [1] "`+`()"
     Code
       error_call_as_string(quote(base::`+`(1, 2)))
     Output
