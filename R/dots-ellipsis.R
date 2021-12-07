@@ -90,12 +90,12 @@ check_dots_unnamed <- function(env = caller_env(),
                                error = NULL,
                                call = caller_env(),
                                action = abort) {
-  proms <- ellipsis_dots(env, auto_name = FALSE)
+  proms <- ellipsis_dots(env)
   if (length(proms) == 0) {
     return()
   }
 
-  unnamed <- is.na(names(proms))
+  unnamed <- names2(proms) == ""
   if (all(unnamed)) {
     return(invisible())
   }
@@ -154,10 +154,17 @@ check_dots_empty <- function(env = caller_env(),
     return()
   }
 
+  if (!is_named(dots)) {
+    note <- c("i" = "Did you forget to name an argument?")
+  } else {
+    note <- NULL
+  }
+
   action_dots(
     error = error,
     action = action,
     message = "`...` must be empty.",
+    note = note,
     dots_i = TRUE,
     class = "rlib_error_dots_nonempty",
     call = call,
@@ -187,6 +194,7 @@ action_dots <- function(error,
                         dots_i,
                         env,
                         class = NULL,
+                        note = NULL,
                         ...) {
   if (is_missing(action)) {
     action <- abort
@@ -223,7 +231,7 @@ action_dots <- function(error,
   }
 
   try_dots(action(
-    c(message, "x" = bullet_header, set_names(bullets, "*")),
+    c(message, "x" = bullet_header, set_names(bullets, "*"), note),
     class = c(class, "rlib_error_dots"),
     ...
   ))
@@ -232,8 +240,8 @@ action_dots <- function(error,
 promise_forced <- function(x) {
   .Call(ffi_ellipsis_promise_forced, x)
 }
-ellipsis_dots <- function(env = caller_env(), auto_name = TRUE) {
-  .Call(ffi_ellipsis_dots, env, auto_name)
+ellipsis_dots <- function(env = caller_env()) {
+  .Call(ffi_ellipsis_dots, env)
 }
 
 #' Helper for consistent documentation of empty dots

@@ -115,3 +115,12 @@ test_that("expression contents are mentioned", {
     f(a = toupper(letters))
   })
 })
+
+test_that("empty dots error mentions info bullets if any unnamed element", {
+  f <- function(...) check_dots_empty()
+  expect_snapshot(error = TRUE, {
+    f(1)
+    f(a = 1)
+    f(a = 1, 2)
+  })
+})
