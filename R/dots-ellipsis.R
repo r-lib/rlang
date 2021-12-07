@@ -61,7 +61,10 @@ check_dots <- function(env = caller_env(), error, action, call) {
   action_dots(
     error = error,
     action = action,
-    message = paste0(length(unused), " arguments in `...` were not used."),
+    message = c(
+      "Arguments in `...` must be used.",
+      "x" = "Problematic arguments:"
+    ),
     dot_names = unused,
     class = "rlib_error_dots_unused",
     call = call
@@ -104,7 +107,10 @@ check_dots_unnamed <- function(env = caller_env(),
   action_dots(
     error = error,
     action = action,
-    message = paste0(length(named), " arguments in `...` had unexpected names."),
+    message = c(
+      "Arguments in `...` can't be named.",
+      "x" = "Problematic arguments:"
+    ),
     dot_names = named,
     class = "rlib_error_dots_named",
     call = call
@@ -156,9 +162,11 @@ check_dots_empty <- function(env = caller_env(),
   action_dots(
     error = error,
     action = action,
-    message = "`...` is not empty.",
+    message = c(
+      "`...` must be empty.",
+      "x" = "Problematic arguments:"
+    ),
     dot_names = names(dots),
-    note = "These dots only exist to allow future extensions and should be empty.",
     class = "rlib_error_dots_nonempty",
     call = call
   )
@@ -180,7 +188,7 @@ check_dots_empty0 <- function(..., call = caller_env()) {
   }
 }
 
-action_dots <- function(error, action, message, dot_names, note = NULL, class = NULL, ...) {
+action_dots <- function(error, action, message, dot_names, class = NULL, ...) {
   if (is_missing(action)) {
     action <- abort
   } else  {
@@ -199,10 +207,7 @@ action_dots <- function(error, action, message, dot_names, note = NULL, class = 
 
   message <- c(
     message,
-    i = note,
-    x = "We detected these problematic arguments:",
-    set_names(chr_quoted(dot_names), "*"),
-    i = "Did you misspecify an argument?"
+    set_names(chr_quoted(dot_names), "*")
   )
 
   try_dots(action(message, class = c(class, "rlib_error_dots"), ...))
