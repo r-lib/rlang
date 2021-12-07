@@ -103,3 +103,15 @@ test_that("can supply `error` handler", {
   expect_silent(f(foo))
   expect_warning(f(foo = foo), class = "rlib_error_dots_named")
 })
+
+test_that("expression contents are mentioned", {
+  f <- function(...) check_dots_empty()
+
+  expect_snapshot(error = TRUE, {
+    f("foo")
+    f(foo)
+    inject(f(!!letters))
+    f(a = { 1; 2 })
+    f(a = toupper(letters))
+  })
+})

@@ -55,19 +55,16 @@ check_dots <- function(env = caller_env(), error, action, call) {
   }
 
   proms <- ellipsis_dots(env)
-  used <- map_lgl(proms, promise_forced)
+  unused <- !map_lgl(proms, promise_forced)
 
-  unused <- names(proms)[!used]
   action_dots(
     error = error,
     action = action,
-    message = c(
-      "Arguments in `...` must be used.",
-      "x" = "Problematic arguments:"
-    ),
-    dot_names = unused,
+    message = "Arguments in `...` must be used.",
+    dots_i = unused,
     class = "rlib_error_dots_unused",
-    call = call
+    call = call,
+    env = env
   )
 }
 
@@ -102,18 +99,16 @@ check_dots_unnamed <- function(env = caller_env(),
   if (all(unnamed)) {
     return(invisible())
   }
+  named <- !unnamed
 
-  named <- names(proms)[!unnamed]
   action_dots(
     error = error,
     action = action,
-    message = c(
-      "Arguments in `...` can't be named.",
-      "x" = "Problematic arguments:"
-    ),
-    dot_names = named,
+    message = "Arguments in `...` can't be named.",
+    dots_i = named,
     class = "rlib_error_dots_named",
-    call = call
+    call = call,
+    env = env
   )
 }
 
@@ -162,13 +157,11 @@ check_dots_empty <- function(env = caller_env(),
   action_dots(
     error = error,
     action = action,
-    message = c(
-      "`...` must be empty.",
-      "x" = "Problematic arguments:"
-    ),
-    dot_names = names(dots),
+    message = "`...` must be empty.",
+    dots_i = TRUE,
     class = "rlib_error_dots_nonempty",
-    call = call
+    call = call,
+    env = env
   )
 }
 #' Check that dots are empty (low level variant)
@@ -188,7 +181,13 @@ check_dots_empty0 <- function(..., call = caller_env()) {
   }
 }
 
-action_dots <- function(error, action, message, dot_names, class = NULL, ...) {
+action_dots <- function(error,
+                        action,
+                        message,
+                        dots_i,
+                        env,
+                        class = NULL,
+                        ...) {
   if (is_missing(action)) {
     action <- abort
   } else  {
@@ -199,18 +198,35 @@ action_dots <- function(error, action, message, dot_names, class = NULL, ...) {
     )
   }
 
+  dots <- substitute(...(), env = env)[dots_i]
+
+  names(dots) <- ifelse(
+    have_name(dots),
+    names2(dots),
+    paste0("..", seq_along(dots))
+  )
+
+  bullet_header <- ngettext(
+    length(dots),
+    "Problematic argument:",
+    "Problematic arguments:",
+  )
+
+  bullets <- map2_chr(names(dots), dots, function(name, expr) {
+    sprintf("%s = %s", name, as_label(expr))
+  })
+
   if (is_null(error)) {
     try_dots <- identity
   } else {
     try_dots <- function(expr) try_call(expr, error = error)
   }
 
-  message <- c(
-    message,
-    set_names(chr_quoted(dot_names), "*")
-  )
-
-  try_dots(action(message, class = c(class, "rlib_error_dots"), ...))
+  try_dots(action(
+    c(message, "x" = bullet_header, set_names(bullets, "*")),
+    class = c(class, "rlib_error_dots"),
+    ...
+  ))
 }
 
 promise_forced <- function(x) {

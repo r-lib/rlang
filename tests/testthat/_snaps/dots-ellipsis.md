@@ -12,8 +12,8 @@
       Error in `f()`:
       Arguments in `...` can't be named.
       x Problematic arguments:
-      * `xy`
-      * `x`
+      * xy = 4
+      * x = 5
 
 # error if if dots not empty
 
@@ -23,14 +23,50 @@
       <error/rlib_error_dots_nonempty>
       Error in `f()`:
       `...` must be empty.
-      x Problematic arguments:
-      * `xy`
+      x Problematic argument:
+      * xy = 4
     Code
       (expect_error(f0(xy = 4), class = "rlib_error_dots_nonempty"))
     Output
       <error/rlib_error_dots_nonempty>
       Error in `f0()`:
       `...` must be empty.
-      x Problematic arguments:
-      * `xy`
+      x Problematic argument:
+      * xy = 4
+
+# expression contents are mentioned
+
+    Code
+      f("foo")
+    Error <rlib_error_dots_nonempty>
+      `...` must be empty.
+      x Problematic argument:
+      * ..1 = "foo"
+    Code
+      f(foo)
+    Error <rlib_error_dots_nonempty>
+      `...` must be empty.
+      x Problematic argument:
+      * ..1 = foo
+    Code
+      inject(f(!!letters))
+    Error <rlib_error_dots_nonempty>
+      `...` must be empty.
+      x Problematic argument:
+      * ..1 = <chr>
+    Code
+      f(a = {
+        1
+        2
+      })
+    Error <rlib_error_dots_nonempty>
+      `...` must be empty.
+      x Problematic argument:
+      * a = { ... }
+    Code
+      f(a = toupper(letters))
+    Error <rlib_error_dots_nonempty>
+      `...` must be empty.
+      x Problematic argument:
+      * a = toupper(letters)
 
