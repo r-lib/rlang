@@ -168,6 +168,9 @@ entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
 
   # Rethrow errors
   if (is_error(cnd)) {
+    if (has_recover()) {
+      return()
+    }
     entraced <- error_cnd(
       message = conditionMessage(cnd) %||% "",
       call = conditionCall(cnd),
@@ -181,6 +184,19 @@ entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
 
   # Ignore other condition types
   NULL
+}
+
+has_recover <- function() {
+  handler_call <- peek_option("error")
+  if (!is_call(handler_call)) {
+    return(FALSE)
+  }
+
+  if (is_call(handler_call, "recover", ns = c("", "base"))) {
+    return(TRUE)
+  }
+
+  identical(handler_call[[1]], utils::recover)
 }
 
 #' @rdname entrace
