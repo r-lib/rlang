@@ -116,13 +116,14 @@ validate_cnd_signal_args <- function(cnd,
 warn <- function(message = NULL,
                  class = NULL,
                  ...,
+                 body = NULL,
                  use_cli_format = NULL,
                  .frequency = c("always", "regularly", "once"),
                  .frequency_id = NULL,
                  .subclass = deprecated()) {
   message <- validate_signal_args(message, class, NULL, .subclass)
 
-  message_info <- cnd_message_info(message, caller_env(), use_cli_format = use_cli_format)
+  message_info <- cnd_message_info(message, body, caller_env(), use_cli_format = use_cli_format)
   message <- message_info$message
   extra_fields <- message_info$extra_fields
 
@@ -147,6 +148,7 @@ warn <- function(message = NULL,
 inform <- function(message = NULL,
                    class = NULL,
                    ...,
+                   body = NULL,
                    use_cli_format = NULL,
                    .file = NULL,
                    .frequency = c("always", "regularly", "once"),
@@ -156,7 +158,7 @@ inform <- function(message = NULL,
 
   validate_signal_args(message, class, NULL, .subclass)
 
-  message_info <- cnd_message_info(message, caller_env(), use_cli_format = use_cli_format)
+  message_info <- cnd_message_info(message, body, caller_env(), use_cli_format = use_cli_format)
   message <- message_info$message
   extra_fields <- message_info$extra_fields
 

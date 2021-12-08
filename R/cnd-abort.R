@@ -125,6 +125,7 @@
 #'
 #'   See also [rlang::local_error_call()] for an alternative way of
 #'   providing this information.
+#' @param body Additional bullets.
 #' @param use_cli_format Whether to format `message` lazily using
 #'   [cli](https://cli.r-lib.org/) if available. This results in
 #'   prettier and more accurate formatting of messages. See also
@@ -204,6 +205,7 @@ abort <- function(message = NULL,
                   class = NULL,
                   ...,
                   call,
+                  body = NULL,
                   trace = NULL,
                   parent = NULL,
                   use_cli_format = NULL,
@@ -230,7 +232,7 @@ abort <- function(message = NULL,
   }
 
   message <- validate_signal_args(message, class, call, .subclass)
-  message_info <- cnd_message_info(message, caller_env(), use_cli_format = use_cli_format)
+  message_info <- cnd_message_info(message, body, caller_env(), use_cli_format = use_cli_format)
   message <- message_info$message
   extra_fields <- message_info$extra_fields
 
@@ -259,6 +261,7 @@ abort <- function(message = NULL,
 }
 
 cnd_message_info <- function(message,
+                             body,
                              env,
                              cli_opts = use_cli(env),
                              use_cli_format = NULL) {
@@ -276,14 +279,14 @@ cnd_message_info <- function(message,
   # indent and width-wrap depending on the context
   if (cli_opts[["format"]]) {
     fields$use_cli_format <- TRUE
-    fields$body <- message[-1]
+    fields$body <- c(message[-1], body)
     message <- message[1]
   } else {
     # Compatibility with older bullets formatting
     if (is_null(names(message)) && length(message) > 1) {
       names(message) <- c("", rep_len("*", length(message) - 1))
     }
-    message <- .rlang_cli_format_fallback(message)
+    message <- .rlang_cli_format_fallback(c(message, body))
   }
 
   list(message = message, extra_fields = fields)

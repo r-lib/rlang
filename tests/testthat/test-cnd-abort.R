@@ -528,3 +528,19 @@ test_that("errors are fully displayed (parents, calls) in knitted files", {
     writeLines(render_md("test-parent-errors.Rmd"))
   })
 })
+
+test_that("can supply bullets both through `message` and `body`", {
+  local_use_cli(format = FALSE)
+  expect_snapshot({
+    (expect_error(abort("foo", body = c("a", "b"))))
+    (expect_error(abort(c("foo", "bar"), body = c("a", "b"))))
+  })
+})
+
+test_that("can supply bullets both through `message` and `body` (cli case)", {
+  local_use_cli(format = TRUE)
+  expect_snapshot({
+    (expect_error(abort("foo", body = c("a", "b"))))
+    (expect_error(abort(c("foo", "bar"), body = c("a", "b"))))
+  })
+})

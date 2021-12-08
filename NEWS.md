@@ -72,6 +72,9 @@
 
 ## Features and bugfixes
 
+* `abort()`, `warn()`, and `inform()` gain a `body` argument to supply
+  additional bullets in the error message.
+
 * rlang conditions now have `as.character()` methods. Use this generic
   on conditions to generate a whole error message, including the
   `Error:` prefix. These methods are implemented as wrappers around

@@ -13,6 +13,7 @@ abort(
   class = NULL,
   ...,
   call,
+  body = NULL,
   trace = NULL,
   parent = NULL,
   use_cli_format = NULL,
@@ -24,6 +25,7 @@ warn(
   message = NULL,
   class = NULL,
   ...,
+  body = NULL,
   use_cli_format = NULL,
   .frequency = c("always", "regularly", "once"),
   .frequency_id = NULL,
@@ -34,6 +36,7 @@ inform(
   message = NULL,
   class = NULL,
   ...,
+  body = NULL,
   use_cli_format = NULL,
   .file = NULL,
   .frequency = c("always", "regularly", "once"),
@@ -82,6 +85,8 @@ contextual call or hard-code it.
 
 See also \code{\link[=local_error_call]{local_error_call()}} for an alternative way of
 providing this information.}
+
+\item{body}{Additional bullets.}
 
 \item{trace}{A \code{trace} object created by \code{\link[=trace_back]{trace_back()}}.}
 

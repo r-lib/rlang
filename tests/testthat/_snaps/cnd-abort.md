@@ -533,3 +533,39 @@
           ##   * Bullet 1.
           ##   * Bullet 2.
 
+# can supply bullets both through `message` and `body`
+
+    Code
+      (expect_error(abort("foo", body = c("a", "b"))))
+    Output
+      <error/rlang_error>
+      Error: foo
+      a
+      b
+    Code
+      (expect_error(abort(c("foo", "bar"), body = c("a", "b"))))
+    Output
+      <error/rlang_error>
+      Error: foo
+      * bar
+      a
+      b
+
+# can supply bullets both through `message` and `body` (cli case)
+
+    Code
+      (expect_error(abort("foo", body = c("a", "b"))))
+    Output
+      <error/rlang_error>
+      Error: foo
+      a
+      b
+    Code
+      (expect_error(abort(c("foo", "bar"), body = c("a", "b"))))
+    Output
+      <error/rlang_error>
+      Error: foo
+      bar
+      a
+      b
+
