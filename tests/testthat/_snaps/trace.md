@@ -1033,7 +1033,7 @@
 # runs of namespaces are embolden (#946)
 
     Code
-      with_options(crayon.enabled = TRUE, print(err))
+      print(err)
     Output
       [1m[1m[1m[34m<error/rlang_error>[39m[22m
       [1m[33mError[39m in [1m[1m[30m[47m`+`[49m[39m:[22m non-numeric argument to binary operator
@@ -1044,7 +1044,7 @@
       [90m 11. [39mrlang h()
       [90m 12. [39m[1mbase[22m::identity(1 + "")
     Code
-      with_options(crayon.enabled = TRUE, summary(err))
+      summary(err)
     Output
       [1m[1m[1m[34m<error/rlang_error>[39m[22m
       [1m[33mError[39m in [1m[1m[30m[47m`+`[49m[39m:[22m non-numeric argument to binary operator

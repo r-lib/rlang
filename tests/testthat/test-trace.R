@@ -688,15 +688,11 @@ test_that("runs of namespaces are embolden (#946)", {
   h <- function() identity(1 + "")
   err <- catch_cnd(withCallingHandlers(f(), error = entrace), "error")
 
+  testthat::local_reproducible_output(crayon = TRUE)
+
   expect_snapshot({
-    with_options(
-      crayon.enabled = TRUE,
-      print(err)
-    )
-    with_options(
-      crayon.enabled = TRUE,
-      summary(err)
-    )
+    print(err)
+    summary(err)
   })
 })
 
