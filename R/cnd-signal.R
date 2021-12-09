@@ -56,6 +56,9 @@ cnd_signal <- function(cnd, ...) {
         trace <- trace_back()
         cnd$trace <- trace_trim_context(trace, trace_length(trace))
       }
+      if (is_environment(cnd$call)) {
+        cnd$call <- error_call(cnd$call)
+      }
       signal_abort(cnd)
     },
     warning = warning(cnd),

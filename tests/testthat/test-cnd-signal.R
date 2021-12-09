@@ -291,6 +291,14 @@ test_that("signal functions check inputs", {
   })
 })
 
+test_that("cnd_signal() sets call", {
+  f <- function() {
+    cnd_signal(error_cnd(message = "foo", call = current_env()))
+  }
+  cnd <- catch_cnd(f())
+  expect_equal(cnd$call, quote(f()))
+})
+
 
 # Lifecycle ----------------------------------------------------------
 
