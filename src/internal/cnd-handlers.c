@@ -2,7 +2,7 @@
 
 #include "decl/cnd-handlers-decl.h"
 
-r_obj* ffi_try_catch(r_obj* try_catch_args) {
+r_obj* ffi_try_call(r_obj* try_catch_args) {
   r_obj* env = r_node_cadr(try_catch_args);
 
   r_obj* handlers = KEEP(rlang_env_dots_list(env));

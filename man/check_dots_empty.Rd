@@ -14,7 +14,7 @@ check_dots_empty(
 \arguments{
 \item{env}{Environment in which to look for \code{...}.}
 
-\item{error}{An optional error handler passed to \code{\link[=try_catch]{try_catch()}}. Use
+\item{error}{An optional error handler passed to \code{\link[=try_call]{try_call()}}. Use
 this e.g. to demote an error into a warning.}
 
 \item{call}{The execution environment of a currently

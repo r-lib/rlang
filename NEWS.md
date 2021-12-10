@@ -125,7 +125,7 @@
   - If `is_call_simple(x, ns = TRUE)` is `TRUE`, `call_ns()` always
     returns a string.
 
-* `try_catch()` is a flexible alternative to both `tryCatch()` and
+* `try_call()` is a flexible alternative to both `tryCatch()` and
   `withCallingHandlers()` (#503). It is also more efficient than
   `tryCatch()` and creates leaner backtraces.
 

@@ -3,7 +3,7 @@
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' `try_catch()` establishes handlers for conditions of a given class
+#' `try_call()` establishes handlers for conditions of a given class
 #' (`"error"`, `"warning"`, `"message"`, ...). Handlers are functions
 #' that take a condition object as argument and are called when the
 #' corresponding condition class has been signalled.
@@ -12,13 +12,13 @@
 #'
 #' -   **Recover from conditions** with a value. In this case the computation of
 #'     `expr` is aborted and the recovery value is returned from
-#'     `try_catch()`. Error recovery is useful when you don't want
+#'     `try_call()`. Error recovery is useful when you don't want
 #'     errors to abruptly interrupt your program but resume at the
 #'     catching site instead.
 #'
 #'     ```
 #'     # Recover with the value 0
-#'     try_catch(1 + "", error = function(cnd) 0)
+#'     try_call(1 + "", error = function(cnd) 0)
 #'     ```
 #'
 #' -   **Rethrow conditions**, e.g. using `abort(msg, parent = cnd)`.
@@ -27,22 +27,28 @@
 #'     in which they occurred.
 #'
 #'     ```
-#'     try_catch(1 + "", error = function(cnd) abort("Failed.", parent = cnd))
+#'     try_call(1 + "", error = function(cnd) abort("Failed.", parent = cnd))
 #'     ```
 #'
 #' -   **Inspect conditions**, for instance to log data about warnings
 #'     or errors. In this case, the handler must return the [zap()]
-#'     sentinel to instruct `try_catch()` to ignore (or zap) that
+#'     sentinel to instruct `try_call()` to ignore (or zap) that
 #'     particular handler. The next matching handler is called if any,
 #'     and errors bubble up to the user if no handler remains.
 #'
 #'     ```
 #'     log <- NULL
-#'     try_catch(1 + "", error = function(cnd) {
+#'     try_call(1 + "", error = function(cnd) {
 #'       log <<- cnd
 #'       zap()
 #'     })
 #'     ```
+#'
+#' Whereas `tryCatch()` catches conditions and then calls the handler,
+#' `try_call()` first calls the handler and then catches its return
+#' value. This is a subtle difference that has implications for the
+#' debuggability of your functions. See the comparison with
+#' `tryCatch()` section below.
 #'
 #' @param expr An R expression.
 #' @param ... <[`dynamic-dots`][rlang::dyn-dots]> Named condition
@@ -62,7 +68,7 @@
 #' #> Error: C stack usage  9525680 is too close to the limit
 #' ```
 #'
-#' Because `try_catch()` preserves as much of the running program as
+#' Because `try_call()` preserves as much of the running program as
 #' possible in order to produce informative backtraces on error
 #' rethrows, it is unable to deal with stack overflows. When an
 #' overflow occurs, R needs to unwind as much of the program as is
@@ -72,11 +78,11 @@
 #' This usually isn't a problem for error rethrowing or logging but
 #' might make your program more brittle in case of error recovery. In
 #' that case, capture errors with [base::tryCatch()] instead of
-#' `try_catch()`.
+#' `try_call()`.
 #'
 #' @section Comparison with `tryCatch()`:
 #'
-#' `try_catch()` generalises `tryCatch()` and `withCallingHandlers()`
+#' `try_call()` generalises `tryCatch()` and `withCallingHandlers()`
 #' in a single function. It reproduces the behaviour of both calling
 #' and exiting handlers depending the on the return value of the
 #' handler. If the handler returns the [zap()] sentinel, it is taken
@@ -84,16 +90,16 @@
 #' Otherwise, it is taken as an exiting handler which returns a value
 #' from the catching site.
 #'
-#' The important difference between `tryCatch()` and `try_catch()` is
+#' The important difference between `tryCatch()` and `try_call()` is
 #' that the program in `expr` is still fully running when an error
 #' handler is called. Because the call stack is preserved, this makes
 #' it possible to capture a full backtrace from within the handler,
 #' e.g. when rethrowing the error with `abort(parent = cnd)`.
-#' Technically, `try_catch()` is more similar to (and implemented on
+#' Technically, `try_call()` is more similar to (and implemented on
 #' top of) [base::withCallingHandlers()] than `tryCatch().`
 #'
 #' @export
-try_catch <- function(expr, ...) {
+try_call <- function(expr, ...) {
   frame <- environment()
 
   catch <- value <- NULL
@@ -104,7 +110,7 @@ try_catch <- function(expr, ...) {
     catch
   }
 
-  .External(ffi_try_catch, frame)
+  .External(ffi_try_call, frame)
 }
 
 handler_call <- quote(function(cnd) {
@@ -119,7 +125,7 @@ handler_call <- quote(function(cnd) {
 #' `r lifecycle::badge("deprecated")`
 #'
 #' As of rlang 1.0.0, `with_handlers()` is deprecated. Use the base
-#' functions or the experimental [try_catch()] function instead.
+#' functions or the experimental [try_call()] function instead.
 #'
 #' Condition handlers are functions established on the evaluation
 #' stack (see [ctxt_stack()]) that are called by R when a condition is

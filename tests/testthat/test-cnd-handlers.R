@@ -1,24 +1,24 @@
-test_that("try_catch() catches or declines values", {
+test_that("try_call() catches or declines values", {
   f <- function() g()
   g <- function() h()
   h <- function() abort("foo")
 
-  expect_error(try_catch(f(), warning = function(cnd) NULL), "foo")
-  expect_error(try_catch(f(), error = function(cnd) zap()), "foo")
-  expect_null(try_catch(f(), error = function(cnd) NULL))
+  expect_error(try_call(f(), warning = function(cnd) NULL), "foo")
+  expect_error(try_call(f(), error = function(cnd) zap()), "foo")
+  expect_null(try_call(f(), error = function(cnd) NULL))
 
   fns <- list(error = function(cnd) NULL)
-  expect_null(try_catch(f(), !!!fns))
+  expect_null(try_call(f(), !!!fns))
 })
 
-test_that("try_catch() checks inputs", {
+test_that("try_call() checks inputs", {
   expect_snapshot({
-    (expect_error(try_catch(NULL, function(...) NULL)))
+    (expect_error(try_call(NULL, function(...) NULL)))
   })
-  expect_true(try_catch(TRUE))
+  expect_true(try_call(TRUE))
 })
 
-test_that("can rethrow from `try_catch()`", {
+test_that("can rethrow from `try_call()`", {
   local_options(
     rlang_trace_top_env = current_env(),
     rlang_trace_format_srcrefs = FALSE
@@ -29,7 +29,7 @@ test_that("can rethrow from `try_catch()`", {
 
   expect_snapshot({
     err <- catch_error(
-      try_catch(f(), error = function(cnd) abort("bar", parent = cnd))
+      try_call(f(), error = function(cnd) abort("bar", parent = cnd))
     )
 
     print(err)

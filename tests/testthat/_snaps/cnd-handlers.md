@@ -1,15 +1,15 @@
-# try_catch() checks inputs
+# try_call() checks inputs
 
     Code
-      (expect_error(try_catch(NULL, function(...) NULL)))
+      (expect_error(try_call(NULL, function(...) NULL)))
     Output
       <error/rlang_error>
-      Error in `try_catch()`: `...` must be named with condition classes.
+      Error in `try_call()`: `...` must be named with condition classes.
 
-# can rethrow from `try_catch()`
+# can rethrow from `try_call()`
 
     Code
-      err <- catch_error(try_catch(f(), error = function(cnd) abort("bar", parent = cnd)))
+      err <- catch_error(try_call(f(), error = function(cnd) abort("bar", parent = cnd)))
       print(err)
     Output
       <error/rlang_error>
@@ -40,7 +40,7 @@
         6. |   |   \-base tryCatchOne(expr, names, parentenv, handlers[[1L]])
         7. |   |     \-base doTryCatch(return(expr), name, parentenv, handler)
         8. |   \-base::force(expr)
-        9. +-rlang::try_catch(f(), error = function(cnd) abort("bar", parent = cnd))
+        9. +-rlang::try_call(f(), error = function(cnd) abort("bar", parent = cnd))
        10. | \-base::withCallingHandlers(...)
        11. \-rlang f()
        12.   \-rlang g()
