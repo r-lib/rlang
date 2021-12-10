@@ -146,4 +146,11 @@ test_that("picks up cli format flag", {
     cnd_signal(warning_cnd(message = c("foo", "i" = "bar")))
     cnd_signal(message_cnd(message = c("foo", "i" = "bar")))
   })
+
+  local_use_cli(format = FALSE)
+  expect_snapshot(error = TRUE, {
+    cnd_signal(error_cnd(message = c("foo", "i" = "bar")))
+    cnd_signal(warning_cnd(message = c("foo", "i" = "bar")))
+    cnd_signal(message_cnd(message = c("foo", "i" = "bar")))
+  })
 })

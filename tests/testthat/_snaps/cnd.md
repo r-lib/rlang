@@ -130,3 +130,21 @@
       foo
       i bar
 
+---
+
+    Code
+      cnd_signal(error_cnd(message = c("foo", i = "bar")))
+    Error <rlang_error>
+      foo
+      bar
+    Code
+      cnd_signal(warning_cnd(message = c("foo", i = "bar")))
+    Warning <rlang_warning>
+      foo
+      bar
+    Code
+      cnd_signal(message_cnd(message = c("foo", i = "bar")))
+    Message <rlang_message>
+      foo
+      bar
+

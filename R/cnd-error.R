@@ -65,12 +65,13 @@ error_cnd_fields <- function(trace,
                              ...,
                              use_cli_format = NULL,
                              .subclass = NULL,
-                             env = caller_env()) {
+                             `_env` = caller_env(),
+                             `_frame` = caller_env(2)) {
   if (!is_null(.subclass)) {
-    deprecate_subclass(.subclass, env)
+    deprecate_subclass(.subclass, `_env`)
   }
 
-  use_cli_format <- use_cli_format %||% use_cli(env)[["format"]]
+  use_cli_format <- use_cli_format %||% use_cli(`_frame`)[["format"]]
 
   if (is_true(use_cli_format)) {
     list2(trace = trace, parent = parent, ..., use_cli_format = TRUE)
