@@ -138,3 +138,12 @@ test_that("cnd_inherits() detects parent classes (#1293)", {
   expect_true(cnd_inherits(cnd, "bar"))
   expect_false(cnd_inherits(cnd, "baz"))
 })
+
+test_that("picks up cli format flag", {
+  local_use_cli()
+  expect_snapshot(error = TRUE, {
+    cnd_signal(error_cnd(message = c("foo", "i" = "bar")))
+    cnd_signal(warning_cnd(message = c("foo", "i" = "bar")))
+    cnd_signal(message_cnd(message = c("foo", "i" = "bar")))
+  })
+})

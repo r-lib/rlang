@@ -23,6 +23,8 @@
 #'   condition when it is signalled.
 #' @param trace A `trace` object created by [trace_back()].
 #' @param parent A parent condition object created by [abort()].
+#' @param use_cli_format Whether to use the cli package to format
+#'   `message`. See [local_use_cli()].
 #' @seealso [cnd_signal()], [try_catch()].
 #'
 #' @keywords internal
@@ -39,26 +41,61 @@
 #' # to the handler
 #' with_handlers(cnd_signal(cnd), foo = function(c) "caught!")
 #' tryCatch(cnd_signal(cnd), foo = function(c) "caught!")
-cnd <- function(class, ..., message = "") {
+cnd <- function(class,
+                ...,
+                message = "",
+                use_cli_format = NULL) {
   check_required(class)
-  .Call(ffi_new_condition, class, message, cnd_fields(...))
+  .Call(
+    ffi_new_condition,
+    class,
+    message,
+    cnd_fields(..., `_use_cli_format` = use_cli_format, `_frame` = caller_env())
+  )
 }
 #' @rdname cnd
 #' @export
-warning_cnd <- function(class = NULL, ..., message = "") {
-  .Call(ffi_new_condition, c(class, "rlang_warning", "warning"), message, cnd_fields(...))
+warning_cnd <- function(class = NULL,
+                        ...,
+                        message = "",
+                        use_cli_format = NULL) {
+  .Call(
+    ffi_new_condition,
+    c(class, "rlang_warning", "warning"),
+    message,
+    cnd_fields(..., `_use_cli_format` = use_cli_format, `_frame` = caller_env())
+  )
 }
 #' @rdname cnd
 #' @export
-message_cnd <- function(class = NULL, ..., message = "") {
-  .Call(ffi_new_condition, c(class, "rlang_message", "message"), message, cnd_fields(...))
+message_cnd <- function(class = NULL,
+                        ...,
+                        message = "",
+                        use_cli_format = NULL) {
+  .Call(
+    ffi_new_condition,
+    c(class, "rlang_message", "message"),
+    message,
+    cnd_fields(..., `_use_cli_format` = use_cli_format, `_frame` = caller_env())
+  )
 }
 
-cnd_fields <- function(..., .subclass = NULL, env = caller_env()) {
+cnd_fields <- function(...,
+                       .subclass = NULL,
+                       `_use_cli_format` = NULL,
+                       `_env` = caller_env(),
+                       `_frame` = caller_env(2)) {
   if (!is_null(.subclass)) {
-    deprecate_subclass(.subclass, env)
+    deprecate_subclass(.subclass, `_env`)
   }
-  dots_list(...)
+
+  use_cli_format <- `_use_cli_format` %||% use_cli(`_frame`)[["format"]]
+
+  if (is_true(use_cli_format)) {
+    dots_list(..., use_cli_format = use_cli_format)
+  } else {
+    dots_list(...)
+  }
 }
 
 #' Is object a condition?

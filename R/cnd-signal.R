@@ -129,6 +129,7 @@ warn <- function(message = NULL,
   message_info <- cnd_message_info(message, body, caller_env(), use_cli_format = use_cli_format)
   message <- message_info$message
   extra_fields <- message_info$extra_fields
+  use_cli_format <- message_info$use_cli_format
 
   .frequency <- arg_match0(.frequency, c("always", "regularly", "once"))
   if (!needs_signal(.frequency, .frequency_id, warning_freq_env, "rlib_warning_verbosity")) {
@@ -139,6 +140,7 @@ warn <- function(message = NULL,
     class,
     message = message,
     !!!extra_fields,
+    use_cli_format = use_cli_format,
     ...
   )
   cnd$footer <- c(cnd$footer, message_freq(message, .frequency, "warning"))
@@ -164,6 +166,7 @@ inform <- function(message = NULL,
   message_info <- cnd_message_info(message, body, caller_env(), use_cli_format = use_cli_format)
   message <- message_info$message
   extra_fields <- message_info$extra_fields
+  use_cli_format <- message_info$use_cli_format
 
   .frequency <- arg_match0(.frequency, c("always", "regularly", "once"))
   if (!needs_signal(.frequency, .frequency_id, message_freq_env, "rlib_message_verbosity")) {
@@ -174,6 +177,7 @@ inform <- function(message = NULL,
     class,
     message = message,
     !!!extra_fields,
+    use_cli_format = use_cli_format,
     ...
   )
   cnd$footer <- c(cnd$footer, message_freq(message, .frequency, "message"))

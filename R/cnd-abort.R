@@ -235,6 +235,7 @@ abort <- function(message = NULL,
   message_info <- cnd_message_info(message, body, caller_env(), use_cli_format = use_cli_format)
   message <- message_info$message
   extra_fields <- message_info$extra_fields
+  use_cli_format <- message_info$use_cli_format
 
   # Don't record call by default when supplied a parent because it
   # probably means that we are called from a condition handler
@@ -253,6 +254,7 @@ abort <- function(message = NULL,
     ...,
     message = message,
     !!!extra_fields,
+    use_cli_format = use_cli_format,
     call = call,
     parent = parent,
     trace = trace
@@ -275,10 +277,11 @@ cnd_message_info <- function(message,
     message[] <- map_chr(message, cli::format_inline, .envir = env)
   }
 
+  use_cli_format <- cli_opts[["format"]]
+
   # Formatting with cli is delayed until print time so we can properly
   # indent and width-wrap depending on the context
-  if (cli_opts[["format"]]) {
-    fields$use_cli_format <- TRUE
+  if (use_cli_format) {
     fields$body <- c(message[-1], body)
     message <- message[1]
   } else {
@@ -289,7 +292,11 @@ cnd_message_info <- function(message,
     message <- .rlang_cli_format_fallback(c(message, body))
   }
 
-  list(message = message, extra_fields = fields)
+  list(
+    message = message,
+    use_cli_format = use_cli_format,
+    extra_fields = fields
+  )
 }
 
 

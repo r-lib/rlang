@@ -112,3 +112,21 @@
       <error/rlang_error>
       Error in `message_cnd()`: `message` must be a character vector.
 
+# picks up cli format flag
+
+    Code
+      cnd_signal(error_cnd(message = c("foo", i = "bar")))
+    Error <rlang_error>
+      foo
+      i bar
+    Code
+      cnd_signal(warning_cnd(message = c("foo", i = "bar")))
+    Warning <rlang_warning>
+      foo
+      i bar
+    Code
+      cnd_signal(message_cnd(message = c("foo", i = "bar")))
+    Message <rlang_message>
+      foo
+      i bar
+

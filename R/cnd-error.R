@@ -42,22 +42,41 @@ error_cnd <- function(class = NULL,
                       ...,
                       message = "",
                       trace = NULL,
-                      parent = NULL) {
+                      parent = NULL,
+                      use_cli_format = NULL) {
   if (!is_null(trace) && !inherits(trace, "rlang_trace")) {
     abort("`trace` must be NULL or an rlang backtrace")
   }
   if (!is_null(parent) && !inherits(parent, "condition")) {
     abort("`parent` must be NULL or a condition object")
   }
-  fields <- error_cnd_fields(trace = trace, parent = parent, ...)
+
+  fields <- error_cnd_fields(
+    trace = trace,
+    parent = parent,
+    ...,
+    use_cli_format = use_cli_format
+  )
 
   .Call(ffi_new_condition, c(class, "rlang_error", "error"), message, fields)
 }
-error_cnd_fields <- function(trace, parent, ..., .subclass = NULL, env = caller_env()) {
+error_cnd_fields <- function(trace,
+                             parent,
+                             ...,
+                             use_cli_format = NULL,
+                             .subclass = NULL,
+                             env = caller_env()) {
   if (!is_null(.subclass)) {
     deprecate_subclass(.subclass, env)
   }
-  list2(trace = trace, parent = parent, ...)
+
+  use_cli_format <- use_cli_format %||% use_cli(env)[["format"]]
+
+  if (is_true(use_cli_format)) {
+    list2(trace = trace, parent = parent, ..., use_cli_format = TRUE)
+  } else {
+    list2(trace = trace, parent = parent, ...)
+  }
 }
 
 #' @export

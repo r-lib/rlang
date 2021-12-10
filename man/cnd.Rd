@@ -7,13 +7,20 @@
 \alias{message_cnd}
 \title{Create a condition object}
 \usage{
-error_cnd(class = NULL, ..., message = "", trace = NULL, parent = NULL)
+error_cnd(
+  class = NULL,
+  ...,
+  message = "",
+  trace = NULL,
+  parent = NULL,
+  use_cli_format = NULL
+)
 
-cnd(class, ..., message = "")
+cnd(class, ..., message = "", use_cli_format = NULL)
 
-warning_cnd(class = NULL, ..., message = "")
+warning_cnd(class = NULL, ..., message = "", use_cli_format = NULL)
 
-message_cnd(class = NULL, ..., message = "")
+message_cnd(class = NULL, ..., message = "", use_cli_format = NULL)
 }
 \arguments{
 \item{class}{The condition subclass.}
@@ -27,6 +34,9 @@ condition when it is signalled.}
 \item{trace}{A \code{trace} object created by \code{\link[=trace_back]{trace_back()}}.}
 
 \item{parent}{A parent condition object created by \code{\link[=abort]{abort()}}.}
+
+\item{use_cli_format}{Whether to use the cli package to format
+\code{message}. See \code{\link[=local_use_cli]{local_use_cli()}}.}
 }
 \description{
 These constructors create subclassed conditions, the objects that

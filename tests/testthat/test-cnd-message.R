@@ -231,18 +231,19 @@ cli::test_that_cli("format_error_bullets() generates bullets", {
 cli::test_that_cli(configs = c("plain", "fancy"), "can use cli syntax in `cnd_message()` methods", {
   local_methods(
     cnd_header.rlang_foobar = function(cnd, ...) {
-      cli::format_error("Header: {.emph {cnd$field}}")
+      cli::format_inline("Header: {.emph {cnd$field}}")
     },
     cnd_body.rlang_foobar = function(cnd, ...) {
-      cli::format_error(c("i" = "Bullet: {.emph {cnd$field}}"))
+      c("i" = cli::format_inline("Bullet: {.emph {cnd$field}}"))
     },
     cnd_footer.rlang_foobar = function(cnd, ...) {
-      cli::format_error(c("_" = "Footer: {.emph {cnd$field}}"))
+      c("_" = cli::format_inline("i" = "Footer: {.emph {cnd$field}}"))
     }
   )
   cnd <- error_cnd(
     "rlang_foobar",
-    field = "User { {field}."
+    field = "User { {field}.",
+    use_cli_format = TRUE
   )
   expect_snapshot(cnd_message(cnd))
 })
