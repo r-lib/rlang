@@ -57,6 +57,8 @@ void r_init_library_globals(r_obj* ns) {
 
 void r_init_library_globals_syms() {
   r_syms.abort = r_sym("abort");
+  r_syms.brackets = R_BracketSymbol;
+  r_syms.brackets2 = R_Bracket2Symbol;
   r_syms.class = R_ClassSymbol;
   r_syms.colon2 = R_DoubleColonSymbol;
   r_syms.colon3 = R_TripleColonSymbol;
@@ -73,6 +75,7 @@ void r_init_library_globals_syms() {
   r_syms.dim = R_DimSymbol;
   r_syms.dim_names = R_DimNamesSymbol;
   r_syms.row_names = R_RowNamesSymbol;
+  r_syms.stack_overflow_error = r_sym("stackOverflowError");
   r_syms.unbound = R_UnboundValue;
   r_syms.warning = r_sym("warning");
 

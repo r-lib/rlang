@@ -2,8 +2,8 @@
 
 #include "decl/cnd-handlers-decl.h"
 
-r_obj* ffi_try_call(r_obj* try_catch_args) {
-  r_obj* env = r_node_cadr(try_catch_args);
+r_obj* ffi_try_call(r_obj* try_call_args) {
+  r_obj* env = r_node_cadr(try_call_args);
 
   r_obj* handlers = KEEP(rlang_env_dots_list(env));
   r_env_poke(env, rlang_syms.handlers, handlers);
@@ -27,8 +27,23 @@ r_obj* ffi_try_call(r_obj* try_catch_args) {
   r_obj* args = r_null;
   r_keep_t shelter; KEEP_HERE(args, &shelter);
 
+  r_obj* exiting_args = r_null;
+  r_keep_t exiting_shelter; KEEP_HERE(exiting_args, &exiting_shelter);
+
   for (int i = n - 1; i >= 0; --i) {
     r_obj* cls = v_classes[i];
+
+    if (cls == r_strs.error) {
+      r_obj* exiting_hnd = KEEP(r_call3(r_syms.brackets2,
+                                        rlang_syms.handlers,
+                                        r_int(i + 1)));
+      exiting_args = r_new_node(exiting_hnd, exiting_args);
+      KEEP_AT(exiting_args, exiting_shelter);
+
+      r_node_poke_tag(exiting_args, r_syms.stack_overflow_error);
+      FREE(1);
+    }
+
     r_obj* hnd = KEEP(r_copy(hnd_call));
 
     // Equivalent to hnd[[3]][[2]][[3]][[1]][3]
@@ -47,9 +62,19 @@ r_obj* ffi_try_call(r_obj* try_catch_args) {
   r_obj* call = r_new_call(rlang_syms.withCallingHandlers, args);
   KEEP_AT(call, shelter);
 
+  // Wrap in a `tryCatch(stackOverflowError = )` call if there are any
+  // `error` handlers
+  if (exiting_args != r_null) {
+    exiting_args = r_new_node(call, exiting_args);
+    KEEP_AT(exiting_args, exiting_shelter);
+
+    call = r_new_call(rlang_syms.tryCatch, exiting_args);
+    KEEP_AT(call, shelter);
+  }
+
   r_obj* out = r_eval(call, env);
 
-  FREE(2);
+  FREE(3);
   return out;
 }
 

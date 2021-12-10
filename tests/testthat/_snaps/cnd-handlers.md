@@ -19,9 +19,9 @@
         foo
       Backtrace:
         1. rlang:::catch_error(...)
-       11. rlang f()
-       12. rlang g()
-       13. rlang h()
+       15. rlang f()
+       16. rlang g()
+       17. rlang h()
     Code
       print(err, simplify = "none")
     Output
@@ -41,8 +41,12 @@
         7. |   |     \-base doTryCatch(return(expr), name, parentenv, handler)
         8. |   \-base::force(expr)
         9. +-rlang::try_call(f(), error = function(cnd) abort("bar", parent = cnd))
-       10. | \-base::withCallingHandlers(...)
-       11. \-rlang f()
-       12.   \-rlang g()
-       13.     \-rlang h()
+       10. | +-base::tryCatch(...)
+       11. | | \-base tryCatchList(expr, classes, parentenv, handlers)
+       12. | |   \-base tryCatchOne(expr, names, parentenv, handlers[[1L]])
+       13. | |     \-base doTryCatch(return(expr), name, parentenv, handler)
+       14. | \-base::withCallingHandlers(...)
+       15. \-rlang f()
+       16.   \-rlang g()
+       17.     \-rlang h()
 
