@@ -822,7 +822,7 @@ error_call_as_string <- function(call) {
 
 error_call <- function(call) {
   while (is_environment(call)) {
-    flag <- error_flag(call)
+    flag <- env_get(call, ".__error_call__.", default = TRUE)
 
     if (is_null(flag) || is_call(flag)) {
       call <- flag
@@ -877,16 +877,6 @@ error_call <- function(call) {
 call_restore <- function(x, to) {
   attr(x, "srcref") <- attr(to, "srcref")
   x
-}
-
-error_flag <- function(env, top = topenv(env)) {
-  env_get(
-    env,
-    ".__error_call__.",
-    default = TRUE,
-    inherit = FALSE,
-    last = top
-  )
 }
 
 trace_trim_context <- function(trace, idx) {
