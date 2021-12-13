@@ -64,17 +64,23 @@ f()
 #> Error: C stack usage  9525680 is too close to the limit
 }
 
-Because \code{try_call()} preserves as much of the running program as
-possible in order to produce informative backtraces on error
-rethrows, it is unable to deal with stack overflows. When an
-overflow occurs, R needs to unwind as much of the program as is
-possible and can't afford to run any more R code, such as in an
-error handler.
+Because memory is very limited when these errors happen, it is not
+possible to call the handlers on the existing program stack.
+Instead, error conditions are first caught by \code{try_call()} and only
+then error handlers are called. Catching the error interrupts the
+program up to the \code{try_call()} context, which allows R to reclaim
+stack memory.
 
-This usually isn't a problem for error rethrowing or logging but
-might make your program more brittle in case of error recovery. In
-that case, capture errors with \code{\link[base:conditions]{base::tryCatch()}} instead of
-\code{try_call()}.
+The practical implication is that error handlers should never
+assume that the whole call stack is preserved. For instance a
+\code{\link[=trace_back]{trace_back()}} capture might miss frames.
+
+Note that error handlers are only run for stack overflows on R >=
+4.2 (unreleased at the time of writing). On older versions of R the
+handlers are simply not run. This is because these errors do not
+inherit from the class \code{stackOverflowError} before R 4.2. Consider
+using \code{\link[=tryCatch]{tryCatch()}} instead with critical error handlers that need
+to capture all errors on old versions of R.
 }
 
 \section{Comparison with \code{tryCatch()}}{

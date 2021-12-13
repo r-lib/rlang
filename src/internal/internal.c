@@ -59,6 +59,7 @@ void rlang_init_internal(r_obj* ns) {
 
   rlang_syms.c_null = r_sym(".__C_NULL__.");
   rlang_syms.handlers = r_sym("handlers");
+  rlang_syms.tryCatch = r_sym("tryCatch");
   rlang_syms.withCallingHandlers = r_sym("withCallingHandlers");
 
   rlang_zap = rlang_ns_get("zap!");

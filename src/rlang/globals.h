@@ -41,6 +41,8 @@ struct r_globals_strs {
 
 struct r_globals_syms {
   r_obj* abort;
+  r_obj* brackets;
+  r_obj* brackets2;
   r_obj* class;
   r_obj* condition;
   r_obj* dots;
@@ -63,6 +65,7 @@ struct r_globals_syms {
   r_obj* dim;
   r_obj* dim_names;
   r_obj* row_names;
+  r_obj* stack_overflow_error;
   r_obj* tilde;
   r_obj* unbound;
   r_obj* w;

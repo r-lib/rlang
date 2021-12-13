@@ -148,3 +148,34 @@ test_that("drop_global_handlers() works and is idempotent", {
   out <- Rscript(shQuote(c("--vanilla", "-e", code)))
   expect_equal(out$out, chr())
 })
+
+test_that("stackOverflowError are caught", {
+  overflow <- function() signal("", "stackOverflowError")
+
+  handled <- FALSE
+  try_call(
+    overflow(),
+    error = function(cnd) handled <<- TRUE
+  )
+  expect_true(handled)
+
+  handled <- FALSE
+  try_call(
+    overflow(),
+    warning = identity,
+    error = function(cnd) handled <<- TRUE
+  )
+  expect_true(handled)
+
+  handled <- NULL
+  try_call(
+    overflow(),
+    error = function(cnd) {
+      handled <<- c(handled, 1)
+      cnd_signal(cnd)
+    },
+    warning = identity,
+    error = function(cnd) handled <<- c(handled, 2)
+  )
+  expect_equal(handled, c(1, 2))
+})
