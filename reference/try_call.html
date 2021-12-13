@@ -219,16 +219,21 @@ exhausted.</p><div class="sourceCode"><pre><code><span class="co"># A function t
 <span class="fu">f</span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; Error: C stack usage  9525680 is too close to the limit</span></code></pre></div>
 
-<p>Because <code>try_call()</code> preserves as much of the running program as
-possible in order to produce informative backtraces on error
-rethrows, it is unable to deal with stack overflows. When an
-overflow occurs, R needs to unwind as much of the program as is
-possible and can't afford to run any more R code, such as in an
-error handler.</p>
-<p>This usually isn't a problem for error rethrowing or logging but
-might make your program more brittle in case of error recovery. In
-that case, capture errors with <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">base::tryCatch()</a></code> instead of
-<code>try_call()</code>.</p>
+<p>Because memory is very limited when these errors happen, it is not
+possible to call the handlers on the existing program stack.
+Instead, error conditions are first caught by <code>try_call()</code> and only
+then error handlers are called. Catching the error interrupts the
+program up to the <code>try_call()</code> context, which allows R to reclaim
+stack memory.</p>
+<p>The practical implication is that error handlers should never
+assume that the whole call stack is preserved. For instance a
+<code><a href="trace_back.html">trace_back()</a></code> capture might miss frames.</p>
+<p>Note that error handlers are only run for stack overflows on R &gt;=
+4.2 (unreleased at the time of writing). On older versions of R the
+handlers are simply not run. This is because these errors do not
+inherit from the class <code>stackOverflowError</code> before R 4.2. Consider
+using <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code> instead with critical error handlers that need
+to capture all errors on old versions of R.</p>
     </div>
     <div class="section level2">
     <h2 id="comparison-with-trycatch-">Comparison with <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code><a class="anchor" aria-label="anchor" href="#comparison-with-trycatch-"></a></h2>
