@@ -96,7 +96,7 @@ check_installed <- function(pkg,
     needs_install <- !map_lgl(pkg, is_installed)
   } else {
     if (!is_character(version, n = length(pkg))) {
-      abort("`version` must be a character vector the same length as `pkg`.", call = call)
+      abort("`version` must be a character vector the same length as `pkg`.")
     }
     needs_install <- !map2_lgl(pkg, version, function(p, v) is_installed(p, version = v))
   }

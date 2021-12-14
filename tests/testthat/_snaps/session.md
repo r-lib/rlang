@@ -16,8 +16,22 @@
       <error/rlang_error>
       Error in `foo()`: The packages `_foo` and `_bar` are required to proceed.
 
+# is_installed() checks minimal versions
+
+    Code
+      (expect_error(is_installed(c("rlang", "testthat"), version = "0.1"),
+      "the same length"))
+    Output
+      <error/rlang_error>
+      Error in `is_installed()`: `version` must be a character vector the same length as `pkg`.
+
 # check_installed() checks minimal versions
 
+    Code
+      (expect_error(check_installed(c("rlang", "testthat"), version = "0.1")))
+    Output
+      <error/rlang_error>
+      Error in `check_installed()`: `version` must be a character vector the same length as `pkg`.
     Code
       (expect_error(check_installed("_foo", version = "1.0")))
     Output
