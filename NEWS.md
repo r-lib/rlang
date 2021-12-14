@@ -72,6 +72,8 @@
 
 ## Features and bugfixes
 
+* `is_string()` gains an `empty` argument to match on the empty string `""`.
+
 * `abort()`, `warn()`, and `inform()` gain a `body` argument to supply
   additional bullets in the error message.
 

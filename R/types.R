@@ -154,9 +154,12 @@ is_scalar_raw <- function(x) {
 #' @export
 #' @param string A string to compare to `x`. If a character vector,
 #'   returns `TRUE` if at least one element is equal to `x`.
+#' @param empty If `NULL`, the empty string `""` is not treated
+#'   specially. If `TRUE`, `x` must be `""`. If `FALSE`, `x` can't be
+#'   `""`. `empty` and `string` are mutually exclusive arguments.
 #' @rdname scalar-type-predicates
-is_string <- function(x, string = NULL) {
-  .Call(ffi_is_string, x, string)
+is_string <- function(x, string = NULL, empty = NULL) {
+  .Call(ffi_is_string, x, string, empty)
 }
 #' @export
 #' @rdname scalar-type-predicates

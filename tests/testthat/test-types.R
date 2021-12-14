@@ -130,6 +130,23 @@ test_that("is_string() matches on string", {
   expect_false(is_string("foo", c("bar", "baz")))
 })
 
+test_that("is_string() matches on `empty`", {
+  # Input checking
+  expect_snapshot({
+    (expect_error(is_string("foo", empty = 1)))
+    (expect_error(is_string("foo", empty = NA)))
+    (expect_error(is_string("foo", "foo", empty = TRUE)))
+  })
+
+  expect_true(is_string("foo", empty = NULL))
+  expect_true(is_string("foo", empty = FALSE))
+  expect_false(is_string("foo", empty = TRUE))
+
+  expect_true(is_string("", empty = NULL))
+  expect_true(is_string("", empty = TRUE))
+  expect_false(is_string("", empty = FALSE))
+})
+
 test_that("is_bool() checks for single `TRUE` or `FALSE`", {
   expect_true(is_bool(TRUE))
   expect_true(is_bool(FALSE))

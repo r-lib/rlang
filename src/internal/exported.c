@@ -867,7 +867,7 @@ r_obj* ffi_is_raw(r_obj* x, r_obj* n_) {
   return r_shared_lgl(r_is_raw(x, n));
 }
 
-r_obj* ffi_is_string(r_obj* x, r_obj* string) {
+r_obj* ffi_is_string(r_obj* x, r_obj* string, r_obj* empty) {
   if (r_typeof(x) != R_TYPE_character || r_length(x) != 1) {
     return r_false;
   }
@@ -878,26 +878,41 @@ r_obj* ffi_is_string(r_obj* x, r_obj* string) {
     return r_false;
   }
 
-  if (string == r_null) {
-    return r_true;
-  }
+  if (string != r_null) {
+    if (!ffi_is_string(string, r_null, r_null)) {
+      r_abort("`string` must be `NULL` or a string.");
+    }
+    if (empty != r_null) {
+      r_abort("Exactly one of `string` and `empty` must be supplied.");
+    }
 
-  if (!ffi_is_string(string, r_null)) {
-    r_abort("`string` must be `NULL` or a string");
-  }
+    bool matched = false;
+    r_obj* const * p_string = r_chr_cbegin(string);
+    r_ssize n = r_length(string);
 
-  bool out = false;
-  r_ssize n = r_length(string);
-  r_obj* const * p_string = r_chr_cbegin(string);
+    for (r_ssize i = 0; i < n; ++i) {
+      if (p_string[i] == value) {
+        matched = true;
+        break;
+      }
+    }
 
-  for (r_ssize i = 0; i < n; ++i) {
-    if (p_string[i] == value) {
-      out = true;
-      break;
+    if (!matched) {
+      return r_false;
     }
   }
 
-  return r_shared_lgl(out);
+  if (empty != r_null) {
+    if (!r_is_bool(empty)) {
+      r_abort("`empty` must be `NULL` or a logical value.");
+    }
+
+    bool c_empty = r_as_bool(empty);
+    bool matched = c_empty == (value == r_strs.empty);
+    return r_lgl(matched);
+  }
+
+  return r_true;
 }
 
 r_obj* ffi_vec_resize(r_obj* x, r_obj* n) {

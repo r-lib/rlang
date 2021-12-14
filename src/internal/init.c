@@ -102,7 +102,7 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_is_raw",                       (DL_FUNC) &ffi_is_raw, 2},
   {"ffi_is_reference",                 (DL_FUNC) &ffi_is_reference, 2},
   {"ffi_is_splice_box",                (DL_FUNC) &ffi_is_splice_box, 1},
-  {"ffi_is_string",                    (DL_FUNC) &ffi_is_string, 2},
+  {"ffi_is_string",                    (DL_FUNC) &ffi_is_string, 3},
   {"ffi_is_vector",                    (DL_FUNC) &ffi_is_vector, 2},
   {"ffi_is_weakref",                   (DL_FUNC) &ffi_is_weakref, 1},
   {"ffi_length",                       (DL_FUNC) &ffi_length, 1},
