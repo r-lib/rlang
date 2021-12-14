@@ -7,7 +7,7 @@
 \usage{
 is_installed(pkg, ..., version = NULL)
 
-check_installed(pkg, reason = NULL, ..., version = NULL)
+check_installed(pkg, reason = NULL, ..., version = NULL, call = caller_env())
 }
 \arguments{
 \item{pkg}{The package names.}
@@ -20,6 +20,11 @@ same length as \code{pkg}. \code{NA} elements stand for any versions.}
 \item{reason}{Optional string indicating why is \code{pkg} needed.
 Appears in error messages (if non-interactive) and user prompts
 (if interactive).}
+
+\item{call}{The execution environment of a currently
+running function, e.g. \code{caller_env()}. The function will be
+mentioned in error messages as the source of the error. See the
+\code{call} argument of \code{\link[=abort]{abort()}} for more information.}
 }
 \value{
 \code{is_installed()} returns \code{TRUE} if \emph{all} package names

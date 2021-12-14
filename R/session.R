@@ -79,23 +79,24 @@ is_installed <- function(pkg, ..., version = NULL) {
   }))
 }
 #' @rdname is_installed
+#' @inheritParams args_error_context
 #' @export
 check_installed <- function(pkg,
                             reason = NULL,
                             ...,
-                            version = NULL) {
+                            version = NULL,
+                            call = caller_env()) {
   check_dots_empty0(...)
-  .__error_call__. <- "caller"
 
   if (!is_character(pkg)) {
-    abort("`pkg` must be a package name or a vector of package names.")
+    abort("`pkg` must be a package name or a vector of package names.", call = call)
   }
 
   if (is_null(version)) {
     needs_install <- !map_lgl(pkg, is_installed)
   } else {
     if (!is_character(version, n = length(pkg))) {
-      abort("`version` must be a character vector the same length as `pkg`.")
+      abort("`version` must be a character vector the same length as `pkg`.", call = call)
     }
     needs_install <- !map2_lgl(pkg, version, function(p, v) is_installed(p, version = v))
   }
@@ -110,8 +111,7 @@ check_installed <- function(pkg,
   cnd <- new_error_package_not_found(
     missing_pkgs,
     missing_vers,
-    reason = reason,
-    use_cli_format = TRUE
+    reason = reason
   )
 
   restart <- peek_option("rlib_restart_package_not_found") %||% TRUE
@@ -120,7 +120,7 @@ check_installed <- function(pkg,
   }
 
   if (!is_interactive() || !restart) {
-    abort(cnd_header(cnd))
+    abort(cnd_header(cnd), call = call)
   }
 
   if (signal_package_not_found(cnd)) {
@@ -128,7 +128,7 @@ check_installed <- function(pkg,
     # again.
     return(with_options(
       "rlib_restart_package_not_found" = FALSE,
-      check_installed(pkg, reason, version = version)
+      check_installed(pkg, reason, version = version, call = call)
     ))
   }
 

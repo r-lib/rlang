@@ -4,8 +4,7 @@ test_that("is_installed() properly checks multiple packages", {
 
 test_that("check_installed() fails if packages are not installed", {
   local_options(rlang_interactive = FALSE)
-
-  .__error_call__. <- quote(my_wrapper())
+  local_error_call(call("foo"))
 
   expect_snapshot({
     (expect_error(check_installed("_foo")))
@@ -30,6 +29,7 @@ test_that("is_installed() checks minimal versions", {
 
 test_that("check_installed() checks minimal versions", {
   local_options(rlang_interactive = FALSE)
+  local_error_call(call("foo"))
 
   expect_snapshot({
     (expect_error(check_installed("_foo", version = "1.0")))
