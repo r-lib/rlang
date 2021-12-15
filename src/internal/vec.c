@@ -206,6 +206,8 @@ bool list_match(r_obj* const * v_x,
       }
     }
     return true;
+  default:
+    r_stop_unreached("list_match");
   }
 }
 
