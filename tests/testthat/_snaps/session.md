@@ -56,11 +56,19 @@
       <error/rlang_error>
       Error in `foo()`: The packages `rlangFoo` (>= 1.0) and `rlangBar` (>= 2.0) are required to proceed.
     Code
-      (expect_error(check_installed(c("rlangFoo (>= 1.0)", "rlangBar (>= 2.0)"),
+      (expect_error(check_installed(c("rlangFoo (>= 1.0)", "rlangBar (> 2.0)"),
       "to proceed.")))
     Output
       <error/rlang_error>
-      Error in `foo()`: The packages `rlangFoo (>= 1.0)` and `rlangBar (>= 2.0)` are required to proceed.
+      Error in `foo()`: The packages `rlangFoo` (>= 1.0) and `rlangBar` (> 2.0) are required to proceed.
+
+# < requirements can't be recovered with restart
+
+    Code
+      (expect_error(check_installed("rlang (< 0.1)")))
+    Output
+      <error/rlang_error>
+      Error in `foo()`: The package `rlang` (< 0.1) is required.
 
 # `pkg` is type-checked
 
