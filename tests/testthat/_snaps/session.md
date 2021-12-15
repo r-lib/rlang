@@ -98,4 +98,34 @@
       Error in `caller()`: Can't supply version in both `pkg` and `version`.
       x Redundant versions:
       * "foo (>= 1.0)"
+    Code
+      (expect_error(pkg_version_info(c("foo (!= 1.0)"))))
+    Output
+      <error/rlang_error>
+      Error in `caller()`: `op` must be one of ">", ">=", "<", or "<=".
+
+# pkg_version_info() supports `op`
+
+    Code
+      err(pkg_version_info(c("foo", "bar", "baz"), NULL, c(NA, NA, ">=")))
+    Output
+      <error/rlang_error>
+      Error in `caller()`: `version` must be supplied when `op` is supplied.
+    Code
+      err(pkg_version_info(c("foo", "bar", "baz"), c("1", "2", NA), c(NA, NA, ">=")))
+    Output
+      <error/rlang_error>
+      Error in `caller()`: `version` must be supplied when `op` is supplied.
+    Code
+      err(pkg_version_info(c("foo", "bar (>= 2.0)"), c(NA, "2.0"), c(NA, ">=")))
+    Output
+      <error/rlang_error>
+      Error in `caller()`: Can't supply version in both `pkg` and `version`.
+      x Redundant versions:
+      * "bar (>= 2.0)"
+    Code
+      err(pkg_version_info("foo", "1.0", "!="))
+    Output
+      <error/rlang_error>
+      Error in `caller()`: `op` must be one of ">", ">=", "<", or "<=".
 

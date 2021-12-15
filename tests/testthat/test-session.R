@@ -153,5 +153,26 @@ test_that("pkg_version_info() parses info", {
     (expect_error(pkg_version_info("foo 1.0"), "valid"))
     (expect_error(pkg_version_info("foo (1.0)"), "parse"))
     (expect_error(pkg_version_info("foo (>= 1.0)", "1.0"), "both"))
+    (expect_error(pkg_version_info(c("foo (!= 1.0)"))))
+  })
+})
+
+test_that("pkg_version_info() supports `op`", {
+  local_error_call(call("caller"))
+
+  pkg <- c("foo", "bar", "baz")
+  out <- pkg_version_info(pkg, c("1.0", "2.0", "3.0"), c(NA, NA, "<"))
+
+  expect_equal(out, data_frame(
+    pkg = c("foo", "bar", "baz"),
+    op = c(">=", ">=", "<"),
+    ver = c("1.0", "2.0", "3.0")
+  ))
+
+  expect_snapshot({
+    err(pkg_version_info(c("foo", "bar", "baz"), NULL, c(NA, NA, ">=")))
+    err(pkg_version_info(c("foo", "bar", "baz"), c("1", "2", NA), c(NA, NA, ">=")))
+    err(pkg_version_info(c("foo", "bar (>= 2.0)"), c(NA, "2.0"), c(NA, ">=")))
+    err(pkg_version_info("foo", "1.0", "!="))
   })
 })

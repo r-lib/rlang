@@ -56,7 +56,7 @@
 #' is_installed(c("base", "ggplot5"), version = c(NA, "5.1.0"))
 is_installed <- function(pkg, ..., version = NULL) {
   check_dots_empty0(...)
-  check_pkg_version(pkg, version)
+  check_pkg_version(pkg, version, NULL)
 
   # Internal mechanism for unit tests
   hook <- peek_option("rlang:::is_installed_hook")
@@ -76,8 +76,11 @@ is_installed <- function(pkg, ..., version = NULL) {
   }))
 }
 
-pkg_version_info <- function(pkg, version = NULL, call = caller_env()) {
-  check_pkg_version(pkg, version)
+pkg_version_info <- function(pkg,
+                             version = NULL,
+                             op = NULL,
+                             call = caller_env()) {
+  check_pkg_version(pkg, version, op, call = call)
 
   matches <- grepl(version_regex, pkg)
   pkg_info <- as_version_info(pkg[matches], call = call)
@@ -113,8 +116,19 @@ pkg_version_info <- function(pkg, version = NULL, call = caller_env()) {
       abort(msg, call = call)
     }
 
+    op <- op %||% ">="
+    op <- op %|% ">="
+
     info$ver[has_version] <- version[has_version]
-    info$op[has_version] <- ">="
+    info$op[has_version] <- op
+  }
+
+  if (!all(detect_na(info$op) | info$op %in% c(">", ">=", "<", "<="))) {
+    msg <- sprintf(
+      '%s must be one of ">", ">=", "<", or "<=".',
+      format_arg("op")
+    )
+    abort(msg, call = call)
   }
 
   info
@@ -154,7 +168,7 @@ check_installed <- function(pkg,
                             version = NULL,
                             call = caller_env()) {
   check_dots_empty0(...)
-  check_pkg_version(pkg, version)
+  check_pkg_version(pkg, version, NULL)
 
   if (is_null(version)) {
     needs_install <- !map_lgl(pkg, is_installed)
@@ -219,7 +233,10 @@ check_installed <- function(pkg,
   }
 }
 
-check_pkg_version <- function(pkg, version, call = caller_env()) {
+check_pkg_version <- function(pkg,
+                              version,
+                              op,
+                              call = caller_env()) {
   if (!is_character(pkg, missing = FALSE, empty = FALSE)) {
     abort(
       sprintf(
@@ -239,6 +256,17 @@ check_pkg_version <- function(pkg, version, call = caller_env()) {
       ),
       call = call
     )
+  }
+
+  if (!is_null(op)) {
+    if (is_null(version) || any((!detect_na(op)) & detect_na(version))) {
+      msg <- sprintf(
+        "%s must be supplied when %s is supplied.",
+        format_arg("version"),
+        format_arg("op")
+      )
+      abort(msg, call = call)
+    }
   }
 }
 
