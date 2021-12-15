@@ -20,7 +20,8 @@
 #'  `rlib_restart_package_not_found` global option to `FALSE`. In that
 #'  case, missing packages always cause an error.
 #'
-#' @param pkg The package names.
+#' @param pkg The package names. Can include version requirements,
+#'   e.g. `"pkg (>= 1.0.0)"`.
 #' @param reason Optional string indicating why is `pkg` needed.
 #'   Appears in error messages (if non-interactive) and user prompts
 #'   (if interactive).

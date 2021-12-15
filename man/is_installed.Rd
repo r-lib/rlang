@@ -7,10 +7,18 @@
 \usage{
 is_installed(pkg, ..., version = NULL, op = NULL)
 
-check_installed(pkg, reason = NULL, ..., version = NULL, call = caller_env())
+check_installed(
+  pkg,
+  reason = NULL,
+  ...,
+  version = NULL,
+  op = NULL,
+  call = caller_env()
+)
 }
 \arguments{
-\item{pkg}{The package names.}
+\item{pkg}{The package names. Can include version requirements,
+e.g. \code{"pkg (>= 1.0.0)"}.}
 
 \item{...}{These dots must be empty.}
 
