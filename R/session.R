@@ -195,7 +195,8 @@ check_installed <- function(pkg,
     missing_pkgs,
     missing_vers,
     missing_cmps,
-    reason = reason
+    reason = reason,
+    call = call
   )
 
   restart <- peek_option("rlib_restart_package_not_found") %||% TRUE
@@ -204,7 +205,7 @@ check_installed <- function(pkg,
   }
 
   if (!is_interactive() || !restart || any(missing_cmps %in% c("<", "<="))) {
-    abort(cnd_header(cnd), call = call)
+    stop(cnd)
   }
 
   if (signal_package_not_found(cnd)) {
@@ -232,7 +233,8 @@ check_installed <- function(pkg,
   ))
 
   if (utils::menu(c("Yes", "No")) != 1) {
-    invokeRestart("abort")
+    # Pass condition in case caller sets up an `abort` restart
+    invokeRestart("abort", cnd)
   }
   if (is_installed("pak")) {
     pkg_install <- env_get(ns_env("pak"), "pkg_install")

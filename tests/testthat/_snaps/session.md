@@ -3,17 +3,17 @@
     Code
       (expect_error(check_installed("rlangFoo")))
     Output
-      <error/rlang_error>
+      <error/rlib_error_package_not_found>
       Error in `foo()`: The package `rlangFoo` is required.
     Code
       (expect_error(check_installed(c("rlangFoo", "rlangBar"))))
     Output
-      <error/rlang_error>
+      <error/rlib_error_package_not_found>
       Error in `foo()`: The packages `rlangFoo` and `rlangBar` are required.
     Code
       (expect_error(check_installed(c("rlangFoo", "rlangBar"), "to proceed.")))
     Output
-      <error/rlang_error>
+      <error/rlib_error_package_not_found>
       Error in `foo()`: The packages `rlangFoo` and `rlangBar` are required to proceed.
 
 # is_installed() checks minimal versions
@@ -35,31 +35,31 @@
     Code
       (expect_error(check_installed("rlangFoo", version = "1.0")))
     Output
-      <error/rlang_error>
+      <error/rlib_error_package_not_found>
       Error in `foo()`: The package `rlangFoo` (>= 1.0) is required.
     Code
       (expect_error(check_installed(c("rlangFoo", "rlangBar"), version = c("1.0", NA)))
       )
     Output
-      <error/rlang_error>
+      <error/rlib_error_package_not_found>
       Error in `foo()`: The packages `rlangFoo` (>= 1.0) and `rlangBar` are required.
     Code
       (expect_error(check_installed(c("rlangFoo", "rlangBar"), version = c(NA, "2.0")))
       )
     Output
-      <error/rlang_error>
+      <error/rlib_error_package_not_found>
       Error in `foo()`: The packages `rlangFoo` and `rlangBar` (>= 2.0) are required.
     Code
       (expect_error(check_installed(c("rlangFoo", "rlangBar"), "to proceed.",
       version = c("1.0", "2.0"))))
     Output
-      <error/rlang_error>
+      <error/rlib_error_package_not_found>
       Error in `foo()`: The packages `rlangFoo` (>= 1.0) and `rlangBar` (>= 2.0) are required to proceed.
     Code
       (expect_error(check_installed(c("rlangFoo (>= 1.0)", "rlangBar (> 2.0)"),
       "to proceed.")))
     Output
-      <error/rlang_error>
+      <error/rlib_error_package_not_found>
       Error in `foo()`: The packages `rlangFoo` (>= 1.0) and `rlangBar` (> 2.0) are required to proceed.
 
 # < requirements can't be recovered with restart
@@ -67,7 +67,7 @@
     Code
       (expect_error(check_installed("rlang (< 0.1)")))
     Output
-      <error/rlang_error>
+      <error/rlib_error_package_not_found>
       Error in `foo()`: The package `rlang` (< 0.1) is required.
 
 # `pkg` is type-checked

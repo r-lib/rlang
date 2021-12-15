@@ -103,7 +103,9 @@ test_that("can handle check-installed", {
     withCallingHandlers(
       rlib_error_package_not_found = function(cnd) {
         override <<- value
-        invokeRestart("rlib_restart_package_not_found")
+        if (!is_null(findRestart("rlib_restart_package_not_found"))) {
+          invokeRestart("rlib_restart_package_not_found")
+        }
       },
       expr
     )
