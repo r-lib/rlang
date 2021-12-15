@@ -148,9 +148,51 @@ bool r_is_integerish(r_obj* x, r_ssize n, int finite) {
 
 #undef RLANG_MAX_DOUBLE_INT
 
-bool r_is_character(r_obj* x, r_ssize n) {
-  return r_typeof(x) == R_TYPE_character && has_correct_length(x, n);
+bool is_character(r_obj* x,
+                  r_ssize n,
+                  enum option_bool missing,
+                  enum option_bool empty) {
+  if (r_typeof(x) != R_TYPE_character) {
+    return false;
+  }
+  if (!has_correct_length(x, n)) {
+    return false;
+  }
+
+  bool has_missing = missing != OPTION_BOOL_null;
+  bool has_empty = empty != OPTION_BOOL_null;
+
+  if (!has_missing && !has_empty) {
+    return true;
+  }
+  if (has_missing && has_empty) {
+    r_abort("Exactly one of `missing` and `empty` must be supplied.");
+  }
+
+  // Could we inspect ALTREP properties for the `missing` case?
+  r_obj* value = has_missing ? r_strs.na : r_strs.empty;
+  enum option_bool expected = has_missing ? missing : empty;
+
+  n = r_length(x);
+  r_obj* const * v_x = r_chr_cbegin(x);
+
+  if (expected == OPTION_BOOL_true) {
+    for (r_ssize i = 0; i < n; ++i) {
+      if (v_x[i] != value) {
+        return false;
+      }
+    }
+  } else {
+    for (r_ssize i = 0; i < n; ++i) {
+      if (v_x[i] == value) {
+        return false;
+      }
+    }
+  }
+
+  return true;
 }
+
 bool r_is_raw(r_obj* x, r_ssize n) {
   return r_typeof(x) == R_TYPE_raw && has_correct_length(x, n);
 }

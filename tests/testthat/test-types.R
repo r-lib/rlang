@@ -153,3 +153,19 @@ test_that("is_bool() checks for single `TRUE` or `FALSE`", {
   expect_false(is_bool(NA))
   expect_false(is_bool(c(TRUE, FALSE)))
 })
+
+test_that("is_character() matches empty and missing values", {
+  expect_snapshot({
+    (expect_error(is_character("", empty = TRUE, missing = TRUE)))
+  })
+
+  expect_false(is_character(c("foo", ""), empty = FALSE))
+  expect_false(is_character(c("foo", ""), empty = TRUE))
+  expect_true(is_character(c("", ""), empty = TRUE))
+  expect_true(is_character(c("foo", "foo"), empty = FALSE))
+
+  expect_false(is_character(c("foo", NA), missing = FALSE))
+  expect_false(is_character(c("foo", NA), missing = TRUE))
+  expect_true(is_character(chr(NA, NA), missing = TRUE))
+  expect_true(is_character(c("foo", "foo"), missing = FALSE))
+})

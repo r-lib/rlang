@@ -130,7 +130,7 @@ r_obj* ffi_set_names(r_obj* x, r_obj* mold, r_obj* nm, r_obj* env) {
     r_chr_fill(nm, val, n);
   }
 
-  if (!r_is_character(nm, n)) {
+  if (!is_character(nm, n, OPTION_BOOL_null, OPTION_BOOL_null)) {
     r_abort("`nm` must be `NULL` or a character vector the same length as `x`");
   }
 

@@ -72,7 +72,9 @@
 
 ## Features and bugfixes
 
-* `is_string()` gains an `empty` argument to match on the empty string `""`.
+* `is_string()` gains an `empty` argument to match on the empty string
+  `""`. `is_character()` gains both an `empty` and `missing`
+  arguments to match `""` and `NA` respectively.
 
 * `abort()`, `warn()`, and `inform()` gain a `body` argument to supply
   additional bullets in the error message.

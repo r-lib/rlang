@@ -858,9 +858,28 @@ r_obj* ffi_is_integerish(r_obj* x, r_obj* n_, r_obj* finite_) {
   return r_shared_lgl(r_is_integerish(x, n, finite));
 }
 
-r_obj* ffi_is_character(r_obj* x, r_obj* n_) {
-  r_ssize n = validate_n(n_);
-  return r_shared_lgl(r_is_character(x, n));
+static
+enum option_bool as_option_bool(r_obj* x) {
+  if (x == r_null) {
+    return(OPTION_BOOL_null);
+  }
+  if (r_as_bool(x)) {
+    return OPTION_BOOL_true;
+  } else {
+    return OPTION_BOOL_false;
+  }
+}
+
+r_obj* ffi_is_character(r_obj* x,
+                        r_obj* ffi_n,
+                        r_obj* ffi_missing,
+                        r_obj* ffi_empty) {
+  r_ssize n = validate_n(ffi_n);
+
+  enum option_bool missing = as_option_bool(ffi_missing);
+  enum option_bool empty = as_option_bool(ffi_empty);
+
+  return r_shared_lgl(is_character(x, n, missing, empty));
 }
 r_obj* ffi_is_raw(r_obj* x, r_obj* n_) {
   r_ssize n = validate_n(n_);
