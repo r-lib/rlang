@@ -76,15 +76,45 @@ is_installed <- function(pkg, ..., version = NULL) {
   }))
 }
 
-pkg_version_info <- function(pkg, version, call = caller_env()) {
+pkg_version_info <- function(pkg, version = NULL, call = caller_env()) {
+  check_pkg_version(pkg, version)
+
   matches <- grepl(version_regex, pkg)
+  pkg_info <- as_version_info(pkg[matches], call = call)
 
   info <- data_frame(pkg = pkg, op = na_chr, ver = na_chr)
-  info <- vec_assign(info, matches, new_version_info(pkg[matches]))
+  info <- vec_assign(info, matches, pkg_info)
+
+  is_invalid <- grepl("[^A-Za-z0-9.]", info$pkg)
+  if (any(is_invalid)) {
+    elts <- encodeString(info$pkg[is_invalid], quote = '"')
+    msg <- c(
+      "Must supply valid package names.",
+      "x" = "Problematic names:",
+      set_names(elts, "*")
+    )
+    abort(msg, call = call)
+  }
 
   if (!is_null(version)) {
-    abort("TODO")
-    info <- vec_assign(info, !matches)
+    has_version <- !detect_na(version)
+    is_redundant <- has_version & matches
+    if (any(is_redundant)) {
+      elts <- encodeString(pkg[is_redundant], quote = '"')
+      msg <- c(
+        sprintf(
+          "Can't supply version in both %s and %s.",
+          format_arg("pkg"),
+          format_arg("version")
+        ),
+        "x" = "Redundant versions:",
+        set_names(elts, "*")
+      )
+      abort(msg, call = call)
+    }
+
+    info$ver[has_version] <- version[has_version]
+    info$op[has_version] <- ">="
   }
 
   info
@@ -92,7 +122,10 @@ pkg_version_info <- function(pkg, version, call = caller_env()) {
 
 version_regex <- "(.*) \\((.*)\\)$"
 
-new_version_info <- function(pkg) {
+as_version_info <- function(pkg, call = caller_env()) {
+  if (!length(pkg)) {
+    return(data_frame(pkg = chr(), op = chr(), ver = chr()))
+  }
   ver <- sub(version_regex, "\\2", pkg)
   ver <- strsplit(ver, " ")
 

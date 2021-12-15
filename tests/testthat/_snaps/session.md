@@ -77,3 +77,25 @@
       <error/rlang_error>
       Error in `check_installed()`: `version` must be `NULL` or a vector of versions the same length as `pkg`.
 
+# pkg_version_info() parses info
+
+    Code
+      (expect_error(pkg_version_info("foo 1.0"), "valid"))
+    Output
+      <error/rlang_error>
+      Error in `caller()`: Must supply valid package names.
+      x Problematic names:
+      * "foo 1.0"
+    Code
+      (expect_error(pkg_version_info("foo (1.0)"), "parse"))
+    Output
+      <error/rlang_error>
+      Error in `caller()`: Can't parse version in `pkg`.
+    Code
+      (expect_error(pkg_version_info("foo (>= 1.0)", "1.0"), "both"))
+    Output
+      <error/rlang_error>
+      Error in `caller()`: Can't supply version in both `pkg` and `version`.
+      x Redundant versions:
+      * "foo (>= 1.0)"
+

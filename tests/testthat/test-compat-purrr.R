@@ -49,5 +49,8 @@ test_that("reduce/accumulate work", {
 
   expect_equal(accumulate(x, `+`), c(1, 3, 6))
   expect_equal(accumulate_right(x, `+`), c(6, 5, 3))
+})
 
+test_that("transpose() handles empty list", {
+  expect_equal(transpose(list()), list())
 })

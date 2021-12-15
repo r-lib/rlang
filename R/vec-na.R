@@ -121,6 +121,8 @@ is_na <- function(x) {
   is_scalar_vector(x) && is.na(x)
 }
 
+detect_na <- are_na
+
 #' @rdname are_na
 #' @export
 is_lgl_na <- function(x) {

@@ -120,12 +120,38 @@ test_that("`pkg` is type-checked", {
 })
 
 test_that("pkg_version_info() parses info", {
-  pkg <- c("foo (>= 0.99)", "bar", "baz (> 0.1)")
+  local_error_call(call("caller"))
+
+  pkg <- c("foo (>= 1.0)", "bar", "baz (> 3.0)")
   out <- pkg_version_info(pkg, NULL)
 
   expect_equal(out, data_frame(
     pkg = c("foo", "bar", "baz"),
     op = c(">=", NA, ">"),
-    ver = c("0.99", NA, "0.1")
+    ver = c("1.0", NA, "3.0")
   ))
+
+  pkg <- c("foo (>= 1.0)", "bar", "baz (> 3.0)", "quux")
+  out <- pkg_version_info(pkg, c(NA, "2.0", NA, NA))
+
+  expect_equal(out, data_frame(
+    pkg = c("foo", "bar", "baz", "quux"),
+    op = c(">=", ">=", ">", NA),
+    ver = c("1.0", "2.0", "3.0", NA)
+  ))
+
+  pkg <- c("foo (>= 1.0)", "bar", "baz (> 3.0)", "quux")
+  out <- pkg_version_info(pkg, c(NA, "2.0", NA, "4.0"))
+
+  expect_equal(out, data_frame(
+    pkg = c("foo", "bar", "baz", "quux"),
+    op = c(">=", ">=", ">", ">="),
+    ver = c("1.0", "2.0", "3.0", "4.0")
+  ))
+
+  expect_snapshot({
+    (expect_error(pkg_version_info("foo 1.0"), "valid"))
+    (expect_error(pkg_version_info("foo (1.0)"), "parse"))
+    (expect_error(pkg_version_info("foo (>= 1.0)", "1.0"), "both"))
+  })
 })
