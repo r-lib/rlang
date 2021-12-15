@@ -7,9 +7,9 @@ test_that("check_installed() fails if packages are not installed", {
   local_error_call(call("foo"))
 
   expect_snapshot({
-    (expect_error(check_installed("_foo")))
-    (expect_error(check_installed(c("_foo", "_bar"))))
-    (expect_error(check_installed(c("_foo", "_bar"), "to proceed.")))
+    (expect_error(check_installed("rlangFoo")))
+    (expect_error(check_installed(c("rlangFoo", "rlangBar"))))
+    (expect_error(check_installed(c("rlangFoo", "rlangBar"), "to proceed.")))
   })
 })
 
@@ -27,18 +27,25 @@ test_that("is_installed() checks minimal versions", {
 
   expect_true(is_installed(c("rlang", "testthat"), version = chr(NA, NA)))
   expect_false(is_installed(c("rlang", "testthat"), version = c(NA, "100")))
+
+  expect_true(is_installed(c("rlang (>= 0.1)", "testthat (>= 0.1)")))
+  expect_false(is_installed(c("rlang (>= 100.1)", "testthat (>= 0.1)")))
+  expect_false(is_installed(c("rlang (<= 0.4.0)", "testthat (>= 0.1)")))
 })
 
 test_that("check_installed() checks minimal versions", {
   local_options(rlang_interactive = FALSE)
   local_error_call(call("foo"))
 
+  expect_null(check_installed(c("rlang (>= 0.1)", "testthat (>= 0.1)")))
+
   expect_snapshot({
     (expect_error(check_installed(c("rlang", "testthat"), version = "0.1")))
-    (expect_error(check_installed("_foo", version = "1.0")))
-    (expect_error(check_installed(c("_foo", "_bar"), version = c("1.0", NA))))
-    (expect_error(check_installed(c("_foo", "_bar"), version = c(NA, "2.0"))))
-    (expect_error(check_installed(c("_foo", "_bar"), "to proceed.", version = c("1.0", "2.0"))))
+    (expect_error(check_installed("rlangFoo", version = "1.0")))
+    (expect_error(check_installed(c("rlangFoo", "rlangBar"), version = c("1.0", NA))))
+    (expect_error(check_installed(c("rlangFoo", "rlangBar"), version = c(NA, "2.0"))))
+    (expect_error(check_installed(c("rlangFoo", "rlangBar"), "to proceed.", version = c("1.0", "2.0"))))
+    (expect_error(check_installed(c("rlangFoo (>= 1.0)", "rlangBar (>= 2.0)"), "to proceed.")))
   })
 })
 

@@ -5,7 +5,7 @@
 \alias{check_installed}
 \title{Are packages installed in any of the libraries?}
 \usage{
-is_installed(pkg, ..., version = NULL)
+is_installed(pkg, ..., version = NULL, op = NULL)
 
 check_installed(pkg, reason = NULL, ..., version = NULL, call = caller_env())
 }
@@ -16,6 +16,11 @@ check_installed(pkg, reason = NULL, ..., version = NULL, call = caller_env())
 
 \item{version}{Minimum versions for \code{pkg}. If supplied, must be the
 same length as \code{pkg}. \code{NA} elements stand for any versions.}
+
+\item{op}{A character vector of comparison operators to use for
+\code{version}. If supplied, must be the same length as \code{version}. If
+\code{NULL}, \code{>=} is used as default for all elements. \code{NA} elements
+in \code{op} are also set to \code{>=} by default.}
 
 \item{reason}{Optional string indicating why is \code{pkg} needed.
 Appears in error messages (if non-interactive) and user prompts

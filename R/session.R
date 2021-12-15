@@ -27,6 +27,10 @@
 #' @param ... These dots must be empty.
 #' @param version Minimum versions for `pkg`. If supplied, must be the
 #'   same length as `pkg`. `NA` elements stand for any versions.
+#' @param op A character vector of comparison operators to use for
+#'   `version`. If supplied, must be the same length as `version`. If
+#'   `NULL`, `>=` is used as default for all elements. `NA` elements
+#'   in `op` are also set to `>=` by default.
 #' @return `is_installed()` returns `TRUE` if _all_ package names
 #'   provided in `pkg` are installed, `FALSE`
 #'   otherwise. `check_installed()` either doesn't return or returns
@@ -54,7 +58,7 @@
 #' is_installed("utils")
 #' is_installed(c("base", "ggplot5"))
 #' is_installed(c("base", "ggplot5"), version = c(NA, "5.1.0"))
-is_installed <- function(pkg, ..., version = NULL) {
+is_installed <- function(pkg, ..., version = NULL, op = NULL) {
   check_dots_empty0(...)
   check_pkg_version(pkg, version, NULL)
 
@@ -64,16 +68,15 @@ is_installed <- function(pkg, ..., version = NULL) {
     return(all(hook(pkg, version)))
   }
 
-  if (!all(map_lgl(pkg, function(x) is_true(requireNamespace(x, quietly = TRUE))))) {
+  info <- pkg_version_info(pkg, version = version, op = op)
+
+  if (!all(map_lgl(info$pkg, function(x) is_true(requireNamespace(x, quietly = TRUE))))) {
     return(FALSE)
   }
-  if (is_null(version)) {
-    return(TRUE)
-  }
 
-  all(map2_lgl(pkg, version, function(p, v) {
-    is_na(v) || utils::packageVersion(p) >= v
-  }))
+  all(flatten_lgl(pmap(info, function(pkg, op, ver) {
+    is_na(ver) || exec(op, utils::packageVersion(pkg), ver)
+  })))
 }
 
 pkg_version_info <- function(pkg,

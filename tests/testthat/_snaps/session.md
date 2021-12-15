@@ -1,20 +1,20 @@
 # check_installed() fails if packages are not installed
 
     Code
-      (expect_error(check_installed("_foo")))
+      (expect_error(check_installed("rlangFoo")))
     Output
       <error/rlang_error>
-      Error in `foo()`: The package `_foo` is required.
+      Error in `foo()`: The package `rlangFoo` is required.
     Code
-      (expect_error(check_installed(c("_foo", "_bar"))))
+      (expect_error(check_installed(c("rlangFoo", "rlangBar"))))
     Output
       <error/rlang_error>
-      Error in `foo()`: The packages `_foo` and `_bar` are required.
+      Error in `foo()`: The packages `rlangFoo` and `rlangBar` are required.
     Code
-      (expect_error(check_installed(c("_foo", "_bar"), "to proceed.")))
+      (expect_error(check_installed(c("rlangFoo", "rlangBar"), "to proceed.")))
     Output
       <error/rlang_error>
-      Error in `foo()`: The packages `_foo` and `_bar` are required to proceed.
+      Error in `foo()`: The packages `rlangFoo` and `rlangBar` are required to proceed.
 
 # is_installed() checks minimal versions
 
@@ -33,26 +33,34 @@
       <error/rlang_error>
       Error in `check_installed()`: `version` must be `NULL` or a vector of versions the same length as `pkg`.
     Code
-      (expect_error(check_installed("_foo", version = "1.0")))
+      (expect_error(check_installed("rlangFoo", version = "1.0")))
     Output
       <error/rlang_error>
-      Error in `foo()`: The package `_foo` (>= 1.0) is required.
+      Error in `foo()`: The package `rlangFoo` (>= 1.0) is required.
     Code
-      (expect_error(check_installed(c("_foo", "_bar"), version = c("1.0", NA))))
+      (expect_error(check_installed(c("rlangFoo", "rlangBar"), version = c("1.0", NA)))
+      )
     Output
       <error/rlang_error>
-      Error in `foo()`: The packages `_foo` (>= 1.0) and `_bar` are required.
+      Error in `foo()`: The packages `rlangFoo` (>= 1.0) and `rlangBar` are required.
     Code
-      (expect_error(check_installed(c("_foo", "_bar"), version = c(NA, "2.0"))))
+      (expect_error(check_installed(c("rlangFoo", "rlangBar"), version = c(NA, "2.0")))
+      )
     Output
       <error/rlang_error>
-      Error in `foo()`: The packages `_foo` and `_bar` (>= 2.0) are required.
+      Error in `foo()`: The packages `rlangFoo` and `rlangBar` (>= 2.0) are required.
     Code
-      (expect_error(check_installed(c("_foo", "_bar"), "to proceed.", version = c(
-        "1.0", "2.0"))))
+      (expect_error(check_installed(c("rlangFoo", "rlangBar"), "to proceed.",
+      version = c("1.0", "2.0"))))
     Output
       <error/rlang_error>
-      Error in `foo()`: The packages `_foo` (>= 1.0) and `_bar` (>= 2.0) are required to proceed.
+      Error in `foo()`: The packages `rlangFoo` (>= 1.0) and `rlangBar` (>= 2.0) are required to proceed.
+    Code
+      (expect_error(check_installed(c("rlangFoo (>= 1.0)", "rlangBar (>= 2.0)"),
+      "to proceed.")))
+    Output
+      <error/rlang_error>
+      Error in `foo()`: The packages `rlangFoo (>= 1.0)` and `rlangBar (>= 2.0)` are required to proceed.
 
 # `pkg` is type-checked
 
