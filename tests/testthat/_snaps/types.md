@@ -22,5 +22,5 @@
       (expect_error(is_character("", empty = TRUE, missing = TRUE)))
     Output
       <error/rlang_error>
-      Error in `is_character()`: Exactly one of `missing` and `empty` must be supplied.
+      Error in `is_character()`: Exactly one of `missing` and `empty` can be `TRUE`.
 

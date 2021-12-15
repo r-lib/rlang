@@ -168,4 +168,10 @@ test_that("is_character() matches empty and missing values", {
   expect_false(is_character(c("foo", NA), missing = TRUE))
   expect_true(is_character(chr(NA, NA), missing = TRUE))
   expect_true(is_character(c("foo", "foo"), missing = FALSE))
+
+  expect_true(is_character(c("foo", "foo"), empty = FALSE, missing = FALSE))
+  expect_false(is_character(c("foo", "foo"), empty = FALSE, missing = TRUE))
+  expect_true(is_character(chr(NA, NA), empty = FALSE, missing = TRUE))
+  expect_false(is_character(c("foo", "foo"), empty = TRUE, missing = FALSE))
+  expect_true(is_character(c("", ""), empty = TRUE, missing = FALSE))
 })

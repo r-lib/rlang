@@ -1,4 +1,5 @@
 #include <rlang.h>
+#include "decl/vec-decl.h"
 
 
 static
@@ -165,32 +166,47 @@ bool is_character(r_obj* x,
   if (!has_missing && !has_empty) {
     return true;
   }
-  if (has_missing && has_empty) {
-    r_abort("Exactly one of `missing` and `empty` must be supplied.");
+  if (missing == OPTION_BOOL_true && empty == OPTION_BOOL_true) {
+    r_abort("Exactly one of `missing` and `empty` can be `TRUE`.");
   }
-
-  // Could we inspect ALTREP properties for the `missing` case?
-  r_obj* value = has_missing ? r_strs.na : r_strs.empty;
-  enum option_bool expected = has_missing ? missing : empty;
 
   n = r_length(x);
   r_obj* const * v_x = r_chr_cbegin(x);
 
-  if (expected == OPTION_BOOL_true) {
+  // Could we inspect ALTREP properties for the `missing` case?
+  if (!list_match(v_x, n, r_strs.na, missing)) {
+    return false;
+  }
+  if (!list_match(v_x, n, r_strs.empty, empty)) {
+    return false;
+  }
+
+  return true;
+}
+
+static
+bool list_match(r_obj* const * v_x,
+                r_ssize n,
+                r_obj* value,
+                enum option_bool match) {
+  switch (match) {
+  case OPTION_BOOL_null:
+    return true;
+  case OPTION_BOOL_true:
     for (r_ssize i = 0; i < n; ++i) {
       if (v_x[i] != value) {
         return false;
       }
     }
-  } else {
+    return true;
+  case OPTION_BOOL_false:
     for (r_ssize i = 0; i < n; ++i) {
       if (v_x[i] == value) {
         return false;
       }
     }
+    return true;
   }
-
-  return true;
 }
 
 bool r_is_raw(r_obj* x, r_ssize n) {
