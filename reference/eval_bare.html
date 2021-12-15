@@ -205,19 +205,19 @@ support.</p></div>
 <span class="r-in"><span class="co"># With eval_bare(), we do get the expected environment:</span></span>
 <span class="r-in"><span class="fu">fn</span><span class="op">(</span><span class="fu">rlang</span><span class="fu">::</span><span class="va">eval_bare</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $returned_env</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x56043d6ff678&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5572b2f9aec8&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $actual_env</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x56043d6ff678&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5572b2f9aec8&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># But that's not the case with base::eval():</span></span>
 <span class="r-in"><span class="fu">fn</span><span class="op">(</span><span class="fu">base</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval</a></span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $returned_env</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x56043c23a870&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5572b2a2e3e8&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $actual_env</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x56043c23ad78&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5572b2a2e8f0&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>

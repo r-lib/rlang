@@ -132,7 +132,7 @@ or a single <code>TRUE</code> or <code>FALSE</code>.</p>
 
 <span class="fu">is_scalar_raw</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 
-<span class="fu">is_string</span><span class="op">(</span><span class="va">x</span>, string <span class="op">=</span> <span class="cn">NULL</span>, empty <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
+<span class="fu">is_string</span><span class="op">(</span><span class="va">x</span>, string <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
 
 <span class="fu">is_scalar_bytes</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 
@@ -146,10 +146,6 @@ or a single <code>TRUE</code> or <code>FALSE</code>.</p>
 <dt>string</dt>
 <dd><p>A string to compare to <code>x</code>. If a character vector,
 returns <code>TRUE</code> if at least one element is equal to <code>x</code>.</p></dd>
-<dt>empty</dt>
-<dd><p>If <code>NULL</code>, the empty string <code>""</code> is not treated
-specially. If <code>TRUE</code>, <code>x</code> must be <code>""</code>. If <code>FALSE</code>, <code>x</code> can't be
-<code>""</code>. <code>empty</code> and <code>string</code> are mutually exclusive arguments.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
