@@ -118,3 +118,14 @@ test_that("`pkg` is type-checked", {
     (expect_error(check_installed(c("foo", "bar"), version = c("1", ""))))
   })
 })
+
+test_that("pkg_version_info() parses info", {
+  pkg <- c("foo (>= 0.99)", "bar", "baz (> 0.1)")
+  out <- pkg_version_info(pkg, NULL)
+
+  expect_equal(out, data_frame(
+    pkg = c("foo", "bar", "baz"),
+    op = c(">=", NA, ">"),
+    ver = c("0.99", NA, "0.1")
+  ))
+})

@@ -75,6 +75,43 @@ is_installed <- function(pkg, ..., version = NULL) {
     is_na(v) || utils::packageVersion(p) >= v
   }))
 }
+
+pkg_version_info <- function(pkg, version, call = caller_env()) {
+  matches <- grepl(version_regex, pkg)
+
+  info <- data_frame(pkg = pkg, op = na_chr, ver = na_chr)
+  info <- vec_assign(info, matches, new_version_info(pkg[matches]))
+
+  if (!is_null(version)) {
+    abort("TODO")
+    info <- vec_assign(info, !matches)
+  }
+
+  info
+}
+
+version_regex <- "(.*) \\((.*)\\)$"
+
+new_version_info <- function(pkg) {
+  ver <- sub(version_regex, "\\2", pkg)
+  ver <- strsplit(ver, " ")
+
+  if (!every(ver, is_character, n = 2, missing = FALSE, empty = FALSE)) {
+    abort(
+      sprintf("Can't parse version in %s.", format_arg("pkg")),
+      call = call
+    )
+  }
+
+  info <- set_names(transpose(ver), c("op", "ver"))
+  info <- map(info, flatten_chr)
+
+  pkg <- sub(version_regex, "\\1", pkg)
+  info <- c(list(pkg = pkg), info)
+
+  new_data_frame(info, .class = "tbl")
+}
+
 #' @rdname is_installed
 #' @inheritParams args_error_context
 #' @export
