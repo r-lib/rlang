@@ -118,20 +118,20 @@
       (expect_error(pkg_version_info(c("foo (!= 1.0)"))))
     Output
       <error/rlang_error>
-      Error in `caller()`: `op` must be one of ">", ">=", "<", or "<=".
+      Error in `caller()`: `compare` must be one of ">", ">=", "<", or "<=".
 
-# pkg_version_info() supports `op`
+# pkg_version_info() supports `cmp`
 
     Code
       err(pkg_version_info(c("foo", "bar", "baz"), NULL, c(NA, NA, ">=")))
     Output
       <error/rlang_error>
-      Error in `caller()`: `version` must be supplied when `op` is supplied.
+      Error in `caller()`: `version` must be supplied when `compare` is supplied.
     Code
       err(pkg_version_info(c("foo", "bar", "baz"), c("1", "2", NA), c(NA, NA, ">=")))
     Output
       <error/rlang_error>
-      Error in `caller()`: `version` must be supplied when `op` is supplied.
+      Error in `caller()`: `version` must be supplied when `compare` is supplied.
     Code
       err(pkg_version_info(c("foo", "bar (>= 2.0)"), c(NA, "2.0"), c(NA, ">=")))
     Output
@@ -143,5 +143,5 @@
       err(pkg_version_info("foo", "1.0", "!="))
     Output
       <error/rlang_error>
-      Error in `caller()`: `op` must be one of ">", ">=", "<", or "<=".
+      Error in `caller()`: `compare` must be one of ">", ">=", "<", or "<=".
 

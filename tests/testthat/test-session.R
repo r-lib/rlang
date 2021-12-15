@@ -86,13 +86,13 @@ test_that("can handle check-installed", {
 
   # Override `is_installed()` results
   override <- NULL
-  is_installed_hook <- function(pkg, ver, op) {
+  is_installed_hook <- function(pkg, ver, cmp) {
     if (is_bool(override)) {
       rep_along(pkg, override)
     } else {
       with_options(
         "rlang:::is_installed_hook" = NULL,
-        is_installed(pkg, version = ver, op = op)
+        is_installed(pkg, version = ver, compare = cmp)
       )
     }
   }
@@ -146,7 +146,7 @@ test_that("pkg_version_info() parses info", {
 
   expect_equal(out, data_frame(
     pkg = c("foo", "bar", "baz"),
-    op = c(">=", NA, ">"),
+    cmp = c(">=", NA, ">"),
     ver = c("1.0", NA, "3.0")
   ))
 
@@ -155,7 +155,7 @@ test_that("pkg_version_info() parses info", {
 
   expect_equal(out, data_frame(
     pkg = c("foo", "bar", "baz", "quux"),
-    op = c(">=", ">=", ">", NA),
+    cmp = c(">=", ">=", ">", NA),
     ver = c("1.0", "2.0", "3.0", NA)
   ))
 
@@ -164,7 +164,7 @@ test_that("pkg_version_info() parses info", {
 
   expect_equal(out, data_frame(
     pkg = c("foo", "bar", "baz", "quux"),
-    op = c(">=", ">=", ">", ">="),
+    cmp = c(">=", ">=", ">", ">="),
     ver = c("1.0", "2.0", "3.0", "4.0")
   ))
 
@@ -176,7 +176,7 @@ test_that("pkg_version_info() parses info", {
   })
 })
 
-test_that("pkg_version_info() supports `op`", {
+test_that("pkg_version_info() supports `cmp`", {
   local_error_call(call("caller"))
 
   pkg <- c("foo", "bar", "baz")
@@ -184,7 +184,7 @@ test_that("pkg_version_info() supports `op`", {
 
   expect_equal(out, data_frame(
     pkg = c("foo", "bar", "baz"),
-    op = c(">=", ">=", "<"),
+    cmp = c(">=", ">=", "<"),
     ver = c("1.0", "2.0", "3.0")
   ))
 

@@ -28,10 +28,11 @@
 #' @param ... These dots must be empty.
 #' @param version Minimum versions for `pkg`. If supplied, must be the
 #'   same length as `pkg`. `NA` elements stand for any versions.
-#' @param op A character vector of comparison operators to use for
-#'   `version`. If supplied, must be the same length as `version`. If
-#'   `NULL`, `>=` is used as default for all elements. `NA` elements
-#'   in `op` are also set to `>=` by default.
+#' @param compare A character vector of comparison operators to use
+#'   for `version`. If supplied, must be the same length as
+#'   `version`. If `NULL`, `>=` is used as default for all
+#'   elements. `NA` elements in `compare` are also set to `>=` by
+#'   default.
 #' @return `is_installed()` returns `TRUE` if _all_ package names
 #'   provided in `pkg` are installed, `FALSE`
 #'   otherwise. `check_installed()` either doesn't return or returns
@@ -59,22 +60,22 @@
 #' is_installed("utils")
 #' is_installed(c("base", "ggplot5"))
 #' is_installed(c("base", "ggplot5"), version = c(NA, "5.1.0"))
-is_installed <- function(pkg, ..., version = NULL, op = NULL) {
+is_installed <- function(pkg, ..., version = NULL, compare = NULL) {
   check_dots_empty0(...)
 
-  info <- pkg_version_info(pkg, version = version, op = op)
+  info <- pkg_version_info(pkg, version = version, compare = compare)
   all(detect_installed(info))
 }
 detect_installed <- function(info) {
   # Internal mechanism for unit tests
   hook <- peek_option("rlang:::is_installed_hook")
   if (is_function(hook)) {
-    return(all(hook(info$pkg, info$ver, info$op)))
+    return(all(hook(info$pkg, info$ver, info$cmp)))
   }
 
-  flatten_lgl(pmap(info, function(pkg, op, ver) {
+  flatten_lgl(pmap(info, function(pkg, cmp, ver) {
     if (requireNamespace(pkg, quietly = TRUE)) {
-      is_na(ver) || exec(op, utils::packageVersion(pkg), ver)
+      is_na(ver) || exec(cmp, utils::packageVersion(pkg), ver)
     } else {
       FALSE
     }
@@ -83,14 +84,14 @@ detect_installed <- function(info) {
 
 pkg_version_info <- function(pkg,
                              version = NULL,
-                             op = NULL,
+                             compare = NULL,
                              call = caller_env()) {
-  check_pkg_version(pkg, version, op, call = call)
+  check_pkg_version(pkg, version, compare, call = call)
 
   matches <- grepl(version_regex, pkg)
   pkg_info <- as_version_info(pkg[matches], call = call)
 
-  info <- data_frame(pkg = pkg, op = na_chr, ver = na_chr)
+  info <- data_frame(pkg = pkg, cmp = na_chr, ver = na_chr)
   info <- vec_assign(info, matches, pkg_info)
 
   is_invalid <- grepl("[^A-Za-z0-9.]", info$pkg)
@@ -121,17 +122,17 @@ pkg_version_info <- function(pkg,
       abort(msg, call = call)
     }
 
-    op <- op %||% ">="
-    op <- op %|% ">="
+    compare <- compare %||% ">="
+    compare <- compare %|% ">="
 
     info$ver[has_version] <- version[has_version]
-    info$op[has_version] <- op
+    info$cmp[has_version] <- compare
   }
 
-  if (!all(detect_na(info$op) | info$op %in% c(">", ">=", "<", "<="))) {
+  if (!all(detect_na(info$cmp) | info$cmp %in% c(">", ">=", "<", "<="))) {
     msg <- sprintf(
       '%s must be one of ">", ">=", "<", or "<=".',
-      format_arg("op")
+      format_arg("compare")
     )
     abort(msg, call = call)
   }
@@ -143,7 +144,7 @@ version_regex <- "(.*) \\((.*)\\)$"
 
 as_version_info <- function(pkg, call = caller_env()) {
   if (!length(pkg)) {
-    return(data_frame(pkg = chr(), op = chr(), ver = chr()))
+    return(data_frame(pkg = chr(), cmp = chr(), ver = chr()))
   }
   ver <- sub(version_regex, "\\2", pkg)
   ver <- strsplit(ver, " ")
@@ -155,7 +156,7 @@ as_version_info <- function(pkg, call = caller_env()) {
     )
   }
 
-  info <- set_names(transpose(ver), c("op", "ver"))
+  info <- set_names(transpose(ver), c("cmp", "ver"))
   info <- map(info, flatten_chr)
 
   pkg <- sub(version_regex, "\\1", pkg)
@@ -171,20 +172,20 @@ check_installed <- function(pkg,
                             reason = NULL,
                             ...,
                             version = NULL,
-                            op = NULL,
+                            compare = NULL,
                             call = caller_env()) {
   check_dots_empty0(...)
 
-  info <- pkg_version_info(pkg, version = version, op = op)
+  info <- pkg_version_info(pkg, version = version, compare = compare)
   needs_install <- !detect_installed(info)
 
   pkg <- info$pkg
   version <- info$ver
-  op <- info$op
+  compare <- info$cmp
 
   missing_pkgs <- pkg[needs_install]
   missing_vers <- version[needs_install]
-  missing_ops <- op[needs_install]
+  missing_cmps <- compare[needs_install]
 
   if (!length(missing_pkgs)) {
     return(invisible(NULL))
@@ -193,7 +194,7 @@ check_installed <- function(pkg,
   cnd <- new_error_package_not_found(
     missing_pkgs,
     missing_vers,
-    missing_ops,
+    missing_cmps,
     reason = reason
   )
 
@@ -202,7 +203,7 @@ check_installed <- function(pkg,
     abort("`rlib_restart_package_not_found` must be a logical value.")
   }
 
-  if (!is_interactive() || !restart || any(missing_ops %in% c("<", "<="))) {
+  if (!is_interactive() || !restart || any(missing_cmps %in% c("<", "<="))) {
     abort(cnd_header(cnd), call = call)
   }
 
@@ -243,7 +244,7 @@ check_installed <- function(pkg,
 
 check_pkg_version <- function(pkg,
                               version,
-                              op,
+                              compare,
                               call = caller_env()) {
   if (!is_character(pkg, missing = FALSE, empty = FALSE)) {
     abort(
@@ -266,12 +267,12 @@ check_pkg_version <- function(pkg,
     )
   }
 
-  if (!is_null(op)) {
-    if (is_null(version) || any((!detect_na(op)) & detect_na(version))) {
+  if (!is_null(compare)) {
+    if (is_null(version) || any((!detect_na(compare)) & detect_na(version))) {
       msg <- sprintf(
         "%s must be supplied when %s is supplied.",
         format_arg("version"),
-        format_arg("op")
+        format_arg("compare")
       )
       abort(msg, call = call)
     }
@@ -280,7 +281,7 @@ check_pkg_version <- function(pkg,
 
 new_error_package_not_found <- function(pkg,
                                         version = NULL,
-                                        op = NULL,
+                                        compare = NULL,
                                         ...,
                                         reason = NULL,
                                         class = NULL) {
@@ -288,7 +289,7 @@ new_error_package_not_found <- function(pkg,
     class = c(class, "rlib_error_package_not_found"),
     pkg = pkg,
     version = version,
-    op = op,
+    compare = compare,
     reason = reason,
     ...
   )
@@ -298,14 +299,14 @@ new_error_package_not_found <- function(pkg,
 cnd_header.rlib_error_package_not_found <- function(cnd, ...) {
   pkg <- cnd$pkg
   version <- cnd$version
-  op <- cnd$op
+  compare <- cnd$compare
   reason <- cnd$reason
   n <- length(pkg)
 
   pkg_enum <- chr_quoted(cnd$pkg)
 
   if (!is_null(version)) {
-    pkg_enum <- flatten_chr(pmap(list(pkg_enum, op, version), function(p, o, v) {
+    pkg_enum <- flatten_chr(pmap(list(pkg_enum, compare, version), function(p, o, v) {
       if (is_na(v)) {
         p
       } else {
