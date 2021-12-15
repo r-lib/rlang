@@ -109,3 +109,12 @@ test_that("can handle check-installed", {
     "are required"
   )
 })
+
+test_that("`pkg` is type-checked", {
+  expect_snapshot({
+    (expect_error(is_installed(1)))
+    (expect_error(is_installed(na_chr)))
+    (expect_error(check_installed(c("foo", ""))))
+    (expect_error(check_installed(c("foo", "bar"), version = c("1", ""))))
+  })
+})

@@ -23,7 +23,7 @@
       "the same length"))
     Output
       <error/rlang_error>
-      Error in `is_installed()`: `version` must be a character vector the same length as `pkg`.
+      Error in `is_installed()`: `version` must be `NULL` or a vector of versions the same length as `pkg`.
 
 # check_installed() checks minimal versions
 
@@ -31,7 +31,7 @@
       (expect_error(check_installed(c("rlang", "testthat"), version = "0.1")))
     Output
       <error/rlang_error>
-      Error in `check_installed()`: `version` must be a character vector the same length as `pkg`.
+      Error in `check_installed()`: `version` must be `NULL` or a vector of versions the same length as `pkg`.
     Code
       (expect_error(check_installed("_foo", version = "1.0")))
     Output
@@ -53,4 +53,27 @@
     Output
       <error/rlang_error>
       Error in `foo()`: The packages `_foo` (>= 1.0) and `_bar` (>= 2.0) are required to proceed.
+
+# `pkg` is type-checked
+
+    Code
+      (expect_error(is_installed(1)))
+    Output
+      <error/rlang_error>
+      Error in `is_installed()`: `pkg` must be a package name or a vector of package names.
+    Code
+      (expect_error(is_installed(na_chr)))
+    Output
+      <error/rlang_error>
+      Error in `is_installed()`: `pkg` must be a package name or a vector of package names.
+    Code
+      (expect_error(check_installed(c("foo", ""))))
+    Output
+      <error/rlang_error>
+      Error in `check_installed()`: `pkg` must be a package name or a vector of package names.
+    Code
+      (expect_error(check_installed(c("foo", "bar"), version = c("1", ""))))
+    Output
+      <error/rlang_error>
+      Error in `check_installed()`: `version` must be `NULL` or a vector of versions the same length as `pkg`.
 

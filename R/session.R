@@ -56,6 +56,7 @@
 #' is_installed(c("base", "ggplot5"), version = c(NA, "5.1.0"))
 is_installed <- function(pkg, ..., version = NULL) {
   check_dots_empty0(...)
+  check_pkg_version(pkg, version)
 
   # Internal mechanism for unit tests
   hook <- peek_option("rlang:::is_installed_hook")
@@ -68,10 +69,6 @@ is_installed <- function(pkg, ..., version = NULL) {
   }
   if (is_null(version)) {
     return(TRUE)
-  }
-
-  if (!is_character(version, n = length(pkg))) {
-    abort("`version` must be a character vector the same length as `pkg`.")
   }
 
   all(map2_lgl(pkg, version, function(p, v) {
@@ -87,17 +84,11 @@ check_installed <- function(pkg,
                             version = NULL,
                             call = caller_env()) {
   check_dots_empty0(...)
-
-  if (!is_character(pkg)) {
-    abort("`pkg` must be a package name or a vector of package names.", call = call)
-  }
+  check_pkg_version(pkg, version)
 
   if (is_null(version)) {
     needs_install <- !map_lgl(pkg, is_installed)
   } else {
-    if (!is_character(version, n = length(pkg))) {
-      abort("`version` must be a character vector the same length as `pkg`.")
-    }
     needs_install <- !map2_lgl(pkg, version, function(p, v) is_installed(p, version = v))
   }
 
@@ -155,6 +146,29 @@ check_installed <- function(pkg,
     pkg_install(missing_pkgs, ask = FALSE)
   } else {
     utils::install.packages(missing_pkgs)
+  }
+}
+
+check_pkg_version <- function(pkg, version, call = caller_env()) {
+  if (!is_character(pkg, missing = FALSE, empty = FALSE)) {
+    abort(
+      sprintf(
+        "%s must be a package name or a vector of package names.",
+        format_arg("pkg")
+      ),
+      call = call
+    )
+  }
+
+  if (!is_null(version) && !is_character(version, n = length(pkg), empty = FALSE)) {
+    abort(
+      sprintf(
+        "%s must be `NULL` or a vector of versions the same length as %s.",
+        format_arg("version"),
+        format_arg("pkg")
+      ),
+      call = call
+    )
   }
 }
 
