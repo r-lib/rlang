@@ -77,6 +77,9 @@
   They also gain `version` and `compare` arguments to supply requirements
   programmatically.
 
+* `check_installed()` gains a `src` argument to specificy pak-style
+  sources.
+
 * `abort()`, `warn()`, and `inform()` gain a `body` argument to supply
   additional bullets in the error message.
 

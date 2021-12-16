@@ -145,3 +145,16 @@
       <error/rlang_error>
       Error in `caller()`: `compare` must be one of ">", ">=", "<", or "<=".
 
+# `src` is checked
+
+    Code
+      err(check_installed("foo", src = c("a", "b")))
+    Output
+      <error/rlang_error>
+      Error in `check_installed()`: `src` must be a character vector as long as `pkg`.
+    Code
+      err(check_installed("foo", src = 1))
+    Output
+      <error/rlang_error>
+      Error in `check_installed()`: `src` must be a character vector as long as `pkg`.
+
