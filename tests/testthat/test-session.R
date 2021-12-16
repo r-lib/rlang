@@ -197,3 +197,10 @@ test_that("pkg_version_info() supports `cmp`", {
     err(pkg_version_info("foo", "1.0", "!="))
   })
 })
+
+test_that("`action` is checked", {
+  expect_snapshot({
+    err(check_installed("foo", action = "identity"))
+    err(check_installed("foo", action = identity))
+  })
+})

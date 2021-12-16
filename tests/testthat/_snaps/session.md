@@ -145,3 +145,16 @@
       <error/rlang_error>
       Error in `caller()`: `compare` must be one of ">", ">=", "<", or "<=".
 
+# `action` is checked
+
+    Code
+      err(check_installed("foo", action = "identity"))
+    Output
+      <error/rlang_error>
+      Error in `check_installed()`: `action` must `NULL` or a function.
+    Code
+      err(check_installed("foo", action = identity))
+    Output
+      <error/rlang_error>
+      Error in `check_installed()`: `action` must take a `...` argument.
+

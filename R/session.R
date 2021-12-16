@@ -166,6 +166,10 @@ as_version_info <- function(pkg, call = caller_env()) {
 }
 
 #' @rdname is_installed
+#' @param action An optional function taking `pkg` and `...`
+#'   arguments. It is called by `check_installed()` when the user
+#'   chooses to update outdated packages. The function is passed the
+#'   missing and outdated packages as a character vector of names.
 #' @inheritParams args_error_context
 #' @export
 check_installed <- function(pkg,
@@ -173,8 +177,10 @@ check_installed <- function(pkg,
                             ...,
                             version = NULL,
                             compare = NULL,
+                            action = NULL,
                             call = caller_env()) {
   check_dots_empty0(...)
+  check_action(action)
 
   info <- pkg_version_info(pkg, version = version, compare = compare)
   needs_install <- !detect_installed(info)
@@ -236,7 +242,10 @@ check_installed <- function(pkg,
     # Pass condition in case caller sets up an `abort` restart
     invokeRestart("abort", cnd)
   }
-  if (is_installed("pak")) {
+
+  if (!is_null(action)) {
+    action(missing_pkgs)
+  } else if (is_installed("pak")) {
     pkg_install <- env_get(ns_env("pak"), "pkg_install")
     pkg_install(missing_pkgs, ask = FALSE)
   } else {
@@ -275,6 +284,27 @@ check_pkg_version <- function(pkg,
         "%s must be supplied when %s is supplied.",
         format_arg("version"),
         format_arg("compare")
+      )
+      abort(msg, call = call)
+    }
+  }
+}
+
+check_action <- function(action, call = caller_env()) {
+  # Take `pkg`, `version`, and `compare`?
+  if (!is_null(action)) {
+    if (!is_closure(action)) {
+      msg <- sprintf(
+        "%s must `NULL` or a function.",
+        format_arg("action")
+      )
+      abort(msg, call = call)
+    }
+    if (!"..." %in% names(formals(action))) {
+      msg <- sprintf(
+        "%s must take a %s argument.",
+        format_arg("action"),
+        format_arg("...")
       )
       abort(msg, call = call)
     }
