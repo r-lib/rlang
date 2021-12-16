@@ -360,8 +360,10 @@ test_that("qualified calls are included in error prefix (#1315)", {
 })
 
 test_that("special syntax calls handle edge cases", {
-  expect_equal(error_call_as_string(quote(`+`())), "+")
-  expect_equal(error_call_as_string(quote(base::`+`(1, 2))), "+")
+  expect_snapshot({
+    error_call_as_string(quote(`+`()))
+    error_call_as_string(quote(base::`+`(1, 2)))
+  })
 })
 
 test_that("can print message with and without prefix", {
@@ -471,4 +473,12 @@ test_that("as.character() methods for errors, warnings, and messages", {
     cat(as.character(cnd_with(warning_cnd, parent = TRUE)))
     cat(as.character(cnd_with(message_cnd, parent = TRUE)))
   })
+})
+
+test_that("multiline operator calls are preserved", {
+  err <- function(expr) error_cnd(message = "This is the error message.", call = enexpr(expr))
+
+  expect_snapshot_output(err(1 + ("veeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeery_long" + "veeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeery_long")))
+  expect_snapshot_output(err({ 1; 2 } + { 2; 3 }))
+  expect_snapshot_output(err(x[{ 1; 2 }]))
 })

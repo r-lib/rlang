@@ -49,7 +49,7 @@
       print(err)
     Output
       <error/rlang_error>
-      Error in `+`:
+      Error in `1 + ""`:
       non-numeric argument to binary operator
       Backtrace:
         1. rlang::catch_cnd(...)
@@ -60,7 +60,7 @@
 
 # can set `entrace()` as a global handler
 
-    Error in `+`:
+    Error in `1 + ""`:
     non-numeric argument to binary operator
     Backtrace:
         x
@@ -71,7 +71,7 @@
 
 ---
 
-    Error in `+`:
+    Error in `1 + ""`:
     non-numeric argument to binary operator
     Backtrace:
         x

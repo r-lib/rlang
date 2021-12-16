@@ -373,6 +373,34 @@
       Error: `"f"` must be one of "foo", not "f".
       i Did you mean "foo"?
 
+# error_call() and format_error_call() preserve special syntax ops
+
+    Code
+      format_error_call(quote(1 + 2))
+    Output
+      [1] "`1 + 2`"
+
+---
+
+    Code
+      format_error_call(quote(for (x in y) NULL))
+    Output
+      [1] "`for (x in y) NULL`"
+
+---
+
+    Code
+      format_error_call(quote(a %||% b))
+    Output
+      [1] "`a %||% b`"
+
+---
+
+    Code
+      format_error_call(quote(`%||%`()))
+    Output
+      [1] "``%||%`()`"
+
 # withCallingHandlers() wrappers don't throw off trace capture on rethrow
 
     Code

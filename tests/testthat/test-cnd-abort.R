@@ -349,28 +349,16 @@ test_that("error_call() and format_error_call() preserve special syntax ops", {
     error_call(quote(1 + 2)),
     quote(1 + 2)
   )
-  expect_equal(
-    format_error_call(quote(1 + 2)),
-    "`+`"
-  )
+  expect_snapshot(format_error_call(quote(1 + 2)))
 
   expect_equal(
     error_call(quote(for (x in y) NULL)),
     quote(for (x in y) NULL)
   )
-  expect_equal(
-    format_error_call(quote(for (x in y) NULL)),
-    "`for`"
-  )
+  expect_snapshot(format_error_call(quote(for (x in y) NULL)))
 
-  expect_equal(
-    format_error_call(quote(a %||% b)),
-    "`%||%`"
-  )
-  expect_equal(
-    format_error_call(quote(`%||%`())),
-    "`%||%`"
-  )
+  expect_snapshot(format_error_call(quote(a %||% b)))
+  expect_snapshot(format_error_call(quote(`%||%`())))  # Suboptimal
 })
 
 test_that("error_call() preserves srcrefs", {

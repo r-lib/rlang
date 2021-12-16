@@ -419,3 +419,12 @@ capitalise <- function(x) {
 testing <- function() {
   nzchar(Sys.getenv("TESTTHAT"))
 }
+
+cli_with_whiteline_escapes <- function(x, fn) {
+  x <- gsub("\n", "__NEW_LINE__", x, fixed = TRUE)
+  x <- gsub(" ", "__SPACE__", x, fixed = TRUE)
+  x <- fn(x)
+  x <- gsub("__SPACE__", " ", x, fixed = TRUE)
+  x <- gsub("__NEW_LINE__", "\n", x, fixed = TRUE)
+  x
+}
