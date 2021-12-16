@@ -208,8 +208,10 @@ cnd_message_format_prefixed <- function(cnd,
                                         ...,
                                         parent = FALSE,
                                         alert = NULL) {
-  alert <- alert %||% is_error(cnd)
   type <- cnd_type(cnd)
+  if (is_null(alert)) {
+    alert <- type %in% c("error", "warning")
+  }
 
   if (parent) {
     prefix <- sprintf("Caused by %s", type)

@@ -477,7 +477,7 @@
     Header.
     i Bullet.
     Caused by warning in `quux()`:
-    Header.
+    ! Header.
     i Bullet.
     Backtrace:
      1. foo()
