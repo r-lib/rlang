@@ -321,7 +321,7 @@
       cat(as.character(cnd_with(warning_cnd)))
     Output
       Warning in `bar()`:
-      ! Message.
+      Message.
       * Bullet A.
       * Bullet B.
     Code
@@ -346,7 +346,7 @@
       cat(as.character(cnd_with(warning_cnd, parent = TRUE)))
     Output
       Warning in `bar()`:
-      ! Message.
+      Message.
       * Bullet A.
       * Bullet B.
       Caused by error in `foo()`:
