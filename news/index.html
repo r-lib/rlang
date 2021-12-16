@@ -16,7 +16,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.0.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.0.9003</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -124,7 +124,9 @@
 </ul></div>
 <div class="section level3">
 <h3 id="features-and-bugfixes-development-version">Features and bugfixes<a class="anchor" aria-label="anchor" href="#features-and-bugfixes-development-version"></a></h3>
-<ul><li><p><code><a href="../reference/abort.html">abort()</a></code>, <code><a href="../reference/abort.html">warn()</a></code>, and <code><a href="../reference/abort.html">inform()</a></code> gain a <code>body</code> argument to supply additional bullets in the error message.</p></li>
+<ul><li><p><code><a href="../reference/is_installed.html">is_installed()</a></code> and <code><a href="../reference/is_installed.html">check_installed()</a></code> now support DESCRIPTION-style version requirements like <code>"rlang (&gt;= 1.0)"</code>. They also gain <code>version</code> and <code>compare</code> arguments to supply requirements programmatically.</p></li>
+<li><p><code><a href="../reference/is_installed.html">check_installed()</a></code> gains an <code>action</code> argument that is called when the user chooses to install and update missing and outdated packages.</p></li>
+<li><p><code><a href="../reference/abort.html">abort()</a></code>, <code><a href="../reference/abort.html">warn()</a></code>, and <code><a href="../reference/abort.html">inform()</a></code> gain a <code>body</code> argument to supply additional bullets in the error message.</p></li>
 <li><p>rlang conditions now have <code><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character()</a></code> methods. Use this generic on conditions to generate a whole error message, including the <code>Error:</code> prefix. These methods are implemented as wrappers around <code><a href="../reference/cnd_message.html">cnd_message()</a></code>.</p></li>
 <li><p><code>header</code> and <code>footer</code> methods can now be stored as closures in condition fields of the same name.</p></li>
 <li><p><code><a href="../reference/cnd_message.html">cnd_message()</a></code> gains a <code>prefix</code> argument to print the message with a full prefix, including <code>call</code> field if present and parent messages if the condition is chained.</p></li>

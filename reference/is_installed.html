@@ -48,7 +48,7 @@ case, missing packages always cause an error."><meta property="og:image" content
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.0.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.0.9003</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -144,24 +144,44 @@ case, missing packages always cause an error.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">is_installed</span><span class="op">(</span><span class="va">pkg</span>, <span class="va">...</span>, version <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">is_installed</span><span class="op">(</span><span class="va">pkg</span>, <span class="va">...</span>, version <span class="op">=</span> <span class="cn">NULL</span>, compare <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
 
-<span class="fu">check_installed</span><span class="op">(</span><span class="va">pkg</span>, reason <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span>, version <span class="op">=</span> <span class="cn">NULL</span>, call <span class="op">=</span> <span class="fu"><a href="caller_env.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="fu">check_installed</span><span class="op">(</span>
+  <span class="va">pkg</span>,
+  reason <span class="op">=</span> <span class="cn">NULL</span>,
+  <span class="va">...</span>,
+  version <span class="op">=</span> <span class="cn">NULL</span>,
+  compare <span class="op">=</span> <span class="cn">NULL</span>,
+  action <span class="op">=</span> <span class="cn">NULL</span>,
+  call <span class="op">=</span> <span class="fu"><a href="caller_env.html">caller_env</a></span><span class="op">(</span><span class="op">)</span>
+<span class="op">)</span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>pkg</dt>
-<dd><p>The package names.</p></dd>
+<dd><p>The package names. Can include version requirements,
+e.g. <code>"pkg (&gt;= 1.0.0)"</code>.</p></dd>
 <dt>...</dt>
 <dd><p>These dots must be empty.</p></dd>
 <dt>version</dt>
 <dd><p>Minimum versions for <code>pkg</code>. If supplied, must be the
 same length as <code>pkg</code>. <code>NA</code> elements stand for any versions.</p></dd>
+<dt>compare</dt>
+<dd><p>A character vector of comparison operators to use
+for <code>version</code>. If supplied, must be the same length as
+<code>version</code>. If <code>NULL</code>, <code>&gt;=</code> is used as default for all
+elements. <code>NA</code> elements in <code>compare</code> are also set to <code>&gt;=</code> by
+default.</p></dd>
 <dt>reason</dt>
 <dd><p>Optional string indicating why is <code>pkg</code> needed.
 Appears in error messages (if non-interactive) and user prompts
 (if interactive).</p></dd>
+<dt>action</dt>
+<dd><p>An optional function taking <code>pkg</code> and <code>...</code>
+arguments. It is called by <code>check_installed()</code> when the user
+chooses to update outdated packages. The function is passed the
+missing and outdated packages as a character vector of names.</p></dd>
 <dt>call</dt>
 <dd><p>The execution environment of a currently
 running function, e.g. <code><a href="caller_env.html">caller_env()</a></code>. The function will be
