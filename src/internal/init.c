@@ -42,7 +42,7 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_dots_list",                    (DL_FUNC) &ffi_dots_list, 7},
   {"ffi_dots_pairlist",                (DL_FUNC) &ffi_dots_pairlist, 7},
   {"ffi_duplicate",                    (DL_FUNC) &ffi_duplicate, 2},
-  {"ffi_ellipsis_dots",                (DL_FUNC) &ffi_ellipsis_dots, 2},
+  {"ffi_ellipsis_dots",                (DL_FUNC) &ffi_ellipsis_dots, 1},
   {"ffi_ellipsis_dots_used",           (DL_FUNC) &ffi_ellipsis_dots_used, 1},
   {"ffi_ellipsis_promise_forced",      (DL_FUNC) &ffi_ellipsis_promise_forced, 1},
   {"ffi_enexpr",                       (DL_FUNC) &ffi_enexpr, 2},

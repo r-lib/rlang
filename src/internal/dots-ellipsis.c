@@ -15,7 +15,7 @@ r_obj* ffi_ellipsis_find_dots(r_obj* env) {
   return dots;
 }
 
-r_obj* ffi_ellipsis_dots(r_obj* env, r_obj* auto_name) {
+r_obj* ffi_ellipsis_dots(r_obj* env) {
   r_obj* dots = ffi_ellipsis_find_dots(env);
 
   // Empty dots
@@ -24,8 +24,6 @@ r_obj* ffi_ellipsis_dots(r_obj* env, r_obj* auto_name) {
   }
 
   KEEP(dots);
-
-  bool c_auto_name = r_arg_as_bool(auto_name, "auto_name");
 
   int n = r_length(dots);
   r_obj* out = KEEP(r_alloc_list(n));
@@ -40,13 +38,7 @@ r_obj* ffi_ellipsis_dots(r_obj* env, r_obj* auto_name) {
     if (r_typeof(name) == R_TYPE_symbol) {
       r_chr_poke(names, i, r_sym_string(name));
     } else {
-      if (c_auto_name) {
-        char buffer[20];
-        snprintf(buffer, 20, "..%i", i + 1);
-        r_chr_poke(names, i, r_str(buffer));
-      } else {
-        r_chr_poke(names, i, r_globals.na_str);
-      }
+      r_chr_poke(names, i, r_strs.empty);
     }
 
     dots = r_node_cdr(dots);

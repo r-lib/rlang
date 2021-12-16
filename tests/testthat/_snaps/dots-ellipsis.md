@@ -10,11 +10,10 @@
     Output
       <error/rlib_error_dots_named>
       Error in `f()`:
-      2 arguments in `...` had unexpected names.
-      x We detected these problematic arguments:
-      * `xy`
-      * `x`
-      i Did you misspecify an argument?
+      Arguments in `...` must be passed by position, not name.
+      x Problematic arguments:
+      * xy = 4
+      * x = 5
 
 # error if if dots not empty
 
@@ -23,19 +22,78 @@
     Output
       <error/rlib_error_dots_nonempty>
       Error in `f()`:
-      `...` is not empty.
-      i These dots only exist to allow future extensions and should be empty.
-      x We detected these problematic arguments:
-      * `xy`
-      i Did you misspecify an argument?
+      `...` must be empty.
+      x Problematic argument:
+      * xy = 4
     Code
       (expect_error(f0(xy = 4), class = "rlib_error_dots_nonempty"))
     Output
       <error/rlib_error_dots_nonempty>
       Error in `f0()`:
-      `...` is not empty.
-      i These dots only exist to allow future extensions and should be empty.
-      x We detected these problematic arguments:
-      * `xy`
-      i Did you misspecify an argument?
+      `...` must be empty.
+      x Problematic argument:
+      * xy = 4
+
+# expression contents are mentioned
+
+    Code
+      f("foo")
+    Error <rlib_error_dots_nonempty>
+      `...` must be empty.
+      x Problematic argument:
+      * ..1 = "foo"
+      i Did you forget to name an argument?
+    Code
+      f(foo)
+    Error <rlib_error_dots_nonempty>
+      `...` must be empty.
+      x Problematic argument:
+      * ..1 = foo
+      i Did you forget to name an argument?
+    Code
+      inject(f(!!letters))
+    Error <rlib_error_dots_nonempty>
+      `...` must be empty.
+      x Problematic argument:
+      * ..1 = <chr>
+      i Did you forget to name an argument?
+    Code
+      f(a = {
+        1
+        2
+      })
+    Error <rlib_error_dots_nonempty>
+      `...` must be empty.
+      x Problematic argument:
+      * a = { ... }
+    Code
+      f(a = toupper(letters))
+    Error <rlib_error_dots_nonempty>
+      `...` must be empty.
+      x Problematic argument:
+      * a = toupper(letters)
+
+# empty dots error mentions info bullets if any unnamed element
+
+    Code
+      f(1)
+    Error <rlib_error_dots_nonempty>
+      `...` must be empty.
+      x Problematic argument:
+      * ..1 = 1
+      i Did you forget to name an argument?
+    Code
+      f(a = 1)
+    Error <rlib_error_dots_nonempty>
+      `...` must be empty.
+      x Problematic argument:
+      * a = 1
+    Code
+      f(a = 1, 2)
+    Error <rlib_error_dots_nonempty>
+      `...` must be empty.
+      x Problematic arguments:
+      * a = 1
+      * ..2 = 2
+      i Did you forget to name an argument?
 
