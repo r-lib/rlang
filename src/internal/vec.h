@@ -2,6 +2,12 @@
 #define RLANG_INTERNAL_VEC_H
 
 
+enum option_bool {
+  OPTION_BOOL_false = -1,
+  OPTION_BOOL_null = 0,
+  OPTION_BOOL_true = 1
+};
+
 bool r_is_vector(r_obj* x, r_ssize n);
 bool r_is_atomic(r_obj* x, r_ssize n);
 
@@ -11,7 +17,10 @@ bool r_is_integerish(r_obj* x, r_ssize n, int finite);
 bool r_is_integer(r_obj* x, r_ssize n, int finite);
 bool r_is_double(r_obj* x, r_ssize n, int finite);
 bool r_is_complex(r_obj* x, r_ssize n, int finite);
-bool r_is_character(r_obj* x, r_ssize n);
+bool is_character(r_obj* x,
+                  r_ssize n,
+                  enum option_bool missing,
+                  enum option_bool empty);
 bool r_is_raw(r_obj* x, r_ssize n);
 
 void r_vec_poke_coerce_n(r_obj* x, r_ssize offset,

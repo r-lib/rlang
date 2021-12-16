@@ -1,4 +1,5 @@
 #include <rlang.h>
+#include "decl/vec-decl.h"
 
 
 static
@@ -148,9 +149,68 @@ bool r_is_integerish(r_obj* x, r_ssize n, int finite) {
 
 #undef RLANG_MAX_DOUBLE_INT
 
-bool r_is_character(r_obj* x, r_ssize n) {
-  return r_typeof(x) == R_TYPE_character && has_correct_length(x, n);
+bool is_character(r_obj* x,
+                  r_ssize n,
+                  enum option_bool missing,
+                  enum option_bool empty) {
+  if (r_typeof(x) != R_TYPE_character) {
+    return false;
+  }
+  if (!has_correct_length(x, n)) {
+    return false;
+  }
+
+  bool has_missing = missing != OPTION_BOOL_null;
+  bool has_empty = empty != OPTION_BOOL_null;
+
+  if (!has_missing && !has_empty) {
+    return true;
+  }
+  if (missing == OPTION_BOOL_true && empty == OPTION_BOOL_true) {
+    r_abort("Exactly one of `missing` and `empty` can be `TRUE`.");
+  }
+
+  n = r_length(x);
+  r_obj* const * v_x = r_chr_cbegin(x);
+
+  // Could we inspect ALTREP properties for the `missing` case?
+  if (!list_match(v_x, n, r_strs.na, missing)) {
+    return false;
+  }
+  if (!list_match(v_x, n, r_strs.empty, empty)) {
+    return false;
+  }
+
+  return true;
 }
+
+static
+bool list_match(r_obj* const * v_x,
+                r_ssize n,
+                r_obj* value,
+                enum option_bool match) {
+  switch (match) {
+  case OPTION_BOOL_null:
+    return true;
+  case OPTION_BOOL_true:
+    for (r_ssize i = 0; i < n; ++i) {
+      if (v_x[i] != value) {
+        return false;
+      }
+    }
+    return true;
+  case OPTION_BOOL_false:
+    for (r_ssize i = 0; i < n; ++i) {
+      if (v_x[i] == value) {
+        return false;
+      }
+    }
+    return true;
+  default:
+    r_stop_unreached("list_match");
+  }
+}
+
 bool r_is_raw(r_obj* x, r_ssize n) {
   return r_typeof(x) == R_TYPE_raw && has_correct_length(x, n);
 }
