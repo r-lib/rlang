@@ -149,7 +149,7 @@ as_version_info <- function(pkg, call = caller_env()) {
   ver <- sub(version_regex, "\\2", pkg)
   ver <- strsplit(ver, " ")
 
-  if (!every(ver, is_character, n = 2, missing = FALSE, empty = FALSE)) {
+  if (!every(ver, is_character2, n = 2, missing = FALSE, empty = FALSE)) {
     abort(
       sprintf("Can't parse version in %s.", format_arg("pkg")),
       call = call
@@ -257,7 +257,7 @@ check_pkg_version <- function(pkg,
                               version,
                               compare,
                               call = caller_env()) {
-  if (!is_character(pkg, missing = FALSE, empty = FALSE)) {
+  if (!is_character2(pkg, missing = FALSE, empty = FALSE)) {
     abort(
       sprintf(
         "%s must be a package name or a vector of package names.",
@@ -267,7 +267,7 @@ check_pkg_version <- function(pkg,
     )
   }
 
-  if (!is_null(version) && !is_character(version, n = length(pkg), empty = FALSE)) {
+  if (!is_null(version) && !is_character2(version, n = length(pkg), empty = FALSE)) {
     abort(
       sprintf(
         "%s must be `NULL` or a vector of versions the same length as %s.",
