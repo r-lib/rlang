@@ -11,16 +11,29 @@ error_cnd(
   class = NULL,
   ...,
   message = "",
+  call = NULL,
   trace = NULL,
   parent = NULL,
   use_cli_format = NULL
 )
 
-cnd(class, ..., message = "", use_cli_format = NULL)
+cnd(class, ..., message = "", call = NULL, use_cli_format = NULL)
 
-warning_cnd(class = NULL, ..., message = "", use_cli_format = NULL)
+warning_cnd(
+  class = NULL,
+  ...,
+  message = "",
+  call = NULL,
+  use_cli_format = NULL
+)
 
-message_cnd(class = NULL, ..., message = "", use_cli_format = NULL)
+message_cnd(
+  class = NULL,
+  ...,
+  message = "",
+  call = NULL,
+  use_cli_format = NULL
+)
 }
 \arguments{
 \item{class}{The condition subclass.}
@@ -30,6 +43,10 @@ the condition object.}
 
 \item{message}{A default message to inform the user about the
 condition when it is signalled.}
+
+\item{call}{A function call to be included in the error message.
+If an execution environment of a running function, the
+corresponding function call is retrieved.}
 
 \item{trace}{A \code{trace} object created by \code{\link[=trace_back]{trace_back()}}.}
 

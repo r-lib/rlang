@@ -154,3 +154,25 @@ test_that("picks up cli format flag", {
     cnd_signal(message_cnd(message = c("foo", "i" = "bar")))
   })
 })
+
+test_that("picks up caller frame", {
+  get_call <- function(ctor) ctor(call = current_env())$call
+
+  expect_equal(
+    get_call(error_cnd),
+    quote(get_call(error_cnd))
+  )
+  expect_equal(
+    get_call(warning_cnd),
+    quote(get_call(warning_cnd))
+  )
+  expect_equal(
+    get_call(message_cnd),
+    quote(get_call(message_cnd))
+  )
+  cnd2 <- function(...) cnd("foo", ...)
+  expect_equal(
+    get_call(cnd2),
+    quote(get_call(cnd2))
+  )
+})

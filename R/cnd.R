@@ -21,6 +21,9 @@
 #'   the condition object.
 #' @param message A default message to inform the user about the
 #'   condition when it is signalled.
+#' @param call A function call to be included in the error message.
+#'   If an execution environment of a running function, the
+#'   corresponding function call is retrieved.
 #' @param trace A `trace` object created by [trace_back()].
 #' @param parent A parent condition object created by [abort()].
 #' @param use_cli_format Whether to use the cli package to format
@@ -44,26 +47,46 @@
 cnd <- function(class,
                 ...,
                 message = "",
+                call = NULL,
                 use_cli_format = NULL) {
   check_required(class)
-  .Call(
-    ffi_new_condition,
-    class,
-    message,
-    cnd_fields(..., `_use_cli_format` = use_cli_format, `_frame` = caller_env())
+
+  if (is_environment(call)) {
+    call <- error_call(call)
+  }
+
+  fields <- cnd_fields(
+    ...,
+    call = call,
+    `_use_cli_format` = use_cli_format,
+    `_frame` = caller_env()
   )
+
+  .Call(ffi_new_condition, class, message, fields)
 }
 #' @rdname cnd
 #' @export
 warning_cnd <- function(class = NULL,
                         ...,
                         message = "",
+                        call = NULL,
                         use_cli_format = NULL) {
+  if (is_environment(call)) {
+    call <- error_call(call)
+  }
+
+  fields <- cnd_fields(
+    ...,
+    call = call,
+    `_use_cli_format` = use_cli_format,
+    `_frame` = caller_env()
+  )
+
   .Call(
     ffi_new_condition,
     c(class, "rlang_warning", "warning"),
     message,
-    cnd_fields(..., `_use_cli_format` = use_cli_format, `_frame` = caller_env())
+    fields
   )
 }
 #' @rdname cnd
@@ -71,12 +94,24 @@ warning_cnd <- function(class = NULL,
 message_cnd <- function(class = NULL,
                         ...,
                         message = "",
+                        call = NULL,
                         use_cli_format = NULL) {
+  if (is_environment(call)) {
+    call <- error_call(call)
+  }
+
+  fields <- cnd_fields(
+    ...,
+    call = call,
+    `_use_cli_format` = use_cli_format,
+    `_frame` = caller_env()
+  )
+
   .Call(
     ffi_new_condition,
     c(class, "rlang_message", "message"),
     message,
-    cnd_fields(..., `_use_cli_format` = use_cli_format, `_frame` = caller_env())
+    fields
   )
 }
 

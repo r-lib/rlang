@@ -41,6 +41,7 @@ NULL
 error_cnd <- function(class = NULL,
                       ...,
                       message = "",
+                      call = NULL,
                       trace = NULL,
                       parent = NULL,
                       use_cli_format = NULL) {
@@ -51,14 +52,24 @@ error_cnd <- function(class = NULL,
     abort("`parent` must be NULL or a condition object")
   }
 
+  if (is_environment(call)) {
+    call <- error_call(call)
+  }
+
   fields <- error_cnd_fields(
     trace = trace,
     parent = parent,
     ...,
-    use_cli_format = use_cli_format
+    use_cli_format = use_cli_format,
+    call = call
   )
 
-  .Call(ffi_new_condition, c(class, "rlang_error", "error"), message, fields)
+  .Call(
+    ffi_new_condition,
+    c(class, "rlang_error", "error"),
+    message,
+    fields
+  )
 }
 error_cnd_fields <- function(trace,
                              parent,
