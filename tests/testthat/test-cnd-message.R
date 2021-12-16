@@ -444,7 +444,7 @@ test_that("ANSI escapes are supported in `conditionMessage()`", {
   expect_equal(out_bare, cli::ansi_strip(out_ansi))
 })
 
-test_that("as.character() methods for errors, warnings, and messages", {
+test_that("as.character() and conditionMessage() methods for errors, warnings, and messages", {
   parent_cnd <- error_cnd(
     "foo",
     message = "Parent message.",
@@ -472,6 +472,14 @@ test_that("as.character() methods for errors, warnings, and messages", {
     cat(as.character(cnd_with(error_cnd, parent = TRUE)))
     cat(as.character(cnd_with(warning_cnd, parent = TRUE)))
     cat(as.character(cnd_with(message_cnd, parent = TRUE)))
+
+    cat(conditionMessage(cnd_with(error_cnd)))
+    cat(conditionMessage(cnd_with(warning_cnd)))
+    cat(conditionMessage(cnd_with(message_cnd)))
+
+    cat(conditionMessage(cnd_with(error_cnd, parent = TRUE)))
+    cat(conditionMessage(cnd_with(warning_cnd, parent = TRUE)))
+    cat(conditionMessage(cnd_with(message_cnd, parent = TRUE)))
   })
 })
 

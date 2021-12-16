@@ -308,7 +308,7 @@
       * Bullet A.
       * Bullet B.
 
-# as.character() methods for errors, warnings, and messages
+# as.character() and conditionMessage() methods for errors, warnings, and messages
 
     Code
       cat(as.character(cnd_with(error_cnd)))
@@ -357,6 +357,54 @@
       cat(as.character(cnd_with(message_cnd, parent = TRUE)))
     Output
       Message in `bar()`:
+      Message.
+      * Bullet A.
+      * Bullet B.
+      Caused by error in `foo()`:
+      ! Parent message.
+      * Bullet 1.
+      * Bullet 2.
+    Code
+      cat(conditionMessage(cnd_with(error_cnd)))
+    Output
+      Message.
+      * Bullet A.
+      * Bullet B.
+    Code
+      cat(conditionMessage(cnd_with(warning_cnd)))
+    Output
+      Message.
+      * Bullet A.
+      * Bullet B.
+    Code
+      cat(conditionMessage(cnd_with(message_cnd)))
+    Output
+      Message.
+      * Bullet A.
+      * Bullet B.
+    Code
+      cat(conditionMessage(cnd_with(error_cnd, parent = TRUE)))
+    Output
+      Message.
+      * Bullet A.
+      * Bullet B.
+      Caused by error in `foo()`:
+      ! Parent message.
+      * Bullet 1.
+      * Bullet 2.
+    Code
+      cat(conditionMessage(cnd_with(warning_cnd, parent = TRUE)))
+    Output
+      Message.
+      * Bullet A.
+      * Bullet B.
+      Caused by error in `foo()`:
+      ! Parent message.
+      * Bullet 1.
+      * Bullet 2.
+    Code
+      cat(conditionMessage(cnd_with(message_cnd, parent = TRUE)))
+    Output
       Message.
       * Bullet A.
       * Bullet B.
