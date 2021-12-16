@@ -5,19 +5,19 @@
     Output
       <error/rlang_error>
       Error in `is_string2()`:
-      `empty` must be `NULL` or a logical value.
+      ! `empty` must be `NULL` or a logical value.
     Code
       (expect_error(is_string2("foo", empty = NA)))
     Output
       <error/rlang_error>
       Error in `is_string2()`:
-      `empty` must be `NULL` or a logical value.
+      ! `empty` must be `NULL` or a logical value.
     Code
       (expect_error(is_string2("foo", "foo", empty = TRUE)))
     Output
       <error/rlang_error>
       Error in `is_string2()`:
-      Exactly one of `string` and `empty` must be supplied.
+      ! Exactly one of `string` and `empty` must be supplied.
 
 # is_character2() matches empty and missing values
 
@@ -26,5 +26,5 @@
     Output
       <error/rlang_error>
       Error in `is_character2()`:
-      Exactly one of `missing` and `empty` can be `TRUE`.
+      ! Exactly one of `missing` and `empty` can be `TRUE`.
 

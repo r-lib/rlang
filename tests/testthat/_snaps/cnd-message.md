@@ -5,7 +5,7 @@
     Output
       <error/rlang_error>
       Error in `cnd_body()`:
-      `body` field must be a character vector or a function.
+      ! `body` field must be a character vector or a function.
 
 # can request a line break in error bullets (#1130)
 
@@ -14,7 +14,8 @@
         "Header 2", x = "Bullet 3", x = "Bullet 4"))))
     Output
       <error/rlang_error>
-      Error: Main header.
+      Error:
+      ! Main header.
       Header 1
       x Bullet 1
       x Bullet 2
@@ -27,7 +28,8 @@
       )
     Output
       <error/rlang_error>
-      Error: Main header.
+      Error:
+      ! Main header.
       Header 1
       x Bullet 1
         Break line
@@ -87,7 +89,7 @@
       writeLines(cnd_message_format_prefixed(err))
     Output
       Error in `foo()`:
-      msg
+      ! msg
     Code
       err1 <- error_cnd(message = "msg", call = expr(foo(bar = !!(1:3))))
       err2 <- error_cnd(message = "msg", call = quote(foo$bar()))
@@ -95,15 +97,17 @@
       writeLines(cnd_message_format_prefixed(err1))
     Output
       Error in `foo()`:
-      msg
+      ! msg
     Code
       writeLines(cnd_message_format_prefixed(err2))
     Output
-      Error: msg
+      Error:
+      ! msg
     Code
       writeLines(cnd_message_format_prefixed(err3))
     Output
-      Error: msg
+      Error:
+      ! msg
 
 # long prefixes cause a line break
 
@@ -112,7 +116,7 @@
     Output
       <error/rlang_error>
       Error in `very_very_very_very_very_long_function_name()`:
-      My somewhat longish and verbose error message.
+      ! My somewhat longish and verbose error message.
 
 # prefixes include srcrefs
 
@@ -121,7 +125,7 @@
     Output
       <error/rlang_error>
       Error in `g()` at bar/baz/myfile.R:2:9:
-      Foo.
+      ! Foo.
 
 # inform() and warn() use fallback bullets formatting
 
@@ -189,12 +193,14 @@
       (catch_cnd(inform(c(i = "foo")), "message"))
     Output
       <message/rlang_message>
-      Message: i foo
+      Message:
+      i foo
     Code
       (catch_cnd(warn(c(i = "foo")), "warning"))
     Output
       <warning/rlang_warning>
-      Warning: i foo
+      Warning:
+      i foo
 
 # parent errors prints with bullets in all cases
 
@@ -203,19 +209,19 @@
     Output
       <error/rlang_error>
       Error:
-        Wrapper
+      ! Wrapper
       Caused by error in `f()`:
-        Header
-        i Bullet
+      ! Header
+      i Bullet
     Code
       (expect_error(f(FALSE)))
     Output
       <error/rlang_error>
       Error:
-        Wrapper
+      ! Wrapper
       Caused by error in `f()`:
-        Header
-        i Bullet
+      ! Header
+      i Bullet
 
 # special syntax calls handle edge cases
 
@@ -237,20 +243,21 @@
       parent = foo, use_cli_format = TRUE)
       writeLines(cnd_message(foo, prefix = TRUE))
     Output
-      Error: Parent message.
+      Error:
+      ! Parent message.
       * Bullet 1.
       * Bullet 2.
     Code
       writeLines(cnd_message(bar, prefix = TRUE))
     Output
       Error:
-        Message.
-        * Bullet A.
-        * Bullet B.
+      ! Message.
+      * Bullet A.
+      * Bullet B.
       Caused by error:
-        Parent message.
-        * Bullet 1.
-        * Bullet 2.
+      ! Parent message.
+      * Bullet 1.
+      * Bullet 2.
     Code
       writeLines(cnd_message(foo, prefix = FALSE))
     Output
@@ -261,12 +268,12 @@
       writeLines(cnd_message(bar, prefix = FALSE))
     Output
       Message.
-        * Bullet A.
-        * Bullet B.
+      * Bullet A.
+      * Bullet B.
       Caused by error:
-        Parent message.
-        * Bullet 1.
-        * Bullet 2.
+      ! Parent message.
+      * Bullet 1.
+      * Bullet 2.
 
 # can print message without inheritance
 
@@ -277,13 +284,15 @@
       parent = foo, use_cli_format = TRUE)
       writeLines(cnd_message(foo, inherit = FALSE, prefix = TRUE))
     Output
-      Error: Parent message.
+      Error:
+      ! Parent message.
       * Bullet 1.
       * Bullet 2.
     Code
       writeLines(cnd_message(bar, inherit = FALSE, prefix = TRUE))
     Output
-      Error: Message.
+      Error:
+      ! Message.
       * Bullet A.
       * Bullet B.
     Code
@@ -305,7 +314,7 @@
       cat(as.character(cnd_with(error_cnd)))
     Output
       Error in `bar()`:
-      Message.
+      ! Message.
       * Bullet A.
       * Bullet B.
     Code
@@ -318,6 +327,7 @@
     Code
       cat(as.character(cnd_with(message_cnd)))
     Output
+      Message in `bar()`:
       Message.
       * Bullet A.
       * Bullet B.
@@ -325,41 +335,42 @@
       cat(as.character(cnd_with(error_cnd, parent = TRUE)))
     Output
       Error in `bar()`:
-        Message.
-        * Bullet A.
-        * Bullet B.
+      ! Message.
+      * Bullet A.
+      * Bullet B.
       Caused by error in `foo()`:
-        Parent message.
-        * Bullet 1.
-        * Bullet 2.
+      ! Parent message.
+      * Bullet 1.
+      * Bullet 2.
     Code
       cat(as.character(cnd_with(warning_cnd, parent = TRUE)))
     Output
       Warning in `bar()`:
-        Message.
-        * Bullet A.
-        * Bullet B.
+      Message.
+      * Bullet A.
+      * Bullet B.
       Caused by error in `foo()`:
-        Parent message.
-        * Bullet 1.
-        * Bullet 2.
+      ! Parent message.
+      * Bullet 1.
+      * Bullet 2.
     Code
       cat(as.character(cnd_with(message_cnd, parent = TRUE)))
     Output
+      Message in `bar()`:
       Message.
-        * Bullet A.
-        * Bullet B.
+      * Bullet A.
+      * Bullet B.
       Caused by error in `foo()`:
-        Parent message.
-        * Bullet 1.
-        * Bullet 2.
+      ! Parent message.
+      * Bullet 1.
+      * Bullet 2.
 
 # multiline operator calls are preserved
 
     <error/rlang_error>
     Error in `1 + ("veeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeery_long" +
         "veeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeery_long")`:
-    This is the error message.
+    ! This is the error message.
 
 ---
 
@@ -371,7 +382,7 @@
         2
         3
       }`:
-    This is the error message.
+    ! This is the error message.
 
 ---
 
@@ -380,5 +391,5 @@
         1
         2
       }]`:
-    This is the error message.
+    ! This is the error message.
 

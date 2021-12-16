@@ -10,7 +10,7 @@
     Output
       <error/rlib_error_dots_named>
       Error in `f()`:
-      Arguments in `...` must be passed by position, not name.
+      ! Arguments in `...` must be passed by position, not name.
       x Problematic arguments:
       * xy = 4
       * x = 5
@@ -22,7 +22,7 @@
     Output
       <error/rlib_error_dots_nonempty>
       Error in `f()`:
-      `...` must be empty.
+      ! `...` must be empty.
       x Problematic argument:
       * xy = 4
     Code
@@ -30,7 +30,7 @@
     Output
       <error/rlib_error_dots_nonempty>
       Error in `f0()`:
-      `...` must be empty.
+      ! `...` must be empty.
       x Problematic argument:
       * xy = 4
 

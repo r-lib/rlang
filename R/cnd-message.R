@@ -69,21 +69,11 @@ cnd_message <- function(cnd, ..., inherit = TRUE, prefix = FALSE) {
   if (prefix) {
     msg <- cnd_message_format_prefixed(cnd, ..., parent = FALSE)
   } else {
-    indent <- is_condition(cnd$parent)
-    msg <- cnd_message_format(cnd, ..., indent = indent)
-
-    # Remove leading indent but leave bullets indent if we are not in
-    # charge of formatting the error prefix. This makes the output of
-    # `conditionMessage()` as consistent as possible.
-    if (indent && !prefix) {
-      # Don't anchor the pattern to start of line because there might
-      # be ANSI escapes
-      msg <- sub("  ", "", msg)
-    }
+    msg <- cnd_message_format(cnd, ...)
   }
 
   # Parent messages are always prefixed
-  while (is_error(cnd <- cnd$parent)) {
+  while (is_condition(cnd <- cnd$parent)) {
     parent_msg <- cnd_message_format_prefixed(cnd, parent = TRUE)
     msg <- paste_line(msg, parent_msg)
   }
@@ -112,16 +102,24 @@ cnd_backtrace_on_error <- function(cnd) {
   cnd[["rlang"]]$internal$backtrace_on_error
 }
 
-cnd_message_format <- function(cnd, ..., indent = FALSE) {
+cnd_message_format <- function(cnd, ..., alert = FALSE) {
   lines <- cnd_message_lines(cnd, ...)
+
+  needs_alert <-
+    alert &&
+    length(lines) &&
+    is_string(names2(lines)[[1]], "")
 
   if (!is_true(cnd$use_cli_format)) {
     out <- paste_line(lines)
-    if (indent) {
-      out <- paste0("  ", out)
-      out <- gsub("\n", "\n  ", out, fixed = TRUE)
+    if (needs_alert) {
+      out <- paste(ansi_alert(), out)
     }
     return(out)
+  }
+
+  if (needs_alert) {
+    names2(lines)[[1]] <- "!"
   }
 
   # FIXME! Use `format_message()` instead of `format_error()` until
@@ -133,9 +131,6 @@ cnd_message_format <- function(cnd, ..., indent = FALSE) {
     cli::format_message
   )
 
-  if (indent) {
-    local_cli_indent()
-  }
   cli_format(glue_escape(lines), .envir = emptyenv())
 }
 
@@ -209,31 +204,33 @@ exec_cnd_method <- function(name, cnd) {
 }
 
 
-cnd_message_format_prefixed <- function(cnd, ..., parent = FALSE) {
+cnd_message_format_prefixed <- function(cnd,
+                                        ...,
+                                        parent = FALSE,
+                                        alert = NULL) {
+  alert <- alert %||% is_error(cnd)
   type <- cnd_type(cnd)
 
   if (parent) {
     prefix <- sprintf("Caused by %s", type)
-    indent <- TRUE
   } else {
     prefix <- col_yellow(capitalise(type))
-    indent <- is_condition(cnd$parent)
   }
 
-  message <- cnd_message_format(cnd, ..., indent = indent)
+  call <- format_error_call(cnd$call)
+
+  message <- cnd_message_format(cnd, ..., alert = alert)
   message <- strip_trailing_newline(message)
 
   if (!nzchar(message)) {
     return(NULL)
   }
 
-  call <- format_error_call(cnd$call)
   has_loc <- FALSE
 
   if (is_null(call)) {
     prefix <- sprintf("%s:", prefix)
   } else {
-    indent <- TRUE
     src_loc <- src_loc(attr(cnd$call, "srcref"))
     if (nzchar(src_loc) && !is_testing()) {
       prefix <- sprintf("%s in %s at %s:", prefix, call, src_loc)
@@ -244,16 +241,7 @@ cnd_message_format_prefixed <- function(cnd, ..., parent = FALSE) {
   }
   prefix <- style_bold(prefix)
 
-  break_line <-
-    indent ||
-    has_loc ||
-    nchar(strip_style(prefix)) > (peek_option("width") / 2)
-
-  if (break_line) {
-    paste0(prefix, "\n", message)
-  } else {
-    paste0(prefix, " ", message)
-  }
+  paste0(prefix, "\n", message)
 }
 
 #' @export
@@ -271,7 +259,7 @@ conditionMessage.rlang_error <- function(c) {
 
 #' @export
 as.character.rlang_message <- function(x, ...) {
-  paste0(cnd_message(x, prefix = FALSE), "\n")
+  paste0(cnd_message(x, prefix = TRUE), "\n")
 }
 #' @export
 as.character.rlang_warning <- function(x, ...) {

@@ -5,7 +5,7 @@
     Output
       <error/rlang_error>
       Error in `try_call()`:
-      `...` must be named with condition classes.
+      ! `...` must be named with condition classes.
 
 # can rethrow from `try_call()`
 
@@ -15,9 +15,9 @@
     Output
       <error/rlang_error>
       Error:
-        bar
+      ! bar
       Caused by error in `h()`:
-        foo
+      ! foo
       Backtrace:
         1. rlang:::catch_error(...)
        15. rlang f()
@@ -28,9 +28,9 @@
     Output
       <error/rlang_error>
       Error:
-        bar
+      ! bar
       Caused by error in `h()`:
-        foo
+      ! foo
       Backtrace:
            x
         1. +-rlang:::catch_error(...)

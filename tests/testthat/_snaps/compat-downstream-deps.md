@@ -8,5 +8,6 @@
       }))
     Output
       <warning/rlang_warning>
-      Warning: The package `utils` (>= 100.10) is required as of rlang 0.5.0.
+      Warning:
+      The package `utils` (>= 100.10) is required as of rlang 0.5.0.
 

@@ -4,7 +4,8 @@
       (expect_warning(tryCatch(abort("foo"), error = identity)))
     Output
       <warning/rlang_warning>
-      Warning: Invalid `rlang_backtrace_on_error` option.
+      Warning:
+      Invalid `rlang_backtrace_on_error` option.
       i The option was just reset to `NULL`.
 
 # error is printed with backtrace
@@ -13,14 +14,14 @@
       cat_line(default_interactive)
     Output
       Error in `h()`:
-      Error message
+      ! Error message
       Run `rlang::last_error()` to see where the error occurred.
       Execution halted
     Code
       cat_line(default_non_interactive)
     Output
       Error in `h()`:
-      Error message
+      ! Error message
       Backtrace:
           x
        1. \-global f()
@@ -33,13 +34,13 @@
       cat_line(reminder)
     Output
       Error in `h()`:
-      Error message
+      ! Error message
       Execution halted
     Code
       cat_line(branch)
     Output
       Error in `h()`:
-      Error message
+      ! Error message
       Backtrace:
        1. global f()
        4. global g()
@@ -49,7 +50,7 @@
       cat_line(collapse)
     Output
       Error in `h()`:
-      Error message
+      ! Error message
       Backtrace:
           x
        1. \-global f()
@@ -61,7 +62,7 @@
       cat_line(full)
     Output
       Error in `h()`:
-      Error message
+      ! Error message
       Backtrace:
           x
        1. \-global f()
@@ -74,14 +75,14 @@
       cat_line(rethrown_interactive)
     Output
       Error in `h()`:
-      Error message
+      ! Error message
       Run `rlang::last_error()` to see where the error occurred.
       Execution halted
     Code
       cat_line(rethrown_non_interactive)
     Output
       Error in `h()`:
-      Error message
+      ! Error message
       Backtrace:
           x
        1. +-base::tryCatch(f(), error = function(cnd) rlang::cnd_signal(cnd))
@@ -100,18 +101,20 @@
     Code
       cat_line(branch_depth_0)
     Output
-      Error: foo
+      Error:
+      ! foo
       Execution halted
     Code
       cat_line(full_depth_0)
     Output
-      Error: foo
+      Error:
+      ! foo
       Execution halted
     Code
       cat_line(branch_depth_1)
     Output
       Error in `f()`:
-      foo
+      ! foo
       Backtrace:
        1. global f()
       Execution halted
@@ -119,7 +122,7 @@
       cat_line(full_depth_1)
     Output
       Error in `f()`:
-      foo
+      ! foo
       Backtrace:
           x
        1. \-global f()
@@ -131,18 +134,18 @@
       cat_line(interactive)
     Output
       Error:
-        bar
+      ! bar
       Caused by error in `h()`:
-        foo
+      ! foo
       Run `rlang::last_error()` to see where the error occurred.
       Execution halted
     Code
       cat_line(non_interactive)
     Output
       Error:
-        bar
+      ! bar
       Caused by error in `h()`:
-        foo
+      ! foo
       Backtrace:
            x
         1. \-global a()
@@ -165,7 +168,7 @@
     Output
       <error/rlang_error>
       Error in `h()`:
-      foo
+      ! foo
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang f()
@@ -177,7 +180,7 @@
     Output
       <error/rlang_error>
       Error in `h()`:
-      foo
+      ! foo
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang f()
@@ -193,7 +196,7 @@
     Output
       <error/rlang_error>
       Error in `h()`:
-      foo
+      ! foo
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang f()
@@ -209,7 +212,7 @@
     Output
       <error/rlang_error>
       Error in `h()`:
-      foo
+      ! foo
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang f()
@@ -230,9 +233,9 @@
     Output
       <error/rlang_error>
       Error:
-        no wrapper
+      ! no wrapper
       Caused by error in `failing()`:
-        low-level
+      ! low-level
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang f()
@@ -248,9 +251,9 @@
     Output
       <error/rlang_error>
       Error:
-        wrapper
+      ! wrapper
       Caused by error in `failing()`:
-        low-level
+      ! low-level
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang f()
@@ -266,9 +269,9 @@
     Output
       <error/rlang_error>
       Error:
-        wrapper
+      ! wrapper
       Caused by error in `failing()`:
-        low-level
+      ! low-level
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang f()
@@ -280,9 +283,9 @@
     Output
       <error/rlang_error>
       Error:
-        bar
+      ! bar
       Caused by error in `baz()`:
-        foo
+      ! foo
       Backtrace:
         1. rlang:::catch_error(...)
        10. rlang foo()
@@ -295,7 +298,7 @@
       run("rlang::abort('foo', call = quote(bar(baz)))")
     Output
       Error in `bar()`:
-      foo
+      ! foo
       Execution halted
 
 ---
@@ -304,7 +307,7 @@
       run("rlang::cnd_signal(errorCondition('foo', call = quote(bar(baz))))")
     Output
       Error in `bar()`:
-      foo
+      ! foo
       Execution halted
 
 # abort() accepts environment as `call` field.
@@ -314,7 +317,7 @@
     Output
       <error/rlang_error>
       Error in `h()`:
-      `arg` must be supplied.
+      ! `arg` must be supplied.
 
 # local_error_call() works
 
@@ -323,7 +326,7 @@
     Output
       <error/rlang_error>
       Error in `expected()`:
-      tilt
+      ! tilt
 
 # can disable error call inference for unexported functions
 
@@ -332,7 +335,7 @@
     Output
       <error/rlang_error>
       Error in `foo()`:
-      foo
+      ! foo
     Code
       local({
         local_options(`rlang:::restrict_default_error_call` = TRUE)
@@ -340,7 +343,8 @@
       })
     Output
       <error/rlang_error>
-      Error: foo
+      Error:
+      ! foo
     Code
       local({
         local_options(`rlang:::restrict_default_error_call` = TRUE)
@@ -349,7 +353,7 @@
     Output
       <error/rlang_error>
       Error in `dots_list()`:
-      `.homonyms` must be one of "keep", "first", "last", or "error", not "k".
+      ! `.homonyms` must be one of "keep", "first", "last", or "error", not "k".
       i Did you mean "keep"?
 
 # NSE doesn't interfere with error call contexts
@@ -358,19 +362,22 @@
       (expect_error(local(arg_match0("f", "foo"))))
     Output
       <error/rlang_error>
-      Error: `"f"` must be one of "foo", not "f".
+      Error:
+      ! `"f"` must be one of "foo", not "f".
       i Did you mean "foo"?
     Code
       (expect_error(eval_bare(quote(arg_match0("f", "foo")))))
     Output
       <error/rlang_error>
-      Error: `"f"` must be one of "foo", not "f".
+      Error:
+      ! `"f"` must be one of "foo", not "f".
       i Did you mean "foo"?
     Code
       (expect_error(eval_bare(quote(arg_match0("f", "foo")), env())))
     Output
       <error/rlang_error>
-      Error: `"f"` must be one of "foo", not "f".
+      Error:
+      ! `"f"` must be one of "foo", not "f".
       i Did you mean "foo"?
 
 # error_call() and format_error_call() preserve special syntax ops
@@ -409,9 +416,9 @@
     Output
       <error/rlang_error>
       Error:
-        High-level message
+      ! High-level message
       Caused by error in `h()`:
-        Low-level message
+      ! Low-level message
       Backtrace:
         1. testthat::expect_error(foo())
         7. rlang foo()
@@ -425,9 +432,9 @@
     Output
       <error/rlang_error>
       Error:
-        High-level message
+      ! High-level message
       Caused by error in `h()`:
-        Low-level message
+      ! Low-level message
       Backtrace:
            x
         1. +-testthat::expect_error(foo())
@@ -453,9 +460,9 @@
     Output
       <error/rlang_error>
       Error:
-        High-level message
+      ! High-level message
       Caused by error:
-        foo
+      ! foo
       Backtrace:
         1. testthat::expect_error(foo())
         7. rlang foo()
@@ -470,9 +477,9 @@
     Output
       <error/rlang_error>
       Error:
-        High-level message
+      ! High-level message
       Caused by error:
-        foo
+      ! foo
       Backtrace:
            x
         1. +-testthat::expect_error(foo())
@@ -503,25 +510,25 @@
     Output
       <error/rlang_error>
       Error in `f1()`:
-      foo
+      ! foo
     Code
       err(f2())
     Output
       <error/rlang_error>
       Error in `f2()`:
-      foo
+      ! foo
     Code
       err(f3())
     Output
       <error/rlang_error>
       Error in `f3()`:
-      foo
+      ! foo
     Code
       err(f4(NULL))
     Output
       <error/rlang_error>
       Error in `f4()`:
-      foo
+      ! foo
 
 # errors are fully displayed (parents, calls) in knitted files
 
@@ -545,13 +552,13 @@
           )
       
           ## Error in `f()`:
-          ##   Message.
-          ##   x Bullet A
-          ##   i Bullet B.
+          ## ! Message.
+          ## x Bullet A
+          ## i Bullet B.
           ## Caused by error in `foo()`:
-          ##   Parent message.
-          ##   * Bullet 1.
-          ##   * Bullet 2.
+          ## ! Parent message.
+          ## * Bullet 1.
+          ## * Bullet 2.
       
       Warning.
       
@@ -562,12 +569,12 @@
           )
       
           ## Warning in f(): Message.
-          ##   x Bullet A
-          ##   i Bullet B.
+          ## x Bullet A
+          ## i Bullet B.
           ## Caused by error in `foo()`:
-          ##   Parent message.
-          ##   * Bullet 1.
-          ##   * Bullet 2.
+          ## ! Parent message.
+          ## * Bullet 1.
+          ## * Bullet 2.
       
       Message.
       
@@ -578,12 +585,12 @@
           )
       
           ## Message.
-          ##   x Bullet A
-          ##   i Bullet B.
+          ## x Bullet A
+          ## i Bullet B.
           ## Caused by error in `foo()`:
-          ##   Parent message.
-          ##   * Bullet 1.
-          ##   * Bullet 2.
+          ## ! Parent message.
+          ## * Bullet 1.
+          ## * Bullet 2.
 
 # can supply bullets both through `message` and `body`
 
@@ -591,14 +598,16 @@
       (expect_error(abort("foo", body = c("a", "b"))))
     Output
       <error/rlang_error>
-      Error: foo
+      Error:
+      ! foo
       a
       b
     Code
       (expect_error(abort(c("foo", "bar"), body = c("a", "b"))))
     Output
       <error/rlang_error>
-      Error: foo
+      Error:
+      ! foo
       * bar
       a
       b
@@ -609,14 +618,16 @@
       (expect_error(abort("foo", body = c("a", "b"))))
     Output
       <error/rlang_error>
-      Error: foo
+      Error:
+      ! foo
       a
       b
     Code
       (expect_error(abort(c("foo", "bar"), body = c("a", "b"))))
     Output
       <error/rlang_error>
-      Error: foo
+      Error:
+      ! foo
       bar
       a
       b

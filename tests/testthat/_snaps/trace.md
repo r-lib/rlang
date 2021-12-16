@@ -977,7 +977,7 @@
           f()
       
           ## Error in `h()`:
-          ## foo
+          ## ! foo
       
       Currently needs to be in a different chunk:
       
@@ -985,7 +985,7 @@
       
           ## <error/rlang_error>
           ## Error in `h()`:
-          ## foo
+          ## ! foo
           ## Backtrace:
           ##  1. global f()
           ##  2. global g()
@@ -996,7 +996,7 @@
       
           ## <error/rlang_error>
           ## Error in `h()`:
-          ## foo
+          ## ! foo
           ## Backtrace:
           ##     x
           ##  1. \-global f()
@@ -1007,7 +1007,7 @@
           f()
       
           ## Error in `h()`:
-          ## foo
+          ## ! foo
       
           ## Run `rlang::last_error()` to see where the error occurred.
       
@@ -1015,7 +1015,7 @@
           f()
       
           ## Error in `h()`:
-          ## foo
+          ## ! foo
       
           ## Backtrace:
           ##     x
@@ -1042,7 +1042,7 @@
     Output
       [1m[1m[1m[34m<error/rlang_error>[39m[22m
       [1m[33mError[39m in [1m[1m[30m[47m`1 + ""`[49m[39m:[22m
-      non-numeric argument to binary operator
+      [33m![39m non-numeric argument to binary operator
       [1mBacktrace:[22m
       [90m  1. [39m[1mrlang[22m::catch_cnd(withCallingHandlers(f(), error = entrace), "error")
       [90m  9. [39mrlang f()
@@ -1054,7 +1054,7 @@
     Output
       [1m[1m[1m[34m<error/rlang_error>[39m[22m
       [1m[33mError[39m in [1m[1m[30m[47m`1 + ""`[49m[39m:[22m
-      non-numeric argument to binary operator
+      [33m![39m non-numeric argument to binary operator
       [1mBacktrace:[22m
       [90m     [39mx
       [90m  1. [39m+-[1mrlang[22m::catch_cnd(withCallingHandlers(f(), error = entrace), "error")
@@ -1077,7 +1077,7 @@
     Output
       <error/rlang_error>
       Error in `trace_back()`:
-      `bottom` must be a positive integer.
+      ! `bottom` must be a positive integer.
 
 # collapsed case in branch formatting
 
