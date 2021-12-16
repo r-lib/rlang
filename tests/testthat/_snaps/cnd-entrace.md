@@ -7,14 +7,16 @@
       Calls: f -> g -> h
       Run `rlang::last_error()` to see where the error occurred.
       <error/rlang_error>
-      Error: foo
+      Error:
+      ! foo
       Backtrace:
        1. global f()
        2. global g()
        3. global h()
       Run `rlang::last_trace()` to see the full context.
       <error/rlang_error>
-      Error: foo
+      Error:
+      ! foo
       Backtrace:
           x
        1. \-global f()
@@ -24,11 +26,11 @@
       cat_line(rlang)
     Output
       Error in `h()`:
-      foo
+      ! foo
       Run `rlang::last_error()` to see where the error occurred.
       <error/rlang_error>
       Error in `h()`:
-      foo
+      ! foo
       Backtrace:
        1. global f()
        2. global g()
@@ -36,7 +38,7 @@
       Run `rlang::last_trace()` to see the full context.
       <error/rlang_error>
       Error in `h()`:
-      foo
+      ! foo
       Backtrace:
           x
        1. \-global f()
@@ -50,7 +52,7 @@
     Output
       <error/rlang_error>
       Error in `1 + ""`:
-      non-numeric argument to binary operator
+      ! non-numeric argument to binary operator
       Backtrace:
         1. rlang::catch_cnd(...)
         9. rlang f()
@@ -61,7 +63,7 @@
 # can set `entrace()` as a global handler
 
     Error in `1 + ""`:
-    non-numeric argument to binary operator
+    ! non-numeric argument to binary operator
     Backtrace:
         x
      1. \-global f()
@@ -72,7 +74,7 @@
 ---
 
     Error in `1 + ""`:
-    non-numeric argument to binary operator
+    ! non-numeric argument to binary operator
     Backtrace:
         x
      1. \-global f()

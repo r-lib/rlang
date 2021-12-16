@@ -4,14 +4,14 @@
       cat_line(interactive)
     Output
       Error in `h()`:
-      dispatched!
+      ! dispatched!
       Run `rlang::last_error()` to see where the error occurred.
       Execution halted
     Code
       cat_line(non_interactive)
     Output
       Error in `h()`:
-      dispatched!
+      ! dispatched!
       Backtrace:
           x
        1. \-global f()
@@ -26,7 +26,7 @@
     Output
       <error/foobar>
       Error in `h()`:
-      Low-level message
+      ! Low-level message
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang f()
@@ -40,14 +40,14 @@
     Output
       <error/rlang_error>
       Error:
-        High-level message
+      ! High-level message
       Backtrace:
         1. rlang:::catch_error(a())
         9. rlang a()
        10. rlang b()
        11. rlang c()
       Caused by error in `h()`:
-        Low-level message
+      ! Low-level message
       Backtrace:
         1. rlang:::catch_error(a())
         9. rlang a()
@@ -64,7 +64,7 @@
     Output
       <error/rlang_error>
       Error:
-        High-level message
+      ! High-level message
       Backtrace:
            x
         1. +-rlang:::catch_error(a())
@@ -79,7 +79,7 @@
        10.   \-rlang b()
        11.     \-rlang c()
       Caused by error in `h()`:
-        Low-level message
+      ! Low-level message
       Backtrace:
            x
         1. +-rlang:::catch_error(a())
@@ -109,7 +109,7 @@
     Output
       <error/rlang_error>
       Error:
-        High-level message
+      ! High-level message
       Backtrace:
            x
         1. +-rlang:::catch_error(a())
@@ -124,7 +124,7 @@
        10.   \-rlang b()
        11.     \-rlang c()
       Caused by error in `h()`:
-        Low-level message
+      ! Low-level message
       Backtrace:
            x
         1. +-rlang:::catch_error(a())
@@ -151,7 +151,7 @@
     Output
       <error/rlang_error>
       Error:
-        High-level message
+      ! High-level message
       Backtrace:
            x
         1. +-[ rlang:::catch_error(...) ] with 7 more calls
@@ -159,7 +159,7 @@
        10.   \-rlang b()
        11.     \-rlang c()
       Caused by error in `h()`:
-        Low-level message
+      ! Low-level message
       Backtrace:
            x
         1. +-[ rlang:::catch_error(...) ] with 7 more calls
@@ -176,14 +176,14 @@
     Output
       <error/rlang_error>
       Error:
-        High-level message
+      ! High-level message
       Backtrace:
         1. rlang:::catch_error(a())
         9. rlang a()
        10. rlang b()
        11. rlang c()
       Caused by error in `h()`:
-        Low-level message
+      ! Low-level message
       Backtrace:
         1. rlang:::catch_error(a())
         9. rlang a()
@@ -200,11 +200,11 @@
     Output
       <error/high>
       Error:
-        High-level
+      ! High-level
       Caused by error:
-        Mid-level
+      ! Mid-level
       Caused by error in `low()`:
-        Low-level
+      ! Low-level
 
 # summary.rlang_error() prints full backtrace
 
@@ -213,9 +213,9 @@
     Output
       <error/rlang_error>
       Error:
-        The high-level error message
+      ! The high-level error message
       Caused by error in `h()`:
-        The low-level error message
+      ! The low-level error message
       Backtrace:
            x
         1. +-rlang:::catch_error(a())
@@ -244,6 +244,8 @@
       print(err)
     Output
       <error/foo>
+      Error:
+      ! 
 
 # base parent errors are printed with rlang method
 
@@ -252,9 +254,9 @@
     Output
       <error/bar>
       Error:
-        baz
+      ! baz
       Caused by error:
-        foo
+      ! foo
 
 # errors are printed with call
 
@@ -263,7 +265,7 @@
     Output
       <error/rlang_error>
       Error in `foo()`:
-      msg
+      ! msg
 
 # calls are consistently displayed on rethrow (#1240)
 
@@ -272,17 +274,17 @@
     Output
       <error/rlang_error>
       Error in `step_dummy()`:
-        Problem while executing step.
+      ! Problem while executing step.
       Caused by error in `base_problem()`:
-        oh no!
+      ! oh no!
     Code
       (expect_error(with_context(rlang_problem(), "step_dummy")))
     Output
       <error/rlang_error>
       Error in `step_dummy()`:
-        Problem while executing step.
+      ! Problem while executing step.
       Caused by error in `rlang_problem()`:
-        oh no!
+      ! oh no!
 
 # external backtraces are displayed (#1098)
 
@@ -291,7 +293,7 @@
     Output
       <error/rlang_error>
       Error:
-        High-level message
+      ! High-level message
       Backtrace:
         1. rlang::catch_cnd(foo(), "error")
         8. rlang foo()
@@ -301,7 +303,7 @@
        13. rlang g()
        14. rlang h()
       Caused by error in `h()`:
-        Low-level message
+      ! Low-level message
       Backtrace:
        1. quux()
        2. foofy()
@@ -310,7 +312,7 @@
     Output
       <error/rlang_error>
       Error:
-        High-level message
+      ! High-level message
       Backtrace:
            x
         1. +-rlang::catch_cnd(foo(), "error")
@@ -328,7 +330,7 @@
        13.         \-rlang g()
        14.           \-rlang h()
       Caused by error in `h()`:
-        Low-level message
+      ! Low-level message
       Backtrace:
           x
        1. \-quux()
@@ -342,7 +344,7 @@
     Output
       <error/rlang_error>
       Error:
-        bar
+      ! bar
       Backtrace:
            x
         1. +-rlang::catch_cnd(foo(), "error")
@@ -356,7 +358,7 @@
         9.   \-rlang bar()
        10.     \-rlang baz()
       Caused by error in `h()`:
-        foo
+      ! foo
       Backtrace:
            x
         1. +-rlang::catch_cnd(foo(), "error")
@@ -382,7 +384,7 @@
     Output
       <error/rlang_error>
       Error:
-        bar
+      ! bar
       Backtrace:
            x
         1. +-[ rlang::catch_cnd(...) ] with 6 more calls
@@ -390,7 +392,7 @@
         9.   \-rlang bar()
        10.     \-rlang baz()
       Caused by error in `h()`:
-        foo
+      ! foo
       Backtrace:
            x
         1. +-[ rlang::catch_cnd(...) ] with 6 more calls
@@ -407,14 +409,14 @@
     Output
       <error/rlang_error>
       Error:
-        bar
+      ! bar
       Backtrace:
         1. rlang::catch_cnd(foo(), "error")
         8. rlang foo()
         9. rlang bar()
        10. rlang baz()
       Caused by error in `h()`:
-        foo
+      ! foo
       Backtrace:
         1. rlang::catch_cnd(foo(), "error")
         8. rlang foo()
@@ -431,13 +433,13 @@
     Output
       <error/rlang_error>
       Error in `cnd()`:
-      `class` must be supplied.
+      ! `class` must be supplied.
     Code
       (expect_error(signal("")))
     Output
       <error/rlang_error>
       Error in `signal()`:
-      `class` must be supplied.
+      ! `class` must be supplied.
 
 # cnd_type_header() formats condition classes
 
@@ -472,11 +474,11 @@
 
     <message/rlang_message>
     Message in `quux()`:
-      Header.
-      i Bullet.
+    Header.
+    i Bullet.
     Caused by warning in `quux()`:
-      Header.
-      i Bullet.
+    ! Header.
+    i Bullet.
     Backtrace:
      1. foo()
      2. bar()
@@ -531,19 +533,19 @@
     Output
       <error/rlang_error>
       Error in `warning_cnd()`:
-      `class` must be a character vector.
+      ! `class` must be a character vector.
     Code
       (expect_error(error_cnd(class = list())))
     Output
       <error/rlang_error>
       Error in `error_cnd()`:
-      `class` must be a character vector.
+      ! `class` must be a character vector.
     Code
       (expect_error(message_cnd(message = 1)))
     Output
       <error/rlang_error>
       Error in `message_cnd()`:
-      `message` must be a character vector.
+      ! `message` must be a character vector.
 
 # picks up cli format flag
 

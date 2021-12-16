@@ -431,15 +431,22 @@ cnd_print <- function(x, ...) {
 cnd_format <- function(x,
                        ...,
                        backtrace = TRUE,
-                       simplify = c("branch", "collapse", "none")) {
+                       simplify = c("branch", "collapse", "none"),
+                       prefix = TRUE,
+                       alert = NULL) {
   simplify <- arg_match(simplify)
+  alert <- alert %||% is_error(x)
 
   orig <- x
   parent <- x$parent
   style <- cli_box_chars()
 
   header <- cnd_type_header(x)
-  message <- cnd_message_format_prefixed(x)
+  if (prefix) {
+    message <- cnd_message_format_prefixed(x, alert = alert)
+  } else {
+    message <- cnd_message_format(x, alert = alert)
+  }
 
   out <- paste_line(
     header,

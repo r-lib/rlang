@@ -28,9 +28,9 @@ Let's see what happens when we pass arguments to a data-masking function like \c
 
 my_mean(mtcars, cyl, am)
 #> Error in `dplyr::summarise()`:
-#>   Problem while computing `..1 = mean(var1 + var2)`.
+#> ! Problem while computing `..1 = mean(var1 + var2)`.
 #> Caused by error in `mean()`:
-#>   object 'cyl' not found
+#> ! object 'cyl' not found
 }\if{html}{\out{</div>}}
 
 The problem here is that \code{summarise()} defuses the R code it was supplied, i.e. \code{mean(var1 + var2)}.  Instead we want it to see \code{mean(cyl + am)}. This is why we need injection, we need to modify that piece of code by injecting the code supplied to the function in place of \code{var1} and \code{var2}.
