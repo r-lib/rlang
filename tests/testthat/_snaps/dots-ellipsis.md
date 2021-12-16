@@ -10,7 +10,7 @@
     Output
       <error/rlib_error_dots_named>
       Error in `f()`:
-      Arguments in `...` can't be named.
+      Arguments in `...` must be passed by position, not name.
       x Problematic arguments:
       * xy = 4
       * x = 5

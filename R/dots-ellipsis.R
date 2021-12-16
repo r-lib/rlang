@@ -104,7 +104,7 @@ check_dots_unnamed <- function(env = caller_env(),
   action_dots(
     error = error,
     action = action,
-    message = "Arguments in `...` can't be named.",
+    message = "Arguments in `...` must be passed by position, not name.",
     dots_i = named,
     class = "rlib_error_dots_named",
     call = call,
