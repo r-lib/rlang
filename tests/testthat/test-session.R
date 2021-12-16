@@ -197,13 +197,3 @@ test_that("pkg_version_info() supports `cmp`", {
     err(pkg_version_info("foo", "1.0", "!="))
   })
 })
-
-test_that("`src` is checked", {
-  expect_null(check_src(c("a", "b"), c("c", "d")))
-  expect_null(check_src(NULL, c("c", "d")))
-
-  expect_snapshot({
-    err(check_installed("foo", src = c("a", "b")))
-    err(check_installed("foo", src = 1))
-  })
-})

@@ -166,10 +166,6 @@ as_version_info <- function(pkg, call = caller_env()) {
 }
 
 #' @rdname is_installed
-#' @param src A [pak
-#'   source](https://pak.r-lib.org/reference/pak_package_sources.html)
-#'   specification passed to `pak::pkg_install()` when `pkg` needs to
-#'   be installed or reinstalled.
 #' @inheritParams args_error_context
 #' @export
 check_installed <- function(pkg,
@@ -177,7 +173,6 @@ check_installed <- function(pkg,
                             ...,
                             version = NULL,
                             compare = NULL,
-                            src = NULL,
                             call = caller_env()) {
   check_dots_empty0(...)
 
@@ -188,21 +183,13 @@ check_installed <- function(pkg,
   version <- info$ver
   compare <- info$cmp
 
-  if (!any(needs_install)) {
-    return(invisible(NULL))
-  }
-
-  check_src(src, pkg)
-  if (is_null(src)) {
-    missing_srcs <- NULL
-  } else {
-    src <- ifelse(detect_na(src), pkg, src)
-    missing_srcs <- src[needs_install]
-  }
-
   missing_pkgs <- pkg[needs_install]
   missing_vers <- version[needs_install]
   missing_cmps <- compare[needs_install]
+
+  if (!length(missing_pkgs)) {
+    return(invisible(NULL))
+  }
 
   cnd <- new_error_package_not_found(
     missing_pkgs,
@@ -215,12 +202,6 @@ check_installed <- function(pkg,
   restart <- peek_option("rlib_restart_package_not_found") %||% TRUE
   if (!is_bool(restart)) {
     abort("`rlib_restart_package_not_found` must be a logical value.")
-  }
-
-  # Can't install packages if remotes are supplied and pak is not installed
-  has_pak <- is_installed("pak")
-  if (!has_pak && !is_null(missing_srcs)) {
-    restart <- FALSE
   }
 
   if (!is_interactive() || !restart || any(missing_cmps %in% c("<", "<="))) {
@@ -255,9 +236,9 @@ check_installed <- function(pkg,
     # Pass condition in case caller sets up an `abort` restart
     invokeRestart("abort", cnd)
   }
-  if (has_pak) {
+  if (is_installed("pak")) {
     pkg_install <- env_get(ns_env("pak"), "pkg_install")
-    pkg_install(missing_srcs %||% missing_pkgs, ask = FALSE)
+    pkg_install(missing_pkgs, ask = FALSE)
   } else {
     utils::install.packages(missing_pkgs)
   }
@@ -294,18 +275,6 @@ check_pkg_version <- function(pkg,
         "%s must be supplied when %s is supplied.",
         format_arg("version"),
         format_arg("compare")
-      )
-      abort(msg, call = call)
-    }
-  }
-}
-check_src <- function(src, pkg, call = caller_env()) {
-  if (!is_null(src)) {
-    if (!is_character(src, n = length(pkg), empty = FALSE)) {
-      msg <- sprintf(
-        "%s must be a character vector as long as %s.",
-        format_arg("src"),
-        format_arg("pkg")
       )
       abort(msg, call = call)
     }

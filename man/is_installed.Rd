@@ -13,7 +13,6 @@ check_installed(
   ...,
   version = NULL,
   compare = NULL,
-  src = NULL,
   call = caller_env()
 )
 }
@@ -35,10 +34,6 @@ default.}
 \item{reason}{Optional string indicating why is \code{pkg} needed.
 Appears in error messages (if non-interactive) and user prompts
 (if interactive).}
-
-\item{src}{A \href{https://pak.r-lib.org/reference/pak_package_sources.html}{pak source}
-specification passed to \code{pak::pkg_install()} when \code{pkg} needs to
-be installed or reinstalled.}
 
 \item{call}{The execution environment of a currently
 running function, e.g. \code{caller_env()}. The function will be
