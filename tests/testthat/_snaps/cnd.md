@@ -3,13 +3,15 @@
     Code
       cat_line(interactive)
     Output
-      Error in `h()`: dispatched!
+      Error in `h()`:
+      dispatched!
       Run `rlang::last_error()` to see where the error occurred.
       Execution halted
     Code
       cat_line(non_interactive)
     Output
-      Error in `h()`: dispatched!
+      Error in `h()`:
+      dispatched!
       Backtrace:
           x
        1. \-global f()
@@ -23,7 +25,8 @@
       print(err)
     Output
       <error/foobar>
-      Error in `h()`: Low-level message
+      Error in `h()`:
+      Low-level message
       Backtrace:
         1. rlang:::catch_error(f())
         9. rlang f()
@@ -259,7 +262,8 @@
       print(err)
     Output
       <error/rlang_error>
-      Error in `foo()`: msg
+      Error in `foo()`:
+      msg
 
 # calls are consistently displayed on rethrow (#1240)
 
@@ -426,12 +430,14 @@
       (expect_error(cnd()))
     Output
       <error/rlang_error>
-      Error in `cnd()`: `class` must be supplied.
+      Error in `cnd()`:
+      `class` must be supplied.
     Code
       (expect_error(signal("")))
     Output
       <error/rlang_error>
-      Error in `signal()`: `class` must be supplied.
+      Error in `signal()`:
+      `class` must be supplied.
 
 # cnd_type_header() formats condition classes
 
@@ -455,7 +461,8 @@
 # can format warnings and other conditions
 
     <warning/rlang_warning>
-    Warning in `quux()`: Header.
+    Warning in `quux()`:
+    Header.
     i Bullet.
     Backtrace:
      1. foo()
@@ -477,7 +484,8 @@
 ---
 
     <condition/foobar>
-    Condition in `quux()`: Header.
+    Condition in `quux()`:
+    Header.
     i Bullet.
     Backtrace:
      1. foo()
@@ -522,17 +530,20 @@
       (expect_error(warning_cnd(class = list())))
     Output
       <error/rlang_error>
-      Error in `warning_cnd()`: `class` must be a character vector.
+      Error in `warning_cnd()`:
+      `class` must be a character vector.
     Code
       (expect_error(error_cnd(class = list())))
     Output
       <error/rlang_error>
-      Error in `error_cnd()`: `class` must be a character vector.
+      Error in `error_cnd()`:
+      `class` must be a character vector.
     Code
       (expect_error(message_cnd(message = 1)))
     Output
       <error/rlang_error>
-      Error in `message_cnd()`: `message` must be a character vector.
+      Error in `message_cnd()`:
+      `message` must be a character vector.
 
 # picks up cli format flag
 

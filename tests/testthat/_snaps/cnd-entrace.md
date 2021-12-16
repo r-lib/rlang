@@ -23,17 +23,20 @@
     Code
       cat_line(rlang)
     Output
-      Error in `h()`: foo
+      Error in `h()`:
+      foo
       Run `rlang::last_error()` to see where the error occurred.
       <error/rlang_error>
-      Error in `h()`: foo
+      Error in `h()`:
+      foo
       Backtrace:
        1. global f()
        2. global g()
        3. global h()
       Run `rlang::last_trace()` to see the full context.
       <error/rlang_error>
-      Error in `h()`: foo
+      Error in `h()`:
+      foo
       Backtrace:
           x
        1. \-global f()
@@ -46,7 +49,8 @@
       print(err)
     Output
       <error/rlang_error>
-      Error in `+`: non-numeric argument to binary operator
+      Error in `+`:
+      non-numeric argument to binary operator
       Backtrace:
         1. rlang::catch_cnd(...)
         9. rlang f()
@@ -56,7 +60,8 @@
 
 # can set `entrace()` as a global handler
 
-    Error in `+`: non-numeric argument to binary operator
+    Error in `+`:
+    non-numeric argument to binary operator
     Backtrace:
         x
      1. \-global f()
@@ -66,7 +71,8 @@
 
 ---
 
-    Error in `+`: non-numeric argument to binary operator
+    Error in `+`:
+    non-numeric argument to binary operator
     Backtrace:
         x
      1. \-global f()
@@ -82,13 +88,15 @@
     > rlang::last_warnings()
     [[1]]
     <warning/rlang_warning>
-    Warning in `f()`: foo
+    Warning in `f()`:
+    foo
     Backtrace:
      1. global f()
     
     [[2]]
     <warning/rlang_warning>
-    Warning in `g()`: bar
+    Warning in `g()`:
+    bar
     Backtrace:
      1. global f()
      2. global g()
@@ -97,13 +105,15 @@
     > rlang::last_warnings(2)
     [[1]]
     <warning/rlang_warning>
-    Warning in `f()`: foo
+    Warning in `f()`:
+    foo
     Backtrace:
      1. global f()
     
     [[2]]
     <warning/rlang_warning>
-    Warning in `g()`: bar
+    Warning in `g()`:
+    bar
     Backtrace:
      1. global f()
      2. global g()
@@ -112,14 +122,16 @@
     > summary(rlang::last_messages())
     [[1]]
     <message/rlang_message>
-    Message in `message()`: FOO
+    Message in `message()`:
+    FOO
     Backtrace:
         x
      1. \-global f()
     
     [[2]]
     <message/rlang_message>
-    Message in `message()`: baz
+    Message in `message()`:
+    baz
     Backtrace:
         x
      1. \-global f()
@@ -130,7 +142,8 @@
     > summary(rlang::last_messages(1))
     [[1]]
     <message/rlang_message>
-    Message in `message()`: baz
+    Message in `message()`:
+    baz
     Backtrace:
         x
      1. \-global f()

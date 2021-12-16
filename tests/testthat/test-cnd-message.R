@@ -249,16 +249,18 @@ cli::test_that_cli(configs = c("plain", "fancy"), "can use cli syntax in `cnd_me
 })
 
 test_that("prefix takes call into account", {
-  err <- error_cnd(message = "msg", call = quote(foo(bar = TRUE)))
-  expect_equal(cnd_message_format_prefixed(err), "Error in `foo()`: msg")
+  expect_snapshot({
+    err <- error_cnd(message = "msg", call = quote(foo(bar = TRUE)))
+    writeLines(cnd_message_format_prefixed(err))
 
-  # Inlined objects disable context deparsing
-  err1 <- error_cnd(message = "msg", call = expr(foo(bar = !!(1:3))))
-  err2 <- error_cnd(message = "msg", call = quote(foo$bar()))
-  err3 <- error_cnd(message = "msg", call = call2(identity))
-  expect_equal(cnd_message_format_prefixed(err1), "Error in `foo()`: msg")
-  expect_equal(cnd_message_format_prefixed(err2), "Error: msg")
-  expect_equal(cnd_message_format_prefixed(err3), "Error: msg")
+    # Inlined objects disable context deparsing
+    err1 <- error_cnd(message = "msg", call = expr(foo(bar = !!(1:3))))
+    err2 <- error_cnd(message = "msg", call = quote(foo$bar()))
+    err3 <- error_cnd(message = "msg", call = call2(identity))
+    writeLines(cnd_message_format_prefixed(err1))
+    writeLines(cnd_message_format_prefixed(err2))
+    writeLines(cnd_message_format_prefixed(err3))
+  })
 })
 
 test_that("long prefixes cause a line break", {

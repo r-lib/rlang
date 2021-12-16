@@ -4,7 +4,8 @@
       (expect_error(stop(error_cnd("foo", body = 1:3)), "must be"))
     Output
       <error/rlang_error>
-      Error in `cnd_body()`: `body` field must be a character vector or a function.
+      Error in `cnd_body()`:
+      `body` field must be a character vector or a function.
 
 # can request a line break in error bullets (#1130)
 
@@ -78,6 +79,31 @@
       cnd_message(cnd)
     Output
       [1] "\033[1m\033[22mHeader: \033[3mUser { {field}.\033[23m\n\033[36mℹ\033[39m Bullet: \033[3mUser { {field}.\033[23m\nFooter: \033[3mUser { {field}.\033[23m"
+
+# prefix takes call into account
+
+    Code
+      err <- error_cnd(message = "msg", call = quote(foo(bar = TRUE)))
+      writeLines(cnd_message_format_prefixed(err))
+    Output
+      Error in `foo()`:
+      msg
+    Code
+      err1 <- error_cnd(message = "msg", call = expr(foo(bar = !!(1:3))))
+      err2 <- error_cnd(message = "msg", call = quote(foo$bar()))
+      err3 <- error_cnd(message = "msg", call = call2(identity))
+      writeLines(cnd_message_format_prefixed(err1))
+    Output
+      Error in `foo()`:
+      msg
+    Code
+      writeLines(cnd_message_format_prefixed(err2))
+    Output
+      Error: msg
+    Code
+      writeLines(cnd_message_format_prefixed(err3))
+    Output
+      Error: msg
 
 # long prefixes cause a line break
 
@@ -267,13 +293,15 @@
     Code
       cat(as.character(cnd_with(error_cnd)))
     Output
-      Error in `bar()`: Message.
+      Error in `bar()`:
+      Message.
       * Bullet A.
       * Bullet B.
     Code
       cat(as.character(cnd_with(warning_cnd)))
     Output
-      Warning in `bar()`: Message.
+      Warning in `bar()`:
+      Message.
       * Bullet A.
       * Bullet B.
     Code
