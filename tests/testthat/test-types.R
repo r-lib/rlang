@@ -130,21 +130,21 @@ test_that("is_string() matches on string", {
   expect_false(is_string("foo", c("bar", "baz")))
 })
 
-test_that("is_string() matches on `empty`", {
+test_that("is_string2() matches on `empty`", {
   # Input checking
   expect_snapshot({
-    (expect_error(is_string("foo", empty = 1)))
-    (expect_error(is_string("foo", empty = NA)))
-    (expect_error(is_string("foo", "foo", empty = TRUE)))
+    (expect_error(is_string2("foo", empty = 1)))
+    (expect_error(is_string2("foo", empty = NA)))
+    (expect_error(is_string2("foo", "foo", empty = TRUE)))
   })
 
-  expect_true(is_string("foo", empty = NULL))
-  expect_true(is_string("foo", empty = FALSE))
-  expect_false(is_string("foo", empty = TRUE))
+  expect_true(is_string2("foo", empty = NULL))
+  expect_true(is_string2("foo", empty = FALSE))
+  expect_false(is_string2("foo", empty = TRUE))
 
-  expect_true(is_string("", empty = NULL))
-  expect_true(is_string("", empty = TRUE))
-  expect_false(is_string("", empty = FALSE))
+  expect_true(is_string2("", empty = NULL))
+  expect_true(is_string2("", empty = TRUE))
+  expect_false(is_string2("", empty = FALSE))
 })
 
 test_that("is_bool() checks for single `TRUE` or `FALSE`", {
@@ -154,24 +154,24 @@ test_that("is_bool() checks for single `TRUE` or `FALSE`", {
   expect_false(is_bool(c(TRUE, FALSE)))
 })
 
-test_that("is_character() matches empty and missing values", {
+test_that("is_character2() matches empty and missing values", {
   expect_snapshot({
-    (expect_error(is_character("", empty = TRUE, missing = TRUE)))
+    (expect_error(is_character2("", empty = TRUE, missing = TRUE)))
   })
 
-  expect_false(is_character(c("foo", ""), empty = FALSE))
-  expect_false(is_character(c("foo", ""), empty = TRUE))
-  expect_true(is_character(c("", ""), empty = TRUE))
-  expect_true(is_character(c("foo", "foo"), empty = FALSE))
+  expect_false(is_character2(c("foo", ""), empty = FALSE))
+  expect_false(is_character2(c("foo", ""), empty = TRUE))
+  expect_true(is_character2(c("", ""), empty = TRUE))
+  expect_true(is_character2(c("foo", "foo"), empty = FALSE))
 
-  expect_false(is_character(c("foo", NA), missing = FALSE))
-  expect_false(is_character(c("foo", NA), missing = TRUE))
-  expect_true(is_character(chr(NA, NA), missing = TRUE))
-  expect_true(is_character(c("foo", "foo"), missing = FALSE))
+  expect_false(is_character2(c("foo", NA), missing = FALSE))
+  expect_false(is_character2(c("foo", NA), missing = TRUE))
+  expect_true(is_character2(chr(NA, NA), missing = TRUE))
+  expect_true(is_character2(c("foo", "foo"), missing = FALSE))
 
-  expect_true(is_character(c("foo", "foo"), empty = FALSE, missing = FALSE))
-  expect_false(is_character(c("foo", "foo"), empty = FALSE, missing = TRUE))
-  expect_true(is_character(chr(NA, NA), empty = FALSE, missing = TRUE))
-  expect_false(is_character(c("foo", "foo"), empty = TRUE, missing = FALSE))
-  expect_true(is_character(c("", ""), empty = TRUE, missing = FALSE))
+  expect_true(is_character2(c("foo", "foo"), empty = FALSE, missing = FALSE))
+  expect_false(is_character2(c("foo", "foo"), empty = FALSE, missing = TRUE))
+  expect_true(is_character2(chr(NA, NA), empty = FALSE, missing = TRUE))
+  expect_false(is_character2(c("foo", "foo"), empty = TRUE, missing = FALSE))
+  expect_true(is_character2(c("", ""), empty = TRUE, missing = FALSE))
 })

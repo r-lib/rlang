@@ -27,7 +27,7 @@ is_double(x, n = NULL, finite = NULL)
 
 is_complex(x, n = NULL, finite = NULL)
 
-is_character(x, n = NULL, ..., missing = NULL, empty = NULL)
+is_character(x, n = NULL)
 
 is_logical(x, n = NULL)
 
@@ -46,12 +46,6 @@ is_null(x)
 non-finite values are \code{NA}, \code{Inf}, \code{-Inf} and \code{NaN}. Setting this
 to something other than \code{NULL} can be expensive because the whole
 vector needs to be traversed and checked.}
-
-\item{...}{These dots are for future extensions and must be empty.}
-
-\item{missing, empty}{A logical value indicating whether to forbid
-(\code{FALSE}) or enforce (\code{TRUE}) missing values or empty \code{""}. If
-\code{NULL}, these values are ignored.}
 }
 \description{
 These type predicates aim to make type testing in R more

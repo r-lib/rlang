@@ -34,7 +34,7 @@ is_scalar_logical(x)
 
 is_scalar_raw(x)
 
-is_string(x, string = NULL, ..., empty = NULL)
+is_string(x, string = NULL)
 
 is_scalar_bytes(x)
 
@@ -45,12 +45,6 @@ is_bool(x)
 
 \item{string}{A string to compare to \code{x}. If a character vector,
 returns \code{TRUE} if at least one element is equal to \code{x}.}
-
-\item{...}{These dots are for future extensions and must be empty.}
-
-\item{empty}{A logical value indicating whether to forbid
-(\code{FALSE}) or enforce (\code{TRUE}) missing values or empty \code{""}. If
-\code{NULL}, these values are ignored.}
 }
 \description{
 These predicates check for a given type and whether the vector is
