@@ -72,6 +72,14 @@
 
 ## Features and bugfixes
 
+* `is_installed()` and `check_installed()` now support
+  DESCRIPTION-style version requirements like `"rlang (>= 1.0)"`.
+  They also gain `version` and `compare` arguments to supply requirements
+  programmatically.
+
+* `check_installed()` gains an `action` argument that is called when
+  the user chooses to install and update missing and outdated packages.
+
 * `abort()`, `warn()`, and `inform()` gain a `body` argument to supply
   additional bullets in the error message.
 

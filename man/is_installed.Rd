@@ -5,21 +5,41 @@
 \alias{check_installed}
 \title{Are packages installed in any of the libraries?}
 \usage{
-is_installed(pkg, ..., version = NULL)
+is_installed(pkg, ..., version = NULL, compare = NULL)
 
-check_installed(pkg, reason = NULL, ..., version = NULL, call = caller_env())
+check_installed(
+  pkg,
+  reason = NULL,
+  ...,
+  version = NULL,
+  compare = NULL,
+  action = NULL,
+  call = caller_env()
+)
 }
 \arguments{
-\item{pkg}{The package names.}
+\item{pkg}{The package names. Can include version requirements,
+e.g. \code{"pkg (>= 1.0.0)"}.}
 
 \item{...}{These dots must be empty.}
 
 \item{version}{Minimum versions for \code{pkg}. If supplied, must be the
 same length as \code{pkg}. \code{NA} elements stand for any versions.}
 
+\item{compare}{A character vector of comparison operators to use
+for \code{version}. If supplied, must be the same length as
+\code{version}. If \code{NULL}, \code{>=} is used as default for all
+elements. \code{NA} elements in \code{compare} are also set to \code{>=} by
+default.}
+
 \item{reason}{Optional string indicating why is \code{pkg} needed.
 Appears in error messages (if non-interactive) and user prompts
 (if interactive).}
+
+\item{action}{An optional function taking \code{pkg} and \code{...}
+arguments. It is called by \code{check_installed()} when the user
+chooses to update outdated packages. The function is passed the
+missing and outdated packages as a character vector of names.}
 
 \item{call}{The execution environment of a currently
 running function, e.g. \code{caller_env()}. The function will be

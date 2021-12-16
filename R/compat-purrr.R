@@ -14,6 +14,9 @@
 #
 # 2021-05-21:
 # * Fixed "object `x` not found" error in `imap()` (@mgirlich)
+#
+# 2021-12-15:
+# * `transpose()` now supports empty lists.
 
 map <- function(.x, .f, ...) {
   .f <- as_function(.f, env = global_env())
@@ -115,6 +118,9 @@ compact <- function(.x) {
 }
 
 transpose <- function(.l) {
+  if (!length(.l)) {
+    return(.l)
+  }
   inner_names <- names(.l[[1]])
   if (is.null(inner_names)) {
     fields <- seq_along(.l[[1]])
