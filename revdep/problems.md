@@ -39,20 +39,25 @@ Run `cloud_details(, "nofrills")` for more info
     Execution halted
     ```
 
-## In both
-
 *   checking tests ... ERROR
     ```
       Running ‘testthat.R’
     Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > library(testthat)
-      Error in library(testthat) : there is no package called 'testthat'
+    Last 13 lines of output:
+      > test_check("nofrills")
+      ══ Failed tests ════════════════════════════════════════════════════════════════
+      ── Error (test-functions.R:48:3): body can be a closure ────────────────────────
+      Error in `function_(d$args, d$body, ..env)`: Body must be an expression or closure.
+      Backtrace:
+          ▆
+       1. ├─testthat::expect_equal(fn(x ~ function(y) x + y), foo) at test-functions.R:48:2
+       2. │ └─testthat::quasi_label(enquo(object), label, arg = "object")
+       3. │   └─rlang::eval_bare(expr, quo_get_env(quo))
+       4. └─nofrills::fn(x ~ function(y) x + y)
+       5.   └─nofrills function_(d$args, d$body, ..env)
+      
+      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 107 ]
+      Error: Test failures
       Execution halted
-    ```
-
-*   checking package dependencies ... NOTE
-    ```
-    Packages suggested but not available for checking: 'testthat', 'dplyr'
     ```
 
