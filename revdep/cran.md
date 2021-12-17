@@ -1,172 +1,169 @@
 ## revdepcheck results
 
-We checked 1276 reverse dependencies (1264 from CRAN + 12 from Bioconductor), comparing R CMD check results across CRAN and dev versions of this package.
+We checked 1487 reverse dependencies (1471 from CRAN + 16 from Bioconductor), comparing R CMD check results across CRAN and dev versions of this package.
 
- * We saw 22 new problems
- * We failed to check 87 packages
+ * We saw 1 new problems
+ * We failed to check 152 packages
 
 Issues with CRAN packages are summarised below.
 
 ### New problems
 (This reports the first line of each new failure)
 
-* arrow
-  checking tests ... ERROR
-
-* assemblerr
-  checking dependencies in R code ... NOTE
-
-* bignum
-  checking examples ... ERROR
-  checking tests ... ERROR
-
-* catchr
-  checking tests ... ERROR
-
-* cmstatr
-  checking tests ... ERROR
-
-* dtplyr
-  checking examples ... ERROR
-  checking tests ... ERROR
-
-* fabricatr
-  checking tests ... ERROR
-
-* gestalt
-  checking tests ... ERROR
-
-* ggh4x
-  checking tests ... ERROR
-
-* heemod
-  checking examples ... ERROR
-  checking tests ... ERROR
-
-* icecream
-  checking tests ... ERROR
-
-* lares
-  checking examples ... ERROR
-
 * nofrills
   checking examples ... ERROR
-  checking tests ... ERROR
-
-* partition
-  checking tests ... ERROR
-
-* PVplr
-  checking examples ... ERROR
-
-* ricu
-  checking tests ... ERROR
-
-* sketch
-  checking examples ... ERROR
-
-* tidyMicro
-  checking examples ... ERROR
-  checking tests ... ERROR
-
-* tidyquery
-  checking tests ... ERROR
-
-* tidytext
-  checking tests ... ERROR
-
-* Tplyr
-  checking tests ... ERROR
-
-* winch
-  checking tests ... ERROR
 
 ### Failed to check
 
-* admixr             (NA)
-* alakazam           (NA)
-* Andromeda          (NA)
-* apisensr           (NA)
-* applicable         (NA)
-* apyramid           (NA)
-* arena2r            (NA)
-* ARPALData          (NA)
-* auk                (NA)
-* autoharp           (NA)
-* basedosdados       (NA)
-* bayesAB            (NA)
-* bayesdfa           (NA)
-* beadplexr          (NA)
-* binomialMix        (NA)
-* bioOED             (NA)
-* bitmexr            (NA)
-* broomExtra         (NA)
-* bs4cards           (NA)
-* bupaR              (NA)
-* cansim             (NA)
-* card               (NA)
-* cartograflow       (NA)
-* CausalGPS          (NA)
-* chantrics          (NA)
-* cjbart             (NA)
-* clock              (NA)
-* clustermole        (NA)
-* clustringr         (NA)
-* consortr           (NA)
-* ConsReg            (NA)
-* corporaexplorer    (NA)
-* cowplot            (NA)
-* crosstable         (NA)
-* cspp               (NA)
-* cutpointr          (NA)
-* cylcop             (NA)
-* dabestr            (NA)
-* data.validator     (NA)
-* dbflobr            (NA)
-* dbplyr             (NA)
-* dcurves            (NA)
-* describedata       (NA)
-* dexter             (NA)
-* DiagrammeR         (NA)
-* diffEnrich         (NA)
-* dipsaus            (NA)
-* disk.frame         (NA)
-* diversityForest    (NA)
-* DSAIRM             (NA)
-* dynprog            (NA)
-* echor              (NA)
-* egor               (NA)
-* ellipsis           (NA)
-* EpiNow2            (NA)
-* era                (NA)
-* esquisse           (NA)
-* fable              (NA)
-* fabletools         (NA)
-* factory            (NA)
-* farrell            (NA)
-* feasts             (NA)
-* fgeo               (NA)
-* FielDHub           (NA)
-* GillespieSSA2      (NA)
-* LAGOSNE            (NA)
-* loon.ggplot        (NA)
-* madrat             (NA)
-* MazamaSpatialUtils (NA)
-* metagam            (NA)
-* NMproject          (NA)
-* OncoBayes2         (NA)
-* OpenSpecy          (NA)
-* PupillometryR      (NA)
-* rabhit             (NA)
-* RClimacell         (NA)
-* Rcurvep            (NA)
-* REDCapR            (NA)
-* scoper             (NA)
-* SimSurvey          (NA)
-* SUNGEO             (NA)
-* SurviMChd          (NA)
-* SynthETIC          (NA)
-* tigger             (NA)
-* TKCat              (NA)
-* trackr             (NA)
-* XPolaris           (NA)
+* alakazam            (NA)
+* amt                 (NA)
+* assignR             (NA)
+* bayesnec            (NA)
+* bayesplot           (NA)
+* bfsMaps             (NA)
+* BiodiversityR       (NA)
+* biomod2             (NA)
+* broom               (NA)
+* butcher             (NA)
+* canadamaps          (NA)
+* cancensus           (NA)
+* cartograflow        (NA)
+* cat2cat             (NA)
+* censable            (NA)
+* ceramic             (NA)
+* chilemapas          (NA)
+* clustermole         (NA)
+* clustree            (NA)
+* composits           (NA)
+* conos               (NA)
+* consortr            (NA)
+* covidregionaldata   (NA)
+* dalmatian           (NA)
+* deepredeff          (NA)
+* digitalDLSorteR     (NA)
+* diversityForest     (NA)
+* dowser              (NA)
+* dragon              (NA)
+* driveR              (NA)
+* dsims               (NA)
+* dyngen              (NA)
+* ebirdst             (NA)
+* ech                 (NA)
+* echor               (NA)
+* ecochange           (NA)
+* ecocomDP            (NA)
+* eiCompare           (NA)
+* epcc                (NA)
+* excessmort          (NA)
+* foodingraph         (NA)
+* geofi               (NA)
+* geometr             (NA)
+* geouy               (NA)
+* geoviz              (NA)
+* ggformula           (NA)
+* ggplot2             (NA)
+* ggspatial           (NA)
+* gms                 (NA)
+* graphicalVAR        (NA)
+* graphTweets         (NA)
+* grattan             (NA)
+* highcharter         (NA)
+* idmodelr            (NA)
+* industRial          (NA)
+* ipumsr              (NA)
+* isobxr              (NA)
+* janitor             (NA)
+* jmvcore             (NA)
+* malariaAtlas        (NA)
+* mapboxapi           (NA)
+* Mapinguari          (NA)
+* MazamaLocationUtils (NA)
+* MazamaSpatialPlots  (NA)
+* MazamaSpatialUtils  (NA)
+* mcvis               (NA)
+* MetabolomicsBasics  (NA)
+* metacoder           (NA)
+* microbial           (NA)
+* missCompare         (NA)
+* mlVAR               (NA)
+* molnet              (NA)
+* momentuHMM          (NA)
+* mrgsolve            (NA)
+* multinma            (NA)
+* MultIS              (NA)
+* naijR               (NA)
+* naturaList          (NA)
+* nbTransmission      (NA)
+* neo4r               (NA)
+* NetFACS             (NA)
+* netgsa              (NA)
+* nhdR                (NA)
+* NMproject           (NA)
+* noaastormevents     (NA)
+* onemapsgapi         (NA)
+* pagoda2             (NA)
+* parsnip             (NA)
+* pems.utils          (NA)
+* pillar              (NA)
+* places              (NA)
+* plotly              (NA)
+* plsmod              (NA)
+* poppr               (NA)
+* ppmf                (NA)
+* profile             (NA)
+* protti              (NA)
+* psycModel           (NA)
+* PupillometryR       (NA)
+* PWFSLSmoke          (NA)
+* qualmap             (NA)
+* rabhit              (NA)
+* Radviz              (NA)
+* rcage               (NA)
+* recipes             (NA)
+* redist              (NA)
+* reproducible        (NA)
+* rliger              (NA)
+* rmapzen             (NA)
+* Rsagacmd            (NA)
+* RSDA                (NA)
+* rsyntax             (NA)
+* RTL                 (NA)
+* RVA                 (NA)
+* sccore              (NA)
+* scITD               (NA)
+* scoper              (NA)
+* SDMtune             (NA)
+* secuTrialR          (NA)
+* segclust2d          (NA)
+* Seurat              (NA)
+* sf                  (NA)
+* shazam              (NA)
+* sigminer            (NA)
+* simplevis           (NA)
+* SimSurvey           (NA)
+* SpatialKDE          (NA)
+* spNetwork           (NA)
+* stacks              (NA)
+* stars               (NA)
+* strm                (NA)
+* sugarbag            (NA)
+* SUNGEO              (NA)
+* swfscDAS            (NA)
+* taxizedb            (NA)
+* telemac             (NA)
+* tidycensus          (NA)
+* tidyseurat          (NA)
+* tidysq              (NA)
+* tigger              (NA)
+* TKCat               (NA)
+* tmap                (NA)
+* tongfen             (NA)
+* track2KBA           (NA)
+* tsibble             (NA)
+* TUFLOWR             (NA)
+* uavRmp              (NA)
+* valhallr            (NA)
+* valr                (NA)
+* vistime             (NA)
+* vosonSML            (NA)
+* zipcodeR            (NA)
