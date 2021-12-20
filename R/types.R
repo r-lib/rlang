@@ -74,9 +74,18 @@ is_character <- function(x, n = NULL) {
 is_character2 <- function(x,
                           n = NULL,
                           ...,
-                          missing = NULL,
-                          empty = NULL) {
+                          missing = TRUE,
+                          empty = TRUE) {
   check_dots_empty0(...)
+
+  # FIXME: Change API at C-level so that `TRUE` means no restriction
+  if (is_true(missing)) {
+    missing <- NULL
+  }
+  if (is_true(empty)) {
+    empty <- NULL
+  }
+
   .Call(ffi_is_character, x, n, missing, empty)
 }
 #' @export

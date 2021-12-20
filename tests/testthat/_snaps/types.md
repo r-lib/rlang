@@ -19,12 +19,3 @@
       Error in `is_string2()`:
       ! Exactly one of `string` and `empty` must be supplied.
 
-# is_character2() matches empty and missing values
-
-    Code
-      (expect_error(is_character2("", empty = TRUE, missing = TRUE)))
-    Output
-      <error/rlang_error>
-      Error in `is_character2()`:
-      ! Exactly one of `missing` and `empty` can be `TRUE`.
-
