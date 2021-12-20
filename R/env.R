@@ -286,7 +286,7 @@ env_parent <- function(env = caller_env(), n = 1) {
 
   while (n > 0) {
     if (is_empty_env(env_)) {
-      abort("The empty environment has no parent")
+      abort("The empty environment has no parent.")
     }
     n <- n - 1
     env_ <- parent.env(env_)
@@ -317,8 +317,8 @@ env_parents <- function(env = caller_env(), last = global_env()) {
   n <- env_depth(env)
   out <- new_list(n)
 
-  if (!typeof(last) %in% c("environment", "NULL")) {
-    abort("`last` must be `NULL` or an environment")
+  if (!is_null(last)) {
+    check_environment(last, what = "`NULL` or an environment")
   }
 
   i <- 1L
@@ -454,7 +454,7 @@ get_env <- function(env, default = NULL) {
 
   if (is_null(out)) {
     type <- friendly_type_of(env)
-    abort(paste0("Can't extract an environment from ", type))
+    abort(paste0("Can't extract an environment from ", type, "."))
   } else {
     out
   }
@@ -509,7 +509,7 @@ set_env <- function(env, new_env = caller_env()) {
   }
 
   abort(paste0(
-    "Can't set environment for ", friendly_type_of(env)
+    "Can't set environment for ", friendly_type_of(env), "."
   ))
 }
 #' @rdname get_env

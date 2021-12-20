@@ -194,9 +194,7 @@ rep_along <- function(along, x) {
 #' @rdname rep_along
 rep_named <- function(names, x) {
   names <- names %||% chr()
-  if (!is_character(names)) {
-    abort("`names` must be `NULL` or a character vector")
-  }
+  check_character(names, what = "`NULL` or a character vector")
 
   set_names(rep_len(x, length(names)), names)
 }

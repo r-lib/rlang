@@ -85,9 +85,8 @@ search_envs <- function() {
 #' @rdname search_envs
 #' @export
 search_env <- function(name) {
-  if (!is_string(name)) {
-    abort("`name` must be a string")
-  }
+  check_string(name)
+
   if (!is_attached(name)) {
     abort(paste_line(
       sprintf("`%s` is not attached.", name),
@@ -114,9 +113,7 @@ is_attached <- function(x) {
   if (is_string(x)) {
     return(x %in% search())
   }
-  if (!is_environment(x)) {
-    abort("`x` must be an environment or a name")
-  }
+  check_environment(x, what = "an environment or a name")
 
   env <- global_env()
   while (!is_reference(env, empty_env())) {
@@ -228,7 +225,7 @@ ns_env <- function(x = caller_env()) {
   )
 
   if (!is_namespace(env)) {
-    abort("`x` must be a package name or a function inheriting from a namespace.")
+    stop_input_type(x, "a package name or a function inheriting from a namespace")
   }
 
   env
@@ -247,7 +244,7 @@ ns_env_name <- function(x = caller_env()) {
     builtin = ,
     special = ,
     closure = ns_env(x),
-    abort("`x` must be an environment or a function inheriting from a namespace.")
+    stop_input_type(x, "an environment or a function inheriting from a namespace")
   )
   unname(getNamespaceName(env))
 }
@@ -292,7 +289,7 @@ friendly_env_type <- function(type) {
     base = "the base environment",
     frame = "a frame environment",
     local = "a local environment",
-    abort("Internal error: unknown environment type")
+    abort("Unknown environment type.", .internal = TRUE)
   )
 }
 
@@ -346,9 +343,7 @@ env_format <- function(env) {
 #' env_name(env())
 #' env_label(env())
 env_name <- function(env) {
-  if (!is_environment(env)) {
-    abort("`env` must be an environment")
-  }
+  check_environment(env)
 
   if (is_reference(env, global_env())) {
     return("global")

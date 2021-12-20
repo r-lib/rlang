@@ -339,23 +339,25 @@ test_that("precedence of associative ops", {
 })
 
 test_that("call functions type-check their input (#187)", {
-  x <- list(a = 1)
-  expect_error(call_modify(x, NULL), "must be a quoted call")
-  expect_error(call_standardise(x), "must be a quoted call")
-  expect_error(call_name(x), "must be a quoted call")
-  expect_error(call_args(x), "must be a quoted call")
-  expect_error(call_args_names(x), "must be a quoted call")
+  expect_snapshot({
+    x <- list(a = 1)
+    err(call_modify(x, NULL))
+    err(call_standardise(x))
+    err(call_name(x))
+    err(call_args(x))
+    err(call_args_names(x))
 
-  q <- quo(!!x)
-  expect_error(call_modify(q, NULL), "must be a quoted call")
-  expect_error(call_standardise(q), "must be a quoted call")
-  expect_error(call_name(q), "must be a quoted call")
-  expect_error(call_args(q), "must be a quoted call")
-  expect_error(call_args_names(q), "must be a quoted call")
+    q <- quo(!!x)
+    err(call_modify(q, NULL))
+    err(call_standardise(q))
+    err(call_name(q))
+    err(call_args(q))
+    err(call_args_names(q))
+  })
 })
 
 test_that("call_print_type() returns correct enum", {
-  expect_error(call_print_type(""), "must be a call")
+  expect_error(call_print_type(""), "must be a defused call")
   expect_identical(call_print_type(quote(foo())), "prefix")
 
   expect_identical(call_print_type(quote(~a)), "prefix")
@@ -434,7 +436,7 @@ test_that("call_print_type() returns correct enum", {
 })
 
 test_that("call_print_fine_type() returns correct enum", {
-  expect_error(call_print_fine_type(""), "must be a call")
+  expect_error(call_print_fine_type(""), "must be a defused call")
   expect_identical(call_print_fine_type(quote(foo())), "call")
 
   expect_identical(call_print_fine_type(quote(~a)), "prefix")
@@ -520,7 +522,7 @@ test_that("call_name() fails with namespaced objects (#670)", {
 })
 
 test_that("call_ns() retrieves namespaces", {
-  expect_error(call_ns(quote(foo)), "must be a quoted call")
+  expect_error(call_ns(quote(foo)), "must be a defused call")
   expect_null(call_ns(quote(foo())))
   expect_identical(call_ns(quote(foo::bar())), "foo")
   expect_identical(call_ns(quote(foo:::bar())), "foo")

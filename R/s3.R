@@ -37,7 +37,7 @@
 #' inherits_only(obj, c("foo", "bar", "baz"))
 inherits_any <- function(x, class) {
   if (is_empty(class)) {
-    abort("`class` can't be empty")
+    abort("`class` can't be empty.")
   }
   inherits(x, class)
 }
@@ -45,7 +45,7 @@ inherits_any <- function(x, class) {
 #' @export
 inherits_all <- function(x, class) {
   if (is_empty(class)) {
-    abort("`class` can't be empty")
+    abort("`class` can't be empty.")
   }
 
   idx <- inherits(x, class, which = TRUE)

@@ -53,8 +53,8 @@ test_that("expr_name() with symbols, calls, and literals", {
   expect_identical(expr_name(function() NULL), "function () ...")
   expect_identical(expr_name(expr(function() { a; b })), "function() ...")
   expect_identical(expr_name(NULL), "NULL")
-  expect_error(expr_name(1:2), "must quote")
-  expect_error(expr_name(env()), "must quote")
+  expect_error(expr_name(1:2), "must be")
+  expect_error(expr_name(env()), "must be")
 })
 
 # --------------------------------------------------------------------

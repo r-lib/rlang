@@ -111,7 +111,7 @@ na_cpl <- NA_complex_
 #' @export
 are_na <- function(x) {
   if (!is_atomic(x)) {
-    abort("`x` must be an atomic vector")
+    stop_input_type(x, "an atomic vector")
   }
   is.na(x)
 }

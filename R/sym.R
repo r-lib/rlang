@@ -61,7 +61,7 @@ sym <- function(x) {
     return(missing_arg())
   }
   if (!is_string(x)) {
-    abort("Only strings can be converted to symbols")
+    abort_coercion(x, "a symbol")
   }
   .Call(ffi_symbol, x)
 }

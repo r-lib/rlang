@@ -113,10 +113,10 @@ error_cnd <- function(class = NULL,
                       parent = NULL,
                       use_cli_format = NULL) {
   if (!is_null(trace) && !inherits(trace, "rlang_trace")) {
-    abort("`trace` must be NULL or an rlang backtrace")
+    stop_input_type(trace, "`NULL` or an rlang backtrace")
   }
   if (!is_null(parent) && !inherits(parent, "condition")) {
-    abort("`parent` must be NULL or a condition object")
+    stop_input_type(parent, "`NULL` or a condition object")
   }
 
   if (is_environment(call)) {

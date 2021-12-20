@@ -58,10 +58,12 @@ parse_expr <- function(x) {
   exprs <- parse_exprs(x)
 
   n <- length(exprs)
-  if (n == 0) {
-    abort("No expression to parse")
-  } else if (n > 1) {
-    abort("More than one expression parsed")
+  if (n != 1) {
+    abort(sprintf(
+      "%s must contain exactly 1 expression, not %d.",
+      format_arg("x"),
+      n
+    ))
   }
 
   exprs[[1]]
@@ -78,7 +80,7 @@ parse_exprs <- function(x) {
   } else if (is.character(x)) {
     exprs <- chr_parse_exprs(x)
   } else {
-    abort("`x` must be a character vector or an R connection")
+    stop_input_type(x, "a character vector or an R connection")
   }
   as.list(exprs)
 }
@@ -106,7 +108,7 @@ chr_parse_exprs <- function(x) {
 #' @export
 parse_quo <- function(x, env = global_env()) {
   if (missing(env)) {
-    abort("The quosure environment should be explicitly supplied as `env`")
+    abort("The quosure environment must be supplied as `env`.")
   }
   new_quosure(parse_expr(x), as_environment(env))
 }
@@ -114,7 +116,7 @@ parse_quo <- function(x, env = global_env()) {
 #' @export
 parse_quos <- function(x, env = global_env()) {
   if (missing(env)) {
-    abort("The quosure environment should be explicitly supplied as `env`")
+    abort("The quosure environment must be supplied as `env`.")
   }
   out <- map(parse_exprs(x), new_quosure, env = as_environment(env))
   new_quosures(out)

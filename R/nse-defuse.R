@@ -428,7 +428,8 @@ endots <- function(call,
                    ignore_empty,
                    unquote_names,
                    homonyms,
-                   check_assign) {
+                   check_assign,
+                   error_call = caller_env()) {
   ignore_empty <- arg_match0(ignore_empty, c("trailing", "none", "all"))
   syms <- as.list(node_cdr(call))
 
@@ -443,7 +444,10 @@ endots <- function(call,
   splice_dots <- FALSE
   dots <- map(syms, function(sym) {
     if (!is_symbol(sym)) {
-      abort("Inputs to capture must be argument names")
+      abort(
+        "Inputs to defuse must be argument names.",
+        call = error_call
+      )
     }
     if (identical(sym, dots_sym)) {
       splice_dots <<- TRUE
@@ -488,7 +492,7 @@ endots <- function(call,
   } else if (is_false(named)) {
     names(dots) <- names2(dots)
   } else if (!is_null(named)) {
-    abort("`.named` must be a logical value.")
+    check_bool(named, arg = ".named", call = error_call)
   }
 
   dots

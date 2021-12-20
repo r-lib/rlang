@@ -123,7 +123,7 @@ string <- function(x, encoding = NULL) {
   } else if (is_raw(x)) {
     x <- rawToChar(x)
   } else if (!is_string(x)) {
-    abort("`x` must be a string or raw vector")
+    stop_input_type(x, "a string or a raw vector")
   }
 
   if (!is_null(encoding)) {
@@ -133,13 +133,13 @@ string <- function(x, encoding = NULL) {
   x
 }
 
-cast_raw <- function(x) {
+cast_raw <- function(x, call = caller_env()) {
   if (is_integerish(x)) {
     as.raw(x)
   } else if (is_raw(x)) {
     x
   } else {
-    abort("input should be integerish")
+    abort("`...` must be numbers.", call = call)
   }
 }
 
@@ -149,5 +149,5 @@ legacy_as_raw <- function(x) {
     raw = return(x),
     character = if (is_string(x)) return(charToRaw(x))
   )
-  abort("`x` must be a string or raw vector")
+  stop_input_type(x, "a string or a raw vector", call = NULL)
 }

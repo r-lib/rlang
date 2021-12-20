@@ -496,10 +496,7 @@ env_poke <- function(env = caller_env(),
 #' @export
 env_cache <- function(env, nm, default) {
   check_required(default)
-
-  if (!is_string(nm)) {
-    abort("`nm` must be a string.")
-  }
+  check_string(nm)
 
   if (env_has(env, nm)) {
     env_get(env, nm)
@@ -554,9 +551,7 @@ env_names <- function(env) {
 #' @rdname env_names
 #' @export
 env_length <- function(env) {
-  if (!is_environment(env)) {
-    abort("`env` must be an environment")
-  }
+  check_environment(env)
   length(env)
 }
 
@@ -641,11 +636,13 @@ env_binding_are_active <- function(env, nms = NULL) {
 env_binding_are_lazy <- function(env, nms = NULL) {
   env_binding_are_type(env, nms, 1L)
 }
-env_binding_are_type <- function(env, nms, type) {
-  if (!is_environment(env)) {
-    abort("`env` must be an environment.")
-  }
-  nms <- env_binding_validate_names(env, nms)
+env_binding_are_type <- function(env,
+                                 nms,
+                                 type,
+                                 error_call = caller_env()) {
+  check_environment(env, call = error_call)
+
+  nms <- env_binding_validate_names(env, nms, call = error_call)
   promise <- env_binding_types(env, nms)
 
   if (is_null(promise)) {
@@ -656,13 +653,15 @@ env_binding_are_type <- function(env, nms, type) {
   set_names(promise, nms)
 }
 
-env_binding_validate_names <- function(env, nms) {
+env_binding_validate_names <- function(env, nms, call = caller_env()) {
   if (is_null(nms)) {
     nms <- env_names(env)
   } else {
-    if (!is_character(nms)) {
-      abort("`nms` must be a character vector of names")
-    }
+    check_character(
+      nms,
+      what = "a character vector of names",
+      call = call
+    )
   }
   nms
 }

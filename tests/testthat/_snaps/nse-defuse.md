@@ -1,3 +1,30 @@
+# ensyms() captures multiple symbols
+
+    Code
+      err(fn(foo()))
+    Output
+      <error/rlang_error>
+      Error in `sym()`:
+      ! Can't convert a call to a symbol.
+
+# ensym() unwraps quosures
+
+    Code
+      err(fn(!!quo(foo())))
+    Output
+      <error/rlang_error>
+      Error in `ensym()`:
+      ! Can't convert to a symbol.
+
+# ensyms() unwraps quosures
+
+    Code
+      err(fn(!!!quos(foo, bar())))
+    Output
+      <error/rlang_error>
+      Error in `sym()`:
+      ! Can't convert a call to a symbol.
+
 # auto-named expressions can be unique-repaired
 
     Code
