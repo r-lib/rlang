@@ -20,7 +20,7 @@
 #' rlang::global_entrace()
 #' ```
 #'
-#' @param enable Whether to enable or disable entracing.
+#' @param enable Whether to enable or disable global handling.
 #' @param class A character vector of one or several classes of
 #'   conditions to be entraced.
 #'
@@ -35,25 +35,15 @@
 #' @export
 global_entrace <- function(enable = TRUE,
                            class = c("error", "warning", "message")) {
+  check_bool(enable)
+  class <- arg_match(class, multiple = TRUE)
+
   if (getRversion() < "4.0") {
     return(global_entrace_fallback(enable, class))
   }
-  if (!is_character(class)) {
-    abort(sprintf(
-      "%s must be a character vector, not %s.",
-      format_arg("class"),
-      friendly_type_of(class)
-    ))
-  }
-
-  if (enable) {
-    poke_handlers <- globalCallingHandlers
-  } else {
-    poke_handlers <- drop_global_handlers
-  }
 
   handlers <- rep_named(class, list(hnd_entrace))
-  inject(poke_handlers(!!!handlers))
+  poke_global_handlers(enable, !!!handlers)
 
   invisible(NULL)
 }

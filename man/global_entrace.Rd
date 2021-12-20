@@ -7,7 +7,7 @@
 global_entrace(enable = TRUE, class = c("error", "warning", "message"))
 }
 \arguments{
-\item{enable}{Whether to enable or disable entracing.}
+\item{enable}{Whether to enable or disable global handling.}
 
 \item{class}{A character vector of one or several classes of
 conditions to be entraced.}
