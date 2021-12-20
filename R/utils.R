@@ -293,7 +293,7 @@ stop_internal <- function(message, ..., call = caller_env(2)) {
   abort(message, ..., call = call, .internal = TRUE)
 }
 stop_internal_c_lib <- function(fn, message) {
-  if (!is_installed("winch")) {
+  if (!is_installed("winch") && is_interactive()) {
     message <- c(
       message,
       "i" = sprintf(
