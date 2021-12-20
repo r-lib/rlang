@@ -348,33 +348,6 @@ fn_env <- function(fn) {
   x
 }
 
-check_closure <- function(x,
-                          arg = caller_arg(x),
-                          call = caller_env()) {
-  if (!is_closure(x)) {
-    msg <- sprintf(
-      "%s must be an R function, not %s.",
-      format_arg(arg),
-      friendly_type_of(x)
-    )
-    abort(msg, call = call)
-  }
-}
-check_function <- function(x,
-                           arg = caller_arg(x),
-                           call = caller_env()) {
-  if (!is_function(x)) {
-    msg <- sprintf(
-      "%s must be a function, not %s.",
-      format_arg(arg),
-      friendly_type_of(x)
-    )
-    abort(msg, call = call)
-  }
-}
-
-
-
 #' Convert to function
 #'
 #' @description
