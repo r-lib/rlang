@@ -38,7 +38,11 @@ arg_match <- function(arg,
 
   arg_expr <- enexpr(arg)
   if (!is_symbol(arg_expr)) {
-    stop_internal(sprintf("%s must be a symbol.", format_arg("arg")))
+    abort(
+      sprintf("%s must be a symbol.", format_arg("arg")),
+      call = caller_env(),
+      .internal = TRUE
+    )
   }
 
   error_arg <- as_string(error_arg)

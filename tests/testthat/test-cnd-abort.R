@@ -532,3 +532,18 @@ test_that("can supply bullets both through `message` and `body` (cli case)", {
     (expect_error(abort(c("foo", "bar"), body = c("a", "b"))))
   })
 })
+
+test_that("setting `.internal` adds footer bullet", {
+  expect_snapshot({
+    err(abort(c("foo", "x" = "bar"), .internal = TRUE))
+    err(abort("foo", body = c("x" = "bar"), .internal = TRUE))
+  })
+})
+
+test_that("setting `.internal` adds footer bullet (fallback)", {
+  local_use_cli(format = FALSE)
+  expect_snapshot({
+    err(abort(c("foo", "x" = "bar"), .internal = TRUE))
+    err(abort("foo", body = c("x" = "bar"), .internal = TRUE))
+  })
+})
