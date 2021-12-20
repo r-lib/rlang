@@ -3,6 +3,9 @@
 # Changelog
 # =========
 #
+# 2021-12-20:
+# - Added support for scalar values.
+#
 # 2021-06-30:
 # - Added support for missing arguments.
 #
@@ -30,6 +33,29 @@ friendly_type_of <- function(x, length = FALSE) {
       type <- paste(class(x), collapse = "/")
     }
     return(sprintf("a <%s> object", type))
+  }
+
+  if (is_na(x)) {
+    return(switch(
+      typeof(x),
+      logical = "`NA`",
+      integer = "an integer `NA`",
+      double = "a numeric `NA`",
+      complex = "a complex `NA`",
+      character = "a character `NA`"
+    ))
+  }
+
+  if (rlang::is_scalar_vector(x)) {
+    return(switch(
+      typeof(x),
+      logical = if (x) "`TRUE`" else "`FALSE`",
+      integer = "an integer",
+      double = "a number",
+      complex = "a complex number",
+      character = if (nzchar(x)) "a string" else "`\"\"`",
+      raw = "a raw value"
+    ))
   }
 
   if (!rlang::is_vector(x)) {

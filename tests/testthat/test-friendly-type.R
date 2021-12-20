@@ -20,3 +20,22 @@ test_that("friendly_type_of() supports matrices and arrays (#141)", {
 test_that("friendly_type_of() supports missing arguments", {
   expect_equal(friendly_type_of(missing_arg()), "absent")
 })
+
+test_that("friendly_type_of() handles scalars", {
+  expect_equal(friendly_type_of(NA), "`NA`")
+  expect_equal(friendly_type_of(na_int), "an integer `NA`")
+  expect_equal(friendly_type_of(na_dbl), "a numeric `NA`")
+  expect_equal(friendly_type_of(na_cpl), "a complex `NA`")
+  expect_equal(friendly_type_of(na_chr), "a character `NA`")
+
+  expect_equal(friendly_type_of(TRUE), "`TRUE`")
+  expect_equal(friendly_type_of(FALSE), "`FALSE`")
+
+  expect_equal(friendly_type_of(1L), "an integer")
+  expect_equal(friendly_type_of(1.0), "a number")
+  expect_equal(friendly_type_of(1i), "a complex number")
+  expect_equal(friendly_type_of(as.raw(1)), "a raw value")
+
+  expect_equal(friendly_type_of("foo"), "a string")
+  expect_equal(friendly_type_of(""), "`\"\"`")
+})
