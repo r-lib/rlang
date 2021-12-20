@@ -5,7 +5,7 @@ abort_coercion <- function(x,
                            x_type = NULL,
                            arg = NULL,
                            call = caller_env()) {
-  x_type <- x_type %||% friendly_type_of(x)
+  x_type <- x_type %||% friendly_type_of(x, value = TRUE)
 
   if (is_null(arg)) {
     msg <- sprintf("Can't convert %s to %s.", x_type, to_type)

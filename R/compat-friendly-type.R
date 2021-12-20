@@ -17,11 +17,12 @@
 
 #' Return English-friendly type
 #' @param x Any R object.
+#' @param value Whether to describe the value of `x`.
 #' @param length Whether to mention the length of vectors and lists.
 #' @return A string describing the type. Starts with an indefinite
 #'   article, e.g. "an integer vector".
 #' @noRd
-friendly_type_of <- function(x, length = FALSE) {
+friendly_type_of <- function(x, value = TRUE, length = FALSE) {
   if (is_missing(x)) {
     return("absent")
   }
@@ -41,7 +42,7 @@ friendly_type_of <- function(x, length = FALSE) {
 
   n_dim <- length(dim(x))
 
-  if (!n_dim) {
+  if (value && !n_dim) {
     if (is_na(x)) {
       return(switch(
         typeof(x),
