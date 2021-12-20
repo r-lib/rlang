@@ -4,7 +4,7 @@
 # =========
 #
 # 2021-12-20:
-# - Added support for scalar values.
+# - Added support for scalar values and empty vectors.
 #
 # 2021-06-30:
 # - Added support for missing arguments.
@@ -49,10 +49,11 @@ friendly_type_of <- function(x, length = FALSE) {
         integer = "an integer `NA`",
         double = "a numeric `NA`",
         complex = "a complex `NA`",
-        character = "a character `NA`"
+        character = "a character `NA`",
+        .rlang_stop_unexpected_typeof(x)
       ))
     }
-    if (rlang::is_scalar_vector(x)) {
+    if (length(x) == 1 && !is_list(x)) {
       return(switch(
         typeof(x),
         logical = if (x) "`TRUE`" else "`FALSE`",
@@ -60,7 +61,21 @@ friendly_type_of <- function(x, length = FALSE) {
         double = "a number",
         complex = "a complex number",
         character = if (nzchar(x)) "a string" else "`\"\"`",
-        raw = "a raw value"
+        raw = "a raw value",
+        .rlang_stop_unexpected_typeof(x)
+      ))
+    }
+    if (length(x) == 0) {
+      return(switch(
+        typeof(x),
+        logical = "an empty logical vector",
+        integer = "an empty integer vector",
+        double = "an empty numeric vector",
+        complex = "an empty complex vector",
+        character = "an empty character vector",
+        raw = "an empty raw vector",
+        list = "an empty list",
+        .rlang_stop_unexpected_typeof(x)
       ))
     }
   }
@@ -137,6 +152,13 @@ friendly_type_of <- function(x, length = FALSE) {
     closure = "a function",
 
     type
+  )
+}
+
+.rlang_stop_unexpected_typeof <- function(x, call = rlang::caller_env()) {
+  rlang::abort(
+    sprintf("Unexpected type <%s>.", typeof(x)),
+    call = call
   )
 }
 

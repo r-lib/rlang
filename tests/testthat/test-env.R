@@ -91,7 +91,7 @@ test_that("finds correct env type", {
 })
 
 test_that("current_env() fails if no default", {
-  expect_error(get_env(list()), "Can't extract an environment from a list")
+  expect_error(get_env(list()), "Can't extract an environment from")
 })
 
 test_that("current_env() picks up default", {
