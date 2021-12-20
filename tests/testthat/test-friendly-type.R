@@ -38,4 +38,7 @@ test_that("friendly_type_of() handles scalars", {
 
   expect_equal(friendly_type_of("foo"), "a string")
   expect_equal(friendly_type_of(""), "`\"\"`")
+
+  expect_equal(friendly_type_of(matrix(NA)), "a logical matrix")
+  expect_equal(friendly_type_of(matrix(1)), "a double matrix")
 })

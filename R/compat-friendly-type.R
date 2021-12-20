@@ -35,34 +35,36 @@ friendly_type_of <- function(x, length = FALSE) {
     return(sprintf("a <%s> object", type))
   }
 
-  if (is_na(x)) {
-    return(switch(
-      typeof(x),
-      logical = "`NA`",
-      integer = "an integer `NA`",
-      double = "a numeric `NA`",
-      complex = "a complex `NA`",
-      character = "a character `NA`"
-    ))
-  }
-
-  if (rlang::is_scalar_vector(x)) {
-    return(switch(
-      typeof(x),
-      logical = if (x) "`TRUE`" else "`FALSE`",
-      integer = "an integer",
-      double = "a number",
-      complex = "a complex number",
-      character = if (nzchar(x)) "a string" else "`\"\"`",
-      raw = "a raw value"
-    ))
-  }
-
   if (!rlang::is_vector(x)) {
     return(.rlang_as_friendly_type(typeof(x)))
   }
 
   n_dim <- length(dim(x))
+
+  if (!n_dim) {
+    if (is_na(x)) {
+      return(switch(
+        typeof(x),
+        logical = "`NA`",
+        integer = "an integer `NA`",
+        double = "a numeric `NA`",
+        complex = "a complex `NA`",
+        character = "a character `NA`"
+      ))
+    }
+    if (rlang::is_scalar_vector(x)) {
+      return(switch(
+        typeof(x),
+        logical = if (x) "`TRUE`" else "`FALSE`",
+        integer = "an integer",
+        double = "a number",
+        complex = "a complex number",
+        character = if (nzchar(x)) "a string" else "`\"\"`",
+        raw = "a raw value"
+      ))
+    }
+  }
+
   type <- .rlang_as_friendly_vector_type(typeof(x), n_dim)
 
   if (length && !n_dim) {
