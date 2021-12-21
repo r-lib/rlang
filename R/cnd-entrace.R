@@ -52,16 +52,7 @@ global_entrace <- function(enable = TRUE,
     poke_handlers <- drop_global_handlers
   }
 
-  # Keep `rlang::` indirection in case rlang is reloaded. This way the
-  # global handlers can be set once in RProfile and they will always
-  # call into the most recently loaded version.
-  hnd <- function(cnd) rlang::entrace(cnd)
-
-  # Avoid duplicate handlers. This makes `global_entrace()` idempotent.
-  # Requires https://bugs.r-project.org/show_bug.cgi?id=18197
-  hnd <- set_env(hnd, base_env())
-
-  handlers <- rep_named(class, list(hnd))
+  handlers <- rep_named(class, list(hnd_entrace))
   inject(poke_handlers(!!!handlers))
 
   invisible(NULL)
@@ -82,6 +73,17 @@ global_entrace_fallback <- function(enable, class) {
 
   invisible(NULL)
 }
+
+# Keep `rlang::` indirection in case rlang is reloaded. This way the
+# global handlers can be set once in RProfile and they will always
+# call into the most recently loaded version.
+hnd_entrace <- function(cnd) rlang::entrace(cnd)
+
+# Set to `base_env()` to avoid duplicate handlers in case of
+# reload. This makes `global_entrace()` idempotent.  Requires
+# https://bugs.r-project.org/show_bug.cgi?id=18197
+environment(hnd_entrace) <- baseenv()
+
 
 #' Add backtrace from error handler
 #'
