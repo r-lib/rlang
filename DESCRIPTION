@@ -53,5 +53,4 @@ BugReports: https://github.com/r-lib/rlang/issues
 Config/testthat/edition: 3
 Config/Needs/website:
     dplyr,
-    r-lib/pkgdown,
     tidyverse/tidytemplate
