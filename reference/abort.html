@@ -147,6 +147,7 @@ to create custom interrupt condition objects.</p>
   trace <span class="op">=</span> <span class="cn">NULL</span>,
   parent <span class="op">=</span> <span class="cn">NULL</span>,
   use_cli_format <span class="op">=</span> <span class="cn">NULL</span>,
+  .internal <span class="op">=</span> <span class="cn">FALSE</span>,
   .file <span class="op">=</span> <span class="cn">NULL</span>,
   .subclass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>
 <span class="op">)</span>
@@ -230,6 +231,10 @@ namespace.</p>
 lines into a single string with lines separated by <code>\\n</code>
 characters) <code>message</code> ahead of time because that would conflict
 with cli formatting.</p></dd>
+<dt>.internal</dt>
+<dd><p>If <code>TRUE</code>, a footer bullet is added to <code>message</code>
+to let the user know that the error is internal and that they
+should report it to the package authors.</p></dd>
 <dt>.file</dt>
 <dd><p>A connection or a string specifying where to print the
 message. The default depends on the context, see the <code>stdout</code> vs
