@@ -125,7 +125,7 @@
       <error/rlang_error>
       Error in `wrapper()`:
       ! `arg` must be a symbol.
-      ! This is an internal error, please report it to the package authors.
+      i This is an internal error, please report it to the package authors.
 
 # can match multiple arguments
 

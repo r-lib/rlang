@@ -136,6 +136,9 @@
 #'   lines into a single string with lines separated by `\\n`
 #'   characters) `message` ahead of time because that would conflict
 #'   with cli formatting.
+#' @param .internal If `TRUE`, a footer bullet is added to `message`
+#'   to let the user know that the error is internal and that they
+#'   should report it to the package authors.
 #' @param .file A connection or a string specifying where to print the
 #'   message. The default depends on the context, see the `stdout` vs
 #'   `stderr` section.
@@ -209,6 +212,7 @@ abort <- function(message = NULL,
                   trace = NULL,
                   parent = NULL,
                   use_cli_format = NULL,
+                  .internal = FALSE,
                   .file = NULL,
                   .subclass = deprecated()) {
   if (is_null(trace) && is_null(peek_option("rlang:::disable_trace_capture"))) {
@@ -232,7 +236,13 @@ abort <- function(message = NULL,
   }
 
   message <- validate_signal_args(message, class, call, .subclass)
-  message_info <- cnd_message_info(message, body, caller_env(), use_cli_format = use_cli_format)
+  message_info <- cnd_message_info(
+    message,
+    body,
+    caller_env(),
+    use_cli_format = use_cli_format,
+    internal = .internal
+  )
   message <- message_info$message
   extra_fields <- message_info$extra_fields
   use_cli_format <- message_info$use_cli_format
@@ -266,7 +276,8 @@ cnd_message_info <- function(message,
                              body,
                              env,
                              cli_opts = use_cli(env),
-                             use_cli_format = NULL) {
+                             use_cli_format = NULL,
+                             internal = FALSE) {
   if (!is_null(use_cli_format)) {
     cli_opts[["format"]] <- use_cli_format
   }
@@ -283,13 +294,22 @@ cnd_message_info <- function(message,
   # indent and width-wrap depending on the context
   if (use_cli_format) {
     fields$body <- c(message[-1], body)
+    if (internal) {
+      fields$footer <- footer_internal
+    }
     message <- message[1]
   } else {
     # Compatibility with older bullets formatting
     if (is_null(names(message)) && length(message) > 1) {
       names(message) <- c("", rep_len("*", length(message) - 1))
     }
-    message <- .rlang_cli_format_fallback(c(message, body))
+    message <- c(message, body)
+
+    if (internal) {
+      message <- c(message, footer_internal)
+    }
+
+    message <- .rlang_cli_format_fallback(message)
   }
 
   list(
@@ -298,6 +318,10 @@ cnd_message_info <- function(message,
     extra_fields = fields
   )
 }
+
+footer_internal <- c(
+  "i" = "This is an internal error, please report it to the package authors."
+)
 
 
 #' Use cli to format error messages

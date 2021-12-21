@@ -632,3 +632,41 @@
       a
       b
 
+# setting `.internal` adds footer bullet
+
+    Code
+      err(abort(c("foo", x = "bar"), .internal = TRUE))
+    Output
+      <error/rlang_error>
+      Error:
+      ! foo
+      x bar
+      i This is an internal error, please report it to the package authors.
+    Code
+      err(abort("foo", body = c(x = "bar"), .internal = TRUE))
+    Output
+      <error/rlang_error>
+      Error:
+      ! foo
+      x bar
+      i This is an internal error, please report it to the package authors.
+
+# setting `.internal` adds footer bullet (fallback)
+
+    Code
+      err(abort(c("foo", x = "bar"), .internal = TRUE))
+    Output
+      <error/rlang_error>
+      Error:
+      ! foo
+      x bar
+      i This is an internal error, please report it to the package authors.
+    Code
+      err(abort("foo", body = c(x = "bar"), .internal = TRUE))
+    Output
+      <error/rlang_error>
+      Error:
+      ! foo
+      x bar
+      i This is an internal error, please report it to the package authors.
+

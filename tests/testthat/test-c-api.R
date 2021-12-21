@@ -1020,14 +1020,10 @@ test_that("can push to dynamic list-of", {
 
 test_that("can push to arrays in dynamic list-of", {
   lof <- new_dyn_list_of("integer", 3, 2)
-  expect_error(
-    lof_arr_push_back(lof, 0, 42L),
-    "Location 0 does not exist"
-  )
-  expect_error(
-    lof_arr_push_back(lof, 10, 42L),
-    "Location 10 does not exist"
-  )
+  expect_snapshot({
+    err(lof_arr_push_back(lof, 0, 42L), "Location 0 does not exist")
+    err(lof_arr_push_back(lof, 10, 42L), "Location 10 does not exist")
+  })
   lof_push_back(lof)
   lof_push_back(lof)
   lof_push_back(lof)

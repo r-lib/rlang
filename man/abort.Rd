@@ -17,6 +17,7 @@ abort(
   trace = NULL,
   parent = NULL,
   use_cli_format = NULL,
+  .internal = FALSE,
   .file = NULL,
   .subclass = deprecated()
 )
@@ -102,6 +103,10 @@ The downside is that you can no longer format (assemble multiple
 lines into a single string with lines separated by \verb{\\\\n}
 characters) \code{message} ahead of time because that would conflict
 with cli formatting.}
+
+\item{.internal}{If \code{TRUE}, a footer bullet is added to \code{message}
+to let the user know that the error is internal and that they
+should report it to the package authors.}
 
 \item{.file}{A connection or a string specifying where to print the
 message. The default depends on the context, see the \code{stdout} vs

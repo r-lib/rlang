@@ -289,19 +289,13 @@ split_lines <- function(x) {
   strsplit(x, "\n", fixed = TRUE)[[1]]
 }
 
-stop_internal <- function(msg, call = caller_env(2)) {
-  msg <- c(msg, "!" = "This is an internal error, please report it to the package authors.")
-  abort(msg, call = call)
+stop_internal <- function(message, ..., call = caller_env(2)) {
+  abort(message, ..., call = call, .internal = TRUE)
 }
-stop_internal_c_lib <- function(fn, msg) {
-  msg <- c(
-    sprintf("Internal error in `%s()`: %s", fn, msg),
-    "!" = "This error should be reported to the package authors."
-  )
-
-  if (!is_installed("winch")) {
-    msg <- c(
-      msg,
+stop_internal_c_lib <- function(fn, message) {
+  if (!is_installed("winch") && is_interactive()) {
+    message <- c(
+      message,
       "i" = sprintf(
         "Install the %s package to get additional debugging info the next time you get this error.",
         format_pkg("winch")
@@ -309,7 +303,7 @@ stop_internal_c_lib <- function(fn, msg) {
     )
   }
 
-  abort(msg, call = NULL)
+  abort(message, call = call(fn), .internal = TRUE)
 }
 
 with_srcref <- function(src, env = caller_env(), file = NULL) {

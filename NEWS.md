@@ -72,6 +72,10 @@
 
 ## Features and bugfixes
 
+* `abort()` gains a `.internal` argument. When set to `TRUE`, a footer
+  bullet is added to `message` to let the user know that the error is
+  internal and that they should report it to the package authors.
+
 * `is_installed()` and `check_installed()` now support
   DESCRIPTION-style version requirements like `"rlang (>= 1.0)"`.
   They also gain `version` and `compare` arguments to supply requirements
