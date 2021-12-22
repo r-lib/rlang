@@ -3,6 +3,9 @@
 # Changelog
 # =========
 #
+# 2021-12-20:
+# - Added support for scalar values and empty vectors.
+#
 # 2021-06-30:
 # - Added support for missing arguments.
 #
@@ -14,11 +17,12 @@
 
 #' Return English-friendly type
 #' @param x Any R object.
+#' @param value Whether to describe the value of `x`.
 #' @param length Whether to mention the length of vectors and lists.
 #' @return A string describing the type. Starts with an indefinite
 #'   article, e.g. "an integer vector".
 #' @noRd
-friendly_type_of <- function(x, length = FALSE) {
+friendly_type_of <- function(x, value = TRUE, length = FALSE) {
   if (is_missing(x)) {
     return("absent")
   }
@@ -37,6 +41,46 @@ friendly_type_of <- function(x, length = FALSE) {
   }
 
   n_dim <- length(dim(x))
+
+  if (value && !n_dim) {
+    if (is_na(x)) {
+      return(switch(
+        typeof(x),
+        logical = "`NA`",
+        integer = "an integer `NA`",
+        double = "a numeric `NA`",
+        complex = "a complex `NA`",
+        character = "a character `NA`",
+        .rlang_stop_unexpected_typeof(x)
+      ))
+    }
+    if (length(x) == 1 && !is_list(x)) {
+      return(switch(
+        typeof(x),
+        logical = if (x) "`TRUE`" else "`FALSE`",
+        integer = "an integer",
+        double = "a number",
+        complex = "a complex number",
+        character = if (nzchar(x)) "a string" else "`\"\"`",
+        raw = "a raw value",
+        .rlang_stop_unexpected_typeof(x)
+      ))
+    }
+    if (length(x) == 0) {
+      return(switch(
+        typeof(x),
+        logical = "an empty logical vector",
+        integer = "an empty integer vector",
+        double = "an empty numeric vector",
+        complex = "an empty complex vector",
+        character = "an empty character vector",
+        raw = "an empty raw vector",
+        list = "an empty list",
+        .rlang_stop_unexpected_typeof(x)
+      ))
+    }
+  }
+
   type <- .rlang_as_friendly_vector_type(typeof(x), n_dim)
 
   if (length && !n_dim) {
@@ -109,6 +153,13 @@ friendly_type_of <- function(x, length = FALSE) {
     closure = "a function",
 
     type
+  )
+}
+
+.rlang_stop_unexpected_typeof <- function(x, call = rlang::caller_env()) {
+  rlang::abort(
+    sprintf("Unexpected type <%s>.", typeof(x)),
+    call = call
   )
 }
 

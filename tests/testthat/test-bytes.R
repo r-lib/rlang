@@ -1,6 +1,6 @@
 test_that("bytes() coerces unspecified vectors but not logical ones", {
   expect_equal(bytes2(c(NA, NA), NA), new_bytes(dbl(NA, NA, NA)))
-  expect_error(bytes2(TRUE), "Can't coerce a logical")
+  expect_error(bytes2(TRUE), "Can't coerce")
 })
 
 test_that("can create empty and unspecified bytes() vector", {

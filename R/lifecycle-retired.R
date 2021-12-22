@@ -399,7 +399,7 @@ env_as_list <- function(x) {
   set_names(x, .Call(ffi_unescape_character, names_x))
 }
 vec_as_list <- function(x) {
-  coerce_type_vec(x, friendly_type_of(list()),
+  coerce_type_vec(x, friendly_type_of(list(), value = FALSE),
     logical = ,
     integer = ,
     double = ,
@@ -412,28 +412,28 @@ vec_as_list <- function(x) {
 }
 
 legacy_as_logical <- function(x) {
-  coerce_type_vec(x, friendly_type_of(lgl()),
+  coerce_type_vec(x, friendly_type_of(lgl(), value = FALSE),
     logical = { attributes(x) <- NULL; x },
     integer = as_base_type(x, as.logical),
     double = as_integerish_type(x, as.logical, lgl())
   )
 }
 legacy_as_integer <- function(x) {
-  coerce_type_vec(x, friendly_type_of(int()),
+  coerce_type_vec(x, friendly_type_of(int(), value = FALSE),
     logical = as_base_type(x, as.integer),
     integer = { attributes(x) <- NULL; x },
-    double = as_integerish_type(x, as.integer, int())
+    double = as_integerish_type(x, as.integer, int(), value = FALSE)
   )
 }
 legacy_as_double <- function(x) {
-  coerce_type_vec(x, friendly_type_of(dbl()),
+  coerce_type_vec(x, friendly_type_of(dbl(), value = FALSE),
     logical = ,
     integer = as_base_type(x, as.double),
     double = { attributes(x) <- NULL; x }
   )
 }
 legacy_as_complex <- function(x) {
-  coerce_type_vec(x, friendly_type_of(cpl()),
+  coerce_type_vec(x, friendly_type_of(cpl(), value = FALSE),
     logical = ,
     integer = ,
     double = as_base_type(x, as.complex),
@@ -444,7 +444,9 @@ legacy_as_character <- function(x, encoding = NULL) {
   if (is_unspecified(x)) {
     return(rep_along(x, na_chr))
   }
-  coerce_type_vec(x, friendly_type_of(chr()),
+  coerce_type_vec(
+    x,
+    friendly_type_of(chr(), value = FALSE),
     string = ,
     character = {
       attributes(x) <- NULL
@@ -475,12 +477,14 @@ as_base_type <- function(x, as_type) {
 
   as_type(x)
 }
-as_integerish_type <- function(x, as_type, to) {
+as_integerish_type <- function(x, as_type, to, value = FALSE) {
   if (is_integerish(x)) {
     as_base_type(x, as_type)
   } else {
     abort(paste0(
-      "Can't convert a fractional double vector to ", friendly_type_of(to), ""
+      "Can't convert a fractional double vector to ",
+      friendly_type_of(to, value = value),
+      ""
     ))
   }
 }
@@ -488,7 +492,7 @@ as_integerish_type <- function(x, as_type, to) {
 coerce_type_vec <- function(.x, .to, ...) {
   # Cannot reuse coerce_type() because switch() has a bug with
   # fallthrough and multiple levels of dots forwarding.
-  out <- switch(type_of_(.x), ..., abort_coercion(.x, .to))
+  out <- switch(type_of_(.x), ..., abort_coercion(.x, .to, call = NULL))
 
   if (!is_null(names(.x))) {
     # Avoid a copy of `out` when we restore the names, since it could be
