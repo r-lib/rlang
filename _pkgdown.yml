@@ -143,6 +143,9 @@ reference:
 
   - subtitle: Handle errors
     contents:
+      - global_handle
+      - global_entrace
+      - global_prompt_install
       - try_call
       - caller_arg
       - local_error_call
