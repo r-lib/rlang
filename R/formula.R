@@ -93,7 +93,7 @@ is_bare_formula <- function(x, scoped = TRUE, lhs = NULL) {
   } else if (is_false(scoped)) {
     exp_class <- "call"
   } else {
-    abort("`scoped` must be `NULL` or a logical value.")
+    stop_input_type(scoped, "`NULL` or a logical value.")
   }
   is_string(class(x), exp_class)
 }
@@ -135,9 +135,7 @@ f_rhs <- function(f) {
     signal_formula_access()
     return(quo_set_expr(x, value))
   }
-  if (!is_formula(x)) {
-    abort("`f` must be a formula")
-  }
+  check_formula(x, arg = "LHS")
   x[[length(x)]] <- value
   x
 }
@@ -147,7 +145,7 @@ f_rhs <- function(f) {
 f_lhs <- function(f) {
   if (is_quosure(f)) {
     signal_formula_access()
-    abort("Can't retrieve the LHS of a quosure")
+    abort("Can't retrieve the LHS of a quosure.")
   }
   .Call(ffi_f_lhs, f)
 }
@@ -157,11 +155,9 @@ f_lhs <- function(f) {
 `f_lhs<-` <- function(x, value) {
   if (is_quosure(x)) {
     signal_formula_access()
-    abort("Can't set the LHS of a quosure")
+    abort("Can't set the LHS of a quosure.")
   }
-  if (!is_formula(x)) {
-    abort("`f` must be a formula")
-  }
+  check_formula(x, arg = "LHS")
 
   if (length(x) < 3) {
     x <- duplicate(x)
@@ -180,9 +176,7 @@ f_env <- function(f) {
     signal_formula_access()
     return(quo_get_env(f))
   }
-  if (!is_formula(f)) {
-    abort("`f` must be a formula")
-  }
+  check_formula(f)
   attr(f, ".Environment")
 }
 

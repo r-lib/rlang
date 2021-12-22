@@ -721,12 +721,7 @@ NULL
 #' @export
 caller_arg <- function(arg) {
   arg <- substitute(arg)
-  if (!is_symbol(arg)) {
-    abort(sprintf(
-      "%s must be an argument name.",
-      format_arg("arg")
-    ))
-  }
+  check_arg(arg)
 
   expr <- do.call(substitute, list(arg), envir = caller_env())
   as_label(expr)
@@ -923,10 +918,8 @@ call_restore <- function(x, to) {
   x
 }
 
-trace_trim_context <- function(trace, idx) {
-  if (!is_scalar_integerish(idx)) {
-    abort("`frame` must be a frame environment or index")
-  }
+trace_trim_context <- function(trace, idx, call = caller_env()) {
+  check_frame(idx, arg = "frame", call = call)
 
   to_trim <- seq2(idx, trace_length(trace))
   if (length(to_trim)) {
@@ -934,6 +927,16 @@ trace_trim_context <- function(trace, idx) {
   }
 
   trace
+}
+check_frame <- function(x, arg, call) {
+  if (!is_scalar_integerish(x)) {
+    stop_input_type(
+      x,
+      "a frame environment or index",
+      arg = arg,
+      call = call
+    )
+  }
 }
 
 # Assumes we're called from a calling or exiting handler

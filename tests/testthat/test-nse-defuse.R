@@ -388,7 +388,7 @@ test_that("endots() supports `.ignore_empty`", {
 test_that("ensyms() captures multiple symbols", {
   fn <- function(arg, ...) ensyms(arg, ...)
   expect_identical(fn(foo, bar, baz), exprs(foo, bar, baz))
-  expect_error(fn(foo()), "Only strings can be converted to symbols")
+  expect_snapshot(err(fn(foo())))
 })
 
 test_that("enquos() works with lexically scoped dots", {
@@ -492,13 +492,13 @@ test_that("ensym() unwraps quosures", {
   fn <- function(arg) ensym(arg)
   expect_identical(fn(!!quo(foo)), quote(foo))
   expect_identical(fn(!!quo("foo")), quote(foo))
-  expect_error(fn(!!quo(foo())), "Only strings can be converted to symbols")
+  expect_snapshot(err(fn(!!quo(foo()))))
 })
 
 test_that("ensyms() unwraps quosures", {
   fn <- function(...) ensyms(...)
   expect_identical(fn(!!!quos(foo, "bar")), exprs(foo, bar))
-  expect_error(fn(!!!quos(foo, bar())), "Only strings can be converted to symbols")
+  expect_snapshot(err(fn(!!!quos(foo, bar()))))
 })
 
 test_that("enquo0() and enquos0() capture arguments without injection", {

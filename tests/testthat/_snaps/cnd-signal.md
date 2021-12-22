@@ -57,23 +57,23 @@
     Output
       <error/rlang_error>
       Error in `abort()`:
-      ! `message` must be a character vector.
+      ! `message` must be a character vector, not a <foo/rlang_error/error/condition> object.
     Code
       (expect_error(inform(error_cnd("foo"))))
     Output
       <error/rlang_error>
       Error in `inform()`:
-      ! `message` must be a character vector.
+      ! `message` must be a character vector, not a <foo/rlang_error/error/condition> object.
     Code
       (expect_error(warn(class = error_cnd("foo"))))
     Output
       <error/rlang_error>
       Error in `warn()`:
-      ! `class` must be a character vector.
+      ! `class` must be a character vector, not a <foo/rlang_error/error/condition> object.
     Code
       (expect_error(abort("foo", call = base::call)))
     Output
       <error/rlang_error>
       Error in `abort()`:
-      ! `call` must be a call or environment.
+      ! `call` must be a call or environment, not a primitive function.
 

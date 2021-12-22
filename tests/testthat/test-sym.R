@@ -1,7 +1,9 @@
 test_that("ensym() fails with calls", {
   capture_sym <- function(arg) ensym(arg)
   expect_identical(capture_sym(foo), quote(foo))
-  expect_error(capture_sym(foo(bar)), "Only strings can be converted to symbols")
+  expect_snapshot({
+    err(capture_sym(foo(bar)))
+  })
 })
 
 test_that("ensym() supports strings and symbols", {
@@ -31,8 +33,10 @@ test_that("is_symbol() matches any name in a vector", {
 })
 
 test_that("must supply strings to sym()", {
-  expect_error(sym(letters), "strings")
-  expect_error(sym(1:2), "strings")
+  expect_snapshot({
+    err(sym(letters))
+    err(sym(1:2))
+  })
 })
 
 test_that("data_sym() and data_syms() work", {

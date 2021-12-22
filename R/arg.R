@@ -37,26 +37,15 @@ arg_match <- function(arg,
   check_dots_empty0(...)
 
   arg_expr <- enexpr(arg)
-  if (!is_symbol(arg_expr)) {
-    abort(
-      sprintf("%s must be a symbol.", format_arg("arg")),
-      call = caller_env(),
-      .internal = TRUE
-    )
-  }
-
   error_arg <- as_string(error_arg)
+
+  check_symbol(arg_expr, arg = "arg", call = caller_env(), .internal = TRUE)
+  check_character(arg, arg = error_arg, call = error_call)
 
   if (is_null(values)) {
     fn <- caller_fn()
     values <- formals(fn)[[error_arg]]
     values <- eval_bare(values, get_env(fn))
-  }
-  if (!is_character(arg)) {
-    abort(
-      sprintf("%s must be a character vector.", format_arg(error_arg)),
-      call = error_call
-    )
   }
 
   if (multiple) {

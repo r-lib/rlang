@@ -7,12 +7,9 @@ line_push <- function(line, text,
   if (!length(line)) {
     return(text)
   }
-  if (!is_string(line)) {
-    abort("`line` must be a string or empty")
-  }
-  if (!is_string(text)) {
-    abort("`text` must be a string")
-  }
+  check_string(line)
+  check_string(text)
+
   width <- width %||% peek_option("width")
 
   if (!has_overflown(line, text, width, has_colour)) {
@@ -950,10 +947,7 @@ as_label_infix <- function(x) {
   # In case something went wrong
   if (length(out) > 1) {
     if (testing()) {
-      abort(c(
-        "Deparsed `out` can't be multiline.",
-        i = "This is a bug in rlang, please file an issue."
-      ))
+      abort("Deparsed `out` can't be multiline.", .internal = TRUE)
     }
     paste(out[[1]], "...")
   } else {

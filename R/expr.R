@@ -222,7 +222,10 @@ expr_name <- function(expr) {
     return(name)
   }
 
-  abort("`expr` must quote a symbol, scalar, or call")
+  abort(sprintf(
+    "%s must be a symbol, scalar, or call.",
+    format_arg("expr")
+  ))
 }
 #' @rdname expr_label
 #' @export

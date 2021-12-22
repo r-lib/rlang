@@ -19,8 +19,10 @@ test_that("temporary connections are closed", {
 })
 
 test_that("parse_expr() throws meaningful error messages", {
-  expect_error(parse_expr(""), "No expression to parse")
-  expect_error(parse_expr("foo; bar"), "More than one expression parsed")
+  expect_snapshot({
+    err(parse_expr(""))
+    err(parse_expr("foo; bar"))
+  })
 })
 
 test_that("parse_exprs() and parse_quos() handle character vectors", {

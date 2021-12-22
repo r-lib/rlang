@@ -16,7 +16,7 @@ test_that("is_interactive() is FALSE when testthat runs", {
 test_that("is_interactive() honors rlang_interactive option, above all else", {
   expect_true(with_options(rlang_interactive = TRUE, is_interactive()))
   expect_false(with_options(rlang_interactive = FALSE, is_interactive()))
-  expect_error(with_options(rlang_interactive = NA, is_interactive()), "must be a single")
+  expect_snapshot_error(with_options(rlang_interactive = NA, is_interactive()))
 
   local_interactive(FALSE)
   expect_false(is_interactive())

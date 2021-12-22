@@ -239,7 +239,11 @@ interrupt <- function() {
   .Call(ffi_interrupt)
 }
 
-validate_signal_args <- function(msg, class, call, subclass, env = caller_env()) {
+validate_signal_args <- function(message,
+                                 class,
+                                 call,
+                                 subclass,
+                                 env = caller_env()) {
   local_error_call("caller")
 
   if (!is_missing(subclass)) {
@@ -249,30 +253,23 @@ validate_signal_args <- function(msg, class, call, subclass, env = caller_env())
 
   if (!is_missing(call)) {
     if (!is_null(call) && !is_environment(call) && !is_call(call)) {
-      abort(sprintf(
-        "%s must be a call or environment.",
-        format_arg("call")
-      ))
+      stop_input_type(call, "a call or environment", arg = "call", call = env)
     }
   }
 
-  if (is_null(msg)) {
+  if (is_null(message)) {
     if (is_null(class)) {
-      abort("Either `message` or `class` must be supplied.")
+      abort("Either `message` or `class` must be supplied.", call = env)
     }
-    msg <- ""
+    message <- ""
   }
 
-  if (!is_character(msg)) {
-    msg <- sprintf("%s must be a character vector.", format_arg("message"))
-    abort(msg)
-  }
-  if (!is_character(class) && !is_null(class)) {
-    msg <- sprintf("%s must be a character vector.", format_arg("class"))
-    abort(msg)
+  check_character(message, call = env)
+  if (!is_null(class)) {
+    check_character(class, call = env)
   }
 
-  msg
+  message
 }
 
 
@@ -325,7 +322,7 @@ needs_signal <- function(frequency,
   }
 
   if (!inherits(sentinel, "POSIXct")) {
-    stop_internal("needs_signal", "Expected `POSIXct` value.")
+    abort("Expected `POSIXct` value.", .internal = TRUE)
   }
 
   # Signal every 8 hours

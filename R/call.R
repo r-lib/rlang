@@ -343,9 +343,11 @@ is_call2 <- function(x, ...) {
 #' call_print_type(call)
 #' @noRd
 call_print_type <- function(call) {
-  type <- call_print_fine_type(call)
+  check_call(call)
 
-  switch(type,
+  type <- call_print_fine_type(call)
+  switch(
+    type,
     call = "prefix",
     control = ,
     delim = ,
@@ -354,16 +356,15 @@ call_print_type <- function(call) {
   )
 }
 call_print_fine_type <- function(call) {
-  if (!is_call(call)) {
-    abort("`call` must be a call")
-  }
+  check_call(call)
 
   op <- call_parse_type(call)
   if (op == "") {
     return("call")
   }
 
-  switch(op,
+  switch(
+    op,
     `+unary` = ,
     `-unary` = ,
     `~unary` = ,
@@ -616,21 +617,9 @@ call_modify <- function(.call,
                         .standardise = NULL,
                         .env = caller_env()) {
   args <- dots_list(..., .preserve_empty = TRUE, .homonyms = .homonyms)
+
   expr <- get_expr(.call)
-
-  if (!is_null(.standardise)) {
-    warn_deprecated(paste_line(
-      "`.standardise` is deprecated as of rlang 0.3.0.",
-      "Please use `call_standardise()` prior to calling `call_modify()`."
-    ))
-    if (.standardise) {
-      expr <- get_expr(call_standardise(.call, env = .env))
-    }
-  }
-
-  if (!is_call(expr)) {
-    abort_call_input_type(".call")
-  }
+  check_call(expr, arg = ".call")
 
   expr <- duplicate(expr, shallow = TRUE)
 
@@ -892,10 +881,8 @@ call_name <- function(call) {
   if (is_quosure(call) || is_formula(call)) {
     call <- get_expr(call)
   }
+  check_call(call)
 
-  if (!is_call(call)) {
-    abort_call_input_type("call")
-  }
   if (is_call(call, c("::", ":::"))) {
     return(NULL)
   }
@@ -914,6 +901,7 @@ call_ns <- function(call) {
   if (is_quosure(call) || is_formula(call)) {
     call <- get_expr(call)
   }
+  check_call(call)
 
   if (!is_call(call)) {
     abort_call_input_type("call")
@@ -985,9 +973,7 @@ call_args <- function(call) {
   if (is_quosure(call) || is_formula(call)) {
     call <- get_expr(call)
   }
-  if (!is_call(call)) {
-    abort_call_input_type("call")
-  }
+  check_call(call)
 
   args <- as.list(call[-1])
   set_names((args), names2(args))
@@ -1000,9 +986,8 @@ call_args_names <- function(call) {
   if (is_quosure(call) || is_formula(call)) {
     call <- get_expr(call)
   }
-  if (!is_call(call)) {
-    abort_call_input_type("call")
-  }
+  check_call(call)
+
   names2(call[-1])
 }
 

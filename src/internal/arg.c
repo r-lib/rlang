@@ -62,7 +62,8 @@ r_obj* ffi_ensym(r_obj* sym, r_obj* frame) {
     }
     // else fallthrough
   default:
-    r_abort("Only strings can be converted to symbols");
+    // FIXME: Should call `abort_coercion()`
+    r_abort("Can't convert to a symbol.");
   }
 
   return expr;

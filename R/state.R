@@ -113,7 +113,7 @@ is_interactive <- function() {
   if (!is_null(opt)) {
     if (!is_bool(opt)) {
       options(rlang_interactive = NULL)
-      abort("`rlang_interactive` must be a single `TRUE` of `FALSE`")
+      check_bool(opt, arg = "rlang_interactive")
     }
     return(opt)
   }
