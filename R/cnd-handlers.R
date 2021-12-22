@@ -1,3 +1,77 @@
+#' Register default global handlers
+#'
+#' @description
+#' `global_handle()` sets up a default configuration for error,
+#' warning, and message handling. It calls:
+#'
+#' * [global_entrace()] to enable rlang errors and warnings globally.
+#'
+#' * [global_prompt_install()] to recover from `packageNotFoundError`s
+#'   with a user prompt to install the missing package. Note that at
+#'   the time of writing (R 4.1), there are only very limited
+#'   situations where this handler works.
+#'
+#' @param entrace Passed as `enable` argument to [global_entrace()].
+#' @param prompt_install Passed as `enable` argument to
+#'   [global_prompt_install()].
+#'
+#' @export
+global_handle <- function(entrace = TRUE,
+                          prompt_install = TRUE) {
+  check_bool(entrace)
+  check_bool(prompt_install)
+
+  global_entrace(entrace)
+  global_prompt_install(prompt_install)
+
+  invisible(NULL)
+}
+
+#' Prompt user to install missing packages
+#'
+#' @description
+#' When enabled, `packageNotFoundError` thrown by [loadNamespace()]
+#' cause a user prompt to install the missing package and continue
+#' without interrupting the current program.
+#'
+#' This is similar to how [check_installed()] prompts users to install
+#' required packages. It uses the same install strategy, using pak if
+#' available and [install.packages()] otherwise.
+#'
+#' @inheritParams global_entrace
+#' @export
+global_prompt_install <- function(enable = TRUE) {
+  check_bool(enable)
+
+  if (getRversion() <= "4.0") {
+    return(invisible(NULL))
+  }
+
+  poke_global_handlers(
+    enable,
+    packageNotFoundError = hnd_prompt_install
+  )
+}
+
+# To help with `load_all()`, hard-code to base env with `rlang::`
+# indirection
+hnd_prompt_install <- function(cnd) {
+  if (!rlang::is_interactive()) {
+    return(rlang::zap())
+  }
+
+  # Be defensive to avoid weird errors
+  if (!rlang::is_string(cnd$package) ||
+      is.null(findRestart("retry_loadNamespace"))) {
+    return(rlang::zap())
+  }
+
+  rlang::check_installed(cnd$package)
+  invokeRestart("retry_loadNamespace")
+}
+environment(hnd_prompt_install) <- baseenv()
+
+
 #' Try an expression with condition handlers
 #'
 #' @description
@@ -430,6 +504,18 @@ cnd_muffle <- function(cnd) {
 
 if (getRversion() < "4.0") {
   utils::globalVariables("globalCallingHandlers")
+}
+
+
+poke_global_handlers <- function(enable, ...) {
+  check_bool(enable)
+  handlers <- list2(...)
+
+  if (enable) {
+    inject(globalCallingHandlers(!!!handlers))
+  } else {
+    inject(drop_global_handlers(!!!handlers))
+  }
 }
 
 drop_global_handlers <- function(...) {
