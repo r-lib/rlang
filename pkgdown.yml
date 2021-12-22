@@ -2,7 +2,7 @@ pandoc: 2.7.3
 pkgdown: 2.0.1
 pkgdown_sha: ~
 articles: {}
-last_built: 2021-12-22T12:07Z
+last_built: 2021-12-22T12:23Z
 urls:
   reference: https://rlang.r-lib.org/reference
   article: https://rlang.r-lib.org/articles

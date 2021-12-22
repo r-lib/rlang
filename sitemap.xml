@@ -331,6 +331,12 @@
     <loc>https://rlang.r-lib.org/reference/global_entrace.html</loc>
   </url>
   <url>
+    <loc>https://rlang.r-lib.org/reference/global_handle.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/global_prompt_install.html</loc>
+  </url>
+  <url>
     <loc>https://rlang.r-lib.org/reference/glue-operators.html</loc>
   </url>
   <url>
