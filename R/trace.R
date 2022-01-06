@@ -260,16 +260,16 @@ add_winch_trace <- function(trace) {
 
 # Construction ------------------------------------------------------------
 
-new_trace <- function(calls,
-                      parents,
+new_trace <- function(call,
+                      parent,
                       ...,
                       visible = TRUE,
                       namespace = NA,
                       scope = NA,
                       class = NULL) {
   new_trace0(
-    calls,
-    parents,
+    call,
+    parent,
     ...,
     visible = visible,
     namespace = namespace,
@@ -277,21 +277,21 @@ new_trace <- function(calls,
     class = c(class, "rlang_trace", "rlib_trace")
   )
 }
-new_trace0 <- function(calls,
-                       parents,
+new_trace0 <- function(call,
+                       parent,
                        ...,
                        visible = TRUE,
                        namespace = NA,
                        scope = NA,
                        class = NULL) {
   stopifnot(
-    is_bare_list(calls),
-    is_bare_integer(parents)
+    is_bare_list(call),
+    is_bare_integer(parent)
   )
 
   df <- df_list(
-    call = calls,
-    parent = parents,
+    call = call,
+    parent = parent,
     visible = visible,
     namespace = namespace,
     scope = scope,
