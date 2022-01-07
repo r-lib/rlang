@@ -126,6 +126,7 @@
 #'   See also [rlang::local_error_call()] for an alternative way of
 #'   providing this information.
 #' @param body Additional bullets.
+#' @param footer Optional footer bullet.
 #' @param use_cli_format Whether to format `message` lazily using
 #'   [cli](https://cli.r-lib.org/) if available. This results in
 #'   prettier and more accurate formatting of messages. See also
@@ -138,7 +139,8 @@
 #'   with cli formatting.
 #' @param .internal If `TRUE`, a footer bullet is added to `message`
 #'   to let the user know that the error is internal and that they
-#'   should report it to the package authors.
+#'   should report it to the package authors. This argument is
+#'   incompatible with `footer`.
 #' @param .file A connection or a string specifying where to print the
 #'   message. The default depends on the context, see the `stdout` vs
 #'   `stderr` section.
@@ -209,6 +211,7 @@ abort <- function(message = NULL,
                   ...,
                   call,
                   body = NULL,
+                  footer = NULL,
                   trace = NULL,
                   parent = NULL,
                   use_cli_format = NULL,
@@ -239,6 +242,7 @@ abort <- function(message = NULL,
   message_info <- cnd_message_info(
     message,
     body,
+    footer,
     caller_env(),
     use_cli_format = use_cli_format,
     internal = .internal
@@ -274,11 +278,20 @@ abort <- function(message = NULL,
 
 cnd_message_info <- function(message,
                              body,
+                             footer,
                              env,
                              cli_opts = use_cli(env),
                              use_cli_format = NULL,
                              internal = FALSE,
                              error_call = caller_env()) {
+  if (internal) {
+    check_exclusive(footer, .internal, .require = FALSE, .frame = error_call)
+  }
+
+  if (length(message) > 1 && !is_character(body) && !is_null(body)) {
+    stop_multiple_body(body, call = error_call)
+  }
+
   if (!is_null(use_cli_format)) {
     cli_opts[["format"]] <- use_cli_format
   }
@@ -291,10 +304,6 @@ cnd_message_info <- function(message,
 
   use_cli_format <- cli_opts[["format"]]
 
-  if (length(message) > 1 && !is_character(body) && !is_null(body)) {
-    stop_multiple_body(body, call = error_call)
-  }
-
   # Formatting with cli is delayed until print time so we can properly
   # indent and width-wrap depending on the context
   if (use_cli_format) {
@@ -303,6 +312,9 @@ cnd_message_info <- function(message,
       message <- message[1]
     } else {
       fields$body <- body
+    }
+    if (!is_null(footer)) {
+      fields$footer <- footer
     }
     if (internal) {
       fields$footer <- footer_internal
@@ -317,6 +329,11 @@ cnd_message_info <- function(message,
     } else {
       fields$body <- body
     }
+    if (is_character(footer)) {
+      message <- c(message, footer)
+    } else {
+      fields$footer <- footer
+    }
     if (internal) {
       message <- c(message, footer_internal)
     }
@@ -329,6 +346,7 @@ cnd_message_info <- function(message,
     extra_fields = fields
   )
 }
+utils::globalVariables(".internal")
 
 footer_internal <- c(
   "i" = "This is an internal error, please report it to the package authors."

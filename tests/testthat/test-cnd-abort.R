@@ -568,3 +568,27 @@ test_that("must pass character `body` when `message` is > 1 (non-cli case)", {
     err(abort(c("foo", "bar"), body = function() "baz"))
   })
 })
+
+test_that("can supply `footer`", {
+  local_error_call(call("f"))
+  expect_snapshot({
+    err(abort("foo", body = c("i" = "bar"), footer = c("i" = "baz")))
+    err(abort("foo", body = function(cnd) c("i" = "bar"), footer = function(cnd) c("i" = "baz")))
+  })
+})
+
+test_that("can supply `footer` (non-cli case)", {
+  local_use_cli(format = FALSE)
+  local_error_call(call("f"))
+  expect_snapshot({
+    err(abort("foo", body = c("i" = "bar"), footer = c("i" = "baz")))
+    err(abort("foo", body = function(cnd) c("i" = "bar"), footer = function(cnd) c("i" = "baz")))
+  })
+})
+
+test_that("can't supply both `footer` and `.internal`", {
+  expect_snapshot({
+    err(abort("foo", .internal = TRUE, call = quote(f())))
+    err(abort("foo", footer = "bar", .internal = TRUE, call = quote(f())))
+  })
+})

@@ -706,3 +706,57 @@
       x `body` must be character or NULL when a length > 1 `message` is supplied.
       i `body` is currently a function.
 
+# can supply `footer`
+
+    Code
+      err(abort("foo", body = c(i = "bar"), footer = c(i = "baz")))
+    Output
+      <error/rlang_error>
+      Error in `f()`:
+      ! foo
+      i bar
+      i baz
+    Code
+      err(abort("foo", body = function(cnd) c(i = "bar"), footer = function(cnd) c(i = "baz")))
+    Output
+      <error/rlang_error>
+      Error in `f()`:
+      ! foo
+      i bar
+      i baz
+
+# can supply `footer` (non-cli case)
+
+    Code
+      err(abort("foo", body = c(i = "bar"), footer = c(i = "baz")))
+    Output
+      <error/rlang_error>
+      Error in `f()`:
+      ! foo
+      i bar
+      i baz
+    Code
+      err(abort("foo", body = function(cnd) c(i = "bar"), footer = function(cnd) c(i = "baz")))
+    Output
+      <error/rlang_error>
+      Error in `f()`:
+      ! foo
+      bar
+      baz
+
+# can't supply both `footer` and `.internal`
+
+    Code
+      err(abort("foo", .internal = TRUE, call = quote(f())))
+    Output
+      <error/rlang_error>
+      Error in `f()`:
+      ! foo
+      i This is an internal error, please report it to the package authors.
+    Code
+      err(abort("foo", footer = "bar", .internal = TRUE, call = quote(f())))
+    Output
+      <error/rlang_error>
+      Error in `abort()`:
+      ! Exactly one of `footer` or `.internal` must be supplied.
+

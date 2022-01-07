@@ -14,6 +14,7 @@ abort(
   ...,
   call,
   body = NULL,
+  footer = NULL,
   trace = NULL,
   parent = NULL,
   use_cli_format = NULL,
@@ -27,6 +28,7 @@ warn(
   class = NULL,
   ...,
   body = NULL,
+  footer = NULL,
   use_cli_format = NULL,
   .frequency = c("always", "regularly", "once"),
   .frequency_id = NULL,
@@ -38,6 +40,7 @@ inform(
   class = NULL,
   ...,
   body = NULL,
+  footer = NULL,
   use_cli_format = NULL,
   .file = NULL,
   .frequency = c("always", "regularly", "once"),
@@ -89,6 +92,8 @@ providing this information.}
 
 \item{body}{Additional bullets.}
 
+\item{footer}{Optional footer bullet.}
+
 \item{trace}{A \code{trace} object created by \code{\link[=trace_back]{trace_back()}}.}
 
 \item{parent}{A parent condition object created by \code{\link[=abort]{abort()}}.}
@@ -106,7 +111,8 @@ with cli formatting.}
 
 \item{.internal}{If \code{TRUE}, a footer bullet is added to \code{message}
 to let the user know that the error is internal and that they
-should report it to the package authors.}
+should report it to the package authors. This argument is
+incompatible with \code{footer}.}
 
 \item{.file}{A connection or a string specifying where to print the
 message. The default depends on the context, see the \code{stdout} vs
