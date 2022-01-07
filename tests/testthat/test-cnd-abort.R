@@ -176,7 +176,7 @@ test_that("capture context doesn't leak into low-level backtraces", {
   )
 
   failing <- function() stop("low-level")
-  stop_wrapper <- function(...) abort("wrapper", ...)
+  stop_wrapper <- function(...) abort("wrapper", ..., call = caller_env())
   f <- function() g()
   g <- function() h()
   h <- function() {
@@ -378,26 +378,30 @@ test_that("withCallingHandlers() wrappers don't throw off trace capture on rethr
     rlang_trace_format_srcrefs = FALSE
   )
 
-  f <- function() g()
-  g <- function() h()
-  h <- function() abort("Low-level message")
+  low1 <- function() low2()
+  low2 <- function() low3()
+  low3 <- function() abort("Low-level message")
 
-  wch <- function(expr, ...) withCallingHandlers(expr, ...)
-  wrapper1 <- function(err) wrapper2(err)
-  wrapper2 <- function(err) abort("High-level message", parent = err)
+  wch <- function(expr, ...) {
+    withCallingHandlers(expr, ...)
+  }
+  handler1 <- function(err, call = caller_env()) {
+    handler2(err, call = call)
+  }
+  handler2 <- function(err, call = caller_env()) {
+    abort("High-level message", parent = err, call = call)
+  }
 
-  foo <- function() bar()
-  bar <- function() baz()
-  baz <- function() {
+  high1 <- function() high2()
+  high2 <- function() high3()
+  high3 <- function() {
     wch(
-      f(),
-      error = function(err) {
-        wrapper1(err)
-      }
+      low1(),
+      error = function(err) handler1(err)
     )
   }
 
-  err <- expect_error(foo())
+  err <- expect_error(high1())
   expect_snapshot({
     "`abort()` error"
     print(err)
@@ -406,8 +410,8 @@ test_that("withCallingHandlers() wrappers don't throw off trace capture on rethr
 
   # Avoid `:::` vs `::` ambiguity depending on loadall
   fail <- errorcall
-  h <- function() fail(NULL, "foo")
-  err <- expect_error(foo())
+  low3 <- function() fail(NULL, "Low-level message")
+  err <- expect_error(high1())
   expect_snapshot({
     "C-level error"
     print(err)

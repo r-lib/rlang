@@ -216,33 +216,20 @@ abort <- function(message = NULL,
                   use_cli_format = NULL,
                   .internal = FALSE,
                   .file = NULL,
+                  .trace_bottom = NULL,
                   .subclass = deprecated()) {
-  if (is_null(trace) && is_null(peek_option("rlang:::disable_trace_capture"))) {
-    # Prevents infloops when rlang throws during trace capture
-    with_options("rlang:::disable_trace_capture" = TRUE, {
-      trace <- trace_back()
-
-      # Remove throwing context. Especially important when rethrowing
-      # from a condition handler because in that case there are a
-      # bunch of irrelevant frames in the trailing branch of the call
-      # stack. We want to display the call tree branch that is
-      # relevant to users in simplified backtraces.
-      if (is_null(parent)) {
-        context <- trace_length(trace)
-      } else {
-        context <- trace_capture_depth(trace)
-      }
-
-      trace <- trace_trim_context(trace, context)
-    })
+  if (!is_null(.trace_bottom)) {
+    check_environment(.trace_bottom)
   }
+
+  caller <- caller_env()
 
   message <- validate_signal_args(message, class, call, .subclass)
   message_info <- cnd_message_info(
     message,
     body,
     footer,
-    caller_env(),
+    caller,
     use_cli_format = use_cli_format,
     internal = .internal
   )
@@ -250,11 +237,24 @@ abort <- function(message = NULL,
   extra_fields <- message_info$extra_fields
   use_cli_format <- message_info$use_cli_format
 
-  # Don't record call by default when supplied a parent because it
-  # probably means that we are called from a condition handler
+  if (is_null(trace) && is_null(peek_option("rlang:::disable_trace_capture"))) {
+    if (is_null(.trace_bottom)) {
+      if (is_null(parent)) {
+        .trace_bottom <- abort_find_bottom(call, caller)
+      } else {
+        .trace_bottom <- abort_find_handler_bottom()
+      }
+    }
+
+    # Prevents infloops when rlang throws during trace capture
+    with_options("rlang:::disable_trace_capture" = TRUE, {
+      trace <- trace_back(visible_bottom = .trace_bottom)
+    })
+  }
+
   if (is_missing(call)) {
     if (is_null(parent)) {
-      call <- default_error_call(caller_env())
+      call <- error_call(caller)
     } else {
       call <- NULL
     }
@@ -273,6 +273,29 @@ abort <- function(message = NULL,
     trace = trace
   )
   signal_abort(cnd, .file)
+}
+
+abort_find_bottom <- function(call, caller) {
+  frames <- sys.frames()
+
+  if (!is_missing(call) && is_environment(call)) {
+    if (detect_index(frames, identical, call)) {
+      return(call)
+    }
+  }
+
+  if (is_environment(caller)) {
+    if (detect_index(frames, identical, caller)) {
+      return(caller)
+    }
+  }
+}
+abort_find_handler_bottom <- function() {
+  tmp_trace <- new_trace(sys.calls(), sys.parents())
+  capture_loc <- trace_capture_depth(tmp_trace)
+  if (!is_null(capture_loc)) {
+    I(capture_loc - 1L)
+  }
 }
 
 cnd_message_info <- function(message,
@@ -487,37 +510,6 @@ check_use_cli_flag <- function(flag) {
       abort("Can't use cli inline formatting without cli bullets formatting.")
     }
   }
-}
-
-# Private option to disable default error call except for exported
-# functions
-default_error_call <- function(env) {
-  call <- error_call(env)
-
-  opt <- peek_option("rlang:::restrict_default_error_call") %||% FALSE
-  if (is_false(opt)) {
-    return(call)
-  }
-
-  if (!is_call(call)) {
-    return(call)
-  }
-
-  fn <- call[[1]]
-  if (!is_symbol(fn)) {
-    return(call)
-  }
-  fn <- as_string(fn)
-
-  top <- topenv(env)
-  if (!is_namespace(top)) {
-    return(NULL)
-  }
-  if (!ns_exports_has(top, fn)) {
-    return(NULL)
-  }
-
-  call
 }
 
 signal_abort <- function(cnd, file = NULL) {
@@ -989,9 +981,8 @@ check_frame <- function(x, arg, call) {
 }
 
 # Assumes we're called from a calling or exiting handler
-trace_capture_depth <- function(trace) {
+trace_capture_depth <- function(trace, default = NULL) {
   calls <- trace$call
-  default <- length(calls)
 
   if (length(calls) <= 3L) {
     return(default)

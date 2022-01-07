@@ -53,8 +53,6 @@
        10.     \-rlang h()
        11.       +-[ base::tryCatch(...) ] with 3 more calls at test-trace.R:51:20
        15.       \-rlang i()
-       16.         +-[ base::tryCatch(...) ] with 1 more call at test-trace.R:52:20
-       18.         \-rlang::trace_back(e, bottom = 0)
     Code
       # Branch
       print(trace, simplify = "branch", dir = dir, srcrefs = srcrefs)
@@ -64,7 +62,6 @@
              at test-trace.R:49:20
        10. rlang h()
        15. rlang i()
-       18. rlang::trace_back(e, bottom = 0)
 
 ---
 
@@ -237,15 +234,12 @@
        1. \-rlang f()
        2.   +-[ base::eval(...) ] with 1 more call
        4.   \-rlang g()
-       5.     +-[ base::eval(...) ] with 1 more call
-       7.     \-rlang::trace_back(e, bottom = 0)
     Code
       # Branch
       print(trace, simplify = "branch", dir = dir, srcrefs = srcrefs)
     Output
        1. rlang f()
        4. rlang g()
-       7. rlang::trace_back(e, bottom = 0)
 
 ---
 
@@ -269,15 +263,12 @@
        1. \-rlang f()
        2.   +-[ base::evalq(...) ] with 1 more call
        4.   \-rlang g()
-       5.     +-[ base::evalq(...) ] with 1 more call
-       7.     \-rlang::trace_back(e, bottom = 0)
     Code
       # Branch
       print(trace, simplify = "branch", dir = dir, srcrefs = srcrefs)
     Output
        1. rlang f()
        4. rlang g()
-       7. rlang::trace_back(e, bottom = 0)
 
 # %>% frames are collapsed
 
@@ -1002,6 +993,7 @@
           ##  1. \-global f()
           ##  2.   \-global g()
           ##  3.     \-global h()
+          ##  4.       \-rlang::abort("foo")
       
           options(rlang_backtrace_on_error_report = "reminder")
           f()
@@ -1022,6 +1014,7 @@
           ##  1. \-global f()
           ##  2.   \-global g()
           ##  3.     \-global h()
+          ##  4.       \-rlang::abort("foo")
 
 # backtraces don't contain inlined objects (#1069, r-lib/testthat#1223)
 
