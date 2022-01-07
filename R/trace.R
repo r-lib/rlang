@@ -373,7 +373,7 @@ format.rlang_trace <- function(x,
                                srcrefs = NULL) {
   switch(
     arg_match(simplify),
-    none = trace_format(x, max_frames, dir, srcrefs),
+    none = trace_format_full(x, max_frames, dir, srcrefs),
     collapse = trace_format_collapse(x, max_frames, dir, srcrefs),
     branch = trace_format_branch(x, max_frames, dir, srcrefs)
   )
@@ -391,6 +391,12 @@ trace_format <- function(trace, max_frames, dir, srcrefs) {
   cli_tree(trace_as_tree(trace, dir = dir, srcrefs = srcrefs))
 }
 
+trace_format_full <- function(trace, max_frames, dir, srcrefs) {
+  if (length(trace$visible)) {
+    trace$visible <- TRUE
+  }
+  trace_format(trace, max_frames, dir, srcrefs)
+}
 trace_format_collapse <- function(trace, max_frames, dir, srcrefs) {
   trace <- trace_simplify_collapse(trace)
   trace_format(trace, max_frames, dir, srcrefs)
@@ -766,7 +772,7 @@ trace_simplify_collapse <- function(trace) {
     }
   }
 
-  trace$visible <- visible
+  trace$visible <- visible & old_visible
   trace$parent <- parents
 
   trace

@@ -721,3 +721,12 @@ test_that("can detect namespace and scope from call", {
     trace_context("foo", ":::")
   )
 })
+
+test_that("trailing `FALSE` visibility is handled", {
+  trace <- new_trace(
+    alist(f(), g(), h(), foo(), bar()),
+    parent = 0:4,
+    visible = c(TRUE, TRUE, TRUE, FALSE, FALSE)
+  )
+  expect_snapshot_trace(trace)
+})

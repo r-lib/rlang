@@ -1086,3 +1086,31 @@
      3. h()
      4. [ evalq() ] with 1 more call
 
+# trailing `FALSE` visibility is handled
+
+    Code
+      # Full
+      print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
+    Output
+          x
+       1. \-f()
+       2.   \-g()
+       3.     \-h()
+       4.       \-foo()
+       5.         \-bar()
+    Code
+      # Collapsed
+      print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
+    Output
+          x
+       1. \-f()
+       2.   \-g()
+       3.     \-h()
+    Code
+      # Branch
+      print(trace, simplify = "branch", dir = dir, srcrefs = srcrefs)
+    Output
+       1. f()
+       2. g()
+       3. h()
+
