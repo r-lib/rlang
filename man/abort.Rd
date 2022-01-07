@@ -90,9 +90,7 @@ contextual call or hard-code it.
 See also \code{\link[=local_error_call]{local_error_call()}} for an alternative way of
 providing this information.}
 
-\item{body}{Additional bullets.}
-
-\item{footer}{Optional footer bullet.}
+\item{body, footer}{Additional bullets.}
 
 \item{trace}{A \code{trace} object created by \code{\link[=trace_back]{trace_back()}}.}
 

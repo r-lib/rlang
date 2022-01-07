@@ -125,8 +125,7 @@
 #'
 #'   See also [rlang::local_error_call()] for an alternative way of
 #'   providing this information.
-#' @param body Additional bullets.
-#' @param footer Optional footer bullet.
+#' @param body,footer Additional bullets.
 #' @param use_cli_format Whether to format `message` lazily using
 #'   [cli](https://cli.r-lib.org/) if available. This results in
 #'   prettier and more accurate formatting of messages. See also
