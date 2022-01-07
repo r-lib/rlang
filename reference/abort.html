@@ -144,6 +144,7 @@ to create custom interrupt condition objects.</p>
   <span class="va">...</span>,
   <span class="va">call</span>,
   body <span class="op">=</span> <span class="cn">NULL</span>,
+  footer <span class="op">=</span> <span class="cn">NULL</span>,
   trace <span class="op">=</span> <span class="cn">NULL</span>,
   parent <span class="op">=</span> <span class="cn">NULL</span>,
   use_cli_format <span class="op">=</span> <span class="cn">NULL</span>,
@@ -157,6 +158,7 @@ to create custom interrupt condition objects.</p>
   class <span class="op">=</span> <span class="cn">NULL</span>,
   <span class="va">...</span>,
   body <span class="op">=</span> <span class="cn">NULL</span>,
+  footer <span class="op">=</span> <span class="cn">NULL</span>,
   use_cli_format <span class="op">=</span> <span class="cn">NULL</span>,
   .frequency <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"always"</span>, <span class="st">"regularly"</span>, <span class="st">"once"</span><span class="op">)</span>,
   .frequency_id <span class="op">=</span> <span class="cn">NULL</span>,
@@ -168,6 +170,7 @@ to create custom interrupt condition objects.</p>
   class <span class="op">=</span> <span class="cn">NULL</span>,
   <span class="va">...</span>,
   body <span class="op">=</span> <span class="cn">NULL</span>,
+  footer <span class="op">=</span> <span class="cn">NULL</span>,
   use_cli_format <span class="op">=</span> <span class="cn">NULL</span>,
   .file <span class="op">=</span> <span class="cn">NULL</span>,
   .frequency <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"always"</span>, <span class="st">"regularly"</span>, <span class="st">"once"</span><span class="op">)</span>,
@@ -217,6 +220,8 @@ contextual call or hard-code it.</p>
 providing this information.</p></dd>
 <dt>body</dt>
 <dd><p>Additional bullets.</p></dd>
+<dt>footer</dt>
+<dd><p>Optional footer bullet.</p></dd>
 <dt>trace</dt>
 <dd><p>A <code>trace</code> object created by <code><a href="trace_back.html">trace_back()</a></code>.</p></dd>
 <dt>parent</dt>
@@ -234,7 +239,8 @@ with cli formatting.</p></dd>
 <dt>.internal</dt>
 <dd><p>If <code>TRUE</code>, a footer bullet is added to <code>message</code>
 to let the user know that the error is internal and that they
-should report it to the package authors.</p></dd>
+should report it to the package authors. This argument is
+incompatible with <code>footer</code>.</p></dd>
 <dt>.file</dt>
 <dd><p>A connection or a string specifying where to print the
 message. The default depends on the context, see the <code>stdout</code> vs
