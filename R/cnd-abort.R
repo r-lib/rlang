@@ -277,7 +277,8 @@ cnd_message_info <- function(message,
                              env,
                              cli_opts = use_cli(env),
                              use_cli_format = NULL,
-                             internal = FALSE) {
+                             internal = FALSE,
+                             error_call = caller_env()) {
   if (!is_null(use_cli_format)) {
     cli_opts[["format"]] <- use_cli_format
   }
@@ -290,25 +291,35 @@ cnd_message_info <- function(message,
 
   use_cli_format <- cli_opts[["format"]]
 
+  if (length(message) > 1 && !is_character(body) && !is_null(body)) {
+    stop_multiple_body(body, call = error_call)
+  }
+
   # Formatting with cli is delayed until print time so we can properly
   # indent and width-wrap depending on the context
   if (use_cli_format) {
-    fields$body <- c(message[-1], body)
+    if (length(message) > 1) {
+      fields$body <- c(message[-1], body)
+      message <- message[1]
+    } else {
+      fields$body <- body
+    }
     if (internal) {
       fields$footer <- footer_internal
     }
-    message <- message[1]
   } else {
     # Compatibility with older bullets formatting
-    if (is_null(names(message)) && length(message) > 1) {
+    if (length(message) > 1 && is_null(names(message))) {
       names(message) <- c("", rep_len("*", length(message) - 1))
     }
-    message <- c(message, body)
-
+    if (is_character(body)) {
+      message <- c(message, body)
+    } else {
+      fields$body <- body
+    }
     if (internal) {
       message <- c(message, footer_internal)
     }
-
     message <- .rlang_cli_format_fallback(message)
   }
 
@@ -322,6 +333,27 @@ cnd_message_info <- function(message,
 footer_internal <- c(
   "i" = "This is an internal error, please report it to the package authors."
 )
+
+stop_multiple_body <- function(body, call) {
+  msg <- c(
+    sprintf(
+      "Can't supply conflicting bodies in %s and %s.",
+      format_arg("body"),
+      format_arg("message")
+    ),
+    "x" = sprintf(
+      "%s must be character or NULL when a length > 1 %s is supplied.",
+      format_arg("body"),
+      format_arg("message")
+    ),
+    "i" = sprintf(
+      "%s is currently %s.",
+      format_arg("body"),
+      friendly_type_of(body)
+    )
+  )
+  abort(msg, call = call)
+}
 
 
 #' Use cli to format error messages

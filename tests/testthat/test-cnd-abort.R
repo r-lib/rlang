@@ -547,3 +547,24 @@ test_that("setting `.internal` adds footer bullet (fallback)", {
     err(abort("foo", body = c("x" = "bar"), .internal = TRUE))
   })
 })
+
+test_that("must pass character `body` when `message` is > 1", {
+  expect_snapshot({
+    # This is ok because `message` is length 1
+    err(abort("foo", body = function(cnd) c("i" = "bar")))
+
+    # This is an internal error
+    err(abort(c("foo", "bar"), body = function() "baz"))
+  })
+})
+
+test_that("must pass character `body` when `message` is > 1 (non-cli case)", {
+  local_use_cli(format = FALSE)
+  expect_snapshot({
+    # This is ok because `message` is length 1
+    err(abort("foo", body = function(cnd) c("i" = "bar")))
+
+    # This is an internal error
+    err(abort(c("foo", "bar"), body = function() "baz"))
+  })
+})

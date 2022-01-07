@@ -670,3 +670,39 @@
       x bar
       i This is an internal error, please report it to the package authors.
 
+# must pass character `body` when `message` is > 1
+
+    Code
+      err(abort("foo", body = function(cnd) c(i = "bar")))
+    Output
+      <error/rlang_error>
+      Error:
+      ! foo
+      i bar
+    Code
+      err(abort(c("foo", "bar"), body = function() "baz"))
+    Output
+      <error/rlang_error>
+      Error in `abort()`:
+      ! Can't supply conflicting bodies in `body` and `message`.
+      x `body` must be character or NULL when a length > 1 `message` is supplied.
+      i `body` is currently a function.
+
+# must pass character `body` when `message` is > 1 (non-cli case)
+
+    Code
+      err(abort("foo", body = function(cnd) c(i = "bar")))
+    Output
+      <error/rlang_error>
+      Error:
+      ! foo
+      bar
+    Code
+      err(abort(c("foo", "bar"), body = function() "baz"))
+    Output
+      <error/rlang_error>
+      Error in `abort()`:
+      ! Can't supply conflicting bodies in `body` and `message`.
+      x `body` must be character or NULL when a length > 1 `message` is supplied.
+      i `body` is currently a function.
+
