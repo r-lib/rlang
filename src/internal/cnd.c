@@ -123,12 +123,14 @@ r_obj* ffi_new_condition(r_obj* class,
     msg = r_chrs.empty_string;
   } else if (r_typeof(msg) != R_TYPE_character) {
     const char* arg = r_format_error_arg(r_sym("message"));
-    r_abort("%s must be a character vector.", arg);
+    const char* what = friendly_type_of(msg);
+    r_abort("%s must be a character vector, not %s.", arg, what);
   }
 
   if (r_typeof(class) != R_TYPE_character) {
     const char* arg = r_format_error_arg(r_sym("class"));
-    r_abort("%s must be a character vector.", arg);
+    const char* what = friendly_type_of(class);
+    r_abort("%s must be a character vector, not %s.", arg, what);
   }
 
   r_ssize n_data = r_length(data);
@@ -167,11 +169,34 @@ r_obj* new_condition_names(r_obj* data) {
   return nms;
 }
 
+const char* friendly_type_of(r_obj* x) {
+  r_obj* out_obj = KEEP(r_eval_with_x(friendly_type_of_call, x, rlang_ns_env));
+
+  if (!r_is_string(out_obj)) {
+    r_stop_unexpected_type("friendly_type_of", r_typeof(out_obj));
+  }
+  const char* out_str = r_chr_get_c_string(out_obj, 0);
+
+  // Uses the vmax protection stack.
+  int n = strlen(out_str) + 1;
+  char* out = R_alloc(n, sizeof(char));
+  memcpy(out, out_str, n);
+
+  FREE(1);
+  return out;
+}
+
 
 void rlang_init_cnd(r_obj* ns) {
   format_arg_call = r_parse("format_arg(x)");
   r_preserve(format_arg_call);
+
+  friendly_type_of_call = r_parse("friendly_type_of(x)");
+  r_preserve(friendly_type_of_call);
 }
 
 static
 r_obj* format_arg_call = NULL;
+
+static
+r_obj* friendly_type_of_call = NULL;

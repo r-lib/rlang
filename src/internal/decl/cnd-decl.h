@@ -20,3 +20,6 @@ r_obj* new_condition_names(r_obj* data);
 
 static
 r_obj* format_arg_call;
+
+static
+r_obj* friendly_type_of_call;

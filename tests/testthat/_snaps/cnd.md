@@ -533,19 +533,19 @@
     Output
       <error/rlang_error>
       Error in `warning_cnd()`:
-      ! `class` must be a character vector.
+      ! `class` must be a character vector, not a list.
     Code
       (expect_error(error_cnd(class = list())))
     Output
       <error/rlang_error>
       Error in `error_cnd()`:
-      ! `class` must be a character vector.
+      ! `class` must be a character vector, not a list.
     Code
       (expect_error(message_cnd(message = 1)))
     Output
       <error/rlang_error>
       Error in `message_cnd()`:
-      ! `message` must be a character vector.
+      ! `message` must be a character vector, not a number.
 
 # picks up cli format flag
 

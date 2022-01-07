@@ -50,5 +50,9 @@ r_obj* rlang_as_function(r_obj* x, r_obj* env);
 
 extern struct rlang_globals_syms rlang_syms;
 
+// From cnd.c
+// Protects with the vmax stack
+const char* friendly_type_of(r_obj* x);
+
 
 #endif
