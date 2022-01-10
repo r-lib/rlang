@@ -1114,3 +1114,21 @@
        2. g()
        3. h()
 
+# can format empty traces
+
+    Code
+      # Full
+      print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
+    Output
+      x
+    Code
+      # Collapsed
+      print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
+    Output
+      x
+    Code
+      # Branch
+      print(trace, simplify = "branch", dir = dir, srcrefs = srcrefs)
+    Output
+      
+

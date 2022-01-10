@@ -730,3 +730,15 @@ test_that("trailing `FALSE` visibility is handled", {
   )
   expect_snapshot_trace(trace)
 })
+
+test_that("can create empty trace with trace_back()", {
+  expect_equal(
+    trace_back(top = environment()),
+    new_trace(list(), int())
+  )
+})
+
+test_that("can format empty traces", {
+  trace <- new_trace(list(), int())
+  expect_snapshot_trace(trace)
+})

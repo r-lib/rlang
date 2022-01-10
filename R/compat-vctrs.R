@@ -198,6 +198,12 @@ vec_dims <- function(x) {
 vec_as_location <- function(i, n, names = NULL) {
   out <- seq_len(n)
   names(out) <- names
+
+  # Special-case recycling to size 0
+  if (is_logical(i, n = 1) && !length(out)) {
+    return(out)
+  }
+
   unname(out[i])
 }
 

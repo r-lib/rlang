@@ -101,7 +101,7 @@ trace_back <- function(top = NULL, bottom = NULL) {
   calls <- map(calls, call_zap_inline)
 
   context <- map2(calls, seq_along(calls), call_trace_context)
-  context <- inject(vec_rbind(!!!context))
+  context <- inject(vec_rbind(empty_trace_context(), !!!context))
 
   parents <- normalise_parents(parents)
 
@@ -227,6 +227,9 @@ trace_context <- function(namespace = NA, scope = NA) {
     scope = scope
   )
 }
+empty_trace_context <- function() {
+  trace_context(chr(), chr())
+}
 
 # Remove recursive frames which occur with quosures
 normalise_parents <- function(parents) {
@@ -264,8 +267,8 @@ new_trace <- function(call,
                       parent,
                       ...,
                       visible = TRUE,
-                      namespace = NA,
-                      scope = NA,
+                      namespace = na_chr,
+                      scope = na_chr,
                       class = NULL) {
   new_trace0(
     call,
@@ -643,12 +646,21 @@ is_eval_call <- function(call) {
 }
 
 trace_simplify_branch <- function(trace) {
+  if (!trace_length(trace)) {
+    return(trace)
+  }
+
   parents <- trace$parent
 
   old_visible <- trace$visible
   visible <- rep_along(old_visible, FALSE)
 
-  id <- trace_length(trace)
+  old_visible_loc <- which(old_visible)
+  if (length(old_visible_loc)) {
+    id <- last(old_visible_loc)
+  } else {
+    id <- 0L
+  }
 
   trace$collapsed <- 0L
 
@@ -729,6 +741,10 @@ is_winch_frame <- function(call) {
 }
 
 trace_simplify_collapse <- function(trace) {
+  if (!trace_length(trace)) {
+    return(trace)
+  }
+
   parents <- trace$parent
 
   old_visible <- trace$visible
@@ -782,7 +798,9 @@ trace_simplify_collapse <- function(trace) {
 # Printing ----------------------------------------------------------------
 
 trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL) {
-  trace$collapsed <- trace$collapsed %||% 0L
+  if (is_null(trace$collapsed)) {
+    trace$collapsed <- vec_recycle(0L, trace_length(trace))
+  }
   call_text_data <- trace[c("call", "collapsed", "namespace", "scope")]
   call_text <- chr(!!!pmap(call_text_data, trace_call_text))
 
@@ -794,7 +812,7 @@ trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL) {
     src_locs <- map_chr(refs, src_loc)
     trace$src_loc <- src_locs
   } else {
-    trace$src_loc <- ""
+    trace$src_loc <- vec_recycle("", trace_length(trace))
   }
 
   id <- c(0, seq_along(trace$call))
