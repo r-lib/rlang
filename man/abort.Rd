@@ -20,6 +20,7 @@ abort(
   use_cli_format = NULL,
   .internal = FALSE,
   .file = NULL,
+  .frame = NULL,
   .subclass = deprecated()
 )
 
@@ -115,6 +116,11 @@ incompatible with \code{footer}.}
 \item{.file}{A connection or a string specifying where to print the
 message. The default depends on the context, see the \code{stdout} vs
 \code{stderr} section.}
+
+\item{.frame}{The throwing context. Default to \code{call} if it is an
+environment, \code{\link[=caller_env]{caller_env()}} otherwise. This is used during
+backtrace construction as a starting point to hide condition
+handling frames from the user.}
 
 \item{.subclass}{This argument was renamed to \code{class} in rlang
 0.4.2.  It will be deprecated in the next major version. This is

@@ -143,6 +143,10 @@
 #' @param .file A connection or a string specifying where to print the
 #'   message. The default depends on the context, see the `stdout` vs
 #'   `stderr` section.
+#' @param .frame The throwing context. Default to `call` if it is an
+#'   environment, [caller_env()] otherwise. This is used during
+#'   backtrace construction as a starting point to hide condition
+#'   handling frames from the user.
 #' @param .subclass This argument was renamed to `class` in rlang
 #'   0.4.2.  It will be deprecated in the next major version. This is
 #'   for consistency with our conventions for class constructors
@@ -216,15 +220,36 @@ abort <- function(message = NULL,
                   use_cli_format = NULL,
                   .internal = FALSE,
                   .file = NULL,
-                  .trace_bottom = NULL,
+                  .frame = NULL,
                   .subclass = deprecated()) {
-  if (!is_null(.trace_bottom)) {
-    check_environment(.trace_bottom)
-  }
-
   caller <- caller_env()
 
+  if (is_null(.frame)) {
+    if (is_environment(maybe_missing(call))) {
+      .frame <- call
+    } else {
+      .frame <- caller
+    }
+  } else {
+    check_environment(.frame)
+  }
+
+  # This is a heuristic. This currently doesn't handle non-chained
+  # rethrowing handlers. TODO: Detect handler frame.
+  from_handler <- !is_null(parent)
+
+  if (is_missing(call)) {
+    if (from_handler) {
+      # TODO: Find caller of setup frame
+      call <- NULL
+    } else {
+      call <- .frame
+    }
+  }
+
   message <- validate_signal_args(message, class, call, .subclass)
+  call <- error_call(call)
+
   message_info <- cnd_message_info(
     message,
     body,
@@ -238,28 +263,16 @@ abort <- function(message = NULL,
   use_cli_format <- message_info$use_cli_format
 
   if (is_null(trace) && is_null(peek_option("rlang:::disable_trace_capture"))) {
-    if (is_null(.trace_bottom)) {
-      if (is_null(parent)) {
-        .trace_bottom <- abort_find_bottom(call, caller)
-      } else {
-        .trace_bottom <- abort_find_handler_bottom()
-      }
+    if (from_handler) {
+      bottom <- abort_find_handler_bottom()
+    } else {
+      bottom <- abort_find_bottom(.frame)
     }
 
     # Prevents infloops when rlang throws during trace capture
     with_options("rlang:::disable_trace_capture" = TRUE, {
-      trace <- trace_back(visible_bottom = .trace_bottom)
+      trace <- trace_back(visible_bottom = bottom)
     })
-  }
-
-  if (is_missing(call)) {
-    if (is_null(parent)) {
-      call <- error_call(caller)
-    } else {
-      call <- NULL
-    }
-  } else {
-    call <- error_call(call)
   }
 
   cnd <- error_cnd(
@@ -275,19 +288,10 @@ abort <- function(message = NULL,
   signal_abort(cnd, .file)
 }
 
-abort_find_bottom <- function(call, caller) {
+abort_find_bottom <- function(frame) {
   frames <- sys.frames()
-
-  if (!is_missing(call) && is_environment(call)) {
-    if (detect_index(frames, identical, call)) {
-      return(call)
-    }
-  }
-
-  if (is_environment(caller)) {
-    if (detect_index(frames, identical, caller)) {
-      return(caller)
-    }
+  if (detect_index(frames, identical, frame)) {
+    return(frame)
   }
 }
 abort_find_handler_bottom <- function() {
@@ -959,6 +963,7 @@ call_restore <- function(x, to) {
   x
 }
 
+# TODO!
 trace_trim_context <- function(trace, idx, call = caller_env()) {
   check_frame(idx, arg = "frame", call = call)
 
