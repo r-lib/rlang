@@ -175,63 +175,79 @@ test_that("capture context doesn't leak into low-level backtraces", {
     rlang_trace_top_env = current_env()
   )
 
-  failing <- function() stop("low-level")
-  stop_wrapper <- function(...) abort("wrapper", ..., call = caller_env())
-  f <- function() g()
-  g <- function() h()
-  h <- function() {
+  stop1 <- function(..., call = caller_env()) stop2(..., call = call)
+  stop2 <- function(..., call = caller_env()) stop3(..., call = call)
+  stop3 <- function(..., call = caller_env()) abort(..., call = call)
+
+  low1 <- function() low2()
+  low2 <- function() low3()
+  low3 <- function() stop("low-level")
+
+  high3_catch <- function(..., chain, stop_helper) {
     tryCatch(
-      failing(),
+      low1(),
       error = function(err) {
-        if (wrapper) {
-          stop_wrapper(parent = err)
+        parent <- if (chain) err
+        if (stop_helper) {
+          stop1("high-level", parent = err)
         } else {
-          if (parent) {
-            abort("no wrapper", parent = err)
-          } else {
-            abort("no wrapper")
-          }
+          abort("high-level", parent = err)
+        }
+      }
+    )
+  }
+  high3_call <- function(..., chain, stop_helper) {
+    withCallingHandlers(
+      low1(),
+      error = function(err) {
+        parent <- if (chain) err
+        if (stop_helper) {
+          stop1("high-level", parent = err)
+        } else {
+          abort("high-level", parent = err)
+        }
+      }
+    )
+  }
+  high3_fetch <- function(..., chain, stop_helper) {
+    try_call(
+      low1(),
+      error = function(err) {
+        parent <- if (chain) err
+        if (stop_helper) {
+          stop1("high-level", parent = err)
+        } else {
+          abort("high-level", parent = err)
         }
       }
     )
   }
 
-  foo <- function(cnd) bar(cnd)
-  bar <- function(cnd) baz(cnd)
-  baz <- function(cnd) abort("foo")
-  err_wch <- catch_error(
-    withCallingHandlers(
-      foo(),
-      error = function(cnd) abort("bar", parent = cnd)
-    )
+  high1 <- function(...) high2(...)
+  high2 <- function(...) high3(...)
+  high3 <- NULL
+
+  cases <- list(
+    "tryCatch()" = high3_catch,
+    "withCallingHandlers()" = high3_call,
+    "try_fetch()" = high3_fetch
   )
 
-  expect_snapshot({
-    "Non wrapped case"
-    {
-      parent <- TRUE
-      wrapper <- FALSE
-      err <- catch_error(f())
-      print(err)
-    }
+  for (i in seq_along(cases)) {
+    high3 <- cases[[i]]
 
-    "Wrapped case"
-    {
-      wrapper <- TRUE
-      err <- catch_error(f())
-      print(err)
-    }
+    # Use `print()` because `testthat_print()` (called implicitly in
+    # snapshots) doesn't print backtraces
+    inject(expect_snapshot({
+      !!names(cases)[[i]]
 
-    "FIXME?"
-    {
-      parent <- FALSE
-      err <- catch_error(f())
-      print(err)
-    }
+      print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
+      print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
 
-    "withCallingHandlers()"
-    print(err_wch)
-  })
+      print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
+      print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
+    }))
+  }
 })
 
 test_that("`.subclass` argument of `abort()` still works", {

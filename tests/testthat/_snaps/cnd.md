@@ -17,6 +17,7 @@
        1. \-global f()
        2.   \-global g()
        3.     \-global h()
+       4.       \-rlang::abort("", "foobar_error")
       Execution halted
 
 # rlang_error.print() calls cnd_message() methods

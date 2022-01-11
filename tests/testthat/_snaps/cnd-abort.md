@@ -29,6 +29,7 @@
        3.   | \-base tryCatchList(expr, classes, parentenv, handlers)
        4.   \-global g()
        5.     \-global h()
+       6.       \-rlang::abort("Error message")
       Execution halted
     Code
       cat_line(reminder)
@@ -70,6 +71,7 @@
        3.   | \-base tryCatchList(expr, classes, parentenv, handlers)
        4.   \-global g()
        5.     \-global h()
+       6.       \-rlang::abort("Error message")
       Execution halted
     Code
       cat_line(rethrown_interactive)
@@ -84,16 +86,17 @@
       Error in `h()`:
       ! Error message
       Backtrace:
-          x
-       1. +-base::tryCatch(f(), error = function(cnd) rlang::cnd_signal(cnd))
-       2. | \-base tryCatchList(expr, classes, parentenv, handlers)
-       3. |   \-base tryCatchOne(expr, names, parentenv, handlers[[1L]])
-       4. |     \-base doTryCatch(return(expr), name, parentenv, handler)
-       5. \-global f()
-       6.   +-base::tryCatch(g())
-       7.   | \-base tryCatchList(expr, classes, parentenv, handlers)
-       8.   \-global g()
-       9.     \-global h()
+           x
+        1. +-base::tryCatch(f(), error = function(cnd) rlang::cnd_signal(cnd))
+        2. | \-base tryCatchList(expr, classes, parentenv, handlers)
+        3. |   \-base tryCatchOne(expr, names, parentenv, handlers[[1L]])
+        4. |     \-base doTryCatch(return(expr), name, parentenv, handler)
+        5. \-global f()
+        6.   +-base::tryCatch(g())
+        7.   | \-base tryCatchList(expr, classes, parentenv, handlers)
+        8.   \-global g()
+        9.     \-global h()
+       10.       \-rlang::abort("Error message")
       Execution halted
 
 # empty backtraces are not printed
@@ -103,12 +106,17 @@
     Output
       Error:
       ! foo
+      Backtrace:
+       1. rlang::abort("foo")
       Execution halted
     Code
       cat_line(full_depth_0)
     Output
       Error:
       ! foo
+      Backtrace:
+          x
+       1. \-rlang::abort("foo")
       Execution halted
     Code
       cat_line(branch_depth_1)
@@ -126,6 +134,7 @@
       Backtrace:
           x
        1. \-global f()
+       2.   \-rlang::abort("foo")
       Execution halted
 
 # parent errors are not displayed in error message and backtrace
@@ -158,6 +167,7 @@
         8.       \-global f()
         9.         \-global g()
        10.           \-global h()
+       11.             \-rlang::abort("foo")
       Execution halted
 
 # backtrace reminder is displayed when called from `last_error()`
@@ -223,74 +233,178 @@
 # capture context doesn't leak into low-level backtraces
 
     Code
-      # Non wrapped case
-      {
-        parent <- TRUE
-        wrapper <- FALSE
-        err <- catch_error(f())
-        print(err)
-      }
+      # tryCatch()
+      print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
     Output
       <error/rlang_error>
       Error:
-      ! no wrapper
-      Caused by error in `failing()`:
+      ! high-level
+      Caused by error in `low3()`:
       ! low-level
       Backtrace:
-        1. rlang:::catch_error(f())
-        9. rlang f()
-       10. rlang g()
-       11. rlang h()
+        1. base::print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
+       10. rlang high1(chain = TRUE, stop_helper = TRUE)
+       11. rlang high2(...)
+       12. rlang high3(...)
     Code
-      # Wrapped case
-      {
-        wrapper <- TRUE
-        err <- catch_error(f())
-        print(err)
-      }
+      print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
     Output
       <error/rlang_error>
       Error:
-      ! wrapper
-      Caused by error in `failing()`:
+      ! high-level
+      Caused by error in `low3()`:
       ! low-level
       Backtrace:
-        1. rlang:::catch_error(f())
-        9. rlang f()
-       10. rlang g()
-       11. rlang h()
+        1. base::print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
+       10. rlang high1(chain = TRUE, stop_helper = FALSE)
+       11. rlang high2(...)
+       12. rlang high3(...)
     Code
-      # FIXME?
-      {
-        parent <- FALSE
-        err <- catch_error(f())
-        print(err)
-      }
+      print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
     Output
       <error/rlang_error>
       Error:
-      ! wrapper
-      Caused by error in `failing()`:
+      ! high-level
+      Caused by error in `low3()`:
       ! low-level
       Backtrace:
-        1. rlang:::catch_error(f())
-        9. rlang f()
-       10. rlang g()
-       11. rlang h()
+        1. base::print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
+       10. rlang high1(chain = FALSE, stop_helper = TRUE)
+       11. rlang high2(...)
+       12. rlang high3(...)
+    Code
+      print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
+    Output
+      <error/rlang_error>
+      Error:
+      ! high-level
+      Caused by error in `low3()`:
+      ! low-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
+       10. rlang high1(chain = FALSE, stop_helper = FALSE)
+       11. rlang high2(...)
+       12. rlang high3(...)
+
+---
+
     Code
       # withCallingHandlers()
-      print(err_wch)
+      print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
+    Output
+      <error/rlang_error>
+      Error in `h()`:
+      ! high-level
+      Caused by error in `low3()`:
+      ! low-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
+       10. rlang high1(chain = TRUE, stop_helper = TRUE)
+       11. rlang high2(...)
+       12. rlang high3(...)
+       14. rlang low1()
+       15. rlang low2()
+       16. rlang low3()
+       17. base::stop("low-level")
+    Code
+      print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
     Output
       <error/rlang_error>
       Error:
-      ! bar
-      Caused by error in `baz()`:
-      ! foo
+      ! high-level
+      Caused by error in `low3()`:
+      ! low-level
       Backtrace:
-        1. rlang:::catch_error(...)
-       10. rlang foo()
-       11. rlang bar(cnd)
-       12. rlang baz(cnd)
+        1. base::print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
+       10. rlang high1(chain = TRUE, stop_helper = FALSE)
+       11. rlang high2(...)
+       12. rlang high3(...)
+       14. rlang low1()
+       15. rlang low2()
+       16. rlang low3()
+       17. base::stop("low-level")
+    Code
+      print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
+    Output
+      <error/rlang_error>
+      Error in `h()`:
+      ! high-level
+      Caused by error in `low3()`:
+      ! low-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
+       10. rlang high1(chain = FALSE, stop_helper = TRUE)
+       11. rlang high2(...)
+       12. rlang high3(...)
+       14. rlang low1()
+       15. rlang low2()
+       16. rlang low3()
+       17. base::stop("low-level")
+    Code
+      print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
+    Output
+      <error/rlang_error>
+      Error:
+      ! high-level
+      Caused by error in `low3()`:
+      ! low-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
+       10. rlang high1(chain = FALSE, stop_helper = FALSE)
+       11. rlang high2(...)
+       12. rlang high3(...)
+       14. rlang low1()
+       15. rlang low2()
+       16. rlang low3()
+       17. base::stop("low-level")
+
+---
+
+    Code
+      # try_fetch()
+      print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
+    Output
+      <error/rlang_error>
+      Error:
+      ! high-level
+      Caused by error in `low3()`:
+      ! low-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
+       23. base::.handleSimpleError(`<fn>`, "low-level", base::quote(low3()))
+    Code
+      print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
+    Output
+      <error/rlang_error>
+      Error:
+      ! high-level
+      Caused by error in `low3()`:
+      ! low-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
+       23. base::.handleSimpleError(`<fn>`, "low-level", base::quote(low3()))
+    Code
+      print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
+    Output
+      <error/rlang_error>
+      Error:
+      ! high-level
+      Caused by error in `low3()`:
+      ! low-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
+       23. base::.handleSimpleError(`<fn>`, "low-level", base::quote(low3()))
+    Code
+      print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
+    Output
+      <error/rlang_error>
+      Error:
+      ! high-level
+      Caused by error in `low3()`:
+      ! low-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
+       23. base::.handleSimpleError(`<fn>`, "low-level", base::quote(low3()))
 
 # abort() displays call in error prefix
 
@@ -299,6 +413,9 @@
     Output
       Error in `bar()`:
       ! foo
+      Backtrace:
+          ▆
+       1. └─rlang::abort("foo", call = quote(bar(baz)))
       Execution halted
 
 ---
@@ -308,6 +425,9 @@
     Output
       Error in `bar()`:
       ! foo
+      Backtrace:
+          ▆
+       1. └─rlang::cnd_signal(errorCondition("foo", call = quote(bar(baz))))
       Execution halted
 
 # abort() accepts environment as `call` field.

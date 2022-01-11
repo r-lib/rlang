@@ -44,6 +44,8 @@
 #' cnd <- error_cnd("my_error_class", message = "This is an error")
 #' try(cnd_signal(cnd))
 cnd_signal <- function(cnd, ...) {
+  .__signal_frame__. <- TRUE
+
   validate_cnd_signal_args(cnd, ...)
   if (is_null(cnd)) {
     return(invisible(NULL))
@@ -52,12 +54,16 @@ cnd_signal <- function(cnd, ...) {
   switch(
     cnd_type(cnd),
     error = {
-      if (is_null(cnd$trace)) {
-        trace <- trace_back()
-        cnd$trace <- trace_trim_context(trace, trace_length(trace))
-      }
       if (is_environment(cnd$call)) {
+        frame <- cnd$call
         cnd$call <- error_call(cnd$call)
+      } else {
+        frame <- caller_env()
+      }
+      if (is_null(cnd$trace)) {
+        info <- abort_context(frame, cnd$parent)
+        trace <- trace_back(visible_bottom = info$bottom_frame)
+        cnd$trace <- trace
       }
       signal_abort(cnd)
     },

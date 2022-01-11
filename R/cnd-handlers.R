@@ -194,6 +194,7 @@ try_call <- function(expr, ...) {
 }
 
 handler_call <- quote(function(cnd) {
+  .__handler_frame__. <- TRUE
   out <- handlers[[i]](cnd)
   if (!inherits(out, "rlang_zap")) throw(out)
 })
