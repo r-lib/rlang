@@ -234,12 +234,10 @@ abort <- function(message = NULL,
     check_environment(.frame)
   }
 
-  # This is a heuristic. This currently doesn't handle non-chained
-  # rethrowing handlers. TODO: Detect handler frame.
-  from_handler <- !is_null(parent)
+  info <- abort_context(.frame, parent)
 
   if (is_missing(call)) {
-    if (from_handler) {
+    if (info$from_handler) {
       # TODO: Find caller of setup frame
       call <- NULL
     } else {
@@ -263,15 +261,10 @@ abort <- function(message = NULL,
   use_cli_format <- message_info$use_cli_format
 
   if (is_null(trace) && is_null(peek_option("rlang:::disable_trace_capture"))) {
-    if (from_handler) {
-      bottom <- abort_find_handler_bottom()
-    } else {
-      bottom <- abort_find_bottom(.frame)
-    }
 
     # Prevents infloops when rlang throws during trace capture
     with_options("rlang:::disable_trace_capture" = TRUE, {
-      trace <- trace_back(visible_bottom = bottom)
+      trace <- trace_back(visible_bottom = info$bottom)
     })
   }
 
@@ -288,6 +281,22 @@ abort <- function(message = NULL,
   signal_abort(cnd, .file)
 }
 
+abort_context <- function(frame, parent) {
+  # This is a heuristic. This currently doesn't handle non-chained
+  # rethrowing handlers. TODO: Detect handler frame.
+  from_handler <- !is_null(parent)
+
+  if (from_handler) {
+    bottom <- abort_find_handler_bottom()
+  } else {
+    bottom <- abort_find_bottom(frame)
+  }
+
+  list(
+    from_handler = from_handler,
+    bottom = bottom
+  )
+}
 abort_find_bottom <- function(frame) {
   frames <- sys.frames()
   if (detect_index(frames, identical, frame)) {
