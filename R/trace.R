@@ -37,7 +37,6 @@
 #'   capture context.
 #'
 #'   Can also be an integer that will be passed to [caller_env()].
-#' @param visible_bottom TODO.
 #' @examples
 #' # Trim backtraces automatically (this improves the generated
 #' # documentation for the rlang website and the same trick can be
@@ -90,9 +89,10 @@
 #' source(conn, echo = TRUE, local = TRUE)
 #' close(conn)
 #' @export
-trace_back <- function(top = NULL,
-                       bottom = NULL,
-                       visible_bottom = NULL) {
+trace_back <- function(top = NULL, bottom = NULL) {
+  # FIXME: Include this in the `trace_back()` UI?
+  visible_bottom <- peek_option("rlang:::visible_bottom")
+
   frames <- sys.frames()
 
   idx <- trace_find_bottom(bottom, frames)

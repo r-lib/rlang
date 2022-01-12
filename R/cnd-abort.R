@@ -262,11 +262,12 @@ abort <- function(message = NULL,
   use_cli_format <- message_info$use_cli_format
 
   if (is_null(trace) && is_null(peek_option("rlang:::disable_trace_capture"))) {
-
-    # Prevents infloops when rlang throws during trace capture
-    with_options("rlang:::disable_trace_capture" = TRUE, {
-      trace <- trace_back(visible_bottom = info$bottom_frame)
-    })
+    with_options(
+      # Prevents infloops when rlang throws during trace capture
+      "rlang:::disable_trace_capture" = TRUE,
+      "rlang:::visible_bottom" = info$bottom_frame,
+      { trace <- trace_back() }
+    )
   }
 
   cnd <- error_cnd(
