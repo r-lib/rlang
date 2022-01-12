@@ -315,10 +315,10 @@ abort_context <- function(frame, parent, call = caller_env()) {
       if (is_string(from_handler, "calling") || !is_null(parent)) {
         if (is_calling_handler_inlined_call(call1)) {
           from_handler <- "calling"
-          bottom_loc <- calls_signal_loc(calls, frame_loc)
+          bottom_loc <- calls_signal_loc(calls, frame_loc - 1L)
         } else if (is_calling_handler_simple_error_call(call1, call2)) {
           from_handler <- "calling"
-          bottom_loc <- calls_signal_loc(calls, frame_loc - 1L)
+          bottom_loc <- calls_signal_loc(calls, frame_loc - 2L)
         }
       }
     }
@@ -349,7 +349,6 @@ calls_try_catch_loc <- function(calls, loc) {
 }
 
 calls_signal_loc <- function(calls, loc) {
-  loc <- loc - 1L
   node <- as.pairlist(rev(calls[seq_len(loc)]))
   call <- node_car(node)
 
@@ -366,7 +365,7 @@ calls_signal_loc <- function(calls, loc) {
     )
     while (is_call(node_car(node), restart_fns)) {
       node <- node_cdr(node)
-      i <- i + 1L
+      i <- i - 1L
       found <- TRUE
     }
 
