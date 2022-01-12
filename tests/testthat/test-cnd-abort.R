@@ -631,3 +631,18 @@ test_that("can't supply both `footer` and `.internal`", {
     err(abort("foo", footer = "bar", .internal = TRUE, call = quote(f())))
   })
 })
+
+test_that("caller of withCallingHandlers() is used as default `call`", {
+  low <- function() {
+    # Intervening `withCallingHandlers()` is not picked up
+    withCallingHandlers(stop("low"))
+  }
+  high <- function() {
+    withCallingHandlers(
+      low(),
+      error = function(cnd) abort("high", parent = cnd)
+    )
+  }
+  err <- catch_error(high())
+  expect_equal(err$call, quote(high()))
+})

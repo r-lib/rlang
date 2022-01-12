@@ -295,7 +295,7 @@ abort_context <- function(frame, parent, call = caller_env()) {
     from_handler <- NULL
   }
 
-  signal_loc <- 0L
+  setup_loc <- 0L
   bottom_loc <- frame_loc
 
   if ((frame_loc - 1) > 0) {
@@ -310,8 +310,8 @@ abort_context <- function(frame, parent, call = caller_env()) {
 
     if (is_exiting_handler_call(call1, call2)) {
       from_handler <- "exiting"
-      signal_loc <- calls_try_catch_loc(calls, frame_loc)
-      bottom_loc <- parents[[signal_loc]]
+      setup_loc <- calls_try_catch_loc(calls, frame_loc)
+      bottom_loc <- parents[[setup_loc]]
     } else {
       if (is_string(from_handler, "calling") || !is_null(parent)) {
         if (is_calling_handler_inlined_call(call1)) {
@@ -320,6 +320,7 @@ abort_context <- function(frame, parent, call = caller_env()) {
         } else if (is_calling_handler_simple_error_call(call1, call2)) {
           from_handler <- "calling"
           bottom_loc <- calls_signal_loc(calls, frame_loc - 2L)
+          setup_loc <- calls_setup_loc(calls, frames, frame_loc)
         }
       }
     }
@@ -329,14 +330,14 @@ abort_context <- function(frame, parent, call = caller_env()) {
     # Skip frames marked with the sentinel `.__signal_frame__.`
     bottom_loc <- skip_signal_frames(bottom_loc, frames)
   }
-  if (signal_loc) {
-    signal_loc <- parents[[signal_loc]]
+  if (setup_loc) {
+    setup_loc <- parents[[setup_loc]]
   }
 
   list(
     from_handler = from_handler,
     bottom_frame = if (bottom_loc) frames[[bottom_loc]],
-    signal_frame = if (signal_loc) frames[[signal_loc]]
+    signal_frame = if (setup_loc) frames[[setup_loc]]
   )
 }
 
@@ -404,6 +405,28 @@ calls_signal_loc <- function(calls, loc) {
   }
 
   loc
+}
+
+calls_setup_loc <- function(calls, frames, handler_loc) {
+  handler <- sys.function(handler_loc)
+  top <- handler_loc
+
+  while (TRUE) {
+    calls <- calls[seq_len(top)]
+    setup_loc <- detect_index(calls, is_call, "withCallingHandlers", .right = TRUE)
+
+    if (!setup_loc) {
+      return(0L)
+    }
+
+    signal_handlers <- frames[[setup_loc]][["handlers"]]
+
+    if (some(signal_handlers, identical, handler)) {
+      return(setup_loc)
+    }
+
+    top <- setup_loc - 1L
+  }
 }
 
 skip_signal_frames <- function(loc, frames) {
