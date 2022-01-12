@@ -230,10 +230,9 @@
        11. rlang h()
       Run `rlang::last_trace()` to see the full context.
 
-# capture context doesn't leak into low-level backtraces
+# Backtrace on rethrow: stop() - tryCatch()
 
     Code
-      # tryCatch()
       print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
     Output
       <error/rlang_error>
@@ -286,10 +285,9 @@
        11. rlang high2(...)
        12. rlang high3(...)
 
----
+# Backtrace on rethrow: stop() - withCallingHandlers()
 
     Code
-      # withCallingHandlers()
       print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
     Output
       <error/rlang_error>
@@ -358,10 +356,9 @@
        16. rlang low3()
        17. base::stop("low-level")
 
----
+# Backtrace on rethrow: stop() - try_fetch()
 
     Code
-      # try_fetch()
       print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
     Output
       <error/rlang_error>
@@ -371,7 +368,13 @@
       ! low-level
       Backtrace:
         1. base::print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
-       23. base::.handleSimpleError(`<fn>`, "low-level", base::quote(low3()))
+       10. rlang high1(chain = TRUE, stop_helper = TRUE)
+       11. rlang high2(...)
+       12. rlang high3(...)
+       19. rlang low1()
+       20. rlang low2()
+       21. rlang low3()
+       22. base::stop("low-level")
     Code
       print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
     Output
@@ -382,7 +385,13 @@
       ! low-level
       Backtrace:
         1. base::print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
-       23. base::.handleSimpleError(`<fn>`, "low-level", base::quote(low3()))
+       10. rlang high1(chain = TRUE, stop_helper = FALSE)
+       11. rlang high2(...)
+       12. rlang high3(...)
+       19. rlang low1()
+       20. rlang low2()
+       21. rlang low3()
+       22. base::stop("low-level")
     Code
       print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
     Output
@@ -393,7 +402,13 @@
       ! low-level
       Backtrace:
         1. base::print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
-       23. base::.handleSimpleError(`<fn>`, "low-level", base::quote(low3()))
+       10. rlang high1(chain = FALSE, stop_helper = TRUE)
+       11. rlang high2(...)
+       12. rlang high3(...)
+       19. rlang low1()
+       20. rlang low2()
+       21. rlang low3()
+       22. base::stop("low-level")
     Code
       print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
     Output
@@ -404,7 +419,391 @@
       ! low-level
       Backtrace:
         1. base::print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
-       23. base::.handleSimpleError(`<fn>`, "low-level", base::quote(low3()))
+       10. rlang high1(chain = FALSE, stop_helper = FALSE)
+       11. rlang high2(...)
+       12. rlang high3(...)
+       19. rlang low1()
+       20. rlang low2()
+       21. rlang low3()
+       22. base::stop("low-level")
+
+# Backtrace on rethrow: abort() - tryCatch()
+
+    Code
+      print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
+    Output
+      <error/rlang_error>
+      Error:
+      ! high-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
+       10. rlang high1(chain = TRUE, stop_helper = TRUE)
+       11. rlang high2(...)
+       12. rlang high3(...)
+      Caused by error in `low3()`:
+      ! low-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
+       10. rlang high1(chain = TRUE, stop_helper = TRUE)
+       11. rlang high2(...)
+       12. rlang high3(...)
+       17. rlang low1()
+       18. rlang low2()
+       19. rlang low3()
+    Code
+      print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
+    Output
+      <error/rlang_error>
+      Error:
+      ! high-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
+       10. rlang high1(chain = TRUE, stop_helper = FALSE)
+       11. rlang high2(...)
+       12. rlang high3(...)
+      Caused by error in `low3()`:
+      ! low-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
+       10. rlang high1(chain = TRUE, stop_helper = FALSE)
+       11. rlang high2(...)
+       12. rlang high3(...)
+       17. rlang low1()
+       18. rlang low2()
+       19. rlang low3()
+    Code
+      print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
+    Output
+      <error/rlang_error>
+      Error:
+      ! high-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
+       10. rlang high1(chain = FALSE, stop_helper = TRUE)
+       11. rlang high2(...)
+       12. rlang high3(...)
+      Caused by error in `low3()`:
+      ! low-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
+       10. rlang high1(chain = FALSE, stop_helper = TRUE)
+       11. rlang high2(...)
+       12. rlang high3(...)
+       17. rlang low1()
+       18. rlang low2()
+       19. rlang low3()
+    Code
+      print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
+    Output
+      <error/rlang_error>
+      Error:
+      ! high-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
+       10. rlang high1(chain = FALSE, stop_helper = FALSE)
+       11. rlang high2(...)
+       12. rlang high3(...)
+      Caused by error in `low3()`:
+      ! low-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
+       10. rlang high1(chain = FALSE, stop_helper = FALSE)
+       11. rlang high2(...)
+       12. rlang high3(...)
+       17. rlang low1()
+       18. rlang low2()
+       19. rlang low3()
+
+# Backtrace on rethrow: abort() - withCallingHandlers()
+
+    Code
+      print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
+    Output
+      <error/rlang_error>
+      Error:
+      ! high-level
+      Caused by error in `low3()`:
+      ! low-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
+       10. rlang high1(chain = TRUE, stop_helper = TRUE)
+       11. rlang high2(...)
+       12. rlang high3(...)
+       14. rlang low1()
+       15. rlang low2()
+       16. rlang low3()
+    Code
+      print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
+    Output
+      <error/rlang_error>
+      Error:
+      ! high-level
+      Caused by error in `low3()`:
+      ! low-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
+       10. rlang high1(chain = TRUE, stop_helper = FALSE)
+       11. rlang high2(...)
+       12. rlang high3(...)
+       14. rlang low1()
+       15. rlang low2()
+       16. rlang low3()
+    Code
+      print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
+    Output
+      <error/rlang_error>
+      Error:
+      ! high-level
+      Caused by error in `low3()`:
+      ! low-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
+       10. rlang high1(chain = FALSE, stop_helper = TRUE)
+       11. rlang high2(...)
+       12. rlang high3(...)
+       14. rlang low1()
+       15. rlang low2()
+       16. rlang low3()
+    Code
+      print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
+    Output
+      <error/rlang_error>
+      Error:
+      ! high-level
+      Caused by error in `low3()`:
+      ! low-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
+       10. rlang high1(chain = FALSE, stop_helper = FALSE)
+       11. rlang high2(...)
+       12. rlang high3(...)
+       14. rlang low1()
+       15. rlang low2()
+       16. rlang low3()
+
+# Backtrace on rethrow: abort() - try_fetch()
+
+    Code
+      print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
+    Output
+      <error/rlang_error>
+      Error:
+      ! high-level
+      Caused by error in `low3()`:
+      ! low-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
+       10. rlang high1(chain = TRUE, stop_helper = TRUE)
+       11. rlang high2(...)
+       12. rlang high3(...)
+       19. rlang low1()
+       20. rlang low2()
+       21. rlang low3()
+    Code
+      print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
+    Output
+      <error/rlang_error>
+      Error:
+      ! high-level
+      Caused by error in `low3()`:
+      ! low-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
+       10. rlang high1(chain = TRUE, stop_helper = FALSE)
+       11. rlang high2(...)
+       12. rlang high3(...)
+       19. rlang low1()
+       20. rlang low2()
+       21. rlang low3()
+    Code
+      print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
+    Output
+      <error/rlang_error>
+      Error:
+      ! high-level
+      Caused by error in `low3()`:
+      ! low-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
+       10. rlang high1(chain = FALSE, stop_helper = TRUE)
+       11. rlang high2(...)
+       12. rlang high3(...)
+       19. rlang low1()
+       20. rlang low2()
+       21. rlang low3()
+    Code
+      print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
+    Output
+      <error/rlang_error>
+      Error:
+      ! high-level
+      Caused by error in `low3()`:
+      ! low-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
+       10. rlang high1(chain = FALSE, stop_helper = FALSE)
+       11. rlang high2(...)
+       12. rlang high3(...)
+       19. rlang low1()
+       20. rlang low2()
+       21. rlang low3()
+
+# Backtrace on rethrow: warn = 2 - tryCatch()
+
+    Code
+      print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
+    Output
+      <error/rlang_error>
+      Error:
+      ! high-level
+      Caused by error in `low3()`:
+      ! (converted from warning) low-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
+       10. rlang high1(chain = TRUE, stop_helper = TRUE)
+       11. rlang high2(...)
+       12. rlang high3(...)
+    Code
+      print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
+    Output
+      <error/rlang_error>
+      Error:
+      ! high-level
+      Caused by error in `low3()`:
+      ! (converted from warning) low-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
+       10. rlang high1(chain = TRUE, stop_helper = FALSE)
+       11. rlang high2(...)
+       12. rlang high3(...)
+    Code
+      print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
+    Output
+      <error/rlang_error>
+      Error:
+      ! high-level
+      Caused by error in `low3()`:
+      ! (converted from warning) low-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
+       10. rlang high1(chain = FALSE, stop_helper = TRUE)
+       11. rlang high2(...)
+       12. rlang high3(...)
+    Code
+      print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
+    Output
+      <error/rlang_error>
+      Error:
+      ! high-level
+      Caused by error in `low3()`:
+      ! (converted from warning) low-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
+       10. rlang high1(chain = FALSE, stop_helper = FALSE)
+       11. rlang high2(...)
+       12. rlang high3(...)
+
+# Backtrace on rethrow: warn = 2 - withCallingHandlers()
+
+    Code
+      print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
+    Output
+      <error/rlang_error>
+      Error in `h()`:
+      ! high-level
+      Caused by error in `low3()`:
+      ! (converted from warning) low-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
+       22. base::.handleSimpleError(...)
+       23. rlang h(simpleError(msg, call))
+    Code
+      print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
+    Output
+      <error/rlang_error>
+      Error:
+      ! high-level
+      Caused by error in `low3()`:
+      ! (converted from warning) low-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
+       22. base::.handleSimpleError(...)
+       23. rlang h(simpleError(msg, call))
+    Code
+      print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
+    Output
+      <error/rlang_error>
+      Error in `h()`:
+      ! high-level
+      Caused by error in `low3()`:
+      ! (converted from warning) low-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
+       22. base::.handleSimpleError(...)
+       23. rlang h(simpleError(msg, call))
+    Code
+      print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
+    Output
+      <error/rlang_error>
+      Error:
+      ! high-level
+      Caused by error in `low3()`:
+      ! (converted from warning) low-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
+       22. base::.handleSimpleError(...)
+       23. rlang h(simpleError(msg, call))
+
+# Backtrace on rethrow: warn = 2 - try_fetch()
+
+    Code
+      print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
+    Output
+      <error/rlang_error>
+      Error:
+      ! high-level
+      Caused by error in `low3()`:
+      ! (converted from warning) low-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
+       27. base::.handleSimpleError(...)
+       28. rlang h(simpleError(msg, call))
+    Code
+      print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
+    Output
+      <error/rlang_error>
+      Error:
+      ! high-level
+      Caused by error in `low3()`:
+      ! (converted from warning) low-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
+       27. base::.handleSimpleError(...)
+       28. rlang h(simpleError(msg, call))
+    Code
+      print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
+    Output
+      <error/rlang_error>
+      Error:
+      ! high-level
+      Caused by error in `low3()`:
+      ! (converted from warning) low-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
+       27. base::.handleSimpleError(...)
+       28. rlang h(simpleError(msg, call))
+    Code
+      print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
+    Output
+      <error/rlang_error>
+      Error:
+      ! high-level
+      Caused by error in `low3()`:
+      ! (converted from warning) low-level
+      Backtrace:
+        1. base::print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
+       27. base::.handleSimpleError(...)
+       28. rlang h(simpleError(msg, call))
 
 # abort() displays call in error prefix
 

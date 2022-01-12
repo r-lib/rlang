@@ -287,7 +287,13 @@ abort_context <- function(frame, parent, call = caller_env()) {
   frames <- sys.frames()
   frame_loc <- detect_index(frames, identical, frame)
 
-  from_handler <- NULL
+  if (frame_loc > 1L && env_has(frames[[frame_loc - 1L]], ".__handler_frame__.")) {
+    from_handler <- "calling"
+    frame_loc <- frame_loc - 1L
+  } else {
+    from_handler <- NULL
+  }
+
   signal_loc <- 0L
   bottom_loc <- frame_loc
 
@@ -305,19 +311,16 @@ abort_context <- function(frame, parent, call = caller_env()) {
       from_handler <- "exiting"
       bottom_loc <- calls_try_catch_loc(calls, frame_loc)
       bottom_loc <- sys.parents()[[bottom_loc]]
-    } else if (!is_null(parent)) {
-      if (is_calling_handler_inlined_call(call1)) {
-        from_handler <- "calling"
-        bottom_loc <- calls_signal_loc(calls, frame_loc)
-      } else if (is_calling_handler_simple_error_call(call1, call2)) {
-        from_handler <- "calling"
-        bottom_loc <- calls_signal_loc(calls, frame_loc - 1L)
+    } else {
+      if (is_string(from_handler, "calling") || !is_null(parent)) {
+        if (is_calling_handler_inlined_call(call1)) {
+          from_handler <- "calling"
+          bottom_loc <- calls_signal_loc(calls, frame_loc)
+        } else if (is_calling_handler_simple_error_call(call1, call2)) {
+          from_handler <- "calling"
+          bottom_loc <- calls_signal_loc(calls, frame_loc - 1L)
+        }
       }
-    }
-
-    if (is_null(from_handler) && env_has(frames[[frame_loc - 1L]], ".__handler_frame__.")) {
-      from_handler <- "calling"
-      bottom_loc <- frame_loc - 2
     }
   }
 

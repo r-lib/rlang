@@ -175,13 +175,11 @@ test_that("capture context doesn't leak into low-level backtraces", {
     rlang_trace_top_env = current_env()
   )
 
-  stop1 <- function(..., call = caller_env()) stop2(..., call = call)
-  stop2 <- function(..., call = caller_env()) stop3(..., call = call)
-  stop3 <- function(..., call = caller_env()) abort(..., call = call)
+  throw <- NULL
 
   low1 <- function() low2()
   low2 <- function() low3()
-  low3 <- function() stop("low-level")
+  low3 <- NULL
 
   high3_catch <- function(..., chain, stop_helper) {
     tryCatch(
@@ -227,26 +225,45 @@ test_that("capture context doesn't leak into low-level backtraces", {
   high2 <- function(...) high3(...)
   high3 <- NULL
 
-  cases <- list(
+  stop1 <- function(..., call = caller_env()) stop2(..., call = call)
+  stop2 <- function(..., call = caller_env()) stop3(..., call = call)
+  stop3 <- function(..., call = caller_env()) abort(..., call = call)
+
+  throwers <- list(
+    "stop()" = function() stop("low-level"),
+    "abort()" = function() abort("low-level"),
+    "warn = 2" = function() {
+      local_options(warn = 2)
+      warning("low-level")
+    }
+  )
+  handlers <- list(
     "tryCatch()" = high3_catch,
     "withCallingHandlers()" = high3_call,
     "try_fetch()" = high3_fetch
   )
 
-  for (i in seq_along(cases)) {
-    high3 <- cases[[i]]
+  for (i in seq_along(throwers)) {
+    for (j in seq_along(handlers)) {
+      case_name <- paste0(
+        "Backtrace on rethrow: ",
+        names(throwers)[[i]], " - ", names(handlers)[[j]]
+      )
+      low3 <- throwers[[i]]
+      high3 <- handlers[[j]]
 
-    # Use `print()` because `testthat_print()` (called implicitly in
-    # snapshots) doesn't print backtraces
-    inject(expect_snapshot({
-      !!names(cases)[[i]]
+      # Use `print()` because `testthat_print()` (called implicitly in
+      # snapshots) doesn't print backtraces
+      test_that(case_name, {
+        expect_snapshot({
+          print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
+          print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
 
-      print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
-      print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
-
-      print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
-      print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
-    }))
+          print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
+          print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
+        })
+      })
+    }
   }
 })
 
