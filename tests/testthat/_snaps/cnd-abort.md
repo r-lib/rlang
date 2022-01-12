@@ -249,7 +249,7 @@
       print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
     Output
       <error/rlang_error>
-      Error:
+      Error in `high3()`:
       ! high-level
       Caused by error in `low3()`:
       ! low-level
@@ -275,7 +275,7 @@
       print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
     Output
       <error/rlang_error>
-      Error:
+      Error in `high3()`:
       ! high-level
       Caused by error in `low3()`:
       ! low-level
@@ -454,7 +454,7 @@
       print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
     Output
       <error/rlang_error>
-      Error:
+      Error in `high3()`:
       ! high-level
       Backtrace:
         1. base::print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
@@ -496,7 +496,7 @@
       print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
     Output
       <error/rlang_error>
-      Error:
+      Error in `high3()`:
       ! high-level
       Backtrace:
         1. base::print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
@@ -667,7 +667,7 @@
       print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
     Output
       <error/rlang_error>
-      Error:
+      Error in `high3()`:
       ! high-level
       Caused by error in `low3()`:
       ! (converted from warning) low-level
@@ -693,7 +693,7 @@
       print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
     Output
       <error/rlang_error>
-      Error:
+      Error in `high3()`:
       ! high-level
       Caused by error in `low3()`:
       ! (converted from warning) low-level

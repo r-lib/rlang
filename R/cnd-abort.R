@@ -241,8 +241,7 @@ abort <- function(message = NULL,
     if (is_null(info$from_handler)) {
       call <- .frame
     } else {
-      # TODO!: Find caller of setup frame
-      call <- NULL
+      call <- info$signal_frame
     }
   }
 
@@ -286,6 +285,7 @@ abort <- function(message = NULL,
 abort_context <- function(frame, parent, call = caller_env()) {
   calls <- sys.calls()
   frames <- sys.frames()
+  parents <- sys.parents()
   frame_loc <- detect_index(frames, identical, frame)
 
   if (frame_loc > 1L && env_has(frames[[frame_loc - 1L]], ".__handler_frame__.")) {
@@ -310,8 +310,8 @@ abort_context <- function(frame, parent, call = caller_env()) {
 
     if (is_exiting_handler_call(call1, call2)) {
       from_handler <- "exiting"
-      bottom_loc <- calls_try_catch_loc(calls, frame_loc)
-      bottom_loc <- sys.parents()[[bottom_loc]]
+      signal_loc <- calls_try_catch_loc(calls, frame_loc)
+      bottom_loc <- parents[[signal_loc]]
     } else {
       if (is_string(from_handler, "calling") || !is_null(parent)) {
         if (is_calling_handler_inlined_call(call1)) {
@@ -329,11 +329,14 @@ abort_context <- function(frame, parent, call = caller_env()) {
     # Skip frames marked with the sentinel `.__signal_frame__.`
     bottom_loc <- skip_signal_frames(bottom_loc, frames)
   }
+  if (signal_loc) {
+    signal_loc <- parents[[signal_loc]]
+  }
 
   list(
     from_handler = from_handler,
-    signal_loc = signal_loc,
-    bottom_frame = if (bottom_loc) frames[[bottom_loc]]
+    bottom_frame = if (bottom_loc) frames[[bottom_loc]],
+    signal_frame = if (signal_loc) frames[[signal_loc]]
   )
 }
 

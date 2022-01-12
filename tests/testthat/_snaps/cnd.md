@@ -40,7 +40,7 @@
       print(err)
     Output
       <error/rlang_error>
-      Error:
+      Error in `c()`:
       ! High-level message
       Backtrace:
         1. rlang:::catch_error(a())
@@ -64,7 +64,7 @@
       print(err, simplify = "none")
     Output
       <error/rlang_error>
-      Error:
+      Error in `c()`:
       ! High-level message
       Backtrace:
            x
@@ -115,7 +115,7 @@
       print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
     Output
       <error/rlang_error>
-      Error:
+      Error in `c()`:
       ! High-level message
       Backtrace:
            x
@@ -163,7 +163,7 @@
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
       <error/rlang_error>
-      Error:
+      Error in `c()`:
       ! High-level message
       Backtrace:
            x
@@ -188,7 +188,7 @@
       print(trace, simplify = "branch", dir = dir, srcrefs = srcrefs)
     Output
       <error/rlang_error>
-      Error:
+      Error in `c()`:
       ! High-level message
       Backtrace:
         1. rlang:::catch_error(a())
@@ -212,9 +212,9 @@
       catch_error(high())
     Output
       <error/high>
-      Error:
+      Error in `high()`:
       ! High-level
-      Caused by error:
+      Caused by error in `mid()`:
       ! Mid-level
       Caused by error in `low()`:
       ! Low-level
@@ -388,7 +388,7 @@
       print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
     Output
       <error/rlang_error>
-      Error:
+      Error in `baz()`:
       ! bar
       Backtrace:
            x
@@ -434,7 +434,7 @@
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
       <error/rlang_error>
-      Error:
+      Error in `baz()`:
       ! bar
       Backtrace:
            x
@@ -459,7 +459,7 @@
       print(trace, simplify = "branch", dir = dir, srcrefs = srcrefs)
     Output
       <error/rlang_error>
-      Error:
+      Error in `baz()`:
       ! bar
       Backtrace:
         1. rlang::catch_cnd(foo(), "error")
