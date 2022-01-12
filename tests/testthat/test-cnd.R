@@ -1,3 +1,5 @@
+local_unexport_signal_abort()
+
 test_that("error_cnd() checks its fields", {
   expect_no_error(error_cnd(trace = NULL))
   expect_error(error_cnd(trace = env()), "`trace` must be `NULL` or an rlang backtrace")

@@ -102,3 +102,11 @@ expect_warning2 <- catch_warning
 err <- function(...) {
   (expect_error(...))
 }
+
+local_unexport_signal_abort <- function(frame = caller_env()) {
+  local_bindings(
+    .env = ns_env("rlang")[[".__NAMESPACE__."]][["exports"]],
+    .frame = frame,
+    signal_abort = zap()
+  )
+}

@@ -1,3 +1,5 @@
+local_unexport_signal_abort()
+
 test_that("try_call() catches or declines values", {
   f <- function() g()
   g <- function() h()

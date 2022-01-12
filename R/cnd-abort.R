@@ -350,6 +350,9 @@ calls_try_catch_loc <- function(calls, loc) {
 }
 
 calls_signal_loc <- function(calls, loc) {
+  # Visible bindings for R CMD check
+  tmp_node <- tmp_loc <- found_restart <- NULL
+
   node <- as.pairlist(rev(calls[seq_len(loc)]))
   call <- node_car(node)
 

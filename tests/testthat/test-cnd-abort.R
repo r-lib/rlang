@@ -1,3 +1,5 @@
+local_unexport_signal_abort()
+
 test_that("errors are signalled with backtrace", {
   fn <- function() abort("")
   err <- expect_error(fn())

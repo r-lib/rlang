@@ -1009,7 +1009,7 @@
        13. |       \-rlang low2()
        14. |         \-rlang low3()
        15. |           \-rlang::abort("Low-level message")
-       16. |             \-rlang::signal_abort(cnd, .file)
+       16. |             \-rlang:::signal_abort(cnd, .file)
        17. |               \-base::signalCondition(cnd)
        18. \-rlang `<fn>`(`<rlng_rrr>`)
        19.   \-rlang handler1(err)
