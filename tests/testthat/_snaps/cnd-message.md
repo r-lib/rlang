@@ -208,7 +208,7 @@
       (expect_error(f(TRUE)))
     Output
       <error/rlang_error>
-      Error:
+      Error in `f()`:
       ! Wrapper
       Caused by error in `f()`:
       ! Header
@@ -217,7 +217,7 @@
       (expect_error(f(FALSE)))
     Output
       <error/rlang_error>
-      Error:
+      Error in `f()`:
       ! Wrapper
       Caused by error in `f()`:
       ! Header

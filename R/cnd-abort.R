@@ -241,7 +241,7 @@ abort <- function(message = NULL,
     if (is_null(info$from_handler)) {
       call <- .frame
     } else {
-      call <- info$signal_frame
+      call <- info$setup_caller
     }
   }
 
@@ -286,16 +286,25 @@ abort_context <- function(frame, parent, call = caller_env()) {
   calls <- sys.calls()
   frames <- sys.frames()
   parents <- sys.parents()
-  frame_loc <- detect_index(frames, identical, frame)
 
-  if (frame_loc > 1L && env_has(frames[[frame_loc - 1L]], ".__handler_frame__.")) {
-    from_handler <- "calling"
-    frame_loc <- frame_loc - 1L
-  } else {
-    from_handler <- NULL
+  frame_loc <- detect_index(frames, identical, frame)
+  setup_loc <- 0L
+  setup_caller <- NULL
+  from_handler <- NULL
+
+  if (frame_loc > 1L) {
+    prev_frame <- frames[[frame_loc - 1L]]
+    if (env_has(prev_frame, ".__handler_frame__.")) {
+      from_handler <- "calling"
+      frame_loc <- frame_loc - 1L
+
+      setup_frame <- env_get(prev_frame, ".__setup_frame__.", default = NULL)
+      if (!is_null(setup_frame)) {
+        setup_caller <- eval_bare(call2(parent.frame), setup_frame)
+      }
+    }
   }
 
-  setup_loc <- 0L
   bottom_loc <- frame_loc
 
   if ((frame_loc - 1) > 0) {
@@ -320,8 +329,8 @@ abort_context <- function(frame, parent, call = caller_env()) {
         } else if (is_calling_handler_simple_error_call(call1, call2)) {
           from_handler <- "calling"
           bottom_loc <- calls_signal_loc(calls, frame_loc - 2L)
-          setup_loc <- calls_setup_loc(calls, frames, frame_loc)
         }
+        setup_loc <- calls_setup_loc(calls, frames, frame_loc)
       }
     }
   }
@@ -329,15 +338,19 @@ abort_context <- function(frame, parent, call = caller_env()) {
   if (bottom_loc) {
     # Skip frames marked with the sentinel `.__signal_frame__.`
     bottom_loc <- skip_signal_frames(bottom_loc, frames)
+    bottom_frame <- frames[[bottom_loc]]
+  } else {
+    bottom_frame <- NULL
   }
-  if (setup_loc) {
-    setup_loc <- parents[[setup_loc]]
+
+  if (is_null(setup_caller) && setup_loc) {
+    setup_caller <- frames[[parents[[setup_loc]]]]
   }
 
   list(
     from_handler = from_handler,
-    bottom_frame = if (bottom_loc) frames[[bottom_loc]],
-    signal_frame = if (setup_loc) frames[[setup_loc]]
+    bottom_frame = bottom_frame,
+    setup_caller = setup_caller
   )
 }
 

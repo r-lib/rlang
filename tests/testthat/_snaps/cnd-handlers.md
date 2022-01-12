@@ -81,7 +81,7 @@
       print(err)
     Output
       <error/rlang_error>
-      Error:
+      Error in `high3()`:
       ! bar
       Caused by error in `h()`:
       ! foo
@@ -97,7 +97,7 @@
       print(err, simplify = "none")
     Output
       <error/rlang_error>
-      Error:
+      Error in `high3()`:
       ! bar
       Backtrace:
            x
@@ -157,7 +157,7 @@
       print(err)
     Output
       <error/rlang_error>
-      Error:
+      Error in `high3()`:
       ! bar
       Backtrace:
         1. rlang:::catch_error(high1(chain = FALSE))
@@ -171,7 +171,7 @@
       print(err, simplify = "none")
     Output
       <error/rlang_error>
-      Error:
+      Error in `high3()`:
       ! bar
       Backtrace:
            x

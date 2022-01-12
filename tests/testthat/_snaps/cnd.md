@@ -225,7 +225,7 @@
       summary(err)
     Output
       <error/rlang_error>
-      Error:
+      Error in `c()`:
       ! The high-level error message
       Backtrace:
            x
@@ -332,7 +332,7 @@
       print(err)
     Output
       <error/rlang_error>
-      Error:
+      Error in `baz()`:
       ! High-level message
       Backtrace:
         1. rlang::catch_cnd(foo(), "error")
@@ -351,7 +351,7 @@
       summary(err)
     Output
       <error/rlang_error>
-      Error:
+      Error in `baz()`:
       ! High-level message
       Backtrace:
            x
