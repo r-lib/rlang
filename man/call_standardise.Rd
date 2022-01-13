@@ -7,11 +7,9 @@
 call_standardise(call, env = caller_env())
 }
 \arguments{
-\item{call}{A defused function call.}
+\item{call}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}}
 
-\item{env}{The environment where to find the definition of the
-function quoted in \code{call} in case \code{call} is not wrapped in a
-quosure.}
+\item{env}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}}
 }
 \value{
 A quosure if \code{call} is a quosure, a raw call otherwise.
