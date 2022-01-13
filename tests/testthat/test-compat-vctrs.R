@@ -388,6 +388,11 @@ test_that("vec_as_location() works", {
   expect_identical(vec_as_location(i, n, names), c(1L, 4L))
 })
 
+test_that("vec_as_location() recycles scalar logical inputs", {
+  expect_equal(vec_as_location(TRUE, 0), int())
+  expect_equal(vec_as_location(FALSE, 0), int())
+})
+
 test_that("vec_slice() preserves attributes of data frames", {
   df <- data_frame(x = 1:2)
   attr(df, "foo") <- TRUE

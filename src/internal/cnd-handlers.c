@@ -46,8 +46,8 @@ r_obj* ffi_try_call(r_obj* try_call_args) {
 
     r_obj* hnd = KEEP(r_copy(hnd_call));
 
-    // Equivalent to hnd[[3]][[2]][[3]][[1]][3]
-    r_obj* subscript_node = r_node_cdr(r_node_cdar(r_node_cadr(r_node_cdar(r_node_cdar(r_node_cddr(hnd))))));
+    // Equivalent to hnd[[3]][[3]][[3]][[1]][3]
+    r_obj* subscript_node = r_node_cddr(r_node_caar(r_node_cddr(r_node_cadr(r_node_cdar(r_node_cddr(hnd))))));
     r_node_poke_car(subscript_node, r_int(i + 1));
 
     args = r_new_node3(hnd, args, r_str_as_symbol(cls));

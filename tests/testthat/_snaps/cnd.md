@@ -17,6 +17,7 @@
        1. \-global f()
        2.   \-global g()
        3.     \-global h()
+       4.       \-rlang::abort("", "foobar_error")
       Execution halted
 
 # rlang_error.print() calls cnd_message() methods
@@ -39,7 +40,7 @@
       print(err)
     Output
       <error/rlang_error>
-      Error:
+      Error in `c()`:
       ! High-level message
       Backtrace:
         1. rlang:::catch_error(a())
@@ -63,7 +64,7 @@
       print(err, simplify = "none")
     Output
       <error/rlang_error>
-      Error:
+      Error in `c()`:
       ! High-level message
       Backtrace:
            x
@@ -78,6 +79,11 @@
         9. \-rlang a()
        10.   \-rlang b()
        11.     \-rlang c()
+       12.       \-base::tryCatch(...)
+       13.         \-base tryCatchList(expr, classes, parentenv, handlers)
+       14.           \-base tryCatchOne(expr, names, parentenv, handlers[[1L]])
+       15.             \-value[[3L]](cond)
+       16.               \-rlang::abort("High-level message", parent = err)
       Caused by error in `h()`:
       ! Low-level message
       Backtrace:
@@ -100,6 +106,7 @@
        16.       \-rlang f()
        17.         \-rlang g()
        18.           \-rlang h()
+       19.             \-rlang::abort("", "foobar", foobar_msg = "Low-level message")
 
 ---
 
@@ -108,7 +115,7 @@
       print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
     Output
       <error/rlang_error>
-      Error:
+      Error in `c()`:
       ! High-level message
       Backtrace:
            x
@@ -123,6 +130,11 @@
         9. \-rlang a()
        10.   \-rlang b()
        11.     \-rlang c()
+       12.       \-base::tryCatch(...)
+       13.         \-base tryCatchList(expr, classes, parentenv, handlers)
+       14.           \-base tryCatchOne(expr, names, parentenv, handlers[[1L]])
+       15.             \-value[[3L]](cond)
+       16.               \-rlang::abort("High-level message", parent = err)
       Caused by error in `h()`:
       ! Low-level message
       Backtrace:
@@ -145,12 +157,13 @@
        16.       \-rlang f()
        17.         \-rlang g()
        18.           \-rlang h()
+       19.             \-rlang::abort("", "foobar", foobar_msg = "Low-level message")
     Code
       # Collapsed
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
       <error/rlang_error>
-      Error:
+      Error in `c()`:
       ! High-level message
       Backtrace:
            x
@@ -175,7 +188,7 @@
       print(trace, simplify = "branch", dir = dir, srcrefs = srcrefs)
     Output
       <error/rlang_error>
-      Error:
+      Error in `c()`:
       ! High-level message
       Backtrace:
         1. rlang:::catch_error(a())
@@ -199,9 +212,9 @@
       catch_error(high())
     Output
       <error/high>
-      Error:
+      Error in `high()`:
       ! High-level
-      Caused by error:
+      Caused by error in `mid()`:
       ! Mid-level
       Caused by error in `low()`:
       ! Low-level
@@ -212,8 +225,34 @@
       summary(err)
     Output
       <error/rlang_error>
-      Error:
+      Error in `c()`:
       ! The high-level error message
+      Backtrace:
+           x
+        1. +-rlang:::catch_error(a())
+        2. | \-rlang::catch_cnd(expr, "error")
+        3. |   +-rlang::eval_bare(...)
+        4. |   +-base::tryCatch(...)
+        5. |   | \-base tryCatchList(expr, classes, parentenv, handlers)
+        6. |   |   \-base tryCatchOne(expr, names, parentenv, handlers[[1L]])
+        7. |   |     \-base doTryCatch(return(expr), name, parentenv, handler)
+        8. |   \-base::force(expr)
+        9. +-rlang a()
+       10. | +-base::tryCatch(b())
+       11. | | \-base tryCatchList(expr, classes, parentenv, handlers)
+       12. | \-rlang b()
+       13. |   \-rlang c()
+       14. |     +-base::withCallingHandlers(f(), error = handler)
+       15. |     \-rlang f()
+       16. |       +-base::tryCatch(g())
+       17. |       | \-base tryCatchList(expr, classes, parentenv, handlers)
+       18. |       \-rlang g()
+       19. |         \-rlang h()
+       20. |           \-rlang::abort("The low-level error message", foo = "foo")
+       21. |             \-rlang:::signal_abort(cnd, .file)
+       22. |               \-base::signalCondition(cnd)
+       23. \-rlang `<fn>`(`<rlng_rrr>`)
+       24.   \-rlang::abort("The high-level error message", parent = c)
       Caused by error in `h()`:
       ! The low-level error message
       Backtrace:
@@ -237,6 +276,7 @@
        17.         | \-base tryCatchList(expr, classes, parentenv, handlers)
        18.         \-rlang g()
        19.           \-rlang h()
+       20.             \-rlang::abort("The low-level error message", foo = "foo")
 
 # don't print message or backtrace fields if empty
 
@@ -292,7 +332,7 @@
       print(err)
     Output
       <error/rlang_error>
-      Error:
+      Error in `baz()`:
       ! High-level message
       Backtrace:
         1. rlang::catch_cnd(foo(), "error")
@@ -311,7 +351,7 @@
       summary(err)
     Output
       <error/rlang_error>
-      Error:
+      Error in `baz()`:
       ! High-level message
       Backtrace:
            x
@@ -322,13 +362,18 @@
         5. | |   \-base tryCatchOne(expr, names, parentenv, handlers[[1L]])
         6. | |     \-base doTryCatch(return(expr), name, parentenv, handler)
         7. | \-base::force(expr)
-        8. \-rlang foo()
-        9.   \-rlang bar()
-       10.     \-rlang baz()
-       11.       +-base::withCallingHandlers(...)
-       12.       \-rlang f()
-       13.         \-rlang g()
-       14.           \-rlang h()
+        8. +-rlang foo()
+        9. | \-rlang bar()
+       10. |   \-rlang baz()
+       11. |     +-base::withCallingHandlers(...)
+       12. |     \-rlang f()
+       13. |       \-rlang g()
+       14. |         \-rlang h()
+       15. |           \-rlang::abort("Low-level message", trace = ext_trace)
+       16. |             \-rlang:::signal_abort(cnd, .file)
+       17. |               \-base::signalCondition(cnd)
+       18. \-rlang `<fn>`(`<rlng_rrr>`)
+       19.   \-rlang::abort("High-level message", parent = err)
       Caused by error in `h()`:
       ! Low-level message
       Backtrace:
@@ -343,7 +388,7 @@
       print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
     Output
       <error/rlang_error>
-      Error:
+      Error in `baz()`:
       ! bar
       Backtrace:
            x
@@ -357,6 +402,11 @@
         8. \-rlang foo()
         9.   \-rlang bar()
        10.     \-rlang baz()
+       11.       \-base::tryCatch(f(), error = function(err) abort("bar", parent = err))
+       12.         \-base tryCatchList(expr, classes, parentenv, handlers)
+       13.           \-base tryCatchOne(expr, names, parentenv, handlers[[1L]])
+       14.             \-value[[3L]](cond)
+       15.               \-rlang::abort("bar", parent = err)
       Caused by error in `h()`:
       ! foo
       Backtrace:
@@ -378,12 +428,13 @@
        15.       \-rlang f()
        16.         \-rlang g()
        17.           \-rlang h()
+       18.             \-rlang::abort("foo")
     Code
       # Collapsed
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
       <error/rlang_error>
-      Error:
+      Error in `baz()`:
       ! bar
       Backtrace:
            x
@@ -408,7 +459,7 @@
       print(trace, simplify = "branch", dir = dir, srcrefs = srcrefs)
     Output
       <error/rlang_error>
-      Error:
+      Error in `baz()`:
       ! bar
       Backtrace:
         1. rlang::catch_cnd(foo(), "error")

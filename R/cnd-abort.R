@@ -143,6 +143,10 @@
 #' @param .file A connection or a string specifying where to print the
 #'   message. The default depends on the context, see the `stdout` vs
 #'   `stderr` section.
+#' @param .frame The throwing context. Default to `call` if it is an
+#'   environment, [caller_env()] otherwise. This is used during
+#'   backtrace construction as a starting point to hide condition
+#'   handling frames from the user.
 #' @param .subclass This argument was renamed to `class` in rlang
 #'   0.4.2.  It will be deprecated in the next major version. This is
 #'   for consistency with our conventions for class constructors
@@ -216,33 +220,39 @@ abort <- function(message = NULL,
                   use_cli_format = NULL,
                   .internal = FALSE,
                   .file = NULL,
+                  .frame = NULL,
                   .subclass = deprecated()) {
-  if (is_null(trace) && is_null(peek_option("rlang:::disable_trace_capture"))) {
-    # Prevents infloops when rlang throws during trace capture
-    with_options("rlang:::disable_trace_capture" = TRUE, {
-      trace <- trace_back()
+  .__signal_frame__. <- TRUE
+  caller <- caller_env()
 
-      # Remove throwing context. Especially important when rethrowing
-      # from a condition handler because in that case there are a
-      # bunch of irrelevant frames in the trailing branch of the call
-      # stack. We want to display the call tree branch that is
-      # relevant to users in simplified backtraces.
-      if (is_null(parent)) {
-        context <- trace_length(trace)
-      } else {
-        context <- trace_capture_depth(trace)
-      }
+  if (is_null(.frame)) {
+    if (is_environment(maybe_missing(call))) {
+      .frame <- call
+    } else {
+      .frame <- caller
+    }
+  } else {
+    check_environment(.frame)
+  }
 
-      trace <- trace_trim_context(trace, context)
-    })
+  info <- abort_context(.frame, parent)
+
+  if (is_missing(call)) {
+    if (is_null(info$from_handler)) {
+      call <- .frame
+    } else {
+      call <- info$setup_caller
+    }
   }
 
   message <- validate_signal_args(message, class, call, .subclass)
+  call <- error_call(call)
+
   message_info <- cnd_message_info(
     message,
     body,
     footer,
-    caller_env(),
+    caller,
     use_cli_format = use_cli_format,
     internal = .internal
   )
@@ -250,16 +260,13 @@ abort <- function(message = NULL,
   extra_fields <- message_info$extra_fields
   use_cli_format <- message_info$use_cli_format
 
-  # Don't record call by default when supplied a parent because it
-  # probably means that we are called from a condition handler
-  if (is_missing(call)) {
-    if (is_null(parent)) {
-      call <- default_error_call(caller_env())
-    } else {
-      call <- NULL
-    }
-  } else {
-    call <- error_call(call)
+  if (is_null(trace) && is_null(peek_option("rlang:::disable_trace_capture"))) {
+    with_options(
+      # Prevents infloops when rlang throws during trace capture
+      "rlang:::disable_trace_capture" = TRUE,
+      "rlang:::visible_bottom" = info$bottom_frame,
+      { trace <- trace_back() }
+    )
   }
 
   cnd <- error_cnd(
@@ -273,6 +280,190 @@ abort <- function(message = NULL,
     trace = trace
   )
   signal_abort(cnd, .file)
+}
+
+abort_context <- function(frame, parent, call = caller_env()) {
+  calls <- sys.calls()
+  frames <- sys.frames()
+  parents <- sys.parents()
+
+  frame_loc <- detect_index(frames, identical, frame)
+  setup_loc <- 0L
+  setup_caller <- NULL
+  from_handler <- NULL
+
+  if (frame_loc > 1L) {
+    prev_frame <- frames[[frame_loc - 1L]]
+    if (env_has(prev_frame, ".__handler_frame__.")) {
+      from_handler <- "calling"
+      frame_loc <- frame_loc - 1L
+
+      setup_frame <- env_get(prev_frame, ".__setup_frame__.", default = NULL)
+      if (!is_null(setup_frame)) {
+        setup_caller <- eval_bare(call2(parent.frame), setup_frame)
+      }
+    }
+  }
+
+  bottom_loc <- frame_loc
+
+  if ((frame_loc - 1) > 0) {
+    # We currently have no reliable way of detecting a rethrow from a
+    # condition handler. We attempt to detect it from the call stack
+    # in three cases: (a) when we see a `tryCatch()` stack, (b) when a
+    # `parent` condition is supplied, (c) when a `.__handler_frame__.`
+    # binding is present in the calling frame (as determined by `call`
+    # if an environment).
+    call1 <- calls[[frame_loc]]
+    call2 <- calls[[frame_loc - 1]]
+
+    if (is_exiting_handler_call(call1, call2)) {
+      from_handler <- "exiting"
+      setup_loc <- calls_try_catch_loc(calls, frame_loc)
+      bottom_loc <- parents[[setup_loc]]
+    } else {
+      if (is_string(from_handler, "calling") || !is_null(parent)) {
+        if (is_calling_handler_inlined_call(call1)) {
+          from_handler <- "calling"
+          bottom_loc <- calls_signal_loc(calls, frame_loc - 1L)
+        } else if (is_calling_handler_simple_error_call(call1, call2)) {
+          from_handler <- "calling"
+          bottom_loc <- calls_signal_loc(calls, frame_loc - 2L)
+        }
+        setup_loc <- calls_setup_loc(calls, frames, frame_loc)
+      }
+    }
+  }
+
+  if (bottom_loc) {
+    # Skip frames marked with the sentinel `.__signal_frame__.`
+    bottom_loc <- skip_signal_frames(bottom_loc, frames)
+    bottom_frame <- frames[[bottom_loc]]
+  } else {
+    bottom_frame <- NULL
+  }
+
+  if (is_null(setup_caller) && setup_loc) {
+    setup_caller <- frames[[parents[[setup_loc]]]]
+  }
+
+  list(
+    from_handler = from_handler,
+    bottom_frame = bottom_frame,
+    setup_caller = setup_caller
+  )
+}
+
+calls_try_catch_loc <- function(calls, loc) {
+  loc <- loc - 1L
+  node <- as.pairlist(rev(calls[seq_len(loc)]))
+
+  while (is_call(node_car(node), c("tryCatchList", "tryCatchOne"))) {
+    node <- node_cdr(node)
+    loc <- loc - 1L
+  }
+
+  loc
+}
+
+calls_signal_loc <- function(calls, loc) {
+  # Visible bindings for R CMD check
+  tmp_node <- tmp_loc <- found_restart <- NULL
+
+  node <- as.pairlist(rev(calls[seq_len(loc)]))
+  call <- node_car(node)
+
+  advance <- function(node, i) {
+    list(node_cdr(node), i - 1L)
+  }
+  advance_restart <- function(node, i) {
+    found <- FALSE
+
+    restart_fns <- c(
+      "doWithOneRestart",
+      "withOneRestart",
+      "withRestarts"
+    )
+    while (is_call(node_car(node), restart_fns)) {
+      node <- node_cdr(node)
+      i <- i - 1L
+      found <- TRUE
+    }
+
+    list(node, i, found)
+  }
+
+  if (is_call(call, "stop")) {
+    return(loc)
+  }
+
+  if (is_call(call, "signalCondition")) {
+    c(tmp_node, tmp_loc, found_restart) %<-% advance_restart(node, loc)
+
+    if (found_restart && is_call(node_car(tmp_node), "message")) {
+      return(tmp_loc)
+    } else {
+      return(loc)
+    }
+  }
+
+  c(tmp_node, tmp_loc, found_restart) %<-% advance_restart(node, loc)
+  if (found_restart) {
+    if (is_call(node_car(tmp_node), ".signalSimpleWarning")) {
+      c(tmp_node, tmp_loc) %<-% advance(tmp_node, tmp_loc)
+    }
+    if (is_call(node_car(tmp_node), "warning")) {
+      return(tmp_loc)
+    }
+  }
+
+  loc
+}
+
+calls_setup_loc <- function(calls, frames, handler_loc) {
+  handler <- sys.function(handler_loc)
+  top <- handler_loc
+
+  while (TRUE) {
+    calls <- calls[seq_len(top)]
+    setup_loc <- detect_index(calls, is_call, "withCallingHandlers", .right = TRUE)
+
+    if (!setup_loc) {
+      return(0L)
+    }
+
+    signal_handlers <- frames[[setup_loc]][["handlers"]]
+
+    if (some(signal_handlers, identical, handler)) {
+      return(setup_loc)
+    }
+
+    top <- setup_loc - 1L
+  }
+}
+
+skip_signal_frames <- function(loc, frames) {
+  found <- FALSE
+  while (loc > 1 && env_has(frames[[loc - 1L]], ".__signal_frame__.")) {
+    found <- TRUE
+    loc <- loc - 1L
+  }
+
+  if (found) {
+    loc - 1L
+  } else {
+    loc
+  }
+}
+
+is_calling_handler_inlined_call <- function(call) {
+  is_call(call) && is_function(call[[1]]) && is_condition(call[[2]])
+}
+is_calling_handler_simple_error_call <- function(call1, call2) {
+  identical(call1, quote(h(simpleError(msg, call)))) && is_call(call2, ".handleSimpleError")
+}
+is_exiting_handler_call <- function(call1, call2) {
+  identical(call1, quote(value[[3L]](cond))) && is_call(call2, "tryCatchOne")
 }
 
 cnd_message_info <- function(message,
@@ -489,38 +680,10 @@ check_use_cli_flag <- function(flag) {
   }
 }
 
-# Private option to disable default error call except for exported
-# functions
-default_error_call <- function(env) {
-  call <- error_call(env)
-
-  opt <- peek_option("rlang:::restrict_default_error_call") %||% FALSE
-  if (is_false(opt)) {
-    return(call)
-  }
-
-  if (!is_call(call)) {
-    return(call)
-  }
-
-  fn <- call[[1]]
-  if (!is_symbol(fn)) {
-    return(call)
-  }
-  fn <- as_string(fn)
-
-  top <- topenv(env)
-  if (!is_namespace(top)) {
-    return(NULL)
-  }
-  if (!ns_exports_has(top, fn)) {
-    return(NULL)
-  }
-
-  call
-}
-
 signal_abort <- function(cnd, file = NULL) {
+  # Hide this frame in backtraces
+  .__signal_frame__. <- TRUE
+
   if (is_true(peek_option("rlang::::force_unhandled_error"))) {
     # Fall back with the full rlang error
     fallback <- cnd
@@ -965,99 +1128,6 @@ error_call <- function(call) {
 call_restore <- function(x, to) {
   attr(x, "srcref") <- attr(to, "srcref")
   x
-}
-
-trace_trim_context <- function(trace, idx, call = caller_env()) {
-  check_frame(idx, arg = "frame", call = call)
-
-  to_trim <- seq2(idx, trace_length(trace))
-  if (length(to_trim)) {
-    trace <- trace_slice(trace, -to_trim)
-  }
-
-  trace
-}
-check_frame <- function(x, arg, call) {
-  if (!is_scalar_integerish(x)) {
-    stop_input_type(
-      x,
-      "a frame environment or index",
-      arg = arg,
-      call = call
-    )
-  }
-}
-
-# Assumes we're called from a calling or exiting handler
-trace_capture_depth <- function(trace) {
-  calls <- trace$call
-  default <- length(calls)
-
-  if (length(calls) <= 3L) {
-    return(default)
-  }
-
-  depth <- trace_depth_wch(trace)
-  if (!is_null(depth)) {
-    return(depth)
-  }
-
-  depth <- trace_depth_trycatch(trace)
-  if (!is_null(depth)) {
-    return(depth)
-  }
-
-  default
-}
-
-trace_depth_wch <- function(trace) {
-  calls <- trace$call
-  parents <- trace$parent
-
-  # GNU R currently structures evaluation of calling handlers as
-  # called from the global env. We find the first call with 0 as
-  # parent to skip all potential wrappers of the rethrowing handler.
-  top <- which(parents == 0)
-  top <- top[length(top)]
-  if (!length(top)) {
-    return(NULL)
-  }
-  if (top <= 2) {
-    return(NULL)
-  }
-
-  # withCallingHandlers() - C level error case
-  if (length(calls) > top + 1 &&
-      identical(calls[[top + 1]], quote(h(simpleError(msg, call))))) {
-    return(top)
-  }
-
-  # withCallingHandlers() - `abort()` case
-  wch_calls <- calls[seq2(top - 2L, top - 0L)]
-  if (!is_call(wch_calls[[1]], "signal_abort") ||
-      !is_call(wch_calls[[2]], "signalCondition") ||
-      !is_call(wch_calls[[3]]) && is_function(wch_calls[[3]][[1]])) {
-    return(NULL)
-  }
-
-  top - 3L
-}
-
-trace_depth_trycatch <- function(trace) {
-  calls <- trace$call
-
-  exiting_call <- quote(value[[3L]](cond))
-  exiting_n <- detect_index(calls, identical, exiting_call, .right = TRUE)
-
-  if (exiting_n != 0L) {
-    try_catch_calls <- calls[seq_len(exiting_n - 1L)]
-    try_catch_n <- detect_index(try_catch_calls, is_call, "tryCatch", .right = TRUE)
-    if (try_catch_n != 0L) {
-      return(try_catch_n)
-    }
-  }
-
-  NULL
 }
 
 #' Display backtrace on error

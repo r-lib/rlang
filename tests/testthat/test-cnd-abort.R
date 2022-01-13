@@ -1,3 +1,5 @@
+local_unexport_signal_abort()
+
 test_that("errors are signalled with backtrace", {
   fn <- function() abort("")
   err <- expect_error(fn())
@@ -169,69 +171,102 @@ test_that("backtrace reminder is displayed when called from `last_error()`", {
   })
 })
 
-test_that("capture context doesn't leak into low-level backtraces", {
+local({
   local_options(
     rlang_trace_format_srcrefs = FALSE,
     rlang_trace_top_env = current_env()
   )
 
-  failing <- function() stop("low-level")
-  stop_wrapper <- function(...) abort("wrapper", ...)
-  f <- function() g()
-  g <- function() h()
-  h <- function() {
+  throw <- NULL
+
+  low1 <- function() low2()
+  low2 <- function() low3()
+  low3 <- NULL
+
+  high3_catch <- function(..., chain, stop_helper) {
     tryCatch(
-      failing(),
+      low1(),
       error = function(err) {
-        if (wrapper) {
-          stop_wrapper(parent = err)
+        parent <- if (chain) err
+        if (stop_helper) {
+          stop1("high-level", parent = err)
         } else {
-          if (parent) {
-            abort("no wrapper", parent = err)
-          } else {
-            abort("no wrapper")
-          }
+          abort("high-level", parent = err)
+        }
+      }
+    )
+  }
+  high3_call <- function(..., chain, stop_helper) {
+    withCallingHandlers(
+      low1(),
+      error = function(err) {
+        parent <- if (chain) err
+        if (stop_helper) {
+          stop1("high-level", parent = err)
+        } else {
+          abort("high-level", parent = err)
+        }
+      }
+    )
+  }
+  high3_fetch <- function(..., chain, stop_helper) {
+    try_call(
+      low1(),
+      error = function(err) {
+        parent <- if (chain) err
+        if (stop_helper) {
+          stop1("high-level", parent = err)
+        } else {
+          abort("high-level", parent = err)
         }
       }
     )
   }
 
-  foo <- function(cnd) bar(cnd)
-  bar <- function(cnd) baz(cnd)
-  baz <- function(cnd) abort("foo")
-  err_wch <- catch_error(
-    withCallingHandlers(
-      foo(),
-      error = function(cnd) abort("bar", parent = cnd)
-    )
+  high1 <- function(...) high2(...)
+  high2 <- function(...) high3(...)
+  high3 <- NULL
+
+  stop1 <- function(..., call = caller_env()) stop2(..., call = call)
+  stop2 <- function(..., call = caller_env()) stop3(..., call = call)
+  stop3 <- function(..., call = caller_env()) abort(..., call = call)
+
+  throwers <- list(
+    "stop()" = function() stop("low-level"),
+    "abort()" = function() abort("low-level"),
+    "warn = 2" = function() {
+      local_options(warn = 2)
+      warning("low-level")
+    }
+  )
+  handlers <- list(
+    "tryCatch()" = high3_catch,
+    "withCallingHandlers()" = high3_call,
+    "try_fetch()" = high3_fetch
   )
 
-  expect_snapshot({
-    "Non wrapped case"
-    {
-      parent <- TRUE
-      wrapper <- FALSE
-      err <- catch_error(f())
-      print(err)
-    }
+  for (i in seq_along(throwers)) {
+    for (j in seq_along(handlers)) {
+      case_name <- paste0(
+        "Backtrace on rethrow: ",
+        names(throwers)[[i]], " - ", names(handlers)[[j]]
+      )
+      low3 <- throwers[[i]]
+      high3 <- handlers[[j]]
 
-    "Wrapped case"
-    {
-      wrapper <- TRUE
-      err <- catch_error(f())
-      print(err)
-    }
+      # Use `print()` because `testthat_print()` (called implicitly in
+      # snapshots) doesn't print backtraces
+      test_that(case_name, {
+        expect_snapshot({
+          print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
+          print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
 
-    "FIXME?"
-    {
-      parent <- FALSE
-      err <- catch_error(f())
-      print(err)
+          print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
+          print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
+        })
+      })
     }
-
-    "withCallingHandlers()"
-    print(err_wch)
-  })
+  }
 })
 
 test_that("`.subclass` argument of `abort()` still works", {
@@ -242,14 +277,20 @@ test_that("abort() displays call in error prefix", {
   skip_if_not_installed("rlang", "0.4.11.9001")
 
   expect_snapshot(
-    run("rlang::abort('foo', call = quote(bar(baz)))")
+    run("{
+      options(cli.unicode = FALSE, crayon.enabled = FALSE)
+      rlang::abort('foo', call = quote(bar(baz)))
+    }")
   )
 
   # errorCondition()
   skip_if_not_installed("base", "3.6.0")
 
   expect_snapshot(
-    run("rlang::cnd_signal(errorCondition('foo', call = quote(bar(baz))))")
+    run("{
+      options(cli.unicode = FALSE, crayon.enabled = FALSE)
+      rlang::cnd_signal(errorCondition('foo', call = quote(bar(baz))))
+    }")
   )
 })
 
@@ -378,27 +419,33 @@ test_that("withCallingHandlers() wrappers don't throw off trace capture on rethr
     rlang_trace_format_srcrefs = FALSE
   )
 
-  f <- function() g()
-  g <- function() h()
-  h <- function() abort("Low-level message")
+  variant <- if (getRversion() < "3.6.0") "pre-3.6.0" else "current"
 
-  wch <- function(expr, ...) withCallingHandlers(expr, ...)
-  wrapper1 <- function(err) wrapper2(err)
-  wrapper2 <- function(err) abort("High-level message", parent = err)
+  low1 <- function() low2()
+  low2 <- function() low3()
+  low3 <- function() abort("Low-level message")
 
-  foo <- function() bar()
-  bar <- function() baz()
-  baz <- function() {
+  wch <- function(expr, ...) {
+    withCallingHandlers(expr, ...)
+  }
+  handler1 <- function(err, call = caller_env()) {
+    handler2(err, call = call)
+  }
+  handler2 <- function(err, call = caller_env()) {
+    abort("High-level message", parent = err, call = call)
+  }
+
+  high1 <- function() high2()
+  high2 <- function() high3()
+  high3 <- function() {
     wch(
-      f(),
-      error = function(err) {
-        wrapper1(err)
-      }
+      low1(),
+      error = function(err) handler1(err)
     )
   }
 
-  err <- expect_error(foo())
-  expect_snapshot({
+  err <- expect_error(high1())
+  expect_snapshot(variant = variant, {
     "`abort()` error"
     print(err)
     summary(err)
@@ -406,9 +453,9 @@ test_that("withCallingHandlers() wrappers don't throw off trace capture on rethr
 
   # Avoid `:::` vs `::` ambiguity depending on loadall
   fail <- errorcall
-  h <- function() fail(NULL, "foo")
-  err <- expect_error(foo())
-  expect_snapshot({
+  low3 <- function() fail(NULL, "Low-level message")
+  err <- expect_error(high1())
+  expect_snapshot(variant = variant, {
     "C-level error"
     print(err)
     summary(err)
@@ -591,4 +638,19 @@ test_that("can't supply both `footer` and `.internal`", {
     err(abort("foo", .internal = TRUE, call = quote(f())))
     err(abort("foo", footer = "bar", .internal = TRUE, call = quote(f())))
   })
+})
+
+test_that("caller of withCallingHandlers() is used as default `call`", {
+  low <- function() {
+    # Intervening `withCallingHandlers()` is not picked up
+    withCallingHandlers(stop("low"))
+  }
+  high <- function() {
+    withCallingHandlers(
+      low(),
+      error = function(cnd) abort("high", parent = cnd)
+    )
+  }
+  err <- catch_error(high())
+  expect_equal(err$call, quote(high()))
 })

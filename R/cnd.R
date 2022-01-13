@@ -460,8 +460,13 @@ cnd_format <- function(x,
     parent <- parent$parent
 
     chained_trace <- x$trace
+
+    # NOTE: Should we detect trace subsets as well?
     if (can_paste_trace(backtrace, chained_trace) &&
-        !identical(trace, chained_trace)) {
+        !identical(
+          format(trace, simplify = simplify),
+          format(chained_trace, simplify = simplify)
+        )) {
       out <- paste_trace(out, trace, simplify, ...)
       trace <- chained_trace
     }

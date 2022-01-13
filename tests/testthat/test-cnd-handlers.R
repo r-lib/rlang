@@ -1,3 +1,5 @@
+local_unexport_signal_abort()
+
 test_that("try_call() catches or declines values", {
   f <- function() g()
   g <- function() h()
@@ -27,11 +29,28 @@ test_that("can rethrow from `try_call()`", {
   g <- function() h()
   h <- function() abort("foo")
 
+  high1 <- function(...) high2(...)
+  high2 <- function(...) high3(...)
+  high3 <- function(..., chain) {
+    if (chain) {
+      try_call(f(), error = function(cnd) abort("bar", parent = cnd))
+    } else {
+      try_call(f(), error = function(cnd) abort("bar", error = cnd))
+    }
+  }
+
   expect_snapshot({
     err <- catch_error(
       try_call(f(), error = function(cnd) abort("bar", parent = cnd))
     )
+    print(err)
+    print(err, simplify = "none")
 
+    err <- catch_error(high1(chain = TRUE))
+    print(err)
+    print(err, simplify = "none")
+
+    err <- catch_error(high1(chain = FALSE))
     print(err)
     print(err, simplify = "none")
   })

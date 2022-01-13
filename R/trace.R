@@ -90,8 +90,16 @@
 #' close(conn)
 #' @export
 trace_back <- function(top = NULL, bottom = NULL) {
+  # FIXME: Include this in the `trace_back()` UI?
+  visible_bottom <- peek_option("rlang:::visible_bottom")
+
   frames <- sys.frames()
+
   idx <- trace_find_bottom(bottom, frames)
+  visible_idx <- trace_find_bottom(visible_bottom, frames)
+
+  visible_idx <- intersect(visible_idx, idx)
+  is_visible <- seq_along(idx) %in% visible_idx
 
   frames <- frames[idx]
   parents <- sys.parents()[idx]
@@ -101,7 +109,7 @@ trace_back <- function(top = NULL, bottom = NULL) {
   calls <- map(calls, call_zap_inline)
 
   context <- map2(calls, seq_along(calls), call_trace_context)
-  context <- inject(vec_rbind(!!!context))
+  context <- inject(vec_rbind(empty_trace_context(), !!!context))
 
   parents <- normalise_parents(parents)
 
@@ -109,7 +117,8 @@ trace_back <- function(top = NULL, bottom = NULL) {
     calls,
     parents,
     namespace = context$namespace,
-    scope = context$scope
+    scope = context$scope,
+    visible = is_visible
   )
   trace <- add_winch_trace(trace)
   trace <- trace_trim_env(trace, frames, top)
@@ -117,11 +126,13 @@ trace_back <- function(top = NULL, bottom = NULL) {
   trace
 }
 
-trace_find_bottom <- function(bottom, frames) {
+trace_find_bottom <- function(bottom,
+                              frames,
+                              arg = caller_arg(bottom),
+                              call = caller_env()) {
   if (is_null(bottom)) {
     return(seq_len(sys.parent(2L)))
   }
-  local_error_call("caller")
 
   if (is_environment(bottom)) {
     top <- detect_index(frames, is_reference, bottom)
@@ -129,10 +140,11 @@ trace_find_bottom <- function(bottom, frames) {
       if (is_reference(bottom, global_env())) {
         return(int())
       }
-      abort(sprintf(
+      msg <- sprintf(
         "Can't find %s on the call tree.",
-        format_arg("bottom")
-      ))
+        format_arg(arg)
+      )
+      abort(msg, call = call)
     }
 
     return(seq_len(top))
@@ -140,18 +152,24 @@ trace_find_bottom <- function(bottom, frames) {
 
   if (is_integerish(bottom, n = 1)) {
     if (bottom < 0) {
-      abort(sprintf(
+      msg <- sprintf(
         "%s must be a positive integer.",
-        format_arg("bottom")
-      ))
+        format_arg(arg)
+      )
+      abort(msg, call = call)
     }
-    return(seq_len(sys.parent(bottom + 1L)))
+    if (inherits(bottom, "AsIs")) {
+      return(seq_len(bottom))
+    } else {
+      return(seq_len(sys.parent(bottom + 1L)))
+    }
   }
 
-  abort(sprintf(
+  msg <- sprintf(
     "%s must be `NULL`, a frame environment, or an integer.",
-    format_arg("bottom")
-  ))
+    format_arg(arg)
+  )
+  abort(msg, call = call)
 }
 
 # Work around R bug causing promises to leak in frame calls
@@ -227,6 +245,9 @@ trace_context <- function(namespace = NA, scope = NA) {
     scope = scope
   )
 }
+empty_trace_context <- function() {
+  trace_context(chr(), chr())
+}
 
 # Remove recursive frames which occur with quosures
 normalise_parents <- function(parents) {
@@ -264,8 +285,8 @@ new_trace <- function(call,
                       parent,
                       ...,
                       visible = TRUE,
-                      namespace = NA,
-                      scope = NA,
+                      namespace = na_chr,
+                      scope = na_chr,
                       class = NULL) {
   new_trace0(
     call,
@@ -284,6 +305,9 @@ new_trace0 <- function(call,
                        namespace = NA,
                        scope = NA,
                        class = NULL) {
+  if (is_pairlist(call)) {
+    call <- as.list(call)
+  }
   stopifnot(
     is_bare_list(call),
     is_bare_integer(parent)
@@ -583,6 +607,10 @@ parents_indices <- function(i, parents) {
 # Trimming ----------------------------------------------------------------
 
 trace_trim_env <- function(x, frames, to) {
+  idx <- trace_trim_env_idx(trace_length(x), frames, to)
+  trace_slice(x, idx)
+}
+trace_trim_env_idx <- function(n, frames, to) {
   to <- to %||% peek_option("rlang_trace_top_env")
 
   # Trim knitr context if available
@@ -591,18 +619,16 @@ trace_trim_env <- function(x, frames, to) {
   }
 
   if (is.null(to)) {
-    return(x)
+    return(TRUE)
   }
 
   is_top <- map_lgl(frames, is_reference, to)
   if (!any(is_top)) {
-    return(x)
+    return(TRUE)
   }
 
   start <- last(which(is_top)) + 1L
-  end <- trace_length(x)
-
-  trace_slice(x, seq2(start, end))
+  seq2(start, n)
 }
 
 set_trace_skipped <- function(trace, id, n) {
@@ -643,12 +669,21 @@ is_eval_call <- function(call) {
 }
 
 trace_simplify_branch <- function(trace) {
+  if (!trace_length(trace)) {
+    return(trace)
+  }
+
   parents <- trace$parent
 
   old_visible <- trace$visible
   visible <- rep_along(old_visible, FALSE)
 
-  id <- trace_length(trace)
+  old_visible_loc <- which(old_visible)
+  if (length(old_visible_loc)) {
+    id <- last(old_visible_loc)
+  } else {
+    id <- 0L
+  }
 
   trace$collapsed <- 0L
 
@@ -729,6 +764,10 @@ is_winch_frame <- function(call) {
 }
 
 trace_simplify_collapse <- function(trace) {
+  if (!trace_length(trace)) {
+    return(trace)
+  }
+
   parents <- trace$parent
 
   old_visible <- trace$visible
@@ -782,7 +821,9 @@ trace_simplify_collapse <- function(trace) {
 # Printing ----------------------------------------------------------------
 
 trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL) {
-  trace$collapsed <- trace$collapsed %||% 0L
+  if (is_null(trace$collapsed)) {
+    trace$collapsed <- vec_recycle(0L, trace_length(trace))
+  }
   call_text_data <- trace[c("call", "collapsed", "namespace", "scope")]
   call_text <- chr(!!!pmap(call_text_data, trace_call_text))
 
@@ -794,7 +835,7 @@ trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL) {
     src_locs <- map_chr(refs, src_loc)
     trace$src_loc <- src_locs
   } else {
-    trace$src_loc <- ""
+    trace$src_loc <- vec_recycle("", trace_length(trace))
   }
 
   id <- c(0, seq_along(trace$call))

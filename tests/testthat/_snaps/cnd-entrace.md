@@ -44,6 +44,7 @@
        1. \-global f()
        2.   \-global g()
        3.     \-global h()
+       4.       \-rlang::abort("foo")
 
 # can supply handler environment as `bottom`
 

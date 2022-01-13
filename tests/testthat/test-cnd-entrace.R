@@ -14,10 +14,11 @@ test_that("cnd_entrace() entraces conditions properly", {
   }
 
   expect_cnd_trace <- function(signaller,
-                                 catcher,
-                                 arg,
-                                 native = NULL,
-                                 classes = "error") {
+                               catcher,
+                               arg,
+                               native = NULL,
+                               classes = "error",
+                               abort = FALSE) {
     err <- with_cnd_entrace(signaller, catcher, arg, classes = classes)
 
     trace <- err$trace
@@ -27,7 +28,15 @@ test_that("cnd_entrace() entraces conditions properly", {
       abort("Expected trace, got NULL.")
     }
 
-    if (is_null(native)) {
+    if (abort) {
+      calls <- trace$call[seq2(n - 3, n)]
+      expect_true(all(
+        is_call(calls[[1]], "f"),
+        is_call(calls[[2]], "g"),
+        is_call(calls[[3]], "h"),
+        is_call(calls[[4]], "signaller")
+      ))
+    } else if (is_null(native)) {
       calls <- trace$call[seq2(n - 2, n)]
       expect_true(all(
         is_call(calls[[1]], "f"),
@@ -56,7 +65,7 @@ test_that("cnd_entrace() entraces conditions properly", {
   expect_cnd_trace(base::stop, catch_error, "")
   expect_cnd_trace(base::stop, catch_error, cnd("error"))
   expect_cnd_trace(function(msg) errorcall(NULL, msg), catch_error, "", "errorcall")
-  expect_cnd_trace(abort, catch_error, "")
+  expect_cnd_trace(abort, catch_error, "", abort = TRUE)
 
   expect_cnd_trace(base::warning, catch_warning, "", classes = "warning")
   expect_cnd_trace(base::warning, catch_warning, cnd("warning"), classes = "warning")

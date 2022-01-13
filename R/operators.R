@@ -13,6 +13,9 @@
 `%||%` <- function(x, y) {
   if (is_null(x)) y else x
 }
+`%|0|%` <- function(x, y) {
+  if (!length(x)) y else x
+}
 
 #' Replace missing values
 #'
