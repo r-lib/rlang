@@ -96,8 +96,8 @@ expr_interp() is deprecated, please use inject() instead."><meta property="og:im
     </div>
 
     <div class="ref-description section level2">
-    <p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a></p>
-<p><code>expr_interp()</code> is deprecated, please use <code><a href="inject.html">inject()</a></code> instead.</p>
+    <p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a>
+<code>expr_interp()</code> is deprecated, please use <code><a href="inject.html">inject()</a></code> instead.</p>
     </div>
 
     <div class="section level2">
@@ -107,71 +107,10 @@ expr_interp() is deprecated, please use inject() instead."><meta property="og:im
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>x</dt>
-<dd><p>A function, raw expression, or formula to interpolate.</p></dd>
-<dt>env</dt>
-<dd><p>The environment in which unquoted expressions should be
-evaluated. By default, the formula or closure environment if a
-formula or a function, or the current environment otherwise.</p></dd>
+    <dl><dt>x, env</dt>
+<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a></p></dd>
 </dl></div>
 
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># All tidy NSE functions like quo() unquote on capture:</span></span>
-<span class="r-in"><span class="fu"><a href="defusing-advanced.html">quo</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^list(3)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x55d484897090</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># expr_interp() is meant to provide the same functionality when you</span></span>
-<span class="r-in"><span class="co"># have a formula or expression that might contain unquoting</span></span>
-<span class="r-in"><span class="co"># operators:</span></span>
-<span class="r-in"><span class="va">f</span> <span class="op">&lt;-</span> <span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">expr_interp</span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ~list(3)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55d484897090&gt;</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Note that only the outer formula is unquoted (which is a reason</span></span>
-<span class="r-in"><span class="co"># to use expr_interp() as early as possible in all user-facing</span></span>
-<span class="r-in"><span class="co"># functions):</span></span>
-<span class="r-in"><span class="va">f</span> <span class="op">&lt;-</span> <span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">~</span><span class="op">!</span><span class="op">!</span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">2</span><span class="op">)</span>, <span class="op">!</span><span class="op">!</span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">expr_interp</span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ~list(~3, 3)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55d484897090&gt;</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Another purpose for expr_interp() is to interpolate a closure's</span></span>
-<span class="r-in"><span class="co"># body. This is useful to inline a function within another. The</span></span>
-<span class="r-in"><span class="co"># important limitation is that all formal arguments of the inlined</span></span>
-<span class="r-in"><span class="co"># function should be defined in the receiving function:</span></span>
-<span class="r-in"><span class="va">other_fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">toupper</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">fn</span> <span class="op">&lt;-</span> <span class="fu">expr_interp</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"_suffix"</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">!</span><span class="op">!</span><span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/body.html" class="external-link">body</a></span><span class="op">(</span><span class="va">other_fn</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span><span class="op">)</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unquoting language objects with `!!!` is deprecated as of rlang 0.4.0.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> Please use `!!` instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   # Bad:</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   dplyr::select(data, !!!enquo(x))</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   # Good:</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   dplyr::select(data, !!enquo(x))    # Unquote single quosure</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   dplyr::select(data, !!!enquos(x))  # Splice list of quosures</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">This warning is displayed once per session.</span></span>
-<span class="r-in"><span class="va">fn</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> function (x) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     x &lt;- paste0(x, "_suffix")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     toupper(x)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55d484897090&gt;</span>
-<span class="r-in"><span class="fu">fn</span><span class="op">(</span><span class="st">"foo"</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "FOO_SUFFIX"</span>
-</code></pre></div>
-    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

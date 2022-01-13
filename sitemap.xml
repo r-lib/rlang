@@ -52,9 +52,6 @@
     <loc>https://rlang.r-lib.org/reference/as_data_mask.html</loc>
   </url>
   <url>
-    <loc>https://rlang.r-lib.org/reference/as_env.html</loc>
-  </url>
-  <url>
     <loc>https://rlang.r-lib.org/reference/as_environment.html</loc>
   </url>
   <url>
@@ -65,9 +62,6 @@
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/as_name.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/as_overscope.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/as_string.html</loc>
@@ -116,9 +110,6 @@
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/caller_fn.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/caller_frame.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/catch_cnd.html</loc>
@@ -208,9 +199,6 @@
     <loc>https://rlang.r-lib.org/reference/env_bind.html</loc>
   </url>
   <url>
-    <loc>https://rlang.r-lib.org/reference/env_bind_exprs.html</loc>
-  </url>
-  <url>
     <loc>https://rlang.r-lib.org/reference/env_binding_are_active.html</loc>
   </url>
   <url>
@@ -274,9 +262,6 @@
     <loc>https://rlang.r-lib.org/reference/exec.html</loc>
   </url>
   <url>
-    <loc>https://rlang.r-lib.org/reference/exiting.html</loc>
-  </url>
-  <url>
     <loc>https://rlang.r-lib.org/reference/expr.html</loc>
   </url>
   <url>
@@ -317,9 +302,6 @@
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/format_error_call.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/frame_position.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/friendly_type.html</loc>
@@ -382,22 +364,13 @@
     <loc>https://rlang.r-lib.org/reference/is_empty.html</loc>
   </url>
   <url>
-    <loc>https://rlang.r-lib.org/reference/is_env.html</loc>
-  </url>
-  <url>
     <loc>https://rlang.r-lib.org/reference/is_environment.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/is_expr.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/is_expression.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/is_formula.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/is_frame.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/is_function.html</loc>
@@ -427,9 +400,6 @@
     <loc>https://rlang.r-lib.org/reference/is_reference.html</loc>
   </url>
   <url>
-    <loc>https://rlang.r-lib.org/reference/is_stack.html</loc>
-  </url>
-  <url>
     <loc>https://rlang.r-lib.org/reference/is_symbol.html</loc>
   </url>
   <url>
@@ -440,12 +410,6 @@
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/lang.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/lang_head.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/lang_modify.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/last_error.html</loc>
@@ -475,16 +439,10 @@
     <loc>https://rlang.r-lib.org/reference/missing_arg.html</loc>
   </url>
   <url>
-    <loc>https://rlang.r-lib.org/reference/mut_node_car.html</loc>
-  </url>
-  <url>
     <loc>https://rlang.r-lib.org/reference/names2.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/names_inform_repair.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/new-vector-along-retired.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/new-vector.html</loc>
@@ -529,19 +487,10 @@
     <loc>https://rlang.r-lib.org/reference/op-null-default.html</loc>
   </url>
   <url>
-    <loc>https://rlang.r-lib.org/reference/overscope_eval_next.html</loc>
-  </url>
-  <url>
     <loc>https://rlang.r-lib.org/reference/pairlist2.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/parse_expr.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/parse_quosure.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/prepend.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/prim_name.html</loc>
@@ -568,9 +517,6 @@
     <loc>https://rlang.r-lib.org/reference/rep_along.html</loc>
   </url>
   <url>
-    <loc>https://rlang.r-lib.org/reference/restarting.html</loc>
-  </url>
-  <url>
     <loc>https://rlang.r-lib.org/reference/return_from.html</loc>
   </url>
   <url>
@@ -584,12 +530,6 @@
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/rlib_trace_spec.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/rst_abort.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/rst_list.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/scalar-type-predicates.html</loc>
@@ -623,9 +563,6 @@
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/stack.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/stack_trim.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/string.html</loc>
@@ -713,9 +650,6 @@
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/with_handlers.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/with_restarts.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/wref_key.html</loc>

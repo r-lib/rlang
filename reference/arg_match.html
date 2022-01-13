@@ -6,7 +6,7 @@ standards.
 
 
 arg_match() derives the possible values from the
-caller frame.
+caller function.
 arg_match0() is a bare-bones version if performance is at a premium.
 It requires a string as arg and explicit character values.
 For convenience, arg may also be a character vector containing
@@ -18,7 +18,7 @@ standards.
 
 
 arg_match() derives the possible values from the
-caller frame.
+caller function.
 arg_match0() is a bare-bones version if performance is at a premium.
 It requires a string as arg and explicit character values.
 For convenience, arg may also be a character vector containing
@@ -122,7 +122,7 @@ In this case, the first element of arg is used."><meta property="og:image" conte
 <li><p>Error messages are a bit more informative and obey the tidyverse
 standards.</p></li>
 </ul><p><code>arg_match()</code> derives the possible values from the
-<a href="caller_frame.html">caller frame</a>.</p>
+<a href="caller_fn.html">caller function</a>.</p>
 <p><code>arg_match0()</code> is a bare-bones version if performance is at a premium.
 It requires a string as <code>arg</code> and explicit character <code>values</code>.
 For convenience, <code>arg</code> may also be a character vector containing
