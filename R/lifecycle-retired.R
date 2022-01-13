@@ -1697,52 +1697,6 @@ node <- function(car, cdr = NULL) {
 
 #  Environments  -----------------------------------------------------
 
-#' Coerce to an environment
-#'
-#' @description
-#'
-#' `r lifecycle::badge("deprecated")`
-#'
-#' This function is deprecated as it was renamed to [as_environment()]
-#' in rlang 0.2.0.
-#'
-#' @keywords internal
-#' @export
-as_env <- function(x, parent = NULL) {
-  warn_deprecated("`as_env()` is deprecated as of rlang 0.2.0.")
-  as_environment(x, parent)
-}
-
-#' Is an object an environment?
-#'
-#' @description
-#'
-#' `r lifecycle::badge("deprecated")`
-#'
-#' These functions were deprecated and renamed to [is_environment()]
-#' and [is_bare_environment()] in rlang 0.2.0. This is for consistency
-#' with other type predicates which are not abbreviated.
-#'
-#' @inheritParams is_environment
-#' @keywords internal
-#' @export
-is_env <- function(x) {
-  warn_deprecated(paste_line(
-    "`is_env()` is deprecated as of rlang 0.2.0.",
-    "Please use `is_environment()` instead."
-  ))
-  is_environment(x)
-}
-#' @rdname is_env
-#' @export
-is_bare_env <- function(x) {
-  warn_deprecated(paste_line(
-    "`is_bare_env()` is deprecated as of rlang 0.2.0.",
-    "Please use `is_bare_environment()` instead."
-  ))
-  is_bare_environment(x)
-}
-
 #' Bind a promise or active binding
 #'
 #' @description

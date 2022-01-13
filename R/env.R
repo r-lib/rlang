@@ -182,13 +182,6 @@ new_environment <- function(data = list(), parent = empty_env()) {
 #' environment is duplicated before being set a new parent. The return
 #' value is therefore a different environment than `x`.
 #'
-#'
-#' @section Life cycle:
-#'
-#' `as_env()` was soft-deprecated and renamed to `as_environment()` in
-#' rlang 0.2.0. This is for consistency as type predicates should not
-#' be abbreviated.
-#'
 #' @param x An object to coerce.
 #' @param parent A parent environment, [empty_env()] by default. This
 #'   argument is only used when `x` is data actually coerced to an

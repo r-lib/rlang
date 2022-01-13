@@ -164,13 +164,6 @@ test_that("overscope functions forward to mask functions", {
   expect_identical(overscope_eval_next(mask, quote(am * x), current_env()), mtcars$am * x)
 })
 
-test_that("as_env() forwards to as_environment()", {
-  x <- as_env(mtcars, base_env())
-  y <- as_environment(mtcars, base_env())
-  expect_equal(as.list(x), as.list(y))
-  expect_identical(env_parent(x), env_parent(y))
-})
-
 test_that("is_expr() forwards to is_expression()", {
   expect_true(is_expr(1L))
   expect_false(is_expr(1:2))

@@ -25,14 +25,6 @@ If \code{x} is an environment and \code{parent} is not \code{NULL}, the
 environment is duplicated before being set a new parent. The return
 value is therefore a different environment than \code{x}.
 }
-\section{Life cycle}{
-
-
-\code{as_env()} was soft-deprecated and renamed to \code{as_environment()} in
-rlang 0.2.0. This is for consistency as type predicates should not
-be abbreviated.
-}
-
 \examples{
 # Coerce a named vector to an environment:
 env <- as_environment(mtcars)
