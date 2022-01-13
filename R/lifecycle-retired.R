@@ -1195,79 +1195,12 @@ parse_quosures <- function(x, env = caller_env()) {
 #' @keywords internal
 #' @export
 quo_expr <- function(quo, warn = FALSE) {
+  # 2022-01: Still used by many packages on CRAN
   warn_deprecated(paste_line(
     "`quo_expr()` is deprecated as of rlang 0.2.0.",
     "Please use `quo_squash()` instead."
   ))
   quo_squash(quo, warn = warn)
-}
-
-#' Create an overscope
-#'
-#' @description
-#'
-#' `r lifecycle::badge("deprecated")`
-#'
-#' These functions have been deprecated in rlang 0.2.0. Please use
-#' [as_data_mask()] and [new_data_mask()] instead. We no longer
-#' require the mask to be cleaned up so `overscope_clean()` does not
-#' have a replacement.
-#'
-#' @inheritParams as_data_mask
-#' @param quo A [quosure][nse-defuse].
-#'
-#' @keywords internal
-#' @export
-as_overscope <- function(quo, data = NULL) {
-  warn_deprecated(paste_line(
-    "`as_overscope()` is deprecated as of rlang 0.2.0.",
-    "Please use `as_data_mask()` instead."
-  ))
-  as_data_mask(data)
-}
-#' @rdname as_overscope
-#' @param enclosure The `parent` argument of [new_data_mask()].
-#' @export
-new_overscope <- function(bottom, top = NULL, enclosure = NULL) {
-  warn_deprecated(paste_line(
-    "`new_overscope()` is deprecated as of rlang 0.2.0.",
-    "Please use `new_data_mask()` instead."
-  ))
-  new_data_mask(bottom, top)
-}
-#' @rdname as_overscope
-#' @param overscope A data mask.
-#' @export
-overscope_clean <- function(overscope) {
-  warn_deprecated("`overscope_clean()` is deprecated as of rlang 0.2.0.")
-  invisible(.Call(ffi_data_mask_clean, overscope))
-}
-
-#' Evaluate next quosure in a data mask
-#'
-#' @description
-#'
-#' `r lifecycle::badge("deprecated")`
-#'
-#' `overscope_eval_next()` is deprecated as of rlang 0.2.0. Please use
-#' `eval_tidy()` to which you can now supply an overscope.
-#'
-#' @param quo A quosure.
-#' @param overscope A valid overscope containing bindings for `~`,
-#'   `.top_env` and `_F` and whose parents contain overscoped bindings
-#'   for tidy evaluation.
-#' @param env The lexical enclosure in case `quo` is not a validly
-#'   scoped quosure. This is the [base environment][base_env] by
-#'   default.
-#'
-#' @keywords internal
-#' @export
-overscope_eval_next <- function(overscope, quo, env = base_env()) {
-  warn_deprecated(paste_line(
-    "`overscope_eval_next()` is deprecated as of rlang 0.2.0.",
-    "Please use `eval_tidy()` with a data mask instead."
-  ))
-  .External2(ffi_eval_tidy, quo, overscope, env)
 }
 
 #' Process unquote operators in a captured expression

@@ -143,27 +143,6 @@ test_that("lang_head() still works", {
   )
 })
 
-test_that("as_overscope() forwards to as_data_mask()", {
-  quo <- quo(foo)
-  mask <- as_overscope(quo, mtcars)
-  expect_true(".__tidyeval_data_mask__." %in% env_names(mask))
-})
-
-test_that("overscope functions forward to mask functions", {
-  top <- env()
-  bottom <- child_env(top, foo = "bar")
-  mask <- new_overscope(bottom, top)
-  expect_true(env_has(mask, ".__tidyeval_data_mask__."))
-
-  overscope_clean(mask)
-  expect_false(env_has(env_parent(mask), "foo"))
-
-  mask <- as_data_mask(mtcars)
-  x <- 10
-  expect_identical(overscope_eval_next(mask, quote(cyl * x), current_env()), mtcars$cyl * x)
-  expect_identical(overscope_eval_next(mask, quote(am * x), current_env()), mtcars$am * x)
-})
-
 test_that("is_expr() forwards to is_expression()", {
   expect_true(is_expr(1L))
   expect_false(is_expr(1:2))
@@ -479,29 +458,6 @@ test_that("call is not modified in place", {
 
 test_that("finds correct env type - frame", {
   expect_identical(identity(env_type(ctxt_frame(2)$env)), "frame")
-})
-
-test_that("whole scope is purged", {
-  local_options(lifecycle_verbose_soft_deprecation = FALSE)
-
-  outside <- child_env(NULL, important = TRUE)
-  top <- child_env(outside, foo = "bar", hunoz = 1)
-  mid <- child_env(top, bar = "baz", hunoz = 2)
-
-  data_mask_objects <- list(
-    .top_env = top,
-    .env = 1,
-    `~` = 2,
-    .__tidyeval_data_mask__. = env()
-  )
-  bottom <- child_env(mid, !!! data_mask_objects)
-
-  overscope_clean(bottom)
-
-  expect_identical(names(bottom), character(0))
-  expect_identical(names(mid), character(0))
-  expect_identical(names(top), character(0))
-  expect_identical(names(outside), "important")
 })
 
 test_that("invoke() buries arguments", {
