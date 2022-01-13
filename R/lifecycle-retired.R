@@ -1815,132 +1815,13 @@ NULL
 
 #' @rdname vector-old-ctors
 #' @export
-lgl_len <- function(.n) {
-  warn_deprecated(paste_line(
-    "`lgl_len()` is deprecated as of rlang 0.2.0.",
-    "Please use `new_logical()` instead."
-  ))
-  new_logical(.n)
-}
-#' @rdname vector-old-ctors
-#' @export
-int_len <- function(.n) {
-  warn_deprecated(paste_line(
-    "`int_len()` is deprecated as of rlang 0.2.0.",
-    "Please use `new_integer()` instead."
-  ))
-  new_integer(.n)
-}
-#' @rdname vector-old-ctors
-#' @export
-dbl_len <- function(.n) {
-  warn_deprecated(paste_line(
-    "`dbl_len()` is deprecated as of rlang 0.2.0.",
-    "Please use `new_double()` instead."
-  ))
-  new_double(.n)
-}
-#' @rdname vector-old-ctors
-#' @export
-chr_len <- function(.n) {
-  warn_deprecated(paste_line(
-    "`chr_len()` is deprecated as of rlang 0.2.0.",
-    "Please use `new_character()` instead."
-  ))
-  new_character(.n)
-}
-#' @rdname vector-old-ctors
-#' @export
-cpl_len <- function(.n) {
-  warn_deprecated(paste_line(
-    "`cpl_len()` is deprecated as of rlang 0.2.0.",
-    "Please use `new_complex()` instead."
-  ))
-  new_complex(.n)
-}
-#' @rdname vector-old-ctors
-#' @export
-raw_len <- function(.n) {
-  warn_deprecated(paste_line(
-    "`raw_len()` is deprecated as of rlang 0.2.0.",
-    "Please use `new_raw()` instead."
-  ))
-  new_raw(.n)
-}
-#' @rdname vector-old-ctors
-#' @export
-bytes_len <- function(.n) {
-  warn_deprecated(paste_line(
-    "`bytes_len()` is deprecated as of rlang 0.2.0.",
-    "Please use `new_raw()` instead."
-  ))
-  new_raw(.n)
-}
-#' @rdname vector-old-ctors
-#' @export
-list_len <- function(.n) {
-  warn_deprecated(paste_line(
-    "`list_len()` is deprecated as of rlang 0.2.0.",
-    "Please use `new_list()` instead."
-  ))
-  new_list(.n)
-}
-
-#' @rdname vector-old-ctors
-#' @export
 lgl_along <- function(.x) {
-  warn_deprecated("`lgl_along()` is deprecated as of rlang 0.2.0.")
-  local_options(lifecycle_disable_warnings = TRUE)
-  new_logical_along(.x, NULL)
+  stop_defunct("`lgl_along()` is deprecated as of rlang 0.2.0.")
 }
 #' @rdname vector-old-ctors
 #' @export
 int_along <- function(.x) {
-  warn_deprecated("`int_along()` is deprecated as of rlang 0.2.0.")
-  local_options(lifecycle_disable_warnings = TRUE)
-  new_integer_along(.x, NULL)
-}
-#' @rdname vector-old-ctors
-#' @export
-dbl_along <- function(.x) {
-  warn_deprecated("`dbl_along()` is deprecated as of rlang 0.2.0.")
-  local_options(lifecycle_disable_warnings = TRUE)
-  new_double_along(.x, NULL)
-}
-#' @rdname vector-old-ctors
-#' @export
-chr_along <- function(.x) {
-  warn_deprecated("`chr_along()` is deprecated as of rlang 0.2.0.")
-  local_options(lifecycle_disable_warnings = TRUE)
-  new_character_along(.x, NULL)
-}
-#' @rdname vector-old-ctors
-#' @export
-cpl_along <- function(.x) {
-  warn_deprecated("`cpl_along()` is deprecated as of rlang 0.2.0.")
-  local_options(lifecycle_disable_warnings = TRUE)
-  new_complex_along(.x, NULL)
-}
-#' @rdname vector-old-ctors
-#' @export
-raw_along <- function(.x) {
-  warn_deprecated("`raw_along()` is deprecated as of rlang 0.2.0.")
-  local_options(lifecycle_disable_warnings = TRUE)
-  new_raw_along(.x, NULL)
-}
-#' @rdname vector-old-ctors
-#' @export
-bytes_along <- function(.x) {
-  warn_deprecated("`bytes_along()` is deprecated as of rlang 0.2.0.")
-  local_options(lifecycle_disable_warnings = TRUE)
-  new_raw_along(.x, NULL)
-}
-#' @rdname vector-old-ctors
-#' @export
-list_along <- function(.x) {
-  warn_deprecated("`list_along()` is deprecated as of rlang 0.2.0.")
-  local_options(lifecycle_disable_warnings = TRUE)
-  new_list_along(.x, NULL)
+  stop_defunct("`int_along()` is deprecated as of rlang 0.2.0.")
 }
 
 #' Create vectors matching the length of a given vector
