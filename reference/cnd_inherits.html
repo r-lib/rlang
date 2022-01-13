@@ -138,13 +138,13 @@ error.</p>
 </dl></div>
     <div class="section level2">
     <h2 id="capture-an-error-with-cnd-inherits-">Capture an error with <code>cnd_inherits()</code><a class="anchor" aria-label="anchor" href="#capture-an-error-with-cnd-inherits-"></a></h2>
-    <p>Error catchers like <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code> and <code><a href="try_call.html">try_call()</a></code> can only match
+    <p>Error catchers like <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code> and <code><a href="try_fetch.html">try_fetch()</a></code> can only match
 the class of a condition, not the class of its parents. To match a
 class across the ancestry of an error, you'll need a bit of
 craftiness.</p>
 <p>Ancestry matching can't be done with <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code> at all so you'll
 need to switch to <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">withCallingHandlers()</a></code>. Alternatively, you can
-use the experimental rlang function <code><a href="try_call.html">try_call()</a></code> which is able to
+use the experimental rlang function <code><a href="try_fetch.html">try_fetch()</a></code> which is able to
 perform the roles of both <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code> and <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">withCallingHandlers()</a></code>.</p><div class="section">
 <h3 id="withcallinghandlers-"><code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">withCallingHandlers()</a></code><a class="anchor" aria-label="anchor" href="#withcallinghandlers-"></a></h3>
 
@@ -172,13 +172,13 @@ throw, nothing happens.</p>
 </div>
 
 <div class="section">
-<h3 id="try-call-"><code><a href="try_call.html">try_call()</a></code><a class="anchor" aria-label="anchor" href="#try-call-"></a></h3>
+<h3 id="try-fetch-"><code><a href="try_fetch.html">try_fetch()</a></code><a class="anchor" aria-label="anchor" href="#try-fetch-"></a></h3>
 
 
-<p>This pattern is easier with <code><a href="try_call.html">try_call()</a></code>. Like
+<p>This pattern is easier with <code><a href="try_fetch.html">try_fetch()</a></code>. Like
 <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">withCallingHandlers()</a></code>, it doesn't capture a matching error right
 away. Instead, it captures it only if the handler doesn't return a
-<code><a href="zap.html">zap()</a></code> value.</p><div class="sourceCode r"><pre><code><span class="va">cnd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/try_call.html">try_call</a></span><span class="op">(</span>
+<code><a href="zap.html">zap()</a></code> value.</p><div class="sourceCode r"><pre><code><span class="va">cnd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/try_fetch.html">try_fetch</a></span><span class="op">(</span>
   <span class="fu">f</span><span class="op">(</span><span class="op">)</span>,
   error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="../reference/cnd_inherits.html">cnd_inherits</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"bar"</span><span class="op">)</span><span class="op">)</span> <span class="va">x</span> <span class="kw">else</span> <span class="fu"><a href="../reference/zap.html">zap</a></span><span class="op">(</span><span class="op">)</span>
 <span class="op">)</span>
