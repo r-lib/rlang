@@ -150,6 +150,7 @@ to create custom interrupt condition objects.</p>
   use_cli_format <span class="op">=</span> <span class="cn">NULL</span>,
   .internal <span class="op">=</span> <span class="cn">FALSE</span>,
   .file <span class="op">=</span> <span class="cn">NULL</span>,
+  .frame <span class="op">=</span> <span class="cn">NULL</span>,
   .subclass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>
 <span class="op">)</span>
 
@@ -243,6 +244,11 @@ incompatible with <code>footer</code>.</p></dd>
 <dd><p>A connection or a string specifying where to print the
 message. The default depends on the context, see the <code>stdout</code> vs
 <code>stderr</code> section.</p></dd>
+<dt>.frame</dt>
+<dd><p>The throwing context. Default to <code>call</code> if it is an
+environment, <code><a href="caller_env.html">caller_env()</a></code> otherwise. This is used during
+backtrace construction as a starting point to hide condition
+handling frames from the user.</p></dd>
 <dt>.subclass</dt>
 <dd><p>This argument was renamed to <code>class</code> in rlang
 0.4.2.  It will be deprecated in the next major version. This is
