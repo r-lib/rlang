@@ -843,15 +843,46 @@ names(set_attrs_null) <- ""
 
 #  Conditions --------------------------------------------------------
 
-#' Exiting handler
+#' Establish handlers on the stack
 #'
 #' @description
+#' `r lifecycle::badge("deprecated")`
 #'
-#' `r lifecycle::badge("soft-deprecated")`
+#' As of rlang 1.0.0, `with_handlers()` is deprecated. Use the base
+#' functions or the experimental [try_call()] function instead.
 #'
-#' `exiting()` is no longer necessary as handlers are exiting by default.
-#'
+#' @param .expr,...,handler `r lifecycle::badge("deprecated")`
 #' @keywords internal
+#' @export
+with_handlers <- function(.expr, ...) {
+  # 1.0.0: Silently deprecated. Used in recipes.
+
+  handlers <- list2(...)
+
+  is_calling <- map_lgl(handlers, inherits, "rlang_box_calling_handler")
+  handlers <- map_if(handlers, is_calling, unbox)
+  handlers <- map(handlers, as_function)
+
+  calling <- handlers[is_calling]
+  exiting <- handlers[!is_calling]
+
+  expr <- quote(.expr)
+  if (length(calling)) {
+    expr <- expr(withCallingHandlers(!!expr, !!!calling))
+  }
+  if (length(exiting)) {
+    expr <- expr(tryCatch(!!expr, !!!exiting))
+  }
+
+  .External2(ffi_eval, expr, environment())
+}
+#' @rdname with_handlers
+#' @export
+calling <- function(handler) {
+  handler <- as_function(handler)
+  new_box(handler, "rlang_box_calling_handler")
+}
+#' @rdname with_handlers
 #' @export
 exiting <- function(handler) {
   signal_soft_deprecated(c(
