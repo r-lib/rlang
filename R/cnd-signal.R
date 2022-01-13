@@ -222,7 +222,21 @@ deprecate_subclass <- function(subclass, fn, env = caller_env()) {
     format_fn(fn),
     format_arg("class")
   )
-  signal_soft_deprecated(msg)
+  # 2022-01: Too many packages still use `.subclass`
+  # - https://github.com/ropensci/jstor/issues/88
+  # - https://github.com/jacob-long/jtools/issues/118
+  # - https://github.com/tidyverse/tibble/issues/1015
+  # - https://github.com/r-lib/pkgload/issues/188
+  # - https://github.com/poissonconsulting/chk/issues/102
+  # - https://github.com/burchill/catchr/issues/8
+  # - https://github.com/cynkra/dm/issues/743
+  # - https://github.com/factset/analyticsapi-engines-r-sdk/issues/13
+  # - https://github.com/tidymodels/textrecipes/issues/152
+  # - https://github.com/NikKrieger/sociome/issues/14
+  # - https://github.com/r-lib/testthat/commit/f09df60dd881530332b252474e9f35c97f8640be
+  if (is_true(peek_option("force_subclass_deprecation"))) {
+    signal_soft_deprecated(msg)
+  }
   env_bind(env, class = subclass)
 }
 

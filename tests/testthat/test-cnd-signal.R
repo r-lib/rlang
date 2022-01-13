@@ -303,7 +303,13 @@ test_that("cnd_signal() sets call", {
 # Lifecycle ----------------------------------------------------------
 
 test_that("error_cnd() still accepts `.subclass`", {
-  local_options(lifecycle_disable_warnings = FALSE)
+  # <deprecatedWarning>
+  skip_if(getRversion() < "3.6.0")
+
+  local_options(
+    lifecycle_disable_warnings = FALSE,
+    force_subclass_deprecation = TRUE
+  )
   expect_snapshot({
     expect_equal(
       error_cnd(.subclass = "foo"),
