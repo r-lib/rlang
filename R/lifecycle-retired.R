@@ -896,35 +896,47 @@ exiting <- function(handler) {
 
 #  Scoped_
 
-#' Questioning `scoped_` functions
+#' Deprecated `scoped_` functions
 #'
 #' @description
+#' `r lifecycle::badge("deprecated")`
 #'
-#' `r lifecycle::badge("questioning")`
-#'
-#' These functions have been renamed to use the conventional `local_`
-#' prefix. They will be deprecated in the next minor version of rlang.
+#' Deprecated as of rlang 0.4.2. Use [local_interactive()],
+#' [local_options()], or [local_bindings()] instead.
 #'
 #' @inheritParams local_interactive
 #' @inheritParams local_options
 #' @inheritParams local_bindings
 #'
 #' @keywords internal
-#'
 #' @export
 scoped_interactive <- function(value = TRUE, frame = caller_env()) {
+  signal_soft_deprecated(c(
+    "`scoped_interactive()` is deprecated as of rlang 0.4.2.",
+    "Please use `local_interactive()` instead."
+  ))
   local_interactive(value = value, frame = frame)
 }
 #' @rdname scoped_interactive
 #' @export
 scoped_options <- function(..., .frame = caller_env()) {
+  signal_soft_deprecated(c(
+    "`scoped_options()` is deprecated as of rlang 0.4.2.",
+    "Please use `local_options()` instead."
+  ))
   local_options(..., .frame = .frame)
 }
 #' @rdname scoped_interactive
 #' @export
 scoped_bindings <- function(..., .env = .frame, .frame = caller_env()) {
+  signal_soft_deprecated(c(
+    "`scoped_bindings()` is deprecated as of rlang 0.4.2.",
+    "Please use `local_bindings()` instead."
+  ))
   local_bindings(..., .env = .env, .frame = .frame)
 }
+# rlang 0.4.2: Silent deprecation.
+# rlang 1.0.0: Soft deprecation.
 
 
 #  Superseded
