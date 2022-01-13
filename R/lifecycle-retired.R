@@ -733,37 +733,6 @@ call_fn <- function(call, env = caller_env()) {
 
 #  Environments  -----------------------------------------------------
 
-#' Bind a promise or active binding
-#'
-#' @description
-#'
-#' `r lifecycle::badge("deprecated")`
-#'
-#' As of rlang 0.3.0, `env_bind_exprs()` and `env_bind_fns()` have
-#' been renamed to [env_bind_lazy()] and [env_bind_active()] for
-#' consistency.
-#'
-#' @inheritParams env_bind
-#'
-#' @keywords internal
-#' @export
-env_bind_exprs <- function(.env, ..., .eval_env = caller_env()) {
-  warn_deprecated(paste_line(
-    "`env_bind_exprs()` is deprecated as of rlang 0.3.0.",
-    "Please use `env_bind_lazy()` instead."
-  ))
-  env_bind_lazy(.env = .env, ..., .eval_env = .eval_env)
-}
-#' @rdname env_bind_exprs
-#' @export
-env_bind_fns <- function(.env, ...) {
-  warn_deprecated(paste_line(
-    "`env_bind_fns()` is deprecated as of rlang 0.3.0.",
-    "Please use `env_bind_active()` instead."
-  ))
-  env_bind_active(.env = .env, ...)
-}
-
 #' Retired `scoped` functions
 #'
 #' @description
