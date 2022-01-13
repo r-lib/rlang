@@ -237,6 +237,59 @@ friendly_type <- function(type) {
 }
 
 
+##  Eval
+
+#' Invoke a function with a list of arguments
+#'
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#' Deprecated in rlang 0.4.0 in favour of [exec()].
+#'
+#' @param .fn,args,...,.env,.bury `r lifecycle::badge("deprecated")`
+#' @export
+#' @keywords internal
+invoke <- function(.fn, .args = list(), ...,
+                   .env = caller_env(), .bury = c(".fn", "")) {
+  # rlang 0.4.0: Soft-deprecation
+  # rlang 1.0.0: Deprecation
+  warn_deprecated(c(
+    "`invoke()` is deprecated as of rlang 0.4.0.",
+    "Please use `exec()` or `inject()` instead."
+  ))
+
+  args <- c(.args, list(...))
+
+  if (is_null(.bury) || !length(args)) {
+    if (is_scalar_character(.fn)) {
+      .fn <- env_get(.env, .fn, inherit = TRUE)
+    }
+    call <- call2(.fn, !!! args)
+    return(.External2(ffi_eval, call, .env))
+  }
+
+
+  if (!is_character(.bury, 2L)) {
+    abort("`.bury` must be a character vector of length 2")
+  }
+  arg_prefix <- .bury[[2]]
+  fn_nm <- .bury[[1]]
+
+  buried_nms <- paste0(arg_prefix, seq_along(args))
+  buried_args <- set_names(args, buried_nms)
+  .env <- env_bury(.env, !!! buried_args)
+  args <- set_names(buried_nms, names(args))
+  args <- syms(args)
+
+  if (is_function(.fn)) {
+    env_bind(.env, !! fn_nm := .fn)
+    .fn <- fn_nm
+  }
+
+  call <- call2(.fn, !!! args)
+  .External2(ffi_eval, call, .env)
+}
+
+
 ##  Casting
 
 #' Coerce an object to a base type
