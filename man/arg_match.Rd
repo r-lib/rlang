@@ -48,7 +48,7 @@ standards.
 }
 
 \code{arg_match()} derives the possible values from the
-\link[=caller_frame]{caller frame}.
+\link[=caller_fn]{caller function}.
 
 \code{arg_match0()} is a bare-bones version if performance is at a premium.
 It requires a string as \code{arg} and explicit character \code{values}.

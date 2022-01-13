@@ -10,7 +10,7 @@ caller_fn(n = 1)
 current_fn()
 }
 \arguments{
-\item{n}{The number of generations to go back.}
+\item{n}{The number of callers to go back.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
@@ -20,11 +20,8 @@ is currently being evaluated.
 \item The caller frame is the execution context of the function that
 called the function currently being evaluated.
 }
-
-See the \link[=stack]{call stack} topic for more information.
 }
 \section{Life cycle}{
-
 
 These functions are experimental.
 }

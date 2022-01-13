@@ -205,9 +205,9 @@ fn_body_node <- function(fn) {
 #' environment. When closures are evaluated, a new environment called
 #' the evaluation frame is created with the closure environment as
 #' parent. This is where the body of the closure is evaluated. These
-#' closure frames appear on the evaluation stack (see [ctxt_stack()]),
-#' as opposed to primitive functions which do not necessarily have
-#' their own evaluation frame and never appear on the stack.
+#' closure frames appear on the evaluation stack, as opposed to
+#' primitive functions which do not necessarily have their own
+#' evaluation frame and never appear on the stack.
 #'
 #' Primitive functions are more efficient than closures for two
 #' reasons. First, they are written entirely in fast low-level
@@ -259,14 +259,6 @@ fn_body_node <- function(fn) {
 #' # Both closures and primitives are functions:
 #' is_function(base::c)
 #' is_function(base::eval)
-#'
-#' # Primitive functions never appear in evaluation stacks:
-#' is_primitive(base::`[[`)
-#' is_primitive(base::list)
-#' list(ctxt_stack())[[1]]
-#'
-#' # While closures do:
-#' identity(identity(ctxt_stack()))
 is_function <- function(x) {
   .Call(ffi_is_function, x)
 }
@@ -310,9 +302,9 @@ is_primitive_lazy <- function(x) {
 #'
 #' Closure environments define the scope of functions (see [env()]).
 #' When a function call is evaluated, R creates an evaluation frame
-#' (see [ctxt_stack()]) that inherits from the closure environment.
-#' This makes all objects defined in the closure environment and all
-#' its parents available to code executed within the function.
+#' that inherits from the closure environment. This makes all objects
+#' defined in the closure environment and all its parents available to
+#' code executed within the function.
 #'
 #' `fn_env()` returns the closure environment of `fn`. There is also
 #' an assignment method to set a new closure environment.

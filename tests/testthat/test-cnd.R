@@ -243,30 +243,6 @@ test_that("cnd() throws with unnamed fields", {
   expect_error(cnd("class", "msg", 10), "must have named data fields")
 })
 
-test_that("restarts are established", {
-  with_restarts(foo = function() {}, expect_true(rst_exists("foo")))
-})
-
-test_that("restarting() handlers pass along all requested arguments", {
-  signal_foo <- function() {
-    signal("", "foo", foo_field = "foo_field")
-  }
-  fn <- function() {
-    with_handlers(signal_foo(), foo = restart_handler)
-  }
-
-  restart_handler <- restarting("rst_foo",
-    a = "a",
-    splice(list(b = "b")),
-    .fields = c(field_arg = "foo_field")
-  )
-
-  rst_foo <- function(a, b, field_arg) {
-    expect_equal(list(a, b, field_arg), list("a", "b", "foo_field"))
-  }
-  with_restarts(fn(), rst_foo = rst_foo)
-})
-
 test_that("cnd_type() detects condition type", {
   expect_error(cnd_type(list()), "not a condition object")
   expect_error(cnd_type(mtcars), "not a condition object")

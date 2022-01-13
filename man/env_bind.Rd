@@ -79,16 +79,6 @@ Like other side-effecty functions like \code{par()} and \code{options()},
 \code{env_bind()} and variants return the old values invisibly.
 }
 
-\section{Life cycle}{
-
-
-Passing an environment wrapper like a formula or a function instead
-of an environment is soft-deprecated as of rlang 0.3.0. This
-internal genericity was causing confusion (see issue #427). You
-should now extract the environment separately before calling these
-functions.
-}
-
 \examples{
 # env_bind() is a programmatic way of assigning values to symbols
 # with `<-`. We can add bindings in the current environment:

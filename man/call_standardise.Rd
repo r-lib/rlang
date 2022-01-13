@@ -7,11 +7,9 @@
 call_standardise(call, env = caller_env())
 }
 \arguments{
-\item{call}{A defused function call.}
+\item{call}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}}
 
-\item{env}{The environment where to find the definition of the
-function quoted in \code{call} in case \code{call} is not wrapped in a
-quosure.}
+\item{env}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}}
 }
 \value{
 A quosure if \code{call} is a quosure, a raw call otherwise.
@@ -30,3 +28,4 @@ as a simpler wrapper around \code{\link[=match.call]{match.call()}}.
 This is essentially equivalent to \code{\link[base:match.call]{base::match.call()}}, but with
 experimental handling of primitive functions.
 }
+\keyword{internal}

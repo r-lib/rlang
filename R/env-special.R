@@ -155,9 +155,7 @@ empty_env <- emptyenv
 #' * The caller environment is the execution environment of the
 #'   function that called the current function.
 #'
-#' @inheritParams caller_frame
-#'
-#' @seealso [caller_frame()] and [current_frame()]
+#' @param n The number of callers to go back.
 #' @export
 #' @examples
 #' if (FALSE) {
@@ -195,12 +193,6 @@ current_env <- function() {
 #' live. The parent environments of namespaces are the `imports`
 #' environments, which contain all the functions imported from other
 #' packages.
-#'
-#'
-#' @section Life cycle:
-#'
-#' These functions are experimental and may not belong to the rlang
-#' package. Expect API changes.
 #'
 #' @param x
 #'   * For `ns_env()`, the name of a package or an environment as a
@@ -276,8 +268,6 @@ env_type <- function(env) {
     "empty"
   } else if (is_reference(env, base_env())) {
     "base"
-  } else if (is_frame_env(env)) {
-    "frame"
   } else {
     "local"
   }

@@ -67,7 +67,6 @@ is_complex <- function(x, n = NULL, finite = NULL) {
 }
 #' @export
 #' @rdname type-predicates
-#' @inheritParams args_dots_empty
 is_character <- function(x, n = NULL) {
   .Call(ffi_is_character, x, n, NULL, NULL)
 }
@@ -172,7 +171,6 @@ is_scalar_raw <- function(x) {
 #' @export
 #' @param string A string to compare to `x`. If a character vector,
 #'   returns `TRUE` if at least one element is equal to `x`.
-#' @inheritParams args_dots_empty
 #' @rdname scalar-type-predicates
 is_string <- function(x, string = NULL) {
   .Call(ffi_is_string, x, string, NULL)

@@ -44,9 +44,10 @@
 #' cnd <- error_cnd("my_error_class", message = "This is an error")
 #' try(cnd_signal(cnd))
 cnd_signal <- function(cnd, ...) {
+  check_dots_empty0(...)
+
   .__signal_frame__. <- TRUE
 
-  validate_cnd_signal_args(cnd, ...)
   if (is_null(cnd)) {
     return(invisible(NULL))
   }
@@ -78,41 +79,6 @@ cnd_signal <- function(cnd, ...) {
     ))
   )
 }
-validate_cnd_signal_args <- function(cnd,
-                                     ...,
-                                     .cnd,
-                                     .mufflable,
-                                     env = parent.frame()) {
-  if (dots_n(...)) {
-    abort("`...` must be empty.")
-  }
-  if (is_character(cnd)) {
-    warn_deprecated(paste_line(
-      "Creating a condition with `cnd_signal()` is deprecated as of rlang 0.3.0.",
-      "Please use `signal()` instead."
-    ))
-    env$cnd <- cnd(cnd)
-  }
-  if (!missing(.cnd)) {
-    warn_deprecated(paste_line(
-      "The `.cnd` argument is deprecated as of rlang 0.3.0.",
-      "Please use `cnd` instead."
-    ))
-    if (is_character(.cnd)) {
-      warn_deprecated(paste_line(
-        "Creating a condition with `cnd_signal()` is deprecated as of rlang 0.3.0.",
-        "Please use `signal()` instead."
-      ))
-      .cnd <- cnd(.cnd)
-    }
-    env$cnd <- .cnd
-  }
-  if (!missing(.mufflable)) {
-    warn_deprecated(
-      "`.mufflable` is deprecated as of rlang 0.3.0 and no longer has any effect"
-    )
-  }
-}
 
 #' @rdname abort
 #' @param .frequency How frequently should the warning or message be
@@ -133,7 +99,7 @@ warn <- function(message = NULL,
                  .frequency = c("always", "regularly", "once"),
                  .frequency_id = NULL,
                  .subclass = deprecated()) {
-  message <- validate_signal_args(message, class, NULL, .subclass)
+  message <- validate_signal_args(message, class, NULL, .subclass, "warn")
 
   message_info <- cnd_message_info(
     message,
@@ -177,7 +143,7 @@ inform <- function(message = NULL,
                    .subclass = deprecated()) {
   message <- message %||% ""
 
-  validate_signal_args(message, class, NULL, .subclass)
+  validate_signal_args(message, class, NULL, .subclass, "inform")
 
   message_info <- cnd_message_info(
     message,
@@ -218,7 +184,7 @@ signal <- function(message,
                    class,
                    ...,
                    .subclass = deprecated()) {
-  validate_signal_args(message, class, NULL, .subclass)
+  validate_signal_args(message, class, NULL, .subclass, "signal")
 
   message <- .rlang_cli_format_fallback(message)
   cnd <- cnd(class, ..., message = message)
@@ -249,10 +215,29 @@ default_message_file <- function() {
   }
 }
 
-deprecate_subclass <- function(subclass, env = caller_env()) {
+deprecate_subclass <- function(subclass, fn, env = caller_env()) {
+  msg <- sprintf(
+    "The %s argument of %s has been renamed to %s.",
+    format_arg(".subclass"),
+    format_fn(fn),
+    format_arg("class")
+  )
+  # 2022-01: Too many packages still use `.subclass`
+  # - https://github.com/ropensci/jstor/issues/88
+  # - https://github.com/jacob-long/jtools/issues/118
+  # - https://github.com/tidyverse/tibble/issues/1015
+  # - https://github.com/r-lib/pkgload/issues/188
+  # - https://github.com/poissonconsulting/chk/issues/102
+  # - https://github.com/burchill/catchr/issues/8
+  # - https://github.com/cynkra/dm/issues/743
+  # - https://github.com/factset/analyticsapi-engines-r-sdk/issues/13
+  # - https://github.com/tidymodels/textrecipes/issues/152
+  # - https://github.com/NikKrieger/sociome/issues/14
+  # - https://github.com/r-lib/testthat/commit/f09df60dd881530332b252474e9f35c97f8640be
+  if (is_true(peek_option("force_subclass_deprecation"))) {
+    signal_soft_deprecated(msg)
+  }
   env_bind(env, class = subclass)
-  local_error_call("caller")
-  # TODO! Allow until next major version
 }
 
 #' @rdname abort
@@ -265,11 +250,12 @@ validate_signal_args <- function(message,
                                  class,
                                  call,
                                  subclass,
+                                 fn,
                                  env = caller_env()) {
   local_error_call("caller")
 
   if (!is_missing(subclass)) {
-    deprecate_subclass(subclass, env)
+    deprecate_subclass(subclass, fn, env)
   }
   check_required(class, error_call = env)
 

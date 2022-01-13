@@ -34,9 +34,9 @@ root environment of the closure is called the closure
 environment. When closures are evaluated, a new environment called
 the evaluation frame is created with the closure environment as
 parent. This is where the body of the closure is evaluated. These
-closure frames appear on the evaluation stack (see \code{\link[=ctxt_stack]{ctxt_stack()}}),
-as opposed to primitive functions which do not necessarily have
-their own evaluation frame and never appear on the stack.
+closure frames appear on the evaluation stack, as opposed to
+primitive functions which do not necessarily have their own
+evaluation frame and never appear on the stack.
 
 Primitive functions are more efficient than closures for two
 reasons. First, they are written entirely in fast low-level
@@ -86,14 +86,6 @@ is_closure(base::eval)
 # Both closures and primitives are functions:
 is_function(base::c)
 is_function(base::eval)
-
-# Primitive functions never appear in evaluation stacks:
-is_primitive(base::`[[`)
-is_primitive(base::list)
-list(ctxt_stack())[[1]]
-
-# While closures do:
-identity(identity(ctxt_stack()))
 
 # Many primitive functions evaluate arguments eagerly:
 is_primitive_eager(base::c)

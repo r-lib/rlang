@@ -4,7 +4,7 @@
 \alias{scoped_interactive}
 \alias{scoped_options}
 \alias{scoped_bindings}
-\title{Questioning \code{scoped_} functions}
+\title{Deprecated \code{scoped_} functions}
 \usage{
 scoped_interactive(value = TRUE, frame = caller_env())
 
@@ -31,9 +31,9 @@ the options are reset to their original values.}
 \item{.env}{An environment.}
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#questioning}{\figure{lifecycle-questioning.svg}{options: alt='[Questioning]'}}}{\strong{[Questioning]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
-These functions have been renamed to use the conventional \code{local_}
-prefix. They will be deprecated in the next minor version of rlang.
+Deprecated as of rlang 0.4.2. Use \code{\link[=local_interactive]{local_interactive()}},
+\code{\link[=local_options]{local_options()}}, or \code{\link[=local_bindings]{local_bindings()}} instead.
 }
 \keyword{internal}

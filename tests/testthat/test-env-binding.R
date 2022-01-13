@@ -472,19 +472,3 @@ test_that("env_get(last = ) checks for empty env when last is disconnected (#120
   )
   expect_equal(out, "_fallback")
 })
-
-
-# Lifecycle ----------------------------------------------------------
-
-test_that("env_bind_exprs() and env_bind_fns() still work", {
-  local_options(lifecycle_disable_warnings = TRUE)
-  e <- env()
-
-  env_bind_exprs(e, foo = cat("foo\n"))
-  expect_output(e$foo, "foo")
-  expect_null(e$foo)
-
-  env_bind_fns(e, bar = ~ cat("foo\n"))
-  expect_output(e$bar, "foo")
-  expect_output(e$bar, "foo")
-})

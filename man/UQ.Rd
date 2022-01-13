@@ -11,7 +11,6 @@ UQS(x)
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
-
 These operators are deprecated in favour of
 \code{\link[=injection-operator]{!!}} and \code{\link[=splice-operator]{!!!}}.
 }

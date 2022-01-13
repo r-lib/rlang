@@ -182,13 +182,6 @@ new_environment <- function(data = list(), parent = empty_env()) {
 #' environment is duplicated before being set a new parent. The return
 #' value is therefore a different environment than `x`.
 #'
-#'
-#' @section Life cycle:
-#'
-#' `as_env()` was soft-deprecated and renamed to `as_environment()` in
-#' rlang 0.2.0. This is for consistency as type predicates should not
-#' be abbreviated.
-#'
 #' @param x An object to coerce.
 #' @param parent A parent environment, [empty_env()] by default. This
 #'   argument is only used when `x` is data actually coerced to an
@@ -282,30 +275,30 @@ vec_as_environment <- function(x, parent = NULL) {
 #' fn <- set_env(function() env_parent(), enclos_env)
 #' identical(enclos_env, fn())
 env_parent <- function(env = caller_env(), n = 1) {
-  env_ <- get_env_retired(env, "env_parent()")
+  check_environment(env)
 
   while (n > 0) {
-    if (is_empty_env(env_)) {
+    if (is_empty_env(env)) {
       abort("The empty environment has no parent.")
     }
     n <- n - 1
-    env_ <- parent.env(env_)
+    env <- parent.env(env)
   }
 
-  env_
+  env
 }
 #' @rdname env_parent
 #' @export
 env_tail <- function(env = caller_env(), last = global_env()) {
-  env_ <- get_env_retired(env, "env_tail()")
-  parent <- env_parent(env_)
+  check_environment(env)
+  parent <- env_parent(env)
 
-  while (!is_reference(parent, last) && !is_empty_env(parent)) {
-    env_ <- parent
+  while (!identical(parent, last) && !is_empty_env(parent)) {
+    env <- parent
     parent <- env_parent(parent)
   }
 
-  env_
+  env
 }
 #' @rdname env_parent
 #' @export
@@ -358,11 +351,11 @@ env_parents <- function(env = caller_env(), last = global_env()) {
 #' env_depth(empty_env())
 #' env_depth(pkg_env("rlang"))
 env_depth <- function(env) {
-  env_ <- get_env_retired(env, "env_depth()")
+  check_environment(env)
 
   n <- 0L
-  while (!is_empty_env(env_)) {
-    env_ <- env_parent(env_)
+  while (!is_empty_env(env)) {
+    env <- env_parent(env)
     n <- n + 1L
   }
 
@@ -377,11 +370,10 @@ is_empty_env <- function(env) {
 #'
 #' These functions dispatch internally with methods for functions,
 #' formulas and frames. If called with a missing argument, the
-#' environment of the current evaluation frame (see [ctxt_stack()]) is
-#' returned. If you call `get_env()` with an environment, it acts as
-#' the identity function and the environment is simply returned (this
-#' helps simplifying code when writing generic functions for
-#' environments).
+#' environment of the current evaluation frame is returned. If you
+#' call `get_env()` with an environment, it acts as the identity
+#' function and the environment is simply returned (this helps
+#' simplifying code when writing generic functions for environments).
 #'
 #' While `set_env()` returns a modified copy and does not have side
 #' effects, `env_poke_parent()` operates changes the environment by
@@ -389,19 +381,6 @@ is_empty_env <- function(env) {
 #' [uncopyable][is_copyable]. Be careful not to change environments
 #' that you don't own, e.g. a parent environment of a function from a
 #' package.
-#'
-#'
-#' @section Life cycle:
-#'
-#' - Using `get_env()` without supplying `env` is deprecated as
-#'   of rlang 0.3.0. Please use [current_env()] to retrieve the
-#'   current environment.
-#'
-#' - Passing environment wrappers like formulas or functions instead
-#'   of bare environments is deprecated as of rlang 0.3.0. This
-#'   internal genericity was causing confusion (see issue #427). You
-#'   should now extract the environment separately before calling
-#'   these functions.
 #'
 #' @param env An environment.
 #' @param default The default environment in case `env` does not wrap
@@ -435,11 +414,6 @@ is_empty_env <- function(env) {
 #' default <- env()
 #' identical(get_env(f, default), default)
 get_env <- function(env, default = NULL) {
-  if (missing(env)) {
-    warn_deprecated("The `env` argument of `get_env()` must now be supplied")
-    env <- caller_env()
-  }
-
   out <- switch(typeof(env),
     environment = env,
     definition = ,
@@ -458,19 +432,6 @@ get_env <- function(env, default = NULL) {
   } else {
     out
   }
-}
-get_env_retired <- function(x, fn) {
-  if (is_environment(x)) {
-    return(x)
-  }
-
-  type <- friendly_type_of(x)
-  warn_deprecated(paste_line(
-    sprintf("Passing an environment wrapper like %s is deprecated.", type),
-    sprintf("Please retrieve the environment before calling `%s`", fn)
-  ))
-
-  get_env(x)
 }
 
 #' @rdname get_env
@@ -498,29 +459,24 @@ get_env_retired <- function(x, fn) {
 #' fn <- set_env(fn, other_env)
 #' identical(get_env(fn), other_env)
 set_env <- function(env, new_env = caller_env()) {
-  new_env <- get_env_retired(new_env, "set_env()")
-
   if (is_formula(env) || is_closure(env)) {
     environment(env) <- new_env
     return(env)
   }
-  if (is_environment(env)) {
-    return(new_env)
-  }
 
-  abort(paste0(
-    "Can't set environment for ", friendly_type_of(env), "."
-  ))
+  check_environment(env)
+  new_env
 }
 #' @rdname get_env
 #' @export
 env_poke_parent <- function(env, new_env) {
-  env <- get_env_retired(env, "env_poke_parent()")
-  new_env <- get_env_retired(new_env, "env_poke_parent()")
+  check_environment(env)
+  check_environment(new_env)
   .Call(ffi_env_poke_parent, env, new_env)
 }
 `env_parent<-` <- function(x, value) {
-  env <- get_env_retired(x, "env_poke_parent<-")
+  check_environment(env)
+  check_environment(value)
   .Call(ffi_env_poke_parent, env, value)
 }
 
@@ -540,7 +496,8 @@ env_poke_parent <- function(env, new_env) {
 #' identical(env, clone)
 #' identical(env$cyl, clone$cyl)
 env_clone <- function(env, parent = env_parent(env)) {
-  env <- get_env_retired(env, "env_clone()")
+  check_environment(env)
+  check_environment(parent)
   .Call(ffi_env_clone, env, parent)
 }
 
@@ -552,7 +509,8 @@ env_clone <- function(env, parent = env_parent(env)) {
 #' @param ancestor Another environment from which `x` might inherit.
 #' @export
 env_inherits <- function(env, ancestor) {
-  env <- get_env_retired(env, "env_inherits()")
+  check_environment(env)
+  check_environment(ancestor)
   .Call(ffi_env_inherits, env, ancestor)
 }
 
