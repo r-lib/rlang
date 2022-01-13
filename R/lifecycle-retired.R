@@ -1152,43 +1152,10 @@ stack_trim <- function(stack, n = 1) {
 
 #  Tidy eval  --------------------------------------------------------
 
-#' Parse text into a quosure
-#'
-#' @description
-#'
-#' `r lifecycle::badge("deprecated")`
-#'
-#' These functions were deprecated and renamed to [parse_quo()]
-#' and [parse_quos()] in rlang 0.2.0. This is for consistency with the
-#' convention that suffixes indicating return types are not
-#' abbreviated.
-#'
-#' @inheritParams parse_expr
-#' @keywords internal
-#' @export
-parse_quosure <- function(x, env = caller_env()) {
-  warn_deprecated(paste_line(
-    "`parse_quosure()` is deprecated as of rlang 0.2.0.",
-    "Please use `parse_quo()` instead."
-  ))
-  parse_quo(x, env = env)
-}
-#' @rdname parse_quosure
-#' @export
-parse_quosures <- function(x, env = caller_env()) {
-  warn_deprecated(paste_line(
-    "`parse_quosures()` is deprecated as of rlang 0.2.0.",
-    "Please use `parse_quos()` instead."
-  ))
-  parse_quos(x, env = env)
-}
-
 #' Squash a quosure
 #'
 #' @description
-#'
 #' `r lifecycle::badge("deprecated")`
-#'
 #' This function is deprecated, please use [quo_squash()] instead.
 #'
 #' @inheritParams quo_squash
@@ -1207,7 +1174,6 @@ quo_expr <- function(quo, warn = FALSE) {
 #'
 #' @description
 #' `r lifecycle::badge("deprecated")`
-#'
 #' `expr_interp()` is deprecated, please use [inject()] instead.
 #'
 #' @param x A function, raw expression, or formula to interpolate.
@@ -1259,9 +1225,7 @@ expr_interp <- function(x, env = NULL) {
 #' Deprecated `UQ()` and `UQS()` operators
 #'
 #' @description
-#'
 #' `r lifecycle::badge("deprecated")`
-#'
 #' These operators are deprecated in favour of
 #' [`!!`][injection-operator] and [`!!!`][splice-operator].
 #'
@@ -1275,7 +1239,6 @@ UQ <- function(x) {
 UQS <- function(x) {
   abort("`UQS()` can only be used within a defused argument")
 }
-
 
 
 #  Expressions  ------------------------------------------------------

@@ -80,12 +80,6 @@ test_that("can convert strings (#138)", {
 
 # --------------------------------------------------------------------
 
-test_that("parse_quosure() forwards to parse_quo()", {
-  env <- env()
-  expect_identical(parse_quosure("foo", env), parse_quo("foo", env))
-  expect_identical(parse_quosures("foo; bar", env), parse_quos("foo; bar", env))
-})
-
 test_that("lang() forwards to call2() and is_lang() to is_call()", {
   lang <- lang("foo", !!! list(1, 2), .ns = "bar")
   call <- call2("foo", !!! list(1, 2), .ns = "bar")

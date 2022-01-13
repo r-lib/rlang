@@ -3,12 +3,6 @@ test_that("parse_quo() etc return quosures", {
   expect_identical(parse_quos("foo(bar)\n mtcars", "base"), new_quosures(list(set_env(quo(foo(bar)), base_env()), set_env(quo(mtcars), base_env()))))
 })
 
-test_that("parse_quosure() and parse_quosures() are deprecated", {
-  local_lifecycle_warnings()
-  expect_warning(parse_quosure("foo"), "deprecated")
-  expect_warning(parse_quosures("foo; bar"), "deprecated")
-})
-
 test_that("temporary connections are closed", {
   path <- tempfile("file")
   cat("1; 2; mtcars", file = path)
