@@ -512,32 +512,13 @@ endots <- function(call,
 #'   default, minimal names are returned. See `?vctrs::vec_as_names`
 #'   for information about name repairing.
 #' @param repair_quiet Whether to inform user about repaired names.
-#' @param width `r lifecycle::badge("deprecated")` Maximum width of
-#'   names.
-#' @param printer `r lifecycle::badge("deprecated")` A function that
-#'   takes an expression and converts it to a string. This function
-#'   must take an expression as the first argument and `width` as the
-#'   second argument.
 #' @export
 exprs_auto_name <- function(exprs,
                             ...,
                             repair_auto = c("minimal", "unique"),
-                            repair_quiet = FALSE,
-                            width = deprecated(),
-                            printer = deprecated()) {
+                            repair_quiet = FALSE) {
   check_dots_empty0(...)
   repair_auto <- arg_match0(repair_auto, c("minimal", "unique"))
-
-  if (!is_missing(width) && !is_null(width)) {
-    warn_deprecated(paste_line(
-      "The `width` argument is deprecated as of rlang 0.3.0."
-    ))
-  }
-  if (!is_missing(printer) && !is_null(width)) {
-    warn_deprecated(paste_line(
-      "The `printer` argument is deprecated as of rlang 0.3.0."
-    ))
-  }
 
   named <- detect_named(exprs)
   if (all(named)) {
@@ -565,8 +546,8 @@ exprs_auto_name <- function(exprs,
 #' @rdname exprs_auto_name
 #' @param quos A list of quosures.
 #' @export
-quos_auto_name <- function(quos, width = NULL) {
-  exprs_auto_name(quos, width = width)
+quos_auto_name <- function(quos) {
+  exprs_auto_name(quos)
 }
 
 

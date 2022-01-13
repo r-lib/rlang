@@ -9,12 +9,10 @@ exprs_auto_name(
   exprs,
   ...,
   repair_auto = c("minimal", "unique"),
-  repair_quiet = FALSE,
-  width = deprecated(),
-  printer = deprecated()
+  repair_quiet = FALSE
 )
 
-quos_auto_name(quos, width = NULL)
+quos_auto_name(quos)
 }
 \arguments{
 \item{exprs}{A list of expressions.}
@@ -26,14 +24,6 @@ default, minimal names are returned. See \code{?vctrs::vec_as_names}
 for information about name repairing.}
 
 \item{repair_quiet}{Whether to inform user about repaired names.}
-
-\item{width}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Maximum width of
-names.}
-
-\item{printer}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} A function that
-takes an expression and converts it to a string. This function
-must take an expression as the first argument and \code{width} as the
-second argument.}
 
 \item{quos}{A list of quosures.}
 }
