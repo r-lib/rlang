@@ -731,74 +731,6 @@ call_fn <- function(call, env = caller_env()) {
 }
 
 
-#  Nodes  ------------------------------------------------------------
-
-#' Mutate node components
-#'
-#' @description
-#'
-#' `r lifecycle::badge("deprecated")`
-#'
-#' These functions were deprecated and renamed with `node_poke_`
-#' prefix in rlang 0.2.0. This change follows a new naming convention
-#' where mutation is referred to as "poking".
-#'
-#' @inheritParams new_node
-#'
-#' @keywords internal
-#' @export
-mut_node_car <- function(x, newcar) {
-  warn_deprecated("`mut_node_car()` is deprecated as of rlang 0.2.0.")
-  invisible(.Call(ffi_node_poke_car, x, newcar))
-}
-#' @rdname mut_node_car
-#' @export
-mut_node_cdr <- function(x, newcdr) {
-  warn_deprecated("`mut_node_cdr()` is deprecated as of rlang 0.2.0.")
-  invisible(.Call(ffi_node_poke_cdr, x, newcdr))
-}
-#' @rdname mut_node_car
-#' @export
-mut_node_caar <- function(x, newcar) {
-  warn_deprecated("`mut_node_caar()` is deprecated as of rlang 0.2.0.")
-  invisible(.Call(ffi_node_poke_caar, x, newcar))
-}
-#' @rdname mut_node_car
-#' @export
-mut_node_cadr <- function(x, newcar) {
-  warn_deprecated("`mut_node_cadr()` is deprecated as of rlang 0.2.0.")
-  invisible(.Call(ffi_node_poke_cadr, x, newcar))
-}
-#' @rdname mut_node_car
-#' @export
-mut_node_cdar <- function(x, newcdr) {
-  warn_deprecated("`mut_node_cdar()` is deprecated as of rlang 0.2.0.")
-  invisible(.Call(ffi_node_poke_cdar, x, newcdr))
-}
-#' @rdname mut_node_car
-#' @export
-mut_node_cddr <- function(x, newcdr) {
-  warn_deprecated("`mut_node_cddr()` is deprecated as of rlang 0.2.0.")
-  invisible(.Call(ffi_node_poke_cddr, x, newcdr))
-}
-#' @rdname mut_node_car
-#' @export
-mut_node_tag <- function(x, newtag) {
-  warn_deprecated("`mut_node_tag()` is deprecated as of rlang 0.2.0.")
-  invisible(.Call(ffi_node_poke_tag, x, newtag))
-}
-
-#' @rdname vector-old-ctors
-#' @export
-node <- function(car, cdr = NULL) {
-  warn_deprecated(paste_line(
-    "`node()` is deprecated as of rlang 0.2.0.",
-    "Please use `new_node()` instead."
-  ))
-  new_node(car, cdr)
-}
-
-
 #  Environments  -----------------------------------------------------
 
 #' Bind a promise or active binding
@@ -864,6 +796,7 @@ scoped_env <- function(nm) {
 #' @rdname scoped_env
 #' @export
 is_scoped <- function(nm) {
+  # 2022-01: https://github.com/tidyverse/purrr/issues/851
   warn_deprecated(paste_line(
     "`is_scoped()` is deprecated as of rlang 0.3.0.",
     "Please use `is_attached()` instead."

@@ -80,10 +80,6 @@ test_that("can convert strings (#138)", {
 
 # --------------------------------------------------------------------
 
-test_that("node() still works", {
-  expect_identical(node(1, NULL), new_node(1, NULL))
-})
-
 test_that("set_attrs() fails with uncopyable types", {
   expect_error(set_attrs(env(), foo = "bar"), "is uncopyable")
 })

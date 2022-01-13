@@ -11,7 +11,7 @@ new_call(car, cdr = NULL)
 \link[=is_callable]{callable} object: a symbol, call, or literal
 function.}
 
-\item{cdr}{The tail of the call, i.e. a \link[=node]{node list} of
+\item{cdr}{The tail of the call, i.e. a \link[=new_node]{pairlist} of
 arguments.}
 }
 \description{

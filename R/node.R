@@ -194,7 +194,7 @@ node_list_reverse <- function(x) {
 #' @param car The head of the call. It should be a
 #'   [callable][is_callable] object: a symbol, call, or literal
 #'   function.
-#' @param cdr The tail of the call, i.e. a [node list][node] of
+#' @param cdr The tail of the call, i.e. a [pairlist][new_node] of
 #'   arguments.
 #'
 #' @keywords internal
