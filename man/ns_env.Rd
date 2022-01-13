@@ -34,13 +34,6 @@ live. The parent environments of namespaces are the \code{imports}
 environments, which contain all the functions imported from other
 packages.
 }
-\section{Life cycle}{
-
-
-These functions are experimental and may not belong to the rlang
-package. Expect API changes.
-}
-
 \seealso{
 \code{\link[=pkg_env]{pkg_env()}}
 }

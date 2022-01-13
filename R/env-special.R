@@ -196,12 +196,6 @@ current_env <- function() {
 #' environments, which contain all the functions imported from other
 #' packages.
 #'
-#'
-#' @section Life cycle:
-#'
-#' These functions are experimental and may not belong to the rlang
-#' package. Expect API changes.
-#'
 #' @param x
 #'   * For `ns_env()`, the name of a package or an environment as a
 #'     string.
