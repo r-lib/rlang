@@ -891,22 +891,6 @@ set_attrs_impl <- function(.x, ...) {
 set_attrs_null <- list(NULL)
 names(set_attrs_null) <- ""
 
-#' Is a vector uniquely named?
-#'
-#' @description
-#' `r lifecycle::badge("deprecated")`
-#' Like [is_named()] but also checks that names are unique.
-#' @param x A vector.
-#' @keywords internal
-#' @export
-is_dictionaryish <- function(x) {
-  if (!length(x)) {
-    return(!is.null(x))
-  }
-
-  is_named(x) && !any(duplicated(names(x)))
-}
-
 
 #  Conditions --------------------------------------------------------
 

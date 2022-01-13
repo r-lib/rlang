@@ -101,6 +101,23 @@ detect_void_name <- function(x) {
   x == "" | is.na(x)
 }
 
+#' Is a vector uniquely named?
+#'
+#' Like [is_named()] but also checks that names are unique.
+#' @param x A vector.
+#' @keywords internal
+#' @export
+is_dictionaryish <- function(x) {
+  # 2022-01: Used in many packages. Don't deprecate without a
+  # replacement.
+  if (!length(x)) {
+    return(!is.null(x))
+  }
+
+  is_named(x) && !any(duplicated(names(x)))
+}
+
+
 #' Does an object have an element with this name?
 #'
 #' This function returns a logical value that indicates if a data
