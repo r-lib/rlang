@@ -2,18 +2,9 @@
 % Please edit documentation in R/lifecycle-retired.R
 \name{is_lang}
 \alias{is_lang}
-\alias{is_unary_lang}
-\alias{is_binary_lang}
-\alias{quo_is_lang}
 \title{Is object a call?}
 \usage{
 is_lang(x, name = NULL, n = NULL, ns = NULL)
-
-is_unary_lang(x, name = NULL, ns = NULL)
-
-is_binary_lang(x, name = NULL, ns = NULL)
-
-quo_is_lang(quo)
 }
 \arguments{
 \item{x}{An object to test. Formulas and quosures are treated
@@ -36,12 +27,9 @@ namespaced within \code{ns}.
 Can be a character vector of namespaces, in which case the call
 has to match at least one of them, otherwise \code{is_call()} returns
 \code{FALSE}.}
-
-\item{quo}{A quosure to test.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
-
 These functions are deprecated, please use \code{\link[=is_call]{is_call()}} and its \code{n}
 argument instead.
 }

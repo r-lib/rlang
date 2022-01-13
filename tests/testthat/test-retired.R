@@ -80,68 +80,6 @@ test_that("can convert strings (#138)", {
 
 # --------------------------------------------------------------------
 
-test_that("lang() forwards to call2() and is_lang() to is_call()", {
-  lang <- lang("foo", !!! list(1, 2), .ns = "bar")
-  call <- call2("foo", !!! list(1, 2), .ns = "bar")
-  expect_identical(lang, call)
-  expect_true(is_lang(lang, "foo", 2, "bar"))
-  expect_false(is_unary_lang(lang, "foo", "bar"))
-  expect_true(is_binary_lang(lang, "foo", "bar"))
-})
-
-test_that("new_language() forwards to new_call()", {
-  expect_identical(
-    new_language(quote(foo), pairlist("bar")),
-    new_call(quote(foo), pairlist("bar"))
-  )
-})
-
-test_that("lang_modify() forwards to call_modify()", {
-  fn <- function(foo = "bar") NULL
-  call <- quote(fn(f = "foo"))
-  expect_identical(
-    lang_modify(call, baz = "bam", .standardise = FALSE),
-    call_modify(call, baz = "bam", .standardise = FALSE)
-  )
-})
-
-test_that("lang_standardise() forwards to call_standardise()", {
-  fn <- function(foo = "bar") NULL
-  call <- quote(fn(f = "foo"))
-  expect_identical(
-    lang_standardise(call),
-    call_standardise(call)
-  )
-})
-
-test_that("`lang_` accessors forward to `call_` accessors", {
-  fn <- function(foo = "bar") NULL
-  call <- quote(fn(f = "foo"))
-  expect_identical(lang_fn(call), fn)
-  expect_identical(lang_name(call), "fn")
-  expect_identical(lang_args(call), list(f = "foo"))
-  expect_identical(lang_args_names(call), "f")
-})
-
-test_that("lang_tail() still works", {
-  expect_identical(
-    pairlist(sym("a")),
-    lang_tail(expr(foo(a)))
-  )
-})
-
-test_that("lang_head() still works", {
-  expect_identical(
-    lang_head(expr(foo(a))),
-    expr(foo)
-  )
-})
-
-test_that("is_expr() forwards to is_expression()", {
-  expect_true(is_expr(1L))
-  expect_false(is_expr(1:2))
-})
-
 test_that("node() still works", {
   expect_identical(node(1, NULL), new_node(1, NULL))
 })

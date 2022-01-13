@@ -2,12 +2,9 @@
 % Please edit documentation in R/lifecycle-retired.R
 \name{lang}
 \alias{lang}
-\alias{new_language}
 \title{Create a call}
 \usage{
 lang(.fn, ..., .ns = NULL)
-
-new_language(head, tail = NULL)
 }
 \arguments{
 \item{.fn}{Function to call. Must be a callable object: a string,
@@ -21,7 +18,6 @@ or symbol.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
-
 These functions are deprecated, please use \code{\link[=call2]{call2()}} and
 \code{\link[=new_call]{new_call()}} instead.
 }

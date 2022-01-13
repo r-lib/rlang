@@ -16,6 +16,8 @@ quosure.}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
+Deprecated in rlang 0.4.11.
+
 If \code{call} is a quosure or formula, the function will be retrieved
 from the associated environment. Otherwise, it is looked up in the
 calling frame.

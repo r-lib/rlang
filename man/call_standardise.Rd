@@ -30,3 +30,4 @@ as a simpler wrapper around \code{\link[=match.call]{match.call()}}.
 This is essentially equivalent to \code{\link[base:match.call]{base::match.call()}}, but with
 experimental handling of primitive functions.
 }
+\keyword{internal}

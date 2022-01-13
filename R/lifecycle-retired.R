@@ -1246,9 +1246,7 @@ UQS <- function(x) {
 #' Create a call
 #'
 #' @description
-#'
 #' `r lifecycle::badge("deprecated")`
-#'
 #' These functions are deprecated, please use [call2()] and
 #' [new_call()] instead.
 #'
@@ -1256,191 +1254,32 @@ UQS <- function(x) {
 #' @keywords internal
 #' @export
 lang <- function(.fn, ..., .ns = NULL) {
+  # 2022-01: Still used in attempt
+  # https://github.com/ColinFay/attempt/issues/16
   warn_deprecated(paste_line(
     "`lang()` is deprecated as of rlang 0.2.0.",
     "Please use `call2()` instead."
   ))
   call2(.fn, ..., .ns = .ns)
 }
-#' @rdname lang
-#' @inheritParams new_call
-#' @export
-new_language <- function(head, tail = NULL) {
-  warn_deprecated(paste_line(
-    "`new_language()` is deprecated as of rlang 0.2.0.",
-    "Please use `new_call()` instead."
-  ))
-  new_call(head, tail)
-}
-
 #' Is object a call?
 #'
 #' @description
-#'
 #' `r lifecycle::badge("deprecated")`
-#'
 #' These functions are deprecated, please use [is_call()] and its `n`
 #' argument instead.
-#'
 #' @inheritParams is_call
 #' @keywords internal
 #' @export
 is_lang <- function(x, name = NULL, n = NULL, ns = NULL) {
+  # 2022-01: Still used in foolbox
+  # https://github.com/mailund/foolbox/issues/50
   warn_deprecated(paste_line(
     "`is_lang()` is deprecated as of rlang 0.2.0.",
     "Please use `is_call()` instead."
   ))
   is_call(x, name, n, ns)
 }
-#' @rdname is_lang
-#' @export
-is_unary_lang <- function(x, name = NULL, ns = NULL) {
-  warn_deprecated(paste_line(
-    "`is_unary_lang()` is deprecated as of rlang 0.2.0.",
-    "Please use `is_call()` instead."
-  ))
-  is_call(x, name, n = 1L, ns = ns)
-}
-#' @rdname is_lang
-#' @export
-is_binary_lang <- function(x, name = NULL, ns = NULL) {
-  warn_deprecated(paste_line(
-    "`is_binary_lang()` is deprecated as of rlang 0.2.0.",
-    "Please use `is_call()` instead."
-  ))
-  is_call(x, name, n = 2L, ns = ns)
-}
-#' @rdname is_lang
-#' @param quo A quosure to test.
-#' @export
-quo_is_lang <- function(quo) {
-  warn_deprecated(paste_line(
-    "`quo_is_lang()` is deprecated as of rlang 0.2.0.",
-    "Please use `quo_is_call()` instead."
-  ))
-  .Call(ffi_quo_is_call, quo)
-}
-
-#' Manipulate or access a call
-#'
-#' @description
-#'
-#' `r lifecycle::badge("deprecated")`
-#'
-#' These functions are deprecated, please use [call_modify()],
-#' [call_standardise()], or [call_fn()] instead.
-#'
-#' @inheritParams call_modify
-#' @param lang,.lang The `call` or `.call` argument of the renamed
-#'   functions.
-#' @keywords internal
-#' @export
-lang_modify <- function(.lang, ..., .standardise = FALSE) {
-  warn_deprecated(paste_line(
-    "`lang_modify()` is deprecated as of rlang 0.2.0.",
-    "Please use `call_modify()` instead."
-  ))
-  if (.standardise) {
-    .lang <- call_standardise(.lang, caller_env())
-  }
-  call_modify(.lang, ...)
-}
-#' @rdname lang_modify
-#' @export
-lang_standardise <- function(lang) {
-  warn_deprecated(paste_line(
-    "`lang_standardise()` is deprecated as of rlang 0.2.0.",
-    "Please use `call_standardise()` instead."
-  ))
-  call_standardise(lang, env = caller_env())
-}
-#' @rdname lang_modify
-#' @export
-lang_fn <- function(lang) {
-  warn_deprecated(paste_line(
-    "`lang_fn()` is deprecated as of rlang 0.2.0.",
-    "Please use `call_fn()` instead."
-  ))
-  call_fn(lang, caller_env())
-}
-#' @rdname lang_modify
-#' @export
-lang_name <- function(lang) {
-  warn_deprecated(paste_line(
-    "`lang_name()` is deprecated as of rlang 0.2.0.",
-    "Please use `call_name()` instead."
-  ))
-  call_name(lang)
-}
-#' @rdname lang_modify
-#' @export
-lang_args <- function(lang) {
-  warn_deprecated(paste_line(
-    "`lang_args()` is deprecated as of rlang 0.2.0.",
-    "Please use `call_args()` instead."
-  ))
-  call_args(lang)
-}
-#' @rdname lang_modify
-#' @export
-lang_args_names <- function(lang) {
-  warn_deprecated(paste_line(
-    "`lang_args_names()` is deprecated as of rlang 0.2.0.",
-    "Please use `call_args_names()` instead."
-  ))
-  call_args_names(lang)
-}
-
-
-#' Return the head or tail of a call
-#'
-#' @description
-#'
-#' `r lifecycle::badge("deprecated")`
-#'
-#' As of rlang 0.2.0 these functions are retired (deprecated for now)
-#' because they are low level accessors that are rarely needed for end
-#' users.
-#'
-#' @param lang A call.
-#' @keywords internal
-#' @export
-lang_head <- function(lang) {
-  warn_deprecated("`lang_head()` is deprecated as of rlang 0.2.0.")
-  call <- get_expr(lang)
-  stopifnot(is_call(call))
-  node_car(call)
-}
-#' @rdname lang_head
-#' @export
-lang_tail <- function(lang) {
-  warn_deprecated("`lang_tail()` is deprecated as of rlang 0.2.0.")
-  call <- get_expr(lang)
-  stopifnot(is_call(call))
-  node_cdr(call)
-}
-
-#' Is an object an expression?
-#'
-#' @description
-#'
-#' `r lifecycle::badge("deprecated")`
-#'
-#' This function was deprecated and renamed to [is_expression()] in
-#' rlang 0.2.0. This is for consistency with other type predicates
-#' which are not abbreviated.
-#'
-#' @inheritParams is_expression
-#' @keywords internal
-#' @export
-is_expr <- function(x) {
-  warn_deprecated(paste_line(
-    "`is_expr()` is deprecated as of rlang 0.2.0.",
-    "Please use `is_expression()` instead."
-  ))
-  is_expression(x)
-}
-
 
 #' Standardise a call
 #'
@@ -1463,6 +1302,7 @@ is_expr <- function(x) {
 #' @inheritParams call_match
 #'
 #' @return A quosure if `call` is a quosure, a raw call otherwise.
+#' @keywords internal
 #' @export
 call_standardise <- function(call, env = caller_env()) {
   expr <- get_expr(call)
@@ -1490,6 +1330,8 @@ call_standardise <- function(call, env = caller_env()) {
 #'
 #' @description
 #' `r lifecycle::badge("deprecated")`
+#'
+#' Deprecated in rlang 0.4.11.
 #'
 #' If `call` is a quosure or formula, the function will be retrieved
 #' from the associated environment. Otherwise, it is looked up in the
