@@ -504,12 +504,6 @@ test_that("whole scope is purged", {
   expect_identical(names(outside), "important")
 })
 
-test_that("vector is modified", {
-  x <- c(1, b = 2, c = 3, 4)
-  out <- modify(x, 5, b = 20, splice(list(6, c = "30")))
-  expect_equal(out, list(1, b = 20, c = "30", 4, 5, 6))
-})
-
 test_that("invoke() buries arguments", {
   expect_identical(invoke(call_inspect, 1:2, 3L), quote(.fn(`1`, `2`, `3`)))
   expect_identical(invoke("call_inspect", 1:2, 3L), quote(call_inspect(`1`, `2`, `3`)))
