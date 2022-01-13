@@ -1807,8 +1807,6 @@ scoped_names <- function() {
 #' constructors.
 #'
 #' @param .x A vector.
-#' @inheritParams new-vector
-#' @inheritParams new-vector-along-retired
 #' @name vector-old-ctors
 #' @keywords internal
 NULL
@@ -1822,70 +1820,6 @@ lgl_along <- function(.x) {
 #' @export
 int_along <- function(.x) {
   stop_defunct("`int_along()` is deprecated as of rlang 0.2.0.")
-}
-
-#' Create vectors matching the length of a given vector
-#'
-#' These functions are deprecated as of rlang 0.3.0 because they
-#' are longer to type than the equivalent [rep_along()] or
-#' [rep_named()] calls without added clarity.
-#'
-#' @param x A vector.
-#' @param names Names for the new vector.
-#' @name new-vector-along-retired
-#' @keywords internal
-
-#' @export
-#' @rdname new-vector-along-retired
-new_logical_along <- function(x, names = base::names(x)) {
-  warn_deprecated_along("logical", "NA")
-  set_names_impl(rep_len(na_lgl, length(x)), x, names)
-}
-#' @export
-#' @rdname new-vector-along-retired
-new_integer_along <- function(x, names = base::names(x)) {
-  warn_deprecated_along("integer", "na_int")
-  set_names_impl(rep_len(na_int, length(x)), x, names)
-}
-#' @export
-#' @rdname new-vector-along-retired
-new_double_along <- function(x, names = base::names(x)) {
-  warn_deprecated_along("double", "na_dbl")
-  set_names_impl(rep_len(na_dbl, length(x)), x, names)
-}
-#' @export
-#' @rdname new-vector-along-retired
-new_character_along <- function(x, names = base::names(x)) {
-  warn_deprecated_along("character", "na_chr")
-  set_names_impl(rep_len(na_chr, length(x)), x, names)
-}
-#' @export
-#' @rdname new-vector-along-retired
-new_complex_along <- function(x, names = base::names(x)) {
-  warn_deprecated_along("complex", "na_cpl")
-  set_names_impl(rep_len(na_cpl, length(x)), x, names)
-}
-#' @export
-#' @rdname new-vector-along-retired
-new_raw_along <- function(x, names = base::names(x)) {
-  warn_deprecated_along("raw", "new_raw(1)")
-  set_names_impl(vector("raw", length(x)), x, names)
-}
-#' @export
-#' @rdname new-vector-along-retired
-new_list_along <- function(x, names = base::names(x)) {
-  warn_deprecated_along("list", "list(NULL)")
-  set_names_impl(vector("list", length(x)), x, names)
-}
-warn_deprecated_along <- function(type, na) {
-  warn_deprecated(paste_line(
-    sprintf("`new_%s_along()` is deprecated as of rlang 0.3.0.", type),
-    sprintf("Please use `rep_along(x, %s)` or `rep_named(nms, %s)` instead.", na, na)
-  ))
-}
-# FIXME: This can be simplified once the `_along` ctors are defunct
-set_names_impl <- function(x, mold, nm, ...) {
-  .Call(ffi_set_names, x, mold, nm, environment())
 }
 
 #' Prepend a vector
