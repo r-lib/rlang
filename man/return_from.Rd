@@ -2,17 +2,13 @@
 % Please edit documentation in R/stack.R
 \name{return_from}
 \alias{return_from}
-\alias{return_to}
 \title{Jump to or from a frame}
 \usage{
 return_from(frame, value = NULL)
-
-return_to(frame, value = NULL)
 }
 \arguments{
-\item{frame}{An environment, a frame object, or any object with an
-\code{\link[=get_env]{get_env()}} method. The environment should be an evaluation
-environment currently on the stack.}
+\item{frame}{An execution environment of a currently running
+function.}
 
 \item{value}{The return value.}
 }
@@ -20,48 +16,24 @@ environment currently on the stack.}
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#questioning}{\figure{lifecycle-questioning.svg}{options: alt='[Questioning]'}}}{\strong{[Questioning]}}
 
 While \code{\link[base:function]{base::return()}} can only return from the current local
-frame, these two functions will return from any frame on the
+frame, \code{return_from()} will return from any frame on the
 current evaluation stack, between the global and the currently
-active context. They provide a way of performing arbitrary
-non-local jumps out of the function currently under evaluation.
+active context.
 }
-\details{
-\code{return_from()} will jump out of \code{frame}. \code{return_to()} is a bit
-trickier. It will jump out of the frame located just before \code{frame}
-in the evaluation stack, so that control flow ends up in \code{frame},
-at the location where the previous frame was called from.
-
-These functions should only be used rarely. These sort of non-local
-gotos can be hard to reason about in casual code, though they can
-sometimes be useful. Also, consider to use the condition system to
-perform non-local jumps.
-}
-\section{Life cycle}{
-
-
-The support for \code{frame} object is soft-deprecated.  Please pass
-simple environments to \code{return_from()} and \code{return_to()}.
-
-These functions are in the questioning lifecycle because we are
-considering simpler alternatives.
-}
-
 \examples{
-# Passing fn() evaluation frame to g():
 fn <- function() {
-  val <- g(current_env())
-  cat("g returned:", val, "\n")
-  "normal return"
+  g(current_env())
+  "ignored"
 }
-g <- function(env) h(env)
+g <- function(env) {
+  h(env)
+  "ignored"
+}
+h <- function(env) {
+  return_from(env, "early return")
+  "ignored"
+}
 
-# Here we return from fn() with a new return value:
-h <- function(env) return_from(env, "early return")
-fn()
-
-# Here we return to fn(). The call stack unwinds until the last frame
-# called by fn(), which is g() in that case.
-h <- function(env) return_to(env, "early return")
 fn()
 }
 \keyword{internal}

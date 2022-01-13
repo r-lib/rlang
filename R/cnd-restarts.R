@@ -19,13 +19,13 @@
 #' @param ... <[dynamic][dyn-dots]> Named restart functions. The
 #'   name is taken as the restart name and the function is executed
 #'   after the jump.
-#' @seealso [return_from()] and [return_to()] for a more flexible way
-#'   of performing a non-local jump to an arbitrary call frame.
+#' @seealso [return_from()] for a more flexible way of performing a
+#'   non-local jump to an arbitrary call frame.
 #'
 #' @details
 #'
 #' Restarts are not the only way of jumping to a previous call frame
-#' (see [return_from()] or [return_to()]). However, they have the
+#' (see [return_from()]). However, they have the
 #' advantage of being callable by name once established.
 #'
 #' @section Life cycle:

@@ -29,7 +29,7 @@ from the establishing point (i.e., a return value for
 }
 \details{
 Restarts are not the only way of jumping to a previous call frame
-(see \code{\link[=return_from]{return_from()}} or \code{\link[=return_to]{return_to()}}). However, they have the
+(see \code{\link[=return_from]{return_from()}}). However, they have the
 advantage of being callable by name once established.
 }
 \section{Life cycle}{
@@ -125,7 +125,7 @@ with_handlers(fn(FALSE), default_empty_string = rst_handler)
 with_handlers(fn(FALSE), default_empty_string = restarting("rst_null"))
 }
 \seealso{
-\code{\link[=return_from]{return_from()}} and \code{\link[=return_to]{return_to()}} for a more flexible way
-of performing a non-local jump to an arbitrary call frame.
+\code{\link[=return_from]{return_from()}} for a more flexible way of performing a
+non-local jump to an arbitrary call frame.
 }
 \keyword{internal}
