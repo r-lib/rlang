@@ -346,6 +346,9 @@ test_that("environment is printed with class if any", {
 })
 
 test_that("env_clone() handles active bindings", {
+  # FIXME: Seems cloning evaluates the binding
+  value <- NULL
+
   e <- env()
   env_bind_active(e, foo = function() value)
   out <- env_clone(e)
