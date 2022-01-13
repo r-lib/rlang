@@ -48,15 +48,6 @@
 #' Like other side-effecty functions like `par()` and `options()`,
 #' `env_bind()` and variants return the old values invisibly.
 #'
-#'
-#' @section Life cycle:
-#'
-#' Passing an environment wrapper like a formula or a function instead
-#' of an environment is soft-deprecated as of rlang 0.3.0. This
-#' internal genericity was causing confusion (see issue #427). You
-#' should now extract the environment separately before calling these
-#' functions.
-#'
 #' @param .env An environment.
 #' @param ... <[dynamic][dyn-dots]> Named objects (`env_bind()`),
 #'   expressions `env_bind_lazy()`, or functions (`env_bind_active()`).
@@ -111,7 +102,7 @@
 #' # old values back:
 #' env_bind(my_env, !!!old)
 env_bind <- function(.env, ...) {
-  .env <- get_env_retired(.env, "env_bind()")
+  check_environment(.env)
   invisible(.Call(
     ffi_env_bind,
     env = .env,
@@ -177,7 +168,7 @@ env_bind0 <- function(.env, values) {
 #' env_bind_lazy(env, name = !!quo)
 #' env$name
 env_bind_lazy <- function(.env, ..., .eval_env = caller_env()) {
-  .env <- get_env_retired(.env, "env_bind_lazy()")
+  check_environment(.env)
   invisible(.Call(
     ffi_env_bind,
     env = .env,
@@ -213,7 +204,7 @@ env_bind_lazy <- function(.env, ..., .eval_env = caller_env()) {
 #' env$foo
 #' env$foo
 env_bind_active <- function(.env, ...) {
-  .env <- get_env_retired(.env, "env_bind_active()")
+  check_environment(.env)
   invisible(.Call(
     ffi_env_bind,
     env = .env,
@@ -270,10 +261,11 @@ env_bind_active <- function(.env, ...) {
 #' with_bindings(paste(foo, bar), foo = "rebinded")
 #' paste(foo, bar)
 local_bindings <- function(..., .env = .frame, .frame = caller_env()) {
-  env <- get_env_retired(.env, "local_bindings()")
+  check_environment(.env)
+  check_environment(.frame)
 
-  old <- env_bind(env, ...)
-  defer(env_bind0(env, old), envir = .frame)
+  old <- env_bind(.env, ...)
+  defer(env_bind0(.env, old), envir = .frame)
 
   invisible(old)
 }
@@ -281,7 +273,7 @@ local_bindings <- function(..., .env = .frame, .frame = caller_env()) {
 #' @param .expr An expression to evaluate with temporary bindings.
 #' @export
 with_bindings <- function(.expr, ..., .env = caller_env()) {
-  env <- get_env_retired(.env, "with_bindings()")
+  check_environment(.env)
   local_bindings(..., .env = .env)
   .expr
 }
@@ -340,7 +332,7 @@ env_unbind <- function(env = caller_env(), nms, inherit = FALSE) {
 #' env_has(env, "foo")
 #' env_has(env, "foo", inherit = TRUE)
 env_has <- function(env = caller_env(), nms, inherit = FALSE) {
-  env <- get_env_retired(env, "env_has()")
+  check_environment(env)
   .Call(ffi_env_has, env, nms, inherit)
 }
 
@@ -380,7 +372,8 @@ env_get <- function(env = caller_env(),
                     default,
                     inherit = FALSE,
                     last = empty_env()) {
-  env <- get_env_retired(env, "env_get()")
+  check_environment(env)
+  check_environment(last)
 
   if (missing(default)) {
     default %<~% stop_env_get_missing(nm)
@@ -402,7 +395,8 @@ env_get_list <- function(env = caller_env(),
                          default,
                          inherit = FALSE,
                          last = empty_env()) {
-  env <- get_env_retired(env, "env_get_list()")
+  check_environment(env)
+  check_environment(last)
   .Call(
     ffi_env_get_list,
     env = env,
@@ -456,7 +450,7 @@ env_poke <- function(env = caller_env(),
                      value,
                      inherit = FALSE,
                      create = !inherit) {
-  env <- get_env_retired(env, "env_poke()")
+  check_environment(env)
   invisible(.Call(
     ffi_env_poke,
     env = env,
@@ -543,7 +537,7 @@ env_cache <- function(env, nm, default) {
 #' env <- env(a = 1, b = 2)
 #' env_names(env)
 env_names <- function(env) {
-  env <- get_env_retired(env, "env_names()")
+  check_environment(env)
   nms <- names(env)
   .Call(ffi_unescape_character, nms)
 }

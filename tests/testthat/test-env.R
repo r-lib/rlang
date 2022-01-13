@@ -495,31 +495,3 @@ test_that("env_has() doesn't force active bindings (#1292)", {
   e2 <- env(e)
   expect_true(env_has(e2, "active", inherit = TRUE))
 })
-
-
-#  Lifecycle ---------------------------------------------------------
-
-test_that("env API warns with non-environments", {
-  local_options(lifecycle_verbose_soft_deprecation = TRUE)
-
-  f <- local(~foo)
-  expect_warning(env_parent(f) <- empty_env(), "deprecated")
-
-  expect_warning(env_depth(function() foo), "deprecated")
-  expect_warning(env_poke_parent(local(~foo), empty_env()), "deprecated")
-  expect_warning(env_parent(~foo), "deprecated")
-  expect_warning(env_tail(~foo), "deprecated")
-  expect_warning(set_env(~foo, ~bar), "deprecated")
-  expect_warning(env_clone(~foo), "deprecated")
-  expect_warning(env_inherits(~foo, empty_env()), "deprecated")
-
-  expect_warning(env_bind(~foo, a = 1), "deprecated")
-  expect_warning(local_bindings(.env = ~foo), "deprecated")
-  expect_warning(with_bindings(NULL, a = 1, .env = ~foo), "deprecated")
-  expect_warning(env_poke(~foo, "a", NULL), "deprecated")
-  expect_warning(env_has(~foo, "a"), "deprecated")
-  expect_warning(env_get(~foo, "f"), "deprecated")
-  expect_warning(env_names(~foo), "deprecated")
-  expect_warning(env_bind_lazy(~foo, foo = list()), "deprecated")
-  expect_warning(env_bind_active(~foo, a = function() "foo"), "deprecated")
-})
