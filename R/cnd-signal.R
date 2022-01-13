@@ -44,9 +44,10 @@
 #' cnd <- error_cnd("my_error_class", message = "This is an error")
 #' try(cnd_signal(cnd))
 cnd_signal <- function(cnd, ...) {
+  check_dots_empty0(...)
+
   .__signal_frame__. <- TRUE
 
-  validate_cnd_signal_args(cnd, ...)
   if (is_null(cnd)) {
     return(invisible(NULL))
   }
@@ -77,41 +78,6 @@ cnd_signal <- function(cnd, ...) {
       signalCondition(cnd)
     ))
   )
-}
-validate_cnd_signal_args <- function(cnd,
-                                     ...,
-                                     .cnd,
-                                     .mufflable,
-                                     env = parent.frame()) {
-  if (dots_n(...)) {
-    abort("`...` must be empty.")
-  }
-  if (is_character(cnd)) {
-    warn_deprecated(paste_line(
-      "Creating a condition with `cnd_signal()` is deprecated as of rlang 0.3.0.",
-      "Please use `signal()` instead."
-    ))
-    env$cnd <- cnd(cnd)
-  }
-  if (!missing(.cnd)) {
-    warn_deprecated(paste_line(
-      "The `.cnd` argument is deprecated as of rlang 0.3.0.",
-      "Please use `cnd` instead."
-    ))
-    if (is_character(.cnd)) {
-      warn_deprecated(paste_line(
-        "Creating a condition with `cnd_signal()` is deprecated as of rlang 0.3.0.",
-        "Please use `signal()` instead."
-      ))
-      .cnd <- cnd(.cnd)
-    }
-    env$cnd <- .cnd
-  }
-  if (!missing(.mufflable)) {
-    warn_deprecated(
-      "`.mufflable` is deprecated as of rlang 0.3.0 and no longer has any effect"
-    )
-  }
 }
 
 #' @rdname abort
