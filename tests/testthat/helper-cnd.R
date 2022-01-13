@@ -110,3 +110,7 @@ local_unexport_signal_abort <- function(frame = caller_env()) {
     signal_abort = zap()
   )
 }
+
+rst_exists <- function(.restart) {
+  !is.null(findRestart(.restart))
+}

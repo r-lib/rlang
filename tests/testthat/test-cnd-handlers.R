@@ -71,6 +71,11 @@ test_that("with_handlers() establishes inplace and exiting handlers", {
   expect_output(expect_equal(with_handlers({ signal("", "foobar"); letters }, !!!handlers), identity(letters)), "foobar")
 })
 
+test_that("with_handlers() propagates visibility", {
+  expect_visible(with_handlers(list(invisible(1))))
+  expect_invisible(with_handlers(invisible(1)))
+})
+
 test_that("bare functions are treated as exiting handlers", {
   expect_identical(with_handlers(abort("foo"), error = function(cnd) "caught"), "caught")
 })
@@ -107,28 +112,6 @@ test_that("can catch condition of specific classes", {
   expect_s3_class(catch_cnd(signal("", "foo"), classes), "foo")
 })
 
-test_that("with_handlers() registers calling handlers first (#718)", {
-  out <- with_restarts(
-    RESTART = ~ "good",
-    with_handlers(
-      CND = calling(~ rst_jump("RESTART")),
-      CND = ~ "bad",
-      signal("", "CND")
-    )
-  )
-  expect_identical(out, "good")
-
-  out <- with_restarts(
-    RESTART = ~ "good",
-    with_handlers(
-      CND = ~ "bad",
-      CND = calling(~ rst_jump("RESTART")),
-      signal("", "CND")
-    )
-  )
-  expect_identical(out, "good")
-})
-
 test_that("cnd_muffle() returns FALSE if the condition is not mufflable", {
   value <- NULL
   expect_error(withCallingHandlers(
@@ -136,11 +119,6 @@ test_that("cnd_muffle() returns FALSE if the condition is not mufflable", {
     error = function(cnd) value <<- cnd_muffle(cnd)
   ))
   expect_false(value)
-})
-
-test_that("with_handlers() propagates visibility", {
-  expect_visible(with_handlers(list(invisible(1))))
-  expect_invisible(with_handlers(invisible(1)))
 })
 
 test_that("drop_global_handlers() works and is idempotent", {
