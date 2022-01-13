@@ -733,21 +733,20 @@ call_fn <- function(call, env = caller_env()) {
 
 #  Environments  -----------------------------------------------------
 
-#' Retired `scoped` functions
+#' Deprecated `scoped` functions
 #'
 #' @description
-#'
 #' `r lifecycle::badge("deprecated")`
 #'
-#' These functions are deprecated as of rlang 0.3.0. They are replaced
-#' by [is_attached()], ...
+#' These functions are deprecated as of rlang 0.3.0. Please use
+#' [is_attached()] instead.
 #'
 #' @param nm The name of an environment attached to the search
 #'   path. Call [base::search()] to see what is currently on the path.
-#'
 #' @keywords internal
 #' @export
 scoped_env <- function(nm) {
+  # 2022-01: https://github.com/r-lib/conflicted/issues/65
   warn_deprecated(paste_line(
     "`scoped_env()` is deprecated as of rlang 0.3.0.",
     "Please use `search_env()` instead."
@@ -775,28 +774,7 @@ is_scoped <- function(nm) {
   if (!is_scalar_character(nm)) {
     stop("`nm` must be a string", call. = FALSE)
   }
-  nm %in% scoped_names()
-}
-#' @rdname scoped_env
-#' @export
-scoped_envs <- function() {
-  warn_deprecated(paste_line(
-    "`scoped_envs()` is deprecated as of rlang 0.3.0.",
-    "Please use `search_envs()` instead."
-  ))
-  local_options(lifecycle_disable_warnings = TRUE)
-
-  envs <- c(list(.GlobalEnv), env_parents(.GlobalEnv))
-  set_names(envs, scoped_names())
-}
-#' @rdname scoped_env
-#' @export
-scoped_names <- function() {
-  warn_deprecated(paste_line(
-    "`scoped_names()` is deprecated as of rlang 0.3.0.",
-    "Please use `base::search()` instead."
-  ))
-  c(search(), "NULL")
+  nm %in% c(search(), "NULL")
 }
 
 
