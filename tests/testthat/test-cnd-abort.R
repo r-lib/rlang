@@ -171,7 +171,7 @@ test_that("backtrace reminder is displayed when called from `last_error()`", {
   })
 })
 
-test_that("capture context doesn't leak into low-level backtraces", {
+local({
   local_options(
     rlang_trace_format_srcrefs = FALSE,
     rlang_trace_top_env = current_env()
@@ -413,6 +413,8 @@ test_that("withCallingHandlers() wrappers don't throw off trace capture on rethr
     rlang_trace_format_srcrefs = FALSE
   )
 
+  variant <- if (getRversion() < "3.6.0") "pre-3.6.0" else "current"
+
   low1 <- function() low2()
   low2 <- function() low3()
   low3 <- function() abort("Low-level message")
@@ -437,7 +439,7 @@ test_that("withCallingHandlers() wrappers don't throw off trace capture on rethr
   }
 
   err <- expect_error(high1())
-  expect_snapshot({
+  expect_snapshot(variant = variant, {
     "`abort()` error"
     print(err)
     summary(err)
@@ -447,7 +449,7 @@ test_that("withCallingHandlers() wrappers don't throw off trace capture on rethr
   fail <- errorcall
   low3 <- function() fail(NULL, "Low-level message")
   err <- expect_error(high1())
-  expect_snapshot({
+  expect_snapshot(variant = variant, {
     "C-level error"
     print(err)
     summary(err)
