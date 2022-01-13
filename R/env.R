@@ -370,11 +370,10 @@ is_empty_env <- function(env) {
 #'
 #' These functions dispatch internally with methods for functions,
 #' formulas and frames. If called with a missing argument, the
-#' environment of the current evaluation frame (see [ctxt_stack()]) is
-#' returned. If you call `get_env()` with an environment, it acts as
-#' the identity function and the environment is simply returned (this
-#' helps simplifying code when writing generic functions for
-#' environments).
+#' environment of the current evaluation frame is returned. If you
+#' call `get_env()` with an environment, it acts as the identity
+#' function and the environment is simply returned (this helps
+#' simplifying code when writing generic functions for environments).
 #'
 #' While `set_env()` returns a modified copy and does not have side
 #' effects, `env_poke_parent()` operates changes the environment by

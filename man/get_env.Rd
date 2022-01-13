@@ -24,11 +24,10 @@ an error is issued.}
 \description{
 These functions dispatch internally with methods for functions,
 formulas and frames. If called with a missing argument, the
-environment of the current evaluation frame (see \code{\link[=ctxt_stack]{ctxt_stack()}}) is
-returned. If you call \code{get_env()} with an environment, it acts as
-the identity function and the environment is simply returned (this
-helps simplifying code when writing generic functions for
-environments).
+environment of the current evaluation frame is returned. If you
+call \code{get_env()} with an environment, it acts as the identity
+function and the environment is simply returned (this helps
+simplifying code when writing generic functions for environments).
 }
 \details{
 While \code{set_env()} returns a modified copy and does not have side

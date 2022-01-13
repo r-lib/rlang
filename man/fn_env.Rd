@@ -17,9 +17,9 @@ fn_env(x) <- value
 \description{
 Closure environments define the scope of functions (see \code{\link[=env]{env()}}).
 When a function call is evaluated, R creates an evaluation frame
-(see \code{\link[=ctxt_stack]{ctxt_stack()}}) that inherits from the closure environment.
-This makes all objects defined in the closure environment and all
-its parents available to code executed within the function.
+that inherits from the closure environment. This makes all objects
+defined in the closure environment and all its parents available to
+code executed within the function.
 }
 \details{
 \code{fn_env()} returns the closure environment of \code{fn}. There is also

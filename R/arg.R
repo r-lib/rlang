@@ -10,7 +10,7 @@
 #'   standards.
 #'
 #' `arg_match()` derives the possible values from the
-#' [caller frame][caller_frame].
+#' [caller function][caller_fn].
 #'
 #' @param arg A symbol referring to an argument accepting strings.
 #' @param values A character vector of possible values that `arg` can take.

@@ -1,7 +1,6 @@
 #' Get properties of the current or caller frame
 #'
 #' @description
-#'
 #' `r lifecycle::badge("experimental")`
 #'
 #' * The current frame is the execution context of the function that
@@ -10,30 +9,24 @@
 #' * The caller frame is the execution context of the function that
 #'   called the function currently being evaluated.
 #'
-#' See the [call stack][stack] topic for more information.
-#'
-#'
 #' @section Life cycle:
-#'
 #' These functions are experimental.
 #'
-#' @param n The number of generations to go back.
+#' @param n The number of callers to go back.
 #'
 #' @seealso [caller_env()] and [current_env()]
 #' @keywords internal
 #' @export
 caller_fn <- function(n = 1) {
-  with_options(lifecycle_disable_warnings = TRUE,
-    call_frame(n + 2)$fn
-  )
+  delayedAssign("do", sys.function(), eval.env = caller_env(n + 1))
+  do
 }
 #' @rdname caller_fn
 #' @export
 current_fn <- function() {
-  with_options(lifecycle_disable_warnings = TRUE,
-    call_frame(2)$fn
-  )
+  caller_fn()
 }
+utils::globalVariables("do")
 
 caller_call <- function(n = 1L) {
   if (is_environment(n)) {
@@ -132,16 +125,6 @@ return_to <- function(frame, value = NULL) {
   })
   return_from(prev_frame, value)
 }
-
-is_frame_env <- function(env) {
-  for (frame in sys.frames()) {
-    if (identical(env, frame)) {
-      return(TRUE)
-    }
-  }
-  FALSE
-}
-
 
 #' Inspect a call
 #'
