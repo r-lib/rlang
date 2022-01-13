@@ -66,7 +66,7 @@ NULL
 #' @param parent A parent condition object created by [abort()].
 #' @param use_cli_format Whether to use the cli package to format
 #'   `message`. See [local_use_cli()].
-#' @seealso [cnd_signal()], [try_call()].
+#' @seealso [cnd_signal()], [try_fetch()].
 #'
 #' @keywords internal
 #' @export
@@ -290,14 +290,14 @@ cnd_type <- function(cnd) {
 #'
 #' # Capture an error with `cnd_inherits()`
 #'
-#' Error catchers like [tryCatch()] and [try_call()] can only match
+#' Error catchers like [tryCatch()] and [try_fetch()] can only match
 #' the class of a condition, not the class of its parents. To match a
 #' class across the ancestry of an error, you'll need a bit of
 #' craftiness.
 #'
 #' Ancestry matching can't be done with `tryCatch()` at all so you'll
 #' need to switch to [withCallingHandlers()]. Alternatively, you can
-#' use the experimental rlang function [try_call()] which is able to
+#' use the experimental rlang function [try_fetch()] which is able to
 #' perform the roles of both `tryCatch()` and `withCallingHandlers()`.
 #'
 #'
@@ -328,15 +328,15 @@ cnd_type <- function(cnd) {
 #' ```
 #'
 #'
-#' ## `try_call()`
+#' ## `try_fetch()`
 #'
-#' This pattern is easier with [try_call()]. Like
+#' This pattern is easier with [try_fetch()]. Like
 #' `withCallingHandlers()`, it doesn't capture a matching error right
 #' away. Instead, it captures it only if the handler doesn't return a
 #' [zap()] value.
 #'
 #' ```{r, comment = "#>", collapse = TRUE}
-#' cnd <- try_call(
+#' cnd <- try_fetch(
 #'   f(),
 #'   error = function(x) if (cnd_inherits(x, "bar")) x else zap()
 #' )

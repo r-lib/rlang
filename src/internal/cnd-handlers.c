@@ -2,8 +2,8 @@
 
 #include "decl/cnd-handlers-decl.h"
 
-r_obj* ffi_try_call(r_obj* try_call_args) {
-  r_obj* env = r_node_cadr(try_call_args);
+r_obj* ffi_try_fetch(r_obj* try_fetch_args) {
+  r_obj* env = r_node_cadr(try_fetch_args);
 
   r_obj* handlers = KEEP(rlang_env_dots_list(env));
   r_env_poke(env, rlang_syms.handlers, handlers);

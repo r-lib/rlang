@@ -210,7 +210,7 @@ local({
     )
   }
   high3_fetch <- function(..., chain, stop_helper) {
-    try_call(
+    try_fetch(
       low1(),
       error = function(err) {
         parent <- if (chain) err

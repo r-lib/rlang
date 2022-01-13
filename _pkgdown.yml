@@ -146,7 +146,7 @@ reference:
       - global_handle
       - global_entrace
       - global_prompt_install
-      - try_call
+      - try_fetch
       - caller_arg
       - local_error_call
       - args_error_context

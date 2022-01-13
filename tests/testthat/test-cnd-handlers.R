@@ -1,26 +1,26 @@
 local_unexport_signal_abort()
 
-test_that("try_call() catches or declines values", {
+test_that("try_fetch() catches or declines values", {
   f <- function() g()
   g <- function() h()
   h <- function() abort("foo")
 
-  expect_error(try_call(f(), warning = function(cnd) NULL), "foo")
-  expect_error(try_call(f(), error = function(cnd) zap()), "foo")
-  expect_null(try_call(f(), error = function(cnd) NULL))
+  expect_error(try_fetch(f(), warning = function(cnd) NULL), "foo")
+  expect_error(try_fetch(f(), error = function(cnd) zap()), "foo")
+  expect_null(try_fetch(f(), error = function(cnd) NULL))
 
   fns <- list(error = function(cnd) NULL)
-  expect_null(try_call(f(), !!!fns))
+  expect_null(try_fetch(f(), !!!fns))
 })
 
-test_that("try_call() checks inputs", {
+test_that("try_fetch() checks inputs", {
   expect_snapshot({
-    (expect_error(try_call(NULL, function(...) NULL)))
+    (expect_error(try_fetch(NULL, function(...) NULL)))
   })
-  expect_true(try_call(TRUE))
+  expect_true(try_fetch(TRUE))
 })
 
-test_that("can rethrow from `try_call()`", {
+test_that("can rethrow from `try_fetch()`", {
   local_options(
     rlang_trace_top_env = current_env(),
     rlang_trace_format_srcrefs = FALSE
@@ -33,15 +33,15 @@ test_that("can rethrow from `try_call()`", {
   high2 <- function(...) high3(...)
   high3 <- function(..., chain) {
     if (chain) {
-      try_call(f(), error = function(cnd) abort("bar", parent = cnd))
+      try_fetch(f(), error = function(cnd) abort("bar", parent = cnd))
     } else {
-      try_call(f(), error = function(cnd) abort("bar", error = cnd))
+      try_fetch(f(), error = function(cnd) abort("bar", error = cnd))
     }
   }
 
   expect_snapshot({
     err <- catch_error(
-      try_call(f(), error = function(cnd) abort("bar", parent = cnd))
+      try_fetch(f(), error = function(cnd) abort("bar", parent = cnd))
     )
     print(err)
     print(err, simplify = "none")
@@ -107,14 +107,14 @@ test_that("stackOverflowError are caught", {
   overflow <- function() signal("", "stackOverflowError")
 
   handled <- FALSE
-  try_call(
+  try_fetch(
     overflow(),
     error = function(cnd) handled <<- TRUE
   )
   expect_true(handled)
 
   handled <- FALSE
-  try_call(
+  try_fetch(
     overflow(),
     warning = identity,
     error = function(cnd) handled <<- TRUE
@@ -122,7 +122,7 @@ test_that("stackOverflowError are caught", {
   expect_true(handled)
 
   handled <- NULL
-  try_call(
+  try_fetch(
     overflow(),
     error = function(cnd) {
       handled <<- c(handled, 1)

@@ -77,7 +77,7 @@ environment(hnd_prompt_install) <- baseenv()
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' `try_call()` establishes handlers for conditions of a given class
+#' `try_fetch()` establishes handlers for conditions of a given class
 #' (`"error"`, `"warning"`, `"message"`, ...). Handlers are functions
 #' that take a condition object as argument and are called when the
 #' corresponding condition class has been signalled.
@@ -86,13 +86,13 @@ environment(hnd_prompt_install) <- baseenv()
 #'
 #' -   **Recover from conditions** with a value. In this case the computation of
 #'     `expr` is aborted and the recovery value is returned from
-#'     `try_call()`. Error recovery is useful when you don't want
+#'     `try_fetch()`. Error recovery is useful when you don't want
 #'     errors to abruptly interrupt your program but resume at the
 #'     catching site instead.
 #'
 #'     ```
 #'     # Recover with the value 0
-#'     try_call(1 + "", error = function(cnd) 0)
+#'     try_fetch(1 + "", error = function(cnd) 0)
 #'     ```
 #'
 #' -   **Rethrow conditions**, e.g. using `abort(msg, parent = cnd)`.
@@ -101,27 +101,29 @@ environment(hnd_prompt_install) <- baseenv()
 #'     in which they occurred.
 #'
 #'     ```
-#'     try_call(1 + "", error = function(cnd) abort("Failed.", parent = cnd))
+#'     try_fetch(1 + "", error = function(cnd) abort("Failed.", parent = cnd))
 #'     ```
 #'
 #' -   **Inspect conditions**, for instance to log data about warnings
 #'     or errors. In this case, the handler must return the [zap()]
-#'     sentinel to instruct `try_call()` to ignore (or zap) that
+#'     sentinel to instruct `try_fetch()` to ignore (or zap) that
 #'     particular handler. The next matching handler is called if any,
 #'     and errors bubble up to the user if no handler remains.
 #'
 #'     ```
 #'     log <- NULL
-#'     try_call(1 + "", error = function(cnd) {
+#'     try_fetch(1 + "", error = function(cnd) {
 #'       log <<- cnd
 #'       zap()
 #'     })
 #'     ```
 #'
-#' Whereas `tryCatch()` catches conditions and then calls the handler,
-#' `try_call()` first calls the handler and then catches its return
-#' value. This is a subtle difference that has implications for the
-#' debuggability of your functions. See the comparison with
+#' Whereas `tryCatch()` catches conditions (discarding any running
+#' code along the way) and then calls the handler, `try_fetch()` first
+#' calls the handler with the condition on top of the currently
+#' running code (fetches it where it stands) and then catches the
+#' return value . This is a subtle difference that has implications
+#' for the debuggability of your functions. See the comparison with
 #' `tryCatch()` section below.
 #'
 #' @param expr An R expression.
@@ -144,9 +146,9 @@ environment(hnd_prompt_install) <- baseenv()
 #'
 #' Because memory is very limited when these errors happen, it is not
 #' possible to call the handlers on the existing program stack.
-#' Instead, error conditions are first caught by `try_call()` and only
+#' Instead, error conditions are first caught by `try_fetch()` and only
 #' then error handlers are called. Catching the error interrupts the
-#' program up to the `try_call()` context, which allows R to reclaim
+#' program up to the `try_fetch()` context, which allows R to reclaim
 #' stack memory.
 #'
 #' The practical implication is that error handlers should never
@@ -162,7 +164,7 @@ environment(hnd_prompt_install) <- baseenv()
 #'
 #' @section Comparison with `tryCatch()`:
 #'
-#' `try_call()` generalises `tryCatch()` and `withCallingHandlers()`
+#' `try_fetch()` generalises `tryCatch()` and `withCallingHandlers()`
 #' in a single function. It reproduces the behaviour of both calling
 #' and exiting handlers depending the on the return value of the
 #' handler. If the handler returns the [zap()] sentinel, it is taken
@@ -170,16 +172,16 @@ environment(hnd_prompt_install) <- baseenv()
 #' Otherwise, it is taken as an exiting handler which returns a value
 #' from the catching site.
 #'
-#' The important difference between `tryCatch()` and `try_call()` is
+#' The important difference between `tryCatch()` and `try_fetch()` is
 #' that the program in `expr` is still fully running when an error
 #' handler is called. Because the call stack is preserved, this makes
 #' it possible to capture a full backtrace from within the handler,
 #' e.g. when rethrowing the error with `abort(parent = cnd)`.
-#' Technically, `try_call()` is more similar to (and implemented on
+#' Technically, `try_fetch()` is more similar to (and implemented on
 #' top of) [base::withCallingHandlers()] than `tryCatch().`
 #'
 #' @export
-try_call <- function(expr, ...) {
+try_fetch <- function(expr, ...) {
   frame <- environment()
 
   catch <- value <- NULL
@@ -190,7 +192,7 @@ try_call <- function(expr, ...) {
     catch
   }
 
-  .External(ffi_try_call, frame)
+  .External(ffi_try_fetch, frame)
 }
 
 handler_call <- quote(function(cnd) {

@@ -1,16 +1,16 @@
-# try_call() checks inputs
+# try_fetch() checks inputs
 
     Code
-      (expect_error(try_call(NULL, function(...) NULL)))
+      (expect_error(try_fetch(NULL, function(...) NULL)))
     Output
       <error/rlang_error>
-      Error in `try_call()`:
+      Error in `try_fetch()`:
       ! `...` must be named with condition classes.
 
-# can rethrow from `try_call()`
+# can rethrow from `try_fetch()`
 
     Code
-      err <- catch_error(try_call(f(), error = function(cnd) abort("bar", parent = cnd)))
+      err <- catch_error(try_fetch(f(), error = function(cnd) abort("bar", parent = cnd)))
       print(err)
     Output
       <error/rlang_error>
@@ -39,7 +39,7 @@
         6. |   |   \-base tryCatchOne(expr, names, parentenv, handlers[[1L]])
         7. |   |     \-base doTryCatch(return(expr), name, parentenv, handler)
         8. |   \-base::force(expr)
-        9. +-rlang::try_call(f(), error = function(cnd) abort("bar", parent = cnd))
+        9. +-rlang::try_fetch(f(), error = function(cnd) abort("bar", parent = cnd))
        10. | +-base::tryCatch(...)
        11. | | \-base tryCatchList(expr, classes, parentenv, handlers)
        12. | |   \-base tryCatchOne(expr, names, parentenv, handlers[[1L]])
@@ -66,7 +66,7 @@
         6. |   |   \-base tryCatchOne(expr, names, parentenv, handlers[[1L]])
         7. |   |     \-base doTryCatch(return(expr), name, parentenv, handler)
         8. |   \-base::force(expr)
-        9. +-rlang::try_call(f(), error = function(cnd) abort("bar", parent = cnd))
+        9. +-rlang::try_fetch(f(), error = function(cnd) abort("bar", parent = cnd))
        10. | +-base::tryCatch(...)
        11. | | \-base tryCatchList(expr, classes, parentenv, handlers)
        12. | |   \-base tryCatchOne(expr, names, parentenv, handlers[[1L]])
@@ -112,7 +112,7 @@
         9. +-rlang high1(chain = TRUE)
        10. | \-rlang high2(...)
        11. |   \-rlang high3(...)
-       12. |     +-rlang::try_call(f(), error = function(cnd) abort("bar", parent = cnd))
+       12. |     +-rlang::try_fetch(f(), error = function(cnd) abort("bar", parent = cnd))
        13. |     | +-base::tryCatch(...)
        14. |     | | \-base tryCatchList(expr, classes, parentenv, handlers)
        15. |     | |   \-base tryCatchOne(expr, names, parentenv, handlers[[1L]])
@@ -142,7 +142,7 @@
         9. \-rlang high1(chain = TRUE)
        10.   \-rlang high2(...)
        11.     \-rlang high3(...)
-       12.       +-rlang::try_call(f(), error = function(cnd) abort("bar", parent = cnd))
+       12.       +-rlang::try_fetch(f(), error = function(cnd) abort("bar", parent = cnd))
        13.       | +-base::tryCatch(...)
        14.       | | \-base tryCatchList(expr, classes, parentenv, handlers)
        15.       | |   \-base tryCatchOne(expr, names, parentenv, handlers[[1L]])
@@ -186,7 +186,7 @@
         9. +-rlang high1(chain = FALSE)
        10. | \-rlang high2(...)
        11. |   \-rlang high3(...)
-       12. |     +-rlang::try_call(f(), error = function(cnd) abort("bar", error = cnd))
+       12. |     +-rlang::try_fetch(f(), error = function(cnd) abort("bar", error = cnd))
        13. |     | +-base::tryCatch(...)
        14. |     | | \-base tryCatchList(expr, classes, parentenv, handlers)
        15. |     | |   \-base tryCatchOne(expr, names, parentenv, handlers[[1L]])

@@ -910,7 +910,7 @@ names(set_attrs_null) <- ""
 #' `r lifecycle::badge("deprecated")`
 #'
 #' As of rlang 1.0.0, `with_handlers()` is deprecated. Use the base
-#' functions or the experimental [try_call()] function instead.
+#' functions or the experimental [try_fetch()] function instead.
 #'
 #' @param .expr,...,handler `r lifecycle::badge("deprecated")`
 #' @keywords internal

@@ -19,6 +19,6 @@ exiting(handler)
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
 As of rlang 1.0.0, \code{with_handlers()} is deprecated. Use the base
-functions or the experimental \code{\link[=try_call]{try_call()}} function instead.
+functions or the experimental \code{\link[=try_fetch]{try_fetch()}} function instead.
 }
 \keyword{internal}

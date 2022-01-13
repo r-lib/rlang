@@ -84,6 +84,6 @@ with_handlers(cnd_signal(cnd), foo = function(c) "caught!")
 tryCatch(cnd_signal(cnd), foo = function(c) "caught!")
 }
 \seealso{
-\code{\link[=cnd_signal]{cnd_signal()}}, \code{\link[=try_call]{try_call()}}.
+\code{\link[=cnd_signal]{cnd_signal()}}, \code{\link[=try_fetch]{try_fetch()}}.
 }
 \keyword{internal}

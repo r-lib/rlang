@@ -5,7 +5,7 @@
 #' this often indicates a programming error. Call `check_dots_used()`
 #' to fail with an error when unused arguments are detected.
 #'
-#' @param error An optional error handler passed to [try_call()]. Use
+#' @param error An optional error handler passed to [try_fetch()]. Use
 #'   this e.g. to demote an error into a warning.
 #' @param action `r lifecycle::badge("deprecated")`
 #' @param env Environment in which to look for `...` and to set up handler.
@@ -227,7 +227,7 @@ action_dots <- function(error,
   if (is_null(error)) {
     try_dots <- identity
   } else {
-    try_dots <- function(expr) try_call(expr, error = error)
+    try_dots <- function(expr) try_fetch(expr, error = error)
   }
 
   try_dots(action(

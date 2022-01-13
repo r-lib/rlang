@@ -19,7 +19,7 @@ running function, e.g. \code{caller_env()}. The function will be
 mentioned in error messages as the source of the error. See the
 \code{call} argument of \code{\link[=abort]{abort()}} for more information.}
 
-\item{error}{An optional error handler passed to \code{\link[=try_call]{try_call()}}. Use
+\item{error}{An optional error handler passed to \code{\link[=try_fetch]{try_fetch()}}. Use
 this e.g. to demote an error into a warning.}
 
 \item{action}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}}

@@ -335,7 +335,7 @@ test_that("parent errors prints with bullets in all cases", {
   f <- function(use_cli = TRUE) {
     local_use_cli(format = use_cli)
 
-    try_call(
+    try_fetch(
       abort(c(
         "Header",
         i = "Bullet"

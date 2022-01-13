@@ -31,7 +31,7 @@
 #' * [abort()], [warn()] and [inform()] for creating and signalling
 #'   structured R conditions in one go.
 #'
-#' * [try_call()] for establishing condition handlers for
+#' * [try_fetch()] for establishing condition handlers for
 #'   particular condition classes.
 #' @export
 #' @examples

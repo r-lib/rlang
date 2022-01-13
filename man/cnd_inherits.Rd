@@ -25,14 +25,14 @@ object is a particular kind of error or has been caused by such an
 error.
 }
 \section{Capture an error with \code{cnd_inherits()}}{
-Error catchers like \code{\link[=tryCatch]{tryCatch()}} and \code{\link[=try_call]{try_call()}} can only match
+Error catchers like \code{\link[=tryCatch]{tryCatch()}} and \code{\link[=try_fetch]{try_fetch()}} can only match
 the class of a condition, not the class of its parents. To match a
 class across the ancestry of an error, you'll need a bit of
 craftiness.
 
 Ancestry matching can't be done with \code{tryCatch()} at all so you'll
 need to switch to \code{\link[=withCallingHandlers]{withCallingHandlers()}}. Alternatively, you can
-use the experimental rlang function \code{\link[=try_call]{try_call()}} which is able to
+use the experimental rlang function \code{\link[=try_fetch]{try_fetch()}} which is able to
 perform the roles of both \code{tryCatch()} and \code{withCallingHandlers()}.
 \subsection{\code{withCallingHandlers()}}{
 
@@ -60,12 +60,12 @@ class(cnd$parent)
 }\if{html}{\out{</div>}}
 }
 
-\subsection{\code{try_call()}}{
+\subsection{\code{try_fetch()}}{
 
-This pattern is easier with \code{\link[=try_call]{try_call()}}. Like
+This pattern is easier with \code{\link[=try_fetch]{try_fetch()}}. Like
 \code{withCallingHandlers()}, it doesn't capture a matching error right
 away. Instead, it captures it only if the handler doesn't return a
-\code{\link[=zap]{zap()}} value.\if{html}{\out{<div class="sourceCode r">}}\preformatted{cnd <- try_call(
+\code{\link[=zap]{zap()}} value.\if{html}{\out{<div class="sourceCode r">}}\preformatted{cnd <- try_fetch(
   f(),
   error = function(x) if (cnd_inherits(x, "bar")) x else zap()
 )
