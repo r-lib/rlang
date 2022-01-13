@@ -77,3 +77,16 @@
       Error in `abort()`:
       ! `call` must be a call or environment, not a primitive function.
 
+# error_cnd() still accepts `.subclass`
+
+    Code
+      expect_equal(error_cnd(.subclass = "foo"), error_cnd("foo"))
+    Warning <deprecatedWarning>
+      The `.subclass` argument of `error_cnd()` has been renamed to `class`.
+      This warning is displayed once per session.
+    Code
+      expect_error(abort("foo", .subclass = "bar"), class = "bar")
+    Warning <deprecatedWarning>
+      The `.subclass` argument of `abort()` has been renamed to `class`.
+      This warning is displayed once per session.
+

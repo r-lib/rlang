@@ -97,6 +97,7 @@ cnd <- function(class,
     ...,
     call = call,
     `_use_cli_format` = use_cli_format,
+    `_fn` = "cnd",
     `_frame` = caller_env()
   )
 
@@ -146,7 +147,7 @@ error_cnd_fields <- function(trace,
                              `_env` = caller_env(),
                              `_frame` = caller_env(2)) {
   if (!is_null(.subclass)) {
-    deprecate_subclass(.subclass, `_env`)
+    deprecate_subclass(.subclass, "error_cnd", `_env`)
   }
 
   use_cli_format <- use_cli_format %||% use_cli(`_frame`)[["format"]]
@@ -173,6 +174,7 @@ warning_cnd <- function(class = NULL,
     ...,
     call = call,
     `_use_cli_format` = use_cli_format,
+    `_fn` = "warning_cnd",
     `_frame` = caller_env()
   )
 
@@ -199,6 +201,7 @@ message_cnd <- function(class = NULL,
     ...,
     call = call,
     `_use_cli_format` = use_cli_format,
+    `_fn` = "message_cnd",
     `_frame` = caller_env()
   )
 
@@ -213,10 +216,11 @@ message_cnd <- function(class = NULL,
 cnd_fields <- function(...,
                        .subclass = NULL,
                        `_use_cli_format` = NULL,
+                       `_fn` = "cnd",
                        `_env` = caller_env(),
                        `_frame` = caller_env(2)) {
   if (!is_null(.subclass)) {
-    deprecate_subclass(.subclass, `_env`)
+    deprecate_subclass(.subclass, `_fn`, `_env`)
   }
 
   use_cli_format <- `_use_cli_format` %||% use_cli(`_frame`)[["format"]]

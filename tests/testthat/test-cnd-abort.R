@@ -269,10 +269,6 @@ local({
   }
 })
 
-test_that("`.subclass` argument of `abort()` still works", {
-  expect_error(abort("foo", .subclass = "bar"), class = "bar")
-})
-
 test_that("abort() displays call in error prefix", {
   skip_if_not_installed("rlang", "0.4.11.9001")
 

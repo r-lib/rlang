@@ -99,7 +99,7 @@ warn <- function(message = NULL,
                  .frequency = c("always", "regularly", "once"),
                  .frequency_id = NULL,
                  .subclass = deprecated()) {
-  message <- validate_signal_args(message, class, NULL, .subclass)
+  message <- validate_signal_args(message, class, NULL, .subclass, "warn")
 
   message_info <- cnd_message_info(
     message,
@@ -143,7 +143,7 @@ inform <- function(message = NULL,
                    .subclass = deprecated()) {
   message <- message %||% ""
 
-  validate_signal_args(message, class, NULL, .subclass)
+  validate_signal_args(message, class, NULL, .subclass, "inform")
 
   message_info <- cnd_message_info(
     message,
@@ -184,7 +184,7 @@ signal <- function(message,
                    class,
                    ...,
                    .subclass = deprecated()) {
-  validate_signal_args(message, class, NULL, .subclass)
+  validate_signal_args(message, class, NULL, .subclass, "signal")
 
   message <- .rlang_cli_format_fallback(message)
   cnd <- cnd(class, ..., message = message)
@@ -215,10 +215,15 @@ default_message_file <- function() {
   }
 }
 
-deprecate_subclass <- function(subclass, env = caller_env()) {
+deprecate_subclass <- function(subclass, fn, env = caller_env()) {
+  msg <- sprintf(
+    "The %s argument of %s has been renamed to %s.",
+    format_arg(".subclass"),
+    format_fn(fn),
+    format_arg("class")
+  )
+  signal_soft_deprecated(msg)
   env_bind(env, class = subclass)
-  local_error_call("caller")
-  # TODO! Allow until next major version
 }
 
 #' @rdname abort
@@ -231,11 +236,12 @@ validate_signal_args <- function(message,
                                  class,
                                  call,
                                  subclass,
+                                 fn,
                                  env = caller_env()) {
   local_error_call("caller")
 
   if (!is_missing(subclass)) {
-    deprecate_subclass(subclass, env)
+    deprecate_subclass(subclass, fn, env)
   }
   check_required(class, error_call = env)
 

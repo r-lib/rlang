@@ -302,27 +302,13 @@ test_that("cnd_signal() sets call", {
 
 # Lifecycle ----------------------------------------------------------
 
-test_that("deprecated arguments of cnd_signal() still work", {
-  local_lifecycle_silence()
-
-  observed <- catch_cnd(cnd_signal("foo"))
-  expected <- catch_cnd(signal("", "foo"))
-  expected$glue_env <- NULL
-  expect_identical(observed, expected)
-
-  with_handlers(cnd_signal(cnd("foo"), .mufflable = TRUE),
-    foo = calling(function(cnd) expect_true(rst_exists("rlang_muffle")))
-  )
-
-  expect_condition(
-    signal("", .subclass = "foo"),
-    class = "foo"
-  )
-})
-
 test_that("error_cnd() still accepts `.subclass`", {
-  expect_equal(
-    error_cnd(.subclass = "foo"),
-    error_cnd("foo")
-  )
+  local_options(lifecycle_disable_warnings = FALSE)
+  expect_snapshot({
+    expect_equal(
+      error_cnd(.subclass = "foo"),
+      error_cnd("foo")
+    )
+    expect_error(abort("foo", .subclass = "bar"), class = "bar")
+  })
 })

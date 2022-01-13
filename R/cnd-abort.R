@@ -245,7 +245,7 @@ abort <- function(message = NULL,
     }
   }
 
-  message <- validate_signal_args(message, class, call, .subclass)
+  message <- validate_signal_args(message, class, call, .subclass, "abort")
   call <- error_call(call)
 
   message_info <- cnd_message_info(
