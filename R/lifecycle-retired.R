@@ -1,3 +1,9 @@
+# rlang 0.2.0: 2018-02
+# rlang 0.3.0: 2018-10
+# rlang 0.4.0: 2019-06
+# rlang 0.4.2: 2019-11
+# rlang 1.0.0: 2022-01
+
 #  Deprecated in rlang 1.0.0
 
 # Silently deprecated for now
@@ -870,6 +876,8 @@ int_along <- function(.x) {
 #' @keywords internal
 #' @export
 set_attrs <- function(.x, ...) {
+  # 2018-10: Soft-deprecated
+  # 2019-06: Deprecated
   # 2022-01: Used in `survivalAnalysis`
   warn_deprecated("`set_attrs()` is deprecated as of rlang 0.3.0")
 
