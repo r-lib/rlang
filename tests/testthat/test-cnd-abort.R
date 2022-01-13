@@ -277,14 +277,20 @@ test_that("abort() displays call in error prefix", {
   skip_if_not_installed("rlang", "0.4.11.9001")
 
   expect_snapshot(
-    run("rlang::abort('foo', call = quote(bar(baz)))")
+    run("{
+      options(cli.unicode = FALSE, crayon.enabled = FALSE)
+      rlang::abort('foo', call = quote(bar(baz)))
+    }")
   )
 
   # errorCondition()
   skip_if_not_installed("base", "3.6.0")
 
   expect_snapshot(
-    run("rlang::cnd_signal(errorCondition('foo', call = quote(bar(baz))))")
+    run("{
+      options(cli.unicode = FALSE, crayon.enabled = FALSE)
+      rlang::cnd_signal(errorCondition('foo', call = quote(bar(baz))))
+    }")
   )
 })
 

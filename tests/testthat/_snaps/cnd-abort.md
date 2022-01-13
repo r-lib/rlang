@@ -848,25 +848,27 @@
 # abort() displays call in error prefix
 
     Code
-      run("rlang::abort('foo', call = quote(bar(baz)))")
+      run(
+        "{\n      options(cli.unicode = FALSE, crayon.enabled = FALSE)\n      rlang::abort('foo', call = quote(bar(baz)))\n    }")
     Output
       Error in `bar()`:
       ! foo
       Backtrace:
-          ▆
-       1. └─rlang::abort("foo", call = quote(bar(baz)))
+          x
+       1. \-rlang::abort("foo", call = quote(bar(baz)))
       Execution halted
 
 ---
 
     Code
-      run("rlang::cnd_signal(errorCondition('foo', call = quote(bar(baz))))")
+      run(
+        "{\n      options(cli.unicode = FALSE, crayon.enabled = FALSE)\n      rlang::cnd_signal(errorCondition('foo', call = quote(bar(baz))))\n    }")
     Output
       Error in `bar()`:
       ! foo
       Backtrace:
-          ▆
-       1. └─rlang::cnd_signal(errorCondition("foo", call = quote(bar(baz))))
+          x
+       1. \-rlang::cnd_signal(errorCondition("foo", call = quote(bar(baz))))
       Execution halted
 
 # abort() accepts environment as `call` field.
