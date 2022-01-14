@@ -247,6 +247,13 @@ reference:
       - caller_env
       - env_browse
 
+  - subtitle: Stack
+    contents:
+      - caller_env
+      - current_env
+      - caller_fn
+      - current_fn
+
   - subtitle: Environment bindings
     contents:
       - env_bind

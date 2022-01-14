@@ -1,21 +1,12 @@
 #' Get properties of the current or caller frame
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
-#'
-#' * The current frame is the execution context of the function that
-#'   is currently being evaluated.
-#'
-#' * The caller frame is the execution context of the function that
-#'   called the function currently being evaluated.
-#'
-#' @section Life cycle:
-#' These functions are experimental.
+#' * `current_fn()` returns the function of the current frame.
+#' * `caller_fn()` returns the function of the calling frame.
 #'
 #' @param n The number of callers to go back.
 #'
 #' @seealso [caller_env()] and [current_env()]
-#' @keywords internal
 #' @export
 caller_fn <- function(n = 1) {
   check_number(n)

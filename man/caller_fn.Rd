@@ -13,20 +13,11 @@ current_fn()
 \item{n}{The number of callers to go back.}
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 \itemize{
-\item The current frame is the execution context of the function that
-is currently being evaluated.
-\item The caller frame is the execution context of the function that
-called the function currently being evaluated.
+\item \code{current_fn()} returns the function of the current frame.
+\item \code{caller_fn()} returns the function of the calling frame.
 }
 }
-\section{Life cycle}{
-
-These functions are experimental.
-}
-
 \seealso{
 \code{\link[=caller_env]{caller_env()}} and \code{\link[=current_env]{current_env()}}
 }
-\keyword{internal}
