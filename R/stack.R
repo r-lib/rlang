@@ -18,6 +18,8 @@
 #' @keywords internal
 #' @export
 caller_fn <- function(n = 1) {
+  check_number(n)
+
   parent <- sys_parent(n + 1)
   if (parent) {
     sys.function(parent)

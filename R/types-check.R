@@ -20,6 +20,16 @@ check_string <- function(x,
   }
 }
 
+check_number <- function(x,
+                         ...,
+                         what = "a round number",
+                         arg = caller_arg(x),
+                         call = caller_env()) {
+  if (!is_number(x)) {
+    stop_input_type(x, what, ..., arg = arg, call = call)
+  }
+}
+
 check_symbol <- function(x,
                          ...,
                          what = "a symbol",
