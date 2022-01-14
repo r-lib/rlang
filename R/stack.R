@@ -18,15 +18,44 @@
 #' @keywords internal
 #' @export
 caller_fn <- function(n = 1) {
-  delayedAssign("do", sys.function(), eval.env = caller_env(n + 1))
-  do
+  parent <- sys_parent(n + 1)
+  if (parent) {
+    sys.function(parent)
+  } else {
+    NULL
+  }
 }
 #' @rdname caller_fn
 #' @export
 current_fn <- function() {
   caller_fn()
 }
-utils::globalVariables("do")
+
+sys_parent <- function(n, frame = caller_env()) {
+  parents <- sys_parents(frame = frame)
+
+  if (!length(parents)) {
+    return(0L)
+  }
+
+  out <- last(parents)
+  n <- n - 1L
+
+  while (n && out) {
+    out <- parents[[out]]
+    n <- n - 1L
+  }
+
+  out
+}
+sys_parents <- function(frame = caller_env()) {
+  parents <- eval_bare(call2(sys.parents), frame)
+
+  # Fix infloop parents caused by evaluation in non-frame environments
+  parents[parents == seq_along(parents)] <- 0L
+
+  parents
+}
 
 caller_call <- function(n = 1L) {
   if (is_environment(n)) {

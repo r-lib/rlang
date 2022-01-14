@@ -27,10 +27,26 @@ test_that("current_env() and current_fn() return current frame props", {
   expect_identical(out$rlang[[2]], out$base[[2]])
 })
 
+test_that("sys_parents() removes infloop values", {
+  f <- function() g()
+  g <- function() sys_parents()
+
+  parents <- do.call("f", list(), envir = env())
+  n <- length(parents)
+
+  # No loop when called in non-frame env
+  expect_false(any(parents == seq_len(n)))
+
+  # g() is called by f() which is called by global because the calling
+  # env is not on the stack
+  expect_equal(parents[[n - 1]], 0)  # f()
+  expect_equal(parents[[n]], n - 1)  # g()
+})
+
 test_that("current_fn() and caller_fn() work", {
-  f <- function(n) g(n)
-  g <- function(n) h(n)
-  h <- function(n) caller_fn(n)
+  f <- function(n) identity(g(n))
+  g <- function(n) identity(h(n))
+  h <- function(n) identity(caller_fn(n))
   expect_equal(f(1), g)
   expect_equal(f(2), f)
 
