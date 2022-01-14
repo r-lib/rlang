@@ -1,8 +1,8 @@
 pandoc: 2.7.3
-pkgdown: 2.0.1
+pkgdown: 2.0.2
 pkgdown_sha: ~
 articles: {}
-last_built: 2022-01-13T16:35Z
+last_built: 2022-01-14T07:14Z
 urls:
   reference: https://rlang.r-lib.org/reference
   article: https://rlang.r-lib.org/articles
