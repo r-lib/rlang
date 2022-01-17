@@ -45,13 +45,13 @@ current_env <- function() {
 #' @export
 caller_call <- function(n = 1) {
   check_number(n)
-  frame_call(caller_env2(n + 1))
+  frame_call(caller_env(n + 1))
 }
 #' @rdname stack
 #' @export
 caller_fn <- function(n = 1) {
   check_number(n)
-  frame_fn(caller_env2(n + 1))
+  frame_fn(caller_env(n + 1))
 }
 #' @rdname stack
 #' @export
@@ -95,6 +95,7 @@ caller_env2 <- function(n = 1, error_call = caller_env()) {
   # might not be on the stack
   parent <- sys_parent(
     n + 1,
+    patch_eval = TRUE,
     frame = current_env(),
     error_call = error_call
   )
@@ -102,6 +103,7 @@ caller_env2 <- function(n = 1, error_call = caller_env()) {
 }
 
 sys_parent <- function(n,
+                       patch_eval = FALSE,
                        frame = caller_env(),
                        error_call = caller_env()) {
   parents <- sys_parents(frame = frame)
@@ -120,7 +122,7 @@ sys_parent <- function(n,
   out <- length(parents)
 
   while (n && out) {
-    if (identical(sys.function(out), prim_eval)) {
+    if (patch_eval && identical(sys.function(out), prim_eval)) {
       out <- parents[[out - 1]]
     }
     out <- parents[[out]]

@@ -120,6 +120,14 @@ test_that("current_call(), caller_call() and frame_call() work", {
   expect_null(eval_bare(call2(caller_call), global_env()))
   expect_null(eval_bare(call2(frame_call), global_env()))
 
+  f <- function() g()
+  g <- function() {
+    direct <- frame_call()
+    indirect <- evalq(frame_call())
+    expect_equal(direct, indirect)
+  }
+  f()
+
   f <- function() {
     this <- current_call()
     that <- g()
@@ -129,14 +137,7 @@ test_that("current_call(), caller_call() and frame_call() work", {
   g <- function() caller_call()
   f()
 
-  f <- function() g()
-  g <- function() {
-    direct <- frame_call()
-    indirect <- evalq(frame_call())
-    expect_equal(direct, indirect)
-  }
-  f()
-
+  return("Don't make this guarantee to stay consistent with `caller_env()`")
   f <- function() g()
   g <- function() {
     direct <- caller_call()
