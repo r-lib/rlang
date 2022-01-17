@@ -155,4 +155,8 @@ test_that("caller_env2() respects invariant", {
     expect_equal(indirect, direct)
   }
   f()
+
+  f <- function() g()
+  g <- function() inject(caller_env2(), env())
+  expect_equal(f(), global_env())
 })

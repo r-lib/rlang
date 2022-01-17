@@ -91,9 +91,11 @@ frame_get <- function(frame, accessor) {
 
 # Respects the invariant: caller_env2() === evalq(caller_env2())
 caller_env2 <- function(n = 1, error_call = caller_env()) {
+  # Start from `current_env()` with `n + 1` because `caller_env()`
+  # might not be on the stack
   parent <- sys_parent(
-    n,
-    frame = caller_env(),
+    n + 1,
+    frame = current_env(),
     error_call = error_call
   )
   sys.frame(parent)
