@@ -170,7 +170,7 @@ The reason for this has to do with compilation of R code which makes it impossib
     <p>We can observe this optimisation by calling into the C-level <code>findVar()</code> function to capture promises.</p><div class="sourceCode r"><pre><code><span class="co"># Return the object bound to `arg` without triggering evaluation of</span>
 <span class="co"># promises</span>
 <span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu">rlang</span><span class="fu">:::</span><span class="fu">find_var</span><span class="op">(</span><span class="fu"><a href="../reference/caller_env.html">current_env</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="../reference/sym.html">sym</a></span><span class="op">(</span><span class="st">"arg"</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu">rlang</span><span class="fu">:::</span><span class="fu">find_var</span><span class="op">(</span><span class="fu"><a href="../reference/stack.html">current_env</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="../reference/sym.html">sym</a></span><span class="op">(</span><span class="st">"arg"</span><span class="op">)</span><span class="op">)</span>
 <span class="op">}</span>
 
 <span class="co"># Call `f()` with a symbol or with a constant</span>

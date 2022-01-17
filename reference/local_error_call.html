@@ -108,7 +108,7 @@ that is automatically picked up by <code><a href="abort.html">abort()</a></code>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">local_error_call</span><span class="op">(</span><span class="va">call</span>, frame <span class="op">=</span> <span class="fu"><a href="caller_env.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">local_error_call</span><span class="op">(</span><span class="va">call</span>, frame <span class="op">=</span> <span class="fu"><a href="stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -117,7 +117,7 @@ that is automatically picked up by <code><a href="abort.html">abort()</a></code>
 <dd><p>This can be:</p><ul><li><p>A call to be used as context for an error thrown in that
 execution environment.</p></li>
 <li><p>The <code>NULL</code> value to show no context.</p></li>
-<li><p>An execution environment, e.g. as returned by <code><a href="caller_env.html">caller_env()</a></code>.
+<li><p>An execution environment, e.g. as returned by <code><a href="stack.html">caller_env()</a></code>.
 The <code><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">sys.call()</a></code> for that environment is taken as context.</p></li>
 </ul></dd>
 <dt>frame</dt>
@@ -155,7 +155,7 @@ for consistency with <code>error_arg</code> which is prefixed because there is
 an existing <code>arg</code> argument. In other situations, taking <code>arg</code> and
 <code>call</code> arguments might be appropriate.</p><div class="sourceCode"><pre><code><span class="va">arg_check</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span>,
                       <span class="va">error_arg</span> <span class="op">=</span> <span class="fu"><a href="../reference/as_string.html">as_string</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">substitute</a></span><span class="op">(</span><span class="va">arg</span><span class="op">)</span><span class="op">)</span>,
-                      <span class="va">error_call</span> <span class="op">=</span> <span class="fu"><a href="../reference/caller_env.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+                      <span class="va">error_call</span> <span class="op">=</span> <span class="fu"><a href="../reference/stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="../reference/abort.html">abort</a></span><span class="op">(</span>
     <span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/format_error.html" class="external-link">format_error</a></span><span class="op">(</span><span class="st">"{.arg {error_arg}} is failing."</span><span class="op">)</span>,
     call <span class="op">=</span> <span class="va">error_call</span>
@@ -181,7 +181,7 @@ following example, the complexity is not so important that sparing
 the argument passing makes a big difference. However this
 illustrates the pattern:</p><div class="sourceCode"><pre><code><span class="va">arg_check</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span>,
                       <span class="va">error_arg</span> <span class="op">=</span> <span class="fu"><a href="../reference/caller_arg.html">caller_arg</a></span><span class="op">(</span><span class="va">arg</span><span class="op">)</span>,
-                      <span class="va">error_call</span> <span class="op">=</span> <span class="fu"><a href="../reference/caller_env.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+                      <span class="va">error_call</span> <span class="op">=</span> <span class="fu"><a href="../reference/stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
   <span class="co"># Set the local error call</span>
   <span class="fu"><a href="../reference/local_error_call.html">local_error_call</a></span><span class="op">(</span><span class="va">error_call</span><span class="op">)</span>
 
@@ -192,7 +192,7 @@ illustrates the pattern:</p><div class="sourceCode"><pre><code><span class="va">
 
 <span class="va">my_classed_stop</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">message</span><span class="op">)</span> <span class="op">{</span>
   <span class="co"># Forward the local error call to the caller's</span>
-  <span class="fu"><a href="../reference/local_error_call.html">local_error_call</a></span><span class="op">(</span><span class="fu"><a href="../reference/caller_env.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="../reference/local_error_call.html">local_error_call</a></span><span class="op">(</span><span class="fu"><a href="../reference/stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 
   <span class="fu"><a href="../reference/abort.html">abort</a></span><span class="op">(</span><span class="va">message</span>, class <span class="op">=</span> <span class="st">"my_class"</span><span class="op">)</span>
 <span class="op">}</span>
@@ -208,9 +208,9 @@ illustrates the pattern:</p><div class="sourceCode"><pre><code><span class="va">
 
 
 <p>The <code>call</code> argument can also be the string <code>"caller"</code>. This is
-equivalent to <code><a href="caller_env.html">caller_env()</a></code> or <code><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame()</a></code> but has a lower
+equivalent to <code><a href="stack.html">caller_env()</a></code> or <code><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame()</a></code> but has a lower
 overhead because call stack introspection is only performed when an
-error is triggered. Note that eagerly calling <code><a href="caller_env.html">caller_env()</a></code> is
+error is triggered. Note that eagerly calling <code><a href="stack.html">caller_env()</a></code> is
 fast enough in almost all cases.</p>
 <p>If your function needs to be really fast, assign the error call
 flag directly instead of calling <code>local_error_call()</code>:</p><div class="sourceCode"><pre><code><span class="va">.__error_call__.</span> <span class="op">&lt;-</span> <span class="st">"caller"</span></code></pre></div>
@@ -228,7 +228,7 @@ flag directly instead of calling <code>local_error_call()</code>:</p><div class=
 <span class="r-out co"><span class="r-pr">#&gt;</span>   local_error_call(quote(foo()))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   local_error_call(sys.call())</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55dde9783bb8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55958572ef70&gt;</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Disable the context</span></span>
 <span class="r-in"><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
@@ -237,16 +237,16 @@ flag directly instead of calling <code>local_error_call()</code>:</p><div class=
 <span class="r-out co"><span class="r-pr">#&gt;</span> function() {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   local_error_call(NULL)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55dde9783bb8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55958572ef70&gt;</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Use the caller's context</span></span>
 <span class="r-in"><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="fu">local_error_call</span><span class="op">(</span><span class="fu"><a href="caller_env.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in">  <span class="fu">local_error_call</span><span class="op">(</span><span class="fu"><a href="stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">}</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function() {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   local_error_call(caller_env())</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55dde9783bb8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55958572ef70&gt;</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

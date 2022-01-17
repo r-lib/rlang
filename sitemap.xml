@@ -106,12 +106,6 @@
     <loc>https://rlang.r-lib.org/reference/caller_arg.html</loc>
   </url>
   <url>
-    <loc>https://rlang.r-lib.org/reference/caller_env.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/caller_fn.html</loc>
-  </url>
-  <url>
     <loc>https://rlang.r-lib.org/reference/catch_cnd.html</loc>
   </url>
   <url>
@@ -560,6 +554,9 @@
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/splice.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/stack-deprecated.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/stack.html</loc>

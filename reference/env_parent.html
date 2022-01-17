@@ -126,11 +126,11 @@ empty environment. This list is named using <code><a href="env_name.html">env_na
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">env_parent</span><span class="op">(</span>env <span class="op">=</span> <span class="fu"><a href="caller_env.html">caller_env</a></span><span class="op">(</span><span class="op">)</span>, n <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">env_parent</span><span class="op">(</span>env <span class="op">=</span> <span class="fu"><a href="stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span>, n <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
 
-<span class="fu">env_tail</span><span class="op">(</span>env <span class="op">=</span> <span class="fu"><a href="caller_env.html">caller_env</a></span><span class="op">(</span><span class="op">)</span>, last <span class="op">=</span> <span class="fu"><a href="search_envs.html">global_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<span class="fu">env_tail</span><span class="op">(</span>env <span class="op">=</span> <span class="fu"><a href="stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span>, last <span class="op">=</span> <span class="fu"><a href="search_envs.html">global_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 
-<span class="fu">env_parents</span><span class="op">(</span>env <span class="op">=</span> <span class="fu"><a href="caller_env.html">caller_env</a></span><span class="op">(</span><span class="op">)</span>, last <span class="op">=</span> <span class="fu"><a href="search_envs.html">global_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="fu">env_parents</span><span class="op">(</span>env <span class="op">=</span> <span class="fu"><a href="stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span>, last <span class="op">=</span> <span class="fu"><a href="search_envs.html">global_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -171,7 +171,7 @@ of environments for <code>env_parents()</code>.</p>
 <span class="r-in"><span class="co"># current evaluation frame. If called at top-level (the global</span></span>
 <span class="r-in"><span class="co"># frame), the following two expressions are equivalent:</span></span>
 <span class="r-in"><span class="fu">env_parent</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55ddeadec610&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5595802f3788&gt;</span>
 <span class="r-in"><span class="fu">env_parent</span><span class="op">(</span><span class="fu"><a href="search_envs.html">base_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: R_EmptyEnv&gt;</span>
 <span class="r-in"></span>

@@ -108,7 +108,7 @@ thrown if multiple arguments are supplied.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">check_exclusive</span><span class="op">(</span>
   <span class="va">...</span>,
   .require <span class="op">=</span> <span class="cn">TRUE</span>,
-  .frame <span class="op">=</span> <span class="fu"><a href="caller_env.html">caller_env</a></span><span class="op">(</span><span class="op">)</span>,
+  .frame <span class="op">=</span> <span class="fu"><a href="stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span>,
   .error_call <span class="op">=</span> <span class="va">.frame</span>
 <span class="op">)</span></code></pre></div>
     </div>
@@ -123,7 +123,7 @@ thrown if multiple arguments are supplied.</p>
 <dd><p>Environment where the arguments in <code>...</code> are defined.</p></dd>
 <dt>.error_call</dt>
 <dd><p>The execution environment of a currently
-running function, e.g. <code><a href="caller_env.html">caller_env()</a></code>. The function will be
+running function, e.g. <code><a href="stack.html">caller_env()</a></code>. The function will be
 mentioned in error messages as the source of the error. See the
 <code>call</code> argument of <code><a href="abort.html">abort()</a></code> for more information.</p></dd>
 </dl></div>

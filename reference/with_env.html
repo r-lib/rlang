@@ -160,7 +160,7 @@ an object with a <code><a href="get_env.html">get_env()</a></code> method.</p></
 <span class="r-in"><span class="co"># Unlike eval() it doesn't create duplicates on the evaluation</span></span>
 <span class="r-in"><span class="co"># stack. You can thus use it e.g. to create non-local returns:</span></span>
 <span class="r-in"><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="fu">g</span><span class="op">(</span><span class="fu"><a href="caller_env.html">current_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in">  <span class="fu">g</span><span class="op">(</span><span class="fu"><a href="stack.html">current_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in">  <span class="st">"normal return"</span></span>
 <span class="r-in"><span class="op">}</span></span>
 <span class="r-in"><span class="va">g</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">env</span><span class="op">)</span> <span class="op">{</span></span>

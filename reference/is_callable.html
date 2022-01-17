@@ -134,7 +134,7 @@ is not legal to manually set language heads to strings.</p>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># node_poke_car() lets you modify calls without any checking:</span></span>
 <span class="r-in"><span class="va">lang</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="fu">foo</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="new_node.html">node_poke_car</a></span><span class="op">(</span><span class="va">lang</span>, <span class="fu"><a href="caller_env.html">current_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="new_node.html">node_poke_car</a></span><span class="op">(</span><span class="va">lang</span>, <span class="fu"><a href="stack.html">current_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Use is_callable() to check an input object is safe to put as CAR:</span></span>
 <span class="r-in"><span class="va">obj</span> <span class="op">&lt;-</span> <span class="fu">base</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/base/identity.html" class="external-link">identity</a></span></span>

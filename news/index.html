@@ -124,7 +124,8 @@
 </ul></div>
 <div class="section level3">
 <h3 id="features-and-bugfixes-development-version">Features and bugfixes<a class="anchor" aria-label="anchor" href="#features-and-bugfixes-development-version"></a></h3>
-<ul><li><p><code><a href="../reference/abort.html">abort()</a></code> gains a <code>.internal</code> argument. When set to <code>TRUE</code>, a footer bullet is added to <code>message</code> to let the user know that the error is internal and that they should report it to the package authors.</p></li>
+<ul><li><p>New <code><a href="../reference/stack.html">current_call()</a></code>, <code><a href="../reference/stack.html">caller_call()</a></code>, and <code><a href="../reference/stack.html">frame_call()</a></code> accessors. New <code><a href="../reference/stack.html">frame_fn()</a></code> accessor.</p></li>
+<li><p><code><a href="../reference/abort.html">abort()</a></code> gains a <code>.internal</code> argument. When set to <code>TRUE</code>, a footer bullet is added to <code>message</code> to let the user know that the error is internal and that they should report it to the package authors.</p></li>
 <li><p><code><a href="../reference/is_installed.html">is_installed()</a></code> and <code><a href="../reference/is_installed.html">check_installed()</a></code> now support DESCRIPTION-style version requirements like <code>"rlang (&gt;= 1.0)"</code>. They also gain <code>version</code> and <code>compare</code> arguments to supply requirements programmatically.</p></li>
 <li><p><code><a href="../reference/is_installed.html">check_installed()</a></code> gains an <code>action</code> argument that is called when the user chooses to install and update missing and outdated packages.</p></li>
 <li><p><code><a href="../reference/abort.html">abort()</a></code>, <code><a href="../reference/abort.html">warn()</a></code>, and <code><a href="../reference/abort.html">inform()</a></code> gain a <code>body</code> argument to supply additional bullets in the error message.</p></li>
@@ -670,7 +671,7 @@
 <div class="section level3">
 <h3 id="environments-0-3-0">Environments<a class="anchor" aria-label="anchor" href="#environments-0-3-0"></a></h3>
 <ul><li><p><code><a href="../reference/env.html">env()</a></code> now treats a single unnamed argument as the parent of the new environment. Consequently, <code><a href="../reference/env.html">child_env()</a></code> is now superfluous and is now in questioning life cycle.</p></li>
-<li><p>New <code><a href="../reference/caller_env.html">current_env()</a></code> and <code><a href="../reference/caller_fn.html">current_fn()</a></code> functions to retrieve the current environment or the function being evaluated. They are equivalent to <code><a href="https://rdrr.io/r/base/environment.html" class="external-link">base::environment()</a></code> and <code><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">base::sys.function()</a></code> called without argument.</p></li>
+<li><p>New <code><a href="../reference/stack.html">current_env()</a></code> and <code><a href="../reference/stack.html">current_fn()</a></code> functions to retrieve the current environment or the function being evaluated. They are equivalent to <code><a href="https://rdrr.io/r/base/environment.html" class="external-link">base::environment()</a></code> and <code><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">base::sys.function()</a></code> called without argument.</p></li>
 <li><p><code><a href="../reference/env_get.html">env_get()</a></code> and <code><a href="../reference/env_get.html">env_get_list()</a></code> gain a <code>default</code> argument to provide a default value for non-existing bindings.</p></li>
 <li><p><code><a href="../reference/env_poke.html">env_poke()</a></code> now returns the old value invisibly rather than the input environment.</p></li>
 <li><p>The new function <code><a href="../reference/env_name.html">env_name()</a></code> returns the name of an environment. It always adds the “namespace:” prefix to namespace names. It returns “global” instead of “.GlobalEnv” or “R_GlobalEnv”, “empty” instead of “R_EmptyEnv”. The companion <code><a href="../reference/env_name.html">env_label()</a></code> is like <code><a href="../reference/env_name.html">env_name()</a></code> but returns the memory address for anonymous environments.</p></li>
@@ -746,7 +747,7 @@
 </ul></div>
 <div class="section level5">
 <h5 id="miscellaneous-0-3-0">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-3-0"></a></h5>
-<ul><li><p>Using <code><a href="../reference/get_env.html">get_env()</a></code> without supplying an environment is now soft-deprecated. Please use <code><a href="../reference/caller_env.html">current_env()</a></code> to retrieve the current environment.</p></li>
+<ul><li><p>Using <code><a href="../reference/get_env.html">get_env()</a></code> without supplying an environment is now soft-deprecated. Please use <code><a href="../reference/stack.html">current_env()</a></code> to retrieve the current environment.</p></li>
 <li><p>The frame and stack API is soft-deprecated. Some of the functionality has been replaced by <code><a href="../reference/trace_back.html">trace_back()</a></code>.</p></li>
 <li><p>The <code>new_vector_along()</code> family is soft-deprecated because these functions are longer to type than the equivalent <code><a href="../reference/rep_along.html">rep_along()</a></code> or <code><a href="../reference/rep_along.html">rep_named()</a></code> calls without added clarity.</p></li>
 <li>
