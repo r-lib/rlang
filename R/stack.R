@@ -51,6 +51,25 @@ sys_parents <- function(frame = caller_env()) {
   # Fix infloop parents caused by evaluation in non-frame environments
   parents[parents == seq_along(parents)] <- 0L
 
+  # Patch callers of frames that have the same environment which can
+  # happens with frames created by `eval()`. When duplicates
+  # environments are on the stack, `sys.parents()` returns the number
+  # of the oldest frame instead of the youngest. We fix this here to
+  # be consistent with `parent.frame()`.
+  frames <- as.list(sys.frames())
+  remaining_dups <- which(duplicated(frames) | duplicated(frames, fromLast = TRUE))
+
+  while (length(remaining_dups)) {
+    dups <- which(map_lgl(frames, identical, frames[[remaining_dups[[1]]]]))
+    remaining_dups <- setdiff(remaining_dups, dups)
+
+    # We're going to patch the callers of duplicate frames so discard
+    # any duplicate that doesn't have a caller
+    dups <- dups[dups < length(parents)]
+
+    parents[dups + 1L] <- dups
+  }
+
   parents
 }
 

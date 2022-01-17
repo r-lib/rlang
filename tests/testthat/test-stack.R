@@ -57,3 +57,31 @@ test_that("current_fn() and caller_fn() work", {
   f <- function() current_fn()
   expect_equal(f(), f)
 })
+
+test_that("Parents are matched to youngest duplicate frames", {
+  skip_on_cran()
+
+  out <- env()
+  f <- function() {
+    invisible(g(environment(), report("f")))
+  }
+  g <- function(env, arg) {
+    fn <- function() h(env, arg)
+    eval(as.call(list(fn)), env)
+  }
+  h <- function(env, arg) {
+    fn <- function() list(arg, report("h"))
+    eval(as.call(list(fn)), env)
+  }
+  report <- function(what) {
+    parents <- sys_parents()
+    env_poke(out, what, parents)
+  }
+
+  f()
+  f_parents <- tail(out[["f"]], 10) - length(out[["f"]]) + 10
+  h_parents <- tail(out[["h"]], 10) - length(out[["h"]]) + 10
+
+  expect_equal(f_parents, c(0:8, 1L))
+  expect_equal(h_parents, 0:9)
+})
