@@ -13,17 +13,7 @@
 #' @export
 caller_fn <- function(n = 1) {
   check_number(n)
-
-  # Can use promise-env matching when `n = 1` because this always
-  # matches the first occurrence. When `n > 1`, base frame matching
-  # iterates until it finds the oldest frame on the stack, which isn't
-  # what we want.
-  if (n == 1) {
-    frame_fn(caller_env(2))
-  } else {
-    parent <- sys_parent(n + 1)
-    if (parent) sys.function(parent) else NULL
-  }
+  frame_fn(caller_env(n + 1))
 }
 #' @rdname caller_fn
 #' @export

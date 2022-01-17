@@ -50,9 +50,11 @@ test_that("current_fn() and caller_fn() work", {
   expect_equal(f(1), g)
   expect_equal(f(2), f)
 
-  # Need to break the chain of callers to get `NULL`.
+  # Need to break the chain of callers to get an error at `n = 3`.
   # Otherwise we get the `eval()` frame from testthat
-  expect_null(eval_bare(quote(f(3)), env()))
+  expect_snapshot({
+    (expect_error(eval_bare(quote(f(3)), env())))
+  })
 
   f <- function() current_fn()
   expect_equal(f(), f)
