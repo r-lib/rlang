@@ -1,45 +1,167 @@
 #' Get properties of the current or caller frame
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
+#' These accessors retrieve properties of frames on the call stack.
+#' The prefix indicates for which frame a property should be accessed:
 #'
-#' * The current frame is the execution context of the function that
-#'   is currently being evaluated.
+#' * From the current frame with `current_` accessors.
+#' * From a calling frame with `caller_` accessors.
+#' * From a matching frame with `frame_` accessors.
 #'
-#' * The caller frame is the execution context of the function that
-#'   called the function currently being evaluated.
+#' The suffix indicates which property to retrieve:
 #'
-#' @section Life cycle:
-#' These functions are experimental.
+#' * `_fn` accessors return the function running in the frame.
+#' * `_call` accessors return the defused call with which the function
+#'   running in the frame was invoked.
+#' * `_env` accessors return the execution environment of the function
+#'   running in the frame.
 #'
 #' @param n The number of callers to go back.
+#' @param frame A frame environment of a currently running function,
+#'   as returned by [caller_env()]. `NULL` is returned if the
+#'   environment does not exist on the stack.
 #'
 #' @seealso [caller_env()] and [current_env()]
-#' @keywords internal
+#' @name stack
+NULL
+
+#' @rdname stack
 #' @export
-caller_fn <- function(n = 1) {
-  delayedAssign("do", sys.function(), eval.env = caller_env(n + 1))
-  do
+current_call <- function() {
+  caller_call()
 }
-#' @rdname caller_fn
+#' @rdname stack
 #' @export
 current_fn <- function() {
   caller_fn()
 }
-utils::globalVariables("do")
+#' @rdname stack
+#' @export
+current_env <- function() {
+  parent.frame()
+}
 
-caller_call <- function(n = 1L) {
-  if (is_environment(n)) {
-    parent <- detect_index(sys.frames(), identical, n, .right = TRUE)
-  } else {
-    parent <- sys.parent(n + 1L)
+#' @rdname stack
+#' @export
+caller_call <- function(n = 1) {
+  check_number(n)
+  frame_call(caller_env(n + 1))
+}
+#' @rdname stack
+#' @export
+caller_fn <- function(n = 1) {
+  check_number(n)
+  frame_fn(caller_env(n + 1))
+}
+#' @rdname stack
+#' @export
+caller_env <- function(n = 1) {
+  parent.frame(n + 1)
+}
+
+#' @rdname stack
+#' @export
+frame_call <- function(frame = caller_env()) {
+  check_environment(frame)
+  frame_get(frame, sys.call)
+}
+#' @rdname stack
+#' @export
+frame_fn <- function(frame = caller_env()) {
+  check_environment(frame)
+  frame_get(frame, sys.function)
+}
+
+frame_get <- function(frame, accessor) {
+  if (identical(frame, global_env())) {
+    return(NULL)
   }
 
-  if (parent) {
-    sys.call(parent)
+  # Match the oldest frame to find an actual execution environment if
+  # it exists rather than `eval()` frames
+  frames <- eval_bare(call2(sys.frames), frame)
+  i <- detect_index(frames, identical, frame)
+
+  if (i) {
+    accessor(i)
   } else {
     NULL
   }
+}
+
+# Respects the invariant: caller_env2() === evalq(caller_env2())
+caller_env2 <- function(n = 1, error_call = caller_env()) {
+  # Start from `current_env()` with `n + 1` because `caller_env()`
+  # might not be on the stack
+  parent <- sys_parent(
+    n + 1,
+    patch_eval = TRUE,
+    frame = current_env(),
+    error_call = error_call
+  )
+  sys.frame(parent)
+}
+
+sys_parent <- function(n,
+                       patch_eval = FALSE,
+                       frame = caller_env(),
+                       error_call = caller_env()) {
+  parents <- sys_parents(frame = frame)
+  if (n > length(parents)) {
+    msg <- sprintf(
+      "%s can't be larger than the number of calling frames.",
+      format_arg("n")
+    )
+    abort(msg, call = error_call)
+  }
+
+  if (!length(parents)) {
+    return(0L)
+  }
+
+  out <- length(parents)
+
+  while (n && out) {
+    if (patch_eval && identical(sys.function(out), prim_eval)) {
+      out <- parents[[out - 1]]
+    }
+    out <- parents[[out]]
+    n <- n - 1L
+  }
+
+  out
+}
+
+sys_parents <- function(frame = caller_env(), match_oldest = TRUE) {
+  parents <- eval_bare(call2(sys.parents), frame)
+
+  # Fix infloop parents caused by evaluation in non-frame environments
+  parents[parents == seq_along(parents)] <- 0L
+
+  if (match_oldest) {
+    return(parents)
+  }
+
+  # Patch callers of frames that have the same environment which can
+  # happens with frames created by `eval()`. When duplicates
+  # environments are on the stack, `sys.parents()` returns the number
+  # of the oldest frame instead of the youngest. We fix this here when
+  # requested to be consistent with `parent.frame()`.
+  frames <- as.list(sys.frames())
+  remaining_dups <- which(duplicated(frames) | duplicated(frames, fromLast = TRUE))
+
+  while (length(remaining_dups)) {
+    dups <- which(map_lgl(frames, identical, frames[[remaining_dups[[1]]]]))
+    remaining_dups <- setdiff(remaining_dups, dups)
+
+    # We're going to patch the callers of duplicate frames so discard
+    # any duplicate that doesn't have a caller
+    dups <- dups[dups < length(parents)]
+
+    parents[dups + 1L] <- dups
+  }
+
+  parents
 }
 
 #' Jump to or from a frame

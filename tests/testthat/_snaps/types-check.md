@@ -58,6 +58,45 @@
       Error in `checker()`:
       ! `foo` must be a single string, not a number.
 
+# `check_number()` checks
+
+    Code
+      err(checker(NA, check_number))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a round number, not `NA`.
+    Code
+      err(checker(int(), check_number))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a round number, not an empty integer vector.
+    Code
+      err(checker(na_dbl, check_number))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a round number, not a numeric `NA`.
+    Code
+      err(checker(na_int, check_number))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a round number, not an integer `NA`.
+    Code
+      err(checker(10:11, check_number))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a round number, not an integer vector.
+    Code
+      err(checker(10.5, check_number))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a round number, not a number.
+
 # `check_symbol()` checks
 
     Code

@@ -575,11 +575,11 @@ vec_coerce <- function(x, type) {
 #' `r lifecycle::badge("deprecated")`
 #' Deprecated as of rlang 0.3.0.
 #' @param n The number of frames to go back in the stack.
-#' @name stack
+#' @name stack-deprecated
 #' @keywords internal
 NULL
 
-#' @rdname stack
+#' @rdname stack-deprecated
 #' @export
 ctxt_frame <- function(n = 1) {
   # 2022-01: https://github.com/tidyverse/purrr/issues/851
@@ -605,7 +605,7 @@ ctxt_frame <- function(n = 1) {
 
 # 2022-01: Used in `ctxt_frame()`
 
-#' @rdname stack
+#' @rdname stack-deprecated
 #' @export
 global_frame <- function() {
   warn_deprecated("`global_frame()` is deprecated as of rlang 0.3.0.")

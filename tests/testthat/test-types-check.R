@@ -23,6 +23,20 @@ test_that("`check_string()` checks", {
   })
 })
 
+test_that("`check_number()` checks", {
+  expect_null(check_number(10))
+  expect_null(check_number(10L))
+
+  expect_snapshot({
+    err(checker(NA, check_number))
+    err(checker(int(), check_number))
+    err(checker(na_dbl, check_number))
+    err(checker(na_int, check_number))
+    err(checker(10:11, check_number))
+    err(checker(10.5, check_number))
+  })
+})
+
 test_that("`check_symbol()` checks", {
   expect_null(check_symbol(quote(foo)))
 
