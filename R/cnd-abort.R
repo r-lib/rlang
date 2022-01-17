@@ -1101,7 +1101,7 @@ error_call <- function(call) {
         i <- i - 1
         prev <- frames[[i]]
 
-        if (is_call(caller_call(prev), "NextMethod")) {
+        if (is_call(frame_call(prev), "NextMethod")) {
           next
         }
 
@@ -1114,7 +1114,7 @@ error_call <- function(call) {
       }
     }
 
-    call <- caller_call(call)
+    call <- frame_call(call)
     break
   }
 

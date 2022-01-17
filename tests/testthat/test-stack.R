@@ -50,11 +50,9 @@ test_that("current_fn() and caller_fn() work", {
   expect_equal(f(1), g)
   expect_equal(f(2), f)
 
-  # Need to break the chain of callers to get an error at `n = 3`.
+  # Need to break the chain of callers to get `NULL` at `n = 3`.
   # Otherwise we get the `eval()` frame from testthat
-  expect_snapshot({
-    (expect_error(eval_bare(quote(f(3)), env())))
-  })
+  expect_null(eval_bare(quote(f(3)), env()))
 
   f <- function() current_fn()
   expect_equal(f(), f)
@@ -76,7 +74,7 @@ test_that("Parents are matched to youngest duplicate frames", {
     eval(as.call(list(fn)), env)
   }
   report <- function(what) {
-    parents <- sys_parents()
+    parents <- sys_parents(match_oldest = FALSE)
     env_poke(out, what, parents)
   }
 
@@ -114,7 +112,47 @@ test_that("frame_fn() returns the function of the supplied frame", {
   f <- function() {
     eval_bare(quote(g(current_env())), env())
   }
-  expect_snapshot({
-    (expect_error(f()))
-  })
+  expect_null(f())
+})
+
+test_that("current_call(), caller_call() and frame_call() work", {
+  expect_null(eval_bare(call2(current_call), global_env()))
+  expect_null(eval_bare(call2(caller_call), global_env()))
+  expect_null(eval_bare(call2(frame_call), global_env()))
+
+  f <- function() {
+    this <- current_call()
+    that <- g()
+    expect_equal(this, quote(f()))
+    expect_equal(this, that)
+  }
+  g <- function() caller_call()
+  f()
+
+  f <- function() g()
+  g <- function() {
+    direct <- frame_call()
+    indirect <- evalq(frame_call())
+    expect_equal(direct, indirect)
+  }
+  f()
+
+  f <- function() g()
+  g <- function() {
+    direct <- caller_call()
+    indirect <- h(current_env())
+    expect_equal(indirect, direct)
+  }
+  h <- function(env) evalq(caller_call(), env)
+  f()
+})
+
+test_that("caller_env2() respects invariant", {
+  f <- function() h()
+  h <- function() {
+    indirect <- evalq(caller_env2())
+    direct <- caller_env2()
+    expect_equal(indirect, direct)
+  }
+  f()
 })

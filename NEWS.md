@@ -72,6 +72,9 @@
 
 ## Features and bugfixes
 
+* New `current_call()`, `caller_call()`, and `frame_call()`
+  accessors. New `frame_fn()` accessor.
+
 * `abort()` gains a `.internal` argument. When set to `TRUE`, a footer
   bullet is added to `message` to let the user know that the error is
   internal and that they should report it to the package authors.
