@@ -35,7 +35,13 @@ current_call <- function() {
 current_fn <- function() {
   caller_fn()
 }
+#' @rdname stack
+#' @export
+current_env <- function() {
+  parent.frame()
+}
 
+#' @rdname stack
 #' @export
 caller_call <- function(n = 1) {
   check_number(n)
@@ -46,6 +52,11 @@ caller_call <- function(n = 1) {
 caller_fn <- function(n = 1) {
   check_number(n)
   frame_fn(caller_env2(n + 1))
+}
+#' @rdname stack
+#' @export
+caller_env <- function(n = 1) {
+  parent.frame(n + 1)
 }
 
 #' @rdname stack

@@ -4,7 +4,10 @@
 \alias{stack}
 \alias{current_call}
 \alias{current_fn}
+\alias{current_env}
+\alias{caller_call}
 \alias{caller_fn}
+\alias{caller_env}
 \alias{frame_call}
 \alias{frame_fn}
 \title{Get properties of the current or caller frame}
@@ -13,7 +16,13 @@ current_call()
 
 current_fn()
 
+current_env()
+
+caller_call(n = 1)
+
 caller_fn(n = 1)
+
+caller_env(n = 1)
 
 frame_call(frame = caller_env())
 
