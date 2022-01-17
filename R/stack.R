@@ -3,8 +3,11 @@
 #' @description
 #' * `current_fn()` returns the function of the current frame.
 #' * `caller_fn()` returns the function of the calling frame.
+#' * `frame_fn()` returns the function of the supplied frame.
 #'
 #' @param n The number of callers to go back.
+#' @param frame A frame environment of a currently running function,
+#'   as returned by [caller_env()].
 #'
 #' @seealso [caller_env()] and [current_env()]
 #' @export
@@ -16,7 +19,7 @@ caller_fn <- function(n = 1) {
   # iterates until it finds the oldest frame on the stack, which isn't
   # what we want.
   if (n == 1) {
-    eval_bare(call2(sys.function), caller_env(2))
+    frame_fn(caller_env(2))
   } else {
     parent <- sys_parent(n + 1)
     if (parent) sys.function(parent) else NULL
@@ -26,6 +29,24 @@ caller_fn <- function(n = 1) {
 #' @export
 current_fn <- function() {
   caller_fn()
+}
+#' @rdname caller_fn
+#' @export
+frame_fn <- function(frame = caller_env()) {
+  check_environment(frame)
+
+  # Match the oldest frame to find an actual execution environment if
+  # it exists rather than `eval()` frames
+  frames <- eval_bare(call2(sys.frames), frame)
+  if (i <- detect_index(frames, identical, frame)) {
+    return(sys.function(i))
+  }
+
+  msg <- sprintf(
+    "%s must be the environment of a currently running function.",
+    format_arg("frame")
+  )
+  abort(msg)
 }
 
 sys_parent <- function(n, frame = caller_env()) {

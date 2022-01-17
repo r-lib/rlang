@@ -85,3 +85,34 @@ test_that("Parents are matched to youngest duplicate frames", {
   expect_equal(f_parents, c(0:8, 1L))
   expect_equal(h_parents, 0:9)
 })
+
+test_that("frame_fn() returns the function of the supplied frame", {
+  f <- function() {
+    identity(g(current_env()))
+  }
+  g <- function(frame) {
+    identity(h(frame))
+  }
+  h <- function(frame) {
+    tryCatch(frame_fn(frame))
+  }
+  expect_equal(f(), f)
+
+  f <- function() {
+    evalq(g(current_env()))
+  }
+  expect_equal(f(), f)
+
+  f <- function() {
+    evalq(g(current_env()), env())
+  }
+  eval_prim <- eval(call2(sys.function))
+  expect_equal(f(), eval_prim)
+
+  f <- function() {
+    eval_bare(quote(g(current_env())), env())
+  }
+  expect_snapshot({
+    (expect_error(f()))
+  })
+})

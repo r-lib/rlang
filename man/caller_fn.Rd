@@ -3,19 +3,26 @@
 \name{caller_fn}
 \alias{caller_fn}
 \alias{current_fn}
+\alias{frame_fn}
 \title{Get properties of the current or caller frame}
 \usage{
 caller_fn(n = 1)
 
 current_fn()
+
+frame_fn(frame = caller_env())
 }
 \arguments{
 \item{n}{The number of callers to go back.}
+
+\item{frame}{A frame environment of a currently running function,
+as returned by \code{\link[=caller_env]{caller_env()}}.}
 }
 \description{
 \itemize{
 \item \code{current_fn()} returns the function of the current frame.
 \item \code{caller_fn()} returns the function of the calling frame.
+\item \code{frame_fn()} returns the function of the supplied frame.
 }
 }
 \seealso{
