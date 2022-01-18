@@ -146,6 +146,15 @@ test_that("is_missing() works with enclosed arguments", {
   #> ! argument "other" is missing, with no default
 })
 
+test_that("is_missing() works in unframed envs", {
+  expect_false(inject(is_missing(foo), env(foo = 2)))
+  expect_true(inject(is_missing(foo), env(foo = missing_arg())))
+
+  # Should not be an error, see previous test
+  expect_error((function(x) inject(is_missing(x), env()))())
+  #> ! 'missing' can only be used for arguments
+})
+
 test_that("check_required() checks argument is supplied (#1118)", {
   f <- function(x) check_required(x)
   g <- function(y) f(y)
