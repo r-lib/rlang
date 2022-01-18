@@ -125,6 +125,27 @@ test_that("is_missing() works with dots", {
   expect_false((function(...) is_missing(..1))(1))
 })
 
+test_that("is_missing() works with enclosed arguments", {
+  # FIXME: Probably none of these should be errors
+
+  clo <- (function(other = 1) function() is_missing(other))()
+  expect_error(clo())
+  #> ! 'missing' can only be used for arguments
+
+  clo <- (function(other) function() is_missing(other))()
+  expect_error(clo())
+  #> ! 'missing' can only be used for arguments
+
+  is_missing2 <- function(x) is_missing(x)
+
+  clo <- (function(other = 1) function() is_missing2(other))()
+  expect_false(clo())
+
+  clo <- (function(other) function() is_missing2(other))()
+  expect_error(clo())
+  #> ! argument "other" is missing, with no default
+})
+
 test_that("check_required() checks argument is supplied (#1118)", {
   f <- function(x) check_required(x)
   g <- function(y) f(y)
