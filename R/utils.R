@@ -343,9 +343,7 @@ new_stack <- function() {
   ))
 }
 
-# FIXME: Use an unlikely sentinel like `as.symbol(".__exhausted__.")`
-# https://github.com/r-lib/coro/issues/35
-exhausted <- function() as.symbol("exhausted")
+exhausted <- function() as.symbol(".__exhausted__.")
 is_exhausted <- function(x) identical(x, exhausted())
 
 path_trim_prefix <- function(path, n) {
