@@ -116,8 +116,38 @@ test_that("maybe_missing() forwards missing value", {
 })
 
 test_that("is_missing() works with default arguments", {
-  expect_true((function(x = 1) is_missing(x))())
+  expect_false((function(x = 1) is_missing(x))())
   expect_false((function(x = 1) is_missing(x))(1))
+
+  bare <- function(x) is_missing(x)
+  default <- function(x = 1) is_missing(x)
+
+  bare_bare <- function(x) bare(x)
+  bare_default <- function(x) default(x)
+
+  default_bare <- function(x = 1) bare(x)
+  default_default <- function(x = 1) default(x)
+
+  expect_true(bare())
+  expect_true(bare_bare())
+  expect_true(bare_default())
+
+  expect_false(default())
+  expect_false(default_bare())
+  expect_false(default_default())
+
+  expect_true(bare(missing_arg()))
+  expect_true(bare_bare(missing_arg()))
+  expect_true(default(missing_arg()))
+  expect_true(bare_default(missing_arg()))
+  expect_true(default_bare(missing_arg()))
+  expect_true(default_default(missing_arg()))
+})
+
+test_that("is_missing() detects defaults that evaluate to the missing arg", {
+  deprecated <- function() missing_arg()
+  fn <- function(x = deprecated()) is_missing(x)
+  expect_true(fn())
 })
 
 test_that("is_missing() works with dots", {
@@ -125,12 +155,11 @@ test_that("is_missing() works with dots", {
   expect_false((function(...) is_missing(..1))(1))
 })
 
-test_that("is_missing() works with enclosed arguments", {
-  # FIXME: Probably none of these should be errors
-
+test_that("is_missing() works with enclosed arguments (currently doesn't)", {
   clo <- (function(other = 1) function() is_missing(other))()
-  expect_error(clo())
-  #> ! 'missing' can only be used for arguments
+  expect_false(clo())
+
+  # FIXME: Probably none of these should be errors
 
   clo <- (function(other) function() is_missing(other))()
   expect_error(clo())
@@ -147,10 +176,29 @@ test_that("is_missing() works with enclosed arguments", {
 })
 
 test_that("is_missing() in child envs", {
-  # FIXME: Sholud not be an error
-  f <- function(x = 1) local(is_missing(x))
+  # FIXME: Should not be an error
+  f <- function(x) local(is_missing(x))
   expect_error(f())
-  #> ! 'missing' can only be used for arguments
+  #> ! argument "x" is missing, with no default
+
+  f <- function(x = 1) local(is_missing(x))
+  expect_false(f())
+})
+
+test_that("is_missing() is transitive", {
+  caller <- function(y) f(y)
+
+  f <- function(x = y, y = "foo") is_missing(x)
+  expect_false(f())
+  expect_true(caller())
+
+  f <- function(x = y, y) is_missing(x)
+  expect_true(f())
+  expect_true(caller())
+
+  f <- function(x = y, y = deprecated()) is_missing(x)
+  expect_true(f())
+  expect_true(caller())
 })
 
 test_that("is_missing() works in unframed envs", {

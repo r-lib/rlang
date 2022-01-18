@@ -69,6 +69,7 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_f_lhs",                        (DL_FUNC) &r_f_lhs, 1},
   {"ffi_f_rhs",                        (DL_FUNC) &r_f_rhs, 1},
   {"ffi_find_var",                     (DL_FUNC) &ffi_find_var, 2},
+  {"ffi_find_var_in_frame",            (DL_FUNC) &ffi_find_var_in_frame, 2},
   {"ffi_fini_rlang",                   (DL_FUNC) &ffi_fini_rlang, 0},
   {"ffi_format_error_arg",             (DL_FUNC) &ffi_format_error_arg, 1},
   {"ffi_get_expression",               (DL_FUNC) &ffi_get_expression, 2},
