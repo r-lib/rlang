@@ -426,10 +426,6 @@
 
 * `arg_match()` now mentions the supplied argument (#1113).
 
-* `is_missing()` now never treats arguments with a default as missing,
-  unlike `base::missing()` which treat them as missing depending on
-  the context (#1106).
-
 * `is_bare_formula()` now handles the `scoped` argument
   consistently. The default has been changed to `TRUE` for
   compatibility with the historical default behaviour (#1115).

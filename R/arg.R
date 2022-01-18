@@ -468,34 +468,7 @@ missing_arg <- function() {
 #' @rdname missing_arg
 #' @export
 is_missing <- function(x) {
-  arg <- substitute(x)
-  env <- caller_env()
-
-  if (!is_symbol(arg)) {
-    return(is_missing0(x))
-  }
-  if (!inject(base::missing(!!arg), env)) {
-    return(is_missing0(x))
-  }
-
-  if (typeof(find_var_in_frame(env, arg)) != "promise") {
-    return(TRUE)
-  }
-
-  fn <- eval_bare(call2(sys.function), env)
-
-  # Be defensive because `is_missing()` may be called in arbitrary
-  # contexts to check that a normal binding points to the missing arg
-  if (is_null(fn)) {
-    return(TRUE)
-  }
-
-  # If this is a formal argument defined with a default we never treat
-  # it as missing, unlike `base::missing()`
-  identical(formals(fn)[[arg]], missing_arg())
-}
-is_missing0 <- function(x) {
-  is_reference(x, quote(expr = ))
+  missing(x) || identical(x, quote(expr = ))
 }
 
 #' @rdname missing_arg
