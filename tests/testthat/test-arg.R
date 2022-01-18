@@ -146,6 +146,13 @@ test_that("is_missing() works with enclosed arguments", {
   #> ! argument "other" is missing, with no default
 })
 
+test_that("is_missing() in child envs", {
+  # FIXME: Sholud not be an error
+  f <- function(x = 1) local(is_missing(x))
+  expect_error(f())
+  #> ! 'missing' can only be used for arguments
+})
+
 test_that("is_missing() works in unframed envs", {
   expect_false(inject(is_missing(foo), env(foo = 2)))
   expect_true(inject(is_missing(foo), env(foo = missing_arg())))
