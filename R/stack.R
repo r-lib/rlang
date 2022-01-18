@@ -78,15 +78,17 @@ frame_get <- function(frame, accessor) {
   }
 
   # Match the oldest frame to find an actual execution environment if
-  # it exists rather than `eval()` frames
+  # it exists. Using the `eval_bare(call2(accessor), frame)` trick
+  # would match from the bottom and might encounter `eval()` frames.
   frames <- eval_bare(call2(sys.frames), frame)
-  i <- detect_index(frames, identical, frame)
 
-  if (i) {
-    accessor(i)
-  } else {
-    NULL
+  for (i in seq_along(frames)) {
+    if (identical(frames[[i]], frame)) {
+      return(accessor(i))
+    }
   }
+
+  NULL
 }
 
 # Respects the invariant: caller_env2() === evalq(caller_env2())
