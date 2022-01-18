@@ -4,22 +4,22 @@
 \alias{check_required}
 \title{Check that argument is supplied}
 \usage{
-check_required(arg, error_arg = caller_arg(arg), error_call = caller_env())
+check_required(x, arg = caller_arg(x), call = caller_env())
 }
 \arguments{
-\item{arg}{A function argument. Must be a symbol.}
+\item{x}{A function argument. Must be a symbol.}
 
-\item{error_arg}{An argument name as a string. This argument
+\item{arg}{An argument name as a string. This argument
 will be mentioned in error messages as the input that is at the
 origin of a problem.}
 
-\item{error_call}{The execution environment of a currently
+\item{call}{The execution environment of a currently
 running function, e.g. \code{caller_env()}. The function will be
 mentioned in error messages as the source of the error. See the
 \code{call} argument of \code{\link[=abort]{abort()}} for more information.}
 }
 \description{
-Throws an informative error if \code{arg} is missing.
+Throws an error if \code{x} is missing.
 }
 \examples{
 f <- function(x)  {

@@ -291,12 +291,12 @@ test_that("abort() displays call in error prefix", {
 })
 
 test_that("abort() accepts environment as `call` field.", {
-  check_required2 <- function(arg, error_call = caller_call()) {
-    check_required(arg, error_call = error_call)
+  check_required2 <- function(arg, call = caller_call()) {
+    check_required(arg, call = call)
   }
   f <- function(x) g(x)
   g <- function(x) h(x)
-  h <- function(x) check_required2(x, error_call = environment())
+  h <- function(x) check_required2(x, call = environment())
 
   expect_snapshot((expect_error(f())))
 })

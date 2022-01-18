@@ -162,8 +162,9 @@ arg_match_invalid_msg <- function(val, values, error_arg) {
 
 #' Check that argument is supplied
 #'
-#' Throws an informative error if `arg` is missing.
-#' @param arg A function argument. Must be a symbol.
+#' Throws an error if `x` is missing.
+#'
+#' @param x A function argument. Must be a symbol.
 #' @inheritParams args_error_context
 #'
 #' @seealso [arg_match()]
@@ -178,20 +179,20 @@ arg_match_invalid_msg <- function(val, values, error_arg) {
 #' # Succeeds
 #' f(NULL)
 #' @export
-check_required <- function(arg,
-                           error_arg = caller_arg(arg),
-                           error_call = caller_env()) {
-  if (!missing(arg)) {
+check_required <- function(x,
+                           arg = caller_arg(x),
+                           call = caller_env()) {
+  if (!missing(x)) {
     invisible(return(TRUE))
   }
 
-  arg_expr <- substitute(arg)
+  arg_expr <- substitute(x)
   if (!is_symbol(arg_expr)) {
-    abort(sprintf("%s must be an argument name.", format_arg("arg")))
+    abort(sprintf("%s must be an argument name.", format_arg("x")))
   }
 
-  msg <- sprintf("%s must be supplied.", format_arg(error_arg))
-  abort(msg, call = error_call)
+  msg <- sprintf("%s must be supplied.", format_arg(arg))
+  abort(msg, call = call)
 }
 
 chr_quoted <- function(chr, type = "`") {
