@@ -25,7 +25,8 @@ object.
 \item \code{missing_arg()} generates a missing argument.
 \item \code{is_missing()} is like \code{\link[base:missing]{base::missing()}} but also supports
 testing for missing arguments contained in other objects like
-lists.
+lists. It is also more consistent with default arguments which
+are never treated as missing (see section below).
 \item \code{maybe_missing()} is useful to pass down an input that might be
 missing to another function, potentially substituting by a
 default value. It avoids triggering an "argument is missing" error.
@@ -40,6 +41,40 @@ argument object.
 \item \code{quo()} called without argument creates an empty quosure, i.e. a
 quosure containing the missing argument object.
 }
+}
+
+\section{\code{is_missing()} and default arguments}{
+
+
+The base function \code{\link[=missing]{missing()}} makes a distinction between default
+values supplied explicitly and default values generated through a
+missing argument:\if{html}{\out{<div class="sourceCode r">}}\preformatted{fn <- function(x = 1) base::missing(x)
+
+fn()
+}\if{html}{\out{</div>}}\preformatted{## [1] TRUE
+}\if{html}{\out{<div class="sourceCode r">}}\preformatted{fn(1)
+}\if{html}{\out{</div>}}\preformatted{## [1] FALSE
+}
+
+This only happens within a function. If the default value has been
+generated in a calling function, it is never treated as missing:\if{html}{\out{<div class="sourceCode r">}}\preformatted{caller <- function(x = 1) fn(x)
+caller()
+}\if{html}{\out{</div>}}\preformatted{## [1] FALSE
+}
+
+\code{rlang::is_missing()} simplifies these rules by never treating
+default arguments as missing, even in internal contexts:\if{html}{\out{<div class="sourceCode r">}}\preformatted{fn <- function(x = 1) rlang::is_missing(x)
+
+fn()
+}\if{html}{\out{</div>}}\preformatted{## [1] FALSE
+}\if{html}{\out{<div class="sourceCode r">}}\preformatted{fn(1)
+}\if{html}{\out{</div>}}\preformatted{## [1] FALSE
+}
+
+This is a little less flexible because you can't specialise
+behaviour based on implicitly supplied default values. However,
+this makes the behaviour of \code{is_missing()} and functions using it
+simpler to understand.
 }
 
 \section{Fragility of the missing argument object}{

@@ -92,7 +92,11 @@ vec_alloc <- function(type, n) {
   .Call(ffi_vec_alloc, type, n)
 }
 
+# Note that the C-level function has inverted arguments
 find_var <- function(env, sym) {
+  .Call(ffi_find_var, env, sym);
+}
+find_var_in_frame <- function(env, sym) {
   .Call(ffi_find_var, env, sym);
 }
 

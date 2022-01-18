@@ -712,6 +712,9 @@ r_obj* ffi_named(r_obj* x, r_obj* env) {
 r_obj* ffi_find_var(r_obj* env, r_obj* sym) {
   return Rf_findVar(sym, env);
 }
+r_obj* ffi_find_var_in_frame(r_obj* env, r_obj* sym) {
+  return Rf_findVarInFrame(env, sym);
+}
 
 r_obj* ffi_chr_get(r_obj* x, r_obj* i) {
   if (r_typeof(i) != R_TYPE_integer || r_length(i) != 1) {

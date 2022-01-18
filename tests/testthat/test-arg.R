@@ -116,8 +116,32 @@ test_that("maybe_missing() forwards missing value", {
 })
 
 test_that("is_missing() works with default arguments", {
-  expect_true((function(x = 1) is_missing(x))())
+  expect_false((function(x = 1) is_missing(x))())
   expect_false((function(x = 1) is_missing(x))(1))
+
+  bare <- function(x) is_missing(x)
+  default <- function(x = 1) is_missing(x)
+
+  bare_bare <- function(x) bare(x)
+  bare_default <- function(x) default(x)
+
+  default_bare <- function(x = 1) bare(x)
+  default_default <- function(x = 1) default(x)
+
+  expect_true(bare())
+  expect_true(bare_bare())
+
+  expect_false(default())
+  expect_false(bare_default())
+  expect_false(default_bare())
+  expect_false(default_default())
+
+  expect_true(bare(missing_arg()))
+  expect_true(bare_bare(missing_arg()))
+  expect_true(default(missing_arg()))
+  expect_true(bare_default(missing_arg()))
+  expect_true(default_bare(missing_arg()))
+  expect_true(default_default(missing_arg()))
 })
 
 test_that("is_missing() works with dots", {
