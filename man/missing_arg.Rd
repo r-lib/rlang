@@ -48,16 +48,26 @@ quosure containing the missing argument object.
 The missing argument is an object that triggers an error if and
 only if it is the result of evaluating a symbol. No error is
 produced when a function call evaluates to the missing argument
-object. This means that expressions like \code{x[[1]] <- missing_arg()}
-are perfectly safe. Likewise, \code{x[[1]]} is safe even if the result
-is the missing object.
+object. For instance, it is possible to bind the missing argument
+to a variable with an expression like \code{x[[1]] <- missing_arg()}.
+Likewise, \code{x[[1]]} is safe to use as argument, e.g. \code{list(x[[1]])}
+even when the result is the missing object.
 
 However, as soon as the missing argument is passed down between
-functions through an argument, you're at risk of triggering a
-missing error. This is because arguments are passed through
-symbols. To work around this, \code{is_missing()} and \code{maybe_missing(x)}
-use a bit of magic to determine if the input is the missing
-argument without triggering a missing error.
+functions through a bare variable, it is likely to cause a missing
+argument error:\if{html}{\out{<div class="sourceCode r">}}\preformatted{x <- missing_arg()
+list(x)
+#> Error:
+#> ! argument "x" is missing, with no default
+}\if{html}{\out{</div>}}
+
+To work around this, \code{is_missing()} and \code{maybe_missing(x)} use a
+bit of magic to determine if the input is the missing argument
+without triggering a missing error.\if{html}{\out{<div class="sourceCode r">}}\preformatted{x <- missing_arg()
+list(maybe_missing(x))
+#> [[1]]
+#>
+}\if{html}{\out{</div>}}
 
 \code{maybe_missing()} is particularly useful for prototyping
 meta-programming algorithms in R. The missing argument is a likely
@@ -67,14 +77,6 @@ return the missing argument and pass it to other C functions, this
 is not the case on the R side. If you're implementing your
 meta-programming algorithm in R, use \code{maybe_missing()} when an
 input might be the missing argument object.
-}
-
-\section{Life cycle}{
-
-\itemize{
-\item \code{missing_arg()} and \code{is_missing()} are stable.
-\item Like the rest of rlang, \code{maybe_missing()} is maturing.
-}
 }
 
 \examples{
