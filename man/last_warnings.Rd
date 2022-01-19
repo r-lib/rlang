@@ -69,27 +69,30 @@ To get a full backtrace, use \code{\link[=summary]{summary()}}. In this case the
 backtraces do not include more information:\if{html}{\out{<div class="sourceCode r">}}\preformatted{summary(last_warnings())
 #> [[1]]
 #> <warning/rlang_warning>
-#> Warning in `f()`: foo
+#> Warning in `f()`:
+#> foo
 #> Backtrace:
-#>     ▆
-#>  1. └─global f()
+#>     x
+#>  1. \\-global f()
 #>
 #> [[2]]
 #> <warning/rlang_warning>
-#> Warning in `g()`: bar
+#> Warning in `g()`:
+#> bar
 #> Backtrace:
-#>     ▆
-#>  1. └─global f()
-#>  2.   └─global g()
+#>     x
+#>  1. \\-global f()
+#>  2.   \\-global g()
 #>
 #> [[3]]
 #> <warning/rlang_warning>
-#> Warning in `h()`: baz
+#> Warning in `h()`:
+#> baz
 #> Backtrace:
-#>     ▆
-#>  1. └─global f()
-#>  2.   └─global g()
-#>  3.     └─global h()
+#>     x
+#>  1. \\-global f()
+#>  2.   \\-global g()
+#>  3.     \\-global h()
 }\if{html}{\out{</div>}}
 }
 

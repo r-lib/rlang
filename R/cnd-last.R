@@ -138,27 +138,30 @@ last_error_env <- function() {
 #' summary(last_warnings())
 #' #> [[1]]
 #' #> <warning/rlang_warning>
-#' #> Warning in `f()`: foo
+#' #> Warning in `f()`:
+#' #> foo
 #' #> Backtrace:
-#' #>     ▆
-#' #>  1. └─global f()
+#' #>     x
+#' #>  1. \-global f()
 #' #>
 #' #> [[2]]
 #' #> <warning/rlang_warning>
-#' #> Warning in `g()`: bar
+#' #> Warning in `g()`:
+#' #> bar
 #' #> Backtrace:
-#' #>     ▆
-#' #>  1. └─global f()
-#' #>  2.   └─global g()
+#' #>     x
+#' #>  1. \-global f()
+#' #>  2.   \-global g()
 #' #>
 #' #> [[3]]
 #' #> <warning/rlang_warning>
-#' #> Warning in `h()`: baz
+#' #> Warning in `h()`:
+#' #> baz
 #' #> Backtrace:
-#' #>     ▆
-#' #>  1. └─global f()
-#' #>  2.   └─global g()
-#' #>  3.     └─global h()
+#' #>     x
+#' #>  1. \-global f()
+#' #>  2.   \-global g()
+#' #>  3.     \-global h()
 #' ```
 #'
 #' @export
