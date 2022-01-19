@@ -878,7 +878,7 @@
     Output
       <error/rlang_error>
       Error in `h()`:
-      ! `arg` must be supplied.
+      ! `arg` is absent but must be supplied.
 
 # local_error_call() works
 

@@ -99,13 +99,13 @@
     Output
       <error/rlang_error>
       Error in `f()`:
-      ! `x` must be supplied.
+      ! `x` is absent but must be supplied.
     Code
       (expect_error(g()))
     Output
       <error/rlang_error>
       Error in `f()`:
-      ! `x` must be supplied.
+      ! `x` is absent but must be supplied.
 
 # arg_match() supports symbols and scalar strings
 

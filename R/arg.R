@@ -191,7 +191,7 @@ check_required <- function(x,
     abort(sprintf("%s must be an argument name.", format_arg("x")))
   }
 
-  msg <- sprintf("%s must be supplied.", format_arg(arg))
+  msg <- sprintf("%s is absent but must be supplied.", format_arg(arg))
   abort(msg, call = call)
 }
 
