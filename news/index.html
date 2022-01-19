@@ -16,7 +16,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.0.9003</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -93,9 +93,9 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="development version" id="rlang-development-version">rlang (development version)<a class="anchor" aria-label="anchor" href="#rlang-development-version"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.0.0" id="rlang-100">rlang 1.0.0<a class="anchor" aria-label="anchor" href="#rlang-100"></a></h2>
 <div class="section level3">
-<h3 id="breaking-changes-development-version">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-development-version"></a></h3>
+<h3 id="breaking-changes-1-0-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-1-0-0"></a></h3>
 <ul><li>
 <p>The <code>.data</code> object exported by rlang now fails when subsetted instead of returning <code>NULL</code>. This new error helps you detect when <code>.data</code> is used in the wrong context.</p>
 <p>We’ve noticed several packages failing after this change because they were using <code>.data</code> outside of a data-masking context. For instance the <code>by</code> argument of <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">dplyr::join()</a></code> is not data-masked. Previously <code>dplyr::join(by = .data$foo)</code> would silently be interpreted as <code>dplyr::join(by = NULL)</code>. This is now an error.</p>
@@ -123,7 +123,7 @@
 <li><p><code>with_abort()</code> has been removed from the package.</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="features-and-bugfixes-development-version">Features and bugfixes<a class="anchor" aria-label="anchor" href="#features-and-bugfixes-development-version"></a></h3>
+<h3 id="features-and-bugfixes-1-0-0">Features and bugfixes<a class="anchor" aria-label="anchor" href="#features-and-bugfixes-1-0-0"></a></h3>
 <ul><li><p>New <code><a href="../reference/stack.html">current_call()</a></code>, <code><a href="../reference/stack.html">caller_call()</a></code>, and <code><a href="../reference/stack.html">frame_call()</a></code> accessors. New <code><a href="../reference/stack.html">frame_fn()</a></code> accessor.</p></li>
 <li><p><code><a href="../reference/abort.html">abort()</a></code> gains a <code>.internal</code> argument. When set to <code>TRUE</code>, a footer bullet is added to <code>message</code> to let the user know that the error is internal and that they should report it to the package authors.</p></li>
 <li><p><code><a href="../reference/is_installed.html">is_installed()</a></code> and <code><a href="../reference/is_installed.html">check_installed()</a></code> now support DESCRIPTION-style version requirements like <code>"rlang (&gt;= 1.0)"</code>. They also gain <code>version</code> and <code>compare</code> arguments to supply requirements programmatically.</p></li>

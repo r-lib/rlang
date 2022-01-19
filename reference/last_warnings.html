@@ -28,7 +28,7 @@ conditions with a full backtrace."><meta property="og:image" content="https://rl
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.0.9003</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -169,27 +169,30 @@ about the call stack:</p><div class="sourceCode r"><pre><code><span class="va">f
 backtraces do not include more information:</p><div class="sourceCode r"><pre><code><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/last_warnings.html">last_warnings</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [[1]]</span>
 <span class="co">#&gt; &lt;warning/rlang_warning&gt;</span>
-<span class="co">#&gt; Warning in `f()`: foo</span>
+<span class="co">#&gt; Warning in `f()`:</span>
+<span class="co">#&gt; foo</span>
 <span class="co">#&gt; Backtrace:</span>
-<span class="co">#&gt;     ▆</span>
-<span class="co">#&gt;  1. └─global f()</span>
+<span class="co">#&gt;     x</span>
+<span class="co">#&gt;  1. \-global f()</span>
 <span class="co">#&gt;</span>
 <span class="co">#&gt; [[2]]</span>
 <span class="co">#&gt; &lt;warning/rlang_warning&gt;</span>
-<span class="co">#&gt; Warning in `g()`: bar</span>
+<span class="co">#&gt; Warning in `g()`:</span>
+<span class="co">#&gt; bar</span>
 <span class="co">#&gt; Backtrace:</span>
-<span class="co">#&gt;     ▆</span>
-<span class="co">#&gt;  1. └─global f()</span>
-<span class="co">#&gt;  2.   └─global g()</span>
+<span class="co">#&gt;     x</span>
+<span class="co">#&gt;  1. \-global f()</span>
+<span class="co">#&gt;  2.   \-global g()</span>
 <span class="co">#&gt;</span>
 <span class="co">#&gt; [[3]]</span>
 <span class="co">#&gt; &lt;warning/rlang_warning&gt;</span>
-<span class="co">#&gt; Warning in `h()`: baz</span>
+<span class="co">#&gt; Warning in `h()`:</span>
+<span class="co">#&gt; baz</span>
 <span class="co">#&gt; Backtrace:</span>
-<span class="co">#&gt;     ▆</span>
-<span class="co">#&gt;  1. └─global f()</span>
-<span class="co">#&gt;  2.   └─global g()</span>
-<span class="co">#&gt;  3.     └─global h()</span></code></pre><p></p></div>
+<span class="co">#&gt;     x</span>
+<span class="co">#&gt;  1. \-global f()</span>
+<span class="co">#&gt;  2.   \-global g()</span>
+<span class="co">#&gt;  3.     \-global h()</span></code></pre><p></p></div>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
