@@ -284,8 +284,6 @@
       print(err)
     Output
       <error/foo>
-      Error:
-      ! 
 
 # base parent errors are printed with rlang method
 

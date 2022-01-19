@@ -104,6 +104,9 @@ cnd_backtrace_on_error <- function(cnd) {
 
 cnd_message_format <- function(cnd, ..., alert = FALSE) {
   lines <- cnd_message_lines(cnd, ...)
+  if (is_string(lines, "")) {
+    return("")
+  }
 
   needs_alert <-
     alert &&
@@ -122,11 +125,9 @@ cnd_message_format <- function(cnd, ..., alert = FALSE) {
     names2(lines)[[1]] <- "!"
   }
 
-  # FIXME! Use `format_message()` instead of `format_error()` until
-  # https://github.com/r-lib/cli/issues/345 is fixed
   cli_format <- switch(
     cnd_type(cnd),
-    error = cli::format_message,
+    error = cli::format_error,
     warning = cli::format_warning,
     cli::format_message
   )
