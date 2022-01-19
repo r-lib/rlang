@@ -231,7 +231,7 @@ Run `cloud_details(, "NA")` for more info
 * GitHub: https://github.com/AlbertoAlmuinha/bayesmodels
 * Source code: https://github.com/cran/bayesmodels
 * Date/Publication: 2021-06-28 21:30:02 UTC
-* Number of recursive dependencies: 257
+* Number of recursive dependencies: 259
 
 Run `cloud_details(, "bayesmodels")` for more info
 
@@ -353,70 +353,6 @@ Run `cloud_details(, "NA")` for more info
 
 ```
 
-
-
-
-
-
-```
-# CausalImpact
-
-<details>
-
-* Version: 1.2.7
-* GitHub: NA
-* Source code: https://github.com/cran/CausalImpact
-* Date/Publication: 2021-06-07 06:40:02 UTC
-* Number of recursive dependencies: 68
-
-Run `cloud_details(, "CausalImpact")` for more info
-
-</details>
-
-## Error before installation
-
-### Devel
-
-```
-* using log directory ‘/tmp/workdir/CausalImpact/new/CausalImpact.Rcheck’
-* using R version 4.0.3 (2020-10-10)
-* using platform: x86_64-pc-linux-gnu (64-bit)
-* using session charset: UTF-8
-* using options ‘--no-manual --no-build-vignettes’
-* checking for file ‘CausalImpact/DESCRIPTION’ ... OK
-* this is package ‘CausalImpact’ version ‘1.2.7’
-* checking package namespace information ... OK
-* checking package dependencies ... ERROR
-Packages required but not available: 'bsts', 'Boom'
-
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-manual.
-* DONE
-Status: 1 ERROR
-
-
-
-
-
-```
-### CRAN
-
-```
-* using log directory ‘/tmp/workdir/CausalImpact/old/CausalImpact.Rcheck’
-* using R version 4.0.3 (2020-10-10)
-* using platform: x86_64-pc-linux-gnu (64-bit)
-* using session charset: UTF-8
-* using options ‘--no-manual --no-build-vignettes’
-* checking for file ‘CausalImpact/DESCRIPTION’ ... OK
-* this is package ‘CausalImpact’ version ‘1.2.7’
-* checking package namespace information ... OK
-* checking package dependencies ... ERROR
-Packages required but not available: 'bsts', 'Boom'
-
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-manual.
-* DONE
-Status: 1 ERROR
 
 
 
@@ -590,7 +526,7 @@ Run `cloud_details(, "NA")` for more info
 * GitHub: https://github.com/kharchenkolab/conos
 * Source code: https://github.com/cran/conos
 * Date/Publication: 2021-11-08 22:40:09 UTC
-* Number of recursive dependencies: 237
+* Number of recursive dependencies: 238
 
 Run `cloud_details(, "conos")` for more info
 
@@ -2043,7 +1979,7 @@ Status: 1 NOTE
 * GitHub: NA
 * Source code: https://github.com/cran/Platypus
 * Date/Publication: 2021-10-19 07:00:02 UTC
-* Number of recursive dependencies: 243
+* Number of recursive dependencies: 244
 
 Run `cloud_details(, "Platypus")` for more info
 
@@ -3321,6 +3257,76 @@ Status: 1 NOTE
 * checking re-building of vignette outputs ... SKIPPED
 * DONE
 Status: 1 NOTE
+
+
+
+
+
+```
+# NA
+
+<details>
+
+* Version: NA
+* GitHub: NA
+* Source code: https://github.com/cran/NA
+* Number of recursive dependencies: 0
+
+Run `cloud_details(, "NA")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+
+
+
+
+
+
+```
+### CRAN
+
+```
+
+
+
+
+
+
+```
+# NA
+
+<details>
+
+* Version: NA
+* GitHub: NA
+* Source code: https://github.com/cran/NA
+* Number of recursive dependencies: 0
+
+Run `cloud_details(, "NA")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+
+
+
+
+
+
+```
+### CRAN
+
+```
+
 
 
 

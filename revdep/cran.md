@@ -1,9 +1,9 @@
 ## revdepcheck results
 
-We checked 4237 reverse dependencies (4207 from CRAN + 30 from Bioconductor), comparing R CMD check results across CRAN and dev versions of this package.
+We checked 4254 reverse dependencies (4222 from CRAN + 32 from Bioconductor), comparing R CMD check results across CRAN and dev versions of this package.
 
- * We saw 21 new problems
- * We failed to check 36 packages
+ * We saw 15 new problems
+ * We failed to check 35 packages
 
 Issues with CRAN packages are summarised below.
 
@@ -27,22 +27,10 @@ Issues with CRAN packages are summarised below.
   checking Rd files ... WARNING
   checking for unstated dependencies in examples ... WARNING
 
-* ergm.ego
-  checking contents of ‘data’ directory ... WARNING
-
 * fabricatr
   checking tests ... ERROR
 
 * gestalt
-  checking tests ... ERROR
-
-* glmmTMB
-  checking tests ... ERROR
-
-* healthyR.ts
-  checking examples ... ERROR
-
-* icecream
   checking tests ... ERROR
 
 * nofrills
@@ -54,9 +42,6 @@ Issues with CRAN packages are summarised below.
 
 * qacBase
   checking examples ... ERROR
-
-* shinymodels
-  checking contents of ‘data’ directory ... WARNING
 
 * survivalAnalysis
   checking examples ... ERROR
@@ -71,9 +56,6 @@ Issues with CRAN packages are summarised below.
 * tidytidbits
   checking examples ... ERROR
 
-* timetk
-  checking examples ... ERROR
-
 * Tplyr
   checking tests ... ERROR
 
@@ -83,7 +65,6 @@ Issues with CRAN packages are summarised below.
 * AeroSampleR    (NA)
 * apisensr       (NA)
 * bayesmodels    (NA)
-* CausalImpact   (NA)
 * cbar           (NA)
 * ch             (NA)
 * conos          (NA)

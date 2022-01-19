@@ -6,7 +6,7 @@
 * GitHub: https://github.com/Harrison4192/autostats
 * Source code: https://github.com/cran/autostats
 * Date/Publication: 2021-12-10 09:30:02 UTC
-* Number of recursive dependencies: 213
+* Number of recursive dependencies: 214
 
 Run `cloud_details(, "autostats")` for more info
 
@@ -189,41 +189,6 @@ Run `cloud_details(, "equatiomatic")` for more info
     Execution halted
     ```
 
-# ergm.ego
-
-<details>
-
-* Version: 1.0.0
-* GitHub: https://github.com/statnet/ergm.ego
-* Source code: https://github.com/cran/ergm.ego
-* Date/Publication: 2021-06-23 07:00:04 UTC
-* Number of recursive dependencies: 74
-
-Run `cloud_details(, "ergm.ego")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking contents of ‘data’ directory ... WARNING
-    ```
-    Output for data("fmhfit", package = "ergm.ego"):
-      Search path was changed
-    ```
-
-## In both
-
-*   checking whether package ‘ergm.ego’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: package ‘ergm’ was built under R version 4.0.5
-      Warning: package ‘network’ was built under R version 4.0.5
-      Warning: package ‘egor’ was built under R version 4.0.5
-      Warning: package ‘dplyr’ was built under R version 4.0.5
-      Warning: package ‘tibble’ was built under R version 4.0.5
-    See ‘/tmp/workdir/ergm.ego/new/ergm.ego.Rcheck/00install.out’ for details.
-    ```
-
 # fabricatr
 
 <details>
@@ -296,146 +261,6 @@ Run `cloud_details(, "gestalt")` for more info
        6.     └─is_expression(body) %because% ...
       
       [ FAIL 1 | WARN 0 | SKIP 0 | PASS 1040 ]
-      Error: Test failures
-      Execution halted
-    ```
-
-# glmmTMB
-
-<details>
-
-* Version: 1.1.2.3
-* GitHub: https://github.com/glmmTMB/glmmTMB
-* Source code: https://github.com/cran/glmmTMB
-* Date/Publication: 2021-09-20 14:40:02 UTC
-* Number of recursive dependencies: 178
-
-Run `cloud_details(, "glmmTMB")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking tests ... ERROR
-    ```
-      Running ‘AAAtest-all.R’
-    Running the tests in ‘tests/AAAtest-all.R’ failed.
-    Last 13 lines of output:
-        ... and 14 more
-      
-      
-      Maximum number of 10 failures reached, some test results may be missing.
-      
-      ══ DONE ════════════════════════════════════════════════════════════════════════
-      Error: Test failures
-      In addition: Warning messages:
-      1: package 'testthat' was built under R version 4.0.5 
-      2: In checkMatrixPackageVersion() :
-        Package version inconsistency detected.
-      TMB was built with Matrix version 1.4.0
-      Current Matrix version is 1.2.18
-      Please re-install 'TMB' from source using install.packages('TMB', type = 'source') or ask CRAN for a binary version of 'TMB' matching CRAN's 'Matrix' package
-      Execution halted
-    ```
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is 71.4Mb
-      sub-directories of 1Mb or more:
-        libs           66.7Mb
-        test_data       2.2Mb
-        vignette_data   1.1Mb
-    ```
-
-# healthyR.ts
-
-<details>
-
-* Version: 0.1.7
-* GitHub: https://github.com/spsanderson/healthyR.ts
-* Source code: https://github.com/cran/healthyR.ts
-* Date/Publication: 2021-12-11 05:50:02 UTC
-* Number of recursive dependencies: 191
-
-Run `cloud_details(, "healthyR.ts")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘healthyR.ts-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: ts_vva_plot
-    > ### Title: Time Series Value, Velocity and Acceleration Plot
-    > ### Aliases: ts_vva_plot
-    > 
-    > ### ** Examples
-    > 
-    > suppressPackageStartupMessages(library(dplyr))
-    Warning: package ‘dplyr’ was built under R version 4.0.5
-    > 
-    > data_tbl <- ts_to_tbl(AirPassengers) %>%
-    +   select(-index)
-    > 
-    > ts_vva_plot(data_tbl, date_col, value)$plots$static_plot
-    Error: tk_augment_differences(.lags) is missing.
-    Execution halted
-    ```
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is 11.3Mb
-      sub-directories of 1Mb or more:
-        doc  10.7Mb
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘earth’
-      All declared Imports should be used.
-    ```
-
-# icecream
-
-<details>
-
-* Version: 0.2.0
-* GitHub: https://github.com/lewinfox/icecream
-* Source code: https://github.com/cran/icecream
-* Date/Publication: 2021-10-03 10:30:02 UTC
-* Number of recursive dependencies: 34
-
-Run `cloud_details(, "icecream")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking tests ... ERROR
-    ```
-      Running ‘testthat.R’
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      > library(icecream)
-      > 
-      > test_check("icecream")
-      i ic| <env: global>
-      ══ Failed tests ════════════════════════════════════════════════════════════════
-      ── Failure (test-icecream.R:88:3): source file is correctly identified ─────────
-      `f()` did not throw the expected message.
-      Backtrace:
-          ▆
-       1. └─testthat::expect_message(f(), regexp = "my_name_is_inigo_montoya") at test-icecream.R:88:2
-       2.   └─testthat:::expect_condition_matching(...)
-      
-      [ FAIL 1 | WARN 2 | SKIP 0 | PASS 45 ]
       Error: Test failures
       Execution halted
     ```
@@ -648,50 +473,6 @@ ERROR: lazy loading failed for package ‘RAQSAPI’
 
 
 ```
-# shinymodels
-
-<details>
-
-* Version: 0.1.0
-* GitHub: https://github.com/tidymodels/shinymodels
-* Source code: https://github.com/cran/shinymodels
-* Date/Publication: 2021-11-17 21:00:02 UTC
-* Number of recursive dependencies: 146
-
-Run `cloud_details(, "shinymodels")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking contents of ‘data’ directory ... WARNING
-    ```
-    Output for data("ames_mlp_itr", package = "shinymodels"):
-      Search path was changed
-    Output for data("cars_bag_vfld", package = "shinymodels"):
-      Search path was changed
-    Output for data("cell_race", package = "shinymodels"):
-      Search path was changed
-    Output for data("scat_fda_bt", package = "shinymodels"):
-      Search path was changed
-    Output for data("two_class_final", package = "shinymodels"):
-      Search path was changed
-    ```
-
-## In both
-
-*   checking whether package ‘shinymodels’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: package ‘ggplot2’ was built under R version 4.0.5
-    See ‘/tmp/workdir/shinymodels/new/shinymodels.Rcheck/00install.out’ for details.
-    ```
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: ‘finetune’
-    ```
-
 # survivalAnalysis
 
 <details>
@@ -888,54 +669,6 @@ Run `cloud_details(, "tidytidbits")` for more info
     > replace_sequential_duplicates(c("a", "a", "b", "b", "b", "a"))
     Error: `lgl_along()` is deprecated as of rlang 0.2.0.
     Execution halted
-    ```
-
-# timetk
-
-<details>
-
-* Version: 2.6.2
-* GitHub: https://github.com/business-science/timetk
-* Source code: https://github.com/cran/timetk
-* Date/Publication: 2021-11-16 07:00:05 UTC
-* Number of recursive dependencies: 208
-
-Run `cloud_details(, "timetk")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘timetk-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: tk_augment_differences
-    > ### Title: Add many differenced columns to the data
-    > ### Aliases: tk_augment_differences
-    > 
-    > ### ** Examples
-    > 
-    > library(tidyverse)
-    ...
-    ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-    ✖ dplyr::filter() masks stats::filter()
-    ✖ dplyr::lag()    masks stats::lag()
-    > library(timetk)
-    > 
-    > m4_monthly %>%
-    +     group_by(id) %>%
-    +     tk_augment_differences(value, .lags = 1:20)
-    Error: tk_augment_differences(.differences) is missing.
-    Execution halted
-    ```
-
-## In both
-
-*   checking data for non-ASCII characters ... NOTE
-    ```
-      Note: found 2750 marked UTF-8 strings
     ```
 
 # Tplyr
