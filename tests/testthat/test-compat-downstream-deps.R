@@ -102,7 +102,8 @@ test_that("setting `rlib_downstream_check` disables the check", {
 })
 
 test_that("check_downstream() saves status in global env", {
-  local_interactive(FALSE)
+  local_interactive(TRUE)
+  local_options("rlang:::no_downstream_prompt" = TRUE)
 
   bad_deps <- .rlang_downstream_parse_deps(c(
     "base (>= 1.0)",

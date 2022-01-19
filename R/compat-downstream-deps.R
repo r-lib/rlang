@@ -10,31 +10,38 @@
 
 # Changelog:
 #
-# 2020-06-08:
+# 2022-01-19:
+#
+# * Prompt results are no longer cached in the `org:r-lib` search path
+#   environment in non-interactive sessions. This is to avoid side
+#   effects causing R CMD check failures.
+#
+#
+# 2021-06-08:
 #
 # * User response is cached in the global env to avoid asking again
 #   when session is reloaded.
 #
 #
-# 2020-05-20:
+# 2021-05-20:
 #
 # * Fixed issue when downstream package is not installed.
 #
 #
-# 2020-05-17:
+# 2021-05-17:
 #
 # * Added an `info` argument intended to inform users about the
 #   consequences of not updating right away.
 #
 #
-# 2020-05-12:
+# 2021-05-12:
 #
 # * All packages are now updated at once. The user is not prompted
 #   again after accepting or declining to update the packages, even
 #   when one of the packages is loaded later on.
 #
 #
-# 2020-05-07:
+# 2021-05-07:
 #
 # * In interactive sessions, user is now prompted to update outdated
 #   packages.
@@ -74,8 +81,12 @@ check_downstream <- function(ver,
     }
   }
 
-  cache <- .rlang_downstream_get_cache()
-  cache[[pkg]][[deps_key]] <- FALSE
+  is_interactive <- .rlang_downstream_compat("is_interactive")
+
+  if (is_interactive()) {
+    cache <- .rlang_downstream_get_cache()
+    cache[[pkg]][[deps_key]] <- FALSE
+  }
 
   checked <- FALSE
   for (dep in deps) {
@@ -142,9 +153,12 @@ check_downstream <- function(ver,
   # Check cache in the global environment. This cache gets saved along
   # with the session. This avoids getting repeated checks when session
   # is reloaded, e.g. when revisiting RStudio servers.
-  cache <- .rlang_downstream_get_cache()
-  if (isTRUE(cache[[pkg]][[deps_key]])) {
-    return(NULL)
+  is_interactive <- .rlang_downstream_compat("is_interactive")
+  if (is_interactive()) {
+    cache <- .rlang_downstream_get_cache()
+    if (isTRUE(cache[[pkg]][[deps_key]])) {
+      return(NULL)
+    }
   }
 
   # Still check closure env in case the cache in the global
@@ -155,7 +169,9 @@ check_downstream <- function(ver,
 
   # Don't ask again. Flip now instead of on exit to defensively
   # prevent recursion.
-  cache[[pkg]][deps_key] <- list(TRUE)
+  if (is_interactive()) {
+    cache[[pkg]][deps_key] <- list(TRUE)
+  }
   env$checked <- TRUE
 
   pkgs <- vapply(deps, `[[`, "", "pkg")
@@ -194,7 +210,7 @@ check_downstream <- function(ver,
   inform <- .rlang_downstream_compat("inform")
   is_interactive <- .rlang_downstream_compat("is_interactive")
 
-  if (!is_interactive()) {
+  if (!is_interactive() || !is.null(getOption("rlang:::no_downstream_prompt"))) {
     warn(header)
     return(FALSE)
   }
