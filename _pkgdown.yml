@@ -61,10 +61,10 @@ navbar:
       text: Conditions
       menu:
       - text: Notes
+      - text: Customising condition messages
+        href: reference/topic-condition-customisation.html
       - text: Formatting condition messages
         href: reference/topic-condition-formatting.html
-      - text: Customise the appearance of condition messages
-        href: reference/topic-condition-customisation.html
 
     news:
       text: News

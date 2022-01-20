@@ -2,7 +2,7 @@
 % Please edit documentation in R/topic-errors.R
 \name{topic-condition-customisation}
 \alias{topic-condition-customisation}
-\title{Customise the appearance of condition messages}
+\title{Customising condition messages}
 \description{
 Various aspects of the condition messages displayed by \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, and \code{\link[=inform]{inform()}} can be customised using options from the \href{https://cli.r-lib.org}{cli} package.
 }

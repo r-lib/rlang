@@ -151,7 +151,7 @@ condition.
 
 Certain components of condition messages are formatted with unicode
 symbols and terminal colours by default. These aspects can be
-customised, see \ifelse{html}{\link[=topic-condition-customisation]{Customise the appearance of condition messages}}{\link[=topic-condition-customisation]{Customise the appearance of condition messages}}.
+customised, see \ifelse{html}{\link[=topic-condition-customisation]{Customising condition messages}}{\link[=topic-condition-customisation]{Customising condition messages}}.
 }
 \details{
 \itemize{
