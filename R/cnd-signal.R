@@ -240,7 +240,13 @@ deprecate_subclass <- function(subclass, fn, env = caller_env()) {
   env_bind(env, class = subclass)
 }
 
-#' @rdname abort
+#' Simulate interrupt condition
+#'
+#' `interrupt()` simulates a user interrupt of the kind that is
+#' signalled with `Ctrl-C`. It is currently not possible to create
+#' custom interrupt condition objects.
+#'
+#' @keywords internal
 #' @export
 interrupt <- function() {
   .Call(ffi_interrupt)

@@ -1,27 +1,84 @@
 #' Signal an error, warning, or message
 #'
 #' @description
-#'
 #' These functions are equivalent to base functions [base::stop()],
-#' [base::warning()], and [base::message()], but make it easy to supply
-#' condition metadata:
+#' [base::warning()], and [base::message()]. They signal a condition
+#' (an error, warning, or message respectively) and make it easy to
+#' supply condition metadata:
 #'
-#' * Supply `class` to create a classed condition. Typed
-#'   conditions can be captured or handled selectively, allowing for
-#'   finer-grained error handling.
+#' * Supply `class` to create a classed condition that can be caught
+#'   or handled selectively, allowing for finer-grained error
+#'   handling.
 #'
-#' * Supply metadata with named `...` arguments. This data will be
-#'   stored in the condition object and can be examined by handlers.
+#' * Supply metadata with named `...` arguments. This data is stored
+#'   in the condition object and can be examined by handlers.
 #'
-#' `abort()` throws subclassed errors, see
-#' [`"rlang_error"`][rlang_error].
+#' * Supply `call` to inform users about which function the error
+#'   occurred in.
 #'
-#' `interrupt()` allows R code to simulate a user interrupt of the
-#' kind that is signalled with `Ctrl-C`. It is currently not possible
-#' to create custom interrupt condition objects.
+#' * Supply another condition as `parent` to create a chained
+#'   condition.
+#'
+#' @inheritParams cnd
+#' @param message The message to display, formatted as a __bulleted
+#'   list__. The first element is displayed as an _alert_ bullet
+#'   prefixed with `!` by default. Elements named `"*"`, `"i"`, and
+#'   `"x"` are formatted as regular, info, and cross bullets
+#'   respectively. See `r link("topic_error_formatting")` for more
+#'   about bulleted messaging.
+#'
+#'   If a message is not supplied, it is expected that the message is
+#'   generated __lazily__ through [cnd_header()] and [cnd_body()]
+#'   methods. In that case, `class` must be supplied. Only `inform()`
+#'   allows empty messages as it is occasionally useful to build user
+#'   output incrementally.
+#' @param class Subclass of the condition.
+#' @param ... Additional data to be stored in the condition object.
+#'   If you supply condition fields, you should usually provide a
+#'   `class` argument. You may consider prefixing condition fields
+#'   with the name of your package or organisation to prevent name
+#'   collisions.
+#' @param call The execution environment of a currently running
+#'   function, e.g. `call = caller_env()`. The corresponding function
+#'   call is retrieved and mentioned in error messages as the source
+#'   of the error.
+#'
+#'   You only need to supply `call` when throwing a condition from a
+#'   helper function which wouldn't be relevant to mention in the
+#'   message.
+#'
+#'   Can also be `NULL` or a [defused function call][topic-defuse] to
+#'   respectively not display any call or hard-code a code to display.
+#' @param body,footer Additional bullets.
+#' @param use_cli_format Whether to format `message` lazily using
+#'   [cli](https://cli.r-lib.org/) if available. This results in
+#'   prettier and more accurate formatting of messages. See
+#'   [local_use_cli()] to set this condition field by default in your
+#'   package namespace.
+#'
+#'   If set to `TRUE`, `message` should be a character vector of
+#'   individual and unformatted lines. Any newline character `"\\n"`
+#'   already present in `message` is reformatted by cli's paragraph
+#'   formatter. See `r link("topic_error_formatting")`.
+#' @param .internal If `TRUE`, a footer bullet is added to `message`
+#'   to let the user know that the error is internal and that they
+#'   should report it to the package authors. This argument is
+#'   incompatible with `footer`.
+#' @param .file A connection or a string specifying where to print the
+#'   message. The default depends on the context, see the `stdout` vs
+#'   `stderr` section.
+#' @param .frame The throwing context. Defaults to `call` if it is an
+#'   environment, [caller_env()] otherwise. This is used in the
+#'   display of simplified backtraces as the last relevant call frame
+#'   to show. This way, the irrelevant parts of backtraces
+#'   corresponding to condition handling ([tryCatch()], [try_fetch()],
+#'   `abort()`, etc.) are hidden by default.
+#' @param .subclass `r lifecycle::badge("deprecated")` This argument
+#'   was renamed to `class` in rlang 0.4.2 for consistency with our
+#'   conventions for class constructors documented in
+#'   <https://adv-r.hadley.nz/s3.html#s3-subclassing>.
 #'
 #' @section Error prefix:
-#'
 #' As with [base::stop()], errors thrown with `abort()` are prefixed
 #' with `"Error: "`. Calls and source references are included in the
 #' prefix, e.g. `"Error in `my_function()` at myfile.R:1:2:"`. There
@@ -41,24 +98,22 @@
 #' users. See the `call` argument of `abort()`.
 #'
 #' @section Backtrace:
-#'
-#' `abort()` always saves a backtrace. You can print a simplified
-#' backtrace of the last error by calling [last_error()] and a full
-#' backtrace with `summary(last_error())`. Learn how to control what is
-#' displayed when an error is thrown with [`rlang_backtrace_on_error`].
+#' `abort()` saves a backtrace in the `trace` component of the error
+#' condition. You can print a simplified backtrace of the last error
+#' by calling [last_error()] and a full backtrace with
+#' `summary(last_error())`. Learn how to control what is displayed
+#' when an error is thrown with [`rlang_backtrace_on_error`].
 #'
 #' @section Muffling and silencing conditions:
-#'
-#' Signalling a condition with `inform()` or `warn()` causes a message
-#' to be displayed in the console. These messages can be muffled with
+#' Signalling a condition with `inform()` or `warn()` displays a
+#' message in the console. These messages can be muffled as usual with
 #' [base::suppressMessages()] or [base::suppressWarnings()].
 #'
 #' `inform()` and `warn()` messages can also be silenced with the
 #' global options `rlib_message_verbosity` and
 #' `rlib_warning_verbosity`. These options take the values:
 #'
-#' - `"default"`: Verbose unless the `.frequency` argument is
-#'   supplied.
+#' - `"default"`: Verbose unless the `.frequency` argument is supplied.
 #' - `"verbose"`: Always verbose.
 #' - `"quiet"`: Always quiet.
 #'
@@ -66,7 +121,6 @@
 #' is not signalled.
 #'
 #' @section `stdout` and `stderr`:
-#'
 #' By default, `abort()` and `inform()` print to standard output in
 #' interactive sessions. This allows rlang to be in control of the
 #' appearance of messages in IDEs like RStudio.
@@ -84,128 +138,73 @@
 #' non-interactive sessions, and when sinks are active.
 #'
 #' @details
+#' - `abort()` throws subclassed errors, see
+#'   [`"rlang_error"`][rlang_error].
 #'
-#' - `abort()` and `warn()` temporarily set the `warning.length`
-#'   global option to the maximum value (8170), unless that option has
-#'   been changed from the default value. The default limit (1000
-#'   characters) is especially easy to hit when the message contains a
-#'   lot of ANSI escapes, as created by the crayon or cli packages
-#'
-#' @inheritParams cnd
-#' @param message The message to display. Character vectors are
-#'   formatted with [format_error_bullets()]. The first element
-#'   defines a message header and the rest of the vector defines
-#'   bullets. Bullets named `i` and `x` define info and error bullets
-#'   respectively, with special Unicode and colour formatting applied
-#'   if possible.
-#'
-#'   If a message is not supplied, it is expected that the message is
-#'   generated lazily through [conditionMessage()][cnd_message]. In
-#'   that case, `class` must be supplied. Only `inform()` allows empty
-#'   messages as it is occasionally useful to build user output
-#'   incrementally.
-#' @param class Subclass of the condition. This allows your users
-#'   to selectively handle the conditions signalled by your functions.
-#' @param ... Additional data to be stored in the condition object.
-#'   If you supply condition fields, you should usually provide a
-#'   `class` argument. You may consider prefixing condition fields
-#'   with the name of your package or organisation to avoid any
-#'   conflict in case of subclassing.
-#' @param call The execution environment of a currently
-#'   running function, e.g. `call = caller_env()`. The function will
-#'   be mentioned in error messages as the source of the error.
-#'
-#'   When an error occurs, the corresponding function call (see
-#'   [sys.call()]) is retrieved and stored as `call` field in the
-#'   error object to provide users with contextual information about
-#'   the error.
-#'
-#'   Can also be `NULL` or a function call to respectively disable the
-#'   contextual call or hard-code it.
-#'
-#'   See also [rlang::local_error_call()] for an alternative way of
-#'   providing this information.
-#' @param body,footer Additional bullets.
-#' @param use_cli_format Whether to format `message` lazily using
-#'   [cli](https://cli.r-lib.org/) if available. This results in
-#'   prettier and more accurate formatting of messages. See also
-#'   [local_use_cli()] to set this condition field by default in your
-#'   namespace.
-#'
-#'   The downside is that you can no longer format (assemble multiple
-#'   lines into a single string with lines separated by `\\n`
-#'   characters) `message` ahead of time because that would conflict
-#'   with cli formatting.
-#' @param .internal If `TRUE`, a footer bullet is added to `message`
-#'   to let the user know that the error is internal and that they
-#'   should report it to the package authors. This argument is
-#'   incompatible with `footer`.
-#' @param .file A connection or a string specifying where to print the
-#'   message. The default depends on the context, see the `stdout` vs
-#'   `stderr` section.
-#' @param .frame The throwing context. Default to `call` if it is an
-#'   environment, [caller_env()] otherwise. This is used during
-#'   backtrace construction as a starting point to hide condition
-#'   handling frames from the user.
-#' @param .subclass This argument was renamed to `class` in rlang
-#'   0.4.2.  It will be deprecated in the next major version. This is
-#'   for consistency with our conventions for class constructors
-#'   documented in <https://adv-r.hadley.nz/s3.html#s3-subclassing>.
+#' - `warn()` temporarily set the `warning.length` global option to
+#'   the maximum value (8170), unless that option has been changed
+#'   from the default value. The default limit (1000 characters) is
+#'   especially easy to hit when the message contains a lot of ANSI
+#'   escapes, as created by the crayon or cli packages
 #'
 #' @examples
 #' # These examples are guarded to avoid throwing errors
 #' if (FALSE) {
 #'
 #' # Signal an error with a message just like stop():
-#' abort("Something bad happened")
+#' abort("The error message.")
+#'
+#'
+#' # Unhandled errors are saved automatically by `abort()` and can be
+#' # retrieved with `last_error()`. The error prints with a simplified
+#' # backtrace:
+#' f <- function() try(g())
+#' g <- function() evalq(h())
+#' h <- function() abort("Tilt.")
+#' last_error()
+#'
+#' # Use `summary()` to print the full backtrace and the condition fields:
+#' summary(last_error())
+#'
 #'
 #' # Give a class to the error:
-#' abort("Something bad happened", "somepkg_bad_error")
+#' abort("The error message", "mypkg_bad_error")
 #'
-#' # This will allow your users to handle the error selectively
+#' # This allows callers to handle the error selectively
 #' tryCatch(
-#'   somepkg_function(),
-#'   somepkg_bad_error = function(err) {
+#'   mypkg_function(),
+#'   mypkg_bad_error = function(err) {
 #'     warn(conditionMessage(err)) # Demote the error to a warning
 #'     NA                          # Return an alternative value
 #'   }
 #' )
 #'
 #' # You can also specify metadata that will be stored in the condition:
-#' abort("Something bad happened", "somepkg_bad_error", data = 1:10)
+#' abort("The error message.", "mypkg_bad_error", data = 1:10)
 #'
 #' # This data can then be consulted by user handlers:
 #' tryCatch(
-#'   somepkg_function(),
-#'   somepkg_bad_error = function(err) {
+#'   mypkg_function(),
+#'   mypkg_bad_error = function(err) {
 #'     # Compute an alternative return value with the data:
 #'     recover_error(err$data)
 #'   }
 #' )
 #'
-#' # If you call low-level APIs it is good practice to handle
-#' # technical errors and rethrow them with a more meaningful
-#' # message. Always prefer doing this from `withCallingHandlers()`
-#' # rather than `tryCatch()` because the former preserves the stack
-#' # on error and makes it possible for users to use `recover()`.
+#'
+#' # If you call low-level APIs it may be a good idea to create a
+#' # chained error with the low-level error wrapped in a more
+#' # user-friendly error. Use `try_fetch()` to fetch errors of a given
+#' # class and rethrow them with the `parent` argument of `abort()`:
 #' file <- "http://foo.bar/baz"
-#' try(withCallingHandlers(
-#'   download(file),
-#'   error = function(err) {
-#'     msg <- sprintf("Can't download `%s`", file)
-#'     abort(msg, parent = err)
-#' }))
-#' # Note how we supplied the parent error to `abort()` as `parent` to
-#' # get a decomposition of error messages across error contexts.
-#'
-#' # Unhandled errors are saved automatically by `abort()` and can be
-#' # retrieved with `last_error()`. The error prints with a simplified
-#' # backtrace:
-#' abort("Saved error?")
-#' last_error()
-#'
-#' # Use `summary()` to print the full backtrace and the condition fields:
-#' summary(last_error())
+#' try(
+#'   try_fetch(
+#'     download(file),
+#'     error = function(err) {
+#'       msg <- sprintf("Can't download `%s`", file)
+#'       abort(msg, parent = err)
+#'   })
+#' )
 #'
 #' }
 #' @export
