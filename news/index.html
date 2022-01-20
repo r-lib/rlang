@@ -16,7 +16,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.0.9003</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,9 +101,9 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="development version" id="rlang-development-version">rlang (development version)<a class="anchor" aria-label="anchor" href="#rlang-development-version"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.0.0" id="rlang-100">rlang 1.0.0<a class="anchor" aria-label="anchor" href="#rlang-100"></a></h2>
 <div class="section level3">
-<h3 id="major-changes-development-version">Major changes<a class="anchor" aria-label="anchor" href="#major-changes-development-version"></a></h3>
+<h3 id="major-changes-1-0-0">Major changes<a class="anchor" aria-label="anchor" href="#major-changes-1-0-0"></a></h3>
 <p>This release focuses on the rlang errors framework and features extensive changes to the display of error messages.</p>
 <ul><li><p><code><a href="../reference/abort.html">abort()</a></code> now displays errors as fully bulleted lists. Error headers are displayed with a <code>!</code> prefix. See <a href="https://rlang.r-lib.org/reference/topic-condition-customisation.html" class="uri">https://rlang.r-lib.org/reference/topic-condition-customisation.html</a> to customise the display of error messages.</p></li>
 <li><p><code><a href="../reference/abort.html">abort()</a></code> now displays a full chain of messages when errors are chained with the <code>parent</code> argument. Following this change, you should update dplyr to version 1.0.8 to get proper error messages.</p></li>
@@ -119,7 +119,7 @@
 </ul></li>
 </ul></div>
 <div class="section level3">
-<h3 id="breaking-changes-development-version">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-development-version"></a></h3>
+<h3 id="breaking-changes-1-0-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-1-0-0"></a></h3>
 <ul><li>
 <p>The <code>.data</code> object exported by rlang now fails when subsetted instead of returning <code>NULL</code>. This new error helps you detect when <code>.data</code> is used in the wrong context.</p>
 <p>We’ve noticed several packages failing after this change because they were using <code>.data</code> outside of a data-masking context. For instance the <code>by</code> argument of <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">dplyr::join()</a></code> is not data-masked. Previously <code>dplyr::join(by = .data$foo)</code> would silently be interpreted as <code>dplyr::join(by = NULL)</code>. This is now an error.</p>
@@ -145,9 +145,9 @@
 <li><p>Many functions deprecated deprecated in rlang 0.2.0 and 0.3.0 have been removed from the package.</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="fixes-and-features-development-version">Fixes and features<a class="anchor" aria-label="anchor" href="#fixes-and-features-development-version"></a></h3>
+<h3 id="fixes-and-features-1-0-0">Fixes and features<a class="anchor" aria-label="anchor" href="#fixes-and-features-1-0-0"></a></h3>
 <div class="section level4">
-<h4 id="tidyeval-development-version">tidyeval<a class="anchor" aria-label="anchor" href="#tidyeval-development-version"></a></h4>
+<h4 id="tidyeval-1-0-0">tidyeval<a class="anchor" aria-label="anchor" href="#tidyeval-1-0-0"></a></h4>
 <ul><li><p>New <code><a href="../reference/englue.html">englue()</a></code> operator to allow string-embracing outside of dynamic dots (<a href="https://github.com/r-lib/rlang/issues/1172" class="external-link">#1172</a>).</p></li>
 <li><p>New <code><a href="../reference/sym.html">data_sym()</a></code> and <code><a href="../reference/sym.html">data_syms()</a></code> functions to create calls of the form <code>.data$foo</code>.</p></li>
 <li><p><code>.data</code> now fails early when it is subsetted outside of a data mask context. This provides a more informative error message (<a href="https://github.com/r-lib/rlang/issues/804" class="external-link">#804</a>, <a href="https://github.com/r-lib/rlang/issues/1133" class="external-link">#1133</a>).</p></li>
@@ -162,7 +162,7 @@
 <li><p>Fixed AST rotation issue with <code>!!</code> involving binary operators (<a href="https://github.com/r-lib/rlang/issues/1125" class="external-link">#1125</a>).</p></li>
 </ul></div>
 <div class="section level4">
-<h4 id="rlang-errors-development-version">rlang errors<a class="anchor" aria-label="anchor" href="#rlang-errors-development-version"></a></h4>
+<h4 id="rlang-errors-1-0-0">rlang errors<a class="anchor" aria-label="anchor" href="#rlang-errors-1-0-0"></a></h4>
 <ul><li><p><code><a href="../reference/try_fetch.html">try_fetch()</a></code> is a flexible alternative to both <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code> and <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">withCallingHandlers()</a></code> (<a href="https://github.com/r-lib/rlang/issues/503" class="external-link">#503</a>). It is also more efficient than <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code> and creates leaner backtraces.</p></li>
 <li><p>New <code><a href="../reference/cnd_inherits.html">cnd_inherits()</a></code> function to detect a class in a chain of errors (<a href="https://github.com/r-lib/rlang/issues/1293" class="external-link">#1293</a>).</p></li>
 <li><p>New <code><a href="../reference/global_entrace.html">global_entrace()</a></code> function, a user-friendly helper for configuring errors in your RProfile. Call it to enrich all base errors and warnings with an rlang backtrace. This enables <code><a href="../reference/last_error.html">last_error()</a></code>, <code><a href="../reference/last_warnings.html">last_warnings()</a></code>, <code><a href="../reference/last_warnings.html">last_messages()</a></code>, and <code>backtrace_on_error</code> support for all conditions.</p></li>
@@ -211,7 +211,7 @@
 <li><p><code><a href="../reference/abort.html">warn()</a></code> now temporarily sets the <code>warning.length</code> global option to the maximum value (8170). The default limit (1000 characters) is especially easy to hit when the message contains a lot of ANSI escapes, as created by the crayon or cli packages (<a href="https://github.com/r-lib/rlang/issues/1211" class="external-link">#1211</a>).</p></li>
 </ul></div>
 <div class="section level4">
-<h4 id="backtraces-development-version">Backtraces<a class="anchor" aria-label="anchor" href="#backtraces-development-version"></a></h4>
+<h4 id="backtraces-1-0-0">Backtraces<a class="anchor" aria-label="anchor" href="#backtraces-1-0-0"></a></h4>
 <ul><li><p><code><a href="../reference/entrace.html">entrace()</a></code> and <code><a href="../reference/global_entrace.html">global_entrace()</a></code> now log warnings and messages with backtraces attached. Run <code><a href="../reference/last_warnings.html">last_warnings()</a></code> or <code><a href="../reference/last_warnings.html">last_messages()</a></code> to inspect the warnings or messages emitted during the last command.</p></li>
 <li><p>Internal errors now include a winch backtrace if installed. The user is invited to install it if not installed.</p></li>
 <li><p>Display of rlang backtraces in dynamic reports (knitted documents and RStudio notebooks) is now controlled by the <code>rlang_backtrace_on_error_report</code> option. By default, nothing is displayed in interactive sessions. In non-interactive sessions, a simplified backtrace is displayed instead of a full backtrace</p></li>
@@ -234,7 +234,7 @@
 <li><p>The root symbol in backtraces is now slightly different so that it can’t be confused with a prompt character (<a href="https://github.com/r-lib/rlang/issues/1207" class="external-link">#1207</a>).</p></li>
 </ul></div>
 <div class="section level4">
-<h4 id="argument-intake-development-version">Argument intake<a class="anchor" aria-label="anchor" href="#argument-intake-development-version"></a></h4>
+<h4 id="argument-intake-1-0-0">Argument intake<a class="anchor" aria-label="anchor" href="#argument-intake-1-0-0"></a></h4>
 <ul><li><p><code><a href="../reference/arg_match.html">arg_match()</a></code> gains a <code>multiple</code> argument for cases where zero or several matches are allowed (<a href="https://github.com/r-lib/rlang/issues/1281" class="external-link">#1281</a>).</p></li>
 <li><p>New function <code><a href="../reference/check_required.html">check_required()</a></code> to check that an argument is supplied. It produces a more friendly error message than <code><a href="https://rdrr.io/r/base/force.html" class="external-link">force()</a></code> (<a href="https://github.com/r-lib/rlang/issues/1118" class="external-link">#1118</a>).</p></li>
 <li>
@@ -251,18 +251,18 @@
 <li><p>New <code><a href="../reference/check_exclusive.html">check_exclusive()</a></code> function to check that only one argument of a set is supplied (<a href="https://github.com/r-lib/rlang/issues/1261" class="external-link">#1261</a>).</p></li>
 </ul></div>
 <div class="section level4">
-<h4 id="r-apis-development-version">R APIs<a class="anchor" aria-label="anchor" href="#r-apis-development-version"></a></h4>
-<ul><li><p>New <code><a href="../reference/stack.html">current_call()</a></code>, <code><a href="../reference/stack.html">caller_call()</a></code>, and <code><a href="../reference/stack.html">frame_call()</a></code> accessors. New <code><a href="../reference/stack.html">frame_fn()</a></code> accessor.</p></li>
-<li><p><code><a href="../reference/env_has.html">env_has()</a></code> and the corresponding C-level function no longer force active bindings (<a href="https://github.com/r-lib/rlang/issues/1292" class="external-link">#1292</a>).</p></li>
-<li><p>New <code>names2&lt;-</code> replacement function that never adds missing values when names don’t have names (<a href="https://github.com/r-lib/rlang/issues/1301" class="external-link">#1301</a>).</p></li>
-<li><p><code><a href="../reference/zap_srcref.html">zap_srcref()</a></code> now preserves attributes of closures.</p></li>
-<li><p><code><a href="../reference/on_load.html">on_load()</a></code> and <code><a href="../reference/on_load.html">run_on_load()</a></code> lets you run <code><a href="https://rdrr.io/r/base/ns-hooks.html" class="external-link">.onLoad()</a></code> expressions from any file of your package. <code><a href="../reference/on_load.html">on_package_load()</a></code> runs expressions when another package is loaded. (<a href="https://github.com/r-lib/rlang/issues/1284" class="external-link">#1284</a>)</p></li>
-<li><p><code><a href="../reference/call_name.html">call_name()</a></code> and <code><a href="../reference/call_name.html">call_ns()</a></code> now return <code>NULL</code> with calls of the form <code>foo::bar</code> (<a href="https://github.com/r-lib/rlang/issues/670" class="external-link">#670</a>).</p></li>
+<h4 id="r-apis-1-0-0">R APIs<a class="anchor" aria-label="anchor" href="#r-apis-1-0-0"></a></h4>
+<ul><li><p><code><a href="../reference/on_load.html">on_load()</a></code> and <code><a href="../reference/on_load.html">run_on_load()</a></code> lets you run <code><a href="https://rdrr.io/r/base/ns-hooks.html" class="external-link">.onLoad()</a></code> expressions from any file of your package. <code><a href="../reference/on_load.html">on_package_load()</a></code> runs expressions when another package is loaded. (<a href="https://github.com/r-lib/rlang/issues/1284" class="external-link">#1284</a>)</p></li>
 <li>
 <p>The new predicate <code><a href="../reference/call_name.html">is_call_simple()</a></code> indicates whether a call has a name and/or a namespace. It provides two invariants:</p>
 <ul><li><p>If <code>is_call_simple(x)</code> is <code>TRUE</code>, <code><a href="../reference/call_name.html">call_name()</a></code> always returns a string.</p></li>
 <li><p>If <code>is_call_simple(x, ns = TRUE)</code> is <code>TRUE</code>, <code><a href="../reference/call_name.html">call_ns()</a></code> always returns a string.</p></li>
 </ul></li>
+<li><p><code><a href="../reference/call_name.html">call_name()</a></code> and <code><a href="../reference/call_name.html">call_ns()</a></code> now return <code>NULL</code> with calls of the form <code>foo::bar</code> (<a href="https://github.com/r-lib/rlang/issues/670" class="external-link">#670</a>).</p></li>
+<li><p>New <code><a href="../reference/stack.html">current_call()</a></code>, <code><a href="../reference/stack.html">caller_call()</a></code>, and <code><a href="../reference/stack.html">frame_call()</a></code> accessors. New <code><a href="../reference/stack.html">frame_fn()</a></code> accessor.</p></li>
+<li><p><code><a href="../reference/env_has.html">env_has()</a></code> and the corresponding C-level function no longer force active bindings (<a href="https://github.com/r-lib/rlang/issues/1292" class="external-link">#1292</a>).</p></li>
+<li><p>New <code>names2&lt;-</code> replacement function that never adds missing values when names don’t have names (<a href="https://github.com/r-lib/rlang/issues/1301" class="external-link">#1301</a>).</p></li>
+<li><p><code><a href="../reference/zap_srcref.html">zap_srcref()</a></code> now preserves attributes of closures.</p></li>
 <li><p>Objects headers (as printed by <code><a href="../reference/last_error.html">last_error()</a></code>, <code><a href="../reference/env_print.html">env_print()</a></code>, …) are now formatted using the <code>cls</code> class of the cli package.</p></li>
 <li><p><code><a href="../reference/as_function.html">as_function()</a></code> gains <code>arg</code> and <code>call</code> arguments to provide contextual information about erroring inputs.</p></li>
 <li><p><code><a href="../reference/is_expression.html">is_expression()</a></code> now returns <code>FALSE</code> for manually constructed expressions that cannot be created by the R parser.</p></li>
