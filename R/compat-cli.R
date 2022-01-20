@@ -257,7 +257,13 @@ format_message <- function(x) {
     abort('Bullet names must be one of "i", "x", "v", "*", "!", ">", or " ".')
   }
 
-  bullets <-
+  bullets <- local({
+    unicode_opt <- getOption("cli.condition_unicode_bullets")
+    if (identical(unicode_opt, FALSE)) {
+      old <- options(cli.unicode = FALSE)
+      on.exit(options(old))
+    }
+
     ifelse(nms == "i", ansi_info(),
     ifelse(nms == "x", ansi_cross(),
     ifelse(nms == "v", ansi_tick(),
@@ -267,6 +273,7 @@ format_message <- function(x) {
     ifelse(nms == "", "",
     ifelse(nms == " ", " ",
       "*"))))))))
+  })
 
   bullets <-
     ifelse(bullets == "", "", paste0(bullets, " "))

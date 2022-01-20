@@ -650,3 +650,14 @@ test_that("caller of withCallingHandlers() is used as default `call`", {
   err <- catch_error(high())
   expect_equal(err$call, quote(high()))
 })
+
+test_that("`cli.condition_unicode_bullets` is supported by fallback formatting", {
+  local_use_cli(format = FALSE)
+  local_options(
+    cli.unicode = TRUE,
+    cli.condition_unicode_bullets = FALSE
+  )
+  expect_snapshot_error(
+    rlang::abort(c("foo", "i" = "bar"))
+  )
+})

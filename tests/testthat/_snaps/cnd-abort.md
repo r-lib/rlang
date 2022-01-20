@@ -1231,3 +1231,8 @@
       Error in `abort()`:
       ! Exactly one of `footer` or `.internal` must be supplied.
 
+# `cli.condition_unicode_bullets` is supported by fallback formatting
+
+    foo
+    i bar
+
