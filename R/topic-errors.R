@@ -5,6 +5,7 @@
 #' ```{r, child = "man/rmd/topic-condition-formatting.Rmd"}
 #' ```
 #'
+#' @keywords internal
 #' @name topic-condition-formatting
 NULL
 
@@ -13,5 +14,6 @@ NULL
 #' ```{r, child = "man/rmd/topic-condition-customisation.Rmd"}
 #' ```
 #'
+#' @keywords internal
 #' @name topic-condition-customisation
 NULL
