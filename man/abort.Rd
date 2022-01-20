@@ -55,7 +55,7 @@ signal(message, class, ..., .subclass = deprecated())
 list}. The first element is displayed as an \emph{alert} bullet
 prefixed with \code{!} by default. Elements named \code{"*"}, \code{"i"}, and
 \code{"x"} are formatted as regular, info, and cross bullets
-respectively. Se\ifelse{html}{\link[=topic-error-formatting]{Formatting error messages}}{\link[=topic-error-formatting]{Formatting error messages}})` for more
+respectively. Se\ifelse{html}{\link[=topic-condition-formatting]{Formatting condition messages}}{\link[=topic-condition-formatting]{Formatting condition messages}})` for more
 about bulleted messaging.
 
 If a message is not supplied, it is expected that the message is
@@ -99,7 +99,7 @@ package namespace.
 If set to \code{TRUE}, \code{message} should be a character vector of
 individual and unformatted lines. Any newline character \code{"\\\\n"}
 already present in \code{message} is reformatted by cli's paragraph
-formatter. See \ifelse{html}{\link[=topic-error-formatting]{Formatting error messages}}{\link[=topic-error-formatting]{Formatting error messages}}.}
+formatter. See \ifelse{html}{\link[=topic-condition-formatting]{Formatting condition messages}}{\link[=topic-condition-formatting]{Formatting condition messages}}.}
 
 \item{.internal}{If \code{TRUE}, a footer bullet is added to \code{message}
 to let the user know that the error is internal and that they

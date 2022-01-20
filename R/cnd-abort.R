@@ -24,7 +24,7 @@
 #'   list__. The first element is displayed as an _alert_ bullet
 #'   prefixed with `!` by default. Elements named `"*"`, `"i"`, and
 #'   `"x"` are formatted as regular, info, and cross bullets
-#'   respectively. See `r link("topic_error_formatting")` for more
+#'   respectively. See `r link("topic_condition_formatting")` for more
 #'   about bulleted messaging.
 #'
 #'   If a message is not supplied, it is expected that the message is
@@ -59,7 +59,7 @@
 #'   If set to `TRUE`, `message` should be a character vector of
 #'   individual and unformatted lines. Any newline character `"\\n"`
 #'   already present in `message` is reformatted by cli's paragraph
-#'   formatter. See `r link("topic_error_formatting")`.
+#'   formatter. See `r link("topic_condition_formatting")`.
 #' @param .internal If `TRUE`, a footer bullet is added to `message`
 #'   to let the user know that the error is internal and that they
 #'   should report it to the package authors. This argument is

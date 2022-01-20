@@ -19,18 +19,21 @@ NULL
 
 # Guides ------------------------------------------------------------------
 
-#' `r title("topic_error_formatting")`
-#'
-#' TODO!
-#'
-#' @keywords internal
-#' @name topic-error-formatting
-NULL
-
 #' `r title("topic_error_laziness")`
 #'
 #' TODO!
 #'
 #' @keywords internal
 #' @name topic-error-laziness
+NULL
+
+
+# Notes -------------------------------------------------------------------
+
+#' `r title("topic_condition_formatting")`
+#'
+#' ```{r, child = "man/rmd/topic-condition-formatting.Rmd"}
+#' ```
+#'
+#' @name topic-condition-formatting
 NULL

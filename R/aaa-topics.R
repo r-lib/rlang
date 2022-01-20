@@ -40,10 +40,12 @@ titles <- list(
     "Chaining errors",
 
   ## Guides
-  topic_error_formatting =
-    "Formatting error messages",
   topic_error_laziness =
-    "Lazy creation of error messages"
+    "Lazy creation of error messages",
+
+  ## Notes
+  topic_condition_formatting =
+    "Formatting condition messages"
 )
 
 sprintf_topic_link <- function(id, topic = NULL) {
