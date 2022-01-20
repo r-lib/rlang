@@ -470,7 +470,7 @@ cnd_message_info <- function(message,
                              body,
                              footer,
                              env,
-                             cli_opts = use_cli(env),
+                             cli_opts = NULL,
                              use_cli_format = NULL,
                              internal = FALSE,
                              error_call = caller_env()) {
@@ -481,6 +481,8 @@ cnd_message_info <- function(message,
   if (length(message) > 1 && !is_character(body) && !is_null(body)) {
     stop_multiple_body(body, call = error_call)
   }
+
+  cli_opts <- cli_opts %||% use_cli(env, error_call = error_call)
 
   if (!is_null(use_cli_format)) {
     cli_opts[["format"]] <- use_cli_format
@@ -622,7 +624,7 @@ local_use_cli <- function(...,
   invisible(NULL)
 }
 
-use_cli <- function(env) {
+use_cli <- function(env, error_call) {
   # Internal option to disable cli in case of recursive errors
   if (is_true(peek_option("rlang:::disable_cli"))) {
     return(FALSE)
@@ -646,9 +648,7 @@ use_cli <- function(env) {
     last = last
   )
 
-  local_error_call("caller")
-  check_use_cli_flag(flag)
-
+  check_use_cli_flag(flag, error_call = error_call)
   flag
 }
 
@@ -656,26 +656,26 @@ use_cli <- function(env) {
 # cli is optional. If cli is not installed or too old, the rlang
 # fallback formatting is used. On the other hand, formatting inline
 # parts with cli requires a recent version of cli to be installed.
-check_use_cli_flag <- function(flag) {
-  local_error_call("caller")
-
+check_use_cli_flag <- function(flag, error_call) {
   if (!is_logical(flag) || !identical(names(flag), c("format", "inline")) || anyNA(flag)) {
-    abort("`.__rlang_use_cli__.` has unknown format.")
+    abort("`.__rlang_use_cli__.` has unknown format.", call = error_call)
   }
 
   if (flag[["inline"]]) {
     if (!has_cli_format || !has_cli_inline) {
+      msg <- c(
+        "`.__rlang_use_cli__.[[\"inline\"]]` is set to `TRUE` but cli is not installed or is too old.",
+        "i" = "The package author should add a recent version of `cli` to their `Imports`."
+      )
       with_options(
         "rlang:::disable_cli" = TRUE,
-        abort(c(
-          "`.__rlang_use_cli__.[[\"inline\"]]` is set to `TRUE` but cli is not installed or is too old.",
-          "i" = "The package author should add a recent version of `cli` to their `Imports`."
-        ))
+        abort(call = error_call)
       )
     }
 
     if (!flag[["format"]]) {
-      abort("Can't use cli inline formatting without cli bullets formatting.")
+      msg <- "Can't use cli inline formatting without cli bullets formatting."
+      abort(msg, call = error_call)
     }
   }
 }
