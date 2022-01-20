@@ -45,7 +45,9 @@ titles <- list(
 
   ## Notes
   topic_condition_formatting =
-    "Formatting condition messages"
+    "Formatting condition messages",
+  topic_condition_customisation =
+    "Customise the appearance of condition messages"
 )
 
 sprintf_topic_link <- function(id, topic = NULL) {

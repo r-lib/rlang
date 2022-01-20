@@ -19,6 +19,10 @@
 #' * Supply another condition as `parent` to create a chained
 #'   condition.
 #'
+#' Certain components of condition messages are formatted with unicode
+#' symbols and terminal colours by default. These aspects can be
+#' customised, see `r link("topic_condition_customisation")`.
+#'
 #' @inheritParams cnd
 #' @param message The message to display, formatted as a __bulleted
 #'   list__. The first element is displayed as an _alert_ bullet
