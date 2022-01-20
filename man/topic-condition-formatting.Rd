@@ -30,7 +30,7 @@ By default, rlang uses an internal mechanism to format bullets. It is preferable
 #> i Did you mean "error"?
 }\if{html}{\out{</div>}}
 
-To enable cli formatting, use \code{\link[cli:cli_abort]{cli::cli_abort()}}, \code{\link[cli:cli_abort]{cli::cli_warn()}}, and \code{cli::cli_inform()}. Not only do these wrappers improve the formatting of messages, they also add many features such as interpolation, semantic formatting of text elements, and pluralisation:\if{html}{\out{<div class="sourceCode r">}}\preformatted{inform_marbles <- function(n_marbles) \{
+To enable cli formatting, use \code{\link[cli:cli_abort]{cli::cli_abort()}}, \code{\link[cli:cli_abort]{cli::cli_warn()}}, and \code{\link[cli:cli_abort]{cli::cli_inform()}}. Not only do these wrappers improve the formatting of messages, they also add many features such as interpolation, semantic formatting of text elements, and pluralisation:\if{html}{\out{<div class="sourceCode r">}}\preformatted{inform_marbles <- function(n_marbles) \{
   cli::cli_inform(c(
     "i" = "I have \{n_marbles\} shiny marble\{?s\} in my bag.",
     "v" = "Way to go \{.code cli::cli_inform()\}!"
@@ -38,12 +38,12 @@ To enable cli formatting, use \code{\link[cli:cli_abort]{cli::cli_abort()}}, \co
 \}
 
 inform_marbles(1)
-#> * I have 1 shiny marble in my bag.
-#> * Way to go `cli::cli_inform()`!
+#> i I have 1 shiny marble in my bag.
+#> v Way to go `cli::cli_inform()`!
 
 inform_marbles(2)
-#> * I have 2 shiny marbles in my bag.
-#> * Way to go `cli::cli_inform()`!
+#> i I have 2 shiny marbles in my bag.
+#> v Way to go `cli::cli_inform()`!
 }\if{html}{\out{</div>}}
 }
 }

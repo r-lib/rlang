@@ -33,7 +33,7 @@ rlang::global_entrace(class = "errorr")
 #> i Did you mean "error"?
 ```
 
-To enable cli formatting, use [cli::cli_abort()], [cli::cli_warn()], and `cli::cli_inform()`. Not only do these wrappers improve the formatting of messages, they also add many features such as interpolation, semantic formatting of text elements, and pluralisation:
+To enable cli formatting, use [cli::cli_abort()], [cli::cli_warn()], and [cli::cli_inform()]. Not only do these wrappers improve the formatting of messages, they also add many features such as interpolation, semantic formatting of text elements, and pluralisation:
 
 ```r
 inform_marbles <- function(n_marbles) {
@@ -44,10 +44,10 @@ inform_marbles <- function(n_marbles) {
 }
 
 inform_marbles(1)
-#> * I have 1 shiny marble in my bag.
-#> * Way to go `cli::cli_inform()`!
+#> i I have 1 shiny marble in my bag.
+#> v Way to go `cli::cli_inform()`!
 
 inform_marbles(2)
-#> * I have 2 shiny marbles in my bag.
-#> * Way to go `cli::cli_inform()`!
+#> i I have 2 shiny marbles in my bag.
+#> v Way to go `cli::cli_inform()`!
 ```
