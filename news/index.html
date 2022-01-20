@@ -140,11 +140,9 @@
 <p>If a string is supplied to <code><a href="../reference/as_function.html">as_function()</a></code> instead of an object (function or formula), the function is looked up in the global environment instead of the calling environment. In general, passing a function name as a string is brittle. It is easy to forget to pass the user environment to <code><a href="../reference/as_function.html">as_function()</a></code> and sometimes there is no obvious user environment. The support for strings should be considered a convenience for end users only, not for programmers.</p>
 <p>Since environment forwarding is easy to mess up, and since the feature is aimed towards end users, <code><a href="../reference/as_function.html">as_function()</a></code> now defaults to the global environment. Supply an environment explicitly if that is not correct in your case.</p>
 </li>
-<li><p><code><a href="../reference/with_handlers.html">with_handlers()</a></code> is deprecated.</p></li>
-<li><p><code><a href="../reference/call_fn.html">call_fn()</a></code> is deprecated.</p></li>
-<li><p><code><a href="../reference/friendly_type.html">friendly_type()</a></code> is deprecated and <code>as_pairlist()</code> is defunct.</p></li>
+<li><p><code><a href="../reference/with_handlers.html">with_handlers()</a></code>, <code><a href="../reference/call_fn.html">call_fn()</a></code>, and <code><a href="../reference/friendly_type.html">friendly_type()</a></code> are deprecated.</p></li>
 <li><p>The <code>action</code> argument of <code><a href="../reference/check_dots_used.html">check_dots_used()</a></code>, <code><a href="../reference/check_dots_unnamed.html">check_dots_unnamed()</a></code>, and <code><a href="../reference/check_dots_empty.html">check_dots_empty()</a></code> is deprecated in favour of the new <code>error</code> argument which takes an error handler.</p></li>
-<li><p><code>with_abort()</code> has been removed from the package.</p></li>
+<li><p>Many functions deprecated deprecated in rlang 0.2.0 and 0.3.0 have been removed from the package.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="fixes-and-features-development-version">Fixes and features<a class="anchor" aria-label="anchor" href="#fixes-and-features-development-version"></a></h3>
@@ -167,13 +165,15 @@
 <h4 id="rlang-errors-development-version">rlang errors<a class="anchor" aria-label="anchor" href="#rlang-errors-development-version"></a></h4>
 <ul><li><p><code><a href="../reference/try_fetch.html">try_fetch()</a></code> is a flexible alternative to both <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code> and <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">withCallingHandlers()</a></code> (<a href="https://github.com/r-lib/rlang/issues/503" class="external-link">#503</a>). It is also more efficient than <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code> and creates leaner backtraces.</p></li>
 <li><p>New <code><a href="../reference/cnd_inherits.html">cnd_inherits()</a></code> function to detect a class in a chain of errors (<a href="https://github.com/r-lib/rlang/issues/1293" class="external-link">#1293</a>).</p></li>
-<li><p><code><a href="../reference/global_entrace.html">global_entrace()</a></code> is a user-friendly helper for configuring errors in your RProfile. Call it to enrich all base errors with an rlang backtrace with <code><a href="../reference/last_error.html">last_error()</a></code> and <code>backtrace_on_error</code> support.</p></li>
+<li><p>New <code><a href="../reference/global_entrace.html">global_entrace()</a></code> function, a user-friendly helper for configuring errors in your RProfile. Call it to enrich all base errors and warnings with an rlang backtrace. This enables <code><a href="../reference/last_error.html">last_error()</a></code>, <code><a href="../reference/last_warnings.html">last_warnings()</a></code>, <code><a href="../reference/last_warnings.html">last_messages()</a></code>, and <code>backtrace_on_error</code> support for all conditions.</p></li>
+<li><p>New <code><a href="../reference/global_handle.html">global_handle()</a></code> function to install a default configuration of error handlers. This currently calls <code><a href="../reference/global_entrace.html">global_entrace()</a></code> and <code><a href="../reference/global_prompt_install.html">global_prompt_install()</a></code>. Expect more to come.</p></li>
 <li>
 <p>The “Error:” part of error messages is now printed by rlang instead of R. This introduces several cosmetic and informative changes in errors thrown by <code><a href="../reference/abort.html">abort()</a></code>:</p>
 <ul><li><p>The <code>call</code> field of error messages is now displayed, as is the default in <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">base::stop()</a></code>. The call is only displayed if it is a simple expression (e.g. no inlined function) and the arguments are not displayed to avoid distracting from the error message. The message is formatted with the tidyverse style (<code>code</code> formatting by the cli package if available).</p></li>
 <li><p>The source location is displayed (as in <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">base::stop()</a></code>) if <code>call</code> carries a source reference. Source locations are not displayed when testthat is running to avoid brittle snapshots.</p></li>
-<li><p>If the “Error:” prefix including the call is too long, a line break is introduced to print the error message on the line below. If a source location is displayed in the prefix, a line break is always included.</p></li>
-</ul></li>
+<li><p>Error headers are always displayed on their own line, with a <code>"!"</code> bullet prefix.</p></li>
+</ul><p>See <a href="https://rlang.r-lib.org/reference/topic-condition-customisation.html" class="uri">https://rlang.r-lib.org/reference/topic-condition-customisation.html</a> to customise this new display.</p>
+</li>
 <li><p>The display of chained errors created with the <code>parent</code> argument of <code><a href="../reference/abort.html">abort()</a></code> has been improved. Chains of errors are now displayed at throw time with the error prefix “Caused by error:”.</p></li>
 <li>
 <p>The <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> method of rlang errors (commonly invoked with <code><a href="../reference/last_error.html">last_error()</a></code>) has been improved:</p>
@@ -187,7 +187,7 @@
 <p>This special formatting is not applied when <code><a href="../reference/abort.html">abort()</a></code>, <code><a href="../reference/abort.html">warn()</a></code>, and <code><a href="../reference/abort.html">inform()</a></code> are called from another namespace than rlang. See <a href="https://rlang.r-lib.org/reference/topic-condition-formatting.html" class="uri">https://rlang.r-lib.org/reference/topic-condition-formatting.html</a> if you’d like to use cli to format condition messages in your package.</p>
 </li>
 <li>
-<p><code><a href="../reference/format_error_bullets.html">format_error_bullets()</a></code> now treats:</p>
+<p><code><a href="../reference/format_error_bullets.html">format_error_bullets()</a></code> (used as a fallback instead of cli) now treats:</p>
 <ul><li>Unnamed elements as unindented line breaks (<a href="https://github.com/r-lib/rlang/issues/1130" class="external-link">#1130</a>)</li>
 <li>Elements named <code>"v"</code> as green ticks (<a href="https://github.com/rossellhayes" class="external-link">@rossellhayes</a>)</li>
 <li>Elements named <code>" "</code> as indented line breaks</li>
@@ -234,7 +234,7 @@
 <li><p>The root symbol in backtraces is now slightly different so that it can’t be confused with a prompt character (<a href="https://github.com/r-lib/rlang/issues/1207" class="external-link">#1207</a>).</p></li>
 </ul></div>
 <div class="section level4">
-<h4 id="argument-ingestion-development-version">Argument ingestion<a class="anchor" aria-label="anchor" href="#argument-ingestion-development-version"></a></h4>
+<h4 id="argument-intake-development-version">Argument intake<a class="anchor" aria-label="anchor" href="#argument-intake-development-version"></a></h4>
 <ul><li><p><code><a href="../reference/arg_match.html">arg_match()</a></code> gains a <code>multiple</code> argument for cases where zero or several matches are allowed (<a href="https://github.com/r-lib/rlang/issues/1281" class="external-link">#1281</a>).</p></li>
 <li><p>New function <code><a href="../reference/check_required.html">check_required()</a></code> to check that an argument is supplied. It produces a more friendly error message than <code><a href="https://rdrr.io/r/base/force.html" class="external-link">force()</a></code> (<a href="https://github.com/r-lib/rlang/issues/1118" class="external-link">#1118</a>).</p></li>
 <li>
