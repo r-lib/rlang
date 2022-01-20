@@ -59,6 +59,14 @@
     <a class="dropdown-item" href="../reference/topic-embrace-constants.html">Why are strings and other constants enquosed in the empty environment?</a>
   </div>
 </li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-conditions">Conditions</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-conditions">
+    <h6 class="dropdown-header" data-toc-skip>Notes</h6>
+    <a class="dropdown-item" href="../reference/topic-condition-customisation.html">Customising condition messages</a>
+    <a class="dropdown-item" href="../reference/topic-condition-formatting.html">Formatting condition messages</a>
+  </div>
+</li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -187,7 +195,7 @@
 <li><p>Fixed a hang when a quosure inheriting from a data mask is evaluated in the mask again.</p></li>
 <li><p>Added <code><a href="../reference/is_condition.html">is_error()</a></code>, <code><a href="../reference/is_condition.html">is_warning()</a></code>, and <code><a href="../reference/is_condition.html">is_message()</a></code> predicates (<a href="https://github.com/r-lib/rlang/issues/1220" class="external-link">#1220</a>).</p></li>
 <li><p>Fixed an <code>s3_register()</code> issue when the registering package is a dependency of the package that exports the generic (<a href="https://github.com/r-lib/rlang/issues/1225" class="external-link">#1225</a>).</p></li>
-<li><p><code><a href="../reference/abort.html">interrupt()</a></code> no longer fails when interrupts are suspended (<a href="https://github.com/r-lib/rlang/issues/1224" class="external-link">#1224</a>).</p></li>
+<li><p><code><a href="../reference/interrupt.html">interrupt()</a></code> no longer fails when interrupts are suspended (<a href="https://github.com/r-lib/rlang/issues/1224" class="external-link">#1224</a>).</p></li>
 <li><p>Added <code>compat-vctrs.R</code> file for robust manipulation of data frames in zero-deps packages.</p></li>
 <li><p>Display of rlang backtraces in dynamic reports (knitted documents and RStudio notebooks) is now controlled by the <code>rlang_backtrace_on_error_report</code> option. By default, nothing is displayed in interactive sessions. In non-interactive sessions, a simplified backtrace is displayed instead of a full backtrace</p></li>
 <li><p>The <code><a href="../reference/last_error.html">last_error()</a></code> reminder is no longer displayed in RStudio notebooks.</p></li>
@@ -628,7 +636,7 @@
 <li><p>Unhandled errors thrown by <code><a href="../reference/abort.html">abort()</a></code> are now automatically saved and can be retrieved with <code><a href="../reference/last_error.html">rlang::last_error()</a></code>. The error prints with a simplified backtrace. Call <code>summary(last_error())</code> to see the full backtrace.</p></li>
 <li><p>New experimental option <code>rlang__backtrace_on_error</code> to display backtraces alongside error messages. See <code><a href="../reference/abort.html">?rlang::abort</a></code> for supported options.</p></li>
 <li><p>The new <code><a href="../reference/abort.html">signal()</a></code> function completes the <code><a href="../reference/abort.html">abort()</a></code>, <code><a href="../reference/abort.html">warn()</a></code> and <code><a href="../reference/abort.html">inform()</a></code> family. It creates and signals a bare condition.</p></li>
-<li><p>New <code><a href="../reference/abort.html">interrupt()</a></code> function to simulate an user interrupt from R code.</p></li>
+<li><p>New <code><a href="../reference/interrupt.html">interrupt()</a></code> function to simulate an user interrupt from R code.</p></li>
 <li><p><code><a href="../reference/cnd_signal.html">cnd_signal()</a></code> now dispatches messages, warnings, errors and interrupts to the relevant signalling functions (<code><a href="https://rdrr.io/r/base/message.html" class="external-link">message()</a></code>, <code><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning()</a></code>, <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop()</a></code> and the C function <code>Rf_onintr()</code>). This makes it a good choice to resignal a captured condition.</p></li>
 <li><p>New <code><a href="../reference/cnd_type.html">cnd_type()</a></code> helper to determine the type of a condition (<code>"condition"</code>, <code>"message"</code>, <code>"warning"</code>, <code>"error"</code> or <code>"interrupt"</code>).</p></li>
 <li>

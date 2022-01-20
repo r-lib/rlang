@@ -337,6 +337,9 @@
     <loc>https://rlang.r-lib.org/reference/injection-operator.html</loc>
   </url>
   <url>
+    <loc>https://rlang.r-lib.org/reference/interrupt.html</loc>
+  </url>
+  <url>
     <loc>https://rlang.r-lib.org/reference/invoke.html</loc>
   </url>
   <url>
@@ -571,6 +574,12 @@
     <loc>https://rlang.r-lib.org/reference/sym.html</loc>
   </url>
   <url>
+    <loc>https://rlang.r-lib.org/reference/topic-condition-customisation.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/topic-condition-formatting.html</loc>
+  </url>
+  <url>
     <loc>https://rlang.r-lib.org/reference/topic-data-mask-ambiguity.html</loc>
   </url>
   <url>
@@ -590,18 +599,6 @@
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/topic-embrace-non-args.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/topic-error-chaining.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/topic-error-formatting.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/topic-error-laziness.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/topic-error-rlang.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/topic-inject-out-of-context.html</loc>
