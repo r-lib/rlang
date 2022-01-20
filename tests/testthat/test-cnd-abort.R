@@ -661,3 +661,8 @@ test_that("`cli.condition_unicode_bullets` is supported by fallback formatting",
     rlang::abort(c("foo", "i" = "bar"))
   )
 })
+
+test_that("call can be a quosure or contain quosures", {
+  err <- catch_error(abort("foo", call = quo(f(!!quo(g())))))
+  expect_equal(err$call, quote(f(g())))
+})

@@ -1125,7 +1125,7 @@ error_call <- function(call) {
     return(NULL)
   }
 
-  call
+  quo_squash(call)
 }
 
 call_restore <- function(x, to) {
