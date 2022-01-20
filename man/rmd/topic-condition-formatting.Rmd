@@ -1,0 +1,53 @@
+```{r, child = "setup.Rmd", include = FALSE}
+```
+
+Condition signallers like [abort()], [warn()], and [signal()] take a character vector of __bulleted text__ as `message` argument. This makes it easy to write messages in a list format where each bullet conveys a single important point.
+
+```{r, error = TRUE}
+abort(c(
+  "The error header",
+  "*" = "An error bullet",
+  "i" = "An info bullet",
+  "x" = "A cross bullet"
+))
+```
+
+See the [tidyverse error style guide](https://style.tidyverse.org/error-messages.html) for more about this style of error messaging.
+
+By default, condition messages use unicode symbols rather than simple letters. This is not the case here because unicode isn't supported in documentation. If you'd like to disable unicode symbols globally, add this to your Rprofile:
+
+```r
+options(cli.condition_unicode_bullets = FALSE)
+```
+
+
+## Use cli formatting
+
+By default, rlang uses an internal mechanism to format bullets. It is preferable to delegate formatting to the [cli package](https://cli.r-lib.org/) because it uses sophisticated paragraph wrapping and bullet indenting that make long lines easier to read. In the following example, a long `!` bullet is broken with an indented newline:
+
+```r
+rlang::global_entrace(class = "errorr")
+#> Error in `rlang::global_entrace()`:
+#> ! `class` must be one of "error", "warning", or "message",
+#>   not "errorr".
+#> i Did you mean "error"?
+```
+
+To enable cli formatting, use [cli::cli_abort()], [cli::cli_warn()], and `cli::cli_inform()`. Not only do these wrappers improve the formatting of messages, they also add many features such as interpolation, semantic formatting of text elements, and pluralisation:
+
+```r
+inform_marbles <- function(n_marbles) {
+  cli::cli_inform(c(
+    "i" = "I have {n_marbles} shiny marble{?s} in my bag.",
+    "v" = "Way to go {.code cli::cli_inform()}!"
+  ))
+}
+
+inform_marbles(1)
+#> * I have 1 shiny marble in my bag.
+#> * Way to go `cli::cli_inform()`!
+
+inform_marbles(2)
+#> * I have 2 shiny marbles in my bag.
+#> * Way to go `cli::cli_inform()`!
+```

@@ -275,12 +275,12 @@ cnd_type <- function(cnd) {
 #' Does a condition or its ancestors inherit from a class?
 #'
 #' @description
-#' Like any R objects, errors captured with catchers like
-#' [tryCatch()] have a [class()] which you can test with [inherits()].
-#' However, with [chained errors][topic-error-chaining], the class of
-#' a captured error might be different than the error that was
-#' originally signalled. Use `cnd_inherits()` to detect whether an
-#' error or any of its _parent_ inherits from a class.
+#' Like any R objects, errors captured with catchers like [tryCatch()]
+#' have a [class()] which you can test with [inherits()].  However,
+#' with chained errors, the class of a captured error might be
+#' different than the error that was originally signalled. Use
+#' `cnd_inherits()` to detect whether an error or any of its _parent_
+#' inherits from a class.
 #'
 #' Whereas `inherits()` tells you whether an object is a particular
 #' kind of error, `cnd_inherits()` answers the question whether an
@@ -347,9 +347,6 @@ cnd_type <- function(cnd) {
 #'
 #' @param cnd A condition to test.
 #' @param class A class passed to [inherits()].
-#'
-#' @seealso
-#' * `r link("topic_error_chaining")`
 #'
 #' @export
 cnd_inherits <- function(cnd, class) {

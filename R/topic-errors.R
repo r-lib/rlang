@@ -1,36 +1,19 @@
-# Overviews ---------------------------------------------------------------
+# Notes -------------------------------------------------------------------
 
-#' `r title("topic_error_rlang")`
+#' `r title("topic_condition_formatting")`
 #'
-#' TODO!
+#' ```{r, child = "man/rmd/topic-condition-formatting.Rmd"}
+#' ```
 #'
 #' @keywords internal
-#' @name topic-error-rlang
+#' @name topic-condition-formatting
 NULL
 
-#' `r title("topic_error_chaining")`
+#' `r title("topic_condition_customisation")`
 #'
-#' TODO!
-#'
-#' @keywords internal
-#' @name topic-error-chaining
-NULL
-
-
-# Guides ------------------------------------------------------------------
-
-#' `r title("topic_error_formatting")`
-#'
-#' TODO!
+#' ```{r, child = "man/rmd/topic-condition-customisation.Rmd"}
+#' ```
 #'
 #' @keywords internal
-#' @name topic-error-formatting
-NULL
-
-#' `r title("topic_error_laziness")`
-#'
-#' TODO!
-#'
-#' @keywords internal
-#' @name topic-error-laziness
+#' @name topic-condition-customisation
 NULL

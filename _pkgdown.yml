@@ -8,7 +8,7 @@ template:
 
 navbar:
   structure:
-    left:  [home, reference, tidyeval, metaprog]
+    left:  [home, reference, tidyeval, metaprog, errors]
     right: [news, github]
   components:
     tidyeval:
@@ -56,6 +56,15 @@ navbar:
       - text: Notes
       - text: Why are strings and other constants enquosed in the empty environment?
         href: reference/topic-embrace-constants.html
+
+    errors:
+      text: Conditions
+      menu:
+      - text: Notes
+      - text: Customising condition messages
+        href: reference/topic-condition-customisation.html
+      - text: Formatting condition messages
+        href: reference/topic-condition-formatting.html
 
     news:
       text: News

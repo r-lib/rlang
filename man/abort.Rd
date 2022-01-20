@@ -5,7 +5,6 @@
 \alias{warn}
 \alias{inform}
 \alias{signal}
-\alias{interrupt}
 \title{Signal an error, warning, or message}
 \usage{
 abort(
@@ -50,46 +49,40 @@ inform(
 )
 
 signal(message, class, ..., .subclass = deprecated())
-
-interrupt()
 }
 \arguments{
-\item{message}{The message to display. Character vectors are
-formatted with \code{\link[=format_error_bullets]{format_error_bullets()}}. The first element
-defines a message header and the rest of the vector defines
-bullets. Bullets named \code{i} and \code{x} define info and error bullets
-respectively, with special Unicode and colour formatting applied
-if possible.
+\item{message}{The message to display, formatted as a \strong{bulleted
+list}. The first element is displayed as an \emph{alert} bullet
+prefixed with \code{!} by default. Elements named \code{"*"}, \code{"i"}, and
+\code{"x"} are formatted as regular, info, and cross bullets
+respectively. Se\ifelse{html}{\link[=topic-condition-formatting]{Formatting condition messages}}{\link[=topic-condition-formatting]{Formatting condition messages}})` for more
+about bulleted messaging.
 
 If a message is not supplied, it is expected that the message is
-generated lazily through \link[=cnd_message]{conditionMessage()}. In
-that case, \code{class} must be supplied. Only \code{inform()} allows empty
-messages as it is occasionally useful to build user output
-incrementally.}
+generated \strong{lazily} through \code{\link[=cnd_header]{cnd_header()}} and \code{\link[=cnd_body]{cnd_body()}}
+methods. In that case, \code{class} must be supplied. Only \code{inform()}
+allows empty messages as it is occasionally useful to build user
+output incrementally.}
 
-\item{class}{Subclass of the condition. This allows your users
-to selectively handle the conditions signalled by your functions.}
+\item{class}{Subclass of the condition.}
 
 \item{...}{Additional data to be stored in the condition object.
 If you supply condition fields, you should usually provide a
 \code{class} argument. You may consider prefixing condition fields
-with the name of your package or organisation to avoid any
-conflict in case of subclassing.}
+with the name of your package or organisation to prevent name
+collisions.}
 
-\item{call}{The execution environment of a currently
-running function, e.g. \code{call = caller_env()}. The function will
-be mentioned in error messages as the source of the error.
+\item{call}{The execution environment of a currently running
+function, e.g. \code{call = caller_env()}. The corresponding function
+call is retrieved and mentioned in error messages as the source
+of the error.
 
-When an error occurs, the corresponding function call (see
-\code{\link[=sys.call]{sys.call()}}) is retrieved and stored as \code{call} field in the
-error object to provide users with contextual information about
-the error.
+You only need to supply \code{call} when throwing a condition from a
+helper function which wouldn't be relevant to mention in the
+message.
 
-Can also be \code{NULL} or a function call to respectively disable the
-contextual call or hard-code it.
-
-See also \code{\link[=local_error_call]{local_error_call()}} for an alternative way of
-providing this information.}
+Can also be \code{NULL} or a \link[=topic-defuse]{defused function call} to
+respectively not display any call or hard-code a code to display.}
 
 \item{body, footer}{Additional bullets.}
 
@@ -99,14 +92,14 @@ providing this information.}
 
 \item{use_cli_format}{Whether to format \code{message} lazily using
 \href{https://cli.r-lib.org/}{cli} if available. This results in
-prettier and more accurate formatting of messages. See also
+prettier and more accurate formatting of messages. See
 \code{\link[=local_use_cli]{local_use_cli()}} to set this condition field by default in your
-namespace.
+package namespace.
 
-The downside is that you can no longer format (assemble multiple
-lines into a single string with lines separated by \verb{\\\\n}
-characters) \code{message} ahead of time because that would conflict
-with cli formatting.}
+If set to \code{TRUE}, \code{message} should be a character vector of
+individual and unformatted lines. Any newline character \code{"\\\\n"}
+already present in \code{message} is reformatted by cli's paragraph
+formatter. See \ifelse{html}{\link[=topic-condition-formatting]{Formatting condition messages}}{\link[=topic-condition-formatting]{Formatting condition messages}}.}
 
 \item{.internal}{If \code{TRUE}, a footer bullet is added to \code{message}
 to let the user know that the error is internal and that they
@@ -117,15 +110,17 @@ incompatible with \code{footer}.}
 message. The default depends on the context, see the \code{stdout} vs
 \code{stderr} section.}
 
-\item{.frame}{The throwing context. Default to \code{call} if it is an
-environment, \code{\link[=caller_env]{caller_env()}} otherwise. This is used during
-backtrace construction as a starting point to hide condition
-handling frames from the user.}
+\item{.frame}{The throwing context. Defaults to \code{call} if it is an
+environment, \code{\link[=caller_env]{caller_env()}} otherwise. This is used in the
+display of simplified backtraces as the last relevant call frame
+to show. This way, the irrelevant parts of backtraces
+corresponding to condition handling (\code{\link[=tryCatch]{tryCatch()}}, \code{\link[=try_fetch]{try_fetch()}},
+\code{abort()}, etc.) are hidden by default.}
 
-\item{.subclass}{This argument was renamed to \code{class} in rlang
-0.4.2.  It will be deprecated in the next major version. This is
-for consistency with our conventions for class constructors
-documented in \url{https://adv-r.hadley.nz/s3.html#s3-subclassing}.}
+\item{.subclass}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} This argument
+was renamed to \code{class} in rlang 0.4.2 for consistency with our
+conventions for class constructors documented in
+\url{https://adv-r.hadley.nz/s3.html#s3-subclassing}.}
 
 \item{.frequency}{How frequently should the warning or message be
 displayed? By default (\code{"always"}) it is displayed at each
@@ -139,34 +134,37 @@ recurring conditions. This argument must be supplied if
 }
 \description{
 These functions are equivalent to base functions \code{\link[base:stop]{base::stop()}},
-\code{\link[base:warning]{base::warning()}}, and \code{\link[base:message]{base::message()}}, but make it easy to supply
-condition metadata:
+\code{\link[base:warning]{base::warning()}}, and \code{\link[base:message]{base::message()}}. They signal a condition
+(an error, warning, or message respectively) and make it easy to
+supply condition metadata:
 \itemize{
-\item Supply \code{class} to create a classed condition. Typed
-conditions can be captured or handled selectively, allowing for
-finer-grained error handling.
-\item Supply metadata with named \code{...} arguments. This data will be
-stored in the condition object and can be examined by handlers.
+\item Supply \code{class} to create a classed condition that can be caught
+or handled selectively, allowing for finer-grained error
+handling.
+\item Supply metadata with named \code{...} arguments. This data is stored
+in the condition object and can be examined by handlers.
+\item Supply \code{call} to inform users about which function the error
+occurred in.
+\item Supply another condition as \code{parent} to create a chained
+condition.
 }
 
-\code{abort()} throws subclassed errors, see
-\code{\link[=rlang_error]{"rlang_error"}}.
-
-\code{interrupt()} allows R code to simulate a user interrupt of the
-kind that is signalled with \code{Ctrl-C}. It is currently not possible
-to create custom interrupt condition objects.
+Certain components of condition messages are formatted with unicode
+symbols and terminal colours by default. These aspects can be
+customised, see \ifelse{html}{\link[=topic-condition-customisation]{Customising condition messages}}{\link[=topic-condition-customisation]{Customising condition messages}}.
 }
 \details{
 \itemize{
-\item \code{abort()} and \code{warn()} temporarily set the \code{warning.length}
-global option to the maximum value (8170), unless that option has
-been changed from the default value. The default limit (1000
-characters) is especially easy to hit when the message contains a
-lot of ANSI escapes, as created by the crayon or cli packages
+\item \code{abort()} throws subclassed errors, see
+\code{\link[=rlang_error]{"rlang_error"}}.
+\item \code{warn()} temporarily set the \code{warning.length} global option to
+the maximum value (8170), unless that option has been changed
+from the default value. The default limit (1000 characters) is
+especially easy to hit when the message contains a lot of ANSI
+escapes, as created by the crayon or cli packages
 }
 }
 \section{Error prefix}{
-
 
 As with \code{\link[base:stop]{base::stop()}}, errors thrown with \code{abort()} are prefixed
 with \code{"Error: "}. Calls and source references are included in the
@@ -189,26 +187,24 @@ users. See the \code{call} argument of \code{abort()}.
 
 \section{Backtrace}{
 
-
-\code{abort()} always saves a backtrace. You can print a simplified
-backtrace of the last error by calling \code{\link[=last_error]{last_error()}} and a full
-backtrace with \code{summary(last_error())}. Learn how to control what is
-displayed when an error is thrown with \code{\link{rlang_backtrace_on_error}}.
+\code{abort()} saves a backtrace in the \code{trace} component of the error
+condition. You can print a simplified backtrace of the last error
+by calling \code{\link[=last_error]{last_error()}} and a full backtrace with
+\code{summary(last_error())}. Learn how to control what is displayed
+when an error is thrown with \code{\link{rlang_backtrace_on_error}}.
 }
 
 \section{Muffling and silencing conditions}{
 
-
-Signalling a condition with \code{inform()} or \code{warn()} causes a message
-to be displayed in the console. These messages can be muffled with
+Signalling a condition with \code{inform()} or \code{warn()} displays a
+message in the console. These messages can be muffled as usual with
 \code{\link[base:message]{base::suppressMessages()}} or \code{\link[base:warning]{base::suppressWarnings()}}.
 
 \code{inform()} and \code{warn()} messages can also be silenced with the
 global options \code{rlib_message_verbosity} and
 \code{rlib_warning_verbosity}. These options take the values:
 \itemize{
-\item \code{"default"}: Verbose unless the \code{.frequency} argument is
-supplied.
+\item \code{"default"}: Verbose unless the \code{.frequency} argument is supplied.
 \item \code{"verbose"}: Always verbose.
 \item \code{"quiet"}: Always quiet.
 }
@@ -218,7 +214,6 @@ is not signalled.
 }
 
 \section{\code{stdout} and \code{stderr}}{
-
 
 By default, \code{abort()} and \code{inform()} print to standard output in
 interactive sessions. This allows rlang to be in control of the
@@ -242,55 +237,59 @@ non-interactive sessions, and when sinks are active.
 if (FALSE) {
 
 # Signal an error with a message just like stop():
-abort("Something bad happened")
+abort("The error message.")
+
+
+# Unhandled errors are saved automatically by `abort()` and can be
+# retrieved with `last_error()`. The error prints with a simplified
+# backtrace:
+f <- function() try(g())
+g <- function() evalq(h())
+h <- function() abort("Tilt.")
+last_error()
+
+# Use `summary()` to print the full backtrace and the condition fields:
+summary(last_error())
+
 
 # Give a class to the error:
-abort("Something bad happened", "somepkg_bad_error")
+abort("The error message", "mypkg_bad_error")
 
-# This will allow your users to handle the error selectively
+# This allows callers to handle the error selectively
 tryCatch(
-  somepkg_function(),
-  somepkg_bad_error = function(err) {
+  mypkg_function(),
+  mypkg_bad_error = function(err) {
     warn(conditionMessage(err)) # Demote the error to a warning
     NA                          # Return an alternative value
   }
 )
 
 # You can also specify metadata that will be stored in the condition:
-abort("Something bad happened", "somepkg_bad_error", data = 1:10)
+abort("The error message.", "mypkg_bad_error", data = 1:10)
 
 # This data can then be consulted by user handlers:
 tryCatch(
-  somepkg_function(),
-  somepkg_bad_error = function(err) {
+  mypkg_function(),
+  mypkg_bad_error = function(err) {
     # Compute an alternative return value with the data:
     recover_error(err$data)
   }
 )
 
-# If you call low-level APIs it is good practice to handle
-# technical errors and rethrow them with a more meaningful
-# message. Always prefer doing this from `withCallingHandlers()`
-# rather than `tryCatch()` because the former preserves the stack
-# on error and makes it possible for users to use `recover()`.
+
+# If you call low-level APIs it may be a good idea to create a
+# chained error with the low-level error wrapped in a more
+# user-friendly error. Use `try_fetch()` to fetch errors of a given
+# class and rethrow them with the `parent` argument of `abort()`:
 file <- "http://foo.bar/baz"
-try(withCallingHandlers(
-  download(file),
-  error = function(err) {
-    msg <- sprintf("Can't download `\%s`", file)
-    abort(msg, parent = err)
-}))
-# Note how we supplied the parent error to `abort()` as `parent` to
-# get a decomposition of error messages across error contexts.
-
-# Unhandled errors are saved automatically by `abort()` and can be
-# retrieved with `last_error()`. The error prints with a simplified
-# backtrace:
-abort("Saved error?")
-last_error()
-
-# Use `summary()` to print the full backtrace and the condition fields:
-summary(last_error())
+try(
+  try_fetch(
+    download(file),
+    error = function(err) {
+      msg <- sprintf("Can't download `\%s`", file)
+      abort(msg, parent = err)
+  })
+)
 
 }
 }

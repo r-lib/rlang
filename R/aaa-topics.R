@@ -33,17 +33,11 @@ titles <- list(
 
   # Errors
 
-  ## Overviews
-  topic_error_rlang =
-    "Working with rlang errors",
-  topic_error_chaining =
-    "Chaining errors",
-
-  ## Guides
-  topic_error_formatting =
-    "Formatting error messages",
-  topic_error_laziness =
-    "Lazy creation of error messages"
+  ## Notes
+  topic_condition_customisation =
+    "Customising condition messages",
+  topic_condition_formatting =
+    "Formatting condition messages"
 )
 
 sprintf_topic_link <- function(id, topic = NULL) {

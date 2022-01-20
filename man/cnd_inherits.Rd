@@ -12,12 +12,12 @@ cnd_inherits(cnd, class)
 \item{class}{A class passed to \code{\link[=inherits]{inherits()}}.}
 }
 \description{
-Like any R objects, errors captured with catchers like
-\code{\link[=tryCatch]{tryCatch()}} have a \code{\link[=class]{class()}} which you can test with \code{\link[=inherits]{inherits()}}.
-However, with \link[=topic-error-chaining]{chained errors}, the class of
-a captured error might be different than the error that was
-originally signalled. Use \code{cnd_inherits()} to detect whether an
-error or any of its \emph{parent} inherits from a class.
+Like any R objects, errors captured with catchers like \code{\link[=tryCatch]{tryCatch()}}
+have a \code{\link[=class]{class()}} which you can test with \code{\link[=inherits]{inherits()}}.  However,
+with chained errors, the class of a captured error might be
+different than the error that was originally signalled. Use
+\code{cnd_inherits()} to detect whether an error or any of its \emph{parent}
+inherits from a class.
 
 Whereas \code{inherits()} tells you whether an object is a particular
 kind of error, \code{cnd_inherits()} answers the question whether an
@@ -78,8 +78,3 @@ class(cnd$parent)
 }
 }
 
-\seealso{
-\itemize{
-\item \ifelse{html}{\link[=topic-error-chaining]{Chaining errors}}{\link[=topic-error-chaining]{Chaining errors}}
-}
-}
