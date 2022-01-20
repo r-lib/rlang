@@ -1,5 +1,50 @@
 # rlang (development version)
 
+## Major changes
+
+This release focuses on the rlang errors framework and features
+extensive changes to the display of error messages.
+
+* `abort()` now displays errors as fully bulleted lists. Error headers
+  are displayed with a `!` prefix. See
+  <https://rlang.r-lib.org/reference/topic-condition-customisation.html>
+  to customise the display of error messages.
+
+* `abort()` now displays a full chain of messages when errors are
+  chained with the `parent` argument. Following this change, you
+  should update dplyr to version 1.0.8 to get proper error messages.
+
+* `abort()` now displays function calls in which a message originated
+  by default. We have refrained from showing these calls until now to
+  avoid confusing messages when an error is thrown from a helper
+  function that isn't relevant to users.
+
+  To help with these cases, `abort()` now takes a `call` argument that
+  you can set to `caller_env()` or `parent.frame()` when used in a
+  helper function. The function call corresponding to this environment
+  is retrieved and stored in the condition.
+
+* cli formatting is now supported. Use `cli::cli_abort()` to get
+  advanced formatting of error messages, including indented bulleted
+  lists. See <https://rlang.r-lib.org/reference/topic-condition-formatting.html>.
+
+* New `try_fetch()` function for error handling. We recommend to use
+  it for chaining errors. It mostly works like `tryCatch()` with a few
+  important differences.
+
+  - Compared to `tryCatch()`, `try_fetch()` preserves the call
+    stack. This allows full backtrace capture and allows `recover()`
+    to reach the error site.
+
+  - Compared to `withCallingHandler()`, `try_fetch()` is able to
+    handle stack overflow errors (this requires R 4.2, unreleased at
+    the time of writing).
+
+* The tidy eval documentation has been fully rewritten to reflect
+  current practices. Access it through the "Tidy evaluation" and
+  "Metaprogramming" menus on <https://rlang.r-lib.org>.
+
+
 ## Breaking changes
 
 * The `.data` object exported by rlang now fails when subsetted
