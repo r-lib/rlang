@@ -1,4 +1,3 @@
-
 ## Test environments
 
 * local OS X install: release
@@ -14,4 +13,11 @@
 
 ## Reverse dependencies
 
-No problems were found.
+We checked 4254 reverse dependencies of rlang, tidyverse, and tidymodels packgaes (4222 from CRAN + 32 from Bioconductor), comparing R CMD check results across CRAN and dev versions of this package.
+
+ * We saw 15 new problems
+ * We failed to check 35 packages
+
+The results are summarised in <https://github.com/r-lib/rlang/tree/main/revdep>.
+
+The authors of these packages were notified about the failures and/or provided patches.
