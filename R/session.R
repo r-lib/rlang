@@ -151,7 +151,7 @@ as_version_info <- function(pkg, call = caller_env()) {
 
   parsed <- vapply(
     ver, is_character2, n = 2, missing = FALSE, empty = FALSE,
-    logical(1L)
+    FUN.VALUE = logical(1L)
   )
 
   if (!all(parsed)) {
