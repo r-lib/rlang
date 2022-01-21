@@ -149,9 +149,15 @@ as_version_info <- function(pkg, call = caller_env()) {
   ver <- sub(version_regex, "\\2", pkg)
   ver <- strsplit(ver, " ")
 
-  if (!every(ver, is_character2, n = 2, missing = FALSE, empty = FALSE)) {
+  parsed <- vapply(
+    ver, is_character2, n = 2, missing = FALSE, empty = FALSE,
+    logical(1L)
+  )
+
+  if (!all(parsed)) {
+    error_pkg <- format_arg(pkg[!parsed][[1L]])
     abort(
-      sprintf("Can't parse version in %s.", format_arg("pkg")),
+      sprintf("Can't parse version in %s.", error_pkg),
       call = call
     )
   }
