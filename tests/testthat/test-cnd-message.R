@@ -490,3 +490,7 @@ test_that("multiline operator calls are preserved", {
   expect_snapshot_output(err({ 1; 2 } + { 2; 3 }))
   expect_snapshot_output(err(x[{ 1; 2 }]))
 })
+
+test_that("eval_tidy() is not mentioned in calls", {
+  expect_null(format_error_call(quote(eval_tidy(expr))))
+})

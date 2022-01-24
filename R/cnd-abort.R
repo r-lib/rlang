@@ -1030,7 +1030,7 @@ error_call_as_string <- function(call) {
   #   all environments and the `sys.call()` for that frame is `eval()`.
   #   It wouldn't be useful to display this as the context so calls to
   #   `eval()` and `evalq()` are replaced by `NULL`.
-  if (is_call(call, c("eval", "evalq"))) {
+  if (is_call(call, c("eval", "evalq", "eval_tidy"))) {
     return(NULL)
   }
 

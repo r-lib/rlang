@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* `eval_tidy()` calls are no longer mentioned in error messages.
+
+
 # rlang 1.0.0
 
 ## Major changes
