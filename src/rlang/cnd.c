@@ -60,8 +60,25 @@ void r_abort(const char* fmt, ...) {
 
 __attribute__((noreturn))
 void r_abort_n(const struct r_pair* args, int n) {
-  r_exec_mask_n(r_null, r_syms.abort, args, n, r_envs.ns);
+  r_exec_mask_n(r_null, r_syms.abort, args, n, r_peek_frame());
   r_stop_unreached("r_abort_n");
+}
+
+__attribute__((noreturn))
+void r_abort_call(r_obj* call, const char* fmt, ...) {
+  char buf[BUFSIZE];
+  INTERP(buf, fmt, ...);
+  r_obj* message = KEEP(r_chr(buf));
+
+  struct r_pair args[] = {
+    { r_syms.message, message },
+    { r_syms.call, call }
+  };
+
+  r_obj* frame = KEEP(r_peek_frame());
+  r_exec_mask_n(r_null, r_syms.abort, args, R_ARR_SIZEOF(args), frame);
+
+  r_stop_unreached("r_abort_call");
 }
 
 void r_cnd_signal(r_obj* cnd) {

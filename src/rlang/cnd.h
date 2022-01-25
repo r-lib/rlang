@@ -9,6 +9,7 @@ void r_warn(const char* fmt, ...);
 void r_interrupt();
 void  __attribute__((noreturn)) r_abort(const char* fmt, ...);
 void  __attribute__((noreturn)) r_abort_n(const struct r_pair* args, int n);
+void __attribute__((noreturn)) r_abort_call(r_obj* call, const char* fmt, ...);
 
 // Formats input as an argument, using cli if available. Returns a
 // vmax-protected string.

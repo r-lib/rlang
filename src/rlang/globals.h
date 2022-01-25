@@ -43,6 +43,7 @@ struct r_globals_syms {
   r_obj* abort;
   r_obj* brackets;
   r_obj* brackets2;
+  r_obj* call;
   r_obj* class;
   r_obj* condition;
   r_obj* dots;
