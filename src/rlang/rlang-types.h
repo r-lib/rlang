@@ -12,6 +12,12 @@
 // symbol clashes.
 #define r_visible attribute_visible extern
 
+#ifdef __GNUC__
+#define r_unused __attribute__ ((unused))
+#else
+#define r_unused
+#endif
+
 typedef struct SEXPREC r_obj;
 typedef Rcomplex r_complex_t;
 

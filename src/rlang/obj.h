@@ -17,17 +17,17 @@ enum r_type r_typeof(r_obj* x) {
 void _r_preserve(r_obj* x);
 void _r_unpreserve(r_obj* x);
 
-static
+static r_unused
 r_obj* _r_placeholder = NULL;
 
 #define r_preserve(X)                           \
   (R_PreserveObject(_r_placeholder = X),        \
-   (_r_preserve)(_r_placeholder),                \
+   (_r_preserve)(_r_placeholder),               \
    (void) NULL)
 
 #define r_unpreserve(X)                         \
   (R_ReleaseObject(_r_placeholder = X),         \
-   (_r_unpreserve)(_r_placeholder),              \
+   (_r_unpreserve)(_r_placeholder),             \
    (void) NULL)
 
 static inline
@@ -40,16 +40,15 @@ bool r_is_shared(r_obj* x) {
 }
 
 static inline
-r_obj* _r_preserve_global(r_obj* x) {
+void _r_preserve_global(r_obj* x) {
   (_r_preserve)(x);
   r_mark_shared(x);
-  return x;
 }
 
 #define r_preserve_global(X)                    \
   (R_PreserveObject(_r_placeholder = X),        \
    (_r_preserve_global)(_r_placeholder),         \
-   _r_placeholder)
+   (void) NULL)
 
 static inline
 void r_mark_object(r_obj* x) {

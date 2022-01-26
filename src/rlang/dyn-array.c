@@ -116,6 +116,6 @@ void r_arr_resize(struct r_dyn_array* p_arr,
 
 
 void r_init_library_dyn_array() {
-  attribs_dyn_array = r_preserve_global(r_pairlist(r_chr("rlang_dyn_array")));
+  r_preserve_global(attribs_dyn_array = r_pairlist(r_chr("rlang_dyn_array")));
   r_node_poke_tag(attribs_dyn_array, r_syms.class);
 }
