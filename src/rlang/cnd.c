@@ -151,7 +151,15 @@ void r_init_library_cnd() {
   cnd_signal_call = r_parse("rlang::cnd_signal(x)");
   r_preserve(cnd_signal_call);
 
+  // Silence "'noreturn' attribute does not apply to types warning".
+  // It seems like GCC doesn't handle attributes in casts.
+  // https://stackoverflow.com/questions/9441262/function-pointer-to-attribute-const-function
+  #ifdef __clang__
   r_stop_internal = (r_no_return void (*)(const char*, const char*, ...)) R_GetCCallable("rlang", "rlang_stop_internal");
+  #else
+  typedef r_no_return void (*r_stop_internal_t)(const char*, const char*, ...);
+  r_stop_internal = (r_stop_internal_t) R_GetCCallable("rlang", "rlang_stop_internal");
+  #endif
 
   r_format_error_arg = (const char* (*)(r_obj*)) r_peek_c_callable("rlang", "rlang_format_error_arg");
 }
