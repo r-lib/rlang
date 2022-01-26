@@ -19,7 +19,7 @@ extern "C" {
 }
 
 
-__attribute__((noreturn))
+r_no_return
 void rcc_abort(const char* fn) {
  try {
   throw;

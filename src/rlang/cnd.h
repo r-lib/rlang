@@ -7,9 +7,9 @@
 void r_inform(const char* fmt, ...);
 void r_warn(const char* fmt, ...);
 void r_interrupt();
-void  __attribute__((noreturn)) r_abort(const char* fmt, ...);
-void  __attribute__((noreturn)) r_abort_n(const struct r_pair* args, int n);
-void __attribute__((noreturn)) r_abort_call(r_obj* call, const char* fmt, ...);
+void r_no_return r_abort(const char* fmt, ...);
+void r_no_return r_abort_n(const struct r_pair* args, int n);
+void r_no_return r_abort_call(r_obj* call, const char* fmt, ...);
 
 // Formats input as an argument, using cli if available. Returns a
 // vmax-protected string.
@@ -17,22 +17,22 @@ extern const char* (*r_format_error_arg)(r_obj* arg);
 
 
 extern
-__attribute__((noreturn))
+r_no_return
 void (*r_stop_internal)(const char* fn, const char* fmt, ...);
 
 static inline
-__attribute__((noreturn))
+r_no_return
 void r_stop_unreached(const char* fn) {
   r_stop_internal(fn, "Reached the unreachable.");
 }
 
 static inline
-__attribute__((noreturn))
+r_no_return
 void r_stop_unimplemented_type(const char* fn, enum r_type type) {
   r_stop_internal(fn, "Unimplemented type `%s`.", Rf_type2char(type));
 }
 static inline
-__attribute__((noreturn))
+r_no_return
 void r_stop_unexpected_type(const char* fn, enum r_type type) {
   r_stop_internal(fn, "Unexpected type `%s`.", Rf_type2char(type));
 }

@@ -18,6 +18,8 @@
 #define r_unused
 #endif
 
+#define r_no_return __attribute__ ((noreturn))
+
 typedef struct SEXPREC r_obj;
 typedef Rcomplex r_complex_t;
 

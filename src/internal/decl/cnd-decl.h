@@ -5,7 +5,7 @@ static
 void without_winch(void* payload);
 
 static
-__attribute__((noreturn))
+r_no_return
 r_obj* stop_internal_cb(void* payload);
 
 // From rlang/vec-chr.c

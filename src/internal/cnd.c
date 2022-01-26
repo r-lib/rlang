@@ -57,7 +57,7 @@ struct stop_internal_data {
   const char* msg;
 };
 
-__attribute__((noreturn))
+r_no_return
 void rlang_stop_internal(const char* fn, const char* fmt, ...) {
   R_CheckStack2(BUFSIZE);
 
@@ -85,7 +85,7 @@ void rlang_stop_internal(const char* fn, const char* fmt, ...) {
 }
 
 static
-__attribute__((noreturn))
+r_no_return
 r_obj* stop_internal_cb(void* payload) {
   struct stop_internal_data* data = (struct stop_internal_data*) payload;
   r_obj* call = KEEP(r_parse("stop_internal_c_lib(x, y)"));
