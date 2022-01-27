@@ -30,7 +30,7 @@ r_obj* ns_env_get(r_obj* env, const char* name) {
 
   // Trigger object not found error
   r_eval(r_sym(name), env);
-  r_stop_unreachable("ns_env_get");
+  r_stop_unreachable();
 }
 r_obj* r_base_ns_get(const char* name) {
   return ns_env_get(r_envs.base, name);

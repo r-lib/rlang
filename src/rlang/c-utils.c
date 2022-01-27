@@ -18,11 +18,11 @@ void* r_shelter_deref(r_obj* x) {
   case R_TYPE_raw:
     break;
   default:
-    r_stop_unimplemented_type("r_shelter_deref", type);
+    r_stop_unimplemented_type(type);
   }
 
   if (type != R_TYPE_raw) {
-    r_stop_unexpected_type("r_shelter_deref", type);
+    r_stop_unexpected_type(type);
   }
 
   return r_raw_begin(x);

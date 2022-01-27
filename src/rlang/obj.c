@@ -35,7 +35,7 @@ void (_r_unpreserve)(r_obj* x) {
   int n = pop_precious(stack);
 
   if (n < 0) {
-    r_stop_internal("r_unpreserve", "`n` unexpectedly < 0.");
+    r_stop_internal("`n` unexpectedly < 0.");
   }
   if (n == 0) {
     r_dict_del(p_precious_dict, x);

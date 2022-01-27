@@ -26,6 +26,6 @@ void rcc_abort(const char* fn) {
  } catch (const std::exception& err) {
    r_abort(err.what());
  } catch (...) {
-   r_stop_internal(fn, "Caught unknown C++ exception.");
+   r_stop_internal2(fn, "Caught unknown C++ exception.");
  }
 }

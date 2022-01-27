@@ -53,19 +53,29 @@ struct without_winch_data {
   r_obj* old_use_winch;
 };
 struct stop_internal_data {
+  const char* file;
+  int line;
   const char* fn;
+  r_obj* call;
   const char* msg;
 };
 
 r_no_return
-void rlang_stop_internal(const char* fn, const char* fmt, ...) {
+void rlang_stop_internal2(const char* file,
+                          int line,
+                          const char* fn,
+                          r_obj* call,
+                          const char* fmt,
+                          ...) {
   R_CheckStack2(BUFSIZE);
-
   char msg[BUFSIZE];
   INTERP(msg, fmt, ...);
 
   struct stop_internal_data stop_internal_data = {
+    .file = file,
+    .line = line,
     .fn = fn,
+    .call = call,
     .msg = msg
   };
 
@@ -81,21 +91,39 @@ void rlang_stop_internal(const char* fn, const char* fmt, ...) {
   R_ExecWithCleanup(&with_winch, &with_winch_data,
                     &without_winch, &without_winch_data);
 
-  r_abort("Unreached.");
+  r_abort("unreachable");
+}
+
+// For compatibility, exported as C callable `rlang_stop_internal`
+r_no_return
+void rlang_stop_internal(const char* fn,
+                         const char* fmt,
+                         ...) {
+  R_CheckStack2(BUFSIZE);
+  char msg[BUFSIZE];
+  INTERP(msg, fmt, ...);
+
+  rlang_stop_internal2("", -1, fn, r_null, msg);
 }
 
 static
 r_no_return
 r_obj* stop_internal_cb(void* payload) {
   struct stop_internal_data* data = (struct stop_internal_data*) payload;
-  r_obj* call = KEEP(r_parse("stop_internal_c_lib(x, y)"));
-  r_eval_with_xy(call,
-                 KEEP(r_chr(data->fn)),
-                 KEEP(r_chr(data->msg)),
-                 rlang_ns_env);
-  r_abort("Unreached.");
-}
 
+  struct r_pair args[] = {
+    { r_sym("file"), KEEP(r_chr(data->file)) },
+    { r_sym("line"), KEEP(r_int(data->line)) },
+    { r_sym("fn"), KEEP(r_chr(data->fn)) },
+    { r_sym("call"), data->call },
+    { r_sym("message"), KEEP(r_chr(data->msg)) }
+  };
+
+  r_exec_mask_n(r_null, r_sym("stop_internal_c_lib"),
+                args, R_ARR_SIZEOF(args),
+                rlang_ns_env);
+  r_abort("unreachable");
+}
 
 static
 r_obj* with_winch(void* payload) {
@@ -173,7 +201,7 @@ const char* friendly_type_of(r_obj* x) {
   r_obj* out_obj = KEEP(r_eval_with_x(friendly_type_of_call, x, rlang_ns_env));
 
   if (!r_is_string(out_obj)) {
-    r_stop_unexpected_type("friendly_type_of", r_typeof(out_obj));
+    r_stop_unexpected_type(r_typeof(out_obj));
   }
   const char* out_str = r_chr_get_c_string(out_obj, 0);
 

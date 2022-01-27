@@ -66,7 +66,7 @@ void* r_vec_begin0(enum r_type type, r_obj* x) {
   case R_TYPE_double: return r_dbl_begin(x);
   case R_TYPE_complex: return r_cpl_begin(x);
   case R_TYPE_raw: return r_raw_begin(x);
-  default: r_stop_unimplemented_type("r_vec_begin", type);
+  default: r_stop_unimplemented_type(type);
   }
 }
 static inline
@@ -84,7 +84,7 @@ const void* r_vec_cbegin0(enum r_type type, r_obj* x) {
   case R_TYPE_raw: return r_raw_cbegin(x);
   case R_TYPE_character: return r_chr_cbegin(x);
   case R_TYPE_list: return r_list_cbegin(x);
-  default: r_stop_unimplemented_type("r_vec_cbegin", type);
+  default: r_stop_unimplemented_type(type);
   }
 }
 static inline
@@ -102,7 +102,7 @@ int r_vec_elt_sizeof0(enum r_type type) {
   case R_TYPE_raw: return sizeof(char);
   case R_TYPE_character: return sizeof(r_obj*);
   case R_TYPE_list: return sizeof(r_obj*);
-  default: r_stop_unimplemented_type("r_vec_elt_sizeof", type);
+  default: r_stop_unimplemented_type(type);
   }
 }
 static inline
@@ -337,7 +337,7 @@ r_obj* r_vec_resize0(enum r_type type, r_obj* x, r_ssize size) {
   case R_TYPE_raw: return r_raw_resize(x, size);
   case R_TYPE_character: return r_chr_resize(x, size);
   case R_TYPE_list: return r_list_resize(x, size);
-  default: r_stop_unimplemented_type("r_vec_resize", type);
+  default: r_stop_unimplemented_type(type);
   }
 }
 static inline
@@ -361,7 +361,7 @@ r_obj* r_vec_n(enum r_type type, void* v_src, r_ssize n) {
   case R_TYPE_list:
     r_abort("TODO: barrier types in `r_vec_n()`");
   default:
-    r_stop_unimplemented_type("r_vec_n", type);
+    r_stop_unimplemented_type(type);
   }
 }
 

@@ -210,8 +210,7 @@ r_obj* ffi_arr_push_back(r_obj* arr_sexp, r_obj* x) {
   struct r_dyn_array* p_arr = r_shelter_deref(arr_sexp);
 
   if (!p_arr->barrier_set && r_vec_elt_sizeof(x) != p_arr->elt_byte_size) {
-    r_stop_internal("ffi_arr_push_back",
-                    "Incompatible byte sizes %d/%d.",
+    r_stop_internal("Incompatible byte sizes %d/%d.",
                     r_vec_elt_sizeof(x),
                     p_arr->elt_byte_size);
   }
@@ -498,7 +497,7 @@ r_obj* ffi_call_has_precedence(r_obj* x, r_obj* y, r_obj* side) {
     has_predence = r_rhs_call_has_precedence(x, y);
     break;
   default:
-    r_stop_internal("ffi_call_has_precedence", "Unexpected `side` value.");
+    r_stop_internal("Unexpected `side` value.");
   }
   return r_lgl(has_predence);
 }
@@ -948,7 +947,7 @@ r_obj* ffi_vec_resize(r_obj* x, r_obj* n) {
   case R_TYPE_raw: return r_raw_resize(x, n_ssize);
   case R_TYPE_character: return r_chr_resize(x, n_ssize);
   case R_TYPE_list: return r_list_resize(x, n_ssize);
-  default: r_stop_unimplemented_type("ffi_vec_resize", r_typeof(x));
+  default: r_stop_unimplemented_type(r_typeof(x));
   }
 }
 

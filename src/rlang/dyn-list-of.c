@@ -164,9 +164,7 @@ void r_lof_arr_push_back(struct r_dyn_list_of* p_lof,
                          r_ssize i,
                          void* p_elt) {
   if (i >= p_lof->count) {
-    r_stop_internal("r_lof_arr_push_back",
-                    "Location %d does not exist.",
-                    i);
+    r_stop_internal("Location %d does not exist.", i);
   }
 
   if (reserve_push_back(p_lof, i, p_elt)) {
@@ -177,9 +175,7 @@ void r_lof_arr_push_back(struct r_dyn_list_of* p_lof,
   r_ssize arr_i = p_lof->v_arr_locs[i];
 
   if (arr_i >= p_arr->count) {
-    r_stop_internal("r_lof_arr_push_back",
-                    "Location %d does not exist in the extra array",
-                    arr_i);
+    r_stop_internal("Location %d does not exist in the extra array", arr_i);
   }
 
   struct r_dyn_array* p_inner_arr = R_ARR_GET(struct r_dyn_array*, p_arr, arr_i);

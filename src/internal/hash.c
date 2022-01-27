@@ -209,7 +209,7 @@ void hash_char(R_outpstream_t stream, int input) {
   // `R_Serialize()` only ever calls `stream->OutChar()` for ASCII and
   // ASCIIHEX formats, neither of which we are using.
   // https://github.com/wch/r-source/blob/161e21346c024b79db2654d3331298f96cdf6968/src/main/serialize.c#L376
-  r_stop_internal("hash_char", "Should never be called with binary format.");
+  r_stop_internal("Should never be called with binary format.");
 }
 
 #if USE_VERSION_3

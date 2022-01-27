@@ -266,7 +266,7 @@ struct r_dict_iterator* r_new_dict_iterator(struct r_dict* p_dict) {
   p_it->v_buckets = p_dict->p_buckets;
 
   if (p_it->n == 0) {
-    r_stop_internal("r_new_dict_iterator", "Empty dictionary.");
+    r_stop_internal("Empty dictionary.");
   }
   p_it->node = p_it->v_buckets[0];
 

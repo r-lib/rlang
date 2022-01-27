@@ -206,7 +206,7 @@ bool vec_find_first_duplicate(r_obj* x, r_obj* except, r_ssize* index) {
 // Can use simple pointer hashing thanks to the string pool
 r_obj* chr_detect_dups(r_obj* x) {
   if (r_typeof(x) != R_TYPE_character) {
-    r_stop_internal("chr_detect_dups", "`x` must be a character vector.");
+    r_stop_internal("`x` must be a character vector.");
   }
 
   x = KEEP(r_obj_encode_utf8(x));

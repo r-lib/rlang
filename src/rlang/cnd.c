@@ -14,10 +14,6 @@
     BUF[BUFSIZE - 1] = '\0';                    \
   }
 
-
-r_no_return
-void (*r_stop_internal)(const char* fn, const char* fmt, ...) = NULL;
-
 static r_obj* msg_call = NULL;
 void r_inform(const char* fmt, ...) {
   char buf[BUFSIZE];
@@ -59,9 +55,19 @@ void r_abort(const char* fmt, ...) {
 }
 
 r_no_return
+void (r_stop_c_internal)(const char* file,
+                         int line,
+                         const char* fn,
+                         const char* fmt, ...) {
+  char buf[BUFSIZE];
+  INTERP(buf, fmt, ...);
+  r_abort("TODO");
+}
+
+r_no_return
 void r_abort_n(const struct r_pair* args, int n) {
   r_exec_mask_n(r_null, r_syms.abort, args, n, r_peek_frame());
-  r_stop_unreachable("r_abort_n");
+  r_stop_unreachable();
 }
 
 r_no_return
@@ -78,7 +84,7 @@ void r_abort_call(r_obj* call, const char* fmt, ...) {
   r_obj* frame = KEEP(r_peek_frame());
   r_exec_mask_n(r_null, r_syms.abort, args, R_ARR_SIZEOF(args), frame);
 
-  r_stop_unreachable("r_abort_call");
+  r_stop_unreachable();
 }
 
 void r_cnd_signal(r_obj* cnd) {
@@ -152,17 +158,27 @@ void r_init_library_cnd() {
   r_preserve(cnd_signal_call);
 
   // Silence "'noreturn' attribute does not apply to types warning".
-  // It seems like GCC doesn't handle attributes in casts.
+  // It seems like GCC doesn't handle attributes in casts so we need
+  // to cast through a typedef.
   // https://stackoverflow.com/questions/9441262/function-pointer-to-attribute-const-function
-  #ifdef __clang__
-  r_stop_internal = (r_no_return void (*)(const char*, const char*, ...)) R_GetCCallable("rlang", "rlang_stop_internal");
-  #else
-  typedef r_no_return void (*r_stop_internal_t)(const char*, const char*, ...);
-  r_stop_internal = (r_stop_internal_t) R_GetCCallable("rlang", "rlang_stop_internal");
-  #endif
+  typedef r_no_return void (*r_stop_internal_t)(const char*,
+                                                int,
+                                                const char*,
+                                                r_obj*,
+                                                const char* fmt,
+                                                ...);
+  r_stop_internal = (r_stop_internal_t) R_GetCCallable("rlang", "rlang_stop_internal2");
 
   r_format_error_arg = (const char* (*)(r_obj*)) r_peek_c_callable("rlang", "rlang_format_error_arg");
 }
+
+r_no_return
+void (*r_stop_internal)(const char* file,
+                        int line,
+                        const char* fn,
+                        r_obj* call,
+                        const char* fmt,
+                        ...) = NULL;
 
 static
 r_obj* cnd_signal_call = NULL;

@@ -47,7 +47,7 @@ r_obj* r_pairlist_clone_until(r_obj* node, r_obj* sentinel, r_obj** parent_out) 
     cur = r_node_cdr(cur);
   }
 
-  r_stop_unreachable("r_pairlist_clone_until");
+  r_stop_unreachable();
 }
 
 

@@ -24,7 +24,7 @@ r_ssize r_env_length(r_obj* env) {
 static inline
 r_obj* r_env_parent(r_obj* env) {
   if (env == r_envs.empty) {
-    r_stop_internal("r_env_parent", "Can't take the parent of the empty environment.");
+    r_stop_internal("Can't take the parent of the empty environment.");
   }
   return ENCLOS(env);
 }

@@ -172,7 +172,7 @@ ptrdiff_t suffix_pos(const char* name) {
       goto done;
 
     default:
-      r_stop_internal("suffix_pos", "Unexpected state.");
+      r_stop_internal("Unexpected state.");
     }}
 
  done:

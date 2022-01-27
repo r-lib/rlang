@@ -62,7 +62,7 @@ r_obj* ffi_c_tests() {
 
 r_obj* ffi_run_c_test(r_obj* fn_ptr) {
   if (r_typeof(fn_ptr) != R_TYPE_pointer) {
-    r_stop_unexpected_type("ffi_run_c_test", r_typeof(fn_ptr));
+    r_stop_unexpected_type(r_typeof(fn_ptr));
   }
 
   bool (*p)() = (bool (*)()) r_fn_ptr_addr(fn_ptr);

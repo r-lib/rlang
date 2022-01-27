@@ -22,7 +22,7 @@ r_obj* r_peek_frame() {
 
 r_obj* r_caller_env(r_obj* n) {
   if (r_typeof(n) != R_TYPE_environment) {
-    r_stop_internal("r_caller_env", "`n` must be an environment.");
+    r_stop_internal("`n` must be an environment.");
   }
   return r_eval(caller_env_call, n);
 }
