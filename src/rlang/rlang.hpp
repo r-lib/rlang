@@ -7,7 +7,7 @@ extern "C" {
 # pragma clang diagnostic ignored "-Wkeyword-macro"
 #endif
 
-#define class rlang_class
+#define class klass
 
 #ifdef __clang__
 # pragma clang diagnostic pop
