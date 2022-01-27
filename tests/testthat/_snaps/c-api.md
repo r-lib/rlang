@@ -1,4 +1,4 @@
-# can push to arrays in dynamic list-of
+# internal error is thrown with OOB dyn-lof access
 
     Code
       err(lof_arr_push_back(lof, 0, 42L), "Location 0 does not exist")

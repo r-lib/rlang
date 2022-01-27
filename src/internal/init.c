@@ -26,6 +26,7 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_chr_has_curly",                (DL_FUNC) &ffi_chr_has_curly, 1},
   {"ffi_cnd_signal",                   (DL_FUNC) &ffi_cnd_signal, 1},
   {"ffi_cnd_type",                     (DL_FUNC) &ffi_cnd_type, 1},
+  {"ffi_compiled_by_gcc",              (DL_FUNC) &ffi_compiled_by_gcc, 0},
   {"ffi_data_mask_clean",              (DL_FUNC) &ffi_data_mask_clean, 1},
   {"ffi_data_pronoun_get",             (DL_FUNC) &ffi_data_pronoun_get, 3},
   {"ffi_dict_as_df_list",              (DL_FUNC) &ffi_dict_as_df_list, 1},

@@ -1018,12 +1018,17 @@ test_that("can push to dynamic list-of", {
   expect_equal(lof_unwrap(lof), list(int(), int(), int()))
 })
 
-test_that("can push to arrays in dynamic list-of", {
+test_that("internal error is thrown with OOB dyn-lof access", {
+  skip_if(!compiled_by_gcc())
   lof <- new_dyn_list_of("integer", 3, 2)
   expect_snapshot({
     err(lof_arr_push_back(lof, 0, 42L), "Location 0 does not exist")
     err(lof_arr_push_back(lof, 10, 42L), "Location 10 does not exist")
   })
+})
+
+test_that("can push to arrays in dynamic list-of", {
+  lof <- new_dyn_list_of("integer", 3, 2)
   lof_push_back(lof)
   lof_push_back(lof)
   lof_push_back(lof)

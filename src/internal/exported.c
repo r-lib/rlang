@@ -9,6 +9,15 @@ void r_vec_poke_range(r_obj* x, r_ssize offset,
                       r_obj* y, r_ssize from, r_ssize to);
 
 
+r_obj* ffi_compiled_by_gcc() {
+#if defined(__GNUC__) && !defined(__clang__)
+  return r_true;
+  #else
+  return r_false;
+  #endif
+}
+
+
 // cnd.c
 
 r_obj* ffi_cnd_signal(r_obj* cnd) {
