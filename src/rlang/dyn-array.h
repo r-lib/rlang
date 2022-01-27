@@ -104,5 +104,33 @@ void r_dyn_list_push_back(struct r_dyn_array* p_vec, r_obj* elt) {
 #define R_DYN_GET(TYPE, X, I) (*((TYPE*) r_dyn_pointer((X), (I))))
 #define R_DYN_POKE(TYPE, X, I, VAL) (*((TYPE*) r_dyn_pointer((X), (I))) = (VAL))
 
+static inline
+int r_dyn_lgl_get(struct r_dyn_array* p_vec, r_ssize i) {
+  return ((const int*) p_vec->v_data_const)[i];
+}
+static inline
+int r_dyn_int_get(struct r_dyn_array* p_vec, r_ssize i) {
+  return ((const int*) p_vec->v_data_const)[i];
+}
+static inline
+double r_dyn_dbl_get(struct r_dyn_array* p_vec, r_ssize i) {
+  return ((const double*) p_vec->v_data_const)[i];
+}
+static inline
+r_complex_t r_dyn_cpl_get(struct r_dyn_array* p_vec, r_ssize i) {
+  return ((const r_complex_t*) p_vec->v_data_const)[i];
+}
+static inline
+char r_dyn_raw_get(struct r_dyn_array* p_vec, r_ssize i) {
+  return ((const char*) p_vec->v_data_const)[i];
+}
+static inline
+r_obj* r_dyn_chr_get(struct r_dyn_array* p_vec, r_ssize i) {
+  return ((r_obj* const *) p_vec->v_data_const)[i];
+}
+static inline
+r_obj* r_dyn_list_get(struct r_dyn_array* p_vec, r_ssize i) {
+  return ((r_obj* const *) p_vec->v_data_const)[i];
+}
 
 #endif

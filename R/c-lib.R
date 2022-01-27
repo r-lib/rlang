@@ -252,6 +252,28 @@ dyn_resize <- function(x, capacity) {
   .Call(ffi_dyn_resize, x, capacity)
 }
 
+dyn_lgl_get <- function(x, i) {
+  .Call(ffi_dyn_lgl_get, x, i)
+}
+dyn_int_get <- function(x, i) {
+  .Call(ffi_dyn_int_get, x, i)
+}
+dyn_dbl_get <- function(x, i) {
+  .Call(ffi_dyn_dbl_get, x, i)
+}
+dyn_cpl_get <- function(x, i) {
+  .Call(ffi_dyn_cpl_get, x, i)
+}
+dyn_raw_get <- function(x, i) {
+  .Call(ffi_dyn_raw_get, x, i)
+}
+dyn_chr_get <- function(x, i) {
+  .Call(ffi_dyn_chr_get, x, i)
+}
+dyn_list_get <- function(x, i) {
+  .Call(ffi_dyn_list_get, x, i)
+}
+
 #' @export
 print.rlang_dyn_array <- function(x, ...) {
   writeLines(sprintf("<rlang/dyn_array: %s>", obj_address(x)))

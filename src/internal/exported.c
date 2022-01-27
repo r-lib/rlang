@@ -259,6 +259,35 @@ r_obj* ffi_dyn_resize(r_obj* arr_sexp, r_obj* capacity_sexp) {
   return r_null;
 }
 
+// [[ register() ]]
+r_obj* ffi_dyn_lgl_get(r_obj* x, r_obj* i) {
+  return r_lgl(r_dyn_lgl_get(r_shelter_deref(x), r_arg_as_ssize(i, "i")));
+}
+// [[ register() ]]
+r_obj* ffi_dyn_int_get(r_obj* x, r_obj* i) {
+  return r_int(r_dyn_int_get(r_shelter_deref(x), r_arg_as_ssize(i, "i")));
+}
+// [[ register() ]]
+r_obj* ffi_dyn_dbl_get(r_obj* x, r_obj* i) {
+  return r_dbl(r_dyn_dbl_get(r_shelter_deref(x), r_arg_as_ssize(i, "i")));
+}
+// [[ register() ]]
+r_obj* ffi_dyn_cpl_get(r_obj* x, r_obj* i) {
+  return r_cpl(r_dyn_cpl_get(r_shelter_deref(x), r_arg_as_ssize(i, "i")));
+}
+// [[ register() ]]
+r_obj* ffi_dyn_raw_get(r_obj* x, r_obj* i) {
+  return r_raw(r_dyn_raw_get(r_shelter_deref(x), r_arg_as_ssize(i, "i")));
+}
+// [[ register() ]]
+r_obj* ffi_dyn_chr_get(r_obj* x, r_obj* i) {
+  return r_dyn_chr_get(r_shelter_deref(x), r_arg_as_ssize(i, "i"));
+}
+// [[ register() ]]
+r_obj* ffi_dyn_list_get(r_obj* x, r_obj* i) {
+  return r_dyn_list_get(r_shelter_deref(x), r_arg_as_ssize(i, "i"));
+}
+
 
 // dyn-list-of.c
 
