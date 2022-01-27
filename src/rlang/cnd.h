@@ -22,7 +22,7 @@ void (*r_stop_internal)(const char* fn, const char* fmt, ...);
 
 static inline
 r_no_return
-void r_stop_unreached(const char* fn) {
+void r_stop_unreachable(const char* fn) {
   r_stop_internal(fn, "Reached the unreachable.");
 }
 

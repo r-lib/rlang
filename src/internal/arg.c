@@ -156,7 +156,7 @@ int arg_match(r_obj* arg,
     if (!matched) {
       error_arg = KEEP(wrap_chr(error_arg));
       r_eval_with_wxyz(stop_arg_match_call, arg, values, error_arg, error_call, rlang_ns_env);
-      r_stop_unreached("arg_match");
+      r_stop_unreachable("arg_match");
     }
   }
 
@@ -168,7 +168,7 @@ int arg_match(r_obj* arg,
     }
   }
 
-  r_stop_unreached("arg_match");
+  r_stop_unreachable("arg_match");
 }
 
 static
@@ -199,7 +199,7 @@ int arg_match1(r_obj* arg,
                    KEEP(wrap_chr(error_arg)),
                    error_call,
                    rlang_ns_env);
-  r_stop_unreached("arg_match");
+  r_stop_unreachable("arg_match");
 }
 
 
@@ -225,7 +225,7 @@ r_obj* wrap_chr(r_obj* arg) {
   case R_TYPE_character:
     return arg;
   default:
-    r_stop_unreached("wrap_chr");
+    r_stop_unreachable("wrap_chr");
   }
 }
 

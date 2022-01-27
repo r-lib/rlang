@@ -62,7 +62,7 @@ r_obj* env_get_sym(r_obj* env,
                args,
                R_ARR_SIZEOF(args),
                closure_env);
-      r_stop_unreached("env_get_sym");
+      r_stop_unreachable("env_get_sym");
     }
 
     out = r_eval(r_sym("default"), closure_env);
@@ -204,7 +204,7 @@ enum bind_type parse_bind_type(r_obj* bind_type) {
   case 'v': return BIND_TYPE_value;
   case 'a': return BIND_TYPE_active;
   case 'l': return BIND_TYPE_lazy;
-  default: r_stop_unreached("parse_bind_type");
+  default: r_stop_unreachable("parse_bind_type");
   }
 }
 

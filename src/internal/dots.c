@@ -744,7 +744,7 @@ void dots_check_homonyms(r_obj* dots, r_obj* nms) {
              args,
              R_ARR_SIZEOF(args),
              env);
-    r_stop_unreached("dots_check_homonyms");
+    r_stop_unreachable("dots_check_homonyms");
   }
 
   FREE(1);
@@ -794,7 +794,7 @@ r_obj* dots_finalise(struct dots_capture_info* capture_info, r_obj* dots) {
     case DOTS_HOMONYMS_first: dots = dots_keep(dots, nms, true); break;
     case DOTS_HOMONYMS_last: dots = dots_keep(dots, nms, false); break;
     case DOTS_HOMONYMS_error: dots_check_homonyms(dots, nms); break;
-    default: r_stop_unreached("dots_finalise");
+    default: r_stop_unreachable("dots_finalise");
     }
 
     FREE(2);

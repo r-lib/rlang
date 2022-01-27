@@ -198,7 +198,7 @@ bool sexp_next_incoming(struct r_sexp_iterator* p_it,
     child.x = sexp_node_cdr(type, x, &child.rel);
     break;
   case SEXP_ITERATOR_STATE_done:
-    r_stop_unreached("r_sexp_next");
+    r_stop_unreachable("r_sexp_next");
   }
 
   child.type = r_typeof(child.x);
@@ -361,7 +361,7 @@ const char* r_sexp_it_direction_as_c_string(enum r_sexp_it_direction dir) {
   case R_SEXP_IT_DIRECTION_leaf: return "leaf";
   case R_SEXP_IT_DIRECTION_incoming: return "incoming";
   case R_SEXP_IT_DIRECTION_outgoing: return "outgoing";
-  default: r_stop_unreached("r_sexp_it_direction_as_c_string");
+  default: r_stop_unreachable("r_sexp_it_direction_as_c_string");
   }
 }
 
@@ -399,7 +399,7 @@ const char* r_sexp_it_relation_as_c_string(enum r_sexp_it_relation rel) {
 
   case R_SEXP_IT_RELATION_none: r_stop_internal("r_sexp_it_relation_as_c_string",
                                                 "Found `R_SEXP_IT_RELATION_none`.");
-  default: r_stop_unreached("r_sexp_it_relation_as_c_string");
+  default: r_stop_unreachable("r_sexp_it_relation_as_c_string");
   }
 }
 
@@ -411,6 +411,6 @@ const char* r_sexp_it_raw_relation_as_c_string(enum r_sexp_it_raw_relation rel) 
   case R_SEXP_IT_RAW_RELATION_node_cdr: return "node_cdr";
   case R_SEXP_IT_RAW_RELATION_node_tag: return "node_tag";
   case R_SEXP_IT_RAW_RELATION_vector_elt: return "vector_elt";
-  default: r_stop_unreached("r_sexp_it_raw_relation_as_c_string");
+  default: r_stop_unreachable("r_sexp_it_raw_relation_as_c_string");
   }
 }

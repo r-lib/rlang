@@ -61,7 +61,7 @@ void r_abort(const char* fmt, ...) {
 r_no_return
 void r_abort_n(const struct r_pair* args, int n) {
   r_exec_mask_n(r_null, r_syms.abort, args, n, r_peek_frame());
-  r_stop_unreached("r_abort_n");
+  r_stop_unreachable("r_abort_n");
 }
 
 r_no_return
@@ -78,7 +78,7 @@ void r_abort_call(r_obj* call, const char* fmt, ...) {
   r_obj* frame = KEEP(r_peek_frame());
   r_exec_mask_n(r_null, r_syms.abort, args, R_ARR_SIZEOF(args), frame);
 
-  r_stop_unreached("r_abort_call");
+  r_stop_unreachable("r_abort_call");
 }
 
 void r_cnd_signal(r_obj* cnd) {
