@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* Fixed a partial matching issue with `header`, `body`, and `footer`
+  condition fields.
+
 * `eval_tidy()` calls are no longer mentioned in error messages.
 
 

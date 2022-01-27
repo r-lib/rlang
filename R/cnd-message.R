@@ -146,7 +146,7 @@ local_cli_indent <- function(frame = caller_env()) {
 #' @rdname cnd_message
 #' @export
 cnd_header <- function(cnd, ...) {
-  if (is_null(cnd$header)) {
+  if (is_null(cnd[["header"]])) {
     UseMethod("cnd_header")
   } else {
     exec_cnd_method("header", cnd)
@@ -160,7 +160,7 @@ cnd_header.default <- function(cnd, ...) {
 #' @rdname cnd_message
 #' @export
 cnd_body <- function(cnd, ...) {
-  if (is_null(cnd$body)) {
+  if (is_null(cnd[["body"]])) {
     UseMethod("cnd_body")
   } else {
     exec_cnd_method("body", cnd)
@@ -174,7 +174,7 @@ cnd_body.default <- function(cnd, ...) {
 #' @rdname cnd_message
 #' @export
 cnd_footer <- function(cnd, ...) {
-  if (is_null(cnd$footer)) {
+  if (is_null(cnd[["footer"]])) {
     UseMethod("cnd_footer")
   } else {
     exec_cnd_method("footer", cnd)

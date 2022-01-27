@@ -494,3 +494,18 @@ test_that("multiline operator calls are preserved", {
 test_that("eval_tidy() is not mentioned in calls", {
   expect_null(format_error_call(quote(eval_tidy(expr))))
 })
+
+test_that("header, body, and footer don't partial-match", {
+  expect_equal(
+    cnd_header(error_cnd("foo", headers = 1)),
+    ""
+  )
+  expect_equal(
+    cnd_body(error_cnd("foo", bodyy = 1)),
+    chr()
+  )
+  expect_equal(
+    cnd_footer(error_cnd("foo", footers = 1)),
+    chr()
+  )
+})
