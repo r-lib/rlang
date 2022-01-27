@@ -182,12 +182,12 @@ r_obj* ffi_new_dyn_array(r_obj* elt_byte_size,
 }
 
 // [[ register() ]]
-r_obj* ffi_arr_unwrap(r_obj* arr) {
-  return r_arr_unwrap(r_shelter_deref(arr));
+r_obj* ffi_dyn_unwrap(r_obj* arr) {
+  return r_dyn_unwrap(r_shelter_deref(arr));
 }
 
 // [[ register() ]]
-r_obj* ffi_arr_info(r_obj* arr_sexp) {
+r_obj* ffi_dyn_info(r_obj* arr_sexp) {
   struct r_dyn_array* arr = r_shelter_deref(arr_sexp);
 
   const char* names_c_strs[] = {
@@ -215,7 +215,7 @@ r_obj* ffi_arr_info(r_obj* arr_sexp) {
 }
 
 // [[ register() ]]
-r_obj* ffi_arr_push_back(r_obj* arr_sexp, r_obj* x) {
+r_obj* ffi_dyn_push_back(r_obj* arr_sexp, r_obj* x) {
   struct r_dyn_array* p_arr = r_shelter_deref(arr_sexp);
 
   if (!p_arr->barrier_set && r_vec_elt_sizeof(x) != p_arr->elt_byte_size) {
@@ -227,24 +227,24 @@ r_obj* ffi_arr_push_back(r_obj* arr_sexp, r_obj* x) {
   switch (p_arr->type) {
   case R_TYPE_character:
   case R_TYPE_list:
-    r_arr_push_back(p_arr, &x);
+    r_dyn_push_back(p_arr, &x);
     return r_null;
   default:
-    r_arr_push_back(p_arr, r_vec_cbegin(x));
+    r_dyn_push_back(p_arr, r_vec_cbegin(x));
     return r_null;
   }
 }
 // [[ register() ]]
-r_obj* ffi_arr_push_back_bool(r_obj* arr_sexp, r_obj* x_sexp) {
+r_obj* ffi_dyn_push_back_bool(r_obj* arr_sexp, r_obj* x_sexp) {
   struct r_dyn_array* arr = r_shelter_deref(arr_sexp);
   bool x = r_as_bool(x_sexp);
-  r_arr_push_back(arr, &x);
+  r_dyn_push_back(arr, &x);
   return r_null;
 }
 // [[ register() ]]
-r_obj* ffi_arr_pop_back(r_obj* arr_sexp) {
+r_obj* ffi_dyn_pop_back(r_obj* arr_sexp) {
   struct r_dyn_array* arr = r_shelter_deref(arr_sexp);
-  void* const * out = r_arr_pop_back(arr);
+  void* const * out = r_dyn_pop_back(arr);
 
   if (arr->type == R_TYPE_list) {
     return *((r_obj* const *) out);
@@ -253,9 +253,9 @@ r_obj* ffi_arr_pop_back(r_obj* arr_sexp) {
   }
 }
 // [[ register() ]]
-r_obj* ffi_arr_resize(r_obj* arr_sexp, r_obj* capacity_sexp) {
+r_obj* ffi_dyn_resize(r_obj* arr_sexp, r_obj* capacity_sexp) {
   struct r_dyn_array* arr = r_shelter_deref(arr_sexp);
-  r_arr_resize(arr, r_arg_as_ssize(capacity_sexp, "capacity"));
+  r_dyn_resize(arr, r_arg_as_ssize(capacity_sexp, "capacity"));
   return r_null;
 }
 
@@ -1031,10 +1031,10 @@ r_obj* ffi_sexp_iterate(r_obj* x, r_obj* fn) {
                                     R_ARR_SIZEOF(args),
                                     r_envs.base));
 
-    r_list_push_back(p_out, out);
+    r_dyn_list_push_back(p_out, out);
     FREE(9);
   }
 
   FREE(3);
-  return r_arr_unwrap(p_out);
+  return r_dyn_unwrap(p_out);
 }
