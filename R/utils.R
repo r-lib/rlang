@@ -222,7 +222,7 @@ stop_internal <- function(message, ..., call = caller_env(2)) {
   abort(message, ..., call = call, .internal = TRUE)
 }
 
-stop_internal_c_lib <- function(file, line, fn, call, message) {
+stop_internal_c_lib <- function(file, line, call, message) {
   if (nzchar(file)) {
     message <- c(
       message,
@@ -242,15 +242,7 @@ stop_internal_c_lib <- function(file, line, fn, call, message) {
     )
   }
 
-  parent <- NULL
-  if (nzchar(fn)) {
-    if (!is_null(call)) {
-      parent <- error_cnd(call = call)
-    }
-    call <- call(fn)
-  }
-
-  abort(message, parent = parent, call = call, .internal = TRUE)
+  abort(message, call = call, .internal = TRUE)
 }
 
 with_srcref <- function(src, env = caller_env(), file = NULL) {

@@ -55,7 +55,6 @@ struct without_winch_data {
 struct stop_internal_data {
   const char* file;
   int line;
-  const char* fn;
   r_obj* call;
   const char* msg;
 };
@@ -63,7 +62,6 @@ struct stop_internal_data {
 r_no_return
 void rlang_stop_internal2(const char* file,
                           int line,
-                          const char* fn,
                           r_obj* call,
                           const char* fmt,
                           ...) {
@@ -74,7 +72,6 @@ void rlang_stop_internal2(const char* file,
   struct stop_internal_data stop_internal_data = {
     .file = file,
     .line = line,
-    .fn = fn,
     .call = call,
     .msg = msg
   };
@@ -103,7 +100,10 @@ void rlang_stop_internal(const char* fn,
   char msg[BUFSIZE];
   INTERP(msg, fmt, ...);
 
-  rlang_stop_internal2("", -1, fn, r_null, msg);
+  r_obj* call = KEEP(r_call(r_sym(fn)));
+
+  rlang_stop_internal2("", -1, call, msg);
+  r_abort("unreachable");
 }
 
 static
@@ -114,7 +114,6 @@ r_obj* stop_internal_cb(void* payload) {
   struct r_pair args[] = {
     { r_sym("file"), KEEP(r_chr(data->file)) },
     { r_sym("line"), KEEP(r_int(data->line)) },
-    { r_sym("fn"), KEEP(r_chr(data->fn)) },
     { r_sym("call"), data->call },
     { r_sym("message"), KEEP(r_chr(data->msg)) }
   };

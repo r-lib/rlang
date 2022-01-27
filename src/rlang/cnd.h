@@ -20,32 +20,27 @@ extern
 r_no_return
 void (*r_stop_internal)(const char* file,
                         int line,
-                        const char* fn,
                         r_obj* call,
                         const char* fmt,
                         ...);
 
 r_obj* r_peek_frame();
 
-#define r_stop_internal(...)                                    \
-  (r_stop_internal)(__FILE__, __LINE__, "", r_peek_frame(),     \
+#define r_stop_internal(...)                            \
+  (r_stop_internal)(__FILE__, __LINE__, r_peek_frame(), \
                     __VA_ARGS__)
 
-#define r_stop_internal2(FN, ...)                               \
-  (r_stop_internal)(__FILE__, __LINE__, FN, r_peek_frame(),     \
-                    __VA_ARGS__)
-
-#define r_stop_unreachable()                                    \
-  (r_stop_internal)(__FILE__, __LINE__, "", r_peek_frame(),     \
+#define r_stop_unreachable()                            \
+  (r_stop_internal)(__FILE__, __LINE__, r_peek_frame(), \
                     "Reached the unreachable")
 
 #define r_stop_unimplemented_type(TYPE)                                 \
-  (r_stop_internal)(__FILE__, __LINE__, "", r_peek_frame(),             \
+  (r_stop_internal)(__FILE__, __LINE__, r_peek_frame(),                 \
                     "Unimplemented type `%s`.", Rf_type2char(TYPE))
 
 
 #define r_stop_unexpected_type(TYPE)                                    \
-  (r_stop_internal)(__FILE__, __LINE__, "", r_peek_frame(),             \
+  (r_stop_internal)(__FILE__, __LINE__, r_peek_frame(),                 \
                     "Unexpected type `%s`.", Rf_type2char(TYPE))
 
 

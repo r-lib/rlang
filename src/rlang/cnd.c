@@ -163,7 +163,6 @@ void r_init_library_cnd() {
   // https://stackoverflow.com/questions/9441262/function-pointer-to-attribute-const-function
   typedef r_no_return void (*r_stop_internal_t)(const char*,
                                                 int,
-                                                const char*,
                                                 r_obj*,
                                                 const char* fmt,
                                                 ...);
@@ -175,7 +174,6 @@ void r_init_library_cnd() {
 r_no_return
 void (*r_stop_internal)(const char* file,
                         int line,
-                        const char* fn,
                         r_obj* call,
                         const char* fmt,
                         ...) = NULL;
