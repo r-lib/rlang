@@ -45,7 +45,7 @@ void r_lof_arr_push_back(struct r_dyn_list_of* p_lof,
 static inline
 void* r_lof_arr_ptr(struct r_dyn_list_of* p_lof, r_ssize i, r_ssize j) {
   r_ssize offset = j * p_lof->elt_byte_size;
-  struct r_pair_ptr_ssize* v_arrays = (struct r_pair_ptr_ssize*) r_arr_pointer(p_lof->p_arrays, i);
+  struct r_pair_ptr_ssize* v_arrays = (struct r_pair_ptr_ssize*) r_dyn_pointer(p_lof->p_arrays, i);
   return ((unsigned char*) v_arrays->ptr) + offset;
 }
 static inline

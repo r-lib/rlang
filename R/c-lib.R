@@ -228,35 +228,79 @@ new_dyn_vector <- function(type, capacity) {
 new_dyn_array <- function(elt_size, capacity) {
   .Call(ffi_new_dyn_array, elt_size, capacity)
 }
-arr_unwrap <- function(arr) {
-  .Call(ffi_arr_unwrap, arr)
+dyn_unwrap <- function(x) {
+  .Call(ffi_dyn_unwrap, x)
 }
 
-arr_info <- function(arr) {
-  .Call(ffi_arr_info, arr)
+dyn_info <- function(x) {
+  .Call(ffi_dyn_info, x)
 }
-arr_count <- function(arr) {
-  arr_info(arr)$count
+dyn_count <- function(x) {
+  dyn_info(x)$count
 }
 
-arr_push_back <- function(arr, x) {
-  .Call(ffi_arr_push_back, arr, x)
+dyn_push_back <- function(x, value) {
+  .Call(ffi_dyn_push_back, x, value)
 }
-arr_push_back_bool <- function(arr, x) {
-  .Call(ffi_arr_push_back_bool, arr, x)
+dyn_push_back_bool <- function(x, value) {
+  .Call(ffi_dyn_push_back_bool, x, value)
 }
-arr_pop_back <- function(arr) {
-  .Call(ffi_arr_pop_back, arr)
+dyn_pop_back <- function(x) {
+  .Call(ffi_dyn_pop_back, x)
 }
-arr_resize <- function(arr, capacity) {
-  .Call(ffi_arr_resize, arr, capacity)
+dyn_resize <- function(x, capacity) {
+  .Call(ffi_dyn_resize, x, capacity)
+}
+
+dyn_lgl_get <- function(x, i) {
+  .Call(ffi_dyn_lgl_get, x, i)
+}
+dyn_int_get <- function(x, i) {
+  .Call(ffi_dyn_int_get, x, i)
+}
+dyn_dbl_get <- function(x, i) {
+  .Call(ffi_dyn_dbl_get, x, i)
+}
+dyn_cpl_get <- function(x, i) {
+  .Call(ffi_dyn_cpl_get, x, i)
+}
+dyn_raw_get <- function(x, i) {
+  .Call(ffi_dyn_raw_get, x, i)
+}
+dyn_chr_get <- function(x, i) {
+  .Call(ffi_dyn_chr_get, x, i)
+}
+dyn_list_get <- function(x, i) {
+  .Call(ffi_dyn_list_get, x, i)
+}
+
+dyn_lgl_poke <- function(x, i, value) {
+  invisible(.Call(ffi_dyn_lgl_poke, x, i, value))
+}
+dyn_int_poke <- function(x, i, value) {
+  invisible(.Call(ffi_dyn_int_poke, x, i, value))
+}
+dyn_dbl_poke <- function(x, i, value) {
+  invisible(.Call(ffi_dyn_dbl_poke, x, i, value))
+}
+dyn_cpl_poke <- function(x, i, value) {
+  invisible(.Call(ffi_dyn_cpl_poke, x, i, value))
+}
+dyn_raw_poke <- function(x, i, value) {
+  invisible(.Call(ffi_dyn_raw_poke, x, i, value))
+}
+dyn_chr_poke <- function(x, i, value) {
+  invisible(.Call(ffi_dyn_chr_poke, x, i, value))
+}
+dyn_list_poke <- function(x, i, value) {
+  invisible(.Call(ffi_dyn_list_poke, x, i, value))
 }
 
 #' @export
 print.rlang_dyn_array <- function(x, ...) {
   writeLines(sprintf("<rlang/dyn_array: %s>", obj_address(x)))
 
-  info <- arr_info(x)
+  info <- dyn_info(x)
   writeLines(paste0("count: ", info$count))
   writeLines(paste0("capacity: ", info$capacity))
   writeLines(paste0("growth_factor: ", info$growth_factor))

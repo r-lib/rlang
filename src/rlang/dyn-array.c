@@ -48,7 +48,7 @@ struct r_dyn_array* r_new_dyn_vector(enum r_type type,
   return p_vec;
 }
 
-r_obj* r_arr_unwrap(struct r_dyn_array* p_arr) {
+r_obj* r_dyn_unwrap(struct r_dyn_array* p_arr) {
   if (p_arr->type == R_TYPE_raw) {
     return r_raw_resize(p_arr->data, p_arr->count * p_arr->elt_byte_size);
   } else {
@@ -68,13 +68,13 @@ struct r_dyn_array* r_new_dyn_array(r_ssize elt_byte_size,
 }
 
 
-void r_arr_push_back(struct r_dyn_array* p_arr,
+void r_dyn_push_back(struct r_dyn_array* p_arr,
                      const void* p_elt) {
   r_ssize count = ++p_arr->count;
   if (count > p_arr->capacity) {
     r_ssize new_capacity = r_ssize_mult(p_arr->capacity,
                                         p_arr->growth_factor);
-    r_arr_resize(p_arr, new_capacity);
+    r_dyn_resize(p_arr, new_capacity);
   }
 
   if (p_arr->barrier_set) {
@@ -84,13 +84,13 @@ void r_arr_push_back(struct r_dyn_array* p_arr,
   }
 
   if (p_elt) {
-    memcpy(r_arr_last(p_arr), p_elt, p_arr->elt_byte_size);
+    memcpy(r_dyn_last(p_arr), p_elt, p_arr->elt_byte_size);
   } else {
-    memset(r_arr_last(p_arr), 0, p_arr->elt_byte_size);
+    memset(r_dyn_last(p_arr), 0, p_arr->elt_byte_size);
   }
 }
 
-void r_arr_resize(struct r_dyn_array* p_arr,
+void r_dyn_resize(struct r_dyn_array* p_arr,
                   r_ssize capacity) {
   enum r_type type = p_arr->type;
 

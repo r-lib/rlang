@@ -263,14 +263,14 @@ new_stack <- function() {
 
   push <- function(...) {
     for (obj in list2(...)) {
-      arr_push_back(stack, maybe_missing(obj))
+      dyn_push_back(stack, maybe_missing(obj))
     }
   }
 
   # Can be used as a coro generator
   pop <- function() {
-    if (arr_count(stack)) {
-      arr_pop_back(stack)
+    if (dyn_count(stack)) {
+      dyn_pop_back(stack)
     } else {
       exhausted()
     }

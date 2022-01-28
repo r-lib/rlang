@@ -127,6 +127,10 @@ r_complex_t r_cpl_get(r_obj* x, r_ssize i) {
   return COMPLEX(x)[i];
 }
 static inline
+char r_raw_get(r_obj* x, r_ssize i) {
+  return RAW(x)[i];
+}
+static inline
 r_obj* r_chr_get(r_obj* x, r_ssize i) {
   return STRING_ELT(x, i);
 }
@@ -154,6 +158,10 @@ void r_dbl_poke(r_obj* x, r_ssize i, double y) {
 static inline
 void r_cpl_poke(r_obj* x, r_ssize i, r_complex_t y) {
   COMPLEX(x)[i] = y;
+}
+static inline
+void r_raw_poke(r_obj* x, r_ssize i, char y) {
+  RAW(x)[i] = y;
 }
 static inline
 void r_chr_poke(r_obj* x, r_ssize i, r_obj* y) {
@@ -227,6 +235,10 @@ r_obj* r_cpl(r_complex_t x) {
   return Rf_ScalarComplex(x);
 }
 static inline
+r_obj* r_raw(char x) {
+  return Rf_ScalarRaw(x);
+}
+static inline
 r_obj* r_str(const char* c_string) {
   return Rf_mkCharCE(c_string, CE_UTF8);
 }
@@ -264,6 +276,34 @@ r_obj* r_shared_lgl(bool x) {
   } else {
     return r_false;
   }
+}
+
+static inline
+bool _r_has_correct_length(r_obj* x, r_ssize n) {
+  return n < 0 || r_length(x) == n;
+}
+extern
+bool _r_is_finite(r_obj* x);
+
+static inline
+bool _r_is_double(r_obj* x, r_ssize n, int finite) {
+  if (r_typeof(x) != R_TYPE_double || !_r_has_correct_length(x, n)) {
+    return false;
+  }
+  if (finite >= 0 && (bool) finite != _r_is_finite(x)) {
+    return false;
+  }
+  return true;
+}
+static inline
+bool _r_is_complex(r_obj* x, r_ssize n, int finite) {
+  if (r_typeof(x) != R_TYPE_complex || !_r_has_correct_length(x, n)) {
+    return false;
+  }
+  if (finite >= 0 && (bool) finite != _r_is_finite(x)) {
+    return false;
+  }
+  return true;
 }
 
 static inline
@@ -307,6 +347,7 @@ static inline
 bool r_as_bool(r_obj* x) {
   return r_arg_as_bool(x, "x");
 }
+
 static inline
 int r_arg_as_int(r_obj* x, const char* arg) {
   if (!r_is_int(x)) {
@@ -317,6 +358,43 @@ int r_arg_as_int(r_obj* x, const char* arg) {
 static inline
 int r_as_int(r_obj* x) {
   return r_arg_as_int(x, "x");
+}
+
+static inline
+double r_arg_as_double(r_obj* x, const char* arg) {
+  // TODO: Coercion of int and lgl values
+  if (!_r_is_double(x, 1, 1)) {
+    r_abort("`%s` must be a double value.", arg);
+  }
+  return r_dbl_get(x, 0);
+}
+static inline
+double r_as_double(r_obj* x) {
+  return r_arg_as_double(x, "x");
+}
+
+static inline
+r_complex_t r_arg_as_complex(r_obj* x, const char* arg) {
+  if (!_r_is_complex(x, 1, 1)) {
+    r_abort("`%s` must be a complex value.", arg);
+  }
+  return r_cpl_get(x, 0);
+}
+static inline
+r_complex_t r_as_complex(r_obj* x) {
+  return r_arg_as_complex(x, "x");
+}
+
+static inline
+char r_arg_as_char(r_obj* x, const char* arg) {
+  if (r_typeof(x) != R_TYPE_raw && r_length(x) != 1) {
+    r_abort("`%s` must be a raw value.", arg);
+  }
+  return r_raw_get(x, 0);
+}
+static inline
+char r_as_char(r_obj* x) {
+  return r_arg_as_char(x, "x");
 }
 
 r_obj* r_lgl_resize(r_obj* x, r_ssize size);

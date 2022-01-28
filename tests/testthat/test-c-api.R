@@ -804,7 +804,7 @@ test_that("can grow and shrink dynamic arrays", {
   arr <- new_dyn_array(1, 3)
 
   expect_equal(
-    arr_info(arr),
+    dyn_info(arr),
     list(
       count = 0,
       capacity = 3,
@@ -814,11 +814,11 @@ test_that("can grow and shrink dynamic arrays", {
     )
   )
 
-  arr_push_back_bool(arr, FALSE)
-  arr_push_back_bool(arr, TRUE)
-  arr_push_back_bool(arr, TRUE)
+  dyn_push_back_bool(arr, FALSE)
+  dyn_push_back_bool(arr, TRUE)
+  dyn_push_back_bool(arr, TRUE)
   expect_equal(
-    arr_info(arr),
+    dyn_info(arr),
     list(
       count = 3,
       capacity = 3,
@@ -828,19 +828,19 @@ test_that("can grow and shrink dynamic arrays", {
     )
   )
 
-  arr_push_back_bool(arr, FALSE)
+  dyn_push_back_bool(arr, FALSE)
   expect_equal(
-    arr_info(arr)[1:2],
+    dyn_info(arr)[1:2],
     list(
       count = 4,
       capacity = 6
     )
   )
 
-  arr_push_back_bool(arr, FALSE)
-  arr_push_back_bool(arr, TRUE)
+  dyn_push_back_bool(arr, FALSE)
+  dyn_push_back_bool(arr, TRUE)
   expect_equal(
-    arr_info(arr)[1:2],
+    dyn_info(arr)[1:2],
     list(
       count = 6,
       capacity = 6
@@ -850,9 +850,9 @@ test_that("can grow and shrink dynamic arrays", {
   exp <- bytes(0, 1, 1, 0, 0, 1)
   expect_equal(arr[[2]], exp)
 
-  arr_pop_back(arr)
+  dyn_pop_back(arr)
   expect_equal(
-    arr_info(arr)[1:2],
+    dyn_info(arr)[1:2],
     list(
       count = 5,
       capacity = 6
@@ -863,13 +863,13 @@ test_that("can grow and shrink dynamic arrays", {
 
 test_that("can resize dynamic arrays", {
   arr <- new_dyn_array(1, 4)
-  arr_push_back_bool(arr, TRUE)
-  arr_push_back_bool(arr, FALSE)
-  arr_push_back_bool(arr, TRUE)
+  dyn_push_back_bool(arr, TRUE)
+  dyn_push_back_bool(arr, FALSE)
+  dyn_push_back_bool(arr, TRUE)
 
-  arr_resize(arr, 2L)
+  dyn_resize(arr, 2L)
   expect_equal(
-    arr_info(arr),
+    dyn_info(arr),
     list(
       count = 2,
       capacity = 2,
@@ -880,22 +880,22 @@ test_that("can resize dynamic arrays", {
   )
   expect_equal(arr[[2]], bytes(1, 0))
 
-  arr_resize(arr, 4L)
+  dyn_resize(arr, 4L)
   expect_equal(
-    arr_info(arr)[1:2],
+    dyn_info(arr)[1:2],
     list(
       count = 2,
       capacity = 4
     )
   )
   expect_equal(arr[[2]][1:2], bytes(1, 0))
-  expect_equal(arr_unwrap(arr), bytes(1, 0))
+  expect_equal(dyn_unwrap(arr), bytes(1, 0))
 })
 
 test_that("can shrink and grow dynamic atomic vectors", {
   arr <- new_dyn_vector("double", 3)
   expect_equal(
-    arr_info(arr),
+    dyn_info(arr),
     list(
       count = 0,
       capacity = 3,
@@ -905,11 +905,11 @@ test_that("can shrink and grow dynamic atomic vectors", {
     )
   )
 
-  arr_push_back(arr, 1)
-  arr_push_back(arr, 2)
-  arr_push_back(arr, 3)
+  dyn_push_back(arr, 1)
+  dyn_push_back(arr, 2)
+  dyn_push_back(arr, 3)
   expect_equal(
-    arr_info(arr)[1:2],
+    dyn_info(arr)[1:2],
     list(
       count = 3,
       capacity = 3
@@ -917,9 +917,9 @@ test_that("can shrink and grow dynamic atomic vectors", {
   )
   expect_identical(arr[[2]], dbl(1:3))
 
-  arr_push_back(arr, 4)
+  dyn_push_back(arr, 4)
   expect_equal(
-    arr_info(arr),
+    dyn_info(arr),
     list(
       count = 4,
       capacity = 6,
@@ -929,13 +929,13 @@ test_that("can shrink and grow dynamic atomic vectors", {
     )
   )
   expect_identical(arr[[2]][1:4], dbl(1:4))
-  expect_identical(arr_unwrap(arr), dbl(1:4))
+  expect_identical(dyn_unwrap(arr), dbl(1:4))
 })
 
 test_that("can shrink and grow dynamic barrier vectors", {
   arr <- new_dyn_vector("list", 3)
   expect_equal(
-    arr_info(arr)[1:4],
+    dyn_info(arr)[1:4],
     list(
       count = 0,
       capacity = 3,
@@ -944,11 +944,11 @@ test_that("can shrink and grow dynamic barrier vectors", {
     )
   )
 
-  arr_push_back(arr, 1)
-  arr_push_back(arr, 2)
-  arr_push_back(arr, 3)
+  dyn_push_back(arr, 1)
+  dyn_push_back(arr, 2)
+  dyn_push_back(arr, 3)
   expect_equal(
-    arr_info(arr)[1:2],
+    dyn_info(arr)[1:2],
     list(
       count = 3,
       capacity = 3
@@ -956,9 +956,9 @@ test_that("can shrink and grow dynamic barrier vectors", {
   )
   expect_identical(arr[[2]], as.list(dbl(1:3)))
 
-  arr_push_back(arr, 4)
+  dyn_push_back(arr, 4)
   expect_equal(
-    arr_info(arr)[1:4],
+    dyn_info(arr)[1:4],
     list(
       count = 4,
       capacity = 6,
@@ -967,11 +967,52 @@ test_that("can shrink and grow dynamic barrier vectors", {
     )
   )
   expect_identical(arr[[2]][1:4], as.list(dbl(1:4)))
-  expect_identical(arr_unwrap(arr), as.list(dbl(1:4)))
+  expect_identical(dyn_unwrap(arr), as.list(dbl(1:4)))
 
-  expect_equal(arr_pop_back(arr), 4)
-  expect_equal(arr_pop_back(arr), 3)
-  expect_equal(arr_count(arr), 2)
+  expect_equal(dyn_pop_back(arr), 4)
+  expect_equal(dyn_pop_back(arr), 3)
+  expect_equal(dyn_count(arr), 2)
+})
+
+test_that("can get and poke elements", {
+  arr <- new_dyn_vector("logical", 3)
+  dyn_push_back(arr, TRUE)
+  dyn_lgl_poke(arr, 0L, FALSE)
+  expect_equal(dyn_lgl_get(arr, 0L), FALSE)
+
+  arr <- new_dyn_vector("integer", 3)
+  dyn_push_back(arr, 1L)
+  dyn_push_back(arr, 2L)
+  expect_equal(dyn_int_get(arr, 0L), 1L)
+  expect_equal(dyn_int_get(arr, 1L), 2L)
+  dyn_int_poke(arr, 0L, 10L)
+  expect_equal(dyn_int_get(arr, 0L), 10L)
+
+  arr <- new_dyn_vector("double", 3)
+  dyn_push_back(arr, 1.5)
+  dyn_dbl_poke(arr, 0L, 2.5)
+  expect_equal(dyn_dbl_get(arr, 0L), 2.5)
+
+  arr <- new_dyn_vector("complex", 3)
+  dyn_push_back(arr, 0i)
+  dyn_cpl_poke(arr, 0L, 1i)
+  expect_equal(dyn_cpl_get(arr, 0L), 1i)
+
+  arr <- new_dyn_vector("raw", 3)
+  dyn_push_back(arr, as.raw(1))
+  dyn_raw_poke(arr, 0L, as.raw(2))
+  expect_equal(dyn_raw_get(arr, 0L), as.raw(2))
+
+  arr <- new_dyn_vector("character", 3)
+  dyn_push_back(arr, chr_get("foo", 0L))
+  val <- chr_get("bar", 0L)
+  dyn_chr_poke(arr, 0L, val)
+  expect_true(identical(dyn_chr_get(arr, 0L), val))
+
+  arr <- new_dyn_vector("list", 3)
+  dyn_push_back(arr, 1:2)
+  dyn_list_poke(arr, 0L, 11:12)
+  expect_equal(dyn_list_get(arr, 0L), 11:12)
 })
 
 test_that("can create dynamic list-of", {

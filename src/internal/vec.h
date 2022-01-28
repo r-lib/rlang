@@ -11,7 +11,7 @@ enum option_bool {
 bool r_is_vector(r_obj* x, r_ssize n);
 bool r_is_atomic(r_obj* x, r_ssize n);
 
-bool r_is_finite(r_obj* x);
+bool _r_is_finite(r_obj* x);
 bool r_is_logical(r_obj* x, r_ssize n);
 bool r_is_integerish(r_obj* x, r_ssize n, int finite);
 bool r_is_integer(r_obj* x, r_ssize n, int finite);

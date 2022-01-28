@@ -97,7 +97,7 @@ struct r_sexp_iterator* r_new_sexp_iterator(r_obj* root) {
     init_incoming_stack_info(&root_info, it_type, has_attrib);
   }
 
-  r_arr_push_back(p_stack, &root_info);
+  r_dyn_push_back(p_stack, &root_info);
 
   *p_it = (struct r_sexp_iterator) {
     .shelter = shelter,
@@ -121,13 +121,13 @@ bool r_sexp_next(struct r_sexp_iterator* p_it) {
     return false;
   }
 
-  struct sexp_stack_info* p_info = (struct sexp_stack_info*) r_arr_last(p_stack);
+  struct sexp_stack_info* p_info = (struct sexp_stack_info*) r_dyn_last(p_stack);
 
   if (p_it->skip_incoming) {
     p_it->skip_incoming = false;
 
     if (p_it->dir == R_SEXP_IT_DIRECTION_incoming) {
-      r_arr_pop_back(p_stack);
+      r_dyn_pop_back(p_stack);
       return r_sexp_next(p_it);
     }
   }
@@ -164,7 +164,7 @@ bool r_sexp_next(struct r_sexp_iterator* p_it) {
     }
   }
 
-  r_arr_pop_back(p_stack);
+  r_dyn_pop_back(p_stack);
   return true;
 }
 
@@ -214,7 +214,7 @@ bool sexp_next_incoming(struct r_sexp_iterator* p_it,
     // Push incoming node on the stack so it can be visited again,
     // either to descend its children or to visit it again on the
     // outgoing trip
-    r_arr_push_back(p_it->p_stack, &child);
+    r_dyn_push_back(p_it->p_stack, &child);
   }
 
   // Bump state for next iteration
