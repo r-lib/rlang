@@ -1,6 +1,8 @@
 #ifndef RLANG_DYN_ARRAY_H
 #define RLANG_DYN_ARRAY_H
 
+#include "vec.h"
+
 
 struct r_dyn_array {
   r_obj* shelter;
@@ -131,6 +133,35 @@ r_obj* r_dyn_chr_get(struct r_dyn_array* p_vec, r_ssize i) {
 static inline
 r_obj* r_dyn_list_get(struct r_dyn_array* p_vec, r_ssize i) {
   return ((r_obj* const *) p_vec->v_data_const)[i];
+}
+
+static inline
+void r_dyn_lgl_poke(struct r_dyn_array* p_vec, r_ssize i, int value) {
+  ((int*) p_vec->v_data)[i] = value;
+}
+static inline
+void r_dyn_int_poke(struct r_dyn_array* p_vec, r_ssize i, int value) {
+  ((int*) p_vec->v_data)[i] = value;
+}
+static inline
+void r_dyn_dbl_poke(struct r_dyn_array* p_vec, r_ssize i, double value) {
+  ((double*) p_vec->v_data)[i] = value;
+}
+static inline
+void r_dyn_cpl_poke(struct r_dyn_array* p_vec, r_ssize i, r_complex_t value) {
+  ((r_complex_t*) p_vec->v_data)[i] = value;
+}
+static inline
+void r_dyn_raw_poke(struct r_dyn_array* p_vec, r_ssize i, char value) {
+  ((char*) p_vec->v_data)[i] = value;
+}
+static inline
+void r_dyn_chr_poke(struct r_dyn_array* p_vec, r_ssize i, r_obj* value) {
+  r_chr_poke(p_vec->data, i, value);
+}
+static inline
+void r_dyn_list_poke(struct r_dyn_array* p_vec, r_ssize i, r_obj* value) {
+  r_list_poke(p_vec->data, i, value);
 }
 
 #endif

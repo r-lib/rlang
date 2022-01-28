@@ -974,37 +974,45 @@ test_that("can shrink and grow dynamic barrier vectors", {
   expect_equal(dyn_count(arr), 2)
 })
 
-test_that("can get elements", {
+test_that("can get and poke elements", {
   arr <- new_dyn_vector("logical", 3)
   dyn_push_back(arr, TRUE)
-  expect_equal(dyn_lgl_get(arr, 0L), TRUE)
+  dyn_lgl_poke(arr, 0L, FALSE)
+  expect_equal(dyn_lgl_get(arr, 0L), FALSE)
 
   arr <- new_dyn_vector("integer", 3)
   dyn_push_back(arr, 1L)
   dyn_push_back(arr, 2L)
   expect_equal(dyn_int_get(arr, 0L), 1L)
   expect_equal(dyn_int_get(arr, 1L), 2L)
+  dyn_int_poke(arr, 0L, 10L)
+  expect_equal(dyn_int_get(arr, 0L), 10L)
 
   arr <- new_dyn_vector("double", 3)
   dyn_push_back(arr, 1.5)
-  expect_equal(dyn_dbl_get(arr, 0L), 1.5)
+  dyn_dbl_poke(arr, 0L, 2.5)
+  expect_equal(dyn_dbl_get(arr, 0L), 2.5)
 
   arr <- new_dyn_vector("complex", 3)
   dyn_push_back(arr, 0i)
-  expect_equal(dyn_cpl_get(arr, 0L), 0i)
+  dyn_cpl_poke(arr, 0L, 1i)
+  expect_equal(dyn_cpl_get(arr, 0L), 1i)
 
   arr <- new_dyn_vector("raw", 3)
   dyn_push_back(arr, as.raw(1))
-  expect_equal(dyn_raw_get(arr, 0L), as.raw(1))
+  dyn_raw_poke(arr, 0L, as.raw(2))
+  expect_equal(dyn_raw_get(arr, 0L), as.raw(2))
 
   arr <- new_dyn_vector("character", 3)
-  val <- chr_get("foo", 0L)
-  dyn_push_back(arr, val)
+  dyn_push_back(arr, chr_get("foo", 0L))
+  val <- chr_get("bar", 0L)
+  dyn_chr_poke(arr, 0L, val)
   expect_true(identical(dyn_chr_get(arr, 0L), val))
 
   arr <- new_dyn_vector("list", 3)
   dyn_push_back(arr, 1:2)
-  expect_equal(dyn_list_get(arr, 0L), 1:2)
+  dyn_list_poke(arr, 0L, 11:12)
+  expect_equal(dyn_list_get(arr, 0L), 11:12)
 })
 
 test_that("can create dynamic list-of", {

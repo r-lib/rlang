@@ -288,6 +288,42 @@ r_obj* ffi_dyn_list_get(r_obj* x, r_obj* i) {
   return r_dyn_list_get(r_shelter_deref(x), r_arg_as_ssize(i, "i"));
 }
 
+// [[ register() ]]
+r_obj* ffi_dyn_lgl_poke(r_obj* x, r_obj* i, r_obj* value) {
+  r_dyn_lgl_poke(r_shelter_deref(x), r_arg_as_ssize(i, "i"), r_as_bool(value));
+  return r_null;
+}
+// [[ register() ]]
+r_obj* ffi_dyn_int_poke(r_obj* x, r_obj* i, r_obj* value) {
+  r_dyn_int_poke(r_shelter_deref(x), r_arg_as_ssize(i, "i"), r_as_int(value));
+  return r_null;
+}
+// [[ register() ]]
+r_obj* ffi_dyn_dbl_poke(r_obj* x, r_obj* i, r_obj* value) {
+  r_dyn_dbl_poke(r_shelter_deref(x), r_arg_as_ssize(i, "i"), r_as_double(value));
+  return r_null;
+}
+// [[ register() ]]
+r_obj* ffi_dyn_cpl_poke(r_obj* x, r_obj* i, r_obj* value) {
+  r_dyn_cpl_poke(r_shelter_deref(x), r_arg_as_ssize(i, "i"), r_as_complex(value));
+  return r_null;
+}
+// [[ register() ]]
+r_obj* ffi_dyn_raw_poke(r_obj* x, r_obj* i, r_obj* value) {
+  r_dyn_raw_poke(r_shelter_deref(x), r_arg_as_ssize(i, "i"), r_as_char(value));
+  return r_null;
+}
+// [[ register() ]]
+r_obj* ffi_dyn_chr_poke(r_obj* x, r_obj* i, r_obj* value) {
+  r_dyn_chr_poke(r_shelter_deref(x), r_arg_as_ssize(i, "i"), value);
+  return r_null;
+}
+// [[ register() ]]
+r_obj* ffi_dyn_list_poke(r_obj* x, r_obj* i, r_obj* value) {
+  r_dyn_list_poke(r_shelter_deref(x), r_arg_as_ssize(i, "i"), value);
+  return r_null;
+}
+
 
 // dyn-list-of.c
 
@@ -851,7 +887,7 @@ static int validate_finite(r_obj* finite) {
 }
 
 r_obj* ffi_is_finite(r_obj* x) {
-  return r_shared_lgl(r_is_finite(x));
+  return r_shared_lgl(_r_is_finite(x));
 }
 
 r_obj* ffi_is_list(r_obj* x, r_obj* n_) {

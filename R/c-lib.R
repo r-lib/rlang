@@ -274,6 +274,28 @@ dyn_list_get <- function(x, i) {
   .Call(ffi_dyn_list_get, x, i)
 }
 
+dyn_lgl_poke <- function(x, i, value) {
+  invisible(.Call(ffi_dyn_lgl_poke, x, i, value))
+}
+dyn_int_poke <- function(x, i, value) {
+  invisible(.Call(ffi_dyn_int_poke, x, i, value))
+}
+dyn_dbl_poke <- function(x, i, value) {
+  invisible(.Call(ffi_dyn_dbl_poke, x, i, value))
+}
+dyn_cpl_poke <- function(x, i, value) {
+  invisible(.Call(ffi_dyn_cpl_poke, x, i, value))
+}
+dyn_raw_poke <- function(x, i, value) {
+  invisible(.Call(ffi_dyn_raw_poke, x, i, value))
+}
+dyn_chr_poke <- function(x, i, value) {
+  invisible(.Call(ffi_dyn_chr_poke, x, i, value))
+}
+dyn_list_poke <- function(x, i, value) {
+  invisible(.Call(ffi_dyn_list_poke, x, i, value))
+}
+
 #' @export
 print.rlang_dyn_array <- function(x, ...) {
   writeLines(sprintf("<rlang/dyn_array: %s>", obj_address(x)))
