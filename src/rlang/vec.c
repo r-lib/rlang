@@ -81,7 +81,7 @@ r_obj* r_dbl_resize(r_obj* x, r_ssize size) {
   RESIZE(R_TYPE_double, double, r_dbl_cbegin, r_dbl_begin);
 }
 r_obj* r_cpl_resize(r_obj* x, r_ssize size) {
-  RESIZE(R_TYPE_complex, r_complex_t, r_cpl_cbegin, r_cpl_begin);
+  RESIZE(R_TYPE_complex, r_complex, r_cpl_cbegin, r_cpl_begin);
 }
 r_obj* r_raw_resize(r_obj* x, r_ssize size) {
   RESIZE(R_TYPE_raw, unsigned char, r_raw_cbegin, r_raw_begin);
@@ -188,8 +188,8 @@ void r_vec_poke_n(r_obj* x, r_ssize offset,
     break;
   }
   case R_TYPE_complex: {
-    r_complex_t* src_data = r_cpl_begin(y);
-    r_complex_t* dest_data = r_cpl_begin(x);
+    r_complex* src_data = r_cpl_begin(y);
+    r_complex* dest_data = r_cpl_begin(x);
     for (r_ssize i = 0; i != n; ++i)
       dest_data[i + offset] = src_data[i + from];
     break;
@@ -250,7 +250,7 @@ bool _r_is_finite(r_obj* x) {
     break;
   }
   case R_TYPE_complex: {
-    const r_complex_t* p_x = r_cpl_cbegin(x);
+    const r_complex* p_x = r_cpl_cbegin(x);
     for (r_ssize i = 0; i < n; ++i) {
       if (!isfinite(p_x[i].r) || !isfinite(p_x[i].i)) {
         return false;

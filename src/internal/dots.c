@@ -489,7 +489,7 @@ r_obj* dots_unquote(r_obj* dots, struct dots_capture_info* capture_info) {
         expr = r_eval(expr, env);
       }
 
-      r_keep_t i;
+      r_keep_loc i;
       KEEP_HERE(expr, &i);
 
       if (is_splice_box(expr)) {

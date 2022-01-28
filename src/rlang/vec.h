@@ -17,7 +17,7 @@ double* r_dbl_begin(r_obj* x) {
   return REAL(x);
 }
 static inline
-r_complex_t* r_cpl_begin(r_obj* x) {
+r_complex* r_cpl_begin(r_obj* x) {
   return COMPLEX(x);
 }
 static inline
@@ -38,8 +38,8 @@ const double* r_dbl_cbegin(r_obj* x) {
   return (const double*) REAL(x);
 }
 static inline
-const r_complex_t* r_cpl_cbegin(r_obj* x) {
-  return (const r_complex_t*) COMPLEX(x);
+const r_complex* r_cpl_cbegin(r_obj* x) {
+  return (const r_complex*) COMPLEX(x);
 }
 static inline
 const void* r_raw_cbegin(r_obj* x) {
@@ -98,7 +98,7 @@ int r_vec_elt_sizeof0(enum r_type type) {
   case R_TYPE_logical: return sizeof(int);
   case R_TYPE_integer: return sizeof(int);
   case R_TYPE_double: return sizeof(double);
-  case R_TYPE_complex: return sizeof(r_complex_t);
+  case R_TYPE_complex: return sizeof(r_complex);
   case R_TYPE_raw: return sizeof(char);
   case R_TYPE_character: return sizeof(r_obj*);
   case R_TYPE_list: return sizeof(r_obj*);
@@ -123,7 +123,7 @@ double r_dbl_get(r_obj* x, r_ssize i) {
   return REAL(x)[i];
 }
 static inline
-r_complex_t r_cpl_get(r_obj* x, r_ssize i) {
+r_complex r_cpl_get(r_obj* x, r_ssize i) {
   return COMPLEX(x)[i];
 }
 static inline
@@ -156,7 +156,7 @@ void r_dbl_poke(r_obj* x, r_ssize i, double y) {
   REAL(x)[i] = y;
 }
 static inline
-void r_cpl_poke(r_obj* x, r_ssize i, r_complex_t y) {
+void r_cpl_poke(r_obj* x, r_ssize i, r_complex y) {
   COMPLEX(x)[i] = y;
 }
 static inline
@@ -231,7 +231,7 @@ r_obj* r_dbl(double x) {
   return Rf_ScalarReal(x);
 }
 static inline
-r_obj* r_cpl(r_complex_t x) {
+r_obj* r_cpl(r_complex x) {
   return Rf_ScalarComplex(x);
 }
 static inline
@@ -374,14 +374,14 @@ double r_as_double(r_obj* x) {
 }
 
 static inline
-r_complex_t r_arg_as_complex(r_obj* x, const char* arg) {
+r_complex r_arg_as_complex(r_obj* x, const char* arg) {
   if (!_r_is_complex(x, 1, 1)) {
     r_abort("`%s` must be a complex value.", arg);
   }
   return r_cpl_get(x, 0);
 }
 static inline
-r_complex_t r_as_complex(r_obj* x) {
+r_complex r_as_complex(r_obj* x) {
   return r_arg_as_complex(x, "x");
 }
 

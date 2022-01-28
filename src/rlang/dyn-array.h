@@ -93,7 +93,7 @@ void r_dyn_dbl_push_back(struct r_dyn_array* p_vec, double elt) {
   r_dyn_push_back(p_vec, &elt);
 }
 static inline
-void r_dyn_cpl_push_back(struct r_dyn_array* p_vec, r_complex_t elt) {
+void r_dyn_cpl_push_back(struct r_dyn_array* p_vec, r_complex elt) {
   r_dyn_push_back(p_vec, &elt);
 }
 static inline
@@ -119,8 +119,8 @@ double r_dyn_dbl_get(struct r_dyn_array* p_vec, r_ssize i) {
   return ((const double*) p_vec->v_data_const)[i];
 }
 static inline
-r_complex_t r_dyn_cpl_get(struct r_dyn_array* p_vec, r_ssize i) {
-  return ((const r_complex_t*) p_vec->v_data_const)[i];
+r_complex r_dyn_cpl_get(struct r_dyn_array* p_vec, r_ssize i) {
+  return ((const r_complex*) p_vec->v_data_const)[i];
 }
 static inline
 char r_dyn_raw_get(struct r_dyn_array* p_vec, r_ssize i) {
@@ -148,8 +148,8 @@ void r_dyn_dbl_poke(struct r_dyn_array* p_vec, r_ssize i, double value) {
   ((double*) p_vec->v_data)[i] = value;
 }
 static inline
-void r_dyn_cpl_poke(struct r_dyn_array* p_vec, r_ssize i, r_complex_t value) {
-  ((r_complex_t*) p_vec->v_data)[i] = value;
+void r_dyn_cpl_poke(struct r_dyn_array* p_vec, r_ssize i, r_complex value) {
+  ((r_complex*) p_vec->v_data)[i] = value;
 }
 static inline
 void r_dyn_raw_poke(struct r_dyn_array* p_vec, r_ssize i, char value) {

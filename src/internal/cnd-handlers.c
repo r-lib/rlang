@@ -25,10 +25,10 @@ r_obj* ffi_try_fetch(r_obj* try_fetch_args) {
   // Build handlers arguments with updated index into the `handlers` list.
   // See `handler_call` at R level for the template.
   r_obj* args = r_null;
-  r_keep_t shelter; KEEP_HERE(args, &shelter);
+  r_keep_loc shelter; KEEP_HERE(args, &shelter);
 
   r_obj* exiting_args = r_null;
-  r_keep_t exiting_shelter; KEEP_HERE(exiting_args, &exiting_shelter);
+  r_keep_loc exiting_shelter; KEEP_HERE(exiting_args, &exiting_shelter);
 
   for (int i = n - 1; i >= 0; --i) {
     r_obj* cls = v_classes[i];
