@@ -70,7 +70,7 @@ r_obj* ffi_replace_na(r_obj* x, r_obj* replacement) {
   }
 
   case R_TYPE_complex: {
-    r_complex_t* arr = r_cpl_begin(x);
+    r_complex* arr = r_cpl_begin(x);
 
     for (; i < n; ++i) {
       if (ISNA(arr[i].r)) {
@@ -143,8 +143,8 @@ static r_obj* replace_na_(r_obj* x, r_obj* replacement, int i) {
   }
 
   case R_TYPE_complex: {
-    r_complex_t* arr = r_cpl_begin(x);
-    r_complex_t new_value = r_cpl_get(replacement, 0);
+    r_complex* arr = r_cpl_begin(x);
+    r_complex new_value = r_cpl_get(replacement, 0);
 
     for (; i < n; ++i) {
       if (ISNA(arr[i].r)) {
@@ -209,7 +209,7 @@ static r_obj* replace_na_vec_(r_obj* x, r_obj* replacement, int i) {
   }
 
   case R_TYPE_complex: {
-    r_complex_t* arr = r_cpl_begin(x);
+    r_complex* arr = r_cpl_begin(x);
     for (; i < n; ++i) {
       if (ISNA(arr[i].r)) {
         arr[i] = r_cpl_get(replacement, i);

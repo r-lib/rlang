@@ -21,7 +21,7 @@
 #define r_no_return __attribute__ ((noreturn))
 
 typedef struct SEXPREC r_obj;
-typedef Rcomplex r_complex_t;
+typedef Rcomplex r_complex;
 
 typedef R_xlen_t r_ssize;
 #define R_SSIZE_MAX R_XLEN_T_MAX
@@ -89,7 +89,7 @@ struct r_pair_callback {
 #define KEEP2(x, y) (KEEP(x), KEEP(y))
 #define KEEP_N(x, n) (++(*n), KEEP(x))
 
-#define r_keep_t PROTECT_INDEX
+#define r_keep_loc PROTECT_INDEX
 #define KEEP_AT REPROTECT
 #define KEEP_HERE PROTECT_WITH_INDEX
 

@@ -91,7 +91,7 @@ r_ssize chr_find_encoding_start(r_obj* x, r_ssize size) {
 
 static
 r_obj* list_encode_utf8(r_obj* x) {
-  r_keep_t pi;
+  r_keep_loc pi;
   KEEP_HERE(x, &pi);
 
   r_ssize size = r_length(x);
@@ -143,7 +143,7 @@ r_obj* attrib_encode_utf8(r_obj* x) {
   r_ssize loc = 0;
   bool owned = false;
 
-  r_keep_t pi;
+  r_keep_loc pi;
   KEEP_HERE(x, &pi);
 
   for (r_obj* node = x; node != r_null; node = r_node_cdr(node), ++loc) {
