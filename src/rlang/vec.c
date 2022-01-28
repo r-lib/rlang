@@ -226,3 +226,41 @@ void r_vec_poke_range(r_obj* x, r_ssize offset,
                       r_obj* y, r_ssize from, r_ssize to) {
   r_vec_poke_n(x, offset, y, from, to - from + 1);
 }
+
+bool _r_is_finite(r_obj* x) {
+  r_ssize n = r_length(x);
+
+  switch(r_typeof(x)) {
+  case R_TYPE_integer: {
+    const int* p_x = r_int_cbegin(x);
+    for (r_ssize i = 0; i < n; ++i) {
+      if (p_x[i] == r_globals.na_int) {
+        return false;
+      }
+    }
+    break;
+  }
+  case R_TYPE_double: {
+    const double* p_x = r_dbl_cbegin(x);
+    for (r_ssize i = 0; i < n; ++i) {
+      if (!isfinite(p_x[i])) {
+        return false;
+      }
+    }
+    break;
+  }
+  case R_TYPE_complex: {
+    const r_complex_t* p_x = r_cpl_cbegin(x);
+    for (r_ssize i = 0; i < n; ++i) {
+      if (!isfinite(p_x[i].r) || !isfinite(p_x[i].i)) {
+        return false;
+      }
+    }
+    break;
+  }
+  default:
+    r_abort("Internal error: expected a numeric vector");
+  }
+
+  return true;
+}

@@ -2,11 +2,6 @@
 #include "decl/vec-decl.h"
 
 
-static
-bool has_correct_length(r_obj* x, r_ssize n) {
-  return n < 0 || r_length(x) == n;
-}
-
 bool r_is_atomic(r_obj* x, r_ssize n) {
   switch(r_typeof(x)) {
   case R_TYPE_logical:
@@ -15,7 +10,7 @@ bool r_is_atomic(r_obj* x, r_ssize n) {
   case R_TYPE_complex:
   case R_TYPE_character:
   case RAWSXP:
-    return has_correct_length(x, n);
+    return _r_has_correct_length(x, n);
   default:
     return false;
   }
@@ -30,79 +25,30 @@ bool r_is_vector(r_obj* x, r_ssize n) {
   case R_TYPE_character:
   case RAWSXP:
   case VECSXP:
-    return has_correct_length(x, n);
+    return _r_has_correct_length(x, n);
   default:
     return false;
   }
 }
 
 bool r_is_logical(r_obj* x, r_ssize n) {
-  return r_typeof(x) == R_TYPE_logical && has_correct_length(x, n);
+  return r_typeof(x) == R_TYPE_logical && _r_has_correct_length(x, n);
 }
 
-bool r_is_finite(r_obj* x) {
-  r_ssize n = r_length(x);
-
-  switch(r_typeof(x)) {
-  case R_TYPE_integer: {
-    const int* p_x = r_int_cbegin(x);
-    for (r_ssize i = 0; i < n; ++i) {
-      if (p_x[i] == r_globals.na_int) {
-        return false;
-      }
-    }
-    break;
-  }
-  case R_TYPE_double: {
-    const double* p_x = r_dbl_cbegin(x);
-    for (r_ssize i = 0; i < n; ++i) {
-      if (!isfinite(p_x[i])) {
-        return false;
-      }
-    }
-    break;
-  }
-  case R_TYPE_complex: {
-    const r_complex_t* p_x = r_cpl_cbegin(x);
-    for (r_ssize i = 0; i < n; ++i) {
-      if (!isfinite(p_x[i].r) || !isfinite(p_x[i].i)) {
-        return false;
-      }
-    }
-    break;
-  }
-  default:
-    r_abort("Internal error: expected a numeric vector");
-  }
-
-  return true;
-}
 bool r_is_integer(r_obj* x, r_ssize n, int finite) {
-  if (r_typeof(x) != R_TYPE_integer || !has_correct_length(x, n)) {
+  if (r_typeof(x) != R_TYPE_integer || !_r_has_correct_length(x, n)) {
     return false;
   }
-  if (finite >= 0 && (bool) finite != r_is_finite(x)) {
+  if (finite >= 0 && (bool) finite != _r_is_finite(x)) {
     return false;
   }
   return true;
 }
 bool r_is_double(r_obj* x, r_ssize n, int finite) {
-  if (r_typeof(x) != R_TYPE_double || !has_correct_length(x, n)) {
-    return false;
-  }
-  if (finite >= 0 && (bool) finite != r_is_finite(x)) {
-    return false;
-  }
-  return true;
+  return _r_is_double(x, n, finite);
 }
 bool r_is_complex(r_obj* x, r_ssize n, int finite) {
-  if (r_typeof(x) != R_TYPE_complex || !has_correct_length(x, n)) {
-    return false;
-  }
-  if (finite >= 0 && (bool) finite != r_is_finite(x)) {
-    return false;
-  }
-  return true;
+  return _r_is_complex(x, n, finite);
 }
 
 // Allow integers up to 2^52, same as R_XLEN_T_MAX when long vector
@@ -113,7 +59,7 @@ bool r_is_integerish(r_obj* x, r_ssize n, int finite) {
   if (r_typeof(x) == R_TYPE_integer) {
     return r_is_integer(x, n, finite);
   }
-  if (r_typeof(x) != R_TYPE_double || !has_correct_length(x, n)) {
+  if (r_typeof(x) != R_TYPE_double || !_r_has_correct_length(x, n)) {
     return false;
   }
 
@@ -156,7 +102,7 @@ bool is_character(r_obj* x,
   if (r_typeof(x) != R_TYPE_character) {
     return false;
   }
-  if (!has_correct_length(x, n)) {
+  if (!_r_has_correct_length(x, n)) {
     return false;
   }
 
@@ -212,7 +158,7 @@ bool list_match(r_obj* const * v_x,
 }
 
 bool r_is_raw(r_obj* x, r_ssize n) {
-  return r_typeof(x) == R_TYPE_raw && has_correct_length(x, n);
+  return r_typeof(x) == R_TYPE_raw && _r_has_correct_length(x, n);
 }
 
 
