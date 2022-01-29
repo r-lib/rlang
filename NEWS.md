@@ -539,6 +539,11 @@ extensive changes to the display of error messages.
   under the name `rlang_xxh3_64bits()`.
 
 
+# rlang 0.4.12
+
+* Fix for CRAN checks.
+
+
 # rlang 0.4.11
 
 * Fix for CRAN checks.
