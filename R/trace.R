@@ -109,7 +109,7 @@ trace_back <- function(top = NULL, bottom = NULL) {
   calls <- map(calls, call_zap_inline)
 
   context <- map2(calls, seq_along(calls), call_trace_context)
-  context <- inject(vec_rbind(empty_trace_context(), !!!context))
+  context <- inject(rbind(empty_trace_context(), !!!context))
 
   parents <- normalise_parents(parents)
 
