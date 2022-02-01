@@ -169,6 +169,7 @@ test_that("entrace() preserves exit status in non-interactive sessions (#1052, r
   # Probably because of <https://github.com/wch/r-source/commit/3055aa86>
   skip_if(getRversion() < "3.3")
 
+  # This also tests for empty backtraces
   out <- Rscript(shQuote(c("--vanilla", "-e", 'options(error = rlang::entrace); stop("An error")')))
   expect_false(out$status == 0L)
 

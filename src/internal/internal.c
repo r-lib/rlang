@@ -43,12 +43,11 @@ r_obj* rlang_objs_trailing = NULL;
 r_obj* fns_function = NULL;
 r_obj* fns_quote = NULL;
 
-void rlang_init_arg(r_obj* ns);
-
 void rlang_init_internal(r_obj* ns) {
   rlang_init_utils();
   rlang_init_arg(ns);
   rlang_init_attr(ns);
+  rlang_init_call(ns);
   rlang_init_cnd(ns);
   rlang_init_cnd_handlers(ns);
   rlang_init_dots(ns);

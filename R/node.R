@@ -88,7 +88,7 @@ node_poke_cddr <- function(x, newcdr) {
 }
 
 node_get <- function(node, i) {
-  if (node < 1L) {
+  if (i < 1L) {
     abort("`i` must be an integer greater than 0.")
   }
   while (i > 1L) {

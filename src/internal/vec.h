@@ -23,6 +23,8 @@ bool is_character(r_obj* x,
                   enum option_bool empty);
 bool r_is_raw(r_obj* x, r_ssize n);
 
+r_ssize validate_n(r_obj* n);
+
 void r_vec_poke_coerce_n(r_obj* x, r_ssize offset,
                          r_obj* y, r_ssize from, r_ssize n);
 void r_vec_poke_coerce_range(r_obj* x, r_ssize offset,

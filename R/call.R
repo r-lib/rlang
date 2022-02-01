@@ -234,54 +234,7 @@ is_callable <- function(x) {
 #' is_call(quote(foo(bar)), c("bar", "foo"))
 #' is_call(quote(base::list), c("::", ":::", "$", "@"))
 is_call <- function(x, name = NULL, n = NULL, ns = NULL) {
-  if (typeof(x) != "language") {
-    return(FALSE)
-  }
-
-  if (!is_null(ns)) {
-    good_ns <- FALSE
-
-    for (elt in ns) {
-      if (identical(elt, "") && !is_namespaced_call(x, private = FALSE)) {
-        good_ns <- TRUE
-        break
-      } else if (is_namespaced_call(x, elt, private = FALSE)) {
-        good_ns <- TRUE
-        break
-      }
-    }
-
-    if (!good_ns) {
-      return(FALSE)
-    }
-  }
-
-  x <- call_unnamespace(x)
-
-  if (!is_null(name)) {
-    # Wrap language objects in a list
-    if (!is_vector(name)) {
-      name <- list(name)
-    }
-
-    unmatched <- TRUE
-    for (elt in name) {
-      if (identical(node_car(x), sym(elt))) {
-        unmatched <- FALSE
-        break
-      }
-    }
-
-    if (unmatched) {
-      return(FALSE)
-    }
-  }
-
-  if (!is_null(n) && !has_length(x, n + 1L)) {
-    return(FALSE)
-  }
-
-  TRUE
+  .Call(ffi_is_call, x, name, n, ns)
 }
 
 # Until `is_call()` is fixed
@@ -1057,22 +1010,10 @@ call_type <- function(x) {
 }
 
 call_zap_inline <- function(x) {
-  if (is_call(x)) {
-    if (is_call(x, "function")) {
-      if (!is_null(x[[2]])) {
-        x[[2]] <- as.pairlist(map(x[[2]], call_zap_inline))
-      }
-      x[[3]] <- call_zap_inline(x[[3]])
-    } else {
-      x[] <- map(x, call_zap_inline)
-    }
-    return(x)
-  }
+  .Call(ffi_call_zap_inline, x)
+}
 
-  if (is_symbol(x) || is_syntactic_literal(x)) {
-    x
-  } else {
-    name <- sprintf("<%s>", rlang_type_sum(x))
-    sym(name)
-  }
+# Called from C
+call_type_sum <- function(x) {
+  sym(sprintf("<%s>", rlang_type_sum(x)))
 }
