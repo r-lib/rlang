@@ -4,7 +4,8 @@
 #include "parse.h"
 
 
-static inline bool op_needs_fixup(enum r_operator op) {
+static inline
+bool op_needs_fixup(enum r_operator op) {
   switch (op) {
   case R_OP_GREATER:
   case R_OP_GREATER_EQUAL:
@@ -27,7 +28,8 @@ static inline bool op_needs_fixup(enum r_operator op) {
   }
 }
 
-static inline bool is_problematic_op(r_obj* x) {
+static inline
+bool is_problematic_op(r_obj* x) {
   return op_needs_fixup(r_which_operator(x));
 }
 

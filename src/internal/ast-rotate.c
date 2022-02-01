@@ -5,6 +5,30 @@
 
 
 /**
+ * struct ast_rotation_info - Rotation data gathered while recursing over AST
+ *
+ * @upper_pivot_op: The operation type of the upper pivot.
+ * @upper_pivot: The expression that becomes the new root after rotation.
+ * @lower_pivot: The expression whose LHS is attached to @upper_root.
+ * @upper_root: The expression that becomes the LHS of @lower_pivot.
+ * @lower_root: The expression whose RHS is attached to the LHS of @lower_pivot.
+ * @root_parent: Node whose CAR should be reattached to @upper_pivot
+ *   after rotation.
+ */
+struct ast_rotation_info {
+  enum r_operator upper_pivot_op;
+  enum r_operator lower_pivot_op;
+  r_obj* upper_pivot;
+  r_obj* lower_pivot;
+  r_obj* upper_root;
+  r_obj* lower_root;
+  r_obj* root_parent;
+};
+
+#include "decl/ast-rotate-decl.h"
+
+
+/**
  * DOC: Interpolation in operator calls whose precedence might need fixup
  *
  * We want `!!` to have the precedence of unary `-` and `+` instead of
@@ -221,16 +245,19 @@
  */
 
 
+static
 bool op_is_unary(enum r_operator op) {
   if (op == R_OP_NONE || op > R_OP_MAX) {
     r_abort("Internal error: `enum r_operator` out of bounds");
   }
   return r_ops_precedence[op].unary;
 }
+static
 bool is_unary(r_obj* x) {
   return op_is_unary(r_which_operator(x));
 }
 
+static
 bool op_is_unary_plusminus(enum r_operator op) {
   switch (op) {
   case R_OP_PLUS_UNARY:
@@ -240,32 +267,13 @@ bool op_is_unary_plusminus(enum r_operator op) {
     return false;
   }
 }
+static
 bool is_unary_plusminus(r_obj* x) {
   return op_is_unary_plusminus(r_which_operator(x));
 }
 
-/**
- * struct ast_rotation_info - Rotation data gathered while recursing over AST
- *
- * @upper_pivot_op: The operation type of the upper pivot.
- * @upper_pivot: The expression that becomes the new root after rotation.
- * @lower_pivot: The expression whose LHS is attached to @upper_root.
- * @upper_root: The expression that becomes the LHS of @lower_pivot.
- * @lower_root: The expression whose RHS is attached to the LHS of @lower_pivot.
- * @root_parent: Node whose CAR should be reattached to @upper_pivot
- *   after rotation.
- */
-struct ast_rotation_info {
-  enum r_operator upper_pivot_op;
-  enum r_operator lower_pivot_op;
-  r_obj* upper_pivot;
-  r_obj* lower_pivot;
-  r_obj* upper_root;
-  r_obj* lower_root;
-  r_obj* root_parent;
-};
-
-static void initialise_rotation_info(struct ast_rotation_info* info) {
+static
+void initialise_rotation_info(struct ast_rotation_info* info) {
   info->upper_pivot_op = R_OP_NONE;
   info->upper_pivot = NULL;
   info->lower_pivot = NULL;
@@ -273,11 +281,6 @@ static void initialise_rotation_info(struct ast_rotation_info* info) {
   info->lower_root = NULL;
   info->root_parent = NULL;
 }
-
-// Defined below
-static r_obj* node_list_interp_fixup(r_obj* x, r_obj* parent, r_obj* env,
-                                     struct ast_rotation_info* rotation_info,
-                                     bool expand_lhs);
 
 /**
  * maybe_rotate() - Rotate if we found a pivot
@@ -292,7 +295,10 @@ static r_obj* node_list_interp_fixup(r_obj* x, r_obj* parent, r_obj* env,
  * of `!` on the AST corresponds to the implicit grouping (e.g. with
  * `1 + !!2 * 3`).
  */
-static r_obj* maybe_rotate(r_obj* op, r_obj* env, struct ast_rotation_info* info) {
+static
+r_obj* maybe_rotate(r_obj* op,
+                    r_obj* env,
+                    struct ast_rotation_info* info) {
   if (info->upper_pivot_op == R_OP_NONE) {
     return op;
   }
@@ -388,7 +394,8 @@ r_obj* fixup_interp_first(r_obj* x, r_obj* env) {
  * in &ast_rotation_info->upper_pivot_op and
  * &ast_rotation_info->upper_pivot within @info.
  */
-static void find_upper_pivot(r_obj* x, struct ast_rotation_info* info) {
+static
+void find_upper_pivot(r_obj* x, struct ast_rotation_info* info) {
   if (!r_is_call(x, "!")) {
     return;
   }
@@ -429,8 +436,11 @@ static void find_upper_pivot(r_obj* x, struct ast_rotation_info* info) {
  *
  * Fill in &ast_rotation_info->lower_pivot within @info.
  */
-static void find_lower_pivot(r_obj* x, r_obj* parent_node, r_obj* env,
-                             struct ast_rotation_info* info) {
+static
+void find_lower_pivot(r_obj* x,
+                      r_obj* parent_node,
+                      r_obj* env,
+                      struct ast_rotation_info* info) {
   r_obj* lhs_node = r_node_cdr(x);
   r_obj* rhs_node = r_node_cdr(lhs_node);
 
@@ -476,10 +486,6 @@ static void find_lower_pivot(r_obj* x, r_obj* parent_node, r_obj* env,
 }
 
 
-// Defined below
-static void node_list_interp_fixup_rhs(r_obj* rhs, r_obj* rhs_node, r_obj* parent,
-                                       r_obj* env, struct ast_rotation_info* info);
-
 /**
  * node_list_interp_fixup() - Expansion for binary operators that might need fixup
  *
@@ -495,9 +501,12 @@ static void node_list_interp_fixup_rhs(r_obj* rhs, r_obj* rhs_node, r_obj* paren
  *   rotation) it is not necessary to expand the LHS as it was already
  *   visited.
  */
-static r_obj* node_list_interp_fixup(r_obj* x, r_obj* parent, r_obj* env,
-                                     struct ast_rotation_info* info,
-                                     bool expand_lhs) {
+static
+r_obj* node_list_interp_fixup(r_obj* x,
+                              r_obj* parent,
+                              r_obj* env,
+                              struct ast_rotation_info* info,
+                              bool expand_lhs) {
   r_obj* lhs_node = r_node_cdr(x);
   r_obj* lhs = r_node_car(lhs_node);
 
@@ -531,8 +540,12 @@ static r_obj* node_list_interp_fixup(r_obj* x, r_obj* parent, r_obj* env,
  * @env: The unquoting environment.
  * @info: See &struct ast_rotation_info.
  */
-static void node_list_interp_fixup_rhs(r_obj* rhs, r_obj* rhs_node, r_obj* parent,
-                                       r_obj* env, struct ast_rotation_info* info) {
+static
+void node_list_interp_fixup_rhs(r_obj* rhs,
+                                r_obj* rhs_node,
+                                r_obj* parent,
+                                r_obj* env,
+                                struct ast_rotation_info* info) {
   // Happens with constructed calls like `/`(1)
   if (rhs_node == r_null) {
     return;
