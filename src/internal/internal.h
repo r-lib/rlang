@@ -2,6 +2,7 @@
 #define RLANG_INTERNAL_INTERNAL_H
 
 #include "arg.h"
+#include "call.h"
 #include "quo.h"
 
 struct rlang_globals_syms {

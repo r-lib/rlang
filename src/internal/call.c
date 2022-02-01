@@ -1,19 +1,8 @@
 #include <rlang.h>
 #include "internal.h"
 
+#include "decl/call-decl.h"
 
-static bool is_callable(r_obj* x) {
-  switch (r_typeof(x)) {
-  case R_TYPE_symbol:
-  case R_TYPE_call:
-  case R_TYPE_closure:
-  case R_TYPE_builtin:
-  case R_TYPE_special:
-    return true;
-  default:
-    return false;
-  }
-}
 
 r_obj* rlang_call2(r_obj* fn, r_obj* args, r_obj* ns) {
   if (r_typeof(fn) == R_TYPE_character) {
@@ -55,4 +44,18 @@ r_obj* ffi_call2(r_obj* call, r_obj* op, r_obj* args, r_obj* env) {
 
   FREE(3);
   return out;
+}
+
+static
+bool is_callable(r_obj* x) {
+  switch (r_typeof(x)) {
+  case R_TYPE_symbol:
+  case R_TYPE_call:
+  case R_TYPE_closure:
+  case R_TYPE_builtin:
+  case R_TYPE_special:
+    return true;
+  default:
+    return false;
+  }
 }
