@@ -101,6 +101,7 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_interp",                       (DL_FUNC) &ffi_interp, 2},
   {"ffi_interrupt",                    (DL_FUNC) &ffi_interrupt, 0},
   {"ffi_is_atomic",                    (DL_FUNC) &ffi_is_atomic, 2},
+  {"ffi_is_call",                      (DL_FUNC) &ffi_is_call, 4},
   {"ffi_is_character",                 (DL_FUNC) &ffi_is_character, 4},
   {"ffi_is_closure",                   (DL_FUNC) &ffi_is_closure, 1},
   {"ffi_is_complex",                   (DL_FUNC) &ffi_is_complex, 3},

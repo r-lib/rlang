@@ -1,4 +1,10 @@
 static
+bool call_is_namespaced(r_obj* x, r_obj* ns);
+
+static inline
+r_obj* call_unnamespace(r_obj* x);
+
+static
 bool is_callable(r_obj* x);
 
 static

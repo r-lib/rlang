@@ -161,6 +161,25 @@ bool r_is_raw(r_obj* x, r_ssize n) {
   return r_typeof(x) == R_TYPE_raw && _r_has_correct_length(x, n);
 }
 
+r_ssize validate_n(r_obj* n) {
+  if (n == r_null) {
+    return -1;
+  }
+
+  switch (r_typeof(n)) {
+  case R_TYPE_integer:
+  case R_TYPE_double:
+    if (r_length(n) == 1) {
+      break;
+    }
+    // fallthrough
+  default:
+    r_abort("`n` must be NULL or a scalar integer");
+  }
+
+  return r_arg_as_ssize(n, "n");
+}
+
 
 // Coercion ----------------------------------------------------------
 

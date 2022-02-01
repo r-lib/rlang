@@ -248,6 +248,11 @@ test_that("quosures are not calls", {
   expect_false(is_call(quo()))
 })
 
+test_that("is_call() supports symbol `name`", {
+  expect_true(is_call(quote(foo()), quote(foo)))
+  expect_false(is_call(quote(foo()), quote(bar)))
+})
+
 test_that("is_call() vectorises name", {
   expect_false(is_call(quote(foo::bar), c("fn", "fn2")))
   expect_true(is_call(quote(foo::bar), c("fn", "::")))

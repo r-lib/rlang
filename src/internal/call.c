@@ -1,7 +1,131 @@
 #include <rlang.h>
 #include "internal.h"
-
 #include "decl/call-decl.h"
+
+
+r_obj* ffi_is_call(r_obj* x, r_obj* name, r_obj* ffi_n, r_obj* ns) {
+  if (r_typeof(x) != R_TYPE_call) {
+    return r_false;
+  }
+
+  if (ns != r_null) {
+    if (!is_character(ns, -1, OPTION_BOOL_false, OPTION_BOOL_null)) {
+      r_abort("`ns` must be a character vector of namespaces.");
+    }
+
+    bool found = false;
+    r_obj* const * v_ns = r_chr_cbegin(ns);
+    r_ssize ns_len = r_length(ns);
+
+    for (r_ssize i = 0; i < ns_len; ++i) {
+      r_obj* elt = v_ns[i];
+
+      if ((elt == r_strs.empty && !call_is_namespaced(x, r_null))
+            || call_is_namespaced(x, elt)) {
+        found = true;
+        break;
+      }
+    }
+
+    if (!found) {
+      return r_false;
+    }
+  }
+
+  x = KEEP(call_unnamespace(x));
+
+  if (name != r_null) {
+    r_obj* fn = r_node_car(x);
+    if (r_typeof(fn) != R_TYPE_symbol) {
+      FREE(1);
+      return r_false;
+    }
+
+    switch (r_typeof(name)) {
+    case R_TYPE_symbol:
+      if (fn == name) {
+        goto found_name;
+      }
+      FREE(1);
+      return r_false;
+
+    // List of symbols
+    case R_TYPE_list: {
+      r_obj* const * v_name = r_list_cbegin(name);
+      r_ssize name_len = r_length(name);
+
+      for (r_ssize i = 0; i < name_len; ++i) {
+        if (fn == v_name[i]) {
+          goto found_name;
+        }
+      }
+      FREE(1);
+      return r_false;
+    }
+
+    default:
+      break;
+    }
+
+    if (!is_character(name, -1, OPTION_BOOL_false, OPTION_BOOL_false)) {
+      r_abort("`name` must be a character vector of names.");
+    }
+
+    fn = r_sym_string(fn);
+    r_obj* const * v_name = r_chr_cbegin(name);
+    r_ssize name_len = r_length(name);
+
+    for (r_ssize i = 0; i < name_len; ++i) {
+      if (fn == v_name[i]) {
+        goto found_name;
+      }
+    }
+    FREE(1);
+    return r_false;
+  }
+ found_name:
+
+  if (ffi_n != r_null) {
+    r_ssize n = validate_n(ffi_n);
+    if (!_r_has_correct_length(r_node_cdr(x), n)) {
+      FREE(1);
+      return r_false;
+    }
+  }
+
+  FREE(1);
+  return r_true;
+}
+
+static
+bool call_is_namespaced(r_obj* x, r_obj* ns) {
+  if (r_typeof(x) != R_TYPE_call) {
+    return(false);
+  }
+
+  r_obj* car = r_node_car(x);
+  if (r_typeof(car) != R_TYPE_call) {
+    return(false);
+  }
+
+  if (ns != r_null) {
+    r_obj* arg = r_node_cadr(car);
+    if (r_typeof(arg) != R_TYPE_symbol || r_sym_string(arg) != ns) {
+      return false;
+    }
+  }
+
+  return r_node_car(car) == r_syms.colon2;
+}
+
+static inline
+r_obj* call_unnamespace(r_obj* x) {
+  if (call_is_namespaced(x, r_null)) {
+    return r_new_call(r_node_cadr(r_node_cdar(x)), r_node_cdr(x));
+  } else {
+    return x;
+  }
+}
 
 
 r_obj* rlang_call2(r_obj* fn, r_obj* args, r_obj* ns) {

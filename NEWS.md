@@ -1,5 +1,9 @@
 # rlang (development version)
 
+* `is_call()` is now implemented in C for performance.
+
+* Fixed performance regression in `trace_back()`.
+
 * Fixed a partial matching issue with `header`, `body`, and `footer`
   condition fields.
 
