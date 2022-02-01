@@ -64,7 +64,7 @@ use_rlang_c_library <- function() {
   }
 
   if (!has_include_directive(src_path)) {
-    usethis::ui_todo("Add to `src/Makvars`:")
+    usethis::ui_todo("Add to `src/Makevars`:")
     usethis::ui_code_block("PKG_CPPFLAGS = -I./rlang")
   }
   if (!has_cpp11_sysreq(proj_path)) {
