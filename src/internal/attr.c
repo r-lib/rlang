@@ -2,15 +2,8 @@
 #include "internal.h"
 #include "vec.h"
 
-static r_obj* c_fn = NULL;
-static r_obj* as_character_call = NULL;
-static r_obj* names_call = NULL;
-static r_obj* set_names_call = NULL;
-static r_obj* length_call = NULL;
+#include "decl/attr-decl.h"
 
-
-static r_obj* node_names(r_obj* x);
-static r_obj* names_dispatch(r_obj* x, r_obj* env);
 
 r_obj* ffi_names2(r_obj* x, r_obj* env) {
   const enum r_type type = r_typeof(x);
@@ -66,11 +59,6 @@ r_obj* node_names(r_obj* x) {
   FREE(1);
   return out;
 }
-
-static inline r_obj* eval_fn_dots(r_obj* fn, r_obj* x, r_obj* dots, r_obj* env);
-static inline r_obj* eval_as_character(r_obj* x, r_obj* env);
-static inline r_obj* set_names_dispatch(r_obj* x, r_obj* nm, r_obj* env);
-static inline r_ssize length_dispatch(r_obj* x, r_obj* env);
 
 r_obj* ffi_set_names(r_obj* x, r_obj* mold, r_obj* nm, r_obj* env) {
   int n_kept = 0;
@@ -222,3 +210,9 @@ void rlang_init_attr(r_obj* ns) {
   length_call = r_parse("length(.x)");
   r_preserve(length_call);
 }
+
+static r_obj* c_fn = NULL;
+static r_obj* as_character_call = NULL;
+static r_obj* names_call = NULL;
+static r_obj* set_names_call = NULL;
+static r_obj* length_call = NULL;
