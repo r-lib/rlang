@@ -50,7 +50,7 @@ struct r_dict* r_new_dict(r_ssize size) {
   p_dict->p_buckets = r_list_cbegin(p_dict->buckets);
   p_dict->n_buckets = size;
 
-  r_attrib_poke(shelter, r_syms.class, r_chr("rlang_dict"));
+  r_attrib_poke(shelter, r_syms.class_, r_chr("rlang_dict"));
 
   FREE(1);
   return p_dict;

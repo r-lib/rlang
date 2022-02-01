@@ -44,7 +44,7 @@ struct r_globals_syms {
   r_obj* brackets;
   r_obj* brackets2;
   r_obj* call;
-  r_obj* class;
+  r_obj* class_;
   r_obj* condition;
   r_obj* dots;
   r_obj* dot_environment;

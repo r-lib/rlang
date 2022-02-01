@@ -31,11 +31,11 @@ r_obj* r_attrib_set(r_obj* x, r_obj* tag, r_obj* value);
 
 static inline
 r_obj* r_class(r_obj* x) {
-  return r_attrib_get(x, r_syms.class);
+  return r_attrib_get(x, r_syms.class_);
 }
 static inline
 void r_attrib_poke_class(r_obj* x, r_obj* classes) {
-  r_attrib_poke(x, r_syms.class, classes);
+  r_attrib_poke(x, r_syms.class_, classes);
 }
 
 void r_attrib_push_class(r_obj* x, const char* tag);
@@ -72,7 +72,7 @@ bool r_is_named(r_obj* x);
 
 
 #define r_attrib_poke(X, SYM, VALUE) Rf_setAttrib(X, SYM, VALUE)
-#define r_attrib_poke_class(X, VALUE) Rf_setAttrib(X, r_syms.class, VALUE)
+#define r_attrib_poke_class(X, VALUE) Rf_setAttrib(X, r_syms.class_, VALUE)
 #define r_attrib_poke_dim(X, VALUE) Rf_setAttrib(X, r_syms.dim, VALUE)
 #define r_attrib_poke_dim_names(X, VALUE) Rf_setAttrib(X, r_syms.dim_names, VALUE)
 #define r_attrib_poke_names(X, VALUE) Rf_setAttrib(X, r_syms.names, VALUE)
