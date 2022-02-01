@@ -11,20 +11,7 @@ using std::isfinite;
 #include <Rinternals.h>
 
 extern "C" {
-#ifdef __clang__
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wkeyword-macro"
-#endif
-
-#define class klass
-
-#ifdef __clang__
-# pragma clang diagnostic pop
-#endif
-
 #include <rlang.h>
-
-#undef class
 }
 
 static inline
