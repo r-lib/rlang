@@ -59,3 +59,89 @@ bool is_callable(r_obj* x) {
     return false;
   }
 }
+
+
+r_obj* ffi_call_zap_inline(r_obj* x) {
+  if (r_typeof(x) == R_TYPE_call) {
+    r_obj* out = KEEP(r_call_clone(x));
+    call_zap_inline(out);
+    FREE(1);
+    return out;
+  } else {
+    return call_zap_one(x);
+  }
+}
+
+static
+void call_zap_inline(r_obj* x) {
+  if (r_node_car(x) == r_syms.function) {
+    call_zap_fn(x);
+  } else {
+    node_zap_inline(x);
+  }
+}
+
+static
+void node_zap_inline(r_obj* x) {
+  while (x != r_null) {
+    r_node_poke_car(x, call_zap_one(r_node_car(x)));
+    x = r_node_cdr(x);
+  }
+}
+
+static
+void call_zap_fn(r_obj* x) {
+  // Formals
+  x = r_node_cdr(x);
+  node_zap_inline(r_node_car(x));
+
+  // Body
+  x = r_node_cdr(x);
+  r_node_poke_car(x, call_zap_one(r_node_car(x)));
+
+  // Zap srcref
+  x = r_node_cdr(x);
+  r_node_poke_car(x, r_null);
+}
+
+static
+r_obj* call_zap_one(r_obj* x) {
+  switch (r_typeof(x)) {
+  case R_TYPE_call:
+    call_zap_inline(x);
+    return x;
+
+  case R_TYPE_null:
+  case R_TYPE_symbol:
+    return x;
+
+  // Syntactic literals
+  case R_TYPE_logical:
+  case R_TYPE_integer:
+  case R_TYPE_double:
+  case R_TYPE_character:
+  case R_TYPE_complex: // Not entirely correct for complex
+    if (r_attrib(x) == r_null && r_length(x) == 1) {
+      return x;
+    } else {
+      return type_sum(x);
+    }
+
+  default:
+    return type_sum(x);
+  }
+}
+
+static
+r_obj* type_sum(r_obj* x) {
+  return r_eval_with_x(type_sum_call, x, rlang_ns_env);
+}
+
+
+void rlang_init_call(r_obj* ns) {
+  type_sum_call = r_parse("call_type_sum(x)");
+  r_preserve_global(type_sum_call);
+}
+
+static
+r_obj* type_sum_call = NULL;

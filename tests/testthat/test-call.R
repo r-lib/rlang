@@ -555,6 +555,12 @@ test_that("call_zap_inline() works", {
     call_zap_inline(call),
     quote(function(x = `<int>`) foo(`<int>`))
   )
+
+  call2 <- expr(function(x = NULL) foo(!!(1:2)))
+  call2[[2]]$x <- 1:2
+
+  # No mutation
+  expect_equal(call, call2)
 })
 
 test_that("is_call_simple() works", {

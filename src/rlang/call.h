@@ -15,6 +15,7 @@ bool r_is_call(r_obj* x, const char* name);
 bool r_is_call_any(r_obj* x, const char** names, int n);
 
 r_obj* r_expr_protect(r_obj* x);
+r_obj* r_call_clone(r_obj* x);
 
 
 #endif
