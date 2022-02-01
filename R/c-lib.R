@@ -64,7 +64,7 @@ use_rlang_c_library <- function() {
   }
 
   if (!has_include_directive(src_path)) {
-    usethis::ui_todo("Add to `src/Makvars`:")
+    usethis::ui_todo("Add to `src/Makevars`:")
     usethis::ui_code_block("PKG_CPPFLAGS = -I./rlang")
   }
   if (!has_cpp11_sysreq(proj_path)) {
@@ -80,13 +80,13 @@ use_rlang_c_library <- function() {
 download_rlang <- function() {
   dest_zip <- fs::file_temp("rlang-src")
 
-  url <- "https://github.com/r-lib/rlang/archive/master.zip"
+  url <- "https://github.com/r-lib/rlang/archive/main.zip"
   utils::download.file(url, dest_zip)
 
   dest_dir <- fs::file_temp("rlang-src")
   utils::unzip(dest_zip, exdir = dest_dir)
 
-  fs::path(dest_dir, "rlang-master")
+  fs::path(dest_dir, "rlang-main")
 }
 
 check_rlang <- function(path) {
