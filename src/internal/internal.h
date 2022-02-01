@@ -4,6 +4,7 @@
 #include "arg.h"
 #include "call.h"
 #include "quo.h"
+#include "vec.h"
 
 struct rlang_globals_syms {
   r_obj* c_null;
