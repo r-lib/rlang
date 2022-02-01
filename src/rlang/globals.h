@@ -44,7 +44,9 @@ struct r_globals_syms {
   r_obj* brackets;
   r_obj* brackets2;
   r_obj* call;
-  r_obj* class;
+  // `_` is required to avoid conflicts with the C++ keyword `class`.
+  // See https://github.com/r-lib/rlang/pull/1359 for details.
+  r_obj* class_;
   r_obj* condition;
   r_obj* dots;
   r_obj* dot_environment;

@@ -32,11 +32,11 @@ r_obj* r_alloc_df_list(r_ssize n_rows,
 
 void r_init_data_frame(r_obj* x, r_ssize n_rows) {
   init_compact_rownames(x, n_rows);
-  r_attrib_poke(x, r_syms.class, r_classes.data_frame);
+  r_attrib_poke(x, r_syms.class_, r_classes.data_frame);
 }
 void r_init_tibble(r_obj* x, r_ssize n_rows) {
   r_init_data_frame(x, n_rows);
-  r_attrib_poke(x, r_syms.class, r_classes.tibble);
+  r_attrib_poke(x, r_syms.class_, r_classes.tibble);
 }
 
 static

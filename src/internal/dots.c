@@ -1065,7 +1065,7 @@ void rlang_init_dots(r_obj* ns) {
     r_preserve(splice_box_attrib);
     r_mark_shared(splice_box_attrib);
 
-    r_node_poke_tag(splice_box_attrib, r_syms.class);
+    r_node_poke_tag(splice_box_attrib, r_syms.class_);
     FREE(1);
   }
 
@@ -1086,7 +1086,7 @@ void rlang_init_dots(r_obj* ns) {
     r_preserve(quosures_attrib);
     r_mark_shared(quosures_attrib);
 
-    r_node_poke_tag(quosures_attrib, r_syms.class);
+    r_node_poke_tag(quosures_attrib, r_syms.class_);
     FREE(1);
   }
 

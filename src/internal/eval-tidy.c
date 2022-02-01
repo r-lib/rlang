@@ -45,7 +45,7 @@ static r_obj* rlang_new_data_pronoun(r_obj* mask) {
   r_obj* pronoun = KEEP(r_alloc_list(1));
 
   r_list_poke(pronoun, 0, mask);
-  r_attrib_poke(pronoun, r_syms.class, data_pronoun_class);
+  r_attrib_poke(pronoun, r_syms.class_, data_pronoun_class);
 
   FREE(1);
   return pronoun;
@@ -53,7 +53,7 @@ static r_obj* rlang_new_data_pronoun(r_obj* mask) {
 static r_obj* rlang_new_ctxt_pronoun(r_obj* top) {
   r_obj* pronoun = KEEP(r_alloc_environment(0, r_env_parent(top)));
 
-  r_attrib_poke(pronoun, r_syms.class, ctxt_pronoun_class);
+  r_attrib_poke(pronoun, r_syms.class_, ctxt_pronoun_class);
 
   FREE(1);
   return pronoun;

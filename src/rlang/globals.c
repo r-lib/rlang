@@ -60,7 +60,7 @@ void r_init_library_globals_syms() {
   r_syms.brackets = R_BracketSymbol;
   r_syms.brackets2 = R_Bracket2Symbol;
   r_syms.call = r_sym("call");
-  r_syms.class = R_ClassSymbol;
+  r_syms.class_ = R_ClassSymbol;
   r_syms.colon2 = R_DoubleColonSymbol;
   r_syms.colon3 = R_TripleColonSymbol;
   r_syms.condition = r_sym("condition");
