@@ -27,6 +27,7 @@ extern "C" {
 #undef class
 }
 
+static inline
 r_no_return
 void rcc_abort(const char* fn) {
  try {
