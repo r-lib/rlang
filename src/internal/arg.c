@@ -81,7 +81,6 @@ r_obj* ffi_enquo(r_obj* sym, r_obj* frame) {
 
 // Match ------------------------------------------------------------------
 
-// [[ export() ]]
 int arg_match(r_obj* arg,
               r_obj* values,
               r_obj* error_arg,
