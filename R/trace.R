@@ -108,11 +108,13 @@ trace_back <- function(top = NULL, bottom = NULL) {
   calls <- map(calls, call_fix_car)
   calls <- map(calls, call_zap_inline)
 
-  context_data <- map2(calls, seq_along(calls), call_trace_context)
-
   context <- empty_trace_context()
-  context$namespace <- do.call(base::c, map(context_data, `[[`, "namespace"))
-  context$scope <- do.call(base::c, map(context_data, `[[`, "scope"))
+
+  if (length(calls)) {
+    context_data <- map2(calls, seq_along(calls), call_trace_context)
+    context$namespace <- do.call(base::c, map(context_data, `[[`, "namespace"))
+    context$scope <- do.call(base::c, map(context_data, `[[`, "scope"))
+  }
   context <- new_data_frame(context)
 
   parents <- normalise_parents(parents)
