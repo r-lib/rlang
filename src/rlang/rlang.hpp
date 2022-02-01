@@ -1,9 +1,7 @@
 #ifndef RLANG_RLANG_HPP
 #define RLANG_RLANG_HPP
 
-#include <cmath>
 #include <exception>
-using std::isfinite;
 
 // Include Rinternals.h with C++ linkage to avoid rlang including it while
 // having C linkage, which causes issues with the GHA Mac machine
