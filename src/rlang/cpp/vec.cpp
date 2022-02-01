@@ -1,5 +1,5 @@
-#include <algorithm>
 #include <rlang.hpp>
+#include <algorithm>
 
 extern "C" {
 

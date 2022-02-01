@@ -1,4 +1,5 @@
 #include <cmath>
+#include <exception>
 using std::isfinite;
 
 // Include Rinternals.h with C++ linkage to avoid rlang including it while
