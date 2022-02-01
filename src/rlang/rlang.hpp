@@ -1,3 +1,6 @@
+#ifndef RLANG_RLANG_HPP
+#define RLANG_RLANG_HPP
+
 #include <cmath>
 #include <exception>
 using std::isfinite;
@@ -35,3 +38,5 @@ void rcc_abort(const char* fn) {
    (r_stop_internal)("", -1, call, "Caught unknown C++ exception.");
  }
 }
+
+#endif
