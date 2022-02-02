@@ -1,7 +1,7 @@
 ## Test environments
 
 * local OS X install: release
-* travis-ci: 3.3, 3.4, 3.5, 3.6, 4.0, devel
+* ci: r-devel and 5 last R versions
 * win-builder: devel and release
 * rchk: unbuntu-rchk platform on R-hub
 
@@ -13,16 +13,31 @@
 
 ## Reverse dependencies
 
-We checked 4254 reverse dependencies of rlang, tidyverse, and tidymodels packgaes (4222 from CRAN + 32 from Bioconductor), comparing R CMD check results across CRAN and dev versions of this package.
+We checked 1534 reverse dependencies (1531 from CRAN + 3 from Bioconductor), comparing R CMD check results across CRAN and dev versions of this package.
 
- * We saw 15 new problems
- * We failed to check 35 packages
+ * We saw 1 new problems
+ * We failed to check 3 packages
 
-The results are summarised in <https://github.com/r-lib/rlang/tree/main/revdep>.
+Issues with CRAN packages are summarised below.
 
-The authors of these packages were notified about the failures and/or provided patches.
+### New problems
+(This reports the first line of each new failure)
+
+* galah
+  checking tests ... ERROR
+
+  -> Seems unrelated and I can't reproduce.
+
+### Failed to check
+
+* bayesmodels (NA)
+* conos       (NA)
+* loon.ggplot (NA)
+> 
 
 
 ## CRAN checks
+
+Fixed a performance regression that caused excessive checking time with packages throwing unhandled warnings in tight loops during checks
 
 Fixed Rd cross-references NOTE on r-devel-linux-x86_64-fedora-clang
