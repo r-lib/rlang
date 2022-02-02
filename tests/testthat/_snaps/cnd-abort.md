@@ -1236,3 +1236,19 @@
     foo
     i bar
 
+# can rethrow outside handler
+
+    Code
+      print(err(foo()))
+    Output
+      <error/rlang_error>
+      Error in `baz()`:
+      ! High-level
+      Caused by error in `low()`:
+      ! Low-level
+      Backtrace:
+        1. base::print(err(foo()))
+        9. rlang foo()
+       10. rlang bar()
+       11. rlang baz()
+

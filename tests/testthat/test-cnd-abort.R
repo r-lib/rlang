@@ -754,3 +754,17 @@ test_that("`parent = NA` signals a non-chained rethrow", {
     print(err(ff()))
   })
 })
+
+test_that("can rethrow outside handler", {
+  local_options(rlang_trace_format_srcrefs = FALSE)
+
+  parent <- error_cnd(message = "Low-level", call = call("low"))
+
+  foo <- function() bar()
+  bar <- function() baz()
+  baz <- function() abort("High-level", parent = parent)
+
+  expect_snapshot({
+    print(err(foo()))
+  })
+})
