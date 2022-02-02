@@ -187,7 +187,7 @@ local({
     tryCatch(
       low1(),
       error = function(err) {
-        parent <- if (chain) err
+        parent <- if (chain) err else NA
         if (stop_helper) {
           stop1("high-level", parent = err)
         } else {
@@ -200,7 +200,7 @@ local({
     withCallingHandlers(
       low1(),
       error = function(err) {
-        parent <- if (chain) err
+        parent <- if (chain) err else NA
         if (stop_helper) {
           stop1("high-level", parent = err)
         } else {
@@ -213,7 +213,7 @@ local({
     try_fetch(
       low1(),
       error = function(err) {
-        parent <- if (chain) err
+        parent <- if (chain) err else NA
         if (stop_helper) {
           stop1("high-level", parent = err)
         } else {
@@ -649,6 +649,31 @@ test_that("caller of withCallingHandlers() is used as default `call`", {
   }
   err <- catch_error(high())
   expect_equal(err$call, quote(high()))
+
+  # Named case
+  handler <- function(cnd) abort("high", parent = cnd)
+  high <- function() {
+    withCallingHandlers(
+      low(),
+      error = handler
+    )
+  }
+  err <- catch_error(high())
+  expect_equal(err$call, quote(high()))
+
+  # Wrapped case
+  handler1 <- function(cnd) handler2(cnd)
+  handler2 <- function(cnd) abort("high", parent = cnd)
+  high <- function() {
+    try_fetch(
+      low(),
+      error = handler1
+    )
+  }
+  err <- catch_error(high())
+  expect_equal(err$call, quote(high()))
+
+  function(cnd) abort("high", parent = cnd)
 })
 
 test_that("`cli.condition_unicode_bullets` is supported by fallback formatting", {
@@ -665,4 +690,67 @@ test_that("`cli.condition_unicode_bullets` is supported by fallback formatting",
 test_that("call can be a quosure or contain quosures", {
   err <- catch_error(abort("foo", call = quo(f(!!quo(g())))))
   expect_equal(err$call, quote(f(g())))
+})
+
+test_that("`parent = NA` signals a non-chained rethrow", {
+  variant <- if (getRversion() < "3.6.0") "pre-3.6.0" else "current"
+
+  local_options(
+    rlang_trace_top_env = current_env(),
+    rlang_trace_format_srcrefs = FALSE
+  )
+
+  ff <- function() gg()
+  gg <- function() hh()
+
+  foo <- function() bar()
+  bar <- function() baz()
+  baz <- function() stop("bar")
+
+  expect_snapshot(variant = variant, {
+    "Absent parent causes bad trace bottom"
+    hh <- function() {
+      withCallingHandlers(foo(), error = function(cnd) {
+        abort(cnd_header(cnd))
+      })
+    }
+    print(err(ff()))
+
+    "Missing parent allows correct trace bottom"
+    hh <- function() {
+      withCallingHandlers(foo(), error = function(cnd) {
+        abort(cnd_header(cnd), parent = NA)
+      })
+    }
+    print(err(ff()))
+
+    "Wrapped handler"
+    handler1 <- function(cnd, call = caller_env()) handler2(cnd, call)
+    handler2 <- function(cnd, call) abort(cnd_header(cnd), parent = NA, call = call)
+    hh <- function() {
+      withCallingHandlers(
+        foo(),
+        error = function(cnd) handler1(cnd)
+      )
+    }
+    print(err(ff()))
+
+    "Wrapped handler, `try_fetch()`"
+    hh <- function() {
+      try_fetch(
+        foo(),
+        error = function(cnd) handler1(cnd)
+      )
+    }
+    print(err(ff()))
+
+    "Wrapped handler, incorrect `call`"
+    hh <- function() {
+      withCallingHandlers(
+        foo(),
+        error = handler1
+      )
+    }
+    print(err(ff()))
+  })
 })

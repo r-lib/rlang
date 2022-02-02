@@ -53,7 +53,7 @@ corresponding function call is retrieved.}
 
 \item{trace}{A \code{trace} object created by \code{\link[=trace_back]{trace_back()}}.}
 
-\item{parent}{A parent condition object created by \code{\link[=abort]{abort()}}.}
+\item{parent}{A parent condition object.}
 }
 \description{
 These constructors create subclassed conditions, the objects that
