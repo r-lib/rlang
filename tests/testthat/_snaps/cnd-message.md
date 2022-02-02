@@ -441,3 +441,12 @@
       }]`:
     ! This is the error message.
 
+# can disable srcrefs in call formatting
+
+    Code
+      err(f())
+    Output
+      <error/rlang_error>
+      Error in `g()`:
+      ! foo
+

@@ -1,5 +1,11 @@
 # rlang (development version)
 
+* New `rlang_call_format_srcrefs` global option (#1349). Similar to
+  `rlang_trace_format_srcrefs`, this option allows turning off the
+  display of srcrefs in error calls. This can be useful for
+  reproducibility but note that srcrefs are already disabled
+  within testthat by default.
+
 * `abort(parent = NA)` is now supported to indicate an unchained
   rethrow. This helps `abort()` detect the condition handling context
   to create simpler backtraces where this context is hidden by

@@ -509,3 +509,15 @@ test_that("header, body, and footer don't partial-match", {
     chr()
   )
 })
+
+test_that("can disable srcrefs in call formatting", {
+  withr::local_envvar(c("TESTTHAT" = "false"))
+  local_options(rlang_call_format_srcrefs = FALSE)
+
+  with_srcref("{
+    f <- function() { g() }
+    g <- function() abort('foo')
+  }")
+
+  expect_snapshot(err(f()))
+})

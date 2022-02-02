@@ -236,7 +236,7 @@ cnd_message_format_prefixed <- function(cnd,
     prefix <- sprintf("%s:", prefix)
   } else {
     src_loc <- src_loc(attr(cnd$call, "srcref"))
-    if (nzchar(src_loc) && !is_testing()) {
+    if (nzchar(src_loc) && peek_call_format_srcref()) {
       prefix <- sprintf("%s in %s at %s:", prefix, call, src_loc)
       has_loc <- TRUE
     } else {
@@ -246,6 +246,16 @@ cnd_message_format_prefixed <- function(cnd,
   prefix <- style_bold(prefix)
 
   paste0(prefix, "\n", message)
+}
+
+peek_call_format_srcref <- function() {
+  opt <- peek_option("rlang_call_format_srcrefs")
+  if (is_null(opt)) {
+    !is_testing()
+  } else {
+    check_bool(opt, arg = "rlang_call_format_srcrefs")
+    opt
+  }
 }
 
 #' @export
