@@ -5,6 +5,10 @@
   to create simpler backtraces where this context is hidden by
   default.
 
+* When `parent` is supplied, `abort()` now loops over callers to
+  detect the condition handler frame. This makes it easier to wrap or
+  extract condition handlers in functions without supplying `.frame`.
+
 * `is_call()` is now implemented in C for performance.
 
 * Fixed performance regression in `trace_back()`.

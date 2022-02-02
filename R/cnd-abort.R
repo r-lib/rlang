@@ -304,49 +304,56 @@ abort_context <- function(frame, parent, call = caller_env()) {
   parents <- sys.parents()
 
   frame_loc <- detect_index(frames, identical, frame)
+  bottom_loc <- frame_loc
   setup_loc <- 0L
   setup_caller <- NULL
   from_handler <- NULL
 
-  if (frame_loc > 1L) {
-    prev_frame <- frames[[frame_loc - 1L]]
-    if (env_has(prev_frame, ".__handler_frame__.")) {
-      from_handler <- "calling"
-      frame_loc <- frame_loc - 1L
+  rethrowing <- !is_null(parent)
 
-      setup_frame <- env_get(prev_frame, ".__setup_frame__.", default = NULL)
-      if (!is_null(setup_frame)) {
-        setup_caller <- eval_bare(call2(parent.frame), setup_frame)
-      }
-    }
-  }
+  if (rethrowing) {
+    # This iteration through callers may be incorrect in case of
+    # intervening frames. Ideally, we'd iterate only over parent frames.
+    # This shouldn't be likely to cause issues though.
+    while (is_null(from_handler) && frame_loc > 1L) {
+      prev_frame <- frames[[frame_loc - 1L]]
+      if (env_has(prev_frame, ".__handler_frame__.")) {
+        from_handler <- "calling"
+        frame_loc <- frame_loc - 1L
 
-  bottom_loc <- frame_loc
-
-  if ((frame_loc - 1) > 0) {
-    # We currently have no reliable way of detecting a rethrow from a
-    # condition handler. We attempt to detect it from the call stack
-    # in three cases: (a) when we see a `tryCatch()` stack, (b) when a
-    # `parent` condition is supplied, (c) when a `.__handler_frame__.`
-    # binding is present in the calling frame (as determined by `call`
-    # if an environment).
-    call1 <- calls[[frame_loc]]
-    call2 <- calls[[frame_loc - 1]]
-
-    if (is_exiting_handler_call(call1, call2)) {
-      from_handler <- "exiting"
-      setup_loc <- calls_try_catch_loc(calls, frame_loc)
-      bottom_loc <- parents[[setup_loc]]
-    } else {
-      if (is_string(from_handler, "calling") || !is_null(parent)) {
-        if (is_calling_handler_inlined_call(call1)) {
-          from_handler <- "calling"
-          bottom_loc <- calls_signal_loc(calls, frame_loc - 1L)
-        } else if (is_calling_handler_simple_error_call(call1, call2)) {
-          from_handler <- "calling"
-          bottom_loc <- calls_signal_loc(calls, frame_loc - 2L)
+        setup_frame <- env_get(prev_frame, ".__setup_frame__.", default = NULL)
+        if (!is_null(setup_frame)) {
+          setup_caller <- eval_bare(call2(parent.frame), setup_frame)
         }
-        setup_loc <- calls_setup_loc(calls, frames, frame_loc)
+      }
+
+      if ((frame_loc - 1) > 0) {
+        # We currently have no reliable way of detecting a rethrow from a
+        # condition handler. We attempt to detect it from the call stack
+        # in three cases: (a) when we see a `tryCatch()` stack, (b) when a
+        # `parent` condition is supplied, (c) when a `.__handler_frame__.`
+        # binding is present in the calling frame (as determined by `call`
+        # if an environment).
+        call1 <- calls[[frame_loc]]
+        call2 <- calls[[frame_loc - 1]]
+
+        if (is_exiting_handler_call(call1, call2)) {
+          from_handler <- "exiting"
+          setup_loc <- calls_try_catch_loc(calls, frame_loc)
+          bottom_loc <- parents[[setup_loc]]
+        } else {
+          if (is_calling_handler_inlined_call(call1)) {
+            from_handler <- "calling"
+            bottom_loc <- calls_signal_loc(calls, frame_loc - 1L)
+          } else if (is_calling_handler_simple_error_call(call1, call2)) {
+            from_handler <- "calling"
+            bottom_loc <- calls_signal_loc(calls, frame_loc - 2L)
+          }
+          setup_loc <- calls_setup_loc(calls, frames, frame_loc)
+        }
+      }
+      if (is_null(from_handler)) {
+        frame_loc <- frame_loc - 1L
       }
     }
   }

@@ -649,6 +649,31 @@ test_that("caller of withCallingHandlers() is used as default `call`", {
   }
   err <- catch_error(high())
   expect_equal(err$call, quote(high()))
+
+  # Named case
+  handler <- function(cnd) abort("high", parent = cnd)
+  high <- function() {
+    withCallingHandlers(
+      low(),
+      error = handler
+    )
+  }
+  err <- catch_error(high())
+  expect_equal(err$call, quote(high()))
+
+  # Wrapped case
+  handler1 <- function(cnd) handler2(cnd)
+  handler2 <- function(cnd) abort("high", parent = cnd)
+  high <- function() {
+    try_fetch(
+      low(),
+      error = handler1
+    )
+  }
+  err <- catch_error(high())
+  expect_equal(err$call, quote(high()))
+
+  function(cnd) abort("high", parent = cnd)
 })
 
 test_that("`cli.condition_unicode_bullets` is supported by fallback formatting", {
