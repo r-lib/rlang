@@ -5,7 +5,7 @@
       print(err)
     Output
       <error/rlang_error>
-      Error:
+      Error in `wch()`:
       ! High-level message
       Caused by error in `low3()`:
       ! Low-level message
@@ -21,7 +21,7 @@
       summary(err)
     Output
       <error/rlang_error>
-      Error:
+      Error in `wch()`:
       ! High-level message
       Backtrace:
            x
@@ -73,7 +73,7 @@
       print(err)
     Output
       <error/rlang_error>
-      Error in `h()`:
+      Error in `wch()`:
       ! High-level message
       Caused by error:
       ! Low-level message
@@ -90,7 +90,7 @@
       summary(err)
     Output
       <error/rlang_error>
-      Error in `h()`:
+      Error in `wch()`:
       ! High-level message
       Caused by error:
       ! Low-level message
@@ -116,4 +116,103 @@
        18.     \-rlang handler1(err)
        19.       \-rlang handler2(err, call = call)
        20.         \-rlang::abort("High-level message", parent = err, call = call)
+
+# `parent = NA` signals a non-chained rethrow
+
+    Code
+      # Absent parent causes bad trace bottom
+      hh <- (function() {
+        withCallingHandlers(foo(), error = function(cnd) {
+          abort(cnd_header(cnd))
+        })
+      })
+      print(err(ff()))
+    Output
+      <error/rlang_error>
+      Error in `h()`:
+      ! bar
+      Backtrace:
+        1. base::print(err(ff()))
+       17. base::.handleSimpleError(`<fn>`, "bar", quote(baz()))
+       18. rlang h(simpleError(msg, call))
+    Code
+      # Missing parent allows correct trace bottom
+      hh <- (function() {
+        withCallingHandlers(foo(), error = function(cnd) {
+          abort(cnd_header(cnd), parent = NA)
+        })
+      })
+      print(err(ff()))
+    Output
+      <error/rlang_error>
+      Error in `hh()`:
+      ! bar
+      Backtrace:
+        1. base::print(err(ff()))
+        9. rlang ff()
+       10. rlang gg()
+       11. rlang hh()
+       13. rlang foo()
+       14. rlang bar()
+       15. rlang baz()
+       16. base::stop("bar")
+    Code
+      # Wrapped handler
+      handler1 <- (function(cnd, call = caller_env()) handler2(cnd, call))
+      handler2 <- (function(cnd, call) abort(cnd_header(cnd), parent = NA, call = call))
+      hh <- (function() {
+        withCallingHandlers(foo(), error = function(cnd) handler1(cnd))
+      })
+      print(err(ff()))
+    Output
+      <error/rlang_error>
+      Error in `hh()`:
+      ! bar
+      Backtrace:
+        1. base::print(err(ff()))
+        9. rlang ff()
+       10. rlang gg()
+       11. rlang hh()
+       13. rlang foo()
+       14. rlang bar()
+       15. rlang baz()
+       16. base::stop("bar")
+    Code
+      # Wrapped handler, `try_fetch()`
+      hh <- (function() {
+        try_fetch(foo(), error = function(cnd) handler1(cnd))
+      })
+      print(err(ff()))
+    Output
+      <error/rlang_error>
+      Error in `hh()`:
+      ! bar
+      Backtrace:
+        1. base::print(err(ff()))
+        9. rlang ff()
+       10. rlang gg()
+       11. rlang hh()
+       18. rlang foo()
+       19. rlang bar()
+       20. rlang baz()
+       21. base::stop("bar")
+    Code
+      # Wrapped handler, incorrect `call`
+      hh <- (function() {
+        withCallingHandlers(foo(), error = handler1)
+      })
+      print(err(ff()))
+    Output
+      <error/rlang_error>
+      Error in `.handleSimpleError()`:
+      ! bar
+      Backtrace:
+        1. base::print(err(ff()))
+        9. rlang ff()
+       10. rlang gg()
+       11. rlang hh()
+       13. rlang foo()
+       14. rlang bar()
+       15. rlang baz()
+       16. base::stop("bar")
 

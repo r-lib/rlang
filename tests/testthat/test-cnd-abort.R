@@ -693,6 +693,8 @@ test_that("call can be a quosure or contain quosures", {
 })
 
 test_that("`parent = NA` signals a non-chained rethrow", {
+  variant <- if (getRversion() < "3.6.0") "pre-3.6.0" else "current"
+
   local_options(
     rlang_trace_top_env = current_env(),
     rlang_trace_format_srcrefs = FALSE
@@ -705,7 +707,7 @@ test_that("`parent = NA` signals a non-chained rethrow", {
   bar <- function() baz()
   baz <- function() stop("bar")
 
-  expect_snapshot({
+  expect_snapshot(variant = variant, {
     "Absent parent causes bad trace bottom"
     hh <- function() {
       withCallingHandlers(foo(), error = function(cnd) {
