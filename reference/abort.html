@@ -237,12 +237,18 @@ respectively not display any call or hard-code a code to display.</p></dd>
 <dd><p>A <code>trace</code> object created by <code><a href="trace_back.html">trace_back()</a></code>.</p></dd>
 <dt>parent</dt>
 <dd><p>Supply <code>parent</code> when you rethrow an error from a
-condition handler (e.g. with <code><a href="try_fetch.html">try_fetch()</a></code>).</p>
-<p>If <code>parent</code> is a condition object, a <em>chained error</em> is
-created. If <code>parent</code> is <code>NA</code>, it indicates an unchained rethrow.
-Supplying <code>NA</code> lets <code>abort()</code> know it is called from a condition
-handler. This helps it create simpler backtraces where the
-condition handling context is hidden by default.</p></dd>
+condition handler (e.g. with <code><a href="try_fetch.html">try_fetch()</a></code>).</p><ul><li><p>If <code>parent</code> is a condition object, a <em>chained error</em> is
+created, which is useful when you want to enhance an error with
+more details, while still retaining the original information.</p></li>
+<li><p>If <code>parent</code> is <code>NA</code>, it indicates an unchained rethrow, which
+is useful when you want to take ownership over an error and
+rethrow it with a custom message that better fits the
+surrounding context.</p>
+<p>Technically, supplying <code>NA</code> lets <code>abort()</code> know it is called
+from a condition handler. This helps it create simpler
+backtraces where the condition handling context is hidden by
+default.</p></li>
+</ul></dd>
 <dt>use_cli_format</dt>
 <dd><p>Whether to format <code>message</code> lazily using
 <a href="https://cli.r-lib.org/" class="external-link">cli</a> if available. This results in
