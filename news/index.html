@@ -16,7 +16,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,7 +101,7 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="development version" id="rlang-development-version">rlang (development version)<a class="anchor" aria-label="anchor" href="#rlang-development-version"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.0.1" id="rlang-101">rlang 1.0.1<a class="anchor" aria-label="anchor" href="#rlang-101"></a></h2>
 <ul><li><p>New <code>rlang_call_format_srcrefs</code> global option (<a href="https://github.com/r-lib/rlang/issues/1349" class="external-link">#1349</a>). Similar to <code>rlang_trace_format_srcrefs</code>, this option allows turning off the display of srcrefs in error calls. This can be useful for reproducibility but note that srcrefs are already disabled within testthat by default.</p></li>
 <li><p><code>abort(parent = NA)</code> is now supported to indicate an unchained rethrow. This helps <code><a href="../reference/abort.html">abort()</a></code> detect the condition handling context to create simpler backtraces where this context is hidden by default.</p></li>
 <li><p>When <code>parent</code> is supplied, <code><a href="../reference/abort.html">abort()</a></code> now loops over callers to detect the condition handler frame. This makes it easier to wrap or extract condition handlers in functions without supplying <code>.frame</code>.</p></li>

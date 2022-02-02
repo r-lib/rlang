@@ -18,7 +18,7 @@ list of arguments, body code and parent environment."><meta property="og:image" 
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -142,32 +142,32 @@ calling environment of <code>new_function()</code></p></dd>
 <span class="r-in"><span class="fu">new_function</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (x = 10) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55573d810bf8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x557eba226120&gt;</span>
 <span class="r-in"><span class="fu">new_function</span><span class="op">(</span><span class="fu"><a href="pairlist2.html">pairlist2</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (x = 10) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55573d810bf8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x557eba226120&gt;</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Use `exprs()` to create quoted defaults. Compare:</span></span>
 <span class="r-in"><span class="fu">new_function</span><span class="op">(</span><span class="fu"><a href="pairlist2.html">pairlist2</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">5</span> <span class="op">+</span> <span class="fl">5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (x = 10) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55573d810bf8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x557eba226120&gt;</span>
 <span class="r-in"><span class="fu">new_function</span><span class="op">(</span><span class="fu"><a href="defusing-advanced.html">exprs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">5</span> <span class="op">+</span> <span class="fl">5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (x = 5 + 5) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55573d810bf8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x557eba226120&gt;</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Pass empty arguments to omit defaults. `list()` doesn't allow</span></span>
 <span class="r-in"><span class="co"># empty arguments but `pairlist2()` does:</span></span>
 <span class="r-in"><span class="fu">new_function</span><span class="op">(</span><span class="fu"><a href="pairlist2.html">pairlist2</a></span><span class="op">(</span>x <span class="op">=</span> , y <span class="op">=</span> <span class="fl">5</span> <span class="op">+</span> <span class="fl">5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">x</span> <span class="op">+</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (x, y = 10) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> x + y</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55573d810bf8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x557eba226120&gt;</span>
 <span class="r-in"><span class="fu">new_function</span><span class="op">(</span><span class="fu"><a href="defusing-advanced.html">exprs</a></span><span class="op">(</span>x <span class="op">=</span> , y <span class="op">=</span> <span class="fl">5</span> <span class="op">+</span> <span class="fl">5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">x</span> <span class="op">+</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (x, y = 5 + 5) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> x + y</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55573d810bf8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x557eba226120&gt;</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
