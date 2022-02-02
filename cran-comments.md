@@ -21,3 +21,8 @@ We checked 4254 reverse dependencies of rlang, tidyverse, and tidymodels packgae
 The results are summarised in <https://github.com/r-lib/rlang/tree/main/revdep>.
 
 The authors of these packages were notified about the failures and/or provided patches.
+
+
+## CRAN checks
+
+Fixed Rd cross-references NOTE on r-devel-linux-x86_64-fedora-clang

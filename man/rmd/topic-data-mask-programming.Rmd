@@ -35,11 +35,11 @@ In a regular function, arguments can be defined in terms of a _type_ of objects 
 
 - Data-masked expressions (base): E.g. [transform()], [with()].  Expressions may refer to the columns of the supplied data frame.
 
-- Data-masked expressions (tidy eval): E.g. [dplyr::mutate()], [ggplot2::aes()]. Same as base data-masking but with tidy eval features enabled. This includes [injection operators][topic-inject] such as `r link("{{")` and [`!!`][injection-operator] and the [`.data`] and [`.env`] pronouns.
+- Data-masked expressions (tidy eval): E.g. `dplyr::mutate()`, `ggplot2::aes()`. Same as base data-masking but with tidy eval features enabled. This includes [injection operators][topic-inject] such as `r link("{{")` and [`!!`][injection-operator] and the [`.data`] and [`.env`] pronouns.
 
 - Data-masked symbols: Same as data-masked arguments but the supplied expressions must be simple column names. This often simplifies things, for instance this is an easy way of avoiding issues of [double evaluation][topic-double-evaluation].
 
-- [Tidy selections][tidyselect::language]: E.g. [dplyr::select()], [tidyr::pivot_longer()]. This is an alternative to data masking that supports selection helpers like `starts_with()` or `all_of()`, and implements special behaviour for operators like `c()`, `|` and `&`.
+- [Tidy selections](https://tidyselect.r-lib.org/reference/language.html): E.g. `dplyr::select()`, `tidyr::pivot_longer()`. This is an alternative to data masking that supports selection helpers like `starts_with()` or `all_of()`, and implements special behaviour for operators like `c()`, `|` and `&`.
 
   Unlike data masking, tidy selection is an interpreted dialect. There is in fact no masking at all. Expressions are either interpreted in the context of the data frame (e.g. `c(cyl, am)` which stands for the union of the columns `cyl` and `am`), or evaluated in the user environment (e.g. `all_of()`, `starts_with()`, and any other expressions). This has implications for inheritance of argument behaviour as we will see below.
 
