@@ -1,4 +1,4 @@
-# rlang (development version)
+# rlang 1.0.1
 
 * New `rlang_call_format_srcrefs` global option (#1349). Similar to
   `rlang_trace_format_srcrefs`, this option allows turning off the
