@@ -62,7 +62,7 @@ cnd_signal <- function(cnd, ...) {
         frame <- caller_env()
       }
       if (is_null(cnd$trace)) {
-        info <- abort_context(frame, !is_null(cnd$parent))
+        info <- abort_context(frame, rethrowing = !is_null(cnd$parent))
         with_options(
           "rlang:::visible_bottom" = info$bottom_frame,
           { cnd$trace <- trace_back() }
