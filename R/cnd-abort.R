@@ -236,22 +236,28 @@ abort <- function(message = NULL,
   .__signal_frame__. <- TRUE
   caller <- caller_env()
 
+  rethrowing <- !is_null(parent)
+  if (is_na(parent)) {
+    parent <- NULL
+  }
+
+  # `.frame` is used to soft-truncate the backtrace
   if (is_null(.frame)) {
-    if (is_environment(maybe_missing(call))) {
-      .frame <- call
-    } else {
+    if (rethrowing) {
       .frame <- caller
+    } else {
+      # Truncate backtrace up to `call` if it is a frame
+      if (is_environment(maybe_missing(call))) {
+        .frame <- call
+      } else {
+        .frame <- caller
+      }
     }
   } else {
     check_environment(.frame)
   }
 
-  info <- abort_context(.frame, parent)
-
-  # Zap `NA` parent now that it has been detected in `abort_context()`
-  if (is_na(parent)) {
-    parent <- NULL
-  }
+  info <- abort_context(.frame, rethrowing)
 
   if (is_missing(call)) {
     if (is_null(info$from_handler)) {
@@ -259,6 +265,8 @@ abort <- function(message = NULL,
     } else {
       call <- info$setup_caller
     }
+  } else if (rethrowing && identical(call, info$handler_frame)) {
+    call <- info$setup_caller
   }
 
   message <- validate_signal_args(message, class, call, .subclass, "abort")
@@ -298,7 +306,7 @@ abort <- function(message = NULL,
   signal_abort(cnd, .file)
 }
 
-abort_context <- function(frame, parent, call = caller_env()) {
+abort_context <- function(frame, rethrowing, call = caller_env()) {
   calls <- sys.calls()
   frames <- sys.frames()
   parents <- sys.parents()
@@ -306,12 +314,20 @@ abort_context <- function(frame, parent, call = caller_env()) {
   frame_loc <- detect_index(frames, identical, frame)
   bottom_loc <- frame_loc
   setup_loc <- 0L
+
   setup_caller <- NULL
   from_handler <- NULL
+  handler_frame <- NULL
 
-  rethrowing <- !is_null(parent)
-
+  # If rethrowing we need to find:
+  # - The caller of the condition setup frame. This replaces `call`
+  #   when it points to the handler frame.
+  # - The caller of the handler frame, used to soft-truncate the
+  #   backtrace. This way we hide the condition signalling and
+  #   handling context (which can be quite complex) in simplified
+  #   backtraces.
   if (rethrowing) {
+
     # This iteration through callers may be incorrect in case of
     # intervening frames. Ideally, we'd iterate only over parent frames.
     # This shouldn't be likely to cause issues though.
@@ -319,6 +335,7 @@ abort_context <- function(frame, parent, call = caller_env()) {
       prev_frame <- frames[[frame_loc - 1L]]
       if (env_has(prev_frame, ".__handler_frame__.")) {
         from_handler <- "calling"
+        handler_frame <- frames[[frame_loc]]
         frame_loc <- frame_loc - 1L
 
         setup_frame <- env_get(prev_frame, ".__setup_frame__.", default = NULL)
@@ -328,25 +345,22 @@ abort_context <- function(frame, parent, call = caller_env()) {
       }
 
       if ((frame_loc - 1) > 0) {
-        # We currently have no reliable way of detecting a rethrow from a
-        # condition handler. We attempt to detect it from the call stack
-        # in three cases: (a) when we see a `tryCatch()` stack, (b) when a
-        # `parent` condition is supplied, (c) when a `.__handler_frame__.`
-        # binding is present in the calling frame (as determined by `call`
-        # if an environment).
         call1 <- calls[[frame_loc]]
         call2 <- calls[[frame_loc - 1]]
 
         if (is_exiting_handler_call(call1, call2)) {
           from_handler <- "exiting"
+          handler_frame <- handler_frame %||% frames[[frame_loc]]
           setup_loc <- calls_try_catch_loc(calls, frame_loc)
           bottom_loc <- parents[[setup_loc]]
         } else {
           if (is_calling_handler_inlined_call(call1)) {
             from_handler <- "calling"
+            handler_frame <- handler_frame %||% frames[[frame_loc]]
             bottom_loc <- calls_signal_loc(calls, frame_loc - 1L)
           } else if (is_calling_handler_simple_error_call(call1, call2)) {
             from_handler <- "calling"
+            handler_frame <- handler_frame %||% frames[[frame_loc]]
             bottom_loc <- calls_signal_loc(calls, frame_loc - 2L)
           }
           setup_loc <- calls_setup_loc(calls, frames, frame_loc)
@@ -372,6 +386,7 @@ abort_context <- function(frame, parent, call = caller_env()) {
 
   list(
     from_handler = from_handler,
+    handler_frame = handler_frame,
     bottom_frame = bottom_frame,
     setup_caller = setup_caller
   )

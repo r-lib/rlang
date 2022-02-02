@@ -187,7 +187,7 @@ local({
     tryCatch(
       low1(),
       error = function(err) {
-        parent <- if (chain) err
+        parent <- if (chain) err else NA
         if (stop_helper) {
           stop1("high-level", parent = err)
         } else {
@@ -200,7 +200,7 @@ local({
     withCallingHandlers(
       low1(),
       error = function(err) {
-        parent <- if (chain) err
+        parent <- if (chain) err else NA
         if (stop_helper) {
           stop1("high-level", parent = err)
         } else {
@@ -213,7 +213,7 @@ local({
     try_fetch(
       low1(),
       error = function(err) {
-        parent <- if (chain) err
+        parent <- if (chain) err else NA
         if (stop_helper) {
           stop1("high-level", parent = err)
         } else {

@@ -9,6 +9,11 @@
   detect the condition handler frame. This makes it easier to wrap or
   extract condition handlers in functions without supplying `.frame`.
 
+* When `parent` is supplied and `call` points to the condition setup
+  frame (e.g. `withCallingHandlers()` or `try_fetch()`), `call` is
+  replaced with the caller of that setup frame. This provides a more
+  helpful default call.
+
 * `is_call()` is now implemented in C for performance.
 
 * Fixed performance regression in `trace_back()`.

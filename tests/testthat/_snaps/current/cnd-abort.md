@@ -5,7 +5,7 @@
       print(err)
     Output
       <error/rlang_error>
-      Error:
+      Error in `wch()`:
       ! High-level message
       Caused by error in `low3()`:
       ! Low-level message
@@ -21,7 +21,7 @@
       summary(err)
     Output
       <error/rlang_error>
-      Error:
+      Error in `wch()`:
       ! High-level message
       Backtrace:
            x
@@ -73,7 +73,7 @@
       print(err)
     Output
       <error/rlang_error>
-      Error in `h()`:
+      Error in `wch()`:
       ! High-level message
       Caused by error:
       ! Low-level message
@@ -90,7 +90,7 @@
       summary(err)
     Output
       <error/rlang_error>
-      Error in `h()`:
+      Error in `wch()`:
       ! High-level message
       Caused by error:
       ! Low-level message

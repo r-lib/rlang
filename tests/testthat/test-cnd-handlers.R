@@ -35,7 +35,7 @@ test_that("can rethrow from `try_fetch()`", {
     if (chain) {
       try_fetch(f(), error = function(cnd) abort("bar", parent = cnd))
     } else {
-      try_fetch(f(), error = function(cnd) abort("bar", error = cnd))
+      try_fetch(f(), error = function(cnd) abort("bar", parent = NA))
     }
   }
 

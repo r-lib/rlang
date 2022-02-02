@@ -186,7 +186,7 @@
         9. +-rlang high1(chain = FALSE)
        10. | \-rlang high2(...)
        11. |   \-rlang high3(...)
-       12. |     +-rlang::try_fetch(f(), error = function(cnd) abort("bar", error = cnd))
+       12. |     +-rlang::try_fetch(f(), error = function(cnd) abort("bar", parent = NA))
        13. |     | +-base::tryCatch(...)
        14. |     | | \-base tryCatchList(expr, classes, parentenv, handlers)
        15. |     | |   \-base tryCatchOne(expr, names, parentenv, handlers[[1L]])
@@ -200,5 +200,5 @@
        23. |               \-base::signalCondition(cnd)
        24. \-rlang `<fn>`(`<rlng_rrr>`)
        25.   \-handlers[[1L]](cnd)
-       26.     \-rlang::abort("bar", error = cnd)
+       26.     \-rlang::abort("bar", parent = NA)
 
