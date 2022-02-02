@@ -1,5 +1,10 @@
 # rlang (development version)
 
+* `abort(parent = NA)` is now supported to indicate an unchained
+  rethrow. This helps `abort()` detect the condition handling context
+  to create simpler backtraces where this context is hidden by
+  default.
+
 * `is_call()` is now implemented in C for performance.
 
 * Fixed performance regression in `trace_back()`.

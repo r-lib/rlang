@@ -63,7 +63,7 @@ NULL
 #'   If an execution environment of a running function, the
 #'   corresponding function call is retrieved.
 #' @param trace A `trace` object created by [trace_back()].
-#' @param parent A parent condition object created by [abort()].
+#' @param parent A parent condition object.
 #' @param use_cli_format Whether to use the cli package to format
 #'   `message`. See [local_use_cli()].
 #' @seealso [cnd_signal()], [try_fetch()].

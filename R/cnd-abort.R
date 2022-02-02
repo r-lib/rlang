@@ -42,6 +42,7 @@
 #'   `class` argument. You may consider prefixing condition fields
 #'   with the name of your package or organisation to prevent name
 #'   collisions.
+#' @param body,footer Additional bullets.
 #' @param call The execution environment of a currently running
 #'   function, e.g. `call = caller_env()`. The corresponding function
 #'   call is retrieved and mentioned in error messages as the source
@@ -53,7 +54,14 @@
 #'
 #'   Can also be `NULL` or a [defused function call][topic-defuse] to
 #'   respectively not display any call or hard-code a code to display.
-#' @param body,footer Additional bullets.
+#' @param parent Supply `parent` when you rethrow an error from a
+#'   condition handler (e.g. with [try_fetch()]).
+#'
+#'   If `parent` is a condition object, a _chained error_ is
+#'   created. If `parent` is `NA`, it indicates an unchained rethrow.
+#'   Supplying `NA` lets `abort()` know it is called from a condition
+#'   handler. This helps it create simpler backtraces where the
+#'   condition handling context is hidden by default.
 #' @param use_cli_format Whether to format `message` lazily using
 #'   [cli](https://cli.r-lib.org/) if available. This results in
 #'   prettier and more accurate formatting of messages. See
@@ -239,6 +247,11 @@ abort <- function(message = NULL,
   }
 
   info <- abort_context(.frame, parent)
+
+  # Zap `NA` parent now that it has been detected in `abort_context()`
+  if (is_na(parent)) {
+    parent <- NULL
+  }
 
   if (is_missing(call)) {
     if (is_null(info$from_handler)) {
