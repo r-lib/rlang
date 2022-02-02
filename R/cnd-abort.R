@@ -57,11 +57,19 @@
 #' @param parent Supply `parent` when you rethrow an error from a
 #'   condition handler (e.g. with [try_fetch()]).
 #'
-#'   If `parent` is a condition object, a _chained error_ is
-#'   created. If `parent` is `NA`, it indicates an unchained rethrow.
-#'   Supplying `NA` lets `abort()` know it is called from a condition
-#'   handler. This helps it create simpler backtraces where the
-#'   condition handling context is hidden by default.
+#'   - If `parent` is a condition object, a _chained error_ is
+#'     created, which is useful when you want to enhance an error with
+#'     more details, while still retaining the original information.
+#'
+#'   - If `parent` is `NA`, it indicates an unchained rethrow, which
+#'     is useful when you want to take ownership over an error and
+#'     rethrow it with a custom message that better fits the
+#'     surrounding context.
+#'
+#'     Technically, supplying `NA` lets `abort()` know it is called
+#'     from a condition handler. This helps it create simpler
+#'     backtraces where the condition handling context is hidden by
+#'     default.
 #' @param use_cli_format Whether to format `message` lazily using
 #'   [cli](https://cli.r-lib.org/) if available. This results in
 #'   prettier and more accurate formatting of messages. See
