@@ -69,7 +69,7 @@ s3_register <- function(generic, class, method = NULL) {
       caller
     }
   }
-  get_method <- function(method, env) {
+  get_method <- function(method) {
     if (is.null(method)) {
       get(paste0(generic, ".", class), envir = get_method_env())
     } else {
