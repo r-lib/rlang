@@ -146,18 +146,17 @@ r_obj* r_exec_mask_n_call_poke(r_obj* fn_sym,
     r_obj* car = r_node_car(node);
     r_obj* tag = r_node_tag(node);
 
-    // Protect symbolic arguments from evaluation
-    car = KEEP(r_expr_protect(car));
-
-    // If symbol is supplied, assign the value in the environment and
-    // use the symbol instead of the value in the list of arguments
-    if (tag != r_null) {
+    if (tag == r_null) {
+      // If symbol is not supplied, protect symbolic arguments from
+      // evaluation. If supplied this is not needed because of the
+      // masking.
+      r_node_poke_car(node, r_expr_protect(car));
+    } else {
+      // If symbol is supplied, assign the value in the environment and
+      // use the symbol instead of the value in the list of arguments
       r_env_poke(env, tag, car);
-      car = tag;
+      r_node_poke_car(node, tag);
     }
-
-    r_node_poke_car(node, car);
-    FREE(1);
 
     node = r_node_cdr(node);
   }
