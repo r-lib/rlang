@@ -495,9 +495,18 @@ r_obj* r_list_of_as_ptr_ssize(r_obj* xs,
 
 int* r_int_unique0(int* v_data, r_ssize size);
 
+bool r_list_all_of0(r_obj* const * v_first,
+                    r_ssize size,
+                    bool (*predicate)(r_obj* x));
+
 static inline
 int* r_int_unique(r_obj* x) {
   return r_int_unique0(r_int_begin(x), r_length(x));
+}
+
+static inline
+bool r_list_all_of(r_obj* x, bool (*predicate)(r_obj* x)) {
+  return r_list_all_of0(r_list_cbegin(x), r_length(x), predicate);
 }
 
 
