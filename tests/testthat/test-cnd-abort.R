@@ -793,3 +793,7 @@ test_that("if `call` is older than handler caller, use that as bottom", {
     print(expect_error(f()))
   })
 })
+
+test_that("is_calling_handler_inlined_call() doesn't fail with OOB subsetting", {
+  expect_false(is_calling_handler_inlined_call(call2(function() NULL)))
+})

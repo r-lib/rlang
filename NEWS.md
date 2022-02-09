@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* Fixed an OOB subsetting error in `abort()`.
+
+
 # rlang 1.0.1
 
 * New `rlang_call_format_srcrefs` global option (#1349). Similar to

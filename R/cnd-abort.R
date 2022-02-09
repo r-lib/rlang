@@ -512,7 +512,7 @@ skip_signal_frames <- function(loc, frames) {
 }
 
 is_calling_handler_inlined_call <- function(call) {
-  is_call(call) && is_function(call[[1]]) && is_condition(call[[2]])
+  is_call(call) && length(call) >= 2 && is_function(call[[1]]) && is_condition(call[[2]])
 }
 is_calling_handler_simple_error_call <- function(call1, call2) {
   identical(call1, quote(h(simpleError(msg, call)))) && is_call(call2, ".handleSimpleError")
