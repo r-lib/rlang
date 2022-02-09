@@ -229,7 +229,7 @@ test_that("can supply handler environment as `bottom`", {
 })
 
 test_that("can set `entrace()` as a global handler", {
-  skip_if_not_installed("base", "4.0")
+  skip_if_not_installed("base", "4.0.0")
 
   expect_snapshot_output(run('{
     suppressMessages(testthat::local_reproducible_output())
