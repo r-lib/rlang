@@ -768,3 +768,28 @@ test_that("can rethrow outside handler", {
     print(err(foo()))
   })
 })
+
+test_that("if `call` is older than handler caller, use that as bottom", {
+  local_options(
+    rlang_trace_format_srcrefs = FALSE
+  )
+  f <- function() helper()
+  helper <- function(call = caller_env()) {
+    try_fetch(
+      low_level(call),
+      error = function(cnd) abort(
+        "Problem.",
+        parent = cnd,
+        call = call
+      )
+    )
+  }
+  low_level <- function(call) {
+    # Should pass `call = list(NULL, frame = call)`
+    abort("Tilt.", call = call)
+  }
+
+  expect_snapshot({
+    print(expect_error(f()))
+  })
+})

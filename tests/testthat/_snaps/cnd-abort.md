@@ -1252,3 +1252,17 @@
        10. rlang bar()
        11. rlang baz()
 
+# if `call` is older than handler caller, use that as bottom
+
+    Code
+      print(expect_error(f()))
+    Output
+      <error/rlang_error>
+      Error in `f()`:
+      ! Problem.
+      Caused by error in `f()`:
+      ! Tilt.
+      Backtrace:
+       1. base::print(expect_error(f()))
+       8. rlang f()
+

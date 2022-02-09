@@ -265,7 +265,7 @@ abort <- function(message = NULL,
     check_environment(.frame)
   }
 
-  info <- abort_context(.frame, rethrowing)
+  info <- abort_context(.frame, rethrowing, maybe_missing(call))
 
   if (is_missing(call)) {
     if (is_null(info$from_handler)) {
@@ -314,7 +314,10 @@ abort <- function(message = NULL,
   signal_abort(cnd, .file)
 }
 
-abort_context <- function(frame, rethrowing, call = caller_env()) {
+abort_context <- function(frame,
+                          rethrowing,
+                          abort_call,
+                          call = caller_env()) {
   calls <- sys.calls()
   frames <- sys.frames()
   parents <- sys.parents()
@@ -384,6 +387,12 @@ abort_context <- function(frame, rethrowing, call = caller_env()) {
     # Skip frames marked with the sentinel `.__signal_frame__.`
     bottom_loc <- skip_signal_frames(bottom_loc, frames)
     bottom_frame <- frames[[bottom_loc]]
+    if (!is_missing(abort_call) && is_environment(abort_call)) {
+      abort_call_loc <- detect_index(frames, identical, abort_call)
+      if (abort_call_loc && abort_call_loc < bottom_loc) {
+        bottom_frame <- frames[[abort_call_loc]]
+      }
+    }
   } else {
     bottom_frame <- NULL
   }
