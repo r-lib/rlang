@@ -1255,12 +1255,29 @@
 # if `call` is older than handler caller, use that as bottom
 
     Code
+      low_level <- (function(call) {
+        abort("Tilt.", call = call)
+      })
       print(expect_error(f()))
     Output
       <error/rlang_error>
       Error in `f()`:
       ! Problem.
       Caused by error in `f()`:
+      ! Tilt.
+      Backtrace:
+       1. base::print(expect_error(f()))
+       8. rlang f()
+    Code
+      low_level <- (function(call) {
+        abort("Tilt.", call = list(NULL, frame = call))
+      })
+      print(expect_error(f()))
+    Output
+      <error/rlang_error>
+      Error in `f()`:
+      ! Problem.
+      Caused by error:
       ! Tilt.
       Backtrace:
        1. base::print(expect_error(f()))

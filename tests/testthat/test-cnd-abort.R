@@ -784,12 +784,16 @@ test_that("if `call` is older than handler caller, use that as bottom", {
       )
     )
   }
-  low_level <- function(call) {
-    # Should pass `call = list(NULL, frame = call)`
-    abort("Tilt.", call = call)
-  }
 
   expect_snapshot({
+    low_level <- function(call) {
+      abort("Tilt.", call = call)
+    }
+    print(expect_error(f()))
+
+    low_level <- function(call) {
+      abort("Tilt.", call = list(NULL, frame = call))
+    }
     print(expect_error(f()))
   })
 })

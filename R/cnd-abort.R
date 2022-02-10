@@ -249,6 +249,15 @@ abort <- function(message = NULL,
     parent <- NULL
   }
 
+  if (is_list(maybe_missing(call))) {
+    if (!identical(names(call), c("call", "frame")) &&
+        !identical(names(call), c("", "frame"))) {
+      abort("When a list, `call` must have \"call\" and \"frame\" names.")
+    }
+    .frame <- call[["frame"]] %||% .frame
+    call <- call[["call"]]
+  }
+
   # `.frame` is used to soft-truncate the backtrace
   if (is_null(.frame)) {
     if (rethrowing) {
