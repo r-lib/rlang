@@ -892,6 +892,20 @@ test_that("can resize dynamic arrays", {
   expect_equal(dyn_unwrap(arr), bytes(1, 0))
 })
 
+test_that("dynamic arrays with multiple bytes per elements are resized correctly", {
+  arr <- new_dyn_array(4, 4)
+  expect_length(arr[[2]], 16)
+
+  dyn_resize(arr, 8L)
+  expect_length(arr[[2]], 32)
+
+  arr <- new_dyn_vector("integer", 4)
+  expect_length(arr[[2]], 4)
+
+  dyn_resize(arr, 8L)
+  expect_length(arr[[2]], 8)
+})
+
 test_that("can shrink and grow dynamic atomic vectors", {
   arr <- new_dyn_vector("double", 3)
   expect_equal(

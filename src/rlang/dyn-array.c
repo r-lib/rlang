@@ -94,9 +94,13 @@ void r_dyn_resize(struct r_dyn_array* p_arr,
                   r_ssize capacity) {
   enum r_type type = p_arr->type;
 
+  r_ssize capacity_multiplier = p_arr->type == R_TYPE_raw ?
+    r_ssize_mult(p_arr->elt_byte_size, capacity) :
+    capacity;
+
   r_obj* data = r_vec_resize0(type,
                               r_list_get(p_arr->shelter, 1),
-                              p_arr->elt_byte_size * capacity);
+                              capacity_multiplier);
   r_list_poke(p_arr->shelter, 1, data);
 
   p_arr->count = r_ssize_min(p_arr->count, capacity);
