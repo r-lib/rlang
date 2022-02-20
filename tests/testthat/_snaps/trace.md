@@ -1034,7 +1034,7 @@
       print(err)
     Output
       [1m[1m[1m[34m<error/rlang_error>[39m[22m
-      [1m[33mError[39m in [1m[1m[30m[47m`1 + ""`[49m[39m:[22m
+      [1m[33mError[39m in [1m[1m`1 + ""`:[22m
       [33m![39m non-numeric argument to binary operator
       [1mBacktrace:[22m
       [90m  1. [39m[1mrlang[22m::catch_cnd(withCallingHandlers(f(), error = entrace), "error")
@@ -1046,7 +1046,7 @@
       summary(err)
     Output
       [1m[1m[1m[34m<error/rlang_error>[39m[22m
-      [1m[33mError[39m in [1m[1m[30m[47m`1 + ""`[49m[39m:[22m
+      [1m[33mError[39m in [1m[1m`1 + ""`:[22m
       [33m![39m non-numeric argument to binary operator
       [1mBacktrace:[22m
       [90m     [39mx
