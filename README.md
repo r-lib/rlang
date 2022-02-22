@@ -2,9 +2,9 @@ rlang <img src="man/figures/logo.png" align="right" />
 =======================================================
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/r-lib/rlang/workflows/R-CMD-check/badge.svg)](https://github.com/r-lib/rlang/actions)
 [![Codecov test coverage](https://codecov.io/gh/r-lib/rlang/branch/main/graph/badge.svg)](https://app.codecov.io/gh/r-lib/rlang?branch=main)
 [![Lifecycle Status](https://img.shields.io/badge/lifecycle-stable-green.svg)](https://lifecycle.r-lib.org/articles/stages.html)
+[![R-CMD-check](https://github.com/r-lib/rlang/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/r-lib/rlang/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 
