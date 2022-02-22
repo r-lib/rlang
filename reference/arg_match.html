@@ -191,12 +191,10 @@ mentioned in error messages as the source of the error. See the
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Throws an informative error for mismatches:</span></span>
 <span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">fn</span><span class="op">(</span><span class="st">"b"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in fn("b") : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #262626; background-color: #DADADA;">`x`</span> must be one of "foo" or "bar", not "b".</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in fn("b") : `x` must be one of "foo" or "bar", not "b".</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Did you mean "bar"?</span>
 <span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">fn</span><span class="op">(</span><span class="st">"baz"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in fn("baz") : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #262626; background-color: #DADADA;">`x`</span> must be one of "foo" or "bar", not "baz".</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in fn("baz") : `x` must be one of "foo" or "bar", not "baz".</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Did you mean "bar"?</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Use the bare-bones version with explicit values for speed:</span></span>
@@ -213,7 +211,7 @@ mentioned in error messages as the source of the error. See the
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "bar"</span>
 <span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">fn3</span><span class="op">(</span><span class="st">"zoo"</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error in fn3("zoo") : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #262626; background-color: #DADADA;">`x`</span> must be one of "foo", "bar", or "baz", not "zoo".</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   `x` must be one of "foo", "bar", or "baz", not "zoo".</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Did you mean "foo"?</span>
 </code></pre></div>
     </div>

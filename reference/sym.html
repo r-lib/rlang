@@ -196,7 +196,7 @@ functions, use simple symbols created with <code>sym()</code> or <code>syms()</c
 <span class="r-in"><span class="co"># These can only be used with tidy eval functions</span></span>
 <span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval</a></span><span class="op">(</span><span class="fu">data_sym</span><span class="op">(</span><span class="st">"Cyl"</span><span class="op">)</span>, <span class="va">mtcars</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error in eval(data_sym("Cyl"), mtcars) : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Can't subset <span style="color: #262626; background-color: #DADADA;">`.data`</span> outside of a data mask context.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Can't subset `.data` outside of a data mask context.</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># The empty string returns the missing argument:</span></span>
 <span class="r-in"><span class="fu">sym</span><span class="op">(</span><span class="st">""</span><span class="op">)</span></span>

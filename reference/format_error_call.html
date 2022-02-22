@@ -155,7 +155,7 @@ their names rather than the potentially confusing function form.</p></li>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Arguments are stripped</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/writeLines.html" class="external-link">writeLines</a></span><span class="op">(</span><span class="fu">format_error_call</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="fu">foo</span><span class="op">(</span><span class="va">bar</span>, <span class="va">baz</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #262626; background-color: #DADADA;">`foo()`</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> `foo()`</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Returns `NULL` with complex calls such as those that contain</span></span>
 <span class="r-in"><span class="co"># inlined functions</span></span>
@@ -165,7 +165,7 @@ their names rather than the potentially confusing function form.</p></li>
 <span class="r-in"><span class="co"># Operators are formatted using their names rather than in</span></span>
 <span class="r-in"><span class="co"># function call form</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/writeLines.html" class="external-link">writeLines</a></span><span class="op">(</span><span class="fu">format_error_call</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #262626; background-color: #DADADA;">`1 + 2`</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> `1 + 2`</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

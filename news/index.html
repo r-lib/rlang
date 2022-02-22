@@ -102,7 +102,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="rlang-development-version">rlang (development version)<a class="anchor" aria-label="anchor" href="#rlang-development-version"></a></h2>
-<ul><li>Fixed an OOB subsetting error in <code><a href="../reference/abort.html">abort()</a></code>.</li>
+<ul><li><p><code><a href="../reference/abort.html">abort()</a></code> and friends no longer calls non-existent functions (e.g. <code><a href="https://cli.r-lib.org/reference/format_error.html" class="external-link">cli::format_error()</a></code> or <code><a href="https://cli.r-lib.org/reference/format_error.html" class="external-link">cli::format_warning</a></code>) when the installed version of cli is too old (<a href="https://github.com/r-lib/rlang/issues/1367" class="external-link">#1367</a>, tidyverse/dplyr#6189).</p></li>
+<li><p>Fixed an OOB subsetting error in <code><a href="../reference/abort.html">abort()</a></code>.</p></li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.1" id="rlang-101">rlang 1.0.1<a class="anchor" aria-label="anchor" href="#rlang-101"></a></h2><p class="text-muted">CRAN release: 2022-02-03</p>
@@ -527,7 +528,7 @@
 <h3 id="new-functions-and-features-0-4-0">New functions and features<a class="anchor" aria-label="anchor" href="#new-functions-and-features-0-4-0"></a></h3>
 <ul><li><p>New <code><a href="../reference/pairlist2.html">pairlist2()</a></code> function with splicing support. It preserves missing arguments, which makes it useful for lists of formal parameters for functions.</p></li>
 <li><p><code><a href="../reference/scalar-type-predicates.html">is_bool()</a></code> is a scalar type predicate that checks whether its input is a single <code>TRUE</code> or <code>FALSE</code>. Like <code><a href="../reference/scalar-type-predicates.html">is_string()</a></code>, it returns <code>FALSE</code> when the input is missing. This is useful for type-checking function arguments (<a href="https://github.com/r-lib/rlang/issues/695" class="external-link">#695</a>).</p></li>
-<li><p><code><a href="../reference/scalar-type-predicates.html">is_string()</a></code> gains a <code>string</code> argument. <code>is_string(x, "foo")</code> is a shortcut for <code>is_character(x) &amp;&amp; length(x) == 1 &amp;&amp; identical(x, "foo")</code>.</p></li>
+<li><p><code><a href="../reference/scalar-type-predicates.html">is_string()</a></code> gains a <code>string</code> argument. <code>is_string(x, "foo")</code> is a shortcut for <code>is_character(x) &amp;&amp; length(x) == 1 &amp;&amp; identical(x,   "foo")</code>.</p></li>
 <li><p>Lists of quosures now have pillar methods for display in tibbles.</p></li>
 <li>
 <p><code><a href="../reference/set_names.html">set_names()</a></code> now names unnamed input vectors before applying a function. The following expressions are now equivalent:</p>
@@ -798,7 +799,7 @@
 <p>Deprecation warnings shouldn’t make R CMD check fail for packages using testthat. However, <code>expect_silent()</code> can transform the warning to a hard failure.</p>
 <div class="section level5">
 <h5 id="tidyeval-0-3-0">tidyeval<a class="anchor" aria-label="anchor" href="#tidyeval-0-3-0"></a></h5>
-<ul><li><p><code>.data[[foo]]</code> is now an unquote operator. This guarantees that <code>foo</code> is evaluated in the context rather than the data mask and makes it easier to treat <code>.data[["bar"]]</code> the same way as a symbol. For instance, this will help ensuring that <code>group_by(df, .data[["name"]])</code> and <code>group_by(df, name)</code> produce the same column name.</p></li>
+<ul><li><p><code>.data[[foo]]</code> is now an unquote operator. This guarantees that <code>foo</code> is evaluated in the context rather than the data mask and makes it easier to treat <code>.data[["bar"]]</code> the same way as a symbol. For instance, this will help ensuring that <code>group_by(df,   .data[["name"]])</code> and <code>group_by(df, name)</code> produce the same column name.</p></li>
 <li><p>Automatic naming of expressions now uses a new deparser (still unexported) instead of <code><a href="../reference/quo_label.html">quo_text()</a></code>. Following this change, automatic naming is now compatible with all object types (via <code><a href="https://pillar.r-lib.org/reference/type_sum.html" class="external-link">pillar::type_sum()</a></code> if available), prevents multi-line names, and ensures <code>name</code> and <code>.data[["name"]]</code> are given the same default name.</p></li>
 <li><p>Supplying a name with <code>!!!</code> calls is soft-deprecated. This name is ignored because only the names of the spliced vector are applied.</p></li>
 <li><p>Quosure lists returned by <code><a href="../reference/defusing-advanced.html">quos()</a></code> and <code><a href="../reference/enquo.html">enquos()</a></code> now have “list-of” behaviour: the types of new elements are checked when adding objects to the list. Consequently, assigning non-quosure objects to quosure lists is now soft-deprecated. Please coerce to a bare list with <code><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list()</a></code> beforehand.</p></li>
