@@ -179,13 +179,6 @@ test_that("cli is not used when message is escaped with `I()`", {
   )
 })
 
-test_that("cli syntax is escaped in 'try' mode", {
-  local_use_cli()
-
-  x <- "{foo {{}}"
-  expect_equal(rlang_format_message(x), x)
-})
-
 test_that(".rlang_cli_str_restore() deals with attributes", {
   msg <- structure("foo", attr = TRUE)
 
@@ -198,24 +191,6 @@ test_that(".rlang_cli_str_restore() deals with attributes", {
   expect_equal(
     .rlang_cli_str_restore("bar", msg_oo),
     "bar"
-  )
-
-  local_use_cli(inline = TRUE, format = TRUE)
-  expect_equal(
-    attributes(rlang_format_message(msg)),
-    list(attr = TRUE)
-  )
-
-  local_use_cli(inline = FALSE, format = FALSE)
-  expect_equal(
-    attributes(rlang_format_message(msg)),
-    list(attr = TRUE)
-  )
-
-  local_use_cli(inline = FALSE, format = TRUE)
-  expect_equal(
-    attributes(rlang_format_message(msg)),
-    list(attr = TRUE)
   )
 })
 
