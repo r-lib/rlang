@@ -127,12 +127,12 @@ cnd_message_format <- function(cnd, ..., alert = FALSE) {
 
   cli_format <- switch(
     cnd_type(cnd),
-    error = cli::format_error,
-    warning = cli::format_warning,
-    cli::format_message
+    error = format_error,
+    warning = format_warning,
+    format_message
   )
 
-  cli_format(glue_escape(lines), .envir = emptyenv())
+  cli_format(glue_escape(lines))
 }
 
 local_cli_indent <- function(frame = caller_env()) {

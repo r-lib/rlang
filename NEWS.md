@@ -1,5 +1,9 @@
 # rlang (development version)
 
+* `abort()` and friends no longer calls non-existent functions
+  (e.g. `cli::format_error()` or `cli::format_warning`) when the
+  installed version of cli is too old (#1367, tidyverse/dplyr#6189).
+
 * Fixed an OOB subsetting error in `abort()`.
 
 
