@@ -7,6 +7,16 @@
 #
 # Changelog:
 #
+# 2022-02-22:
+#
+# * `format_error()` and variants now call cli even when ANSI colours
+#   are disabled.
+#
+# * The fallback formatting for `.emph` and `.strong` no longer
+#   surrounds in `_` or `*` characters. This is consistent with cli
+#   formatting.
+#
+#
 # 2021-07-06:
 #
 # * Added missing `col_`, `bg_`, and `style_` functions.
@@ -156,8 +166,8 @@ mark_cls <- function(x) {
   .rlang_cli_style_inline(x, "cls", fallback)
 }
 
-format_emph   <- function(x) .rlang_cli_format_inline(x, "emph", "_%s_")
-format_strong <- function(x) .rlang_cli_format_inline(x, "strong", "*%s*")
+format_emph   <- function(x) .rlang_cli_format_inline(x, "emph", "%s")
+format_strong <- function(x) .rlang_cli_format_inline(x, "strong", "%s")
 format_code   <- function(x) .rlang_cli_format_inline(x, "code", "`%s`")
 format_q      <- function(x) .rlang_cli_format_inline(x, "q", NULL)
 format_pkg    <- function(x) .rlang_cli_format_inline(x, "pkg", NULL)
@@ -179,7 +189,7 @@ format_cls <- function(x) {
 }
 
 .rlang_cli_style_inline <- function(x, span, fallback = "`%s`") {
-  if (.rlang_cli_has_ansi()) {
+  if (.rlang_cli_has_cli()) {
     paste0("{.", span, " {\"", encodeString(x), "\"}}")
   } else if (is.null(fallback)) {
     x
@@ -190,7 +200,7 @@ format_cls <- function(x) {
   }
 }
 .rlang_cli_format_inline <- function(x, span, fallback = "`%s`") {
-  if (.rlang_cli_has_ansi()) {
+  if (.rlang_cli_has_cli()) {
     cli::format_message(paste0("{.", span, " {x}}"))
   } else {
     .rlang_cli_style_inline(x, span, fallback = fallback)
@@ -234,7 +244,7 @@ format_message <- function(x) {
 }
 
 .rlang_cli_format <- function(x, cli_format) {
-  if (.rlang_cli_has_ansi()) {
+  if (.rlang_cli_has_cli()) {
     out <- cli_format(x, .envir = emptyenv())
     .rlang_cli_str_restore(out, unname(x))
   } else {
@@ -333,7 +343,7 @@ format_message <- function(x) {
 #'
 #' @noRd
 cli_escape <- function(x) {
-  if (.rlang_cli_has_ansi()) {
+  if (.rlang_cli_has_cli()) {
     gsub("\\}", "}}", gsub("\\{", "{{", x))
   } else {
     x

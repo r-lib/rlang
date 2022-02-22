@@ -3,75 +3,75 @@
     Code
       mark_emph("foo")
     Output
-      [1] "_foo_"
+      [1] "{.emph {\"foo\"}}"
     Code
       mark_strong("foo")
     Output
-      [1] "*foo*"
+      [1] "{.strong {\"foo\"}}"
     Code
       mark_code("foo")
     Output
-      [1] "`foo`"
+      [1] "{.code {\"foo\"}}"
     Code
       mark_q("foo")
     Output
-      [1] "foo"
+      [1] "{.q {\"foo\"}}"
     Code
       mark_pkg("foo")
     Output
-      [1] "foo"
+      [1] "{.pkg {\"foo\"}}"
     Code
       mark_fn("foo")
     Output
-      [1] "`foo()`"
+      [1] "{.fn {\"foo\"}}"
     Code
       mark_arg("foo")
     Output
-      [1] "`foo`"
+      [1] "{.arg {\"foo\"}}"
     Code
       mark_kbd("foo")
     Output
-      [1] "[foo]"
+      [1] "{.kbd {\"foo\"}}"
     Code
       mark_key("foo")
     Output
-      [1] "[foo]"
+      [1] "{.key {\"foo\"}}"
     Code
       mark_file("foo")
     Output
-      [1] "foo"
+      [1] "{.file {\"foo\"}}"
     Code
       mark_path("foo")
     Output
-      [1] "foo"
+      [1] "{.path {\"foo\"}}"
     Code
       mark_email("foo")
     Output
-      [1] "foo"
+      [1] "{.email {\"foo\"}}"
     Code
       mark_url("foo")
     Output
-      [1] "<foo>"
+      [1] "{.url {\"foo\"}}"
     Code
       mark_var("foo")
     Output
-      [1] "`foo`"
+      [1] "{.var {\"foo\"}}"
     Code
       mark_envvar("foo")
     Output
-      [1] "`foo`"
+      [1] "{.envvar {\"foo\"}}"
     Code
       mark_field("foo")
     Output
-      [1] "foo"
+      [1] "{.field {\"foo\"}}"
     Code
       mark_cls("foo")
     Output
-      [1] "<foo>"
+      [1] "{.cls {\"foo\"}}"
     Code
       mark_cls(c("foo", "bar"))
     Output
-      [1] "<foo/bar>"
+      [1] "{.cls {\"foo\"}}" "{.cls {\"bar\"}}"
 
 # can style strings with cli [ansi]
 
@@ -153,11 +153,11 @@
     Code
       format_emph("foo")
     Output
-      [1] "_foo_"
+      [1] "foo"
     Code
       format_strong("foo")
     Output
-      [1] "*foo*"
+      [1] "foo"
     Code
       format_code("foo")
     Output
@@ -165,7 +165,7 @@
     Code
       format_q("foo")
     Output
-      [1] "foo"
+      [1] "\"foo\""
     Code
       format_pkg("foo")
     Output
@@ -189,15 +189,15 @@
     Code
       format_file("foo")
     Output
-      [1] "foo"
+      [1] "'foo'"
     Code
       format_path("foo")
     Output
-      [1] "foo"
+      [1] "'foo'"
     Code
       format_email("foo")
     Output
-      [1] "foo"
+      [1] "'foo'"
     Code
       format_url("foo")
     Output
@@ -303,11 +303,11 @@
     Code
       mark_emph("{foo {}")
     Output
-      [1] "_{foo {}_"
+      [1] "{.emph {\"{foo {}\"}}"
     Code
       format_message(mark_emph("{foo {}"))
     Output
-      [1] "_{foo {}_"
+      [1] "{foo {}"
 
 # styled strings may contain `{` syntax [ansi]
 

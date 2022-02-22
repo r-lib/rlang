@@ -967,7 +967,7 @@
     Code
       format_error_call(quote(`%||%`()))
     Output
-      [1] "``%||%`()`"
+      [1] "`` `%||%`() ``"
 
 # `abort()` uses older bullets formatting by default
 
