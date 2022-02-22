@@ -6,7 +6,7 @@
       <error/rlang_error>
       Error in `lof_arr_push_back()`:
       ! Location 0 does not exist.
-      i In file rlang/dyn-list-of.c at line 167.
+      i In file 'rlang/dyn-list-of.c' at line 167.
       i This is an internal error, please report it to the package authors.
     Code
       err(lof_arr_push_back(lof, 10, 42L), "Location 10 does not exist")
@@ -14,7 +14,7 @@
       <error/rlang_error>
       Error in `lof_arr_push_back()`:
       ! Location 10 does not exist.
-      i In file rlang/dyn-list-of.c at line 167.
+      i In file 'rlang/dyn-list-of.c' at line 167.
       i This is an internal error, please report it to the package authors.
 
 # re-encoding fails purposefully with any bytes
