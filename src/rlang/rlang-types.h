@@ -28,9 +28,9 @@ typedef R_xlen_t r_ssize;
 #define R_SSIZE_MIN (-R_XLEN_T_MAX)
 
 #ifdef LONG_VECTOR_SUPPORT
-# define R_SSIZE_FMT "%td"
+# define R_PRI_SSIZE "td"
 #else
-# define R_SSIZE_FMT "%d"
+# define R_PRI_SSIZE "d"
 #endif
 
 enum r_type {
