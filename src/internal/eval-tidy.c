@@ -244,8 +244,8 @@ r_obj* ffi_data_pronoun_get(r_obj* pronoun, r_obj* sym, r_obj* error_call) {
   r_obj* obj = mask_find(pronoun, sym);
 
   if (obj == r_syms.unbound) {
-    r_obj* call = KEEP(r_parse("rlang:::abort_data_pronoun(x, call = y)"));
-    r_eval_with_xy(call, sym, error_call, r_envs.base);
+    r_obj* call = KEEP(r_parse("abort_data_pronoun(x, call = y)"));
+    r_eval_with_xy(call, sym, error_call, rlang_ns_env);
     r_abort("Internal error: .data subsetting should have failed earlier");
   }
 
