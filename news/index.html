@@ -102,7 +102,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="rlang-development-version">rlang (development version)<a class="anchor" aria-label="anchor" href="#rlang-development-version"></a></h2>
-<ul><li><p><code><a href="../reference/abort.html">abort()</a></code> and friends no longer calls non-existent functions (e.g. <code><a href="https://cli.r-lib.org/reference/format_error.html" class="external-link">cli::format_error()</a></code> or <code><a href="https://cli.r-lib.org/reference/format_error.html" class="external-link">cli::format_warning</a></code>) when the installed version of cli is too old (<a href="https://github.com/r-lib/rlang/issues/1367" class="external-link">#1367</a>, tidyverse/dplyr#6189).</p></li>
+<ul><li><p>The internal bullet formatting routine now ignores unknown names (<a href="https://github.com/r-lib/rlang/issues/1364" class="external-link">#1364</a>). This makes it consistent with the cli package, increases resilience against hard-to-detect errors, and increases forward compatibility.</p></li>
+<li><p><code><a href="../reference/abort.html">abort()</a></code> and friends no longer calls non-existent functions (e.g. <code><a href="https://cli.r-lib.org/reference/format_error.html" class="external-link">cli::format_error()</a></code> or <code><a href="https://cli.r-lib.org/reference/format_error.html" class="external-link">cli::format_warning</a></code>) when the installed version of cli is too old (<a href="https://github.com/r-lib/rlang/issues/1367" class="external-link">#1367</a>, tidyverse/dplyr#6189).</p></li>
 <li><p>Fixed an OOB subsetting error in <code><a href="../reference/abort.html">abort()</a></code>.</p></li>
 </ul></div>
     <div class="section level2">
