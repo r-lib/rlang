@@ -13,9 +13,9 @@
 #define r_visible attribute_visible extern
 
 #ifdef __GNUC__
-#define r_unused __attribute__ ((unused))
+# define r_unused __attribute__ ((unused))
 #else
-#define r_unused
+# define r_unused
 #endif
 
 #define r_no_return __attribute__ ((noreturn))
@@ -26,6 +26,12 @@ typedef Rcomplex r_complex;
 typedef R_xlen_t r_ssize;
 #define R_SSIZE_MAX R_XLEN_T_MAX
 #define R_SSIZE_MIN (-R_XLEN_T_MAX)
+
+#ifdef LONG_VECTOR_SUPPORT
+# define R_SSIZE_FMT "%td"
+#else
+# define R_SSIZE_FMT "%d"
+#endif
 
 enum r_type {
   R_TYPE_null        = 0,

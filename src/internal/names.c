@@ -67,7 +67,10 @@ r_obj* names_as_unique(r_obj* names, bool quiet) {
     memcpy(buf, name, size);
     int remaining = buf_size - size;
 
-    int needed = snprintf(buf + size, remaining, "...%ld", i + 1);
+    int needed = snprintf(buf + size,
+                          remaining,
+                          "..." R_SSIZE_FMT,
+                          i + 1);
     if (needed >= remaining) {
       stop_large_name();
     }
