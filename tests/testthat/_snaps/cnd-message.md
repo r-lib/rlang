@@ -450,3 +450,39 @@
       Error in `g()`:
       ! foo
 
+# fallback method supports unknown bullets (#1364)
+
+    Code
+      # With fallback
+      (expect_error(abort(c("foo", i2 = "bar"))))
+    Output
+      <error/rlang_error>
+      Error:
+      ! foo
+      bar
+    Code
+      (expect_error(abort(c(i1 = "foo", i2 = "bar"))))
+    Output
+      <error/rlang_error>
+      Error:
+      ! foo
+      bar
+
+---
+
+    Code
+      # With cli
+      (expect_error(abort(c("foo", i2 = "bar"))))
+    Output
+      <error/rlang_error>
+      Error:
+      ! foo
+      bar
+    Code
+      (expect_error(abort(c(i1 = "foo", i2 = "bar"))))
+    Output
+      <error/rlang_error>
+      Error:
+      foo
+      bar
+

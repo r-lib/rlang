@@ -1,5 +1,10 @@
 # rlang (development version)
 
+* The internal bullet formatting routine now ignores unknown names
+  (#1364). This makes it consistent with the cli package, increases
+  resilience against hard-to-detect errors, and increases forward
+  compatibility.
+
 * `abort()` and friends no longer calls non-existent functions
   (e.g. `cli::format_error()` or `cli::format_warning`) when the
   installed version of cli is too old (#1367, tidyverse/dplyr#6189).

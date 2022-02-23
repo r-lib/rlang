@@ -7,6 +7,13 @@
 #
 # Changelog:
 #
+# 2022-02-23:
+#
+# * Bullet formatting now ignores unknown bullet names, consistently
+#   with cli. This increases resiliency against hard-to-detect errors
+#   and improves forward compatibility.
+#
+#
 # 2022-02-22:
 #
 # * `format_error()` and variants now call cli even when ANSI colours
@@ -263,9 +270,6 @@ format_message <- function(x) {
   }
 
   abort <- .rlang_cli_compat("abort")
-  if (!all(nms %in% c("i", "x", "v", "*", "!", ">", " ", ""))) {
-    abort('Bullet names must be one of "i", "x", "v", "*", "!", ">", or " ".')
-  }
 
   bullets <- local({
     unicode_opt <- getOption("cli.condition_unicode_bullets")
@@ -274,6 +278,10 @@ format_message <- function(x) {
       on.exit(options(old))
     }
 
+    # For consistency with `cli::format_error()` and for resiliency
+    # against hard-to-detect errors (see #1364), unknown names are
+    # silently ignored. This also makes it easier to add new bullet
+    # names in the future with forward-compatibility.
     ifelse(nms == "i", ansi_info(),
     ifelse(nms == "x", ansi_cross(),
     ifelse(nms == "v", ansi_tick(),
@@ -282,7 +290,7 @@ format_message <- function(x) {
     ifelse(nms == ">", ansi_arrow(),
     ifelse(nms == "", "",
     ifelse(nms == " ", " ",
-      "*"))))))))
+      ""))))))))
   })
 
   bullets <-

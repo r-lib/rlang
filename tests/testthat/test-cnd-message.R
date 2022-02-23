@@ -1,8 +1,8 @@
 test_that("format_error_bullets() formats bullets depending on names", {
-  expect_identical(format_error_bullets(c("foo", "bar")), "* foo\n* bar")
-  expect_identical(format_error_bullets(c(i = "foo", "*" = "baz", x = "bar", v = "bam")), "i foo\n* baz\nx bar\nv bam")
-  expect_error(format_error_bullets(c(i = "foo", u = "bar")))
-  expect_identical(format_error_bullets(chr()), chr())
+  expect_equal(format_error_bullets(c("foo", "bar")), "* foo\n* bar")
+  expect_equal(format_error_bullets(c(i = "foo", "*" = "baz", x = "bar", v = "bam")), "i foo\n* baz\nx bar\nv bam")
+  expect_equal(format_error_bullets(c(i = "foo", u = "bar")), "i foo\nbar")
+  expect_equal(format_error_bullets(chr()), chr())
 })
 
 test_that("default conditionMessage() method for rlang errors calls cnd_message()", {
@@ -495,4 +495,20 @@ test_that("can disable srcrefs in call formatting", {
   }")
 
   expect_snapshot(err(f()))
+})
+
+test_that("fallback method supports unknown bullets (#1364)", {
+  local_use_cli(format = FALSE)
+  expect_snapshot({
+    "With fallback"
+    (expect_error(abort(c("foo", i2 = "bar"))))
+    (expect_error(abort(c(i1 = "foo", i2 = "bar"))))
+  })
+
+  local_use_cli(format = TRUE)
+  expect_snapshot({
+    "With cli"
+    (expect_error(abort(c("foo", i2 = "bar"))))
+    (expect_error(abort(c(i1 = "foo", i2 = "bar"))))
+  })
 })
