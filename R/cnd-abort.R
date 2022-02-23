@@ -726,7 +726,7 @@ check_use_cli_flag <- function(flag, error_call) {
   }
 
   if (flag[["inline"]]) {
-    if (!has_cli_format || !has_cli_inline) {
+    if (!has_cli_format) {
       msg <- c(
         "`.__rlang_use_cli__.[[\"inline\"]]` is set to `TRUE` but cli is not installed or is too old.",
         "i" = "The package author should add a recent version of `cli` to their `Imports`."

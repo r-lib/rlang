@@ -168,8 +168,7 @@ pad_spaces <- function(x, left = TRUE) {
 # Import symbols from cli if available
 on_load({
   has_cli <- is_installed("cli")
-  has_cli_format <- is_installed("cli", version = "2.5.0")
-  has_cli_inline <- is_installed("cli", version = "3.0.0")
+  has_cli_format <- is_installed("cli", version = "3.0.0")
 })
 
 info <- function() {
