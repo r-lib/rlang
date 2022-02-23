@@ -69,7 +69,7 @@ r_obj* names_as_unique(r_obj* names, bool quiet) {
 
     int needed = snprintf(buf + size,
                           remaining,
-                          "...%"R_PRI_SSIZE,
+                          "...%" R_PRI_SSIZE,
                           i + 1);
     if (needed >= remaining) {
       stop_large_name();
