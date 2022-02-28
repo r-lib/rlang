@@ -9,6 +9,15 @@
 #' @name topic-error-call
 NULL
 
+#' `r title("topic_error_chaining")`
+#'
+#' ```{r, child = "man/rmd/topic-error-chaining.Rmd"}
+#' ```
+#'
+#' @keywords internal
+#' @name topic-error-chaining
+NULL
+
 
 # Notes -------------------------------------------------------------------
 
