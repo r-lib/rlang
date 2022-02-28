@@ -74,6 +74,9 @@ effects."><meta property="og:image" content="https://rlang.r-lib.org/logo.png"><
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-conditions">Conditions</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-conditions">
+    <h6 class="dropdown-header" data-toc-skip>Guides</h6>
+    <a class="dropdown-item" href="../reference/topic-error-call.html">Including function calls in error messages</a>
+    <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>Notes</h6>
     <a class="dropdown-item" href="../reference/topic-condition-customisation.html">Customising condition messages</a>
     <a class="dropdown-item" href="../reference/topic-condition-formatting.html">Formatting condition messages</a>
@@ -140,11 +143,11 @@ effects.</p>
 <span class="r-in"><span class="co"># they are not copied, the attributes are changed in place:</span></span>
 <span class="r-in"><span class="va">env</span> <span class="op">&lt;-</span> <span class="fu"><a href="env.html">env</a></span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/structure.html" class="external-link">structure</a></span><span class="op">(</span><span class="va">env</span>, foo <span class="op">=</span> <span class="st">"bar"</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55d0a81aaa18&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55c23e447358&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"foo")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "bar"</span>
 <span class="r-in"><span class="va">env</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55d0a81aaa18&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55c23e447358&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"foo")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "bar"</span>
 <span class="r-in"></span>
