@@ -33,6 +33,10 @@ titles <- list(
 
   # Errors
 
+  ## Guides
+  topic_error_call =
+    "Including function calls in error messages",
+
   ## Notes
   topic_condition_customisation =
     "Customising condition messages",

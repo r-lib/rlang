@@ -60,6 +60,11 @@ navbar:
     errors:
       text: Conditions
       menu:
+      - text: Guides
+      - text: Including function calls in error messages
+        href: reference/topic-error-call.html
+      - text: ---
+
       - text: Notes
       - text: Customising condition messages
         href: reference/topic-condition-customisation.html

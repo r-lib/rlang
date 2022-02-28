@@ -54,6 +54,8 @@
 #'
 #'   Can also be `NULL` or a [defused function call][topic-defuse] to
 #'   respectively not display any call or hard-code a code to display.
+#'
+#'   For more information about error calls, see `r link("topic_error_call")`.
 #' @param parent Supply `parent` when you rethrow an error from a
 #'   condition handler (e.g. with [try_fetch()]).
 #'
@@ -166,6 +168,9 @@
 #'   from the default value. The default limit (1000 characters) is
 #'   especially easy to hit when the message contains a lot of ANSI
 #'   escapes, as created by the crayon or cli packages
+#'
+#' @seealso
+#' - `r link("topic_error_call")`
 #'
 #' @examples
 #' # These examples are guarded to avoid throwing errors

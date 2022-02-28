@@ -82,7 +82,9 @@ helper function which wouldn't be relevant to mention in the
 message.
 
 Can also be \code{NULL} or a \link[=topic-defuse]{defused function call} to
-respectively not display any call or hard-code a code to display.}
+respectively not display any call or hard-code a code to display.
+
+For more information about error calls, see \ifelse{html}{\link[=topic-error-call]{Including function calls in error messages}}{\link[=topic-error-call]{Including function calls in error messages}}.}
 
 \item{body, footer}{Additional bullets.}
 
@@ -306,5 +308,10 @@ try(
   })
 )
 
+}
+}
+\seealso{
+\itemize{
+\item \ifelse{html}{\link[=topic-error-call]{Including function calls in error messages}}{\link[=topic-error-call]{Including function calls in error messages}}
 }
 }

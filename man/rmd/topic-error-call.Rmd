@@ -1,0 +1,165 @@
+```{r, child = "setup.Rmd", include = FALSE}
+```
+
+Starting with rlang 1.0, `abort()` includes the erroring function in the message by default:
+
+```{r, error = TRUE}
+my_function <- function() {
+  abort("Can't do that.")
+}
+
+my_function()
+```
+
+This works well when `abort()` is called directly within the failing function. However, when the `abort()` call is exported to another function (which we call an "error helper"), we need to be explicit about which function `abort()` is throwing an error for.
+
+
+# Passing the user context
+
+There are two main kinds of error helpers:
+
+- Simple `abort()` wrappers. These often aim at adding classes and attributes to an error condition in a structured way:
+
+  ```{r}
+  stop_my_class <- function(message) {
+    abort(message, class = "my_class")
+  }
+  ```
+
+- Input checking functions. An input checker is typically passed an input and an argument name. It throws an error if the input doesn't conform to expectations:
+
+  ```{r}
+  check_string <- function(x, arg = "x") {
+    if (!is_string(x)) {
+      cli::cli_abort("{.arg {arg}} must be a string.")
+    }
+  }
+  ```
+
+In both cases, the default error call is not very helpful to the end user because it reflects an internal function rather than a user function:
+
+```{r}
+my_function <- function(x) {
+  check_string(x)
+  stop_my_class("Unimplemented")
+}
+```
+
+```{r, error = TRUE}
+my_function(NA)
+```
+
+```{r, error = TRUE}
+my_function("foo")
+```
+
+To fix this, let `abort()` knows about the function that it is throwing the error for by passing the corresponding function environment as `call` argument:
+
+```{r}
+stop_my_class <- function(message, call = caller_env()) {
+  abort(message, class = "my_class", call = call)
+}
+
+check_string <- function(x, arg = "x", call = caller_env()) {
+  if (!is_string(x)) {
+    cli::cli_abort("{.arg {arg}} must be a string.", call = call)
+  }
+}
+```
+
+```{r, error = TRUE}
+my_function(NA)
+```
+
+```{r, error = TRUE}
+my_function("foo")
+```
+
+
+## Input checkers and `caller_arg()`
+
+The `caller_arg()` helper is useful in input checkers which check an input on the behalf of another function. Instead of hard-coding `arg = "x"`, and forcing the callers to supply it if `"x"` is not the name of the argument being checked, use `caller_arg()`.
+
+```{r}
+check_string <- function(x,
+                         arg = caller_arg(x),
+                         call = caller_env()) {
+  if (!is_string(x)) {
+    cli::cli_abort("{.arg {arg}} must be a string.", call = call)
+  }
+}
+```
+
+It is a combination of `substitute()` and `rlang::as_label()` which provides a more generally applicable default:
+
+```{r, error = TRUE}
+my_function <- function(my_arg) {
+  check_string(my_arg)
+}
+
+my_function(NA)
+```
+
+
+# Side benefit: backtrace trimming
+
+Another benefit of passing `caller_env()` as `call` is that it allows `abort()` to automatically hide the error helpers
+
+```{r}
+my_function <- function() {
+  their_function()
+}
+their_function <- function() {
+  error_helper1()
+}
+
+error_helper1 <- function(call = caller_env()) {
+  error_helper2(call = call)
+}
+error_helper2 <- function(call = caller_env()) {
+  if (use_call) {
+    abort("Can't do this", call = call)
+  } else {
+    abort("Can't do this")
+  }
+}
+```
+
+```{r, error = TRUE}
+use_call <- FALSE
+their_function()
+```
+
+```{r}
+rlang::last_error()
+```
+
+With the correct `call`, the backtrace is much simpler and let the user focus on the part of the stack that is relevant to them:
+
+```{r, error = TRUE}
+use_call <- TRUE
+their_function()
+```
+
+```{r}
+rlang::last_error()
+```
+
+
+# testthat workflow
+
+Error snapshots are the main way of checking that the correct error call is included in an error message. However you'll need to opt into a new testthat display for warning and error snapshots. With the new display, these are printed by rlang, including the `call` field. This makes it easy to monitor the full appearance of warning and error messages as they are displayed to users.
+
+This display is not applied to all packages yet. With testthat 3.1.2, depend explicitly on rlang >= 1.0.0 to opt in. Starting from testthat 3.1.3, depending on rlang, no matter the version, is sufficient to opt in. In the future, the new display will be enabled for all packages.
+
+Once enabled, create error snapshots with:
+
+```{r, eval = FALSE}
+expect_snapshot(error = TRUE, {
+  my_function()
+})
+
+expect_snapshot_error(my_function())
+```
+
+You'll have to make sure that the snapshot coverage for error messages is sufficient for your package.
