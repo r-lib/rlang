@@ -63,6 +63,8 @@ navbar:
       - text: Guides
       - text: Including function calls in error messages
         href: reference/topic-error-call.html
+      - text: Including contextual information with error chains
+        href: reference/topic-error-chaining.html
       - text: ---
 
       - text: Notes
