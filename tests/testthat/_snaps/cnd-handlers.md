@@ -18,6 +18,7 @@
       ! bar
       Caused by error in `h()`:
       ! foo
+      ---
       Backtrace:
         1. rlang:::catch_error(...)
        15. rlang f()
@@ -29,6 +30,7 @@
       <error/rlang_error>
       Error:
       ! bar
+      ---
       Backtrace:
            x
         1. +-rlang:::catch_error(...)
@@ -56,6 +58,7 @@
        23.     \-rlang::abort("bar", parent = cnd)
       Caused by error in `h()`:
       ! foo
+      ---
       Backtrace:
            x
         1. +-rlang:::catch_error(...)
@@ -85,6 +88,7 @@
       ! bar
       Caused by error in `h()`:
       ! foo
+      ---
       Backtrace:
         1. rlang:::catch_error(high1(chain = TRUE))
         9. rlang high1(chain = TRUE)
@@ -99,6 +103,7 @@
       <error/rlang_error>
       Error in `high3()`:
       ! bar
+      ---
       Backtrace:
            x
         1. +-rlang:::catch_error(high1(chain = TRUE))
@@ -129,6 +134,7 @@
        26.     \-rlang::abort("bar", parent = cnd)
       Caused by error in `h()`:
       ! foo
+      ---
       Backtrace:
            x
         1. +-rlang:::catch_error(high1(chain = TRUE))
@@ -159,6 +165,7 @@
       <error/rlang_error>
       Error in `high3()`:
       ! bar
+      ---
       Backtrace:
         1. rlang:::catch_error(high1(chain = FALSE))
         9. rlang high1(chain = FALSE)
@@ -173,6 +180,7 @@
       <error/rlang_error>
       Error in `high3()`:
       ! bar
+      ---
       Backtrace:
            x
         1. +-rlang:::catch_error(high1(chain = FALSE))

@@ -9,6 +9,7 @@
       <error/rlang_error>
       Error:
       ! foo
+      ---
       Backtrace:
        1. global f()
        2. global g()
@@ -17,6 +18,7 @@
       <error/rlang_error>
       Error:
       ! foo
+      ---
       Backtrace:
           x
        1. \-global f()
@@ -31,6 +33,7 @@
       <error/rlang_error>
       Error in `h()`:
       ! foo
+      ---
       Backtrace:
        1. global f()
        2. global g()
@@ -39,6 +42,7 @@
       <error/rlang_error>
       Error in `h()`:
       ! foo
+      ---
       Backtrace:
           x
        1. \-global f()
@@ -54,6 +58,7 @@
       <error/rlang_error>
       Error in `1 + ""`:
       ! non-numeric argument to binary operator
+      ---
       Backtrace:
         1. rlang::catch_cnd(...)
         9. rlang f()
@@ -93,6 +98,7 @@
     <warning/rlang_warning>
     Warning in `f()`:
     foo
+    ---
     Backtrace:
      1. global f()
     
@@ -100,6 +106,7 @@
     <warning/rlang_warning>
     Warning in `g()`:
     bar
+    ---
     Backtrace:
      1. global f()
      2. global g()
@@ -110,6 +117,7 @@
     <warning/rlang_warning>
     Warning in `f()`:
     foo
+    ---
     Backtrace:
      1. global f()
     
@@ -117,6 +125,7 @@
     <warning/rlang_warning>
     Warning in `g()`:
     bar
+    ---
     Backtrace:
      1. global f()
      2. global g()
@@ -127,6 +136,7 @@
     <message/rlang_message>
     Message in `message()`:
     FOO
+    ---
     Backtrace:
         x
      1. \-global f()
@@ -135,6 +145,7 @@
     <message/rlang_message>
     Message in `message()`:
     baz
+    ---
     Backtrace:
         x
      1. \-global f()
@@ -147,6 +158,7 @@
     <message/rlang_message>
     Message in `message()`:
     baz
+    ---
     Backtrace:
         x
      1. \-global f()

@@ -488,7 +488,7 @@ can_paste_trace <- function(backtrace, trace) {
 }
 paste_trace <- function(x, trace, simplify, ...) {
   trace_lines <- format(trace, ..., simplify = simplify)
-  paste_line(x, bold("Backtrace:"), trace_lines)
+  paste_line(x, "---", bold("Backtrace:"), trace_lines)
 }
 
 cnd_type_header <- function(cnd) {

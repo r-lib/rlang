@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* Backtraces are now separated from error messages with a `---` ruler
+  line (#1368).
+
 * The internal bullet formatting routine now ignores unknown names
   (#1364). This makes it consistent with the cli package, increases
   resilience against hard-to-detect errors, and increases forward
