@@ -209,6 +209,7 @@ This works well when abort() is called directly within the failing function. How
 <span class="co">#&gt; &lt;error/rlang_error&gt;</span>
 <span class="co">#&gt; Error in `error_helper2()`:</span>
 <span class="co">#&gt; ! Can't do this</span>
+<span class="co">#&gt; ---</span>
 <span class="co">#&gt; Backtrace:</span>
 <span class="co">#&gt;  1. rlang their_function()</span>
 <span class="co">#&gt;  2. rlang error_helper1()</span>
@@ -221,6 +222,7 @@ This works well when abort() is called directly within the failing function. How
 <span class="co">#&gt; &lt;error/rlang_error&gt;</span>
 <span class="co">#&gt; Error in `their_function()`:</span>
 <span class="co">#&gt; ! Can't do this</span>
+<span class="co">#&gt; ---</span>
 <span class="co">#&gt; Backtrace:</span>
 <span class="co">#&gt;  1. rlang their_function()</span>
 <span class="co">#&gt; Run `rlang::last_trace()` to see the full context.</span></code></pre><p></p></div>

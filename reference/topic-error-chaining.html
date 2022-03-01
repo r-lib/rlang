@@ -203,6 +203,7 @@ There may be more than one contextual error in an error chain, but there is alwa
 <span class="co">#&gt; ! Problem during step.</span>
 <span class="co">#&gt; Caused by error in `x + y`:</span>
 <span class="co">#&gt; ! non-numeric argument to binary operator</span>
+<span class="co">#&gt; ---</span>
 <span class="co">#&gt; Backtrace:</span>
 <span class="co">#&gt;  1. rlang my_verb(add(1, ""))</span>
 <span class="co">#&gt;  9. rlang add(1, "")</span>
@@ -226,6 +227,7 @@ There may be more than one contextual error in an error chain, but there is alwa
 <span class="co">#&gt; ! Problem during step.</span>
 <span class="co">#&gt; Caused by error in `x + y`:</span>
 <span class="co">#&gt; ! non-numeric argument to binary operator</span>
+<span class="co">#&gt; ---</span>
 <span class="co">#&gt; Backtrace:</span>
 <span class="co">#&gt;  1. rlang my_verb(add(1, ""))</span>
 <span class="co">#&gt; Run `rlang::last_trace()` to see the full context.</span></code></pre><p></p></div>
@@ -284,6 +286,7 @@ There may be more than one contextual error in an error chain, but there is alwa
 <span class="co">#&gt; &lt;error/vctrs_error_scalar_type&gt;</span>
 <span class="co">#&gt; Error in `my_verb()`:</span>
 <span class="co">#&gt; ! `expr` must be a vector, not an environment.</span>
+<span class="co">#&gt; ---</span>
 <span class="co">#&gt; Backtrace:</span>
 <span class="co">#&gt;  1. rlang my_verb(env())</span></code></pre><p></p></div>
     </div>
