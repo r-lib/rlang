@@ -9,6 +9,7 @@
       ! High-level message
       Caused by error in `low3()`:
       ! Low-level message
+      ---
       Backtrace:
         1. testthat::expect_error(high1())
         7. rlang high1()
@@ -23,6 +24,7 @@
       <error/rlang_error>
       Error in `wch()`:
       ! High-level message
+      ---
       Backtrace:
            x
         1. +-testthat::expect_error(high1())
@@ -46,8 +48,10 @@
        19.   \-rlang handler1(err)
        20.     \-rlang handler2(err, call = call)
        21.       \-rlang::abort("High-level message", parent = err, call = call)
+      ---
       Caused by error in `low3()`:
       ! Low-level message
+      ---
       Backtrace:
            x
         1. +-testthat::expect_error(high1())
@@ -77,6 +81,7 @@
       ! High-level message
       Caused by error:
       ! Low-level message
+      ---
       Backtrace:
         1. testthat::expect_error(high1())
         7. rlang high1()
@@ -94,6 +99,7 @@
       ! High-level message
       Caused by error:
       ! Low-level message
+      ---
       Backtrace:
            x
         1. +-testthat::expect_error(high1())
@@ -131,6 +137,7 @@
       <error/rlang_error>
       Error in `h()`:
       ! bar
+      ---
       Backtrace:
         1. base::print(err(ff()))
        17. base::.handleSimpleError(`<fn>`, "bar", base::quote(baz()))
@@ -147,6 +154,7 @@
       <error/rlang_error>
       Error in `hh()`:
       ! bar
+      ---
       Backtrace:
         1. base::print(err(ff()))
         9. rlang ff()
@@ -168,6 +176,7 @@
       <error/rlang_error>
       Error in `hh()`:
       ! bar
+      ---
       Backtrace:
         1. base::print(err(ff()))
         9. rlang ff()
@@ -187,6 +196,7 @@
       <error/rlang_error>
       Error in `hh()`:
       ! bar
+      ---
       Backtrace:
         1. base::print(err(ff()))
         9. rlang ff()
@@ -206,6 +216,7 @@
       <error/rlang_error>
       Error in `.handleSimpleError()`:
       ! bar
+      ---
       Backtrace:
         1. base::print(err(ff()))
         9. rlang ff()

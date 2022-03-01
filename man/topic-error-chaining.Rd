@@ -73,6 +73,7 @@ Altough we have created a chained error, the error call of the contextual error 
 #> ! Problem during step.
 #> Caused by error in `x + y`:
 #> ! non-numeric argument to binary operator
+#> ---
 #> Backtrace:
 #>  1. rlang my_verb(add(1, ""))
 #>  9. rlang add(1, "")
@@ -102,6 +103,7 @@ It also hides all the error helpers from the backtrace:\if{html}{\out{<div class
 #> ! Problem during step.
 #> Caused by error in `x + y`:
 #> ! non-numeric argument to binary operator
+#> ---
 #> Backtrace:
 #>  1. rlang my_verb(add(1, ""))
 #> Run `rlang::last_trace()` to see the full context.
@@ -170,6 +172,7 @@ When a low-level error is overtaken, it is good practice to store it in the high
 #> <error/vctrs_error_scalar_type>
 #> Error in `my_verb()`:
 #> ! `expr` must be a vector, not an environment.
+#> ---
 #> Backtrace:
 #>  1. rlang my_verb(env())
 }\if{html}{\out{</div>}}

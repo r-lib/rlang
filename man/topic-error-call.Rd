@@ -106,6 +106,7 @@ their_function()
 #> <error/rlang_error>
 #> Error in `error_helper2()`:
 #> ! Can't do this
+#> ---
 #> Backtrace:
 #>  1. rlang their_function()
 #>  2. rlang error_helper1()
@@ -121,6 +122,7 @@ their_function()
 #> <error/rlang_error>
 #> Error in `their_function()`:
 #> ! Can't do this
+#> ---
 #> Backtrace:
 #>  1. rlang their_function()
 #> Run `rlang::last_trace()` to see the full context.

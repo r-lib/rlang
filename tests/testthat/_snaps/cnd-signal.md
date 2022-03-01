@@ -4,6 +4,7 @@
       print(err)
     Output
       <error/rlang_error_foobar>
+      ---
       Backtrace:
         1. rlang::catch_cnd(f())
         8. rlang f()
