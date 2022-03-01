@@ -65,13 +65,13 @@ navbar:
         href: reference/topic-error-call.html
       - text: Including contextual information with error chains
         href: reference/topic-error-chaining.html
+      - text: Formatting messages with cli
+        href: reference/topic-condition-formatting.html
       - text: ---
 
       - text: Notes
       - text: Customising condition messages
         href: reference/topic-condition-customisation.html
-      - text: Formatting condition messages
-        href: reference/topic-condition-formatting.html
 
     news:
       text: News

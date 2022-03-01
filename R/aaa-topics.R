@@ -38,12 +38,12 @@ titles <- list(
     "Including function calls in error messages",
   topic_error_chaining =
     "Including contextual information with error chains",
+  topic_condition_formatting =
+    "Formatting messages with cli",
 
   ## Notes
   topic_condition_customisation =
-    "Customising condition messages",
-  topic_condition_formatting =
-    "Formatting condition messages"
+    "Customising condition messages"
 )
 
 sprintf_topic_link <- function(id, topic = NULL) {
