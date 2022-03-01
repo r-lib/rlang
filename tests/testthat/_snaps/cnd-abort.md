@@ -457,6 +457,7 @@
        10. rlang high1(chain = TRUE, stop_helper = TRUE)
        11. rlang high2(...)
        12. rlang high3(...)
+      ---
       Caused by error in `low3()`:
       ! low-level
       ---
@@ -480,6 +481,7 @@
        10. rlang high1(chain = TRUE, stop_helper = FALSE)
        11. rlang high2(...)
        12. rlang high3(...)
+      ---
       Caused by error in `low3()`:
       ! low-level
       ---
@@ -503,6 +505,7 @@
        10. rlang high1(chain = FALSE, stop_helper = TRUE)
        11. rlang high2(...)
        12. rlang high3(...)
+      ---
       Caused by error in `low3()`:
       ! low-level
       ---
@@ -526,6 +529,7 @@
        10. rlang high1(chain = FALSE, stop_helper = FALSE)
        11. rlang high2(...)
        12. rlang high3(...)
+      ---
       Caused by error in `low3()`:
       ! low-level
       ---

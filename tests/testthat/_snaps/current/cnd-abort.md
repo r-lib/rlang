@@ -48,6 +48,7 @@
        19.   \-rlang handler1(err)
        20.     \-rlang handler2(err, call = call)
        21.       \-rlang::abort("High-level message", parent = err, call = call)
+      ---
       Caused by error in `low3()`:
       ! Low-level message
       ---

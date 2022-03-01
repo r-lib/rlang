@@ -56,6 +56,7 @@
        21. \-rlang `<fn>`(`<rlng_rrr>`)
        22.   \-handlers[[1L]](cnd)
        23.     \-rlang::abort("bar", parent = cnd)
+      ---
       Caused by error in `h()`:
       ! foo
       ---
@@ -132,6 +133,7 @@
        24. \-rlang `<fn>`(`<rlng_rrr>`)
        25.   \-handlers[[1L]](cnd)
        26.     \-rlang::abort("bar", parent = cnd)
+      ---
       Caused by error in `h()`:
       ! foo
       ---

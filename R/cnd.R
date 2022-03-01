@@ -469,6 +469,7 @@ cnd_format <- function(x,
           format(chained_trace, simplify = simplify)
         )) {
       out <- paste_trace(out, trace, simplify, ...)
+      out <- paste_line(out, "---")
       trace <- chained_trace
     }
 

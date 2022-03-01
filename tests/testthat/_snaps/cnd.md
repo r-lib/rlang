@@ -49,6 +49,7 @@
         9. rlang a()
        10. rlang b()
        11. rlang c()
+      ---
       Caused by error in `h()`:
       ! Low-level message
       ---
@@ -88,6 +89,7 @@
        14.           \-base tryCatchOne(expr, names, parentenv, handlers[[1L]])
        15.             \-value[[3L]](cond)
        16.               \-rlang::abort("High-level message", parent = err)
+      ---
       Caused by error in `h()`:
       ! Low-level message
       ---
@@ -141,6 +143,7 @@
        14.           \-base tryCatchOne(expr, names, parentenv, handlers[[1L]])
        15.             \-value[[3L]](cond)
        16.               \-rlang::abort("High-level message", parent = err)
+      ---
       Caused by error in `h()`:
       ! Low-level message
       ---
@@ -179,6 +182,7 @@
         9. \-rlang a()
        10.   \-rlang b()
        11.     \-rlang c()
+      ---
       Caused by error in `h()`:
       ! Low-level message
       ---
@@ -205,6 +209,7 @@
         9. rlang a()
        10. rlang b()
        11. rlang c()
+      ---
       Caused by error in `h()`:
       ! Low-level message
       ---
@@ -265,6 +270,7 @@
        22. |               \-base::signalCondition(cnd)
        23. \-rlang `<fn>`(`<rlng_rrr>`)
        24.   \-rlang::abort("The high-level error message", parent = c)
+      ---
       Caused by error in `h()`:
       ! The low-level error message
       ---
@@ -354,6 +360,7 @@
        12. rlang f()
        13. rlang g()
        14. rlang h()
+      ---
       Caused by error in `h()`:
       ! Low-level message
       ---
@@ -388,6 +395,7 @@
        17. |               \-base::signalCondition(cnd)
        18. \-rlang `<fn>`(`<rlng_rrr>`)
        19.   \-rlang::abort("High-level message", parent = err)
+      ---
       Caused by error in `h()`:
       ! Low-level message
       ---
@@ -423,6 +431,7 @@
        13.           \-base tryCatchOne(expr, names, parentenv, handlers[[1L]])
        14.             \-value[[3L]](cond)
        15.               \-rlang::abort("bar", parent = err)
+      ---
       Caused by error in `h()`:
       ! foo
       ---
@@ -460,6 +469,7 @@
         8. \-rlang foo()
         9.   \-rlang bar()
        10.     \-rlang baz()
+      ---
       Caused by error in `h()`:
       ! foo
       ---
@@ -486,6 +496,7 @@
         8. rlang foo()
         9. rlang bar()
        10. rlang baz()
+      ---
       Caused by error in `h()`:
       ! foo
       ---
