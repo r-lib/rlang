@@ -10,8 +10,7 @@ Supply metadata with named ... arguments. This data is stored
 in the condition object and can be examined by handlers.
 Supply call to inform users about which function the error
 occurred in.
-Supply another condition as parent to create a chained
-condition.
+Supply another condition as parent to create a chained condition.
 
 
 Certain components of condition messages are formatted with unicode
@@ -27,8 +26,7 @@ Supply metadata with named ... arguments. This data is stored
 in the condition object and can be examined by handlers.
 Supply call to inform users about which function the error
 occurred in.
-Supply another condition as parent to create a chained
-condition.
+Supply another condition as parent to create a chained condition.
 
 
 Certain components of condition messages are formatted with unicode
@@ -149,8 +147,7 @@ handling.</p></li>
 in the condition object and can be examined by handlers.</p></li>
 <li><p>Supply <code>call</code> to inform users about which function the error
 occurred in.</p></li>
-<li><p>Supply another condition as <code>parent</code> to create a chained
-condition.</p></li>
+<li><p>Supply another condition as <code>parent</code> to create a <a href="topic-error-chaining.html">chained condition</a>.</p></li>
 </ul><p>Certain components of condition messages are formatted with unicode
 symbols and terminal colours by default. These aspects can be
 customised, see <a href="topic-condition-customisation.html">Customising condition messages</a>.</p>
@@ -252,7 +249,7 @@ surrounding context.</p>
 from a condition handler. This helps it create simpler
 backtraces where the condition handling context is hidden by
 default.</p></li>
-</ul></dd>
+</ul><p>For more information about error calls, see <a href="topic-error-chaining.html">Including contextual information with error chains</a>.</p></dd>
 <dt>use_cli_format</dt>
 <dd><p>Whether to format <code>message</code> lazily using
 <a href="https://cli.r-lib.org/" class="external-link">cli</a> if available. This results in
@@ -368,6 +365,7 @@ non-interactive sessions, and when sinks are active.</p>
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index">
 <ul><li><p><a href="topic-error-call.html">Including function calls in error messages</a></p></li>
+<li><p><a href="topic-error-chaining.html">Including contextual information with error chains</a></p></li>
 </ul></div>
     </div>
 
