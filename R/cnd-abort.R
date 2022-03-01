@@ -16,8 +16,8 @@
 #' * Supply `call` to inform users about which function the error
 #'   occurred in.
 #'
-#' * Supply another condition as `parent` to create a chained
-#'   condition.
+#' * Supply another condition as `parent` to create a [chained
+#'   condition][topic-error-chaining].
 #'
 #' Certain components of condition messages are formatted with unicode
 #' symbols and terminal colours by default. These aspects can be
@@ -72,6 +72,8 @@
 #'     from a condition handler. This helps it create simpler
 #'     backtraces where the condition handling context is hidden by
 #'     default.
+#'
+#'   For more information about error calls, see `r link("topic_error_chaining")`.
 #' @param use_cli_format Whether to format `message` lazily using
 #'   [cli](https://cli.r-lib.org/) if available. This results in
 #'   prettier and more accurate formatting of messages. See
@@ -171,6 +173,7 @@
 #'
 #' @seealso
 #' - `r link("topic_error_call")`
+#' - `r link("topic_error_chaining")`
 #'
 #' @examples
 #' # These examples are guarded to avoid throwing errors

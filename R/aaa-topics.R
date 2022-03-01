@@ -36,6 +36,8 @@ titles <- list(
   ## Guides
   topic_error_call =
     "Including function calls in error messages",
+  topic_error_chaining =
+    "Including contextual information with error chains",
 
   ## Notes
   topic_condition_customisation =

@@ -105,7 +105,9 @@ Technically, supplying \code{NA} lets \code{abort()} know it is called
 from a condition handler. This helps it create simpler
 backtraces where the condition handling context is hidden by
 default.
-}}
+}
+
+For more information about error calls, see \ifelse{html}{\link[=topic-error-chaining]{Including contextual information with error chains}}{\link[=topic-error-chaining]{Including contextual information with error chains}}.}
 
 \item{use_cli_format}{Whether to format \code{message} lazily using
 \href{https://cli.r-lib.org/}{cli} if available. This results in
@@ -162,8 +164,7 @@ handling.
 in the condition object and can be examined by handlers.
 \item Supply \code{call} to inform users about which function the error
 occurred in.
-\item Supply another condition as \code{parent} to create a chained
-condition.
+\item Supply another condition as \code{parent} to create a \link[=topic-error-chaining]{chained condition}.
 }
 
 Certain components of condition messages are formatted with unicode
@@ -313,5 +314,6 @@ try(
 \seealso{
 \itemize{
 \item \ifelse{html}{\link[=topic-error-call]{Including function calls in error messages}}{\link[=topic-error-call]{Including function calls in error messages}}
+\item \ifelse{html}{\link[=topic-error-chaining]{Including contextual information with error chains}}{\link[=topic-error-chaining]{Including contextual information with error chains}}
 }
 }
