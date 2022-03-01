@@ -1,27 +1,27 @@
 ```{r, child = "setup.Rmd", include = FALSE}
 ```
 
-Condition signallers like [abort()], [warn()], and [signal()] take a character vector of __bulleted text__ as `message` argument. This makes it easy to write messages in a list format where each bullet conveys a single important point.
+Condition formatting is a set of operations applied to raw inputs for error messages that includes:
 
-```{r, error = TRUE}
-abort(c(
-  "The error header",
-  "*" = "An error bullet",
-  "i" = "An info bullet",
-  "x" = "A cross bullet"
-))
-```
+- Transforming a character vector of lines to a width-wrapped list of error bullets. This makes it easy to write messages in a list format where each bullet conveys a single important point.
 
-See the [tidyverse error style guide](https://style.tidyverse.org/error-messages.html) for more about this style of error messaging.
+  ```{r, error = TRUE}
+  abort(c(
+    "The error header",
+    "*" = "An error bullet",
+    "i" = "An info bullet",
+    "x" = "A cross bullet"
+  ))
+  ```
 
-By default, condition messages use unicode symbols rather than simple letters. This is not the case here because unicode isn't supported in documentation. If you'd like to disable unicode symbols globally, add this to your Rprofile:
+  See the [tidyverse error style guide](https://style.tidyverse.org/error-messages.html) for more about this style of error messaging.
 
-```r
-options(cli.condition_unicode_bullets = FALSE)
-```
+- Applying style (emphasis, boldness, ...) and colours to message elements.
+
+While the rlang package embeds rudimentary formatting routines, the main formatting engine is implemented in the [cli package](https://cli.r-lib.org/).
 
 
-## Use cli formatting
+## Formatting messages with cli
 
 By default, rlang uses an internal mechanism to format bullets. It is preferable to delegate formatting to the [cli package](https://cli.r-lib.org/) because it uses sophisticated paragraph wrapping and bullet indenting that make long lines easier to read. In the following example, a long `!` bullet is broken with an indented newline:
 
@@ -33,7 +33,16 @@ rlang::global_entrace(class = "errorr")
 #> i Did you mean "error"?
 ```
 
-To enable cli formatting, use [cli::cli_abort()], [cli::cli_warn()], and [cli::cli_inform()]. Not only do these wrappers improve the formatting of messages, they also add many features such as interpolation, semantic formatting of text elements, and pluralisation:
+To enable cli formatting globally, call [local_use_cli()] in the `onLoad` hook of your package. If you call [run_on_load()] from your `onLoad` hook, just call this anywhere:
+
+```r
+on_load(local_use_cli())
+```
+
+
+## Using `cli::cli_abort()`
+
+Another way of enabling cli formatting, use [cli::cli_abort()], [cli::cli_warn()], and [cli::cli_inform()]. Not only do these wrappers improve the formatting of messages, they also add many features such as interpolation, semantic formatting of text elements, and pluralisation:
 
 ```r
 inform_marbles <- function(n_marbles) {
@@ -50,4 +59,18 @@ inform_marbles(1)
 inform_marbles(2)
 #> i I have 2 shiny marbles in my bag.
 #> v Way to go `cli::cli_inform()`!
+```
+
+If you plan to mass-rename calls from `abort()` to `cli::cli_abort()`, be careful if you assemble error messages from user inputs. If these individual pieces contain cli or glue syntax, this will result in hard-to-debug errors and possibly [unexpected behaviour](https://xkcd.com/327).
+
+```{r, error = TRUE}
+user_input <- "{base::stop('Wrong message.', call. = FALSE)}"
+cli::cli_abort(sprintf("Can't handle input `%s`.", user_input))
+```
+
+To avoid this, protect your error messages by using cli to assemble the pieces:
+
+```{r, error = TRUE}
+user_input <- "{base::stop('Wrong message.', call. = FALSE)}"
+cli::cli_abort("Can't handle input {.code {user_input}}.")
 ```

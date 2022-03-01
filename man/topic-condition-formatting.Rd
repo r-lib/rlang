@@ -2,9 +2,11 @@
 % Please edit documentation in R/topic-errors.R
 \name{topic-condition-formatting}
 \alias{topic-condition-formatting}
-\title{Formatting condition messages}
+\title{Formatting messages with cli}
 \description{
-Condition signallers like \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, and \code{\link[=signal]{signal()}} take a character vector of \strong{bulleted text} as \code{message} argument. This makes it easy to write messages in a list format where each bullet conveys a single important point.\if{html}{\out{<div class="sourceCode r">}}\preformatted{abort(c(
+Condition formatting is a set of operations applied to raw inputs for error messages that includes:
+\itemize{
+\item Transforming a character vector of lines to a width-wrapped list of error bullets. This makes it easy to write messages in a list format where each bullet conveys a single important point.\if{html}{\out{<div class="sourceCode r">}}\preformatted{abort(c(
   "The error header",
   "*" = "An error bullet",
   "i" = "An info bullet",
@@ -18,10 +20,11 @@ Condition signallers like \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn
 }\if{html}{\out{</div>}}
 
 See the \href{https://style.tidyverse.org/error-messages.html}{tidyverse error style guide} for more about this style of error messaging.
+\item Applying style (emphasis, boldness, ...) and colours to message elements.
+}
 
-By default, condition messages use unicode symbols rather than simple letters. This is not the case here because unicode isn't supported in documentation. If you'd like to disable unicode symbols globally, add this to your Rprofile:\if{html}{\out{<div class="sourceCode r">}}\preformatted{options(cli.condition_unicode_bullets = FALSE)
-}\if{html}{\out{</div>}}
-\subsection{Use cli formatting}{
+While the rlang package embeds rudimentary formatting routines, the main formatting engine is implemented in the \href{https://cli.r-lib.org/}{cli package}.
+\subsection{Formatting messages with cli}{
 
 By default, rlang uses an internal mechanism to format bullets. It is preferable to delegate formatting to the \href{https://cli.r-lib.org/}{cli package} because it uses sophisticated paragraph wrapping and bullet indenting that make long lines easier to read. In the following example, a long \code{!} bullet is broken with an indented newline:\if{html}{\out{<div class="sourceCode r">}}\preformatted{rlang::global_entrace(class = "errorr")
 #> Error in `rlang::global_entrace()`:
@@ -30,7 +33,13 @@ By default, rlang uses an internal mechanism to format bullets. It is preferable
 #> i Did you mean "error"?
 }\if{html}{\out{</div>}}
 
-To enable cli formatting, use \code{\link[cli:cli_abort]{cli::cli_abort()}}, \code{\link[cli:cli_abort]{cli::cli_warn()}}, and \code{\link[cli:cli_abort]{cli::cli_inform()}}. Not only do these wrappers improve the formatting of messages, they also add many features such as interpolation, semantic formatting of text elements, and pluralisation:\if{html}{\out{<div class="sourceCode r">}}\preformatted{inform_marbles <- function(n_marbles) \{
+To enable cli formatting globally, call \code{\link[=local_use_cli]{local_use_cli()}} in the \code{onLoad} hook of your package. If you call \code{\link[=run_on_load]{run_on_load()}} from your \code{onLoad} hook, just call this anywhere:\if{html}{\out{<div class="sourceCode r">}}\preformatted{on_load(local_use_cli())
+}\if{html}{\out{</div>}}
+}
+
+\subsection{Using \code{cli::cli_abort()}}{
+
+Another way of enabling cli formatting, use \code{\link[cli:cli_abort]{cli::cli_abort()}}, \code{\link[cli:cli_abort]{cli::cli_warn()}}, and \code{\link[cli:cli_abort]{cli::cli_inform()}}. Not only do these wrappers improve the formatting of messages, they also add many features such as interpolation, semantic formatting of text elements, and pluralisation:\if{html}{\out{<div class="sourceCode r">}}\preformatted{inform_marbles <- function(n_marbles) \{
   cli::cli_inform(c(
     "i" = "I have \{n_marbles\} shiny marble\{?s\} in my bag.",
     "v" = "Way to go \{.code cli::cli_inform()\}!"
@@ -44,6 +53,17 @@ inform_marbles(1)
 inform_marbles(2)
 #> i I have 2 shiny marbles in my bag.
 #> v Way to go `cli::cli_inform()`!
+}\if{html}{\out{</div>}}
+
+If you plan to mass-rename calls from \code{abort()} to \code{cli::cli_abort()}, be careful if you assemble error messages from user inputs. If these individual pieces contain cli or glue syntax, this will result in hard-to-debug errors and possibly \href{https://xkcd.com/327}{unexpected behaviour}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{user_input <- "\{base::stop('Wrong message.', call. = FALSE)\}"
+cli::cli_abort(sprintf("Can't handle input `\%s`.", user_input))
+#> Error: Wrong message.
+}\if{html}{\out{</div>}}
+
+To avoid this, protect your error messages by using cli to assemble the pieces:\if{html}{\out{<div class="sourceCode r">}}\preformatted{user_input <- "\{base::stop('Wrong message.', call. = FALSE)\}"
+cli::cli_abort("Can't handle input \{.code \{user_input\}\}.")
+#> Error:
+#> ! Can't handle input `\{base::stop('Wrong message.', call. = FALSE)\}`.
 }\if{html}{\out{</div>}}
 }
 }
