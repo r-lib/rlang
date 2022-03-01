@@ -1,3 +1,15 @@
+# Guides ---------------------------------------------------------------
+
+#' `r title("topic_error_call")`
+#'
+#' ```{r, child = "man/rmd/topic-error-call.Rmd"}
+#' ```
+#'
+#' @keywords internal
+#' @name topic-error-call
+NULL
+
+
 # Notes -------------------------------------------------------------------
 
 #' `r title("topic_condition_formatting")`
