@@ -15,7 +15,7 @@ Authors@R: c(
            family = "Collet",
            role = "cph", 
            comment = "Author of the embedded xxHash library"),
-    person("RStudio", role = "cph")
+    person(given = "RStudio", role = c("cph", "fnd"))
     )
 License: MIT + file LICENSE
 ByteCompile: true
