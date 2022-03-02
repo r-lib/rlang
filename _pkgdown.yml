@@ -1,14 +1,19 @@
 url: https://rlang.r-lib.org
 
+development:
+  mode: auto
+
 template:
-  bootstrap: 5
   package: tidytemplate
-  params:
-    ganalytics: UA-115082821-1
+  bootstrap: 5
+
+  includes:
+    in_header: |
+      <script defer data-domain="rlang.r-lib.org,all.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
 
 navbar:
   structure:
-    left:  [home, reference, tidyeval, metaprog, errors]
+    left:  [reference, tidyeval, metaprog, errors]
     right: [news, github]
   components:
     tidyeval:
