@@ -23,7 +23,7 @@ While the rlang package embeds rudimentary formatting routines, the main formatt
 
 ## Formatting messages with cli
 
-By default, rlang uses an internal mechanism to format bullets. It is preferable to delegate formatting to the [cli package](https://cli.r-lib.org/) because it uses sophisticated paragraph wrapping and bullet indenting that make long lines easier to read. In the following example, a long `!` bullet is broken with an indented newline:
+By default, rlang uses an internal mechanism to format bullets. It is preferable to delegate formatting to the [cli package](https://cli.r-lib.org/) by using [cli::cli_abort()], [cli::cli_warn()], and [cli::cli_inform()] instead of the rlang versions. These wrappers enable cli formatting with sophisticated paragraph wrapping and bullet indenting that make long lines easier to read. In the following example, a long `!` bullet is broken with an indented newline:
 
 ```r
 rlang::global_entrace(class = "errorr")
@@ -33,16 +33,7 @@ rlang::global_entrace(class = "errorr")
 #> i Did you mean "error"?
 ```
 
-To enable cli formatting globally, call [local_use_cli()] in the `onLoad` hook of your package. If you call [run_on_load()] from your `onLoad` hook, just call this anywhere:
-
-```r
-on_load(local_use_cli())
-```
-
-
-## Using `cli::cli_abort()`
-
-Another way of enabling cli formatting, use [cli::cli_abort()], [cli::cli_warn()], and [cli::cli_inform()]. Not only do these wrappers improve the formatting of messages, they also add many features such as interpolation, semantic formatting of text elements, and pluralisation:
+The cli wrappers also add many features such as interpolation, semantic formatting of text elements, and pluralisation:
 
 ```r
 inform_marbles <- function(n_marbles) {
@@ -61,7 +52,10 @@ inform_marbles(2)
 #> v Way to go `cli::cli_inform()`!
 ```
 
-If you plan to mass-rename calls from `abort()` to `cli::cli_abort()`, be careful if you assemble error messages from user inputs. If these individual pieces contain cli or glue syntax, this will result in hard-to-debug errors and possibly [unexpected behaviour](https://xkcd.com/327).
+
+## Transitioning from `abort()` to `cli_abort()`
+
+If you plan to mass-rename calls from `abort()` to `cli::cli_abort()`, be careful if you assemble error messages from user inputs. If these individual pieces contain cli or glue syntax, this will result in hard-to-debug errors and possibly [unexpected behaviour](https://xkcd.com/327/).
 
 ```{r, error = TRUE}
 user_input <- "{base::stop('Wrong message.', call. = FALSE)}"
@@ -74,3 +68,20 @@ To avoid this, protect your error messages by using cli to assemble the pieces:
 user_input <- "{base::stop('Wrong message.', call. = FALSE)}"
 cli::cli_abort("Can't handle input {.code {user_input}}.")
 ```
+
+
+## Enabling cli formatting globally
+
+To enable cli formatting for all `abort()` calls in your namespace, call [local_use_cli()] in the `onLoad` hook of your package. Using [on_load()] (make sure to call [run_on_load()] in your hook):
+
+```r
+on_load(local_use_cli())
+```
+
+Enabling cli formatting in `abort()` is useful for:
+
+- Transitioning from `abort()` to `cli::cli_abort()` progressively.
+
+- Using `abort()` when you'd like to disable interpolation syntax.
+
+- Creating error conditions with `error_cnd()`. These condition messages will be automatically formatted with cli as well.

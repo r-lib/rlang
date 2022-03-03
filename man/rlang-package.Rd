@@ -31,7 +31,7 @@ Other contributors:
 \itemize{
   \item mikefc \email{mikefc@coolbutuseless.com} (Hash implementation based on Mike's xxhashlite) [copyright holder]
   \item Yann Collet (Author of the embedded xxHash library) [copyright holder]
-  \item RStudio [copyright holder]
+  \item RStudio [copyright holder, funder]
 }
 
 }
