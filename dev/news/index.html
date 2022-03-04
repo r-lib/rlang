@@ -100,7 +100,9 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="rlang-development-version">rlang (development version)<a class="anchor" aria-label="anchor" href="#rlang-development-version"></a></h2>
-<ul><li><p>Internal errors thrown with <code>abort(.internal = TRUE)</code> now mention the name of the package the error should be reported to.</p></li>
+<ul><li><p>Backtraces of parent errors are now reused on rethrow. This avoids capturing the same backtrace twice and solves consistency problems by making sure both errors in a chain have the same backtrace.</p></li>
+<li><p>Fixed backtrace oversimplification when <code>cnd</code> is a base error in <code>abort(parent = cnd)</code>.</p></li>
+<li><p>Internal errors thrown with <code>abort(.internal = TRUE)</code> now mention the name of the package the error should be reported to.</p></li>
 <li><p>Backtraces are now separated from error messages with a <code>---</code> ruler line (<a href="https://github.com/r-lib/rlang/issues/1368" class="external-link">#1368</a>).</p></li>
 <li><p>The internal bullet formatting routine now ignores unknown names (<a href="https://github.com/r-lib/rlang/issues/1364" class="external-link">#1364</a>). This makes it consistent with the cli package, increases resilience against hard-to-detect errors, and increases forward compatibility.</p></li>
 <li><p><code><a href="../reference/abort.html">abort()</a></code> and friends no longer calls non-existent functions (e.g. <code><a href="https://cli.r-lib.org/reference/format_error.html" class="external-link">cli::format_error()</a></code> or <code><a href="https://cli.r-lib.org/reference/format_error.html" class="external-link">cli::format_warning</a></code>) when the installed version of cli is too old (<a href="https://github.com/r-lib/rlang/issues/1367" class="external-link">#1367</a>, tidyverse/dplyr#6189).</p></li>

@@ -224,10 +224,8 @@ There may be more than one contextual error in an error chain, but there is alwa
 <span class="co">#&gt; ---</span>
 <span class="co">#&gt; Backtrace:</span>
 <span class="co">#&gt;  1. rlang my_verb(add(1, ""))</span>
-<span class="co">#&gt; Run `rlang::last_trace()` to see the full context.</span></code></pre><p></p></div>
-<p><strong>FIXME</strong>: The simplified backtrace should be:</p><div class="sourceCode r"><pre><code><span class="co">#&gt; Backtrace:</span>
-<span class="co">#&gt;  1. global my_verb(add(1, ""))</span>
-<span class="co">#&gt;  9. global add(1, "")</span></code></pre><p></p></div><div class="section">
+<span class="co">#&gt;  9. rlang add(1, "")</span>
+<span class="co">#&gt; Run `rlang::last_trace()` to see the full context.</span></code></pre><p></p></div><div class="section">
 <h3 id="side-note-about-missing-arguments">Side note about missing arguments<a class="anchor" aria-label="anchor" href="#side-note-about-missing-arguments"></a></h3>
 
 
