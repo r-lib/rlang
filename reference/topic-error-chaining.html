@@ -191,17 +191,7 @@ There may be more than one contextual error in an error chain, but there is alwa
 <span class="co">#&gt; ! Problem during step.</span>
 <span class="co">#&gt; Caused by error in `x + y`:</span>
 <span class="co">#&gt; ! non-numeric argument to binary operator</span></code></pre><p></p></div>
-<p>Altough we have created a chained error, the error call of the contextual error is not quite right. It mentions the name of the error helper instead of the name of the user-facing function. Furthermore, the error backtrace is rather unhelpful:</p><div class="sourceCode r"><pre><code><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="../reference/last_error.html">last_error</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; &lt;error/rlang_error&gt;</span>
-<span class="co">#&gt; Error in `with_chained_errors()`:</span>
-<span class="co">#&gt; ! Problem during step.</span>
-<span class="co">#&gt; Caused by error in `x + y`:</span>
-<span class="co">#&gt; ! non-numeric argument to binary operator</span>
-<span class="co">#&gt; ---</span>
-<span class="co">#&gt; Backtrace:</span>
-<span class="co">#&gt;  1. rlang my_verb(add(1, ""))</span>
-<span class="co">#&gt;  9. rlang add(1, "")</span>
-<span class="co">#&gt; Run `rlang::last_trace()` to see the full context.</span></code></pre><p></p></div>
+<p>Altough we have created a chained error, the error call of the contextual error is not quite right. It mentions the name of the error helper instead of the name of the user-facing function.</p>
 <p>If you've read <a href="topic-error-call.html">Including function calls in error messages</a>, you may suspect that we need to pass a <code>call</code> argument to <code><a href="abort.html">abort()</a></code>. That's exactly what needs to happen to fix the call and backtrace issues:</p><div class="sourceCode r"><pre><code><span class="va">with_chained_errors</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">expr</span>, <span class="va">call</span> <span class="op">=</span> <span class="fu"><a href="../reference/stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="../reference/try_fetch.html">try_fetch</a></span><span class="op">(</span>
     <span class="va">expr</span>,
@@ -214,18 +204,7 @@ There may be more than one contextual error in an error chain, but there is alwa
 <span class="co">#&gt; Error in `my_verb()`:</span>
 <span class="co">#&gt; ! Problem during step.</span>
 <span class="co">#&gt; Caused by error in `x + y`:</span>
-<span class="co">#&gt; ! non-numeric argument to binary operator</span></code></pre><p></p></div>
-<p>It also hides all the error helpers from the backtrace:</p><div class="sourceCode r"><pre><code><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="../reference/last_error.html">last_error</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; &lt;error/rlang_error&gt;</span>
-<span class="co">#&gt; Error in `my_verb()`:</span>
-<span class="co">#&gt; ! Problem during step.</span>
-<span class="co">#&gt; Caused by error in `x + y`:</span>
-<span class="co">#&gt; ! non-numeric argument to binary operator</span>
-<span class="co">#&gt; ---</span>
-<span class="co">#&gt; Backtrace:</span>
-<span class="co">#&gt;  1. rlang my_verb(add(1, ""))</span>
-<span class="co">#&gt;  9. rlang add(1, "")</span>
-<span class="co">#&gt; Run `rlang::last_trace()` to see the full context.</span></code></pre><p></p></div><div class="section">
+<span class="co">#&gt; ! non-numeric argument to binary operator</span></code></pre><p></p></div><div class="section">
 <h3 id="side-note-about-missing-arguments">Side note about missing arguments<a class="anchor" aria-label="anchor" href="#side-note-about-missing-arguments"></a></h3>
 
 
@@ -332,7 +311,7 @@ There may be more than one contextual error in an error chain, but there is alwa
 </div>
 
 <div class="section">
-<h3 id="dealing-with-foobar-errors">Dealing with foobar errors<a class="anchor" aria-label="anchor" href="#dealing-with-foobar-errors"></a></h3>
+<h3 id="dealing-with-errors-thrown-from-the-mapped-function">Dealing with errors thrown from the mapped function<a class="anchor" aria-label="anchor" href="#dealing-with-errors-thrown-from-the-mapped-function"></a></h3>
 
 
 <p>One problem though, is that the user error call is not very informative when the error occurs immediately in the function supplied to <code>my_map()</code>:</p><div class="sourceCode r"><pre><code><span class="va">my_function</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
