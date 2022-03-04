@@ -1,4 +1,4 @@
-# rlang (development version)
+# rlang 1.0.2
 
 * Backtraces of parent errors are now reused on rethrow. This avoids
   capturing the same backtrace twice and solves consistency problems
