@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* Internal errors thrown with `abort(.internal = TRUE)` now mention
+  the name of the package the error should be reported to.
+
 * Backtraces are now separated from error messages with a `---` ruler
   line (#1368).
 

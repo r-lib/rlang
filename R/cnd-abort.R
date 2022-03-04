@@ -581,7 +581,7 @@ cnd_message_info <- function(message,
       fields$footer <- footer
     }
     if (internal) {
-      fields$footer <- footer_internal
+      fields$footer <- footer_internal(env)
     }
   } else {
     # Compatibility with older bullets formatting
@@ -599,7 +599,7 @@ cnd_message_info <- function(message,
       fields$footer <- footer
     }
     if (internal) {
-      message <- c(message, footer_internal)
+      message <- c(message, footer_internal(env))
     }
     message <- .rlang_cli_format_fallback(message)
   }
@@ -612,9 +612,20 @@ cnd_message_info <- function(message,
 }
 utils::globalVariables(".internal")
 
-footer_internal <- c(
-  "i" = "This is an internal error, please report it to the package authors."
-)
+footer_internal <- function(env) {
+  top <- topenv(env)
+  if (is_namespace(top)) {
+    pkg <- sprintf(" in the %s package", ns_env_name(top))
+  } else {
+    pkg <- ""
+  }
+  footer <- sprintf(
+    "This is an internal error%s, please report it to the package authors.",
+    pkg
+  )
+
+  c(i = footer)
+}
 
 stop_multiple_body <- function(body, call) {
   msg <- c(

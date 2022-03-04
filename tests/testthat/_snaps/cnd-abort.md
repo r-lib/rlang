@@ -1160,7 +1160,7 @@
       Error:
       ! foo
       x bar
-      i This is an internal error, please report it to the package authors.
+      i This is an internal error in the rlang package, please report it to the package authors.
     Code
       err(abort("foo", body = c(x = "bar"), .internal = TRUE))
     Output
@@ -1168,7 +1168,7 @@
       Error:
       ! foo
       x bar
-      i This is an internal error, please report it to the package authors.
+      i This is an internal error in the rlang package, please report it to the package authors.
 
 # setting `.internal` adds footer bullet (fallback)
 
@@ -1179,7 +1179,7 @@
       Error:
       ! foo
       x bar
-      i This is an internal error, please report it to the package authors.
+      i This is an internal error in the rlang package, please report it to the package authors.
     Code
       err(abort("foo", body = c(x = "bar"), .internal = TRUE))
     Output
@@ -1187,7 +1187,7 @@
       Error:
       ! foo
       x bar
-      i This is an internal error, please report it to the package authors.
+      i This is an internal error in the rlang package, please report it to the package authors.
 
 # must pass character `body` when `message` is > 1
 
@@ -1271,7 +1271,7 @@
       <error/rlang_error>
       Error in `f()`:
       ! foo
-      i This is an internal error, please report it to the package authors.
+      i This is an internal error in the rlang package, please report it to the package authors.
     Code
       err(abort("foo", footer = "bar", .internal = TRUE, call = quote(f())))
     Output
