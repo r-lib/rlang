@@ -67,18 +67,7 @@ my_verb(add(1, ""))
 #> ! non-numeric argument to binary operator
 }\if{html}{\out{</div>}}
 
-Altough we have created a chained error, the error call of the contextual error is not quite right. It mentions the name of the error helper instead of the name of the user-facing function. Furthermore, the error backtrace is rather unhelpful:\if{html}{\out{<div class="sourceCode r">}}\preformatted{rlang::last_error()
-#> <error/rlang_error>
-#> Error in `with_chained_errors()`:
-#> ! Problem during step.
-#> Caused by error in `x + y`:
-#> ! non-numeric argument to binary operator
-#> ---
-#> Backtrace:
-#>  1. rlang my_verb(add(1, ""))
-#>  9. rlang add(1, "")
-#> Run `rlang::last_trace()` to see the full context.
-}\if{html}{\out{</div>}}
+Altough we have created a chained error, the error call of the contextual error is not quite right. It mentions the name of the error helper instead of the name of the user-facing function.
 
 If you've read \ifelse{html}{\link[=topic-error-call]{Including function calls in error messages}}{\link[=topic-error-call]{Including function calls in error messages}}, you may suspect that we need to pass a \code{call} argument to \code{abort()}. That's exactly what needs to happen to fix the call and backtrace issues:\if{html}{\out{<div class="sourceCode r">}}\preformatted{with_chained_errors <- function(expr, call = caller_env()) \{
   try_fetch(
@@ -95,19 +84,6 @@ Now that we've passed the caller environment as \code{call} argument, \code{abor
 #> ! Problem during step.
 #> Caused by error in `x + y`:
 #> ! non-numeric argument to binary operator
-}\if{html}{\out{</div>}}
-
-It also hides all the error helpers from the backtrace:\if{html}{\out{<div class="sourceCode r">}}\preformatted{rlang::last_error()
-#> <error/rlang_error>
-#> Error in `my_verb()`:
-#> ! Problem during step.
-#> Caused by error in `x + y`:
-#> ! non-numeric argument to binary operator
-#> ---
-#> Backtrace:
-#>  1. rlang my_verb(add(1, ""))
-#>  9. rlang add(1, "")
-#> Run `rlang::last_trace()` to see the full context.
 }\if{html}{\out{</div>}}
 \subsection{Side note about missing arguments}{
 
@@ -228,7 +204,7 @@ And that's it, the error chain created by the rethrowing handler now provides us
 }\if{html}{\out{</div>}}
 }
 
-\subsection{Dealing with foobar errors}{
+\subsection{Dealing with errors thrown from the mapped function}{
 
 One problem though, is that the user error call is not very informative when the error occurs immediately in the function supplied to \code{my_map()}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function <- function(x) \{
   if (!is_string(x)) \{

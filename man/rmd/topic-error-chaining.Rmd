@@ -63,11 +63,7 @@ my_verb <- function(expr) {
 my_verb(add(1, ""))
 ```
 
-Altough we have created a chained error, the error call of the contextual error is not quite right. It mentions the name of the error helper instead of the name of the user-facing function. Furthermore, the error backtrace is rather unhelpful:
-
-```{r}
-rlang::last_error()
-```
+Altough we have created a chained error, the error call of the contextual error is not quite right. It mentions the name of the error helper instead of the name of the user-facing function.
 
 If you've read `r rlang:::link("topic_error_call")`, you may suspect that we need to pass a `call` argument to `abort()`. That's exactly what needs to happen to fix the call and backtrace issues:
 
@@ -86,12 +82,6 @@ Now that we've passed the caller environment as `call` argument, `abort()` autom
 
 ```{r, error = TRUE}
 my_verb(add(1, ""))
-```
-
-It also hides all the error helpers from the backtrace:
-
-```{r}
-rlang::last_error()
 ```
 
 
@@ -218,7 +208,7 @@ list(1, "foo") |> my_map(add, 100)
 ```
 
 
-## Dealing with foobar errors
+## Dealing with errors thrown from the mapped function
 
 One problem though, is that the user error call is not very informative when the error occurs immediately in the function supplied to `my_map()`:
 
