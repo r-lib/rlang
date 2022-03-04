@@ -801,3 +801,31 @@ test_that("if `call` is older than handler caller, use that as bottom", {
 test_that("is_calling_handler_inlined_call() doesn't fail with OOB subsetting", {
   expect_false(is_calling_handler_inlined_call(call2(function() NULL)))
 })
+
+test_that("base causal errors include full user backtrace", {
+  local_options(
+    rlang_trace_format_srcrefs = FALSE,
+    rlang_trace_top_env = current_env()
+  )
+
+  my_verb <- function(expr) {
+    with_chained_errors(expr)
+  }
+  with_chained_errors <- function(expr, call = caller_env()) {
+    try_fetch(
+      expr,
+      error = function(cnd) {
+        abort(
+          "Problem during step.",
+          parent = cnd,
+          call = call
+        )
+      }
+    )
+  }
+
+  add <- function(x, y) x + y
+  expect_snapshot({
+    print(expect_error(my_verb(add(1, ""))))
+  })
+})

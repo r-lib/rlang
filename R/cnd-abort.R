@@ -309,6 +309,9 @@ abort <- function(message = NULL,
   extra_fields <- message_info$extra_fields
   use_cli_format <- message_info$use_cli_format
 
+  if (rethrowing) {
+    trace <- trace %||% parent[["trace"]]
+  }
   if (is_null(trace) && is_null(peek_option("rlang:::disable_trace_capture"))) {
     with_options(
       # Prevents infloops when rlang throws during trace capture
@@ -404,7 +407,7 @@ abort_context <- function(frame,
     # Skip frames marked with the sentinel `.__signal_frame__.`
     bottom_loc <- skip_signal_frames(bottom_loc, frames)
     bottom_frame <- frames[[bottom_loc]]
-    if (!is_missing(abort_call) && is_environment(abort_call)) {
+    if (!rethrowing && !is_missing(abort_call) && is_environment(abort_call)) {
       abort_call_loc <- detect_index(frames, identical, abort_call)
       if (abort_call_loc && abort_call_loc < bottom_loc) {
         bottom_frame <- frames[[abort_call_loc]]

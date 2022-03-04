@@ -1,5 +1,12 @@
 # rlang (development version)
 
+* Backtraces of parent errors are now reused on rethrow. This avoids
+  capturing the same backtrace twice and solves consistency problems
+  by making sure both errors in a chain have the same backtrace.
+
+* Fixed backtrace oversimplification when `cnd` is a base error in
+  `abort(parent = cnd)`.
+
 * Internal errors thrown with `abort(.internal = TRUE)` now mention
   the name of the package the error should be reported to.
 
