@@ -106,12 +106,8 @@ It also hides all the error helpers from the backtrace:\if{html}{\out{<div class
 #> ---
 #> Backtrace:
 #>  1. rlang my_verb(add(1, ""))
+#>  9. rlang add(1, "")
 #> Run `rlang::last_trace()` to see the full context.
-}\if{html}{\out{</div>}}
-
-\strong{FIXME}: The simplified backtrace should be:\if{html}{\out{<div class="sourceCode r">}}\preformatted{#> Backtrace:
-#>  1. global my_verb(add(1, ""))
-#>  9. global add(1, "")
 }\if{html}{\out{</div>}}
 \subsection{Side note about missing arguments}{
 

@@ -1306,3 +1306,18 @@
        1. base::print(expect_error(f()))
        8. rlang f()
 
+# base causal errors include full user backtrace
+
+    Code
+      print(expect_error(my_verb(add(1, ""))))
+    Output
+      <error/rlang_error>
+      Error in `my_verb()`:
+      ! Problem during step.
+      Caused by error in `x + y`:
+      ! non-numeric argument to binary operator
+      ---
+      Backtrace:
+        1. base::print(expect_error(my_verb(add(1, ""))))
+       16. rlang add(1, "")
+

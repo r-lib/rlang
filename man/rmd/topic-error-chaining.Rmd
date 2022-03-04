@@ -94,14 +94,6 @@ It also hides all the error helpers from the backtrace:
 rlang::last_error()
 ```
 
-__FIXME__: The simplified backtrace should be:
-
-```r
-#> Backtrace:
-#>  1. global my_verb(add(1, ""))
-#>  9. global add(1, "")
-```
-
 
 ## Side note about missing arguments
 
