@@ -350,11 +350,15 @@ extensive changes to the display of error messages.
 * Internal errors now include a winch backtrace if installed. The user
   is invited to install it if not installed.
 
-* Display of rlang backtraces in dynamic reports (knitted documents
-  and RStudio notebooks) is now controlled by the
-  `rlang_backtrace_on_error_report` option. By default, nothing is
-  displayed in interactive sessions. In non-interactive sessions, a
-  simplified backtrace is displayed instead of a full backtrace
+* Display of rlang backtraces for expected errors in dynamic reports
+  (chunks where `error = TRUE` in knitted documents and RStudio
+  notebooks) is now controlled by the
+  `rlang_backtrace_on_error_report` option. By default, this is set to
+  `"none"`.
+
+  The display of backtraces for _unexpected_ errors (in chunks where
+  `error` is unset or set to `FALSE`) is still controlled by
+  `rlang_backtrace_on_error`.
 
 * The `last_error()` reminder is no longer displayed in RStudio
   notebooks.
@@ -362,8 +366,8 @@ extensive changes to the display of error messages.
 * A `knitr::sew()` method is registered for `rlang_error`. This makes
   it possible to consult `last_error()` (the call must occur in a
   different chunk than the error) and to set
-  `rlang_backtrace_on_error` global options in knitr to display a
-  backtrace on error.
+  `rlang_backtrace_on_error_report` global options in knitr to display
+  a backtrace for expected errors.
 
   If you show rlang backtraces in a knitted document, also set this in
   a hidden chunk to trim the knitr context from the backtraces:
