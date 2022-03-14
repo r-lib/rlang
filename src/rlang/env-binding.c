@@ -20,12 +20,14 @@ static r_obj* new_binding_types(r_ssize n) {
 }
 
 static enum r_env_binding_type which_env_binding(r_obj* env, r_obj* sym) {
-  if (r_env_binding_is_promise(env, sym)) {
-    return R_ENV_BINDING_TYPE_promise;
+  if (r_env_binding_is_active(env, sym)) {
+    // Check for active bindings first, since promise detection triggers
+    // active bindings through `r_env_find()` (#1376)
+    return R_ENV_BINDING_TYPE_active;
   }
 
-  if (r_env_binding_is_active(env, sym)) {
-    return R_ENV_BINDING_TYPE_active;
+  if (r_env_binding_is_promise(env, sym)) {
+    return R_ENV_BINDING_TYPE_promise;
   }
 
   return R_ENV_BINDING_TYPE_value;
