@@ -212,6 +212,14 @@ test_that("env_binding_are_active() doesn't force promises", {
   expect_identical(env_binding_are_lazy(env), lgl(foo = TRUE))
 })
 
+test_that("env_binding_are_active() doesn't trigger active bindings (#1376)", {
+  env <- env()
+  env_bind_active(env, foo = ~stop("kaboom"))
+  expect_no_error(env_binding_are_active(env))
+  expect_identical(env_binding_are_active(env), lgl(foo = TRUE))
+  expect_identical(env_binding_are_lazy(env), lgl(foo = FALSE))
+})
+
 test_that("env_binding_type_sum() detects types", {
   env <- env()
   env_bind_active(env, a = ~"foo")
