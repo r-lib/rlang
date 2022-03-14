@@ -237,10 +237,13 @@
 <h4 id="backtraces-1-0-0">Backtraces<a class="anchor" aria-label="anchor" href="#backtraces-1-0-0"></a></h4>
 <ul><li><p><code><a href="../reference/entrace.html">entrace()</a></code> and <code><a href="../reference/global_entrace.html">global_entrace()</a></code> now log warnings and messages with backtraces attached. Run <code><a href="../reference/last_warnings.html">last_warnings()</a></code> or <code><a href="../reference/last_warnings.html">last_messages()</a></code> to inspect the warnings or messages emitted during the last command.</p></li>
 <li><p>Internal errors now include a winch backtrace if installed. The user is invited to install it if not installed.</p></li>
-<li><p>Display of rlang backtraces in dynamic reports (knitted documents and RStudio notebooks) is now controlled by the <code>rlang_backtrace_on_error_report</code> option. By default, nothing is displayed in interactive sessions. In non-interactive sessions, a simplified backtrace is displayed instead of a full backtrace</p></li>
+<li>
+<p>Display of rlang backtraces for expected errors in dynamic reports (chunks where <code>error = TRUE</code> in knitted documents and RStudio notebooks) is now controlled by the <code>rlang_backtrace_on_error_report</code> option. By default, this is set to <code>"none"</code>.</p>
+<p>The display of backtraces for <em>unexpected</em> errors (in chunks where <code>error</code> is unset or set to <code>FALSE</code>) is still controlled by <code>rlang_backtrace_on_error</code>.</p>
+</li>
 <li><p>The <code><a href="../reference/last_error.html">last_error()</a></code> reminder is no longer displayed in RStudio notebooks.</p></li>
 <li>
-<p>A <code><a href="https://rdrr.io/pkg/knitr/man/sew.html" class="external-link">knitr::sew()</a></code> method is registered for <code>rlang_error</code>. This makes it possible to consult <code><a href="../reference/last_error.html">last_error()</a></code> (the call must occur in a different chunk than the error) and to set <code>rlang_backtrace_on_error</code> global options in knitr to display a backtrace on error.</p>
+<p>A <code><a href="https://rdrr.io/pkg/knitr/man/sew.html" class="external-link">knitr::sew()</a></code> method is registered for <code>rlang_error</code>. This makes it possible to consult <code><a href="../reference/last_error.html">last_error()</a></code> (the call must occur in a different chunk than the error) and to set <code>rlang_backtrace_on_error_report</code> global options in knitr to display a backtrace for expected errors.</p>
 <p>If you show rlang backtraces in a knitted document, also set this in a hidden chunk to trim the knitr context from the backtraces:</p>
 <pre><code><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>
   rlang_trace_top_env <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/environment.html" class="external-link">environment</a></span><span class="op">(</span><span class="op">)</span>
