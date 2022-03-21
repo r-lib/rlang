@@ -422,7 +422,7 @@ extensive changes to the display of error messages.
   supplied. It produces a more friendly error message than `force()`
   (#1118).
 
-* `check_dots_empty()`, `check_dots_unused()`, and
+* `check_dots_empty()`, `check_dots_used()`, and
   `check_dots_unnamed()` have been moved from ellipsis to rlang. The
   ellipsis package is deprecated and will eventually be archived.
 
