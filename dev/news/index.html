@@ -266,7 +266,7 @@
 <ul><li><p><code><a href="../reference/arg_match.html">arg_match()</a></code> gains a <code>multiple</code> argument for cases where zero or several matches are allowed (<a href="https://github.com/r-lib/rlang/issues/1281" class="external-link">#1281</a>).</p></li>
 <li><p>New function <code><a href="../reference/check_required.html">check_required()</a></code> to check that an argument is supplied. It produces a more friendly error message than <code><a href="https://rdrr.io/r/base/force.html" class="external-link">force()</a></code> (<a href="https://github.com/r-lib/rlang/issues/1118" class="external-link">#1118</a>).</p></li>
 <li>
-<p><code><a href="../reference/check_dots_empty.html">check_dots_empty()</a></code>, <code>check_dots_unused()</code>, and <code><a href="../reference/check_dots_unnamed.html">check_dots_unnamed()</a></code> have been moved from ellipsis to rlang. The ellipsis package is deprecated and will eventually be archived.</p>
+<p><code><a href="../reference/check_dots_empty.html">check_dots_empty()</a></code>, <code><a href="../reference/check_dots_used.html">check_dots_used()</a></code>, and <code><a href="../reference/check_dots_unnamed.html">check_dots_unnamed()</a></code> have been moved from ellipsis to rlang. The ellipsis package is deprecated and will eventually be archived.</p>
 <p>We have added <code><a href="../reference/check_dots_empty0.html">check_dots_empty0()</a></code>. It has a different UI but is almost as efficient as checking for <code>missing(...)</code>. Use this in very low level functions where a couple microseconds make a difference.</p>
 </li>
 <li><p>The <code>arg_nm</code> argument of <code><a href="../reference/arg_match.html">arg_match0()</a></code> must now be a string or symbol.</p></li>
