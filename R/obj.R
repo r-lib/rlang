@@ -87,7 +87,7 @@ obj_attrib <- function(x) {
 vec_alloc <- function(type, n) {
   stopifnot(
     is_string(type),
-    is_integer(n, 1)
+    is_integer(n, 1) && is.finite(n)
   )
   .Call(ffi_vec_alloc, type, n)
 }
