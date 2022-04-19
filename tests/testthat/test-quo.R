@@ -286,6 +286,20 @@ test_that("quosure attributes are cloned (#1142)", {
   expect_true(setequal(names(attributes(y)), c("names", "class")))
 })
 
+test_that("quo_squash() supports nested missing args", {
+  expect_equal(
+    quo_squash(expr(foo(!!quo()))),
+    quote(foo(, ))[1:2]
+  )
+  expect_equal(
+    quo_squash(expr(foo(bar(!!quo(), !!quo())))),
+    quote(foo(bar(, )))
+  )
+
+  expect_equal(quo_squash(missing_arg()), missing_arg())
+  expect_equal(quo_squash(quo()), missing_arg())
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

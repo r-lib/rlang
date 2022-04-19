@@ -3,6 +3,10 @@
 * `env_binding_are_active()` no longer accidentally triggers active bindings
   (#1376).
 
+* Fixed bug in `quo_squash()` with nested quosures containing the
+  missing argument.
+
+
 # rlang 1.0.2
 
 * Backtraces of parent errors are now reused on rethrow. This avoids

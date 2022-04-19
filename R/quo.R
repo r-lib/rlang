@@ -453,7 +453,8 @@ quo_name <- function(quo) {
 }
 
 quo_squash_impl <- function(x, parent = NULL, warn = FALSE) {
-  switch_expr(x,
+  switch_expr(
+    x,
     language = {
       if (is_quosure(x)) {
         if (!is_false(warn)) {
@@ -466,11 +467,11 @@ quo_squash_impl <- function(x, parent = NULL, warn = FALSE) {
           warn <- FALSE
         }
 
-        while (is_quosure(x)) {
+        while (is_quosure(maybe_missing(x))) {
           x <- quo_get_expr(x)
         }
         if (!is_null(parent)) {
-          node_poke_car(parent, x)
+          node_poke_car(parent, maybe_missing(x))
         }
         quo_squash_impl(x, parent, warn = warn)
       } else {
@@ -485,7 +486,7 @@ quo_squash_impl <- function(x, parent = NULL, warn = FALSE) {
     }
   )
 
-  x
+  maybe_missing(x)
 }
 
 

@@ -328,7 +328,7 @@ get_expr <- function(x, default = x) {
 }
 
 expr_type_of <- function(x) {
-  if (missing(x)) {
+  if (is_missing(x)) {
     return("missing")
   }
 
