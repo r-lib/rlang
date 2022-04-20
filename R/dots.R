@@ -463,7 +463,7 @@ abort_dots_homonyms <- function(dots, dups) {
   enums_lines <- map2_chr(dups_nms, enums, sprintf, fmt = line)
 
   abort(c(
-    "Arguments can't have the same name.",
+    "Arguments in `...` must have unique names.",
     set_names(enums_lines, "x")
   ))
 }
