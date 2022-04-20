@@ -7,6 +7,7 @@ static r_obj* empty_spliced_arg;
 static r_obj* glue_unquote_fn;
 static r_obj* quosures_attrib;
 static r_obj* splice_box_attrib;
+static r_obj* abort_dots_homonyms_ns_sym;
 
 r_obj* rlang_ns_get(const char* name);
 

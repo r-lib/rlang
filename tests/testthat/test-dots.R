@@ -332,3 +332,8 @@ test_that("`.named` can be `NULL` (default names) or `FALSE` (minimal names)", {
     list()
   )
 })
+
+test_that("`.homonyms` error is thrown", {
+  f <- function() dots_list(a = 1, a = 2, .homonyms = "error")
+  expect_snapshot((expect_error(f())))
+})

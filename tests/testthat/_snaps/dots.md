@@ -42,3 +42,13 @@
       ! `.ignore_empty` must be one of "trailing", "none", or "all", not "t".
       i Did you mean "trailing"?
 
+# `.homonyms` error is thrown
+
+    Code
+      (expect_error(f()))
+    Output
+      <error/rlang_error>
+      Error in `f()`:
+      ! Arguments can't have the same name.
+      x Multiple arguments named `a` at positions 1 and 2.
+

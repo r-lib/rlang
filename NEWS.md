@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* `abort(.homonyms = "error")` now throws the expected error (#1394).
+
 * `env_binding_are_active()` no longer accidentally triggers active bindings
   (#1376).
 

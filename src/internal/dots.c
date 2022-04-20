@@ -723,9 +723,6 @@ r_obj* dots_keep(r_obj* dots, r_obj* nms, bool first) {
 }
 
 static
-r_obj* abort_dots_homonyms_call = NULL;
-
-static
 void dots_check_homonyms(r_obj* dots, r_obj* nms) {
   r_obj* dups = KEEP(nms_are_duplicated(nms, false));
 
@@ -740,7 +737,7 @@ void dots_check_homonyms(r_obj* dots, r_obj* nms) {
       { r_sym("dups"), dups }
     };
     r_exec_n(r_null,
-             r_sym("abort_dots_homonyms"),
+             abort_dots_homonyms_ns_sym,
              args,
              R_ARR_SIZEOF(args),
              env);
@@ -1053,8 +1050,8 @@ void rlang_init_dots(r_obj* ns) {
   auto_name_call = r_parse("rlang:::quos_auto_name(x)");
   r_preserve(auto_name_call);
 
-  abort_dots_homonyms_call = r_parse("rlang:::abort_dots_homonyms(x, y)");
-  r_preserve(abort_dots_homonyms_call);
+  abort_dots_homonyms_ns_sym = r_parse("rlang:::abort_dots_homonyms");
+  r_preserve(abort_dots_homonyms_ns_sym);
 
   {
     r_obj* splice_box_class = KEEP(r_alloc_character(2));
@@ -1109,3 +1106,4 @@ static r_obj* dots_ignore_empty_arg = NULL;
 static r_obj* dots_ignore_empty_values = NULL;
 static r_obj* quosures_attrib = NULL;
 static r_obj* splice_box_attrib = NULL;
+static r_obj* abort_dots_homonyms_ns_sym = NULL;
