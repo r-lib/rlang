@@ -30,7 +30,5 @@ for information about name repairing.}
 \description{
 This gives default names to unnamed elements of a list of
 expressions (or expression wrappers such as formulas or
-quosures). \code{exprs_auto_name()} deparses the expressions with
-\code{\link[=expr_name]{expr_name()}} by default. \code{quos_auto_name()} deparses with
-\code{\link[=quo_name]{quo_name()}}.
+quosures), deparsed with \code{\link[=as_label]{as_label()}}.
 }

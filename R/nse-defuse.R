@@ -173,7 +173,7 @@ expr <- function(expr) {
 #'   f({{ arg }} * 2)
 #' }
 #' g(100)
-#' 
+#'
 #' column <- sym("cyl")
 #' g(!!column)
 #'
@@ -502,9 +502,7 @@ endots <- function(call,
 #'
 #' This gives default names to unnamed elements of a list of
 #' expressions (or expression wrappers such as formulas or
-#' quosures). `exprs_auto_name()` deparses the expressions with
-#' [expr_name()] by default. `quos_auto_name()` deparses with
-#' [quo_name()].
+#' quosures), deparsed with [as_label()].
 #'
 #' @param exprs A list of expressions.
 #' @inheritParams args_dots_empty
