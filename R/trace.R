@@ -884,13 +884,24 @@ src_loc <- function(srcref) {
   }
 
   if (is_null(peek_option("rlang:::disable_trim_srcref"))) {
-    file <- path_trim_prefix(file, 3)
+    file_trim <- path_trim_prefix(file, 3)
+  } else {
+    file_trim <- file
   }
 
   line <- srcref[[1]]
   column <- srcref[[5]] - 1L
 
-  paste0(file, ":", line, ":", column)
+  if (is_installed("cli")) {
+    cli::style_hyperlink(
+      paste0(file_trim, ":", line, ":", column),
+      paste0("file://", file),
+      params = c(line = line, col = column)
+    )
+  } else {
+    paste0(file_trim, ":", line, ":", column)
+  }
+
 }
 
 trace_root <- function() {
