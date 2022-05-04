@@ -332,8 +332,7 @@
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.12" id="rlang-0412">rlang 0.4.12<a class="anchor" aria-label="anchor" href="#rlang-0412"></a></h2><p class="text-muted">CRAN release: 2021-10-18</p>
-<ul><li>Fix for CRAN checks.</li>
-</ul></div>
+<ul><li>Fix for CRAN checks.</li></ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.11" id="rlang-0411">rlang 0.4.11<a class="anchor" aria-label="anchor" href="#rlang-0411"></a></h2><p class="text-muted">CRAN release: 2021-04-30</p>
 <ul><li><p>Fix for CRAN checks.</p></li>
@@ -351,8 +350,7 @@
 <h2 class="pkg-version" data-toc-text="0.4.9" id="rlang-049">rlang 0.4.9<a class="anchor" aria-label="anchor" href="#rlang-049"></a></h2><p class="text-muted">CRAN release: 2020-11-25</p>
 <div class="section level3">
 <h3 id="breaking-changes-0-4-9">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-4-9"></a></h3>
-<ul><li>Dropped support for the R 3.2 series.</li>
-</ul></div>
+<ul><li>Dropped support for the R 3.2 series.</li></ul></div>
 <div class="section level3">
 <h3 id="new-features-0-4-9">New features<a class="anchor" aria-label="anchor" href="#new-features-0-4-9"></a></h3>
 <ul><li><p><code><a href="../reference/inject.html">inject()</a></code> evaluates its argument with <code>!!</code>, <code>!!!</code>, and <code>{{</code> support.</p></li>
@@ -412,8 +410,7 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.6" id="rlang-046">rlang 0.4.6<a class="anchor" aria-label="anchor" href="#rlang-046"></a></h2><p class="text-muted">CRAN release: 2020-05-02</p>
 <ul><li>
-<code>!!!</code> now uses a combination of <code><a href="https://rdrr.io/r/base/length.html" class="external-link">length()</a></code>, <code><a href="https://rdrr.io/r/base/names.html" class="external-link">names()</a></code>, and <code>[[</code> to splice S3 and S4 objects. This produces more consistent behaviour than <code><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list()</a></code> on a wider variety of vector classes (<a href="https://github.com/r-lib/rlang/issues/945" class="external-link">#945</a>, tidyverse/dplyr#4931).</li>
-</ul></div>
+<code>!!!</code> now uses a combination of <code><a href="https://rdrr.io/r/base/length.html" class="external-link">length()</a></code>, <code><a href="https://rdrr.io/r/base/names.html" class="external-link">names()</a></code>, and <code>[[</code> to splice S3 and S4 objects. This produces more consistent behaviour than <code><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list()</a></code> on a wider variety of vector classes (<a href="https://github.com/r-lib/rlang/issues/945" class="external-link">#945</a>, tidyverse/dplyr#4931).</li></ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.5" id="rlang-045">rlang 0.4.5<a class="anchor" aria-label="anchor" href="#rlang-045"></a></h2><p class="text-muted">CRAN release: 2020-03-01</p>
 <ul><li><p><code><a href="../reference/set_names.html">set_names()</a></code>, <code><a href="../reference/is_formula.html">is_formula()</a></code>, and <code><a href="../reference/names2.html">names2()</a></code> are now implemented in C for efficiency.</p></li>
@@ -426,8 +423,7 @@
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.4" id="rlang-044">rlang 0.4.4<a class="anchor" aria-label="anchor" href="#rlang-044"></a></h2><p class="text-muted">CRAN release: 2020-01-28</p>
-<ul><li>Maintenance release for CRAN.</li>
-</ul></div>
+<ul><li>Maintenance release for CRAN.</li></ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.3" id="rlang-043">rlang 0.4.3<a class="anchor" aria-label="anchor" href="#rlang-043"></a></h2><p class="text-muted">CRAN release: 2020-01-24</p>
 <ul><li>
@@ -721,8 +717,7 @@
 <li><p>S4 objects. These are converted with <code>as(obj, "list")</code> before splicing.</p></li>
 <li><p>Quoted blocks of expressions, i.e. <code><a href="https://rdrr.io/r/base/Paren.html" class="external-link">{ }</a></code> calls</p></li>
 </ul><p><code>!!!</code> disallows:</p>
-<ul><li>Any other objects like functions or environments, but also language objects like formula, symbols, or quosures.</li>
-</ul><p>Quoting functions used to automatically wrap language objects in lists to make them spliceable. This behaviour is now soft-deprecated and it is no longer valid to write <code>!!!enquo(x)</code>. Please unquote scalar objects with <code>!!</code> instead.</p>
+<ul><li>Any other objects like functions or environments, but also language objects like formula, symbols, or quosures.</li></ul><p>Quoting functions used to automatically wrap language objects in lists to make them spliceable. This behaviour is now soft-deprecated and it is no longer valid to write <code>!!!enquo(x)</code>. Please unquote scalar objects with <code>!!</code> instead.</p>
 </li>
 <li><p><code><a href="../reference/list2.html">dots_list()</a></code>, <code><a href="../reference/defusing-advanced.html">enexprs()</a></code> and <code><a href="../reference/enquo.html">enquos()</a></code> gain a <code>.homonyms</code> argument to control how to treat arguments with the same name. The default is to keep them. Set it to <code>"first"</code> or <code>"last"</code> to keep only the first or last occurrences. Set it to <code>"error"</code> to raise an informative error about the arguments with duplicated names.</p></li>
 <li><p><code><a href="../reference/defusing-advanced.html">enexprs()</a></code> and <code><a href="../reference/enquo.html">enquos()</a></code> now support <code>.ignore_empty = "all"</code> with named arguments as well (<a href="https://github.com/r-lib/rlang/issues/414" class="external-link">#414</a>).</p></li>
@@ -1019,8 +1014,7 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.4" id="rlang-014">rlang 0.1.4<a class="anchor" aria-label="anchor" href="#rlang-014"></a></h2><p class="text-muted">CRAN release: 2017-11-05</p>
 <ul><li>
-<code><a href="../reference/eval_tidy.html">eval_tidy()</a></code> no longer maps over lists but returns them literally. This behaviour is an overlook from past refactorings and was never documented.</li>
-</ul></div>
+<code><a href="../reference/eval_tidy.html">eval_tidy()</a></code> no longer maps over lists but returns them literally. This behaviour is an overlook from past refactorings and was never documented.</li></ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.2" id="rlang-012">rlang 0.1.2<a class="anchor" aria-label="anchor" href="#rlang-012"></a></h2><p class="text-muted">CRAN release: 2017-08-09</p>
 <p>This hotfix release makes rlang compatible with the R 3.1 branch.</p>
@@ -1062,7 +1056,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
   </div></footer></body></html>
