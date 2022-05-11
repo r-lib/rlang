@@ -15,7 +15,7 @@ use_rlang_c_library <- function() {
 
   rlang_path <- Sys.getenv("RLANG_PATH")
   if (!nzchar(rlang_path)) {
-    rlang_path <- download_rlang()
+    rlang_path <- download_package("r-lib", "rlang")
     on.exit(fs::dir_delete(rlang_path))
   }
 
@@ -77,16 +77,24 @@ use_rlang_c_library <- function() {
   }
 }
 
-download_rlang <- function() {
-  dest_zip <- fs::file_temp("rlang-src")
+download_package <- function(owner, repo) {
+  # Hardcoded for now
+  branch <- "main"
 
-  url <- "https://github.com/r-lib/rlang/archive/main.zip"
+  dest_zip <- fs::file_temp("pkg-src")
+
+  url <- sprintf(
+    "https://github.com/%s/%s/archive/%s.zip",
+    owner,
+    repo,
+    branch
+  )
   utils::download.file(url, dest_zip)
 
-  dest_dir <- fs::file_temp("rlang-src")
+  dest_dir <- fs::file_temp("pkg-src")
   utils::unzip(dest_zip, exdir = dest_dir)
 
-  fs::path(dest_dir, "rlang-main")
+  fs::path(dest_dir, paste0(repo, "-", branch))
 }
 
 check_rlang <- function(path) {
