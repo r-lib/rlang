@@ -206,13 +206,17 @@ default_message_file <- function() {
     return(opt)
   }
 
-  if (is_interactive() &&
+  if ((is_interactive() || is_rstudio()) &&
       sink.number("output") == 0 &&
       sink.number("message") == 2) {
     stdout()
   } else {
     stderr()
   }
+}
+
+is_rstudio <- function() {
+  Sys.getenv("RSTUDIO_SESSION_PID") == Sys.getpid()
 }
 
 deprecate_subclass <- function(subclass, fn, env = caller_env()) {
