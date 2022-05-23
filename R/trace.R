@@ -892,16 +892,11 @@ src_loc <- function(srcref) {
   line <- srcref[[1]]
   column <- srcref[[5]] - 1L
 
-  if (is_installed("cli")) {
-    cli::style_hyperlink(
-      paste0(file_trim, ":", line, ":", column),
-      paste0("file://", file),
-      params = c(line = line, col = column)
-    )
-  } else {
-    paste0(file_trim, ":", line, ":", column)
-  }
-
+  style_hyperlink(
+    paste0(file_trim, ":", line, ":", column),
+    paste0("file://", file),
+    params = c(line = line, col = column)
+  )
 }
 
 trace_root <- function() {

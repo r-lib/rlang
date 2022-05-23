@@ -142,3 +142,38 @@ cli::test_that_cli(configs = c("plain", "ansi"), "cli_escape() conditionally esc
     format_error(cli_escape("{"))
   })
 })
+
+test_that("hyperlinks are supported", {
+  local_options(cli.hyperlink = FALSE)
+  expect_equal(
+    unstructure(style_hyperlink("foo", "bar")),
+    "foo"
+  )
+
+  local_options(cli.hyperlink = TRUE)
+  cache <- env_get(fn_env(.rlang_cli_has_cli), "cache")
+
+  local_bindings(.env = cache, "{CLI_SUPPORT_HYPERLINK}" = TRUE)
+  expect_equal(
+    style_hyperlink("foo", "bar"),
+    cli::style_hyperlink("foo", "bar")
+  )
+
+  local_bindings(.env = cache, "{CLI_SUPPORT_HYPERLINK}" := FALSE)
+  expect_equal(
+    style_hyperlink("foo", "bar"),
+    "foo"
+  )
+
+  local_bindings(.env = cache, "{CLI_SUPPORT_HYPERLINK_PARAMS}" := TRUE)
+  expect_equal(
+    style_hyperlink("foo", "bar", c(param = "baz")),
+    cli::style_hyperlink("foo", "bar", c(param = "baz"))
+  )
+
+  local_bindings(.env = cache, "{CLI_SUPPORT_HYPERLINK_PARAMS}" := FALSE)
+  expect_equal(
+    style_hyperlink("foo", "bar", list()),
+    "foo"
+  )
+})

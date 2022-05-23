@@ -7,6 +7,11 @@
 #
 # Changelog:
 #
+# 2022-05-23:
+#
+# * Added compat for `style_hyperlink()`.
+#
+#
 # 2022-02-23:
 #
 # * Bullet formatting now ignores unknown bullet names, consistently
@@ -128,6 +133,25 @@ style_no_underline     <- function(x) if (.rlang_cli_has_ansi()) cli::style_no_u
 style_reset            <- function(x) if (.rlang_cli_has_ansi()) cli::style_reset(x) else x
 style_no_colour        <- function(x) if (.rlang_cli_has_ansi()) cli::style_no_color(x) else x
 style_no_bg_colour     <- function(x) if (.rlang_cli_has_ansi()) cli::style_no_bg_color(x) else x
+
+CLI_SUPPORT_HYPERLINK <- "2.2.0"
+CLI_SUPPORT_HYPERLINK_PARAMS <- "3.1.1"
+
+style_hyperlink <- function(text, url, params = NULL) {
+  if (is.null(params)) {
+    if (.rlang_cli_has_cli(CLI_SUPPORT_HYPERLINK)) {
+      cli::style_hyperlink(text, url)
+    } else {
+      text
+    }
+  } else {
+    if (.rlang_cli_has_cli(CLI_SUPPORT_HYPERLINK_PARAMS)) {
+      cli::style_hyperlink(text, url, params = params)
+    } else {
+      text
+    }
+  }
+}
 
 #' Apply inline styling
 #'
@@ -329,16 +353,18 @@ format_message <- function(x) {
 }
 
 .rlang_cli_has_cli <- local({
-  has_cli <- NULL
+  cache <- new.env()
 
-  function(pkg) {
-    if (is.null(has_cli)) {
-      has_cli <<- TRUE &&
+  function(version = "3.0.0") {
+    out <- cache[[version]]
+
+    if (is.null(out)) {
+      out <- cache[[version]] <<-
         requireNamespace("cli", quietly = TRUE) &&
-        utils::packageVersion("cli") >= "3.0.0"
+        utils::packageVersion("cli") >= version
     }
 
-    has_cli
+    out
   }
 })
 

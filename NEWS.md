@@ -1,5 +1,10 @@
 # rlang (development version)
 
+* Source references in backtraces are now clickable in IDEs that
+  support links (#1396).
+
+* `compat-cli.R` now supports `style_hyperlink()`.
+
 * `abort(.homonyms = "error")` now throws the expected error (#1394).
 
 * `env_binding_are_active()` no longer accidentally triggers active bindings
