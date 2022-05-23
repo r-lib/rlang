@@ -358,3 +358,10 @@ cli_with_whiteline_escapes <- function(x, fn) {
   x <- gsub("__NEW_LINE__", "\n", x, fixed = TRUE)
   x
 }
+
+style_rlang_run <- function(code) {
+  style_hyperlink(
+    paste0("`rlang::", code, "`"),
+    paste0("rstudio:run:rlang::", code)
+  )
+}

@@ -1,7 +1,7 @@
 # rlang (development version)
 
-* Source references in backtraces are now clickable in IDEs that
-  support links (#1396).
+* Source references in backtraces and `last_error()`/`last_trace()` instructions
+  are now clickable in IDEs that support links (#1396).
 
 * `compat-cli.R` now supports `style_hyperlink()`.
 

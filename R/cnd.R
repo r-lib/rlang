@@ -388,7 +388,8 @@ format.rlang_error <- function(x,
   # Recommend printing the full backtrace if called from `last_error()`
   from_last_error <- is_true(x$rlang$internal$from_last_error)
   if (from_last_error && simplify == "branch" && !is_null(x$trace)) {
-    reminder <- silver("Run `rlang::last_trace()` to see the full context.")
+    last_trace <- style_rlang_run("last_trace()")
+    reminder <- silver(paste0("Run ", last_trace, " to see the full context."))
     out <- paste_line(out, reminder)
   }
 
