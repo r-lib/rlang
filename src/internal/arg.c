@@ -161,7 +161,7 @@ int arg_match(r_obj* arg,
                        arg,
                        values,
                        KEEP(lazy_wrap_chr(error_arg)),
-                       r_lazy_eval(error_call),
+                       KEEP(r_lazy_eval(error_call)),
                        rlang_ns_env);
       r_stop_unreachable();
     }
@@ -219,7 +219,7 @@ int arg_match1(r_obj* arg,
                    KEEP(wrap_chr(arg)),
                    values,
                    KEEP(lazy_wrap_chr(error_arg)),
-                   KEEP(ffi_error_call),
+                   ffi_error_call,
                    rlang_ns_env);
   r_stop_unreachable();
 }
