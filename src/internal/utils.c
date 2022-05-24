@@ -259,6 +259,10 @@ r_obj* ffi_use_local_precious_list(r_obj* x) {
   return r_lgl(old);
 }
 
+r_obj* ffi_getppid() {
+  return r_getppid();
+}
+
 
 void rlang_init_utils() {
   warn_deprecated_call = r_parse("rlang:::warn_deprecated(x, id = y)");

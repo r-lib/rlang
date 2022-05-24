@@ -89,6 +89,7 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_fini_rlang",                   (DL_FUNC) &ffi_fini_rlang, 0},
   {"ffi_format_error_arg",             (DL_FUNC) &ffi_format_error_arg, 1},
   {"ffi_get_expression",               (DL_FUNC) &ffi_get_expression, 2},
+  {"ffi_getppid",                      (DL_FUNC) &ffi_getppid, 0},
   {"ffi_glue_is_here",                 (DL_FUNC) &ffi_glue_is_here, 0},
   {"ffi_has_local_precious_list",      (DL_FUNC) &ffi_has_local_precious_list, 0},
   {"ffi_hash",                         (DL_FUNC) &ffi_hash, 1},

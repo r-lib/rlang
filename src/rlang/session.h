@@ -4,6 +4,7 @@
 
 bool r_is_installed(const char* pkg);
 bool r_has_colour();
+r_obj* r_getppid();
 
 
 #endif
