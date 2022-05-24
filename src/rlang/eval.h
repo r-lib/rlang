@@ -156,8 +156,8 @@ r_obj* r_lazy_eval(struct r_lazy lazy) {
   }
 }
 
-static
-struct r_lazy r_lazy_null = { 0 };
+extern
+struct r_lazy r_lazy_null;
 
 extern
 struct r_lazy r_lazy_missing_arg;

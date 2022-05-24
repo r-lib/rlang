@@ -172,4 +172,5 @@ void r_init_library_eval() {
   r_lazy_missing_arg = (struct r_lazy) { .x = r_missing_arg, .env = r_null };
 }
 
+struct r_lazy r_lazy_null = { 0 };
 struct r_lazy r_lazy_missing_arg = { 0 };
