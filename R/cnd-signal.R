@@ -216,7 +216,7 @@ default_message_file <- function() {
 }
 
 is_rstudio <- function() {
-  Sys.getenv("RSTUDIO_SESSION_PID") == getppid()
+  Sys.getenv("RSTUDIO_SESSION_PID") %in% c(Sys.getpid(), getppid())
 }
 
 deprecate_subclass <- function(subclass, fn, env = caller_env()) {
