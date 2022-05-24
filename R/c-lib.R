@@ -352,6 +352,13 @@ rlang_unpreserve <- function(x) {
 }
 
 
+# session.c
+
+getppid <- function() {
+  .Call(ffi_getppid)
+}
+
+
 # tests.c
 
 c_tests <- function() {
