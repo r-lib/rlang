@@ -124,6 +124,9 @@
       <error/rlang_error>
       Error in `caller()`:
       ! Can't parse version in `pkg`.
+      x Problematic versions:
+      * foo (1.0)
+      i Example of expected version format: `rlang (>= 1.0.0)`.
     Code
       (expect_error(pkg_version_info("foo (>= 1.0)", "1.0"), "both"))
     Output

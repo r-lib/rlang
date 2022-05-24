@@ -149,9 +149,16 @@ as_version_info <- function(pkg, call = caller_env()) {
   ver <- sub(version_regex, "\\2", pkg)
   ver <- strsplit(ver, " ")
 
-  if (!every(ver, is_character2, n = 2, missing = FALSE, empty = FALSE)) {
+  ok <- map_lgl(ver, is_character2, n = 2, missing = FALSE, empty = FALSE)
+
+  if (!all(ok)) {
     abort(
-      sprintf("Can't parse version in %s.", format_arg("pkg")),
+      c(
+        sprintf("Can't parse version in %s.", format_arg("pkg")),
+        "x" = "Problematic versions:",
+        set_names(pkg[!ok], "*"),
+        "i" = "Example of expected version format: `rlang (>= 1.0.0)`."
+      ),
       call = call
     )
   }
