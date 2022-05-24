@@ -57,6 +57,7 @@ void r_init_library_globals(r_obj* ns) {
 
 void r_init_library_globals_syms() {
   r_syms.abort = r_sym("abort");
+  r_syms.arg = r_sym("arg");
   r_syms.brackets = R_BracketSymbol;
   r_syms.brackets2 = R_Bracket2Symbol;
   r_syms.call = r_sym("call");
@@ -66,6 +67,8 @@ void r_init_library_globals_syms() {
   r_syms.condition = r_sym("condition");
   r_syms.dots = R_DotsSymbol;
   r_syms.error = r_sym("error");
+  r_syms.error_arg = r_sym("error_arg");
+  r_syms.error_call = r_sym("error_call");
   r_syms.error_call_flag = r_sym(".__error_call__.");
   r_syms.expr = r_sym("expr");
   r_syms.interrupt = r_sym("interrupt");

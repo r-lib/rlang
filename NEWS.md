@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* `arg_match()` and `arg_match0()` now mention the correct call in
+  case of type error (#1388).
+
 * `abort()` and `inform()` now print messages to `stdout` in RStudio
   panes (#1393).
 

@@ -54,6 +54,7 @@ internal-files = \
         internal/exported.c \
         internal/file.c \
         internal/fn.c \
+        internal/globals.c \
         internal/hash.c \
         internal/init.c \
         internal/internal.c \
