@@ -685,6 +685,6 @@ test_that("backtrace is formatted with sources (#1396)", {
   rlang_cli_local_hyperlinks()
 
   lines <- format(err$trace)
-  n_links <- sum(grepl("file:///.*my_source.*\\.R:", lines))
+  n_links <- sum(grepl("\033]8;.*my_source.*\\.R:", lines))
   expect_true(n_links > 0)
 })
