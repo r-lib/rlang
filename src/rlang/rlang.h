@@ -75,4 +75,8 @@ bool _r_use_local_precious_list;
 #include "walk.h"
 
 
+#define r_abort_lazy_call(LAZY, ...) \
+  r_abort_call(KEEP(r_lazy_eval(LAZY)), __VA_ARGS__)
+
+
 #endif

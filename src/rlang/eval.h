@@ -143,4 +143,34 @@ r_obj* r_exec_mask7(r_obj* fn_sym, r_obj* fn,
 }
 
 
+static inline
+r_obj* r_lazy_eval(struct r_lazy lazy) {
+  if (!lazy.env) {
+    // Unitialised lazy variable
+    return r_null;
+  } else if (lazy.env == r_null) {
+    // Forced lazy variable
+    return lazy.x;
+  } else {
+    return r_eval(lazy.x, lazy.env);
+  }
+}
+
+static
+struct r_lazy r_lazy_null = { 0 };
+
+static inline
+r_obj* r_lazy_eval_protect(struct r_lazy lazy) {
+  r_obj* out = KEEP(r_lazy_eval(lazy));
+  out = r_expr_protect(out);
+
+  FREE(1);
+  return out;
+}
+
+static inline
+bool r_lazy_is_null(struct r_lazy call) {
+  return !call.x && !call.env;
+}
+
 #endif
