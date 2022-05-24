@@ -534,7 +534,10 @@ r_obj* dots_unquote(r_obj* dots, struct dots_capture_info* capture_info) {
 
 static
 enum dots_ignore_empty arg_match_ignore_empty(r_obj* ignore_empty) {
-  return r_arg_match(ignore_empty, dots_ignore_empty_values, dots_ignore_empty_arg, r_missing_arg);
+  return r_arg_match(ignore_empty,
+                     dots_ignore_empty_values,
+                     dots_ignore_empty_arg,
+                     r_lazy_missing_arg);
 }
 
 static
@@ -547,7 +550,10 @@ const char* dots_homonyms_c_values[DOTS_HOMONYMS_SIZE] = {
 
 static
 enum dots_homonyms arg_match_homonyms(r_obj* homonyms) {
-  return r_arg_match(homonyms, dots_homonyms_values, dots_homonyms_arg, r_missing_arg);
+  return r_arg_match(homonyms,
+                     dots_homonyms_values,
+                     dots_homonyms_arg,
+                     r_lazy_missing_arg);
 }
 
 static
@@ -1093,17 +1099,18 @@ void rlang_init_dots(r_obj* ns) {
   dots_homonyms_values = r_chr_n(dots_homonyms_c_values, DOTS_HOMONYMS_SIZE);
   r_preserve_global(dots_homonyms_values);
 
-  dots_ignore_empty_arg = r_sym(".ignore_empty");
-  dots_homonyms_arg = r_sym(".homonyms");
+  dots_ignore_empty_arg = (struct r_lazy) { .x = r_sym(".ignore_empty"), .env = r_null };
+  dots_homonyms_arg = (struct r_lazy) { .x = r_sym(".homonyms"), .env = r_null };
 }
 
 static r_obj* auto_name_call = NULL;
 static r_obj* empty_spliced_arg = NULL;
 static r_obj* glue_unquote_fn = NULL;
-static r_obj* dots_homonyms_arg = NULL;
 static r_obj* dots_homonyms_values = NULL;
-static r_obj* dots_ignore_empty_arg = NULL;
 static r_obj* dots_ignore_empty_values = NULL;
 static r_obj* quosures_attrib = NULL;
 static r_obj* splice_box_attrib = NULL;
 static r_obj* abort_dots_homonyms_ns_sym = NULL;
+
+static struct r_lazy dots_homonyms_arg = { 0 };
+static struct r_lazy dots_ignore_empty_arg = { 0 };

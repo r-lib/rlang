@@ -207,11 +207,19 @@ int arg_match1(r_obj* arg,
     }
   }
 
+  r_obj* ffi_error_call = r_lazy_eval(error_call);
+  if (ffi_error_call == r_missing_arg) {
+    // Replace `error_call` by environment on the stack because
+    // `r_eval_with_` evaluates in an out-of-stack mask
+    ffi_error_call = r_peek_frame();
+  }
+  KEEP(ffi_error_call);
+
   r_eval_with_wxyz(stop_arg_match_call,
                    KEEP(wrap_chr(arg)),
                    values,
                    KEEP(lazy_wrap_chr(error_arg)),
-                   KEEP(r_lazy_eval(error_call)),
+                   KEEP(ffi_error_call),
                    rlang_ns_env);
   r_stop_unreachable();
 }

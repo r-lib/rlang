@@ -159,6 +159,9 @@ r_obj* r_lazy_eval(struct r_lazy lazy) {
 static
 struct r_lazy r_lazy_null = { 0 };
 
+extern
+struct r_lazy r_lazy_missing_arg;
+
 static inline
 r_obj* r_lazy_eval_protect(struct r_lazy lazy) {
   r_obj* out = KEEP(r_lazy_eval(lazy));
