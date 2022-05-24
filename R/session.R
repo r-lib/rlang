@@ -74,7 +74,13 @@ detect_installed <- function(info) {
   }
 
   flatten_lgl(pmap(info, function(pkg, cmp, ver) {
-    if (requireNamespace(pkg, quietly = TRUE)) {
+    # Check for sealed namespaces to protect against `is_installed()`
+    # being called from user hooks of `pkg` (#1378)
+    is_fully_loaded <-
+      requireNamespace(pkg, quietly = TRUE) &&
+      env_is_locked(ns_env(pkg))
+
+    if (is_fully_loaded) {
       is_na(ver) || exec(cmp, utils::packageVersion(pkg), ver)
     } else {
       FALSE

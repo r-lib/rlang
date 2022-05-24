@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* `is_installed()` now detects unsealed namespaces (#1378). This fixes
+  inconsistent behaviour when run within user onLoad hooks.
+
 * Source references in backtraces and `last_error()`/`last_trace()` instructions
   are now clickable in IDEs that support links (#1396).
 
