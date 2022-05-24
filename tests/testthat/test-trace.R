@@ -673,3 +673,18 @@ test_that("can format empty traces", {
   trace <- new_trace(list(), int())
   expect_snapshot_trace(trace)
 })
+
+test_that("backtrace is formatted with sources (#1396)", {
+  file <- tempfile("my_source", fileext = ".R")
+  with_srcref(file = file, "
+    f <- function() g()
+    g <- function() abort('foo')
+  ")
+  err <- catch_cnd(f(), "error")
+
+  rlang_cli_local_hyperlinks()
+
+  lines <- format(err$trace)
+  n_links <- sum(grepl("\033]8;.*my_source.*\\.R:", lines))
+  expect_true(n_links > 0)
+})
