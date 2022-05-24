@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* `abort()` and `inform()` now print messages to `stdout` in RStudio
+  panes (#1393).
+
 * `is_installed()` now detects unsealed namespaces (#1378). This fixes
   inconsistent behaviour when run within user onLoad hooks.
 
