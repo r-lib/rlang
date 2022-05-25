@@ -512,3 +512,23 @@ test_that("fallback method supports unknown bullets (#1364)", {
     (expect_error(abort(c(i1 = "foo", i2 = "bar"))))
   })
 })
+
+test_that("`cnd_message(prefix = TRUE)` propagates warning style across parent errors (#1387)", {
+  local_options(cli.num_colors = 8)
+
+  hnd_message <- function(cnd) cnd_message(cnd, prefix = TRUE)
+
+  msg_warning <- try_fetch(
+    error = function(cnd) warn("foo", parent = cnd),
+    condition = hnd_message,
+    abort("bar")
+  )
+  msg_error <- try_fetch(
+    error = function(cnd) abort("foo", parent = cnd),
+    condition = hnd_message,
+    abort("bar")
+  )
+
+  expect_false(grepl("\033\\[1mCaused by error", msg_warning))
+  expect_true(grepl("\033\\[1mCaused by error", msg_error))
+})

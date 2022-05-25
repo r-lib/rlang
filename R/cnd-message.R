@@ -72,9 +72,11 @@ cnd_message <- function(cnd, ..., inherit = TRUE, prefix = FALSE) {
     msg <- cnd_message_format(cnd, ...)
   }
 
+  warning <- inherits(cnd, "warning")
+
   # Parent messages are always prefixed
   while (is_condition(cnd <- cnd$parent)) {
-    parent_msg <- cnd_message_format_prefixed(cnd, parent = TRUE)
+    parent_msg <- cnd_message_format_prefixed(cnd, parent = TRUE, warning = warning)
     msg <- paste_line(msg, parent_msg)
   }
 
@@ -208,7 +210,8 @@ exec_cnd_method <- function(name, cnd) {
 cnd_message_format_prefixed <- function(cnd,
                                         ...,
                                         parent = FALSE,
-                                        alert = NULL) {
+                                        alert = NULL,
+                                        warning = FALSE) {
   type <- cnd_type(cnd)
 
   if (is_null(alert)) {
@@ -243,7 +246,9 @@ cnd_message_format_prefixed <- function(cnd,
       prefix <- sprintf("%s in %s:", prefix, call)
     }
   }
-  prefix <- style_bold(prefix)
+  if (!warning) {
+    prefix <- style_bold(prefix)
+  }
 
   paste0(prefix, "\n", message)
 }

@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* Warning style is propagated across parent errors in chained error
+  messages (#1387).
+
 * `check_installed()` now works within catch-all `tryCatch(error = )`
   expressions (#1402, tidyverse/ggplot2#4845).
 
