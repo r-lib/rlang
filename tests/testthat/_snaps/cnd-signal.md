@@ -7,9 +7,9 @@
       ---
       Backtrace:
         1. rlang::catch_cnd(f())
-        8. rlang f()
-        9. rlang g()
-       10. rlang h()
+        8. rlang (local) f()
+        9. rlang (local) g()
+       10. rlang (local) h()
 
 # `inform()` and `warn()` with recurrent footer handle newlines correctly
 

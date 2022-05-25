@@ -857,7 +857,7 @@ trace_call_text <- function(call, collapsed, namespace, scope) {
   if (is_string(scope, "global")) {
     text <- paste0("global ", text)
   } else if (is_string(scope, "local") && !is_na(namespace)) {
-    text <- paste0(namespace, " ", text)
+    text <- paste0(namespace, " (local) ", text)
   }
 
   if (collapsed) {

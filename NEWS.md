@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* Calls to local functions that are not accessible through `::` or
+  `:::` are now marked with `(local)` in backtraces (#1399).
+
 * Error messages now mention indexed calls like `foo$bar()`.
 
 * New `env_coalesce()` function to copy bindings from one environment
