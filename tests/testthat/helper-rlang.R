@@ -26,6 +26,17 @@ run_script <- function(file, envvars = chr()) {
   ))
 }
 
+run_code <- function(code) {
+  file <- withr::local_tempfile()
+  writeLines(code, file)
+
+  out <- run_script(file)
+  list(
+    success = identical(attr(out, "status"), 0L),
+    output = unstructure(out)
+  )
+}
+
 local_methods <- function(..., .frame = caller_env()) {
   local_bindings(..., .env = global_env(), .frame = .frame)
 }

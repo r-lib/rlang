@@ -417,7 +417,7 @@ abort_context <- function(frame,
     bottom_frame <- NULL
   }
 
-  if (is_null(setup_caller) && setup_loc) {
+  if (is_null(setup_caller) && setup_loc && parents[[setup_loc]]) {
     setup_caller <- frames[[parents[[setup_loc]]]]
   }
 

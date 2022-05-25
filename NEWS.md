@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* Chaining errors at top-level (directly in the console instead of in
+  a function) no longer fails (#1405).
+
 * Warning style is propagated across parent errors in chained error
   messages (#1387).
 

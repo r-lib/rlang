@@ -829,3 +829,23 @@ test_that("base causal errors include full user backtrace", {
     print(expect_error(my_verb(add(1, ""))))
   })
 })
+
+test_that("can chain errors at top-level (#1405)", {
+  out <- run_code("
+    tryCatch(
+      error = function(err) rlang::abort('bar', parent = err),
+      rlang::abort('foo')
+    )
+  ")
+  expect_true(any(grepl("foo", out$output)))
+  expect_true(any(grepl("bar", out$output)))
+
+  out <- run_code("
+    withCallingHandlers(
+      error = function(err) rlang::abort('bar', parent = err),
+      rlang::abort('foo')
+    )
+  ")
+  expect_true(any(grepl("foo", out$output)))
+  expect_true(any(grepl("bar", out$output)))
+})
