@@ -26,10 +26,10 @@
 #' @inheritParams cnd
 #' @param message The message to display, formatted as a __bulleted
 #'   list__. The first element is displayed as an _alert_ bullet
-#'   prefixed with `!` by default. Elements named `"*"`, `"i"`, and
-#'   `"x"` are formatted as regular, info, and cross bullets
-#'   respectively. See `r link("topic_condition_formatting")` for more
-#'   about bulleted messaging.
+#'   prefixed with `!` by default. Elements named `"*"`, `"i"`, `"v"`,
+#'   `"x"`, and `"!"` are formatted as regular, info, success,
+#'   failure, and error bullets respectively. See `r link("topic_condition_formatting")`
+#'   for more about bulleted messaging.
 #'
 #'   If a message is not supplied, it is expected that the message is
 #'   generated __lazily__ through [cnd_header()] and [cnd_body()]

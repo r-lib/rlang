@@ -53,10 +53,10 @@ signal(message, class, ..., .subclass = deprecated())
 \arguments{
 \item{message}{The message to display, formatted as a \strong{bulleted
 list}. The first element is displayed as an \emph{alert} bullet
-prefixed with \code{!} by default. Elements named \code{"*"}, \code{"i"}, and
-\code{"x"} are formatted as regular, info, and cross bullets
-respectively. Se\ifelse{html}{\link[=topic-condition-formatting]{Formatting messages with cli}}{\link[=topic-condition-formatting]{Formatting messages with cli}})` for more
-about bulleted messaging.
+prefixed with \code{!} by default. Elements named \code{"*"}, \code{"i"}, \code{"v"},
+\code{"x"}, and \code{"!"} are formatted as regular, info, success,
+failure, and error bullets respectively. Se\ifelse{html}{\link[=topic-condition-formatting]{Formatting messages with cli}}{\link[=topic-condition-formatting]{Formatting messages with cli}})`
+for more about bulleted messaging.
 
 If a message is not supplied, it is expected that the message is
 generated \strong{lazily} through \code{\link[=cnd_header]{cnd_header()}} and \code{\link[=cnd_body]{cnd_body()}}
