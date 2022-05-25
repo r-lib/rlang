@@ -365,3 +365,12 @@ style_rlang_run <- function(code) {
     paste0("rstudio:run:rlang::", code)
   )
 }
+
+vec_remove <- function(x, values) {
+  loc <- match(values, x, nomatch = 0)
+  if (sum(loc) == 0) {
+    x
+  } else {
+    x[-loc]
+  }
+}

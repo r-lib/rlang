@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* `check_installed()` now works within catch-all `tryCatch(error = )`
+  expressions (#1402, tidyverse/ggplot2#4845).
+
 * `arg_match()` and `arg_match0()` now mention the correct call in
   case of type error (#1388).
 

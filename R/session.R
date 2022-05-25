@@ -244,12 +244,17 @@ check_installed <- function(pkg,
     "Would you like to install it?",
     "Would you like to install them?"
   )
-
-  cat(paste_line(
+  question <- paste_line(
     paste0(info(), " ", header),
     paste0(cross(), " ", question),
     .trailing = TRUE
-  ))
+  )
+
+  if (is_true(peek_option("rlang:::check_installed_test_hook"))) {
+    return(question)
+  }
+
+  cat(question)
 
   if (utils::menu(c("Yes", "No")) != 1) {
     # Pass condition in case caller sets up an `abort` restart
@@ -371,6 +376,8 @@ cnd_header.rlib_error_package_not_found <- function(cnd, ...) {
 }
 
 signal_package_not_found <- function(cnd) {
+  class(cnd) <- vec_remove(class(cnd), "error")
+
   withRestarts({
     signalCondition(cnd)
     FALSE

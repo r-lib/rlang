@@ -204,3 +204,15 @@ test_that("`action` is checked", {
     err(check_installed("foo", action = identity))
   })
 })
+
+test_that("`check_installed()` works within `tryCatch(error = )` (#1402, tidyverse/ggplot2#4845)", {
+  local_options("rlang:::check_installed_test_hook" = TRUE)
+  local_interactive()
+
+  expect_snapshot({
+    cat(tryCatch(
+      error = function(cnd) NULL,
+      check_installed("rlangFoo")
+    ))
+  })
+})

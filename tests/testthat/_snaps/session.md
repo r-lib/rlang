@@ -186,3 +186,11 @@
       Error in `check_installed()`:
       ! `action` must take a `...` argument.
 
+# `check_installed()` works within `tryCatch(error = )` (#1402, tidyverse/ggplot2#4845)
+
+    Code
+      cat(tryCatch(error = function(cnd) NULL, check_installed("rlangFoo")))
+    Output
+      i The package `rlangFoo` is required.
+      x Would you like to install it?
+
