@@ -89,6 +89,11 @@ struct r_pair_callback {
   void* data;
 };
 
+struct r_lazy {
+  r_obj* x;
+  r_obj* env;
+};
+
 
 #define KEEP PROTECT
 #define FREE UNPROTECT

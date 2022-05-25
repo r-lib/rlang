@@ -207,3 +207,18 @@
       ! Exactly one of `foo`, `bar`, or `baz` must be supplied.
       x `foo` and `bar` were supplied together.
 
+# arg_match() mentions correct call if wrong type is supplied (#1388)
+
+    Code
+      (expect_error(f(1)))
+    Output
+      <error/rlang_error>
+      Error in `f()`:
+      ! `my_arg` must be a string or character vector.
+    Code
+      (expect_error(g(1)))
+    Output
+      <error/rlang_error>
+      Error in `g()`:
+      ! `my_arg` must be a character vector, not a number.
+

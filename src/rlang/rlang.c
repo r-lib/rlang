@@ -94,6 +94,7 @@ r_obj* r_init_library(r_obj* ns) {
   r_init_library_cnd();
   r_init_library_dyn_array();
   r_init_library_env();
+  r_init_library_eval();
   r_init_library_fn();
   r_init_library_quo();
   r_init_library_session();

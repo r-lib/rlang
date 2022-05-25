@@ -3,6 +3,7 @@
 
 #include "arg.h"
 #include "call.h"
+#include "globals.h"
 #include "quo.h"
 #include "vec.h"
 

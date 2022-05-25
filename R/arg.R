@@ -98,7 +98,7 @@ arg_match0 <- function(arg,
                        values,
                        arg_nm = caller_arg(arg),
                        error_call = caller_env()) {
-  .External(ffi_arg_match0, arg, values, arg_nm, error_call)
+  .External(ffi_arg_match0, arg, values, environment())
 }
 
 stop_arg_match <- function(arg, values, error_arg, error_call) {

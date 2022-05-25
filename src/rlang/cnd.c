@@ -182,3 +182,10 @@ static
 r_obj* cnd_signal_call = NULL;
 
 const char* (*r_format_error_arg)(r_obj* arg) = NULL;
+
+const char* r_format_lazy_error_arg(struct r_lazy arg) {
+  r_obj* ffi_arg = KEEP(r_lazy_eval(arg));
+  const char* out = r_format_error_arg(ffi_arg);
+  FREE(1);
+  return out;
+}

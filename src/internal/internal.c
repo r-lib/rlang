@@ -1,6 +1,8 @@
 #include <rlang.h>
 #include "internal.h"
 
+#include "globals.c"
+
 #include "arg.c"
 #include "attr.c"
 #include "call.c"
@@ -44,6 +46,8 @@ r_obj* fns_function = NULL;
 r_obj* fns_quote = NULL;
 
 void rlang_init_internal(r_obj* ns) {
+  rlang_init_globals(ns);
+
   rlang_init_utils();
   rlang_init_arg(ns);
   rlang_init_attr(ns);

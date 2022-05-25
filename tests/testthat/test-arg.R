@@ -300,3 +300,13 @@ test_that("check_exclusive works", {
     (expect_error(g(foo, bar)))
   })
 })
+
+test_that("arg_match() mentions correct call if wrong type is supplied (#1388)", {
+  f <- function(my_arg) arg_match0(my_arg, "a")
+  g <- function(my_arg) arg_match(my_arg, "a")
+
+  expect_snapshot({
+    (expect_error(f(1)))
+    (expect_error(g(1)))
+  })
+})
