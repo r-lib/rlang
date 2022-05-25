@@ -1003,7 +1003,7 @@
           ## Error in `h()`:
           ## ! foo
       
-          ## Run `rlang::last_error()` to see where the error occurred.
+          ## Run `rlang::last_error()` or `rlang::last_trace()` to see where the error occurred.
       
           options(rlang_backtrace_on_error_report = "full")
           f()
