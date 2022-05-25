@@ -261,7 +261,7 @@ extern uint64_t XXH3_64bits(const void*, size_t);
 r_visible
 void R_init_rlang(DllInfo* dll) {
   R_RegisterCCallable("rlang", "rlang_arg_match",           (DL_FUNC) &arg_match_legacy);
-  R_RegisterCCallable("rlang", "rlang_arg_match_2",         (DL_FUNC) &arg_match);
+  R_RegisterCCallable("rlang", "rlang_arg_match_2",         (DL_FUNC) &cci_arg_match);
   R_RegisterCCallable("rlang", "rlang_as_data_mask_3.0.0",  (DL_FUNC) &ffi_as_data_mask);
   R_RegisterCCallable("rlang", "rlang_as_data_pronoun",     (DL_FUNC) &ffi_as_data_pronoun);
   R_RegisterCCallable("rlang", "rlang_env_unbind",          (DL_FUNC) &r_env_unbind);

@@ -82,6 +82,7 @@ r_obj* ffi_enquo(r_obj* sym, r_obj* frame) {
 
 // Match ------------------------------------------------------------------
 
+static
 int arg_match(r_obj* arg,
               r_obj* values,
               struct r_lazy error_arg,
@@ -224,22 +225,6 @@ int arg_match1(r_obj* arg,
   r_stop_unreachable();
 }
 
-
-r_obj* ffi_arg_match0(r_obj* args) {
-  args = r_node_cdr(args);
-
-  r_obj* arg = r_node_car(args); args = r_node_cdr(args);
-  r_obj* values = r_node_car(args); args = r_node_cdr(args);
-  r_obj* frame = r_node_car(args);
-
-  struct r_lazy error_arg = { .x = syms.arg_nm, .env = frame };
-  struct r_lazy error_call = { .x = r_syms.error_call, .env = frame };
-  struct r_lazy call = { .x = frame, .env = r_null };
-
-  int i = arg_match(arg, values, error_arg, error_call, call);
-  return r_str_as_character(r_chr_get(values, i));
-}
-
 static
 r_obj* wrap_chr(r_obj* arg) {
   switch (arg_match_arg_nm_type(arg)) {
@@ -275,6 +260,29 @@ enum r_type arg_match_arg_nm_type(r_obj* arg_nm) {
   default:
       r_abort("`arg_nm` must be a string or symbol.");
   }
+}
+
+
+int cci_arg_match(r_obj* arg,
+                  r_obj* values,
+                  struct r_lazy error_arg,
+                  struct r_lazy error_call) {
+  return arg_match(arg, values, error_arg, error_call, r_lazy_null);
+}
+
+r_obj* ffi_arg_match0(r_obj* args) {
+  args = r_node_cdr(args);
+
+  r_obj* arg = r_node_car(args); args = r_node_cdr(args);
+  r_obj* values = r_node_car(args); args = r_node_cdr(args);
+  r_obj* frame = r_node_car(args);
+
+  struct r_lazy error_arg = { .x = syms.arg_nm, .env = frame };
+  struct r_lazy error_call = { .x = r_syms.error_call, .env = frame };
+  struct r_lazy call = { .x = frame, .env = r_null };
+
+  int i = arg_match(arg, values, error_arg, error_call, call);
+  return r_str_as_character(r_chr_get(values, i));
 }
 
 
