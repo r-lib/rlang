@@ -3,6 +3,8 @@
 "_PACKAGE"
 
 on_load({
+  # TODO! Once pkgload is on CRAN
+  # check_downstream("1.0.3", "pkgload (>= 1.2.5)")
   check_downstream("0.4.0", "dplyr (>= 0.8.0)")
   check_downstream(
     "1.0.0",
