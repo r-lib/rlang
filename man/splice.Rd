@@ -83,14 +83,18 @@ if you use a standard function taking tidy dots within a quoting
 function, the \verb{!!!} operator will disaggregate its argument because
 the behaviour of the quasiquoting function has priority. You might
 then observe some performance cost in edge cases. Here is one
-example where this would happen:\preformatted{purrr::rerun(10, dplyr::bind_rows(!!! x))
-}
+example where this would happen:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{purrr::rerun(10, dplyr::bind_rows(!!! x))
+}\if{html}{\out{</div>}}
 
 \code{purrr::rerun()} is a quoting function and \code{dplyr::bind_rows()} is
 a standard function. Because \code{bind_rows()} is called \emph{inside}
 \code{rerun()}, the list \code{x} will be disaggregated into a pairlist of
-arguments. To avoid this you can use \code{splice()} instead:\preformatted{purrr::rerun(10, dplyr::bind_rows(splice(x)))
-}
+arguments. To avoid this you can use \code{splice()} instead:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{purrr::rerun(10, dplyr::bind_rows(splice(x)))
+}\if{html}{\out{</div>}}
 }
 
 \section{Life cycle}{

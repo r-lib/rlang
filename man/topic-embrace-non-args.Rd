@@ -4,7 +4,9 @@
 \alias{topic-embrace-non-args}
 \title{Does \verb{\{\{} work on regular objects?}
 \description{
-The embrace operator \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}} should be used exclusively with function arguments:\if{html}{\out{<div class="sourceCode r">}}\preformatted{fn <- function(arg) \{
+The embrace operator \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}} should be used exclusively with function arguments:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{fn <- function(arg) \{
   quo(foo(\{\{ arg \}\}))
 \}
 
@@ -14,7 +16,9 @@ fn(1 + 1)
 #> env:  0x7ffd89aac518
 }\if{html}{\out{</div>}}
 
-However you may have noticed that it also works on regular objects:\if{html}{\out{<div class="sourceCode r">}}\preformatted{fn <- function(arg) \{
+However you may have noticed that it also works on regular objects:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{fn <- function(arg) \{
   arg <- force(arg)
   quo(foo(\{\{ arg \}\}))
 \}

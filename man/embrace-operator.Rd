@@ -8,7 +8,9 @@
 The embrace operator \verb{\{\{} is used to create functions that call
 other \link[=topic-data-mask]{data-masking} functions. It transports a
 data-masked argument (an argument that can refer to columns of a
-data frame) from one function to another.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
+data frame) from one function to another.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
   dplyr::summarise(data, mean = mean(\{\{ var \}\}))
 \}
 }\if{html}{\out{</div>}}
@@ -17,7 +19,9 @@ data frame) from one function to another.\if{html}{\out{<div class="sourceCode r
 
 
 \verb{\{\{} combines \code{\link[=enquo]{enquo()}} and \code{\link[=injection-operator]{!!}} in one
-step. The snippet above is equivalent to:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
+step. The snippet above is equivalent to:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
   var <- enquo(var)
   dplyr::summarise(data, mean = mean(!!var))
 \}

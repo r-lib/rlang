@@ -41,7 +41,9 @@ error. If you don't explicitly jump with an \emph{error} or a \emph{value}
 throw, nothing happens.
 
 Since we don't want to throw an error, we'll throw a value using
-\code{\link[=callCC]{callCC()}}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{f <- function() \{
+\code{\link[=callCC]{callCC()}}:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{f <- function() \{
   parent <- error_cnd("bar", message = "Bar")
   abort("Foo", parent = parent)
 \}
@@ -65,7 +67,9 @@ class(cnd$parent)
 This pattern is easier with \code{\link[=try_fetch]{try_fetch()}}. Like
 \code{withCallingHandlers()}, it doesn't capture a matching error right
 away. Instead, it captures it only if the handler doesn't return a
-\code{\link[=zap]{zap()}} value.\if{html}{\out{<div class="sourceCode r">}}\preformatted{cnd <- try_fetch(
+\code{\link[=zap]{zap()}} value.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cnd <- try_fetch(
   f(),
   error = function(x) if (cnd_inherits(x, "bar")) x else zap()
 )

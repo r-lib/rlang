@@ -7,7 +7,9 @@
 A quosure is a special type of \link[=topic-defuse]{defused expression} that keeps track of the original context the expression was written in. The tracking capabilities of quosures is important when interfacing \link[=topic-data-mask]{data-masking} functions together because the functions might come from two unrelated environments, like two different packages.
 }
 \section{Blending environments}{
-Let's take an example where the R user calls the function \code{summarise_bmi()} from the foo package to summarise a data frame with statistics of a BMI value. Because the \code{height} variable of their data frame is not in metres, they use a custom function \code{div100()} to rescale the column.\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Global environment of user
+Let's take an example where the R user calls the function \code{summarise_bmi()} from the foo package to summarise a data frame with statistics of a BMI value. Because the \code{height} variable of their data frame is not in metres, they use a custom function \code{div100()} to rescale the column.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Global environment of user
 
 div100 <- function(x) \{
   x / 100
@@ -17,7 +19,9 @@ dplyr::starwars \%>\%
   foo::summarise_bmi(mass, div100(height))
 }\if{html}{\out{</div>}}
 
-The \code{summarise_bmi()} function is a data-masking function defined in the namespace of the foo package which looks like this:\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Namespace of package foo
+The \code{summarise_bmi()} function is a data-masking function defined in the namespace of the foo package which looks like this:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Namespace of package foo
 
 bmi <- function(mass, height) \{
   mass / height^2
@@ -29,7 +33,9 @@ summarise_bmi <- function(data, mass, height) \{
 \}
 }\if{html}{\out{</div>}}
 
-The foo package uses the custom function \code{bmi()} to perform a computation on two vectors. It interfaces with \code{summarise_stats()} defined in bar, another package whose namespace looks like this:\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Namespace of package bar
+The foo package uses the custom function \code{bmi()} to perform a computation on two vectors. It interfaces with \code{summarise_stats()} defined in bar, another package whose namespace looks like this:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Namespace of package bar
 
 check_numeric <- function(x) \{
   stopifnot(is.numeric(x))
@@ -59,7 +65,9 @@ There are three data-masking functions simultaneously interfacing in this snippe
 
 There is a fourth context, the global environment where \code{summarise_bmi()} is called with two columns defined in a data frame, one of which is transformed on the fly with the user function \code{div100()}.
 
-All of these contexts (except to some extent the global environment) contain functions that are private and invisible to foreign functions. Yet, the final expanded data-masked expression that is evaluated down the line looks like this (with caret characters indicating the quosure boundaries):\if{html}{\out{<div class="sourceCode r">}}\preformatted{dplyr::transmute(
+All of these contexts (except to some extent the global environment) contain functions that are private and invisible to foreign functions. Yet, the final expanded data-masked expression that is evaluated down the line looks like this (with caret characters indicating the quosure boundaries):
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{dplyr::transmute(
   var = ^check_numeric(^bmi(^mass, ^div100(height)))
 )
 }\if{html}{\out{</div>}}
@@ -71,7 +79,9 @@ The role of quosures is to let R know that \code{check_numeric()} should be foun
 As a tidyverse user you generally don't need to worry about quosures because \verb{\{\{} and \code{...} will create them for you. Introductory texts like \href{https://dplyr.tidyverse.org/articles/programming.html}{Programming with dplyr} or the \link[=topic-data-mask-programming]{standard data-mask programming patterns} don't even mention the term. In more complex cases you might need to create quosures with \code{\link[=enquo]{enquo()}} or \code{\link[=enquos]{enquos()}} (even though you generally don't need to know or care that these functions return quosures). In this section, we explore when quosures are necessary in these more advanced applications.
 \subsection{Foreign and local expressions}{
 
-As a rule of thumb, quosures are only needed for arguments defused with \code{\link[=enquo]{enquo()}} or \code{\link[=enquos]{enquos()}} (or with \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}} which calls \code{enquo()} implicitly):\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function <- function(var) \{
+As a rule of thumb, quosures are only needed for arguments defused with \code{\link[=enquo]{enquo()}} or \code{\link[=enquos]{enquos()}} (or with \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}} which calls \code{enquo()} implicitly):
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function <- function(var) \{
   var <- enquo(var)
   their_function(!!var)
 \}
@@ -82,7 +92,9 @@ my_function <- function(var) \{
 \}
 }\if{html}{\out{</div>}}
 
-Wrapping defused arguments in quosures is needed because expressions supplied as argument comes from a different environment, the environment of your user. For local expressions created in your function, you generally don't need to create quosures:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
+Wrapping defused arguments in quosures is needed because expressions supplied as argument comes from a different environment, the environment of your user. For local expressions created in your function, you generally don't need to create quosures:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
   # `expr()` is sufficient, no need for `quo()`
   expr <- expr(mean(\{\{ var \}\}))
   dplyr::summarise(data, !!expr)
@@ -97,7 +109,9 @@ my_mean(mtcars, cyl)
 
 Using \code{\link[=quo]{quo()}} instead of \code{\link[=expr]{expr()}} would have worked too but it is superfluous because \code{dplyr::summarise()}, which uses \code{\link[=enquos]{enquos()}}, is already in charge of wrapping your expression within a quosure scoped in your environment.
 
-The same applies if you evaluate manually. By default, \code{\link[=eval]{eval()}} and \code{\link[=eval_tidy]{eval_tidy()}} capture your environment:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
+The same applies if you evaluate manually. By default, \code{\link[=eval]{eval()}} and \code{\link[=eval_tidy]{eval_tidy()}} capture your environment:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
   expr <- expr(mean(\{\{ var \}\}))
   eval_tidy(expr, data)
 \}
@@ -109,7 +123,9 @@ my_mean(mtcars, cyl)
 
 \subsection{External defusing}{
 
-An exception to this rule of thumb (wrap foreign expressions in quosures, not your own expressions) arises when your function takes multiple expressions in a list instead of \code{...}. The preferred approach in that case is to take a tidy selection so that users can combine multiple columns using \code{c()}. If that is not possible, you can take a list of externally defused expressions:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_group_by <- function(data, vars) \{
+An exception to this rule of thumb (wrap foreign expressions in quosures, not your own expressions) arises when your function takes multiple expressions in a list instead of \code{...}. The preferred approach in that case is to take a tidy selection so that users can combine multiple columns using \code{c()}. If that is not possible, you can take a list of externally defused expressions:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_group_by <- function(data, vars) \{
   stopifnot(is_quosures(vars))
   data \%>\% dplyr::group_by(!!!vars)
 \}
@@ -117,7 +133,9 @@ An exception to this rule of thumb (wrap foreign expressions in quosures, not yo
 mtcars \%>\% my_group_by(dplyr::vars(cyl, am))
 }\if{html}{\out{</div>}}
 
-In this pattern, \code{dplyr::vars()} defuses expressions externally. It creates a list of quosures because the expressions are passed around from function to function like regular arguments. In fact, \code{dplyr::vars()} and \code{ggplot2::vars()} are simple aliases of \code{\link[=quos]{quos()}}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{dplyr::vars(cyl, am)
+In this pattern, \code{dplyr::vars()} defuses expressions externally. It creates a list of quosures because the expressions are passed around from function to function like regular arguments. In fact, \code{dplyr::vars()} and \code{ggplot2::vars()} are simple aliases of \code{\link[=quos]{quos()}}.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{dplyr::vars(cyl, am)
 #> <list_of<quosure>>
 #> 
 #> [[1]]

@@ -4,7 +4,9 @@
 \alias{topic-data-mask}
 \title{What is data-masking and why do I need \verb{\{\{}?}
 \description{
-Data-masking is a distinctive feature of R whereby programming is performed directly on a data set, with columns defined as normal objects.\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Unmasked programming
+Data-masking is a distinctive feature of R whereby programming is performed directly on a data set, with columns defined as normal objects.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Unmasked programming
 mean(mtcars$cyl + mtcars$am)
 #> [1] 6.59375
 
@@ -22,7 +24,9 @@ While data-masking makes it easy to program interactively with data frames, it m
 \section{Why does data-masking require embracing and injection?}{
 Injection (also known as quasiquotation) is a metaprogramming feature that allows you to modify parts of a program. This is needed because under the hood data-masking works by \link[=topic-defuse]{defusing} R code to prevent its immediate evaluation. The defused code is resumed later on in a context where data frame columns are defined.
 
-Let's see what happens when we pass arguments to a data-masking function like \code{summarise()} in the normal way:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var1, var2) \{
+Let's see what happens when we pass arguments to a data-masking function like \code{summarise()} in the normal way:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var1, var2) \{
   dplyr::summarise(data, mean(var1 + var2))
 \}
 
@@ -35,7 +39,9 @@ my_mean(mtcars, cyl, am)
 
 The problem here is that \code{summarise()} defuses the R code it was supplied, i.e. \code{mean(var1 + var2)}.  Instead we want it to see \code{mean(cyl + am)}. This is why we need injection, we need to modify that piece of code by injecting the code supplied to the function in place of \code{var1} and \code{var2}.
 
-To inject a function argument in data-masked context, just embrace it with \verb{\{\{}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var1, var2) \{
+To inject a function argument in data-masked context, just embrace it with \verb{\{\{}:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var1, var2) \{
   dplyr::summarise(data, mean(\{\{ var1 \}\} + \{\{ var2 \}\}))
 \}
 
@@ -50,7 +56,9 @@ See \ifelse{html}{\link[=topic-data-mask-programming]{Data mask programming patt
 }
 
 \section{What does "masking" mean?}{
-In normal R programming objects are defined in the current environment, for instance in the global environment or the environment of a function.\if{html}{\out{<div class="sourceCode r">}}\preformatted{factor <- 1000
+In normal R programming objects are defined in the current environment, for instance in the global environment or the environment of a function.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{factor <- 1000
 
 # Can now use `factor` in computations
 mean(mtcars$cyl * factor)
@@ -61,7 +69,9 @@ This environment also contains all functions currently in scope. In a script thi
 
 To keep these objects and functions in scope, the data frame is inserted at the bottom of the current chain of environments. It comes first and has precedence over the user environment. In other words, it \emph{masks} the user environment.
 
-Since masking blends the data and the user environment by giving priority to the former, R can sometimes use a data frame column when you really intended to use a local object.\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Defining an env-variable
+Since masking blends the data and the user environment by giving priority to the former, R can sometimes use a data frame column when you really intended to use a local object.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Defining an env-variable
 cyl <- 1000
 
 # Referring to a data-variable
@@ -72,7 +82,9 @@ dplyr::summarise(mtcars, mean(cyl))
 #> 1        6.19
 }\if{html}{\out{</div>}}
 
-The tidy eval framework provides \link[=.data]{pronouns} to help disambiguate between the mask and user contexts. It is often a good idea to use these pronouns in production code.\if{html}{\out{<div class="sourceCode r">}}\preformatted{cyl <- 1000
+The tidy eval framework provides \link[=.data]{pronouns} to help disambiguate between the mask and user contexts. It is often a good idea to use these pronouns in production code.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cyl <- 1000
 
 mtcars \%>\%
   dplyr::summarise(
@@ -92,22 +104,30 @@ Read more about this in \ifelse{html}{\link[=topic-data-mask-ambiguity]{The data
 Data-masking relies on three language features:
 \itemize{
 \item \link[=topic-defuse]{Argument defusal} with \code{\link[=substitute]{substitute()}} (base R) or \code{\link[=enquo]{enquo()}}, \code{\link[=enquos]{enquos()}}, and \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}} (rlang). R code is defused so it can be evaluated later on in a special environment enriched with data.
-\item First class environments. Environments are a special type of list-like object in which defused R code can be evaluated.  The named elements in an environment define objects. Lists and data frames can be transformed to environments:\if{html}{\out{<div class="sourceCode r">}}\preformatted{as.environment(mtcars)
+\item First class environments. Environments are a special type of list-like object in which defused R code can be evaluated.  The named elements in an environment define objects. Lists and data frames can be transformed to environments:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{as.environment(mtcars)
 #> <environment: 0x7febb17e3468>
 }\if{html}{\out{</div>}}
-\item Explicit evaluation with \code{\link[=eval]{eval()}} (base) or \code{\link[=eval_tidy]{eval_tidy()}} (rlang). When R code is defused, evaluation is interrupted. It can be resumed later on with \code{\link[=eval]{eval()}}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{expr(1 + 1)
+\item Explicit evaluation with \code{\link[=eval]{eval()}} (base) or \code{\link[=eval_tidy]{eval_tidy()}} (rlang). When R code is defused, evaluation is interrupted. It can be resumed later on with \code{\link[=eval]{eval()}}:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{expr(1 + 1)
 #> 1 + 1
 
 eval(expr(1 + 1))
 #> [1] 2
 }\if{html}{\out{</div>}}
 
-By default \code{eval()} and \code{eval_tidy()} evaluate in the current environment.\if{html}{\out{<div class="sourceCode r">}}\preformatted{code <- expr(mean(cyl + am))
+By default \code{eval()} and \code{eval_tidy()} evaluate in the current environment.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{code <- expr(mean(cyl + am))
 eval(code)
 #> Error in mean(cyl + am): object 'am' not found
 }\if{html}{\out{</div>}}
 
-You can supply an optional list or data frame that will be converted to an environment.\if{html}{\out{<div class="sourceCode r">}}\preformatted{eval(code, mtcars)
+You can supply an optional list or data frame that will be converted to an environment.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{eval(code, mtcars)
 #> [1] 6.59375
 }\if{html}{\out{</div>}}
 

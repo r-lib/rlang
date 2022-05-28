@@ -29,14 +29,18 @@ that is automatically picked up by \code{\link[=abort]{abort()}}.
 
 
 By default \code{\link[=abort]{abort()}} uses the function call of its caller as
-context in error messages:\preformatted{foo <- function() abort("Uh oh.")
+context in error messages:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{foo <- function() abort("Uh oh.")
 foo()
 #> Error in `foo()`: Uh oh.
-}
+}\if{html}{\out{</div>}}
 
 This is not always appropriate. For example a function that checks
 an input on the behalf of another function should reference the
-latter, not the former:\preformatted{arg_check <- function(arg,
+latter, not the former:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{arg_check <- function(arg,
                       error_arg = as_string(substitute(arg))) \{
   abort(cli::format_error("\{.arg \{error_arg\}\} is failing."))
 \}
@@ -44,7 +48,7 @@ latter, not the former:\preformatted{arg_check <- function(arg,
 foo <- function(x) arg_check(x)
 foo()
 #> Error in `arg_check()`: `x` is failing.
-}
+}\if{html}{\out{</div>}}
 
 The mismatch is clear in the example above. \code{arg_check()} does not
 have any \code{x} argument and so it is confusing to present
@@ -55,7 +59,9 @@ One way around this is to take a \code{call} or \code{error_call} argument
 and pass it to \code{abort()}. Here we name this argument \code{error_call}
 for consistency with \code{error_arg} which is prefixed because there is
 an existing \code{arg} argument. In other situations, taking \code{arg} and
-\code{call} arguments might be appropriate.\preformatted{arg_check <- function(arg,
+\code{call} arguments might be appropriate.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{arg_check <- function(arg,
                       error_arg = as_string(substitute(arg)),
                       error_call = caller_env()) \{
   abort(
@@ -67,7 +73,7 @@ an existing \code{arg} argument. In other situations, taking \code{arg} and
 foo <- function(x) arg_check(x)
 foo()
 #> Error in `foo()`: `x` is failing.
-}
+}\if{html}{\out{</div>}}
 
 This is the generally recommended pattern for argument checking
 functions. If you mention an argument in an error message, provide
@@ -83,7 +89,9 @@ structured into many different functions. In this case, use
 to climb the call stack one level to find the relevant call. In the
 following example, the complexity is not so important that sparing
 the argument passing makes a big difference. However this
-illustrates the pattern:\preformatted{arg_check <- function(arg,
+illustrates the pattern:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{arg_check <- function(arg,
                       error_arg = caller_arg(arg),
                       error_call = caller_env()) \{
   # Set the local error call
@@ -104,7 +112,7 @@ my_classed_stop <- function(message) \{
 foo <- function(x) arg_check(x)
 foo()
 #> Error in `foo()`: `x` is failing.
-}
+}\if{html}{\out{</div>}}
 }
 
 \section{Error call flags in performance-critical functions}{
@@ -117,8 +125,10 @@ error is triggered. Note that eagerly calling \code{caller_env()} is
 fast enough in almost all cases.
 
 If your function needs to be really fast, assign the error call
-flag directly instead of calling \code{local_error_call()}:\preformatted{.__error_call__. <- "caller"
-}
+flag directly instead of calling \code{local_error_call()}:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{.__error_call__. <- "caller"
+}\if{html}{\out{</div>}}
 }
 
 \examples{

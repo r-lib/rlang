@@ -10,19 +10,23 @@
 \description{
 The \code{.data} and \code{.env} pronouns make it explicit where to find
 objects when programming with \link[=topic-data-mask]{data-masked}
-functions.\preformatted{m <- 10
+functions.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{m <- 10
 mtcars \%>\% mutate(disp = .data$disp * .env$m)
-}
+}\if{html}{\out{</div>}}
 \itemize{
 \item \code{.data} retrieves data-variables from the data frame.
 \item \code{.env} retrieves env-variables from the environment.
 }
 
 Because the lookup is explicit, there is no ambiguity between both
-kinds of variables. Compare:\preformatted{disp <- 10
+kinds of variables. Compare:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{disp <- 10
 mtcars \%>\% mutate(disp = .data$disp * .env$disp)
 mtcars \%>\% mutate(disp = disp * disp)
-}
+}\if{html}{\out{</div>}}
 
 Note that \code{.data} is only a pronoun, it is not a real data
 frame. This means that you can't take its names or map a function

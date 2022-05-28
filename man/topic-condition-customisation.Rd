@@ -26,7 +26,9 @@ By default, bulleted lists are prefixed with unicode symbols:
 #> → Arrow bullet.
 }\if{html}{\out{</div>}}}
 
-Set this option to use simple letters instead:\if{html}{\out{<div class="sourceCode r">}}\preformatted{options(cli.condition_unicode_bullets = FALSE)
+Set this option to use simple letters instead:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{options(cli.condition_unicode_bullets = FALSE)
 
 rlang::abort(c(
   "The error message.",
@@ -47,7 +49,9 @@ rlang::abort(c(
 }
 
 \section{Changing the bullet symbols}{
-You can specify what symbol to use for each type of bullet through your cli user theme. For instance, here is how to uniformly use \code{*} for all bullet kinds:\if{html}{\out{<div class="sourceCode r">}}\preformatted{options(cli.user_theme = list(
+You can specify what symbol to use for each type of bullet through your cli user theme. For instance, here is how to uniformly use \code{*} for all bullet kinds:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{options(cli.user_theme = list(
   ".cli_rlang .bullet-*" = list(before = "* "),
   ".cli_rlang .bullet-i" = list(before = "* "),
   ".cli_rlang .bullet-x" = list(before = "* "),
@@ -72,7 +76,9 @@ rlang::abort(c(
 #> * Arrow bullet.
 }\if{html}{\out{</div>}}
 
-If you want all the bullets to be the same, including the leading bullet, you can achieve this using the \code{bullet} class:\if{html}{\out{<div class="sourceCode r">}}\preformatted{options(cli.user_theme = list(
+If you want all the bullets to be the same, including the leading bullet, you can achieve this using the \code{bullet} class:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{options(cli.user_theme = list(
   ".cli_rlang .bullet" = list(before = "* ")
 ))
 
@@ -95,7 +101,9 @@ rlang::abort(c(
 }
 
 \section{Changing the foreground and background colour of error calls}{
-When called inside a function, \code{abort()} displays the function call to help contextualise the error:\if{html}{\out{<div class="sourceCode r">}}\preformatted{splash <- function() \{
+When called inside a function, \code{abort()} displays the function call to help contextualise the error:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{splash <- function() \{
   abort("Can't splash without water.")
 \}
 
@@ -106,7 +114,9 @@ splash()
 
 The call is formatted with cli as a \code{code} element. This is not visible in the manual, but code text is formatted with a highlighted background colour by default. When this can be reliably detected, that background colour is different depending on whether you're using a light or dark theme.
 
-You can override the colour of code elements in your cli theme. Here is my personal configuration that fits well with the colour theme I currently use in my IDE:\if{html}{\out{<div class="sourceCode r">}}\preformatted{options(cli.user_theme = list(
+You can override the colour of code elements in your cli theme. Here is my personal configuration that fits well with the colour theme I currently use in my IDE:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{options(cli.user_theme = list(
   span.code = list(
     "background-color" = "#3B4252",
     color = "#E5E9F0"

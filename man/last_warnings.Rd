@@ -26,12 +26,16 @@ conditions with a full backtrace.
 \section{Examples}{
 
 
-Enable backtrace capture with \code{global_entrace()}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{global_entrace()
+Enable backtrace capture with \code{global_entrace()}:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{global_entrace()
 }\if{html}{\out{</div>}}
 
 Signal some warnings in nested functions. The warnings inform about
 which function emitted a warning but they don't provide information
-about the call stack:\if{html}{\out{<div class="sourceCode r">}}\preformatted{f <- function() \{ warning("foo"); g() \}
+about the call stack:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{f <- function() \{ warning("foo"); g() \}
 g <- function() \{ warning("bar", immediate. = TRUE); h() \}
 h <- function() warning("baz")
 
@@ -42,7 +46,9 @@ f()
 #> 2: In h() : baz
 }\if{html}{\out{</div>}}
 
-Call \code{last_warnings()} to see backtraces for each of these warnings:\if{html}{\out{<div class="sourceCode r">}}\preformatted{last_warnings()
+Call \code{last_warnings()} to see backtraces for each of these warnings:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{last_warnings()
 #> [[1]]
 #> <warning/rlang_warning>
 #> Warning in `f()`: foo
@@ -66,7 +72,9 @@ Call \code{last_warnings()} to see backtraces for each of these warnings:\if{htm
 }\if{html}{\out{</div>}}
 
 To get a full backtrace, use \code{\link[=summary]{summary()}}. In this case the full
-backtraces do not include more information:\if{html}{\out{<div class="sourceCode r">}}\preformatted{summary(last_warnings())
+backtraces do not include more information:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{summary(last_warnings())
 #> [[1]]
 #> <warning/rlang_warning>
 #> Warning in `f()`:

@@ -9,7 +9,7 @@ env_poke(env = caller_env(), nm, value, inherit = FALSE, create = !inherit)
 \arguments{
 \item{env}{An environment.}
 
-\item{nm}{Names of bindings. \code{nm} must be a single string.}
+\item{nm}{Name of binding, a string.}
 
 \item{value}{The value for a new binding.}
 

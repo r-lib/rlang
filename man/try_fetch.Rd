@@ -27,24 +27,30 @@ A condition handler can:
 \code{expr} is aborted and the recovery value is returned from
 \code{try_fetch()}. Error recovery is useful when you don't want
 errors to abruptly interrupt your program but resume at the
-catching site instead.\preformatted{# Recover with the value 0
+catching site instead.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{# Recover with the value 0
 try_fetch(1 + "", error = function(cnd) 0)
-}
+}\if{html}{\out{</div>}}
 \item \strong{Rethrow conditions}, e.g. using \code{abort(msg, parent = cnd)}.
 See the \code{parent} argument of \code{\link[=abort]{abort()}}. This is typically done to
 add information to low-level errors about the high-level context
-in which they occurred.\preformatted{try_fetch(1 + "", error = function(cnd) abort("Failed.", parent = cnd))
-}
+in which they occurred.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{try_fetch(1 + "", error = function(cnd) abort("Failed.", parent = cnd))
+}\if{html}{\out{</div>}}
 \item \strong{Inspect conditions}, for instance to log data about warnings
 or errors. In this case, the handler must return the \code{\link[=zap]{zap()}}
 sentinel to instruct \code{try_fetch()} to ignore (or zap) that
 particular handler. The next matching handler is called if any,
-and errors bubble up to the user if no handler remains.\preformatted{log <- NULL
+and errors bubble up to the user if no handler remains.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{log <- NULL
 try_fetch(1 + "", error = function(cnd) \{
   log <<- cnd
   zap()
 \})
-}
+}\if{html}{\out{</div>}}
 }
 
 Whereas \code{tryCatch()} catches conditions (discarding any running
@@ -60,11 +66,13 @@ for the debuggability of your functions. See the comparison with
 
 A stack overflow occurs when a program keeps adding to itself until
 the stack memory (whose size is very limited unlike heap memory) is
-exhausted.\preformatted{# A function that calls itself indefinitely causes stack overflows
+exhausted.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{# A function that calls itself indefinitely causes stack overflows
 f <- function() f()
 f()
 #> Error: C stack usage  9525680 is too close to the limit
-}
+}\if{html}{\out{</div>}}
 
 Because memory is very limited when these errors happen, it is not
 possible to call the handlers on the existing program stack.

@@ -15,7 +15,9 @@ for debugging injection code.
 
 
 \code{qq_show()} shows the intermediary expression before it is
-evaluated by R:\if{html}{\out{<div class="sourceCode r">}}\preformatted{list2(!!!1:3)
+evaluated by R:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{list2(!!!1:3)
 #> [[1]]
 #> [1] 1
 #> 
@@ -30,7 +32,9 @@ qq_show(list2(!!!1:3))
 }\if{html}{\out{</div>}}
 
 It is especially useful inside functions to reveal what an injected
-expression looks like:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
+expression looks like:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
   qq_show(data \%>\% dplyr::summarise(mean(\{\{ var \}\})))
 \}
 

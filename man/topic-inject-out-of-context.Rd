@@ -9,7 +9,9 @@ The \link[=topic-inject]{injection operators} \ifelse{html}{\code{\link[=embrace
 
 The embrace operator \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}} is a feature available in \link[=topic-data-mask]{data-masked} arguments powered by tidy eval. If you use it elsewhere, it is interpreted as a double \verb{\{} wrapping.
 
-In the R language, \verb{\{} is like \code{(} but takes multiple expressions instead of one:\if{html}{\out{<div class="sourceCode r">}}\preformatted{\{
+In the R language, \verb{\{} is like \code{(} but takes multiple expressions instead of one:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{\{
   1 # Discarded
   2
 \}
@@ -23,14 +25,18 @@ list(
 #> [1] 2
 }\if{html}{\out{</div>}}
 
-Just like you can wrap an expression in as many parentheses as you'd like, you can wrap multiple times with braces:\if{html}{\out{<div class="sourceCode r">}}\preformatted{((1))
+Just like you can wrap an expression in as many parentheses as you'd like, you can wrap multiple times with braces:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{((1))
 #> [1] 1
 
 \{\{ 2 \}\}
 #> [1] 2
 }\if{html}{\out{</div>}}
 
-So nothing prevents you from embracing a function argument in a context where this operation is not implemented. R will just treat the braces like a set of parentheses and silently return the result:\if{html}{\out{<div class="sourceCode r">}}\preformatted{f <- function(arg) list(\{\{ arg \}\})
+So nothing prevents you from embracing a function argument in a context where this operation is not implemented. R will just treat the braces like a set of parentheses and silently return the result:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{f <- function(arg) list(\{\{ arg \}\})
 f(1)
 #> [[1]]
 #> [1] 1
@@ -38,7 +44,9 @@ f(1)
 
 This sort of no-effect embracing should be avoided in real code because it falsely suggests that the function supports the tidy eval operator and that something special is happening.
 
-However in many cases embracing is done to implement \link[=topic-data-mask]{data masking}. It is likely that the function will be called with data-variables references which R won't be able to resolve properly:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
+However in many cases embracing is done to implement \link[=topic-data-mask]{data masking}. It is likely that the function will be called with data-variables references which R won't be able to resolve properly:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
   with(data, mean(\{\{ var \}\}))
 \}
 
@@ -53,21 +61,27 @@ Since \code{\link[=with]{with()}} is a base data-masking function that doesn't s
 
 The injection operators \code{\link{!!}} and \code{\link{!!!}} are implemented in \link[=topic-data-mask]{data-masked} arguments, \link[=dyn-dots]{dynamic dots}, and within \code{\link[=inject]{inject()}}. When used in other contexts, they are interpreted by R as double and triple \emph{negations}.
 
-Double negation can be used in ordinary code to convert an input to logical:\if{html}{\out{<div class="sourceCode r">}}\preformatted{!!10
+Double negation can be used in ordinary code to convert an input to logical:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{!!10
 #> [1] TRUE
 
 !!0
 #> [1] FALSE
 }\if{html}{\out{</div>}}
 
-Triple negation is essentially the same as simple negation:\if{html}{\out{<div class="sourceCode r">}}\preformatted{!10
+Triple negation is essentially the same as simple negation:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{!10
 #> [1] FALSE
 
 !!!10
 #> [1] FALSE
 }\if{html}{\out{</div>}}
 
-This means that when injection operators are used in the wrong place, they will be interpreted as negation. In the best case scenario you will get a type error:\if{html}{\out{<div class="sourceCode r">}}\preformatted{!"foo"
+This means that when injection operators are used in the wrong place, they will be interpreted as negation. In the best case scenario you will get a type error:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{!"foo"
 #> Error in !"foo": invalid argument type
 
 !quote(foo)

@@ -10,13 +10,11 @@ as_box(x, class = NULL)
 as_box_if(.x, .p, .class = NULL, ...)
 }
 \arguments{
-\item{x}{An R object.}
+\item{x, .x}{An R object.}
 
 \item{class, .class}{A box class. If the input is already a box of
 that class, it is returned as is. If the input needs to be boxed,
 \code{class} is passed to \code{\link[=new_box]{new_box()}}.}
-
-\item{.x}{An R object.}
 
 \item{.p}{A predicate function.}
 

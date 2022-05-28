@@ -28,7 +28,9 @@ use \verb{\{\{} at least once. Use \code{glue::glue()} for simple
 interpolation.
 
 Before using \code{englue()} in a package, first ensure that glue is
-installed by adding it to your \verb{Imports:} section.\if{html}{\out{<div class="sourceCode r">}}\preformatted{usethis::use_package("glue", "Imports")
+installed by adding it to your \verb{Imports:} section.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{usethis::use_package("glue", "Imports")
 }\if{html}{\out{</div>}}
 }
 \examples{

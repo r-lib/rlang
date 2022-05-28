@@ -6,7 +6,7 @@
 \alias{rlang-package}
 \title{rlang: Functions for Base Types and Core R and 'Tidyverse' Features}
 \description{
-\if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
 A toolbox for working with base types, core R features like the condition system, and core 'Tidyverse' features like tidy evaluation.
 }

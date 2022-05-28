@@ -14,7 +14,9 @@ The two main cases for splice injection are:
 \itemize{
 \item Turning a list of inputs into distinct arguments. This is
 especially useful with functions that take data in \code{...}, such as
-\code{\link[base:cbind]{base::rbind()}}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{dfs <- list(mtcars, mtcars)
+\code{\link[base:cbind]{base::rbind()}}.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{dfs <- list(mtcars, mtcars)
 inject(rbind(!!!mtcars))
 }\if{html}{\out{</div>}}
 \item Injecting \link[=topic-defuse]{defused expressions} like
@@ -48,7 +50,9 @@ see \ifelse{html}{\link[=topic-inject-out-of-context]{What happens if I use inje
 
 
 Take a function like \code{\link[base:cbind]{base::rbind()}} that takes data in \code{...}. This
-sort of functions takes a variable number of arguments.\if{html}{\out{<div class="sourceCode r">}}\preformatted{df1 <- data.frame(x = 1)
+sort of functions takes a variable number of arguments.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{df1 <- data.frame(x = 1)
 df2 <- data.frame(x = 2)
 
 rbind(df1, df2)
@@ -60,7 +64,9 @@ rbind(df1, df2)
 Passing individual arguments is only possible for a fixed amount of
 arguments. When the arguments are in a list whose length is
 variable (and potentially very large), we need a programmatic
-approach like the splicing syntax \verb{!!!}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{dfs <- list(df1, df2)
+approach like the splicing syntax \verb{!!!}:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{dfs <- list(df1, df2)
 
 inject(rbind(!!!dfs))
 #>   x
@@ -69,8 +75,10 @@ inject(rbind(!!!dfs))
 }\if{html}{\out{</div>}}
 
 Because \code{rbind()} is a base function we used \code{\link[=inject]{inject()}} to
-explicitly enable \verb{!!!}. However, many functions implement \link[=list2]{dynamic dots} with \verb{!!!} implicitly enabled out of the box.\if{html}{\out{<div class="sourceCode r">}}\preformatted{tidyr::expand_grid(x = 1:2, y = c("a", "b"))
-#> # A tibble: 4 × 2
+explicitly enable \verb{!!!}. However, many functions implement \link[=list2]{dynamic dots} with \verb{!!!} implicitly enabled out of the box.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{tidyr::expand_grid(x = 1:2, y = c("a", "b"))
+#> # A tibble: 4 x 2
 #>       x y    
 #>   <int> <chr>
 #> 1     1 a    
@@ -80,7 +88,7 @@ explicitly enable \verb{!!!}. However, many functions implement \link[=list2]{dy
 
 xs <- list(x = 1:2, y = c("a", "b"))
 tidyr::expand_grid(!!!xs)
-#> # A tibble: 4 × 2
+#> # A tibble: 4 x 2
 #>       x y    
 #>   <int> <chr>
 #> 1     1 a    
@@ -91,8 +99,10 @@ tidyr::expand_grid(!!!xs)
 
 Note how the expanded grid has the right column names. That's
 because we spliced a \emph{named} list. Splicing causes each name of the
-list to become an argument name.\if{html}{\out{<div class="sourceCode r">}}\preformatted{tidyr::expand_grid(!!!set_names(xs, toupper))
-#> # A tibble: 4 × 2
+list to become an argument name.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{tidyr::expand_grid(!!!set_names(xs, toupper))
+#> # A tibble: 4 x 2
 #>       X Y    
 #>   <int> <chr>
 #> 1     1 a    
@@ -112,7 +122,9 @@ patterns if possible.
 
 First, instead of using the \link[=topic-data-mask-programming]{defuse-and-inject pattern} with \code{...}, you can simply pass
 them on as you normally would. These two expressions are completely
-equivalent:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_group_by <- function(.data, ...) \{
+equivalent:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_group_by <- function(.data, ...) \{
   .data \%>\% dplyr::group_by(!!!enquos(...))
 \}
 
@@ -126,7 +138,9 @@ Second, more complex applications such as \link[=topic-metaprogramming]{transfor
 operation introduced in dplyr 1.0. Say you want to take the
 \code{mean()} of all expressions in \code{...}. Before \code{across()}, you had to
 defuse the \code{...} expressions, wrap them in a call to \code{mean()}, and
-inject them in \code{summarise()}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(.data, ...) \{
+inject them in \code{summarise()}.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(.data, ...) \{
   # Defuse dots and auto-name them
   exprs <- enquos(..., .named = TRUE)
 
@@ -138,7 +152,9 @@ inject them in \code{summarise()}.\if{html}{\out{<div class="sourceCode r">}}\pr
 \}
 }\if{html}{\out{</div>}}
 
-It is much easier to use \code{across()} instead:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(.data, ...) \{
+It is much easier to use \code{across()} instead:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(.data, ...) \{
   .data \%>\% dplyr::summarise(across(c(...), ~ mean(.x, na.rm = TRUE)))
 \}
 }\if{html}{\out{</div>}}
@@ -147,20 +163,26 @@ It is much easier to use \code{across()} instead:\if{html}{\out{<div class="sour
 \section{Performance of injected dots and dynamic dots}{
 
 
-Take this \link[=dyn-dots]{dynamic dots} function:\if{html}{\out{<div class="sourceCode r">}}\preformatted{n_args <- function(...) \{
+Take this \link[=dyn-dots]{dynamic dots} function:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{n_args <- function(...) \{
   length(list2(...))
 \}
 }\if{html}{\out{</div>}}
 
 Because it takes dynamic dots you can splice with \verb{!!!} out of the
-box.\if{html}{\out{<div class="sourceCode r">}}\preformatted{n_args(1, 2)
+box.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{n_args(1, 2)
 #> [1] 2
 
 n_args(!!!mtcars)
 #> [1] 11
 }\if{html}{\out{</div>}}
 
-Equivalently you could enable \verb{!!!} explicitly with \code{\link[=inject]{inject()}}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{inject(n_args(!!!mtcars))
+Equivalently you could enable \verb{!!!} explicitly with \code{\link[=inject]{inject()}}.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{inject(n_args(!!!mtcars))
 #> [1] 11
 }\if{html}{\out{</div>}}
 
@@ -170,7 +192,9 @@ special-cases \verb{!!!} arguments. On the other hand, \code{\link[=inject]{inje
 operates on the language and creates a function call containing as
 many arguments as there are elements in the spliced list. If you
 supply a list of size 1e6, \code{inject()} is creating one million
-arguments before evaluation. This can be much slower.\if{html}{\out{<div class="sourceCode r">}}\preformatted{xs <- rep(list(1), 1e6)
+arguments before evaluation. This can be much slower.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{xs <- rep(list(1), 1e6)
 
 system.time(
   n_args(!!!xs)

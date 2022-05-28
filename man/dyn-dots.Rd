@@ -36,8 +36,10 @@ See also \code{\link[=dots_list]{dots_list()}}, which offers more control over t
 In general, passing \code{...} to a function that supports dynamic dots
 causes your function to inherit the dynamic behaviour.
 
-In packages, document dynamic dots with this standard tag:\preformatted{ @param ... <[`dynamic-dots`][rlang::dyn-dots]> What these dots do.
-}
+In packages, document dynamic dots with this standard tag:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{ @param ... <[`dynamic-dots`][rlang::dyn-dots]> What these dots do.
+}\if{html}{\out{</div>}}
 }
 
 \examples{

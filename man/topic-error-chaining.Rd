@@ -11,7 +11,9 @@ Error chaining is a mechanism for providing contextual information when an error
 \item Mentioning the \emph{iteration context} in which a user error occurred. For instance, the input file when processing documents, or the iteration number or key when running user code in a loop.
 }
 
-Here is an example of a chained error from dplyr that shows the pipeline step (\code{mutate()}) and the iteration context (group ID) in which a function called by the user failed:\if{html}{\out{<div class="sourceCode r">}}\preformatted{add <- function(x, y) x + y
+Here is an example of a chained error from dplyr that shows the pipeline step (\code{mutate()}) and the iteration context (group ID) in which a function called by the user failed:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{add <- function(x, y) x + y
 
 mtcars |>
   dplyr::group_by(cyl) |>
@@ -40,7 +42,9 @@ To create an error chain, you must first capture causal errors when they occur. 
 
 In practice, \code{try_fetch()} works just like \code{tryCatch()}. It takes pairs of error class names and handling functions. To chain an error, simply rethrow it from an error handler by passing it as \code{parent} argument.
 
-In this example, we'll create a \code{with_} function. That is, a function that sets up some configuration (in this case, chained errors) before executing code supplied as input:\if{html}{\out{<div class="sourceCode r">}}\preformatted{with_chained_errors <- function(expr) \{
+In this example, we'll create a \code{with_} function. That is, a function that sets up some configuration (in this case, chained errors) before executing code supplied as input:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{with_chained_errors <- function(expr) \{
   try_fetch(
     expr,
     error = function(cnd) \{
@@ -56,7 +60,9 @@ with_chained_errors(1 + "")
 #> ! non-numeric argument to binary operator
 }\if{html}{\out{</div>}}
 
-Typically, you'll use this error helper from another user-facing function.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_verb <- function(expr) \{
+Typically, you'll use this error helper from another user-facing function.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_verb <- function(expr) \{
   with_chained_errors(expr)
 \}
 
@@ -69,7 +75,9 @@ my_verb(add(1, ""))
 
 Altough we have created a chained error, the error call of the contextual error is not quite right. It mentions the name of the error helper instead of the name of the user-facing function.
 
-If you've read \ifelse{html}{\link[=topic-error-call]{Including function calls in error messages}}{\link[=topic-error-call]{Including function calls in error messages}}, you may suspect that we need to pass a \code{call} argument to \code{abort()}. That's exactly what needs to happen to fix the call and backtrace issues:\if{html}{\out{<div class="sourceCode r">}}\preformatted{with_chained_errors <- function(expr, call = caller_env()) \{
+If you've read \ifelse{html}{\link[=topic-error-call]{Including function calls in error messages}}{\link[=topic-error-call]{Including function calls in error messages}}, you may suspect that we need to pass a \code{call} argument to \code{abort()}. That's exactly what needs to happen to fix the call and backtrace issues:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{with_chained_errors <- function(expr, call = caller_env()) \{
   try_fetch(
     expr,
     error = function(cnd) \{
@@ -79,7 +87,9 @@ If you've read \ifelse{html}{\link[=topic-error-call]{Including function calls i
 \}
 }\if{html}{\out{</div>}}
 
-Now that we've passed the caller environment as \code{call} argument, \code{abort()} automatically picks up the correspondin function call from the execution frame:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_verb(add(1, ""))
+Now that we've passed the caller environment as \code{call} argument, \code{abort()} automatically picks up the correspondin function call from the execution frame:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_verb(add(1, ""))
 #> Error in `my_verb()`:
 #> ! Problem during step.
 #> Caused by error in `x + y`:
@@ -87,14 +97,18 @@ Now that we've passed the caller environment as \code{call} argument, \code{abor
 }\if{html}{\out{</div>}}
 \subsection{Side note about missing arguments}{
 
-\code{my_verb()} is implemented with a lazy evaluation pattern. The user input kept unevaluated until the error chain context is set up. A downside of this arrangement is that missing argument errors are reported in the wrong context:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_verb()
+\code{my_verb()} is implemented with a lazy evaluation pattern. The user input kept unevaluated until the error chain context is set up. A downside of this arrangement is that missing argument errors are reported in the wrong context:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_verb()
 #> Error in `my_verb()`:
 #> ! Problem during step.
 #> Caused by error in `withCallingHandlers()`:
 #> ! argument "expr" is missing, with no default
 }\if{html}{\out{</div>}}
 
-To fix this, simply require these arguments before setting up the chained error context, for instance with the \code{check_required()} input checker exported from rlang:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_verb <- function(expr) \{
+To fix this, simply require these arguments before setting up the chained error context, for instance with the \code{check_required()} input checker exported from rlang:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_verb <- function(expr) \{
   check_required(expr)
   with_chained_errors(expr)
 \}
@@ -114,7 +128,9 @@ It is also possible to completely take ownership of a causal error and rethrow i
 \item Hiding causal errors indiscriminately should likely be avoided because it may suppress information about unexpected errors. In general, rethrowing an unchained errors should only be done with specific error classes.
 }
 
-To rethow an error without chaining it, and completely take over the causal error from the user point of view, fetch it with \code{try_fetch()} and throw a new error. The only difference with throwing a chained error is that the \code{parent} argument is set to \code{NA}. You could also omit the \code{parent} argument entirely, but passing \code{NA} lets \code{abort()} know it is rethrowing an error from a handler and that it should hide the corresponding error helpers in the backtrace.\if{html}{\out{<div class="sourceCode r">}}\preformatted{with_own_scalar_errors <- function(expr, call = caller_env()) \{
+To rethow an error without chaining it, and completely take over the causal error from the user point of view, fetch it with \code{try_fetch()} and throw a new error. The only difference with throwing a chained error is that the \code{parent} argument is set to \code{NA}. You could also omit the \code{parent} argument entirely, but passing \code{NA} lets \code{abort()} know it is rethrowing an error from a handler and that it should hide the corresponding error helpers in the backtrace.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{with_own_scalar_errors <- function(expr, call = caller_env()) \{
   try_fetch(
     expr,
     vctrs_error_scalar_type = function(cnd) \{
@@ -140,7 +156,9 @@ my_verb(env())
 #> ! Must supply a vector.
 }\if{html}{\out{</div>}}
 
-When a low-level error is overtaken, it is good practice to store it in the high-level error object, so that it can be inspected for debugging purposes. In the snippet above, we stored it in the \code{error} field. Here is one way of accessing the original error by subsetting the object returned by \code{last_error()}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{rlang::last_error()$error
+When a low-level error is overtaken, it is good practice to store it in the high-level error object, so that it can be inspected for debugging purposes. In the snippet above, we stored it in the \code{error} field. Here is one way of accessing the original error by subsetting the object returned by \code{last_error()}:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{rlang::last_error()$error
 #> <error/vctrs_error_scalar_type>
 #> Error in `my_verb()`:
 #> ! `expr` must be a vector, not an environment.
@@ -153,7 +171,9 @@ When a low-level error is overtaken, it is good practice to store it in the high
 \section{Case study: Mapping with chained errors}{
 One good use case for chained errors is adding information about the iteration state when looping over a set of inputs. To illustrate this, we'll implement a version of \code{map()} / \code{lapply()} that chains an iteration error to any captured user error.
 
-Here is a minimal implementation of \code{map()}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_map <- function(.xs, .fn, ...) \{
+Here is a minimal implementation of \code{map()}:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_map <- function(.xs, .fn, ...) \{
   out <- new_list(length(.xs))
 
   for (i in seq_along(.xs)) \{
@@ -171,12 +191,16 @@ list(1, 2) |> my_map(add, 100)
 #> [1] 102
 }\if{html}{\out{</div>}}
 
-With this implementation, the user has no idea which iteration failed when an error occurs:\if{html}{\out{<div class="sourceCode r">}}\preformatted{list(1, "foo") |> my_map(add, 100)
+With this implementation, the user has no idea which iteration failed when an error occurs:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{list(1, "foo") |> my_map(add, 100)
 #> Error in x + y: non-numeric argument to binary operator
 }\if{html}{\out{</div>}}
 \subsection{Rethrowing with iteration information}{
 
-To improve on this we'll wrap the loop in a \code{try_fetch()} call that rethrow errors with iteration information. Make sure to call \code{try_fetch()} on the outside of the loop to avoid a massive performance hit:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_map <- function(.xs, .fn, ...) \{
+To improve on this we'll wrap the loop in a \code{try_fetch()} call that rethrow errors with iteration information. Make sure to call \code{try_fetch()} on the outside of the loop to avoid a massive performance hit:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_map <- function(.xs, .fn, ...) \{
   out <- new_list(length(.xs))
   i <- 0L
 
@@ -196,7 +220,9 @@ To improve on this we'll wrap the loop in a \code{try_fetch()} call that rethrow
 \}
 }\if{html}{\out{</div>}}
 
-And that's it, the error chain created by the rethrowing handler now provides users with the number of the failing iteration:\if{html}{\out{<div class="sourceCode r">}}\preformatted{list(1, "foo") |> my_map(add, 100)
+And that's it, the error chain created by the rethrowing handler now provides users with the number of the failing iteration:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{list(1, "foo") |> my_map(add, 100)
 #> Error in `my_map()`:
 #> ! Problem while mapping element 2.
 #> Caused by error in `x + y`:
@@ -206,7 +232,9 @@ And that's it, the error chain created by the rethrowing handler now provides us
 
 \subsection{Dealing with errors thrown from the mapped function}{
 
-One problem though, is that the user error call is not very informative when the error occurs immediately in the function supplied to \code{my_map()}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function <- function(x) \{
+One problem though, is that the user error call is not very informative when the error occurs immediately in the function supplied to \code{my_map()}:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function <- function(x) \{
   if (!is_string(x)) \{
     abort("`x` must be a string.")
   \}
@@ -221,7 +249,9 @@ list(1, "foo") |> my_map(my_function)
 
 Functions have no names by themselves. Only the variable that refers to the function has a name. In this case, the mapped function is passed by argument to the variable \code{.fn}. So, when an error happens, this is the name that is reported to users.
 
-One approach to fix this is to inspect the \code{call} field of the error. When we detect a \code{.fn} call, we replace it by the defused code supplied as \code{.fn} argument:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_map <- function(.xs, .fn, ...) \{
+One approach to fix this is to inspect the \code{call} field of the error. When we detect a \code{.fn} call, we replace it by the defused code supplied as \code{.fn} argument:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_map <- function(.xs, .fn, ...) \{
   # Capture the defused code supplied as `.fn`
   fn_code <- substitute(.fn)
 
@@ -249,7 +279,9 @@ One approach to fix this is to inspect the \code{call} field of the error. When 
 \}
 }\if{html}{\out{</div>}}
 
-And voilà!\if{html}{\out{<div class="sourceCode r">}}\preformatted{list(1, "foo") |> my_map(my_function)
+And voilà!
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{list(1, "foo") |> my_map(my_function)
 #> Error in `my_map()`:
 #> ! Problem while mapping element 1.
 #> Caused by error in `my_function()`:
